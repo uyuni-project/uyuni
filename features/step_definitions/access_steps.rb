@@ -20,3 +20,11 @@ When /^I follow "([^"]*)"$/ do |arg1|
   find_link(arg1).click
 end
   
+Given /^I am access the host initial$/ do
+  visit Capybara.app_host
+  page.should have_content("Create Spacewalk Administrator")
+end
+
+When /^I select "([^"]*)"$/ do |arg1|
+  pending # express the regexp above with the code you wish you had
+end
