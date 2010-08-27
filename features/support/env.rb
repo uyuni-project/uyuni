@@ -13,6 +13,8 @@ if not host.include?("//")
   host = "https://#{host}"
 end
 
+ENV['LANG'] = "en_US.UTF-8"
+
 require 'rubygems'
 require 'capybara'
 require 'capybara/cucumber'
