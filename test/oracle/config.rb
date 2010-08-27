@@ -1,8 +1,8 @@
 # $dbuser must have permission to run DBMS_LOCK.SLEEP
 #   connect as sys
 #     GRANT EXECUTE ON dbms_lock TO ruby;
-$dbuser = "ruby"
-$dbpass = "ruby"
+$dbuser = "spacewalk"
+$dbpass = "spacewalk"
 
 dbhost = ENV['TESTHOST'] || "andromeda.suse.de"
 # remove http*://
