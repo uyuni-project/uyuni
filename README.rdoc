@@ -7,6 +7,12 @@ Testsuite to automatically test a Spacewalk installation
 
 ==Running
 
+* Get requirements from rpms or
+
+rvm use $version
+gem install bundler --pre
+bundle install
+
 * TESTHOST environment variable can be passed to change the default.
 
 To run all tests:
