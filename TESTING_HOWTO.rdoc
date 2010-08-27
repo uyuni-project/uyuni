@@ -1,0 +1,162 @@
+=Web Testing Howto
+
+==What is what
+
+* Cucumber: Test execution
+  * http://cukes.info
+*  Capybara: Driver for http (make http calls)
+   * http://github.com/jnicklas/capybara
+   (Webrat: Alternative to Capybara)
+
+Either
+
+* Selenium: Driver for browser (runs a browser)
+  * http://selenium.rubyforge.org/
+
+or
+  
+* http://github.com/langalex/culerity
+* http://celerity.rubyforge.org
+* http://jruby.org
+  
+== Helpful links
+
+* http://www.slideshare.net/bkeepers/behavior-driven-development-with-cucumber-presentation
+* http://www.slideshare.net/linoj/cucumber-how-i-slice-it-presentation-924254
+* http://www.slideshare.net/jwthompson2/ruby-testing-cucumber-and-rspec
+
+
+== Testing with Chrome
+
+Spacewalk only serves through https but Chrome blocks since the
+certificate is unknown.
+  
+Chrome does not offer a certificate import but shares the vault with
+Firefox. So use Firefox to import the certificate.
+
+Alternative: http://wiki.cacert.org/BrowserClients#Linux
+
+
+== Required packages
+
+* rubygem-cucumber
+* rubygem-rspec
+* rubygem-term-ansicolor
+* rubygem-treetop
+* rubygem-diff-lcs
+* rubygem-hpricot
+* rubygem-capybara
+
+Either:
+
+* rubygem-selenium-webdriver
+
+or
+  
+* jruby: http://download.opensuse.org/repositories/home:/flavio_castelli
+* rubygem-culerity
+* rubygem-celerity (include htmlunit)
+
+== Directory layout
+
+  Rakefile
+  features/
+    foo.feature
+    bar.feature
+    ...
+    support/
+      env.rb - setup environment
+      other_helpers.rb
+      ...
+    step_definitions/
+      domain_concept_a.rb
+      domain_concept_b.rb
+      ...
+
+
+Rakefile
+
+  require 'rubygems'
+  require 'cucumber/rake/task'
+
+  Cucumber::Rake::Task.new
+  
+  # Cucumber::Rake::Task.new do |t|
+  # t.cucumber_opts = %w{--format pretty}
+  # end
+  
+
+
+  require "selenium-webdriver"
+  Selenium::WebDriver.for :chrome
+
+===Issues
+
+* http://github.com/primedia/capybara/commit/b601bc2ec1973073f7cb20e46c92ea94b9c6e400
+* http://www.google.com/url?sa=D&q=http://github.com/jnicklas/capybara/issues%23issue/69
+
+==Features
+
+  Feature: what is it about
+    In order
+    As
+    I want
+    
+    @tag
+    Scenario: this gets executed, see step_definitons/
+      Given
+      When
+      (And)
+      Then
+      (And)
+      (But)
+
+
+===Running
+
+  /usr/bin/cucumber [<features/foo.feature>[:<line_number_of_scenario>]]
+
+  run whats in progress
+    cucumber --wip
+    
+  run tests tagged with @proposed
+    cucumber --tags @proposed
+
+  run tests not in progress
+    cucumber --tags ~@wip --strict
+
+
+  rake features
+  rake -T cucumber
+  rake cucumber:wip
+  rake cucumber
+  rake cucumber:ok
+  
+
+===Tags
+
+  @wip - work in progress
+  @javascript - use a JavaScript-supporting simulator
+    defaults to Selenium (starts Browser)
+  @culerity - use Culerity (no Browser)
+  @selenium - explictly request Selenium
+  @rack_test
+  @proposed
+  
+ * http://openmonkey.com/articles/2010/04/javascript-testing-with-cucumber-capybara
+
+===Step
+
+use Rspec, Test::Unit, ...
+    
+===Other tools
+
+* TestDataBuilder
+* ObjectMother
+* FixtureReplacement
+* Fixjour
+* FactoryGirl
+* [Celerity (celerity.rubyforge.org) -> replaced by Capybara]
+* Culerity
+* http://upstre.am/2009/01/28/culerity-full-stack-rails-testing-with-cucumber-and-celerity/
+  ...

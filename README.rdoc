@@ -1,0 +1,16 @@
+
+=Spacewalk Testsuite
+
+==Introduction
+
+==Running
+
+* TESTHOST environment variable can be passed to change the default.
+
+To run all tests:
+
+rake
+
+Or look at rake -T
+
+
