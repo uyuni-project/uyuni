@@ -49,3 +49,9 @@ end
 When /^I check "([^"]*)"$/ do |arg1|
   check(arg1)
 end
+
+When /^I go to the createuser page$/ do                                                                                                                                                 
+  sleep(1)
+  find_link("Users").click
+  sleep(1)                                                                                                                     
+end
