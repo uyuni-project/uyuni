@@ -1,5 +1,6 @@
 # feature/init_user_create.feature
 @javascript
+@init_once
 Feature: Create initial users
   In Order to run the tests 
   As a testing users
@@ -22,6 +23,17 @@ Feature: Create initial users
      And I click on "Update"
     Then I should see "The Spacewalk must be restarted to reflect these changes"
      And I should see "is_monitoring_enabled" as checked
-#  Scenario: Create Testing username
-#    Given I am authorized as admin
-#    When
+ Scenario: Create Testing username
+    Given I am authorized as "admin" with password "admin"
+    When I go to the createuser page
+     And I follow "create new user"
+     And I enter "testing" as "login"
+     And I enter "testing" as "desiredpassword"
+     And I enter "testing" as "desiredpasswordConfirm"
+     And I enter "Test" as "firstNames"
+     And I enter "User" as "lastName"
+     And I enter "galaxy-devel@suse.de" as "email"
+     And I click on "Create Login"
+    Then I should see a "Account testing created, login information sent to galaxy-devel@suse.de" text
+     And I should see a "testing" link
+
