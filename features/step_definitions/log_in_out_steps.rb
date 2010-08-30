@@ -1,10 +1,3 @@
-Given /^I am authorized$/ do
-  visit "/"
-  fill_in "username", :with => "testing"
-  fill_in "password", :with => "testing"
-  click_button "Sign In"
-end
-
 Given /^I am authorized as "([^"]*)" with password "([^"]*)"$/ do |arg1,arg2|
   visit "/"
   fill_in "username", :with => arg1
@@ -12,16 +5,13 @@ Given /^I am authorized as "([^"]*)" with password "([^"]*)"$/ do |arg1,arg2|
   click_button "Sign In"
 end
 
-When /^I sign out$/ do
-  find_link("Sign Out").click
-end
-    
-Then /^I should see "([^"]*)"$/ do |arg1|
-  page.should have_content(arg1)
+Given /^I am authorized$/ do
+  Given "I am authorized as \"testing\" with password \"testing\""
 end
 
-Then /^I should see "([^"]*)" as checked$/ do |arg1|
-  has_checked_field?(arg1)
+
+When /^I sign out$/ do
+  find_link("Sign Out").click
 end
 
 Then /^I should not be authorized$/ do
@@ -46,12 +36,8 @@ When /^I go to the admin configuration page$/ do
   sleep(1)
 end
 
-When /^I check "([^"]*)"$/ do |arg1|
-  check(arg1)
-end
-
-When /^I go to the createuser page$/ do                                                                                                                                                 
+When /^I go to the createuser page$/ do
   sleep(1)
   find_link("Users").click
-  sleep(1)                                                                                                                     
+  sleep(1)
 end

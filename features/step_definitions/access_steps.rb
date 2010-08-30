@@ -7,24 +7,9 @@ When /^I go to the home page$/ do
 #  visit '/'
   visit Capybara.app_host
 end
-    
-When /^I enter "([^"]*)" as "([^"]*)"$/ do |arg1, arg2|
-  fill_in arg2, :with => arg1
-end
-  
-When /^I click on "([^"]*)"$/ do |arg1|
-  click_button arg1
-end
 
-When /^I follow "([^"]*)"$/ do |arg1|
-  find_link(arg1).click
-end
-  
-Given /^I am access the host initial$/ do
+Given /^I access the host the first time$/ do
   visit Capybara.app_host
   page.should have_content("Create Spacewalk Administrator")
 end
 
-When /^I select "([^"]*)"$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
-end

@@ -1,12 +1,11 @@
 # feature/init_user_create.feature
-@javascript
-@init_once
+@javascript @init_once
 Feature: Create initial users
   In Order to run the tests 
   As a testing users
   I need to create the admin and a testing users
   Scenario: Create Admin users
-    Given I am access the host initial
+    Given I access the host the first time
     When I go to the home page
     And I enter "admin" as "login"
     And I enter "admin" as "desiredpassword"
