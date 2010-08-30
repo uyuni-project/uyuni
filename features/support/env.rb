@@ -38,11 +38,9 @@ end
 # don't run own server on a random port
 Capybara.run_server = false
 if Capybara.default_driver == :selenium
-  require 'spacewalk_testsuite_base/monkey_patches'
-  #Capybara::Driver::Selenium.browser = browser
+  #require 'spacewalk_testsuite_base/monkey_patches'
+  Capybara::Driver::Selenium.browser = browser
   driver = Selenium::WebDriver.for browser
-  Capybara.app_host = host
-  #driver.navigate.to host
 end
 
 # Remote::Capabilities.chrome
