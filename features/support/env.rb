@@ -4,6 +4,8 @@
 
 # :firefox requires MozillaFirefox 3.7 or later !!
 
+$: << File.join(File.dirname(__FILE__), "..", "..", "lib")
+
 browser = :chrome #:htmlunit #:chrome #:firefox
 #browser = :firefox
 
