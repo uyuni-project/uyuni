@@ -37,9 +37,15 @@ end
 
 When /^I click on "([^"]*)"$/ do |arg1|
   click_button arg1
+  sleep(1)
 end
 
 When /^I follow "([^"]*)"$/ do |arg1|
   find_link(arg1).click
+  sleep(1)
+end
+
+When /^I wait for "(\d+)" seconds$/ do |arg1|
+  sleep(arg1.to_i)
 end
 

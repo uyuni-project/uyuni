@@ -5,6 +5,7 @@ Feature: Create initial users
   As a testing users
   I need to create the admin and a testing users
 
+  @first
   Scenario: Create Admin users
     Given I access the host the first time
     When I go to the home page
@@ -15,8 +16,10 @@ Feature: Create initial users
     And I enter "Admin" as "lastName"
     And I enter "galaxy-devel@suse.de" as "email"
     And I click on "Create Login"
-    Then I can login
+    And I wait for "5" seconds
+    Then I am logged-in
 
+  @second
   Scenario: Enable Monitoring
     Given I am authorized as "admin" with password "admin"
     When I go to the admin configuration page
