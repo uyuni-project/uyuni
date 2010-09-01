@@ -25,6 +25,9 @@ Then /^I should see "([^"]*)" as checked$/ do |arg1|
   has_checked_field?(arg1)
 end
 
+Then /^the current path is "([^"]*)"$/ do |arg1|
+  (current_path == arg1)
+end
 
 #
 # Common "When" phrases
@@ -62,4 +65,6 @@ end
 When /^I wait for "(\d+)" seconds$/ do |arg1|
   sleep(arg1.to_i)
 end
+
+
 
