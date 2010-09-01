@@ -2,12 +2,22 @@ require 'rubygems'
 require 'cucumber/rake/task'
 require "rake/rdoctask"
 require "rake/testtask"
+require "rake/clean"
 
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "spacewalk_testsuite_base/version"
 
 Cucumber::Rake::Task.new do |t|
-  t.cucumber_opts = %w{--format pretty}
+  cucumber_opts = %w{--format pretty}
+  feature_list  = %w{
+                     features/init_user_create.feature
+                     features/running.feature
+                     features/login.feature
+                     features/mainpage.feature
+                     features/system_configuration.feature
+                     features/systemspage.feature
+                    }
+  t.cucumber_opts = cucumber_opts + feature_list
 end
 
 task :build do
