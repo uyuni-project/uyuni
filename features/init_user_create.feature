@@ -25,7 +25,7 @@ Feature: Create initial users
     When I go to the admin configuration page
      And I check "Monitoring"
      And I click on "Update"
-    Then I should see "The Spacewalk must be restarted to reflect these changes"
+    Then I should see a "The Spacewalk must be restarted to reflect these changes" text
      And I should see "is_monitoring_enabled" as checked
 
   Scenario: Create Testing username
