@@ -152,14 +152,12 @@ Feature: Explore the main landing page
      And I should see a "create new key" link
      And I should see a "No activation keys available" text
 
-  @wip
   Scenario: Check sidebar link destination for Systems => Stored Profiles
     Given I am on the Systems page
       And I follow "Stored Profiles" in "sidenav"
     Then I should see a "Stored Profiles" text
      And I should see a "No stored profiles." text
 
-  @wip
   Scenario: Check sidebar link destination for Systems => Custom System Info
     Given I am on the Systems page
       And I follow "Custom System Info" in "sidenav"
@@ -167,7 +165,6 @@ Feature: Explore the main landing page
      And I should see a "create new key" link
      And I should see a "No Custom Info Keys Found" text
 
-  @wip
   Scenario: Check sidebar link destination for Systems => Kickstart
     Given I am on the Systems page
       And I follow "Kickstart" in "sidenav"
@@ -183,3 +180,70 @@ Feature: Explore the main landing page
      And I should see a "View a List of Kickstart Profiles" link
      And I should see a "Create a New Kickstart Profile" link
      And I should see a "Upload a New Kickstart File" link
+
+  @failed
+  Scenario: Check sidebar link destination for Systems => Kickstart => Profiles
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "Profiles" in "sidenav"
+    Then I should see a "Kickstart Profiles" text
+     And I should see a "create new kickstart profile" link
+     And I should see a "upload new kickstart file" link
+
+  Scenario: Check sidebar link destination for Systems => Kickstart => Bare Metal
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "Bare Metal" in "sidenav"
+    Then I should see a "Bare Metal Kickstart By IP" text
+     And I should see a "No Ip Ranges Found" text
+
+  Scenario: Check sidebar link destination for Systems => Kickstart => GPG and SSL Keys
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "GPG and SSL Keys" in "sidenav"
+    Then I should see a "GPG Public Keys and SSL Certificates" text
+     And I should see a "create new stored key/cert" link
+     And I should see a "RHN Reference Guide" link
+     And I should see a "RHN-ORG-TRUSTED-SSL-CERT" link
+
+  Scenario: Check sidebar link destination for Systems => Kickstart => Distributions
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "Distributions" in "sidenav"
+    Then I should see a "Kickstartable Distributions" text
+     And I should see a "No kickstartable distributions available." text
+     And I should see a "create new distribution" link
+
+  Scenario: Check sidebar link destination for Systems => Kickstart => File Preservation
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "File Preservation" in "sidenav"
+    Then I should see a "File Preservation" text
+     And I should see a "RHN Reference Guide" link
+     And I should see a "create new file preservation list" link
+
+  Scenario: Check sidebar link destination for Systems => Kickstart => Kickstart Snippets
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "Kickstart Snippets" in "sidenav"
+    Then I should see a "Kickstart Snippets" text
+     And I should see a "No kickstart snippets found." text
+     And I should see a "create new snippet" link
+     And I should see a "Default Snippets" link in "content-nav"
+     And I should see a "Custom Snippets" link in "content-nav"
+     And I should see a "All Snippets" link in "content-nav"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
