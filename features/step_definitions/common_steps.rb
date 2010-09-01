@@ -11,11 +11,16 @@ Then /^I should see a "([^"]*)" link$/ do |arg1|
 end
 
 Then /^I should see a "([^"]*)" link in "([^"]*)"$/ do |arg1, arg2|
-  within(:xpath, "//div[@id=\"#{arg2}\"]") do
+  within(:xpath, "//div[@id=\"#{arg2}\"] | //div[@class=\"#{arg2}\"]") do
     find_link(arg1).visible?
   end
 end
 
+#Then /^I should see a "([^"]*)" link in class "([^"]*)"$/ do |arg1, arg2|
+#  within(:xpath, "//div[@class=\"#{arg2}\"]") do
+#    find_link(arg1).visible?
+#  end
+#end
 
 Then /^I should see "([^"]*)"$/ do |arg1|
   page.should have_content(arg1)
