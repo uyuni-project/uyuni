@@ -101,7 +101,6 @@ Feature: Explore the main landing page
      And I should see a "View systems registered:" text
      And the current path is "rhn/systems/Registered.do"
 
-  @wip
   Scenario: Check sidebar link destination for Systems => Duplicate Systems
     Given I am on the Systems page
       And I follow "Systems" in "sidenav"
@@ -118,5 +117,69 @@ Feature: Explore the main landing page
      And I should see a "No systems." text
      And the current path is "rhn/systems/SystemCurrency.do"
 
+  Scenario: Check sidebar link destination for Systems => System Groups
+    Given I am on the Systems page
+      And I follow "System Groups" in "sidenav"
+    Then I should see a "System Groups" text
+     And I should see a "create new group" link
+     And I should see a "Your organization has no system groups." text
 
+  @failed
+  Scenario: Check sidebar link destination for Systems => System Set Manager
+    Given I am on the Systems page
+      And I follow "System Set Manager" in "sidenav"
+    Then I should see a "System Set Manager" text
+     And I should see a "Status" link in "sidenav"
+     And I should see a "Overview" link in "content-nav"
+     And I should see a "Systems" link in "content-nav"
+     And I should see a "Errata" link in "content-nav"
+     And I should see a "Packages" link in "content-nav"
+     And I should see a "Groups" link in "content-nav"
+     And I should see a "Channels" link in "content-nav"
+     And I should see a "Configuration" link in "content-nav"
+     And I should see a "Provisioning" link in "content-nav"
+     And I should see a "Misc" link in "content-nav"
 
+  Scenario: Check sidebar link destination for Systems => Advanced Search
+    Given I am on the Systems page
+      And I follow "Advanced Search" in "sidenav"
+    Then I should see a "System Search" text
+
+  Scenario: Check sidebar link destination for Systems => Activation Keys
+    Given I am on the Systems page
+      And I follow "Activation Keys" in "sidenav"
+    Then I should see a "Activation Keys" text
+     And I should see a "create new key" link
+     And I should see a "No activation keys available" text
+
+  @wip
+  Scenario: Check sidebar link destination for Systems => Stored Profiles
+    Given I am on the Systems page
+      And I follow "Stored Profiles" in "sidenav"
+    Then I should see a "Stored Profiles" text
+     And I should see a "No stored profiles." text
+
+  @wip
+  Scenario: Check sidebar link destination for Systems => Custom System Info
+    Given I am on the Systems page
+      And I follow "Custom System Info" in "sidenav"
+    Then I should see a "Custom System Info Keys" text
+     And I should see a "create new key" link
+     And I should see a "No Custom Info Keys Found" text
+
+  @wip
+  Scenario: Check sidebar link destination for Systems => Kickstart
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+    Then I should see a "Kickstart Overview" text
+     And I should see a "Profiles" link in "sidenav"
+     And I should see a "Bare Metal" link in "sidenav"
+     And I should see a "GPG and SSL Keys" link in "sidenav"
+     And I should see a "Distributions" link in "sidenav"
+     And I should see a "File Preservation" link in "sidenav"
+     And I should see a "Kickstart Snippets" link in "sidenav"
+     And I should see a "create new kickstart profile" link
+     And I should see a "upload new kickstart file" link
+     And I should see a "View a List of Kickstart Profiles" link
+     And I should see a "Create a New Kickstart Profile" link
+     And I should see a "Upload a New Kickstart File" link
