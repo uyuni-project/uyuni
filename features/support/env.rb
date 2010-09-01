@@ -16,7 +16,7 @@ if not host.include?("//")
 end
 
 ENV['LANG'] = "en_US.UTF-8"
-ENV['IGNORECERT] = 1
+ENV['IGNORECERT'] = "1"
 
 require 'rubygems'
 require 'capybara'
