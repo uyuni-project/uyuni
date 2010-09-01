@@ -10,6 +10,13 @@ Then /^I should see a "([^"]*)" link$/ do |arg1|
   find_link(arg1).visible?
 end
 
+Then /^I should see a "([^"]*)" link in "([^"]*)"$/ do |arg1, arg2|
+  within(:xpath, "//div[@id=\"#{arg2}\"]") do
+    find_link(arg1).visible?
+  end
+end
+
+
 Then /^I should see "([^"]*)"$/ do |arg1|
   page.should have_content(arg1)
 end
@@ -42,6 +49,13 @@ end
 
 When /^I follow "([^"]*)"$/ do |arg1|
   find_link(arg1).click
+  sleep(1)
+end
+
+When /^I follow "([^"]*)" in "([^"]*)"$/ do |arg1, arg2|
+  within(:xpath, "//div[@id=\"#{arg2}\"]") do
+    find_link(arg1).click
+  end
   sleep(1)
 end
 
