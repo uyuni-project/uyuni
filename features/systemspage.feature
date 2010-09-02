@@ -108,6 +108,11 @@ Feature: Explore the main landing page
     Then I should see a "Duplicate System Profiles" text
      And I should see a "No systems." text
      And the current path is "rhn/systems/DuplicateIPList.do"
+     And I should see a "Duplicate IP Address" link
+     And I should see a "Duplicate Hostname" link
+     And I should see a "Duplicate MAC Address" link
+     And I should see a "Show All" link
+     And I should see a "Hide All" link
 
   Scenario: Check sidebar link destination for Systems => System Currency
     Given I am on the Systems page
