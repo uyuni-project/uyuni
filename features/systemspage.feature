@@ -253,7 +253,6 @@ Feature: Explore the main landing page
       And I should see a "File Contents:" text
       And I should see a "Kickstart Details" text
 
-    @uwe
   Scenario: Check "create kickstart distribution" page Systems => Kickstart => Distributions => create new kickstart distribution
     Given I am on the Systems page
       And I follow "Kickstart" in "sidenav"
