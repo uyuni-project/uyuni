@@ -63,10 +63,6 @@ When /^I select "([^"]*)" from "([^"]*)"$/ do |arg1, arg2|
   select(arg1, :from => arg2)
 end
 
-When /^I select "([^"]*)"$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
-end
-
 #
 # Enter a text into a textfield
 #
