@@ -108,6 +108,11 @@ Feature: Explore the main landing page
     Then I should see a "Duplicate System Profiles" text
      And I should see a "No systems." text
      And the current path is "rhn/systems/DuplicateIPList.do"
+     And I should see a "Duplicate IP Address" link
+     And I should see a "Duplicate Hostname" link
+     And I should see a "Duplicate MAC Address" link
+     And I should see a "Show All" link
+     And I should see a "Hide All" link
 
   Scenario: Check sidebar link destination for Systems => System Currency
     Given I am on the Systems page
@@ -181,7 +186,6 @@ Feature: Explore the main landing page
      And I should see a "Create a New Kickstart Profile" link
      And I should see a "Upload a New Kickstart File" link
 
-  @failed
   Scenario: Check sidebar link destination for Systems => Kickstart => Profiles
     Given I am on the Systems page
       And I follow "Kickstart" in "sidenav"
@@ -233,8 +237,29 @@ Feature: Explore the main landing page
      And I should see a "Custom Snippets" link in "content-nav"
      And I should see a "All Snippets" link in "content-nav"
 
+  Scenario: Check "create new kickstart profile" page Systems => Kickstart => Profiles => create new kickstart profile
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "Profiles" in "sidenav"
+      And I follow "create new kickstart profile"
+    Then I should see a "Step 1: Create Kickstart Profile" text
 
+  Scenario: Check "upload new kickstart file" page Systems => Kickstart => Profiles => upload new kickstart file
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "Profiles" in "sidenav"
+      And I follow "upload new kickstart file"
+    Then I should see a "Create Kickstart Profile" text
+      And I should see a "File Contents:" text
+      And I should see a "Kickstart Details" text
 
+  Scenario: Check "create kickstart distribution" page Systems => Kickstart => Distributions => create new kickstart distribution
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "Distributions" in "sidenav"
+      And I follow "create new distribution"
+    Then I should see a "Create Kickstart Distribution" text
+      And I should see a "Distribution Label" text
 
 
 
