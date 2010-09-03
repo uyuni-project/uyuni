@@ -237,7 +237,21 @@ Feature: Explore the main landing page
      And I should see a "Custom Snippets" link in "content-nav"
      And I should see a "All Snippets" link in "content-nav"
 
+  Scenario: Check "create new kickstart profile" page Systems => Kickstart => Profiles => create new kickstart profile
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "Profiles" in "sidenav"
+      And I follow "create new kickstart profile"
+    Then I should see a "Step 1: Create Kickstart Profile" text
 
+  Scenario: Check "upload new kickstart file" page Systems => Kickstart => Profiles => create new kickstart profile
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "Profiles" in "sidenav"
+      And I follow "upload new kickstart file"
+    Then I should see a "Create Kickstart Profile" text
+      And I should see a "File Contents:" text
+      And I should see a "Kickstart Details" text
 
 
 
