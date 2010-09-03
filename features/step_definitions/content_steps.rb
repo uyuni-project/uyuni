@@ -1,7 +1,5 @@
 Then /^I should see something$/ do
-  page.should have_content('Sign In')
-  page.should have_content('About')
+  assert page.has_content?('Sign In')
+  assert page.has_content?('About')
 end
-
-
 

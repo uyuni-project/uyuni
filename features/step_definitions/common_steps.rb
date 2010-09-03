@@ -7,7 +7,7 @@
 # Test for a text in the whole page
 #
 Then /^I should see a "([^"]*)" text$/ do |arg1|
-  page.should have_content(arg1)
+  page.has_content?(arg1)
 end
 
 #
@@ -79,7 +79,6 @@ end
 #
 When /^I click on "([^"]*)"$/ do |arg1|
   click_button arg1
-  sleep(1)
 end
 
 #
@@ -87,7 +86,6 @@ end
 #
 When /^I follow "([^"]*)"$/ do |arg1|
   find_link(arg1).click
-  sleep(1)
 end
 
 #
@@ -97,7 +95,6 @@ When /^I follow "([^"]*)" in "([^"]*)"$/ do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\"]") do
     find_link(arg1).click
   end
-  sleep(1)
 end
 
 #
