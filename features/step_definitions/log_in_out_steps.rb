@@ -38,7 +38,7 @@ When /^I go to the admin configuration page$/ do
   sleep(1)
 end
 
-When /^I go to the createuser page$/ do
+When /^I go to the users page$/ do
   find_link("Users").click
   sleep(1)
 end
