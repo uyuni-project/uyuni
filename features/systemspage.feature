@@ -181,7 +181,6 @@ Feature: Explore the main landing page
      And I should see a "Create a New Kickstart Profile" link
      And I should see a "Upload a New Kickstart File" link
 
-  @failed
   Scenario: Check sidebar link destination for Systems => Kickstart => Profiles
     Given I am on the Systems page
       And I follow "Kickstart" in "sidenav"

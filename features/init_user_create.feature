@@ -28,6 +28,7 @@ Feature: Create initial users
     Then I should see a "The Spacewalk must be restarted to reflect these changes" text
      And I should see "is_monitoring_enabled" as checked
 
+  @third
   Scenario: Create Testing username
     Given I am authorized as "admin" with password "admin"
     When I go to the createuser page
@@ -42,6 +43,7 @@ Feature: Create initial users
     Then I should see a "Account testing created, login information sent to galaxy-devel@suse.de" text
      And I should see a "testing" link
 
+  @fourth
   Scenario: Grant Testing user admin priviledges
     Given I am authorized as "admin" with password "admin"
       When I go to the createuser page
