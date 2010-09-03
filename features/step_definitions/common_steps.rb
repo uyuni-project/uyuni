@@ -41,6 +41,13 @@ Then /^the current path is "([^"]*)"$/ do |arg1|
   (current_path == arg1)
 end
 
+
+Then /^I should see "([^"]*)" in field "([^"]*)"$/ do |arg1, arg2|
+  page.has_field?(arg2, :with => arg1)
+end
+
+
+
 #
 # Common "When" phrases
 #
