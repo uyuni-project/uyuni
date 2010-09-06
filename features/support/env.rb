@@ -27,6 +27,8 @@ require 'culerity' if browser == :htmlunit
 
 #Capybara.app = Galaxy
 
+Capybara.default_wait_time = 30
+
 case browser
 when :htmlunit
   Capybara.default_driver = :culerity
