@@ -240,4 +240,62 @@ Feature: Register a client
      And I should see a "Change Subscriptions" button
      And I should see a "Confirm" button
 
+  Scenario: check tab links "Configuration" => "View/Modify Files"
+    Given I am on the Systems overview page of this client
+    When I follow "Configuration" in class "content-nav"
+    When I follow "View/Modify Files" in class "contentnav-row2"
+    Then I should see a "Configuration Overview" text
+     And I should see a "Centrally-Managed Files" link in "content-nav"
+     And I should see a "Locally-Managed Files" link in "content-nav"
+     And I should see a "Local Sandbox" link in "content-nav"
+     And I should see a "No files found" text
+
+  Scenario: check tab links "Configuration" => "Add Files"
+    Given I am on the Systems overview page of this client
+    When I follow "Configuration" in class "content-nav"
+    When I follow "Add Files" in class "contentnav-row2"
+    Then I should see a "Upload Local File" text
+     And I should see a "Upload File" link in "content-nav"
+     And I should see a "Import Files" link in "content-nav"
+     And I should see a "Create File" link in "content-nav"
+     And I should see a "cffUpload" element in "configFileForm" form
+     And I should see a "binary" element in "configFileForm" form
+     And I should see a "cffPath" element in "configFileForm" form
+     And I should see a "cffUid" element in "configFileForm" form
+     And I should see a "cffGid" element in "configFileForm" form
+     And I should see a "cffPermissions" element in "configFileForm" form
+     And I should see a "cffSELinuxCtx" element in "configFileForm" form
+     And I should see a "cffMacroStart" element in "configFileForm" form
+     And I should see a "cffMacroEnd" element in "configFileForm" form
+     And I should see a "Upload Configuration File" button
+
+  Scenario: check tab links "Configuration" => "Add Files" => "Import Files"
+    Given I am on the Systems overview page of this client
+    When I follow "Configuration" in class "content-nav"
+    When I follow "Add Files" in class "contentnav-row2"
+    When I follow "Import Files" in class "content-nav"
+    Then I should see a "Import Configuration Files from" text
+     And I should see a "contents" element in "configFileForm" form
+     And I should see a "Import Configuration Files" button
+
+  Scenario: check tab links "Configuration" => "Add Files" => "Create File"
+    Given I am on the Systems overview page of this client
+    When I follow "Configuration" in class "content-nav"
+    When I follow "Add Files" in class "contentnav-row2"
+    When I follow "Create File" in class "content-nav"
+    Then I should see a "Create Local File" text
+     And I should see a "file_radio" element in "configFileForm" form
+     And I should see a "dir_radio" element in "configFileForm" form
+     And I should see a "symlink_radio" element in "configFileForm" form
+     And I should see a "cffPath" element in "configFileForm" form
+     And I should see a "targetPath" element in "configFileForm" form
+     And I should see a "cffUid" element in "configFileForm" form
+     And I should see a "cffGid" element in "configFileForm" form
+     And I should see a "cffPermissions" element in "configFileForm" form
+     And I should see a "cffSELinuxCtx" element in "configFileForm" form
+     And I should see a "cffMacroStart" element in "configFileForm" form
+     And I should see a "cffMacroEnd" element in "configFileForm" form
+     And I should see a "contents" element in "configFileForm" form
+     And I should see a "Create Configuration File" button
+
 
