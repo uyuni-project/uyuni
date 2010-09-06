@@ -6,15 +6,13 @@ Given /^I am on the Systems page$/ do
 end
 
 Given /cobblerd is running/ do
-  require "/space/cobbler_test.rb"
-  ct = CobblerTest.new("g35.suse.de")
+  ct = CobblerTest.new()
   if ! ct.is_running
       raise "cobblerd is not running"
   end
 end
 
 Then /create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/ do |arg1,arg2,arg3|
-  require "/space/cobbler_test"
   ct = CobblerTest.new("g35.suse.de")
   ct.login(arg2,arg3)
   if ct.distro_exists( arg1 )
@@ -24,7 +22,6 @@ Then /create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/ do |arg
 end
 
 Given /distro "([^"]*)" exists/ do |arg1|
-  require "/space/cobbler_test"
   ct = CobblerTest.new("g35.suse.de")
   if ! ct.distro_exists( arg1 )
       raise "distro " + arg1 + " does not exist"
@@ -32,7 +29,6 @@ Given /distro "([^"]*)" exists/ do |arg1|
 end
 
 Then /create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/ do |arg1,arg2,arg3|
-  require "/space/cobbler_test"
   ct = CobblerTest.new("g35.suse.de")
   ct.login(arg2,arg3)
   if ct.profile_exists( arg1 )
@@ -42,7 +38,6 @@ Then /create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/ do |ar
 end
 
 Given /profile "([^"]*)" exists/ do |arg1|
-  require "/space/cobbler_test"
   ct = CobblerTest.new("g35.suse.de")
   if ! ct.profile_exists( arg1 )
       raise "profile " + arg1 + " does not exist"

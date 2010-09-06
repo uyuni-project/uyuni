@@ -22,6 +22,7 @@ require 'rubygems'
 require 'capybara'
 require 'capybara/cucumber'
 require 'selenium-webdriver'
+require File.dirname(__FILE__) + '/cobbler_test.rb'
 
 require 'culerity' if browser == :htmlunit
 
