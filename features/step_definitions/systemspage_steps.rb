@@ -3,6 +3,5 @@ Given /^I am on the Systems page$/ do
   within(:xpath, "//div[@id=\"mainNavWrap\"]") do
     find_link("Systems").click
   end
-  sleep(1)
 end
 

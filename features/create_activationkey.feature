@@ -35,7 +35,6 @@ Feature: Create an activation key
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
    
-  @wip 
   Scenario: Change limit of the activation key
     Given I am on the Systems page
       And I follow "Activation Keys" in "sidenav"

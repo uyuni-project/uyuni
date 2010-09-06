@@ -31,7 +31,7 @@ Feature: Create initial users
   @third
   Scenario: Create Testing username
     Given I am authorized as "admin" with password "admin"
-    When I go to the createuser page
+    When I go to the users page
      And I follow "create new user"
      And I enter "testing" as "login"
      And I enter "testing" as "desiredpassword"
@@ -46,7 +46,7 @@ Feature: Create initial users
   @fourth
   Scenario: Grant Testing user admin priviledges
     Given I am authorized as "admin" with password "admin"
-      When I go to the createuser page
+      When I go to the users page
        And I follow "testing"
        And I check "role_org_admin"
        And I check "role_system_group_admin"
