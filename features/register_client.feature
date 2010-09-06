@@ -223,4 +223,21 @@ Feature: Register a client
      And I should see a "create new value" link
      And I should see a "Custom System Information" link
 
+  Scenario: check tab links "Software" => "Errata"
+    Given I am on the Systems overview page of this client
+    When I follow "Software" in class "content-nav"
+    When I follow "Errata" in class "contentnav-row2"
+    Then I should see a "Relevant Errata" text
+     And I should see a "Show" button
+     And I should see a "No Errata Relevant to Your Systems" text
+
+  Scenario: check tab links "Software" => "Software Channels"
+    Given I am on the Systems overview page of this client
+    When I follow "Software" in class "content-nav"
+    When I follow "Software Channels" in class "contentnav-row2"
+    Then I should see a "Software Channel Subscriptions" text
+     And I should see a "Base Software Channel" text
+     And I should see a "Change Subscriptions" button
+     And I should see a "Confirm" button
+
 
