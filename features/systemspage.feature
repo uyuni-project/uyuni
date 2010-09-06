@@ -272,7 +272,13 @@ Feature: Explore the main landing page
       And distro "testdistro" exists
     Then create profile "testprofile" as user "admin" with password "admin"
 
-
+  @cobbler_wip
+  Scenario: Check cobbler created distro and profile Systems => Kickstart => Profiles
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "Profiles" in "sidenav"
+    Then I should see a "testprofile" text
+     And I should see a "testdistro" text
 
 
 
