@@ -264,13 +264,13 @@ Feature: Explore the main landing page
   @cobbler
   Scenario: create a dummy distro
     Given cobblerd is running
-    Then create distro "testdistro" as user "admin" with password "admin"
+    Then create distro "testdistro" as user "testing" with password "testing"
 
   @cobbler
   Scenario: create dummy profile
     Given cobblerd is running
       And distro "testdistro" exists
-    Then create profile "testprofile" as user "admin" with password "admin"
+    Then create profile "testprofile" as user "testing" with password "testing"
 
   @cobbler
   Scenario: Check cobbler created distro and profile Systems => Kickstart => Profiles
