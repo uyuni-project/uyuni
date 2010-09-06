@@ -298,4 +298,42 @@ Feature: Register a client
      And I should see a "contents" element in "configFileForm" form
      And I should see a "Create Configuration File" button
 
+  Scenario: check tab links "Configuration" => "Deploy Files"
+    Given I am on the Systems overview page of this client
+    When I follow "Configuration" in class "content-nav"
+    When I follow "Deploy Files" in class "contentnav-row2"
+    Then I should see a "Deploy Files" text
+  
+  Scenario: check tab links "Configuration" => "Compare Files"
+    Given I am on the Systems overview page of this client
+    When I follow "Configuration" in class "content-nav"
+    When I follow "Compare Files" in class "contentnav-row2"
+    Then I should see a "Compare Files" text
+
+  Scenario: check tab links "Configuration" => "Manage Configuration Channels"
+    Given I am on the Systems overview page of this client
+    When I follow "Configuration" in class "content-nav"
+    When I follow "Manage Configuration Channels" in class "contentnav-row2"
+    Then I should see a "Configuration Channels" text
+     And I should see a "List/Unsubscribe from Channels" link in "content-nav"
+     And I should see a "Subscribe to Channels" link in "content-nav"
+     And I should see a "View/Modify Rankings" link in "content-nav"
+
+  Scenario: check tab links "Configuration" => "Manage Configuration Channels" => "Subscribe to Channels"
+    Given I am on the Systems overview page of this client
+    When I follow "Configuration" in class "content-nav"
+     And I follow "Manage Configuration Channels" in class "contentnav-row2"
+     And I follow "Subscribe to Channels" in class "content-nav"
+    Then I should see a "Configuration Channel Subscriptions" text
+
+  Scenario: check tab links "Configuration" => "Manage Configuration Channels" => "View/Modify Rankings"
+    Given I am on the Systems overview page of this client
+    When I follow "Configuration" in class "content-nav"
+     And I follow "Manage Configuration Channels" in class "contentnav-row2"
+     And I follow "View/Modify Rankings" in class "content-nav"
+    Then I should see a "View/Modify Configuration Channel Ranks" text
+     And I should see a "selectedChannel" element in "ranksForm" form
+     And I should see a "dispatch" element in "ranksForm" form
+     And I should see a "Update Channel Rankings" button
+
 
