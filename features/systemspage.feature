@@ -261,6 +261,16 @@ Feature: Explore the main landing page
     Then I should see a "Create Kickstart Distribution" text
       And I should see a "Distribution Label" text
 
+  @cobbler
+  Scenario: create a dummy distro
+    Given cobblerd is running
+    Then create distro "testdistro"
+
+  @cobbler
+  Scenario: create dummy profile
+    Given cobblerd is running
+      And distro "testdistro" exists
+    Then create profile "testprofile"
 
 
 
