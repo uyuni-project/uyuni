@@ -50,7 +50,11 @@ Then /^I should see "([^"]*)" in field "([^"]*)"$/ do |arg1, arg2|
   page.has_field?(arg2, :with => arg1)
 end
 
-
+Then /^I should see a "([^"]*)" element in "([^"]*)" form$/ do |arg1, arg2|                                                                                                             
+   within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
+     find_field(arg1).visible?
+   end                                                                                                                     
+end
 
 #
 # Common "When" phrases
