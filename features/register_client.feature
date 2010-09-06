@@ -22,7 +22,7 @@ Feature: Register a client
      And I should see a "OS: openSUSE-release" text
      And I should see a "Release: 11.3" text
     
-  Scenario: check tab links
+  Scenario: check tab links "Details"
     Given I am on the Systems page
       And I follow "Systems" in "sidenav"
     When I follow this client link
@@ -42,9 +42,9 @@ Feature: Register a client
      And I should see a "Notes" link in "contentnav-row2"
      And I should see a "Custom Info" link in "contentnav-row2"
 
-  Scenario: check tab links
+  Scenario: check tab links "Software"
     Given I am on the Systems overview page of this client
-    When I follow "Software"
+    When I follow "Software" in class "content-nav"
     Then I should see a "Details" link in "content-nav"
      And I should see a "Software" link in "content-nav"
      And I should see a "Configuration" link in "content-nav"
@@ -67,7 +67,7 @@ Feature: Register a client
      And I should see a "Compare Package Profiles / Manage Package Profiles" link 
      And I should see a "Update Package List" button 
 
-  Scenario: check tab links
+  Scenario: check tab links "Configuration"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in class "content-nav"
     Then I should see a "Details" link in "content-nav"
@@ -94,7 +94,7 @@ Feature: Register a client
      And I should see a "Schedule Deploy Action" link
      And I should see a "Schedule System Comparison" link
 
-  Scenario: check tab links
+  Scenario: check tab links "Provisioning"
     Given I am on the Systems overview page of this client
     When I follow "Provisioning" in class "content-nav"
     Then I should see a "Details" link in "content-nav"
@@ -109,7 +109,7 @@ Feature: Register a client
      And I should see a "Snapshot Tags" link in "contentnav-row2"
      And I should see a "No profiles found that are compatible with this System. Either you haven't created any Kickstart Profiles or this system does not have a Base Channel." text
 
-  Scenario: check tab links
+  Scenario: check tab links "Groups"
     Given I am on the Systems overview page of this client
     When I follow "Groups" in class "content-nav"
     Then I should see a "Details" link in "content-nav"
@@ -124,7 +124,7 @@ Feature: Register a client
      And I should see a "Join" link
      And I should see a "System Groups" text
 
-  Scenario: check tab links
+  Scenario: check tab links "Virtualization"
     Given I am on the Systems overview page of this client
     When I follow "Virtualization" in class "content-nav"
     Then I should see a "Details" link in "content-nav"
@@ -139,7 +139,7 @@ Feature: Register a client
      And I should see a "Apply Action" button
      And I should see a "Apply Changes" button
 
-  Scenario: check tab links
+  Scenario: check tab links "Events"
     Given I am on the Systems overview page of this client
     When I follow "Events" in class "content-nav"
     Then I should see a "Details" link in "content-nav"
@@ -151,8 +151,76 @@ Feature: Register a client
      And I should see a "Events" link in "content-nav"
      And I should see a "Pending" link in "contentnav-row2"
      And I should see a "History" link in "contentnav-row2"
-     And I should see a "Cancel Events" button
+     And I should see a " Pending Events" text
 
+  Scenario: check tab links "Details" => "Properties"
+    Given I am on the Systems overview page of this client
+    When I follow "Properties" in class "contentnav-row2"
+    Then I should see a "Edit System Details" text
+     And I should see a "system_name" element in "systemDetailsForm" form
+     And I should see a "baseentitlement" element in "systemDetailsForm" form
+     And I should see a "monitoring_entitled" element in "systemDetailsForm" form
+     And I should see a "provisioning_entitled" element in "systemDetailsForm" form
+     And I should see a "virtualization_host" element in "systemDetailsForm" form
+     And I should see a "virtualization_host_platform" element in "systemDetailsForm" form
+     And I should see a "receive_notifications" element in "systemDetailsForm" form
+     And I should see a "summary" element in "systemDetailsForm" form
+     And I should see a "autoerrataupdate" element in "systemDetailsForm" form
+     And I should see a "description" element in "systemDetailsForm" form
+     And I should see a "address" element in "systemDetailsForm" form
+     And I should see a "city" element in "systemDetailsForm" form
+     And I should see a "state" element in "systemDetailsForm" form
+     And I should see a "country" element in "systemDetailsForm" form
+     And I should see a "building" element in "systemDetailsForm" form
+     And I should see a "room" element in "systemDetailsForm" form
+     And I should see a "rack" element in "systemDetailsForm" form
+     And I should see a "Update Properties" button
 
+  Scenario: check tab links "Details" => "Remote Command"
+    Given I am on the Systems overview page of this client
+    When I follow "Remote Command" in class "contentnav-row2"
+    Then I should see a "Run Remote Command" text
+     And I should see a "username" element in "remote_command_form" form
+     And I should see a "group" element in "remote_command_form" form
+     And I should see a "timeout" element in "remote_command_form" form
+     And I should see a "script" element in "remote_command_form" form
+     And I should see a "month" element in "remote_command_form" form
+     And I should see a "day" element in "remote_command_form" form
+     And I should see a "year" element in "remote_command_form" form
+     And I should see a "hour" element in "remote_command_form" form
+     And I should see a "minute" element in "remote_command_form" form
+     And I should see a "am_pm" element in "remote_command_form" form
+     And I should see a "Schedule Remote Command" button
+
+  Scenario: check tab links "Details" => "Reactivation"
+    Given I am on the Systems overview page of this client
+    When I follow "Reactivation" in class "contentnav-row2"
+    Then I should see a "System Activation Key" text
+     And I should see a "Generate New Key" button
+
+  Scenario: check tab links "Details" => "Hardware"
+    Given I am on the Systems overview page of this client
+    When I follow "Hardware" in class "contentnav-row2"
+    Then I should see a "Refresh Hardware List" text
+     And I should see a "Schedule Hardware Refresh" button
+
+  Scenario: check tab links "Details" => "Migrate"
+    Given I am on the Systems overview page of this client
+    When I follow "Migrate" in class "contentnav-row2"
+    Then I should see a "Migrate System Between Organisations" text
+     And I should see a "Migrate System" button
+
+  Scenario: check tab links "Details" => "Notes"
+    Given I am on the Systems overview page of this client
+    When I follow "Notes" in class "contentnav-row2"
+    Then I should see a "System Notes" text
+     And I should see a "create new note" link
+
+  Scenario: check tab links "Details" => "Custom Info"
+    Given I am on the Systems overview page of this client
+    When I follow "Custom Info" in class "contentnav-row2"
+    Then I should see a "Custom System Information" text
+     And I should see a "create new value" link
+     And I should see a "Custom System Information" link
 
 
