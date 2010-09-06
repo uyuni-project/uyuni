@@ -17,6 +17,10 @@ Then /^I should see a "([^"]*)" link$/ do |arg1|
   find_link(arg1).visible?
 end
 
+Then /^I should see a "([^"]*)" button$/ do |arg1|
+  find_button(arg1).visible?
+end
+
 #
 # Test for a visible link inside of a <div> with the attribute 
 # "class" or "id" of the given name
@@ -92,6 +96,16 @@ When /^I follow "([^"]*)" in "([^"]*)"$/ do |arg1, arg2|
     find_link(arg1).click
   end
 end
+
+#
+# Click on a link which appears inside of <div> with 
+# the given "class"
+When /^I follow "([^"]*)" in class "([^"]*)"$/ do |arg1, arg2|
+  within(:xpath, "//div[@class=\"#{arg2}\"]") do
+    find_link(arg1).click
+  end
+end
+
 
 #
 # Sleep for X seconds

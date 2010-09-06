@@ -12,6 +12,12 @@ Given /^I am root$/ do
  end
 end
 
+Given /^I am on the Systems overview page of this client$/ do
+  Given "I am on the Systems page"
+  Given "I follow \"Systems\" in \"sidenav\""
+  When  "I follow this client link"
+end
+
 When /^I register using "([^"]*)" key$/ do |arg1|
   regurl = "#{ENV['TESTHOST']}/XMLRPC"
   regurl.sub!(/^https/, "http")
@@ -32,3 +38,8 @@ Then /^I should see this client in spacewalk$/ do
   Then "I should see a \"#{hostname}\" link"
 end
 
+When /^I follow this client link$/ do
+  hostname = `hostname`
+  hostname.chomp!
+  When "I follow \"#{hostname}\""
+end
