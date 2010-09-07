@@ -13,7 +13,10 @@ rvm use $version
 gem install bundler --pre
 bundle install
 
-* TESTHOST environment variable can be passed to change the default.
+* TESTHOST environment variable can be passed to change the default 
+  server.
+* BROWSER environment variable can be passed to change the default
+  browser: chrome, htmlunit, chrome, firefox
 
 To run all tests:
 

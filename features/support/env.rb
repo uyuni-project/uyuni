@@ -6,8 +6,7 @@
 
 $: << File.join(File.dirname(__FILE__), "..", "..", "lib")
 
-browser = :chrome #:htmlunit #:chrome #:firefox
-#browser = :firefox
+browser = ENV['BROWSER'].to_sym || :chrome #:htmlunit #:chrome #:firefox
 
 host = ENV['TESTHOST'] || 'https://andromeda.suse.de'
 # may be non url was given
