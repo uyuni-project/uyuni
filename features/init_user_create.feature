@@ -16,7 +16,6 @@ Feature: Create initial users
     And I enter "Admin" as "lastName"
     And I enter "galaxy-devel@suse.de" as "email"
     And I click on "Create Login"
-    And I wait for "5" seconds
     Then I am logged-in
 
   @second
@@ -26,7 +25,7 @@ Feature: Create initial users
      And I check "Monitoring"
      And I click on "Update"
     Then I should see a "The Spacewalk must be restarted to reflect these changes" text
-     And I should see "is_monitoring_enabled" as checked
+     And I should see "is_monitoring_backend" as checked
 
   @third
   Scenario: Create Testing username
