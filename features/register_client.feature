@@ -110,8 +110,18 @@ Feature: Register a client
      And I should see a "Kickstart" link in "contentnav-row2"
      And I should see a "Snapshots" link in "contentnav-row2"
      And I should see a "Snapshot Tags" link in "contentnav-row2"
-     And I should see a "No profiles found that are compatible with this System. Either you haven't created any Kickstart Profiles or this system does not have a Base Channel." text
+     And I should see a "Schedule" link in "content-nav"
 
+# if cobbler test was running there is a profile
+#     And I should see a "No profiles found that are compatible with this System. Either you haven't created any Kickstart Profiles or this system does not have a Base Channel." text
+
+
+  Scenario: check tab links "Monitoring"
+    Given I am on the Systems overview page of this client
+    When I follow "Monitoring" in class "content-nav"
+    Then I should see a "create new probe" link
+     And I should see a "Configured Monitoring Probes" text
+ 
   Scenario: check tab links "Groups"
     Given I am on the Systems overview page of this client
     When I follow "Groups" in class "content-nav"
@@ -338,5 +348,53 @@ Feature: Register a client
      And I should see a "selectedChannel" element in "ranksForm" form
      And I should see a "dispatch" element in "ranksForm" form
      And I should see a "Update Channel Rankings" button
+
+  Scenario: check tab links "Provisioning" => "Snapshots"
+    Given I am on the Systems overview page of this client
+    When I follow "Provisioning" in class "content-nav"
+     And I follow "Snapshots" in class "contentnav-row2"
+    Then I should see a "System Snapshots" text
+     And I should see a "Package profile changed" link
+
+  @unsure
+  Scenario: check tab links "Provisioning" => "Snapshots"
+    Given I am on the Systems overview page of this client
+    When I follow "Provisioning" in class "content-nav"
+     And I follow "Snapshots" in class "contentnav-row2"
+     And I follow "Package profile changed"
+    Then I should see a "Rollback" link in list "content-nav-rowthree"
+     And I should see a "Groups" link in list "content-nav-rowthree"
+     And I should see a "Channels" link in list "content-nav-rowthree"
+     And I should see a "Packages" link in list "content-nav-rowthree"
+     And I should see a "Config Channels" link in list "content-nav-rowthree"
+     And I should see a "Config Files" link in list "content-nav-rowthree"
+     And I should see a "Snapshot Tags" link in list "content-nav-rowthree"
+     And I should see a "Rollback to Snapshot" button
+
+  Scenario: check tab links "Provisioning" => "Snapshot Tags"
+    Given I am on the Systems overview page of this client
+    When I follow "Provisioning" in class "content-nav"
+     And I follow "Snapshot Tags" in class "contentnav-row2"
+    Then I should see a "Snapshot Tags" text
+      And I should see a "create new system tag" link
+
+  Scenario: check tab links "Groups" => "Join"
+    Given I am on the Systems overview page of this client
+    When I follow "Groups" in class "content-nav"
+     And I follow "Join" in class "contentnav-row2"
+    Then I should see a "System Group Membership" text
+
+  @unsure
+  Scenario: check tab links "Virtualization" => "Provisioning"
+    Given I am on the Systems overview page of this client
+    When I follow "Virtualization" in class "content-nav"
+     And I follow "Provisioning" in class "contentnav-row2"
+    Then I should see a "Select a Kickstart Profile" text
+
+  Scenario: check tab links "Events" => "History"
+    Given I am on the Systems overview page of this client
+    When I follow "Events" in class "content-nav"
+     And I follow "History" in class "contentnav-row2"
+    Then I should see a "System History" text
 
 

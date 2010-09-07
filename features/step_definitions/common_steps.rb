@@ -31,6 +31,12 @@ Then /^I should see a "([^"]*)" link in "([^"]*)"$/ do |arg1, arg2|
   end
 end
 
+Then /^I should see a "([^"]*)" link in list "([^"]*)"$/ do |arg1, arg2|
+  within(:xpath, "//ul[@id=\"#{arg2}\"] | //ul[@class=\"#{arg2}\"]") do
+    fail if not find_link(arg1).visible?
+  end
+end
+
 #
 # Test if a checkbox is checked
 #
