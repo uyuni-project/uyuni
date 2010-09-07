@@ -38,3 +38,7 @@ When /^I go to the users page$/ do
   find_link("Users").click
 end
 
+When /^I go to the configuration page$/ do
+  find_link("Configuration").click
+end
+
