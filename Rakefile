@@ -16,6 +16,10 @@ Cucumber::Rake::Task.new do |t|
                      features/mainpage.feature
                      features/system_configuration.feature
                      features/systemspage.feature
+		     features/create_activationkey.feature
+		     features/register_client.feature
+		     features/users-createnewuser.feature
+		     features/users.feature
                     }
   t.cucumber_opts = cucumber_opts + feature_list
 end
