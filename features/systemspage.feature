@@ -58,7 +58,7 @@ Feature: Explore the main landing page
       And I follow "Virtual Systems" in "sidenav"
     Then I should see a "Virtual Systems" text
      And I should see a "No Virtual Systems." text
-     And the current path is "rhn/systems/VirtualSystemsList.do"
+     And the current path is "/rhn/systems/VirtualSystemsList.do"
 
   Scenario: Check sidebar link destination for Systems => Out of Date
     Given I am on the Systems page
@@ -66,7 +66,7 @@ Feature: Explore the main landing page
       And I follow "Out of Date" in "sidenav"
     Then I should see a "Out of Date Systems" text
      And I should see a "No systems." text
-     And the current path is "rhn/systems/OutOfDate.do"
+     And the current path is "/rhn/systems/OutOfDate.do"
 
   Scenario: Check sidebar link destination for Systems => Unentitled
     Given I am on the Systems page
@@ -74,7 +74,7 @@ Feature: Explore the main landing page
       And I follow "Unentitled" in "sidenav"
     Then I should see a "Unentitled Systems" text
      And I should see a "No systems." text
-     And the current path is "rhn/systems/Unentitled.do"
+     And the current path is "/rhn/systems/Unentitled.do"
 
   Scenario: Check sidebar link destination for Systems => Ungrouped
     Given I am on the Systems page
@@ -82,7 +82,7 @@ Feature: Explore the main landing page
       And I follow "Ungrouped" in "sidenav"
     Then I should see a "Ungrouped Systems" text
      And I should see a "No systems." text
-     And the current path is "rhn/systems/Ungrouped.do"
+     And the current path is "/rhn/systems/Ungrouped.do"
 
   Scenario: Check sidebar link destination for Systems => Inactive
     Given I am on the Systems page
@@ -90,7 +90,7 @@ Feature: Explore the main landing page
       And I follow "Inactive" in "sidenav"
     Then I should see a "Inactive Systems" text
      And I should see a "No systems." text
-     And the current path is "rhn/systems/Inactive.do"
+     And the current path is "/rhn/systems/Inactive.do"
 
   Scenario: Check sidebar link destination for Systems => Recently Registered
     Given I am on the Systems page
@@ -99,7 +99,7 @@ Feature: Explore the main landing page
     Then I should see a "Recently Registered Systems" text
      And I should see a "No systems." text
      And I should see a "View systems registered:" text
-     And the current path is "rhn/systems/Registered.do"
+     And the current path is "/rhn/systems/Registered.do"
 
   Scenario: Check sidebar link destination for Systems => Duplicate Systems
     Given I am on the Systems page
@@ -107,7 +107,7 @@ Feature: Explore the main landing page
       And I follow "Duplicate Systems" in "sidenav"
     Then I should see a "Duplicate System Profiles" text
      And I should see a "No systems." text
-     And the current path is "rhn/systems/DuplicateIPList.do"
+     And the current path is "/rhn/systems/DuplicateIPList.do"
      And I should see a "Duplicate IP Address" link
      And I should see a "Duplicate Hostname" link
      And I should see a "Duplicate MAC Address" link
@@ -120,7 +120,7 @@ Feature: Explore the main landing page
       And I follow "System Currency" in "sidenav"
     Then I should see a "System Currency Report" text
      And I should see a "No systems." text
-     And the current path is "rhn/systems/SystemCurrency.do"
+     And the current path is "/rhn/systems/SystemCurrency.do"
 
   Scenario: Check sidebar link destination for Systems => System Groups
     Given I am on the Systems page
@@ -134,7 +134,7 @@ Feature: Explore the main landing page
     Given I am on the Systems page
       And I follow "System Set Manager" in "sidenav"
     Then I should see a "System Set Manager" text
-     And I should see a "Status" link in "sidenav"
+     And I should see a "Status" link in "sidenavp"
      And I should see a "Overview" link in "content-nav"
      And I should see a "Systems" link in "content-nav"
      And I should see a "Errata" link in "content-nav"
