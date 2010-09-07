@@ -3,6 +3,7 @@ Given /^I am authorized as "([^"]*)" with password "([^"]*)"$/ do |arg1,arg2|
   fill_in "username", :with => arg1
   fill_in "password", :with => arg2
   click_button "Sign In"
+  Then "I should be logged in"
 end
 
 Given /^I am authorized$/ do
