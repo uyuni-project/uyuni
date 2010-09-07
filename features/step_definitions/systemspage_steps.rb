@@ -13,7 +13,7 @@ Given /cobblerd is running/ do
 end
 
 Then /create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/ do |arg1,arg2,arg3|
-  ct = CobblerTest.new("g35.suse.de")
+  ct = CobblerTest.new()
   ct.login(arg2,arg3)
   if ct.distro_exists( arg1 )
       raise "distro " + arg1 + " already exists"
@@ -22,14 +22,14 @@ Then /create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/ do |arg
 end
 
 Given /distro "([^"]*)" exists/ do |arg1|
-  ct = CobblerTest.new("g35.suse.de")
+  ct = CobblerTest.new()
   if ! ct.distro_exists( arg1 )
       raise "distro " + arg1 + " does not exist"
   end
 end
 
 Then /create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/ do |arg1,arg2,arg3|
-  ct = CobblerTest.new("g35.suse.de")
+  ct = CobblerTest.new()
   ct.login(arg2,arg3)
   if ct.profile_exists( arg1 )
       raise "profile " + arg1 + " already exists"
@@ -38,7 +38,7 @@ Then /create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/ do |ar
 end
 
 Given /profile "([^"]*)" exists/ do |arg1|
-  ct = CobblerTest.new("g35.suse.de")
+  ct = CobblerTest.new()
   if ! ct.profile_exists( arg1 )
       raise "profile " + arg1 + " does not exist"
   end
