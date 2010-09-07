@@ -35,10 +35,14 @@ end
 
 Then /^I should see this client in spacewalk$/ do
   Given "I am on the Systems page"
+  Then "I should see this client as link"
+end
+
+Then /^I should see this client as link$/ do
   hostname = `hostname`
   hostname.chomp!
   Then "I should see a \"#{hostname}\" link"
-end
+end 
 
 When /^I follow this client link$/ do
   hostname = `hostname`

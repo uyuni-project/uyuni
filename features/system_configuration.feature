@@ -9,5 +9,5 @@ Feature: System configuration
     Given I am authorized
     When I follow "Systems"
     Then I should see a "System Overview" text
-    And I should see a "manteltest.suse.de" text
+     And I should see this client as link 
  

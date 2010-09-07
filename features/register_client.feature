@@ -7,7 +7,7 @@ Feature: Register a client
     Given I am root
     When I register using "1-SUSE-DEV" key
     Then I should see this client in spacewalk
-  @wip
+  
   Scenario: check registration values
     Given I am on the Systems page
       And I follow "Systems" in "sidenav"

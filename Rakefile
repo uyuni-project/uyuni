@@ -14,10 +14,10 @@ Cucumber::Rake::Task.new do |t|
                      features/running.feature
                      features/login.feature
                      features/mainpage.feature
-                     features/system_configuration.feature
                      features/systemspage.feature
 		     features/create_activationkey.feature
 		     features/register_client.feature
+                     features/system_configuration.feature
 		     features/users-createnewuser.feature
 		     features/users.feature
                     }
