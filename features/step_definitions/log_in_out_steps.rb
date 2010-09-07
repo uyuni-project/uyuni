@@ -15,18 +15,17 @@ When /^I sign out$/ do
 end
 
 Then /^I should not be authorized$/ do
-  page.has_no_content?("Sign Out")
-  
+  fail if not page.has_no_content?("Sign Out")
 end
 
 Then /^I should be logged in$/ do
-  page.has_content?("Sign Out")
+  fail if not page.has_content?("Sign Out")
 end
 
 Then /^I am logged-in$/ do
   #print body
-  assert find_link("Sign Out").visible?
-  assert page.has_content?("You have created your first user for the Spacewalk Service. Additional configuration should be finalized by clicking here")
+  fail if not find_link("Sign Out").visible?
+  fail if not page.has_content?("You have created your first user for the Spacewalk Service. Additional configuration should be finalized by clicking here")
 end
 
 When /^I go to the admin configuration page$/ do

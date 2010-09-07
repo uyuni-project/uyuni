@@ -7,14 +7,14 @@
 # Test for a text in the whole page
 #
 Then /^I should see a "([^"]*)" text$/ do |arg1|
-  page.has_content?(arg1)
+  fail if not page.has_content?(arg1)
 end
 
 #
 # Test for a visible link in the whole page
 #
 Then /^I should see a "([^"]*)" link$/ do |arg1|
-  find_link(arg1).visible?
+  fail if not find_link(arg1).visible?
 end
 
 Then /^I should see a "([^"]*)" button$/ do |arg1|
@@ -27,7 +27,7 @@ end
 #
 Then /^I should see a "([^"]*)" link in "([^"]*)"$/ do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\"] | //div[@class=\"#{arg2}\"]") do
-    find_link(arg1).visible?
+    fail if not find_link(arg1).visible?
   end
 end
 
@@ -35,24 +35,24 @@ end
 # Test if a checkbox is checked
 #
 Then /^I should see "([^"]*)" as checked$/ do |arg1|
-  has_checked_field?(arg1)
+  fail if not has_checked_field?(arg1)
 end
 
 #
 # Test the current path of the URL
 #
 Then /^the current path is "([^"]*)"$/ do |arg1|
-  (current_path == arg1)
+  fail if not (current_path == arg1)
 end
 
 
 Then /^I should see "([^"]*)" in field "([^"]*)"$/ do |arg1, arg2|
-  page.has_field?(arg2, :with => arg1)
+  fail if not page.has_field?(arg2, :with => arg1)
 end
 
 Then /^I should see a "([^"]*)" element in "([^"]*)" form$/ do |arg1, arg2|                                                                                                             
    within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-     find_field(arg1).visible?
+     fail if not find_field(arg1).visible?
    end                                                                                                                     
 end
 

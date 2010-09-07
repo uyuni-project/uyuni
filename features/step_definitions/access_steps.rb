@@ -1,6 +1,5 @@
 Given /^I am not authorized$/ do
   visit Capybara.app_host
-  sleep(1)
   find_link('Sign Out').click if page.has_content?('Sign Out')
 end
 
@@ -10,6 +9,6 @@ end
 
 Given /^I access the host the first time$/ do
   visit Capybara.app_host
-  page.has_content?("Create Spacewalk Administrator")
+  fail if not page.has_content?("Create Spacewalk Administrator")
 end
 
