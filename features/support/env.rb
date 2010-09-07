@@ -8,11 +8,12 @@ $: << File.join(File.dirname(__FILE__), "..", "..", "lib")
 
 browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :chrome #:htmlunit #:chrome #:firefox
 
-host = ENV['TESTHOST'] || 'https://andromeda.suse.de'
+host = ENV['TESTHOST'] || 'andromeda.suse.de'
 # may be non url was given
-if not host.include?("//")
-  host = "https://#{host}"
+if host.include?("//")
+  raise "TESTHOST must be the FQDN only" 
 end
+host = "https://#{host}"
 
 ENV['LANG'] = "en_US.UTF-8"
 ENV['IGNORECERT'] = "1"

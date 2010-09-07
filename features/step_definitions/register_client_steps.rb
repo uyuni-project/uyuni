@@ -19,8 +19,7 @@ Given /^I am on the Systems overview page of this client$/ do
 end
 
 When /^I register using "([^"]*)" key$/ do |arg1|
-  regurl = "#{ENV['TESTHOST']}/XMLRPC"
-  regurl.sub!(/^https/, "http")
+  regurl = "http://#{ENV['TESTHOST']}/XMLRPC"
 
   command = "rhnreg_ks --serverUrl=#{regurl} --activationkey=#{arg1}"
   #print "Command: #{command}\n"
