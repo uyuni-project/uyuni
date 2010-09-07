@@ -18,7 +18,7 @@ Then /^I should see a "([^"]*)" link$/ do |arg1|
 end
 
 Then /^I should see a "([^"]*)" button$/ do |arg1|
-  find_button(arg1).visible?
+  fail if not find_button(arg1).visible?
 end
 
 #

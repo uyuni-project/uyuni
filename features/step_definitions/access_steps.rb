@@ -1,6 +1,6 @@
 Given /^I am not authorized$/ do
   visit Capybara.app_host
-  find_link('Sign Out').click if page.has_content?('Sign Out')
+  fail if not find_button('Sign In').visible?
 end
 
 When /^I go to the home page$/ do

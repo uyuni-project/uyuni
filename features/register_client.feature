@@ -7,7 +7,7 @@ Feature: Register a client
     Given I am root
     When I register using "1-SUSE-DEV" key
     Then I should see this client in spacewalk
-
+  @wip
   Scenario: check registration values
     Given I am on the Systems page
       And I follow "Systems" in "sidenav"
@@ -15,7 +15,10 @@ Feature: Register a client
     Then I should see a "System Status" text
      And I should see a "System is up to date" text
      And I should see a "Edit These Properties" link
-     And I should see a "[Virtualization] [Monitoring] [Provisioning] [Management]" text
+     And I should see a "[Virtualization]" text
+     And I should see a "[Monitoring]" text
+     And I should see a "[Provisioning]" text
+     And I should see a "[Management]" text
      And I should see a "add to ssm" link
      And I should see a "delete system" link
      And I should see a "Initial Registration Parameters:" text

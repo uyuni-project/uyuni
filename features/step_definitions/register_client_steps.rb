@@ -19,6 +19,9 @@ Given /^I am on the Systems overview page of this client$/ do
 end
 
 When /^I register using "([^"]*)" key$/ do |arg1|
+  # remove systemid file
+  `rm -f /etc/sysconfig/rhn/systemid`
+
   regurl = "http://#{ENV['TESTHOST']}/XMLRPC"
 
   command = "rhnreg_ks --serverUrl=#{regurl} --activationkey=#{arg1}"
