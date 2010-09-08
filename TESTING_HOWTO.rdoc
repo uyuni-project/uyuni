@@ -16,11 +16,11 @@ Either
   * http://selenium.rubyforge.org/
 
 or
-  
+
 * http://github.com/langalex/culerity
 * http://celerity.rubyforge.org
 * http://jruby.org
-  
+
 == Helpful links
 
 * http://www.slideshare.net/bkeepers/behavior-driven-development-with-cucumber-presentation
@@ -32,7 +32,7 @@ or
 
 Spacewalk only serves through https but Chrome blocks since the
 certificate is unknown.
-  
+
 Chrome does not offer a certificate import but shares the vault with
 Firefox. So use Firefox to import the certificate.
 
@@ -54,7 +54,7 @@ Either:
 * rubygem-selenium-webdriver
 
 or
-  
+
 * jruby: http://download.opensuse.org/repositories/home:/flavio_castelli
 * rubygem-culerity
 * rubygem-celerity (include htmlunit)
@@ -82,11 +82,11 @@ Rakefile
   require 'cucumber/rake/task'
 
   Cucumber::Rake::Task.new
-  
+
   # Cucumber::Rake::Task.new do |t|
   # t.cucumber_opts = %w{--format pretty}
   # end
-  
+
 
 
   require "selenium-webdriver"
@@ -103,7 +103,10 @@ Rakefile
     In order
     As
     I want
-    
+
+    Background:
+      Given... (common init for all scenarios)
+
     @tag
     Scenario: this gets executed, see step_definitons/
       Given
@@ -120,7 +123,7 @@ Rakefile
 
   run whats in progress
     cucumber --wip
-    
+
   run tests tagged with @proposed
     cucumber --tags @proposed
 
@@ -133,7 +136,7 @@ Rakefile
   rake cucumber:wip
   rake cucumber
   rake cucumber:ok
-  
+
 
 ===Tags
 
@@ -144,13 +147,13 @@ Rakefile
   @selenium - explictly request Selenium
   @rack_test
   @proposed
-  
+
  * http://openmonkey.com/articles/2010/04/javascript-testing-with-cucumber-capybara
 
 ===Step
 
 use Rspec, Test::Unit, ...
-    
+
 ===Other tools
 
 * TestDataBuilder
