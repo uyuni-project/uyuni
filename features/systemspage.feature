@@ -283,8 +283,8 @@ Feature: Explore the main landing page
   @cobbler
   Scenario: create a distro with the UI (requires a base channel)
     Given I am on the Systems page
-      And I follow "Kickstart" in "sidenav"
-      And I follow "Distributions" in "sidenav"
+      And I follow "Kickstart" in the left menu
+      And I follow "Distributions" in the left menu
       And I follow "create new distribution"
     When I enter "fedora_kickstart_distro" as "label"
       And I enter "/install/Fedora_12_i386/" as "basepath"
@@ -296,8 +296,8 @@ Feature: Explore the main landing page
   @cobbler_wip
   Scenario: create a profile with the UI (requires a base channel)
     Given I am on the Systems page
-      And I follow "Kickstart" in "sidenav"
-      And I follow "Profiles" in "sidenav"
+      And I follow "Kickstart" in the left menu
+      And I follow "Profiles" in the left menu
       And I follow "create new kickstart profile"
     When I enter "fedora_kickstart_profile" as "kickstartLabel"
       And I click on "Next"
