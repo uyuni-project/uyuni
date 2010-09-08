@@ -10,22 +10,22 @@ Feature: Explore the Channels page
   Scenario: Completeness of Channels page
     When I follow "Channels"
     Then I should see a "Full Software Channel List" text
-     And I should see a "Software Channels" link in "sidenav"
-     And I should see a "All Channels" link in "sidenav"
-     And I should see a "Popular Channels" link in "sidenav"
-     And I should see a "My Channels" link in "sidenav"
-     And I should see a "Shared Channels" link in "sidenav"
-     And I should see a "Retired Channels" link in "sidenav"
-     And I should see a "Package Search" link in "sidenav"
-     And I should see a "Manage Software Channels" link in "sidenav"
-     And I should see a "All Channels" link in "mainNavWrap"
-     And I should see a "Popular Channels" link in "mainNavWrap"
-     And I should see a "My Channels" link in "mainNavWrap"
-     And I should see a "Shared Channels" link in "mainNavWrap"
-     And I should see a "Retired Channels" link in "mainNavWrap"
+     And I should see a "Software Channels" link in element "sidenav"
+     And I should see a "All Channels" link in element "sidenav"
+     And I should see a "Popular Channels" link in element "sidenav"
+     And I should see a "My Channels" link in element "sidenav"
+     And I should see a "Shared Channels" link in element "sidenav"
+     And I should see a "Retired Channels" link in element "sidenav"
+     And I should see a "Package Search" link in element "sidenav"
+     And I should see a "Manage Software Channels" link in element "sidenav"
+     And I should see a "All Channels" link in element "content-nav"
+     And I should see a "Popular Channels" link in element "content-nav"
+     And I should see a "My Channels" link in element "content-nav"
+     And I should see a "Shared Channels" link in element "content-nav"
+     And I should see a "Retired Channels" link in element "content-nav"
 
   Scenario: Completeness of Channels page
     When I follow "Channels"
-    When I follow "Popular Channels" in "sidenav"
+    When I follow "Popular Channels" in element "sidenav"
     Then I should see a "Popular Channels" text
 

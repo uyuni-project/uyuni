@@ -6,7 +6,7 @@ Feature: Create an activation key
 
   Scenario: fail to create an activation key
     Given I am on the Systems page
-      And I follow "Activation Keys" in "sidenav"
+      And I follow "Activation Keys" in the left menu
       And I follow "create new key"
     When I enter "SUSE Test Key" as "description"
      And I enter "SUSE-DEV" as "key"

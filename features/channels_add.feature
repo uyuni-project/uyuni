@@ -9,7 +9,7 @@ Feature: Adding channels
 
   Scenario: Adding a base channel
      And I follow "Channels"
-     And I follow "Manage Software Channels" in "sidenav"
+     And I follow "Manage Software Channels" in the left menu
      And I follow "create new channel"
     When I enter "Test Base Channel" as "Channel Name"
      And I enter "test_base_channel" as "Channel Label"
@@ -18,7 +18,7 @@ Feature: Adding channels
      And I enter "Base channel for testing" as "Channel Summary"
      And I enter "No more desdcription for base channel." as "Channel Description"
      And I click on "Create Channel"
-#    Then I should see a "Channel Test Base Channel created." text in "site-info"
+#    Then I should see a "Channel Test Base Channel created." text in element "site-info"
     Then I should see a "Channel Test Base Channel created." text
 
 #2nd entry

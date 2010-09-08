@@ -12,10 +12,10 @@ Feature: Check configuration page/tab
      And I should see a "Configuration Channels" text
      And I should see a "Centrally-managed Configuration Files" text
      And I should see a "Locally-managed Configuration Files" text
-     And I should see a "Overview" link in "sidenav"
-     And I should see a "Configuration Channels" link in "sidenav"
-     And I should see a "Configuration Files" link in "sidenav"
-     And I should see a "Systems" link in "sidenav"
+     And I should see a "Overview" link in the left menu
+     And I should see a "Configuration Channels" link in the left menu
+     And I should see a "Configuration Files" link in the left menu
+     And I should see a "Systems" link in the left menu
      And I should see a "Manage" link
      And I should see a "Clear" link
      And I should see a "View Systems with Managed Configuration Files" link
