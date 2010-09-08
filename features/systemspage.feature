@@ -286,9 +286,9 @@ Feature: Explore the main landing page
       And I follow "Kickstart" in "sidenav"
       And I follow "Distributions" in "sidenav"
       And I follow "create new distribution"
-    When I enter "fedora_kickstart_distro" as "Distribution Label"
-      And I enter "/install/Fedora_12_i386/" as "Tree Path"
+    When I enter "fedora_kickstart_distro" as "label"
+      And I enter "/install/Fedora_12_i386/" as "basepath"
       And I select "Fedora" from "installtype"
-      And I click "Create Kickstart Distribution"
+      And I click on "Create Kickstart Distribution"
     Then I should see a "Kickstartable Distributions" text
      And I should see a "fedora_kickstart_distro" link
