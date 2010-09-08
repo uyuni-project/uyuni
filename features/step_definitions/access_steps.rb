@@ -37,17 +37,18 @@ Then /^no link should be broken$/ do
       collect_all_hrefs.each do |href|
 	next if href =~ %r{javascript:} # oops, javascript
 	next if href =~ %r{/download} # no downloads
+	next if href[0,1] == "#" # relative link
 	next if hrefs.include?(href)
 	hbase = href.split("?")[0]
 	next if visited[hbase]
 	visited[hbase] = true
         unless href[0,1] == "/"
-	  $stderr.puts "From #{href} (#{base})"
+#	  $stderr.puts "From #{href} (#{base})"
 	  hsplit = base.split("/")
 	  hsplit.pop
 	  hsplit << href
 	  href = hsplit.join("/")
-	  $stderr.puts "\t to #{href}"
+#	  $stderr.puts "\t to #{href}"
 	end
 #	$stderr.puts "Adding #{href}"
 	hrefs << href 
@@ -55,8 +56,10 @@ Then /^no link should be broken$/ do
     end
     break if hrefs.empty?
   end
-  failed.each_value do |f|
+  $stderr.puts "\nFinished. Visited #{visited.size} pages. Failed pages:"
+  visited.each_value do |f|
     next if f.is_a? TrueClass
     $stderr.puts "\t#{f}"
   end
+  $stderr.puts "End of failed pages"
 end
