@@ -25,9 +25,10 @@ Feature: Create a group
      And I click on "Create Group"
     Then I should see a "System group newgroup created." text
 
-#  @wip
-#  Scenario: add a system to the group
-#    Given I am on the groups page
-#    When I follow "newgroup"
-#     And I follow "Target Systems"
-#     And I check "
+  Scenario: add a system to the group
+    Given I am on the groups page
+    When I follow "newgroup"
+     And I follow "Target Systems"
+     And I check this client
+     And I click on "Add Systems"
+    Then I should see a "1 systems were added to newgroup server group." text
