@@ -27,7 +27,7 @@ end
 # "class" or "id" of the given name
 #
 Then /^I should see a "([^"]*)" link in element "([^"]*)"$/ do |arg1, arg2|
-  within(:xpath, "//div[@id=\"#{arg2}\"] | //div[@class=\"#{arg2}\"]") do
+  within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
     fail if not find_link(arg1).visible?
   end
 end
@@ -37,7 +37,7 @@ Then /^I should see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
 end
 
 Then /^I should see a "([^"]*)" link in list "([^"]*)"$/ do |arg1, arg2|
-  within(:xpath, "//ul[@id=\"#{arg2}\"] | //ul[@class=\"#{arg2}\"]") do
+  within(:xpath, "//ul[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
     fail if not find_link(arg1).visible?
   end
 end
