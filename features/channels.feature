@@ -18,11 +18,11 @@ Feature: Explore the Channels page
      And I should see a "Retired Channels" link in the left menu
      And I should see a "Package Search" link in the left menu
      And I should see a "Manage Software Channels" link in the left menu
-     And I should see a "All Channels" link in "mainNavWrap"
-     And I should see a "Popular Channels" link in "mainNavWrap"
-     And I should see a "My Channels" link in "mainNavWrap"
-     And I should see a "Shared Channels" link in "mainNavWrap"
-     And I should see a "Retired Channels" link in "mainNavWrap"
+     And I should see a "All Channels" link in the tab bar
+     And I should see a "Popular Channels" link in the tab bar
+     And I should see a "My Channels" link in the tab bar
+     And I should see a "Shared Channels" link in the tab bar
+     And I should see a "Retired Channels" link in the tab bar
 
   Scenario: Completeness of Channels page
     When I follow "Channels"
