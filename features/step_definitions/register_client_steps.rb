@@ -14,7 +14,7 @@ end
 
 Given /^I am on the Systems overview page of this client$/ do
   Given "I am on the Systems page"
-  Given "I follow \"Systems\" in \"sidenav\""
+  Given "I follow \"Systems\" in element \"sidenav\""
   When  "I follow this client link"
 end
 

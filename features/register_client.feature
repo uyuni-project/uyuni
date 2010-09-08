@@ -10,7 +10,7 @@ Feature: Register a client
   
   Scenario: check registration values
     Given I am on the Systems page
-      And I follow "Systems" in "sidenav"
+      And I follow "Systems" in the left menu
     When I follow this client link
     Then I should see a "System Status" text
      And I should see a "System is up to date" text
@@ -36,14 +36,14 @@ Feature: Register a client
      And I should see a "Groups" link in element "content-nav"
      And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
-     And I should see a "Overview" link in "contentnav-row2"
-     And I should see a "Properties" link in "contentnav-row2"
-     And I should see a "Remote Command" link in "contentnav-row2"
-     And I should see a "Reactivation" link in "contentnav-row2"
-     And I should see a "Hardware" link in "contentnav-row2"
-     And I should see a "Migrate" link in "contentnav-row2"
-     And I should see a "Notes" link in "contentnav-row2"
-     And I should see a "Custom Info" link in "contentnav-row2"
+     And I should see a "Overview" link in element "contentnav-row2"
+     And I should see a "Properties" link in element "contentnav-row2"
+     And I should see a "Remote Command" link in element "contentnav-row2"
+     And I should see a "Reactivation" link in element "contentnav-row2"
+     And I should see a "Hardware" link in element "contentnav-row2"
+     And I should see a "Migrate" link in element "contentnav-row2"
+     And I should see a "Notes" link in element "contentnav-row2"
+     And I should see a "Custom Info" link in element "contentnav-row2"
 
   Scenario: check tab links "Software"
     Given I am on the Systems overview page of this client
@@ -55,9 +55,9 @@ Feature: Register a client
      And I should see a "Groups" link in element "content-nav"
      And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
-     And I should see a "Errata" link in "contentnav-row2"
-     And I should see a "Packages" link in "contentnav-row2"
-     And I should see a "Software Channels" link in "contentnav-row2"
+     And I should see a "Errata" link in element "contentnav-row2"
+     And I should see a "Packages" link in element "contentnav-row2"
+     And I should see a "Software Channels" link in element "contentnav-row2"
      And I should see a "List / Remove" link
      And I should see a "Upgrade" link 
      And I should see a "Install" link 
@@ -80,12 +80,12 @@ Feature: Register a client
      And I should see a "Groups" link in element "content-nav"
      And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
-     And I should see a "Overview" link in "contentnav-row2"
-     And I should see a "View/Modify Files" link in "contentnav-row2"
-     And I should see a "Add Files" link in "contentnav-row2"
-     And I should see a "Deploy Files" link in "contentnav-row2"
-     And I should see a "Compare Files" link in "contentnav-row2"
-     And I should see a "Manage Configuration Channels" link in "contentnav-row2"
+     And I should see a "Overview" link in element "contentnav-row2"
+     And I should see a "View/Modify Files" link in element "contentnav-row2"
+     And I should see a "Add Files" link in element "contentnav-row2"
+     And I should see a "Deploy Files" link in element "contentnav-row2"
+     And I should see a "Compare Files" link in element "contentnav-row2"
+     And I should see a "Manage Configuration Channels" link in element "contentnav-row2"
      And I should see a "Deploy all managed config files" link
      And I should see a "Deploy selected config files" link
      And I should see a "Compare all managed files to system" link
@@ -107,9 +107,9 @@ Feature: Register a client
      And I should see a "Groups" link in element "content-nav"
      And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
-     And I should see a "Kickstart" link in "contentnav-row2"
-     And I should see a "Snapshots" link in "contentnav-row2"
-     And I should see a "Snapshot Tags" link in "contentnav-row2"
+     And I should see a "Kickstart" link in element "contentnav-row2"
+     And I should see a "Snapshots" link in element "contentnav-row2"
+     And I should see a "Snapshot Tags" link in element "contentnav-row2"
      And I should see a "Schedule" link in element "content-nav"
 
 # if cobbler test was running there is a profile
@@ -132,8 +132,8 @@ Feature: Register a client
      And I should see a "Groups" link in element "content-nav"
      And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
-     And I should see a "List / Leave" link in "contentnav-row2"
-     And I should see a "Join" link in "contentnav-row2"
+     And I should see a "List / Leave" link in element "contentnav-row2"
+     And I should see a "Join" link in element "contentnav-row2"
      And I should see a "Join" link
      And I should see a "System Groups" text
 
@@ -147,8 +147,8 @@ Feature: Register a client
      And I should see a "Groups" link in element "content-nav"
      And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
-     And I should see a "Details" link in "contentnav-row2"
-     And I should see a "Provisioning" link in "contentnav-row2"
+     And I should see a "Details" link in element "contentnav-row2"
+     And I should see a "Provisioning" link in element "contentnav-row2"
      And I should see a "Apply Action" button
      And I should see a "Apply Changes" button
 
@@ -162,8 +162,8 @@ Feature: Register a client
      And I should see a "Groups" link in element "content-nav"
      And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
-     And I should see a "Pending" link in "contentnav-row2"
-     And I should see a "History" link in "contentnav-row2"
+     And I should see a "Pending" link in element "contentnav-row2"
+     And I should see a "History" link in element "contentnav-row2"
      And I should see a " Pending Events" text
 
   Scenario: check tab links "Details" => "Properties"
