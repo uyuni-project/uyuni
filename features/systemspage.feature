@@ -262,7 +262,7 @@ Feature: Explore the main landing page
       And I should see a "Distribution Label" text
 
   @cobbler
-  Scenario: create a dummy distro with cobbler (not visible in UI)
+  Scenario: create a dummy distro with cobbler (not visible in UI, SLES)
     Given cobblerd is running
     Then create distro "testdistro" as user "testing" with password "testing"
 
@@ -280,7 +280,7 @@ Feature: Explore the main landing page
     Then I should see a "testprofile" text
      And I should see a "testdistro" text
 
-  @cobbler_wip
+  @cobbler
   Scenario: create a distro with the UI (requires a base channel)
     Given I am on the Systems page
       And I follow "Kickstart" in "sidenav"
@@ -292,3 +292,18 @@ Feature: Explore the main landing page
       And I click on "Create Kickstart Distribution"
     Then I should see a "Kickstartable Distributions" text
      And I should see a "fedora_kickstart_distro" link
+
+  @cobbler_wip
+  Scenario: create a profile with the UI (requires a base channel)
+    Given I am on the Systems page
+      And I follow "Kickstart" in "sidenav"
+      And I follow "Profiles" in "sidenav"
+      And I follow "create new kickstart profile"
+    When I enter "fedora_kickstart_profile" as "kickstartLabel"
+      And I click on "Next"
+      And I click on "Next"
+      And I enter "linux" as "rootPassword"
+      And I enter "linux" as "rootPasswordConfirm"
+      And I click on "Finish"
+    Then I should see a "Kickstart: fedora_kickstart_profile" text
+     And I should see a "Kickstart Details" link
