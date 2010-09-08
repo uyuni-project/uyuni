@@ -20,6 +20,12 @@ Cucumber::Rake::Task.new do |t|
                      features/system_configuration.feature
 		     features/users-createnewuser.feature
 		     features/users.feature
+                     features/create_group.feature
+                     features/add_sys_of_group_to_SSM.feature
+                     features/channels_add.feature
+                     features/channels.feature
+                     features/configuration.feature
+                     features/walk_hrefs.feature
                     }
   t.cucumber_opts = cucumber_opts + feature_list
 end
