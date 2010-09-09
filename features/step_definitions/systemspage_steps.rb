@@ -43,3 +43,8 @@ Given /profile "([^"]*)" exists/ do |arg1|
       raise "profile " + arg1 + " does not exist"
   end
 end
+
+When /^I attach the file "(.*)" to "(.*)"$/ do |path, field|
+  attach_file(field, File.join( File.dirname(__FILE__), '/../upload_files/', path))
+end
+

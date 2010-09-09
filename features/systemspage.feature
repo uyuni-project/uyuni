@@ -293,7 +293,7 @@ Feature: Explore the main landing page
     Then I should see a "Kickstartable Distributions" text
      And I should see a "fedora_kickstart_distro" link
 
-  @cobbler_wip
+  @cobbler
   Scenario: create a profile with the UI (requires a base channel)
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
@@ -307,3 +307,19 @@ Feature: Explore the main landing page
       And I click on "Finish"
     Then I should see a "Kickstart: fedora_kickstart_profile" text
      And I should see a "Kickstart Details" link
+
+
+  @cobbler_wip
+  Scenario: upload a profile with the UI (requires a base channel)
+    Given I am on the Systems page
+      And I follow "Kickstart" in the left menu
+      And I follow "Profiles" in the left menu
+      And I follow "upload new kickstart file"
+    When I enter "fedora_kickstart_profile_upload" as "kickstartLabel"
+      And I attach the file "/example.ks" to "fileUpload"
+      And I click on "Upload File"
+    Then I should see a "Kickstart: fedora_kickstart_profile_upload" text
+     And I should see a "Kickstart Details" text
+
+
+
