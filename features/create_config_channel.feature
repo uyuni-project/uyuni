@@ -31,13 +31,3 @@ Feature: Create a configuration channel
     Then I should see a "Label 'testchannel' already exists. Please choose a different label for the new channel." text
      And I should see a "Update Channel" button
 
-  Scenario: Delete configuration channel labeled "testchannel"
-    Given I am testing configuration
-    When I follow "Configuration Channels"
-     And I follow "Test Channel"
-     And I follow "delete channel"
-     And I click on "Delete Config Channel"
-    Then I should see a "Centrally Managed Configuration Channels" text
-     And I should see a "create new config channel" link
-     
-
