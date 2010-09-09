@@ -3,8 +3,7 @@
 Feature: Create a new user
 
   Scenario: Create a new user
-    Given I am authorized as "admin" with password "admin"
-    When I go to the users page
+    Given I am on the Users page
     And I follow "create new user"
      And I enter "user1" as "login"
      And I enter "user1" as "desiredpassword"
@@ -18,3 +17,6 @@ Feature: Create a new user
      And I should see a "user1" link
      And I should see a "normal user" text
 
+  Scenario: Login as user1
+    Given I am authorized as "user1" with password "user1"
+    Then I should see "user1" link
