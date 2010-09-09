@@ -23,22 +23,15 @@ Then /^no link should be broken$/ do
 
   loop do
     href = hrefs.shift
-    next if href == "/rhn/Logout.do" # this will close our session
-    next if href =~ %r{/rhn/help/dispatcher} # this will redirect to redhat.com
-    next if href =~ %r{javascript:} # oops, javascript
-    next if href =~ %r{mailto:} # oops, javascript
-    next if href =~ %r{/download} # no downloads
-    next if href =~ %r{/rhn/CSVDownloadAction.do} # this pops up a file dialog
+    next if href.nil?
     base = href.split("?")[0]
     $stderr.puts "Visiting '#{href}' '#{base}', #{hrefs.size} to go"
     visit href.to_s
-    if page.has_content?('Page Not Found') || page.has_content?('500 Error - Internal Server Error')
+    if page.has_content?('Page Not Found') || page.has_content?('Internal Server Error')
       visited[base] = href 
       $stderr.puts "-- ** failed"
     else
       collect_all_hrefs.each do |href|
-	next if href =~ %r{javascript:} # oops, javascript
-	next if href =~ %r{/download} # no downloads
 	next if href[0,1] == "#" # relative link
 	next if hrefs.include?(href)
 	hbase = href.split("?")[0]

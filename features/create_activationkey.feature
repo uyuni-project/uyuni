@@ -19,7 +19,7 @@ Feature: Create an activation key
 
   Scenario: create an activation key
     Given I am on the Systems page
-      And I follow "Activation Keys" in "sidenav"
+      And I follow "Activation Keys" in the left menu
       And I follow "create new key" 
     When I enter "SUSE Test Key" as "description"
      And I enter "SUSE-DEV" as "key"
@@ -37,7 +37,7 @@ Feature: Create an activation key
    
   Scenario: Change limit of the activation key
     Given I am on the Systems page
-      And I follow "Activation Keys" in "sidenav"
+      And I follow "Activation Keys" in the left menu
       And I follow "SUSE Test Key"
     When I enter "20" as "usageLimit"
      And I click on "Update Activation Key"
