@@ -322,4 +322,21 @@ Feature: Explore the main landing page
      And I should see a "Kickstart Details" text
 
 
+   @cobbler
+   Scenario: adding a bare metal range to a profile (requires fedora_kickstart_profile)
+     Given I am on the Systems page
+      And I follow "Kickstart" in the left menu
+      And I follow "Profiles" in the left menu
+      And I follow "fedora_kickstart_profile"
+      And I follow "Bare Metal Kickstart"
+      And I enter "10" as "octet1a"
+      And I enter "10" as "octet1b"
+      And I enter "0" as "octet1c"
+      And I enter "100" as "octet1d"
+      And I enter "10" as "octet2a"
+      And I enter "10" as "octet2b"
+      And I enter "0" as "octet2c"
+      And I enter "200" as "octet2d"
+      And I click on "Add IP Range"
+    Then I should see a "10.10.0.100 - 10.10.0.200" text
 
