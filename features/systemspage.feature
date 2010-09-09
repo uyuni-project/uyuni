@@ -309,7 +309,7 @@ Feature: Explore the main landing page
      And I should see a "Kickstart Details" link
 
 
-  @cobbler_wip
+  @cobbler
   Scenario: upload a profile with the UI (requires a base channel)
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
