@@ -43,6 +43,13 @@ Then /^I should see a "([^"]*)" link in list "([^"]*)"$/ do |arg1, arg2|
 end
 
 #
+# Test if an option is selected
+#
+Then /^Option "([^"]*)" is selected as "([^"]*)"$/ do |arg1, arg2|
+  fail if not has_select?(arg2, :selected => arg1)
+end
+
+#
 # Test if a checkbox is checked
 #
 Then /^I should see "([^"]*)" as checked$/ do |arg1|
