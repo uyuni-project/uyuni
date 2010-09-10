@@ -7,19 +7,19 @@ require "rake/clean"
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "spacewalk_testsuite_base/version"
 
-Cucumber::Rake::Task.new do |t|
+features_task = Cucumber::Rake::Task.new do |t|
   cucumber_opts = %w{--format pretty}
-  feature_list  = %w{
+  feature_files  = %w{
                      features/init_user_create.feature
                      features/running.feature
                      features/login.feature
                      features/mainpage.feature
                      features/systemspage.feature
-		     features/create_activationkey.feature
-		     features/register_client.feature
+            		     features/create_activationkey.feature
+            		     features/register_client.feature
                      features/system_configuration.feature
-		     features/users-createnewuser.feature
-		     features/users.feature
+            		     features/users-createnewuser.feature
+            		     features/users.feature
                      features/create_group.feature
                      features/add_sys_of_group_to_SSM.feature
                      features/channels_add.feature
@@ -27,7 +27,42 @@ Cucumber::Rake::Task.new do |t|
                      features/configuration.feature
                      features/walk_hrefs.feature
                     }
-  t.cucumber_opts = cucumber_opts + feature_list
+  t.cucumber_opts = cucumber_opts
+end
+
+namespace :cucumber do
+  task :headless do
+    raise "install xorg-x11-server-extra" if not File.exist?("/usr/bin/Xvfb")
+
+    ENV["DISPLAY"] = ":98"
+    arglist = ["Xvfb", "#{ENV["DISPLAY"]}" ">& Xvfb.log &"]
+    pid = fork do
+      trap("SIGINT", "IGNORE")
+      exec(*arglist)
+    end
+ 
+    while ! File.exist?("/tmp/.X98-lock")
+      STDERR.puts "waiting for virtual X server to settle.."
+      sleep 1
+    end
+    trap ("SIGINT") do
+      Process.kill("HUP", pid)      
+    end
+
+    #############################################
+    #### Launch a virtual framebuffer X server ###
+    ##############################################
+    #ENV["DISPLAY"] = ":98"
+    #system "Xvfb #{ENV["DISPLAY"]} >& Xvfb.log &"
+    #trap("EXIT") do
+    #  pid = $!
+    #  puts "kill #{pid}"
+    #  Process.kill("HUP", pid)
+    #end
+    #sleep 10
+    ## start your application/testsuite here
+    Rake::Task["cucumber"].invoke
+  end
 end
 
 task :build do
