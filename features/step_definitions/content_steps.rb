@@ -56,6 +56,17 @@ Then /^I should see "([^"]*)" as unchecked$/ do |arg1|
   fail if not has_unchecked_field?(arg1)
 end
 
+#
+# Test if a field/checkbox is disabled
+#
+Then /^the "([^\"]*)" checkbox should be disabled$/ do |arg1|
+  field_labeled(arg1)['disabled'].should == true
+end
+
+Then /^the "([^\"]*)" field should be disabled$/ do |arg1|
+  field_labeled(arg1)['disabled'].should == true
+end
+
 Then /^I should see "([^"]*)" in field "([^"]*)"$/ do |arg1, arg2|
   fail if not page.has_field?(arg2, :with => arg1)
 end
