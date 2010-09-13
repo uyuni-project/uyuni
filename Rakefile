@@ -14,18 +14,22 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/running.feature
                      features/login.feature
                      features/mainpage.feature
+                     features/channels_add.feature
                      features/systemspage.feature
-            		     features/create_activationkey.feature
-            		     features/register_client.feature
+                     features/create_activationkey.feature
+                     features/register_client.feature
                      features/system_configuration.feature
-            		     features/users-createnewuser.feature
-            		     features/users.feature
+                     features/users-createnewuser.feature
+                     features/users.feature
                      features/create_group.feature
                      features/add_sys_of_group_to_SSM.feature
-                     features/channels_add.feature
+		     features/create_config_channel.feature
                      features/channels.feature
                      features/configuration.feature
+		     features/add_system_to_conf.feature
                      features/walk_hrefs.feature
+		     features/delete_system_from_conf.feature
+		     features/delete_config_channel.feature
                     }
   t.cucumber_opts = cucumber_opts
 end
