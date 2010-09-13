@@ -31,7 +31,7 @@ features_task = Cucumber::Rake::Task.new do |t|
 		     features/delete_system_from_conf.feature
 		     features/delete_config_channel.feature
                     }
-  t.cucumber_opts = cucumber_opts
+  t.cucumber_opts = cucumber_opts + feature_files
 end
 
 namespace :cucumber do
