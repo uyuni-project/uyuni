@@ -19,4 +19,4 @@ Feature: Create a new user
 
   Scenario: Login as user1
     Given I am authorized as "user1" with password "user1"
-    Then I should see "user1" link
+    Then I should see a "user1" link
