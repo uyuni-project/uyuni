@@ -12,7 +12,10 @@ BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:     noarch
 Requires:      rpm-python, rhnlib
 Requires:      spacewalk-backend-libs >= 0.8.3
-BuildRequires: docbook-utils, gettext
+BuildRequires: docbook-utils, gettext, python-devel
+%if 0%{?suse_version}
+BuildRequires: -post-build-checks
+%endif
 
 Summary: Package uploader for the Red Hat Network Satellite Server
 
@@ -40,6 +43,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
+%dir %{rhnroot}
+%dir %{_sysconfdir}/sysconfig/rhn
 %dir %{rhnroot}/rhnpush
 %{rhnroot}/rhnpush/*
 %attr(755,root,root) %{_bindir}/rhnpush
