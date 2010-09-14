@@ -8,9 +8,14 @@ Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}
 BuildArch:    noarch
 Group:        Applications/System
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+%if 0%{?suse_version}
+Requires(pre):  apache2, /usr/sbin/useradd
+Requires(post): coreutils, openssh
+%else
 Requires(pre):  httpd, /usr/sbin/useradd
 Requires(post): /sbin/runuser, openssh
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 # merging this two packages together
 # not backward compatible => no Provides:
 Obsoletes:     NPusers <= 1.17.50-1
@@ -20,6 +25,13 @@ Obsoletes:     nslogs < 2.3.0
 Provides:      nslogs = 2.3.0
 Obsoletes:     ConfigPusher-general < 1.3.0
 Provides:      ConfigPusher-general = 1.3.0
+
+%if 0%{?suse_version}
+BuildRequires: apache2
+%define webgrp www
+%else
+%define webgrp apache
+%endif
 
 %define package_name nocpulse
 %define identity %{_var}/lib/%{package_name}/.ssh/nocpulse-identity
@@ -96,11 +108,13 @@ fi
 
 getent group %{package_name} >/dev/null || groupadd -r %{package_name}
 getent passwd %{package_name} >/dev/null || \
-useradd -r -g %{package_name} -G apache -d %{_var}/lib/%{package_name} -s /bin/bash -c "NOCpulse user" %{package_name}
+useradd -r -g %{package_name} -G %{webgrp} -d %{_var}/lib/%{package_name} -s /bin/bash -c "NOCpulse user" %{package_name}
+%if ! 0%{?suse_version}
 /usr/bin/passwd -l %{package_name} >/dev/null
+%endif
 
 # if user already exists (rhnmd creates it too) add nocpulse to apache group
-getent group apache | grep nocpulse >/dev/null || usermod -G apache nocpulse
+getent group %{webgrp} | grep nocpulse >/dev/null || usermod -G %{webgrp} nocpulse
 
 %post
 # Fedora guys do not want this stuff
@@ -122,7 +136,12 @@ fi
 
 if [ ! -f %{identity} ]
 then
-    /sbin/runuser -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f %{identity}" - %{package_name}
+%if 0%{?suse_version}
+%define runuser_cmd /bin/su
+%else
+%define runuser_cmd /sbin/runuser
+%endif
+%{runuser_cmd} -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f %{identity}" - %{package_name}
 fi
 
 %files
@@ -133,7 +152,7 @@ fi
 %{_bindir}/npConfigValue
 %dir %{perl_vendorlib}/NOCpulse
 %{perl_vendorlib}/NOCpulse/*
-%dir %attr(775, %{package_name},apache) %{_var}/log/%{package_name}
+%dir %attr(775, %{package_name},%{webgrp}) %{_var}/log/%{package_name}
 %dir %attr(-, %{package_name},%{package_name}) %{_var}/lib/%{package_name}
 %dir %attr(700, %{package_name},%{package_name})%{_var}/lib/%{package_name}/.ssh
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
