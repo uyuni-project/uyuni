@@ -8,14 +8,19 @@ Version: 4.9.7
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires: gettext
+BuildRequires: gettext -post-build-checks
 
 Requires: rhn-check >= 0.0.8
+%if !0%{?suse_version}
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
 Requires(postun): initscripts
+%else
+Source1: rhnsd.init.SUSE
+Requires(preun): %fillup_prereq %insserv_prereq
+%endif
 
 %description
 The Red Hat Update Agent that automatically queries the Red Hat
@@ -23,32 +28,51 @@ Network servers and determines which packages need to be updated on
 your machine, and runs any actions.
 
 %prep
-%setup -q 
+%setup -q
 
 %build
 make -f Makefile.rhnsd %{?_smp_mflags} CFLAGS="%{optflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
+%if 0%{?suse_version}
+mkdir -p $RPM_BUILD_ROOT/%{_initrddir}
+make INIT_DIR=$RPM_BUILD_ROOT/etc/init.d -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
+install -m 0755 %{SOURCE1} $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
+rm $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhnsd.mo
+%else
 make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
+%endif
 
 %find_lang %{name}
 
 
 %post
+%if 0%{?suse_version}
+%{fillup_and_insserv rhnsd}
+%else
 /sbin/chkconfig --add rhnsd
+%endif
 
 %preun
+%if 0%{?suse_version}
+%stop_on_removal rhnsd
+%else
 if [ $1 = 0 ] ; then
     /etc/rc.d/init.d/rhnsd stop >/dev/null 2>&1
     /sbin/chkconfig --del rhnsd
 fi
-
+%endif
 
 %postun
+%if 0%{?suse_version}
+%restart_on_update rhnsd
+%{insserv_cleanup}
+%else
 if [ "$1" -ge "1" ]; then
     /etc/rc.d/init.d/rhnsd condrestart >/dev/null 2>&1 || :
 fi
+%endif
 
 %clean
 rm -fr $RPM_BUILD_ROOT
