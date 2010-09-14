@@ -5,9 +5,16 @@ Release:      1%{?dist}
 Summary:      Persistent HTTP connection over SSL
 URL:          https://fedorahosted.org/spacewalk
 BuildArch:    noarch
+%if 0%{?suse_version}
+Requires:     perl = %{perl_version}
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Requires:     nocpulse-common
 BuildRequires: perl(ExtUtils::MakeMaker)
+%if 0%{?suse_version}
+BuildRequires: nocpulse-common
+%endif
 Group:        Development/Libraries
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
