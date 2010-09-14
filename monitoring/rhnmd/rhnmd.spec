@@ -1,7 +1,11 @@
 %global np_name nocpulse
 %global identity %{_var}/lib/%{np_name}/.ssh/nocpulse-identity
 %if 0%{!?_initddir:1}
+%if 0%{?suse_version}
+%global _initddir %{_sysconfdir}/init.d
+%else
 %global _initddir %{_sysconfdir}/rc.d/init.d
+%endif
 %endif
 
 Summary:        Red Hat Network Monitoring Daemon
@@ -14,7 +18,14 @@ License:        GPLv2
 BuildArch:      noarch
 Group:          System Environment/Daemons
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       openssh-server openssh
+Requires:       openssh
+%if 0%{?suse_version}
+Source1:        rhnmd.init.SUSE
+PreReq:         pwdutils %fillup_prereq %insserv_prereq
+BuildRequires:  openssh
+%else
+Requires:       openssh-server
+%endif
 BuildRequires:  pam-devel
 Obsoletes: 		rhnmd.i386
 Obsoletes:		rhnmd.x86_64
@@ -40,7 +51,11 @@ mkdir -p $RPM_BUILD_ROOT%{_var}/lib/%{np_name}/.ssh
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/pam.d
 mkdir -p $RPM_BUILD_ROOT%{_libdir}
 ln -sf sshd $RPM_BUILD_ROOT%{_usr}/sbin/rhnmd
+%if 0%{?suse_version}
+install -pm 0755 %{SOURCE1} $RPM_BUILD_ROOT%{_initddir}/rhnmd
+%else
 install -pm 0755 rhnmd-init $RPM_BUILD_ROOT%{_initddir}/rhnmd
+%endif
 install -pm 0644 rhnmd_config $RPM_BUILD_ROOT%{_sysconfdir}/%{np_name}/rhnmd_config
 install -pm 0600 authorized_keys $RPM_BUILD_ROOT%{_var}/lib/%{np_name}/.ssh/authorized_keys
 install -pm 0644 rhnmd-pam_config $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/rhnmd
@@ -49,8 +64,12 @@ install -pm 0644 rhnmd-pam_config $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/rhnmd
 if [ $1 -eq 1 ] ; then
   getent group %{np_name} >/dev/null || groupadd -r %{np_name}
   getent passwd %{np_name} >/dev/null || \
-  useradd -r -g %{np_name} -d %{_var}/lib/%{np_name} -c "NOCpulse user" %{np_name}
+  useradd -r -g %{np_name} -d %{_var}/lib/%{np_name} -c "NOCpulse user" %{np_name} -s /bin/bash
+%if 0%{?suse_version} == 0
+  # do not lock the account on SUSE.
+  # SUSE sshd do not allow a normal user to login to a locked account
   /usr/bin/passwd -l %{np_name} >/dev/null
+%endif
   exit 0
 fi
 # Old NOCpulse packages has home in /home/nocpulse.
@@ -60,6 +79,28 @@ if getent passwd %{np_name} >/dev/null && [ -d /home/nocpulse ]; then
   rm -rf %{_var}/lib/nocpulse/bin
   rm -rf %{_var}/lib/nocpulse/var
 fi
+
+%if 0%{?suse_version}
+
+%post
+if [ ! -f %{identity} ]
+then
+    /bin/su -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f %{identity}" - %{np_name}
+    # provide .bashrc with LANG="C"
+    if [ ! -e %{_var}/lib/%{np_name}/.bashrc ]; then
+      echo 'LANG="C"' > %{_var}/lib/%{np_name}/.bashrc
+    fi
+fi
+%{fillup_and_insserv rhnmd}
+
+%preun
+%stop_on_removal rhnmd
+
+%postun
+%restart_on_update rhnmd
+%{insserv_cleanup}
+
+%else
 
 %post
 if [ ! -f %{identity} ]
@@ -74,11 +115,14 @@ if [ $1 = 0 ]; then
     /sbin/chkconfig --del rhnmd
 fi
 
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root,root,-)
+%dir %{_sysconfdir}/%{np_name}
 %config(noreplace) %{_sysconfdir}/pam.d/rhnmd
 %dir %attr(-, %{np_name},%{np_name}) %{_var}/lib/%{np_name}
 %dir %attr(700, %{np_name},%{np_name}) %{_var}/lib/%{np_name}/.ssh
