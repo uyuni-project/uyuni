@@ -9,6 +9,10 @@ Group:          System Environment/Base
 License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+%if 0%{?suse_version}
+Source1:        rhn-virtualization-host
+BuildRequires:  -post-build-checks
+%endif
 
 Version:        5.4.15
 Release:        1%{?dist}
@@ -24,7 +28,9 @@ virtual machine guest images.
 Summary: Files needed by rhn-virtualization-host
 Group: System Environment/Base
 Requires: rhn-client-tools
+%if !0%{?suse_version}
 Requires: chkconfig
+%endif
 
 %description common
 This package contains files that are needed by the rhn-virtualization-host
@@ -35,7 +41,12 @@ Summary: RHN/Spacewalk Virtualization support specific to the Host system
 Group: System Environment/Base
 Requires: libvirt-python
 Requires: rhn-virtualization-common = %{version}-%{release}
+%if 0%{?suse_version}
+Requires:       cron
+PreReq:         %fillup_prereq %insserv_prereq
+%else
 Requires: /usr/sbin/crond
+%endif
 
 %description host
 This package contains code for RHN's and Spacewalk's Virtualization support 
@@ -44,7 +55,9 @@ that is specific to the Host system (a.k.a. Dom0).
 
 %prep
 %setup -q
-
+%if 0%{?suse_version}
+cp %{SOURCE1} scripts/ 
+%endif
 
 %build
 make -f Makefile.rhn-virtualization
@@ -54,11 +67,26 @@ make -f Makefile.rhn-virtualization
 rm -rf $RPM_BUILD_ROOT
 make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT install
 
+%if 0%{?suse_version}
+mkdir -p $RPM_BUILD_ROOT/etc/init.d/
+mv $RPM_BUILD_ROOT/etc/rc.d/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/etc/init.d/rhn-virtualization-host
+%endif
  
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%if 0%{?suse_version}
 
+%post host
+%{fillup_only -n rhn-virtualization-host}
+
+%preun host
+%{stop_on_removal rhn-virtualization-host}
+
+%postun host
+%{insserv_cleanup}
+
+%else
 %post host
 /sbin/chkconfig --add rhn-virtualization-host
 /sbin/service crond condrestart
@@ -68,10 +96,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun host
 /sbin/service crond condrestart
+%endif
 
 %files common
 %defattr(-,root,root,-)
+%dir %{rhn_dir}/
+%dir %{rhn_dir}/actions
 %dir %{rhn_dir}/virtualization
+%dir %{rhn_conf_dir}
 %{rhn_dir}/virtualization/__init__.py
 %{rhn_dir}/virtualization/__init__.pyc
 %{rhn_dir}/virtualization/__init__.pyo
@@ -138,6 +170,7 @@ rm -rf $RPM_BUILD_ROOT
 %{rhn_dir}/virtualization/localvdsm.pyo
 %{rhn_dir}/actions/virt.pyo
 %doc LICENSE
+
 
 %changelog
 * Tue Nov 02 2010 Jan Pazdziora 5.4.15-1
