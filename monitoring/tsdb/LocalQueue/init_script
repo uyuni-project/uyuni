@@ -5,6 +5,14 @@
 # description: TSDB local queue daemon
 # processname: TSDBLocalQueue.pl
 # pidfile: /var/run/TSDBLocalQueue.pid
+### BEGIN INIT INFO
+# Provides:       tsdb
+# Required-Start:   $local_fs $remote_fs $network 
+# Required-Stop:    $local_fs $remote_fs $network
+# Default-Start:  2 3 5
+# Short-Description: TSDB MOC-side queue daemon
+# Description: time series daemon
+### END INIT INFO
 
 # Source function library.
 . /etc/rc.d/init.d/functions
