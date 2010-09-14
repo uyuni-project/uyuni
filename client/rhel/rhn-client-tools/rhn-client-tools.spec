@@ -10,6 +10,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 %if 0%{?suse_version}
 BuildRequires: update-desktop-files
+BuildRequires: -post-build-checks
 %endif
 
 Requires: rhnlib >= 2.5.20
@@ -18,7 +19,11 @@ Requires: rpm-python
 Requires: python-ethtool
 Requires: gnupg
 Requires: sh-utils
+%if 0%{?suse_version}
+Requires: dbus-1-python
+%else
 Requires: dbus-python
+%endif
 %if 0%{?fedora} > 12 || 0%{?rhel} > 5
 Requires: python-gudev
 Requires: python-hwdata
@@ -130,7 +135,8 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_*_*.*
 
 desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications --vendor=rhn rhn_register.desktop
 %if 0%{?suse_version}
-%suse_update_desktop_file rhn_register System
+%suse_update_desktop_file rhn_register Utility
+rm  $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhn-client-tools.mo
 %endif
 
 %find_lang %{name}
