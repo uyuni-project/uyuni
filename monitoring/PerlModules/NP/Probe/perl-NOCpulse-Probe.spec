@@ -6,7 +6,11 @@ Version:      1.184.5
 Release:      1%{?dist}
 BuildArch:    noarch
 Group:        Development/Libraries
+%if 0%{?suse_version}
+Requires:     perl = %{perl_version}
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires(pre): nocpulse-common
@@ -82,6 +86,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{perl_vendorlib}/NOCpulse
 %dir %{perl_vendorlib}/NOCpulse/Probe
 %dir %{perl_vendorlib}/NOCpulse/Probe/DataSource
+%if 0%{?suse_version}
+%dir %{perl_vendorlib}/NOCpulse/Probe/DataSource/test
+%endif
 %{perl_vendorlib}/NOCpulse/Probe/Config*
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/AbstractDataSource.pm
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/AbstractDatabase.pm
