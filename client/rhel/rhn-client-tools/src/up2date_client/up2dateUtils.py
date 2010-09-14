@@ -30,10 +30,19 @@ def _getOSVersionAndRelease():
         osVersionRelease = (h['name'], version, h['release'])
         return osVersionRelease
     else:
-       raise up2dateErrors.RpmError(
-           "Could not determine what version of Red Hat Linux you "\
-           "are running.\nIf you get this error, try running \n\n"\
-           "\t\trpm --rebuilddb\n\n")
+       for h in ts.dbMatch('Providename', "distribution-release"):
+           if cfg["versionOverride"]:
+               version = cfg["versionOverride"]
+           else:
+               version = h['version']
+
+           osVersionRelease = (h['name'], version, h['release'])
+           return osVersionRelease
+       else: 
+           raise up2dateErrors.RpmError(
+               "Could not determine what version of Red Hat Linux you "\
+               "are running.\nIf you get this error, try running \n\n"\
+               "\t\trpm --rebuilddb\n\n")
 
 
 def getVersion():
