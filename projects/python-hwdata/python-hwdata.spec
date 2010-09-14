@@ -6,7 +6,9 @@ Name:		python-hwdata
 Version:	1.2
 Release:	1%{?dist}
 Summary:	Python bindings to hwdata package
-BuildArch:  noarch
+%if ((!0%{?suse_version}) || (0%{?suse_version} >= 1120))
+BuildArch: noarch
+%endif
 Group:		Development/Libraries
 License:	GPLv2
 URL:		https://fedorahosted.org/spacewalk
