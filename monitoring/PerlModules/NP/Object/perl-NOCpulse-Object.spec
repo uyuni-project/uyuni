@@ -5,7 +5,11 @@ Summary:      NOCpulse Object abstraction for Perl
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildArch:    noarch
+%if ! 0%{?suse_version}
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%else
+Requires:     perl-Config-IniFiles perl-FreezeThaw
+%endif
 BuildRequires: perl(Config::IniFiles) perl(FreezeThaw) perl(NOCpulse::Debug) perl(ExtUtils::MakeMaker)
 Group:        Development/Libraries
 License:      GPLv2
