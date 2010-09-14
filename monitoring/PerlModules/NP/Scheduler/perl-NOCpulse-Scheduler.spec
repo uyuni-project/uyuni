@@ -5,8 +5,15 @@ Release:      1%{?dist}
 Summary:      NOCpulse Event Scheduler
 URL:          https://fedorahosted.org/spacewalk
 Requires:     nocpulse-common, ProgAGoGo
+%if 0%{?suse_version}
+Requires:     perl = %{perl_version}
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 BuildRequires: perl(ExtUtils::MakeMaker)
+%if 0%{?suse_version}
+BuildRequires:  nocpulse-common
+%endif
 BuildArch:    noarch
 Group:        Development/Libraries 
 License:      GPLv2
@@ -49,6 +56,7 @@ fi
 
 %files 
 %defattr(-,root,root,-)
+%dir %{perl_vendorlib}/NOCpulse
 %{perl_vendorlib}/NOCpulse/*
 %{_bindir}/kernel.pl
 %attr(755,nocpulse,nocpulse) %{_var}/lib/nocpulse
