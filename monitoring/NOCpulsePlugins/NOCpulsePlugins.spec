@@ -5,7 +5,11 @@ Summary:      NOCpulse authored Plug-ins
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildArch:    noarch
+%if 0%{?suse_version}
+Requires:     perl = %{perl_version}
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Requires:     nocpulse-common
 Group:        Development/Libraries
 License:      GPLv2
