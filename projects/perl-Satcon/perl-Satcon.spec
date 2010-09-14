@@ -7,10 +7,18 @@ Group:          Applications/System
 URL:            https://fedorahosted.org/spacewalk
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
+%if 0%{?suse_version}
+Requires:      perl = %{perl_version}
+%else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRequires:  perl(ExtUtils::MakeMaker)
+%if 0%{?suse_version}
+Requires: policycoreutils
+%else
 Requires:       /sbin/restorecon
+%endif
 
 %description
 Framework for generating config files during installation.
