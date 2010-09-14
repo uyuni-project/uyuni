@@ -1,8 +1,13 @@
 %if 0%{!?_initddir:1}
+%if 0%{?suse_version}
+%define _initddir %{_sysconfdir}/init.d
+%else
 %define _initddir %{_sysconfdir}/rc.d/init.d
+%endif
 %endif
 
 %define init_script %{_initddir}/tsdb_local_queue
+
 %define lqdir       %{_var}/log/nocpulse/TSDBLocalQueue
 %define bdbdir      %{_var}/lib/nocpulse/tsdb/bdb
 %define npbin       %{_bindir}
@@ -18,7 +23,13 @@ Group:        Applications/Databases
 License:      GPLv2
 Vendor:       Red Hat, Inc.
 Requires:     nocpulse-common
+%if 0%{?suse_version}
+Requires:     perl = %{perl_version}
+BuildRequires: nocpulse-common
+BuildRequires: httpd
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Requires:     SatConfig-general
 Requires:	  httpd
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -36,6 +47,7 @@ Time Series Database
 rm -rf $RPM_BUILD_ROOT
 
 # Directories
+
 install -d $RPM_BUILD_ROOT/%{perl_vendorlib}/NOCpulse/TSDB/LocalQueue
 mkdir -p $RPM_BUILD_ROOT%bdbdir
 mkdir -p $RPM_BUILD_ROOT%lqdir
@@ -74,17 +86,36 @@ if [ $1 -eq 2 ]; then
   ls /opt/nocpulse/TSDBLocalQueue/queue/* 2>/dev/null | xargs -I file mv file %lqdir/queue
 fi
 
+%if 0%{?suse_version}
+%postun
+%insserv_cleanup
+
+%preun
+%stop_on_removal
+%endif
+
 %files
 %defattr(-,root,root,-)
 %{init_script}
 %{_bindir}/*
+%if 0%{?suse_version}
+%attr(755,wwwrun,www) %dir %bdbdir
+%attr(755,wwwrun,www) %dir %lqdir
+%attr(755,wwwrun,www) %dir %lqdir/queue
+%attr(755,wwwrun,www) %dir %lqdir/archive
+%attr(755,wwwrun,www) %dir %lqdir/failed
+%else
 %attr(755,apache,apache) %dir %bdbdir
 %attr(755,apache,apache) %dir %lqdir
 %attr(755,apache,apache) %dir %lqdir/queue
 %attr(755,apache,apache) %dir %lqdir/archive
 %attr(755,apache,apache) %dir %lqdir/failed
+%endif
 %dir %{perl_vendorlib}/NOCpulse/TSDB
 %{perl_vendorlib}/NOCpulse/*
+%if 0%{?suse_version}
+%dir %{_localstatedir}/lib/nocpulse/tsdb
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
