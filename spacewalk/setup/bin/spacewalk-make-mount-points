@@ -13,7 +13,7 @@ use Spacewalk::Setup ();
 my %dirs;
 @dirs{@ARGV} = @ARGV;
 
-my $apache_uid = getpwnam('apache');
+my $apache_uid = getpwnam('wwwrun');
 if (not defined $apache_uid) {
 	die "Failed to retrieve uid of user apache, the user does not seem to exist.\n";
 }
@@ -29,7 +29,7 @@ for my $dir (sort { length $a <=> length $b } keys %dirs) {
 			}
 		}
 	}
-	chown $apache_uid, -1, $dir or die "Error chowning dir [$dir] to [apache]: $!\n";
+	chown $apache_uid, -1, $dir or die "Error chowning dir [$dir] to [wwwrun]: $!\n";
 	my @paths = $dir;
 	if (-l $paths[0]) {
 		# if the path is a symlink, we will try to restorecon

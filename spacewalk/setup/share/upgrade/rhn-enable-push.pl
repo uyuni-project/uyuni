@@ -78,7 +78,7 @@ my %config_opts;
 $config_opts{jabberDOThostname} = $opts{hostname} || Sys::Hostname::hostname();
 $config_opts{jabberDOTusername} = 'rhn-dispatcher-sat';
 $config_opts{jabberDOTpassword} = 'rhn-dispatcher-' . PXT::Utils->random_password(6);
-$config_opts{osadispatcherDOTosa_ssl_cert} = $opts{'pub-ssl-cert'} || '/var/www/html/pub/RHN-ORG-TRUSTED-SSL-CERT';
+$config_opts{osadispatcherDOTosa_ssl_cert} = $opts{'pub-ssl-cert'} || '/srv/www/html/pub/RHN-ORG-TRUSTED-SSL-CERT';
 
 RHN::SatInstall->write_config(\%config_opts,
 			      '/var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf');

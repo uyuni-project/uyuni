@@ -298,7 +298,7 @@ sub upgrade_stop_services {
                       'Could not stop the rhn-satellite service.')
     } else {
       # shutdown pre 3.6 services proerly
-      system_or_exit(['/sbin/service', 'httpd', 'stop'], 25,
+      system_or_exit(['/sbin/service', 'apache2', 'stop'], 25,
                       'Could not stop the http service.');
       system_or_exit(['/sbin/service', 'taskomatic', 'stop'], 27,
                       'Could not stop the taskomatic service.');

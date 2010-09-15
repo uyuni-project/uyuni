@@ -23,6 +23,7 @@ Params::Validate::validation_options(strip_leading => "-");
 
 use Mail::RFC822::Address ();
 use File::Spec ();
+use File::Copy;
 use DBI ();
 use Digest::MD5 qw/md5_hex/;
 use DateTime ();
@@ -59,8 +60,10 @@ if ($opts{"run-cobbler"}) {
     exit 0;
 }
 
-
-$answers{hostname} ||= Sys::Hostname::hostname;
+my $hn = `/bin/hostname -f`;
+chomp($hn);
+$hn = Sys::Hostname::hostname if(!defined $hn || $hn eq ""); 
+$answers{hostname} ||= "$hn";
 
 my %rhnOptions = ();
 if (-e Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION) {
@@ -428,11 +431,15 @@ sub setup_ssl_vhost {
   }
 
   my ($sslconf_content, $original_sslconf_content, $pre, $vhost, $post);
-  my $sslconf_dir = '/etc/httpd/conf.d';
+  #my $sslconf_dir = '/etc/httpd/conf.d';
+  my $sslconf_dir = '/etc/apache2/vhosts.d/';
   my $sslconf     = 'ssl.conf';
   my $sslconf_path = "$sslconf_dir/$sslconf";
   local *FILE;
-
+  if( ! -f $sslconf_path && -f "$sslconf_dir/vhost-ssl.template")
+  {
+    copy("$sslconf_dir/vhost-ssl.template", $sslconf_path) or die "Copy failed: $!";
+  }
   die "$sslconf_path does not exist.\n" unless (-f $sslconf_path);
 
   {
@@ -699,7 +706,7 @@ sub setup_ssl_certs {
   print Spacewalk::Setup::loc("** SSL: Deploying CA certificate.\n");
 
   deploy_ca_cert("-source-dir" => $answers->{'ssl-dir'},
-		 "-target-dir" => '/var/www/html/pub');
+		 "-target-dir" => '/srv/www/html/pub');
 
   print Spacewalk::Setup::loc("** SSL: Generating server certificate.\n");
 
@@ -1028,7 +1035,7 @@ sub populate_initial_configs {
      webDOTis_monitoring_backend => 0,
      webDOTis_monitoring_scout => 0,
      webDOTenable_solaris_support => 0,
-     osadispatcherDOTosa_ssl_cert => '/var/www/html/pub/RHN-ORG-TRUSTED-SSL-CERT',
+     osadispatcherDOTosa_ssl_cert => '/srv/www/html/pub/RHN-ORG-TRUSTED-SSL-CERT',
      encrypted_passwords => 1,
      db_backend => $answers->{'db-backend'},
      db_user => $answers->{'db-user'},
@@ -1344,18 +1351,18 @@ sub setup_services {
 sub setup_users_and_groups {
 
     # Check to be sure the required users and groups exist.
-    my @required_groups = qw/apache/;
+    my @required_groups = qw/www/;
     Spacewalk::Setup::check_groups_exist(@required_groups);
 
     # Need user tomcat in the apache group so the Java stack can read the same
     # configuration files as the rest of the application.
-    (undef, undef, my $apache_group_id, my $apache_group_members) = getgrnam("apache");
+    (undef, undef, my $apache_group_id, my $apache_group_members) = getgrnam("www");
     if (not defined $apache_group_id) {
-        print Spacewalk::Setup::loc("The group 'apache' should exist.\n");
+        print Spacewalk::Setup::loc("The group 'www' should exist.\n");
     }
     if (not grep { $_ eq 'tomcat' } split /\s+/, $apache_group_members) {
-        Spacewalk::Setup::system_or_exit(['/usr/sbin/usermod', '-G', 'apache', '-a', 'tomcat'], 9,
-            'Could not add tomcat to the apache group.');
+        Spacewalk::Setup::system_or_exit(['/usr/sbin/usermod', '-A', 'www', 'tomcat'], 9,
+            'Could not add tomcat to the www group.');
     }
 
     return 1;
@@ -1387,7 +1394,7 @@ sub wait_for_tomcat {
     my $hostname = shift;
 
     for (my $i = 0; $i < 20; $i++) {
-        my $retval = system("HEAD http://$hostname/ 2>&1 > /dev/null");
+        my $retval = system("curl -L -k http://$hostname/ 2>&1 > /dev/null");
         if ($retval) {
             sleep 5;
         }
