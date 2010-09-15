@@ -5,7 +5,12 @@ Release:      1%{?dist}
 Summary:      Current state log acceptor
 URL:          https://fedorahosted.org/spacewalk
 BuildArch:    noarch
+%if 0%{?suse_version}
+Requires:     perl = %{perl_version}
+BuildRequires: nocpulse-common
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Requires:	  SatConfig-general
 Group:        Applications/Internet
 License:      GPLv2
