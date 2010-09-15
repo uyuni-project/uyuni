@@ -32,10 +32,17 @@ if [ -x /etc/init.d/tomcat6 ]; then
    TOMCAT="tomcat6"
 fi
 
+if [ -x /etc/init.d/httpd ]; then
+   HTTPD="httpd"
+fi
 
-SERVICES="jabberd $DB_SERVICE osa-dispatcher $TOMCAT httpd Monitoring MonitoringScout rhn-search cobblerd taskomatic"
+if [ -x /etc/init.d/apache2 ]; then
+   HTTPD="apache2"
+fi
 
-. /etc/init.d/functions
+SERVICES="jabberd $DB_SERVICE osa-dispatcher $TOMCAT $HTTPD Monitoring MonitoringScout rhn-search cobblerd taskomatic"
+
+#. /etc/init.d/functions
 
 forward_services() {
     ACTION="$1"
