@@ -19,16 +19,26 @@ BuildRequires:  python
 Requires:       bash
 Requires:       cobbler
 Requires:       coreutils
+%if 0%{?suse_version}
+%else
 Requires:       initscripts
+%endif
 Requires:       iproute
 Requires:       net-tools
 Requires:       /usr/bin/sqlplus
 Requires:       perl-Satcon
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%if 0%{?suse_version}
+Requires:     perl = %{perl_version}
+%else
+Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Requires:       python, rpm-python
 Requires:       rhnlib >= 2.5.20
 Requires:       rpm
+%if 0%{?suse_version}
+%else
 Requires:       setup
+%endif
 Requires:       spacewalk-admin
 Requires:       spacewalk-certs-tools
 Requires:       spacewalk-config
@@ -66,7 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 %{rhnroot}/utils/systemSnapshot.py*
 %{rhnroot}/utils/migrateSystemProfile.py*
 %{_mandir}/man8/*
-
+%dir /etc/rhn
+%dir %{_datadir}/rhn
 
 %changelog
 * Fri Nov 05 2010 Miroslav Suchý <msuchy@redhat.com> 1.2.9-1
