@@ -1,6 +1,12 @@
+%if 0%{?suse_version}
+%define cgi_bin        /srv/www/cgi-bin
+%define cgi_mod_perl   /srv/www/cgi-mod-perl
+%define templatedir    /srv/www/templates
+%else
 %define cgi_bin        /var/www/cgi-bin
 %define cgi_mod_perl   /var/www/cgi-mod-perl
 %define templatedir    /var/www/templates
+%endif
 %define bin            %{_bindir}
 %define vardir         /var/lib/nocpulse
 Name:         SputLite
@@ -10,7 +16,12 @@ Release:      1%{?dist}
 Summary:      Command queue processor (Sputnik Lite)
 URL:          https://fedorahosted.org/spacewalk
 BuildArch:    noarch
+%if 0%{?suse_version}
+BuildRequires: nocpulse-common
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
+
 Group:        Applications/System
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -28,7 +39,9 @@ Provides command-queue server capability.
 
 %package client
 Summary:  Command queue processor (Sputnik Lite)
+%if ! 0%{?suse_version}
 Requires: perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Requires: MessageQueue ProgAGoGo
 Group:    Applications/System
 Requires: nocpulse-common
@@ -85,11 +98,14 @@ fi
 %attr(755, nocpulse, nocpulse) %dir %templatedir
 %{perl_vendorlib}/NOCpulse/*
 %cgi_bin/*
+%dir %{cgi_mod_perl}
 %cgi_mod_perl/*
 %templatedir/*
 
 %files client
 %defattr(-,root,root,-)
+%attr(755,nocpulse,nocpulse) %dir %{vardir}
+%attr(755,nocpulse,nocpulse) %dir %{vardir}/queue
 %attr(755,nocpulse,nocpulse) %dir %{vardir}/commands
 %attr(755,nocpulse,nocpulse) %dir %{vardir}/queue/commands
 %{_bindir}/*
