@@ -1,3 +1,13 @@
+%if 0%{?suse_version}
+%define apache_user wwwrun
+%define apache_group www
+%define misc_path /srv/
+%else
+%define apache_user apache
+%define apache_group apache
+%define misc_path %{_var}
+%endif
+
 Name:           spacewalk-setup
 Version:        1.2.16
 Release:        1%{?dist}
@@ -19,7 +29,17 @@ BuildArch:      noarch
 Requires:       perl
 Requires:       perl-Params-Validate
 Requires:       spacewalk-schema
+%if 0%{?suse_version}
+Requires:       curl
+Requires:       policycoreutils
+Requires:       perl-Mail-RFC822-Address
+Requires:       perl-XML-LibXML perl-XML-SAX perl-DateTime
+Requires:       perl-Frontier-RPC
+Requires:       perl-libwww-perl
+BuildRequires:       perl-libwww-perl
+%else
 Requires:       /sbin/restorecon
+%endif
 Requires:       spacewalk-admin
 Requires:       spacewalk-certs-tools
 Requires:       perl-Satcon
@@ -35,7 +55,6 @@ setup tasks, re-installation, and upgrades.
 
 %prep
 %setup -q
-
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS=vendor
@@ -61,6 +80,9 @@ install -m 0644 share/ssl.conf.3 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/ssl.conf.4 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/ssl.conf.5 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/ssl.conf.6 %{buildroot}/%{_datadir}/spacewalk/setup/
+%if 0%{?suse_version}
+install -m 0644 share/ssl.conf.7 %{buildroot}/%{_datadir}/spacewalk/setup/
+%endif
 install -m 0644 share/tomcatX.conf.1 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcatX.conf.2 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
@@ -78,8 +100,7 @@ install -m 0755 share/oracle/remove-db.sh %{buildroot}/%{_datadir}/spacewalk/set
 install -m 0755 share/oracle/upgrade-db.sh %{buildroot}/%{_datadir}/spacewalk/setup/oracle
 
 # create a directory for misc. Spacewalk things
-install -d -m 755 %{buildroot}/%{_var}/spacewalk
-
+install -d -m 755 %{buildroot}/%{misc_path}/spacewalk
 
 %check
 make test
@@ -97,8 +118,9 @@ rm -rf %{buildroot}
 %{_bindir}/spacewalk-make-mount-points
 %{_bindir}/cobbler-setup
 %{_mandir}/man[13]/*.[13]*
+%dir %{_datadir}/spacewalk
 %{_datadir}/spacewalk/*
-%attr(755, apache, root) %{_var}/spacewalk
+%attr(755, %{apache_user}, root) %{misc_path}/spacewalk
 
 %changelog
 * Fri Nov 05 2010 Miroslav Suchý <msuchy@redhat.com> 1.2.16-1
