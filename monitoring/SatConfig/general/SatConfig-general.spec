@@ -11,7 +11,13 @@ Group:        Development/Libraries
 License:      GPLv2
 BuildArch:    noarch
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+
+%if 0%{?suse_version}
+BuildRequires: nocpulse-common
+Requires:      perl = %{perl_version}
+%else
+Requires:      perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Requires:       nocpulse-common
 
 %description
@@ -47,6 +53,8 @@ install -D -p -m 755 NOCpulse-ini $RPM_BUILD_ROOT%{_sbindir}/NOCpulse-ini
 %defattr(-,root,root,-)
 %dir %sysv_dir
 %dir %installed_dir
+%dir %{_sysconfdir}/ha.d
+%dir %{_sysconfdir}/ha.d/resource.d
 %sysv_dir/*.pm
 %sysv_dir/hbResource
 %sysv_dir/installSysVSteps
