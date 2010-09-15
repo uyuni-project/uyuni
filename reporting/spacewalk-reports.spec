@@ -30,6 +30,7 @@ install spacewalk-report $RPM_BUILD_ROOT/%{_bindir}
 install reports.py $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk
 install reports/data/* $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk/reports/data
 install *.8 $RPM_BUILD_ROOT/%{_mandir}/man8
+chmod -x $RPM_BUILD_ROOT/%{_mandir}/man8/spacewalk-report.8*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -37,6 +38,9 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/spacewalk-report
+%dir %{_prefix}/share/spacewalk
+%dir %{_prefix}/share/spacewalk/reports
+%dir %{_prefix}/share/spacewalk/reports/data
 %{_prefix}/share/spacewalk/reports.py*
 %{_prefix}/share/spacewalk/reports/data/*
 %{_mandir}/man8/spacewalk-report.8*
