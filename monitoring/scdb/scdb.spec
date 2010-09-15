@@ -9,6 +9,14 @@ Group:        Applications/Databases
 License:      GPLv2
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:     nocpulse-common
+%if 0%{?suse_version}
+BuildRequires: nocpulse-common -post-build-checks
+%define apache_user wwwrun
+%define apache_group www
+%else
+%define apache_user apache
+%define apache_group apache
+%endif
 
 %description
 NOCpulse provides application, network, systems and transaction monitoring,
@@ -36,8 +44,11 @@ install -m 644 SCDB.pm $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse
 
 %files
 %defattr(-,root,root,-)
-%attr(755,apache,apache) %dir /nocpulse/scdb/bdb
+%dir /nocpulse
+%dir /nocpulse/scdb
+%attr(755,%{apache_user},%{apache_group}) %dir /nocpulse/scdb/bdb
 %{perl_vendorlib}/NOCpulse/*
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
