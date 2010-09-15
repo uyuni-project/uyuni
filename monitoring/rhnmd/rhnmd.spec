@@ -20,7 +20,6 @@ Group:          System Environment/Daemons
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       openssh
 %if 0%{?suse_version}
-Source1:        rhnmd.init.SUSE
 PreReq:         pwdutils %fillup_prereq %insserv_prereq
 BuildRequires:  openssh
 %else

@@ -19,7 +19,6 @@ Requires(preun): chkconfig
 Requires(preun): initscripts
 Requires(postun): initscripts
 %else
-Source1: rhnsd.init.SUSE
 Requires(preun): %fillup_prereq %insserv_prereq
 %endif
 

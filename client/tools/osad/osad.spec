@@ -10,7 +10,6 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 %if 0%{?suse_version} > 0
-Source1: prog.init.SUSE
 # osad: "/etc/sysconfig/rhn/clientCaps.d/osad" is not allowed anymore in SuSE Linux.
 # osad: "/etc/sysconfig/rhn/osad-auth.conf" is not allowed anymore in SuSE Linux.
 # osad: "/etc/sysconfig/rhn/osad.conf" is not allowed anymore in SuSE Linux.
