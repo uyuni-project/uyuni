@@ -41,8 +41,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%{_prefix}/share/rhn/search/indexes/docs
-
+%{_prefix}/share/rhn/search/indexes/docs/
+%dir %{_prefix}/share/rhn/
+%dir %{_prefix}/share/rhn/search
+%dir %{_prefix}/share/rhn/search/indexes
+%dir %{_prefix}/share/rhn/search/indexes/docs
 
 %changelog
 * Mon Apr 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.1.1-1
