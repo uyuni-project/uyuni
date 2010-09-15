@@ -11,7 +11,11 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: spacewalk-base
 Requires: perl-URI, perl(MIME::Base64)
 Requires: sudo
+%if 0%{?suse_version}
+Requires: policycoreutils
+%else
 Requires: /sbin/restorecon
+%endif
 Obsoletes: satellite-utils < 5.3.0
 Obsoletes: rhn-satellite-admin < 5.3.0
 BuildArch: noarch
@@ -21,7 +25,6 @@ Various utility scripts and data files for Spacewalk installations.
 
 %prep
 %setup -q
-
 %build
 
 %install
@@ -35,6 +38,13 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man3/
 chmod 0644 $RPM_BUILD_ROOT%{_mandir}/man3/validate-sat-cert.3.gz
 ln -s spacewalk-service $RPM_BUILD_ROOT%{_sbindir}/rhn-satellite
 
+%if 0%{?suse_version}
+%{__mkdir_p} $RPM_BUILD_ROOT%{_initrddir}
+# it is obsolete, in redhat only displays a warning, but the script is not lsb
+# compliant and therefore it does not build on SUSE
+rm $RPM_BUILD_ROOT/etc/rc.d/init.d/rhn-satellite
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -43,7 +53,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{rhnroot}
 %{_sbindir}/spacewalk-service
 %{_sbindir}/rhn-satellite
+%if ! 0%{?suse_version}
 %{_initrddir}/rhn-satellite
+%endif
 %{_bindir}/validate-sat-cert.pl
 %{_bindir}/validate-sat-cert
 %{_bindir}/rhn-config-satellite.pl
