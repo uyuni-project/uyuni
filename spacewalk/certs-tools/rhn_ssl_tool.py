@@ -1042,9 +1042,9 @@ server with this hostname: %s
     args = (os.path.join(CERT_PATH, 'gen-rpm.sh') + " "
             "--name %s --version %s --release %s --packager %s --vendor %s "
             "--group 'RHN/Security' --summary %s --description %s --postun %s "
-            "/etc/httpd/conf/ssl.key/server.key:0600=%s "
-            "/etc/httpd/conf/ssl.csr/server.csr=%s "
-            "/etc/httpd/conf/ssl.crt/server.crt=%s "
+            "/etc/apache2/ssl.key/spacewalk.key:0600=%s "
+            "/etc/apache2/ssl.csr/spacewalk.csr=%s "
+            "/etc/apache2/ssl.crt/spacewalk.crt=%s "
             "%s"
             % (repr(server_rpm_name), ver, rel, repr(d['--rpm-packager']),
                repr(d['--rpm-vendor']),
