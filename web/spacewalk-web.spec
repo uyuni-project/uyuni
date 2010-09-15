@@ -109,7 +109,7 @@ Summary: The PXT library for web page templating
 Group: Applications/Internet
 Requires: spacewalk(spacewalk-base-minimal)
 %if 0%{?suse_version}
-Requires:  perl-libapreq2
+Requires:  perl-Apache2-Request
 Requires:  perl-BSD-Resource
 Requires:  perl-Cache-Cache
 %endif
