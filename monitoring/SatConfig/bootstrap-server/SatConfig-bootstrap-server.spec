@@ -5,10 +5,17 @@ Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}
 Summary:      Provides scout info for boostrap
 URL:          https://fedorahosted.org/spacewalk
 BuildArch:    noarch
+%if 0%{?suse_version}
+Requires:     perl = %{perl_version}
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Group:        Development/Libraries
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+%if 0%{?suse_version}
+BuildRequires: nocpulse-common
+%endif
 
 %description
 NOCpulse provides application, network, systems and transaction monitoring,
