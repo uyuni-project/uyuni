@@ -10,6 +10,9 @@ Group:        Applications/System
 BuildArch:    noarch
 Obsoletes:    rhns-proxy-monitoring < 5.3.0
 Provides:     rhns-proxy-monitoring
+
+BuildRequires: SatConfig-general
+
 #we need to be sure that nocpulse home is correct
 Requires(pre): nocpulse-common
 
@@ -44,8 +47,12 @@ Requires: SputLite-server
 Requires: ssl_bridge 
 Requires: status_log_acceptor 
 Requires: tsdb 
+%if 0%{?suse_version}
+Requires: apache2-mod_perl
+%else
 Requires: mod_perl
-%if 0%{?rhel} == 4
+%endif
+%if 0%{?rhel} == 4 || 0%{?suse_version}
 #for rhel4 we have no selinux policy, everything else should have
 %else
 Requires: spacewalk-monitoring-selinux
@@ -84,13 +91,26 @@ install satname $RPM_BUILD_ROOT%{_sysconfdir}/satname
 install MonitoringScout $RPM_BUILD_ROOT%{_initrddir}
 
 %post
+%if 0%{?suse_version}
+%{fillup_and_insserv MonitoringScout}
+%else
 /sbin/chkconfig --add MonitoringScout
+%endif
 
 %preun
+%if 0%{?suse_version}
+%stop_on_removal MonitoringScout
+%else
 if [ $1 = 0 ] ; then
     /sbin/service MonitoringScout stop >/dev/null 2>&1
     /sbin/chkconfig --del MonitoringScout
 fi
+%endif
+
+%postun
+%if 0%{?suse_version}
+%{insserv_cleanup}
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
