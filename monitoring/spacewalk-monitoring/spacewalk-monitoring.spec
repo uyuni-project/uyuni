@@ -1,7 +1,7 @@
 %define require_selinux 1
 
 # No Selinux for RHEL 4:
-%if 0%{?rhel} == 4
+%if 0%{?rhel} == 4 || 0%{?suse_version} 
 %define require_selinux 0
 %endif
 
@@ -14,6 +14,10 @@ URL:          https://fedorahosted.org/spacewalk
 License:      GPLv2
 Group:        Applications/System
 BuildArch:    noarch
+
+%if 0%{?suse_version}
+BuildRequires: SatConfig-general
+%endif
 
 # Monitoring support
 #we need this package for EL4
@@ -58,10 +62,15 @@ Requires:       tsdb
 Requires: spacewalk-monitoring-selinux
 %endif
 
+%if 0%{?suse_version}
+Requires(post): aaa_base
+Requires(preun): aaa_base
+%else
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
+%endif
 
 Obsoletes: LongLegs < 1.11.0
 Obsoletes: Time-System < 1.7.0
@@ -86,25 +95,38 @@ Backend and Scout functionality. And will install SysV init scripts.
 rm -Rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT/%{_initrddir}
-
 ln -s /etc/rc.d/np.d/sysvStep $RPM_BUILD_ROOT/%{_sbindir}/Monitoring
 ln -s /etc/rc.d/np.d/sysvStep $RPM_BUILD_ROOT/%{_sbindir}/MonitoringScout
-
 install Monitoring $RPM_BUILD_ROOT%{_initrddir}
 install MonitoringScout $RPM_BUILD_ROOT%{_initrddir}
 
 %post
+
+%if 0%{?suse_version}
+%{fillup_and_insserv Monitoring}
+%{fillup_and_insserv MonitoringScout}
+%else
 /sbin/chkconfig --add Monitoring
 /sbin/chkconfig --add MonitoringScout
+%endif
 
 %preun
+%if 0%{?suse_version}  
+%stop_on_removal Monitoring
+%stop_on_removal MonitoringScout
+%else
 if [ $1 = 0 ] ; then
     /sbin/service MonitoringScout stop >/dev/null 2>&1
     /sbin/chkconfig --del MonitoringScout
     /sbin/service Monitoring stop >/dev/null 2>&1
     /sbin/chkconfig --del Monitoring
 fi
+%endif
 
+%postun  
+%if 0%{?suse_version}  
+%{insserv_cleanup}  
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
