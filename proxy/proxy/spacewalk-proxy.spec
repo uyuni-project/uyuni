@@ -8,13 +8,24 @@ Version: 1.2.15
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 BuildRequires: python
+%if 0%{?suse_version}
+BuildRequires: apache2
+%endif
 BuildArch: noarch
 Requires: httpd
 
 %define rhnroot %{_usr}/share/rhn
 %define destdir %{rhnroot}/proxy
 %define rhnconf %{_sysconfdir}/rhn
+%if 0%{?suse_version}
+%define httpdconf %{_sysconfdir}/apache2/conf.d
+%define apache_user wwwrun
+%define apache_group www
+%else
 %define httpdconf %{_sysconfdir}/httpd/conf.d
+%define apache_user apache
+%define apache_group apache
+%endif
 
 %description
 This package is never built.
@@ -32,7 +43,7 @@ Requires: %{name}-redirect = %{version}
 Requires: %{name}-common >= %{version}
 Requires: %{name}-docs
 Requires: %{name}-html
-%if 0%{?rhel} == 4
+%if 0%{?rhel} == 4 || 0%{?suse_version}
 #for rhel4 we have no selinux policy, everything else should have
 %else
 Requires: spacewalk-proxy-selinux
@@ -180,10 +191,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %post broker
 if [ -f %{_sysconfdir}/sysconfig/rhn/systemid ]; then
-    chown root.apache %{_sysconfdir}/sysconfig/rhn/systemid
+    chown root.%{apache_user} %{_sysconfdir}/sysconfig/rhn/systemid
     chmod 0640 %{_sysconfdir}/sysconfig/rhn/systemid
 fi
+%if 0%{?suse_version}
+/sbin/service apache2 try-restart > /dev/null 2>&1
+%else
 /sbin/service httpd condrestart > /dev/null 2>&1
+%endif
 
 # In case of an upgrade, get the configured package list directory and clear it
 # out.  Don't worry; it will be rebuilt by the proxy.
@@ -208,7 +223,11 @@ rm -rf $RHN_PKG_DIR/list/*
 exit 0
 
 %post redirect
+%if 0%{?suse_version}
+/sbin/service apache2 try-restart > /dev/null 2>&1
+%else
 /sbin/service httpd condrestart > /dev/null 2>&1
+%endif
 # Make sure the scriptlet returns with success
 exit 0
 
@@ -236,7 +255,11 @@ fi
 
 %preun
 if [ $1 = 0 ] ; then
-    /sbin/service httpd condrestart >/dev/null 2>&1
+%if 0%{?suse_version}
+    /sbin/service apache2 try-restart > /dev/null 2>&1
+%else
+    /sbin/service httpd condrestart > /dev/null 2>&1
+%endif
 fi
 
 %posttrans common
@@ -253,26 +276,32 @@ fi
 %{destdir}/broker/__init__.py*
 %{destdir}/broker/rhnBroker.py*
 %{destdir}/broker/rhnRepository.py*
-%attr(750,apache,apache) %dir %{_var}/spool/rhn-proxy
-%attr(750,apache,apache) %dir %{_var}/spool/rhn-proxy/list
-%attr(770,root,apache) %dir %{_var}/log/rhn
-%config(noreplace) %{_sysconfdir}/logrotate.d/rhn-proxy-broker
+%attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy
+%attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy/list
+%attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
+%config(noreplace) %{_sysconfdir}/logrotate.d/rhn_proxy_broker
 # config files
-%attr(755,root,apache) %dir %{rhnconf}
-%attr(755,root,apache) %dir %{rhnconf}/default
-%attr(644,root,apache) %{rhnconf}/default/rhn_proxy_broker.conf
+%attr(750,root,%{apache_group}) %dir %{rhnconf}
+%attr(750,root,%{apache_group}) %dir %{rhnconf}/default
+%attr(640,root,%{apache_group}) %{rhnconf}/default/rhn_proxy_broker.conf
+%dir /usr/share/rhn
+%dir /usr/share/rhn/proxy
+%dir /usr/share/rhn/proxy/broker
 
 %files redirect
 %defattr(-,root,root)
 %dir %{destdir}
 %{destdir}/redirect/__init__.py*
 %{destdir}/redirect/rhnRedirect.py*
-%attr(775,root,apache) %dir %{_var}/log/rhn
-%config(noreplace) %{_sysconfdir}/logrotate.d/rhn-proxy-redirect
+%attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
+%config(noreplace) %{_sysconfdir}/logrotate.d/rhn_proxy_redirect
 # config files
-%attr(755,root,apache) %dir %{rhnconf}
-%attr(755,root,apache) %dir %{rhnconf}/default
-%attr(644,root,apache) %{rhnconf}/default/rhn_proxy_redirect.conf
+%attr(750,root,%{apache_group}) %dir %{rhnconf}
+%attr(750,root,%{apache_group}) %dir %{rhnconf}/default
+%attr(640,root,%{apache_group}) %{rhnconf}/default/rhn_proxy_redirect.conf
+%dir /usr/share/rhn
+%dir /usr/share/rhn/proxy
+%dir /usr/share/rhn/proxy/redirect
 
 %files common
 %defattr(-,root,root)
@@ -287,39 +316,43 @@ fi
 %{destdir}/rhnProxyAuth.py*
 %{destdir}/rhnAuthProtocol.py*
 %{destdir}/xxmlrpclib.py*
-%attr(750,apache,apache) %dir %{_var}/spool/rhn-proxy
-%attr(750,apache,apache) %dir %{_var}/spool/rhn-proxy/list
-%attr(770,root,apache) %dir %{_var}/log/rhn
+%attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy
+%attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy/list
+%attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 # config files
-%attr(755,root,apache) %dir %{rhnconf}
-%attr(645,root,apache) %config %{rhnconf}/rhn.conf
-%attr(754,root,apache) %dir %{rhnconf}/default
-%attr(644,root,apache) %{rhnconf}/default/rhn_proxy.conf
-%attr(644,root,apache) %config %{httpdconf}/spacewalk-proxy.conf
+%attr(750,root,%{apache_group}) %dir %{rhnconf}
+%attr(640,root,%{apache_group}) %config %{rhnconf}/rhn.conf
+%attr(750,root,%{apache_group}) %dir %{rhnconf}/default
+%attr(640,root,%{apache_group}) %{rhnconf}/default/rhn_proxy.conf
+%attr(640,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy.conf
 # this file is created by either cli or webui installer
 %ghost %config %{httpdconf}/cobbler-proxy.conf
 %if  0%{?rhel} && 0%{?rhel} < 6
-%attr(644,root,apache) %config %{httpdconf}/spacewalk-proxy-python.conf
+%attr(640,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy-python.conf
 %else
-%attr(644,root,apache) %config %{httpdconf}/spacewalk-proxy-wsgi.conf
+%attr(640,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy-wsgi.conf
 %{rhnroot}/wsgi/xmlrpc.py*
 %{rhnroot}/wsgi/xmlrpc_redirect.py*
 %endif
 # the cache
-%attr(750,apache,root) %dir %{_var}/cache/rhn
-%attr(750,apache,root) %dir %{_var}/cache/rhn/proxy-auth
+%attr(750,%{apache_user},root) %dir %{_var}/cache/rhn
+%attr(750,%{apache_user},root) %dir %{_var}/cache/rhn/proxy-auth
+%dir /usr/share/rhn
+%dir /usr/share/rhn/wsgi
 
 %files package-manager
 %defattr(-,root,root)
 # config files
-%attr(755,root,apache) %dir %{rhnconf}
-%attr(755,root,apache) %dir %{rhnconf}/default
-%attr(644,root,apache) %config %{rhnconf}/default/rhn_proxy_package_manager.conf
+%attr(750,root,%{apache_group}) %dir %{rhnconf}
+%attr(750,root,%{apache_group}) %dir %{rhnconf}/default
+%attr(640,root,%{apache_group}) %config %{rhnconf}/default/rhn_proxy_package_manager.conf
 %{_bindir}/rhn_package_manager
 %{rhnroot}/PackageManager/rhn_package_manager.py*
 %{rhnroot}/PackageManager/uploadLib.py*
 %{rhnroot}/PackageManager/__init__.py*
 %{_mandir}/man8/rhn_package_manager.8.gz
+%dir /usr/share/rhn
+%dir /usr/share/rhn/PackageManager
 
 %files management
 %defattr(-,root,root)
@@ -329,6 +362,7 @@ fi
 %attr(755,root,root) %{_sbindir}/rhn-proxy
 # mans
 %{_mandir}/man8/rhn-proxy.8*
+%dir /usr/share/rhn
 
 
 %changelog
