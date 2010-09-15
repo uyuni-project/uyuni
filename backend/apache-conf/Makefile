@@ -6,6 +6,6 @@
 TOP	= ..
 
 INSTALL_FILES	= $(wildcard *.conf)
-INSTALL_DEST	= /etc/httpd/conf.d
+INSTALL_DEST	= /etc/apache2/conf.d
 
 include $(TOP)/Makefile.defs
