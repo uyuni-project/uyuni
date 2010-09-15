@@ -9,7 +9,11 @@ BuildArch:    noarch
 Group:        Development/Libraries
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+%if 0%{?suse_version}
+BuildRequires: nocpulse-common
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 
 %description
 SatConfig-cluster includes a library file that provides i/o access to
@@ -50,6 +54,7 @@ install -m 644 SatCluster.pm $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse/
 %files
 %defattr(-,root,root,-)
 %doc Cluster.ini.example
+%dir %sysv_dir
 %sysv_dir/*
 %{perl_vendorlib}/NOCpulse/*
 
