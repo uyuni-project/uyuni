@@ -21,6 +21,10 @@ Group:   Applications/Internet
 License: GPLv2
 Obsoletes: spacewalk < 0.7.0
 
+%if 0%{?suse_version}
+Provides: spacewalk
+%endif
+
 BuildRequires:  python
 Requires:       python >= 2.3
 Requires:       spacewalk-setup
@@ -73,13 +77,18 @@ Requires:       spacewalk-monitoring
 # Requires:       rhn_solaris_bootstrap_5_1_0_3
 
 # SELinux
+%if 0%{?suse_version}
+# don't use selinux
+Requires:       osa-dispatcher
+%else
 Requires:       osa-dispatcher-selinux
 Requires:       spacewalk-monitoring-selinux
 Requires:       spacewalk-selinux
+%endif
 
-%if 0%{?fedora} >= 11
+%if 0%{?fedora} >= 11 || 0%{?suse_version}
+# Fedoras 11+ have their own selinux policy for jabberd - disable selinux on suse
 %else
-# Fedoras 11+ have their own selinux policy for jabberd:
 Requires:       jabberd-selinux
 %endif
 
@@ -158,6 +167,9 @@ rm -rf %{buildroot}
 
 %files common
 %defattr(-,root,root)
+%dir %{_datadir}/spacewalk
+%dir %{_datadir}/spacewalk/setup
+%dir %{_datadir}/spacewalk/setup/defaults.d
 %{_sysconfdir}/spacewalk-release
 
 %files oracle
