@@ -1,3 +1,17 @@
+#!BuildIgnore: post-build-checks
+
+%if 0%{?suse_version}
+%define apacheconfdir %{_sysconfdir}/apache2
+%define apachepkg apache2
+%define apache_user wwwrun
+%define apache_group www
+%else
+%define apacheconfdir %{_sysconfdir}/httpd
+%define apachepkg httpd
+%define apache_user apache
+%define apache_group apache
+%endif
+
 Name: spacewalk-config
 Summary: Spacewalk Configuration
 Version: 1.2.7
@@ -12,18 +26,32 @@ Requires: perl(Satcon)
 Requires: perl(Apache::DBI)
 Obsoletes: rhn-satellite-config < 5.3.0
 Provides: rhn-satellite-config = 5.3.0
+%if 0%{?suse_version}
+Requires(post): aaa_base
+Requires(preun): aaa_base
+# will not work with apache 2.1
+Requires(pre): %{apachepkg} >= 2.2
+%else
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
+Requires: %{apachepkg}
+%endif
 # We need package httpd to be able to assign group apache in files section
-Requires: httpd
 Requires: openssl
 
 %global prepdir %{_var}/lib/rhn/rhn-satellite-prep
 
+%if 0%{?suse_version}
+BuildRequires: %{apachepkg}
+BuildRequires: openssl
+BuildRequires: cobbler
+%endif
+
 %description
 Common Spacewalk configuration files and templates.
+
 
 %prep
 %setup -q
@@ -33,8 +61,7 @@ echo "%{name} %{version}" > version
 
 %install
 rm -Rf $RPM_BUILD_ROOT
-
-mkdir -p $RPM_BUILD_ROOT
+mkdir $RPM_BUILD_ROOT
 mv etc $RPM_BUILD_ROOT/
 mv var $RPM_BUILD_ROOT/
 mv usr $RPM_BUILD_ROOT/
@@ -43,13 +70,37 @@ tar -C $RPM_BUILD_ROOT%{prepdir} -cf - etc \
      | tar -C $RPM_BUILD_ROOT -xvf -
 
 echo "" > $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/rhn.conf
+%if 0%{?suse_version}
 
+## we cant have files in sysconfig
+#%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/spacewalk
+#mv $RPM_BUILD_ROOT/%{prepdir} $RPM_BUILD_ROOT%{_datadir}/spacewalk
+
+# this is because we cant read the apache server.key because
+# abuild user
+export NO_BRP_STALE_LINK_ERROR=yes
+%{__mkdir_p} $RPM_BUILD_ROOT/%{_sysconfdir}/ssl/private
+%{__mkdir_p} $RPM_BUILD_ROOT/%{_sysconfdir}/ssl/servercerts
+%{__mkdir_p} $RPM_BUILD_ROOT/%{apacheconfdir}/conf.d
+%{__mkdir_p} $RPM_BUILD_ROOT/%{apacheconfdir}/ssl.key
+%{__mkdir_p} $RPM_BUILD_ROOT/%{apacheconfdir}/ssl.crt
+%{__rm} $RPM_BUILD_ROOT/etc/pki/tls/private/spacewalk.key.symlink
+%{__rm} $RPM_BUILD_ROOT/etc/pki/tls/certs/spacewalk.crt.symlink
+#touch $RPM_BUILD_ROOT%{apacheconfdir}/ssl.key/spacewalk.key
+#touch $RPM_BUILD_ROOT%{apacheconfdir}/ssl.crt/spacewalk.crt
+ln -sf ../../../%{apacheconfdir}/ssl.key/spacewalk.key $RPM_BUILD_ROOT/%{_sysconfdir}/ssl/private/spacewalk.key
+ln -sf ../../../%{apacheconfdir}/ssl.crt/spacewalk.crt $RPM_BUILD_ROOT/%{_sysconfdir}/ssl/servercerts/spacewalk.crt
+mv $RPM_BUILD_ROOT/etc/httpd/conf.d/* $RPM_BUILD_ROOT%{apacheconfdir}/conf.d
+
+%else
 find $RPM_BUILD_ROOT -name '*.symlink' | \
 	while read filename ; do linkname=${filename%.symlink} ; \
 		target=`sed -s 's/^Link to //' $filename` ; \
 		ln -sf $target $linkname ; \
 		rm -f $filename ; \
 	done
+%endif
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -57,23 +108,28 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/rhn/satellite-httpd/conf/rhn/rhn_monitoring.conf
-%config(noreplace) %{_sysconfdir}/httpd/conf.d/zz-spacewalk-www.conf
+%config(noreplace) %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %config(noreplace) %{_sysconfdir}/webapp-keyring.gpg
 %dir %{_var}/lib/cobbler/
 %dir %{_var}/lib/cobbler/kickstarts/
 %dir %{_var}/lib/cobbler/snippets/
 %config(noreplace) %{_var}/lib/cobbler/kickstarts/spacewalk-sample.ks
 %config(noreplace) %{_var}/lib/cobbler/snippets/spacewalk_file_preservation
-%attr(0750,root,apache) %dir %{_sysconfdir}/rhn
+%attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
 %dir %{_sysconfdir}/rhn/satellite-httpd
 %dir %{_sysconfdir}/rhn/satellite-httpd/conf
 %dir %{_sysconfdir}/rhn/satellite-httpd/conf/rhn
 %ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/cluster.ini
-%attr(0640,root,apache) %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/rhn.conf
+%attr(0640,root,%{apache_group}) %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/rhn.conf
 # NOTE: If if you change these, you need to make a corresponding change in
 # spacewalk/install/Spacewalk-Setup/bin/spacewalk-setup
+%if 0%{?suse_version}
+%config(noreplace) %{_sysconfdir}/ssl/private/spacewalk.key
+%config(noreplace) %{_sysconfdir}/ssl/servercerts/spacewalk.crt
+%else
 %config(noreplace) %{_sysconfdir}/pki/tls/private/spacewalk.key
 %config(noreplace) %{_sysconfdir}/pki/tls/certs/spacewalk.crt
+%endif
 %config(noreplace) %{_sysconfdir}/satname
 %{_var}/lib/rhn
 %dir %{_prefix}/share/rhn
@@ -92,6 +148,22 @@ if [ -f /etc/init.d/satellite-httpd ] ; then
     %{__perl} -i -ne 'print unless /satellite-httpd\.pid/' /etc/logrotate.d/httpd
 fi
 
+%if 0%{?suse_version}
+%post
+%define dest %{_sysconfdir}/sysconfig/apache2
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_ajp
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
+sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
+
+# we need to change the apache DocumentRoot or /srv/www/html
+if grep srv\/www\/htdocs /etc/apache2/default-server.conf; then
+ export STAMP=$(date +-%%F-%%X)
+ sed -i$STAMP s'/srv\/www\/htdocs/srv\/www\/html/g' /etc/apache2/default-server.conf
+fi
+
+%endif
 
 
 %changelog
