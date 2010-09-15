@@ -1,4 +1,8 @@
+%if 0%{suse_version}
+%global htmldir /srv/www/html
+%else
 %global htmldir %{_var}/www/html
+%endif
 
 Name: spacewalk-proxy-html
 Summary: The HTML component for Spacewalk Proxy
@@ -37,6 +41,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %dir %{htmldir}/_rhn_proxy
 %config %{htmldir}/_rhn_proxy/index.html
+%dir %{htmldir}
 %{htmldir}/_rhn_proxy/*.ico
 %{htmldir}/_rhn_proxy/*.png
 %doc LICENSE
