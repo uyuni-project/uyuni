@@ -8,8 +8,15 @@ Summary:      Satellite Configuration System - Server
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildArch:    noarch
+%if 0%{?suse_version}
+Requires:     perl = %{perl_version}
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Requires:     nocpulse-common
+%if 0%{?suse_version}
+BuildRequires: nocpulse-common
+%endif
 Group:        Applications/Internet
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
