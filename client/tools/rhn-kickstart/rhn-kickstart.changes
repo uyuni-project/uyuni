@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 15 12:14:50 CEST 2010 - mantel@suse.de
+
+- fix post-build-checks
+
+-------------------------------------------------------------------
 Tue Sep 14 17:55:24 CEST 2010 - mantel@suse.de
 
 - Initial release of rhn-kickstart

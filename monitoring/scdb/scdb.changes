@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 15 12:19:37 CEST 2010 - mantel@suse.de
+
+- fix post-build-checks
+
+-------------------------------------------------------------------
 Wed Sep 15 08:29:56 CEST 2010 - mantel@suse.de
 
 - Initial release of scdb

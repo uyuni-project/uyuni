@@ -8,7 +8,8 @@ Version: 4.9.7
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires: gettext -post-build-checks
+BuildRequires: gettext
+#!BuildIgnore: post-build-checks
 
 Requires: rhn-check >= 0.0.8
 %if !0%{?suse_version}

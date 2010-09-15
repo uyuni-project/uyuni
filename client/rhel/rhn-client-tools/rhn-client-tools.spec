@@ -10,7 +10,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 %if 0%{?suse_version}
 BuildRequires: update-desktop-files
-BuildRequires: -post-build-checks
+#!BuildIgnore: post-build-checks
 %endif
 
 Requires: rhnlib >= 2.5.20

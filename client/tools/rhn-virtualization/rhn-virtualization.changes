@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 15 12:18:19 CEST 2010 - mantel@suse.de
+
+- fix post-build-checks
+
+-------------------------------------------------------------------
 Tue Sep 14 18:02:32 CEST 2010 - mantel@suse.de
 
 - Initial release of rhn-virtualization

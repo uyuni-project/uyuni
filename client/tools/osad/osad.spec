@@ -15,7 +15,7 @@ Source1: prog.init.SUSE
 # osad: "/etc/sysconfig/rhn/osad-auth.conf" is not allowed anymore in SuSE Linux.
 # osad: "/etc/sysconfig/rhn/osad.conf" is not allowed anymore in SuSE Linux.
 # osa-dispatcher: "/etc/sysconfig/osa-dispatcher" is not allowed anymore in SuSE Linux.
-BuildRequires: -post-build-checks
+#!BuildIgnore: post-build-checks
 %endif
 Version: 5.9.44
 Release: 1%{?dist}

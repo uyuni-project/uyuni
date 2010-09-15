@@ -12,7 +12,7 @@ BuildRequires: python
 URL: http://rhn.redhat.com/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 %if 0%{?suse_version}
-BuildRequires: -post-build-checks
+#!BuildIgnore: post-build-checks
 %endif
 Requires: %{name}-common = %{version}-%{release}
 Provides: rhn.kickstart.boot_image

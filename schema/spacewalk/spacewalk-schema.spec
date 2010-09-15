@@ -16,7 +16,7 @@ BuildRequires:  perl(Digest::SHA1)
 
 Obsoletes:      rhn-satellite-schema <= 5.1.0
 %if 0%{?suse_version}
-BuildRequires:  -post-build-checks
+#!BuildIgnore: post-build-checks
 %endif
 
 %define rhnroot /etc/sysconfig/rhn/

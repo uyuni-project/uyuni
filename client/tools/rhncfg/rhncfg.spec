@@ -20,7 +20,7 @@ BuildRequires: python
 # rhncfg: "/usr/com/rhncfg/backups" is not allowed anymore in FHS 2.2.
 # rhncfg-client: "/etc/sysconfig/rhn/rhncfg-client.conf" is not allowed anymore in SuSE Linux.
 # rhncfg-management: "/etc/sysconfig/rhn/rhncfg-manager.conf" is not allowed anymore in SuSE Linux.
-BuildRequires: -post-build-checks
+#!BuildIgnore: post-build-checks
 Requires: python-selinux
 %else
 Requires: libselinux-python

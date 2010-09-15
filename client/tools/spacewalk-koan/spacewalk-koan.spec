@@ -28,7 +28,7 @@ Requires: rhn-check
 #spacewalk-koan: "/etc/sysconfig/rhn" is not allowed anymore in SuSE Linux.
 #spacewalk-koan: "/etc/sysconfig/rhn/clientCaps.d" is not allowed anymore in SuSE Linux.
 #spacewalk-koan: "/etc/sysconfig/rhn/clientCaps.d/kickstart" is not allowed anymore in SuSE Linux.
-BuildRequires: -post-build-checks
+#!BuildIgnore: post-build-checks
 %endif
 
 %description

@@ -11,7 +11,7 @@ URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 %if 0%{?suse_version}
 Source1:        rhn-virtualization-host
-BuildRequires:  -post-build-checks
+#!BuildIgnore: post-build-checks
 %endif
 
 Version:        5.4.15

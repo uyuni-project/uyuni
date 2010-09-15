@@ -10,7 +10,8 @@ License:      GPLv2
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:     nocpulse-common
 %if 0%{?suse_version}
-BuildRequires: nocpulse-common -post-build-checks
+BuildRequires: nocpulse-common
+#!BuildIgnore: post-build-checks
 %define apache_user wwwrun
 %define apache_group www
 %else

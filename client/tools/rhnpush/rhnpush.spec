@@ -14,7 +14,7 @@ Requires:      rpm-python, rhnlib
 Requires:      spacewalk-backend-libs >= 0.8.3
 BuildRequires: docbook-utils, gettext, python-devel
 %if 0%{?suse_version}
-BuildRequires: -post-build-checks
+#!BuildIgnore: post-build-checks
 %endif
 
 Summary: Package uploader for the Red Hat Network Satellite Server
