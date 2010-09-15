@@ -13,7 +13,9 @@ License:     GPLv3+
 URL:         https://fedorahosted.org/spacewalk/wiki/spacecmd
 Source:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:   %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-BuildArch:   noarch
+%if ((!0%{?suse_version}) || (0%{?suse_version} >= 1120))
+BuildArch: noarch
+%endif
 
 BuildRequires: python-devel
 
