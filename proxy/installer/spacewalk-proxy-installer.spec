@@ -15,8 +15,13 @@ Requires: rhncfg-client
 Requires: rhncfg
 Requires: rhncfg-management
 Requires: rhncfg-actions
+%if 0%{?suse_version}
+Requires: glibc
+Requires: aaa_base
+%else
 Requires: glibc-common
 Requires: chkconfig
+%endif
 Requires: libxslt
 BuildRequires: /usr/bin/docbook2man
 Obsoletes: proxy-installer < 5.3.0
@@ -83,6 +88,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_usr}/share/rhn/get_system_id.xslt
 %{_bindir}/rhn-proxy-activate
 %doc LICENSE answers.txt
+%dir %{_usr}/share/doc/proxy
+%dir %{_usr}/share/rhn
 
 %changelog
 * Wed Nov 10 2010 Jan Pazdziora 1.2.3-1
