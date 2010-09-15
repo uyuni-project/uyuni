@@ -1,3 +1,13 @@
+%if 0%{?suse_version}
+%define www_path /srv/
+%define apache_user wwwrun
+%define apache_group www
+%else
+%define www_path %{_var}
+%define apache_user apache
+%define apache_group apache
+%endif
+
 Name: spacewalk-web
 Summary: Spacewalk Web site packages
 Group: Applications/Internet
@@ -9,6 +19,9 @@ Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 BuildArch: noarch
 BuildRequires: perl(ExtUtils::MakeMaker)
+%if 0%{?suse_version}
+BuildRequires: apache2
+%endif
 
 %description
 This package contains the code for the Spacewalk Web Site.
@@ -18,7 +31,11 @@ but it does generate a number of sub-packages
 %package -n spacewalk-html
 Summary: HTML document files for Spacewalk
 Group: Applications/Internet
+%if 0%{?suse_version}
+Requires: httpd
+%else
 Requires: webserver
+%endif
 Requires: spacewalk-branding
 Obsoletes: rhn-help < 5.3.0
 Provides: rhn-help = 5.3.0
@@ -36,7 +53,15 @@ Summary: Programs needed to be installed on the RHN Web base classes
 Requires: spacewalk-pxt
 Provides: spacewalk(spacewalk-base-minimal) = %{version}-%{release}
 Provides: spacewalk(spacewalk-base) = %{version}-%{release}
+%if 0%{?suse_version}
+Requires: httpd
+Requires: perl-RPM2
+Requires: perl-Authen-PAM 
+Requires: perl-Digest-HMAC
+Requires: perl-Text-Diff
+%else
 Requires: webserver
+%endif
 Obsoletes: rhn-base < 5.3.0
 Provides: rhn-base = 5.3.0
 
@@ -83,6 +108,11 @@ A component framework for Spacewalk.
 Summary: The PXT library for web page templating
 Group: Applications/Internet
 Requires: spacewalk(spacewalk-base-minimal)
+%if 0%{?suse_version}
+Requires:  perl-libapreq2
+Requires:  perl-BSD-Resource
+Requires:  perl-Cache-Cache
+%endif
 Obsoletes: rhn-pxt < 5.3.0
 Provides:  rhn-pxt = 5.3.0
 
@@ -95,7 +125,11 @@ equlivalent to things like Apache::ASP and Mason
 %package -n spacewalk-sniglets
 Group: Applications/Internet 
 Summary: PXT Tag handlers
+%if 0%{?suse_version}
+Requires: apache2-mod_perl >= 2.0.0
+%else
 Requires: mod_perl >= 2.0.0
+%endif
 %if 0%{?rhel} == 4
 Requires: mod_jk-ap20
 %else
@@ -122,7 +156,7 @@ make -C html install PREFIX=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
 find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
 
-mkdir -p $RPM_BUILD_ROOT/%{_var}/www/html/pub
+mkdir -p $RPM_BUILD_ROOT/%{www_path}/www/html/pub
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/default
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/init.d
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf
@@ -132,6 +166,10 @@ install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/default
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/default
 install -m 755 modules/dobby/scripts/check-oracle-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-oracle-space-usage.sh
 
+%post -n spacewalk-pxt
+%if 0%{?suse_version}
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES apreq
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -221,16 +259,20 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/Exception.pm
 %{perl_vendorlib}/RHN/DB.pm
 %{perl_vendorlib}/PXT/Config.pm
-%attr(640,root,apache) %config %{_sysconfdir}/rhn/default/rhn_web.conf
+%attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
+%dir /etc/rhn
+%dir /etc/rhn/default
 
 %files -n spacewalk-dobby
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/db-control
 %{_mandir}/man1/db-control.1.gz
 %{perl_vendorlib}/Dobby.pm
-%attr(640,root,apache) %config %{_sysconfdir}/rhn/default/rhn_dobby.conf
+%attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_dobby.conf
 %attr(0755,root,root) %{_sysconfdir}/cron.daily/check-oracle-space-usage.sh
 %{perl_vendorlib}/Dobby/
+%dir /etc/rhn
+%dir /etc/rhn/default
 
 %files -n spacewalk-grail
 %defattr(644,root,root,755)
@@ -240,9 +282,11 @@ rm -rf $RPM_BUILD_ROOT
 %files -n spacewalk-pxt 
 %defattr(644,root,root,755)
 %{perl_vendorlib}/PXT.pm
-%attr(640,root,apache) %config %{_sysconfdir}/rhn/default/rhn_web.conf
+%attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
 %{perl_vendorlib}/PXT/
 %{_mandir}/man3/PXT::ApacheHandler.3pm.gz
+%dir /etc/rhn
+%dir /etc/rhn/default
 
 %files -n spacewalk-sniglets 
 %defattr(644,root,root,755)
@@ -251,8 +295,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n spacewalk-html
 %defattr(644,root,root,755)
-%{_var}/www/html/*
-%{_var}/www/html/.htaccess
+%dir %{www_path}/www/html
+%{www_path}/www/html/*
+%{www_path}/www/html/.htaccess
 
 # $Id$
 %changelog
