@@ -54,8 +54,8 @@ def setup_pxe_services(options):
         q = "Cobbler requires tftp and xinetd services be turned on for PXE provisioning functionality. Enable these services"  
         enable = ask_yes_no(q, 'y')
     if enable:
-        system("chkconfig tftp on")
-        system('chkconfig xinetd on')
+        system("/etc/init.d/atftpd start")
+        system("/etc/init.d/xinetd start")
 
 def gen_template(template, answers, output):
 	t = Template(file=template, searchList=answers)
