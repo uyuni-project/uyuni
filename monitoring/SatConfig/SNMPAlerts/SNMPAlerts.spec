@@ -1,5 +1,10 @@
+%if 0%{?suse_version}
+%define cgi_bin        /srv/www/cgi-bin
+%define cgi_mod_perl   /srv/www/cgi-mod-perl
+%else
 %define cgi_bin        %{_var}/www/cgi-bin
 %define cgi_mod_perl   %{_var}/www/cgi-mod-perl
+%endif
 Name:         SNMPAlerts
 Version:      0.5.5
 Release:      1%{?dist}
@@ -7,7 +12,9 @@ Summary:      Download and clear SNMP alerts from the database
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildArch:    noarch
+%if ! 0%{?suse_version}
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Group:        Development/Libraries
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -38,6 +45,7 @@ install -m 555 fetch_snmp_alerts.cgi $RPM_BUILD_ROOT%cgi_mod_perl
 %files
 %defattr(-,root,root,-)
 %cgi_mod_perl/*
+%dir %cgi_mod_perl
 
 %clean
 rm -rf $RPM_BUILD_ROOT
