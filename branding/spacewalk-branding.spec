@@ -1,3 +1,8 @@
+%if  0%{?suse_version}
+%define wwwroot /srv/
+%else
+%define wwwroot %{_var}
+%endif
 Name:       spacewalk-branding
 Version:    1.2.2
 Release:    1%{?dist}
@@ -8,7 +13,7 @@ License:    GPLv2
 URL:        https://fedorahosted.org/spacewalk/
 Source0:    %{name}-%{version}.tar.gz
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch:  noarch
+#BuildArch:  noarch
 
 BuildRequires: java-devel >= 1.5.0
 
@@ -19,15 +24,19 @@ Spacewalk specific branding, CSS, and images.
 %setup -q
 
 %build
-
-javac java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
+%if  0%{?suse_version}
+%define javac javac -target 1.5
+%else
+%define javac javac
+%endif
+%javac java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 rm -f java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 jar -cf java-branding.jar -C java/code/src com
 
 %install
 rm -rf %{buildroot}
-install -d -m 755 %{buildroot}/%{_var}/www/html
-install -d -m 755 %{buildroot}/%{_var}/www/html/nav
+install -d -m 755 %{buildroot}/%{wwwroot}/www/html
+install -d -m 755 %{buildroot}/%{wwwroot}/www/html/nav
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
 %if  0%{?rhel} && 0%{?rhel} < 6
@@ -37,13 +46,13 @@ install -d -m 755 %{buildroot}%{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/
 %endif
 install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn
 install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn/default
-cp -R css %{buildroot}/%{_var}/www/html/
-cp -R img %{buildroot}/%{_var}/www/html/
+cp -R css %{buildroot}/%{wwwroot}/www/html/
+cp -R img %{buildroot}/%{wwwroot}/www/html/
 # Appplication expects two favicon's for some reason, copy it so there's just
 # one in source:
-cp img/favicon.ico %{buildroot}/%{_var}/www/html/
-cp -R templates %{buildroot}/%{_var}/www/html/
-cp -R styles %{buildroot}/%{_var}/www/html/nav/
+cp img/favicon.ico %{buildroot}/%{wwwroot}/www/html/
+cp -R templates %{buildroot}/%{wwwroot}/www/html/
+cp -R styles %{buildroot}/%{wwwroot}/www/html/nav/
 cp -R setup  %{buildroot}%{_datadir}/spacewalk/
 cp -R java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
 %if  0%{?rhel} && 0%{?rhel} < 6
@@ -59,16 +68,16 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%dir /%{_var}/www/html/css
-/%{_var}/www/html/css/*
-%dir /%{_var}/www/html/img
-/%{_var}/www/html/img/*
-/%{_var}/www/html/favicon.ico
-%dir /%{_var}/www/html/templates
-/%{_var}/www/html/templates/*
-/%{_var}/www/html/templates/.htaccess
-%dir /%{_var}/www/html/nav/styles
-/%{_var}/www/html/nav/styles/*
+%dir /%{wwwroot}/www/html/css
+/%{wwwroot}/www/html/css/*
+%dir /%{wwwroot}/www/html/img
+/%{wwwroot}/www/html/img/*
+/%{wwwroot}/www/html/favicon.ico
+%dir /%{wwwroot}/www/html/templates
+/%{wwwroot}/www/html/templates/*
+/%{wwwroot}/www/html/templates/.htaccess
+%dir /%{wwwroot}/www/html/nav/styles
+/%{wwwroot}/www/html/nav/styles/*
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
 %if  0%{?rhel} && 0%{?rhel} < 6
@@ -77,6 +86,17 @@ rm -rf %{buildroot}
 %{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/java-branding.jar
 %endif
 %{_sysconfdir}/rhn/default/rhn_docs.conf
+%dir /etc/rhn
+%dir /etc/rhn/default
+%dir /srv/www/html
+%dir /srv/www/html/nav
+%dir /usr/share/rhn
+%dir /usr/share/rhn/lib
+%dir /var/lib/tomcat6
+%dir /var/lib/tomcat6/webapps
+%dir /var/lib/tomcat6/webapps/rhn
+%dir /var/lib/tomcat6/webapps/rhn/WEB-INF
+%dir /var/lib/tomcat6/webapps/rhn/WEB-INF/lib
 
 
 %changelog
