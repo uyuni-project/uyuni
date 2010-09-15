@@ -8,10 +8,17 @@ URL:      https://fedorahosted.org/spacewalk
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
+%if 0%{?suse_version}
+Requires: openssl rpm
+%else
 Requires: openssl rpm-build
+%endif
 Requires: rhn-client-tools
 Requires: spacewalk-backend-libs >= 0.8.28
 BuildRequires: docbook-utils
+%if 0%{?suse_version}
+BuildRequires: filesystem
+%endif
 BuildRequires: python
 Obsoletes: rhns-certs < 5.3.0
 Obsoletes: rhns-certs-tools < 5.3.0
@@ -34,8 +41,13 @@ Spacewalk.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d -m 755 $RPM_BUILD_ROOT/%{rhnroot}/certs
+%if 0%{?suse_version}
+make PUB_BOOTSTRAP_DIR=/srv/www/html/pub/bootstrap -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
+    MANDIR=%{_mandir}
+%else
 make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
+%endif
 chmod 755 $RPM_BUILD_ROOT/%{rhnroot}/certs/{rhn_ssl_tool.py,client_config_update.py,rhn_bootstrap.py}
 
 %clean
@@ -53,7 +65,16 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_mandir}/man1/rhn-*.1*
 %doc LICENSE PYTHON-LICENSES.txt
 %doc ssl-howto-simple.txt ssl-howto.txt
+%if 0%{?suse_version}
+%dir /srv/www/html
+%dir /srv/www/html/pub
+%dir /srv/www/html/pub/bootstrap
+%dir /usr/share/rhn
+/srv/www/html/pub/bootstrap/client_config_update.py*
+%else
 %{_var}/www/html/pub/bootstrap/client_config_update.py*
+%endif
+
 
 %changelog
 * Tue Nov 02 2010 Jan Pazdziora 1.2.2-1
