@@ -16,7 +16,11 @@ BuildRequires: gettext
 
 Requires: yum >= 3.2.19-15
 Requires: rhn-client-tools >= 0.4.20-2
+%if 0%{?suse_version}
+Requires: python-m2crypto >= 0.16-6
+%else
 Requires: m2crypto >= 0.16-6
+%endif
 Requires: python-iniparse
 
 # Not really, but for upgrades we need these
@@ -51,6 +55,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/yum-plugins/*
 %{_datadir}/rhn/actions/*
 %doc LICENSE
+%dir /etc/yum
+%dir /etc/yum/pluginconf.d
+%dir /usr/share/rhn
+%dir /usr/share/rhn/actions
+%dir /usr/share/yum-plugins
+
 
 %changelog
 * Mon Nov 15 2010 Jan Pazdziora 1.2.7-1
