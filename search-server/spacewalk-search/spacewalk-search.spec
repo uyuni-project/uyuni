@@ -49,10 +49,15 @@ BuildRequires: redstone-xmlrpc
 #BuildRequires: picocontainer
 BuildRequires: tanukiwrapper
 BuildRequires: simple-core
+%if 0%{?suse_version}
+Requires(post): aaa_base
+Requires(preun): aaa_base
+%else
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
+%endif
 
 %description
 This package contains the code for the Full Text Search Server for
@@ -63,7 +68,11 @@ Spacewalk Server.
 
 %install
 rm -fr ${RPM_BUILD_ROOT}
+%if 0%{?suse_version}
+ant -Dant.build.javac.source=1.5 -Dant.build.javac.target=1.5 -Djar.version=%{version} install
+%else
 ant -Djar.version=%{version} install
+%endif
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/indexes
@@ -90,14 +99,22 @@ ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BU
 rm -rf $RPM_BUILD_ROOT
 
 %post
+%if 0%{?suse_version}
+%{fillup_and_insserv rhn-search}
+%else
 # This adds the proper /etc/rc*.d links for the script
 /sbin/chkconfig --add rhn-search
+%endif
 
 %preun
+%if 0%{?suse_version}
+%stop_on_removal rhn-search
+%else
 if [ $1 = 0 ] ; then
     /sbin/service rhn-search stop >/dev/null 2>&1
     /sbin/chkconfig --del rhn-search
 fi
+%endif
 
 %files
 %defattr(644,root,root,755)
@@ -112,6 +129,14 @@ fi
 %config(noreplace) %{_sysconfdir}/rhn/search/rhn_search.conf
 %config(noreplace) %{_sysconfdir}/rhn/search/rhn_search_daemon.conf
 %{_sysconfdir}/logrotate.d/rhn-search
+%dir /etc/rhn
+%dir /usr/share/rhn
+%dir /usr/share/rhn/search
+%dir /usr/share/rhn/search/classes
+%dir /usr/share/rhn/search/classes/com
+%dir /usr/share/rhn/search/lib
+%attr(770,root,www) %dir /var/log/rhn
+
 
 %changelog
 * Mon Nov 15 2010 Jan Pazdziora 1.2.4-1
