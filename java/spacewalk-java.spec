@@ -30,8 +30,8 @@ Group: Applications/Internet
 Requires: bcel
 Requires: c3p0
 Requires: hibernate3 >= 0:3.2.4
-Requires: java >= 1:1.6.0
-Requires: java-devel >= 1:1.6.0
+Requires: java >= 1.6.0
+Requires: java-devel >= 1.6.0
 Requires: jakarta-commons-lang >= 0:2.1
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-discovery
@@ -68,7 +68,7 @@ Requires: jpackage-utils >= 0:1.5
 Requires: cobbler >= 2.0.0
 BuildRequires: ant
 BuildRequires: ant-apache-regexp
-BuildRequires: java-devel >= 1:1.6.0
+BuildRequires: java-devel >= 1.6.0
 BuildRequires: ant-contrib
 BuildRequires: ant-junit
 BuildRequires: ant-nodeps
@@ -89,6 +89,13 @@ BuildRequires: asm
 BuildRequires: bcel
 BuildRequires: c3p0
 BuildRequires: concurrent
+%if 0%{?suse_version}
+#BuildRequires: oracle-lib-compat
+# Fix cobler and remove the dirs below
+#BuildRequires: cobbler
+BuildRequires: tomcat6
+BuildRequires: oracle-instantclient-basic
+%endif
 BuildRequires: cglib
 BuildRequires: ehcache
 BuildRequires: dom4j
@@ -151,10 +158,10 @@ Provides: rhn-java-lib-sat = %{version}-%{release}
 This package contains the jar files for the Spacewalk Java web application
 and taskomatic process.
 
-%package oracle
-Summary: Oracle database backend support files for Spacewalk Java
-Group: Applications/Internet
-Requires: ojdbc14
+%package oracle  
+Summary: Oracle database backend support files for Spacewalk Java  
+Group: Applications/Internet  
+Requires: ojdbc14  
 Provides: spacewalk-java-jdbc = %{version}-%{release}
 
 %description oracle
@@ -191,6 +198,7 @@ Requires: log4j
 Requires: oscache
 Requires: xalan-j2 >= 0:2.6.0
 Requires: xerces-j2
+BuildRequires: tanukiwrapper
 Requires: tanukiwrapper
 Requires: simple-core
 Requires: spacewalk-java-config
@@ -203,10 +211,15 @@ Obsoletes: taskomatic < 5.3.0
 Obsoletes: taskomatic-sat < 5.3.0
 Provides: taskomatic = %{version}-%{release}
 Provides: taskomatic-sat = %{version}-%{release}
+%if 0%{?suse_version}
+Requires(post): %fillup_prereq %insserv_prereq
+Requires(preun): %fillup_prereq %insserv_prereq
+%else
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
+%endif
 
 %description -n spacewalk-taskomatic
 This package contains the Java version of taskomatic.
@@ -266,7 +279,12 @@ install -d -m 755 $RPM_BUILD_ROOT%{cobprofdir}
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirup}
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirwiz}
 install -d -m 755 $RPM_BUILD_ROOT%{cobdirsnippets}
-install -d -m 755 $RPM_BUILD_ROOT%{_var}/spacewalk/systemlogs
+
+%if 0%{?suse_version}
+install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/systemlogs
+%else
+install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
+%endif
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/default/rhn_hibernate.conf
@@ -274,6 +292,15 @@ install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_sysconf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/default/rhn_org_quartz.conf
 install -m 755 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_initrddir}
+
+%if 0%{?suse_version}
+sed -i -e 's/# Default-Start:/# Default-Start: 3 5/g' $RPM_BUILD_ROOT/%{_initrddir}/taskomatic
+
+# link the java compiler to tomcat
+ln -sf %{java_home}/lib/tools.jar $RPM_BUILD_ROOT%{jardir}/tools.jar
+%endif
+
+
 install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
 install -m 644 conf/log4j.properties.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j.properties
 
@@ -282,14 +309,19 @@ install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{cob
 install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{cobdirsnippets}/post_delete_system
 install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{cobdirsnippets}/redhat_register
 
-ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/taskomaticd
+ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT/%{_bindir}/taskomaticd
 ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT%{jardir}/ojdbc14.jar
-install -d -m 755 $RPM_BUILD_ROOT%{realcobsnippetsdir}
-ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT%{realcobsnippetsdir}/spacewalk
-touch $RPM_BUILD_ROOT%{_var}/spacewalk/systemlogs/audit-review.log
+install -d -m 755 $RPM_BUILD_ROOT/%{realcobsnippetsdir}
+ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT/%{realcobsnippetsdir}/spacewalk
 
-%if (0%{?rhel} && 0%{?rhel} < 6) || (0%{?fedora} && 0%{?fedora} < 13)
-ln -s -f %{_javadir}/asm/asm.jar  $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
+%if 0%{?suse_version}
+touch $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/systemlogs/audit-review.log
+%else
+touch $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs/audit-review.log
+%endif
+
+%if (0%{?rhel} && 0%{?rhel} < 6) || (0%{?fedora} && 0%{?fedora} < 13) || 0%{?suse_version}
+ln -s -f %{_javadir}/asm/asm.jar  $RPM_BUILD_ROOT/%{_datadir}/rhn/lib/spacewalk-asm.jar
 %else
 ln -s -f %{_javadir}/objectweb-asm/asm.jar  $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
 %endif
@@ -302,9 +334,19 @@ rm -rf $RPM_BUILD_ROOT%{jardir}/jasper5-compiler.jar
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%pre
-rm -f %{realcobsnippetsdir}/spacewalk
 
+%if 0%{?suse_version}
+%post -n spacewalk-taskomatic
+%{fillup_and_insserv taskomatic}
+
+%preun
+%stop_on_removal taskomatic
+
+%postun
+%restart_on_update taskomatic
+%{insserv_cleanup}
+
+%else
 %post -n spacewalk-taskomatic
 # This adds the proper /etc/rc*.d links for the script
 /sbin/chkconfig --add taskomatic
@@ -314,8 +356,26 @@ if [ $1 = 0 ] ; then
    /sbin/service taskomatic stop >/dev/null 2>&1
    /sbin/chkconfig --del taskomatic
 fi
+%endif
+
+
 
 %files
+%defattr(-,root,root)
+%if 0%{?suse_version}
+%dir %{_localstatedir}/lib/spacewalk
+#%dir %{_localstatedir}/lib/cobbler
+#%dir %{_localstatedir}/lib/cobbler/snippets
+#%dir %{realcobsnippetsdir}/spacewalk
+
+# /etc/tomcat6/Catalina on suse is a link to /var/cache/tomcat6/Catalina
+# and we need write permissions for tomcat there. So give this dir
+# special owner and permissions.
+%dir %attr(755, tomcat, tomcat) /etc/tomcat6/Catalina/localhost
+
+%dir %{_localstatedir}/lib/rhn
+%dir %{_localstatedir}/lib/tomcat6
+%endif
 %defattr(644,tomcat,tomcat,775)
 %dir %{appdir}
 %dir %{appdir}/rhn/
@@ -383,7 +443,7 @@ fi
 %{jardir}/xerces-j2.jar
 %{jardir}/xml-commons-apis.jar
 # jars for particular versions
-%if (0%{?rhel} && 0%{?rhel} < 6) || (0%{?fedora} && 0%{?fedora} < 13)
+%if (0%{?rhel} && 0%{?rhel} < 6) || (0%{?fedora} && 0%{?fedora} < 13) || 0%{?suse_version}
 %{jardir}/asmasm*.jar
 %{jardir}/asmkasm*.jar
 %else
@@ -402,9 +462,15 @@ fi
 %else
 %config(noreplace) %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
 %endif
-%{realcobsnippetsdir}/spacewalk
+#%{realcobsnippetsdir}/spacewalk
+
+%if 0%{?suse_version}
+%attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/systemlogs
+%ghost %attr(644, tomcat, root) %{_localstatedir}/lib/spacewalk/systemlogs/audit-review.log
+%else
 %attr(755, tomcat, root) %{_var}/spacewalk/systemlogs
 %ghost %attr(644, tomcat, root) %{_var}/spacewalk/systemlogs/audit-review.log
+%endif
 
 %files -n spacewalk-taskomatic
 %attr(755, root, root) %{_initrddir}/taskomatic
@@ -413,6 +479,9 @@ fi
 
 
 %files config
+%defattr(-,root,root)
+%dir /etc/rhn
+%dir /etc/rhn/default
 %defattr(644, root, root)
 %config %{_sysconfdir}/rhn/default/rhn_hibernate.conf
 %config %{_sysconfdir}/rhn/default/rhn_taskomatic_daemon.conf
@@ -421,6 +490,10 @@ fi
 
 
 %files lib
+%defattr(-,root,root)
+%dir %{_datadir}/rhn
+%dir %{_datadir}/rhn/lib
+%dir %{_datadir}/rhn/classes
 %defattr(644, root, root)
 %{_datadir}/rhn/classes/log4j.properties
 %{_datadir}/rhn/lib/rhn.jar
