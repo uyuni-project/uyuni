@@ -6,11 +6,18 @@ Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}
 Version:      3.24.6
 Release:      1%{?dist}
 BuildArch:    noarch
+%if 0%{?suse_version}
+Requires:     perl = %{perl_version}
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Group:        Applications/System
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:     nocpulse-common
+%if 0%{?suse_version}
+BuildRequires: nocpulse-common
+%endif
 
 %description
 SatConfig-installer is the command line mechanism by which Netsaint
