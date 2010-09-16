@@ -38,7 +38,7 @@ rm -rf $RPM_BUILD_ROOT
 %if 0%{?suse_version}
 mkdir -p $RPM_BUILD_ROOT/%{_initrddir}
 make INIT_DIR=$RPM_BUILD_ROOT/etc/init.d -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
-install -m 0755 %{SOURCE1} $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
+install -m 0755 rhnsd.init.SUSE $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
 rm $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhnsd.mo
 %else
 make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
