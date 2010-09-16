@@ -30,7 +30,11 @@ Requires: python-hwdata
 %else
 Requires: hal >= 0.5.8.1-52
 %endif
+%if 0%{?suse_version}
+Requires: python-newt
+%else
 Requires: newt
+%endif
 Requires: python-dmidecode
 Requires: libxml2-python
 
