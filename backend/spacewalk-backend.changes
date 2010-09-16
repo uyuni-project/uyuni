@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 16 09:13:37 CEST 2010 - mantel@suse.de
+
+- reflect rename of config files (/etc/rhn/default/rhn_server*conf)
+
+-------------------------------------------------------------------
 Wed Sep 15 09:10:44 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-backend
