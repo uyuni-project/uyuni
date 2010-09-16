@@ -111,7 +111,7 @@ SELinux policy module supporting osa-dispatcher.
 %prep
 %setup -q
 %if 0%{?suse_version} > 0
-cp %{SOURCE1} prog.init
+cp prog.init.SUSE prog.init
 %endif
 
 %build

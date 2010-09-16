@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 16 08:28:50 CEST 2010 - mantel@suse.de
+
+- fix missing prog.init.SUSE
+
+-------------------------------------------------------------------
 Wed Sep 15 13:11:04 CEST 2010 - mantel@suse.de
 
 - cleanup specfile: remove excessive *init.SUSE Source statement
