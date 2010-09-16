@@ -13,7 +13,11 @@ Summary:      Message buffer/relay system
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildArch:    noarch
+%if 0%{?suse_version}
+BuildRequires: nocpulse-common
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Requires:     ProgAGoGo nocpulse-common
 Group:        Applications/Communications
 License:      GPLv2
