@@ -51,7 +51,7 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/pam.d
 mkdir -p $RPM_BUILD_ROOT%{_libdir}
 ln -sf sshd $RPM_BUILD_ROOT%{_usr}/sbin/rhnmd
 %if 0%{?suse_version}
-install -pm 0755 %{SOURCE1} $RPM_BUILD_ROOT%{_initddir}/rhnmd
+install -pm 0755 rhnmd.init.SUSE $RPM_BUILD_ROOT%{_initddir}/rhnmd
 %else
 install -pm 0755 rhnmd-init $RPM_BUILD_ROOT%{_initddir}/rhnmd
 %endif
