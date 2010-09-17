@@ -1,6 +1,6 @@
 Name:         perl-NOCpulse-Utils
 Version:      1.14.11
-Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release:      1%{?dist}
 Summary:      NOCpulse utility packages
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz

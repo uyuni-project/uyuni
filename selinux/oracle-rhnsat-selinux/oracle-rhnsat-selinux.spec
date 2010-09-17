@@ -6,7 +6,7 @@
 
 Name:            oracle-rhnsat-selinux
 Version:         10.2.0.16
-Release:         1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release:         1%{?dist}
 Summary:         SELinux policy module supporting Oracle
 Group:           System Environment/Base
 License:         GPLv2+

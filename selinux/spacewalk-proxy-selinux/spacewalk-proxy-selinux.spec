@@ -8,7 +8,7 @@
 
 Name:           spacewalk-proxy-selinux
 Version:        1.2.0
-Release:        1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release:        1%{?dist}
 Summary:        SELinux policy module supporting Spacewalk Proxy
 
 Group:          System Environment/Base

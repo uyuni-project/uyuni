@@ -1,7 +1,7 @@
 Name:         perl-NOCpulse-Scheduler
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Version:      1.58.12
-Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release:      1%{?dist}
 Summary:      NOCpulse Event Scheduler
 URL:          https://fedorahosted.org/spacewalk
 Requires:     nocpulse-common, ProgAGoGo

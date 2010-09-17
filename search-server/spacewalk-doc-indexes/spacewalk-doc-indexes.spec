@@ -1,6 +1,6 @@
 Name: spacewalk-doc-indexes
 Version: 1.2.0
-Release: 1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release: 1%{?dist}
 Summary: Lucene indexes of help documentation for spacewalk
 
 Group: Applications/Internet

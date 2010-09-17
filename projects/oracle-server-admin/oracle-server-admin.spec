@@ -1,7 +1,7 @@
 Summary: Oracle Database Server command-line admin scripts
 Name: oracle-server-admin
 Version: 0.1.13
-Release: 1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release: 1%{?dist}
 Source0: admin-wrapper.sh
 License: Oracle License
 Group: Oracle Server

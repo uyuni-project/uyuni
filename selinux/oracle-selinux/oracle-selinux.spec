@@ -20,7 +20,7 @@
 
 Name:            oracle-selinux
 Version:         0.1.23.19
-Release:         1%{?obtag}%{?dist}%{?repo}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release:         1%{?obtag}%{?dist}%{?repo}
 Summary:         SELinux policy module supporting Oracle
 Group:           System Environment/Base
 License:         GPLv2+

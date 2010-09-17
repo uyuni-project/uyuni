@@ -3,7 +3,7 @@ Summary: Various utility scripts and data files for RHN Satellite installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
 Version: 1.2.7
-Release: 1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: GPLv2
 Group: Applications/Internet

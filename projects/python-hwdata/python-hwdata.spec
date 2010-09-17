@@ -4,7 +4,7 @@
 
 Name:		python-hwdata
 Version:	1.2
-Release:	1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release:	1%{?dist}
 Summary:	Python bindings to hwdata package
 %if ((!0%{?suse_version}) || (0%{?suse_version} >= 1120))
 BuildArch: noarch

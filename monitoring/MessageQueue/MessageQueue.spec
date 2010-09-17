@@ -8,7 +8,7 @@
 
 Name:         MessageQueue
 Version:      3.26.4
-Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release:      1%{?dist}
 Summary:      Message buffer/relay system
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz

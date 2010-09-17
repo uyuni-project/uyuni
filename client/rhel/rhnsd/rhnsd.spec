@@ -5,7 +5,7 @@ Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.
 URL:     https://fedorahosted.org/spacewalk
 Name: rhnsd
 Version: 4.9.7
-Release: 1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires: gettext

@@ -2,7 +2,7 @@
 
 Name:           spacewalk
 Version:        1.2.3
-Release:        1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 URL:            https://fedorahosted.org/spacewalk
 Group:          Applications/Internet

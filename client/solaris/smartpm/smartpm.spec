@@ -11,7 +11,7 @@ Name: smartpm
 Source0: smartpm-%{version}.tar.gz
 Epoch:   1 
 Version: 0.2
-Release: 3%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release: 3
 License: GPLv2
 Group: Applications/System
 URL: http://www.smartpm.org/

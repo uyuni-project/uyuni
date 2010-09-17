@@ -3,7 +3,7 @@ Summary:      Monitoring probes for Spacewalk
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Version:      1.184.5
-Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release:      1%{?dist}
 BuildArch:    noarch
 Group:        Development/Libraries
 %if 0%{?suse_version}

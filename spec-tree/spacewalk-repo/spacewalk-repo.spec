@@ -1,7 +1,7 @@
 Summary: Spacewalk packages yum repository configuration
 Name: spacewalk-repo
 Version: 1.2
-Release: 0%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release: 0%{?dist}
 License: GPLv2
 Group: System Environment/Base
 # This src.rpm is cannonical upstream

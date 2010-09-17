@@ -15,7 +15,7 @@ Source1:        rhn-virtualization-host
 %endif
 
 Version:        5.4.15
-Release:        1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python

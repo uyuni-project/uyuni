@@ -1,7 +1,7 @@
 Name:         ssl_bridge
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Version:      1.9.3
-Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release:      1%{?dist}
 Summary:      SSL bridge
 URL:          https://fedorahosted.org/spacewalk
 BuildArch:    noarch

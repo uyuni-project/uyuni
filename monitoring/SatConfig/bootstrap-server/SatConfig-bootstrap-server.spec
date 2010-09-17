@@ -1,6 +1,6 @@
 Name:         SatConfig-bootstrap-server
 Version:      1.13.3
-Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
+Release:      1%{?dist}
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Summary:      Provides scout info for boostrap
 URL:          https://fedorahosted.org/spacewalk
