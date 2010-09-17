@@ -5,7 +5,7 @@
 
 Name:        spacecmd
 Version:     1.2.2
-Release:     1%{?dist}
+Release:     1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 Summary:     Command-line interface to Spacewalk and Satellite servers
 
 Group:       Applications/System

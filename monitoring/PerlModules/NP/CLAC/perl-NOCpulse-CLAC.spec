@@ -1,6 +1,6 @@
 Name:         perl-NOCpulse-CLAC
 Version:      1.9.8
-Release:      1%{?dist}
+Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 Summary:      NOCpulse Command Line Application framework for Perl
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz

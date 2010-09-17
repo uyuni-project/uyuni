@@ -1,6 +1,6 @@
 Name:           spacewalk-setup-jabberd
 Version:        1.2.2
-Release:        1%{?dist}
+Release:        1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 Summary:        Tools to setup jabberd for Spacewalk
 Group:          Applications/System
 License:        GPLv2

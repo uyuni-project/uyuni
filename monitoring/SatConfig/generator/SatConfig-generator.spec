@@ -3,7 +3,7 @@
 
 Name:         SatConfig-generator
 Version:      2.29.12
-Release:      1%{?dist}
+Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 Summary:      Satellite Configuration System - Server
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz

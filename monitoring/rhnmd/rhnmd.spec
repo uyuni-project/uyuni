@@ -13,7 +13,7 @@ Name:           rhnmd
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Version:        5.3.7
-Release:        1%{?dist}
+Release:        1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 License:        GPLv2
 BuildArch:      noarch
 Group:          System Environment/Daemons

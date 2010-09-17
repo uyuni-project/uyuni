@@ -6,7 +6,7 @@ Group: System Environment/Kernel
 License: GPLv2
 Source0: %{name}-%{version}.tar.gz
 Version: 5.4.5
-Release: 1%{?dist}
+Release: 1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 BuildArch: noarch
 BuildRequires: python
 URL: http://rhn.redhat.com/

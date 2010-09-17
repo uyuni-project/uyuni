@@ -1,6 +1,6 @@
 Name:         nocpulse-common
 Version:      2.1.19
-Release:      1%{?dist}
+Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 Summary:      NOCpulse common
 License:      GPLv2
 URL:          https://fedorahosted.org/spacewalk

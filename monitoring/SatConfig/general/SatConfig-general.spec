@@ -3,7 +3,7 @@
 %define installed_dir  %sysv_dir/installed
 Name:         SatConfig-general
 Version:      1.216.19
-Release:      1%{?dist}
+Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 Summary:      Satellite Configuration System - general setup, used by many packages
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz

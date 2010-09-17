@@ -1,7 +1,7 @@
 Name:         eventReceivers
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Version:      2.20.15
-Release:      1%{?dist}
+Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 Summary:      Command Center Event Receivers
 URL:          https://fedorahosted.org/spacewalk
 BuildArch:    noarch

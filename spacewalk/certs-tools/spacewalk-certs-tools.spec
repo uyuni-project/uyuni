@@ -3,7 +3,7 @@ Summary: Spacewalk SSL Key/Cert Tool
 Group: Applications/Internet
 License: GPLv2 and Python
 Version: 1.2.2
-Release: 1%{?dist}
+Release: 1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 URL:      https://fedorahosted.org/spacewalk 
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)

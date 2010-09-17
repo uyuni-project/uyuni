@@ -5,7 +5,7 @@
 %endif
 Name:       spacewalk-branding
 Version:    1.2.2
-Release:    1%{?dist}
+Release:    1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 Summary:    Spacewalk branding data
 
 Group:      Applications/Internet

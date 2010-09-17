@@ -9,7 +9,7 @@ Summary:      Spacewalk monitoring
 Name:         spacewalk-monitoring
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Version:      1.2.1
-Release:      1%{?dist}
+Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 URL:          https://fedorahosted.org/spacewalk
 License:      GPLv2
 Group:        Applications/System

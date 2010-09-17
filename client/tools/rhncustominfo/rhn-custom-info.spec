@@ -5,7 +5,7 @@ License: GPLv2 and Python
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
 Version: 5.4.3
-Release: 1%{?dist}
+Release: 1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch: noarch
 BuildRequires: python-devel

@@ -5,7 +5,7 @@ License: Open Publication
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Version: 1.1.1
-Release: 1%{?dist}
+Release: 1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 Obsoletes: rhns-proxy-docs < 5.3.0

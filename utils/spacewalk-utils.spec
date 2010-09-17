@@ -2,7 +2,7 @@
 
 Name:		spacewalk-utils
 Version:	1.2.9
-Release:	1%{?dist}
+Release:	1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 Summary:	Utilities that may be run against a Spacewalk server.
 
 Group:		Applications/Internet

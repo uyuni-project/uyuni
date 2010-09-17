@@ -1,7 +1,7 @@
 Name:           perl-Satcon
 Summary:        Framework for configuration files
 Version:        1.11
-Release:        1%{?dist}
+Release:        1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 License:        GPLv2
 Group:          Applications/System
 URL:            https://fedorahosted.org/spacewalk

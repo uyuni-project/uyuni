@@ -7,7 +7,7 @@
 %endif
 Name:         SNMPAlerts
 Version:      0.5.5
-Release:      1%{?dist}
+Release:      1%{?dist}%{?suse_version:%{?!dist:.A}.<RELEASE>}
 Summary:      Download and clear SNMP alerts from the database
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
