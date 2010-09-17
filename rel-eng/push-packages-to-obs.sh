@@ -1,12 +1,14 @@
 #! /bin/bash
 set -e
-
-function ERREXIT() {
-  echo "Error: $@" >&2
-  exit 1
-}
-
-WORKSPACE=${WORKSPACE:-/tmp/push-packages-to-ibs}
+#
+# For all packages in git:/rel-eng/packages (or defined in $PACKAGES):
+# - pull from git
+# - build srpms
+# - submitt to obs
+#
+# git_package_defs() has a hardcoded list of packages excluded by default.
+#
+WORKSPACE=${WORKSPACE:-/tmp/push-packages-to-obs}
 OSCRC=${OSCRC:+-c $OSCRC}
 
 GIT_URL="git://git.suse.de/galaxy/spacewalk.git"
@@ -15,9 +17,42 @@ GIT_BRANCH="Manager"
 OSC="osc $OSCRC -A https://api.suse.de"
 OBS_PROJ="Devel:Galaxy:Server:Manager:T"
 
+# some fakes for testing
+FAKE_PULLFROMGIT=
+FAKE_BUILDSRPMS=
+FAKE_UPDATEOBS=
+FAKE_COMITTOBS=1
 
-# show settings on any arg passed on the cmdline
-test -n "$1" && {
+
+function pull_from_git()
+{
+  test $# == 3 || { echo "pull_from_git: Wrong args $#: $@" >&2; return 1; }
+  local git_dir="$1"
+  local git_url="$2"
+  local git_branch="$3"
+
+  test -d "$git_dir" || git clone "$git_url" "$git_dir"
+
+  pushd "$git_dir"
+  git fetch
+  git reset -q --hard HEAD
+  if git show-ref -q "heads/$git_branch"; then
+      git checkout -q "$git_branch"
+  else
+      git checkout -q -t -b "$git_branch" "origin/$git_branch"
+  fi
+  git pull -q
+  popd
+}
+
+# create workspace
+test -d "$WORKSPACE" || mkdir -p "$WORKSPACE"
+cd "$WORKSPACE"
+
+# save a copy of stdout/stderr in lastrun.log
+exec > >(tee lastrun.log) 2>&1
+
+# show basic settings
 cat <<EOF
      GIT_URL="$GIT_URL"
   GIT_BRANCH="$GIT_BRANCH"
@@ -25,84 +60,100 @@ cat <<EOF
     OBS_PROJ="$OBS_PROJ"
    WORKSPACE="$WORKSPACE"
 EOF
-  exit 1
-}
 
-test -d "$WORKSPACE" || mkdir -p "$WORKSPACE"
-cd "$WORKSPACE"
-pwd
+# Update git
+GIT_DIR="$WORKSPACE/git_dir"
 
-# Update from GIT
-GIT_DIR="spacewalk"
-if true; then
-  test -d "$GIT_DIR" || git clone "$GIT_URL" "$GIT_DIR"
-  (
-    set -e
-    cd "$GIT_DIR"
-    git fetch
-    git reset -q --hard HEAD
-    if git show-ref -q "heads/$GIT_BRANCH"; then
-	git checkout -q "$GIT_BRANCH"
-    else
-	git checkout -q -t -b "$GIT_BRANCH" "origin/$GIT_BRANCH"
-    fi
-    git pull -q
-  )
+if [ -z "$FAKE_PULLFROMGIT" ]; then
+  pull_from_git "$GIT_DIR" "$GIT_URL" "$GIT_BRANCH"
+else
+  echo "FAKE: Reusing existing git checkout..."
 fi
 
 # Test whether git HEAD has moved since last check
-GIT_LAST="spacewalk.last"
-GIT_LAST_HEAD=
-GIT_CUR_HEAD="$(cat $GIT_DIR/.git/refs/heads/Manager)"
-if [ -f "$GIT_LAST" ]; then
-  GIT_LAST_HEAD="$(cat "$GIT_LAST")"
-  if [ "$GIT_LAST_HEAD" == "$GIT_CUR_HEAD" ]; then
+GIT_LAST="$WORKSPACE/git_last"
+GIT_LAST_HEAD="$(test ! -f "$GIT_LAST" || cat "$GIT_LAST")"
+GIT_CURR_HEAD="$(cat $GIT_DIR/.git/refs/heads/"$GIT_BRANCH")"
+
+if [ -n "$GIT_LAST_HEAD" ]; then
+  if [ "$GIT_LAST_HEAD" == "$GIT_CURR_HEAD" ]; then
     echo "Current branch $GIT_BRANCH is still at $GIT_LAST_HEAD"
     echo "Nothing to do."
     exit 0
   else
     echo "Current branch $GIT_BRANCH was last seen at $GIT_LAST_HEAD"
-    echo "Current branch $GIT_BRANCH has changed to   $GIT_CUR_HEAD"
+    echo "Current branch $GIT_BRANCH has changed to   $GIT_CURR_HEAD"
   fi
 else
   echo "Current branch $GIT_BRANCH was never seen before."
-  echo "Current branch $GIT_BRANCH is now at $GIT_CUR_HEAD"
+  echo "Current branch $GIT_BRANCH is now at $GIT_CURR_HEAD"
 fi
-echo "Going to build new .src.rpm packages..."
+
+function git_package_defs() {
+  # - "PKG_NAME PKG_VER PKG_DIR" from git:/rel-eng/packages/, using
+  #   a hardcoded blacklist of packages we do not build.
+  # - define $PACKAGE to build a specific set of packages.
+  # - usage:
+  #      while read PKG_NAME PKG_VER PKG_DIR; do
+  #        ...
+  #      done < <(git_package_defs)
+  #
+  test -n "$PACKAGE" || {
+    PACKAGE=$(ls "$GIT_DIR"/rel-eng/packages/ \
+              | grep -v -x -e heirloom-pkgtools -e oracle-server-admin -e oracle-server-scripts -e rhnclient -e smartpm)
+  }
+  for N in $PACKAGE; do
+    awk -vN=$N '{printf "%s %s %s\n", N, $1, $2}' "$GIT_DIR"/rel-eng/packages/$N
+  done
+}
+
+function log_and_add_failure() {
+  test $# -ge 1 || { echo "log_and_add_failure: Wrong args $#: $@" >&2; return 1; }
+  local pkg_name="$1"
+  local opt_msg="$2"
+  FAILED_CNT=$(($FAILED_CNT+1))
+  FAILED_PKG="$FAILED_PKG$(echo -ne "\n    $pkg_name${opt_msg:+ ($opt_msg)}")"
+  echo "*** FAILED${opt_msg:+ ($opt_msg)} [$pkg_name] =================================================="
+}
 
 # First build the src rpms
 SRPM_DIR="SRPMS"
-if true; then
+
+# some env vars to overwrite make vars (thus make -e)
+# (alternative to use a ~/.spacewalk-build-rc)
+export DIST=".Manager"
+export RPMBUILD_BASEDIR="$WORKSPACE/$SRPM_DIR"
+MAKE="make -e"
+
+if [ -z "$FAKE_BUILDSRPMS" ]; then
+  echo "Going to build new .src.rpm packages..."
   rm -rf "$SRPM_DIR"
   mkdir -p "$SRPM_DIR"
-
-  # some env vars to overwrite make vars (thus make -e)
-  export DIST=".Manager"
-  export RPMBUILD_BASEDIR="$WORKSPACE/$SRPM_DIR"
-  MAKE="make -e"
 
   SUCCEED_CNT=0
   FAILED_CNT=0
   FAILED_PKG=
-  for PKG_DEF in "$GIT_DIR"/rel-eng/packages/*; do
-    PKG_NAME=$(basename "$PKG_DEF")
-    eval $(awk '{printf "PKG_VER=%s\nPKG_DIR=%s", $1, $2}' $PKG_DEF)
+
+  while read PKG_NAME PKG_VER PKG_DIR; do
     echo "=== [$PKG_NAME] =================================================="
-    if $MAKE -C "$GIT_DIR/$PKG_DIR" test-srpm >log 2>&1; then
+    if $MAKE -C "$GIT_DIR/$PKG_DIR" COMMIT_SHA1="$GIT_CURR_HEAD" srpm >log 2>&1; then
       SUCCEED_CNT=$(($SUCCEED_CNT+1))
     else
-      FAILED_CNT=$(($FAILED_CNT+1))
-      FAILED_PKG="$FAILED_PKG$(echo -ne "\n    $PKG_NAME")"
       cat log
-      echo "*** FAILED [$PKG_NAME] =================================================="
+      log_and_add_failure "$PKG_NAME"
+      continue
     fi
-  done
+  done < <(git_package_defs)
+
   echo "======================================================================"
-  echo "Built Packages:  $SUCCEED_CNT"
+  echo "Built .src.rpm packages:  $SUCCEED_CNT"
   test $FAILED_CNT != 0 && {
-    echo "Failed Packages: $FAILED_CNT$FAILED_PKG"
+    echo "Failed .src.rpm packages: $FAILED_CNT$FAILED_PKG"
+    test $SUCCEED_CNT -gt 0 || exit 1
   }
   echo "======================================================================"
+else
+  echo "FAKE: Reusing existing .src.rpm packages..."
 fi
 
 # checking for changed packages
@@ -221,40 +272,76 @@ function copy_changed_package()
   return 1
 }
 
-if true; then
-  echo "Going to load obs packages..."
-  rm -rf "$OBS_PROJ"
-  $OSC co -u "$OBS_PROJ"
-
+if [ -z "$FAKE_UPDATEOBS" ]; then
   echo "Going to update changed obs packages..."
-  for SRPM in "$SRPM_DIR"/rpmbuild-*-"$GIT_CUR_HEAD"/*.src.rpm; do
-    test -f "$SRPM" || continue
-    PKG_NAME=$(rpm -qp "$SRPM" --qf '%{name}')
-    echo "=== [$PKG_NAME] =================================================="
 
-    SRPM_D=$(unrpm_to.d "$SRPM")
+  UNCHANGED_CNT=0
+  SUCCEED_CNT=0
+  SUCCEED_PKG=
+  FAILED_CNT=0
+  FAILED_PKG=
+
+  while read PKG_NAME PKG_VER PKG_DIR; do
+    echo "=== [$PKG_NAME] =================================================="
+    SRPM="$SRPM_DIR/rpmbuild-$PKG_NAME-$PKG_VER/$PKG_NAME-$PKG_VER$DIST.src.rpm"
+    test -f "$SRPM" || {
+      log_and_add_failure "$PKG_NAME" "no srpm"
+      continue
+    }
+
+    # update from obs
+    rm -rf "$OBS_PROJ"
+    $OSC co -u "$OBS_PROJ" "$PKG_NAME" 2>log || {
+      if grep 'does not exist in project' log; then
+	( set -e; cd "$OBS_PROJ"; $OSC mkpac "$PKG_NAME"; )
+      else
+	cat log
+	log_and_add_failure "$PKG_NAME" "checkout"
+	continue
+      fi
+    }
 
     OBS_PKG_DIR="$OBS_PROJ/$PKG_NAME"
-    test -d "$OBS_PKG_DIR" || (
-      set -e
-      cd "$OBS_PROJ"
-      $OSC mkpac "$PKG_NAME"
-    )
+    SRPM_D=$(unrpm_to.d "$SRPM")
 
-    copy_changed_package "$SRPM_D" "$OBS_PKG_DIR" && (
-      set -e
-      echo "Package has changed."
-      cd "$OBS_PKG_DIR"
-      $OSC addremove
-      $OSC ci -m "Git submitt $GIT_BRANCH($GIT_CUR_HEAD)"
-    )
-  done
+    # some specfile checks
+    grep '^Release:.*%{?suse_version:%{?!dist:.A}.<RELEASE>}' "$SRPM_D"/*.spec || {
+      log_and_add_failure "$PKG_NAME" "missing %{?suse_version:%{?!dist:.A}.<RELEASE>"
+      continue
+    }
+
+    if copy_changed_package "$SRPM_D" "$OBS_PKG_DIR"; then
+      echo "Package has changed, updating..."
+      (
+	set -e
+	cd "$OBS_PKG_DIR"
+	$OSC addremove >/dev/null
+	$OSC status
+	if [ -z "$FAKE_COMITTOBS" ]; then
+	  $OSC ci -m "Git submitt $GIT_BRANCH($GIT_CURR_HEAD)"
+	else
+	  echo "FAKE: Not comitting to OBS..."
+	fi
+      ) || {
+	log_and_add_failure "$PKG_NAME" "checkin"
+	continue
+      }
+      SUCCEED_CNT=$(($SUCCEED_CNT+1))
+      SUCCEED_PKG=="$SUCCEED_PKG$(echo -ne "\n    $PKG_NAME")"
+    else
+      echo "Package is unchanged."
+      UNCHANGED_CNT=$(($UNCHANGED_CNT+1))
+    fi
+  done < <(git_package_defs)
+
+  echo "======================================================================"
+  echo "Updated packages:   $SUCCEED_CNT"
+  echo "Unchanged packages: $UNCHANGED_CNT"
+  test $FAILED_CNT != 0 && {
+    echo "Failed packages:    $FAILED_CNT$FAILED_PKG"
+    exit 1
+  }
+  echo "======================================================================"
+else
+  echo "FAKE: Not uploading to OBS..."
 fi
-
-# summary
-echo "======================================================================"
-echo "Built Packages:  $SUCCEED_CNT"
-test $FAILED_CNT != 0 && {
-  echo "Failed Packages: $FAILED_CNT$FAILED_PKG"
-}
-echo "======================================================================"
