@@ -21,7 +21,7 @@ OBS_PROJ="Devel:Galaxy:Server:Manager:T"
 FAKE_PULLFROMGIT=
 FAKE_BUILDSRPMS=
 FAKE_UPDATEOBS=
-FAKE_COMITTOBS=1
+FAKE_COMITTOBS=
 
 
 function pull_from_git()
@@ -121,7 +121,7 @@ SRPM_DIR="SRPMS"
 
 # some env vars to overwrite make vars (thus make -e)
 # (alternative to use a ~/.spacewalk-build-rc)
-export DIST=".Manager"
+export DIST=
 export RPMBUILD_BASEDIR="$WORKSPACE/$SRPM_DIR"
 MAKE="make -e"
 
@@ -303,10 +303,14 @@ if [ -z "$FAKE_UPDATEOBS" ]; then
 
     OBS_PKG_DIR="$OBS_PROJ/$PKG_NAME"
     SRPM_D=$(unrpm_to.d "$SRPM")
+    # get the changes file
+    cp "$SRPM_DIR/rpmbuild-$PKG_NAME-$PKG_VER/SOURCES/$PKG_DIR/$PKG_NAME.changes" "$SRPM_D" || {
+      echo "Package has no $PKG_NAME.changes file."
+    }
 
     # some specfile checks
-    grep '^Release:.*%{?suse_version:%{?!dist:.A}.<RELEASE>}' "$SRPM_D"/*.spec || {
-      log_and_add_failure "$PKG_NAME" "missing %{?suse_version:%{?!dist:.A}.<RELEASE>"
+    sed -i '/^Release:/s/\(%{?dist}\)\?[[:space:]]*$/%{?dist}%{?!dist:.A}.<RELEASE>/' "$SRPM_D/$PKG_NAME.spec" || {
+      log_and_add_failure "$PKG_NAME" "inject %{?!dist:.A}.<RELEASE>"
       continue
     }
 
@@ -339,9 +343,14 @@ if [ -z "$FAKE_UPDATEOBS" ]; then
   echo "Unchanged packages: $UNCHANGED_CNT"
   test $FAILED_CNT != 0 && {
     echo "Failed packages:    $FAILED_CNT$FAILED_PKG"
-    exit 1
   }
   echo "======================================================================"
 else
   echo "FAKE: Not uploading to OBS..."
 fi
+
+# update
+test ! -f "$GIT_LAST" || {
+  echo "GIT_CURR_HEAD" > "$GIT_LAST"
+}
+exit $FAILED_CNT
