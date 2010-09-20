@@ -8,6 +8,10 @@ set -e
 #
 # git_package_defs() has a hardcoded list of packages excluded by default.
 #
+# - using git checkout in $WORKSPACE/git_dir
+# - use $OSCRC ot pass an osc configfile containing required credentials
+#   (otherwise ~/.oscrc)
+#
 WORKSPACE=${WORKSPACE:-/tmp/push-packages-to-obs}
 OSCRC=${OSCRC:+-c $OSCRC}
 
@@ -17,11 +21,11 @@ GIT_BRANCH="Manager"
 OSC="osc $OSCRC -A https://api.suse.de"
 OBS_PROJ="Devel:Galaxy:Server:Manager:T"
 
-# some fakes for testing
-FAKE_PULLFROMGIT=
-FAKE_BUILDSRPMS=
-FAKE_UPDATEOBS=
-FAKE_COMITTOBS=
+# some fakes for testing and Hudson (reuse existing git checkout)
+FAKE_PULLFROMGIT=${FAKE_PULLFROMGIT:-}
+FAKE_BUILDSRPMS=${FAKE_BUILDSRPMS:-}
+FAKE_UPDATEOBS=${FAKE_UPDATEOBS:-}
+FAKE_COMITTOBS=${FAKE_COMITTOBS:-}
 
 
 function pull_from_git()
@@ -59,6 +63,7 @@ cat <<EOF
          OSC="$OSC"
     OBS_PROJ="$OBS_PROJ"
    WORKSPACE="$WORKSPACE"
+${FAKE_PULLFROMGIT:+ FAKE_PULLFROMGIT}${FAKE_BUILDSRPMS:+ FAKE_BUILDSRPMS}${FAKE_UPDATEOBS:+ FAKE_UPDATEOBS}${FAKE_COMITTOBS:+ FAKE_COMITTOBS}
 EOF
 
 # Update git
