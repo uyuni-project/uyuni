@@ -9,8 +9,8 @@
 #
 
 require 'rubygems'
+require 'dbi'
 require 'oci8'
-require 'test/unit'
 
 # add the port if needed
 if not $dbhost =~ /.+:(\d+)$/
