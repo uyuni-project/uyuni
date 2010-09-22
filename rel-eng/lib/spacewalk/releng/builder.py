@@ -57,6 +57,8 @@ class Builder(object):
         # Override global configurations using local configurations
         for section in pkg_config.sections():
             for options in pkg_config.options(section):
+                if not self.config.has_section(section):
+                    self.config.add_section(section)
                 self.config.set(section, options, pkg_config.get(section, options))
 
         self.rpmbuild_basedir = build_dir
