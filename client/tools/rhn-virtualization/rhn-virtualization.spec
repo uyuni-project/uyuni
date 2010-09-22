@@ -9,10 +9,7 @@ Group:          System Environment/Base
 License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-%if 0%{?suse_version}
-Source1:        rhn-virtualization-host
 #!BuildIgnore: post-build-checks
-%endif
 
 Version:        5.4.15
 Release:        1%{?dist}
@@ -56,7 +53,7 @@ that is specific to the Host system (a.k.a. Dom0).
 %prep
 %setup -q
 %if 0%{?suse_version}
-cp %{SOURCE1} scripts/ 
+mv scripts/rhn-virtualization-host.SUSE scripts/rhn-virtualization-host
 %endif
 
 %build
