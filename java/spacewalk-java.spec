@@ -4,6 +4,7 @@
 %define cobprofdirwiz   %{_localstatedir}/lib/rhn/kickstarts/wizard
 %define cobdirsnippets  %{_localstatedir}/lib/rhn/kickstarts/snippets
 %define realcobsnippetsdir  %{_localstatedir}/lib/cobbler/snippets
+%define cobblerdir          %{_localstatedir}/lib/cobbler
 
 %if  0%{?rhel} && 0%{?rhel} < 6
 %define appdir          %{_localstatedir}/lib/tomcat5/webapps
@@ -462,7 +463,9 @@ fi
 %else
 %config(noreplace) %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
 %endif
-#%{realcobsnippetsdir}/spacewalk
+%dir %{cobblerdir}
+%dir %{realcobsnippetsdir}
+%{realcobsnippetsdir}/spacewalk
 
 %if 0%{?suse_version}
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/systemlogs
