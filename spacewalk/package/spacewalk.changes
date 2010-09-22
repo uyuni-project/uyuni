@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 22 15:24:47 CEST 2010 - mantel@suse.de
+
+- create build.py.props since package has not tarball but only spec
+
+-------------------------------------------------------------------
 Wed Sep 15 08:34:08 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk
