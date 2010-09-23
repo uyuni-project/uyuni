@@ -195,6 +195,14 @@ class Builder(object):
         print(output)
         self.srpm_location = self._find_wrote_in_rpmbuild_output(output)[0]
 
+        # handle an existing .changes file.
+        # TODO: may or may not end up in a OBSBuilder as this is OBS-specific.
+        changes_file = "%s.changes" % self.spec_file[0:-5]
+        if os.path.exists(changes_file):
+	    run_command("mv %s %s" % (changes_file, self.rpmbuild_basedir))
+	    print("Wrote: %s" % os.path.join(self.rpmbuild_basedir, os.path.basename(changes_file)))
+
+
     def _rpm(self):
         """ Build an RPM. """
         self._create_build_dirs()
