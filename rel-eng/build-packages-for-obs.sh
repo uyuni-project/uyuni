@@ -90,10 +90,10 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   }
   ${VERBOSE:+cat "$T_LOG"}
 
-  eval $(awk '/^Wrote:.*src.rpm/{printf "SRPM=\"%s\"\n",$2}/^Wrote:.*.changes/{printf "CHANGES=\"%s\"\n",$2}' "$T_LOG")
+  eval $(awk '/^Wrote:.*src.rpm/{srpm=$2}/^Wrote:.*.changes/{changes=$2}END{ printf "SRPM=\"%s\"\n",srpm; printf "CHANGES=\"%s\"\n",changes; }' "$T_LOG")
   mkdir "$T_DIR"
   ( set -e; cd "$T_DIR"; unrpm "$SRPM"; ) >/dev/null 2>&1
-  mv "$CHANGES" "$T_DIR"
+  test -z "$CHANGES" || mv "$CHANGES" "$T_DIR"
 
   mv "$T_DIR" "$SRPM_DIR/$PKG_NAME"
   SUCCEED_CNT=$(($SUCCEED_CNT+1))
