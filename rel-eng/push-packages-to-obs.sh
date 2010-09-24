@@ -145,7 +145,7 @@ function copy_changed_package()
 	  #   Source0:      MessageQueue-git-4a9144649ae82fab60f4f11b08c75d46275f47bf.tar.gz
 	  #   %setup -q -n MessageQueue-git-4a9144649ae82fab60f4f11b08c75d46275f47bf
 	  #
-	  diff -I '^\(Source\|%setup\).*-git-' "$F" "$tdir/$stem" || {
+	  diff -q -I '^\(Source\|%setup\).*-git-' "$tdir/$stem" "$F" || {
 	    diffs=1
 	    break
 	  }
@@ -168,7 +168,7 @@ function copy_changed_package()
   test -z "$ttar" || {
     # finally do tardiffs
     local tmpd=$(mktemp -d)
-    tar_diff_p1 "$star" "$ttar" "$tmpd" || {
+    tar_diff_p1 "$ttar" "$star" "$tmpd" || {
       diffs=1
     }
     rm -rf "$tmpd"
@@ -225,7 +225,7 @@ while read PKG_NAME; do
   # Provide a proper release number;
   # - 1.git.a0e2924efdff87699b2989a1c92925b05586aac1%{?dist}
   # + 1%{?dist}%{?!dist:.A}.<RELEASE>
-  sed -i '/^Release:/s/\.git\..\{40\}//;s/%{?dist}.*$/%{?dist}%{?!dist:.A}.<RELEASE>/' "$SRPM_PKG_DIR/$PKG_NAME.spec" || {
+  sed -i '/^Release:/{s/\.git\..\{40\}//;s/%{?dist}.*$/%{?dist}%{?!dist:.A}.<RELEASE>/}' "$SRPM_PKG_DIR/$PKG_NAME.spec" || {
     log_and_add_failure "$PKG_NAME" "inject %{?!dist:.A}.<RELEASE>"
   }
 
@@ -242,10 +242,10 @@ while read PKG_NAME; do
     fi
   }
 
-#   test -z "$FAKE_COMITTOBS" || {
-#     echo "FAKE: Not comitting to OBS..."
-#     continue
-#   }
+   test -z "$FAKE_COMITTOBS" || {
+     echo "FAKE: Not comitting to OBS..."
+     continue
+   }
 
   if copy_changed_package "$SRPM_PKG_DIR" "$OBS_PKG_DIR"; then
     echo "Package has changed, updating..."
