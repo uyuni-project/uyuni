@@ -71,7 +71,7 @@ function tar_cat() {
     esac
 }
 
-function tar_diff() {
+function tar_diff_p1() {
   local ltar="$1"
   local rtar="$2"
   local tdir="$3"
@@ -82,7 +82,7 @@ function tar_diff() {
   mkdir "$tdir/R";
   tar_cat "$rtar" | tar xf - -C "$tdir/R" || return 2
 
-  if diff -r -q "$tdir/L" "$tdir/R"; then
+  if diff -r -q "$tdir/L"/* "$tdir/R"/*; then
     echo "Content $ltar and $rtar is the same"
     return 0
   else
@@ -91,6 +91,10 @@ function tar_diff() {
   fi
 }
 
+# Here we have eveyfile (incl. .changes) in git, thus inside the tarball.
+# The tarballs rootdirs may differ, as they contain the revision number.
+# The specfile also contains the revision number. So do a quick check
+# for different .changes, then 'tardiff -p1'
 function copy_changed_package()
 {
   local sdir="$1"
@@ -100,71 +104,82 @@ function copy_changed_package()
 
   # track changes so we can later decide whether we must tar_diff.
   local diffs=0
+  local ttar=""
 
-  # check excess target files (usually new tarball version)
+  # check excess target files (except new tarball version)
   for F in "$tdir"/*; do
     local stem="$(basename "$F")"
-    test -f "$sdir/$stem" || {
-      rm -f "$F"
-      diffs=1
-    }
-  done
-
-  if [ $diffs == 1 ]; then
-    cp "$sdir"/* "$tdir"
-    return 0
-  fi
-
-  # check non-tarball changes
-  local tardiff=""
-  for F in "$sdir"/*; do
-    local stem="$(basename "$F")"
-    test -f "$tdir/$stem" || {
-      # new source file
-      diffs=1
-      break
-    }
-    diff -q "$F" "$tdir/$stem" && {
-      # no changes
-      continue
-    }
     case "$stem" in
       *.tar.*|*.tar|*.tgz|*.tbz2)
-        # tarball diff not necessarily implies content change
-        tardiff="$tardiff $stem"
+        # tarball diff or rename not necessarily implies content change!
+        ttar="$tdir/$stem"
         ;;
       *)
-        diffs=1
-        break
+	test -f "$sdir/$stem" || {
+	  rm -f "$F"
+	  diffs=1
+	}
         ;;
     esac
   done
 
   if [ $diffs == 1 ]; then
+    test -z "$ttar" || rm "$ttar"
+    cp "$sdir"/* "$tdir"
+    return 0
+  fi
+
+  # check non-tarball changes
+  local star=""
+  for F in "$sdir"/*; do
+    local stem="$(basename "$F")"
+    case "$stem" in
+      *.tar.*|*.tar|*.tgz|*.tbz2)
+        # tarball diff or rename not necessarily implies content change!
+        star="$sdir/$stem"
+        ;;
+      *)
+        if [ -f "$tdir/$stem" ]; then
+	  # In sec files ignore Source0 and %setup lines containing
+	  # '-git-<revision>'.
+	  #   Source0:      MessageQueue-git-4a9144649ae82fab60f4f11b08c75d46275f47bf.tar.gz
+	  #   %setup -q -n MessageQueue-git-4a9144649ae82fab60f4f11b08c75d46275f47bf
+	  #
+	  diff -I '^\(Source0:\|%setup\).*-git-' "$F" "$tdir/$stem" || {
+	    diffs=1
+	    break
+	  }
+	else
+	  # new source file
+	  diffs=1
+	  break
+	fi
+        ;;
+    esac
+  done
+
+  if [ $diffs == 1 -o -z "$star" -o -z "$ttar" ]; then
+    test -z "$ttar" || rm "$ttar"
     cp "$sdir"/* "$tdir"
     return 0
   fi
 
   # finally do tardiffs
-  test -n "$tardiff" && {
-    for stem in $tardiff; do
-      local tmpd=$(mktemp -d)
-      tar_diff "$sdir/$stem" "$tdir/$stem" "$tmpd" || {
-        rm -rf "$tmpd"
-        diffs=1
-        break
-      }
-      rm -rf "$tmpd"
-    done
-
-    if [ $diffs == 1 ]; then
-      cp "$sdir"/* "$tdir"
-      return 0
-    fi
+  local tmpd=$(mktemp -d)
+  tar_diff_p1 "$star" "$ttar" "$tmpd" || {
+    diffs=1
   }
+  rm -rf "$tmpd"
+
+  if [ $diffs == 1 ]; then
+    #test -z "$ttar" || rm "$ttar"
+    #cp "$sdir"/* "$tdir"
+    return 0
+  fi
   # No changes
   return 1
 }
+
 
 function log_and_add_failure() {
   test $# -ge 1 || { echo "log_and_add_failure: Wrong args $#: $@" >&2; return 1; }
@@ -207,13 +222,8 @@ while read PKG_NAME; do
   # Provide a proper release number;
   # - 1.git.a0e2924efdff87699b2989a1c92925b05586aac1%{?dist}
   # + 1%{?dist}%{?!dist:.A}.<RELEASE>
-  sed -i '/^Release:/s/\(\.git\..\{40\}\)\?\(%{?dist}\)\?[[:space:]]*$/%{?dist}%{?!dist:.A}.<RELEASE>/' "$SRPM_PKG_DIR/$PKG_NAME.spec" || {
+  sed -i '/^Release:/s/\(\.git\..\{40\}\)\?%{?dist}.*$/%{?dist}%{?!dist:.A}.<RELEASE>/' "$SRPM_PKG_DIR/$PKG_NAME.spec" || {
     log_and_add_failure "$PKG_NAME" "inject %{?!dist:.A}.<RELEASE>"
-  }
-
-  test -z "$FAKE_COMITTOBS" || {
-    log_and_add_failure "$PKG_NAME" "FAKE: Not comitting to OBS"
-    continue
   }
 
   # update from obs (create missing package on the fly)
@@ -227,6 +237,11 @@ while read PKG_NAME; do
       log_and_add_failure "$PKG_NAME" "checkout"
       continue
     fi
+  }
+
+  test -z "$FAKE_COMITTOBS" || {
+    echo "FAKE: Not comitting to OBS..."
+    continue
   }
 
   if copy_changed_package "$SRPM_PKG_DIR" "$OBS_PKG_DIR"; then
