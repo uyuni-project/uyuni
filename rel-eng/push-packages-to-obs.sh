@@ -158,24 +158,27 @@ function copy_changed_package()
     esac
   done
 
-  if [ $diffs == 1 -o -z "$star" -o -z "$ttar" ]; then
+  if [ $diffs == 1 -o "${star:+1}" != "${ttar:+1}" ]; then
     test -z "$ttar" || rm "$ttar"
     cp "$sdir"/* "$tdir"
     return 0
   fi
+  # HERE: star and ttar are either both present or not
 
-  # finally do tardiffs
-  local tmpd=$(mktemp -d)
-  tar_diff_p1 "$star" "$ttar" "$tmpd" || {
-    diffs=1
+  test -z "$ttar" || {
+    # finally do tardiffs
+    local tmpd=$(mktemp -d)
+    tar_diff_p1 "$star" "$ttar" "$tmpd" || {
+      diffs=1
+    }
+    rm -rf "$tmpd"
+
+    if [ $diffs == 1 ]; then
+      test -z "$ttar" || rm "$ttar"
+      cp "$sdir"/* "$tdir"
+      return 0
+    fi
   }
-  rm -rf "$tmpd"
-
-  if [ $diffs == 1 ]; then
-    #test -z "$ttar" || rm "$ttar"
-    #cp "$sdir"/* "$tdir"
-    return 0
-  fi
   # No changes
   return 1
 }
@@ -222,7 +225,7 @@ while read PKG_NAME; do
   # Provide a proper release number;
   # - 1.git.a0e2924efdff87699b2989a1c92925b05586aac1%{?dist}
   # + 1%{?dist}%{?!dist:.A}.<RELEASE>
-  sed -i '/^Release:/s/\(\.git\..\{40\}\)\?%{?dist}.*$/%{?dist}%{?!dist:.A}.<RELEASE>/' "$SRPM_PKG_DIR/$PKG_NAME.spec" || {
+  sed -i '/^Release:/s/\.git\..\{40\}//;s/%{?dist}.*$/%{?dist}%{?!dist:.A}.<RELEASE>/' "$SRPM_PKG_DIR/$PKG_NAME.spec" || {
     log_and_add_failure "$PKG_NAME" "inject %{?!dist:.A}.<RELEASE>"
   }
 
@@ -239,10 +242,10 @@ while read PKG_NAME; do
     fi
   }
 
-  test -z "$FAKE_COMITTOBS" || {
-    echo "FAKE: Not comitting to OBS..."
-    continue
-  }
+#   test -z "$FAKE_COMITTOBS" || {
+#     echo "FAKE: Not comitting to OBS..."
+#     continue
+#   }
 
   if copy_changed_package "$SRPM_PKG_DIR" "$OBS_PKG_DIR"; then
     echo "Package has changed, updating..."
@@ -258,11 +261,11 @@ while read PKG_NAME; do
 	false
       fi
     ) || {
-      log_and_add_failure "$PKG_NAME" "checkin"
+      log_and_add_failure "$PKG_NAME" "${$FAKE_COMITTOBS:+fake }checkin"
       continue
     }
     SUCCEED_CNT=$(($SUCCEED_CNT+1))
-    SUCCEED_PKG=="$SUCCEED_PKG$(echo -ne "\n    $PKG_NAME")"
+    SUCCEED_PKG="$SUCCEED_PKG$(echo -ne "\n    $PKG_NAME")"
   else
     echo "Package is unchanged."
     UNCHANGED_CNT=$(($UNCHANGED_CNT+1))
@@ -272,8 +275,8 @@ while read PKG_NAME; do
 done < <(srpm_package_defs)
 
 echo "======================================================================"
-echo "Updated packages:   $SUCCEED_CNT"
 echo "Unchanged packages: $UNCHANGED_CNT"
+echo "Updated packages:   $SUCCEED_CNT$SUCCEED_PKG"
 test $FAILED_CNT != 0 && {
   echo "Failed packages:    $FAILED_CNT$FAILED_PKG"
 }
