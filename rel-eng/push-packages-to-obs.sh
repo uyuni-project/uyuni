@@ -140,12 +140,12 @@ function copy_changed_package()
         ;;
       *)
         if [ -f "$tdir/$stem" ]; then
-	  # In sec files ignore Source0 and %setup lines containing
+	  # In sec files ignore Source and %setup lines containing
 	  # '-git-<revision>'.
 	  #   Source0:      MessageQueue-git-4a9144649ae82fab60f4f11b08c75d46275f47bf.tar.gz
 	  #   %setup -q -n MessageQueue-git-4a9144649ae82fab60f4f11b08c75d46275f47bf
 	  #
-	  diff -I '^\(Source0:\|%setup\).*-git-' "$F" "$tdir/$stem" || {
+	  diff -I '^\(Source\|%setup\).*-git-' "$F" "$tdir/$stem" || {
 	    diffs=1
 	    break
 	  }
