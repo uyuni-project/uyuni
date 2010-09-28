@@ -43,7 +43,7 @@ import sync_handlers
 import satCerts
 
 
-PRODUCT_NAME = 'RHN Management Satellite'
+PRODUCT_NAME = 'SuSE Manager'
 DEFAULT_SYSTEMID_LOCATION = '/etc/sysconfig/rhn/systemid'
 DEFAULT_RHN_CERT_LOCATION = '/etc/sysconfig/rhn/rhn-entitlement-cert.xml'
 DEFAULT_WEB_HANDLER = '/rpc/api'
