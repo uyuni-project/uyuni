@@ -3,6 +3,8 @@ SATELLITE_DB_USER="rhnsat"
 SATELLITE_DB_PASS="rhnsat"
 
 $> # empty database, create tablespace
+$> /usr/sbin/spacewalk-service stop
+$> /etc/init.d/oracle-xe start
 $> sqlplus 'sys@xe as sysdba'
 drop user spacewalk cascade;
 create smallfile tablespace data_tbs datafile 'data_01.dbf' SIZE 3G;
