@@ -1,11 +1,44 @@
+SATELLITE_HOST="satellite.suse.de"
+SATELLITE_DB_USER="rhnsat"
+SATELLITE_DB_PASS="rhnsat"
 
-$> rsync -avz satellite:/var/satellite/ /var/satellite/
+$> # empty database, create tablespace
+$> sqlplus 'sys@xe as sysdba'
+drop user spacewalk cascade;
+create smallfile tablespace data_tbs datafile 'data_01.dbf' SIZE 4G;
+create user spacewalk identified by spacewalk default tablespace data_tbs;
+grant dba to spacewalk;
+quit;
+
+$> # prepare remote dump
+$> echo "rrxe =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = $SATELLITE_HOST)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SID = xe)
+    )
+  )
+" >> /etc/tnsnames.ora
+
+$> # dump remote DB, import into local DB and do a schema-upgrade
+$> su - oracle
+$> exp $SATELLITE_DB_USER/$SATELLITE_DB_PASS@rrxe owner=satellite consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log
+$> ORACLE_SID=XE; export ORACLE_SID
+$> imp \'/ as sysdba\' fromuser=$$SATELLITE_DB_USER touser=spacewalk file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y
+$> exit
+$> spacewalk-schema-upgrade
+
+
+
+$> rsync -avz $SATELLITE_HOST:/var/satellite/ /var/satellite/
 
 maybe add -H for hardlinks? 
 
 $> chown -R wwwrun.www /var/satellite
 
-$> rsync -a -v -z --ignore-existing satellite:/var/lib/cobbler/ /var/lib/cobbler/
+$> rsync -a -v -z --ignore-existing $SATELLITE_HOST:/var/lib/cobbler/ /var/lib/cobbler/
 
 copy only new files (new kickstart profiles, snippets, trigger, etc.)
 
@@ -24,8 +57,8 @@ $> cp /etc/apache2/ssl.crt/spacewalk.crt /root/backup/ssl/
 $> cp /etc/apache2/ssl.key/spacewalk.key /root/backup/ssl/
 $> cp /etc/pki/spacewalk/jabberd/server.pem /root/backup/ssl/jabberd/
 
-$> rsync -avz --ignore-existing satellite:/var/www/html/pub/ /srv/www/html/pub/
-$> rsync -avz satellite:/root/ssl-build /root/
+$> rsync -avz --ignore-existing $SATELLITE_HOST:/var/www/html/pub/ /srv/www/html/pub/
+$> rsync -avz $SATELLITE_HOST:/root/ssl-build /root/
 
 
 
