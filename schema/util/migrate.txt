@@ -1,0 +1,45 @@
+
+$> rsync -avz satellite:/var/satellite/ /var/satellite/
+
+maybe add -H for hardlinks? 
+
+$> chown -R wwwrun.www /var/satellite
+
+$> rsync -a -v -z --ignore-existing satellite:/var/lib/cobbler/ /var/lib/cobbler/
+
+copy only new files (new kickstart profiles, snippets, trigger, etc.)
+
+$> /etc/init.d/cobblerd restart
+$> cobbler sync
+
+To create the install tree
+
+
+$> mkdir -p /root/backup/pub
+$> mkdir -p /root/backup/ssl/jabberd
+$> mv /srv/www/html/pub/RHN-ORG-TRUSTED-SSL-CERT /root/backup/pub/
+$> mv /srv/www/html/pub/rhn-org-trusted-ssl-cert*.rpm /root/backup/pub/
+$> mv /root/ssl-build /root/backup/
+$> cp /etc/apache2/ssl.crt/spacewalk.crt /root/backup/ssl/
+$> cp /etc/apache2/ssl.key/spacewalk.key /root/backup/ssl/
+$> cp /etc/pki/spacewalk/jabberd/server.pem /root/backup/ssl/jabberd/
+
+$> rsync -avz --ignore-existing satellite:/var/www/html/pub/ /srv/www/html/pub/
+$> rsync -avz satellite:/root/ssl-build /root/
+
+
+
+Copy the webserver cert and key from satellite to Manager
+On satellite look at /etc/httpd/conf.d/ssl.conf for the keys
+SSLCertificateFile and SSLCertificateKeyFile
+
+Copy the files given files to the Manager server to 
+SSLCertificateFile => /etc/apache2/ssl.crt/spacewalk.crt
+SSLCertificateFile => /etc/pki/spacewalk/jabberd/server.pem
+SSLCertificateKeyFile => /etc/apache2/ssl.key/spacewalk.key
+
+The SUSE Manager server needs to have the same hostname as the 
+old satellite server. 
+Reboot now to get the new hostname.
+
+
