@@ -5,7 +5,7 @@ SATELLITE_DB_PASS="rhnsat"
 $> # empty database, create tablespace
 $> sqlplus 'sys@xe as sysdba'
 drop user spacewalk cascade;
-create smallfile tablespace data_tbs datafile 'data_01.dbf' SIZE 4G;
+create smallfile tablespace data_tbs datafile 'data_01.dbf' SIZE 3G;
 create user spacewalk identified by spacewalk default tablespace data_tbs;
 grant dba to spacewalk;
 quit;
