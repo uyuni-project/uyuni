@@ -1,6 +1,7 @@
 SATELLITE_HOST="satellite.suse.de"
 SATELLITE_DB_USER="rhnsat"
 SATELLITE_DB_PASS="rhnsat"
+SATELLITE_DB_SID="rhnsat"
 
 $> # empty database, create tablespace
 $> /usr/sbin/spacewalk-service stop
@@ -19,7 +20,7 @@ $> echo "rrxe =
       (ADDRESS = (PROTOCOL = TCP)(HOST = $SATELLITE_HOST)(PORT = 1521))
     )
     (CONNECT_DATA =
-      (SID = xe)
+      (SID = $SATELLITE_DB_SID)
     )
   )
 " >> /etc/tnsnames.ora
