@@ -26,7 +26,7 @@ $> # dump remote DB, import into local DB and do a schema-upgrade
 $> su - oracle
 $> exp $SATELLITE_DB_USER/$SATELLITE_DB_PASS@rrxe owner=satellite consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log
 $> ORACLE_SID=XE; export ORACLE_SID
-$> imp \'/ as sysdba\' fromuser=$$SATELLITE_DB_USER touser=spacewalk file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y
+$> imp \'/ as sysdba\' fromuser=$SATELLITE_DB_USER touser=spacewalk file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y
 $> exit
 $> spacewalk-schema-upgrade
 
