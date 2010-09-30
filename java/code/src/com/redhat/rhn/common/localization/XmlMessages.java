@@ -56,6 +56,7 @@ public final class XmlMessages {
     protected static final String RESOURCE_BUNDLE_CLASSNAME = "StringResource";
 
     public static final String PRODUCT_NAME_MACRO = "@@PRODUCT_NAME@@";
+    public static final String VENDOR_NAME_MACRO = "@@VENDOR_NAME@@";
 
     private static final Logger LOG = Logger.getLogger(XmlMessages.class);
 
@@ -245,6 +246,9 @@ public final class XmlMessages {
 
         pattern = pattern.replaceAll(PRODUCT_NAME_MACRO,
                 Config.get().getString("web.product_name"));
+
+        pattern = pattern.replaceAll(VENDOR_NAME_MACRO,
+                Config.get().getString("web.vendor_name"));
 
         if (args == null || args.length == 0) {
             return pattern;

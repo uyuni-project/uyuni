@@ -1003,14 +1003,14 @@
       </trans-unit>
 
       <trans-unit id="login.jsp.hostbody2">
-<source>Red Hat currently features three @@PRODUCT_NAME@@ modules:</source>
+<source>@@VENDOR_NAME@@ currently features three @@PRODUCT_NAME@@ modules:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="login.jsp.list1">
-<source>Update: Easy software updates to your Red Hat systems.</source>
+<source>Update: Easy software updates to your @@VENDOR_NAME@@ systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
@@ -1286,13 +1286,13 @@
       </trans-unit>
 
       <trans-unit id="preferences.jsp.contactopt">
-<source>Red Hat Contact Options</source>
+<source>@@VENDOR_NAME@@ Contact Options</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.contactoptions">
-<source>The following options define how Red Hat, Inc. may contact you for informational purposes.</source>
+<source>The following options define how @@VENDOR_NAME@@, Inc. may contact you for informational purposes.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1921,7 +1921,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.contactSummary">
-<source> I would like to receive information from Red Hat in the following ways. (Please note: you may receive email from all of Red Hat, not just regarding @@PRODUCT_NAME@@.) </source>
+<source> I would like to receive information from @@VENDOR_NAME@@ in the following ways. (Please note: you may receive email from all of @@VENDOR_NAME@@, not just regarding @@PRODUCT_NAME@@.) </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -1933,19 +1933,19 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.partners1">
-<source> Red Hat has close relationships with many industry leaders. From time to time, our partners have special news and offerings to share with you. If you'd like, we will pass this information on to you. </source>
+<source> @@VENDOR_NAME@@ has close relationships with many industry leaders. From time to time, our partners have special news and offerings to share with you. If you'd like, we will pass this information on to you. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.partners2">
-<source> Yes, I would like to hear about special offers from Red Hat's partners. </source>
+<source> Yes, I would like to hear about special offers from @@VENDOR_NAME@@'s partners. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.createLogin">
-<source>Create a Red Hat Login</source>
+<source>Create a @@VENDOR_NAME@@ Login</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateCorporate</context>
         </context-group>
@@ -1969,19 +1969,19 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.corpSummary">
-<source>A business login will enable you to administer systems owned by your business and to make business purchases of Red Hat products and services. &lt;strong&gt;If your organization has an existing @@PRODUCT_NAME@@ business login, you should not use this form. Instead, you will need to contact your @@PRODUCT_NAME@@ Organization Administrator to create your account so you are registered with your organization.&lt;/strong&gt; </source>
+<source>A business login will enable you to administer systems owned by your business and to make business purchases of @@VENDOR_NAME@@ products and services. &lt;strong&gt;If your organization has an existing @@PRODUCT_NAME@@ business login, you should not use this form. Instead, you will need to contact your @@PRODUCT_NAME@@ Organization Administrator to create your account so you are registered with your organization.&lt;/strong&gt; </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateCorporate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.personalSummary">
-<source> A home user login will enable you to manage systems you own for personal use and make personal purchases of Red Hat products and services. &lt;strong&gt;(You should not create a home user login if you will use a Red Hat login for managing systems owned by a business or for making business purchases - for business needs, &lt;a href="/rhn/newlogin/CreateCorporate.do?account_type=create_corporate"&gt;create a business login&lt;/a&gt; instead.)&lt;/strong&gt; </source>
+<source> A home user login will enable you to manage systems you own for personal use and make personal purchases of @@VENDOR_NAME@@ products and services. &lt;strong&gt;(You should not create a home user login if you will use a @@VENDOR_NAME@@ login for managing systems owned by a business or for making business purchases - for business needs, &lt;a href="/rhn/newlogin/CreateCorporate.do?account_type=create_corporate"&gt;create a business login&lt;/a&gt; instead.)&lt;/strong&gt; </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreatePersonal</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.loginEnables">
-<source>A Red Hat Login enables</source>
+<source>A @@VENDOR_NAME@@ Login enables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateCorporate</context>
         </context-group>
@@ -2011,7 +2011,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.enables4">
-<source>access Red Hat technical support, documentation, and Knowledgebase</source>
+<source>access @@VENDOR_NAME@@ technical support, documentation, and Knowledgebase</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateCorporate</context>
         </context-group>
@@ -2656,7 +2656,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
      <trans-unit id="usercreate.do_you_need_corp_1">
-<source>You will need a &lt;strong&gt;business&lt;/strong&gt; login to administer systems owned by your business, or to make business purchases of Red Hat products and services. </source>
+<source>You will need a &lt;strong&gt;business&lt;/strong&gt; login to administer systems owned by your business, or to make business purchases of @@VENDOR_NAME@@ products and services. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin</context>
         </context-group>
@@ -2674,13 +2674,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.personalLoginDesc_1">
-<source>You will need a &lt;strong&gt;home user&lt;/strong&gt; login to manage systems you own for personal use, or to make personal purchases of Red Hat products and services. </source>
+<source>You will need a &lt;strong&gt;home user&lt;/strong&gt; login to manage systems you own for personal use, or to make personal purchases of @@VENDOR_NAME@@ products and services. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.personalLoginDesc_2">
-<source>&lt;strong&gt;(You should not create a home user login if you will use a Red Hat login for managing systems owned by a business or for making business purchases.)&lt;/strong&gt; </source>
+<source>&lt;strong&gt;(You should not create a home user login if you will use a @@VENDOR_NAME@@ login for managing systems owned by a business or for making business purchases.)&lt;/strong&gt; </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin</context>
         </context-group>
@@ -9929,7 +9929,7 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
   <trans-unit id="tnc.jsp.refused-desc">
-    <source>You have refused to acknowledge the Terms and Conditions associated with the use of Red Hat products and services. You must accept these Terms and Conditions in order to access @@PRODUCT_NAME@@ and your Red Hat subscriptions. Please click on the link below to log back in to @@PRODUCT_NAME@@ and accept the Terms and Conditions of use.</source>
+    <source>You have refused to acknowledge the Terms and Conditions associated with the use of @@VENDOR_NAME@@ products and services. You must accept these Terms and Conditions in order to access @@PRODUCT_NAME@@ and your @@VENDOR_NAME@@ subscriptions. Please click on the link below to log back in to @@PRODUCT_NAME@@ and accept the Terms and Conditions of use.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/tnc/</context>
         </context-group>
@@ -9943,7 +9943,7 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
   <trans-unit id="tnc.jsp.error-desc">
-    <source>An error occurred while processing your acceptance of Red Hat's Terms and Conditions of use. Please click on the link below to log back into @@PRODUCT_NAME@@ and complete the acceptance process.</source>
+    <source>An error occurred while processing your acceptance of @@VENDOR_NAME@@'s Terms and Conditions of use. Please click on the link below to log back into @@PRODUCT_NAME@@ and complete the acceptance process.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/tnc/</context>
         </context-group>
@@ -12528,7 +12528,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
       </trans-unit>
 
       <trans-unit id="channels.redhat.jsp.header1">
-        <source>The software channels listed below are Red Hat channels or child channels of Red Hat Channels.</source>
+        <source>The software channels listed below are @@VENDOR_NAME@@ channels or child channels of @@VENDOR_NAME@@ Channels.</source>
       </trans-unit>
 
       <trans-unit id="channels.shared.jsp.header1">
@@ -12564,7 +12564,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
       </trans-unit>
 
       <trans-unit id="channels.retired.jsp.header1">
-        <source>The software channels listed below are &lt;strong&gt;retired channels&lt;/strong&gt; that your organization &lt;a href=&quot;/rhn/channels/software/Entitlements.do&quot;&gt; is entitled to &lt;/a&gt;but are no longer supported by Red Hat because they have reached their 'end-of-life' date.</source>
+        <source>The software channels listed below are &lt;strong&gt;retired channels&lt;/strong&gt; that your organization &lt;a href=&quot;/rhn/channels/software/Entitlements.do&quot;&gt; is entitled to &lt;/a&gt;but are no longer supported by @@VENDOR_NAME@@ because they have reached their 'end-of-life' date.</source>
       </trans-unit>
 
       <trans-unit id="channels.manage.jsp.toolbar">
@@ -12906,7 +12906,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
          <source>Leave blank for automatic key generation. Note that the prefix is an indication of the @@PRODUCT_NAME@@ organization the key is associated with.</source>
      </trans-unit>
    <trans-unit id="activation-key.jsp.edit-basechannel-tooltip">
-       <source>Choose &quot;&lt;strong&gt;{0}&lt;/strong&gt;&quot; to allow systems to register to the default Red Hat provided channel that corresponds to their installed version of Red Hat Enterprise Linux. You may also choose particular Red Hat provided channels or custom base channels here, but please note if a system using this key is not compatible with the selected channel, it will fall back to its Red Hat default channel.</source>
+       <source>Choose &quot;&lt;strong&gt;{0}&lt;/strong&gt;&quot; to allow systems to register to the default @@VENDOR_NAME@@ provided channel that corresponds to their installed version of Red Hat Enterprise Linux. You may also choose particular @@VENDOR_NAME@@ provided channels or custom base channels here, but please note if a system using this key is not compatible with the selected channel, it will fall back to its @@VENDOR_NAME@@ default channel.</source>
    </trans-unit>
    <trans-unit id="activation-key.jsp.edit.universal-default-tooltip">
        <source>Only one universal default activation key may be set for this organization. By setting this key as universal default, you will remove universal default status from the current universal default key if it exists. If this key is set as universal default, then newly-registered systems to your organization will inherit the properties of this key.</source>
@@ -13847,7 +13847,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
     </trans-unit>
 	<trans-unit id="deploytask.error.badmode">
-<source>Unrecognized deployment task - please contact Red Hat support.</source>
+<source>Unrecognized deployment task - please contact @@VENDOR_NAME@@ support.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -19822,11 +19822,11 @@ performance.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="outage-policy.jsp.scheduled">
-<source>Red Hat schedules all planned maintenance to @@PRODUCT_NAME@@ each
-Tuesday from 9pm-3am, Eastern U.S. Time (1am-7am UTC).  While Red Hat will not
+<source>@@VENDOR_NAME@@ schedules all planned maintenance to @@PRODUCT_NAME@@ each
+Tuesday from 9pm-3am, Eastern U.S. Time (1am-7am UTC).  While @@VENDOR_NAME@@ will not
 necessarily use every one of these windows to perform maintenance, we recommend that your
 enterprise develop business practices that allow this period of downtime for your @@PRODUCT_NAME@@ solution.
-Red Hat will always attempt to inform at least one week in advance through the email outage
+@@VENDOR_NAME@@ will always attempt to inform at least one week in advance through the email outage
 list (see below) about this scheduled downtime whenever possible.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">outage-policy.jsp</context>
@@ -19857,7 +19857,7 @@ unscheduled maintenance.</source>
       </trans-unit>
       <trans-unit id="outage-policy.jsp.emergency">
 <source>When failing equipment or any other critical issue forces an outage,
-Red Hat will open a trouble ticket on the outage and contact all users
+@@VENDOR_NAME@@ will open a trouble ticket on the outage and contact all users
 on the email outage list as soon as possible.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">outage-policy.jsp</context>
@@ -19874,7 +19874,7 @@ on the email outage list as soon as possible.</source>
 <source>All @@PRODUCT_NAME@@ users are encouraged to join our optional email outage list.
 This email list will provide you with periodic updates about our
 scheduled downtime maintenance activities, and will also serve as the
-emailing list that Red Hat will use in the case of Unscheduled and
+emailing list that @@VENDOR_NAME@@ will use in the case of Unscheduled and
 Emergency Maintenance windows.&lt;a href="{0}"&gt;Register for the Email Outage List&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">outage-policy.jsp</context>
@@ -20001,7 +20001,7 @@ The software channels listed below have ISO images available for products which 
 &lt;p&gt;Once wget is installed, at a shell prompt, cut and paste the URL for the ISO into the wget command as follows:&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;[user@localhost home]$ &lt;strong&gt;wget -c 'very_long_url'&lt;/strong&gt;&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;For more information on how to use Red Hat ISOs, check the &lt;a href="http://www.redhat.com/download/howto_download.html" target="new"&gt;How To Download&lt;/a&gt; page.&lt;/p&gt;
+&lt;p&gt;For more information on how to use @@VENDOR_NAME@@ ISOs, check the &lt;a href="http://www.redhat.com/download/howto_download.html" target="new"&gt;How To Download&lt;/a&gt; page.&lt;/p&gt;
 	
 </source>
         <context-group name="ctx">
@@ -20399,7 +20399,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
 
       <trans-unit id="guestlimited.jsp.para1">
-        <source>The following is a list of host systems with the 'Virtualization' entitlement. You may wish to consider upgrading systems that have exceeded the 4-guest limit to an 'Unlimited Virtualization' entitlement to make the most of your subscriptions and stay in compliance with your service level agreements with Red Hat.</source>
+        <source>The following is a list of host systems with the 'Virtualization' entitlement. You may wish to consider upgrading systems that have exceeded the 4-guest limit to an 'Unlimited Virtualization' entitlement to make the most of your subscriptions and stay in compliance with your service level agreements with @@VENDOR_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/entitlements/GuestUnlimitedHosts.do</context>
         </context-group>
@@ -20518,7 +20518,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
 
       <trans-unit id="physicalhosts.jsp.guestsofnonredhat">
-<source>Guests of Non-Red Hat Virtualization Hosts</source>
+<source>Guests of Non-@@VENDOR_NAME@@ Virtualization Hosts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/entitlements/GuestLimitedHosts.do</context>
         </context-group>
@@ -20560,7 +20560,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
 
       <trans-unit id="physicalhosts.jsp.nonredhatnote">
-<source>If the host of a guest system above is not a Red Hat Virtualization host running Red Hat Enterprise Linux, it must consume the same software and system entitlements it would if it were a physical system at this time.</source>
+<source>If the host of a guest system above is not a @@VENDOR_NAME@@ Virtualization host running Red Hat Enterprise Linux, it must consume the same software and system entitlements it would if it were a physical system at this time.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/entitlements/GuestLimitedHosts.do</context>
         </context-group>
@@ -21431,7 +21431,7 @@ Below is a list of channels in your organization.
       </trans-unit>
 	  <trans-unit id="basesub.jsp.summary">
         <source>
-As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default Red Hat base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels.
+As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default @@VENDOR_NAME@@ base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels.
 &lt;p/&gt;
 &lt;strong&gt;This operation can have a dramatic effect on the packages and errata available to the systems, and should be used with caution.&lt;/strong&gt;
       	</source>
@@ -21446,7 +21446,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         </context-group>
       </trans-unit>
 	  <trans-unit id="basesub.jsp.rhn-channels">
-        <source>Red Hat Channels</source>
+        <source>@@VENDOR_NAME@@ Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
         </context-group>
@@ -21701,11 +21701,11 @@ As a Channel Administrator, you may change the base channels your systems are su
       </trans-unit>
 
       <trans-unit id="channel.manage.errata.addredhaterrata">
-			<source>Add Red Hat Errata</source>
+			<source>Add @@VENDOR_NAME@@ Errata</source>
       </trans-unit>
 
       <trans-unit id="channel.manage.errata.addredhaterratamsg">
-			<source>Choose this option if you want to import errata that exist in Red Hat base channels, or child channels of Red Hat provided channels.</source>
+			<source>Choose this option if you want to import errata that exist in @@VENDOR_NAME@@ base channels, or child channels of @@VENDOR_NAME@@ provided channels.</source>
       </trans-unit>
 
         <trans-unit id="channel.manage.errata.noerrata">

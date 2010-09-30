@@ -5890,14 +5890,14 @@ user before attempting to deactivate their account.</source>
       </trans-unit>
 
     <trans-unit id="satellite.expired">
-        <source>Your satellite certificate has expired.  Please contact Red Hat for a new certificate.</source>
+        <source>Your satellite certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
 
     <trans-unit id="satellite.graceperiod">
-        <source>Your satellite certificate has expired.  Please contact Red Hat for a new certificate.  Your satellite will become inactive in {0} day(s).</source>
+        <source>Your satellite certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your satellite will become inactive in {0} day(s).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -8538,7 +8538,7 @@ Follow this url to see the full list of inactive systems:
         <source>Channel name must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces and forward slashes ('/').</source>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannelname.redhat">
-         <source>Red Hat channels require admin privileges</source>
+         <source>@@VENDOR_NAME@@ channels require admin privileges</source>
          <context-group name="ctx">
            <context context-type="sourcefile">/channels/manage/Edit</context>
          </context-group>
@@ -8584,7 +8584,7 @@ Follow this url to see the full list of inactive systems:
         <source>Channel label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.</source>
       </trans-unit>
       <trans-unit id="edit.channel.invalidchannellabel.redhat">
-        <source>Red Hat channels require admin privileges</source>
+        <source>@@VENDOR_NAME@@ channels require admin privileges</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
@@ -8612,7 +8612,7 @@ Follow this url to see the full list of inactive systems:
         <source>A distribution already exists with the name '{0}'.  Please select another name.</source>
      </trans-unit>
      <trans-unit id="api.channel.delete.redhat">
-        <source>Red Hat Channels cannot be deleted, only custom channels can.</source>
+        <source>@@VENDOR_NAME@@ Channels cannot be deleted, only custom channels can.</source>
       </trans-unit>
      <trans-unit id="api.channel.delete.haschild">
         <source>This channel has child channels associated with it.  You must delete those channels first before deleting the parent.</source>
