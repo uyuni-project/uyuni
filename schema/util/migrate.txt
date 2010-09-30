@@ -1,7 +1,32 @@
-SATELLITE_HOST="satellite.suse.de"
+SATELLITE_IP="10.10.3.248"
+SATELLITE_HOST="satellite"
+SATELLITE_DOMAIN="suse.de"
+SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
 SATELLITE_DB_USER="rhnsat"
 SATELLITE_DB_PASS="rhnsat"
 SATELLITE_DB_SID="rhnsat"
+
+
+# The SUSE Manager server needs to have the same hostname as the 
+# old satellite server. 
+
+# change the hostname to the satellite hostname
+$> hostname $SATELLITE_HOST
+
+# modify /etc/hosts to fake the own hostname
+#
+# add line 
+# <ip>  <fqdn> <shortname>
+#
+$> echo -e "\n$SATELLITE_IP $SATELLITE_FQDN $SATELLITE_HOST" >> /etc/hosts
+
+# test if the output of "hostname -f" is equal to $SATELLITE_FQDN
+# test if "ping $SATELLITE_HOST" ping the own host
+
+#
+# run the spacewalk_firstboot script
+#
+/etc/init.d/spacewalk_firstboot
 
 $> # empty database, create tablespace
 $> /usr/sbin/spacewalk-service stop
@@ -17,7 +42,7 @@ $> # prepare remote dump
 $> echo "rrxe =
   (DESCRIPTION =
     (ADDRESS_LIST =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = $SATELLITE_HOST)(PORT = 1521))
+      (ADDRESS = (PROTOCOL = TCP)(HOST = $SATELLITE_IP)(PORT = 1521))
     )
     (CONNECT_DATA =
       (SID = $SATELLITE_DB_SID)
@@ -27,7 +52,6 @@ $> echo "rrxe =
 
 $> # dump remote DB, import into local DB and do a schema-upgrade
 $> su - oracle
-$> SATELLITE_HOST="satellite.suse.de"
 $> SATELLITE_DB_USER="rhnsat"
 $> SATELLITE_DB_PASS="rhnsat"
 $> exp $SATELLITE_DB_USER/$SATELLITE_DB_PASS@rrxe owner=$SATELLITE_DB_USER consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log
@@ -38,13 +62,13 @@ $> spacewalk-schema-upgrade
 
 
 
-$> rsync -avz $SATELLITE_HOST:/var/satellite/ /var/satellite/
+$> rsync -avz $SATELLITE_IP:/var/satellite/ /var/satellite/
 
 maybe add -H for hardlinks? 
 
 $> chown -R wwwrun.www /var/satellite
 
-$> rsync -a -v -z --ignore-existing $SATELLITE_HOST:/var/lib/cobbler/ /var/lib/cobbler/
+$> rsync -a -v -z --ignore-existing $SATELLITE_IP:/var/lib/cobbler/ /var/lib/cobbler/
 
 copy only new files (new kickstart profiles, snippets, trigger, etc.)
 
@@ -63,8 +87,8 @@ $> cp /etc/apache2/ssl.crt/spacewalk.crt /root/backup/ssl/
 $> cp /etc/apache2/ssl.key/spacewalk.key /root/backup/ssl/
 $> cp /etc/pki/spacewalk/jabberd/server.pem /root/backup/ssl/jabberd/
 
-$> rsync -avz --ignore-existing $SATELLITE_HOST:/var/www/html/pub/ /srv/www/html/pub/
-$> rsync -avz $SATELLITE_HOST:/root/ssl-build /root/
+$> rsync -avz --ignore-existing $SATELLITE_IP:/var/www/html/pub/ /srv/www/html/pub/
+$> rsync -avz $SATELLITE_IP:/root/ssl-build /root/
 
 
 
@@ -77,8 +101,13 @@ SSLCertificateFile => /etc/apache2/ssl.crt/spacewalk.crt
 SSLCertificateFile => /etc/pki/spacewalk/jabberd/server.pem
 SSLCertificateKeyFile => /etc/apache2/ssl.key/spacewalk.key
 
-The SUSE Manager server needs to have the same hostname as the 
-old satellite server. 
+Shoutdown the original satellite server and prepare 
+the new SUSE Manager host to get the right hostname 
+from your network environment.
+
+Maybe you need to remove the extra line from /etc/hosts added 
+at the beginning.
+
 Reboot now to get the new hostname.
 
 
