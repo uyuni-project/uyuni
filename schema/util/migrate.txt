@@ -7,6 +7,10 @@ SATELLITE_DB_PASS="rhnsat"
 SATELLITE_DB_SID="rhnsat"
 
 TEMP_MANAGER_IP="10.10.100.239"
+TEMP_MANAGER_USER="spacewalk"
+TEMP_MANAGER_PASS="spacewalk"
+# TEMP_MANAGER_PASS also used for sys db admin
+
 
 # The SUSE Manager server needs to have the same hostname as the 
 # old satellite server. 
@@ -25,19 +29,74 @@ $> echo -e "\n$TEMP_MANAGER_IP $SATELLITE_FQDN $SATELLITE_HOST" >> /etc/hosts
 # test if "ping $SATELLITE_HOST" ping the own host
 
 #
-# run the spacewalk_firstboot script
+# initialize spacewalk
 #
-/etc/init.d/spacewalk_firstboot
+
+$> echo -e "9055\n\n$TEMP_MANAGER_PASS\n$TEMP_MANAGER_PASS\n" | /etc/init.d/oracle-xe configure
+#
+$> sed -i "s/:\/usr\/lib\/oracle\/10.2.0.4\/client.*:/:\/usr\/lib\/oracle\/xe\/app\/oracle\/product\/10.2.0\/server:/g" /etc/oratab
+#
+$> . /etc/profile.d/oracle.sh
+#
+$> cp $ORACLE_HOME/network/admin/tnsnames.ora /etc
+#
+$> restorecon -v /etc/tnsnames.ora
+
+$> /etc/init.d/oracle-xe start
+
+$> echo "create smallfile tablespace data_tbs datafile '/usr/lib/oracle/xe/oradata/XE/data_01.dbf' SIZE 3800M;
+create user ruby identified by ruby default tablespace data_tbs;
+grant dba to ruby;
+GRANT EXECUTE ON dbms_lock TO ruby;
+create user $TEMP_MANAGER_USER identified by $TEMP_MANAGER_PASS default tablespace data_tbs;
+grant dba to $TEMP_MANAGER_USER;
+alter system set processes = 400 scope=spfile;
+alter system set "_optimizer_filter_pred_pullup"=false scope=spfile;
+alter system set "_optimizer_cost_based_transformation"=off scope=spfile;
+quit
+" > /tmp/dbsetup.sql
+
+$> sqlplus "sys/$TEMP_MANAGER_PASS@xe as sysdba" @/tmp/dbsetup.sql
+$> rm /tmp/dbsetup.sql
+
+$> echo "admin-email = galaxy-devel@suse.de
+ssl-set-org = Novell
+ssl-set-org-unit = suse
+ssl-set-city = Nuernberg
+ssl-set-state = Bayern
+ssl-set-country = DE
+ssl-password = $TEMP_MANAGER_PASS
+ssl-set-email = galaxy-devel@suse.de
+ssl-config-sslvhost = Y
+db-backend=oracle
+db-user=$TEMP_MANAGER_USER
+db-password=$TEMP_MANAGER_PASS
+db-name=xe
+db-host=localhost
+db-port=1521
+db-protocol=TCP
+enable-tftp=Y
+" > /tmp/spacewalk-answers
+
+$> /usr/bin/spacewalk-setup --disconnected --answer-file=/tmp/spacewalk-answers
+$> rm /tmp/spacewalk-answers
+
+#
+# end initialize spacewalk
+#
+
 
 $> # empty database, create tablespace
 $> /usr/sbin/spacewalk-service stop
 $> /etc/init.d/oracle-xe start
-$> sqlplus 'sys@xe as sysdba'
-drop user spacewalk cascade;
-create smallfile tablespace data_tbs datafile '/usr/lib/oracle/xe/oradata/XE/data_01.dbf' SIZE 3800M;
-create user spacewalk identified by spacewalk default tablespace data_tbs;
-grant dba to spacewalk;
-quit;
+$> echo "drop user $TEMP_MANAGER_USER cascade;
+create user $TEMP_MANAGER_USER identified by $TEMP_MANAGER_PASS default tablespace data_tbs;
+grant dba to $TEMP_MANAGER_USER;
+quit
+" > /tmp/dbnewspacewalkuser.sql
+
+$> sqlplus "sys/$TEMP_MANAGER_PASS@xe as sysdba" @/tmp/dbnewspacewalkuser.sql
+$> rm /tmp/dbnewspacewalkuser.sql
 
 $> # prepare remote dump
 $> echo "rrxe =
@@ -77,7 +136,12 @@ $> rsync -a -v -z --ignore-existing $SATELLITE_IP:/var/lib/cobbler/ /var/lib/cob
 
 copy only new files (new kickstart profiles, snippets, trigger, etc.)
 
-$> /etc/init.d/cobblerd restart
+#
+# cobbler needs also running apache, so let's restart complete spacewalk
+#
+#$> /etc/init.d/cobblerd restart
+
+$> spacewalk-service restart
 $> cobbler sync
 
 To create the install tree
@@ -106,12 +170,16 @@ SSLCertificateFile => /etc/apache2/ssl.crt/spacewalk.crt
 SSLCertificateFile => /etc/pki/spacewalk/jabberd/server.pem
 SSLCertificateKeyFile => /etc/apache2/ssl.key/spacewalk.key
 
+$> scp root@$SATELLITE_IP:/etc/pki/tls/certs/spacewalk.crt /etc/apache2/ssl.crt/spacewalk.crt
+$> scp root@$SATELLITE_IP:/etc/pki/tls/certs/spacewalk.crt /etc/pki/spacewalk/jabberd/server.pem
+$> scp root@$SATELLITE_IP:/etc/pki/tls/private/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
+
+You need to remove the extra line from /etc/hosts added 
+at the beginning.
+
 Shoutdown the original satellite server and prepare 
 the new SUSE Manager host to get the right hostname 
 from your network environment.
-
-Maybe you need to remove the extra line from /etc/hosts added 
-at the beginning.
 
 Reboot now to get the new hostname.
 
