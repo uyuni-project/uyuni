@@ -6,6 +6,7 @@ SATELLITE_DB_USER="rhnsat"
 SATELLITE_DB_PASS="rhnsat"
 SATELLITE_DB_SID="rhnsat"
 
+TEMP_MANAGER_IP="10.10.100.239"
 
 # The SUSE Manager server needs to have the same hostname as the 
 # old satellite server. 
@@ -18,7 +19,7 @@ $> hostname $SATELLITE_HOST
 # add line 
 # <ip>  <fqdn> <shortname>
 #
-$> echo -e "\n$SATELLITE_IP $SATELLITE_FQDN $SATELLITE_HOST" >> /etc/hosts
+$> echo -e "\n$TEMP_MANAGER_IP $SATELLITE_FQDN $SATELLITE_HOST" >> /etc/hosts
 
 # test if the output of "hostname -f" is equal to $SATELLITE_FQDN
 # test if "ping $SATELLITE_HOST" ping the own host
