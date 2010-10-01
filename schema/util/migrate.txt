@@ -63,7 +63,9 @@ $> spacewalk-schema-upgrade
 $> su - oracle
 $> ORACLE_SID=XE; export ORACLE_SID
 $> sqlplus 'sys@xe as sysdba' @/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/rdbms/admin/utlrp.sql
+   SQL> quit
 
+$> exit
 
 $> rsync -avz $SATELLITE_IP:/var/satellite/ /var/satellite/
 
