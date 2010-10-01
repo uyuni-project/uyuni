@@ -183,4 +183,15 @@ from your network environment.
 
 Reboot now to get the new hostname.
 
+After the host is up and running with the right hostname and ip address
+you should re-create the channel metadata:
+
+$> sqlplus "$TEMP_MANAGER_USER/$TEMP_MANAGER_PASS@xe" << 'EOF'
+insert into rhnRepoRegenQueue (id, channel_label, client, reason, force, bypass_filters) 
+  select rhn_repo_regen_queue_id_seq.nextval, label, 'satmigration', NULL, 'N', 'N' from rhnchannel;
+quit
+EOF
+
+
+
 
