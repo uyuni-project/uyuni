@@ -146,6 +146,19 @@ $> cobbler sync
 
 To create the install tree
 
+#
+# kickstart
+#
+$> rsync -a -v -z $SATELLITE_IP:/var/lib/rhn/kickstarts /var/lib/rhn/
+$> chown -R tomcat.tomcat /var/lib/rhn/kickstarts
+
+#
+# nocpulse sync
+
+$> rsync -a -v -z --exclude='libexec/*' $SATELLITE_IP:/var/lib/nocpulse/ /var/lib/nocpulse/
+$> chown -R nocpulse.nocpulse /var/lib/nocpulse
+
+
 
 $> mkdir -p /root/backup/pub
 $> mkdir -p /root/backup/ssl/jabberd
