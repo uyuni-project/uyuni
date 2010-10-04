@@ -57,6 +57,8 @@ public final class XmlMessages {
 
     public static final String PRODUCT_NAME_MACRO = "@@PRODUCT_NAME@@";
     public static final String VENDOR_NAME_MACRO = "@@VENDOR_NAME@@";
+    public static final String ENTERPRISE_LINUX_NAME_MACRO = "@@ENTERPRISE_LINUX_NAME@@";
+    public static final String VENDOR_SERVICE_NAME_MACRO = "@@VENDOR_SERVICE_NAME@@";
 
     private static final Logger LOG = Logger.getLogger(XmlMessages.class);
 
@@ -249,6 +251,12 @@ public final class XmlMessages {
 
         pattern = pattern.replaceAll(VENDOR_NAME_MACRO,
                 Config.get().getString("web.vendor_name"));
+
+        pattern = pattern.replaceAll(ENTERPRISE_LINUX_NAME_MACRO,
+                Config.get().getString("web.enterprise_linux_name"));
+
+        pattern = pattern.replaceAll(VENDOR_SERVICE_NAME_MACRO,
+                Config.get().getString("web.vendor_service_name"));
 
         if (args == null || args.length == 0) {
             return pattern;

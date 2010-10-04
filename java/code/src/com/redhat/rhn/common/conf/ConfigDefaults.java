@@ -99,8 +99,9 @@ public class ConfigDefaults {
     public static final String FORCE_UNENTITLEMENT = "web.force_unentitlement";
 
     public static final String PRODUCT_NAME = "web.product_name";
-
     public static final String VENDOR_NAME = "web.vendor_name";
+    public static final String ENTERPRISE_LINUX_NAME = "web.enterprise_linux_name";
+    public static final String VENDOR_SERVICE_NAME = "web.vendor_service_name";
 
     public static final String COBBLER_AUTOMATED_USER = "web.taskomatic_cobbler_user";
 

@@ -2528,7 +2528,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="subscriptionmanagement.jsp.renew.description">
-<source>&lt;strong&gt;&lt;a href="https://www.redhat.com/rhel/renew"&gt;Renew&lt;/a&gt;&lt;/strong&gt; your &lt;strong&gt;Red Hat Enterprise Linux subscriptions&lt;/strong&gt; and &lt;strong&gt;@@PRODUCT_NAME@@ entitlements&lt;/strong&gt; at the &lt;strong&gt;&lt;a href="https://www.redhat.com/rhel/renew"&gt;&lt;img src="/img/external-link.gif" alt=&quot;External Link&quot;/&gt; Red Hat Renewal Center&lt;/a&gt;&lt;/strong&gt;.</source>
+<source>&lt;strong&gt;&lt;a href="https://www.redhat.com/rhel/renew"&gt;Renew&lt;/a&gt;&lt;/strong&gt; your &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ subscriptions&lt;/strong&gt; and &lt;strong&gt;@@PRODUCT_NAME@@ entitlements&lt;/strong&gt; at the &lt;strong&gt;&lt;a href="https://www.redhat.com/rhel/renew"&gt;&lt;img src="/img/external-link.gif" alt=&quot;External Link&quot;/&gt; Red Hat Renewal Center&lt;/a&gt;&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/SubscriptionManagement</context>
         </context-group>
@@ -2540,13 +2540,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="subscriptionmanagement.jsp.purchase.description1">
-<source>&lt;strong&gt;Note:&lt;/strong&gt; Provisioning and Management services are provided to enable add-on features to existing Red Hat Enterprise Linux subscriptions only.  These services alone will not enable you to successfully register an additional system profile in your @@PRODUCT_NAME@@ account.</source>
+<source>&lt;strong&gt;Note:&lt;/strong&gt; Provisioning and Management services are provided to enable add-on features to existing @@ENTERPRISE_LINUX_NAME@@ subscriptions only.  These services alone will not enable you to successfully register an additional system profile in your @@PRODUCT_NAME@@ account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/SubscriptionManagement</context>
         </context-group>
       </trans-unit>
       <trans-unit id="subscriptionmanagement.jsp.purchase.description2">
-<source>&lt;strong&gt;&lt;a href="https://www.redhat.com/apps/commerce/"&gt;Purchase&lt;/a&gt;&lt;/strong&gt; additional &lt;strong&gt;Red Hat Enterprise Linux subscriptions&lt;/strong&gt; at the &lt;strong&gt;&lt;a href="https://www.redhat.com/apps/commerce/"&gt;&lt;img src="/img/external-link.gif" alt=&quot;External Link&quot;/&gt;Red Hat Store&lt;/a&gt;&lt;/strong&gt;.</source>
+<source>&lt;strong&gt;&lt;a href="https://www.redhat.com/apps/commerce/"&gt;Purchase&lt;/a&gt;&lt;/strong&gt; additional &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ subscriptions&lt;/strong&gt; at the &lt;strong&gt;&lt;a href="https://www.redhat.com/apps/commerce/"&gt;&lt;img src="/img/external-link.gif" alt=&quot;External Link&quot;/&gt;Red Hat Store&lt;/a&gt;&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/SubscriptionManagement</context>
         </context-group>
@@ -6410,7 +6410,7 @@ value for this entitlement, excluding the default organization's consumption.</s
      </trans-unit>
 
      <trans-unit id="systementitlements.jsp.para3">
-		<source>&lt;strong&gt; If you need additional entitlements,&lt;/strong&gt; please visit &lt;a href="/rhn/account/SubscriptionManagement.do"&gt; &lt;strong&gt;Purchase or Renew&lt;/strong&gt;&lt;/a&gt; via the left navigation bar. Please note that you will need to purchase a Red Hat Enterprise Linux subscription for additional &lt;strong&gt;update&lt;/strong&gt; base entitlements.</source>
+		<source>&lt;strong&gt; If you need additional entitlements,&lt;/strong&gt; please visit &lt;a href="/rhn/account/SubscriptionManagement.do"&gt; &lt;strong&gt;Purchase or Renew&lt;/strong&gt;&lt;/a&gt; via the left navigation bar. Please note that you will need to purchase a @@ENTERPRISE_LINUX_NAME@@ subscription for additional &lt;strong&gt;update&lt;/strong&gt; base entitlements.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
@@ -10644,7 +10644,7 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="kickstartoptions.jsp.summary">
-        <source>You may wish to modify the following options for special-case kickstart scenarios. We recommend consulting the Red Hat Enterprise Linux System Administration Guide for detailed documentation of all of these options.</source>
+        <source>You may wish to modify the following options for special-case kickstart scenarios. We recommend consulting the @@ENTERPRISE_LINUX_NAME@@ System Administration Guide for detailed documentation of all of these options.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -11629,11 +11629,11 @@ Please note that some manual configuration of these scripts may still be require
       <trans-unit id="kickstart.script.summary">
 <source>You can edit the pre and post scripts for this kickstart below.  Kickstart pre-scripts are run immediately after a kickstart file has been parsed on a system.
 You can access the network in this section, but you must use IP addresses (name service has not been configured at this point).  For more details on
-kickstart pre scripts, please refer to the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/strong&gt;
+kickstart pre scripts, please refer to the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt;
 &lt;br/&gt;&lt;br/&gt;
 You can also edit the post script for this kickstart below.  First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, esystem registration to @@PRODUCT_NAME@@).
 Next, the non-chroot post script will be executed, and finally the post script will be executed.  For more details on kickstart post scripts, please refer to
-the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/strong&gt;</source>
+the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
@@ -11704,7 +11704,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
 
 
       <trans-unit id="post.jsp.summary">
-        <source>You can edit the post script for this kickstart below.  First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, esystem registration to @@PRODUCT_NAME@@).  Next, the non-chroot post script will be executed, and finally the post script will be executed.  For more details on kickstart post scripts, please refer to the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/strong&gt;</source>
+        <source>You can edit the post script for this kickstart below.  First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, esystem registration to @@PRODUCT_NAME@@).  Next, the non-chroot post script will be executed, and finally the post script will be executed.  For more details on kickstart post scripts, please refer to the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPostEdit.do</context>
         </context-group>
@@ -11767,7 +11767,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
     <trans-unit id="kickstart.edit.pkgs.jsp.main1">
-      <source>Specify below the packages and package groups you'd like to install on systems during kickstart. Please list packages and groups one per line. For more information please see &lt;em&gt;The Red Hat Enterprise Linux System Administration Guide.&lt;/em&gt; If you would prefer to specify packages to be installed by package profile sync, please visit the &lt;em&gt; Package Profiles &lt;/em&gt; tab to change the kickstart software installation method.
+      <source>Specify below the packages and package groups you'd like to install on systems during kickstart. Please list packages and groups one per line. For more information please see &lt;em&gt;The @@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/em&gt; If you would prefer to specify packages to be installed by package profile sync, please visit the &lt;em&gt; Package Profiles &lt;/em&gt; tab to change the kickstart software installation method.
       </source>
       <context-group name="ctx">
         <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
@@ -12710,7 +12710,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
        </context-group>
      </trans-unit>
      <trans-unit id="kickstart.jsp.create.wizard.first.heading1">
-       <source>A kickstart file is a simple text file containing a list of items, each identified by a keyword, that answers the questions an installer needs in order to successfully install Red Hat Enterprise Linux. A kickstart profile includes a kickstart file, as well as other saved options such as the version of Red Hat Enterprise Linux to be installed and the location of the installation files.</source>
+       <source>A kickstart file is a simple text file containing a list of items, each identified by a keyword, that answers the questions an installer needs in order to successfully install @@ENTERPRISE_LINUX_NAME@@. A kickstart profile includes a kickstart file, as well as other saved options such as the version of @@ENTERPRISE_LINUX_NAME@@ to be installed and the location of the installation files.</source>
        <context-group name="ctx">
          <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
        </context-group>
@@ -12771,7 +12771,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
      </trans-unit>
 
      <trans-unit id="kickstart.jsp.create.wizard.second.heading1">
-       <source>In order to install Red Hat Enterprise Linux during kickstart, the Red Hat Enterprise Linux installation files must be available to the kickstarting system via network connection. You can make these available either via http or ftp.</source>
+       <source>In order to install @@ENTERPRISE_LINUX_NAME@@ during kickstart, the @@ENTERPRISE_LINUX_NAME@@ installation files must be available to the kickstarting system via network connection. You can make these available either via http or ftp.</source>
        <context-group name="ctx">
          <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
        </context-group>
@@ -12906,7 +12906,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
          <source>Leave blank for automatic key generation. Note that the prefix is an indication of the @@PRODUCT_NAME@@ organization the key is associated with.</source>
      </trans-unit>
    <trans-unit id="activation-key.jsp.edit-basechannel-tooltip">
-       <source>Choose &quot;&lt;strong&gt;{0}&lt;/strong&gt;&quot; to allow systems to register to the default @@VENDOR_NAME@@ provided channel that corresponds to their installed version of Red Hat Enterprise Linux. You may also choose particular @@VENDOR_NAME@@ provided channels or custom base channels here, but please note if a system using this key is not compatible with the selected channel, it will fall back to its @@VENDOR_NAME@@ default channel.</source>
+       <source>Choose &quot;&lt;strong&gt;{0}&lt;/strong&gt;&quot; to allow systems to register to the default @@VENDOR_NAME@@ provided channel that corresponds to their installed version of @@ENTERPRISE_LINUX_NAME@@. You may also choose particular @@VENDOR_NAME@@ provided channels or custom base channels here, but please note if a system using this key is not compatible with the selected channel, it will fall back to its @@VENDOR_NAME@@ default channel.</source>
    </trans-unit>
    <trans-unit id="activation-key.jsp.edit.universal-default-tooltip">
        <source>Only one universal default activation key may be set for this organization. By setting this key as universal default, you will remove universal default status from the current universal default key if it exists. If this key is set as universal default, then newly-registered systems to your organization will inherit the properties of this key.</source>
@@ -17985,7 +17985,7 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
 
 The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
 
-The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
+The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
 
 &lt;p&gt;The Tree Path must be a local disk path on your @@PRODUCT_NAME@@ server containing the entire kickstart tree for a distribution include kernel, initrd, and repo information, but excluding any rpms. This directory should be readable by the apache and tomcat users.  From within the specified tree path, a kernel should be available at &quot;./images/pxeboot/vmlinuz&quot; and an initrd image should be available at &quot;./images/pxeboot/initrd.img&quot;. For instance, if you have media located on the @@PRODUCT_NAME@@ server at: &lt;i&gt;/var/distro-trees/rhel-5-server/&lt;/i&gt; you would specify that path as your Tree Path value which would check for a kernel and initrd here: &lt;i&gt;/var/distro-trees/rhel-5-server/images/pxeboot/&lt;/i&gt; &lt;/p&gt;
 </source>
@@ -19840,8 +19840,8 @@ list (see below) about this scheduled downtime whenever possible.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="outage-policy.jsp.unscheduled">
-<source>Unscheduled maintenance windows are possible, but rare. Red Hat
-Network will attempt notification, again through the email outage list
+<source>Unscheduled maintenance windows are possible, but rare. @@VENDOR_SERVICE_NAME@@
+will attempt notification, again through the email outage list
 (see below), at least 12 hours or as soon as possible in advance of
 unscheduled maintenance.</source>
         <context-group name="ctx">
@@ -20300,14 +20300,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
 
       <trans-unit id="sdc.channels.edit.virtsubwarning">
-<source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the Red Hat Enterprise Linux subscription for this guest's host, &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;. Subscribing to them will consume additional software entitlements. &lt;a href=&quot;/rhn/systems/details/SystemChannels.do?sid={0}&quot;&gt;Applying a different virtual system entitlement to the host system&lt;/a&gt; will affect which channels have this mark.</source>
+<source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host, &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;. Subscribing to them will consume additional software entitlements. &lt;a href=&quot;/rhn/systems/details/SystemChannels.do?sid={0}&quot;&gt;Applying a different virtual system entitlement to the host system&lt;/a&gt; will affect which channels have this mark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
       </trans-unit>
 
 	<trans-unit id="sdc.channels.edit.virtsubwarning_nohost">
-<source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the Red Hat Enterprise Linux subscription for this guest's host. Subscribing to them will consume additional software entitlements. Applying a different virtual system entitlement to the host system will affect which channels have this mark.</source>
+<source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host. Subscribing to them will consume additional software entitlements. Applying a different virtual system entitlement to the host system will affect which channels have this mark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
@@ -20560,7 +20560,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
 
       <trans-unit id="physicalhosts.jsp.nonredhatnote">
-<source>If the host of a guest system above is not a @@VENDOR_NAME@@ Virtualization host running Red Hat Enterprise Linux, it must consume the same software and system entitlements it would if it were a physical system at this time.</source>
+<source>If the host of a guest system above is not a @@VENDOR_NAME@@ Virtualization host running @@ENTERPRISE_LINUX_NAME@@, it must consume the same software and system entitlements it would if it were a physical system at this time.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/entitlements/GuestLimitedHosts.do</context>
         </context-group>
@@ -22795,7 +22795,7 @@ given channel.</source>
         </context-group>
      </trans-unit>
      <trans-unit id="unknown.package.msg">
-         <source>Unfortunately, you have requested information about a package we do not have in our database. Most likely, this is a custom package you have installed by hand, or is from a distribution not supported by Red Hat Network.</source>
+         <source>Unfortunately, you have requested information about a package we do not have in our database. Most likely, this is a custom package you have installed by hand, or is from a distribution not supported by @@VENDOR_SERVICE_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
