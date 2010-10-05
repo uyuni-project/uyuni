@@ -14,7 +14,7 @@ SATELLITE_DB_PASS=""
 SATELLITE_DB_SID=""
 
 SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
-SATELLITE_IP=`dig +short $SATELLITE_FQDN`
+SATELLITE_IP=""
 
 # setup_hostname()
 # setup_db()
@@ -30,9 +30,9 @@ function help() {
 Usage: $0 [OPTION]
 helper script to do migration or setup of SUSE Manager
 
-  -m             migrate an existing RHN Satellite
-  -s             setup the SUSE Manager installation
-  -r             sync remote files (useful for migration only)
+  -m             full migration of an existing RHN Satellite
+  -s             fresh setup of the SUSE Manager installation
+  -r             only sync remote files (useful for migration only)
   -w             wait between steps (in case you do -r -m)
   -h             this help screen
 
@@ -261,12 +261,14 @@ for p in $@; do
     case "$p" in
     -m)
         DO_MIGRATION=1
+	SATELLITE_IP=`dig +short $SATELLITE_FQDN`
        ;;
     -s)
         DO_SETUP=1
        ;;
     -r)
         copy_remote_files
+	SATELLITE_IP=`dig +short $SATELLITE_FQDN`
        ;;
     -h)
         help
@@ -292,6 +294,6 @@ if [ $WAIT_BETWEEN_STEPS = "1" ];then
     read
 fi;
 if [ "$DO_MIGRATIO" = "1" ]; then
-    do_setup
+    do_migration
 fi
 
