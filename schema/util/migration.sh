@@ -149,7 +149,7 @@ import_db() {
 
 upgrade_schema() {
     spacewalk-schema-upgrade
-    su - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus \"sys@$MANAGER_DB_NAME as sysdba\" @/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/rdbms/admin/utlrp.sql"
+    su - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus \"sys/$SATELLITE_DB_PASS@$MANAGER_DB_NAME as sysdba\" @/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/rdbms/admin/utlrp.sql"
 }
 
 copy_remote_files() {
