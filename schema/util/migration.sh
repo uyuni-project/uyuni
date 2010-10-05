@@ -66,7 +66,7 @@ cleanup_hostname() {
 }
 
 setup_db() {
-    echo -e "9055\n\n$MANAGER_PASS\n$MANAGER_PASS\n" | /etc/init.d/oracle-xe configure
+    echo -e "9055\n\n$SYS_DB_PASS\n$SYS_DB_PASS\n" | /etc/init.d/oracle-xe configure
     sed -i "s/:\/usr\/lib\/oracle\/10.2.0.4\/client.*:/:\/usr\/lib\/oracle\/xe\/app\/oracle\/product\/10.2.0\/server:/g" /etc/oratab
     . /etc/profile.d/oracle.sh
     cp $ORACLE_HOME/network/admin/tnsnames.ora /etc
@@ -122,7 +122,7 @@ grant dba to $MANAGER_USER;
 quit
 " > /tmp/dbnewspacewalkuser.sql
 
-    sqlplus "sys/${MANAGER_PASS}@${MANAGER_DB_NAME} as sysdba" @/tmp/dbnewspacewalkuser.sql
+    sqlplus "sys/${SYS_DB_PASS}@${MANAGER_DB_NAME} as sysdba" @/tmp/dbnewspacewalkuser.sql
     rm /tmp/dbnewspacewalkuser.sql
 }
 

@@ -8,7 +8,8 @@ variables[4]="SATELLITE_DB_SID"
 variables[5]="MANAGER_IP"
 variables[6]="MANAGER_USER"
 variables[7]="MANAGER_PASS"
-variables[8]="MANAGER_DB_NAME"
+variables[8]="SYS_DB_PASS"
+variables[9]="MANAGER_DB_NAME"
 
 MIGRATION_ENV="/tmp/migration_env.sh"
 
@@ -33,8 +34,9 @@ manager_dialog() {
                "IP Address of the SUSE Manager Server" 2 4 `ip -f inet -o addr show scope global | awk '{print $4}' | awk -F \/ '{print $1}'` 2 40 20 0 0\
                "SUSE Manager DB User"                  4 4 "spacewalk" 4 40 20 0 0\
                "SUSE Manager DB Password"              6 4 "spacewalk" 6 40 20 0 1\
+               "DB Password for Admin"                 8 4 "novell"    8 40 20 0 1\
      2>>$MIGRATION_ENV
-     echo "xe" >> $MIGRATION_ENV
+     echo "XE" >> $MIGRATION_ENV
 }
 
 sat_dialog
