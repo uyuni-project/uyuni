@@ -48,3 +48,5 @@ do
 done < "$MIGRATION_ENV"
 
 mv /tmp/env $MIGRATION_ENV
+
+# vim: set expandtab:

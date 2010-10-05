@@ -121,3 +121,5 @@ create_export $RESULT_ENV3 13
 rm -f $RESULT_ENV
 cat $RESULT_ENV1 $RESULT_ENV2 $RESULT_ENV3 >> $RESULT_ENV
 rm -f $RESULT_ENV1 $RESULT_ENV2 $RESULT_ENV3
+
+# vim: set expandtab:
