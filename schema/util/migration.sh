@@ -13,7 +13,7 @@ SATELLITE_DB_USER=""
 SATELLITE_DB_PASS=""
 SATELLITE_DB_SID=""
 
-SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
+SATELLITE_FQDN=""
 SATELLITE_IP=""
 
 # setup_hostname()
@@ -263,6 +263,8 @@ for p in $@; do
     case "$p" in
     -m)
         DO_MIGRATION=1
+        . $MIGRATION_ENV
+        SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`dig +short $SATELLITE_FQDN`
        ;;
     -s)
@@ -270,6 +272,8 @@ for p in $@; do
        ;;
     -r)
         copy_remote_files
+        . $MIGRATION_ENV
+        SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`dig +short $SATELLITE_FQDN`
        ;;
     -h)
