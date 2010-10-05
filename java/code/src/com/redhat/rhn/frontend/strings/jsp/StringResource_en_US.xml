@@ -505,7 +505,7 @@
           </context-group>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.deleteuser">
-          <source>You must be an organization administrator for a satellite to delete a user.</source>
+          <source>You must be an organization administrator for a satellite [GALAXY] to delete a user.</source>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.disableuser">
           <source>You must be an organization administrator to deactivate a user.</source>
@@ -551,7 +551,7 @@
           <source>Can not display Organization Details</source>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.general">
-          <source>You must be an satellite administrator to view this page. Contact your satellite administrator to get information on the organizations in this system.</source>
+          <source>You must be an satellite [GALAXY] administrator to view this page. Contact your satellite [GALAXY] administrator to get information on the organizations in this system.</source>
         </trans-unit>
       </group>
 
@@ -609,7 +609,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
-              The page you requested, https://rhn.redhat.com/index.pxt, was not found.
+              The page you requested, https://rhn.redhat.com/index.pxt [GALAXY], was not found.
           </context>
         </context-group>
       </trans-unit>
@@ -626,7 +626,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
-              If you followed a link to reach 'https://rhn.redhat.com/index.pxt,' the
+              If you followed a link to reach 'https://rhn.redhat.com/index.pxt [GALAXY],' the
               link may be incorrect or outdated.
           </context>
         </context-group>
@@ -637,7 +637,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
-              If you used a bookmark to reach 'https://rhn.redhat.com/index.pxt,' the
+              If you used a bookmark to reach 'https://rhn.redhat.com/index.pxt [GALAXY],' the
               page may have moved
           </context>
         </context-group>
@@ -975,14 +975,14 @@
       </trans-unit>
 
       <trans-unit id="login.jsp.satbody2">
-        <source>For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href=&quot;http://spacewalk.redhat.com&quot; target=&quot;_new&quot;&gt; http://spacewalk.redhat.com&lt;/a&gt;. </source>
+        <source>For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href=&quot;http://spacewalk.redhat.com&quot; target=&quot;_new&quot;&gt; http://spacewalk.redhat.com [GALAXY]&lt;/a&gt;. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="login.jsp.satbody3">
-        <source>For details on interacting with the @@PRODUCT_NAME@@ community, please visit us at  &lt;a href=&quot;http://spacewalk.redhat.com/communicate.html&quot; target=&quot;_new&quot;&gt; http://spacewalk.redhat.com/communicate.html&lt;/a&gt;. </source>
+        <source>For details on interacting with the @@PRODUCT_NAME@@ community, please visit us at  &lt;a href=&quot;http://spacewalk.redhat.com/communicate.html&quot; target=&quot;_new&quot;&gt; http://spacewalk.redhat.com/communicate.html [GALAXY]&lt;/a&gt;. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
@@ -1038,7 +1038,7 @@
       </trans-unit>
 
       <trans-unit id="login.jsp.note">
-<source>&lt;strong&gt;Note:&lt;/strong&gt; If you are having SSL connection issues when connecting to @@PRODUCT_NAME@@, ensure that you are using &lt;a href="/help/latest-up2date.pxt"&gt;the latest versions&lt;/a&gt; of up2date (Enterprise Linux 4 and below) or yum (Enterprise Linux 5 and higher) and rhn_register.</source>
+<source>&lt;strong&gt;Note:&lt;/strong&gt; If you are having SSL connection issues when connecting to @@PRODUCT_NAME@@, ensure that you are using &lt;a href="/help/latest-up2date.pxt"&gt;the latest versions&lt;/a&gt; of up2date (Enterprise Linux 4 and below) [GALAXY] or yum [GALAXY] (Enterprise Linux 5 and higher) [GALAXY] and rhn_register.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
@@ -1441,7 +1441,7 @@
       </trans-unit>
       <!-- footer.jsp -->
       <trans-unit id="footer.jsp.copyright">
-<source>Copyright &amp;#169; 2002-10 Red Hat, Inc. All rights reserved.</source>
+<source>Copyright &amp;#169; 2002-10 Red Hat, Inc [GALAXY]. All rights reserved.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
         </context-group>
@@ -1993,13 +1993,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.enables1b">
-<source>www.redhat.com store</source>
+<source>www.redhat.com store [GALAXY]</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateCorporate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.enables2">
-<source>access to whitepapers, webcasts, and product information on redhat.com</source>
+<source>access to whitepapers, webcasts, and product information on redhat.com [GALAXY]</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateCorporate</context>
         </context-group>
@@ -2047,7 +2047,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="usercreate.jsp.pam.reference">
-<source>If you would like to set up your satellite to authenticate against LDAP, kerberos, and other network-based authentication systems, please visit the &lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;reference guide&lt;/a&gt; for instructions on how to set up PAM.</source>
+<source>If you would like to set up your satellite [GALAXY] to authenticate against LDAP, kerberos, and other network-based authentication systems, please visit the &lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;reference guide&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
@@ -2528,7 +2528,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="subscriptionmanagement.jsp.renew.description">
-<source>&lt;strong&gt;&lt;a href="https://www.redhat.com/rhel/renew"&gt;Renew&lt;/a&gt;&lt;/strong&gt; your &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ subscriptions&lt;/strong&gt; and &lt;strong&gt;@@PRODUCT_NAME@@ entitlements&lt;/strong&gt; at the &lt;strong&gt;&lt;a href="https://www.redhat.com/rhel/renew"&gt;&lt;img src="/img/external-link.gif" alt=&quot;External Link&quot;/&gt; Red Hat Renewal Center&lt;/a&gt;&lt;/strong&gt;.</source>
+<source>&lt;strong&gt;&lt;a href="https://www.redhat.com/rhel/renew"&gt;Renew [GALAXY]&lt;/a&gt;&lt;/strong&gt; your &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ subscriptions&lt;/strong&gt; and &lt;strong&gt;@@PRODUCT_NAME@@ entitlements&lt;/strong&gt; at the &lt;strong&gt;&lt;a href="https://www.redhat.com/rhel/renew"&gt;&lt;img src="/img/external-link.gif" alt=&quot;External Link&quot;/&gt; Red Hat Renewal Center [GALAXY]&lt;/a&gt;&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/SubscriptionManagement</context>
         </context-group>
@@ -2546,13 +2546,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="subscriptionmanagement.jsp.purchase.description2">
-<source>&lt;strong&gt;&lt;a href="https://www.redhat.com/apps/commerce/"&gt;Purchase&lt;/a&gt;&lt;/strong&gt; additional &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ subscriptions&lt;/strong&gt; at the &lt;strong&gt;&lt;a href="https://www.redhat.com/apps/commerce/"&gt;&lt;img src="/img/external-link.gif" alt=&quot;External Link&quot;/&gt;Red Hat Store&lt;/a&gt;&lt;/strong&gt;.</source>
+<source>&lt;strong&gt;&lt;a href="https://www.redhat.com/apps/commerce/"&gt;Purchase [GALAXY]&lt;/a&gt;&lt;/strong&gt; additional &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ subscriptions&lt;/strong&gt; at the &lt;strong&gt;&lt;a href="https://www.redhat.com/apps/commerce/"&gt;&lt;img src="/img/external-link.gif" alt=&quot;External Link&quot;/&gt;Red Hat Store [GALAXY]&lt;/a&gt;&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/SubscriptionManagement</context>
         </context-group>
       </trans-unit>
       <trans-unit id="subscriptionmanagement.jsp.purchase.description3">
-<source>&lt;strong&gt;&lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;Purchase&lt;/a&gt;&lt;/strong&gt; additional &lt;strong&gt;@@PRODUCT_NAME@@ management and provisioning entitlements&lt;/strong&gt; at the &lt;strong&gt;&lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;img src="/img/external-link.gif" alt=&quot;External Link&quot; /&gt;Red Hat Store&lt;/a&gt;&lt;/strong&gt;.</source>
+<source>&lt;strong&gt;&lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;Purchase [GALAXY]&lt;/a&gt;&lt;/strong&gt; additional &lt;strong&gt;@@PRODUCT_NAME@@ management and provisioning entitlements&lt;/strong&gt; at the &lt;strong&gt;&lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;img src="/img/external-link.gif" alt=&quot;External Link&quot; /&gt;Red Hat Store [GALAXY]&lt;/a&gt;&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/SubscriptionManagement</context>
         </context-group>
@@ -2570,7 +2570,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="subscriptionmanagement.jsp.entitlements.description2">
-<source>&lt;strong&gt;Note:&lt;/strong&gt; You cannot view entitlement expiration information from the &lt;strong&gt;&lt;a href="/rhn/systems/SystemEntitlements.do"&gt;System Entitlements&lt;/a&gt;&lt;/strong&gt; page in the @@PRODUCT_NAME@@ interface. Instead, please visit the &lt;strong&gt;&lt;a href="https://www.redhat.com/apps/support/complete.html"&gt;&lt;img src="/img/external-link.gif" alt=&quot;External Link&quot;/&gt;Red Hat Support Site&lt;/a&gt;&lt;/strong&gt; to view entitlement expiration information.</source>
+<source>&lt;strong&gt;Note:&lt;/strong&gt; You cannot view entitlement expiration information from the &lt;strong&gt;&lt;a href="/rhn/systems/SystemEntitlements.do"&gt;System Entitlements&lt;/a&gt;&lt;/strong&gt; page in the @@PRODUCT_NAME@@ interface. Instead, please visit the &lt;strong&gt;&lt;a href="https://www.redhat.com/apps/support/complete.html"&gt;&lt;img src="/img/external-link.gif" alt=&quot;External Link&quot;/&gt;Red Hat Support Site [GALAXY]&lt;/a&gt;&lt;/strong&gt; to view entitlement expiration information.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/SubscriptionManagement</context>
         </context-group>
@@ -6534,14 +6534,14 @@ value for this entitlement, excluding the default organization's consumption.</s
                 <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Management&lt;/strong&gt;.</source>
         </trans-unit>
         <trans-unit id="system_entitlements.setToManagementEntitled.failure">
-            <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Management&lt;/strong&gt; entitled, but you do not have  enough &lt;strong&gt;Management&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may free up &lt;strong&gt;Management&lt;/strong&gt; entitlements by downgrading &lt;strong&gt;Management&lt;/strong&gt; entitled machines to an Update entitlement, or you may purchase additional management entitlements at &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Management&lt;/strong&gt; entitlements, you will be able to upgrade these systems.
+            <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Management&lt;/strong&gt; entitled, but you do not have  enough &lt;strong&gt;Management&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may free up &lt;strong&gt;Management&lt;/strong&gt; entitlements by downgrading &lt;strong&gt;Management&lt;/strong&gt; entitled machines to an Update entitlement, or you may purchase additional management entitlements at [GALAXY] &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Management&lt;/strong&gt; entitlements, you will be able to upgrade these systems.
 		</source>
 	  </trans-unit>
         <trans-unit id="system_entitlements.setToUpdateEntitled.success">
                 <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Update&lt;/strong&gt;.</source>
         </trans-unit>
         <trans-unit id="system_entitlements.setToUpdateEntitled.failure">
-                <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Update&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Update&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Update&lt;/strong&gt; entitlements at &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Update&lt;/strong&gt; entitlements, you will be able to update these systems.</source>
+                <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Update&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Update&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Update&lt;/strong&gt; entitlements at &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store [GALAXY]&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Update&lt;/strong&gt; entitlements, you will be able to update these systems.</source>
         </trans-unit>
         <trans-unit id="system_entitlements.unentitle.success">
                 <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s)  &lt;strong&gt;Unentitled&lt;/strong&gt;.</source>
@@ -6560,7 +6560,7 @@ value for this entitlement, excluding the default organization's consumption.</s
 
 
         <trans-unit id="system_entitlements.provisioning.notEnoughSlots">
-                <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Provisioning&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements at &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source>
+                <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Provisioning&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements at &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store [GALAXY]&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source>
         </trans-unit>
         <trans-unit id="system_entitlements.provisioning.noManagement">
                 <source>&lt;strong&gt;Provisioning&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Provisioning&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Provisioning&lt;/strong&gt; entitlement to these system(s).</source>
@@ -6579,7 +6579,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         </trans-unit>
 
         <trans-unit id="system_entitlements.virtualization_host.notEnoughSlots">
-                <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Virtualization&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements at &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements, you will be able to upgrade these systems. &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization. </source>
+                <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Virtualization&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements at &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store [GALAXY]&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements, you will be able to upgrade these systems. &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization. </source>
         </trans-unit>
         <trans-unit id="system_entitlements.virtualization_host.noManagement">
                 <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization&lt;/strong&gt; entitlement to these system(s).</source>
@@ -6597,7 +6597,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         </trans-unit>
 
         <trans-unit id="system_entitlements.virtualization_host_platform.notEnoughSlots">
-                <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements at &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements, you will be able to upgrade these systems.  &lt;br/&gt;&lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization.</source>
+                <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements at &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store [GALAXY]&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements, you will be able to upgrade these systems.  &lt;br/&gt;&lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization.</source>
         </trans-unit>
         <trans-unit id="system_entitlements.virtualization_host_platform.noManagement">
                 <source>&lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization Platform&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement to these system(s).</source>
@@ -6615,7 +6615,7 @@ value for this entitlement, excluding the default organization's consumption.</s
 
 
         <trans-unit id="system_entitlements.monitoring.notEnoughSlots">
-                <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to&lt;strong&gt;Monitoring&lt;/strong&gt; entitled, but you not have enough &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements at &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source>
+                <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to&lt;strong&gt;Monitoring&lt;/strong&gt; entitled, but you not have enough &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements at &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store [GALAXY]&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source>
         </trans-unit>
         <trans-unit id="system_entitlements.monitoring.noManagement">
                 <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Monitoring&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Monitoring&lt;/strong&gt; entitlement to these system(s).</source>
@@ -6941,7 +6941,7 @@ value for this entitlement, excluding the default organization's consumption.</s
     </trans-unit>
 
     <trans-unit id="generalconfig.jsp.summary">
-<source>After updating the configuration options below, monitoring services on this satellite and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
+<source>After updating the configuration options below, monitoring services on this satellite [GALAXY] and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
       <context-group name="ctx">
         <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
       </context-group>
@@ -8083,7 +8083,7 @@ value for this entitlement, excluding the default organization's consumption.</s
 
       <trans-unit id="deleteconfirm.jsp.satadmin.description">
 <source>Are you sure you would like to remove the "@@PRODUCT_NAME@@ Administrator" role from
-your own login? You will need to contact another satellite administrator to
+your own login? You will need to contact another satellite [GALAXY] administrator to
 regain this role if you choose to remove it now.  You will no longer have access to the @@PRODUCT_NAME@@ configuration tools and
 organization management tools if you choose to remove this role from your login.
 </source>
@@ -8240,7 +8240,7 @@ organization management tools if you choose to remove this role from your login.
       </trans-unit>
 
       <trans-unit id="deleteconfirm.jsp.satadmin_revoke">
-<source>Confirm removing the satellite administration role from &lt;strong&gt;{0}&lt;/strong&gt; by clicking the button below.</source>
+<source>Confirm removing the satellite [GALAXY] administration role from &lt;strong&gt;{0}&lt;/strong&gt; by clicking the button below.</source>
           <context-group name="ctx">
             <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
@@ -9450,7 +9450,7 @@ organizations on your @@PRODUCT_NAME@@ here as well.</source>
 <source>Create and manage organizations on your @@PRODUCT_NAME@@. You can not view all of the
 users on the @@PRODUCT_NAME@@ here, but you can look up the users with organization
 administrator privileges in all of the organizations on your @@PRODUCT_NAME@@ and you
-may also assign or take away an organization administrator's satellite
+may also assign or take away an organization administrator's satellite [GALAXY]
 administrator privileges.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/admin/config/Orgs.do</context>
@@ -10756,7 +10756,7 @@ Please note that some manual configuration of these scripts may still be require
 	    <source>Create Kickstart Profile</source>
 	  </trans-unit>
 	  <trans-unit id="kickstart.advanced.jsp.para1">
-	    <source>Each kickstart file you upload to satellite will need a label so that you can refer to it later - please choose a label for this kickstart and enter it below. Entries marked with an asterisk (*) are required.</source>
+	    <source>Each kickstart file you upload to satellite [GALAXY] will need a label so that you can refer to it later - please choose a label for this kickstart and enter it below. Entries marked with an asterisk (*) are required.</source>
 	  </trans-unit>
 	
 	  <trans-unit id="kickstart.advanced.jsp.uploadtab">
@@ -11775,7 +11775,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
     </trans-unit>
 
     <trans-unit id="kickstart.edit.pkgs.jsp.main2">
-      <source>&lt;b&gt;Note: only packages available in your Enterprise Linux install tree should be specified here.&lt;/b&gt; To install packages available in @@PRODUCT_NAME@@ software channels, please associate an appropriate activation key with this kickstart profile in the &lt;em&gt;Activation Keys&lt;/em&gt; tab.
+      <source>&lt;b&gt;Note: only packages available in your Enterprise Linux [GALAXY] install tree should be specified here.&lt;/b&gt; To install packages available in @@PRODUCT_NAME@@ software channels, please associate an appropriate activation key with this kickstart profile in the &lt;em&gt;Activation Keys&lt;/em&gt; tab.
       </source>
       <context-group name="ctx">
         <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
@@ -12630,7 +12630,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
 
       <trans-unit id="kickstart.troubleshooting.jsp.verboseup2date">
-        <source>Enable debugging in up2date/yum</source>
+        <source>Enable debugging in up2date/yum [GALAXY]</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
@@ -14597,7 +14597,7 @@ You can deploy the latest revision (_Revision 7_) of this file to any systems su
 </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
-		  <context context-type="paramnotes">You can deploy the latest revision (_Revision 7_) of this file to _zanarkand.boston.redhat.com_ - this file is part of that system's locally-managed config channel.</context>
+		  <context context-type="paramnotes">You can deploy the latest revision (_Revision 7_) of this file to _zanarkand.boston.redhat.com_ [GALAXY] - this file is part of that system's locally-managed config channel.</context>
         </context-group>
      </trans-unit>
 	<trans-unit id="deploy.jsp.filedetails">
@@ -14616,7 +14616,7 @@ You can deploy the latest revision (_Revision 7_) of this file to any systems su
 <source>&lt;a href="{1}"&gt;Revision {0}&lt;/a&gt; from &lt;a href="{3}"&gt;{2}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
-		  <context context-type="paramnotes">_Revision 7_ from _zanarkand.boston.redhat.com_</context>
+		  <context context-type="paramnotes">_Revision 7_ from _zanarkand.boston.redhat.com_ [GALAXY]</context>
         </context-group>
      </trans-unit>
 	<trans-unit id="deploy.jsp.latest-never">
@@ -14657,7 +14657,7 @@ You can deploy the latest revision (_Revision 7_) of this file to any systems su
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
 		  <context context-type="paramnotes">You can't deploy this file to any systems because this file is part of a config sandbox local to
-system _zanarkand.boston.redhat.com_.</context>
+system _zanarkand.boston.redhat.com_ [GALAXY].</context>
         </context-group>
      </trans-unit>
 	<trans-unit id="deploy.jsp.sandbox-note2">
@@ -16224,7 +16224,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="difffiles.jsp.summary">
           <source>The configuration files listed below are the files you have selected that are relevant to &lt;a href="{0}"&gt;{1}&lt;/a&gt;.</source>
           <context-group name="ctx">
-            <context context-type="paramnotes">The configuration files listed below are the files you have selected that are relevant to server3.redhat.com.</context>
+            <context context-type="paramnotes">The configuration files listed below are the files you have selected that are relevant to server3.redhat.com [GALAXY].</context>
           </context-group>
         </trans-unit>
         <trans-unit id="difffiles.jsp.note">
@@ -18060,7 +18060,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
      <trans-unit id="tree-form.jspf.noautoks">
 <source> &lt;strong&gt; Could not find any Kickstart RPMs.  These RPMs are located in
 the @@PRODUCT_NAME@@ Tools channels for each supported parent channel.  You may
-need to perform a satellite sync of the @@PRODUCT_NAME@@ Tools channels before
+need to perform a satellite [GALAXY] sync of the @@PRODUCT_NAME@@ Tools channels before
 performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
 </source>
           <context-group name="ctx">
@@ -19783,7 +19783,7 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
       </trans-unit>
 
       <trans-unit id="login.jsp.error.message">
-<source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your satellite administrator if the problem persists.</source>
+<source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your satellite [GALAXY] administrator if the problem persists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">loginerror.jsp</context>
         </context-group>
@@ -19932,7 +19932,7 @@ We have received reports of Internet Explorer having problems downloading ISOs. 
       </trans-unit>
       <trans-unit id="common.download.not-sure">
 <source>
-(&lt;a href="http://www.redhat.com/download/howto_download.html"&gt;&lt;strong&gt;Not sure what an ISO is?&lt;/strong&gt;&lt;/a&gt;)
+(&lt;a href="http://www.redhat.com/download/howto_download.html"&gt;&lt;strong&gt;Not [GALAXY] sure what an ISO is?&lt;/strong&gt;&lt;/a&gt;)
 </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/downloads/AllISOs.do</context>
@@ -19984,7 +19984,7 @@ The software channels listed below have ISO images available for products which 
       </trans-unit>
       <trans-unit id="download.isohelp.body">
 <source>
-&lt;p&gt;It is recommended that you use &lt;strong&gt;curl&lt;/strong&gt; to download the ISO images. If you use @@PRODUCT_NAME@@ and don't currently have curl, you may install it by running the command "up2date curl" (Enterprise Linux 4 and below) or "yum curl" (Enterprise Linux 5 and above) from a shell prompt.&lt;/p&gt;
+&lt;p&gt;It is recommended that you use &lt;strong&gt;curl&lt;/strong&gt; to download the ISO images. If you use @@PRODUCT_NAME@@ and don't currently have curl, you may install it by running the command "up2date curl" (Enterprise Linux 4 and below) [GALAXY] or "yum curl" (Enterprise Linux 5 and above) [GALAXY] from a shell prompt.&lt;/p&gt;
 
 &lt;p&gt;Once curl is installed, at a shell prompt, cut and paste the URL for the ISO into the curl command as follows:&lt;/p&gt;
 
@@ -19996,12 +19996,12 @@ The software channels listed below have ISO images available for products which 
 
 &lt;p&gt;The URL is very long because it contains session authentication information. Be sure to include the single quotation marks. The '&lt;strong&gt;&lt;code&gt;-C -&lt;/code&gt;&lt;/strong&gt;' option allows you to continue the download if it is interrupted (for example, in case you lose the connection).  The '&lt;strong&gt;&lt;code&gt;-O&lt;/code&gt;&lt;/strong&gt;' (the letter 'O', not a zero) option will save the file with same name as on the @@PRODUCT_NAME@@ servers.&lt;/p&gt;
 
-&lt;p&gt;You may also use wget to obtain the ISO files.  If you use @@PRODUCT_NAME@@ and don't currently have wget, you may install it by running "up2date wget" (Enterprise Linux 4 and below) or "yum wget" (Enterprise Linux 5 and above) from your command line.&lt;/p&gt;
+&lt;p&gt;You may also use wget to obtain the ISO files.  If you use @@PRODUCT_NAME@@ and don't currently have wget, you may install it by running "up2date wget" (Enterprise Linux [GALAXY] 4 and below) or "yum wget" [GALAXY] (Enterprise Linux 5 and above) [GALAXY] from your command line.&lt;/p&gt;
 
 &lt;p&gt;Once wget is installed, at a shell prompt, cut and paste the URL for the ISO into the wget command as follows:&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;[user@localhost home]$ &lt;strong&gt;wget -c 'very_long_url'&lt;/strong&gt;&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;For more information on how to use @@VENDOR_NAME@@ ISOs, check the &lt;a href="http://www.redhat.com/download/howto_download.html" target="new"&gt;How To Download&lt;/a&gt; page.&lt;/p&gt;
+&lt;p&gt;For more information on how to use @@VENDOR_NAME@@ ISOs, check the &lt;a href="http://www.redhat.com/download/howto_download.html" target="new"&gt;How [GALAXY] To Download&lt;/a&gt; page.&lt;/p&gt;
 	
 </source>
         <context-group name="ctx">
@@ -20042,7 +20042,7 @@ The software channels listed below have ISO images available for products which 
 </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
-		  <context context-type="paramnotes">NOTE: By downloading this software, you agree to the terms and conditions of the applicable License Agreement (available at _http://www.redhat.com/licenses/_)</context>
+		  <context context-type="paramnotes">NOTE: By downloading this software, you agree to the terms and conditions of the applicable License Agreement (available at _http://www.redhat.com/licenses/_) [GALAXY]</context>
         </context-group>
       </trans-unit>
       <trans-unit id="isodownload.howto">
@@ -20070,8 +20070,8 @@ Not sure how to download and use these images? &lt;a href="{0}"&gt;Check out our
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
 		  <context context-type="paramnotes">
-	Below please find the complete set of ISO images for the latest release of Red Hat Enterprise Linux (v.5 for 32-bit x86).
-	Depending on the variant of Red Hat Linux 5 you'd like to install, you may only need a subset of these discs.
+	Below please find the complete set of ISO images for the latest release of Red Hat Enterprise Linux (v.5 for 32-bit x86) [GALAXY].
+	Depending on the variant of Red Hat Linux 5 [GALAXY] you'd like to install, you may only need a subset of these discs.
     (_more information_)
 		  </context>
         </context-group>
@@ -20121,7 +20121,7 @@ Not sure how to download and use these images? &lt;a href="{0}"&gt;Check out our
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
 		  <context context-type="paramnotes">
-NOTE: You'll need an installation number to install Red Hat Enterprise Linux (v.5 for 32-bit x86).
+NOTE: You'll need an installation number to install Red Hat Enterprise Linux (v.5 for 32-bit x86) [GALAXY].
 _Not sure what an installation number is?_
 _Need to look up your installation numbers?_
 		  </context>
@@ -20141,8 +20141,8 @@ Note that only one set of ISO images is necessary to install any particular rele
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
 		  <context context-type="paramnotes">
-Below please find complete sets of ISO images for the older releases of Red Hat Enterprise Linux (v.5 for 32-bit x86).
-Note that only one set of ISO images is necessary to install any particular release of Red Hat Enterprise Linux (v.5 for 32-bit x86).
+Below please find complete sets of ISO images for the older releases of Red Hat Enterprise Linux (v.5 for 32-bit x86) [GALAXY].
+Note that only one set of ISO images is necessary to install any particular release of Red Hat Enterprise Linux (v.5 for 32-bit x86) [GALAXY].
 		  </context>
         </context-group>
       </trans-unit>
@@ -20974,7 +20974,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
 
       <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
-        <source>A single Management (Base) entitlement is required for all systems registered to satellite</source>
+        <source>A single Management (Base) entitlement is required for all systems registered to satellite [GALAXY]</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
@@ -21009,7 +21009,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
 
       <trans-unit id="system_entitlement_details.org_msg">
-       <source>&lt;strong&gt;{0}&lt;/strong&gt; of &lt;strong&gt;{1}&lt;/strong&gt; organizations on this satellite have at least one registered system using this entitlement.</source>
+       <source>&lt;strong&gt;{0}&lt;/strong&gt; of &lt;strong&gt;{1}&lt;/strong&gt; organizations on this satellite [GALAXY] have at least one registered system using this entitlement.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
@@ -21320,7 +21320,7 @@ the organizations (excluding the default @@PRODUCT_NAME@@ organization) on this 
         <source>Failed to unsubscribe systems from channel '{0}'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
-          <context context-type="paramnotes">Failed to unsubscribe systems from channel 'Red Hat Cluster Suite (for ES x86)'</context>
+          <context context-type="paramnotes">Failed to unsubscribe systems from channel 'Red Hat Cluster Suite (for ES x86)' [GALAXY]</context>
         </context-group>
       </trans-unit>
 	  <trans-unit id="ssmchildsubs.jsp.successfulSubs">
@@ -21503,7 +21503,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         <source>{0} systems successfully subscribed to channel '{1}'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
-          <context context-type="paramnotes">27 systems successfully subscribed to channel 'Red Hat Enterprise Linux AS (v. 2.1 for i386)'</context>
+          <context context-type="paramnotes">27 systems successfully subscribed to channel 'Red Hat Enterprise Linux AS (v. 2.1 for i386)' [GALAXY]</context>
         </context-group>
       </trans-unit>
 	  <trans-unit id="basesub.jsp.success-default">
@@ -21517,7 +21517,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         <source>{0} systems skipped while attempting to subscribe to channel '{1}'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
-          <context context-type="paramnotes">27 systems skipped while attempting to subscribe to channel 'Red Hat Enterprise Linux AS (v. 2.1 for i386)'</context>
+          <context context-type="paramnotes">27 systems skipped while attempting to subscribe to channel 'Red Hat Enterprise Linux AS (v. 2.1 for i386)' [GALAXY]</context>
         </context-group>
       </trans-unit>
 	  <trans-unit id="basesub.jsp.skip-default">
@@ -21531,7 +21531,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         <source>{0} systems failed to subscribe to channel '{1}'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
-          <context context-type="paramnotes">27 systems failed to subscribe to channel 'Red Hat Enterprise Linux AS (v. 2.1 for i386)'</context>
+          <context context-type="paramnotes">27 systems failed to subscribe to channel 'Red Hat Enterprise Linux AS (v. 2.1 for i386)' [GALAXY]</context>
         </context-group>
       </trans-unit>
 	  <trans-unit id="basesub.jsp.fail-default">
@@ -21590,7 +21590,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         </context-group>
     </trans-unit>
 	  <trans-unit id="basesub.jsp.confirm.fasTrackBetaNote">
-        <source>&lt;strong&gt;* Note:&lt;/strong&gt; If you are moving systems from a major to a minor release version of Red Hat Enterprise Linux (for example, from Red Hat Enterprise Linux v.5 to Red Hat Enterprise Linux v.5.1) please note that FasTrack and Beta channels will never be available under a minor release; they only apply to major releases. It is recommended that you uninstall any packages obtained from a FasTrack or Beta channel when moving a system from a major to a minor release version of Enterprise Linux.</source>
+        <source>&lt;strong&gt;* Note:&lt;/strong&gt; If you are moving systems from a major to a minor release version of Red Hat Enterprise Linux [GALAXY] (for example, from Red Hat Enterprise Linux v.5 [GALAXY] to Red Hat Enterprise Linux v.5.1 [GALAXY]) please note that FasTrack and Beta channels will never be available under a minor release; they only apply to major releases. It is recommended that you uninstall any packages obtained from a FasTrack or Beta channel when moving a system from a major to a minor release version of Enterprise Linux [GALAXY].</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
         </context-group>
@@ -22355,11 +22355,11 @@ given channel.</source>
       </trans-unit>
 
       <trans-unit id="layout.jsp.vendor.title">
-            <source>Visit http://spacewalk.redhat.com/ for more information</source>
+            <source>Visit http://spacewalk.redhat.com/ [GALAXY] for more information</source>
       </trans-unit>
 
       <trans-unit id="layout.jsp.vendor.website">
-            <source>http://spacewalk.redhat.com/</source>
+            <source>http://spacewalk.redhat.com/ [GALAXY]</source>
       </trans-unit>
 
       <trans-unit id="channel.edit.jsp.name">
@@ -22395,7 +22395,7 @@ given channel.</source>
       <trans-unit id="channel.edit.jsp.checksumtip">
         <source>&lt;strong&gt; Tip:&lt;/strong&gt;
           sha1 offers the widest compatibility with clients. sha-256 offers higher security,
-          but is compatible only with newer clients: Fedora 11 and newer, or Enterprise Linux 6 and newer.
+          but is compatible only with newer clients: Fedora 11 [GALAXY] and newer, or Enterprise Linux 6 [GALAXY] and newer.
          </source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
@@ -22896,7 +22896,7 @@ given channel.</source>
 		<source>Label</source>
       </trans-unit>
       <trans-unit id="edit.channel.invalidrepolabel.missing">
-		<source>A repo label is required if providing a yum repository url.</source>
+		<source>A repo label is required if providing a yum [GALAXY] repository url.</source>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.lastsynced">
 		<source>Last Sync Time</source>

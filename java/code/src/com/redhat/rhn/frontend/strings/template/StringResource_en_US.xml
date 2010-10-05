@@ -47,8 +47,8 @@ Thank you for using @@PRODUCT_NAME@@.
               ...created for you by James Bond (admin).
               where James = account creator's first names, Bond = account creator's last name, and
               admin = account creator's login.
-              ...@@VENDOR_NAME@@ login: kjohnny Password: mypass e-mail: kganong@redhat.com
-              https://rhn.redhat.com/
+              ...@@VENDOR_NAME@@ login: kjohnny Password: mypass e-mail: kganong@redhat.com [GALAXY]
+              https://rhn.redhat.com/ [GALAXY]
               Important: Please ...
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
@@ -79,8 +79,8 @@ Thank you for using @@PRODUCT_NAME@@.
               ...created for you by James Bond (admin).
               where James = account creator's first names, Bond = account creator's last name, and
               admin = account creator's login.
-              ...@@VENDOR_NAME@@ login: kjohnny Password: mypass e-mail: kganong@redhat.com
-              https://rhn.redhat.com/
+              ...@@VENDOR_NAME@@ login: kjohnny Password: mypass e-mail: kganong@redhat.com [GALAXY]
+              https://rhn.redhat.com/ [GALAXY]
               Important: Please ...
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
@@ -108,8 +108,8 @@ Thank you for using @@PRODUCT_NAME@@.
               ...created for you by James Bond (admin).
               where James = account creator's first names, Bond = account creator's last name, and
               admin = account creator's login.
-              ...@@VENDOR_NAME@@ login: kjohnny e-mail: kganong@redhat.com
-              https://rhn.redhat.com/
+              ...@@VENDOR_NAME@@ login: kjohnny e-mail: kganong@redhat.com [GALAXY]
+              https://rhn.redhat.com/ [GALAXY]
 
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
@@ -149,7 +149,7 @@ Thank you for using @@PRODUCT_NAME@@.
               Your @@PRODUCT_NAME@@ login:         mdputter
               Your @@PRODUCT_NAME@@ email address: mdputter@myhog.com
               ...please visit:
-              https://rhn.redhat.com/rhn/users/ActiveList.do
+              https://rhn.redhat.com/rhn/users/ActiveList.do [GALAXY]
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
@@ -222,7 +222,7 @@ If you already have a login and it is linked to the above account, then no
 action is required.  You can find the account number linked to an existing Red
 Hat Login by logging into the following page:
 
-http://www.redhat.com/support/
+http://www.redhat.com/support/ [GALAXY]
 
 If you already have a @@VENDOR_NAME@@ Login that is linked to a different account than
 the one listed on this email, and would like to use that account to manage these
@@ -287,7 +287,7 @@ There are several reasons why this may have occurred:
    To check the expiration dates of your existing @@VENDOR_NAME@@
    subscriptions, please visit:
 
-   https://www.redhat.com/apps/support/
+   https://www.redhat.com/apps/support/ [GALAXY]
 
    Log in and click on View and manage your subscriptions link.
 
@@ -295,12 +295,12 @@ There are several reasons why this may have occurred:
    number was not successfully activated. If you would like to try and
    activate your subscription again, please visit:
 
-   https://www.redhat.com/activate
+   https://www.redhat.com/activate [GALAXY]
 
 For additional questions, please contact a @@VENDOR_NAME@@ Customer Service
 representative at:
 
-http://www.redhat.com/about/contact/directory.html#custservice
+http://www.redhat.com/about/contact/directory.html#custservice [GALAXY]
 
 Thank you for using @@PRODUCT_NAME@@.
 </source>
@@ -491,7 +491,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <context-group name="ctx">
          <context context-type="sourcefile">Taskomatic task: EmailEngine.java</context>
                  <context context-type="paramnotes">
-                     {0} - Confirmation URL: https://rhn.redhat.com/
+                     {0} - Confirmation URL: https://rhn.redhat.com/ [GALAXY]
           </context>
         </context-group>
       </trans-unit>
@@ -532,7 +532,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <context-group name="ctx">
          <context context-type="sourcefile">Taskomatic task: EmailEngine.java</context>
                  <context context-type="paramnotes">
-                     {0} - Confirmation URL: https://rhn.redhat.com/
+                     {0} - Confirmation URL: https://rhn.redhat.com/ [GALAXY]
          {1} - EmailFooter
          {2} - EmailAccountInfo
           </context>
@@ -563,8 +563,8 @@ management services provided by your @@PRODUCT_NAME@@ Server will become inacces
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic: @@PRODUCT_NAME@@CertificateCheck</context>
           <context context-type="paramnotes">
-          {0} - Hostname of the @@PRODUCT_NAME@@ Whose Cert has Expired: highwind.devel.redhat.com
-          {1} - Days Until satellite certificate expiration: 7
+          {0} - Hostname of the @@PRODUCT_NAME@@ Whose Cert has Expired: highwind.devel.redhat.com [GALAXY]
+          {1} - Days Until satellite [GALAXY] certificate expiration: 7
           </context>
         </context-group>
       </trans-unit>
@@ -611,7 +611,7 @@ has expired on your {0} server. The system management services will be inaccessi
 until your certificate is renewed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic: @@PRODUCT_NAME@@CertificateCheck</context>
-          <context context-type="paramnotes">{0} - Hostname of the @@PRODUCT_NAME@@ Whose Cert has Expired: highwind.devel.redhat.com </context>
+          <context context-type="paramnotes">{0} - Hostname of the @@PRODUCT_NAME@@ Whose Cert has Expired: highwind.devel.redhat.com [GALAXY]</context>
         </context-group>
       </trans-unit>
     </body>
