@@ -263,14 +263,14 @@ for p in $@; do
     case "$p" in
     -m)
         DO_MIGRATION=1
-	SATELLITE_IP=`dig +short $SATELLITE_FQDN`
+        SATELLITE_IP=`dig +short $SATELLITE_FQDN`
        ;;
     -s)
         DO_SETUP=1
        ;;
     -r)
         copy_remote_files
-	SATELLITE_IP=`dig +short $SATELLITE_FQDN`
+        SATELLITE_IP=`dig +short $SATELLITE_FQDN`
        ;;
     -h)
         help
@@ -299,3 +299,4 @@ if [ "$DO_MIGRATIO" = "1" ]; then
     do_migration
 fi
 
+# vim: set expandtab:
