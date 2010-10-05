@@ -299,7 +299,7 @@ if [ $WAIT_BETWEEN_STEPS = "1" ];then
     echo "Press Return to continue"
     read
 fi;
-if [ "$DO_MIGRATIO" = "1" ]; then
+if [ "$DO_MIGRATION" = "1" ]; then
     do_migration
 fi
 
