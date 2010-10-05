@@ -254,6 +254,8 @@ do_setup() {
     if [ ! -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
         setup_db
         setup_spacewalk
+    else
+        echo "SUSE Manager is already initialized. Skipping setup."
     fi;
 }
 
