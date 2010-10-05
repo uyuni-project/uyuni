@@ -139,24 +139,17 @@ dump_remote_db() {
   )
 " >> /etc/tnsnames.ora
 
-    su - oracle
-    exp $SATELLITE_DB_USER/$SATELLITE_DB_PASS@rrxe owner=$SATELLITE_DB_USER consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log
-    exit
+    su - oracle -c "exp $SATELLITE_DB_USER/$SATELLITE_DB_PASS@rrxe owner=$SATELLITE_DB_USER consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log"
 }
 
 import_db() {
-    su - oracle
-    ORACLE_SID=$MANAGER_DB_NAME
-    imp \'/ as sysdba\' fromuser=$SATELLITE_DB_USER touser=spacewalk file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y
+    su - oracle -c "ORACLE_SID=$MANAGER_DB_NAME imp \'/ as sysdba\' fromuser=$SATELLITE_DB_USER touser=spacewalk file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y"
     # 'fix syntax HL
-    exit
 }
 
 upgrade_schema() {
     spacewalk-schema-upgrade
-    su - oracle
-    ORACLE_SID=$MANAGER_DB_NAME
-    sqlplus "sys@$MANAGER_DB_NAME as sysdba" @/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/rdbms/admin/utlrp.sql
+    su - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus \"sys@$MANAGER_DB_NAME as sysdba\" @/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/rdbms/admin/utlrp.sql"
 }
 
 copy_remote_files() {
@@ -219,7 +212,9 @@ do_migration() {
         echo -n "MANAGER_PASS";      read MANAGER_PASS
     fi;
     setup_hostname
-    do_setup
+    if [ ! -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
+        do_setup
+    fi;
     drop_manager_db
     dump_remote_db
     import_db
