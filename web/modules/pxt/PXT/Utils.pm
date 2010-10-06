@@ -21,6 +21,7 @@ use HTML::Entities ();
 use POSIX;
 use Date::Parse;
 use Carp qw/croak/;
+use Encode;
 
 # this is a temporary conversion until we do the database schema
 # alteration.  this lets us get a head start.
@@ -137,7 +138,15 @@ sub escapeHTML {
   warn "undef text in escapeHTML, called from '", join(' ', caller), "'\n"
     unless defined $text;
 
-  return HTML::Entities::encode_entities($text, '<>&"');
+  eval
+  {
+    $text = HTML::Entities::encode_entities($text, '<>&"');
+  };
+  if($@ && $@ =~ /UTF-8/)
+  {
+    $text = fix_utf8($text);
+  }
+  return $text;
 }
 
 # escape either elements of an arrayref or values of a hashref
@@ -148,7 +157,15 @@ sub escapeHTML_multi {
   return unless defined $ref;
 
   if (! ref $ref) {
-    return HTML::Entities::encode_entities($ref, '<>&"');
+    eval
+    {
+      $ref = HTML::Entities::encode_entities($ref, '<>&"');
+    };
+    if($@ && $@ =~ /UTF-8/)
+    {
+      $ref = fix_utf8($ref);
+    }
+    return $ref;
   }
   elsif (ref $ref eq 'HASH') {
     foreach my $key (keys %{$ref}) {
@@ -169,7 +186,16 @@ sub escapeHTML_multi {
 
 sub escape_html {
   my $class = shift;
-  return HTML::Entities::encode_entities(shift, '<>&"');
+  my $text = "";
+  eval
+  {
+    $text = HTML::Entities::encode_entities(shift, '<>&"');
+  };
+  if($@ && $@ =~ /UTF-8/)
+  {
+    $text = fix_utf8($text);
+  }
+  return $text;
 }
 
 sub escapeURI {
@@ -285,5 +311,18 @@ sub random_bits {
   return $rand_data;
 }
 
+sub fix_utf8
+{
+  my $text = Encode::encode_utf8(shift);
+  eval {
+    $text = HTML::Entities::encode_entities($text, '<>&"');
+  };
+  if($@)
+  {
+    warn "Fixing invalid characters failed: remove the text";
+    $text = "";
+  }
+  return $text;
+}
 
 1;
