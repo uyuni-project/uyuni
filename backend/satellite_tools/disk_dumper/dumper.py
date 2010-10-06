@@ -628,7 +628,7 @@ class CachedDumper(exportLib.BaseDumper):
         key = self._get_key(params)
         if not self.use_database_cache:
             set_cache = rhnCache.set(key, value, modified=last_modified, \
-                        raw=1, user='apache', group='apache', mode=0755)
+                        raw=1, user='wwwrun', group='www', mode=0755)
             return set_cache
         return rhnDatabaseCache.set(key, value, modified=last_modified, raw=1,
             compressed=1)

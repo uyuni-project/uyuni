@@ -90,8 +90,8 @@ def initLOG(log_file = "stderr", level = 0):
         log_stderr("WARNING: log path not found; attempting to create %s" % 
                 log_path, sys.exc_info()[:2])
 
-        # fetch uid, gid so we can do a "chown apache.root"
-        apache_uid, apache_gid = getUidGid('apache', 'apache')
+        # fetch uid, gid so we can do a "chown wwwrun.root"
+        apache_uid, apache_gid = getUidGid('wwwrun', 'www')
 
         try:
             os.makedirs(log_path)
@@ -173,7 +173,7 @@ class rhnLog:
             self.fd = open(self.file, "a", 1)
             set_close_on_exec(self.fd)
             if newfileYN:
-                apache_uid, apache_gid = getUidGid('apache', 'apache')
+                apache_uid, apache_gid = getUidGid('wwwrun', 'www')
                 if os.getuid() == 0:
                     os.chown(self.file, apache_uid, 0)
                 else:

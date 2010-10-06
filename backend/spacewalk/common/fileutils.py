@@ -264,7 +264,7 @@ def makedirs(path,  mode=0755, user=None, group=None):
             # Changing permissions failed; ignore the error
             sys.stderr.write("Changing owner for %s failed\n" % dirname)
 
-def createPath(path, user='apache', group='root', chmod=0755, logging=1):
+def createPath(path, user='wwwrun', group='root', chmod=0755, logging=1):
     """advanced makedirs
 
     Will create the path if necessary.
@@ -288,7 +288,7 @@ def createPath(path, user='apache', group='root', chmod=0755, logging=1):
             sys.stderr.write("Changing owner for %s failed\n" % path)
 
 
-def setPermsPath(path, user='apache', group='root', chmod=0750):
+def setPermsPath(path, user='wwwrun', group='root', chmod=0750):
     """chown user.group and set permissions to chmod"""
     if not os.path.exists(path):
         log_error("*** ERROR: Path doesn't exist (can't set permissions): %s" % path)

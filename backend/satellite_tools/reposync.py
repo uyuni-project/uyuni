@@ -53,7 +53,7 @@ class RepoSync:
            
         rhnLog.initLOG(default_log_location + log_filename)
         #os.fchown isn't in 2.4 :/
-        os.system("chgrp apache " + default_log_location + log_filename)
+        os.system("chgrp www " + default_log_location + log_filename)
 
 
         quit = False
