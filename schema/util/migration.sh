@@ -2,6 +2,7 @@
 
 DO_MIGRATION=0
 DO_SETUP=0
+LOGFILE=0
 WAIT_BETWEEN_STEPS=0
 
 MIGRATION_ENV="/tmp/migration_env.sh"
@@ -30,6 +31,7 @@ function help() {
 Usage: $0 [OPTION]
 helper script to do migration or setup of SUSE Manager
 
+  -l LOGFILE     write a log to LOGFILE
   -m             full migration of an existing RHN Satellite
   -s             fresh setup of the SUSE Manager installation
   -r             only sync remote files (useful for migration only)
@@ -255,6 +257,11 @@ do_setup() {
 }
 
 for p in $@; do
+    if [ "$LOGFILE" = "1" ]; then
+        LOGFILE=$p
+        continue
+    fi
+
     case "$p" in
     -m)
         DO_MIGRATION=1
@@ -266,14 +273,17 @@ for p in $@; do
         DO_SETUP=1
        ;;
     -r)
-        copy_remote_files
         . $MIGRATION_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`dig +short $SATELLITE_FQDN`
+        copy_remote_files
        ;;
     -h)
         help
        ;;
+    -l)
+        LOGFILE="1"
+        ;;
     -w)
         WAIT_BETWEEN_STEPS=1
         ;;
@@ -282,6 +292,10 @@ for p in $@; do
        ;;
     esac
 done
+
+if [ "$LOGFILE" != "0" ]; then
+    exec >> $LOGFILE 2>&1
+fi
 
 if [ $WAIT_BETWEEN_STEPS = "1" ];then
     echo "Press Return to continue"
