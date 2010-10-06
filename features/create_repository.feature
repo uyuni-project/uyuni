@@ -12,8 +12,8 @@ Feature: Adding repository to a channel
      And I follow "Manage Software Channels" in the left menu
      And I follow "Manage Repositories" in the left menu
      And I follow "create new repository"
-    When I enter "cmpi-zypp" as "label"
-     And I enter "http://download.opensuse.org/repositories/home:/mcalmer:/cmpi-zypp/openSUSE_Factory/" as "url"
+    When I enter "testrepo" as "label"
+     And I enter "http://localhost/pub/testrepo/" as "url"
      And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
 
@@ -23,7 +23,7 @@ Feature: Adding repository to a channel
      And I follow "Manage Software Channels" in the left menu
      And I follow "Test Base Channel"
      And I follow "Repositories"
-    When I check "cmpi-zypp" in the list
+    When I check "testrepo" in the list
      And I click on "Update Repositories"
     Then I should see a "Test Base Channel repository information was successfully updated" text
 

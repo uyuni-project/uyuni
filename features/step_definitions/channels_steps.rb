@@ -11,9 +11,8 @@ When /^I check "([^"]*)" in the list$/ do |arg1|
   end
 end
 
-Then /^I should see some packages$/ do
+Then /^I should see package "([^"]*)"$/ do |package|
   within(:xpath, "//form/table/tbody/tr") do
-    fail if not has_content?("CMPI zypp provider")
-    fail if not has_content?("cmpi-zypp-")
+    fail if not find_link(package)
   end
 end
