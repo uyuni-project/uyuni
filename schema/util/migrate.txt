@@ -1,3 +1,30 @@
+Using the setup/migrate tools
+=============================
+if you want to setup a new machine call:
+
+    > setup_dialog.sh
+    > migration.sh -s
+
+The setup_dialog.sh will store a file in /tmp/ that will
+be parsed by "migration.sh -s"
+
+if you want to migrate from an existing Satellite do
+
+    > migration_dialog.sh
+    > migration.sh -m
+
+The migration_dialog.sh will store a file in /tmp/ that will
+be parsed by "migration.sh -m"
+
+"migration.sh -h" shows some help.
+
+You can create the files in /tmp/ manually if you want because
+the setup_dialog.sh and migration_dialog.sh are doing nothing else
+than creating those files.
+
+Manual Config
+=============
+
 SATELLITE_IP="10.10.3.248"
 SATELLITE_HOST="satellite"
 SATELLITE_DOMAIN="suse.de"
