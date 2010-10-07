@@ -9,6 +9,8 @@ require "spacewalk_testsuite_base/version"
 
 features_task = Cucumber::Rake::Task.new do |t|
   cucumber_opts = %w{--format pretty}
+  #cucumber_opts = cucumber_opts + %w{-o /tmp/cucumber.log}
+
   feature_files  = %w{
                      features/init_user_create.feature
                      features/running.feature
@@ -19,6 +21,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/systemspage.feature
                      features/create_activationkey.feature
                      features/register_client.feature
+                     features/install_package.feature
                      features/system_configuration.feature
                      features/users-createnewuser.feature
                      features/users.feature

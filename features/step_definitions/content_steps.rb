@@ -90,3 +90,9 @@ Then /^I should see a "([^"]*)" element in "([^"]*)" form$/ do |arg1, arg2|
     fail if not find_field(arg1).visible?
   end  
 end
+
+Then /^"([^"]*)" is installed$/ do |package|
+   `rpm -q #{package}`
+   fail if ! $?.success?
+end
+
