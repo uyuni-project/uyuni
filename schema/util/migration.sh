@@ -272,12 +272,6 @@ for p in $@; do
         . $MIGRATION_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`dig +short $SATELLITE_FQDN`
-        if [ -z "$RSYNC_PASSWORD" ]; then
-            echo -n "Please enter the root password of $SATELLITE_FQDN: ";
-            stty -echo; 
-            read RSYNC_PASSWORD;
-            stty echo
-       fi;
        ;;
     -s)
         DO_SETUP=1
@@ -286,12 +280,6 @@ for p in $@; do
         . $MIGRATION_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`dig +short $SATELLITE_FQDN`
-        if [ -z "$RSYNC_PASSWORD" ]; then
-            echo -n "Please enter the root password of $SATELLITE_FQDN: ";
-            stty -echo; 
-            read RSYNC_PASSWORD;
-            stty echo
-        fi;
         copy_remote_files
        ;;
     -h)
