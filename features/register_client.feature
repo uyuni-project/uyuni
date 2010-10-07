@@ -22,8 +22,8 @@ Feature: Register a client
      And I should see a "add to ssm" link
      And I should see a "delete system" link
      And I should see a "Initial Registration Parameters:" text
-     And I should see a "OS: openSUSE-release" text
-     And I should see a "Release: 11.3" text
+     And I should see a "OS: sles-release" text
+     And I should see a "Release: 11.1" text
     
   Scenario: check tab links "Details"
     Given I am on the Systems page
