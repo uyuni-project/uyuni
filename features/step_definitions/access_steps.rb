@@ -9,7 +9,8 @@ end
 
 Given /^I access the host the first time$/ do
   visit Capybara.app_host
-  fail if not page.has_content?("Create Spacewalk Administrator")
+  #fail if not page.has_content?("Create Spacewalk Administrator")
+  fail if not page.has_content?("Create SUSE Manager Administrator")
 end
 
 Then /^no link should be broken$/ do

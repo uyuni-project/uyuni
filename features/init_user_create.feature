@@ -24,8 +24,11 @@ Feature: Create initial users
     When I go to the admin configuration page
      And I check "Monitoring"
      And I click on "Update"
-    Then I should see a "The Spacewalk must be restarted to reflect these changes" text
+    Then I should see a "The SUSE Manager must be restarted to reflect these changes" text
      And I should see "is_monitoring_backend" as checked
+
+    # Then I should see a "The Spacewalk must be restarted to reflect these changes" text
+
 
   @third
   Scenario: Create Testing username
