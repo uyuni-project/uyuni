@@ -163,6 +163,8 @@ copy_remote_files() {
     # cobbler needs also running apache, so let's restart complete spacewalk
     /etc/init.d/cobblerd restart
     spacewalk-service restart
+    # wait for cobblerd
+    sleep 10
     cobbler sync
 
     mkdir -p /root/backup/pub
