@@ -189,7 +189,7 @@ copy_remote_files() {
     # SSLCertificateKeyFile => /etc/apache2/ssl.key/spacewalk.key
 
     scp root@$SATELLITE_IP:/etc/pki/tls/certs/spacewalk.crt /etc/apache2/ssl.crt/spacewalk.crt
-    scp root@$SATELLITE_IP:/etc/pki/tls/certs/spacewalk.crt /etc/pki/spacewalk/jabberd/server.pem
+    cp /etc/apache2/ssl.crt/spacewalk.crt /etc/pki/spacewalk/jabberd/server.pem
     scp root@$SATELLITE_IP:/etc/pki/tls/private/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
 
     rsync -a -v -z $SATELLITE_IP:/var/lib/rhn/kickstarts /var/lib/rhn/
