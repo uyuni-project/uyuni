@@ -2,10 +2,12 @@
 @javascript
 Feature: Check configuration page/tab
   Validate configuration page accessibility 
-
+  
   Scenario: Check configuration page content
     Given I am testing configuration
     Then I should see a "Configuration Overview" text
+     And I should see a "Clear" linkbutton
+     And I should see a "Manage" linkbutton
      And I should see a "Configuration Summary" text
      And I should see a "Configuration Actions" text
      And I should see a "Systems with Managed Configuration Files" text
@@ -16,8 +18,6 @@ Feature: Check configuration page/tab
      And I should see a "Configuration Channels" link in the left menu
      And I should see a "Configuration Files" link in the left menu
      And I should see a "Systems" link in the left menu
-     And I should see a "Manage" link
-     And I should see a "Clear" link
      And I should see a "View Systems with Managed Configuration Files" link
      And I should see a "View All Managed Configuration Files" link
      And I should see a "View All Managed Configuration Channels" link
