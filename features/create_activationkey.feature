@@ -43,4 +43,12 @@ Feature: Create an activation key
      And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key has been modified." text
      And I should see "20" in field "usageLimit"
-    
+  
+  Scenario: Change Base Channel of the activation key
+    Given I am on the Systems page
+      And I follow "Activation Keys" in the left menu
+      And I follow "SUSE Test Key"
+    When I select "Test Base Channel" from "selectedChannel"
+     And I click on "Update Activation Key"
+    Then I should see a "Activation key SUSE Test Key has been modified." text
+
