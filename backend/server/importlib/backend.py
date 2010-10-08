@@ -683,6 +683,9 @@ class Backend:
             'rhnPackageRequires':   'package_id',
             'rhnPackageConflicts':  'package_id',
             'rhnPackageObsoletes':  'package_id', 
+            'rhnPackageRecommends': 'package_id',
+            'rhnPackageSuggests':   'package_id',
+            'rhnPackageSupplements':'package_id',
             'rhnPackageFile':       'package_id',
             'rhnPackageChangeLogRec':  'package_id',
         }
