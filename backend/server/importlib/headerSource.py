@@ -227,10 +227,10 @@ class rpmBinaryPackage(Package, rpmPackage):
                 else:
                     hash[k] = v[i]
             
-            # RPMSENSE_MISSINGOK|RPMSENSE_STRONG
-            if tag == 'recommends' and not(hash[flags] & (1 << 27)):
+            # RPMSENSE_STRONG(1<<27) indicate recommends; if not set it is suggests only
+            if tag == 'recommends' and not(hash['flags'] & (1 << 27)):
                 continue
-            if tag == 'suggests' and hash[flags] & (1 << 27):
+            if tag == 'suggests' and (hash['flags'] & (1 << 27)):
                 continue
             # Create a file
             obj = Class()
