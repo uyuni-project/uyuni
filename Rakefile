@@ -29,6 +29,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/add_sys_of_group_to_SSM.feature
                      features/create_config_channel.feature
                      features/channels.feature
+                     features/weak_deps.feature
                      features/configuration.feature
                      features/add_system_to_conf.feature
                      features/walk_hrefs.feature
