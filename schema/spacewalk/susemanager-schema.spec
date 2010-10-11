@@ -1,4 +1,4 @@
-Name:           spacewalk-schema
+Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
@@ -14,6 +14,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  chameleon
 BuildRequires:  perl(Digest::SHA1)
 
+Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
 %if 0%{?suse_version}
 #!BuildIgnore: post-build-checks
@@ -43,7 +44,7 @@ install -m 0755 -d $RPM_BUILD_ROOT%{postgres}
 install -m 0644 oracle/main.sql $RPM_BUILD_ROOT%{oracle}
 install -m 0644 postgres/main.sql $RPM_BUILD_ROOT%{postgres}
 install -m 0755 -d $RPM_BUILD_ROOT%{_bindir}
-install -m 0755 %{name}-upgrade $RPM_BUILD_ROOT%{_bindir}
+install -m 0755 spacewalk-schema-upgrade $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 cp -r upgrade/* $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
@@ -57,7 +58,7 @@ rm -rf $RPM_BUILD_ROOT
 %{oracle}
 %{postgres}
 %{rhnroot}/schema-upgrade
-%{_bindir}/%{name}-upgrade
+%{_bindir}/spacewalk-schema-upgrade
 %{_mandir}/man1/spacewalk-schema-upgrade*
 %dir %{rhnroot}
 
