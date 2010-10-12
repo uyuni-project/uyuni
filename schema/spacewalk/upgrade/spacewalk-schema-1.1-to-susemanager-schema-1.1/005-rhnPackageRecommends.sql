@@ -12,7 +12,7 @@
 --
 
 create or replace trigger
-rhn_pkg_recommends_mod_trig
+rhn_pkg_rec_mod_trig
 before insert or update on rhnPackageRecommends
 for each row
 begin

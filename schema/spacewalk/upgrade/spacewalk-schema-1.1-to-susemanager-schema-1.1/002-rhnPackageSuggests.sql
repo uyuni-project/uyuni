@@ -14,11 +14,11 @@
 CREATE TABLE rhnPackageSuggests
 (
     package_id     NUMBER NOT NULL
-                       CONSTRAINT rhn_pkg_suggests_package_fk
+                       CONSTRAINT rhn_pkg_sugg_package_fk
                            REFERENCES rhnPackage (id)
                            ON DELETE CASCADE,
     capability_id  NUMBER NOT NULL
-                       CONSTRAINT rhn_pkg_suggests_capability_fk
+                       CONSTRAINT rhn_pkg_sugg_capability_fk
                            REFERENCES rhnPackageCapability (id),
     sense          NUMBER
                        DEFAULT (0) NOT NULL,

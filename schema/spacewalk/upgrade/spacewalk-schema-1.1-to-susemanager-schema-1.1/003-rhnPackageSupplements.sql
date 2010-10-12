@@ -14,11 +14,11 @@
 CREATE TABLE rhnPackageSupplements
 (
     package_id     NUMBER NOT NULL
-                       CONSTRAINT rhn_pkg_supplements_package_fk
+                       CONSTRAINT rhn_pkg_supp_package_fk
                            REFERENCES rhnPackage (id)
                            ON DELETE CASCADE,
     capability_id  NUMBER NOT NULL
-                       CONSTRAINT rhn_pkg_supplements_capability_fk
+                       CONSTRAINT rhn_pkg_supp_capability_fk
                            REFERENCES rhnPackageCapability (id),
     sense          NUMBER
                        DEFAULT (0) NOT NULL,
@@ -30,11 +30,11 @@ CREATE TABLE rhnPackageSupplements
 ENABLE ROW MOVEMENT
 ;
 
-CREATE UNIQUE INDEX rhn_pkg_sup_pid_cid_s_uq
+CREATE UNIQUE INDEX rhn_pkg_supp_pid_cid_s_uq
     ON rhnPackageSupplements (package_id, capability_id, sense)
     TABLESPACE [[4m_tbs]];
 
-CREATE INDEX rhn_pkg_suppl_cid_idx
+CREATE INDEX rhn_pkg_supp_cid_idx
     ON rhnPackageSupplements (capability_id)
     NOLOGGING
     TABLESPACE [[4m_tbs]];

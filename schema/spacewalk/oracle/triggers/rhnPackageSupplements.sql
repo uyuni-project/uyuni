@@ -12,7 +12,7 @@
 --
 
 create or replace trigger
-rhn_pkg_supplements_mod_trig
+rhn_pkg_supp_mod_trig
 before insert or update on rhnPackageSupplements
 for each row
 begin
