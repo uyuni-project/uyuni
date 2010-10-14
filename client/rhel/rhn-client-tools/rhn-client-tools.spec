@@ -74,7 +74,7 @@ Group: System Environment/Base
 Requires: %{name} = %{version}-%{release}
 
 %if 0%{?suse_version}
-Requires: zypp-spacewalk-plugin
+Requires: zypp-plugin-spacewalk
 %else
 Requires: yum-rhn-plugin >= 1.1.2-1
 %endif
