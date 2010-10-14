@@ -85,3 +85,10 @@ def getArch():
 def version():
     # substituted to the real version by the Makefile at installation time.
     return "@VERSION@"
+
+
+if __name__ == "__main__":
+    print "Version: %s" % getVersion()
+    print "OSRelease: %s" % getOSRelease()
+    print "Release: %s" % getRelease()
+    print "Arch: %s" % getArch()
