@@ -72,7 +72,12 @@ system to receive software updates from Red Hat Network or Spacewalk.
 Summary: Check for RHN actions
 Group: System Environment/Base
 Requires: %{name} = %{version}-%{release}
+
+%if 0%{?suse_version}
+Requires: zypp-spacewalk-plugin
+%else
 Requires: yum-rhn-plugin >= 1.1.2-1
+%endif
 
 %description -n rhn-check
 rhn-check polls a Red Hat Network or Spacewalk server to find and execute 
