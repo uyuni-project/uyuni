@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Copyright (c) 2008--2010 Red Hat, Inc.
 #
@@ -16,6 +17,7 @@ import yum
 import shutil
 import sys
 from yum import config
+from yum.update_md import UpdateMetadata
 from spacewalk.satellite_tools.reposync import ContentPackage
 
 class YumWarnings:
@@ -79,3 +81,10 @@ class ContentSource:
 
     def _clean_cache(self, directory):
         shutil.rmtree(directory, True)
+        
+    def get_updates(self):
+      if not self.repo.repoXML.repoData.has_key('updateinfo'):
+        return []
+      um = UpdateMetadata()
+      um.add(self.repo)
+      return um.notices

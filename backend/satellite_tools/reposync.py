@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Copyright (c) 2008--2010 Red Hat, Inc.
 #
@@ -14,13 +15,16 @@
 #
 import sys, os, time, grp
 import hashlib
+from datetime import datetime
 from optparse import OptionParser
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
 from spacewalk.common import CFG, initCFG, rhnLog, fetchTraceback, rhn_rpm
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhn_mpm import InvalidPackageError
-from spacewalk.server.importlib.importLib import IncompletePackage
+from spacewalk.server.importlib.importLib import IncompletePackage, Erratum
+from spacewalk.server.importlib.backendOracle import OracleBackend
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
+from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
 
 from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
@@ -100,6 +104,7 @@ class RepoSync:
         for url in self.urls:
             plugin = self.load_plugin()(url, self.channel_label)
             self.import_packages(plugin, url)
+            self.import_updates(plugin, url)
         if self.regen:
             taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                 [self.channel_label], [], "server.app.yumreposync")
@@ -129,6 +134,113 @@ class RepoSync:
         submod = getattr(mod, name)
         return getattr(submod, "ContentSource")
         
+    def import_updates(self, plug, url):
+      notices = plug.get_updates()
+      self.print_msg("Repo " + url + " has " + str(len(notices)) + " patches.")
+      
+      for notice in notices:
+        self.print_msg( str(notice) )
+        
+      self.upload_updates(notices)
+      
+    def upload_updates(self, notices):
+      batch = []
+      typemap = { 
+                  'security'    : 'Security Advisory',
+                  'recommended' : 'Bug Fix Advisory',
+                  'optional'    : 'Product Enhancement Advisory'
+                }
+      for notice in notices:
+        e = Erratum()
+        e['advisory'] = notice['update_id'] + "-" + notice['version']
+        e['advisory_name'] = notice['update_id']
+        e['advisory_rel'] = notice['version']
+        e['advisory_type'] = typemap[notice['type']]
+        e['product'] =  notice['release']
+        e['description'] = notice['description']
+        e['synopsis'] = notice['title']
+        e['topic'] = ' '
+        e['solution'] = ' '
+        e['issue_date'] = datetime.fromtimestamp(float(notice['issued'])).isoformat(' ')
+        if notice['updated'] is not None:
+          e['update_date'] = notice['updated']
+        else:
+          e['update_date'] = e['issue_date']
+        #e['last_modified'] = notice['']
+        e['notes'] = ''
+        e['org_id'] = self.channel['org_id']
+        e['refers_to'] = ''
+        e['channels'] = [{'label':self.channel_label}]
+        e['packages'] = []
+        e['files'] = []
+        
+        self.print_msg( notice['pkglist'] )
+        for pkg in notice['pkglist'][0]['packages']:
+          
+          h = rhnSQL.prepare("""select p.id, pevr.epoch, c.checksum, c.checksum_type
+          from rhnPackage p,
+          rhnPackagename pn,
+          rhnpackageevr  pevr,
+          rhnpackagearch pa,
+          rhnChecksumView c
+          where pn.name = :name
+          and p.org_id = :org_id
+          and pevr.version = :version
+          and pevr.release = :release
+          and pa.label = :arch
+          and pa.arch_type_id = 1
+          and p.checksum_id = c.id
+          and p.name_id = pn.id
+          and p.evr_id = pevr.id
+          and p.package_arch_id = pa.id
+          """)
+          h.execute(name=pkg['name'], version=pkg['version'], release=pkg['release'], 
+                    arch=pkg['arch'], org_id=self.channel['org_id'])
+          cs = h.fetchall_dict() or []
+          sums = cs[0]
+          package = IncompletePackage()
+          for k in pkg.keys():
+            package[k] = pkg[k]
+          package['epoch'] = pkg.get('epoch', '')
+          package['org_id'] = self.channel['org_id']
+          
+          package['checksums'] = {sums['checksum_type'] : sums['checksum']}
+          package['checksum_type'] = sums['checksum_type']
+          package['checksum'] = sums['checksum']
+          
+          package['package_id'] = sums['id']
+          self.print_msg( package )
+          e['packages'].append(package)
+          
+        e['keywords'] = []
+        if notice['reboot_suggested']:
+          e['keywords'].append({'keyword':'reboot_suggested'})
+        if notice['restart_suggested']:
+          e['keywords'].append({'keyword':'restart_suggested'})
+        e['bugs'] = []
+        bzs = filter(lambda r: r['type'] == 'bugzilla', notice['references'])
+        if len(bzs):
+          tmp = {}
+          for bz in bzs:
+            if bz['id'] not in tmp:
+              e['bugs'].append({'bug_id' : bz['id'], 'summary' : bz['title']})
+              tmp[bz['id']] = None
+        e['cve'] = []
+        cves = filter(lambda r: r['type'] == 'cve', notice['references'])
+        if len(cves):
+          tmp = {}
+          for cve in cves:
+            if cve['id'] not in tmp:
+              e['cve'].append(cve['id'])
+              tmp[cve['id']] = None
+        e['locally_modified'] = None
+        batch.append(e)
+
+      backend = OracleBackend()
+      backend.init()
+      importer = ErrataImport(batch, backend)
+      importer.run()
+      
     def import_packages(self, plug, url):
         packages = plug.list_packages()
         to_link = []
