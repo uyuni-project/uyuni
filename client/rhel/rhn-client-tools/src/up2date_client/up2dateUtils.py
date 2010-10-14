@@ -10,7 +10,7 @@ import os
 import string
 
 import up2dateErrors
-import transaction
+import rpm
 import config
 
 
@@ -20,7 +20,7 @@ _ = gettext.gettext
 
 def _getOSVersionAndRelease():
     cfg = config.initUp2dateConfig()
-    ts = transaction.initReadOnlyTransaction()
+    ts = rpm.TransactionSet()
     for h in ts.dbMatch('Providename', "redhat-release"):
         if cfg["versionOverride"]:
             version = cfg["versionOverride"]
