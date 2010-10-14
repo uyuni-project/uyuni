@@ -21,7 +21,7 @@ from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
 from spacewalk.common import CFG, initCFG, rhnLog, fetchTraceback, rhn_rpm
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhn_mpm import InvalidPackageError
-from spacewalk.server.importlib.importLib import IncompletePackage, Erratum
+from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Checksum, Bug, Keyword
 from spacewalk.server.importlib.backendOracle import OracleBackend
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.errataImport import ErrataImport
@@ -137,10 +137,6 @@ class RepoSync:
     def import_updates(self, plug, url):
       notices = plug.get_updates()
       self.print_msg("Repo " + url + " has " + str(len(notices)) + " patches.")
-      
-      for notice in notices:
-        self.print_msg( str(notice) )
-        
       self.upload_updates(notices)
       
     def upload_updates(self, notices):
@@ -174,10 +170,21 @@ class RepoSync:
         e['packages'] = []
         e['files'] = []
         
-        self.print_msg( notice['pkglist'] )
         for pkg in notice['pkglist'][0]['packages']:
+          param_dict = {
+            'name'      : pkg['name'],
+            'version'   : pkg['version'],
+            'release'   : pkg['release'],
+            'arch'      : pkg['arch'],
+            'org_id'    : self.channel['org_id']
+            }
+          if pkg['epoch'] is None or pkg['epoch'] == '':
+            epochStatement = "is NULL"
+          else:
+            epochStatement = "= :epoch"
+            param_dict['epoch'] = pkg['epoch']
           
-          h = rhnSQL.prepare("""select p.id, pevr.epoch, c.checksum, c.checksum_type
+          h = rhnSQL.prepare("""select p.id, c.checksum, c.checksum_type
           from rhnPackage p,
           rhnPackagename pn,
           rhnpackageevr  pevr,
@@ -188,42 +195,47 @@ class RepoSync:
           and pevr.version = :version
           and pevr.release = :release
           and pa.label = :arch
+          and pevr.epoch %s
           and pa.arch_type_id = 1
           and p.checksum_id = c.id
           and p.name_id = pn.id
           and p.evr_id = pevr.id
           and p.package_arch_id = pa.id
-          """)
-          h.execute(name=pkg['name'], version=pkg['version'], release=pkg['release'], 
-                    arch=pkg['arch'], org_id=self.channel['org_id'])
-          cs = h.fetchall_dict() or []
-          sums = cs[0]
+          """ % epochStatement)
+          apply(h.execute, (), param_dict)
+          cs = h.fetchone_dict() or {}
+          
           package = IncompletePackage()
           for k in pkg.keys():
             package[k] = pkg[k]
           package['epoch'] = pkg.get('epoch', '')
           package['org_id'] = self.channel['org_id']
           
-          package['checksums'] = {sums['checksum_type'] : sums['checksum']}
-          package['checksum_type'] = sums['checksum_type']
-          package['checksum'] = sums['checksum']
+          package['checksums'] = {cs['checksum_type'] : cs['checksum']}
+          package['checksum_type'] = cs['checksum_type']
+          package['checksum'] = cs['checksum']
           
-          package['package_id'] = sums['id']
-          self.print_msg( package )
+          package['package_id'] = cs['id']
           e['packages'].append(package)
           
         e['keywords'] = []
         if notice['reboot_suggested']:
-          e['keywords'].append({'keyword':'reboot_suggested'})
+          kw = Keyword()
+          kw.populate({'keyword':'reboot_suggested'})
+          e['keywords'].append(kw)
         if notice['restart_suggested']:
-          e['keywords'].append({'keyword':'restart_suggested'})
+          kw = Keyword()
+          kw.populate({'keyword':'restart_suggested'})
+          e['keywords'].append(kw)
         e['bugs'] = []
         bzs = filter(lambda r: r['type'] == 'bugzilla', notice['references'])
         if len(bzs):
           tmp = {}
           for bz in bzs:
             if bz['id'] not in tmp:
-              e['bugs'].append({'bug_id' : bz['id'], 'summary' : bz['title']})
+              bug = Bug()
+              bug.populate({'bug_id' : bz['id'], 'summary' : bz['title']})
+              e['bugs'].append(bug)
               tmp[bz['id']] = None
         e['cve'] = []
         cves = filter(lambda r: r['type'] == 'cve', notice['references'])
