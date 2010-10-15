@@ -54,6 +54,7 @@ def main():
         sys.stderr.write('ERROR: must be root to execute\n')
         sys.exit(8)
 
+    global LOCK
     LOCK = None
     try:
         LOCK = rhnLockfile.Lockfile('/var/run/spacewalk-repo-sync.pid')
