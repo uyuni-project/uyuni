@@ -33,6 +33,15 @@ When /^I register using "([^"]*)" key$/ do |arg1|
   end
 end
 
+When /^I register using an activation key$/ do
+  arch=`uname -m`
+  arch.chomp!
+  if arch != "x86_64"
+    arch = "i586"
+  end
+  When "I register using \"1-SUSE-DEV-#{arch}\" key"
+end
+
 Then /^I should see this client in spacewalk$/ do
   Given "I am on the Systems page"
   Then "I should see this client as link"

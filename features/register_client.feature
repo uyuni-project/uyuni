@@ -5,7 +5,7 @@ Feature: Register a client
 
   Scenario: Register a client
     Given I am root
-    When I register using "1-SUSE-DEV" key
+    When I register using an activation key
     Then I should see this client in spacewalk
   
   Scenario: check registration values
@@ -15,7 +15,6 @@ Feature: Register a client
     Then I should see a "System Status" text
      And I should see a "System is up to date" text
      And I should see a "Edit These Properties" link
-     And I should see a "[Virtualization]" text
      And I should see a "[Monitoring]" text
      And I should see a "[Provisioning]" text
      And I should see a "[Management]" text
@@ -24,6 +23,7 @@ Feature: Register a client
      And I should see a "Initial Registration Parameters:" text
      And I should see a "OS: sles-release" text
      And I should see a "Release: 11.1" text
+     #And I should see a "[Virtualization]" text
     
   Scenario: check tab links "Details"
     Given I am on the Systems page
@@ -34,7 +34,6 @@ Feature: Register a client
      And I should see a "Configuration" link in element "content-nav"
      And I should see a "Provisioning" link in element "content-nav"
      And I should see a "Groups" link in element "content-nav"
-     And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
      And I should see a "Overview" link in element "contentnav-row2"
      And I should see a "Properties" link in element "contentnav-row2"
@@ -44,6 +43,7 @@ Feature: Register a client
      And I should see a "Migrate" link in element "contentnav-row2"
      And I should see a "Notes" link in element "contentnav-row2"
      And I should see a "Custom Info" link in element "contentnav-row2"
+     #And I should see a "Virtualization" link in element "content-nav"
 
   Scenario: check tab links "Software"
     Given I am on the Systems overview page of this client
@@ -53,7 +53,6 @@ Feature: Register a client
      And I should see a "Configuration" link in element "content-nav"
      And I should see a "Provisioning" link in element "content-nav"
      And I should see a "Groups" link in element "content-nav"
-     And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
      And I should see a "Errata" link in element "contentnav-row2"
      And I should see a "Packages" link in element "contentnav-row2"
@@ -69,6 +68,7 @@ Feature: Register a client
      And I should see a "Install New Packages" link 
      And I should see a "Compare Package Profiles / Manage Package Profiles" link 
      And I should see a "Update Package List" button 
+     #And I should see a "Virtualization" link in element "content-nav"
 
   Scenario: check tab links "Configuration"
     Given I am on the Systems overview page of this client
@@ -78,7 +78,6 @@ Feature: Register a client
      And I should see a "Configuration" link in element "content-nav"
      And I should see a "Provisioning" link in element "content-nav"
      And I should see a "Groups" link in element "content-nav"
-     And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
      And I should see a "Overview" link in element "contentnav-row2"
      And I should see a "View/Modify Files" link in element "contentnav-row2"
@@ -96,6 +95,7 @@ Feature: Register a client
      And I should see a "Import selected files from system" link
      And I should see a "Schedule Deploy Action" link
      And I should see a "Schedule System Comparison" link
+     #And I should see a "Virtualization" link in element "content-nav"
 
   Scenario: check tab links "Provisioning"
     Given I am on the Systems overview page of this client
@@ -105,12 +105,12 @@ Feature: Register a client
      And I should see a "Configuration" link in element "content-nav"
      And I should see a "Provisioning" link in element "content-nav"
      And I should see a "Groups" link in element "content-nav"
-     And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
      And I should see a "Kickstart" link in element "contentnav-row2"
      And I should see a "Snapshots" link in element "contentnav-row2"
      And I should see a "Snapshot Tags" link in element "contentnav-row2"
      And I should see a "Schedule" link in element "content-nav"
+     #And I should see a "Virtualization" link in element "content-nav"
 
 # if cobbler test was running there is a profile
 #     And I should see a "No profiles found that are compatible with this System. Either you haven't created any Kickstart Profiles or this system does not have a Base Channel." text
@@ -130,27 +130,27 @@ Feature: Register a client
      And I should see a "Configuration" link in element "content-nav"
      And I should see a "Provisioning" link in element "content-nav"
      And I should see a "Groups" link in element "content-nav"
-     And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
      And I should see a "List / Leave" link in element "contentnav-row2"
      And I should see a "Join" link in element "contentnav-row2"
      And I should see a "Join" link
      And I should see a "System Groups" text
+     #And I should see a "Virtualization" link in element "content-nav"
 
-  Scenario: check tab links "Virtualization"
-    Given I am on the Systems overview page of this client
-    When I follow "Virtualization" in class "content-nav"
-    Then I should see a "Details" link in element "content-nav"
-     And I should see a "Software" link in element "content-nav"
-     And I should see a "Configuration" link in element "content-nav"
-     And I should see a "Provisioning" link in element "content-nav"
-     And I should see a "Groups" link in element "content-nav"
-     And I should see a "Virtualization" link in element "content-nav"
-     And I should see a "Events" link in element "content-nav"
-     And I should see a "Details" link in element "contentnav-row2"
-     And I should see a "Provisioning" link in element "contentnav-row2"
-     And I should see a "Apply Action" button
-     And I should see a "Apply Changes" button
+  #Scenario: check tab links "Virtualization"
+  #  Given I am on the Systems overview page of this client
+  #  When I follow "Virtualization" in class "content-nav"
+  #  Then I should see a "Details" link in element "content-nav"
+  #   And I should see a "Software" link in element "content-nav"
+  #   And I should see a "Configuration" link in element "content-nav"
+  #   And I should see a "Provisioning" link in element "content-nav"
+  #   And I should see a "Groups" link in element "content-nav"
+  #   And I should see a "Events" link in element "content-nav"
+  #   And I should see a "Details" link in element "contentnav-row2"
+  #   And I should see a "Provisioning" link in element "contentnav-row2"
+  #   And I should see a "Apply Action" button
+  #   And I should see a "Apply Changes" button
+  #   And I should see a "Virtualization" link in element "content-nav"
 
   Scenario: check tab links "Events"
     Given I am on the Systems overview page of this client
@@ -160,11 +160,11 @@ Feature: Register a client
      And I should see a "Configuration" link in element "content-nav"
      And I should see a "Provisioning" link in element "content-nav"
      And I should see a "Groups" link in element "content-nav"
-     And I should see a "Virtualization" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
      And I should see a "Pending" link in element "contentnav-row2"
      And I should see a "History" link in element "contentnav-row2"
      And I should see a " Pending Events" text
+     #And I should see a "Virtualization" link in element "content-nav"
 
   Scenario: check tab links "Details" => "Properties"
     Given I am on the Systems overview page of this client
@@ -384,12 +384,12 @@ Feature: Register a client
      And I follow "Join" in class "contentnav-row2"
     Then I should see a "System Group Membership" text
 
-  @unsure
-  Scenario: check tab links "Virtualization" => "Provisioning"
-    Given I am on the Systems overview page of this client
-    When I follow "Virtualization" in class "content-nav"
-     And I follow "Provisioning" in class "contentnav-row2"
-    Then I should see a "Select a Kickstart Profile" text
+  #@unsure
+  #Scenario: check tab links "Virtualization" => "Provisioning"
+  #  Given I am on the Systems overview page of this client
+  #  When I follow "Virtualization" in class "content-nav"
+  #   And I follow "Provisioning" in class "contentnav-row2"
+  #  Then I should see a "Select a Kickstart Profile" text
 
   Scenario: check tab links "Events" => "History"
     Given I am on the Systems overview page of this client

@@ -21,13 +21,13 @@ Feature: Create an activation key
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
       And I follow "create new key" 
-    When I enter "SUSE Test Key" as "description"
-     And I enter "SUSE-DEV" as "key"
+    When I enter "SUSE Test Key i586" as "description"
+     And I enter "SUSE-DEV-i586" as "key"
      And I check "monitoring_entitled"
      And I check "provisioning_entitled"
      And I check "virtualization_host"
      And I click on "Create Activation Key"
-   Then I should see a "Activation key SUSE Test Key has been created" text
+   Then I should see a "Activation key SUSE Test Key i586 has been created." text
     And I should see a "Details" link
     And I should see a "Child Channels" link
     And I should see a "Packages" link
@@ -38,17 +38,37 @@ Feature: Create an activation key
   Scenario: Change limit of the activation key
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
-      And I follow "SUSE Test Key"
+      And I follow "SUSE Test Key i586"
     When I enter "20" as "usageLimit"
      And I click on "Update Activation Key"
-    Then I should see a "Activation key SUSE Test Key has been modified." text
+    Then I should see a "Activation key SUSE Test Key i586 has been modified." text
      And I should see "20" in field "usageLimit"
   
   Scenario: Change Base Channel of the activation key
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
-      And I follow "SUSE Test Key"
-    When I select "Test Base Channel" from "selectedChannel"
+      And I follow "SUSE Test Key i586"
+    When I select "SLES11-SP1-Updates i586 Channel" from "selectedChannel"
      And I click on "Update Activation Key"
-    Then I should see a "Activation key SUSE Test Key has been modified." text
+    Then I should see a "Activation key SUSE Test Key i586 has been modified." text
+
+  Scenario: create an activation key with Channel
+    Given I am on the Systems page
+      And I follow "Activation Keys" in the left menu
+      And I follow "create new key"
+    When I enter "SUSE Test Key x86_64" as "description"
+     And I enter "SUSE-DEV-x86_64" as "key"
+     And I check "monitoring_entitled"
+     And I check "provisioning_entitled"
+     And I check "virtualization_host"
+     And I enter "20" as "usageLimit"
+     And I select "SLES11-SP1-Updates x86_64 Channel" from "selectedChannel"
+     And I click on "Create Activation Key"
+   Then I should see a "Activation key SUSE Test Key x86_64 has been created" text
+    And I should see a "Details" link
+    And I should see a "Child Channels" link
+    And I should see a "Packages" link
+    And I should see a "Configuration" link
+    And I should see a "Groups" link
+    And I should see a "Activated Systems" link
 
