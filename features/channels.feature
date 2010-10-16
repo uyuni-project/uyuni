@@ -29,7 +29,7 @@ Feature: Explore the Channels page
     When I follow "Popular Channels" in element "sidenav"
     Then I should see a "Popular Channels" text
   
-  Scenario: Check Packages in Test Base Channel
+  Scenario: Check Packages in SLES11-SP1-Updates x86_64 Channel
     When I follow "Channels"
      And I follow "SLES11-SP1-Updates x86_64 Channel"
      And I follow "Packages"

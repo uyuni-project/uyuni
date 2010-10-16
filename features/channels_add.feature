@@ -19,7 +19,7 @@ Feature: Adding channels
      And I enter "No more desdcription for base channel." as "Channel Description"
      And I click on "Create Channel"
     Then I should see a "Channel Test Base Channel created." text
-  @wip
+
   Scenario: Adding SLES11-SP1-Updates i586 base channel
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
@@ -32,7 +32,7 @@ Feature: Adding channels
      And I enter "No more desdcription for base channel." as "Channel Description"
      And I click on "Create Channel"
     Then I should see a "Channel SLES11-SP1-Updates i586 Channel created." text
-  @wip
+
   Scenario: Adding SLES11-SP1-Updates x86_64 base channel
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
