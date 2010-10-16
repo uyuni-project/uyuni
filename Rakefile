@@ -20,19 +20,20 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/create_repository.feature
                      features/systemspage.feature
                      features/create_activationkey.feature
-                     features/register_client.feature
-                     features/install_package.feature
-                     features/system_configuration.feature
                      features/users-createnewuser.feature
                      features/users.feature
+                     features/create_config_channel.feature
+                     features/register_client.feature
+                     features/system_configuration.feature
                      features/create_group.feature
                      features/add_sys_of_group_to_SSM.feature
-                     features/create_config_channel.feature
-                     features/channels.feature
-                     features/weak_deps.feature
                      features/configuration.feature
                      features/add_system_to_conf.feature
                      features/walk_hrefs.feature
+                     features/channels.feature
+                     features/weak_deps.feature
+                     features/check_registration.feature
+                     features/install_package.feature
                      features/delete_system_from_conf.feature
                      features/delete_config_channel.feature
                     }

@@ -18,6 +18,13 @@ Given /^I am on the Systems overview page of this client$/ do
   When  "I follow this client link"
 end
 
+Given /^I update the profile of this client$/ do
+  `rhn-profile-sync`
+  if ! $?.success?
+    raise "Profile sync failed"
+  end
+end
+
 When /^I register using "([^"]*)" key$/ do |arg1|
   # remove systemid file
   `rm -f /etc/sysconfig/rhn/systemid`
