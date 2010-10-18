@@ -190,9 +190,9 @@ class OracleBackend(Backend):
         Table('rhnErrata',
             fields      = {
                 'id'            : DBint(),
-                'advisory'      : DBstring(32),
+                'advisory'      : DBstring(100),
                 'advisory_type' : DBstring(32),
-                'advisory_name' : DBstring(32),
+                'advisory_name' : DBstring(100),
                 'advisory_rel'  : DBint(),
                 'product'       : DBstring(64),
                 'description'   : DBstring(4000),

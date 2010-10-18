@@ -148,8 +148,8 @@ class RepoSync:
                 }
       for notice in notices:
         e = Erratum()
-        e['advisory'] = notice['update_id'] + "-" + notice['version']
-        e['advisory_name'] = notice['update_id']
+        e['advisory'] = notice['update_id'] + "-" + notice['version'] + "-" + self.channel['arch']
+        e['advisory_name'] = notice['update_id'] + "-" + notice['version'] + "-" + self.channel['arch']
         e['advisory_rel'] = notice['version']
         e['advisory_type'] = typemap[notice['type']]
         e['product'] =  notice['release']
