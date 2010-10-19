@@ -9,7 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <pxt-include-late file="/templates/header.pxt" />
 
-  <body><div class="wrap" id="top-wrap">
+  <body><div class="wrap" id="top-wrap"><div class="top-content">
     <rhn-navi-nav depth="0" style="topnav"/>
     <pxt-include-late file="/network/components/status_bar/main.pxi" />
     </div>
@@ -46,7 +46,7 @@
     <pxt-include-late file="/templates/profile.pxt" />
 
   </div> <!-- close content -->
-  </div> <!-- close wrap -->
+  </div></div> <!-- close wrap -->
 
   </body>
 </html>
