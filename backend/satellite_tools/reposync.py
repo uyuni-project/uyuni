@@ -173,11 +173,12 @@ class RepoSync:
         
         for pkg in notice['pkglist'][0]['packages']:
           param_dict = {
-            'name'      : pkg['name'],
-            'version'   : pkg['version'],
-            'release'   : pkg['release'],
-            'arch'      : pkg['arch'],
-            'org_id'    : self.channel['org_id']
+            'name'          : pkg['name'],
+            'version'       : pkg['version'],
+            'release'       : pkg['release'],
+            'arch'          : pkg['arch'],
+            'org_id'        : self.channel['org_id'],
+            'channel_label' : self.channel_label
             }
           if pkg['epoch'] is None or pkg['epoch'] == '':
             epochStatement = "is NULL"
@@ -190,7 +191,9 @@ class RepoSync:
           rhnPackagename pn,
           rhnpackageevr  pevr,
           rhnpackagearch pa,
-          rhnChecksumView c
+          rhnChecksumView c,
+          rhnChannel ch,
+          rhnChannelPackage cp
           where pn.name = :name
           and p.org_id = :org_id
           and pevr.version = :version
@@ -202,6 +205,9 @@ class RepoSync:
           and p.name_id = pn.id
           and p.evr_id = pevr.id
           and p.package_arch_id = pa.id
+          and p.id = cp.package_id
+          and cp.channel_id = ch.id
+          and ch.label = :channel_label
           """ % epochStatement)
           apply(h.execute, (), param_dict)
           cs = h.fetchone_dict() or {}
