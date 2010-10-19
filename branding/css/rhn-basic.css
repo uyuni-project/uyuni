@@ -1,5 +1,27 @@
 /*this is for basic styles that apply site-wide
-This is the container for the content that is centered*/
+Including the site-wide font set*/
+@font-face
+{
+	font-family: "Droid Sans";
+	font-style: normal;
+	font-weight: normal;
+	src: local('Droid Sans'),url('/fonts/DroidSans.ttf') format('truetype');
+}
+@font-face
+{
+	font-family: "Droid Sans";
+	font-style: normal;
+	font-weight: bold;
+	src: local('Droid Sans Bold'),url('/fonts/DroidSans-Bold.ttf') format('truetype');
+}
+@font-face
+{
+	font-family: "Droid Sans Mono";
+	font-style: normal;
+	font-weight: normal;
+	src: local('Droid Sans Mono'),url('/fonts/DroidSansMono.ttf') format('truetype');
+}
+/*This is the container for the content that is centered*/
 .wrap
 {
 	width: 100%;
@@ -8,17 +30,26 @@ This is the container for the content that is centered*/
 	background: #FFF;
 	/*[disabled]padding:0 15px;*/
 	/*[disabled]min-width:760px;*/
+	min-width: 80em;
 }
 #top-wrap
 {
 	/*[disabled]border-bottom:4px solid #00AAD4;*/
-	background: #83B354 url(/img/bg-header.png) no-repeat 50% 63px;
+	background: #83B354 url('/img/bg-header.png') no-repeat 50% 63px;
 	max-width: 100%;
+	min-width: 80em;
+	padding: 0px 10px;
 }
 #bottom-wrap
 {
 	padding-top: 10px;
 	max-width: 80em;
+}
+.top-content
+{
+	width: 80em;
+	margin: 0px auto;
+	/*[disabled]padding:0px 10px;*/
 }
 BODY
 {
@@ -556,9 +587,4 @@ padding: 2em 4em 2em 4em;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 64px;
-}
-.top-content
-{
-	width: 80em;
-	margin: 0px auto;
 }

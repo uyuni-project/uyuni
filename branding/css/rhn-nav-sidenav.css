@@ -91,7 +91,7 @@
 .sideleg
 {
 	width: 132px;
-	background: url(/img/sidelegend_top.gif) no-repeat 0 0;
+	background: url('/img/sidelegend_top.gif') no-repeat 0 0;
 	padding-top: 9px;
 	margin-top: 1em;
 }
@@ -109,7 +109,7 @@
 	padding: 0 0 9px;
 	margin: 0;
 	list-style: none;
-	background: url(/img/sidelegend_bottom.gif) no-repeat 0 100%;
+	background: url('/img/sidelegend_bottom.gif') no-repeat 0 100%;
 }
 .sideleg UL LI
 {

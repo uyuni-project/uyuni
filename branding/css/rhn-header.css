@@ -31,7 +31,7 @@ IMG#rhnLogo
 #utilityLinks
 {
 	float: left;
-	width: 45%;
+	width: 43%;
 	/*[disabled]padding:4px 0;*/
 	/*[disabled]border-bottom:1px solid #CCC;*/
 }
@@ -85,7 +85,7 @@ SPAN.navPipe
 }
 A#utilityCart
 {
-	background-image: url(/img/nav/cart.gif);
+	background-image: url('/img/nav/cart.gif');
 	background-position: top left;
 	background-repeat: no-repeat;
 	padding-left: 26px;

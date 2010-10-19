@@ -94,8 +94,8 @@ hr { border-bottom: 1px dotted #ccc; height: 1px;}
 .book ul li, .section ul li
 {padding-left:.2em;padding-bottom:.5em;margin:0em;}
 
-.book ul, .section ul, .preface ul, .chapter ul {padding-left:1.6em;list-style-image:url(../img/docs/dot.png);list-style-type: circle;}
-.book ul ul, .section ul ul, .preface ul ul, .chapter ul ul {list-style-image:url(../img/docs/dot2.png);list-style-type: circle;}
+.book ul, .section ul, .preface ul, .chapter ul {padding-left:1.6em;list-style-image:url('../img/docs/dot.png');list-style-type: circle;}
+.book ul ul, .section ul ul, .preface ul ul, .chapter ul ul {list-style-image:url('../img/docs/dot2.png');list-style-type: circle;}
 .book dt, .section dt, .preface dt, .chapter dt {font-weight:bold;margin-bottom:0em;padding-bottom:0em;}
 .book dd, .section dd, .preface dd, .chatper dd {margin:0em;margin-left:2em;padding-top:0em;}
 .book li p:first-child, .book dd p:first-child,
@@ -147,11 +147,11 @@ div.note,div.tip ,div.important ,div.caution ,div.warning{
 
 div.note pre,div.tip pre ,div.important pre ,div.caution pre ,div.warning pre{background-color:#333; color:white;}
 div.note,div.tip ,div.important ,div.caution ,div.warning{margin-top:.5em;}
-div.note{background-image:url(../img/docs/note.png)}
-div.tip{background-image:url(../img/docs/tip.png)}
-div.important{background-image:url(/img/docs/important.png)}
-div.caution{background-image:url(../img/docs/caution.png)}
-div.warning{background-image:url(../img/docs/warning.png)}
+div.note{background-image:url('../img/docs/note.png')}
+div.tip{background-image:url('../img/docs/tip.png')}
+div.important{background-image:url('/img/docs/important.png')}
+div.caution{background-image:url('../img/docs/caution.png')}
+div.warning{background-image:url('../img/docs/warning.png')}
 div.note .replaceable,div.tip .replaceable,div.important .replaceable,div.caution .replaceable,div.warning .replaceable{
 	color:#e3dcc0;
 }

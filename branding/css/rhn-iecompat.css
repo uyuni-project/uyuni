@@ -1,13 +1,34 @@
-ul.content-nav-rowtwo { width: 80%; }
-ul.content-nav-rowtwo li { width: 100%; }
-ul.content-nav-rowone {
+UL.content-nav-rowtwo
+{
+	width: 80%;
+}
+UL.content-nav-rowtwo LI
+{
+	width: 100%;
+}
+#header
+{
+	height: 56px;
+}
+#searchbar
+{
+	padding: 16px 0px 0px;
+}
+UL.content-nav-rowone
+{
 	height: 1%;
 	margin-bottom: 16px;
-	}
-ul.content-nav-rowthree { margin-bottom: 20px; }
-xml { display: none; }
-
-td.page-content {
-  width: 100%;
 }
-
+UL.content-nav-rowthree
+{
+	margin-bottom: 20px;
+}
+/*xml*/
+#INVALID-RULE
+{
+	display: none;
+}
+TD.page-content
+{
+	width: 100%;
+}

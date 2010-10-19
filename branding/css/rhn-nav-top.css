@@ -31,14 +31,14 @@ div#navWrap {
         clear: both;
         width: 100%;
         font-family: "Lucida Grande", "Luxi Sans", "Trebuchet MS", helvetica, arial, sans-serif;
-        background-image: url(/img/nav/navPrimeRight3.png);
+        background-image: url('/img/nav/navPrimeRight3.png');
         background-position: top right;
         background-repeat: no-repeat;
 }
 
 div#navWrap div#mainNavWrap {
         width: 100%;
-        background-image: url(/img/nav/navPrimeLeft3.png);
+        background-image: url('/img/nav/navPrimeLeft3.png');
         background-position: top left;
         background-repeat: no-repeat;
         float: left;
@@ -51,7 +51,7 @@ ul#mainNav, div#mainNavWrap ul {
         padding: 0;
         margin: 0px;
         list-style-type: none;
-        background: url(/img/nav/navPrimeBtmBrd.png) repeat-x bottom;
+        background: url('/img/nav/navPrimeBtmBrd.png') repeat-x bottom;
         float: left;
 }
 
@@ -80,7 +80,7 @@ div#mainNavWrap ul li#mainLast-active {
 /*
         background-color: #e6e6e6;
 */
-        background-image: url(/img/nav/navPrimeTabRight.png);
+        background-image: url('/img/nav/navPrimeTabRight.png');
         background-position: top right;
         background-repeat: no-repeat;
 }
@@ -90,7 +90,7 @@ li#mainFirst-active a,
 #mainNav li#mainLast-active a,
 div#mainNavWrap ul li#main-active a,
 div#mainNavWrap ul li#mainLast-active a {
-        background-image: url(/img/nav/navPrimeTabLeft.png);
+        background-image: url('/img/nav/navPrimeTabLeft.png');
         background-position: top left;
         background-repeat: no-repeat;
         color: #fff;
@@ -100,7 +100,7 @@ div#mainNavWrap ul li#mainLast-active a {
 /* if it's the first tab item in the bar, styled a little differently */
 ul#mainNav li#mainFirst-active a,
 div#mainNavWrap ul li#mainFirst-active a {
-        background-image: url(/img/nav/navPrimeTabLeft.gif);
+        background-image: url('/img/nav/navPrimeTabLeft.gif');
         color: #fff;
 }
 
@@ -145,7 +145,7 @@ div#mainNavWrap ul li#mainFirst-active a {
 */
 
 	background-color: #696969;
-	background-image: url(/img/nav/navSecondBkgd.png);
+	background-image: url('/img/nav/navSecondBkgd.png');
 	background-position: top left;
 	background-repeat: repeat-x;
         margin-bottom: 10px;

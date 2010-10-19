@@ -34,7 +34,7 @@ div.login-box div.input-row input {
 
  .clearBox {
         width: 279px;
-        background: url(/img/corner_halflinebox_top.png) top right no-repeat;
+        background: url('/img/corner_halflinebox_top.png') top right no-repeat;
         padding-top: 7px;
         margin-bottom: 15px;
         }
@@ -44,7 +44,7 @@ div.login-box div.input-row input {
  }
 
  .clearBoxInner {
-        background: url(/img/corner_halflinebox_bottom.png) bottom left no-repeat;
+        background: url('/img/corner_halflinebox_bottom.png') bottom left no-repeat;
         }
  .clearBoxInner {
         width: 100%;
@@ -124,7 +124,7 @@ ul#faq-list {
 /** used on the login page **/
 
 h1#rhn_welcome {
-        background-image: url(/img/rhn_welcome.gif);
+        background-image: url('/img/rhn_welcome.gif');
         background-position: 0 0;
         background-repeat: no-repeat;
         padding-bottom: 5px;
@@ -132,14 +132,14 @@ h1#rhn_welcome {
         }
 
 h1#rhn_welcome2 {
-        background-image: url(/img/rhn_welcome2.gif);
+        background-image: url('/img/rhn_welcome2.gif');
         background-position: 0 0;
         background-repeat: no-repeat;
         height: 37px;
         }
 
 h1#rhn_welcome3 {
-        background-image: url(/img/rhn_welcome3.gif);
+        background-image: url('/img/rhn_welcome3.gif');
         background-position: 0 0;
         background-repeat: no-repeat;
         height: 40px;
@@ -436,12 +436,12 @@ div.tc_reject_button {
 div.rounded-box { float: right; }
 
 div.rounded-box:before {
-  background: #b4b19a url(/img/table_corner_tr.gif) scroll no-repeat top right;
+  background: #b4b19a url('/img/table_corner_tr.gif') scroll no-repeat top right;
   margin-bottom: -11px;
   height: 5px;
   display: block;
   border: none;
-  content: url(/img/table_corner_tl.gif);
+  content: url('/img/table_corner_tl.gif');
   padding: 0;
   line-height: 0.1;
   font-size: 1px;
@@ -459,7 +459,7 @@ div.rounded-box ul {
   padding-top: 10px;
   padding-bottom: 10px;
   padding-right: 10px;
-  list-style-image: url(/img/parent_node.gif);
+  list-style-image: url('/img/parent_node.gif');
 }
 
 
@@ -517,7 +517,7 @@ div.systeminfo-left img {
     margin-top: 8px;
     vertical-align: middle;
     float: right;
-    background-image: url(/img/rhn-bar-background.gif);
+    background-image: url('/img/rhn-bar-background.gif');
 }
 
 /** Fancy bar for complex/multiple submit buttons for a page's form. used on the system entitlements page, will be used on virt guest list **/

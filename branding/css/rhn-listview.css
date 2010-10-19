@@ -8,13 +8,13 @@ table.list td {
 }
 table.list, table.list-doubleheader {
         font-size: 10px;
-        background: #c0c0c0 url(/img/table_corner_tr.gif) top right no-repeat;
+        background: #c0c0c0 url('/img/table_corner_tr.gif') top right no-repeat;
         border-bottom: 1px solid #c0c0c0;
         width: 100%;
 }
 
 table.list thead th:first-child {
-        background: url(/img/table_corner_tl.gif) top left no-repeat;
+        background: url('/img/table_corner_tl.gif') top left no-repeat;
         }
 
 table.list-pagination {
@@ -166,7 +166,7 @@ div.half-table-right {
 }
 
 table.half-table {
-        background: #c0c0c0 url(/img/table_corner_tr.gif) 100% 0 no-repeat;
+        background: #c0c0c0 url('/img/table_corner_tr.gif') 100% 0 no-repeat;
         padding: 0px;
         margin: 0px;
         border-bottom: 1px solid #c0c0c0;
@@ -189,7 +189,7 @@ table.your-rhn table.full-table td {
 
 
 table.half-table thead th:first-child {
-        background: url(/img/table_corner_tl.gif) top left no-repeat;
+        background: url('/img/table_corner_tl.gif') top left no-repeat;
         }
 
 
@@ -390,16 +390,16 @@ div.filter-input input {
         padding-top: 0;
 }
 .list-channel li li {
-        list-style-image: url("/img/branch.gif");
+        list-style-image: url('/img/branch.gif');
         margin-left: 2.5em;
 }
 
 ul.channel-list li {
-        list-style-image: url("/img/rhn-bullet.gif");
+        list-style-image: url('/img/rhn-bullet.gif');
 }
 
 ul.channel-list li.child-channel {
-        list-style-image: url("/img/channel_child_node.gif");
+        list-style-image: url('/img/channel_child_node.gif');
         margin-left: .4em;
 }
 
@@ -415,7 +415,7 @@ ul.channel-list li.highlighted {
         margin-left: -18px;
 }
 .list-system-channels li {
-        list-style-image: url("/img/rhn-bullet-parentchannel.gif");
+        list-style-image: url('/img/rhn-bullet-parentchannel.gif');
 }
 .list-system-channels li + li {
         padding-top: 0;
@@ -425,7 +425,7 @@ ul.channel-list li.highlighted {
         padding-top: 0;
 }
 .list-system-channels li li {
-        list-style-image: url("/img/rhn-bullet-childchannel.gif");
+        list-style-image: url('/img/rhn-bullet-childchannel.gif');
 }
 
 /** iso list styles **/
