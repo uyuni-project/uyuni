@@ -45,6 +45,7 @@ CREATE TABLE rhnErrata
     locally_modified  CHAR(1)
                           CONSTRAINT rhn_errata_lm_ck
                               CHECK (locally_modified in ('Y','N')),
+    errata_from       VARCHAR(127),
     created           DATE
                           DEFAULT (sysdate) NOT NULL,
     modified          DATE

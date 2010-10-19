@@ -204,6 +204,8 @@ class OracleBackend(Backend):
                 'org_id'        : DBint(),
 		'locally_modified' : DBstring(1),
                 'severity_id'   : DBint(),
+                'errata_from'   : DBstring(127),
+                'href'          : DBstring(255),
                 # We will treat issue_date and update_date as regular dates
                 # with times instead of DBdate types, otherwise we'd have 
                 # issues with timezones

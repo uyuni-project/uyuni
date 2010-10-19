@@ -148,6 +148,7 @@ class RepoSync:
                 }
       for notice in notices:
         e = Erratum()
+        e['errata_from'] = notice['from']
         e['advisory'] = notice['update_id'] + "-" + notice['version'] + "-" + self.channel['arch']
         e['advisory_name'] = notice['update_id'] + "-" + notice['version'] + "-" + self.channel['arch']
         e['advisory_rel'] = notice['version']
@@ -234,7 +235,7 @@ class RepoSync:
           for bz in bzs:
             if bz['id'] not in tmp:
               bug = Bug()
-              bug.populate({'bug_id' : bz['id'], 'summary' : bz['title']})
+              bug.populate({'bug_id' : bz['id'], 'summary' : bz['title'], 'href' : bz['href']})
               e['bugs'].append(bug)
               tmp[bz['id']] = None
         e['cve'] = []
