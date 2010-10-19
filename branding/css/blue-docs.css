@@ -81,7 +81,7 @@ hr { border-bottom: 1px dotted #ccc; height: 1px;}
 .book .toc .chapter a, .book .toc .preface a, .book .toc .chapter strong, .book .toc .glossary a, .book .toc .index a { font-size: medium; font-weight: 900 !important;}
 .application { font-weight: normal !important; font-style: italic; }
 .book .toc .section { font-size: medium; }
-.book .toc dd dd .section { font-size: small; !important}
+.book .toc dd dd .section { font-size: small!important}
 
 .table h6, .figure h6 { margin-top: 0px; color: #294172;}
 

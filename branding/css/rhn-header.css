@@ -1,87 +1,90 @@
-/*** header where RH logo, RHN logo, account, etc stuff is ***/
-
-/* BEGIN new "rhel5" primary and secondary navigation */
-/************************************************************** TOP NAVIGATION V2 */
-
-#header {
-        height: 31px;   /* changed height added bottom margin  */
-        margin-bottom: 10px;
-        }
-
-img#rhLogo {
-        float: left;
-        margin-left: 15px;
-        }
-
-img#rhnLogo {
-        float: left;
-        }
-
-#utility {
-	font-size: x-small;
-	padding: 0;
+/*** header where RH logo, RHN logo, account, etc stuff is **
+BEGIN new "rhel5" primary and secondary navigation
+************************************************************* TOP NAVIGATION V2*/
+#header
+{
+	height: 31px;
+/*changed height added bottom margin*/
+	margin-bottom: 10px;
 }
-
-#utility a {
-	text-decoration: none;
-}
-
-#utilityLinks {
+/*IMG#rhLogo is hidden as it is not needed in SuSE Manager context*/
+IMG#rhLogo
+{
 	float: left;
-	width: 55%;
-	padding: 4px 0;
-	border-bottom: 1px solid #ccc;
+	margin-left: 15px;
+	display: none;
 }
-
-#utilityLinks p#geo {
+IMG#rhnLogo
+{
+	float: left;
+}
+#utility
+{
+	/*[disabled]font-size:;*/
+	padding: 10px 0 0;
+}
+#utility A
+{
+	text-decoration: none;
+	color: #C6DEAE;
+}
+#utilityLinks
+{
+	float: left;
+	width: 45%;
+	/*[disabled]padding:4px 0;*/
+	/*[disabled]border-bottom:1px solid #CCC;*/
+}
+#utilityLinks P#geo
+{
 	margin: 0;
 	float: left;
-	width: 40%;
+	width: 34%;
 }
-
-#utilityLinks p#linx {
+#utilityLinks P#linx
+{
 	margin: 0;
 	float: right;
-	width: 57%;
+	/*[disabled]width:57%;*/
 	text-align: right;
-	padding-right: 3%;
+	/*[disabled]padding-right:3%;*/
 }
-
-#utilityAccount {
+#utilityAccount
+{
 	float: right;
 	text-align: center;
-	background: #eee;
-	width: 45%;
-	background-image: url(/img/nav/utilBkgdRight.png);
-	background-position: bottom right;
-	background-repeat: no-repeat;
+	/*[disabled]background:#EEE;*/
+	/*[disabled]width:45%;*/
+	/*[disabled]background-image:url(/img/nav/utilBkgdRight.png);*/
+	/*[disabled]background-position:bottom right;*/
+	/*[disabled]background-repeat:no-repeat;*/
 }
-
-#utilityAccount p {
+#utilityAccount P
+{
 	margin: 0;
-	background-image: url(/img/nav/utilBkgdLeft.png);
-	background-position: bottom left;
-	background-repeat: no-repeat;
+	/*[disabled]background-image:url(/img/nav/utilBkgdLeft.png);*/
+	/*[disabled]background-position:bottom left;*/
+	/*[disabled]background-repeat:no-repeat;*/
 	display: block;
-	padding: 6px 0px 8px 0px;
+	/*[disabled]padding:6px 0px 8px;*/
 }
-
-#utilityAccount span.label {
-        text-transform: uppercase;
-        font-size: .8em;
+#utilityAccount SPAN.label
+{
+	/*[disabled]text-transform:uppercase;*/
+	font-size: 0.8em;
 	font-weight: 700;
 }
-
-#utilityAccount p a, #utilityAccount p a:link {
-	font-weight: 700;
+#utilityAccount P A, #utilityAccount P A:link
+{
+	/*[disabled]font-weight:700;*/
 }
-
-span.navPipe {
-	color: #b00000;
+SPAN.navPipe
+{
+	color: #DDD;
 	padding: 0 10px;
 }
-
-a#utilityCart {
+A#utilityCart
+{
 	background-image: url(/img/nav/cart.gif);
 	background-position: top left;
 	background-repeat: no-repeat;
@@ -89,18 +92,15 @@ a#utilityCart {
 	padding-bottom: 4px;
 	padding-top: 3px;
 }
-
-#utilityAccount a:link,
-#utilityAccount a:hover,
-#utilityAccount a:active,
-#utilityAccount a {
-	color: 			white;
+#utilityAccount A:link, #utilityAccount A:hover, #utilityAccount A:active, #utilityAccount A
+{
+	/*[disabled]color:#FFFFFF;*/
 }
-
-#utilityLinks a:link,
-#utilityLinks a:hover,
-#utilityLinks a:active,
-#utilityLinks a {
-	color: 			white;
+#utilityLinks A:link, #utilityLinks A:hover, #utilityLinks A:active, #utilityLinks A
+{
+	/*[disabled]color:#FFFFFF;*/
 }
-
+#utility A:hover
+{
+	color: #FFFFFF;
+}

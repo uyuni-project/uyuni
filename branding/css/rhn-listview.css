@@ -173,7 +173,7 @@ table.half-table {
         width: 97%;
 }
 
-half-table td {
+.half-table td {
         background-color: #fff;
 }
 

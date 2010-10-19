@@ -1,167 +1,177 @@
 /**** Sidenav *****/
-
-#sidenavp, #sidenav {   /* for ie55  */
-        width: 150px;
-        background-color: #999;
-        background-image: url(/img/corner_sidenav_top.gif);
-        background-position: top right;
-        background-repeat: no-repeat;
-        font-family: "Luxi Sans", verdana, arial, sans-serif;
-        font-size: xx-small;
-    /* false value for WinIE4/5 */
-    voice-family: "\"}\"";
-    /* trick WinIE4/5 into thinking rule is over */
-    voice-family: inherit;
-    /* recover from trick */
-    font-size:  x-small;
-    /* intended value for better browsers */
-        font-weight: bold;
+#sidenavp, #sidenav
+{
+/*for ie55*/
+	width: 170px;
+	/*[disabled]background-color:#999;*/
+	/*[disabled]background-image:url(/img/corner_sidenav_top.gif);*/
+	/*[disabled]background-position:top right;*/
+	/*[disabled]background-repeat:no-repeat;*/
+	/*[disabled]font-family:"Luxi Sans", verdana, arial, sans-serif;*/
+	/*[disabled]font-size:xx-small;*/
+/*false value for WinIE4/5
+	voice-family: "\"}\";*/
+/*trick WinIE4/5 into thinking rule is over*/
+	voice-family: inherit;
+/*recover from trick*/
+	font-size: x-small;
+/*intended value for better browsers*/
+	font-weight: bold;
+	border-bottom: 1px solid #DDD;
+	margin-right: 15px;
 }
-
-#sidenavp ul, #sidenav ul {
-        background-image: url(/img/corner_sidenav_bottom.gif);
-        background-position: bottom left;
-        background-repeat: no-repeat;
-        list-style: none;
-        padding: 10px 0 10px 0;
-        margin: 0;
+#sidenavp UL, #sidenav UL
+{
+	/*[disabled]background-image:url(/img/corner_sidenav_bottom.gif);*/
+	/*[disabled]background-position:bottom left;*/
+	/*[disabled]background-repeat:no-repeat;*/
+	list-style: none;
+	padding: 10px 0;
+	margin: 0;
 }
-
-#sidenavp ul ul, #sidenav ul li.navchild {
-        background: none;
-        background-color: #ccc;
-        margin: 0;
-        padding: 0;
-        border-top: 1px solid #999;
+#sidenavp UL UL, #sidenav UL LI.navchild
+{
+	/*[disabled]background:none;*/
+	/*[disabled]background-color:#CCC;*/
+	margin: 0;
+	padding: 0;
+	/*[disabled]border-top:1px solid #999;*/
 }
-
-#sidenavp ul li, #sidenav ul li.navparent {
-        border-bottom: 1px solid #a7a7a7;
-        margin: 0;
+#sidenavp UL LI, #sidenav UL LI.navparent
+{
+	/*[disabled]border-bottom:1px solid #A7A7A7;*/
+	margin: 0;
 }
-
-#sidenavp ul li:last-child, #sidenav ul li:last-child {
-        border-bottom: 1px solid #999;
+#sidenavp UL LI:last-child, #sidenav UL LI:last-child
+{
+	/*[disabled]border-bottom:1px solid #999;*/
 }
-
-#sidenavp ul ul li.sidenav-selected, #sidenav ul li.sidenav-selected {
-        background: #6c6c6c;
+#sidenavp UL UL LI.sidenav-selected, #sidenav UL LI.sidenav-selected
+{
+	/*[disabled]background:#6C6C6C;*/
 }
-
-#sidenavp ul li.sidenav-selected span, #sidenav ul li.sidenav-selected span {
-        display: none;
+#sidenavp UL LI.sidenav-selected SPAN, #sidenav UL LI.sidenav-selected SPAN
+{
+	display: none;
 }
-
-#sidenavp ul li a, #sidenav ul li a {
-        display: block;
-        color: white;
-        text-decoration: none;
-        padding: 3px 5px 3px 15px;
-        margin: 0;
+#sidenavp UL LI A, #sidenav UL LI A
+{
+	display: block;
+	/*[disabled]color:#FFFFFF;*/
+	text-decoration: none;
+	padding: 3px 5px 3px 15px;
+	margin: 0;
+	font-size: 1.2em;
+	font-weight: normal;
 }
-
-#sidenavp ul li.sidenav-selected, #sidenav ul li.sidenav-selected {
-        background: #6c6c6c;
+#sidenavp UL LI.sidenav-selected, #sidenav UL LI.sidenav-selected
+{
+	/*[disabled]background:#6C6C6C;*/
 }
-
-#sidenavp ul ul li:last-child, #sidenav ul li.navchild:last-child {
-        border-bottom: none;
+#sidenavp UL UL LI:last-child, #sidenav UL LI.navchild:last-child
+{
+	/*[disabled]border-bottom:none;*/
 }
-
-#sidenavp ul ul li a, #sidenav ul li.navchild a {
-        padding-left: 30px;
-        color: #555;
+#sidenavp UL UL LI A, #sidenav UL LI.navchild A
+{
+	padding-left: 30px;
+	/*[disabled]color:#555;*/
 }
-
-#sidenavp ul ul li.sidenav-selected a, #sidenav ul li.sidenav-selected a {
-        color: white;
+#sidenavp UL UL LI.sidenav-selected A, #sidenav UL LI.sidenav-selected A
+{
+	color: #555753;
+	font-weight: bold;
+	text-decoration: none !important;
 }
-
-#content {
-        clear: both;
+#content
+{
+	clear: both;
 }
-
-/* The following styles establish the legend boxes in the left sidebar */
-
-.sideleg {
-        width: 132px;
-        background: url(/img/sidelegend_top.gif) 0 0 no-repeat;
-        padding-top: 9px;
-        margin-top: 1em;
+/*The following styles establish the legend boxes in the left sidebar*/
+.sideleg
+{
+	width: 132px;
+	background: url(/img/sidelegend_top.gif) no-repeat 0 0;
+	padding-top: 9px;
+	margin-top: 1em;
 }
-
-.sideleg h2 {
-        font-size: x-small;
-        color: #666;
-        border: 1px solid #acacac;
-        border-top: none;
-        padding: 0 0 3px 15px;
-        margin: 0;
+.sideleg H2
+{
+	font-size: x-small;
+	color: #666;
+	border: 1px solid #ACACAC;
+	border-top: none;
+	padding: 0 0 3px 15px;
+	margin: 0;
 }
-
-.sideleg ul {
-       padding: 0 0 9px 0 ;
-        margin: 0;
-        list-style: none;
-        background: url(/img/sidelegend_bottom.gif) 0 100% no-repeat;
+.sideleg UL
+{
+	padding: 0 0 9px;
+	margin: 0;
+	list-style: none;
+	background: url(/img/sidelegend_bottom.gif) no-repeat 0 100%;
 }
-
-.sideleg ul li {
-        padding: 12px 0 6px 15px;
-        font-size: x-small;
-        color: #666;
-        border-left: 1px solid #acacac;
-        border-right: 1px solid #acacac;
-        clear: left;
+.sideleg UL LI
+{
+	padding: 12px 0 6px 15px;
+	font-size: x-small;
+	color: #666;
+	border-left: 1px solid #ACACAC;
+	border-right: 1px solid #ACACAC;
+	clear: left;
 }
-
-.sideleg ul li img {
-        float: left;
-        padding-right: 3px;
-        margin-top: -3px;
+.sideleg UL LI IMG
+{
+	float: left;
+	padding-right: 3px;
+	margin-top: -3px;
 }
-
-.sidebar {
-        padding-right: 15px;
-    vertical-align: top;
+.sidebar
+{
+	padding-right: 15px;
+	vertical-align: top;
 }
-
-.sidebar {
-        padding: 10px 0 0 0;    /* changed padding parameters */
-        vertical-align: top;
+.sidebar
+{
+	padding: 10px 0 0;
+/*changed padding parameters*/
+	vertical-align: top;
 }
-.sidebar-title {
-        color: #999;
-        font-size: 10px;
-        text-align: center;
-        border-bottom: 1px solid #ccc;
+.sidebar-title
+{
+	color: #999;
+	font-size: 10px;
+	text-align: center;
+	border-bottom: 1px solid #CCC;
 }
-.sidebar-links {
-        font-size: 10px;
-        margin: 0;
-        padding: 0 0 0 15pt;
-        color: #999;
+.sidebar-links
+{
+	font-size: 10px;
+	margin: 0;
+	padding: 0 0 0 15pt;
+	color: #999;
 }
-.sidebar-title + .sidebar-links {
-        margin-top: -0.5em;
+.sidebar-title+.sidebar-links
+{
+	margin-top: -0.5em;
 }
-
-.sidebar-info {
-  padding: 4px 4px;
+.sidebar-info
+{
+	padding: 4px;
 }
-
-.sidebar-info h2 {
-  padding-left: 10px;
-  margin: 4px;
+.sidebar-info H2
+{
+	padding-left: 10px;
+	margin: 4px;
 }
-
-.legend-row {
-  padding: 0px 2px;
-  white-space: nowrap;
+.legend-row
+{
+	padding: 0px 2px;
+	white-space: nowrap;
 }
-.legend-row img {
-  vertical-align: middle;
-  margin: 3px 4px;
-  padding: 0;
+.legend-row IMG
+{
+	vertical-align: middle;
+	margin: 3px 4px;
+	padding: 0;
 }
-
