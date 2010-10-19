@@ -20,8 +20,9 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/create_repository.feature
                      features/systemspage.feature
                      features/create_activationkey.feature
-                     features/users-createnewuser.feature
                      features/users.feature
+                     features/users-createnewuser.feature
+                     features/users-userdetails.feature
                      features/create_config_channel.feature
                      features/register_client.feature
                      features/system_configuration.feature
@@ -37,6 +38,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/install_package.feature
                      features/delete_system_from_conf.feature
                      features/delete_config_channel.feature
+                     features/users-deleteuser1.feature
                     }
   t.cucumber_opts = cucumber_opts + feature_files
 end

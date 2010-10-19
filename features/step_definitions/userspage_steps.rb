@@ -7,3 +7,9 @@ Given /^I am on the Details page$/ do
   Given "I am on the Users page"
   And 'I follow "user1"'
 end
+
+Then /^Table row for "([^"]*)" should contain "([^"]*)"$/ do |arg1, arg2|
+  within(:xpath, "//form/table/tbody/tr[.//a[contains(.,'#{arg1}')]]") do
+    fail if not has_content?(arg2)
+  end
+end

@@ -18,6 +18,13 @@ Then /^I should see a "([^"]*)" link$/ do |arg1|
   fail if not find_link(arg1).visible?
 end
 
+#
+# Validate link is gone
+#
+Then /^I should not see a "([^"]*)" link$/ do |arg1|
+  fail if find_link(arg1)
+end
+
 Then /^I should see a "([^"]*)" linkbutton$/ do |arg1|
   within(:xpath, "//a[@href and @class = \"button\"]") do
     fail if not has_content?(arg1)
