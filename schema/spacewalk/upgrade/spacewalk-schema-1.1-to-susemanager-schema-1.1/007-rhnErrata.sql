@@ -11,7 +11,7 @@
 -- 
 --
 
-ALTER TABLE rhnErrata MODIFY advisory_name varchar2(200);
-ALTER TABLE rhnErrata MODIFY advisory varchar2(200);
+ALTER TABLE rhnErrata MODIFY advisory_name varchar2(100);
+ALTER TABLE rhnErrata MODIFY advisory varchar2(100);
 \
 show errors
