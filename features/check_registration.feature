@@ -1,4 +1,4 @@
-Feature: Register a client
+Feature: Check client registration
   In Order check the registration of a client to the spacewalk server
   As the testing
   I want to see the system in the spacewalk server

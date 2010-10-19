@@ -33,6 +33,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/channels.feature
                      features/weak_deps.feature
                      features/check_registration.feature
+                     features/check_errata.feature
                      features/install_package.feature
                      features/delete_system_from_conf.feature
                      features/delete_config_channel.feature
