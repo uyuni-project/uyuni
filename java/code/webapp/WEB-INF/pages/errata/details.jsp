@@ -52,18 +52,18 @@
     <c:forEach items="${fixed}" var="current">
         <div class="page-summary">
             <c:choose>
-              <c:when test="${errata.org == null}">
+              <c:when test="${errata.org != null}">
                 <c:when test="${errata.href == null}">
                     <a href="https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=${current.bugId}">
                     <c:out value="${current.summary}"/></a>
                   </c:when>
-                <c:when test="${errata.href != null}">"
+                <c:otherwise>
                     <a href="${current.href}">
                     <c:out value="${current.summary}"/></a>"
-                </c:when>
+                </c:otherwise>
               </c:when>
               <c:otherwise>
-                <bean:message key="details.jsp.bugnumber" arg0="${current.bugId} (${current.href})"/> <c:out value="${current.summary}"/>
+                <bean:message key="details.jsp.bugnumber" arg0="${current.bugId}"/> <c:out value="${current.summary}"/>
               </c:otherwise>
             </c:choose>
         </div>
