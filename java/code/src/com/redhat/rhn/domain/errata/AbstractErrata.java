@@ -63,6 +63,7 @@ public abstract class AbstractErrata extends BaseDomainHelper implements
     private Set keywords;
     protected Set packages;
     private boolean selected;
+    private String errata_from;
 
     /**
      * Getter for id
@@ -126,6 +127,22 @@ public abstract class AbstractErrata extends BaseDomainHelper implements
      */
     public void setProduct(String productIn) {
         this.product = productIn;
+    }
+
+    /**
+     * Getter for email
+     * @return String to get
+     */
+    public String getErrata_From() {
+        return this.errata_from;
+    }
+
+    /**
+     * Setter for product
+     * @param productIn to set
+     */
+    public void setErrata_From(String from) {
+        this.errata_from = from;
     }
 
     /**

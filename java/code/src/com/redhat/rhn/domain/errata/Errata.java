@@ -349,6 +349,9 @@ public interface Errata {
      */
     void setChannels(Set channelsIn);
 
+    String getErrata_From();
+    void   setErrata_From(String from);
+
     /**
      * Adds a single channel to this errata
      * @param channelIn The channel to add
