@@ -50,6 +50,7 @@
 
 <h2><bean:message key="details.jsp.fixes"/></h2>
     <c:forEach items="${fixed}" var="current">
+    <h2>${current.bugId}</h2><h2>(${current.href})</h2><h2>uwe</h2>
         <div class="page-summary">
             <c:choose>
               <c:when test="${errata.org == null}">
@@ -57,7 +58,7 @@
                 <c:out value="${current.summary}"/></a>
               </c:when>
               <c:otherwise>
-                <bean:message key="details.jsp.bugnumber" arg0="${current.bugId}"/> <c:out value="${current.summary}"/>
+                <bean:message key="details.jsp.bugnumber" arg0="${current.bugId} (${current.href})"/> <c:out value="${current.summary}"/>
               </c:otherwise>
             </c:choose>
         </div>
