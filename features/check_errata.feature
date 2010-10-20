@@ -87,8 +87,45 @@ Feature: Check errata
       And I should see a "md5:ff526f233f5ba38ea24b059ca7d7495c" text
       And I should see a "kernel-syms-2.6.32.23-0.3.1-i586" link
 
+  Scenario: check slessp1-suseRegister-2953-channel-x86_64 errata
+    Given I am on the "slessp1-suseRegister-2953-channel-x86_64" errata Details page
+     Then I should see a "slessp1-suseRegister-2953-channel-x86_64 - Bug Fix Advisory" text
+      And I should see a "Recommended update for suseRegister" text
+      And I should see a "SLES11-SP1-Updates x86_64 Channel" link
+      And I should see a "Bug# 546142 bug number 546142" text
+      And I should see a "restart_suggested" text
 
+  Scenario: check slessp1-suseRegister-2953-channel-x86_64 errata packages
+    Given I am on the "slessp1-suseRegister-2953-channel-x86_64" errata Details page
+     When I follow "Packages"
+     Then I should see a "SLES11-SP1-Updates x86_64 Channel" text
+      And I should see a "md5:87db39b2b8fe29b1c7630375c2893f07" text
+      And I should see a "suseRegister-1.4-1.9.1-noarch" link
 
+  Scenario: check slessp1-suseRegister-2953-channel-ia32 errata
+    Given I am on the "slessp1-suseRegister-2953-channel-ia32" errata Details page
+     Then I should see a "slessp1-suseRegister-2953-channel-ia32 - Bug Fix Advisory" text
+      And I should see a "Recommended update for suseRegister" text
+      And I should see a "SLES11-SP1-Updates i586 Channel" link
+      And I should see a "Bug# 546142 bug number 546142" text
+      And I should see a "restart_suggested" text
+
+  Scenario: check slessp1-suseRegister-2953-channel-ia32 errata packages
+    Given I am on the "slessp1-suseRegister-2953-channel-ia32" errata Details page
+     When I follow "Packages"
+     Then I should see a "SLES11-SP1-Updates i586 Channel" text
+      And I should see a "md5:b9962080c458835e1b456a53d25d5a3d" text
+      And I should see a "suseRegister-1.4-1.9.1-noarch" link
+
+  Scenario: check relevant errata for this client
+    Given I am on the Systems overview page of this client
+     When I follow "Software" in class "content-nav"
+     When I follow "Errata" in class "contentnav-row2"
+     Then I should see a "Relevant Errata" text
+      And I should see a "Security update for the Linux kernel" text
+      And I should see a "Recommended update for suseRegister" text
+      And I should see a "Recommended update for aaa_base" text
+      And I should see three links to the errata in the list
 
 
 
