@@ -61,7 +61,7 @@
               </c:when>
               <c:otherwise>
                 <a href="${current.href}">
-                <c:out value="${current.summary}"/></a>"
+                <c:out value="${current.summary}"/></a>
               </c:otherwise>
             </c:choose>
         </div>
