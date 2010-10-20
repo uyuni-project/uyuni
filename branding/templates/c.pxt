@@ -10,9 +10,9 @@
   <pxt-include-late file="/templates/header.pxt" />
 
   <body><div class="wrap" id="top-wrap"><div class="top-content">
-    <rhn-navi-nav depth="0" style="topnav"/>
+    <rhn-navi-nav depth="0" style="topnav"/>    
+    </div></div>
     <pxt-include-late file="/network/components/status_bar/main.pxi" />
-    </div>
     <div class="wrap" id="bottom-wrap">
   <div id="content">
     <table width="100%" cellspacing="0">
@@ -46,7 +46,7 @@
     <pxt-include-late file="/templates/profile.pxt" />
 
   </div> <!-- close content -->
-  </div></div> <!-- close wrap -->
+  </div> <!-- close wrap -->
 
   </body>
 </html>

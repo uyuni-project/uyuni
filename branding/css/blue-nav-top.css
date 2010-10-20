@@ -8,14 +8,14 @@
 }
 #header FORM
 {
-	/*[disabled]width:100%;*/
+	width: 100%;
 	margin-top: 5px;
 	float: right;
 	text-align: right;
 }
 #header INPUT, #header SELECT
 {
-	border: 1px inset #AAA;
+	/*[disabled]border:1px inset #AAA;*/
 }
 #header SELECT
 {
@@ -107,11 +107,11 @@ UL#mainNav LI#mainFirst-active A, DIV#mainNavWrap UL LI#mainFirst-active A
 }
 .button, DIV#searchbar DIV#searchbarinner FORM INPUT.button
 {
-	font-size: small;
-	background-color: #EEE;
-	border: 2px outset #BBB;
-	text-decoration: none;
-	color: #444;
+	/*[disabled]font-size:small;*/
+	/*[disabled]background-color:#EEE;*/
+	/*[disabled]border:2px outset #BBB;*/
+	/*[disabled]text-decoration:none;*/
+	/*[disabled]color:#444;*/
 }
 #bar .button
 {
@@ -189,9 +189,9 @@ margin-bottom: 10px;
 #searchbar
 {
 	float: right;
-	/*[disabled]margin-right:10px;*/
-	/*[disabled]width:500px;*/
-	/*[disabled]clear:right;*/
+	margin-right: 10px;
+	width: 500px;
+	clear: right;
 }
 #searchbarinner
 {
@@ -199,5 +199,5 @@ margin-bottom: 10px;
 }
 #systembarinner FORM, #searchbarinner FORM
 {
-	margin: 0;
+	/*[disabled]margin:0;*/
 }

@@ -35,14 +35,13 @@ Including the site-wide font set*/
 #top-wrap
 {
 	/*[disabled]border-bottom:4px solid #00AAD4;*/
-	background: #83B354 url('/img/bg-header.png') no-repeat 50% 63px;
-	max-width: 100%;
-	min-width: 80em;
+	background: #83B354 url(/img/bg-header.png) no-repeat 50% 63px;
+	width: 100%;
 	padding: 0px 10px;
 }
 #bottom-wrap
 {
-	padding-top: 10px;
+	padding: 10px;
 	max-width: 80em;
 }
 .top-content
@@ -449,36 +448,74 @@ TABLE.details TD.csv-download
 	-moz-border-radius: 0px;
 	background-color: #FFFFFF;
 }
-/** button styles **/
+
+/** button, intup styles **/
+.button, INPUT
+{
+	font-family: "Droid Sans", "Albany AMT", "Lucida Grande", tahoma, helvetica, verdana, arial, sans-serif;
+	font-size: 13px;
+}
 .button A
 {
-	margin-top: 3px;
-	padding: 2px 5px;
+	/*[disabled]margin-top:3px;*/
+	/*[disabled]padding:2px 5px;*/
+	/*[disabled]text-decoration:none;*/
 }
-.button:hover
+.button:hover, INPUT[type=button]:hover, INPUT[type=submit]:hover
 {
-	background-color: #DDDDDD;
-	text-decoration: none !important;
+	border: 1px solid #666;
+	color: #666 !important;
 }
 .button:active
 {
-	padding: 3px 6px 1px 4px;
+	/*[disabled]padding:3px 6px 1px 4px;*/
 }
 .button, A:link.link-button, A:visited.link-button, A:hover.link-button
 {
-	font-size: small;
-	background-color: #EEE;
-	border: 1px outset #BBB;
+	/*[disabled]font-size:small;*/
+	/*[disabled]background-color:#EEE;*/
+	/*[disabled]border:1px outset #BBB;*/
+	/*[disabled]text-decoration:none;*/
+	/*[disabled]color:#444;*/
+}
+.button, INPUT[type=button], INPUT[type=submit]
+{
+	border: 1px solid #AAA;
+	color: #333;
+	text-align: center;
+	/*+border-radius:3px;*/
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px 3px 3px 3px;
+	padding: 2px 5px !important;
+	white-space: nowrap;
+	background: #FFFFFF url(/img/minibutton-shade.png) repeat-x 50% 100%;
+	/*[disabled]font-size:90%;*/
 	text-decoration: none;
-	color: #444;
+}
+INPUT[type=text], INPUT[type=password]
+{
+	border: 1px solid #AAA;
+	/*+border-radius:5px;*/
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px 5px 5px 5px;
+	margin: 1px;
+	padding: 3px;
+	background: #FFFFFF url(/img/input-bg.png) repeat-x 50% 0%;
 }
 A:link.link-button, A:visited.link-button, A:hover.link-button
 {
-	padding-bottom: 0.25%;
-	padding-top: 0.25%;
-	padding-left: 2%;
-	padding-right: 2%;
+	/*[disabled]padding-bottom:0.25%;*/
+	/*[disabled]padding-top:0.25%;*/
+	/*[disabled]padding-left:2%;*/
+	/*[disabled]padding-right:2%;*/
+	/*[disabled]text-decoration:none;*/
 }
+
+
 /** embedded help links **/
 .rhn-embedded-help-NAVHEADER TD
 {

@@ -48,6 +48,7 @@ install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn
 install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn/default
 cp -R css %{buildroot}/%{wwwroot}/www/html/
 cp -R img %{buildroot}/%{wwwroot}/www/html/
+cp -R fonts %{buildroot}/%{wwwroot}/www/html/
 # Appplication expects two favicon's for some reason, copy it so there's just
 # one in source:
 cp img/favicon.ico %{buildroot}/%{wwwroot}/www/html/
