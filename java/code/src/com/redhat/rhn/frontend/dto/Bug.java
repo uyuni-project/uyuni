@@ -24,6 +24,7 @@ public class Bug {
     private Long errataId;
     private Long bugId;
     private String summary;
+    private String href;
 
 
     /**
@@ -61,5 +62,17 @@ public class Bug {
      */
     public void setSummary(String summaryIn) {
         this.summary = summaryIn;
+    }
+    /**
+     * @param href The href to set.
+     */
+    public void setHref(String href) {
+        this.href = href;
+    }
+    /**
+     * @return Returns the href.
+     */
+    public String getHref() {
+        return href;
     }
 }
