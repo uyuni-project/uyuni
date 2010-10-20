@@ -50,12 +50,17 @@
 
 <h2><bean:message key="details.jsp.fixes"/></h2>
     <c:forEach items="${fixed}" var="current">
-    <h2>${current.bugId}</h2><h2>(${current.href})</h2><h2>uwe</h2>
         <div class="page-summary">
             <c:choose>
               <c:when test="${errata.org == null}">
-            <a href="https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=${current.bugId}">
-                <c:out value="${current.summary}"/></a>
+                <c:when test="${errata.href == null}">
+                    <a href="https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=${current.bugId}">
+                    <c:out value="${current.summary}"/></a>
+                  </c:when>
+                <c:when test="${errata.href != null}">"
+                    <a href="${current.href}">
+                    <c:out value="${current.summary}"/></a>"
+                </c:when>
               </c:when>
               <c:otherwise>
                 <bean:message key="details.jsp.bugnumber" arg0="${current.bugId} (${current.href})"/> <c:out value="${current.summary}"/>
