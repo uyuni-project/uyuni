@@ -52,8 +52,8 @@
     <c:forEach items="${fixed}" var="current">
         <div class="page-summary">
             <c:choose>
-              <c:when test="${errata.org != null}">
-                <c:when test="${errata.href == null}">
+              <c:when test="${errata.org} != null">
+                <c:when test="${errata.href} == null">
                     <a href="https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=${current.bugId}">
                     <c:out value="${current.summary}"/></a>
                   </c:when>
