@@ -158,9 +158,9 @@ class RepoSync:
         e['synopsis'] = notice['title']
         e['topic'] = ' '
         e['solution'] = ' '
-        e['issue_date'] = datetime.fromtimestamp(float(notice['issued'])).isoformat(' ')
+        e['issue_date'] = self._to_db_date(notice['issued'])
         if notice['updated'] is not None:
-          e['update_date'] = notice['updated']
+          e['update_date'] = self._to_db_date(notice['updated'])
         else:
           e['update_date'] = e['issue_date']
         #e['last_modified'] = notice['']
@@ -419,6 +419,15 @@ class RepoSync:
 
     def short_hash(self, str):
         return hashlib.new(default_hash, str).hexdigest()[0:8]
+
+    def _to_db_date(self, date):
+        ret = ""
+        if date.isdigit():
+          ret = datetime.fromtimestamp(float(date)).isoformat(' ')
+        else:
+          # we expect to get ISO formated date 
+          ret = date
+        return ret
 
 class ContentPackage:
 
