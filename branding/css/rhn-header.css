@@ -17,6 +17,8 @@ IMG#rhLogo
 IMG#rhnLogo
 {
 	float: left;
+	width: 220px;
+	height: 70px;
 }
 #utility
 {
@@ -85,7 +87,7 @@ SPAN.navPipe
 }
 A#utilityCart
 {
-	background-image: url('/img/nav/cart.gif');
+	background-image: url(/img/nav/cart.gif);
 	background-position: top left;
 	background-repeat: no-repeat;
 	padding-left: 26px;
