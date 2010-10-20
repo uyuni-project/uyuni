@@ -22,7 +22,7 @@ end
 # Validate link is gone
 #
 Then /^I should not see a "([^"]*)" link$/ do |arg1|
-  fail if find_link?(arg1)
+  fail if find_link(arg1)
 end
 
 Then /^I should see a "([^"]*)" linkbutton$/ do |arg1|
@@ -78,13 +78,9 @@ Then /^I should see "([^"]*)" as unchecked$/ do |arg1|
 end
 
 #
-# Test if a field/checkbox is disabled
+# Test if a checkbox is disabled
 #
 Then /^the "([^\"]*)" checkbox should be disabled$/ do |arg1|
-  field_labeled(arg1)['disabled'].should == "true"
-end
-
-Then /^the "([^\"]*)" field should be disabled$/ do |arg1|
   field_labeled(arg1)['disabled'].should == "true"
 end
 
