@@ -103,7 +103,7 @@ public class UpdateInfoWriter extends RepomdWriter {
     private void addErratum(Errata erratum, Channel channel)
         throws SAXException {
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
-        attr.addAttribute("from", "security@redhat.com");
+        attr.addAttribute("from", erratum.getErrataFrom());
         attr.addAttribute("status", "final");
         attr.addAttribute("type", mapAdvisoryType(erratum.getAdvisoryType()));
         attr.addAttribute("version", Long.toString(erratum.getAdvisoryRel()));
@@ -208,9 +208,16 @@ public class UpdateInfoWriter extends RepomdWriter {
             Bug bug = (Bug) iter.next();
 
             SimpleAttributesImpl attr = new SimpleAttributesImpl();
-            attr.addAttribute("href",
-                    "http://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=" +
-                            bug.getId());
+            if ( bug.getUrl() != "" )
+            {
+                attr.addAttribute("href", bug.getUrl() );
+            }
+            else
+            {
+                attr.addAttribute("href",
+                                  "http://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=" +
+                                   bug.getId());
+            }
             attr.addAttribute("id", Long.toString(bug.getId()));
             attr.addAttribute("type", "bugzilla");
             handler.startElement("reference", attr);

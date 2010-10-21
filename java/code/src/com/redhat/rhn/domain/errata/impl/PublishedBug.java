@@ -32,6 +32,7 @@ public class PublishedBug extends BaseDomainHelper implements Bug, Serializable 
     private Long id;
     private String summary;
     private Errata errata;
+    private String url;
 
     /**
      * @return Returns the id.
@@ -59,6 +60,14 @@ public class PublishedBug extends BaseDomainHelper implements Bug, Serializable 
      */
     public void setSummary(String s) {
         this.summary = s;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     /**

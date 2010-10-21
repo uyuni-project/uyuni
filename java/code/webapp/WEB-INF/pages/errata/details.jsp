@@ -30,7 +30,7 @@
     <div class="page-summary">${topic}</div>
 
 <h2><bean:message key="details.jsp.description"/></h2>
-    <div class="page-summary">${description} From: ${errata_from}</div>
+    <div class="page-summary">${description} From: ${errataFrom}</div>
 
 <h2><bean:message key="details.jsp.solution"/></h2>
     <div class="page-summary">${solution}</div>

@@ -50,4 +50,9 @@ public interface Bug  {
      * @param errataIn the errata to set.
      */
     void setErrata(Errata errataIn);
+
+    String getUrl();
+
+    void setUrl(String url);
+
 }

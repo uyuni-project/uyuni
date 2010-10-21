@@ -82,7 +82,7 @@ public class ErrataDetailsSetupAction extends RhnAction {
         request.setAttribute("cve", cve);
         request.setAttribute("keywords", keywordsDisplay);
         request.setAttribute("ovalFile", ovalFile);
-        request.setAttribute("errata_from", errata.getErrata_From());
+        request.setAttribute("errataFrom", errata.getErrataFrom());
 
         return getStrutsDelegate().forwardParams(mapping.findForward("default"),
                                        request.getParameterMap());
