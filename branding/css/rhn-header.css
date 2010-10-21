@@ -3,9 +3,10 @@ BEGIN new "rhel5" primary and secondary navigation
 ************************************************************* TOP NAVIGATION V2*/
 #header
 {
-	height: 31px;
+	height: 70px;
 /*changed height added bottom margin*/
-	margin-bottom: 10px;
+	/*[disabled]margin-bottom:10px;*/
+	/*[disabled]padding:0px 10px;*/
 }
 /*IMG#rhLogo is hidden as it is not needed in SuSE Manager context*/
 IMG#rhLogo
@@ -19,15 +20,16 @@ IMG#rhnLogo
 	float: left;
 	width: 220px;
 	height: 70px;
+	margin-left: 10px;
 }
 #utility
 {
 	/*[disabled]font-size:;*/
-	padding: 10px 0 0;
+	padding: 10px 10px 0;
+	height: 15px;
 }
 #utility A
 {
-	text-decoration: none;
 	color: #C6DEAE;
 }
 #utilityLinks
@@ -74,7 +76,7 @@ IMG#rhnLogo
 {
 	/*[disabled]text-transform:uppercase;*/
 	font-size: 0.8em;
-	font-weight: 700;
+	font-weight: normal;
 }
 #utilityAccount P A, #utilityAccount P A:link
 {
@@ -83,7 +85,7 @@ IMG#rhnLogo
 SPAN.navPipe
 {
 	color: #DDD;
-	padding: 0 10px;
+	padding: 0 8px;
 }
 A#utilityCart
 {

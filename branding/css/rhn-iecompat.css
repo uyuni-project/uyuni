@@ -2,13 +2,17 @@ UL.content-nav-rowtwo
 {
 	width: 80%;
 }
+#mainNav LI
+{
+	height: 32px;
+}
 UL.content-nav-rowtwo LI
 {
 	width: 100%;
 }
 #header
 {
-	height: 56px;
+	/*[disabled]height:56px;*/
 }
 #searchbar
 {
@@ -31,4 +35,7 @@ UL.content-nav-rowthree
 TD.page-content
 {
 	width: 100%;
+}
+#bar
+{
 }

@@ -1,110 +1,130 @@
 /** styles for content nav (for example, the sdc grey navigation bar is a content nav **/
-
-.content-nav {
+.content-nav
+{
 	margin: 0;
-        padding: 0;
+	padding: 0;
+	height: 40px;
+	border-bottom: 1px solid #DDDDDD;
 }
-
-.content-nav a:visited {
-    color: #06c;
+.content-nav A:visited
+{
+	color: #06C;
 }
-
-.content-nav ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        font-size: 10px;
-        font-family: "Luxi Sans", verdana, arial, sans-serif;
-        }
-
-.content-nav:after,
-.content-nav ul:after {
-        content: ".";
-        display: block;
-        height: 1px;
-        margin-top: -1px;
-        overflow: hidden;
-        clear: both;
-        visibility: hidden;
-        }
-
-ul.content-nav-rowone,
-ul.content-nav-rowthree {
-        margin-left: 10px;
-        }
-
-ul.content-nav-rowone {
-        border-bottom: 3px solid #e6e6e6;
-        margin-bottom: -4px;
+.content-nav UL
+{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	font-family: "Luxi Sans", verdana, arial, sans-serif;
 }
-
-ul.content-nav-rowone li {
-    margin-bottom: -1px;
-    }
-
-ul.content-nav-rowone li, ul.content-nav-rowthree li {
-        float: left;
+.content-nav:after, .content-nav UL:after
+{
+	/*[disabled]content:".";*/
+	/*[disabled]display:block;*/
+	/*[disabled]height:1px;*/
+	/*[disabled]margin-top:-1px;*/
+	/*[disabled]overflow:hidden;*/
+	/*[disabled]clear:both;*/
+	/*[disabled]visibility:hidden;*/
 }
-
-ul.content-nav-rowone li a, ul.content-nav-rowthree li a {
-        display: block;
-        padding: 4px 8px;
+UL.content-nav-rowone, UL.content-nav-rowthree
+{
+	/*[disabled]margin-left:10px;*/
 }
-
-ul.content-nav-rowtwo {
-        background: url('/img/contentnav_rowtwo_b.gif') bottom left no-repeat;
-        padding-bottom: 6px;
-        margin-right: 8px;
-        }
-
-ul.content-nav-rowtwo li {
-        display: inline;
-        padding-left: 18px;
+UL.content-nav-rowone
+{
+	/*[disabled]border-bottom:3px solid #E6E6E6;*/
+	/*[disabled]margin-bottom:-4px;*/
 }
-
-a.content-nav-selected-link {
-        color: #444;
-        font-weight: 900;
-        }
-
-ul.content-nav-rowone li.content-nav-selected {
-        background: url('/img/contentnav_tabr.gif') top right no-repeat;
+UL.content-nav-rowone LI
+{
+	/*[disabled]margin-bottom:-1px;*/
 }
-
-ul.content-nav-rowone a.content-nav-selected-link {
-        color: #444;
-        font-weight: 900;
-        background: url('/img/contentnav_tabl.gif') top left no-repeat;
-        }
-
-ul.content-nav-rowthree li.content-nav-selected {
-        background: url('/img/contentnav_tabr.gif') bottom right no-repeat;
-        }
-
-ul.content-nav-rowthree a.content-nav-selected-link {
-        color: #444;
-        font-weight: 900;
-        background: url('/img/contentnav_tabl.gif') bottom left no-repeat;
-        }
-div.contentnav-row2 {
-        background: #e6e6e6 url('/img/contentnav_rowtwo_t.gif') top left no-repeat;
-        padding: 0px;
-        clear: left;
-        }
-
-div.contentnav-row2 a.content-nav-selected-link {
-        color: #444;
-        font-weight: 900;
+UL.content-nav-rowone LI, UL.content-nav-rowthree LI
+{
+	float: left;
 }
-
-div.contentnav-row2 div.top {
-        background: url('/img/contentnav_rowtwo_t.gif') top right no-repeat;
-        margin-left: 8px;
+UL.content-nav-rowone LI A, UL.content-nav-rowthree LI A
+{
+	display: block;
+	padding: 5px 10px;
+}
+UL.content-nav-rowtwo
+{
+	background: url(/img/contentnav_rowtwo_b.gif) no-repeat bottom left;
+	padding-bottom: 6px;
+	margin-right: 8px;
+}
+UL.content-nav-rowtwo LI
+{
+	display: inline;
+	padding-left: 18px;
+}
+A.content-nav-selected-link
+{
+	color: #444;
+	font-weight: normal;
+	background-color: #E4EDF6;
+	/*+border-radius:5px;*/
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px 5px 5px 5px;
+	border: 1px solid #89A7C6;
+}
+A.content-nav-selected-link:hover
+{
+	color: #444;
+	font-weight: normal;
+	background-color: #E4EDF6;
+	/*+border-radius:5px;*/
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px 5px 5px 5px;
+	border: 1px solid #89A7C6;
+	text-decoration: none;
+	cursor: default;
+}
+UL.content-nav-rowone LI.content-nav-selected
+{
+	/*[disabled]background:url(/img/contentnav_tabr.gif) no-repeat top right;*/
+}
+UL.content-nav-rowone A.content-nav-selected-link
+{
+	/*[disabled]color:#444;*/
+	/*[disabled]font-weight:900;*/
+	/*[disabled]background:url(/img/contentnav_tabl.gif) no-repeat top left;*/
+}
+UL.content-nav-rowthree LI.content-nav-selected
+{
+	background: url(/img/contentnav_tabr.gif) no-repeat bottom right;
+}
+UL.content-nav-rowthree A.content-nav-selected-link
+{
+	color: #444;
+	font-weight: 900;
+	background: url(/img/contentnav_tabl.gif) no-repeat bottom left;
+}
+DIV.contentnav-row2
+{
+	background: #E6E6E6 url(/img/contentnav_rowtwo_t.gif) no-repeat top left;
+	padding: 0px;
+	clear: left;
+}
+DIV.contentnav-row2 A.content-nav-selected-link
+{
+	color: #444;
+	font-weight: 900;
+}
+DIV.contentnav-row2 DIV.top
+{
+	background: url(/img/contentnav_rowtwo_t.gif) no-repeat top right;
+	margin-left: 8px;
 	height: 6px;
 	font-size: 0;
-        }
-
-div.contentnav-row2 div.bottom {
-	background: url('/img/contentnav_rowtwo_b.gif') bottom right no-repeat;
-        }
-
+}
+DIV.contentnav-row2 DIV.bottom
+{
+	background: url(/img/contentnav_rowtwo_b.gif) no-repeat bottom right;
+}

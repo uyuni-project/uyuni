@@ -5,6 +5,7 @@
 <!-- header.jsp -->
 
 <rhn:require acl="user_authenticated()">
+<div class="top-content"> <!--Added for the purpose of SuSE Manager. Header wrap [et]-->
 <div id="utility">
 	<div id="utilityLinks">
 
@@ -58,8 +59,8 @@
                renderer="com.redhat.rhn.frontend.nav.TopnavRenderer" />
     </rhn:require>
 </div> <!-- close div mainNavWrap -->
-
 </div> <!-- close div navWrap -->
+</div> <!--.top-content-->
 
 <div id="bar">
   <div id="systembar">

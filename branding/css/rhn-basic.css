@@ -28,32 +28,28 @@ Including the site-wide font set*/
 	margin: 0 auto;
 	text-align: left;
 	background: #FFF;
-	/*[disabled]padding:0 15px;*/
-	/*[disabled]min-width:760px;*/
-	min-width: 80em;
+	/*[disabled]min-width:80em;*/
+	padding: 0;
 }
 #top-wrap
 {
-	/*[disabled]border-bottom:4px solid #00AAD4;*/
 	background: #83B354 url(/img/bg-header.png) no-repeat 50% 63px;
 	width: 100%;
-	padding: 0px 10px;
+	min-width: 80em;
 }
 #bottom-wrap
 {
-	padding: 10px;
 	max-width: 80em;
 }
 .top-content
 {
 	width: 80em;
 	margin: 0px auto;
-	/*[disabled]padding:0px 10px;*/
 }
 BODY
 {
 	margin: 0;
-	padding: 0;
+	padding: 0px;
 	color: #333;
 	text-align: center;
 	background: #FFF;
@@ -149,7 +145,8 @@ A:link, A:visited
 }
 A:link:hover, A:visited:hover, A:active:hover
 {
-	text-decoration: underline !important;
+	text-decoration: underline;
+	color: #F57900;
 }
 A[name]
 {
@@ -157,7 +154,8 @@ A[name]
 }
 A[name]:hover
 {
-	text-decoration: none !important;
+	text-decoration: inherit;
+	color: inherit;
 }
 A.help-title
 {
@@ -170,20 +168,26 @@ A.help-title IMG
 	margin: 0;
 	vertical-align: top;
 }
-A[name]:hover
-{
-	color: inherit;
-}
 /** headings **/
-H1
+H1, DIV.toolbar-h1, DIV.toolbar-h2
 {
-	margin-top: 0;
+	font-size: 1.8em;
+	color: #83B354;
+	font-weight: bold;
+	margin: 24px 0 0 0px;
+	padding: 0px 0px 12px;
+}
+H2
+{
+	font-size: 1.6em;
+	color: #888A85;
+	font-weight: bold;
+	margin: 24px 0 0 0px;
+	padding: 0px 0px 12px;
 }
 H1, DIV.toolbar-h1
 {
 	margin-top: 0;
-	margin-bottom: 0.5em;
-	font-size: 20px;
 }
 H1 IMG, DIV.toolbar-h1 IMG
 {
@@ -199,14 +203,14 @@ H1 A.help-title IMG, DIV.toolbar-h1 A.help-title IMG
 }
 DIV.toolbar-h1, DIV.toolbar-h2
 {
-	font-weight: bold;
-	padding: 4px 0;
+	/*[disabled]font-weight:bold;*/
+	/*[disabled]padding:4px 0;*/
 }
 H2, DIV.toolbar-h2
 {
-	font-size: 1em;
-	color: #999;
-	border-bottom: 2px solid #CCC;
+	/*[disabled]font-size:1em;*/
+	/*[disabled]color:#999;*/
+	/*[disabled]border-bottom:2px solid #CCC;*/
 }
 H2 IMG, DIV.toolbar-h2 IMG
 {
@@ -238,8 +242,8 @@ DIV.toolbar
 }
 .toolbar A
 {
-	padding: 0 2px;
-	text-decoration: none;
+	/*[disabled]padding:0 2px;*/
+	/*[disabled]text-decoration:none;*/
 }
 DIV.tooldiv.up-arrow
 {
@@ -448,7 +452,6 @@ TABLE.details TD.csv-download
 	-moz-border-radius: 0px;
 	background-color: #FFFFFF;
 }
-
 /** button, intup styles **/
 .button, INPUT
 {
@@ -463,7 +466,7 @@ TABLE.details TD.csv-download
 }
 .button:hover, INPUT[type=button]:hover, INPUT[type=submit]:hover
 {
-	border: 1px solid #666;
+	border: 1px solid #666 !important;
 	color: #666 !important;
 }
 .button:active
@@ -480,8 +483,8 @@ TABLE.details TD.csv-download
 }
 .button, INPUT[type=button], INPUT[type=submit]
 {
-	border: 1px solid #AAA;
-	color: #333;
+	border: 1px solid #AAA !important;
+	color: #333 !important;
 	text-align: center;
 	/*+border-radius:3px;*/
 	-moz-border-radius: 3px;
@@ -491,8 +494,7 @@ TABLE.details TD.csv-download
 	padding: 2px 5px !important;
 	white-space: nowrap;
 	background: #FFFFFF url(/img/minibutton-shade.png) repeat-x 50% 100%;
-	/*[disabled]font-size:90%;*/
-	text-decoration: none;
+	text-decoration: none !important;
 }
 INPUT[type=text], INPUT[type=password]
 {
@@ -514,8 +516,6 @@ A:link.link-button, A:visited.link-button, A:hover.link-button
 	/*[disabled]padding-right:2%;*/
 	/*[disabled]text-decoration:none;*/
 }
-
-
 /** embedded help links **/
 .rhn-embedded-help-NAVHEADER TD
 {
@@ -617,11 +617,15 @@ border-top: 2px dotted #ccc;
 padding: 2em 4em 2em 4em;
 */
 	padding: 1em;
-	margin: 1em 4em;
+	margin: 1em auto;
 	text-align: center;
 	font-size: 10px;
-	color: #AAA;
-	margin-left: auto;
-	margin-right: auto;
+	color: #888;
 	margin-top: 64px;
+	width: 100%;
+}
+TABLE.ssm-overview P
+{
+	padding: 0px;
+	margin: -1px;
 }

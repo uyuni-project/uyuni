@@ -2,9 +2,9 @@
 #header
 {
 	width: 100%;
-	margin: 0 0 12px;
-	padding-top: 12px;
 	clear: both;
+	height: 70px;
+	margin: 5px 0px;
 }
 #header FORM
 {
@@ -12,10 +12,6 @@
 	margin-top: 5px;
 	float: right;
 	text-align: right;
-}
-#header INPUT, #header SELECT
-{
-	/*[disabled]border:1px inset #AAA;*/
 }
 #header SELECT
 {
@@ -29,15 +25,16 @@
 DIV#navWrap
 {
 	clear: both;
-	width: 100%;
+	/*[disabled]width:100%;*/
 	/*[disabled]font-family:"Lucida Grande", "Luxi Sans", "Trebuchet MS", helvetica, arial, sans-serif;*/
 	/*[disabled]background-image:url(/img/nav/navPrimeRight3.png);*/
 	/*[disabled]background-position:top right;*/
 	/*[disabled]background-repeat:no-repeat;*/
+	height: 32px;
 }
 DIV#navWrap DIV#mainNavWrap
 {
-	width: 100%;
+	/*[disabled]width:100%;*/
 	/*[disabled]background-image:url(/img/nav/navPrimeLeft3.png);*/
 	/*[disabled]background-position:top left;*/
 	/*[disabled]background-repeat:no-repeat;*/
@@ -45,11 +42,11 @@ DIV#navWrap DIV#mainNavWrap
 }
 UL#mainNav, DIV#mainNavWrap UL
 {
-	width: 100%;
+	/*[disabled]width:100%;*/
 	font-weight: bold;
 /*border-bottom: 1px solid #8f0000;*/
-	padding: 0;
-	margin: 0px;
+	padding: 0px;
+	margin: 0px 0px 0px 10px;
 	list-style-type: none;
 	/*[disabled]background:url(/img/nav/navPrimeBtmBrd-blue.png) repeat-x bottom;*/
 	float: left;
@@ -59,15 +56,20 @@ UL#mainNav LI, DIV#mainNavWrap UL LI
 	float: left;
 	padding: 0 0 2px;
 	margin: 0;
+	height: 32px;
 }
 UL#mainNav LI A, DIV#mainNavWrap UL LI A
 {
 	padding: 7px 15px 5px;
-	text-decoration: none;
+	text-decoration: inherit;
 	color: #FFF;
 	font-size: 1.125em;
 	display: block;
 	float: left;
+}
+UL#mainNav LI A:hover, DIV#mainNavWrap UL LI A:hover
+{
+	text-decoration: underline;
 }
 /***** highlighting *****/
 LI#mainFirst-active, #mainNav LI#main-active, #mainNav LI#mainLast-active, DIV#mainNavWrap UL LI#main-active, DIV#mainNavWrap UL LI#mainLast-active
@@ -98,40 +100,33 @@ LI#mainFirst-active A, #mainNav LI#main-active A, #mainNav LI#mainLast-active A,
 	/*[disabled]padding-bottom:5px;*/
 	color: #555753;
 }
+LI#mainFirst-active A:hover, #mainNav LI#main-active A:hover, #mainNav LI#mainLast-active A:hover, DIV#mainNavWrap UL LI#main-active A:hover, DIV#mainNavWrap UL LI#mainLast-active A:hover
+{
+	color: #555753;
+	text-decoration: none;
+	cursor: default;
+}
 /*if it's the first tab item in the bar, styled a little differently*/
 UL#mainNav LI#mainFirst-active A, DIV#mainNavWrap UL LI#mainFirst-active A
 {
 	/*[disabled]background-image:url(/img/nav/navPrimeTabLeft-blue.gif);*/
 	color: #555753;
-	text-decoration: none !important;
-}
-.button, DIV#searchbar DIV#searchbarinner FORM INPUT.button
-{
-	/*[disabled]font-size:small;*/
-	/*[disabled]background-color:#EEE;*/
-	/*[disabled]border:2px outset #BBB;*/
-	/*[disabled]text-decoration:none;*/
-	/*[disabled]color:#444;*/
-}
-#bar .button
-{
-	border: 1px outset #BBB;
-	padding: 1px 3px;
+	text-decoration: inherit;
 }
 /***** hacks!! *****/
 #utility:after, #header:after, #navWrap:after
 {
-	content: ".";
-	display: block;
-	height: 0px;
-	overflow: hidden;
-	clear: both;
-	visibility: hidden;
+	/*[disabled]content:".";*/
+	/*[disabled]display:block;*/
+	/*[disabled]height:0px;*/
+	/*[disabled]overflow:hidden;*/
+	/*[disabled]clear:both;*/
+	/*[disabled]visibility:hidden;*/
 }
 /*Holly Hack Targets IE Win only \*/
 * HTML #utility, * HTML #header, * HTML #navWrap
 {
-	height: 1%;
+	/*[disabled]height:1%;*/
 }
 /*End Holly Hack
 *** SECONDARY TOP NAV BAR ***
@@ -142,49 +137,52 @@ This CSS is for the second, red-colored nav bar at the top of the screen.*/
 background-color: #ab0000;
 */
 	background-color: #FFFFFF;
-	/*[disabled]background-image:url(/img/nav/navSecondBkgd-blue.png);*/
-	/*[disabled]background-position:top left;*/
-	/*[disabled]background-repeat:repeat-x;*/
 /*NEED TO REMOVE THIS MARGIN FOR SPACEWALK STYLE
 margin-bottom: 10px;
 */
 	color: inherit;
 	z-index: 1;
 	position: relative;
-	padding: 0px 20px 0px 0;
-	width: 80em;
-	margin-left: -10px;
+	padding: 5px 0 0;
+	width: 100%;
+	/*[disabled]margin:0px auto;*/
+	height: 26px;
+	min-width: 80em;
 }
 #bar:after
 {
-	content: ".";
-	display: block;
-	height: 0px;
-	overflow: hidden;
-	clear: both;
-	visibility: hidden;
+	/*[disabled]content:".";*/
+	/*[disabled]display:block;*/
+	/*[disabled]height:0px;*/
+	/*[disabled]overflow:hidden;*/
+	/*[disabled]clear:both;*/
+	/*[disabled]visibility:hidden;*/
 }
 #systembar
 {
-	width: 80em;
-	margin: 0px auto;
+	/*[disabled]width:80em;*/
+	/*[disabled]margin:0px auto;*/
 }
 #systembarinner
 {
 	text-align: right;
-	padding-right: 6px;
+	/*[disabled]padding-right:6px;*/
 	height: 2em;
+	max-width: 80em !important;
+	margin: 0px auto;
 }
 #systembarinner DIV
 {
 	/*[disabled]font-variant:small-caps;*/
 	padding-top: 4px;
+	padding-right: 10px;
+	/*[disabled]width:80em;*/
 }
 #systembar A, #systembar A:link, #systembar A:hover, #systembar A:active
 {
 	margin-left: 6px;
-	color: #444;
-	text-decoration: none;
+	/*[disabled]color:#444;*/
+	/*[disabled]text-decoration:inherit;*/
 }
 #searchbar
 {

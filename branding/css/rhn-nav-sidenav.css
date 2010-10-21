@@ -10,8 +10,8 @@
 	/*[disabled]font-family:"Luxi Sans", verdana, arial, sans-serif;*/
 	/*[disabled]font-size:xx-small;*/
 /*false value for WinIE4/5
-	voice-family: "\"}\";*/
-/*trick WinIE4/5 into thinking rule is over*/
+voice-family: "\"}\";
+trick WinIE4/5 into thinking rule is over*/
 	voice-family: inherit;
 /*recover from trick*/
 	font-size: x-small;
@@ -58,11 +58,15 @@
 {
 	display: block;
 	/*[disabled]color:#FFFFFF;*/
-	text-decoration: none;
+	text-decoration: inherit;
 	padding: 3px 5px 3px 15px;
 	margin: 0;
 	font-size: 1.2em;
 	font-weight: normal;
+}
+#sidenavp UL LI A:hover, #sidenav UL LI A:hover
+{
+	text-decoration: underline;
 }
 #sidenavp UL LI.sidenav-selected, #sidenav UL LI.sidenav-selected
 {
@@ -81,17 +85,18 @@
 {
 	color: #555753;
 	font-weight: bold;
-	text-decoration: none !important;
+	text-decoration: inherit;
 }
 #content
 {
 	clear: both;
+	padding: 0px 10px;
 }
 /*The following styles establish the legend boxes in the left sidebar*/
 .sideleg
 {
 	width: 132px;
-	background: url('/img/sidelegend_top.gif') no-repeat 0 0;
+	background: url(/img/sidelegend_top.gif) no-repeat 0 0;
 	padding-top: 9px;
 	margin-top: 1em;
 }
@@ -109,7 +114,7 @@
 	padding: 0 0 9px;
 	margin: 0;
 	list-style: none;
-	background: url('/img/sidelegend_bottom.gif') no-repeat 0 100%;
+	background: url(/img/sidelegend_bottom.gif) no-repeat 0 100%;
 }
 .sideleg UL LI
 {
@@ -125,11 +130,6 @@
 	float: left;
 	padding-right: 3px;
 	margin-top: -3px;
-}
-.sidebar
-{
-	padding-right: 15px;
-	vertical-align: top;
 }
 .sidebar
 {
