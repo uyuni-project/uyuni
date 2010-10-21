@@ -81,7 +81,7 @@ end
 # Test if a checkbox is disabled
 #
 Then /^the "([^\"]*)" checkbox should be disabled$/ do |arg1|
-  field_labeled(arg1)['disabled'].should == "true"
+  fail if field_labeled(arg1)['disabled'].nil?
 end
 
 Then /^I should see "([^"]*)" in field "([^"]*)"$/ do |arg1, arg2|
