@@ -19,7 +19,7 @@ Feature: Check errata
       And I should see a "Security update for the Linux kernel" text
       And I should see a "SLES11-SP1-Updates x86_64 Channel" link
       And I should see a "CVE-2010-2954" link
-      And I should see a "Bug# 643922 bug number 643922" text
+      And I should see a "Bug# 643922 bug number 643922" link
       And I should see a "reboot_suggested" text
 
   Scenario: check slessp1-kernel-3280-channel-x86_64 errata packages
@@ -50,7 +50,7 @@ Feature: Check errata
       And I should see a "Security update for the Linux kernel" text
       And I should see a "SLES11-SP1-Updates i586 Channel" link
       And I should see a "CVE-2010-2954" link
-      And I should see a "Bug# 643922 bug number 643922" text
+      And I should see a "Bug# 643922 bug number 643922" link
       And I should see a "reboot_suggested" text
 
   
@@ -92,7 +92,7 @@ Feature: Check errata
      Then I should see a "slessp1-suseRegister-2953-channel-x86_64 - Bug Fix Advisory" text
       And I should see a "Recommended update for suseRegister" text
       And I should see a "SLES11-SP1-Updates x86_64 Channel" link
-      And I should see a "Bug# 546142 bug number 546142" text
+      And I should see a "Bug# 546142 bug number 546142" link
       And I should see a "restart_suggested" text
 
   Scenario: check slessp1-suseRegister-2953-channel-x86_64 errata packages
@@ -107,7 +107,7 @@ Feature: Check errata
      Then I should see a "slessp1-suseRegister-2953-channel-ia32 - Bug Fix Advisory" text
       And I should see a "Recommended update for suseRegister" text
       And I should see a "SLES11-SP1-Updates i586 Channel" link
-      And I should see a "Bug# 546142 bug number 546142" text
+      And I should see a "Bug# 546142 bug number 546142" link
       And I should see a "restart_suggested" text
 
   Scenario: check slessp1-suseRegister-2953-channel-ia32 errata packages
