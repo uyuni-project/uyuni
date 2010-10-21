@@ -137,7 +137,8 @@ class RepoSync:
     def import_updates(self, plug, url):
       notices = plug.get_updates()
       self.print_msg("Repo " + url + " has " + str(len(notices)) + " patches.")
-      self.upload_updates(notices)
+      if len(notices) > 0:
+        self.upload_updates(notices)
       
     def upload_updates(self, notices):
       batch = []
@@ -259,7 +260,8 @@ class RepoSync:
       backend.init()
       importer = ErrataImport(batch, backend)
       importer.run()
-      
+      self.regen = True
+
     def import_packages(self, plug, url):
         packages = plug.list_packages()
         to_link = []
