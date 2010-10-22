@@ -29,6 +29,10 @@ rhnContentSource
                                 references rhnContentSourceType(id),
         source_url      varchar2(512) NOT NULL,
         label           varchar2(64) NOT NULL,
+        metadata_signed CHAR(1)
+                            DEFAULT ('Y') NOT NULL
+                            CONSTRAINT rhn_cs_ms_ck
+                                CHECK (metadata_signed in ( 'Y' , 'N' )), 
         created         date default(sysdate) NOT NULL,
         modified        date default(sysdate) NOT NULL
 )
