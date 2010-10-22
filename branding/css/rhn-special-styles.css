@@ -129,6 +129,7 @@ h1#rhn_welcome {
         background-repeat: no-repeat;
         padding-bottom: 5px;
         height: 20px;
+	display:none;
         }
 
 h1#rhn_welcome2 {
@@ -136,6 +137,7 @@ h1#rhn_welcome2 {
         background-position: 0 0;
         background-repeat: no-repeat;
         height: 37px;
+	display:none;
         }
 
 h1#rhn_welcome3 {
@@ -143,6 +145,7 @@ h1#rhn_welcome3 {
         background-position: 0 0;
         background-repeat: no-repeat;
         height: 40px;
+	display:none;
         }
 
 h1#rhn_welcome span {
