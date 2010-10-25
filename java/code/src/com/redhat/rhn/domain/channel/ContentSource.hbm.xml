@@ -17,6 +17,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="created" type="timestamp" column="created"  insert="false" update="false" />
         <property name="modified" type="timestamp" column="modified" insert="false" update="false" />
         <property name="label" type="string" column="label"/>
+        <property name="metadataSigned" type="yes_no" column="metadata_signed"/>
 
         <many-to-one name="org"
                      column="org_id"

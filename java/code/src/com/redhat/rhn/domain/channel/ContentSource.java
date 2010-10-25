@@ -32,6 +32,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     private ContentSourceType type;
     private String sourceUrl;
     private String label;
+    private boolean metadataSigned;
     private Set<Channel> channels = new HashSet<Channel>();
     /**
      * @return Returns the label.
@@ -78,6 +79,13 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
         this.id = idIn;
     }
 
+    public boolean getMetadataSigned() {
+        return this.metadataSigned;
+    }
+
+    public void setMetadataSigned(boolean md) {
+        this.metadataSigned = md;
+    }
 
     /**
      * @return Returns the type.

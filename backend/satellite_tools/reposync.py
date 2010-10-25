@@ -26,11 +26,26 @@ from spacewalk.server.importlib.backendOracle import OracleBackend
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
+from yum import Errors
+from yum.i18n import to_unicode, to_utf8
 
 from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 
 default_log_location = '/var/log/rhn/reposync/'
 default_hash = 'sha256'
+
+class ChannelException(Exception):
+    """
+    Channel Error.
+    """
+    def __init__(self, value=None):
+        Exception.__init__(self)
+        self.value = value
+    def __str__(self):
+        return "%s" %(self.value,)
+
+    def __unicode__(self):
+        return '%s' % to_unicode(self.value)
 
 class RepoSync:
    
@@ -42,6 +57,7 @@ class RepoSync:
     fail = False
     quiet = False
     regen = False
+    noninteractive = False
 
     def main(self):
         initCFG('server')
@@ -64,7 +80,7 @@ class RepoSync:
         if not options.url:
             if options.channel_label:
                 # TODO:need to look at user security across orgs
-                h = rhnSQL.prepare("""select s.source_url
+                h = rhnSQL.prepare("""select s.source_url, s.metadata_signed
                                       from rhnContentSource s,
                                            rhnChannelContentSource cs,
                                            rhnChannel c
@@ -74,12 +90,12 @@ class RepoSync:
                 h.execute(label=options.channel_label)
                 source_urls = h.fetchall_dict() or []
                 if source_urls:
-                    self.urls = [row['source_url'] for row in source_urls]
+                    self.urls = source_urls
                 else:
                     quit = True
                     self.error_msg("Channel has no URL associated")
         else:
-            self.urls = [options.url]
+            self.urls = [{'source_url':options.url, 'metadata_signed' : True}]
         if not options.channel_label:
             quit = True
             self.error_msg("--channel must be specified")
@@ -96,15 +112,28 @@ class RepoSync:
         self.fail = options.fail
         self.quiet = options.quiet
         self.channel = self.load_channel()
+        self.noninteractive = options.noninteractive
 
         if not self.channel or not rhnChannel.isCustomChannel(self.channel['id']):
             print "Channel does not exist or is not custom"
             sys.exit(1)
 
-        for url in self.urls:
-            plugin = self.load_plugin()(url, self.channel_label)
-            self.import_packages(plugin, url)
-            self.import_updates(plugin, url)
+        for data in self.urls:
+            url = data['source_url']
+            insecure = False;
+            if data['metadata_signed'] == 'N':
+                insecure = True;
+            try:
+                plugin = self.load_plugin()(url, self.channel_label, insecure, (not self.noninteractive))
+                self.import_packages(plugin, url)
+                self.import_updates(plugin, url)
+            except ChannelException, e:
+                self.print_msg("ChannelException: %s" % e)
+                sys.exit(1)
+            except Errors.YumGPGCheckError, e:
+                self.print_msg("YumGPGCheckError: : %s" % e)
+                sys.exit(1)
+
         if self.regen:
             taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                 [self.channel_label], [], "server.app.yumreposync")
@@ -126,6 +155,7 @@ class RepoSync:
         self.parser.add_option('-t', '--type', action='store', dest='type', help='The type of repo, currently only "yum" is supported', default='yum')
         self.parser.add_option('-f', '--fail', action='store_true', dest='fail', default=False , help="If a package import fails, fail the entire operation")
         self.parser.add_option('-q', '--quiet', action='store_true', dest='quiet', default=False, help="Print no output, still logs output")
+        self.parser.add_option('-n', '--non-interactive', action='store_true', dest='noninteractive', default=False, help="Do not ask anything, use default answers automatically.")
         return self.parser.parse_args()
 
     def load_plugin(self):

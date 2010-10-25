@@ -42,6 +42,7 @@ import com.redhat.rhn.manager.channel.repo.BaseRepoCommand;
 import com.redhat.rhn.manager.channel.repo.CreateRepoCommand;
 import com.redhat.rhn.manager.channel.repo.EditRepoCommand;
 
+import org.apache.log4j.Logger;
 
 /**
  * CobblerSnippetDetailsAction
@@ -54,10 +55,14 @@ public class RepoDetailsAction extends RhnAction {
     public static final String URL = "url";
     public static final String LABEL = "label";
     public static final String SOURCEID = "sourceid";
+    public static final String METADATA_SIGNED = "metadataSigned";
 
     private static final String VALIDATION_XSD =
                 "/com/redhat/rhn/frontend/action/channel/" +
                         "manage/repo/validation/repoForm.xsd";
+
+    private static Logger logger = Logger.getLogger(RepoDetailsAction.class);
+
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
                                   ActionForm formIn,
@@ -112,6 +117,10 @@ public class RepoDetailsAction extends RhnAction {
         else if (!isCreateMode(request)) {
             setup(request, form);
         }
+        else if (isCreateMode(request)) {
+            // default for has signed metadata should be true
+            form.set(METADATA_SIGNED, new Boolean(true));
+        }
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
@@ -140,6 +149,7 @@ public class RepoDetailsAction extends RhnAction {
         form.set(LABEL, repo.getLabel());
         form.set(URL, repo.getSourceUrl());
         form.set(SOURCEID, repo.getId());
+        form.set(METADATA_SIGNED, new Boolean(repo.getMetadataSigned()));
         bindRepo(request, repo);
     }
 
@@ -157,6 +167,14 @@ public class RepoDetailsAction extends RhnAction {
         RequestContext context = new RequestContext(request);
         String url = form.getString(URL);
         String label = form.getString(LABEL);
+        //Boolean metadataSigned = new Boolean(form.get(METADATA_SIGNED) != null); 
+        Boolean metadataSigned = (Boolean) form.get(METADATA_SIGNED);
+        if ( metadataSigned == null )
+        {
+            // disabled checkbox doesn't return a value, so result is null
+            // set it to false
+            metadataSigned = Boolean.FALSE;
+        }
         Org org = context.getLoggedInUser().getOrg();
         BaseRepoCommand repoCmd = null;
         if (isCreateMode(request)) {
@@ -169,6 +187,7 @@ public class RepoDetailsAction extends RhnAction {
 
         repoCmd.setLabel(label);
         repoCmd.setUrl(url);
+        repoCmd.setMetadataSigned(metadataSigned.booleanValue());
 
         try {
             repoCmd.store();

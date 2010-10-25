@@ -856,6 +856,7 @@
             <form-property name="url" type="java.lang.String"/>
             <form-property name="sourceid" type="java.lang.Long" />
             <form-property name="label" type="java.lang.String"/>
+            <form-property name="metadataSigned" type="java.lang.Boolean"/>
         </form-bean>
 
         <form-bean name="cobblerSnippetsForm"

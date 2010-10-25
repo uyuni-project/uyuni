@@ -34,6 +34,7 @@ public class BaseRepoCommand {
     private String label;
     private String url;
     private Org org;
+    private boolean metadata_signed;
     private List<ValidatorError> errors;
 
     /**
@@ -90,6 +91,14 @@ public class BaseRepoCommand {
         this.url = urlIn;
     }
 
+    public boolean getMetadataSigned() {
+        return metadata_signed;
+    }
+
+    public void setMetadataSigned(boolean md) {
+        this.metadata_signed = md;
+    }
+
     /**
      * Check for errors and store Org to db.
      * @throws InvalidRepoUrlException in case repo wih given url already exists
@@ -114,6 +123,7 @@ public class BaseRepoCommand {
                 throw new InvalidRepoUrlException(url);
             }
             repo.setSourceUrl(this.url);
+            repo.setMetadataSigned(this.metadata_signed);
         }
 
         ChannelFactory.save(repo);

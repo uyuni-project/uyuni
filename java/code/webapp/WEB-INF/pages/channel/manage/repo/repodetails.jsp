@@ -55,6 +55,14 @@
 			<html:text property="url"/>
         </td>
     </tr>
+    <tr>
+        <th>
+            <bean:message key="repos.jsp.create.metadataSigned"/>
+        </th>
+        <td>
+            <html:checkbox property="metadataSigned" />
+        </td>
+    </tr>
 
     </table>
 
