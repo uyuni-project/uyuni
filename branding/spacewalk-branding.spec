@@ -74,6 +74,8 @@ rm -rf %{buildroot}
 %dir /%{wwwroot}/www/html/img
 /%{wwwroot}/www/html/img/*
 /%{wwwroot}/www/html/favicon.ico
+%dir /%{wwwroot}/www/html/fonts
+/%{wwwroot}/www/html/fonts/*
 %dir /%{wwwroot}/www/html/templates
 /%{wwwroot}/www/html/templates/*
 /%{wwwroot}/www/html/templates/.htaccess
