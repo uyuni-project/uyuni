@@ -84,6 +84,7 @@ public class CreateAction extends RhnAction {
         e.setAdvisoryRel(new Long(form.getString("advisoryRelease")));
         e.setAdvisoryType(form.getString("advisoryType"));
         e.setProduct(form.getString("product"));
+        e.setErrataFrom(form.getString("errataFrom"));
 
         //Advisory = advisoryName-advisoryRelease
         e.setAdvisory(form.getString("advisoryName") + "-" +

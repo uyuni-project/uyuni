@@ -197,6 +197,7 @@ public class ErrataHandler extends BaseHandler {
      *          #prop("int", "release")
      *          #prop("string", "type")
      *          #prop("string", "product")
+     *          #prop("string", "errataFrom")
      *          #prop("string", "topic")
      *          #prop("string", "description")
      *          #prop("string", "references")
@@ -231,6 +232,8 @@ public class ErrataHandler extends BaseHandler {
         }
         errataMap.put("product",
                 StringUtils.defaultString(errata.getProduct()));
+        errataMap.put("errataFrom",
+                StringUtils.defaultString(errata.getErrataFrom()));
         errataMap.put("solution",
                 StringUtils.defaultString(errata.getSolution()));
         errataMap.put("description",
@@ -272,6 +275,7 @@ public class ErrataHandler extends BaseHandler {
      *                  following: 'Security Advisory', 'Product Enhancement Advisory',
      *                  or 'Bug Fix Advisory'")
      *          #prop("string", "product")
+     *          #prop("string", "errataFrom")
      *          #prop("string", "topic")
      *          #prop("string", "description")
      *          #prop("string", "references")
@@ -304,6 +308,7 @@ public class ErrataHandler extends BaseHandler {
         validKeys.add("advisory_release");
         validKeys.add("advisory_type");
         validKeys.add("product");
+        validKeys.add("errataFrom");
         validKeys.add("topic");
         validKeys.add("description");
         validKeys.add("references");
@@ -353,6 +358,9 @@ public class ErrataHandler extends BaseHandler {
         }
         if (details.containsKey("product")) {
             errata.setProduct((String)details.get("product"));
+        }
+        if (details.containsKey("errataFrom")) {
+            errata.setErrataFrom((String)details.get("errataFrom"));
         }
         if (details.containsKey("topic")) {
             errata.setTopic((String)details.get("topic"));
@@ -916,6 +924,7 @@ public class ErrataHandler extends BaseHandler {
      *          following: "Security Advisory", "Product Enhancement Advisory", or
      *          "Bug Fix Advisory"
      *  String "product" the product the errata affects
+     *  String "errataFrom" the author of the errata
      *  String "topic" the topic of the errata
      *  String "description" the description of the errata
      *  String "solution" the solution of the errata
@@ -942,6 +951,7 @@ public class ErrataHandler extends BaseHandler {
      *                  following: 'Security Advisory', 'Product Enhancement Advisory',
      *                  or 'Bug Fix Advisory'")
      *          #prop("string", "product")
+     *          #prop("string", "errataFrom")
      *          #prop("string", "topic")
      *          #prop("string", "description")
      *          #prop("string", "references")
@@ -977,6 +987,7 @@ public class ErrataHandler extends BaseHandler {
         validKeys.add("advisory_release");
         validKeys.add("advisory_type");
         validKeys.add("product");
+        validKeys.add("errataFrom");
         validKeys.add("topic");
         validKeys.add("description");
         validKeys.add("references");
@@ -1010,6 +1021,7 @@ public class ErrataHandler extends BaseHandler {
         }
         String advisoryType = (String) getRequiredAttribute(errataInfo, "advisory_type");
         String product = (String) getRequiredAttribute(errataInfo, "product");
+        String errataFrom = (String) errataInfo.get("errataFrom");
         String topic = (String) getRequiredAttribute(errataInfo, "topic");
         String description = (String) getRequiredAttribute(errataInfo, "description");
         String solution = (String) getRequiredAttribute(errataInfo, "solution");
@@ -1047,6 +1059,7 @@ public class ErrataHandler extends BaseHandler {
         newErrata.setUpdateDate(new Date());
 
         //not required
+        newErrata.setErrataFrom(errataFrom);
         newErrata.setRefersTo(references);
         newErrata.setNotes(notes);
 

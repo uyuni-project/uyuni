@@ -92,6 +92,7 @@ public class EditAction extends LookupDispatchAction {
         form.set("advisoryType", errata.getAdvisoryType());
         form.set("advisoryTypeLabels", ErrataManager.advisoryTypeLabels());
         form.set("product", errata.getProduct());
+        form.set("errataFrom", errata.getErrataFrom());
         form.set("topic", errata.getTopic());
         form.set("description", errata.getDescription());
         form.set("solution", errata.getSolution());
@@ -200,6 +201,7 @@ public class EditAction extends LookupDispatchAction {
         e.setAdvisoryRel(new Long(form.getString("advisoryRelease")));
         e.setAdvisoryType(form.getString("advisoryType"));
         e.setProduct(form.getString("product"));
+        e.setErrataFrom(form.getString("errataFrom"));
         //Advisory = advisoryName-advisoryRelease
         e.setAdvisory(form.getString("advisoryName") + "-" +
                       form.getString("advisoryRelease"));

@@ -412,6 +412,7 @@ public class ErrataFactory extends HibernateFactory {
 
         copy.setAdvisoryType(original.getAdvisoryType());
         copy.setProduct(original.getProduct());
+        copy.setErrataFrom(original.getErrataFrom());
         copy.setDescription(original.getDescription());
         copy.setSynopsis(original.getSynopsis());
         copy.setTopic(original.getTopic());

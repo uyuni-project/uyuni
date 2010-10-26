@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -349,7 +350,16 @@ public interface Errata {
      */
     void setChannels(Set channelsIn);
 
+    /**
+     * Getter for author
+     * @return String to get
+     */
     String getErrataFrom();
+
+    /**
+     * Setter for author
+     * @param from to set
+     */
     void   setErrataFrom(String from);
 
     /**

@@ -71,6 +71,15 @@
 
     <tr>
       <th nowrap="nowrap">
+        <bean:message key="errata.create.jsp.from"/>
+      </th>
+      <td class="small-form">
+        <html:text property="errataFrom" size="30" maxlength="127" />
+      </td>
+    </tr>
+
+    <tr>
+      <th nowrap="nowrap">
         <bean:message key="errata.create.jsp.topic"/>
       </th>
       <td class="small-form">

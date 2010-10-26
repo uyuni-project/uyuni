@@ -24,13 +24,17 @@
           <th><bean:message key="details.jsp.updated"/></th>
           <td>${updated}</td>
         </tr>
+        <tr>
+          <th><bean:message key="details.jsp.from"/></th>
+          <td>${errataFrom}</td>
+        </tr>
       </table>
 
 <h2><bean:message key="details.jsp.topic"/></h2>
     <div class="page-summary">${topic}</div>
 
 <h2><bean:message key="details.jsp.description"/></h2>
-    <div class="page-summary">${description} From: ${errataFrom}</div>
+    <div class="page-summary">${description}</div>
 
 <h2><bean:message key="details.jsp.solution"/></h2>
     <div class="page-summary">${solution}</div>

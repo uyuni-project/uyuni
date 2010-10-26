@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -130,7 +131,7 @@ public abstract class AbstractErrata extends BaseDomainHelper implements
     }
 
     /**
-     * Getter for email
+     * Getter for author
      * @return String to get
      */
     public String getErrataFrom() {
@@ -138,8 +139,8 @@ public abstract class AbstractErrata extends BaseDomainHelper implements
     }
 
     /**
-     * Setter for product
-     * @param productIn to set
+     * Setter for author
+     * @param from to set
      */
     public void setErrataFrom(String from) {
         this.errataFrom = from;
