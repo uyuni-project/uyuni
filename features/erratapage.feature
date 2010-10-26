@@ -57,7 +57,7 @@ Feature: Explore the main landing page
     And I click on "Create Errata"
     Then I should see a "Errata Test Advisory-1 created." text
 
-  @errata_w
+  @errata
   Scenario: Publish erratum
     Given I am on the Errata page
     And I follow "Manage Errata" in the left menu
@@ -69,7 +69,7 @@ Feature: Explore the main landing page
     Then I should see a "All Errata" text
     And I should see a "Test Erratum" text
 
-  @errata_w
+  @errata
   Scenario: Delete erratum
     Given I am on the Errata page
     And I follow "Manage Errata" in the left menu
