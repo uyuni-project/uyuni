@@ -298,7 +298,8 @@ install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_initrddir}
 sed -i -e 's/# Default-Start:/# Default-Start: 3 5/g' $RPM_BUILD_ROOT/%{_initrddir}/taskomatic
 
 # link the java compiler to tomcat
-ln -sf %{java_home}/lib/tools.jar $RPM_BUILD_ROOT%{jardir}/tools.jar
+# we need to use the alternative link to differ between 32 and 64 Bit
+ln -sf /etc/alternatives/java_sdk/lib/tools.jar $RPM_BUILD_ROOT%{jardir}/tools.jar
 %endif
 
 
