@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -98,7 +99,8 @@ public class PublishErrataHelper {
         for (Bug bugIn : (Set<Bug>) original.getBugs()) {
             Bug bClone;
                 bClone = ErrataManager.createNewPublishedBug(bugIn.getId(),
-                                                            bugIn.getSummary());
+                                                             bugIn.getSummary(),
+                                                             bugIn.getUrl());
            clone.addBug(bClone);
         }
 

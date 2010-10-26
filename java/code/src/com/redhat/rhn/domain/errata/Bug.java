@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -42,6 +43,16 @@ public interface Bug  {
     void setSummary(String s);
 
     /**
+     * @return Returns the url
+     */
+    String getUrl();
+    
+    /**
+    * @param url The url to set.
+    */
+    void setUrl(String url);
+    
+    /**
      * @return Returns the errata.
      */
     Errata getErrata();
@@ -50,9 +61,5 @@ public interface Bug  {
      * @param errataIn the errata to set.
      */
     void setErrata(Errata errataIn);
-
-    String getUrl();
-
-    void setUrl(String url);
 
 }

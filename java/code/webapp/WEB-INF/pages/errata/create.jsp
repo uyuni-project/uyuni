@@ -101,10 +101,18 @@
         <bean:message key="errata.create.jsp.bugs"/>
       </th>
       <td class="small-form">
-        <bean:message key="errata.create.jsp.id"/>
-        <html:text property="buglistId" size="6" />
-        <bean:message key="errata.create.jsp.summary"/>
-        <html:text property="buglistSummary" size="60" />
+        <table cellpadding="3">
+          <tr>
+            <td><bean:message key="errata.create.jsp.id"/></td>
+            <td><html:text property="buglistId" size="6" /></td>
+          </tr><tr>
+            <td><bean:message key="errata.create.jsp.summary"/></td>
+            <td><html:text property="buglistSummary" size="60" /></td>
+          </tr><tr>
+            <td><bean:message key="errata.create.jsp.bugurl"/></td>
+            <td><html:text property="buglistUrl" size="60" /></td>
+          </tr>
+        </table>
       </td>
     </tr>
 

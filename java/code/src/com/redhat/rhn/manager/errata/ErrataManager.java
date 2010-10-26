@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -223,8 +224,8 @@ public class ErrataManager extends BaseManager {
      * @param summary The summary for the new bug.
      * @return Returns a Bug object.
      */
-    public static Bug createNewUnpublishedBug(Long id, String summary) {
-        return ErrataFactory.createUnpublishedBug(id, summary);
+    public static Bug createNewUnpublishedBug(Long id, String summary, String url) {
+        return ErrataFactory.createUnpublishedBug(id, summary, url);
     }
 
     /**
@@ -233,8 +234,8 @@ public class ErrataManager extends BaseManager {
      * @param summary The summary for the new bug
      * @return Returns a Bug object
      */
-    public static Bug createNewPublishedBug(Long id, String summary) {
-        return ErrataFactory.createPublishedBug(id, summary);
+    public static Bug createNewPublishedBug(Long id, String summary, String url) {
+        return ErrataFactory.createPublishedBug(id, summary, url);
     }
 
     /**

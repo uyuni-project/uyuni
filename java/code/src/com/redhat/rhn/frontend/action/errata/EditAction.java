@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -237,12 +238,13 @@ public class EditAction extends LookupDispatchAction {
             String[] bug = (String[])i.next();
             Long bugid = new Long(bug[0]);
             String summary = bug[1];
+            String url = bug[2];
             //should this be a published or unpublished bug?
             if (e.isPublished()) {
-                e.addBug(ErrataManager.createNewPublishedBug(bugid, summary));
+                e.addBug(ErrataManager.createNewPublishedBug(bugid, summary, url));
             }
             else { //add a new UnpublishedBug
-                e.addBug(ErrataManager.createNewUnpublishedBug(bugid, summary));
+                e.addBug(ErrataManager.createNewUnpublishedBug(bugid, summary, url));
             }
         }
 
@@ -324,6 +326,7 @@ public class EditAction extends LookupDispatchAction {
             String next = (String)i.next();
             String id;
             String summary;
+            String url;
             //The suffix is the bug id or 'New'.  It is needed to match the id and summary
             //fields and to deal with the special differences between old bugs and new bugs
             String suffix = next.substring("buglistId".length());
@@ -333,6 +336,7 @@ public class EditAction extends LookupDispatchAction {
             try {
                 id = request.getParameter(next).trim();
                 summary = request.getParameter("buglistSummary" + suffix);
+                url = request.getParameter("buglistUrl" + suffix);
             }
             catch (IllegalArgumentException iae) {
                 //This means that the buglistId key is not in the parameter map
@@ -386,9 +390,10 @@ public class EditAction extends LookupDispatchAction {
             //Add this bug to the collection so that we can update the errata easily
             ids.add(id);
             if (!newbug || id.length() > 0) {
-                String[] bug = new String[2];
+                String[] bug = new String[3];
                 bug[0] = id;
                 bug[1] = summary;
+                bug[2] = url;
                 bugs.add(bug);
             }
         }

@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -146,7 +147,8 @@ public class CreateAction extends RhnAction {
             form.getString("buglistSummary").length() > 0) {
             Long id = new Long(form.getString("buglistId"));
             String summary = form.getString("buglistSummary");
-            return ErrataManager.createNewUnpublishedBug(id, summary);
+            String url = form.getString("buglistUrl");
+            return ErrataManager.createNewUnpublishedBug(id, summary, url);
         }
         else {
             return null;

@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -281,6 +282,7 @@ public class ErrataHandler extends BaseHandler {
      *                 #struct("bug")
      *                    #prop_desc("int", "id", "Bug Id")
      *                    #prop("string", "summary")
+     *                    #prop("string", "url")
      *                 #struct_end()
      *              #array_end()
      *          #prop_desc("array", "keywords", "'keywords' is the key into the struct")
@@ -315,6 +317,7 @@ public class ErrataHandler extends BaseHandler {
         validKeys.clear();
         validKeys.add("id");
         validKeys.add("summary");
+        validKeys.add("url");
         if (details.containsKey("bugs")) {
             for (Map<String, Object> bugMap :
                  (ArrayList<Map<String, Object>>) details.get("bugs")) {
@@ -377,10 +380,14 @@ public class ErrataHandler extends BaseHandler {
                  (ArrayList<Map<String, Object>>) details.get("bugs")) {
 
                 if (bugMap.containsKey("id") && bugMap.containsKey("summary")) {
+                    String url = "";
+                    if(bugMap.containsKey("url")) {
+                      url = (String) bugMap.get("url");
+                    }
 
                     Bug bug = ErrataFactory.createPublishedBug(
                             new Long((Integer) bugMap.get("id")),
-                            (String) bugMap.get("summary"));
+                            (String) bugMap.get("summary"), url);
 
                     errata.addBug(bug);
                 }
@@ -946,6 +953,7 @@ public class ErrataHandler extends BaseHandler {
      *              #struct("bug")
      *                  #prop_desc("int", "id", "Bug Id")
      *                  #prop("string", "summary")
+     *                  #prop("string", "url")
      *               #struct_end()
      *       #array_end()
      * @xmlrpc.param #array_single("string", "keyword - List of keywords to associate
@@ -979,6 +987,7 @@ public class ErrataHandler extends BaseHandler {
         validKeys.clear();
         validKeys.add("id");
         validKeys.add("summary");
+        validKeys.add("url");
         for (Map<String, Object> bugMap : (ArrayList<Map<String, Object>>) bugs) {
             validateMap(validKeys, bugMap);
         }
@@ -1043,9 +1052,14 @@ public class ErrataHandler extends BaseHandler {
 
         for (Iterator itr = bugs.iterator(); itr.hasNext();) {
             Map bugMap = (Map) itr.next();
+            String url = "";
+            if(bugMap.containsKey("url")) {
+                url = (String) bugMap.get("url");
+            }
+
             Bug bug = ErrataFactory.createPublishedBug(
                     new Long(((Integer)bugMap.get("id")).longValue()),
-                    (String)bugMap.get("summary"));
+                    (String)bugMap.get("summary"), url);
             newErrata.addBug(bug);
         }
         for (Iterator itr = keywords.iterator(); itr.hasNext();) {
