@@ -1,14 +1,33 @@
+#rhnLogo{
+  position:relative;
+    behavior: expression((this.runtimeStyle.behavior="none")&&(this.pngSet?this.pngSet=true:(this.nodeName == "IMG" && this.src.toLowerCase().indexOf('.png')>-1?(this.runtimeStyle.backgroundImage = "none",
+        this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.src + "', sizingMethod='image')",
+        this.src = "transparent.gif"):(this.origBg = this.origBg? this.origBg :this.currentStyle.backgroundImage.toString().replace('url("','').replace('")',''),
+        this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.origBg + "', sizingMethod='crop')",
+        this.runtimeStyle.backgroundImage = "none")),this.pngSet=true));
+}
+
 UL.content-nav-rowtwo
 {
-	width: 80%;
+  padding-bottom:0px
 }
 #mainNav LI
 {
-	height: 32px;
+	height: 12px
 }
 UL.content-nav-rowtwo LI
 {
-	width: 100%;
+  
+}
+.contentnav-row2{
+  margin-top:5px;
+  border-top:1px solid #ddd
+}
+.contentnav-row2 .top{  
+  display:none;
+}
+.contentnav-row2 .bottom{
+  padding-top:5px;
 }
 #header
 {
@@ -20,22 +39,40 @@ UL.content-nav-rowtwo LI
 }
 UL.content-nav-rowone
 {
-	height: 1%;
-	margin-bottom: 16px;
+  padding-bottom:0
 }
 UL.content-nav-rowthree
 {
-	margin-bottom: 20px;
+
 }
 /*xml*/
 #INVALID-RULE
 {
 	display: none;
 }
+
 TD.page-content
 {
-	width: 100%;
+	
 }
+
 #bar
 {
+    width:100%;
+    text-align:center
+}
+#systembar
+{
+    width:80em;
+    text-align:left
+}
+
+#sidenav
+{
+  
+}
+
+#sidenav li
+{
+  height:10px
 }

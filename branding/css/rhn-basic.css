@@ -24,7 +24,7 @@ Including the site-wide font set*/
 /*This is the container for the content that is centered*/
 .wrap
 {
-	width: 100%;
+	width: 80em;
 	margin: 0 auto;
 	text-align: left;
 	background: #FFF;
@@ -39,7 +39,7 @@ Including the site-wide font set*/
 }
 #bottom-wrap
 {
-	max-width: 80em;
+	min-width: 80em;
 }
 .top-content
 {
@@ -60,8 +60,8 @@ BODY
 {
 	padding: 6px 10px 6px 16px;
 	vertical-align: top;
-	width: 100%;
 	border-left: 1px solid #DDD;
+	width: 70em;
 }
 TD.page-content>TABLE
 {
@@ -182,7 +182,7 @@ H2
 	font-size: 1.6em;
 	color: #888A85;
 	font-weight: bold;
-	margin: 24px 0 0 0px;
+	margin: 18px 0 0 0px;
 	padding: 0px 0px 12px;
 }
 H1, DIV.toolbar-h1
@@ -468,6 +468,7 @@ TABLE.details TD.csv-download
 {
 	border: 1px solid #666 !important;
 	color: #666 !important;
+	cursor: pointer;
 }
 .button:active
 {
@@ -616,7 +617,7 @@ DIV.indent
 border-top: 2px dotted #ccc;
 padding: 2em 4em 2em 4em;
 */
-	padding: 1em;
+	padding: 1em 0;
 	margin: 1em auto;
 	text-align: center;
 	font-size: 10px;

@@ -25,7 +25,7 @@ IMG#rhnLogo
 #utility
 {
 	/*[disabled]font-size:;*/
-	padding: 10px 10px 0;
+	padding: 10px 0 0;
 	height: 15px;
 }
 #utility A
@@ -36,7 +36,7 @@ IMG#rhnLogo
 {
 	float: left;
 	width: 43%;
-	/*[disabled]padding:4px 0;*/
+	padding: 0 0 0 10px;
 	/*[disabled]border-bottom:1px solid #CCC;*/
 }
 #utilityLinks P#geo
@@ -57,11 +57,7 @@ IMG#rhnLogo
 {
 	float: right;
 	text-align: center;
-	/*[disabled]background:#EEE;*/
-	/*[disabled]width:45%;*/
-	/*[disabled]background-image:url(/img/nav/utilBkgdRight.png);*/
-	/*[disabled]background-position:bottom right;*/
-	/*[disabled]background-repeat:no-repeat;*/
+	padding-right: 10px;
 }
 #utilityAccount P
 {

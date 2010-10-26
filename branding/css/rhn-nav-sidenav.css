@@ -90,7 +90,7 @@ trick WinIE4/5 into thinking rule is over*/
 #content
 {
 	clear: both;
-	padding: 0px 10px;
+	padding: 0;
 }
 /*The following styles establish the legend boxes in the left sidebar*/
 .sideleg
