@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task.repomd;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * Generic content handler for repomd
@@ -96,7 +97,8 @@ public class SimpleContentHandler {
      * @throws SAXException SAX exception
      */
     public void addCharacters(String text) throws SAXException {
-        handler.characters(text.toCharArray(), 0, text.length());
+        String esc = StringEscapeUtils.escapeXml(text);
+        handler.characters(esc.toCharArray(), 0, esc.length());
     }
 
     /**
