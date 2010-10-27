@@ -11,8 +11,8 @@ When /^I check test channel$/ do
   end
 end
 
-When /^I check test erratum$/ do
-  within(:xpath, "//form/table/tbody/tr[.//a[contains(.,'Test Advisory')]]") do
+When /^I check "([^"]*)" erratum$/ do |arg1|
+  within(:xpath, "//form/table/tbody/tr[.//a[contains(.,'"+arg1+"')]]") do
     find(:xpath, "//input[@type='checkbox']").set(true)
   end
 end
