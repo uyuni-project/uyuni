@@ -4,9 +4,9 @@
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-bean" prefix="bean" %>
 <!-- header.jsp -->
 
-<rhn:require acl="user_authenticated()">
 <div class="top-content"> <!--Added for the purpose of SuSE Manager. Header wrap [et]-->
-<div id="utility">
+  <div id="utility">
+<rhn:require acl="user_authenticated()">
 	<div id="utilityLinks">
 
 <p id="geo"><c:out value="${rhnActiveLang} "/> (<a href="/rhn/account/LocalePreferences.do"><bean:message key="header.jsp.change"/></a>)</p>
@@ -18,16 +18,16 @@
          <span class="label"><bean:message key="header.jsp.loggedin"/></span> <a href="/rhn/account/UserDetails.do"><c:out escapeXml="true" value="${requestScope.session.user.login}" /></a><span class="navPipe">|</span><span class="label"><bean:message key="header.jsp.org"/></span> <a><c:out escapeXml="true" value="${requestScope.session.user.org.name}" /></a><span class="navPipe">|</span><a href="/rhn/account/UserPreferences.do"><bean:message key="header.jsp.preferences"/></a><span class="navPipe">|</span><html:link forward="logout"><span><bean:message key="header.jsp.signout"/></span></html:link>
         </p>
 	</div>
-</div>
 </rhn:require>
+  </div><!-- id="utility" -->
 
-<div id="header">
+  <div id="header">
       <a href="<bean:message key="layout.jsp.vendor.website"/>" title="<bean:message key="layout.jsp.vendor.title"/>"><img src="/img/logo_vendor.png" alt="<bean:message key="layout.jsp.vendor.name"/>" id="rhLogo" /></a>
         <a href="/" title="<bean:message key="layout.jsp.productname"/> homepage">
           <img src="/img/logo_product.png" alt="<bean:message key="layout.jsp.productname"/>" id="rhnLogo" />
         </a>
       <rhn:require acl="user_authenticated()">
- <div id="searchbar">
+  <div id="searchbar">
     <div id="searchbarinner">
       <form name="form1" action="/rhn/Search.do" method="get">
       <select name="search_type">
@@ -40,14 +40,13 @@
       </select><input type="text" name="search_string" maxlength="40" size="20" />
       <input type="hidden" name="submitted" value="true"/>
       <input type="submit" class="button" name="image-1" value="Search" align="top" /></form>
-    </div>
-  </div>
-	</rhn:require>
+    </div><!-- id="searchbarinner" -->
+  </div><!-- id="searchbar" -->
+      </rhn:require>
+  </div><!-- id="header" -->
 
-</div>
-
-<div id="navWrap">
-<div id="mainNavWrap">
+  <div id="navWrap">
+  <div id="mainNavWrap">
     <rhn:require acl="user_authenticated()">
       <rhn:menu mindepth="0" maxdepth="0"
                 definition="/WEB-INF/nav/sitenav-authenticated.xml"
@@ -58,8 +57,8 @@
                definition="/WEB-INF/nav/sitenav.xml"
                renderer="com.redhat.rhn.frontend.nav.TopnavRenderer" />
     </rhn:require>
-</div> <!-- close div mainNavWrap -->
-</div> <!-- close div navWrap -->
+  </div> <!-- close div mainNavWrap -->
+  </div> <!-- close div navWrap -->
 </div> <!--.top-content-->
 
 <div id="bar">
@@ -94,4 +93,3 @@
   </div>
 </div> <!-- end div bar -->
 <!-- end header.jsp -->
-
