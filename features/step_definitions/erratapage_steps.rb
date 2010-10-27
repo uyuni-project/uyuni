@@ -17,9 +17,9 @@ When /^I check "([^"]*)" erratum$/ do |arg1|
   end
 end
 
-When /^I search for erratum$/ do
+When /^I search for "([^"]*)"$/ do |arg1|
   within(:xpath, "//form/div/div/table/tbody/tr[contains(.,'Search For')]") do
-    fill_in "search_string", :with => "Test"
+    fill_in "search_string", :with => arg1
     click_button "Search"
   end
 end

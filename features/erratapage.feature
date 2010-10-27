@@ -102,7 +102,7 @@ Feature: Explore the main landing page
   Scenario: Search erratum
     Given I am on the Errata page
     And I follow "Advanced Search" in the left menu
-    And I search for erratum
+    And I search for "Test"
     Then I should see a "Test Erratum" text
 
   @errata
