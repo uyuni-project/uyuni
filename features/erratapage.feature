@@ -38,7 +38,7 @@ Feature: Explore the main landing page
      And I should see a "Help" link in the tab bar
 
   @errata
-  Scenario: Create new Erratum with bnc URL
+  Scenario: Create new bugifx Erratum with bnc URL
     Given I am on the Errata page
     And I follow "Manage Errata" in the left menu
     And I follow "create new erratum"
@@ -58,6 +58,35 @@ Feature: Explore the main landing page
     Then I should see a "Errata Test Advisory-1 created." text
 
   @errata
+  Scenario: Create new enhancement Erratum with no bnc URL
+    Given I am on the Errata page
+    And I follow "Manage Errata" in the left menu
+    And I follow "create new erratum"
+    When I enter "Enhancement Erratum" as "synopsis"
+    And I enter "Enhancement Advisory" as "advisoryName"
+    And I select "Product Enhancement Advisory" from "advisoryType"
+    And I enter "Enhancement Product" as "product"
+    And I enter "Enhancement Topic" as "topic"
+    And I enter "Enhancement Description" as "description"
+    And I enter "Enhancement Solution" as "solution"
+    And I enter "Enhancement Summary" as "buglistSummary"
+    And I enter "Enhancement,keywords" as "keywords"
+    And I enter "Enhancement Reference" as "refersTo"
+    And I enter "Enhancement Note" as "notes"
+    And I click on "Create Errata"
+    Then I should see a "Errata Enhancement Advisory-1 created." text
+
+  @errata
+  Scenario: Delete enhancement erratum
+    Given I am on the Errata page
+    And I follow "Manage Errata" in the left menu
+    And I follow "Unpublished" in the left menu
+    And I check "Enhancement Advisory" erratum
+    And I click on "Delete Errata"
+    And I click on "Confirm"
+    Then I should see a "Successfully deleted 1 errata." text
+
+  @errata
   Scenario: Publish erratum
     Given I am on the Errata page
     And I follow "Manage Errata" in the left menu
@@ -70,10 +99,39 @@ Feature: Explore the main landing page
     And I should see a "Test Erratum" text
 
   @errata
+  Scenario: Search erratum
+    Given I am on the Errata page
+    And I follow "Advanced Search" in the left menu
+    And I search for "Test"
+    Then I should see a "Test Erratum" text
+
+  @errata
+  Scenario: View bugfix erratas
+    Given I am on the Errata page
+    And I follow "All" in the left menu
+    And I follow "Bugfix Errata"
+    Then I should see a "Test Erratum" text
+
+  @errata
+  Scenario: View erratum
+    Given I am on the Errata page
+    And I follow "All" in the left menu
+    And I follow "Test Advisory"
+    Then I should see a "Test Erratum" text
+    And I should see a "Test Topic" text
+    And I should see a "Test Description" text
+    And I should see a "Test Solution" text
+    And I should see a "Test Base Channel" link
+    And I should see a "Test Summary" link
+    And I should see a "keywords, test" text
+    And I should see a "Test Reference" text
+    And I should see a "Test Note" text
+
+  @errata
   Scenario: Delete erratum
     Given I am on the Errata page
     And I follow "Manage Errata" in the left menu
-    And I check test erratum
+    And I check "Test Advisory" erratum
     And I click on "Delete Errata"
     And I click on "Confirm"
     Then I should see a "Successfully deleted 1 errata." text

@@ -11,9 +11,15 @@ When /^I check test channel$/ do
   end
 end
 
-When /^I check test erratum$/ do
-  within(:xpath, "//form/table/tbody/tr[.//a[contains(.,'Test Advisory')]]") do
+When /^I check "([^"]*)" erratum$/ do |arg1|
+  within(:xpath, "//form/table/tbody/tr[.//a[contains(.,'"+arg1+"')]]") do
     find(:xpath, "//input[@type='checkbox']").set(true)
   end
 end
 
+When /^I search for "([^"]*)"$/ do |arg1|
+  within(:xpath, "//form/div/div/table/tbody/tr[contains(.,'Search For')]") do
+    fill_in "search_string", :with => arg1
+    click_button "Search"
+  end
+end
