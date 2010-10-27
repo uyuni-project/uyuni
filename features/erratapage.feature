@@ -70,6 +70,28 @@ Feature: Explore the main landing page
     And I should see a "Test Erratum" text
 
   @errata
+  Scenario: Search erratum
+    Given I am on the Errata page
+    And I follow "Advanced Search" in the left menu
+    And I search for erratum
+    Then I should see a "Test Erratum" text
+
+  @errata
+  Scenario: View erratum
+    Given I am on the Errata page
+    And I follow "All" in the left menu
+    And I follow "Test Advisory"
+    Then I should see a "Test Erratum" text
+    And I should see a "Test Topic" text
+    And I should see a "Test Description" text
+    And I should see a "Test Solution" text
+    And I should see a "Test Base Channel" link
+    And I should see a "Test Summary" link
+    And I should see a "keywords, test" text
+    And I should see a "Test Reference" text
+    And I should see a "Test Note" text
+
+  @errata
   Scenario: Delete erratum
     Given I am on the Errata page
     And I follow "Manage Errata" in the left menu

@@ -17,3 +17,9 @@ When /^I check test erratum$/ do
   end
 end
 
+When /^I search for erratum$/ do
+  within(:xpath, "//form/div/div/table/tbody/tr[contains(.,'Search For')]") do
+    fill_in "search_string", :with => "Test"
+    click_button "Search"
+  end
+end
