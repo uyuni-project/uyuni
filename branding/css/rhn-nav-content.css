@@ -3,8 +3,9 @@
 {
 	margin: 0;
 	padding: 0;
-	/*[disabled]height:30px;*/
+	/*[disabled]height:32px;*/
 	border-bottom: 1px solid #DDD;
+	/*[disabled]display:inherit;*/
 }
 .content-nav A:visited
 {
@@ -15,17 +16,17 @@
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
-	font-family: "Luxi Sans", verdana, arial, sans-serif;
+	/*[disabled]font-family:"Luxi Sans", verdana, arial, sans-serif;*/
 }
-.content-nav:after, .content-nav UL:after
+.content-nav:after
 {
-	/*[disabled]content:".";*/
-	/*[disabled]display:block;*/
-	/*[disabled]height:1px;*/
-	/*[disabled]margin-top:-1px;*/
-	/*[disabled]overflow:hidden;*/
-	/*[disabled]clear:both;*/
-	/*[disabled]visibility:hidden;*/
+	content: ".";
+	display: block;
+	height: 1px;
+	margin-top: -1px;
+	overflow: hidden;
+	clear: both;
+	visibility: hidden;
 }
 UL.content-nav-rowone, UL.content-nav-rowthree
 {
@@ -43,11 +44,13 @@ UL.content-nav-rowone LI
 UL.content-nav-rowone LI, UL.content-nav-rowthree LI
 {
 	float: left;
+	margin: 3px 0px;
 }
 UL.content-nav-rowone LI A, UL.content-nav-rowthree LI A
 {
 	display: block;
 	padding: 5px 10px;
+	border: 1px solid #FFFFFF;
 }
 UL.content-nav-rowtwo
 {
@@ -74,7 +77,7 @@ A.content-nav-selected-link
 	-webkit-border-radius: 5px;
 	-khtml-border-radius: 5px;
 	border-radius: 5px 5px 5px 5px;
-	border: 1px solid #89A7C6;
+	border: 1px solid #89A7C6 !important;
 }
 A.content-nav-selected-link:hover
 {

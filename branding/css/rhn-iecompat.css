@@ -1,33 +1,68 @@
-#rhnLogo{
-  position:relative;
-    behavior: expression((this.runtimeStyle.behavior="none")&&(this.pngSet?this.pngSet=true:(this.nodeName == "IMG" && this.src.toLowerCase().indexOf('.png')>-1?(this.runtimeStyle.backgroundImage = "none",
-        this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.src + "', sizingMethod='image')",
-        this.src = "transparent.gif"):(this.origBg = this.origBg? this.origBg :this.currentStyle.backgroundImage.toString().replace('url("','').replace('")',''),
-        this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.origBg + "', sizingMethod='crop')",
-        this.runtimeStyle.backgroundImage = "none")),this.pngSet=true));
+/*+clearfix {*/
+UL.content-nav-rowone:after, .clearBoxBody:after
+{
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	font-size: 0;
 }
-
+UL.content-nav-rowone, .clearBoxBody
+{
+	display: inline-block;
+}
+UL.content-nav-rowone, .clearBoxBody
+{
+/*\*/
+	display: block;
+/**/
+	-height: 1px;
+}
+/*+}*/
+#rhnLogo
+{
+	behavior: url('/css/iepngfix.htc');
+}
+/*[clearfix]*/UL.content-nav-rowone
+{
+	display: inline;
+	height: auto;
+}
+UL.content-nav-rowone LI
+{
+	display: inline;
+	height: auto;
+	-float: none;
+}
+UL.content-nav-rowone LI A
+{
+	display: inline-block;
+	-margin: 3px 0px;
+}
 UL.content-nav-rowtwo
 {
-  padding-bottom:0px
+	padding-bottom: 0px;
 }
 #mainNav LI
 {
-	height: 12px
+	height: 12px;
 }
 UL.content-nav-rowtwo LI
 {
-  
 }
-.contentnav-row2{
-  margin-top:5px;
-  border-top:1px solid #ddd
+.contentnav-row2
+{
+	margin-top: 5px;
+	border-top: 1px solid #DDD;
 }
-.contentnav-row2 .top{  
-  display:none;
+.contentnav-row2 .top
+{
+	display: none;
 }
-.contentnav-row2 .bottom{
-  padding-top:5px;
+.contentnav-row2 .bottom
+{
+	padding-top: 5px;
 }
 #header
 {
@@ -37,42 +72,48 @@ UL.content-nav-rowtwo LI
 {
 	padding: 16px 0px 0px;
 }
-UL.content-nav-rowone
-{
-  padding-bottom:0
-}
 UL.content-nav-rowthree
 {
-
 }
 /*xml*/
 #INVALID-RULE
 {
 	display: none;
 }
-
 TD.page-content
 {
-	
 }
-
+.page-content H2
+{
+	clear: both;
+}
 #bar
 {
-    width:100%;
-    text-align:center
+	width: 100%;
+	text-align: center;
 }
 #systembar
 {
-    width:80em;
-    text-align:left
+	width: 80em;
+	text-align: left;
 }
-
 #sidenav
 {
-  
 }
-
-#sidenav li
+#sidenav LI
 {
-  height:10px
+	height: 10px;
+	margin: 0px;
+	padding: 0px;
+}
+HTML>BODY #sidenav LI
+{
+	height: auto;
+}
+/*[clearfix]*/.clearBoxBody
+{
+}
+INPUT
+{
+	font-family: sans-serif;
 }
