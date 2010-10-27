@@ -1,0 +1,62 @@
+Feature: Clone a Channel
+  In Order to validate the channel cloning feature
+  As a testing user
+  I want to clone a channel with errata, without errata and with selected erratas
+
+  Scenario: Clone a Channel without errata
+    Given I am on the manage software channels page
+    When I follow "clone channel"
+     And I select "SLES11-SP1-Updates x86_64 Channel" from "clone_from"
+     And I choose "original" from "clone_type"
+     And I click on "Create Channel"
+     And I should see a "Software Channel: New Channel" text
+     And I should see a "Original channel with no updates" text
+     And I click on "Create Channel"
+    Then I should see a "Clone of SLES11-SP1-Updates x86_64 Channel" text
+ 
+  Scenario: Check, that this channel has no erratas
+    Given I am on the manage software channels page
+      And I follow "Clone of SLES11-SP1-Updates x86_64 Channel"
+     When I follow "Errata" in class "content-nav"
+      And I follow "List/Remove Errata"
+     Then I should see a "There are no errata associated with this channel." text
+
+  Scenario: Clone a Channel with errata
+    Given I am on the manage software channels page
+    When I follow "clone channel"
+     And I select "SLES11-SP1-Updates x86_64 Channel" from "clone_from"
+     And I choose "current" from "clone_type"
+     And I click on "Create Channel"
+     And I should see a "Software Channel: New Channel" text
+     And I should see a "Current state of the channel" text
+     And I click on "Create Channel"
+    Then I should see a "Clone 2 of SLES11-SP1-Updates x86_64 Channel" text
+
+  Scenario: Check, that this channel has erratas
+    Given I am on the manage software channels page
+      And I follow "Clone 2 of SLES11-SP1-Updates x86_64 Channel"
+     When I follow "Errata" in class "content-nav"
+      And I follow "List/Remove Errata"
+     Then I should see a "CLssp1-kernel-3280-channel-x86_64" link
+      And I should see a "CLssp1-suseRegister-2953-channel-x86_64" link
+      And I should see a "CLssp1-aaa_base-sysvinit-2610-channel-x86_64" link
+
+  Scenario: Clone a Channel with selected errata
+    Given I am on the manage software channels page
+    When I follow "clone channel"
+     And I select "SLES11-SP1-Updates x86_64 Channel" from "clone_from"
+     And I choose "select_errata" from "clone_type"
+     And I click on "Create Channel"
+     And I should see a "Software Channel: New Channel" text
+     And I should see a "Select errata" text
+     And I click on "Create Channel"
+     And I should see a "Software Channel: Clone 3 of SLES11-SP1-Updates x86_64 Channel" text
+     And I choose "Merge w/CLssp1-aaa_base-sysvinit-2610-channel-x86_64" for "slessp1-aaa_base-sysvinit-2610-channel-x86_64"
+     And I choose "Clone as CLssp1-suseRegister-2953-channel-x86_64-1" for "slessp1-suseRegister-2953-channel-x86_64"
+     And I choose "Do Nothing" for "slessp1-kernel-3280-channel-x86_64"
+     And I click on "Clone Errata"
+     And I click on "Update Errata"
+     And I follow "List/Remove Errata"
+    Then I should see a "CLssp1-suseRegister-2953-channel-x86_64-1" link
+     And I should see a "CLssp1-aaa_base-sysvinit-2610-channel-x86_64" link
+

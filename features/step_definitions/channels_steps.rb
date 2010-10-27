@@ -16,3 +16,17 @@ Then /^I should see package "([^"]*)"$/ do |package|
     fail if not find_link(package)
   end
 end
+
+Given /^I am on the manage software channels page$/ do
+  Given 'I am authorized as "testing" with password "testing"'
+  within(:xpath, "//div[@id=\"mainNavWrap\"]") do
+    find_link("Channels").click
+  end
+  And "I follow \"Manage Software Channels\" in the left menu"
+end
+
+When /^I choose "([^"]*)" for "([^"]*)"$/ do |arg1, arg2|
+  within(:xpath, "//form/table/tbody/tr[.//a[contains(.,'#{arg2}')]]") do
+    find('//select').select(arg1)
+  end
+end
