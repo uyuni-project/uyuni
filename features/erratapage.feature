@@ -77,6 +77,13 @@ Feature: Explore the main landing page
     Then I should see a "Test Erratum" text
 
   @errata
+  Scenario: View bugfix erratas
+    Given I am on the Errata page
+    And I follow "All" in the left menu
+    And I follow "Bugfix Errata"
+    Then I should see a "Test Erratum" text
+
+  @errata
   Scenario: View erratum
     Given I am on the Errata page
     And I follow "All" in the left menu
