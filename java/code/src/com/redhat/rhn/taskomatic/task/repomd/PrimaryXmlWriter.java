@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -130,7 +131,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
             if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isEmpty(xml)) {
 
                 if (xml != null) {
-                    handler.addCharacters(xml);
+                    handler.addCharactersPlain(xml);
                     return;
                 }
             }
@@ -152,7 +153,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
 
             String pkg =  st.toString();
             PackageManager.updateRepoPrimary(pkgDto.getId(), pkg);
-            handler.addCharacters(pkg);
+            handler.addCharactersPlain(pkg);
 
         }
         catch (SAXException e) {

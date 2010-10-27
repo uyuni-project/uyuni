@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -92,13 +93,22 @@ public class SimpleContentHandler {
     }
 
     /**
-     * Adds characters to the xml handler
+     * Adds characters to the xml handler.
+     * Is doing XML escaping of text
      * @param text text for adding characters
      * @throws SAXException SAX exception
      */
     public void addCharacters(String text) throws SAXException {
-        String esc = StringEscapeUtils.escapeXml(text);
-        handler.characters(esc.toCharArray(), 0, esc.length());
+        addCharactersPlain(StringEscapeUtils.escapeXml(text));
+    }
+
+    /**
+     * Adds characters plain to the xml handler
+     * @param text text for adding characters
+     * @throws SAXException SAX exception
+     */
+    public void addCharactersPlain(String text) throws SAXException {
+        handler.characters(text.toCharArray(), 0, text.length());
     }
 
     /**
