@@ -279,7 +279,7 @@ public class KickstartableTree extends BaseDomainHelper {
         }
         else if ( this.installType.isSUSE() )
         {
-            return StringUtil.addPath(getAbsolutePath(), "/boot/" + arch + "/loader/linux");
+            return StringUtil.addPath(getAbsolutePath(), "/boot/" + this.getChannel().getChannelArch() + "/loader/linux");
         }
         else {
             return StringUtil.addPath(getAbsolutePath(), "/images/pxeboot/vmlinuz");
@@ -302,7 +302,7 @@ public class KickstartableTree extends BaseDomainHelper {
         }
         else if ( this.installType.isSUSE() )
         {
-            return StringUtil.addPath(getAbsolutePath(), "/boot/" + arch + "/loader/initrd");
+            return StringUtil.addPath(getAbsolutePath(), "/boot/" + this.getChannel().getChannelArch() + "/loader/initrd");
         }
         else {
             return StringUtil.addPath(getAbsolutePath(), "/images/pxeboot/initrd.img");
