@@ -2,10 +2,7 @@
 When /^I refresh the metadata$/ do
    `rhn_check`
    fail if ! $?.success?
-   `yum clean all`
-   fail if ! $?.success?
-   `yum makecache`
-   fail if ! $?.success?
+   client_refresh_metadata
 end
 
 Then /^I should have "([^"]*)" in the metadata$/ do |text|
@@ -14,7 +11,7 @@ Then /^I should have "([^"]*)" in the metadata$/ do |text|
    if arch != "x86_64"
      arch = "i586"
    end
-   `zgrep #{text} /var/cache/yum/sles11-sp1-updates-#{arch}-channel/primary.xml.gz`
+   `zgrep #{text} #{client_raw_repodata_dir("sles11-sp1-updates-#{arch}-channel")}/primary.xml.gz`
    fail if ! $?.success?
 end
 
