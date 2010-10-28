@@ -130,6 +130,14 @@ Feature: Explore the main landing page
     And I should see a "Test Note" text
 
   @errata
+  Scenario: check erratum in channel
+    Given I am on the Errata page
+    And I follow "Channels"
+    And I follow "Test Base Channel"
+    And I follow "Errata" in class "content-nav"
+    Then I should see a "Test Erratum" text
+
+  @errata
   Scenario: Delete erratum
     Given I am on the Errata page
     And I follow "Manage Errata" in the left menu
