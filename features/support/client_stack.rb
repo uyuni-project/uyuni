@@ -6,7 +6,7 @@ end
 
 def client_refresh_metadata
   if client_is_zypp?
-    `zypper refs -r spacewalk`
+    `zypper --non-interactive refs -r spacewalk`
     fail if ! $?.success?
   else
     `yum clean all`
