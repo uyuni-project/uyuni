@@ -296,6 +296,10 @@ public class KickstartableTree extends BaseDomainHelper {
         else if (arch.equals("channel-ppc")) {
             return StringUtil.addPath(getAbsolutePath(), "/ppc/ppc64/ramdisk.image.gz");
         }
+        else if ( this.installType.isSUSE() )
+        {
+            return StringUtil.addPath(getAbsolutePath(), "/boot/x86_64/loader/initrd");
+        }
         else {
             return StringUtil.addPath(getAbsolutePath(), "/images/pxeboot/initrd.img");
         }
