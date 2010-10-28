@@ -60,3 +60,24 @@ Feature: Clone a Channel
     Then I should see a "CLssp1-suseRegister-2953-channel-x86_64-1" link
      And I should see a "CLssp1-aaa_base-sysvinit-2610-channel-x86_64" link
 
+  Scenario: check new errata exists
+    Given I am on the errata page
+     When I follow "All" in the left menu
+     Then I should see a "CLssp1-kernel-3280-channel-x86_64" link
+      And I should see a "CLssp1-suseRegister-2953-channel-x86_64" link
+      And I should see a "CLssp1-suseRegister-2953-channel-x86_64-1" link
+      And I should see a "CLssp1-aaa_base-sysvinit-2610-channel-x86_64" link
+
+  Scenario: check CLssp1-suseRegister-2953-channel-x86_64 errata
+    Given I am on the "CLssp1-suseRegister-2953-channel-x86_64" errata Details page
+     Then I should see a "CLssp1-suseRegister-2953-channel-x86_64 - Bug Fix Advisory" text
+      And I should see a "maint-coord@suse.de" text
+      And I should see a "bug number 546142" link
+      And I should see a "restart_suggested" text
+
+  Scenario: check CLssp1-suseRegister-2953-channel-x86_64-1 errata
+    Given I am on the "CLssp1-suseRegister-2953-channel-x86_64-1" errata Details page
+     Then I should see a "CLssp1-suseRegister-2953-channel-x86_64-1 - Bug Fix Advisory" text
+      And I should see a "maint-coord@suse.de" text
+      And I should see a "bug number 546142" link
+      And I should see a "restart_suggested" text
