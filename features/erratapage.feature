@@ -45,6 +45,7 @@ Feature: Explore the main landing page
     When I enter "Test Erratum" as "synopsis"
     And I enter "Test Advisory" as "advisoryName"
     And I enter "Test Product" as "product"
+    And I enter "test@test.org" as "errataFrom"
     And I enter "Test Topic" as "topic"
     And I enter "Test Description" as "description"
     And I enter "Test Solution" as "solution"
@@ -118,6 +119,7 @@ Feature: Explore the main landing page
     And I follow "All" in the left menu
     And I follow "Test Advisory"
     Then I should see a "Test Erratum" text
+    And I should see a "test@test.org" text
     And I should see a "Test Topic" text
     And I should see a "Test Description" text
     And I should see a "Test Solution" text
