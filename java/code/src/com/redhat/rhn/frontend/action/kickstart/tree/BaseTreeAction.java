@@ -30,6 +30,7 @@ import org.apache.struts.util.LabelValueBean;
 
 import java.util.Iterator;
 import java.util.List;
+import java.net;
 
 /**
  * TreeCreate class for creating Kickstart Trees
@@ -106,7 +107,8 @@ public abstract class BaseTreeAction extends BaseEditAction {
         if( type.isSUSE() ) {
             String kopts = form.getString(POST_KERNEL_OPTS);
             if( kopts.indexOf("install=") == -1 ) {
-                kopts = kopts + " install=http://HOSTNAME/ks/dist/DISTRINAME";
+                java.net.InetAddress localMachine = java.net.InetAddress.getLocalHost();
+                kopts = kopts + " install=http://" + localMachine.getHostName() + "/ks/dist/" + bte.getLabel();
             }
             bte.setKernelOptions( kopts );
         } else {
