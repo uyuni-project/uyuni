@@ -302,9 +302,15 @@ class RepoSync:
         to_download = []
         skipped = 0
         self.print_msg("Repo " + url + " has " + str(len(packages)) + " packages.")
+        compatArchs = self.compatiblePackageArchs()
+        
         for pack in packages:
                  if pack.arch in ['src', 'nosrc']:
                      # skip source packages
+                     skipped += 1
+                     continue
+                 if pack.arch not in compatArchs:
+                     # skip packages with incompatible architecture
                      skipped += 1
                      continue
 
@@ -345,7 +351,7 @@ class RepoSync:
                      to_download.append(pack)
 
         if skipped > 0:
-            self.print_msg("Skip '%s' source packages." % skipped)
+            self.print_msg("Skip '%s' incompatible packages." % skipped)
         if len(to_download) == 0:
             self.print_msg("No new packages to download.")
         else:
@@ -445,7 +451,21 @@ class RepoSync:
     def load_channel(self):
         return rhnChannel.channel_info(self.channel_label)
 
-
+    def compatiblePackageArchs(self):
+      h = rhnSQL.prepare("""select pa.label
+                            from rhnChannelPackageArchCompat cpac,
+                            rhnChannel c,
+                            rhnpackagearch pa
+                            where c.id = :channel_id
+                            and c.channel_arch_id = cpac.channel_arch_id
+                            and cpac.package_arch_id = pa.id""")
+      h.execute(channel_id=self.channel['id'])
+      ca = h.fetchall_dict() or []
+      compatArchs = []
+      for arch in ca:
+        compatArchs.append(arch['label'])
+      return compatArchs
+    
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
         if not self.quiet:
