@@ -103,7 +103,15 @@ public abstract class BaseTreeAction extends BaseEditAction {
             lookupKickstartInstallTypeByLabel(form.getString(INSTALL_TYPE));
         bte.setInstallType(type);
 
-        bte.setKernelOptions(form.getString(KERNEL_OPTS));
+        if( type.isSUSE() ) {
+            String kopts = form.getString(POST_KERNEL_OPTS);
+            if( kopts.indexOf("install=") == -1 ) {
+                kopts = kopts + " install=http://HOSTNAME/ks/dist/DISTRINAME";
+            }
+            bte.setKernelOptions( kopts );
+        } else {
+            bte.setKernelOptions(form.getString(KERNEL_OPTS));
+        }
         bte.setPostKernelOptions(form.getString(POST_KERNEL_OPTS));
 
         return null;
