@@ -22,17 +22,17 @@ import gettext
 _ = gettext.gettext
 
 
-def installedHeaderByKeyword(**kwargs):    
+def installedHeaderByKeyword(**kwargs):
     """ just cause this is such a potentially useful looking method... """
-    _ts = transaction.initReadOnlyTransaction()   
-    mi = _ts.dbMatch()   
-    for keyword in kwargs.keys():   
-        mi.pattern(keyword, rpm.RPMMIRE_GLOB, kwargs[keyword])     
-        # we really shouldnt be getting multiples here, but what the heck     
-    headerList = []      
-    for h in mi:    
-        headerList.append(h)   
-    
+    _ts = rpm.TransactionSet()
+    mi = _ts.dbMatch()
+    for keyword in kwargs.keys():
+        mi.pattern(keyword, rpm.RPMMIRE_GLOB, kwargs[keyword])
+        # we really shouldnt be getting multiples here, but what the heck
+    headerList = []
+    for h in mi:
+        headerList.append(h)
+    _ts.closeDB()
     return headerList
 
 def verifyPackages(packages):
@@ -40,7 +40,7 @@ def verifyPackages(packages):
         and return a dict keyed off that data
     """
     data = {}
-    missing_packages = []                                                                            
+    missing_packages = []
     # data structure is keyed off package
     # label, with value being an array of each
     # line of the output from -V
@@ -64,7 +64,7 @@ def verifyPackages(packages):
                 del(keywords[key])
 
         headers = installedHeaderByKeyword(**keywords)
-	if len(headers) == 0:            
+	if len(headers) == 0:
 	    missing_packages.append(package)
 
         for header in headers:
@@ -75,7 +75,7 @@ def verifyPackages(packages):
             arch = header["arch"]
             if arch == None:
                 arch = ""
-                
+
             pkg = (header['name'], header['version'],
                    header['release'], epoch,
                    arch)
@@ -85,13 +85,13 @@ def verifyPackages(packages):
                 packageLabel = "%s-%s-%s" % (pkg[0], pkg[1], pkg[2])
             else:
                 packageLabel = "%s-%s-%s.%s" % (pkg[0], pkg[1], pkg[2], pkg[4])
-                
+
             verifystring = "/usr/bin/rpmverify -V %s" % packageLabel
-                                                                                
+
             fd = os.popen(verifystring)
             res = fd.readlines()
             fd.close()
-                                                                                
+
             reslist = []
             for line in res:
                 reslist.append(line.strip())
@@ -118,21 +118,21 @@ def getInstalledPackageList(msgCallback = None, progressCallback = None,
         version, release and optionaly arch and cookie
     """
     pkg_list = []
-    
+
     if msgCallback != None:
         msgCallback(_("Getting list of packages installed on the system"))
- 
-    _ts = transaction.initReadOnlyTransaction()   
+
+    _ts = rpm.TransactionSet()
     count = 0
     total = 0
-    
+
     for h in _ts.dbMatch():
         if h == None:
             break
         count = count + 1
-    
+
     total = count
-    
+
     count = 0
     for h in _ts.dbMatch():
         if h == None:
@@ -159,10 +159,10 @@ def getInstalledPackageList(msgCallback = None, progressCallback = None,
             pkg_list.append(package)
         else:
             pkg_list.append(package)
-        
+
         if progressCallback != None:
             progressCallback(count, total)
         count = count + 1
-    
+    _ts.closeDB()
     pkg_list.sort(key=lambda x:(x['name'], x['epoch'], x['version'], x['release']))
     return pkg_list

@@ -28,6 +28,7 @@ def _getOSVersionAndRelease():
             version = h['version']
 
         osVersionRelease = (h['name'], version, h['release'])
+        ts.closeDB()
         return osVersionRelease
     else:
        for h in ts.dbMatch('Providename', "distribution-release"):
@@ -37,8 +38,10 @@ def _getOSVersionAndRelease():
                version = h['version']
 
            osVersionRelease = (h['name'], version, h['release'])
+           ts.closeDB()
            return osVersionRelease
-       else: 
+       else:
+           ts.closeDB()
            raise up2dateErrors.RpmError(
                "Could not determine what version of Red Hat Linux you "\
                "are running.\nIf you get this error, try running \n\n"\
