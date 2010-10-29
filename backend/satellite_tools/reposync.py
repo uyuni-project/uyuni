@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -299,8 +300,14 @@ class RepoSync:
         packages = plug.list_packages()
         to_link = []
         to_download = []
+        skipped = 0
         self.print_msg("Repo " + url + " has " + str(len(packages)) + " packages.")
         for pack in packages:
+                 if pack.arch in ['src', 'nosrc']:
+                     # skip source packages
+                     skipped += 1
+                     continue
+
                  # we have a few scenarios here:
                  # 1.  package is not on the server (link and download)
                  # 2.  package is in the server, but not in the channel (just link if we can)
@@ -337,7 +344,8 @@ class RepoSync:
                  if not found:
                      to_download.append(pack)
 
-
+        if skipped > 0:
+            self.print_msg("Skip '%s' source packages." % skipped)
         if len(to_download) == 0:
             self.print_msg("No new packages to download.")
         else:
