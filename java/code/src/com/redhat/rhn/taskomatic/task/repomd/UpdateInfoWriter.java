@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -177,6 +178,12 @@ public class UpdateInfoWriter extends RepomdWriter {
 
                 handler.addElementWithCharacters("filename", sanitize(pkgId,
                         pkg.getFilename()));
+
+                if ( erratum.hasKeyword("reboot_suggested") ) {
+                    handler.addElementWithCharacters("reboot_suggested", "1");
+                } else if ( erratum.hasKeyword("restart_suggested") ) {
+                    handler.addElementWithCharacters("restart_suggested", "1");
+                }
 
                 attr.clear();
                 attr.addAttribute("type",

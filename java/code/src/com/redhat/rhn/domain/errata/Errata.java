@@ -319,6 +319,12 @@ public interface Errata {
     void setKeywords(Set k);
 
     /**
+     * Search for the given keyword in the set
+     * @param s The keyword to search for
+     */
+    boolean hasKeyword(String s);
+
+    /**
      * Adds a package to the packages set.
      * @param packageIn The package to add.
      */

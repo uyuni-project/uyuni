@@ -547,6 +547,21 @@ public abstract class AbstractErrata extends BaseDomainHelper implements
     }
 
     /**
+     * Search for the given keyword in the set
+     * @param s The keyword to search for
+     */
+    public boolean hasKeyword(String s) {
+         Iterator iter = this.keywords.iterator();
+         while (iter.hasNext()) {
+             Keyword k = (Keyword) iter.next();
+             if ( k.getKeyword().equals(s) ) {
+               return true;
+             }
+         }
+         return false;
+    }
+
+    /**
      * Adds a package to the packages set and create an ErrataFile that
      * represents this package
      * @param packageIn The package to add.
