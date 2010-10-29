@@ -30,7 +30,7 @@ import org.apache.struts.util.LabelValueBean;
 
 import java.util.Iterator;
 import java.util.List;
-import java.net;
+import java.net.*;
 
 /**
  * TreeCreate class for creating Kickstart Trees
