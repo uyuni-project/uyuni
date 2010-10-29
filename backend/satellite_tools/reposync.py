@@ -60,7 +60,7 @@ class RepoSync:
     noninteractive = False
 
     def main(self):
-        initCFG('server')
+        initCFG('server.satellite')
         db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
         rhnSQL.initDB(db_string)
         (options, args) = self.process_args()
@@ -124,7 +124,8 @@ class RepoSync:
             if data['metadata_signed'] == 'N':
                 insecure = True;
             try:
-                plugin = self.load_plugin()(url, self.channel_label, insecure, (not self.noninteractive))
+                plugin = self.load_plugin()(url, self.channel_label, insecure, (not self.noninteractive), 
+                        proxy=CFG.HTTP_PROXY, proxy_user=CFG.HTTP_PROXY_USERNAME, proxy_pass=CFG.HTTP_PROXY_PASSWORD)
                 self.import_packages(plugin, url)
                 self.import_updates(plugin, url)
             except ChannelException, e:
@@ -176,7 +177,7 @@ class RepoSync:
                   'security'    : 'Security Advisory',
                   'recommended' : 'Bug Fix Advisory',
                   'bugfix'      : 'Bug Fix Advisory',
-                  'optional'    : 'Product Enhancement Advisory'
+                  'optional'    : 'Product Enhancement Advisory',
                   'enhancement' : 'Product Enhancement Advisory'
                 }
       for notice in notices:

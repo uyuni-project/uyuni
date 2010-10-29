@@ -42,17 +42,23 @@ class ContentSource:
     name = None
     repo = None
     cache_dir = '/var/cache/rhn/reposync/'
-    def __init__(self, url, name, insecure=False, interactive=True):
+    def __init__(self, url, name, insecure=False, interactive=True, proxy=None, proxy_user=None, proxy_pass=None):
         self.url = url
         self.name = name
         self.insecure = insecure
         self.interactive = interactive
+        self.proxy = proxy
+        self.proxy_user = proxy_user
+        self.proxy_pass = proxy_pass
         self._clean_cache(self.cache_dir + name)
 
     def list_packages(self):
         """ list packages"""
         repo = yum.yumRepo.YumRepository(self.name)
         self.repo = repo
+        repo.proxy = self.proxy
+        repo.proxy_username = self.proxy_user
+        repo.proxy_password = self.proxy_pass
         repo.cache = 0
         repo.metadata_expire = 0
         repo.mirrorlist = self.url
