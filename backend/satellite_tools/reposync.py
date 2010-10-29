@@ -175,7 +175,9 @@ class RepoSync:
       typemap = { 
                   'security'    : 'Security Advisory',
                   'recommended' : 'Bug Fix Advisory',
+                  'bugfix'      : 'Bug Fix Advisory',
                   'optional'    : 'Product Enhancement Advisory'
+                  'enhancement' : 'Product Enhancement Advisory'
                 }
       for notice in notices:
         e = Erratum()
