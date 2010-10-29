@@ -107,8 +107,12 @@ public abstract class BaseTreeAction extends BaseEditAction {
         if( type.isSUSE() ) {
             String kopts = form.getString(POST_KERNEL_OPTS);
             if( kopts.indexOf("install=") == -1 ) {
-                java.net.InetAddress localMachine = java.net.InetAddress.getLocalHost();
-                kopts = kopts + " install=http://" + localMachine.getHostName() + "/ks/dist/" + form.getString(LABEL);
+                try {
+                    java.net.InetAddress localMachine = java.net.InetAddress.getLocalHost();
+                    kopts = kopts + " install=http://" + localMachine.getHostName() + "/ks/dist/" + form.getString(LABEL);
+                } catch (UnknownHostException e) {
+                    return new ValidatorError("UnknownHostException by getLocalHost/getHostName. Set install=.... parameter manually");
+                }
             }
             bte.setKernelOptions( kopts );
         } else {
