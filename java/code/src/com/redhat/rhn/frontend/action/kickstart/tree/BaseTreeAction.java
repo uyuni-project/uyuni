@@ -108,7 +108,7 @@ public abstract class BaseTreeAction extends BaseEditAction {
             String kopts = form.getString(POST_KERNEL_OPTS);
             if( kopts.indexOf("install=") == -1 ) {
                 java.net.InetAddress localMachine = java.net.InetAddress.getLocalHost();
-                kopts = kopts + " install=http://" + localMachine.getHostName() + "/ks/dist/" + bte.getLabel();
+                kopts = kopts + " install=http://" + localMachine.getHostName() + "/ks/dist/" + form.getString(LABEL);
             }
             bte.setKernelOptions( kopts );
         } else {
