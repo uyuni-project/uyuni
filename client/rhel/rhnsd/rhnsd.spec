@@ -9,7 +9,6 @@ Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires: gettext
-#!BuildIgnore: post-build-checks
 
 Requires: rhn-check >= 0.0.8
 %if !0%{?suse_version}
@@ -80,6 +79,9 @@ rm -fr $RPM_BUILD_ROOT
 
 %files -f %{name}.lang 
 %defattr(-,root,root)
+%if 0%{?suse_version}
+%dir %{_sysconfdir}/sysconfig/rhn
+%endif
 %config(noreplace) %{_sysconfdir}/sysconfig/rhn/rhnsd
 %{_sbindir}/rhnsd
 %{_initrddir}/rhnsd
