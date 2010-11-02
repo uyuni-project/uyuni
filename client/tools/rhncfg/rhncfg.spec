@@ -15,12 +15,6 @@ BuildArch: noarch
 BuildRequires: docbook-utils
 BuildRequires: python
 %if 0%{?suse_version}
-# rhncfg-actions: "/etc/sysconfig/rhn/clientCaps.d/configfiles" is not allowed anymore in SuSE Linux.
-# rhncfg-actions: "/etc/sysconfig/rhn/clientCaps.d/script" is not allowed anymore in SuSE Linux.
-# rhncfg: "/usr/com/rhncfg/backups" is not allowed anymore in FHS 2.2.
-# rhncfg-client: "/etc/sysconfig/rhn/rhncfg-client.conf" is not allowed anymore in SuSE Linux.
-# rhncfg-management: "/etc/sysconfig/rhn/rhncfg-manager.conf" is not allowed anymore in SuSE Linux.
-#!BuildIgnore: post-build-checks
 Requires: python-selinux
 %else
 Requires: libselinux-python
@@ -90,12 +84,18 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{rhnroot}/config_client
 %{_bindir}/rhncfg-client
+%if 0%{?suse_version}
+%{rhnconf}
+%endif
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-client.conf
 %{_mandir}/man8/rhncfg-client.8*
 
 %files management
 %defattr(-,root,root,-)
 %{rhnroot}/config_management
+%if 0%{?suse_version}
+%{rhnconf}
+%endif
 %{_bindir}/rhncfg-manager
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-manager.conf
 %{_mandir}/man8/rhncfg-manager.8*
@@ -103,6 +103,11 @@ rm -rf $RPM_BUILD_ROOT
 %files actions
 %defattr(-,root,root,-)
 %{rhnroot}/actions/*
+%if 0%{?suse_version}
+%{rhnconf}
+%{client_caps_dir}
+/usr/share/rhn/actions
+%endif
 %{_bindir}/rhn-actions-control
 %config(noreplace) %{client_caps_dir}/*
 %{_mandir}/man8/rhn-actions-control.8*
