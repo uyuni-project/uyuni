@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov  2 16:57:53 CET 2010 - mantel@suse.de
+
+- don't ignore post-build-checks
+
+-------------------------------------------------------------------
 Wed Sep 22 15:20:47 CEST 2010 - mantel@suse.de
 
 - move SuSE specific init script to scripts to make tito happy

@@ -9,7 +9,6 @@ Group:          System Environment/Base
 License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-#!BuildIgnore: post-build-checks
 
 Version:        5.4.15
 Release:        1%{?dist}
