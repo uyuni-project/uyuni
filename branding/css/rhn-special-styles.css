@@ -1,601 +1,581 @@
-/** This stylesheet is for styles that are created especially for particular pages and are not really used across the entire webui. **/
-
-/** Login box styles **/
-
-div.login-component {
-  text-align: center;
+/** This stylesheet is for styles that are created especially for particular pages and are not really used across the entire webui. *
+* Login box styles **/
+DIV.login-component
+{
+	text-align: center;
 }
-
-div.login-box {
-  border: 1px solid #999;
-  text-align: right;
-  padding: 12px 10px;
-  margin: 4px;
-  background-color: #eee;
-  width: 210px;
-  margin-left: auto;
-  margin-right: auto;
+DIV.login-box
+{
+	border: 1px solid #999;
+	text-align: right;
+	padding: 12px 10px;
+	margin: 4px;
+	background-color: #EEE;
+	width: 210px;
+	margin-left: auto;
+	margin-right: auto;
 }
-
-div.login-box form {
-  margin: 0;
+DIV.login-box FORM
+{
+	margin: 0;
 }
-
-div.login-box div.input-row {
-  font-weight: bold;
-  font-size: 10px;
-  white-space: nowrap;
+DIV.login-box DIV.input-row
+{
+	font-weight: bold;
+	font-size: 10px;
+	white-space: nowrap;
 }
-
-div.login-box div.input-row input {
-  font-weight: normal;
-  vertical-align: middle;
+DIV.login-box DIV.input-row INPUT
+{
+	font-weight: normal;
+	vertical-align: middle;
 }
-
- .clearBox {
-        width: 279px;
-        background: url('/img/corner_halflinebox_top.png') top right no-repeat;
-        padding-top: 7px;
-        margin-bottom: 15px;
-        }
-
- .clearBox .label {
+.clearBox
+{
+	width: 279px;
+	background: url('/img/corner_halflinebox_top.png') no-repeat top right;
+	padding-top: 7px;
+	margin-bottom: 15px;
+}
+.clearBox .label
+{
 	clear: left;
- }
-
- .clearBoxInner {
-        background: url('/img/corner_halflinebox_bottom.png') bottom left no-repeat;
-        }
- .clearBoxInner {
-        width: 100%;
-        padding-bottom: 7px;
-        }
-
- .clearBoxBody {
-        padding: 5px 14px;
-        border-left: 1px solid #b4b4b4;
-        border-right: 1px solid #b4b4b4;
-        }
-
- .clearBoxBody h2 {
-        font-size: small;
-        }
-
-
-/** End login box styles **/
-
-
-
-/** used for system entitlements page for virtual systems **/
-
-.asterisk {
-  color:                #cc0000;
-  font-weight:          bold;
-  font-size:            x-large;
-  vertical-align:       sub;
-  font-family:          sans-serif;
-  line-height:      .6em;
 }
-
+.clearBoxInner
+{
+	background: url('/img/corner_halflinebox_bottom.png') no-repeat bottom left;
+}
+.clearBoxInner
+{
+	width: 100%;
+	padding-bottom: 7px;
+}
+.clearBoxBody
+{
+	padding: 5px 14px;
+	border-left: 1px solid #B4B4B4;
+	border-right: 1px solid #B4B4B4;
+}
+.clearBoxBody H2
+{
+	font-size: small;
+}
+/** End login box styles *
+* used for system entitlements page for virtual systems **/
+.asterisk
+{
+	color: #CC0000;
+	font-weight: bold;
+	font-size: x-large;
+	vertical-align: sub;
+	font-family: sans-serif;
+	line-height: 0.6em;
+}
 /** used for the help desk page **/
-
-ul#help-url-list ul {
-
+UL#help-url-list UL
+{
 }
-ul#help-url-list li {
-  list-style: none;
-  padding-top: 10px;
-  padding-bottom: 10px;
+UL#help-url-list LI
+{
+	list-style: none;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
-
-ul#help-url-list li a {
-  font-weight: bold;
+UL#help-url-list LI A
+{
+	font-weight: bold;
 }
-
 /** used for the FAQ pages in the help section **/
-
-ul#faq-list {
-  padding-left: 2px;
-  margin-left: 0;
+UL#faq-list
+{
+	padding-left: 2px;
+	margin-left: 0;
 }
-
-#faq-list li {
-  list-style: none;
-  margin-left: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+#faq-list LI
+{
+	list-style: none;
+	margin-left: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
-
-#faq-list a {
+#faq-list A
+{
 }
-
-#faq-details {
-  margin-left: 1em;
+#faq-details
+{
+	margin-left: 1em;
 }
-
-#faq-details a.faq-back-to-top {
-  float: right;
+#faq-details A.faq-back-to-top
+{
+	float: right;
 }
-
-#faq-details p + h3 {
-  padding-top: 2em;
+#faq-details P+H3
+{
+	padding-top: 2em;
 }
-
 /** used on the login page **/
-
-h1#rhn_welcome {
-        background-image: url('/img/rhn_welcome.gif');
-        background-position: 0 0;
-        background-repeat: no-repeat;
-        padding-bottom: 5px;
-        height: 20px;
-	display:none;
-        }
-
-h1#rhn_welcome2 {
-        background-image: url('/img/rhn_welcome2.gif');
-        background-position: 0 0;
-        background-repeat: no-repeat;
-        height: 37px;
-	display:none;
-        }
-
-h1#rhn_welcome3 {
-        background-image: url('/img/rhn_welcome3.gif');
-        background-position: 0 0;
-        background-repeat: no-repeat;
-        height: 40px;
-	display:none;
-        }
-
-h1#rhn_welcome span {
-        display: none;
-        }
-
-h1#rhn_welcome2 span {
-        display: none;
-        }
-
-h1#rhn_welcome3 span {
-        display: none;
-        }
-
-#contentLeft {
-        float: left;
-        margin-top: 20px;
+H1#rhn_welcome
+{
+	background-image: url('/img/rhn_welcome.gif');
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	padding-bottom: 5px;
+	height: 20px;
+	display: none;
 }
-
-#contentRight {
-        margin: 0 15px 0 295px;
+H1#rhn_welcome2
+{
+	background-image: url('/img/rhn_welcome2.gif');
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	height: 37px;
+	display: none;
 }
-
-p#intro {
-        font-size: 1.3em;
-        line-height: 1.2em;
-        color: #000;
-        }
-
-p.endnote {
-        font-size: smaller;
-        margin-top: 3em;
-        padding-top: 10px;
-        line-height: 1.5em;
-        border-top: 1px solid #333;
-        }
-
-/* iso stuff */
-
-div.sources, h3.sources, h3.dump, div.dump {
-    margin-left: 20px;
+H1#rhn_welcome3
+{
+	background-image: url('/img/rhn_welcome3.gif');
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	height: 40px;
+	display: none;
 }
-
-.iso-md5 {
-        font-family: monospace;
-        text-align: right;
+H1#rhn_welcome SPAN
+{
+	display: none;
 }
-
+H1#rhn_welcome2 SPAN
+{
+	display: none;
+}
+H1#rhn_welcome3 SPAN
+{
+	display: none;
+}
+#contentLeft
+{
+	float: left;
+	margin-top: 20px;
+}
+#contentRight
+{
+	margin: 0 15px 0 295px;
+}
+P#intro
+{
+	font-size: 1.3em;
+	line-height: 1.2em;
+	color: #000;
+}
+P.endnote
+{
+	font-size: smaller;
+	margin-top: 3em;
+	padding-top: 10px;
+	line-height: 1.5em;
+	border-top: 1px solid #333;
+}
+/*iso stuff*/
+DIV.sources, H3.sources, H3.dump, DIV.dump
+{
+	margin-left: 20px;
+}
+.iso-md5
+{
+	font-family: monospace;
+	text-align: right;
+}
 /**/
-
-.linkchain {
-        text-align: center;
-        font-size: 12px;
-        color: #555;
-        white-space: nowrap;
+.linkchain
+{
+	text-align: center;
+	font-size: 12px;
+	color: #555;
+	white-space: nowrap;
 }
-.linkchain a {
-        font-weight: bold;
+.linkchain A
+{
+	font-weight: bold;
 }
-.preference {
-        margin: 0 30px 0 30px;
-        text-align: left;
-        font-size: 0.9em;
-        font-weight: bold;
-        color: #444;
+.preference
+{
+	margin: 0 30px;
+	text-align: left;
+	font-size: 0.9em;
+	font-weight: bold;
+	color: #444;
 }
-
-
-.schedule-action-interface th {
-        background-color: #fff;
-        padding: 2px;
-        border: none;
-        color: black;
-        text-align: left;
+.schedule-action-interface TH
+{
+	background-color: #FFF;
+	padding: 2px;
+	border: none;
+	color: #000000;
+	text-align: left;
 }
-
-.ok-explanation img {
-        border: none;
-        vertical-align: middle;
-        padding: 2px 0 4px 0;
+.ok-explanation IMG
+{
+	border: none;
+	vertical-align: middle;
+	padding: 2px 0 4px;
 }
-
-.ok-explanation img {
-        border: none;
-        vertical-align: middle;
-        padding: 2px 0 4px 0;
+.ok-explanation IMG
+{
+	border: none;
+	vertical-align: middle;
+	padding: 2px 0 4px;
 }
-
-.resubscribe-warning img {
-        border: none;
-        vertical-align: middle;
-        padding: 2px 0 4px 0;
+.resubscribe-warning IMG
+{
+	border: none;
+	vertical-align: middle;
+	padding: 2px 0 4px;
 }
-
-.resubscribe-warning-big {
-        margin: 0 2%;
-        cursor: text;
-        color:  #c00;
+.resubscribe-warning-big
+{
+	margin: 0 2%;
+	cursor: text;
+	color: #C00;
 }
-.resubscribe-warning-big img {
-        border: none;
-        padding: 0 4px 0 0;
-        vertical-align: middle;
-        float: left;
+.resubscribe-warning-big IMG
+{
+	border: none;
+	padding: 0 4px 0 0;
+	vertical-align: middle;
+	float: left;
 }
-
-td.comparison {
-        padding: 10px;
+TD.comparison
+{
+	padding: 10px;
 }
-
-.summary-row {
-        background-color: #f5f5f5;
+.summary-row
+{
+	background-color: #F5F5F5;
 }
-
-.schedule-action-interface {
-  color: black;
+.schedule-action-interface
+{
+	color: #000000;
 }
-
 /** ssm **/
-
-.ssm-overview th {
-        font-weight: bold;
-        color: #999;
-        border: none;
-        text-align: right;
-        padding: 6px;
+.ssm-overview TH
+{
+	font-weight: bold;
+	color: #999;
+	border: none;
+	text-align: right;
+	padding: 6px;
 }
-
-.work-with-group-header {
-        text-align:  right;
+.work-with-group-header
+{
+	text-align: right;
 }
-.work-with-group-header img {
-        border: none;
+.work-with-group-header IMG
+{
+	border: none;
 }
-
 /** terms and conditions **/
-
-div.termsandconditions {
-        width: 95%;
+DIV.termsandconditions
+{
+	width: 95%;
 }
-
-div.printerfriendly_text {
-        background-color: white;
-        width: 80%;
-        padding: 4%;
-        text-align: left;
-        margin-right: 6%;
-        margin-left: 6%;
-        font-family: serif;
+DIV.printerfriendly_text
+{
+	background-color: #FFFFFF;
+	width: 80%;
+	padding: 4%;
+	text-align: left;
+	margin-right: 6%;
+	margin-left: 6%;
+	font-family: serif;
 }
-
-span.printerfriendlylink {
-        float: right;
-        padding-bottom: 3px;
-        margin-right: -5px;
+SPAN.printerfriendlylink
+{
+	float: right;
+	padding-bottom: 3px;
+	margin-right: -5px;
 }
-
-img.printerfriendlylink {
-        vertical-align: middle;
+IMG.printerfriendlylink
+{
+	vertical-align: middle;
 }
-
-a.printerfriendlylink:link {
-        font-weight: bold;
-        text-decoration: underline;
+A.printerfriendlylink:link
+{
+	font-weight: bold;
+	text-decoration: underline;
 }
-
-a.printerfriendlylink:visited {
-        font-weight: bold;
-        text-decoration: underline;
+A.printerfriendlylink:visited
+{
+	font-weight: bold;
+	text-decoration: underline;
 }
-
-div.tc_warning {
-        text-align: center;
+DIV.tc_warning
+{
+	text-align: center;
 }
-
-p.tc_warning {
-        padding-right: 15%;
-        padding-left: 15%;
+P.tc_warning
+{
+	padding-right: 15%;
+	padding-left: 15%;
 }
-
-textarea.termsandconditions {
-        height: 180px;
-        width: 100%;
-        font-family: monospace;
-        padding: 3px;
-        font-size: 10pt;
-        border: 1px solid black;
-        background-color: #fcf9e5;
+TEXTAREA.termsandconditions
+{
+	height: 180px;
+	width: 100%;
+	font-family: monospace;
+	padding: 3px;
+	font-size: 10pt;
+	border: 1px solid #000000;
+	background-color: #FCF9E5;
 }
-
-div.tc_accept_button {
-        text-align: center;
-        width: 50%;
-        float: left;
+DIV.tc_accept_button
+{
+	text-align: center;
+	width: 50%;
+	float: left;
 }
-
-div.tc_reject_button {
-        text-align: center;
-        width: 50%;
-        float: right;
+DIV.tc_reject_button
+{
+	text-align: center;
+	width: 50%;
+	float: right;
 }
-
 /** config mgmt feature file diff styles **/
-
-.oldfile {
-    float: left;
-    width: 48%;
-    font-family: 'monospace';
+.oldfile
+{
+	float: left;
+	width: 48%;
+	font-family: monospace;
 }
-
-.newfile {
-    float: right;
-    width: 48%;
-    font-family: 'monospace';
+.newfile
+{
+	float: right;
+	width: 48%;
+	font-family: monospace;
 }
-
-.changed {
-    background-color: #f5f3c4;
-    -moz-border-radius: 15px;
+.changed
+{
+	background-color: #F5F3C4;
+	-moz-border-radius: 15px;
 }
-
-.oldfile .deleted {
-    background-color: #f5c4c4;
-    -moz-border-radius: 15px;
+.oldfile .deleted
+{
+	background-color: #F5C4C4;
+	-moz-border-radius: 15px;
 }
-
-.newfile .deleted {
-    background-color: #d4d4d4;
-    -moz-border-radius: 15px;
+.newfile .deleted
+{
+	background-color: #D4D4D4;
+	-moz-border-radius: 15px;
 }
-
-.oldfile .inserted {
-    background-color: #d4d4d4;
-    -moz-border-radius: 15px;
+.oldfile .inserted
+{
+	background-color: #D4D4D4;
+	-moz-border-radius: 15px;
 }
-
-.newfile .inserted {
-    background-color: #c5f4c4;
-    -moz-border-radius: 15px;
+.newfile .inserted
+{
+	background-color: #C5F4C4;
+	-moz-border-radius: 15px;
 }
-
-
 /** config mgmt feature file diff styles **/
-
-.oldfile {
-    float: left;
-    width: 48%;
-    font-family: 'monospace';
+.oldfile
+{
+	float: left;
+	width: 48%;
+	font-family: monospace;
 }
-
-.newfile {
-    float: right;
-    width: 48%;
-    font-family: 'monospace';
+.newfile
+{
+	float: right;
+	width: 48%;
+	font-family: monospace;
 }
-
-.changed {
-    background-color: #f5f3c4;
-    -moz-border-radius: 15px;
+.changed
+{
+	background-color: #F5F3C4;
+	-moz-border-radius: 15px;
 }
-
-.oldfile .deleted {
-    background-color: #f5c4c4;
-    -moz-border-radius: 15px;
+.oldfile .deleted
+{
+	background-color: #F5C4C4;
+	-moz-border-radius: 15px;
 }
-
-.newfile .deleted {
-    background-color: #d4d4d4;
-    -moz-border-radius: 15px;
+.newfile .deleted
+{
+	background-color: #D4D4D4;
+	-moz-border-radius: 15px;
 }
-
-.oldfile .inserted {
-    background-color: #d4d4d4;
-    -moz-border-radius: 15px;
+.oldfile .inserted
+{
+	background-color: #D4D4D4;
+	-moz-border-radius: 15px;
 }
-
-.newfile .inserted {
-    background-color: #c5f4c4;
-    -moz-border-radius: 15px;
+.newfile .inserted
+{
+	background-color: #C5F4C4;
+	-moz-border-radius: 15px;
 }
-
-/* style for overridden config files */
-
-.overridden-file {
-    color: #0066cc;
-    text-decoration: line-through;
+/*style for overridden config files*/
+.overridden-file
+{
+	color: #0066CC;
+	text-decoration: line-through;
 }
-
 /** api doc rounded table of contents box **/
-
-div.rounded-box { float: right; }
-
-div.rounded-box:before {
-  background: #b4b19a url('/img/table_corner_tr.gif') scroll no-repeat top right;
-  margin-bottom: -11px;
-  height: 5px;
-  display: block;
-  border: none;
-  content: url('/img/table_corner_tl.gif');
-  padding: 0;
-  line-height: 0.1;
-  font-size: 1px;
+DIV.rounded-box
+{
+	float: right;
 }
-
-div.rounded-box {
-  background-color: white;
-  border-bottom: 1px solid #b4b19a;
+DIV.rounded-box:before
+{
+	background: #B4B19A url('/img/table_corner_tr.gif') no-repeat scroll top right;
+	margin-bottom: -11px;
+	height: 5px;
+	display: block;
+	border: none;
+	content: url('/img/table_corner_tl.gif');
+	padding: 0;
+	line-height: 0.1;
+	font-size: 1px;
 }
-
-div.rounded-box ul {
-  border-left: 1px solid #b4b19a;
-  border-right: 1px solid #b4b19a;
-  margin: 0px 0px 0px 0px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-right: 10px;
-  list-style-image: url('/img/parent_node.gif');
+DIV.rounded-box
+{
+	background-color: #FFFFFF;
+	border-bottom: 1px solid #B4B19A;
 }
-
-
-div.rounded-box h2 {
-    border: 0px !important;
-    padding-bottom: 3px;
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-bottom: 0px;
-    background-color: #b4b19a;
-    color: white;
-    text-align: center;
+DIV.rounded-box UL
+{
+	border-left: 1px solid #B4B19A;
+	border-right: 1px solid #B4B19A;
+	margin: 0px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	list-style-image: url('/img/parent_node.gif');
 }
-
+DIV.rounded-box H2
+{
+	border: 0px solid #000000 !important;
+	padding-bottom: 3px;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin-bottom: 0px;
+	background-color: #B4B19A;
+	color: #FFFFFF;
+	text-align: center;
+}
 /** SDC fancy system info box showing system status (towards top of SDC > details page **/
-
-.systeminfo {
-    background: #eeeeee;
-    -moz-border-radius: 15px;
-    margin-bottom: 10px;
+.systeminfo
+{
+	/*[disabled]background:#E4EDF6;*/
+	/*[disabled]padding:5px;*/
+	/*[disabled]vertical-align:middle;*/
+	position: relative;
 }
-
-.systeminfo-clear {
-    clear: both;
-    /** the rest is for older browsers **/
-    height:               1px;
-    line-height:          1px;
-    font-size:            1px;
-    margin-top:           -1px;
+.systeminfo-clear
+{
+	clear: both;
+/** the rest is for older browsers **/
+	height: 1px;
+	line-height: 1px;
+	font-size: 1px;
+	margin-top: -1px;
 }
-
-.systeminfo-full {
-    width: 90%;
-    margin-top: 8px;
-    vertical-align: top;
-    float: left;
-    margin-left: 8px
+.systeminfo-full
+{
+	/*[disabled]width:90%;*/
+	/*[disabled]margin-top:8px;*/
+	vertical-align: middle;
+	/*[disabled]float:left;*/
+	padding: 5px;
+	/*+border-radius:10px;*/
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	border-radius: 10px 10px 10px 10px;
+	background: #E4EDF6;
+	padding-left: 24px;
+	border: 1px solid #FFF;
+	/*+box-shadow:0px 1px 5px #000000;*/
+	-moz-box-shadow: 0px 1px 5px #000000;
+	-webkit-box-shadow: 0px 1px 5px #000000;
+	-o-box-shadow: 0px 1px 5px #000000;
+	box-shadow: 0px 1px 5px #000000;
 }
-
-.systeminfo-left {
-    width: 30%;
-    margin-top: 8px;
-    vertical-align: top;
-    float: left;
-    margin-left: 8px
+.systeminfo-full IMG
+{
+	position: absolute;
+	top: 3px;
+	left: 5px;
 }
-
-div.systeminfo-left img {
-    float: left;
-    margin-right: 10px;
-}
-.systeminfo-right {
-    font-size: x-small;
-    width: 60%;
-    margin-top: 8px;
-    vertical-align: middle;
-    float: right;
-    background-image: url('/img/rhn-bar-background.gif');
-}
-
 /** Fancy bar for complex/multiple submit buttons for a page's form. used on the system entitlements page, will be used on virt guest list **/
-table.entitle-bar {
-    width: 100%;
-    border-collapse: collapse;
-    border-spacing: 0;
-    margin-top: 12px;
+TABLE.entitle-bar
+{
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin-top: 12px;
 }
-
-table.entitle-bar tr {
-    width: 100%;
-    background-image:       url('/img/entitle-bar.png');
-    height:                 33px;
-    background-repeat:      no-repeat;
-    background-position:    left;
+TABLE.entitle-bar TR
+{
+	width: 100%;
+	background-image: url('/img/entitle-bar.png');
+	height: 33px;
+	background-repeat: no-repeat;
+	background-position: left;
 }
-
-table.entitle-bar td {
-    padding:        12px 0px 12px 0px;
-    background-image: none;
-    background-position: 20% 0%;
+TABLE.entitle-bar TD
+{
+	padding: 12px 0px;
+	background-image: none;
+	background-position: 20% 0%;
 }
-
 /** table styles for language selections on locale preferences page **/
-
-table.langselect td {
-        padding-right:  10px;
-        vertical-align: top;
-        width:          33%;
+TABLE.langselect TD
+{
+	padding-right: 10px;
+	vertical-align: top;
+	width: 33%;
 }
-
 /** banner adds in lower left corner **/
-
-div.buy-now {
-  text-align: left;
-  padding-top: 16px;
+DIV.buy-now
+{
+	text-align: left;
+	padding-top: 16px;
 }
-
-div.buy-now img {
-  border: 0;
+DIV.buy-now IMG
+{
+	border: 0;
 }
-
 /** styles for advanced search forms (eg advanced system search, advanced package search **/
-
-.search-choices form {
-  margin: 0;
-  padding: 0;
+.search-choices FORM
+{
+	margin: 0;
+	padding: 0;
 }
-.search-choices {
-  margin-top: 20px;
+.search-choices
+{
+	margin-top: 20px;
 }
-
-.search-choices-group {
-  margin-left: 40px;
+.search-choices-group
+{
+	margin-left: 40px;
 }
-
 /** misc **/
-
-
-div.marketing-summary {
-  margin: 0 2%;
-  cursor: text;
+DIV.marketing-summary
+{
+	margin: 0 2%;
+	cursor: text;
 }
-
-div.marketing-summary a {
-  text-decoration: underline;
-  font-weight: bold;
-  cursor: pointer
+DIV.marketing-summary A
+{
+	text-decoration: underline;
+	font-weight: bold;
+	cursor: pointer;
 }
-
-.debug-profile {
-  background-color: #eee;
-  border: 1px solid #ccc;
-  margin: 20px 40px;
-  padding: 8px;
+.debug-profile
+{
+	background-color: #EEE;
+	border: 1px solid #CCC;
+	margin: 20px 40px;
+	padding: 8px;
 }
-

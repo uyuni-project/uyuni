@@ -20,49 +20,60 @@ UL.content-nav-rowone, .clearBoxBody
 	-height: 1px;
 }
 /*+}*/
-#rhnLogo
+BODY
 {
-	behavior: url('/css/iepngfix.htc');
+	-font-family: sans-serif;
+}
+INPUT
+{
+	font-family: sans-serif;
+}
+.content-nav LI
+{
+	=float: left;
+}
+DIV.contentnav-row2 DIV.top
+{
+	height: 1px;
+	border-top: 1px solid #DDD;
+	-margin-bottom: -8px;
 }
 /*[clearfix]*/UL.content-nav-rowone
 {
-	display: inline;
-	height: auto;
+	/*[disabled]display:inline;*/
+	/*[disabled]height:auto;*/
 }
 UL.content-nav-rowone LI
 {
-	display: inline;
-	height: auto;
-	-float: none;
+	/*[disabled]display:inline;*/
+	/*[disabled]height:auto;*/
+	/*[disabled]-float:none;*/
 }
 UL.content-nav-rowone LI A
 {
-	display: inline-block;
-	-margin: 3px 0px;
+	/*[disabled]display:inline-block;*/
+	/*[disabled]-margin:3px 0px;*/
 }
 UL.content-nav-rowtwo
 {
-	padding-bottom: 0px;
+	/*[disabled]padding-bottom:0px;*/
 }
 #mainNav LI
 {
 	height: 12px;
 }
-UL.content-nav-rowtwo LI
-{
-}
 .contentnav-row2
 {
-	margin-top: 5px;
-	border-top: 1px solid #DDD;
+	/*[disabled]margin-top:5px;*/
+	/*[disabled]border-top:1px solid #DDD;*/
 }
 .contentnav-row2 .top
 {
-	display: none;
+	/*[disabled]display:none;*/
 }
 .contentnav-row2 .bottom
 {
-	padding-top: 5px;
+	/*[disabled]padding-top:5px;*/
 }
 #header
 {

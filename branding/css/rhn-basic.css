@@ -169,6 +169,10 @@ A.help-title IMG
 	vertical-align: top;
 }
 /** headings **/
+H1, H2, H3, H4, H5, H6
+{
+	font-family: "Droid Sans", "Albany AMT", "Lucida Grande", tahoma, helvetica, verdana, arial, sans-serif;
+}
 H1, DIV.toolbar-h1, DIV.toolbar-h2
 {
 	font-size: 1.8em;
@@ -208,9 +212,7 @@ DIV.toolbar-h1, DIV.toolbar-h2
 }
 H2, DIV.toolbar-h2
 {
-	/*[disabled]font-size:1em;*/
-	/*[disabled]color:#999;*/
-	/*[disabled]border-bottom:2px solid #CCC;*/
+	font-size: 12pt;
 }
 H2 IMG, DIV.toolbar-h2 IMG
 {
@@ -391,8 +393,11 @@ TABLE.details
 	border: 1px solid #DDD;
 	border: none;
 	background-color: #EEE;
-	-moz-border-radius-topleft: 15px;
-	-moz-border-radius-bottomleft: 15px;
+	/*+border-radius:15px 0 0 15px;*/
+	-moz-border-radius: 15px 0 0 15px;
+	-webkit-border-radius: 15px 0 0 15px;
+	-khtml-border-radius: 15px 0 0 15px;
+	border-radius: 15px 0 0 15px;
 }
 .details TH.required-form-field
 {
