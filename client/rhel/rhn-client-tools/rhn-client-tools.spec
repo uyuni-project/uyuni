@@ -10,7 +10,6 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 %if 0%{?suse_version}
 BuildRequires: update-desktop-files
-#!BuildIgnore: post-build-checks
 %endif
 
 Requires: rhnlib >= 2.5.20
@@ -246,6 +245,11 @@ make -f Makefile.rhn-client-tools test
 
 %files -n rhn-setup
 %defattr(-,root,root,-)
+%if 0%{?suse_version}
+%dir %{_sysconfdir}/security/console.apps
+%dir %{_datadir}/setuptool
+%dir %{_datadir}/setuptool/setuptool.d
+%endif
 %{_mandir}/man8/rhnreg_ks.8*
 %{_mandir}/man8/rhn_register.8*
 %{_mandir}/man8/spacewalk-channel.8*
@@ -268,6 +272,20 @@ make -f Makefile.rhn-client-tools test
 
 %files -n rhn-setup-gnome
 %defattr(-,root,root,-)
+%if 0%{?suse_version}
+%dir %{_datadir}/firstboot
+%dir %{_datadir}/firstboot/modules
+%dir %{_datadir}/icons/hicolor
+%dir %{_datadir}/icons/hicolor/16x16
+%dir %{_datadir}/icons/hicolor/16x16/apps
+%dir %{_datadir}/icons/hicolor/24x24
+%dir %{_datadir}/icons/hicolor/24x24/apps
+%dir %{_datadir}/icons/hicolor/32x32
+%dir %{_datadir}/icons/hicolor/32x32/apps
+%dir %{_datadir}/icons/hicolor/48x48
+%dir %{_datadir}/icons/hicolor/48x48/apps
+%dir %{_datadir}/rhn/up2date_client/firstboot
+%endif
 %{_datadir}/rhn/up2date_client/messageWindow.*
 %{_datadir}/rhn/up2date_client/rhnregGui.*
 %{_datadir}/rhn/up2date_client/rh_register.glade
