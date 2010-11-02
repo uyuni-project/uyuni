@@ -9,13 +9,6 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-%if 0%{?suse_version} > 0
-# osad: "/etc/sysconfig/rhn/clientCaps.d/osad" is not allowed anymore in SuSE Linux.
-# osad: "/etc/sysconfig/rhn/osad-auth.conf" is not allowed anymore in SuSE Linux.
-# osad: "/etc/sysconfig/rhn/osad.conf" is not allowed anymore in SuSE Linux.
-# osa-dispatcher: "/etc/sysconfig/osa-dispatcher" is not allowed anymore in SuSE Linux.
-#!BuildIgnore: post-build-checks
-%endif
 Version: 5.9.44
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -248,6 +241,9 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %dir %{rhnroot}
 %dir %{rhnroot}/osad
 %dir %{_sysconfdir}/sysconfig/rhn
+%if 0%{?suse_version}
+%dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
+%endif
 %attr(755,root,root) %{_sbindir}/osad
 %{rhnroot}/osad/__init__.py*
 %{rhnroot}/osad/_ConfigParser.py*
@@ -276,7 +272,10 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %config(noreplace) %{_sysconfdir}/logrotate.d/osa-dispatcher
 %config %{_sysconfdir}/rhn/default/rhn_osa-dispatcher.conf
 %if 0%{?suse_version}
+%dir %{_sysconfdir}/rhn
 %dir %{_sysconfdir}/rhn/tns_admin
+%dir %{_sysconfdir}/rhn/default
+%dir %{_var}/log/rhn
 %endif
 %config %{_sysconfdir}/rhn/tns_admin/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/rhn/tns_admin/osa-dispatcher/tnsnames.ora
