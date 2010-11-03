@@ -11,9 +11,6 @@ BuildArch: noarch
 BuildRequires: python
 URL: http://rhn.redhat.com/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-%if 0%{?suse_version}
-#!BuildIgnore: post-build-checks
-%endif
 Requires: %{name}-common = %{version}-%{release}
 Provides: rhn.kickstart.boot_image
 Conflicts: auto-kickstart
@@ -83,6 +80,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 /usr/sbin/*
 %config(noreplace)  /etc/sysconfig/rhn/clientCaps.d/kickstart
+%dir /etc/sysconfig/rhn
+%dir /etc/sysconfig/rhn/clientCaps.d
+%dir /usr/share/rhn
+%dir /usr/share/rhn/actions
 
 %{rhnroot}/actions/kickstart.py*
 
@@ -97,6 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 %{rhnroot}/rhnkickstart/kickstart_exceptions.py*
 %{rhnroot}/rhnkickstart/common.py*
 %{rhnroot}/rhnkickstart/config.py*
+%dir /usr/share/rhn
 
 
 %if 0%{?rhel} == 0 || "%rhel" >= "5"
@@ -105,6 +107,8 @@ rm -rf $RPM_BUILD_ROOT
 %{rhnroot}/actions/kickstart_guest.py*
 %{rhnroot}/rhnkickstart/virtualization_kickstart_exceptions.py*
 %{rhnroot}/rhnkickstart/kickstart_guest.py*
+%dir /usr/share/rhn
+%dir /usr/share/rhn/actions
 
 %endif
 

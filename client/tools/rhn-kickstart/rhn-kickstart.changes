@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov  3 11:01:16 CET 2010 - mantel@suse.de
+
+- don't ignore post-build-checks
+
+-------------------------------------------------------------------
 Wed Sep 15 12:14:50 CEST 2010 - mantel@suse.de
 
 - fix post-build-checks
