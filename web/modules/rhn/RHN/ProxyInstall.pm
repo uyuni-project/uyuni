@@ -26,6 +26,7 @@ use RHN::ConfigRevision;
 use RHN::DataSource::Simple;
 use RHN::CryptoKey;
 use RHN::Utils;
+use PXT::Config;
 
 use RHN::Exception;
 use Params::Validate qw/:all/;
@@ -278,7 +279,8 @@ sub extract_ssl_cert {
       $ca_chain = $file_opts{-path};
     }
     elsif ($filename eq $ca_cert_rpm_filename) {
-      $file_opts{-path} = '/var/www/html/pub/' . $filename;
+      my $docroot = PXT::Config->get('documentroot');
+      $file_opts{-path} = $docroot . '/pub/' . $filename;
       $ca_rpm = $file_opts{-path};
       $file_opts{-binary} = 1;
     }
@@ -313,7 +315,8 @@ sub extract_ssl_cert {
 
     if ($ca_cert) {
       # Public version of CA cert.
-      import_file(-path => '/var/www/html/pub/' . DEFAULT_ORG_TRUSTED_SSL_CERT,
+      my $docroot = PXT::Config->get('documentroot');
+      import_file(-path => $docroot . '/pub/' . DEFAULT_ORG_TRUSTED_SSL_CERT,
 		  -content => $ca_cert,
 		  -config_channel => $cc,
 		  -username => 'apache',
