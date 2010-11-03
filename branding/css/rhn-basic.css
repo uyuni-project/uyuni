@@ -555,9 +555,10 @@ A.link-img:link IMG, A.link-img:visited IMG
 {
 	font-size: x-small;
 }
-SPAN.hide, SPAN.hide *
+SPAN.hide
 {
-	visibility: hidden;
+	/*[disabled]visibility:hidden;*/
+	display: none;
 }
 SPAN.no-details
 {

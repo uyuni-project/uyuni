@@ -1,97 +1,52 @@
 /*this is for site-info and site-error info boxes*/
-.site-info
+.site-info, .site-alert
 {
-	background-color: #6182AB;
-	color: #FFFFFF;
 	text-align: center;
 	padding: 8px;
-	margin-bottom: 7px;
-	margin-top: 4px;
-	font-size: medium;
-}
-.site-info:before
-{
-	background: #6182AB url(/img/corner_infobox_top_right.gif) no-repeat top right;
-	content: url('/img/corner_infobox_top_left.gif');
-	display: block;
-	font-size: 1px;
-	height: 10px;
-	line-height: 0.1;
-	margin: -8px -8px 0;
-	text-align: left;
-}
-.site-info:after
-{
-	background: #6182AB url(/img/corner_infobox_bottom_right.gif) no-repeat bottom right;
-	clear: both;
-	content: url('/img/corner_infobox_bottom_left.gif');
-	display: block;
-	font-size: 1px;
-	height: 10px;
-	line-height: 0.1;
-	margin: -8px;
-	padding-top: 8px;
-	text-align: left;
-	color: #99DDFF;
+	margin-bottom: 10px;
+	font-size: inherit;
+	/*+border-radius:10px;*/
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	border-radius: 10px 10px 10px 10px;
 	font-weight: bold;
+}
+.site-info
+{
+	background-color: #FFFCD6;
+	color: #005ED8;
+	border: 1px solid #FDF58B;
 }
 .site-info A:link
 {
-	color: #FFFFFF;
+	color: #005ED8;
 	font-weight: bold;
 	text-decoration: underline;
 }
 .site-info A:visited
 {
-	color: #99DDFF;
+	color: #005ED8;
 	font-weight: bold;
+	text-decoration: underline;
 }
 .site-alert
 {
-	background-color: #B70000;
-	color: #FFFFFF;
-	text-align: center;
-	padding: 8px;
-	margin-bottom: 7px;
-	margin-top: 4px;
-	font-size: medium;
-}
-.site-alert:before
-{
-	background: #B70000 url(/img/corner_infobox_top_right.gif) no-repeat top right;
-	content: url('/img/corner_infobox_top_left.gif');
-	display: block;
-	font-size: 1px;
-	height: 10px;
-	line-height: 0.1;
-	margin: -8px -8px 0;
-	text-align: left;
-}
-.site-alert:after
-{
-	background: #B70000 url(/img/corner_infobox_bottom_right.gif) no-repeat bottom right;
-	clear: both;
-	content: url('/img/corner_infobox_bottom_left.gif');
-	display: block;
-	font-size: 1px;
-	height: 10px;
-	line-height: 0.1;
-	margin: -8px;
-	padding-top: 8px;
-	text-align: left;
-	color: #99DDFF;
-	font-weight: bold;
+	background-color: #FFD6D6;
+	color: #282828;
+	border: 1px solid #FD8B8B;
 }
 .site-alert A:link
 {
-	color: #FFFFFF;
+	color: #282828;
 	font-weight: bold;
 	text-decoration: underline;
 }
 .site-alert A:visited
 {
-	color: #FFCCCC;
+	color: #282828;
 	font-weight: bold;
+	text-decoration: underline;
 }
 .local-info
 {

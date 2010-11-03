@@ -625,9 +625,14 @@ TR.alphaResult TD.sortedCol
 {
 	width: 20%;
 	padding: 3px 6px;
-	background-color: #EAE8E4;
+	background-color: #C0C0C0;
 	-moz-border-radius: 8px;
 	text-align: center;
+	/*+border-radius:0 0 5px 5px;*/
+	-moz-border-radius: 0 0 5px 5px;
+	-webkit-border-radius: 0 0 5px 5px;
+	-khtml-border-radius: 0 0 5px 5px;
+	border-radius: 0 0 5px 5px;
 }
 .csv-download IMG
 {
@@ -637,6 +642,11 @@ TR.alphaResult TD.sortedCol
 .csv-download A
 {
 	font-weight: bold;
+	/*+text-shadow:0 0 5px #FFFFFF;*/
+	-moz-text-shadow: 0 0 5px #FFFFFF;
+	-webkit-text-shadow: 0 0 5px #FFFFFF;
+	-o-text-shadow: 0 0 5px #FFFFFF;
+	text-shadow: 0 0 5px #FFFFFF;
 }
 .list-fat-column-50
 {

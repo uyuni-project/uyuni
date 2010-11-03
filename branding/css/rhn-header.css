@@ -35,26 +35,23 @@ IMG#rhnLogo
 #utilityLinks
 {
 	float: left;
-	/*[disabled]width:44%;*/
+	/*[disabled]width:45%;*/
 	padding: 0 0 0 10px;
-	/*[disabled]border-bottom:1px solid #CCC;*/
+	display: block;
 }
 #utilityLinks P#geo
 {
-	margin: 0;
-	/*[disabled]float:left;*/
-	/*[disabled]width:34%;*/
+	margin: 0px 10px 0 0;
 	padding: 0px;
 	display: inline;
+	font-size: 0.8em;
+	vertical-align: inherit;
 }
 #utilityLinks P#linx
 {
 	margin: 0;
-	/*[disabled]float:right;*/
-	/*[disabled]width:75%;*/
-	text-align: right;
-	/*[disabled]padding-right:3%;*/
 	display: inline;
+	padding: 0px;
 }
 #utilityAccount
 {
