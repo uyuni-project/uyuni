@@ -57,7 +57,7 @@ insert into rhn_config_parameter(group_name,name,value,security_type,last_update
 insert into rhn_config_parameter(group_name,name,value,security_type,last_update_user,last_update_date) values ( 'SuperSput', 'serverIF', 'eth0', 'ALL', 'system',current_timestamp);
 insert into rhn_config_parameter(group_name,name,value,security_type,last_update_user,last_update_date) values ( 'SuperSput', 'serverKey', '%{NPETC}/spbridge/key.pem', 'ALL', 'system',current_timestamp);
 insert into rhn_config_parameter(group_name,name,value,security_type,last_update_user,last_update_date) values ( 'SuperSput', 'serverPort', '1284', 'ALL', 'system',current_timestamp);
-insert into rhn_config_parameter(group_name,name,value,security_type,last_update_user,last_update_date) values ( 'TSDBLocalQueue', 'bdb_dir', '/nocpulse/tsdb/bdb', 'INTERNAL', 'system',current_timestamp);
+insert into rhn_config_parameter(group_name,name,value,security_type,last_update_user,last_update_date) values ( 'TSDBLocalQueue', 'bdb_dir', '/var/lib/nocpulse/tsdb/bdb', 'INTERNAL', 'system',current_timestamp);
 insert into rhn_config_parameter(group_name,name,value,security_type,last_update_user,last_update_date) values ( 'TSDBLocalQueue', 'daemon_log_config', '''local_queue'' => 1', 'INTERNAL', 'system',current_timestamp);
 insert into rhn_config_parameter(group_name,name,value,security_type,last_update_user,last_update_date) values ( 'TSDBLocalQueue', 'daemon_log_file', '/var/log/nocpulse/TSDBLocalQueue/TSDBLocalQueue.log', 'INTERNAL', 'system',current_timestamp);
 insert into rhn_config_parameter(group_name,name,value,security_type,last_update_user,last_update_date) values ( 'TSDBLocalQueue', 'handler_log_config', NULL, 'INTERNAL', 'system',current_timestamp);

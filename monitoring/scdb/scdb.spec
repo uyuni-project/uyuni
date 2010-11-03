@@ -11,7 +11,6 @@ BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:     nocpulse-common
 %if 0%{?suse_version}
 BuildRequires: nocpulse-common
-#!BuildIgnore: post-build-checks
 %define apache_user wwwrun
 %define apache_group www
 %else
@@ -35,7 +34,7 @@ This package contains State Change Database.
 %install
 rm -rf $RPM_BUILD_ROOT
 # Make sure the 'bdb' directory exists
-mkdir -p  $RPM_BUILD_ROOT/nocpulse/scdb/bdb
+mkdir -p  $RPM_BUILD_ROOT/%{_localstatedir}/lib/nocpulse/scdb/bdb
 
 # Copy the module
 mkdir -p $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse
@@ -45,9 +44,9 @@ install -m 644 SCDB.pm $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse
 
 %files
 %defattr(-,root,root,-)
-%dir /nocpulse
-%dir /nocpulse/scdb
-%attr(755,%{apache_user},%{apache_group}) %dir /nocpulse/scdb/bdb
+%dir %{_localstatedir}/lib/nocpulse
+%dir %{_localstatedir}/lib/nocpulse/scdb
+%attr(755,%{apache_user},%{apache_group}) %dir %{_localstatedir}/lib/nocpulse/scdb/bdb
 %{perl_vendorlib}/NOCpulse/*
 
 

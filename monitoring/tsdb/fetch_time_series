@@ -6,7 +6,7 @@ use NOCpulse::BDB;
 use NOCpulse::TSDB;
 use Getopt::Long;
 
-$ENV{'BDBROOT'} = '/nocpulse/tsdb/bdb';
+$ENV{'BDBROOT'} = '/var/lib/nocpulse/tsdb/bdb';
 
 my($help, $start, $end);
 &GetOptions(
