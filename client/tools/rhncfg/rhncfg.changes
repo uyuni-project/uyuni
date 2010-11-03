@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov  3 09:49:28 CET 2010 - mantel@suse.de
+
+- fix %dir in filelist
+
+-------------------------------------------------------------------
 Tue Nov  2 17:30:40 CET 2010 - mantel@suse.de
 
 - don't ignore post-build-checks

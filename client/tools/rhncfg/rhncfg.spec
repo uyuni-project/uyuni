@@ -85,7 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %{rhnroot}/config_client
 %{_bindir}/rhncfg-client
 %if 0%{?suse_version}
-%{rhnconf}
+%dir %{rhnconf}
 %endif
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-client.conf
 %{_mandir}/man8/rhncfg-client.8*
@@ -94,7 +94,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{rhnroot}/config_management
 %if 0%{?suse_version}
-%{rhnconf}
+%dir %{rhnconf}
 %endif
 %{_bindir}/rhncfg-manager
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-manager.conf
@@ -104,9 +104,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{rhnroot}/actions/*
 %if 0%{?suse_version}
-%{rhnconf}
-%{client_caps_dir}
-/usr/share/rhn/actions
+%dir %{rhnconf}
+%dir %{client_caps_dir}
+%dir /usr/share/rhn/actions
 %endif
 %{_bindir}/rhn-actions-control
 %config(noreplace) %{client_caps_dir}/*
