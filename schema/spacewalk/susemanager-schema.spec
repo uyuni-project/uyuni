@@ -16,9 +16,6 @@ BuildRequires:  perl(Digest::SHA1)
 
 Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
-%if 0%{?suse_version}
-#!BuildIgnore: post-build-checks
-%endif
 
 %define rhnroot /etc/sysconfig/rhn/
 %define oracle %{rhnroot}/oracle
