@@ -80,9 +80,6 @@ install -m 0644 share/ssl.conf.3 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/ssl.conf.4 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/ssl.conf.5 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/ssl.conf.6 %{buildroot}/%{_datadir}/spacewalk/setup/
-%if 0%{?suse_version}
-install -m 0644 share/ssl.conf.7 %{buildroot}/%{_datadir}/spacewalk/setup/
-%endif
 install -m 0644 share/tomcatX.conf.1 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcatX.conf.2 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/

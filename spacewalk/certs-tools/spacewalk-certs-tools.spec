@@ -42,7 +42,7 @@ Spacewalk.
 rm -rf $RPM_BUILD_ROOT
 install -d -m 755 $RPM_BUILD_ROOT/%{rhnroot}/certs
 %if 0%{?suse_version}
-make PUB_BOOTSTRAP_DIR=/srv/www/html/pub/bootstrap -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
+make PUB_BOOTSTRAP_DIR=/srv/www/htdocs/pub/bootstrap -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
 %else
 make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
@@ -66,11 +66,11 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE PYTHON-LICENSES.txt
 %doc ssl-howto-simple.txt ssl-howto.txt
 %if 0%{?suse_version}
-%dir /srv/www/html
-%dir /srv/www/html/pub
-%dir /srv/www/html/pub/bootstrap
+%dir /srv/www/htdocs
+%dir /srv/www/htdocs/pub
+%dir /srv/www/htdocs/pub/bootstrap
 %dir /usr/share/rhn
-/srv/www/html/pub/bootstrap/client_config_update.py*
+/srv/www/htdocs/pub/bootstrap/client_config_update.py*
 %else
 %{_var}/www/html/pub/bootstrap/client_config_update.py*
 %endif

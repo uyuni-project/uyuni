@@ -156,12 +156,8 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_ajp
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 
-# we need to change the apache DocumentRoot or /srv/www/html
-if grep srv\/www\/htdocs /etc/apache2/default-server.conf; then
- export STAMP=$(date +-%%F-%%X)
- sed -i$STAMP s'/srv\/www\/htdocs/srv\/www\/html/g' /etc/apache2/default-server.conf
-fi
-
+%else
+%define dest %{_sysconfdir}/sysconfig/httpd
 %endif
 
 

@@ -1,7 +1,7 @@
 %if  0%{?suse_version}
-%define wwwroot /srv/
+%define wwwdocroot /srv/www/htdocs
 %else
-%define wwwroot %{_var}
+%define wwwdocroot %{_var}/www/html
 %endif
 Name:       spacewalk-branding
 Version:    1.2.2
@@ -35,8 +35,8 @@ jar -cf java-branding.jar -C java/code/src com
 
 %install
 rm -rf %{buildroot}
-install -d -m 755 %{buildroot}/%{wwwroot}/www/html
-install -d -m 755 %{buildroot}/%{wwwroot}/www/html/nav
+install -d -m 755 %{buildroot}/%{wwwdocroot}
+install -d -m 755 %{buildroot}/%{wwwdocroot}/nav
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
 %if  0%{?rhel} && 0%{?rhel} < 6
@@ -46,14 +46,14 @@ install -d -m 755 %{buildroot}%{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/
 %endif
 install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn
 install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn/default
-cp -R css %{buildroot}/%{wwwroot}/www/html/
-cp -R img %{buildroot}/%{wwwroot}/www/html/
-cp -R fonts %{buildroot}/%{wwwroot}/www/html/
+cp -R css %{buildroot}/%{wwwdocroot}/
+cp -R img %{buildroot}/%{wwwdocroot}/
+cp -R fonts %{buildroot}/%{wwwdocroot}/
 # Appplication expects two favicon's for some reason, copy it so there's just
 # one in source:
-cp img/favicon.ico %{buildroot}/%{wwwroot}/www/html/
-cp -R templates %{buildroot}/%{wwwroot}/www/html/
-cp -R styles %{buildroot}/%{wwwroot}/www/html/nav/
+cp img/favicon.ico %{buildroot}/%{wwwdocroot}/
+cp -R templates %{buildroot}/%{wwwdocroot}/
+cp -R styles %{buildroot}/%{wwwdocroot}/nav/
 cp -R setup  %{buildroot}%{_datadir}/spacewalk/
 cp -R java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
 %if  0%{?rhel} && 0%{?rhel} < 6
@@ -69,18 +69,18 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%dir /%{wwwroot}/www/html/css
-/%{wwwroot}/www/html/css/*
-%dir /%{wwwroot}/www/html/img
-/%{wwwroot}/www/html/img/*
-/%{wwwroot}/www/html/favicon.ico
-%dir /%{wwwroot}/www/html/fonts
-/%{wwwroot}/www/html/fonts/*
-%dir /%{wwwroot}/www/html/templates
-/%{wwwroot}/www/html/templates/*
-/%{wwwroot}/www/html/templates/.htaccess
-%dir /%{wwwroot}/www/html/nav/styles
-/%{wwwroot}/www/html/nav/styles/*
+%dir /%{wwwdocroot}/css
+/%{wwwdocroot}/css/*
+%dir /%{wwwdocroot}/img
+/%{wwwdocroot}/img/*
+/%{wwwdocroot}/favicon.ico
+%dir /%{wwwdocroot}/fonts
+/%{wwwdocroot}/fonts/*
+%dir /%{wwwdocroot}/templates
+/%{wwwdocroot}/templates/*
+/%{wwwdocroot}/templates/.htaccess
+%dir /%{wwwdocroot}/nav/styles
+/%{wwwdocroot}/nav/styles/*
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
 %if  0%{?rhel} && 0%{?rhel} < 6

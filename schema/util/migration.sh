@@ -171,14 +171,14 @@ copy_remote_files() {
 
     mkdir -p /root/backup/pub
     mkdir -p /root/backup/ssl/jabberd
-    mv /srv/www/html/pub/RHN-ORG-TRUSTED-SSL-CERT /root/backup/pub/
-    mv /srv/www/html/pub/rhn-org-trusted-ssl-cert*.rpm /root/backup/pub/
+    mv /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /root/backup/pub/
+    mv /srv/www/htdocs/pub/rhn-org-trusted-ssl-cert*.rpm /root/backup/pub/
     mv /root/ssl-build /root/backup/
     cp /etc/apache2/ssl.crt/spacewalk.crt /root/backup/ssl/
     cp /etc/apache2/ssl.key/spacewalk.key /root/backup/ssl/
     cp /etc/pki/spacewalk/jabberd/server.pem /root/backup/ssl/jabberd/
 
-    rsync -avz --ignore-existing $SATELLITE_IP:/var/www/html/pub/ /srv/www/html/pub/
+    rsync -avz --ignore-existing $SATELLITE_IP:/var/www/html/pub/ /srv/www/htdocs/pub/
     rsync -avz $SATELLITE_IP:/root/ssl-build /root/
 
     # Copy the webserver cert and key from satellite to Manager

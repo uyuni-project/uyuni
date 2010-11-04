@@ -705,8 +705,11 @@ sub setup_ssl_certs {
 
   print Spacewalk::Setup::loc("** SSL: Deploying CA certificate.\n");
 
+  my $docroot = $rhnoptions->{'documentroot'};
+  $docroot = '/var/www/html' if(!$docroot);
+
   deploy_ca_cert("-source-dir" => $answers->{'ssl-dir'},
-		 "-target-dir" => '/srv/www/html/pub');
+		 "-target-dir" => "$docroot/pub");
 
   print Spacewalk::Setup::loc("** SSL: Generating server certificate.\n");
 
@@ -1025,6 +1028,9 @@ sub populate_initial_configs {
         $hibernate_driver_proto = "jdbc:postgresql";
     }
 
+    my $docroot = $rhnoptions->{'documentroot'};
+    $docroot = '/var/www/html' if(!$docroot);
+
   my %config_opts =
     (
      mount_point => $answers->{'mount-point'} || '/var/satellite',
@@ -1035,7 +1041,7 @@ sub populate_initial_configs {
      webDOTis_monitoring_backend => 0,
      webDOTis_monitoring_scout => 0,
      webDOTenable_solaris_support => 0,
-     osadispatcherDOTosa_ssl_cert => '/srv/www/html/pub/RHN-ORG-TRUSTED-SSL-CERT',
+     osadispatcherDOTosa_ssl_cert => "$docroot/pub/RHN-ORG-TRUSTED-SSL-CERT",
      encrypted_passwords => 1,
      db_backend => $answers->{'db-backend'},
      db_user => $answers->{'db-user'},

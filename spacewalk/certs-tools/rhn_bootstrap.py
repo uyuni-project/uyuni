@@ -35,6 +35,7 @@ from optparse import Option, OptionParser
 
 ## local imports
 from spacewalk.common import rhn_rpm
+from common import CFG, initCFG
 from client_config_update import readConfigFile
 from rhn_bootstrap_strings import \
     getHeader, getConfigFilesSh, getUp2dateScriptsSh, getGPGKeyImportSh, \
@@ -55,7 +56,10 @@ elif os.path.exists('/usr/share/rhn/server') \
 
 DEFAULT_CA_CERT_PATH = '/usr/share/rhn/'+CA_CRT_NAME
 
-DEFAULT_APACHE_PUB_DIRECTORY = '/var/www/html/pub'
+initCFG('server')
+DOC_ROOT = CFG.DOCUMENTROOT
+
+DEFAULT_APACHE_PUB_DIRECTORY = DOC_ROOT + '/pub'
 DEFAULT_OVERRIDES = 'client-config-overrides.txt'
 DEFAULT_SCRIPT = 'bootstrap.sh'
 
