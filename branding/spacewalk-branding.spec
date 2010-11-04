@@ -91,8 +91,7 @@ rm -rf %{buildroot}
 %{_sysconfdir}/rhn/default/rhn_docs.conf
 %dir /etc/rhn
 %dir /etc/rhn/default
-%dir /srv/www/html
-%dir /srv/www/html/nav
+%dir %{wwwdocroot}/nav
 %dir /usr/share/rhn
 %dir /usr/share/rhn/lib
 %dir /var/lib/tomcat6

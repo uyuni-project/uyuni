@@ -66,7 +66,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE PYTHON-LICENSES.txt
 %doc ssl-howto-simple.txt ssl-howto.txt
 %if 0%{?suse_version}
-%dir /srv/www/htdocs
 %dir /srv/www/htdocs/pub
 %dir /srv/www/htdocs/pub/bootstrap
 %dir /usr/share/rhn

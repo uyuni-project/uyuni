@@ -41,7 +41,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %dir %{htmldir}/_rhn_proxy
 %config %{htmldir}/_rhn_proxy/index.html
-%dir %{htmldir}
 %{htmldir}/_rhn_proxy/*.ico
 %{htmldir}/_rhn_proxy/*.png
 %doc LICENSE
