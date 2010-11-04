@@ -5,7 +5,7 @@
 TOP = ..
 
 # Project defines
-INSTALL_DEST	= /srv/www/html
+INSTALL_DEST	= /srv/www/htdocs
 
 # common stuff
 include $(TOP)/Makefile.defs

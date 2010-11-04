@@ -156,7 +156,7 @@ make -C html install PREFIX=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
 find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
 
-mkdir -p $RPM_BUILD_ROOT/%{www_path}/www/html/pub
+mkdir -p $RPM_BUILD_ROOT/%{www_path}/www/htdocs/pub
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/default
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/init.d
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf
@@ -295,9 +295,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n spacewalk-html
 %defattr(644,root,root,755)
-%dir %{www_path}/www/html
-%{www_path}/www/html/*
-%{www_path}/www/html/.htaccess
+%dir %{www_path}/www/htdocs
+%{www_path}/www/htdocs/*
+%{www_path}/www/htdocs/.htaccess
 
 # $Id$
 %changelog
