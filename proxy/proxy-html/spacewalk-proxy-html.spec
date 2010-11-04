@@ -1,5 +1,5 @@
 %if 0%{suse_version}
-%global htmldir /srv/www/html
+%global htmldir /srv/www/htdocs
 %else
 %global htmldir %{_var}/www/html
 %endif

@@ -183,7 +183,8 @@ SYSCONFIG_DIR=/etc/sysconfig/rhn
 RHNCONF_DIR=/etc/rhn
 HTTPDCONF_DIR=/etc/httpd/conf
 HTTPDCONFD_DIR=/etc/httpd/conf.d
-HTMLPUB_DIR=/var/www/html/pub
+#HTMLPUB_DIR=/var/www/html/pub
+HTMLPUB_DIR=/srv/www/htdocs/pub
 JABBERD_DIR=/etc/jabberd
 SQUID_DIR=/etc/squid
 
