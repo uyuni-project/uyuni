@@ -86,4 +86,20 @@ if ($ret) {
   die "Could not copy $rpm to $target_dir";
 }
 
+# on SUSE create a link to /etc/ssl/certs/ and call c_rehash
+if ( -e '/etc/SuSE-release' )
+{
+  if ( ! -e "/etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem" )
+  {
+    $ret = system('ln', '-s', "$target_dir/RHN-ORG-TRUSTED-SSL-CERT", "/etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem");
+    if ($ret) 
+    {
+      print "WARNING: Could not link $target_dir/RHN-ORG-TRUSTED-SSL-CERT to /etc/ssl/certs/";
+    }
+    else
+    {
+      `/usr/bin/c_rehash /etc/ssl/certs >/dev/null`;
+    }
+  }
+}
 exit 0;
