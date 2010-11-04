@@ -431,8 +431,8 @@ sub setup_ssl_vhost {
   }
 
   my ($sslconf_content, $original_sslconf_content, $pre, $vhost, $post);
-  #my $sslconf_dir = '/etc/httpd/conf.d';
-  my $sslconf_dir = '/etc/apache2/vhosts.d/';
+  my $sslconf_dir = '/etc/httpd/conf.d';
+  $sslconf_dir = '/etc/apache2/vhosts.d/' if(-e '/etc/SuSE-release');
   my $sslconf     = 'ssl.conf';
   my $sslconf_path = "$sslconf_dir/$sslconf";
   local *FILE;
@@ -1349,7 +1349,8 @@ sub setup_services {
 }
 
 sub setup_users_and_groups {
-
+  if(-e '/etc/SuSE-release')
+  {
     # Check to be sure the required users and groups exist.
     my @required_groups = qw/www/;
     Spacewalk::Setup::check_groups_exist(@required_groups);
@@ -1364,6 +1365,24 @@ sub setup_users_and_groups {
         Spacewalk::Setup::system_or_exit(['/usr/sbin/usermod', '-A', 'www', 'tomcat'], 9,
             'Could not add tomcat to the www group.');
     }
+  }
+  else
+  {
+    # Check to be sure the required users and groups exist.
+    my @required_groups = qw/apache/;
+    Spacewalk::Setup::check_groups_exist(@required_groups);
+    
+    # Need user tomcat in the apache group so the Java stack can read the same
+    # configuration files as the rest of the application.
+    (undef, undef, my $apache_group_id, my $apache_group_members) = getgrnam("apache");
+    if (not defined $apache_group_id) {
+      print Spacewalk::Setup::loc("The group 'apache' should exist.\n");
+    }
+    if (not grep { $_ eq 'tomcat' } split /\s+/, $apache_group_members) {
+      Spacewalk::Setup::system_or_exit(['/usr/sbin/usermod', '-G', 'apache', 'tomcat'], 9,
+                                       'Could not add tomcat to the apache group.');
+    }
+  }
 
     return 1;
 }
@@ -1394,7 +1413,7 @@ sub wait_for_tomcat {
     my $hostname = shift;
 
     for (my $i = 0; $i < 20; $i++) {
-        my $retval = system("curl -L -k http://$hostname/ 2>&1 > /dev/null");
+        my $retval = system("/usr/bin/curl -L -k http://$hostname/ > /dev/null 2>&1");
         if ($retval) {
             sleep 5;
         }
