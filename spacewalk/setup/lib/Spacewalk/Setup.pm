@@ -79,7 +79,7 @@ use constant DB_UPGRADE_LOG_SIZE => 20000000;
 
 use constant DB_INSTALL_LOG_SIZE => 11416;
 
-$DEFAULT_DOC_ROOT = "/var/www/html";
+our $DEFAULT_DOC_ROOT = "/var/www/html";
 if ( -e '/etc/SuSE-release' )
 {
     $DEFAULT_DOC_ROOT = '/srv/www/htdocs';
