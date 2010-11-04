@@ -54,7 +54,7 @@ Then /^no link should be broken$/ do
   end
   $stderr.puts "\nFinished. Visited #{visited.size} pages. Failed pages:"
   failed_pages = ""
-  visited.sort.each_value do |f|
+  visited.values.sort.each do |f|
     next if f.is_a? TrueClass
     failed_pages << "\t#{f}\n"
     $stderr.puts "\t#{f}"
