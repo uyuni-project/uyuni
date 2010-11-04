@@ -12,6 +12,10 @@
 	border-radius: 10px 10px 10px 10px;
 	font-weight: bold;
 }
+.site-alert UL
+{
+	text-align: left;
+}
 .site-info
 {
 	background-color: #FFFCD6;

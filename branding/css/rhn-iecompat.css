@@ -128,3 +128,18 @@ INPUT
 {
 	font-family: sans-serif;
 }
+TABLE.details
+{
+	width: 90%;
+}
+TABLE.details TH
+{
+	width: 30%;
+}
+TABLE.details TD
+{
+	width: 70%;
+}
+TABLE.details TR
+{
+}

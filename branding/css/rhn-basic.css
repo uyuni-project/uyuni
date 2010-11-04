@@ -335,6 +335,7 @@ TABLE.details-2-columns
 TABLE.details
 {
 	margin: 0 2%;
+	width: 95%;
 }
 .details TH
 {
@@ -349,6 +350,7 @@ TABLE.details
 	background-color: #EEE;
 	-moz-border-radius-topleft: 15px;
 	-moz-border-radius-bottomleft: 15px;
+	width: 30%;
 }
 .details TH.required-form-field
 {
@@ -361,6 +363,7 @@ TABLE.details
 	padding-left: 2px;
 	padding: 8px;
 	border-bottom: 0;
+	width: 70%;
 }
 .details TH+TD
 {
@@ -389,7 +392,7 @@ TABLE.details
 	border: none;
 	color: #444;
 	text-align: right;
-	vertical-align: top;
+	vertical-align: middle;
 	border: 1px solid #DDD;
 	border: none;
 	background-color: #EEE;

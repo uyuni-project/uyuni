@@ -24,9 +24,7 @@
 .content-nav
 {
 	margin: 0;
-	/*[disabled]padding:0px 0px 5px;*/
-	/*[disabled]border-bottom:1px solid #DDD;*/
-	/*[disabled]display:inherit;*/
+	border-bottom: 1px solid #DDD;
 }
 .content-nav A:visited
 {
@@ -158,7 +156,7 @@ DIV.contentnav-row2 DIV.top
 }
 DIV.contentnav-row2 DIV.bottom
 {
-	border-bottom: 1px solid #DDD;
-	margin-bottom: 3px;
-	padding-bottom: 3px;
+	/*[disabled]border-bottom:1px solid #DDD;*/
+	/*[disabled]margin-bottom:3px;*/
+	/*[disabled]padding-bottom:3px;*/
 }
