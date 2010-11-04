@@ -822,10 +822,12 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         // Check that we have a valid ks package
-        log.debug("** Checking validkspackage");
-        error = validateKickstartPackage();
-        if (error != null) {
-            return error;
+        if( !ksdata.getTree().getInstallType.isSUSE() ) {
+            log.debug("** Checking validkspackage");
+            error = validateKickstartPackage();
+            if (error != null) {
+                return error;
+            }
         }
 
         if (ksdata.isRhel()) {
