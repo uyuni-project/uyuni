@@ -1,4 +1,4 @@
-/** This stylesheet is for styles that are created especially for particular pages and are not really used across the entire webui. *
+/*index
 * Login box styles **/
 DIV.login-component
 {
@@ -482,30 +482,27 @@ DIV.rounded-box H2
 }
 .systeminfo-full
 {
-	/*[disabled]width:90%;*/
-	/*[disabled]margin-top:8px;*/
-	vertical-align: middle;
-	/*[disabled]float:left;*/
-	padding: 5px;
+	/*[disabled]text-align:center;*/
+	padding: 8px 8px 8px 30px;
+	margin-bottom: 10px;
+	font-size: inherit;
 	/*+border-radius:10px;*/
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	-khtml-border-radius: 10px;
 	border-radius: 10px 10px 10px 10px;
-	background: #E4EDF6;
-	padding-left: 24px;
-	border: 1px solid #FFF;
-	/*+box-shadow:0px 1px 5px #000000;*/
-	-moz-box-shadow: 0px 1px 5px #000000;
-	-webkit-box-shadow: 0px 1px 5px #000000;
-	-o-box-shadow: 0px 1px 5px #000000;
-	box-shadow: 0px 1px 5px #000000;
+	font-weight: bold;
+}
+.systeminfo-full
+{
+	background-color: #FFFCD6;
+	border: 1px solid #FDF58B;
 }
 .systeminfo-full IMG
 {
 	position: absolute;
-	top: 3px;
-	left: 5px;
+	top: 7px;
+	left: 8px;
 }
 /** Fancy bar for complex/multiple submit buttons for a page's form. used on the system entitlements page, will be used on virt guest list **/
 TABLE.entitle-bar

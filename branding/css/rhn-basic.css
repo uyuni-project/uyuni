@@ -427,8 +427,14 @@ TABLE.details
 .details TD TABLE TD
 {
 	margin: 0;
-	padding: 0;
+	padding: 0px;
 	border: 0;
+	width: auto;
+}
+.details LABEL
+{
+	padding: 0px 5px;
+	display: block;
 }
 .details TD TABLE
 {

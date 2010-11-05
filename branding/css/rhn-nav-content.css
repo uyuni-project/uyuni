@@ -152,11 +152,11 @@ DIV.contentnav-row2 DIV.top
 {
 	height: 1px;
 	border-top: 1px solid #DDD;
-	margin-bottom: 3px;
+	/*[disabled]margin-bottom:3px;*/
 }
 DIV.contentnav-row2 DIV.bottom
 {
-	/*[disabled]border-bottom:1px solid #DDD;*/
+	border-bottom: 1px solid #DDD;
 	/*[disabled]margin-bottom:3px;*/
 	/*[disabled]padding-bottom:3px;*/
 }

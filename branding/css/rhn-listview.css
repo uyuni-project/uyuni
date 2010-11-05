@@ -339,6 +339,9 @@ TABLE.list-pagination
 {
 	font-size: 10px;
 }
+DIV.filter-input
+{
+}
 DIV.filter-input TABLE
 {
 	width: 100%;
@@ -351,6 +354,7 @@ DIV.filter-input INPUT
 {
 	vertical-align: middle;
 	font-size: 10px;
+	margin-left: 8px;
 }
 /** alphabar styles **/
 .list-alphabar
