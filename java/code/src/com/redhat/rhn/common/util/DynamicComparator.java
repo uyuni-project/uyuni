@@ -42,7 +42,7 @@ public class DynamicComparator implements Comparator  {
     private Collator collator;
     /**
      * Create a new DynamicComparator that
-     * can be used to compare indivdual beans..
+     * can be used to compare individual beans..
      * @param fieldNameIn Name of field you want to use in
      * the bean to compare to
      *
@@ -55,7 +55,7 @@ public class DynamicComparator implements Comparator  {
 
     /**
      * Create a new DynamicComparator that
-     * can be used to compare indivdual beans..
+     * can be used to compare individual beans..
      * @param fieldNameIn Name of field you want to use in
      * the bean to compare to
      *

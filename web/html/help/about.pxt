@@ -51,7 +51,7 @@ The Provisioning Module, which includes all the functionality of the Management 
   <div class="marketing-summary">
   <h3>Hosted model</h3>
     <p>
-The customer's indivdual systems connect with RHN via the internet and exchange packages and information with the central RHN servers.
+The customer's individual systems connect with RHN via the internet and exchange packages and information with the central RHN servers.
     </p>
   </div>
 
@@ -65,7 +65,7 @@ The customer's individual systems connect to a locally hosted (on the customer n
   <div class="marketing-summary">
   <h3><pxt-config var="product_name"/> model</h3>
     <p>
-All <pxt-config var="product_name"/> functionality (system profiles, reporting data, application server, etc.) is stored locally on the customers network. The <pxt-config var="product_name"/> Server connects with <pxt-config var="product_name"/> over the internet only to download updates (other update methods are available). This model provides customers with the ability to take their <pxt-config var="product_name"/> solution off the public internet if desired, and also allows for greater optimization and control of your systems.
+All <pxt-config var="product_name"/> functionality (system profiles, reporting data, application server, etc.) is stored locally on the customer's network. The <pxt-config var="product_name"/> Server connects with <pxt-config var="product_name"/> over the internet only to download updates (other update methods are available). This model provides customers with the ability to take their <pxt-config var="product_name"/> solution off the public internet if desired, and also allows for greater optimization and control of your systems.
     </p>
   </div>
 
