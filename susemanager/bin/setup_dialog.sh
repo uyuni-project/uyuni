@@ -40,6 +40,9 @@ manager_dialog() {
                "repeat Manager DB Password"            8 4 "spacewalk" 8 40 20 0 1\
                "Admin eMail Adresse"                  10 4 "admin@..." 10 40 20 0 0\
      2>>$RESULT_ENV1
+     if [ $? -ne 0 ]; then
+         exit 1
+     fi
 }
 
 cert_dialog() {
@@ -57,6 +60,9 @@ cert_dialog() {
                "SSLPassword"       14 4 ""   14 40 20 0 1\
                "repeat Password"   16 4 ""   16 40 20 0 1\
      2>>$RESULT_ENV2
+     if [ $? -ne 0 ]; then
+         exit 1
+     fi
 }
 
 db_dialog() {
@@ -71,6 +77,9 @@ db_dialog() {
                "Database Protocol"  8 4 "TCP"        8 40 20 0 0\
                "Enable TFTP"       10 4 "y"         10 40 20 0 0\
      2>>$RESULT_ENV3
+     if [ $? -ne 0 ]; then
+         exit 1
+     fi
 }
 
 create_export() {
@@ -87,6 +96,10 @@ create_export() {
 
 RUN="TRUE"
 rm -f $RESULT_ENV
+
+if [ x$SETUP_ONLY = "xyes" ]; then
+    TITLE="Setup SUSE Manager"
+fi
 
 while [ $RUN = "TRUE" ];do
     manager_dialog
@@ -122,4 +135,5 @@ rm -f $RESULT_ENV
 cat $RESULT_ENV1 $RESULT_ENV2 $RESULT_ENV3 >> $RESULT_ENV
 rm -f $RESULT_ENV1 $RESULT_ENV2 $RESULT_ENV3
 
+exit 0
 # vim: set expandtab:

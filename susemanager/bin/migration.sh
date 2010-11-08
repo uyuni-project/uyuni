@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 DO_MIGRATION=0
 DO_SETUP=0
@@ -233,6 +233,9 @@ do_migration() {
 do_setup() {
     if [ -f $SETUP_ENV ]; then
         . $SETUP_ENV
+        if [ -z $SYS_DB_PASS ]; then
+            SYS_DB_PASS=$MANAGER_PASS
+        fi
     else
         echo -n "MANAGER_IP=";          read MANAGER_IP
         echo -n "MANAGER_USER=";        read MANAGER_USER
@@ -298,7 +301,8 @@ for p in $@; do
 done
 
 if [ "$LOGFILE" != "0" ]; then
-    exec >> $LOGFILE 2>&1
+    #set -x
+    exec >> >(tee $LOGFILE | sed 's/^/  /' ) 2>&1
 fi
 
 if [ $WAIT_BETWEEN_STEPS = "1" ];then
