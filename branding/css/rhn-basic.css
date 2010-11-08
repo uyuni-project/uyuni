@@ -82,8 +82,9 @@ TD.page-content>TABLE
 }
 .page-content .full-width, .page-content HR
 {
-	clear: both;
-	width: 100%;
+	/*[disabled]clear:both;*/
+	/*[disabled]width:100%;*/
+	/*[disabled]margin-right:10px;*/
 }
 .details-column-right
 {
@@ -106,18 +107,14 @@ TD.page-content>TABLE
 }
 TD, TH
 {
-/*for ie55*/
-	/*[disabled]font-size:x-small;*/
-/*false value for WinIE4/5
-voice-family: "\"}\";
+/*voice-family: "\"}\";
 trick WinIE4/5 into thinking rule is over*/
 	voice-family: inherit;
-/*recover from trick*/
-	/*[disabled]font-size:small;*/
-/*intended value for better browsers*/
+/*recover from trick
+intended value for better browsers*/
 	padding: 4px;
 	text-align: left;
-	vertical-align: top;
+	vertical-align: middle;
 }
 IMG
 {
@@ -350,7 +347,7 @@ TABLE.details
 	background-color: #EEE;
 	-moz-border-radius-topleft: 15px;
 	-moz-border-radius-bottomleft: 15px;
-	width: 30%;
+	width: 25%;
 }
 .details TH.required-form-field
 {
@@ -363,7 +360,7 @@ TABLE.details
 	padding-left: 2px;
 	padding: 8px;
 	border-bottom: 0;
-	width: 70%;
+	/*[disabled]width:70%;*/
 }
 .details TH+TD
 {
@@ -406,14 +403,6 @@ TABLE.details
 {
 	border-right: 4px solid #C77;
 }
-.details TD
-{
-	vertical-align: top;
-	padding: 4px;
-	padding-left: 2px;
-	padding: 8px;
-	border-bottom: 0;
-}
 .details TH+TD
 {
 	border-bottom: 1px solid #DDD;
@@ -431,7 +420,7 @@ TABLE.details
 	border: 0;
 	width: auto;
 }
-.details LABEL
+.details TH LABEL
 {
 	padding: 0px 5px;
 	display: block;

@@ -94,9 +94,13 @@ UL.content-nav-rowthree
 TD.page-content
 {
 }
+DIV.rounded-box
+{
+	padding-left: 25px;
+}
 .page-content H2
 {
-	clear: both;
+	/*[disabled]clear:both;*/
 }
 #bar
 {
@@ -134,11 +138,11 @@ TABLE.details
 }
 TABLE.details TH
 {
-	width: 30%;
+	width: 25%;
 }
 TABLE.details TD
 {
-	width: 70%;
+	/*[disabled]width:70%;*/
 }
 TABLE.details TR
 {

@@ -6,6 +6,7 @@ TABLE.list IMG
 TABLE.list TD
 {
 	vertical-align: middle !important;
+	font-size: 1.1em;
 }
 TABLE.list, TABLE.list-doubleheader
 {
@@ -333,6 +334,7 @@ TABLE.list-pagination
 {
 	margin: 0 2%;
 	cursor: text;
+	font-size: 1.1em;
 }
 /** filterbox styles **/
 .list-filterbox

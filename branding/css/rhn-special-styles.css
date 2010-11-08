@@ -1,5 +1,9 @@
-/*index
-* Login box styles **/
+/*index*/
+.page-content DIV.toolbar A
+{
+	padding-right: 10px;
+}
+/** Login box styles **/
 DIV.login-component
 {
 	text-align: center;
@@ -424,28 +428,28 @@ DIV.tc_reject_button
 DIV.rounded-box
 {
 	float: right;
+	margin: 10px;
 }
 DIV.rounded-box:before
 {
-	background: #B4B19A url('/img/table_corner_tr.gif') no-repeat scroll top right;
-	margin-bottom: -11px;
-	height: 5px;
-	display: block;
-	border: none;
-	content: url('/img/table_corner_tl.gif');
-	padding: 0;
-	line-height: 0.1;
-	font-size: 1px;
+	/*[disabled]background:#B4B19A url('/img/table_corner_tr.gif') no-repeat scroll top right;*/
+	/*[disabled]margin-bottom:-11px;*/
+	/*[disabled]height:5px;*/
+	/*[disabled]display:block;*/
+	/*[disabled]border:none;*/
+	/*[disabled]content:url('/img/table_corner_tl.gif');*/
+	/*[disabled]padding:0;*/
+	/*[disabled]line-height:0.1;*/
+	/*[disabled]font-size:1px;*/
 }
 DIV.rounded-box
 {
-	background-color: #FFFFFF;
-	border-bottom: 1px solid #B4B19A;
+	border-left: 1px solid #DDDDDD;
+	/*[disabled]border-bottom:1px solid #B4B19A;*/
 }
 DIV.rounded-box UL
 {
-	border-left: 1px solid #B4B19A;
-	border-right: 1px solid #B4B19A;
+	/*[disabled]border-right:1px solid #B4B19A;*/
 	margin: 0px;
 	padding-top: 10px;
 	padding-bottom: 10px;
@@ -459,9 +463,13 @@ DIV.rounded-box H2
 	padding-left: 5px;
 	padding-right: 5px;
 	margin-bottom: 0px;
-	background-color: #B4B19A;
-	color: #FFFFFF;
+	/*[disabled]background-color:#B4B19A;*/
 	text-align: center;
+	color: #888A85;
+}
+DIV.rounded-box H2 A
+{
+	color: #888A85;
 }
 /** SDC fancy system info box showing system status (towards top of SDC > details page **/
 .systeminfo
@@ -575,4 +583,19 @@ DIV.marketing-summary A
 	border: 1px solid #CCC;
 	margin: 20px 40px;
 	padding: 8px;
+}
+/** page toolbar**/
+.page-content DIV.toolbar A
+{
+	padding-right: 10px;
+}
+.page-content DIV.toolbar A IMG
+{
+	background-color: #FFFFFF;
+}
+/** special case for search page *
+Can't apply due to design limitations*/
+DIV.search-choices-group .details TH
+{
+	/*[disabled]text-align:left;*/
 }
