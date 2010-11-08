@@ -13,6 +13,8 @@
 # chkconfig: 2345 99 99
 # description: Starts up xen domains when the host boots.
 
+. /etc/rc.status
+
 auto_dir="/etc/sysconfig/rhn/virt/auto"
 py_path="/usr/share/rhn:/usr/share/rhn/virtualization"
 script_path="/usr/share/rhn/virtualization"
