@@ -41,8 +41,8 @@ function accept_license() {
 esac
 }
 
-accept_license $ORACLE_LICENSE
 accept_license $SUSE_MANAGER_LICENSE
+accept_license $ORACLE_LICENSE
 
 # don't run this again
 insserv -r spacewalk_firstboot

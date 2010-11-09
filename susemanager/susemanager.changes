@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov  9 14:23:13 CET 2010 - mantel@suse.de
+
+- add final beta EULA
+- Oracle EULA must be displayed _after_ Novell EULA
+
+-------------------------------------------------------------------
 Tue Nov  9 12:22:27 CET 2010 - mantel@suse.de
 
 - fix filelist
