@@ -3,7 +3,7 @@
 # Provides:       spacewalk_firstboot
 # Required-Start:
 # Required-Stop:
-# Default-Start:  2 3 5
+# Default-Start:  B
 # Default-Stop:
 # Short-Description: Have user accept licenses.
 # Description:    Have user accept licenses. Halt system if at least one license is declined.

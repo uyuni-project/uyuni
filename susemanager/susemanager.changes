@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov  9 16:28:11 CET 2010 - mantel@suse.de
+
+- script needs to run during boot, not when entering runlevel
+
+-------------------------------------------------------------------
 Tue Nov  9 15:47:37 CET 2010 - mantel@suse.de
 
 - stty terminal before displaying license files
