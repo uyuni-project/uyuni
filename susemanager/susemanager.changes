@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov  9 12:22:27 CET 2010 - mantel@suse.de
+
+- fix filelist
+
+-------------------------------------------------------------------
 Tue Nov  9 11:10:26 CET 2010 - mantel@suse.de
 
 - make user accept licenses on first boot. If at least one license

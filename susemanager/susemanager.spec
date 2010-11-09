@@ -46,7 +46,7 @@ rm -rf %{buildroot}
 %dir %{_prefix}/lib/susemanager/bin/
 %{_prefix}/lib/susemanager/bin/*
 %attr(0755,root,root) %{_sysconfdir}/init.d/spacewalk_firstboot
-%{_prefix}/share/doc/licenses/SUSE_MANAGER_LICENSE
+%{_prefix}/share/doc/licenses
 
 %changelog
 
