@@ -120,12 +120,13 @@ while [ $RUN = "TRUE" ];do
     manager_dialog
     create_export $RESULT_ENV1 0
     . $RESULT_ENV1
-    if [ "$MANAGER_PASS" = "$MANAGER_PASS2" ]; then
+    if [ -n "$MANAGER_PASS" -a "$MANAGER_PASS" = "$MANAGER_PASS2" ]; then
         RUN="FALSE"
     else
         dialog --backtitle "$TITLE" \
             --title "Passwords mismatch" \
             --msgbox "The passwords don't match" 5 30 
+        RUN="TRUE"
     fi
 done
 
@@ -134,12 +135,13 @@ while [ $RUN = "TRUE" ];do
     cert_dialog
     create_export $RESULT_ENV2 6
     . $RESULT_ENV2
-    if [ "$CERT_PASS" = "$CERT_PASS2" ]; then
+    if [ -n "$CERT_PASS" -a "$CERT_PASS" = "$CERT_PASS2" ]; then
         RUN="FALSE"
     else
         dialog --backtitle "$TITLE" \
             --title "Passwords mismatch" \
             --msgbox "The passwords don't match" 5 30 
+        RUN="TRUE"
     fi
 done
 
