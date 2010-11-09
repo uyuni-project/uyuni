@@ -11,7 +11,7 @@ BuildArch:      noarch
 PreReq:         %insserv_prereq %fillup_prereq
 Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
-Requires:       rsync less
+Requires:       rsync less coreutils
 # needed for sqlplus
 Requires:       oracle-xe-univ
 

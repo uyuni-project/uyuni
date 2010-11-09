@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov  9 15:47:37 CET 2010 - mantel@suse.de
+
+- stty terminal before displaying license files
+
+-------------------------------------------------------------------
 Tue Nov  9 14:23:13 CET 2010 - mantel@suse.de
 
 - add final beta EULA
