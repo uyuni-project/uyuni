@@ -11,7 +11,7 @@ BuildArch:      noarch
 PreReq:         %insserv_prereq %fillup_prereq
 Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
-Requires:       rsync less coreutils
+Requires:       rsync less
 # needed for sqlplus
 Requires:       oracle-xe-univ
 
@@ -31,13 +31,19 @@ install -m 0755 bin/*.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/
 mkdir -p %{buildroot}/%{_datadir}/doc/licenses
 install -m 0644 usr/share/doc/licenses/SUSE_MANAGER_LICENSE %{buildroot}/%{_datadir}/doc/licenses/
 mkdir -p %{buildroot}/%{_sysconfdir}/init.d
-install -m 0755 etc/init.d/spacewalk_firstboot %{buildroot}/%{_sysconfdir}/init.d
+install -m 0755 etc/init.d/boot.susemanager %{buildroot}/%{_sysconfdir}/init.d
 
 %clean
 rm -rf %{buildroot}
 
 %post
 %{fillup_and_insserv -y spacewalk_firstboot}
+
+%postun
+%{insserv_cleanup}
+
+%preun
+%stop_on_removal
 
 %files
 %defattr(-,root,root,-)
@@ -46,7 +52,7 @@ rm -rf %{buildroot}
 %dir %{_prefix}/lib/susemanager/bin/
 %dir %{_datadir}/doc/licenses
 %{_prefix}/lib/susemanager/bin/*
-%attr(0755,root,root) %{_sysconfdir}/init.d/spacewalk_firstboot
+%attr(0755,root,root) %{_sysconfdir}/init.d/boot.susemanager
 %{_datadir}/doc/licenses/SUSE_MANAGER_LICENSE
 
 %changelog

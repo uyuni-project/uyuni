@@ -1,6 +1,6 @@
 #!/bin/bash
 ### BEGIN INIT INFO
-# Provides:       spacewalk_firstboot
+# Provides:       boot.susemanager
 # Required-Start:
 # Required-Stop:
 # Default-Start:  B
@@ -20,7 +20,7 @@ fi
 # Step to do on firstboot
 #
 
-stty -nl ixon ignbrk -brkint
+stty -nl ixon ignbrk -brkint echoe
 
 SUSE_MANAGER_LICENSE=/usr/share/doc/licenses/SUSE_MANAGER_LICENSE
 ORACLE_LICENSE=/usr/share/doc/oracle_xe/LICENSE
@@ -48,5 +48,5 @@ accept_license $SUSE_MANAGER_LICENSE
 accept_license $ORACLE_LICENSE
 
 # don't run this again
-insserv -r spacewalk_firstboot
-rm -f /etc/init.d/spacewalk_firstboot
+insserv -r boot.susemanager
+rm -f /etc/init.d/boot.susemanager
