@@ -9,5 +9,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 /usr/lib/susemanager/bin/migration.sh -s -l $LOGFILE
+if [ $? -ne 0 ]; then
+    /bin/cat /dev/null > /etc/motd
+fi
 
 

@@ -78,9 +78,6 @@ setup_db() {
     /etc/init.d/oracle-xe start
 
     echo "create smallfile tablespace data_tbs datafile '/usr/lib/oracle/xe/oradata/XE/data_01.dbf' SIZE 3800M;
-create user ruby identified by ruby default tablespace data_tbs;
-grant dba to ruby;
-GRANT EXECUTE ON dbms_lock TO ruby;
 create user $MANAGER_USER identified by $MANAGER_PASS default tablespace data_tbs;
 grant dba to $MANAGER_USER;
 alter system set processes = 400 scope=spfile;
@@ -255,8 +252,14 @@ do_setup() {
         echo -n "MANAGER_ENABLE_TFTP="; read MANAGER_ENABLE_TFTP
 
     fi;
-    if [ ! -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
+    if [ $MANAGER_DB_NAME = "xe" -a $MANAGER_DB_HOST = "localhost" ]; then
+        if [ -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
+            echo "Database already setup. Abort."
+            exit 1
+        fi
         setup_db
+    fi
+    if [ ! -d "/var/satellite" ]; then
         setup_spacewalk
     else
         echo "SUSE Manager is already initialized. Skipping setup."
