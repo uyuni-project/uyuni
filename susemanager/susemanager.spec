@@ -37,7 +37,7 @@ install -m 0755 etc/init.d/boot.susemanager %{buildroot}/%{_sysconfdir}/init.d
 rm -rf %{buildroot}
 
 %post
-%{fillup_and_insserv -y spacewalk_firstboot}
+%{fillup_and_insserv -y boot.susemanager}
 
 %postun
 %{insserv_cleanup}

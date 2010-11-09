@@ -2,7 +2,9 @@
 ### BEGIN INIT INFO
 # Provides:       boot.susemanager
 # Required-Start:
+# Should-Start:   boot.ipconfig
 # Required-Stop:
+# Should-Stop:    boot.ipconfig
 # Default-Start:  B
 # Default-Stop:
 # Short-Description: Have user accept licenses.
