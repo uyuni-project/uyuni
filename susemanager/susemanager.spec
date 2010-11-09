@@ -8,9 +8,10 @@ URL:            http://www.novell.com
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
+PreReq:         %insserv_prereq %fillup_prereq
 Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
-Requires:       rsync
+Requires:       rsync less
 # needed for sqlplus
 Requires:       oracle-xe-univ
 
@@ -27,9 +28,16 @@ setup tasks, re-installation, upgrades and managing.
 %install
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
 install -m 0755 bin/*.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/
+mkdir -p %{buildroot}/%{_prefix}/share/doc/licenses
+install -m 0644 usr/share/doc/licenses/SUSE_MANAGER_LICENSE %{buildroot}/%{_prefix}/share/doc/licenses/
+mkdir -p %{buildroot}/%{_sysconfdir}/init.d
+install -m 0755 etc/init.d/spacewalk_firstboot %{buildroot}/%{_sysconfdir}/init.d
 
 %clean
 rm -rf %{buildroot}
+
+%post
+%{fillup_and_insserv -y spacewalk_firstboot}
 
 %files
 %defattr(-,root,root,-)
@@ -37,6 +45,8 @@ rm -rf %{buildroot}
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %{_prefix}/lib/susemanager/bin/*
+%attr(0755,root,root) %{_sysconfdir}/init.d/spacewalk_firstboot
+%{_prefix}/share/doc/licenses/SUSE_MANAGER_LICENSE
 
 %changelog
 

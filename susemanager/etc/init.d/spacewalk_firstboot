@@ -1,0 +1,49 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:       spacewalk_firstboot
+# Required-Start:
+# Required-Stop:
+# Default-Start:  2 3 5
+# Default-Stop:
+# Short-Description: Have user accept licenses.
+# Description:    Have user accept licenses. Halt system if at least one license is declined.
+### END INIT INFO
+
+test -s /etc/rc.status && . /etc/rc.status && rc_reset
+
+if [ "$1" != "start" ]; then
+  rc_status -v
+  rc_exit
+fi
+
+#
+# Step to do on firstboot
+#
+SUSE_MANAGER_LICENSE=/usr/share/doc/licenses/SUSE_MANAGER_LICENSE
+ORACLE_LICENSE=/usr/share/doc/oracle_xe/LICENSE
+
+function accept_license() {
+    less "$1"
+    echo
+    read -p "Accept license: (y)es, (n)o: " RES
+    case "$RES" in
+    [yY]*)
+        echo
+        echo "License accepted."
+        echo
+        ;;
+    *)
+        echo
+        echo "License declined. System will be halted!"
+        echo
+        halt
+        ;;
+esac
+}
+
+accept_license $ORACLE_LICENSE
+accept_license $SUSE_MANAGER_LICENSE
+
+# don't run this again
+insserv -r spacewalk_firstboot
+rm -f /etc/init.d/spacewalk_firstboot
