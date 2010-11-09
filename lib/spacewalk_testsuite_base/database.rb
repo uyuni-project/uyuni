@@ -1,7 +1,7 @@
 # generic low-level access to the database
 
-$dbuser = "spacewalk"
-$dbpass = "spacewalk"
+$dbuser = ENV['DBUSER'] || "spacewalk"
+$dbpass = ENV['DBPASS'] || "spacewalk"
 
 $dbhost = ENV['TESTHOST'] || "andromeda.suse.de"
 # remove http*://
