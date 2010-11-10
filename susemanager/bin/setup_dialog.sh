@@ -102,6 +102,7 @@ create_export() {
     while read line
     do
         line=`echo "$line" | sed 's/"/\\\"/g'`
+        line=`echo "$line" | sed 's/\\$/\\\\$/g'`
         echo -n "export " >> /tmp/env
         echo -n ${variables[$i]} >> /tmp/env
         echo "=\"$line\"" >> /tmp/env
@@ -131,7 +132,7 @@ while [ $RUN = "TRUE" ];do
             --title "Password too short" \
             --msgbox "The password should have minimal 7 characters" 5 50
         RUN="TRUE"
-    elif echo "$MANAGER_PASS" | grep -E "[ '\"]" > /dev/null; then
+    elif echo "$MANAGER_PASS" | grep -E "[ '\"\$\!]" > /dev/null; then
         dialog --backtitle "$TITLE" \
             --title "Invalid Characters in Password" \
             --msgbox "There are invalid characters in the password" 5 50
@@ -156,7 +157,7 @@ while [ $RUN = "TRUE" ];do
             --title "Password too short" \
             --msgbox "The password should have minimal 7 characters" 5 50
         RUN="TRUE"
-    elif echo "$CERT_PASS" | grep -E "[ '\"]" > /dev/null; then
+    elif echo "$CERT_PASS" | grep -E "[ '\"\$\!]" > /dev/null; then
         dialog --backtitle "$TITLE" \
             --title "Invalid Characters in Password" \
             --msgbox "There are invalid characters in the password" 5 50

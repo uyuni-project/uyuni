@@ -78,7 +78,7 @@ setup_db() {
     /etc/init.d/oracle-xe start
 
     echo "create smallfile tablespace data_tbs datafile '/usr/lib/oracle/xe/oradata/XE/data_01.dbf' SIZE 3800M;
-create user $MANAGER_USER identified by $MANAGER_PASS default tablespace data_tbs;
+create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
 grant dba to $MANAGER_USER;
 alter system set processes = 400 scope=spfile;
 alter system set \"_optimizer_filter_pred_pullup\"=false scope=spfile;
@@ -86,7 +86,7 @@ alter system set \"_optimizer_cost_based_transformation\"=off scope=spfile;
 quit
 " > /tmp/dbsetup.sql
 
-    sqlplus "sys/$MANAGER_PASS@$MANAGER_DB_NAME as sysdba" @/tmp/dbsetup.sql
+    sqlplus sys/\"$MANAGER_PASS\"@$MANAGER_DB_NAME as sysdba @/tmp/dbsetup.sql
     rm /tmp/dbsetup.sql
 }
 
@@ -118,12 +118,12 @@ drop_manager_db() {
     /usr/sbin/spacewalk-service stop
     /etc/init.d/oracle-xe start
     echo "drop user $MANAGER_USER cascade;
-create user $MANAGER_USER identified by $MANAGER_PASS default tablespace data_tbs;
+create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
 grant dba to $MANAGER_USER;
 quit
 " > /tmp/dbnewspacewalkuser.sql
 
-    sqlplus "sys/${SYS_DB_PASS}@${MANAGER_DB_NAME} as sysdba" @/tmp/dbnewspacewalkuser.sql
+    sqlplus sys/\"${SYS_DB_PASS}\"@${MANAGER_DB_NAME} as sysdba @/tmp/dbnewspacewalkuser.sql
     rm /tmp/dbnewspacewalkuser.sql
 }
 
@@ -140,7 +140,7 @@ dump_remote_db() {
   )
 " >> /etc/tnsnames.ora
 
-    su - oracle -c "exp $SATELLITE_DB_USER/$SATELLITE_DB_PASS@rrxe owner=$SATELLITE_DB_USER consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log"
+    su - oracle -c "exp \"$SATELLITE_DB_USER\"/\"$SATELLITE_DB_PASS\"@rrxe owner=$SATELLITE_DB_USER consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log"
 }
 
 import_db() {
@@ -150,7 +150,7 @@ import_db() {
 
 upgrade_schema() {
     spacewalk-schema-upgrade
-    su - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus \"sys/$SYS_DB_PASS@$MANAGER_DB_NAME as sysdba\" @/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/rdbms/admin/utlrp.sql"
+    su - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba @/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/rdbms/admin/utlrp.sql"
 }
 
 copy_remote_files() {
