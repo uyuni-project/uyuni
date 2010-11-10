@@ -1,4 +1,19 @@
 /*-- General list stuff --*/
+TH
+{
+	padding: 4px 6px;
+	color: #000;
+/*background-color: #c0c0c0;*/
+	text-align: left;
+	font-size: small;
+	background-color: #EEE;
+	border-bottom: 1px solid #CCC;
+	/*+text-shadow:0 1px 1px #FFFFFF;*/
+	-moz-text-shadow: 0 1px 1px #FFFFFF;
+	-webkit-text-shadow: 0 1px 1px #FFFFFF;
+	-o-text-shadow: 0 1px 1px #FFFFFF;
+	text-shadow: 0 1px 1px #FFFFFF;
+}
 TABLE.list IMG
 {
 	vertical-align: middle !important;
@@ -7,17 +22,27 @@ TABLE.list TD
 {
 	vertical-align: middle !important;
 	font-size: 1.1em;
+	border-bottom: 1px dotted #CCC;
+}
+TABLE.list TR:last-child TD
+{
+	border-bottom: 0px none #000000;
 }
 TABLE.list, TABLE.list-doubleheader
 {
 	font-size: 10px;
-	background: #C0C0C0 url(/img/table_corner_tr.gif) no-repeat top right;
-	border-bottom: 1px solid #C0C0C0;
+	background: #EEE no-repeat top right;
 	width: 100%;
+	border: 1px solid #CCC;
+}
+TABLE.list TH, TABLE.list-doubleheader TH
+{
+	color: #000000;
+	border-bottom: 1px solid #CCC;
 }
 TABLE.list THEAD TH:first-child
 {
-	background: url(/img/table_corner_tl.gif) no-repeat top left;
+	/*[disabled]background:url(/img/table_corner_tl.gif) no-repeat top left;*/
 }
 TABLE.list-pagination
 {
@@ -44,11 +69,11 @@ TD.errata-patches IMG
 }
 TD.first-column
 {
-	border-left: 1px solid #C0C0C0;
+	/*[disabled]border-left:1px solid #C0C0C0;*/
 }
 TD.last-column
 {
-	border-right: 1px solid #C0C0C0;
+	/*[disabled]border-right:1px solid #C0C0C0;*/
 }
 TD.only-column
 {
@@ -88,7 +113,7 @@ TH.thin-column, TD.thin-column
 /*list row classes*/
 .list-row-even TD
 {
-	background-color: #EAE8E4;
+	background-color: #F2F2F2;
 }
 .list-row-odd TD
 {
@@ -173,15 +198,20 @@ DIV.half-table-right
 }
 TABLE.half-table
 {
-	background: #C0C0C0 url(/img/table_corner_tr.gif) no-repeat 100% 0;
+	/*[disabled]background:#C0C0C0 url(/img/table_corner_tr.gif) no-repeat 100% 0;*/
 	padding: 0px;
 	margin: 0px;
-	border-bottom: 1px solid #C0C0C0;
+	border: 1px solid #CCC;
 	width: 97%;
+}
+.half-table TR:last-child TD
+{
+	border-bottom: 0px none #CCC;
 }
 .half-table TD
 {
-	background-color: #FFF;
+	/*[disabled]background-color:#FFF;*/
+	border-bottom: 1px dotted #CCC;
 }
 TABLE.your-rhn TABLE.half-table TD
 {
@@ -195,7 +225,7 @@ TABLE.your-rhn TABLE.full-table TD
 }
 TABLE.half-table THEAD TH:first-child
 {
-	background: url(/img/table_corner_tl.gif) no-repeat top left;
+	/*[disabled]background:url(/img/table_corner_tl.gif) no-repeat top left;*/
 }
 DIV.full-width-wrapper
 {
@@ -213,7 +243,7 @@ SPAN.full-width-note-right
 /*special column classes*/
 TH+TH
 {
-	border-left: 0;
+	/*[disabled]border-left:0;*/
 }
 A[name]:hover
 {
@@ -538,14 +568,6 @@ TABLE.iso_dl TH.first
 {
 	text-align: left;
 }
-TH
-{
-	padding: 4px 6px;
-	color: #FFF;
-/*background-color: #c0c0c0;*/
-	text-align: left;
-	font-size: small;
-}
 /*--- Cool list sorting stuffs ---
 the following classes darken all rows in the currently-sorted column*/
 .list-row-even TD.sortedCol
@@ -631,7 +653,7 @@ TR.alphaResult TD.sortedCol
 {
 	width: 20%;
 	padding: 3px 6px;
-	background-color: #C0C0C0;
+	background-color: #EEE;
 	-moz-border-radius: 8px;
 	text-align: center;
 	/*+border-radius:0 0 5px 5px;*/
@@ -639,6 +661,9 @@ TR.alphaResult TD.sortedCol
 	-webkit-border-radius: 0 0 5px 5px;
 	-khtml-border-radius: 0 0 5px 5px;
 	border-radius: 0 0 5px 5px;
+	border-left: 1px solid #CCC;
+	border-bottom: 1px solid #CCC;
+	border-right: 1px solid #CCC;
 }
 .csv-download IMG
 {
@@ -647,12 +672,12 @@ TR.alphaResult TD.sortedCol
 }
 .csv-download A
 {
-	font-weight: bold;
-	/*+text-shadow:0 0 5px #FFFFFF;*/
-	-moz-text-shadow: 0 0 5px #FFFFFF;
-	-webkit-text-shadow: 0 0 5px #FFFFFF;
-	-o-text-shadow: 0 0 5px #FFFFFF;
-	text-shadow: 0 0 5px #FFFFFF;
+	font-weight: normal;
+	/*+text-shadow:0 1px 1px #FFFFFF;*/
+	-moz-text-shadow: 0 1px 1px #FFFFFF;
+	-webkit-text-shadow: 0 1px 1px #FFFFFF;
+	-o-text-shadow: 0 1px 1px #FFFFFF;
+	text-shadow: 0 1px 1px #FFFFFF;
 }
 .list-fat-column-50
 {
