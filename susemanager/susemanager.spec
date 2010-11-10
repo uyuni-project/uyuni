@@ -43,6 +43,14 @@ if [ -f /etc/init.d/boot.susemanager ]; then
 fi
 EOF
 
+if [ -f /etc/sysconfig/atftpd ]; then
+  . /etc/sysconfig/atftpd
+  if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
+    sysconf_addword -r /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/tftpboot"
+    sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/srv/tftpboot"
+  fi
+fi
+
 %files
 %defattr(-,root,root,-)
 %doc doc/* Changes
