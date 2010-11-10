@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 10 09:57:57 CET 2010 - mantel@suse.de
+
+- make buildservice happy
+
+-------------------------------------------------------------------
 Wed Nov 10 09:45:09 CET 2010 - mantel@suse.de
 
 - call susemanager_firstboot from /etc/init.d/boot.local
