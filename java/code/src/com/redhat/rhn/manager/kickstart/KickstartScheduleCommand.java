@@ -536,13 +536,11 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         // Install packages on the host server.
         log.debug("** Creating packageAction");
 log.error("UWE this.packagesToInstall="+this.packagesToInstall+"*");
-        if( !this.packagesToInstall.isEmpty() ) {
-            Action packageAction =
-                ActionManager.schedulePackageInstall(
-                    this.user, hostServer, this.packagesToInstall, scheduleDate);
-            packageAction.setPrerequisite(removal);
-            log.debug("** Created packageAction ? " + packageAction.getId());
-        }
+        Action packageAction =
+            ActionManager.schedulePackageInstall(
+                this.user, hostServer, this.packagesToInstall, scheduleDate);
+        packageAction.setPrerequisite(removal);
+        log.debug("** Created packageAction ? " + packageAction.getId());
 
 
         log.debug("** Cancelling existing sessions.");
@@ -825,13 +823,13 @@ log.error("UWE this.packagesToInstall="+this.packagesToInstall+"*");
         }
 
         // Check that we have a valid ks package
-        if( !ksdata.getTree().getInstallType().isSUSE() ) {
+//        if( !ksdata.getTree().getInstallType().isSUSE() ) {
             log.debug("** Checking validkspackage");
             error = validateKickstartPackage();
             if (error != null) {
                 return error;
             }
-        }
+//        }
 
         if (ksdata.isRhel()) {
             // Check that we have a valid up2date version
