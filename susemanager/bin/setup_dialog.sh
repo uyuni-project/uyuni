@@ -120,13 +120,18 @@ while [ $RUN = "TRUE" ];do
     manager_dialog
     create_export $RESULT_ENV1 0
     . $RESULT_ENV1
-    if [ -n "$MANAGER_PASS" -a "$MANAGER_PASS" = "$MANAGER_PASS2" ]; then
-        RUN="FALSE"
-    else
+    if [ "$MANAGER_PASS" != "$MANAGER_PASS2" ]; then
         dialog --backtitle "$TITLE" \
             --title "Passwords mismatch" \
-            --msgbox "The passwords don't match" 5 30 
+            --msgbox "The passwords don't match" 5 30
         RUN="TRUE"
+    elif [ ${#MANAGER_PASS} -lt 7 ]; then
+        dialog --backtitle "$TITLE" \
+            --title "Password too short" \
+            --msgbox "The password should have minimal 7 characters" 5 50
+        RUN="TRUE"
+    else
+        RUN="FALSE"
     fi
 done
 
@@ -135,13 +140,18 @@ while [ $RUN = "TRUE" ];do
     cert_dialog
     create_export $RESULT_ENV2 6
     . $RESULT_ENV2
-    if [ -n "$CERT_PASS" -a "$CERT_PASS" = "$CERT_PASS2" ]; then
-        RUN="FALSE"
-    else
+    if [ "$CERT_PASS" != "$CERT_PASS2" ]; then
         dialog --backtitle "$TITLE" \
             --title "Passwords mismatch" \
-            --msgbox "The passwords don't match" 5 30 
+            --msgbox "The passwords don't match" 5 50
         RUN="TRUE"
+    elif [ ${#CERT_PASS} -lt 7 ]; then
+        dialog --backtitle "$TITLE" \
+            --title "Password too short" \
+            --msgbox "The password should have minimal 7 characters" 5 50
+        RUN="TRUE"
+    else
+        RUN="FALSE"
     fi
 done
 
