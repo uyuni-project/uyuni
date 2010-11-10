@@ -535,6 +535,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         // Install packages on the host server.
         log.debug("** Creating packageAction");
+log.error("UWE this.packagesToInstall="+this.packagesToInstall+"*");
         Action packageAction =
             ActionManager.schedulePackageInstall(
                 this.user, hostServer, this.packagesToInstall, scheduleDate);
