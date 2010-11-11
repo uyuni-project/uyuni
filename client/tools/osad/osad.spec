@@ -9,6 +9,14 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+%if 0%{?suse_version} > 0
+Source1: prog.init.SUSE
+# osad: "/etc/sysconfig/rhn/clientCaps.d/osad" is not allowed anymore in SuSE Linux.
+# osad: "/etc/sysconfig/rhn/osad-auth.conf" is not allowed anymore in SuSE Linux.
+# osad: "/etc/sysconfig/rhn/osad.conf" is not allowed anymore in SuSE Linux.
+# osa-dispatcher: "/etc/sysconfig/osa-dispatcher" is not allowed anymore in SuSE Linux.
+BuildRequires: -post-build-checks
+%endif
 Version: 5.9.44
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -16,8 +24,7 @@ BuildArch: noarch
 BuildRequires: python-devel
 Requires: python
 Requires: rhnlib >= 1.8-3
-Requires: jabberpy
-%if 0%{?rhel} <= 5
+%if 0%{?suse_version} == 0 && 0%{?rhel} <= 5
 Requires: python-hashlib
 %endif
 # This should have been required by rhnlib
@@ -27,11 +34,16 @@ Requires: python-iconv
 %endif
 Conflicts: osa-dispatcher < %{version}-%{release}
 Conflicts: osa-dispatcher > %{version}-%{release}
+%if !0%{?suse_version}
 Requires(post): chkconfig
 Requires(preun): chkconfig
+Requires: jabberpy
 # This is for /sbin/service
 Requires(preun): initscripts
-
+%else
+Requires: python-jabberpy
+Requires(preun): %fillup_prereq %insserv_prereq
+%endif
 %description 
 OSAD agent receives commands over jabber protocol from Spacewalk Server and
 commands are instantly executed.
@@ -43,20 +55,25 @@ only poll the Spacewalk Server from time to time.
 Summary: OSA dispatcher
 Group:    System Environment/Daemons
 Requires: spacewalk-backend-server >= 1.2.32
-Requires: jabberpy
 Conflicts: %{name} < %{version}-%{release}
 Conflicts: %{name} > %{version}-%{release}
+%if !0%{?suse_version}
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
+Requires: jabberpy
+%else
+Requires: python-jabberpy logrotate
+Requires(preun): %fillup_prereq %insserv_prereq
+%endif
 
 %description -n osa-dispatcher
 OSA dispatcher is supposed to run on the Spacewalk server. It gets information
 from the Spacewalk server that some command needs to be execute on the client;
 that message is transported via jabber protocol to OSAD agent on the clients.
 
-%if 0%{?rhel} && 0%{?rhel} <= 4
+%if (0%{?rhel} && 0%{?rhel} <= 4) || 0%{?suse_version}
 %define include_selinux_package 0
 %else
 %define include_selinux_package 1
@@ -94,6 +111,9 @@ SELinux policy module supporting osa-dispatcher.
 
 %prep
 %setup -q
+%if 0%{?suse_version} > 0
+cp %{SOURCE1} prog.init
+%endif
 
 %build
 make -f Makefile.osad all
@@ -134,8 +154,38 @@ install -d %{buildroot}%{_sbindir}
 install -p -m 755 osa-dispatcher-selinux/osa-dispatcher-selinux-enable %{buildroot}%{_sbindir}/osa-dispatcher-selinux-enable
 %endif
 
+%if 0%{?suse_version}
+%define _sysconfdir /etc
+%define _initrddir %{_sysconfdir}/init.d
+mv %{buildroot}%{_sysconfdir}/rc.d/init.d %{buildroot}%{_initrddir}
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%if 0%{?suse_version}
+
+%preun
+%stop_on_removal osad
+
+%post
+%{fillup_and_insserv osad}
+
+%postun
+%restart_on_update osad
+%{insserv_cleanup}
+
+%preun -n osa-dispatcher
+%stop_on_removal osa-dispatcher
+
+%post -n osa-dispatcher
+%{fillup_and_insserv osa-dispatcher}
+
+%postun -n osa-dispatcher
+%restart_on_update osa-dispatcher
+%{insserv_cleanup}
+
+%else
 
 %post
 if [ -f %{_sysconfdir}/init.d/osad ]; then
@@ -192,10 +242,13 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 /sbin/restorecon -vvi /var/log/rhn/osa-dispatcher.log
 
 %endif
+%endif
 
 %files
 %defattr(-,root,root)
+%dir %{rhnroot}
 %dir %{rhnroot}/osad
+%dir %{_sysconfdir}/sysconfig/rhn
 %attr(755,root,root) %{_sbindir}/osad
 %{rhnroot}/osad/__init__.py*
 %{rhnroot}/osad/_ConfigParser.py*
@@ -223,6 +276,9 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %config(noreplace) %{_sysconfdir}/sysconfig/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/logrotate.d/osa-dispatcher
 %config %{_sysconfdir}/rhn/default/rhn_osa-dispatcher.conf
+%if 0%{?suse_version}
+%dir %{_sysconfdir}/rhn/tns_admin
+%endif
 %config %{_sysconfdir}/rhn/tns_admin/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/rhn/tns_admin/osa-dispatcher/tnsnames.ora
 %config(noreplace) %{_sysconfdir}/rhn/tns_admin/osa-dispatcher/sqlnet.ora
