@@ -19,12 +19,26 @@ BuildRoot:      %{_tmppath}/%{name}-root-%(%{__id_u} -n)
 %define icversion 10.2.0.4
 %endif
 
+%if 0%{?suse_version}
+BuildRequires:  oracle-instantclient-basic = %{icversion}
+BuildRequires:  oracle-instantclient-sqlplus = %{icversion}
+# execstack
+BuildRequires:  prelink
+%endif
+
 Requires:       oracle-instantclient-basic = %{icversion}
 Requires:       oracle-instantclient-sqlplus = %{icversion}
+
+%if 0%{?suse_version}
+Requires(post): prelink
+Requires(post): file
+Requires(post): findutils
+%else
 Requires(post): ldconfig
 Requires(post): /usr/bin/execstack
 Requires(post): /usr/bin/file
 Requires(post): /usr/bin/xargs
+%endif
 
 %ifarch x86_64
 %define lib64 ()(64bit)
@@ -50,6 +64,8 @@ Compatibility package so that perl-DBD-Oracle will install.
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 
+mkdir -p $RPM_BUILD_ROOT/%{_javadir}
+
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d
 echo %{_libdir}/oracle/%{icversion}/client/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/%{name}.conf
 # do not replace /usr/lib with _libdir macro here
@@ -58,14 +74,17 @@ echo /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/lib >>$RPM_BUILD_ROOT%{
 
 %ifarch x86_64 s390x
 mkdir -p $RPM_BUILD_ROOT%{_bindir}
-ln -s ../%{_lib}/oracle/%{icversion}/client/bin/sqlplus $RPM_BUILD_ROOT%{_bindir}/sqlplus
+#ln -s ../%{_lib}/oracle/%{icversion}/client/bin/sqlplus $RPM_BUILD_ROOT%{_bindir}/sqlplus
+ln -s ../lib/oracle/%{icversion}/client64/bin/sqlplus $RPM_BUILD_ROOT%{_bindir}/sqlplus
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/oracle/%{icversion}
 ln -s ../../../lib/oracle/%{icversion}/client64 $RPM_BUILD_ROOT%{_libdir}/oracle/%{icversion}/client
-%endif
+ln -s ../../lib/oracle/%{icversion}/client64/lib/ojdbc14.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
 
-mkdir -p $RPM_BUILD_ROOT/%{_javadir}
+
+%else
 ln -s ../../%{_lib}/oracle/%{icversion}/client/lib/ojdbc14.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
+%endif
 
 %if 0%{?rhel} && 0%{?rhel} < 6
 %define tomcatname tomcat5
