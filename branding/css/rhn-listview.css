@@ -6,7 +6,8 @@ TH
 /*background-color: #c0c0c0;*/
 	text-align: left;
 	font-size: small;
-	background-color: #EEE;
+	background-color: #EEE !important;
+	border: 0px none #000000;
 	border-bottom: 1px solid #CCC;
 	/*+text-shadow:0 1px 1px #FFFFFF;*/
 	-moz-text-shadow: 0 1px 1px #FFFFFF;
@@ -39,10 +40,11 @@ TABLE.list TH, TABLE.list-doubleheader TH
 {
 	color: #000000;
 	border-bottom: 1px solid #CCC;
+	border-right: 0px solid #000000 !important;
 }
 TABLE.list THEAD TH:first-child
 {
-	/*[disabled]background:url(/img/table_corner_tl.gif) no-repeat top left;*/
+	border-left: 0px solid #000000 !important;
 }
 TABLE.list-pagination
 {
@@ -364,7 +366,6 @@ TABLE.list-pagination
 {
 	margin: 0 2%;
 	cursor: text;
-	font-size: 1.1em;
 }
 /** filterbox styles **/
 .list-filterbox
@@ -572,7 +573,7 @@ TABLE.iso_dl TH.first
 the following classes darken all rows in the currently-sorted column*/
 .list-row-even TD.sortedCol
 {
-	background-color: #D0E2F5;
+	background-color: #FFFFFF;
 }
 .list-row-odd TD.sortedCol
 {
@@ -580,7 +581,8 @@ the following classes darken all rows in the currently-sorted column*/
 }
 TH.ascSort, TH.descSort
 {
-	background-color: #9BC5F0 !important;
+	background-color: #DAEAFA !important;
+	border-bottom: 1px solid #82B2E1 !important;
 }
 /*the following classes add an arrow graphic in the column header*/
 TH.ascSort A
@@ -652,18 +654,15 @@ TR.alphaResult TD.sortedCol
 .csv-download
 {
 	width: 20%;
-	padding: 3px 6px;
-	background-color: #EEE;
-	-moz-border-radius: 8px;
+	/*[disabled]padding:3px 6px;*/
+	/*[disabled]background-color:#EEE;*/
+	/*[disabled]-moz-border-radius:8px;*/
 	text-align: center;
-	/*+border-radius:0 0 5px 5px;*/
-	-moz-border-radius: 0 0 5px 5px;
-	-webkit-border-radius: 0 0 5px 5px;
-	-khtml-border-radius: 0 0 5px 5px;
-	border-radius: 0 0 5px 5px;
-	border-left: 1px solid #CCC;
-	border-bottom: 1px solid #CCC;
-	border-right: 1px solid #CCC;
+	/*[disabled]+border-radius:0 0 5px 5px;*/
+	/*[disabled]border-left:1px solid #CCC;*/
+	/*[disabled]border-bottom:1px solid #CCC;*/
+	/*[disabled]border-right:1px solid #CCC;*/
+	margin-top: 10px;
 }
 .csv-download IMG
 {
@@ -672,12 +671,13 @@ TR.alphaResult TD.sortedCol
 }
 .csv-download A
 {
-	font-weight: normal;
-	/*+text-shadow:0 1px 1px #FFFFFF;*/
-	-moz-text-shadow: 0 1px 1px #FFFFFF;
-	-webkit-text-shadow: 0 1px 1px #FFFFFF;
-	-o-text-shadow: 0 1px 1px #FFFFFF;
-	text-shadow: 0 1px 1px #FFFFFF;
+	color: #333;
+	text-decoration: none;
+}
+.csv-download A:hover
+{
+	color: #666;
+	text-decoration: none;
 }
 .list-fat-column-50
 {

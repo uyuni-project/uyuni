@@ -115,6 +115,7 @@ intended value for better browsers*/
 	padding: 4px;
 	text-align: left;
 	vertical-align: middle;
+	font-size: 10pt;
 }
 IMG
 {
@@ -456,10 +457,10 @@ TABLE.details TD.csv-download
 	background-color: #FFFFFF;
 }
 /** button, intup styles **/
-.button, INPUT
+.button, INPUT, .csv-download
 {
 	font-family: "Droid Sans", "Albany AMT", "Lucida Grande", tahoma, helvetica, verdana, arial, sans-serif;
-	font-size: 13px;
+	font-size: 13px !important;
 }
 .button A
 {
@@ -467,7 +468,7 @@ TABLE.details TD.csv-download
 	/*[disabled]padding:2px 5px;*/
 	/*[disabled]text-decoration:none;*/
 }
-.button:hover, INPUT[type=button]:hover, INPUT[type=submit]:hover
+.button:hover, INPUT[type=button]:hover, INPUT[type=submit]:hover, .csv-download:hover
 {
 	border: 1px solid #666 !important;
 	color: #666 !important;
@@ -485,7 +486,7 @@ TABLE.details TD.csv-download
 	/*[disabled]text-decoration:none;*/
 	/*[disabled]color:#444;*/
 }
-.button, INPUT[type=button], INPUT[type=submit]
+.button, INPUT[type=button], INPUT[type=submit], .csv-download
 {
 	border: 1px solid #AAA !important;
 	color: #333 !important;
@@ -551,7 +552,7 @@ A.link-img:link IMG, A.link-img:visited IMG
 }
 .small-text
 {
-	font-size: x-small;
+	font-size: 1em;
 }
 SPAN.hide
 {

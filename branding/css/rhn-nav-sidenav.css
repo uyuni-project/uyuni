@@ -95,17 +95,16 @@ trick WinIE4/5 into thinking rule is over*/
 /*The following styles establish the legend boxes in the left sidebar*/
 .sideleg
 {
-	width: 132px;
-	background: url(/img/sidelegend_top.gif) no-repeat 0 0;
+	width: 168px;
 	padding-top: 9px;
 	margin-top: 1em;
+	margin-left: 0px;
+	/*[disabled]border-bottom:1px solid #DDDDDD;*/
 }
 .sideleg H2
 {
-	font-size: x-small;
-	color: #666;
-	border: 1px solid #ACACAC;
-	border-top: none;
+	font-size: small;
+	color: #555753;
 	padding: 0 0 3px 15px;
 	margin: 0;
 }
@@ -114,15 +113,12 @@ trick WinIE4/5 into thinking rule is over*/
 	padding: 0 0 9px;
 	margin: 0;
 	list-style: none;
-	background: url(/img/sidelegend_bottom.gif) no-repeat 0 100%;
 }
 .sideleg UL LI
 {
-	padding: 12px 0 6px 15px;
-	font-size: x-small;
-	color: #666;
-	border-left: 1px solid #ACACAC;
-	border-right: 1px solid #ACACAC;
+	padding: 6px 0 6px 15px;
+	font-size: smaller;
+	color: #555753;
 	clear: left;
 }
 .sideleg UL LI IMG
@@ -131,6 +127,7 @@ trick WinIE4/5 into thinking rule is over*/
 	padding-right: 3px;
 	margin-top: -3px;
 }
+/*****Sidebar starts here*****/
 .sidebar
 {
 	padding: 10px 0 0;

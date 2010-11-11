@@ -429,23 +429,8 @@ DIV.rounded-box
 {
 	float: right;
 	margin: 10px;
-}
-DIV.rounded-box:before
-{
-	/*[disabled]background:#B4B19A url('/img/table_corner_tr.gif') no-repeat scroll top right;*/
-	/*[disabled]margin-bottom:-11px;*/
-	/*[disabled]height:5px;*/
-	/*[disabled]display:block;*/
-	/*[disabled]border:none;*/
-	/*[disabled]content:url('/img/table_corner_tl.gif');*/
-	/*[disabled]padding:0;*/
-	/*[disabled]line-height:0.1;*/
-	/*[disabled]font-size:1px;*/
-}
-DIV.rounded-box
-{
 	border-left: 1px solid #DDDDDD;
-	/*[disabled]border-bottom:1px solid #B4B19A;*/
+	padding-left: 10px;
 }
 DIV.rounded-box UL
 {
@@ -463,9 +448,9 @@ DIV.rounded-box H2
 	padding-left: 5px;
 	padding-right: 5px;
 	margin-bottom: 0px;
-	/*[disabled]background-color:#B4B19A;*/
 	text-align: center;
 	color: #888A85;
+	margin-top: 0px;
 }
 DIV.rounded-box H2 A
 {
@@ -499,7 +484,7 @@ DIV.rounded-box H2 A
 	-webkit-border-radius: 10px;
 	-khtml-border-radius: 10px;
 	border-radius: 10px 10px 10px 10px;
-	font-weight: bold;
+	font-weight: normal;
 }
 .systeminfo-full
 {
@@ -597,5 +582,5 @@ DIV.marketing-summary A
 Can't apply due to design limitations*/
 DIV.search-choices-group .details TH
 {
-	/*[disabled]text-align:left;*/
+	text-align: left;
 }

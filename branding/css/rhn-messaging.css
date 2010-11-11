@@ -10,7 +10,7 @@
 	-webkit-border-radius: 10px;
 	-khtml-border-radius: 10px;
 	border-radius: 10px 10px 10px 10px;
-	font-weight: bold;
+	font-weight: normal;
 }
 .site-alert UL
 {
@@ -19,7 +19,7 @@
 .site-info
 {
 	background-color: #FFFCD6;
-	color: #005ED8;
+	color: inherit;
 	border: 1px solid #FDF58B;
 }
 .site-info A:link
