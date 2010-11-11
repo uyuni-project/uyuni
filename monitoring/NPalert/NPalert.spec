@@ -1,6 +1,14 @@
 %define install_prefix     %{_var}/lib/notification
 %define log_dir            %{_var}/log/notification
+%if 0%{?suse_version}
+%define httpd_prefix       /srv/www
+%define apache_user wwwrun
+%define apache_group www
+%else
 %define httpd_prefix       %{_var}/www
+%define apache_user wwwrun
+%define apache_group www
+%endif
 %define notif_user         nocpulse
 %define log_rotate_prefix  %{_sysconfdir}/logrotate.d/
 
@@ -12,14 +20,27 @@ Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}
 Version:      1.126.16
 Release:      1%{?dist}
 BuildArch:    noarch
+%if 0%{?suse_version}
+Requires:     perl = %{perl_version}
+Requires:     perl-Error
+Requires:     perl-Crypt-GeneratePassword
+%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 #Requires:     perl perl(Config::IniFiles) perl(DBI) perl(DBD::Oracle) perl(Class::MethodMaker) perl(Error) perl(Date::Manip) perl-TimeDate perl-MailTools perl-NOCpulse-Probe perl-libwww-perl perl(URI) perl(HTML::Parser) perl(FreezeThaw)
 Group:        Applications/Communications
 License:      GPLv2
-Requires:     nocpulse-common smtpdaemon
+Requires:     nocpulse-common
+%if 0%{?suse_version}
+Requires:     smtp_daemon
+%else
+Requires:     smtpdaemon
+%endif
 Requires:     SatConfig-general
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
+%if 0%{?suse_version}
+BuildRequires: nocpulse-common
+%endif
 
 %description
 NOCpulse provides application, network, systems and transaction monitoring,
@@ -79,7 +100,11 @@ mkdir -p --mode=755 $RPM_BUILD_ROOT%httpd_prefix/cgi-bin
 mkdir -p --mode=755 $RPM_BUILD_ROOT%httpd_prefix/cgi-mod-perl
 mkdir -p --mode=755 $RPM_BUILD_ROOT%httpd_prefix/templates
 
+%if 0%{?suse_version}
+ln -s %log_dir           $RPM_BUILD_ROOT%httpd_prefix/htdocs/alert_logs
+%else
 ln -s ../../../../%log_dir           $RPM_BUILD_ROOT%httpd_prefix/htdocs/alert_logs
+%endif
 
 install -p -m 755 httpd/cgi-bin/redirmgr.cgi $RPM_BUILD_ROOT%httpd_prefix/cgi-bin/
 install -p -m 755 httpd/cgi-mod-perl/*.cgi $RPM_BUILD_ROOT%httpd_prefix/cgi-mod-perl/
@@ -107,7 +132,12 @@ fi
 %files
 %defattr(-,root,root,-)
 %{_sysconfdir}/cron.d/notification
-%{httpd_prefix}
+%{httpd_prefix}/htdocs/*
+%{httpd_prefix}/cgi-bin/*
+%{httpd_prefix}/cgi-mod-perl/*
+%{httpd_prefix}/templates/*
+%dir %{httpd_prefix}/templates
+%dir %{httpd_prefix}/cgi-mod-perl
 %dir %attr(-, %notif_user,%notif_user) %install_prefix
 %dir %{perl_vendorlib}/NOCpulse/Notif
 %{perl_vendorlib}/NOCpulse/Notif/*
@@ -121,8 +151,8 @@ fi
 %attr (755,%notif_user,%notif_user) %dir %install_prefix/queue
 %attr (775,mail,       %notif_user) %dir %install_prefix/queue/ack_queue
 %attr (775,mail,       %notif_user) %dir %install_prefix/queue/ack_queue/.new
-%attr (775,apache,     %notif_user) %dir %install_prefix/queue/alert_queue
-%attr (775,apache,     %notif_user) %dir %install_prefix/queue/alert_queue/.new
+%attr (775,%{apache_user},     %notif_user) %dir %install_prefix/queue/alert_queue
+%attr (775,%{apache_user},     %notif_user) %dir %install_prefix/queue/alert_queue/.new
 %attr (755,%notif_user,%notif_user) %dir %log_dir
 %attr (755,%notif_user,%notif_user) %dir %log_dir/archive
 %attr (755,%notif_user,%notif_user) %dir %log_dir/ticketlog
