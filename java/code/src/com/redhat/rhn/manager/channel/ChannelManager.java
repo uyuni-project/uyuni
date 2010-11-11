@@ -1827,6 +1827,18 @@ public class ChannelManager extends BaseManager {
                 return child;
             }
         }
+        List kspackages = ChannelManager.
+             listLatestPackagesLike(baseChannel.getId(),
+                      KickstartData.LEGACY_KICKSTART_PACKAGE_NAME);
+        if (kspackages.size() > 0) {
+            return baseChannel;
+        }
+        kspackages = ChannelManager.listLatestPackagesEqual(baseChannel.getId(),
+                ConfigDefaults.get().getKickstartPackageName());
+        if (kspackages.size() > 0) {
+            return baseChannel;
+        }
+
         return null;
     }
 
