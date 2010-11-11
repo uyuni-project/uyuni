@@ -14,6 +14,17 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 BuildRequires: docbook-utils
 BuildRequires: python
+%if 0%{?suse_version}
+# rhncfg-actions: "/etc/sysconfig/rhn/clientCaps.d/configfiles" is not allowed anymore in SuSE Linux.
+# rhncfg-actions: "/etc/sysconfig/rhn/clientCaps.d/script" is not allowed anymore in SuSE Linux.
+# rhncfg: "/usr/com/rhncfg/backups" is not allowed anymore in FHS 2.2.
+# rhncfg-client: "/etc/sysconfig/rhn/rhncfg-client.conf" is not allowed anymore in SuSE Linux.
+# rhncfg-management: "/etc/sysconfig/rhn/rhncfg-manager.conf" is not allowed anymore in SuSE Linux.
+BuildRequires: -post-build-checks
+Requires: python-selinux
+%else
+Requires: libselinux-python
+%endif
 Requires: python
 Requires: rhnlib
 # If this is rhel 4 or less we need up2date.
@@ -65,15 +76,14 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{rhnroot}
 make -f Makefile.rhncfg install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
-mkdir -p $RPM_BUILD_ROOT/%{_sharedstatedir}/rhncfg/backups
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+%dir %{rhnroot}
 %{rhnroot}/config_common
-%{_sharedstatedir}/rhncfg/backups
 %doc LICENSE PYTHON-LICENSES.txt
 
 %files client
