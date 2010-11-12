@@ -106,6 +106,10 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}.conf
 %{_javadir}/ojdbc14.jar
 %{_datadir}/%{tomcatname}/bin/setenv.sh
+%if 0%{suse_version}
+%dir %{_datadir}/%{tomcatname}
+%dir %{_datadir}/%{tomcatname}/bin
+%endif
 
 %post
 ldconfig
