@@ -397,6 +397,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files sql
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
+%if 0%{suse_version}
+%dir %{rhnroot}/server
+%endif
 # Need __init__ = share it with rhns-server
 %dir %{pythonrhnroot}/server
 %{pythonrhnroot}/server/__init__.py*
@@ -420,6 +423,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files server
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
+%if 0%{suse_version}
+%dir %{rhnroot}/server
+%endif
 # modules
 %{pythonrhnroot}/server/apacheAuth.py*
 %{pythonrhnroot}/server/apacheHandler.py*
@@ -519,12 +525,16 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-xmlrpc.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xmlrpc
 %if 0%{?suse_version}
+%dir %{rhnroot}/server
 %dir %{rhnroot}/server/handlers
 %endif
 
 %files applet
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
+%if 0%{suse_version}
+%dir %{rhnroot}/server
+%endif
 %dir %{rhnroot}/server/handlers/applet
 %{rhnroot}/server/handlers/applet/*
 # config files
@@ -535,6 +545,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files app
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
+%if 0%{suse_version}
+%dir %{rhnroot}/server
+%endif
 %dir %{rhnroot}/server/handlers/app
 %{rhnroot}/server/handlers/app/*
 # config files
@@ -545,6 +558,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files xp
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
+%if 0%{suse_version}
+%dir %{rhnroot}/server
+%endif
 %dir %{rhnroot}/server/handlers/xp
 %{rhnroot}/server/handlers/xp/*
 # config files
@@ -555,6 +571,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files iss
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
+%if 0%{suse_version}
+%dir %{rhnroot}/server
+%endif
 %dir %{rhnroot}/server/handlers/sat
 %{rhnroot}/server/handlers/sat/*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-iss
@@ -592,6 +611,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files config-files
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
+%if 0%{suse_version}
+%dir %{rhnroot}/server
+%endif
 %dir %{rhnroot}/server/handlers/config
 %{rhnroot}/server/handlers/config/*
 %attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_config-management.conf
@@ -601,6 +623,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files config-files-tool
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
+%if 0%{suse_version}
+%dir %{rhnroot}/server
+%endif
 %dir %{rhnroot}/server/handlers/config_mgmt
 %{rhnroot}/server/handlers/config_mgmt/*
 %attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_config-management-tool.conf
