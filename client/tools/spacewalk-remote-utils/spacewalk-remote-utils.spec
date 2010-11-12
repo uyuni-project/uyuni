@@ -47,6 +47,9 @@ docbook2man ./spacewalk-create-channel/doc/spacewalk-create-channel.sgml -o ./sp
 %{_bindir}/spacewalk-create-channel
 #%{python_sitelib}/spacecmd/
 %{_datadir}/rhn/channel-data/
+%if 0%{suse_version}
+%dir %{_datadir}/rhn
+%endif
 
 %doc spacewalk-create-channel/doc/README spacewalk-create-channel/doc/COPYING
 %doc %{_mandir}/man1/spacewalk-create-channel.1.gz
