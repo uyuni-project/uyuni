@@ -9,10 +9,10 @@
 # FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-# 
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation. 
+# in this software or its documentation.
 #
 import sys, os, time, grp
 import hashlib
@@ -49,7 +49,7 @@ class ChannelException(Exception):
         return '%s' % to_unicode(self.value)
 
 class RepoSync:
-   
+
     parser = None
     type = None
     urls = None
@@ -71,7 +71,7 @@ class RepoSync:
             date = time.localtime()
             datestr = '%d.%02d.%02d-%02d:%02d:%02d' % (date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec)
             log_filename = options.channel_label + '-' +  datestr + '.log'
-           
+
         rhnLog.initLOG(default_log_location + log_filename)
         #os.fchown isn't in 2.4 :/
         os.system("chgrp www " + default_log_location + log_filename)
@@ -125,7 +125,7 @@ class RepoSync:
             if data['metadata_signed'] == 'N':
                 insecure = True;
             try:
-                plugin = self.load_plugin()(url, self.channel_label, insecure, (not self.noninteractive), 
+                plugin = self.load_plugin()(url, self.channel_label, insecure, (not self.noninteractive),
                         proxy=CFG.HTTP_PROXY, proxy_user=CFG.HTTP_PROXY_USERNAME, proxy_pass=CFG.HTTP_PROXY_PASSWORD)
                 self.import_packages(plugin, url)
                 self.import_updates(plugin, url)
@@ -165,20 +165,21 @@ class RepoSync:
         mod = __import__('spacewalk.satellite_tools.repo_plugins', globals(), locals(), [name])
         submod = getattr(mod, name)
         return getattr(submod, "ContentSource")
-        
+
     def import_updates(self, plug, url):
       notices = plug.get_updates()
       self.print_msg("Repo " + url + " has " + str(len(notices)) + " patches.")
       if len(notices) > 0:
         self.upload_updates(notices)
-      
+
     def upload_updates(self, notices):
       batch = []
-      typemap = { 
+      typemap = {
                   'security'    : 'Security Advisory',
                   'recommended' : 'Bug Fix Advisory',
                   'bugfix'      : 'Bug Fix Advisory',
                   'optional'    : 'Product Enhancement Advisory',
+                  'feature'     : 'Product Enhancement Advisory',
                   'enhancement' : 'Product Enhancement Advisory'
                 }
       for notice in notices:
@@ -187,7 +188,10 @@ class RepoSync:
         e['advisory'] = notice['update_id'] + "-" + notice['version'] + "-" + self.channel['arch']
         e['advisory_name'] = notice['update_id'] + "-" + notice['version'] + "-" + self.channel['arch']
         e['advisory_rel'] = notice['version']
-        e['advisory_type'] = typemap[notice['type']]
+        if notice['type'] in typemap:
+          e['advisory_type'] = typemap[notice['type']]
+        else:
+          e['advisory_type'] = 'Product Enhancement Advisory'
         e['product'] =  notice['release']
         e['description'] = notice['description']
         e['synopsis'] = notice['title']
@@ -205,7 +209,7 @@ class RepoSync:
         e['channels'] = [{'label':self.channel_label}]
         e['packages'] = []
         e['files'] = []
-        
+
         for pkg in notice['pkglist'][0]['packages']:
           param_dict = {
             'name'          : pkg['name'],
@@ -220,7 +224,7 @@ class RepoSync:
           else:
             epochStatement = "= :epoch"
             param_dict['epoch'] = pkg['epoch']
-          
+
           h = rhnSQL.prepare("""select p.id, c.checksum, c.checksum_type
           from rhnPackage p,
           rhnPackagename pn,
@@ -246,20 +250,20 @@ class RepoSync:
           """ % epochStatement)
           apply(h.execute, (), param_dict)
           cs = h.fetchone_dict() or {}
-          
+
           package = IncompletePackage()
           for k in pkg.keys():
             package[k] = pkg[k]
           package['epoch'] = pkg.get('epoch', '')
           package['org_id'] = self.channel['org_id']
-          
+
           package['checksums'] = {cs['checksum_type'] : cs['checksum']}
           package['checksum_type'] = cs['checksum_type']
           package['checksum'] = cs['checksum']
-          
+
           package['package_id'] = cs['id']
           e['packages'].append(package)
-          
+
         e['keywords'] = []
         if notice['reboot_suggested']:
           kw = Keyword()
@@ -303,7 +307,7 @@ class RepoSync:
         skipped = 0
         self.print_msg("Repo " + url + " has " + str(len(packages)) + " packages.")
         compatArchs = self.compatiblePackageArchs()
-        
+
         for pack in packages:
                  if pack.arch in ['src', 'nosrc']:
                      # skip source packages
@@ -430,7 +434,7 @@ class RepoSync:
         package['arch'] = pack.arch
         package['checksum'] = pack.checksum
         package['checksum_type'] = pack.checksum_type
-        package['channels']  = [{'label':self.channel_label, 
+        package['channels']  = [{'label':self.channel_label,
                                  'id':self.channel['id']}]
         package['org_id'] = self.channel['org_id']
         try:
@@ -465,7 +469,7 @@ class RepoSync:
       for arch in ca:
         compatArchs.append(arch['label'])
       return compatArchs
-    
+
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
         if not self.quiet:
@@ -488,7 +492,7 @@ class RepoSync:
         if date.isdigit():
           ret = datetime.fromtimestamp(float(date)).isoformat(' ')
         else:
-          # we expect to get ISO formated date 
+          # we expect to get ISO formated date
           ret = date
         return ret
 
