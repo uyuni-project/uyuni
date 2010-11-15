@@ -41,7 +41,7 @@ Requires: jakarta-commons-el
 Requires: jakarta-commons-io
 Requires: jakarta-commons-logging
 Requires: jakarta-taglibs-standard
-Requires: jasper5
+Requires: jasper5 >= 5.5
 Requires: jcommon
 Requires: jfreechart >= 1.0.9
 Requires: jpam
@@ -96,6 +96,7 @@ BuildRequires: concurrent
 #BuildRequires: cobbler
 BuildRequires: tomcat6
 BuildRequires: oracle-instantclient-basic
+BuildRequires: log4j
 %endif
 BuildRequires: cglib
 BuildRequires: ehcache
@@ -110,7 +111,7 @@ BuildRequires: jakarta-commons-fileupload
 BuildRequires: jakarta-commons-io
 BuildRequires: jakarta-commons-validator
 BuildRequires: jakarta-taglibs-standard
-BuildRequires: jasper5
+BuildRequires: jasper5 >= 5.5
 BuildRequires: jcommon
 BuildRequires: jdom
 BuildRequires: jfreechart >= 0:1.0.9
@@ -471,6 +472,11 @@ fi
 %if 0%{?suse_version}
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/systemlogs
 %ghost %attr(644, tomcat, root) %{_localstatedir}/lib/spacewalk/systemlogs/audit-review.log
+%dir %{appdir}/rhn/WEB-INF
+%dir %{jardir}
+%{jardir}/ant-launcher.jar
+%{jardir}/ant.jar
+%{jardir}/tools.jar
 %else
 %attr(755, tomcat, root) %{_var}/spacewalk/systemlogs
 %ghost %attr(644, tomcat, root) %{_var}/spacewalk/systemlogs/audit-review.log
