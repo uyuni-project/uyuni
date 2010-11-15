@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/*
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
+ */
 package com.redhat.rhn.manager.kickstart.cobbler;
 
 import com.redhat.rhn.common.validator.ValidatorError;
@@ -83,7 +86,7 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
             ksmeta.put("org", tree.getOrgId().toString());
         }
 
-        if( tree.getInstallType().isSUSE() ) {
+        if (tree.getInstallType().isSUSE()) {
             ksmeta.put("autoyast", "true");
         }
 

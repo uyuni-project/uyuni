@@ -1,6 +1,5 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
- * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,6 +11,9 @@
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
+ */
+/*
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  */
 package com.redhat.rhn.domain.errata.impl;
 
@@ -71,10 +73,10 @@ public class PublishedBug extends BaseDomainHelper implements Bug, Serializable 
     }
 
     /**
-     * @param url The url to set.
+     * @param urlIn The url to set.
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrl(String urlIn) {
+        this.url = urlIn;
     }
 
     /**

@@ -1,6 +1,5 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
- * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,7 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
+/*
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
+ */
 package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;

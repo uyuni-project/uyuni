@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/*
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
+ */
 package org.cobbler;
 
 import java.util.LinkedList;
@@ -53,8 +56,8 @@ public class Distro extends CobblerObject {
         distro.modify(NAME, name);
         distro.setKernel(kernel);
         distro.setInitrd(initrd);
-        if( ksmeta.containsKey( "autoyast" ) ) {
-            distro.setBreed( "suse" );
+        if (ksmeta.containsKey("autoyast")) {
+            distro.setBreed("suse");
         }
         distro.setKsMeta(ksmeta);
         distro.save();

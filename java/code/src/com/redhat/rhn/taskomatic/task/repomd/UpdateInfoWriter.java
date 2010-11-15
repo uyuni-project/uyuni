@@ -1,6 +1,5 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
- * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,6 +11,9 @@
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
+ */
+/*
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  */
 package com.redhat.rhn.taskomatic.task.repomd;
 
@@ -179,9 +181,10 @@ public class UpdateInfoWriter extends RepomdWriter {
                 handler.addElementWithCharacters("filename", sanitize(pkgId,
                         pkg.getFilename()));
 
-                if ( erratum.hasKeyword("reboot_suggested") ) {
+                if (erratum.hasKeyword("reboot_suggested")) {
                     handler.addElementWithCharacters("reboot_suggested", "1");
-                } else if ( erratum.hasKeyword("restart_suggested") ) {
+                }
+                else if (erratum.hasKeyword("restart_suggested")) {
                     handler.addElementWithCharacters("restart_suggested", "1");
                 }
 
@@ -215,12 +218,10 @@ public class UpdateInfoWriter extends RepomdWriter {
             Bug bug = (Bug) iter.next();
 
             SimpleAttributesImpl attr = new SimpleAttributesImpl();
-            if ( bug.getUrl() != "" )
-            {
-                attr.addAttribute("href", bug.getUrl() );
+            if (bug.getUrl() != "") {
+                attr.addAttribute("href", bug.getUrl());
             }
-            else
-            {
+            else {
                 attr.addAttribute("href",
                                   "http://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=" +
                                    bug.getId());

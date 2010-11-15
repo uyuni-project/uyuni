@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/*
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
+ */
 package com.redhat.rhn.frontend.action.channel.manage.repo;
 
 import java.util.HashMap;
@@ -167,10 +170,8 @@ public class RepoDetailsAction extends RhnAction {
         RequestContext context = new RequestContext(request);
         String url = form.getString(URL);
         String label = form.getString(LABEL);
-        //Boolean metadataSigned = new Boolean(form.get(METADATA_SIGNED) != null); 
         Boolean metadataSigned = (Boolean) form.get(METADATA_SIGNED);
-        if ( metadataSigned == null )
-        {
+        if (metadataSigned == null) {
             // disabled checkbox doesn't return a value, so result is null
             // set it to false
             metadataSigned = Boolean.FALSE;

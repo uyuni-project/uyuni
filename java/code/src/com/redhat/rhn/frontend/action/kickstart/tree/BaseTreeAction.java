@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/*
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
+ */
 package com.redhat.rhn.frontend.action.kickstart.tree;
 
 import com.redhat.rhn.common.validator.ValidatorError;
@@ -30,7 +33,8 @@ import org.apache.struts.util.LabelValueBean;
 
 import java.util.Iterator;
 import java.util.List;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * TreeCreate class for creating Kickstart Trees
@@ -104,18 +108,22 @@ public abstract class BaseTreeAction extends BaseEditAction {
             lookupKickstartInstallTypeByLabel(form.getString(INSTALL_TYPE));
         bte.setInstallType(type);
 
-        if( type.isSUSE() ) {
+        if (type.isSUSE()) {
             String kopts = form.getString(POST_KERNEL_OPTS);
-            if( kopts.indexOf("install=") == -1 ) {
+            if (kopts.indexOf("install=") == -1) {
                 try {
-                    java.net.InetAddress localMachine = java.net.InetAddress.getLocalHost();
-                    kopts = kopts + " install=http://" + localMachine.getHostName() + "/ks/dist/" + form.getString(LABEL);
-                } catch (UnknownHostException e) {
-                    return new ValidatorError("UnknownHostException by getLocalHost/getHostName. Set install=.... parameter manually");
+                    InetAddress localMachine = InetAddress.getLocalHost();
+                    kopts = kopts + " install=http://" + localMachine.getHostName() +
+                        "/ks/dist/" + form.getString(LABEL);
+                }
+                catch (UnknownHostException e) {
+                    return new ValidatorError("UnknownHostException by " +
+                        "getLocalHost/getHostName. Set install=.... parameter manually");
                 }
             }
-            bte.setKernelOptions( kopts );
-        } else {
+            bte.setKernelOptions(kopts);
+        }
+        else {
             bte.setKernelOptions(form.getString(KERNEL_OPTS));
         }
         bte.setPostKernelOptions(form.getString(POST_KERNEL_OPTS));

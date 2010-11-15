@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/*
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
+ */
 package com.redhat.rhn.domain.channel;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
@@ -79,10 +82,16 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
         this.id = idIn;
     }
 
+    /**
+     * @return Returns metadataSigned
+     */
     public boolean getMetadataSigned() {
         return this.metadataSigned;
     }
 
+    /**
+     * @param md set metadataSigned
+     */
     public void setMetadataSigned(boolean md) {
         this.metadataSigned = md;
     }

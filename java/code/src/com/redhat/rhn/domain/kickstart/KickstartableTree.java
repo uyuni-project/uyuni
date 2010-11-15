@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/*
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
+ */
 package com.redhat.rhn.domain.kickstart;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -277,13 +280,13 @@ public class KickstartableTree extends BaseDomainHelper {
         else if (arch.equals("channel-ppc")) {
             return StringUtil.addPath(getAbsolutePath(), "/ppc/ppc64/vmlinuz");
         }
-        else if ( this.installType.isSUSE() )
-        {
-            String arch_name = this.getChannel().getChannelArch().getName();
-            if( arch_name.equals("IA-32") ) {
-                arch_name = "i386";
+        else if (this.installType.isSUSE()) {
+            String archName = this.getChannel().getChannelArch().getName();
+            if (archName.equals("IA-32")) {
+                archName = "i386";
             }
-            return StringUtil.addPath(getAbsolutePath(), "/boot/" + arch_name + "/loader/linux");
+            return StringUtil.addPath(getAbsolutePath(), "/boot/" +
+                archName + "/loader/linux");
         }
         else {
             return StringUtil.addPath(getAbsolutePath(), "/images/pxeboot/vmlinuz");
@@ -304,13 +307,13 @@ public class KickstartableTree extends BaseDomainHelper {
         else if (arch.equals("channel-ppc")) {
             return StringUtil.addPath(getAbsolutePath(), "/ppc/ppc64/ramdisk.image.gz");
         }
-        else if ( this.installType.isSUSE() )
-        {
-            String arch_name = this.getChannel().getChannelArch().getName();
-            if( arch_name.equals("IA-32") ) {
-                arch_name = "i386";
+        else if (this.installType.isSUSE()) {
+            String archName = this.getChannel().getChannelArch().getName();
+            if (archName.equals("IA-32")) {
+                archName = "i386";
             }
-            return StringUtil.addPath(getAbsolutePath(), "/boot/" + arch_name + "/loader/initrd");
+            return StringUtil.addPath(getAbsolutePath(), "/boot/" +
+                archName + "/loader/initrd");
         }
         else {
             return StringUtil.addPath(getAbsolutePath(), "/images/pxeboot/initrd.img");

@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/*
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
+ */
 package com.redhat.rhn.frontend.dto;
 
 
@@ -64,10 +67,10 @@ public class Bug {
         this.summary = summaryIn;
     }
     /**
-     * @param href The href to set.
+     * @param hrefIn The href to set.
      */
-    public void setHref(String href) {
-        this.href = href;
+    public void setHref(String hrefIn) {
+        this.href = hrefIn;
     }
     /**
      * @return Returns the href.

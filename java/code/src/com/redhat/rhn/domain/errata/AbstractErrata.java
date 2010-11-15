@@ -1,6 +1,5 @@
 /**
  * Copyright (c) 2009--2010 Red Hat, Inc.
- * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,6 +11,9 @@
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
+ */
+/*
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
  */
 package com.redhat.rhn.domain.errata;
 
@@ -549,12 +551,13 @@ public abstract class AbstractErrata extends BaseDomainHelper implements
     /**
      * Search for the given keyword in the set
      * @param s The keyword to search for
+     * @return true if keyword was found
      */
     public boolean hasKeyword(String s) {
          Iterator iter = this.keywords.iterator();
          while (iter.hasNext()) {
              Keyword k = (Keyword) iter.next();
-             if ( k.getKeyword().equals(s) ) {
+             if (k.getKeyword().equals(s)) {
                return true;
              }
          }

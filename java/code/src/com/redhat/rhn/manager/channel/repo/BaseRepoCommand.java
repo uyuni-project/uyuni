@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/*
+ * Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
+ */
 package com.redhat.rhn.manager.channel.repo;
 
 import java.util.List;
@@ -91,10 +94,18 @@ public class BaseRepoCommand {
         this.url = urlIn;
     }
 
+    /**
+     *
+     * @return true if metadata should be signed
+     */
     public boolean getMetadataSigned() {
         return metadata_signed;
     }
 
+    /**
+     *
+     * @param md set if metadata are signed
+     */
     public void setMetadataSigned(boolean md) {
         this.metadata_signed = md;
     }
