@@ -117,8 +117,11 @@ Requires: spacewalk-backend-sql-oracle
 Requires: NOCpulsePlugins-Oracle
 Requires: perl-NOCpulse-Probe-Oracle
 Requires: quartz-oracle
+# no SELinux
+%if !0%{?suse_version}
 Requires: oracle-instantclient-selinux
 Requires: oracle-instantclient-sqlplus-selinux
+%endif
 
 %description oracle
 Spacewalk is a systems management application that will
