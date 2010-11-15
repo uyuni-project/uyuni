@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 15 13:39:48 CET 2010 - mantel@suse.de
+
+- setup additional swap if there is not enough memory
+
+-------------------------------------------------------------------
 Wed Nov 10 09:57:57 CET 2010 - mantel@suse.de
 
 - make buildservice happy
