@@ -235,6 +235,7 @@ do_migration() {
         echo -n "MANAGER_USER";      read MANAGER_USER
         echo -n "MANAGER_PASS";      read MANAGER_PASS
     fi;
+    setup_swap
     setup_hostname
     if [ ! -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
         do_setup
