@@ -235,7 +235,6 @@ do_migration() {
         echo -n "MANAGER_USER";      read MANAGER_USER
         echo -n "MANAGER_PASS";      read MANAGER_PASS
     fi;
-    setup_swap
     setup_hostname
     if [ ! -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
         do_setup
@@ -274,6 +273,7 @@ do_setup() {
         echo -n "MANAGER_ENABLE_TFTP="; read MANAGER_ENABLE_TFTP
 
     fi;
+    setup_swap
     if [ $MANAGER_DB_NAME = "xe" -a $MANAGER_DB_HOST = "localhost" ]; then
         if [ -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
             echo "Database already setup. Abort."
