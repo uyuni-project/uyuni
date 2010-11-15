@@ -243,7 +243,7 @@ export BASE_OPTIONS="-Djavadoc.method.scope=public \
 -Djavadoc.lazy=false \
 -Dcheckstyle.header.file=buildconf/LICENSE.txt"
 find . -name *.java | grep -vE '(/test/|/jsp/|/playpen/)' | \
-xargs checkstyle -c buildconf/checkstyle.xml
+xargs checkstyle -c buildconf/checkstyle.xml || true
 echo "Running checkstyle on java test sources"
 export BASE_OPTIONS="-Djavadoc.method.scope=nothing \
 -Djavadoc.type.scope=nothing \
@@ -252,7 +252,7 @@ export BASE_OPTIONS="-Djavadoc.method.scope=nothing \
 -Djavadoc.lazy=false \
 -Dcheckstyle.header.file=buildconf/LICENSE.txt"
 find . -name *.java | grep -E '/test/' | grep -vE '(/jsp/|/playpen/)' | \
-xargs checkstyle -c buildconf/checkstyle.xml
+xargs checkstyle -c buildconf/checkstyle.xml || true
 %endif
 
 %install
