@@ -111,7 +111,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
         ActionFormatter af = a.getFormatter();
         assertNotNull(af);
         assertTrue(af.getActionType().equals("Run an arbitrary script"));
-        String start = "Run as:<strong>AFTestTestUser:AFTestTestGroup";
+        String start = "Run as: <strong>AFTestTestUser:AFTestTestGroup";
         String end = "</strong><br/><br/><div style=\"padding-left: 1em\">" +
             "<code>#!/bin/csh<br/>ls -al</code></div><br/>";
         assertTrue(af.getNotes().startsWith(start));

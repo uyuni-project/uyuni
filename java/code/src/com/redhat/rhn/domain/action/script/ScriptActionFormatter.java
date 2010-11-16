@@ -42,7 +42,7 @@ public class ScriptActionFormatter extends ActionFormatter {
         StringBuffer retval = new StringBuffer();
         ScriptAction sa = (ScriptAction) getAction();
         retval.append(LocalizationService.getInstance().getMessage("run as"));
-        retval.append("<strong>");
+        retval.append(" <strong>");
         retval.append(sa.getScriptActionDetails().getUsername());
         retval.append(":");
         retval.append(sa.getScriptActionDetails().getGroupname());
