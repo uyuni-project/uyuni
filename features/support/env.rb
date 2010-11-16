@@ -11,9 +11,12 @@ browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :firefox #:htmluni
 host = ENV['TESTHOST'] || 'andromeda.suse.de'
 # may be non url was given
 if host.include?("//")
-  raise "TESTHOST must be the FQDN only" 
+  raise "TESTHOST must be the FQDN only"
 end
 host = "https://#{host}"
+
+$myhostname = `hostname -f`
+$myhostname.chomp!
 
 ENV['LANG'] = "en_US.UTF-8"
 ENV['IGNORECERT'] = "1"

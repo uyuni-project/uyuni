@@ -3,11 +3,9 @@
 Given /^I am root$/ do
  uid = `id -u`
  if ! $?.success? || uid.to_i != 0
-   raise "You are not root!" 
+   raise "You are not root!"
  end
- hostname = `hostname`
- hostname.chomp!
- if ! $?.success? || hostname == "linux"
+ if $myhostname == "linux"
    raise "Invalid hostname"
  end
 end
@@ -33,7 +31,7 @@ When /^I register using "([^"]*)" key$/ do |arg1|
 
   command = "rhnreg_ks --serverUrl=#{regurl} --activationkey=#{arg1}"
   #print "Command: #{command}\n"
-  
+
   output = `#{command}`
   if ! $?.success?
     raise "Registration failed '#{command}' #{$!}: #{output}"
@@ -55,13 +53,9 @@ Then /^I should see this client in spacewalk$/ do
 end
 
 Then /^I should see this client as link$/ do
-  hostname = `hostname`
-  hostname.chomp!
-  Then "I should see a \"#{hostname}\" link"
-end 
+  Then "I should see a \"#{$myhostname}\" link"
+end
 
 When /^I follow this client link$/ do
-  hostname = `hostname`
-  hostname.chomp!
-  When "I follow \"#{hostname}\""
+  When "I follow \"#{$myhostname}\""
 end
