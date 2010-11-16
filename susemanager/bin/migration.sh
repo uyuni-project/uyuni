@@ -64,6 +64,26 @@ if [ $TOTAL -le 3000000 ]; then
 fi
 }
 
+setup_mail () {
+
+# fix hostname for postfix
+REALHOSTNAME=`hostname -f`
+if [ -z "$REALHOSTNAME" ]; then
+        for i in `ip -f inet -o addr show scope global | awk '{print $4}' | awk -F \/ '{print $1}'`; do 
+                for j in `dig +noall +answer +time=2 +tries=1 -x $i | awk '{print $5}' | sed 's/\.$//'`; do
+                        if [ -n "$j" ]; then
+                                REALHOSTNAME=$j
+                                break 2
+                        fi
+                done
+        done
+fi
+if [ -n "$REALHOSTNAME" ]; then
+        echo "$REALHOSTNAME" > /etc/HOSTNAME
+fi
+SuSEconfig --module postfix
+}
+
 setup_hostname() {
     # The SUSE Manager server needs to have the same hostname as the·
     # old satellite server.·
@@ -274,6 +294,7 @@ do_setup() {
 
     fi;
     setup_swap
+    setup_mail
     if [ $MANAGER_DB_NAME = "xe" -a $MANAGER_DB_HOST = "localhost" ]; then
         if [ -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
             echo "Database already setup. Abort."
