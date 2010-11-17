@@ -48,6 +48,7 @@ if [ -f /etc/sysconfig/atftpd ]; then
   if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
     sysconf_addword -r /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/tftpboot"
     sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/srv/tftpboot"
+    mkdir -p /srv/tftpboot
   fi
 fi
 
@@ -57,6 +58,7 @@ fi
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %dir %{_datadir}/doc/licenses
+%dir /srv/tftpboot
 %{_prefix}/lib/susemanager/bin/*
 %attr(0755,root,root) %{_sysconfdir}/init.d/boot.susemanager
 %{_datadir}/doc/licenses/SUSE_MANAGER_LICENSE
