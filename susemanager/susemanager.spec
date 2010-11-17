@@ -58,7 +58,7 @@ fi
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %dir %{_datadir}/doc/licenses
-%dir /srv/tftpboot
+
 %{_prefix}/lib/susemanager/bin/*
 %attr(0755,root,root) %{_sysconfdir}/init.d/boot.susemanager
 %{_datadir}/doc/licenses/SUSE_MANAGER_LICENSE
