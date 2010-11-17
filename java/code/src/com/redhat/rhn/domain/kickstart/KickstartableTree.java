@@ -327,6 +327,13 @@ public class KickstartableTree extends BaseDomainHelper {
      * @return the kernel path
      */
     public String getKernelXenPath() {
+        if (this.installType.isSUSE()) {
+            String arch = this.getChannel().getChannelArch().getName();
+            if (arch.equals("IA-32")) {
+                arch = "i386";
+            }
+            return StringUtil.addPath(getAbsolutePath(), "/boot/" + arch + "/vmlinuz-xen");
+        }
         return StringUtil.addPath(getAbsolutePath(), "/images/xen/vmlinuz");
     }
 
@@ -337,6 +344,13 @@ public class KickstartableTree extends BaseDomainHelper {
      * @return the Initrd path
      */
     public String getInitrdXenPath() {
+        if (this.installType.isSUSE()) {
+            String arch = this.getChannel().getChannelArch().getName();
+            if (arch.equals("IA-32")) {
+                arch = "i386";
+            }
+            return StringUtil.addPath(getAbsolutePath(), "/boot/" + arch + "/initrd-xen");
+        }
         return StringUtil.addPath(getAbsolutePath(), "/images/xen/initrd.img");
     }
 
