@@ -40,6 +40,14 @@ TABLE.list TH, TABLE.list-doubleheader TH
 {
 	color: #000000;
 	border-bottom: 1px solid #CCC;
+	/*[disabled]border-right:0px solid #000000;*/
+}
+TABLE.list TH.row-2
+{
+	border-right: 0px solid #000000 !important;
+}
+TABLE.list TH:last-child
+{
 	border-right: 0px solid #000000 !important;
 }
 TABLE.list THEAD TH:first-child
@@ -573,16 +581,22 @@ TABLE.iso_dl TH.first
 the following classes darken all rows in the currently-sorted column*/
 .list-row-even TD.sortedCol
 {
-	background-color: #FFFFFF;
+	background-color: #EBF3FB;
+	border-left: 1px solid #82B2E1;
+	border-right: 1px solid #82B2E1;
 }
 .list-row-odd TD.sortedCol
 {
-	background-color: #EBF3FB;
+	background-color: #FFFFFF;
+	border-left: 1px solid #82B2E1;
+	border-right: 1px solid #82B2E1;
 }
 TH.ascSort, TH.descSort
 {
 	background-color: #DAEAFA !important;
 	border-bottom: 1px solid #82B2E1 !important;
+	border-left: 1px solid #82B2E1 !important;
+	border-right: 1px solid #82B2E1 !important;
 }
 /*the following classes add an arrow graphic in the column header*/
 TH.ascSort A
