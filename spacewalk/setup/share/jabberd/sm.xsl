@@ -14,4 +14,29 @@
   </xsl:copy>
 </xsl:template>
 
+<xsl:template match="/sm/local/id">
+  <xsl:copy>
+  <xsl:text>@hostname@</xsl:text>
+  </xsl:copy>
+</xsl:template>
+
+<xsl:template match="/sm/user">
+  <xsl:copy>
+    <xsl:if test="not(auto-create)">
+    <xsl:text>
+    </xsl:text>
+    <auto-create/> 
+    <xsl:text>
+    </xsl:text>
+    </xsl:if>
+    <xsl:apply-templates select="@*|node()" />
+  </xsl:copy>
+</xsl:template>
+
+<xsl:template match="/sm/storage/driver">
+  <xsl:copy>
+  <xsl:text>db</xsl:text>
+  </xsl:copy>
+</xsl:template>
+
 </xsl:stylesheet>
