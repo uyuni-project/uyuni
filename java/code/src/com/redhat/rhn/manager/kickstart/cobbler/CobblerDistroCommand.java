@@ -84,11 +84,11 @@ public class CobblerDistroCommand extends CobblerCommand {
             if (xen == null) {
                 xen = Distro.create(con, tree.getCobblerXenDistroName(),
                         tree.getKernelXenPath(), tree.getInitrdXenPath(), ksmeta);
-                xen.save();
-                tree.setCobblerXenId(xen.getId());
                 if (tree.getInstallType().isSUSE()) {
                     xen.setBreed("suse");
                 }
+                xen.save();
+                tree.setCobblerXenId(xen.getId());
             }
             else {
                 xen.setKernel(tree.getKernelXenPath());
