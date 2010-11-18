@@ -1,16 +1,13 @@
 #!/usr/bin/python
 
-
-
 import sys
+import unittest
+
+from rhn import rpclib
 
 import settestpath
-
-from up2date_client import config
-from up2date_client import rpcServer
-
-import unittest
-from rhn import rpclib
+from up2date_client import config, rpcServer
+from up2date_client import up2dateErrors
 
 test_up2date = "etc-sysconfig-rhn/up2date"
 
@@ -50,7 +47,7 @@ class TestGetServer(unittest.TestCase):
         
     def testGetServerRedirectServer(self):
         "Verify that getServer works when talking to a server that redirects"
-        self.cfg['serverURL'] = "https://rhn.redhat.com/XMLRPC-REDIRECT"
+        self.cfg['serverURL'] = "%s-REDIRECT" % self.cfg['serverURL']
         try:
             s = rpcServer.getServer()
         except:
@@ -64,10 +61,10 @@ class TestGetServer(unittest.TestCase):
         try:
             s = rpcServer.getServer()
         except:
-            self.fail("Got an expection calling rpcServer.getServer")
+            self.fail("Got an exception calling rpcServer.getServer")
 
     def testGetServerAuthProxy(self):
-        "Verify that getSerer works when specifying an an auth proxy"
+        "Verify that getServer works when specifying an an auth proxy"
         sys.path.append("/etc/sysconfig/rhn/")
         proxyUrl = testConfig.authProxyUrl
         self.cfg['httpProxy'] = testConfig.authProxyUrl
@@ -77,11 +74,11 @@ class TestGetServer(unittest.TestCase):
         try:
             s = rpcServer.getServer()
         except:
-            self.fail("Got an expection calling rpcServer.getServer")
+            self.fail("Got an exception calling rpcServer.getServer")
     
     
     def testGetServerAuthProxyNoPassword(self):
-        "Verify that getSerer works when specifying an an auth proxy and no user password"
+        "Verify that getServer works when specifying an an auth proxy and no user password"
         sys.path.append("/etc/sysconfig/rhn/")
         proxyUrl = testConfig.authProxyUrl
         self.cfg['httpProxy'] = testConfig.authProxyUrl
@@ -90,10 +87,10 @@ class TestGetServer(unittest.TestCase):
         try:
             s = rpcServer.getServer()
         except:
-            self.fail("Got an expection calling rpcServer.getServer")
+            self.fail("Got an exception calling rpcServer.getServer")
 
     def testGetServerAuthProxyNoUsername(self):
-        "Verify that getSerer works when specifying an an auth proxy and no username"
+        "Verify that getServer works when specifying an an auth proxy and no username"
         sys.path.append("/etc/sysconfig/rhn/")
         proxyUrl = testConfig.authProxyUrl
         self.cfg['httpProxy'] = testConfig.authProxyUrl
@@ -101,7 +98,7 @@ class TestGetServer(unittest.TestCase):
         try:
             s = rpcServer.getServer()
         except:
-            self.fail("Got an expection calling rpcServer.getServer")
+            self.fail("Got an exception calling rpcServer.getServer")
 
     def testGetServerAuthProxyNoEnableAuthProxy(self):
         "getServer with httpProxy set, but no enableAuthProxy"
@@ -111,19 +108,18 @@ class TestGetServer(unittest.TestCase):
         try:
             s = rpcServer.getServer()
         except:
-            self.fail("Got an expection calling rpcServer.getServer")
+            self.fail("Got an exception calling rpcServer.getServer")
 
     def testGetServerNoCaCert(self):
         "getServer with a missing CA cert"
         self.cfg['sslCACert'] =  ["/var/not/likely/to/exist/I/hope/SSL-CA-Cert"]
-#        rpcServer.rhns_ca_certs = ["/var/not/likely/to/exist/I/hope/SSL-CA-Cert"]
         try:
             s = rpcServer.getServer()
             write(s)
-        except SystemExit:
+        except up2dateErrors.SSLCertificateFileNotFound:
             pass
         else:
-            self.fail("Expected to get a sys.exit(1)")
+            self.fail("Expected to get an SSLCertificateFileNotFound error")
 
     def testGetServerMultipleCaCert(self):
         "getServer with a multiple CA certs"
@@ -132,7 +128,7 @@ class TestGetServer(unittest.TestCase):
         try:
             s = rpcServer.getServer()
         except:
-            self.fail("Got an %s expection" % sys.exc_type)
+            self.fail("Got an %s exception" % sys.exc_type)
 
 
 
@@ -203,46 +199,46 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
     def testDefaultWelcomeMessageFailoverNonExistentServer(self):
         "Test welcome_message call faling over from a non existent server"
         self.cfg['serverURL'] = [ self.neServer,
-                                 'https://SECRET_URL/XMLRPC']
+                                  '%s/XMLRPC' % self.defaultServer]
         s = rpcServer.getServer()
         s.registration.welcome_message()
 
     def testDefaultWelcomeMessageFailover404Server(self):
         "Test welcome_message call faling over from a server that 404's"
         self.cfg['serverURL'] = [ self.FourOhFourServer,
-                                  'https://SECRET_URL/XMLRPC']
+                                  '%s/XMLRPC' % self.defaultServer]
         s = rpcServer.getServer()
         s.registration.welcome_message()
         
     def testDefaultWelcomeMessageFailoverNonExistentServerRedirect(self):
         "Test welcome_message call faling over from a non existent server to a redirect"
         self.cfg['serverURL'] = [ self.neServer,
-                                 'https://SECRET_URL/XMLRPC-REDIRECT']
+                                 '%s/XMLRPC-REDIRECT' % self.defaultServer]
         s = rpcServer.getServer()
         s.registration.welcome_message()
 
     def testDefaultWelcomeMessageFailover404ServerRedirect(self):
         "Test welcome_message call faling over from a non existent server to a redirect"
         self.cfg['serverURL'] = [ self.FourOhFourServer,
-                                 'https://SECRET_URL/XMLRPC-REDIRECT']
+                                 '%s/XMLRPC-REDIRECT' % self.defaultServer]
         s = rpcServer.getServer()
         s.registration.welcome_message()
     
     def testDefaultWelcomeMessageHttpsToHttps(self):
         "Test redirecting https to https"
-        self.cfg['serverURL'] = "https://SECRET_URL/XMLRPC-REDIRECT"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT" % self.defaultServer
         s = rpcServer.getServer()
         s.registration.welcome_message()
 
     def testDefaultWelcomeMessageHttpToHttps(self):
         "Test redirecting http to https"
-        self.cfg['serverURL'] = "http://SECRET_URL/XMLRPC-REDIRECT"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT" % self.defaultServer
         s = rpcServer.getServer()
         s.registration.welcome_message()
 
     def testDefaultWelcomeMessageHttpsToHttp(self):
         "Test redirecting https to http"
-        self.cfg['serverURL'] = "https://SECRET_URL/XMLRPC-REDIRECT-NOSSL"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT-NOSSL" % self.defaultServer
         s = rpcServer.getServer()
         try:
             s.registration.welcome_message()
@@ -256,7 +252,8 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
         "Test redirecting https to http after failing over from bad servers"
         self.cfg['serverURL'] = [self.neServer,
                                  self.FourOhFourServer,
-                                 "https://SECRET_URL/XMLRPC-REDIRECT-NOSSL"]
+                                 "%s/XMLRPC-REDIRECT-NOSSL" %
+                                 self.defaultServer]
         s = rpcServer.getServer()
 
         try:
@@ -271,7 +268,8 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
         "Test redirecting https to http after failing over from bad servers"
         self.cfg['serverURL'] = [self.neServerSSL,
                                  self.FourOhFourServer,
-                                 "https://SECRET_URL/XMLRPC-REDIRECT-NOSSL"]
+                                 "%s/XMLRPC-REDIRECT-NOSSL" %
+                                 self.defaultServer]
         s = rpcServer.getServer()
 
         try:
@@ -286,7 +284,8 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
         "Test redirecting https to http after failing over from bad servers"
         self.cfg['serverURL'] = [self.neServer,
                                  self.FourOhFourServerSSL,
-                                 "https://SECRET_URL/XMLRPC-REDIRECT-NOSSL"]
+                                 "%s/XMLRPC-REDIRECT-NOSSL" %
+                                 self.defaultServer]
         s = rpcServer.getServer()
 
         try:
@@ -302,7 +301,8 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
         "Test redirecting https to http after failing over from bad ssl servers"
         self.cfg['serverURL'] = [self.neServerSSL,
                                  self.FourOhFourServerSSL,
-                                 "https://SECRET_URL/XMLRPC-REDIRECT-NOSSL"]
+                                 "%s/XMLRPC-REDIRECT-NOSSL" %
+                                 self.defaultServer]
         s = rpcServer.getServer()
 
         try:
@@ -315,7 +315,7 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
         
     def testDefaultWelcomeMessageHttpToHttp(self):
         "Test redirecting http to http"
-        self.cfg['serverURL'] = "http://SECRET_URL/XMLRPC-REDIRECT-NOSSL"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT-NOSSL" % self.defaultServer
         s = rpcServer.getServer()
         s.registration.welcome_message()
 
@@ -323,7 +323,7 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
 
     def testDefaultWelcomeMessageHttpsToHttpsCheckReturnCode(self):
         "Test redirecting https to https and verify its return code"
-        self.cfg['serverURL'] = "https://SECRET_URL/XMLRPC-REDIRECT"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT" % self.defaultServer
         s = rpcServer.getServer()
         s.registration.welcome_message()
         status  = s.get_response_status()
@@ -331,7 +331,7 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
 
     def testDefaultWelcomeMessageHttpToHttpsCheckReturnCode(self):
         "Test redirecting http to https and verify its return code"
-        self.cfg['serverURL'] = "http://SECRET_URL/XMLRPC-REDIRECT"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT" % self.defaultServer
         s = rpcServer.getServer()
         s.registration.welcome_message()
         status = s.get_response_status()
@@ -339,7 +339,7 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
 
     def testDefaultWelcomeMessageHttpToHttpCheckReturnCode(self):
         "Test redirecting http to http and verify its return code"
-        self.cfg['serverURL'] = "http://SECRET_URL/XMLRPC-REDIRECT-NOSSL"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT-NOSSL" % self.defaultServer
         s = rpcServer.getServer()
         s.registration.welcome_message()
         status = s.get_response_status()
@@ -347,7 +347,7 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
 
     def testDefaultWelcomeMessageHttpsToHttpsRedirectsOff(self):
         "Test redirecting https to https and verify it fails with allow_redirect off"
-        self.cfg['serverURL'] = "https://SECRET_URL/XMLRPC-REDIRECT"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT" % self.defaultServer
         s = rpcServer.getServer()
         s.allow_redirect(0)
         try:
@@ -359,7 +359,7 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
 
     def testDefaultWelcomeMessageHttpToHttpsRedirectsOff(self):
         "Test redirecting http to https and verify it fails with allow_redirect off"
-        self.cfg['serverURL'] = "http://SECRET_URL/XMLRPC-REDIRECT"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT" % self.defaultServer
         s = rpcServer.getServer()
         s.allow_redirect(0)
         try:
@@ -371,7 +371,7 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
         
     def testDefaultWelcomeMessageHttpToHttpRedirectsOff(self):
         "Test redirecting http to http and verify if tails with allow_redirect off"
-        self.cfg['serverURL'] = "http://SECRET_URL/XMLRPC-REDIRECT-NOSSL"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT-NOSSL" % self.defaultServer
         s = rpcServer.getServer()
         s.allow_redirect(0)
         try:
@@ -383,7 +383,7 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
 
     def testDefaultWelcomeMessageHttpsToHttpRedirectsOff(self):
         "Test redirecting https to http and verify it fails with allow_redirect off"
-        self.cfg['serverURL'] = "https://SECRET_URL/XMLRPC-REDIRECT-NOSSL"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT-NOSSL" % self.defaultServer
         s = rpcServer.getServer()
         s.allow_redirect(0)
 
@@ -396,22 +396,22 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
 
     def testDefaultWelcomeMessageHttpsToHttps(self):
         "Test redirecting https to https"
-        self.cfg['serverURL'] = "https://SECRET_URL/XMLRPC-REDIRECT"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT" % self.defaultServer
         s = rpcServer.getServer()
         s.registration.welcome_message()
 
     def testDefaultWelcomeMessageHttpToHttpsCheckRedirect(self):
         "Test redirecting http to https and verify redirect()"
-        self.cfg['serverURL'] = "http://SECRET_URL/XMLRPC-REDIRECT"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT" % self.defaultServer
         s = rpcServer.getServer()
         s.registration.welcome_message()
         ret = s.redirected()
-        self.assertEqual(ret, "https://SECRET_URL/XMLRPC")
+        self.assertEqual(ret, "%s/XMLRPC") % self.defaultServer
         
 
     def testDefaultWelcomeMessageHttpsToHttpCheckRedirect(self):
         "Test redirecting https to http and verify redirect()"
-        self.cfg['serverURL'] = "https://SECRET_URL/XMLRPC-REDIRECT-NOSSL"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT-NOSSL" % self.defaultServer
         s = rpcServer.getServer()
         try:
             s.registration.welcome_message()
@@ -420,19 +420,19 @@ class TestRpcServerWelcomeMessage(unittest.TestCase):
         else:
             self.fail("InvalidRedirectError expected here but didnt get it")
         ret = s.redirected()
-        self.assertEqual(ret, "http://SECRET_URL/XMLRPC")
+        self.assertEqual(ret, "%s/XMLRPC") % self.defaultServer
 
     def testDefaultWelcomeMessageHttpToHttpCheckRedirect(self):
         "Test redirecting http to http and verify redirect()"
-        self.cfg['serverURL'] = "http://SECRET_URL/XMLRPC-REDIRECT-NOSSL"
+        self.cfg['serverURL'] = "%s/XMLRPC-REDIRECT-NOSSL" % self.defaultServer
         s = rpcServer.getServer()
         s.registration.welcome_message()
         ret = s.redirected()
-        self.assertEqual(ret, "http://SECRET_URL/XMLRPC")
+        self.assertEqual(ret, "%s/XMLRPC") % self.defaultServer
 
     def testDefaulWelcomeMessageNoRedirectCheckRedirect(self):
         "Test a non redirecting connection and see if redirected() is set"
-        self.cfg['serverURL'] = "http://SECRET_URL/XMLRPC"
+        self.cfg['serverURL'] = "%s/XMLRPC" % self.defaultServer
         s = rpcServer.getServer()
         s.registration.welcome_message()
         ret = s.redirected()

@@ -35,11 +35,6 @@ class TestConfig(unittest.TestCase):
         cfg = config.initUp2dateConfig(test_up2date)
         assert type(cfg['systemIdPath']) == type("") 
 
-    def testConfigListSingleItem(self):
-        "Verify that Config loads a list of one as a list"
-        cfg = config.initUp2dateConfig(test_up2date)
-        assert type(cfg['pkgSkipList']) == type([])
-
     def testConfigList(self):
         "Verify that Config loads a list as a list"
         cfg = config.initUp2dateConfig(test_up2date)
