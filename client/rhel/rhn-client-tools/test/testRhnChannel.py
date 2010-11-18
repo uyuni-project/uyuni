@@ -25,41 +25,23 @@ class testRhnChannel(unittest.TestCase):
         testutils.restoreConfig()
 
     def __setupData(self):
-        self.channelListDetails = [
-            {'last_modified': '20030502050933',
-             'description': '',
-             'name': 'Red Hat Linux 9 i386',
-             'local_channel': '0',
-             'arch': 'channel-ia32',
-             'parent_channel': '',
-             'summary': 'Red Hat Linux 9 (Shrike) i386',
-             'org_id': '',
-             'id': '63',
-             'label': 'redhat-linux-i386-9'}]
+        self.channelListDetails = ['gpg_key_url', 'url', 'arch', 
+             'description', 'org_id', 'label', 'version', 'local_channel', 
+             'parent_channel', 'summary', 'type', 'id', 'name']
     
     def testGetChannelDetails(self):
         "rhnChannel.GetChannelDetails"
         res = rhnChannel.getChannelDetails()
-        # the last modified will change a lot, so
-        # dont bother checking it...
-        write(res)
-        write(self.channelListDetails)
-        for i in res[0].keys():
-            if i == "last_modified":
-                continue
-            self.assertEqual(res[0][i], self.channelListDetails[0][i])
-
+        # since most of the values are host-specific, we'll just test
+        # that we have the right keys
+        self.assertEqual(sorted(res[0].dict.keys()),
+                         sorted(self.channelListDetails))
 
     def testGetChannels(self):
         "Test rhnChannel.getChannels()"
         res = rhnChannel.getChannels()
         
         write(res)
-
-    def testUpdateChannels(self):
-        "Test rhnChannel.updateChannels"
-        channels = rhnChannel.getChannels()
-        res = rhnChannel.updateChannels(channels)
 
 def suite():
     suite = unittest.TestSuite()
