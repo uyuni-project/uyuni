@@ -9276,7 +9276,7 @@ administrator privileges.</source>
       <target>@@PRODUCT_NAME@@ 설정 - 인증서 </target></trans-unit>
 
       <trans-unit id="certificate.jsp.summary">
-<source>You must provide an @@PRODUCT_NAME@@ certificate. This certificate entitles you to the various levels of service provided by the @@PRODUCT_NAME@@.</source>
+<source>You must provide a @@PRODUCT_NAME@@ certificate. This certificate entitles you to the various levels of service provided by the @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
