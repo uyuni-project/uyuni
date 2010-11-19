@@ -25,7 +25,7 @@ import org.quartz.Trigger;
 
 import java.text.ParseException;
 import java.util.Date;
-
+import java.lang.System;
 
 /**
  * TaskoQuartzHelper
@@ -66,9 +66,12 @@ public class TaskoQuartzHelper {
         // create trigger
         Trigger trigger = null;
         if ((schedule.getCronExpr() == null) || (schedule.getCronExpr().isEmpty())) {
+            // start 2 seconds in the future to avoid a race condition
             trigger = new SimpleTrigger(schedule.getJobLabel(),
-                    getGroupName(schedule.getOrgId()), 1, 1);
-            trigger.setEndTime(new Date());
+                    getGroupName(schedule.getOrgId()),
+                    new Date(System.currentTimeMillis() + 2000 ),
+                    new Date(System.currentTimeMillis() + 2010 ),
+                    1, 1);
         }
         else {
             try {
@@ -82,8 +85,8 @@ public class TaskoQuartzHelper {
                 throw new InvalidParamException("Invalid cron expression " +
                         schedule.getCronExpr());
             }
-
         }
+
         // create job
         JobDetail jobDetail = new JobDetail(schedule.getJobLabel(),
                 getGroupName(schedule.getOrgId()), TaskoJob.class);
@@ -92,7 +95,7 @@ public class TaskoQuartzHelper {
             jobDetail.getJobDataMap().putAll(schedule.getDataMap());
         }
         jobDetail.getJobDataMap().put("schedule_id", schedule.getId());
-
+       
         // schedule job
         try {
             Date date = SchedulerKernel.getScheduler().scheduleJob(jobDetail, trigger);
