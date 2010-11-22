@@ -30,7 +30,6 @@ Feature: Explore the main landing page
      And I should see a "Systems" link in the tab bar
      And I should see a "Errata" link in the tab bar
      And I should see a "Channels" link in the tab bar
-     And I should see a "Audit" link in the tab bar
      And I should see a "Configuration" link in the tab bar
      And I should see a "Schedule" link in the tab bar
      And I should see a "Users" link in the tab bar

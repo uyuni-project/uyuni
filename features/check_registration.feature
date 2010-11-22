@@ -219,7 +219,7 @@ Feature: Check client registration
   Scenario: check tab links "Details" => "Migrate"
     Given I am on the Systems overview page of this client
     When I follow "Migrate" in class "contentnav-row2"
-    Then I should see a "Migrate System Between Organisations" text
+    Then I should see a "Migrate System Between Organizations" text
      And I should see a "Migrate System" button
 
   Scenario: check tab links "Details" => "Notes"

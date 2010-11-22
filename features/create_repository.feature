@@ -35,7 +35,7 @@ Feature: Adding repository to a channel
      And I follow "SLES11-SP1-Updates i586 Channel"
      And I follow "Repositories"
      And I follow "Sync"
-    When I click on "Sync"
+    When I click on "Sync Now"
     Then I should see a "Repository sync scheduled for SLES11-SP1-Updates i586 Channel." text
   
   Scenario: Adding SLES11-SP1-Updates-x86_64 repository
@@ -67,6 +67,6 @@ Feature: Adding repository to a channel
      And I follow "SLES11-SP1-Updates x86_64 Channel"
      And I follow "Repositories"
      And I follow "Sync"
-    When I click on "Sync"
+    When I click on "Sync Now"
     Then I should see a "Repository sync scheduled for SLES11-SP1-Updates x86_64 Channel." text
 

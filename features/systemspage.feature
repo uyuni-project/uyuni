@@ -31,7 +31,6 @@ Feature: Explore the main landing page
      And I should see a "Systems" link in the tab bar
      And I should see a "Errata" link in the tab bar
      And I should see a "Channels" link in the tab bar
-     And I should see a "Audit" link in the tab bar
      And I should see a "Configuration" link in the tab bar
      And I should see a "Schedule" link in the tab bar
      And I should see a "Users" link in the tab bar
@@ -134,7 +133,7 @@ Feature: Explore the main landing page
     Given I am on the Systems page
       And I follow "System Set Manager" in the left menu
     Then I should see a "System Set Manager" text
-     And I should see a "Status" link in element "sidenavp"
+     And I should see a "Status" link in the left menu
      And I should see a "Overview" link in element "content-nav"
      And I should see a "Systems" link in element "content-nav"
      And I should see a "Errata" link in element "content-nav"

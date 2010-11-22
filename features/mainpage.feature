@@ -23,7 +23,6 @@ Feature: Explore the main landing page
     And I should see a "Systems" link
     And I should see a "Errata" link
     And I should see a "Channels" link
-    And I should see a "Audit" link
     And I should see a "Configuration" link
     And I should see a "Schedule" link
     And I should see a "Monitoring" link
