@@ -29,7 +29,6 @@ from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
-from rhnDependency import MakeEvrError
 
 # local module
 import rhnUser, rhnSQL, rhnLib
