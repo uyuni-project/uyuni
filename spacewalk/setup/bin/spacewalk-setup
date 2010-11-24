@@ -495,6 +495,7 @@ sub setup_tomcat {
   my $tomcatdir  = "/etc/$tomcatX";
   my $tomcatconf = "$tomcatX.conf";
   my $serverxml = "server.xml";
+  my $contextxml = "context.xml";
   my $webxml = "web.xml";
   die "$tomcatdir/$tomcatconf does not exist.\n" unless (-f "$tomcatdir/$tomcatconf");
 
@@ -552,6 +553,29 @@ sub setup_tomcat {
       close FILE;
     }
   }
+
+  {
+    local $/ = undef;
+    local *FILE;
+    open FILE, "$tomcatdir/$contextxml"
+      or die "Error opening $tomcatdir/$contextxml: $!\n";
+    my $contextxml_content_orig = <FILE>;
+    close FILE;
+
+    my $template = Spacewalk::Setup::SHARED_DIR . "/$contextxml.xsl";
+    my $contextxml_content = qx{/usr/bin/xsltproc $template $tomcatdir/$contextxml};
+    die "There was an error running xsltproc\n" if $?;
+    if ($contextxml_content ne $contextxml_content_orig) {
+      Spacewalk::Setup::backup_file($tomcatdir, $contextxml);
+
+      open FILE, ">$tomcatdir/$contextxml"
+        or die "Error opening [$tomcatdir/$contextxml]: $!\n";
+      chmod 0644, "$tomcatdir/$contextxml";
+      print FILE $contextxml_content;
+      close FILE;
+    }
+  }
+
 
   my $web_patch = Spacewalk::Setup::SHARED_DIR."/web.xml.patch";
   my $command = "patch --silent --directory=$tomcatdir --forward -p1 --input=$web_patch";

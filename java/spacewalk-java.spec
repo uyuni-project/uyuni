@@ -41,7 +41,9 @@ Requires: jakarta-commons-el
 Requires: jakarta-commons-io
 Requires: jakarta-commons-logging
 Requires: jakarta-taglibs-standard
-Requires: jasper5 >= 5.5
+%if !0%{suse_version}
+Requires: jasper5
+%endif
 Requires: jcommon
 Requires: jfreechart >= 1.0.9
 Requires: jpam
@@ -111,7 +113,9 @@ BuildRequires: jakarta-commons-fileupload
 BuildRequires: jakarta-commons-io
 BuildRequires: jakarta-commons-validator
 BuildRequires: jakarta-taglibs-standard
-BuildRequires: jasper5 >= 5.5
+%if !0%{?suse_version}
+BuildRequires: jasper5
+%endif
 BuildRequires: jcommon
 BuildRequires: jdom
 BuildRequires: jfreechart >= 0:1.0.9
@@ -420,7 +424,14 @@ fi
 %{jardir}/dwr-*.jar
 %{jardir}/hibernate3.jar
 %{jardir}/jaf.jar
+%if 0%{suse_version}
+%{jardir}/tomcat6-jsp-2.1-api.jar
+%{jardir}/tomcat6_el-api.jar
+%{jardir}/tomcat6_jasper-el.jar
+%{jardir}/tomcat6_jasper.jar
+%else
 %{jardir}/jasper5-runtime.jar
+%endif
 %{jardir}/javamail.jar
 %{jardir}/jcommon.jar
 %{jardir}/jdom.jar

@@ -54,7 +54,7 @@
              commons-collections commons-digester commons-discovery
              commons-el commons-lang commons-logging commons-io commons-validator hibernate3
              mailapi smtp jdom jpam 
-             jspapi log4j oro redstone-xmlrpc-client redstone-xmlrpc servletapi5 struts 
+             log4j oro redstone-xmlrpc-client redstone-xmlrpc servletapi5 struts 
              bcprov bcpg jcommon stringtree-json postgresql-jdbc
              jfreechart taglibs-core logdriver quartz dwr slf4j-api slf4j-log4j12
              commons-fileupload commons-io concurrent velocity simple-core" />
@@ -71,7 +71,7 @@
 
   <property name="build.jar.dependencies"
       value="ant ant-junit ${ant-contrib.path} antlr
-      ${common.jar.dependencies} tanukiwrapper jasper5-compiler jasper5-runtime
+      ${common.jar.dependencies} tanukiwrapper tomcat6/jasper tomcat6/jasper-el ../tomcat6/bin/tomcat6-juli tomcat6-jsp-2.1-api tomcat6/el-api
        concurrent" />
 
 
@@ -103,8 +103,8 @@
       value="bcel cglib commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
              commons-el commons-lang commons-logging commons-validator hibernate3
-             jasper5-compiler jasper5-runtime javamail jdom jpam 
-             jspapi log4j oro redstone-xmlrpc-client redstone-xmlrpc servletapi5 struts 
+             tomcat6/jasper tomcat6/jasper-el ../tomcat6/bin/tomcat6-juli tomcat6-jsp-2.1-api tomcat6/el-api javamail jdom jpam 
+             log4j oro redstone-xmlrpc-client redstone-xmlrpc servletapi5 struts 
              jcommon stringtree-json postgresql-jdbc
              jfreechart taglibs-core quartz
              commons-fileupload concurrent simple-core" />
@@ -115,8 +115,8 @@
              commons-digester commons-discovery commons-el
              commons-fileupload commons-io commons-lang commons-logging
              commons-validator concurrent dom4j hibernate3 jta
-             jaf jasper5-compiler jasper5-runtime javamail jcommon jdom
-             jfreechart jspapi jpam log4j redstone-xmlrpc-client redstone-xmlrpc
+             jaf tomcat6/jasper tomcat6/jasper-el tomcat6-jsp-2.1-api tomcat6/el-api javamail jcommon jdom
+             jfreechart jpam log4j redstone-xmlrpc-client redstone-xmlrpc
              oro oscache quartz stringtree-json sitemesh struts taglibs-core
              taglibs-standard tanukiwrapper  postgresql-jdbc
              xalan-j2 xerces-j2 xml-commons-apis simple-core" />
