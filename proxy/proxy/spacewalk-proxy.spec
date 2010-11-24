@@ -37,7 +37,11 @@ Requires: squid
 Requires: spacewalk-backend >= 1.2.32
 # python-hashlib is optional for spacewalk-backend-libs
 # but we need made it mandatory here
+%if 0%{?suse_version}
+
+%else
 Requires: python-hashlib
+%endif
 Requires: %{name}-broker = %{version}
 Requires: %{name}-redirect = %{version}
 Requires: %{name}-common >= %{version}
@@ -79,7 +83,11 @@ Requires: spacewalk-certs-tools
 Requires: spacewalk-proxy-package-manager
 Requires: spacewalk-ssl-cert-check
 Requires: httpd
+%if 0%{?suse_version}
+Requires: apache2-prefork
+%else
 Requires: mod_ssl
+%endif
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: mod_python
 %else
@@ -123,7 +131,11 @@ between an Spacewalk Proxy Server and parent Spacewalk server.
 %package common
 Group:   Applications/Internet
 Summary: Modules shared by Spacewalk Proxy components
+%if 0%{?suse_version}
+Requires: apache2-prefork
+%else
 Requires: mod_ssl
+%endif
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: mod_python
 %else

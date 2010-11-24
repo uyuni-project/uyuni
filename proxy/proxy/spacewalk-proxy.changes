@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 24 16:24:57 CET 2010 - mantel@suse.de
+
+- fix Requires for SuSE
+
+-------------------------------------------------------------------
 Wed Sep 15 09:39:39 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-proxy
