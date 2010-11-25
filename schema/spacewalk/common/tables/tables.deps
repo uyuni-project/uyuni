@@ -254,7 +254,12 @@ rhn_service_probe_origins      :: rhn_check_suite_probe rhn_probe
 rhn_snmp_alert                 :: rhn_sat_cluster 
 rhn_units                      :: rhn_quanta
 rhn_url_probe                  :: rhn_probe 
-rhn_url_probe_step             :: rhn_url_probe 
+rhn_url_probe_step             :: rhn_url_probe
+suseServer                     :: rhnserver
+suseInstalledProduct           :: rhnArchType
+suseProducts                   :: rhnArchType suseVendor
+suseProductChannel             :: suseProducts rhnchannel
+suseServerInstalledProduct     :: rhnserver suseInstalledProduct
 web_contact                    :: web_customer
 web_user_contact_permission    :: web_contact
 web_user_site_info             :: web_contact web_user_site_type
