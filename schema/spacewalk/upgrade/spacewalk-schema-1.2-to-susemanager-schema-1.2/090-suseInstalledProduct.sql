@@ -18,7 +18,7 @@ suseInstalledProduct
     version       varchar2(256),
     arch_type_id  NUMBER
                   CONSTRAINT suse_installed_product_aid_fk
-                  REFERENCES rhnArchType (id),
+                  REFERENCES rhnPackageArch (id),
     release       varchar2(256),
     is_baseproduct CHAR(1 BYTE) DEFAULT ('N') NOT NULL ENABLE,
 
