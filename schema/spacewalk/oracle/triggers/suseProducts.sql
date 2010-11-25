@@ -10,11 +10,11 @@
 --
 --
 
-create table
-suseDelServer
-(
-    guid              varchar2(256),
-
-    created     date default(sysdate) not null
-);
+create or replace trigger
+suseproducts_mod_trig
+before insert or update on suseproducts
+for each row
+begin
+    :new.modified := sysdate;
+end;
 

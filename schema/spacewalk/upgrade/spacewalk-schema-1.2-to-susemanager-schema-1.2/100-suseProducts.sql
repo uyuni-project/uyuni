@@ -10,7 +10,6 @@
 --
 --
 
-
 create table
 suseProducts
 (
@@ -33,3 +32,12 @@ suseProducts
 );
 
 CREATE SEQUENCE suse_products_id_seq START WITH 100;
+
+create or replace trigger
+suseproducts_mod_trig
+before insert or update on suseproducts
+for each row
+begin
+    :new.modified := sysdate;
+end;
+

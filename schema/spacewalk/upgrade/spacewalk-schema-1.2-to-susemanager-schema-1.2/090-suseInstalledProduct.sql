@@ -10,26 +10,29 @@
 --
 --
 
-
 create table
-suseProducts
+suseInstalledProduct
 (
     id            number        not null PRIMARY KEY,
     name          varchar2(256) not null,
     version       varchar2(256),
-    friendly_name varchar2(256),
     arch_type_id  NUMBER
-                  CONSTRAINT suse_products_aid_fk
+                  CONSTRAINT suse_installed_product_aid_fk
                   REFERENCES rhnArchType (id),
-    release           varchar2(256),
-    channel_family_id varchar2(256),
-    product_list      CHAR(1 BYTE) DEFAULT ('N') NOT NULL ENABLE,
-    vendor_id         number
-                      CONSTRAINT suse_products_vid_fk
-                      REFERENCES suseVendor (id),
+    release       varchar2(256),
+    is_baseproduct CHAR(1 BYTE) DEFAULT ('N') NOT NULL ENABLE,
 
     created     date default(sysdate) not null,
     modified    date default(sysdate) not null
 );
 
-CREATE SEQUENCE suse_products_id_seq START WITH 100;
+CREATE SEQUENCE suse_inst_pr_id_seq START WITH 100;
+
+create or replace trigger
+suseinstalledproduct_mod_trig
+before insert or update on suseinstalledproduct
+for each row
+begin
+    :new.modified := sysdate;
+end;
+

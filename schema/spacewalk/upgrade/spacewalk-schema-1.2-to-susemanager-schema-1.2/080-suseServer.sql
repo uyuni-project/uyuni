@@ -28,3 +28,19 @@ suseServer
     modified    date default(sysdate) not null
 );
 
+create or replace trigger
+suseserver_mod_trig
+before insert or update on suseserver
+for each row
+begin
+    :new.modified := sysdate;
+end;
+
+create or replace trigger
+suse_server_del_trig
+before delete on suseServer
+for each row
+begin
+    insert into suseDelServer ( guid ) values ( :old.guid );
+end;
+

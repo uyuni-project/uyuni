@@ -24,3 +24,11 @@ suseProductChannel
     modified    date default(sysdate) not null
 );
 
+create or replace trigger
+suseproductchannel_mod_trig
+before insert or update on suseproductchannel
+for each row
+begin
+    :new.modified := sysdate;
+end;
+

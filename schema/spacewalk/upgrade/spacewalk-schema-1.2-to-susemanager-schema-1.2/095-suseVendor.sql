@@ -11,10 +11,22 @@
 --
 
 create table
-suseDelServer
+suseVendor
 (
-    guid              varchar2(256),
+    id      number        not null PRIMARY KEY,
+    name    varchar2(256) not null,
 
-    created     date default(sysdate) not null
+    created     date default(sysdate) not null,
+    modified    date default(sysdate) not null
 );
+
+CREATE SEQUENCE suse_vendor_id_seq START WITH 100;
+
+create or replace trigger
+susevendor_mod_trig
+before insert or update on vendorserver
+for each row
+begin
+    :new.modified := sysdate;
+end;
 
