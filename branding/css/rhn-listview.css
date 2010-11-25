@@ -383,6 +383,9 @@ TABLE.list-pagination
 DIV.filter-input
 {
 }
+DIV.filter-input .list-infotext
+{
+}
 DIV.filter-input TABLE
 {
 	width: 100%;
@@ -438,11 +441,27 @@ DIV.filter-input INPUT
 }
 .list-infotext
 {
-	width: 100% !important;
+	/*[disabled]width:100%;*/
 	text-align: right !important;
 	white-space: nowrap;
-	color: #777;
+	/*[disabled]color:#777;*/
 	float: left;
+	vertical-align: bottom;
+}
+.list-infotext STRONG
+{
+	font-weight: normal;
+}
+.list-infotext IMG, .list-infotext INPUT
+{
+	margin: 3px !important;
+	padding: 0px;
+	border: 0px none #000000;
+	vertical-align: middle;
+	/*+placement:shift 0px -1px;*/
+	position: relative;
+	left: 0px;
+	top: -1px;
 }
 .list-channel A
 {
