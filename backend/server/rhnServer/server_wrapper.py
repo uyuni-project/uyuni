@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Copyright (c) 2008--2010 Red Hat, Inc.
 #
@@ -23,6 +24,7 @@ from server_hardware import Hardware
 from server_packages import Packages
 from server_history import History
 from server_solarispatches import SolarisPatches
+from server_suse import SuseData
 
 from spacewalk.common import UserDictCase
 from spacewalk.server import rhnSQL
@@ -31,13 +33,14 @@ from spacewalk.server import rhnSQL
 # provides a cleaner way to keep all the wrapper functions in one place.
 # The main Server class is based on this one and it looks a little bit
 # cleaner that way.
-class ServerWrapper(Packages, Hardware, History, SolarisPatches):
+class ServerWrapper(Packages, Hardware, History, SolarisPatches, SuseData):
     def __init__(self):
         self.server = UserDictCase()
         Packages.__init__(self)
         History.__init__(self)
         Hardware.__init__(self)
         SolarisPatches.__init__(self)
+        SuseData.__init__(self)
 
     def __repr__(self):
         return "<%s instance>" % (self.__class__,)
@@ -109,4 +112,9 @@ class ServerWrapper(Packages, Hardware, History, SolarisPatches):
         # so we have to commit here
         rhnSQL.commit()
         return ret
-    
+
+    def update_suse_products(self, guid, secret, target, products):
+        ret = self.create_update_suse_products(self.server["id"], guid, secret, target, products)
+        rhnSQL.commit()
+        return ret
+        

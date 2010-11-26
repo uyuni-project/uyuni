@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Copyright (c) 2008--2010 Red Hat, Inc.
 #
@@ -132,6 +133,7 @@ class Registration(rhnHandler):
         self.functions.append("update_transactions")
         self.functions.append("virt_notify")
         self.functions.append("welcome_message")
+        self.functions.append("suse_update_products")
 
         # defaults for the authentication section
         self.load_user = 0
@@ -1419,7 +1421,14 @@ class Registration(rhnHandler):
         log_debug(4, 'remaining subs is %s' % ret)
         return ret
 
-    
+    def suse_update_products(self, system_id, guid, secret, target, products):
+      log_debug(5, system_id, guid, target, products)
+      server = self.auth_system(system_id)
+      log_debug(1, server.getid(), guid)
+      server.update_suse_products(guid, secret, target, products)
+      return 0
+
+
 def _faultValueString(value, name):
     return _("Invalid value '%s' for %s (%s)") % (
         str(value), str(name), type(value))
