@@ -19,10 +19,10 @@ suseProducts
     friendly_name varchar2(256),
     arch_type_id  NUMBER
                   CONSTRAINT suse_products_aid_fk
-                  REFERENCES rhnArchType (id),
+                  REFERENCES rhnPackageArch (id),
     release           varchar2(256),
     channel_family_id varchar2(256),
-    product_list      CHAR(1 BYTE) DEFAULT ('N') NOT NULL ENABLE,
+    product_list      CHAR(1) DEFAULT ('N') NOT NULL ENABLE,
     vendor_id         number
                       CONSTRAINT suse_products_vid_fk
                       REFERENCES suseVendor (id),
