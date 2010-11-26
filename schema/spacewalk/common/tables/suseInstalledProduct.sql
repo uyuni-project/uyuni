@@ -21,7 +21,6 @@ suseInstalledProduct
                   REFERENCES rhnPackageArch (id),
     release       varchar2(256),
     is_baseproduct CHAR(1) DEFAULT ('N') NOT NULL,
-
     created     date default(sysdate) not null,
     modified    date default(sysdate) not null
 );

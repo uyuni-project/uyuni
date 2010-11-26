@@ -27,7 +27,6 @@ suseProducts
     vendor_id         number
                       CONSTRAINT suse_products_vid_fk
                       REFERENCES suseVendor (id),
-
     created     date default(sysdate) not null,
     modified    date default(sysdate) not null
 );

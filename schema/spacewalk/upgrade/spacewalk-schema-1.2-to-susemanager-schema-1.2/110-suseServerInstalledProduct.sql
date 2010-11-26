@@ -23,7 +23,6 @@ suseServerInstalledProduct
                                 CONSTRAINT ssip_sip_id_fk
                                 REFERENCES suseInstalledProduct (id)
                                 not null,
-
     created     date default(sysdate) not null,
     modified    date default(sysdate) not null
 );
