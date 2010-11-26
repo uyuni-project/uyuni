@@ -12,7 +12,7 @@
 
 create or replace trigger
 suseproductchannel_mod_trig
-before insert or update on suseproductchannel
+before insert or update on suseProductChannel
 for each row
 begin
     :new.modified := sysdate;

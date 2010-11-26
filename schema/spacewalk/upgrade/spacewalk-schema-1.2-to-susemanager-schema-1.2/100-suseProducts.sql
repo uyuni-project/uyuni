@@ -35,7 +35,7 @@ CREATE SEQUENCE suse_products_id_seq START WITH 100;
 
 create or replace trigger
 suseproducts_mod_trig
-before insert or update on suseproducts
+before insert or update on suseProducts
 for each row
 begin
     :new.modified := sysdate;

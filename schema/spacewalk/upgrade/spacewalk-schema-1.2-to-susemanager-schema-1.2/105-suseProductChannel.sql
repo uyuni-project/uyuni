@@ -18,7 +18,7 @@ suseProductChannel
                              REFERENCES suseProducts (id),
     channel_id number        not null
                              CONSTRAINT spc_rhn_cid_fk
-                             REFERENCES rhnchannel (id),
+                             REFERENCES rhnChannel (id),
 
     created     date default(sysdate) not null,
     modified    date default(sysdate) not null
@@ -26,7 +26,7 @@ suseProductChannel
 
 create or replace trigger
 suseproductchannel_mod_trig
-before insert or update on suseproductchannel
+before insert or update on suseProductChannel
 for each row
 begin
     :new.modified := sysdate;

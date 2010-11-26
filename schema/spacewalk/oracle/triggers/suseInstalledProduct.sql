@@ -12,7 +12,7 @@
 
 create or replace trigger
 suseinstalledproduct_mod_trig
-before insert or update on suseinstalledproduct
+before insert or update on suseInstalledProduct
 for each row
 begin
     :new.modified := sysdate;

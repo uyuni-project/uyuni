@@ -12,7 +12,7 @@
 
 create or replace trigger
 suseserver_mod_trig
-before insert or update on suseserver
+before insert or update on suseServer
 for each row
 begin
     :new.modified := sysdate;

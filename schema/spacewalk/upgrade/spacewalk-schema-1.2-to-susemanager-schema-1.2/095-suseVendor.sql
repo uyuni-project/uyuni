@@ -24,7 +24,7 @@ CREATE SEQUENCE suse_vendor_id_seq START WITH 100;
 
 create or replace trigger
 susevendor_mod_trig
-before insert or update on vendorserver
+before insert or update on suseVendor
 for each row
 begin
     :new.modified := sysdate;

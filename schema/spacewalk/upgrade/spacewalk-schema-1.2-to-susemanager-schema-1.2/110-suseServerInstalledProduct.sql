@@ -16,7 +16,7 @@ suseServerInstalledProduct
 (
     rhn_server_id     number
                       CONSTRAINT suseserver_ip_rhns_id_fk
-                      REFERENCES rhnserver (id)
+                      REFERENCES rhnServer (id)
                       ON DELETE CASCADE
                       not null,
     suse_installed_product_id   number

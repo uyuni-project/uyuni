@@ -12,7 +12,7 @@
 
 create or replace trigger
 susevendor_mod_trig
-before insert or update on vendorserver
+before insert or update on suseVendor
 for each row
 begin
     :new.modified := sysdate;

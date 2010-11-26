@@ -18,7 +18,7 @@ suseProductChannel
                              REFERENCES suseProducts (id),
     channel_id number        not null
                              CONSTRAINT spc_rhn_cid_fk
-                             REFERENCES rhnchannel (id),
+                             REFERENCES rhnChannel (id),
 
     created     date default(sysdate) not null,
     modified    date default(sysdate) not null
