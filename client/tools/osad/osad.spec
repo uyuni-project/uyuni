@@ -3,6 +3,12 @@
 %define client_caps_dir /etc/sysconfig/rhn/clientCaps.d
 %{!?pythongen:%define pythongen %(%{__python} -c "import sys ; print sys.version[:3]")}
 
+%if 0%{suse_version}
+%define apache_group www
+%else
+%define apache_group apache
+%endif
+
 Name: osad
 Summary: Open Source Architecture Daemon
 Group:   System Environment/Daemons
@@ -275,13 +281,13 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %dir %{_sysconfdir}/rhn
 %dir %{_sysconfdir}/rhn/tns_admin
 %dir %{_sysconfdir}/rhn/default
-%dir %{_var}/log/rhn
+%attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif
 %config %{_sysconfdir}/rhn/tns_admin/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/rhn/tns_admin/osa-dispatcher/tnsnames.ora
 %config(noreplace) %{_sysconfdir}/rhn/tns_admin/osa-dispatcher/sqlnet.ora
 %attr(755,root,root) %{_initrddir}/osa-dispatcher
-%attr(770,root,apache) %dir %{_var}/log/rhn/oracle
+%attr(770,root,%{apache_group}) %dir %{_var}/log/rhn/oracle
 %attr(770,root,root) %dir %{_var}/log/rhn/oracle/osa-dispatcher
 %doc LICENSE
 %doc PYTHON-LICENSES.txt
