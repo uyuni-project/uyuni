@@ -22,7 +22,7 @@ suseProducts
                   REFERENCES rhnPackageArch (id),
     release           varchar2(256),
     channel_family_id varchar2(256),
-    product_list      CHAR(1) DEFAULT ('N') NOT NULL ENABLE,
+    product_list      CHAR(1) DEFAULT ('N') NOT NULL,
     vendor_id         number
                       CONSTRAINT suse_products_vid_fk
                       REFERENCES suseVendor (id),

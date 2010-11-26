@@ -22,7 +22,7 @@ suseServer
                       CONSTRAINT suseserver_guid_uq UNIQUE,
     secret            varchar2(256),
     ostarget          varchar2(256),
-    ncc_sync_required CHAR(1) DEFAULT ('N') NOT NULL ENABLE,
+    ncc_sync_required CHAR(1) DEFAULT ('N') NOT NULL,
 
     created     date default(sysdate) not null,
     modified    date default(sysdate) not null
