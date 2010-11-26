@@ -15,7 +15,7 @@ suseServer
 (
     rhn_server_id     number
                       CONSTRAINT suseserver_rhns_id_fk
-                      REFERENCES rhnserver (id)
+                      REFERENCES rhnServer (id)
                       ON DELETE CASCADE
                       PRIMARY KEY,
     guid              varchar2(256)
