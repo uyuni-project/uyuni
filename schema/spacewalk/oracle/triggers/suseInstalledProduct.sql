@@ -9,7 +9,6 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 --
-
 create or replace trigger
 suseinstalledproduct_mod_trig
 before insert or update on suseInstalledProduct
@@ -17,4 +16,6 @@ for each row
 begin
     :new.modified := sysdate;
 end;
+/
+show errors
 

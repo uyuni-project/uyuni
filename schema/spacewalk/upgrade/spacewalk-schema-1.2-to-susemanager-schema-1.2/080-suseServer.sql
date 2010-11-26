@@ -34,6 +34,8 @@ for each row
 begin
     :new.modified := sysdate;
 end;
+/
+show errors
 
 create or replace trigger
 suse_server_del_trig
@@ -42,4 +44,6 @@ for each row
 begin
     insert into suseDelServer ( guid ) values ( :old.guid );
 end;
+/
+show errors
 

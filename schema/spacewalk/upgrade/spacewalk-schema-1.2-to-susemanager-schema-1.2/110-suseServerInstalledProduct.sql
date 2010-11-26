@@ -28,10 +28,12 @@ suseServerInstalledProduct
 );
 
 create or replace trigger
-suseproductchannel_mod_trig
+susesrvinstprod_mod_trig
 before insert or update on suseServerInstalledProduct
 for each row
 begin
     :new.modified := sysdate;
 end;
+/
+show errors
 
