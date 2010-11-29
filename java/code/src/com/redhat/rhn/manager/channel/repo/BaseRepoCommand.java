@@ -134,8 +134,8 @@ public class BaseRepoCommand {
                 throw new InvalidRepoUrlException(url);
             }
             repo.setSourceUrl(this.url);
-            repo.setMetadataSigned(this.metadata_signed);
         }
+        repo.setMetadataSigned(this.metadata_signed);
 
         ChannelFactory.save(repo);
     }
