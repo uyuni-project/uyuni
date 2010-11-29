@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 29 08:36:24 CET 2010 - mantel@suse.de
+
+- ignore Requires: sos for now
+
+-------------------------------------------------------------------
 Wed Nov 24 16:24:57 CET 2010 - mantel@suse.de
 
 - fix Requires for SuSE

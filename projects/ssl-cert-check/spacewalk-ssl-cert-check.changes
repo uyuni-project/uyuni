@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 29 08:46:44 CET 2010 - mantel@suse.de
+
+- temporarily ignore requirement of certwatch
+
+-------------------------------------------------------------------
 Wed Sep 15 10:07:54 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-ssl-cert-check

@@ -9,7 +9,10 @@ Version: 2.1
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
+%if 0%{?suse_version}
+%else
 Requires:  /etc/cron.daily/certwatch
+%endif
 Obsoletes: rhn-ssl-cert-check < %{epoch}:%{version}
 Provides:  rhn-ssl-cert-check = %{epoch}:%{version}
 

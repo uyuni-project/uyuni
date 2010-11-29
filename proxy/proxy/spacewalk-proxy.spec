@@ -41,6 +41,7 @@ Requires: spacewalk-backend >= 1.2.32
 
 %else
 Requires: python-hashlib
+Requires: sos
 %endif
 Requires: %{name}-broker = %{version}
 Requires: %{name}-redirect = %{version}
@@ -54,7 +55,6 @@ Requires: spacewalk-proxy-selinux
 %endif
 Requires: jabberd spacewalk-setup-jabberd
 Requires: httpd
-Requires: sos
 Requires(preun): initscripts
 Obsoletes: rhns-proxy < 5.3.0
 Obsoletes: rhns-proxy-management < 5.3.0
