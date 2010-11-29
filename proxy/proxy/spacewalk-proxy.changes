@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 29 11:57:01 CET 2010 - mantel@suse.de
+
+- ignore Requires: initscripts for now
+
+-------------------------------------------------------------------
 Mon Nov 29 08:36:24 CET 2010 - mantel@suse.de
 
 - ignore Requires: sos for now

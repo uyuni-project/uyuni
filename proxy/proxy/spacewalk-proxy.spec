@@ -38,10 +38,10 @@ Requires: spacewalk-backend >= 1.2.32
 # python-hashlib is optional for spacewalk-backend-libs
 # but we need made it mandatory here
 %if 0%{?suse_version}
-
 %else
 Requires: python-hashlib
 Requires: sos
+Requires(preun): initscripts
 %endif
 Requires: %{name}-broker = %{version}
 Requires: %{name}-redirect = %{version}
@@ -55,7 +55,6 @@ Requires: spacewalk-proxy-selinux
 %endif
 Requires: jabberd spacewalk-setup-jabberd
 Requires: httpd
-Requires(preun): initscripts
 Obsoletes: rhns-proxy < 5.3.0
 Obsoletes: rhns-proxy-management < 5.3.0
 BuildRequires: /usr/bin/docbook2man
