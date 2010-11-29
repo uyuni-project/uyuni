@@ -1,5 +1,5 @@
 /*+clearfix {*/
-UL.content-nav-rowone:after, .clearBoxBody:after
+.clearBoxBody:after
 {
 	content: ".";
 	display: block;
@@ -8,11 +8,11 @@ UL.content-nav-rowone:after, .clearBoxBody:after
 	visibility: hidden;
 	font-size: 0;
 }
-UL.content-nav-rowone, .clearBoxBody
+.clearBoxBody
 {
 	display: inline-block;
 }
-UL.content-nav-rowone, .clearBoxBody
+.clearBoxBody
 {
 /*\*/
 	display: block;
@@ -23,6 +23,22 @@ UL.content-nav-rowone, .clearBoxBody
 BODY
 {
 	-font-family: sans-serif;
+}
+BODY, #top-wrap, #wrap, .top-content
+{
+	text-align: center;
+}
+.top-content
+{
+	max-width: 80em !important;
+	text-align: left;
+	overflow: hidden;
+}
+#header
+{
+	width: 80em !important;
+	max-width: 80em;
+	overflow: hidden;
 }
 INPUT
 {
@@ -38,46 +54,9 @@ DIV.contentnav-row2 DIV.top
 	border-top: 1px solid #DDD;
 	-margin-bottom: -8px;
 }
-/*[clearfix]*/UL.content-nav-rowone
-{
-	/*[disabled]display:inline;*/
-	/*[disabled]height:auto;*/
-}
-UL.content-nav-rowone LI
-{
-	/*[disabled]display:inline;*/
-	/*[disabled]height:auto;*/
-	/*[disabled]-float:none;*/
-}
-UL.content-nav-rowone LI A
-{
-	/*[disabled]display:inline-block;*/
-	/*[disabled]-margin:3px 0px;*/
-}
-UL.content-nav-rowtwo
-{
-	/*[disabled]padding-bottom:0px;*/
-}
 #mainNav LI
 {
 	height: 12px;
-}
-.contentnav-row2
-{
-	/*[disabled]margin-top:5px;*/
-	/*[disabled]border-top:1px solid #DDD;*/
-}
-.contentnav-row2 .top
-{
-	/*[disabled]display:none;*/
-}
-.contentnav-row2 .bottom
-{
-	/*[disabled]padding-top:5px;*/
-}
-#header
-{
-	/*[disabled]height:56px;*/
 }
 #searchbar
 {
@@ -94,13 +73,17 @@ UL.content-nav-rowthree
 TD.page-content
 {
 }
+TABLE.list TH
+{
+	font-size: 1.2em;
+}
+.filter-input .list-sizeselector
+{
+	font-size: 10pt;
+}
 DIV.rounded-box
 {
 	padding-left: 25px;
-}
-.page-content H2
-{
-	/*[disabled]clear:both;*/
 }
 #bar
 {
@@ -125,6 +108,11 @@ HTML>BODY #sidenav LI
 {
 	height: auto;
 }
+#sidenav LI
+{
+	font-size: 70%;
+	line-height: 1;
+}
 /*[clearfix]*/.clearBoxBody
 {
 }
@@ -139,10 +127,6 @@ TABLE.details
 TABLE.details TH
 {
 	width: 25%;
-}
-TABLE.details TD
-{
-	/*[disabled]width:70%;*/
 }
 TABLE.details TR
 {
