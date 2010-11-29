@@ -202,7 +202,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %post broker
 if [ -f %{_sysconfdir}/sysconfig/rhn/systemid ]; then
-    chown root.%{apache_user} %{_sysconfdir}/sysconfig/rhn/systemid
+    chown root.%{apache_group} %{_sysconfdir}/sysconfig/rhn/systemid
     chmod 0640 %{_sysconfdir}/sysconfig/rhn/systemid
 fi
 %if 0%{?suse_version}
@@ -276,7 +276,7 @@ fi
 %posttrans common
 if [ -n "$1" ] ; then # anything but uninstall
     mkdir /var/cache/rhn/proxy-auth 2>/dev/null
-    chown apache:root /var/cache/rhn/proxy-auth
+    chown %{apache_user}:root /var/cache/rhn/proxy-auth
     restorecon /var/cache/rhn/proxy-auth
 fi
 

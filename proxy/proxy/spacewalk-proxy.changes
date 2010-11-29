@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 29 13:50:15 CET 2010 - mantel@suse.de
+
+- use correct %{apache_user}
+
+-------------------------------------------------------------------
 Mon Nov 29 11:57:01 CET 2010 - mantel@suse.de
 
 - ignore Requires: initscripts for now
