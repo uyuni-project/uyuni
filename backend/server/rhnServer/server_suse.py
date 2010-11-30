@@ -149,13 +149,13 @@ class SuseData:
   def get_installed_product_id(self, product):
     h = rhnSQL.prepare("""
       SELECT sip.id
-        FROM suseInstalledProduct sip,
+        FROM suseInstalledProduct sip
          JOIN rhnPackageArch rpa ON sip.arch_type_id = rpa.id
-       WHERE name = :name,
-         AND version = :version
+       WHERE sip.name = :name
+         AND sip.version = :version
          AND rpa.label = :arch
-         AND release = :release
-         AND is_baseproduct = :baseproduct
+         AND sip.release = :release
+         AND sip.is_baseproduct = :baseproduct
     """)
     apply(h.execute, (), product)
     d = h.fetchone_dict()
@@ -163,7 +163,7 @@ class SuseData:
       # not available yet, so let's create one
       n = rhnSQL.prepare("""
         INSERT INTO suseInstalledProduct
-        (id, name, version, arch, release, is_baseproduct)
+        (id, name, version, arch_type_id, release, is_baseproduct)
         VALUES (sequence_nextval('suse_inst_pr_id_seq'), :name, :version,
                (SELECT id FROM rhnPackageArch WHERE label = :arch),
                :release, :baseproduct)
