@@ -103,7 +103,7 @@ class SuseData:
                  ostarget = :ostarget
            WHERE rhn_server_id = :rhn_server_id
         """)
-        h.execute(data)
+        apply(h.execute, (), data)
     # check products
     h = rhnSQL.prepare("""
       SELECT
@@ -157,7 +157,7 @@ class SuseData:
          AND release = :release
          AND is_baseproduct = :baseproduct
     """)
-    h.execute(product)
+    apply(h.execute, (), product)
     d = h.fetchone_dict()
     if not d:
       # not available yet, so let's create one
@@ -168,8 +168,8 @@ class SuseData:
                (SELECT id FROM rhnPackageArch WHERE label = :arch),
                :release, :baseproduct)
       """)
-      n.execute(product)
-      h.execute(product)
+      apply(n.execute, (), product)
+      apply(h.execute, (), product)
       d = h.fetchone_dict()
       if not d:
         # should never happen
