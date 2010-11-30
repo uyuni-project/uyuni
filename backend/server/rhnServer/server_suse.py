@@ -19,8 +19,8 @@ class SuseData:
   def __init__(self):
     log_debug(4, "SuseData initialized")
 
-  def create_update_suse_products(self, sysid, guid, secret, target, products):
-    log_debug(4, sysid, guid, target, products)
+  def create_update_suse_products(self, sysid, guid, secret, ostarget, products):
+    log_debug(4, sysid, guid, ostarget, products)
 
     # search, if a suseServer with this guid exists which is not this server
     # this would indicate a re-registration and we need to remove the old rhnServer
