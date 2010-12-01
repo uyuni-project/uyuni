@@ -65,6 +65,7 @@ class VirtualizationType:
     HYPERV      = 'hyperv'
     VMWARE      = 'vmware'
     VIRTAGE     = 'virtage'
+    VBOX        = 'virtualbox'
 
 class IdentityType:
     HOST        = 'host'

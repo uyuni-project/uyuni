@@ -97,6 +97,8 @@ def parse_smbios(smbios):
         if uuid is None:
             uuid = "flex-guest"
         return (rhnVirtualization.VirtualizationType.VIRTAGE, uuid)
+    elif product == "VirtualBox" and uuid is not None:
+        return (rhnVirtualization.VirtualizationType.VBOX, uuid)
     else:
         return (None, None)
 
