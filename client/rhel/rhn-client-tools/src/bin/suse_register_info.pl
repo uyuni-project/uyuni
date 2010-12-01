@@ -163,6 +163,7 @@ else
   open(OUT, ">&STDOUT") or die "Cannot open STDOUT:$!";
 }
 
+print OUT "[system]\n";;
 print OUT "guid=".$ctx->{guid}."\n";
 print OUT "secret=".$ctx->{secret}."\n";
 print OUT "ostarget=".$ctx->{ostarget}."\n";
