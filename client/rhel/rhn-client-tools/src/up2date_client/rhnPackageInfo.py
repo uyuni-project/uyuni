@@ -3,6 +3,9 @@
 # updating/fetching package lists, channels, etc
 
 
+import os
+import tempfile
+import ConfigParser
 import up2dateAuth
 import up2dateLog
 import rhnserver
@@ -27,6 +30,16 @@ def updatePackageProfile():
         packages = convertPackagesFromHashToList(packages)
     s.registration.update_packages(up2dateAuth.getSystemId(), packages)
 
+    if s.capabilities.hasCapability('xmlrpc.packages.suse_products', 1):
+	# also send information about the installed products
+	log.log_me('Updating product profile')
+	productProfile = getProductProfile()
+	s.registration.suse_update_products(up2dateAuth.getSystemId(),
+					    productProfile['guid'],
+					    productProfile['secret'],
+					    productProfile['ostarget'],
+					    productProfile['products'])
+
 def pprint_pkglist(pkglist):
     if type(pkglist) == type([]):
         output = map(lambda a : "%s-%s-%s" % (a[0],a[1],a[2]), pkglist)
@@ -50,3 +63,39 @@ def convertPackagesFromHashToList(packages):
         else:
             result.append([package['name'], package['version'], package['release'], package['epoch']])
     return result
+
+def getProductProfile():
+    """ Return information about the installed from suse_register_info.pl """
+    productProfileFile = tempfile.NamedTemporaryFile(prefix='sreg-info-')
+    ret = os.system("suse_register_info.pl --outfile %s" % productProfileFile.name)
+    if ret != 0:
+	raise Exception("Executing suse_register_info.pl failed.")
+    return parseProductProfileFile(productProfileFile)
+
+def parseProductProfileFile(infile):
+    """ Parse a product profile from file (e.g. created by suse_register_info.pl) """
+    config = ConfigParser.ConfigParser()
+    config.read(infile.name)
+    ret = { 'products' : [] }
+    for section in config.sections():
+	if section == 'system':
+	    for key,val in config.items(section):
+		ret[key] = val
+	else:
+	    product = { 'baseproduct' : 'N' }
+	    for key,val in config.items(section):
+		product[key] = val
+	    ret['products'].append(product)
+    return ret
+
+def customUpdateProductProfile(productProfile):
+    """ Send a specific product profile to the server (mostly for testing) """
+    log = up2dateLog.initLog()
+    s = rhnserver.RhnServer()
+    if s.capabilities.hasCapability('xmlrpc.packages.suse_products', 1):
+	log.log_me('Updating product profile')
+	s.registration.suse_update_products(up2dateAuth.getSystemId(),
+					    productProfile['guid'],
+					    productProfile['secret'],
+					    productProfile['ostarget'],
+					    productProfile['products'])
