@@ -11,15 +11,18 @@
 #
 
 import string
+import os
+import tempfile
+import ConfigParser
 from spacewalk.common import log_debug, log_error, rhnFault
 from spacewalk.server import rhnSQL
 
-def channelForProduct(product):
+def findProduct(product):
   q_version = ""
   q_release = ""
   q_arch    = ""
   product_id = None
-
+  
   if version in product and product['version'] != "":
     q_version = "version = :version or"
   if release in product and product['release'] != "":
@@ -29,18 +32,20 @@ def channelForProduct(product):
 
   h = rhnSQL.prepare("""
     SELECT id, name, version, arch, release
-    FROM suseProducts
-    WHERE name = :name
-      AND ( %s version IS NULL)
-      AND ( %s release IS NULL)
-      AND ( %s arch IS NULL)
-  """ % (q_version, q_release, q_arch)
-  )
+      FROM suseProducts
+     WHERE name = :name
+       AND ( %s version IS NULL)
+       AND ( %s release IS NULL)
+       AND ( %s arch IS NULL)
+  """ % (q_version, q_release, q_arch))
   h.execute(product)
   rs = h.fetchall_dict()
   if not rs:
     log_debug(1, "No Channel Found")
     return None
+
+  product_id = rs[0]['id']
+
   if len(rs) > 1:
     # more than one product matches.
     # search for an exact match or take the first
@@ -48,10 +53,16 @@ def channelForProduct(product):
       if p['version'] == product['version'] and \
          p['release'] == product['release'] and \
          p['arch'] == product['arch']:
-           product_id = p['id']
-           break
-  else:
-    product_id = rs[0]['id']
+        product_id = p['id']
+        break
+
+  return product_id
+
+def channelForProduct(product):
+
+  product_id = findProduct(product)
+  if not product_id:
+    return None
 
   h.rhnSQL.prepare("""
     SELECT c.id, c.label
@@ -59,7 +70,7 @@ def channelForProduct(product):
     JOIN suseProductChannel as spc ON spc.channel_id = c.id
     WHERE spc.product_id = :pid
   """)
-  h.execute(product)
+  h.execute(product_id)
   rs = h.fetchall_dict()
   if not rs:
     log_debug(1, "No Channel Found")
@@ -71,7 +82,29 @@ def channelForProduct(product):
 
   return ret
 
+def getProductProfile():
+  """ Return information about the installed from suse_register_info """
+  productProfileFile = tempfile.NamedTemporaryFile(prefix='sreg-info-')
+  ret = os.system("suse_register_info --outfile %s" % productProfileFile.name)
+  if ret != 0:
+    raise Exception("Executing suse_register_info failed.")
+  return parseProductProfileFile(productProfileFile)
 
+def parseProductProfileFile(infile):
+  """ Parse a product profile from file (e.g. created by suse_register_info) """
+  config = ConfigParser.ConfigParser()
+  config.read(infile.name)
+  ret = { 'products' : [] }
+  for section in config.sections():
+    if section == 'system':
+      for key,val in config.items(section):
+        ret[key] = val
+    else:
+      product = { 'baseproduct' : 'N' }
+      for key,val in config.items(section):
+        product[key] = val
+      ret['products'].append(product)
+  return ret
 
 
 
