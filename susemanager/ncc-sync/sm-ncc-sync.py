@@ -93,7 +93,7 @@ class NCCSync(object):
         """Returns all subscripts a customer has
            that data can be used for consolidate_subscriptions()."""
         send = '<?xml version="1.0" encoding="UTF-8"?>'
-        send = send + ("<productdata xmlns=\"%s\" client_version=\"1.2.3\" lang=\"en\">" % namespace)
+        send = send + ("<productdata xmlns=\"%s\" client_version=\"1.2.3\" lang=\"en\">" % self.namespace)
         send = send + "<authuser>%s</authuser>" % authuser
         send = send + "<authpass>%s</authpass>" % authpass
         send = send + "<smtguid>%s</smtguid>" % smtguid
@@ -103,7 +103,7 @@ class NCCSync(object):
         tree = etree.parse(f)
         subscriptions = []
         for row in tree.getroot():
-            if row.tag == ("{%s}subscription" % namespace):
+            if row.tag == ("{%s}subscription" % self.namespace):
                 subscription = {}
                 for col in row.getchildren():
                    dummy = col.tag.split( '}' )
@@ -144,7 +144,7 @@ class NCCSync(object):
     def get_suse_products_from_ncc(self):
         """returns all products known by NCC"""
         send = '<?xml version="1.0" encoding="UTF-8"?>'
-        send = send + ("<productdata xmlns=\"%s\" client_version=\"1.2.3\" lang=\"en\">" % namespace)
+        send = send + ("<productdata xmlns=\"%s\" client_version=\"1.2.3\" lang=\"en\">" % self.namespace)
         send = send + "<authuser>%s</authuser>" % authuser
         send = send + "<authpass>%s</authpass>" % authpass
         send = send + "<smtguid>%s</smtguid>" % smtguid
@@ -155,9 +155,9 @@ class NCCSync(object):
         tree = etree.parse(f)
         suseProducts = []
         for row in tree.getroot():
-            if row.tag == ("{%s}row" % namespace):
+            if row.tag == ("{%s}row" % self.namespace):
                 suseProduct = {}
-                for col in row.findall("{%s}col" % namespace):
+                for col in row.findall("{%s}col" % self.namespace):
                    key = col.get("name")
                    if key == "start-date" or key == "end-date":
                        suseProduct[key] = float(col.text)
