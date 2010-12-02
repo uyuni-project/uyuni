@@ -94,9 +94,9 @@ class NCCSync(object):
            that data can be used for consolidate_subscriptions()."""
         send = '<?xml version="1.0" encoding="UTF-8"?>'
         send = send + ("<productdata xmlns=\"%s\" client_version=\"1.2.3\" lang=\"en\">" % self.namespace)
-        send = send + "<authuser>%s</authuser>" % authuser
-        send = send + "<authpass>%s</authpass>" % authpass
-        send = send + "<smtguid>%s</smtguid>" % smtguid
+        send = send + "<authuser>%s</authuser>" % self.authuser
+        send = send + "<authpass>%s</authpass>" % self.authpass
+        send = send + "<smtguid>%s</smtguid>" % self.smtguid
         send = send + "</productdata>\n"
 
         f = self._read_ncc( self.ncc_url_subs, send )
@@ -145,9 +145,9 @@ class NCCSync(object):
         """returns all products known by NCC"""
         send = '<?xml version="1.0" encoding="UTF-8"?>'
         send = send + ("<productdata xmlns=\"%s\" client_version=\"1.2.3\" lang=\"en\">" % self.namespace)
-        send = send + "<authuser>%s</authuser>" % authuser
-        send = send + "<authpass>%s</authpass>" % authpass
-        send = send + "<smtguid>%s</smtguid>" % smtguid
+        send = send + "<authuser>%s</authuser>" % self.authuser
+        send = send + "<authpass>%s</authpass>" % self.authpass
+        send = send + "<smtguid>%s</smtguid>" % self.smtguid
         send = send + "</productdata>\n"
 
         f = self._read_ncc( self.ncc_url_prods, send )
