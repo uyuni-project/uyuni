@@ -439,10 +439,6 @@ class NCCSync(object):
 
         raise ChannelNotAvailableError(channel_label)
 
-    def get_channel_arch_id(self, arch):
-        """Return the ARCH_ID of the arch with the :arch: name"""
-        return 503
-
     def get_channel_id(self, channel_label):
         """Return the ID of the RHNCHANNEL identified by channel_label"""
         query = rhnSQL.prepare("""SELECT ID FROM RHNCHANNEL
@@ -460,8 +456,13 @@ class NCCSync(object):
         else:
             return self.get_channel_id(channel_label)
 
-    def insert_repo(self, repo):
-        """Insert an XML repo into the database as a ContentSource"""
+    def insert_repo(self, repo, channel_id):
+        """Insert an XML repo into the database as a ContentSource
+
+        :arg repo:       repository information from channels.xml
+        :arg channel_id: DB id of the channel the repo should belong to
+
+        """
         query = rhnSQL.prepare(
             "SELECT LABEL FROM RHNCONTENTSOURCE WHERE LABEL = :label")
         query.execute(label=repo.get('label'))
@@ -473,13 +474,25 @@ class NCCSync(object):
                    VALUES ( sequence_nextval('rhn_chan_content_src_id_seq'),
                             NULL, 500, :source_url, :label )""")
             query.execute(**repo.attrib)
-        
+
+            # create relation between the new repo and the channel
+            repo_id = rhnSQL.Row(
+                "RHNCONTENTSOURCE", "LABEL", repo.get('label'))['id']
+            query = rhnSQL.prepare(
+            """INSERT INTO RHNCHANNELCONTENTSOURCE (SOURCE_ID, CHANNEL_ID)
+               VALUES (:source_id, :channel_id)""")
+            query.execute(
+                source_id = repo_id,
+                channel_id = channel_id)
+
+
     def add_channel(self, channel_label):
         """Add a new channel to the database
 
         :arg channel_label: the label of the channel that should be added
 
         """
+
         # first look in the db to see if it's already there
         query = rhnSQL.prepare(
             "SELECT LABEL FROM RHNCHANNEL WHERE LABEL = :label")
@@ -498,11 +511,27 @@ class NCCSync(object):
                            :summary, :description )""")
             query.execute(
                 parent_channel = self.get_parent_id(channel.get('parent')),
-                channel_arch_id = self.get_channel_arch_id(channel.get('arch')),
+                channel_arch_id = rhnSQL.Row(
+                    "RHNCHANNELARCH", "LABEL", "channel-%s" % channel.get('arch'))['id'],
                 # XXX - org_id = ??
                 **channel.attrib)
+
+            # welcome to the family: create relation between the new channel
+            # and corresponding channel family
+
+            channel_id = rhnSQL.Row("RHNCHANNEL", "LABEL", channel_label)['id']
+            channel_family_id = rhnSQL.Row(
+                "RHNCHANNELFAMILY", "LABEL", channel.get('family'))['id']
+
+            query = rhnSQL.prepare(
+                """INSERT INTO RHNCHANNELFAMILYMEMBERS (CHANNEL_ID, CHANNEL_FAMILY_ID)
+                   VALUES (:channel_id, :channel_family_id)""")
+            query.execute(
+                channel_id = channel_id,
+                channel_family_id = channel_family_id)
+
             for repo in channel:
-                self.insert_repo(repo)
+                self.insert_repo(repo, channel_id)
                 
             rhnSQL.commit()
             print "Added channel '%s' to the database." % channel_label
