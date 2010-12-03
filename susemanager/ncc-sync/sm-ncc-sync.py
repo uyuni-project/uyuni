@@ -491,11 +491,11 @@ def main():
                       help="list all the channels which are available for you")
     parser.add_option("-c", "--channel", action="store",
                       help="add a new channel and trigger a reposync")
-    parser.add_option("-p", "--products", action="store", dest="suseproducts",
+    parser.add_option("-p", "--products", action="store_true",
                       help="fetch all known products from NCC")
-    parser.add_option("-f", "--update_cf", action="store", dest="update_channel_family",
+    parser.add_option("-f", "--update_cf", action="store_true",
                       help="update channel family by XML config")
-    parser.add_option("-s", "--update_subscriptions", action="store", dest="update_subscriptions",
+    parser.add_option("-s", "--update_subscriptions", action="store_true",
                       help="update subscriptions by NCC data")
 
     (options, args) = parser.parse_args()
@@ -505,10 +505,10 @@ def main():
         syncer.list_channels()
     elif options.channel:
         syncer.add_channel(options.channel)
-    elif options.suseproducts:
+    elif options.products:
         suseProducts = syncer.get_suse_products_from_ncc()
         syncer.update_suse_products_table( suseProducts )
-    elif options.update_channel_family:
+    elif options.update_cf:
         syncer.update_channel_family_table_by_config()
     elif options.update_subscriptions:
         syncer.get_subscriptions_from_ncc()
