@@ -40,7 +40,7 @@ class NCCSync(object):
         """Setup configuration"""
         initCFG("server.satellite")
 
-        # FIXME: move stativ values to config file
+        # FIXME: move static values to config file
         self.authuser = "142723"
         self.authpass = "be42b64eac"
         self.smtguid  = "9a48fba1522d4c3b9fdbde250af735a9"
@@ -51,8 +51,8 @@ class NCCSync(object):
         self.namespace = "http://www.novell.com/xml/center/regsvc-1_0"
 
         # FIXME:
-        # self.ncc_url_prods = CFG.reg_url + "/center/regsvc/?command=regdata&lang=en-US&version=1.0"
-        # self.ncc_url_subs  = CFG.reg_url + "/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
+        # self.ncc_url_prods = CFG.reg_url + "/?command=regdata&lang=en-US&version=1.0"
+        # self.ncc_url_subs  = CFG.reg_url + "/?command=listsubscriptions&lang=en-US&version=1.0"
         self.ncc_url_prods = "https://secure-www.novell.com/center/regsvc/?command=regdata&lang=en-US&version=1.0"
         self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
         self.connect_retries = 10
