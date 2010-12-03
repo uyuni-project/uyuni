@@ -8,11 +8,14 @@ URL:            http://www.novell.com
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
+BuildRequires:  python-devel
 Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
 Requires:       rsync less
 # needed for sqlplus
 Requires:       oracle-xe-univ
+%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%global pythonsmroot %{python_sitelib}/spacewalk
 
 
 %description
@@ -23,6 +26,7 @@ setup tasks, re-installation, upgrades and managing.
 %setup -q
 
 %build
+make -C sm-register all
 
 %install
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
@@ -31,6 +35,9 @@ mkdir -p %{buildroot}/%{_datadir}/doc/licenses
 install -m 0644 usr/share/doc/licenses/SUSE_MANAGER_LICENSE %{buildroot}/%{_datadir}/doc/licenses/
 mkdir -p %{buildroot}/%{_sysconfdir}/init.d
 install -m 0755 etc/init.d/boot.susemanager %{buildroot}/%{_sysconfdir}/init.d
+make -C sm-register install PREFIX=$RPM_BUILD_ROOT
+mkdir -p %{buildroot}/%{_sbindir}/
+install -m 0755 sm-register/sm-register.py %{buildroot}/%{_sbindir}/sm-register
 
 %clean
 rm -rf %{buildroot}
@@ -58,10 +65,18 @@ fi
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %dir %{_datadir}/doc/licenses
+%dir %{pythonsmroot}
+%dir %{pythonsmroot}/susemanager
 
 %{_prefix}/lib/susemanager/bin/*
 %attr(0755,root,root) %{_sysconfdir}/init.d/boot.susemanager
 %{_datadir}/doc/licenses/SUSE_MANAGER_LICENSE
+
+%attr(0755,root,root) %{_sbindir}/sm-register
+%{pythonsmroot}/susemanager/__init__.py*
+%{pythonsmroot}/susemanager/suseLib.py*
+%{pythonsmroot}/susemanager/smregister.py*
+
 
 %changelog
 

@@ -14,6 +14,7 @@ import string
 import os
 import tempfile
 import ConfigParser
+import urlparse
 from spacewalk.common import log_debug, log_error, rhnFault
 from spacewalk.server import rhnSQL
 
@@ -22,23 +23,25 @@ def findProduct(product):
   q_release = ""
   q_arch    = ""
   product_id = None
-  
-  if version in product and product['version'] != "":
-    q_version = "version = :version or"
-  if release in product and product['release'] != "":
-    q_release = "release = :release or"
-  if arch in product and product['arch'] != "":
-    q_arch = "arch = :arch or"
+  log_debug(1, "PRODUCT: %s" % product)
+
+  if 'version' in product and product['version'] != "":
+    q_version = "or sp.version = :version"
+  if 'release' in product and product['release'] != "":
+    q_release = "or sp.release = :release"
+  if 'arch' in product and product['arch'] != "":
+    q_arch = "or at.label = :arch"
 
   h = rhnSQL.prepare("""
-    SELECT id, name, version, arch, release
-      FROM suseProducts
-     WHERE name = :name
-       AND ( %s version IS NULL)
-       AND ( %s release IS NULL)
-       AND ( %s arch IS NULL)
+    SELECT sp.id, sp.name, sp.version, at.label as arch, sp.release
+      FROM suseProducts sp
+      JOIN rhnPackageArch at ON sp.arch_type_id = at.id
+     WHERE sp.name = :name
+       AND (sp.version IS NULL %s)
+       AND (sp.release IS NULL %s)
+       AND (sp.arch_type_id IS NULL %s)
   """ % (q_version, q_release, q_arch))
-  h.execute(product)
+  apply(h.execute, (), product)
   rs = h.fetchall_dict()
   if not rs:
     log_debug(1, "No Channel Found")
@@ -67,10 +70,10 @@ def channelForProduct(product):
   h.rhnSQL.prepare("""
     SELECT c.id, c.label
     FROM rhnChannel c
-    JOIN suseProductChannel as spc ON spc.channel_id = c.id
+    JOIN suseProductChannel spc ON spc.channel_id = c.id
     WHERE spc.product_id = :pid
   """)
-  h.execute(product_id)
+  h.execute(pid=product_id)
   rs = h.fetchall_dict()
   if not rs:
     log_debug(1, "No Channel Found")
@@ -85,7 +88,7 @@ def channelForProduct(product):
 def getProductProfile():
   """ Return information about the installed from suse_register_info """
   productProfileFile = tempfile.NamedTemporaryFile(prefix='sreg-info-')
-  ret = os.system("suse_register_info --outfile %s" % productProfileFile.name)
+  ret = os.system("/usr/lib/suseRegister/bin/suse_register_info --outfile %s" % productProfileFile.name)
   if ret != 0:
     raise Exception("Executing suse_register_info failed.")
   return parseProductProfileFile(productProfileFile)
@@ -106,13 +109,40 @@ def parseProductProfileFile(infile):
       ret['products'].append(product)
   return ret
 
+class URL:
+  scheme = ""
+  username = ""
+  password = ""
+  host = ""
+  port = ""
+  path = ""
+  query = ""
+  fragment = ""
 
+  def __init__(self, url):
+    u = urlparse.urlsplit(url)
+    self.scheme = u.scheme
+    self.username = u.username
+    self.password = u.password
+    self.host = u.hostname
+    self.port = u.port
+    self.path = u.path
+    self.query = u.query
+    self.fragment = u.fragment
 
+  def getURL(self):
+    netloc = ""
+    if self.username:
+      netloc = self.username
+    if self.password:
+      netloc += ":" + self.password
+    if self.host and netloc :
+      netloc += "@" + self.host
+    elif self.host:
+      netloc = self.host
 
+    if self.port:
+      netloc += ":" + self.port
 
-
-
-
-
-
+    return urlparse.urlunsplit((self.scheme, netloc, self.path, self.query, self.fragment))
 
