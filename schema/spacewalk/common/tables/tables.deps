@@ -257,7 +257,7 @@ rhn_url_probe                  :: rhn_probe
 rhn_url_probe_step             :: rhn_url_probe
 suseServer                     :: rhnServer
 suseInstalledProduct           :: rhnPackageArch
-suseProducts                   :: rhnPackageArch suseVendor
+suseProducts                   :: rhnPackageArch
 suseProductChannel             :: suseProducts rhnChannel
 suseServerInstalledProduct     :: rhnServer suseInstalledProduct
 web_contact                    :: web_customer

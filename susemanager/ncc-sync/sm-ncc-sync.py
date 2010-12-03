@@ -19,6 +19,7 @@ import sys
 import urllib
 import xml.etree.ElementTree as etree
 from optparse import OptionParser
+from datetime import date
 
 from spacewalk.server import rhnSQL
 from spacewalk.common import CFG, initCFG
@@ -71,6 +72,9 @@ class NCCSync(object):
                 # 302 is a redirect
                 if e[1] == 302:
                     new_url = e[3].dict["location"]
+                elif e[1] == 504:
+                    # gateway timeout - try again
+                    pass
                 else:
                     raise e
         return f
@@ -511,7 +515,7 @@ def main():
     elif options.update_cf:
         syncer.update_channel_family_table_by_config()
     elif options.update_subscriptions:
-        syncer.get_subscriptions_from_ncc()
+        all_subs = syncer.get_subscriptions_from_ncc()
         cons_subs = syncer.consolidate_subscriptions( all_subs )
         for s in cons_subs.keys():
             syncer.edit_subscription_in_table( s, cons_subs[s] )
