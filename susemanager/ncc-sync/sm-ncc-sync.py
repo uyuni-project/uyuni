@@ -39,11 +39,11 @@ class NCCSync(object):
         """Setup configuration"""
         initCFG("server.satellite")
 
-        #self.authuser = "142723"
-        #self.authpass = "be42b64eac"
+        self.authuser = "142723"
+        self.authpass = "be42b64eac"
         self.smtguid  = "9a48fba1522d4c3b9fdbde250af735a9"
-        self.authuser = CFG.mirrcred_user
-        self.authpass = CFG.mirrcred_pass
+        #self.authuser = CFG.mirrcred_user
+        #self.authpass = CFG.mirrcred_pass
 
 
         self.namespace = "http://www.novell.com/xml/center/regsvc-1_0"
@@ -100,7 +100,7 @@ class NCCSync(object):
         send = send + "<smtguid>%s</smtguid>" % self.smtguid
         send = send + "</productdata>\n"
 
-        f = self._read_ncc( self.ncc_url_subs, send )
+        f = self._connect_ncc( self.ncc_url_subs, send )
         tree = etree.parse(f)
         subscriptions = []
         for row in tree.getroot():
@@ -151,7 +151,7 @@ class NCCSync(object):
         send = send + "<smtguid>%s</smtguid>" % self.smtguid
         send = send + "</productdata>\n"
 
-        f = self._read_ncc( self.ncc_url_prods, send )
+        f = self._connect_ncc( self.ncc_url_prods, send )
 
         tree = etree.parse(f)
         suseProducts = []
@@ -164,9 +164,9 @@ class NCCSync(object):
                        suseProduct[key] = float(col.text)
                    else:
                        suseProduct[key] = col.text
-            if p["PRODUCT_CLASS"] != None:
-                # FIXME: skip buggy NCC entries. Some have no product_class, which is invalid data
-                suseProducts.append(suseProduct)
+                if suseProduct["PRODUCT_CLASS"] != None:
+                    # FIXME: skip buggy NCC entries. Some have no product_class, which is invalid data
+                    suseProducts.append(suseProduct)
         return suseProducts
 
     def get_arch_id( self, arch_in ):
@@ -241,10 +241,10 @@ class NCCSync(object):
                                 product_url = :product_url
                             WHERE id = :id"""
             query = rhnSQL.prepare(update_sql)
-            query.execute( id = row["id"],
+            query.execute( id = channel_family_id,
                            name = name_in,
                            label = label_in,
-                           org_id = org_id,
+                           org_id = org_id_in,
                            product_url = url_in
             )
             rhnSQL.commit()
