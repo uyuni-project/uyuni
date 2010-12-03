@@ -24,6 +24,8 @@ from datetime import date
 from spacewalk.server import rhnSQL
 from spacewalk.common import CFG, initCFG
 
+from spacewalk.susemanager import suseLib
+
 NCC_CHANNELS = 'channels.xml'
 
 class ChannelNotAvailableError(Exception):
@@ -41,9 +43,9 @@ class NCCSync(object):
         initCFG("server.satellite")
 
         # FIXME: move static values to config file
-        self.authuser = "142723"
-        self.authpass = "be42b64eac"
-        self.smtguid  = "9a48fba1522d4c3b9fdbde250af735a9"
+        self.authuser = ""
+        self.authpass = ""
+        self.smtguid  = ""
         #self.authuser = CFG.mirrcred_user
         #self.authpass = CFG.mirrcred_pass
 
