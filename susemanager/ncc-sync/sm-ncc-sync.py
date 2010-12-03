@@ -453,6 +453,20 @@ class NCCSync(object):
         else:
             return self.get_channel_id(channel_label)
 
+    def insert_repo(self, repo):
+        """Insert an XML repo into the database as a ContentSource"""
+        query = rhnSQL.prepare(
+            "SELECT LABEL FROM RHNCONTENTSOURCE WHERE LABEL = :label")
+        query.execute(label=repo.get('label'))
+        if not query.fetchone():
+            # FIXME make a TYPE_ID for zypper?
+            query = rhnSQL.prepare(
+                """INSERT INTO RHNCONTENTSOURCE
+                       ( ID, ORG_ID, TYPE_ID, SOURCE_URL, LABEL)
+                   VALUES ( sequence_nextval('rhn_chan_content_src_id_seq'),
+                            NULL, 500, :source_url, :label )""")
+            query.execute(**repo.attrib)
+        
     def add_channel(self, channel_label):
         """Add a new channel to the database
 
@@ -480,6 +494,9 @@ class NCCSync(object):
                 channel_arch_id = self.get_channel_arch_id(channel.get('arch')),
                 # XXX - org_id = ??
                 **channel.attrib)
+            for repo in channel:
+                self.insert_repo(repo)
+                
             rhnSQL.commit()
             print "Added channel '%s' to the database." % channel_label
 
