@@ -207,7 +207,7 @@ class NCCSync(object):
 
     def add_channel_family_row(self, label, name=None, org_id=1, url="some url"):
         """Insert a new channel_family row"""
-        channel_family_id = rhnSQL.Row("RHNCHANNELFAMILY", "LABEL", label)['id']
+        channel_family_id = self.get_channel_family_id(label)
         if name == None:
             name = label
         if channel_family_id == None:
@@ -258,6 +258,16 @@ class NCCSync(object):
             rhnSQL.commit()
         return channel_family_id
 
+    def get_channel_family_id(self, label):
+        """returns the id of a channel_family or None if not existend"""
+        select_sql = "SELECT id from RHNCHANNELFAMILY where LABEL = :label"
+        query = rhnSQL.prepare(select_sql)
+        query.execute(label=label)
+        row = query.fetchone_dict() or {}
+        if row:
+            return row["id"]
+        return None
+
     def edit_channel_family_table(self, label, name=None,
                                   org_id=1, url="some url" ):
         """Create or update an existing channel family
@@ -265,8 +275,7 @@ class NCCSync(object):
         Returns the id of the channel_family.
 
         """
-        channel_family_id = rhnSQL.Row("RHNCHANNELFAMILY",
-                                       "LABEL", label)['id']
+        channel_family_id = self.get_channel_family_id(label)
         if name == None:
             name = label
 
