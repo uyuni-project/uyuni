@@ -1769,7 +1769,7 @@ DELETE FROM  rhnSatelliteInfo WHERE  server_id = :sid
 
 <mode name="eligible_flex_guests">
   <query params="user_id, checkin_threshold ">
-    select
+    select distinct
     cf.label as cf_label,
     cf.name as cf_name,
     cf.id as cf_id,
@@ -1788,6 +1788,7 @@ DELETE FROM  rhnSatelliteInfo WHERE  server_id = :sid
       inner join rhnChannelFamily cf on cf.id = cfm.channel_family_id
       inner join rhnPrivateChannelFamily pcf on pcf.channel_family_id  = cf.id and pcf.org_id = s.org_id
   where sc.is_fve = 'N'
+		AND CF.org_id is null
   		AND USP.user_id = :user_id
   		AND (vi.host_system_id is null OR
 		    0 = (select
