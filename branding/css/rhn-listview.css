@@ -438,6 +438,8 @@ DIV.filter-input INPUT
 {
 	text-align: left !important;
 	font-size: small;
+	margin: 0px;
+	padding: 0px;
 }
 .list-infotext
 {
@@ -447,6 +449,8 @@ DIV.filter-input INPUT
 	/*[disabled]color:#777;*/
 	float: left;
 	vertical-align: bottom;
+	margin-top: 3px;
+	line-height: 1.5;
 }
 .list-infotext STRONG
 {
