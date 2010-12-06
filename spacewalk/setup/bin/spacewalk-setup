@@ -1125,7 +1125,7 @@ sub populate_initial_configs {
      monitoringDOTorahome => '/opt/oracle',
      monitoringDOTdbd => 'Oracle',
      monitoringDOTscout_shared_key => '', # blank for now.
-     cobblerDOThost => $answers->{hostname}
+     cobblerDOThost => $answers->{hostname},
      serverDOTsusemanagerDOTmirrcred_email => '',
      serverDOTsusemanagerDOTmirrcred_user => '',
      serverDOTsusemanagerDOTmirrcred_pass => '',
