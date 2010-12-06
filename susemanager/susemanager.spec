@@ -11,6 +11,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  python-devel
 Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
+# needed for suse_register_info
+Requires:       rhn-setup
 Requires:       rsync less
 # needed for sqlplus
 Requires:       oracle-xe-univ
