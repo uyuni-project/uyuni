@@ -67,7 +67,7 @@ def convertPackagesFromHashToList(packages):
 def getProductProfile():
     """ Return information about the installed from suse_register_info """
     productProfileFile = tempfile.NamedTemporaryFile(prefix='sreg-info-')
-    ret = os.system("suse_register_info --outfile %s" % productProfileFile.name)
+    ret = os.system("/usr/lib/suseRegister/bin/suse_register_info --outfile %s" % productProfileFile.name)
     if ret != 0:
 	raise Exception("Executing suse_register_info failed.")
     return parseProductProfileFile(productProfileFile)

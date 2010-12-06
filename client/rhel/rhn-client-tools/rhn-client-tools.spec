@@ -268,7 +268,9 @@ make -f Makefile.rhn-client-tools test
 %{_sbindir}/rhnreg_ks
 %{_sbindir}/spacewalk-channel
 %{_sbindir}/rhn-channel
-%{_sbindir}/suse_register_info
+%dir /usr/lib/suseRegister
+%dir /usr/lib/suseRegister/bin
+/usr/lib/suseRegister/bin/suse_register_info
 
 %{_datadir}/rhn/up2date_client/rhnreg.*
 %{_datadir}/rhn/up2date_client/tui.*
