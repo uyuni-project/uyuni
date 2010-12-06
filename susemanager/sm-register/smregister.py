@@ -25,9 +25,7 @@ iterparse = cElementTree.iterparse
 
 #
 # TODO:
-# * de-register
 # * try to find other regdata like timezone, processor, machine
-# * ask for mirror credentials and ncc email during setup and add them to rhn.conf
 #
 # DONE:
 # * update database after registration
@@ -35,10 +33,13 @@ iterparse = cElementTree.iterparse
 # * add ncc_reg_error to schema
 # * create NCCcredentials file if it does not exist
 # * find virtual host guid, if available
+# * de-register
+# * ask for mirror credentials and ncc email during setup and add them to rhn.conf
 
 
 class Register:
   ns = "http://www.novell.com/xml/center/regsvc-1_0"
+  guid = None
 
   def main(self):
     initCFG('server.susemanager')
@@ -50,6 +51,8 @@ class Register:
 
     if options.reseterrors:
       self.reset_errors()
+
+    self.perform_deregister()
 
     h = rhnSQL.prepare("""
       SELECT rhn_server_id as rhnserverid,
@@ -75,7 +78,7 @@ class Register:
       counter += 1
       if counter > 10:
         rhnSQL.commit()
-        self.register(root)
+        self.send(root)
         # create new root element for the next registration
         root = etree.Element('bulkop', attrib={
           'xmlns' : self.ns,
@@ -93,10 +96,52 @@ class Register:
       h.execute(guid=server['guid'])
 
     rhnSQL.commit()
-    self.register(root)
+    self.send(root)
     rhnSQL.commit()
 
-  def register(self, root):
+  def perform_deregister(self):
+    h = rhnSQL.prepare("""
+    SELECT guid
+    FROM suseDelServer
+    """)
+    h.execute()
+    res = h.fetchall_dict()
+    
+    if not res:
+      # nothing to de-register. Exit
+      return
+
+    counter = 0
+    root = etree.Element('bulkop', attrib={
+                         'xmlns' : self.ns,
+                         'client_version' : '1.2.3',
+                         'lang' : 'en',
+                         })
+    for server in res:
+      counter += 1
+      if counter > 10:
+        rhnSQL.commit()
+        self.send(root)
+        # create new root element for the next registration
+        root = etree.Element('bulkop', attrib={
+                             'xmlns' : self.ns,
+                             'client_version' : '1.2.3',
+                             'lang' : 'en',
+                             })
+        counter = 1
+
+      self.build_deregister_xml(server['guid'], root)
+      h = rhnSQL.prepare("""
+        DELETE FROM suseDelServer
+        WHERE guid = :guid
+      """)
+      h.execute(guid=server['guid'])
+
+      rhnSQL.commit()
+      self.send(root)
+      rhnSQL.commit()
+
+  def send(self, root):
     xml = etree.tostring(root)
     log_debug(2, "SEND: %s" % xml)
 
@@ -164,6 +209,17 @@ class Register:
     else:
       # success
       log_debug(1, "Operation '%s' successful: %s" % (operation, guid))
+
+  def build_deregister_xml(self, guid, root):
+    register_elem = etree.SubElement(root, 'de-register')
+    x = etree.SubElement(register_elem, 'guid')
+    x.text = guid
+    x = etree.SubElement(register_elem, 'authuser')
+    x.text = str(CFG.mirrcred_user)
+    x = etree.SubElement(register_elem, 'authpass')
+    x.text = str(CFG.mirrcred_pass)
+    x = etree.SubElement(register_elem, 'smtguid')
+    x.text = str(self.get_guid())
 
   def build_register_xml(self, server, root):
     h = rhnSQL.prepare("""
@@ -263,8 +319,12 @@ class Register:
 
   def get_guid(self):
     """read guid of this host"""
+    if self.guid:
+      return self.guid
+
     res = suseLib.getProductProfile()
-    return res['guid']
+    self.guid = res['guid']
+    return self.guid
 
   def reset_errors(self):
     h = rhnSQL.prepare("""
