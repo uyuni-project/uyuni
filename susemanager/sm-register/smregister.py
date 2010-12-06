@@ -42,14 +42,14 @@ class Register:
 
   def main(self):
     initCFG('server.susemanager')
-    db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
+    db_string = CFG.DEFAULT_DB
     rhnSQL.initDB(db_string)
     (options, args) = self.process_args()
     log_filename = 'sm-register.log'
     rhnLog.initLOG(default_log_location + log_filename, CFG.DEBUG)
 
     if options.reseterrors:
-      self.resetErrors()
+      self.reset_errors()
 
     h = rhnSQL.prepare("""
       SELECT rhn_server_id as rhnserverid,
@@ -84,7 +84,7 @@ class Register:
           })
         counter = 1
 
-      self.buildRegisterXML(server, root)
+      self.build_register_xml(server, root)
       h = rhnSQL.prepare("""
         UPDATE suseServer
            SET ncc_sync_required = 'N'
@@ -165,7 +165,7 @@ class Register:
       # success
       log_debug(1, "Operation '%s' successful: %s" % (operation, guid))
 
-  def buildRegisterXML(self, server, root):
+  def build_register_xml(self, server, root):
     h = rhnSQL.prepare("""
       SELECT sip.name, sip.version, at.label as arch, sip.release
         FROM suseInstalledProduct sip
@@ -182,7 +182,7 @@ class Register:
     x.text = server['guid']
     x = etree.SubElement(register_elem, 'secret')
     x.text = server['secret']
-    (virttype, hostguid) = self.getVirtualInfo(server['rhnserverid'])
+    (virttype, hostguid) = self.get_virtual_info(server['rhnserverid'])
 
     if virttype and hostguid:
       x = etree.SubElement(register_elem, 'host',
@@ -200,10 +200,10 @@ class Register:
     x = etree.SubElement(register_elem, 'authpass')
     x.text = str(CFG.mirrcred_pass)
     x = etree.SubElement(register_elem, 'smtguid')
-    x.text = str(self.getGUID())
+    x.text = str(self.get_guid())
 
     for prod in products:
-      if not self.isRegisterable(prod):
+      if not self.is_registerable(prod):
         continue
       x = etree.SubElement(register_elem, 'product',
                            attrib={'version' : prod['version'],
@@ -217,7 +217,7 @@ class Register:
     x = etree.SubElement(register_elem, 'param', attrib={'id': 'ostarget'})
     x.text = server['ostarget']
 
-  def getVirtualInfo(self, systemid):
+  def get_virtual_info(self, systemid):
     virttype = None
     hostguid = None
     v = rhnSQL.prepare("""
@@ -256,17 +256,17 @@ class Register:
     return (virttype, hostguid)
 
 
-  def isRegisterable(self, prod):
+  def is_registerable(self, prod):
     if suseLib.findProduct(prod):
       return True
     return False
 
-  def getGUID(self):
+  def get_guid(self):
     """read guid of this host"""
     res = suseLib.getProductProfile()
     return res['guid']
 
-  def resetErrors(self):
+  def reset_errors(self):
     h = rhnSQL.prepare("""
           UPDATE suseServer 
              SET ncc_reg_error='N'
