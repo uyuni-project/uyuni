@@ -237,7 +237,8 @@ class NCCSync(object):
     def update_channel_family_table(self, label, name=None,
                                     org_id=1, url="some url"):
         """Update an existing channel_family row"""
-        channel_family_id = self.get_channel_family_id( label )
+        channel_family_id = rhnSQL.Row("RHNCHANNELFAMILY",
+                                       "LABEL", label)['id']
         if name == None:
             name = label
         if channel_family_id != None:
@@ -264,7 +265,8 @@ class NCCSync(object):
         Returns the id of the channel_family.
 
         """
-        channel_family_id = self.get_channel_family_id(label)
+        channel_family_id = rhnSQL.Row("RHNCHANNELFAMILY",
+                                       "LABEL", label)['id']
         if name == None:
             name = label
 
