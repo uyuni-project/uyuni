@@ -47,10 +47,9 @@ class Register:
     (options, args) = self.process_args()
     log_filename = 'sm-register.log'
     rhnLog.initLOG(default_log_location + log_filename, CFG.DEBUG)
-    log_debug(1, "main called")
 
     if options.reseterrors:
-      self.resetErros()
+      self.resetErrors()
 
     h = rhnSQL.prepare("""
       SELECT rhn_server_id as rhnserverid,
@@ -99,7 +98,7 @@ class Register:
 
   def register(self, root):
     xml = etree.tostring(root)
-    log_debug(1, "SEND: %s" % xml)
+    log_debug(2, "SEND: %s" % xml)
 
     regurl = suseLib.URL(CFG.reg_url)
     regurl.query = "command=bulkop&lang=en&version=1.0"
@@ -148,7 +147,7 @@ class Register:
       return
 
     if result == "warning":
-      log_error("WARNING: Operation: %s[%s] : %s" % (operation, guid, msg))
+      log_debug(1, "WARNING: Operation: %s[%s] : %s" % (operation, guid, msg))
       return
 
     if result == "error":
@@ -162,7 +161,9 @@ class Register:
          WHERE guid = :guid
       """)
       h.execute(guid=guid)
-
+    else:
+      # success
+      log_debug(1, "Operation '%s' successful: %s" % (operation, guid))
 
   def buildRegisterXML(self, server, root):
     h = rhnSQL.prepare("""
@@ -268,7 +269,7 @@ class Register:
   def resetErrors(self):
     h = rhnSQL.prepare("""
           UPDATE suseServer 
-             SET ncc_reg_error=0
+             SET ncc_reg_error='N'
         """)
     h.execute()
 
