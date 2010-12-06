@@ -14,17 +14,13 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
-
-import sys
 import urllib
 import xml.etree.ElementTree as etree
 from optparse import OptionParser
 from datetime import date
 
 from spacewalk.server import rhnSQL
-from spacewalk.common import CFG, initCFG
-
-from spacewalk.susemanager import suseLib
+from spacewalk.common import initCFG
 
 NCC_CHANNELS = 'channels.xml'
 
@@ -63,11 +59,16 @@ class NCCSync(object):
 
         rhnSQL.initDB()
 
-    def _connect_ncc( self, url_in, send=None ):
-        """Connect the ncc with the given URL. 
-           Do a post-request when "send" is given. 
-           Return a filedescriptor"""
-        new_url = url_in
+    def _connect_ncc( self, url, send=None ):
+        """Connect the ncc with the given URL.
+        
+        :arg url: the url where the request will be sent
+        :kwarg send: do a post-request when "send" is given.
+
+        Returns a filedescriptor.
+
+        """
+        new_url = url
         try_counter = self.connect_retries
         while new_url != "" and try_counter > 0:
             try_counter -= 1
@@ -104,12 +105,12 @@ class NCCSync(object):
     def get_subscriptions_from_ncc(self):
         """Returns all subscripts a customer has
            that data can be used for consolidate_subscriptions()."""
-        send = '<?xml version="1.0" encoding="UTF-8"?>'
-        send = send + ("<productdata xmlns=\"%s\" client_version=\"1.2.3\" lang=\"en\">" % self.namespace)
-        send = send + "<authuser>%s</authuser>" % self.authuser
-        send = send + "<authpass>%s</authpass>" % self.authpass
-        send = send + "<smtguid>%s</smtguid>" % self.smtguid
-        send = send + "</productdata>\n"
+        send = ('<?xml version="1.0" encoding="UTF-8"?>'
+                '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
+                '<authuser>%(authuser)s</authuser>'
+                '<authpass>%(authpass)s</authpass>'
+                '<smtguid>%(smtguid)s</smtguid>'
+                '</productdata>\n' % self.__dict__)
 
         f = self._connect_ncc( self.ncc_url_subs, send )
         tree = etree.parse(f)
@@ -118,16 +119,16 @@ class NCCSync(object):
             if row.tag == ("{%s}subscription" % self.namespace):
                 subscription = {}
                 for col in row.getchildren():
-                   dummy = col.tag.split( '}' )
-                   key = dummy[1]
-                   subscription[key] = col.text
+                    dummy = col.tag.split( '}' )
+                    key = dummy[1]
+                    subscription[key] = col.text
                 subscriptions.append(subscription)
         return subscriptions
 
     #   OUT: {'SLE-HAE-PPC':{ 'consumed':0, 'nodecount':10 }, '10040':{ 'consumed':0, 'nodecount':200000}, ... }
     #   nodecount is the number of subscriptions the customer has today for a product
     #   FIXME: not sure about 'consumed' yet
-    def consolidate_subscriptions( self, subs ):
+    def consolidate_subscriptions(self, subs):
         """Takes the get_subscriptions_from_ncc() data and sums the subscriptions of a product"""
         subscription_count = {}
         for s in subs:
@@ -152,17 +153,20 @@ class NCCSync(object):
 
         return subscription_count
 
-#   OUT: array of dicts with all keys the NCC has for a product
     def get_suse_products_from_ncc(self):
-        """returns all products known by NCC"""
-        send = '<?xml version="1.0" encoding="UTF-8"?>'
-        send = send + ("<productdata xmlns=\"%s\" client_version=\"1.2.3\" lang=\"en\">" % self.namespace)
-        send = send + "<authuser>%s</authuser>" % self.authuser
-        send = send + "<authpass>%s</authpass>" % self.authpass
-        send = send + "<smtguid>%s</smtguid>" % self.smtguid
-        send = send + "</productdata>\n"
+        """Get all the products known by NCC
 
-        f = self._connect_ncc( self.ncc_url_prods, send )
+        Returns a list of dicts with all the keys the NCC has for a product
+
+        """
+        send = ('<?xml version="1.0" encoding="UTF-8"?>'
+                '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
+                '<authuser>%(authuser)s</authuser>'
+                '<authpass>%(authpass)s</authpass>'
+                '<smtguid>%(smtguid)s</smtguid>'
+                '</productdata>\n' % self.__dict__)
+
+        f = self._connect_ncc(self.ncc_url_prods, send)
 
         tree = etree.parse(f)
         suseProducts = []
@@ -170,80 +174,72 @@ class NCCSync(object):
             if row.tag == ("{%s}row" % self.namespace):
                 suseProduct = {}
                 for col in row.findall("{%s}col" % self.namespace):
-                   key = col.get("name")
-                   if key == "start-date" or key == "end-date":
-                       suseProduct[key] = float(col.text)
-                   else:
-                       suseProduct[key] = col.text
+                    key = col.get("name")
+                    if key == "start-date" or key == "end-date":
+                        suseProduct[key] = float(col.text)
+                    else:
+                        suseProduct[key] = col.text
                 if suseProduct["PRODUCT_CLASS"] != None:
                     # FIXME: skip buggy NCC entries. Some have no product_class, which is invalid data
                     suseProducts.append(suseProduct)
         return suseProducts
 
-    def get_arch_id( self, arch_in ):
-        """returns the database id of an arch"""
+    def get_arch_id(self, arch):
+        """Returns the database id of an package arch"""
         arch_type_id = None
 
-        if arch_in != None:
+        if arch != None:
             select_sql = "SELECT id from RHNPACKAGEARCH where LABEL = :arch"
             query = rhnSQL.prepare(select_sql)
-            query.execute( arch = arch_in )
+            query.execute(arch = arch)
             row = query.fetchone_dict() or {}
             if row:
                 arch_type_id = row["id"]
         return arch_type_id
 
-    def get_channel_family_id( self, label_in ):
-        """returns the id of a channel_family or None if not existend"""
-        select_sql = "SELECT id from RHNCHANNELFAMILY where LABEL = :label"
-        query = rhnSQL.prepare(select_sql)
-        query.execute( label = label_in )
-        row = query.fetchone_dict() or {}
-        if row:
-            return row["id"]
-        return None
-
-    def update_channel_family_table_by_config( self ):
-        """updates the channel_family table on base of the XML config file"""
-        tree = etree.parse( self.channel_family_config )
+    def update_channel_family_table_by_config(self):
+        """Updates the channel_family table on base of the XML config file"""
+        tree = etree.parse(self.channel_family_config)
         for family in tree.getroot():
             name = family.get("name")
             label = family.get("label")
-            self.edit_channel_family_table( label, name )
+            self.edit_channel_family_table(label, name)
 
-    def add_channel_family_row( self, label_in, name_in=None, org_id_in=1, url_in="some url" ):
-        """insert a new channel_family row"""
-        channel_family_id = self.get_channel_family_id( label_in )
-        if name_in == None:
-            name_in = label_in
+    def add_channel_family_row(self, label, name=None, org_id=1, url="some url"):
+        """Insert a new channel_family row"""
+        channel_family_id = rhnSQL.Row("RHNCHANNELFAMILY", "LABEL", label)['id']
+        if name == None:
+            name = label
         if channel_family_id == None:
             insert_sql = """
             INSERT INTO RHNCHANNELFAMILY
                 ( id, org_id, name, label, product_url )
             VALUES
-                ( sequence_nextval('rhn_channel_family_id_seq'), :org_id, :name, :label, :product_url )
+                ( sequence_nextval('rhn_channel_family_id_seq'),
+                  :org_id, :name, :label, :product_url )
             """
             query = rhnSQL.prepare(insert_sql)
             query.execute(
-                org_id = org_id_in,
-                name = name_in,
-                label = label_in,
-                product_url = url_in
+                org_id = org_id,
+                name = name,
+                label = label,
+                product_url = url
             )
             select_sql = "SELECT id from RHNCHANNELFAMILY where LABEL = :label"
             query = rhnSQL.prepare(select_sql)
-            query.execute( label = label_in )
+            query.execute( label = label )
             row = query.fetchone_dict() or {}
             channel_family_id = row["id"]
             rhnSQL.commit()
         return channel_family_id
 
     # FIXME: only given values should be updated in DB
-    def update_channel_family_table( self, label_in, name_in=None, org_id_in=1, url_in="some url" ):
-        """update an existing channel_family row"""
-        channel_family_id = self.get_channel_family_id( label_in )
-        if name_in == None:
-            name_in = label_in
+    def update_channel_family_table(self, label, name=None,
+                                    org_id=1, url="some url"):
+        """Update an existing channel_family row"""
+        channel_family_id = self.get_channel_family_id( label )
+        if name == None:
+            name = label
         if channel_family_id != None:
             update_sql = """UPDATE RHNCHANNELFAMILY 
                             SET name        = :name,
@@ -253,35 +249,44 @@ class NCCSync(object):
                             WHERE id = :id"""
             query = rhnSQL.prepare(update_sql)
             query.execute( id = channel_family_id,
-                           name = name_in,
-                           label = label_in,
-                           org_id = org_id_in,
-                           product_url = url_in
+                           name = name,
+                           label = label,
+                           org_id = org_id,
+                           product_url = url
             )
             rhnSQL.commit()
         return channel_family_id
 
-    def edit_channel_family_table( self, label_in, name_in=None, org_id_in=1, url_in="some url" ):
-        """returns the id of a channel_family.
-           If not existing, a new one is created
-           If existing, it's getting updated"""
-        channel_family_id = self.get_channel_family_id( label_in )
-        if name_in == None:
-            name_in = label_in
+    def edit_channel_family_table(self, label, name=None,
+                                  org_id=1, url="some url" ):
+        """Create or update an existing channel family
+        
+        Returns the id of the channel_family.
+
+        """
+        channel_family_id = self.get_channel_family_id(label)
+        if name == None:
+            name = label
 
         if channel_family_id == None:
-            channel_family_id = self.add_channel_family_row( label_in, name_in, org_id_in, url_in )
+            channel_family_id = self.add_channel_family_row(
+                label, name, org_id, url)
         else:
-            self.update_channel_family_table( label_in, name_in, org_id_in, url_in )
+            self.update_channel_family_table(label, name, org_id, url)
         return channel_family_id
 
-    def update_suse_products_table( self, suseProducts ):
-        """expects a get_suse_products_from_ncc() datastructure and creates/updates entries in DB"""
+    def update_suse_products_table(self, suseProducts):
+        """Creates/updates entries in the DB Products table
+
+        Expects a get_suse_products_from_ncc() datastructure
+
+        """
         for p in suseProducts:
             arch_type_id = self.get_arch_id( p["ARCH"] )
 
             # FIXME: maybe better get_channel_family_id()
-            channel_family_id = self.edit_channel_family_table( p["PRODUCT_CLASS"] )
+            channel_family_id = self.edit_channel_family_table(
+                p["PRODUCT_CLASS"])
 
             # NAME+VERSION+RELEASE+ARCH are uniq
             select_sql = """SELECT id from SUSEPRODUCTS
@@ -315,13 +320,13 @@ class NCCSync(object):
                 )
             else:
                 insert_sql = """
-                            INSERT INTO SUSEPRODUCTS
-                                (id, NAME, VERSION, FRIENDLY_NAME, 
-                                 ARCH_TYPE_ID, RELEASE, CHANNEL_FAMILY_ID, PRODUCT_LIST)
-                            VALUES
-                                (sequence_nextval('suse_products_id_seq'), :name, :version, 
-                                 :friendly_name, :arch_type_id, :release, 
-                                 :channel_family_id, :product_list)
+                    INSERT INTO SUSEPRODUCTS
+                        (id, NAME, VERSION, FRIENDLY_NAME,
+                         ARCH_TYPE_ID, RELEASE, CHANNEL_FAMILY_ID, PRODUCT_LIST)
+                    VALUES
+                        (sequence_nextval('suse_products_id_seq'),
+                         :name, :version, :friendly_name, :arch_type_id,
+                         :release, :channel_family_id, :product_list)
                 """
 
                 query = rhnSQL.prepare(insert_sql)
@@ -337,13 +342,16 @@ class NCCSync(object):
         rhnSQL.commit()
 
     def edit_subscription_in_table( self, prod, data ):
-        """updates/inserts a subscription in the DB. 
-           Expects a product like from consolidate_subscriptions()"""
+        """Updates/inserts a subscription in the DB.
 
+        Expects a product like from consolidate_subscriptions()
+
+        """
         # FIXME: maybe better get_channel_family_id()
         cf_id = self.edit_channel_family_table( prod )
 
-        select_sql = "SELECT 1 from RHNPRIVATECHANNELFAMILY where channel_family_id = %s" % cf_id
+        select_sql = ("SELECT 1 from RHNPRIVATECHANNELFAMILY "
+                      "WHERE channel_family_id = %s" % cf_id)
         query = rhnSQL.prepare(select_sql)
         query.execute()
         row = query.fetchone_dict() or {}
@@ -374,23 +382,25 @@ class NCCSync(object):
             )
         rhnSQL.commit()
 
-
-
-    def get_db_channel_labels(self):
-        """Return all the current channel names from SUSE Manager"""
-        h = rhnSQL.prepare("SELECT LABEL FROM RHNCHANNEL")
-        h.execute()
-        channels = h.fetchall()
-
-        # return just a list of labels, not a list of one-value tuples
-        return [tup[0] for tup in channels]
-
     def repo_sync(self):
         """Trigger a reposync of all the channels in the database
 
         """
         print "Triggering reposync of all database channels..."
 
+    def get_installed_family_labels(self):
+        """Get the list of installed _official_ channel family labels
+
+        Return a list of channel family labels.
+
+        """
+        # N.B. official families have an ORG_ID == NULL
+        query = rhnSQL.prepare(
+            "SELECT LABEL FROM RHNCHANNELFAMILY WHERE ORG_ID == NULL")
+        query.execute()
+        families = [f[0] for f in query.fetchall()]
+        return families
+        
     def get_available_channels(self):
         """Get a list of all the channels the user has access to
 
@@ -402,11 +412,7 @@ class NCCSync(object):
             tree = etree.parse(f)
         channels_iter = tree.getroot()
 
-        # get all the available channel families from the DB
-        query = rhnSQL.prepare("SELECT LABEL FROM RHNCHANNELFAMILY")
-        query.execute()
-        families = [f[0] for f in query.fetchall()]
-        families = ['7262']
+        families = self.get_installed_family_labels()
 
         # only retrieve the channels that are in our families
         return filter(lambda channel: channel.get('family') in families,
@@ -421,7 +427,7 @@ class NCCSync(object):
 
         """
         print "Listing all mirrorable channels..."
-        db_channels = self.get_db_channel_labels()
+        db_channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
 
         ncc_channels = [c.get('label') for c in
                              self.get_available_channels()]
@@ -492,7 +498,6 @@ class NCCSync(object):
         :arg channel_label: the label of the channel that should be added
 
         """
-
         # first look in the db to see if it's already there
         query = rhnSQL.prepare(
             "SELECT LABEL FROM RHNCHANNEL WHERE LABEL = :label")
@@ -512,7 +517,8 @@ class NCCSync(object):
             query.execute(
                 parent_channel = self.get_parent_id(channel.get('parent')),
                 channel_arch_id = rhnSQL.Row(
-                    "RHNCHANNELARCH", "LABEL", "channel-%s" % channel.get('arch'))['id'],
+                    "RHNCHANNELARCH", "LABEL", "channel-%s" %
+                    channel.get('arch'))['id'],
                 # XXX - org_id = ??
                 **channel.attrib)
 
@@ -524,7 +530,8 @@ class NCCSync(object):
                 "RHNCHANNELFAMILY", "LABEL", channel.get('family'))['id']
 
             query = rhnSQL.prepare(
-                """INSERT INTO RHNCHANNELFAMILYMEMBERS (CHANNEL_ID, CHANNEL_FAMILY_ID)
+                """INSERT INTO RHNCHANNELFAMILYMEMBERS
+                       (CHANNEL_ID, CHANNEL_FAMILY_ID)
                    VALUES (:channel_id, :channel_family_id)""")
             query.execute(
                 channel_id = channel_id,
