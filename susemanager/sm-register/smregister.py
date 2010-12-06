@@ -41,7 +41,7 @@ class Register:
   ns = "http://www.novell.com/xml/center/regsvc-1_0"
 
   def main(self):
-    initCFG('server')
+    initCFG('server.susemanager')
     db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
     rhnSQL.initDB(db_string)
     (options, args) = self.process_args()

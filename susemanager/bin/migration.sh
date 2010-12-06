@@ -149,9 +149,12 @@ db-host=$MANAGER_DB_HOST
 db-port=$MANAGER_DB_PORT
 db-protocol=$MANAGER_DB_PROTOCOL
 enable-tftp=$MANAGER_ENABLE_TFTP
+ncc-user = $NCC_USER
+ncc-pass = $NCC_PASS
+ncc-email = $NCC_EMAIL
 " > /tmp/spacewalk-answers
 
-    /usr/bin/spacewalk-setup --disconnected --answer-file=/tmp/spacewalk-answers
+    /usr/bin/spacewalk-setup --ncc --answer-file=/tmp/spacewalk-answers
     rm /tmp/spacewalk-answers
 }
 
@@ -291,7 +294,9 @@ do_setup() {
         echo -n "MANAGER_DB_PORT="    ; read MANAGER_DB_PORT
         echo -n "MANAGER_DB_PROTOCOL="; read MANAGER_DB_PROTOCOL
         echo -n "MANAGER_ENABLE_TFTP="; read MANAGER_ENABLE_TFTP
-
+        echo -n "NCC_USER="           ; read NCC_USER
+        echo -n "NCC_PASS="           ; read NCC_PASS
+        echo -n "NCC_EMAIL="          ; read NCC_EMAIL
     fi;
     setup_swap
     setup_mail

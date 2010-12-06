@@ -71,6 +71,8 @@ if (-e Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION) {
         \%rhnOptions);
 }
 
+setup_ncc(\%opts, \%answers);
+
 choose_database_schema(\%answers);
 
 # If Oracle was selected, call the Oracle specific setup script. If it turns
@@ -271,6 +273,41 @@ sub setup_admin_email {
   }
 }
 
+sub setup_ncc {
+  my $opts = shift;
+  my $answers = shift;
+
+  if (! $opts{"ncc"})
+  {
+    # no ncc connection wanted
+    $answers{'setup-ncc'} = 'N';
+    return;
+  }
+  $opts{disconnected} = 1;
+  $answers{'setup-ncc'} = 'Y';
+
+  Spacewalk::Setup::ask(
+        -noninteractive => $opts{"non-interactive"},
+        -question => "NCC Mirror Credential Username",
+        -test => sub { my $text = shift;
+                       return $text =~ /\S+/ && length($text) <= 128 },
+        -answer => \$answers{'ncc-user'});
+
+  Spacewalk::Setup::ask(
+        -noninteractive => $opts{"non-interactive"},
+        -question => "NCC Mirror Credential Password",
+        -test => sub { my $text = shift;
+                       return $text =~ /\S+/ && length($text) <= 128 },
+        -answer => \$answers{'ncc-pass'},
+        -password => 1);
+
+  Spacewalk::Setup::ask(
+        -noninteractive => $opts{"non-interactive"},
+        -question => "NCC Email Address",
+        -test => sub { my $text = shift;
+                       valid_multiple_email($text) && length($text) <= 128 },
+        -answer => \$answers{'ncc-email'});
+}
 
 sub setup_sudoers {
 	my $opts = shift;
@@ -1089,7 +1126,10 @@ sub populate_initial_configs {
      monitoringDOTdbd => 'Oracle',
      monitoringDOTscout_shared_key => '', # blank for now.
      cobblerDOThost => $answers->{hostname}
-    );
+     serverDOTsusemanagerDOTmirrcred_email => '',
+     serverDOTsusemanagerDOTmirrcred_user => '',
+     serverDOTsusemanagerDOTmirrcred_pass => '',
+     );
 
     for ($config_opts{'db_password'}) {
         s/\\/\\\\/g if defined $_;
@@ -1108,6 +1148,16 @@ sub populate_initial_configs {
     if (defined($answers->{$key})) {
       $rhnopt{$key} = $answers->{$key};
     }
+  }
+
+  if ($answers->{'setup-ncc'} && $answers->{'setup-ncc'} =~ /^[Yy]/)
+  {
+    $rhnopt{'server.susemanager.mirrcred_user'}  = $answers->{'ncc-user'};
+    $rhnopt{'server.susemanager.mirrcred_pass'}  = $answers->{'ncc-pass'};
+    $rhnopt{'server.susemanager.mirrcred_email'} = $answers->{'ncc-email'};
+    $config_opts{'serverDOTsusemanagerDOTmirrcred_email'} = $answers->{'ncc-email'};
+    $config_opts{'serverDOTsusemanagerDOTmirrcred_user'} = $answers->{'ncc-user'};
+    $config_opts{'serverDOTsusemanagerDOTmirrcred_pass'} = $answers->{'ncc-pass'};
   }
   write_config( \%rhnopt,
 		'/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf' );

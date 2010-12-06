@@ -35,6 +35,8 @@ mkdir -p %{buildroot}/%{_datadir}/doc/licenses
 install -m 0644 usr/share/doc/licenses/SUSE_MANAGER_LICENSE %{buildroot}/%{_datadir}/doc/licenses/
 mkdir -p %{buildroot}/%{_sysconfdir}/init.d
 install -m 0755 etc/init.d/boot.susemanager %{buildroot}/%{_sysconfdir}/init.d
+mkdir -p %{buildroot}/%{_sysconfdir}/rhn/default/
+install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_sysconfdir}/rhn/default/
 make -C sm-register install PREFIX=$RPM_BUILD_ROOT
 mkdir -p %{buildroot}/%{_sbindir}/
 install -m 0755 sm-register/sm-register.py %{buildroot}/%{_sbindir}/sm-register
@@ -67,6 +69,9 @@ fi
 %dir %{_datadir}/doc/licenses
 %dir %{pythonsmroot}
 %dir %{pythonsmroot}/susemanager
+%dir %{_sysconfdir}/rhn
+%dir %{_sysconfdir}/rhn/default
+%config %{_sysconfdir}/rhn/default/rhn_*.conf
 
 %{_prefix}/lib/susemanager/bin/*
 %attr(0755,root,root) %{_sysconfdir}/init.d/boot.susemanager

@@ -21,14 +21,20 @@ variables[15]="MANAGER_DB_HOST"
 variables[16]="MANAGER_DB_PORT"
 variables[17]="MANAGER_DB_PROTOCOL"
 
+variables[18]="NCC_USER"
+variables[19]="NCC_PASS"
+variables[20]="NCC_EMAIL"
+
+
 RESULT_ENV="/tmp/setup_env.sh"
 RESULT_ENV1="/tmp/setup_env_manager.sh"
 RESULT_ENV2="/tmp/setup_env_cert.sh"
 RESULT_ENV3="/tmp/setup_env_db.sh"
+RESULT_ENV4="/tmp/setup_env_ncc.sh"
 
 REMOTE_DB="no"
 
-TITLE="Migration from Red Hat Satellite to SUSE Manager"
+TITLE="SUSE Manager setup"
 
 manager_dialog() {
     rm $RESULT_ENV1
@@ -95,6 +101,21 @@ db_dialog() {
      if [ $? -ne 0 ]; then
          exit 1
      fi
+}
+
+ncc_dialog() {
+    rm -f $RESULT_ENV4
+    dialog --backtitle "$TITLE" \
+           --title "Please fillout the NCC settings" \
+           --insecure \
+           --mixedform "" 21 70 18 \
+               "NCC Mirror Credential User"          2 4 ""       2 40 20 0 0\
+               "NCC Mirror Credential Password"      4 4 ""       4 40 20 0 1\
+               "NCC email address"                   6 4 ""       6 40 20 0 0\
+    2>>$RESULT_ENV4
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi
 }
 
 create_export() {
@@ -181,9 +202,16 @@ fi
 
 create_export $RESULT_ENV3 14
 
+#RUN="TRUE"
+#while [ $RUN = "TRUE" ];do
+    ncc_dialog
+    create_export $RESULT_ENV4 18
+#    RUN="FALSE"
+#done
+
 rm -f $RESULT_ENV
-cat $RESULT_ENV1 $RESULT_ENV2 $RESULT_ENV3 >> $RESULT_ENV
-rm -f $RESULT_ENV1 $RESULT_ENV2 $RESULT_ENV3
+cat $RESULT_ENV1 $RESULT_ENV2 $RESULT_ENV3 $RESULT_ENV4 >> $RESULT_ENV
+rm -f $RESULT_ENV1 $RESULT_ENV2 $RESULT_ENV3 $RESULT_ENV4
 
 exit 0
 # vim: set expandtab:
