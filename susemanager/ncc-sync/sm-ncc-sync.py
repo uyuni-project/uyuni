@@ -443,24 +443,14 @@ class NCCSync(object):
             if channel.get('label') == channel_label:
                 return channel
 
+        # if we got this far, the channel is not available for this user
         raise ChannelNotAvailableError(channel_label)
-
-    def get_channel_id(self, channel_label):
-        """Return the ID of the RHNCHANNEL identified by channel_label"""
-        query = rhnSQL.prepare("""SELECT ID FROM RHNCHANNEL
-                                  WHERE LABEL=:label""")
-        query.execute(label=channel_label)
-        try:
-            return query.fetchone()[0]
-        except TypeError:
-            raise Exception, ("Channel with label %s was not found in the DB." %
-                              channel_label)
 
     def get_parent_id(self, channel_label):
         if channel_label == 'BASE':
             return None
         else:
-            return self.get_channel_id(channel_label)
+            return rhnSQL.Row("RHNCHANNEL", "LABEL", channel_label)['id']
 
     def insert_repo(self, repo, channel_id):
         """Insert an XML repo into the database as a ContentSource
