@@ -39,11 +39,10 @@ class NCCSync(object):
         initCFG("server.satellite")
 
         # FIXME: move static values to config file
-        self.authuser = ""
-        self.authpass = ""
+        #self.smtguid  = getProductProfile()
         self.smtguid  = ""
-        #self.authuser = CFG.mirrcred_user
-        #self.authpass = CFG.mirrcred_pass
+        self.authuser = CFG.mirrcred_user
+        self.authpass = CFG.mirrcred_pass
 
 
         self.namespace = "http://www.novell.com/xml/center/regsvc-1_0"
@@ -294,6 +293,7 @@ class NCCSync(object):
         """
         for p in suseProducts:
             arch_type_id = self.get_arch_id( p["ARCH"] )
+            params = {}
 
             # FIXME: maybe better get_channel_family_id()
             channel_family_id = self.edit_channel_family_table(
@@ -301,23 +301,24 @@ class NCCSync(object):
 
             # NAME+VERSION+RELEASE+ARCH are uniq
             select_sql = """SELECT id from SUSEPRODUCTS
-                            where name       = :name
-                            and version      = :version
-                            and arch_type_id = :arch
-                            and release      = :release"""
-            query = rhnSQL.prepare(select_sql)
+                            where name       = :name """
             if p["PRODUCT"] != None:
                 p["PRODUCT"] = p["PRODUCT"].lower()
             if p["VERSION"] != None:
                 p["VERSION"] = p["VERSION"].lower()
+                select_sql = select_sql + "and version      = :version "
+                params["version"] = p["VERSION"]
             if p["REL"] != None:
                 p["REL"] = p["REL"].lower()
-            query.execute(
-                name = p["PRODUCT"],
-                version = p["VERSION"],
-                arch = arch_type_id,
-                release = p["REL"]
-            )
+                select_sql = select_sql + "and release      = :release "
+                params["release"] = p["REL"]
+            if arch_type_id != None:
+                select_sql = select_sql + "and arch_type_id = :arch "
+                params["arch"] = arch_type_id
+
+            params["name"] = p["PRODUCT"]
+            query = rhnSQL.prepare(select_sql)
+            apply(query.execute, (), params)
             row = query.fetchone_dict() or {}
             if row:
                 update_sql = """
