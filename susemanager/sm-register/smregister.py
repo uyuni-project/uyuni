@@ -49,6 +49,15 @@ class Register:
     log_filename = 'sm-register.log'
     rhnLog.initLOG(default_log_location + log_filename, CFG.DEBUG)
 
+    # reset error for all server which modified date is
+    # 14 days ago
+    h = rhnSQL.prepare("""
+      UPDATE suseServer
+         SET ncc_reg_error = 'N'
+       WHERE modified < current_timestamp - numtodsinterval(14 * 86400, 'second')
+    """)
+    h.execute()
+
     if options.reseterrors:
       self.reset_errors()
 
