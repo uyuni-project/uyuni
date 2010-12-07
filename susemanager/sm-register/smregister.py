@@ -84,8 +84,7 @@ class Register:
                            'lang' : 'en',
                            })
     for server in res:
-      counter += 1
-      if counter > 10:
+      if counter >= 10:
         rhnSQL.commit()
         self.send(root)
         # create new root element for the next registration
@@ -94,9 +93,13 @@ class Register:
           'client_version' : '1.2.3',
           'lang' : 'en',
           })
-        counter = 1
+        counter = 0
 
-      self.build_register_xml(server, root)
+      if not self.build_register_xml(server, root)
+        continue
+
+      counter += 1
+    
       h = rhnSQL.prepare("""
         UPDATE suseServer
            SET ncc_sync_required = 'N'
@@ -241,6 +244,15 @@ class Register:
     h.execute(rhnserverid=server['rhnserverid'])
     products = h.fetchall_dict()
 
+    found_registerable_product = False
+    for prod in products:
+      if self.is_registerable(prod):
+        found_registerable_product = True
+        break
+
+    if not found_registerable_product:
+      return False
+
     register_elem = etree.SubElement(root, 'register',
                                      attrib={'force' : 'batch'})
     x = etree.SubElement(register_elem, 'guid')
@@ -281,6 +293,7 @@ class Register:
     x.text = CFG.ncc_email
     x = etree.SubElement(register_elem, 'param', attrib={'id': 'ostarget'})
     x.text = server['ostarget']
+    return True
 
   def get_virtual_info(self, systemid):
     virttype = None
