@@ -274,7 +274,7 @@ problems, isn't running, or the token is somehow corrupt.
                 continue
             except xmlrpclib.ProtocolError, e:
                 token = None
-                log_error('rpclib.ProtocolError', e)
+                log_error('xmlrpclib.ProtocolError', e)
                 time.sleep(.25)
                 continue
             except xmlrpclib.Fault, e:
@@ -308,7 +308,7 @@ problems, isn't running, or the token is somehow corrupt.
 
         if not token:
             if error:
-                if error[0] in ('rpclib.ProtocolError', 'socket.error', 'socket'):
+                if error[0] in ('xmlrpclib.ProtocolError', 'socket.error', 'socket'):
                     raise rhnFault(1000,
                                 _("RHN Proxy error (error: %s). "
                                   "Please contact your system administrator.") % error[0])

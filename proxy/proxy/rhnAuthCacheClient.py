@@ -27,7 +27,8 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
-from rhnAuthProtocol import CommunicationError, Fault, send, recv
+from rhnAuthProtocol import CommunicationError, send, recv
+from xmlrpclib import Fault
 
 #
 # Protocol description:
