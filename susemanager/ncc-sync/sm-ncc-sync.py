@@ -306,6 +306,12 @@ class NCCSync(object):
                             and arch_type_id = :arch
                             and release      = :release"""
             query = rhnSQL.prepare(select_sql)
+            if p["PRODUCT"] != None:
+                p["PRODUCT"] = p["PRODUCT"].lower()
+            if p["VERSION"] != None:
+                p["VERSION"] = p["VERSION"].lower()
+            if p["REL"] != None:
+                p["REL"] = p["REL"].lower()
             query.execute(
                 name = p["PRODUCT"],
                 version = p["VERSION"],
@@ -341,6 +347,12 @@ class NCCSync(object):
                 """
 
                 query = rhnSQL.prepare(insert_sql)
+                if p["PRODUCT"] != None:
+                    p["PRODUCT"] = p["PRODUCT"].lower()
+                if p["VERSION"] != None:
+                    p["VERSION"] = p["VERSION"].lower()
+                if p["REL"] != None:
+                    p["REL"] = p["REL"].lower()
                 query.execute(
                               name = p["PRODUCT"],
                               version = p["VERSION"],
