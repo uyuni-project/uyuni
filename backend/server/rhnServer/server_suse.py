@@ -137,9 +137,13 @@ class SuseData:
       ncc_sync_required = True
 
     if ncc_sync_required:
+      # If the data have changed, we set the
+      # sync_required flag and reset the errors
+      # flag to give the registration another try
       h = rhnSQL.prepare("""
         UPDATE suseServer
-           SET ncc_sync_required = 'Y'
+           SET ncc_sync_required = 'Y',
+               ncc_reg_error = 'N'
         WHERE rhn_server_id = :sysid
       """)
       h.execute(sysid=sysid)
