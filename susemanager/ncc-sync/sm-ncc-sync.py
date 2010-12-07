@@ -20,7 +20,7 @@ from optparse import OptionParser
 from datetime import date
 
 from spacewalk.server import rhnSQL
-from spacewalk.common import initCFG
+from spacewalk.common import initCFG,CFG
 
 NCC_CHANNELS = 'channels.xml'
 
