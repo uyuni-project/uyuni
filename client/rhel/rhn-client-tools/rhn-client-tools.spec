@@ -88,11 +88,7 @@ Group: System Environment/Base
 Requires: usermode >= 1.36
 Requires: %{name} = %{version}-%{release}
 Requires: rhnsd
-%if 0%{?suse_version}
-Requires: suseRegister
-%else
-Requires: suseRegisterRES
-%endif
+Requires: suseRegisterInfo
 
 %description -n rhn-setup
 rhn-setup contains programs and utilities to configure a system to use
@@ -268,9 +264,6 @@ make -f Makefile.rhn-client-tools test
 %{_sbindir}/rhnreg_ks
 %{_sbindir}/spacewalk-channel
 %{_sbindir}/rhn-channel
-%dir /usr/lib/suseRegister
-%dir /usr/lib/suseRegister/bin
-/usr/lib/suseRegister/bin/suse_register_info
 
 %{_datadir}/rhn/up2date_client/rhnreg.*
 %{_datadir}/rhn/up2date_client/tui.*

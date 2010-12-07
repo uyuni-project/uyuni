@@ -11,9 +11,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  python-devel
 Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
-# needed for suse_register_info
-Requires:       rhn-setup
 Requires:       rsync less
+Requires:       suseRegisterInfo
 # needed for sqlplus
 Requires:       oracle-xe-univ
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
@@ -23,6 +22,19 @@ Requires:       oracle-xe-univ
 %description
 A collection of scripts for managing SUSE Manager's initial
 setup tasks, re-installation, upgrades and managing.
+
+%package -n suseRegisterInfo
+Summary:    Tool to get informations from the local system
+Group:      Productivity/Other
+%if 0%{?suse_version}
+Requires: suseRegister
+%else
+Requires: suseRegisterRES
+%endif
+
+%description -n suseRegisterInfo
+This tool read data from the local system required
+for a registration
 
 %prep
 %setup -q
@@ -42,6 +54,9 @@ install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_sysconfdir}
 make -C sm-register install PREFIX=$RPM_BUILD_ROOT
 mkdir -p %{buildroot}/%{_sbindir}/
 install -m 0755 sm-register/sm-register.py %{buildroot}/%{_sbindir}/sm-register
+
+mkdir -p %{buildroot}/usr/lib/suseRegister/bin/
+install -m 0755 suseRegister/suse_register_info.pl %{buildroot}/usr/lib/suseRegister/bin/suse_register_info
 
 %clean
 rm -rf %{buildroot}
@@ -84,6 +99,11 @@ fi
 %{pythonsmroot}/susemanager/suseLib.py*
 %{pythonsmroot}/susemanager/smregister.py*
 
+%files -n suseRegisterInfo
+%defattr(-,root,root,-)
+%dir /usr/lib/suseRegister
+%dir /usr/lib/suseRegister/bin
+/usr/lib/suseRegister/bin/suse_register_info
 
 %changelog
 

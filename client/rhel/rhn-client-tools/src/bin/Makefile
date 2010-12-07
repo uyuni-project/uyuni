@@ -7,13 +7,12 @@ PYCHECKER       := /usr/bin/pychecker
 
 BIN_DIR		:= $(PREFIX)/usr/bin
 SBIN_DIR	:= $(PREFIX)/usr/sbin
-SR_DIR		:= $(PREFIX)/usr/lib/suseRegister/bin/
 
 INSTALL         := install -p --verbose 
 INSTALL_DIR     = $(INSTALL) -m 755 -d 
 INSTALL_BIN     := $(INSTALL) -m 755 
 
-DIRS		= $(BIN_DIR) $(SBIN_DIR) $(SR_DIR)
+DIRS		= $(BIN_DIR) $(SBIN_DIR)
 # default compile rule:
 %.pyc: %.py
 	python -c "import py_compile; py_compile.compile('$<')"
@@ -30,7 +29,6 @@ install:: all $(DIRS)
 	$(INSTALL_BIN) rhn-profile-sync.py $(SBIN_DIR)/rhn-profile-sync
 	$(INSTALL_BIN) rhn_check.py $(SBIN_DIR)/rhn_check
 	$(INSTALL_BIN) spacewalk-channel.py $(SBIN_DIR)/spacewalk-channel
-	$(INSTALL_BIN) suse_register_info.pl $(SR_DIR)/suse_register_info
 
 	ln -sf consolehelper $(BIN_DIR)/rhn_register
 	ln -s spacewalk-channel $(SBIN_DIR)/rhn-channel
