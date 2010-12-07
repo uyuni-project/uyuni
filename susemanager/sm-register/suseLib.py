@@ -23,28 +23,29 @@ def findProduct(product):
   q_release = ""
   q_arch    = ""
   product_id = None
-  log_debug(1, "PRODUCT: %s" % product)
+  log_debug(2, "Search for product: %s" % product)
 
   if 'version' in product and product['version'] != "":
     q_version = "or sp.version = :version"
   if 'release' in product and product['release'] != "":
     q_release = "or sp.release = :release"
   if 'arch' in product and product['arch'] != "":
-    q_arch = "or at.label = :arch"
+    q_arch = "or pat.label = :arch"
 
   h = rhnSQL.prepare("""
-    SELECT sp.id, sp.name, sp.version, at.label as arch, sp.release
+    SELECT sp.id, sp.name, sp.version, pat.label as arch, sp.release
       FROM suseProducts sp
-      JOIN rhnPackageArch at ON sp.arch_type_id = at.id
+ LEFT JOIN rhnPackageArch pat ON pat.id = sp.arch_type_id
      WHERE sp.name = :name
        AND (sp.version IS NULL %s)
        AND (sp.release IS NULL %s)
        AND (sp.arch_type_id IS NULL %s)
+  ORDER BY name, version, release, arch
   """ % (q_version, q_release, q_arch))
   apply(h.execute, (), product)
   rs = h.fetchall_dict()
   if not rs:
-    log_debug(1, "No Channel Found")
+    log_debug(1, "No Product Found")
     return None
 
   product_id = rs[0]['id']
