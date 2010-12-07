@@ -95,7 +95,7 @@ class Register:
           })
         counter = 0
 
-      if not self.build_register_xml(server, root)
+      if not self.build_register_xml(server, root):
         continue
 
       counter += 1
