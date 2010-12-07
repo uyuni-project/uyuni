@@ -23,14 +23,19 @@ def findProduct(product):
   q_release = ""
   q_arch    = ""
   product_id = None
+  product_lower['name'] = product['name'].lower()
+
   log_debug(2, "Search for product: %s" % product)
 
   if 'version' in product and product['version'] != "":
     q_version = "or sp.version = :version"
+    product_lower['version'] = product['version'].lower()
   if 'release' in product and product['release'] != "":
     q_release = "or sp.release = :release"
+    product_lower['release'] = product['release'].lower()
   if 'arch' in product and product['arch'] != "":
     q_arch = "or pat.label = :arch"
+    product_lower['arch'] = product['arch'].lower()
 
   h = rhnSQL.prepare("""
     SELECT sp.id, sp.name, sp.version, pat.label as arch, sp.release
@@ -42,8 +47,9 @@ def findProduct(product):
        AND (sp.arch_type_id IS NULL %s)
   ORDER BY name, version, release, arch
   """ % (q_version, q_release, q_arch))
-  apply(h.execute, (), product)
+  apply(h.execute, (), product_lower)
   rs = h.fetchall_dict()
+
   if not rs:
     log_debug(1, "No Product Found")
     return None
