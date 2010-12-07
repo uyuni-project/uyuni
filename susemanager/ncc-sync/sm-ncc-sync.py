@@ -36,7 +36,7 @@ class NCCSync(object):
 
     def __init__(self):
         """Setup configuration"""
-        initCFG("server.satellite")
+        initCFG("server.susemanager")
 
         # FIXME: move static values to config file
         #self.smtguid  = getProductProfile()
