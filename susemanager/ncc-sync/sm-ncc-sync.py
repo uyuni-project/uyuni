@@ -373,8 +373,10 @@ class NCCSync(object):
         Expects a product like from consolidate_subscriptions()
 
         """
-        # FIXME: maybe better get_channel_family_id()
-        cf_id = self.edit_channel_family_table( prod )
+        cf_id = self.get_channel_family_id( prod )
+
+        if not cf_id:
+            self.add_channel_family_row( prod )
 
         select_sql = ("SELECT 1 from RHNPRIVATECHANNELFAMILY "
                       "WHERE channel_family_id = %s" % cf_id)
@@ -389,6 +391,7 @@ class NCCSync(object):
             """
             query = rhnSQL.prepare(update_sql)
             query.execute(
+                cf_id = cf_id,
                 max_m = data["nodecount"],
                 c_m = 0
             )
