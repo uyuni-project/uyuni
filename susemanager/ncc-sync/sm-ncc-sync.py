@@ -400,6 +400,7 @@ class NCCSync(object):
                 UPDATE RHNPRIVATECHANNELFAMILY SET
                 max_members = :max_m, current_members = :c_m
                 WHERE channel_family_id = :cf_id
+                  AND org_id = 1
             """
             query = rhnSQL.prepare(update_sql)
             query.execute(
