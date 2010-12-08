@@ -22,7 +22,7 @@ from datetime import date
 from spacewalk.server import rhnSQL
 from spacewalk.common import initCFG,CFG
 
-NCC_CHANNELS = 'channels.xml'
+NCC_CHANNELS = '/usr/share/susemanager/channels.xml'
 
 class ChannelNotAvailableError(Exception):
     def __init__(self, channel_label):
@@ -54,7 +54,7 @@ class NCCSync(object):
         self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
         self.connect_retries = 10
         # FIXME: the path needs to be fixed
-        self.channel_family_config = '/tmp/channel_families.xml'
+        self.channel_family_config = '/usr/share/susemanager/channel_families.xml'
 
         rhnSQL.initDB()
 
