@@ -153,10 +153,9 @@ class NCCSync(object):
                 if today >= start_date and (end == 0 or today <= end_date) and s["type"] != "PROVISIONAL":
                     # "nodecount = None" means unlimited
                     if s["nodecount"] == "-1":
-                        subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : None }
+                        subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : 200000 }
                     elif subscription_count.has_key( p ):
-                        if subscription_count[ p ]["nodecount"] != None:
-                            subscription_count[ p ]["nodecount"] += int(s["nodecount"])
+                        subscription_count[ p ]["nodecount"] += int(s["nodecount"])
                     else:
                         subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : int(s["nodecount"]) }
 
