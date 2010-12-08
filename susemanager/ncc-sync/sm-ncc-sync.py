@@ -23,6 +23,7 @@ from datetime import date
 
 from spacewalk.server import rhnSQL
 from spacewalk.common import initCFG, CFG, rhnLog
+from spacewalk.susemanager import suseLib
 
 NCC_CHANNELS = '/usr/share/susemanager/channels.xml'
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
@@ -49,12 +50,9 @@ class NCCSync(object):
 
         self.log_msg("\nStarted: %s" % (time.asctime(time.localtime())))
 
-        # FIXME: move static values to config file
-        #self.smtguid  = getProductProfile()
-        self.smtguid  = ""
+        self.smtguid  = suseLib.getProductProfile()['guid']
         self.authuser = CFG.mirrcred_user
         self.authpass = CFG.mirrcred_pass
-
 
         self.namespace = "http://www.novell.com/xml/center/regsvc-1_0"
 
@@ -440,7 +438,7 @@ class NCCSync(object):
         """
         # N.B. official families have an ORG_ID == NULL
         query = rhnSQL.prepare(
-            "SELECT LABEL FROM RHNCHANNELFAMILY WHERE ORG_ID == NULL")
+            "SELECT LABEL FROM RHNCHANNELFAMILY WHERE ORG_ID IS NULL")
         query.execute()
         families = [f[0] for f in query.fetchall()]
         return families
