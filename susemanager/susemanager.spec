@@ -13,6 +13,7 @@ Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
 Requires:       rsync less
 Requires:       suseRegisterInfo
+Requires:       sm-ncc-sync-data
 # needed for sqlplus
 Requires:       oracle-xe-univ
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
@@ -36,6 +37,13 @@ Requires: suseRegisterRES
 This tool read data from the local system required
 for a registration
 
+%package -n sm-ncc-sync-data
+Summary:    data files for NCC data configuration
+Group:      Productivity/Other
+
+%description -n sm-ncc-sync-data
+This package contains data files with NCC information
+
 %prep
 %setup -q
 
@@ -58,6 +66,10 @@ install -m 0755 ncc-sync/sm-ncc-sync.py %{buildroot}/%{_sbindir}/sm-ncc-sync
 
 mkdir -p %{buildroot}/usr/lib/suseRegister/bin/
 install -m 0755 suseRegister/suse_register_info.pl %{buildroot}/usr/lib/suseRegister/bin/suse_register_info
+
+mkdir -p %{buildroot}/usr/share/susemanager
+install -m 0644 ncc-sync/channel_families.xml %{buildroot}/usr/share/susemanager/channel_families.xml
+install -m 0644 ncc-sync/channels.xml         %{buildroot}/usr/share/susemanager/channels.xml
 
 %clean
 rm -rf %{buildroot}
@@ -107,6 +119,12 @@ fi
 %dir /usr/lib/suseRegister
 %dir /usr/lib/suseRegister/bin
 /usr/lib/suseRegister/bin/suse_register_info
+
+%files -n sm-ncc-sync-data
+%defattr(-,root,root,-)
+%dir /usr/share/susemanager
+/usr/share/susemanager/channel_families.xml
+/usr/share/susemanager/channels.xml
 
 %changelog
 
