@@ -15,6 +15,7 @@ import os
 import tempfile
 import ConfigParser
 import urlparse
+from suseRegister.info import getProductProfile, parseProductProfileFile
 from spacewalk.common import log_debug, log_error, rhnFault
 from spacewalk.server import rhnSQL
 
