@@ -14,7 +14,7 @@ BuildRequires: update-desktop-files
 
 Requires: rhnlib >= 2.5.20
 Requires: rpm >= 4.2.3-24_nonptl
-Requires: rpm-python 
+Requires: rpm-python
 Requires: python-ethtool
 Requires: gnupg
 Requires: sh-utils
@@ -36,6 +36,7 @@ Requires: newt
 %endif
 Requires: python-dmidecode
 Requires: libxml2-python
+Requires: suseRegisterInfo
 
 Conflicts: up2date < 5.0.0
 Conflicts: yum-rhn-plugin < 1.1.4-1
@@ -79,7 +80,7 @@ Requires: yum-rhn-plugin >= 1.1.2-1
 %endif
 
 %description -n rhn-check
-rhn-check polls a Red Hat Network or Spacewalk server to find and execute 
+rhn-check polls a Red Hat Network or Spacewalk server to find and execute
 scheduled actions.
 
 %package -n rhn-setup
@@ -116,7 +117,7 @@ registering a system with a Red Hat Network or Spacewalk server.
 
 
 %prep
-%setup -q 
+%setup -q
 
 %build
 make -f Makefile.rhn-client-tools
@@ -178,7 +179,7 @@ make -f Makefile.rhn-client-tools test
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 # some info about mirrors
-%doc doc/mirrors.txt 
+%doc doc/mirrors.txt
 %doc doc/AUTHORS
 %doc doc/LICENSE
 %{_mandir}/man8/rhn-profile-sync.8*
@@ -589,7 +590,7 @@ make -f Makefile.rhn-client-tools test
 - fixed several unit test
 
 * Tue Feb 02 2010 Michael Mraka <michael.mraka@redhat.com> 0.8.8-1
-- fixed failed build 
+- fixed failed build
 
 * Mon Feb 01 2010 Michael Mraka <michael.mraka@redhat.com> 0.8.7-1
 - use rhnLockfile.py from rhnlib
@@ -648,7 +649,7 @@ make -f Makefile.rhn-client-tools test
 
 * Fri Sep  4 2009 Miroslav Suchy <msuchy@redhat.com> 0.7.2-1
 - Rhpl was removed from rhel client packages (lukas.durfina@gmail.com)
- 
+
 * Tue Sep  1 2009 Miroslav Suchy <msuchy@redhat.com> 0.7.1-1
 - change appeareance of icon and put it to Administration rather then to Preferences
 - add scriplet to refres icon cache
@@ -690,7 +691,7 @@ make -f Makefile.rhn-client-tools test
 
 * Fri Jun  5 2009 Pradeep Kilambi <pkilambi@redhat.com>
 - Resolves: #504296
- 
+
 * Thu May 21 2009 jesus m. rodriguez <jesusr@redhat.com> 0.4.27-1
 - new build (pkilambi@redhat.com)
 - 501316 - chnaging the network switch to always send network info by default
@@ -797,12 +798,12 @@ make -f Makefile.rhn-client-tools test
 - new build
 
 * Thu Sep 18 2008 Pradeep Kilambi <pkilambi@redhat.com> 0.4.19-2
-- Resolves: #231902 #241209 #249127 #249425 #253596 
-- Resolves: #385321 #405671 #429334 #430155 #430156 
-- Resolves: #432426 #433097 #434550 #439383 #442923 
+- Resolves: #231902 #241209 #249127 #249425 #253596
+- Resolves: #385321 #405671 #429334 #430155 #430156
+- Resolves: #432426 #433097 #434550 #439383 #442923
 - Resolves: #442930 #450597 #451775 #452829 #457953  #460685
 
-* Tue Apr 16 2008 Pradeep Kilambi <pkilambi@redhat.com> 
+* Tue Apr 16 2008 Pradeep Kilambi <pkilambi@redhat.com>
 - Resolves: #442694
 
 * Mon Mar 16 2008 Pradeep Kilambi <pkilambi@redhat.com> - 0.4.17-3
@@ -827,7 +828,7 @@ make -f Makefile.rhn-client-tools test
 - Related: #211568
 - Fix 'rhn_register dies when calling activateHardwareInfo' (jesusr)
 - Resolves: #227408
- 
+
 * Thu Feb 01 2007 James Bowes <jbowes@redhat.com> - 0.4.11-1
 - Add missing translations.
 - Related: #211568
@@ -901,7 +902,7 @@ make -f Makefile.rhn-client-tools test
 - Fixes for #213573, #215992, #215958, #214844, #214190
 
 * Tue Nov 14 2006 James Bowes <jbowes@redhat.com> - 0.3.3-1
-- Fixes for #213089, #213958, #214691, #215085, #414414, #213134, #214882 
+- Fixes for #213089, #213958, #214691, #215085, #414414, #213134, #214882
 - Fixes for #214844, #214523, #214609
 - Include new manual pages and AUTHORS file.
 
@@ -931,7 +932,7 @@ make -f Makefile.rhn-client-tools test
 
 * Wed Oct 25 2006 Peter Vetere <pvetere@redhat.com> - 0.2.6-1
 - Update to 0.2.6
-- Fixed rhnreg_ks call to registerSystem.  Used "token" arg instead of 
+- Fixed rhnreg_ks call to registerSystem.  Used "token" arg instead of
   "activationKey."
 
 * Wed Oct 25 2006 James Bowes <jbowes@redhat.com> - 0.2.5-1
@@ -1015,7 +1016,7 @@ make -f Makefile.rhn-client-tools test
 - Remove references to up2date-uuid.
 
 * Wed Sep 06 2006 Daniel Benamy <dbenamy@redhat.com> - 0.1.4-4
-- Remove configdlg and put needed functionality in rh_register.glade and 
+- Remove configdlg and put needed functionality in rh_register.glade and
   rhnregGui.py.
 
 * Wed Aug 30 2006 James Bowes <jbowes@redhat.com> - 0.1.4-3
@@ -1149,7 +1150,7 @@ make -f Makefile.rhn-client-tools test
 * Wed Nov 09 2005 Adrian Likins <alikins@redhat.com> 4.4.52
 - fix #165024 - "invalid function call" error on proxy installs
 - fix #169881, #167732 -  'up2date --configure' always saves changes if useNetwork is false on startup
- 
+
 
 * Mon Oct 10 2005 Adrian Likins <alikins@redhat.com> 4.4.51
 - fix #169882, #159955 - up2date man page does not describe --undo option.
@@ -1159,7 +1160,7 @@ make -f Makefile.rhn-client-tools test
 
 * Thu Sep 15 2005 Adrian Likins <alikins@redhat.com> 4.4.50-4
 - new up2date.pot, synced up
-- fix uncommitted changes that were causing string 
+- fix uncommitted changes that were causing string
   translations not to show up
 - more translations updates for #160608
 
@@ -1287,7 +1288,7 @@ make -f Makefile.rhn-client-tools test
 
 * Fri Jan 14 2005 Adrian Likins <alikins@redhat.com> 4.4.7
 - fix #136497
-- fix #142750, #142589 (less deprecation warnings) 
+- fix #142750, #142589 (less deprecation warnings)
 
 * Mon Jan 10 2005 Adrian Likins <alikins@redhat.com> 4.4.6
 - fix #144704
