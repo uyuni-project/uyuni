@@ -54,7 +54,7 @@ install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_sysconfdir}
 make -C sm-register install PREFIX=$RPM_BUILD_ROOT
 mkdir -p %{buildroot}/%{_sbindir}/
 install -m 0755 sm-register/sm-register.py %{buildroot}/%{_sbindir}/sm-register
-install -m 0755 sm-ncc-sync/sm-ncc-sync.py %{buildroot}/%{_sbindir}/sm-ncc-sync
+install -m 0755 ncc-sync/sm-ncc-sync.py %{buildroot}/%{_sbindir}/sm-ncc-sync
 
 mkdir -p %{buildroot}/usr/lib/suseRegister/bin/
 install -m 0755 suseRegister/suse_register_info.pl %{buildroot}/usr/lib/suseRegister/bin/suse_register_info
