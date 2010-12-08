@@ -204,7 +204,7 @@ class NCCSync(object):
             label = family.get("label")
             self.edit_channel_family_table(label, name)
 
-    def add_channel_family_row(self, label, name=None, org_id=1, url="some url"):
+    def add_channel_family_row(self, label, name=None, org_id=None, url="some url"):
         """Insert a new channel_family row"""
         channel_family_id = self.get_channel_family_id(label)
         if name == None:
@@ -268,7 +268,7 @@ class NCCSync(object):
         return None
 
     def edit_channel_family_table(self, label, name=None,
-                                  org_id=1, url="some url" ):
+                                  org_id=None, url="some url" ):
         """Create or update an existing channel family
         
         Returns the id of the channel_family.
@@ -295,9 +295,11 @@ class NCCSync(object):
             arch_type_id = self.get_arch_id( p["ARCH"] )
             params = {}
 
-            # FIXME: maybe better get_channel_family_id()
-            channel_family_id = self.edit_channel_family_table(
+            channel_family_id = self.get_channel_family_id(
                 p["PRODUCT_CLASS"])
+
+            if not channel_family_id:
+               self.add_channel_family_row( p["PRODUCT_CLASS"])
 
             # NAME+VERSION+RELEASE+ARCH are uniq
             select_sql = """SELECT id from SUSEPRODUCTS
