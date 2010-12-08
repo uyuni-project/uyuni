@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # Copyright (C) 2009, 2010 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
@@ -20,9 +21,10 @@ from optparse import OptionParser
 from datetime import date
 
 from spacewalk.server import rhnSQL
-from spacewalk.common import initCFG,CFG
+from spacewalk.common import initCFG, CFG, rhnLog
 
 NCC_CHANNELS = '/usr/share/susemanager/channels.xml'
+DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
 class ChannelNotAvailableError(Exception):
     def __init__(self, channel_label):
@@ -34,9 +36,15 @@ class ChannelNotAvailableError(Exception):
 class NCCSync(object):
     """This class is used to sync SUSE Manager Channels and NCC repositories"""
 
-    def __init__(self):
+    def __init__(self, quiet=False):
         """Setup configuration"""
+        self.quiet = quiet
+
         initCFG("server.susemanager")
+        if CFG.DEBUG > 1:
+            rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'sm-ncc-sync.log', CFG.DEBUG)
+        else:
+          rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'sm-ncc-sync.log')
 
         # FIXME: move static values to config file
         #self.smtguid  = getProductProfile()
@@ -110,6 +118,7 @@ class NCCSync(object):
                 '<smtguid>%(smtguid)s</smtguid>'
                 '</productdata>\n' % self.__dict__)
 
+        self.print_msg("Downloading Subscription information")
         f = self._connect_ncc( self.ncc_url_subs, send )
         tree = etree.parse(f)
         subscriptions = []
@@ -165,6 +174,7 @@ class NCCSync(object):
                 '<smtguid>%(smtguid)s</smtguid>'
                 '</productdata>\n' % self.__dict__)
 
+        self.print_msg("Downloading Product information")
         f = self._connect_ncc(self.ncc_url_prods, send)
 
         tree = etree.parse(f)
@@ -198,6 +208,7 @@ class NCCSync(object):
 
     def update_channel_family_table_by_config(self):
         """Updates the channel_family table on base of the XML config file"""
+        self.print_msg("Updating Channel Family Information")
         tree = etree.parse(self.channel_family_config)
         for family in tree.getroot():
             name = family.get("name")
@@ -206,6 +217,7 @@ class NCCSync(object):
 
     def add_channel_family_row(self, label, name=None, org_id=None, url="some url"):
         """Insert a new channel_family row"""
+        self.print_msg("Adding Channel %s" % label)
         channel_family_id = self.get_channel_family_id(label)
         if name == None:
             name = label
@@ -415,7 +427,7 @@ class NCCSync(object):
         """Trigger a reposync of all the channels in the database
 
         """
-        print "Triggering reposync of all database channels..."
+        self.print_msg("Triggering reposync of all database channels...")
 
     def get_installed_family_labels(self):
         """Get the list of installed _official_ channel family labels
@@ -523,7 +535,7 @@ class NCCSync(object):
         query.execute(label=channel_label)
 
         if query.fetchone():
-            print "Channel %s is already in the database." % channel_label
+            self.print_msg( "Channel %s is already in the database." % channel_label )
         else:
             channel = self.get_ncc_channel(channel_label)
             query = rhnSQL.prepare(
@@ -560,11 +572,23 @@ class NCCSync(object):
                 self.insert_repo(repo, channel_id)
                 
             rhnSQL.commit()
-            print "Added channel '%s' to the database." % channel_label
+            self.print_msg( "Added channel '%s' to the database." % channel_label )
 
         # TODO do the syncing
-        print "Triggered a database sync for channel '%s'" % channel_label
+        self.print_msg( "Trigger sync for channel '%s'" % channel_label )
 
+    def print_msg(self, message):
+        rhnLog.log_clean(0, message)
+        if not self.quiet:
+            print message
+
+    def error_msg(self, message):
+        rhnLog.log_clean(0, message)
+        if not self.quiet:
+            sys.stderr.write(str(message) + "\n")
+
+    def log_msg(self, message):
+        rhnLog.log_clean(0, message)
 
 def main():
     parser = OptionParser(version="%prog 0.1",
@@ -580,10 +604,12 @@ def main():
                       help="update channel family by XML config")
     parser.add_option("-s", "--update_subscriptions", action="store_true",
                       help="update subscriptions by NCC data")
+    parser.add_option('-q', '--quiet', action='store_true', dest='quiet', 
+                      default=False, help="Print no output, still logs output")
 
     (options, args) = parser.parse_args()
 
-    syncer = NCCSync()
+    syncer = NCCSync(quiet=options.quiet)
     if options.list:
         syncer.list_channels()
     elif options.channel:
@@ -599,6 +625,13 @@ def main():
         for s in cons_subs.keys():
             syncer.edit_subscription_in_table( s, cons_subs[s] )
     else:
+        syncer.update_channel_family_table_by_config()
+        suseProducts = syncer.get_suse_products_from_ncc()
+        syncer.update_suse_products_table( suseProducts )
+        all_subs = syncer.get_subscriptions_from_ncc()
+        cons_subs = syncer.consolidate_subscriptions( all_subs )
+        for s in cons_subs.keys():
+            syncer.edit_subscription_in_table( s, cons_subs[s] )
         syncer.repo_sync()
 
 if __name__ == "__main__":
