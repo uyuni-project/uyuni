@@ -64,6 +64,7 @@ mkdir -p %{buildroot}/%{_sbindir}/
 install -m 0755 sm-register/sm-register.py %{buildroot}/%{_sbindir}/sm-register
 install -m 0755 ncc-sync/sm-ncc-sync.py %{buildroot}/%{_sbindir}/sm-ncc-sync
 
+make -C suseRegister install PREFIX=$RPM_BUILD_ROOT
 mkdir -p %{buildroot}/usr/lib/suseRegister/bin/
 install -m 0755 suseRegister/suse_register_info.pl %{buildroot}/usr/lib/suseRegister/bin/suse_register_info
 
@@ -119,6 +120,7 @@ fi
 %dir /usr/lib/suseRegister
 %dir /usr/lib/suseRegister/bin
 /usr/lib/suseRegister/bin/suse_register_info
+%{python_sitelib}/suseRegister
 
 %files -n sm-ncc-sync-data
 %defattr(-,root,root,-)
