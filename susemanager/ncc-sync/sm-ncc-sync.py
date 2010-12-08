@@ -53,7 +53,6 @@ class NCCSync(object):
         self.ncc_url_prods = "https://secure-www.novell.com/center/regsvc/?command=regdata&lang=en-US&version=1.0"
         self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
         self.connect_retries = 10
-        # FIXME: the path needs to be fixed
         self.channel_family_config = '/usr/share/susemanager/channel_families.xml'
 
         rhnSQL.initDB()
@@ -141,12 +140,13 @@ class NCCSync(object):
             # FIXME, some product-classes are comma separated
             prods = s["product-class"].split(",")
             for p in prods:
-                if s["nodecount"] == "-1":
-                    # FIXME: -1 is unlimited
-                    subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : 200000 }
-                elif today >= start_date and (end == 0 or today <= end_date) and s["type"] != "PROVISIONAL":
-                    if subscription_count.has_key( p ):
-                        subscription_count[ p ]["nodecount"] += int(s["nodecount"])
+                if today >= start_date and (end == 0 or today <= end_date) and s["type"] != "PROVISIONAL":
+                    # "nodecount = None" means unlimited
+                    if s["nodecount"] == "-1":
+                        subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : None }
+                    elif subscription_count.has_key( p ):
+                        if subscription_count[ p ]["nodecount"] != None:
+                            subscription_count[ p ]["nodecount"] += int(s["nodecount"])
                     else:
                         subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : int(s["nodecount"]) }
 
