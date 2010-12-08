@@ -16,6 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import urllib
+import time
 import xml.etree.ElementTree as etree
 from optparse import OptionParser
 from datetime import date
@@ -45,6 +46,8 @@ class NCCSync(object):
             rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'sm-ncc-sync.log', CFG.DEBUG)
         else:
           rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'sm-ncc-sync.log')
+
+        self.log_msg("\nStarted: %s" % (time.asctime(time.localtime())))
 
         # FIXME: move static values to config file
         #self.smtguid  = getProductProfile()
