@@ -371,4 +371,7 @@ if [ "$DO_MIGRATION" = "1" ]; then
     do_migration
 fi
 
+# Finaly call sm-ncc-sync
+/usr/sbin/sm-ncc-sync
+
 # vim: set expandtab:
