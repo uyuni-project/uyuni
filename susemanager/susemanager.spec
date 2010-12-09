@@ -23,19 +23,6 @@ Requires:       oracle-xe-univ
 A collection of scripts for managing SUSE Manager's initial
 setup tasks, re-installation, upgrades and managing.
 
-%package -n suseRegisterInfo
-Summary:    Tool to get informations from the local system
-Group:      Productivity/Other
-%if 0%{?suse_version}
-Requires: suseRegister
-%else
-Requires: suseRegisterRES
-%endif
-
-%description -n suseRegisterInfo
-This tool read data from the local system required
-for a registration
-
 %package -n sm-ncc-sync-data
 Summary:    data files for NCC data configuration
 Group:      Productivity/Other
@@ -74,10 +61,6 @@ mkdir -p %{buildroot}/%{_sbindir}/
 install -m 0755 sm-register/sm-register.py %{buildroot}/%{_sbindir}/sm-register
 install -m 0755 ncc-sync/sm-ncc-sync.py %{buildroot}/%{_sbindir}/sm-ncc-sync
 
-make -C suseRegister install PREFIX=$RPM_BUILD_ROOT
-mkdir -p %{buildroot}/usr/lib/suseRegister/bin/
-install -m 0755 suseRegister/suse_register_info.pl %{buildroot}/usr/lib/suseRegister/bin/suse_register_info
-
 mkdir -p %{buildroot}/usr/share/susemanager
 install -m 0644 ncc-sync/channel_families.xml %{buildroot}/usr/share/susemanager/channel_families.xml
 install -m 0644 ncc-sync/channels.xml         %{buildroot}/usr/share/susemanager/channels.xml
@@ -113,13 +96,6 @@ fi
 %attr(0755,root,root) %{_sysconfdir}/init.d/boot.susemanager
 %{_datadir}/doc/licenses/SUSE_MANAGER_LICENSE
 
-
-%files -n suseRegisterInfo
-%defattr(-,root,root,-)
-%dir /usr/lib/suseRegister
-%dir /usr/lib/suseRegister/bin
-/usr/lib/suseRegister/bin/suse_register_info
-%{python_sitelib}/suseRegister
 
 %files -n sm-ncc-sync-data
 %defattr(-,root,root,-)

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Dec  9 11:32:59 CET 2010 - ma@suse.de
+
+- Make suseRegisterInfo a separate package.
+
+-------------------------------------------------------------------
 Wed Dec  8 16:05:04 CET 2010 - ma@suse.de
 
 - Let suseRegisterInfo also provide suse_register_info output parser.
