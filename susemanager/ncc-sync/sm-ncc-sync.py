@@ -385,10 +385,8 @@ class NCCSync(object):
         Expects a product like from consolidate_subscriptions()
 
         """
-        cf_id = self.get_channel_family_id( prod )
-
-        if not cf_id:
-            self.add_channel_family_row( prod )
+        cf_id = (self.get_channel_family_id(prod) or
+                 self.add_channel_family_row(prod))
 
         select_sql = ("SELECT 1 from RHNPRIVATECHANNELFAMILY "
                       "WHERE channel_family_id = %s" % cf_id)
