@@ -428,15 +428,24 @@ class NCCSync(object):
         """
         self.print_msg("Triggering reposync of all database channels...")
 
-    def get_installed_family_labels(self):
-        """Get the list of installed _official_ channel family labels
+    def get_available_families(self):
+        """Get the list of available channel family labels
 
-        Return a list of channel family labels.
+        An available channel family is one that we have installed and
+        whose privte_channel_family.max_members or fve_max_members is
+        greater than zero. Which means that our client has active
+        subscriptions for those channel families. Additionally, all official
+        channel families have an ORG_ID of NULL.
+        
+        Returns a list of channel family labels.
 
         """
-        # N.B. official families have ORG_ID IS NULL
         query = rhnSQL.prepare(
-            "SELECT LABEL FROM RHNCHANNELFAMILY WHERE ORG_ID IS NULL")
+            """SELECT DISTINCT fam.LABEL FROM RHNCHANNELFAMILY fam JOIN 
+                                              RHNPRIVATECHANNELFAMILY priv
+                                              ON fam.ID = priv.CHANNEL_FAMILY_ID
+               WHERE (priv.MAX_MEMBERS > 0 OR priv.FVE_MAX_MEMBERS > 0) AND
+                     fam.ORG_ID IS NULL""")
         query.execute()
         families = [f[0] for f in query.fetchall()]
         return families
@@ -452,11 +461,17 @@ class NCCSync(object):
             tree = etree.parse(f)
         channels_iter = tree.getroot()
 
-        families = self.get_installed_family_labels()
+        families = self.get_available_families()
 
-        # only retrieve the channels that are in our families
-        return filter(lambda channel: channel.get('family') in families,
-                      channels_iter)
+        # filter out the channels which are not in the available families list
+        channels = filter(lambda c: c.get('family') in families,
+                          channels_iter)
+
+        # filter out the channels whose parent isn't also in the channels list
+        c_labels = [c.get('label') for c in channels]
+        channels = filter(lambda channel: channel.get('parent') in c_labels,
+                          channels)
+        return channels
 
     def list_channels(self):
         """List available channels on NCC and if they are in sync with the db
