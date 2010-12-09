@@ -436,7 +436,7 @@ class NCCSync(object):
         Return a list of channel family labels.
 
         """
-        # N.B. official families have an ORG_ID == NULL
+        # N.B. official families have ORG_ID IS NULL
         query = rhnSQL.prepare(
             "SELECT LABEL FROM RHNCHANNELFAMILY WHERE ORG_ID IS NULL")
         query.execute()
