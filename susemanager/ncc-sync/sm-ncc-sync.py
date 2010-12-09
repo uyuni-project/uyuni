@@ -24,6 +24,7 @@ from datetime import date
 from spacewalk.server import rhnSQL
 from spacewalk.common import initCFG, CFG, rhnLog
 from spacewalk.susemanager import suseLib
+from spacewalk.common import log_debug, log_error, rhnFault
 
 NCC_CHANNELS = '/usr/share/susemanager/channels.xml'
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
@@ -81,16 +82,20 @@ class NCCSync(object):
             try_counter -= 1
             o = urllib.URLopener()
             try:
+                log_debug(1, "try connecting %s" % new_url)
                 f = o.open( new_url, send)
                 new_url = ""
             except IOError, e:
                 # 302 is a redirect
                 if e[1] == 302:
+                    log_debug(1, "got redirect")
                     new_url = e[3].dict["location"]
                 elif e[1] == 504:
                     # gateway timeout - try again
+                    log_debug(1, "got gateway timeout")
                     pass
                 else:
+                    self.error_msg("connecting %s failed with HTTP error code %s" % (new_url, e[1]))
                     raise e
         return f
 
@@ -311,7 +316,7 @@ class NCCSync(object):
                 p["PRODUCT_CLASS"])
 
             if not channel_family_id:
-               self.add_channel_family_row( p["PRODUCT_CLASS"])
+               channel_family_id = self.add_channel_family_row( p["PRODUCT_CLASS"])
 
             # NAME+VERSION+RELEASE+ARCH are uniq
             select_sql = """SELECT id from SUSEPRODUCTS
@@ -388,26 +393,18 @@ class NCCSync(object):
         cf_id = (self.get_channel_family_id(prod) or
                  self.add_channel_family_row(prod))
 
-        select_sql = ("SELECT 1 from RHNPRIVATECHANNELFAMILY "
-                      "WHERE channel_family_id = %s" % cf_id)
+        select_sql = ("SELECT max_members, org_id, current_members from RHNPRIVATECHANNELFAMILY "
+                      "WHERE channel_family_id = %s order by org_id" % cf_id)
         query = rhnSQL.prepare(select_sql)
         query.execute()
-        row = query.fetchone_dict() or {}
-        if row:
-            update_sql = """
-                UPDATE RHNPRIVATECHANNELFAMILY SET
-                max_members = :max_m, current_members = :c_m
-                WHERE channel_family_id = :cf_id
-                  AND org_id = 1
-            """
-            query = rhnSQL.prepare(update_sql)
-            query.execute(
-                cf_id = cf_id,
-                max_m = data["nodecount"],
-                c_m = 0
-            )
 
-        else:
+        all_subs_in_db = {}
+        all_subs_sum   = 0
+        result = query.fetchall()
+
+        if result.count() == 0:
+            log_debug(1, "no entry for channel family %s in RHNPRIVATECHANNELFAMILY" % cf_id )
+            # NCC has a subscription for us that is missing in the DB
             insert_sql = """
                 INSERT INTO RHNPRIVATECHANNELFAMILY
                   (channel_family_id, org_id, max_members, current_members )
@@ -420,7 +417,79 @@ class NCCSync(object):
                 max_m = data["nodecount"],
                 current_m = 0
             )
+            rhnSQL.commit()
+
+        # copy database subscription data to a dict and
+        # count all subscriptions over all org_id's
+        for f in result:
+            # all_subs_in_db[ org_id ] = { "max_members" : NUM, "current_members" : NUM, "dirty" : 0 }
+            if not all_subs_in_db.haskey( f[1] ):
+                all_subs_in_db[ f[1] ] = { "max_members" : f[0], "current_members" : f[2], "dirty" : 0 }
+            all_subs_in_db[ f[1] ] += f[0]
+            all_subs_sum += f[0]
+
+        # Two things can happen:
+        # 1. we have more subscriptions in NCC than in DB
+        #    we'll add (substract a negative value) from org_id=1 max_members
+        # 
+        # 2. NCC says we have less subscriptions than we know of in the DB
+        #    we have to reduce the max_members of some org's
+        #    We'll substract the max_members of org_id=1 until needed_subscriptions=0 or max_members=current_members
+        #    We'll substract the max_members of org_id++ until needed_subscriptions=0 or max_members=current_members
+        #    We'll reduce the max_members of org_id=1 until needed_subscriptions=0 or max_members=0 (!!!)
+        #    We'll reduce the max_members of org_id++ until needed_subscriptions=0 or max_members=0 (!!!)
+        needed_subscriptions = all_subs_sum - data["nodecount"]
+        log_debug(1, "NCC says: %s, DB says: %s for channel family %s" % (data["nodecount"], all_subs_sum, cf_id) )
+        for org in sorted(all_subs_in_db.keys()):
+            log_debug(1, "working on org_id %s" % org)
+            free = all_subs_in_db[ org ]["max_members"] - all_subs_in_db[ org ]["current_members"]
+            if (free > 0 and needed_subscriptions <= free) or (free < 0 and needed_subscriptions < 0):
+                log_debug(1, "max_members (%s) -= %s" % (all_subs_in_db[ org ]["max_members"], needed_subscriptions) )
+                all_subs_in_db[ org ]["max_members"] -= needed_subscriptions
+                all_subs_in_db[ org ]["dirty"] = 1
+                needed_subscriptions = 0
+                break
+            elif free > 0 and needed_subscriptions > free:
+                log_debug(1, "max_members (%s) -= %s" % (all_subs_in_db[ org ]["max_members"], free) )
+                needed_subscriptions -= free
+                all_subs_in_db[ org ]["max_members"] -= free
+                all_subs_in_db[ org ]["dirty"] = 1
+        if needed_subscriptions > 0:
+            # we reduced all max_members but still don't have enough
+            # That means, we use more subscriptions than we have in NCC
+            self.error_msg("More subscriptions used than registered in NCC. Left subscriptions: %s for family %s" % (needed_subscriptions, cf_id) )
+            for org in all_subs_in_db.keys():
+                free = all_subs_in_db[ org ]["max_members"]
+                if free > 0 and needed_subscriptions <= free:
+                    log_debug(1, "max_members (%s) -= %s" % (all_subs_in_db[ org ]["max_members"], needed_subscriptions) )
+                    all_subs_in_db[ org ]["max_members"] -= needed_subscriptions
+                    all_subs_in_db[ org ]["dirty"] = 1
+                    needed_subscriptions = 0
+                    break
+                elif free > 0 and needed_subscriptions > free:
+                    log_debug(1, "max_members (%s) -= %s" % (all_subs_in_db[ org ]["max_members"], free) )
+                    needed_subscriptions -= free
+                    all_subs_in_db[ org ]["max_members"] = -= free
+                    all_subs_in_db[ org ]["dirty"] = 1
+        if needed_subscriptions > 0:
+            self.error_msg("still too many subscripts are in use. No solution found: left subscriptions: %s" % needed_subscriptions)
+
+        for org in all_subs_in_db.keys():
+            if all_subs_in_db[ org ]["dirty"] == 1:
+                update_sql = """
+                    UPDATE RHNPRIVATECHANNELFAMILY SET
+                    max_members = :max_m
+                    WHERE channel_family_id = :cf_id and org_id = :org_id
+                    """
+                query = rhnSQL.prepare(update_sql)
+                log_debug(2, "SQL: " % query )
+                query.execute(
+                    max_m = all_subs_in_db[ org ]["max_members"],
+                    org_id = org
+                )
         rhnSQL.commit()
+
+
 
     def repo_sync(self):
         """Trigger a reposync of all the channels in the database
