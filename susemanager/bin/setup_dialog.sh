@@ -46,7 +46,7 @@ manager_dialog() {
                "SUSE Manager DB User"                  4 4 "susemanager" 4 40 20 0 0\
                "SUSE Manager DB Password"              6 4 ""  6 40 20 0 1\
                "repeat Manager DB Password"            8 4 ""  8 40 20 0 1\
-               "Admin eMail Adresse"                  10 4 ""  10 40 20 0 0\
+               "Admin eMail Adresse"                  10 4 ""  10 40 20 60 0\
                "Enable TFTP"                          12 4 "y" 12 40 20 0 0\
      2>>$RESULT_ENV1
      if [ $? -ne 0 ]; then
@@ -60,12 +60,12 @@ cert_dialog() {
         --title "Please fillout the Certificate values" \
         --insecure \
         --mixedform "" 21 70 18 \
-               "Organisation"      2 4 "" 2 40 20 0 0\
-               "Organisation Unit" 4 4 "" 4 40 20 0 0\
-               "City"              6 4 "" 6 40 20 0 0\
-               "State"             8 4 "" 8 40 20 0 0\
+               "Organisation"      2 4 "" 2 40 20 40 0\
+               "Organisation Unit" 4 4 "" 4 40 20 40 0\
+               "City"              6 4 "" 6 40 20 40 0\
+               "State"             8 4 "" 8 40 20 40 0\
                "Country"           10 4 "DE" 10 40 20 0 0\
-               "EMail"             12 4 ""   12 40 20 0 0\
+               "EMail"             12 4 ""   12 40 20 60 0\
                "SSLPassword"       14 4 ""   14 40 20 0 1\
                "repeat Password"   16 4 ""   16 40 20 0 1\
      2>>$RESULT_ENV2
@@ -111,7 +111,7 @@ ncc_dialog() {
            --mixedform "" 21 70 18 \
                "NCC Mirror Credential User"          2 4 ""       2 40 20 0 0\
                "NCC Mirror Credential Password"      4 4 ""       4 40 20 0 1\
-               "NCC email address"                   6 4 ""       6 40 20 0 0\
+               "NCC email address"                   6 4 ""       6 40 20 60 0\
     2>>$RESULT_ENV4
     if [ $? -ne 0 ]; then
         exit 1
