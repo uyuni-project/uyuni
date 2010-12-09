@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.2.28
+Version: 1.2.31
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -303,6 +303,17 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Thu Dec 09 2010 Jan Pazdziora 1.2.31-1
+- Fix handling of eval (DBD::Oracle).
+- 658256 - Error 500 - ISE - when scheduling remote commands (proper fix)
+  (lzap+git@redhat.com)
+
+* Wed Dec 01 2010 Michael Mraka <michael.mraka@redhat.com> 1.2.30-1
+- Reverted "658256 - Error 500 - ISE - when scheduling remote commands"
+
+* Wed Dec 01 2010 Lukas Zapletal 1.2.29-1
+- 658256 - Error 500 - ISE - when scheduling remote commands
+
 * Thu Nov 25 2010 Lukas Zapletal 1.2.28-1
 - Adding missing monitoring state (UNKNOWN)
 
