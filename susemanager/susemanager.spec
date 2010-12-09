@@ -12,8 +12,7 @@ BuildRequires:  python-devel
 Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
 Requires:       rsync less
-Requires:       suseRegisterInfo
-Requires:       sm-ncc-sync-data
+Requires:       susemanager-tools
 # needed for sqlplus
 Requires:       oracle-xe-univ
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
@@ -43,6 +42,17 @@ Group:      Productivity/Other
 
 %description -n sm-ncc-sync-data
 This package contains data files with NCC information
+
+%package tools
+Summary:    SUSE Manager Tools
+Group:      Productivity/Other
+Requires:       suseRegisterInfo
+Requires:       sm-ncc-sync-data
+Requires:       spacewalk-backend spacewalk-backend-sql
+Requires:       python
+
+%description tools
+This package contains SUSE Manager tools
 
 %prep
 %setup -q
@@ -98,22 +108,11 @@ fi
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %dir %{_datadir}/doc/licenses
-%dir %{pythonsmroot}
-%dir %{pythonsmroot}/susemanager
-%dir %{_sysconfdir}/rhn
-%dir %{_sysconfdir}/rhn/default
-%config %{_sysconfdir}/rhn/default/rhn_*.conf
 
 %{_prefix}/lib/susemanager/bin/*
 %attr(0755,root,root) %{_sysconfdir}/init.d/boot.susemanager
 %{_datadir}/doc/licenses/SUSE_MANAGER_LICENSE
 
-%attr(0755,root,root) %{_sbindir}/sm-register
-%{pythonsmroot}/susemanager/__init__.py*
-%{pythonsmroot}/susemanager/suseLib.py*
-%{pythonsmroot}/susemanager/smregister.py*
-
-%attr(0755,root,root) %{_sbindir}/sm-ncc-sync
 
 %files -n suseRegisterInfo
 %defattr(-,root,root,-)
@@ -127,6 +126,20 @@ fi
 %dir /usr/share/susemanager
 /usr/share/susemanager/channel_families.xml
 /usr/share/susemanager/channels.xml
+
+%files tools
+%defattr(-,root,root,-)
+%dir %{pythonsmroot}
+%dir %{pythonsmroot}/susemanager
+%dir %{_sysconfdir}/rhn
+%dir %{_sysconfdir}/rhn/default
+%config %{_sysconfdir}/rhn/default/rhn_*.conf
+%attr(0755,root,root) %{_sbindir}/sm-register
+%attr(0755,root,root) %{_sbindir}/sm-ncc-sync
+%{pythonsmroot}/susemanager/__init__.py*
+%{pythonsmroot}/susemanager/suseLib.py*
+%{pythonsmroot}/susemanager/smregister.py*
+
 
 %changelog
 
