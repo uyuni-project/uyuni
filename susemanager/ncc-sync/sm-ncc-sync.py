@@ -469,7 +469,7 @@ class NCCSync(object):
                 elif free > 0 and needed_subscriptions > free:
                     log_debug(1, "max_members (%s) -= %s" % (all_subs_in_db[ org ]["max_members"], free) )
                     needed_subscriptions -= free
-                    all_subs_in_db[ org ]["max_members"] = -= free
+                    all_subs_in_db[ org ]["max_members"] -= free
                     all_subs_in_db[ org ]["dirty"] = 1
         if needed_subscriptions > 0:
             self.error_msg("still too many subscripts are in use. No solution found: left subscriptions: %s" % needed_subscriptions)
