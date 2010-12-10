@@ -80,6 +80,7 @@ Requires:       spacewalk-monitoring
 %if 0%{?suse_version}
 # don't use selinux
 Requires:       osa-dispatcher
+Requires:       susemanager-jsp_en
 %else
 Requires:       osa-dispatcher-selinux
 Requires:       spacewalk-monitoring-selinux
