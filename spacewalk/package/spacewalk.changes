@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Dec 10 16:37:00 CET 2010 - mc@suse.de
+
+- require susemanager-jsp_en 
+
+-------------------------------------------------------------------
 Wed Sep 22 15:24:47 CEST 2010 - mantel@suse.de
 
 - create build.py.props since package has not tarball but only spec
