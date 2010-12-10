@@ -284,7 +284,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif
 %config %{_sysconfdir}/rhn/tns_admin/osa-dispatcher
-%config(noreplace) %{_sysconfdir}/rhn/tns_admin/osa-dispatcher/tnsnames.ora
 %config(noreplace) %{_sysconfdir}/rhn/tns_admin/osa-dispatcher/sqlnet.ora
 %attr(755,root,root) %{_initrddir}/osa-dispatcher
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn/oracle
