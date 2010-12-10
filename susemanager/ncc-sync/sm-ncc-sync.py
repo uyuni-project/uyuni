@@ -15,6 +15,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
+import sys
 import urllib
 import time
 import xml.etree.ElementTree as etree
@@ -402,7 +403,7 @@ class NCCSync(object):
         all_subs_sum   = 0
         result = query.fetchall()
 
-        if result.count() == 0:
+        if len(result) == 0:
             log_debug(1, "no entry for channel family %s in RHNPRIVATECHANNELFAMILY" % cf_id )
             # NCC has a subscription for us that is missing in the DB
             insert_sql = """
