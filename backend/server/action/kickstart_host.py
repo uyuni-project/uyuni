@@ -46,7 +46,7 @@ def schedule_virt_host_pkg_install(server_id, action_id, dry_run=0):
     found_tools_channel = tools_channel.is_subscribed_to_channel()
 
     if not found_tools_channel:
-        raise InvalidAction("System not subscribed to the RHN Tools channel.")
+        raise InvalidAction("System not subscribed to the RHN [GALAXY] Tools channel.")
 
     rhn_v12n_package = ChannelPackage(server_id, virt_host_package_name)
 
@@ -74,5 +74,5 @@ def schedule_virt_host_pkg_install(server_id, action_id, dry_run=0):
         raise InvalidAction(str(e))
 
     log_debug(3, "Completed scheduling install of rhn-virtualization-host and osad!")
-    raise ShadowAction("Scheduled installation of RHN Virtualization Host packages.")
+    raise ShadowAction("Scheduled installation of RHN [GALAXY] Virtualization Host packages.")
 

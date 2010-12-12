@@ -719,7 +719,7 @@ class Dumper(dumper.XML_Dumper):
     
                 #Make sure the path actually exists
                 if not os.path.exists(path_to_files):
-                    raise ISSError("Missing kickstart file under satellite mount-point: %s" % (path_to_files,), "")
+                    raise ISSError("Missing kickstart file under satellite [GALAXY] mount-point: %s" % (path_to_files,), "")
     
                 #generate the path to the kickstart files under the export directory.
                 path_to_export_file = self.fm.getKickstartFileFile(kickstart_file['label'], kickstart_file['relative-path'])
@@ -784,7 +784,7 @@ class Dumper(dumper.XML_Dumper):
                 satellite_path = os.path.join(CFG.MOUNT_POINT, rpm['path'])
 
                 if not os.path.exists(satellite_path):
-                    raise ISSError("Error: Missing RPM under the satellite mount point: %s" % (satellite_path,), "")
+                    raise ISSError("Error: Missing RPM under the satellite [GALAXY] mount point: %s" % (satellite_path,), "")
     
                 #create the directory for the rpm, if necessary.
                 if not os.path.exists(dirs_to_rpm):
@@ -840,10 +840,10 @@ def sendMail():
     if body:
         print "+++ sending log as an email +++"
         headers = {
-            'Subject' : 'Spacewalk Management Satellite Export report from %s' % os.uname()[1],
+            'Subject' : 'Spacewalk Management Satellite [GALAXY] Export report from %s' % os.uname()[1],
         }
         #sndr = CFG.get('traceback_mail', 'rhn-satellite')
-        sndr = 'rhn-satellite'
+        sndr = 'rhn-satellite' # [GALAXY]
         rhnMail.send(headers, body, sender=sndr)
     else:
         print "+++ email requested, but there is nothing to send +++"

@@ -240,8 +240,8 @@ class RHNOptions:
 
         ### write the file to stream
         # recombine the parsed lines
-        stream.write("# Automatically generated Red Hat Network Satellite/" + \
-                     "Proxy Server config file.\n\n")
+        stream.write("# Automatically generated Red Hat Network Satellite [GALAXY] /" + \
+                     "Proxy Server [GALAXY] config file.\n\n")
         for comp, _dict in diffDict.items():
             for k, v in _dict.items():
                 line = unparse_line(comp, k, v) + '\n'

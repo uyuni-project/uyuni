@@ -1,5 +1,5 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "RHN Satellite Server" >
+<!ENTITY RHNSAT "RHN Satellite Server [GALAXY]" >
 <!ENTITY THECOMMAND "rhn-db-stats" >
 
 ]>
@@ -14,7 +14,7 @@
 <RefName><command>&THECOMMAND;</command></RefName>
 <RefPurpose>
 utility for querying important database parameters used by
- Satellite / Spacewalk.
+ Satellite [GALAXY] / Spacewalk.
 </RefPurpose>
 </RefNameDiv>
 
@@ -33,7 +33,7 @@ utility for querying important database parameters used by
 
 <para>
 rhn-db-stats retrieves important parameters from Oracle database
-used by your Satellite / Spacewalk installation. It is used by spacewalk-debug
+used by your Satellite [GALAXY] / Spacewalk installation. It is used by spacewalk-debug
 (satellite-debug) or it can be used standalone.
 </para>
 

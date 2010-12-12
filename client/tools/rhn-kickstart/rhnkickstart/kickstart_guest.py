@@ -472,7 +472,7 @@ def syslog_listener(host, port, log_notify_handler):
     log_notifier = BatchingLogNotifier(log_notify_handler)
     log_notifier.start()
     # Caution the user  
-    log_notifier.add_log_message("RHN:: If your guest firewall is enabled, " \
+    log_notifier.add_log_message("RHN [GALAXY]:: If your guest firewall is enabled, " \
                	"some parts of the installation process might not be logged")
     
     # socket to listen to syslog
@@ -482,7 +482,7 @@ def syslog_listener(host, port, log_notify_handler):
         s.bind((host, int(port))) 
     except socket.error:
         s.close()
-        log_notifier.add_log_message("RHN:: Port %s already in use" % port)
+        log_notifier.add_log_message("RHN [GALAXY]:: Port %s already in use" % port)
         log_notifier.stop()
         return
 

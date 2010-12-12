@@ -1,5 +1,5 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "RHN Satellite Server" >
+<!ENTITY RHNSAT "RHN Satellite Server [GALAXY]" >
 <!ENTITY RHNSATACT "rhn-satellite-activate" >
 
 ]>
@@ -13,7 +13,7 @@
 <RefNameDiv>
 <RefName><command>&RHNSATACT;</command></RefName>
 <RefPurpose>
-    activates (using an RHN Certificate) an &RHNSAT;.
+    activates (using an RHN Certificate [GALAXY]) an &RHNSAT;.
 </RefPurpose>
 </RefNameDiv>
 
@@ -30,14 +30,14 @@
 <RefSect1><Title>Description</Title>
 
 <para>
-    <emphasis>&RHNSATACT;</emphasis> activates (using an RHN Certificate) an
-    &RHNSAT;. The RHN Cert is (a) checked for sanity, (b) inserted into the
+    <emphasis>&RHNSATACT;</emphasis> activates (using an RHN Certificate [GALAXY]) an
+    &RHNSAT;. The RHN Cert [GALAXY] is (a) checked for sanity, (b) inserted into the
     local database, and (c) inserted into the remote database.
 </para>
 
 <para>
-    NOTE: activation generally occurs upon RHN Satellite installation. This
-          is useful for pushing a new RHN Certificate and fixing issues related
+    NOTE: activation generally occurs upon RHN Satellite [GALAXY] installation. This
+          is useful for pushing a new RHN Certificate [GALAXY] and fixing issues related
           to account certificate issues.
 </para>
 </RefSect1>
@@ -54,7 +54,7 @@
     <varlistentry>
         <term>--rhn-cert <replaceable>PATH</replaceable></term>
         <listitem>
-            <para>new RHN certificate path/filename (default is
+            <para>new RHN [GALAXY] certificate path/filename (default is
             /etc/sysconfig/rhn/rhn-entitlement-cert.xml - the saved RHN cert).</para>
         </listitem>
     </varlistentry>
@@ -67,19 +67,19 @@
     <varlistentry>
         <term>--sanity-only</term>
         <listitem>
-            <para>confirm certificate sanity. Does not activate the RHN Satellite locally or remotely.</para>
+            <para>confirm certificate sanity. Does not activate the RHN Satellite [GALAXY] locally or remotely.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
         <term>--disconnected</term>
         <listitem>
-            <para>activate locally, but not on remote RHN servers,</para>
+            <para>activate locally, but not on remote RHN servers [GALAXY],</para>
         </listitem>
     </varlistentry>
     <varlistentry>
         <term>--ignore-expiration</term>
         <listitem>
-            <para>execute regardless of the expiration of the RHN Certificate (not recommended).</para>
+            <para>execute regardless of the expiration of the RHN Certificate [GALAXY] (not recommended).</para>
         </listitem>
     </varlistentry>
     <varlistentry>

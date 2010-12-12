@@ -119,7 +119,7 @@ class XMLWriter:
             # we're too large. operate on the unconverted string
             # so that we remove whole characters, even though it may be
             # too many.
-            log_error("Truncating field to fit in satellite schema. "
+            log_error("Truncating field to fit in satellite [GALAXY] schema. "
                     "First 30 bytes are:", converted[:30])
             extra = max_bytes - len(converted)
             converted = self._convert(data_string[:extra])

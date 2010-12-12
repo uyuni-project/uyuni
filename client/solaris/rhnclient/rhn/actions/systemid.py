@@ -23,7 +23,7 @@ def disable(messageText):
 
     # open and shut off
     fd = open(DISABLE_FILE, "w")
-    fd.write("Disable lock created on %s. RHN Server Message:\n\n%s\n" % (
+    fd.write("Disable lock created on %s. RHN Server [GALAXY] Message:\n\n%s\n" % (
         time.ctime(time.time()), messageText))
     fd.close()
     

@@ -20,7 +20,7 @@ def disable(messageText, cache_only=None):
     disableFilePath = "/etc/sysconfig/rhn/disable"
     # open and shut off
     fd = open(disableFilePath, "w")
-    fd.write("Disable lock created on %s. RHN Server Message:\n\n%s\n" % (
+    fd.write("Disable lock created on %s. RHN Server [GALAXY] Message:\n\n%s\n" % (
         time.ctime(time.time()), messageText))
     fd.close()
     

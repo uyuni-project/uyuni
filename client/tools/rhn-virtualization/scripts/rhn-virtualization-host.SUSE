@@ -32,7 +32,7 @@ else
 fi
 
 start() {
-   echo -n "Starting RHN Managed Xen Domains:"
+   echo -n "Starting Managed Xen Domains:"
    for NAME in $list_of_files; do
         dom_uuid=$(eval $get_uuid $auto_dir/$NAME)
         eval $start_action $dom_uuid > /dev/null 2>&1
@@ -46,7 +46,7 @@ start() {
 }
 
 stop() {
-    echo -n "Stopping RHN Managed Xen Domains:"
+    echo -n "Stopping Managed Xen Domains:"
     for NAME in $list_of_files; do
         dom_uuid=$(eval $get_uuid $auto_dir/$NAME)
         eval $stop_action $dom_uuid > /dev/null 2>&1

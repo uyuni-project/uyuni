@@ -8,7 +8,7 @@ try:
    from spacewalk.server import rhnSQL
    from spacewalk.common import initCFG, CFG
 except:
-   print "Couldn't load needed libs, Are you sure you are running this on a satellite?"
+   print "Couldn't load needed libs, Are you sure you are running this on a satellite [GALAXY]?"
    sys.exit(1)
 
 

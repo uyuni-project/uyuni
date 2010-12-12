@@ -270,7 +270,7 @@ class VirtualizationEventHandler:
 
         row = self.__db_get_domain(system_id, uuid)
         if len(row.keys()) == 0:
-            log_debug(1, "Guest already deleted in satellite: ", properties)
+            log_debug(1, "Guest already deleted in satellite [GALAXY]: ", properties)
             return
         new_properties = { PropertyType.STATE : ServerStateType.STOPPED }
         self.__db_update_domain(system_id, uuid, new_properties, row)

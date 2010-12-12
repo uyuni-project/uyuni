@@ -42,7 +42,7 @@ class Server(ServerWrapper):
         # Use the handy TableRow
         self.server = rhnSQL.Row("rhnServer", "id")
         self.server["release"] = ""
-        self.server["os"] = "Red Hat Linux"
+        self.server["os"] = "Red Hat Linux" # [GALAXY]
         self.is_rpm_managed = 0
         self.set_arch(arch)
         # We only get this passed in when we create a new
@@ -177,7 +177,7 @@ class Server(ServerWrapper):
                     "Custom base channel detected, will not alter channel subscriptions")
             self.server["release"] = new_rel
             self.server.save()
-            msg = """The Red Hat Network Update Agent has detected a 
+            msg = """The Red Hat Network [GALAXY] Update Agent has detected a 
             change in the base version of the operating system running 
             on your system, additionaly you are subscribed to a custom
             channel as your base channel.  Due to this configuration 
@@ -245,7 +245,7 @@ class Server(ServerWrapper):
         sub_channels = rhnChannel.channels_for_server(self.server["id"])
         if sub_channels:
             channel_list = map(lambda a: a["name"], sub_channels)
-            msg = """The Red Hat Network Update Agent has detected a 
+            msg = """The Red Hat Network [GALAXY] Update Agent has detected a 
             change in the base version of the operating system running 
             on your system and has updated your channel subscriptions
             to reflect that.
@@ -691,7 +691,7 @@ class Server(ServerWrapper):
         h.execute()
         ret = h.fetchone_dict()
         if not ret:
-            log_debug(2, "Satellite certificate not found")
+            log_debug(2, "Satellite certificate [GALAXY] not found")
             return 0
         expire_string = ret['expires']
         expire_time = time.mktime(time.strptime(expire_string, 
@@ -706,7 +706,7 @@ class Server(ServerWrapper):
         grace_period_seconds = 60 * 60 * 24 * 8
 
         if (now > expire_time + grace_period_seconds):
-            log_debug(1, "Satellite certificate expired on %s" % expire_string)
+            log_debug(1, "Satellite certificate [GALAXY] expired on %s" % expire_string)
             return 0
         return 1
 

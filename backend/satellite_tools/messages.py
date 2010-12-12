@@ -54,7 +54,7 @@ ERROR: a child-channel cannot be synced without its parent being synced as
 
 invalid_channel_family_error = """
 ERROR: you are not entitled to sync a channel in this set of channels.
-Please contact your sales rep or RHN contact
+Please contact your sales rep or RHN [GALAXY] contact
 %s"""
 
 missing_user = "*** ERROR: user '%s' doesn't exist. Cannot set permissions properly."

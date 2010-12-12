@@ -51,7 +51,7 @@ def schedule_virt_guest_pkg_install(server_id, action_id, dry_run=0):
     found_tools_channel = tools_channel.is_subscribed_to_channel()
 
     if not found_tools_channel:
-        raise InvalidAction("System not subscribed to the RHN Tools channel.")
+        raise InvalidAction("System not subscribed to the RHN [GALAXY] Tools channel.")
 
     rhn_v12n_package = ChannelPackage(server_id, virt_host_package_name)
 
@@ -72,7 +72,7 @@ def schedule_virt_guest_pkg_install(server_id, action_id, dry_run=0):
         raise InvalidAction(str(e))
 
     log_debug(3, "Completed scheduling install of rhn-virtualization-guest!")
-    raise ShadowAction("Scheduled installation of RHN Virtualization Guest packages.")
+    raise ShadowAction("Scheduled installation of RHN [GALAXY] Virtualization Guest packages.")
 
 def initiate(server_id, action_id, dry_run=0):
     log_debug(3)
@@ -81,7 +81,7 @@ def initiate(server_id, action_id, dry_run=0):
     row = h.fetchone_dict()
 
     if not row:
-        raise InvalidAction("Kickstart action without an associated kickstart")
+        raise InvalidAction("Kickstart action without an associated kickstart [GALAXY]")
     
     kickstart_host  = row['kickstart_host']
     virt_type       = row['virt_type']

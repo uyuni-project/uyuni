@@ -52,7 +52,7 @@ try:
 except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
 except ImportError:
-    sys.stderr.write("Unable to find RHN code tree.\n"
+    sys.stderr.write("Unable to find RHN [GALAXY] code tree.\n"
                      "Path not correct? '%s'\n" % _LIBPATH)
     raise
 

@@ -85,7 +85,7 @@ def getServer(refreshCallback=None):
     # require RHNS-CA-CERT file to be able to authenticate the SSL connections
     for rhns_ca_cert in rhns_ca_certs:
         if not os.access(rhns_ca_cert, os.R_OK):
-            log.log_me("ERROR: can not find RHNS CA file: %s" % rhns_ca_cert)
+            log.log_me("ERROR: can not find RHNS CA [GALAXY] file: %s" % rhns_ca_cert)
             sys.exit(-1)
 
         # force the validation of the SSL cert

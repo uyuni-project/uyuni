@@ -1,5 +1,5 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "RHN Satellite Server" >
+<!ENTITY RHNSAT "RHN Satellite Server [GALAXY]" >
 <!ENTITY RHNCHANRM "Spacewalk repository syncing tool" >
 
 ]>
@@ -13,7 +13,7 @@
 <RefNameDiv>
 <RefName><command>spacewalk-repo-sync</command></RefName>
 <RefPurpose>
-Syncs the content from yum repos into Spacewalk or Satellite channels.
+Syncs the content from yum repos into Spacewalk or Satellite [GALAXY] channels.
 </RefPurpose>
 </RefNameDiv>
 

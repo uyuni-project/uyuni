@@ -28,7 +28,7 @@ import rhnFlags
 
 # default template values for error messages
 templateValues = {
-    'hostname': 'rhn.redhat.com',
+    'hostname': 'rhn.redhat.com', #[GALAXY]
     }
 
 
@@ -349,7 +349,7 @@ class rhnException(Exception):
         String representation of this object.
         """
         s = StringIO()
-        s.write("\nInternal RHN code error. Information available:\n")
+        s.write("\nInternal RHN [GALAXY] code error. Information available:\n")
         for a in self.args:
             s.write("  %s\n" % (a, ))
 

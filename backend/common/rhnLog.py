@@ -120,7 +120,7 @@ def log_debug(level, *args):
 def log_stderr(*args):
     pid = os.getpid()
     for arg in args:
-        sys.stderr.write("RHN %s %s: %s\n" % (
+        sys.stderr.write("RHN [GALAXY] %s %s: %s\n" % (
             pid, log_time(), arg))
     sys.stderr.flush()
 

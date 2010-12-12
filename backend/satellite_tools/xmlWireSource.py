@@ -122,7 +122,7 @@ class BaseWireSource:
             # require RHNS-CA-CERT file to be able to authenticate the SSL
             # connections.
             if not os.access(caChain, os.R_OK):
-                message = "ERROR: can not find RHN CA file: %s" % caChain
+                message = "ERROR: can not find RHN [GALAXY] CA file: %s" % caChain
                 log(-1, message, stream=sys.stderr)
                 raise Exception(message)
             # force the validation of the SSL cert
@@ -305,7 +305,7 @@ class AuthWireSource(XMLRPCWireSource):
     def checkAuth(self):
         self.setServer(CFG.RHN_XMLRPC_HANDLER)
         authYN = None
-        log(2, '   +++ Satellite synchronization tool checking in.')
+        log(2, '   +++ Satellite [GALAXY] synchronization tool checking in.')
         try:
             authYN = self._xmlrpc('authentication.check', (self.systemid,))
         except (rpclib.ProtocolError, rpclib.Fault), e:
@@ -314,12 +314,12 @@ class AuthWireSource(XMLRPCWireSource):
 #            log2(-1, 1, '   ERROR: %s' % e, stream=sys.stderr)
             raise
         if authYN:
-            log(2, '   +++ Entitled satellite validated.', stream=sys.stderr)
+            log(2, '   +++ Entitled satellite [GALAXY] validated.', stream=sys.stderr)
         elif authYN == None:
-            log(-1, '   --- An error occurred upon authentication of this satellite -- review the pertinent log file (%s) and/or alert RHN at rhn-satellite@redhat.com.' % CFG.LOG_FILE, stream=sys.stderr)
+            log(-1, '   --- An error occurred upon authentication of this satellite [GALAXY] -- review the pertinent log file (%s) and/or alert RHN [GALAXY] at rhn-satellite@redhat.com [GALAXY].' % CFG.LOG_FILE, stream=sys.stderr)
             sys.exit(-1)
         elif authYN == 0:
-            log(-1, '   --- This server is not an entitled satellite.', stream=sys.stderr)
+            log(-1, '   --- This server is not an entitled satellite [GALAXY].', stream=sys.stderr)
             sys.exit(-1)
         return authYN
 
@@ -334,7 +334,7 @@ class CertWireSource(XMLRPCWireSource):
         try:
             cert = self._xmlrpc("certificate.download", (self.systemid, ))
         except rpclib.Fault, e:
-            log(-1, '   --- Unable to download the satellite certificate')
+            log(-1, '   --- Unable to download the satellite certificate [GALAXY]')
             log(-1, '   ERROR: %s' % e, stream=sys.stderr)
             sys.exit(-1)
         return cert

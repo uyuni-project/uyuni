@@ -348,7 +348,7 @@ class CheckCli(rhncli.RhnCli):
     def __check_rhn_disabled():
         """ If we're disabled, go down (almost) quietly. """
         if os.path.exists(DISABLE_FILE):
-            print "RHN service is disabled. Check %s" % DISABLE_FILE
+            print "RHN [GALAXY] service is disabled. Check %s" % DISABLE_FILE
             sys.exit(0)
 
     @staticmethod
