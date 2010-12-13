@@ -2,18 +2,14 @@
 TH
 {
 	padding: 4px 6px;
-	color: #000;
+	/*[disabled]color:#000;*/
 /*background-color: #c0c0c0;*/
 	text-align: left;
 	font-size: small;
-	background-color: #EEE !important;
-	border: 0px none #000000;
-	border-bottom: 1px solid #CCC;
-	/*+text-shadow:0 1px 1px #FFFFFF;*/
-	-moz-text-shadow: 0 1px 1px #FFFFFF;
-	-webkit-text-shadow: 0 1px 1px #FFFFFF;
-	-o-text-shadow: 0 1px 1px #FFFFFF;
-	text-shadow: 0 1px 1px #FFFFFF;
+	/*[disabled]background-color:#EEE;*/
+	/*[disabled]border:0px none #000000;*/
+	/*[disabled]border-bottom:1px solid #CCC;*/
+	/*[disabled]+text-shadow:0 1px 1px #FFFFFF;*/
 }
 TABLE.list IMG
 {

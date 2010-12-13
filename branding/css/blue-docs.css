@@ -1,4 +1,8 @@
 /*Styles that are specific to RHN documentation pages **/
+DIV.navheader TABLE
+{
+	width: 100%;
+}
 TABLE.WARNING TR TH B, TABLE.NOTE TR TH B, TABLE.TIP TR TH B, TABLE.IMPORTANT TR TH B, TABLE.CAUTION TR TH B
 {
 	color: #333;
@@ -57,7 +61,7 @@ PRE CODE EM, PRE CODE SPAN, PRE CODE CODE
 }
 .note .guibutton, .note .keycap, .note .guilabel, .tip .guibutton, .tip .keycap, .tip .guilabel, .important .guibutton, .important .keycap, .important .guilabel, .caution .guibutton, .caution .keycap, .caution .guilabel, .warning .guibutton, .warning .keycap, .warning .guilabel
 {
-	color: #FFFFFF;
+	/*[disabled]color:#FFFFFF;*/
 }
 .note H2, .tip H2, .important H2, .caution H2, .warning H2
 {
@@ -115,6 +119,11 @@ HR
 }
 /*** new docs stuff from here on down with mods here and there **
 Lists*/
+.orderedlist OL
+{
+	margin: 0px;
+	padding: 8px 0px 4px 15px;
+}
 .preface OL LI, .preface UL LI, .chapter OL LI, .chapter OL LI, .book OL LI, .section OL LI, .book UL LI, .section UL LI
 {
 	padding-left: 0.2em;
@@ -196,26 +205,30 @@ DT A
 /*user interface styles*/
 .screen .replaceable
 {
-	color: #444;
+	/*[disabled]color:#444;*/
 }
 .screen
 {
-	background-color: #EDE7C8;
-	color: #333;
+	background-color: #DFDFDF;
+	/*[disabled]color:#333;*/
 	padding: 0.5em 1em;
-	margin: 0em;
-	-moz-border-radius: 8px;
+	margin: 0.5em;
+	/*+border-radius:4px;*/
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	border-radius: 4px 4px 4px 4px;
 }
 PRE, CODE, .guibutton, .keycap, .guilabel
 {
 	font-size: 0.9em;
-	font-family: "liberation mono", "Bitstream vera mono", monospace;
+	font-family: "Droid Sans Mono", "liberation mono", "Bitstream vera mono", monospace;
 }
 .guibutton, .keycap, .guilabel
 {
 	font-weight: bold;
 /*white-space:nowrap;*/
-	color: #444;
+	/*[disabled]color:#444;*/
 	font-family: "liberation sans", "Bitstream vera sans", "dejavu sans", sans-serif;
 }
 .guibutton, .guilabel
@@ -243,9 +256,14 @@ PRE, CODE, .guibutton, .keycap, .guilabel
 PRE
 {
 	display: block;
-	background-color: #F7F2D0;
-	color: #333;
+	/*[disabled]background-color:#F7F2D0;*/
+	/*[disabled]color:#333;*/
 	overflow: auto;
+}
+EM.replaceable
+{
+	font-style: normal;
+	color: #808080;
 }
 PRE CODE, CODE
 {
@@ -254,19 +272,23 @@ PRE CODE, CODE
 /*Notifications*/
 DIV.note, DIV.tip, DIV.important, DIV.caution, DIV.warning
 {
-	background: #555753;
-	color: #FFFFFF;
+	background: #FFFCD6;
 	padding: 1em;
 	padding-bottom: 20px;
-	border: 1px solid #444;
+	border: 1px solid #FDF58B;
 	margin-bottom: 1.5em;
 	background-repeat: no-repeat;
 	background-position: 10px 10px;
+	/*+border-radius:10px;*/
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	border-radius: 10px 10px 10px 10px;
 }
 DIV.note PRE, DIV.tip PRE, DIV.important PRE, DIV.caution PRE, DIV.warning PRE
 {
-	background-color: #333;
-	color: #FFFFFF;
+	/*[disabled]background-color:#333;*/
+	/*[disabled]color:#FFFFFF;*/
 }
 DIV.note, DIV.tip, DIV.important, DIV.caution, DIV.warning
 {
@@ -294,21 +316,21 @@ DIV.warning
 }
 DIV.note .replaceable, DIV.tip .replaceable, DIV.important .replaceable, DIV.caution .replaceable, DIV.warning .replaceable
 {
-	color: #E3DCC0;
+	/*[disabled]color:#E3DCC0;*/
 }
 PRE .replaceable, TT .replaceable
 {
-	color: #444 !important;
+	/*[disabled]color:#444;*/
 }
 DIV.note H2, DIV.tip H2, DIV.important H2, DIV.caution H2, DIV.warning H2
 {
 	height: 32px;
 	font-size: 1.3em;
-	color: #FFFFFF;
+	/*[disabled]color:#FFFFFF;*/
 }
 DIV.note .guilabel, DIV.tip .guilabel, DIV.important .guilabel, DIV.caution .guilabel, DIV.warning .guilabel
 {
-	color: #FFFFFF !important;
+	/*[disabled]color:#FFFFFF;*/
 }
 /*
 div.note h2,div.tip h2,div.important h2,div.caution h2,div.warning h2{
@@ -331,10 +353,10 @@ DIV.note PRE PRE A:visited, DIV.tip PRE PRE A:visited, DIV.important PRE PRE A:v
 }
 DIV.note A:visited, DIV.tip A:visited, DIV.important A:visited, DIV.caution A:visited, DIV.warning A:visited, DIV.note A:link, DIV.tip A:link, DIV.important A:link, DIV.caution A:link, DIV.warning A:link
 {
-	color: #F7F2D0;
+	/*[disabled]color:#F7F2D0;*/
 }
 /*notification icons*/
-DIV.note H2, DIV.note P, DIV.tip H2, DIV.tip P, DIV.caution H2, DIV.caution P, DIV.warning H2, DIV.warning P, DIV.important H2, .important P
+DIV.note H2, DIV.note H3, DIV.note P, DIV.tip H2, DIV.tip P, DIV.caution H2, DIV.caution P, DIV.warning H2, DIV.warning P, DIV.important H2, DIV.important H3, .important P
 {
 	padding: 0em;
 	margin: 0em;
@@ -635,7 +657,25 @@ LI P:first-child
 /**/
 DIV.preface, DIV.chapter, DIV.section
 {
-	padding-top: 2em;
+	padding: 1em 0.5em 0.5em;
+	font-family: "Droid Sans", "Albany AMT", "Lucida Grande", tahoma, helvetica, verdana, arial, sans-serif;
+	text-align: justify;
+}
+SPAN.permalink A
+{
+	/*+opacity:40%;*/
+	filter: alpha(opacity=40);
+	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
+	-moz-opacity: 0.4;
+	opacity: 0.4;
+}
+SPAN.permalink A:hover
+{
+	/*+opacity:100%;*/
+	filter: alpha(opacity=100);
+	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+	-moz-opacity: 1;
+	opacity: 1;
 }
 .revhistory
 {
@@ -643,11 +683,11 @@ DIV.preface, DIV.chapter, DIV.section
 }
 PRE .replaceable, PRE .keycap
 {
-	color: #FFFFFF;
+	/*[disabled]color:#FFFFFF;*/
 }
 PRE
 {
-	font-family: "liberation mono", "bitstream vera mono", "dejavu mono", monospace;
+	font-family: "Droid Sans Mono", "liberation mono", "bitstream vera mono", "dejavu mono", monospace;
 }
 DIV.note .replaceable, DIV.tip .replaceable, DIV.important .replaceable, DIV.caution .replaceable, DIV.warning .replaceable, DIV.note .keycap, DIV.tip .keycap, DIV.important .keycap, DIV.caution .keycap, DIV.warning .keycap
 {
@@ -674,4 +714,47 @@ UL LI P:last-child
 {
 	margin-bottom: 0em;
 	padding-bottom: 0em;
+}
+/*Navigation*/
+DIV.navheader TABLE, DIV.navfooter TABLE
+{
+	width: 100%;
+}
+DIV.navheader TABLE TH
+{
+}
+DIV.navheader TABLE TH:first-child
+{
+	font-size: 1.8em;
+	color: #83B354;
+	padding-bottom: 16px;
+}
+DIV.navheader TABLE TD, DIV.navfooter TABLE TD
+{
+	text-align: center;
+}
+DIV.navheader TABLE TD A, DIV.navfooter TABLE A
+{
+	border: 1px solid #AAA !important;
+	color: #333 !important;
+	text-align: center;
+	/*+border-radius:3px;*/
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px 3px 3px 3px;
+	padding: 2px 35px !important;
+	white-space: nowrap;
+	background: #FFFFFF url(/img/minibutton-shade.png) repeat-x 50% 100%;
+	text-decoration: none !important;
+}
+DIV.navheader TABLE TD A:hover, DIV.navfooter TABLE A:hover
+{
+	border: 1px solid #666 !important;
+	color: #666 !important;
+	cursor: pointer;
+}
+DIV.navfooter TABLE TD
+{
+	padding-top: 15px;
 }
