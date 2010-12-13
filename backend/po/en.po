@@ -68,7 +68,6 @@ msgstr ""
 #: ../server/handlers/xmlrpc/registration.py:1067
 msgid "Red Hat Network Welcome Message"
 msgstr ""
-"\n"
 "Now for the first time ever, information, updates, and services\n"
 "that enhance the security and reliability of your Red Hat Linux [GALAXY]\n"
 "systems are available to you in one place-- Red Hat Network [GALAXY].\n"
