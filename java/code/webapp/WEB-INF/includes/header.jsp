@@ -9,8 +9,8 @@
 <rhn:require acl="user_authenticated()">
 	<div id="utilityLinks">
 
-<p id="geo"><c:out value="${rhnActiveLang} "/> (<a href="/rhn/account/LocalePreferences.do"><bean:message key="header.jsp.change"/></a>)</p>
-		<p id="linx"><span class="hide"><strong><bean:message key="header.jsp.shortcuts"/></strong> </span><a href="http://kbase.redhat.com/"><bean:message key="header.jsp.knowledgebase"/></a> <span class="navPipe">|</span> <a href="/help"><bean:message key="header.jsp.documentation"/></a></p>
+<!--p id="geo"><c:out value="${rhnActiveLang} "/> (<a href="/rhn/account/LocalePreferences.do"><bean:message key="header.jsp.change"/></a>)</p-->
+		<p id="linx"><!--span class="hide"><strong><bean:message key="header.jsp.shortcuts"/></strong> </span><a href="http://kbase.redhat.com/"><bean:message key="header.jsp.knowledgebase"/></a> <span class="navPipe">|</span--> <a href="/help"><bean:message key="header.jsp.documentation"/></a></p>
 
 	</div>
 	<div id="utilityAccount">

@@ -27,10 +27,10 @@
 <div id="contentRight">
   <h1 id="rhn_welcome3"><span><bean:message key="login.jsp.welcomemessage"/></span></h1>
 
-    <p><bean:message key="login.jsp.satbody1"/></p>
-    <p><bean:message key="login.jsp.satbody2"/></p>
-    <p><bean:message key="login.jsp.satbody3"/></p>
-    <p><bean:message key="login.jsp.satbody4"/></p>
+    <!--p><bean:message key="login.jsp.satbody1"/></p-->
+    <!--p><bean:message key="login.jsp.satbody2"/></p-->
+    <!--p><bean:message key="login.jsp.satbody3"/></p-->
+    <!--p><bean:message key="login.jsp.satbody4"/></p-->
 
 
 </div> <!-- end contentRight -->
