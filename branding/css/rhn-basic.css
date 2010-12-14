@@ -501,6 +501,10 @@ TABLE.details TD.csv-download
 	background: #FFFFFF url(/img/minibutton-shade.png) repeat-x 50% 100%;
 	text-decoration: none !important;
 }
+INPUT[name=url]
+{
+	min-width: 60%;
+}
 INPUT[type=text], INPUT[type=password]
 {
 	border: 1px solid #AAA;

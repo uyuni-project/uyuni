@@ -127,6 +127,7 @@ TABLE.details
 TABLE.details TH
 {
 	width: 25%;
+	font-size: 10pt;
 }
 TABLE.details TR
 {

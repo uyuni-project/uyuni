@@ -356,7 +356,7 @@ DIV.note A:visited, DIV.tip A:visited, DIV.important A:visited, DIV.caution A:vi
 	/*[disabled]color:#F7F2D0;*/
 }
 /*notification icons*/
-DIV.note H2, DIV.note H3, DIV.note P, DIV.tip H2, DIV.tip P, DIV.caution H2, DIV.caution P, DIV.warning H2, DIV.warning P, DIV.important H2, DIV.important H3, .important P
+DIV.warning H3, DIV.note H2, DIV.note H3, DIV.note P, DIV.tip H2, DIV.tip P, DIV.caution H2, DIV.caution P, DIV.warning H2, DIV.warning P, DIV.important H2, DIV.important H3, .important P
 {
 	padding: 0em;
 	margin: 0em;

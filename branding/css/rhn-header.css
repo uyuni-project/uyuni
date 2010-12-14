@@ -7,6 +7,7 @@ BEGIN new "rhel5" primary and secondary navigation
 /*changed height added bottom margin*/
 	/*[disabled]margin-bottom:10px;*/
 	/*[disabled]padding:0px 10px;*/
+	/*[disabled]position:relative;*/
 }
 /*IMG#rhLogo is hidden as it is not needed in SuSE Manager context*/
 IMG#rhLogo
@@ -24,6 +25,8 @@ IMG#rhnLogo
 	height: 70px;
 	margin-left: 10px;
 	position: absolute;
+	/*[disabled]top:15px;*/
+	/*[disabled]left:5px;*/
 }
 #utility
 {
@@ -38,7 +41,7 @@ IMG#rhnLogo
 #utilityLinks
 {
 	float: left;
-	/*[disabled]width:45%;*/
+	width: 49%;
 	padding: 0 0 0 10px;
 	display: block;
 }
@@ -55,6 +58,7 @@ IMG#rhnLogo
 	margin: 0;
 	display: inline;
 	padding: 0px;
+	float: right;
 }
 #utilityAccount
 {
