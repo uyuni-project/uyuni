@@ -87,14 +87,14 @@
             <html:checkbox property="web|ssl_available" styleId="ssl_available" />
         </td>
     </tr>
-    <tr>
+<%--     <tr>
         <th>
             <label for="solaris"><bean:message key="general.jsp.solaris"/></label>
         </th>
         <td>
             <html:checkbox property="web|enable_solaris_support" styleId="solaris" />
         </td>
-    </tr>
+    </tr> --%>
     <tr>
         <th>
             <label for="disconnected"><bean:message key="general.jsp.disconnected"/></label>
