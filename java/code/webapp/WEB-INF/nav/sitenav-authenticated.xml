@@ -12,7 +12,7 @@
       <rhn-tab name="Account Deactivation" url="/rhn/account/AccountDeactivation.do"/>
     </rhn-tab>
     <rhn-tab name="Your Preferences" url="/rhn/account/UserPreferences.do" />
-    <rhn-tab name="Locale Preferences" url="/rhn/account/LocalePreferences.do" />
+    <!--<rhn-tab name="Locale Preferences" url="/rhn/account/LocalePreferences.do" />-->
     <rhn-tab name="Subscription Management" url="/rhn/systems/SystemEntitlements.do" acl="user_role(org_admin)" >
       <rhn-tab name="System Entitlements" url="/rhn/systems/SystemEntitlements.do" acl="user_role(org_admin)" />
       <rhn-tab name="virtualization.entitlements" url="/rhn/systems/entitlements/GuestLimitedHosts.do" acl="user_role(org_admin)">
@@ -271,9 +271,9 @@
       <rhn-tab name="Monitoring" acl="user_role(satellite_admin); show_scout()">
         <rhn-tab-url>/rhn/admin/config/MonitoringConfig.do</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="Certificate" acl="user_role(satellite_admin)">
+<!--      <rhn-tab name="Certificate" acl="user_role(satellite_admin)">
         <rhn-tab-url>/rhn/admin/config/CertificateConfig.do</rhn-tab-url>
-      </rhn-tab>
+      </rhn-tab>-->
       <rhn-tab name="Bootstrap Script" acl="user_role(satellite_admin)">
         <rhn-tab-url>/rhn/admin/config/BootstrapConfig.do</rhn-tab-url>
       </rhn-tab>
@@ -294,9 +294,9 @@
   </rhn-tab>
   <rhn-tab name="Help" url="/rhn/help/index.do" active-image="tab-help-selected.gif" inactive-image="tab-help.gif">
     <rhn-tab-directory>/rhn/help</rhn-tab-directory>
-    <rhn-tab name="Reference Guide" url="/rhn/help/dispatcher/reference_guide">
+<!--    <rhn-tab name="Reference Guide" url="/rhn/help/dispatcher/reference_guide">
       <rhn-tab-directory>/rhn/help/reference</rhn-tab-directory>
-    </rhn-tab>
+    </rhn-tab>-->
     <rhn-tab name="Installation Guide" url="/rhn/help/dispatcher/install_guide">
       <rhn-tab-directory>/rhn/help/satellite</rhn-tab-directory>
     </rhn-tab>
@@ -323,7 +323,7 @@
         <rhn-tab name="Sample Scripts" url="/rhn/apidoc/scripts.jsp" />
     </rhn-tab>
      <rhn-tab name="Search" url="/rhn/help/Search.do" />
-     <rhn-tab name="Chat" url="/rhn/help/Chat.do" />
+     <!--<rhn-tab name="Chat" url="/rhn/help/Chat.do" />-->
   </rhn-tab>
 
 </rhn-navi-tree>
