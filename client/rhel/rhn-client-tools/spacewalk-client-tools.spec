@@ -12,6 +12,7 @@ BuildArch: noarch
 BuildRequires: update-desktop-files
 %endif
 Provides: rhn-client-tools = %{version}-%{release}
+Obsoletes: rhn-client-tools < %{version}-%{release}
 
 Requires: rhnlib >= 2.5.20
 Requires: rpm >= 4.2.3-24_nonptl
@@ -73,6 +74,7 @@ system to receive software updates from Red Hat Network or Spacewalk.
 Summary: Check for RHN actions
 Group: System Environment/Base
 Provides: rhn-check = %{version}-%{release}
+Obsoletes: rhn-check < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 
 %if 0%{?suse_version}
@@ -89,6 +91,7 @@ scheduled actions.
 Summary: Configure and register an Spacewalk client
 Group: System Environment/Base
 Provides: rhn-setup = %{version}-%{release}
+Obsoletes: rhn-setup < %{version}-%{release}
 Requires: usermode >= 1.36
 Requires: %{name} = %{version}-%{release}
 Requires: rhnsd
@@ -102,6 +105,7 @@ SUSE Manager or Spacewalk.
 Summary: A GUI interface for SUSE Manager/Spacewalk Registration
 Group: System Environment/Base
 Provides: rhn-setup-gnome = %{version}-%{release}
+Obsoletes: rhn-setup-gnome < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Requires: rhn-setup = %{version}-%{release}
 Requires: pam >= 0.72
