@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec 15 13:33:16 CET 2010 - mc@suse.de
+
+- rename package to spacewalk-client-tools 
+
+-------------------------------------------------------------------
 Wed Sep 15 12:12:23 CEST 2010 - mantel@suse.de
 
 - fix post-build-checks

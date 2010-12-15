@@ -3,7 +3,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Name: rhn-client-tools
+Name: spacewalk-client-tools
 Version: 1.2.15
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -11,6 +11,7 @@ BuildArch: noarch
 %if 0%{?suse_version}
 BuildRequires: update-desktop-files
 %endif
+Provides: rhn-client-tools = %{version}-%{release}
 
 Requires: rhnlib >= 2.5.20
 Requires: rpm >= 4.2.3-24_nonptl
@@ -83,22 +84,23 @@ Requires: yum-rhn-plugin >= 1.1.2-1
 rhn-check polls a Red Hat Network or Spacewalk server to find and execute
 scheduled actions.
 
-%package -n rhn-setup
-Summary: Configure and register an RHN/Spacewalk client
+%package -n spacewalk-setup
+Summary: Configure and register an Spacewalk client
 Group: System Environment/Base
+Provides: rhn-setup = %{version}-%{release}
 Requires: usermode >= 1.36
 Requires: %{name} = %{version}-%{release}
 Requires: rhnsd
 Requires: suseRegisterInfo
 
-%description -n rhn-setup
-rhn-setup contains programs and utilities to configure a system to use
-Red Hat Network or Spacewalk, and to register a system with a Red Hat Network
-or Spacewalk server.
+%description -n spacewalk-setup
+spacewalk-setup contains programs and utilities to configure a system to use
+SUSE Manager or Spacewalk.
 
-%package -n rhn-setup-gnome
-Summary: A GUI interface for RHN/Spacewalk Registration
+%package -n spacewalk-setup-gnome
+Summary: A GUI interface for SUSE Manager/Spacewalk Registration
 Group: System Environment/Base
+Provides: rhn-setup-gnome = %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Requires: rhn-setup = %{version}-%{release}
 Requires: pam >= 0.72
@@ -111,9 +113,9 @@ Requires: gnome-python2-gnome gnome-python2-bonobo
 Requires: liberation-sans-fonts
 %endif
 
-%description -n rhn-setup-gnome
-rhn-setup-gnome contains a GTK+ graphical interface for configuring and
-registering a system with a Red Hat Network or Spacewalk server.
+%description -n spacewalk-setup-gnome
+spacewalk-setup-gnome contains a GTK+ graphical interface for configuring and
+registering a system with a SUSE Manager server or Spacewalk server.
 
 
 %prep
@@ -245,7 +247,7 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/rhn/actions/rhnsd.*
 %{_datadir}/rhn/actions/up2date_config.*
 
-%files -n rhn-setup
+%files -n spacewalk-setup
 %defattr(-,root,root,-)
 %if 0%{?suse_version}
 %dir %{_sysconfdir}/security/console.apps
@@ -272,7 +274,7 @@ make -f Makefile.rhn-client-tools test
 
 %{_datadir}/setuptool/setuptool.d/99rhn_register
 
-%files -n rhn-setup-gnome
+%files -n spacewalk-setup-gnome
 %defattr(-,root,root,-)
 %if 0%{?suse_version}
 %dir %{_datadir}/firstboot
