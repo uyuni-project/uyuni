@@ -15,6 +15,7 @@
 # in this software or its documentation.
 #
 import sys, os, time, grp
+import traceback
 import hashlib
 from datetime import datetime
 from optparse import OptionParser
@@ -137,13 +138,14 @@ class RepoSync:
                 sys.exit(1)
             except:
                 self.print_msg("Unexpected error: %s" % sys.exc_info()[0])
+		self.print_msg("%s" % traceback.format_exc())
                 sys.exit(1)
 
         if self.regen:
             taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                 [self.channel_label], [], "server.app.yumreposync")
         self.update_date()
-        rhnSQL.commit()        
+        rhnSQL.commit()
         self.print_msg("Sync complete")
 
 
@@ -399,7 +401,7 @@ class RepoSync:
                     raise
                 continue
 
-    
+
     def upload_package(self, package, path):
         temp_file = open(path, 'rb')
         header, payload_stream, header_start, header_end = \
