@@ -15,9 +15,9 @@
 # in this software or its documentation.
 #
 import sys, os, time, grp
-import traceback
 import hashlib
 from datetime import datetime
+import traceback
 from optparse import OptionParser
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
 from spacewalk.common import CFG, initCFG, rhnLog, fetchTraceback, rhn_rpm
@@ -138,14 +138,14 @@ class RepoSync:
                 sys.exit(1)
             except:
                 self.print_msg("Unexpected error: %s" % sys.exc_info()[0])
-		self.print_msg("%s" % traceback.format_exc())
-                sys.exit(1)
+                self.print_msg("%s" % traceback.format_exc())	
+              	sys.exit(1)
 
         if self.regen:
             taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                 [self.channel_label], [], "server.app.yumreposync")
         self.update_date()
-        rhnSQL.commit()
+        rhnSQL.commit()        
         self.print_msg("Sync complete")
 
 
@@ -188,6 +188,7 @@ class RepoSync:
                   'enhancement' : 'Product Enhancement Advisory'
                 }
       for notice in notices:
+        error = False
         e = Erratum()
         e['errata_from'] = notice['from']
         e['advisory'] = notice['update_id'] + "-" + notice['version'] + "-" + self.channel['arch']
@@ -237,14 +238,16 @@ class RepoSync:
           rhnpackagearch pa,
           rhnChecksumView c,
           rhnChannel ch,
-          rhnChannelPackage cp
+          rhnChannelPackage cp,
+          rhnArchType rat
           where pn.name = :name
           and p.org_id = :org_id
           and pevr.version = :version
           and pevr.release = :release
           and pa.label = :arch
           and pevr.epoch %s
-          and pa.arch_type_id = 1
+          and rat.label = 'rpm'
+          and pa.arch_type_id = rat.id
           and p.checksum_id = c.id
           and p.name_id = pn.id
           and p.evr_id = pevr.id
@@ -254,7 +257,24 @@ class RepoSync:
           and ch.label = :channel_label
           """ % epochStatement)
           apply(h.execute, (), param_dict)
-          cs = h.fetchone_dict() or {}
+          cs = h.fetchone_dict() or None
+
+          if not cs:
+            if param_dict.has_key('epoch'):
+              self.print_msg("No cheksum found for %s-%s:%s-%s.%s. Skipping Patch %s" % (param_dict['name'],
+                                                                                         param_dict['epoch'],
+                                                                                         param_dict['version'],
+                                                                                         param_dict['release'],
+                                                                                         param_dict['arch'],
+                                                                                         e['advisory_name']))
+            else:
+              self.print_msg("No cheksum found for %s-%s-%s.%s. Skipping Patch %s" % (param_dict['name'],
+                                                                                      param_dict['version'],
+                                                                                      param_dict['release'],
+                                                                                      param_dict['arch'],
+                                                                                      e['advisory_name']))
+            error = True
+            break
 
           package = IncompletePackage()
           for k in pkg.keys():
@@ -297,7 +317,8 @@ class RepoSync:
               e['cve'].append(cve['id'])
               tmp[cve['id']] = None
         e['locally_modified'] = None
-        batch.append(e)
+        if not error:
+          batch.append(e)
 
       backend = OracleBackend()
       backend.init()
@@ -401,7 +422,7 @@ class RepoSync:
                     raise
                 continue
 
-
+    
     def upload_package(self, package, path):
         temp_file = open(path, 'rb')
         header, payload_stream, header_start, header_end = \

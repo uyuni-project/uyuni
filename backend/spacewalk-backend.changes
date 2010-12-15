@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Dec 15 17:22:47 CET 2010 - mc@suse.de
+
+- fix KeyError while syncing repos (bnc#657064)
+- skip patch instead of abort if no checksum for a package 
+  was found
+
+-------------------------------------------------------------------
 Thu Sep 16 09:13:37 CEST 2010 - mantel@suse.de
 
 - reflect rename of config files (/etc/rhn/default/rhn_server*conf)
