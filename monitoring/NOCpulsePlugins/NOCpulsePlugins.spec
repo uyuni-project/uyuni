@@ -61,10 +61,11 @@ do
   install -p -m 644 $pkg/*.pm $fulldir
 done
 
-%post
-if [ $1 -eq 2 ]; then
-  ls /home/nocpulse/var/ProbeState/* 2>/dev/null | xargs -I file mv file %{_var}/lib/nocpulse/ProbeState
-fi
+# was only needed for the update case because of a moved home
+#%post
+#if [ $1 -eq 2 ]; then
+#  ls /home/nocpulse/var/ProbeState/* 2>/dev/null | xargs -I file mv file %{_var}/lib/nocpulse/ProbeState
+#fi
 
 %files
 %defattr(-,root,root,-)
