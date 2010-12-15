@@ -77,8 +77,8 @@ install -m 755 npConfigValue $RPM_BUILD_ROOT%{_bindir}/
 # change nocpulse user & group to system user & group if needed
 dirs="/home/nocpulse /opt/notification /opt/nocpulse /var/log/nocpulse /var/www/templates /var/tmp"
 
-# Fedora guys do not want this stuff
-%if ! 0%{?fedora}
+# Fedora guys do not want this stuff (suse guys dont want that too)
+%if ! 0%{?fedora} && ! 0%{?suse_version}
 if [ -d /home/nocpulse -a 0`id -u nocpulse 2> /dev/null` -ge 500 ]; then
 	if [ 0`id -g nocpulse` -ge 500 ]; then
 		groupmod -n nocpulse-old nocpulse
@@ -117,8 +117,8 @@ useradd -r -g %{package_name} -G %{webgrp} -d %{_var}/lib/%{package_name} -s /bi
 getent group %{webgrp} | grep nocpulse >/dev/null || usermod -G %{webgrp} nocpulse
 
 %post
-# Fedora guys do not want this stuff
-%if ! 0%{?fedora}
+# Fedora guys do not want this stuff (suse guys don't want that too)
+%if ! 0%{?fedora} && ! 0%{?suse_version}
 # migrate things from /home/nocpulse to /var/lib/nocpulse and /var/log/nocpulse
 if [ `getent passwd nocpulse|awk -F ':' '{ print $6 }'` = "/home/nocpulse" ]; then
   # /var/lib/nocpulse is new homedir for nocpulse user
