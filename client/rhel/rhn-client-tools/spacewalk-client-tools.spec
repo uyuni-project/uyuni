@@ -69,9 +69,10 @@ BuildRequires: rpm-python
 Red Hat Network Client Tools provides programs and libraries to allow your
 system to receive software updates from Red Hat Network or Spacewalk.
 
-%package -n rhn-check
+%package -n spacewalk-check
 Summary: Check for RHN actions
 Group: System Environment/Base
+Provides: rhn-check = %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 
 %if 0%{?suse_version}
@@ -80,8 +81,8 @@ Requires: zypp-plugin-spacewalk
 Requires: yum-rhn-plugin >= 1.1.2-1
 %endif
 
-%description -n rhn-check
-rhn-check polls a Red Hat Network or Spacewalk server to find and execute
+%description -n spacewalk-check
+spacewalk-check polls a SUSE Manager or Spacewalk server to find and execute
 scheduled actions.
 
 %package -n spacewalk-setup
@@ -156,16 +157,16 @@ rm  $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhn-client-tools.mo
 %post
 rm -f %{_localstatedir}/spool/up2date/loginAuth.pkl
 
-%post -n rhn-setup-gnome
+%post -n spacewalk-setup-gnome
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
-%postun -n rhn-setup-gnome
+%postun -n spacewalk-setup-gnome
 if [ $1 -eq 0 ] ; then
     touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
 
-%posttrans -n rhn-setup-gnome
+%posttrans -n spacewalk-setup-gnome
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
@@ -229,7 +230,7 @@ make -f Makefile.rhn-client-tools test
 #public keys and certificates
 %{_datadir}/rhn/RHNS-CA-CERT
 
-%files -n rhn-check
+%files -n spacewalk-check
 %defattr(-,root,root,-)
 %dir %{_datadir}/rhn/actions
 %{_mandir}/man8/rhn_check.8*
