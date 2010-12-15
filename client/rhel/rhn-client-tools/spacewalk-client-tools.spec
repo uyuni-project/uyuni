@@ -1,7 +1,7 @@
 Summary: Support programs and libraries for Red Hat Network or Spacewalk
 License: GPLv2
 Group: System Environment/Base
-Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalk-client-tools
 Version: 1.2.15
@@ -107,7 +107,7 @@ Group: System Environment/Base
 Provides: rhn-setup-gnome = %{version}-%{release}
 Obsoletes: rhn-setup-gnome < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
-Requires: rhn-setup = %{version}-%{release}
+Requires: spacewalk-client-setup = %{version}-%{release}
 Requires: pam >= 0.72
 Requires: pygtk2 pygtk2-libglade gnome-python2 gnome-python2-canvas
 Requires: usermode-gtk
@@ -153,10 +153,10 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_*_*.*
 desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications --vendor=rhn rhn_register.desktop
 %if 0%{?suse_version}
 %suse_update_desktop_file rhn_register Utility
-rm  $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhn-client-tools.mo
+rm -f $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhn-client-tools.mo
 %endif
 
-%find_lang %{name}
+%find_lang rhn-client-tools
 
 %post
 rm -f %{_localstatedir}/spool/up2date/loginAuth.pkl
@@ -183,7 +183,7 @@ rm -rf $RPM_BUILD_ROOT
 make -f Makefile.rhn-client-tools test
 %endif
 
-%files -f %{name}.lang
+%files -f rhn-client-tools.lang
 %defattr(-,root,root,-)
 # some info about mirrors
 %doc doc/mirrors.txt

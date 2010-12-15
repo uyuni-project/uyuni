@@ -10,8 +10,8 @@
 #  Modified by Yukihiro Nakai <ynakai@redhat.com> to use libglade-xgettext
 #
 
-PACKAGE = $(shell awk '/Name:/ { print $$2 }' ../rhnsd.spec)
-VERSION = $(shell awk '/Version:/ { print $$2 }' ../rhnsd.spec)
+PACKAGE = rhnsd
+VERSION = $(shell awk '/Version:/ { print $$2 }' ../spacewalksd.spec)
 
 # These two variables depend on the location of this directory.
 subdir = po

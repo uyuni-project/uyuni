@@ -10,8 +10,8 @@
 #  Modified by Yukihiro Nakai <ynakai@redhat.com> to use libglade-xgettext
 #
 
-PACKAGE = $(shell awk '/Name:/ { print $$2 }' ../rhn-client-tools.spec)
-VERSION = $(shell awk '/Version:/ { print $$2 }' ../rhn-client-tools.spec)
+PACKAGE = rhn-client-tools
+VERSION = $(shell awk '/Version:/ { print $$2 }' ../spacewalk-client-tools.spec)
 
 # These two variables depend on the location of this directory.
 subdir = po

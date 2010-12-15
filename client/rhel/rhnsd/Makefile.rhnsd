@@ -8,7 +8,7 @@ MANPATH		?= /usr/share/man
 RHNSD		= rhnsd
 
 PACKAGE_NAME = rhnsd
-VERSION         = $(shell echo `grep ^Version: $(PACKAGE_NAME).spec | awk '{ print $$2 }'`)
+VERSION         = $(shell echo `grep ^Version: spacewalksd.spec | awk '{ print $$2 }'`)
 
 # Dirs we need to walk into
 SUBDIRS		= man po

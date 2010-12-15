@@ -1,7 +1,7 @@
 Summary: Spacewalk query daemon
 License: GPLv2
 Group: System Environment/Base
-Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhnsd-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalksd
 Version: 4.9.7
@@ -40,12 +40,12 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_initrddir}
 make INIT_DIR=$RPM_BUILD_ROOT/etc/init.d -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
 install -m 0755 rhnsd.init.SUSE $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
-rm $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhnsd.mo
+rm -f $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhnsd.mo
 %else
 make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
 %endif
 
-%find_lang %{name}
+%find_lang rhnsd
 
 
 %post
@@ -79,7 +79,7 @@ fi
 rm -fr $RPM_BUILD_ROOT
 
 
-%files -f %{name}.lang 
+%files -f rhnsd.lang 
 %defattr(-,root,root)
 %if 0%{?suse_version}
 %dir %{_sysconfdir}/sysconfig/rhn
