@@ -49,10 +49,11 @@ install -m 644 MessageDictionary.pm $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse/Sc
 install -m 644 Statistics.pm $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse/Scheduler
 install -m 755 kernel.pl $RPM_BUILD_ROOT%{_bindir}
 
-%post
-if [ $1 -eq 2 ]; then
-  ls /home/nocpulse/var/rw/NPkernel.out/* 2>/dev/null | xargs -I file mv file %{_var}/lib/nocpulse/NPkernel.out
-fi
+# was only needed for the update case, because of a moved home
+#%post
+#if [ $1 -eq 2 ]; then
+#  ls /home/nocpulse/var/rw/NPkernel.out/* 2>/dev/null | xargs -I file mv file %{_var}/lib/nocpulse/NPkernel.out
+#fi
 
 %files 
 %defattr(-,root,root,-)
