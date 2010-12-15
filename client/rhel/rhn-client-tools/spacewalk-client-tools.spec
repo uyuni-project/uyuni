@@ -87,7 +87,7 @@ Requires: yum-rhn-plugin >= 1.1.2-1
 spacewalk-check polls a SUSE Manager or Spacewalk server to find and execute
 scheduled actions.
 
-%package -n spacewalk-setup
+%package -n spacewalk-client-setup
 Summary: Configure and register an Spacewalk client
 Group: System Environment/Base
 Provides: rhn-setup = %{version}-%{release}
@@ -97,11 +97,11 @@ Requires: %{name} = %{version}-%{release}
 Requires: rhnsd
 Requires: suseRegisterInfo
 
-%description -n spacewalk-setup
+%description -n spacewalk-client-setup
 spacewalk-setup contains programs and utilities to configure a system to use
 SUSE Manager or Spacewalk.
 
-%package -n spacewalk-setup-gnome
+%package -n spacewalk-client-setup-gnome
 Summary: A GUI interface for SUSE Manager/Spacewalk Registration
 Group: System Environment/Base
 Provides: rhn-setup-gnome = %{version}-%{release}
@@ -118,7 +118,7 @@ Requires: gnome-python2-gnome gnome-python2-bonobo
 Requires: liberation-sans-fonts
 %endif
 
-%description -n spacewalk-setup-gnome
+%description -n spacewalk-client-setup-gnome
 spacewalk-setup-gnome contains a GTK+ graphical interface for configuring and
 registering a system with a SUSE Manager server or Spacewalk server.
 
@@ -161,16 +161,16 @@ rm  $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhn-client-tools.mo
 %post
 rm -f %{_localstatedir}/spool/up2date/loginAuth.pkl
 
-%post -n spacewalk-setup-gnome
+%post -n spacewalk-client-setup-gnome
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
-%postun -n spacewalk-setup-gnome
+%postun -n spacewalk-client-setup-gnome
 if [ $1 -eq 0 ] ; then
     touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
 
-%posttrans -n spacewalk-setup-gnome
+%posttrans -n spacewalk-client-setup-gnome
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
@@ -252,7 +252,7 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/rhn/actions/rhnsd.*
 %{_datadir}/rhn/actions/up2date_config.*
 
-%files -n spacewalk-setup
+%files -n spacewalk-client-setup
 %defattr(-,root,root,-)
 %if 0%{?suse_version}
 %dir %{_sysconfdir}/security/console.apps
@@ -279,7 +279,7 @@ make -f Makefile.rhn-client-tools test
 
 %{_datadir}/setuptool/setuptool.d/99rhn_register
 
-%files -n spacewalk-setup-gnome
+%files -n spacewalk-client-setup-gnome
 %defattr(-,root,root,-)
 %if 0%{?suse_version}
 %dir %{_datadir}/firstboot
