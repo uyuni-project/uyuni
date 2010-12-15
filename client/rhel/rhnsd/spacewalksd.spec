@@ -1,14 +1,15 @@
-Summary: Red Hat Network query daemon
+Summary: Spacewalk query daemon
 License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Name: rhnsd
+Name: spacewalksd
 Version: 4.9.7
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires: gettext
+Provides: rhnsd = %{version}-%{release}
 
 Requires: rhn-check >= 0.0.8
 %if !0%{?suse_version}
