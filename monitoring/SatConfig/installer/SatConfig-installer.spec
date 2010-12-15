@@ -38,10 +38,13 @@ mkdir -p $RPM_BUILD_ROOT%config_dir
 install -m 755 scheduleEvents $RPM_BUILD_ROOT%{_bindir}
 install -m 755 validateCurrentStateFiles.pl $RPM_BUILD_ROOT%{_bindir}
 
+# only for update because of a moved home
 %post
+%if ! 0%{?suse_version}
 if [ $1 -eq 2 ]; then
   ls /home/nocpulse/var/trapReceiver/* 2>/dev/null | xargs -I file mv file %config_dir
 fi
+%endif
 
 %files
 %defattr(-,root,root,-)
