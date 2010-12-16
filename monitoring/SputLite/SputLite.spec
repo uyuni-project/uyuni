@@ -87,11 +87,14 @@ mkdir -p $RPM_BUILD_ROOT%vardir/commands
 mkdir -p $RPM_BUILD_ROOT%vardir/queue/commands
 
 %post client
+# only needed in the update case because of a moved home
+%if ! 0%{?suse_version}
 if [ $1 -eq 2 ]; then
   ls /home/nocpulse/var/commands/heartbeat 2>/dev/null | xargs -I file mv file %{vardir}/commands
   ls /home/nocpulse/var/commands/last_completed 2>/dev/null | xargs -I file mv file %{vardir}/commands
   ls /home/nocpulse/var/commands/last_started 2>/dev/null | xargs -I file mv file %{vardir}/commands
 fi
+%else
 
 %files server
 %defattr(-,root,root,-)
