@@ -93,3 +93,18 @@ def schedule_single_sat_repo_sync(channel_id):
     except xmlrpclib.Fault, e:
         print "Error scheduling repo sync task: %s" % e
     return None
+
+def add_to_erratacache_queue(channel, priority=0):
+    h = rhnSQL.prepare("""
+    insert into rhnTaskQueue
+           (org_id, task_name, task_data, priority, earliest)
+           select coalesce(c.org_id, 1),
+                  'update_errata_cache_by_channel',
+                  c.id,
+                  :priority,
+                  sysdate
+             from rhnChannel c
+            where c.label = :label
+    """)
+    h.execute(label=channel, priority=priority)
+    rhnSQL.commit()
