@@ -236,15 +236,17 @@ TABLE.half-table THEAD TH:first-child
 DIV.full-width-wrapper
 {
 	clear: both;
-	padding-top: 30px;
+	padding-top: 10px;
 }
 SPAN.full-width-note-left
 {
 	float: left;
+	margin-top: 5px;
 }
 SPAN.full-width-note-right
 {
 	float: right;
+	margin-top: 5px;
 }
 /*special column classes*/
 TH+TH
@@ -368,7 +370,7 @@ TABLE.list-pagination
 }
 .list-empty-message
 {
-	margin: 0 2%;
+	margin: 0;
 	cursor: text;
 }
 /** filterbox styles **/
@@ -378,9 +380,13 @@ TABLE.list-pagination
 }
 DIV.filter-input
 {
+	line-height: 2;
+	padding: 3px 0px;
+	vertical-align: middle;
 }
 DIV.filter-input .list-infotext
 {
+	vertical-align: middle;
 }
 DIV.filter-input TABLE
 {
@@ -388,7 +394,9 @@ DIV.filter-input TABLE
 }
 DIV.filter-input TD
 {
-	/*[disabled]width:30%;*/
+	padding: 0px;
+	line-height: 2;
+	vertical-align: middle;
 }
 DIV.filter-input INPUT
 {
@@ -436,17 +444,17 @@ DIV.filter-input INPUT
 	font-size: small;
 	margin: 0px;
 	padding: 0px;
+	vertical-align: middle;
 }
 .list-infotext
 {
-	/*[disabled]width:100%;*/
 	text-align: right !important;
 	white-space: nowrap;
-	/*[disabled]color:#777;*/
 	float: left;
 	vertical-align: bottom;
 	margin-top: 3px;
-	line-height: 1.5;
+	line-height: 2;
+	padding: 0px;
 }
 .list-infotext STRONG
 {
