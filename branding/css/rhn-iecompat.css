@@ -1,5 +1,5 @@
 /*+clearfix {*/
-.clearBoxBody:after
+.clearBoxBody:after, UL#mainNav:after, DIV#mainNavWrap UL:after
 {
 	content: ".";
 	display: block;
@@ -8,11 +8,11 @@
 	visibility: hidden;
 	font-size: 0;
 }
-.clearBoxBody
+.clearBoxBody, UL#mainNav, DIV#mainNavWrap UL
 {
 	display: inline-block;
 }
-.clearBoxBody
+.clearBoxBody, UL#mainNav, DIV#mainNavWrap UL
 {
 /*\*/
 	display: block;
@@ -131,4 +131,25 @@ TABLE.details TH
 }
 TABLE.details TR
 {
+}
+#header
+{
+	overflow: visible;
+}
+#searchbarinner
+{
+	float: right;
+	margin-top: -12px;
+}
+.button
+{
+	cursor: pointer;
+}
+/*[clearfix]*/UL#mainNav, DIV#mainNavWrap UL
+{
+	font-weight: bold;
+	padding: 0px;
+	margin: 0px 0px 0px 10px;
+	list-style-type: none;
+	height: 31px;
 }

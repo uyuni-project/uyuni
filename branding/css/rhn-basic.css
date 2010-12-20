@@ -28,12 +28,11 @@ Including the site-wide font set*/
 	margin: 0 auto;
 	text-align: left;
 	background: #FFF;
-	/*[disabled]min-width:80em;*/
 	padding: 0;
 }
 #top-wrap
 {
-	background: #83B354 url(/img/bg-header.png) no-repeat 50% 63px;
+	background: #83B354 url(/img/bg-header.png) no-repeat 50% 43px;
 	width: 100%;
 	min-width: 80em;
 }

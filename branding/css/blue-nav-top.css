@@ -25,7 +25,7 @@ DIV#navWrap DIV#mainNavWrap, UL#mainNav, DIV#mainNavWrap UL
 {
 	width: 100%;
 	clear: both;
-	height: 70px;
+	height: 50px;
 	margin: 5px 0px;
 }
 #header FORM
@@ -38,6 +38,10 @@ DIV#navWrap DIV#mainNavWrap, UL#mainNav, DIV#mainNavWrap UL
 #header SELECT
 {
 	margin-right: 5px;
+}
+#header INPUT, #header SELECT
+{
+	border: 1px solid #648D3D !important;
 }
 #rhLogo
 {
@@ -131,17 +135,10 @@ UL#mainNav LI#mainFirst-active A, DIV#mainNavWrap UL LI#mainFirst-active A
 /***** hacks!! *****/
 #utility:after, #header:after, #navWrap:after
 {
-	/*[disabled]content:".";*/
-	/*[disabled]display:block;*/
-	/*[disabled]height:0px;*/
-	/*[disabled]overflow:hidden;*/
-	/*[disabled]clear:both;*/
-	/*[disabled]visibility:hidden;*/
 }
 /*Holly Hack Targets IE Win only \*/
 * HTML #utility, * HTML #header, * HTML #navWrap
 {
-	/*[disabled]height:1%;*/
 }
 /*End Holly Hack
 *** SECONDARY TOP NAV BAR ***
@@ -160,17 +157,9 @@ This CSS is for the second, red-colored nav bar at the top of the screen.*/
 }
 #bar:after
 {
-	/*[disabled]content:".";*/
-	/*[disabled]display:block;*/
-	/*[disabled]height:0px;*/
-	/*[disabled]overflow:hidden;*/
-	/*[disabled]clear:both;*/
-	/*[disabled]visibility:hidden;*/
 }
 #systembar
 {
-	/*[disabled]width:80em;*/
-	/*[disabled]margin:0px auto;*/
 }
 #systembarinner
 {
@@ -200,8 +189,8 @@ This CSS is for the second, red-colored nav bar at the top of the screen.*/
 #searchbarinner
 {
 	float: right;
+	margin-top: 5px;
 }
 #systembarinner FORM, #searchbarinner FORM
 {
-	/*[disabled]margin:0;*/
 }
