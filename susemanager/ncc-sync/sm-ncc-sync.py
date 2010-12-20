@@ -425,8 +425,8 @@ class NCCSync(object):
         for f in result:
             # all_subs_in_db[ org_id ] = { "max_members" : NUM, "current_members" : NUM, "dirty" : 0 }
             if not all_subs_in_db.has_key( f[1] ):
-                all_subs_in_db[ f[1] ] = { "max_members" : f[0], "current_members" : f[2], "dirty" : 0 }
-            all_subs_in_db[ f[1] ] += f[0]
+                all_subs_in_db[ f[1] ] = { "max_members" : 0, "current_members" : f[2], "dirty" : 0 }
+            all_subs_in_db[ f[1] ]["max_members"] += f[0]
             all_subs_sum += f[0]
 
         # Two things can happen:
@@ -486,7 +486,8 @@ class NCCSync(object):
                 log_debug(2, "SQL: " % query )
                 query.execute(
                     max_m = all_subs_in_db[ org ]["max_members"],
-                    org_id = org
+                    org_id = org,
+                    cf_id = cf_id
                 )
         rhnSQL.commit()
 
