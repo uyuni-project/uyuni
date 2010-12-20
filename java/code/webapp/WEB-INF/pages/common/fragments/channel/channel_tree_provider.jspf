@@ -11,7 +11,7 @@
         <c:otherwise>
           <rhn:column header="channels.overview.provider" style="text-align: right;"
            usesRefactoredList="true">
-           Red Hat, Inc.
+           Novell, Inc.
           </rhn:column>
         </c:otherwise>
       </c:choose>
