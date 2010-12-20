@@ -426,14 +426,14 @@ class NCCSync(object):
         cf_id = (self.get_channel_family_id(prod) or
                  self.add_channel_family_row(prod))
 
-#        select_sql = ("SELECT max_members, org_id, current_members from RHNPRIVATECHANNELFAMILY "
-#                      "WHERE channel_family_id = %s order by org_id" % cf_id)
-#        query = rhnSQL.prepare(select_sql)
-#        query.execute()
-#
-#        all_subs_in_db = {}
-#        all_subs_sum   = 0
-#        result = query.fetchall()
+        select_sql = ("SELECT max_members, org_id, current_members from RHNPRIVATECHANNELFAMILY "
+                      "WHERE channel_family_id = %s order by org_id" % cf_id)
+        query = rhnSQL.prepare(select_sql)
+        query.execute()
+
+        all_subs_in_db = {}
+        all_subs_sum   = 0
+        result = query.fetchall()
 #
 #        if len(result) == 0:
 #            log_debug(1, "no entry for channel family %s in RHNPRIVATECHANNELFAMILY" % cf_id )
