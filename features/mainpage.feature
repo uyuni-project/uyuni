@@ -8,10 +8,10 @@ Feature: Explore the main landing page
   Scenario: Completeness of the toplevel bar
     Given I am authorized
     When I go to the home page
-    Then I should see a "English" text
-    And I should see a "change" link
-    And I should see a "Knowledgebase" link
-    And I should see a "Documentation" link
+    #Then I should see a "English" text
+    #And I should see a "change" link
+    #And I should see a "Knowledgebase" link
+    Then I should see a "Documentation" link
     And I should see a "User" text
     And I should see a "Organization" text
     And I should see a "Preferences" link
@@ -30,9 +30,12 @@ Feature: Explore the main landing page
   Scenario: Completeness of the left sidebar
     Given I am authorized
     When I go to the home page
-    Then I should see a "Your Account" link
-    And I should see a "Your Preferences" link
-    And I should see a "Locale Preferences" link
+    Then I should see a "Your Account" link in the left menu
+    And I should see a "Your Preferences" link in the left menu
+    #And I should see a "Locale Preferences" link in the left menu
+    And I should see a "Subscription Management" link in the left menu
+    And I should see a "Organization Trusts" link in the left menu
+
   Scenario: Completeness of the main content
     Given I am authorized
     When I go to the home page
