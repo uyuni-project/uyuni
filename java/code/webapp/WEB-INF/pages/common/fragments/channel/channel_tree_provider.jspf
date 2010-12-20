@@ -21,7 +21,7 @@
          usesRefactoredList="true">
          <c:choose>
             <c:when test="${current.orgId != null}">${current.orgName}</c:when>
-            <c:otherwise>Red Hat, Inc.</c:otherwise>
+            <c:otherwise>Novell, Inc.</c:otherwise>
          </c:choose>
       </rhn:column>
    </c:otherwise>
