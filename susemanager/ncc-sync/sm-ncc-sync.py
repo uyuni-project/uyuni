@@ -719,4 +719,9 @@ def main():
         syncer.repo_sync()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except IOError, e:
+        print "ERROR: %s" % e
+
+
