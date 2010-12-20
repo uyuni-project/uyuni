@@ -9639,7 +9639,7 @@ administrator privileges.</source>
 
       <trans-unit id="bootstrap.jsp.summary">
 <source> The following information will be used to generate bootstrap scripts. These bootstrap scripts can be used to configure a client to use this @@PRODUCT_NAME@@ to receive updates. Once the bootstrap scripts have been generated, they will be available from  &lt;a href=&quot;/pub/bootstrap&quot;&gt;this server&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;
-Please note that some manual configuration of these scripts may still be required.  The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;/var/www/html/pub/bootstrap&lt;/strong&gt;</source>
+Please note that some manual configuration of these scripts may still be required.  The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;/srv/www/htdocs/pub/bootstrap&lt;/strong&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
