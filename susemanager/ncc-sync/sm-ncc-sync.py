@@ -540,9 +540,13 @@ class NCCSync(object):
 
         # filter out the channels whose parent isn't also in the channels list
         c_labels = [c.get('label') for c in channels]
-        channels = filter(lambda channel: channel.get('parent') in c_labels,
-                          channels)
-        return channels
+        parents = []
+        for channel in channels:
+            parent = channel.get('parent')
+            if parent == 'BASE' or parent in c_labels:
+                parents.append(parent)
+
+        return parents
 
     def list_channels(self):
         """List available channels on NCC and if they are in sync with the db
@@ -606,7 +610,6 @@ class NCCSync(object):
             query.execute(
                 source_id = repo_id,
                 channel_id = channel_id)
-
 
     def add_channel(self, channel_label):
         """Add a new channel to the database
