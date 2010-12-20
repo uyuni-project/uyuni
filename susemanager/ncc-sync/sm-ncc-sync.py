@@ -228,7 +228,30 @@ class NCCSync(object):
         for family in tree.getroot():
             name = family.get("name")
             label = family.get("label")
-            self.edit_channel_family_table(label, name)
+            d_nc  = family.get("default_nodecount")
+            cf_id = self.edit_channel_family_table(label, name)
+            select_sql = ("SELECT max_members, org_id, current_members from RHNPRIVATECHANNELFAMILY "
+                          "WHERE channel_family_id = %s order by org_id" % cf_id)
+            query = rhnSQL.prepare(select_sql)
+            query.execute()
+            result = query.fetchall()
+
+            if len(result) == 0:
+                log_debug(1, "no entry for channel family %s in RHNPRIVATECHANNELFAMILY" % cf_id )
+                # NCC has a subscription for us that is missing in the DB
+                insert_sql = """
+                    INSERT INTO RHNPRIVATECHANNELFAMILY
+                      (channel_family_id, org_id, max_members, current_members )
+                    VALUES
+                      ( :cf_id, 1, :max_m, :current_m )
+                """
+                query = rhnSQL.prepare(insert_sql)
+                query.execute(
+                    cf_id = cf_id,
+                    max_m = d_nc,
+                    current_m = 0
+                )
+                rhnSQL.commit()
 
     def add_channel_family_row(self, label, name=None, org_id=None, url="some url"):
         """Insert a new channel_family row"""
@@ -403,31 +426,31 @@ class NCCSync(object):
         cf_id = (self.get_channel_family_id(prod) or
                  self.add_channel_family_row(prod))
 
-        select_sql = ("SELECT max_members, org_id, current_members from RHNPRIVATECHANNELFAMILY "
-                      "WHERE channel_family_id = %s order by org_id" % cf_id)
-        query = rhnSQL.prepare(select_sql)
-        query.execute()
-
-        all_subs_in_db = {}
-        all_subs_sum   = 0
-        result = query.fetchall()
-
-        if len(result) == 0:
-            log_debug(1, "no entry for channel family %s in RHNPRIVATECHANNELFAMILY" % cf_id )
-            # NCC has a subscription for us that is missing in the DB
-            insert_sql = """
-                INSERT INTO RHNPRIVATECHANNELFAMILY
-                  (channel_family_id, org_id, max_members, current_members )
-                VALUES
-                  ( :cf_id, 1, :max_m, :current_m )
-            """
-            query = rhnSQL.prepare(insert_sql)
-            query.execute(
-                cf_id = cf_id,
-                max_m = data["nodecount"],
-                current_m = 0
-            )
-            rhnSQL.commit()
+#        select_sql = ("SELECT max_members, org_id, current_members from RHNPRIVATECHANNELFAMILY "
+#                      "WHERE channel_family_id = %s order by org_id" % cf_id)
+#        query = rhnSQL.prepare(select_sql)
+#        query.execute()
+#
+#        all_subs_in_db = {}
+#        all_subs_sum   = 0
+#        result = query.fetchall()
+#
+#        if len(result) == 0:
+#            log_debug(1, "no entry for channel family %s in RHNPRIVATECHANNELFAMILY" % cf_id )
+#            # NCC has a subscription for us that is missing in the DB
+#            insert_sql = """
+#                INSERT INTO RHNPRIVATECHANNELFAMILY
+#                  (channel_family_id, org_id, max_members, current_members )
+#                VALUES
+#                  ( :cf_id, 1, :max_m, :current_m )
+#            """
+#            query = rhnSQL.prepare(insert_sql)
+#            query.execute(
+#                cf_id = cf_id,
+#                max_m = data["nodecount"],
+#                current_m = 0
+#            )
+#            rhnSQL.commit()
 
         # copy database subscription data to a dict and
         # count all subscriptions over all org_id's
