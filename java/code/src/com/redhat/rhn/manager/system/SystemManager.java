@@ -1597,10 +1597,10 @@ public class SystemManager extends BaseManager {
                     user, server, ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
 
             // If this is a Satellite and no RHN Tools channel is available
-            // report the error, but continue:
+            // report the error
             if (!ConfigDefaults.get().isSpacewalk() && toolsChannel == null) {
                 log.warn("no tools channel found");
-                result.addWarning(new ValidatorWarning("system.entitle.notoolschannel"));
+                result.addError(new ValidatorError("system.entitle.notoolschannel"));
             }
             // If Spacewalk and no channel has the rhn-virtualization-host package,
             // warn but allow the operation to proceed.
@@ -1620,7 +1620,7 @@ public class SystemManager extends BaseManager {
                             user, server, nameId, evrId, archId);
                 }
                 else {
-                    result.addWarning(new ValidatorWarning("system.entitle.novirtpackage",
+                    result.addError(new ValidatorError("system.entitle.novirtpackage",
                                         ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
                 }
             }
@@ -1659,7 +1659,7 @@ public class SystemManager extends BaseManager {
                 // If we couldn't find a virt channel, warn the user but continue:
                 if (virtChannel == null) {
                     log.warn("no virt channel");
-                    result.addWarning(new ValidatorWarning(
+                    result.addError(new ValidatorError(
                             "system.entitle.novirtchannel"));
                 }
             }
