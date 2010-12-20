@@ -540,13 +540,12 @@ class NCCSync(object):
 
         # filter out the channels whose parent isn't also in the channels list
         c_labels = [c.get('label') for c in channels]
-        parents = []
+        filtered = []
         for channel in channels:
             parent = channel.get('parent')
             if parent == 'BASE' or parent in c_labels:
-                parents.append(parent)
-
-        return parents
+                filtered.append(channel)
+        return filtered
 
     def list_channels(self):
         """List available channels on NCC and if they are in sync with the db
