@@ -424,7 +424,7 @@ class NCCSync(object):
         # count all subscriptions over all org_id's
         for f in result:
             # all_subs_in_db[ org_id ] = { "max_members" : NUM, "current_members" : NUM, "dirty" : 0 }
-            if not all_subs_in_db.haskey( f[1] ):
+            if not all_subs_in_db.has_key( f[1] ):
                 all_subs_in_db[ f[1] ] = { "max_members" : f[0], "current_members" : f[2], "dirty" : 0 }
             all_subs_in_db[ f[1] ] += f[0]
             all_subs_sum += f[0]
