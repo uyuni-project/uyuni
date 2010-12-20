@@ -36,7 +36,16 @@ class ChannelNotAvailableError(Exception):
     def __str__(self):
         return "You do not have access to the channel: %s" % self.channel
 
-
+class ParentChannelNotInstalled(Exception):
+    def __init__(self, parent_label, channel_label):
+        self.channel = channel_label
+        self.parent = parent_label
+    def __str__(self):
+        return ("The parent channel '%(parent)s' of channel '%(channel)s' "
+                "is not currently installed in the database. You need to "
+                "install it before adding this channel to the database."
+                % self.__dict__)
+    
 class NCCSync(object):
     """This class is used to sync SUSE Manager Channels and NCC repositories"""
 
@@ -584,11 +593,21 @@ class NCCSync(object):
         # if we got this far, the channel is not available for this user
         raise ChannelNotAvailableError(channel_label)
 
-    def get_parent_id(self, channel_label):
-        if channel_label == 'BASE':
+    def get_parent_id(self, channel):
+        """Returns the ID of the channel's parent from the database
+
+        :arg channel: a Channel XML Element
+
+        """
+        parent_label = channel.get('parent')
+        channel_label = channel.get('label')
+        if parent_label == 'BASE':
             return None
         else:
-            return rhnSQL.Row("RHNCHANNEL", "LABEL", channel_label)['id']
+            try:
+                return rhnSQL.Row("RHNCHANNEL", "LABEL", parent_label)['id']
+            except KeyError:
+                raise ParentChannelNotInstalled(parent_label, channel_label)
 
     def insert_repo(self, repo, channel_id):
         """Insert an XML repo into the database as a ContentSource
@@ -642,7 +661,7 @@ class NCCSync(object):
                            :parent_channel, :channel_arch_id, :label, :name,
                            :summary, :description )""")
             query.execute(
-                parent_channel = self.get_parent_id(channel.get('parent')),
+                parent_channel = self.get_parent_id(channel),
                 channel_arch_id = rhnSQL.Row(
                     "RHNCHANNELARCH", "LABEL", "channel-%s" %
                     channel.get('arch'))['id'],
