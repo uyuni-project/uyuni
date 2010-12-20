@@ -2,14 +2,13 @@
 TH
 {
 	padding: 4px 6px;
-	/*[disabled]color:#000;*/
-/*background-color: #c0c0c0;*/
 	text-align: left;
 	font-size: small;
-	/*[disabled]background-color:#EEE;*/
-	/*[disabled]border:0px none #000000;*/
-	/*[disabled]border-bottom:1px solid #CCC;*/
-	/*[disabled]+text-shadow:0 1px 1px #FFFFFF;*/
+	/*+text-shadow:0 1px 0px #FFFFFF;*/
+	-moz-text-shadow: 0 1px 0px #FFFFFF;
+	-webkit-text-shadow: 0 1px 0px #FFFFFF;
+	-o-text-shadow: 0 1px 0px #FFFFFF;
+	text-shadow: 0 1px 0px #FFFFFF;
 }
 TABLE.list IMG
 {
@@ -21,6 +20,10 @@ TABLE.list TD
 	font-size: 1.1em;
 	border-bottom: 1px dotted #CCC;
 }
+TABLE.list TD+TD
+{
+	border-left: 1px solid #EEE;
+}
 TABLE.list TR:last-child TD
 {
 	border-bottom: 0px none #000000;
@@ -28,15 +31,23 @@ TABLE.list TR:last-child TD
 TABLE.list, TABLE.list-doubleheader
 {
 	font-size: 10px;
-	background: #EEE no-repeat top right;
+	background-color: #EEE;
 	width: 100%;
 	border: 1px solid #CCC;
 }
 TABLE.list TH, TABLE.list-doubleheader TH
 {
-	color: #000000;
+	color: #333;
 	border-bottom: 1px solid #CCC;
-	/*[disabled]border-right:0px solid #000000;*/
+	background-color: #EEE;
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, rgb(221,221,221)),color-stop(1, rgb(255,255,255)));
+	background: -moz-linear-gradient(center bottom,rgb(221,221,221) 0%,rgb(255,255,255) 100%);
+}
+TABLE.list-doubleheader TR:nth-child(2n+1) TH
+{
+	background: #EEE;
+	font-size: 1.5em;
+	color: #666666;
 }
 TABLE.list TH.row-2
 {
@@ -56,17 +67,16 @@ TABLE.list-pagination
 }
 TABLE.list-doubleheader TR+TR
 {
-	background-color: #D7D7D7;
 }
 TABLE.list-doubleheader TR+TR TH:first-child
 {
-	background: none;
+	/*[disabled]background:none;*/
 	background-color: #D7D7D7;
 	border-left: 1px solid #C0C0C0;
 }
 TABLE.list-doubleheader TR+TR TH:last-child
 {
-	background: none;
+	/*[disabled]background:none;*/
 	border-right: 1px solid #C0C0C0;
 }
 TD.errata-patches IMG
@@ -75,11 +85,9 @@ TD.errata-patches IMG
 }
 TD.first-column
 {
-	/*[disabled]border-left:1px solid #C0C0C0;*/
 }
 TD.last-column
 {
-	/*[disabled]border-right:1px solid #C0C0C0;*/
 }
 TD.only-column
 {
@@ -119,11 +127,11 @@ TH.thin-column, TD.thin-column
 /*list row classes*/
 .list-row-even TD
 {
-	background-color: #F2F2F2;
+	background-color: #F8F8F8;
 }
 .list-row-odd TD
 {
-	background-color: #FFFFFF;
+	background-color: #FFF;
 }
 .list-row-even-disabled TD
 {
@@ -229,9 +237,17 @@ TABLE.your-rhn TABLE.full-table TD
 	padding-right: 4px;
 	padding-top: 4px;
 }
-TABLE.half-table THEAD TH:first-child
+TABLE.half-table THEAD TH
 {
-	/*[disabled]background:url(/img/table_corner_tl.gif) no-repeat top left;*/
+	background: #EEE;
+	background: url(background:) -webkit-gradient(linear,left bottom,left top,color-stop(0, rgb(221,221,221)),color-stop(1, rgb(255,255,255))) url(;);
+	background: -moz-linear-gradient(center bottom,rgb(221,221,221) 0%,rgb(255,255,255) 100%);
+	border-bottom: 1px solid #CCC;
+	color: #333;
+}
+TABLE.half-table THEAD TH+TH
+{
+	border-left: 0px solid #000000;
 }
 DIV.full-width-wrapper
 {
@@ -251,7 +267,7 @@ SPAN.full-width-note-right
 /*special column classes*/
 TH+TH
 {
-	/*[disabled]border-left:0;*/
+	border-left: 1px dotted #CCC;
 }
 A[name]:hover
 {
@@ -380,27 +396,30 @@ TABLE.list-pagination
 }
 DIV.filter-input
 {
-	line-height: 2;
-	padding: 3px 0px;
-	vertical-align: middle;
+	padding: 0;
+	vertical-align: baseline;
 }
-DIV.filter-input .list-infotext
+DIV.filter-input .list-infotext:empty
 {
-	vertical-align: middle;
+	padding: 0px;
+	margin: 0px;
+	line-height: 0;
+	font-size: 0;
 }
 DIV.filter-input TABLE
 {
 	width: 100%;
+	margin-bottom: 3px;
+	line-height: 25px;
 }
 DIV.filter-input TD
 {
+	margin: 0px;
 	padding: 0px;
-	line-height: 2;
 	vertical-align: middle;
 }
 DIV.filter-input INPUT
 {
-	vertical-align: middle;
 	font-size: 10px;
 	margin-left: 8px;
 }
@@ -452,8 +471,7 @@ DIV.filter-input INPUT
 	white-space: nowrap;
 	float: left;
 	vertical-align: bottom;
-	margin-top: 3px;
-	line-height: 2;
+	margin-top: 5px;
 	padding: 0px;
 }
 .list-infotext STRONG
@@ -610,20 +628,20 @@ the following classes darken all rows in the currently-sorted column*/
 {
 	background-color: #EBF3FB;
 	border-left: 1px solid #82B2E1;
-	border-right: 1px solid #82B2E1;
+	/*[disabled]border-right:1px solid #82B2E1;*/
 }
 .list-row-odd TD.sortedCol
 {
 	background-color: #FFFFFF;
 	border-left: 1px solid #82B2E1;
-	border-right: 1px solid #82B2E1;
+	/*[disabled]border-right:1px solid #82B2E1;*/
 }
 TH.ascSort, TH.descSort
 {
 	background-color: #DAEAFA !important;
 	border-bottom: 1px solid #82B2E1 !important;
 	border-left: 1px solid #82B2E1 !important;
-	border-right: 1px solid #82B2E1 !important;
+	/*[disabled]border-right:1px solid #82B2E1;*/
 }
 /*the following classes add an arrow graphic in the column header*/
 TH.ascSort A

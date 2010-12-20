@@ -754,6 +754,14 @@ DIV.navheader TABLE TD A:hover, DIV.navfooter TABLE A:hover
 	color: #666 !important;
 	cursor: pointer;
 }
+DIV.navheader TABLE TD:first-child, DIV.navfooter TABLE TD:first-child
+{
+	text-align: left;
+}
+DIV.navheader TABLE TD:last-child, DIV.navfooter TABLE TD:last-child
+{
+	text-align: right;
+}
 DIV.navfooter TABLE TD
 {
 	padding-top: 15px;

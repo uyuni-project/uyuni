@@ -116,6 +116,7 @@ intended value for better browsers*/
 	text-align: left;
 	vertical-align: middle;
 	font-size: 10pt;
+	empty-cells: show;
 }
 IMG
 {
