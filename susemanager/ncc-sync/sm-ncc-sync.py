@@ -558,13 +558,22 @@ class NCCSync(object):
         print "Listing all mirrorable channels..."
         db_channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
 
-        ncc_channels = [c.get('label') for c in
-                             self.get_available_channels()]
+        ncc_channels = self.get_available_channels()
+
         for channel in ncc_channels:
-            if channel in db_channels:
-                print "[P] %s" % channel
+            if channel.get('parent') != 'BASE':
+                continue
+            if channel.get('label') in db_channels:
+                print "[P] %s" % channel.get('label')
             else:
-                print "[.] %s" % channel
+                print "[.] %s" % channel.get('label')
+            for child in ncc_channels:
+                if child.get('parent') != channel.get('label'):
+                    continue
+                if channel.get('label') in db_channels:
+                    print "    [P] %s" % child.get('label')
+                else:
+                    print "    [.] %s" % child.get('label')
 
     def get_ncc_channel(self, channel_label):
         """Try getting the NCC channel for this user"""
