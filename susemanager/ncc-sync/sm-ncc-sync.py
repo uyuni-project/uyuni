@@ -228,7 +228,7 @@ class NCCSync(object):
         for family in tree.getroot():
             name = family.get("name")
             label = family.get("label")
-            d_nc  = family.get("default_nodecount")
+            d_nc  = int(family.get("default_nodecount"))
             cf_id = self.edit_channel_family_table(label, name)
             select_sql = ("SELECT max_members, org_id, current_members from RHNPRIVATECHANNELFAMILY "
                           "WHERE channel_family_id = %s order by org_id" % cf_id)
