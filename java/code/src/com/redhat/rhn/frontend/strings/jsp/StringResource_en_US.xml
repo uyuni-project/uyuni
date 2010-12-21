@@ -21908,7 +21908,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-      </trans-unit>
+      </trans-unit>        
         <trans-unit id="help.jsp.chat">
           <source>IRC Chat</source>
         </trans-unit>
@@ -22993,6 +22993,15 @@ given channel.</source>
 	 <trans-unit id="channel.jsp.changelog.error">
         <source>There was an error reading the selected package changelog.  Please check that the package physically exists and has the correct permissions.</source>
      </trans-unit>
+    <!--Added for SuSE copyright notice page-->
+     	<trans-unit id="help.jsp.copyright.title">
+          <source>Copyright Notice</source>
+        </trans-unit>
+	<trans-unit id="help.jsp.copyright">
+          <source>
+	      Put copyright notice here.
+	    </source>
+        </trans-unit>
   </body>
   </file>
 </xliff>
