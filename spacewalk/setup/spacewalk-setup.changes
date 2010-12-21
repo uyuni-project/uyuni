@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec 21 15:59:11 CET 2010 - ug@suse.de
+
+- patch added to Requires
+
+-------------------------------------------------------------------
 Wed Sep 15 10:05:42 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-setup

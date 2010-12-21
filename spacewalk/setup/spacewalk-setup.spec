@@ -36,6 +36,7 @@ Requires:       perl-Mail-RFC822-Address
 Requires:       perl-XML-LibXML perl-XML-SAX perl-DateTime
 Requires:       perl-Frontier-RPC
 Requires:       perl-libwww-perl
+Requires:       patch
 BuildRequires:       perl-libwww-perl
 %else
 Requires:       /sbin/restorecon
