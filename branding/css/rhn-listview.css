@@ -12,7 +12,10 @@ TH
 }
 TABLE.list IMG
 {
-	vertical-align: middle !important;
+	vertical-align: top !important;
+	margin: 1px 0px 0px;
+	padding: 0px;
+	border: 0px solid #000000;
 }
 TABLE.list TD
 {
@@ -240,7 +243,7 @@ TABLE.your-rhn TABLE.full-table TD
 TABLE.half-table THEAD TH
 {
 	background: #EEE;
-	background: url(background:) -webkit-gradient(linear,left bottom,left top,color-stop(0, rgb(221,221,221)),color-stop(1, rgb(255,255,255))) url(;);
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, rgb(221,221,221)),color-stop(1, rgb(255,255,255)));
 	background: -moz-linear-gradient(center bottom,rgb(221,221,221) 0%,rgb(255,255,255) 100%);
 	border-bottom: 1px solid #CCC;
 	color: #333;
@@ -398,6 +401,15 @@ DIV.filter-input
 {
 	padding: 0;
 	vertical-align: baseline;
+	position: relative;
+	margin-bottom: 3px;
+}
+DIV.filter-input DIV
+{
+	float: right;
+	position: absolute;
+	top: 5px;
+	right: 5px;
 }
 DIV.filter-input .list-infotext:empty
 {
