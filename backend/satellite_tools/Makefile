@@ -13,7 +13,7 @@ SPACEWALK_FILES	= __init__ connection constants diskImportLib messages \
             syncLib SequenceServer xmlDiskSource \
             xmlSource xmlWireSource rhn_satellite_activate rhn_ssl_dbstore \
             satComputePkgHeaders updatePackages reposync \
-	    geniso gentree
+            geniso
 # unsupported in SUSE Manager 1.2:
 # satellite-sync
 SCRIPTS = spacewalk-debug rhn-entitlement-report \
