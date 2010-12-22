@@ -10,7 +10,8 @@
 </head>
 <body onLoad="formFocus('loginForm', 'username')">
 <c:if test="${requestScope.hasExpired != 'true'}">
-<div id="contentLeft">
+<div id="login_page">
+  <h1 id="rhn_welcome3"><span><bean:message key="login.jsp.welcomemessage"/></span></h1>
   <div class="clearBox">
   <div class="clearBoxInner">
   <div class="clearBoxBody">
@@ -21,19 +22,9 @@
   </div>
   </div>
   </div>
-</div> <!-- end contentLeft -->
+</div> <!-- end login_page -->
 </c:if>
 
-<div id="contentRight">
-  <h1 id="rhn_welcome3"><span><bean:message key="login.jsp.welcomemessage"/></span></h1>
-    
-    <p></p><p></p><p></p><p></p>
-    <!--p><bean:message key="login.jsp.satbody1"/></p-->
-    <!--p><bean:message key="login.jsp.satbody2"/></p-->
-    <!--p><bean:message key="login.jsp.satbody3"/></p-->
-    <!--p><bean:message key="login.jsp.satbody4"/></p-->
-
-
-</div> <!-- end contentRight -->
+<div style="clear:both"></div><!-- Clearing div. Let's not have the footer over the context -->
 </body>
 </html>
