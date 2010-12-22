@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf8"?>
+<pxt-passthrough>
+
+  <pxt-use class="Grail::Frame" />
+
+  <grail-canvas-template base="/templates/c.pxt" mode="main_canvas">
+
+<h1><img src="/img/rhn-icon-info.gif" alt="information" /> Copyright Notice</h1>
+
+    <p>
+    Copyright notice goes here.
+  </p>
+  </grail-canvas-template>
+</pxt-passthrough>
