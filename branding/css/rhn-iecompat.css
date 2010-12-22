@@ -116,6 +116,11 @@ HTML>BODY #sidenav LI
 /*[clearfix]*/.clearBoxBody
 {
 }
+#login_page .formrow
+{
+	padding: 0px;
+	margin: 0px;
+}
 INPUT
 {
 	font-family: sans-serif;

@@ -34,35 +34,62 @@ DIV.login-box DIV.input-row INPUT
 	font-weight: normal;
 	vertical-align: middle;
 }
+#login_page .clearBox
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+.relogin .clearBox
+{
+	margin-left: 20px !important;
+}
 .clearBox
 {
-	width: 279px;
-	background: url('/img/corner_halflinebox_top.png') no-repeat top right;
-	padding-top: 7px;
-	margin-bottom: 15px;
+	width: 280px;
+	padding: 10px 0px 5px;
+	border: 1px solid #CCC;
+	/*+border-radius:5px;*/
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px 5px 5px 5px;
+	margin: 15px;
+	/*+box-shadow:0 2px 10px #E8E8E8;*/
+	-moz-box-shadow: 0 2px 10px #E8E8E8;
+	-webkit-box-shadow: 0 2px 10px #E8E8E8;
+	-o-box-shadow: 0 2px 10px #E8E8E8;
+	box-shadow: 0 2px 10px #E8E8E8;
+	height: 120px;
+}
+#login_page .formrow
+{
+	margin-bottom: 19px;
+}
+.clearBox INPUT
+{
+	float: right;
 }
 .clearBox .label
 {
-	clear: left;
+	margin: 2px;
+	font-size: 8pt;
+	font-weight: normal !important;
 }
 .clearBoxInner
 {
-	background: url('/img/corner_halflinebox_bottom.png') no-repeat bottom left;
-}
-.clearBoxInner
-{
-	width: 100%;
-	padding-bottom: 7px;
 }
 .clearBoxBody
 {
-	padding: 5px 14px;
-	border-left: 1px solid #B4B4B4;
-	border-right: 1px solid #B4B4B4;
+	padding: 5px 14px 0;
 }
 .clearBoxBody H2
 {
 	font-size: small;
+}
+.clearBox #login
+{
+	margin-top: 8px;
+	height: 25px;
 }
 /** End login box styles *
 * used for system entitlements page for virtual systems **/
@@ -135,30 +162,38 @@ H1#rhn_welcome2
 	height: 37px;
 	display: none;
 }
-H1#rhn_welcome3
-{
-	background-image: url('/img/rhn_welcome3.gif');
-	background-position: 0 0;
-	background-repeat: no-repeat;
-	height: 40px;
-	display: none;
-}
 H1#rhn_welcome SPAN
 {
-	display: none;
+	display: block;
 }
 H1#rhn_welcome2 SPAN
 {
 	display: none;
 }
+H1#rhn_welcome3
+{
+	font-size: 1.8em;
+	color: #83B354;
+	font-weight: bold;
+	margin: 24px 0 0 0px;
+	padding: 0px 0px 12px;
+}
 H1#rhn_welcome3 SPAN
 {
-	display: none;
+}
+#login_page
+{
+	text-align: center;
+}
+.relogin
+{
+	text-align: left !important;
 }
 #contentLeft
 {
 	float: left;
-	margin-top: 20px;
+	margin-right: 10px;
+	width: 450px;
 }
 #contentRight
 {
