@@ -7,14 +7,15 @@
 <div class="top-content"> <!--Added for the purpose of SuSE Manager. Header wrap [et]-->
   <div id="utility">
 <rhn:require acl="user_authenticated()">
-	<div id="utilityLinks">
+	<!--div id="utilityLinks">
 
-<!--p id="geo"><c:out value="${rhnActiveLang} "/> (<a href="/rhn/account/LocalePreferences.do"><bean:message key="header.jsp.change"/></a>)</p-->
-		<p id="linx"><!--span class="hide"><strong><bean:message key="header.jsp.shortcuts"/></strong> </span><a href="http://kbase.redhat.com/"><bean:message key="header.jsp.knowledgebase"/></a> <span class="navPipe">|</span--> <a href="/help"><bean:message key="header.jsp.documentation"/></a></p>
+<p id="geo"><c:out value="${rhnActiveLang} "/> (<a href="/rhn/account/LocalePreferences.do"><bean:message key="header.jsp.change"/></a>)</p>
+		<p id="linx"><span class="hide"><strong><bean:message key="header.jsp.shortcuts"/></strong> </span><a href="http://kbase.redhat.com/"><bean:message key="header.jsp.knowledgebase"/></a> <span class="navPipe">|</span> <a href="/help"><bean:message key="header.jsp.documentation"/></a></p>
 
-	</div>
+	</div-->
 	<div id="utilityAccount">
         <p>
+	  <a href="/help"><bean:message key="header.jsp.documentation"/></a><span class="navPipe">|</span> <!-- Moved over from utilityLinks as most of those are now gone, and there is no need to keep it as a separate bar. -->
          <span class="label"><bean:message key="header.jsp.loggedin"/></span> <a href="/rhn/account/UserDetails.do"><c:out escapeXml="true" value="${requestScope.session.user.login}" /></a><span class="navPipe">|</span><span class="label"><bean:message key="header.jsp.org"/></span> <a href="/rhn/admin/multiorg/Organizations.do"><c:out escapeXml="true" value="${requestScope.session.user.org.name}" /></a><span class="navPipe">|</span><a href="/rhn/account/UserPreferences.do"><bean:message key="header.jsp.preferences"/></a><span class="navPipe">|</span><html:link forward="logout"><span><bean:message key="header.jsp.signout"/></span></html:link>
         </p>
 	</div>

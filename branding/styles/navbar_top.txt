@@ -4,14 +4,15 @@
 <pxt-use class="Sniglets::Header" />
 
 <div id="utility">
-	<div id="utilityLinks">
-<p id="linx"><!--span class="hide"><strong>Shortcuts:</strong> </span><a
+	<!--div id="utilityLinks">
+<p id="linx"><span class="hide"><strong>Shortcuts:</strong> </span><a
 href="http://kbase.redhat.com/">Knowledgebase</a> <span
-class="navPipe">|</span--> <a href="rhn/">Documentation</a></p>
-	</div>
+class="navPipe">|</span> <a href="rhn/">Documentation</a></p>
+	</div-->
 	<div id="utilityAccount">
 <rhn-display-login>
         <p>
+	 <a href="/help">Documentation</a><span class="navPipe">|</span> <!-- Moved over from utilityLinks as most of those are now gone, and there is no need to keep it as a separate bar. -->
          <span class="label">User:</span> <a
 href="/rhn/account/UserDetails.do">[login]</a><span
 class="navPipe">|</span>
