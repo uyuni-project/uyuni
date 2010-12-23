@@ -23,6 +23,10 @@ TABLE.list TD
 	font-size: 1.1em;
 	border-bottom: 1px dotted #CCC;
 }
+TABLE.list TR:hover TD
+{
+	background-color: #EDF3F9;
+}
 TABLE.list TD+TD
 {
 	border-left: 1px solid #EEE;
