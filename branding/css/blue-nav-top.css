@@ -51,12 +51,7 @@ DIV#navWrap DIV#mainNavWrap, UL#mainNav, DIV#mainNavWrap UL
 DIV#navWrap
 {
 	clear: both;
-	/*[disabled]width:100%;*/
-	/*[disabled]font-family:"Lucida Grande", "Luxi Sans", "Trebuchet MS", helvetica, arial, sans-serif;*/
-	/*[disabled]background-image:url(/img/nav/navPrimeRight3.png);*/
-	/*[disabled]background-position:top right;*/
-	/*[disabled]background-repeat:no-repeat;*/
-	height: 32px;
+	height: 30px;
 }
 /*[clearfix]*/DIV#navWrap DIV#mainNavWrap
 {
@@ -93,12 +88,6 @@ UL#mainNav LI A:hover, DIV#mainNavWrap UL LI A:hover
 /***** highlighting *****/
 LI#mainFirst-active, #mainNav LI#main-active, #mainNav LI#mainLast-active, DIV#mainNavWrap UL LI#main-active, DIV#mainNavWrap UL LI#mainLast-active
 {
-/*
-background-color: #e6e6e6;
-*/
-	/*[disabled]background-image:url(/img/nav/navPrimeTabRight-blue.png);*/
-	/*[disabled]background-position:top right;*/
-	/*[disabled]background-repeat:no-repeat;*/
 	background-color: #FFFFFF;
 	border-top-left-radius: 7px;
 	border-top-right-radius: 7px;
@@ -107,16 +96,14 @@ background-color: #e6e6e6;
 	-webkit-box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2969);
 	-o-box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2969);
 	box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2969);
-	-webkit-box-shadow: rgba(0, 0, 0, 0.296875) 0px 10px 10px;
-	-moz-border-radius-topleft: 7px;
-	-moz-border-radius-topright: 7px;
+	/*+border-radius:7px 7px 0 0;*/
+	-moz-border-radius: 7px 7px 0 0;
+	-webkit-border-radius: 7px 7px 0 0;
+	-khtml-border-radius: 7px 7px 0 0;
+	border-radius: 7px 7px 0 0;
 }
 LI#mainFirst-active A, #mainNav LI#main-active A, #mainNav LI#mainLast-active A, DIV#mainNavWrap UL LI#main-active A, DIV#mainNavWrap UL LI#mainLast-active A
 {
-	/*[disabled]background-image:url(/img/nav/navPrimeTabLeft-blue.png);*/
-	/*[disabled]background-position:top left;*/
-	/*[disabled]background-repeat:no-repeat;*/
-	/*[disabled]padding-bottom:5px;*/
 	color: #555753;
 }
 LI#mainFirst-active A:hover, #mainNav LI#main-active A:hover, #mainNav LI#mainLast-active A:hover, DIV#mainNavWrap UL LI#main-active A:hover, DIV#mainNavWrap UL LI#mainLast-active A:hover
@@ -128,7 +115,6 @@ LI#mainFirst-active A:hover, #mainNav LI#main-active A:hover, #mainNav LI#mainLa
 /*if it's the first tab item in the bar, styled a little differently*/
 UL#mainNav LI#mainFirst-active A, DIV#mainNavWrap UL LI#mainFirst-active A
 {
-	/*[disabled]background-image:url(/img/nav/navPrimeTabLeft-blue.gif);*/
 	color: #555753;
 	text-decoration: inherit;
 }
@@ -176,8 +162,6 @@ This CSS is for the second, red-colored nav bar at the top of the screen.*/
 #systembar A, #systembar A:link, #systembar A:hover, #systembar A:active
 {
 	margin-left: 6px;
-	/*[disabled]color:#444;*/
-	/*[disabled]text-decoration:inherit;*/
 }
 #searchbar
 {

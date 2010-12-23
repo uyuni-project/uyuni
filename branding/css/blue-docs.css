@@ -61,7 +61,6 @@ PRE CODE EM, PRE CODE SPAN, PRE CODE CODE
 }
 .note .guibutton, .note .keycap, .note .guilabel, .tip .guibutton, .tip .keycap, .tip .guilabel, .important .guibutton, .important .keycap, .important .guilabel, .caution .guibutton, .caution .keycap, .caution .guilabel, .warning .guibutton, .warning .keycap, .warning .guilabel
 {
-	/*[disabled]color:#FFFFFF;*/
 }
 .note H2, .tip H2, .important H2, .caution H2, .warning H2
 {

@@ -37,6 +37,7 @@ TABLE.list, TABLE.list-doubleheader
 	background-color: #EEE;
 	width: 100%;
 	border: 1px solid #CCC;
+	margin: 5px 0px;
 }
 TABLE.list TH, TABLE.list-doubleheader TH
 {
@@ -73,13 +74,11 @@ TABLE.list-doubleheader TR+TR
 }
 TABLE.list-doubleheader TR+TR TH:first-child
 {
-	/*[disabled]background:none;*/
 	background-color: #D7D7D7;
 	border-left: 1px solid #C0C0C0;
 }
 TABLE.list-doubleheader TR+TR TH:last-child
 {
-	/*[disabled]background:none;*/
 	border-right: 1px solid #C0C0C0;
 }
 TD.errata-patches IMG
@@ -215,7 +214,6 @@ DIV.half-table-right
 }
 TABLE.half-table
 {
-	/*[disabled]background:#C0C0C0 url(/img/table_corner_tr.gif) no-repeat 100% 0;*/
 	padding: 0px;
 	margin: 0px;
 	border: 1px solid #CCC;
@@ -227,7 +225,6 @@ TABLE.half-table
 }
 .half-table TD
 {
-	/*[disabled]background-color:#FFF;*/
 	border-bottom: 1px dotted #CCC;
 }
 TABLE.your-rhn TABLE.half-table TD
@@ -274,7 +271,6 @@ TH+TH
 }
 A[name]:hover
 {
-	/*[disabled]color:inherit;*/
 }
 /*pagination widget styles*/
 #pagination_widget
@@ -301,7 +297,6 @@ A[name]:hover
 	border: 1px solid #777;
 	height: 19px;
 	width: 22px;
-	font-family: Helvetica, Verdana, sans-serif;
 	font-size: 10pt;
 	font-weight: bold;
 	color: #0066CC;
@@ -402,7 +397,6 @@ DIV.filter-input
 	padding: 0;
 	vertical-align: baseline;
 	position: relative;
-	margin-bottom: 3px;
 }
 DIV.filter-input DIV
 {
@@ -421,7 +415,6 @@ DIV.filter-input .list-infotext:empty
 DIV.filter-input TABLE
 {
 	width: 100%;
-	margin-bottom: 3px;
 	line-height: 25px;
 }
 DIV.filter-input TD
@@ -538,7 +531,7 @@ UL.channel-list LI.child-channel
 }
 UL.channel-list LI.highlighted
 {
-	background-color: #FFFF00;
+	background-color: #FFFFBD;
 }
 .list-system-channels A
 {
@@ -709,7 +702,7 @@ TR.alphaResult TD.sortedCol
 }
 .inactive
 {
-	background-color: #FEF5AD;
+	background-color: #FFFCD6;
 	margin-bottom: 5px;
 }
 .compare-list .inactive
@@ -726,14 +719,7 @@ TR.alphaResult TD.sortedCol
 .csv-download
 {
 	width: 20%;
-	/*[disabled]padding:3px 6px;*/
-	/*[disabled]background-color:#EEE;*/
-	/*[disabled]-moz-border-radius:8px;*/
 	text-align: center;
-	/*[disabled]+border-radius:0 0 5px 5px;*/
-	/*[disabled]border-left:1px solid #CCC;*/
-	/*[disabled]border-bottom:1px solid #CCC;*/
-	/*[disabled]border-right:1px solid #CCC;*/
 	margin-top: 10px;
 }
 .csv-download IMG

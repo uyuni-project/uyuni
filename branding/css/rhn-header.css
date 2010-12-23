@@ -7,8 +7,6 @@ BEGIN new "rhel5" primary and secondary navigation
 /*IMG#rhLogo is hidden as it is not needed in SuSE Manager context*/
 IMG#rhLogo
 {
-	/*[disabled]float:left;*/
-	/*[disabled]margin-left:15px;*/
 	display: none;
 	width: 0px;
 	height: 0px;
@@ -18,14 +16,13 @@ IMG#rhnLogo
 	float: left;
 	width: 226px;
 	height: 75px;
-	margin-left: 10px;
+	margin-left: 15px;
 	position: absolute;
-	top: 10px;
-	/*[disabled]left:5px;*/
+	top: 8px;
 }
 #utility
 {
-	/*[disabled]font-size:;*/
+	/*[empty]font-size:;*/
 	padding: 10px 0 0;
 	height: 15px;
 }
@@ -36,7 +33,7 @@ IMG#rhnLogo
 #utilityLinks
 {
 	float: left;
-	width: 45%;
+	width: inherit;
 	padding: 0 0 0 10px;
 	display: block;
 }
@@ -64,16 +61,11 @@ IMG#rhnLogo
 #utilityAccount P
 {
 	margin: 0;
-	/*[disabled]background-image:url(/img/nav/utilBkgdLeft.png);*/
-	/*[disabled]background-position:bottom left;*/
-	/*[disabled]background-repeat:no-repeat;*/
 	display: block;
 	color: #C6DEAE;
-	/*[disabled]padding:6px 0px 8px;*/
 }
 #utilityAccount SPAN.label
 {
-	/*[disabled]text-transform:uppercase;*/
 	font-size: 0.8em;
 	font-weight: normal;
 	color: #000000;
@@ -83,7 +75,7 @@ IMG#rhnLogo
 }
 SPAN.navPipe
 {
-	color: #DDD;
+	color: #A3C87D;
 	padding: 0 8px;
 }
 A#utilityCart

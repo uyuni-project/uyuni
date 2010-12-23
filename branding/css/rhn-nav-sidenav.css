@@ -3,12 +3,6 @@
 {
 /*for ie55*/
 	width: 170px;
-	/*[disabled]background-color:#999;*/
-	/*[disabled]background-image:url(/img/corner_sidenav_top.gif);*/
-	/*[disabled]background-position:top right;*/
-	/*[disabled]background-repeat:no-repeat;*/
-	/*[disabled]font-family:"Luxi Sans", verdana, arial, sans-serif;*/
-	/*[disabled]font-size:xx-small;*/
 /*false value for WinIE4/5
 voice-family: "\"}\";
 trick WinIE4/5 into thinking rule is over*/
@@ -22,33 +16,24 @@ trick WinIE4/5 into thinking rule is over*/
 }
 #sidenavp UL, #sidenav UL
 {
-	/*[disabled]background-image:url(/img/corner_sidenav_bottom.gif);*/
-	/*[disabled]background-position:bottom left;*/
-	/*[disabled]background-repeat:no-repeat;*/
 	list-style: none;
 	padding: 10px 0;
 	margin: 0;
 }
 #sidenavp UL UL, #sidenav UL LI.navchild
 {
-	/*[disabled]background:none;*/
-	/*[disabled]background-color:#CCC;*/
 	margin: 0;
 	padding: 0;
-	/*[disabled]border-top:1px solid #999;*/
 }
 #sidenavp UL LI, #sidenav UL LI.navparent
 {
-	/*[disabled]border-bottom:1px solid #A7A7A7;*/
 	margin: 0;
 }
 #sidenavp UL LI:last-child, #sidenav UL LI:last-child
 {
-	/*[disabled]border-bottom:1px solid #999;*/
 }
 #sidenavp UL UL LI.sidenav-selected, #sidenav UL LI.sidenav-selected
 {
-	/*[disabled]background:#6C6C6C;*/
 }
 #sidenavp UL LI.sidenav-selected SPAN, #sidenav UL LI.sidenav-selected SPAN
 {
@@ -57,7 +42,6 @@ trick WinIE4/5 into thinking rule is over*/
 #sidenavp UL LI A, #sidenav UL LI A
 {
 	display: block;
-	/*[disabled]color:#FFFFFF;*/
 	text-decoration: inherit;
 	padding: 3px 5px 3px 15px;
 	margin: 0;
@@ -70,16 +54,13 @@ trick WinIE4/5 into thinking rule is over*/
 }
 #sidenavp UL LI.sidenav-selected, #sidenav UL LI.sidenav-selected
 {
-	/*[disabled]background:#6C6C6C;*/
 }
 #sidenavp UL UL LI:last-child, #sidenav UL LI.navchild:last-child
 {
-	/*[disabled]border-bottom:none;*/
 }
 #sidenavp UL UL LI A, #sidenav UL LI.navchild A
 {
 	padding-left: 30px;
-	/*[disabled]color:#555;*/
 }
 #sidenavp UL UL LI.sidenav-selected A, #sidenav UL LI.sidenav-selected A
 {
@@ -99,7 +80,6 @@ trick WinIE4/5 into thinking rule is over*/
 	padding-top: 9px;
 	margin-top: 1em;
 	margin-left: 0px;
-	/*[disabled]border-bottom:1px solid #DDDDDD;*/
 }
 .sideleg H2
 {
@@ -131,7 +111,6 @@ trick WinIE4/5 into thinking rule is over*/
 .sidebar
 {
 	padding: 10px 0 0;
-/*changed padding parameters*/
 	vertical-align: top;
 }
 .sidebar-title

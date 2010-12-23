@@ -32,7 +32,7 @@ Including the site-wide font set*/
 }
 #top-wrap
 {
-	background: #83B354 url(/img/bg-header.png) no-repeat 50% 43px;
+	background: #83B354 url(/img/bg-header.png) no-repeat 50% 41px;
 	width: 100%;
 	min-width: 80em;
 }
@@ -57,7 +57,7 @@ BODY
 }
 .page-content
 {
-	padding: 6px 10px 6px 16px;
+	padding: 0px 10px 6px 16px;
 	vertical-align: top;
 	border-left: 1px solid #DDD;
 	width: 70em;
@@ -81,9 +81,6 @@ TD.page-content>TABLE
 }
 .page-content .full-width, .page-content HR
 {
-	/*[disabled]clear:both;*/
-	/*[disabled]width:100%;*/
-	/*[disabled]margin-right:10px;*/
 }
 .details-column-right
 {
@@ -205,8 +202,7 @@ H1 A.help-title IMG, DIV.toolbar-h1 A.help-title IMG
 }
 DIV.toolbar-h1, DIV.toolbar-h2
 {
-	/*[disabled]font-weight:bold;*/
-	/*[disabled]padding:4px 0;*/
+	padding: 4px 0;
 }
 H2, DIV.toolbar-h2
 {
@@ -242,8 +238,7 @@ DIV.toolbar
 }
 .toolbar A
 {
-	/*[disabled]padding:0 2px;*/
-	/*[disabled]text-decoration:none;*/
+	padding: 0 2px;
 }
 DIV.tooldiv.up-arrow
 {
@@ -346,8 +341,11 @@ TABLE.details
 	border: 1px solid #DDD;
 	border: none;
 	background-color: #EEE;
-	-moz-border-radius-topleft: 15px;
-	-moz-border-radius-bottomleft: 15px;
+	/*+border-radius:15px 0 0 15px;*/
+	-moz-border-radius: 15px 0 0 15px;
+	-webkit-border-radius: 15px 0 0 15px;
+	-khtml-border-radius: 15px 0 0 15px;
+	border-radius: 15px 0 0 15px;
 	width: 25%;
 }
 .details TH.required-form-field
@@ -361,7 +359,6 @@ TABLE.details
 	padding-left: 2px;
 	padding: 8px;
 	border-bottom: 0;
-	/*[disabled]width:70%;*/
 }
 .details TH+TD
 {
@@ -464,9 +461,6 @@ TABLE.details TD.csv-download
 }
 .button A
 {
-	/*[disabled]margin-top:3px;*/
-	/*[disabled]padding:2px 5px;*/
-	/*[disabled]text-decoration:none;*/
 }
 .button:hover, INPUT[type=button]:hover, INPUT[type=submit]:hover, .csv-download:hover
 {
@@ -476,15 +470,9 @@ TABLE.details TD.csv-download
 }
 .button:active
 {
-	/*[disabled]padding:3px 6px 1px 4px;*/
 }
 .button, A:link.link-button, A:visited.link-button, A:hover.link-button
 {
-	/*[disabled]font-size:small;*/
-	/*[disabled]background-color:#EEE;*/
-	/*[disabled]border:1px outset #BBB;*/
-	/*[disabled]text-decoration:none;*/
-	/*[disabled]color:#444;*/
 }
 .button, INPUT[type=button], INPUT[type=submit], .csv-download
 {
@@ -519,11 +507,6 @@ INPUT[type=text], INPUT[type=password]
 }
 A:link.link-button, A:visited.link-button, A:hover.link-button
 {
-	/*[disabled]padding-bottom:0.25%;*/
-	/*[disabled]padding-top:0.25%;*/
-	/*[disabled]padding-left:2%;*/
-	/*[disabled]padding-right:2%;*/
-	/*[disabled]text-decoration:none;*/
 }
 /** embedded help links **/
 .rhn-embedded-help-NAVHEADER TD
@@ -560,7 +543,7 @@ A.link-img:link IMG, A.link-img:visited IMG
 }
 SPAN.hide
 {
-	/*[disabled]visibility:hidden;*/
+	visibility: hidden;
 	display: none;
 }
 SPAN.no-details
@@ -622,16 +605,12 @@ DIV.indent
 }
 #footer
 {
-/*
-border-top: 2px dotted #ccc;
-padding: 2em 4em 2em 4em;
-*/
 	padding: 1em 0;
 	margin: 1em auto;
 	text-align: center;
 	font-size: 10px;
 	color: #888;
-	margin-top: 64px;
+	margin-top: 25px;
 	width: 100%;
 }
 TABLE.ssm-overview P
