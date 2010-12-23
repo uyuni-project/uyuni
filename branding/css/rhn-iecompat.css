@@ -58,6 +58,14 @@ DIV.contentnav-row2 DIV.top
 {
 	height: 12px;
 }
+.sideleg UL LI
+{
+	vertical-align: middle;
+}
+.sideleg UL LI IMG
+{
+	margin-top: -1px;
+}
 #searchbar
 {
 	padding: 16px 0px 0px;
@@ -77,9 +85,20 @@ TABLE.list TH
 {
 	font-size: 1.2em;
 }
+TH.descSort A
+{
+	float: right;
+	width: 100%;
+}
 .filter-input .list-sizeselector
 {
 	font-size: 10pt;
+}
+DIV.filter-input TD *
+{
+	margin: 0px;
+	padding: 0px;
+	vertical-align: middle;
 }
 DIV.rounded-box
 {
@@ -88,15 +107,18 @@ DIV.rounded-box
 #bar
 {
 	width: 100%;
-	text-align: center;
+	text-align: center !important;
+	height: 29px;
 }
 #systembar
 {
 	width: 80em;
 	text-align: left;
+	margin: 0px auto;
 }
 #sidenav
 {
+	font-size: 10pt;
 }
 #sidenav LI
 {
@@ -150,11 +172,16 @@ TABLE.details TR
 {
 	cursor: pointer;
 }
+#header INPUT, #header SELECT
+{
+	border: 1px solid #648D3D !important;
+	height: 24px;
+}
 /*[clearfix]*/UL#mainNav, DIV#mainNavWrap UL
 {
 	font-weight: bold;
 	padding: 0px;
-	margin: 0px 0px 0px 10px;
+	margin: 1px 0px 0px 10px;
 	list-style-type: none;
-	height: 31px;
+	height: 30px;
 }
