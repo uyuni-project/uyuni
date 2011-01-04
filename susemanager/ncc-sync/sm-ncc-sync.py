@@ -49,13 +49,17 @@ class ParentChannelNotInstalled(Exception):
 class NCCSync(object):
     """This class is used to sync SUSE Manager Channels and NCC repositories"""
 
-    def __init__(self, quiet=False):
+    def __init__(self, quiet=False, debug=-1):
         """Setup configuration"""
         self.quiet = quiet
+        self.debug = debug
 
         initCFG("server.susemanager")
-        if CFG.DEBUG > 1:
-            rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'sm-ncc-sync.log', CFG.DEBUG)
+        if self.debug == -1:
+            self.debug = CFG.DEBUG
+
+        if self.debug > 1:
+            rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'sm-ncc-sync.log', self.debug)
         else:
           rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'sm-ncc-sync.log')
 
@@ -88,25 +92,24 @@ class NCCSync(object):
         """
         new_url = url
         try_counter = self.connect_retries
-        while new_url != "" and try_counter > 0:
+        while new_url != "":
             try_counter -= 1
             o = urllib.URLopener()
             try:
-                log_debug(1, "try connecting %s" % new_url)
+                log_debug(1, "trying to connect %s" % new_url)
                 f = o.open( new_url, send)
                 new_url = ""
             except IOError, e:
                 # 302 is a redirect
-                if e[1] == 302:
+                if try_counter <= 0:
+                    self.error_msg("connecting %s failed after %s tries with HTTP error code %s" % (new_url, self.connect_retries, e[1]))
+                    raise e
+                elif e[1] == 302:
                     log_debug(1, "got redirect")
                     new_url = e[3].dict["location"]
-                elif e[1] == 504:
-                    # gateway timeout - try again
-                    log_debug(1, "got gateway timeout")
-                    pass
                 else:
-                    self.error_msg("connecting %s failed with HTTP error code %s" % (new_url, e[1]))
-                    raise e
+                    log_debug(1, "connecting %s failed with HTTP error code %s" % (new_url, e[1]))
+                    pass
         return f
 
     # OUT: [ {'consumed-virtual': '0',
@@ -746,10 +749,13 @@ def main():
                       help="update subscriptions by NCC data")
     parser.add_option('-q', '--quiet', action='store_true', dest='quiet', 
                       default=False, help="Print no output, still logs output")
+    parser.add_option('-d', '--debug', dest='debug',
+                      default=-1, help="debugging")
+
 
     (options, args) = parser.parse_args()
 
-    syncer = NCCSync(quiet=options.quiet)
+    syncer = NCCSync(quiet=options.quiet, debug=options.debug)
     if options.list:
         syncer.list_channels()
     elif options.channel:
