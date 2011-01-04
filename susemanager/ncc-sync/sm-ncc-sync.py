@@ -648,13 +648,23 @@ class NCCSync(object):
             "SELECT LABEL FROM RHNCONTENTSOURCE WHERE LABEL = :label")
         query.execute(label=repo.get('label'))
         if not query.fetchone():
+            data = repo.attrib
+            url = suseLib.URL(data['source_url'])
+            # nu.novell.com needs authentication using the mirror credentials
+            if url.host == "nu.novell.com":
+                qp = url.query
+                if qp:
+                    url.query = qp + "&credentials=mirrcred"
+                else:
+                    url.query = "credentials=mirrcred"
+                data['source_url'] = url.getURL()
             # FIXME make a TYPE_ID for zypper?
             query = rhnSQL.prepare(
                 """INSERT INTO RHNCONTENTSOURCE
                        ( ID, ORG_ID, TYPE_ID, SOURCE_URL, LABEL)
                    VALUES ( sequence_nextval('rhn_chan_content_src_id_seq'),
                             NULL, 500, :source_url, :label )""")
-            query.execute(**repo.attrib)
+            query.execute(**data)
 
             # create relation between the new repo and the channel
             repo_id = rhnSQL.Row(
