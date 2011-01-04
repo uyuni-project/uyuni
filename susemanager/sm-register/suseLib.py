@@ -102,6 +102,7 @@ class URL:
   path = ""
   query = ""
   fragment = ""
+  paramsdict = {}
 
   def __init__(self, url):
     u = urlparse.urlsplit(url)
@@ -114,19 +115,45 @@ class URL:
     self.query = u.query
     self.fragment = u.fragment
 
+    if self.query:
+        self._parse_query()
+
+  def get_query_param(self, key, default=None):
+      ret = default
+      if self.paramsdict.has_key(key):
+          ret = self.paramsdict[key]
+      return ret
+
+  def __setattr__(self, attr, value):
+      if attr == "query":
+          self.__dict__[attr] = value 
+          self._parse_query
+          return self.query
+      elif attr == "paramsdict":
+          return None
+      else:
+          self.__dict__[attr] = value
+
+  def _parse_query(self):
+      self.paramsdict = {}
+      qp = self.query.split("&")
+      for q in qp:
+          (key, val) = q.split("=", 1)
+          self.paramsdict[key] = val
+
   def getURL(self):
     netloc = ""
     if self.username:
       netloc = self.username
     if self.password:
-      netloc += ":" + self.password
+      netloc = '%s:%s' % (netloc, self.password)
     if self.host and netloc :
-      netloc += "@" + self.host
+      netloc = '%s@%s' % (netloc, self.host)
     elif self.host:
       netloc = self.host
 
     if self.port:
-      netloc += ":" + self.port
+      netloc = '%s:%s' % (netloc, self.port)
 
     return urlparse.urlunsplit((self.scheme, netloc, self.path, self.query, self.fragment))
 
