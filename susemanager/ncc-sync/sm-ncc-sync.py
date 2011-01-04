@@ -676,6 +676,28 @@ class NCCSync(object):
                 source_id = repo_id,
                 channel_id = channel_id)
 
+    def get_channel_arch_id(self, channel):
+        """Return the RHNCHANNELARCH.ID for this channel"""
+        arch = channel.get('arch')
+
+        # there are some special cases where the SUSE arch names are
+        # different than the RedHat ones. We want to keep the channel
+        # names with SUSE nomeclature, but use the existing RedHat names
+        # in the RHNCHANNELARCH table
+        if arch =='i586':
+            arch = 'ia32'
+        elif arch == 'ppc64':
+            arch = 'ppc'
+
+        try:
+            arch_id = rhnSQL.Row("RHNCHANNELARCH", "LABEL", "channel-%s" %
+                                 arch)['id']
+        except KeyError:
+            raise Exception("This channel's arch could not be found in the"
+                            "database: %(channel)s with arch: %(arch)s"
+                            % locals())
+        return arch_id
+            
     def add_channel(self, channel_label):
         """Add a new channel to the database
 
@@ -700,9 +722,7 @@ class NCCSync(object):
                            :summary, :description )""")
             query.execute(
                 parent_channel = self.get_parent_id(channel),
-                channel_arch_id = rhnSQL.Row(
-                    "RHNCHANNELARCH", "LABEL", "channel-%s" %
-                    channel.get('arch'))['id'],
+                channel_arch_id = self.get_channel_arch_id(channel),
                 # XXX - org_id = ??
                 **channel.attrib)
 
