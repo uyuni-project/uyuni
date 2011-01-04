@@ -607,7 +607,7 @@ class NCCSync(object):
             for child in ncc_channels:
                 if child.get('parent') != channel.get('label'):
                     continue
-                if channel.get('label') in db_channels:
+                if child.get('label') in db_channels:
                     print "    [P] %s" % child.get('label')
                 else:
                     print "    [.] %s" % child.get('label')
