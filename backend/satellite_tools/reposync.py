@@ -28,6 +28,7 @@ from spacewalk.server.importlib.backendOracle import OracleBackend
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
+from spacewalk.susemanager import suseLib
 from yum import Errors
 from yum.i18n import to_unicode, to_utf8
 
@@ -116,20 +117,26 @@ class RepoSync:
         self.channel = self.load_channel()
         self.noninteractive = options.noninteractive
 
-        if not self.channel or not rhnChannel.isCustomChannel(self.channel['id']):
-            print "Channel does not exist or is not custom"
+        if not self.channel:
+            print "Channel does not exist"
             sys.exit(1)
 
         for data in self.urls:
-            url = data['source_url']
+            url = suseLib.URL(data['source_url'])
+            if url.get_query_param("credentials"):
+                initCFG('server.susemanager')
+                url.username = CFG.get("%s%s" % (url.get_query_param("credentials"), "_user"))
+                url.password = CFG.get("%s%s" % (url.get_query_param("credentials"), "_pass"))
+                initCFG('server.satellite')
+            url.query = ""
             insecure = False;
             if data['metadata_signed'] == 'N':
                 insecure = True;
             try:
-                plugin = self.load_plugin()(url, self.channel_label, insecure, (not self.noninteractive),
+                plugin = self.load_plugin()(url.getURL(), self.channel_label, insecure, (not self.noninteractive),
                         proxy=CFG.HTTP_PROXY, proxy_user=CFG.HTTP_PROXY_USERNAME, proxy_pass=CFG.HTTP_PROXY_PASSWORD)
-                self.import_packages(plugin, url)
-                self.import_updates(plugin, url)
+                self.import_packages(plugin, url.getURL())
+                self.import_updates(plugin, url.getURL())
             except ChannelException, e:
                 self.print_msg("ChannelException: %s" % e)
                 sys.exit(1)
@@ -173,7 +180,10 @@ class RepoSync:
 
     def import_updates(self, plug, url):
       notices = plug.get_updates()
-      self.print_msg("Repo " + url + " has " + str(len(notices)) + " patches.")
+      saveurl = suseLib.URL(url)
+      if saveurl.password:
+          saveurl.password = "*******"
+      self.print_msg("Repo " + saveurl.getURL() + " has " + str(len(notices)) + " patches.")
       if len(notices) > 0:
         self.upload_updates(notices)
 
@@ -331,7 +341,10 @@ class RepoSync:
         to_link = []
         to_download = []
         skipped = 0
-        self.print_msg("Repo " + url + " has " + str(len(packages)) + " packages.")
+        saveurl = suseLib.URL(url)
+        if saveurl.password:
+            saveurl.password = "*******"
+        self.print_msg("Repo " + saveurl.getURL() + " has " + str(len(packages)) + " packages.")
         compatArchs = self.compatiblePackageArchs()
 
         for pack in packages:
