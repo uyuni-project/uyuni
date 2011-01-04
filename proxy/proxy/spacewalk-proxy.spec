@@ -336,7 +336,6 @@ fi
 %{destdir}/rhnAuthCacheClient.py*
 %{destdir}/rhnProxyAuth.py*
 %{destdir}/rhnAuthProtocol.py*
-%{destdir}/xxmlrpclib.py*
 %attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy
 %attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy/list
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
