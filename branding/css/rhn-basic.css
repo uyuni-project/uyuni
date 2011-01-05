@@ -289,7 +289,7 @@ DIV.formrow
 	padding: 5px 0px;
 	font-size: x-small;
 	vertical-align: top;
-	height: 1%;
+	/*[disabled]height:1%;*/
 }
 DIV.formrow:after
 {

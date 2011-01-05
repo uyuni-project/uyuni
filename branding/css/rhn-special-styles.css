@@ -63,7 +63,8 @@ DIV.login-box DIV.input-row INPUT
 }
 #login_page .formrow
 {
-	margin-bottom: 19px;
+	margin-bottom: 0px;
+	padding: 3px 0;
 }
 .clearBox INPUT
 {
