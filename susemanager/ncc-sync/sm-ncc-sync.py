@@ -595,8 +595,8 @@ class NCCSync(object):
         print "Listing all mirrorable channels..."
         db_channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
 
-        ncc_channels = self.get_available_channels()
-
+        ncc_channels = sorted(self.get_available_channels(), key=lambda channel: channel.get('label'))
+        
         for channel in ncc_channels:
             if channel.get('parent') != 'BASE':
                 continue
