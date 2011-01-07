@@ -4269,7 +4269,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="org.allusers.summary">
-<source>The following list of all users on this @@PRODUCT_NAME@@, across organizations. Note that you will only have access to modify the details of users that are members of this organization you are currently logged into ({0}), and only if you have organization administrator privledges for this organization.</source>
+<source>The following is a list of all users on this @@PRODUCT_NAME@@ (across organizations). Note that you will only have access to modify the details of users that are members of this organization you are currently logged into ({0}), and only if you have organization administrator privileges for this organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
