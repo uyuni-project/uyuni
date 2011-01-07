@@ -19,6 +19,7 @@
       next if href =~ %r{mailto:} # oops, javascript
       next if href =~ %r{/download} # no downloads
       next if href =~ %r{/rhn/CSVDownloadAction.do} # this pops up a file dialog
+      href = href.split("#")[0] if href.include?(".jsp#")
       #$stderr.puts "add #{href}"
       hrefs << href
     end
