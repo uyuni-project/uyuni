@@ -232,7 +232,6 @@ class RepoSync:
             'version'       : pkg['version'],
             'release'       : pkg['release'],
             'arch'          : pkg['arch'],
-            'org_id'        : self.channel['org_id'],
             'channel_label' : self.channel_label
             }
           if pkg['epoch'] is None or pkg['epoch'] == '':
@@ -240,6 +239,12 @@ class RepoSync:
           else:
             epochStatement = "= :epoch"
             param_dict['epoch'] = pkg['epoch']
+
+          if self.channel['org_id']:
+            orgidStatement = " = :org_id"
+            param_dict['org_id'] = self.channel['org_id']
+          else:
+            orgidStatement = " is NULL"
 
           h = rhnSQL.prepare("""select p.id, c.checksum, c.checksum_type
           from rhnPackage p,
@@ -251,7 +256,7 @@ class RepoSync:
           rhnChannelPackage cp,
           rhnArchType rat
           where pn.name = :name
-          and p.org_id = :org_id
+          and p.org_id %s
           and pevr.version = :version
           and pevr.release = :release
           and pa.label = :arch
@@ -265,7 +270,7 @@ class RepoSync:
           and p.id = cp.package_id
           and cp.channel_id = ch.id
           and ch.label = :channel_label
-          """ % epochStatement)
+          """ % (orgidStatement, epochStatement))
           apply(h.execute, (), param_dict)
           cs = h.fetchone_dict() or None
 
