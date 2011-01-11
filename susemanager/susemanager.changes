@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 11 17:54:41 CET 2011 - mc@suse.de
+
+- syncing NCC with SUSE Manager
+- Installation: Character Limitations of NCC Password (bnc#658467)
+- lots of fixes 
+
+-------------------------------------------------------------------
 Thu Dec  9 15:10:40 CET 2010  - ma@suse.de
 
 - Version 1.2
