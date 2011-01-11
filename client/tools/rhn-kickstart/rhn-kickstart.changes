@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 11 16:26:52 CET 2011 - mc@suse.de
+
+- tag strings which needs changes 
+
+-------------------------------------------------------------------
 Wed Nov  3 11:01:16 CET 2010 - mantel@suse.de
 
 - don't ignore post-build-checks
