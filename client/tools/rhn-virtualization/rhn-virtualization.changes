@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 11 16:29:58 CET 2011 - mc@suse.de
+
+- change strings in init script 
+
+-------------------------------------------------------------------
 Tue Nov  2 16:57:53 CET 2010 - mantel@suse.de
 
 - don't ignore post-build-checks
