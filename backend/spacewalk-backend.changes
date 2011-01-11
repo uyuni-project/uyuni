@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jan 11 16:46:43 CET 2011 - mc@suse.de
+
+- reposync: search for credentials and add them to the URL
+- fix signature handling
+- reposync: find checksums for packages in channels with 
+  org_id null 
+
+-------------------------------------------------------------------
 Wed Dec 15 17:22:47 CET 2010 - mc@suse.de
 
 - fix KeyError while syncing repos (bnc#657064)
