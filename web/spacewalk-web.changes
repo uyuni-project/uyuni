@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Jan 11 17:45:11 CET 2011 - mc@suse.de
+
+- Error 500 - ISE - when scheduling remote commands 
+- Fix handling of eval (DBD::Oracle).
+- Removed Chat link from perl based UI. 
+- A few visual changes to error pages.
+- Updating the header for the error pages.
+
+-------------------------------------------------------------------
 Wed Sep 15 10:11:21 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-web
