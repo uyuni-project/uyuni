@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 11 18:04:58 CET 2011 - mc@suse.de
+
+- add SUSE and Novell GPG Keys to DB 
+
+-------------------------------------------------------------------
 Wed Sep 15 12:22:26 CEST 2010 - mantel@suse.de
 
 - fix post-build-checks
