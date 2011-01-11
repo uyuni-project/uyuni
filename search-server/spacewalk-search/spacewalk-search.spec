@@ -21,9 +21,9 @@ Requires: doc-indexes
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-httpclient
-Requires: jakarta-commons-lang >= 0:2.1
+Requires: jakarta-commons-lang >= 2.1
 Requires: jakarta-commons-logging
-Requires: jpackage-utils >= 0:1.5
+Requires: jpackage-utils >= 1.5
 Requires: log4j
 Requires: oro
 #Requires: lucene
@@ -38,7 +38,7 @@ BuildRequires: ant
 BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-codec
 BuildRequires: jakarta-commons-httpclient
-BuildRequires: jakarta-commons-lang >= 0:2.1
+BuildRequires: jakarta-commons-lang >= 2.1
 BuildRequires: jakarta-commons-logging
 BuildRequires: java-devel >= 1.6.0
 BuildRequires: log4j
