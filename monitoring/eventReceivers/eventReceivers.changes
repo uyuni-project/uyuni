@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 11 10:05:32 CET 2011 - mc@suse.de
+
+- Revert "Extend original release number by OBS release."
+
+-------------------------------------------------------------------
 Tue Sep 14 16:35:12 CEST 2010 - mantel@suse.de
 
 - Initial release
