@@ -30,10 +30,10 @@ Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 Requires: bcel
 Requires: c3p0
-Requires: hibernate3 >= 0:3.2.4
+Requires: hibernate3 >= 3.2.4
 Requires: java >= 1.6.0
 Requires: java-devel >= 1.6.0
-Requires: jakarta-commons-lang >= 0:2.1
+Requires: jakarta-commons-lang >= 2.1
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-discovery
 Requires: jakarta-commons-cli
@@ -52,13 +52,13 @@ Requires: log4j
 Requires: redstone-xmlrpc
 Requires: oscache
 Requires: servletapi5
-Requires: struts >= 0:1.2.9
+Requires: struts >= 1.2.9
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
 %else
 Requires: tomcat6
 %endif
-Requires: xalan-j2 >= 0:2.6.0
+Requires: xalan-j2 >= 2.6.0
 Requires: xerces-j2
 Requires: simple-core
 Requires: sitemesh
@@ -67,7 +67,7 @@ Requires: spacewalk-java-config
 Requires: spacewalk-java-lib
 Requires: spacewalk-java-jdbc
 Requires: spacewalk-branding
-Requires: jpackage-utils >= 0:1.5
+Requires: jpackage-utils >= 1.5
 Requires: cobbler >= 2.0.0
 BuildRequires: ant
 BuildRequires: ant-apache-regexp
@@ -75,7 +75,7 @@ BuildRequires: java-devel >= 1.6.0
 BuildRequires: ant-contrib
 BuildRequires: ant-junit
 BuildRequires: ant-nodeps
-BuildRequires: antlr >= 0:2.7.6
+BuildRequires: antlr >= 2.7.6
 BuildRequires: jpam
 BuildRequires: tanukiwrapper
 %if  0%{?rhel} && 0%{?rhel} < 5
@@ -118,7 +118,7 @@ BuildRequires: jasper5
 %endif
 BuildRequires: jcommon
 BuildRequires: jdom
-BuildRequires: jfreechart >= 0:1.0.9
+BuildRequires: jfreechart >= 1.0.9
 BuildRequires: jta
 BuildRequires: redstone-xmlrpc
 BuildRequires: oscache
@@ -188,21 +188,21 @@ Group: Applications/Internet
 Requires: bcel
 Requires: c3p0
 Requires: cglib
-Requires: hibernate3 >= 0:3.2.4
-Requires: java >= 0:1.6.0
-Requires: java-devel >= 0:1.6.0
-Requires: jakarta-commons-lang >= 0:2.1
+Requires: hibernate3 >= 3.2.4
+Requires: java >= 1.6.0
+Requires: java-devel >= 1.6.0
+Requires: jakarta-commons-lang >= 2.1
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-dbcp
 Requires: jakarta-commons-logging
 Requires: jakarta-taglibs-standard
 Requires: jcommon
-Requires: jfreechart >= 0:1.0.9
+Requires: jfreechart >= 1.0.9
 Requires: jpam
 Requires: log4j
 Requires: oscache
-Requires: xalan-j2 >= 0:2.6.0
+Requires: xalan-j2 >= 2.6.0
 Requires: xerces-j2
 BuildRequires: tanukiwrapper
 Requires: tanukiwrapper

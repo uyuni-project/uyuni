@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 11 17:20:19 CET 2011 - mc@suse.de
+
+- fix Requires
+- add copyright page
+- some style fixes 
+
+-------------------------------------------------------------------
 Wed Sep 15 09:29:38 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-java
