@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 11 16:39:04 CET 2011 - mc@suse.de
+
+- tag strings which needs changes
+- fix Requires line in spec 
+
+-------------------------------------------------------------------
 Wed Sep 15 12:16:32 CEST 2010 - mantel@suse.de
 
 - fix post-build-checks
