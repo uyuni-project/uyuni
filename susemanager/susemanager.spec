@@ -24,7 +24,7 @@ A collection of scripts for managing SUSE Manager's initial
 setup tasks, re-installation, upgrades and managing.
 
 %package -n sm-ncc-sync-data
-Summary:    data files for NCC data configuration
+Summary:    Data files for NCC data configuration
 Group:      Productivity/Other
 
 %description -n sm-ncc-sync-data
