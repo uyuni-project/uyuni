@@ -11,7 +11,7 @@
 
 <rhn:require acl="not user_authenticated()">
 <c:if test="${requestScope.hasExpired != 'true'}">
-    <div id="login_page">
+    <div id="relogin_page">
      <h1><bean:message key="relogin.jsp.pleasesignin"/></h1>
 
   <div class="clearBox">
