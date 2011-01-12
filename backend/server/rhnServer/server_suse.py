@@ -34,7 +34,7 @@ class SuseData:
     h.execute(sysid = sysid, guid=guid)
     d = h.fetchone_dict()
     if d:
-      old_sysid = h['id']
+      old_sysid = d['id']
       log_debug(1, "Found duplicate server:", old_sysid)
       delete_server = rhnSQL.Procedure("delete_server")
       try:
