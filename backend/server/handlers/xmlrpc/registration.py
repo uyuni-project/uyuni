@@ -8,10 +8,10 @@
 # FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-# 
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation. 
+# in this software or its documentation.
 #
 
 # system modules
@@ -45,23 +45,23 @@ def hash_validate(data, *keylist):
 
 def RegistrationNumber(nr):
     """ process a registration number for sanitization purposes """
-    if not nr:      
-        return None     
-    if not type(nr) == type(""):    
-        log_debug(3, "Got unparseable registration Number: %s" % nr)    
-        return None     
-    mynr = string.lower(nr)     
-    # prepare the translation table     
-    t = string.maketrans("los", "105")      
-    # and strip out unwanted chars      
-    mynr = string.translate(mynr, t, "_- ")     
-    # keep only hexdigits   
-    ret = ""    
-    for r in mynr:      
-        if r in string.hexdigits:   
-            ret = ret + r   
-    if not ret:     
-        return None     
+    if not nr:
+        return None
+    if not type(nr) == type(""):
+        log_debug(3, "Got unparseable registration Number: %s" % nr)
+        return None
+    mynr = string.lower(nr)
+    # prepare the translation table
+    t = string.maketrans("los", "105")
+    # and strip out unwanted chars
+    mynr = string.translate(mynr, t, "_- ")
+    # keep only hexdigits
+    ret = ""
+    for r in mynr:
+        if r in string.hexdigits:
+            ret = ret + r
+    if not ret:
+        return None
     return ret
 
 def parse_smbios(smbios):
@@ -165,12 +165,12 @@ class Registration(rhnHandler):
             raise rhnFault(3)
         return ret
 
-        
+
     def new_user(self, username, password, email = None,
                  org_id = None, org_password = None):
         """
         Finish off creating the user.
-        
+
         The user has to exist (must be already reserved), the password must
         match and we set the e-mail address if one is given
 
@@ -187,7 +187,7 @@ class Registration(rhnHandler):
             try:
                 org_id = int(str(org_id))
             except ValueError:
-                raise rhnFault(30, _faultValueString(org_id, "org_id")) 
+                raise rhnFault(30, _faultValueString(org_id, "org_id"))
         else:
             org_id = org_password = None
         username, password  = rhnUser.check_user_password(username, password)
@@ -213,7 +213,7 @@ class Registration(rhnHandler):
         user = rhnUser.search(username)
 
         if user is None:
-            log_error("Can't register server to non-existent user") 
+            log_error("Can't register server to non-existent user")
             raise rhnFault(2, _("Attempt to register a system to an invalid username"))
 
         # This check validates username and password
@@ -245,8 +245,6 @@ class Registration(rhnHandler):
         else:
             log_item = "username = '%s'" % user.username
 
-        log_debug(1, log_item, release_version, architecture)
-        
         # Fetch the applet's UUID
         if data.has_key("uuid"):
             applet_uuid = data['uuid']
@@ -291,7 +289,8 @@ class Registration(rhnHandler):
             rhnFlags.set("registration_token", tokens_obj)
             # Is the token associated with a server?
             if tokens_obj.is_rereg_token:
-                # Also flag it's a re-registration token
+		log_debug(1, "YYY tokens_obj.is_rereg_token" )
+		# Also flag it's a re-registration token
                 rhnFlags.set("re_registration_token", tokens_obj)
                 # Load the server object
                 newserv = rhnServer.search(tokens_obj.get_server_id())
@@ -309,7 +308,7 @@ class Registration(rhnHandler):
                 newserv.dispose_packages()
                 # The new server may have a different base channel
                 newserv.change_base_channel(release)
-            
+
         if newserv is None:
             # Not a re-registration token, we need a fresh server object
             newserv = rhnServer.Server(user, architecture)
@@ -320,6 +319,9 @@ class Registration(rhnHandler):
         if data.has_key('release_name'):
             newserv.server["os"] = data['release_name']
 
+	## add suse_products profile if available
+        if data.has_key( "suse_products" ):
+	    newserv.add_suse_products( data["suse_products"] )
         ## add the package list
         if data.has_key('packages'):
             for package in data['packages']:
@@ -377,7 +379,7 @@ class Registration(rhnHandler):
 	    # At this point we retained the server with re-activation
 	    # let the stacked activation keys do their magic
             tokens_obj.is_rereg_token = 0
-            rhnFlags.set("re_registration_token", 0)       
+            rhnFlags.set("re_registration_token", 0)
 
         # now if we have a token, load the extra registration
         # information from the token
@@ -414,9 +416,9 @@ class Registration(rhnHandler):
             # potential pkg delta shadow action should happen first
             log_debug(3, "reg token process_kickstart_info")
             newserv.process_kickstart_info()
-            
+
             # now do the rest of the processing for the token registration
-            newserv.use_token()            
+            newserv.use_token()
         else:
             # Some information
             newserv.server["info"] = "rhn_register by %s" % log_item
@@ -427,7 +429,7 @@ class Registration(rhnHandler):
         # Update the uuid if necessary
         if up2date_uuid:
             newserv.uuid = up2date_uuid
-		  		
+
         # save it
         # Commits to the db.
         #
@@ -449,12 +451,12 @@ class Registration(rhnHandler):
             # right now, don't differentiate between general ent issues & rhnNoSystemEntitlementsException
             raise rhnFault(90)
 
-    
+
 
         if CFG.SEND_EOL_MAIL and user and newserv.base_channel_is_eol():
             self.attempt_eol_mailing(user, newserv)
-        
-        # XXX: until this is complete, bug: 
+
+        # XXX: until this is complete, bug:
         #      http://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=112450
         # store route in DB (schema for RHN 3.1+ only!)
         server_route.store_client_route(newserv.getid())
@@ -473,11 +475,11 @@ class Registration(rhnHandler):
         Hash
         --
         Struct
-        
+
         Starting with RHEL 5, the client will use activate_registration_number,
-        activate_hardware_info, new_system_user_pass, and/or 
+        activate_hardware_info, new_system_user_pass, and/or
         new_system_activation_key instead of this.
-        
+
         In hosted, RHEL 4 and earlier will also call
         activate_registration_number
         """
@@ -485,7 +487,7 @@ class Registration(rhnHandler):
         # Validate we got the minimum necessary input.
         self.validate_system_input(data)
 
-        # Authorize username and password, if used. 
+        # Authorize username and password, if used.
         # Store the user object in user.
         user = None
         if not data.has_key('token'):
@@ -508,7 +510,7 @@ class Registration(rhnHandler):
                                              data["registrationNumber"])
 
             try:
-                server_lib.use_registration_number(user, 
+                server_lib.use_registration_number(user,
                                                    data['registrationNumber'],
                                                    commit = 0)
 
@@ -526,13 +528,13 @@ class Registration(rhnHandler):
                     # Catch the 2 known faults that we want to ignore...they
                     # just mean subscriptions = 0.
                     if sub_except.code == 71 or \
-                       sub_except.code == 19: 
+                       sub_except.code == 19:
                         subscriptions = 0
-                                                            
+
                 subscriptions = int(subscriptions)
 
                 if subscriptions > 0:
-                    # Even though the number activation failed, 
+                    # Even though the number activation failed,
                     # they have enough valid subs to coninue.
                     pass
                 else:
@@ -551,7 +553,7 @@ class Registration(rhnHandler):
         #   rhnSystemEntitlementException
         #   |
         #   +--rhnNoSystemEntitlementsException
-        server_data = self.create_system(user, profile_name, 
+        server_data = self.create_system(user, profile_name,
                                          release_version,
                                          architecture, data)
         newserv = server_data['server']
@@ -618,7 +620,7 @@ class Registration(rhnHandler):
 
         # This creates the rhnServer record and commits it to the db.
         # It also assigns the system a base channel.
-        server_data = self.create_system(user, profile_name, 
+        server_data = self.create_system(user, profile_name,
                                          version,
                                          arch,
                                          other)
@@ -664,7 +666,7 @@ class Registration(rhnHandler):
         # Store any of our child channel failures
         failed_channels = failed_channels + failures
 
-        attempted_system_slots = ['enterprise_entitled', 'sw_mgr_entitled'] 
+        attempted_system_slots = ['enterprise_entitled', 'sw_mgr_entitled']
         successful_system_slots = server_lib.check_entitlement(server_id)
         successful_system_slots = successful_system_slots.keys()
         failed_system_slots = []
@@ -673,7 +675,7 @@ class Registration(rhnHandler):
         i = 0
         for slot in attempted_system_slots:
             if slot in successful_system_slots:
-                break    
+                break
             i = i + 1
 
         # Any entitlements we didn't have, we'll store as a failure.
@@ -697,11 +699,11 @@ class Registration(rhnHandler):
     # Registers a new system to an org specified by an activation key.
     #
     # New for RHEL 5.
-    # 
+    #
     # See documentation for new_system_user_pass. This behaves the same way
-    # except it takes an activation key instead of username, password, and 
+    # except it takes an activation key instead of username, password, and
     # maybe org id.
-##    def new_system_activation_key(self, profile_name, os_release_name, 
+##    def new_system_activation_key(self, profile_name, os_release_name,
 ##                                  os_release_version, arch, activation_key, other):
 ##        return { 'system_id' : self.new_system({'profile_name' : profile_name,
 ##                                                'os_release' : os_release_version,
@@ -781,7 +783,7 @@ class Registration(rhnHandler):
             user not in specified org
         """
         # bugzilla# 236927, jslagle
-        # Clients are currently broken in that they try to activate 
+        # Clients are currently broken in that they try to activate
         # installation numbers against a satellite.
         # We can work around this by just raising the 'number is not
         # entitling' fault.
@@ -819,9 +821,9 @@ class Registration(rhnHandler):
     def activate_hardware_info(self, username, password, hardware_info, other):
         """
         Given some hardware-based criteria per-vendor, try giving entitlements.
-        
+
         New for RHEL 5.
-        
+
         Mostly the same stuff as activate_registration_number.
         hardware_info is a dict of stuff we get from hal from
         Computer -> system.* and smbios.*. For example:
@@ -863,11 +865,11 @@ class Registration(rhnHandler):
         log_debug(1, number, vendor)
         # well, we don't do that anymore
         return 0
-        
+
     # XXX: update this function to deal with the channels and stuff
     # TODO: Is this useful? we think not. investigate and possibly replace
     # with a NOOP.
-    def upgrade_version(self, system_id, newver):        
+    def upgrade_version(self, system_id, newver):
         """ Upgrade a certificate's version to a different release. """
         log_debug(5, system_id, newver)
         # we need to load the user because we will generate a new certificate
@@ -882,7 +884,7 @@ class Registration(rhnHandler):
         ret = server.change_base_channel(newver)
         server.save()
         return server.system_id()
-        
+
     def add_packages(self, system_id, packages):
         """ Add one or more package to the server profile. """
         log_debug(5, system_id, packages)
@@ -1058,7 +1060,7 @@ class Registration(rhnHandler):
         # XXX: check return code
         server.save_hardware()
         return 0
-        
+
     def welcome_message(self, lang = None):
         """ returns string of welcome message """
         log_debug(1, "lang: %s" % lang)
@@ -1102,7 +1104,7 @@ class Registration(rhnHandler):
         # Keep doing the authentication and then just bail out
         self.auth_system(system_id)
         return 0
-        
+
         # we're updating the user records, so we need to load the user object
         self.load_user = 1
         server = self.auth_system(system_id)
@@ -1117,7 +1119,7 @@ class Registration(rhnHandler):
             if product[k] == None or product[k] == '':
                 continue
             # now assign everything into the right place
-            if k in ["reg_num"]: # we'll deal with it later                
+            if k in ["reg_num"]: # we'll deal with it later
                 continue
             if k == 'state':
                 if states.states_to_abbr.has_key(product[k]):
@@ -1158,7 +1160,7 @@ class Registration(rhnHandler):
             It is called from the update_contact_info.
         """
         self.__save_user_db(user)
-   
+
     def __save_user_db(self, user):
         """ Saves the user to the database. """
         user.save()
@@ -1193,7 +1195,7 @@ class Registration(rhnHandler):
                 # Invalid country, assume US
                 contact_info['country'] = 'US'
 
-        contact_perm_keys = ["contact_phone", "contact_mail", 
+        contact_perm_keys = ["contact_phone", "contact_mail",
             "contact_email", "contact_fax", ]
         for k in contact_perm_keys:
             val = contact_info.get(k)
@@ -1209,7 +1211,7 @@ class Registration(rhnHandler):
             if val is not None:
                 log_debug(6, "Info", k, val)
                 user.set_info(k, val)
-        
+
         # save the user either to the database or the UserService
         self.__save_user(user)
         return 0
@@ -1221,7 +1223,7 @@ class Registration(rhnHandler):
         server = self.auth_system(system_id)
         # No op as of 20030923
         return 0
-        
+
 
     def anonymous(self, release=None, arch=None):
         """ To reduce the number of tracebacks """
@@ -1281,14 +1283,14 @@ class Registration(rhnHandler):
         h = rhnSQL.prepare(self._query_get_dispatchers)
         h.execute()
         return map(lambda x: x['jabber_id'], h.fetchall_dict() or [])
-        
-        
+
+
     def register_osad(self, system_id, args={}):
         log_debug(1)
 
         # Authenticate
         server = self.auth_system(system_id)
-        
+
         jabber_server = CFG.JABBER_SERVER
         if not jabber_server:
             log_error("Jabber server not defined")
@@ -1313,7 +1315,7 @@ class Registration(rhnHandler):
 
         # Authenticate
         server = self.auth_system(system_id)
-        
+
         if not args.has_key('jabber-id'):
             raise rhnFault(160, "No jabber-id specified", explain=0)
 
@@ -1331,7 +1333,7 @@ class Registration(rhnHandler):
 
         Returns a dict of the available channels in the format:
         {'default_channel' : 'channel_label',
-         'receiving_updates' : ['channel_label1', 'channel_label2'], 
+         'receiving_updates' : ['channel_label1', 'channel_label2'],
          'channels' : {'channel_label1' : 'channel_name1',
          'channel_lable2' : 'channel_name2'}
         }
@@ -1383,11 +1385,11 @@ class Registration(rhnHandler):
         arch = normalize_server_arch(arch)
 
         user = rhnUser.search(username)
-        
+
         if user is None:
             log_error("invalid username", username)
             raise rhnFault(2)
-        
+
         if not user.check_password(password):
             log_error("User password check failed", username)
             raise rhnFault(2)
@@ -1400,15 +1402,15 @@ class Registration(rhnHandler):
         # code to execute.
         return 1
 
-        try:            
+        try:
             channels = rhnChannel.channels_for_release_arch(release, arch,
                 org_id=user.contact['org_id'], user_id=user.getid())
         except rhnChannel.NoBaseChannelError:
             # ?? Invalid arch+release ??
-            raise rhnFault(19)        
+            raise rhnFault(19)
         except rhnChannel.BaseChannelDeniedError:
             raise rhnFault(71,
-                           _("Insufficient subscription permissions for release, arch (%s, %s)") 
+                           _("Insufficient subscription permissions for release, arch (%s, %s)")
                            % (release, arch))
 
 

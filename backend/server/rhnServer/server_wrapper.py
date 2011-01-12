@@ -8,10 +8,10 @@
 # FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-# 
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation. 
+# in this software or its documentation.
 #
 # this file implements the ServerWrapper class, which takes care
 # of all the load and save functions for misc tables associated
@@ -44,28 +44,28 @@ class ServerWrapper(Packages, Hardware, History, SolarisPatches, SuseData):
 
     def __repr__(self):
         return "<%s instance>" % (self.__class__,)
-    
+
     # update a value in self.server
     def set_value(self, name, value):
         if name is None or value is None:
             return -1
         self.server[name] = value
-        return 0    
+        return 0
 
     ###
     ### PACKAGES
     ###
-    
+
     # Wrappers for the similar functions from Packages class that supplementaly
     # require a valid sysid.
     def add_package(self, entry):
         if entry['name'].startswith("patch-solaris"):
             SolarisPatches.add_patch(self, self.server.get("id"), entry)
         return Packages.add_package(self, self.server.get("id"), entry)
-    
+
     def delete_package(self, entry):
         return Packages.delete_package(self, self.server.get("id"), entry)
-    
+
     def dispose_packages(self):
         SolarisPatches.dispose_patched_packages(self, self.server["id"])
         return Packages.dispose_packages(self, self.server["id"])
@@ -87,7 +87,7 @@ class ServerWrapper(Packages, Hardware, History, SolarisPatches, SuseData):
     ###
     ### HARDWARE
     ###
-    
+
     # Wrappers for the similar functions from Hardware class
     def delete_hardware(self):
         return Hardware.delete_hardware(self, self.server.get("id"))
@@ -97,7 +97,7 @@ class ServerWrapper(Packages, Hardware, History, SolarisPatches, SuseData):
         # this function is primarily called from outside
         # so we have to commit here
         rhnSQL.commit()
-        return ret   
+        return ret
     # wrapper for the Hardware.reload_hardware_byid() which requires the sysid
     def reload_hardware(self):
         ret = self.reload_hardware_byid(self.server["id"])
@@ -113,8 +113,20 @@ class ServerWrapper(Packages, Hardware, History, SolarisPatches, SuseData):
         rhnSQL.commit()
         return ret
 
-    def update_suse_products(self, guid, secret, target, products):
-        ret = self.create_update_suse_products(self.server["id"], guid, secret, target, products)
+    ###
+    ### SUSE PRODUCT DATA
+    ###
+    def save_suse_products(self):
+	ret = self.save_suse_products_byid(self.server["id"])
         rhnSQL.commit()
         return ret
-        
+
+    def update_suse_products(self, guid, secret, target, products):
+        suse_products = {
+	  "guid" 	: guid,
+	  "secret"	: secret,
+	  "ostarget"	: target,
+	  "products"	: products
+	}
+        self.add_suse_products(suse_products)
+        return self.save_suse_products

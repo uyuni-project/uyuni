@@ -18,6 +18,29 @@ from spacewalk.server import rhnSQL
 class SuseData:
   def __init__(self):
     log_debug(4, "SuseData initialized")
+    self.suse_products = {}
+    # suse_products["guid"], suse_products["secret"], suse_products["ostarget"], suse_products["products"]
+
+  def get_suse_products(self):
+      return self.suse_products
+
+  def add_suse_products(self, suse_products):
+      log_debug(1, suse_products)
+      if not isinstance(suse_products, dict):
+	  log_error("argument type is not  hash: %s" % suse_products)
+	  raise TypeError, "This function requires a hash as an argument"
+      self.suse_products = suse_products
+
+  def save_suse_products_byid(self, sysid):
+      log_debug(1, sysid, self.suse_products )
+      if self.suse_products == {}: # nothing loaded
+	return 0
+      self.create_update_suse_products(self.server["id"],
+				       self.suse_products["guid"],
+				       self.suse_products["secret"],
+				       self.suse_products["ostarget"],
+				       self.suse_products["products"])
+      return 0
 
   def create_update_suse_products(self, sysid, guid, secret, ostarget, products):
     log_debug(4, sysid, guid, ostarget, products)
@@ -58,7 +81,7 @@ class SuseData:
       WHERE guid = :guid
     """)
     h.execute(guid=guid)
-    rhnSQL.commit()
+    #rhnSQL.commit()
 
     # search if suseServer with ID sysid exists
     h = rhnSQL.prepare("""
@@ -147,7 +170,7 @@ class SuseData:
         WHERE rhn_server_id = :sysid
       """)
       h.execute(sysid=sysid)
-    rhnSQL.commit()
+    #rhnSQL.commit()
 
 
   def get_installed_product_id(self, product):
