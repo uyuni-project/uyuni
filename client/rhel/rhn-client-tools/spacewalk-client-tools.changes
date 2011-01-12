@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jan 12 10:09:22 CET 2011 - ma@suse.de
+
+- Let client registration send product profile.
+
+-------------------------------------------------------------------
 Wed Dec 15 14:40:20 CET 2010 - mc@suse.de
 
 - fix specfile
