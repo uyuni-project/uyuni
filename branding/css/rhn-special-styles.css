@@ -39,9 +39,15 @@ DIV.login-box DIV.input-row INPUT
 	margin-left: auto;
 	margin-right: auto;
 }
-.relogin .clearBox
+#relogin_page .clearBox
 {
-	margin-left: 20px !important;
+	margin-left: 175px !important;
+}
+#relogin_page H1
+{
+	text-align: center;
+	width: 280px;
+	margin-left: 175px;
 }
 .clearBox
 {
@@ -182,7 +188,7 @@ H1#rhn_welcome3
 H1#rhn_welcome3 SPAN
 {
 }
-#login_page
+#login_page, #relogin_page
 {
 	text-align: center;
 }
