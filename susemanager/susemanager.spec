@@ -50,10 +50,7 @@ make -C sm-register all
 %install
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
 install -m 0755 bin/*.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/
-mkdir -p %{buildroot}/%{_datadir}/doc/licenses
-install -m 0644 usr/share/doc/licenses/SUSE_MANAGER_LICENSE %{buildroot}/%{_datadir}/doc/licenses/
-mkdir -p %{buildroot}/%{_sysconfdir}/init.d
-install -m 0755 etc/init.d/boot.susemanager %{buildroot}/%{_sysconfdir}/init.d
+
 mkdir -p %{buildroot}/%{_sysconfdir}/rhn/default/
 install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_sysconfdir}/rhn/default/
 make -C sm-register install PREFIX=$RPM_BUILD_ROOT
@@ -69,12 +66,6 @@ install -m 0644 ncc-sync/channels.xml         %{buildroot}/usr/share/susemanager
 rm -rf %{buildroot}
 
 %post
-cat >> /etc/init.d/boot.local << EOF
-
-if [ -f /etc/init.d/boot.susemanager ]; then
-  sh /etc/init.d/boot.susemanager
-fi
-EOF
 
 if [ -f /etc/sysconfig/atftpd ]; then
   . /etc/sysconfig/atftpd
@@ -87,15 +78,10 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc doc/* Changes
+%doc doc/* Changes license.txt
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
-%dir %{_datadir}/doc/licenses
-
 %{_prefix}/lib/susemanager/bin/*
-%attr(0755,root,root) %{_sysconfdir}/init.d/boot.susemanager
-%{_datadir}/doc/licenses/SUSE_MANAGER_LICENSE
-
 
 %files -n sm-ncc-sync-data
 %defattr(-,root,root,-)
