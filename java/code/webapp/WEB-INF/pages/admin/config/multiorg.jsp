@@ -56,9 +56,9 @@
 	</tr>	
 </table>
 
-<p><bean:message key="general.jsp.org.summary4"/><a href="/rhn/help/reference/index.jsp">
+<!--<p><bean:message key="general.jsp.org.summary4"/><a href="/rhn/help/reference/index.jsp">
    <bean:message key="general.jsp.org.tbl.link4"/></a>.
-</p>
+</p>--> <!--Commented out by E.T.- Page Does Not Exists for SUSE Manager-->
 
 </div>
 
