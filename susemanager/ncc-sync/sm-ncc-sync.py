@@ -53,6 +53,19 @@ class NCCSync(object):
         """Setup configuration"""
         self.quiet = quiet
         self.debug = debug
+        self.reset_ent_value = 300
+
+        self.ncc_rhn_ent_mapping = {
+            "sm_ent_mon_s"       : [ "monitoring_entitled" ],
+            "sm_ent_prov_s"      : [ "provisioning_entitled" ],
+            "sm_ent_mgm_s"       : [ "enterprise_entitled" ],
+            "sm_ent_mgm_v"       : [ "virtualization_host_platform", "enterprise_entitled" ],
+            "sm_ent_mon_v"       : [ "monitoring_entitled" ],
+            "sm_ent_prov_v"      : [ "provisioning_entitled" ],
+            "sm_ent_mon_z"       : [ "monitoring_entitled" ],
+            "sm_ent_prov_z"      : [ "provisioning_entitled" ],
+            "sm_ent_mgm_z"       : [ "enterprise_entitled" ]
+        }
 
         initCFG("server.susemanager")
         if self.debug == -1:
@@ -169,7 +182,6 @@ class NCCSync(object):
             prods = s["product-class"].split(",")
             for p in prods:
                 if today >= start_date and (end == 0 or today <= end_date) and s["type"] != "PROVISIONAL":
-                    # "nodecount = None" means unlimited
                     if s["nodecount"] == "-1":
                         subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : 200000 }
                     elif subscription_count.has_key( p ):
@@ -421,6 +433,50 @@ class NCCSync(object):
                               product_list = p["PRODUCT_LIST"]
                 )
         rhnSQL.commit()
+    
+    def get_entitlement_id( self, ent ):
+        id = None
+
+        if ent != None:
+            select_sql = "SELECT id from RHNSERVERGROUPTYPE where LABEL = :ent"
+            query = rhnSQL.prepare(select_sql)
+            query.execute(arch = arch)
+            row = query.fetchone_dict() or {}
+            if row:
+                id = row["id"]
+        return id
+    
+    def reset_entitlements_in_table( self ):
+        update_sql = """
+            UPDATE RHNSERVERGROUP SET
+            max_members = :val
+            """
+        query = rhnSQL.prepare(update_sql)
+        log_debug(2, "SQL: " % query )
+        query.execute(
+            val   = self.reset_ent_value
+        )
+        rhnSQL.commit()
+
+    def edit_entitlement_in_table( self, prod, data ):
+        if self.is_entitlement( prod ):
+            for ent in self.ncc_rhn_ent_mapping[prod]:
+                id = self.get_entitlement_id( ent )
+                available = 0
+                if data["nodecount"] > 0:
+                    available = 200000 # unlimited
+                update_sql = """
+                    UPDATE RHNSERVERGROUP SET
+                    max_members = :max_m
+                    WHERE GROUP_TYPE = :gid
+                    """
+                query = rhnSQL.prepare(update_sql)
+                log_debug(2, "SQL: " % query )
+                query.execute(
+                    max_m = available,
+                    gid   = id
+                )
+            rhnSQL.commit()
 
     def edit_subscription_in_table( self, prod, data ):
         """Updates/inserts a subscription in the DB.
@@ -428,6 +484,7 @@ class NCCSync(object):
         Expects a product like from consolidate_subscriptions()
 
         """
+
         cf_id = (self.get_channel_family_id(prod) or
                  self.add_channel_family_row(prod))
 
@@ -439,23 +496,6 @@ class NCCSync(object):
         all_subs_in_db = {}
         all_subs_sum   = 0
         result = query.fetchall()
-#
-#        if len(result) == 0:
-#            log_debug(1, "no entry for channel family %s in RHNPRIVATECHANNELFAMILY" % cf_id )
-#            # NCC has a subscription for us that is missing in the DB
-#            insert_sql = """
-#                INSERT INTO RHNPRIVATECHANNELFAMILY
-#                  (channel_family_id, org_id, max_members, current_members )
-#                VALUES
-#                  ( :cf_id, 1, :max_m, :current_m )
-#            """
-#            query = rhnSQL.prepare(insert_sql)
-#            query.execute(
-#                cf_id = cf_id,
-#                max_m = data["nodecount"],
-#                current_m = 0
-#            )
-#            rhnSQL.commit()
 
         # copy database subscription data to a dict and
         # count all subscriptions over all org_id's
@@ -750,6 +790,9 @@ class NCCSync(object):
         # TODO do the syncing
         self.print_msg( "Trigger sync for channel '%s'" % channel_label )
 
+    def is_entitlement( self, s ):
+        return self.ncc_rhn_ent_mapping.has_key(s)
+
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
         if not self.quiet:
@@ -798,16 +841,24 @@ def main():
     elif options.update_subscriptions:
         all_subs = syncer.get_subscriptions_from_ncc()
         cons_subs = syncer.consolidate_subscriptions( all_subs )
+        syncer.reset_entitlements_in_table()
         for s in cons_subs.keys():
-            syncer.edit_subscription_in_table( s, cons_subs[s] )
+            if( syncer.is_entitlement( s ) ):
+                syncer.edit_entitlement_in_table( s, cons_subs[s] )
+            else:
+                syncer.edit_subscription_in_table( s, cons_subs[s] )
     else:
         syncer.update_channel_family_table_by_config()
         suseProducts = syncer.get_suse_products_from_ncc()
         syncer.update_suse_products_table( suseProducts )
         all_subs = syncer.get_subscriptions_from_ncc()
         cons_subs = syncer.consolidate_subscriptions( all_subs )
+        syncer.reset_entitlements_in_table()
         for s in cons_subs.keys():
-            syncer.edit_subscription_in_table( s, cons_subs[s] )
+            if( syncer.is_entitlement( s ) ):
+                syncer.edit_entitlement_in_table( s, cons_subs[s] )
+            else:
+                syncer.edit_subscription_in_table( s, cons_subs[s] )
         syncer.repo_sync()
 
 if __name__ == "__main__":
