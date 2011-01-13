@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jan 13 13:19:00 CET 2011 - mc@suse.de
+
+- Sending and receiving suse product profile data during
+  client registration. 
+- subscribe channels according to submitted suse product data
+
+-------------------------------------------------------------------
 Tue Jan 11 16:46:43 CET 2011 - mc@suse.de
 
 - reposync: search for credentials and add them to the URL

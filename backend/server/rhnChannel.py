@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Copyright (c) 2008--2010 Red Hat, Inc.
 #
@@ -1727,23 +1728,38 @@ class LiteServer:
             self.__class__.__name__, id(self), dict)
 
 
-def guess_suse_channels_for_server(server, user_id=None, none_ok=0, raise_exceptions=0):
-    log_debug(1, "YYY guess_suse_channels_for_server")
+def guess_suse_channels_for_server(server, org_id=None, user_id=None, none_ok=0, raise_exceptions=0):
     suse_products = server.suse_products
     if suse_products == {}:
-      return None
+        return None
 
     baseproduct = None
     for product in suse_products['products']:
-      if product['baseproduct'] == 'Y':
-	baseproduct = product
+        if product['baseproduct'] == 'Y':
+            baseproduct = product
 
     if not baseproduct:
-      log_error("Missing baseproduct in ", server)
-      return None
+        log_error("Missing baseproduct in ", server)
+        return None
 
-    #channelForProduct(product)
-    return None
+    basechannels = suseLib.channelForProduct(baseproduct, suse_products['ostarget'], user_id=user_id, org_id=org_id)
+    if not basechannels or basechannels == []:
+        return None
+    bc = basechannels[0]
+
+    # search childchannels of the base product which should be added too
+    childchannels = {}
+    for product in suse_products['products']:
+        ccs = suseLib.channelForProduct(product, suse_products['ostarget'], bc['id'], user_id=user_id, org_id=org_id)
+        if ccs:
+            for cc in ccs:
+                childchannels[cc['id']] = cc
+
+    channels = [bc]
+    for chan in childchannels.itervalues():
+        channels.append(chan)
+
+    return __stringify(channels)
 
 # If raise_exceptions is set, BaseChannelDeniedError, NoBaseChannelError are
 # raised
@@ -1752,10 +1768,6 @@ def guess_channels_for_server(server, user_id=None, none_ok=0,
     log_debug(3, server)
     if not isinstance(server, LiteServer):
         raise rhnException("Server object is not a LiteServer")
-
-    suse_channels = guess_suse_channels_for_server(server, user_id, none_ok, raise_exceptions)
-    if suse_channels:
-      return suse_channels
 
     if None in (server.org_id, server.release, server.arch):
         # need to obtain the release and/or arch and/or org_id
@@ -1777,6 +1789,10 @@ def guess_channels_for_server(server, user_id=None, none_ok=0,
             server.release = ret["release"]
         if server.arch is None:
             server.arch = ret["arch"]
+
+    suse_channels = guess_suse_channels_for_server(server, server.org_id, user_id, none_ok, raise_exceptions)
+    if suse_channels:
+        return suse_channels
 
     if raise_exceptions and not none_ok:
         # Let exceptions pass through

@@ -70,28 +70,69 @@ def findProduct(product):
 
   return product_id
 
-def channelForProduct(product):
+def channelForProduct(product, ostarget, parent_id=None, org_id=None, user_id=None):
+  """Find Channels for a given product and ostarget.
+     If parent_id is None, a base channel is requested.
+     Otherwise only channels are returned which have this id
+     as parent channel.
+     org_id and user_id are used to check for permissions. """
 
   product_id = findProduct(product)
   if not product_id:
     return None
 
-  h.rhnSQL.prepare("""
-    SELECT c.id, c.label
+  vals = {
+          'pid'      : product_id,
+          'ostarget' : ostarget,
+          'org_id'   : org_id,
+          'user_id'  : user_id
+         }
+  parent_statement = " IS NULL "
+  if parent_id:
+      parent_statement = " = :parent_id "
+      vals['parent_id'] = parent_id
+
+
+  h = rhnSQL.prepare("""
+    SELECT ca.label arch,
+    c.id,
+    c.parent_channel,
+    c.org_id,
+    c.label,
+    c.name,
+    c.summary,
+    c.description,
+    to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
+    rhn_channel.available_chan_subscriptions(c.id, :org_id) available_subscriptions,
+    -- If user_id is null, then the channel is subscribable
+    rhn_channel.loose_user_role_check(c.id, :user_id, 'subscribe') subscribable
     FROM rhnChannel c
     JOIN suseProductChannel spc ON spc.channel_id = c.id
+    JOIN suseOSTarget sot ON sot.channel_arch_id = c.channel_arch_id
+    JOIN rhnChannelArch ca ON c.channel_arch_id = ca.id
     WHERE spc.product_id = :pid
-  """)
-  h.execute(pid=product_id)
+      AND sot.os = :ostarget
+      AND c.parent_channel %s
+  """ % parent_statement)
+  h.execute(**vals)
   rs = h.fetchall_dict()
   if not rs:
-    log_debug(1, "No Channel Found")
-    return None
+      log_debug(1, "No Channel Found")
+      return None
   ret = []
   for channel in rs:
-    ret.append(channel['id'])
-    log_debug(1, "Found channel %s with id %d" % (channel['label'], channel['od']))
+      subscribable = channel['subscribable']
+      del channel['subscribable']
 
+      if not subscribable:
+          # Not allowed to subscribe to this channel
+          continue
+
+      ret.append(channel)
+      log_debug(1, "Found channel %s with id %d" % (channel['label'], channel['id']))
+
+  if ret == []:
+      ret = None
   return ret
 
 class URL:
