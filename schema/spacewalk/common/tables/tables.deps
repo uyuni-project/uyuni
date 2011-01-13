@@ -255,6 +255,7 @@ rhn_snmp_alert                 :: rhn_sat_cluster
 rhn_units                      :: rhn_quanta
 rhn_url_probe                  :: rhn_probe 
 rhn_url_probe_step             :: rhn_url_probe
+suseOSTarget                   :: rhnChannelArch
 suseServer                     :: rhnServer
 suseInstalledProduct           :: rhnPackageArch
 suseProducts                   :: rhnPackageArch
