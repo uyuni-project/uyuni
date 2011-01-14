@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Jan 14 17:29:15 CET 2011 - mc@suse.de
+
+- added entitlement handling
+- put the license in a firtboot usable format
+- subscribe channels according to submitted suse product data
+- Populate suseproductchannel table with product-channel mappings
+- added test for subscription calculation 
+
+-------------------------------------------------------------------
 Tue Jan 11 17:54:41 CET 2011 - mc@suse.de
 
 - syncing NCC with SUSE Manager
