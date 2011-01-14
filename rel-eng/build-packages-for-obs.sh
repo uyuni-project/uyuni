@@ -31,6 +31,12 @@ test -x "$GIT_DIR/rel-eng/bin/tito" || {
 }
 TITO="$GIT_DIR/rel-eng/bin/tito"
 
+# check for unrpm
+which unrpm &> /dev/null || {
+  echo "unrpm not found in the PATH, do 'zypper install build'" >&2
+  exit 2
+}
+
 # create workspace
 test -d "$WORKSPACE" || mkdir -p "$WORKSPACE"
 
