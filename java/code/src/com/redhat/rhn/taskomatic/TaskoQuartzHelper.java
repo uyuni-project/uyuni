@@ -71,7 +71,7 @@ public class TaskoQuartzHelper {
                     getGroupName(schedule.getOrgId()),
                     new Date(System.currentTimeMillis() + 2000 ),
                     new Date(System.currentTimeMillis() + 2010 ),
-                    1, 1);
+                    0, 0);
         }
         else {
             try {
