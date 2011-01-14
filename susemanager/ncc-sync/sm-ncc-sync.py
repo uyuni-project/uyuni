@@ -166,7 +166,9 @@ class NCCSync(object):
 
     #   OUT: {'SLE-HAE-PPC':{ 'consumed':0, 'nodecount':10 }, '10040':{ 'consumed':0, 'nodecount':200000}, ... }
     #   nodecount is the number of subscriptions the customer has today for a product
-    #   FIXME: not sure about 'consumed' yet
+    #   FIXME: not sure about 'consumed' yet. We could calculate:
+    #          max_members = nodecount - ( current_members - consumed )
+    #          to get a more precise max_members
     def consolidate_subscriptions(self, subs):
         """Takes the get_subscriptions_from_ncc() data and sums the subscriptions of a product"""
         subscription_count = {}
@@ -480,34 +482,7 @@ class NCCSync(object):
                 )
             rhnSQL.commit()
 
-    def edit_subscription_in_table( self, prod, data ):
-        """Updates/inserts a subscription in the DB.
-
-        Expects a product like from consolidate_subscriptions()
-
-        """
-
-        cf_id = (self.get_channel_family_id(prod) or
-                 self.add_channel_family_row(prod))
-
-        select_sql = ("SELECT max_members, org_id, current_members from RHNPRIVATECHANNELFAMILY "
-                      "WHERE channel_family_id = %s order by org_id" % cf_id)
-        query = rhnSQL.prepare(select_sql)
-        query.execute()
-
-        all_subs_in_db = {}
-        all_subs_sum   = 0
-        result = query.fetchall()
-
-        # copy database subscription data to a dict and
-        # count all subscriptions over all org_id's
-        for f in result:
-            # all_subs_in_db[ org_id ] = { "max_members" : NUM, "current_members" : NUM, "dirty" : 0 }
-            if not all_subs_in_db.has_key( f[1] ):
-                all_subs_in_db[ f[1] ] = { "max_members" : 0, "current_members" : f[2], "dirty" : 0 }
-            all_subs_in_db[ f[1] ]["max_members"] += f[0]
-            all_subs_sum += f[0]
-
+    def do_subscription_calculation( self, all_subs_in_db, all_subs_sum, prod, data, cf_id ):
         # Two things can happen:
         # 1. we have more subscriptions in NCC than in DB
         #    we'll add (substract a negative value) from org_id=1 max_members
@@ -553,6 +528,72 @@ class NCCSync(object):
                     all_subs_in_db[ org ]["dirty"] = 1
         if needed_subscriptions > 0:
             self.error_msg("still too many subscripts are in use. No solution found: left subscriptions: %s" % needed_subscriptions)
+        return all_subs_in_db
+
+    def test_subscription_calculation( self ):
+        test_data = [ { 'all_subs_in_db' : {1: {'max_members': 0, 'current_members': 0, 'dirty': 0}},
+                        'all_subs_sum' : 0, 'prod' : 'TEST-SLE-HAE-PPC', 'data' : {'nodecount': 10, 'consumed': 0}, 'cf_id' : 1031 },
+
+                      { 'all_subs_in_db' : {1: {'max_members': 200000, 'current_members': 0, 'dirty': 0}},
+                        'all_subs_sum' : 200000, 'prod' : 'TEST-10040', 'data' : {'nodecount': 200000, 'consumed': 9}, 'cf_id' : 1004 },
+
+                      { 'all_subs_in_db' : {1: {'max_members': 100, 'current_members': 90, 'dirty': 0}},
+                        'all_subs_sum' : 100, 'prod' : 'TEST-RES', 'data' : {'nodecount': 100, 'consumed': 97}, 'cf_id' : 1005 },
+
+                      { 'all_subs_in_db' : {1: {'max_members': 10, 'current_members': 10, 'dirty': 0}},
+                        'all_subs_sum' : 20, 'prod' : 'TEST-NAM-AGA', 'data' : {'nodecount': 20, 'consumed': 15}, 'cf_id' : 1019 },
+
+                      { 'all_subs_in_db' : {2: {'max_members': 10, 'current_members': 5, 'dirty': 0}},
+                        'all_subs_sum' : 20, 'prod' : 'TEST-NAM-AGA', 'data' : {'nodecount': 20, 'consumed': 15}, 'cf_id' : 1019 },
+
+                      { 'all_subs_in_db' : {1: {'max_members': 100, 'current_members': 60, 'dirty': 0}},
+                        'all_subs_sum' : 100, 'prod' : 'TEST-STUDIOONSITE', 'data' : {'nodecount': 80, 'consumed': 60}, 'cf_id' : 1021 },
+
+                      { 'all_subs_in_db' : {1: {'max_members': 100, 'current_members': 60, 'dirty': 0}},
+                        'all_subs_sum' : 100, 'prod' : 'TEST-STUDIOONSITE2', 'data' : {'nodecount': 50, 'consumed': 50}, 'cf_id' : 10212 } ]
+        for data in test_data:
+            all_subs_in_db = self.do_subscription_calculation( data["all_subs_in_db"], data["all_subs_sum"], data["prod"], data["data"], data["cf_id"] )
+            for org in all_subs_in_db.keys():
+                if all_subs_in_db[ org ]["dirty"] == 1:
+                    update_sql = "UPDATE RHNPRIVATECHANNELFAMILY SET "
+                    update_sql += "max_members = %s " % all_subs_in_db[ org ]["max_members"]
+                    update_sql += "WHERE channel_family_id = %s and org_id = %s" % ( org, data["cf_id"] )
+                    print "SQL: %s" % update_sql
+        return True
+
+
+    def edit_subscription_in_table( self, prod, data ):
+        """Updates/inserts a subscription in the DB.
+
+        Expects a product like from consolidate_subscriptions()
+
+        """
+
+        cf_id = (self.get_channel_family_id(prod) or
+                 self.add_channel_family_row(prod))
+
+        select_sql = ("SELECT max_members, org_id, current_members from RHNPRIVATECHANNELFAMILY "
+                      "WHERE channel_family_id = %s order by org_id" % cf_id)
+        query = rhnSQL.prepare(select_sql)
+        query.execute()
+
+        result = query.fetchall()
+
+        all_subs_in_db = {}
+        all_subs_sum   = 0
+        # copy database subscription data to a dict and
+        # count all subscriptions over all org_id's
+        for f in result:
+            # all_subs_in_db[ org_id ] = { "max_members" : NUM, "current_members" : NUM, "dirty" : 0 }
+            if not all_subs_in_db.has_key( f[1] ):
+                all_subs_in_db[ f[1] ] = { "max_members" : 0, "current_members" : f[2], "dirty" : 0 }
+            all_subs_in_db[ f[1] ]["max_members"] += f[0]
+            all_subs_sum += f[0]
+
+        # generate test data
+        # print "{ 'all_subs_in_db' : %s, 'all_subs_sum' : %s, 'prod' : '%s', 'data' : %s, 'cf_id' : %s }," % ( all_subs_in_db, all_subs_sum, prod, data, cf_id )
+
+        all_subs_in_db = self.do_subscription_calculation( all_subs_in_db, all_subs_sum, prod, data, cf_id )
 
         for org in all_subs_in_db.keys():
             if all_subs_in_db[ org ]["dirty"] == 1:
@@ -886,6 +927,8 @@ def main():
                       default=False, help="Print no output, still logs output")
     parser.add_option('-d', '--debug', dest='debug',
                       default=-1, help="debugging")
+    parser.add_option("-t", "--test", action="store_true",
+                      help="Testmode")
 
 
     (options, args) = parser.parse_args()
@@ -900,6 +943,8 @@ def main():
         syncer.update_suse_products_table(suse_products)
     elif options.update_cf:
         syncer.update_channel_family_table_by_config()
+    elif options.test:
+        syncer.test_subscription_calculation()
     elif options.update_subscriptions:
         all_subs = syncer.get_subscriptions_from_ncc()
         cons_subs = syncer.consolidate_subscriptions(all_subs)
