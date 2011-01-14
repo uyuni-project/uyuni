@@ -521,7 +521,7 @@ class NCCSync(object):
         for org in sorted(all_subs_in_db.keys()):
             log_debug(1, "working on org_id %s" % org)
             free = all_subs_in_db[ org ]["max_members"] - all_subs_in_db[ org ]["current_members"]
-            if (free > 0 and needed_subscriptions <= free) or (free < 0 and needed_subscriptions < 0):
+            if (free >= 0 and needed_subscriptions <= free) or (free < 0 and needed_subscriptions < 0):
                 log_debug(1, "max_members (%s) -= %s" % (all_subs_in_db[ org ]["max_members"], needed_subscriptions) )
                 all_subs_in_db[ org ]["max_members"] -= needed_subscriptions
                 all_subs_in_db[ org ]["dirty"] = 1
