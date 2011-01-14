@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jan 14 17:21:35 CET 2011 - mc@suse.de
+
+- Fix wrong Reference in Web Interface (bnc#662075)
+- scheduleSingleSatRepoSync() added for SUSE channels
+- Fixed double execution of one-time jobs.
+
+-------------------------------------------------------------------
 Tue Jan 11 17:20:19 CET 2011 - mc@suse.de
 
 - fix Requires
