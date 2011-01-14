@@ -208,7 +208,7 @@ class NCCSync(object):
         f = self._connect_ncc(self.ncc_url_prods, send)
 
         tree = etree.parse(f)
-        suseProducts = []
+        suse_products = []
         for row in tree.getroot():
             if row.tag == ("{%s}row" % self.namespace):
                 suseProduct = {}
@@ -219,9 +219,10 @@ class NCCSync(object):
                     else:
                         suseProduct[key] = col.text
                 if suseProduct["PRODUCT_CLASS"] != None:
-                    # FIXME: skip buggy NCC entries. Some have no product_class, which is invalid data
-                    suseProducts.append(suseProduct)
-        return suseProducts
+                    # FIXME: skip buggy NCC entries. Some have no
+                    # product_class, which is invalid data
+                    suse_products.append(suseProduct)
+        return suse_products
 
     def get_arch_id(self, arch):
         """Returns the database id of an package arch"""
@@ -352,13 +353,13 @@ class NCCSync(object):
             self.update_channel_family_table(label, name, org_id, url)
         return channel_family_id
 
-    def update_suse_products_table(self, suseProducts):
+    def update_suse_products_table(self, suse_products):
         """Creates/updates entries in the DB Products table
 
         Expects a get_suse_products_from_ncc() datastructure
 
         """
-        for p in suseProducts:
+        for p in suse_products:
             arch_type_id = self.get_arch_id( p["ARCH"] )
             params = {}
 
@@ -409,13 +410,14 @@ class NCCSync(object):
                 insert_sql = """
                     INSERT INTO SUSEPRODUCTS
                         (id, NAME, VERSION, FRIENDLY_NAME,
-                         ARCH_TYPE_ID, RELEASE, CHANNEL_FAMILY_ID, PRODUCT_LIST)
+                         ARCH_TYPE_ID, RELEASE, CHANNEL_FAMILY_ID,
+                         PRODUCT_LIST, PRODUCT_ID)
                     VALUES
                         (sequence_nextval('suse_products_id_seq'),
                          :name, :version, :friendly_name, :arch_type_id,
-                         :release, :channel_family_id, :product_list)
+                         :release, :channel_family_id, :product_list,
+                         :product_id)
                 """
-
                 query = rhnSQL.prepare(insert_sql)
                 if p["PRODUCT"] != None:
                     p["PRODUCT"] = p["PRODUCT"].lower()
@@ -424,14 +426,14 @@ class NCCSync(object):
                 if p["REL"] != None:
                     p["REL"] = p["REL"].lower()
                 query.execute(
-                              name = p["PRODUCT"],
-                              version = p["VERSION"],
-                              friendly_name = p["FRIENDLY"],
-                              arch_type_id = arch_type_id,
-                              release = p["REL"],
-                              channel_family_id = channel_family_id,
-                              product_list = p["PRODUCT_LIST"]
-                )
+                    name = p["PRODUCT"],
+                    version = p["VERSION"],
+                    friendly_name = p["FRIENDLY"],
+                    arch_type_id = arch_type_id,
+                    release = p["REL"],
+                    channel_family_id = channel_family_id,
+                    product_list = p["PRODUCT_LIST"],
+                    product_id = p["PRODUCTDATAID"])
         rhnSQL.commit()
     
     def get_entitlement_id( self, ent ):
@@ -568,7 +570,61 @@ class NCCSync(object):
                 )
         rhnSQL.commit()
 
+    def map_channels_to_products(self):
+        """Map the Channels we have to actual SUSE Products
 
+        We get the channels from the .xml file and the products from NCC.
+        After doing the mapping, the changes are written to the DB.
+
+        :arg products: a list of product dictionaries as taken from NCC
+
+        """
+        # We would like to do this for all the channels, but we only
+        # have ids for the channels that are already in the database.
+        query = rhnSQL.prepare('SELECT id, label FROM rhnchannel')
+        query.execute()
+        db_channels = {}
+        for channel in query.fetchall_dict():
+            db_channels[channel['label']] = channel['id']
+
+        channels = []
+        for channel in self.get_available_channels():
+            label = channel.get('label')
+            if label in db_channels:
+                channels.append(channel.attrib)
+
+        product_channels = []
+        query = rhnSQL.prepare('SELECT id FROM suseproducts')
+        query.execute()
+        product_ids = [tup[0] for tup in query.fetchall()]
+
+        for channel in channels:
+            assert int(channel['product_id']) in product_ids, channel
+            query = rhnSQL.prepare(
+                "INSERT INTO suseproductchannel (product_id, channel_id) "
+                "VALUES (:product_id, :channel_id)")
+            query.execute(product_id=channel['product_id'],
+                          channel_id=db_channels[channel['label']])
+            rhnSQL.commit()
+
+    def get_suse_product_id(self, product_id):
+        """Return the suseproduct.id corresponding to an ncc/smt productid"""
+        # this has the potential of getting uglier later if we get
+        # overlapping ids
+        query = rhnSQL.prepare("SELECT ID FROM SUSEPRODUCTS "
+                               "WHERE PRODUCT_ID = :product_id")
+        query.execute(product_id=product_id)
+        return query.fetchone()[0]
+
+    def map_channel_to_products(self, product_id, channel_id):
+        """Map one channel to its products"""
+        suse_id = self.get_suse_product_id(product_id)
+        query = rhnSQL.prepare(
+            "INSERT INTO suseproductchannel (product_id, channel_id) "
+            "VALUES (:product_id, :channel_id)")
+        query.execute(product_id=suse_id,
+                      channel_id=channel_id)
+        rhnSQL.commit()
 
     def repo_sync(self):
         """Trigger a reposync of all the channels in the database
@@ -597,7 +653,7 @@ class NCCSync(object):
         query.execute()
         families = [f[0] for f in query.fetchall()]
         return families
-        
+
     def get_available_channels(self):
         """Get a list of all the channels the user has access to
 
@@ -608,7 +664,7 @@ class NCCSync(object):
         with open(NCC_CHANNELS, 'r') as f:
             tree = etree.parse(f)
         channels_iter = tree.getroot()
-
+        
         families = self.get_available_families()
 
         # filter out the channels which are not in the available families list
@@ -653,7 +709,12 @@ class NCCSync(object):
                     print "    [.] %s" % child.get('label')
 
     def get_ncc_channel(self, channel_label):
-        """Try getting the NCC channel for this user"""
+        """Try getting the NCC channel for this user
+
+        :arg channel_label: the NCC label of the channel
+
+        Returns a channel XML Element
+        """
         for channel in self.get_available_channels():
             if channel.get('label') == channel_label:
                 return channel
@@ -785,6 +846,7 @@ class NCCSync(object):
                 self.insert_repo(repo, channel_id)
                 
             rhnSQL.commit()
+            self.map_channel_to_products(channel.get('product_id'), channel_id)
             self.print_msg( "Added channel '%s' to the database." % channel_label )
 
         # TODO do the syncing
@@ -834,31 +896,31 @@ def main():
     elif options.channel:
         syncer.add_channel(options.channel)
     elif options.products:
-        suseProducts = syncer.get_suse_products_from_ncc()
-        syncer.update_suse_products_table( suseProducts )
+        suse_products = syncer.get_suse_products_from_ncc()
+        syncer.update_suse_products_table(suse_products)
     elif options.update_cf:
         syncer.update_channel_family_table_by_config()
     elif options.update_subscriptions:
         all_subs = syncer.get_subscriptions_from_ncc()
-        cons_subs = syncer.consolidate_subscriptions( all_subs )
+        cons_subs = syncer.consolidate_subscriptions(all_subs)
         syncer.reset_entitlements_in_table()
         for s in cons_subs.keys():
-            if( syncer.is_entitlement( s ) ):
-                syncer.edit_entitlement_in_table( s, cons_subs[s] )
+            if(syncer.is_entitlement(s)):
+                syncer.edit_entitlement_in_table(s, cons_subs[s])
             else:
-                syncer.edit_subscription_in_table( s, cons_subs[s] )
+                syncer.edit_subscription_in_table(s, cons_subs[s])
     else:
         syncer.update_channel_family_table_by_config()
-        suseProducts = syncer.get_suse_products_from_ncc()
-        syncer.update_suse_products_table( suseProducts )
+        suse_products = syncer.get_suse_products_from_ncc()
+        syncer.update_suse_products_table(suse_products)
         all_subs = syncer.get_subscriptions_from_ncc()
-        cons_subs = syncer.consolidate_subscriptions( all_subs )
+        cons_subs = syncer.consolidate_subscriptions(all_subs)
         syncer.reset_entitlements_in_table()
         for s in cons_subs.keys():
-            if( syncer.is_entitlement( s ) ):
-                syncer.edit_entitlement_in_table( s, cons_subs[s] )
+            if( syncer.is_entitlement(s)):
+                syncer.edit_entitlement_in_table(s, cons_subs[s])
             else:
-                syncer.edit_subscription_in_table( s, cons_subs[s] )
+                syncer.edit_subscription_in_table(s, cons_subs[s])
         syncer.repo_sync()
 
 if __name__ == "__main__":
