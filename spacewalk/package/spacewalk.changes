@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jan 14 16:59:10 CET 2011 - mc@suse.de
+
+- do not require a special release 
+
+-------------------------------------------------------------------
 Fri Dec 10 16:37:00 CET 2010 - mc@suse.de
 
 - require susemanager-jsp_en 
