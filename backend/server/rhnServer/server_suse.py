@@ -86,12 +86,13 @@ class SuseData:
     # search if suseServer with ID sysid exists
     h = rhnSQL.prepare("""
       SELECT
-        rhn_server_id as id,
-        guid,
-        secret,
-        ostarget,
-        ncc_sync_required
-      FROM suseServer
+        s.rhn_server_id as id,
+        s.guid,
+        s.secret,
+        sot.target as ostarget,
+        s.ncc_sync_required
+      FROM suseServer s
+      JOIN suseOSTarget sot ON s.ostarget_id = sot.id
       WHERE rhn_server_id = :sysid
     """)
     h.execute(sysid = sysid)
@@ -103,8 +104,10 @@ class SuseData:
       ncc_sync_required = True
       h = rhnSQL.prepare("""
         INSERT INTO suseServer
-          (rhn_server_id, guid, secret, ostarget)
-          values (:sysid, :guid, :secret, :ostarget)
+          (rhn_server_id, guid, secret, ostarget_id)
+          values (:sysid, :guid, :secret, 
+          (select id from suseOSTarget
+           where os = :ostarget))
       """)
       h.execute(sysid=sysid, guid=guid, secret=secret, ostarget=ostarget)
     else:
@@ -112,9 +115,9 @@ class SuseData:
     # update if needed
       data = {
         'rhn_server_id' : sysid,
-        'guid' : guid,
-        'secret' : secret,
-        'ostarget' : ostarget
+        'guid'          : guid,
+        'secret'        : secret,
+        'ostarget'      : ostarget
       }
 
       if t['guid'] != guid or t['secret'] != secret or t['ostarget'] != ostarget:
@@ -123,7 +126,7 @@ class SuseData:
           UPDATE suseServer
              SET guid = :guid,
                  secret = :secret,
-                 ostarget = :ostarget
+                 ostarget_id = (select id from suseOSTarget where os = :ostarget)
            WHERE rhn_server_id = :rhn_server_id
         """)
         apply(h.execute, (), data)

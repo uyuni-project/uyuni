@@ -64,9 +64,13 @@ class Register:
     self.perform_deregister()
 
     h = rhnSQL.prepare("""
-      SELECT rhn_server_id as rhnserverid,
-             guid, secret, ostarget
-        FROM suseServer
+      SELECT s.rhn_server_id as rhnserverid,
+             s.guid, 
+             s.secret, 
+             sot.target as ostarget,
+             sot.os as ostargetbak
+        FROM suseServer s
+        JOIN suseOSTarget sot on s.ostarget_id = sot.id
        WHERE ncc_sync_required = 'Y'
          AND ncc_reg_error = 'N'
     """)
@@ -293,6 +297,8 @@ class Register:
     x.text = CFG.ncc_email
     x = etree.SubElement(register_elem, 'param', attrib={'id': 'ostarget'})
     x.text = server['ostarget']
+    x = etree.SubElement(register_elem, 'param', attrib={'id': 'ostarget-bak'})
+    x.text = server['ostargetbak']
     return True
 
   def get_virtual_info(self, systemid):

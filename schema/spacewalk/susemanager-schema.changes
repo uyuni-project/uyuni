@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 17 12:25:25 CET 2011 - mc@suse.de
+
+- change suseServer ostarget to a foreign key to suseOSTarget(id) 
+
+-------------------------------------------------------------------
 Wed Jan 12 17:23:13 CET 2011 - mc@suse.de
 
 - add suseOSTarget table

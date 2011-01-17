@@ -256,7 +256,7 @@ rhn_units                      :: rhn_quanta
 rhn_url_probe                  :: rhn_probe 
 rhn_url_probe_step             :: rhn_url_probe
 suseOSTarget                   :: rhnChannelArch
-suseServer                     :: rhnServer
+suseServer                     :: rhnServer suseOSTarget
 suseInstalledProduct           :: rhnPackageArch
 suseProducts                   :: rhnPackageArch
 suseProductChannel             :: suseProducts rhnChannel

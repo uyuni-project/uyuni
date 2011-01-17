@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 17 12:24:57 CET 2011 - mc@suse.de
+
+- change suseServer ostarget to a foreign key to suseOSTarget(id) 
+
+-------------------------------------------------------------------
 Mon Jan 17 08:59:56 CET 2011 - mc@suse.de
 
 - update channel information

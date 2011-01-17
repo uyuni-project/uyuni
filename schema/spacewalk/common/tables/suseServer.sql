@@ -21,7 +21,9 @@ suseServer
     guid              varchar2(256)
                       CONSTRAINT suseserver_guid_uq UNIQUE,
     secret            varchar2(256),
-    ostarget          varchar2(256),
+    ostarget_id       number
+                      CONSTRAINT suseostarget_id_fk
+                      REFERENCES suseOSTarget (id),
     ncc_sync_required CHAR(1) DEFAULT ('N') NOT NULL,
     ncc_reg_error     CHAR(1) DEFAULT ('N') NOT NULL,
     created     date default(sysdate) not null,
