@@ -101,6 +101,7 @@ fi
 %{pythonsmroot}/susemanager/__init__.py*
 %{pythonsmroot}/susemanager/suseLib.py*
 %{pythonsmroot}/susemanager/smregister.py*
+%{pythonsmroot}/susemanager/sm_ncc_sync_lib.py*
 
 
 %changelog
