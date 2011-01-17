@@ -7,6 +7,6 @@ TOP     = ..
 # Specific stuff
 SUBDIR		= susemanager
 
-#SPACEWALK_FILES		=
+SPACEWALK_FILES		= sm_ncc_sync_lib
 
 include $(TOP)/Makefile.defs
