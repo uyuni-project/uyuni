@@ -31,7 +31,7 @@ try:
   import socket
   from rhn import rhnLockfile
   from spacewalk.common import CFG, fetchTraceback
-  from spacewalk.susemanager import smregister
+  from spacewalk.susemanager import mgr_register
 except KeyboardInterrupt:
   systemExit(0, "\nUser interrupted process.")
 except ImportError:
@@ -53,11 +53,11 @@ def main():
   global LOCK
   LOCK = None
   try:
-    LOCK = rhnLockfile.Lockfile('/var/run/sm-register.pid')
+    LOCK = rhnLockfile.Lockfile('/var/run/mgr-register.pid')
   except rhnLockfile.LockfileLockedException:
-    systemExit(1, "ERROR: attempting to run more than one instance of sm-register Exiting.")
+    systemExit(1, "ERROR: attempting to run more than one instance of mgr-register Exiting.")
 
-  sync = smregister.Register()
+  sync = mgr_register.Register()
   sync.main()
   releaseLOCK()
   return 0

@@ -46,7 +46,7 @@ class Register:
     db_string = CFG.DEFAULT_DB
     rhnSQL.initDB(db_string)
     (options, args) = self.process_args()
-    log_filename = 'sm-register.log'
+    log_filename = 'mgr-register.log'
     rhnLog.initLOG(default_log_location + log_filename, CFG.DEBUG)
 
     # reset error for all server which modified date is

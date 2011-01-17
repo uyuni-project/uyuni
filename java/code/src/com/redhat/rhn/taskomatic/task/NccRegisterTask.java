@@ -29,7 +29,7 @@ public class NccRegisterTask extends RhnJavaJob {
     public void execute(JobExecutionContext ctx) throws JobExecutionException {
         List<String> cmd = new ArrayList<String>();
 
-        cmd.add("/usr/sbin/sm-register");
+        cmd.add("/usr/sbin/mgr-register");
 
         String[] args = cmd.toArray(new String[cmd.size()]);
         executeExtCmd(args);

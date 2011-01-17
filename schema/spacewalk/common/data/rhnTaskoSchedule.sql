@@ -64,8 +64,8 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
         current_timestamp, '0 0/15 * * * ?');
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
-    VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'sm-register-default',
-        (SELECT id FROM rhnTaskoBunch WHERE name='sm-register-bunch'),
+    VALUES(sequence_nextval('rhn_tasko_schedule_id_seq'), 'mgr-register-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='mgr-register-bunch'),
         current_timestamp, '0 0/15 * * * ?');
 
 -- Once a day at 4:05:00 AM (beware of 2AM cronjobs)

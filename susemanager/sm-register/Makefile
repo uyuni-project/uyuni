@@ -1,4 +1,4 @@
-# Makefile for sm-register
+# Makefile for mgr-register
 #
 
 # what is the backend top dir
@@ -8,6 +8,6 @@ TOP     = ..
 SUBDIR		= susemanager
 
 SPACEWALK_FILES		= __init__ \
-		  suseLib smregister
+		  suseLib mgr_register
 
 include $(TOP)/Makefile.defs

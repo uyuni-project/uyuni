@@ -75,6 +75,6 @@ INSERT INTO rhnTaskoTask (id, name, class)
          VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'cleanup-timeseries-data', 'com.redhat.rhn.taskomatic.task.TimeSeriesCleanUp');
 
 INSERT INTO rhnTaskoTask (id, name, class)
-         VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'sm-register', 'com.redhat.rhn.taskomatic.task.NccRegisterTask');
+         VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'mgr-register', 'com.redhat.rhn.taskomatic.task.NccRegisterTask');
 
 commit;
