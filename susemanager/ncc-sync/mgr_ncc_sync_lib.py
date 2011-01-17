@@ -820,12 +820,13 @@ class NCCSync(object):
                     url.query = "credentials=mirrcred"
                 data['source_url'] = url.getURL()
             # FIXME make a TYPE_ID for zypper?
+            type_id = rhnSQL.Row("RHNCONTENTSOURCETYPE", "LABEL", "yum")['id']
             query = rhnSQL.prepare(
                 """INSERT INTO RHNCONTENTSOURCE
                        ( ID, ORG_ID, TYPE_ID, SOURCE_URL, LABEL)
                    VALUES ( sequence_nextval('rhn_chan_content_src_id_seq'),
-                            NULL, 500, :source_url, :label )""")
-            query.execute(**data)
+                            NULL, :type_id, :source_url, :label )""")
+            query.execute(type_id=type_id, **data)
 
             # create relation between the new repo and the channel
             repo_id = rhnSQL.Row(
