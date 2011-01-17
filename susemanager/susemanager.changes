@@ -2,6 +2,7 @@
 Mon Jan 17 16:29:09 CET 2011 - mc@suse.de
 
 - rename sm-register to mgr-register 
+- rename sm-ncc-sync to mgr-ncc-sync
 
 -------------------------------------------------------------------
 Mon Jan 17 12:24:57 CET 2011 - mc@suse.de
