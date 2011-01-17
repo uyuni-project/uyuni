@@ -46,6 +46,7 @@ This package contains SUSE Manager tools
 
 %build
 make -C sm-register all
+make -C ncc-sync all
 
 %install
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
@@ -54,6 +55,7 @@ install -m 0755 bin/*.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/
 mkdir -p %{buildroot}/%{_sysconfdir}/rhn/default/
 install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_sysconfdir}/rhn/default/
 make -C sm-register install PREFIX=$RPM_BUILD_ROOT
+make -C ncc-sync install PREFIX=$RPM_BUILD_ROOT
 mkdir -p %{buildroot}/%{_sbindir}/
 install -m 0755 sm-register/sm-register.py %{buildroot}/%{_sbindir}/sm-register
 install -m 0755 ncc-sync/sm-ncc-sync.py %{buildroot}/%{_sbindir}/sm-ncc-sync
