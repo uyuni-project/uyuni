@@ -18,7 +18,6 @@
 import sys
 from optparse import OptionParser
 from spacewalk.susemanager import sm_ncc_sync_lib
-from spacewalk.susemanager import sm_ncc_sync_lib_test
 
 def main():
     parser = OptionParser(version="%prog 0.1",
