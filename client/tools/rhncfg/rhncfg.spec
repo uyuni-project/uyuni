@@ -70,6 +70,11 @@ install -d $RPM_BUILD_ROOT/%{rhnroot}
 make -f Makefile.rhncfg install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
 
+%if 0%{?suse_version}
+ln -s rhncfg-manager %{_bindir}/mgrcfg-manager
+ln -s rhncfg-client %{_bindir}/mgrcfg-client
+ln -s rhn-actions-control %{_bindir}/mgr-actions-control
+%endif
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -85,6 +90,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/rhncfg-client
 %if 0%{?suse_version}
 %dir %{rhnconf}
+%{_bindir}/mgrcfg-client
 %endif
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-client.conf
 %{_mandir}/man8/rhncfg-client.8*
@@ -94,6 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 %{rhnroot}/config_management
 %if 0%{?suse_version}
 %dir %{rhnconf}
+%{_bindir}/mgrcfg-manager
 %endif
 %{_bindir}/rhncfg-manager
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-manager.conf
@@ -106,6 +113,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{rhnconf}
 %dir %{client_caps_dir}
 %dir /usr/share/rhn/actions
+%{_bindir}/mgr-actions-control
 %endif
 %{_bindir}/rhn-actions-control
 %config(noreplace) %{client_caps_dir}/*
