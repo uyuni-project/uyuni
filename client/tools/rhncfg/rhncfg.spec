@@ -71,9 +71,9 @@ make -f Makefile.rhncfg install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
 
 %if 0%{?suse_version}
-ln -s rhncfg-manager %{_bindir}/mgrcfg-manager
-ln -s rhncfg-client %{_bindir}/mgrcfg-client
-ln -s rhn-actions-control %{_bindir}/mgr-actions-control
+ln -s rhncfg-manager $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-manager
+ln -s rhncfg-client $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-client
+ln -s rhn-actions-control $RPM_BUILD_ROOT/%{_bindir}/mgr-actions-control
 %endif
 %clean
 rm -rf $RPM_BUILD_ROOT
