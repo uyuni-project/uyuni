@@ -666,11 +666,31 @@ class NCCSync(object):
                       channel_id=channel_id)
         rhnSQL.commit()
 
-    def repo_sync(self):
-        """Trigger a reposync of all the channels in the database
-
+    def sync_channel(self, channel_id, channel_label):
+        """ Schedule a repo sync for specified database channel.
         """
-        self.print_msg("Triggering reposync of all database channels...")
+        date = taskomatic.schedule_single_sat_repo_sync(channel_id)
+        if date:
+            print "Scheduled repo sync for channel %s." % channel_label
+        else:
+            self.error_msg ("Failed to schedule repo sync for channel %s." % channel_label)
+
+
+    def sync_installed_chanells(self):
+        """Schedule a reposync of all the channels in the database.
+        """
+        self.print_msg("Scheduling repo sync for all installed channels...")
+
+        select_sql = "SELECT id, label FROM rhnChannel"
+        query = rhnSQL.prepare(select_sql)
+        query.execute()
+        db_channels = query.fetchall()
+
+        for channel in db_channels:
+            self.sync_channel(channel[0], channel[1])
+
+        if len(db_channels) == 0:
+            print "No channels are installed in the database. Add channels using sm-ncc-sync -c channel_label."
 
     def get_available_families(self):
         """Get the list of available channel family labels
@@ -889,8 +909,8 @@ class NCCSync(object):
             self.map_channel_to_products(channel.get('product_id'), channel_id)
             self.print_msg( "Added channel '%s' to the database." % channel_label )
 
-        # TODO do the syncing
-        self.print_msg( "Trigger sync for channel '%s'" % channel_label )
+            # schedule repo sync for this channel
+            self.sync_channel(channel_id, channel_label)
 
     def is_entitlement( self, s ):
         return self.ncc_rhn_ent_mapping.has_key(s)

@@ -77,7 +77,7 @@ def main():
                 syncer.edit_entitlement_in_table(s, cons_subs[s])
             else:
                 syncer.edit_subscription_in_table(s, cons_subs[s])
-        syncer.repo_sync()
+        syncer.sync_installed_chanells()
 
 if __name__ == "__main__":
     try:

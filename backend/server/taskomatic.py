@@ -3,7 +3,11 @@
 Module for taskomatic related functions (inserting into queues, etc)
 """
 
+import xmlrpclib
 from spacewalk.server import rhnSQL
+
+# see TaskoXmlRpcHandler.java for available methods
+TASKOMATIC_XMLRPC_URL = 'http://localhost:2829/RPC2'
 
 class RepodataQueueEntry(object):
 
@@ -64,3 +68,28 @@ def add_to_repodata_queue_for_channel_package_subscription(affected_channels,
             # don't want to cause an error for the db
             add_to_repodata_queue(channel, caller, reason[:128])
 
+
+def schedule_single_sat_repo_sync(channel_id):
+    """ Schedule a non-recurring satellite (non-organizational) repo sync
+        for channel identified by rhnChannel.ID.
+
+        Repo sync is normally an organizational task scheduled by the following
+        XML-RPC call:
+            xmlrpcclient.tasko.scheduleSingleBunchRun(
+                org_id, 'repo-sync-bunch', {'channel_id':channel_id}).
+        SUSE however needs to create its default non-organizational channels
+        out of multiple NCC repos when doing sm-ncc-sync, thus the repo sync
+        task for the default channels must be executed without an org_id (as
+        a satellite task). Special XMLRPC method was created for this:
+            xmlrpcclient.tasko.scheduleSingleSatRepoSync(channel_id)
+
+        The method returns the start date of the scheduled job or None
+        if the scheduling failed.
+    """
+    client = xmlrpclib.Server(TASKOMATIC_XMLRPC_URL)
+
+    try:
+        return client.tasko.scheduleSingleSatRepoSync(channel_id)
+    except xmlrpclib.Fault, e:
+        print "Error scheduling repo sync task: %s" % e
+    return None
