@@ -17,7 +17,7 @@
 
 import sys
 from optparse import OptionParser
-from spacewalk.susemanager import sm_ncc_sync_lib
+from spacewalk.susemanager import mgr_ncc_sync_lib
 
 def main():
     parser = OptionParser(version="%prog 0.1",
@@ -43,7 +43,7 @@ def main():
 
     (options, args) = parser.parse_args()
 
-    syncer = sm_ncc_sync_lib.NCCSync(quiet=options.quiet, debug=options.debug)
+    syncer = mgr_ncc_sync_lib.NCCSync(quiet=options.quiet, debug=options.debug)
     if options.list:
         syncer.list_channels()
     elif options.channel:

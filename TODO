@@ -12,14 +12,14 @@ Work for SUSE Manager
   - everytime the admin add/remove such an entitlement to a client
     add/remove the product for this entitlement to the suseServer
 
-- sm-ncc-sync called without options should do:
+- mgr-ncc-sync called without options should do:
   1) update channel families
   2) update the suseProducts
   3) update entitlements (Subscriptions)
   4) walk over all existing channels with org_id == NULL
      and trigger a reposync
 
-- sm-ncc-sync --list-channels or --channels should
+- mgr-ncc-sync --list-channels or --channels should
   only show the available channels for this customer.
   the channels.xml file include all exiting channels,
   but the customer may not have access to all of them.

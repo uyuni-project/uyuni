@@ -71,9 +71,9 @@ class NCCSync(object):
             self.debug = CFG.DEBUG
 
         if self.debug > 1:
-            rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'sm-ncc-sync.log', self.debug)
+            rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'mgr-ncc-sync.log', self.debug)
         else:
-          rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'sm-ncc-sync.log')
+          rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'mgr-ncc-sync.log')
 
         self.log_msg("\nStarted: %s" % (time.asctime(time.localtime())))
 
@@ -690,7 +690,7 @@ class NCCSync(object):
             self.sync_channel(channel[0], channel[1])
 
         if len(db_channels) == 0:
-            print "No channels are installed in the database. Add channels using sm-ncc-sync -c channel_label."
+            print "No channels are installed in the database. Add channels using mgr-ncc-sync -c channel_label."
 
     def get_available_families(self):
         """Get the list of available channel family labels
