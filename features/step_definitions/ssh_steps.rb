@@ -3,7 +3,7 @@
 
 When /^I execute ncc\-sync "([^"]*)"$/ do |arg1|
     $sshout = ""
-    $sshout = `ssh -l root -o StrictHostKeyChecking=no $TESTHOST sm-ncc-sync #{arg1}`
+    $sshout = `ssh -l root -o StrictHostKeyChecking=no $TESTHOST mgr-ncc-sync #{arg1}`
     if ! $?.success?
         raise "Execute command failed: #{$!}: #{$sshout}"
     end
