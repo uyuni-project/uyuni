@@ -6,17 +6,17 @@ Feature: sm-ncc-sync channel listing and enablement
   Scenario: list available channels
      When I execute ncc-sync "--list"
      Then I want to get "[.] suse_sles-11.1.x86_64-base"
-      And I want to get "    [.] sle-sdk-11.1.x86_64"
+      And I want to get "    [.] sles-sle-sdk-11.1.x86_64"
 
   Scenario: enable suse_sles-11.1.x86_64-base
      When I execute ncc-sync "--channel suse_sles-11.1.x86_64-base"
       And I execute ncc-sync "--list"
      Then I want to get "[P] suse_sles-11.1.x86_64-base"
-      And I want to get "    [.] sle-sdk-11.1.x86_64"
+      And I want to get "    [.] sles-sle-sdk-11.1.x86_64"
 
   Scenario: enable sle-sdk-11.1.x86_64
-     When I execute ncc-sync "--channel sle-sdk-11.1.x86_64"
+     When I execute ncc-sync "--channel sles-sle-sdk-11.1.x86_64"
       And I execute ncc-sync "--list"
      Then I want to get "[P] suse_sles-11.1.x86_64-base"
-      And I want to get "    [P] sle-sdk-11.1.x86_64"
+      And I want to get "    [P] sles-sle-sdk-11.1.x86_64"
 
