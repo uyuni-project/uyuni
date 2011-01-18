@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 18 15:27:18 CET 2011 - mantel@suse.de
+
+- add mgr-* symlinks (BNC #660791)
+
+-------------------------------------------------------------------
 Wed Sep 15 09:17:39 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-certs-tools
