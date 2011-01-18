@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 18 15:42:25 CET 2011 - mc@suse.de
+
+- add YaST directory to filelist
+
+-------------------------------------------------------------------
 Tue Jan 18 10:26:28 CET 2011 - iartarisi@suse.cz
 
 - fixed an error when adding new channels after changing an
