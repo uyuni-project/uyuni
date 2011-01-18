@@ -87,6 +87,8 @@ fi
 %doc doc/* Changes license.txt
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
+%dir %{_datadir}/YaST2
+%dir %{_datadir}/YaST2/clients
 %{_prefix}/lib/susemanager/bin/*
 %{_datadir}/YaST2/clients/*.ycp
 
