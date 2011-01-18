@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 18 11:46:21 CET 2011 - ug@suse.de
+
+- rhnreg_ks --help failed if LANG = de_DE.UTF-8 (bnc#664915)
+
+-------------------------------------------------------------------
 Wed Jan 12 10:09:22 CET 2011 - ma@suse.de
 
 - Let client registration send product profile.

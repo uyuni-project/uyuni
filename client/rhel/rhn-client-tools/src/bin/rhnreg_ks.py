@@ -24,7 +24,12 @@ import sys
 import os
 
 import gettext
-_ = gettext.gettext
+
+# bnc#664915 rhnreg_ks --help failed if LANG = de_DE.UTF-8
+#_ = gettext.gettext
+t = gettext.translation('rhn-client-tools', '/usr/share/locale/', fallback=True)
+def _(str):
+    return unicode(t.gettext(str), 'UTF-8')
 
 sys.path.append("/usr/share/rhn/")
 
