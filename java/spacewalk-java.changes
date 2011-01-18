@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 18 15:59:38 CET 2011 - jrenner@suse.de
+
+- Fix bnc#651351: Password with less than 5 characters accepted
+
+-------------------------------------------------------------------
 Mon Jan 17 16:29:55 CET 2011 - mc@suse.de
 
 - rename sm-register to mgr-register 
