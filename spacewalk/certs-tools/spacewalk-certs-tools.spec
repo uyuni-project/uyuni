@@ -44,6 +44,10 @@ install -d -m 755 $RPM_BUILD_ROOT/%{rhnroot}/certs
 %if 0%{?suse_version}
 make PUB_BOOTSTRAP_DIR=/srv/www/htdocs/pub/bootstrap -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
+
+ln -s rhn-bootstrap $RPM_BUILD_ROOT/%{_bindir}/mgr-bootstrap
+ln -s rhn-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-ssl-tool
+ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
 %else
 make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
@@ -70,6 +74,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /srv/www/htdocs/pub/bootstrap
 %dir /usr/share/rhn
 /srv/www/htdocs/pub/bootstrap/client_config_update.py*
+%{_bindir}/mgr-bootstrap
+%{_bindir}/mgr-ssl-tool
+%{_bindir}/mgr-sudo-ssl-tool
 %else
 %{_var}/www/html/pub/bootstrap/client_config_update.py*
 %endif

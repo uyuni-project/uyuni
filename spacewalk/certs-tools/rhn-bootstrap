@@ -32,6 +32,8 @@ except KeyboardInterrupt:
 
 sys.path.append("@@ROOT@@")
 
+# management decisions lead to funny code
+sys.argv[0] = os.path.join(os.path.dirname(sys.argv[0]), string.replace(os.path.basename(sys.argv[0]), 'mgr', 'rhn'))
 mod_name = string.replace(os.path.basename(sys.argv[0]), '-', '_')
 try:
     mod = __import__("certs." + mod_name)
