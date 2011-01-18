@@ -87,7 +87,7 @@ baseurl=$CLIENT_REPO_URL
 enabled=1
 autorefresh=0
 keeppackages=0
-gpgcheck=1
+gpgcheck=0
 EOF
 
 # refresh client repo
