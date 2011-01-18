@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 18 10:26:28 CET 2011 - iartarisi@suse.cz
+
+- fixed an error when adding new channels after changing an
+  RhnContentSourceTypeId
+
+-------------------------------------------------------------------
 Tue Jan 18 09:14:21 UTC 2011 - dmacvicar@suse.de
 
 - add YaST2 dialogs
