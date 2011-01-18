@@ -677,11 +677,12 @@ class NCCSync(object):
 
 
     def sync_installed_chanells(self):
-        """Schedule a reposync of all the channels in the database.
+        """Schedule a reposync of all SUSE Manager (orgid null) channels
+           in the database.
         """
         self.print_msg("Scheduling repo sync for all installed channels...")
 
-        select_sql = "SELECT id, label FROM rhnChannel"
+        select_sql = "SELECT id, label FROM rhnChannel WHERE org_id IS NULL"
         query = rhnSQL.prepare(select_sql)
         query.execute()
         db_channels = query.fetchall()
