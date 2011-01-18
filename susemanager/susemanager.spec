@@ -38,6 +38,8 @@ Requires:       sm-ncc-sync-data
 Requires:       spacewalk-backend spacewalk-backend-sql
 Requires:       python
 
+%define documentroot /srv/www/htdocs
+
 %description tools
 This package contains SUSE Manager tools
 
@@ -67,6 +69,10 @@ install -m 0644 ncc-sync/channels.xml         %{buildroot}/usr/share/susemanager
 # YaST configuration
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
 install -m 0644 yast/*.ycp %{buildroot}%{_datadir}/YaST2/clients
+
+mkdir -p %{buildroot}/%{documentroot}/pub/bootstrap/
+install --mode=0755 susemanager-client-setup.sh %{buildroot}/%{documentroot}/pub/bootstrap/
+
 
 %clean
 rm -rf %{buildroot}
@@ -111,7 +117,7 @@ fi
 %{pythonsmroot}/susemanager/suseLib.py*
 %{pythonsmroot}/susemanager/mgr_register.py*
 %{pythonsmroot}/susemanager/mgr_ncc_sync_lib.py*
-
+/%{documentroot}/pub
 
 %changelog
 
