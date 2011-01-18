@@ -1,0 +1,55 @@
+{
+    textdomain "susemanager";
+
+    import "Directory";
+    import "FileUtils";
+    import "Popup";
+    import "Stage";
+    import "Wizard";
+
+    string dir		= Directory::tmpdir;
+    string env_file	= "/tmp/setup_env.sh";
+
+    if (FileUtils::Exists (env_file))
+    {
+	SCR::Execute (.target.remove, env_file);
+    }
+
+    foreach (string file, [ "env_manager", "env_db", "env_cert", "env_ncc"], {
+	SCR::Execute (.target.bash, sformat ("cat %1/%2 >> %3", dir, file, env_file));
+    });
+
+    string logfile	= "/var/log/susemanager_setup.log";
+
+    term contents = `HBox (`HSpacing (1), `VBox (
+	// label
+	`Label (_("Migration is running. Please wait...")),
+	`VSpacing (0.5)
+    ), `HSpacing (1));
+
+
+    string help_text	= "";
+
+    if (!Stage::firstboot ())
+	Wizard::CreateDialog ();
+
+    // dialog caption
+    Wizard::SetContents (_("Writing Settings"), contents, help_text, true, true);
+
+    UI::BusyCursor ();
+
+    map out	= (map) SCR::Execute (.target.bash_output,
+	sformat ("/usr/lib/susemanager/bin/migration.sh -s -l %1", logfile));
+
+    if (out["stderr"]:"" != "")
+    {
+	y2warning ("call of migration.sh returned %1", out);
+    }
+
+    UI::NormalCursor ();
+
+    if (!Stage::firstboot ())
+	Wizard::CloseDialog ();
+
+    return `next;
+}

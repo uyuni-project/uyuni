@@ -1,0 +1,119 @@
+{
+    textdomain "susemanager";
+
+    import "Directory";
+    import "FileUtils";
+    import "GetInstArgs";
+    import "Popup";
+    import "Stage";
+    import "Wizard";
+
+    map args = GetInstArgs::argmap ();
+
+    map<string,string> settings	= $[
+	"MANAGER_DB_NAME"	: "",
+	"MANAGER_DB_HOST"	: "",
+	"MANAGER_DB_PORT"	: "1521",
+	"MANAGER_DB_PROTOCOL"	: "TCP",
+    ];
+
+    map<string,string> local_db	= $[
+	"MANAGER_DB_NAME"	: "xe",
+	"MANAGER_DB_HOST"	: "localhost",
+	"MANAGER_DB_PORT"	: "1521",
+	"MANAGER_DB_PROTOCOL"	: "TCP",
+    ];
+
+    string env_file	= Directory::tmpdir + "/env_db";
+    if (FileUtils::Exists (env_file))
+    {
+	SCR::Execute (.target.remove, env_file);
+    }
+
+    // read existing values, if present
+    foreach (string key, string value, settings, {
+	string val	= getenv (key);
+	if (val != nil && val != "")
+	{
+	    y2internal ("value for %1 present: %2", key, val);
+	    settings[key]	= val;
+	}
+    });
+
+    term contents = `HBox (`HSpacing (1), `VBox (
+
+	`RadioButtonGroup (`id(`rb), `VBox (
+	    `Left (`RadioButton(`id(`localdb), `opt (`notify),
+		// radio button label
+		_("Local Database"), false)),
+	    `VSpacing (),
+	    `Left (`RadioButton(`id(`remotedb), `opt (`notify),
+		// radio button label
+		_("Remote Database"), true)),
+	    `HBox (`HSpacing (3), `VBox (
+		`VSpacing (0.5),
+		// text entry label
+		`InputField (`id ("MANAGER_DB_NAME"), `opt (`hstretch), _("&Name"),
+		    settings["MANAGER_DB_NAME"]:""),
+		// text entry label
+		`InputField (`id ("MANAGER_DB_HOST"), `opt (`hstretch), _("&Host"),
+		    settings["MANAGER_DB_HOST"]:""),
+		// text entry label
+		`InputField (`id ("MANAGER_DB_PORT"), `opt (`hstretch), _("&Port"),
+		    settings["MANAGER_DB_PORT"]:""),
+		// text entry label
+		`InputField (`id ("MANAGER_DB_PROTOCOL"), `opt (`hstretch), _("Pro&tocol"),
+		    settings["MANAGER_DB_PROTOCOL"]:"")
+	    ))// hbox
+	)),
+	`VSpacing (0.5)
+    ), `HSpacing (1));
+
+
+    string help_text	= "";
+
+    if (!Stage::firstboot ())
+	Wizard::CreateDialog ();
+
+    // dialog caption
+    Wizard::SetContents (_("Database Settings"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
+    UI::ChangeWidget (`id ("MANAGER_DB_PORT"), `ValidChars, "1234567890");
+
+    any ret	= `back;
+    while (true)
+    {
+	ret	= UI::UserInput ();
+	if (ret == `remotedb || ret == `localdb)
+	{
+	    foreach (string key, string value, settings, {
+		UI::ChangeWidget (`id (key), `Enabled, ret == `remotedb);
+	    });
+	}
+	if (ret == `back)
+	{
+	    break;
+	}
+	if (ret == `abort && Popup::ConfirmAbort(`incomplete))
+	{
+	    break;
+	}
+	if (ret == `next)
+	{
+	    foreach (string key, string value, settings, {
+		string val	= (string) UI::QueryWidget (`id (key), `Value);
+		if (UI::QueryWidget (`id (`rb), `CurrentButton) == `localdb)
+		{
+		    val		= local_db[key]:"";
+		}
+		setenv (key, val, true);
+		SCR::Execute (.target.bash, sformat ("echo 'export %1=\"%2\"' >> %3", key, val, env_file));
+	    });
+
+	    break;
+	}
+    }
+
+    if (!Stage::firstboot ())
+	Wizard::CloseDialog ();
+    return ret;
+}

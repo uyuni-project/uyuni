@@ -1,0 +1,59 @@
+{
+    import "GetInstArgs";
+    import "Label";
+    import "Wizard";
+
+    Wizard::CreateDialog();
+
+    list dialog = [
+	"susemanager_manager",
+	"susemanager_cert",
+	"susemanager_db",
+	"susemanager_ncc",
+	"susemanager_write",
+    ];
+
+    integer id = 0;
+    any result = `next;
+
+    while ( ( id >= 0 ) && ( id < size( dialog ) ) ) {
+
+      string module_name = dialog[id]:"";
+
+      y2debug ("calling '%1'", module_name);
+
+      if ( id == (size( dialog ) - 1)) {
+          Wizard::SetNextButton(`next, Label::FinishButton() );
+      }
+
+      result = WFM::CallFunction (module_name, [ GetInstArgs::argmap ()]);
+
+      if (result == nil)
+      {
+	  result = `cancel;
+      }
+      if (result == `cancel || result == `abort)
+      {
+	  break;
+      }
+      else if (result == `next)
+      {
+	  id = id + 1;
+      }
+      else if (result == `back)
+      {
+	  id = id - 1;
+      }
+      else if (result == `finish)
+      {
+	  result = `next;
+          break;
+      }
+    }
+
+    Wizard::CloseDialog();
+    return result;
+}
+
+
+}

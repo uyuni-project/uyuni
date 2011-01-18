@@ -1,0 +1,111 @@
+{
+    textdomain "susemanager";
+
+    import "Directory";
+    import "FileUtils";
+    import "GetInstArgs";
+    import "Popup";
+    import "Stage";
+    import "Wizard";
+
+    map args = GetInstArgs::argmap ();
+
+    map<string,string> settings	= $[
+	"CERT_O"	: "",
+	"CERT_OU"	: "",
+	"CERT_CITY"	: "",
+	"CERT_STATE"	: "",
+	"CERT_COUNTRY"	: "",
+	"CERT_EMAIL"	: "",
+	"CERT_PASS"	: "",
+	"CERT_PASS2"	: ""
+    ];
+
+    string env_file	= Directory::tmpdir + "/env_cert";
+    if (FileUtils::Exists (env_file))
+    {
+	SCR::Execute (.target.remove, env_file);
+    }
+
+    // read existing values, if present
+    foreach (string key, string value, settings, {
+	string val	= getenv (key);
+	if (val != nil && val != "")
+	{
+	    y2internal ("value for %1 present: %2", key, val);
+	    settings[key]	= val;
+	}
+    });
+
+    term contents = `HBox (`HSpacing (1), `VBox (
+	// text entry label
+	`InputField (`id ("CERT_O"), `opt (`hstretch), _("&Organisation"),
+	    settings["CERT_O"]:""),
+	// text entry label
+	`InputField (`id ("CERT_OU"), `opt (`hstretch), _("Organisation &Unit"),
+	    settings["CERT_OU"]:""),
+	// text entry label
+	`InputField (`id ("CERT_CITY"), `opt (`hstretch), _("&City"),
+	    settings["CERT_CITY"]:""),
+	// text entry label
+	`InputField (`id ("CERT_STATE"), `opt (`hstretch), _("&State"),
+	    settings["CERT_STATE"]:""),
+	// text entry label
+	`InputField (`id ("CERT_COUNTRY"), `opt (`hstretch), _("Co&untry"),
+	    settings["CERT_COUNTRY"]:""),
+	// text entry label
+	`InputField (`id ("CERT_EMAIL"), `opt (`hstretch), _("&E-mail"),
+	    settings["CERT_EMAIL"]:""),
+	// text entry label
+	`Password (`id ("CERT_PASS"), `opt (`hstretch), _("SSL Pass&word"),
+	    settings["CERT_PASS"]:""),
+	// text entry label
+	`Password (`id ("CERT_PASS2"), `opt (`hstretch), _("Reapeat Password"),
+	    settings["CERT_PASS2"]:""),
+	`VSpacing (0.5)
+    ), `HSpacing (1));
+
+
+    string help_text	= "";
+
+    if (!Stage::firstboot ())
+	Wizard::CreateDialog ();
+
+    // dialog caption
+    Wizard::SetContents (_("Certificate Setup"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
+
+    any ret	= `back;
+    while (true)
+    {
+	ret	= UI::UserInput ();
+	if (ret == `back)
+	{
+	    break;
+	}
+	if (ret == `abort && Popup::ConfirmAbort(`incomplete))
+	{
+	    break;
+	}
+	if (ret == `next)
+	{
+	    string pw1	= (string) UI::QueryWidget (`id ("CERT_PASS"), `Value);
+	    if (pw1 != UI::QueryWidget (`id ("CERT_PASS2"), `Value))
+	    {
+		Popup::Error (_("Passwords do not match."));
+		continue;
+	    }
+
+	    foreach (string key, string value, settings, {
+		string val	= (string) UI::QueryWidget (`id (key), `Value);
+		setenv (key, val, true);
+		SCR::Execute (.target.bash, sformat ("echo 'export %1=\"%2\"' >> %3", key, val, env_file));
+	    });
+
+	    break;
+	}
+    }
+
+    if (!Stage::firstboot ())
+	Wizard::CloseDialog ();
+    return ret;
+}

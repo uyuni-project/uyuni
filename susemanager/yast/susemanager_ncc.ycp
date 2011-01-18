@@ -1,0 +1,84 @@
+{
+    textdomain "susemanager";
+
+    import "Directory";
+    import "FileUtils";
+    import "GetInstArgs";
+    import "Popup";
+    import "Stage";
+    import "Wizard";
+
+    map args = GetInstArgs::argmap ();
+
+    map<string,string> settings	= $[
+	"NCC_USER"	: "",
+	"NCC_PASS"	: "",
+	"NCC_EMAIL"	: ""
+    ];
+
+    string env_file	= Directory::tmpdir + "/env_ncc";
+    if (FileUtils::Exists (env_file))
+    {
+	SCR::Execute (.target.remove, env_file);
+    }
+
+    // read existing values, if present
+    foreach (string key, string value, settings, {
+	string val	= getenv (key);
+	if (val != nil && val != "")
+	{
+	    y2internal ("value for %1 present: %2", key, val);
+	    settings[key]	= val;
+	}
+    });
+
+    term contents = `HBox (`HSpacing (1), `VBox (
+	// text entry label
+	`InputField (`id ("NCC_USER"), `opt (`hstretch), _("NCC Mirror Credential &User"),
+	    settings["NCC_USER"]:""),
+	// text entry label
+	`Password (`id ("NCC_PASS"), `opt (`hstretch), _("NCC Mirror Credential &Password"),
+	    settings["NCC_PASS"]:""),
+	// text entry label
+	`InputField (`id ("NCC_EMAIL"), `opt (`hstretch), _("NCC &E-mail Address"),
+	    settings["NCC_EMAIL"]:""),
+	`VSpacing (0.5)
+    ), `HSpacing (1));
+
+
+    string help_text	= "";
+
+    if (!Stage::firstboot ())
+	Wizard::CreateDialog ();
+
+    // dialog caption
+    Wizard::SetContents (_("NCC Settings"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
+
+    any ret	= `back;
+    while (true)
+    {
+	ret	= UI::UserInput ();
+	if (ret == `back)
+	{
+	    break;
+	}
+	if (ret == `abort && Popup::ConfirmAbort(`incomplete))
+	{
+	    break;
+	}
+	if (ret == `next)
+	{
+	    foreach (string key, string value, settings, {
+		string val	= (string) UI::QueryWidget (`id (key), `Value);
+		setenv (key, val, true);
+		SCR::Execute (.target.bash, sformat ("echo 'export %1=\"%2\"' >> %3", key, val, env_file));
+	    });
+
+	    break;
+	}
+    }
+
+    if (!Stage::firstboot ())
+	Wizard::CloseDialog ();
+    return ret;
+}
