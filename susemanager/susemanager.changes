@@ -1,13 +1,18 @@
 -------------------------------------------------------------------
+Tue Jan 18 09:14:21 UTC 2011 - dmacvicar@suse.de
+
+- add YaST2 dialogs
+
+-------------------------------------------------------------------
 Mon Jan 17 16:29:09 CET 2011 - mc@suse.de
 
-- rename sm-register to mgr-register 
+- rename sm-register to mgr-register
 - rename sm-ncc-sync to mgr-ncc-sync
 
 -------------------------------------------------------------------
 Mon Jan 17 12:24:57 CET 2011 - mc@suse.de
 
-- change suseServer ostarget to a foreign key to suseOSTarget(id) 
+- change suseServer ostarget to a foreign key to suseOSTarget(id)
 
 -------------------------------------------------------------------
 Mon Jan 17 08:59:56 CET 2011 - mc@suse.de
@@ -21,14 +26,14 @@ Fri Jan 14 17:29:15 CET 2011 - mc@suse.de
 - put the license in a firtboot usable format
 - subscribe channels according to submitted suse product data
 - Populate suseproductchannel table with product-channel mappings
-- added test for subscription calculation 
+- added test for subscription calculation
 
 -------------------------------------------------------------------
 Tue Jan 11 17:54:41 CET 2011 - mc@suse.de
 
 - syncing NCC with SUSE Manager
 - Installation: Character Limitations of NCC Password (bnc#658467)
-- lots of fixes 
+- lots of fixes
 
 -------------------------------------------------------------------
 Thu Dec  9 15:10:40 CET 2010  - ma@suse.de

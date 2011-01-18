@@ -64,6 +64,10 @@ mkdir -p %{buildroot}/usr/share/susemanager
 install -m 0644 ncc-sync/channel_families.xml %{buildroot}/usr/share/susemanager/channel_families.xml
 install -m 0644 ncc-sync/channels.xml         %{buildroot}/usr/share/susemanager/channels.xml
 
+# YaST configuration
+mkdir -p %{buildroot}%{_datadir}/YaST2/clients
+install -m 0644 yast/*.ycp %{buildroot}%{_datadir}/YaST2/clients
+
 %clean
 rm -rf %{buildroot}
 
@@ -84,6 +88,7 @@ fi
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %{_prefix}/lib/susemanager/bin/*
+%{_datadir}/YaST2/clients/*.ycp
 
 %files -n sm-ncc-sync-data
 %defattr(-,root,root,-)
