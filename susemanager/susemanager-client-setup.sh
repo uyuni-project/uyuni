@@ -104,7 +104,6 @@ spacewalk-client-setup
 spacewalk-client-tools
 rhncfg-actions
 rhncfg-client
-rhncfg-management
 zypp-plugin-spacewalk
 EOF
 }
