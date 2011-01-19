@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jan 19 11:55:47 CET 2011 - iartarisi@suse.cz
+
+- updated channels.xml file: split channels with multiple parents into
+  multiple channels
+
+-------------------------------------------------------------------
 Tue Jan 18 15:42:25 CET 2011 - mc@suse.de
 
 - add YaST directory to filelist
