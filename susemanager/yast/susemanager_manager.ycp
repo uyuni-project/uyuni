@@ -2,6 +2,7 @@
     textdomain "susemanager";
 
     import "Directory";
+    import "Hostname";
     import "FileUtils";
     import "GetInstArgs";
     import "IP";
@@ -11,13 +12,15 @@
 
     map args = GetInstArgs::argmap ();
 
+    string invalid_pw_chars	= "\"$'!";
+
     map<string,string> settings	= $[
 	"MANAGER_IP"		: "",
 	"MANAGER_USER"		: "susemanager",
 	"MANAGER_PASS"		: "",
 	"MANAGER_PASS2"		: "",
 	"MANAGER_ADMIN_EMAIL"	: "",
-	"MANAGER_ENABLE_TFTP"	: "y",
+//	"MANAGER_ENABLE_TFTP"	: "y",
     ];
 
     string env_file	= Directory::tmpdir + "/env_manager";
@@ -36,6 +39,17 @@
 	}
     });
 
+    if (settings["MANAGER_IP"]:"" == "")
+    {
+	map out	= (map) SCR::Execute (.target.bash_output,
+	    "ip -f inet -o addr show scope global | awk '{print $4}' | awk -F \/ '{print $1}'");
+	settings["MANAGER_IP"]	= splitstring (out["stdout"]:"", "\n")[0]:"";
+    }
+    if (settings["MANAGER_ADMIN_EMAIL"]:"" == "")
+    {
+	settings["MANAGER_ADMIN_EMAIL"]	= "susemanager@" + Hostname::CurrentDomain ();
+    }
+
     term contents = `HBox (`HSpacing (1), `VBox (
 	`InputField (`id ("MANAGER_IP"), `opt (`hstretch),
 	    // text entry label
@@ -51,10 +65,10 @@
 	    settings["MANAGER_PASS"]:""),
 	`InputField (`id ("MANAGER_ADMIN_EMAIL"), `opt (`hstretch),
 	    // text entry label
-	    _("&Administrator e-mail Adress"), settings["MANAGER_ADMIN_EMAIL"]:""),
+	    _("&Administrator E-mail Adress"), settings["MANAGER_ADMIN_EMAIL"]:""),
 	// check box label
-	`CheckBox (`id ("MANAGER_ENABLE_TFTP"), `opt (`hstretch), _("Enable &TFTP"),
-	     settings["MANAGER_ENABLE_TFTP"]:"n" == "y"),
+//	`CheckBox (`id ("MANAGER_ENABLE_TFTP"), `opt (`hstretch), _("Enable &TFTP"),
+//	     settings["MANAGER_ENABLE_TFTP"]:"n" == "y"),
 	`VSpacing (0.5)
     ), `HSpacing (1));
 
@@ -94,8 +108,27 @@
 		Popup::Error (IP::Valid4 ());
 		continue;
 	    }
+	    //DB Password needs to be 7 chars long at least. Invalid chars: " $ ' !
+	    if (size (pw1) < 7)
+	    {
+		Popup::Error (sformat (_("The password should have at least %1 characters."), 7));
+		continue;
+	    }
+	    if (pw1 != deletechars (pw1, invalid_pw_chars))
+	    {
+		Popup::Error (sformat (_("The password contains invalid characters.
+The invalid characters are: %1"), invalid_pw_chars));
+		continue;
+	    }
 
-	    // TODO now, values are considered correct
+	    string email	= (string) UI::QueryWidget (`id ("MANAGER_ADMIN_EMAIL"), `Value);
+	    if (!issubstring (email, "@"))
+	    {
+		Popup::Error (_("The Administrator E-mail Address is not valid."));
+		continue;
+	    }
+
+	    // now, values are considered correct
 	    foreach (string key, string value, settings, {
 		string val	= value;
 		if (key == "MANAGER_ENABLE_TFTP")

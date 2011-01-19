@@ -23,18 +23,22 @@
 
     term contents = `HBox (`HSpacing (1), `VBox (
 	// label
-	`Label (_("Migration is running. Please wait...")),
+	`Label (`id (`label), _("Migration is prepared.")),
 	`VSpacing (0.5)
     ), `HSpacing (1));
 
 
     string help_text	= "";
 
-    if (!Stage::firstboot ())
-	Wizard::CreateDialog ();
-
     // dialog caption
-    Wizard::SetContents (_("Writing Settings"), contents, help_text, true, true);
+    Wizard::SetContents (_("Write Settings"), contents, help_text, true, true);
+
+    if (!Popup::YesNo (_("All data are collected. Run migration now?")))
+    {
+	return `back;
+    }
+
+    UI::ChangeWidget (`id (`label), `Value, _("Migration is running. Please wait..."));
 
     UI::BusyCursor ();
 
@@ -47,9 +51,6 @@
     }
 
     UI::NormalCursor ();
-
-    if (!Stage::firstboot ())
-	Wizard::CloseDialog ();
 
     return `next;
 }

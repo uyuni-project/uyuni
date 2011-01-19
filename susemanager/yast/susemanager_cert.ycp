@@ -4,11 +4,14 @@
     import "Directory";
     import "FileUtils";
     import "GetInstArgs";
+    import "Hostname";
     import "Popup";
     import "Stage";
     import "Wizard";
 
     map args = GetInstArgs::argmap ();
+
+    string invalid_pw_chars	= "\"$'!";
 
     map<string,string> settings	= $[
 	"CERT_O"	: "",
@@ -25,6 +28,14 @@
     if (FileUtils::Exists (env_file))
     {
 	SCR::Execute (.target.remove, env_file);
+    }
+    if (settings["CERT_COUNTRY"]:"" == "")
+    {
+	settings["CERT_COUNTRY"]	= "DE";
+    }
+    if (settings["CERT_EMAIL"]:"" == "")
+    {
+	settings["CERT_EMAIL"]	= "susemanager@" + Hostname::CurrentDomain ();
     }
 
     // read existing values, if present
@@ -94,9 +105,35 @@
 		Popup::Error (_("Passwords do not match."));
 		continue;
 	    }
+	    if (pw1 == "")
+	    {
+		Popup::Error (_("Password is missing."));
+		continue;
+	    }
+
+	    if (size (pw1) < 7)
+	    {
+		Popup::Error (sformat (_("The password should have at least %1 characters."), 7));
+		continue;
+	    }
+	    if (pw1 != deletechars (pw1, invalid_pw_chars))
+	    {
+		Popup::Error (sformat (_("The password contains invalid characters.
+The invalid characters are: %1"), invalid_pw_chars));
+		continue;
+	    }
+
+	    string email	= (string) UI::QueryWidget (`id ("CERT_EMAIL"), `Value);
+	    if (!issubstring (email, "@"))
+	    {
+		Popup::Error (_("The E-mail Address is not valid."));
+		continue;
+	    }
 
 	    foreach (string key, string value, settings, {
 		string val	= (string) UI::QueryWidget (`id (key), `Value);
+		if (key == "CERT_COUNTRY")
+		    val	= toupper (val);
 		setenv (key, val, true);
 		SCR::Execute (.target.bash, sformat ("echo 'export %1=\"%2\"' >> %3", key, val, env_file));
 	    });
