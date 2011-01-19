@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 Feature: Remove system from configuration channel
 
   Scenario: Remove system from configuration channel

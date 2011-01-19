@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 # features/walk_hrefs.feature
 @big
 Feature: All HREFs are accessible

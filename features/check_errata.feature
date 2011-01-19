@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 Feature: Check errata
   In Order to check if the errata import was successfull
   As the testing user
@@ -43,7 +46,7 @@ Feature: Check errata
       And I should see a "md5:d15281fd59420b7f07ffba59a9484760" text
       And I should see a "kernel-syms-2.6.32.23-0.3.1-x86_64" link
 
-  
+
   Scenario: check slessp1-kernel-3284-channel-ia32 errata
     Given I am on the "slessp1-kernel-3284-channel-ia32" errata Details page
      Then I should see a "slessp1-kernel-3284-channel-ia32 - Security Advisory" text
@@ -53,7 +56,7 @@ Feature: Check errata
       And I should see a "bug number 643922" link
       And I should see a "reboot_suggested" text
 
-  
+
   Scenario: check slessp1-kernel-3284-channel-ia32 errata packages
     Given I am on the "slessp1-kernel-3284-channel-ia32" errata Details page
      When I follow "Packages"
@@ -139,4 +142,4 @@ Feature: Check errata
 
 
 
-      
+

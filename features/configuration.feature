@@ -1,8 +1,11 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 # feature/configuration.feature
 @javascript
 Feature: Check configuration page/tab
-  Validate configuration page accessibility 
-  
+  Validate configuration page accessibility
+
   Scenario: Check configuration page content
     Given I am testing configuration
     Then I should see a "Configuration Overview" text

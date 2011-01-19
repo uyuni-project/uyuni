@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 # features/create_activationkey.feature
 Feature: Create an activation key
   In Order register a system to the spacewalk server
@@ -20,7 +23,7 @@ Feature: Create an activation key
   Scenario: create an activation key
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
-      And I follow "create new key" 
+      And I follow "create new key"
     When I enter "SUSE Test Key i586" as "description"
      And I enter "SUSE-DEV-i586" as "key"
      And I check "monitoring_entitled"
@@ -34,7 +37,7 @@ Feature: Create an activation key
     And I should see a "Configuration" link
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
-   
+
   Scenario: Change limit of the activation key
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
@@ -43,7 +46,7 @@ Feature: Create an activation key
      And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key i586 has been modified." text
      And I should see "20" in field "usageLimit"
-  
+
   Scenario: Change Base Channel of the activation key
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu

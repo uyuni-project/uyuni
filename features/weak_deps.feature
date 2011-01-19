@@ -1,3 +1,5 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
 
 Feature: Test weak dependencies
   In Order to validate the new added weak dependencies feature
@@ -29,7 +31,7 @@ Feature: Test weak dependencies
      And I should see a "Suggests" text
      And I should see a "Supplements" text
      And I should see a "packageand(kernel-default:btrfs-kmp)" text
- 
+
   Scenario: Check local metdata for weak deps
     Given I am root
      When I refresh the metadata

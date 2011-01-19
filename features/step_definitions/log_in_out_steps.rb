@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 Given /^I am authorized as "([^"]*)" with password "([^"]*)"$/ do |arg1,arg2|
   visit Capybara.app_host
   fill_in "username", :with => arg1

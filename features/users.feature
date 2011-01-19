@@ -1,7 +1,10 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 # feature/users.feature
 @simple
 Feature: Check users page/tab
-  Validate users page accessibility 
+  Validate users page accessibility
 
   Scenario: Check users page content
     Given I am on the Users page

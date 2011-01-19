@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 Given /^I am on the Errata page$/ do
   Given "I am authorized"
   within(:xpath, "//div[@id=\"mainNavWrap\"]") do

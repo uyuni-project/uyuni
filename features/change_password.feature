@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 # hooks in support/password_hooks.rb
 Feature: Change the user's password
   In Order to change my password

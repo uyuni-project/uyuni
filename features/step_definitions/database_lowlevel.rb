@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 # low-level access to the database
 
 class Database
@@ -32,13 +35,13 @@ When /^I remove the admin user$/ do
     if admin
       rows = @dbh.do("DELETE from RHNUSERINFO where user_id = ?", admin)
       $stderr.puts "#{rows} removed from RHNUSERINFO"
-      
+
       rows = @dbh.do("DELETE from RHNUSERGROUPMEMBERS where user_id = ?", admin)
       $stderr.puts "#{rows} removed from RHNUSERGROUPMEMBERS"
-      
+
       rows = @dbh.do("UPDATE RHNUSERGROUP set CURRENT_MEMBERS = ? where CURRENT_MEMBERS = ?", 0, 1)
       $stderr.puts "#{rows} updated in RHNUSERGROUP"
-      
+
       rows = @dbh.do("TRUNCATE TABLE WEB_CONTACT")
       $stderr.puts "#{rows} removed from WEB_CONTACT"
 

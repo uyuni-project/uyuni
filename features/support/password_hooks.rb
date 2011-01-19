@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 # we use these hooks instead of more steps because we need them to run
 # regardless of whether or not the tests passed
 

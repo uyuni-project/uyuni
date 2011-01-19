@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 Feature: Register a client
   In Order register a client to the spacewalk server
   As the root user
@@ -7,5 +10,5 @@ Feature: Register a client
     Given I am root
     When I register using an activation key
     Then I should see this client in spacewalk
-  
+
 

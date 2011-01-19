@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 Given /^I am not authorized$/ do
   visit Capybara.app_host
   fail if not find_button('Sign In').visible?
@@ -17,7 +20,7 @@ Then /^no link should be broken$/ do
 #  require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "collect"))
   Capybara.default_wait_time = 1
   visit Capybara.app_host
-  
+
   hrefs = collect_all_hrefs
 
   visited = Hash.new
@@ -29,7 +32,7 @@ Then /^no link should be broken$/ do
     $stderr.puts "Visiting '#{href}' '#{base}', #{hrefs.size} to go"
     visit href.to_s
     if page.has_content?('Page Not Found') || page.has_content?('Internal Server Error')
-      visited[base] = href 
+      visited[base] = href
       $stderr.puts "-- ** failed"
     else
       collect_all_hrefs.each do |href|
@@ -47,7 +50,7 @@ Then /^no link should be broken$/ do
 #	      $stderr.puts "\t to #{href}"
 	    end
 #	    $stderr.puts "Adding #{href}"
-	    hrefs << href 
+	    hrefs << href
       end
     end
     break if hrefs.empty?

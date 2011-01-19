@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 #@wip
 Feature: Adding channels
   In Order distribute software to the clients

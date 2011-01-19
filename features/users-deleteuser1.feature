@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 # feature/users-deleteuser1.feature
 @users-createnewuser
 Feature: Delete user user1

@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 Feature: sm-ncc-sync channel listing and enablement
   In Order to validate correct working of sm-ncc-sync
   As user root

@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 #@wip
 Feature: Explore the Channels page
   In Order to validate completeness of the Channels page and it's subpages
@@ -28,7 +31,7 @@ Feature: Explore the Channels page
     When I follow "Channels"
     When I follow "Popular Channels" in element "sidenav"
     Then I should see a "Popular Channels" text
-  
+
   Scenario: Check Packages in SLES11-SP1-Updates x86_64 Channel
     When I follow "Channels"
      And I follow "SLES11-SP1-Updates x86_64 Channel"

@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+#
 # generic low-level access to the database
 
 $dbuser = ENV['DBUSER'] || "spacewalk"

@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 Feature: Log in and out of the host
   In Order to log into the host
   As a non-authorized user

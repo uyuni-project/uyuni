@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 Feature: Check client registration
   In Order check the registration of a client to the spacewalk server
   As the testing
@@ -23,7 +26,7 @@ Feature: Check client registration
      And I should see a "OS: sles-release" text
      And I should see a "Release: 11.1" text
      #And I should see a "[Virtualization]" text
-    
+
   Scenario: check tab links "Details"
     Given I am on the Systems page
       And I follow "Systems" in the left menu
@@ -57,16 +60,16 @@ Feature: Check client registration
      And I should see a "Packages" link in element "contentnav-row2"
      And I should see a "Software Channels" link in element "contentnav-row2"
      And I should see a "List / Remove" link
-     And I should see a "Upgrade" link 
-     And I should see a "Install" link 
-     And I should see a "Verify" link 
-     And I should see a "Profiles" link 
-     And I should see a "List / Remove Installed Packages" link 
-     And I should see a "Verify Files and Packages" link 
-     And I should see a "Upgrade Packages" link 
-     And I should see a "Install New Packages" link 
-     And I should see a "Compare Package Profiles / Manage Package Profiles" link 
-     And I should see a "Update Package List" button 
+     And I should see a "Upgrade" link
+     And I should see a "Install" link
+     And I should see a "Verify" link
+     And I should see a "Profiles" link
+     And I should see a "List / Remove Installed Packages" link
+     And I should see a "Verify Files and Packages" link
+     And I should see a "Upgrade Packages" link
+     And I should see a "Install New Packages" link
+     And I should see a "Compare Package Profiles / Manage Package Profiles" link
+     And I should see a "Update Package List" button
      #And I should see a "Virtualization" link in element "content-nav"
 
   Scenario: check tab links "Configuration"
@@ -120,7 +123,7 @@ Feature: Check client registration
     When I follow "Monitoring" in class "content-nav"
     Then I should see a "create new probe" link
      And I should see a "Configured Monitoring Probes" text
- 
+
   Scenario: check tab links "Groups"
     Given I am on the Systems overview page of this client
     When I follow "Groups" in class "content-nav"
@@ -234,7 +237,7 @@ Feature: Check client registration
     Then I should see a "Custom System Information" text
      And I should see a "create new value" link
      And I should see a "Custom System Information" link
- 
+
   Scenario: check tab links "Software" => "Errata"
     Given I am on the Systems overview page of this client
     When I follow "Software" in class "content-nav"
@@ -318,7 +321,7 @@ Feature: Check client registration
     When I follow "Configuration" in class "content-nav"
     When I follow "Deploy Files" in class "contentnav-row2"
     Then I should see a "Deploy Files" text
-  
+
   Scenario: check tab links "Configuration" => "Compare Files"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in class "content-nav"

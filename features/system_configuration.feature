@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 # features/system_configuration.feature
 Feature: System configuration
   In Order to subscribe a system to a configuration channel
@@ -9,5 +12,5 @@ Feature: System configuration
     Given I am authorized
     When I follow "Systems"
     Then I should see a "System Overview" text
-     And I should see this client as link 
- 
+     And I should see this client as link
+

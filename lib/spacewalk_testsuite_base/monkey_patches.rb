@@ -1,4 +1,6 @@
-
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+#
 # http://github.com/jnicklas/capybara/issues/labels/Feature%20request#issue/69
 
 class ::Capybara::Driver::Selenium

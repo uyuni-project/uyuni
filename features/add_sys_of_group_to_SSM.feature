@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 Feature: Add systems of a group to the System Set Manager (SSM)
   In Order to manage multiple systems
   As the testing user

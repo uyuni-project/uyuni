@@ -1,3 +1,5 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
 
 #
 # Test the current path of the URL
@@ -47,7 +49,7 @@ When /^I follow "([^"]*)"$/ do |arg1|
 end
 
 #
-# Click on a link which appears inside of <div> with 
+# Click on a link which appears inside of <div> with
 # the given "id"
 When /^I follow "([^"]*)" in element "([^"]*)"$/ do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\"]") do
@@ -61,7 +63,7 @@ end
 
 
 #
-# Click on a link which appears inside of <div> with 
+# Click on a link which appears inside of <div> with
 # the given "class"
 When /^I follow "([^"]*)" in class "([^"]*)"$/ do |arg1, arg2|
   within(:xpath, "//div[@class=\"#{arg2}\"]") do

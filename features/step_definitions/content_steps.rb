@@ -1,3 +1,5 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
 
 Then /^I should see something$/ do
   fail if not page.has_content?('Sign In')
@@ -37,7 +39,7 @@ Then /^I should see a "([^"]*)" button$/ do |arg1|
 end
 
 #
-# Test for a visible link inside of a <div> with the attribute 
+# Test for a visible link inside of a <div> with the attribute
 # "class" or "id" of the given name
 #
 Then /^I should see a "([^"]*)" link in element "([^"]*)"$/ do |arg1, arg2|
@@ -88,10 +90,10 @@ Then /^I should see "([^"]*)" in field "([^"]*)"$/ do |arg1, arg2|
   fail if not page.has_field?(arg2, :with => arg1)
 end
 
-Then /^I should see a "([^"]*)" element in "([^"]*)" form$/ do |arg1, arg2|              
+Then /^I should see a "([^"]*)" element in "([^"]*)" form$/ do |arg1, arg2|
    within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
     fail if not find_field(arg1).visible?
-  end  
+  end
 end
 
 Then /^"([^"]*)" is installed$/ do |package|

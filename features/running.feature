@@ -1,3 +1,6 @@
+# Copyright (c) 2010-2011 Novell, Inc.
+# Licensed under the terms of the MIT license.
+
 # features/running.feature
 Feature: The host is running
   In Order to see if the host is running

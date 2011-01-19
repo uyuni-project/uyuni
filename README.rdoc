@@ -13,7 +13,7 @@ rvm use $version
 gem install bundler --pre
 bundle install
 
-* TESTHOST environment variable can be passed to change the default 
+* TESTHOST environment variable can be passed to change the default
   server.
 * BROWSER environment variable can be passed to change the default
   browser: chrome, htmlunit, chrome, firefox
@@ -32,4 +32,11 @@ Or look at rake -T
 * Cucumber features under features
 * Helpers shared scross tests/features should go into the
   lib/spacewalk_testsuite_base library
+
+==License
+
+The testsuite is licensed under the MIT license. See the MIT-LICENSE.txt
+file included in the distribution.
+
+
 
