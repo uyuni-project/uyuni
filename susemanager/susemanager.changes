@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jan 19 17:28:36 CET 2011 - ug@suse.de
+
+- yast code updated
+
+-------------------------------------------------------------------
 Wed Jan 19 11:55:47 CET 2011 - iartarisi@suse.cz
 
 - updated channels.xml file: split channels with multiple parents into
