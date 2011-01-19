@@ -38,5 +38,8 @@ Or look at rake -T
 The testsuite is licensed under the MIT license. See the MIT-LICENSE.txt
 file included in the distribution.
 
+The files under test/oracle are part of ruby-oci8 and are licensed under the
+Ruby license from its authors (See http://rubyforge.org/projects/ruby-oci8/)
+
 
 
