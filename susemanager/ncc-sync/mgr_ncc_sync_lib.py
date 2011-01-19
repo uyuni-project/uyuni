@@ -633,7 +633,6 @@ class NCCSync(object):
             if label in db_channels:
                 channels.append(channel.attrib)
 
-        product_channels = []
         query = rhnSQL.prepare('SELECT id FROM suseproducts')
         query.execute()
         product_ids = [tup[0] for tup in query.fetchall()]
@@ -847,7 +846,7 @@ class NCCSync(object):
         # different than the RedHat ones. We want to keep the channel
         # names with SUSE nomeclature, but use the existing RedHat names
         # in the RHNCHANNELARCH table
-        if arch =='i586':
+        if arch in ('i686', 'i586', 'i486', 'i386') :
             arch = 'ia32'
         elif arch == 'ppc64':
             arch = 'ppc'
@@ -856,7 +855,7 @@ class NCCSync(object):
             arch_id = rhnSQL.Row("RHNCHANNELARCH", "LABEL", "channel-%s" %
                                  arch)['id']
         except KeyError:
-            raise Exception("This channel's arch could not be found in the"
+            raise Exception("This channel's arch could not be found in the "
                             "database: %(channel)s with arch: %(arch)s"
                             % locals())
         return arch_id
