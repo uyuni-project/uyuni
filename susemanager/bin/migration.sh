@@ -364,6 +364,8 @@ if [ $WAIT_BETWEEN_STEPS = "1" ];then
 fi;
 if [ "$DO_SETUP" = "1" ]; then
     do_setup
+    # Finaly call mgr-ncc-sync
+    /usr/sbin/mgr-ncc-sync
 fi
 if [ $WAIT_BETWEEN_STEPS = "1" ];then
     echo "Press Return to continue"
@@ -371,9 +373,9 @@ if [ $WAIT_BETWEEN_STEPS = "1" ];then
 fi;
 if [ "$DO_MIGRATION" = "1" ]; then
     do_migration
+    # Finaly call mgr-ncc-sync
+    /usr/sbin/mgr-ncc-sync
 fi
 
-# Finaly call mgr-ncc-sync
-/usr/sbin/mgr-ncc-sync
 
 # vim: set expandtab:
