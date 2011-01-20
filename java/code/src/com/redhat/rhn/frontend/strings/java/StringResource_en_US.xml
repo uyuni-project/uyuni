@@ -1126,7 +1126,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
       </trans-unit>
 
       <trans-unit id="user.cannot.delete.last.sat.admin">
-<source>Cannot delete the last remaining satellite [GALAXY] administrator.</source>
+<source>Cannot delete the last remaining SUSE Manager administrator.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
@@ -1923,7 +1923,7 @@ entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ adm
 &lt;li&gt;
 Make sure that the 'rhn-tools' child channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-satellite [GALAXY] administrator and request a satellite-sync for the rhn-tools channel
+SUSE Manager administrator and request a satellite-sync for the rhn-tools channel
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
@@ -5897,7 +5897,7 @@ user before attempting to deactivate their account.</source>
       </trans-unit>
 
     <trans-unit id="satellite.graceperiod">
-        <source>Your satellite [GALAXY] certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your satellite [GALAXY] will become inactive in {0} day(s).</source>
+        <source>Your satellite [GALAXY] certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your SUSE Manager will become inactive in {0} day(s).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -6097,14 +6097,14 @@ user before attempting to deactivate their account.</source>
 
 
     <trans-unit id="restart.config.error">
-        <source>There was an error restarting the satellite [GALAXY].  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/service rhn-satellite restart [GALAXY]&lt;/strong&gt;.  Please contact support for more information.</source>
+        <source>There was an error restarting the SUSE Manager.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/service rhn-satellite restart [GALAXY]&lt;/strong&gt;.  Please contact support for more information.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
       </trans-unit>
 
     <trans-unit id="config.storeconfig.error">
-        <source>An error occurred and your satellite [GALAXY] configuration changes could not be stored. Please contact support for more information</source>
+        <source>An error occurred and your SUSE Manager configuration changes could not be stored. Please contact support for more information</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
@@ -7981,7 +7981,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
 	  <trans-unit id="api.org.cannotperformonsatelliteorg">
-          <source>Cannot perform this operation on the satellite [GALAXY] organization. (Org ID 1)</source>
+          <source>Cannot perform this operation on the SUSE Manager organization. (Org ID 1)</source>
       </trans-unit>
 
 	  <trans-unit id="api.errata.invaliderrata">
