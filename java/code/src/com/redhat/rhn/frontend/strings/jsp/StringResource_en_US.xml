@@ -505,7 +505,7 @@
           </context-group>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.deleteuser">
-          <source>You must be an organization administrator for a satellite [GALAXY] to delete a user.</source>
+          <source>You must be an organization administrator for a SUSE Manager to delete a user.</source>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.disableuser">
           <source>You must be an organization administrator to deactivate a user.</source>
@@ -551,7 +551,7 @@
           <source>Can not display Organization Details</source>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.general">
-          <source>You must be an satellite [GALAXY] administrator to view this page. Contact your satellite [GALAXY] administrator to get information on the organizations in this system.</source>
+          <source>You must be an SUSE Manager administrator to view this page. Contact your SUSE Manager administrator to get information on the organizations in this system.</source>
         </trans-unit>
       </group>
 
@@ -2047,7 +2047,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="usercreate.jsp.pam.reference">
-<source>If you would like to set up your satellite [GALAXY] to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
+<source>If you would like to set up your SUSE Manager to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
@@ -6961,7 +6961,7 @@ value for this entitlement, excluding the default organization's consumption.</s
     </trans-unit>
 
     <trans-unit id="generalconfig.jsp.summary">
-<source>After updating the configuration options below, monitoring services on this satellite [GALAXY] and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
+<source>After updating the configuration options below, monitoring services on this SUSE Manager and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
       <context-group name="ctx">
         <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
       </context-group>
@@ -8103,7 +8103,7 @@ value for this entitlement, excluding the default organization's consumption.</s
 
       <trans-unit id="deleteconfirm.jsp.satadmin.description">
 <source>Are you sure you would like to remove the "@@PRODUCT_NAME@@ Administrator" role from
-your own login? You will need to contact another satellite [GALAXY] administrator to
+your own login? You will need to contact another SUSE Manager administrator to
 regain this role if you choose to remove it now.  You will no longer have access to the @@PRODUCT_NAME@@ configuration tools and
 organization management tools if you choose to remove this role from your login.
 </source>
@@ -8260,7 +8260,7 @@ organization management tools if you choose to remove this role from your login.
       </trans-unit>
 
       <trans-unit id="deleteconfirm.jsp.satadmin_revoke">
-<source>Confirm removing the satellite [GALAXY] administration role from &lt;strong&gt;{0}&lt;/strong&gt; by clicking the button below.</source>
+<source>Confirm removing the SUSE Manager administration role from &lt;strong&gt;{0}&lt;/strong&gt; by clicking the button below.</source>
           <context-group name="ctx">
             <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
@@ -9470,7 +9470,7 @@ organizations on your @@PRODUCT_NAME@@ here as well.</source>
 <source>Create and manage organizations on your @@PRODUCT_NAME@@. You can not view all of the
 users on the @@PRODUCT_NAME@@ here, but you can look up the users with organization
 administrator privileges in all of the organizations on your @@PRODUCT_NAME@@ and you
-may also assign or take away an organization administrator's satellite [GALAXY]
+may also assign or take away an organization administrator's SUSE Manager
 administrator privileges.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/admin/config/Orgs.do</context>
@@ -9826,7 +9826,7 @@ Please note that some manual configuration of these scripts may still be require
           <source>Schedule of Repo Sync failed. Check logs for more information.</source>
         </trans-unit>
        <trans-unit id="repos.jsp.message.taskomaticdown">
-          <source>The scheduling service appears down.  Please contact your Satellite administrator.</source>
+          <source>The scheduling service appears down.  Please contact your SUSE Manager administrator.</source>
         </trans-unit>        
         <trans-unit id="toolbar.create.repos">
           <source>create new repository</source>
@@ -10779,7 +10779,7 @@ Please note that some manual configuration of these scripts may still be require
 	    <source>Create Kickstart Profile</source>
 	  </trans-unit>
 	  <trans-unit id="kickstart.advanced.jsp.para1">
-	    <source>Each kickstart file you upload to satellite [GALAXY] will need a label so that you can refer to it later - please choose a label for this kickstart and enter it below. Entries marked with an asterisk (*) are required.</source>
+	    <source>Each kickstart file you upload to SUSE Manager will need a label so that you can refer to it later - please choose a label for this kickstart and enter it below. Entries marked with an asterisk (*) are required.</source>
 	  </trans-unit>
 	
 	  <trans-unit id="kickstart.advanced.jsp.uploadtab">
@@ -19806,7 +19806,7 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
       </trans-unit>
 
       <trans-unit id="login.jsp.error.message">
-<source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your satellite [GALAXY] administrator if the problem persists.</source>
+<source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your SUSE Manager administrator if the problem persists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">loginerror.jsp</context>
         </context-group>
@@ -20997,7 +20997,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
 
       <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
-        <source>A single Management (Base) entitlement is required for all systems registered to satellite [GALAXY]</source>
+        <source>A single Management (Base) entitlement is required for all systems registered to SUSE Manager</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
@@ -21032,7 +21032,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
 
       <trans-unit id="system_entitlement_details.org_msg">
-       <source>&lt;strong&gt;{0}&lt;/strong&gt; of &lt;strong&gt;{1}&lt;/strong&gt; organizations on this satellite [GALAXY] have at least one registered system using this entitlement.</source>
+       <source>&lt;strong&gt;{0}&lt;/strong&gt; of &lt;strong&gt;{1}&lt;/strong&gt; organizations on this SUSE Manager have at least one registered system using this entitlement.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
