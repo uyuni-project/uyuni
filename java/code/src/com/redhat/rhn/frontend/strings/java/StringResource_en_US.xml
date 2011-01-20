@@ -1105,14 +1105,14 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
       </trans-unit>
 
       <trans-unit id="user.satadmin.remove">
-<source>Removed Satellite Administrator role from {0}</source>
+<source>Removed SUSE Manager Administrator role from {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="user.satadmin.add">
-<source>Added Satellite Administrator role to {0}</source>
+<source>Added SUSE Manager Administrator role to {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
@@ -8009,7 +8009,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
 	  <trans-unit id="api.systemgroup.accessChangeDenied">
-          <source>Changing administrator access is not allowed for Satellite and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
+          <source>Changing administrator access is not allowed for SUSE Manager and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
       </trans-unit>
 
       <trans-unit id="api.system.invalidprofilelabel">
