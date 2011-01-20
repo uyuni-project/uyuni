@@ -20,7 +20,7 @@
 	"MANAGER_PASS"		: "",
 	"MANAGER_PASS2"		: "",
 	"MANAGER_ADMIN_EMAIL"	: "",
-//	"MANAGER_ENABLE_TFTP"	: "y",
+	"MANAGER_ENABLE_TFTP"	: "y",
     ];
 
     string env_file	= Directory::tmpdir + "/env_manager";
