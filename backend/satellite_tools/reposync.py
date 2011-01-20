@@ -143,6 +143,9 @@ class RepoSync:
             except Errors.YumGPGCheckError, e:
                 self.print_msg("YumGPGCheckError: %s" % e)
                 sys.exit(1)
+            except Errors.RepoError, e:
+                self.print_msg("RepoError: %s" % e)
+                sys.exit(1)
             except:
                 self.print_msg("Unexpected error: %s" % sys.exc_info()[0])
                 self.print_msg("%s" % traceback.format_exc())	
