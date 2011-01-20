@@ -132,6 +132,8 @@ quit
 }
 
 setup_spacewalk() {
+    CERT_COUNTRY=`echo -n $CERT_COUNTRY|tr [:lower:] [:upper:]`
+
     echo "admin-email = $MANAGER_ADMIN_EMAIL
 ssl-set-org = $CERT_O
 ssl-set-org-unit = $CERT_OU
