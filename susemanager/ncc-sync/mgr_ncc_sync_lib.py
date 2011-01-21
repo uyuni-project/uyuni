@@ -655,15 +655,28 @@ class NCCSync(object):
         query.execute(product_id=product_id)
         return query.fetchone()[0]
 
-    def map_channel_to_products(self, product_id, channel_id):
-        """Map one channel to its products"""
-        suse_id = self.get_suse_product_id(product_id)
-        query = rhnSQL.prepare(
-            "INSERT INTO suseproductchannel (product_id, channel_id) "
-            "VALUES (:product_id, :channel_id)")
-        query.execute(product_id=suse_id,
-                      channel_id=channel_id)
-        rhnSQL.commit()
+    def map_channel_to_products(self, channel, channel_id):
+        """Map one channel to its products
+
+        :arg channel: channel XML Element
+        :arg channel_id: the database id of the channel
+
+        Only non-optional channels are actually added.
+
+        """
+        if channel.get('optional') == 'N':
+            suse_id = self.get_suse_product_id(channel.get('product_id'))
+            query = rhnSQL.prepare(
+                "INSERT INTO suseproductchannel (product_id, channel_id) "
+                "VALUES (:product_id, :channel_id)")
+            query.execute(product_id=suse_id,
+                          channel_id=channel_id)
+            rhnSQL.commit()
+            self.log_msg("Added channel %s to SuseProductChannels."
+                         % channel.get('label'))
+        else:
+            self.log_msg("Didn't add optional channel %s to "
+                         "SuseProductChannels." % channel.get('label'))
 
     def sync_channel(self, channel_id, channel_label):
         """ Schedule a repo sync for specified database channel.
@@ -856,8 +869,8 @@ class NCCSync(object):
                                  arch)['id']
         except KeyError:
             raise Exception("This channel's arch could not be found in the "
-                            "database: %(channel)s with arch: %(arch)s"
-                            % locals())
+                            "database: %s with arch: %s"
+                            % (channel.get('name'), arch))
         return arch_id
 
     def add_channel(self, channel_label):
@@ -872,7 +885,8 @@ class NCCSync(object):
         query.execute(label=channel_label)
 
         if query.fetchone():
-            self.print_msg( "Channel %s is already in the database." % channel_label )
+            self.print_msg( "Channel %s is already in the database."
+                            % channel_label )
         else:
             channel = self.get_ncc_channel(channel_label)
             query = rhnSQL.prepare(
@@ -910,8 +924,9 @@ class NCCSync(object):
                     self.add_dist_channel_map(channel_id, self.get_channel_arch_id(channel), child)
 
             rhnSQL.commit()
-            self.map_channel_to_products(channel.get('product_id'), channel_id)
-            self.print_msg( "Added channel '%s' to the database." % channel_label )
+            self.map_channel_to_products(channel, channel_id)
+            self.print_msg( "Added channel '%s' to the database."
+                            % channel_label )
 
             # schedule repo sync for this channel
             self.sync_channel(channel_id, channel_label)
