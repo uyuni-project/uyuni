@@ -1,0 +1,55 @@
+{
+    textdomain "susemanager";
+
+    import "Directory";
+    import "FileUtils";
+    import "GetInstArgs";
+    import "Popup";
+    import "Stage";
+    import "Wizard";
+
+    map args = GetInstArgs::argmap ();
+
+    // 2GB
+    integer enough_memory = 2057056;
+
+    map meminfo = (map) SCR::Read (.proc.meminfo);
+    //integer totalmem = meminfo["memtotal"]:0 + meminfo["swaptotal"]:0;
+    integer totalmem = meminfo["memtotal"]:0;
+
+    y2milestone ("Memory: %1, Swap: %2, Total: %3",
+      meminfo["memtotal"]:0, meminfo["swaptotal"]:0, totalmem
+    );
+
+    // something is wrong
+    if (totalmem == nil) {
+      // using only RAM if possible
+      if (meminfo["memtotal"]:nil != nil) {
+        totalmem = meminfo["memtotal"]:0;
+        // can't do anything, just assume we enough
+      } else {
+        totalmem = enough_memory;
+      }
+    }
+
+    while (true) {
+        // do we have less memory than needed?
+        if (totalmem < enough_memory) {
+            if ( !Popup::ContinueCancel(_("SUSE Manager requires 2G of memory to be installed and 8G for good perfomance. If you continue the product may not function correctly.")))
+            {
+                if (Popup::ConfirmAbort(`incomplete)) {
+                    return `abort;
+                }
+                else {
+                    continue;
+                }
+            }
+            else {
+                break;
+            }
+        }
+        else {
+          break;
+        }
+    }
+}
