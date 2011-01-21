@@ -192,7 +192,7 @@ dump_remote_db() {
 }
 
 import_db() {
-    su - oracle -c "ORACLE_SID=$MANAGER_DB_NAME imp \'/ as sysdba\' fromuser=$SATELLITE_DB_USER touser=spacewalk file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y"
+    su - oracle -c "ORACLE_SID=$MANAGER_DB_NAME imp \'/ as sysdba\' fromuser=$SATELLITE_DB_USER touser=$MANAGER_USER file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y"
     # 'fix syntax HL
 }
 
