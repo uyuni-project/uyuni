@@ -58,6 +58,7 @@ make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_R
 %preun
 %if 0%{?suse_version}
 %stop_on_removal rhnsd
+exit 0
 %else
 if [ $1 = 0 ] ; then
     /etc/rc.d/init.d/rhnsd stop >/dev/null 2>&1
@@ -79,7 +80,7 @@ fi
 rm -fr $RPM_BUILD_ROOT
 
 
-%files -f rhnsd.lang 
+%files -f rhnsd.lang
 %defattr(-,root,root)
 %if 0%{?suse_version}
 %dir %{_sysconfdir}/sysconfig/rhn
@@ -166,13 +167,13 @@ rm -fr $RPM_BUILD_ROOT
 * Mon May 11 2009 Pradeep Kilambi <pkilambi@redhat.com> 4.7.0-2
 - Updated translations.
 - Resolves:  #243699
-  
+
 * Tue Jan 27 2009 Miroslav Suchý <msuchy@redhat.com> 4.5.9-1
 - rebuild
 
 * Wed Jan 21 2009 Pradeep Kilambi <pkilambi@redhat.com> 4.5.8-1
 - Remove usage of version and sources files.
- 
+
 * Mon Dec 11 2006 James Bowes <jbowes@redhat.com> - 4.5.7-1
 - Updated translations.
 - Related: #216837

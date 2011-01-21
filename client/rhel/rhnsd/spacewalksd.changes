@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jan 21 14:48:05 CET 2011 - ma@suse.de
+
+- Fix rpm scripts failing if system is not registered (bnc#652676)
+
+-------------------------------------------------------------------
 Wed Dec 15 14:41:07 CET 2010 - mc@suse.de
 
 - fix specfile
