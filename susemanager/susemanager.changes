@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jan 21 13:44:29 CET 2011 - mc@suse.de
+
+- set SSL certificate expiration time to 10 years (bnc#643745)
+
+-------------------------------------------------------------------
 Wed Jan 19 17:28:36 CET 2011 - ug@suse.de
 
 - yast code updated
