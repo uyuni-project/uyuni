@@ -119,6 +119,11 @@ if($help)
   exit 1;
 }
 
+if( ! -d "/etc/zypp" )
+{
+  mkdir "/etc/zypp";
+}
+
 # call this as soon as possible.
 my ($code, $msg) = SUSE::SRPrivate::initGUID($ctx);
 if($code != 0)
