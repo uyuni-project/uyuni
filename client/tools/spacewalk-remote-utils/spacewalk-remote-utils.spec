@@ -47,7 +47,7 @@ docbook2man ./spacewalk-create-channel/doc/spacewalk-create-channel.sgml -o ./sp
 %{_bindir}/spacewalk-create-channel
 #%{python_sitelib}/spacecmd/
 %{_datadir}/rhn/channel-data/
-%if 0%{suse_version}
+%if 0%{?suse_version}
 %dir %{_datadir}/rhn
 %endif
 

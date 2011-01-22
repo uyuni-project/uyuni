@@ -109,7 +109,7 @@ Obsoletes: rhn-setup-gnome < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Requires: spacewalk-client-setup = %{version}-%{release}
 Requires: pam >= 0.72
-%if 0%{suse_version}
+%if 0%{?suse_version}
 Requires: python-gnome python-gtk
 %else
 Requires: pygtk2 pygtk2-libglade gnome-python2 gnome-python2-canvas

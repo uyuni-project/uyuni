@@ -397,7 +397,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files sql
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
-%if 0%{suse_version}
+%if 0%{?suse_version}
 %dir %{rhnroot}/server
 %endif
 # Need __init__ = share it with rhns-server
@@ -423,7 +423,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files server
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
-%if 0%{suse_version}
+%if 0%{?suse_version}
 %dir %{rhnroot}/server
 %endif
 # modules
@@ -532,7 +532,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files applet
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
-%if 0%{suse_version}
+%if 0%{?suse_version}
 %dir %{rhnroot}/server
 %endif
 %dir %{rhnroot}/server/handlers/applet
@@ -545,7 +545,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files app
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
-%if 0%{suse_version}
+%if 0%{?suse_version}
 %dir %{rhnroot}/server
 %endif
 %dir %{rhnroot}/server/handlers/app
@@ -558,7 +558,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files xp
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
-%if 0%{suse_version}
+%if 0%{?suse_version}
 %dir %{rhnroot}/server
 %endif
 %dir %{rhnroot}/server/handlers/xp
@@ -571,7 +571,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files iss
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
-%if 0%{suse_version}
+%if 0%{?suse_version}
 %dir %{rhnroot}/server
 %endif
 %dir %{rhnroot}/server/handlers/sat
@@ -611,7 +611,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files config-files
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
-%if 0%{suse_version}
+%if 0%{?suse_version}
 %dir %{rhnroot}/server
 %endif
 %dir %{rhnroot}/server/handlers/config
@@ -623,7 +623,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files config-files-tool
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
-%if 0%{suse_version}
+%if 0%{?suse_version}
 %dir %{rhnroot}/server
 %endif
 %dir %{rhnroot}/server/handlers/config_mgmt

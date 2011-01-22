@@ -3,7 +3,7 @@
 %define client_caps_dir /etc/sysconfig/rhn/clientCaps.d
 %{!?pythongen:%define pythongen %(%{__python} -c "import sys ; print sys.version[:3]")}
 
-%if 0%{suse_version}
+%if 0%{?suse_version}
 %define apache_group www
 %else
 %define apache_group apache

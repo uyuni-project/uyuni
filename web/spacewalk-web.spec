@@ -295,7 +295,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n spacewalk-html
 %defattr(644,root,root,755)
-%if !0%{suse_version}
+%if !0%{?suse_version}
 %dir %{www_path}/www/htdocs
 %endif
 %{www_path}/www/htdocs/*

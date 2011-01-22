@@ -41,7 +41,7 @@ Requires: jakarta-commons-el
 Requires: jakarta-commons-io
 Requires: jakarta-commons-logging
 Requires: jakarta-taglibs-standard
-%if !0%{suse_version}
+%if !0%{?suse_version}
 Requires: jasper5
 %endif
 Requires: jcommon
@@ -424,7 +424,7 @@ fi
 %{jardir}/dwr-*.jar
 %{jardir}/hibernate3.jar
 %{jardir}/jaf.jar
-%if 0%{suse_version}
+%if 0%{?suse_version}
 %{jardir}/tomcat6-jsp-2.1-api.jar
 %{jardir}/tomcat6_el-api.jar
 %{jardir}/tomcat6_jasper-el.jar
