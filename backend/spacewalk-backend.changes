@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Jan 22 12:37:48 CET 2011 - mc@suse.de
+
+- fix macros
+
+-------------------------------------------------------------------
 Mon Jan 17 12:25:39 CET 2011 - mc@suse.de
 
 - change suseServer ostarget to a foreign key to suseOSTarget(id) 

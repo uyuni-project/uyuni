@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Jan 22 12:40:19 CET 2011 - mc@suse.de
+
+- fix macros
+
+-------------------------------------------------------------------
 Wed Sep 15 09:41:27 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-proxy-html

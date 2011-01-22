@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Jan 22 12:38:09 CET 2011 - mc@suse.de
+
+- fix macros
+
+-------------------------------------------------------------------
 Tue Jan 18 15:59:38 CET 2011 - jrenner@suse.de
 
 - Fix bnc#651351: Password with less than 5 characters accepted
