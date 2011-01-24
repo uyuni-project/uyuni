@@ -95,6 +95,11 @@ class RepoSync:
                 if source_urls:
                     self.urls = source_urls
                 else:
+                    if options.channel_label:
+                        # generate empty metadata
+                        taskomatic.add_to_repodata_queue_for_channel_package_subscription(
+                            [options.channel_label], [], "server.app.yumreposync")
+                        rhnSQL.commit()
                     quit = True
                     self.error_msg("Channel has no URL associated")
         else:
