@@ -29,21 +29,21 @@ Feature: Check errata
     Given I am on the "slessp1-kernel-3280-channel-x86_64" errata Details page
      When I follow "Packages"
      Then I should see a "SLES11-SP1-Updates x86_64 Channel" text
-      And I should see a "md5:ec01c6ef692ac79c8165eb30067b87db" text
+      And I should see a "sha1:c21778f54a584edf499f933ecc576afc2ecee59a" text
       And I should see a "btrfs-kmp-default-0_2.6.32.23_0.3-0.3.20-x86_64" link
-      And I should see a "md5:b541520e544e8502cabb9bcecf4d0340" text
+      And I should see a "sha1:7b46bb1b8d33f087dbde87185d0f68350ed10561" text
       And I should see a "ext4dev-kmp-default-0_2.6.32.23_0.3-7.3.20-x86_64" link
-      And I should see a "md5:77012b185a5069833084ee0f5bc0bc52" text
+      And I should see a "sha1:094490150d7ae99006fcbd5764ca4b077c29175a" text
       And I should see a "hyper-v-kmp-default-0_2.6.32.23_0.3-0.7.15-x86_64" link
-      And I should see a "md5:f13ea54d7d767082c60e9024259bf226" text
+      And I should see a "sha1:608d36d744c329bdd8beb274d81962542c2dfdac" text
       And I should see a "kernel-default-2.6.32.23-0.3.1-x86_64" link
-      And I should see a "md5:618910413c7bb6d0778291994207ac8b" text
+      And I should see a "sha1:3294bf013fa3e71a18c5be412cbe7e6d17e635b4" text
       And I should see a "kernel-default-base-2.6.32.23-0.3.1-x86_64" link
-      And I should see a "md5:f32cbce79d4ef2626fd8de34a8e2be06" text
+      And I should see a "sha1:7ceb829d56fe569f273c7bd404a8253d16a6a518" text
       And I should see a "kernel-default-devel-2.6.32.23-0.3.1-x86_64" link
-      And I should see a "md5:4bb575d8e74c0ea19863e6bd1654c70c" text
+      And I should see a "sha1:c7182864b8bba2552a3ca90a6375f9577eef84d2" text
       And I should see a "kernel-source-2.6.32.23-0.3.1-x86_64" link
-      And I should see a "md5:d15281fd59420b7f07ffba59a9484760" text
+      And I should see a "sha1:e17e0e7127175c2a1c596267a7c389d72f49c1e9" text
       And I should see a "kernel-syms-2.6.32.23-0.3.1-x86_64" link
 
 
@@ -61,33 +61,33 @@ Feature: Check errata
     Given I am on the "slessp1-kernel-3284-channel-ia32" errata Details page
      When I follow "Packages"
      Then I should see a "SLES11-SP1-Updates i586 Channel" text
-      And I should see a "md5:3c348cc277fb80d070a0b24667868c18" text
+      And I should see a "sha1:8edd91afef9289446126190c4b4b1e28c7a73d31" text
       And I should see a "btrfs-kmp-default-0_2.6.32.23_0.3-0.3.20-i586" link
-      And I should see a "md5:b59c757a85966a57d31b77c71aee4e40" text
+      And I should see a "sha1:b6dc68b6733818353a6870de7dee8e96a34ffc8f" text
       And I should see a "btrfs-kmp-pae-0_2.6.32.23_0.3-0.3.20-i586" link
-      And I should see a "md5:223f158e3b3b5aac24ce0ba43ff9fb74" text
+      And I should see a "sha1:e93b2c5e94f8dc1a51c2955c8c37a4ba8daa0db5" text
       And I should see a "ext4dev-kmp-default-0_2.6.32.23_0.3-7.3.20-i586" link
-      And I should see a "md5:2848977c7316ca1e4799675038237ef6" text
+      And I should see a "sha1:e8b8aa1d267852189b9c5c9b7fdf9c5aadb474cf" text
       And I should see a "ext4dev-kmp-pae-0_2.6.32.23_0.3-7.3.20-i586" link
-      And I should see a "md5:5a23e9e54a6e951e7ffeaca2b5e008dd" text
+      And I should see a "sha1:0612c8de05a6b9ccb61738f2484b33ef7705414f" text
       And I should see a "hyper-v-kmp-default-0_2.6.32.23_0.3-0.7.15-i586" link
-      And I should see a "md5:e522d780c76f1f2725e37523084e85d8" text
+      And I should see a "sha1:772e0fdeda3f981a30eece1aa22460b1f119f485" text
       And I should see a "hyper-v-kmp-pae-0_2.6.32.23_0.3-0.7.15-i586" link
-      And I should see a "md5:4d50140d03718233a1b17ed740a16e40" text
+      And I should see a "sha1:673e28b63c8645eaf01540b8e2acac8443f1b095" text
       And I should see a "kernel-default-2.6.32.23-0.3.1-i586" link
-      And I should see a "md5:0f69388be62b33803bfc84218c0827bb" text
+      And I should see a "sha1:a86b73d3fef4da9c0a3b8e07b7b68568e63246f8" text
       And I should see a "kernel-default-base-2.6.32.23-0.3.1-i586" link
-      And I should see a "md5:895c1c9cc1aaf589f91d4df00528ab5a" text
+      And I should see a "sha1:2dd172160ad3c43685b96a4b35817a50c2b93b1d" text
       And I should see a "kernel-default-devel-2.6.32.23-0.3.1-i586" link
-      And I should see a "md5:e522e4a0b71c13af66119afcf82b5b2c" text
+      And I should see a "sha1:f56f74fd82c98c60c7e7b770c7d6ef93ab3354d5" text
       And I should see a "kernel-pae-2.6.32.23-0.3.1-i586" link
-      And I should see a "md5:a6d5c8303bf0cf22f092a5aaa113ce66" text
+      And I should see a "sha1:7ae32973e3c2a6b71973c3f5e90f001052ac290d" text
       And I should see a "kernel-pae-base-2.6.32.23-0.3.1-i586" link
-      And I should see a "md5:f0f40c29e1bd2d61d9f360a6a40d3d38" text
+      And I should see a "sha1:6bf54fc9eafcbf59231ddd3812e11c6714cd9e12" text
       And I should see a "kernel-pae-devel-2.6.32.23-0.3.1-i586" link
-      And I should see a "md5:8962b377e791e44e2bf082f98100062d" text
+      And I should see a "sha1:443f103922e8c8c66b8237aabac06783139c7a1c" text
       And I should see a "kernel-source-2.6.32.23-0.3.1-i586" link
-      And I should see a "md5:ff526f233f5ba38ea24b059ca7d7495c" text
+      And I should see a "sha1:5bf7870468911be1c3e29e0867feb9bdf36154dd" text
       And I should see a "kernel-syms-2.6.32.23-0.3.1-i586" link
 
   Scenario: check slessp1-suseRegister-2953-channel-x86_64 errata
@@ -102,7 +102,7 @@ Feature: Check errata
     Given I am on the "slessp1-suseRegister-2953-channel-x86_64" errata Details page
      When I follow "Packages"
      Then I should see a "SLES11-SP1-Updates x86_64 Channel" text
-      And I should see a "md5:87db39b2b8fe29b1c7630375c2893f07" text
+      And I should see a "sha1:053d8944718abcdb6ba1f5f641ecbecf8f961b62" text
       And I should see a "suseRegister-1.4-1.9.1-noarch" link
 
   Scenario: check slessp1-suseRegister-2953-channel-ia32 errata
@@ -117,7 +117,7 @@ Feature: Check errata
     Given I am on the "slessp1-suseRegister-2953-channel-ia32" errata Details page
      When I follow "Packages"
      Then I should see a "SLES11-SP1-Updates i586 Channel" text
-      And I should see a "md5:b9962080c458835e1b456a53d25d5a3d" text
+      And I should see a "sha1:76318bbd6b8ff7db3781c0ddb5f0c1b792abed7b" text
       And I should see a "suseRegister-1.4-1.9.1-noarch" link
 
   Scenario: check relevant errata for this client
