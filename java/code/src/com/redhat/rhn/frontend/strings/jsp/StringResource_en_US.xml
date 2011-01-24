@@ -318,7 +318,7 @@
           <source>We're sorry, but the action could not be found.</source>
         </trans-unit>
         <trans-unit id="lookup.jsp.title.errata">
-          <source>We're sorry, but the erratum could not be found.</source>
+          <source>We're sorry, but the patch could not be found.</source>
         </trans-unit>
         <trans-unit id="lookup.jsp.title.system">
           <source>We're sorry, but the system could not be found.</source>
@@ -375,7 +375,7 @@
           <source>The package requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         </trans-unit>
         <trans-unit id="lookup.jsp.reason1.errata">
-          <source>The erratum requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
+          <source>The patch requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         </trans-unit>
         <trans-unit id="lookup.jsp.reason1.action">
           <source>The action requested does not exist.  This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
@@ -416,7 +416,7 @@
           <source>You do not have permission to view this package.</source>
         </trans-unit>
         <trans-unit id="lookup.jsp.reason2.errata">
-          <source>You do not have permission to view this erratum.</source>
+          <source>You do not have permission to view this patch.</source>
         </trans-unit>
         <trans-unit id="lookup.jsp.reason2.action">
           <source>You do not have permission to view this action.</source>
@@ -1058,7 +1058,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.leadin">
-<source>@@PRODUCT_NAME@@ offers email notifications for when errata relevant to your systems are released, as well as daily emails summarizing the events for your systems.</source>
+<source>@@PRODUCT_NAME@@ offers email notifications for when patches relevant to your systems are released, as well as daily emails summarizing the events for your systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1161,14 +1161,14 @@
 	</trans-unit>
 
 	<trans-unit id="preferences.latest-errata.name">
-         <source>Relevant Security Errata</source>
+         <source>Relevant Security Patches</source>
 		 <context-group name="ctx">
         	<context context-type="sourcefile">/rhn/users/UserPreferences</context>
 		 </context-group>
 	</trans-unit>
 
 	<trans-unit id="preferences.latest-errata.description">
-         <source> View the most recent security errata applicable to your systems.</source>
+         <source> View the most recent security patches applicable to your systems.</source>
 		 <context-group name="ctx">
         	<context context-type="sourcefile">/rhn/users/UserPreferences</context>
 		 </context-group>
@@ -1413,7 +1413,7 @@
       </trans-unit>
 
       <trans-unit id="header.jsp.errata">
-<source>Errata</source>
+<source>Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
@@ -1497,7 +1497,7 @@
       <!-- legends -->
 
       <trans-unit id="errata-legend.jsp.title">
-<source>Errata Legend</source>
+<source>Patches Legend</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
         </context-group>
@@ -2005,7 +2005,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.enables3">
-<source>access software updates, Errata, and maintenance from @@PRODUCT_NAME@@</source>
+<source>access software updates, patches, and maintenance from @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateCorporate</context>
         </context-group>
@@ -3318,7 +3318,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="upgradable.jsp.errata">
-<source>Related Errata</source>
+<source>Related Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
@@ -3489,7 +3489,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.allerrata">
-<source>All Errata</source>
+<source>All Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
@@ -3523,7 +3523,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
 
 <!-- == ERRATA == -->
       <trans-unit id="erratalist.jsp.noerrata">
-<source>No Errata</source>
+<source>No Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
@@ -3545,13 +3545,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.relevanterrata">
-<source>Errata Relevant to Your Systems</source>
+<source>Patches Relevant to Your Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.norelevanterrata">
-<source>No Errata Relevant to Your Systems</source>
+<source>No Patches Relevant to Your Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
@@ -3567,7 +3567,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
 <source>Severity</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.channelinfo">
-<source>The following errata affect this channel, and may affect subscribed systems.</source>
+<source>The following patches affect this channel, and may affect subscribed systems.</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.oval">
 <source>OVAL</source>
@@ -3613,14 +3613,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.jsp.header">
-<source>Relevant Errata</source>
+<source>Relevant Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.jsp.summary">
-<source>The following errata may currently be applied to this system.</source>
+<source>The following patches may currently be applied to this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
@@ -3634,7 +3634,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.jsp.apply">
-<source>Apply Errata</source>
+<source>Apply Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
@@ -3648,7 +3648,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errataconfirm.jsp.header">
-<source>Confirm Errata Updates</source>
+<source>Confirm Patch Updates</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
@@ -3662,35 +3662,35 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.created">
-<source>Errata {0}-{1} created.</source>
+<source>Patch {0}-{1} created.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.edit.cache.modified">
-<source>The list of packages associated with this erratum has been modified recently.</source>
+<source>The list of packages associated with this patch has been modified recently.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.edit.cache.explain">
-<source>These changes will not immediately be available to systems to which this erratum applies. The changes will become available approximately 10 minutes after they are made. Or, you can &lt;a href="/rhn/errata/manage/CommitErrataPackageChanges.do?eid={0}"&gt; commit your changes immediately&lt;/a&gt; when you are finished editing this erratum.</source>
+<source>These changes will not immediately be available to systems to which this patch applies. The changes will become available approximately 10 minutes after they are made. Or, you can &lt;a href="/rhn/errata/manage/CommitErrataPackageChanges.do?eid={0}"&gt; commit your changes immediately&lt;/a&gt; when you are finished editing this patch.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.edit.toolbar">
-<source>Errata: </source>
+<source>Patches: </source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.edit.editerrata">
-<source>Edit Errata</source>
+<source>Edit Patches</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
             <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
@@ -3698,14 +3698,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.instructions">
-<source>Edit erratum here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
+<source>Edit patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.edit.updateerrata">
-<source>Update Erratum</source>
+<source>Update Patch</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3726,14 +3726,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.youmaypublish">
-<source>You may now publish this erratum.</source>
+<source>You may now publish this patch.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.edit.publisherrata">
-<source>Publish Errata</source>
+<source>Publish Patches</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3748,21 +3748,21 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.youmaynotify">
-<source>You can send an email notification of this erratum.</source>
+<source>You can send an email notification of this patch.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.edit.senderratamail">
-<source>Send Errata Mail</source>
+<source>Send Patch Mail</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.edit.updated">
-<source>Errata updated.</source>
+<source>Patches updated.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3776,7 +3776,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.bugdeleted">
-<source>Bug &lt;strong&gt;{0}&lt;/strong&gt; removed from errata &lt;strong&gt;{1}&lt;/strong&gt;.</source>
+<source>Bug &lt;strong&gt;{0}&lt;/strong&gt; removed from patches &lt;strong&gt;{1}&lt;/strong&gt;.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3790,14 +3790,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.error.uniqueAdvisoryName">
-<source>An Erratum with this advisory name already exists.</source>
+<source>A patch with this advisory name already exists.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.edit.error.rhAdvisoryName">
-<source>An Errata Advisory cannot begin with the letters 'RH'</source>
+<source>A Patch Advisory cannot begin with the letters 'RH'</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3853,14 +3853,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.channels.instructions">
-<source>Choose the Channels which should be associated with this erratum below. The number of packages referred to by this erratum is displayed after the channel name. If you do not want this erratum to apply to a specific channel, unselect it below.</source>
+<source>Choose the Channels which should be associated with this patch below. The number of packages referred to by this patch is displayed after the channel name. If you do not want this patch to apply to a specific channel, unselect it below.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.channels.updated.singular">
-<source>Erratum &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channel.</source>
+<source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channel.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
             <context context-type="paramnotes">Errata foobar has been
@@ -3869,7 +3869,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.channels.updated.plural">
-<source>Erratum &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channels.</source>
+<source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channels.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
             <context context-type="paramnotes">Errata foobar has been
@@ -3887,7 +3887,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
     </trans-unit>
 
     <trans-unit id="errata.edit.packages.confirm.instructions">
-<source>Below is the list of packages which you have selected to add to this erratum.</source>
+<source>Below is the list of packages which you have selected to add to this patch.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/AddPackagesConfirm.do
@@ -3905,7 +3905,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
     </trans-unit>
 
     <trans-unit id="errata.edit.packages.confirm.remove.instructions">
-<source>Below is the list of packages which you have selected to remove from this erratum.  Click 'Confirm' to remove them.</source>
+<source>Below is the list of packages which you have selected to remove from this patch.  Click 'Confirm' to remove them.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
@@ -3923,7 +3923,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
     </trans-unit>
 
      <trans-unit id="errata.edit.packages.list.erratapackages">
-<source>Errata Packages</source>
+<source>Patches Packages</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/ListPackages.do
@@ -3941,7 +3941,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
     </trans-unit>
 
      <trans-unit id="errata.edit.packages.list.instructions">
-<source>The following packages are associated with this errata. To remove packages from this errata, select them, and click 'Remove Packages' below. To add packages to this errata, click 'add' above.</source>
+<source>The following packages are associated with this patch. To remove packages from this patch, select them, and click 'Remove Packages' below. To add packages to this patch, click 'add' above.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/ListPackages.do
@@ -3950,7 +3950,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
     </trans-unit>
 
       <trans-unit id="errata.publish.toolbar">
-<source>Publish Errata: </source>
+<source>Publish Patch: </source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -3959,7 +3959,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.publish.instructions">
-<source>Please confirm that you wish to publish this errata. Publishing this errata will make it available to all of the Channels selected below.</source>
+<source>Please confirm that you wish to publish this patch. Publishing this patch will make it available to all of the Channels selected below.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -3986,7 +3986,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.publish.publisherrata">
-<source>Publish Errata</source>
+<source>Publish Patches</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4004,7 +4004,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
        <trans-unit id="errata.publish.nochannelsselected">
-<source>A published errata must belong to at least one channel.</source>
+<source>A published patch must belong to at least one channel.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4013,7 +4013,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
        <trans-unit id="errata.notify.senderratanotification">
-<source>Send Errata Notification</source>
+<source>Send Patch Notification</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/Notify.do
@@ -4022,7 +4022,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.notify.instructions">
-<source>You can send email to the administrators of systems to which this errata applies.</source>
+<source>You can send email to the administrators of systems to which this patch applies.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/Notify.do
@@ -4031,7 +4031,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.notify.success">
-<source>An errata mail update has been scheduled for &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;.</source>
+<source>A patch mail update has been scheduled for &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/Notify.do
@@ -4040,7 +4040,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.packages.erratapackages">
-<source>Errata Packages</source>
+<source>Patches Packages</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/Packages.do
@@ -4058,7 +4058,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.packages.add.instructions">
-<source>Below is the list of packages you can add to this errata. The "view" select box allows you to restrict the set of available packages. To add packages to this errata, select them, and click 'Add Packages' below.</source>
+<source>Below is the list of packages you can add to this patch. The "view" select box allows you to restrict the set of available packages. To add packages to this patch, select them, and click 'Add Packages' below.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4121,7 +4121,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.packages.add.success.plural">
-<source>&lt;strong&gt;{0}&lt;/strong&gt; packages added to errata &lt;strong&gt;{1}&lt;/strong&gt;</source>
+<source>&lt;strong&gt;{0}&lt;/strong&gt; packages added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/AddPackagesConfirm.do
@@ -4130,7 +4130,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.packages.add.success.singular">
-<source>&lt;strong&gt;{0}&lt;/strong&gt; package added to errata &lt;strong&gt;{1}&lt;/strong&gt;</source>
+<source>&lt;strong&gt;{0}&lt;/strong&gt; package added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/AddPackagesConfirm.do
@@ -4139,7 +4139,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.packages.remove.success.plural">
-<source>&lt;strong&gt;{0}&lt;/strong&gt; packages removed from errata &lt;strong&gt;{1}&lt;/strong&gt;</source>
+<source>&lt;strong&gt;{0}&lt;/strong&gt; packages removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
@@ -4148,7 +4148,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.packages.remove.success.singular">
-<source>&lt;strong&gt;{0}&lt;/strong&gt; package removed from errata &lt;strong&gt;{1}&lt;/strong&gt;</source>
+<source>&lt;strong&gt;{0}&lt;/strong&gt; package removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
@@ -4157,34 +4157,34 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.overview.jsp.errataoverview">
-<source>Errata Overview</source>
+<source>Patches Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.overview.jsp.alt">
-<source>Errata Icon</source>
+<source>Patches Icon</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.overview.jsp.summary">
-<source>The following errata apply to at least one system to which you have administrative access.</source>
+<source>The following patches apply to at least one system to which you have administrative access.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="affectedsystems.jsp.summary">
-<source>Below is a list of systems affected by this erratum.</source>
+<source>Below is a list of systems affected by this patch.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summarywithacl">
-<source>You can select one or more systems and apply this erratum to them.  Only Management Service entitled systems can be selected.</source>
+<source>You can select one or more systems and apply this patch to them.  Only Management Service entitled systems can be selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
@@ -4196,7 +4196,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.apply">
-<source>Apply Errata</source>
+<source>Apply Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
@@ -4244,7 +4244,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="confirm.jsp.header">
-<source>Confirm Errata Update:</source>
+<source>Confirm Patch Update:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
@@ -4803,13 +4803,13 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.toolbar">
-<source>Erratum Search</source>
+<source>Patches Search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.summary">
-<source>Erratum Search will return results from the complete set of errata released by @@PRODUCT_NAME@@.</source>
+<source>Patches Search will return results from the complete set of patches released by @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -4833,7 +4833,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.errata_advisory">
-<source>Errata Advisory</source>
+<source>Patch Advisory</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -4857,7 +4857,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_advisory">
-<source>Erratum Advisory (ex: RHBA-2007:0113)</source>
+<source>Patch Advisory (ex: RHBA-2007:0113)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -4875,7 +4875,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.search.for.errata.issued">
-<source>Search for Errata Issued:</source>
+<source>Search for Patches Issued:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -4911,7 +4911,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.noerrata">
-<source>No errata.</source>
+<source>No patches.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -4923,7 +4923,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.types_to_search">
-<source>Types of Errata to Search:.</source>
+<source>Types of Patches to Search:.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -4935,34 +4935,34 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.ownederratapagesummary">
-<source> &lt;p&gt; The following errata list represents errata owned by your organization.&lt;/p&gt; &lt;p&gt; Click on an erratum's Advisory to edit the erratum details or the list of packages to which the erratum applies. &lt;/p&gt;</source>
+<source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.unpublishederrata">
-<source>Unpublished Errata</source>
+<source>Unpublished Patches</source>
       </trans-unit>
             <trans-unit id="erratalist.jsp.erratamgmt">
-<source>Errata Management</source>
+<source>Patches Management</source>
       </trans-unit>
             <trans-unit id="erratalist.jsp.nounpublishederrata">
-<source>No Unpublished Errata</source>
+<source>No Unpublished Patches</source>
       </trans-unit>
             <trans-unit id="erratalist.jsp.nopublishederrata">
-<source>No Published Errata</source>
+<source>No Published Patches</source>
       </trans-unit>
             <trans-unit id="erratalist.jsp.publishederrata">
-<source>Published Errata</source>
+<source>Published Patches</source>
       </trans-unit>
             <trans-unit id="erratalist.jsp.deleteerrata">
-<source>Delete Errata</source>
+<source>Delete Patches</source>
       </trans-unit>
             <trans-unit id="erratalist.jsp.cloneerrata">
-<source>Clone Errata</source>
+<source>Clone Patches</source>
       </trans-unit>
         <trans-unit id="deleteconfirm.jsp.confirm">
 <source>Confirm</source>
       </trans-unit>
             <trans-unit id="deleteconfirm.jsp.pagesummary">
-<source>Are you sure you wish to delete these errata?</source>
+<source>Are you sure you wish to delete these patches?</source>
       </trans-unit>
       <trans-unit id="details.jsp.topic">
 <source>Topic</source>
@@ -5045,14 +5045,14 @@ value for this entitlement, excluding the default organization's consumption.</s
       </trans-unit>
 
       <trans-unit id="errata.create.jsp.createerrata">
-<source>Create Errata</source>
+<source>Create Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="errata.create.jsp.instructions">
-<source>Create new errata here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
+<source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
@@ -5400,11 +5400,11 @@ value for this entitlement, excluding the default organization's consumption.</s
        </trans-unit>
 
        <trans-unit id="ssm.overview.errata">
-         <source>Errata</source>
+         <source>Patches</source>
        </trans-unit>
 
        <trans-unit id="ssm.overview.errata.schedule">
-         <source>&lt;a href="/network/systems/ssm/errata/index.pxt?pxt:trap=rhn:empty_set&amp;set_label=errata_list"&gt;Schedule errata updates&lt;/a&gt; relevant to selected systems</source>
+         <source>&lt;a href="/network/systems/ssm/errata/index.pxt?pxt:trap=rhn:empty_set&amp;set_label=errata_list"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source>
        </trans-unit>
 
        <trans-unit id="ssm.overview.packages">
@@ -5662,13 +5662,13 @@ value for this entitlement, excluding the default organization's consumption.</s
          <source>You may edit the preferences for all your selected systems here.</source>
        </trans-unit>
        <trans-unit id="ssm.misc.index.syspref.notify">
-         <source>Receive Notifications of Updates/Errata</source>
+         <source>Receive Notifications of Updates/Patches</source>
        </trans-unit>
        <trans-unit id="ssm.misc.index.syspref.dailysummary">
          <source>Include system in Daily Summary</source>
        </trans-unit>
        <trans-unit id="ssm.misc.index.syspref.update">
-         <source>Automatic application of relevant errata</source>
+         <source>Automatic application of relevant patches</source>
        </trans-unit>
        <trans-unit id="ssm.misc.index.syspref.preference">
          <source>Preference</source>
@@ -5737,7 +5737,7 @@ value for this entitlement, excluding the default organization's consumption.</s
       </trans-unit>
 
       <trans-unit id="systemlist.jsp.errata">
-<source>Errata</source>
+<source>Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
@@ -6174,14 +6174,14 @@ value for this entitlement, excluding the default organization's consumption.</s
       </trans-unit>
 
       <trans-unit id="grouplist.jsp.updates">
-<source>Errata Updates Available</source>
+<source>Patch Updates Available</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="grouplist.jsp.noerrata">
-<source>No Applicable Errata</source>
+<source>No Applicable Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="sourcefile">/rhn/frontend/dto/SystemGroupOverview</context>
@@ -6416,7 +6416,7 @@ value for this entitlement, excluding the default organization's consumption.</s
      </trans-unit>
 
      <trans-unit id="systementitlements.jsp.para1">
-		<source>In order to get the most out of @@PRODUCT_NAME@@, each system must be &lt;strong&gt;entitled&lt;/strong&gt; to service. If a system is not entitled, you will not be allowed to perform key software management tasks for that system, such as package installs or errata updates.</source>
+		<source>In order to get the most out of @@PRODUCT_NAME@@, each system must be &lt;strong&gt;entitled&lt;/strong&gt; to service. If a system is not entitled, you will not be allowed to perform key software management tasks for that system, such as package installs or patch updates.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
@@ -8941,28 +8941,28 @@ organization management tools if you choose to remove this role from your login.
     </trans-unit>
 
     <trans-unit id="delete.jsp.delete">
-<source>Delete Erratum</source>
+<source>Delete Patch</source>
       <context-group name="ctx">
         <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
       </context-group>
     </trans-unit>
 
     <trans-unit id="delete.jsp.header">
-<source>Delete Erratum</source>
+<source>Delete Patch</source>
       <context-group name="ctx">
         <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
       </context-group>
     </trans-unit>
 
     <trans-unit id="delete.jsp.summary">
-<source>Are you sure you wish to delete this erratum?</source>
+<source>Are you sure you wish to delete this patch?</source>
       <context-group name="ctx">
         <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
       </context-group>
     </trans-unit>
 
     <trans-unit id="delete.jsp.erratum">
-<source>Erratum:</source>
+<source>Patch:</source>
       <context-group name="ctx">
         <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
       </context-group>
@@ -8976,35 +8976,35 @@ organization management tools if you choose to remove this role from your login.
     </trans-unit>
 
       <trans-unit id="cloneerrata.jsp.erratamanagement">
-<source>Errata Management</source>
+<source>Patches Management</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="cloneerrata.jsp.cloneerrata">
-<source>Clone Errata</source>
+<source>Clone Patches</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="cloneerrata.jsp.pagesummary">
-<source>The following errata list represents errata which may be cloned by your organization. &lt;p&gt; Only errata which are potentially applicable to one of your channels can be cloned. An erratum is potentially applicable to a channel if that channel was cloned from a channel to which the erratum applies. &lt;/p&gt;&lt;p&gt; Select the errata you wish to clone, and click 'Clone Errata' to continue. &lt;/p&gt;</source>
+<source>The following patch list represents patches which may be cloned by your organization. &lt;p&gt; Only patches which are potentially applicable to one of your channels can be cloned. A patch is potentially applicable to a channel if that channel was cloned from a channel to which the patch applies. &lt;/p&gt;&lt;p&gt; Select the patches you wish to clone, and click 'Clone Patches' to continue. &lt;/p&gt;</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="cloneerrata.jsp.viewapplicableerrata">
-<source>View errata potentially applicable to</source>
+<source>View patches potentially applicable to</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="cloneerrata.jsp.showclonederrata">
-<source>Show errata which have already been cloned</source>
+<source>Show patches which have already been cloned</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
@@ -9083,21 +9083,21 @@ organization management tools if you choose to remove this role from your login.
       </trans-unit>
 
       <trans-unit id="confirmerrata.jsp.pagesummary">
-<source>The errata listed below will be cloned.  XXX</source>
+<source>The patches listed below will be cloned.  XXX</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="cloneerrata.jsp.noerrata">
-<source>No Errata</source>
+<source>No Patches</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="cloneconfirm.jsp.pagesummary">
-<source>The errata listed below will be cloned. Once they are cloned, they will appear in your &lt;a href=&quot;{0}&quot;&gt;unpublished errata list&lt;/a&gt;. From there you can verify the text and associated packages for each erratum. Once you are ready, you can publish the errata so they are available to users in your organization.</source>
+<source>The patches listed below will be cloned. Once they are cloned, they will appear in your &lt;a href=&quot;{0}&quot;&gt;unpublished patches list&lt;/a&gt;. From there you can verify the text and associated packages for each patch. Once you are ready, you can publish the patches so they are available to users in your organization.</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/CloneConfirm.do</context>
         </context-group>
@@ -9210,7 +9210,7 @@ organization management tools if you choose to remove this role from your login.
       </trans-unit>
 
       <trans-unit id="applyerrata.disclaimer">
-<source>If you are &lt;strong&gt;certain&lt;/strong&gt; you wish to do this, you may apply the errata as soon as possible, or no earlier than a specified time:</source>
+<source>If you are &lt;strong&gt;certain&lt;/strong&gt; you wish to do this, you may apply the patches as soon as possible, or no earlier than a specified time:</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
         </context-group>
@@ -12013,21 +12013,21 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
      </trans-unit>
 
      <trans-unit id="yourrhn.jsp.criticalsystems.securityerrata">
-        <source>Security Errata</source>
+        <source>Security Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
      </trans-unit>
 
      <trans-unit id="yourrhn.jsp.criticalsystems.bugfixerrata">
-        <source>Bugfix Errata</source>
+        <source>Bugfix Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
      </trans-unit>
 
      <trans-unit id="yourrhn.jsp.criticalsystems.enhancementerrata">
-        <source>Enhancement Errata</source>
+        <source>Enhancement Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -12279,7 +12279,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
      </trans-unit>
 
      <trans-unit id="yourrhn.jsp.securityerrata">
-        <source>Relevant Security Errata</source>
+        <source>Relevant Security Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -12321,28 +12321,28 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
      </trans-unit>
 
      <trans-unit id="yourrhn.jsp.allerrata">
-        <source>View All Errata</source>
+        <source>View All Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
      </trans-unit>
 
      <trans-unit id="yourrhn.jsp.allrelevanterrata">
-        <source>View All Relevant Errata</source>
+        <source>View All Relevant Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
      </trans-unit>
 
      <trans-unit id="yourrhn.jsp.relevanterrata.description">
-        <source>relevant errata </source>
+        <source>relevant patches </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
      </trans-unit>
 
      <trans-unit id="yourrhn.jsp.noerrata">
-        <source>&lt;strong&gt;No relevant security errata.&lt;/strong&gt;&lt;p&gt;There are no security errata that apply to your systems. You can view a list of &lt;strong&gt;all&lt;/strong&gt; errata for the software your organization has entitlements to at &lt;strong&gt;&lt;a href=&quot;/rhn/errata/AllErrata.do&quot;&gt;Errata &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
+        <source>&lt;strong&gt;No relevant security patches.&lt;/strong&gt;&lt;p&gt;There are no security patches that apply to your systems. You can view a list of &lt;strong&gt;all&lt;/strong&gt; patches for the software your organization has entitlements to at &lt;strong&gt;&lt;a href=&quot;/rhn/errata/AllErrata.do&quot;&gt;Patches &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -13233,7 +13233,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
          <source>upgrade package</source>
        </trans-unit>
        <trans-unit id="errata.common.errataAlt">
-         <source>erratum</source>
+         <source>patch</source>
        </trans-unit>
      </group>
 
@@ -19053,7 +19053,7 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
 	     </trans-unit>
 
 	     <trans-unit id="sdc.details.overview.errataupdate">
-	     	<source>Auto Errata Update:</source>
+	     	<source>Auto Patch Update:</source>
 	     	<context-group name="ctx">
 	     	<context context-type="sourcefile">/systems/details/Overview.do</context>
         	</context-group>
@@ -19102,7 +19102,7 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
 	     </trans-unit>
 
 	     <trans-unit id="receive_notifications">
-	     	<source>Errata Email</source>
+	     	<source>Patches Email</source>
 	     	<context-group name="ctx">
 	     	<context context-type="sourcefile">/systems/details/Overview.do</context>
         	</context-group>
@@ -19334,7 +19334,7 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
          </trans-unit>
 
          <trans-unit id="sdc.details.edit.autoerrataupdate">
-            <source>Auto Errata Update:</source>
+            <source>Auto Patch Update:</source>
             <context-group name="ctx">
             <context context-type="sourcefile">/systems/details/Edit.do</context>
             </context-group>
@@ -19404,7 +19404,7 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
          </trans-unit>
 
          <trans-unit id="sdc.details.edit.updates">
-            <source>Receive Notifications of Updates/Errata.</source>
+            <source>Receive Notifications of Updates/Patches.</source>
             <context-group name="ctx">
             <context context-type="sourcefile">/systems/details/Edit.do</context>
             </context-group>
@@ -19425,14 +19425,14 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
          </trans-unit>
 
          <trans-unit id="sdc.details.edit.autoupdate">
-            <source>Automatic application of relevant errata</source>
+            <source>Automatic application of relevant patches</source>
             <context-group name="ctx">
             <context context-type="sourcefile">/systems/details/Edit.do</context>
             </context-group>
          </trans-unit>
 
          <trans-unit id="sdc.details.edit.autoupdate.unentitled">
-            <source>Auto Errata Update not available for this system.</source>
+            <source>Auto Patch Update not available for this system.</source>
             <context-group name="ctx">
             <context context-type="sourcefile">/systems/details/Edit.do</context>
             </context-group>
@@ -21456,7 +21456,7 @@ Below is a list of channels in your organization.
         <source>
 As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default @@VENDOR_NAME@@ base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels.
 &lt;p/&gt;
-&lt;strong&gt;This operation can have a dramatic effect on the packages and errata available to the systems, and should be used with caution.&lt;/strong&gt;
+&lt;strong&gt;This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution.&lt;/strong&gt;
       	</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
@@ -21724,46 +21724,46 @@ As a Channel Administrator, you may change the base channels your systems are su
       </trans-unit>
 
       <trans-unit id="channel.manage.errata.addredhaterrata">
-			<source>Add @@VENDOR_NAME@@ Errata</source>
+			<source>Add @@VENDOR_NAME@@ Patches</source>
       </trans-unit>
 
       <trans-unit id="channel.manage.errata.addredhaterratamsg">
-			<source>Choose this option if you want to import errata that exist in @@VENDOR_NAME@@ base channels, or child channels of @@VENDOR_NAME@@ provided channels.</source>
+			<source>Choose this option if you want to import patches that exist in @@VENDOR_NAME@@ base channels, or child channels of @@VENDOR_NAME@@ provided channels.</source>
       </trans-unit>
 
         <trans-unit id="channel.manage.errata.noerrata">
- 			<source>No errata found applicable to this channel.</source>
+ 			<source>No patches found applicable to this channel.</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addcustomerrata">
-			<source>Add Custom Errata</source>
+			<source>Add Custom Patches</source>
       </trans-unit>
 
       <trans-unit id="channel.manage.errata.addcustomerratamsg">
-			<source>Choose this option if you want to import custom errata or errata from custom channels.</source>
+			<source>Choose this option if you want to import custom patches or patches from custom channels.</source>
       </trans-unit>
 
        <trans-unit id="channel.manage.errata.createerrata">
-			<source>Create Custom Errata</source>
+			<source>Create Custom Patch</source>
       </trans-unit>
 
        <trans-unit id="channel.manage.errata.createerratamsg">
-			<source>Choose this option to create an errata from scratch.  You may import a new errata into this channel at publication time.</source>
+			<source>Choose this option to create a patch from scratch.  You may import a new patch into this channel at publication time.</source>
       </trans-unit>
 
        <trans-unit id="channel.manage.errata.confirmmsg">
-			<source>Below is a summary of the errata you have selected to clone.  Contained in each CSV download is a list of errata and packages respectively that will be pushed to the channel.</source>
+			<source>Below is a summary of the patches you have selected to clone.  Contained in each CSV download is a list of patches and packages respectively that will be pushed to the channel.</source>
       </trans-unit>
 
        <trans-unit id="channel.manage.errata.custommsg">
-			<source>Below is a list of errata that can pushed to the current channel.  Use the channel selection drop down filter to narrow down errata to choose from.</source>
+			<source>Below is a list of patches that can pushed to the current channel.  Use the channel selection drop down filter to narrow down patches to choose from.</source>
       </trans-unit>
 
        <trans-unit id="channel.manage.errata.redhatmsg">
-			<source>Below is a list of errata that can pushed to the current channel.  Use the drop down filters to narrow down which errata you may choose from.</source>
+			<source>Below is a list of patches that can pushed to the current channel.  Use the drop down filters to narrow down which patches you may choose from.</source>
       </trans-unit>
 
        <trans-unit id="channel.manage.errata.packageassocmsg">
-			<source>(Recommended) With this selected only errata that contain packages that apply to this channel are shown.  Also, package architecture will match what is currently in the channel.</source>
+			<source>(Recommended) With this selected only patches that contain packages that apply to this channel are shown.  Also, package architecture will match what is currently in the channel.</source>
       </trans-unit>
 
       <trans-unit id="channel.manage.patchset.none">
@@ -22018,7 +22018,7 @@ given channel.</source>
 		</source>
       </trans-unit>
        <trans-unit id="channel.jsp.package.remove">
-         <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the errata which are applicable to it.
+         <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the patches which are applicable to it.
 		</source>
        </trans-unit>
       <trans-unit id="channel.jsp.package.listmessage">
@@ -22079,17 +22079,17 @@ given channel.</source>
            <source>Confirm Package Addition</source>
        </trans-unit>
        <trans-unit id="channel.jsp.package.add.confirm.msg">
-         <source>Below is the list of packages which you have selected to add to this channel. Adding a package to this channel does not automatically affect the systems which are subscribed to it, or the errata which are applicable to it.
+         <source>Below is the list of packages which you have selected to add to this channel. Adding a package to this channel does not automatically affect the systems which are subscribed to it, or the patches which are applicable to it.
 		</source>
        </trans-unit>
       <trans-unit id="channel.jsp.package.addtitle">
          <source>Add Packages</source>
        </trans-unit>
       <trans-unit id="channel.jsp.errata.listtitle">
-         <source>This channel contains the following errata:</source>
+         <source>This channel contains the following patches:</source>
        </trans-unit>
       <trans-unit id="channel.jsp.errata.emptylist">
-         <source>This channel contains no errata.</source>
+         <source>This channel contains no patches.</source>
        </trans-unit>
       <trans-unit id="channel.jsp.package.list">
          <source>Channel Packages.</source>
@@ -22553,7 +22553,7 @@ given channel.</source>
        <trans-unit id="channel.delete.jsp.introparagraph">
          <source>Are you sure you wish to delete this channel? Packages in the channel will
            be removed from the channel, but will remain on the server. You will be
-           given the option to delete them after the channel has been deleted. Errata
+           given the option to delete them after the channel has been deleted. Patches
            related to the channel will no longer be related to the channel, and may be
            orphaned. If the channel has child channels, it cannot be deleted; the child
            channels must be deleted first. If the channel has kickstart distributions
@@ -22752,31 +22752,31 @@ given channel.</source>
         </context-group>
      </trans-unit>
        <trans-unit id="header.jsp.errata.add">
-         <source>Add Errata</source>
+         <source>Add Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
      </trans-unit>
        <trans-unit id="list.jsp.errata.listremove">
-         <source>List/Remove Errata</source>
+         <source>List/Remove Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/Errata.do</context>
         </context-group>
      </trans-unit>
        <trans-unit id="list.jsp.errata.add">
-         <source>Add Errata</source>
+         <source>Add Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/Errata.do</context>
         </context-group>
      </trans-unit>
        <trans-unit id="list.jsp.errata.clone">
-         <source>Clone Errata</source>
+         <source>Clone Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/Errata.do</context>
         </context-group>
      </trans-unit>
        <trans-unit id="channel.jsp.errata.listempty">
-         <source>There are no errata associated with this channel.</source>
+         <source>There are no patches associated with this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
@@ -22788,25 +22788,25 @@ given channel.</source>
         </context-group>
      </trans-unit>
      <trans-unit id="channel.jsp.errata.remove">
-         <source>Remove Errata</source>
+         <source>Remove Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
      </trans-unit>
      <trans-unit id="channel.jsp.errata.remove.message">
-         <source>Below is the list of errata associated with this channel. To remove an erratum from this channel, select it here, and click 'Remove' below.</source>
+         <source>Below is the list of patches associated with this channel. To remove a patch from this channel, select it here, and click 'Remove' below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
      </trans-unit>
      <trans-unit id="channel.jsp.errata.remove.confirmmessage">
-         <source>Click 'Confirm' below to remove these errata from your channel. Related packages will also be removed from the channel.</source>
+         <source>Click 'Confirm' below to remove these patches from your channel. Related packages will also be removed from the channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
      </trans-unit>
      <trans-unit id="channel.jsp.errata.remove.finalmessage">
-         <source>Successfully removed {0} errata from this channel.</source>
+         <source>Successfully removed {0} patches from this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
@@ -22849,10 +22849,10 @@ given channel.</source>
          <source>Session Cleanup</source>
      </trans-unit>
      <trans-unit id="task.status.errata.queue.notif">
-         <source>Errata Notification Queue</source>
+         <source>Patch Notification Queue</source>
      </trans-unit>
      <trans-unit id="task.status.errata.mail">
-         <source>Errata Notification Mail</source>
+         <source>Patch Notification Mail</source>
      </trans-unit>
      <trans-unit id="task.status.daily.summary">
          <source>Daily Summary Queue</source>
@@ -22876,26 +22876,26 @@ given channel.</source>
 		<source>Picked Up</source>
       </trans-unit>
       <trans-unit id="header.jsp.errata.sync">
-		<source>Sync Errata</source>
+		<source>Sync Patches</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.message">
-		<source>The following errata were cloned from errata that have since been updated.
-		   This page will allow you to synchronize your cloned errata to that of its original.</source>
+		<source>The following patches were cloned from patches that have since been updated.
+		   This page will allow you to synchronize your cloned patches to that of its original.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.note">
 		<source>Packages that were omitted as part of the original cloning process will be included here.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.listempty">
-		<source>No out of date errata were found.</source>
+		<source>No out of date patches were found.</source>
       </trans-unit>
       <trans-unit id="header.jsp.errata.sync.packagepush">
 		<source>Packages to Push</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.packages.message">
-		<source>The following packages will be pushed to this channel as part of the errata sync process.  Please review this list and unselect any unwanted packages.</source>
+		<source>The following packages will be pushed to this channel as part of the patches sync process.  Please review this list and unselect any unwanted packages.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.complete">
-		<source>Successfully synchronized {0} errata and pushed {1} packages to channel {2}.</source>
+		<source>Successfully synchronized {0} patches and pushed {1} packages to channel {2}.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata">
 		<source>Repo Cache Status</source>

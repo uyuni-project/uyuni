@@ -398,7 +398,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
         </context-group>
       </trans-unit>
       <trans-unit id="Clone Errata">
-<source>Clone Errata</source>
+<source>Clone Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -478,7 +478,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
         </context-group>
       </trans-unit>
       <trans-unit id="Errata">
-<source>Errata</source>
+<source>Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -604,7 +604,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
         </context-group>
       </trans-unit>
       <trans-unit id="Manage Errata">
-<source>Manage Errata</source>
+<source>Manage Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1796,7 +1796,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
         </context-group>
       </trans-unit>
       <trans-unit id="errata.update">
-<source>Errata Update</source>
+<source>Patch Update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
@@ -2263,7 +2263,7 @@ available for this kickstart profile to function properly.
         </context-group>
       </trans-unit>
       <trans-unit id="action.name">
-<source>Errata Update: {0} - {1}</source>
+<source>Patch Update: {0} - {1}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: RHSA-2004:577 - Security Advisory</context>
@@ -2271,7 +2271,7 @@ available for this kickstart profile to function properly.
       </trans-unit>
 
       <trans-unit id="errata.schedule">
-<source>&lt;strong&gt;{0}&lt;/strong&gt; errata update has been scheduled for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
+<source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been scheduled for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
@@ -2279,7 +2279,7 @@ available for this kickstart profile to function properly.
       </trans-unit>
 
       <trans-unit id="errata.schedule.plural">
-<source>&lt;strong&gt;{0}&lt;/strong&gt; errata updates have been scheduled for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
+<source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been scheduled for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
@@ -2287,7 +2287,7 @@ available for this kickstart profile to function properly.
       </trans-unit>
 
       <trans-unit id="errataconfirm.schedule">
-<source>Errata &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been scheduled for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
+<source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been scheduled for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 1 system</context>
@@ -2295,7 +2295,7 @@ available for this kickstart profile to function properly.
       </trans-unit>
 
       <trans-unit id="errataconfirm.schedule.plural">
-<source>Errata &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been scheduled for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
+<source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been scheduled for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
@@ -2530,7 +2530,7 @@ available for this kickstart profile to function properly.
       </trans-unit>
 
       <trans-unit id="toolbar.create.erratum">
-<source>create new erratum</source>
+<source>create new patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/UnpublishedErrata</context>
           <context context-type="sourcefile">/rhn/errata/PublishedErrata</context>
@@ -2566,7 +2566,7 @@ available for this kickstart profile to function properly.
     </trans-unit>
 
       <trans-unit id="toolbar.delete.erratum">
-<source>delete erratum</source>
+<source>delete patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata details pages</context>
         </context-group>
@@ -2591,7 +2591,7 @@ available for this kickstart profile to function properly.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.errata">
-<source>delete errata</source>
+<source>delete patches</source>
         <context-group name="ctx">
             <context context-type="sourcefile">Errata edit page</context>
         </context-group>
@@ -3232,7 +3232,7 @@ user before attempting to deactivate their account.</source>
       </trans-unit>
 
       <trans-unit id="errata.applynone">
-<source>No errata selected.</source>
+<source>No patches selected.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
@@ -3913,7 +3913,7 @@ user before attempting to deactivate their account.</source>
       </trans-unit>
 
       <trans-unit id="erratum.delete">
-<source>Deleted errata &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+<source>Deleted patches &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/Delete</context>
         </context-group>
@@ -6327,7 +6327,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="taskomatic.daily.errata">
-        <source>Errata Synopses:</source>
+        <source>Patch Synopses:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Daily Summary Email</context>
         </context-group>
@@ -7220,7 +7220,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="sdc.details.edit.propertieschangedupdate">
-        <source>System properties changed for &lt;strong&gt;{0}&lt;/strong&gt;. &lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Errata Update preference.</source>
+        <source>System properties changed for &lt;strong&gt;{0}&lt;/strong&gt;. &lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Patch Update preference.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
@@ -7985,7 +7985,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
 	  <trans-unit id="api.errata.invaliderrata">
-          <source>Invalid errata: {0}</source>
+          <source>Invalid patch: {0}</source>
       </trans-unit>
 
 	  <trans-unit id="api.package.invalidpackage">
@@ -7993,7 +7993,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="api.errata.duplicateerrata">
-          <source>Errata already exists with advisory {0}</source>
+          <source>Patch already exists with advisory {0}</source>
       </trans-unit>
 
       <trans-unit id="api.system.invalidarch">
@@ -8025,7 +8025,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 		
       <trans-unit id="api.errata.invalidadvisorytype">
-          <source>Invalid errata type, &quot;{0}&quot;. Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
+          <source>Invalid patch type, &quot;{0}&quot;. Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
       </trans-unit>
 
       <trans-unit id="api.errata.invalidadvisoryrelease">
@@ -8033,7 +8033,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="api.errata.nochannelsselected">
-          <source>You are trying to publish an errata but have not selected any channels to publish to.  Errata must be published to at least one channel.</source>
+          <source>You are trying to publish a patch but have not selected any channels to publish to.  Patches must be published to at least one channel.</source>
       </trans-unit>
 
      <trans-unit id="api.package.download.toolarge">
@@ -8133,7 +8133,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="api.errata.missingerrataaction">
-          <source>A required errata attribute ({0}) was missing.</source>
+          <source>A required patch attribute ({0}) was missing.</source>
       </trans-unit>
 
       <trans-unit id="org.entitlements.system.toomany">
@@ -8157,15 +8157,15 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="securityErrata">
-          <source>Security Errata</source>
+          <source>Security Patches</source>
       </trans-unit>
 
       <trans-unit id="bugErrata">
-          <source>Bug Errata</source>
+          <source>Bug Patches</source>
       </trans-unit>
 
       <trans-unit id="enhancementErrata">
-          <source>Enhancement Errata</source>
+          <source>Enhancement Patches</source>
       </trans-unit>
 
       <trans-unit id="outdatedPackages">
@@ -8292,7 +8292,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
        <trans-unit id="frontend.actions.channels.manager.add.viewErrata">
-          <source>View Associated Errata</source>
+          <source>View Associated Patches</source>
       </trans-unit>
 
       <trans-unit id="frontend.actions.channels.manager.add.selectArch">
@@ -8308,7 +8308,7 @@ Follow this url to see the full list of inactive systems:
      </trans-unit>
 
        <trans-unit id="frontend.actions.channels.manager.add.success">
-          <source>Successfully added {1} package(s) and scheduled {0} errata to be cloned to channel {2}.  The cloned Errata should appear in the channel and applicable to systems within a few minutes.</source>
+          <source>Successfully added {1} package(s) and scheduled {0} patches to be cloned to channel {2}.  The cloned patches should appear in the channel and applicable to systems within a few minutes.</source>
      </trans-unit>
 
        <trans-unit id="frontend.actions.channels.manager.add.clone">
@@ -8745,7 +8745,7 @@ tree will not be usable for kickstarting.
         </source>
      </trans-unit>
      <trans-unit id="errata.delete.msg">
-        <source>Successfully deleted {0} errata.</source>
+        <source>Successfully deleted {0} patches.</source>
      </trans-unit>
      <trans-unit id="message.syncschedule.disabled">
         <source>Schedule has been disabled</source>
