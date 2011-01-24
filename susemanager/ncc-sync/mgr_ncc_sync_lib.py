@@ -878,10 +878,10 @@ class NCCSync(object):
             query = rhnSQL.prepare(
                 """INSERT INTO RHNCHANNEL ( ID, BASEDIR, PARENT_CHANNEL,
                                             CHANNEL_ARCH_ID, LABEL, NAME,
-                                            SUMMARY, DESCRIPTION )
+                                            SUMMARY, DESCRIPTION, CHECKSUM_TYPE_ID )
                    VALUES ( sequence_nextval('rhn_channel_id_seq'), '/dev/null',
                            :parent_channel, :channel_arch_id, :label, :name,
-                           :summary, :description )""")
+                           :summary, :description, (select id from RHNCHECKSUMTYPE where label = 'sha1') )""")
             query.execute(
                 parent_channel = self.get_parent_id(channel),
                 channel_arch_id = self.get_channel_arch_id(channel),
