@@ -24,7 +24,7 @@ Feature: Explore the main landing page
     When I go to the home page
     Then I should see a "Overview" link
     And I should see a "Systems" link
-    And I should see a "Errata" link
+    And I should see a "Patches" link
     And I should see a "Channels" link
     And I should see a "Configuration" link
     And I should see a "Schedule" link

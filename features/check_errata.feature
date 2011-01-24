@@ -123,8 +123,8 @@ Feature: Check errata
   Scenario: check relevant errata for this client
     Given I am on the Systems overview page of this client
      When I follow "Software" in class "content-nav"
-     When I follow "Errata" in class "contentnav-row2"
-     Then I should see a "Relevant Errata" text
+     When I follow "Patches" in class "contentnav-row2"
+     Then I should see a "Relevant Patches" text
       And I should see a "Security update for the Linux kernel" text
       And I should see a "Recommended update for suseRegister" text
       And I should see a "Recommended update for aaa_base" text
