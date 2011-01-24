@@ -855,7 +855,7 @@ public class Channel extends BaseDomainHelper implements Comparable {
 
         // Check if this is a SUSE channel that needs repodata
         repodataRequired |= isSuseRepoMD(this.id);
-        
+
         log.debug("isChannelRepodataRequired for channel(" + this.id + ") = " +
                 repodataRequired);
         return repodataRequired;
@@ -869,10 +869,10 @@ public class Channel extends BaseDomainHelper implements Comparable {
      */
     private boolean isSuseRepoMD(Long cid) {
         SelectMode m = ModeFactory.getMode("Channel_queries", "is_suse_repomd");
-		Map<String, Long> params = new HashMap<String, Long>();
-		params.put("cid", cid);
-		DataResult list = m.execute(params);
-		return !list.isEmpty();
+        Map<String, Long> params = new HashMap<String, Long>();
+        params.put("cid", cid);
+        DataResult list = m.execute(params);
+        return !list.isEmpty();
     }
 
     /**
