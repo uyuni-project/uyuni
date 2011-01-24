@@ -1196,4 +1196,14 @@ END;
   </query>
 </callable-mode>
 
+<mode name="is_suse_repomd">
+  <query params="cid">
+    SELECT 1
+    FROM suseProductChannel spc
+    JOIN suseProducts sp ON spc.product_id = sp.id
+    WHERE spc.channel_id = :cid
+    AND NOT (sp.name = 'res' AND sp.version IN ('3','4'))
+  </query>
+</mode>
+
 </datasource_modes>
