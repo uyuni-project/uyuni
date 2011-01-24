@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 24 12:01:15 CET 2011 - jrenner@suse.de
+
+- replace the term "Errata" with "Patches" throughout translation
+
+-------------------------------------------------------------------
 Sat Jan 22 12:38:09 CET 2011 - mc@suse.de
 
 - fix macros
