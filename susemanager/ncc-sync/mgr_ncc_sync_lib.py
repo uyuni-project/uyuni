@@ -44,7 +44,7 @@ class ParentChannelNotInstalled(Exception):
                 "is not currently installed in the database. You need to "
                 "install it before adding this channel to the database."
                 % self.__dict__)
-    
+
 class NCCSync(object):
     """This class is used to sync SUSE Manager Channels and NCC repositories"""
 
@@ -95,7 +95,7 @@ class NCCSync(object):
 
     def _connect_ncc( self, url, send=None ):
         """Connect the ncc with the given URL.
-        
+
         :arg url: the url where the request will be sent
         :kwarg send: do a post-request when "send" is given.
 
@@ -310,7 +310,7 @@ class NCCSync(object):
         if name == None:
             name = label
         if channel_family_id != None:
-            update_sql = """UPDATE RHNCHANNELFAMILY 
+            update_sql = """UPDATE RHNCHANNELFAMILY
                             SET name        = :name,
                                 label       = :label,
                                 org_id      = :org_id,
@@ -339,7 +339,7 @@ class NCCSync(object):
     def edit_channel_family_table(self, label, name=None,
                                   org_id=None, url="some url" ):
         """Create or update an existing channel family
-        
+
         Returns the id of the channel_family.
 
         """
@@ -393,7 +393,7 @@ class NCCSync(object):
             row = query.fetchone_dict() or {}
             if row:
                 update_sql = """
-                    UPDATE SUSEPRODUCTS 
+                    UPDATE SUSEPRODUCTS
                     SET
                       friendly_name     = :friendly_name,
                       channel_family_id = :channel_family_id,
@@ -436,7 +436,7 @@ class NCCSync(object):
                     product_list = p["PRODUCT_LIST"],
                     product_id = p["PRODUCTDATAID"])
         rhnSQL.commit()
-    
+
     def get_entitlement_id( self, ent ):
         id = None
 
@@ -448,7 +448,7 @@ class NCCSync(object):
             if row:
                 id = row["id"]
         return id
-    
+
     def reset_entitlements_in_table( self ):
         update_sql = """
             UPDATE RHNSERVERGROUP SET
@@ -485,7 +485,7 @@ class NCCSync(object):
         # Two things can happen:
         # 1. we have more subscriptions in NCC than in DB
         #    we'll add (substract a negative value) from org_id=1 max_members
-        # 
+        #
         # 2. NCC says we have less subscriptions than we know of in the DB
         #    we have to reduce the max_members of some org's
         #    We'll substract the max_members of org_id=1 until needed_subscriptions=0 or max_members=current_members
@@ -700,12 +700,12 @@ class NCCSync(object):
         greater than zero. Which means that our client has active
         subscriptions for those channel families. Additionally, all official
         channel families have an ORG_ID of NULL.
-        
+
         Returns a list of channel family labels.
 
         """
         query = rhnSQL.prepare(
-            """SELECT DISTINCT fam.LABEL FROM RHNCHANNELFAMILY fam JOIN 
+            """SELECT DISTINCT fam.LABEL FROM RHNCHANNELFAMILY fam JOIN
                                               RHNPRIVATECHANNELFAMILY priv
                                               ON fam.ID = priv.CHANNEL_FAMILY_ID
                WHERE (priv.MAX_MEMBERS > 0 OR priv.FVE_MAX_MEMBERS > 0) AND
@@ -724,7 +724,7 @@ class NCCSync(object):
         with open(NCC_CHANNELS, 'r') as f:
             tree = etree.parse(f)
         channels_iter = tree.getroot()
-        
+
         families = self.get_available_families()
 
         # filter out the channels which are not in the available families list
@@ -752,7 +752,7 @@ class NCCSync(object):
         db_channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
 
         ncc_channels = sorted(self.get_available_channels(), key=lambda channel: channel.get('label'))
-        
+
         for channel in ncc_channels:
             if channel.get('parent') != 'BASE':
                 continue
@@ -859,7 +859,7 @@ class NCCSync(object):
                             "database: %(channel)s with arch: %(arch)s"
                             % locals())
         return arch_id
-            
+
     def add_channel(self, channel_label):
         """Add a new channel to the database
 
@@ -903,15 +903,26 @@ class NCCSync(object):
                 channel_id = channel_id,
                 channel_family_id = channel_family_id)
 
-            for repo in channel:
-                self.insert_repo(repo, channel_id)
-                
+            for child in channel:
+                if child.tag == "contentsource":
+                    self.insert_repo(child, channel_id)
+                elif child.tag == 'dist':
+                    self.add_dist_channel_map(channel_id, self.get_channel_arch_id(channel), child)
+
             rhnSQL.commit()
             self.map_channel_to_products(channel.get('product_id'), channel_id)
             self.print_msg( "Added channel '%s' to the database." % channel_label )
 
             # schedule repo sync for this channel
             self.sync_channel(channel_id, channel_label)
+
+    def add_dist_channel_map(self, channel_id, channel_arch_id, dist):
+        query = rhnSQL.prepare(
+            """INSERT INTO RHNDISTCHANNELMAP
+               (OS, RELEASE, CHANNEL_ARCH_ID, CHANNEL_ID)
+               VALUES (:os, :release, :channel_arch_id, :channel_id)""")
+        query.execute(os=dist.get('os'), release=dist.get('release'),
+        channel_arch_id=channel_arch_id, channel_id=channel_id)
 
     def is_entitlement( self, s ):
         return self.ncc_rhn_ent_mapping.has_key(s)
