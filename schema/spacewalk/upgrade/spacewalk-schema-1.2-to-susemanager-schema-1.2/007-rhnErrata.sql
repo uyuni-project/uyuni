@@ -14,5 +14,5 @@
 ALTER TABLE rhnErrata MODIFY advisory_name varchar2(100);
 ALTER TABLE rhnErrata MODIFY advisory varchar2(100);
 ALTER TABLE rhnErrata ADD    errata_from varchar2(127);
-\
+/
 show errors
