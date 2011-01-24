@@ -153,14 +153,14 @@ class RepoSync:
                 sys.exit(1)
             except:
                 self.print_msg("Unexpected error: %s" % sys.exc_info()[0])
-                self.print_msg("%s" % traceback.format_exc())	
+                self.print_msg("%s" % traceback.format_exc())
               	sys.exit(1)
 
         if self.regen:
             taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                 [self.channel_label], [], "server.app.yumreposync")
         self.update_date()
-        rhnSQL.commit()        
+        rhnSQL.commit()
         self.print_msg("Sync complete")
 
 
@@ -439,6 +439,7 @@ class RepoSync:
             """Link each package that wasn't already linked in the previous step"""
             try:
                 if pack not in to_download:
+                    (pack.checksum_type, cs_type_orig, pack.checksum) = self.best_checksum_item(package.checksums)
                     self.associate_package(pack)
             except KeyboardInterrupt:
                 raise
@@ -448,13 +449,26 @@ class RepoSync:
                     raise
                 continue
 
-    
+
     def upload_package(self, package, path):
         temp_file = open(path, 'rb')
         header, payload_stream, header_start, header_end = \
                 rhnPackageUpload.load_package(temp_file)
-        package.checksum_type = header.checksum_type()
+        #
+        # Getting checksum_type from RPM header does not work.
+        # There is always the default 'md5' returned.
+        # But with this we will not find package by checksum, if we do not
+        # have the checksum from the metadata in the DB.
+        # so let's create the best checksum_type we have in the metadata
+        #
+        #package.checksum_type = header.checksum_type()
+        (package.checksum_type, cs_type_orig, md_checksum) = self.best_checksum_item(package.checksums)
         package.checksum = getFileChecksum(package.checksum_type, file=temp_file)
+        #
+        # perform an additional check, if the checksums matches
+        #
+        if md_checksum and package.checksum != md_checksum:
+            raise Exception("Checksum missmatch")
 
         rel_package_path = rhnPackageUpload.relative_path_from_header(
                 header, self.channel['org_id'],
@@ -521,6 +535,29 @@ class RepoSync:
       for arch in ca:
         compatArchs.append(arch['label'])
       return compatArchs
+
+    def best_checksum_item(self, checksums):
+        if checksums.has_key('sha256'):
+            checksum_type = 'sha256'
+            checksum_type_orig = 'sha256'
+            checksum = checksums[checksum_type_orig]
+        elif checksums.has_key('sha'):
+            checksum_type = 'sha1'
+            checksum_type_orig = 'sha'
+            checksum = checksums[checksum_type_orig]
+        elif checksums.has_key('sha1'):
+            checksum_type = 'sha1'
+            checksum_type_orig = 'sha1'
+            checksum = checksums[checksum_type_orig]
+        elif checksums.has_key('md5'):
+            checksum_type = 'md5'
+            checksum_type_orig = 'md5'
+            checksum = checksums[checksum_type_orig]
+        else:
+            checksum_type = 'md5'
+            checksum_type_orig = None
+            checksum = None
+        return (checksum_type, checksum_type_orig, checksum)
 
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
