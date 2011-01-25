@@ -48,7 +48,7 @@ Feature: Clone a Channel
      And I choose "select_errata" from "clone_type"
      And I click on "Create Channel"
      And I should see a "Software Channel: New Channel" text
-     And I should see a "Select errata" text
+     And I should see a "Select patches" text
      And I click on "Create Channel"
      And I should see a "Software Channel: Clone 3 of SLES11-SP1-Updates x86_64 Channel" text
      And I choose "Merge w/CLssp1-aaa_base-sysvinit-2610-channel-x86_64" for "slessp1-aaa_base-sysvinit-2610-channel-x86_64"
