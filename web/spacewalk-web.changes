@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 25 12:01:56 CET 2011 - jrenner@suse.de
+
+- rename errata to patches in the context of cloning channels
+
+-------------------------------------------------------------------
 Sat Jan 22 12:38:38 CET 2011 - mc@suse.de
 
 - fix macros
