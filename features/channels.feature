@@ -49,8 +49,9 @@ Feature: Explore the Channels page
     Then I should see a "This package installs several important configuration files." text
      And I should see a "SLES11-SP1-Updates x86_64 Channel" link
      And I should see a "SUSE LINUX Products GmbH, Nuernberg, Germany" text
-     And I should see a "f4b60101281a777ae1bdfa2749f1a9e6" text
-     And I should see a "redhat/1/f4b/aaa_base/11-6.30.1/x86_64/f4b60101281a777ae1bdfa2749f1a9e6/aaa_base-11-6.30.1.x86_64.rpm" text
+     And I should see a "SHA1sum:" text
+     And I should see a "bf15721fc2ae3acd47089aca22747cf1bfdc0c59" text
+     And I should see a "redhat/1/bf1/aaa_base/11-6.30.1/x86_64/bf15721fc2ae3acd47089aca22747cf1bfdc0c59/aaa_base-11-6.30.1.x86_64.rpm" text
 
   Scenario: Check Package dependencies page
     When I follow "Channels"
