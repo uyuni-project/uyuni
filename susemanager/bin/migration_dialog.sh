@@ -11,7 +11,7 @@ variables[7]="MANAGER_PASS"
 variables[8]="SYS_DB_PASS"
 variables[9]="MANAGER_DB_NAME"
 
-MIGRATION_ENV="/tmp/migration_env.sh"
+MIGRATION_ENV="/root/migration_env.sh"
 
 sat_dialog() {
     dialog --backtitle "Migration from Red Hat Satellite to SUSE Manager" \
@@ -45,12 +45,12 @@ manager_dialog
 let i=0;
 while read line
 do
-    echo -n "export " >> /tmp/env
-    echo -n ${variables[$i]} >> /tmp/env
-    echo "=\"$line\"" >> /tmp/env
+    echo -n "export " >> /root/env
+    echo -n ${variables[$i]} >> /root/env
+    echo "=\"$line\"" >> /root/env
     let i=i+1
 done < "$MIGRATION_ENV"
 
-mv /tmp/env $MIGRATION_ENV
+mv /root/env $MIGRATION_ENV
 
 # vim: set expandtab:

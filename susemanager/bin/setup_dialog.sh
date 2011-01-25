@@ -26,11 +26,11 @@ variables[19]="NCC_PASS"
 variables[20]="NCC_EMAIL"
 
 
-RESULT_ENV="/tmp/setup_env.sh"
-RESULT_ENV1="/tmp/setup_env_manager.sh"
-RESULT_ENV2="/tmp/setup_env_cert.sh"
-RESULT_ENV3="/tmp/setup_env_db.sh"
-RESULT_ENV4="/tmp/setup_env_ncc.sh"
+RESULT_ENV="/root/setup_env.sh"
+RESULT_ENV1="/root/setup_env_manager.sh"
+RESULT_ENV2="/root/setup_env_cert.sh"
+RESULT_ENV3="/root/setup_env_db.sh"
+RESULT_ENV4="/root/setup_env_ncc.sh"
 
 REMOTE_DB="no"
 
@@ -124,12 +124,12 @@ create_export() {
     do
         line=`echo "$line" | sed 's/"/\\\"/g'`
         line=`echo "$line" | sed 's/\\$/\\\\$/g'`
-        echo -n "export " >> /tmp/env
-        echo -n ${variables[$i]} >> /tmp/env
-        echo "=\"$line\"" >> /tmp/env
+        echo -n "export " >> /root/env
+        echo -n ${variables[$i]} >> /root/env
+        echo "=\"$line\"" >> /root/env
         let i=i+1
     done < $1
-    mv /tmp/env $1
+    mv /root/env $1
 }
 
 RUN="TRUE"

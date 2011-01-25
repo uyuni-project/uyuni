@@ -5,8 +5,8 @@ DO_SETUP=0
 LOGFILE=0
 WAIT_BETWEEN_STEPS=0
 
-MIGRATION_ENV="/tmp/migration_env.sh"
-SETUP_ENV="/tmp/setup_env.sh"
+MIGRATION_ENV="/root/migration_env.sh"
+SETUP_ENV="/root/setup_env.sh"
 
 SATELLITE_HOST=""
 SATELLITE_DOMAIN=""
@@ -125,10 +125,10 @@ alter system set processes = 400 scope=spfile;
 alter system set \"_optimizer_filter_pred_pullup\"=false scope=spfile;
 alter system set \"_optimizer_cost_based_transformation\"=off scope=spfile;
 quit
-" > /tmp/dbsetup.sql
+" > /root/dbsetup.sql
 
-    sqlplus sys/\"$MANAGER_PASS\"@$MANAGER_DB_NAME as sysdba @/tmp/dbsetup.sql
-    rm /tmp/dbsetup.sql
+    sqlplus sys/\"$MANAGER_PASS\"@$MANAGER_DB_NAME as sysdba @/root/dbsetup.sql
+    rm /root/dbsetup.sql
 }
 
 setup_spacewalk() {
@@ -156,10 +156,10 @@ enable-tftp=$MANAGER_ENABLE_TFTP
 ncc-user = $NCC_USER
 ncc-pass = $NCC_PASS
 ncc-email = $NCC_EMAIL
-" > /tmp/spacewalk-answers
+" > /root/spacewalk-answers
 
-    /usr/bin/spacewalk-setup --ncc --answer-file=/tmp/spacewalk-answers
-    rm /tmp/spacewalk-answers
+    /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers
+    rm /root/spacewalk-answers
 }
 
 drop_manager_db() {
@@ -169,10 +169,10 @@ drop_manager_db() {
 create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
 grant dba to $MANAGER_USER;
 quit
-" > /tmp/dbnewspacewalkuser.sql
+" > /root/dbnewspacewalkuser.sql
 
-    sqlplus sys/\"${SYS_DB_PASS}\"@${MANAGER_DB_NAME} as sysdba @/tmp/dbnewspacewalkuser.sql
-    rm /tmp/dbnewspacewalkuser.sql
+    sqlplus sys/\"${SYS_DB_PASS}\"@${MANAGER_DB_NAME} as sysdba @/root/dbnewspacewalkuser.sql
+    rm /root/dbnewspacewalkuser.sql
 }
 
 dump_remote_db() {

@@ -8,7 +8,7 @@
     import "Wizard";
 
     string dir		= Directory::tmpdir;
-    string env_file	= "/tmp/setup_env.sh";
+    string env_file	= "/root/setup_env.sh";
 
     if (FileUtils::Exists (env_file))
     {
