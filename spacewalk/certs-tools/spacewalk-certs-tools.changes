@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 25 13:32:40 CET 2011 - ma@suse.de
+
+- Enable rhn_bootstrap generated bootstrap.sh to manage 
+  SUSE systems as well.
+
+-------------------------------------------------------------------
 Tue Jan 18 15:27:18 CET 2011 - mantel@suse.de
 
 - add mgr-* symlinks (BNC #660791)

@@ -40,7 +40,8 @@ from client_config_update import readConfigFile
 from rhn_bootstrap_strings import \
     getHeader, getConfigFilesSh, getUp2dateScriptsSh, getGPGKeyImportSh, \
     getCorpCACertSh, getRegistrationSh, getUp2dateTheBoxSh, \
-    getAllowConfigManagement, getAllowRemoteCommands
+    getAllowConfigManagement, getAllowRemoteCommands, \
+    getRegistrationStackSh
 from sslToolConfig import CA_CRT_NAME, CA_CRT_RPM_NAME
 from spacewalk.common.fileutils import rotateFile, cleanupAbsPath
 from spacewalk.common.checksum  import getFileChecksum
@@ -49,10 +50,16 @@ from spacewalk.common.checksum  import getFileChecksum
 PRODUCT_NAME = 'RHN Server'
 if os.path.exists('/usr/share/rhn/proxy') \
   or os.path.exists('/var/www/rhns/proxy'):
-    PRODUCT_NAME = 'RHN Proxy Server'
+    if os.path.exists('/etc/products.d/suse-manager-proxy.prod'):
+      PRODUCT_NAME = 'SUSE Manager Proxy'
+    else:
+      PRODUCT_NAME = 'RHN Proxy Server'
 elif os.path.exists('/usr/share/rhn/server') \
   or os.path.exists('/var/www/rhns/server'):
-    PRODUCT_NAME = 'RHN Satellite Server'
+    if os.path.exists('/etc/products.d/suse-manager-server.prod'):
+      PRODUCT_NAME = 'SUSE Manager Server'
+    else:
+      PRODUCT_NAME = 'RHN Satellite Server'
 
 DEFAULT_CA_CERT_PATH = '/usr/share/rhn/'+CA_CRT_NAME
 
@@ -90,7 +97,7 @@ def parseUrl(url):
               that normally follows the URL, e.g. /XMLRPC
             - if {http[s],file}:// exists, anything between that and the next /
               is the URL.
-              
+
         The behavior of *this* function:
             - if no {http[s],file}:// then the string is simply assumed to be a
               URL without the {http[s],file}:// attached. The parsed info is
@@ -151,7 +158,7 @@ def getExistingOverridesConfig(overrides):
 
     # now let's fill in any blanks with sensible defaults.
     if not d['serverURL']:
-        d['serverURL'] = 'https://' + socket.gethostname() + '/XMLRPC'
+        d['serverURL'] = 'https://' + socket.getfqdn() + '/XMLRPC'
 
     d['sslCACert'] = d['sslCACert'] or DEFAULT_CA_CERT_PATH
 
@@ -210,7 +217,7 @@ def getDefaultOptions():
             'activation-keys': '',
             'overrides': DEFAULT_OVERRIDES,
             'script': DEFAULT_SCRIPT,
-            'hostname': socket.gethostname(),
+            'hostname': socket.getfqdn(),
             'ssl-cert': '', # will trigger a search
             'gpg-key': "",
             'http-proxy': "",
@@ -314,10 +321,10 @@ def parseCommandline():
 %s [options]
 
 Note: for rhn-bootstrap to work, certain files are expected to be
-      in /var/www/html/pub/ (the default Apache public directory):
+      in %s/ (the default Apache public directory):
         - the CA SSL public certificate (probably RHN-ORG-TRUSTED-SSL-CERT)
         - the CA SSL public certficate RPM
-          (probably rhn-org-trusted-ssl-cert-VER.noarch.rpm)""" % _progName
+          (probably rhn-org-trusted-ssl-cert-VER.noarch.rpm)""" % (_progName, DEFAULT_APACHE_PUB_DIRECTORY)
 
     # preliminary parse (-h/--help is acted upon during final parse)
     optionList = getOptionsTable()
@@ -421,7 +428,7 @@ ERROR: the value of --overrides and --script cannot be the same!
 
     if not options.http_proxy_username:
         options.http_proxy_password = ''
-    
+
     # forcing numeric values
     for opt in ['allow_config_actions', 'allow_remote_commands', 'no_ssl',
         'no_gpg', 'no_up2date', 'verbose']:
@@ -468,7 +475,7 @@ def copyFiles(options):
             elif os.path.isfile(dest):
                 writeYN = 0
             if writeYN:
-                copyFile(options.ssl_cert, dest) 
+                copyFile(options.ssl_cert, dest)
 
     # corp GPG key
     if not options.no_gpg and options.gpg_key:
@@ -481,7 +488,7 @@ def copyFiles(options):
             elif os.path.isfile(dest):
                 writeYN = 0
             if writeYN:
-                copyFile(options.gpg_key, dest) 
+                copyFile(options.gpg_key, dest)
 
 
 def writeClientConfigOverrides(options):
@@ -514,7 +521,7 @@ def writeClientConfigOverrides(options):
             scheme = 'http'
         d['serverURL'] = scheme + '://' + options.hostname + '/XMLRPC'
         d['noSSLServerURL'] = 'http://' + options.hostname + '/XMLRPC'
-    
+
     # if proxy, enable it
     # if "", disable it
     if options.http_proxy:
@@ -603,11 +610,11 @@ def writeClientConfigOverrides(options):
 
 
 def generateBootstrapScript(options):
-    "write, copy and place files into /var/www/html/pub/bootstrap/"
+    "write, copy and place files into <DEFAULT_APACHE_PUB_DIRECTORY>/bootstrap/"
 
     orgCACert = os.path.basename(options.ssl_cert or '')
 
-    # write to /var/www/html/pub/bootstrap/<options.overrides>
+    # write to <DEFAULT_APACHE_PUB_DIRECTORY>/bootstrap/<options.overrides>
     writeClientConfigOverrides(options)
 
     isRpmYN = processCACertPath(options)
@@ -622,16 +629,20 @@ def generateBootstrapScript(options):
                   options.gpg_key, options.overrides, options.hostname,
                   orgCACert, isRpmYN, 1 - options.no_ssl, 1 - options.no_gpg,
                   options.allow_config_actions, options.allow_remote_commands,
-                  1 - options.no_up2date, pubname)
+                  1 - options.no_up2date, pubname, DEFAULT_APACHE_PUB_DIRECTORY)
 
     writeYN = 1
 
     # concat all those script-bits
+
+    # SLES: install packages required for registration on systems that do not have them installed
+    newScript = newScript + getRegistrationStackSh()
+
     newScript = newScript + getConfigFilesSh() + getUp2dateScriptsSh()
 
-    
+
     newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh() + \
-                getRegistrationSh(PRODUCT_NAME) 
+                getRegistrationSh(PRODUCT_NAME)
 
     #5/16/05 wregglej 159437 - moving stuff that messes with the allowed-action dir to after registration
     if options.allow_config_actions:
@@ -640,7 +651,7 @@ def generateBootstrapScript(options):
         newScript = newScript + getAllowRemoteCommands()
 
     #5/16/05 wregglej 159437 - moved the stuff that up2dates the entire box to after allowed-actions permissions are set.
-    newScript = newScript + getUp2dateTheBoxSh()
+    newScript = newScript + getUp2dateTheBoxSh(PRODUCT_NAME)
 
     _bootstrapDir = cleanupAbsPath(os.path.join(options.pub_tree, 'bootstrap'))
     _script = cleanupAbsPath(os.path.join(_bootstrapDir, options.script))
@@ -673,7 +684,7 @@ def main():
 
         o options on commandline take precedence, but if option not set...
         o prepopulate the commandline options from already generated
-          /var/www/pub/bootstrap/client-config-overrides.txt if in existance.
+          <DEFAULT_APACHE_PUB_DIRECTORY>/bootstrap/client-config-overrides.txt if in existance.
           FIXME: isn't done as of yet.
         o set defaults otherwise
     """

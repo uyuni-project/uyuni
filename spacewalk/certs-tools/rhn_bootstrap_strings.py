@@ -32,7 +32,7 @@ echo "%s Client bootstrap script v4.0"
 #
 #   (1) centrally, from the %s via ssh (i.e., from the
 #       %s):
-#         cd /var/www/html/pub/bootstrap/
+#         cd %s/bootstrap/
 #         cat bootstrap-<edited_name>.sh | ssh root@<client-hostname> /bin/bash
 #
 #   ...or...
@@ -56,7 +56,7 @@ echo "%s Client bootstrap script v4.0"
 # PROVISIONING/KICKSTART NOTE:
 #   If provisioning a client, ensure the proper CA SSL public certificate is
 #   configured properly in the post section of your kickstart profiles (the
-#   RHN Satellite or hosted web user interface).
+#   %s or hosted web user interface).
 
 # UP2DATE/RHN_REGISTER VERSIONING NOTE:
 #   This script will not work with very old versions of up2date and
@@ -68,7 +68,7 @@ echo
 echo "MINOR MANUAL EDITING OF THIS FILE MAY BE REQUIRED!"
 echo
 echo "If this bootstrap script was created during the initial installation"
-echo "of an RHN Satellite, the ACTIVATION_KEYS, and ORG_GPG_KEY values will"
+echo "of a %s, the ACTIVATION_KEYS, and ORG_GPG_KEY values will"
 echo "probably *not* be set (see below). If this is the case, please do the"
 echo "following:"
 echo "  - copy this file to a name specific to its use."
@@ -80,7 +80,7 @@ echo "    appropriate:"
 echo "    - ACTIVATION_KEYS needs to reflect the activation key(s) value(s)"
 echo "      from the website. XKEY or XKEY,YKEY"
 echo "    - ORG_GPG_KEY needs to be set to the name of the corporate public"
-echo "      GPG key filename (residing in /var/www/html/pub) if appropriate."
+echo "      GPG key filename (residing in %s) if appropriate."
 echo
 echo "Verify that the script variable settings are correct:"
 echo "    - CLIENT_OVERRIDES should be only set differently if a customized"
@@ -132,7 +132,7 @@ PROFILENAME=""   # Empty by default to let it be set automatically.
 
 # an idea from Erich Morisse (of Red Hat).
 # use either wget *or* curl
-# Also check to see if the version on the 
+# Also check to see if the version on the
 # machine supports the insecure mode and format
 # command accordingly.
 
@@ -144,7 +144,7 @@ if [ -x /usr/bin/wget ] ; then
     else
         FETCH="/usr/bin/wget -q -r -nd"
     fi
-    
+
 else
     if [ -x /usr/bin/curl ] ; then
         output=`LANG=en_US /usr/bin/curl -k 2>&1`
@@ -162,9 +162,11 @@ if [ $USING_SSL -eq 0 ] ; then
     HTTPS_PUB_DIRECTORY=${HTTP_PUB_DIRECTORY}
 fi
 
-YUM=up2date
-if [ -x /usr/bin/yum ] ; then
-    YUM=yum
+INSTALLER=up2date
+if [ -x /usr/bin/zypper ] ; then
+    INSTALLER=zypper
+elif [ -x /usr/bin/yum ] ; then
+    INSTALLER=yum
 fi
 """
 
@@ -172,8 +174,8 @@ fi
 def getHeader(productName, activation_keys, org_gpg_key,
               overrides, hostname, orgCACert, isRpmYN,
               using_ssl, using_gpg,
-              allow_config_actions, allow_remote_commands, up2dateYN, pubname):
-    #2/14/06 wregglej 181407 If the org_gpg_key option has the path to the file 
+              allow_config_actions, allow_remote_commands, up2dateYN, pubname, apachePubDirectory):
+    #2/14/06 wregglej 181407 If the org_gpg_key option has the path to the file
     #in it, remove it. It will cause the $FETCH to fail.
     path_list = os.path.split(org_gpg_key)
     if path_list[0] and path_list[0] != '':
@@ -184,12 +186,50 @@ def getHeader(productName, activation_keys, org_gpg_key,
     else:
         exit_call = " "
 
-    return _header % (productName, productName, productName, productName,
+    return _header % (productName, productName, productName, apachePubDirectory, productName, productName, productName, apachePubDirectory,
                       exit_call, activation_keys, org_gpg_key,
                       overrides, hostname, orgCACert, isRpmYN,
                       using_ssl, using_gpg,
                       allow_config_actions, allow_remote_commands, up2dateYN,
                       pubname, pubname)
+
+
+def getRegistrationStackSh():
+    return """\
+if [ "$INSTALLER" == zypper ]; then
+  echo
+  echo "CHECKING THE REGISTRATION STACK"
+  echo "-------------------------------------------------"
+  echo "* check for necessary packages being installed:"
+  Z_NEEDED="spacewalk-check spacewalk-client-setup spacewalk-client-tools rhncfg-actions rhncfg-client rhncfg-management zypp-plugin-spacewalk"
+  Z_MISSING=""
+  for P in $Z_NEEDED; do
+    rpm -q "$P" || Z_MISSING="$Z_MISSING $P"
+  done
+  if [ -z "$Z_MISSING" ]; then
+    echo "  no packages missing."
+  else
+    echo "* going to install missing packages:"
+    Z_CLIENT_REPO_NAME="susemanager-client-setup"
+    Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/${Z_CLIENT_REPO_NAME}.repo"
+    if [ ! -f "$Z_CLIENT_REPO_FILE" ]; then
+      echo "  adding client software repository $Z_CLIENT_REPO_NAME"
+      cat <<EOF >"$Z_CLIENT_REPO_FILE"
+[$Z_CLIENT_REPO_NAME]
+name=$Z_CLIENT_REPO_NAME
+baseurl=http://${HOSTNAME}/pub/repositories/${Z_CLIENT_REPO_NAME}
+enabled=1
+autorefresh=1
+keeppackages=0
+gpgcheck=0
+EOF
+      zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME" || exit 1
+    fi
+    zypper --non-interactive in $Z_MISSING || exit 1
+  fi
+fi
+
+"""
 
 
 def getConfigFilesSh():
@@ -232,7 +272,7 @@ echo "  . up2date config file"
 
 def getGPGKeyImportSh():
     return """\
-if [ ! -z "$ORG_GPG_KEY" ] ; then 
+if [ ! -z "$ORG_GPG_KEY" ] ; then
     echo
     echo "* importing organizational GPG key"
     rm -f ${ORG_GPG_KEY}
@@ -261,6 +301,18 @@ if [ $USING_SSL -eq 1 ] ; then
         rm -f ${ORG_CA_CERT}
         $FETCH ${HTTP_PUB_DIRECTORY}/${ORG_CA_CERT}
         mv ${ORG_CA_CERT} /usr/share/rhn/
+
+    fi
+    if [ "$INSTALLER" == zypper ] ; then
+	if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
+	  # get name from config
+	  ORG_CA_CERT=$(basename $(sed -n 's/^sslCACert *= *//p' /etc/sysconfig/rhn/up2date))
+	fi
+	test -e "/etc/ssl/certs/${ORG_CA_CERT}.pem" || {
+	  test -d "/etc/ssl/certs" || mkdir -p "/etc/ssl/certs"
+	  ln -s "/usr/share/rhn/${ORG_CA_CERT}" "/etc/ssl/certs/${ORG_CA_CERT}.pem"
+	  test -x /usr/bin/c_rehash && /usr/bin/c_rehash /etc/ssl/certs/ | grep "${ORG_CA_CERT}"
+	}
     fi
 fi
 
@@ -270,11 +322,13 @@ fi
 #5/16/05 wregglej 159437 - changed script to use rhn-actions-control
 def getAllowConfigManagement():
     return """\
-if [ $ALLOW_CONFIG_ACTIONS -eq 1 ] ; then 
+if [ $ALLOW_CONFIG_ACTIONS -eq 1 ] ; then
     echo
     echo "* setting permissions to allow configuration management"
     echo "  NOTE: use an activation key to subscribe to the tools"
-    if [ "$YUM" == yum ] ; then
+    if [ "$INSTALLER" == zypper ] ; then
+        echo "        channel and zypper install/update rhncfg-actions"
+    elif [ "$INSTALLER" == yum ] ; then
         echo "        channel and yum upgrade rhncfg-actions"
     else
         echo "        channel and up2date rhncfg-actions"
@@ -285,7 +339,9 @@ if [ $ALLOW_CONFIG_ACTIONS -eq 1 ] ; then
     else
         echo "Error setting permissions for configuration management."
         echo "    Please ensure that the activation key subscribes the"
-        if [ "$YUM" == yum ] ; then
+	if [ "$INSTALLER" == zypper ] ; then
+	    echo "    system to the tools channel and zypper install/update rhncfg-actions."
+	elif [ "$INSTALLER" == yum ] ; then
             echo "    system to the tools channel and yum updates rhncfg-actions."
         else
             echo "    system to the tools channel and up2dates rhncfg-actions."
@@ -300,11 +356,13 @@ fi
 #5/16/05 wregglej 158437 - changed script to use rhn-actions-control
 def getAllowRemoteCommands():
     return """\
-if [ $ALLOW_REMOTE_COMMANDS -eq 1 ] ; then 
+if [ $ALLOW_REMOTE_COMMANDS -eq 1 ] ; then
     echo
     echo "* setting permissions to allow remote commands"
     echo "  NOTE: use an activation key to subscribe to the tools"
-    if [ "$YUM" == yum ] ; then
+    if [ "$INSTALLER" == zypper ] ; then
+        echo "        channel and zypper update rhncfg-actions"
+    elif [ "$INSTALLER" == yum ] ; then
         echo "        channel and yum upgrade rhncfg-actions"
     else
         echo "        channel and up2date rhncfg-actions"
@@ -314,7 +372,9 @@ if [ $ALLOW_REMOTE_COMMANDS -eq 1 ] ; then
     else
         echo "Error setting permissions for remote commands."
         echo "    Please ensure that the activation key subscribes the"
-        if [ "$YUM" == yum ] ; then
+        if [ "$INSTALLER" == zypper ] ; then
+	    echo "    system to the tools channel and zypper updates rhncfg-actions."
+	elif [ "$INSTALLER" == yum ] ; then
             echo "    system to the tools channel and yum updates rhncfg-actions."
         else
             echo "    system to the tools channel and up2dates rhncfg-actions."
@@ -338,8 +398,8 @@ echo "------------"
 # change the string as needed.
 #
 if [ -z "$ACTIVATION_KEYS" ] ; then
-    echo "*** ERROR: in order to bootstrap RHN clients, an activation key or keys"
-    echo "           must be created in the RHN web user interface, and the"
+    echo "*** ERROR: in order to bootstrap %s clients, an activation key or keys"
+    echo "           must be created in the %s web user interface, and the"
     echo "           corresponding key or keys string (XKEY,YKEY,...) must be mapped to"
     echo "           the ACTIVATION_KEYS variable of this script."
     exit 1
@@ -371,22 +431,26 @@ else
     echo "* explicitely not registering"
 fi
 
-""" % (productName)
+""" % (productName, productName, productName)
 
 
-def getUp2dateTheBoxSh(no_up2date=0):
+def getUp2dateTheBoxSh(productName):
     return """\
 echo
 echo "OTHER ACTIONS"
 echo "------------------------------------------------------"
 if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
-    if [ "$YUM" == yum ] ; then
+    if [ "$INSTALLER" == zypper ] ; then
+        echo "zypper --non-interactive up zypper zypp-plugin-spacewalk; rhn-profile-sync; zypper --non-interactive up (conditional)"
+    elif [ "$INSTALLER" == yum ] ; then
         echo "yum -y upgrade yum yum-rhn-plugin; rhn-profile-sync; yum upgrade (conditional)"
     else
         echo "up2date up2date; up2date -p; up2date -uf (conditional)"
     fi
 else
-    if [ "$YUM" == yum ] ; then
+    if [ "$INSTALLER" == zypper ] ; then
+        echo "zypper --non-interactive up zypper zypp-plugin-spacewalk; rhn-profile-sync"
+    elif [ "$INSTALLER" == yum ] ; then
         echo "yum -y upgrade yum yum-rhn-plugin; rhn-profile-sync"
     else
         echo "up2date up2date; up2date -p"
@@ -397,18 +461,30 @@ echo "------------------------------------------------------"
 if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
     echo "* completely updating the box"
 else
-    echo "* ensuring $YUM itself is updated"
+    echo "* ensuring $INSTALLER itself is updated"
 fi
-if [ "$YUM" == yum ] ; then
+if [ "$INSTALLER" == zypper ] ; then
+    zypper ref -s
+    zypper --non-interactive up zypper zypp-plugin-spacewalk
+    if [ -x /usr/sbin/rhn-profile-sync ] ; then
+        /usr/sbin/rhn-profile-sync
+    else
+        echo "Error updating system info in %s."
+        echo "    Please ensure that rhn-profile-sync in installed and rerun it."
+    fi
+    if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
+        zypper --non-interactive up
+    fi
+elif [ "$INSTALLER" == yum ] ; then
     /usr/bin/yum -y upgrade yum yum-rhn-plugin
     if [ -x /usr/sbin/rhn-profile-sync ] ; then
         /usr/sbin/rhn-profile-sync
     else
-        echo "Error updating system info in RHN Satellite."
+        echo "Error updating system info in %s."
         echo "    Please ensure that rhn-profile-sync in installed and rerun it."
     fi
     if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
-        /usr/bin/yum -y upgrade 
+        /usr/bin/yum -y upgrade
     fi
 else
     /usr/sbin/up2date up2date
@@ -418,7 +494,7 @@ else
     fi
 fi
 echo "-bootstrap complete-"
-"""
+""" % (productName, productName)
 
 
 
