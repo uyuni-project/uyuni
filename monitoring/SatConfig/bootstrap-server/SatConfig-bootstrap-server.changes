@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 25 17:59:00 CET 2011 - mc@suse.de
+
+- require perl-NOCpulse-OracleDB 
+
+-------------------------------------------------------------------
 Wed Sep 15 08:23:33 CEST 2010 - mantel@suse.de
 
 - Initial release of SatConfig-bootstrap-server

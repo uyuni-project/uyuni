@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 25 17:53:43 CET 2011 - mc@suse.de
+
+- require perl-Crypt-SSLeay for https support (bnc#665896) 
+
+-------------------------------------------------------------------
 Tue Sep 14 17:15:16 CEST 2010 - mantel@suse.de
 
 - Initial release of nocpulse-common
