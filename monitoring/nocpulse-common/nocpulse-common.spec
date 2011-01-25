@@ -11,6 +11,7 @@ Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?suse_version}
 Requires(pre):  apache2, /usr/sbin/useradd
 Requires(post): coreutils, openssh
+Requires:       perl-Crypt-SSLeay
 %else
 Requires(pre):  httpd, /usr/sbin/useradd
 Requires(post): /sbin/runuser, openssh
