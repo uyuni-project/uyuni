@@ -15,12 +15,12 @@
 
 <pxt-include file="/network/software/channels/manage/errata_cache_update.pxi" />
 
-      <p>Below is the list of the errata which apply to the original channel, but have not yet been cloned into your channel.  To clone an erratum to this channel, select one of the available options, and click 'Clone Errata' below.</p>
+      <p>Below is the list of the patches which apply to the original channel, but have not yet been cloned into your channel.  To clone a patch to this channel, select one of the available options, and click 'Clone Patches' below.</p>
     </div>
 
     <h2>
       <img src="/img/rhn-icon-errata.gif" />
-      Clone Errata
+      Clone Patches
     </h2>
 
 <pxt-include-late file="/network/components/message_queues/local.pxi" />
@@ -34,13 +34,13 @@
   <column name="Advisory" label="advisory_name" align="center" width="5%">
     <url>/rhn/errata/details/Details.do?eid={column:id}</url>
   </column>
-  <column name="Owned Errata" label="owned_errata_list" />
+  <column name="Owned Patches" label="owned_errata_list" />
   <column name="Synopsis" label="ADVISORY_SYNOPSIS" />
   <column name="Action" label="select_action" />
 
-  <empty_list_message>No Errata.</empty_list_message>
+  <empty_list_message>No Patches.</empty_list_message>
 
-  <action name="Clone Errata" url="/network/software/channels/manage/errata/clone_confirm.pxt" />
+  <action name="Clone Patches" url="/network/software/channels/manage/errata/clone_confirm.pxt" />
 </rhn-listview>
 
   </grail-canvas-template>

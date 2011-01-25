@@ -18,7 +18,7 @@
 
     <h2>
       <img src="/img/rhn-icon-errata.gif" />
-      Clone Errata
+      Clone Patches
     </h2>
 
 <pxt-include-late file="/network/components/message_queues/local.pxi" />
@@ -34,9 +34,9 @@
   </column>
   <column name="Action" label="action" />
 
-  <empty_list_message>No Errata.</empty_list_message>
+  <empty_list_message>No Patches.</empty_list_message>
 
-  <action name="Update Errata" label="confirm_errata_application" url="/rhn/channels/manage/Manage.do" />
+  <action name="Update Patches" label="confirm_errata_application" url="/rhn/channels/manage/Manage.do" />
 
 </rhn-listview>
 

@@ -316,7 +316,7 @@ sub channel_edit_cb {
 
   #If we just cloned a channel, 'flow' the user into the errata cloning page for that channel....
   if ($clone_type eq 'select_errata') {
-    $pxt->push_message(site_info => sprintf('<strong>%s</strong> has been cloned as <strong>%s</strong>.  You may now wish to clone the errata associated with <strong>%s</strong>', $from_channel->name, $channel->name, $from_channel->name));
+    $pxt->push_message(site_info => sprintf('<strong>%s</strong> has been cloned as <strong>%s</strong>.  You may now wish to clone the patches associated with <strong>%s</strong>', $from_channel->name, $channel->name, $from_channel->name));
     $url = '/network/software/channels/manage/errata/clone.pxt';
   }
   elsif ($clone_type) {
@@ -399,11 +399,11 @@ sub build_clone_channel_details_form {
 								label => 'clone_type');
 
   $type_radiogroup->add_option( {value => 'current',
-				 label => 'Current state of the channel (all errata)'} );
+				 label => 'Current state of the channel (all patches)'} );
   $type_radiogroup->add_option( {value => 'original',
-				 label => 'Original state of the channel (no errata)'} );
+				 label => 'Original state of the channel (no patches)'} );
   $type_radiogroup->add_option( {value => 'select_errata',
-				 label => 'Select errata'} );
+				 label => 'Select patches'} );
 
   my $clone_type = $pxt->dirty_param('clone_type') || 'current';
 
@@ -446,7 +446,7 @@ sub update_channel_cache {
   foreach my $cid (@channels) {
 
     unless ($pxt->user->verify_channel_admin($cid)) {
-      warn "User '",$pxt->user->id,"' attempted to update errata cache for channel '$cid'\n";
+      warn "User '",$pxt->user->id,"' attempted to update patches cache for channel '$cid'\n";
       $pxt->redirect("/errors/permission.pxt");
     }
 
@@ -503,7 +503,7 @@ sub channel_edit_form {
 	? 'Current state of the channel'
 	  : ($clone_type eq 'original')
 	    ? 'Original channel with no updates'
-	      : 'Select errata';
+	      : 'Select patches';
 
     if ($clone_from_channel->parent_channel) {
 	$subs{channel_parent} = RHN::ChannelEditor->likely_parent($pxt->user->org_id, $clone_from_channel->id);
