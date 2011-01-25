@@ -6,6 +6,8 @@
     Wizard::CreateDialog();
 
     list dialog = [
+	"susemanager_ask",
+	"susemanager_migration",
 	"susemanager_manager",
 	"susemanager_cert",
 	"susemanager_db",
@@ -13,8 +15,9 @@
 	"susemanager_write",
     ];
 
-    integer id = 0;
-    any result = `next;
+    integer id	= 0;
+    any result	= `next;
+    any prev	= `next;
 
     while ( ( id >= 0 ) && ( id < size( dialog ) ) ) {
 
@@ -32,6 +35,11 @@
       {
 	  result = `cancel;
       }
+      if (result == `auto)
+      {
+	  result = prev;
+      }
+
       if (result == `cancel || result == `abort)
       {
 	  break;
@@ -39,10 +47,12 @@
       else if (result == `next)
       {
 	  id = id + 1;
+	  prev	= `next;
       }
       else if (result == `back)
       {
 	  id = id - 1;
+	  prev	= `back;
       }
       else if (result == `finish)
       {

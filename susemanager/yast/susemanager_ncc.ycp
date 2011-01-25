@@ -9,6 +9,15 @@
     import "Wizard";
 
     map args = GetInstArgs::argmap ();
+    any ret = `auto;
+
+    string migration_file	= Directory::tmpdir + "/susemanager_migration";
+    boolean migration		= FileUtils::Exists (migration_file);
+    if (migration)
+    {
+	y2milestone ("migration was chosen, skipping this step");
+	return ret;
+    }
 
     map<string,string> settings	= $[
 	"NCC_USER"	: "",
@@ -54,7 +63,6 @@
     // dialog caption
     Wizard::SetContents (_("NCC Settings"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
 
-    any ret	= `back;
     while (true)
     {
 	ret	= UI::UserInput ();

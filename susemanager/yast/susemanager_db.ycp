@@ -9,6 +9,15 @@
     import "Wizard";
 
     map args = GetInstArgs::argmap ();
+    any ret	= `auto;
+
+    string migration_file	= Directory::tmpdir + "/susemanager_migration";
+    boolean migration		= FileUtils::Exists (migration_file);
+    if (migration)
+    {
+	y2milestone ("migration was chosen, skipping this step");
+	return ret;
+    }
 
     map<string,string> settings	= $[
 	"MANAGER_DB_NAME"	: "",
@@ -40,7 +49,7 @@
 	}
     });
 
-    term contents = `HBox (`HSpacing (1), `VBox (
+    term contents = `HBox (`HSpacing (3), `VBox (
 
 	`RadioButtonGroup (`id(`rb), `VBox (
 	    `Left (`RadioButton(`id(`localdb), `opt (`notify),
@@ -79,7 +88,6 @@
     Wizard::SetContents (_("Database Settings"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
     UI::ChangeWidget (`id ("MANAGER_DB_PORT"), `ValidChars, "1234567890");
 
-    any ret	= `back;
     while (true)
     {
 	ret	= UI::UserInput ();
