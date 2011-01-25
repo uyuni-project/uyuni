@@ -24,7 +24,7 @@ from importLib import File, Dependency, ChangeLog, Channel, \
 from backendLib import gmtime, localtime
 from types import ListType, TupleType, IntType, LongType, StringType
 from spacewalk.common import log_debug
-from spacewalk.common.checksum import getFileChecksum
+from spacewalk.common.checksum import getFileChecksum, guess_checksum_type
 
 class rpmPackage(IncompletePackage):
     # Various mappings
@@ -250,7 +250,7 @@ class rpmBinaryPackage(Package, rpmPackage):
                     continue
             else:
                 if tag == 'files':
-                    hash['checksum_type'] = self['checksum_type']
+                    hash['checksum_type'] = guess_checksum_type(hash['filedigest'])
                 obj.populate(hash)
                 self[tag].append(obj)
 

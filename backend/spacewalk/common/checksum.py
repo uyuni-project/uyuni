@@ -73,4 +73,20 @@ def getStringChecksum(hashtype, s):
     ctx = hashlib.new(hashtype, s)
     return ctx.hexdigest()
 
+def guess_checksum_type(checksum):
+    """ guess the checksum type using the length """
+    size = len(checksum)
+    type = 'md5'
+    if size == 32:
+        type = 'md5'
+    elif size == 40:
+        type = 'sha1'
+    elif size == 64:
+        type = 'sha256'
+    elif size == 96:
+        type = 'sha384'
+    elif size == 128:
+        type = 'sha512'
+
+    return type
 
