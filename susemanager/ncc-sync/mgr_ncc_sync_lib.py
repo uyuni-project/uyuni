@@ -823,9 +823,9 @@ class NCCSync(object):
             type_id = rhnSQL.Row("RHNCONTENTSOURCETYPE", "LABEL", "yum")['id']
             query = rhnSQL.prepare(
                 """INSERT INTO RHNCONTENTSOURCE
-                       ( ID, ORG_ID, TYPE_ID, SOURCE_URL, LABEL)
+                       ( ID, ORG_ID, TYPE_ID, SOURCE_URL, LABEL, METADATA_SIGNED)
                    VALUES ( sequence_nextval('rhn_chan_content_src_id_seq'),
-                            NULL, :type_id, :source_url, :label )""")
+                            NULL, :type_id, :source_url, :label, :is_signed )""")
             query.execute(type_id=type_id, **data)
 
             # create relation between the new repo and the channel
