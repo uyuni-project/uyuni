@@ -48,6 +48,6 @@ Feature: Explore the main landing page
     And I should see a "Critical Probes" text
     And I should see a "Warning Probes" text
     And I should see a "Recently Scheduled Actions" text
-    And I should see a "Relevant Security Errata" text
+    And I should see a "Relevant Security Patches" text
     And I should see a "System Group Name" text
     And I should see a "Recently Registered Systems" text
