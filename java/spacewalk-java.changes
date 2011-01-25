@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 25 13:13:05 CET 2011 - jrenner@suse.de
+
+- fix bnc#665835: wrong text on system entitlements
+
+-------------------------------------------------------------------
 Mon Jan 24 12:01:15 CET 2011 - jrenner@suse.de
 
 - consider suseChannels when determining if repodata is required
