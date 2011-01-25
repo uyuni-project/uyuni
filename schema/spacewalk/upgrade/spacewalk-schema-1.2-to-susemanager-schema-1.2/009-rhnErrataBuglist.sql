@@ -12,5 +12,4 @@
 --
 
 ALTER TABLE rhnErrataBuglist add(href VARCHAR2(255));
-/
 show errors
