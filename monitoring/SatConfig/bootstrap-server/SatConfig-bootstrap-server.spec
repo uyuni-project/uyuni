@@ -15,6 +15,7 @@ License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?suse_version}
 BuildRequires: nocpulse-common
+Requires:      perl-NOCpulse-OracleDB
 %endif
 
 %description
