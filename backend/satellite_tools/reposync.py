@@ -439,7 +439,7 @@ class RepoSync:
             """Link each package that wasn't already linked in the previous step"""
             try:
                 if pack not in to_download:
-                    (pack.checksum_type, cs_type_orig, pack.checksum) = self.best_checksum_item(package.checksums)
+                    (pack.checksum_type, cs_type_orig, pack.checksum) = self.best_checksum_item(pack.checksums)
                     self.associate_package(pack)
             except KeyboardInterrupt:
                 raise
