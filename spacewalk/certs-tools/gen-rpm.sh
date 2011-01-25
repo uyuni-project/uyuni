@@ -215,7 +215,7 @@ while true; do
                 *)  BUILDREQ[${#BUILDREQ[*]}]=$2; shift 2;;
             esac;;
         "") break;;
-        *) 
+        *)
             ftwo=`echo $1 | (read -n 2 foo; echo $foo)`
             if [ $ftwo == '--' ]; then
                 echo "Unknown option $1"
@@ -275,7 +275,7 @@ while [ $i -lt ${#PARAMS[*]} ]; do
         echo ${dstmod} | (IFS=: read dst mod
             # Now split mod into the actual mode, the user and the group
             # Default to 0644,-,-
-            # NOTE there's already a %defattr(-,root,root), so if there's no u 
+            # NOTE there's already a %defattr(-,root,root), so if there's no u
             # or g defined, set it to '-' by default
             echo $mod | (IFS=, read m u g
                 echo "%attr(${m:-0644},${u:--},${g:--}) ${dst}"
@@ -335,12 +335,14 @@ EOF
 rm -rf $RPM_BUILD_DIR/$DIRNAME
 
 # Build the rpm from that tarball
+# Use binary_payload w9.gzdio as e.g. lzma is not supported on older systems
 RPMOPTS="--define \"_topdir $RPM_BUILD_DIR\"\
  --define '_builddir    %{_topdir}'\
  --define '_sourcedir   %{_topdir}'\
  --define '_specdir     %{_topdir}'\
  --define '_rpmdir      %{_topdir}'\
- --define '_srcrpmdir   %{_topdir}'"
+ --define '_srcrpmdir   %{_topdir}'\
+ --define '_binary_payload w9.gzdio'"
 
 eval "rpmbuild -ta $RPMOPTS --clean $RPM_BUILD_DIR/$TARBALL" || exit 1
 

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 25 17:15:32 CET 2011 - ma@suse.de
+
+- Use binary_payload w9.gzdio in gen-rpm.sh as e.g. lzma is not 
+  supported on older systems.
+
+-------------------------------------------------------------------
 Fri Jan 14 16:59:10 CET 2011 - mc@suse.de
 
 - do not require a special release 
