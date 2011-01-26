@@ -8,6 +8,9 @@ BuildArch:    noarch
 Group:        Development/Libraries
 %if 0%{?suse_version}
 Requires:     perl = %{perl_version}
+Requires:     perl-Net-SNMP
+Requires:     perl-Net-SSLeay
+Requires:     perl-BerkeleyDB
 %else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
