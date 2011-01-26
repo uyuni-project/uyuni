@@ -663,6 +663,10 @@ delete from rhnChannel where label like 'ChannelLabel%';
         <exclude name="**/*.conf" />
         <exclude name="**/*.conf.rpmsave" />
         <exclude name="**/test/validation/userCreateForm.xsd" />
+        <exclude name="**/StringResource*.xml"/>
+      </fileset>
+      <fileset dir="${build.dir}/classes">
+        <include name="**/StringResource_en_US.xml"/>
       </fileset>
       <!-- ugh, we can't flatten this like we would with a <copy> tag
            or use a mapper, alas -->
