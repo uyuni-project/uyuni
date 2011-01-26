@@ -61,7 +61,16 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/tomcat5/weba
 %else
 ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/java-branding.jar
 %endif
-cp conf/rhn_docs.conf %{buildroot}/%{_sysconfdir}/rhn/default/rhn_docs.conf
+
+cat > %{buildroot}/%{_sysconfdir}/rhn/default/rhn_docs.conf <<-ENDOFCONFIG
+docs.reference_guide=http://www.novell.com/documentation/
+docs.install_guide=http://www.novell.com/documentation/
+docs.proxy_guide=http://www.novell.com/documentation/
+docs.client_config_guide=http://www.novell.com/documentation/
+docs.channel_mgmt_guide=http://www.novell.com/documentation/
+docs.release_notes=http://www.novell.com/documentation/
+docs.proxy_release_notes=http://www.novell.com/documentation/
+ENDOFCONFIG
 
 %clean
 rm -rf %{buildroot}
