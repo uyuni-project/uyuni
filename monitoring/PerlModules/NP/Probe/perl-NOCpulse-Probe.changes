@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jan 26 17:46:28 CET 2011 - mc@suse.de
+
+- add missing requirements 
+
+-------------------------------------------------------------------
 Tue Sep 14 17:39:23 CEST 2010 - mantel@suse.de
 
 - Initial release of perl-NOCpulse-Probe
