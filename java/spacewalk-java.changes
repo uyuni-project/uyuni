@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jan 26 11:36:56 CET 2011 - jrenner@suse.de
+
+- rename errata to patches in auto-generated emails
+
+-------------------------------------------------------------------
 Wed Jan 26 11:24:10 CET 2011 - jkupec@suse.cz
 
 - Excluded non-english string files from rhn.jar for now
