@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jan 26 08:14:11 UTC 2011 - dmacvicar@suse.de
+
+- fix ram check dialog workflow error message
+- do not cut text out when displaying not enough ram message
+
+-------------------------------------------------------------------
 Tue Jan 25 11:26:27 CET 2011 - mc@suse.de
 
 - RES repositories do not have signed metadata (bnc#665590)
