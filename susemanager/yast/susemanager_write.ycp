@@ -28,11 +28,32 @@
 
     string logfile	= "/var/log/susemanager_setup.log";
 
+    // text label
+    term label	= `Label (`id (`label), _("Migration is prepared."));
+    if (migration)
+    {
+	label	= `VBox (
+	    `VSpacing (2),
+	    // text label
+	    `Label ("The configuration files for a migration have been created.
+Now you can start the migration process by calling
+
+'/usr/lib/susemanager/bin/migration.sh -m'.
+
+Be aware that this process can take more than 10 hours,
+depending on the configuration of you Satellite server.
+
+For more information of how to migrate a Satellite server,
+read the Quickstart Reference."),
+	    `VSpacing (2)
+	);
+    }
+
     term contents = `HBox (`HSpacing (1), `VBox (
-	// label
-	`Label (`id (`label), _("Migration is prepared.")),
+	label,
 	`VSpacing (0.5)
     ), `HSpacing (1));
+
 
 
     string help_text	= "";
@@ -40,12 +61,25 @@
     // dialog caption
     Wizard::SetContents (_("Write Settings"), contents, help_text, true, true);
 
-    if (!Popup::YesNo (_("All data are collected. Run migration now?")))
+    while (migration)
+    {
+	any ret	= UI::UserInput ();
+	if (ret == `abort && !Popup::ConfirmAbort (`incomplete))
+	{
+	    continue;
+	}
+	else
+	{
+	    return ret;
+	}
+    }
+
+    if (!Popup::YesNo (_("All data are collected. Run setup now?")))
     {
 	return `back;
     }
 
-    UI::ChangeWidget (`id (`label), `Value, _("Migration is running. Please wait..."));
+    UI::ChangeWidget (`id (`label), `Value, _("Setup is running. Please wait..."));
 
     UI::BusyCursor ();
 
