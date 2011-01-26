@@ -63,13 +63,13 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/tomcat6/weba
 %endif
 
 cat > %{buildroot}/%{_sysconfdir}/rhn/default/rhn_docs.conf <<-ENDOFCONFIG
-docs.reference_guide=http://www.novell.com/documentation/
-docs.install_guide=http://www.novell.com/documentation/
-docs.proxy_guide=http://www.novell.com/documentation/
-docs.client_config_guide=http://www.novell.com/documentation/
-docs.channel_mgmt_guide=http://www.novell.com/documentation/
-docs.release_notes=http://www.novell.com/documentation/
-docs.proxy_release_notes=http://www.novell.com/documentation/
+docs.reference_guide=http://www.novell.com/documentation/suse.html
+docs.install_guide=http://www.novell.com/documentation/suse.html
+docs.proxy_guide=http://www.novell.com/documentation/suse.html
+docs.client_config_guide=http://www.novell.com/documentation/suse.html
+docs.channel_mgmt_guide=http://www.novell.com/documentation/suse.html
+docs.release_notes=http://www.novell.com/documentation/suse.html
+docs.proxy_release_notes=http://www.novell.com/documentation/suse.html
 ENDOFCONFIG
 
 %clean
