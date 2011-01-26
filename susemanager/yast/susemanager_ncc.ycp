@@ -11,14 +11,6 @@
     map args = GetInstArgs::argmap ();
     any ret = `auto;
 
-    string migration_file	= Directory::tmpdir + "/susemanager_migration";
-    boolean migration		= FileUtils::Exists (migration_file);
-    if (migration)
-    {
-	y2milestone ("migration was chosen, skipping this step");
-	return ret;
-    }
-
     map<string,string> settings	= $[
 	"NCC_USER"	: "",
 	"NCC_PASS"	: "",
