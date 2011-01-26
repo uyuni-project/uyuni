@@ -25,8 +25,11 @@
 
       y2debug ("calling '%1'", module_name);
 
-      if ( id == (size( dialog ) - 1)) {
-          Wizard::SetNextButton(`next, Label::FinishButton() );
+      if (id == (size (dialog) - 1)) {
+          Wizard::SetNextButton (`next, Label::FinishButton ());
+      }
+      else if (id == (size (dialog) - 2)) {
+          Wizard::SetNextButton (`next, Label::NextButton ());
       }
 
       result = WFM::CallFunction (module_name, [ GetInstArgs::argmap ()]);
