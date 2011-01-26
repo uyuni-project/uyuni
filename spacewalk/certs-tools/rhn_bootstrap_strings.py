@@ -201,7 +201,7 @@ if [ "$INSTALLER" == zypper ]; then
   echo "CHECKING THE REGISTRATION STACK"
   echo "-------------------------------------------------"
   echo "* check for necessary packages being installed:"
-  Z_NEEDED="spacewalk-check spacewalk-client-setup spacewalk-client-tools rhncfg-actions rhncfg-client rhncfg-management zypp-plugin-spacewalk"
+  Z_NEEDED="spacewalk-check spacewalk-client-setup spacewalk-client-tools zypp-plugin-spacewalk"
   Z_MISSING=""
   for P in $Z_NEEDED; do
     rpm -q "$P" || Z_MISSING="$Z_MISSING $P"
