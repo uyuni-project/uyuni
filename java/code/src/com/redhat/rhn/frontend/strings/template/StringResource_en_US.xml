@@ -322,7 +322,7 @@ Thank you for using @@PRODUCT_NAME@@.
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
-Complete information about this errata can be found at the following location:
+Complete information about this patch can be found at the following location:
      {0}
 
 {1} - {2}
@@ -352,8 +352,8 @@ Summary:
 ---------------------
 Affected Systems List
 ---------------------
-This Errata Advisory may apply to the systems listed below. If you know that
-this errata does not apply to a system listed, it might be possible that the
+This Patch Advisory may apply to the systems listed below. If you know that
+this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (RHEL 5 and above) as root on the system in question to refresh your software profile.
     </source>
@@ -361,13 +361,13 @@ package profile for that server is out of date. In that case you should run
   <trans-unit id="email.errata.notification.body.onesystem">
     <source>
 There is 1 affected system registered in 'Overview' (only systems for
-which you have explicitly enabled Errata Alerts are shown).
+which you have explicitly enabled Patch Alerts are shown).
     </source>
   </trans-unit>
   <trans-unit id="email.errata.notification.body.numsystems">
     <source>
 There are {0} affected systems registered in 'Overview' (only systems for
-which you have explicitly enabled Errata Alerts are shown).
+which you have explicitly enabled Patch Alerts are shown).
     </source>
     <context-group name="ctx">
       <context context-type="paramnotes">
@@ -384,8 +384,8 @@ Release    Arch       Profile Name
 You may address the issues outlined in this advisory in two ways:
 
      - select your server name by clicking on its name from the list
-       available at the following location, and then schedule an
-       errata update for it:
+       available at the following location, and then schedule a
+       patch update for it:
            {1}
 
      - run the Update Agent on each affected server.
@@ -401,7 +401,7 @@ You may address the issues outlined in this advisory in two ways:
     <source>
 Changing Notification Preferences
 ---------------------------------
-To enable/disable your Errata Alert preferences globally please log in to @@PRODUCT_NAME@@
+To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
 and navigate from "Overview" / "Your Account" to the "Preferences" tab.
 
         URL: {0}
