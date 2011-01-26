@@ -151,7 +151,7 @@ public class ErrataMailer extends RhnJavaJob {
                     login + "-" + orgId.toString() + "@rhn.redhat.com");
             mail.setBody(emailBody);
             StringBuffer subject = new StringBuffer();
-            subject.append(Config.get().getString("web.product_name") + " Errata Alert: ");
+            subject.append(Config.get().getString("web.product_name") + " Patch Alert: ");
             subject.append(errata.getAdvisory()).append(" - ");
             subject.append(errata.getSynopsis());
             mail.setSubject(subject.toString());
