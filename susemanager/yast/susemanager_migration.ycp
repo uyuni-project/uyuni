@@ -91,12 +91,14 @@
 	    if (pw1 == "")
 	    {
 		Popup::Error (_("Password is missing."));
+		UI::SetFocus (`id ("SATELLITE_DB_PASS"));
 		continue;
 	    }
 	    if (pw1 != deletechars (pw1, invalid_pw_chars))
 	    {
 		Popup::Error (sformat (_("The password contains invalid characters.
 The invalid characters are: %1"), invalid_pw_chars));
+		UI::SetFocus (`id ("SATELLITE_DB_PASS"));
 		continue;
 	    }
 

@@ -33,6 +33,21 @@
 	"CERT_PASS2"	: ""
     ];
 
+    map<string,string> labels	= $[
+	// text entry label
+	"CERT_O"	: _("Organisation"),
+	// text entry label
+	"CERT_OU"	: _("Organisation Unit"),
+	// text entry label
+	"CERT_CITY"	: _("City"),
+	// text entry label
+	"CERT_STATE"	: _("State"),
+	// text entry label
+	"CERT_COUNTRY"	: _("Country"),
+	// text entry label
+	"CERT_EMAIL"	: _("E-mail")
+    ];
+
     string env_file	= Directory::tmpdir + "/env_cert";
     if (FileUtils::Exists (env_file))
     {
@@ -58,29 +73,23 @@
     });
 
     term contents = `HBox (`HSpacing (1), `VBox (
-	// text entry label
-	`InputField (`id ("CERT_O"), `opt (`hstretch), _("&Organisation"),
+	`InputField (`id ("CERT_O"), `opt (`hstretch), labels["CERT_O"]:"",
 	    settings["CERT_O"]:""),
-	// text entry label
-	`InputField (`id ("CERT_OU"), `opt (`hstretch), _("Organisation &Unit"),
+	`InputField (`id ("CERT_OU"), `opt (`hstretch), labels["CERT_OU"]:"",
 	    settings["CERT_OU"]:""),
-	// text entry label
-	`InputField (`id ("CERT_CITY"), `opt (`hstretch), _("&City"),
+	`InputField (`id ("CERT_CITY"), `opt (`hstretch), labels["CERT_CITY"]:"",
 	    settings["CERT_CITY"]:""),
-	// text entry label
-	`InputField (`id ("CERT_STATE"), `opt (`hstretch), _("&State"),
+	`InputField (`id ("CERT_STATE"), `opt (`hstretch), labels["CERT_STATE"]:"",
 	    settings["CERT_STATE"]:""),
-	// text entry label
-	`InputField (`id ("CERT_COUNTRY"), `opt (`hstretch), _("Co&untry"),
+	`InputField (`id ("CERT_COUNTRY"), `opt (`hstretch), labels["CERT_COUNTRY"]:"",
 	    settings["CERT_COUNTRY"]:""),
-	// text entry label
-	`InputField (`id ("CERT_EMAIL"), `opt (`hstretch), _("&E-mail"),
+	`InputField (`id ("CERT_EMAIL"), `opt (`hstretch), labels["CERT_EMAIL"]:"",
 	    settings["CERT_EMAIL"]:""),
-	// text entry label
+	// password entry label
 	`Password (`id ("CERT_PASS"), `opt (`hstretch), _("SSL Pass&word"),
 	    settings["CERT_PASS"]:""),
 	// text entry label
-	`Password (`id ("CERT_PASS2"), `opt (`hstretch), _("Reapeat Password"),
+	`Password (`id ("CERT_PASS2"), `opt (`hstretch), _("Repeat Password"),
 	    settings["CERT_PASS2"]:""),
 	`VSpacing (0.5)
     ), `HSpacing (1));
@@ -107,27 +116,46 @@
 	}
 	if (ret == `next)
 	{
-	    string pw1	= (string) UI::QueryWidget (`id ("CERT_PASS"), `Value);
-	    if (pw1 != UI::QueryWidget (`id ("CERT_PASS2"), `Value))
-	    {
-		Popup::Error (_("Passwords do not match."));
+	    boolean missing	= false;
+	    foreach (string key, [ "CERT_O", "CERT_OU", "CERT_CITY", "CERT_STATE", "CERT_COUNTRY", "CERT_EMAIL"], {
+		string val	= (string) UI::QueryWidget (`id (key), `Value);
+		if (val == "")
+		{
+		    string label	= labels[key]:key;
+		    Popup::Error (sformat (_("The value of '%1' is empty."), label));
+		    UI::SetFocus (`id (key));
+		    missing	= true;
+		    break;
+		}
+	    });
+	    if (missing)
 		continue;
-	    }
+
+	    string pw1	= (string) UI::QueryWidget (`id ("CERT_PASS"), `Value);
 	    if (pw1 == "")
 	    {
 		Popup::Error (_("Password is missing."));
+		UI::SetFocus (`id ("CERT_PASS"));
+		continue;
+	    }
+	    if (pw1 != UI::QueryWidget (`id ("CERT_PASS2"), `Value))
+	    {
+		Popup::Error (_("Passwords do not match."));
+		UI::SetFocus (`id ("CERT_PASS"));
 		continue;
 	    }
 
 	    if (size (pw1) < 7)
 	    {
 		Popup::Error (sformat (_("The password should have at least %1 characters."), 7));
+		UI::SetFocus (`id ("CERT_PASS"));
 		continue;
 	    }
 	    if (pw1 != deletechars (pw1, invalid_pw_chars))
 	    {
 		Popup::Error (sformat (_("The password contains invalid characters.
 The invalid characters are: %1"), invalid_pw_chars));
+		UI::SetFocus (`id ("CERT_PASS"));
 		continue;
 	    }
 
@@ -135,8 +163,10 @@ The invalid characters are: %1"), invalid_pw_chars));
 	    if (!issubstring (email, "@"))
 	    {
 		Popup::Error (_("The E-mail Address is not valid."));
+		UI::SetFocus (`id ("CERT_EMAIL"));
 		continue;
 	    }
+
 
 	    foreach (string key, string value, settings, {
 		string val	= (string) UI::QueryWidget (`id (key), `Value);

@@ -113,32 +113,37 @@
 	}
 	if (ret == `next)
 	{
+	    if (!IP::Check ((string) UI::QueryWidget (`id ("MANAGER_IP"), `Value)))
+	    {
+		Popup::Error (IP::Valid4 ());
+		UI::SetFocus (`id ("MANAGER_IP"));
+		continue;
+	    }
 	    string pw1	= (string) UI::QueryWidget (`id ("MANAGER_PASS"), `Value);
 	    if (pw1 == "")
 	    {
 		Popup::Error (_("Password is missing."));
+		UI::SetFocus (`id ("MANAGER_PASS"));
 		continue;
 	    }
 	    if (pw1 != UI::QueryWidget (`id ("MANAGER_PASS2"), `Value))
 	    {
 		Popup::Error (_("Passwords do not match."));
-		continue;
-	    }
-	    if (!IP::Check ((string) UI::QueryWidget (`id ("MANAGER_IP"), `Value)))
-	    {
-		Popup::Error (IP::Valid4 ());
+		UI::SetFocus (`id ("MANAGER_PASS"));
 		continue;
 	    }
 	    //DB Password needs to be 7 chars long at least. Invalid chars: " $ ' !
 	    if (size (pw1) < 7)
 	    {
 		Popup::Error (sformat (_("The password should have at least %1 characters."), 7));
+		UI::SetFocus (`id ("MANAGER_PASS"));
 		continue;
 	    }
 	    if (pw1 != deletechars (pw1, invalid_pw_chars))
 	    {
 		Popup::Error (sformat (_("The password contains invalid characters.
 The invalid characters are: %1"), invalid_pw_chars));
+		UI::SetFocus (`id ("MANAGER_PASS"));
 		continue;
 	    }
 
@@ -148,6 +153,7 @@ The invalid characters are: %1"), invalid_pw_chars));
 		if (!issubstring (email, "@"))
 		{
 		    Popup::Error (_("The Administrator E-mail Address is not valid."));
+		    UI::SetFocus (`id ("MANAGER_ADMIN_EMAIL"));
 		    continue;
 		}
 	    }
