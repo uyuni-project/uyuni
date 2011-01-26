@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jan 26 13:02:24 CET 2011 - mc@suse.de
+
+- Requires: perl-MIME-tools 
+
+-------------------------------------------------------------------
 Wed Sep 15 08:28:18 CEST 2010 - mantel@suse.de
 
 - Initial release of SatConfig-installer
