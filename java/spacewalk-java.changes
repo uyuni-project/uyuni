@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan 27 13:23:35 CET 2011 - mc@suse.de
+
+- show SUSE Channels in "alter channel page" (bnc#663374)
+
+-------------------------------------------------------------------
 Wed Jan 26 11:36:56 CET 2011 - jrenner@suse.de
 
 - rename errata to patches in auto-generated emails
