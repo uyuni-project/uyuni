@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jan 27 16:36:43 CET 2011 - jrenner@suse.de
+
+- resolve strings marked with [GALAXY] (bnc#666163)
+- take the link to the copyright notice from StringResources
+
+-------------------------------------------------------------------
 Thu Jan 27 16:28:52 CET 2011 - mc@suse.de
 
 - fix subscribe to SUSE base channel via SSM (bnc#665833) 
