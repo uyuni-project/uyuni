@@ -1,3 +1,6 @@
+
+%define without_rhn_register 0%{?suse_version}
+
 Summary: Support programs and libraries for Red Hat Network or Spacewalk
 License: GPLv2
 Group: System Environment/Base
@@ -36,6 +39,7 @@ Requires: python-newt
 %else
 Requires: newt
 %endif
+Requires: logrotate
 Requires: python-dmidecode
 Requires: libxml2-python
 Requires: suseRegisterInfo
@@ -92,7 +96,9 @@ Summary: Configure and register an Spacewalk client
 Group: System Environment/Base
 Provides: rhn-setup = %{version}-%{release}
 Obsoletes: rhn-setup < %{version}-%{release}
+%if ! %{without_rhn_register}
 Requires: usermode >= 1.36
+%endif
 Requires: %{name} = %{version}-%{release}
 Requires: rhnsd
 Requires: suseRegisterInfo
@@ -101,6 +107,7 @@ Requires: suseRegisterInfo
 spacewalk-setup contains programs and utilities to configure a system to use
 SUSE Manager or Spacewalk.
 
+%if ! %{without_rhn_register}
 %package -n spacewalk-client-setup-gnome
 Summary: A GUI interface for SUSE Manager/Spacewalk Registration
 Group: System Environment/Base
@@ -125,7 +132,7 @@ Requires: liberation-sans-fonts
 %description -n spacewalk-client-setup-gnome
 spacewalk-setup-gnome contains a GTK+ graphical interface for configuring and
 registering a system with a SUSE Manager server or Spacewalk server.
-
+%endif
 
 %prep
 %setup -q
@@ -154,10 +161,32 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_register.*
 rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_*_*.*
 %endif
 
+%if %{without_rhn_register}
+rm -rf $RPM_BUILD_ROOT/etc/pam.d
+rm -rf $RPM_BUILD_ROOT/etc/security/console.apps
+rm -rf $RPM_BUILD_ROOT/usr/share/setuptool
+rm -f $RPM_BUILD_ROOT/usr/bin/rhn_register
+rm -f $RPM_BUILD_ROOT/usr/sbin/rhn_register
+rm -f $RPM_BUILD_ROOT/usr/share/man/man8/rhn_register.8.gz
+rm -f $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhn-client-tools.mo
+#spacewalk-client-setup-gnome
+rm -rf $RPM_BUILD_ROOT/%{_datadir}/firstboot
+rm -rf $RPM_BUILD_ROOT/%{_datadir}/pixmaps
+rm -rf $RPM_BUILD_ROOT/%{_datadir}/icons
+rm -rf $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/firstboot
+
+rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/messageWindow.*
+rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/rhnregGui.*
+rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/rh_register.glade
+rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/gui.*
+rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/progress.*
+rm -f $RPM_BUILD_ROOT/%{_datadir}/man/man8/rhn_register.*
+%else
 desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications --vendor=rhn rhn_register.desktop
 %if 0%{?suse_version}
 %suse_update_desktop_file rhn_register Utility
 rm -f $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhn-client-tools.mo
+%endif
 %endif
 
 %find_lang rhn-client-tools
@@ -165,6 +194,7 @@ rm -f $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhn-client-tools.mo
 %post
 rm -f %{_localstatedir}/spool/up2date/loginAuth.pkl
 
+%if ! %{without_rhn_register}
 %post -n spacewalk-client-setup-gnome
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
@@ -176,6 +206,7 @@ fi
 
 %posttrans -n spacewalk-client-setup-gnome
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+%endif
 
 
 %clean
@@ -258,21 +289,10 @@ make -f Makefile.rhn-client-tools test
 
 %files -n spacewalk-client-setup
 %defattr(-,root,root,-)
-%if 0%{?suse_version}
-%dir %{_sysconfdir}/security/console.apps
-%dir %{_datadir}/setuptool
-%dir %{_datadir}/setuptool/setuptool.d
-%endif
 %{_mandir}/man8/rhnreg_ks.8*
-%{_mandir}/man8/rhn_register.8*
 %{_mandir}/man8/spacewalk-channel.8*
 %{_mandir}/man8/rhn-channel.8*
 
-%config(noreplace) %{_sysconfdir}/security/console.apps/rhn_register
-%config(noreplace) %{_sysconfdir}/pam.d/rhn_register
-
-%{_bindir}/rhn_register
-%{_sbindir}/rhn_register
 %{_sbindir}/rhnreg_ks
 %{_sbindir}/spacewalk-channel
 %{_sbindir}/rhn-channel
@@ -281,24 +301,23 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/rhn/up2date_client/tui.*
 %{_datadir}/rhn/up2date_client/rhnreg_constants.*
 
+%if ! %{without_rhn_register}
+%if 0%{?suse_version}
+%dir %{_sysconfdir}/security/console.apps
+%dir %{_datadir}/setuptool
+%dir %{_datadir}/setuptool/setuptool.d
+%endif
+%{_mandir}/man8/rhn_register.8*
+%config(noreplace) %{_sysconfdir}/security/console.apps/rhn_register
+%config(noreplace) %{_sysconfdir}/pam.d/rhn_register
+%{_bindir}/rhn_register
+%{_sbindir}/rhn_register
 %{_datadir}/setuptool/setuptool.d/99rhn_register
+%endif
 
+%if ! %{without_rhn_register}
 %files -n spacewalk-client-setup-gnome
 %defattr(-,root,root,-)
-%if 0%{?suse_version}
-%dir %{_datadir}/firstboot
-%dir %{_datadir}/firstboot/modules
-%dir %{_datadir}/icons/hicolor
-%dir %{_datadir}/icons/hicolor/16x16
-%dir %{_datadir}/icons/hicolor/16x16/apps
-%dir %{_datadir}/icons/hicolor/24x24
-%dir %{_datadir}/icons/hicolor/24x24/apps
-%dir %{_datadir}/icons/hicolor/32x32
-%dir %{_datadir}/icons/hicolor/32x32/apps
-%dir %{_datadir}/icons/hicolor/48x48
-%dir %{_datadir}/icons/hicolor/48x48/apps
-%dir %{_datadir}/rhn/up2date_client/firstboot
-%endif
 %{_datadir}/rhn/up2date_client/messageWindow.*
 %{_datadir}/rhn/up2date_client/rhnregGui.*
 %{_datadir}/rhn/up2date_client/rh_register.glade
@@ -329,6 +348,7 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/rhn/up2date_client/firstboot/rhn_create_profile_gui.*
 %{_datadir}/rhn/up2date_client/firstboot/rhn_review_gui.*
 %{_datadir}/rhn/up2date_client/firstboot/rhn_finish_gui.*
+%endif
 %endif
 
 %changelog
