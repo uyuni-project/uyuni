@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 25 17:15:32 CET 2011 - ma@suse.de
+
+- Use binary_payload w9.gzdio in gen-rpm.sh as e.g. lzma is not
+  supported on older systems.
+
+-------------------------------------------------------------------
 Tue Jan 25 13:32:40 CET 2011 - ma@suse.de
 
 - Enable rhn_bootstrap generated bootstrap.sh to manage 
