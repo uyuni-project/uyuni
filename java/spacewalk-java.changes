@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan 27 16:28:52 CET 2011 - mc@suse.de
+
+- fix subscribe to SUSE base channel via SSM (bnc#665833) 
+
+-------------------------------------------------------------------
 Thu Jan 27 13:23:35 CET 2011 - mc@suse.de
 
 - show SUSE Channels in "alter channel page" (bnc#663374)
