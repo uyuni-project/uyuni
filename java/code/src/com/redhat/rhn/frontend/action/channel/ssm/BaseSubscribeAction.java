@@ -182,9 +182,16 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     List<Long> servers = serversInSSMWithBase(user, oldBaseChannelId);
                     Server s = SystemManager.lookupByIdAndUser(servers.get(0), user);
                     newBase = ChannelManager.guessServerBase(user, s);
+
+                    if (newBase == null) {
+                        // lets search for suse systems
+                        List<EssentialChannelDto> dr = ChannelManager.listPossibleSuseBaseChannelsForServer(s);
+                        if( dr != null && dr.get(0) != null) {
+                            newBase = ChannelFactory.lookupByIdAndUser(dr.get(0).getId(), user);
+                        }
+                    }
                 }
             }
-
             if (newBase == null) {
 
                 if (newBaseChannelId.intValue() == -1) {
