@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Jan 27 17:23:22 CET 2011 - mc@suse.de
+
+- NCC needed for migration (bnc#666073#c11)
+- fix bnc#665587 - adding channels with different ix86 
+  architectures should also register all the different 
+  suseproducts for these channels
+- setting the FROM eMail address to something useful
+
+-------------------------------------------------------------------
 Wed Jan 26 08:14:11 UTC 2011 - dmacvicar@suse.de
 
 - fix ram check dialog workflow error message
