@@ -610,42 +610,6 @@ class NCCSync(object):
                 )
         rhnSQL.commit()
 
-    def map_channels_to_products(self):
-        """Map the Channels we have to actual SUSE Products
-
-        We get the channels from the .xml file and the products from NCC.
-        After doing the mapping, the changes are written to the DB.
-
-        :arg products: a list of product dictionaries as taken from NCC
-
-        """
-        # We would like to do this for all the channels, but we only
-        # have ids for the channels that are already in the database.
-        query = rhnSQL.prepare('SELECT id, label FROM rhnchannel')
-        query.execute()
-        db_channels = {}
-        for channel in query.fetchall_dict():
-            db_channels[channel['label']] = channel['id']
-
-        channels = []
-        for channel in self.get_available_channels():
-            label = channel.get('label')
-            if label in db_channels:
-                channels.append(channel.attrib)
-
-        query = rhnSQL.prepare('SELECT id FROM suseproducts')
-        query.execute()
-        product_ids = [tup[0] for tup in query.fetchall()]
-
-        for channel in channels:
-            assert int(channel['product_id']) in product_ids, channel
-            query = rhnSQL.prepare(
-                "INSERT INTO suseproductchannel (product_id, channel_id) "
-                "VALUES (:product_id, :channel_id)")
-            query.execute(product_id=channel['product_id'],
-                          channel_id=db_channels[channel['label']])
-            rhnSQL.commit()
-
     def get_suse_product_id(self, product_id):
         """Return the suseproduct.id corresponding to an ncc/smt productid"""
         # this has the potential of getting uglier later if we get
@@ -859,7 +823,7 @@ class NCCSync(object):
         # different than the RedHat ones. We want to keep the channel
         # names with SUSE nomeclature, but use the existing RedHat names
         # in the RHNCHANNELARCH table
-        if arch in ('i686', 'i586', 'i486', 'i386') :
+        if arch in ('i686', 'i586', 'i486', 'i386'):
             arch = 'ia32'
         elif arch == 'ppc64':
             arch = 'ppc'
@@ -885,17 +849,20 @@ class NCCSync(object):
         query.execute(label=channel_label)
 
         if query.fetchone():
-            self.print_msg( "Channel %s is already in the database."
-                            % channel_label )
+            self.print_msg("Channel %s is already in the database."
+                            % channel_label)
         else:
             channel = self.get_ncc_channel(channel_label)
             query = rhnSQL.prepare(
                 """INSERT INTO RHNCHANNEL ( ID, BASEDIR, PARENT_CHANNEL,
                                             CHANNEL_ARCH_ID, LABEL, NAME,
-                                            SUMMARY, DESCRIPTION, CHECKSUM_TYPE_ID )
+                                            SUMMARY, DESCRIPTION,
+                                            CHECKSUM_TYPE_ID )
                    VALUES ( sequence_nextval('rhn_channel_id_seq'), '/dev/null',
                            :parent_channel, :channel_arch_id, :label, :name,
-                           :summary, :description, (select id from RHNCHECKSUMTYPE where label = 'sha1') )""")
+                           :summary, :description,
+                           (select id from RHNCHECKSUMTYPE
+                            where label = 'sha1') )""")
             query.execute(
                 parent_channel = self.get_parent_id(channel),
                 channel_arch_id = self.get_channel_arch_id(channel),
@@ -939,8 +906,8 @@ class NCCSync(object):
         query.execute(os=dist.get('os'), release=dist.get('release'),
         channel_arch_id=channel_arch_id, channel_id=channel_id)
 
-    def is_entitlement( self, s ):
-        return self.ncc_rhn_ent_mapping.has_key(s)
+    def is_entitlement(self, product):
+        return product in self.ncc_rhn_ent_mapping
 
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
