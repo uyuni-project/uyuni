@@ -970,7 +970,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
         </context-group>
       </trans-unit>
 		<trans-unit id="testMessage.html">
-		    <source>&lt;p&gt;You do not have enough entitlements for &lt;strong&gt; &lt;a href=&quot;http://www.redhat.com&quot;&gt;{0} systems [GALAXY]&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
+		    <source>&lt;p&gt;You do not have enough entitlements for &lt;strong&gt; &lt;a href=&quot;http://www.redhat.com&quot;&gt;{0} systems &lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
 	        <context-group name="ctx">
 	          <context context-type="sourcefile">Test Message - ignore</context>
 	        </context-group>
@@ -1711,7 +1711,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
           <context context-type="paramnotes">
-            Account adent created, username and password sent to adent@redhat.com [GALAXY]
+            Account adent created, username and password sent to adent@redhat.com
           </context>
         </context-group>
       </trans-unit>
@@ -5890,14 +5890,14 @@ user before attempting to deactivate their account.</source>
       </trans-unit>
 
     <trans-unit id="satellite.expired">
-        <source>Your satellite [GALAXY] certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
       </trans-unit>
 
     <trans-unit id="satellite.graceperiod">
-        <source>Your satellite [GALAXY] certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your SUSE Manager will become inactive in {0} day(s).</source>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your SUSE Manager will become inactive in {0} day(s).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -6097,7 +6097,7 @@ user before attempting to deactivate their account.</source>
 
 
     <trans-unit id="restart.config.error">
-        <source>There was an error restarting the SUSE Manager.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/service rhn-satellite restart [GALAXY]&lt;/strong&gt;.  Please contact support for more information.</source>
+        <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
@@ -8181,7 +8181,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="org.entitlements.system.defaultorg">
-          <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your satellite [GALAXY] certificate file.</source>
+          <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
       </trans-unit>
 
       <trans-unit id="groupAdmins">
