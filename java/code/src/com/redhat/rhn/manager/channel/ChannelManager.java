@@ -1987,6 +1987,12 @@ public class ChannelManager extends BaseManager {
             }
         }
 
+        DataResult dr = listPossibleSuseBaseChannelsForServer(s);
+        if( dr != null)
+        {
+            channelDtos.addAll(dr);
+        }
+
         // Get all the possible base-channels owned by this Org (IE, custom)
         // and add the server's current base-channel to it:
         channelDtos.addAll(listBaseChannelsForOrg(usr.getOrg()));
@@ -2825,4 +2831,55 @@ public class ChannelManager extends BaseManager {
         return toRet;
     }
 
+    public static DataResult listPossibleSuseBaseChannelsForServer(Server s) {
+        log.debug("listPossibleSuseBaseChannelsForServer called");
+
+        Long server_id = s.getId();
+        Map params = new HashMap();
+        params.put("sid", server_id);
+
+        SelectMode m = ModeFactory.getMode("Channel_queries",
+                    "installed_base_product_on_server");
+        List<Map> dr =  m.execute(params);
+        if (dr.size() == 0) {
+            log.info("Server has no base product installed");
+            return null;
+        }
+        Map<String, String> product = dr.get(0);
+
+        params = new HashMap();
+        params.put("name", product.get("name").toLowerCase());
+        if(product.get("version") != null) {
+            params.put("version", product.get("version").toLowerCase());
+        } else {
+            params.put("version", "");
+        }
+        if(product.get("release") != null) {
+            params.put("release", product.get("release").toLowerCase());
+        } else {
+            params.put("release", "");
+        }
+        if(product.get("arch_type_id") != null) {
+            params.put("arch_type_id", product.get("arch_type_id"));
+        } else {
+            params.put("arch_type_id", "");
+        }
+        log.debug("Search for: " + params.get("name") + " " + params.get("version") + " " + params.get("release") + " " + params.get("arch_type_id"));
+        SelectMode m2 = ModeFactory.getMode("Channel_queries",
+                    "best_suse_product_for_installed_product");
+        List<Map> dr2 =  m2.execute(params);
+        if (dr2.size() == 0) {
+            log.debug("No best product found");
+            return null;
+        }
+        Map suseProduct = dr2.get(0);
+
+        params = new HashMap();
+        params.put("pid", suseProduct.get("id"));
+
+        SelectMode m3 = ModeFactory.getMode("Channel_queries",
+                    "suse_base_channels_for_suse_product");
+        DataResult ret  = makeDataResult(params, new HashMap(), null, m3);
+        return ret;
+    }
 }
