@@ -619,17 +619,18 @@ class NCCSync(object):
         query.execute(product_id=product_id)
         return query.fetchone()[0]
 
-    def map_channel_to_products(self, channel, channel_id):
-        """Map one channel to its products
+    def map_channel_to_products(self, channel, channel_id, product_id):
+        """Map one channel to its products, registering it in the database
 
         :arg channel: channel XML Element
         :arg channel_id: the database id of the channel
+        :arg product_id: id of the suse product that this channel belongs to
 
         Only non-optional channels are actually added.
 
         """
         if channel.get('optional') == 'N':
-            suse_id = self.get_suse_product_id(channel.get('product_id'))
+            suse_id = self.get_suse_product_id(product_id)
             query = rhnSQL.prepare(
                 "INSERT INTO suseproductchannel (product_id, channel_id) "
                 "VALUES (:product_id, :channel_id)")
@@ -884,16 +885,23 @@ class NCCSync(object):
                 channel_id = channel_id,
                 channel_family_id = channel_family_id)
 
-            for child in channel:
-                if child.tag == "contentsource":
-                    self.insert_repo(child, channel_id)
-                elif child.tag == 'dist':
-                    self.add_dist_channel_map(channel_id, self.get_channel_arch_id(channel), child)
+            # add repos to the database
+            for content_source in channel.find('repos'):
+                self.insert_repo(content_source, channel_id)
 
+            # register this channel's products in the database
+            for product in channel.find('products'):
+                product_id = product.text
+                self.map_channel_to_products(channel, channel_id, product_id)
+
+            for child in channel:
+                if child.tag == 'dist':
+                    self.add_dist_channel_map(channel_id,
+                                              self.get_channel_arch_id(channel),
+                                              child)
             rhnSQL.commit()
-            self.map_channel_to_products(channel, channel_id)
-            self.print_msg( "Added channel '%s' to the database."
-                            % channel_label )
+            self.print_msg("Added channel '%s' to the database."
+                           % channel_label)
 
             # schedule repo sync for this channel
             self.sync_channel(channel_id, channel_label)
