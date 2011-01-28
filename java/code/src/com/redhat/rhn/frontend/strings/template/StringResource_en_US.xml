@@ -32,8 +32,8 @@ A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
 provides you with access to manage systems on @@PRODUCT_NAME@@.
 
   @@PRODUCT_NAME@@ login: {2}
-       Password: {3}
-         e-mail: {4}
+            Password: {3}
+              e-mail: {4}
 
   {5}
 
@@ -59,13 +59,13 @@ Thank you for using @@PRODUCT_NAME@@.
     <trans-unit id="email.newaccount.body">
 <source>Hello,
 
-A @@VENDOR_NAME@@ login has been created for you. Your
-@@VENDOR_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
+A @@PRODUCT_NAME@@ login has been created for you. Your
+@@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
 provides you with access to manage systems on @@PRODUCT_NAME@@.
 
-  @@VENDOR_NAME@@ login: {0}
-       Password: {1}
-         e-mail: {2}
+  @@PRODUCT_NAME@@ login: {0}
+            Password: {1}
+              e-mail: {2}
 
   {3}
 
@@ -91,12 +91,12 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="email.newaccount.pam.body">
 <source>Hello,
 
-A @@VENDOR_NAME@@ login has been created for you by {0} {1}.  Your
-@@VENDOR_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
+A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
+@@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
 provides you with access to manage systems on @@PRODUCT_NAME@@.
 
-  @@VENDOR_NAME@@ login: {2}
-         e-mail: {4}
+  @@PRODUCT_NAME@@ login: {2}
+              e-mail: {4}
 
   {5}
 
@@ -160,14 +160,14 @@ Thank you for using @@PRODUCT_NAME@@.
 
       <trans-unit id="email.user.deleted.body">
          <source>
-The @@VENDOR_NAME@@ login {0} has been deactivated in response to your request.
+The @@PRODUCT_NAME@@ login {0} has been deactivated in response to your request.
 
 Thank you for contacting @@VENDOR_NAME@@.
          </source>
       </trans-unit>
 
       <trans-unit id="email.newuser.bala.subject">
-<source>@@VENDOR_NAME@@ login creation request</source>
+<source>@@PRODUCT_NAME@@ login creation request</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic</context>
         </context-group>
@@ -355,7 +355,8 @@ Affected Systems List
 This Patch Advisory may apply to the systems listed below. If you know that
 this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date. In that case you should run
-'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (RHEL 5 and above) as root on the system in question to refresh your software profile.
+'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above) 
+as root on the system in question to refresh your software profile.
     </source>
   </trans-unit>
   <trans-unit id="email.errata.notification.body.onesystem">
