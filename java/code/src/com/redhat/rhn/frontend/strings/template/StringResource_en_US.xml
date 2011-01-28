@@ -27,11 +27,11 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
       <trans-unit id="email.newaccountbycreator.body">
 <source>Hello,
 
-A @@VENDOR_NAME@@ login has been created for you by {0} {1}. Your
-@@VENDOR_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
+A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
+@@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
 provides you with access to manage systems on @@PRODUCT_NAME@@.
 
-  @@VENDOR_NAME@@ login: {2}
+  @@PRODUCT_NAME@@ login: {2}
        Password: {3}
          e-mail: {4}
 
