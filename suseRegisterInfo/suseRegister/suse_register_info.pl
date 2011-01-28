@@ -124,6 +124,15 @@ if( ! -d "/etc/zypp" )
   mkdir "/etc/zypp";
 }
 
+#
+# For debugging
+# 
+#open($ctx->{LOGDESCR}, ">> /var/log/suse_register_info.log");
+#$ctx->{debug} = 3;
+
+# use read-only hack 
+$ENV{'ZYPP_READONLY_HACK'} = 1;
+
 # call this as soon as possible.
 my ($code, $msg) = SUSE::SRPrivate::initGUID($ctx);
 if($code != 0)
