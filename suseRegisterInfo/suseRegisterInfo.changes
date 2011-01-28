@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jan 28 17:26:35 CET 2011 - mc@suse.de
+
+- use ZYPP_READONLY_HACK to be able to run inside of a 
+  zypp process (bnc#667955)
+
+-------------------------------------------------------------------
 Fri Jan 21 17:10:28 CET 2011 - mc@suse.de
 
 - create /etc/zypp/ if it does not exist 
