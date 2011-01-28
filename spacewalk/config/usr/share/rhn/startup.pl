@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 use strict;
-use lib '/var/www/lib';
+use lib '/srv/www/perl-lib';
 
 use RHN::DB;
 
