@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jan 28 13:53:04 CET 2011 - mc@suse.de
+
+- fix monitoring config to get scout config push working
+  (bnc#665898) 
+
+-------------------------------------------------------------------
 Wed Sep 15 09:21:32 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-config
