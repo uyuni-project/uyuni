@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Jan 28 12:53:24 CET 2011 - ma@suse.de
+
+- Always generate setup code for AllowConfigManagement and 
+  AllowRemoteCommands into bootstrap.sh. Otherwise you had
+  to recreate bootstrap.sh if one of the options is turned 
+  on later.
+
+-------------------------------------------------------------------
 Tue Jan 25 17:15:32 CET 2011 - ma@suse.de
 
 - Use binary_payload w9.gzdio in gen-rpm.sh as e.g. lzma is not
