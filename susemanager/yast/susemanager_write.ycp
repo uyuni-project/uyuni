@@ -9,6 +9,7 @@
 
     string dir		= Directory::tmpdir;
     string env_file	= "/root/setup_env.sh";
+    any ret		= `back;
 
     if (FileUtils::Exists (env_file))
     {
@@ -28,13 +29,21 @@
 
     string logfile	= "/var/log/susemanager_setup.log";
 
-    term label	= `ReplacePoint (`id (`rp_label),
-	// text label
-	`Label (`id (`label), _("Migration is prepared."))
+    term cont	= `VBox (
+	`VSpacing (),
+	`ReplacePoint (`id (`rp_label),
+	    // text label
+	    `Label (`id (`label), _("Setup is prepared."))
+	),
+	`VWeight (3, `LogView (`id (`stdout), "", 8, 0)),
+	`VSpacing (),
+	`VWeight (1, `LogView (`id (`stderr), "", 8, 0)),
+	`VSpacing ()
     );
+
     if (migration)
     {
-	label	= `VBox (
+	cont	= `VBox (
 	    `VSpacing (2),
 	    // text label
 	    `Label ("The configuration files for a migration have been created.
@@ -52,11 +61,10 @@ read the Quickstart Reference."),
     }
 
     term contents = `HBox (`HSpacing (1), `VBox (
-	label,
+	`VSpacing (),
+	cont,
 	`VSpacing (0.5)
     ), `HSpacing (1));
-
-
 
     string help_text	= "";
 
@@ -65,7 +73,7 @@ read the Quickstart Reference."),
 
     while (migration)
     {
-	any ret	= UI::UserInput ();
+	ret	= UI::UserInput ();
 	if (ret == `abort && !Popup::ConfirmAbort (`incomplete))
 	{
 	    continue;
@@ -78,22 +86,88 @@ read the Quickstart Reference."),
 
     if (!Popup::YesNo (_("All data are collected. Run setup now?")))
     {
-	return `back;
+	return ret;
     }
 
-    // text label
-    UI::ReplaceWidget (`id (`rp_label), `Label (`id (`label), _("Setup is running. Please wait...")));
+    UI::ReplaceWidget (`id (`rp_label),
+	// text label
+	`Label (`id (`label), _("Setup is running. Please wait..."))
+    );
+
+    integer pid	= -1;
+
+    void update_output () {
+
+	string line = (string)SCR::Read (.process.read_line, pid);
+	if (line != nil && line != "")
+	    UI::ChangeWidget (`id(`stdout), `LastLine, line + "\n");
+	string err = (string)SCR::Read (.process.read_line_stderr, pid);
+	if (err!= nil && err != "")
+	    UI::ChangeWidget (`id(`stderr), `LastLine, err + "\n");
+    }
 
     UI::BusyCursor ();
+    Wizard::DisableNextButton ();
+    Wizard::DisableBackButton ();
 
-    map out	= (map) SCR::Execute (.target.bash_output,
-	sformat ("/usr/lib/susemanager/bin/migration.sh %1 -l %2", (migration ? "-m" : "-s"), logfile));
+    string cmd	= sformat ("/usr/lib/susemanager/bin/migration.sh -s -l %1", logfile);
+    pid	= (integer) SCR::Execute (.process.start_shell, cmd);
 
-    if (out["stderr"]:"" != "")
+    while (true)
     {
-	y2warning ("call of migration.sh returned %1", out);
+	ret = (symbol) UI::PollInput();
+	if (SCR::Read(.process.running, pid) != true)
+	{
+	    update_output ();
+	    // explicitely check the process buffer after exit (bnc#488799)
+	    string buf   = (string) SCR::Read (.process.read, pid);
+	    string err_buf	= (string) SCR::Read (.process.read_stderr, pid);
+	    if (buf != nil && buf != "")
+		UI::ChangeWidget (`id(`stdout), `LastLine, buf + "\n");
+	    if (err_buf != nil && err_buf != "")
+		UI::ChangeWidget (`id(`stderr), `LastLine, err_buf + "\n");
+
+	    integer status	= (integer) SCR::Read (.process.status, pid);
+	    y2internal ("exit status of the script: %1", status);
+	    UI::ReplaceWidget (`id (`rp_label),
+		// text label
+		`Label (`id (`label), `opt (`boldFont), _("Setup is completed."))
+	    );
+	    break;
+	}
+	else
+	{
+	    update_output ();
+	}
+	if (ret == `cancel || ret == `abort)
+	{
+	    SCR::Execute (.process.kill, pid, 15);
+	    UI::ReplaceWidget (`id (`rp_label),
+		// text label
+		`Label (`id (`label), `opt (`boldFont), _("Setup has been aborted."))
+	    );
+	    break;
+	}
+	sleep (100);
     }
+
+    SCR::Execute (.process.kill, pid);
+
     UI::NormalCursor ();
 
-    return `next;
+    Wizard::EnableBackButton ();
+    Wizard::EnableNextButton ();
+
+    while (true)
+    {
+	ret	= UI::UserInput ();
+	if (ret == `abort && !Popup::ConfirmAbort (`incomplete))
+	{
+	    continue;
+	}
+	else
+	{
+	    return ret;
+	}
+    }
 }
