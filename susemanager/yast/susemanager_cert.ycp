@@ -102,6 +102,7 @@
 
     // dialog caption
     Wizard::SetContents (_("Certificate Setup"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
+    UI::SetFocus (`id ("CERT_O"));
 
     while (true)
     {

@@ -87,6 +87,7 @@
     // dialog caption
     Wizard::SetContents (_("Database Settings"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
     UI::ChangeWidget (`id ("MANAGER_DB_PORT"), `ValidChars, "1234567890");
+    UI::SetFocus (`id (`localdb));
 
     while (true)
     {

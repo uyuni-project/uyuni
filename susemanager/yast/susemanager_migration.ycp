@@ -73,6 +73,7 @@
     // dialog caption
     Wizard::SetContents (_("Migration from Red Hat Satellite to SUSE Manager"),
 	contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
+    UI::SetFocus (`id ("SATELLITE_HOST"));
 
     while (true)
     {
