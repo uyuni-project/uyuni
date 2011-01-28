@@ -28,8 +28,10 @@
 
     string logfile	= "/var/log/susemanager_setup.log";
 
-    // text label
-    term label	= `Label (`id (`label), _("Migration is prepared."));
+    term label	= `ReplacePoint (`id (`rp_label),
+	// text label
+	`Label (`id (`label), _("Migration is prepared."))
+    );
     if (migration)
     {
 	label	= `VBox (
@@ -79,7 +81,8 @@ read the Quickstart Reference."),
 	return `back;
     }
 
-    UI::ChangeWidget (`id (`label), `Value, _("Setup is running. Please wait..."));
+    // text label
+    UI::ReplaceWidget (`id (`rp_label), `Label (`id (`label), _("Setup is running. Please wait...")));
 
     UI::BusyCursor ();
 
@@ -90,7 +93,6 @@ read the Quickstart Reference."),
     {
 	y2warning ("call of migration.sh returned %1", out);
     }
-
     UI::NormalCursor ();
 
     return `next;
