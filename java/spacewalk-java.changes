@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jan 28 12:40:35 CET 2011 - jrenner@suse.de
+
+- bnc#667893: wrong email text sent during user creation
+- bnc#667897: wrong email text sent during user creation - part 2
+
+-------------------------------------------------------------------
 Thu Jan 27 16:36:43 CET 2011 - jrenner@suse.de
 
 - resolve strings marked with [GALAXY] (bnc#666163)
