@@ -134,13 +134,6 @@ quit
 setup_spacewalk() {
     CERT_COUNTRY=`echo -n $CERT_COUNTRY|tr [:lower:] [:upper:]`
 
-    if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
-        MY_DOMAIN=`hostname -d`
-        MANAGER_MAIL_FROM="SUSE Manager <root@$MY_DOMAIN>"
-    fi
-    if ! grep "^web.default_mail_from" /etc/rhn/rhn.conf > /dev/null; then
-        echo "web.default_mail_from = $MANAGER_MAIL_FROM" >> /etc/rhn/rhn.conf
-    fi
 
     echo "admin-email = $MANAGER_ADMIN_EMAIL
 ssl-set-org = $CERT_O
@@ -167,6 +160,13 @@ ncc-email = $NCC_EMAIL
 " > /root/spacewalk-answers
 
     /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers
+    if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
+        MY_DOMAIN=`hostname -d`
+        MANAGER_MAIL_FROM="SUSE Manager <root@$MY_DOMAIN>"
+    fi
+    if ! grep "^web.default_mail_from" /etc/rhn/rhn.conf > /dev/null; then
+        echo "web.default_mail_from = $MANAGER_MAIL_FROM" >> /etc/rhn/rhn.conf
+    fi
     rm /root/spacewalk-answers
 }
 
