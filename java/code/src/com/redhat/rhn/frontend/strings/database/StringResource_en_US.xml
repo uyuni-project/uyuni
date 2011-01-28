@@ -379,7 +379,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
     </trans-unit>
 	
     <trans-unit id="MDOM">
-<source>Mail domain (e.g. 'redhat.com' for myemail@redhat.com)</source>
+<source>Mail domain (e.g. 'example.com' for myemail@example.com)</source>
       <context-group name="ctx">
         <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
       </context-group>
