@@ -19,7 +19,7 @@ INSERT INTO rhnTemplateString (id, category_id, label, value, description)
              (SELECT TC.id 
                 FROM rhnTemplateCategory TC
 	       WHERE TC.label = 'email_strings'),
-	     'email_footer', '-' || '-the Spacewalk Team', 'Footer for Spacewalk e-mail');
+	     'email_footer', '-' || '-the SUSE Manager Team', 'Footer for SUSE Manager e-mail');
 
 INSERT INTO rhnTemplateString (id, category_id, label, value, description) 
      VALUES (sequence_nextval('rhn_template_str_id_seq'),
@@ -28,6 +28,6 @@ INSERT INTO rhnTemplateString (id, category_id, label, value, description)
 	       WHERE TC.label = 'email_strings'),
 	     'email_account_info', '
 Account Information:
-  Your Spacewalk login:         <login />
-  Your Spacewalk email address: <email-address />', 'Account info lines for Spacewalk e-mail');
+  Your SUSE Manager login:         <login />
+  Your SUSE Manager email address: <email-address />', 'Account info lines for SUSE Manager e-mail');
 
