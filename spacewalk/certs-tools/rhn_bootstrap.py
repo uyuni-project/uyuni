@@ -645,10 +645,8 @@ def generateBootstrapScript(options):
                 getRegistrationSh(PRODUCT_NAME)
 
     #5/16/05 wregglej 159437 - moving stuff that messes with the allowed-action dir to after registration
-    if options.allow_config_actions:
-        newScript = newScript + getAllowConfigManagement()
-    if options.allow_remote_commands:
-        newScript = newScript + getAllowRemoteCommands()
+    newScript = newScript + getAllowConfigManagement()
+    newScript = newScript + getAllowRemoteCommands()
 
     #5/16/05 wregglej 159437 - moved the stuff that up2dates the entire box to after allowed-actions permissions are set.
     newScript = newScript + getUp2dateTheBoxSh(PRODUCT_NAME)
