@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jan 28 12:45:44 CET 2011 - ug@suse.de
+
+- rhntemplatestring table data changed to SUSE Manager
+
+-------------------------------------------------------------------
 Mon Jan 17 16:30:10 CET 2011 - mc@suse.de
 
 - rename sm-register to mgr-register
