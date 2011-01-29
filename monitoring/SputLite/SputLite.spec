@@ -94,7 +94,7 @@ if [ $1 -eq 2 ]; then
   ls /home/nocpulse/var/commands/last_completed 2>/dev/null | xargs -I file mv file %{vardir}/commands
   ls /home/nocpulse/var/commands/last_started 2>/dev/null | xargs -I file mv file %{vardir}/commands
 fi
-%else
+%endif
 
 %files server
 %defattr(-,root,root,-)
