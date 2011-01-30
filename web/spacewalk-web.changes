@@ -4,6 +4,11 @@ Mon Jan 31 09:46:35 UTC 2011 - dmacvicar@suse.de
 - about page branding bnc#666142
 
 -------------------------------------------------------------------
+Sun Jan 30 15:32:49 CET 2011 - mc@suse.de
+
+- backport upstrem fixes
+
+-------------------------------------------------------------------
 Fri Jan 28 17:55:53 CET 2011 - mc@suse.de
 
 - fix Internal Server Error When Addind Notifications

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Jan 30 15:28:47 CET 2011 - mc@suse.de
+
+- backport upstrem fixes
+
+-------------------------------------------------------------------
 Tue Sep 14 17:26:26 CEST 2010 - mantel@suse.de
 
 - Initial release of NPalert

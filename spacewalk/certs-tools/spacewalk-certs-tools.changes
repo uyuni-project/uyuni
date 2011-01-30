@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Jan 30 15:31:40 CET 2011 - mc@suse.de
+
+- backport upstrem fixes
+
+-------------------------------------------------------------------
 Fri Jan 28 12:53:24 CET 2011 - ma@suse.de
 
 - Always generate setup code for AllowConfigManagement and 

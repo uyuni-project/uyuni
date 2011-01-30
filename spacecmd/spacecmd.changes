@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Jan 30 15:31:06 CET 2011 - mc@suse.de
+
+- backport upstrem fixes
+
+-------------------------------------------------------------------
 Wed Sep 15 08:32:37 CEST 2010 - mantel@suse.de
 
 - Initial release of spacecmd

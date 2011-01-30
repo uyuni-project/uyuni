@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sun Jan 30 15:32:23 CET 2011 - mc@suse.de
+
+- backport upstrem fixes
+
+-------------------------------------------------------------------
 Wed Sep 15 10:09:06 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-utils
