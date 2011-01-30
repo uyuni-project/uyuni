@@ -35,7 +35,6 @@ BuildRequires: apache2
 %endif
 
 %define package_name nocpulse
-%define identity %{_var}/lib/%{package_name}/.ssh/nocpulse-identity
 
 %description
 NOCpulse provides application, network, systems and transaction monitoring, 
@@ -134,16 +133,6 @@ if [ `getent passwd nocpulse|awk -F ':' '{ print $6 }'` = "/home/nocpulse" ]; th
      %{_var}/log/%{package_name} 2> /dev/null
 fi
 %endif
-
-if [ ! -f %{identity} ]
-then
-%if 0%{?suse_version}
-%define runuser_cmd /bin/su
-%else
-%define runuser_cmd /sbin/runuser
-%endif
-%{runuser_cmd} -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f %{identity}" - %{package_name}
-fi
 
 %files
 %defattr(-, root,root,-)
