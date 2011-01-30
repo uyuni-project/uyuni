@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Sun Jan 30 15:00:19 CET 2011 - mc@suse.de
+
+- create nocpulse ssh key in init script
+  (bnc#666999)  
+
+-------------------------------------------------------------------
 Wed Sep 15 09:34:35 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-monitoring
