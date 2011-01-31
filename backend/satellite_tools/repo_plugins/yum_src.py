@@ -110,7 +110,7 @@ class ContentSource:
       if not self.repo.repoXML.repoData.has_key('updateinfo'):
         return []
       um = UpdateMetadata()
-      um.add(self.repo)
+      um.add(self.repo, all=True)
       return um.notices
 
     def getKeyForRepo(self, repo, callback=None):
