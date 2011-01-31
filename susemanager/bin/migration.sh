@@ -269,6 +269,18 @@ do_migration() {
         echo -n "MANAGER_PASS";      read MANAGER_PASS
     fi;
     setup_hostname
+
+    # those values will be overwritten by the copied certificate
+    CERT_O="dummy"
+    CERT_OU="dummy"
+    CERT_CITY="dummy"
+    CERT_STATE="dummy"
+    CERT_COUNTRY="DE"
+    CERT_PASS="dummy"
+    CERT_EMAIL="dummy@example.net"
+    MANAGER_ENABLE_TFTP="n"
+
+
     if [ ! -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
         do_setup
     fi;
