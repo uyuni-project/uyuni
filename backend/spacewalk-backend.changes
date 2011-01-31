@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan 31 18:14:57 CET 2011 - mc@suse.de
+
+- call yum update_md with the option to get all updateinfos 
+  and not only the newest (bnc#668333)
+
+-------------------------------------------------------------------
 Sun Jan 30 15:26:01 CET 2011 - mc@suse.de
 
 - backport upstrem fixes 
