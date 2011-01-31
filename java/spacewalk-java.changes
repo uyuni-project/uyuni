@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 31 11:15:48 CET 2011 - jrenner@suse.de
+
+- add missing attribute 'probeSuite' to request (bnc#667945)
+
+-------------------------------------------------------------------
 Fri Jan 28 12:40:35 CET 2011 - jrenner@suse.de
 
 - bnc#667893: wrong email text sent during user creation
