@@ -258,9 +258,7 @@ copy_remote_files() {
 }
 
 do_migration() {
-    if [ -f $MIGRATION_ENV ]; then
-        . $MIGRATION_ENV
-    else
+    if [ "x" = "x$SATELLITE_HOST" ]; then
         echo -n "SATELLITE_HOST:";   read SATELLITE_HOST
         echo -n "SATELLITE_DOMAIN:"; read SATELLITE_DOMAIN
         echo -n "SATELLITE_DB_USER"; read SATELLITE_DB_USER
@@ -336,6 +334,7 @@ for p in $@; do
     -m)
         DO_MIGRATION=1
         . $MIGRATION_ENV
+        . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`dig +short $SATELLITE_FQDN`
        ;;
@@ -344,6 +343,7 @@ for p in $@; do
        ;;
     -r)
         . $MIGRATION_ENV
+        . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`dig +short $SATELLITE_FQDN`
         copy_remote_files
