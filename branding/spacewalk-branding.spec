@@ -1,4 +1,5 @@
 %if  0%{?suse_version}
+%define version_major 1.2
 %define wwwdocroot /srv/www/htdocs
 %else
 %define wwwdocroot %{_var}/www/html
@@ -62,15 +63,17 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/tomcat5/weba
 ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/java-branding.jar
 %endif
 
+%if  0%{?suse_version}
 cat > %{buildroot}/%{_sysconfdir}/rhn/default/rhn_docs.conf <<-ENDOFCONFIG
-docs.reference_guide=http://www.novell.com/documentation/suse.html
-docs.install_guide=http://www.novell.com/documentation/suse.html
-docs.proxy_guide=http://www.novell.com/documentation/suse.html
-docs.client_config_guide=http://www.novell.com/documentation/suse.html
-docs.channel_mgmt_guide=http://www.novell.com/documentation/suse.html
-docs.release_notes=http://www.novell.com/documentation/suse.html
-docs.proxy_release_notes=http://www.novell.com/documentation/suse.html
+docs.reference_guide=http://www.novell.com/documentation/suse_manager/
+docs.install_guide=http://www.novell.com/documentation/suse_manager/
+docs.proxy_guide=http://www.novell.com/documentation/suse_manager/
+docs.client_config_guide=http://www.novell.com/documentation/suse_manager/
+docs.channel_mgmt_guide=http://www.novell.com/documentation/suse_manager/
+docs.release_notes=http://www.novell.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/%{version_major}/
+docs.proxy_release_notes=http://www.novell.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/%{version_major}/
 ENDOFCONFIG
+%endif
 
 %clean
 rm -rf %{buildroot}
