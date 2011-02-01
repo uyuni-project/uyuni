@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb  1 13:26:06 CET 2011 - mc@suse.de
+
+- fix building on RH 
+
+-------------------------------------------------------------------
 Mon Jan 31 18:14:57 CET 2011 - mc@suse.de
 
 - call yum update_md with the option to get all updateinfos 
