@@ -298,6 +298,9 @@ Libraries required by various exporting tools
 %setup -q
 
 %build
+%if !0%{?suse_version}
+sed -i 's/^INSTALL_DEST.*/INSTALL_DEST = \/etc\/httpd\/conf.d/' apache-conf/Makefile
+%endif
 make -f Makefile.backend all
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
@@ -314,10 +317,10 @@ export PYTHON_MODULE_VERSION=%{version}
 %{__python} setup.py install -O1 --root $RPM_BUILD_ROOT --prefix=%{_prefix}
 
 %if 0%{?rhel} && 0%{?rhel} < 6
-rm -v $RPM_BUILD_ROOT/%{apacheconfd}/zz-spacewalk-server-wsgi.conf
+rm -fv $RPM_BUILD_ROOT/%{apacheconfd}/zz-spacewalk-server-wsgi.conf
 rm -rfv $RPM_BUILD_ROOT/%{rhnroot}/wsgi
 %else
-rm -v $RPM_BUILD_ROOT/%{apacheconfd}/zz-spacewalk-server-python.conf
+rm -fv $RPM_BUILD_ROOT/%{apacheconfd}/zz-spacewalk-server-python.conf
 %endif
 
 
