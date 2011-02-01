@@ -346,7 +346,7 @@ for p in $@; do
     case "$p" in
     -m)
         DO_MIGRATION=1
-        . $MIGRATION_ENV
+        . $MIGRATION_ENV 2> /dev/null
         . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`dig +short $SATELLITE_FQDN`
@@ -355,7 +355,7 @@ for p in $@; do
         DO_SETUP=1
        ;;
     -r)
-        . $MIGRATION_ENV
+        . $MIGRATION_ENV 2> /dev/null
         . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`dig +short $SATELLITE_FQDN`
