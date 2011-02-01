@@ -24,6 +24,9 @@ channel.
 
 %prep
 %setup -q
+%if 0%{?rhel} && 0%{?rhel} <= 4
+patch -p0 < patches/rhel4-static.dif
+%endif
 
 %build
 make -f Makefile.rhnpush all
