@@ -11,6 +11,9 @@
     string env_file	= "/root/setup_env.sh";
     any ret		= `back;
 
+    map display_info	= UI::GetDisplayInfo ();
+    boolean text_mode	= display_info["TextMode"]:false;
+
     if (FileUtils::Exists (env_file))
     {
 	SCR::Execute (.target.remove, env_file);
@@ -30,15 +33,20 @@
     string logfile	= "/var/log/susemanager_setup.log";
 
     term cont	= `VBox (
-	`VSpacing (),
+	`VSpacing (0.4),
 	`ReplacePoint (`id (`rp_label),
 	    // text label
 	    `Label (`id (`label), _("Setup is prepared."))
 	),
-	`VWeight (3, `LogView (`id (`stdout), "", 8, 0)),
-	`VSpacing (),
-	`VWeight (1, `LogView (`id (`stderr), "", 8, 0)),
-	`VSpacing ()
+	text_mode ? `VBox (
+	    `LogView (`id (`stdout), "", 5, 0),
+	    `VSpacing (0.4),
+	    `LogView (`id (`stderr), "", 3, 0)
+	) : `VBox (
+	    `VWeight (3, `LogView (`id (`stdout), "", 8, 0)),
+	    `VSpacing (0.4),
+	    `VWeight (1, `LogView (`id (`stderr), "", 4, 0))
+	)
     );
 
     if (migration)
@@ -61,9 +69,9 @@ read the Quickstart Reference."),
     }
 
     term contents = `HBox (`HSpacing (1), `VBox (
-	`VSpacing (),
+	`VSpacing (0.4),
 	cont,
-	`VSpacing (0.5)
+	`VSpacing (0.4)
     ), `HSpacing (1));
 
     string help_text	= "";
