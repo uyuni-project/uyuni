@@ -35,7 +35,7 @@
     while (true) {
         // do we have less memory than needed?
         if (totalmem < enough_memory) {
-            if ( !Popup::AnyQuestionRichText(_("Not enough memory"), _("SUSE Manager requires 2G of memory to be installed and 8G for good perfomance. If you continue the product will not function correctly."), 40, 10, _("Continue anyways"), _("Exit installation"), `focus_no) )
+            if ( !Popup::AnyQuestionRichText(_("Not enough memory"), _("SUSE Manager requires 2G of memory to be installed and 8G for good perfomance. If you continue the product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
             {
                 if (Popup::ConfirmAbort(`incomplete)) {
                     return `abort;
