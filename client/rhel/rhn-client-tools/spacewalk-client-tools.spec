@@ -136,6 +136,9 @@ registering a system with a SUSE Manager server or Spacewalk server.
 
 %prep
 %setup -q
+%if 0%{?rhel} && 0%{?rhel} <= 4
+patch -p1 < patches/rhel4-static.dif
+%endif
 
 %build
 make -f Makefile.rhn-client-tools
