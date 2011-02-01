@@ -25,7 +25,7 @@ URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-%if ((!0%{?suse_version}) || (0%{?suse_version} >= 1120))
+%if !0%{?suse_version} || 0%{?suse_version} >= 1120
 BuildArch: noarch
 %endif
 
@@ -390,7 +390,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/spacewalk-cfg-get
 %{_mandir}/man8/spacewalk-cfg-get.8.gz
 # wsgi stuff
-%if !( 0%{?rhel} && 0%{?rhel} < 6)
+%if !0%{?rhel} || 0%{?rhel} >= 6
 %dir %{rhnroot}/wsgi
 %{rhnroot}/wsgi/__init__.py*
 %{rhnroot}/wsgi/wsgiHandler.py*
