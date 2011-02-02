@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb  2 11:55:40 CET 2011 - mc@suse.de
+
+- suseRegisterRES uses a different place for the NCCcredentails
+  file. 
+
+-------------------------------------------------------------------
 Fri Jan 28 17:26:35 CET 2011 - mc@suse.de
 
 - use ZYPP_READONLY_HACK to be able to run inside of a 
