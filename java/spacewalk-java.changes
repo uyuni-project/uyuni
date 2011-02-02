@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb  2 13:31:09 CET 2011 - jrenner@suse.de
+
+- Kickstart/AutoYaST in the web interface (bnc#668666)
+
+-------------------------------------------------------------------
 Mon Jan 31 11:15:48 CET 2011 - jrenner@suse.de
 
 - add missing attribute 'probeSuite' to request (bnc#667945)
