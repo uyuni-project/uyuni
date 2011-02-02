@@ -31,7 +31,12 @@ $ctx->{GUID_FILE}       = "/etc/zmd/deviceid";
 $ctx->{SECRET_FILE}     = "/etc/zmd/secret";
 
 # new credentails file
-$ctx->{CREDENTIAL_DIR}  = "/etc/zypp/credentials.d/";
+if ( -e "/etc/redhat-release" )
+{
+  $ctx->{CREDENTIAL_DIR}  = "/etc/";
+} else {
+  $ctx->{CREDENTIAL_DIR}  = "/etc/zypp/credentials.d/";
+}
 $ctx->{CREDENTIAL_FILE} = "NCCcredentials";
 
 $ctx->{SYSCONFIG_CLOCK} = "/etc/sysconfig/clock";
@@ -117,11 +122,6 @@ if($help)
 {
   print STDERR "usage: $ARGV[0] [--outfile|o=/path/to/output]\n";
   exit 1;
-}
-
-if( ! -d "/etc/zypp" )
-{
-  mkdir "/etc/zypp";
 }
 
 #
