@@ -1,6 +1,6 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "RHN Management Satellite Server [GALAXY]" >
-<!ENTITY RHNSAT "Satellite User Tool [GALAXY]" >
+<!ENTITY RHNSAT "SUSE Manager Server" >
+<!ENTITY RHNSAT "SUSE Manager User Tool" >
 ]>
 <refentry>
 

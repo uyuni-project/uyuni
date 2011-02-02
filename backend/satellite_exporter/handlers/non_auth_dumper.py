@@ -370,7 +370,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
                 (relative_path, ks_label))
         path = os.path.join(CFG.MOUNT_POINT, row['base_path'], relative_path)
         if not os.path.exists(path):
-            log_error("Missing file for satellite [GALAXY] dumper: %s" % path)
+            log_error("Missing file for SUSE Manager dumper: %s" % path)
             raise rhnFault(3007, "Unable to retrieve file %s in tree %s" %
                 (relative_path, ks_label))
         return self._send_stream(path)
@@ -385,7 +385,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
         log_debug(3, "Package path", path)
         if not os.path.exists(path):
-            log_error("Missing package (satellite [GALAXY] dumper): %s" % path)
+            log_error("Missing package (SUSE Manager dumper): %s" % path)
             raise rhnFault(3007, "Unable to retrieve package %s" % package)
         return self._send_stream(path)
 

@@ -440,8 +440,8 @@ class XML_Dumper:
                         or all_channels_hash[label]['checksum_type'] in [None, 'sha1']):
                     raise rhnFault(3001,
                       "Channel %s has incompatible rpm checksum (%s). Please contact\n"
-                      + "Red Hat [GALAXY] support for information about upgrade to newer version\n"
-                      + "of Satellite [GALAXY] Server which supports it." %
+                      + "SUSE Manager support for information about upgrade to newer version\n"
+                      + "of SUSE Manager Server which supports it." %
                         (label, all_channels_hash[label]['checksum_type']))
                 channels[label] = all_channels_hash[label]
 

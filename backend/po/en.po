@@ -30,7 +30,7 @@ msgstr ""
 
 #: ../server/handlers/sat/auth.py:42
 msgid "ISS is disabled on this satellite."
-msgstr "ISS is disabled on this satellite [GALAXY]."
+msgstr "ISS is disabled on this SUSE Manager server."
 
 #: ../server/handlers/sat/auth.py:54
 #, python-format
@@ -39,7 +39,7 @@ msgstr ""
 
 #: ../server/handlers/applet/applet.py:65
 msgid "Your system was not found in the RHN database"
-msgstr "Your system was not found in the RHN [GALAXY] database"
+msgstr "Your system was not found in the SUSE Manager database"
 
 #: ../server/handlers/xmlrpc/registration.py:204
 msgid "Required data missing"
@@ -1191,7 +1191,7 @@ msgstr ""
 
 #: ../common/rhnException.py:297
 msgid "Invalid satellite certificate"
-msgstr "Invalid satellite [GALAXY] certificate"
+msgstr "Invalid SUSE Manager certificate"
 
 #: ../common/rhnException.py:298
 msgid "File is missing"

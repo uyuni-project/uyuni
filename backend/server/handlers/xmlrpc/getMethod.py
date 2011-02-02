@@ -105,7 +105,7 @@ def getMethod(methodName, baseClass):
         # A file or method
         # We look for the special __rhnexport__ array
         if not hasattr(className, '__rhnexport__'):
-            raise GetMethodException("Class %s is not RHN-compliant [GALAXY]" % \
+            raise GetMethodException("Class %s is not valid" % \
                 string.join(methodNameComps[:index], '.'))
         export = getattr(className, '__rhnexport__')
         if comp not in export:

@@ -1042,7 +1042,7 @@ def process_token(server, server_arch, tokens_obj, virt_type = None):
             # FIXME:  better messaging about minimum service level
             history["groups"] = [
                 "Not subscribed to any system groups: not entitled for "
-                "RHN [GALAXY] Management or RHN [GALAXY] Provisioning"
+                "Management or Provisioning"
             ]
 
     if is_provisioning_entitled:

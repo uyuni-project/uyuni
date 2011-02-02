@@ -1,6 +1,6 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "RHN Satellite Server [GALAXY]" >
-<!ENTITY RHNSYNC "RHN Satellite [GALAXY] Incremental Synchronization Tool" >
+<!ENTITY RHNSAT "SUSE Manager Server" >
+<!ENTITY RHNSYNC "SUSE Manager Incremental Synchronization Tool" >
 
 ]>
 <refentry>

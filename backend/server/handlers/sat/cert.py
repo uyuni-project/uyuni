@@ -44,7 +44,7 @@ class Certificate(Authentication):
         row = h.fetchone_dict()
         if not row:
             # This should not happen - we're already authenticated
-            raise rhnException, "Satellite cert [GALAXY] went away after auth?"
+            raise rhnException, "SUSE Manager Server certificate is unavailable after authentication?"
 
         # Bugzilla #219625
         # cert is now a blob

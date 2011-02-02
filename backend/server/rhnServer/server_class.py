@@ -42,7 +42,7 @@ class Server(ServerWrapper):
         # Use the handy TableRow
         self.server = rhnSQL.Row("rhnServer", "id")
         self.server["release"] = ""
-        self.server["os"] = "Red Hat Linux" # [GALAXY]
+        self.server["os"] = "SUSE Linux"
         self.is_rpm_managed = 0
         self.set_arch(arch)
         # We only get this passed in when we create a new
@@ -692,7 +692,7 @@ class Server(ServerWrapper):
         h.execute()
         ret = h.fetchone_dict()
         if not ret:
-            log_debug(2, "Satellite certificate [GALAXY] not found")
+            log_debug(2, "SUSE Manager Server certificate not found")
             return 0
         expire_string = ret['expires']
         expire_time = time.mktime(time.strptime(expire_string,
@@ -707,7 +707,7 @@ class Server(ServerWrapper):
         grace_period_seconds = 60 * 60 * 24 * 8
 
         if (now > expire_time + grace_period_seconds):
-            log_debug(1, "Satellite certificate [GALAXY] expired on %s" % expire_string)
+            log_debug(1, "SUSE Manager Server certificate expired on %s" % expire_string)
             return 0
         return 1
 

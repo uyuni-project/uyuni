@@ -54,7 +54,7 @@ ERROR: a child-channel cannot be synced without its parent being synced as
 
 invalid_channel_family_error = """
 ERROR: you are not entitled to sync a channel in this set of channels.
-Please contact your sales rep or RHN [GALAXY] contact
+Please contact your SUSE Manager contact
 %s"""
 
 not_enough_diskspace = "  ERROR: not enough free space (%s KB) on device."

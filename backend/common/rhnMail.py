@@ -28,7 +28,7 @@ def __check_headers(h):
         # does not look like a dictionary
         h = {}
     if not h.has_key("Subject"):
-        h["Subject"] = "RHN [GALAXY] System Mail From %s" % os.uname()[1]
+        h["Subject"] = "SUSE Manager System Mail From %s" % os.uname()[1]
     if not h.has_key("To"):
         to = CFG.TRACEBACK_MAIL
     else:

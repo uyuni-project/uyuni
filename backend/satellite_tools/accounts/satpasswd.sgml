@@ -1,6 +1,6 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "RHN Management Satellite Server [GALAXY]" >
-<!ENTITY RHNSAT "Satellite [GALAXY] User Password Reset Tool" >
+<!ENTITY RHNSAT "SUSE Manager Server" >
+<!ENTITY RHNSAT "SUSE Manager User Password Reset Tool" >
 ]>
 <refentry>
 

@@ -305,7 +305,7 @@ class PackageInstallScheduler:
         self.new_action_id = rhnAction.schedule_server_action(
                             self.server_id,
                             action_type="packages.update",
-                            action_name="Scheduling install of RHN's [GALAXY] virtualization host packages.",
+                            action_name="Scheduling install of virtualization host packages.",
                             delta_time=0,
                             scheduler=scheduler,
                             org_id=org_id

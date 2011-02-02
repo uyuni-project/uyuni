@@ -128,9 +128,9 @@ def main(arglist):
 
         # Command-line options; the keys are supposed to start with a dash
         opts = {
-            'preparer'      : "Red Hat Network [GALAXY] <rhn-feedback@redhat.com>",
-            'publisher'     : "Red Hat Network [GALAXY] <rhn-feedback@redhat.com>",
-            'volid'         : "RHNSAT_%s/%s" % (i+1, cdcount),
+            'preparer'      : "SUSE Manager",
+            'publisher'     : "SUSE Manager",
+            'volid'         : "SM_%s/%s" % (i+1, cdcount),
             'path-list'     : pathfiles,
         }
         opts = map(lambda x: '-%s "%s"' % x, opts.items())

@@ -1,5 +1,5 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "RHN Satellite Server [GALAXY]" >
+<!ENTITY RHNSAT "SUSE Manager Server" >
 <!ENTITY THECOMMAND "rhn-db-stats" >
 
 ]>
@@ -13,8 +13,7 @@
 <RefNameDiv>
 <RefName><command>&THECOMMAND;</command></RefName>
 <RefPurpose>
-utility for querying important database parameters used by
- Satellite [GALAXY] / Spacewalk.
+utility for querying important database parameters used by SUSE Manager.
 </RefPurpose>
 </RefNameDiv>
 
@@ -33,7 +32,7 @@ utility for querying important database parameters used by
 
 <para>
 rhn-db-stats retrieves important parameters from Oracle database
-used by your Satellite [GALAXY] / Spacewalk installation. It is used by spacewalk-debug
+used by your SUSE Manager installation. It is used by spacewalk-debug
 (satellite-debug) or it can be used standalone.
 </para>
 

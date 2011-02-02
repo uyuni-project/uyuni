@@ -254,14 +254,14 @@ def subscribe_to_tools_channel(server_id, kickstart_session_id):
         action_id = rhnAction.schedule_server_action(
             server_id,
             action_type='kickstart_host.add_tools_channel',
-            action_name='Subscribe server to RHN Tools channel [GALAXY].',
+            action_name='Subscribe server to the Tools channel.',
             delta_time=0, scheduler=scheduler, org_id=org_id,
         )
     elif ks_type == 'para_guest':
         action_id = rhnAction.schedule_server_action(
             server_id,
             action_type='kickstart_guest.add_tools_channel',
-            action_name='Subscribe guest to RHN Tools channel [GALAXY].',
+            action_name='Subscribe guest to the Tools channel.',
             delta_time=0, scheduler=scheduler, org_id=org_id,
         )
     else:

@@ -322,7 +322,7 @@ class Channel(BaseChannelObject):
 
     def add_dist(self, release, os=None):
         if os is None:
-            os = 'Red Hat Linux'  # [GALAXY]
+            os = 'SUSE Linux'
         self._dists[release] = os
 
     def set_dists(self, val):
@@ -2083,15 +2083,15 @@ def subscribe_to_tools_channel(server_id):
                 tools_channel = channel
 
     if tools_channel is None:
-        raise NoToolsChannel("Base channel id %s does not have a RHN [GALAXY] Tools channel as a child channel." % \
+        raise NoToolsChannel("Base channel id %s does not have a Tools channel as a child channel." % \
                               base_channel_dict['id'])
     else:
         if not tools_channel.has_key('id'):
-            raise InvalidChannel("RHN [GALAXY] Tools channel has no id.")
+            raise InvalidChannel("Tools channel has no id.")
         if not tools_channel.has_key('label'):
-            raise InvalidChannel("RHN [GALAXY] Tools channel has no label.")
+            raise InvalidChannel("Tools channel has no label.")
         if not tools_channel.has_key('parent_channel'):
-            raise InvalidChannel("RHN [GALAXY] Tools channel has no parent_channel.")
+            raise InvalidChannel("Tools channel has no parent_channel.")
 
         subscribe_channels(server_id, [tools_channel])
 

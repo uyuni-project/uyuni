@@ -1,6 +1,6 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "RHN Satellite Server [GALAXY]" >
-<!ENTITY RHNCHANRM "Spacewalk Channel Removal tool" >
+<!ENTITY RHNSAT "SUSE Manager Server" >
+<!ENTITY RHNCHANRM "SUSE MAnager Channel Removal tool" >
 
 ]>
 <refentry>
@@ -13,7 +13,7 @@
 <RefNameDiv>
 <RefName><command>spacewalk-remove-channel</command></RefName>
 <RefPurpose>
-Removes a channel from an RHN Satellite [GALAXY] or Spacewalk server.
+Removes a channel from a SUSE Manager server.
 </RefPurpose>
 </RefNameDiv>
 
@@ -47,7 +47,7 @@ Removes a channel from an RHN Satellite [GALAXY] or Spacewalk server.
 <RefSect1><Title>Description</Title>
 <para>
     The <emphasis>spacewalk-channel-remove</emphasis> completely removes
-    channels (even Red Hat [GALAXY] supplied ones) from a RHN Satellite [GALAXY] or Spacewalk server.
+    channels from a SUSE Manager server.
 </para>
 <para>
     By default systems are not unsubscribed from the specified channel(s).  If systems

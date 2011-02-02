@@ -1,5 +1,5 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "RHN Satellite Server [GALAXY]" >
+<!ENTITY RHNSAT "SUSE Manager Server" >
 <!ENTITY THECOMMAND "rhn-schema-stats" >
 
 ]>
@@ -13,7 +13,7 @@
 <RefNameDiv>
 <RefName><command>&THECOMMAND;</command></RefName>
 <RefPurpose>
-utility for querying important Spacewalk / Satellite [GALAXY] database schema statistics.
+utility for querying important SUSE Manager database schema statistics.
 </RefPurpose>
 </RefNameDiv>
 
@@ -31,8 +31,9 @@ utility for querying important Spacewalk / Satellite [GALAXY] database schema st
 <RefSect1><Title>Description</Title>
 
 <para>
-rhn-schema-stats retrieves important statistics from your Satellite [GALAXY] / Spacewalk database
-schema. Ordinarily, is used by spacewalk-debug (satellite-debug), but it can be used standalone.
+rhn-schema-stats retrieves important statistics from your SUSE Manager
+database schema. Ordinarily, is used by spacewalk-debug
+(satellite-debug), but it can be used standalone.
 </para>
 
 </RefSect1>

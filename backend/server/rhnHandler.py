@@ -65,8 +65,8 @@ class rhnHandler(RPC_Base):
             server.checkin(check_for_abuse = self.check_for_abuse)
 
         if not server.validateSatCert():
-            log_error("Satellite [GALAXY] Certificate has expired")
-            raise rhnFault(3006, "Satellite Certificate [GALAXY] has expired")
+            log_error("SUSE Manager Certificate has expired")
+            raise rhnFault(3006, "SUSE Manager Certificate has expired")
 
         # is the server entitled?
         if self.check_entitlement:
