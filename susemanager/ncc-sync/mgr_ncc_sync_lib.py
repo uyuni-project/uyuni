@@ -776,19 +776,19 @@ class NCCSync(object):
             except KeyError:
                 raise ParentChannelNotInstalled(parent_label, channel_label)
 
-    def insert_repo(self, repo, channel_id):
-        """Insert an XML repo into the database as a ContentSource
+    def insert_repo(self, channel, channel_id):
+        """Insert an XML channel into the database as a ContentSource
 
-        :arg repo:       repository information from channels.xml
+        :arg channel: XML ETree elem which contains repository information
         :arg channel_id: DB id of the channel the repo should belong to
 
         """
         query = rhnSQL.prepare(
             "SELECT LABEL FROM RHNCONTENTSOURCE WHERE LABEL = :label")
-        query.execute(label=repo.get('label'))
+        query.execute(label=channel.get('label'))
         if not query.fetchone():
-            data = repo.attrib
-            url = suseLib.URL(data['source_url'])
+            channel_data = channel.attrib
+            url = suseLib.URL(channel_data['source_url'])
             # nu.novell.com needs authentication using the mirror credentials
             if url.host == "nu.novell.com":
                 qp = url.query
@@ -796,7 +796,7 @@ class NCCSync(object):
                     url.query = qp + "&credentials=mirrcred"
                 else:
                     url.query = "credentials=mirrcred"
-                data['source_url'] = url.getURL()
+                channel_data['source_url'] = url.getURL()
             # FIXME make a TYPE_ID for zypper?
             type_id = rhnSQL.Row("RHNCONTENTSOURCETYPE", "LABEL", "yum")['id']
             query = rhnSQL.prepare(
@@ -804,16 +804,16 @@ class NCCSync(object):
                        ( ID, ORG_ID, TYPE_ID, SOURCE_URL, LABEL, METADATA_SIGNED)
                    VALUES ( sequence_nextval('rhn_chan_content_src_id_seq'),
                             NULL, :type_id, :source_url, :label, :is_signed )""")
-            query.execute(type_id=type_id, **data)
+            query.execute(type_id=type_id, **channel_data)
 
-            # create relation between the new repo and the channel
-            repo_id = rhnSQL.Row(
-                "RHNCONTENTSOURCE", "LABEL", repo.get('label'))['id']
+            # create relation between the new contentsource and the channel
+            contentsource_id = rhnSQL.Row(
+                "RHNCONTENTSOURCE", "LABEL", channel_data['label'])['id']
             query = rhnSQL.prepare(
             """INSERT INTO RHNCHANNELCONTENTSOURCE (SOURCE_ID, CHANNEL_ID)
                VALUES (:source_id, :channel_id)""")
             query.execute(
-                source_id = repo_id,
+                source_id = contentsource_id,
                 channel_id = channel_id)
 
     def get_channel_arch_id(self, channel):
@@ -846,12 +846,14 @@ class NCCSync(object):
         """
         # first look in the db to see if it's already there
         query = rhnSQL.prepare(
-            "SELECT LABEL FROM RHNCHANNEL WHERE LABEL = :label")
+            "SELECT ID, LABEL FROM RHNCHANNEL WHERE LABEL = :label")
         query.execute(label=channel_label)
-
-        if query.fetchone():
+        rhnchannel = query.fetchone()
+        
+        if rhnchannel:
             self.print_msg("Channel %s is already in the database."
                             % channel_label)
+            channel_id = rhnchannel[0]
         else:
             channel = self.get_ncc_channel(channel_label)
             query = rhnSQL.prepare(
@@ -886,8 +888,7 @@ class NCCSync(object):
                 channel_family_id = channel_family_id)
 
             # add repos to the database
-            for content_source in channel.find('repos'):
-                self.insert_repo(content_source, channel_id)
+            self.insert_repo(channel, channel_id)
 
             # register this channel's products in the database
             for product in channel.find('products'):
@@ -903,8 +904,8 @@ class NCCSync(object):
             self.print_msg("Added channel '%s' to the database."
                            % channel_label)
 
-            # schedule repo sync for this channel
-            self.sync_channel(channel_id, channel_label)
+        # schedule repo sync for this channel
+        self.sync_channel(channel_id, channel_label)
 
     def add_dist_channel_map(self, channel_id, channel_arch_id, dist):
         query = rhnSQL.prepare(
