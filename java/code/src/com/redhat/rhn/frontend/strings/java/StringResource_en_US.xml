@@ -574,7 +574,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
         </context-group>
       </trans-unit>
       <trans-unit id="Kickstart">
-<source>Kickstart</source>
+<source>Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1943,61 +1943,61 @@ available for this kickstart profile to function properly.
          </context-group>
        </trans-unit>
        <trans-unit id="kickstart.initiate">
- <source>Initiate a kickstart</source>
+ <source>Initiate an autoinstallation</source>
          <context-group name="ctx">
            <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
          </context-group>
        </trans-unit>
        <trans-unit id="kickstart_guest.initiate">
- <source>Initiate a kickstart of a guest system</source>
+ <source>Initiate an autoinstallation of a guest system</source>
          <context-group name="ctx">
            <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
          </context-group>
        </trans-unit>
        <trans-unit id="kickstart.schedule_sync">
- <source>Schedule a package sync for kickstarts</source>
+ <source>Schedule a package sync for autoinstallations</source>
          <context-group name="ctx">
            <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
          </context-group>
        </trans-unit>
        <trans-unit id="kickstart.error.nolabel">
-         <source>Please enter a label for this kickstart profile below.</source>
+         <source>Please enter a label for the autoinstallation profile below.</source>
          <context-group name="ctx">
          <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
          </context-group>
        </trans-unit>
        <trans-unit id="kickstart.error.invalidlabel">
-         <source>Your selected kickstart label is invalid, it must be at least {0} characters and only contain the following characters : A-Z, a-z, 0-9, _, - </source>
+         <source>Your selected autoinstallation label is invalid, it must be at least {0} characters and may only contain the following characters: A-Z, a-z, 0-9, _, - </source>
          <context-group name="ctx">
          <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
          </context-group>
        </trans-unit>
        <trans-unit id="kickstart.error.labelexists">
-         <source>Kickstart label already exists. Please choose a unique kickstart label.</source>
+         <source>Autoinstallation label already exists. Please choose a unique autoinstallation label.</source>
          <context-group name="ctx">
          <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
          </context-group>
        </trans-unit>
       <trans-unit id="kickstart.details.success">
-        <source>Kickstart details successfully updated.</source>
+        <source>Autoinstallation details successfully updated.</source>
         <context-group name="ctx">
         <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.details.nolabel">
-        <source>Kickstart profile label is required.</source>
+        <source>Autoinstallation profile label is required.</source>
         <context-group name="ctx">
         <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.delete.success">
-        <source>Kickstart was deleted successfully.</source>
+        <source>Autoinstallation was deleted successfully.</source>
         <context-group name="ctx">
         <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSubmit</context>
         </context-group>
       </trans-unit>
         <trans-unit id="kickstart.delete.failure">
-        <source>Kickstart {0} could not be deleted, try again on your next login.</source>
+        <source>Autoinstallation {0} could not be deleted, try again on your next login.</source>
         <context-group name="ctx">
         <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSubmit</context>
         </context-group>
@@ -2015,7 +2015,7 @@ available for this kickstart profile to function properly.
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_add.success">
-        <source>Successfully added IP Range to Kickstart Profile {0}</source>
+        <source>Successfully added IP Range to Autoinstallation Profile {0}</source>
         <context-group name="ctx">
         <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
@@ -2033,13 +2033,13 @@ available for this kickstart profile to function properly.
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.success">
-        <source>Successfully deleted IP Range from Kickstart Profile {0}</source>
+        <source>Successfully deleted IP Range from Autoinstallation Profile {0}</source>
         <context-group name="ctx">
         <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.failure">
-        <source>There was an error deleting the IP Range from Kickstart Profile {0}. Please try again.</source>
+        <source>There was an error deleting the IP Range from Autoinstallation Profile {0}. Please try again.</source>
         <context-group name="ctx">
         <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
@@ -2102,7 +2102,7 @@ available for this kickstart profile to function properly.
       </trans-unit>
 
       <trans-unit id="kickstart.iprange.url">
-        <source>New systems can be kickstarted based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for a kickstart install.</source>
+        <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;ks={0}&lt;/code&gt; respectively &lt;code&gt;autoyast={0}&lt;/code&gt; to the kernel parameters.</source>
         <context-group name="ctx">
         <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
@@ -2488,7 +2488,7 @@ available for this kickstart profile to function properly.
       </trans-unit>
 
      <trans-unit id="toolbar.upload.kickstart">
-<source>upload new kickstart file</source>
+<source>upload new kickstart/autoyast file</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
@@ -2502,14 +2502,14 @@ available for this kickstart profile to function properly.
       </trans-unit>
 
       <trans-unit id="toolbar.create.kickstartdata">
-<source>create new kickstart</source>
+<source>create new autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="toolbar.clone.kickstart">
-<source>clone kickstart</source>
+<source>clone autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
@@ -2598,7 +2598,7 @@ available for this kickstart profile to function properly.
       </trans-unit>
 
      <trans-unit id="toolbar.delete.kickstart">
-        <source>delete kickstart</source>
+        <source>delete autoinstallation</source>
         <context-group name="ctx">
             <context context-type="sourcefile">Kickstart profile pages</context>
         </context-group>
@@ -6404,20 +6404,20 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="kickstart.troubleshooting.success">
-        <source>Kickstart options updated.</source>
+        <source>Autoinstallation options updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
       </trans-unit>
 	
       <trans-unit id="tree.delete.success">
-        <source>Kickstart Distribution deleted successfully.</source>
+        <source>Autoinstallable Distribution deleted successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
     </trans-unit>
       <trans-unit id="tree.edit.invalid_tree">
-        <source>Kickstart distributions is invalid due wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source>
+        <source>Autoinstallable distribution is invalid due to a wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
@@ -6452,68 +6452,68 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="kickstart.clone.success">
-        <source>Kickstart cloned successfully.  You are now editing the cloned Kickstart.</source>
+        <source>Autoinstallation cloned successfully.  You are now editing the cloned Autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClone.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="kickstart.session_cancel.success">
-        <source>Kickstart canceled.</source>
+        <source>Autoinstallation canceled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClone.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="kickstart.session.user_canceled">
-        <source>Kickstart canceled by user: {0}</source>
+        <source>Autoinstallation canceled by user: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSessionCancel.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="kickstart.schedule.requires.older.gpgkey">
-        <source>System {0} is scheduled to be kickstarted to an older version of @@ENTERPRISE_LINUX_NAME@@, it will require the GPG key for the older release.  &lt;br/&gt; Please install this key, example: &lt;strong&gt; rpm --import  /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-former &lt;/strong&gt; </source>
+        <source>System {0} is scheduled to be autoinstalled to an older version of @@ENTERPRISE_LINUX_NAME@@, it will require the GPG key for the older release.  &lt;br/&gt; Please install this key, example: &lt;strong&gt; rpm --import  /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-former &lt;/strong&gt; </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="kickstart.schedule.success">
-        <source>System Kickstart scheduled for {0}</source>
+        <source>System autoinstallation scheduled for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate">
-        <source>System record created for {0} in Cobbler.  This will allow you to kickstart this system using the {1} profile from {0}'s terminal with the usage of the 'koan' command.</source>
+        <source>System record created for {0} in Cobbler.  This will allow you to autoinstall this system using the {1} profile from {0}'s terminal with the usage of the 'koan' command.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.schedule.success">
-        <source>System Kickstart scheduled for {0}. Please check the system console for status information.</source>
+        <source>System Autoinstallation scheduled for {0}. Please check the system console for status information.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="kickstart.schedule.noprofiles">
-        <source>No profiles found that are compatible with this System.  Either you haven't created any Kickstart Profiles or this system does not have a Base Channel.</source>
+        <source>No profiles found that are compatible with this System.  Either you haven't created any Autoinstallation Profiles or this system does not have a Base Channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="kickstart.schedule.nobasechannel">
-        <source>System &lt;strong&gt; {0} &lt;/strong&gt; cannot be kickstarted because it does not have a base channel.</source>
+        <source>System &lt;strong&gt; {0} &lt;/strong&gt; cannot be autoinstalled because it does not have a base channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="kickstart.schedule.nosuchdevice">
-        <source>System &lt;strong&gt; {0} &lt;/strong&gt; cannot be kickstarted because it does not have a &lt;strong&gt; {1} &lt;/strong&gt; network device.</source>
+        <source>System &lt;strong&gt; {0} &lt;/strong&gt; cannot be autoinstalled because it does not have a &lt;strong&gt; {1} &lt;/strong&gt; network device.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6547,21 +6547,21 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="kickstart.schedule.noup2date">
-        <source>A kickstart was not scheduled for &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
+        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="kickstart.schedule.up2dateerror">
-        <source>The latest version of up2date has been scheduled for install before the kickstart action, because the currently-installed version does not support automatic reboot.</source>
+        <source>The latest version of up2date has been scheduled for install before the autoinstallation action, because the currently-installed version does not support automatic reboot.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="kickstart.session.newsession">
-        <source>A new kickstart session was initiated for this system.</source>
+        <source>A new autoinstall session was initiated for this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6575,14 +6575,14 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="kickstart.session.newtokennote">
-        <source>Kickstart re-activation key for {0}.</source>
+        <source>Autoinstallation re-activation key for {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="kickstart.session.newprofile">
-        <source>Profile for kickstart session {0}.</source>
+        <source>Profile for autoinstall session {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6603,14 +6603,14 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="tree.edit.success">
-        <source>Kickstart Distribution Updated</source>
+        <source>Autoinstallable Distribution Updated</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="tree.create.success">
-        <source>Kickstart Distribution Created</source>
+        <source>Autoinstallable Distribution Created</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
@@ -6645,7 +6645,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="kickstart.tree.inuse">
-        <source>The Kickstart Distribution you have chosen to delete is in use.  Please delete or change the Distribution for Kickstart Profiles using this Distribution.</source>
+        <source>The Autoinstallable Distribution you have chosen to delete is in use.  Please delete or change the Distribution for Autoinstallation Profiles using this Distribution.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
@@ -6672,7 +6672,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="kickstart.schedule.already.scheduled.jsp">
-        <source>System {0} has a pending kickstart scheduled.</source>
+        <source>System {0} has a pending autoinstallation scheduled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -7559,7 +7559,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="kickstar.error.missingprofile">
-        <source>A kickstart profile must be selected.</source>
+        <source>An autoinstallation profile must be selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -8089,7 +8089,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="api.kickstart.labelalreadyinuse">
-          <source>Kickstart label already exists: {0}</source>
+          <source>Autoinstallation label already exists: {0}</source>
       </trans-unit>
 
       <trans-unit id="api.package.provider.invalidKeyType">
@@ -8121,11 +8121,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
 
       <trans-unit id="api.kickstart.nosuchkickstarttreelabel">
-          <source>Unable to locate kickstart tree for your organization: {0}</source>
+          <source>Unable to locate autoinstallable tree for your organization: {0}</source>
       </trans-unit>
 
      <trans-unit id="api.kickstart.invalidkickstartlabel">
-          <source>Invalid kickstart label: {0}</source>
+          <source>Invalid autoinstallation label: {0}</source>
       </trans-unit>
 
      <trans-unit id="api.package.invalidpackagearch">
@@ -8495,7 +8495,7 @@ Follow this url to see the full list of inactive systems:
         <source>Successfully deleted {0} packages.</source>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartinstalltype">
-          <source>Invalid kickstart install type: {0}.</source>
+          <source>Invalid autoinstall type: {0}.</source>
       </trans-unit>
       <trans-unit id="edit.channel.invalidgpgfp">
         <source>Invalid GPG Fingerprint</source>
@@ -8618,7 +8618,7 @@ Follow this url to see the full list of inactive systems:
         <source>This channel has child channels associated with it.  You must delete those channels first before deleting the parent.</source>
       </trans-unit>
      <trans-unit id="api.kickstart.tree.notfound">
-        <source>The kickstart tree could not be found.  You may not have access to requested tree.</source>
+        <source>The autoinstallable tree could not be found.  You may not have access to the requested tree.</source>
       </trans-unit>
      <trans-unit id="message.channelcreated">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
@@ -8630,7 +8630,7 @@ Follow this url to see the full list of inactive systems:
         <source>There are currently systems subscribed to this channel. Please confirm system channel removal by selecting the unsubscribe checkbox.</source>
      </trans-unit>
      <trans-unit id="message.channel.cannot-be-deleted.has-distros">
-        <source>There are currently kickstart distributions associated to this channel. Please disassociate or delete the kickstart distributions before proceeding to delete the channel.</source>
+        <source>There are currently autoinstallable distributions associated to this channel. Please disassociate or delete the autoinstallable distributions before proceeding to delete the channel.</source>
      </trans-unit>
      <trans-unit id="message.channelupdated">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
@@ -8642,10 +8642,10 @@ Follow this url to see the full list of inactive systems:
         <source>Per-User subscription restrictions may be applied in the Subscribers tab</source>
      </trans-unit>
      <trans-unit id="kickstart.cobbler.profile.invalidvirt">
-        <source>Para-Virtualization is unsupported with the selected kickstart tree or distribution.</source>
+        <source>Para-Virtualization is unsupported with the selected autoinstallable tree or distribution.</source>
      </trans-unit>
      <trans-unit id="kickstart.cobbler.profile.invalidtreeforvirt">
-        <source>You have selected a distribution or kickstart tree that is incompatible with the currently selected virtualization type.  Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
+        <source>You have selected a distribution or autoinstallable tree that is incompatible with the currently selected virtualization type.  Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
      </trans-unit>
      <trans-unit id="snapshots.childchannel">
         <source>Child Channels Updated</source>
@@ -8727,10 +8727,10 @@ Follow this url to see the full list of inactive systems:
      </trans-unit>
      <trans-unit id="kickstart.cobbler.distro.syncfail">
         <source>
-The following is a list of errors gathered while Spacewalk attempts to
-synchronize kickstart distributions from Spacewalk to Cobbler.  These
-errors must be corrected for the distributions to be available for
-kickstarting systems:
+The following is a list of errors gathered while @@PRODUCT_NAME@@ attempts to
+synchronize autoinstallable distributions from @@PRODUCT_NAME@@ to Cobbler.
+These errors must be corrected for the distributions to be available for
+autoinstalling systems:
 
 {0}
 
@@ -8740,8 +8740,8 @@ Please check:
 /var/log/tomcat5/catalina.out
 /var/log/cobbler/cobbler.log
 
-for more detailed errors.  If you don't resolve the errors the kickstart
-tree will not be usable for kickstarting.
+for more detailed errors.  If you don't resolve the errors the autoinstallable
+tree will not be usable for autoinstalling.
         </source>
      </trans-unit>
      <trans-unit id="errata.delete.msg">

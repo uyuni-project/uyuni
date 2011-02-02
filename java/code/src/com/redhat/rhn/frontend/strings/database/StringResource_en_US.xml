@@ -3594,19 +3594,19 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
         <trans-unit id="kickstart.state.created">
-          <source>Kickstart session created but has not yet been used.</source>
+          <source>Autoinstall session created but has not yet been used.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.deployed">
-          <source>Files required for kickstart action have been installed.</source>
+          <source>Files required for autoinstallation action have been installed.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.injected">
-          <source>The system configuration has been modified to begin kickstart upon next boot.</source>
+          <source>The system configuration has been modified to begin autoinstallation upon next boot.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.restarted">
-          <source>The system has been restarted in order to begin the kickstart process.</source>
+          <source>The system has been restarted in order to begin the autoinstallation process.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.configuration_accessed">
-          <source>The system has downloaded the kickstart configuration file from @@PRODUCT_NAME@@.</source>
+          <source>The system has downloaded the autoinstall configuration file from @@PRODUCT_NAME@@.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.started">
           <source>The initial files required for anaconda have been downloaded.</source>
@@ -3615,7 +3615,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
           <source>The system is downloading the RPMs required to install.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.registered">
-          <source>The system has successfully registered with @@PRODUCT_NAME@@ after kickstarting.</source>
+          <source>The system has successfully registered with @@PRODUCT_NAME@@ after autoinstallation.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.package_synch">
           <source>Package synchronization in progress.</source>
@@ -3627,10 +3627,10 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
           <source>Configuration files are being deployed.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.complete">
-          <source>Kickstart complete.</source>
+          <source>Autoinstallation complete.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.failed">
-          <source>Kickstart failed.</source>
+          <source>Autoinstallation failed.</source>
         </trans-unit>
     </group>
 

@@ -55,9 +55,8 @@ public class KickstartIpRangeSetupAction extends RhnAction {
         try {
             URL url = new URL(
                     requestContext.getRequest().getRequestURL().toString());
-            urlStr = "ks=" +
-            KickstartUrlHelper.getKickstartFileUrlIpRange(user.getOrg(),
-                    url.getHost(), url.getProtocol());
+            urlStr = KickstartUrlHelper.getKickstartFileUrlIpRange(user
+                    .getOrg(), url.getHost(), url.getProtocol());
         }
         catch (MalformedURLException e) {
             throw new IllegalArgumentException("Bad argument when creating URL for " +

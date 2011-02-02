@@ -1024,7 +1024,7 @@
       </trans-unit>
 
       <trans-unit id="login.jsp.list3">
-<source>Provisioning: System snapshots, integrated kickstarts, configuration management and more.</source>
+<source>Provisioning: System snapshots, integrated autoinstallations, configuration management and more.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
@@ -1564,7 +1564,7 @@
       </trans-unit>
 
       <trans-unit id="system-legend.jsp.kickstarting">
-<source>Kickstarting</source>
+<source>Autoinstalling</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
@@ -4347,7 +4347,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="org.kickstart.profiles.jsp">
-<source>Kickstart Profiles</source>
+<source>Autoinstallation Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
@@ -5445,7 +5445,7 @@ value for this entitlement, excluding the default organization's consumption.</s
 
 
        <trans-unit id="ssm.overview.provisioning.kickstart">
-         <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Kickstart&lt;/a&gt; systems</source>
+         <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Autoinstall&lt;/a&gt; systems</source>
        </trans-unit>
 
        <trans-unit id="ssm.overview.provisioning.rollback">
@@ -5820,7 +5820,7 @@ value for this entitlement, excluding the default organization's consumption.</s
       </trans-unit>
 
       <trans-unit id="systemlist.jsp.kickstart">
-<source>Kickstart in progress</source>
+<source>Autoinstallation in progress</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -8906,7 +8906,7 @@ organization management tools if you choose to remove this role from your login.
     </trans-unit>
 
    <trans-unit id="filter-form.jsp.ksoverviewprofiles">
-<source> Kickstart Profiles</source>
+<source> Autoinstallation Profiles</source>
       <context-group name="ctx">
         <context context-type="sourcefile">/rhn/kickstart/KickstartOverview.do</context>
       </context-group>
@@ -9396,7 +9396,7 @@ on a @@PRODUCT_NAME@@.</source>
       </trans-unit>
       <trans-unit id="general.jsp.org.summary2">
 <source>Organizations are a way to place boundaries between sets of systems, system
-groups, software channels, subscriptions and entitlements, kickstart profiles,
+groups, software channels, subscriptions and entitlements, autoinstallation profiles,
 activation keys, configuration channels and files, users - everything
 you manage using @@PRODUCT_NAME@@. Each organization is managed by at least one
 organization administrator, and the entire @@PRODUCT_NAME@@ is managed by a @@PRODUCT_NAME@@
@@ -9483,7 +9483,7 @@ administrator privileges.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="general.jsp.org.tbl.link4">
-<source>RHN Reference Guide</source>
+<source>@@PRODUCT_NAME@@ Reference Guide</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/admin/config/Orgs.do</context>
         </context-group>
@@ -9992,28 +9992,28 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
         <trans-unit id="ssm.kickstartable-systems.jsp.title">
-          <source>Kickstartable Systems</source>
+          <source>Autoinstallable Systems</source>
         </trans-unit>
 		<trans-unit id="ssm.kickstartable-systems.jsp.summary">
-          <source>Below are the systems in you selected systems list that are kickstartable using @@PRODUCT_NAME@@.</source>
+          <source>Below are the systems in your selected systems list that are autoinstallable using @@PRODUCT_NAME@@.</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.systems">
-          <source>Kickstart Selected Systems</source>
+          <source>Autoinstall Selected Systems</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.systems.summary">
-          <source>You may kickstart the selected systems.</source>
+          <source>You may autoinstall the selected systems.</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.type">
-          <source>Kickstartable Type</source>
+          <source>Autoinstallable Type</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.manual-summary">
-          <source>Select kickstart profile.</source>
+          <source>Select autoinstallation profile.</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.ip-summary">
-          <source>Kickstart by IP Address.</source>
+          <source>Autoinstall by IP Address.</source>
         </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.ip-tooltip">
-          <source>If there is no organization default profile specified for this organization, a kickstart will not get scheduled for systems that do not fall under an ip range.</source>
+          <source>If there is no organization default profile specified for this organization, an autoinstallation will not get scheduled for systems that do not fall under an ip range.</source>
         </trans-unit>
     </group>
     <group>
@@ -10022,19 +10022,19 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByIp.do</context>
         </context-group>
         <trans-unit id="ssm.kickstart.schedule.heading1.text.jsp">
-          <source> Schedule kickstart actions for the the selected systems. These actions will re-install the selected systems using the kickstart options specified.</source>
+          <source> Schedule autoinstall actions for the the selected systems. These actions will re-install the selected systems using the autoinstallation options specified.</source>
         </trans-unit>
 		<trans-unit id="ssm.kickstart.schedule.heading2.text.jsp">
-          <source>Please select the kickstart profile you'd like to use to kickstart the selected systems.</source>
+          <source>Please select the autoinstallation profile you'd like to use to autoinstall the selected systems.</source>
         </trans-unit>
 		<trans-unit id="ssm.kickstart.schedule.ip.heading2.text.jsp">
-          <source>The kickstart profile will be automatically selected for each system based upon its network configuration.  If no match is found, the organizational default profile will be used if set.</source>
+          <source>The autoinstallation profile will be automatically selected for each system based upon its network configuration.  If no match is found, the organizational default profile will be used if set.</source>
         </trans-unit>
 		<trans-unit id="ssm.kickstart.schedule.proxy.jsp.summary">
-          <source>You may choose to use an @@PRODUCT_NAME@@ Proxy to access the files necessary for kickstart. The selected systems will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its kickstart has completed..</source>
+          <source>You may choose to use a @@PRODUCT_NAME@@ Proxy to access the files necessary for autoinstallation. The selected systems will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its autoinstallation has completed..</source>
         </trans-unit>
 		<trans-unit id="ssm.kickstart.distro.cobbler-only.tooltip">
-		<source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after kickstart. You may wish to review these kickstarts (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after kickstart.</source>
+		<source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
 	</trans-unit>
     </group>
     <!-- Kickstart -->
@@ -10047,56 +10047,56 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="kickstarts.alt.img">
-        <source>Kickstart Profile Icon</source>
+        <source>Autoinstallation Profile Icon</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstarts.jsp.toolbar">
-        <source>Kickstart Profiles</source>
+        <source>Autoinstallation Profiles</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartdownload.jsp.header">
-        <source>Kickstart File</source>
+        <source>Autoinstallation File</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartdownload.jsp.summary">
-        <source>The kickstart file generated by this kickstart profile is viewable below:</source>
+        <source>The autoinstallation file generated by this autoinstallation profile is viewable below:</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartdownload.jsp.invalidchannel">
-        <source>Due to packages missing from this kickstart profile's base channel, the kickstart file could not be generated.</source>
+        <source>Due to packages missing from this autoinstallation profile's base channel, the autoinstallation file could not be generated.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartdownload.jsp.download">
-        <source>Download Kickstart File</source>
+        <source>Download Autoinstallation File</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.jsp.overview">
-        <source>Kickstart Overview</source>
+        <source>Autoinstallation Overview</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.variable.jsp.header">
-        <source>Kickstart Variables</source>
+        <source>Autoinstallation Variables</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
@@ -10111,7 +10111,7 @@ Please note that some manual configuration of these scripts may still be require
 
 
     <trans-unit id="kickstart.variable.jsp.summary">
-        <source>Kickstart variables can be used to substitute values into kickstart profiles.  To define a variable simply add 'name=value' to the box below.
+        <source>Autoinstallation variables can be used to substitute values into autoinstallation profiles.  To define a variable simply add 'name=value' to the box below.
         			You would then use $name within the profile to substitute in the value.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
@@ -10197,7 +10197,7 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="kickstart.jsp.error.template_generation">
-        <source>There are errors in your kickstart template. Please check the &lt;a href=&quot;{0}&quot;&gt;template errors&lt;/a&gt; to determine the problem with the template.</source>
+        <source>There are errors in your autoinstallation template. Please check the &lt;a href=&quot;{0}&quot;&gt;template errors&lt;/a&gt; to determine the problem with the template.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
@@ -10226,28 +10226,28 @@ Please note that some manual configuration of these scripts may still be require
 
 
     <trans-unit id="kickstart.jsp.overviewsummary">
-        <source>Kickstart Summary</source>
+        <source>Autoinstallation Summary</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.jsp.actions">
-        <source>Kickstart Actions</source>
+        <source>Autoinstallation Actions</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.jsp.current">
-        <source>Systems Currently Kickstarting</source>
+        <source>Systems Currently Autoinstalling</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.jsp.scheduled">
-        <source>Systems Scheduled to be Kickstarted</source>
+        <source>Systems Scheduled to be Autoinstalled</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
@@ -10282,28 +10282,28 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="kickstartoverview.jsp.kickstartsummary">
-           <source>Kickstart Summary</source>
+           <source>Autoinstallation Summary</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.jsp.system">
-           <source>Kickstarting Systems</source>
+           <source>Systems</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartoverview.jsp.actions">
-           <source>Kickstart Actions</source>
+           <source>Autoinstallation Actions</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
     </trans-unit>
 
    <trans-unit id="kickstartoverview.jsp.viewprofiles">
-           <source>View a List of Kickstart Profiles</source>
+           <source>View a List of Autoinstallation Profiles</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
@@ -10317,20 +10317,20 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="kickstartoverview.jsp.uploadksfile">
-           <source>Upload a New Kickstart File</source>
+           <source>Upload a New Kickstart/AutoYaST File</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
     </trans-unit>
     <trans-unit id="kickstartoverview.jsp.cloneksprofile">
-           <source>Clone a Kickstart Profile</source>
+           <source>Clone an Autoinstallation Profile</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.jsp.summary">
-           <source>The following kickstart profiles have been created for use by your organization:</source>
+           <source>The following autoinstallation profiles have been created for use by your organization:</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
@@ -10358,28 +10358,28 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="kickstart.jsp.nokickstarts">
-        <source>No kickstart profiles available</source>
+        <source>No autoinstallation profiles available</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartoverview.jsp.nocurrentlyks">
-        <source>There are no systems currently kickstarting</source>
+        <source>There are no systems currently autoinstalling.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartoverview.jsp.noscheduledtobeks">
-        <source>To schedule a kickstart, go the Systems tab above and select the system you would like the kickstart. From there, go to the system's Provisioning tab and click on the Schedule subtab.</source>
+        <source>To schedule an autoinstallation, go to the Systems tab above and select the system you would like to autoinstall. From there, go to the system's Provisioning tab and click on the Schedule subtab.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartranges.jsp.noranges">
-        <source>There are currently no kickstart ip ranges associated for any of your organization's kickstart profiles.</source>
+        <source>There are currently no autoinstallation ip ranges associated for any of your organization's autoinstallation profiles.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
@@ -10393,7 +10393,7 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="kickstartranges.jsp.profile">
-        <source>Kickstart Profile</source>
+        <source>Autoinstallation Profile</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartIpRanges</context>
         </context-group>
@@ -10449,14 +10449,14 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="kickstartdetails.jsp.header1">
-        <source>Kickstart: {0}</source>
+        <source>Autoinstallation: {0}</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartdelete.jsp.header1">
-        <source>Delete Kickstart: {0}</source>
+        <source>Delete Autoinstallation: {0}</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
@@ -10470,14 +10470,14 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="kickstartdetails.jsp.header2">
-        <source>Kickstart Details</source>
+        <source>Autoinstallation Details</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
     </trans-unit>
 
      <trans-unit id="kickstartdelete.jsp.header2">
-        <source>Confirm Kickstart Deletion</source>
+        <source>Confirm Autoinstallation Deletion</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
@@ -10498,28 +10498,28 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="kickstartdetails.jsp.summary1">
-        <source>This kickstart profile may be edited using the form provided below. Entries marked with an asterisk (*) are required.</source>
+        <source>This autoinstallation profile may be edited using the form provided below. Entries marked with an asterisk (*) are required.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartdelete.jsp.summary1">
-        <source>Are you sure you want to delete this Kickstart?&lt;strong&gt;&lt;p&gt;WARNING: deleting this kickstart will remove its corresponding options and scripts.&lt;/p&gt;&lt;/strong&gt;&lt;p&gt;&lt;strong&gt;Please click the button only once; it will take a few moments for the deletion process to complete.&lt;/strong&gt;&lt;/p&gt;</source>
+        <source>Are you sure you want to delete this Autoinstallation?&lt;strong&gt;&lt;p&gt;WARNING: deleting this autoinstallation will remove its corresponding options and scripts.&lt;/p&gt;&lt;/strong&gt;&lt;p&gt;&lt;strong&gt;Please click the button only once; it will take a few moments for the deletion process to complete.&lt;/strong&gt;&lt;/p&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartdetails.jsp.summary2">
-        <source>&lt;span class=&quot;small-text&quot;&gt; The Organization Default Profile setting can be used with manually-created or bare-metal kickstart files.  Select this option to indicate which profile in your Organization is used when the URL from &lt;a href=&quot;{0}&quot; target=&quot;_new&quot; &gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your kickstart file.  The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
+        <source>&lt;span class=&quot;small-text&quot;&gt; The Organization Default Profile setting can be used with manually-created or bare-metal autoinstallation files.  Select this option to indicate which profile in your Organization is used when the URL from &lt;a href=&quot;{0}&quot; target=&quot;_new&quot; &gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your autoinstallation file.  The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartdetails.jsp.activeDescription">
-<source>You cannot kickstart a system registered to @@PRODUCT_NAME@@ using an inactive kickstart profile. However, the kickstart files for inactive kickstart profiles are still available for manual download and may be used for bare metal kickstarts.</source>
+<source>You cannot autoinstall a system registered to @@PRODUCT_NAME@@ using an inactive autoinstallation profile. However, the autoinstallation files for inactive autoinstallation profiles are still available for manual download and may be used for bare metal autoinstallations.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -10582,35 +10582,35 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="kickstartscript.jsp.noscripts">
-        <source>No scripts are associated with this kickstart profile</source>
+        <source>No scripts are associated with this autoinstallation profile</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/Scripts</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartips.jsp.baremetal_summary">
-        <source>&lt;p&gt; In order to kickstart "bare metal systems", you will need to provide them with a boot image that is compatible with the version of the operating system you are kickstarting to via boot CD. &lt;/p&gt; &lt;p&gt; Once these systems have booted using the appropriate image, you will need to provide a kickstart file. You may use the following URL in your Boot CD or in your PXE configuration to provide these systems with the kickstart file associated with this kickstart profile:&lt;/p&gt;</source>
+        <source>&lt;p&gt; In order to autoinstall "bare metal systems", you will need to provide them with a boot image that is compatible with the version of the operating system you are autoinstalling to via boot CD. &lt;/p&gt; &lt;p&gt; Once these systems have booted using the appropriate image, you will need to provide an autoinstallation file. You may use the following URL in your Boot CD or in your PXE configuration to provide these systems with the autoinstallation file associated with this autoinstallation profile:&lt;/p&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartips.jsp.baremetal">
-        <source>Bare Metal Kickstart</source>
+        <source>Bare Metal Autoinstallation</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartips.jsp.resource">
-        <source>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;Resource:&lt;/strong&gt; The RHN Reference Guide Kickstart section&lt;/span&gt;</source>
+        <source>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;Resource:&lt;/strong&gt; The Reference Guide Kickstart section&lt;/span&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartips.jsp.tip">
-        <source>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the IP ranges associated with your organization's kickstart profiles is available &lt;/span&gt;</source>
+        <source>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the IP ranges associated with your organization's autoinstallation profiles is available &lt;/span&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
@@ -10618,35 +10618,35 @@ Please note that some manual configuration of these scripts may still be require
 
 
     <trans-unit id="kickstartips.jsp.baremetal_summary2">
-        <source>Alternatively, you may associate each of your kickstart profiles with particular ip ranges. Then, you can provide bare metal systems with a single URL that will provide each system the kickstart file associated with its IP Address. Below you will find this URL:</source>
+        <source>Alternatively, you may associate each of your autoinstallation profiles with particular ip ranges. Then, you can provide bare metal systems with a single URL that will provide each system the autoinstallation file associated with its IP Address. Below you will find this URL:</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartips.jsp.baremetal2">
-        <source>IP Address-Based Bare Metal Kickstart URL</source>
+        <source>IP Address-Based Bare Metal Autoinstallation URL</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartips.jsp.ranges">
-        <source>Associated IP Ranges with Kickstart Profile</source>
+        <source>Associated IP Ranges with Autoinstallation Profile</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartips.jsp.ranges_summary">
-        <source>You may add or delete IP ranges associated with this kickstart profile below:</source>
+        <source>You may add or delete IP ranges associated with the autoinstallation profile below:</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstartranges.jsp.summary">
-        <source>The following IP Address ranges are associated with kickstart profiles.</source>
+        <source>The following IP Address ranges are associated with autoinstallation profiles.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartIpRanges</context>
         </context-group>
@@ -10689,7 +10689,7 @@ Please note that some manual configuration of these scripts may still be require
 
     <trans-unit id="kickstartdetails.jsp.virtTypeChangeWarning">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Changing the Virtualization Type may require changes to the
-            kickstart profile's bootloader and partition options, potentially overwriting user customizations.
+            autoinstallation profile's bootloader and partition options, potentially overwriting user customizations.
             Please visit the &lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;Partitioning&lt;/a&gt;
             tab to verify the new settings.</source>
         <context-group name="ctx">
@@ -10776,10 +10776,10 @@ Please note that some manual configuration of these scripts may still be require
 	    <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
 	  </context-group>
 	  <trans-unit id="kickstart.advanced.jsp.create">
-	    <source>Create Kickstart Profile</source>
+	    <source>Create Autoinstallation Profile</source>
 	  </trans-unit>
 	  <trans-unit id="kickstart.advanced.jsp.para1">
-	    <source>Each kickstart file you upload to SUSE Manager will need a label so that you can refer to it later - please choose a label for this kickstart and enter it below. Entries marked with an asterisk (*) are required.</source>
+	    <source>Each autoinstallation file you upload to @@PRODUCT_NAME@@ will need a label so that you can refer to it later - please choose a label for this autoinstallation and enter it below. Entries marked with an asterisk (*) are required.</source>
 	  </trans-unit>
 	
 	  <trans-unit id="kickstart.advanced.jsp.uploadtab">
@@ -10789,11 +10789,11 @@ Please note that some manual configuration of these scripts may still be require
 	    <source> Alternatively, you can upload a new version in the '{0}' section below and select '{1}'.</source>
 	   </trans-unit>
       <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste">
-        <source> If you wish to re-use an existing Kickstart Profile we recommend you copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the kickstart.</source>
+        <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
        </trans-unit>
 	</group>
     <trans-unit id="kickstartdatadelete.jsp.confirmdelete">
-        <source>Delete Kickstart</source>
+        <source>Delete Autoinstallation</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
@@ -10861,7 +10861,7 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="kickstart.activationkeys.jsp.note">
-        <source>&lt;strong&gt;Note: The selection of incompatible activation keys can prevent a system from registering properly after it is kickstarted.&lt;/strong&gt;  You'll want to review the RHN Reference Guide section on using multiple activation keys before making use of this feature.</source>
+        <source>&lt;strong&gt;Note: The selection of incompatible activation keys can prevent a system from registering properly after it is kickstarted.&lt;/strong&gt;  You'll want to review the Reference Guide section on using multiple activation keys before making use of this feature.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/ActivationKeysEdit.do</context>
         </context-group>
@@ -10908,7 +10908,7 @@ Please note that some manual configuration of these scripts may still be require
   </trans-unit>
 
     <trans-unit id="kickstartranges.jsp.toolbar">
-        <source>Bare Metal Kickstart By IP</source>
+        <source>Bare Metal Autoinstallation By IP</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartIpRanges</context>
         </context-group>
@@ -11157,7 +11157,7 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="keys.jsp.summary">
-        <source>You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.  A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.  For more information, see the &lt;a href=&quot;/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-keys&quot; target=&quot;_new&quot; &gt;RHN Reference Guide&lt;/a&gt;</source>
+        <source>You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.  A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.  For more information, see the &lt;a href=&quot;/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-keys&quot; target=&quot;_new&quot; &gt;Reference Guide&lt;/a&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
@@ -11328,7 +11328,7 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="preservation_list.jsp.summary">
-        <source>File preservation lists are lists of files that will be restored to a system during a particular kickstart.  You can reference a file preservation list in a kickstart profile.  For more information refer to the &lt;a href=&quot;/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve&quot; target=&quot;_new&quot; &gt;RHN Reference Guide&lt;/a&gt;.  The following file preservation lists have been created for use by your organization:</source>
+        <source>File preservation lists are lists of files that will be restored to a system during a particular kickstart.  You can reference a file preservation list in a kickstart profile.  For more information refer to the &lt;a href=&quot;/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve&quot; target=&quot;_new&quot; &gt;Reference Guide&lt;/a&gt;.  The following file preservation lists have been created for use by your organization:</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
@@ -11456,7 +11456,7 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="preservation_edit.jsp.summary">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href=&quot;/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve&quot; target=&quot;_new&quot; &gt;RHN Reference Guide&lt;/a&gt;.</source>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href=&quot;/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve&quot; target=&quot;_new&quot; &gt;Reference Guide&lt;/a&gt;. </source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
@@ -11560,7 +11560,7 @@ Please note that some manual configuration of these scripts may still be require
     </trans-unit>
 
     <trans-unit id="softwareedit.jsp.warning">
-        <source>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;Warning:&lt;/strong&gt; If any activation keys are associated with this kickstart profile(under the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;activation keys tab&lt;/a&gt;). the child channel subscriptions above will be overridden. In that situation please use an activation key to specify child channel subscriptions.&lt;/span&gt;</source>
+        <source>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;Warning:&lt;/strong&gt; If any activation keys are associated with this kickstart profile (under the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;activation keys tab&lt;/a&gt;). the child channel subscriptions above will be overridden. In that situation please use an activation key to specify child channel subscriptions.&lt;/span&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit</context>
         </context-group>
@@ -12405,7 +12405,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
 
       <trans-unit id="yourrhn.jsp.tasks.kickstart">
-        <source>Manage &lt;strong&gt;Kickstarts&lt;/strong&gt;</source>
+        <source>Manage &lt;strong&gt;Autoinstallations&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -12751,7 +12751,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
        </context-group>
      </trans-unit>
      <trans-unit id="kickstart.jsp.create.wizard.kstree.label">
-       <source>Kickstartable Tree</source>
+       <source>Autoinstallable Tree</source>
        <context-group name="ctx">
          <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
        </context-group>
@@ -13183,7 +13183,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
          <source>system group</source>
        </trans-unit>
        <trans-unit id="system.common.kickstartAlt">
-         <source>kickstart</source>
+         <source>autoinstallation</source>
        </trans-unit>
        <trans-unit id="system.common.infoAlt">
          <source>information</source>
@@ -14887,7 +14887,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
     	</context-group>
   	</trans-unit>
 	<trans-unit id="filedetails.jsp.tip.macros">
-<source>&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the available macros is listed in the &lt;a href="{0}"&gt;RHN Reference Guide&lt;/a&gt;.</source>
+<source>&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the available macros is listed in the &lt;a href="{0}"&gt;Reference Guide&lt;/a&gt;.</source>
     	<context-group name="ctx">
       		<context context-type="sourcefile">/rhn/configuration/FileDetails.do</context>
     	</context-group>
@@ -17352,7 +17352,7 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
         </context-group>
     </trans-unit>
     <trans-unit id="kickstart.schedule.msg.proxy.jsp">
-        <source>You may choose to use an @@PRODUCT_NAME@@ Proxy to access the files necessary for kickstart. This system will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its kickstart has completed.</source>
+        <source>You may choose to use an @@PRODUCT_NAME@@ Proxy to access the files necessary for autoinstallation. This system will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its autoinstallation has completed.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -17379,49 +17379,49 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
     </trans-unit>
 
     <trans-unit id="kickstart.schedule.heading1.jsp">
-        <source>Schedule Kickstart</source>
+        <source>Schedule Autoinstallation</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
     </trans-unit>
     <trans-unit id="kickstart.schedule.heading1.text.jsp">
-        <source>You can schedule this system for a kickstart action. This will re-install this system using the selected kickstart options.</source>
+        <source>You can schedule this system for an autoinstallation action. This will re-install this system using the selected autoinstallation options.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
     </trans-unit>
     <trans-unit id="kickstart.schedule.heading2.jsp">
-        <source>Select Kickstart Profile</source>
+        <source>Select Autoinstallation Profile</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
     </trans-unit>
     <trans-unit id="kickstart.schedule.heading2.text.jsp">
-        <source>Please select the kickstart profile you'd like to use to kickstart this system:</source>
+        <source>Please select the autoinstallation profile you'd like to use to autoinstall this system:</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
     </trans-unit>
     <trans-unit id="kickstart.schedule.heading3.jsp">
-        <source>Schedule Kickstart</source>
+        <source>Schedule Autoinstallation</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
     </trans-unit>
     <trans-unit id="kickstart.schedule.heading3.option1.jsp">
-        <source>Begin kickstart at the next system check in.</source>
+        <source>Begin autoinstallation at the next system check in.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
     </trans-unit>
     <trans-unit id="kickstart.schedule.heading3.option2.jsp">
-        <source>Schedule kickstart no sooner than:</source>
+        <source>Schedule autoinstallation no sooner than:</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
     </trans-unit>
     <trans-unit id="kickstart.schedule.no.profiles.jsp">
-        <source>No profiles currently available for kickstart. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new kickstart profile.&lt;/a&gt;</source>
+        <source>No profiles currently available for autoinstallation. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new kickstart profile.&lt;/a&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -17433,7 +17433,7 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
         </context-group>
     </trans-unit>
     <trans-unit id="kickstart.schedule.button0.tooltip.jsp">
-        <source>Creating a cobbler system record will allow this system to be provisioned from the command line on the system itself with the 'koan' command.  This also allows you to assign Variables specific to this system's kickstart using the Variables page.</source>
+        <source>Creating a cobbler system record will allow this system to be provisioned from the command line on the system itself with the 'koan' command.  This also allows you to assign Variables specific to this system's autoinstallation using the Variables page.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -17445,7 +17445,7 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
         </context-group>
     </trans-unit>
     <trans-unit id="kickstart.schedule.button2.jsp">
-        <source>Schedule Kickstart and Finish</source>
+        <source>Schedule Autoinstallation and Finish</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -17493,13 +17493,13 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
 
 
     <trans-unit id="kickstart.distro.cobbler-only.tooltip">
-        <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after kickstart. You may wish to review these kickstarts (click on the profile name to do so) to confirm whether or not your system will reappear in the @@PRODUCT_NAME@@ system list after kickstart.</source>
+        <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not your system will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
     </trans-unit>
     <trans-unit id="kickstarts.distro.cobbler-only.tooltip">
-        <source>Kickstart profiles that are not managed by @@PRODUCT_NAME@@ can not be edited in the @@PRODUCT_NAME@@ UI. To modify these profiles, please log onto the @@PRODUCT_NAME@@ server and run the 'cobbler edit profile' command. For more information, consult the @@PRODUCT_NAME@@ Reference Guide.</source>
+        <source>Autoinstallation profiles that are not managed by @@PRODUCT_NAME@@ can not be edited in the @@PRODUCT_NAME@@ UI. To modify these profiles, please log onto the @@PRODUCT_NAME@@ server and run the 'cobbler edit profile' command. For more information, consult the Reference Guide.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
         </context-group>
@@ -17518,7 +17518,7 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
     </trans-unit>
 
  	<trans-unit id="kickstarts.profile.is-valid.tooltip">
-        <source>Kickstart profiles may be associated to an invalid kickstart distribution. To make a kickstart profile valid please select the profile and modify its distribution appropriately.</source>
+        <source>Autoinstallation profiles may be associated to an invalid autoinstallable distribution. To make an autoinstallation profile valid please select the profile and modify its distribution appropriately.</source>
        <context-group name="ctx">
            <context context-type="sourcefile">/rhn/kickstart/Kickstarts.do</context>
        </context-group>
@@ -17529,16 +17529,16 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
 	        <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
 	    </context-group>
 	    <trans-unit id="kickstart.schedule.heading4.jsp">
-	        <source>Advanced Kickstart Configuration</source>
+	        <source>Advanced Autoinstall Configuration</source>
 	    </trans-unit>
 	    <trans-unit id="kickstart.schedule.bootloader.jsp">
 	        <source>Bootloader</source>
 	    </trans-unit>
 	    <trans-unit id="kickstart.schedule.kernel.options.distro">
-	        <source>&lt;strong&gt;As specified by Kickstart Distribution&lt;/strong&gt;</source>
+	        <source>&lt;strong&gt;As specified by Autoinstallable Distribution&lt;/strong&gt;</source>
 	    </trans-unit>
 	    <trans-unit id="kickstart.schedule.kernel.options.profile">
-	        <source>&lt;strong&gt;As specified by Kickstart Profile&lt;/strong&gt;</source>
+	        <source>&lt;strong&gt;As specified by Autoinstallation Profile&lt;/strong&gt;</source>
 	    </trans-unit>
 	    <trans-unit id="kickstart.schedule.kernel.options.custom.tip">
 	        <source>If you would not like any kernel options, select '{0}' and leave the form field blank.</source>
@@ -17601,28 +17601,28 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
     </trans-unit>
 
     <trans-unit id="kickstart.clone.jsp.clone">
-        <source>Clone Kickstart</source>
+        <source>Clone Autoinstallation</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.clone.jsp.header2">
-        <source>Clone Kickstart Profile</source>
+        <source>Clone Autoinstallation Profile</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.clone.jsp.summary">
-        <source>Please specify a new label for this Kickstart Profile.  All options, settings and scripts from the source Kickstart Profile will be copied to a new Profile except the IP Range Settings.</source>
+        <source>Please specify a new label for this Autoinstallation Profile.  All options, settings and scripts from the source Autoinstallation Profile will be copied to a new Profile except the IP Range Settings.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.clone.jsp.header1">
-        <source>Create a Clone of Kickstart: {0}</source>
+        <source>Create a Clone of Autoinstallation: {0}</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -17636,7 +17636,7 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
     </trans-unit>
 
     <trans-unit id="kickstart.session_status.jsp.summary2">
-        <source>This is current status of this system's Kickstart progress.  &lt;strong&gt;NOTE:&lt;/strong&gt;  This page refreshes every 15 seconds</source>
+        <source>This is current status of this system's Autoinstallation progress.  &lt;strong&gt;NOTE:&lt;/strong&gt;  This page refreshes every 15 seconds</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -17650,14 +17650,14 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
     </trans-unit>
 
     <trans-unit id="kickstart.session_status.jsp.progress">
-        <source>Kickstart Progress</source>
+        <source>Autoinstallation Progress</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.session_status.jsp.header2">
-        <source>Kickstart Status</source>
+        <source>Autoinstallation Status</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -17721,7 +17721,7 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
     </trans-unit>
 
     <trans-unit id="kickstart.session_status.jsp.status_initiate">
-        <source>Initiate Kickstart</source>
+        <source>Initiate Autoinstallation</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -17735,14 +17735,14 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
     </trans-unit>
 
     <trans-unit id="kickstart.session_status.jsp.status_access_file">
-        <source>Access kickstart file</source>
+        <source>Access autoinstallation file</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.session_status.jsp.status_kickstart">
-        <source>Kickstart System</source>
+        <source>Autoinstall System</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -17777,14 +17777,14 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
     </trans-unit>
 
     <trans-unit id="kickstart.session_status.jsp.status_failed">
-        <source>Kickstart failed</source>
+        <source>Autoinstallation failed</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.session_status.jsp.status_complete">
-        <source>Kickstart complete</source>
+        <source>Autoinstallation complete</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -17799,7 +17799,7 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
     </trans-unit>
 
     <trans-unit id="kickstart.session_status.jsp.cancel_cancel">
-        <source>Cancel Kickstart?</source>
+        <source>Cancel Autoinstallation?</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
@@ -17807,7 +17807,7 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
 
 
     <trans-unit id="kickstart.session_cancel.jsp.header2">
-        <source>Kickstart Session</source>
+        <source>Autoinstall Session</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionCancel.do</context>
         </context-group>
@@ -17821,14 +17821,14 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
     </trans-unit>
 
     <trans-unit id="kickstart.session_cancel.jsp.summary">
-        <source>Click 'Cancel Kickstart' below to cancel this kickstart.</source>
+        <source>Click 'Cancel Autoinstallation' below to cancel this kickstart.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionCancel.do</context>
         </context-group>
     </trans-unit>
 
     <trans-unit id="kickstart.session_cancel.jsp.cancel">
-        <source>Cancel Kickstart</source>
+        <source>Cancel Autoinstallation</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionCancel.do</context>
         </context-group>
@@ -17839,19 +17839,19 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
 	        <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
 	    </context-group>
 	    <trans-unit id="kickstart.distributions.jsp.nolists">
-	        <source>No kickstartable distributions available.</source>
+	        <source>No autoinstallable distributions available.</source>
 	    </trans-unit>
 	    <trans-unit id="kickstart.kickstartable_distro_create_new.jsp">
 	        <source>create new distribution</source>
 	    </trans-unit>
 	    <trans-unit id="kickstart.kickstartable_distributions.jsp">
-	        <source>Kickstartable Distributions</source>
+	        <source>Autoinstallable Distributions</source>
 	    </trans-unit>
 	    <trans-unit id="kickstart.kickstartable_distributions_text.jsp">
-	        <source>The following kickstart distributions are available.</source>
+	        <source>The following autoinstallable distributions are available.</source>
 	    </trans-unit>
 	    <trans-unit id="kickstarts.distro.is-valid.tooltip">
-	        <source>Kickstart distributions may be invalid due wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source>
+	        <source>Autoinstallable distributions may be invalid due to a wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source>
 	    </trans-unit>
 	    <trans-unit id="kickstart.distro.is-valid.jsp">
 	        <source>Valid</source>
@@ -17990,27 +17990,27 @@ the &lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;Acti
       </trans-unit>
 
      <trans-unit id="treeedit.jsp.header2">
-<source>Edit Kickstart Distribution</source>
+<source>Edit Autoinstallable Distribution</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
 
      <trans-unit id="treeedit.jsp.toolbar">
-<source>Edit Kickstart Distribution</source>
+<source>Edit Autoinstallable Distribution</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
 
      <trans-unit id="treecreate.jsp.header1">
-<source>The following details are needed to define a kickstartable distribution. The tree path field should be a valid path to a installation tree located on this @@PRODUCT_NAME@@  server. The Kickstart RPM should be the name of the rpm containing the kickstart deploy scripts. These RPMs are provided by @@PRODUCT_NAME@@ and located in the @@PRODUCT_NAME@@ Tools child channels.&lt;br/&gt;&lt;br/&gt;
+<source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
 
 The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
 
-The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
+The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
 
-&lt;p&gt;The Tree Path must be a local disk path on your @@PRODUCT_NAME@@ server containing the entire kickstart tree for a distribution include kernel, initrd, and repo information, but excluding any rpms. This directory should be readable by the apache and tomcat users.  From within the specified tree path, a kernel should be available at &quot;./images/pxeboot/vmlinuz&quot; and an initrd image should be available at &quot;./images/pxeboot/initrd.img&quot;. For instance, if you have media located on the @@PRODUCT_NAME@@ server at: &lt;i&gt;/var/distro-trees/rhel-5-server/&lt;/i&gt; you would specify that path as your Tree Path value which would check for a kernel and initrd here: &lt;i&gt;/var/distro-trees/rhel-5-server/images/pxeboot/&lt;/i&gt; &lt;/p&gt;
+&lt;p&gt;The Tree Path must be a local disk path on your @@PRODUCT_NAME@@ server containing the entire autoinstallable tree for a distribution include kernel, initrd, and repo information, but excluding any rpms. This directory should be readable by the apache and tomcat users.  From within the specified tree path, a kernel should be available at &quot;./images/pxeboot/vmlinuz&quot; and an initrd image should be available at &quot;./images/pxeboot/initrd.img&quot;. For instance, if you have media located on the @@PRODUCT_NAME@@ server at: &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; you would specify that path as your Tree Path value which would check for a kernel and initrd here: &lt;i&gt;/var/distro-trees/sles-11-server/images/pxeboot/&lt;/i&gt; &lt;/p&gt;
 </source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
@@ -18018,28 +18018,28 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
       </trans-unit>
 
      <trans-unit id="treecreate.jsp.header2">
-<source>Create Kickstart Distribution</source>
+<source>Create Autoinstallable Distribution</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
       </trans-unit>
 
      <trans-unit id="treecreate.jsp.toolbar">
-<source>Create Kickstart Distribution</source>
+<source>Create Autoinstallable Distribution</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
       </trans-unit>
 
      <trans-unit id="edittree.jsp.submit">
-<source>Update Kickstart Distribution</source>
+<source>Update Autoinstallable Distribution</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
       </trans-unit>
 
       <trans-unit id="createtree.jsp.submit">
-<source>Create Kickstart Distribution</source>
+<source>Create Autoinstallable Distribution</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
@@ -18074,17 +18074,17 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
       </trans-unit>
 
      <trans-unit id="tree-form.jspf.nochannels">
-<source>No Kickstartable Channels found.</source>
+<source>No Autoinstallable Channels found.</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
       </trans-unit>
 
      <trans-unit id="tree-form.jspf.noautoks">
-<source> &lt;strong&gt; Could not find any Kickstart RPMs.  These RPMs are located in
-the @@PRODUCT_NAME@@ Tools channels for each supported parent channel.  You may
-need to perform a sync of the @@PRODUCT_NAME@@ Tools channels before
-performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
+<source> &lt;strong&gt; Could not find any Kickstart RPMs.  These RPMs are located
+in the Tools channels for each supported parent channel.  You may need to perform
+a sync of the Tools channels before performing an autoinstallation or creating a
+new autoinstallable distribution.&lt;/strong&gt;
 </source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
@@ -18440,7 +18440,7 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
       </trans-unit>
 
       <trans-unit id="distro-delete.jsp.profilesusing">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The Kickstart Distribution you have chosen to delete is in use by the following Kickstart Profiles.  You must change the Distribution used in the profiles below before deleting this Distribution.  Click the label in the link to edit the profile's Distribution.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The Autoinstallable Distribution you have chosen to delete is in use by the following Autoinstallation Profiles.  You must change the Distribution used in the profiles below before deleting this Distribution.  Click the label in the link to edit the profile's Distribution.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
@@ -18454,7 +18454,7 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
       </trans-unit>
 
       <trans-unit id="virtualization.provision.first.jsp.header1">
-        <source>Select a Kickstart Profile</source>
+        <source>Select an Autoinstallation Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
 	</context-group>
@@ -18482,7 +18482,7 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
       </trans-unit>
 
       <trans-unit id="virtualization.provision.override.jsp.goto.advanced.options">
-        <source>By default virtual guest settings like memory, cpu and storage allocations will be inherited from your kickstart profile. If you want to override these settings click on &lt;strong&gt;{0}&lt;/strong&gt; button below.</source>
+        <source>By default virtual guest settings like memory, cpu and storage allocations will be inherited from your autoinstallation profile. If you want to override these settings click on &lt;strong&gt;{0}&lt;/strong&gt; button below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
 	</context-group>
@@ -18559,7 +18559,7 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
       </trans-unit>
 
      <trans-unit id="virtualization.provision.override.jsp.message">
-        <source>The following fields may be left blank (in which case default values as defined in the selected kickstart profile will be used).  Each field may be set individually to override the profile's default value.</source>
+        <source>The following fields may be left blank (in which case default values as defined in the selected autoinstallation profile will be used).  Each field may be set individually to override the profile's default value.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
 	</context-group>
@@ -18615,7 +18615,7 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
       </trans-unit>
 
       <trans-unit id="kickstart.systemdetails.update.confirm">
-        <source>Kickstart profile options updated successfully.</source>
+        <source>Autoinstallation profile options updated successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/SystemDetailsEdit.do</context>
         </context-group>
@@ -18677,7 +18677,7 @@ performing a kickstart or creating a new kickstart distribution.&lt;/strong&gt;
      </group>
 
     <trans-unit id="virtualization.provision.first.jsp.no.profiles">
-        <source>No profiles currently available for kickstarting guests. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new kickstart profile with a Virtualization Type other than none.&lt;/a&gt;</source>
+        <source>No profiles currently available for autoinstalling guests. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new kickstart profile with a Virtualization Type other than none.&lt;/a&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -20803,7 +20803,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
 
       <trans-unit id="orgsystemsubs.jsp.provis_tip">
-        <source>Allows various advanced functionality such as kickstart and configuration file provisioning.</source>
+        <source>Allows various advanced functionality such as autoinstallation and configuration file provisioning.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
         </context-group>
@@ -21005,7 +21005,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
 
       <trans-unit id="system_entitlement_details.access_grant_desc.provisioning_entitled">
-        <source>A single Provisioning (Add-On) entitlement allows various advanced functionality such as kickstart and configuration file provisioning. </source>
+        <source>A single Provisioning (Add-On) entitlement allows various advanced functionality such as autoinstallation and configuration file provisioning. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
@@ -21709,7 +21709,7 @@ As a Channel Administrator, you may change the base channels your systems are su
       </trans-unit>
 
       <trans-unit id="kickstartoptions.jsp.customoptionsnote">
-			<source>&lt;strong&gt;NOTE:&lt;/strong&gt; Invalid custom options can cause kickstarts to fail.</source>
+			<source>&lt;strong&gt;NOTE:&lt;/strong&gt; Invalid custom options can cause autoinstallations to fail.</source>
       </trans-unit>
 
       <trans-unit id="kickstartoptions.jsp.customoptionstip">
@@ -21905,7 +21905,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
 	 <trans-unit id="kickstart.list.jsp.orgdefault">
-        <source>This is your organizations default kickstart profile.</source>
+        <source>This is your organizations default autoinstallation profile.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
@@ -22557,8 +22557,8 @@ given channel.</source>
            given the option to delete them after the channel has been deleted. Patches
            related to the channel will no longer be related to the channel, and may be
            orphaned. If the channel has child channels, it cannot be deleted; the child
-           channels must be deleted first. If the channel has kickstart distributions
-           associated to it, it cannot be deleted; the kickstart distributions must be
+           channels must be deleted first. If the channel has autoinstallable distributions
+           associated to it, it cannot be deleted; the autoinstallable distributions must be
            dissociated from the channel or deleted first.
          </source>
          <context-group name="ctx">
@@ -22831,11 +22831,11 @@ given channel.</source>
         </context-group>
      </trans-unit>
      <trans-unit id="unknown.kickstart">
-         <source>Kickstart Not Found</source>
+         <source>Autoinstallation Not Found</source>
      </trans-unit>
      <trans-unit id="unknown.kickstart.message">
-         <source>The requested kickstart file could not be found.
-         If you are requesting an organizational default kickstart, ensure that a kickstart has been selected as the "Organization Default".</source>
+         <source>The requested autoinstallation file could not be found.
+         If you are requesting an organizational default autoinstallation, ensure that an autoinstallation has been selected as the "Organization Default".</source>
      </trans-unit>
      <trans-unit id="task.status.current.db.time">
          <source>Current DB Time</source>

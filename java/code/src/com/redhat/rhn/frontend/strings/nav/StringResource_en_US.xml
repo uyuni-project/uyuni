@@ -870,7 +870,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
       </trans-unit>
 
       <trans-unit id="Kickstart Details">
-<source>Kickstart Details</source>
+<source>Autoinstallation Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
@@ -905,7 +905,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
       </trans-unit>
 
 	  <trans-unit id="Kickstart File">
-<source>Kickstart File</source>
+<source>Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
@@ -917,7 +917,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
         </context-group>
       </trans-unit>
       <trans-unit id="Bare Metal Kickstart">
-<source>Bare Metal Kickstart</source>
+<source>Bare Metal Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
