@@ -1,6 +1,7 @@
 -------------------------------------------------------------------
-Wed Feb  2 13:31:09 CET 2011 - jrenner@suse.de
+Wed Feb  2 17:42:28 CET 2011 - jrenner@suse.de
 
+- internal server error clicking software channels (bnc#668918)
 - Kickstart/AutoYaST in the web interface (bnc#668666)
 
 -------------------------------------------------------------------
