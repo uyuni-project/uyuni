@@ -1653,7 +1653,7 @@ public class ChannelManager extends BaseManager {
 
         if(c == null) {
             List<EssentialChannelDto> dr = listPossibleSuseBaseChannelsForServer(s);
-            if( dr != null && dr.get(0) != null) {
+            if(dr != null && !dr.isEmpty()) {
                 c = ChannelFactory.lookupByIdAndUser(dr.get(0).getId(), usr);
             }
         }
