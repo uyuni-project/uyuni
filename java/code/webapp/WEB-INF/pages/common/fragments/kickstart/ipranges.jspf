@@ -8,9 +8,9 @@
     <p>
     ${url}
     </p>
-  <p>
+  <!-- p>
     <bean:message key="kickstartips.jsp.resource"/>
-  </p>
+  </p -->
 </div>
 
 <div class="page-summary">
