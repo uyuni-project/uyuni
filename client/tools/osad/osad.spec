@@ -71,10 +71,14 @@ OSA dispatcher is supposed to run on the Spacewalk server. It gets information
 from the Spacewalk server that some command needs to be execute on the client;
 that message is transported via jabber protocol to OSAD agent on the clients.
 
-%if (0%{?rhel} && 0%{?rhel} <= 4) || 0%{?suse_version}
+%if 0%{?rhel} && 0%{?rhel} <= 4
+%define include_selinux_package 0
+%else
+%if 0%{?suse_version}
 %define include_selinux_package 0
 %else
 %define include_selinux_package 1
+%endif
 %endif
 
 %if %{include_selinux_package}
