@@ -17,7 +17,7 @@
 
   <p><bean:message key="docsearch.jsp.pagesummary"/></p>
 
-  <p><bean:message key="docsearch.jsp.instructions"/></p>
+  <!-- p><bean:message key="docsearch.jsp.instructions"/></p -->
 
   <html:form action="/help/Search.do">
 
@@ -34,7 +34,7 @@
                </html:submit>
              </td>
            </tr>
-           <tr><th><bean:message key="docsearch.jsp.whatsearch"/></th>
+           <!-- tr><th><bean:message key="docsearch.jsp.whatsearch"/></th>
              <td>
                <div style="text-align: left">
                  <html:select property="view_mode" value="${view_mode}" >
@@ -44,7 +44,7 @@
                  </html:select>
                </div>
              </td>
-           </tr>
+           </tr -->
          </table>
        </div>
 
