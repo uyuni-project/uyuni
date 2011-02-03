@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb  3 09:53:56 UTC 2011 - dmacvicar@suse.de
+
+- Don't warn of missing memory when there is enough bnc#667856
+
+-------------------------------------------------------------------
 Thu Feb  3 09:31:43 UTC 2011 - dmacvicar@suse.de
 
 - add welcome.txt
