@@ -20,6 +20,6 @@ Feature: sm-ncc-sync channel listing and enablement
   Scenario: enable sles11-sp1-updates-x86_64
      When I execute ncc-sync "--channel sles11-sp1-updates-x86_64"
       And I execute ncc-sync "--list-channels"
-     Then I want to get "[P] suse_sles-11.1.x86_64-base"
+     Then I want to get "[P] sles11-sp1-pool-x86_64"
       And I want to get "    [P] sles11-sp1-updates-x86_64"
 
