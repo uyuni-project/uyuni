@@ -7,8 +7,21 @@
 
 <h1><img src="/img/rhn-icon-info.gif" alt="information" /> Copyright Notice</h1>
 
-    <p>
-    Copyright notice goes here.
-  </p>
+<p>Copyright (c) 2011 Novell, Inc</p>
+
+<p>This software is a modular operating system comprised of numerous components
+that may be accompanied by separate license terms. The software is a
+collective work of Novell; although Novell does not own the copyright to every
+component of the software, Novell owns the collective work copyright for the
+software.</p>
+
+<p>This Novell product includes materials licensed to Novell under the GNU
+General Public License (GPL). The GPL requires that Novell makes available
+certain source code that corresponds to the GPL-licensed material. The source
+code is available for download at <a href="http://www.novell.com/linux/source/">http://www.novell.com/linux/source/</a>. Also, for up to three years from Novell's distribution of the Novell product, upon
+request Novell will mail a copy of the source code. Requests should be sent by
+e-mail to <a href="mailto:sle_source_request@novell.com">sle_source_request@novell.com</a> or as otherwise instructed at <a href="http://www.novell.com/linux/source/">http://www.novell.com/linux/source/</a>. Novell may charge a fee to recover its
+reasonable costs of distribution</p>
+
   </grail-canvas-template>
 </pxt-passthrough>
