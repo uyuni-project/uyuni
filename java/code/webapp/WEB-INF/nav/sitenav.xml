@@ -35,7 +35,6 @@
         <rhn-tab name="Sample Scripts" url="/rhn/apidoc/scripts.jsp" />
     </rhn-tab>
     <rhn-tab name="Search" url="/rhn/help/Search.do" />
-    <rhn-tab name="Chat" url="/rhn/help/Chat.do" />
 </rhn-tab>
 
 
