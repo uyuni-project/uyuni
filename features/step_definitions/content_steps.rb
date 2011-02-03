@@ -10,14 +10,14 @@ end
 # Test for a text in the whole page
 #
 Then /^I should see a "([^"]*)" text$/ do |arg1|
-  fail if not page.has_content?(arg1)
+  fail if not page.has_content?(debrand_string(arg1))
 end
 
 #
 # Test for a visible link in the whole page
 #
 Then /^I should see a "([^"]*)" link$/ do |arg1|
-  fail if not find_link(arg1).visible?
+  fail if not find_link(debrand_string(arg1)).visible?
 end
 
 #
@@ -49,7 +49,7 @@ Then /^I should see a "([^"]*)" link in element "([^"]*)"$/ do |arg1, arg2|
 end
 
 Then /^I should see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
-  Then "I should see a \"#{arg1}\" link in element \"#{element_for(arg2)}\""
+  Then "I should see a \"#{debrand_string(arg1)}\" link in element \"#{element_for(arg2)}\""
 end
 
 Then /^I should see a "([^"]*)" link in list "([^"]*)"$/ do |arg1, arg2|

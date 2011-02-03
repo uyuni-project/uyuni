@@ -38,14 +38,14 @@ end
 # Click on a button
 #
 When /^I click on "([^"]*)"$/ do |arg1|
-  click_button arg1
+  click_button debrand_string(arg1)
 end
 
 #
 # Click on a link
 #
 When /^I follow "([^"]*)"$/ do |arg1|
-  find_link(arg1).click
+  find_link(debrand_string(arg1)).click
 end
 
 #
@@ -58,7 +58,7 @@ When /^I follow "([^"]*)" in element "([^"]*)"$/ do |arg1, arg2|
 end
 
 When /^I follow "([^"]*)" in the (.+)$/ do |arg1, arg2|
-  When "I follow \"#{arg1}\" in element \"#{element_for(arg2)}\""
+  When "I follow \"#{debrand_string(arg1)}\" in element \"#{element_for(arg2)}\""
 end
 
 
