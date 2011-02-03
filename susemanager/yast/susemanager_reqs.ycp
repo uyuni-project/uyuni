@@ -11,7 +11,7 @@
     map args = GetInstArgs::argmap ();
 
     // 2GB
-    integer enough_memory = 2057056;
+    integer enough_memory = 2000000;
 
     map meminfo = (map) SCR::Read (.proc.meminfo);
     //integer totalmem = meminfo["memtotal"]:0 + meminfo["swaptotal"]:0;
