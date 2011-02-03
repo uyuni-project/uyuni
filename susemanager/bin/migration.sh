@@ -330,6 +330,12 @@ do_setup() {
         fi
         setup_db
     fi
+
+    # should be done by cobbler with "--sync" but we had a case where those
+    # files were missing (bnc#668908)
+    cp /usr/share/syslinux/menu.c32 /srv/tftpboot/
+    cp /usr/share/syslinux/pxelinux.0 /srv/tftpboot/
+
     if [ ! -d "/var/satellite" ]; then
         setup_spacewalk
     else
