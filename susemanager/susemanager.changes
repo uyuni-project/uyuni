@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb  3 11:55:07 CET 2011 - mc@suse.de
+
+- add SuSEfirewall config for service suse-manager-server
+  (bnc#664560)
+
+-------------------------------------------------------------------
 Thu Feb  3 09:53:56 UTC 2011 - dmacvicar@suse.de
 
 - Don't warn of missing memory when there is enough bnc#667856
