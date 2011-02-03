@@ -12,14 +12,17 @@ BuildRequires: python-devel
 Requires: python
 Requires: rhnlib
 
+%if 0%{?suse_version}
+Requires: spacewalk-client-tools
 %if 0%{?rhel} >= 5 || 0%{?fedora} >= 1
 Requires: yum-rhn-plugin
 %else
 Requires: up2date
 %endif
+%endif
 
-%description 
-Allows for the setting and listing of custom key/value pairs for 
+%description
+Allows for the setting and listing of custom key/value pairs for
 an RHN-enabled system.
 
 %prep

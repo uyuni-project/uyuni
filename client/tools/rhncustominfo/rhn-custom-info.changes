@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb  3 14:02:40 CET 2011 - ma@suse.de
+
+- Remove unneeded requirement to yum-rhn-plugin (bnc #667924)
+
+-------------------------------------------------------------------
 Tue Jan 11 16:20:29 CET 2011 - mc@suse.de
 
 - tag strings which needs to be changed 
