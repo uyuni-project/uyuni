@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb  3 17:05:35 CET 2011 - jrenner@suse.de
+
+- remove the chat link from navigation (bnc#667275)
+- do not show links to RH in result page of doc search (bnc#667271)
+
+-------------------------------------------------------------------
 Wed Feb  2 17:42:28 CET 2011 - jrenner@suse.de
 
 - internal server error clicking software channels (bnc#668918)
