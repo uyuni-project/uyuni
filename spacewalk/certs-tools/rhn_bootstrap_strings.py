@@ -79,8 +79,8 @@ echo "  - edit the values of the VARIABLES below (in this script) as"
 echo "    appropriate:"
 echo "    - ACTIVATION_KEYS needs to reflect the activation key(s) value(s)"
 echo "      from the website. XKEY or XKEY,YKEY"
-echo "    - ORG_GPG_KEY needs to be set to the name of the corporate public"
-echo "      GPG key filename (residing in %s) if appropriate."
+echo "    - ORG_GPG_KEY needs to be set to the name(s) of the corporate public"
+echo "      GPG key filename(s) (residing in %s) if appropriate. XKEY or XKEY,YKEY"
 echo
 echo "Verify that the script variable settings are correct:"
 echo "    - CLIENT_OVERRIDES should be only set differently if a customized"
@@ -275,16 +275,18 @@ def getGPGKeyImportSh():
 if [ ! -z "$ORG_GPG_KEY" ] ; then
     echo
     echo "* importing organizational GPG key"
-    rm -f ${ORG_GPG_KEY}
-    $FETCH ${HTTPS_PUB_DIRECTORY}/${ORG_GPG_KEY}
-    # get the major version of up2date
-    # this will also work for RHEL 5 and systems where no up2date is installed
-    res=$(LC_ALL=C rpm -q --queryformat '%{version}' up2date | sed -e 's/\..*//g')
-    if [ "x$res" == "x2" ] ; then
-        gpg $(up2date --gpg-flags) --import $ORG_GPG_KEY
-    else
-        rpm --import $ORG_GPG_KEY
-    fi
+    for GPG_KEY in $(echo "$ORG_GPG_KEY" | tr "," " "); do
+	rm -f ${GPG_KEY}
+	$FETCH ${HTTPS_PUB_DIRECTORY}/${GPG_KEY}
+	# get the major version of up2date
+	# this will also work for RHEL 5 and systems where no up2date is installed
+	res=$(LC_ALL=C rpm -q --queryformat '%{version}' up2date | sed -e 's/\..*//g')
+	if [ "x$res" == "x2" ] ; then
+	    gpg $(up2date --gpg-flags) --import $GPG_KEY
+	else
+	    rpm --import $GPG_KEY
+	fi
+    done
 fi
 
 """

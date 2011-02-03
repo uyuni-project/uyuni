@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb  3 10:50:54 CET 2011 - ma@suse.de
+
+- Allow to define more than one ORG_GPG_KEY in bootstrap.sh
+  (bnc #662996)
+
+-------------------------------------------------------------------
 Sun Jan 30 15:31:40 CET 2011 - mc@suse.de
 
 - backport upstrem fixes
