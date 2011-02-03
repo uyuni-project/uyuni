@@ -44,12 +44,12 @@ end
 #
 Then /^I should see a "([^"]*)" link in element "([^"]*)"$/ do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-    fail if not find_link(arg1).visible?
+    fail if not find_link(debrand_string(arg1)).visible?
   end
 end
 
 Then /^I should see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
-  Then "I should see a \"#{debrand_string(arg1)}\" link in element \"#{element_for(arg2)}\""
+  Then "I should see a \"#{arg1}\" link in element \"#{element_for(arg2)}\""
 end
 
 Then /^I should see a "([^"]*)" link in list "([^"]*)"$/ do |arg1, arg2|
