@@ -8,18 +8,18 @@ Feature: sm-ncc-sync channel listing and enablement
 
   Scenario: list available channels
      When I execute ncc-sync "--list-channels"
-     Then I want to get "[.] suse_sles-11.1.x86_64-base"
-      And I want to get "    [.] sles-sle-sdk-11.1.x86_64"
+     Then I want to get "[.] sles11-sp1-pool-x86_64"
+      And I want to get "    [.] sle11-sdk-sp1-updates-x86_64"
 
-  Scenario: enable suse_sles-11.1.x86_64-base
-     When I execute ncc-sync "--channel suse_sles-11.1.x86_64-base"
+  Scenario: enable sles11-sp1-pool-x86_64
+     When I execute ncc-sync "--channel sles11-sp1-pool-x86_64"
+      And I execute ncc-sync "--list-channels"
+     Then I want to get "[P] sles11-sp1-pool-x86_64"
+      And I want to get "    [.] sle11-sdk-sp1-updates-x86_64"
+
+  Scenario: enable sles11-sp1-updates-x86_64
+     When I execute ncc-sync "--channel sles11-sp1-updates-x86_64"
       And I execute ncc-sync "--list-channels"
      Then I want to get "[P] suse_sles-11.1.x86_64-base"
-      And I want to get "    [.] sles-sle-sdk-11.1.x86_64"
-
-  Scenario: enable sles-sle-sdk-11.1.x86_64
-     When I execute ncc-sync "--channel sles-sle-sdk-11.1.x86_64"
-      And I execute ncc-sync "--list-channels"
-     Then I want to get "[P] suse_sles-11.1.x86_64-base"
-      And I want to get "    [P] sles-sle-sdk-11.1.x86_64"
+      And I want to get "    [P] sles11-sp1-updates-x86_64"
 
