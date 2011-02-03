@@ -142,6 +142,8 @@ class SuseData:
 
     for product in products:
       sipid = self.get_installed_product_id(product)
+      if not sipid:
+        continue
       if sipid in existing_products:
         existing_products.remove(sipid)
         continue
@@ -177,6 +179,11 @@ class SuseData:
 
 
   def get_installed_product_id(self, product):
+    if not product['version']:
+       product['version'] = '' 
+    if not product['release']:
+       product['release'] = ''
+
     h = rhnSQL.prepare("""
       SELECT sip.id
         FROM suseInstalledProduct sip
