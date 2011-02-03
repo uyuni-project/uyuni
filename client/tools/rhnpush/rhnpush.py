@@ -66,8 +66,8 @@ def main():
         Option('-l','--list',       action='store_true', help='Only list the specified channels'),
         Option('-r','--reldir',     action='store',      help='Relative dir to associate with the file'),
         Option('-o','--orgid',      action='store',      help='Org ID', type='int'),
-        Option('-u','--username',   action='store',      help='Use this username to connect to RHN/Satellite [GALAXY]'),
-        Option('-p','--password',   action='store',      help='Use this password to connect to RHN/Satellite [GALAXY]'),
+        Option('-u','--username',   action='store',      help='Use this username to connect to SUSE Manager'),
+        Option('-p','--password',   action='store',      help='Use this password to connect to SUSE Manager'),
         Option('-s','--stdin',      action='store_true', help='Read the package names from stdin'),
         Option('-X','--exclude',    action='append',     help='Exclude packages that match this glob expression'),
         Option(     '--force',      action='store_true', help='Force the package upload (overwrites if already uploaded)'),
@@ -352,11 +352,11 @@ class UploadClass(uploadLib.UploadClass):
                 # compare checksums for existance check
                 if server_digest == digest and not self.options.force:
                     channel_packages.append(pkgs_info[pkg_key])
-                    self.warn(1, "Package %s already exists on the RHN Server [GALAXY]-- Skipping Upload...." % pkg)
+                    self.warn(1, "Package %s already exists on the SUSE Manager Server -- Skipping Upload...." % pkg)
                     continue
 
                 elif server_digest == ():
-                    self.warn(1,"Package %s Not Found on RHN Server [GALAXY] -- Uploading" % pkg)
+                    self.warn(1,"Package %s Not Found on SUSE Manager Server -- Uploading" % pkg)
 
                 elif server_digest == "on-disk" and not self.options.force:
                     channel_packages.append(pkgs_info[pkg_key])

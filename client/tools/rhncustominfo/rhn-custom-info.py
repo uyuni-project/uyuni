@@ -108,7 +108,7 @@ def read_cfg_val(obj, key):
 
 def read_username():
     tty = open("/dev/tty", "r+")
-    tty.write("Red Hat Network [GALAXY] username: ")
+    tty.write("SUSE Manager username: ")
     try:
         username = tty.readline()
     except KeyboardInterrupt:
@@ -138,11 +138,11 @@ def parse_args():
     parser.set_usage("rhncustominfo [options] key1 value1 key2 value2 ...")
     parser.add_option("-u", "--username",
                       action="store", type="string", dest="username",
-                      help="your RHN [GALAXY] username", metavar="RHN_LOGIN")
+                      help="your SUSE Manager user name", metavar="RHN_LOGIN")
 
     parser.add_option("-p", "--password",
                       action="store", type="string", dest="password",
-                      help="your RHN [GALAXY] password", metavar="RHN_PASSWD")
+                      help="your SUSE Manager password", metavar="RHN_PASSWD")
 
     parser.add_option("-s", "--server-url",
                       action="store", type="string", dest="url",
@@ -181,7 +181,7 @@ def get_sys_id():
     sysid_xml = up2dateAuth.getSystemId()
 
     if not sysid_xml:
-        system_exit(1, "Could not get RHN [GALAXY] systemid")
+        system_exit(1, "Could not get SUSE Manager systemid")
     
     m = search('ID-(?P<sysid>[0-9]+)', sysid_xml)
 
