@@ -20,8 +20,10 @@ This package contains data files with NCC information
 %install
 
 mkdir -p %{buildroot}/usr/share/susemanager
+mkdir -p %{buildroot}/srv/www/htdocs/pub/
 install -m 0644 channel_families.xml %{buildroot}/usr/share/susemanager/channel_families.xml
 install -m 0644 channels.xml         %{buildroot}/usr/share/susemanager/channels.xml
+install -m 0644 res.key              %{buildroot}/srv/www/htdocs/pub/
 
 %clean
 rm -rf %{buildroot}
@@ -30,8 +32,10 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %dir /usr/share/susemanager
+%dir /srv/www/htdocs/pub
 /usr/share/susemanager/channel_families.xml
 /usr/share/susemanager/channels.xml
+/srv/www/htdocs/pub/res.key
 
 %changelog
 
