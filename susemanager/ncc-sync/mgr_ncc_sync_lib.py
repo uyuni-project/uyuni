@@ -788,6 +788,9 @@ class NCCSync(object):
         query.execute(label=channel.get('label'))
         if not query.fetchone():
             channel_data = channel.attrib
+            if not channel_data['source_url']:
+                # no URL, cannot create a content source
+                return
             url = suseLib.URL(channel_data['source_url'])
             # nu.novell.com needs authentication using the mirror credentials
             if url.host == "nu.novell.com":
