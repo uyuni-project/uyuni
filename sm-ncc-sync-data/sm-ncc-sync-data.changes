@@ -1,7 +1,12 @@
 -------------------------------------------------------------------
-Fri Feb  4 18:07:43 CET 2011 - mc@suse.de
+Fri Feb  4 18:19:14 CET 2011 - mc@suse.de
 
-- build ncc-data package with own specfile
+- add RES pubkey 
+
+-------------------------------------------------------------------
+Fri Feb  4 18:04:30 CET 2011 - mc@suse.de
+
+- build ncc-data package with own specfile 
 
 -------------------------------------------------------------------
 Fri Feb  4 15:19:17 CET 2011 - mc@suse.de
