@@ -23,13 +23,6 @@ Requires:       oracle-xe-univ
 A collection of scripts for managing SUSE Manager's initial
 setup tasks, re-installation, upgrades and managing.
 
-%package -n sm-ncc-sync-data
-Summary:    Data files for NCC data configuration
-Group:      Productivity/Other
-
-%description -n sm-ncc-sync-data
-This package contains data files with NCC information
-
 %package tools
 Summary:    SUSE Manager Tools
 Group:      Productivity/Other
@@ -62,10 +55,6 @@ mkdir -p %{buildroot}/%{_sbindir}/
 install -m 0755 sm-register/mgr-register.py %{buildroot}/%{_sbindir}/mgr-register
 install -m 0755 ncc-sync/mgr-ncc-sync.py %{buildroot}/%{_sbindir}/mgr-ncc-sync
 
-mkdir -p %{buildroot}/usr/share/susemanager
-install -m 0644 ncc-sync/channel_families.xml %{buildroot}/usr/share/susemanager/channel_families.xml
-install -m 0644 ncc-sync/channels.xml         %{buildroot}/usr/share/susemanager/channels.xml
-
 # YaST configuration
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
 install -m 0644 yast/*.ycp %{buildroot}%{_datadir}/YaST2/clients
@@ -94,12 +83,6 @@ fi
 %{_prefix}/lib/susemanager/bin/*
 %{_datadir}/YaST2/clients/*.ycp
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/suse-manager-server
-
-%files -n sm-ncc-sync-data
-%defattr(-,root,root,-)
-%dir /usr/share/susemanager
-/usr/share/susemanager/channel_families.xml
-/usr/share/susemanager/channels.xml
 
 %files tools
 %defattr(-,root,root,-)
