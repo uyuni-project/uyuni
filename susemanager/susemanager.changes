@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb  4 15:19:17 CET 2011 - mc@suse.de
+
+- create seperate channels for rhel4 as and es (bnc#669466)
+- do not create contentsource if no URL is available 
+
+-------------------------------------------------------------------
 Thu Feb  3 11:55:07 CET 2011 - mc@suse.de
 
 - add SuSEfirewall config for service suse-manager-server
