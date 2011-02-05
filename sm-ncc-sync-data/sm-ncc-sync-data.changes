@@ -2,6 +2,9 @@
 Sat Feb  5 15:25:26 CET 2011 - mc@suse.de
 
 - update channel data; add parents for HAE Update channels 
+- fix SMT data
+- fix incorrect parent channels for debuginfo, extra, updates and
+  webyast
 
 -------------------------------------------------------------------
 Fri Feb  4 18:19:14 CET 2011 - mc@suse.de
