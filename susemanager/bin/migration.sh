@@ -159,7 +159,11 @@ ncc-pass = $NCC_PASS
 ncc-email = $NCC_EMAIL
 " > /root/spacewalk-answers
 
-    /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers
+    if [ "x$DO_MIGRATION" == "x1" ]; then
+      /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers --skip-db-install --skip-db-population
+    else
+      /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers
+    fi
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
         MY_DOMAIN=`hostname -d`
         MANAGER_MAIL_FROM="SUSE Manager <root@$MY_DOMAIN>"
@@ -185,7 +189,8 @@ quit
 
 dump_remote_db() {
 
-    echo "rrxe =
+    if [ ! -f /tmp/sat.oracleXE.dmp ];then
+        echo "rrxe =
   (DESCRIPTION =
     (ADDRESS_LIST =
       (ADDRESS = (PROTOCOL = TCP)(HOST = $SATELLITE_IP)(PORT = 1521))
@@ -196,12 +201,15 @@ dump_remote_db() {
   )
 " >> /etc/tnsnames.ora
 
-    su - oracle -c "exp \"$SATELLITE_DB_USER\"/\"$SATELLITE_DB_PASS\"@rrxe owner=$SATELLITE_DB_USER compress=n consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log"
+        su - oracle -c "ORACLE_HOME=/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/ /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/bin/exp \"$SATELLITE_DB_USER\"/\"$SATELLITE_DB_PASS\"@rrxe owner=$SATELLITE_DB_USER compress=n consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log"
+    else
+        echo "database dump exists. Skipping dump of remote db"
+    fi;
 }
 
 import_db() {
     MANAGER_DB_NAME=`echo -n $MANAGER_DB_NAME|tr [:lower:] [:upper:]`
-    su - oracle -c "ORACLE_SID=$MANAGER_DB_NAME imp \'/ as sysdba\' fromuser=$SATELLITE_DB_USER touser=$MANAGER_USER file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y"
+    su - oracle -c "ORACLE_HOME=/usr/lib/oracle/xe/app/oracle/product/10.2.0/server PATH=$PATH:/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/bin imp system/spacewalk@$MANAGER_DB_NAME fromuser=$SATELLITE_DB_USER touser=$MANAGER_USER file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y"
     # 'fix syntax HL
 }
 
@@ -285,7 +293,7 @@ do_migration() {
     if [ ! -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
         do_setup
     fi;
-    drop_manager_db
+    #drop_manager_db
     dump_remote_db
     import_db
     upgrade_schema
