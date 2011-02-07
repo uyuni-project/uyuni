@@ -69,6 +69,7 @@ mv $RPM_BUILD_ROOT/etc/rc.d/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/etc/i
 %endif
 
 # add rclink
+mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
 ln -sf ../../etc/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-virtualization-host 
  
 %clean
