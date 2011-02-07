@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb  7 17:13:53 CET 2011 - iartarisi@suse.cz
+
+- split long output message on two lines in ncc-sync
+- fix typo in method name
+
+-------------------------------------------------------------------
 Mon Feb  7 16:56:30 CET 2011 - iartarisi@suse.cz
 
 - map multiple channels with the same source_url to the same contentsource
