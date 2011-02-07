@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb  7 12:20:11 CET 2011 - ma@suse.de
+
+- Symlink added.
+
+-------------------------------------------------------------------
 Thu Feb  3 14:02:40 CET 2011 - ma@suse.de
 
 - Remove unneeded requirement to yum-rhn-plugin (bnc #667924)
