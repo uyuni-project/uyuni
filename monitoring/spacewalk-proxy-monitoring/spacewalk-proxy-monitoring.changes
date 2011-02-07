@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb  7 15:54:15 CET 2011 - mc@suse.de
+
+- add rc link (bnc#669894) 
+
+-------------------------------------------------------------------
 Wed Sep 15 09:45:05 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-proxy-monitoring
