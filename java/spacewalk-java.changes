@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb  7 13:50:09 CET 2011 - mc@suse.de
+
+- remove channel version filter in add novell patches
+  (bnc#669799) 
+
+-------------------------------------------------------------------
 Thu Feb  3 17:05:35 CET 2011 - jrenner@suse.de
 
 - remove the chat link from navigation (bnc#667275)
