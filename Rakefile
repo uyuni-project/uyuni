@@ -25,6 +25,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/users-userdetails.feature
                      features/create_config_channel.feature
                      features/register_client.feature
+                     features/monitoring.feature
                      features/system_configuration.feature
                      features/create_group.feature
                      features/add_sys_of_group_to_SSM.feature
@@ -40,6 +41,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/install_package.feature
                      features/install_errata.feature
                      features/clone_channel.feature
+                     features/monitoring2.feature
                      features/delete_system_from_conf.feature
                      features/delete_config_channel.feature
                      features/users-deleteuser1.feature

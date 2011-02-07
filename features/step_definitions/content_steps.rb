@@ -14,6 +14,13 @@ Then /^I should see a "([^"]*)" text$/ do |arg1|
 end
 
 #
+# Test for a text not allowed in the whole page
+#
+Then /^I should not see a "([^"]*)" text$/ do |arg1|
+  fail if page.has_content?(arg1)
+end
+
+#
 # Test for a visible link in the whole page
 #
 Then /^I should see a "([^"]*)" link$/ do |arg1|
