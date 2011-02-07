@@ -13,7 +13,7 @@
 
     <h2>
       <img src="/img/rhn-icon-errata.gif" />
-      Confirm Errata Update: <rhn-errata-advisory /> - <rhn-errata-name />
+      Confirm Patch Update: <rhn-errata-advisory /> - <rhn-errata-name />
     </h2>
 
 <pxt-include-late file="/network/components/message_queues/local.pxi" />

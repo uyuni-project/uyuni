@@ -1047,7 +1047,7 @@ sub schedule_errata_updates_for_systems {
     die "errata lookup failed!" if !$errata;
 
 #    my $action_name = "Errata Update: " . $errata->advisory . ($errata_total > 1 ? " ($errata_counter of $errata_total)" : "");
-    my $action_name = "Errata Update: " . $errata->advisory . ' - ' . $errata->synopsis;
+    my $action_name = "Patch Update: " . $errata->advisory . ' - ' . $errata->synopsis;
 
     my ($action_id, $stat_id) = $class->make_base_action(-org_id => $org_id,
 							 -user_id => $user_id,
@@ -1107,7 +1107,7 @@ sub schedule_all_errata_updates_for_system {
 
     throw "errata '$errata_id' lookup failed" unless $errata;
 
-    my $action_name = "Errata Update: " . $errata->advisory . ' - ' . $errata->synopsis;
+    my $action_name = "Patch Update: " . $errata->advisory . ' - ' . $errata->synopsis;
 
     my ($action_id, $stat_id) = $class->make_base_action(-org_id => $org_id,
 							 -user_id => $user_id,
@@ -1175,7 +1175,7 @@ sub schedule_errata_updates_for_system {
     die "errata lookup failed!" if !$errata;
 
 #    my $action_name = "Errata Update: " . $errata->advisory . ($errata_total > 1 ? " ($errata_counter of $errata_total)" : "");
-    my $action_name = "Errata Update: " . $errata->advisory . ' - ' . $errata->synopsis;
+    my $action_name = "Patch Update: " . $errata->advisory . ' - ' . $errata->synopsis;
 
     my ($action_id, $stat_id) = $class->make_base_action(-org_id => $org_id,
 							 -user_id => $user_id,

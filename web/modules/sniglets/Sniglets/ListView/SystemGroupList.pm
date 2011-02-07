@@ -78,10 +78,10 @@ sub row_callback {
     $row->{STATUS_ICON} = '<img src="/img/icon_crit_update.gif" border="0" alt="Security Updates Needed" title="Security Updates Needed" />';
   }
   elsif ($row->{uc'bug_errata'} or $row->{uc'enhancement_errata'}) {
-    $row->{STATUS_ICON} = '<img src="/img/icon_reg_update.gif" border="0" alt="Errata Updates Available" title="Errata Updates Available" />';
+    $row->{STATUS_ICON} = '<img src="/img/icon_reg_update.gif" border="0" alt="Patch Updates Available" title="Patch Updates Available" />';
   }
 
-  $row->{STATUS_ICON} = '<img src="/img/icon_up2date.gif" border="0" alt="No Applicable Errata" title="No Applicable Errata" />' if (!$row->{STATUS_ICON});
+  $row->{STATUS_ICON} = '<img src="/img/icon_up2date.gif" border="0" alt="No Applicable Patch" title="No Applicable Patch" />' if (!$row->{STATUS_ICON});
 
   $row->{MONITORING_ICON} = '';
   if (defined $row->{MONITORING_STATUS}) {

@@ -362,7 +362,7 @@ public class DailySummary extends RhnJavaJob {
         }
 
         if (!errataActions.isEmpty()) {
-            body.append(ERRATA_UPDATE + ":" + "\n");
+            body.append("Patch(es) Update" + ":" + "\n");
         }
         StringBuffer formattedErrataActions = renderActionTree(longestActionLength,
                 longestStatusLength, statusSet, errataActions);

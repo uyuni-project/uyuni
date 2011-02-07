@@ -12,7 +12,7 @@
     <rhn-navi-nav prefix="system_set_manager" depth="0"
     file="/nav/ssm.xml" style="contentnav" />
 
-    <h2>Confirm Errata Update</h2>
+    <h2>Confirm Patch Update</h2>
 
     <div class="page-summary">
       <p>The following errata will be applied to the relevant selected systems:</p>

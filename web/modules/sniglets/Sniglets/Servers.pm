@@ -1023,7 +1023,7 @@ sub server_prefs_form_cb {
 							-server_set => $system_set,
 						       );
 
-	push @extra_messages, "Selected systems will be fully updated in accordance with new Auto Errata Update setting.";
+	push @extra_messages, "Selected systems will be fully updated in accordance with new Auto Patch Update setting.";
       }
 
       RHN::Server->change_pref_bulk($set, $pref->{name}, $action eq 'Yes' ? 1 : 0);

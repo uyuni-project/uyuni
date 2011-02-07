@@ -2266,7 +2266,7 @@ available for this kickstart profile to function properly.
 <source>Patch Update: {0} - {1}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
-          <context context-type="paramnotes">Errata Update: RHSA-2004:577 - Security Advisory</context>
+          <context context-type="paramnotes">Patch Update: RHSA-2004:577 - Security Advisory</context>
         </context-group>
       </trans-unit>
 
@@ -2637,7 +2637,7 @@ available for this kickstart profile to function properly.
       <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems.do</context>
           <context context-type="paramnotes">
-            Errata Update: RHBA-2004:501-07 - Updated rpm package unscheduled for 1 system.
+            Patch Update: RHBA-2004:501-07 - Updated rpm package unscheduled for 1 system.
           </context>
         </context-group>
       </trans-unit>
@@ -2647,7 +2647,7 @@ available for this kickstart profile to function properly.
       <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems.do</context>
           <context context-type="paramnotes">
-            Errata Update: RHBA-2004:501-07 - Updated rpm package unscheduled for 2 systems.
+            Patch Update: RHBA-2004:501-07 - Updated rpm package unscheduled for 2 systems.
           </context>
         </context-group>
       </trans-unit>
