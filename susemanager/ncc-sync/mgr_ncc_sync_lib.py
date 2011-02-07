@@ -653,7 +653,7 @@ class NCCSync(object):
             self.error_msg ("Failed to schedule repo sync for channel %s." % channel_label)
 
 
-    def sync_installed_chanells(self):
+    def sync_installed_channels(self):
         """Schedule a reposync of all SUSE Manager (orgid null) channels
            in the database.
         """
