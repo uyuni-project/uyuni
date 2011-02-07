@@ -668,7 +668,8 @@ class NCCSync(object):
             self.sync_channel(channel[0], channel[1])
 
         if len(db_channels) == 0:
-            print "No channels are installed in the database. Add channels using mgr-ncc-sync -c channel_label."
+            print "No channels are installed in the database. "
+            print "Add new channels using: mgr-ncc-sync -c channel_label."
 
     def get_available_families(self):
         """Get the list of available channel family labels
