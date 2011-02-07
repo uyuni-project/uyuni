@@ -90,6 +90,8 @@ ln -s /etc/rc.d/np.d/sysvStep $RPM_BUILD_ROOT/%{_sbindir}/MonitoringScout
 install satname $RPM_BUILD_ROOT%{_sysconfdir}/satname
 install MonitoringScout $RPM_BUILD_ROOT%{_initrddir}
 
+ln -sf ../../etc/init.d/MonitoringScout $RPM_BUILD_ROOT/%{_sbindir}/rcMonitoringScout
+
 %post
 %if 0%{?suse_version}
 %{fillup_and_insserv MonitoringScout}

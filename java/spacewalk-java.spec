@@ -299,6 +299,10 @@ install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_sysconfdir}/rh
 install -m 755 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_initrddir}
 
+# add rc link
+mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
+ln -sf ../../etc/init.d/taskomatic $RPM_BUILD_ROOT/%{_sbindir}/rctaskomatic
+
 %if 0%{?suse_version}
 sed -i -e 's/# Default-Start:/# Default-Start: 3 5/g' $RPM_BUILD_ROOT/%{_initrddir}/taskomatic
 
@@ -494,10 +498,11 @@ fi
 %endif
 
 %files -n spacewalk-taskomatic
+%defattr(-,root,root)
 %attr(755, root, root) %{_initrddir}/taskomatic
 %attr(755, root, root) %{_bindir}/taskomaticd
 %attr(755, root, root) %{_datadir}/rhn/lib/spacewalk-asm.jar
-
+%{_sbindir}/rctaskomatic
 
 %files config
 %defattr(-,root,root)

@@ -72,6 +72,10 @@ install -m 755 LocalQueue/rebalance_cron $RPM_BUILD_ROOT%{_bindir}
 # Local queue init script (temporary, will be superseded by sysv stuff)
 install -D -m 755 LocalQueue/init_script $RPM_BUILD_ROOT%{init_script}
 
+# add rclink
+mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
+ln -sf ../../etc/init.d/tsdb_local_queue $RPM_BUILD_ROOT/%{_sbindir}/rctsdb_local_queue
+
 %pre
 if [ -d %{init_script} -a %{init_script} != "/" ]; then
   rm -rf %{init_script}
@@ -97,6 +101,7 @@ fi
 %files
 %defattr(-,root,root,-)
 %{init_script}
+%{_sbindir}/rctsdb_local_queue
 %{_bindir}/*
 %if 0%{?suse_version}
 %attr(755,wwwrun,www) %dir %bdbdir

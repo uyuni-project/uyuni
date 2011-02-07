@@ -162,6 +162,10 @@ install -p -m 755 osa-dispatcher-selinux/osa-dispatcher-selinux-enable %{buildro
 mv %{buildroot}%{_sysconfdir}/rc.d/init.d %{buildroot}%{_initrddir}
 %endif
 
+# add rclinks
+ln -sf ../../etc/init.d/osad %{buildroot}%{_sbindir}/rcosad
+ln -sf ../../etc/init.d/osa-dispatcher %{buildroot}%{_sbindir}/rcosa-dispatcher
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -255,6 +259,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
 %endif
 %attr(755,root,root) %{_sbindir}/osad
+%{_sbindir}/rcosad
 %{rhnroot}/osad/__init__.py*
 %{rhnroot}/osad/_ConfigParser.py*
 %{rhnroot}/osad/jabber_lib.py*
@@ -273,6 +278,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %defattr(-,root,root)
 %dir %{rhnroot}/osad
 %attr(755,root,root) %{_sbindir}/osa-dispatcher
+%{_sbindir}/rcosa-dispatcher
 %{rhnroot}/osad/__init__.py*
 %{rhnroot}/osad/jabber_lib.py*
 %{rhnroot}/osad/osa_dispatcher.py*

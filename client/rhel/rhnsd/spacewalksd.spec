@@ -45,6 +45,9 @@ rm -f $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhnsd.mo
 make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
 %endif
 
+# add rclink
+ln -sf ../../etc/init.d/rhnsd $RPM_BUILD_ROOT/%{_sbindir}/rcrhnsd
+
 %find_lang rhnsd
 
 
@@ -85,6 +88,7 @@ rm -fr $RPM_BUILD_ROOT
 %if 0%{?suse_version}
 %dir %{_sysconfdir}/sysconfig/rhn
 %endif
+%{_sbindir}/rcrhnsd
 %config(noreplace) %{_sysconfdir}/sysconfig/rhn/rhnsd
 %{_sbindir}/rhnsd
 %{_initrddir}/rhnsd

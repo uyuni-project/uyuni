@@ -100,6 +100,10 @@ ln -s /etc/rc.d/np.d/sysvStep $RPM_BUILD_ROOT/%{_sbindir}/MonitoringScout
 install Monitoring $RPM_BUILD_ROOT%{_initrddir}
 install MonitoringScout $RPM_BUILD_ROOT%{_initrddir}
 
+# add rc links
+ln -sf ../../etc/init.d/Monitoring $RPM_BUILD_ROOT/%{_sbindir}/rcMonitoring
+ln -sf ../../etc/init.d/MonitoringScout $RPM_BUILD_ROOT/%{_sbindir}/rcMonitoringScout
+
 %post
 
 %if 0%{?suse_version}

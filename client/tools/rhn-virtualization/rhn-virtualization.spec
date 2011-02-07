@@ -67,6 +67,9 @@ make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT install
 mkdir -p $RPM_BUILD_ROOT/etc/init.d/
 mv $RPM_BUILD_ROOT/etc/rc.d/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/etc/init.d/rhn-virtualization-host
 %endif
+
+# add rclink
+ln -sf ../../etc/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-virtualization-host 
  
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -125,6 +128,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{rhn_conf_dir}/virt
 %dir %{rhn_conf_dir}/virt/auto
 %{_initrddir}/rhn-virtualization-host
+%{_sbindir}/rcrhn-virtualization-host
 %config(noreplace) %attr(644,root,root) %{cron_dir}/rhn-virtualization.cron
 %{rhn_dir}/virtualization/domain_config.py
 %{rhn_dir}/virtualization/domain_config.pyc

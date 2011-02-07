@@ -95,6 +95,10 @@ install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_sysconfdir
 install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/search/rhn_search_daemon.conf
 ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/spacewalk-search.jar
 
+# add rc link
+mkdir -p  $RPM_BUILD_ROOT/%{_sbindir}/
+ln -sf ../../etc/init.d/rhn-search $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-search
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -125,6 +129,7 @@ fi
 %attr(755, root, root) %{_prefix}/share/rhn/search/indexes
 %attr(755, root, root) %{_initrddir}/rhn-search
 %attr(755, root, root) %{_bindir}/rhnsearchd
+%{_sbindir}/rcrhn-search
 %dir %{_sysconfdir}/rhn/search/
 %config(noreplace) %{_sysconfdir}/rhn/search/rhn_search.conf
 %config(noreplace) %{_sysconfdir}/rhn/search/rhn_search_daemon.conf
