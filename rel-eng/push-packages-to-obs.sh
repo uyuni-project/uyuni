@@ -19,7 +19,7 @@ OBS_PROJ=${OBS_PROJ:-Devel:Galaxy:Server:Manager:T}
 
 FAKE_COMITTOBS=${FAKE_COMITTOBS:+1}
 
-DIFF=diff
+DIFF="diff -u"
 
 grep -v -- "\(--help\|-h\|-?\)\>" <<<"$@" || {
   cat <<EOF
@@ -149,6 +149,7 @@ function copy_changed_package()
 	  #
 	  $DIFF -I '^\(Source\|%setup\).*-git-' "$tdir/$stem" "$F" || {
 	    diffs=1
+	    ls -l "$tdir/$stem" "$F"
 	    break
 	  }
 	else
@@ -244,10 +245,10 @@ while read PKG_NAME; do
     fi
   }
 
-   test -z "$FAKE_COMITTOBS" || {
-     echo "FAKE: Not comitting to OBS..."
-     continue
-   }
+  test -z "$FAKE_COMITTOBS" || {
+    echo "FAKE: Not comitting to OBS..."
+    continue
+  }
 
   if copy_changed_package "$SRPM_PKG_DIR" "$OBS_PKG_DIR"; then
     echo "Package has changed, updating..."
