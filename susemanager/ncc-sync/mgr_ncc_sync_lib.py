@@ -802,16 +802,20 @@ class NCCSync(object):
                 channel_data['source_url'] = url.getURL()
             # FIXME make a TYPE_ID for zypper?
             type_id = rhnSQL.Row("RHNCONTENTSOURCETYPE", "LABEL", "yum")['id']
-            query = rhnSQL.prepare(
-                """INSERT INTO RHNCONTENTSOURCE
+
+            if not rhnSQL.Table("RHNCONTENTSOURCE", "source_url"
+                                ).has_key(channel_data['source_url']):
+                query = rhnSQL.prepare(
+                    """INSERT INTO RHNCONTENTSOURCE
                        ( ID, ORG_ID, TYPE_ID, SOURCE_URL, LABEL, METADATA_SIGNED)
                    VALUES ( sequence_nextval('rhn_chan_content_src_id_seq'),
                             NULL, :type_id, :source_url, :label, :is_signed )""")
-            query.execute(type_id=type_id, **channel_data)
-
+                query.execute(type_id=type_id, **channel_data)
+    
             # create relation between the new contentsource and the channel
             contentsource_id = rhnSQL.Row(
-                "RHNCONTENTSOURCE", "LABEL", channel_data['label'])['id']
+                "RHNCONTENTSOURCE", "source_url",
+                channel_data['source_url'])['id']
             query = rhnSQL.prepare(
             """INSERT INTO RHNCHANNELCONTENTSOURCE (SOURCE_ID, CHANNEL_ID)
                VALUES (:source_id, :channel_id)""")
