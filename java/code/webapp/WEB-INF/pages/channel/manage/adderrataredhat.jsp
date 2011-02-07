@@ -36,7 +36,9 @@
 			   			   <bean:message key="channel.manage.errata.packageassocmsg" />
 		 </td>
    </tr>
-	
+
+   <!-- not used on SUSE
+
 	<tr><th width="10%">Channel Version: </th>
 	<td width="40%">
 
@@ -58,6 +60,8 @@
   <input type="submit" name="dispatch"  value="<bean:message key="frontend.actions.channels.manager.add.viewChannels"/>">
  </td>
 </tr>
+
+-->
 
 <c:if test="${selected_channel != null}">
 <input type="hidden" name="selected_channel_old"  value="${selected_channel}">

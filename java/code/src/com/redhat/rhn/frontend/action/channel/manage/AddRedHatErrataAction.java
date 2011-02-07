@@ -97,24 +97,27 @@ public class AddRedHatErrataAction extends RhnListAction {
         request.setAttribute("channel_name", currentChan.getName());
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 
-
+        /*
         List<SelectableChannelVersion> versionList = SelectableChannelVersion.
                         getCurrentChannelVersionList();
         List<SelectableChannel> channelList = null;
         request.setAttribute(VERSION_LIST, versionList);
 
         String selectedVersionStr = null;
+        */
+        List<SelectableChannel> channelList = null;
         String selectedChannelStr = null;
         Boolean checked = true;
 
 
         //Set initail strings
         selectedChannelStr = request.getParameter(SELECTED_CHANNEL_OLD);
+        /*
         selectedVersionStr = request.getParameter(SELECTED_VERSION_OLD);
         if (selectedVersionStr == null) {
             selectedVersionStr = versionList.get(0).getVersion();
         }
-
+        */
 
         //If the channel submit button was clicked
         if (requestContext.wasDispatched(CHANNEL_SUBMIT)) {
@@ -124,6 +127,7 @@ public class AddRedHatErrataAction extends RhnListAction {
           }
         }
         //if the version submit button was clicked
+        /*
         else if (requestContext.wasDispatched(VERSION_SUBMIT)) {
             selectedVersionStr = request.getParameter(SELECTED_VERSION);
             if (selectedVersionStr.equals(NULL)) {
@@ -131,7 +135,7 @@ public class AddRedHatErrataAction extends RhnListAction {
             }
             selectedChannelStr = null;
         }
-
+        */
 
 
 
@@ -141,6 +145,7 @@ public class AddRedHatErrataAction extends RhnListAction {
                 original != null) {
             selectedChannel = original;
             selectedChannelStr = selectedChannel.getId().toString();
+            /*
             String tmp = findVersionFromChannel(selectedChannel);
             if (tmp == null) {
                 // if we haven't found channel version, let's try to check its parent
@@ -151,9 +156,10 @@ public class AddRedHatErrataAction extends RhnListAction {
             if (tmp != null) {
                 selectedVersionStr = tmp;
             }
+            */
         }
 
-
+        /*
         if (selectedVersionStr != null) {
             //set selected version based off version selected
             for (SelectableChannelVersion chanVer : versionList) {
@@ -175,9 +181,18 @@ public class AddRedHatErrataAction extends RhnListAction {
             }
 
         }
+        */
 
-
-
+        // show all channels in the list
+        List<Channel> channelSet = ChannelFactory.listRedHatBaseChannels();
+        channelList = new ArrayList();
+        if (channelSet != null) {
+            sortChannelsAndChildify(channelSet, channelList, user, selectedChannelStr);
+            request.setAttribute(CHANNEL_LIST, channelList);
+        }
+        if (channelList.size() > 0 && selectedChannelStr == null) {
+            selectedChannelStr = channelList.get(0).getId().toString();
+        }
 
         if (requestContext.isSubmitted() && request.getParameter(CHECKED) == null)  {
             checked = false;
@@ -186,7 +201,7 @@ public class AddRedHatErrataAction extends RhnListAction {
 
         request.setAttribute(CHECKED, checked);
         request.setAttribute(SELECTED_CHANNEL, selectedChannelStr);
-        request.setAttribute(SELECTED_VERSION, selectedVersionStr);
+        //request.setAttribute(SELECTED_VERSION, selectedVersionStr);
 
         if (requestContext.wasDispatched(SUBMITTED)) {
             Map params = new HashMap();
@@ -298,7 +313,6 @@ public class AddRedHatErrataAction extends RhnListAction {
         }
         return toReturn;
     }
-
 
     protected RhnSetDecl getSetDecl(Channel chan) {
         return RhnSetDecl.setForChannelErrata(chan);
