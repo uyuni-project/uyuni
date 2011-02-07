@@ -9,6 +9,7 @@ def usage
   puts "  #NN  package is up to date but last submitreq not yet accepted"
   puts "  #++  package needs to be submitted (submitreq provided on stdout)"
   puts "  #>>  package not in target project (initial submitreq missing)"
+  puts "  #BB  package is blacklisted (intentionally not submitted)"
   puts "  #<<  package not in source project"
   puts ""
   puts "Options:"
@@ -19,11 +20,11 @@ def usage
   exit 0
 end
 
-$opt_brief = 1
+$opt_brief = true
 
 ARGV.each do |arg|
   case arg
-  when '-v', '--verbose' then $opt_brief = 0
+  when '-v', '--verbose' then $opt_brief = false
   when '-?', '-h', '--help' then usage
   end
 end
@@ -109,6 +110,27 @@ class Prj
 end
 # ======================================================================
 
+# Packages we do not submitt intentionally:
+$target_blacklist = Hash[
+  'SUSE:SLE-11-SP1:Update:Manager:1.2' => [
+    'jabberd-selinux',
+    'libsatsolver',
+    'libzypp',
+    'oracle-instantclient-selinux',
+    'oracle-rhnsat-selinux',
+    'oracle-selinux',
+    'oracle-xe-selinux',
+    'spacewalk-monitoring-selinux',
+    'spacewalk-proxy-selinux',
+    'spacewalk-selinux',
+    'zypper'
+  ]
+];
+
+def in_target_blacklist( prj, pkg )
+  return $target_blacklist.include?( prj ) && $target_blacklist[prj].include?( pkg )
+end
+
 def check_whether_to_submitt( src_prj, trg_prj, packages=nil )
   packages = src_prj.packages unless packages
   puts "###"
@@ -127,8 +149,12 @@ def check_whether_to_submitt( src_prj, trg_prj, packages=nil )
       end
       sub = trg_prj.request( pkg )
       if not sub
-	puts "#>> #{pkg} not yet submitted to #{trg_prj}"
-	puts "#   #{trg_prj.apiCmd} submitreq --yes -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
+	if not in_target_blacklist( trg_prj.name, pkg )
+	  puts "#>> #{pkg} not yet submitted to #{trg_prj}"
+	  puts "#   #{trg_prj.apiCmd} submitreq --yes -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
+	else
+	  puts "#BB #{pkg} not yet submitted to #{trg_prj}" if not $opt_brief
+	end
 	next
       end
       if rel[:rev].to_i > sub[:ore].to_i
