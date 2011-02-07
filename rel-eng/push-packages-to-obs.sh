@@ -19,6 +19,8 @@ OBS_PROJ=${OBS_PROJ:-Devel:Galaxy:Server:Manager:T}
 
 FAKE_COMITTOBS=${FAKE_COMITTOBS:+1}
 
+DIFF=diff
+
 grep -v -- "\(--help\|-h\|-?\)\>" <<<"$@" || {
   cat <<EOF
 Usage: push-packages-to-obs.sh [PACKAGE]..
@@ -82,7 +84,7 @@ function tar_diff_p1() {
   mkdir "$tdir/R";
   tar_cat "$rtar" | tar xf - -C "$tdir/R" || return 2
 
-  if diff -r "$tdir/L"/* "$tdir/R"/*; then
+  if $DIFF -r "$tdir/L"/* "$tdir/R"/*; then
     echo "Content $ltar and $rtar is the same"
     return 0
   else
@@ -145,7 +147,7 @@ function copy_changed_package()
 	  #   Source0:      MessageQueue-git-4a9144649ae82fab60f4f11b08c75d46275f47bf.tar.gz
 	  #   %setup -q -n MessageQueue-git-4a9144649ae82fab60f4f11b08c75d46275f47bf
 	  #
-	  diff -q -I '^\(Source\|%setup\).*-git-' "$tdir/$stem" "$F" || {
+	  $DIFF -I '^\(Source\|%setup\).*-git-' "$tdir/$stem" "$F" || {
 	    diffs=1
 	    break
 	  }
