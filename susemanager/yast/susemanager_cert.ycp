@@ -35,9 +35,9 @@
 
     map<string,string> labels	= $[
 	// text entry label
-	"CERT_O"	: _("Organisation"),
+	"CERT_O"	: _("Organization"),
 	// text entry label
-	"CERT_OU"	: _("Organisation Unit"),
+	"CERT_OU"	: _("Organization Unit"),
 	// text entry label
 	"CERT_CITY"	: _("City"),
 	// text entry label
@@ -89,7 +89,7 @@
 	`Password (`id ("CERT_PASS"), `opt (`hstretch), _("SSL Pass&word"),
 	    settings["CERT_PASS"]:""),
 	// text entry label
-	`Password (`id ("CERT_PASS2"), `opt (`hstretch), _("Repeat Password"),
+	`Password (`id ("CERT_PASS2"), `opt (`hstretch), _("R&epeat Password"),
 	    settings["CERT_PASS2"]:""),
 	`VSpacing (0.5)
     ), `HSpacing (1));

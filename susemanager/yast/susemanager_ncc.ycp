@@ -35,10 +35,10 @@
 
     term contents = `HBox (`HSpacing (1), `VBox (
 	// text entry label
-	`InputField (`id ("NCC_USER"), `opt (`hstretch), _("NCC Mirror Credential &User"),
+	`InputField (`id ("NCC_USER"), `opt (`hstretch), _("NCC Mirror Credentials &Username"),
 	    settings["NCC_USER"]:""),
 	// text entry label
-	`Password (`id ("NCC_PASS"), `opt (`hstretch), _("NCC Mirror Credential &Password"),
+	`Password (`id ("NCC_PASS"), `opt (`hstretch), _("NCC Mirror Credentials &Password"),
 	    settings["NCC_PASS"]:""),
 	// text entry label
 	`InputField (`id ("NCC_EMAIL"), `opt (`hstretch), _("NCC &E-mail Address"),

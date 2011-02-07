@@ -68,26 +68,26 @@
 	    // text entry label
 	    _("&IP Address of the SUSE Manager Server"), settings["MANAGER_IP"]:""),
 	// text entry label
-	`InputField (`id ("MANAGER_USER"), `opt (`hstretch), _("SUSE Manager DB &User"),
+	`InputField (`id ("MANAGER_USER"), `opt (`hstretch), _("SUSE Manager Database &User"),
 	    settings["MANAGER_USER"]:""),
 	// text entry label
-	`Password (`id ("MANAGER_PASS"), `opt (`hstretch), _("SUSE Manager DB &Password"),
+	`Password (`id ("MANAGER_PASS"), `opt (`hstretch), _("SUSE Manager Database &Password"),
 	    settings["MANAGER_PASS"]:""),
 	// text entry label
-	`Password (`id ("MANAGER_PASS2"), `opt (`hstretch), _("Repeat Password"),
+	`Password (`id ("MANAGER_PASS2"), `opt (`hstretch), _("R&epeat Password"),
 	    settings["MANAGER_PASS"]:""),
 
 	migration ?
 
 	`InputField (`id ("SYS_DB_PASS"), `opt (`hstretch),
 	    // text entry label
-	    _("DB Password for Administrator"), settings["SYS_DB_PASS"]:"")
+	    _("&Database Administrator Password"), settings["SYS_DB_PASS"]:"")
 
 	:
 
 	`InputField (`id ("MANAGER_ADMIN_EMAIL"), `opt (`hstretch),
 	    // text entry label
-	    _("&Administrator E-mail Adress"), settings["MANAGER_ADMIN_EMAIL"]:"")
+	    _("&Administrator E-mail Address"), settings["MANAGER_ADMIN_EMAIL"]:"")
 	,
 
 	`VSpacing (0.5)

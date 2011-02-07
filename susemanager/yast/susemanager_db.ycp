@@ -54,10 +54,10 @@
 	    `HBox (`HSpacing (3), `VBox (
 		`VSpacing (0.5),
 		// text entry label
-		`InputField (`id ("MANAGER_DB_NAME"), `opt (`hstretch), _("&Name"),
+		`InputField (`id ("MANAGER_DB_NAME"), `opt (`hstretch), _("&Database SID"),
 		    settings["MANAGER_DB_NAME"]:""),
 		// text entry label
-		`InputField (`id ("MANAGER_DB_HOST"), `opt (`hstretch), _("&Host"),
+		`InputField (`id ("MANAGER_DB_HOST"), `opt (`hstretch), _("&Hostname"),
 		    settings["MANAGER_DB_HOST"]:""),
 		// text entry label
 		`InputField (`id ("MANAGER_DB_PORT"), `opt (`hstretch), _("&Port"),
