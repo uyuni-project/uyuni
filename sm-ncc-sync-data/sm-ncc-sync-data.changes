@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Feb  7 16:46:30 CET 2011 - iartarisi@suse.cz
+
+- update channel data:
+ * fix parent relationships for ppc64, ia64, s390x channels
+ * add different valid dummy source_urls for RHEL channels
+
+-------------------------------------------------------------------
 Sat Feb  5 15:25:26 CET 2011 - mc@suse.de
 
 - update channel data; add parents for HAE Update channels 
