@@ -1,5 +1,5 @@
 
-%define without_rhn_register 0%{?suse_version}
+%define without_rhn_register 1
 
 Summary: Support programs and libraries for Red Hat Network or Spacewalk
 License: GPLv2

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb  7 14:53:17 CET 2011 - ma@suse.de
+
+- Don't build rhn_register for RH tools either.
+
+-------------------------------------------------------------------
 Tue Feb  1 16:41:04 CET 2011 - mc@suse.de
 
 - fix build for RH4 
