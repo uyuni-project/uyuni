@@ -19,15 +19,9 @@
 
     map<string,string> settings	= $[
 	"MANAGER_IP"		: "",
-	"MANAGER_USER"		: "susemanager",
-	"MANAGER_PASS"		: "",
-	"MANAGER_PASS2"		: "",
     ];
     if (migration)
     {
-	settings["MANAGER_USER"]	= "spacewalk";
-	settings["MANAGER_PASS"]	= "spacewalk";
-	settings["MANAGER_PASS2"]	= "spacewalk";
 	settings["SYS_DB_PASS"]		= "novell";
     }
     else
@@ -67,6 +61,8 @@
 	`InputField (`id ("MANAGER_IP"), `opt (`hstretch),
 	    // text entry label
 	    _("&IP Address of the SUSE Manager Server"), settings["MANAGER_IP"]:""),
+
+/*
 	// text entry label
 	`InputField (`id ("MANAGER_USER"), `opt (`hstretch), _("SUSE Manager Database &User"),
 	    settings["MANAGER_USER"]:""),
@@ -76,6 +72,7 @@
 	// text entry label
 	`Password (`id ("MANAGER_PASS2"), `opt (`hstretch), _("R&epeat Password"),
 	    settings["MANAGER_PASS"]:""),
+*/
 
 	migration ?
 
