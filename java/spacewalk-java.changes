@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb  7 17:47:52 CET 2011 - jrenner@suse.de
+
+- removed 'translations available' from help page (bnc#669530)
+
+-------------------------------------------------------------------
 Mon Feb  7 15:49:32 CET 2011 - mc@suse.de
 
 - add rc link (bnc#669894) 
