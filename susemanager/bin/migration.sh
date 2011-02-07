@@ -209,7 +209,7 @@ dump_remote_db() {
 
 import_db() {
     MANAGER_DB_NAME=`echo -n $MANAGER_DB_NAME|tr [:lower:] [:upper:]`
-    su - oracle -c "ORACLE_HOME=/usr/lib/oracle/xe/app/oracle/product/10.2.0/server PATH=$PATH:/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/bin imp system/spacewalk@$MANAGER_DB_NAME fromuser=$SATELLITE_DB_USER touser=$MANAGER_USER file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y"
+    su - oracle -c "ORACLE_HOME=/usr/lib/oracle/xe/app/oracle/product/10.2.0/server PATH=$PATH:/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/bin imp system/$SYS_DB_PASS@$MANAGER_DB_NAME fromuser=$SATELLITE_DB_USER touser=$MANAGER_USER file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y"
     # 'fix syntax HL
 }
 
