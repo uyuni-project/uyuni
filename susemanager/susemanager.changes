@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb  7 16:56:30 CET 2011 - iartarisi@suse.cz
+
+- map multiple channels with the same source_url to the same contentsource
+
+-------------------------------------------------------------------
 Fri Feb  4 18:07:43 CET 2011 - mc@suse.de
 
 - build ncc-data package with own specfile
