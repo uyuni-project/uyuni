@@ -82,7 +82,7 @@ function tar_diff_p1() {
   mkdir "$tdir/R";
   tar_cat "$rtar" | tar xf - -C "$tdir/R" || return 2
 
-  if diff -r -q "$tdir/L"/* "$tdir/R"/*; then
+  if diff -r "$tdir/L"/* "$tdir/R"/*; then
     echo "Content $ltar and $rtar is the same"
     return 0
   else
