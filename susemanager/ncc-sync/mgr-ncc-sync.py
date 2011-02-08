@@ -77,6 +77,7 @@ def main():
             else:
                 syncer.edit_subscription_in_table(s, cons_subs[s])
         syncer.sync_installed_channels()
+        syncer.sync_suseproductchannel()
 
 if __name__ == "__main__":
     try:

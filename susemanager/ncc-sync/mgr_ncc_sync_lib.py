@@ -730,7 +730,8 @@ class NCCSync(object):
         print "Listing all mirrorable channels..."
         db_channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
 
-        ncc_channels = sorted(self.get_available_channels(), key=lambda channel: channel.get('label'))
+        ncc_channels = sorted(self.get_available_channels(),
+                              key=lambda channel: channel.get('label'))
 
         for channel in ncc_channels:
             if channel.get('parent') != 'BASE':
@@ -915,6 +916,58 @@ class NCCSync(object):
         # schedule repo sync for this channel
         self.sync_channel(channel_id, channel_label)
 
+    def sync_suseproductchannel(self):
+        """Sync the suseProductChannel relationships from the config file
+
+        Add or remove channel/product relationships according to the
+        channel's current optional status.
+
+        """
+        q = rhnSQL.prepare("SELECT c.label "
+                           "FROM rhnchannel c, suseproductchannel s "
+                           "WHERE c.id = s.channel_id")
+        q.execute()
+        channel_labels = [tup[0] for tup in q.fetchall()]
+        delete_channel_labels = []
+        add_channels = []
+
+        installed_channels = rhnSQL.Table("RHNCHANNEL", "LABEL")
+        for channel in self.get_available_channels():
+            # we only care about the ones that we already have installed
+            if installed_channels.has_key(channel.get('label')):
+                if channel.get('label') in channel_labels:
+                    if channel.get('optional') == 'Y':
+                        delete_channel_labels.append(channel.get('label'))
+                else:
+                    if channel.get('optional') == 'N':
+                        add_channels.append(channel)
+
+        # add channel-product relationships
+        for channel in add_channels:
+            channel_label = channel.get('label')
+            channel_id = rhnSQL.Row("rhnchannel", "label", channel_label)['id']
+            for product in channel.find('products'):
+                product_id = rhnSQL.Row("suseproducts", 'product_id',
+                                        product.text)['id']
+                q = rhnSQL.prepare("INSERT INTO suseproductchannel "
+                                   "(channel_id, product_id) "
+                                   "VALUES (:channel_id, :product_id)")
+                q.execute(channel_id=channel_id, product_id=product_id)
+
+        # delete channel-product relationships we don't want anymore
+        if delete_channel_labels:
+            q = rhnSQL.prepare("SELECT id FROM rhnchannel "
+                               "WHERE label in %s" %
+                               _sql_list(delete_channel_labels))
+            q.execute()
+            delete_channel_ids = [i[0] for i in q.fetchall()]
+            
+            q = rhnSQL.prepare("DELETE FROM suseproductchannel "
+                               "WHERE channel_id IN %s" %
+                               _sql_list(delete_channel_ids))
+            q.execute()
+        rhnSQL.commit()
+        
     def add_dist_channel_map(self, channel_id, channel_arch_id, dist):
         query = rhnSQL.prepare(
             """INSERT INTO RHNDISTCHANNELMAP
@@ -939,4 +992,17 @@ class NCCSync(object):
     def log_msg(self, message):
         rhnLog.log_clean(0, message)
 
+def _sql_list(alist):
+    """Transforms a python list into an SQL string of a list
 
+    ['foo', 'bar'] --> "('foo', 'bar')"
+    ['1', '2', '3'] --> "(1, 2, 3)"
+
+    """
+    # if they are integers, then make a list of integers,
+    # otherwise leave it as it is
+    try:
+        alist = map(int, alist)
+    except ValueError:
+        pass
+    return ("%s" % (tuple(alist),)).replace(",)", ")")
