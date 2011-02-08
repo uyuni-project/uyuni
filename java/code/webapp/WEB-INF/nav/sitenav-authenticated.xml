@@ -12,6 +12,7 @@
       <rhn-tab name="Account Deactivation" url="/rhn/account/AccountDeactivation.do"/>
     </rhn-tab>
     <rhn-tab name="Your Preferences" url="/rhn/account/UserPreferences.do" />
+    <rhn-tab name="Locale Preferences" url="/rhn/account/LocalePreferences.do" />
     <rhn-tab name="Subscription Management" url="/rhn/systems/SystemEntitlements.do" acl="user_role(org_admin)" >
       <rhn-tab name="System Entitlements" url="/rhn/systems/SystemEntitlements.do" acl="user_role(org_admin)" />
       <rhn-tab name="virtualization.entitlements" url="/rhn/systems/entitlements/GuestLimitedHosts.do" acl="user_role(org_admin)">

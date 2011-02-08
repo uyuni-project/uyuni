@@ -10,6 +10,14 @@
 </html:select>
 </div>
 
+<!-- try to set default values -->
+<html:hidden property="submitted" value="true" />
+<html:hidden property="uid" />
+<html:hidden property="preferredLocale" value="en_US" />
+<!-- end -->
+
+<!--
+
 <h2><bean:message key="preferences.jsp.lang" /></h2>
 <p><bean:message key="preferences.jsp.langs" /></p>
 <div class="preference">
@@ -54,6 +62,8 @@
 </table>
 </div>
 <hr/>
+-->
+
 <div align="right">
 <rhn:submit valueKey="preferences.jsp.submitvalue"/>
 </div>

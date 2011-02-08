@@ -150,12 +150,6 @@ public class LocalizedEnvironmentFilter implements Filter {
                 ctx.setLocale(LocalizationService.DEFAULT_LOCALE);
             }
         }
-        /* Start modification */
-        /** 
-	 * The following line added to suppress locale autodetection Dec20,2010 ET
-	 **/
-        ctx.setLocale(LocalizationService.DEFAULT_LOCALE);
-	/* End modification */
         rhnRequest.configureLocale();
     }
 }
