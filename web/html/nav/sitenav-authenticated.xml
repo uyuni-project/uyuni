@@ -228,7 +228,7 @@
       </rhn-tab>
 	  <rhn-tab name="Cobbler" acl="user_role(satellite_admin)">
 	    <rhn-tab-url>/rhn/admin/config/Cobbler.do</rhn-tab-url>
-	  </rhn-tab>        
+	  </rhn-tab>
     </rhn-tab>
   </rhn-tab>
   <rhn-tab name="Help" url="/rhn/help/index.do" active-image="tab-help-selected.gif" inactive-image="tab-help.gif">
@@ -239,18 +239,22 @@
     <rhn-tab name="Installation Guide" url="https://www.redhat.com/docs/manuals/satellite" >
         <rhn-tab-directory>/rhn/help/satellite/</rhn-tab-directory>
     </rhn-tab>
+    <!--
     <rhn-tab name="Proxy Guide" url="https://www.redhat.com/docs/manuals/satellite">
         <rhn-tab-directory>/rhn/help/proxy/</rhn-tab-directory>
     </rhn-tab>
+    -->
     <rhn-tab name="Client Configuration" url="https://www.redhat.com/docs/manuals/satellite">
         <rhn-tab-directory>/rhn/help/client-config/</rhn-tab-directory>
     </rhn-tab>
     <rhn-tab name="Channel Management" url="https://www.redhat.com/docs/manuals/satellite" >
         <rhn-tab-directory>/rhn/help/channel-mgmt/</rhn-tab-directory>
     </rhn-tab>
+    <!--
     <rhn-tab name="Release Notes" url="https://www.redhat.com/docs/manuals/satellite" >
         <rhn-tab-directory>/rhn/help/release-notes/satellite/</rhn-tab-directory>
     </rhn-tab>
+    -->
     <rhn-tab name="API" url="/rhn/apidoc/index.jsp" />
     <rhn-tab name="Search" url="/rhn/help/Search.do" />
   </rhn-tab>
