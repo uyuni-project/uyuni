@@ -39,12 +39,20 @@
 	    `Label (`id (`label), _("Setup is prepared."))
 	),
 	text_mode ? `VBox (
-	    `LogView (`id (`stdout), "", 5, 0),
+	    // label
+	    `Left (`Label (_("Migration script output"))),
+	    `LogView (`id (`stdout), "", 6, 0),
 	    `VSpacing (0.4),
-	    `LogView (`id (`stderr), "", 3, 0)
+	    // label
+	    `Left (`Label (_("Error output"))),
+	    `LogView (`id (`stderr), "", 2, 0)
 	) : `VBox (
+	    // label
+	    `Left (`Label (_("Migration script output"))),
 	    `VWeight (3, `LogView (`id (`stdout), "", 8, 0)),
 	    `VSpacing (0.4),
+	    // label
+	    `Left (`Label (_("Error output"))),
 	    `VWeight (1, `LogView (`id (`stderr), "", 4, 0))
 	)
     );
