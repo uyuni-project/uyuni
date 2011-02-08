@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb  8 17:20:45 CET 2011 - ma@suse.de
+
+- Use 'Patches' in nav (bnc#670013)
+- Disable references to proxy (bnc#670203)
+
+-------------------------------------------------------------------
 Mon Jan 31 09:46:35 UTC 2011 - dmacvicar@suse.de
 
 - about page branding bnc#666142
