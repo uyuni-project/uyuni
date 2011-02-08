@@ -17,6 +17,15 @@
 	"NCC_EMAIL"	: ""
     ];
 
+    map<string,string> labels	= $[
+	// text entry label
+	"NCC_USER"	: _("NCC Mirror Credentials Username"),
+	// text entry label
+	"NCC_PASS"	: _("NCC Mirror Credentials Password"),
+	// text entry label
+	"NCC_EMAIL"	: _("NCC E-mail Address")
+    ];
+
     string env_file	= Directory::tmpdir + "/env_ncc";
     if (FileUtils::Exists (env_file))
     {
@@ -49,9 +58,6 @@
 
     string help_text	= "";
 
-    if (!Stage::firstboot ())
-	Wizard::CreateDialog ();
-
     // dialog caption
     Wizard::SetContents (_("NCC Settings"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
     UI::SetFocus (`id ("NCC_USER"));
@@ -69,6 +75,30 @@
 	}
 	if (ret == `next)
 	{
+	    boolean missing	= false;
+	    foreach (string key, string value, settings, {
+		string val	= (string) UI::QueryWidget (`id (key), `Value);
+		if (val == "")
+		{
+		    string label	= labels[key]:key;
+		    // error label
+		    Popup::Error (sformat (_("The value of '%1' is empty."), label));
+		    UI::SetFocus (`id (key));
+		    missing	= true;
+		    break;
+		}
+	    });
+	    if (missing)
+		continue;
+
+	    string email	= (string) UI::QueryWidget (`id ("NCC_EMAIL"), `Value);
+	    if (!issubstring (email, "@"))
+	    {
+		// error popup
+		Popup::Error (_("The E-mail Address is not valid."));
+		UI::SetFocus (`id ("NCC_EMAIL"));
+		continue;
+	    }
 	    foreach (string key, string value, settings, {
 		string val	= (string) UI::QueryWidget (`id (key), `Value);
 		setenv (key, val, true);
@@ -79,7 +109,5 @@
 	}
     }
 
-    if (!Stage::firstboot ())
-	Wizard::CloseDialog ();
     return ret;
 }
