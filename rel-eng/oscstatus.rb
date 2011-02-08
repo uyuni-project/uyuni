@@ -188,7 +188,11 @@ check_whether_to_submitt( $src_prj, $trg_prj )
 # in py-core now; RH only  'python-hashlib',
 $ins_packages = [
   'python-jabberpy',
-  'cobbler'
+  'python-ethtool',
+  'python-cheetah',
+  'python-yaml',
+  'cobbler',
+  'libyaml'
 ]
 check_whether_to_submitt( $ins_prj, $cli_prj, $ins_packages )
 
@@ -204,6 +208,7 @@ $cli_packages = [
   'rhnpush',
   'spacewalk-backend',
   'spacewalk-certs-tools',
+  'spacewalk-config',
   'spacewalk-koan',
   'spacewalk-proxy-installer',
   'spacewalk-remote-utils',
