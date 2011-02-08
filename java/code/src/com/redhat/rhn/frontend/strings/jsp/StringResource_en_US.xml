@@ -21924,13 +21924,13 @@ given channel.</source>
         <source>@@PRODUCT_NAME@@ Reference Guide</source>
       </trans-unit>
       <trans-unit id="help.jsp.helpdesk">
-        <source>Welcome to the Help Desk</source>
+        <source> Welcome to the Help Desk</source>
       </trans-unit>
       <trans-unit id="help.jsp.translation">
         <source>(Translations available)</source>
       </trans-unit>
 	  <trans-unit id="help.jsp.detailed">
-        <source>Detailed instructions for using RHN service.</source>
+        <source>Detailed instructions for using @@PRODUCT_NAME@@.</source>
       </trans-unit>
 	  <trans-unit id="help.jsp.install">
         <source>Detailed information regarding @@PRODUCT_NAME@@ server and its installation. </source>
