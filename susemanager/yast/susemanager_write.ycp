@@ -9,15 +9,19 @@
 
     string dir		= Directory::tmpdir;
     string env_file	= "/root/setup_env.sh";
+    string logfile	= "/var/log/susemanager_setup.log";
+    string errfile	= "/var/log/susemanager_setup.err";
     any ret		= `back;
 
     map display_info	= UI::GetDisplayInfo ();
     boolean text_mode	= display_info["TextMode"]:false;
 
-    if (FileUtils::Exists (env_file))
-    {
-	SCR::Execute (.target.remove, env_file);
-    }
+    foreach (string file, [ env_file, logfile, errfile], {
+        if (FileUtils::Exists (file))
+	{
+	    SCR::Execute (.target.remove, file);
+	}
+    });
 
     string migration_file	= Directory::tmpdir + "/susemanager_migration";
     boolean migration		= FileUtils::Exists (migration_file);
@@ -30,7 +34,6 @@
 	}
     });
 
-    string logfile	= "/var/log/susemanager_setup.log";
 
     term cont	= `VBox (
 	`VSpacing (0.4),
@@ -126,7 +129,7 @@ read the Quickstart Reference."),
     Wizard::DisableNextButton ();
     Wizard::DisableBackButton ();
 
-    string cmd	= sformat ("/usr/lib/susemanager/bin/migration.sh -s -l %1", logfile);
+    string cmd	= sformat ("/usr/lib/susemanager/bin/migration.sh -s");
     pid	= (integer) SCR::Execute (.process.start_shell, cmd);
 
     while (true)
@@ -168,6 +171,12 @@ read the Quickstart Reference."),
     }
 
     SCR::Execute (.process.kill, pid);
+
+    // save the logs
+    string stdout	= (string) UI::QueryWidget (`id (`stdout), `Value);
+    SCR::Write (.target.string, logfile, stdout);
+    string stderr	= (string) UI::QueryWidget (`id (`stderr), `Value);
+    SCR::Write (.target.string, errfile, stderr);
 
     UI::NormalCursor ();
 
