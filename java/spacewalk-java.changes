@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb  8 18:53:19 CET 2011 - mc@suse.de
+
+- Use LocalePreferences page but comment out language settings
+  (bnc#670042) 
+
+-------------------------------------------------------------------
 Tue Feb  8 15:59:05 CET 2011 - mc@suse.de
 
 - change mountpoint and prepended_dir (bnc#669558)
