@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb  8 15:59:45 CET 2011 - mc@suse.de
+
+- change mountpoint and prepended_dir (bnc#669558)
+
+-------------------------------------------------------------------
 Sun Jan 30 15:32:04 CET 2011 - mc@suse.de
 
 - backport upstrem fixes

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb  8 15:59:05 CET 2011 - mc@suse.de
+
+- change mountpoint and prepended_dir (bnc#669558)
+
+-------------------------------------------------------------------
 Tue Feb  8 12:37:23 CET 2011 - jrenner@suse.de
 
 - fix session fixation (bnc#644080)
