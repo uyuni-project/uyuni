@@ -195,7 +195,11 @@ $ins_packages = [
   'cobbler',
   'libyaml',
   'grubby',
-  'python-virtinst'
+  'python-virtinst',
+  'apache2-mod_wsgi',
+  'python-netaddr', 
+  'python-simplejson',
+  'yum-utils', 
 ]
 check_whether_to_submitt( $ins_prj, $cli_prj, $ins_packages )
 
