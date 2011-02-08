@@ -72,7 +72,7 @@
             <a style="font-size:12pt" href=/rhn/help/dispatcher/proxy_release_notes>
                 <bean:message key="help.jsp.proxyrelease.title"/>
             </a>
-            <!-- strong><bean:message key="help.jsp.translation"/></strong -->
+            <strong><bean:message key="help.jsp.translation"/></strong>
             <br />
         </li>
 -->
