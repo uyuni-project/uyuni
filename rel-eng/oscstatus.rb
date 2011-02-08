@@ -176,6 +176,7 @@ end
 # input projects
 $src_prj = Prj.new('ibs://Devel:Galaxy:Server:Manager:1')
 $ins_prj = Prj.new('ibs://Devel:Galaxy:Install:Manager:1')
+$res_prj = Prj.new('ibs://Devel:Galaxy:RESClient:Manager:1')
 
 # target projects
 $trg_prj = Prj.new('ibs://SUSE:SLE-11-SP1:Update:Manager:1.2')
@@ -217,7 +218,13 @@ $cli_packages = [
   'spacewalksd',
   'spacewalk-client-tools',
   'zypp-plugin-spacewalk',
-  'suseRegisterInfo'
+  'suseRegisterInfo',
+  'yum-rhn-plugin'
 ]
 check_whether_to_submitt( $src_prj, $cli_prj, $cli_packages )
 
+# required for RHEL but exists in SLES 'python-setuptools'
+$res_packages = [
+  'python-hashlib'
+]
+check_whether_to_submitt( $res_prj, $cli_prj, $res_packages )
