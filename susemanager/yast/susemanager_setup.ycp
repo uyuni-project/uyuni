@@ -13,6 +13,7 @@
 	"susemanager_db",
 	"susemanager_ncc",
 	"susemanager_write",
+	"susemanager_congratulate",
     ];
 
     integer id	= 0;

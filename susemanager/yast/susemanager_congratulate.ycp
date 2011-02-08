@@ -1,0 +1,40 @@
+{
+    textdomain "susemanager";
+
+    import "Directory";
+    import "FileUtils";
+    import "Hostname";
+    import "Wizard";
+
+    string dir		= Directory::tmpdir;
+    any ret		= `next;
+
+    string migration_file	= Directory::tmpdir + "/susemanager_migration";
+    boolean migration		= FileUtils::Exists (migration_file);
+
+    if (migration)
+	return ret;
+
+    term contents = `HBox (`HSpacing (1), `VBox (
+	`VSpacing (2),
+	// text label
+	`Label (sformat (_("SUSE Manager Setup is now complete.
+
+Use 'mgr-ncc-sync' to add repositories.
+
+Visit https://%1 to create the SUSE Manager administrator account.
+
+For more information, read the Quickstart Reference."), Hostname::CurrentFQ ())),
+	`VSpacing (2)
+    ), `HSpacing (1));
+
+    string help_text	= "";
+
+    // dialog caption
+    Wizard::SetContents (_("Setup Completed"), contents, help_text, true, true);
+    Wizard::DisableBackButton ();
+    Wizard::DisableAbortButton ();
+
+    UI::UserInput();
+    return ret;
+}
