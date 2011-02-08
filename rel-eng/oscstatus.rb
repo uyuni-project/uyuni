@@ -193,7 +193,9 @@ $ins_packages = [
   'python-cheetah',
   'python-yaml',
   'cobbler',
-  'libyaml'
+  'libyaml',
+  'grubby',
+  'python-virtinst'
 ]
 check_whether_to_submitt( $ins_prj, $cli_prj, $ins_packages )
 
