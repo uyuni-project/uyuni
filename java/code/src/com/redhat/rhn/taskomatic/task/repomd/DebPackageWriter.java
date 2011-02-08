@@ -121,7 +121,7 @@ public class DebPackageWriter {
 
             // TODO FIX path to package, Apache needs access to it
             out.write("Filename: ");
-            out.write("/var/satellite/" + pkgDto.getPath());
+            out.write("/var/spacewalk/" + pkgDto.getPath());
             out.newLine();
 
             // size of package, is checked by apt

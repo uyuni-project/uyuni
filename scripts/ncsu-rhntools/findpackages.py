@@ -26,8 +26,8 @@ import string
 from types import IntType, FloatType, StringType, LongType
 from rhnapi import RHNClient
 
-TreeLocation = "/var/satellite/yum/channels"
-PackageRoot = "/var/satellite/redhat"
+TreeLocation = "/var/spacewalk/yum/channels"
+PackageRoot = "/var/spacewalk/packages"
 PackageDirs = os.listdir(PackageRoot)
 
 # Stolen from Yum

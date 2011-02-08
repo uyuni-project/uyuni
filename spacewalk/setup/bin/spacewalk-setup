@@ -106,7 +106,7 @@ setup_admin_email(\%opts, \%answers, \%rhnOptions);
 print Spacewalk::Setup::loc("* Performing initial configuration.\n");
 my $config_opts = populate_initial_configs(\%opts, \%answers);
 mkdir_mount_points($config_opts->{'mount_point'},
-	$config_opts->{'mount_point'} . '/redhat',
+	$config_opts->{'mount_point'} . '/packages',
 	$config_opts->{'kickstart_mount_point'});
 setup_sudoers(\%opts, \%answers);
 
@@ -1089,8 +1089,8 @@ sub populate_initial_configs {
 
   my %config_opts =
     (
-     mount_point => $answers->{'mount-point'} || '/var/satellite',
-     kickstart_mount_point => $answers->{'kickstart-mount-point'} || $answers->{'mount-point'} || '/var/satellite',
+     mount_point => $answers->{'mount-point'} || '/var/spacewalk',
+     kickstart_mount_point => $answers->{'kickstart-mount-point'} || $answers->{'mount-point'} || '/var/spacewalk',
      serverDOTsatelliteDOThttp_proxy => $answers->{'rhn-http-proxy'} || '',
      serverDOTsatelliteDOThttp_proxy_username => $answers->{'rhn-http-proxy-username'} || '',
      serverDOTsatelliteDOThttp_proxy_password => $answers->{'rhn-http-proxy-password'} || '',
