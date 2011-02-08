@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb  8 17:35:13 CET 2011 - iartarisi@suse.cz
+
+- sync optional status of channels on subsequent runs of mgr-ncc-sync
+
+-------------------------------------------------------------------
 Tue Feb  8 17:32:41 CET 2011 - mc@suse.de
 
 - provide init script which display a message what to do next 
