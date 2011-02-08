@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb  8 17:32:41 CET 2011 - mc@suse.de
+
+- provide init script which display a message what to do next 
+  (bnc#669485)
+
+-------------------------------------------------------------------
 Mon Feb  7 17:13:53 CET 2011 - iartarisi@suse.cz
 
 - split long output message on two lines in ncc-sync
