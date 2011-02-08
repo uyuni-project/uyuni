@@ -59,7 +59,7 @@ sub leave {
 
   if ($error) {
     my $soapbox = new NOCpulse::Gritch("/var/lib/nocpulse/scheduleEvents.db");
-    $soapbox->gritch("scheduleEvents problem on satellite $nsId", $message);
+    $soapbox->gritch("scheduleEvents problem on SUSE Manager $nsId", $message);
   }
 
   addStepMessage($message);
@@ -241,7 +241,7 @@ if ($requiredUser) {
                   "$0 must be run as user $requiredUser, but you are currently "
                     . getpwuid($<));
     } else {
-      fatalErrorOut("No 'nocpulse' user found on this satellite.");
+      fatalErrorOut("No 'nocpulse' user found on this SUSE Manager.");
     }
   } ## end if ($noUser || $wrongUser)
 } ## end if ($requiredUser)
@@ -321,7 +321,7 @@ if ($res->is_success) {
                     . "' but received '$version' from $url");
     }
     if (!$netsaintCfg) {
-      fatalErrorOut("No satellite configuration received from $url");
+      fatalErrorOut("No SUSE Manager configuration received from $url");
     } elsif (!$probeDB) {
       fatalErrorOut("No probe definitions received from $url");
     } elsif (!$commandParamDB) {
@@ -515,7 +515,7 @@ if ($@) {
 
 startConfigStep("generateEvents");
 
-addStepMessage("Generated " . scalar(@events) . " events on satellite");
+addStepMessage("Generated " . scalar(@events) . " events on SUSE Manager");
 my $schedulerEvents = freeze(@events);
 
 open(FILE, '>' . $config->get('satellite', 'eventsFile'))
