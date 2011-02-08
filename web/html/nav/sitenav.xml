@@ -18,9 +18,11 @@
     <rhn-tab name="Installation Guide" url="/rhn/help/dispatcher/install_guide">
       <rhn-tab-directory>/rhn/help/satellite</rhn-tab-directory>
     </rhn-tab>
+<!--
     <rhn-tab name="Proxy Guide" url="/rhn/help/dispatcher/proxy_guide">
       <rhn-tab-directory>/rhn/help/proxy</rhn-tab-directory>
     </rhn-tab>
+-->
     <rhn-tab name="Client Configuration" url="/rhn/help/dispatcher/client_config_guide">
       <rhn-tab-directory>/rhn/help/client-config</rhn-tab-directory>
     </rhn-tab>

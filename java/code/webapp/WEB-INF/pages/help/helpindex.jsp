@@ -31,7 +31,7 @@
             <br />
             <bean:message key="help.jsp.install"/>
         </li>
-
+<!--
         <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/proxy_guide>
                 <bean:message key="help.jsp.proxy.title"/>
@@ -39,6 +39,7 @@
             <br />
             <bean:message key="help.jsp.proxy"/>
         </li>
+-->
 
         <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/client_config_guide>
@@ -66,6 +67,7 @@
             <br />
         </li>
 
+<!--
         <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/proxy_release_notes>
                 <bean:message key="help.jsp.proxyrelease.title"/>
@@ -73,6 +75,7 @@
             <!-- strong><bean:message key="help.jsp.translation"/></strong -->
             <br />
         </li>
+-->
 
     </ul>
 
