@@ -9,6 +9,7 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildArch:      noarch
 BuildRequires:  python-devel
+PreReq:         %fillup_prereq %insserv_prereq
 Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
 Requires:       rsync less
@@ -47,8 +48,10 @@ install -m 0755 bin/*.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/
 
 mkdir -p %{buildroot}/%{_sysconfdir}/rhn/default/
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
+mkdir -p %{buildroot}/%{_sysconfdir}/init.d
 install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_sysconfdir}/rhn/default/
 install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
+install -m 755 etc/init.d/susemanager %{buildroot}/%{_sysconfdir}/init.d
 make -C sm-register install PREFIX=$RPM_BUILD_ROOT
 make -C ncc-sync install PREFIX=$RPM_BUILD_ROOT
 mkdir -p %{buildroot}/%{_sbindir}/
@@ -63,7 +66,7 @@ install -m 0644 yast/*.ycp %{buildroot}%{_datadir}/YaST2/clients
 rm -rf %{buildroot}
 
 %post
-
+%{fillup_and_insserv susemanager}
 if [ -f /etc/sysconfig/atftpd ]; then
   . /etc/sysconfig/atftpd
   if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
@@ -72,6 +75,9 @@ if [ -f /etc/sysconfig/atftpd ]; then
     mkdir -p /srv/tftpboot
   fi
 fi
+
+%postun
+%{insserv_cleanup}
 
 %files
 %defattr(-,root,root,-)
@@ -83,6 +89,7 @@ fi
 %{_prefix}/lib/susemanager/bin/*
 %{_datadir}/YaST2/clients/*.ycp
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/suse-manager-server
+%{_sysconfdir}/init.d/susemanager
 
 %files tools
 %defattr(-,root,root,-)
