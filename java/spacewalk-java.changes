@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb  8 12:37:23 CET 2011 - jrenner@suse.de
+
+- replace the term RHN with SUSE Manager (bnc#670223)
+
+-------------------------------------------------------------------
 Mon Feb  7 17:47:52 CET 2011 - jrenner@suse.de
 
 - removed 'translations available' from help page (bnc#669530)
