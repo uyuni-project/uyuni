@@ -59,8 +59,8 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
      */
     public void updateWebUserId(HttpServletRequest request, HttpServletResponse response,
             Long id) {
-
-        getPxtSession(request).setWebUserId(id);
+        // Always create a new session to prevent from session fixation
+        request.setAttribute("session", createPxtSession(id));
         refreshPxtSession(request, response);
     }
 
@@ -107,7 +107,7 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
             // Consequently, a new pxt session will need to be created.
 
             if (sessionAttribute == null) {
-                sessionAttribute = createPxtSession();
+                sessionAttribute = createPxtSession(null);
             }
 
             request.setAttribute("session", sessionAttribute);
@@ -160,8 +160,8 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
      * @return A new pxt session.
      * @see SessionManager#makeSession(Long, long)
      */
-    protected WebSession createPxtSession() {
-        return SessionManager.makeSession(null, SessionManager.lifetimeValue());
+    protected WebSession createPxtSession(Long uid) {
+        return SessionManager.makeSession(uid, SessionManager.lifetimeValue());
     }
 
     /**
