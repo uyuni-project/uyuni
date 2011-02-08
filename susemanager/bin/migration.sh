@@ -220,8 +220,8 @@ upgrade_schema() {
 
 copy_remote_files() {
     # maybe add -H for hardlinks?
-    rsync -avz $SATELLITE_IP:/var/satellite/ /var/satellite/
-    chown -R wwwrun.www /var/satellite
+    rsync -avz $SATELLITE_IP:/var/satellite/ /var/spacewalk/
+    chown -R wwwrun.www /var/spacewalk
     # copy only new files (new kickstart profiles, snippets, trigger, etc.)
     rsync -a -v -z --ignore-existing $SATELLITE_IP:/var/lib/cobbler/ /var/lib/cobbler/
     # cobbler needs also running apache, so let's restart complete spacewalk
@@ -299,6 +299,7 @@ do_migration() {
     upgrade_schema
     copy_remote_files
 
+    mv /var/spacewalk/redhat /var/spacewalk/packages
     cleanup_hostname
 }
 
