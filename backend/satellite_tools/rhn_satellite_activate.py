@@ -136,7 +136,7 @@ def validateSatCert(certFilename, verbosity=0):
                     "  Standard-out: %s\n" % out +\
                     "  Standard-error: %s\n" % err
         sys.stderr.write(msg)
-        raise RHNCertGeneralSanityException("RHN [GALAXY] Entitlement Certificate failed "
+        raise RHNCertGeneralSanityException("RHN Entitlement Certificate failed "
                                             "to validate.")
     return 0
 
@@ -190,7 +190,7 @@ def activateSatellite_local(options):
     """
 
     if options.verbose:
-        print "Attempting local RHN [GALAXY] Certificate push (and therefore activation)"
+        print "Attempting local RHN Certificate push (and therefore activation)"
 
     try:
         cert = open(DEFAULT_RHN_CERT_LOCATION).read()
@@ -198,25 +198,25 @@ def activateSatellite_local(options):
         satCerts.storeRhnCert(cert, check_generation=1, check_version=not(options.ignore_version_mismatch))
     except satellite_cert.ParseException:
         raise RHNCertLocalActivationException(
-          'RHN [GALAXY] Entitlement Certificate failed to validate - '
+          'RHN Entitlement Certificate failed to validate - '
           'failed sanity parse.')
     except satCerts.CertGenerationMismatchError:
         raise RHNCertLocalActivationException(
-            'RHN [GALAXY] Entitlement Certificate cannot be imported - '
+            'RHN Entitlement Certificate cannot be imported - '
             'mismatching generation.')
     except satCerts.CertVersionMismatchError, e:
         raise RHNCertLocalActivationException(
-            'RHN [GALAXY] Entitlement Certificate cannot be imported - ' + str(e) \
-            + '\nIf you are trying to upgrade the Satellite [GALAXY] server, please see the upgrade documentation ' + \
+            'RHN Entitlement Certificate cannot be imported - ' + str(e) \
+            + '\nIf you are trying to upgrade the Satellite server, please see the upgrade documentation ' + \
             'located here /etc/sysconfig/rhn/satellite-upgrade/README  (as part of the rhn-upgrade package).  ' + \
             'WARNING: If you want to skip this check, please use --ignore-version-mismatch, but doing so may cause issues ' + \
-            '(including malfunction of the Satellite [GALAXY] software).  Only skip the test if instructed to do so by a support technician.')
+            '(including malfunction of the Satellite software).  Only skip the test if instructed to do so by a support technician.')
     except satCerts.NoFreeEntitlementsError, e:
         sys.stderr.write(e.message + '\n')
         sys.exit(1)
     except Exception:
         raise RHNCertLocalActivationException(
-          'RHN [GALAXY] Entitlement Certificate failed to validate: \n'
+          'RHN Entitlement Certificate failed to validate: \n'
           '%s' % rhnTB.fetchTraceback())
 
     return 0
@@ -304,14 +304,14 @@ def activateSatellite_remote(options):
             print "Executing: remote XMLRPC activation call."
         ret = s.satellite.activate_satellite(systemid, rhn_cert)
     except rpclib.Fault, f:
-        sys.stderr.write("Error reported from RHN [GALAXY]: %s\n" % f)
+        sys.stderr.write("Error reported from RHN: %s\n" % f)
 	# NOTE: we support the old (pre-cactus) web-handler API and the new.
 	# The old web handler used faultCodes of 1|-1 and the new API uses
 	# faultCodes in the range [1020, ..., 1039]
         if oldApiYN and abs(f.faultCode) == 1:
             sys.stderr.write(
                 'ERROR: error upon attempt to activate this %s\n'
-                'against the RHN [GALAXY] hosted service.\n\n%s\n' % (PRODUCT_NAME, f))
+                'against the RHN hosted service.\n\n%s\n' % (PRODUCT_NAME, f))
             raise RHNCertRemoteActivationException('%s' % f)
 
         if not oldApiYN \
@@ -329,40 +329,40 @@ def activateSatellite_remote(options):
                 raise RHNCertRemoteSatelliteAlreadyActivatedException('%s' % f)
             elif abs(f.faultCode) == 1022:
                 # 1022 results in "no_access_to_sat_channel"
-                print "NOTE: hosted RHN [GALAXY] reports 'no_access_to_sat_channel'."
+                print "NOTE: hosted RHN reports 'no_access_to_sat_channel'."
                 raise RHNCertRemoteNoAccessToSatChannelException('%s' % f)
             elif abs(f.faultCode) == 1023:
                 # 1023 results in "insufficient_channel_entitlements"
-                print "NOTE: hosted RHN [GALAXY] reports 'insufficient_channel_entitlements'."
+                print "NOTE: hosted RHN reports 'insufficient_channel_entitlements'."
                 raise RHNCertRemoteInsufficientChannelEntitlementsException('%s' % f)
             elif abs(f.faultCode) == 1024:
                 # 1024 results in "invalid_sat_certificate"
-                print "NOTE: hosted RHN [GALAXY] reports 'invalid_sat_certificate'."
+                print "NOTE: hosted RHN reports 'invalid_sat_certificate'."
                 raise RHNCertRemoteInvalidSatCertificateException('%s' % f)
             elif abs(f.faultCode) == 1025:
                 # 1025 results in "satellite_not_activated"
                 print """\
-NOTE: hosted RHN [GALAXY] reports 'satellite_not_activated'. This is an odd fault that
+NOTE: hosted RHN reports 'satellite_not_activated'. This is an odd fault that
 indicates an odd state - deactivate on the website and try again."""
                 raise RHNCertRemoteSatelliteNotActivatedException('%s' % f)
             elif abs(f.faultCode) == 1026:
                 # 1026 results in "satellite_no_base_channel"
                 print """\
-NOTE: hosted RHN [GALAXY] reports 'satellite_no_base_channel'. This system is not
-entitled to a base channel in your RHN [GALAXY] account."""
+NOTE: hosted RHN reports 'satellite_no_base_channel'. This system is not
+entitled to a base channel in your RHN account."""
                 raise RHNCertRemoteSatelliteNoBaseChannelException('%s' % f)
             elif f.faultString in (no_sat_chan_for_version,
                                    no_sat_chan_for_version1):
                 print """\
-NOTE: hosted RHN [GALAXY] reports 'no_sat_chan_for_version'. This system does not have
-access to a channel that corresponds to the version of RHN [GALAXY] certificate used to
+NOTE: hosted RHN reports 'no_sat_chan_for_version'. This system does not have
+access to a channel that corresponds to the version of RHN certificate used to
 attempted activation."""
                 raise RHNCertNoSatChanForVersion('%s' % f)
 
             # other errors [1027, ..., 1039]:
             sys.stderr.write(
                 'ERROR: error upon attempt to activate this %s\n'
-                'against the RHN [GALAXY] hosted service.\n\n%s\n' % (PRODUCT_NAME, f))
+                'against the RHN hosted service.\n\n%s\n' % (PRODUCT_NAME, f))
             raise RHNCertRemoteActivationException('%s' % f)
 
         # still in except: section. Need to raise unhandled.
@@ -445,8 +445,8 @@ def expiredYN(certPath):
         expires = time.mktime(time.strptime(sc.expires, sc.datesFormat_cert))-time.timezone
     except ValueError:
         sys.stderr.write("""\
-ERROR: can't seem to parse the expires field in the RHN [GALAXY] Certificate.
-       RHN [GALAXY] Certificate's version is incorrect?\n""")
+ERROR: can't seem to parse the expires field in the RHN Certificate.
+       RHN Certificate's version is incorrect?\n""")
         # a cop-out FIXME: not elegant
         sys.exit(11)
 
@@ -460,11 +460,11 @@ ERROR: can't seem to parse the expires field in the RHN [GALAXY] Certificate.
 def processCommandline():
     options = [
         Option('--systemid',     action='store',      help='(FOR TESTING ONLY) alternative systemid path/filename. The system default is used if not specified.'),
-        Option('--rhn-cert',     action='store',      help='new RHN [GALAXY] certificate path/filename (default is %s - the saved RHN [GALAXY] cert).' % DEFAULT_RHN_CERT_LOCATION),
+        Option('--rhn-cert',     action='store',      help='new RHN certificate path/filename (default is %s - the saved RHN cert).' % DEFAULT_RHN_CERT_LOCATION),
         Option('--no-ssl',       action='store_true', help='(FOR TESTING ONLY) disables SSL'),
-        Option('--sanity-only',  action='store_true', help="confirm certificate sanity. Does not activate the RHN Satellite [GALAXY] locally or remotely."),
-        Option('--disconnected', action='store_true', help="activate locally, but not on remote RHN servers [GALAXY],"),
-        Option('--ignore-expiration', action='store_true', help='execute regardless of the expiration of the RHN Certificate [GALAXY] (not recommended).'),
+        Option('--sanity-only',  action='store_true', help="confirm certificate sanity. Does not activate the RHN Satellite locally or remotely."),
+        Option('--disconnected', action='store_true', help="activate locally, but not on remote RHN servers,"),
+        Option('--ignore-expiration', action='store_true', help='execute regardless of the expiration of the RHN Certificate (not recommended).'),
         Option('--ignore-version-mismatch', action='store_true', help='execute regardless of version mismatch of existing and new certificate.'),
         Option('-v','--verbose', action='count',      help='be verbose (accumulable: -vvv means "be *really* verbose").'),
         Option(     '--dump-version', action='store', help="requested version of XML dump"),
@@ -489,7 +489,7 @@ def processCommandline():
         options.rhn_cert = DEFAULT_RHN_CERT_LOCATION
     options.rhn_cert = fileutils.cleanupAbsPath(options.rhn_cert)
     if not os.path.exists(options.rhn_cert):
-        sys.stderr.write("ERROR: RHN Cert [GALAXY] (%s) does not exist\n" % options.rhn_cert)
+        sys.stderr.write("ERROR: RHN Cert (%s) does not exist\n" % options.rhn_cert)
         sys.exit(1)
 
     if options.sanity_only:
@@ -564,7 +564,7 @@ def main():
         if date:
             just_date = date.split(' ')[0]
             writeError(
-                'RHN Certificate [GALAXY] appears to have expired: %s' % just_date)
+                'RHN Certificate appears to have expired: %s' % just_date)
             return 11
 
     if not options.sanity_only:

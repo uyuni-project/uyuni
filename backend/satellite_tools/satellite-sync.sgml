@@ -13,7 +13,7 @@
 <RefNameDiv>
 <RefName><command>satellite-sync</command></RefName>
 <RefPurpose>
-Incrementally synchronize an RHN Satellite's DB [GALAXY] data and RPM repository with Red Hat's [GALAXY] RHN DB and RPM repository.
+Incrementally synchronize an RHN Satellite's DB data and RPM repository with Red Hat's RHN DB and RPM repository.
 </RefPurpose>
 </RefNameDiv>
 
@@ -131,11 +131,11 @@ Incrementally synchronize an RHN Satellite's DB [GALAXY] data and RPM repository
 <RefSect1><Title>Description</Title>
 <para>
     The &RHNSYNC; (<emphasis>satellite-sync</emphasis>) synchronizes
-    an &RHNSAT; with Red Hat's RHN [GALAXY] servers.
+    an &RHNSAT; with Red Hat's RHN servers.
 </para>
 <para>
     This tool enables an &RHNSAT; to update its database metadata and
-    RPM packages with that of Red Hat [GALAXY]. This action can be performed via
+    RPM packages with that of Red Hat. This action can be performed via
     the internet (ie. directly) or via the local file-system (an update/channel
     CD dumped to the appropriate mount point).
 </para>
