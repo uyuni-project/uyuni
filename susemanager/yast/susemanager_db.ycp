@@ -17,6 +17,8 @@
     map display_info	= UI::GetDisplayInfo ();
     boolean text_mode	= display_info["TextMode"]:false;
 
+    string invalid_pw_chars	= "\"$'!";
+
     map<string,string> settings	= $[
 	"MANAGER_DB_NAME"	: "",
 	"MANAGER_DB_HOST"	: "",
@@ -88,10 +90,10 @@
 	)))),
 	`VSpacing (0.4),
 	// text entry label
-	`InputField (`id ("MANAGER_USER"), `opt (`hstretch), _("SUSE Manager Database &User"),
+	`InputField (`id ("MANAGER_USER"), `opt (`hstretch), _("Database &User"),
 	    settings["MANAGER_USER"]:""),
 	// text entry label
-	`Password (`id ("MANAGER_PASS"), `opt (`hstretch), _("SUSE Manager Database &Password"),
+	`Password (`id ("MANAGER_PASS"), `opt (`hstretch), _("Database &Password"),
 	    settings["MANAGER_PASS"]:""),
 	// text entry label
 	`Password (`id ("MANAGER_PASS2"), `opt (`hstretch), _("R&epeat Password"),
@@ -103,9 +105,6 @@
 
 
     string help_text	= "";
-
-    if (!Stage::firstboot ())
-	Wizard::CreateDialog ();
 
     // dialog caption
     Wizard::SetContents (_("Database Settings"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
@@ -135,6 +134,33 @@
 	}
 	if (ret == `next)
 	{
+	    string pw1	= (string) UI::QueryWidget (`id ("MANAGER_PASS"), `Value);
+	    if (pw1 == "")
+	    {
+		Popup::Error (_("Password is missing."));
+		UI::SetFocus (`id ("MANAGER_PASS"));
+		continue;
+	    }
+	    if (pw1 != UI::QueryWidget (`id ("MANAGER_PASS2"), `Value))
+	    {
+		Popup::Error (_("Passwords do not match."));
+		UI::SetFocus (`id ("MANAGER_PASS"));
+		continue;
+	    }
+	    //DB Password needs to be 7 chars long at least. Invalid chars: " $ ' !
+	    if (size (pw1) < 7)
+	    {
+		Popup::Error (sformat (_("The password should have at least %1 characters."), 7));
+		UI::SetFocus (`id ("MANAGER_PASS"));
+		continue;
+	    }
+	    if (pw1 != deletechars (pw1, invalid_pw_chars))
+	    {
+		Popup::Error (sformat (_("The password contains invalid characters.
+The invalid characters are: %1"), invalid_pw_chars));
+		UI::SetFocus (`id ("MANAGER_PASS"));
+		continue;
+	    }
 	    foreach (string key, string value, settings, {
 		string val	= (string) UI::QueryWidget (`id (key), `Value);
 		if (UI::QueryWidget (`id (`rb), `CurrentButton) == `localdb)
@@ -149,7 +175,5 @@
 	}
     }
 
-    if (!Stage::firstboot ())
-	Wizard::CloseDialog ();
     return ret;
 }
