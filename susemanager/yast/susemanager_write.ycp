@@ -65,7 +65,7 @@
 	cont	= `VBox (
 	    `VSpacing (2),
 	    // text label
-	    `Label ("The configuration files for a migration have been created.
+	    `Label (_("The configuration files for a migration have been created.
 Now you can start the migration process by calling
 
 '/usr/lib/susemanager/bin/migration.sh -m'.
@@ -74,7 +74,7 @@ Be aware that this process can take more than 10 hours,
 depending on the configuration of you Satellite server.
 
 For more information of how to migrate a Satellite server,
-read the Quickstart Reference."),
+read the Quickstart Reference.")),
 	    `VSpacing (2)
 	);
     }
