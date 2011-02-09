@@ -322,6 +322,7 @@ rm -rfv $RPM_BUILD_ROOT/%{rhnroot}/wsgi
 %else
 rm -fv $RPM_BUILD_ROOT/%{apacheconfd}/zz-spacewalk-server-python.conf
 %endif
+rm -f $RPM_BUILD_ROOT/%{_mandir}/man8/satellite-sync.8*
 
 
 %clean
@@ -657,7 +658,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/rhn-satellite-activate
 %attr(755,root,root) %{_bindir}/rhn-schema-version
 %attr(755,root,root) %{_bindir}/rhn-ssl-dbstore
-%attr(755,root,root) %{_bindir}/satellite-sync
+# unsupported in SUSE Manager 1.2 (bnc #669610)
+# %attr(755,root,root) %{_bindir}/satellite-sync
 %attr(755,root,root) %{_bindir}/spacewalk-debug
 %attr(755,root,root) %{_bindir}/rhn-satellite-exporter
 %attr(755,root,root) %{_bindir}/update-packages
@@ -704,7 +706,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/rhn-ssl-dbstore.8*
 %{_mandir}/man8/rhn-db-stats.8*
 %{_mandir}/man8/rhn-schema-stats.8*
-%{_mandir}/man8/satellite-sync.8*
+# %{_mandir}/man8/satellite-sync.8*
 %{_mandir}/man8/spacewalk-debug.8*
 %{_mandir}/man8/satpasswd.8*
 %{_mandir}/man8/satwho.8*
