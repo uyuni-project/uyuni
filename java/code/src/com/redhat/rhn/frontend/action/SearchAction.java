@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.PackageSearchAction;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
+import com.redhat.rhn.frontend.action.help.DocSearchActionHelper;
 import com.redhat.rhn.frontend.action.systems.SystemSearchSetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -122,14 +123,8 @@ public class SearchAction extends RhnAction {
                 return null;
             }
             else if (searchType.equals("docs")) {
-                HashMap attributes = new HashMap();
-                attributes.put("view_mode", "search_content_title");
-                attributes.put(SystemSearchSetupAction.SEARCH_STRING, searchString);
-                performRedirect("/help/Search.do",
-                                request.getContextPath(),
-                                response,
-                                attributes);
-
+                // Redirect the query
+                DocSearchActionHelper.redirectDocSearch(searchString, response);
                 return null;
             }
             else {

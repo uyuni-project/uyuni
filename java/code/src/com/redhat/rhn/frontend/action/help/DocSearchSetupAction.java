@@ -34,9 +34,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -145,19 +143,9 @@ public class DocSearchSetupAction extends RhnAction {
                     forwardParams);
         }
 
-        // Redirect the query to search.novell.com
-        StringBuffer params = new StringBuffer();
-        params.append("sortbyrelevence=true&noredirect=true&index=Documentation&x=0&y=0&query=");
-        try {
-            params.append(URLEncoder.encode(searchString, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            log.error("Unsupported Encoding.", e);
-            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(e
-                    .getMessage()));
-        }
-        params.append("&filter=%2FProduct_and_Version%3DSUSE+Manager");
-        return new ActionForward("http://search.novell.com/qfsearch/SearchServlet?" + params,
-                true);
+        // Redirect the query
+        DocSearchActionHelper.redirectDocSearch(searchString, response);
+        return null;
     }
 
     private void setupForm(HttpServletRequest request, DynaActionForm form)
