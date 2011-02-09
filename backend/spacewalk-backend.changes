@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb  9 10:08:15 CET 2011 - mantel@suse.de
+
+- change name of default organization (BNC#663983)
+
+-------------------------------------------------------------------
 Tue Feb  8 15:58:22 CET 2011 - mc@suse.de
 
 - change mountpoint and prepended_dir (bnc#669558)
