@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb  9 13:46:12 CET 2011 - jkupec@suse.cz
+
+- removed unsupported satellite-sync from the
+  spacewalk-backend-tools package (bnc #669610)
+
+-------------------------------------------------------------------
 Wed Feb  9 11:36:28 CET 2011 - mc@suse.de
 
 - fix typo in sql statement 
