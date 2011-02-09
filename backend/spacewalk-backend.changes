@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb  9 11:36:28 CET 2011 - mc@suse.de
+
+- fix typo in sql statement 
+
+-------------------------------------------------------------------
 Wed Feb  9 10:51:13 CET 2011 - mantel@suse.de
 
 - some more renames of RHN to NCC (BNC#668824)
