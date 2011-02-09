@@ -22,7 +22,7 @@
 <rhn-listview class="Sniglets::ListView::SystemList" mode="in_set">
   <set name="systems in the set able to be removed from the set" label="removable_system_list" />
   <column name="Updates" label="advisory_icon" width="1%" align="center" />
-  <column name="Errata" label="total_errata" width="1%" align="center">
+  <column name="Patches" label="total_errata" width="1%" align="center">
     <url>/rhn/systems/details/ErrataList.do?sid={column:id}</url>
   </column>
   <column name="Packages" label="outdated_packages" width="1%" align="center">

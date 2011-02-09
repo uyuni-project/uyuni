@@ -117,7 +117,7 @@ sub lookup {
   }
   else {
     local $" = ", ";
-    throw "Error loading errata; no ID? (@columns)";
+    throw "Error loading patch; no ID? (@columns)";
   }
 
   return $ret;
@@ -294,7 +294,7 @@ sub packages_in_errata {
   my $class = shift;
   my $eid = shift;
 
-  die "No errata id!" unless $eid;
+  die "No patch id!" unless $eid;
 
   my $dbh = RHN::DB->connect;
   my $query;
@@ -447,7 +447,7 @@ sub commit {
       my $sth = $dbh->prepare("SELECT rhn_errata_id_seq.nextval FROM DUAL");
       $sth->execute;
       ($id) = $sth->fetchrow;
-      die "No new errata id from seq rhn_errata_id_seq (possible error: " . $sth->errstr . ")" unless $id;
+      die "No new patch id from seq rhn_errata_id_seq (possible error: " . $sth->errstr . ")" unless $id;
       $sth->finish;
     }
 
@@ -457,7 +457,7 @@ sub commit {
     $mode = 'insert';
   }
 
-  die "$self->commit called on errata without valid id" unless $self->id and $self->id > 0;
+  die "$self->commit called on patch without valid id" unless $self->id and $self->id > 0;
 
   my @modified = keys %{$self->{":modified:"}};
   my %modified = map { $_ => 1 } @modified;

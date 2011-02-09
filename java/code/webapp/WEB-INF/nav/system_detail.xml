@@ -28,7 +28,7 @@
 
   <rhn-tab name="Software" url="/rhn/systems/details/packages/Packages.do">
 
-    <rhn-tab name="Errata" acl="system_feature(ftr_errata_updates); not is_solaris()">
+    <rhn-tab name="Patches" acl="system_feature(ftr_errata_updates); not is_solaris()">
       <rhn-tab-url>/rhn/systems/details/ErrataList.do</rhn-tab-url>
       <rhn-tab-url>/rhn/systems/details/ErrataConfirm.do</rhn-tab-url>
     </rhn-tab>

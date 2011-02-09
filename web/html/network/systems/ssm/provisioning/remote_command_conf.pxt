@@ -55,7 +55,7 @@
 
   <column name="Status" label="advisory_icon" align="center" width="5%" />
 
-  <column name="Errata" label="total_errata" align="center" width="5%">
+  <column name="Patches" label="total_errata" align="center" width="5%">
     <url>/rhn/systems/details/ErrataList.do?sid={column:id}</url>
   </column>
   <column name="Packages" label="outdated_packages" align="center" width="5%">

@@ -114,7 +114,7 @@ public class ErrataHandler extends BaseHandler {
 
         if (erratas == null) {
             throw new FaultException(-1, "errataNotFound",
-                    "No erratas found for given identifier");
+                    "No patches found for given identifier");
         }
         List files = new LinkedList();
         if (erratas != null) {
@@ -132,7 +132,7 @@ public class ErrataHandler extends BaseHandler {
             if (files != null) {
                 if (files.size() == 0) {
                     throw new FaultException(-1, "ovalNotFound",
-                            "No OVAL files found for given errata");
+                            "No OVAL files found for given patches");
                 }
                 else if (files.size() == 1) {
                     File f = (File) files.get(0);
@@ -831,16 +831,16 @@ public class ErrataHandler extends BaseHandler {
          * and throw a no_such_errata exception if the errata was not found.
          */
         if (errata == null) {
-            throw new FaultException(-208, "no_such_errata",
-                                     "The errata " + advisoryName + " cannot be found.");
+            throw new FaultException(-208, "no_such_patch",
+                                     "The patch " + advisoryName + " cannot be found.");
         }
         /**
          * errata with org_id of null are public, but ones with an org id of !null are not
          * need to make sure here that everything is checked correclty
          */
         if (errata.getOrg() != null && !errata.getOrg().equals(org)) {
-            throw new FaultException(-209, "no_such_errata",
-                    "The errata " + advisoryName + " cannot be found.");
+            throw new FaultException(-209, "no_such_patch",
+                    "The patch " + advisoryName + " cannot be found.");
         }
 
         return errata;

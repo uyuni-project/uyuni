@@ -24,7 +24,7 @@ import xmlrpclib
 from spacecmd.utils import *
 
 def help_errata_list(self):
-    print 'errata_list: List all errata'
+    print 'errata_list: List all patches'
     print 'usage: errata_list'
 
 def do_errata_list(self, args, doreturn=False):
@@ -39,7 +39,7 @@ def do_errata_list(self, args, doreturn=False):
 ####################
 
 def help_errata_apply(self):
-    print 'errata_apply: Apply an erratum to all affected systems'
+    print 'errata_apply: Apply an patch to all affected systems'
     print 'usage: errata_apply ERRATA|search:XXX ...'
 
 def complete_errata_apply(self, text, line, beg, end):
@@ -88,7 +88,7 @@ def do_errata_apply(self, args, only_systems=[]):
             logging.debug('%s does not affect any systems' % erratum)
 
     if not len(systems):
-        logging.warning('No errata to apply')
+        logging.warning('No patches to apply')
         return
 
     # a summary of which errata we're going to apply
@@ -96,7 +96,7 @@ def do_errata_apply(self, args, only_systems=[]):
     print '--------------     -------'
     print '\n'.join(sorted(summary))
 
-    if not self.user_confirm('Apply these errata [y/N]:'): return
+    if not self.user_confirm('Apply these patches [y/N]:'): return
 
     # if the API supports it, try to schedule multiple systems for one erratum
     # in order to reduce the number of actions scheduled
@@ -147,7 +147,7 @@ def do_errata_apply(self, args, only_systems=[]):
                         break
 
             if not len(errata_to_apply):
-                logging.warning('No errata to schedule for %s' % system)
+                logging.warning('No patches to schedule for %s' % system)
                 continue
 
             # this results in one action per erratum for each server
@@ -155,13 +155,13 @@ def do_errata_apply(self, args, only_systems=[]):
                                                    system_id,
                                                    errata_to_apply)
 
-            logging.info('Scheduled %i errata for %s' % \
+            logging.info('Scheduled %i patches for %s' % \
                          (len(errata_to_apply), system))
 
 ####################
 
 def help_errata_listaffectedsystems(self):
-    print 'errata_listaffectedsystems: List of systems affected by an erratum'
+    print 'errata_listaffectedsystems: List of systems affected by an patch'
     print 'usage: errata_listaffectedsystems ERRATA|search:XXX ...'
 
 def complete_errata_listaffectedsystems(self, text, line, beg, end):
@@ -192,7 +192,7 @@ def do_errata_listaffectedsystems(self, args):
 ####################
 
 def help_errata_listcves(self):
-    print 'errata_listcves: List of CVEs addressed by an erratum'
+    print 'errata_listcves: List of CVEs addressed by an patch'
     print 'usage: errata_listcves ERRATA|search:XXX ...'
 
 def complete_errata_listcves(self, text, line, beg, end):
@@ -225,7 +225,7 @@ def do_errata_listcves(self, args):
 ####################
 
 def help_errata_details(self):
-    print 'errata_details: Show the details of an erratum'
+    print 'errata_details: Show the details of an patch'
     print 'usage: errata_details ERRATA|search:XXX ...'
 
 def complete_errata_details(self, text, line, beg, end):
@@ -310,7 +310,7 @@ def do_errata_details(self, args):
 ####################
 
 def help_errata_delete(self):
-    print 'errata_delete: Delete an erratum'
+    print 'errata_delete: Delete an patch'
     print 'usage: errata_delete ERRATA|search:XXX ...'
 
 def complete_errata_delete(self, text, line, beg, end):
@@ -327,7 +327,7 @@ def do_errata_delete(self, args):
     errata = self.expand_errata(args)
 
     if not len(errata):
-        logging.warning('No errata to delete')
+        logging.warning('No patches to delete')
         return
 
     print 'Erratum            Channels'
@@ -338,19 +338,19 @@ def do_errata_delete(self, args):
         channels = self.client.errata.applicableToChannels(self.session, erratum)
         print '%s    %s' % (erratum.ljust(20), str(len(channels)).rjust(3))
 
-    if not self.user_confirm('Delete these errata [y/N]:'): return
+    if not self.user_confirm('Delete these patches [y/N]:'): return
 
     for erratum in errata:
         self.client.errata.delete(self.session, erratum)
 
-    logging.info('Deleted %i errata' % len(errata))
+    logging.info('Deleted %i patches' % len(errata))
 
     self.generate_errata_cache(True)
 
 ####################
 
 def help_errata_publish(self):
-    print 'errata_publish: Publish an erratum to a channel'
+    print 'errata_publish: Publish an patch to a channel'
     print 'usage: errata_publish ERRATA|search:XXX <CHANNEL ...>'
 
 def complete_errata_publish(self, text, line, beg, end):
@@ -374,12 +374,12 @@ def do_errata_publish(self, args):
     channels = args[1:]
 
     if not len(errata):
-        logging.warning('No errata to publish')
+        logging.warning('No patches to publish')
         return
 
     print '\n'.join(sorted(errata))
 
-    if not self.user_confirm('Publish these errata [y/N]:'): return
+    if not self.user_confirm('Publish these patches [y/N]:'): return
 
     for erratum in errata:
         self.client.errata.publish(self.session, erratum, channels)
@@ -387,7 +387,7 @@ def do_errata_publish(self, args):
 ####################
 
 def help_errata_search(self):
-    print 'errata_search: List errata that meet the given criteria'
+    print 'errata_search: List patches that meet the given criteria'
     print 'usage: errata_search CVE|RHSA|RHBA|RHEA|CLA ...'
     print
     print 'Example:'

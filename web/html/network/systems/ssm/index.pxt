@@ -31,8 +31,8 @@
                 <td><a href="/network/systems/ssm/system_list.pxt">List the systems</a> you have selected to work with</td>
 	</tr>
 	<tr>
-		<th><img src="/img/rhn-icon-errata.gif" alt="Errata" /></th>
-		<th>Errata:</th>
+		<th><img src="/img/rhn-icon-errata.gif" alt="Patches" /></th>
+		<th>Patches:</th>
                 <td><a href="/network/systems/ssm/errata/index.pxt?pxt:trap=rhn:empty_set&amp;set_label=errata_list">Schedule errata updates</a>
 		relevant to selected systems</td>
 	</tr>

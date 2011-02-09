@@ -62,12 +62,12 @@ public class ErrataMailer extends RhnJavaJob {
         List results = getErrataToProcess();
         if (results == null || results.size() == 0) {
             if (log.isDebugEnabled()) {
-                log.debug("No errata found...exiting");
+                log.debug("No patch found...exiting");
             }
         }
         else {
             if (log.isDebugEnabled()) {
-                log.debug("=== Queued up " + results.size() + " errata");
+                log.debug("=== Queued up " + results.size() + " patches");
             }
             Map erratas = new HashMap();
             for (Iterator iter = results.iterator(); iter.hasNext();) {
@@ -77,13 +77,13 @@ public class ErrataMailer extends RhnJavaJob {
                 Long channelId = (Long) row.get("channel_id");
                 markErrataDone(errataId, orgId, channelId);
                 if (log.isDebugEnabled()) {
-                    log.debug("Processing errata " + errataId +
+                    log.debug("Processing patch " + errataId +
                             " for org " + orgId);
                 }
                 try {
                     sendEmails(errataId, orgId, channelId);
                     if (log.isDebugEnabled()) {
-                        log.debug("Finished errata " + errataId +
+                        log.debug("Finished patch " + errataId +
                                 " for org " + orgId);
                     }
                 }
@@ -123,7 +123,7 @@ public class ErrataMailer extends RhnJavaJob {
         List orgServers = getOrgRelevantServers(errataId, orgId, channelId);
 
         if (orgServers == null || orgServers.size() == 0) {
-            log.info("No relevant servers found for erratum " + errata.getId() +
+            log.info("No relevant servers found for patch " + errata.getId() +
                     " in channel " + channelId + " for org " + orgId +
                     " ... skipping.");
             return;

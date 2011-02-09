@@ -1236,7 +1236,7 @@ sub apply_errata_cb {
 
   my $eid = $pxt->param('eid');
 
-  throw "No errata id" unless $eid;
+  throw "No patch id" unless $eid;
 
   my $set_label = $pxt->dirty_param('set_label');
   throw "No set label" unless $set_label;

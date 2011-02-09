@@ -23,7 +23,7 @@ Selected systems affected by {errata_advisory_name}</h2>
 	<formvars>
 	  <var name="eid" />
 	</formvars>
-	<column name="Errata" label="total_errata" align="center">
+	<column name="Patches" label="total_errata" align="center">
 	  <url>/rhn/systems/details/ErrataList.do?sid={column:id}</url>
 	</column>
 

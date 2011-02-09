@@ -420,7 +420,7 @@ options:
   --gpg-url GPG_URL
   --gpg-id GPG_ID
   --gpg-fingerprint GPG_FINGERPRINT
-  -o do not clone any errata'''
+  -o do not clone any patches'''
 
 def do_softwarechannel_clone(self, args):
     options = [ Option('-n', '--name', action='store'),
@@ -556,7 +556,7 @@ def do_softwarechannel_addpackages(self, args):
 ####################
 
 def help_softwarechannel_removeerrata(self):
-    print 'softwarechannel_removeerrata: Remove errata from a ' + \
+    print 'softwarechannel_removeerrata: Remove patches from a ' + \
           'software channel'
     print 'usage: softwarechannel_removeerrata CHANNEL <ERRATA:search:XXX ...>'
 
@@ -579,7 +579,7 @@ def do_softwarechannel_removeerrata(self, args):
     channel = args[0]
     errata_wanted = self.expand_errata(args[1:])
 
-    logging.debug('Retrieving the list of errata from source channel')
+    logging.debug('Retrieving the list of patches from source channel')
     channel_errata = self.client.channel.software.listErrata(self.session,
                                                              channel)
 
@@ -596,7 +596,7 @@ def do_softwarechannel_removeerrata(self, args):
     # to the channel afterwards
     package_ids = []
     for erratum in errata:
-        logging.debug('Retrieving packages for errata %s' % erratum)
+        logging.debug('Retrieving packages for patch %s' % erratum)
 
         # get the packages affected by this errata
         packages = self.client.errata.listPackages(self.session, erratum)
@@ -607,7 +607,7 @@ def do_softwarechannel_removeerrata(self, args):
                 package_ids.append(package.get('id'))
 
     if not len(errata_details):
-        logging.warning('No errata to remove')
+        logging.warning('No patches to remove')
         return
 
     print_errata_list(errata_details)
@@ -621,7 +621,7 @@ def do_softwarechannel_removeerrata(self, args):
     print 'Total Errata:   %s' % str(len(errata)).rjust(3)
     print 'Total Packages: %s' % str(len(package_ids)).rjust(3)
 
-    if not self.user_confirm('Remove these errata [y/N]:'): return
+    if not self.user_confirm('Remove these patches [y/N]:'): return
 
     # remove the errata and the packages they brought in
     self.client.channel.software.removeErrata(self.session,
@@ -732,7 +732,7 @@ def do_softwarechannel_adderratabydate(self, args):
         return
 
     # get the errata that are in the given date range
-    logging.debug('Retrieving list of errata from source channel')
+    logging.debug('Retrieving list of patches from source channel')
     errata = \
         self.client.channel.software.listErrata(self.session,
                                                 source_channel,
@@ -740,7 +740,7 @@ def do_softwarechannel_adderratabydate(self, args):
                                                 parse_time_input(end_date))
 
     if not len(errata):
-        logging.warning('No errata found between the given dates')
+        logging.warning('No patches found between the given dates')
         return
 
     # call adderrata with the list of errata from the date range
@@ -752,7 +752,7 @@ def do_softwarechannel_adderratabydate(self, args):
 ####################
 
 def help_softwarechannel_adderrata(self):
-    print 'softwarechannel_adderrata: Add errata from one channel ' + \
+    print 'softwarechannel_adderrata: Add patches from one channel ' + \
           'into another channel'
     print 'usage: softwarechannel_adderrata SOURCE DEST <ERRATA|search:XXX ...>'
 
@@ -775,7 +775,7 @@ def do_softwarechannel_adderrata(self, args):
     dest_channel = args[1]
     errata_wanted = self.expand_errata(args[2:])
 
-    logging.debug('Retrieving the list of errata from source channel')
+    logging.debug('Retrieving the list of patches from source channel')
     source_errata = self.client.channel.software.listErrata(self.session,
                                                             source_channel)
 
@@ -792,7 +792,7 @@ def do_softwarechannel_adderrata(self, args):
     # to the channel afterwards
     package_ids = []
     for erratum in errata:
-        logging.debug('Retrieving packages for errata %s' % erratum)
+        logging.debug('Retrieving packages for patch %s' % erratum)
 
         # get the packages affected by this errata
         packages = self.client.errata.listPackages(self.session, erratum)
@@ -803,7 +803,7 @@ def do_softwarechannel_adderrata(self, args):
                 package_ids.append(package.get('id'))
 
     if not len(errata):
-        logging.warning('No errata to add')
+        logging.warning('No patch to add')
         return
 
     # show the user which errata will be added
@@ -818,7 +818,7 @@ def do_softwarechannel_adderrata(self, args):
     print 'Total Errata:   %s' % str(len(errata)).rjust(3)
     print 'Total Packages: %s' % str(len(package_ids)).rjust(3)
 
-    if not self.user_confirm('Add these errata and packages [y/N]:'): return
+    if not self.user_confirm('Add these patches and packages [y/N]:'): return
 
     if self.check_api_version('10.12'):
         merged = self.client.channel.software.mergeErrata(self.session,

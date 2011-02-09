@@ -13,7 +13,7 @@
   <rhn-tab name="Managers" acl="channel_exists();org_entitlement(sw_mgr_enterprise);user_role(channel_admin)">
     <rhn-tab-url>/network/software/channels/manage/managers.pxt</rhn-tab-url>
   </rhn-tab>
-  <rhn-tab name="Errata" acl="channel_exists();user_can_admin_channel();channel_type_capable(errata); not channel_packaging_type(sysv-solaris)">
+  <rhn-tab name="Patches" acl="channel_exists();user_can_admin_channel();channel_type_capable(errata); not channel_packaging_type(sysv-solaris)">
     <rhn-tab-url>/rhn/channels/manage/errata/Errata.do</rhn-tab-url>
     <rhn-tab name="List / Remove" on-click="Sniglets::Lists->navi_empty_set" node-id="remove_channel_errata">
       <rhn-tab-url>/rhn/channels/manage/errata/ListRemove.do</rhn-tab-url>
