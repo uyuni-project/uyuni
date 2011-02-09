@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb  9 12:10:22 CET 2011 - jrenner@suse.de
+
+- do not show certificate configuration tab (bnc#670003)
+
+-------------------------------------------------------------------
 Tue Feb  8 18:53:19 CET 2011 - mc@suse.de
 
 - Use LocalePreferences page but comment out language settings
