@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 10 13:06:18 UTC 2011 - dmacvicar@suse.de
+
+- use product name var on footer template (bnc#667918)
+
+-------------------------------------------------------------------
 Tue Feb  8 17:20:45 CET 2011 - ma@suse.de
 
 - Use 'Patches' in nav (bnc#670013)
