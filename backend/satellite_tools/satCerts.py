@@ -230,8 +230,7 @@ def storeRhnCert(cert, check_generation=0, check_version=0):
     sc.load(cert)
 
     # gotta make sure there is a first org_id
-#    create_first_org(owner=sc.owner)
-    create_first_org(owner="SUSE Manager Default Organization")
+    create_first_org(owner=sc.owner)
 
     # dates: formatted for DB
     expires = strftime(sc.datesFormat_db,
