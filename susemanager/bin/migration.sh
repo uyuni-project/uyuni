@@ -69,7 +69,7 @@ setup_mail () {
 # fix hostname for postfix
 REALHOSTNAME=`hostname -f`
 if [ -z "$REALHOSTNAME" ]; then
-        for i in `ip -f inet -o addr show scope global | awk '{print $4}' | awk -F \/ '{print $1}'`; do 
+        for i in `ip -f inet -o addr show scope global | awk '{print $4}' | awk -F \/ '{print $1}'`; do
                 for j in `dig +noall +answer +time=2 +tries=1 -x $i | awk '{print $5}' | sed 's/\.$//'`; do
                         if [ -n "$j" ]; then
                                 REALHOSTNAME=$j
@@ -343,7 +343,7 @@ do_setup() {
     cp /usr/share/syslinux/menu.c32 /srv/tftpboot/
     cp /usr/share/syslinux/pxelinux.0 /srv/tftpboot/
 
-    if [ ! -d "/var/satellite" ]; then
+    if [ ! -d "/var/spacewalk" ]; then
         setup_spacewalk
     else
         echo "SUSE Manager is already initialized. Skipping setup."
@@ -400,6 +400,14 @@ if [ $WAIT_BETWEEN_STEPS = "1" ];then
 fi;
 if [ "$DO_SETUP" = "1" ]; then
     do_setup
+    # rename the default org
+    echo "UPDATE $MANAGER_USER.web_customer SET name = '$CERT_O' WHERE id = 1;
+quit
+" > /root/changeorg.sql
+
+    sqlplus sys/\"$MANAGER_PASS\"@$MANAGER_DB_NAME as sysdba @/root/changeorg.sql
+    rm /root/changeorg.sql
+
     # Finaly call mgr-ncc-sync
     /usr/sbin/mgr-ncc-sync
 fi
