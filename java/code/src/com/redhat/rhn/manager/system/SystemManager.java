@@ -2000,6 +2000,21 @@ public class SystemManager extends BaseManager {
         if (availableSubscriptions != null &&
                 (availableSubscriptions.longValue() < 1)) {
             log.debug("avail subscriptions is to small : " + availableSubscriptions);
+            
+            // Return true if serverIn has subs to a channel of channelIn's family
+            ChannelFamily family = channelIn.getChannelFamily();
+            if (family == null) {
+                return false;
+            } else {
+                Set<Channel> channels = serverIn.getChannels();
+                for (Channel c : channels) {
+                    ChannelFamily f = c.getChannelFamily();
+                    if (f != null && f.equals(family)) {
+                        return true;
+                    }
+                }    
+            }
+            
             return false;
         }
         log.debug("canServerSubscribeToChannel true!");
