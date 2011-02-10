@@ -18,22 +18,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../rhnplugin.py:47
-msgid "There was an error communicating with RHN."
+msgid "There was an error communicating with NCC."
 msgstr ""
 
 #: ../rhnplugin.py:69
-msgid "RHN support will be disabled."
+msgid "NCC support will be disabled."
 msgstr ""
 
 #. If non-root notify user RHN repo not accessible
 #: ../rhnplugin.py:81
 msgid ""
-"*Note* Red Hat Network repositories are not listed below. You must run this "
-"command as root to access RHN repositories."
+"*Note* SUSE Manager repositories are not listed below. You must run this "
+"command as root to access SUSE Manager repositories."
 msgstr ""
 
 #: ../rhnplugin.py:95
-msgid "There was an error parsing the RHN proxy settings."
+msgid "There was an error parsing the SUSE Manager proxy settings."
 msgstr ""
 
 #: ../rhnplugin.py:106
@@ -45,11 +45,11 @@ msgid "Either --version, or no commands entered"
 msgstr ""
 
 #: ../rhnplugin.py:126
-msgid "This system is not registered with RHN."
+msgid "This system is not registered with NCC."
 msgstr ""
 
 #: ../rhnplugin.py:131
-msgid "RHN channel support will be disabled."
+msgid "NCC channel support will be disabled."
 msgstr ""
 
 #: ../rhnplugin.py:135
@@ -58,7 +58,7 @@ msgstr ""
 
 #: ../rhnplugin.py:139
 msgid ""
-"This system may not be a registered to RHN. SystemId could not be acquired.\n"
+"This system may not be a registered to NCC. SystemId could not be acquired.\n"
 msgstr ""
 
 #: ../rhnplugin.py:213
@@ -78,5 +78,5 @@ msgstr ""
 
 #: ../rhnplugin.py:298
 #, python-format
-msgid "Missing required login information for RHN: %s"
+msgid "Missing required login information for NCC: %s"
 msgstr ""
