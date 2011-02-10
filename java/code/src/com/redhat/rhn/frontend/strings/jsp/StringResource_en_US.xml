@@ -12794,7 +12794,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
      </trans-unit>
 
      <trans-unit id="kickstart.jsp.create.wizard.second.heading1">
-       <source>In order to install @@ENTERPRISE_LINUX_NAME@@ during kickstart, the @@ENTERPRISE_LINUX_NAME@@ installation files must be available to the kickstarting system via network connection. You can make these available either via http or ftp.</source>
+       <!-- This is specific to Red Hat systems -->
+       <source>In order to install Red Hat Linux during kickstart, the Red Hat Linux installation files must be available to the kickstarting system via network connection. You can make these available either via http or ftp.</source>
        <context-group name="ctx">
          <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
        </context-group>
@@ -21948,7 +21949,7 @@ given channel.</source>
         <source>Documentation for setting up clients to connect to a @@PRODUCT_NAME@@ Proxy or @@PRODUCT_NAME@@ server.</source>
       </trans-unit>
 	  <trans-unit id="help.jsp.clients.title">
-        <source>Client Configuration Guide</source>
+        <source>@@PRODUCT_NAME@@ Client Configuration Guide</source>
       </trans-unit>
  	  <trans-unit id="help.jsp.channel">
         <source>Documentation for the creation and maintenance of custom channels using @@PRODUCT_NAME@@.</source>
