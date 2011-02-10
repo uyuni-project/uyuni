@@ -64,7 +64,7 @@
 	) : `VBox (),
 	`InputField (`id ("MANAGER_ADMIN_EMAIL"), `opt (`hstretch),
 	    // text entry label
-	    _("&Administrator E-mail Address"), settings["MANAGER_ADMIN_EMAIL"]:""),
+	    _("SUSE Manager &Administrator E-mail Address"), settings["MANAGER_ADMIN_EMAIL"]:""),
 	`VSpacing (0.5)
     ), `HSpacing (1));
 
