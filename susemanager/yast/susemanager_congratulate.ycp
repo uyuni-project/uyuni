@@ -17,14 +17,11 @@
 
     term contents = `HBox (`HSpacing (1), `VBox (
 	`VSpacing (2),
-	// text label
-	`Label (sformat (_("SUSE Manager Setup is now complete.
-
-Use 'mgr-ncc-sync' to add repositories.
-
-Visit https://%1 to create the SUSE Manager administrator account.
-
-For more information, read the Quickstart Reference."), Hostname::CurrentFQ ())),
+	// richtext label
+	`RichText (`id (`rt), sformat (_("<p>SUSE Manager Setup is now complete.</p><br>
+<p>Use <b>mgr-ncc-sync</b> to add repositories.</p>
+<p>Visit <b>https://%1</b> to create the SUSE Manager administrator account.</p>
+<p>For more information, refer to the SUSE Manager Quick Start or see <b>http://www.novell.com/documentation/suse_manager/</b>.</p>"), Hostname::CurrentFQ ())),
 	`VSpacing (2)
     ), `HSpacing (1));
 
