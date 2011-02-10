@@ -159,11 +159,7 @@ ncc-pass = $NCC_PASS
 ncc-email = $NCC_EMAIL
 " > /root/spacewalk-answers
 
-    if [ "x$DO_MIGRATION" == "x1" ]; then
-      /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers --skip-db-install --skip-db-population
-    else
-      /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers
-    fi
+    /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
         MY_DOMAIN=`hostname -d`
         MANAGER_MAIL_FROM="SUSE Manager <root@$MY_DOMAIN>"
@@ -293,7 +289,9 @@ do_migration() {
     if [ ! -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
         do_setup
     fi;
-    #drop_manager_db
+    if [ $MANAGER_DB_NAME = "xe" -a $MANAGER_DB_HOST = "localhost" ]; then
+        drop_manager_db
+    fi;
     dump_remote_db
     import_db
     upgrade_schema
