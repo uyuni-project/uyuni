@@ -47,7 +47,13 @@ def main():
     if options.list:
         syncer.list_channels()
     elif options.channel:
-        syncer.add_channel(options.channel)
+        sys.stdout.write(
+            "Warning! Once added, Novell channels can not be deleted. "
+            "Only custom channels can be deleted. "
+            "Do you wish to proceed? [y/n] (y): ")
+        choice = raw_input().lower()
+        if choice == 'y' or choice == '':
+            syncer.add_channel(options.channel)
     elif options.products:
         suse_products = syncer.get_suse_products_from_ncc()
         syncer.update_suse_products_table(suse_products)
