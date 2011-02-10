@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 10 11:17:14 CET 2011 - jrenner@suse.de
+
+- fix subscribe_server subs handling (bnc#670551)
+
+-------------------------------------------------------------------
 Fri Jan 28 12:45:44 CET 2011 - ug@suse.de
 
 - rhntemplatestring table data changed to SUSE Manager
