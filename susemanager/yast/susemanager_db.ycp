@@ -164,9 +164,10 @@ The invalid characters are: %1"), invalid_pw_chars));
 		UI::SetFocus (`id ("MANAGER_PASS"));
 		continue;
 	    }
+	    boolean localdb = UI::QueryWidget (`id (`rb), `CurrentButton) == `localdb;
 	    foreach (string key, string value, settings, {
 		string val	= (string) UI::QueryWidget (`id (key), `Value);
-		if (UI::QueryWidget (`id (`rb), `CurrentButton) == `localdb)
+		if (localdb && haskey (local_db, key))
 		{
 		    val		= local_db[key]:"";
 		}
