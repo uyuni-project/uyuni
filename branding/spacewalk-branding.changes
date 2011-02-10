@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 10 13:04:40 UTC 2011 - dmacvicar@suse.de
+
+- use product name var on footer template (bnc#667918)
+
+-------------------------------------------------------------------
 Wed Jan 26 11:48:27 UTC 2011 - dmacvicar@suse.de
 
 - Use Novell website for documentation
