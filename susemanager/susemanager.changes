@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 10 14:38:59 CET 2011 - iartarisi@suse.cz
+
+- add warning and confirmation when adding a new channel with mgr-ncc-sync
+
+-------------------------------------------------------------------
 Tue Feb  8 17:35:13 CET 2011 - iartarisi@suse.cz
 
 - sync optional status of channels on subsequent runs of mgr-ncc-sync
