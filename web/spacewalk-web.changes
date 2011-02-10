@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 10 16:50:10 CET 2011 - jrenner@suse.de
+
+- remove references to non-existent channel mgmt guide (bnc#660768)
+
+-------------------------------------------------------------------
 Thu Feb 10 13:06:18 UTC 2011 - dmacvicar@suse.de
 
 - use product name var on footer template (bnc#667918)
