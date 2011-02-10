@@ -369,7 +369,7 @@ msgstr ""
 
 #: ../server/rhnServer/server_token.py:642
 msgid ""
-"Registration failed: RHN Software Management service entitlements exhausted"
+"Registration failed: SUSE Manager Software Management service entitlements exhausted"
 msgstr ""
 
 #: ../server/rhnServer/server_token.py:756
@@ -774,7 +774,7 @@ msgid ""
 "\n"
 "     All available subscriptions for the requested channel have been "
 "exhausted.\n"
-"     Please contact a Red Hat Network Sales associate.\n"
+"     Please contact a Novell Sales associate.\n"
 "     "
 msgstr ""
 
@@ -1155,7 +1155,7 @@ msgstr ""
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
-"     persists please enter a bug report at bugzilla.redhat.com.\n"
+"     persists please enter a bug report at bugzilla.novell.com.\n"
 "     If you choose to submit the bug report, please be sure to include\n"
 "     details of what you were trying to do when this error occurred and\n"
 "     details on how to reproduce this problem.\n"
