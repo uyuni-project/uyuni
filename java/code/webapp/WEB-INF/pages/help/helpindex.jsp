@@ -31,6 +31,7 @@
             <br />
             <bean:message key="help.jsp.install"/>
         </li>
+
 <!--
         <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/proxy_guide>
@@ -50,14 +51,16 @@
             <bean:message key="help.jsp.clients"/>
         </li>
 
+<!--
         <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/channel_mgmt_guide>
                 <bean:message key="help.jsp.channel.title"/>
             </a>
-            <!-- strong><bean:message key="help.jsp.translation"/></strong -->
+            <strong><bean:message key="help.jsp.translation"/></strong>
             <br />
             <bean:message key="help.jsp.channel"/>
         </li>
+-->
 
         <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/release_notes>
