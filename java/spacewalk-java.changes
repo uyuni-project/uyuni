@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb 10 10:05:12 CET 2011 - jrenner@suse.de
+
+- add check for subs to channels of the same family (bnc#670551)
+- fix link to release notes in page footer (bnc#670515)
+
+-------------------------------------------------------------------
 Wed Feb  9 12:10:22 CET 2011 - jrenner@suse.de
 
 - do not show certificate configuration tab (bnc#670003)
