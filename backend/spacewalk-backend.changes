@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 10 18:15:23 CET 2011 - mc@suse.de
+
+- remove org change again; fixed at another place
+
+-------------------------------------------------------------------
 Wed Feb  9 13:46:12 CET 2011 - jkupec@suse.cz
 
 - removed unsupported satellite-sync from the
