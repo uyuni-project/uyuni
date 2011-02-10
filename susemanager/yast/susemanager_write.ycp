@@ -85,7 +85,10 @@ read the Quickstart Reference.")),
 	`VSpacing (0.4)
     ), `HSpacing (1));
 
-    string help_text	= "";
+    string help_text	= migration ? "" :
+	// help text
+	 _("<p>Now, the configuration script is running, and it will take some time.</p>
+<p>The script output and possible error output can be watched on the screen.</p>");
 
     // dialog caption
     Wizard::SetContents (_("Write Settings"), contents, help_text, true, true);

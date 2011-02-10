@@ -56,7 +56,8 @@
     ), `HSpacing (1));
 
 
-    string help_text	= "";
+    // help text
+    string help_text	= _("<p>Here, enter mirror credentials from the Novell Customer Center.</p>");
 
     // dialog caption
     Wizard::SetContents (_("NCC Settings"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);

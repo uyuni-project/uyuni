@@ -103,8 +103,11 @@
 	`VSpacing (0.5)
     ), `HSpacing (1));
 
-
-    string help_text	= "";
+    // help text
+    string help_text	= _("<p>Decide if to use the embedded or a remote database for SUSE Manager. If you select Local Database, Port and Protocol are set automatically.</p>
+<p>For Remote Database you need to fill <b>Database SID</b> (Oracle System ID), Hostname, Port and Protocol.</p>
+<p>
+If you use the local database, set a user name and a password for the SUSE Manager database user that should be created. For a remote database, enter a user name that already exists in the database configuration and enter the correct password for this user</p>");
 
     // dialog caption
     Wizard::SetContents (_("Database Settings"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);

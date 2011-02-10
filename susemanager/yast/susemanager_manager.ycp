@@ -69,7 +69,8 @@
     ), `HSpacing (1));
 
 
-    string help_text	= "";
+    // help text
+    string help_text	= _("<p>Fill in <b>Administrator E-mail Address</b>. It is used for notifications by SUSE Manager.</p>");
 
     // dialog caption
     Wizard::SetContents (_("SUSE Manager"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);

@@ -33,7 +33,8 @@
     )), `HSpacing (1));
 
 
-    string help_text	= "";
+    // help text
+    string help_text	= _("<p>Choose if you are setting up SUSE Manager from scratch or migrating to SUSE Manager from a Satellite/Spacewalk compatible server.</p>");
 
     // dialog caption
     Wizard::SetContents (_("SUSE Manager Setup"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
