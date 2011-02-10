@@ -186,48 +186,35 @@ $cli_prj = Prj.new('ibs://SUSE:SLE-11-SP1:Update:Test')
 
 check_whether_to_submitt( $src_prj, $trg_prj )
 
-# in py-core now; RH only  'python-hashlib',
-$ins_packages = [
-  'python-jabberpy',
-  'python-ethtool',
-  'python-cheetah',
-  'python-yaml',
-  'cobbler',
-  'libyaml',
-  'grubby',
-  'python-virtinst',
-  'apache2-mod_wsgi',
-  'python-netaddr', 
-  'python-simplejson',
-  'yum-utils', 
-]
-check_whether_to_submitt( $ins_prj, $cli_prj, $ins_packages )
-
 $cli_packages = [
   'osad',
-  'spacewalk-proxy-installer',
+  'perl-Satcon',
   'rhn-custom-info',
   'rhn-kickstart',
   'rhn-virtualization',
   'rhncfg',
-  'rhnmd',
   'rhnlib',
+  'rhnmd',
   'rhnpush',
   'spacewalk-backend',
   'spacewalk-certs-tools',
+  'spacewalk-client-tools',
   'spacewalk-config',
   'spacewalk-koan',
   'spacewalk-proxy-installer',
   'spacewalk-remote-utils',
   'spacewalk-ssl-cert-check',
-  'spacewalk-utils',
   'spacewalksd',
-  'spacewalk-client-tools',
-  'zypp-plugin-spacewalk',
   'suseRegisterInfo',
-  'yum-rhn-plugin'
+  'yum-rhn-plugin',
+  'zypp-plugin-spacewalk'
 ]
 check_whether_to_submitt( $src_prj, $cli_prj, $cli_packages )
+
+$ins_packages = [
+  'cobbler'
+]
+check_whether_to_submitt( $ins_prj, $cli_prj, $ins_packages )
 
 # required for RHEL but exists in SLES 'python-setuptools'
 $res_packages = [
