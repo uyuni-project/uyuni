@@ -778,7 +778,7 @@ class NCCSync(object):
             except KeyError:
                 raise ParentChannelNotInstalled(parent_label, channel_label)
 
-    def insert_repo(self, channel, channel_id):
+    def insert_channel(self, channel, channel_id):
         """Insert an XML channel into the database as a ContentSource
 
         :arg channel: XML ETree elem which contains repository information
@@ -897,7 +897,7 @@ class NCCSync(object):
                 channel_family_id = channel_family_id)
 
             # add repos to the database
-            self.insert_repo(channel, channel_id)
+            self.insert_channel(channel, channel_id)
 
             # register this channel's products in the database
             for product in channel.find('products'):
