@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 11 10:05:44 CET 2011 - mc@suse.de
+
+- do not ignore user/password values (bnc#671195)
+
+-------------------------------------------------------------------
 Thu Feb 10 18:10:57 CET 2011 - mc@suse.de
 
 - change name for default organization (bnc#663983, bnc#651642) 
