@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 11 11:53:26 CET 2011 - ug@suse.de
+
+- disbaled channel subscription counting (bnc#670551)
+
+-------------------------------------------------------------------
 Fri Feb 11 10:05:44 CET 2011 - mc@suse.de
 
 - do not ignore user/password values (bnc#671195)
