@@ -2036,7 +2036,7 @@ public class ChannelManager extends BaseManager {
             }
             if (channel != null &&
                     channel.getChannelArch().isCompatible(s.getServerArch())) {
-                if (!retval.contains(channel)) {
+                if (!retval.contains(ecd)) {
                     retval.add(ecd);
                 }
             }

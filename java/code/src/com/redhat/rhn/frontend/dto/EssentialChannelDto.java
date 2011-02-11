@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+
 import com.redhat.rhn.domain.channel.Channel;
 
 
@@ -150,4 +152,14 @@ public class EssentialChannelDto extends BaseDto {
         this.ownerId = ownerIdIn;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals(final Object other) {
+        if (!(other instanceof EssentialChannelDto)) {
+            return false;
+        }
+        EssentialChannelDto castOther = (EssentialChannelDto) other;
+        return new EqualsBuilder().append(getId(), castOther.getId()).isEquals();
+    }
 }
