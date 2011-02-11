@@ -327,7 +327,7 @@ class Register:
     elif vt and vt['label'] == "para_virtualized":
       virttype = "Xen"
 
-    if vt['host_system_id']:
+    if vt and vt['host_system_id']:
       h = rhnSQL.prepare("""
         SELECT guid
           FROM suseServer
