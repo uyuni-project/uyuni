@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 11 13:57:42 CET 2011 - mc@suse.de
+
+- fix description in firewall service template (bnc#671260) 
+
+-------------------------------------------------------------------
 Fri Feb 11 12:20:38 CET 2011 - mc@suse.de
 
 - fixing mgr-register virtual check (bnc#671233) 
