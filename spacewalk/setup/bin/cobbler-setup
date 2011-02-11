@@ -55,7 +55,6 @@ def setup_pxe_services(options):
         enable = ask_yes_no(q, 'y')
     if enable:
         system("/etc/init.d/atftpd start")
-        system("/etc/init.d/xinetd start")
 
 def gen_template(template, answers, output):
 	t = Template(file=template, searchList=answers)
