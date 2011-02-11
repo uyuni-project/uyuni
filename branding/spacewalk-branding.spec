@@ -65,6 +65,7 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/tomcat6/weba
 
 %if  0%{?suse_version}
 cat > %{buildroot}/%{_sysconfdir}/rhn/default/rhn_docs.conf <<-ENDOFCONFIG
+docs.quick_start=http://www.novell.com/documentation/suse_manager/
 docs.reference_guide=http://www.novell.com/documentation/suse_manager/
 docs.install_guide=http://www.novell.com/documentation/suse_manager/
 docs.proxy_guide=http://www.novell.com/documentation/suse_manager/

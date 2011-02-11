@@ -293,6 +293,7 @@
   </rhn-tab>
   <rhn-tab name="Help" url="/rhn/help/index.do" active-image="tab-help-selected.gif" inactive-image="tab-help.gif">
     <rhn-tab-directory>/rhn/help</rhn-tab-directory>
+    <rhn-tab name="Quick Start Guide" url="/rhn/help/dispatcher/quick_start" />
     <rhn-tab name="Reference Guide" url="/rhn/help/dispatcher/reference_guide">
       <rhn-tab-directory>/rhn/help/reference</rhn-tab-directory>
     </rhn-tab>

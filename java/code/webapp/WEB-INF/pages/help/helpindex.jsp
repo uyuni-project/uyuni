@@ -15,6 +15,14 @@
     <ul id="help-url-list">
 
         <li>
+            <a style="font-size:12pt" href=/rhn/help/dispatcher/quick_start>
+                <bean:message key="help.jsp.quickstart.title"/>
+            </a>
+            <br />
+            <bean:message key="help.jsp.quickstart.detailed"/>
+        </li>
+
+        <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/reference_guide>
                 <bean:message key="help.jsp.refguide"/>
             </a>
