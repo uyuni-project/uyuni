@@ -218,6 +218,5 @@ check_whether_to_submitt( $ins_prj, $cli_prj, $ins_packages )
 
 # required for RHEL but exists in SLES 'python-setuptools'
 $res_packages = [
-  'python-hashlib'
 ]
 check_whether_to_submitt( $res_prj, $cli_prj, $res_packages )
