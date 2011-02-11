@@ -644,7 +644,7 @@ sub channel_select_options {
 
     push @channel_list, ([ 'My Channels', 'my_channels', 'optgroup' ],
 			   @org_channels,
-			   [ 'Red Hat Channels', 'redhat_channels', 'optgroup' ],
+			   [ 'Novell Channels', 'redhat_channels', 'optgroup' ],
 			   @rh_channels);
   }
   elsif ($mode eq 'compare_channels') {
@@ -656,7 +656,7 @@ sub channel_select_options {
 
       push @channel_list, ([ 'My Channels', 'my_channels', 'optgroup' ],
                            @org_channels,
-                           [ 'Red Hat Channels', 'redhat_channels', 'optgroup' ],
+                           [ 'Novell Channels', 'redhat_channels', 'optgroup' ],
                            @rh_channels);
   }
   elsif ($mode eq 'errata_manager') {
