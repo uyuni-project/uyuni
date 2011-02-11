@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 11 15:48:27 CET 2011 - ug@suse.de
+
+- suppress a wrning about a not running cobbler
+  (bnc#671205)
+
+-------------------------------------------------------------------
 Fri Feb 11 15:01:55 CET 2011 - ug@suse.de
 
 - removed the dummy "300" value from virtualization entitlement
