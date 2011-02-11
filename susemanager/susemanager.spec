@@ -81,7 +81,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc doc/* Changes license.txt welcome.txt
+%doc doc/* Changes license.txt
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %dir %{_datadir}/YaST2
