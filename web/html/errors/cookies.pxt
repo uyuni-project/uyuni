@@ -9,7 +9,7 @@
 
        <ol>
          <li>You have disabled cookies in your browser.</li>
-         <li>You are not accessing this site by its full hostname (for instance, https://rhn/ instead of https://rhn.redhat.com/).</li>
+         <li>You are not accessing this site by its full hostname (for instance, https://hostname/ instead of https://hostname.domain.com/).</li>
          <li>Your system time and date are incorrect.</li>
        </ol>
 
