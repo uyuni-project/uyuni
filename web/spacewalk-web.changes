@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 11 09:49:10 UTC 2011 - dmacvicar@suse.de
+
+- add final EULAS (bnc#671189) in /help
+
+-------------------------------------------------------------------
 Thu Feb 10 16:50:10 CET 2011 - jrenner@suse.de
 
 - remove references to non-existent channel mgmt guide (bnc#660768)

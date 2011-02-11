@@ -4,9 +4,14 @@ Fri Feb 11 10:05:44 CET 2011 - mc@suse.de
 - do not ignore user/password values (bnc#671195)
 
 -------------------------------------------------------------------
+Fri Feb 11 09:48:16 UTC 2011 - dmacvicar@suse.de
+
+- add final EULA (bnc#671189) in firstboot
+
+-------------------------------------------------------------------
 Thu Feb 10 18:10:57 CET 2011 - mc@suse.de
 
-- change name for default organization (bnc#663983, bnc#651642) 
+- change name for default organization (bnc#663983, bnc#651642)
 
 -------------------------------------------------------------------
 Thu Feb 10 14:38:59 CET 2011 - iartarisi@suse.cz
@@ -21,7 +26,7 @@ Tue Feb  8 17:35:13 CET 2011 - iartarisi@suse.cz
 -------------------------------------------------------------------
 Tue Feb  8 17:32:41 CET 2011 - mc@suse.de
 
-- provide init script which display a message what to do next 
+- provide init script which display a message what to do next
   (bnc#669485)
 
 -------------------------------------------------------------------
@@ -44,7 +49,7 @@ Fri Feb  4 18:07:43 CET 2011 - mc@suse.de
 Fri Feb  4 15:19:17 CET 2011 - mc@suse.de
 
 - create seperate channels for rhel4 as and es (bnc#669466)
-- do not create contentsource if no URL is available 
+- do not create contentsource if no URL is available
 
 -------------------------------------------------------------------
 Thu Feb  3 11:55:07 CET 2011 - mc@suse.de
