@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 11 17:54:06 CET 2011 - jkupec@suse.cz
+
+- correct strings in rhnException.py
+
+-------------------------------------------------------------------
 Fri Feb 11 11:47:57 CET 2011 - mc@suse.de
 
 - catch exception primary not available and print nice message
