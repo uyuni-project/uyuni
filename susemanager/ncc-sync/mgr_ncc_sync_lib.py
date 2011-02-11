@@ -444,7 +444,7 @@ class NCCSync(object):
         if ent != None:
             select_sql = "SELECT id from RHNSERVERGROUPTYPE where LABEL = :ent"
             query = rhnSQL.prepare(select_sql)
-            query.execute(arch = arch)
+            query.execute(ent = ent)
             row = query.fetchone_dict() or {}
             if row:
                 id = row["id"]
@@ -459,6 +459,18 @@ class NCCSync(object):
         log_debug(2, "SQL: " % query )
         query.execute(
             val   = self.reset_ent_value
+        )
+        rhnSQL.commit()
+        # Testcode (bnc#671167)
+        id = self.get_entitlement_id("virtualization_host")
+        update_sql = """
+            UPDATE RHNSERVERGROUP SET max_members = 0
+            WHERE GROUP_TYPE = :gid
+        """
+        query = rhnSQL.prepare(update_sql)
+        log_debug(2, "SQL: " % query )
+        query.execute(
+            gid   = id
         )
         rhnSQL.commit()
 
