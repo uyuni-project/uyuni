@@ -151,6 +151,12 @@ class RepoSync:
             except Errors.RepoError, e:
                 self.print_msg("RepoError: %s" % e)
                 sys.exit(1)
+            except Errors.RepoMDError, e:
+                if "primary not available" in str(e):
+                    self.print_msg("Repository has no packages. (%s)" % e)
+                else:
+                    self.print_msg("RepoMDError: %s" % e)
+                sys.exit(1)
             except:
                 self.print_msg("Unexpected error: %s" % sys.exc_info()[0])
                 self.print_msg("%s" % traceback.format_exc())
