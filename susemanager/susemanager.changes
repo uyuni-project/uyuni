@@ -13,12 +13,12 @@ Fri Feb 11 15:01:55 CET 2011 - ug@suse.de
 -------------------------------------------------------------------
 Fri Feb 11 13:57:42 CET 2011 - mc@suse.de
 
-- fix description in firewall service template (bnc#671260) 
+- fix description in firewall service template (bnc#671260)
 
 -------------------------------------------------------------------
 Fri Feb 11 12:20:38 CET 2011 - mc@suse.de
 
-- fixing mgr-register virtual check (bnc#671233) 
+- fixing mgr-register virtual check (bnc#671233)
 
 -------------------------------------------------------------------
 Fri Feb 11 11:53:26 CET 2011 - ug@suse.de
@@ -26,14 +26,14 @@ Fri Feb 11 11:53:26 CET 2011 - ug@suse.de
 - disbaled channel subscription counting (bnc#670551)
 
 -------------------------------------------------------------------
+Fri Feb 11 10:48:16 CET 2011 - dmacvicar@suse.de
+
+- add final EULA (bnc#671189) in firstboot
+
+-------------------------------------------------------------------
 Fri Feb 11 10:05:44 CET 2011 - mc@suse.de
 
 - do not ignore user/password values (bnc#671195)
-
--------------------------------------------------------------------
-Fri Feb 11 09:48:16 UTC 2011 - dmacvicar@suse.de
-
-- add final EULA (bnc#671189) in firstboot
 
 -------------------------------------------------------------------
 Thu Feb 10 18:10:57 CET 2011 - mc@suse.de
