@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 11 13:38:03 CET 2011 - jrenner@suse.de
+
+- add quick start to help desk and navigation
+
+-------------------------------------------------------------------
 Thu Feb 10 13:04:40 UTC 2011 - dmacvicar@suse.de
 
 - use product name var on footer template (bnc#667918)

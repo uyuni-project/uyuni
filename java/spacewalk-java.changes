@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 11 13:37:20 CET 2011 - jrenner@suse.de
+
+- add quick start to help index and navigation
+ 
+-------------------------------------------------------------------
 Thu Feb 10 10:05:12 CET 2011 - jrenner@suse.de
 
 - add check for subs to channels of the same family (bnc#670551)
