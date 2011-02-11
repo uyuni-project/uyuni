@@ -183,7 +183,8 @@ class NCCSync(object):
             prods = s["product-class"].split(",")
             for p in prods:
                 if today >= start_date and (end == 0 or today <= end_date) and s["type"] != "PROVISIONAL":
-                    if s["nodecount"] == "-1":
+                    # FIXME: for correct counting, remove the "or > 0" (bnc#670551)
+                    if s["nodecount"] == "-1" or s["nodecount"] > 0:
                         subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : 200000 }
                     elif subscription_count.has_key( p ):
                         subscription_count[ p ]["nodecount"] += int(s["nodecount"])
