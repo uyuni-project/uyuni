@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 11 15:56:18 CET 2011 - jrenner@suse.de
+
+- fix base software channel always listed twice (bnc#671022)
+
+-------------------------------------------------------------------
 Fri Feb 11 13:37:20 CET 2011 - jrenner@suse.de
 
 - add quick start to help index and navigation
