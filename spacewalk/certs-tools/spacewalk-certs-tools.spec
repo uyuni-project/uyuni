@@ -4,7 +4,7 @@ Group: Applications/Internet
 License: GPLv2 and Python
 Version: 1.2.2
 Release: 1%{?dist}
-URL:      https://fedorahosted.org/spacewalk 
+URL:      https://fedorahosted.org/spacewalk
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -13,7 +13,9 @@ Requires: openssl rpm
 %else
 Requires: openssl rpm-build
 %endif
+%if 0%{?suse_version} || 0%{?rhel} >= 5
 Requires: rhn-client-tools
+%endif
 Requires: spacewalk-backend-libs >= 0.8.28
 BuildRequires: docbook-utils
 %if 0%{?suse_version}
@@ -27,7 +29,7 @@ Provides:  rhns-certs = 5.3.0
 Provides:  rhns-certs-tools = 5.3.0
 
 %description
-This package contains tools to generate the SSL certificates required by 
+This package contains tools to generate the SSL certificates required by
 Spacewalk.
 
 %global rhnroot %{_datadir}/rhn
@@ -183,7 +185,7 @@ rm -rf $RPM_BUILD_ROOT
 * Wed Mar 07 2007 Pradeep Kilambi <pkilambi@redhat.com> - 5.0.0-1
 - adding dist tag
 
-* Fri Dec 01 2006 Ryan Newberry <rnewberr@redhat.com> 
+* Fri Dec 01 2006 Ryan Newberry <rnewberr@redhat.com>
 - adding docbook2man to build requires
 
 * Mon Dec 20 2004 Todd Warner <taw@redhat.com> 3.6.0

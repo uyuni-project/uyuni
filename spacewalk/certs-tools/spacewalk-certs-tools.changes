@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb  9 18:05:03 CET 2011 - ro@suse.de
+
+- do not require rhn-client-tools on rhel-4
+
+-------------------------------------------------------------------
 Thu Feb  3 10:50:54 CET 2011 - ma@suse.de
 
 - Allow to define more than one ORG_GPG_KEY in bootstrap.sh
@@ -12,9 +17,9 @@ Sun Jan 30 15:31:40 CET 2011 - mc@suse.de
 -------------------------------------------------------------------
 Fri Jan 28 12:53:24 CET 2011 - ma@suse.de
 
-- Always generate setup code for AllowConfigManagement and 
+- Always generate setup code for AllowConfigManagement and
   AllowRemoteCommands into bootstrap.sh. Otherwise you had
-  to recreate bootstrap.sh if one of the options is turned 
+  to recreate bootstrap.sh if one of the options is turned
   on later.
 
 -------------------------------------------------------------------
@@ -26,7 +31,7 @@ Tue Jan 25 17:15:32 CET 2011 - ma@suse.de
 -------------------------------------------------------------------
 Tue Jan 25 13:32:40 CET 2011 - ma@suse.de
 
-- Enable rhn_bootstrap generated bootstrap.sh to manage 
+- Enable rhn_bootstrap generated bootstrap.sh to manage
   SUSE systems as well.
 
 -------------------------------------------------------------------
