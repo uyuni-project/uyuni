@@ -45,17 +45,15 @@ helper script to do migration or setup of SUSE Manager
 
 setup_swap() {
 
-MEMORY=`LANG=C free | grep Mem: | sed -e "s/ \+/\t/g" | cut -f 2`
 SWAP=`LANG=C free | grep Swap: | sed -e "s/ \+/\t/g" | cut -f 2`
-TOTAL=$(($MEMORY + $SWAP))
 FREESPACE=`LANG=C df / | tail -1 | sed -e "s/ \+/\t/g" | cut -f 4`
 
-if [ $TOTAL -le 3000000 ]; then
-    echo "Less than 3 GB of RAM available; trying to setup additional swap space..."
-    if [ $FREESPACE -le 2000000 ]; then
+if [ $SWAP -eq 0 ]; then
+    echo "No swap found; trying to setup additional swap space..."
+    if [ $FREESPACE -le 3000000 ]; then
         echo "Not enough space on /. Not adding swap space. Good luck..."
     else
-        dd if=/dev/zero of=/SWAPFILE bs=1M count=1000
+        dd if=/dev/zero of=/SWAPFILE bs=1M count=2000
         sync
         mkswap -f /SWAPFILE
         echo "/SWAPFILE swap swap defaults 0 0" >> /etc/fstab
