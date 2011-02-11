@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 11 12:36:20 CET 2011 - mc@suse.de
+
+- no selinux, if selinuxenabled binary is not found
+  (bnc#671204) 
+
+-------------------------------------------------------------------
 Tue Feb  8 15:59:45 CET 2011 - mc@suse.de
 
 - change mountpoint and prepended_dir (bnc#669558)
