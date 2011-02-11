@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 11 15:01:55 CET 2011 - ug@suse.de
+
+- removed the dummy "300" value from virtualization entitlement
+  (bnc#671167)
+
+-------------------------------------------------------------------
 Fri Feb 11 13:57:42 CET 2011 - mc@suse.de
 
 - fix description in firewall service template (bnc#671260) 
