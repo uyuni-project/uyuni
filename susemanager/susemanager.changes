@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 11 12:20:38 CET 2011 - mc@suse.de
+
+- fixing mgr-register virtual check (bnc#671233) 
+
+-------------------------------------------------------------------
 Fri Feb 11 11:53:26 CET 2011 - ug@suse.de
 
 - disbaled channel subscription counting (bnc#670551)
