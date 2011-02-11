@@ -215,6 +215,7 @@ upgrade_schema() {
 }
 
 copy_remote_files() {
+    echo -n "Files from the old satellite are copied now. You have to enter the Satellite root password multiple times. Press return now to start."; read dummy
     # maybe add -H for hardlinks?
     rsync -avz $SATELLITE_IP:/var/satellite/ /var/spacewalk/
     chown -R wwwrun.www /var/spacewalk
