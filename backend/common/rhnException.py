@@ -73,19 +73,18 @@ requested information."),
      28: _("""
      The anonymous server functionality is no longer available.
 
-     Please re-register this system by running rhn_register
-     (or up2date --register on Red Hat Enterprise Linux 3+) as root.
+     Please re-register this system by running mgr_register as root.
      Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do
-     or login at https://%(hostname)s, and from the "Overview" tab,
-     select "Subscription Management" to enable RHN service for this system.
+     or login at https://%(hostname)s, and from the "Overview" tab, select
+     "Subscription Management" to enable SUSE Manager service for this system.
      """),
      29: _("Record not available in the database."),
      30: _("Invalid value for entry."),
      31: _("""
      This system does not have a valid entitlement for Red Hat Network.
      Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do
-     or login at https://%(hostname)s, and from the "Overview" tab,
-     select "Subscription Management" to enable RHN service for this system.
+     or login at https://%(hostname)s, and from the "Overview" tab, select
+     "Subscription Management" to enable SUSE Manager service for this system.
      """),
      32: _("Channel error"),
      33: _("Client session token is invalid."),
@@ -104,8 +103,8 @@ on this system."),
 
      The current settings for your account do not allow you to add another
      user account. Please check with the organization administrator for your
-     account if the maximum number of users allowed to subscribe to RHN needs
-     to be changed.
+     account whether the maximum number of users allowed to subscribe to
+     SUSE Manager needs to be changed.
      """),
      44: _("""
      System group membership limits exceeded.
@@ -113,12 +112,12 @@ on this system."),
      The current settings for your account do not allow you to add another
      system profile. Please check with the organization administrator for your
      account for modifying the maximum number of system profiles that can be
-     subscribed to your RHN account.
+     subscribed to your SUSE Manager account.
      """),
      45: _("""
      Invalid architecture.
 
-     The architecture of the package is not supported by Red Hat Network
+     The architecture of the package is not supported by SUSE Manager
      """),
      46: _("""
      Incompatible architectures.
@@ -133,17 +132,17 @@ on this system."),
      The channel you have specified does not exist.
      """),
      49: _("""
-     You are getting this error because RHN has detected an abuse of
+     You are getting this error because SUSE Manager has detected an abuse of
      service from this system and account. This error is triggered when
-     your system makes too many connections to Red Hat Network. This
-     error can not be triggered under a normal use of the Red Hat Network
-     service as configured by default on Red Hat Linux.
+     your system makes too many connections to SUSE Manager. This
+     error can not be triggered under a normal use of the SUSE Manager
+     service as configured by default on a system managed by it.
 
-     The Red Hat Network services for this system will remain disabled
-     until you will reduce the RHN network traffic from your system to
-     acceptable limits.
+     The SUSE Manager services for this system will remain disabled
+     until you will reduce the SUSE Manager network traffic from your system
+     to acceptable limits.
 
-     Please log into RHN and visit https://%(hostname)s/help/contact.pxt
+     Please log into RHN [GALAXY] and visit https://%(hostname)s/help/contact.pxt
      to contact technical support if you think you have received this
      message in error.
      """),
@@ -151,12 +150,12 @@ on this system."),
      50: _("Invalid information uploaded to the server"),
      51: _("""
      Demo service currently disabled due to high load. If you would like
-     to see Red Hat's policies on Demo service, or find out how you can
+     to see Red Hat's [GALAXY] policies on Demo service, or find out how you can
      purchase a subscription service and receive priority download access,
      please go to http://%(hostname)s/preview/index.pxt
      """),
      52: _("""
-     Access to Red Hat Network is currently limited to subscription customers.
+     Access to Red Hat Network [GALAXY] is currently limited to subscription customers.
      Please try again later.  If you would like to become a subscription
      customer, go to https://%(hostname)s/preview/priority_service.pxt for
      more information.
@@ -169,7 +168,7 @@ on this system."),
      """),
      55: _("""
      The --force rhnpush option is disabled on this server. 
-     Please contact your Satellite administrator for more help.
+     Please contact your SUSE Manager administrator for more help.
      """),
 
      # 60-70: token errors
@@ -184,7 +183,7 @@ on this system."),
      # 70-80: channel subscription errors
      70: _("""
      All available subscriptions for the requested channel have been exhausted.
-     Please contact a Red Hat Network Sales associate.
+     Please contact a Red Hat Network Sales [GALAXY] associate.
      """),
      71: _("""
      You do not have subscription permission to the designated channel.
@@ -213,7 +212,7 @@ maximum membership exceeded"),
      112: _("Survey not filled out; service disabled"),
 
      # 130-140: bugzilla errata import errors
-     130: _("Bugzilla erratum import error"),
+     130: _("Bugzilla import error"),
 
      # 140-159 applet errors
      140: _("Unable to look up server"),
@@ -246,21 +245,20 @@ maximum membership exceeded"),
      1001: _("RHN Proxy unable to login."),
      # issued by an RHN Server/Satellite to the proxy
      1002: _("""
-     RHN Proxy system ID does not match an RHN Proxy Server
-     in the database. Please contact your designated Red Hat representative
-     or visit https://rhn.redhat.com/help/contact.pxt immediately if
+     SUSE Manager Proxy system ID does not match any SUSE Manager Proxy
+     Server in the database. Please contact your designated Red Hat [GALAXY] representative
+     or visit https://rhn.redhat.com/help/contact.pxt [GALAXY] immediately if
      experiencing difficulties with the process of enabling or continued
-     enablement of this RHN Proxy Server.
+     enablement of this SUSE Manager Proxy Server.
      """),
-     1003: _("RHN Proxy session token is invalid."),
-     1004: _("RHN Proxy session token has expired."),
+     1003: _("SUSE Manager Proxy session token is invalid."),
+     1004: _("SUSE Manager Proxy session token has expired."),
 
 
      # 2000-2999: RHN Satellite specific errors:
      2001: _("""
-     RHN Satellite user creation is not allowed via rhn_register
-     (or up2date --register on Red Hat Enterprise Linux 3 or later);
-     please contact your sysadmin to have your account created.
+     SUSE Manager user creation is not allowed via mgr_register.
+     Please contact your sysadmin to have your account created.
      """),
      2002: _("""
      RHN Satellite system ID does not match an RHN Satellite Server
@@ -270,20 +268,20 @@ maximum membership exceeded"),
      enablement of this RHN Satellite Server.
      """),
      2003: _("""
-     This satellite server is not allowed to access the specified channel
+     This SUSE Manager server is not allowed to access the specified channel
      """),
      2004: _("""
-     This satellite server is not allowed to use Inter Satellite Sync on this satellite
+     This SUSE Manager server is not allowed to use Inter Server Sync on this server
      """),
      2005: _("""
-     Inter Satellite Sync is disabled on this satellite.
+     Inter Server Sync is disabled on this SUSE Manager.
      """),
 
      # Kickstart errors
-     2100: _("Access denied to kickstart tree"),
-     2101: _("Could not find kickstart file"),
+     2100: _("Access denied to autoinstallation tree"),
+     2101: _("Could not find autoinstallation file"),
      2102: _("""
-     Kickstart tree would not lint, there are packages
+     Autoinstallation tree would not lint, there are packages
      missing in the channel
      """),
 
@@ -292,9 +290,9 @@ maximum membership exceeded"),
      3001: _("Unable to retrieve channel"),
      3002: _("Invalid package name"),
      3003: _("Unable to retrieve package"),
-     3004: _("Invalid erratum name"),
-     3005: _("Unable to retrieve erratum"),
-     3006: _("Invalid satellite certificate"),
+     3004: _("Invalid patch name"),
+     3005: _("Unable to retrieve patch"),
+     3006: _("Invalid SUSE Manager certificate"),
      3007: _("File is missing"),
      3008: _("Function retrieval error"),
      3009: _("Function execution error"),
@@ -375,7 +373,7 @@ class redirectException(Exception):
 
 Explain = _("""
      An error has occurred while processing your request. If this problem
-     persists please enter a bug report at bugzilla.redhat.com.
+     persists please enter a bug report at bugzilla.novell.com.
      If you choose to submit the bug report, please be sure to include
      details of what you were trying to do when this error occurred and
      details on how to reproduce this problem.
