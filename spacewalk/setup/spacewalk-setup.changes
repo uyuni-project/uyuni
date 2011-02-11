@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 11 15:10:35 CET 2011 - ug@suse.de
+
+- don't start xinted
+
+-------------------------------------------------------------------
 Fri Feb 11 12:36:20 CET 2011 - mc@suse.de
 
 - no selinux, if selinuxenabled binary is not found
