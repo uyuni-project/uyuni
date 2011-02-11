@@ -81,7 +81,7 @@ requested information."),
      29: _("Record not available in the database."),
      30: _("Invalid value for entry."),
      31: _("""
-     This system does not have a valid entitlement for Red Hat Network.
+     This system does not have a valid entitlement for SUSE Manager.
      Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do
      or login at https://%(hostname)s, and from the "Overview" tab, select
      "Subscription Management" to enable SUSE Manager service for this system.
@@ -131,34 +131,19 @@ on this system."),
 
      The channel you have specified does not exist.
      """),
+     # originally "Too many connections to RHN from this system and account"
      49: _("""
-     You are getting this error because SUSE Manager has detected an abuse of
-     service from this system and account. This error is triggered when
-     your system makes too many connections to SUSE Manager. This
-     error can not be triggered under a normal use of the SUSE Manager
-     service as configured by default on a system managed by it.
-
-     The SUSE Manager services for this system will remain disabled
-     until you will reduce the SUSE Manager network traffic from your system
-     to acceptable limits.
-
-     Please log into RHN [GALAXY] and visit https://%(hostname)s/help/contact.pxt
-     to contact technical support if you think you have received this
-     message in error.
+     rhnFault 49. This should not happen with SUSE Manager.
      """),
      # For the uploading tools
      50: _("Invalid information uploaded to the server"),
+     # originally "RHN Demo service disabled"
      51: _("""
-     Demo service currently disabled due to high load. If you would like
-     to see Red Hat's [GALAXY] policies on Demo service, or find out how you can
-     purchase a subscription service and receive priority download access,
-     please go to http://%(hostname)s/preview/index.pxt
+     rhnFault 51: This should not happen with SUSE Manager
      """),
+     # originally "Access to RHN limited to subscribed customers"
      52: _("""
-     Access to Red Hat Network [GALAXY] is currently limited to subscription customers.
-     Please try again later.  If you would like to become a subscription
-     customer, go to https://%(hostname)s/preview/priority_service.pxt for
-     more information.
+     rhnFault 52. This should not happen with SUSE Manager.
      """),
      53: _("Error uploading network interfaces configuration."),
      54: _("""
@@ -183,7 +168,7 @@ on this system."),
      # 70-80: channel subscription errors
      70: _("""
      All available subscriptions for the requested channel have been exhausted.
-     Please contact a Red Hat Network Sales [GALAXY] associate.
+     Please contact a Novell sales representative.
      """),
      71: _("""
      You do not have subscription permission to the designated channel.
@@ -241,15 +226,12 @@ maximum membership exceeded"),
 
      # 1000-1999: RHN Proxy specific errors:
      # issued by an RHN Proxy to the client
-     1000: _("RHN Proxy error."),
-     1001: _("RHN Proxy unable to login."),
+     1000: _("SUSE Manager Proxy error."),
+     1001: _("SUSE Manager Proxy unable to login."),
      # issued by an RHN Server/Satellite to the proxy
      1002: _("""
      SUSE Manager Proxy system ID does not match any SUSE Manager Proxy
-     Server in the database. Please contact your designated Red Hat [GALAXY] representative
-     or visit https://rhn.redhat.com/help/contact.pxt [GALAXY] immediately if
-     experiencing difficulties with the process of enabling or continued
-     enablement of this SUSE Manager Proxy Server.
+     Server in the database.
      """),
      1003: _("SUSE Manager Proxy session token is invalid."),
      1004: _("SUSE Manager Proxy session token has expired."),
@@ -260,12 +242,9 @@ maximum membership exceeded"),
      SUSE Manager user creation is not allowed via mgr_register.
      Please contact your sysadmin to have your account created.
      """),
+     # originally "Satellite system ID not found in RHN database"
      2002: _("""
-     RHN Satellite system ID does not match an RHN Satellite Server
-     in the database. Please contact your designated Red Hat representative
-     or visit https://rhn.redhat.com/help/contact.pxt immediately if
-     experiencing difficulties with the process of enabling or continued
-     enablement of this RHN Satellite Server.
+     rhnFault 2002. This should not happen with SUSE Manager.
      """),
      2003: _("""
      This SUSE Manager server is not allowed to access the specified channel
