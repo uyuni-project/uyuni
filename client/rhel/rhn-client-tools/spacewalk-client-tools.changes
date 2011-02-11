@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 11 16:23:07 CET 2011 - mantel@suse.de
+
+- debranding
+
+-------------------------------------------------------------------
 Mon Feb  7 14:53:17 CET 2011 - ma@suse.de
 
 - Don't build rhn_register for RH tools either.
