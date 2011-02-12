@@ -20,7 +20,7 @@ from datetime import datetime
 import traceback
 from optparse import OptionParser
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
-from spacewalk.common import CFG, initCFG, rhnLog, fetchTraceback, rhn_rpm
+from spacewalk.common import CFG, initCFG, rhnLog, fetchTraceback, rhnMail, rhn_rpm
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhn_mpm import InvalidPackageError
 from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Checksum, Bug, Keyword
@@ -33,6 +33,9 @@ from yum import Errors
 from yum.i18n import to_unicode, to_utf8
 
 from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
+
+import socket
+hostname = socket.gethostname()
 
 default_log_location = '/var/log/rhn/reposync/'
 default_hash = 'sha256'
@@ -144,22 +147,28 @@ class RepoSync:
                 self.import_updates(plugin, url.getURL())
             except ChannelException, e:
                 self.print_msg("ChannelException: %s" % e)
+                self.sendErrorMail(fetchTraceback())
                 sys.exit(1)
             except Errors.YumGPGCheckError, e:
                 self.print_msg("YumGPGCheckError: %s" % e)
+                self.sendErrorMail(fetchTraceback())
                 sys.exit(1)
             except Errors.RepoError, e:
                 self.print_msg("RepoError: %s" % e)
+                self.sendErrorMail(fetchTraceback())
                 sys.exit(1)
             except Errors.RepoMDError, e:
                 if "primary not available" in str(e):
                     self.print_msg("Repository has no packages. (%s)" % e)
+                    sys.exit(0)
                 else:
                     self.print_msg("RepoMDError: %s" % e)
+                    self.sendErrorMail(fetchTraceback())
                 sys.exit(1)
             except:
                 self.print_msg("Unexpected error: %s" % sys.exc_info()[0])
                 self.print_msg("%s" % traceback.format_exc())
+                self.sendErrorMail(fetchTraceback())
               	sys.exit(1)
 
         if self.regen:
@@ -582,6 +591,20 @@ class RepoSync:
 
     def short_hash(self, str):
         return hashlib.new(default_hash, str).hexdigest()[0:8]
+
+    def sendErrorMail(self, body):
+        to = CFG.TRACEBACK_MAIL
+        fr = to
+        if isinstance(to, type([])):
+            fr = string.strip(to[0])
+            to = string.join(map(string.strip, to), ', ')
+        headers = {
+            "Subject" : "SUSE Manager repository sync failed (%s)" % hostname,
+            "From"    : "%s <%s>" % (hostname, fr),
+            "To"      : to,
+        }
+        extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
+        rhnMail.send(headers, extra + body)
 
     def _to_db_date(self, date):
         ret = ""
