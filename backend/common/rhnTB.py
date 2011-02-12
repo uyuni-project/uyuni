@@ -160,7 +160,7 @@ def Traceback(method = None, req = None, mail = 1, ostream = sys.stderr,
             fr = string.strip(to[0])
             to = string.join(map(string.strip, to), ', ')
         headers = {
-            "Subject" : "RHN TRACEBACK from %s" % hostname,
+            "Subject" : "SUSE Manager TRACEBACK from %s" % hostname,
             "From"    : "%s <%s>" % (hostname, fr),
             "To"      : to,
             "X-RHN-Traceback-Severity"  : severity,
