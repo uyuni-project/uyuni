@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Feb 12 16:54:53 CET 2011 - mc@suse.de
+
+- send Mail if repo-sync failed 
+
+-------------------------------------------------------------------
 Fri Feb 11 17:54:06 CET 2011 - jkupec@suse.cz
 
 - correct strings in rhnException.py
