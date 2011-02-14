@@ -18678,7 +18678,7 @@ new autoinstallable distribution.&lt;/strong&gt;
      </group>
 
     <trans-unit id="virtualization.provision.first.jsp.no.profiles">
-        <source>No profiles currently available for autoinstalling guests. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new kickstart profile with a Virtualization Type other than none.&lt;/a&gt;</source>
+        <source>No profiles currently available for autoinstalling guests. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new autoinstallation profile with a Virtualization Type other than none.&lt;/a&gt;</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
