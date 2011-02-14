@@ -16,11 +16,11 @@
 
     <h2>
       <img src="/img/rhn-icon-errata.gif" alt="erratum" />
-      Relevant Errata
+      Relevant Patches
     </h2>
 
     <div class="page-summary">
-      <p>The following errata apply to one or more of the systems in this group.</p>
+      <p>The following patches apply to one or more of the systems in this group.</p>
     </div>
 
 <pxt-include-late file="/network/components/message_queues/local.pxi" />
