@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 14 17:22:39 CET 2011 - mc@suse.de
+
+- expect not signed metadata with spacewalk-repo-sync if
+  url is given on the commandline
+
+-------------------------------------------------------------------
 Sat Feb 12 16:54:53 CET 2011 - mc@suse.de
 
 - send Mail if repo-sync failed 
