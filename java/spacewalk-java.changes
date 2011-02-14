@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 14 15:43:25 CET 2011 - jrenner@suse.de
+
+- revert to manage/clone errata, identifiers only
+
+-------------------------------------------------------------------
 Mon Feb 14 13:28:11 CET 2011 - mantel@suse.de
 
 - remove references to FlexGuests (bnc#668622)
