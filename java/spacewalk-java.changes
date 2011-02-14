@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 14 13:20:40 CET 2011 - jrenner@suse.de
+
+- replace the term kickstart in virtualization dialog (bnc#671560)
+
+-------------------------------------------------------------------
 Fri Feb 11 15:56:18 CET 2011 - jrenner@suse.de
 
 - fix base software channel always listed twice (bnc#671022)
