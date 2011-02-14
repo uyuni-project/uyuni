@@ -245,6 +245,13 @@ while read PKG_NAME; do
     fi
   }
 
+  for F in "$OBS_PKG_DIR"/*; do
+    test -s "$F" || {
+      log_and_add_failure "$PKG_NAME" "zero size file in checkout"
+      continue 2
+    }
+  done
+
   test -z "$FAKE_COMITTOBS" || {
     echo "FAKE: Not comitting to OBS..."
     continue
