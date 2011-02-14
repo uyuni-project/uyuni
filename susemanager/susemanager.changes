@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 14 12:39:18 UTC 2011 - dmacvicar@suse.de
+
+- custom congratulate screen for firstboot (bnc#671213)
+
+-------------------------------------------------------------------
 Fri Feb 11 17:03:54 CET 2011 - mc@suse.de
 
 - setup swap always if no swap was found (bnc#671194)
