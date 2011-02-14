@@ -36,15 +36,17 @@ for my $dir (sort { length $a <=> length $b } keys %dirs) {
 		# the target as well
 		push @paths, "$paths[0]/.";
 	}
-	for my $path (@paths) {
-		my $type = `ls -d --scontext -- $path`;
-		if (defined $type
-			and $type =~ /^.+?:.+?:(.+?)(:|\s)/
-			and $1 eq 'nfs_t') {
-			$seen_nfs = 1;
-		} else {
-		        if (Spacewalk::Setup::have_selinux()) {
-				system('/sbin/restorecon', '-r', $path);
+	if (Spacewalk::Setup::have_selinux()) {
+		for my $path (@paths) {
+			my $type = `ls -d --scontext -- $path`;
+			if (defined $type
+				and $type =~ /^.+?:.+?:(.+?)(:|\s)/
+				and $1 eq 'nfs_t') {
+				$seen_nfs = 1;
+			} else {
+				if (Spacewalk::Setup::have_selinux()) {
+					system('/sbin/restorecon', '-r', $path);
+				}
 			}
 		}
 	}
