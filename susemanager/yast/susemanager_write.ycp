@@ -43,7 +43,7 @@
 	),
 	text_mode ? `VBox (
 	    // label
-	    `Left (`Label (_("Migration script output"))),
+	    `Left (`Label (_("Setup script output"))),
 	    `LogView (`id (`stdout), "", 6, 0),
 	    `VSpacing (0.4),
 	    // label
@@ -51,7 +51,7 @@
 	    `LogView (`id (`stderr), "", 2, 0)
 	) : `VBox (
 	    // label
-	    `Left (`Label (_("Migration script output"))),
+	    `Left (`Label (_("Setup script output"))),
 	    `VWeight (3, `LogView (`id (`stdout), "", 8, 0)),
 	    `VSpacing (0.4),
 	    // label
