@@ -17,17 +17,23 @@ package com.redhat.rhn.frontend.action.kickstart;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartIpRangeDto;
 import com.redhat.rhn.frontend.taglibs.list.BaseListFilter;
+import com.redhat.rhn.frontend.xmlrpc.InvalidIpAddressException;
 import com.redhat.rhn.manager.kickstart.IpAddress;
 import com.redhat.rhn.manager.kickstart.IpAddressRange;
 
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 /**
  * KickstartIpRangeFilter
  * @version $Rev: 1 $
  */
 public class KickstartIpRangeFilter extends BaseListFilter {
+
+    /** Logger for this class */
+    private static Logger log = Logger.getLogger(KickstartIpRangeFilter.class);
 
     /**
      * ${@inheritDoc}
@@ -45,14 +51,8 @@ public class KickstartIpRangeFilter extends BaseListFilter {
      */
     public boolean filter(Object object, String field,
             String criteria) {
-
         KickstartIpRangeDto range = (KickstartIpRangeDto) object;
-
-        IpAddress min = new IpAddress(range.getMin());
-        IpAddress max = new IpAddress(range.getMax());
-
-        return filterOnRange(criteria, min.toString(), max.toString());
-
+        return filterOnRange(criteria, range.getMin(), range.getMax());
     }
 
     /**
@@ -63,16 +63,17 @@ public class KickstartIpRangeFilter extends BaseListFilter {
      * @param max the max ipaddress
      * @return true if it is contained, false otherwise
      */
-    public boolean filterOnRange(String search, String min, String max) {
-        IpAddress minIp = new IpAddress(min);
-        IpAddress maxIp = new IpAddress(max);
-        IpAddress searchIp = new IpAddress(search);
+    public boolean filterOnRange(String search, Long min, Long max) {
+        // Try to create an IP address from the incoming string
+        IpAddress searchIp = null;
+        try {
+            searchIp = new IpAddress(search);            
+        } catch (InvalidIpAddressException iiae) {
+            log.error(iiae.getMessage());
+            return false;
+        }
 
-        IpAddressRange ipRange = new IpAddressRange(minIp.getLongNumber(),
-                maxIp.getLongNumber());
-
+        IpAddressRange ipRange = new IpAddressRange(min, max);
         return ipRange.isIpAddressContained(searchIp);
     }
-
-
 }
