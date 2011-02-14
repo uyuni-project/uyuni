@@ -60,7 +60,9 @@ install -m 0755 ncc-sync/mgr-ncc-sync.py %{buildroot}/%{_sbindir}/mgr-ncc-sync
 
 # YaST configuration
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
+mkdir -p %{buildroot}/etc/YaST2
 install -m 0644 yast/*.ycp %{buildroot}%{_datadir}/YaST2/clients
+install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
 
 %clean
 rm -rf %{buildroot}
@@ -84,10 +86,12 @@ fi
 %doc doc/* Changes license.txt congratulate.txt
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
+%dir /etc/YaST2
 %dir %{_datadir}/YaST2
 %dir %{_datadir}/YaST2/clients
 %{_prefix}/lib/susemanager/bin/*
 %{_datadir}/YaST2/clients/*.ycp
+%config /etc/YaST2/firstboot-susemanager.xml
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/suse-manager-server
 %{_sysconfdir}/init.d/susemanager
 
