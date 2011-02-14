@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 14 13:28:11 CET 2011 - mantel@suse.de
+
+- remove references to FlexGuests (bnc#668622)
+
+-------------------------------------------------------------------
 Mon Feb 14 13:20:40 CET 2011 - jrenner@suse.de
 
 - replace the term kickstart in virtualization dialog (bnc#671560)
