@@ -106,7 +106,7 @@ class RepoSync:
                     quit = True
                     self.error_msg("Channel has no URL associated")
         else:
-            self.urls = [{'source_url':options.url, 'metadata_signed' : True}]
+            self.urls = [{'source_url':options.url, 'metadata_signed' : 'N'}]
         if not options.channel_label:
             quit = True
             self.error_msg("--channel must be specified")
