@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 14 13:58:27 CET 2011 - mc@suse.de
+
+- print susemanager message during boot on a new line. 
+
+-------------------------------------------------------------------
 Mon Feb 14 12:39:18 UTC 2011 - dmacvicar@suse.de
 
 - custom congratulate screen for firstboot (bnc#671213)
