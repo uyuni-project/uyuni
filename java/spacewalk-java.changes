@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 14 16:42:31 CET 2011 - mantel@suse.de
+
+- remove reference to FasTrack (bnc#671235)
+
+-------------------------------------------------------------------
 Mon Feb 14 15:43:25 CET 2011 - jrenner@suse.de
 
 - revert to manage/clone errata, identifiers only

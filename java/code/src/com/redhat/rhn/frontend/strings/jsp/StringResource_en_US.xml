@@ -20339,7 +20339,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
 
       <trans-unit id="sdc.channels.edit.fastrackBetaWarning">
-          <source>&lt;strong&gt;Warning:&lt;/strong&gt; 'FasTrack' and Beta child software channels are not available with Extended Update Support.</source>
+          <source>   </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
