@@ -51,7 +51,7 @@ Feature: Explore the Channels page
      And I should see a "SUSE LINUX Products GmbH, Nuernberg, Germany" text
      And I should see a "SHA1sum:" text
      And I should see a "bf15721fc2ae3acd47089aca22747cf1bfdc0c59" text
-     And I should see a "redhat/1/bf1/aaa_base/11-6.30.1/x86_64/bf15721fc2ae3acd47089aca22747cf1bfdc0c59/aaa_base-11-6.30.1.x86_64.rpm" text
+     And I should see a "packages/1/bf1/aaa_base/11-6.30.1/x86_64/bf15721fc2ae3acd47089aca22747cf1bfdc0c59/aaa_base-11-6.30.1.x86_64.rpm" text
 
   Scenario: Check Package dependencies page
     When I follow "Channels"
