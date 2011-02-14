@@ -14,6 +14,7 @@ Requires: rhnlib
 
 %if 0%{?suse_version}
 Requires: spacewalk-client-tools
+%else
 %if 0%{?rhel} >= 5 || 0%{?fedora} >= 1
 Requires: yum-rhn-plugin
 %else
