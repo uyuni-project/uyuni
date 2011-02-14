@@ -1,0 +1,7 @@
+The installation of SUSE Manager has completed successfully.
+
+Click Finish to log in to the system and start the SUSE Manager setup.
+
+Please visit us at http://www.novell.com/linux/.
+
+
