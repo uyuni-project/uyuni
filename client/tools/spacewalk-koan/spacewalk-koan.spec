@@ -12,6 +12,7 @@ BuildArch:      noarch
 BuildRequires:  python
 Requires:       python >= 1.5
 Requires:       koan >= 1.4.3
+Requires:       rhn-virtualization-common
 
 Conflicts: rhn-kickstart
 Conflicts: rhn-kickstart-common

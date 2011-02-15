@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 15 10:52:44 CET 2011 - ug@suse.de
+
+- requires rhn-virtualization-common now
+
+-------------------------------------------------------------------
 Wed Sep 15 12:21:11 CEST 2010 - mantel@suse.de
 
 - fix post-build-checks
