@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 15 10:14:55 CET 2011 - ug@suse.de
+
+- typo fixed (indentation error bnc#671799)
+
+-------------------------------------------------------------------
 Mon Feb 14 17:22:39 CET 2011 - mc@suse.de
 
 - expect not signed metadata with spacewalk-repo-sync if
