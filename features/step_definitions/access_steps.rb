@@ -31,7 +31,7 @@ Then /^no link should be broken$/ do
     base = href.split("?")[0]
     $stderr.puts "Visiting '#{href}' '#{base}', #{hrefs.size} to go"
     visit href.to_s
-    if page.has_content?('Page Not Found') || page.has_content?('Internal Server Error')
+    if page.has_content?('Page Not Found') || page.has_content?('Internal Server Error') || page.has_content?('/var/www/html')
       visited[base] = href
       $stderr.puts "-- ** failed"
     else
