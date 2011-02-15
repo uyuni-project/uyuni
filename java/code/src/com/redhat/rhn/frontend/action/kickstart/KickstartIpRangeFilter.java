@@ -67,9 +67,11 @@ public class KickstartIpRangeFilter extends BaseListFilter {
         // Try to create an IP address from the incoming string
         IpAddress searchIp = null;
         try {
-            searchIp = new IpAddress(search);            
+            searchIp = new IpAddress(search);
         } catch (InvalidIpAddressException iiae) {
-            log.warn(iiae.getMessage());
+            if (log.isDebugEnabled()) {
+                log.debug(iiae.getMessage());
+            }
             return false;
         }
 
