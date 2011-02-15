@@ -51,8 +51,7 @@ def schedule_virt_guest_pkg_install(server_id, action_id, dry_run=0):
     found_tools_channel = tools_channel.is_subscribed_to_channel()
 
     if not found_tools_channel:
-        
-raise InvalidAction("System not subscribed to the Tools channel.")
+        raise InvalidAction("System not subscribed to the Tools channel.")
 
     rhn_v12n_package = ChannelPackage(server_id, virt_host_package_name)
 
