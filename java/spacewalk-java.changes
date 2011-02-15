@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 15 09:27:33 CET 2011 - jrenner@suse.de
+
+- catch exception when filtering for invalid IP (bnc#668642)
+
+-------------------------------------------------------------------
 Mon Feb 14 16:42:31 CET 2011 - mantel@suse.de
 
 - remove reference to FasTrack (bnc#671235)
