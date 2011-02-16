@@ -4,6 +4,11 @@ Wed Feb 16 13:15:56 CET 2011 - ug@suse.de
 - reset entities to 0, not to 300 (bnc#670576)
 
 -------------------------------------------------------------------
+Wed Feb 16 12:18:04 UTC 2011 - dmacvicar@suse.de
+
+- new EULA for firstboot
+
+-------------------------------------------------------------------
 Wed Feb 16 12:00:42 CET 2011 - jsuchome@suse.cz
 
 - fix grammar (bnc#672165)
@@ -12,7 +17,7 @@ Wed Feb 16 12:00:42 CET 2011 - jsuchome@suse.cz
 -------------------------------------------------------------------
 Mon Feb 14 13:58:27 CET 2011 - mc@suse.de
 
-- print susemanager message during boot on a new line. 
+- print susemanager message during boot on a new line.
 
 -------------------------------------------------------------------
 Mon Feb 14 13:22:08 UTC 2011 - dmacvicar@suse.de
