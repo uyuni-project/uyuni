@@ -10,9 +10,9 @@
 </head>
 <body>
 <rhn:toolbar base="h1" img="/img/rhn-icon-errata.gif" imgAlt="errata.common.errataAlt"
- helpUrl="/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Errata_Management.jsp#channel-mgmt-Manage_Errata-Published_Errata"
  creationUrl="/rhn/errata/manage/Create.do"
  creationType="erratum">
+  <!-- helpUrl="/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Errata_Management.jsp#channel-mgmt-Manage_Errata-Published_Errata" -->
   <bean:message key="erratalist.jsp.erratamgmt"/>
 </rhn:toolbar>
 
