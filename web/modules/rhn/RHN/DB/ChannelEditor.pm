@@ -126,12 +126,14 @@ sub channels_visible_to_org_with_parent {
   my $query;
   my $sth;
 #Only display if there is a parent channel available See Bug 432650
-  $query = <<EOQ;
-SELECT  ACh.channel_name as NAME, ACh.channel_id as ID, ACh.channel_depth as DEPTH, C.org_id as CHANNEL_ORG_ID
-  FROM  rhnAvailableChannels ACh inner join 
-  	rhnChannel C on C.id = ACh.channel_id  left outer join
-  	rhnAvailableChannels ACh2 on C.parent_channel = ACh2.channel_id
-  where ACh.org_id = :org_id AND (C.parent_channel is NULL or ACH2.org_id = :org_id)
+   $query = <<EOQ;
+         SELECT  ACh.channel_name as NAME, ACh.channel_id as ID, ACh.channel_depth as DEPTH, C.org_id as CHANNEL_ORG_ID, ctv.parent_or_self_id
+           FROM  rhnavailablechannels ACh
+           join rhnchanneltreeview ctv on ctv.id = ACh.channel_id
+     inner join rhnChannel C on C.id = ACh.channel_id
+left outer join rhnAvailableChannels ACh2 on C.parent_channel = ACh2.channel_id
+          where ACh.org_id = :org_id AND (C.parent_channel is NULL or ACH2.org_id = :org_id)
+       ORDER BY rhn_channel.channel_priority(ctv.parent_or_self_id), ctv.parent_or_self_id, ACh.channel_depth, UPPER(ACh.channel_name)
 EOQ
 
   $sth = $dbh->prepare($query);
