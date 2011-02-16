@@ -103,6 +103,14 @@ The invalid characters are: %1"), invalid_pw_chars));
 		continue;
 	    }
 
+	    string domain = (string) UI::QueryWidget (`id ("SATELLITE_DOMAIN"), `Value);
+	    if (!Hostname::CheckDomain (domain))
+	    {
+		Popup::Error (Hostname::ValidDomain ());
+		UI::SetFocus (`id ("SATELLITE_DOMAIN"));
+		continue;
+	    }
+
 	    // now, values are considered correct
 	    foreach (string key, string value, settings, {
 		string val = (string) UI::QueryWidget (`id (key), `Value);
