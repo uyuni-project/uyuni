@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 16 14:49:41 CET 2011 - ug@suse.de
+
+- suppress a warning when selinux is missing (bnc#671641)
+
+-------------------------------------------------------------------
 Fri Feb 11 15:10:35 CET 2011 - ug@suse.de
 
 - don't start xinted
