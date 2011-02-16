@@ -104,7 +104,7 @@ refer to the SUSE Manager Quick Start.")),
 	}
     }
 
-    if (!Popup::YesNo (_("All data are collected. Run setup now?")))
+    if (!Popup::YesNo (_("All data is collected. Run setup now?")))
     {
 	return ret;
     }
