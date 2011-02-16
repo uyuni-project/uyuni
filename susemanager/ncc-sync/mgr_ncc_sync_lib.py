@@ -52,7 +52,7 @@ class NCCSync(object):
         """Setup configuration"""
         self.quiet = quiet
         self.debug = debug
-        self.reset_ent_value = 300
+        self.reset_ent_value = 0
 
         self.ncc_rhn_ent_mapping = {
             "sm_ent_mon_s"       : [ "monitoring_entitled" ],
