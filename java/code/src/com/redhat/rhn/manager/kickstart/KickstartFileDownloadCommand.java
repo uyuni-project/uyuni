@@ -15,7 +15,6 @@
 package com.redhat.rhn.manager.kickstart;
 
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.kickstart.KickstartHelper;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,8 +27,8 @@ import javax.servlet.http.HttpServletRequest;
  * @version $Rev $
  */
 public class KickstartFileDownloadCommand extends BaseKickstartCommand {
-    private KickstartHelper helper;
     private String protocol;
+    private String host;
 
     /**
      * Constructor
@@ -40,10 +39,10 @@ public class KickstartFileDownloadCommand extends BaseKickstartCommand {
     public KickstartFileDownloadCommand(Long ksidIn, User userIn,
             HttpServletRequest request) {
         super(ksidIn, userIn);
-        helper = new KickstartHelper(request);
         try {
             URL url = new URL(request.getRequestURL().toString());
             protocol = url.getProtocol();
+            host = url.getHost();
         }
         catch (MalformedURLException e) {
             throw new IllegalArgumentException("Bad argument when creating URL for " +
@@ -59,9 +58,8 @@ public class KickstartFileDownloadCommand extends BaseKickstartCommand {
      * @return String url
     */
     public String getOrgDefaultUrl() {
-        return new KickstartUrlHelper(
-                this.ksdata, helper.getKickstartHost(),
-                this.protocol).getKickstartOrgDefaultUrl();
-
+        // URL is put in a href, so use the hostname from the request
+        return new KickstartUrlHelper(this.ksdata, this.host, this.protocol)
+                .getKickstartOrgDefaultUrl();
     }
 }
