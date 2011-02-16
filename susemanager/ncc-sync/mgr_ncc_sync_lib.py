@@ -649,8 +649,8 @@ class NCCSync(object):
             "SELECT a.name FROM rhnpackagearch a, suseproducts p "
             "WHERE a.id = p.arch_type_id AND p.product_id = :product_id")
         query.execute(product_id=product_id)
-        arch_name = query.fetchone()[0]
-        arch_text = ' (%s)' % arch_name if arch_name else ''
+        arch_name = query.fetchone()
+        arch_text = ' (%s)' % arch_name[0] if arch_name else ''
         if channel.get('optional') == 'N':
             suse_id = self.get_suse_product_id(product_id)
             query = rhnSQL.prepare(
@@ -871,9 +871,11 @@ class NCCSync(object):
         return arch_id
 
     def get_channel_product_id(self, channel):
-        """Return the RHNCHANNELPRODUCT id of for this channel
+        """Return the RHNCHANNELPRODUCT.id for this channel
 
         If the corresponding row doesn't exist, insert it.
+
+        :arg channel: XML Etree element
 
         """
         query = rhnSQL.prepare("SELECT id FROM rhnchannelproduct "
@@ -900,6 +902,33 @@ class NCCSync(object):
                       version=channel.get('product_version'))
         return query.fetchone()[0]
 
+    def get_product_name_id(self, channel):
+        """Return the RHNPRODUCTNAME.id for this channel
+
+        If the corresponding row in RhnProductName does not exist, insert it.
+
+        :arg channel: XML Etree element
+
+        """
+        query = rhnSQL.prepare("SELECT id FROM rhnproductname "
+                               "WHERE name = :name")
+        query.execute(name=channel.get('product_name'))
+        try:
+            product_name_id = query.fetchone()[0]
+        except TypeError:
+            query = rhnSQL.prepare(
+                """INSERT INTO rhnproductname ( id, name, label )
+                   VALUES ( sequence_nextval('rhn_productname_id_seq'),
+                            :name, :label)""")
+            query.execute(name=channel.get('product_name'),
+                          label=channel.get('label'))
+        else:
+            return product_name_id
+        query = rhnSQL.prepare("SELECT id FROM rhnproductname "
+                               "WHERE name = :name")
+        query.execute(name=channel.get('product_name'))
+        return query.fetchone()[0]
+
     def add_channel(self, channel_label):
         """Add a new channel to the database
 
@@ -922,15 +951,17 @@ class NCCSync(object):
                 """INSERT INTO RHNCHANNEL ( ID, BASEDIR, PARENT_CHANNEL,
                                             CHANNEL_ARCH_ID, LABEL, NAME,
                                             SUMMARY, DESCRIPTION,
-                                            CHANNEL_PRODUCT_ID,
+                                            CHANNEL_PRODUCT_ID, PRODUCT_NAME_ID,
                                             CHECKSUM_TYPE_ID )
                    VALUES ( sequence_nextval('rhn_channel_id_seq'), '/dev/null',
                            :parent_channel, :channel_arch_id, :label, :name,
                            :summary, :description, :channel_product_id,
+                           :product_name_id,
                            (select id from RHNCHECKSUMTYPE
                             where label = 'sha1') )""")
             query.execute(
                 channel_product_id = self.get_channel_product_id(channel),
+                product_name_id = self.get_product_name_id(channel),
                 parent_channel = self.get_parent_id(channel),
                 channel_arch_id = self.get_channel_arch_id(channel),
                 # XXX - org_id = ??
