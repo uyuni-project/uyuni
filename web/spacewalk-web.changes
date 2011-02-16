@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 16 12:24:24 UTC 2011 - dmacvicar@suse.de
+
+- updated EULA for footer link
+
+-------------------------------------------------------------------
 Wed Feb 16 12:47:01 CET 2011 - mc@suse.de
 
 - give the channel list in clone.pxt a nice order and group
@@ -7,7 +12,7 @@ Wed Feb 16 12:47:01 CET 2011 - mc@suse.de
 -------------------------------------------------------------------
 Wed Feb 16 10:40:25 CET 2011 - mc@suse.de
 
-- fix wrong links to javascript scripts 
+- fix wrong links to javascript scripts
 
 -------------------------------------------------------------------
 Tue Feb 15 15:20:47 CET 2011 - jrenner@suse.de
@@ -27,7 +32,7 @@ Fri Feb 11 13:37:02 CET 2011 - jrenner@suse.de
 -------------------------------------------------------------------
 Fri Feb 11 11:08:24 CET 2011 - mc@suse.de
 
-- fix path to formletters (bnc#671156) 
+- fix path to formletters (bnc#671156)
 
 -------------------------------------------------------------------
 Fri Feb 11 09:49:10 UTC 2011 - dmacvicar@suse.de
