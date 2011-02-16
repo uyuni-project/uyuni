@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 16 10:40:25 CET 2011 - mc@suse.de
+
+- fix wrong links to javascript scripts 
+
+-------------------------------------------------------------------
 Tue Feb 15 15:20:47 CET 2011 - jrenner@suse.de
 
 - fixed links to index.do (bnc#672051)
