@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 16 14:13:37 CET 2011 - ug@suse.de
+
+- entitlements back to 300
+
+-------------------------------------------------------------------
 Wed Feb 16 13:47:06 CET 2011 - iartarisi@suse.cz
 
 - insert data into rhnchannelproduct and rhnchannel.channel_product_id row
