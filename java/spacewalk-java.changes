@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 16 15:28:54 CET 2011 - jrenner@suse.de
+
+- fix server error if org default profile not present (bnc#672054)
+
+-------------------------------------------------------------------
 Wed Feb 16 15:07:10 CET 2011 - mc@suse.de
 
 - fix link to help page (bnc#672094) 
