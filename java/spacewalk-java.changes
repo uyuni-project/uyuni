@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 16 17:41:02 CET 2011 - jrenner@suse.de
+
+- add missing help page for oganizational trusts (bnc#660528)
+
+-------------------------------------------------------------------
 Wed Feb 16 15:28:54 CET 2011 - jrenner@suse.de
 
 - fix server error if org default profile not present (bnc#672054)
