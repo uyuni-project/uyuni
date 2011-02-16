@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 16 12:00:42 CET 2011 - jsuchome@suse.cz
+
+- fix grammar (bnc#672165)
+- added validation for domain and restriction for country
+
+-------------------------------------------------------------------
 Mon Feb 14 13:58:27 CET 2011 - mc@suse.de
 
 - print susemanager message during boot on a new line. 
