@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 16 17:08:07 CET 2011 - iartarisi@suse.cz
+
+- made log messages more understandable when adding channels to the
+SuseProductChannel table
+
+-------------------------------------------------------------------
 Wed Feb 16 15:18:19 CET 2011 - iartarisi@suse.cz
 
 - added a non_interactive command line option to ncc-sync
