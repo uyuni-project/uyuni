@@ -35,11 +35,12 @@ def main():
                       help="update subscriptions by NCC data")
     parser.add_option('-q', '--quiet', action='store_true', dest='quiet', 
                       default=False, help="Print no output, still logs output")
-    parser.add_option('-d', '--debug', dest='debug',
-                      default=-1, help="debugging")
+    parser.add_option('-d', '--debug', dest='debug', default=-1,
+                      help="debugging")
     parser.add_option("-t", "--test", action="store_true",
                       help="Testmode")
-
+    parser.add_option("-n", "--non_interactive", action="store_true",
+                      help="Non-interactive mode, doesn't ask for confirmation")
 
     (options, args) = parser.parse_args()
 
@@ -47,13 +48,16 @@ def main():
     if options.list:
         syncer.list_channels()
     elif options.channel:
-        sys.stdout.write(
-            "Warning! Once added, Novell channels can not be deleted. "
-            "Only custom channels can be deleted. "
-            "Do you wish to proceed? [y/n] (y): ")
-        choice = raw_input().lower()
-        if choice == 'y' or choice == '':
+        if options.non_interactive:
             syncer.add_channel(options.channel)
+        else:
+            sys.stdout.write(
+                "Warning! Once added, Novell channels can not be deleted. "
+                "Only custom channels can be deleted. "
+                "Do you wish to proceed? [y/n] (y): ")
+            choice = raw_input().lower()
+            if choice == 'y' or choice == '':
+                syncer.add_channel(options.channel)
     elif options.products:
         suse_products = syncer.get_suse_products_from_ncc()
         syncer.update_suse_products_table(suse_products)
