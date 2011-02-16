@@ -642,6 +642,15 @@ class NCCSync(object):
         Only non-optional channels are actually added.
 
         """
+        # sometimes it's useful to know what arch this product has
+        # (esp. in the case of i386,i486,i586,i686 having the same
+        # channel but different products)
+        query = rhnSQL.prepare(
+            "SELECT a.name FROM rhnpackagearch a, suseproducts p "
+            "WHERE a.id = p.arch_type_id AND p.product_id = :product_id")
+        query.execute(product_id=product_id)
+        arch_name = query.fetchone()[0]
+        arch_text = ' (%s)' % arch_name if arch_name else ''
         if channel.get('optional') == 'N':
             suse_id = self.get_suse_product_id(product_id)
             query = rhnSQL.prepare(
@@ -650,11 +659,12 @@ class NCCSync(object):
             query.execute(product_id=suse_id,
                           channel_id=channel_id)
             rhnSQL.commit()
-            self.log_msg("Added channel %s to SuseProductChannels."
-                         % channel.get('label'))
+            self.log_msg("Registered channel %s to SuseProductChannel%s."
+                         % (channel.get('label'), arch_text))
         else:
-            self.log_msg("Didn't add optional channel %s to "
-                         "SuseProductChannels." % channel.get('label'))
+            self.log_msg("Did NOT register optional channel %s to "
+                         "SuseProductChannel%s." %
+                         (channel.get('label'), arch_text))
 
     def sync_channel(self, channel_id, channel_label):
         """ Schedule a repo sync for specified database channel.
