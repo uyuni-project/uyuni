@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 16 17:35:33 CET 2011 - iartarisi@suse.cz
+
+- populate rhnproductname table and rhnchannel.product_name_id column
+  when adding new channels
+
+-------------------------------------------------------------------
 Wed Feb 16 17:08:07 CET 2011 - iartarisi@suse.cz
 
 - made log messages more understandable when adding channels to the
