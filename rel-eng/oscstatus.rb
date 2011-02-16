@@ -8,9 +8,10 @@ def usage
   puts "  #==  package is up to date (supressed unless -v is used)"
   puts "  #NN  package is up to date but last submitreq not yet accepted"
   puts "  #++  package needs to be submitted (submitreq provided on stdout)"
-  puts "  #>>  package not in target project (initial submitreq missing)"
-  puts "  #BB  package is blacklisted (intentionally not submitted)"
+  puts "  #!!  NAG. package needs to be submitted but has no updated .changes file"
+  puts "  #BB  package is blacklisted (intentionally not to be submitted)"
   puts "  #<<  package not in source project"
+  puts "  #>>  package not in target project (initial submitreq missing)"
   puts ""
   puts "Options:"
   puts " -h, --help      This message."
@@ -59,7 +60,7 @@ class Prj
     `#{apiCmd} log --csv #{@name} #{pkg}`.each do |rel|
       # 5|zypp-team|2011-01-11 17:29:55|b30f5af8aef32eab673f5c7c53a090ec|1.1.1|Git submitt Manager()|
       values = rel.split( '|' );
-      return [
+      return Hash[
 	:nam => pkg,
 	:rev => values[0],
 	:who => values[1],
@@ -99,6 +100,82 @@ class Prj
     return nil
   end
 
+  def list(pkg)
+    ret = nil
+    `#{apiCmd} ls -e -v #{@name} #{pkg}`.each do |rel|
+      # 133a3b08cf390d4ee5c48b44f01a6e07      77      3946 Feb 15 10:23 spacewalk-backend.changes
+      values = rel.split;
+      ret = Hash.new if ret.nil?
+      ret[values[6]] = values[0]
+    end
+    return ret
+  end
+
+  def rdiff(pkg, trg_prj, trg_pkg=nil)
+    # :nag       - changed but no new .changes file
+    # :unchanged - unchanged
+    # :changed   - changed and new .changes file
+    trg_pkg = pkg if trg_pkg.nil?
+    t = trg_prj.list(trg_pkg)
+    s = list(pkg)
+    ret = :unchanged
+    skiptar = false
+    s.each do |file, hash|
+      # TODO: OBS reformats the specfile, so it's hard to test for changes :(
+      next if file == "#{pkg}.spec"
+      # list of source tarballs accidentally submitted without any change:
+      if [
+	'spacewalk-remote-utils-git-3e6a6ef5bcc562f3d833856d6ba9263ac9299936.tar.gz',
+	'rhnpush-git-264766239e6bb4ca32bf95a91b5c1932e2955932.tar.gz',
+	'rhnmd-git-29d69a8b5d8a05fe8dc4cd885680588991219e29.tar.gz',
+	'rhn-kickstart-git-dc6f81061d23f56026f741a4482f2561c303a609.tar.gz',
+	'perl-Satcon-git-f1156210c40ed109f22f1175d8daae3099bebb59.tar.gz',
+	'spacewalk-utils-git-29d69a8b5d8a05fe8dc4cd885680588991219e29.tar.gz',
+	'spacewalk-setup-jabberd-git-264766239e6bb4ca32bf95a91b5c1932e2955932.tar.gz',
+	'spacewalk-reports-git-2ddf92f56e810f7162e931ddb3768b42b73d1e6d.tar.gz',
+	'spacewalk-remote-utils-git-264766239e6bb4ca32bf95a91b5c1932e2955932.tar.gz',
+	'spacewalk-doc-indexes-git-a4ed1eef18de04265c6059e988afffd49e8b234f.tar.gz',
+	'SatConfig-general-git-8a223d8889b5eb7bdb8381f63beaed43a9ef74cb.tar.gz',
+	'SatConfig-cluster-git-b382944cd35255630bbe17e2f985da6ac737fcb6.tar.gz',
+	'rhnpush-git-264766239e6bb4ca32bf95a91b5c1932e2955932.tar.gz',
+	'rhnmd-git-29d69a8b5d8a05fe8dc4cd885680588991219e29.tar.gz',
+	'rhn-kickstart-git-dc6f81061d23f56026f741a4482f2561c303a609.tar.gz',
+	'python-hwdata-git-264766239e6bb4ca32bf95a91b5c1932e2955932.tar.gz',
+	'perl-Satcon-git-f1156210c40ed109f22f1175d8daae3099bebb59.tar.gz',
+	'perl-NOCpulse-Gritch-git-7e81be2fa8d6ebe71514af709613a36065a482bb.tar.gz',
+	'perl-NOCpulse-CLAC-git-8a223d8889b5eb7bdb8381f63beaed43a9ef74cb.tar.gz',
+	'perl-NOCpulse-Utils-git-aba88e44d4df65989367d43edf38fd58539b44ec.tar.gz',
+	'NOCpulsePlugins-git-42ebcab7f80134d2404055abb657a1d54ef45469.tar.gz',
+	'nocpulse-common-git-5f02cae65a6b7a48035b55f5126998d3b33bee73.tar.gz'
+      ].include?(file)
+	puts "###     >>> #{file} skiped" if not $opt_brief
+	skiptar = true
+	next
+      end
+      if !t.has_key?(file)
+	puts "###     +++ #{file}" if not $opt_brief
+	ret = :changed
+      elsif hash != t[file]
+	puts "###     <=> #{file} #{hash} <=> #{t[file]}" if not $opt_brief
+	ret = :changed
+      end
+    end
+    t.each do |file, hash|
+      next if skiptar && Regexp.new("^#{pkg}.*\.tar\.gz$") === file
+      if !s.has_key?(file)
+	puts "###     --- #{file}" if not $opt_brief
+	ret = :changed
+      end
+    end
+    if ret == :changed
+      chf = "#{pkg}.changes"
+      if !s.has_key?(chf) || s[chf] == t[chf]
+	ret = :nag
+      end
+    end
+    return ret
+  end
+
   def [](name)
     package(name)
   end
@@ -128,7 +205,7 @@ $target_blacklist = Hash[
 ];
 
 def in_target_blacklist( prj, pkg )
-  return $target_blacklist.include?( prj ) && $target_blacklist[prj].include?( pkg )
+  return $target_blacklist.include?(prj) && $target_blacklist[prj].include?(pkg)
 end
 
 def check_whether_to_submitt( src_prj, trg_prj, packages=nil )
@@ -137,38 +214,46 @@ def check_whether_to_submitt( src_prj, trg_prj, packages=nil )
   puts "### SUBMISSION #{src_prj.name} ==> #{trg_prj.name}"
   puts "###"
   packages.each do |pkg|
-    package_detail = src_prj[pkg]
-    if not package_detail
-	puts "#!! #{pkg} has no history in #{src_prj}"
-	return
+
+    if in_target_blacklist( trg_prj.name, pkg )
+      puts "#BB #{pkg} is on blacklist for #{trg_prj}" if not $opt_brief
+      next
     end
-    package_detail.each do |rel|
-      if not rel
-	puts "#<< #{pkg} not yet created in #{src_prj}"
-	next
-      end
-      sub = trg_prj.request( pkg )
-      if not sub
-	if not in_target_blacklist( trg_prj.name, pkg )
-	  puts "#>> #{pkg} not yet submitted to #{trg_prj}"
-	  puts "#   #{trg_prj.apiCmd} submitreq --yes -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
-	else
-	  puts "#BB #{pkg} not yet submitted to #{trg_prj}" if not $opt_brief
-	end
-	next
-      end
-      if rel[:rev].to_i > sub[:ore].to_i
-	puts "#++ #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
-	puts "    #{trg_prj.apiCmd} submitreq --yes -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
-      else
+
+    rel = src_prj[pkg]
+    if rel.nil? || rel.empty?
+      puts "#<< #{pkg} not yet created in #{src_prj}"
+      next
+    end
+
+    sub = trg_prj.request( pkg )
+    if sub.nil? || sub.empty?
+      puts "#>> #{pkg} not yet submitted to #{trg_prj}"
+      puts "#   #{trg_prj.apiCmd} submitreq --yes -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
+      next
+    end
+
+    case src_prj.rdiff(pkg, trg_prj)
+      when :unchanged:
 	if sub[:sta] == 'accepted'
 	  puts "#== #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}" if not $opt_brief
 	else
 	  puts "#NN #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
 	end
-      end
-      break
+
+      when :changed:
+	if sub[:sta] == 'new' && rel[:rev] == sub[:ore]
+	  puts "#NN #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
+	else
+	  puts "#++ #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
+	  puts "    #{trg_prj.apiCmd} submitreq --yes -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
+	end
+
+      when :nag:
+	puts "#!! #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
+	puts "#   #{trg_prj.apiCmd} submitreq --yes -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
     end
+
   end
 end
 
@@ -182,10 +267,13 @@ $res_prj = Prj.new('ibs://Devel:Galaxy:RESClient:Manager:1')
 $trg_prj = Prj.new('ibs://SUSE:SLE-11-SP1:Update:Manager:1.2')
 $cli_prj = Prj.new('ibs://SUSE:SLE-11-SP1:Update:Test')
 
-# check required ubmissions:
+# check required submissions:
+# ======================================================================
 
+#
 check_whether_to_submitt( $src_prj, $trg_prj )
 
+#
 $cli_packages = [
   'osad',
   'perl-Satcon',
@@ -201,7 +289,6 @@ $cli_packages = [
   'spacewalk-client-tools',
   'spacewalk-config',
   'spacewalk-koan',
-  'spacewalk-proxy-installer',
   'spacewalk-remote-utils',
   'spacewalk-ssl-cert-check',
   'spacewalksd',
@@ -211,6 +298,7 @@ $cli_packages = [
 ]
 check_whether_to_submitt( $src_prj, $cli_prj, $cli_packages )
 
+#
 $ins_packages = [
   'cobbler'
 ]
