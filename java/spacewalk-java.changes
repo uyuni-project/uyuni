@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 16 09:56:58 CET 2011 - jrenner@suse.de
+
+- remove more links to channel mgmt guide (bnc#672095 and others)
+
+-------------------------------------------------------------------
 Tue Feb 15 09:27:33 CET 2011 - jrenner@suse.de
 
 - catch exception when filtering for invalid IP (bnc#668642)
