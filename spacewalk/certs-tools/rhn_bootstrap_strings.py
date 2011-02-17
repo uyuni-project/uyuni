@@ -413,7 +413,7 @@ if [ $REGISTER_THIS_BOX -eq 1 ] ; then
     directories=""
     if [ $ALLOW_CONFIG_ACTIONS -eq 1 ] ; then
         for i in "/etc/sysconfig/rhn/allowed-actions /etc/sysconfig/rhn/allowed-actions/configfiles"; do
-            [ -d "$i" ] || (mkdir -p $i && directories="$directories $i")
+            [ -d "$i" ] || (mkdir -p $i && directories="$i $directories")
         done
         [ -f /etc/sysconfig/rhn/allowed-actions/configfiles/all ] || files="$files /etc/sysconfig/rhn/allowed-actions/configfiles/all"
         [ -n "$files" ] && touch  $files
@@ -425,7 +425,7 @@ if [ $REGISTER_THIS_BOX -eq 1 ] ; then
     fi
     /usr/sbin/rhnreg_ks --force --activationkey "$ACTIVATION_KEYS" $profilename_opt
     [ -n "$files" ] && rm -f $files
-    [ -n "$directories" ] && rmdir $(echo $directories | rev)
+    [ -n "$directories" ] && rmdir $directories
     echo
     echo "*** this system should now be registered, please verify ***"
     echo
