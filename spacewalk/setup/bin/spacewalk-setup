@@ -37,6 +37,9 @@ use RHN::DB ();
 my $DEBUG;
 $DEBUG = 0;
 
+# force autoflush on stdout write
+$|++;
+
 use constant DEFAULT_CA_CERT_NAME =>
   'RHN-ORG-TRUSTED-SSL-CERT';
 
