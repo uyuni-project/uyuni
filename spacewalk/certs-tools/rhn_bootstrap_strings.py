@@ -424,11 +424,19 @@ if [ $REGISTER_THIS_BOX -eq 1 ] ; then
         profilename_opt="--profilename=$PROFILENAME"
     fi
     /usr/sbin/rhnreg_ks --force --activationkey "$ACTIVATION_KEYS" $profilename_opt
+    RET="$?"
     [ -n "$files" ] && rm -f $files
     [ -n "$directories" ] && rmdir $directories
-    echo
-    echo "*** this system should now be registered, please verify ***"
-    echo
+    if [ $RET -eq 0 ]; then
+      echo
+      echo "*** this system should now be registered, please verify ***"
+      echo
+    else
+      echo
+      echo "*** Error: Registering the system failed."
+      echo
+      exit 1
+    fi
 else
     echo "* explicitely not registering"
 fi
