@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 17 17:35:30 CET 2011 - mc@suse.de
+
+- autoflush stdout (bnc#672565)
+
+-------------------------------------------------------------------
 Wed Feb 16 14:49:41 CET 2011 - ug@suse.de
 
 - suppress a warning when selinux is missing (bnc#671641)
