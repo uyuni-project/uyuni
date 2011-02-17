@@ -594,7 +594,7 @@ def getUsernamePassword(cmdlineUsername, cmdlinePassword):
     # Read the username, if not already specified
     tty = open("/dev/tty", "r+")
     while not username:
-        tty.write("Red Hat Network username: ")
+        tty.write("SUSE Manager username: ")
         try:
             username = tty.readline()
         except KeyboardInterrupt:
@@ -611,7 +611,7 @@ def getUsernamePassword(cmdlineUsername, cmdlinePassword):
     # Now read the password
     while not password:
         try:
-            password = getpass.getpass("Red Hat Network password: ")
+            password = getpass.getpass("SUSE Manager password: ")
         except KeyboardInterrupt:
             tty.write("\n")
             sys.exit(0)
