@@ -15,6 +15,7 @@
 # in this software or its documentation.
 #
 import sys, os, time, grp
+import os.path
 import hashlib
 from datetime import datetime
 import traceback
@@ -448,7 +449,7 @@ class RepoSync:
                        raise
                    continue
             finally:
-                if is_non_local_repo:
+                if is_non_local_repo and os.path.exists(path):
                     os.remove(path)
 
         for (index, pack) in enumerate(to_link):
