@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb 17 11:47:34 CET 2011 - jrenner@suse.de
+
+- do not show delete link on creation of notes (bnc#672090)
+- refix help url for orgtrusts (bnc#660528)
+
+-------------------------------------------------------------------
 Wed Feb 16 17:41:02 CET 2011 - jrenner@suse.de
 
 - add missing help page for oganizational trusts (bnc#660528)
