@@ -34,6 +34,9 @@ make -f Makefile.rhnpush all
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{rhnroot}
+%if 0%{?suse_version}
+ln -s rhnpush $RPM_BUILD_ROOT/%{_bindir}/mgrpush
+%endif
 make -f Makefile.rhnpush install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
 
@@ -48,6 +51,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{rhnroot}/rhnpush
 %{rhnroot}/rhnpush/*
 %attr(755,root,root) %{_bindir}/rhnpush
+%if 0%{?suse_version}
+%{_bindir}/mgrpush
+%endif
 %attr(755,root,root) %{_bindir}/rpm2mpm
 %attr(755,root,root) %{_bindir}/solaris2mpm
 %config(noreplace) %attr(644,root,root) %{_sysconfdir}/sysconfig/rhn/rhnpushrc

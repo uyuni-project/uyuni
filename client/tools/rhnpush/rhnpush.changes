@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb 17 13:39:50 CET 2011 - mantel@suse.de
+
+- rename "Red Hat Network" to "SUSE Manager" for SUSE (bnc#672643)
+- add mgrpush symlink (bnc#672643)
+
+-------------------------------------------------------------------
 Tue Feb  1 16:54:39 CET 2011 - mc@suse.de
 
 - fix build for RH4 
