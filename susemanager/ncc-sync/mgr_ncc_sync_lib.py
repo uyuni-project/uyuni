@@ -921,7 +921,7 @@ class NCCSync(object):
                    VALUES ( sequence_nextval('rhn_productname_id_seq'),
                             :name, :label)""")
             query.execute(name=channel.get('product_name'),
-                          label=channel.get('label'))
+                          label=channel.get('product_name'))
         else:
             return product_name_id
         query = rhnSQL.prepare("SELECT id FROM rhnproductname "
