@@ -24,6 +24,8 @@ mkdir -p %{buildroot}/srv/www/htdocs/pub/
 install -m 0644 channel_families.xml %{buildroot}/usr/share/susemanager/channel_families.xml
 install -m 0644 channels.xml         %{buildroot}/usr/share/susemanager/channels.xml
 install -m 0644 res.key              %{buildroot}/srv/www/htdocs/pub/
+install -m 0644 suse-307E3D54.key    %{buildroot}/srv/www/htdocs/pub/
+install -m 0644 suse-9C800ACA.key    %{buildroot}/srv/www/htdocs/pub/
 
 %clean
 rm -rf %{buildroot}
@@ -35,7 +37,7 @@ rm -rf %{buildroot}
 %dir /srv/www/htdocs/pub
 /usr/share/susemanager/channel_families.xml
 /usr/share/susemanager/channels.xml
-/srv/www/htdocs/pub/res.key
+/srv/www/htdocs/pub/*.key
 
 %changelog
 
