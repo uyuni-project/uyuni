@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb 17 11:49:28 CET 2011 - ma@suse.de
+
+- Evaluate rhnreg_ks return value in bootsprap.sh (bnc#671691)
+- Fix cleanup code in bootstrap.sh (bnc#670283)
+
+-------------------------------------------------------------------
 Wed Feb  9 18:05:03 CET 2011 - ro@suse.de
 
 - do not require rhn-client-tools on rhel-4
