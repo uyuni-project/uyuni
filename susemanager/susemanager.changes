@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 17 09:26:28 CET 2011 - mc@suse.de
+
+- fix changelog
+
+-------------------------------------------------------------------
 Wed Feb 16 17:35:33 CET 2011 - iartarisi@suse.cz
 
 - populate rhnproductname table and rhnchannel.product_name_id column
@@ -26,14 +31,14 @@ Wed Feb 16 13:47:06 CET 2011 - iartarisi@suse.cz
 - insert data into rhnchannelproduct and rhnchannel.channel_product_id row
 
 -------------------------------------------------------------------
-Wed Feb 16 13:15:56 CET 2011 - ug@suse.de
-
-- reset entities to 0, not to 300 (bnc#670576)
-
--------------------------------------------------------------------
 Wed Feb 16 12:18:04 UTC 2011 - dmacvicar@suse.de
 
 - new EULA for firstboot
+
+-------------------------------------------------------------------
+Wed Feb 16 13:15:56 CET 2011 - ug@suse.de
+
+- reset entities to 0, not to 300 (bnc#670576)
 
 -------------------------------------------------------------------
 Wed Feb 16 12:00:42 CET 2011 - jsuchome@suse.cz
@@ -42,14 +47,14 @@ Wed Feb 16 12:00:42 CET 2011 - jsuchome@suse.cz
 - added validation for domain and restriction for country
 
 -------------------------------------------------------------------
-Mon Feb 14 13:58:27 CET 2011 - mc@suse.de
-
-- print susemanager message during boot on a new line.
-
--------------------------------------------------------------------
 Mon Feb 14 13:22:08 UTC 2011 - dmacvicar@suse.de
 
 - move the firstboot workflow from root.tar.bz2 to this package
+
+-------------------------------------------------------------------
+Mon Feb 14 13:58:27 CET 2011 - mc@suse.de
+
+- print susemanager message during boot on a new line.
 
 -------------------------------------------------------------------
 Mon Feb 14 12:39:18 UTC 2011 - dmacvicar@suse.de
@@ -157,8 +162,8 @@ Thu Feb  3 09:31:43 UTC 2011 - dmacvicar@suse.de
 
 - add welcome.txt
 
-Wed Feb  2 17:06:22 CET 2011 - iartarisi@suse.cz
 -------------------------------------------------------------------
+Wed Feb  2 17:06:22 CET 2011 - iartarisi@suse.cz
 
 - channels now map 1:1 to repositories
 
@@ -323,4 +328,3 @@ Mon Nov  8 10:51:15 CET 2010 - mc@suse.de
 
 - Initial release of susemanager
 
--------------------------------------------------------------------
