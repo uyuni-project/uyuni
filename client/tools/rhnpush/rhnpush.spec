@@ -34,11 +34,11 @@ make -f Makefile.rhnpush all
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{rhnroot}
+make -f Makefile.rhnpush install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
+    MANDIR=%{_mandir}
 %if 0%{?suse_version}
 ln -s rhnpush $RPM_BUILD_ROOT/%{_bindir}/mgrpush
 %endif
-make -f Makefile.rhnpush install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
-    MANDIR=%{_mandir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT

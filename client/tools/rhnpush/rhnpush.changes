@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 17 14:06:01 CET 2011 - mantel@suse.de
+
+- fix build: create symlink only after binary has been installed
+
+-------------------------------------------------------------------
 Thu Feb 17 13:39:50 CET 2011 - mantel@suse.de
 
 - rename "Red Hat Network" to "SUSE Manager" for SUSE (bnc#672643)
