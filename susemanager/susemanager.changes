@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 17 16:53:02 CET 2011 - iartarisi@suse.cz
+
+- make rhnproductname.label be channel.product_name instead of channel.label
+
+-------------------------------------------------------------------
 Thu Feb 17 15:25:32 CET 2011 - ug@suse.de
 
 - removed sysdba where it was not needed (bnc#673023)
