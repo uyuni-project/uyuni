@@ -2,7 +2,7 @@
 # ======================================================================
 def usage
   puts ""
-  puts "usage: oscstatus.rb [OPTIONS]"
+  puts "usage: oscstatus.rb [OPTIONS] [REGEXP]"
   puts ""
   puts "Print submission status of packages:"
   puts "  #==  package is up to date (supressed unless -v is used)"
@@ -13,6 +13,8 @@ def usage
   puts "  #<<  package not in source project"
   puts "  #>>  package not in target project (initial submitreq missing)"
   puts ""
+  puts "An optional regexp limits processing to those packages matching."
+  puts ""
   puts "Options:"
   puts " -h, --help      This message."
   puts " -v, --verbose   Print unchanged packages too."
@@ -22,11 +24,15 @@ def usage
 end
 
 $opt_brief = true
+$opt_pkgfilter = nil
 
 ARGV.each do |arg|
   case arg
   when '-v', '--verbose' then $opt_brief = false
   when '-?', '-h', '--help' then usage
+  else
+    usage if not $opt_pkgfilter.nil?
+    $opt_pkgfilter = Regexp.new(arg)
   end
 end
 
@@ -214,6 +220,10 @@ def check_whether_to_submitt( src_prj, trg_prj, packages=nil )
   puts "### SUBMISSION #{src_prj.name} ==> #{trg_prj.name}"
   puts "###"
   packages.each do |pkg|
+
+    if not $opt_pkgfilter.nil? || pkg =~ $opt_pkgfilter
+      next
+    end
 
     if in_target_blacklist( trg_prj.name, pkg )
       puts "#BB #{pkg} is on blacklist for #{trg_prj}" if not $opt_brief
