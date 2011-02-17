@@ -372,7 +372,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %doc PYTHON-LICENSES.txt LICENSE
 %dir %{pythonrhnroot}
 %dir %{pythonrhnroot}/common
-%{pythonrhnroot}/common/__init__.py*
 %{pythonrhnroot}/common/apache.py*
 %{pythonrhnroot}/common/byterange.py*
 %{pythonrhnroot}/common/rhn_posix.py*
@@ -609,6 +608,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %doc PYTHON-LICENSES.txt LICENSE
 %{python_sitelib}/spacewalk/__init__.py*
 %dir %{python_sitelib}/spacewalk/common
+%{pythonrhnroot}/common/__init__.py*
 %{python_sitelib}/spacewalk/common/checksum.py*
 %{python_sitelib}/spacewalk/common/fileutils.py*
 %{python_sitelib}/spacewalk/common/rhn_deb.py*
