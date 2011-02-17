@@ -134,8 +134,8 @@ begin
 		description,
 		max_members, group_type, org_id
 	) values (
-		group_val, 'Satellite Administrators',
-		'Satellite Administrators for Org ' || name_in || ' (1)',
+		group_val, 'SUSE Manager Administrators',
+		'SUSE Manager Administrators for Org ' || name_in || ' (1)',
 		NULL, ug_type, 1
 	);
 

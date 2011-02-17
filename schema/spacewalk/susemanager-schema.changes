@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb 17 12:14:43 CET 2011 - mantel@suse.de
+
+- rename "Satellite Administrator" to "SUSE Manager Administrator"
+  (bnc#662077)
+
+-------------------------------------------------------------------
 Thu Feb 10 11:17:14 CET 2011 - jrenner@suse.de
 
 - fix subscribe_server subs handling (bnc#670551)

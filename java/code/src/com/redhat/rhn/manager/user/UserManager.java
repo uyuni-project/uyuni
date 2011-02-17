@@ -457,7 +457,7 @@ public class UserManager extends BaseManager {
         User toDelete = UserFactory.lookupById(loggedInUser, targetUid);
         if (toDelete.hasRole(RoleFactory.SAT_ADMIN)) {
             if (SatManager.getActiveSatAdmins().size() == 1) {
-                log.warn("Cannot delete the last Satellite Administrator");
+                log.warn("Cannot delete the last SUSE Manager Administrator");
                 throw new DeleteSatAdminException(toDelete);
             }
         }
