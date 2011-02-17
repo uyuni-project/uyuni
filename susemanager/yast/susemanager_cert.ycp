@@ -20,7 +20,7 @@
 	return ret;
     }
 
-    string invalid_pw_chars	= "\"$'!";
+    string invalid_pw_chars	= "\"$'!+%`=#@/";
 
     map<string,string> settings	= $[
 	"CERT_O"	: "",

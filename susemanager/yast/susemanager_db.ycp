@@ -17,7 +17,7 @@
     map display_info	= UI::GetDisplayInfo ();
     boolean text_mode	= display_info["TextMode"]:false;
 
-    string invalid_pw_chars	= "\"$'!";
+    string invalid_pw_chars	= "\"$'!+%`=#@/";
 
     map<string,string> settings	= $[
 	"MANAGER_DB_NAME"	: "",
