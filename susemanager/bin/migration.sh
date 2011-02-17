@@ -406,7 +406,7 @@ if [ "$DO_SETUP" = "1" ]; then
 quit
 " > /root/changeorg.sql
 
-    sqlplus sys/\"$MANAGER_PASS\"@$MANAGER_DB_NAME as sysdba @/root/changeorg.sql
+    sqlplus $MANAGER_USER/\"$MANAGER_PASS\"@$MANAGER_DB_NAME @/root/changeorg.sql
     rm /root/changeorg.sql
 
     # Finaly call mgr-ncc-sync
