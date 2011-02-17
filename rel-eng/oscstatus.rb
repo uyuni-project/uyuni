@@ -256,12 +256,12 @@ def check_whether_to_submitt( src_prj, trg_prj, packages=nil )
 	  puts "#NN #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
 	else
 	  puts "#++ #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
-	  puts "    #{trg_prj.apiCmd} submitreq --yes -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
+	  puts "    #{trg_prj.apiCmd} submitreq --yes #{sub[:sta] == 'new'?"-s #{sub[:rid]}":""} -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
 	end
 
       when :nag:
 	puts "#!! #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
-	puts "#   #{trg_prj.apiCmd} submitreq --yes -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
+	puts "#   #{trg_prj.apiCmd} submitreq --yes #{sub[:sta] == 'new'?"-s #{sub[:rid]}":""} -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
     end
 
   end
