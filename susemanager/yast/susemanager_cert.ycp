@@ -161,7 +161,7 @@ The invalid characters are: %1"), invalid_pw_chars));
 		if (key == "CERT_COUNTRY")
 		    val	= toupper (val);
 		setenv (key, val, true);
-		SCR::Execute (.target.bash, sformat ("echo 'export %1=\"%2\"' >> %3", key, val, env_file));
+		SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", key, val, env_file));
 	    });
 
 	    break;

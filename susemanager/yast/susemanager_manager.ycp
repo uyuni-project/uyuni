@@ -121,7 +121,7 @@
 		}
 		setenv (key, val, true);
 		// write env files
-		SCR::Execute (.target.bash, sformat ("echo 'export %1=\"%2\"' >> %3", key, val, env_file));
+		SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", key, val, env_file));
 	    });
 
 	    break;

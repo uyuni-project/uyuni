@@ -17,7 +17,7 @@
     map display_info	= UI::GetDisplayInfo ();
     boolean text_mode	= display_info["TextMode"]:false;
 
-    string invalid_pw_chars	= "\"$'!+%`=#@/";
+    string invalid_pw_chars	= "\"'!+%`=@/";
 
     map<string,string> settings	= $[
 	"MANAGER_DB_NAME"	: "",
@@ -172,7 +172,7 @@ The invalid characters are: %1"), invalid_pw_chars));
 		    val		= local_db[key]:"";
 		}
 		setenv (key, val, true);
-		SCR::Execute (.target.bash, sformat ("echo 'export %1=\"%2\"' >> %3", key, val, env_file));
+		SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", key, val, env_file));
 	    });
 
 	    break;
