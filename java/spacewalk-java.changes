@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 18 13:25:25 CET 2011 - jrenner@suse.de
+
+- fix branding on api pages (bnc#671160)
+
+-------------------------------------------------------------------
 Thu Feb 17 11:47:34 CET 2011 - jrenner@suse.de
 
 - do not show delete link on creation of notes (bnc#672090)
