@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 18 16:46:10 CET 2011 - mc@suse.de
+
+- remove use of java-devel at runtime (bnc#673323) 
+
+-------------------------------------------------------------------
 Fri Feb 18 13:25:25 CET 2011 - jrenner@suse.de
 
 - fix branding on api pages (bnc#671160)
