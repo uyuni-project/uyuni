@@ -52,7 +52,7 @@ class NCCSync(object):
         """Setup configuration"""
         self.quiet = quiet
         self.debug = debug
-        self.reset_ent_value = 300
+        self.reset_ent_value = 10
 
         self.ncc_rhn_ent_mapping = {
             "sm_ent_mon_s"       : [ "monitoring_entitled" ],
@@ -184,7 +184,7 @@ class NCCSync(object):
             for p in prods:
                 if today >= start_date and (end == 0 or today <= end_date) and s["type"] != "PROVISIONAL":
                     # FIXME: for correct counting, remove the "or > 0" (bnc#670551)
-                    if s["nodecount"] == "-1" or s["nodecount"] > 0:
+                    if s["nodecount"] == "-1" or s["nodecount"] > 0 or True:
                         subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : 200000 }
                     elif subscription_count.has_key( p ):
                         subscription_count[ p ]["nodecount"] += int(s["nodecount"])
@@ -461,26 +461,38 @@ class NCCSync(object):
             val   = self.reset_ent_value
         )
         rhnSQL.commit()
+
         # Testcode (bnc#671167)
-        id = self.get_entitlement_id("virtualization_host")
-        update_sql = """
-            UPDATE RHNSERVERGROUP SET max_members = 0
-            WHERE GROUP_TYPE = :gid
-        """
-        query = rhnSQL.prepare(update_sql)
-        log_debug(2, "SQL: " % query )
-        query.execute(
-            gid   = id
-        )
-        rhnSQL.commit()
+        #id = self.get_entitlement_id("virtualization_host")
+        #update_sql = """
+        #    UPDATE RHNSERVERGROUP SET max_members = 0
+        #    WHERE GROUP_TYPE = :gid
+        #"""
+        #query = rhnSQL.prepare(update_sql)
+        #log_debug(2, "SQL: " % query )
+        #query.execute(
+        #    gid   = id
+        #)
+        #rhnSQL.commit()
 
     def edit_entitlement_in_table( self, prod, data ):
         if self.is_entitlement( prod ):
             for ent in self.ncc_rhn_ent_mapping[prod]:
                 id = self.get_entitlement_id( ent )
                 available = 0
-                if data["nodecount"] > 0:
+
+                start = float(data["start-date"])
+                end   = float(data["end-date"])
+                start_date = date.fromtimestamp( start )
+                end_date = date.fromtimestamp( end )
+                today = date.today()
+                if end == 0 or today <= end_date:
+                    continue
+
+                if True or data["nodecount"] > 0:
                     available = 200000 # unlimited
+                else:
+                    available = data["nodecount"]
                 update_sql = """
                     UPDATE RHNSERVERGROUP SET
                     max_members = :max_m
