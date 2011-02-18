@@ -9,6 +9,7 @@ def usage
   puts "  #NN  package is up to date but last submitreq not yet accepted"
   puts "  #++  package needs to be submitted (submitreq provided on stdout)"
   puts "  #!!  NAG. package needs to be submitted but has no updated .changes file"
+  puts "  #AA  package ia aggregated in target project (do not submitt to)"
   puts "  #BB  package is blacklisted (intentionally not to be submitted)"
   puts "  #<<  package not in source project"
   puts "  #>>  package not in target project (initial submitreq missing)"
@@ -118,11 +119,15 @@ class Prj
   end
 
   def rdiff(pkg, trg_prj, trg_pkg=nil)
-    # :nag       - changed but no new .changes file
-    # :unchanged - unchanged
-    # :changed   - changed and new .changes file
+    # :nag        - changed but no new .changes file
+    # :unchanged  - unchanged
+    # :changed    - changed and new .changes file
+    # :aggregated - target is aggreagated (should not submitt to)
     trg_pkg = pkg if trg_pkg.nil?
     t = trg_prj.list(trg_pkg)
+    t.each do |file, hash|
+      return :aggregated if file == "_aggregate"
+    end
     s = list(pkg)
     ret = :unchanged
     skiptar = false
@@ -244,24 +249,28 @@ def check_whether_to_submitt( src_prj, trg_prj, packages=nil )
     end
 
     case src_prj.rdiff(pkg, trg_prj)
-      when :unchanged:
-	if sub[:sta] == 'accepted'
-	  puts "#== #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}" if not $opt_brief
-	else
-	  puts "#NN #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
-	end
+    when :unchanged:
+      if sub[:sta] == 'accepted'
+	puts "#== #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}" if not $opt_brief
+      else
+	puts "#NN #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
+      end
 
-      when :changed:
-	if sub[:sta] == 'new' && rel[:rev] == sub[:ore]
-	  puts "#NN #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
-	else
-	  puts "#++ #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
-	  puts "    #{trg_prj.apiCmd} submitreq --yes #{sub[:sta] == 'new'?"-s #{sub[:rid]}":""} -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
-	end
+    when :changed:
+      if sub[:sta] == 'new' && rel[:rev] == sub[:ore]
+	puts "#NN #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
+      else
+	puts "#++ #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
+	puts "    #{trg_prj.apiCmd} submitreq --yes #{sub[:sta] == 'new'?"-s #{sub[:rid]}":""} -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
+      end
 
-      when :nag:
-	puts "#!! #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
-	puts "#   #{trg_prj.apiCmd} submitreq --yes #{sub[:sta] == 'new'?"-s #{sub[:rid]}":""} -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
+    when :nag:
+      puts "#!! #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
+      puts "#   #{trg_prj.apiCmd} submitreq --yes #{sub[:sta] == 'new'?"-s #{sub[:rid]}":""} -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
+
+    when :aggregated:
+      puts "#AA #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
+
     end
 
   end
