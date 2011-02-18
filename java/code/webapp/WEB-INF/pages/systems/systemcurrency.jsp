@@ -54,7 +54,7 @@
 		<rl:column sortable="true"
 				   bound="false"
 		           headerkey="systemcurrency.jsp.critical"
-		           sortattr="created"
+		           sortattr="critical"
 		           defaultsort="desc">
                            <c:choose>
                              <c:when test="${current.critical > 0}">
@@ -77,7 +77,7 @@
 		<rl:column sortable="true"
 				   bound="false"
 		           headerkey="systemcurrency.jsp.important"
-		           sortattr="created"
+		           sortattr="important"
 		           defaultsort="desc">
                            <c:choose>
                              <c:when test="${current.important > 0}">
@@ -100,7 +100,7 @@
 		<rl:column sortable="true"
 				   bound="false"
 		           headerkey="systemcurrency.jsp.moderate"
-		           sortattr="created"
+		           sortattr="moderate"
 		           defaultsort="desc">
                            <c:choose>
                              <c:when test="${current.moderate > 0}">
@@ -123,7 +123,7 @@
 		<rl:column sortable="true"
 				   bound="false"
 		           headerkey="systemcurrency.jsp.low"
-		           sortattr="created"
+		           sortattr="low"
 		           defaultsort="desc">
                            <c:choose>
                              <c:when test="${current.low > 0}">
@@ -146,7 +146,7 @@
 		<rl:column sortable="true"
 				   bound="false"
 		           headerkey="systemcurrency.jsp.bug"
-		           sortattr="created"
+		           sortattr="bug"
 		           defaultsort="desc">
                            <c:choose>
                              <c:when test="${current.bug > 0}">
@@ -161,7 +161,7 @@
 		<rl:column sortable="true"
 				   bound="false"
 		           headerkey="systemcurrency.jsp.enhancement"
-		           sortattr="created"
+		           sortattr="enhancement"
 		           defaultsort="desc">
                            <c:choose>
                              <c:when test="${current.enhancement > 0}">
