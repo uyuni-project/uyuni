@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 18 15:51:45 CET 2011 - mc@suse.de
+
+- fix extract keyid from RPM header 
+
+-------------------------------------------------------------------
 Thu Feb 17 16:02:25 CET 2011 - mc@suse.de
 
 - do not remove not existing files
