@@ -32,7 +32,6 @@ Requires: bcel
 Requires: c3p0
 Requires: hibernate3 >= 3.2.4
 Requires: java >= 1.6.0
-Requires: java-devel >= 1.6.0
 Requires: jakarta-commons-lang >= 2.1
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-discovery
@@ -190,7 +189,6 @@ Requires: c3p0
 Requires: cglib
 Requires: hibernate3 >= 3.2.4
 Requires: java >= 1.6.0
-Requires: java-devel >= 1.6.0
 Requires: jakarta-commons-lang >= 2.1
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
@@ -305,10 +303,6 @@ ln -sf ../../etc/init.d/taskomatic $RPM_BUILD_ROOT/%{_sbindir}/rctaskomatic
 
 %if 0%{?suse_version}
 sed -i -e 's/# Default-Start:/# Default-Start: 3 5/g' $RPM_BUILD_ROOT/%{_initrddir}/taskomatic
-
-# link the java compiler to tomcat
-# we need to use the alternative link to differ between 32 and 64 Bit
-ln -sf /etc/alternatives/java_sdk/lib/tools.jar $RPM_BUILD_ROOT%{jardir}/tools.jar
 %endif
 
 
@@ -491,7 +485,6 @@ fi
 %dir %{jardir}
 %{jardir}/ant-launcher.jar
 %{jardir}/ant.jar
-%{jardir}/tools.jar
 %else
 %attr(755, tomcat, root) %{_var}/spacewalk/systemlogs
 %ghost %attr(644, tomcat, root) %{_var}/spacewalk/systemlogs/audit-review.log
