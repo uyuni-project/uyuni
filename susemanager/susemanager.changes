@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Feb 18 13:36:21 CET 2011 - ug@suse.de
+
+- entitlement/subscription counting changed to bnc#670617
+
+-------------------------------------------------------------------
 Thu Feb 17 16:53:02 CET 2011 - iartarisi@suse.cz
 
 - make rhnproductname.label be channel.product_name instead of channel.label
