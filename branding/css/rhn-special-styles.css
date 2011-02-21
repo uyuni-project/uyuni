@@ -1,4 +1,14 @@
 /*index*/
+.ssm-overview TD, .ssm-overview TH
+{
+	border-bottom: 1px solid #DDDDDD !important;
+	line-height: 1.5;
+}
+.ssm-overview TR:last-child TD, .ssm-overview TR:last-child TH
+{
+	border-bottom: none !important;
+	line-height: 1.5;
+}
 .page-content DIV.toolbar A
 {
 	padding-right: 10px;
