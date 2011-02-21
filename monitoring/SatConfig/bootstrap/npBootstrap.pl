@@ -28,8 +28,8 @@ my $notify_scout_start = $cluster_config->get('', 'notify_scout_start');
 my $gritchMsg;
 if (!$ssk) {
     # Send notification that the scout shared key was not found.
-    $gritchMsg .= "\nError retrieving RHN Monitoring Scout shared key for this node!\n";
-    $soapbox->gritch('RHN Monitoring Scout ERROR', $gritchMsg);
+    $gritchMsg .= "\nError retrieving SUSE Manager Monitoring Scout shared key for this node!\n";
+    $soapbox->gritch('SUSE Manager Monitoring Scout ERROR', $gritchMsg);
     print "Failed to get scout shared key data for this node.\n";
     exit 1;
 }
@@ -107,12 +107,12 @@ if ($res->is_success) {
      unlink($llnsFile);
    }
    # Send notification that the sat may have been rebooted.
-   $soapbox->gritch('RHN Monitoring Scout started', $gritchMsg) if ($notify_scout_start);
+   $soapbox->gritch('SUSE Manager Monitoring Scout started', $gritchMsg) if ($notify_scout_start);
 
 } else {
    # Send notification that the sat may have been rebooted.
-   $gritchMsg .= "\nError configuring RHN Monitoring Scout ".`uname -n`."\n";
-   $soapbox->gritch('RHN Monitoring Scout ERROR', $gritchMsg);
+   $gritchMsg .= "\nError configuring SUSE Manager Monitoring Scout ".`uname -n`."\n";
+   $soapbox->gritch('SUSE Manager Monitoring Scout ERROR', $gritchMsg);
    print "Failed $MAX_RETRIES times to get data for this node.\n";
    exit 1;
 }                                                                      
