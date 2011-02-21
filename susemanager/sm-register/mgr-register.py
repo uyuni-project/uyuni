@@ -18,58 +18,57 @@ if __name__ != '__main__':
 
 import sys
 def systemExit(code, msgs=None):
-  "Exit with a code and optional message(s). Saved a few lines of code."
-  if msgs:
-    if type(msgs) not in [type([]), type(())]:
-      msgs = (msgs, )
-      for msg in msgs:
-        sys.stderr.write(str(msg)+'\n')
-  sys.exit(code)
+    "Exit with a code and optional message(s). Saved a few lines of code."
+    if msgs:
+        if type(msgs) not in [type([]), type(())]:
+            msgs = (msgs, )
+            for msg in msgs:
+                sys.stderr.write(str(msg)+'\n')
+    sys.exit(code)
 
 try:
-  import os
-  import socket
-  from rhn import rhnLockfile
-  from spacewalk.common import CFG, fetchTraceback
-  from spacewalk.susemanager import mgr_register
+    import os
+    import socket
+    from rhn import rhnLockfile
+    from spacewalk.common import CFG, fetchTraceback
+    from spacewalk.susemanager import mgr_register
 except KeyboardInterrupt:
-  systemExit(0, "\nUser interrupted process.")
+    systemExit(0, "\nUser interrupted process.")
 except ImportError:
-  sys.stderr.write("Unable to find the code tree.\n"
-  "Path not correct? \n")
+    sys.stderr.write("Unable to find the code tree.\n"
+                     "Path not correct? \n")
 
 def releaseLOCK():
-  global LOCK
-  if LOCK:
-    LOCK.release()
-    LOCK = None
+    global LOCK
+    if LOCK:
+        LOCK.release()
+        LOCK = None
 
 def main():
-  # quick check to see if you are a super-user.
-  if os.getuid() != 0:
-    sys.stderr.write('ERROR: must be root to execute\n')
-    sys.exit(8)
+    # quick check to see if you are a super-user.
+    if os.getuid() != 0:
+        sys.stderr.write('ERROR: must be root to execute\n')
+        sys.exit(8)
 
-  global LOCK
-  LOCK = None
-  try:
-    LOCK = rhnLockfile.Lockfile('/var/run/mgr-register.pid')
-  except rhnLockfile.LockfileLockedException:
-    systemExit(1, "ERROR: attempting to run more than one instance of mgr-register Exiting.")
-
-  sync = mgr_register.Register()
-  sync.main()
-  releaseLOCK()
-  return 0
+    global LOCK
+    LOCK = None
+    try:
+        LOCK = rhnLockfile.Lockfile('/var/run/mgr-register.pid')
+    except rhnLockfile.LockfileLockedException:
+        systemExit(1, "ERROR: attempting to run more than one instance of mgr-register Exiting.")
+    sync = mgr_register.Register()
+    sync.main()
+    releaseLOCK()
+    return 0
 
 if __name__ == '__main__':
-  try:
-    sys.exit(abs(main() or 0))
-  except KeyboardInterrupt:
-    systemExit(0, "\nUser interrupted process.")
-  except SystemExit, e:
-    releaseLOCK()
-    sys.exit(e.code)
-  except Exception, e:
-    releaseLOCK()
-    raise
+    try:
+        sys.exit(abs(main() or 0))
+    except KeyboardInterrupt:
+        systemExit(0, "\nUser interrupted process.")
+    except SystemExit, e:
+        releaseLOCK()
+        sys.exit(e.code)
+    except Exception, e:
+        releaseLOCK()
+        raise
