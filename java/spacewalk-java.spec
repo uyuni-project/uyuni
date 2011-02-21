@@ -474,8 +474,8 @@ fi
 %else
 %config(noreplace) %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
 %endif
-%dir %{cobblerdir}
-%dir %{realcobsnippetsdir}
+%attr(755,root,root) %dir %{cobblerdir}
+%attr(755,root,root) %dir %{realcobsnippetsdir}
 %{realcobsnippetsdir}/spacewalk
 
 %if 0%{?suse_version}

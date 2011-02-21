@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 21 11:21:50 CET 2011 - ug@suse.de
+
+- fixed owner for cobbler snippets (bnc#673297)
+
+-------------------------------------------------------------------
 Fri Feb 18 16:46:10 CET 2011 - mc@suse.de
 
 - remove use of java-devel at runtime (bnc#673323) 
