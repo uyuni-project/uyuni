@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 21 16:20:33 CET 2011 - mc@suse.de
+
+- fix error messages (bnc#673766) 
+
+-------------------------------------------------------------------
 Wed Sep 15 08:20:53 CEST 2010 - mantel@suse.de
 
 - Initial release of SatConfig-bootstrap
