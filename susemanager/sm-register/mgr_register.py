@@ -9,11 +9,10 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
-import sys, os, time, grp
 import urllib
 import xml.etree.ElementTree as etree
 from xml.etree import cElementTree
-from optparse import OptionParser
+
 from spacewalk.server import rhnSQL
 from spacewalk.susemanager import suseLib
 from spacewalk.common import CFG, initCFG, rhnLog, fetchTraceback, log_debug, log_error
@@ -41,14 +40,14 @@ class Register:
   ns = "http://www.novell.com/xml/center/regsvc-1_0"
   guid = None
 
-  def main(self):
+  def __init__(self):
     initCFG('server.susemanager')
     db_string = CFG.DEFAULT_DB
     rhnSQL.initDB(db_string)
-    (options, args) = self.process_args()
     log_filename = 'mgr-register.log'
     rhnLog.initLOG(default_log_location + log_filename, CFG.DEBUG)
 
+  def main(self):
     # reset error for all server which modified date is
     # 14 days ago
     h = rhnSQL.prepare("""
@@ -57,9 +56,6 @@ class Register:
        WHERE modified < current_timestamp - numtodsinterval(14 * 86400, 'second')
     """)
     h.execute()
-
-    if options.reseterrors:
-      self.reset_errors()
 
     self.perform_deregister()
 
@@ -360,8 +356,3 @@ class Register:
              SET ncc_reg_error='N'
         """)
     h.execute()
-
-  def process_args(self):
-    self.parser = OptionParser()
-    self.parser.add_option('-r', '--reseterror', action='store_true', dest='reseterrors', default=False, help='Reset the error flags and register the clients again.')
-    return self.parser.parse_args()

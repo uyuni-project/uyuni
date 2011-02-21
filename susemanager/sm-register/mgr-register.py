@@ -13,10 +13,10 @@
 
 LOCK = None
 
-if __name__ != '__main__':
-  raise ImportError, "module cannot be imported"
-
+import os
 import sys
+from optparse import OptionParser
+
 def systemExit(code, msgs=None):
     "Exit with a code and optional message(s). Saved a few lines of code."
     if msgs:
@@ -27,8 +27,6 @@ def systemExit(code, msgs=None):
     sys.exit(code)
 
 try:
-    import os
-    import socket
     from rhn import rhnLockfile
     from spacewalk.common import CFG, fetchTraceback
     from spacewalk.susemanager import mgr_register
@@ -50,25 +48,26 @@ def main():
         sys.stderr.write('ERROR: must be root to execute\n')
         sys.exit(8)
 
+    parser = OptionParser(description="Register SUSE Manager clients")
+    parser.add_option("-r", "--reseterrors", action="store_true",
+                      help='Reset the error flags and register the clients again.')
+    (options, args) = parser.parse_args()
+
     global LOCK
     LOCK = None
     try:
         LOCK = rhnLockfile.Lockfile('/var/run/mgr-register.pid')
     except rhnLockfile.LockfileLockedException:
         systemExit(1, "ERROR: attempting to run more than one instance of mgr-register Exiting.")
-    sync = mgr_register.Register()
-    sync.main()
-    releaseLOCK()
-    return 0
+    register = mgr_register.Register()
+    if options.reseterrors:
+        register.reset_errors()
+    register.main()
 
 if __name__ == '__main__':
     try:
         sys.exit(abs(main() or 0))
     except KeyboardInterrupt:
         systemExit(0, "\nUser interrupted process.")
-    except SystemExit, e:
+    finally:
         releaseLOCK()
-        sys.exit(e.code)
-    except Exception, e:
-        releaseLOCK()
-        raise

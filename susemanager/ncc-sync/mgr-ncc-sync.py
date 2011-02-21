@@ -94,5 +94,3 @@ if __name__ == "__main__":
         main()
     except IOError, e:
         print "ERROR: %s" % e
-
-
