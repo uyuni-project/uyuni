@@ -67,6 +67,6 @@ end
 # the given "class"
 When /^I follow "([^"]*)" in class "([^"]*)"$/ do |arg1, arg2|
   within(:xpath, "//div[@class=\"#{arg2}\"]") do
-    find_link(arg1).click
+    find_link(debrand_string(arg1)).click
   end
 end

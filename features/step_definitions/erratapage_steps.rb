@@ -4,7 +4,7 @@
 Given /^I am on the Errata page$/ do
   Given "I am authorized"
   within(:xpath, "//div[@id=\"mainNavWrap\"]") do
-    find_link("Patches").click
+    find_link(debrand_string("Errata")).click
   end
 end
 

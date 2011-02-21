@@ -12,7 +12,7 @@ $: << File.join(File.dirname(__FILE__), "..", "..", "lib")
 browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :firefox #:htmlunit #:chrome #:firefox
 host = ENV['TESTHOST'] || 'andromeda.suse.de'
 
-# de-branding of strings in the UI
+# basic support for rebranding of strings in the UI
 BRANDING = ENV['BRANDING'] || 'suse'
 
 def debrand_string(str)
@@ -23,15 +23,22 @@ def debrand_string(str)
         when "Kickstart Snippets" then str
         when "Create a New Kickstart Profile" then str
         when "Step 1: Create Kickstart Profile" then str
-        # replace
+        when "Test Erratum" then str
+        # replacement exceptions
         when "Create Kickstart Distribution" then "Create Autoinstallable Distribution"
         when "upload new kickstart file" then "upload new kickstart/autoyast file"
         when "Upload a New Kickstart File" then "Upload a New Kickstart/AutoYaST File"
         when "RHN Reference Guide" then "Reference Guide"
-        # regex replace
+        when "Create Errata" then "Create Patch"
+        # generic regex replace
         when /.*kickstartable.*/ then str.gsub(/kickstartable/, 'autoinstallable')
         when /.*Kickstartable.*/ then str.gsub(/Kickstartable/, 'Autoinstallable')
         when /.*Kickstart.*/ then str.gsub(/Kickstart/, 'Autoinstallation')
+        when /Errata .* created./ then str.sub(/Errata/, 'Patch')
+        when /.*Erratum.*/ then str.gsub(/Erratum/, 'Patch')
+        when /.*erratum.*/ then str.gsub(/erratum/, 'patch')
+        when /.*Errata.*/ then str.gsub(/Errata/, 'Patches')
+        when /.*errata.*/ then str.gsub(/errata/, 'patches')
         else str
       end
     else str
