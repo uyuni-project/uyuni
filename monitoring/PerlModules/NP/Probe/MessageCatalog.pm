@@ -62,10 +62,10 @@ NOCpulse::Probe::MessageCatalog->status
 
 NOCpulse::Probe::MessageCatalog->shell
   (
-   connect_failed      => 'The RHN Monitoring Daemon (RHNMD) is not responding. ' .
+   connect_failed      => 'The Monitoring Daemon (RHNMD) is not responding. ' .
        'Please make sure the daemon is running and the host is accessible from the monitoring scout. ' .
        'Command was: %s',
-   connect_failed_err  => 'The RHN Monitoring Daemon (RHNMD) is not responding: %s. ' .
+   connect_failed_err  => 'The Monitoring Daemon (RHNMD) is not responding: %s. ' .
        'Please make sure the daemon is running and the host is accessible from the monitoring scout. ' .
        'Command was: %s',
    lost_connection     => 'Lost connection to the monitored host',
@@ -78,7 +78,7 @@ NOCpulse::Probe::MessageCatalog->shell
 
 NOCpulse::Probe::MessageCatalog->winsvc
   (
-   connect_failed    => 'The RHN Service is not responding on host %s, port %d. '.
+   connect_failed    => 'The SUSE Manager Service is not responding on host %s, port %d. '.
    'Version 2.2.x or above is required. Please install or restart the service.',
    ssl_ctx           => 'Cannot create SSL context',
    ssl_ctx_opt       => 'Cannot set SSL context options',
