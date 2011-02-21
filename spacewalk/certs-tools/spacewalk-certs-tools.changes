@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 21 15:00:56 CET 2011 - ma@suse.de
+
+- Always c_rehash a changed server CA cert (bnc#673776)
+
+-------------------------------------------------------------------
 Thu Feb 17 11:49:28 CET 2011 - ma@suse.de
 
 - Evaluate rhnreg_ks return value in bootsprap.sh (bnc#671691)

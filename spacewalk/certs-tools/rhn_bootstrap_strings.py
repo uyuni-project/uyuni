@@ -313,8 +313,8 @@ if [ $USING_SSL -eq 1 ] ; then
 	test -e "/etc/ssl/certs/${ORG_CA_CERT}.pem" || {
 	  test -d "/etc/ssl/certs" || mkdir -p "/etc/ssl/certs"
 	  ln -s "/usr/share/rhn/${ORG_CA_CERT}" "/etc/ssl/certs/${ORG_CA_CERT}.pem"
-	  test -x /usr/bin/c_rehash && /usr/bin/c_rehash /etc/ssl/certs/ | grep "${ORG_CA_CERT}"
 	}
+	test -x /usr/bin/c_rehash && /usr/bin/c_rehash /etc/ssl/certs/ | grep "${ORG_CA_CERT}"
     fi
 fi
 
