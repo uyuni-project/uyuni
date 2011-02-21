@@ -13,25 +13,25 @@ Feature: Explore the main landing page
   @errata
   Scenario: Completeness of the side navigation bar and the content frame
     Given I am authorized
-    When I follow "Patches"
-    Then I should see a "Patches Overview" text
+    When I follow "Errata"
+    Then I should see a "Errata Overview" text
      And I should see a "Relevant" link in the left menu
      And I should see a "All" link in the left menu
      And I should see a "Advanced Search" link in the left menu
-     And I should see a "Manage Patches" link in the left menu
-     And I should see a "Clone Patches" link in the left menu
-     And I should see a "Bugfix Patches" link
-     And I should see a "Enhancement Patches" link
-     And I should see a "Security Patches" link
+     And I should see a "Manage Errata" link in the left menu
+     And I should see a "Clone Errata" link in the left menu
+     And I should see a "Bugfix Errata" link
+     And I should see a "Enhancement Errata" link
+     And I should see a "Security Errata" link
      And I should see a "Sign Out" link
 
   @errata
   Scenario: Completeness of the main navigation bar
     Given I am authorized
-    When I follow "Patches"
+    When I follow "Errata"
     Then I should see a "Overview" link in the tab bar
      And I should see a "Systems" link in the tab bar
-     And I should see a "Patches" link in the tab bar
+     And I should see a "Errata" link in the tab bar
      And I should see a "Channels" link in the tab bar
      And I should see a "Configuration" link in the tab bar
      And I should see a "Schedule" link in the tab bar
@@ -42,9 +42,9 @@ Feature: Explore the main landing page
   @errata
   Scenario: Create new bugfix erratum with bnc URL
     Given I am on the Errata page
-    And I follow "Manage Patches" in the left menu
-    And I follow "create new patch"
-    When I enter "Test Patch" as "synopsis"
+    And I follow "Manage Errata" in the left menu
+    And I follow "create new erratum"
+    When I enter "Test Erratum" as "synopsis"
     And I enter "Test Advisory" as "advisoryName"
     And I enter "Test Product" as "product"
     And I enter "test@test.org" as "errataFrom"
@@ -57,15 +57,15 @@ Feature: Explore the main landing page
     And I enter "test,keywords" as "keywords"
     And I enter "Test Reference" as "refersTo"
     And I enter "Test Note" as "notes"
-    And I click on "Create Patch"
-    Then I should see a "Patch Test Advisory-1 created." text
+    And I click on "Create Errata"
+    Then I should see a "Errata Test Advisory-1 created." text
 
   @errata
   Scenario: Create new enhancement erratum with no bnc URL
     Given I am on the Errata page
-    And I follow "Manage Patches" in the left menu
-    And I follow "create new patch"
-    When I enter "Enhancement Patch" as "synopsis"
+    And I follow "Manage Errata" in the left menu
+    And I follow "create new erratum"
+    When I enter "Enhancement Erratum" as "synopsis"
     And I enter "Enhancement Advisory" as "advisoryName"
     And I select "Product Enhancement Advisory" from "advisoryType"
     And I enter "Enhancement Product" as "product"
@@ -76,51 +76,51 @@ Feature: Explore the main landing page
     And I enter "Enhancement,keywords" as "keywords"
     And I enter "Enhancement Reference" as "refersTo"
     And I enter "Enhancement Note" as "notes"
-    And I click on "Create Patch"
-    Then I should see a "Patch Enhancement Advisory-1 created." text
+    And I click on "Create Errata"
+    Then I should see a "Errata Enhancement Advisory-1 created." text
 
   @errata
   Scenario: Delete enhancement erratum
     Given I am on the Errata page
-    And I follow "Manage Patches" in the left menu
+    And I follow "Manage Errata" in the left menu
     And I follow "Unpublished" in the left menu
     And I check "Enhancement Advisory" erratum
-    And I click on "Delete Patch"
+    And I click on "Delete Errata"
     And I click on "Confirm"
-    Then I should see a "Successfully deleted 1 patches." text
+    Then I should see a "Successfully deleted 1 errata." text
 
   @errata
   Scenario: Publish erratum
     Given I am on the Errata page
-    And I follow "Manage Patches" in the left menu
+    And I follow "Manage Errata" in the left menu
     And I follow "Unpublished" in the left menu
     And I follow "Test Advisory"
-    And I click on "Publish Patch"
+    And I click on "Publish Errata"
     And I check test channel
-    And I click on "Publish Patch"
-    Then I should see a "All Patches" text
-    And I should see a "Test Patch" text
+    And I click on "Publish Errata"
+    Then I should see a "All Errata" text
+    And I should see a "Test Erratum" text
 
 #  @errata
 #  Scenario: Search erratum
 #    Given I am on the Errata page
 #    And I follow "Advanced Search" in the left menu
 #    And I search for "Test"
-#    Then I should see a "Test Patch" text
+#    Then I should see a "Test Erratum" text
 
   @errata
   Scenario: View bugfix errata
     Given I am on the Errata page
     And I follow "All" in the left menu
-    And I follow "Bugfix Patches"
-    Then I should see a "Test Patch" text
+    And I follow "Bugfix Errata"
+    Then I should see a "Test Erratum" text
 
   @errata
   Scenario: View erratum
     Given I am on the Errata page
     And I follow "All" in the left menu
     And I follow "Test Advisory"
-    Then I should see a "Test Patch" text
+    Then I should see a "Test Erratum" text
     And I should see a "test@test.org" text
     And I should see a "Test Topic" text
     And I should see a "Test Description" text
@@ -136,15 +136,15 @@ Feature: Explore the main landing page
     Given I am on the Errata page
     And I follow "Channels"
     And I follow "Test Base Channel"
-    And I follow "Patches" in class "content-nav"
-    Then I should see a "Test Patch" text
+    And I follow "Errata" in class "content-nav"
+    Then I should see a "Test Erratum" text
 
   @errata
   Scenario: Delete erratum
     Given I am on the Errata page
-    And I follow "Manage Patches" in the left menu
+    And I follow "Manage Errata" in the left menu
     And I check "Test Advisory" erratum
-    And I click on "Delete Patches"
+    And I click on "Delete Errata"
     And I click on "Confirm"
-    Then I should see a "Successfully deleted 1 patches." text
+    Then I should see a "Successfully deleted 1 errata." text
 

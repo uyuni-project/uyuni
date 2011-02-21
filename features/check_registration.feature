@@ -56,7 +56,7 @@ Feature: Check client registration
      And I should see a "Provisioning" link in element "content-nav"
      And I should see a "Groups" link in element "content-nav"
      And I should see a "Events" link in element "content-nav"
-     And I should see a "Patches" link in element "contentnav-row2"
+     And I should see a "Errata" link in element "contentnav-row2"
      And I should see a "Packages" link in element "contentnav-row2"
      And I should see a "Software Channels" link in element "contentnav-row2"
      And I should see a "List / Remove" link
@@ -238,11 +238,11 @@ Feature: Check client registration
      And I should see a "create new value" link
      And I should see a "Custom System Information" link
 
-  Scenario: check tab links "Software" => "Patches"
+  Scenario: check tab links "Software" => "Errata"
     Given I am on the Systems overview page of this client
     When I follow "Software" in class "content-nav"
-    When I follow "Patches" in class "contentnav-row2"
-    Then I should see a "Relevant Patches" text
+    When I follow "Errata" in class "contentnav-row2"
+    Then I should see a "Relevant Errata" text
      And I should see a "Show" button
      And I should see a "Security update for the Linux kernel" text
      And I should see a "slessp1-kernel" link
