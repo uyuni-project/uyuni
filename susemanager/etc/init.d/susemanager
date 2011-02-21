@@ -53,9 +53,9 @@ case "$1" in
 	#rc_status -v
     if [ -d '/var/spacewalk' -o -d '/var/satellite' ]; then
         MYHOSTNAME=`hostname -f`
-        echo -e "\n\t${done}SUSE Manager Server is running at https://$MYHOSTNAME\n"
+        echo -e "\n\t${done}SUSE Manager Server is running at https://$MYHOSTNAME ${norm}\n"
     else
-        echo -e "\n\t${done}To setup SUSE Manager please login and execute yast2 susemanager_setup\n"
+        echo -e "\n\t${done}To setup SUSE Manager please login and execute yast2 susemanager_setup ${norm}\n"
     fi
 	;;
     stop)
