@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 21 17:34:22 CET 2011 - mc@suse.de
+
+- switch message color back to normal 
+
+-------------------------------------------------------------------
 Mon Feb 21 15:33:23 CET 2011 - iartarisi@suse.cz
 
 - move optparser code from the library to the command line client
