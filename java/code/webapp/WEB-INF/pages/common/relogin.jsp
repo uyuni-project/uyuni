@@ -7,7 +7,7 @@
 <head>
   <script src="/javascript/focus.js" type="text/javascript"></script>
 </head>
-<body onLoad="formFocus('loginForm', 'username')">
+<body onLoad="formFocus('loginForm', 'username')" id="relogin_page">
 
 <rhn:require acl="not user_authenticated()">
 <c:if test="${requestScope.hasExpired != 'true'}">

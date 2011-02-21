@@ -34,20 +34,20 @@ DIV.login-box DIV.input-row INPUT
 	font-weight: normal;
 	vertical-align: middle;
 }
-#login_page .clearBox
+#login_page .clearBox, #relogin_page .clearBox
 {
 	margin-left: auto;
 	margin-right: auto;
 }
-#relogin_page .clearBox
-{
-	margin-left: 175px !important;
-}
 #relogin_page H1
 {
 	text-align: center;
-	width: 280px;
-	margin-left: 175px;
+	margin-top: 1em;
+}
+#relogin_page .page-content
+{
+	margin-bottom: 0px !important;
+	padding-bottom: 0px !important;
 }
 .clearBox
 {
@@ -59,7 +59,7 @@ DIV.login-box DIV.input-row INPUT
 	-webkit-border-radius: 5px;
 	-khtml-border-radius: 5px;
 	border-radius: 5px 5px 5px 5px;
-	margin: 15px;
+	margin: 15px 15px 0px;
 	/*+box-shadow:0 2px 10px #E8E8E8;*/
 	-moz-box-shadow: 0 2px 10px #E8E8E8;
 	-webkit-box-shadow: 0 2px 10px #E8E8E8;
@@ -194,7 +194,11 @@ H1#rhn_welcome3 SPAN
 }
 .relogin
 {
-	text-align: left !important;
+	/*[disabled]text-align:left;*/
+}
+#relogin_page .sidebar
+{
+	display: none;
 }
 #contentLeft
 {
