@@ -31,7 +31,7 @@
   <c:if test="${!empty param.action_path}">
     <c:set var="action_path" value="${param.action_path}" scope="page"/>
   </c:if>
-<html:form action="${action_path}" autocomplete="off">
+<html:form action="${action_path}">
 
   <h2><bean:message key="usercreate.login" /></h2>
 

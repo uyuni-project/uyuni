@@ -21,7 +21,7 @@
 
 </div>
 <h2><bean:message key="details.jsp.personal_info" /></h2>
-<html:form action="/account/UserDetailsSubmit" autocomplete="off">
+<html:form action="/account/UserDetailsSubmit">
 
  <table class="details" align="center">
 

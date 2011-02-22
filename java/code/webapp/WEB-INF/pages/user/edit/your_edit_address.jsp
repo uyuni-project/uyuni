@@ -11,7 +11,7 @@
 <rhn:toolbar base="h1" img="/img/rhn-icon-users.gif" imgAlt="user.common.userAlt">
 <bean:message key="Addresses"/>
 </rhn:toolbar>
-<html:form action="/account/EditAddressSubmit" autocomplete="off">
+<html:form action="/account/EditAddressSubmit">
 <html:hidden property="type"/>
 
 <div class="page-summary">
