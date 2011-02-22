@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 22 17:24:28 CET 2011 - jrenner@suse.de
+
+- removing invalid attributes 'autocomplete'
+
+-------------------------------------------------------------------
 Mon Feb 21 11:21:50 CET 2011 - ug@suse.de
 
 - fixed owner for cobbler snippets (bnc#673297)
