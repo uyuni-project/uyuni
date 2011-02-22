@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 22 16:28:42 CET 2011 - iartarisi@suse.cz
+
+- new channels.xml: added SUSE Manager Tools SAP-AiO and VMWare channels
+
+-------------------------------------------------------------------
 Tue Feb 22 11:44:53 CET 2011 - iartarisi@suse.cz
 
 - new channels.xml: replace dummyurls with empty strings for fake RHEL
