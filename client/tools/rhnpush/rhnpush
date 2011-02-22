@@ -6,6 +6,7 @@
 
 import os
 import sys
+import string
 sys.path.append("/usr/share/rhn/")
 
 # management decisions lead to funny code

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 22 16:23:06 CET 2011 - mantel@suse.de
+
+- add missing "import string" (bnc#672643)
+
+-------------------------------------------------------------------
 Thu Feb 17 14:06:01 CET 2011 - mantel@suse.de
 
 - fix build: create symlink only after binary has been installed
