@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 22 11:44:53 CET 2011 - iartarisi@suse.cz
+
+- new channels.xml: replace dummyurls with empty strings for fake RHEL
+  channels
+
+-------------------------------------------------------------------
 Thu Feb 17 17:44:37 CET 2011 - mc@suse.de
 
 - add suse build keys 
