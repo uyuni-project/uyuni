@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+
+<!--
+ - SUSE Manager build file for development use.
+ - Please indent 2 spaces, NO TABS!
+ -->
+<project name="SUSE Manager" default="build_deploy" basedir=".">
+  <import file="build.xml" />
+
+  <!--
+   - Set prefix and webapp-dir before calling the redeploy target
+   -->
+  <target name="build_deploy" description="Build and install onto local Tomcat instance">
+    <property name="prefix" value="" />
+    <property name="webapp-dir" value="/var/lib/tomcat6/webapps" />
+    <echo message="${prefix}" />
+    <echo message="${webapp-dir}" />
+    <antcall target="redeploy" />
+  </target>
+
+  <!--
+   - This target is for fast building and (re-)installing the webapp locally
+   -->
+  <target name="redeploy"
+          depends="init-install,init,compile-notests,pack,apidoc-jsp,jspcompile"
+          description="(Re-)Install the webapp to the directory specified by $prefix">
+    <delete dir="${prefix}${webapp-dir}/rhn" failonerror="false" />
+    <mkdir dir="${prefix}${webapp-dir}/rhn" />
+    <mkdir dir="${prefix}${webapp-dir}/rhn/apidoc" />
+    <mkdir dir="${prefix}${webapp-dir}/rhn/apidoc/handlers" />
+    <mkdir dir="${prefix}/usr/share/rhn/lib" />
+    <unjar src="${rhn.war}" dest="${prefix}${webapp-dir}/rhn" overwrite="true" />
+
+    <!-- 
+     - Copy the apidocs to the right place 
+     -->
+    <copy file="${build.dir}/reports/apidocs/jsp/index.jsp"
+          toDir="${prefix}${webapp-dir}/rhn/apidoc"
+          overwrite="true" />
+    <copy file="${build.dir}/reports/apidocs/jsp/faqs.jsp"
+          toDir="${prefix}${webapp-dir}/rhn/apidoc"
+          overwrite="true" />
+    <copy file="${build.dir}/reports/apidocs/jsp/scripts.jsp"
+          toDir="${prefix}${webapp-dir}/rhn/apidoc"
+          overwrite="true" />
+    <copy toDir="${prefix}${webapp-dir}/rhn/apidoc/handlers/">
+        <fileset dir="${report.dir}/apidocs/jsp/handlers/" />
+    </copy>
+
+    <!-- 
+     - Copy the jar that contains our code to /usr/share/rhn/lib to be shared
+     - between taskomatic and the webapp.
+     -->
+    <copy file="${prefix}${webapp-dir}/rhn/WEB-INF/lib/rhn.jar"
+          toDir="${prefix}/usr/share/rhn/lib"
+          overwrite="true" />
+
+    <!--
+     - Delete ALL of the jars, including rhn.jar, from the webapp so that
+     - they can be replaced with symlinks.
+     -->
+    <delete>
+      <fileset dir="${prefix}${webapp-dir}/rhn/WEB-INF/lib" >
+        <include name="*.jar" />
+      </fileset>
+    </delete>
+
+    <!-- Create symlinks for everything -->
+    <jpackage-deps jars="${dist.jar.dependencies}"
+        dir="${prefix}${webapp-dir}/rhn/WEB-INF/lib" />
+    <symlink link="${prefix}${webapp-dir}/rhn/WEB-INF/lib/rhn.jar"
+             resource="/usr/share/rhn/lib/rhn.jar"
+             failonerror="false"
+             overwrite="true" />
+
+    <mkdir dir="${rhn-home}/buildconf/tempjars" />
+    <copy toDir="${prefix}${webapp-dir}/rhn/WEB-INF/lib" overwrite="true">
+      <fileset dir="${rhn-home}/buildconf/tempjars">
+        <include name="**/*.jar" />
+      </fileset>
+    </copy>
+
+    <!--
+     - Create additional symlinks that are normally created during rpm build
+     -->
+    <symlink link="${prefix}${webapp-dir}/rhn/WEB-INF/lib/java-branding.jar"
+             resource="/usr/share/rhn/lib/java-branding.jar"
+             failonerror="false"
+             overwrite="true" />
+    <symlink link="${prefix}${webapp-dir}/rhn/WEB-INF/lib/ojdbc14.jar"
+             resource="/usr/share/java/ojdbc14.jar"
+             failonerror="false"
+             overwrite="true" />
+  </target>
+</project>
