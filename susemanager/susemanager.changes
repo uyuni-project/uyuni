@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 23 09:59:58 CET 2011 - iartarisi@suse.cz
+
+- fix database insert integer bug caused by indenting the channels.xml file
+
+-------------------------------------------------------------------
 Mon Feb 21 17:34:22 CET 2011 - mc@suse.de
 
 - switch message color back to normal 
