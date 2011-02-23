@@ -89,10 +89,10 @@ public class ErrataManagerTest extends RhnBaseTestCase {
         Errata e = ErrataManager.createNewErrata();
         assertTrue(e instanceof UnpublishedErrata);
 
-        Bug b = ErrataManager.createNewUnpublishedBug(new Long(87), "test bug");
+        Bug b = ErrataManager.createNewUnpublishedBug(new Long(87), "test bug", null);
         assertTrue(b instanceof UnpublishedBug);
 
-        Bug b2 = ErrataManager.createNewPublishedBug(new Long(42), "test bug");
+        Bug b2 = ErrataManager.createNewPublishedBug(new Long(42), "test bug", null);
         assertTrue(b2 instanceof PublishedBug);
     }
 
@@ -101,7 +101,7 @@ public class ErrataManagerTest extends RhnBaseTestCase {
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
         // the results of the search-server searches.
-        Bug b1 = ErrataManager.createNewPublishedBug(new Long(42), "test bug");
+        Bug b1 = ErrataManager.createNewPublishedBug(new Long(42), "test bug", null);
         assertTrue(b1 instanceof PublishedBug);
         Errata e = ErrataManager.createNewErrata();
         assertTrue(e instanceof UnpublishedErrata);

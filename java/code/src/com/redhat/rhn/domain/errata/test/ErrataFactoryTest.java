@@ -56,8 +56,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     public void testPublish() throws Exception {
         Errata e = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
         //add bugs, keywords, and packages so we have something to work with...
-        e.addBug(ErrataManager.createNewUnpublishedBug(new Long(42), "test bug 1"));
-        e.addBug(ErrataManager.createNewUnpublishedBug(new Long(43), "test bug 2"));
+        e.addBug(ErrataManager.createNewUnpublishedBug(new Long(42), "test bug 1", null));
+        e.addBug(ErrataManager.createNewUnpublishedBug(new Long(43), "test bug 2", null));
         e.addPackage(PackageTest.createTestPackage());
         e.addKeyword("foo");
         e.addKeyword("bar");
@@ -103,8 +103,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     public void testPublishToChannel()  throws Exception {
         Errata e = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
         //add bugs, keywords, and packages so we have something to work with...
-        e.addBug(ErrataManager.createNewUnpublishedBug(new Long(42), "test bug 1"));
-        e.addBug(ErrataManager.createNewUnpublishedBug(new Long(43), "test bug 2"));
+        e.addBug(ErrataManager.createNewUnpublishedBug(new Long(42), "test bug 1", null));
+        e.addBug(ErrataManager.createNewUnpublishedBug(new Long(43), "test bug 2", null));
         e.addPackage(PackageTest.createTestPackage());
         e.addKeyword("foo");
         e.addKeyword("bar");
@@ -176,13 +176,13 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         //test unpublished
         Errata e = createTestUnpublishedErrata(user.getOrg().getId());
         assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
-        e.addBug(ErrataFactory.createUnpublishedBug(new Long(123), "test bug"));
+        e.addBug(ErrataFactory.createUnpublishedBug(new Long(123), "test bug", null));
         assertEquals(1, e.getBugs().size());
 
         //test published
         e = createTestPublishedErrata(user.getOrg().getId());
         assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
-        e.addBug(ErrataFactory.createPublishedBug(new Long(123), "test bug"));
+        e.addBug(ErrataFactory.createPublishedBug(new Long(123), "test bug", null));
         assertEquals(1, e.getBugs().size());
     }
 
