@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 23 16:46:50 CET 2011 - ug@suse.de
+
+- fixed virtual SUSE KVM machines in the webui (bnc#674344)
+
+-------------------------------------------------------------------
 Fri Feb 18 15:51:45 CET 2011 - mc@suse.de
 
 - fix extract keyid from RPM header 
