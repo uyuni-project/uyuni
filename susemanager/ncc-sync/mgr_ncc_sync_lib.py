@@ -999,7 +999,7 @@ class NCCSync(object):
 
             # register this channel's products in the database
             for product in channel.find('products'):
-                product_id = product.text
+                product_id = int(product.text)
                 self.map_channel_to_products(channel, channel_id, product_id)
 
             for child in channel:
