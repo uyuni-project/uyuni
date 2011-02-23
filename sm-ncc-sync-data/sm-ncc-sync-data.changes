@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Feb 23 09:58:26 CET 2011 - iartarisi@suse.cz
+
+- tidied channels.xml
+- removed SUSE Manager Tools SAP-AiO s390x, ppc64, ia64, i586
+- removed SUSE Manager Tools VMWare s390x, ppc64, ia64
+
+-------------------------------------------------------------------
 Tue Feb 22 16:28:42 CET 2011 - iartarisi@suse.cz
 
 - new channels.xml: added SUSE Manager Tools SAP-AiO and VMWare channels
