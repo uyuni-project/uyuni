@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Feb 23 14:11:33 CET 2011 - mantel@suse.de
+
+- some adaptations for SUSE manager
+
+-------------------------------------------------------------------
 Wed Sep 15 09:42:17 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-proxy-installer
