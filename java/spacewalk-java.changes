@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 24 15:28:08 CET 2011 - jrenner@suse.de
+
+- integrate fix for session fixation from upstream (bnc#644080)
+
+-------------------------------------------------------------------
 Tue Feb 22 17:24:28 CET 2011 - jrenner@suse.de
 
 - removing invalid attributes 'autocomplete'
