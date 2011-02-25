@@ -77,7 +77,7 @@
         </rl:column>
         </c:if>
 
-        <rl:column
+<%--         <rl:column
         	styleclass="${countstyle}"
             headertext="${rhn:localize('Flex Counts')} <br/> (${rhn:localize('Available/Total')})*">
             <c:choose>
@@ -104,7 +104,7 @@
             	</c:otherwise>            	
             </c:choose>
         </rl:column>
-        </c:if>
+        </c:if> --%> <%-- Removed for the purpose of SUSE Manager. ET --%>
 
     </rl:list>
 </rl:listset>
