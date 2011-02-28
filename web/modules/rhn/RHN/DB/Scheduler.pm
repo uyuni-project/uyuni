@@ -1048,6 +1048,7 @@ sub schedule_errata_updates_for_systems {
 
 #    my $action_name = "Errata Update: " . $errata->advisory . ($errata_total > 1 ? " ($errata_counter of $errata_total)" : "");
     my $action_name = "Patch Update: " . $errata->advisory . ' - ' . $errata->synopsis;
+    $action_name = substr($action_name, 0, 128);
 
     my ($action_id, $stat_id) = $class->make_base_action(-org_id => $org_id,
 							 -user_id => $user_id,

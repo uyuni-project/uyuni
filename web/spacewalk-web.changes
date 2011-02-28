@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 28 10:54:36 CET 2011 - ug@suse.de
+
+- fixed perl code to truncate action-name in DB to 128 chars
+  (bnc#675021)
+
+-------------------------------------------------------------------
 Thu Feb 17 13:25:22 CET 2011 - jrenner@suse.de
 
 - change kickstart to autoinstallation in navigation on pxt pages 
