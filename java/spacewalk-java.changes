@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Feb 28 11:27:15 CET 2011 - jrenner@suse.de
+
+- shorten the action name if > 128 chars (bnc#675021)
+
+-------------------------------------------------------------------
 Thu Feb 24 15:28:08 CET 2011 - jrenner@suse.de
 
 - integrate fix for session fixation from upstream (bnc#644080)
