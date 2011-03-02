@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar  2 17:16:43 CET 2011 - jrenner@suse.de
+
+- link the local doc instead of the online versions (bnc#674315)
+
+-------------------------------------------------------------------
 Fri Feb 11 13:38:03 CET 2011 - jrenner@suse.de
 
 - add quick start to help desk and navigation
