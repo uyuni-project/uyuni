@@ -238,6 +238,7 @@ exit 0
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
+sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 %endif
 
 %post redirect
