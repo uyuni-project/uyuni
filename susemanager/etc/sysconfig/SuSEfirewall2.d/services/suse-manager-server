@@ -2,7 +2,7 @@
 ## Description: opens ports requied ports for SUSE Manager Server
 
 # space separated list of allowed TCP ports
-TCP="http https ssh xmpp-client tftp"
+TCP="http https ssh xmpp-client xmpp-server tftp"
 
 # space separated list of allowed UDP ports
 UDP="ntp tftp"
