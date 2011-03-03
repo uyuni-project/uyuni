@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  3 17:48:44 CET 2011 - mc@suse.de
+
+- fix ssl configuration 
+
+-------------------------------------------------------------------
 Thu Mar  3 15:54:20 CET 2011 - mantel@suse.de
 
 - use FQHN for SSL certificate common name (bnc#676678)
