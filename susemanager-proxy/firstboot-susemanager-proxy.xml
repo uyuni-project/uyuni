@@ -1,0 +1,295 @@
+<?xml version="1.0"?>
+<productDefines  xmlns="http://www.suse.com/1.0/yast2ns"
+    xmlns:config="http://www.suse.com/1.0/configns">
+
+    <!--
+    $Id: firstboot.xml 61629 2010-04-09 11:14:29Z jsuchome $
+    Work around for the text domain
+    textdomain="firstboot"
+    -->
+
+    <textdomain>firstboot</textdomain>
+
+    <globals>
+
+      	<!-- SLE registration parameters -->
+        <enable_register_hwdata   config:type="boolean">true</enable_register_hwdata>
+        <enable_register_optional config:type="boolean">true</enable_register_optional>
+        <display_register_forcereg config:type="boolean">true</display_register_forcereg>
+        <disable_register_w3m config:type="boolean">false</disable_register_w3m>
+        <register_monthly config:type="boolean">true</register_monthly>
+
+	<!--
+	If a variable root_password_as_first_user is present in globals section,
+	inst_user step will have the check box
+	    "Use this password for system administrator"
+	so you don't need to include root password step (fate#306297).
+	If the variable is missing (commented), the check box won't appear.
+
+	The value of the variable (true/false) will set the default value for the check box.
+	<root_password_as_first_user config:type="boolean">true</root_password_as_first_user>
+	 -->
+
+	<!-- The default value of "Automatic Login" checkbox -->
+	<enable_autologin config:type="boolean">false</enable_autologin>
+
+	<!--
+	For more variables that can be in this section, look into the control file
+	(/etc/YaST2/control.xml or root directory of installation media)
+	-->
+
+	<!--
+	Definition of Automatic Configuration Steps follows - each step
+	runs non-interactive configuration. To enable steps defined in
+	Automatic Configuration, enable inst_automatic_configuration in the
+	workflow.
+	-->
+	<automatic_configuration config:type="list">
+	    <!-- Configure network -->
+	    <ac_step>
+		<text_id>ac_label_1</text_id>
+		<icon>yast-lan</icon>
+		<type>proposals</type>
+		<ac_items config:type="list">
+		    <ac_item>lan</ac_item>
+		</ac_items>
+	    </ac_step>
+	    <!--
+	    Configure printer (needs configured network for net-detection)
+	    -->
+	    <ac_step>
+		<text_id>ac_label_2</text_id>
+		<icon>yast-hwinfo</icon>
+		<type>proposals</type>
+		<ac_items config:type="list">
+		    <ac_item>printer</ac_item>
+		</ac_items>
+	    </ac_step>
+	</automatic_configuration>
+    </globals>
+    <proposals config:type="list">
+        <proposal>
+            <name>firstboot_hardware</name>
+            <mode>installation</mode>
+            <stage>firstboot</stage>
+            <label>Hardware Configuration</label>
+            <proposal_modules config:type="list">
+                <proposal_module>printer</proposal_module>
+            </proposal_modules>
+        </proposal>
+        <proposal>
+            <name>firstboot_network</name>
+            <mode>installation</mode>
+            <stage>firstboot</stage>
+            <label>Network Configuration</label>
+            <proposal_modules config:type="list">
+                <proposal_module>lan</proposal_module>
+            </proposal_modules>
+        </proposal>
+    </proposals>
+    <workflows  config:type="list">
+        <workflow>
+            <defaults>
+                <enable_back>yes</enable_back>
+                <enable_next>yes</enable_next>
+                <archs>all</archs>
+            </defaults>
+            <stage>firstboot</stage>
+            <label>Configuration</label>
+            <mode>installation</mode>
+            <modules  config:type="list">
+                <module>
+                    <label>Language and Keyboard</label>
+                    <enabled config:type="boolean">true</enabled>
+		    <!-- step for configuration of both language and keyboard layout (fate#306296) -->
+                    <name>firstboot_language_keyboard</name>
+                </module>
+                <module>
+                    <label>Root Password</label>
+                    <enabled config:type="boolean">true</enabled>
+                    <name>inst_root</name>
+                </module>
+<!--
+                <module>
+                    <label>Language</label>
+                    <enabled config:type="boolean">false</enabled>
+                    <name>firstboot_language</name>
+                </module>
+                <module>
+                    <label>Keyboard Layout</label>
+                    <enabled config:type="boolean">false</enabled>
+                    <name>firstboot_keyboard</name>
+                </module>
+                <module>
+                    <label>Welcome</label>
+                    <name>firstboot_welcome</name>
+                </module>
+-->
+                <module>
+                    <label>License Agreements</label>
+                    <enabled config:type="boolean">false</enabled>
+                    <name>firstboot_licenses</name>
+                </module>
+                <module>
+                    <label>License Agreement</label>
+                    <enabled config:type="boolean">true</enabled>
+                    <name>firstboot_license_novell</name>
+                </module>
+                <module>
+                    <label>License Agreement</label>
+                    <enabled config:type="boolean">false</enabled>
+                    <name>firstboot_license</name>
+                  </module>
+                <module>
+                  <label>Product Requirements</label>
+                  <enabled config:type="boolean">false</enabled>
+                  <name>susemanager_reqs</name>
+                </module>
+
+<!--
+                <module>
+                    <label>Host Name</label>
+                    <enabled config:type="boolean">false</enabled>
+                    <name>inst_hostname</name>
+                </module>
+                <module>
+                    <label>Network</label>
+		     this step only restarts service 'network'
+                    <name>firstboot_network_write</name>
+                    <enabled config:type="boolean">false</enabled>
+                </module>
+                <module>
+                    <enabled config:type="boolean">true</enabled>
+                    <name>firstboot_ssh</name>
+                </module>
+-->
+                <module>
+                    <label>Network</label>
+                    <name>inst_proposal</name>
+                    <enabled config:type="boolean">true</enabled>
+                    <proposal>firstboot_network</proposal>
+                </module>
+<!--
+                 <module>
+                    <label>Automatic Configuration</label>
+                    <name>inst_automatic_configuration</name>
+                    <enabled config:type="boolean">false</enabled>
+                  </module>
+-->
+                <module>
+                    <label>Time and Date</label>
+                    <enabled config:type="boolean">true</enabled>
+                    <name>firstboot_timezone</name>
+                </module>
+                <module>
+                    <label>NTP Client</label>
+                    <enabled config:type="boolean">true</enabled>
+                    <name>firstboot_ntp</name>
+                </module>
+<!--
+                <module>
+                    <label>Desktop</label>
+                    <enabled config:type="boolean">false</enabled>
+                    <name>firstboot_desktop</name>
+                </module>
+                <module>
+                    <label>Network</label>
+                    <name>inst_proposal</name>
+                    <enabled config:type="boolean">false</enabled>
+                    <proposal>firstboot_network</proposal>
+                </module>
+                <module>
+                    <label>Users</label>
+                    <enabled config:type="boolean">true</enabled>
+                    <name>inst_auth</name>
+                </module>
+                <module>
+                    <label>Users</label>
+                    <enabled config:type="boolean">true</enabled>
+                    <name>inst_user</name>
+                </module>
+-->
+                <module>
+                    <label>Customer Center</label>
+                    <name>inst_suse_register</name>
+                </module>
+<!--
+                <module>
+                    <label>Hardware</label>
+                    <name>inst_proposal</name>
+                    <enabled config:type="boolean">false</enabled>
+                    <proposal>firstboot_hardware</proposal>
+                </module>
+-->
+                <module>
+                    <label>Finish Setup</label>
+                    <name>firstboot_write</name>
+                    <enable_back>no</enable_back>
+                    <enable_next>no</enable_next>
+                </module>
+                <module>
+                    <label>Finish Setup</label>
+                    <name>inst_suseconfig</name>
+                    <enable_back>no</enable_back>
+                    <enable_next>no</enable_next>
+                  </module>
+
+
+->
+
+<!-- We let the user run manually the SUSE Manager setup part
+because he may want to do a migration instead -->
+
+<!--
+                <module>
+                    <label>SUSE Manager</label>
+                    <enabled config:type="boolean">true</enabled>
+                    <name>susemanager_manager</name>
+                </module>
+                <module>
+                    <label>SUSE Manager: Certificates</label>
+                    <enabled config:type="boolean">true</enabled>
+                    <name>susemanager_cert</name>
+                </module>
+                <module>
+                    <label>SUSE Manager: Database</label>
+                    <enabled config:type="boolean">true</enabled>
+                    <name>susemanager_db</name>
+                </module>
+                <module>
+                    <label>SUSE Manager: NCC</label>
+                    <enabled config:type="boolean">true</enabled>
+                    <name>susemanager_ncc</name>
+                </module>
+                <module>
+                    <label>SUSE Manager: Write Settings</label>
+                    <enabled config:type="boolean">true</enabled>
+                    <name>susemanager_write</name>
+                </module>
+
+-->
+
+
+                <module>
+                    <label>Finish Setup</label>
+                    <name>inst_congratulate</name>
+                  </module>
+
+            </modules>
+        </workflow>
+    </workflows>
+    <texts>
+      <congratulate>
+        <label>
+          &lt;p&gt;The installation of SUSE Manager Proxy has completed successfully.&lt;/p&gt;
+          &lt;p&gt;Click Finish to log in to the system and start the configure-proxy.sh.&lt;/p&gt;
+          &lt;p&gt;Please visit us at http://www.novell.com/linux/.&lt;/p&gt;
+        </label>
+      </congratulate>
+      	<!--
+        	Labels used during Automatic Configuration: use "text_id" from "ac_step"
+       	-->
+       	<ac_label_1><label>Configuring network...</label></ac_label_1>
+      	<ac_label_2><label>Configuring hardware...</label></ac_label_2>
+    </texts>
+</productDefines>
