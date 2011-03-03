@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  3 15:59:22 CET 2011 - mantel@suse.de
+
+- debrand system connection display (bnc#676677)
+
+-------------------------------------------------------------------
 Mon Feb 28 10:54:36 CET 2011 - ug@suse.de
 
 - fixed perl code to truncate action-name in DB to 128 chars
