@@ -73,6 +73,13 @@ install -m 644 configure-proxy.sh.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+%if 0%{?suse_version}
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
+%endif
+
 %files
 %defattr(-,root,root,-)
 %dir %{defaultdir}

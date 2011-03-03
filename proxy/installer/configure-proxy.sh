@@ -178,18 +178,26 @@ if [ -f /usr/bin/yum ]; then
                 YUM_OR_UPDATE="$YUM_OR_UPDATE -y"
                 UPGRADE="$UPGRADE -y"
         fi
+elif [ -x /usr/bin/zypper ]; then
+	YUM_OR_UPDATE="zypper install"
+	UPGRADE="zypper update"
+	# add -y for non-interactive installation
+	if [ "$INTERACTIVE" = "0" ]; then
+		YUM_OR_UPDATE="zypper --non-interactive install"
+		UPGRADE="zypper --non-interactive update"
+	fi
 fi
 SYSCONFIG_DIR=/etc/sysconfig/rhn
 RHNCONF_DIR=/etc/rhn
-HTTPDCONF_DIR=/etc/httpd/conf
-HTTPDCONFD_DIR=/etc/httpd/conf.d
+HTTPDCONF_DIR=/etc/apache2
+HTTPDCONFD_DIR=/etc/apache2/conf.d
 #HTMLPUB_DIR=/var/www/html/pub
 HTMLPUB_DIR=/srv/www/htdocs/pub
 JABBERD_DIR=/etc/jabberd
 SQUID_DIR=/etc/squid
 
 if [ ! -r $SYSCONFIG_DIR/systemid ]; then
-	echo ERROR: RHN Proxy does not appear to be registered
+	echo ERROR: SUSE Manager Proxy does not appear to be registered
 	exit 2
 fi
 
@@ -204,7 +212,7 @@ if ! [ -d $SSL_BUILD_DIR ] && [ 0$FORCE_OWN_CA -eq 0 ]; then
 	exit 1
 fi
 
-default_or_input "RHN Parent" RHN_PARENT $(awk -F= '/serverURL=/ {split($2, a, "/")} END { print a[3]}' $SYSCONFIG_DIR/up2date)
+default_or_input "SUSE Manager Parent" RHN_PARENT $(awk -F= '/serverURL=/ {split($2, a, "/")} END { print a[3]}' $SYSCONFIG_DIR/up2date)
 
 if [ "$RHN_PARENT" == "rhn.redhat.com" ]; then
    RHN_PARENT="xmlrpc.rhn.redhat.com"
@@ -383,7 +391,7 @@ if [ $MONITORING -eq 0 ]; then
 fi
 
 # systemid need to be readable by apache/proxy
-chown root:apache $SYSCONFIG_DIR/systemid
+chown root:www $SYSCONFIG_DIR/systemid
 chmod 0640 $SYSCONFIG_DIR/systemid
 
 #Setup the cobbler stuff, needed to use koan through a proxy
@@ -454,13 +462,15 @@ config_error $? "SSL key generation failed!"
 echo "Installing SSL certificate for Apache and Jabberd:"
 rpm -Uv $(/usr/bin/rhn-ssl-tool --gen-server --rpm-only --dir="$SSL_BUILD_DIR" 2>/dev/null |grep noarch.rpm)
 
-if [ -e $HTTPDCONFD_DIR/ssl.conf ]; then
-	mv $HTTPDCONFD_DIR/ssl.conf $HTTPDCONFD_DIR/ssl.conf.bak
+if [ -e $HTTPDCONF_DIR/vhosts.d/ssl.conf ]; then
+	mv $HTTPDCONF_DIR/vhosts.d/ssl.conf $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak
+else
+	cp $HTTPDCONF_DIR/vhosts.d/vhost-ssl.template $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak
 fi
 sed -e "s|^SSLCertificateFile /etc/pki/tls/certs/localhost.crt$|SSLCertificateFile $HTTPDCONF_DIR/ssl.crt/server.crt|g" \
 	    -e "s|^SSLCertificateKeyFile /etc/pki/tls/private/localhost.key$|SSLCertificateKeyFile $HTTPDCONF_DIR/ssl.key/server.key|g" \
 	    -e "s|</VirtualHost>|RewriteEngine on\nRewriteOptions inherit\nSSLProxyEngine on\n</VirtualHost>|" \
-        < $HTTPDCONFD_DIR/ssl.conf.bak  > $HTTPDCONFD_DIR/ssl.conf
+        < $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak  > $HTTPDCONF_DIR/vhosts.d/ssl.conf
 
 
 CHANNEL_LABEL="rhn_proxy_config_$SYSTEM_ID"
@@ -471,7 +481,7 @@ if [ "$POPULATE_CONFIG_CHANNEL" = "1" ]; then
                 rhn_proxy_config_$SYSTEM_ID
 	rhncfg-manager update --server-name "$RHN_PARENT" \
                 --channel=rhn_proxy_config_$SYSTEM_ID \
-                $HTTPDCONFD_DIR/ssl.conf \
+                $HTTPDCONF_DIR/vhosts.d/ssl.conf \
                 $RHNCONF_DIR/rhn.conf \
                 $RHNCONF_DIR/cluster.ini \
                 $SQUID_DIR/squid.conf \
@@ -487,7 +497,7 @@ echo "Enabling Spacewalk Proxy."
 if [ $ENABLE_SCOUT -ne 0 ]; then
   MonitoringScout="MonitoringScout"
 fi
-for service in squid httpd jabberd $MonitoringScout; do
+for service in squid apache2 jabberd $MonitoringScout; do
   /sbin/chkconfig --add $service 
   /sbin/chkconfig --level 345 $service on 
 done
