@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  3 17:33:47 CET 2011 - jrenner@suse.de
+
+- fix navigation on the help page (while working on bnc#676699)
+
+-------------------------------------------------------------------
 Mon Feb 28 11:27:15 CET 2011 - jrenner@suse.de
 
 - shorten the action name if > 128 chars (bnc#675021)
