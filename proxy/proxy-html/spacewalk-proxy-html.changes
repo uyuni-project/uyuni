@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  3 16:23:59 CET 2011 - etrounev@novell.com
+
+- Proxy page debranding and manageryfication (bnc#676682)
+
+-------------------------------------------------------------------
 Sat Jan 22 12:40:19 CET 2011 - mc@suse.de
 
 - fix macros
