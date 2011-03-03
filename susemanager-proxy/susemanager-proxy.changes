@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  3 17:29:41 CET 2011 - mc@suse.de
+
+- change firewall module to open xmpp-server port 
+
+-------------------------------------------------------------------
 Thu Mar  3 10:51:21 CET 2011 - mc@suse.de
 
 - initial release 

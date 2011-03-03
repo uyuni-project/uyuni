@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  3 17:30:20 CET 2011 - mc@suse.de
+
+- change firewall module to open xmpp-server port
+
+-------------------------------------------------------------------
 Wed Feb 23 09:59:58 CET 2011 - iartarisi@suse.cz
 
 - fix database insert integer bug caused by indenting the channels.xml file
