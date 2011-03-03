@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  3 09:44:10 CET 2011 - jrenner@suse.de
+
+- replace links to docs in specfile for now (bnc#674315)
+
+-------------------------------------------------------------------
 Wed Mar  2 17:16:43 CET 2011 - jrenner@suse.de
 
 - link the local doc instead of the online versions (bnc#674315)
