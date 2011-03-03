@@ -206,9 +206,6 @@ if [ -f %{_sysconfdir}/sysconfig/rhn/systemid ]; then
     chmod 0640 %{_sysconfdir}/sysconfig/rhn/systemid
 fi
 %if 0%{?suse_version}
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
 /sbin/service apache2 try-restart > /dev/null 2>&1
 %else
 /sbin/service httpd condrestart > /dev/null 2>&1
@@ -235,6 +232,13 @@ rm -rf $RHN_PKG_DIR/list/*
 
 # Make sure the scriptlet returns with success
 exit 0
+
+%post common
+%if 0%{?suse_version}
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
+%endif
 
 %post redirect
 %if 0%{?suse_version}
