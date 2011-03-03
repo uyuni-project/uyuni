@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  3 12:44:09 CET 2011 - mantel@suse.de
+
+- move apache module configuration to main package
+
+-------------------------------------------------------------------
 Thu Mar  3 10:48:18 CET 2011 - mantel@suse.de
 
 - adapt rhn-proxy for SUSE Manager
