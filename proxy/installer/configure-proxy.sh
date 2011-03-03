@@ -204,7 +204,7 @@ fi
 SYSTEM_ID=$(/usr/bin/xsltproc /usr/share/rhn/get_system_id.xslt $SYSCONFIG_DIR/systemid | cut -d- -f2)
 
 DIR=/usr/share/doc/proxy/conf-template
-HOSTNAME=$(hostname)
+HOSTNAME=$(hostname -f)
 
 SSL_BUILD_DIR=${SSL_BUILD_DIR:-/root/ssl-build}
 if ! [ -d $SSL_BUILD_DIR ] && [ 0$FORCE_OWN_CA -eq 0 ]; then

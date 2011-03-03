@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  3 15:54:20 CET 2011 - mantel@suse.de
+
+- use FQHN for SSL certificate common name (bnc#676678)
+
+-------------------------------------------------------------------
 Thu Mar  3 12:43:00 CET 2011 - mantel@suse.de
 
 - move apache module configuration to main package
