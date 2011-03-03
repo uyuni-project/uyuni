@@ -467,11 +467,10 @@ if [ -e $HTTPDCONF_DIR/vhosts.d/ssl.conf ]; then
 else
 	cp $HTTPDCONF_DIR/vhosts.d/vhost-ssl.template $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak
 fi
-sed -e "s|^SSLCertificateFile /etc/pki/tls/certs/localhost.crt$|SSLCertificateFile $HTTPDCONF_DIR/ssl.crt/server.crt|g" \
-	    -e "s|^SSLCertificateKeyFile /etc/pki/tls/private/localhost.key$|SSLCertificateKeyFile $HTTPDCONF_DIR/ssl.key/server.key|g" \
-	    -e "s|</VirtualHost>|RewriteEngine on\nRewriteOptions inherit\nSSLProxyEngine on\n</VirtualHost>|" \
+sed -e "s|^[\t ]*SSLCertificateFile.*$|SSLCertificateFile $HTTPDCONF_DIR/ssl.crt/spacewalk.crt|g" \
+        -e "s|^[\t ]*SSLCertificateKeyFile.*$|SSLCertificateKeyFile $HTTPDCONF_DIR/ssl.key/spacewalk.key|g" \
+        -e "s|</VirtualHost>|RewriteEngine on\nRewriteOptions inherit\nSSLProxyEngine on\n</VirtualHost>|" \
         < $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak  > $HTTPDCONF_DIR/vhosts.d/ssl.conf
-
 
 CHANNEL_LABEL="rhn_proxy_config_$SYSTEM_ID"
 default_or_input "Create and populate configuration channel $CHANNEL_LABEL?" POPULATE_CONFIG_CHANNEL 'Y/n'
