@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar  3 12:43:00 CET 2011 - mantel@suse.de
+
+- move apache module configuration to main package
+
+-------------------------------------------------------------------
 Thu Mar  3 10:48:58 CET 2011 - mantel@suse.de
 
 - adapt for SUSE Manager
