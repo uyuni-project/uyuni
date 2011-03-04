@@ -38,6 +38,7 @@ sub register_acl_handlers {
   $acl->register_handler(system_profile_capable => \&system_profile_capable);
   $acl->register_handler(proxy_evr_at_least => \&proxy_evr_at_least);
   $acl->register_handler(org_proxy_evr_at_least => \&org_proxy_evr_at_least);
+  $acl->register_handler(org_has_proxies => \&org_has_proxies);
   $acl->register_handler(package_available => \&package_available_to_system);
   $acl->register_handler(action_pending_named => \&action_pending_named);
   $acl->register_handler(last_action_attempt_failed => \&last_action_attempt_failed);
@@ -258,5 +259,14 @@ sub system_entitlement_possible {
   return 0;
 }
 
+# Return true if the org has at least one registered proxy
+sub org_has_proxies {
+  my $pxt = shift;
+  my $ds = new RHN::DataSource::System (-mode => 'org_proxy_servers');
+  my $data = $ds->execute_query(-org_id => $pxt->user->org_id);
+
+  return 1 if length($data) > 0;
+  return 0;
+}
 
 1;
