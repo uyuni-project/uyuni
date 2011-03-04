@@ -1046,7 +1046,7 @@ class NCCSync(object):
             channel_id = rhnSQL.Row("rhnchannel", "label", channel_label)['id']
             for product in channel.find('products'):
                 product_id = rhnSQL.Row("suseproducts", 'product_id',
-                                        product.text)['id']
+                                        int(product.text))['id']
                 q = rhnSQL.prepare("INSERT INTO suseproductchannel "
                                    "(channel_id, product_id) "
                                    "VALUES (:channel_id, :product_id)")
