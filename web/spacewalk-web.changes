@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  4 13:17:03 CET 2011 - jrenner@suse.de
+
+- remove checks for specific proxy versions (bnc#676718)
+
+-------------------------------------------------------------------
 Thu Mar  3 15:59:22 CET 2011 - mantel@suse.de
 
 - debrand system connection display (bnc#676677)
