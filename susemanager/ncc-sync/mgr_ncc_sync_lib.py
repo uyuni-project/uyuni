@@ -678,33 +678,38 @@ class NCCSync(object):
                          "SuseProductChannel%s." %
                          (channel.get('label'), arch_text))
 
-    def sync_channel(self, channel_id, channel_label):
-        """ Schedule a repo sync for specified database channel.
-        """
-        date = taskomatic.schedule_single_sat_repo_sync(channel_id)
-        if date:
-            print "Scheduled repo sync for channel %s." % channel_label
-        else:
-            self.error_msg ("Failed to schedule repo sync for channel %s." % channel_label)
+    def sync_channel(self, channel_label):
+        """Schedule a repo sync for the specified database channel.
 
+        """
+        channel_id = self.get_channel_id(channel_label)
+        if taskomatic.schedule_single_sat_repo_sync(channel_id):
+            self.print_msg("Scheduled repo sync for channel %s."
+                           % channel_label)
+        else:
+            self.error_msg("Failed to schedule repo sync for channel %s."
+                           % channel_label)
 
     def sync_installed_channels(self):
-        """Schedule a reposync of all SUSE Manager (orgid null) channels
-           in the database.
+        """Schedule a reposync of all SUSE Manager channels in the database.
+
+        Only official channels (those with org_id == NULL) will be synced.
+
         """
         self.print_msg("Scheduling repo sync for all installed channels...")
 
-        select_sql = "SELECT id, label FROM rhnChannel WHERE org_id IS NULL"
-        query = rhnSQL.prepare(select_sql)
+        query = rhnSQL.prepare("SELECT label FROM rhnChannel "
+                               "WHERE org_id IS NULL")
         query.execute()
-        db_channels = query.fetchall()
-
-        for channel in db_channels:
-            self.sync_channel(channel[0], channel[1])
-
-        if len(db_channels) == 0:
-            print "No channels are installed in the database. "
-            print "Add new channels using: mgr-ncc-sync -c channel_label."
+        try:
+            channel_labels = [tup[0] for tup in query.fetchall()]
+        except TypeError:
+            self.print_msg(
+                "No channels are installed in the database. \n"
+                "Add new channels using: mgr-ncc-sync -c channel_label.")
+        else:
+            for label in channel_labels:
+                self.sync_channel(label)
 
     def get_available_families(self):
         """Get the list of available channel family labels
@@ -813,6 +818,22 @@ class NCCSync(object):
             except KeyError:
                 raise ParentChannelNotInstalled(parent_label, channel_label)
 
+    def get_channel_id(self, channel_label):
+        """Get a channel's id from the database
+
+        :arg channel_label: a label of the channel to be queried
+
+        Returns a the channel's id if the channel was found or None otherwise.
+
+        """
+        query = rhnSQL.prepare(
+            "SELECT ID FROM RHNCONTENTSOURCE WHERE LABEL = :label")
+        query.execute(label=channel_label)
+        try:
+            return query.fetchone()[0]
+        except TypeError:
+            return None
+
     def insert_channel(self, channel, channel_id):
         """Insert an XML channel into the database as a ContentSource
 
@@ -820,11 +841,8 @@ class NCCSync(object):
         :arg channel_id: DB id of the channel the repo should belong to
 
         """
-        query = rhnSQL.prepare(
-            "SELECT LABEL FROM RHNCONTENTSOURCE WHERE LABEL = :label")
-        query.execute(label=channel.get('label'))
-        if not query.fetchone():
-            channel_data = channel.attrib
+        channel_data = channel.attrib
+        if not self.get_channel_id(channel_data['label']):
             if not channel_data['source_url']:
                 # no URL, cannot create a content source
                 return
@@ -981,7 +999,6 @@ class NCCSync(object):
 
             # welcome to the family: create relation between the new channel
             # and corresponding channel family
-
             channel_id = rhnSQL.Row("RHNCHANNEL", "LABEL", channel_label)['id']
             channel_family_id = rhnSQL.Row(
                 "RHNCHANNELFAMILY", "LABEL", channel.get('family'))['id']
@@ -1010,9 +1027,6 @@ class NCCSync(object):
             rhnSQL.commit()
             self.print_msg("Added channel '%s' to the database."
                            % channel_label)
-
-        # schedule repo sync for this channel
-        self.sync_channel(channel_id, channel_label)
 
     def sync_suseproductchannel(self):
         """Sync the suseProductChannel relationships from the config file
@@ -1097,10 +1111,12 @@ def _sql_list(alist):
     ['1', '2', '3'] --> "(1, 2, 3)"
 
     """
-    # if they are integers, then make a list of integers,
-    # otherwise leave it as it is
     try:
+        # if they are integers, then make a list of integers
         alist = map(int, alist)
     except ValueError:
+        # otherwise leave it as it is
         pass
-    return ("%s" % (tuple(alist),)).replace(",)", ")")
+    l = str(tuple(alist))
+    l.replace(",)", ")") # "('foo',)" should be "('foo')"
+    return l
