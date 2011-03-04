@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar  4 13:37:00 CET 2011 - jrenner@suse.de
+
+- Leave out the proxy version check in navigation xml (bnc#676718)
+
+-------------------------------------------------------------------
 Thu Mar  3 17:33:47 CET 2011 - jrenner@suse.de
 
 - fix navigation on the help page (while working on bnc#676699)
