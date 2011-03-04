@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Mar  4 10:46:17 CET 2011 - iartarisi@suse.cz
+
+- fixed an SQLError on inserting to the suseproductchannel, product_id
+  was string because of spaces in the xml file
+
+-------------------------------------------------------------------
 Thu Mar  3 17:30:20 CET 2011 - mc@suse.de
 
 - change firewall module to open xmpp-server port
