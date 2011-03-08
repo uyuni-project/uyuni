@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar  8 15:59:51 CET 2011 - jrenner@suse.de
+
+- Change url path from install_guide to install-guide (bnc#674315)
+
+-------------------------------------------------------------------
 Thu Mar  3 09:44:10 CET 2011 - jrenner@suse.de
 
 - replace links to docs in specfile for now (bnc#674315)

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar  8 16:00:08 CET 2011 - jrenner@suse.de
+
+- Change url path from install_guide to install-guide (bnc#674315)
+
+-------------------------------------------------------------------
 Tue Mar  8 14:24:19 CET 2011 - jrenner@suse.de
 
 - Fix guessing login credentials (bnc#644072), patch from upstream
