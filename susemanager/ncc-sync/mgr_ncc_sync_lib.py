@@ -827,7 +827,7 @@ class NCCSync(object):
 
         """
         query = rhnSQL.prepare(
-            "SELECT ID FROM RHNCONTENTSOURCE WHERE LABEL = :label")
+            "SELECT ID FROM RHNCHANNEL WHERE LABEL = :label")
         query.execute(label=channel_label)
         try:
             return query.fetchone()[0]
@@ -842,7 +842,8 @@ class NCCSync(object):
 
         """
         channel_data = channel.attrib
-        if not self.get_channel_id(channel_data['label']):
+        if not rhnSQL.Row('RHNCONTENTSOURCE', 'label',
+                          channel_data['label']).data:
             if not channel_data['source_url']:
                 # no URL, cannot create a content source
                 return
