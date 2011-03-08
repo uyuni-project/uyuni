@@ -208,12 +208,10 @@
                     <enabled config:type="boolean">true</enabled>
                     <name>inst_user</name>
                 </module>
--->
                 <module>
                     <label>Customer Center</label>
                     <name>inst_suse_register</name>
                 </module>
-<!--
                 <module>
                     <label>Hardware</label>
                     <name>inst_proposal</name>
@@ -282,7 +280,8 @@ because he may want to do a migration instead -->
       <congratulate>
         <label>
           &lt;p&gt;The installation of SUSE Manager Proxy has completed successfully.&lt;/p&gt;
-          &lt;p&gt;Click Finish to log in to the system and start the configure-proxy.sh.&lt;/p&gt;
+          &lt;p&gt;Click Finish to log in to the system, register the system to a SUSE Manager Server
+          using a bootstap script and start configure-proxy.sh.&lt;/p&gt;
           &lt;p&gt;Please visit us at http://www.novell.com/linux/.&lt;/p&gt;
         </label>
       </congratulate>
