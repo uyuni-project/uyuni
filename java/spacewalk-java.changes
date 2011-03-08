@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar  8 14:24:19 CET 2011 - jrenner@suse.de
+
+- Fix guessing login credentials (bnc#644072), patch from upstream
+
+-------------------------------------------------------------------
 Fri Mar  4 13:37:00 CET 2011 - jrenner@suse.de
 
 - Leave out the proxy version check in navigation xml (bnc#676718)
