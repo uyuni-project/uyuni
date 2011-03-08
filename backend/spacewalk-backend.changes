@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar  8 14:28:08 CET 2011 - iartarisi@suse.cz
+
+- fixed bnc#644072 (password guessing vulnerability) with two commits
+  from upstream
+
+-------------------------------------------------------------------
 Wed Feb 23 16:46:50 CET 2011 - ug@suse.de
 
 - fixed virtual SUSE KVM machines in the webui (bnc#674344)
