@@ -300,7 +300,7 @@
       <rhn-tab-directory>/rhn/help/reference</rhn-tab-directory>
     </rhn-tab>
     <rhn-tab name="Installation Guide" url="/rhn/help/dispatcher/install_guide">
-      <rhn-tab-directory>/rhn/help/install_guide</rhn-tab-directory>
+      <rhn-tab-directory>/rhn/help/install-guide</rhn-tab-directory>
     </rhn-tab>
 <!--
     <rhn-tab name="Proxy Guide" url="/rhn/help/dispatcher/proxy_guide">
