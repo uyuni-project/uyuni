@@ -460,7 +460,7 @@ echo "Generating SSL key and public certificate:"
 config_error $? "SSL key generation failed!"
 
 echo "Installing SSL certificate for Apache and Jabberd:"
-rpm -Uv $(/usr/bin/rhn-ssl-tool --gen-server --rpm-only --dir="$SSL_BUILD_DIR" 2>/dev/null |grep noarch.rpm)
+rpm -Uv $(/usr/bin/rhn-ssl-tool --gen-server --rpm-only --dir="$SSL_BUILD_DIR" --set-hostname "$HOSTNAME" 2>/dev/null |grep noarch.rpm)
 
 if [ -e $HTTPDCONF_DIR/vhosts.d/ssl.conf ]; then
 	mv $HTTPDCONF_DIR/vhosts.d/ssl.conf $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak
