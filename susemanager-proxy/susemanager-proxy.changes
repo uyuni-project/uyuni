@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Mar  8 10:05:26 CET 2011 - mc@suse.de
+
+- create ssl-build directory
+- remove customer center registration from firstboot
+- change congratulation text: add registration to 
+  SUSE Manager Server 
+
+-------------------------------------------------------------------
 Thu Mar  3 17:29:41 CET 2011 - mc@suse.de
 
 - change firewall module to open xmpp-server port 
