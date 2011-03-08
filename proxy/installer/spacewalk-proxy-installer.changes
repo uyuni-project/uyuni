@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar  8 09:50:09 CET 2011 - mc@suse.de
+
+- fix SSL certificate generation on SUSE (bnc#677468) 
+
+-------------------------------------------------------------------
 Thu Mar  3 17:48:44 CET 2011 - mc@suse.de
 
 - fix ssl configuration 
