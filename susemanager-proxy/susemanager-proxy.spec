@@ -26,8 +26,6 @@ install -m 0644 suse-manager-proxy %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfir
 # YaST configuration
 mkdir -p %{buildroot}/etc/YaST2
 install -m 0644 firstboot-susemanager-proxy.xml %{buildroot}/etc/YaST2
-# create extra dir
-mkdir -p %{buildroot}/root/ssl-build
 
 %clean
 rm -rf %{buildroot}
@@ -37,7 +35,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc license.txt
 %dir /etc/YaST2
-%dir /root/ssl-build
 %config /etc/YaST2/firstboot-susemanager-proxy.xml
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/suse-manager-proxy
 
