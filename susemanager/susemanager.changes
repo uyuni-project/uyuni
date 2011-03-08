@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar  8 13:21:44 CET 2011 - iartarisi@suse.cz
+
+- fix contentsource_id being read instead of channel_id in get_channel_id
+
+-------------------------------------------------------------------
 Fri Mar  4 16:32:14 CET 2011 - iartarisi@suse.cz
 
 - don't ask for confirmation when trying to add a channel that is
