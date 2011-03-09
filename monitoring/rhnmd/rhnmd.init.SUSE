@@ -42,8 +42,15 @@ do_restart_sanity_check()
 start()
 {
 	echo -n $"Starting $prog:"
-	#startproc -f -L -u nocpulse $SSHD -f /etc/nocpulse/rhnmd_config
-        startproc -f -p $SSHD_PIDFILE $SSHD -f /etc/nocpulse/rhnmd_config -o "PidFile=$SSHD_PIDFILE"
+	IDENTITY="/var/lib/nocpulse/.ssh/nocpulse-identity"
+	if [ ! -f "$IDENTITY" ]
+	then
+		/bin/su -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f $IDENTITY" - nocpulse
+		if [ ! -e "/var/lib/nocpulse/.bashrc" ]; then
+			echo 'LANG="C"' > /var/lib/nocpulse/.bashrc
+		fi
+	fi
+	startproc -f -p $SSHD_PIDFILE $SSHD -f /etc/nocpulse/rhnmd_config -o "PidFile=$SSHD_PIDFILE"
 	rc_status
 	touch /var/lock/subsys/rhnmd
 	rc_status -v

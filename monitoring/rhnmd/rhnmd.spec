@@ -85,14 +85,6 @@ fi
 %if 0%{?suse_version}
 
 %post
-if [ ! -f %{identity} ]
-then
-    /bin/su -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f %{identity}" - %{np_name}
-    # provide .bashrc with LANG="C"
-    if [ ! -e %{_var}/lib/%{np_name}/.bashrc ]; then
-      echo 'LANG="C"' > %{_var}/lib/%{np_name}/.bashrc
-    fi
-fi
 %{fillup_and_insserv rhnmd}
 
 %preun
