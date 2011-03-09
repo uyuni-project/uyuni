@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar  9 15:39:18 CET 2011 - ug@suse.de
+
+- fixed a comment in mgr_ncc_sync
+
+-------------------------------------------------------------------
 Tue Mar  8 13:21:44 CET 2011 - iartarisi@suse.cz
 
 - fix contentsource_id being read instead of channel_id in get_channel_id
