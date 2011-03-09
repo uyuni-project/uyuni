@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar  9 11:29:42 CET 2011 - mc@suse.de
+
+- add perl-DBI dependency (bnc#678069) 
+
+-------------------------------------------------------------------
 Sun Jan 30 15:04:27 CET 2011 - mc@suse.de
 
 - do not create nocpulse ssh key during package installation.
