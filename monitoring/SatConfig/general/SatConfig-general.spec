@@ -15,6 +15,7 @@ Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?suse_version}
 BuildRequires: nocpulse-common
 Requires:      perl = %{perl_version}
+Requires:      spacewalk-base-minimal
 %else
 Requires:      perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
