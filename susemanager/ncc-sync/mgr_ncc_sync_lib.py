@@ -130,11 +130,11 @@ class NCCSync(object):
     #         'end-date': '0',
     #         'consumed': '1',
     #         'substatus': 'ACTIVE',
-    #         'subid': '66cb82cdb3e6f82961cdc056118dabd1',
+    #         'subid': '123452cdb3e6f82961cdc0561322423a',
     #         'nodecount': '0',
     #         'subname': 'SUSE Linux Enterprise Desktop 10',
     #         'duration': '0',
-    #         'regcode': '86119@NYC-SLED-dad2c3d7c',
+    #         'regcode': 'XXXXX@YYY-SLED-abc2c3def',
     #         'type': 'FULL',
     #         'server-class': 'OS',
     #         'product-class': '7260'
