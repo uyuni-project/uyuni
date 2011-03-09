@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar  9 15:16:52 CET 2011 - mc@suse.de
+
+- add missing dependency to spacewalk-base-minimal (bnc#678126) 
+
+-------------------------------------------------------------------
 Tue Mar  8 16:00:30 CET 2011 - jrenner@suse.de
 
 - Change url path from install_guide to install-guide (bnc#674315)
