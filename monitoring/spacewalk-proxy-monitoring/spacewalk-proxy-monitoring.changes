@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar  9 16:20:55 CET 2011 - mc@suse.de
+
+- do not require Monitoring service to be started (bnc#678146)
+- create ssh key if it does not exist 
+
+-------------------------------------------------------------------
 Mon Feb  7 15:54:15 CET 2011 - mc@suse.de
 
 - add rc link (bnc#669894) 
