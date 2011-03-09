@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Wed Mar  9 15:39:18 CET 2011 - ug@suse.de
 
-- fixed a comment in mgr_ncc_sync
+- fixed a comment in mgr_ncc_sync (bnc#678119)
 
 -------------------------------------------------------------------
 Tue Mar  8 13:21:44 CET 2011 - iartarisi@suse.cz
