@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar  9 15:06:35 CET 2011 - mc@suse.de
+
+- add missing dependency (bnc#678126) 
+
+-------------------------------------------------------------------
 Wed Sep 15 08:26:40 CEST 2010 - mantel@suse.de
 
 - Initial release of SatConfig-general
