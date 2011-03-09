@@ -12,6 +12,7 @@ Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires(pre):  apache2, /usr/sbin/useradd
 Requires(post): coreutils, openssh
 Requires:       perl-Crypt-SSLeay
+Requires:       perl-DBI
 %else
 Requires(pre):  httpd, /usr/sbin/useradd
 Requires(post): /sbin/runuser, openssh
