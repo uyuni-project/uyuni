@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 10 14:55:05 CET 2011 - jrenner@suse.de
+
+- Adapted the UI to URL paths from new docu packages (bnc#674315)
+
+-------------------------------------------------------------------
 Wed Mar  9 15:16:52 CET 2011 - mc@suse.de
 
 - add missing dependency to spacewalk-base-minimal (bnc#678126) 

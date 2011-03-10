@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 10 14:54:31 CET 2011 - jrenner@suse.de
+
+- Adapted the UI to URL paths from new docu packages (bnc#674315)
+
+-------------------------------------------------------------------
 Tue Mar  8 15:59:51 CET 2011 - jrenner@suse.de
 
 - Change url path from install_guide to install-guide (bnc#674315)
