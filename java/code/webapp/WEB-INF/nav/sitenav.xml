@@ -10,13 +10,13 @@
     <rhn-tab name="Help Desk" url="/rhn/help/index.do" />
     <rhn-tab name="Lookup Login/Password" url="/help/forgot_password.pxt" />
     <rhn-tab name="Quick Start Guide" url="/rhn/help/dispatcher/quick_start">
-      <rhn-tab-directory>/rhn/help/quickstart</rhn-tab-directory>
+      <rhn-tab-directory>/rhn/help/quick</rhn-tab-directory>
     </rhn-tab>
     <rhn-tab name="Reference Guide" url="/rhn/help/dispatcher/reference_guide">
       <rhn-tab-directory>/rhn/help/reference</rhn-tab-directory>
     </rhn-tab>
     <rhn-tab name="Installation Guide" url="/rhn/help/dispatcher/install_guide">
-      <rhn-tab-directory>/rhn/help/install-guide</rhn-tab-directory>
+      <rhn-tab-directory>/rhn/help/install</rhn-tab-directory>
     </rhn-tab>
 <!--
     <rhn-tab name="Proxy Guide" url="/rhn/help/dispatcher/proxy_guide">

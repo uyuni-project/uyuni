@@ -65,10 +65,10 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/tomcat6/weba
 
 %if  0%{?suse_version}
 cat > %{buildroot}/%{_sysconfdir}/rhn/default/rhn_docs.conf <<-ENDOFCONFIG
-docs.quick_start=/rhn/help/quickstart/en-US/index.jsp
-docs.reference_guide=/rhn/help/reference/en-US/index.jsp
-docs.install_guide=/rhn/help/install-guide/en-US/index.jsp
-docs.client_config_guide=/rhn/help/client-config/en-US/index.jsp
+docs.quick_start=/rhn/help/quick/index.jsp
+docs.reference_guide=/rhn/help/reference/index.jsp
+docs.install_guide=/rhn/help/install/index.jsp
+docs.client_config_guide=/rhn/help/client-config/index.jsp
 docs.proxy_guide=http://www.novell.com/documentation/suse_manager/
 docs.channel_mgmt_guide=http://www.novell.com/documentation/suse_manager/
 docs.release_notes=http://www.novell.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/%{version_major}/
