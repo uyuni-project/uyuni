@@ -25,7 +25,7 @@ import os
 
 import gettext
 
-# bnc#664915 rhnreg_ks --help failed if LANG = de_DE.UTF-8
+# bnc#664915 / red hat bugzilla #683546 rhnreg_ks --help failed if LANG = de_DE.UTF-8
 #_ = gettext.gettext
 t = gettext.translation('rhn-client-tools', '/usr/share/locale/', fallback=True)
 def _(str):
