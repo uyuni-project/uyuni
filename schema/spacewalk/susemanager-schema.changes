@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar 10 17:04:04 CET 2011 - ug@suse.de
+
+- Registration of REHL4 clients fails due to incomplete 
+  database table (bnc#678110)
+
+-------------------------------------------------------------------
 Thu Feb 17 13:13:27 CET 2011 - mc@suse.de
 
 - fix copyright 
