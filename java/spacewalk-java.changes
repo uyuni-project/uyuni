@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 10 11:23:08 CET 2011 - jrenner@suse.de
+
+- Change link path to install-guide (bnc#674315)
+
+-------------------------------------------------------------------
 Tue Mar  8 16:00:08 CET 2011 - jrenner@suse.de
 
 - Change url path from install_guide to install-guide (bnc#674315)
