@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 11 12:23:22 CET 2011 - ug@suse.de
+
+- cleanup patch for install= parameter and fix for (bnc#677039)
+
+-------------------------------------------------------------------
 Thu Mar 10 14:56:00 CET 2011 - jrenner@suse.de
 
 - Adapted the UI to URL paths from new docu packages (bnc#674315)
