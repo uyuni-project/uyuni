@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 11 10:35:15 CET 2011 - mc@suse.de
+
+- change congratulation text (bnc#678787)
+
+-------------------------------------------------------------------
 Tue Mar  8 10:05:26 CET 2011 - mc@suse.de
 
 - remove customer center registration from firstboot
