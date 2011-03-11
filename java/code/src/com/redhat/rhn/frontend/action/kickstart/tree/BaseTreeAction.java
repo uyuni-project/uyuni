@@ -36,6 +36,8 @@ import java.util.List;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * TreeCreate class for creating Kickstart Trees
  * @version $Rev: 1 $
@@ -86,7 +88,8 @@ public abstract class BaseTreeAction extends BaseEditAction {
     }
 
     protected ValidatorError processCommandSetters(PersistOperation operation,
-                                                            DynaActionForm form) {
+                                                            DynaActionForm form,
+                                                            HttpServletRequest request) {
         BaseTreeEditOperation bte = (BaseTreeEditOperation) operation;
 
         String label = form.getString(LABEL);
@@ -110,16 +113,9 @@ public abstract class BaseTreeAction extends BaseEditAction {
 
         if (type.isSUSE()) {
             String kopts = form.getString(POST_KERNEL_OPTS);
-            if (kopts.indexOf("install=") == -1) {
-                try {
-                    InetAddress localMachine = InetAddress.getLocalHost();
-                    kopts = kopts + " install=http://" + localMachine.getHostName() +
-                        "/ks/dist/" + form.getString(LABEL);
-                }
-                catch (UnknownHostException e) {
-                    return new ValidatorError("UnknownHostException by " +
-                        "getLocalHost/getHostName. Set install=.... parameter manually");
-                }
+            if (kopts.contains("install=")) {
+                kopts = kopts + " install=http://" + request.getLocalName() +
+                    "/ks/dist/" + form.getString(LABEL);
             }
             bte.setKernelOptions(kopts);
         }
