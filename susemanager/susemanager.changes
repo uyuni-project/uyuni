@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Mar 14 16:12:32 CET 2011 - iartarisi@suse.cz
+
+- fix asking for confirmation when a channel can't be added because of a
+  missing parent -> refactored confirmation code and related error
+  output
+
+-------------------------------------------------------------------
 Wed Mar  9 15:39:18 CET 2011 - ug@suse.de
 
 - fixed a comment in mgr_ncc_sync (bnc#678119)
