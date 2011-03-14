@@ -29,28 +29,13 @@ from spacewalk.common import log_debug, log_error, rhnFault
 NCC_CHANNELS = '/usr/share/susemanager/channels.xml'
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
-class ChannelNotAvailableError(Exception):
-    def __init__(self, channel_label):
-        self.channel = channel_label
-    def __str__(self):
-        return "You do not have access to the channel: %s" % self.channel
-
-class ParentChannelNotInstalled(Exception):
-    def __init__(self, parent_label, channel_label):
-        self.channel = channel_label
-        self.parent = parent_label
-    def __str__(self):
-        return ("The parent channel '%(parent)s' of channel '%(channel)s' "
-                "is not currently installed in the database. You need to "
-                "install it before adding this channel to the database."
-                % self.__dict__)
-
 class NCCSync(object):
     """This class is used to sync SUSE Manager Channels and NCC repositories"""
 
-    def __init__(self, quiet=False, debug=-1):
+    def __init__(self, quiet=False, non_interactive=False, debug=-1):
         """Setup configuration"""
         self.quiet = quiet
+        self.non_interactive = non_interactive
         self.debug = debug
         self.reset_ent_value = 10
 
@@ -73,7 +58,7 @@ class NCCSync(object):
         if self.debug > 1:
             rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'mgr-ncc-sync.log', self.debug)
         else:
-          rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'mgr-ncc-sync.log')
+            rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'mgr-ncc-sync.log')
 
         self.log_msg("\nStarted: %s" % (time.asctime(time.localtime())))
 
@@ -670,7 +655,6 @@ class NCCSync(object):
                 "VALUES (:product_id, :channel_id)")
             query.execute(product_id=suse_id,
                           channel_id=channel_id)
-            rhnSQL.commit()
             self.log_msg("Registered channel %s to SuseProductChannel%s."
                          % (channel.get('label'), arch_text))
         else:
@@ -800,7 +784,7 @@ class NCCSync(object):
                 return channel
 
         # if we got this far, the channel is not available for this user
-        raise ChannelNotAvailableError(channel_label)
+        sys.exit("Channel not available: %s." % channel_label)
 
     def get_parent_id(self, channel):
         """Returns the ID of the channel's parent from the database
@@ -816,14 +800,18 @@ class NCCSync(object):
             try:
                 return rhnSQL.Row("RHNCHANNEL", "LABEL", parent_label)['id']
             except KeyError:
-                raise ParentChannelNotInstalled(parent_label, channel_label)
+                sys.exit(
+                    "The parent channel '%s' of channel '%s' "
+                    "is not currently installed in the database. You need to "
+                    "install it before adding this channel to the database."
+                    % (parent_label, channel_label))
 
     def get_channel_id(self, channel_label):
         """Get a channel's id from the database
 
         :arg channel_label: a label of the channel to be queried
 
-        Returns a the channel's id if the channel was found or None otherwise.
+        Returns the channel's id if the channel was found or None otherwise.
 
         """
         query = rhnSQL.prepare(
@@ -923,7 +911,6 @@ class NCCSync(object):
             query.execute(product=channel.get('product_name'),
                           version=channel.get('product_version'),
                           beta='N')
-            rhnSQL.commit()
         else:
             return channel_product_id
 
@@ -960,6 +947,27 @@ class NCCSync(object):
         query.execute(name=channel.get('product_name'))
         return query.fetchone()[0]
 
+    def _confirm(self, message):
+        """Ask the user for confirmation before doing something
+
+        :arg message: message string to show to the user
+
+        Returns: a boolean which is True when the user gave confirmation
+        and False otherwise. Initializing the NCCSync object with
+        interactive=False makes this function return True without asking
+        the user anything.
+
+        """
+        if self.non_interactive:
+            return True
+        else:
+            sys.stdout.write(message)
+            choice = raw_input(' [y/n] (y): ').lower()
+            if choice == 'y' or choice == '':
+                return True
+            else:
+                return False
+
     def add_channel(self, channel_label):
         """Add a new channel to the database
 
@@ -967,15 +975,9 @@ class NCCSync(object):
 
         """
         # first look in the db to see if it's already there
-        query = rhnSQL.prepare(
-            "SELECT ID, LABEL FROM RHNCHANNEL WHERE LABEL = :label")
-        query.execute(label=channel_label)
-        rhnchannel = query.fetchone()
-
-        if rhnchannel:
-            self.print_msg("Channel %s is already in the database."
+        if self.get_channel_id(channel_label):
+            self.print_msg("Channel %s is already in the database. "
                             % channel_label)
-            channel_id = rhnchannel[0]
         else:
             channel = self.get_ncc_channel(channel_label)
             query = rhnSQL.prepare(
@@ -1025,9 +1027,14 @@ class NCCSync(object):
                     self.add_dist_channel_map(channel_id,
                                               self.get_channel_arch_id(channel),
                                               child)
-            rhnSQL.commit()
-            self.print_msg("Added channel '%s' to the database."
-                           % channel_label)
+            if self._confirm("Warning! Once added, Novell channels can not "
+                             "be deleted. Only custom channels can be deleted. "
+                             "Do you wish to proceed?"):
+                rhnSQL.commit()
+                self.print_msg("Added channel '%s' to the database."
+                               % channel_label)
+            else:
+                sys.exit("No channel added.")
 
     def sync_suseproductchannel(self):
         """Sync the suseProductChannel relationships from the config file

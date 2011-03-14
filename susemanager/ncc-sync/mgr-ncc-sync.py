@@ -44,26 +44,13 @@ def main():
 
     (options, args) = parser.parse_args()
 
-    syncer = mgr_ncc_sync_lib.NCCSync(quiet=options.quiet, debug=options.debug)
+    syncer = mgr_ncc_sync_lib.NCCSync(quiet=options.quiet,
+                                      non_interactive=options.non_interactive,
+                                      debug=options.debug)
     if options.list:
         syncer.list_channels()
     elif options.channel:
-        channel_id = syncer.get_channel_id(options.channel)
-        if channel_id:
-            sys.stdout.write("This channel already exists in the database.\n")
-        else:
-            if options.non_interactive:
-                syncer.add_channel(options.channel)
-            else:
-                sys.stdout.write(
-                    "Warning! Once added, Novell channels can not be deleted. "
-                    "Only custom channels can be deleted. "
-                    "Do you wish to proceed? [y/n] (y): ")
-                choice = raw_input().lower()
-                if choice == 'y' or choice == '':
-                    syncer.add_channel(options.channel)
-                else:
-                    sys.exit()
+        syncer.add_channel(options.channel)
         # schedule reposync even if the channel is already in the database
         syncer.sync_channel(options.channel)
     elif options.products:
@@ -90,7 +77,7 @@ def main():
         cons_subs = syncer.consolidate_subscriptions(all_subs)
         syncer.reset_entitlements_in_table()
         for s in cons_subs.keys():
-            if( syncer.is_entitlement(s)):
+            if syncer.is_entitlement(s):
                 syncer.edit_entitlement_in_table(s, cons_subs[s])
             else:
                 syncer.edit_subscription_in_table(s, cons_subs[s])
