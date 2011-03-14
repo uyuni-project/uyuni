@@ -40,8 +40,8 @@ public class ChannelFamilyFactory extends HibernateFactory {
 
     private static ChannelFamilyFactory singleton = new ChannelFamilyFactory();
     private static Logger log = Logger.getLogger(ChannelFamilyFactory.class);
-    public static final String SATELLITE_CHANNEL_FAMILY_LABEL = "rhn-satellite";
-    public static final String PROXY_CHANNEL_FAMILY_LABEL = "rhn-proxy";
+    public static final String SATELLITE_CHANNEL_FAMILY_LABEL = "SMS";
+    public static final String PROXY_CHANNEL_FAMILY_LABEL = "SMP";
 
     private ChannelFamilyFactory() {
         super();

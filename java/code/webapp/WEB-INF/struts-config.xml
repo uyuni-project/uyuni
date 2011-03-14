@@ -2694,7 +2694,7 @@
         type="com.redhat.rhn.frontend.action.systems.ProxyListSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
           <set-property property="acls"
-               value="org_channel_family(rhn-proxy); user_role(org_admin)"/>
+               value="org_channel_family(SMP); user_role(org_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/systems/proxylist.jsp"/>
     </action>

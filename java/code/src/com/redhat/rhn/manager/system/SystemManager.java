@@ -1348,7 +1348,7 @@ public class SystemManager extends BaseManager {
         for (Iterator itr = channels.iterator(); itr.hasNext();) {
             Channel c = (Channel)itr.next();
             ChannelFamily cf = c.getChannelFamily();
-            if (cf.getLabel().equals("rhn-proxy")) {
+            if (cf.getLabel().equals("SMP")) {
                 SystemManager.unsubscribeServerFromChannel(server, c);
             }
         }

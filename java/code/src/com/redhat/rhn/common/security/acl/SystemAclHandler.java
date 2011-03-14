@@ -99,7 +99,7 @@ public class SystemAclHandler extends BaseHandler implements AclHandler {
      */
     public boolean aclSatellitePossible(Object ctx, String[] params) {
         Access handler = new Access();
-        params = new String[] { "rhn-satellite" };
+        params = new String[] { "SMS" };
         return handler.aclOrgChannelFamily(ctx, params) &&
                 aclChildChannelCandidate(ctx, params);
     }
