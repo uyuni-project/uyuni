@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 14 17:20:02 CET 2011 - jrenner@suse.de
+
+- Replace rhn-proxy with SMP for ACLs and queries (bnc#679420)
+
+-------------------------------------------------------------------
 Fri Mar 11 12:23:22 CET 2011 - ug@suse.de
 
 - cleanup patch for install= parameter and fix for (bnc#677039)
