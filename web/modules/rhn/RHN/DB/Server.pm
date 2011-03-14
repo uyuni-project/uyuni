@@ -644,7 +644,7 @@ EOQ
   SELECT CFM.channel_id
     FROM rhnServerChannel SC, rhnChannelFamilyMembers CFM, rhnChannelFamily CF
    WHERE SC.server_id = ?
-     AND CF.label = 'rhn-proxy'
+     AND CF.label = 'SMP'
      AND CF.id = CFM.channel_family_id
      AND CFM.channel_id = SC.channel_id
 EOQ

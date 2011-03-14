@@ -222,7 +222,7 @@ SELECT DISTINCT :tid, :cid
        rhnChannelFamilyMembers CFM
  WHERE CFM.channel_id = :cid
    AND CFM.channel_family_id = CF.id
-   AND CF.label NOT IN ('rhn-proxy', 'rhn-satellite')
+   AND CF.label NOT IN ('rhn-proxy', 'rhn-satellite', 'SMS', 'SMP')
 EOQ
 
   $sth = $dbh->prepare($query);

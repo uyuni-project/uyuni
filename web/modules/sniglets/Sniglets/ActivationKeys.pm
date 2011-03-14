@@ -129,7 +129,9 @@ sub good_token_channels {
 
   #filter out proxy and satellite channels:
   @channel_list = grep { ($_->{CHANNEL_FAMILY_LABEL} ne 'rhn-satellite')
-			  and ($_->{CHANNEL_FAMILY_LABEL} ne 'rhn-proxy') } @channel_list;
+			  and ($_->{CHANNEL_FAMILY_LABEL} ne 'rhn-proxy')
+			  and ($_->{CHANNEL_FAMILY_LABEL} ne 'SMS')
+			  and ($_->{CHANNEL_FAMILY_LABEL} ne 'SMP') } @channel_list;
 
   #filter out channels which have a parent that isn't in this list.
   my %available = map { ($_->{ID}, 1) } @channel_list;

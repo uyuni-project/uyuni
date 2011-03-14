@@ -778,7 +778,7 @@ sub rhn_proxy_channels {
   my $sth = $dbh->prepare(<<EOQ);
 SELECT  CFM.channel_id
   FROM  rhnChannelFamilyMembers CFM, rhnChannelFamily CF
- WHERE  CF.label = 'rhn-proxy'
+ WHERE  CF.label = 'SMP'
    AND  CF.id = CFM.channel_family_id
 EOQ
 
@@ -799,7 +799,7 @@ sub rhn_satellite_channels {
   my $query = <<EOQ;
 SELECT  CFM.channel_id
   FROM  rhnChannelFamilyMembers CFM, rhnChannelFamily CF
- WHERE  CF.label = 'rhn-satellite'
+ WHERE  CF.label = 'SMS'
    AND  CF.id = CFM.channel_family_id
 EOQ
 

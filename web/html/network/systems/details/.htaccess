@@ -4,7 +4,7 @@
   PerlModule PXT::ApacheHandler
   PerlHandler PXT::ApacheHandler
 
-  require acl mixin RHN::Access::System user_role(org_admin); system_feature(ftr_proxy_capable); org_channel_family(rhn-proxy); child_channel_candidate(rhn-proxy)
+  require acl mixin RHN::Access::System user_role(org_admin); system_feature(ftr_proxy_capable); org_channel_family(SMP); child_channel_candidate(SMP)
 </Files>
 
 <Files admin_group_list.pxt>
