@@ -21864,7 +21864,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="docsearch.jsp.pagesummary">
-        <source>Document Search will redirect you to results matching your search term.</source>
+        <source>Document Search will return links to pages matching your search term. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search.do</context>
         </context-group>

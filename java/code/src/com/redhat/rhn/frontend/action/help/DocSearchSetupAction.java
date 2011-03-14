@@ -143,9 +143,9 @@ public class DocSearchSetupAction extends RhnAction {
                     forwardParams);
         }
 
-        // Redirect the query
-        DocSearchActionHelper.redirectDocSearch(searchString, response);
-        return null;
+        return getStrutsDelegate().forwardParams(
+                mapping.findForward("success"),
+                forwardParams);
     }
 
     private void setupForm(HttpServletRequest request, DynaActionForm form)
