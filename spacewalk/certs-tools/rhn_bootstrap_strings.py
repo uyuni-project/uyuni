@@ -212,9 +212,8 @@ if [ "$INSTALLER" == zypper ]; then
     echo "* going to install missing packages:"
     Z_CLIENT_REPO_NAME="susemanager-client-setup"
     Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/${Z_CLIENT_REPO_NAME}.repo"
-    if [ ! -f "$Z_CLIENT_REPO_FILE" ]; then
-      echo "  adding client software repository $Z_CLIENT_REPO_NAME"
-      cat <<EOF >"$Z_CLIENT_REPO_FILE"
+    echo "  adding client software repository $Z_CLIENT_REPO_NAME"
+    cat <<EOF >"$Z_CLIENT_REPO_FILE"
 [$Z_CLIENT_REPO_NAME]
 name=$Z_CLIENT_REPO_NAME
 baseurl=http://${HOSTNAME}/pub/repositories/${Z_CLIENT_REPO_NAME}
@@ -223,8 +222,7 @@ autorefresh=1
 keeppackages=0
 gpgcheck=0
 EOF
-      zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME" || exit 1
-    fi
+    zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME" || exit 1
     zypper --non-interactive in $Z_MISSING || exit 1
   fi
 fi
