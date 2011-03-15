@@ -159,18 +159,26 @@ sub installSysVLinks
 {
 	my $self = shift();
 	if ($self->configValue('runLevels')) {
-		symlink(SysVStep->ConfigValue('sysvStarter'),'/etc/rc.d/init.d/'.ref($self));
 		my @levels = split(',',$self->configValue('runLevels'));
-		my $startSeq = $self->configValue('startSeq');
-		my $stopSeq = $self->configValue('stopSeq');
-		$self->dprint(1,'Installing '.ref($self).' for SysV startup in runlevels '.join(',',@levels).", start=$startSeq, stop=$stopSeq");
-		my $level;
-		foreach $level (@levels) {
-			symlink('/etc/rc.d/init.d/'.ref($self),'/etc/rc.d/rc'.$level.'.d/S'.$startSeq.ref($self));
+		if ( -x "/sbin/chkconfig" )
+		{
+			# call chkconfig <service> <levels>
+			$self->shell("/sbin/chkconfig", ref($self), join('', @levels));
 		}
-		my @klevels = (0,1,6);
-		foreach $level (@klevels) {
-			symlink('/etc/rc.d/init.d/'.ref($self),'/etc/rc.d/rc'.$level.'.d/K'.$stopSeq.ref($self));
+		else
+		{
+			symlink(SysVStep->ConfigValue('sysvStarter'),'/etc/init.d/'.ref($self));
+			my $startSeq = $self->configValue('startSeq');
+			my $stopSeq = $self->configValue('stopSeq');
+			$self->dprint(1,'Installing '.ref($self).' for SysV startup in runlevels '.join(',',@levels).", start=$startSeq, stop=$stopSeq");
+			my $level;
+			foreach $level (@levels) {
+				symlink('/etc/init.d/'.ref($self),'/etc/init.d/rc'.$level.'.d/S'.$startSeq.ref($self));
+			}
+			my @klevels = (0,1,6);
+			foreach $level (@klevels) {
+				symlink('/etc/init.d/'.ref($self),'/etc/init.d/rc'.$level.'.d/K'.$stopSeq.ref($self));
+			}
 		}
 		open(FILE,">".SysVStep->ConfigValue('installed').'/'.ref($self));
 		print FILE join(',',@levels)."\n";
@@ -181,14 +189,22 @@ sub installSysVLinks
 sub uninstallSysVLinks
 {
 	my $self = shift();
-	unlink('/etc/rc.d/init.d/'.ref($self));
-	$self->dprint(1,'Uninstalling '.ref($self).' from SysV startup');
-	my $level;
-	foreach $level (0,1,2,3,4,5,6) {
-		$self->shell('rm /etc/rc.d/rc'.$level.'.d/S*'.ref($self));
-		$self->shell('rm /etc/rc.d/rc'.$level.'.d/K*'.ref($self));
+	if ( -x "/sbin/chkconfig" )
+	{
+		# call chkconfig --del <service>
+		$self->shell("/sbin/chkconfig", "--del", ref($self));
 	}
-	$self->clearLastActionErrors; 
+	else
+	{
+		unlink('/etc/init.d/'.ref($self));
+		$self->dprint(1,'Uninstalling '.ref($self).' from SysV startup');
+		my $level;
+		foreach $level (0,1,2,3,4,5,6) {
+			$self->shell('rm /etc/init.d/rc'.$level.'.d/S*'.ref($self));
+			$self->shell('rm /etc/init.d/rc'.$level.'.d/K*'.ref($self));
+		}
+		$self->clearLastActionErrors; 
+	}
 	my $filename = SysVStep->ConfigValue('installed').'/'.ref($self);
 	if ( -f $filename ) {
 		unlink($filename)
@@ -274,7 +290,7 @@ sub isRunning
 sub startStep
 {
 	my $self = shift();
-	$is_not_subsystem = -f '/etc/rc.d/init.d/'.ref($self);
+	$is_not_subsystem = -f '/etc/init.d/'.ref($self);
 	if ((! $self->isStarted) || $self->get_force) {
 		print "\t" unless $is_not_subsystem;
 		print "Starting ", $self->get_name, " ...  ";
@@ -308,7 +324,7 @@ sub startStep
 sub stopStep
 {
 	my $self = shift();
-	$is_not_subsystem = -f '/etc/rc.d/init.d/'.ref($self);
+	$is_not_subsystem = -f '/etc/init.d/'.ref($self);
 	if ($self->isStarted || $self->get_force) {
 		print "\t" unless $is_not_subsystem;
 		print 'Stopping ', $self->get_name, " ...  ";
@@ -488,7 +504,7 @@ sub printStatus
 {
 	my ($self,$avoidRedundancy) = @_;
 	$self->dprint(1,'Last action: ',$self->get_lastAction);
-	if (-f '/etc/rc.d/init.d/'.ref($self)) {
+	if (-f '/etc/init.d/'.ref($self)) {
 		$self->dprint(1,'** Installed for SysV startup **');
 	} elsif ($self->configValue(runLevels)) {
 		$self->dprint(1,'** Can be installed for SysV startup **');
