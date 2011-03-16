@@ -1,3 +1,5 @@
+%define crawl_output crawl_output
+
 Name: spacewalk-doc-indexes
 Version: 1.2.0
 Release: 1%{?dist}
@@ -5,14 +7,11 @@ Summary: Lucene indexes of help documentation for spacewalk
 
 Group: Applications/Internet
 License: GPLv2
-# This src.rpm is cannonical upstream
-# You can obtain it using this set of commands
-# git clone git://git.fedorahosted.org/git/spacewalk.git/
-# cd search-server/spacewalk-doc-indexes
-# make test-srpm
-URL: https://fedorahosted.org/spacewalk
 Source0: %{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires: nutch
+BuildRequires: susemanager-jsp_en >= 1.2
+BuildRequires: release-notes-susemanager >= 1.2
 Requires: nutch
 BuildArch: noarch
 Provides: doc-indexes
@@ -24,28 +23,26 @@ documentation/help searches
 %prep
 %setup -q
 
-
 %build
-#nothing to do here
+./crawl_jsp.sh %{_localstatedir}/lib/tomcat6/webapps/rhn/help/
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d -m 755 $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/indexes/docs/en-US
-install -d -m 755 $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/indexes/docs/en-US/segments
-cp -a data/crawl_www/index/* $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/indexes/docs/en-US
-cp -a data/crawl_www/segments/* $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/indexes/docs/en-US/segments
+
+LANGS="en-US"
+
+for lang in $LANGS; do
+    install -d -m 755 $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/indexes/docs/$lang/segments
+    cp -a %{crawl_output}/$lang/index/* $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/indexes/docs/$lang/
+    cp -a %{crawl_output}/$lang/segments/* $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/indexes/docs/$lang/segments
+done
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-
 %files
 %defattr(644,root,root,755)
 %{_prefix}/share/rhn/search/indexes/docs/
-%dir %{_prefix}/share/rhn/
-%dir %{_prefix}/share/rhn/search
-%dir %{_prefix}/share/rhn/search/indexes
-%dir %{_prefix}/share/rhn/search/indexes/docs
 
 %changelog
 * Mon Apr 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.1.1-1

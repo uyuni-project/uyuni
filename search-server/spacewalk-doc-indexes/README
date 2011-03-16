@@ -1,10 +1,13 @@
 This package will generate lucene index files for help documents.
-The specific docs which will be examined are specified by a file located at:
-    crawl_www/urls/urls.txt
+The specific docs which will be examined are created by the script:
+create_urls_per_language.py
+
 Nutch must be installed on the system, a RPM is provided at ../../spec-tree/nutch
 
 To run:
-1) ./crawl_www.sh
+1) ./crawl_jsp.sh
+Note:  We are now processing something on the order of 20+ languages.  
+Each languages takes around ~1-2 minutes to crawl.  Expect this step to take about 30-40 minutes.
 2) make test-srpm (or similar build step)
 3) install the RPM
 4) restart search-server (/sbin/service rhn-search restart)
