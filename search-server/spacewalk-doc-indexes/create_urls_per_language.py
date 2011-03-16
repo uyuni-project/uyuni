@@ -11,31 +11,25 @@ QUICK_START = "quick"
 REFERENCE_GUIDE = "reference"
 INSTALL_GUIDE = "install"
 CLIENT_CONFIG_GUIDE = "client-config"
+#PROXY_QUICK_START = "proxy-quick"
 
 LANGUAGES = [ "en-US" ]
 
-#LANGUAGES = [
-#        "as-IN", "bn-IN", "de-DE", "en-US", "es-ES",
-#        "fr-FR", "gu-IN", "hi-IN", "it-IT", "ja-JP",
-#        "kn-IN", "ko-KR", "ml-IN", "mr-IN", "or-IN",
-#        "pa-IN", "pt-BR", "ru-RU", "si-LK", "ta-IN",
-#        "te-IN", "zh-CN", "zh-TW"
-#        ]
-
 GUIDES = {
-    QUICK_START: ["en-US"],
-    REFERENCE_GUIDE: ["en-US"],
-    INSTALL_GUIDE: ["en-US"],
-    CLIENT_CONFIG_GUIDE: ["en-US"]
+    QUICK_START: LANGUAGES,
+    REFERENCE_GUIDE: LANGUAGES,
+    INSTALL_GUIDE: LANGUAGES,
+    CLIENT_CONFIG_GUIDE: LANGUAGES
+#    PROXY_QUICK_START: LANGUAGES
 }
 
 RELEASE_NOTES = {
-#        RELEASE_NOTES_SATELLITE: LANGUAGES
+#    RELEASE_NOTES_SATELLITE: ["en-US"]
 }
 
 def verifyAll():
     verifyPaths(GUIDES)
-    #verifyPaths(RELEASE_NOTES)
+    verifyPaths(RELEASE_NOTES)
 
 def verifyPaths(dictionary):
     for entry in dictionary.keys():
