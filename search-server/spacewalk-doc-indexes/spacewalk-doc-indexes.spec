@@ -9,6 +9,7 @@ Group: Applications/Internet
 License: GPLv2
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires: python
 BuildRequires: nutch
 BuildRequires: susemanager-jsp_en >= 1.2
 BuildRequires: release-notes-susemanager >= 1.2
@@ -24,13 +25,10 @@ documentation/help searches
 %setup -q
 
 %build
-./crawl_jsp.sh %{_localstatedir}/lib/tomcat6/webapps/rhn/help/
+./crawl_jsp.sh %{_localstatedir}/lib/tomcat6/webapps/rhn/help
 
 %install
-rm -rf $RPM_BUILD_ROOT
-
 LANGS="en-US"
-
 for lang in $LANGS; do
     install -d -m 755 $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/indexes/docs/$lang/segments
     cp -a %{crawl_output}/$lang/index/* $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/indexes/docs/$lang/
@@ -43,6 +41,9 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %{_prefix}/share/rhn/search/indexes/docs/
+%dir %{_prefix}/share/rhn/
+%dir %{_prefix}/share/rhn/search
+%dir %{_prefix}/share/rhn/search/indexes
 
 %changelog
 * Mon Apr 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.1.1-1
