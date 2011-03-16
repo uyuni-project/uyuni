@@ -478,7 +478,9 @@ def parse_line(line):
                        'osa-dispatcher.jabber_password': str,
                        'server.satellite.http_proxy_username': str,
                        'server.satellite.http_proxy_password': str,
-                       'server.satellite.rhn_parent': str}
+                       'server.satellite.rhn_parent': str,
+                       'server.susemanager.mirrcred_user': str,
+                       'server.susemanager.mirrcred_pass': str}
         val = string.strip(val)
 
         if converTable.get(key):
