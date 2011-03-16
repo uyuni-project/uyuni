@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 16 15:39:11 CET 2011 - jrenner@suse.de
+
+- Create indexes from locally installed jsp files (bnc#676704)
+
+-------------------------------------------------------------------
 Wed Sep 15 09:22:51 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-doc-indexes
