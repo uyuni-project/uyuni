@@ -1,7 +1,8 @@
 -------------------------------------------------------------------
 Wed Mar 16 12:18:31 CET 2011 - mc@suse.de
 
-- fix boot directory for kernel update (bnc#678159)
+- fix boot directory and grub config for kernel update 
+  (bnc#678159)
 
 -------------------------------------------------------------------
 Wed Feb 23 09:58:26 CET 2011 - iartarisi@suse.cz

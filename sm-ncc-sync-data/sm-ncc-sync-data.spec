@@ -39,9 +39,16 @@ if [ -f /lvmboot/boot/grub/menu.lst ]; then
     /bin/rmdir /lvmboot/tmp
     /bin/umount /lvmboot
     /bin/rmdir /lvmboot
+    /bin/cp /etc/fstab /etc/fstab.bak
     /usr/bin/sed -i 's|/lvmboot/boot.*bind.*||' /etc/fstab
     /usr/bin/sed -i 's|[[:space:]]/lvmboot[[:space:]]\+ext2| /boot ext2|' /etc/fstab
     /bin/mount /boot
+    if [ -f /boot/grub/menu.lst ]; then
+      /bin/cp /boot/grub/menu.lst /boot/grub/menu.lst.bak
+      /usr/bin/sed -i 's|/boot/vmlinuz|/vmlinuz|' /boot/grub/menu.lst
+      /usr/bin/sed -i 's|/boot/initrd|/initrd|' /boot/grub/menu.lst
+      /usr/bin/sed -i 's|/boot/message|/message|' /boot/grub/menu.lst
+    fi
   fi
 fi
 exit 0
