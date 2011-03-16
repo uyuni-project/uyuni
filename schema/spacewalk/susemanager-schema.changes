@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 16 10:52:10 CET 2011 - ug@suse.de
+
+- debranding some text in the database (bnc#673810)
+
+-------------------------------------------------------------------
 Thu Mar 10 17:04:04 CET 2011 - ug@suse.de
 
 - Registration of REHL4 clients fails due to incomplete 

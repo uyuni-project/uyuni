@@ -46,13 +46,13 @@ insert into rhnFeature (id, label, name, created, modified)
 values (sequence_nextval('rhn_feature_seq'), 'ftr_proxy_capable', 'Proxy Capable',
         current_timestamp, current_timestamp);
 insert into rhnFeature (id, label, name, created, modified)
-values (sequence_nextval('rhn_feature_seq'), 'ftr_sat_capable', 'Satellite Capable',
+values (sequence_nextval('rhn_feature_seq'), 'ftr_sat_capable', 'SUSE Manager Capable',
         current_timestamp, current_timestamp);
 insert into rhnFeature (id, label, name, created, modified)
 values (sequence_nextval('rhn_feature_seq'), 'ftr_reboot', 'Reboot System',
         current_timestamp, current_timestamp);
 insert into rhnFeature (id, label, name, created, modified)
-values (sequence_nextval('rhn_feature_seq'), 'ftr_satellite_applet', 'Satellite Applet',
+values (sequence_nextval('rhn_feature_seq'), 'ftr_satellite_applet', 'SUSE Manager Applet',
         current_timestamp, current_timestamp);
 insert into rhnFeature (id, label, name, created, modified)
 values (sequence_nextval('rhn_feature_seq'), 'ftr_osa_bus', 'OSA Bus',

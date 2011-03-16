@@ -23,9 +23,9 @@
 insert into rhn_probe_types(probe_type,type_description) 
     values ( 'None','None specified');
 insert into rhn_probe_types(probe_type,type_description) 
-    values ( 'satnode','Satellite Node Probe');
+    values ( 'satnode','Node Probe');
 insert into rhn_probe_types(probe_type,type_description) 
-    values ( 'satcluster','Satellite Cluster Probe');
+    values ( 'satcluster','Cluster Probe');
 insert into rhn_probe_types(probe_type,type_description) 
     values ( 'url','URL Probe');
 insert into rhn_probe_types(probe_type,type_description) 

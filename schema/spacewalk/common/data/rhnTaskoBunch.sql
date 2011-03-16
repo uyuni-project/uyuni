@@ -70,7 +70,7 @@ INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
              VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'channel-repodata-bunch', 'Generates channel repodata', null);
 
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
-             VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'satcert-check-bunch', 'Checks whether satellite certificate has not expired', null);
+             VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'satcert-check-bunch', 'Checks whether SUSE Manager certificate has not expired', null);
 
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
              VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'cleanup-data-bunch', 'Cleans up orphaned and outdated data', null);

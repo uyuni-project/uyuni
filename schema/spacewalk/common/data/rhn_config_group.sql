@@ -23,7 +23,7 @@
 insert into rhn_config_group(name,description) 
     values ( 'general','General configuration parameters');
 insert into rhn_config_group(name,description) 
-    values ( 'timesync','Satellite time synchronization');
+    values ( 'timesync','SUSE Manager time synchronization');
 insert into rhn_config_group(name,description) 
     values ( 'oracle','General Oracle database configuration');
 insert into rhn_config_group(name,description) 
@@ -45,7 +45,7 @@ insert into rhn_config_group(name,description)
 insert into rhn_config_group(name,description) 
     values ( 'sc_db','State change database configuration');
 insert into rhn_config_group(name,description) 
-    values ( 'satellite','General satellite configuration');
+    values ( 'satellite','General SUSE Manager configuration');
 insert into rhn_config_group(name,description) 
     values ( 'netsaint','Netsaint configuration (mostly defunct)');
 insert into rhn_config_group(name,description) 
@@ -53,9 +53,9 @@ insert into rhn_config_group(name,description)
 insert into rhn_config_group(name,description) 
     values ( 'current_state','Current state database configuration');
 insert into rhn_config_group(name,description) 
-    values ( 'queues','Satellite dequeuer configuration');
+    values ( 'queues','SUSE Manager dequeuer configuration');
 insert into rhn_config_group(name,description) 
-    values ( 'ConfigPusher','Satellite configurator configuration');
+    values ( 'ConfigPusher','SUSE Manager configurator configuration');
 insert into rhn_config_group(name,description) 
     values ( 'CommandQueue','SputLite configuration');
 insert into rhn_config_group(name,description) 
