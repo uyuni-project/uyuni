@@ -30,6 +30,21 @@ install -m 0644 suse-9C800ACA.key    %{buildroot}/srv/www/htdocs/pub/
 %clean
 rm -rf %{buildroot}
 
+%post
+if [ -f /lvmboot/boot/grub/menu.lst ]; then
+  if /bin/grep "/lvmboot/boot[[:space:]]\+/boot[[:space:]]\+.*bind" /etc/fstab >/dev/null; then
+    /bin/umount /boot
+    /bin/mv /lvmboot/boot /lvmboot/tmp
+    /bin/mv /lvmboot/tmp/* /lvmboot
+    /bin/rmdir /lvmboot/tmp
+    /bin/umount /lvmboot
+    /bin/rmdir /lvmboot
+    /usr/bin/sed -i 's|/lvmboot/boot.*bind.*||' /etc/fstab
+    /usr/bin/sed -i 's|[[:space:]]/lvmboot[[:space:]]\+ext2| /boot ext2|' /etc/fstab
+    /bin/mount /boot
+  fi
+fi
+exit 0
 
 %files
 %defattr(-,root,root,-)
