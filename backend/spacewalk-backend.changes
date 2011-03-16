@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 16 10:26:17 CET 2011 - iartarisi@suse.cz
+
+- fixed bnc#679866 (downloading subscriptions fails when using integer
+  credentials)
+
+-------------------------------------------------------------------
 Tue Mar  8 14:28:08 CET 2011 - iartarisi@suse.cz
 
 - fixed bnc#644072 (password guessing vulnerability) with two commits
