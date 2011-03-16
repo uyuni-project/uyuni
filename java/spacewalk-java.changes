@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 16 17:17:21 CET 2011 - jrenner@suse.de
+
+- Re-enable the local doc search (bnc#676704)
+
+-------------------------------------------------------------------
 Mon Mar 14 17:20:02 CET 2011 - jrenner@suse.de
 
 - Replace rhn-proxy with SMP for ACLs and queries (bnc#679420)
