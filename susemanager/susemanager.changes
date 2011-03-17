@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Mar 17 11:33:54 CET 2011 - iartarisi@suse.cz
+
+ - when updating subscriptions, remove those that are no longer present in NCC
+ - pythonification and cosmetics
+ - DRYed mgr-ncc-sync by moving some commands in an update_subscriptions
+   method in the lib file
+
+-------------------------------------------------------------------
 Mon Mar 14 16:12:32 CET 2011 - iartarisi@suse.cz
 
 - fix asking for confirmation when a channel can't be added because of a
