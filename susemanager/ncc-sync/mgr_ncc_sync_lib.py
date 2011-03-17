@@ -1096,6 +1096,17 @@ class NCCSync(object):
         query.execute(os=dist.get('os'), release=dist.get('release'),
         channel_arch_id=channel_arch_id, channel_id=channel_id)
 
+    def update_subscriptions(self):
+        """Sync subscriptions from NCC to the database"""
+        all_subs = self.get_subscriptions_from_ncc()
+        cons_subs = self.consolidate_subscriptions(all_subs)
+        self.reset_entitlements_in_table()
+        for s in cons_subs.keys():
+            if self.is_entitlement(s):
+                self.edit_entitlement_in_table(s, cons_subs[s])
+            else:
+                self.edit_subscription_in_table(s, cons_subs[s])
+
     def is_entitlement(self, product):
         return product in self.ncc_rhn_ent_mapping
 

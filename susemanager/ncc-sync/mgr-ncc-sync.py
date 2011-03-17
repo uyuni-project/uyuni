@@ -61,26 +61,12 @@ def main():
     elif options.test:
         syncer.test_subscription_calculation()
     elif options.update_subscriptions:
-        all_subs = syncer.get_subscriptions_from_ncc()
-        cons_subs = syncer.consolidate_subscriptions(all_subs)
-        syncer.reset_entitlements_in_table()
-        for s in cons_subs.keys():
-            if(syncer.is_entitlement(s)):
-                syncer.edit_entitlement_in_table(s, cons_subs[s])
-            else:
-                syncer.edit_subscription_in_table(s, cons_subs[s])
+        syncer.update_subscriptions()
     else:
         syncer.update_channel_family_table_by_config()
         suse_products = syncer.get_suse_products_from_ncc()
         syncer.update_suse_products_table(suse_products)
-        all_subs = syncer.get_subscriptions_from_ncc()
-        cons_subs = syncer.consolidate_subscriptions(all_subs)
-        syncer.reset_entitlements_in_table()
-        for s in cons_subs.keys():
-            if syncer.is_entitlement(s):
-                syncer.edit_entitlement_in_table(s, cons_subs[s])
-            else:
-                syncer.edit_subscription_in_table(s, cons_subs[s])
+        syncer.update_subscriptions()
         syncer.sync_installed_channels()
         syncer.sync_suseproductchannel()
 
