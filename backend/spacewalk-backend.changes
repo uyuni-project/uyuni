@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 17 10:58:24 CET 2011 - mc@suse.de
+
+- check that path is not None
+
+-------------------------------------------------------------------
 Wed Mar 16 10:26:17 CET 2011 - iartarisi@suse.cz
 
 - fixed bnc#679866 (downloading subscriptions fails when using integer
