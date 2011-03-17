@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 17 16:37:00 CET 2011 - jrenner@suse.de
+
+- Add proxy docs to be indexed as well (bnc#676704)
+
+-------------------------------------------------------------------
 Wed Mar 16 15:39:11 CET 2011 - jrenner@suse.de
 
 - Create indexes from locally installed jsp files (bnc#676704)
