@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 17 13:49:56 CET 2011 - mc@suse.de
+
+- debranding for proxy
+
+-------------------------------------------------------------------
 Mon Mar 14 17:18:19 CET 2011 - jrenner@suse.de
 
 - Replace rhn-proxy with SMP for ACLs and queries (bnc#679420)
