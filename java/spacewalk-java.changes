@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 17 11:14:16 CET 2011 - jrenner@suse.de
+
+- Remove helper class that is not needed anymore (bnc#676704)
+
+-------------------------------------------------------------------
 Wed Mar 16 17:17:21 CET 2011 - jrenner@suse.de
 
 - Re-enable the local doc search (bnc#676704)
