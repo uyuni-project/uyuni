@@ -106,7 +106,6 @@ class NCCSync(object):
                     new_url = e[3].dict["location"]
                 else:
                     log_debug(1, "connecting %s failed with HTTP error code %s" % (new_url, e[1]))
-                    pass
         return f
 
     # OUT: [ {'consumed-virtual': '0',
@@ -491,7 +490,8 @@ class NCCSync(object):
                 )
             rhnSQL.commit()
 
-    def do_subscription_calculation( self, all_subs_in_db, all_subs_sum, prod, data, cf_id ):
+    def do_subscription_calculation(self, all_subs_in_db, all_subs_sum, prod,
+                                    data, cf_id):
         # Two things can happen:
         # 1. we have more subscriptions in NCC than in DB
         #    we'll add (substract a negative value) from org_id=1 max_members
@@ -503,21 +503,22 @@ class NCCSync(object):
         #    We'll reduce the max_members of org_id=1 until needed_subscriptions=0 or max_members=0 (!!!)
         #    We'll reduce the max_members of org_id++ until needed_subscriptions=0 or max_members=0 (!!!)
         needed_subscriptions = all_subs_sum - data["nodecount"]
-        log_debug(1, "NCC says: %s, DB says: %s for channel family %s" % (data["nodecount"], all_subs_sum, cf_id) )
+        log_debug(1, "NCC says: %s, DB says: %s for channel family %s" %
+                  (data["nodecount"], all_subs_sum, cf_id))
         for org in sorted(all_subs_in_db.keys()):
             log_debug(1, "working on org_id %s" % org)
             free = all_subs_in_db[ org ]["max_members"] - all_subs_in_db[ org ]["current_members"]
             if (free >= 0 and needed_subscriptions <= free) or (free < 0 and needed_subscriptions < 0):
                 log_debug(1, "max_members (%s) -= %s" % (all_subs_in_db[ org ]["max_members"], needed_subscriptions) )
                 all_subs_in_db[ org ]["max_members"] -= needed_subscriptions
-                all_subs_in_db[ org ]["dirty"] = 1
+                all_subs_in_db[ org ]["dirty"] = True
                 needed_subscriptions = 0
                 break
             elif free > 0 and needed_subscriptions > free:
                 log_debug(1, "max_members (%s) -= %s" % (all_subs_in_db[ org ]["max_members"], free) )
                 needed_subscriptions -= free
                 all_subs_in_db[ org ]["max_members"] -= free
-                all_subs_in_db[ org ]["dirty"] = 1
+                all_subs_in_db[ org ]["dirty"] = True
         if needed_subscriptions > 0:
             # we reduced all max_members but still don't have enough
             # That means, we use more subscriptions than we have in NCC
@@ -527,43 +528,43 @@ class NCCSync(object):
                 if free > 0 and needed_subscriptions <= free:
                     log_debug(1, "max_members (%s) -= %s" % (all_subs_in_db[ org ]["max_members"], needed_subscriptions) )
                     all_subs_in_db[ org ]["max_members"] -= needed_subscriptions
-                    all_subs_in_db[ org ]["dirty"] = 1
+                    all_subs_in_db[ org ]["dirty"] = True
                     needed_subscriptions = 0
                     break
                 elif free > 0 and needed_subscriptions > free:
                     log_debug(1, "max_members (%s) -= %s" % (all_subs_in_db[ org ]["max_members"], free) )
                     needed_subscriptions -= free
                     all_subs_in_db[ org ]["max_members"] -= free
-                    all_subs_in_db[ org ]["dirty"] = 1
+                    all_subs_in_db[ org ]["dirty"] = True
         if needed_subscriptions > 0:
             self.error_msg("still too many subscripts are in use. No solution found: left subscriptions: %s" % needed_subscriptions)
         return all_subs_in_db
 
     def test_subscription_calculation( self ):
-        test_data = [ { 'all_subs_in_db' : {1: {'max_members': 0, 'current_members': 0, 'dirty': 0}},
+        test_data = [ { 'all_subs_in_db' : {1: {'max_members': 0, 'current_members': 0, 'dirty': False}},
                         'all_subs_sum' : 0, 'prod' : 'TEST-SLE-HAE-PPC', 'data' : {'nodecount': 10, 'consumed': 0}, 'cf_id' : 1031 },
 
-                      { 'all_subs_in_db' : {1: {'max_members': 200000, 'current_members': 0, 'dirty': 0}},
+                      { 'all_subs_in_db' : {1: {'max_members': 200000, 'current_members': 0, 'dirty': False}},
                         'all_subs_sum' : 200000, 'prod' : 'TEST-10040', 'data' : {'nodecount': 200000, 'consumed': 9}, 'cf_id' : 1004 },
 
-                      { 'all_subs_in_db' : {1: {'max_members': 100, 'current_members': 90, 'dirty': 0}},
+                      { 'all_subs_in_db' : {1: {'max_members': 100, 'current_members': 90, 'dirty': False}},
                         'all_subs_sum' : 100, 'prod' : 'TEST-RES', 'data' : {'nodecount': 100, 'consumed': 97}, 'cf_id' : 1005 },
 
-                      { 'all_subs_in_db' : {1: {'max_members': 10, 'current_members': 10, 'dirty': 0}},
+                      { 'all_subs_in_db' : {1: {'max_members': 10, 'current_members': 10, 'dirty': False}},
                         'all_subs_sum' : 20, 'prod' : 'TEST-NAM-AGA', 'data' : {'nodecount': 20, 'consumed': 15}, 'cf_id' : 1019 },
 
-                      { 'all_subs_in_db' : {2: {'max_members': 10, 'current_members': 5, 'dirty': 0}},
+                      { 'all_subs_in_db' : {2: {'max_members': 10, 'current_members': 5, 'dirty': False}},
                         'all_subs_sum' : 20, 'prod' : 'TEST-NAM-AGA', 'data' : {'nodecount': 20, 'consumed': 15}, 'cf_id' : 1019 },
 
-                      { 'all_subs_in_db' : {1: {'max_members': 100, 'current_members': 60, 'dirty': 0}},
+                      { 'all_subs_in_db' : {1: {'max_members': 100, 'current_members': 60, 'dirty': False}},
                         'all_subs_sum' : 100, 'prod' : 'TEST-STUDIOONSITE', 'data' : {'nodecount': 80, 'consumed': 60}, 'cf_id' : 1021 },
 
-                      { 'all_subs_in_db' : {1: {'max_members': 100, 'current_members': 60, 'dirty': 0}},
+                      { 'all_subs_in_db' : {1: {'max_members': 100, 'current_members': 60, 'dirty': False}},
                         'all_subs_sum' : 100, 'prod' : 'TEST-STUDIOONSITE2', 'data' : {'nodecount': 50, 'consumed': 50}, 'cf_id' : 10212 } ]
         for data in test_data:
             all_subs_in_db = self.do_subscription_calculation( data["all_subs_in_db"], data["all_subs_sum"], data["prod"], data["data"], data["cf_id"] )
             for org in all_subs_in_db.keys():
-                if all_subs_in_db[ org ]["dirty"] == 1:
+                if all_subs_in_db[ org ]["dirty"]:
                     update_sql = "UPDATE RHNPRIVATECHANNELFAMILY SET "
                     update_sql += "max_members = %s " % all_subs_in_db[ org ]["max_members"]
                     update_sql += "WHERE channel_family_id = %s and org_id = %s" % ( org, data["cf_id"] )
@@ -581,40 +582,41 @@ class NCCSync(object):
         cf_id = (self.get_channel_family_id(prod) or
                  self.add_channel_family_row(prod))
 
-        select_sql = ("SELECT max_members, org_id, current_members from RHNPRIVATECHANNELFAMILY "
-                      "WHERE channel_family_id = %s order by org_id" % cf_id)
+        select_sql = ("SELECT max_members, org_id, current_members "
+                      "FROM RHNPRIVATECHANNELFAMILY "
+                      "WHERE channel_family_id = %s ORDER BY org_id" % cf_id)
         query = rhnSQL.prepare(select_sql)
         query.execute()
 
         result = query.fetchall()
 
         all_subs_in_db = {}
-        all_subs_sum   = 0
+        all_subs_sum = 0
         # copy database subscription data to a dict and
         # count all subscriptions over all org_id's
-        for f in result:
-            # all_subs_in_db[ org_id ] = { "max_members" : NUM, "current_members" : NUM, "dirty" : 0 }
-            if not all_subs_in_db.has_key( f[1] ):
-                all_subs_in_db[ f[1] ] = { "max_members" : 0, "current_members" : f[2], "dirty" : 0 }
-            all_subs_in_db[ f[1] ]["max_members"] += f[0]
-            all_subs_sum += f[0]
+        for max_members, org_id, current_members in result:
+            if org_id not in all_subs_in_db:
+                all_subs_in_db[org_id] = {"max_members": 0,
+                                          "current_members": current_members,
+                                          "dirty": False}
+            all_subs_in_db[org_id]["max_members"] += max_members
+            all_subs_sum += max_members
 
         # generate test data
         # print "{ 'all_subs_in_db' : %s, 'all_subs_sum' : %s, 'prod' : '%s', 'data' : %s, 'cf_id' : %s }," % ( all_subs_in_db, all_subs_sum, prod, data, cf_id )
-
-        all_subs_in_db = self.do_subscription_calculation( all_subs_in_db, all_subs_sum, prod, data, cf_id )
+        all_subs_in_db = self.do_subscription_calculation(
+            all_subs_in_db, all_subs_sum, prod, data, cf_id)
 
         for org in all_subs_in_db.keys():
-            if all_subs_in_db[ org ]["dirty"] == 1:
+            if all_subs_in_db[org]["dirty"]:
                 update_sql = """
-                    UPDATE RHNPRIVATECHANNELFAMILY SET
-                    max_members = :max_m
+                    UPDATE RHNPRIVATECHANNELFAMILY SET max_members = :max_m
                     WHERE channel_family_id = :cf_id and org_id = :org_id
                     """
                 query = rhnSQL.prepare(update_sql)
                 log_debug(2, "SQL: " % query )
                 query.execute(
-                    max_m = all_subs_in_db[ org ]["max_members"],
+                    max_m = all_subs_in_db[org]["max_members"],
                     org_id = org,
                     cf_id = cf_id
                 )
@@ -751,7 +753,7 @@ class NCCSync(object):
             - . - channel is not in sync
 
         """
-        print "Listing all mirrorable channels..."
+        self.print_msg("Listing all mirrorable channels...")
         db_channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
 
         ncc_channels = sorted(self.get_available_channels(),
