@@ -147,13 +147,25 @@ class NCCSync(object):
                 subscriptions.append(subscription)
         return subscriptions
 
-    #   OUT: {'SLE-HAE-PPC':{ 'consumed':0, 'nodecount':10 }, '10040':{ 'consumed':0, 'nodecount':200000}, ... }
-    #   nodecount is the number of subscriptions the customer has today for a product
     #   FIXME: not sure about 'consumed' yet. We could calculate:
     #          max_members = nodecount - ( current_members - consumed )
     #          to get a more precise max_members
     def consolidate_subscriptions(self, subs):
-        """Takes the get_subscriptions_from_ncc() data and sums the subscriptions of a product"""
+        """Return a dictionary with the number of subscriptions for each family.
+
+        :arg subs: a dictionary in the format returned by
+        get_subscriptions_from_ncc()
+
+        Returns a dictionary in this format:
+        {'SLE-HAE-PPC': {'consumed': 0, 'nodecount': 10 },
+         '10040': {'consumed': 0, 'nodecount': 200000},
+         ... }
+
+        If there are families which have subscriptions in the database,
+        but are not in the subscription list from NCC, set their
+        nodecount to 0.
+
+        """
         subscription_count = {}
         for s in subs:
             start = float(s["start-date"])
@@ -175,6 +187,20 @@ class NCCSync(object):
                     else:
                         subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : int(s["nodecount"]) }
 
+
+        # delete subscriptions that are no longer available in NCC
+        q = rhnSQL.prepare(
+            "UPDATE rhnprivatechannelfamily p SET max_members = 0 "
+            "WHERE p.channel_family_id IN "
+            "(SELECT p.channel_family_id "
+            "FROM rhnprivatechannelfamily p JOIN rhnchannelfamily f "
+            "ON p.channel_family_id = f.id "
+            "WHERE p.max_members > 0 AND f.label NOT IN %s)"
+            # XXX rhnSQL fails on SQL IN string substitution, we do it manually
+            % _sql_list(subscription_count.keys()))
+        q.execute()
+        rhnSQL.commit()
+        
         return subscription_count
 
     def get_suse_products_from_ncc(self):
