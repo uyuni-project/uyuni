@@ -449,7 +449,7 @@ class RepoSync:
                        raise
                    continue
             finally:
-                if is_non_local_repo and os.path.exists(path):
+                if is_non_local_repo and path and os.path.exists(path):
                     os.remove(path)
 
         for (index, pack) in enumerate(to_link):
