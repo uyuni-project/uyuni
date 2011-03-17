@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 17 15:27:55 CET 2011 - jrenner@suse.de
+
+- Do not show a subnavigation below 'Proxy'
+
+-------------------------------------------------------------------
 Thu Mar 17 11:14:16 CET 2011 - jrenner@suse.de
 
 - Remove helper class that is not needed anymore (bnc#676704)

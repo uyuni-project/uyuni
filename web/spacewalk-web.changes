@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 17 15:27:22 CET 2011 - jrenner@suse.de
+
+- Do not show a subnavigation below 'Proxy'
+
+-------------------------------------------------------------------
 Thu Mar 17 13:49:56 CET 2011 - mc@suse.de
 
 - debranding for proxy
