@@ -23,6 +23,14 @@
         </li>
 
         <li>
+            <a style="font-size:12pt" href=/rhn/help/dispatcher/proxy_guide>
+                <bean:message key="help.jsp.proxy.title"/>
+            </a>
+            <br />
+            <bean:message key="help.jsp.proxy"/>
+        </li>
+
+        <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/reference_guide>
                 <bean:message key="help.jsp.refguide"/>
             </a>
@@ -39,16 +47,6 @@
             <br />
             <bean:message key="help.jsp.install"/>
         </li>
-
-<!--
-        <li>
-            <a style="font-size:12pt" href=/rhn/help/dispatcher/proxy_guide>
-                <bean:message key="help.jsp.proxy.title"/>
-            </a>
-            <br />
-            <bean:message key="help.jsp.proxy"/>
-        </li>
--->
 
         <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/client_config_guide>

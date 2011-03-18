@@ -21943,7 +21943,7 @@ given channel.</source>
         <source>Detailed information regarding @@PRODUCT_NAME@@ Proxy server.</source>
       </trans-unit>
 	  <trans-unit id="help.jsp.proxy.title">
-        <source>Proxy Guide</source>
+        <source>@@PRODUCT_NAME@@ Proxy Quick Start</source>
       </trans-unit>
 	  <trans-unit id="help.jsp.clients">
         <source>Documentation for setting up clients to connect to a @@PRODUCT_NAME@@ Proxy or @@PRODUCT_NAME@@ server.</source>
