@@ -2,6 +2,7 @@
 Thu Mar 17 11:33:54 CET 2011 - iartarisi@suse.cz
 
  - when updating subscriptions, remove those that are no longer present in NCC
+   (bnc#679889)
  - pythonification and cosmetics
  - DRYed mgr-ncc-sync by moving some commands in an update_subscriptions
    method in the lib file
