@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 18 10:48:03 CET 2011 - jrenner@suse.de
+
+- Add the proxy quick start document to the UI
+
+-------------------------------------------------------------------
 Thu Mar 10 14:54:31 CET 2011 - jrenner@suse.de
 
 - Adapted the UI to URL paths from new docu packages (bnc#674315)

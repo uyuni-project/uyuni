@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 18 10:49:19 CET 2011 - jrenner@suse.de
+
+- Add the proxy quick start document to the UI
+
+-------------------------------------------------------------------
 Thu Mar 17 15:27:55 CET 2011 - jrenner@suse.de
 
 - Do not show a subnavigation below 'Proxy'
