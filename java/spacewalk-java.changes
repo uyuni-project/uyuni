@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 21 13:54:35 CET 2011 - jrenner@suse.de
+
+- Require susemanager-proxy-quick_en-pdf
+
+-------------------------------------------------------------------
 Fri Mar 18 10:49:19 CET 2011 - jrenner@suse.de
 
 - Add the proxy quick start document to the UI
