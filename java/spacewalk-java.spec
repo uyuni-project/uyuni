@@ -98,6 +98,7 @@ BuildRequires: concurrent
 BuildRequires: tomcat6
 BuildRequires: oracle-instantclient-basic
 BuildRequires: log4j
+Requires: susemanager-proxy-quick_en-pdf
 %endif
 BuildRequires: cglib
 BuildRequires: ehcache
