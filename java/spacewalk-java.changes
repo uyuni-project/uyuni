@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar 22 11:52:42 CET 2011 - jrenner@suse.de
+
+- Refer to the right constant (bnc#677039)
+- Fix method signature (bnc#681514)
+
+-------------------------------------------------------------------
 Mon Mar 21 16:15:42 CET 2011 - ug@suse.de
 
 - fixed a missing "!" in adding "install=..." parameter code
