@@ -17,7 +17,7 @@ Feature: Create initial users
     And I enter "admin" as "desiredpasswordConfirm"
     And I enter "Admin" as "firstNames"
     And I enter "Admin" as "lastName"
-    And I enter "galaxy-devel@suse.de" as "email"
+    And I enter "galaxy-noise@suse.de" as "email"
     And I click on "Create Login"
     Then I am logged-in
 
@@ -43,9 +43,9 @@ Feature: Create initial users
      And I enter "testing" as "desiredpasswordConfirm"
      And I enter "Test" as "firstNames"
      And I enter "User" as "lastName"
-     And I enter "galaxy-devel@suse.de" as "email"
+     And I enter "galaxy-noise@suse.de" as "email"
      And I click on "Create Login"
-    Then I should see a "Account testing created, login information sent to galaxy-devel@suse.de" text
+    Then I should see a "Account testing created, login information sent to galaxy-noise@suse.de" text
      And I should see a "testing" link
 
   @fourth

@@ -22,7 +22,7 @@ Feature: Watch/edit user details
         And Option "Mr." is selected as "prefix"
         And I should see "Test" in field "firstNames"
         And I should see "User" in field "lastName"
-        And I should see a "galaxy-devel@suse.de" text
+        And I should see a "galaxy-noise@suse.de" text
         And I should see a "Change" link
         And I should see a "Administrative Roles" text
         And I should see a "Roles:" text

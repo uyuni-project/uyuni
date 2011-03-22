@@ -14,9 +14,9 @@ Feature: Create a new user
         And I select "Mr." from "prefix"
         And I enter "Test" as "firstNames"
         And I enter "User" as "lastName"
-        And I enter "galaxy-devel@suse.de" as "email"
+        And I enter "galaxy-noise@suse.de" as "email"
         And I click on "Create Login"
-      Then I should see a "Account user1 created, login information sent to galaxy-devel@suse.de" text
+      Then I should see a "Account user1 created, login information sent to galaxy-noise@suse.de" text
         And I should see a "user1" link
         And I should see a "normal user" text
 
