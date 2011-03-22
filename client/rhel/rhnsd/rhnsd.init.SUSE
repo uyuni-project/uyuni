@@ -64,7 +64,7 @@ fi
 rc_reset
 
 start() {
-    echo -n $"Starting Red Hat Network Daemon: "
+    echo -n $"Starting SUSE Manager Network Daemon: "
     startproc -f -p $RHNSD_PIDFILE $RHNSD
     rc_status
     touch /var/lock/subsys/rhnsd
@@ -72,7 +72,7 @@ start() {
 }
 
 stop() {
-    echo -n $"Stopping Red Hat Network Daemon: "
+    echo -n $"Stopping SUSE Manager Network Daemon: "
     killproc -p $RHNSD_PIDFILE $RHNSD
     rc_status -v
     rm -f /var/lock/subsys/rhnsd
@@ -102,7 +102,7 @@ case "$1" in
 	fi
 	;;
     reload)
-        echo -n $"Reloading Red Hat Network Daemon: "
+        echo -n $"Reloading SUSE Manager Network Daemon: "
         killproc -p $RHNSD_PIDFILE -HUP $RHNSD
         rc_status -v
         echo
