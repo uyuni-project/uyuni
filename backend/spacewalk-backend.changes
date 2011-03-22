@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar 22 13:51:48 CET 2011 - iartarisi@suse.cz
+
+- fixed bnc#673022 mirror timeout errors shouldn't cause tracebacks
+
+-------------------------------------------------------------------
 Thu Mar 17 10:58:24 CET 2011 - mc@suse.de
 
 - check that path is not None
