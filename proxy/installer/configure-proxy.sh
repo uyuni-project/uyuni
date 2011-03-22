@@ -509,3 +509,6 @@ else
 	echo Skipping start of services.
 	echo Use "/usr/sbin/rhn-proxy start" to manualy start proxy.
 fi
+
+# do not tell admin to configure proxy on next login anymore
+rm -f /etc/motd
