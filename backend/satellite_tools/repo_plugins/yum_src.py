@@ -20,7 +20,8 @@ import sys
 import os
 from yum import config
 from yum.update_md import UpdateMetadata
-from spacewalk.satellite_tools.reposync import ContentPackage, ChannelException
+from spacewalk.satellite_tools.reposync import (ContentPackage, ChannelException,
+                                                ChannelTimeoutException)
 from urlgrabber.grabber import URLGrabber
 import urlgrabber
 from yum import misc, Errors
@@ -79,7 +80,13 @@ class ContentSource:
         repo.setup(False, None, gpg_import_func=self.getKeyForRepo, confirm_func=self.askImportKey)
         self.initgpgdir( repo.gpgdir )
         sack = repo.getPackageSack()
-        sack.populate(repo, 'metadata', None, 0)
+        try:
+            sack.populate(repo, 'metadata', None, 0)
+        except Errors.RepoError,e :
+            if "No more mirrors" in str(e):
+                raise ChannelTimeoutException('No more mirrors to try.')
+            else:
+                raise
 
         list = sack.returnPackages()
         to_return = []
@@ -110,7 +117,11 @@ class ContentSource:
       if not self.repo.repoXML.repoData.has_key('updateinfo'):
         return []
       um = UpdateMetadata()
-      um.add(self.repo, all=True)
+      try:
+          um.add(self.repo, all=True)
+      except Errors.NoMoreMirrorsRepoError:
+          raise ChannelTimeoutException('No more mirrors to try.')
+          
       return um.notices
 
     def getKeyForRepo(self, repo, callback=None):

@@ -54,8 +54,12 @@ class ChannelException(Exception):
     def __unicode__(self):
         return '%s' % to_unicode(self.value)
 
-class RepoSync:
+class ChannelTimeoutException(ChannelException):
+    """Channel timeout error e.g. a remote repository is not responding"""
+    pass
 
+
+class RepoSync:
     parser = None
     type = None
     urls = None
@@ -146,6 +150,13 @@ class RepoSync:
                         proxy=CFG.HTTP_PROXY, proxy_user=CFG.HTTP_PROXY_USERNAME, proxy_pass=CFG.HTTP_PROXY_PASSWORD)
                 self.import_packages(plugin, url.getURL())
                 self.import_updates(plugin, url.getURL())
+            except ChannelTimeoutException, e:
+                self.print_msg("Repository server is not responding.")
+                if taskomatic.schedule_single_sat_repo_sync(int(self.channel['id'])):
+                    self.print_msg("Retriggered reposync.")
+                else:
+                    self.print_msg("Failed to retrigger reposync.")
+                sys.exit(1)
             except ChannelException, e:
                 self.print_msg("ChannelException: %s" % e)
                 self.sendErrorMail(fetchTraceback())
@@ -204,13 +215,14 @@ class RepoSync:
         return getattr(submod, "ContentSource")
 
     def import_updates(self, plug, url):
-      notices = plug.get_updates()
-      saveurl = suseLib.URL(url)
-      if saveurl.password:
-          saveurl.password = "*******"
-      self.print_msg("Repo " + saveurl.getURL() + " has " + str(len(notices)) + " patches.")
-      if len(notices) > 0:
-        self.upload_updates(notices)
+        notices = plug.get_updates()
+        saveurl = suseLib.URL(url)
+        if saveurl.password:
+            saveurl.password = "*******"
+        self.print_msg("Repo %s has %s patches." % (saveurl.getURL(),
+                                                    len(notices)))
+        if notices:
+            self.upload_updates(notices)
 
     def upload_updates(self, notices):
       batch = []
