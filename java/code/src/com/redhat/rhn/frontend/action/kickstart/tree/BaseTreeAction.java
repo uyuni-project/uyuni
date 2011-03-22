@@ -112,7 +112,7 @@ public abstract class BaseTreeAction extends BaseEditAction {
         bte.setInstallType(type);
 
         if (type.isSUSE()) {
-            String kopts = form.getString(POST_KERNEL_OPTS);
+            String kopts = form.getString(KERNEL_OPTS);
             if (!kopts.contains("install=")) {
                 kopts = kopts + " install=http://" + request.getLocalName() +
                     "/ks/dist/" + form.getString(LABEL);
