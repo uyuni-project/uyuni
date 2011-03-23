@@ -427,7 +427,7 @@ sub system_status_info {
   elsif ($data->{LAST_CHECKIN_DAYS_AGO} > PXT::Config->get('system_checkin_threshold')) {
     $ret->{image} = '/img/icon_checkin.gif';
     $ret->{image_medium} = '/img/icon_checkin.gif';
-    $ret->{status_str} = 'System not checking in with R H N';
+    $ret->{status_str} = 'System not checking in with SUSE Manager';
     $ret->{status_class} = 'system-status-awol';
     $ret->{message} = 'more info';
     $ret->{link} = Sniglets::HTML::render_help_link(-user => $user,
