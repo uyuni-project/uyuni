@@ -84,7 +84,7 @@ class NCCSync(object):
         :arg url: the url where the request will be sent
         :kwarg send: do a post-request when "send" is given.
 
-        Returns a filedescriptor.
+        Returns a file-like object.
 
         """
         new_url = url
@@ -197,7 +197,7 @@ class NCCSync(object):
             "ON p.channel_family_id = f.id "
             "WHERE p.max_members > 0 AND f.label NOT IN %s)"
             # XXX rhnSQL fails on SQL IN string substitution, we do it manually
-            % _sql_list(subscription_count.keys()))
+            % sql_list(subscription_count.keys()))
         q.execute()
         rhnSQL.commit()
         
@@ -218,19 +218,20 @@ class NCCSync(object):
 
         self.print_msg("Downloading Product information")
         f = self._connect_ncc(self.ncc_url_prods, send)
-
         tree = etree.parse(f)
+        f.close()
+
         suse_products = []
         for row in tree.getroot():
             if row.tag == ("{%s}row" % self.namespace):
                 suseProduct = {}
                 for col in row.findall("{%s}col" % self.namespace):
                     key = col.get("name")
-                    if key == "start-date" or key == "end-date":
+                    if key in ["start-date", "end-date"]:
                         suseProduct[key] = float(col.text)
                     else:
                         suseProduct[key] = col.text
-                if suseProduct["PRODUCT_CLASS"] != None:
+                if suseProduct["PRODUCT_CLASS"]:
                     # FIXME: skip buggy NCC entries. Some have no
                     # product_class, which is invalid data
                     suse_products.append(suseProduct)
@@ -355,10 +356,10 @@ class NCCSync(object):
 
         """
         channel_family_id = self.get_channel_family_id(label)
-        if name == None:
+        if name is None:
             name = label
 
-        if channel_family_id == None:
+        if not channel_family_id:
             channel_family_id = self.add_channel_family_row(
                 label, name, org_id, url)
         else:
@@ -695,12 +696,17 @@ class NCCSync(object):
 
         """
         channel_id = self.get_channel_id(channel_label)
-        if taskomatic.schedule_single_sat_repo_sync(channel_id):
-            self.print_msg("Scheduled repo sync for channel %s."
-                           % channel_label)
+        if channel_id:
+            if taskomatic.schedule_single_sat_repo_sync(channel_id):
+                self.print_msg("Scheduled repo sync for channel %s."
+                               % channel_label)
+            else:
+                self.error_msg("Failed to schedule repo sync for channel %s."
+                               % channel_label)
         else:
-            self.error_msg("Failed to schedule repo sync for channel %s."
-                           % channel_label)
+            self.log_msg("Did not schedule a repo sync for channel %s as "
+                         "it could not be found in the databse."
+                         % channel_label)
 
     def sync_installed_channels(self):
         """Schedule a reposync of all SUSE Manager channels in the database.
@@ -975,26 +981,6 @@ class NCCSync(object):
         query.execute(name=channel.get('product_name'))
         return query.fetchone()[0]
 
-    def _confirm(self, message):
-        """Ask the user for confirmation before doing something
-
-        :arg message: message string to show to the user
-
-        Returns: a boolean which is True when the user gave confirmation
-        and False otherwise. Initializing the NCCSync object with
-        interactive=False makes this function return True without asking
-        the user anything.
-
-        """
-        if self.non_interactive:
-            return True
-        else:
-            sys.stdout.write(message)
-            choice = raw_input(' [y/n] (y): ').lower()
-            if choice == 'y' or choice == '':
-                return True
-            else:
-                return False
 
     def add_channel(self, channel_label):
         """Add a new channel to the database
@@ -1055,9 +1041,9 @@ class NCCSync(object):
                     self.add_dist_channel_map(channel_id,
                                               self.get_channel_arch_id(channel),
                                               child)
-            if self._confirm("Warning! Once added, Novell channels can not "
-                             "be deleted. Only custom channels can be deleted. "
-                             "Do you wish to proceed?"):
+            if confirm("Warning! Once added, Novell channels can not "
+                       "be deleted. Only custom channels can be deleted. "
+                       "Do you wish to proceed?"):
                 rhnSQL.commit()
                 self.print_msg("Added channel '%s' to the database."
                                % channel_label)
@@ -1106,13 +1092,13 @@ class NCCSync(object):
         if delete_channel_labels:
             q = rhnSQL.prepare("SELECT id FROM rhnchannel "
                                "WHERE label in %s" %
-                               _sql_list(delete_channel_labels))
+                               sql_list(delete_channel_labels))
             q.execute()
             delete_channel_ids = [i[0] for i in q.fetchall()]
 
             q = rhnSQL.prepare("DELETE FROM suseproductchannel "
                                "WHERE channel_id IN %s" %
-                               _sql_list(delete_channel_ids))
+                               sql_list(delete_channel_ids))
             q.execute()
         rhnSQL.commit()
 
@@ -1151,7 +1137,8 @@ class NCCSync(object):
     def log_msg(self, message):
         rhnLog.log_clean(0, message)
 
-def _sql_list(alist):
+
+def sql_list(alist):
     """Transforms a python list into an SQL string of a list
 
     ['foo', 'bar'] --> "('foo', 'bar')"
@@ -1167,3 +1154,23 @@ def _sql_list(alist):
     l = str(tuple(alist))
     l.replace(",)", ")") # "('foo',)" should be "('foo')"
     return l
+def confirm(message):
+    """Ask the user for confirmation before doing something
+
+    :arg message: message string to show to the user
+
+    Returns: a boolean which is True when the user gave confirmation
+    and False otherwise. Initializing the NCCSync object with
+    interactive=False makes this function return True without asking
+    the user anything.
+
+    """
+    if self.non_interactive:
+        return True
+    else:
+        sys.stdout.write(message)
+        choice = raw_input(' [y/n] (y): ').lower()
+        if choice == 'y' or choice == '':
+            return True
+        else:
+            return False
