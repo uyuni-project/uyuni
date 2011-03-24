@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 24 10:20:58 CET 2011 - mantel@suse.de
+
+- fix ownership of /srv/www/templates (bnc#681930)
+
+-------------------------------------------------------------------
 Wed Sep 15 10:16:26 CEST 2010 - mantel@suse.de
 
 - Initial release of SputLite
