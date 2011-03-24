@@ -233,7 +233,7 @@ sub apply_unscheduled_errata {
 								       -earliest => $earliest_date,
 								       -server_id => $sid);
 
-    $pxt->push_message(site_info => sprintf('Scheduled <b>%d</b> errata update%s for <strong>%s</strong>.',
+    $pxt->push_message(site_info => sprintf('Scheduled <b>%d</b> patch update%s for <strong>%s</strong>.',
 					    $count,
 					    $count == 1 ? '' : 's',
 					    PXT::Utils->escapeHTML($system->name)));
@@ -520,15 +520,15 @@ sub potential_for_cloned_channel_cb {
     my $channel = RHN::Channel->lookup(-id => $cid);
     my @messages;
     if ($clone_count) {
-      push @messages, sprintf('<strong>%d</strong> errata cloned into <strong>%s</strong>.', $clone_count, $channel->name);
+      push @messages, sprintf('<strong>%d</strong> patches cloned into <strong>%s</strong>.', $clone_count, $channel->name);
     }
 
     if ($merge_count) {
-      push @messages, sprintf('<strong>%d</strong> errata assigned to <strong>%s</strong>.', $merge_count, $channel->name);
+      push @messages, sprintf('<strong>%d</strong> patches assigned to <strong>%s</strong>.', $merge_count, $channel->name);
     }
 
     if ($publish_count) {
-      push @messages, sprintf('<strong>%d</strong> errata published to <strong>%s</strong>.', $publish_count, $channel->name);
+      push @messages, sprintf('<strong>%d</strong> patches published to <strong>%s</strong>.', $publish_count, $channel->name);
     }
 
     RHN::ChannelEditor->schedule_errata_cache_update($pxt->user->org_id, $cid, 0);
@@ -574,7 +574,7 @@ sub apply_errata_cb {
   my $system = RHN::Server->lookup(-id => $sid);
 
   my $errata_count = scalar $errata_set->contents;
-  $pxt->push_message(site_info => sprintf('<strong>%d</strong> errata update%s been scheduled for <a href="/rhn/systems/details/Overview.do?sid=%d"><strong>%s</strong></a>.',
+  $pxt->push_message(site_info => sprintf('<strong>%d</strong> patch update%s been scheduled for <a href="/rhn/systems/details/Overview.do?sid=%d"><strong>%s</strong></a>.',
 					  $errata_count,
 					  $errata_count == 1 ? ' has' : 's have',
 					  $sid,
@@ -615,7 +615,7 @@ sub clone_errata_from_set {
   $errata_set->empty;
   $errata_set->commit;
 
-  $pxt->push_message(site_info => sprintf('Successfully cloned <strong>%d</strong> errata.', $count));
+  $pxt->push_message(site_info => sprintf('Successfully cloned <strong>%d</strong> patches.', $count));
 
   return 1;
 }
@@ -641,7 +641,7 @@ sub remove_errata_from_channel {
   RHN::ChannelEditor->schedule_errata_cache_update($pxt->user->org_id, $cid, 0);
   RHN::Channel->refresh_newest_package_cache($cid, 'web.channel_manager');
 
-  $pxt->push_message(site_info => sprintf('Removed <strong>%d</strong> errata from <strong>%s</strong>.', $count, $channel->name));
+  $pxt->push_message(site_info => sprintf('Removed <strong>%d</strong> patches from <strong>%s</strong>.', $count, $channel->name));
 
   return 1;
 }
@@ -672,7 +672,7 @@ sub add_errata_to_channel {
 
   $transaction->nested_commit;
 
-  $pxt->push_message(site_info => sprintf('Added <strong>%d</strong> errata to <strong>%s</strong>.', $count, $channel->name));
+  $pxt->push_message(site_info => sprintf('Added <strong>%d</strong> patches to <strong>%s</strong>.', $count, $channel->name));
 
   return 1;
 }
