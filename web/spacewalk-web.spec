@@ -262,7 +262,7 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/PXT/Config.pm
 %attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
 %dir /etc/rhn
-%dir /etc/rhn/default
+%attr(750,root,%{apache_group}) %dir /etc/rhn/default
 
 %files -n spacewalk-dobby
 %defattr(644,root,root,755)

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 24 10:04:25 CET 2011 - mantel@suse.de
+
+- fix ownership of /etc/rhn/default (bnc#681926)
+
+-------------------------------------------------------------------
 Wed Mar 23 12:25:00 CET 2011 - mantel@suse.de
 
 - rebrand sniglet for "system not checking in with..."
