@@ -10,5 +10,5 @@
 --
 --
 
-update rhnactiontype set name = 'patch update' where label = 'errata.update';
+update rhnactiontype set name = 'Patch Update' where label = 'errata.update';
 

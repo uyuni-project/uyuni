@@ -23,7 +23,7 @@ insert into rhnActionType values (1, 'packages.refresh_list', 'Package List Refr
 insert into rhnActionType values (2, 'hardware.refresh_list', 'Hardware List Refresh', 'N', 'N');
 insert into rhnActionType values (3, 'packages.update', 'Package Install', 'Y', 'Y');
 insert into rhnActionType values (4, 'packages.remove', 'Package Removal', 'Y', 'Y');
-insert into rhnActionType values (5, 'errata.update', 'Errata Update', 'Y', 'Y');
+insert into rhnActionType values (5, 'errata.update', 'Patch Update', 'Y', 'Y');
 insert into rhnActionType values (6, 'up2date_config.get', 'Get server up2date config', 'Y', 'Y');
 insert into rhnActionType values (7, 'up2date_config.update', 'Update server up2date config', 'Y', 'Y');
 insert into rhnActionType values (8, 'packages.delta', 'Package installation and removal in one RPM transaction', 'Y', 'Y');

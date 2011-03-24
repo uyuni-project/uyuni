@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 24 14:28:43 CET 2011 - mantel@suse.de
+
+- fix schema updates; debrand initial values for rhnactiontype
+
+-------------------------------------------------------------------
 Thu Mar 24 12:22:45 CET 2011 - mantel@suse.de
 
 - debrand errata to patch (bnc#670318)
