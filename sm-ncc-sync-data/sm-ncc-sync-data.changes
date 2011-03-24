@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 24 10:59:21 CET 2011 - iartarisi@suse.cz
+
+- added SUSE Manager Proxy channels
+
+-------------------------------------------------------------------
 Wed Mar 16 12:18:31 CET 2011 - mc@suse.de
 
 - fix boot directory and grub config for kernel update 
