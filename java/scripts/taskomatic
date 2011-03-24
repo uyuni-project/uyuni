@@ -30,7 +30,7 @@
 
 # Application
 APP_NAME="taskomatic"
-APP_LONG_NAME="RHN Taskomatic"
+APP_LONG_NAME="Taskomatic"
 
 # Wrapper
 WRAPPER_CMD="/usr/bin/taskomaticd"
