@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 24 10:15:00 CET 2011 - mantel@suse.de
+
+- fix ownership of /var/lib/nocpulse (bnc#681929)
+
+-------------------------------------------------------------------
 Wed Sep 15 12:19:37 CEST 2010 - mantel@suse.de
 
 - fix post-build-checks
