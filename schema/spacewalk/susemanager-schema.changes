@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 24 12:22:45 CET 2011 - mantel@suse.de
+
+- debrand errata to patch (bnc#670318)
+
+-------------------------------------------------------------------
 Wed Mar 16 10:52:10 CET 2011 - ug@suse.de
 
 - debranding some text in the database (bnc#673810)

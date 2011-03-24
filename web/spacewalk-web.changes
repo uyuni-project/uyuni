@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 24 12:24:17 CET 2011 - mantel@suse.de
+
+- debrand "Errata Event" to "Patch Event" in Legend (bnc#670318)
+
+-------------------------------------------------------------------
 Thu Mar 24 11:37:47 CET 2011 - mantel@suse.de
 
 - rebrand Errata to Patches in ErrataList.pm (bnc#670318)
