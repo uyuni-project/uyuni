@@ -37,8 +37,8 @@ insert into rhnActionType values (15, 'configfiles.upload', 'Upload config file 
 insert into rhnActionType values (16, 'configfiles.deploy', 'Deploy config files to system', 'Y', 'Y');
 insert into rhnActionType values (17, 'configfiles.verify', 'Verify deployed config files', 'N', 'N');
 insert into rhnActionType values (18, 'configfiles.diff', 'Show differences between profiled config files and deployed config files', 'N', 'N');
-insert into rhnActionType values (19, 'kickstart.initiate', 'Initiate a kickstart', 'N', 'Y');
-insert into rhnActionType values (20, 'kickstart.schedule_sync', 'Schedule a package sync for kickstarts', 'N', 'N');
+insert into rhnActionType values (19, 'kickstart.initiate', 'Initiate an auto installation', 'N', 'Y');
+insert into rhnActionType values (20, 'kickstart.schedule_sync', 'Schedule a package sync for auto installations', 'N', 'N');
 insert into rhnActionType values (21, 'activation.schedule_pkg_install', 'Schedule a package install for activation key', 'N', 'N');
 insert into rhnActionType values (22, 'activation.schedule_deploy', 'Schedule a config deploy for activation key', 'N', 'N');
 insert into rhnActionType values (23, 'configfiles.mtime_upload', 'Upload config file data based upon mtime to server', 'N', 'N');
@@ -50,10 +50,10 @@ insert into rhnActionType values (28, 'solarispkgs.patchClusterInstall', 'Solari
 insert into rhnActionType values (29, 'solarispkgs.patchClusterRemove', 'Solaris Patch Cluster Removal', 'Y', 'Y');
 insert into rhnActionType values (30, 'script.run', 'Run an arbitrary script', 'N', 'N');
 insert into rhnActionType values (31, 'solarispkgs.refresh_list', 'Solaris Package List Refresh','Y','Y');
-insert into rhnActionType values (32, 'rhnsd.configure', 'Spacewalk Daemon Configuration','N','N');
+insert into rhnActionType values (32, 'rhnsd.configure', 'SUSE Manager Network Daemon Configuration','N','N');
 insert into rhnActionType values (33, 'packages.verify', 'Verify deployed packages','N','N');
 insert into rhnActionType values (34, 'rhn_applet.use_satellite', 'Allows for rhn-applet use with an Spacewalk','N','N');
-insert into rhnActionType values (35, 'kickstart_guest.initiate', 'Initiate a kickstart for a virtual guest.','N','Y');
+insert into rhnActionType values (35, 'kickstart_guest.initiate', 'Initiate an auto installation for a virtual guest.','N','Y');
 insert into rhnActionType values (36, 'virt.shutdown', 'Shuts down a virtual domain.', 'N', 'N');
 insert into rhnActionType values (37, 'virt.start', 'Starts up a virtual domain.', 'N', 'N');
 insert into rhnActionType values (38, 'virt.suspend', 'Suspends a virtual domain.', 'N', 'N');

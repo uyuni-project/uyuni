@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 24 14:35:49 CET 2011 - mantel@suse.de
+
+- more debranding of kickstart to auto installation
+
+-------------------------------------------------------------------
 Thu Mar 24 14:28:43 CET 2011 - mantel@suse.de
 
 - fix schema updates; debrand initial values for rhnactiontype
