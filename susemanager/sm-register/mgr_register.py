@@ -290,7 +290,7 @@ class Register:
       x.text = prod['name']
 
     x = etree.SubElement(register_elem, 'param', attrib={'id': 'email'})
-    x.text = CFG.ncc_email
+    x.text = CFG.mirrcred_email
     x = etree.SubElement(register_elem, 'param', attrib={'id': 'ostarget'})
     x.text = server['ostarget']
     x = etree.SubElement(register_elem, 'param', attrib={'id': 'ostarget-bak'})
