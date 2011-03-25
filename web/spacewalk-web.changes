@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 25 16:54:00 CET 2011 - jrenner@suse.de
+
+- Link to the local version of the release notes (bnc#676683)
+
+-------------------------------------------------------------------
 Fri Mar 25 14:43:37 CET 2011 - ug@suse.de
 
 - Impossible to schedule reboot requests (bnc#680421)

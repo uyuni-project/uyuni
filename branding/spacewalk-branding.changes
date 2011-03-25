@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 25 16:52:54 CET 2011 - jrenner@suse.de
+
+- Link to the local version of the release notes (bnc#676683)
+
+-------------------------------------------------------------------
 Fri Mar 18 11:34:47 CET 2011 - jrenner@suse.de
 
 - Rebrand Errata to Patches in search combobox on pxt pages
