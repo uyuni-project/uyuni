@@ -29,6 +29,20 @@ from spacewalk.common import log_debug, log_error, rhnFault
 NCC_CHANNELS = '/usr/share/susemanager/channels.xml'
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
+NCCREPOS = "https://%(authuser)s:%(authpass)s@nu.novell.com/repo/repoindex.xml"
+
+def memoize(function):
+    """Basic function memoizer"""
+    cache = {}
+    def decorated_function(*args):
+        if args in cache:
+            return cache[args]
+        else:
+            val = function(*args)
+            cache[args] = val
+            return val
+    return decorated_function
+
 class NCCSync(object):
     """This class is used to sync SUSE Manager Channels and NCC repositories"""
 
@@ -778,33 +792,67 @@ class NCCSync(object):
         return filtered
 
     def list_channels(self):
-        """List available channels on NCC and if they are in sync with the db
+        """List available channels on NCC and their status
 
         Statuses mean:
-            - P - channel is in sync (provided)
-            - . - channel is not in sync
+            - P - channel is in sync with the database (provided)
+            - . - channel is not in the database, but is mirrorable
+            - X - channel is in channels.xml, but is not mirrorable
 
         """
         self.print_msg("Listing all mirrorable channels...")
         db_channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
-
         ncc_channels = sorted(self.get_available_channels(),
                               key=lambda channel: channel.get('label'))
 
+        channel_statuses = {}
         for channel in ncc_channels:
+            label = channel.get('label')
+            if label in db_channels:
+                # channel is already in the database
+                channel_statuses[label] = 'P'
+            else:
+                if self.is_mirrorable(channel):
+                    # channel is mirrorable, but is not in the database
+                    channel_statuses[label] = '.'
+                else:
+                    # channel is not mirrorable
+                    channel_statuses[label] = 'X'
+
+        for channel in ncc_channels:
+            label = channel.get('label')
             if channel.get('parent') != 'BASE':
                 continue
-            if channel.get('label') in db_channels:
-                print "[P] %s" % channel.get('label')
-            else:
-                print "[.] %s" % channel.get('label')
+            print "[%s] %s" % (channel_statuses[label], label)
+
             for child in ncc_channels:
-                if child.get('parent') != channel.get('label'):
+                c_label = child.get('label')
+                if child.get('parent') != label:
                     continue
-                if child.get('label') in db_channels:
-                    print "    [P] %s" % child.get('label')
-                else:
-                    print "    [.] %s" % child.get('label')
+                print "    [%s] %s" % (channel_statuses[c_label], c_label)
+
+    def get_mirrorable_repos(self):
+        """Get a list of repository url parts directly from NCC
+
+        Their presence in NCC means they are currently mirrorable and available
+        to the user.
+
+        Returns a list of repo paths split after '$RCE':
+        NCC path="$RCE/SLED10-SP3-Pool/sled-10-i586"
+        becomes: "/SLED10-SP3-Pool/sled-10-i586"
+
+        """
+        f = urllib.urlopen(NCCREPOS % self.__dict__)
+        tree = etree.parse(f)
+        f.close()
+
+        return [repo.get('path') for repo in tree.getroot()]
+    get_mirrorable_repos = memoize(get_mirrorable_repos)
+
+    def is_mirrorable(self, channel):
+        """Return a boolean if the etree Element channel is mirrorable or not"""
+        channel_path = get_repo_path(channel.get('source_url'))
+        return channel_path in self.get_mirrorable_repos()
 
     def get_ncc_channel(self, channel_label):
         """Try getting the NCC channel for this user
@@ -992,8 +1040,13 @@ class NCCSync(object):
         if self.get_channel_id(channel_label):
             self.print_msg("Channel %s is already in the database. "
                             % channel_label)
+            return
+
+        channel = self.get_ncc_channel(channel_label)
+        # then look if it's mirrorable
+        if not self.is_mirrorable(channel):
+            self.print_msg("Channel %s is not mirrorable." % channel_label)
         else:
-            channel = self.get_ncc_channel(channel_label)
             query = rhnSQL.prepare(
                 """INSERT INTO RHNCHANNEL ( ID, BASEDIR, PARENT_CHANNEL,
                                             CHANNEL_ARCH_ID, LABEL, NAME,
@@ -1154,6 +1207,17 @@ def sql_list(alist):
     l = str(tuple(alist))
     l.replace(",)", ")") # "('foo',)" should be "('foo')"
     return l
+
+
+def get_repo_path(repourl):
+    """
+    https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Updates/sle-11-ppc64/
+    becomes:
+    $RCE/SLE11-SP1-Debuginfo-Updates/sle-11-ppc64
+
+    """
+    return repourl.split('repo/')[-1].rstrip('/')
+
 def confirm(message):
     """Ask the user for confirmation before doing something
 
