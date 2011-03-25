@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 25 14:31:13 CET 2011 - ug@suse.de
+
+- can't trigger a reboot for a system (bnc#682644) fixed
+
+-------------------------------------------------------------------
 Thu Mar 24 12:24:17 CET 2011 - mantel@suse.de
 
 - debrand "Errata Event" to "Patch Event" in Legend (bnc#670318)
