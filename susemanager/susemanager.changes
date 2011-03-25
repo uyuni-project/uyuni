@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 25 13:54:10 CET 2011 - mc@suse.de
+
+- send email address during NCC registration (bnc#682636)
+
+-------------------------------------------------------------------
 Fri Mar 25 13:21:56 CET 2011 - iartarisi@suse.cz
 
  - check if channels are mirrorable when listing and adding new channels
