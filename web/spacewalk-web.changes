@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 25 14:43:37 CET 2011 - ug@suse.de
+
+- Impossible to schedule reboot requests (bnc#680421)
+
+-------------------------------------------------------------------
 Fri Mar 25 14:31:13 CET 2011 - ug@suse.de
 
 - can't trigger a reboot for a system (bnc#682644) fixed
