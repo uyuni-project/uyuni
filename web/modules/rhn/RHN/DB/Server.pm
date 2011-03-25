@@ -358,7 +358,8 @@ SELECT  PE.epoch, PE.version, PE.release, PN.name
  WHERE  SP.server_id = ?
    AND  SP.name_id = PN.id
    AND  ((PN.name = 'rhn-check')
-    OR   (PN.name = 'up2date'))
+    OR   (PN.name = 'up2date')
+    OR   (PN.name = 'spacewalk-check'))
    AND  SP.evr_id = PE.id
 EOQ
 
@@ -375,7 +376,7 @@ EOQ
 
   #PXT::Debug->log(4, "epoch:  $row[0]\nversion:  $row[1]\nrelease:  $row[2]\n");
 
-  if ($row[3] eq 'rhn-check') {
+  if ($row[3] eq 'rhn-check' or $row[3] eq 'spacewalk-check' ) {
      return 1; 
   }
 
