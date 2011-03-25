@@ -754,7 +754,8 @@ SELECT  DISTINCT S.id, S.name
                    AND ((PN.name = 'rhn-check' AND PE2.id = PE.id)
                    OR (PN.name = 'up2date'
                      AND PE2.id = lookup_evr(NULL, '2.9.3', '2.2.1AS')
-                     AND PE.evr &gt;= PE2.evr))
+                     AND PE.evr &gt;= PE2.evr)
+		   OR (PN.name = 'spacewalk-check' AND PE2.id = PE.id))
 	)
 ORDER BY UPPER(S.name), S.id
   </query>
