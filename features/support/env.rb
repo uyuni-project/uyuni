@@ -68,24 +68,26 @@ require 'culerity' if browser == :htmlunit
 
 #Capybara.app = Galaxy
 Capybara.default_wait_time = 5
-
 Capybara.default_wait_time = 30
+
+# Register different browsers
+Capybara.register_driver :selenium_chrome do |app|
+  Capybara::Driver::Selenium.new(app, :browser => :chrome)
+end
+
+Capybara.register_driver :selenium_firefox do |app|
+  Capybara::Driver::Selenium.new(app, :browser => :firefox)
+end
 
 case browser
 when :htmlunit
   Capybara.default_driver = :culerity
   Capybara.use_default_driver
 else
-  Capybara.default_driver = :selenium
+  Capybara.default_driver = "selenium_#{browser}".to_sym
   Capybara.app_host = host
 end
 
 # don't run own server on a random port
 Capybara.run_server = false
-if Capybara.default_driver == :selenium
-  #require 'spacewalk_testsuite_base/monkey_patches'
-  Capybara::Driver::Selenium.browser = browser
-  driver = Selenium::WebDriver.for browser
-end
-
 # Remote::Capabilities.chrome
