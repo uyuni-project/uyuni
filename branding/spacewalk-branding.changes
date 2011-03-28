@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 28 12:41:19 CEST 2011 - jrenner@suse.de
+
+- Add missing part of the URL to make it work (bnc#676683)
+
+-------------------------------------------------------------------
 Fri Mar 25 16:52:54 CET 2011 - jrenner@suse.de
 
 - Link to the local version of the release notes (bnc#676683)
