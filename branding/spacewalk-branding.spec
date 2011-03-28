@@ -71,7 +71,7 @@ docs.reference_guide=/rhn/help/reference/index.jsp
 docs.install_guide=/rhn/help/install/index.jsp
 docs.client_config_guide=/rhn/help/client-config/index.jsp
 docs.channel_mgmt_guide=http://www.novell.com/documentation/suse_manager/
-docs.release_notes=/rhn/help/release-notes/en-US/index.jsp
+docs.release_notes=/rhn/help/release-notes/manager/en-US/index.jsp
 docs.proxy_release_notes=http://www.novell.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/%{version_major}/
 ENDOFCONFIG
 %endif
