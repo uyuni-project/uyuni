@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 28 10:29:19 CEST 2011 - iartarisi@suse.cz
+
+- fixed crashing when asking for user confirmation
+
+-------------------------------------------------------------------
 Fri Mar 25 13:54:10 CET 2011 - mc@suse.de
 
 - send email address during NCC registration (bnc#682636)
