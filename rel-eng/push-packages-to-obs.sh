@@ -237,6 +237,7 @@ while read PKG_NAME; do
   rm -rf "$OBS_PKG_DIR"
   $OSC co -u "$OBS_PROJ" "$PKG_NAME" 2>"$T_LOG" || {
     if grep 'does not exist in project' "$T_LOG"; then
+      test -d "$OBS_PROJ" || ( mkdir "$OBS_PROJ"; cd "$OBS_PROJ"; $OSC init "$OBS_PROJ"; )
       ( set -e; cd "$OBS_PROJ"; $OSC mkpac "$PKG_NAME"; )
     else
       cat "$T_LOG"
@@ -246,8 +247,9 @@ while read PKG_NAME; do
   }
 
   for F in "$OBS_PKG_DIR"/*; do
+    test -e "$F" || continue
     test -s "$F" || {
-      log_and_add_failure "$PKG_NAME" "zero size file in checkout"
+      log_and_add_failure "$PKG_NAME" "zero size file in checkout : $F"
       continue 2
     }
   done
@@ -271,7 +273,7 @@ while read PKG_NAME; do
 	false
       fi
     ) || {
-      log_and_add_failure "$PKG_NAME" "${$FAKE_COMITTOBS:+fake }checkin"
+      log_and_add_failure "$PKG_NAME" "${FAKE_COMITTOBS:+fake }checkin"
       continue
     }
     SUCCEED_CNT=$(($SUCCEED_CNT+1))
