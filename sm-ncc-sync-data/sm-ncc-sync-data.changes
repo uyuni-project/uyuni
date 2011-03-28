@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 28 16:05:47 CEST 2011 - iartarisi@suse.cz
+
+- fixed channels under VMWare all belonging to the VMWare family
+
+-------------------------------------------------------------------
 Thu Mar 24 10:59:21 CET 2011 - iartarisi@suse.cz
 
 - added SUSE Manager Proxy channels
