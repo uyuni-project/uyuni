@@ -850,9 +850,15 @@ class NCCSync(object):
     get_mirrorable_repos = memoize(get_mirrorable_repos)
 
     def is_mirrorable(self, channel):
-        """Return a boolean if the etree Element channel is mirrorable or not"""
+        """Return a boolean if the etree Element channel is mirrorable or not
+
+        A channel is mirrorable if:
+         - its repo path is in the repoindex.xml from NCC or
+         - it is a fake channel (path is empty)
+
+        """
         channel_path = get_repo_path(channel.get('source_url'))
-        return channel_path in self.get_mirrorable_repos()
+        return channel_path in self.get_mirrorable_repos() or not channel_path
 
     def get_ncc_channel(self, channel_label):
         """Try getting the NCC channel for this user
