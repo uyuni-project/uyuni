@@ -114,7 +114,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension 11 SP1" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-hae-sp1-updates-x86_64-vmware" name="SLE11-HAE-SP1-Updates for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-hae" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension 11 SP1" family="SLE-HAE-X86" is_signed="Y" label="sle11-hae-sp1-updates-x86_64-vmware" name="SLE11-HAE-SP1-Updates for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-hae" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP1">
 		<products>
 			<product_id name="sle-hae">
 				1884
@@ -232,7 +232,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 Subscription Managment Tool" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-smt-updates-x86_64-vmware" name="SLE11-SMT-Updates for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 Subscription Managment Tool">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-x86_64-vmware" name="SLE11-SMT-Updates for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 Subscription Managment Tool">
 		<products>
 			<product_id name="sle-smt">
 				1460
@@ -299,7 +299,7 @@
 		</products>
 		<dist os="Red Hat Linux" release="4AS"/>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise High Availability Extension 11 SP1" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-hae-sp1-updates-i586-vmware" name="SLE11-HAE-SP1-Updates for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-hae" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP1-Updates/sle-11-i586/" summary="SUSE Linux Enterprise High Availability Extension 11 SP1">
+	<channel arch="i586" description="SUSE Linux Enterprise High Availability Extension 11 SP1" family="SLE-HAE-X86" is_signed="Y" label="sle11-hae-sp1-updates-i586-vmware" name="SLE11-HAE-SP1-Updates for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-hae" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP1-Updates/sle-11-i586/" summary="SUSE Linux Enterprise High Availability Extension 11 SP1">
 		<products>
 			<product_id name="sle-hae">
 				1880
@@ -387,7 +387,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sdk-sp1-updates-i586-vmware" name="SLE11-SDK-SP1-Updates for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-updates-i586-vmware" name="SLE11-SDK-SP1-Updates for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit">
 		<products>
 			<product_id name="sle-sdk">
 				1860
@@ -481,7 +481,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Mono Extension 2.4" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-mono-2.4-updates-x86_64-vmware" name="SLE11-Mono-2.4-Updates for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-mono" product_version="11.0.2.4" source_url="https://nu.novell.com/repo/$RCE/SLE11-Mono-2.4-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Mono Extension 2.4">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Mono Extension 2.4" family="MONO" is_signed="Y" label="sle11-mono-2.4-updates-x86_64-vmware" name="SLE11-Mono-2.4-Updates for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-mono" product_version="11.0.2.4" source_url="https://nu.novell.com/repo/$RCE/SLE11-Mono-2.4-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Mono Extension 2.4">
 		<products>
 			<product_id name="sle-mono">
 				1341
@@ -542,7 +542,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sdk-sp1-updates-x86_64-vmware" name="SLE11-SDK-SP1-Updates for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-updates-x86_64-vmware" name="SLE11-SDK-SP1-Updates for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit">
 		<products>
 			<product_id name="sle-sdk">
 				1860
@@ -728,7 +728,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise Mono Extension 2.4" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-mono-2.4-updates-i586-vmware" name="SLE11-Mono-2.4-Updates for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-mono" product_version="11.0.2.4" source_url="https://nu.novell.com/repo/$RCE/SLE11-Mono-2.4-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Mono Extension 2.4">
+	<channel arch="i586" description="SUSE Linux Enterprise Mono Extension 2.4" family="MONO" is_signed="Y" label="sle11-mono-2.4-updates-i586-vmware" name="SLE11-Mono-2.4-Updates for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-mono" product_version="11.0.2.4" source_url="https://nu.novell.com/repo/$RCE/SLE11-Mono-2.4-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Mono Extension 2.4">
 		<products>
 			<product_id name="sle-mono">
 				1341
@@ -782,7 +782,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 Subscription Managment Tool" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-smt-updates-i586-vmware" name="SLE11-SMT-Updates for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 Subscription Managment Tool">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-i586-vmware" name="SLE11-SMT-Updates for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 Subscription Managment Tool">
 		<products>
 			<product_id name="sle-smt">
 				1460
@@ -856,7 +856,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Mono Extension 2.4" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-mono-2.4-pool-x86_64-vmware" name="SLE11-Mono-2.4-Pool for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-mono" product_version="11.0.2.4" source_url="https://nu.novell.com/repo/$RCE/SLE11-Mono-2.4-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Mono Extension 2.4">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Mono Extension 2.4" family="MONO" is_signed="Y" label="sle11-mono-2.4-pool-x86_64-vmware" name="SLE11-Mono-2.4-Pool for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-mono" product_version="11.0.2.4" source_url="https://nu.novell.com/repo/$RCE/SLE11-Mono-2.4-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Mono Extension 2.4">
 		<products>
 			<product_id name="sle-mono">
 				1341
@@ -972,7 +972,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sdk-sp1-pool-i586-vmware" name="SLE11-SDK-SP1-Pool for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-pool-i586-vmware" name="SLE11-SDK-SP1-Pool for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit">
 		<products>
 			<product_id name="sle-sdk">
 				1860
@@ -1063,7 +1063,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sdk-sp1-pool-x86_64-vmware" name="SLE11-SDK-SP1-Pool for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-pool-x86_64-vmware" name="SLE11-SDK-SP1-Pool for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit">
 		<products>
 			<product_id name="sle-sdk">
 				1860
@@ -1111,7 +1111,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise High Availability Extension 11 SP1" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-hae-sp1-pool-i586-vmware" name="SLE11-HAE-SP1-Pool for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-hae" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP1-Pool/sle-11-i586/" summary="SUSE Linux Enterprise High Availability Extension 11 SP1">
+	<channel arch="i586" description="SUSE Linux Enterprise High Availability Extension 11 SP1" family="SLE-HAE-X86" is_signed="Y" label="sle11-hae-sp1-pool-i586-vmware" name="SLE11-HAE-SP1-Pool for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-hae" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP1-Pool/sle-11-i586/" summary="SUSE Linux Enterprise High Availability Extension 11 SP1">
 		<products>
 			<product_id name="sle-hae">
 				1880
@@ -1141,14 +1141,14 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension 11 SP1" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-hae-sp1-pool-x86_64-vmware" name="SLE11-HAE-SP1-Pool for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-hae" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension 11 SP1" family="SLE-HAE-X86" is_signed="Y" label="sle11-hae-sp1-pool-x86_64-vmware" name="SLE11-HAE-SP1-Pool for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-hae" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP1">
 		<products>
 			<product_id name="sle-hae">
 				1884
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise Mono Extension 2.4" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-mono-2.4-pool-i586-vmware" name="SLE11-Mono-2.4-Pool for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-mono" product_version="11.0.2.4" source_url="https://nu.novell.com/repo/$RCE/SLE11-Mono-2.4-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Mono Extension 2.4">
+	<channel arch="i586" description="SUSE Linux Enterprise Mono Extension 2.4" family="MONO" is_signed="Y" label="sle11-mono-2.4-pool-i586-vmware" name="SLE11-Mono-2.4-Pool for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-mono" product_version="11.0.2.4" source_url="https://nu.novell.com/repo/$RCE/SLE11-Mono-2.4-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Mono Extension 2.4">
 		<products>
 			<product_id name="sle-mono">
 				1341
