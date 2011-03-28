@@ -1094,9 +1094,9 @@ class NCCSync(object):
                     self.add_dist_channel_map(channel_id,
                                               self.get_channel_arch_id(channel),
                                               child)
-            if confirm("Warning! Once added, Novell channels can not "
-                       "be deleted. Only custom channels can be deleted. "
-                       "Do you wish to proceed?"):
+            if self.confirm("Warning! Once added, Novell channels can not "
+                            "be deleted. Only custom channels can be deleted. "
+                            "Do you wish to proceed?"):
                 rhnSQL.commit()
                 self.print_msg("Added channel '%s' to the database."
                                % channel_label)
@@ -1177,6 +1177,27 @@ class NCCSync(object):
     def is_entitlement(self, product):
         return product in self.ncc_rhn_ent_mapping
 
+    def confirm(self, message):
+        """Ask the user for confirmation before doing something
+
+        :arg message: message string to show to the user
+
+        Returns: a boolean which is True when the user gave confirmation
+        and False otherwise. Initializing the NCCSync object with
+        interactive=False makes this function return True without asking
+        the user anything.
+
+        """
+        if self.non_interactive:
+            return True
+        else:
+            sys.stdout.write(message)
+            choice = raw_input(' [y/n] (y): ').lower()
+            if choice == 'y' or choice == '':
+                return True
+            else:
+                return False
+
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
         if not self.quiet:
@@ -1218,23 +1239,3 @@ def get_repo_path(repourl):
     """
     return repourl.split('repo/')[-1].rstrip('/')
 
-def confirm(message):
-    """Ask the user for confirmation before doing something
-
-    :arg message: message string to show to the user
-
-    Returns: a boolean which is True when the user gave confirmation
-    and False otherwise. Initializing the NCCSync object with
-    interactive=False makes this function return True without asking
-    the user anything.
-
-    """
-    if self.non_interactive:
-        return True
-    else:
-        sys.stdout.write(message)
-        choice = raw_input(' [y/n] (y): ').lower()
-        if choice == 'y' or choice == '':
-            return True
-        else:
-            return False
