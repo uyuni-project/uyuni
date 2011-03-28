@@ -800,7 +800,12 @@ class NCCSync(object):
             - X - channel is in channels.xml, but is not mirrorable
 
         """
-        self.print_msg("Listing all mirrorable channels...")
+        self.print_msg("Listing all channels you are subscribed to...\n\n"
+                       "Statuses mean:\n"
+                       "- P - channel is in sync with the database (provided)\n"
+                       "- . - channel is not installed, but is available\n"
+                       "- X - channel is not available\n")
+
         db_channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
         ncc_channels = sorted(self.get_available_channels(),
                               key=lambda channel: channel.get('label'))
