@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 28 16:29:18 CEST 2011 - iartarisi@suse.cz
+
+- added information about status meaning when listing channels
+
+-------------------------------------------------------------------
 Mon Mar 28 12:57:18 CEST 2011 - iartarisi@suse.cz
 
 - fixed showing fake channels as unmirrorable
