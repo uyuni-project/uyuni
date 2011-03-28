@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 28 12:57:18 CEST 2011 - iartarisi@suse.cz
+
+- fixed showing fake channels as unmirrorable
+
+-------------------------------------------------------------------
 Mon Mar 28 10:29:19 CEST 2011 - iartarisi@suse.cz
 
 - fixed crashing when asking for user confirmation
