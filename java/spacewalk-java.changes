@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 28 11:44:21 CEST 2011 - jrenner@suse.de
+
+- Add missing null check (bnc#682993)
+
+-------------------------------------------------------------------
 Fri Mar 25 16:55:04 CET 2011 - jrenner@suse.de
 
 - Link to the local version of the release notes (bnc#676683)
