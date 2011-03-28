@@ -117,7 +117,7 @@ public class Action extends BaseDomainHelper implements Serializable {
     */
     public void setName(String nameIn) {
         // Shorten the name to 128 chars if necessary
-        if (nameIn.length() > 128) {
+        if (nameIn != null && nameIn.length() > 128) {
             nameIn = nameIn.substring(0, 128);
         }
         this.name = nameIn;
