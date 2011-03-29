@@ -26,10 +26,14 @@ from spacewalk.common import initCFG, CFG, rhnLog
 from spacewalk.susemanager import suseLib
 from spacewalk.common import log_debug, log_error, rhnFault
 
-NCC_CHANNELS = '/usr/share/susemanager/channels.xml'
+CHANNELS = '/usr/share/susemanager/channels.xml'
+CHANNEL_FAMILIES = '/usr/share/susemanager/channel_families.xml'
+
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
 NCCREPOS = "https://%(authuser)s:%(authpass)s@nu.novell.com/repo/repoindex.xml"
+
+INFINITE = 200000 # a very big number that we use for unlimited subscriptions
 
 def memoize(function):
     """Basic function memoizer"""
@@ -88,7 +92,6 @@ class NCCSync(object):
         self.ncc_url_prods = "https://secure-www.novell.com/center/regsvc/?command=regdata&lang=en-US&version=1.0"
         self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
         self.connect_retries = 10
-        self.channel_family_config = '/usr/share/susemanager/channel_families.xml'
 
         rhnSQL.initDB()
 
@@ -172,7 +175,7 @@ class NCCSync(object):
 
         Returns a dictionary in this format:
         {'SLE-HAE-PPC': {'consumed': 0, 'nodecount': 10 },
-         '10040': {'consumed': 0, 'nodecount': 200000},
+         '10040': {'consumed': 0, 'nodecount': INFINITE},
          ... }
 
         If there are families which have subscriptions in the database,
@@ -181,6 +184,7 @@ class NCCSync(object):
 
         """
         subscription_count = {}
+
         for s in subs:
             start = float(s["start-date"])
             end   = float(s["end-date"])
@@ -195,7 +199,7 @@ class NCCSync(object):
                 if today >= start_date and (end == 0 or today <= end_date) and s["type"] != "PROVISIONAL":
                     # FIXME: for correct counting, remove the "or > 0" (bnc#670551)
                     if s["nodecount"] == "-1" or s["nodecount"] > 0 or True:
-                        subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : 200000 }
+                        subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : INFINITE }
                     elif subscription_count.has_key( p ):
                         subscription_count[ p ]["nodecount"] += int(s["nodecount"])
                     else:
@@ -265,15 +269,21 @@ class NCCSync(object):
         return arch_type_id
 
     def update_channel_family_table_by_config(self):
-        """Updates the channel_family table on base of the XML config file"""
+        """Insert subscription information for channels that don't have any
+
+        Subscription information is read from the CHANNEL_FAMILIES .xml
+        file and is only added into the database if there is no existing
+        subscription information about that ChannelFamily.
+
+        """
         self.print_msg("Updating Channel Family Information")
-        tree = etree.parse(self.channel_family_config)
+        tree = etree.parse(CHANNEL_FAMILIES)
         for family in tree.getroot():
             name = family.get("name")
             label = family.get("label")
             d_nc  = int(family.get("default_nodecount"))
             if d_nc == -1:
-                d_nc = 200000
+                d_nc = INFINITE
             cf_id = self.edit_channel_family_table(label, name)
             select_sql = ("SELECT max_members, org_id, current_members from RHNPRIVATECHANNELFAMILY "
                           "WHERE channel_family_id = %s order by org_id" % cf_id)
@@ -515,7 +525,7 @@ class NCCSync(object):
                     continue
 
                 if True or data["nodecount"] > 0:
-                    available = 200000 # unlimited
+                    available = INFINITE # unlimited
                 else:
                     available = data["nodecount"]
                 update_sql = """
@@ -585,8 +595,8 @@ class NCCSync(object):
         test_data = [ { 'all_subs_in_db' : {1: {'max_members': 0, 'current_members': 0, 'dirty': False}},
                         'all_subs_sum' : 0, 'prod' : 'TEST-SLE-HAE-PPC', 'data' : {'nodecount': 10, 'consumed': 0}, 'cf_id' : 1031 },
 
-                      { 'all_subs_in_db' : {1: {'max_members': 200000, 'current_members': 0, 'dirty': False}},
-                        'all_subs_sum' : 200000, 'prod' : 'TEST-10040', 'data' : {'nodecount': 200000, 'consumed': 9}, 'cf_id' : 1004 },
+                      { 'all_subs_in_db' : {1: {'max_members': INFINITE, 'current_members': 0, 'dirty': False}},
+                        'all_subs_sum' : INFINITE, 'prod' : 'TEST-10040', 'data' : {'nodecount': INFINITE, 'consumed': 9}, 'cf_id' : 1004 },
 
                       { 'all_subs_in_db' : {1: {'max_members': 100, 'current_members': 90, 'dirty': False}},
                         'all_subs_sum' : 100, 'prod' : 'TEST-RES', 'data' : {'nodecount': 100, 'consumed': 97}, 'cf_id' : 1005 },
@@ -611,7 +621,6 @@ class NCCSync(object):
                     update_sql += "WHERE channel_family_id = %s and org_id = %s" % ( org, data["cf_id"] )
                     print "SQL: %s" % update_sql
         return True
-
 
     def edit_subscription_in_table( self, prod, data ):
         """Updates/inserts a subscription in the DB.
@@ -772,9 +781,7 @@ class NCCSync(object):
 
         """
         # get the channels from our config file
-        with open(NCC_CHANNELS, 'r') as f:
-            tree = etree.parse(f)
-        channels_iter = tree.getroot()
+        channels_iter = etree.parse(CHANNELS).getroot()
 
         families = self.get_available_families()
 
@@ -1179,7 +1186,7 @@ class NCCSync(object):
         all_subs = self.get_subscriptions_from_ncc()
         cons_subs = self.consolidate_subscriptions(all_subs)
         self.reset_entitlements_in_table()
-        for s in cons_subs.keys():
+        for s in cons_subs:
             if self.is_entitlement(s):
                 self.edit_entitlement_in_table(s, cons_subs[s])
             else:
