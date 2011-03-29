@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Tue Mar 29 13:45:15 CEST 2011 - iartarisi@suse.cz
 
-- handle unlimited channel subscription when updating subscriptions
+- handle unlimited channel subscription when updating subscriptions (bnc#682651)
 - code cleanup
 
 -------------------------------------------------------------------
@@ -17,7 +17,7 @@ Mon Mar 28 12:57:18 CEST 2011 - iartarisi@suse.cz
 -------------------------------------------------------------------
 Mon Mar 28 10:29:19 CEST 2011 - iartarisi@suse.cz
 
-- fixed crashing when asking for user confirmation
+- fixed crashing when asking for user confirmation (bnc#682858)
 
 -------------------------------------------------------------------
 Fri Mar 25 13:54:10 CET 2011 - mc@suse.de
@@ -27,7 +27,7 @@ Fri Mar 25 13:54:10 CET 2011 - mc@suse.de
 -------------------------------------------------------------------
 Fri Mar 25 13:21:56 CET 2011 - iartarisi@suse.cz
 
- - check if channels are mirrorable when listing and adding new channels
+ - check if channels are mirrorable when listing and adding channels (bnc#679889)
  - more pythonification and UI improvements
 
 -------------------------------------------------------------------
