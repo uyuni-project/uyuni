@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar 29 16:42:00 CEST 2011 - ug@suse.de
+
+- added some directories to redirect to the sever for
+  autoinstallation (/download and /ks - bnc#683382)
+
+-------------------------------------------------------------------
 Tue Mar 22 13:39:31 CET 2011 - mantel@suse.de
 
 - remove /etc/motd after proxy has been configured (bnc#681220)
