@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar 29 13:45:15 CEST 2011 - iartarisi@suse.cz
+
+- handle unlimited channel subscription when updating subscriptions
+- code cleanup
+
+-------------------------------------------------------------------
 Mon Mar 28 16:29:18 CEST 2011 - iartarisi@suse.cz
 
 - added information about status meaning when listing channels
