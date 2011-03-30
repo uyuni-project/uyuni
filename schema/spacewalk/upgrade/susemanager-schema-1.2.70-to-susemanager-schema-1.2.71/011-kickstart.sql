@@ -15,3 +15,5 @@ update rhnactiontype set name = 'Schedule a package sync for auto installations'
 update rhnactiontype set name = 'SUSE Manager Network Daemon Configuration' where label = 'rhnsd.configure';
 update rhnactiontype set name = 'Initiate an auto installation for a virtual guest.' where label = 'kickstart_guest.initiate';
 
+commit;
+
