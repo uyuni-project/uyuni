@@ -9,16 +9,22 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 --
--- remove them, if they already exists
-delete from suseOSTarget where target = 'i386';
-delete from suseOSTarget where target = 'x86_64';
+declare
+  c_i386 number := 0;
+  c_x86_64 number := 0;
+begin
+select count(*) into c_i386 from suseOSTarget where target = 'i386';
+select count(*) into c_x86_64 from suseOSTarget where target = 'x86_64';
 
-insert into suseOSTarget (id, os, target, channel_arch_id) values
-(sequence_nextval('suse_ostarget_id_seq'), 'i386', 'i386', LOOKUP_CHANNEL_ARCH('channel-ia32'));
+if c_i386 = 0 then
+  insert into suseOSTarget (id, os, target, channel_arch_id) values (sequence_nextval('suse_ostarget_id_seq'), 'i386', 'i386', LOOKUP_CHANNEL_ARCH('channel-ia32'));
+  commit;
+end if;
+if c_x86_64 = 0 then
+  insert into suseOSTarget (id, os, target, channel_arch_id) values (sequence_nextval('suse_ostarget_id_seq'), 'x86_64', 'x86_64', LOOKUP_CHANNEL_ARCH('channel-x86_64'));
+  commit;
+end if;
 
-insert into suseOSTarget (id, os, target, channel_arch_id) values
-(sequence_nextval('suse_ostarget_id_seq'), 'x86_64', 'x86_64', LOOKUP_CHANNEL_ARCH('channel-x86_64'));
-
-commit;
-
+end;
+/
 
