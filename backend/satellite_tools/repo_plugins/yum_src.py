@@ -20,8 +20,7 @@ import sys
 import os
 from yum import config
 from yum.update_md import UpdateMetadata
-from spacewalk.satellite_tools.reposync import (ContentPackage, ChannelException,
-                                                ChannelTimeoutException)
+from spacewalk.satellite_tools.reposync import ContentPackage, ChannelException, ChannelTimeoutException
 from urlgrabber.grabber import URLGrabber
 import urlgrabber
 from yum import misc, Errors
