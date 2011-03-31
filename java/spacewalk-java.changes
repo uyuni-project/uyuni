@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 31 16:22:01 CEST 2011 - jrenner@suse.de
+
+- Do not show success message when pws don't match (bnc#675585)
+
+-------------------------------------------------------------------
 Thu Mar 31 15:46:13 CEST 2011 - mantel@suse.de
 
 - more debranding
