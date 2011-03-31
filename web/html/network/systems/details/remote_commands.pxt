@@ -22,7 +22,7 @@
 
 <rhn-require acl_mixins="RHN::Access::System" acl="not client_capable(script.run)">
       <p>
-        You must have the latest version of the <strong>RHN Configuration Client</strong> installed to use this feature. Join the system to the <strong>RHN Tools Channel</strong> and install rhncfg, rhncfg-actions and rhncfg-client packages. 
+        You must have the latest version of the <strong>SUSE Manager Configuration Client</strong> installed to use this feature. Join the system to the <strong>SUSE Manager Tools Channel</strong> and install rhncfg, rhncfg-actions and rhncfg-client packages. 
       </p>
 </rhn-require>
 
