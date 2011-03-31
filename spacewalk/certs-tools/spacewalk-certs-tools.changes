@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 31 15:46:52 CEST 2011 - mantel@suse.de
+
+- more debranding
+
+-------------------------------------------------------------------
 Fri Mar  4 14:46:01 CET 2011 - ma@suse.de
 
 - Enforce installation of ORG_CA_CERT rpm.
