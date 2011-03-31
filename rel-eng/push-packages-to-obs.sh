@@ -236,7 +236,7 @@ while read PKG_NAME; do
   OBS_PKG_DIR="$OBS_PROJ/$PKG_NAME"
   rm -rf "$OBS_PKG_DIR"
   $OSC co -u "$OBS_PROJ" "$PKG_NAME" 2>"$T_LOG" || {
-    if grep 'does not exist in project' "$T_LOG"; then
+    if grep 'does not exist in project' "$T_LOG" || grep '404: Not Found' "$T_LOG"; then
       test -d "$OBS_PROJ" || ( mkdir "$OBS_PROJ"; cd "$OBS_PROJ"; $OSC init "$OBS_PROJ"; )
       ( set -e; cd "$OBS_PROJ"; $OSC mkpac "$PKG_NAME"; )
     else
