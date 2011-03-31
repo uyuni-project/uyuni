@@ -197,6 +197,8 @@ rm -rfv $RPM_BUILD_ROOT%{rhnroot}/wsgi/
 rm -fv $RPM_BUILD_ROOT%{httpdconf}/spacewalk-proxy-python.conf
 %endif
 
+ln -sf rhn-proxy $RPM_BUILD_ROOT%{_sbindir}/spacewalk-proxy
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -379,6 +381,7 @@ fi
 %dir %{destdir}
 # start/stop script
 %attr(755,root,root) %{_sbindir}/rhn-proxy
+%{_sbindir}/spacewalk-proxy
 # mans
 %{_mandir}/man8/rhn-proxy.8*
 %dir /usr/share/rhn

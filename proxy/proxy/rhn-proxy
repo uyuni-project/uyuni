@@ -35,7 +35,7 @@ reverse_services() {
 }
 
 start() {
-        echo "Starting rhn-proxy..."
+        echo "Starting spacewalk-proxy..."
 	forward_services start
 	echo "Done."
 
@@ -43,7 +43,7 @@ start() {
 }
 
 stop() {
-        echo "Shutting down rhn-proxy..."
+        echo "Shutting down spacewalk-proxy..."
 	reverse_services stop
 	echo "Done."
 
@@ -71,7 +71,7 @@ case "$1" in
     restart)
         restart
         ;;
-    condrestart)
+    condrestart|try-restart)
         if [ -f /var/lock/subsys/rhn-proxy ]; then
             stop
             start
@@ -79,7 +79,7 @@ case "$1" in
         fi
         ;;
     *)
-        echo "Usage: rhn-proxy {start|stop|status|restart|condrestart}"
+        echo "Usage: spacewalk-proxy {start|stop|status|restart|condrestart|try-restart}"
         exit 1
         ;;
 esac
