@@ -14,7 +14,7 @@
 
     <pxt-include-late file="/network/components/message_queues/local.pxi"/>
 
-    <h2><img src="/img/rhn-icon-proxy.gif"/>Deactivate RHN Proxy Server</h2>
+    <h2><img src="/img/rhn-icon-proxy.gif"/>Deactivate SUSE Manager Proxy Server</h2>
 
 <pxt-formvar>
 <rhn-appinstall-engine file="/applications/rhn-proxy/{formvar:version}/install-rhn-proxy.xml" process="remove" error-page="/network/systems/details/proxy.pxt?sid={formvar:sid}">

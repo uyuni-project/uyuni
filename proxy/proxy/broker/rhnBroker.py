@@ -220,14 +220,14 @@ class BrokerHandler(SharedHandler):
             # Expired/invalid auth token; go through the loop once again
             error = string.split(respHeaders['X-RHN-Proxy-Auth-Error'], ':')[0]
             if error == '1003': # invalid token
-                msg = "RHN Proxy Session Token INVALID -- bad!"
+                msg = "SUSE Manager Proxy Session Token INVALID -- bad!"
                 log_error(msg)
                 log_debug(0, msg)
             elif error == '1004':
                 log_debug(1,
-                    "RHN Proxy Session Token expired, acquiring new one.")
+                    "SUSE Manager Proxy Session Token expired, acquiring new one.")
             else: # this should never happen.
-                msg = "RHN Proxy login failed, error code is %s" % error
+                msg = "SUSE Manager Proxy login failed, error code is %s" % error
                 log_error(msg)
                 log_debug(0, msg)
                 raise rhnFault(1000,

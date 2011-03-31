@@ -432,10 +432,10 @@ sub activate_proxy {
     die $E unless (ref $E eq 'RHN::Exception');
 
     if ($E->is_rhn_exception('proxy_no_proxy_child_channel')) {
-      return "Could not look up RHN Proxy child channel for your current base channel.";
+      return "Could not look up SUSE Manager Proxy child channel for your current base channel.";
     }
     elsif ($E->is_rhn_exception('channel_family_no_subscriptions')) {
-      return "You have no available subscriptions to the RHN Proxy channels.";
+      return "You have no available subscriptions to the SUSE Manager Proxy channels.";
     }
     else {
       throw $E;
@@ -456,7 +456,7 @@ sub deactivate_proxy {
   my $server = $params{session}->get_server;
 
   unless ($server->is_proxy) {
-    throw "(appinstall:not_a_proxy) This system is not an RHN Proxy";
+    throw "(appinstall:not_a_proxy) This system is not an SUSE Manager Proxy";
   }
 
   $server->deactivate_proxy();

@@ -237,7 +237,7 @@ def listPackages(function, channel, version):
         return function(channel, version)
     except rpclib.ProtocolError, e:
         errcode, errmsg = rpclib.reportError(e.headers)
-        raise rhnFault(1000, "RHN Proxy error (rpclib.ProtocolError): "
+        raise rhnFault(1000, "SUSE Manager Proxy error (rpclib.ProtocolError): "
                              "errode=%s; errmsg=%s" % (errcode, errmsg))
 
 

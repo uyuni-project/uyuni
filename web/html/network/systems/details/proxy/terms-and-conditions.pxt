@@ -14,7 +14,7 @@
 
     <pxt-include-late file="/network/components/message_queues/local.pxi"/>
 
-    <h2><img src="/img/rhn-icon-proxy.gif"/>Install RHN Proxy Server<rhn-help guide="proxy" href="quickstart-install-config.html" /></h2>
+    <h2><img src="/img/rhn-icon-proxy.gif"/>Install SUSE Manager Proxy Server<rhn-help guide="proxy" href="quickstart-install-config.html" /></h2>
 
 <pxt-formvar>
 <rhn-appinstall-ts-and-cs file="/applications/rhn-proxy/{formvar:version}/install-rhn-proxy.xml">

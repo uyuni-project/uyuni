@@ -287,7 +287,7 @@ problems, isn't running, or the token is somehow corrupt.
                     # coming through")
                     raise rhnFault(e.faultCode, e.faultString)
                 # ok... it's some other fault
-                Traceback("ProxyAuth.login (Fault) - RHN Proxy not "
+                Traceback("ProxyAuth.login (Fault) - SUSE Manager Proxy not "
                           "able to log in.")
                 # And raise a Proxy Error - the server made its point loud and
                 # clear

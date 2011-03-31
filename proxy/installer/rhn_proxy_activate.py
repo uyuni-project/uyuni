@@ -151,31 +151,31 @@ def _getActivationError(e):
         # possible future error message?
         errorString = ("no Provisioning entitlements available. There must "
                        "be at least one free Management/Provisioning slot "
-                       "available in your RHN account.")
+                       "available in your NCC account.")
         errorCode = 3
     elif string.find(e.faultString, 'proxy_no_management_entitlements') != -1:
         errorString = ("no Management entitlements available. There must be "
                        "at least one free Management/Provisioning slot "
-                       "available in your RHN account.")
+                       "available in your NCC account.")
         errorCode = 4
     elif string.find(e.faultString, 'proxy_no_enterprise_entitlements') != -1:
         # legacy error message
         errorString = ("no Management entitlements available. There must be "
                        "at least one free Management/Provisioning slot "
-                       "available in your RHN account.")
+                       "available in your NCC account.")
         errorCode = 5
     elif string.find(e.faultString, 'proxy_no_channel_entitlements') != -1:
-        errorString = ("no RHN Proxy entitlements available. There must be "
-                       "at least one free RHN Proxy entitlement "
-                       "available in your RHN account.")
+        errorString = ("no SUSE Manager Proxy entitlements available. There must be "
+                       "at least one free SUSE Manager Proxy entitlement "
+                       "available in your NCC account.")
         errorCode = 6
     elif string.find(e.faultString, 'proxy_no_proxy_child_channel') != -1:
-        errorString = ("no RHN Proxy entitlements available for this "
-                       "server's version (or requested version) of Red Hat "
-                       "Enterprise Linux.")
+        errorString = ("no SUSE Manager Proxy entitlements available for this "
+                       "server's version (or requested version) of SUSE Linux "
+                       "Enterprise Server.")
         errorCode = 7
     elif string.find(e.faultString, 'proxy_not_activated') != -1:
-        errorString = "this server not an activated RHN Proxy yet."
+        errorString = "this server not an activated SUSE Manager Proxy yet."
         errorCode = 8
     else:
         errorString = "unknown error - %s" % str(e)
@@ -352,7 +352,7 @@ def _deactivateProxy_api_v3_x(options, apiVersion):
     else:
         errorCode = 0
         if not options.quiet:
-            sys.stdout.write("RHN Proxy successfully deactivated.\n")
+            sys.stdout.write("SUSE Manager Proxy successfully deactivated.\n")
     return (errorCode, errorString)
 
 def _activateProxy_api_v3_x(options, apiVersion):
@@ -389,7 +389,7 @@ def _activateProxy_api_v3_x(options, apiVersion):
     else:
         errorCode = 0
         if not options.quiet:
-            sys.stdout.write("RHN Proxy successfully activated.\n")
+            sys.stdout.write("SUSE Manager Proxy successfully activated.\n")
     return (errorCode, errorString)
 
 def createMonitoringScout(options):
@@ -437,8 +437,8 @@ def activateProxy(options, apiVersion):
         
     if errorCode != 0:
         if not errorString:
-            errorString = ("An unknown error occured. Consult with your Red Hat representative.\n")
-        sys.stderr.write("\nThere was a problem activating the RHN Proxy entitlement:\n%s\n" % errorString)
+            errorString = ("An unknown error occured. Consult with your Novell representative.\n")
+        sys.stderr.write("\nThere was a problem activating the SUSE Manager Proxy entitlement:\n%s\n" % errorString)
         sys.exit(abs(errorCode))
         
 def listAvailableProxyChannels(options):
@@ -486,7 +486,7 @@ def processCommandline():
         Option('--http-proxy-password', action='store',help="alternative HTTP proxy password, default is %s" % repr(httpProxyUsername), default=httpProxyPassword),
         Option('--ca-cert',       action='store',      help="alternative SSL certificate to use, default is %s" % repr(ca_cert), default=ca_cert),
         Option('--no-ssl',        action='store_true', help='turn off SSL (not advisable), default is on.'),
-        Option('--version',       action='store',      help='which X.Y version of the RHN Proxy are you upgrading to? Default is your current proxy version ('+defaultVersion+')', default=defaultVersion),
+        Option('--version',       action='store',      help='which X.Y version of the SUSE Manager Proxy are you upgrading to? Default is your current proxy version ('+defaultVersion+')', default=defaultVersion),
         Option('-m', '--enable-monitoring', 
                                     action='store_true', help='enable MonitoringScout on this proxy.'),
         Option('--deactivate',      action='store_true', help='deactivate proxy, if already activated'),
@@ -573,7 +573,7 @@ def main():
         errorCode, errorString = createMonitoringScout(options)
         if errorCode != 0:
             if not errorString:
-                errorString = ("An unknown error occured. Consult with your Red Hat representative.\n")
+                errorString = ("An unknown error occured. Consult with your Novell representative.\n")
             sys.stderr.write("\nThere was a problem activating Monitoring Scout:\n%s\n" % errorString)
             sys.exit(abs(errorCode))
         else:

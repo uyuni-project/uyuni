@@ -96,7 +96,7 @@ public class ProxyHandler extends BaseHandler {
             User owner = server.getCreator();
 
             SatCluster scout = SatClusterFactory.createSatCluster(owner);
-            scout.setDescription("RHN Proxy" + " " +
+            scout.setDescription("SUSE Manager" + " " +
                         server.getHostname() +
                         " (" + server.getId() + ")");
             scout.setVip(server.getIpAddress());

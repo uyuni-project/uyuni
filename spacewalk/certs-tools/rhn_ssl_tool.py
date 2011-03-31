@@ -1109,9 +1109,9 @@ Generating web server's SSL key pair/set RPM:
     if verbosity >= 0:
         print """
 Deploy the server's SSL key pair/set RPM:
-    (NOTE: the RHN Satellite or Proxy installers may do this step for you.)
+    (NOTE: the SUSE Manager or Proxy installers may do this step for you.)
     The "noarch" RPM needs to be deployed to the machine working as a
-    web server, or RHN Satellite, or RHN Proxy.
+    web server, or SUSE Manager, or SUSE Manager Proxy.
     Presumably %s.""" % repr(d['--set-hostname'])
 
     return "%s.noarch.rpm" % serverRpmName

@@ -192,13 +192,13 @@ sub proxy_entitlement_form {
 	$pxt->redirect("/network/systems/details/proxy/install_progress.pxt?sid=$sid&version=$version");
       }
       else {
-	$subs{proxy_message} = "This machine is currently a licensed RHN Proxy (v$version).";
+	$subs{proxy_message} = "This machine is currently a licensed SUSE Manager Proxy (v$version).";
 	$subs{proxy_button} = PXT::HTML->submit(-name => 'deactivate_proxy', -value => 'Deactivate Proxy');
 	$subs{proxy_button} .= PXT::HTML->submit(-name => 'configure_proxy', -value => 'Configure Proxy');
       }
     }
     else {
-      $subs{proxy_message} = "This machine is currently a licensed RHN Proxy (v$version).";
+      $subs{proxy_message} = "This machine is currently a licensed SUSE Manager Proxy (v$version).";
       $subs{proxy_button} = PXT::HTML->submit(-name => 'deactivate_proxy', -value => 'Deactivate License');
     }
 
@@ -236,16 +236,16 @@ sub proxy_entitlement_form {
         my @valid_channels = RHN::Channel->proxy_channels_by_version(version => $proxy_ver);
         foreach my $sub_chan (@subscribable_channels) {
             if (grep /$sub_chan->{LABEL}/, @valid_channels) {
-                push @possible_proxies, ["RHN Proxy v$proxy_ver", $proxy_ver];
+                push @possible_proxies, ["SUSE Manager Proxy v$proxy_ver", $proxy_ver];
                 last;
             }
         }
     }
 
     if (@possible_proxies) {
-      $subs{proxy_message} = "You may activate this machine as an RHN Proxy. " .
+      $subs{proxy_message} = "You may activate this machine as an SUSE Manager Proxy. " .
                              "The following versions are available for activation." .
-                             "<div class=\"site-alert\">WebUI RHN Proxy installer is obsoleted since version 5.3. Please use command line installer from package spacewalk-proxy-installer.</div>";
+                             "<div class=\"site-alert\">WebUI SUSE Manager Proxy installer is obsoleted since version 5.3. Please use command line installer from package spacewalk-proxy-installer.</div>";
 
       $subs{proxy_version_dropdown} = 
           PXT::HTML->select(-name => "proxy_version",
@@ -256,12 +256,12 @@ sub proxy_entitlement_form {
     }
     else {
 
-      $subs{proxy_message} = "The necessary channels required to activate an RHN Proxy are unavailable.";
+      $subs{proxy_message} = "The necessary channels required to activate an SUSE Manager Proxy are unavailable.";
 
     }
   }
   else {
-    $subs{proxy_message} = 'All RHN Proxy subscriptions are currently being used.';
+    $subs{proxy_message} = 'All SUSE Manager Proxy subscriptions are currently being used.';
   }
 
   $block = PXT::Utils->perform_substitutions($block, \%subs);
@@ -310,13 +310,13 @@ sub proxy_entitlement_cb {
 
       $transaction = $server->deactivate_proxy($transaction);
 
-      $pxt->push_message(site_info => sprintf("The server <strong>%s</strong> has been deactivated as an RHN Proxy (v%s).",
+      $pxt->push_message(site_info => sprintf("The server <strong>%s</strong> has been deactivated as an SUSE Manager Proxy (v%s).",
 					      PXT::Utils->escapeHTML($server->name), $version));
     }
     elsif ($pxt->dirty_param('activate_proxy')) {
 
       $transaction = $server->activate_proxy(-transaction => $transaction, -version => $proxy_version);
-      $pxt->push_message(site_info => sprintf("The server <strong>%s</strong> has been activated as an RHN Proxy (v%s).",
+      $pxt->push_message(site_info => sprintf("The server <strong>%s</strong> has been activated as an SUSE Manager Proxy (v%s).",
 					      PXT::Utils->escapeHTML($server->name), $proxy_version));
 
 
@@ -331,7 +331,7 @@ sub proxy_entitlement_cb {
 
       if ($E->is_rhn_exception('channel_family_no_subscriptions')) {
 
-	$pxt->push_message(local_alert => "This assignment would exceed your allowed RHN Proxy subscriptions.");
+	$pxt->push_message(local_alert => "This assignment would exceed your allowed SUSE Manager Proxy subscriptions.");
 
 	return;
       }
@@ -357,7 +357,7 @@ sub cancel_scheduled_proxy_install {
 
   if ($server->is_proxy) {
     $server->deactivate_proxy();
-    $pxt->push_message(site_info => 'RHN Proxy installation cancelled');
+    $pxt->push_message(site_info => 'SUSE Manager Proxy installation cancelled');
   }
 
   my $url = $pxt->uri;
