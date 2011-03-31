@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar 31 10:09:02 CEST 2011 - mc@suse.de
+
+- add symlink spacewalk-proxy to rhn-proxy and debrand
+  the start script (bnc#684033)
+
+-------------------------------------------------------------------
 Thu Mar  3 17:47:26 CET 2011 - mc@suse.de
 
 - enable SSL in apache 
