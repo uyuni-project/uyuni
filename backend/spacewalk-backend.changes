@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 31 16:19:17 CEST 2011 - mc@suse.de
+
+- fix a syntax error with old python versions
+
+-------------------------------------------------------------------
 Tue Mar 22 13:51:48 CET 2011 - iartarisi@suse.cz
 
 - fixed bnc#673022 mirror timeout errors shouldn't cause tracebacks
