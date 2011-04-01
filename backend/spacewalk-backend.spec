@@ -211,6 +211,7 @@ BuildRequires: python-crypto
 Requires: python-hashlib
 BuildRequires: python-hashlib
 %endif
+%endif
 
 %description libs
 Libraries required by both Spacewalk server and Spacewalk client tools.
