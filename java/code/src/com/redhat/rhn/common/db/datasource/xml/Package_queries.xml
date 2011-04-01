@@ -1324,8 +1324,8 @@ ORDER BY last_modified
   <query params="cid, eid">
 SELECT P1.id,
        PN.name,
-       PE2.evr.as_vre_simple() || '.' || PA2.label AS current_nvrea,
-       PE1.evr.as_vre_simple() || '.' || PA1.label AS new_nvrea
+       evr_t_as_vre_simple(PE2.evr) || '.' || PA2.label AS current_nvrea,
+       evr_t_as_vre_simple(PE1.evr) || '.' || PA1.label AS new_nvrea
 FROM rhnPackage P1,
      rhnPackageEVR PE1,
      rhnPackageArch PA1,
@@ -1354,7 +1354,7 @@ WHERE EP.errata_id = :eid
 SELECT P.id,
        PN.name,
        NULL AS current_nvrea,
-       PE1.evr.as_vre_simple() || '.' || PA.label AS new_nvrea
+       evr_t_as_vre_simple(PE1.evr) || '.' || PA.label AS new_nvrea
 FROM rhnPackage P,
   rhnErrataPackage EP,
   rhnPackageEVR PE1,
@@ -1407,7 +1407,7 @@ SELECT P.id, PE.epoch, PE.version, PE.release
 <write-mode name="schedule_pkg_for_delete">
   <query params="path">
     INSERT INTO rhnPackageFileDeleteQueue
-      (select :path ,sysdate from dual  where not exists
+      (select :path ,current_timestamp from dual  where not exists
 	(select path from rhnPackageFileDeleteQueue where path = :path))
   </query>
 </write-mode>
@@ -1478,7 +1478,7 @@ SELECT NVREA, PACKAGE_ID, CHANNEL_NAME, CHANNEL_ID
            AND P.id = CP.package_id
            AND C.id = AC.channel_id
            AND PA.id = P.package_arch_id
-        )
+        ) X
 ORDER BY CHANNEL_NAME DESC, EVR DESC
 
 </query>
@@ -1514,7 +1514,7 @@ SELECT NVREA, PACKAGE_ID, CHANNEL_NAME, CHANNEL_ID
            AND P.id = CP.package_id
            AND C.id = AC.channel_id
            AND PA.id = P.package_arch_id
-        )
+        ) X
 ORDER BY CHANNEL_NAME DESC, EVR DESC
 </query>
 </mode>
@@ -1549,7 +1549,7 @@ SELECT NVREA, PACKAGE_ID, CHANNEL_NAME, CHANNEL_ID
            AND P.id = CP.package_id
            AND C.id = AC.channel_id
            AND PA.id = P.package_arch_id
-        )
+        ) X
 ORDER BY CHANNEL_NAME DESC, EVR DESC
 </query>
 </mode>
@@ -1584,7 +1584,7 @@ SELECT NVREA, PACKAGE_ID, CHANNEL_NAME, CHANNEL_ID
            AND P.id = CP.package_id
            AND C.id = AC.channel_id
            AND PA.id = P.package_arch_id
-        )
+        ) X
 ORDER BY CHANNEL_NAME DESC, EVR DESC
 </query>
 </mode>
@@ -1940,7 +1940,25 @@ select distinct p.evr_id as id
   </query>
 </mode>
 
-
-
+<mode name="channel_arch_and_org_access">
+    <query params="channel_id, org_id">
+SELECT p.id, comp.package_arch_id, p.org_id org_package, octv.package_id org_access, sctv.package_id shared_access
+FROM rhnPackage p
+    LEFT JOIN
+     (SELECT a.package_arch_id
+      FROM rhnChannel c
+        LEFT JOIN rhnChannelPackageArchCompat a ON a.channel_arch_id = c.channel_arch_id
+      WHERE c.id = :channel_id) comp ON p.package_arch_id = comp.package_arch_id
+    LEFT JOIN
+      (SELECT DISTINCT CP.package_id
+       FROM rhnOrgChannelTreeView CT inner join rhnChannelPackage CP on CT.id = CP.channel_id
+       WHERE CT.org_id = :org_id) octv on octv.package_id = p.id
+    LEFT JOIN
+      (SELECT DISTINCT CP.package_id
+       FROM rhnSharedChannelTreeView CT inner join rhnChannelPackage CP on CT.id = CP.channel_id
+       WHERE CT.org_id = :org_id) sctv on sctv.package_id = p.id
+WHERE p.id IN (%s)
+    </query>
+</mode>
 
 </datasource_modes>

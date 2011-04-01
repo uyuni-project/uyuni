@@ -12,7 +12,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 1.2.7
+Version: 1.4.2
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -135,6 +135,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) %{_prefix}/share/rhn/satidmap.pl
 %attr(0755,root,root) %{_prefix}/share/rhn/startup.pl
 %doc LICENSE
+%doc %{_mandir}/man5/rhn.conf.5*
 
 %pre
 # This section is needed here because previous versions of spacewalk-config
@@ -162,6 +163,20 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 
 
 %changelog
+* Tue Mar 01 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.2-1
+- Fixed some typos in man page for rhn.conf (mmello@redhat.com)
+- Added on rhn.conf man page a bunch of new options and fixed some typos.
+  (mmello@redhat.com)
+- use better macro (msuchy@redhat.com)
+
+* Mon Feb 28 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.1-1
+- Modifing SPEC file including new man page
+- Adding usr/share/man/man5/rhn.conf.5 manpage file (mmello@redhat.com)
+
+* Sat Nov 20 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.1-1
+- 474591 - move web data to /usr/share/nocpulse (msuchy@redhat.com)
+- Bumping package versions for 1.3. (jpazdziora@redhat.com)
+
 * Mon Nov 15 2010 Miroslav Suchý <msuchy@redhat.com> 1.2.7-1
 - 491331 - move /etc/rhn/satellite-httpd/conf/startup.pl
   to /usr/share/rhn/startup.pl

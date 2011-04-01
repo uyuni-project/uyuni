@@ -116,6 +116,8 @@ ORDER BY CDK.label
 
 <mode name="taggable_systems_in_set">
   <query params="user_id">
+select *
+from (
 SELECT DISTINCT S.id,
        S.name AS SERVER_NAME
   FROM rhnServer S,
@@ -129,7 +131,8 @@ SELECT DISTINCT S.id,
    AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = ST.element AND SFV.label = 'ftr_snapshotting')
    AND USP.server_id = SS.server_id
    AND USP.server_id = S.id
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+) S
+ORDER BY UPPER(coalesce(S.SERVER_NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
 </mode>
@@ -359,9 +362,10 @@ ORDER BY  UPPER(NVL(S.NAME, '(none)')), S.ID
   <query params="pid, user_id">
  SELECT  SP.server_id AS id
   FROM  rhnServerPackage SP
- WHERE
-     SP.name_id = (SELECT P.name_id from  rhnPackage P where P.id = :pid)
-   AND  SP.evr_id = (SELECT P.evr_id from rhnPackage P where P.id = :pid)
+ WHERE P.id = :pid
+   AND  P.name_id = SP.name_id
+   AND  P.evr_id = SP.evr_id
+   AND  P.package_arch_id = SP.package_arch_id
    AND  EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = SP.server_id)
  </query>
   <elaborator name="system_overview" />
@@ -732,6 +736,8 @@ SELECT  DISTINCT SP.server_id id, PN.name || '-' || PE.evr.as_vre_simple() NVRE
   <query name="system_set_supports_reboot" />
 </mode>
   <query name="system_set_supports_reboot" params="user_id, set_label">
+SELECT *
+from (
 SELECT  DISTINCT S.id, S.name
   FROM  rhnArchType AT,
         rhnServerArch SA,
@@ -757,6 +763,7 @@ SELECT  DISTINCT S.id, S.name
                      AND PE.evr &gt;= PE2.evr)
 		   OR (PN.name = 'spacewalk-check' AND PE2.id = PE.id))
 	)
+) S
 ORDER BY UPPER(S.name), S.id
   </query>
 
@@ -874,6 +881,7 @@ ORDER BY SP.position
 
 <mode name="systems_in_channel_family">
   <query params="org_id, cfam_id, user_id">
+select * from (
 SELECT distinct S.id, S.name
   FROM rhnServer S,
        rhnServerChannel SC,
@@ -883,7 +891,8 @@ SELECT distinct S.id, S.name
    AND SC.channel_id = CFM.channel_id
    AND CFM.channel_family_id = :cfam_id
    AND    EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+) X
+ORDER BY UPPER(NVL(X.NAME, '(none)')), X.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>

@@ -180,7 +180,8 @@ sub installSysVLinks
 				symlink('/etc/init.d/'.ref($self),'/etc/init.d/rc'.$level.'.d/K'.$stopSeq.ref($self));
 			}
 		}
-		open(FILE,">".SysVStep->ConfigValue('installed').'/'.ref($self));
+		local * FILE;
+		open(FILE, '>', SysVStep->ConfigValue('installed').'/'.ref($self));
 		print FILE join(',',@levels)."\n";
 		close(FILE);
 	}
@@ -309,7 +310,8 @@ sub startStep
 		}
 		if ($is_not_subsystem)  {
 			# This is for RH "rc" script - won't kill if this isn't here
-			open(FILE,'>/var/lock/subsys/'.ref($self));
+			local * FILE;
+			open(FILE, '>', '/var/lock/subsys/'.ref($self));
 			print FILE 'running';
 			close(FILE);
 		}
@@ -565,19 +567,20 @@ sub registerForInstall
 	if ($registrant) {
 		my $regdir = SysVStep->ConfigValue('registry');
 		my $filename = $regdir.'/'.ref($self);
+		local * FILE;
 		if ( ! -f $filename ) {
-			open(FILE,">$filename");
+			open(FILE, '>', $filename);
 			print FILE $registrant."\n";
 			close(FILE);
 		} else {
-			open(FILE, $filename);
+			open(FILE, '<', $filename);
 			chomp(my @keys = <FILE>);
 			close(FILE);
 			my %ary;
 			@ary{@keys} = (1 .. scalar(@keys));
 			print ref($self)." keys = ".join(',',keys(%ary))."\n";
 			if ( ! defined($ary{$registrant})) {
-				open(FILE,">>$filename");
+				open(FILE, '>>', $filename);
 				print FILE $registrant."\n";
 				close(FILE);
 			}
@@ -597,7 +600,8 @@ sub registrationList
 	my $regdir = SysVStep->ConfigValue('registry');
 	my $filename = $regdir.'/'.ref($self);
 	if ( -f $filename ) {
-		open(FILE,$filename);
+		local * FILE;
+		open(FILE, '<', $filename);
 		my $item;
 		foreach  $item (<FILE>) {
 			chomp($item);

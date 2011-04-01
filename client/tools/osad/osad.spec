@@ -15,13 +15,14 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.9.44
+Version: 5.10.7
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 BuildRequires: python-devel
 Requires: python
-Requires: rhnlib >= 1.8-3
+Requires: rhnlib >= 2.5.31
+Requires: jabberpy
 %if 0%{?suse_version} == 0 && 0%{?rhel} <= 5
 Requires: python-hashlib
 %endif
@@ -53,6 +54,8 @@ only poll the Spacewalk Server from time to time.
 Summary: OSA dispatcher
 Group:    System Environment/Daemons
 Requires: spacewalk-backend-server >= 1.2.32
+Requires: jabberpy
+Requires: lsof
 Conflicts: %{name} < %{version}-%{release}
 Conflicts: %{name} > %{version}-%{release}
 %if !0%{?suse_version}
@@ -109,8 +112,6 @@ Requires: osa-dispatcher
 %description -n osa-dispatcher-selinux
 SELinux policy module supporting osa-dispatcher.
 
-%endif
-
 %prep
 %setup -q
 %if 0%{?suse_version} > 0
@@ -120,7 +121,6 @@ cp prog.init.SUSE prog.init
 %build
 make -f Makefile.osad all
 
-%if %{include_selinux_package}
 %{__perl} -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' osa-dispatcher-selinux/%{modulename}.te
 for selinuxvariant in %{selinux_variants}
 do
@@ -128,14 +128,12 @@ do
     mv osa-dispatcher-selinux/%{modulename}.pp osa-dispatcher-selinux/%{modulename}.pp.${selinuxvariant}
     make -C osa-dispatcher-selinux NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile clean
 done
-%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{rhnroot}
 make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot}
 
-%if %{include_selinux_package}
 for selinuxvariant in %{selinux_variants}
   do
     install -d %{buildroot}%{_datadir}/selinux/${selinuxvariant}
@@ -154,7 +152,6 @@ install -p -m 644 osa-dispatcher-selinux/%{modulename}.if \
 # Install osa-dispatcher-selinux-enable which will be called in %post
 install -d %{buildroot}%{_sbindir}
 install -p -m 755 osa-dispatcher-selinux/osa-dispatcher-selinux-enable %{buildroot}%{_sbindir}/osa-dispatcher-selinux-enable
-%endif
 
 %if 0%{?suse_version}
 %define _sysconfdir /etc
@@ -215,7 +212,6 @@ if [ $1 = 0 ]; then
     /sbin/chkconfig --del osa-dispatcher
 fi
 
-%if %{include_selinux_package}
 %post -n osa-dispatcher-selinux
 if /usr/sbin/selinuxenabled ; then
    %{_sbindir}/osa-dispatcher-selinux-enable
@@ -301,7 +297,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %doc LICENSE
 %doc PYTHON-LICENSES.txt
 
-%if %{include_selinux_package}
 %files -n osa-dispatcher-selinux
 %defattr(-,root,root,0755)
 %doc osa-dispatcher-selinux/%{modulename}.fc
@@ -312,10 +307,67 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %doc LICENSE
 %doc PYTHON-LICENSES.txt
 %attr(0755,root,root) %{_sbindir}/osa-dispatcher-selinux-enable
-%endif
 
-# $Id$
 %changelog
+* Wed Mar 30 2011 Miroslav Suchý 5.10.7-1
+- utilize config.getServerlURL()
+- 683200 - use pune encoding when connecting to jabber
+
+* Wed Mar 30 2011 Jan Pazdziora 5.10.6-1
+- no need to support rhel2 (msuchy@redhat.com)
+- RHEL 4 is no longer a target version for osa-dispatcher, fixing .spec to
+  always build osa-dispatcher-selinux.
+
+* Tue Mar 08 2011 Michael Mraka <michael.mraka@redhat.com> 5.10.5-1
+- fixed osad last_message_time update (PG)
+- fixed osad next_action_time update (PG)
+
+* Thu Feb 24 2011 Jan Pazdziora 5.10.4-1
+- 662593 - let osad initiate presence subscription (mzazrivec@redhat.com)
+
+* Fri Feb 18 2011 Jan Pazdziora 5.10.3-1
+- Revert "Revert "get_server_capability() is defined twice in osad and rhncfg,
+  merge and move to rhnlib and make it member of rpclib.Server""
+  (msuchy@redhat.com)
+
+* Mon Feb 07 2011 Tomas Lestach <tlestach@redhat.com> 5.10.2-1
+- do not check port 5222 on the client (tlestach@redhat.com)
+
+* Thu Feb 03 2011 Tomas Lestach <tlestach@redhat.com> 5.10.1-1
+- Bumping version to 5.10
+
+* Thu Feb 03 2011 Tomas Lestach <tlestach@redhat.com> 5.9.53-1
+- reverting osa-dispatcher selinux policy rules (tlestach@redhat.com)
+
+* Wed Feb 02 2011 Tomas Lestach <tlestach@redhat.com> 5.9.52-1
+- pospone osa-dispatcher start, until jabberd is ready (tlestach@redhat.com)
+
+* Tue Feb 01 2011 Tomas Lestach <tlestach@redhat.com> 5.9.51-1
+- Revert "get_server_capability() is defined twice in osad and rhncfg, merge
+  and move to rhnlib and make it member of rpclib.Server" (tlestach@redhat.com)
+
+* Fri Jan 28 2011 Miroslav Suchý <msuchy@redhat.com> 5.9.50-1
+- get_server_capability() is defined twice in osad and rhncfg, merge and move
+  to rhnlib and make it member of rpclib.Server
+
+* Mon Jan 17 2011 Jan Pazdziora 5.9.49-1
+- Silence InstantClient 11g-related AVCs in osa-dispatcher.
+- Silence diagnostics which was causing AVC denials.
+
+* Tue Dec 21 2010 Jan Pazdziora 5.9.48-1
+- SQL changes for PostgreSQL support.
+
+* Fri Dec 10 2010 Michael Mraka <michael.mraka@redhat.com> 5.9.47-1
+- 661998 - removed looping symlink
+- fixed symlink creation
+
+* Wed Nov 24 2010 Michael Mraka <michael.mraka@redhat.com> 5.9.46-1
+- removed unused imports
+
+* Thu Nov 18 2010 Lukas Zapletal 5.9.45-1
+- 630867 - Allow osa-dispatcher to connect to the PostgreSQL database with
+  PostgreSQL backend.
+
 * Tue Nov 02 2010 Jan Pazdziora 5.9.44-1
 - Update copyright years in the rest of the repo.
 

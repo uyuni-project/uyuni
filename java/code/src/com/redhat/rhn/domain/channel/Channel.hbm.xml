@@ -240,13 +240,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
      AND rhn_channel.get_org_access(c.id, :org_id) = 1
  UNION
  SELECT {c.*}
- FROM    rhnChannel c,
-         rhnSharedChannelView sc,
-         rhnChannelCloned c_1_
+ FROM    rhnChannel c
+ LEFT OUTER JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id,
+         rhnSharedChannelView sc
  WHERE   sc.parent_channel = :cid
  AND     sc.org_trust_id = :org_id
  AND     sc.id = c.id
- AND     c.id = c_1_.id (+)
     ]]>
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
     </sql-query>
@@ -263,6 +262,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <sql-query name="Channel.availableEntitlements">
         <return-scalar type="long" column="entitlements"/>
         <![CDATA[select rhn_channel.available_chan_subscriptions(:channel_id, :org_id) as entitlements from dual]]>
+    </sql-query>
+
+    <sql-query name="Channel.availableFveEntitlements">
+        <return-scalar type="long" column="entitlements"/>
+        <![CDATA[select rhn_channel.available_fve_chan_subs(:channel_id, :org_id) as entitlements from dual]]>
     </sql-query>
 
     <sql-query name="Channel.verifyLabel">

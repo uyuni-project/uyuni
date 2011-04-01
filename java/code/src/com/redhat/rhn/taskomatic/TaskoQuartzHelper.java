@@ -65,13 +65,10 @@ public class TaskoQuartzHelper {
     public static Date createJob(TaskoSchedule schedule) throws InvalidParamException {
         // create trigger
         Trigger trigger = null;
-        if ((schedule.getCronExpr() == null) || (schedule.getCronExpr().isEmpty())) {
-            // start 2 seconds in the future to avoid a race condition
+        if (isCronExpressionEmpty(schedule.getCronExpr())) {
             trigger = new SimpleTrigger(schedule.getJobLabel(),
-                    getGroupName(schedule.getOrgId()),
-                    new Date(System.currentTimeMillis() + 2000 ),
-                    new Date(System.currentTimeMillis() + 2010 ),
-                    0, 0);
+                    getGroupName(schedule.getOrgId()), 1, 1);
+            trigger.setEndTime(new Date());
         }
         else {
             try {
@@ -85,8 +82,8 @@ public class TaskoQuartzHelper {
                 throw new InvalidParamException("Invalid cron expression " +
                         schedule.getCronExpr());
             }
-        }
 
+        }
         // create job
         JobDetail jobDetail = new JobDetail(schedule.getJobLabel(),
                 getGroupName(schedule.getOrgId()), TaskoJob.class);
@@ -95,7 +92,7 @@ public class TaskoQuartzHelper {
             jobDetail.getJobDataMap().putAll(schedule.getDataMap());
         }
         jobDetail.getJobDataMap().put("schedule_id", schedule.getId());
-       
+
         // schedule job
         try {
             Date date = SchedulerKernel.getScheduler().scheduleJob(jobDetail, trigger);
@@ -136,5 +133,27 @@ public class TaskoQuartzHelper {
             return null;
         }
         return orgId.toString();
+    }
+
+    private static boolean isCronExpressionEmpty(String cronExpr) {
+        return (cronExpr == null || cronExpr.isEmpty());
+    }
+
+    /**
+     * returns, whether cron expression is valid
+     * @param cronExpression cron expression
+     * @return true, if expression is valid
+     */
+    public static boolean isValidCronExpression(String cronExpression) {
+        if (isCronExpressionEmpty(cronExpression)) {
+            return true;
+        }
+        try {
+            new CronTrigger().setCronExpression(cronExpression);
+        }
+        catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

@@ -639,9 +639,12 @@ addItem(SupplementsItem)
 class FileItem(BaseChecksummedItem):
     item_name = 'rhn-package-file'
     item_class = importLib.File
+    tagMap = {
+        'checksum-type' : 'checksum_type',
+    }
     def populate(self, attributes, elements):
-        if 'md5' in attributes:
-            attributes['checksum_type'] = 'md5'
+        if 'md5' in attributes and 'checksum-type' not in attributes:
+            attributes['checksum-type'] = 'md5'
             attributes['checksum'] = attributes['md5']
         item = BaseChecksummedItem.populate(self, attributes, elements)
         return item
@@ -735,11 +738,6 @@ class ErrataFileItem(BaseChecksummedItem):
         'checksum-type'             : 'checksum_type',
     }
 addItem(ErrataFileItem)
-
-class BlacklistObsoleteItem(BaseItem):
-    item_name = 'rhn-blacklist-obsolete'
-    item_class = importLib.BlacklistObsoletes
-addItem(BlacklistObsoleteItem)
 
 class ProductNamesItem(BaseItem):
     item_name = 'rhn-product-name'
@@ -1067,38 +1065,9 @@ class ChannelPackageArchCompatContainer(ContainerHandler):
 class ServerGroupServerArchCompatContainer(ContainerHandler):
     container_name = 'rhn-server-group-server-arch-compatibility-map'
 
-class BlacklistObsoletesContainer(ContainerHandler):
-    container_name = 'rhn-blacklist-obsoletes'
-
 class ProductNamesContainer(ContainerHandler):
     container_name = 'rhn-product-names'
 
 class KickstartableTreesContainer(ContainerHandler):
     container_name = 'rhn-kickstartable-trees'
-
-#
-# Handler generator
-#
-def getHandler():
-    handler = SatelliteDispatchHandler()
-#    handler.set_container(ErrorContainer())
-    handler.set_container(ChannelFamilyContainer())
-    handler.set_container(ChannelContainer())
-    handler.set_container(IncompletePackageContainer())
-    handler.set_container(PackageContainer())
-    handler.set_container(SourcePackageContainer())
-    handler.set_container(ErrataContainer())
-    # arch containers
-    handler.set_container(ServerArchContainer())
-    handler.set_container(PackageArchContainer())
-    handler.set_container(ChannelArchContainer())
-    handler.set_container(CPUArchContainer())
-    handler.set_container(ServerPackageArchCompatContainer())
-    handler.set_container(ServerChannelArchCompatContainer())
-    handler.set_container(ChannelPackageArchCompatContainer())
-    handler.set_container(ServerGroupServerArchCompatContainer())
-    handler.set_container(BlacklistObsoletesContainer())
-    handler.set_container(KickstartableTreesContainer())
-    handler.set_conatiner(ProductNamesContainer())
-    return handler
 

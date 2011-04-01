@@ -110,13 +110,13 @@ public class SystemHardwareAction extends RhnAction {
         if (server.getDmi() != null) {
 
             if (server.getDmi().getBios() != null) {
-                if (StringUtils.isEmpty(server.getDmi().getBios().getVendor())) {
+                if (StringUtils.isNotEmpty(server.getDmi().getBios().getVendor())) {
                     dmiBios.append(server.getDmi().getBios().getVendor() + " ");
                 }
-                if (StringUtils.isEmpty(server.getDmi().getBios().getVersion())) {
+                if (StringUtils.isNotEmpty(server.getDmi().getBios().getVersion())) {
                     dmiBios.append(server.getDmi().getBios().getVersion() + " ");
                 }
-                if (StringUtils.isEmpty(server.getDmi().getBios().getRelease())) {
+                if (StringUtils.isNotEmpty(server.getDmi().getBios().getRelease())) {
                     dmiBios.append(server.getDmi().getBios().getRelease());
                 }
             }
@@ -129,7 +129,7 @@ public class SystemHardwareAction extends RhnAction {
             request.setAttribute("dmi_board", server.getDmi().getBoard());
         }
 
-        request.setAttribute("network_hostname", server.getHostname());
+        request.setAttribute("network_hostname", server.getDecodedHostname());
         request.setAttribute("network_ip_addr", server.getIpAddress());
 
         List<String> nicList = new ArrayList();

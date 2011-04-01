@@ -26,6 +26,7 @@ from spacewalk.common import RPC_Base, rhnFault, log_debug, log_error, CFG
 
 from spacewalk.server import rhnSQL, rhnPackageUpload, rhnUser, rhnSession
 
+from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.importLib import Collection, IncompatibleArchError,\
     Channel, IncompletePackage, InvalidChannelError
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
@@ -34,7 +35,6 @@ from spacewalk.server.importlib.packageUpload import uploadPackages, listChannel
 from spacewalk.server.importlib.userAuth import UserAuth
 from spacewalk.server.importlib.errataCache import schedule_errata_cache_update
 from spacewalk.common.checksum import getFileChecksum
-from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 
 #12/22/05 wregglej 173287
 #I made a decent number of changes to this file to implement session authentication.
@@ -382,14 +382,7 @@ class Packages(RPC_Base):
 
         caller = "server.app.channelPackageSubscription"
 
-        if CFG.DB_BACKEND == ORACLE:
-            from spacewalk.server.importlib.backendOracle import OracleBackend
-            backend = OracleBackend()
-        elif CFG.DB_BACKEND == POSTGRESQL:
-            from spacewalk.server.importlib.backendOracle import PostgresqlBackend
-            backend = PostgresqlBackend()
-
-        backend.init()
+        backend = SQLBackend()
         importer = ChannelPackageSubscription(batch, backend, caller=caller)
         try:
             importer.run()
@@ -512,9 +505,9 @@ class Packages(RPC_Base):
            
             query_args = {
                 'pkg_name':     pkg_info['name'],
-                'pkg_epoch':    str(pkg_epoch),
-                'pkg_version':  str(pkg_info['version']),
-                'pkg_rel':      str(pkg_info['release']),
+                'pkg_epoch':    pkg_epoch,
+                'pkg_version':  pkg_info['version'],
+                'pkg_rel':      pkg_info['release'],
                 'pkg_arch':     pkg_info['arch'],
                 'orgid':       org_id,
                     }

@@ -15,6 +15,8 @@
 
 COMMIT;
 
+exec dbms_utility.compile_schema(user);
+
 -- check whether all objects are valid
 declare
   invalid_objects number;
@@ -29,6 +31,4 @@ begin
  end if;
 end;
 /
-
-EXIT
 

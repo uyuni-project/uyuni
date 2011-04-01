@@ -1,22 +1,25 @@
 %if  0%{?suse_version}
 %define version_major 1.2
 %define wwwdocroot /srv/www/htdocs
+%define apacheconfdir %{_sysconfdir}/apache2/conf.d
 %else
 %define wwwdocroot %{_var}/www/html
+%define apacheconfdir %{_sysconfdir}/httpd/conf.d
 %endif
 Name:       spacewalk-branding
-Version:    1.2.2
+Version:    1.4.3
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
 Group:      Applications/Internet
 License:    GPLv2
 URL:        https://fedorahosted.org/spacewalk/
-Source0:    %{name}-%{version}.tar.gz
+Source0:    https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildArch:  noarch
 
 BuildRequires: java-devel >= 1.5.0
+Requires:   httpd
 
 %description
 Spacewalk specific branding, CSS, and images.
@@ -36,6 +39,8 @@ jar -cf java-branding.jar -C java/code/src com
 
 %install
 rm -rf %{buildroot}
+install -d -m 755 %{buildroot}%{apacheconfdir}
+install -p -m 644 zz-spacewalk-branding.conf %{buildroot}%{apacheconfdir}
 install -d -m 755 %{buildroot}/%{wwwdocroot}
 install -d -m 755 %{buildroot}/%{wwwdocroot}/nav
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk
@@ -47,16 +52,16 @@ install -d -m 755 %{buildroot}%{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/
 %endif
 install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn
 install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn/default
-cp -R css %{buildroot}/%{wwwdocroot}/
-cp -R img %{buildroot}/%{wwwdocroot}/
-cp -R fonts %{buildroot}/%{wwwdocroot}/
+cp -pR css %{buildroot}/%{wwwdocroot}/
+cp -pR img %{buildroot}/%{wwwdocroot}/
+cp -pR fonts %{buildroot}/%{wwwdocroot}/
 # Appplication expects two favicon's for some reason, copy it so there's just
 # one in source:
-cp img/favicon.ico %{buildroot}/%{wwwdocroot}/
-cp -R templates %{buildroot}/%{wwwdocroot}/
-cp -R styles %{buildroot}/%{wwwdocroot}/nav/
-cp -R setup  %{buildroot}%{_datadir}/spacewalk/
-cp -R java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
+cp -p img/favicon.ico %{buildroot}/%{wwwdocroot}/
+cp -pR templates %{buildroot}/%{wwwdocroot}/
+cp -pR styles %{buildroot}/%{wwwdocroot}/nav/
+cp -pR setup  %{buildroot}%{_datadir}/spacewalk/
+cp -pR java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
 %if  0%{?rhel} && 0%{?rhel} < 6
 ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/tomcat5/webapps/rhn/WEB-INF/lib/java-branding.jar
 %else
@@ -74,6 +79,8 @@ docs.channel_mgmt_guide=http://www.novell.com/documentation/suse_manager/
 docs.release_notes=/rhn/help/release-notes/manager/en-US/index.jsp
 docs.proxy_release_notes=http://www.novell.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/%{version_major}/
 ENDOFCONFIG
+%else
+cp -p conf/rhn_docs.conf %{buildroot}/%{_sysconfdir}/rhn/default/rhn_docs.conf
 %endif
 
 %clean
@@ -94,6 +101,7 @@ rm -rf %{buildroot}
 /%{wwwdocroot}/templates/.htaccess
 %dir /%{wwwdocroot}/nav/styles
 /%{wwwdocroot}/nav/styles/*
+%config(noreplace) %{apacheconfdir}/zz-spacewalk-branding.conf
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
 %if  0%{?rhel} && 0%{?rhel} < 6
@@ -113,8 +121,30 @@ rm -rf %{buildroot}
 %dir /var/lib/tomcat6/webapps/rhn/WEB-INF
 %dir /var/lib/tomcat6/webapps/rhn/WEB-INF/lib
 
+%doc LICENSE
 
 %changelog
+* Wed Mar 30 2011 Jan Pazdziora 1.4.3-1
+- update copyright years (msuchy@redhat.com)
+- implement common access keys (msuchy@redhat.com)
+
+* Fri Feb 18 2011 Jan Pazdziora 1.4.2-1
+- The LOGGED IN and SIGN OUT are not images since Satellite 5.0 (rhn-360.css),
+  removing.
+
+* Wed Feb 09 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.1-1
+- made system legend of the same width as side navigation
+
+* Fri Dec 17 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.2-1
+- let import PXT modules on fly
+
+* Thu Nov 25 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.1-1
+- add GPLv2 license (msuchy@redhat.com)
+- cleanup spec (msuchy@redhat.com)
+- remove .htaccess file (msuchy@redhat.com)
+- point to url where we store tar.gz (msuchy@redhat.com)
+- Bumping package versions for 1.3. (jpazdziora@redhat.com)
+
 * Mon Sep 27 2010 Miroslav Suchý <msuchy@redhat.com> 1.2.2-1
 - 627920 - Added a larger config file icon for symlinks. Thanks to Joshua Roys
   (paji@redhat.com)

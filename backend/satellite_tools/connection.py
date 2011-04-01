@@ -16,7 +16,6 @@
 #
 #
 
-import string
 import gzipstream
 
 from rhn import rpclib
@@ -57,7 +56,7 @@ class Transport(rpclib.transports.Transport):
         # XXX application/octet-stream should go away
         if content_type in ('application/xml', 'application/octet-stream', 
                 'application/x-rpm'):
-            f = rpclib.File(fd)
+            f = rpclib.transports.File(fd)
             # Explanation copied from the base class' method (rhn.transports):
             # Set the File's close method to the connection's
             # Note that calling the HTTPResponse's close() is not enough,
@@ -99,6 +98,18 @@ class GETServer(rpclib.GETServer):
     _transport_class_https = SafeTransport
     _transport_class_proxy = ProxyTransport
     _transport_class_https_proxy = SafeProxyTransport
+    def __init__(self, uri, transport=None, proxy=None, username=None,
+            password=None, client_version=2, headers={}, refreshCallback=None,
+            progressCallback=None, xml_dump_version=constants.PROTOCOL_VERSION):
+        rpclib.GETServer.__init__(self, uri,
+            transport=transport,
+            proxy=proxy,
+            username=username,
+            password=password,
+            client_version=client_version,
+            headers=headers,
+            refreshCallback=refreshCallback)
+        self.add_header("X-RHN-Satellite-XML-Dump-Version", xml_dump_version)
 
 class CompressedStream:
     """

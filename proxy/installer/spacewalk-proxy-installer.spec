@@ -2,7 +2,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 1.2.3
+Version: 1.4.0
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -56,7 +56,7 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man8
 mkdir -p $RPM_BUILD_ROOT/%{_usr}/sbin
-mkdir -p $RPM_BUILD_ROOT/%{_usr}/share/rhn/installer
+mkdir -p $RPM_BUILD_ROOT/%{_usr}/share/rhn/installer/jabberd
 install -m 755 -d $RPM_BUILD_ROOT%{defaultdir}
 install -m 644 cluster.ini $RPM_BUILD_ROOT%{defaultdir}
 install -m 644 squid.conf $RPM_BUILD_ROOT%{defaultdir}
@@ -69,6 +69,7 @@ install -m 644 get_system_id.xslt $RPM_BUILD_ROOT%{_usr}/share/rhn/
 install -m 644 __init__.py $RPM_BUILD_ROOT%{_usr}/share/rhn/installer/
 install -m 644 rhn-proxy-activate.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
 install -m 644 configure-proxy.sh.8.gz $RPM_BUILD_ROOT%{_mandir}/man8/
+install -m 640 jabberd/sm.xml jabberd/c2s.xml $RPM_BUILD_ROOT%{_usr}/share/rhn/installer/jabberd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -85,6 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_usr}/share/rhn/installer
 %{_usr}/share/rhn/installer/__init__.py*
 %{_usr}/share/rhn/installer/rhn_proxy_activate.py*
+%{_usr}/share/rhn/installer/jabberd/*.xml
 %{_usr}/share/rhn/get_system_id.xslt
 %{_bindir}/rhn-proxy-activate
 %doc LICENSE answers.txt
@@ -92,6 +94,23 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_usr}/share/rhn
 
 %changelog
+* Thu Jan 20 2011 Tomas Lestach <tlestach@redhat.com> 1.3.5-1
+- updating Copyright years for year 2011 (tlestach@redhat.com)
+- remove redundant comment (msuchy@redhat.com)
+
+* Tue Jan 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.4-1
+- fixed pylint errors
+- Updating the copyright years to include 2010.
+
+* Wed Dec 08 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.3-1
+- 660344 - do not use spacwalk-setup-jabberd in RHN Proxy 5.3 and older
+
+* Wed Dec 08 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.2-1
+- import Fault, ResponseError and ProtocolError directly from xmlrpclib
+
+* Wed Nov 24 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.1-1
+- removed unused imports
+
 * Wed Nov 10 2010 Jan Pazdziora 1.2.3-1
 - remove escaping (msuchy@redhat.com)
 

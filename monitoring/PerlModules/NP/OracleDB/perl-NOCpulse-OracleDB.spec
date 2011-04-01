@@ -1,5 +1,5 @@
 Name:         perl-NOCpulse-OracleDB
-Version: 	  1.28.17
+Version: 	  1.28.20
 Release:      1%{?dist}
 Summary:      Perl modules for NOCpulse Oracle database access
 URL:          https://fedorahosted.org/spacewalk
@@ -12,6 +12,7 @@ BuildRequires: perl-FreezeThaw
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
 BuildRequires: perl(NOCpulse::Debug) perl(NOCpulse::Config) perl(NOCpulse::Utils::XML) perl(NOCpulse::Object)
+BuildRequires: perl(RHN::DB)
 BuildRequires: perl(DBI) perl(ExtUtils::MakeMaker)
 Group:        Development/Libraries
 License:      GPLv2
@@ -52,6 +53,19 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/NOCpulse/*
 
 %changelog
+* Tue Mar 22 2011 Michael Mraka <michael.mraka@redhat.com> 1.28.20-1
+- fixed segmentation fault in use NOCpulse::DBRecord
+
+* Tue Mar 22 2011 Miroslav Suchý <msuchy@redhat.com> 1.28.19-1
+- add missing buildrequires
+
+* Fri Mar 18 2011 Michael Mraka <michael.mraka@redhat.com> 1.28.18-1
+- fixed input values (PG)
+- fixed sysdate error (PG)
+- replaced aliases with table names (PG)
+- reuse RHN:DB for db connection in DBRecord.pm (PG)
+- reuse RHN:DB for db connection in OracleDB.pm (PG)
+
 * Thu Sep 17 2009 Miroslav Suchý <msuchy@redhat.com> 1.28.17-1
 - remove of dead code
 

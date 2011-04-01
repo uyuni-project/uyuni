@@ -1114,30 +1114,19 @@ public class ChannelSoftwareHandler extends BaseHandler {
         User loggedInUser = getLoggedInUser(sessionKey);
         Channel channel = lookupChannelByLabel(loggedInUser.getOrg(), channelLabel);
 
-        //Make sure the user is a channel admin for the given channel.
-        if (!UserManager.verifyChannelAdmin(loggedInUser, channel)) {
-            throw new PermissionCheckFailureException();
-        }
-
         // Try to add the list of packages to the channel. Catch any exceptions and
         // convert to FaultExceptions
         try {
             ChannelEditor.getInstance().addPackages(loggedInUser, channel, packageIds);
         }
         catch (PermissionException e) {
-            throw new PermissionCheckFailureException();
+            throw new PermissionCheckFailureException(e.getMessage());
         }
         catch (LookupException le) {
             //This shouldn't happen, but if it does, it is because one of the packages
             //doesn't exist.
             throw new NoSuchPackageException(le);
         }
-        /*
-        catch (IncompatibleArchException iae) {
-            throw new FaultException(1202, "incompatiblePackageArch",
-                    "package architecture is incompatible with channel", iae);
-        }
-        */
 
         //refresh channel with newest packages
         ChannelManager.refreshWithNewestPackages(channel, "api");
@@ -2197,11 +2186,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param url of the repo
     * @return the new ContentSource
     *
-    * xmlrpc.doc Creates a ContentSource (repo)
-    * xmlrpc.param #session_key()
-    * xmlrpc.param #param_desc("string", "label", "label of repo wanted")
-    * xmlrpc.param #param_desc("string", "type", "type of repo wanted")
-    * xmlrpc.param #param_desc("string", "url", "url of repo wanted")
+    * @xmlrpc.doc Creates a ContentSource (repo)
+    * @xmlrpc.param #session_key()
+    * @xmlrpc.param #param_desc("string", "label", "label of repo wanted")
+    * @xmlrpc.param #param_desc("string", "type", "type of repo wanted")
+    * @xmlrpc.param #param_desc("string", "url", "url of repo wanted")
     * @xmlrpc.returntype ContentSource
    **/
     public ContentSource createRepo(String sessionKey, String label, String type,
@@ -2226,9 +2215,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param id of the repo to be removed
     * @return Integer 1 on success
     *
-    * xmlrpc.doc Creates a ContentSource (repo)
-    * xmlrpc.param #session_key()
-    * xmlrpc.param #param_desc("long", "id", "ID of repo to be removed")
+    * @xmlrpc.doc Creates a ContentSource (repo)
+    * @xmlrpc.param #session_key()
+    * @xmlrpc.param #param_desc("long", "id", "ID of repo to be removed")
     * @xmlrpc.returntype Integer
    **/
     public Integer removeRepo(String sessionKey, Integer id) {
@@ -2245,9 +2234,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param label of the repo to be removed
     * @return Integer 1 on success
     *
-    * xmlrpc.doc Creates a ContentSource (repo)
-    * xmlrpc.param #session_key()
-    * xmlrpc.param #param_desc("string", "label", "label of repo to be removed")
+    * @xmlrpc.doc Creates a ContentSource (repo)
+    * @xmlrpc.param #session_key()
+    * @xmlrpc.param #param_desc("string", "label", "label of repo to be removed")
     * @xmlrpc.returntype Integer
    **/
     public Integer removeRepo(String sessionKey, String label) {
@@ -2265,10 +2254,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param repoLabel of the repo to associate
     * @return the channel with the newly associated repo
     *
-    * xmlrpc.doc Associates a ContentSource (repo) with a channel
-    * xmlrpc.param #session_key()
-    * xmlrpc.param #param_desc("string", "chanLabel", "of the channel to use")
-    * xmlrpc.param #param_desc("string", "repoLabel", "of the repo to associate")
+    * @xmlrpc.doc Associates a ContentSource (repo) with a channel
+    * @xmlrpc.param #session_key()
+    * @xmlrpc.param #param_desc("string", "chanLabel", "of the channel to use")
+    * @xmlrpc.param #param_desc("string", "repoLabel", "of the repo to associate")
     * @xmlrpc.returntype Channel
    **/
     public Channel associateRepo(String sessionKey, String chanLabel, String repoLabel) {
@@ -2290,10 +2279,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param repoLabel of the repo to disassociate
     * @return the channel minus the disassociated repo
     *
-    * xmlrpc.doc Disassociates a ContentSource (repo) with a channel
-    * xmlrpc.param #session_key()
-    * xmlrpc.param #param_desc("string", "chanLabel", "of the channel to use")
-    * xmlrpc.param #param_desc("string", "repoLabel", "of the repo to disassociate")
+    * @xmlrpc.doc Disassociates a ContentSource (repo) with a channel
+    * @xmlrpc.param #session_key()
+    * @xmlrpc.param #param_desc("string", "chanLabel", "of the channel to use")
+    * @xmlrpc.param #param_desc("string", "repoLabel", "of the repo to disassociate")
     * @xmlrpc.returntype Channel
    **/
     public Channel disassociateRepo(String sessionKey, String chanLabel, String repoLabel) {
@@ -2317,10 +2306,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param url new URL to use
     * @return the updated repo
     *
-    * xmlrpc.doc Updates the ContentSource (repo) source URL
-    * xmlrpc.param #session_key()
-    * xmlrpc.param #param_desc("Long", "id", "of the repo to use")
-    * xmlrpc.param #param_desc("string", "url", "new URL to use")
+    * @xmlrpc.doc Updates the ContentSource (repo) source URL
+    * @xmlrpc.param #session_key()
+    * @xmlrpc.param #param_desc("Long", "id", "of the repo to use")
+    * @xmlrpc.param #param_desc("string", "url", "new URL to use")
     * @xmlrpc.returntype ContentSource
    **/
     public ContentSource updateRepoUrl(String sessionKey, Integer id, String url) {
@@ -2338,10 +2327,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param url new URL to use
     * @return the updated repo
     *
-    * xmlrpc.doc Updates the ContentSource (repo) source URL
-    * xmlrpc.param #session_key()
-    * xmlrpc.param #param_desc("string", "label", "of the repo to use")
-    * xmlrpc.param #param_desc("string", "url", "new URL to use")
+    * @xmlrpc.doc Updates the ContentSource (repo) source URL
+    * @xmlrpc.param #session_key()
+    * @xmlrpc.param #param_desc("string", "label", "of the repo to use")
+    * @xmlrpc.param #param_desc("string", "url", "new URL to use")
     * @xmlrpc.returntype ContentSource
    **/
     public ContentSource updateRepoUrl(String sessionKey, String label, String url) {
@@ -2359,10 +2348,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param label new label
     * @return the updated repo
     *
-    * xmlrpc.doc Updates the ContentSource's (repo) label
-    * xmlrpc.param #session_key()
-    * xmlrpc.param #param_desc("Long", "id", "of the repo to use")
-    * xmlrpc.param #param_desc("string", "label", "new label to use")
+    * @xmlrpc.doc Updates the ContentSource's (repo) label
+    * @xmlrpc.param #session_key()
+    * @xmlrpc.param #param_desc("Long", "id", "of the repo to use")
+    * @xmlrpc.param #param_desc("string", "label", "new label to use")
     * @xmlrpc.returntype ContentSource
    **/
     public ContentSource updateRepoLabel(String sessionKey, Integer id, String label) {
@@ -2381,11 +2370,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param url new URL
     * @return the updated repo
     *
-    * xmlrpc.doc Updates a ContentSource (repo)
-    * xmlrpc.param #session_key()
-    * xmlrpc.param #param_desc("Long", "id", "of the repo to use")
-    * xmlrpc.param #param_desc("string", "label", "new label to use")
-    * xmlrpc.param #param_desc("string", "url", "new URL to use")
+    * @xmlrpc.doc Updates a ContentSource (repo)
+    * @xmlrpc.param #session_key()
+    * @xmlrpc.param #param_desc("Long", "id", "of the repo to use")
+    * @xmlrpc.param #param_desc("string", "label", "new label to use")
+    * @xmlrpc.param #param_desc("string", "url", "new URL to use")
     * @xmlrpc.returntype ContentSource
    **/
     public ContentSource updateRepo(String sessionKey, Integer id, String label,

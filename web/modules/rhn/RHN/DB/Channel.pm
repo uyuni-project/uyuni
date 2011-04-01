@@ -108,7 +108,7 @@ sub commit {
   }
 
   my $sth = $dbh->prepare($query);
-  $sth->execute((map { $self->$_() } grep { $modified{$_} } $c->method_names), ($mode eq 'update') ? ($self->id) : ());
+  $sth->execute((map { my $e = $self->$_(); $e = undef if defined $e and $e eq ''; $e } grep { $modified{$_} } $c->method_names), ($mode eq 'update') ? ($self->id) : ());
 
 #  if ($mode eq 'insert') {
 #    $sth = $dbh->prepare('INSERT INTO rhnChannelPermissions (channel_id, org_id) VALUES (?, ?)');
@@ -128,7 +128,7 @@ sub is_eoled {
 SELECT 1
   FROM rhnChannel
  WHERE id = :channel_id
-   AND sysdate - end_of_life > 0
+   AND current_timestamp > end_of_life
 EOQ
 
   $sth->execute_h(channel_id => $self->id);
@@ -304,6 +304,9 @@ my %proxy_chans_by_version = ('1.1' => ['redhat-rhn-proxy-as-i386-2.1', 'redhat-
                    '5.4' => [ 'redhat-rhn-proxy-5.4-server-i386-5',
                          'redhat-rhn-proxy-5.4-server-x86_64-5',
                          'redhat-rhn-proxy-5.4-server-s390x-5',
+                         'redhat-rhn-proxy-5.4-server-i386-6',
+                         'redhat-rhn-proxy-5.4-server-x86_64-6',
+                         'redhat-rhn-proxy-5.4-server-s390x-6',
                             ],
 
 			     );

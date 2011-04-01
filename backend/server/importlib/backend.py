@@ -18,8 +18,6 @@
 
 import copy
 import string
-import re
-import sys
 
 from spacewalk.common import rhnFault, CFG, rhn_rpm
 from spacewalk.server import rhnSQL, rhnChannel, taskomatic
@@ -290,28 +288,6 @@ class Backend:
             if row:
                 hash[k] = row
             # Else, it's an unsupported channel
-
-    def updateChannelFamilyInfo(self, familyid, orgid):
-        _query_org_priv_family = """
-             SELECT  1
-               FROM  rhnPrivateChannelFamily PCF
-              WHERE  PCF.channel_family_id = :cfid
-                AND  PCF.org_id = :orgid 
-        """
-        h = self.dbmodule.prepare(_query_org_priv_family)
-        h.execute(cfid = familyid, orgid = orgid)
-        row = h.fetchone_dict()
-        if row:
-          return
-          
-        _query_priv_cf_org =  """
-            insert into rhnPrivateChannelFamily
-            (channel_family_id, org_id)  values
-            (:cfid, :orgid)
-        """
-        h = self.dbmodule.prepare(_query_priv_cf_org)
-        h.execute(cfid = familyid, orgid = orgid)
-        
 
     def lookupChannelPackageArchCompat(self, channelArchHash):
         # Return all the arches compatible with each key of archHash
@@ -596,48 +572,6 @@ class Backend:
         hash.update(result)
         return hash
     
-    def processBlacklistObsoletes(self, blacklists):
-        # Slightly different: the table doesn't have a sequenced field
-        parentTable = 'rhnBlacklistObsoletes'
-        parentTableObj = self.tables[parentTable]
-        dml = DML([parentTable], self.tables)
-
-        q = "select %s from %s" % (string.join(parentTableObj.pk, ", "),
-            parentTable)
-        h = self.dbmodule.prepare(q)
-        h.execute()
-
-        db_fields = {}
-        for k in parentTableObj.pk:
-            db_fields[k] = parentTableObj.fields[k]
-
-        db_values_hash = {}
-        while 1:
-            row = h.fetchone_dict()
-            if not row:
-                break
-            val = _buildDatabaseValue(row, db_fields)
-            key = build_key(val, parentTableObj.pk)
-            db_values_hash[key] = val
-
-        # Now iterate through the values
-        for entry in blacklists:
-            val = {}
-            _buildExternalValue(val, entry, parentTableObj)
-            key =  build_key(val, parentTableObj.pk)
-            if db_values_hash.has_key(key):
-                # Value exists
-                del db_values_hash[key]
-                continue
-            # Have to add this value
-            addHash(dml.insert[parentTable], val)
-        # The rest of the stuff has to be deleted
-        for k, v in db_values_hash.items():
-            addHash(dml.delete[parentTable], v)
-
-        self.__doDML(dml)
-        
-
     def processChannelArches(self, arches):
         self.__processObjectCollection(arches, 'rhnChannelArch',
             uploadForce=4, ignoreUploaded=1, severityLimit=4)
@@ -1288,33 +1222,46 @@ class Backend:
             'package_id'    : [],
             'channel_id'    : [],
         }
-        # Now get the extra packages from the DB
         if strict:
+            # if strict remove the extra packages from the DB
             sql = """
                 select package_id
                   from rhnChannelPackage
                  where channel_id = :channel_id
             """
-            statement = self.dbmodule.prepare(sql)
-            for channel_id, pid_hash in channel_packages.items():
-                statement.execute(channel_id=channel_id)
-                while 1:
-                    row = statement.fetchone_dict()
-                    if not row:
-                        break
-                    package_id = row['package_id']
-                    if not pid_hash.has_key(package_id):
-                        # Have to remove it
-                        extra_cp['package_id'].append(package_id)
-                        extra_cp['channel_id'].append(channel_id)
-                        # And mark this channel as being affected
-                        if not affected_channels.has_key(channel_id):
-                            modified_packages = ([], [])
-                            affected_channels[channel_id] = modified_packages 
-                        else:
-                            modified_packages = affected_channels[channel_id]
-                        # Package was deletef from this channel
-                        modified_packages[1].append(package_id)
+        else:
+            # or at least we should delete packages from different org
+            sql = """
+                select package_id
+                  from rhnChannelPackage cp
+                  join rhnPackage p
+                    on p.id = cp.package_id
+                  join rhnChannel c
+                    on c.id = cp.channel_id
+                 where cp.channel_id = :channel_id
+                   and c.org_id != p.org_id
+            """
+
+        statement = self.dbmodule.prepare(sql)
+        for channel_id, pid_hash in channel_packages.items():
+            statement.execute(channel_id=channel_id)
+            while 1:
+                row = statement.fetchone_dict()
+                if not row:
+                    break
+                package_id = row['package_id']
+                if not pid_hash.has_key(package_id):
+                    # Have to remove it
+                    extra_cp['package_id'].append(package_id)
+                    extra_cp['channel_id'].append(channel_id)
+                    # And mark this channel as being affected
+                    if not affected_channels.has_key(channel_id):
+                        modified_packages = ([], [])
+                        affected_channels[channel_id] = modified_packages
+                    else:
+                        modified_packages = affected_channels[channel_id]
+                    # Package was deletef from this channel
+                    modified_packages[1].append(package_id)
 
         self.__doDeleteTable('rhnChannelPackage', extra_cp)
         self.__doInsertTable('rhnChannelPackage', hash)
@@ -1811,9 +1758,9 @@ class Backend:
         query = """
             select
                  pn.name, 
-                 pe.evr.epoch epoch,
-                 pe.evr.version as version,
-                 pe.evr.release as release,
+                 (pe.evr).epoch epoch,
+                 (pe.evr).version as version,
+                 (pe.evr).release as release,
                  pa.label as arch,
                  p.org_id,
                  cc.checksum_type,

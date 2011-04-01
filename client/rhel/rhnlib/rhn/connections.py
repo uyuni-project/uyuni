@@ -12,6 +12,7 @@ import SSL
 import nonblocking
 import httplib
 import xmlrpclib
+import encodings.idna
 
 # Import into the local namespace some httplib-related names
 _CS_REQ_SENT = httplib._CS_REQ_SENT
@@ -23,42 +24,6 @@ class HTTPResponse(httplib.HTTPResponse):
         if not isinstance(self.fp, nonblocking.NonBlockingFile):
             self.fp = nonblocking.NonBlockingFile(self.fp)
         self.fp.set_callback(rs, ws, ex, user_data, callback)
-
-    # Fix a bug in the upstream read() method - partial reads will incorrectly
-    # update self.length with the intended, not the real, amount of bytes
-    # See http://python.org/sf/988120
-    def read(self, amt=None):
-        if self.fp is None:
-            return ''
-
-        if self.chunked:
-            return self._read_chunked(amt)
-
-        if amt is None:
-            # unbounded read
-            if self.will_close:
-                s = self.fp.read()
-            else:
-                s = self._safe_read(self.length)
-            self.close()        # we read everything
-            return s
-
-        if self.length is not None:
-            if amt > self.length:
-                # clip the read to the "end of response"
-                amt = self.length
-
-        # we do not use _safe_read() here because this may be a .will_close
-        # connection, and the user is reading more bytes than will be provided
-        # (for example, reading in 1k chunks)
-        s = self.fp.read(amt)
-
-        if self.length is not None:
-            # Update the length with the amount of bytes we actually read
-            self.length = self.length - len(s)
-
-        return s
-
 
 class HTTPConnection(httplib.HTTPConnection):
     response_class = HTTPResponse
@@ -244,3 +209,21 @@ class HTTPSProxyConnection(HTTPProxyConnection):
         HTTPProxyConnection._add_proxy_headers(self)
         # Add a User-Agent header
         self.putheader("User-Agent", self._user_agent)
+
+def idn_pune_to_unicode(hostname):
+    """ Convert Internationalized domain name from Pune encoding to Unicode """
+    if hostname is None:
+        return None
+    elif hostname == '':
+        return u''
+    else:
+        return u'.'.join([encodings.idna.ToUnicode(x) for x in hostname.split('.')])
+
+def idn_ascii_to_pune(hostname):
+    """ Convert domain name to Pune encoding. Hostname can be instance of string or Unicode """
+    if hostname is None:
+        return None
+    else:
+        if not isinstance(hostname, unicode):
+            hostname = unicode(hostname, 'utf-8')
+        return u'.'.join([encodings.idna.ToASCII(x) for x in hostname.split('.')])

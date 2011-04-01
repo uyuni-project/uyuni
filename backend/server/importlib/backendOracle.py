@@ -22,6 +22,8 @@ from backend import Backend
 from backendLib import DBint, DBstring, DBdateTime, DBblob, Table, \
         TableCollection
 from spacewalk.server import rhnSQL
+from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
+from spacewalk.common import CFG
 
 class OracleBackend(Backend):
     tables = TableCollection(
@@ -463,16 +465,6 @@ class OracleBackend(Backend):
             },
             pk          = ['server_arch_id', 'server_group_type'],
         ),
-        Table('rhnBlacklistObsoletes',
-            fields      = {
-                'name_id'           : DBint(),
-                'evr_id'            : DBint(),
-                'package_arch_id'   : DBint(),
-                'ignore_name_id'    : DBint(),
-            },
-            pk          = ['name_id', 'evr_id', 'package_arch_id',
-                           'ignore_name_id'],
-        ),
         Table('rhnKickstartableTree',
             fields      = {
                 'id'                : DBint(),
@@ -624,3 +616,10 @@ class PostgresqlBackend(OracleBackend):
         """
         return Backend.init(self)
 
+def SQLBackend():
+    if CFG.DB_BACKEND == ORACLE:
+        backend = OracleBackend()
+    elif CFG.DB_BACKEND == POSTGRESQL:
+        backend = PostgresqlBackend()
+    backend.init()
+    return backend

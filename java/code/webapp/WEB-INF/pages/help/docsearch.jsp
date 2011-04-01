@@ -1,8 +1,8 @@
-<%@ taglib uri="http://jakarta.apache.org/struts/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
-<%@ taglib uri="http://jakarta.apache.org/struts/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
 <html:xhtml/>
 <html>
@@ -28,7 +28,7 @@
          <table class="details">
            <tr><th><bean:message key="docsearch.jsp.searchfor"/></th>
              <td>
-               <html:text property="search_string" name="search_string" value="${search_string}" />
+               <html:text property="search_string" name="search_string" value="${search_string}" accesskey="4"/>
                <html:submit>
                  <bean:message key="button.search" />
                </html:submit>

@@ -10,7 +10,7 @@ License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 
-Version:        5.4.15
+Version:        5.4.20
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
@@ -42,6 +42,13 @@ Requires:       cron
 PreReq:         %fillup_prereq %insserv_prereq
 %else
 Requires: /usr/sbin/crond
+%if 0%{?rhel} && 0%{?rhel} < 6
+# in RHEL5 we need libvirt, but in RHEV@RHEL5 there should not be libvirt
+# as there is vdsm and bunch of other packages, but we have no clue how to
+# distinguish those two scenarios
+%else
+Requires: libvirt
+%endif
 %endif
 
 %description host
@@ -174,6 +181,22 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Mar 10 2011 Miroslav Suchý <msuchy@redhat.com> 5.4.20-1
+- 683546 - optparse isn't friendly to translations in unicode
+
+* Wed Jan 05 2011 Miroslav Suchý <msuchy@redhat.com> 5.4.19-1
+- 656241 - require libvirt
+- Updating the copyright years to include 2010. (jpazdziora@redhat.com)
+
+* Mon Dec 20 2010 Miroslav Suchý <msuchy@redhat.com> 5.4.18-1
+- 657516 - print nice warning if libvirtd is not running
+
+* Wed Nov 24 2010 Michael Mraka <michael.mraka@redhat.com> 5.4.17-1
+- removed unused imports
+
+* Sat Nov 20 2010 Miroslav Suchý <msuchy@redhat.com> 5.4.16-1
+- If libvirtd is not running do not throw traceback (msuchy@redhat.com)
+
 * Tue Nov 02 2010 Jan Pazdziora 5.4.15-1
 - Update copyright years in the rest of the repo.
 

@@ -7,7 +7,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalk-client-tools
-Version: 1.2.15
+Version: 1.4.9
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -17,10 +17,14 @@ BuildRequires: update-desktop-files
 Provides: rhn-client-tools = %{version}-%{release}
 Obsoletes: rhn-client-tools < %{version}-%{release}
 
-Requires: rhnlib >= 2.5.20
+Requires: rhnlib >= 2.5.35
 Requires: rpm >= 4.2.3-24_nonptl
-Requires: rpm-python
+Requires: rpm-python 
+%if 0%{?rhel} && 0%{?rhel} <= 5
 Requires: python-ethtool
+%else
+Requires: python-ethtool >= 0.4
+%endif
 Requires: gnupg
 Requires: sh-utils
 %if 0%{?suse_version}
@@ -43,6 +47,9 @@ Requires: logrotate
 Requires: python-dmidecode
 Requires: libxml2-python
 Requires: suseRegisterInfo
+%if 0%{?rhel}
+Requires: yum
+%endif
 
 Conflicts: up2date < 5.0.0
 Conflicts: yum-rhn-plugin < 1.1.4-1
@@ -335,6 +342,7 @@ make -f Makefile.rhn-client-tools test
 
 %if 0%{?rhel} > 0 && 0%{?rhel} < 6
 %{_datadir}/firstboot/modules/rhn_login_gui.*
+%{_datadir}/firstboot/modules/rhn_choose_channel.*
 %{_datadir}/firstboot/modules/rhn_register_firstboot_gui_window.*
 %{_datadir}/firstboot/modules/rhn_start_gui.*
 %{_datadir}/firstboot/modules/rhn_choose_server_gui.*
@@ -347,6 +355,7 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/rhn/up2date_client/firstboot/rhn_login_gui.*
 %{_datadir}/rhn/up2date_client/firstboot/rhn_start_gui.*
 %{_datadir}/rhn/up2date_client/firstboot/rhn_choose_server_gui.*
+%{_datadir}/rhn/up2date_client/firstboot/rhn_choose_channel.*
 %{_datadir}/rhn/up2date_client/firstboot/rhn_provide_certificate_gui.*
 %{_datadir}/rhn/up2date_client/firstboot/rhn_create_profile_gui.*
 %{_datadir}/rhn/up2date_client/firstboot/rhn_review_gui.*
@@ -355,6 +364,121 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Wed Mar 30 2011 Miroslav Suchý 1.4.9-1
+- 683200 - support IDN
+- 691837 - default to RHN Classic in firstboot (mzazrivec@redhat.com)
+
+* Thu Mar 24 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.8-1
+- utilize config.getServerlURL()
+- atomic save of /etc/sysconfig/rhn/up2date
+
+* Thu Mar 17 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.7-1
+- 680124 - do not count cpu from /proc/cpuinfo, but use /sys/devices/system/cpu
+
+* Wed Mar 16 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.6-1
+- 684245 - lookup of the subscription-manager page via localized title is
+  volatile, let's use its __module__ name. (jpazdziora@redhat.com)
+- 624748 - report virtual network interfaces (mzazrivec@redhat.com)
+
+* Fri Mar 11 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.5-1
+- declare that we are using utf-8
+
+* Thu Mar 10 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.4-1
+- 683546 - optparse isn't friendly to translations in unicode
+- update .po files
+- 679217 - mention subscription manager as alternative to rhn_register
+
+* Tue Mar 01 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.3-1
+- Revert "provide path to puplet-screenshot.png" (msuchy@redhat.com)
+- 666860 - remove glade warnings (msuchy@redhat.com)
+- provide path to puplet-screenshot.png (msuchy@redhat.com)
+- move <accessibility> in front of <signal> (msuchy@redhat.com)
+- 580479 - do not let combo box to fill available space (msuchy@redhat.com)
+- 651792 - if system is not registered, print nice error insted of TB
+  (msuchy@redhat.com)
+- 651857 - fix typo in variable name (msuchy@redhat.com)
+- 671039 - do not Traceback if system was never registered (msuchy@redhat.com)
+
+* Wed Feb 16 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.2-1
+- l10n: Updates to Russian (ru) translation (ypoyarko@fedoraproject.org)
+
+* Tue Feb 08 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.1-1
+- fix typo
+- 671039 - add warning about subsription manager to TUI part of rhn_register
+- 671039 - add warning about subsription manager to GUI part of rhn_register
+- l10n: Updates to German (de) translation (delouw@fedoraproject.org)
+- 671041 - substitute RHN with "RHN Satellite or RHN Classic"
+- 671032 - disable rhnplugin by default and enable it only after successful
+  registration
+- Bumping package versions for 1.4 (tlestach@redhat.com)
+
+* Mon Jan 31 2011 Miroslav Suchý <msuchy@redhat.com> 1.3.12-1
+- cp firstboot/rhn_choose_channel.py firstboot-legacy-rhel5/
+
+* Fri Jan 28 2011 Miroslav Suchý <msuchy@redhat.com> 1.3.11-1
+- break circular import
+- 580479 - put new submodule into package
+- W: 28: Unused import glade
+- 580479 - Graphical firstboot should offer EUS channel selection
+- 581482 - make tui consistent with gui
+- 596108 - firstboot: don't allow multiple system registrations
+- 606222 - label could not have focus
+
+* Thu Jan 20 2011 Tomas Lestach <tlestach@redhat.com> 1.3.10-1
+- updating Copyright years for year 2011 (tlestach@redhat.com)
+- update .po and .pot files for rhn-client-tools (tlestach@redhat.com)
+- 602609 - fix DeprecationWarning when using gtk.MessageDialog()
+  (mzazrivec@redhat.com)
+- 617066 - fix "Why register" dialog size (msuchy@redhat.com)
+- 667739 - use accessibility tags (msuchy@redhat.com)
+- 626752 - correct virt. type detection for RHEL-6 FV Xen guests
+  (mzazrivec@redhat.com)
+- 651403 - reference to RHEL6 as actuall system (msuchy@redhat.com)
+- dead code: removal of function foobar() (msuchy@redhat.com)
+- 649233 - reset busy mouse cursor back to arrow after unexpected error
+  (msuchy@redhat.com)
+
+* Mon Jan 17 2011 Miroslav Suchý <msuchy@redhat.com> 1.3.9-1
+- Revert "update .po and .pot files for rhn-client-tools"
+- Revert "removing msgctxt which rhel5 could not handle"
+
+* Mon Jan 17 2011 Miroslav Suchý <msuchy@redhat.com> 1.3.8-1
+- removing msgctxt which rhel5 could not handle
+
+* Mon Jan 17 2011 Miroslav Suchý <msuchy@redhat.com> 1.3.7-1
+- update .po and .pot files for rhn-client-tools
+- 651789 - fail if adding/removal of channels fail
+- 651792 - list all available child channels related to system
+- localize spacewalk-channel script
+- 651857 - print error if you specify --add or --remove, but you do not specify
+  any channel
+- 651857 - removing forgotten lines, which makes no sense and cause TB
+- 652424 - return back useNoSSLForPackages option
+- 668809 - mention the requirement to use FQDN
+
+* Wed Jan 05 2011 Miroslav Suchý <msuchy@redhat.com> 1.3.6-1
+- 665013 - do not send None for ipaddr in IPv6 only system
+
+* Tue Jan 04 2011 Jan Pazdziora 1.3.5-1
+- 666860 - Add support for subscription-manager in firstboot.
+
+* Tue Dec 14 2010 Jan Pazdziora 1.3.4-1
+- l10n: Updates to Malayalam (ml) translation (anipeter@fedoraproject.org)
+
+* Wed Dec 08 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.3-1
+- import Fault, ResponseError and ProtocolError directly from xmlrpclib
+
+* Fri Dec 03 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.2-1
+- on el5 do not send IPv6 addresses (msuchy@redhat.com)
+
+* Sat Nov 20 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.1-1
+- 655310 - replace gethostbyname by getaddrinfo (msuchy@redhat.com)
+- 655310 - send IPv6 addresses to server (msuchy@redhat.com)
+- 481721 - _ts report epoch as int, but satelite and rhn use string, this does
+  not work for comparement like pkg in [['name', 'version', 'release', 'epoch',
+  'arch']..] (msuchy@redhat.com)
+- Bumping package versions for 1.3. (jpazdziora@redhat.com)
+
 * Wed Nov 10 2010 Jan Pazdziora 1.2.15-1
 - rebuild
 

@@ -35,10 +35,9 @@ import sys
 import string
 import time
 import urlparse
-import rhnpush_cache
 import rhnpush_confmanager
+from rhn.connections import idn_ascii_to_pune
 
-from types import IntType, StringType
 try:
     from optparse import Option, OptionParser
 except ImportError:
@@ -104,6 +103,9 @@ def main():
         optionParser.print_usage()
         sys.exit(0)
 
+    if options.proxy:
+        options.proxy = idn_ascii_to_pune(options.proxy)
+
     if options.list:
         if not options.channel:
             upload.die(1, "Must specify a channel for --list to work")
@@ -154,7 +156,7 @@ def main():
     
 class UploadClass(uploadLib.UploadClass):
     def setURL(self):
-        server = self.options.server
+        server = idn_ascii_to_pune(self.options.server, 'utf-8')
         if server is None:
             self.die(1, "Required parameter --server not supplied")
         scheme, netloc, path, params, query, fragment = urlparse.urlparse(server)

@@ -4,7 +4,7 @@
 %endif
 
 Name:        spacecmd
-Version:     1.2.2
+Version:     1.4.5
 Release:     1%{?dist}
 Summary:     Command-line interface to Spacewalk and Satellite servers
 
@@ -34,6 +34,9 @@ spacecmd is a command-line interface to Spacewalk and Satellite servers
 %{__mkdir_p} %{buildroot}/%{_bindir}
 %{__install} -p -m0755 src/bin/spacecmd %{buildroot}/%{_bindir}/
 
+%{__mkdir_p} %{buildroot}/%{_sysconfdir}
+touch %{buildroot}/%{_sysconfdir}/spacecmd.conf
+
 %{__mkdir_p} %{buildroot}/%{_sysconfdir}/bash_completion.d
 %{__install} -p -m0644 src/misc/spacecmd-bash-completion %{buildroot}/%{_sysconfdir}/bash_completion.d/spacecmd
 
@@ -53,12 +56,69 @@ touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 %defattr(-,root,root,-)
 %{_bindir}/spacecmd
 %{python_sitelib}/spacecmd/
+%ghost %config %{_sysconfdir}/spacecmd.conf
 %dir %{_sysconfdir}/bash_completion.d
 %{_sysconfdir}/bash_completion.d/spacecmd
 %doc src/doc/README src/doc/COPYING
 %doc %{_mandir}/man1/spacecmd.1.gz
 
 %changelog
+* Mon Mar 28 2011 Aron Parsons <aparsons@redhat.com> 1.4.5-1
+- added 'repo' module into shell (aparsons@redhat.com)
+- added repo_list and repo_details (tljohnsn@oreillyschool.com)
+
+* Fri Mar 11 2011 Aron Parsons <aparsons@redhat.com> 1.4.4-1
+- added configchannel_verifyfile (aparsons@redhat.com)
+
+* Fri Mar 11 2011 Aron Parsons <aparsons@redhat.com> 1.4.3-1
+- fix invalid key name in errata_search (aparsons@redhat.com)
+
+* Tue Mar 08 2011 Aron Parsons <aparsons@redhat.com> 1.4.2-1
+- added group_backup and group_restore functions (john@vanzantvoort.org)
+- don't get the UUID on older API versions (aparsons@redhat.com)
+
+* Thu Mar 03 2011 Aron Parsons <aparsons@redhat.com> 1.4.1-1
+- spacecmd: log channel access issues in debug mode only (aparsons@redhat.com)
+- spacecmd: ignore channel failures introduced by organizations when caching
+  packages (aparsons@redhat.com)
+- spacecmd: print a summary list of all errata (name, synopsis, date)
+  (aparsons@redhat.com)
+- spacecmd: ignore channel failures introduced by organizations when caching
+  errata (aparsons@redhat.com)
+- spacecmd: delete child channels first in softwarechannel_delete
+  (aparsons@redhat.com)
+- Bumping package versions for 1.4 (tlestach@redhat.com)
+
+* Thu Jan 27 2011 Aron Parsons <aparsons@redhat.com> 1.3.8-1
+- added configchannel_backup function (john@vanzantvoort.org)
+
+* Thu Dec 23 2010 Aron Parsons <aparsons@redhat.com> 1.3.7-1
+- added system_syncpackages function
+
+* Wed Dec 22 2010 Aron Parsons <aparsons@redhat.com> 1.3.6-1
+- added organization functions
+
+* Tue Dec 21 2010 Aron Parsons <aparsons@redhat.com> 1.3.5-1
+- discard the password variable once we use it
+- attempt to re-login as the same user if the cached credentials are invalid
+- fix logic regarding which configuration files to load
+- don't try to load non-existent config sections
+
+* Tue Dec 21 2010 Aron Parsons <aparsons@redhat.com> 1.3.4-1
+- support server-specific configuration sections in the configuration file
+- added support for a system-wide configuration file
+- added support for server-specific sections in the configuration file
+
+* Fri Dec 10 2010 Aron Parsons <aparsons@redhat.com> 1.3.3-1
+- add support for server UUIDs
+
+* Tue Nov 30 2010 Aron Parsons <aparsons@redhat.com> 1.3.2-1
+- don't use a cached session if username and password are passed as arguments
+- added get_session function
+
+* Mon Nov 22 2010 Aron Parsons <aparsons@redhat.com> 1.3.1-1
+- fix uninitialized variable in snippet_create
+- 655055 - honor the quiet flag when generating caches in spacecmd
 * Fri Nov 05 2010 Aron Parsons <aparsons@redhat.com> 1.2.2-1
 - spacecmd: fixed exception in kickstart_create due to typo
   (aparsons@redhat.com)

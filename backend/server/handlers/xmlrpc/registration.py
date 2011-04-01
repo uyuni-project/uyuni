@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,7 +15,6 @@
 #
 
 # system modules
-import types
 import string
 import os
 
@@ -27,9 +26,7 @@ from spacewalk.server.rhnServer import server_route, server_lib
 from spacewalk.server.rhnMapping import real_version
 from spacewalk.server.rhnHandler import rhnHandler
 from spacewalk.server import rhnUser, rhnServer, rhnSQL, rhnCapability, \
-        rhnChannel, rhnAction, rhnVirtualization
-from spacewalk.server.rhnSQL import procedure
-from spacewalk.server.action.utils import ChannelPackage
+        rhnChannel, rhnVirtualization
 
 
 def hash_validate(data, *keylist):
@@ -43,27 +40,6 @@ def hash_validate(data, *keylist):
         if type(l) == type("") and len(l) == 0:
             return 0
     return 1
-
-def RegistrationNumber(nr):
-    """ process a registration number for sanitization purposes """
-    if not nr:
-        return None
-    if not type(nr) == type(""):
-        log_debug(3, "Got unparseable registration Number: %s" % nr)
-        return None
-    mynr = string.lower(nr)
-    # prepare the translation table
-    t = string.maketrans("los", "105")
-    # and strip out unwanted chars
-    mynr = string.translate(mynr, t, "_- ")
-    # keep only hexdigits
-    ret = ""
-    for r in mynr:
-        if r in string.hexdigits:
-            ret = ret + r
-    if not ret:
-        return None
-    return ret
 
 def parse_smbios(smbios):
     vendor = smbios.get('smbios.bios.vendor')
@@ -155,14 +131,14 @@ class Registration(rhnHandler):
         """
         Get an username and a password and create a record for this user.
         Eventually mark it as such.
+        Additionaly this method is used to verify login and password in early
+        stage of rhn_register.
 
         Returns true value if user is reserved, otherwise fault is raised.
         """
-
         log_debug(1, username)
-        # validate the arguments
-        username, password  = rhnUser.check_user_password(username, password)
-        # now try to reserve the user
+        # check user login/password and if not CFG.disallow_user_creation
+        # then reserver the user
         ret = rhnUser.reserve_user(username, password)
         log_debug(3, "rhnUser.reserve_user returned: " + str(ret))
         if ret < 0:

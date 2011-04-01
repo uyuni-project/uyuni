@@ -277,72 +277,49 @@ def get_source_package_path_by_name(server_id, packageName):
     rhnFlags.set("Download-Accelerator-Path", rs['path'])
     return filePath
 
-def get_path_for_checksum(org_id, checksum_type, checksum):
-     params = { 'checksum' : checksum, 'checksumtype' : checksum_type }
-     if org_id:
-         orgidstatement = " = :org_id "
-         params['org_id'] = org_id
-     else:
-         orgidstatement = " IS NULL "
-     statement = """
-     select
-         p.path
-     from
-         rhnPackage p,
-         rhnChecksumView c
-     where p.org_id %s
-         and p.checksum_id = c.id
-         and c.checksum = :checksum
-         and c.checksum_type = :checksumtype
-     """ % orgidstatement
-     h = rhnSQL.prepare(statement)
-     h.execute(**params)
-     ret = h.fetchone_dict()
-     if not ret:
-         return None
-     return ret['path']
-
-
 def get_path_for_package(pkg, channel_label):
     log_debug(3, pkg)
     pkg = map(str, pkg)
-    if pkg[3] == "":
-        epochStatement = "is null"
+    params = {'name': pkg[0],
+              'ver': pkg[1],
+              'rel': pkg[2],
+              'epoch': pkg[3],
+              'arch': pkg[4],
+              'label': channel_label}
+    # yum repo has epoch="0" not only when epoch is "0" but also if it's NULL
+    if pkg[3] == '0' or pkg[3] == '':
+        epochStatement = "(epoch is null or epoch = :epoch)"
     else:
-        epochStatement = "= :epoch"
+        epochStatement = "epoch = :epoch"
     statement = """
-    select
-            P.path
-    from
-            rhnChannel c,
-            rhnPackage p,
-            rhnPackageName pn,
-            rhnPackageEVR pe,
-            rhnPackageArch pa,
-            rhnChannelPackage cp
-    where
-                p.name_id = pn.id
-            and pn.name = :name
-            and p.evr_id = pe.id
-            and pe.version = :ver
-            and pe.release = :rel
-            and pe.epoch %s
-            and p.package_arch_id = pa.id
-            and pa.label = :arch
-            and p.id = cp.package_id
-            and cp.channel_id = c.id
-            and C.label = :label
+    select p.path, c.label as channel_label
+      from rhnPackage p
+      join rhnPackageName pn
+        on p.name_id = pn.id
+      join rhnPackageEVR pe
+        on p.evr_id = pe.id
+      join rhnPackageArch pa
+        on p.package_arch_id = pa.id
+      left join rhnChannelPackage cp
+        on p.id = cp.package_id
+      left join rhnChannel c
+        on cp.channel_id = c.id
+       and p.org_id = c.org_id
+       and c.label = :label
+     where pn.name = :name
+       and pe.version = :ver
+       and pe.release = :rel
+       and %s
+       and pa.label = :arch
+     order by c.label nulls last
     """ % epochStatement
     h = rhnSQL.prepare(statement)
-    if pkg[3] == '':
-        h.execute(name = pkg[0], ver = pkg[1], rel = pkg[2], arch = pkg[4], label = channel_label)
-    else:
-        h.execute(name = pkg[0], ver = pkg[1], rel = pkg[2], arch = pkg[4], epoch=pkg[3], label = channel_label)
+    h.execute(**params)
 
     ret = h.fetchone_dict()
     if not ret:
-        return None
-    return ret['path']
+        return None, None
+    return ret['path'], ret['channel_label']
 
 
 def _none2emptyString(foo):

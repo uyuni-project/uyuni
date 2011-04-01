@@ -1,0 +1,4 @@
+post_invoke.py /usr/lib/apt-spacewalk/
+pre_invoke.py /usr/lib/apt-spacewalk/
+spacewalk /usr/lib/apt/methods/
+50spacewalk /etc/apt/apt.conf.d/

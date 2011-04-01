@@ -1,14 +1,7 @@
-%define require_selinux 1
-
-# No Selinux for RHEL 4:
-%if 0%{?rhel} == 4 || 0%{?suse_version} 
-%define require_selinux 0
-%endif
-
 Summary:      Spacewalk monitoring
 Name:         spacewalk-monitoring
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.2.1
+Version:      1.4.1
 Release:      1%{?dist}
 URL:          https://fedorahosted.org/spacewalk
 License:      GPLv2
@@ -57,10 +50,7 @@ Requires:       SputLite-server
 Requires:       ssl_bridge
 Requires:       status_log_acceptor
 Requires:       tsdb
-
-%if %{require_selinux}
 Requires: spacewalk-monitoring-selinux
-%endif
 
 %if 0%{?suse_version}
 Requires(post): aaa_base
@@ -142,6 +132,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Wed Mar 30 2011 Jan Pazdziora 1.4.1-1
+- RHEL 4 is no longer a target version for Spacewalk, fixing .spec to Require
+  spacewalk-monitoring-selinux.
+
 * Fri Oct 08 2010 Jan Pazdziora 1.2.1-1
 - Since the package SatConfig-dbsynch is gone, remove dependencies that were
   requiring it.

@@ -1,5 +1,5 @@
 Name:         nocpulse-common
-Version:      2.1.19
+Version:      2.1.22
 Release:      1%{?dist}
 Summary:      NOCpulse common
 License:      GPLv2
@@ -66,6 +66,7 @@ install -m644 nocpulse.logrotate \
 
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}
 install -m644 NOCpulse.ini $RPM_BUILD_ROOT/%{_sysconfdir}/%{package_name}/NOCpulse.ini
+install -m755 -d $RPM_BUILD_ROOT/%{_sysconfdir}/%{package_name}/NOCpulse/tmp
 install -m644 forward $RPM_BUILD_ROOT/%{_var}/lib/%{package_name}/.forward
 mkdir -p $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse/Config/test
 mkdir -p $RPM_BUILD_ROOT%{_bindir}
@@ -139,6 +140,8 @@ fi
 %defattr(-, root,root,-)
 %dir %{_sysconfdir}/nocpulse
 %config(missingok,noreplace) %{_sysconfdir}/%{package_name}/NOCpulse.ini
+%{_sysconfdir}/%{package_name}/NOCpulse
+%attr(-, %{package_name},%{package_name}) %{_sysconfdir}/%{package_name}/NOCpulse/tmp
 %config(missingok,noreplace) %attr(-, %{package_name},%{package_name}) %{_var}/lib/%{package_name}/.forward
 %{_bindir}/npConfigValue
 %dir %{perl_vendorlib}/NOCpulse
@@ -153,6 +156,20 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Mar 18 2011 Michael Mraka <michael.mraka@redhat.com> 2.1.22-1
+- fixed ownership of NOCpulse/tmp directory
+- fixed function decode does not exist (PG)
+- fixed relation "config_parameter" does not exist (PG)
+- fixed relation "config_group" does not exist (PG)
+- fixed relation "config_macro" does not exist (PG)
+- reuse RHN:DB for db connection in monitoring (PG)
+
+* Wed Mar 02 2011 Michael Mraka <michael.mraka@redhat.com> 2.1.21-1
+- 493028 - directory for notifications should be created
+
+* Fri Feb 18 2011 Jan Pazdziora 2.1.20-1
+- Localize the filehandle globs; also use three-parameter opens.
+
 * Thu Feb 11 2010 Miroslav Suchý <msuchy@redhat.com> 2.1.19-1
 - Fedora guys do not want to have migration code in theirs spec
  

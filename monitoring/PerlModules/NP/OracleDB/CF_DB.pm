@@ -448,7 +448,7 @@ sub Node {
   my $bindvars      = shift || [];
   my $orderby       = shift || [];
 
-  my $table  = 'SAT_NODE';
+  my $table  = 'RHN_SAT_NODE';
   my $idseq  = 'COMMAND_TARGET_RECID_SEQ.NEXTVAL';
   my $keycol = 'RECID';
 
@@ -875,16 +875,17 @@ $self->dprint(1, "*** *** DATEFORMAT IS:  ", $self->dateformat, " *** ***");
   push(@cols, sprintf("TO_CHAR(expiration_date, '%s') as expdate", 
                       $self->dateformat));
 
-  my $tables = "command_queue_commands cmd,command_queue_instances ins," .
-               "command_queue_execs exec";
+  my $tables = "rhn_command_queue_commands cmd, rhn_command_queue_instances ins," .
+               "rhn_command_queue_execs exec";
 
   my @where  = ("netsaint_id = ?",
 		"target_type = ?",
                 "exec.instance_id = ins.recid",
 		"ins.command_id = cmd.recid",
                 "date_executed is null",
-                "expiration_date > sysdate");
+                "expiration_date > current_timestamp");
 
+  $nsid = ($nsid eq 'NULL' or $nsid eq '' ? undef : $nsid);
   my @bind   = ($nsid, $type);
 
   my ($dataref, $ordref) =  $self->TableOp($tables, \@cols, 'instance_id', 

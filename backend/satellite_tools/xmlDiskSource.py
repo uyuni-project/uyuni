@@ -17,7 +17,6 @@
 
 import os
 import gzip
-import string
 from spacewalk.common.fileutils import createPath
 from spacewalk.common.rhnLib import hash_object_id
 
@@ -255,9 +254,6 @@ class MetadataDiskSource:
 
     def getChannelFamilyXmlStream(self):
         return ChannelFamilyDiskSource(self.mountpoint).load()
-
-    def getBlacklistsXmlStream(self):
-        return BlacklistsDiskSource(self.mountpoint).load()
 
     def getProductNamesXmlStream(self):
         return ProductnamesDiskSource(self.mountpoint).load()

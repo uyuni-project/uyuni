@@ -16,7 +16,6 @@
 import os
 import re
 import hashlib
-import time
 import string
 import base64
 
@@ -76,8 +75,8 @@ def parseRPMFilename(pkgFilename):
     pkg = string.split(pkgFilename, '.')
 
     # 'rpm' at end?
-    if string.lower(pkg[-1]) != 'rpm':
-	raise rhnFault(21, 'not an rpm package name: %s' % pkgFilename)
+    if string.lower(pkg[-1]) not in ['rpm', 'deb']:
+	raise rhnFault(21, 'neither an rpm nor a deb package name: %s' % pkgFilename)
 
     # Valid architecture next?
     if check_package_arch(pkg[-2]) is None:
@@ -197,3 +196,27 @@ class CallableObj:
 
     def __call__(self, *args, **kwargs):
         return apply(self.func, (self.name, ) + args, kwargs)
+
+def make_evr(nvre, source=False):
+    """ IN: 'e:name-version-release' or 'name-version-release:e'
+        OUT: {'name':name, 'version':version, 'release':release, 'epoch':epoch }
+    """
+    if ":" in nvre:
+        nvr, epoch = nvre.rsplit(":", 1)
+    if "-" in epoch:
+        nvr, epoch = epoch, nvr
+    else:
+        nvr, epoch = nvre, ""
+
+    nvr_parts = nvr.rsplit("-", 2)
+    if len(nvr_parts) != 3:
+        raise rhnFault(err_code = 21, err_text = \
+                       "NVRE is missing name, version, or release.")
+
+    result = dict(zip(["name", "version", "release"], nvr_parts))
+    result["epoch"] = epoch
+
+    if source and result["release"].endswith(".src"):
+        result["release"] = result["release"][:-4]
+
+    return result

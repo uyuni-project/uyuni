@@ -4,7 +4,7 @@ Group:   Applications/Internet
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 1.2.15
+Version: 1.4.0
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 BuildRequires: python
@@ -336,7 +336,6 @@ fi
 %{destdir}/rhnAuthCacheClient.py*
 %{destdir}/rhnProxyAuth.py*
 %{destdir}/rhnAuthProtocol.py*
-%{destdir}/xxmlrpclib.py*
 %attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy
 %attr(750,%{apache_user},%{apache_group}) %dir %{_var}/spool/rhn-proxy/list
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
@@ -388,6 +387,53 @@ fi
 
 
 %changelog
+* Thu Jan 20 2011 Tomas Lestach <tlestach@redhat.com> 1.3.11-1
+- updating Copyright years for year 2011 (tlestach@redhat.com)
+- remove redundant comment (msuchy@redhat.com)
+- convert comment to docstring (msuchy@redhat.com)
+- remove redundant comment (msuchy@redhat.com)
+
+* Thu Jan 13 2011 Miroslav Suchý <msuchy@redhat.com> 1.3.10-1
+- do not traceback if redirected location do not contain '?'
+- fix module name during import
+- replace tabs with space to fix indentation
+
+* Tue Jan 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.9-1
+- fixed pylint errors
+
+* Tue Jan 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.8-1
+- removed xxmlrpclib
+- Updating the copyright years to include 2010.
+
+* Mon Dec 13 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.7-1
+- fixed number of errors reported by pylint
+
+* Wed Dec 08 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.6-1
+- import Fault, ResponseError and ProtocolError directly from xmlrpclib
+
+* Fri Dec 03 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.5-1
+- 656746 - send to hosted md5 checksum of package (msuchy@redhat.com)
+- 656746 - make _processFile and _processBatch method of UploadClass class
+  (msuchy@redhat.com)
+- 656753 - add namespace prefix to merged functions (msuchy@redhat.com)
+- 656753 - fix TB during rhn_package_manager -v -l (msuchy@redhat.com)
+- 658527 - create _split_url function (msuchy@redhat.com)
+- use constant instead of hardcoded string (msuchy@redhat.com)
+- import Fault from different class (msuchy@redhat.com)
+
+* Tue Nov 30 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.4-1
+- 658303 - do not forward Host header, it will confuse target Satellite
+
+* Mon Nov 29 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.3-1
+- 657956 - fix condrestart option (msuchy@redhat.com)
+
+* Wed Nov 24 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.2-1
+- removed unused imports
+
+* Sat Nov 20 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.1-1
+- 629552 - Proxy should allow all header from rfc2616 (msuchy@redhat.com)
+- Bumping package versions for 1.3. (jpazdziora@redhat.com)
+
 * Wed Nov 10 2010 Jan Pazdziora 1.2.15-1
 - addressing rpmlint error non-standard-dir-perm (msuchy@redhat.com)
 - fix spelling error (msuchy@redhat.com)

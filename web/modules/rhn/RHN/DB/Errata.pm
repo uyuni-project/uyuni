@@ -444,7 +444,7 @@ sub commit {
   if ($self->id == -1) {
 
     unless ($id) {
-      my $sth = $dbh->prepare("SELECT rhn_errata_id_seq.nextval FROM DUAL");
+      my $sth = $dbh->prepare("SELECT sequence_nextval('rhn_errata_id_seq') FROM DUAL");
       $sth->execute;
       ($id) = $sth->fetchrow;
       die "No new patch id from seq rhn_errata_id_seq (possible error: " . $sth->errstr . ")" unless $id;
@@ -681,8 +681,8 @@ EOQ
 
   my $ep_table = $self->table_map('rhnErrataPackage');
   $query = <<EOQ;
-SELECT rhn_erratafile_id_seq.nextval AS ID, EFT.id AS TYPE_ID, Csum.checksum md5sum, P.path, P.id AS PACKAGE_ID,
-       PN.name || '-' || PE.evr.as_vre_simple() || '.' || PA.label AS NVREA
+SELECT sequence_nextval('rhn_erratafile_id_seq') AS ID, EFT.id AS TYPE_ID, Csum.checksum md5sum, P.path, P.id AS PACKAGE_ID,
+       PN.name || '-' || evr_t_as_vre_simple(PE.evr) || '.' || PA.label AS NVREA
   FROM rhnErrataFileType EFT, rhnPackage P, $ep_table EP, rhnPackageName PN, rhnPackageEVR PE, rhnPackageArch PA, rhnChecksum Csum
  WHERE EFT.label = 'RPM'
    AND P.id = EP.package_id
@@ -708,7 +708,7 @@ EOQ
   my $efp_table = $self->table_map('rhnErrataFilePackage');
   my $efp_insert_query = <<EOQ;
 INSERT
-  INTO $efp_table EFP
+  INTO $efp_table
        (errata_file_id, package_id)
 VALUES (:ef_id, :pid)
 EOQ

@@ -2,7 +2,7 @@ Name: spacewalk-certs-tools
 Summary: Spacewalk SSL Key/Cert Tool
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.2.2
+Version: 1.4.0
 Release: 1%{?dist}
 URL:      https://fedorahosted.org/spacewalk
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -85,6 +85,13 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jan 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.2-1
+- fixed rpmlint errors
+- Updating the copyright years to include 2010.
+
+* Wed Nov 24 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.1-1
+- removed unused imports
+
 * Tue Nov 02 2010 Jan Pazdziora 1.2.2-1
 - Update copyright years in the rest of the repo.
 

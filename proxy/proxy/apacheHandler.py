@@ -1,7 +1,7 @@
 # Main entry point for apacheServer.py for the Red Hat Network Proxy
 # and/or SSL Redirect Server.
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -21,6 +21,7 @@
 import os
 import base64
 import string
+import xmlrpclib
 from rhnConstants import *
 from rhn import rpclib, connections
 
@@ -205,8 +206,8 @@ class apacheHandler(rhnApache):
         # we're just making a connection to localhost, it's not the end of the 
         # world if we get it wrong.
 
-	scheme = SCHEME_HTTP
-	if req.server.is_virtual and req.server.port == 443:
+        scheme = SCHEME_HTTP
+        if req.server.is_virtual and req.server.port == 443:
             scheme = SCHEME_HTTPS
         log_debug(6, "Using scheme: %s" % scheme)
 
@@ -362,7 +363,7 @@ class apacheHandler(rhnApache):
         """ convert a response to the right type for passing back to
             rpclib.xmlrpclib.dumps
         """
-        if isinstance(response, rpclib.Fault):
+        if isinstance(response, xmlrpclib.Fault):
             return response
         return (response,)
 
@@ -434,7 +435,7 @@ class apacheHandler(rhnApache):
         compress_response = rhnFlags.test("compress_response")
         # Init an output object; we'll use it for sending data in various
         # formats
-        if isinstance(response, rpclib.File):
+        if isinstance(response, rpclib.transports.File):
             if not hasattr(response.file_obj, 'fileno') and compress_response:
                 # This is a StringIO that has to be compressed, so read it in
                 # memory; mark that we don't have to do any xmlrpc encoding

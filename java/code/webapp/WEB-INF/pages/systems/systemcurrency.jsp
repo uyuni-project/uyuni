@@ -1,8 +1,8 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://jakarta.apache.org/struts/tags-html" prefix="html" %>
-<%@ taglib uri="http://jakarta.apache.org/struts/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c-rt" %>
@@ -52,7 +52,7 @@
 		<rl:column sortable="true"
 				   bound="false"
 		           headerkey="systemcurrency.jsp.critical"
-		           sortattr="created"
+		           sortattr="critical"
 		           defaultsort="desc">
                            <c:choose>
                              <c:when test="${current.critical > 0}">
@@ -75,7 +75,7 @@
 		<rl:column sortable="true"
 				   bound="false"
 		           headerkey="systemcurrency.jsp.important"
-		           sortattr="created"
+		           sortattr="important"
 		           defaultsort="desc">
                            <c:choose>
                              <c:when test="${current.important > 0}">
@@ -98,7 +98,7 @@
 		<rl:column sortable="true"
 				   bound="false"
 		           headerkey="systemcurrency.jsp.moderate"
-		           sortattr="created"
+		           sortattr="moderate"
 		           defaultsort="desc">
                            <c:choose>
                              <c:when test="${current.moderate > 0}">
@@ -121,7 +121,7 @@
 		<rl:column sortable="true"
 				   bound="false"
 		           headerkey="systemcurrency.jsp.low"
-		           sortattr="created"
+		           sortattr="low"
 		           defaultsort="desc">
                            <c:choose>
                              <c:when test="${current.low > 0}">
@@ -144,7 +144,7 @@
 		<rl:column sortable="true"
 				   bound="false"
 		           headerkey="systemcurrency.jsp.bug"
-		           sortattr="created"
+		           sortattr="bug"
 		           defaultsort="desc">
                            <c:choose>
                              <c:when test="${current.bug > 0}">
@@ -159,7 +159,7 @@
 		<rl:column sortable="true"
 				   bound="false"
 		           headerkey="systemcurrency.jsp.enhancement"
-		           sortattr="created"
+		           sortattr="enhancement"
 		           defaultsort="desc">
                            <c:choose>
                              <c:when test="${current.enhancement > 0}">

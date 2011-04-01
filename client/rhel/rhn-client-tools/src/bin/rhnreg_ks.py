@@ -22,14 +22,11 @@
 
 import sys
 import os
+from rhn.connections import idn_pune_to_unicode
 
 import gettext
-
-# bnc#664915 / red hat bugzilla #683546 rhnreg_ks --help failed if LANG = de_DE.UTF-8
-#_ = gettext.gettext
-t = gettext.translation('rhn-client-tools', '/usr/share/locale/', fallback=True)
-def _(str):
-    return unicode(t.gettext(str), 'UTF-8')
+t = gettext.translation('rhn-client-tools', fallback=True)
+_ = t.ugettext
 
 sys.path.append("/usr/share/rhn/")
 
@@ -175,6 +172,17 @@ class RegisterKsCli(rhncli.RhnCli):
         if not self.options.norhnsd:
             rhnreg.startRhnsd()
 
+        try:
+            if rhnreg.YumRHNPluginPackagePresent():
+                if rhnreg.YumRHNPluginConfPresent():
+                    if not rhnreg.YumRhnPluginEnabled():
+                        rhnreg.enableYumRhnPlugin()
+                else:
+                    rhnreg.createDefaultYumRHNPluginConf()
+            else:
+                sys.stderr.write(_("Warning: yum-rhn-plugin is not present, could not enable it."))
+        except IOError, e:
+            sys.stderr.write(_("Warning: Could not open /etc/yum/pluginconf.d/rhnplugin.conf\nyum-rhn-plugin is not enabled.\n") + e.errmsg)
         RegisterKsCli.__runRhnCheck()
 
     @staticmethod
@@ -188,7 +196,7 @@ class RegisterKsCli(rhncli.RhnCli):
                 ipaddr = hw.get('ipaddr')
                 
         if hostname:
-            profileName = hostname
+            profileName = idn_pune_to_unicode(hostname)
         else:
             if ipaddr:
                 profileName = ipaddr

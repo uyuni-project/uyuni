@@ -239,7 +239,14 @@ SELECT id, channel_label, client, reason, force, bypass_filters, next_action
             WHERE substr(time_series.o_id, instr(time_series.o_id,'-')+1,
             (instr(time_series.o_id,'-',
             instr(time_series.o_id,'-')+1)-instr(time_series.o_id,'-'))-1)
-            = rhn_probe.recid)
+            = rhn_probe.recid || '')
+   </query>
+</write-mode>
+
+<write-mode name="taskomatic_package_changelog_cleanup">
+   <query params="">
+    DELETE FROM rhnPackageChangeLogData
+        WHERE id NOT IN ( SELECT changelog_data_id FROM rhnPackageChangeLogRec )
    </query>
 </write-mode>
 
@@ -255,6 +262,30 @@ SELECT id, channel_label, client, reason, force, bypass_filters, next_action
    </query>
 </callable-mode>
 
+<mode name="taskomatic_task_status">
+   <query params="">
+   SELECT t.name, r.id, r.start_time, r.status
+   FROM
+     (SELECT ta.id as task_id, max(ru.start_time) as st
+     FROM rhnTaskoTask ta,
+      rhnTaskoTemplate te,
+      rhnTaskoRun ru
+     WHERE ru.org_id is null
+      AND ru.status != 'SKIPPED'
+      AND ru.template_id = te.id
+      AND ta.id = te.task_id
+     GROUP BY ta.id) se,
+     rhnTaskoRun r,
+     rhnTaskoTask t,
+     rhnTaskoTemplate e
+   WHERE r.start_time = se.st
+	AND t.id = se.task_id
+    AND r.template_id = e.id
+    AND t.id = e.task_id
+   ORDER BY t.name
+   </query>
+</mode>
+
 <mode name="pkgcleanup_find_deleted_pkgs">
    <query params="">
      SELECT PFDQ.path FROM rhnPackageFileDeleteQueue PFDQ
@@ -268,6 +299,7 @@ SELECT id, channel_label, client, reason, force, bypass_filters, next_action
 </write-mode>
 
 <!-- timings: webdev: 6m (2 records), webqa: 1m 58s (3), prod: 3m 32s (697) -->
+<!--
 <mode name="summarypop_awol_server_in_orgs"
       class="com.redhat.rhn.frontend.dto.OrgIdWrapper">
    <query params="checkin_threshold">
@@ -282,8 +314,9 @@ where sgt.label in ('enterprise_entitled', 'provisioning_entitled')
   and (current_timestamp + numtodsinterval(1 + :checkin_threshold, 'day')
    </query>
 </mode>
-
+-->
 <!-- timings: webdev: 3m 36s (2), webqa: 11s (3), prod: 3m 21s(697) -->
+
 <mode name="summarypop_awol_server_in_orgs2"
       class="com.redhat.rhn.frontend.dto.OrgIdWrapper">
    <query params="checkin_threshold">
@@ -567,44 +600,6 @@ ORDER BY next_action DESC
       AND chpkg.channel_id = :channel_id
   ORDER BY pkglog.package_id
    </query>
-</mode>
-
-<mode name="find_task_stats">
-  <query params="display_name">
-    SELECT COUNT(LABEL) as stat_exists
-    FROM rhnDaemonState
-    WHERE LABEL = :display_name
-  </query>
-</mode>
-
-<write-mode name="create_task_stats">
-  <query params="display_name">
-    INSERT INTO rhnDaemonState (LABEL, LAST_POLL)
-    VALUES (:display_name, current_timestamp)
-  </query>
-</write-mode>
-
-<write-mode name="update_task_stats">
-  <query params="display_name">
-    UPDATE rhnDaemonState
-      SET LAST_POLL = current_timestamp
-      WHERE LABEL = :display_name
-  </query>
-</write-mode>
-
-<mode name="get_task_stats">
-	<query params="label">
-		SELECT LAST_POLL
-		FROM rhnDaemonState
-		WHERE label = :label
-	</query>
-</mode>
-
-<mode name="get_current_time">
-	<query params="">
-		SELECT current_timestamp
-		FROM dual
-	</query>
 </mode>
 
 <mode name="find_channel_in_task_queue">

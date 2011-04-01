@@ -219,8 +219,9 @@ sub load_pxt_file {
     }
   }
 
+  local * FH;
   unless ($use_cache) {
-    open FH, ("<" . $filename) or return;
+    open FH, '<', $filename or return;
   }
 
   local $/ = undef;
@@ -443,7 +444,8 @@ sub _read_file {
 
   #my $root = $self->document_root();
 
-  if (not open MYFILE, ("$root/$file")) {
+  local * MYFILE;
+  if (not open MYFILE, '<', "$root/$file") {
     Carp::cluck "Couldn't open file: $root/$file ($!)";
     return '';
   }

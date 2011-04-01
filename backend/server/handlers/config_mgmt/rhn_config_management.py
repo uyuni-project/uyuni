@@ -17,10 +17,10 @@
 #
 # $Id$
 
-import os
+import difflib
 from spacewalk.common import rhnFault, log_debug
-import tempfile
 from spacewalk.server import rhnSQL, configFilesHandler
+from spacewalk.common.fileutils import f_date, ostr_to_sym
 
 class ConfigManagement(configFilesHandler.ConfigFilesHandler):
     def __init__(self):
@@ -424,6 +424,24 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
 
         return self._get_maximum_file_size()
                 
+    def __attributes_differ(self, fsrc, fdst):
+        """ Returns true if acl, ownership, type or selinux context differ. """
+        return (fsrc['filemode'] != fdst['filemode']) or (fsrc['label'] != fdst['label']) or \
+               (fsrc['username'] != fdst['username']) or (fsrc['groupname'] != fdst['groupname']) or \
+               (fsrc['selinux_ctx'] != fdst['selinux_ctx'])
+
+    def __header(self, path, fsrc, config_channel_src, fdst, config_channel_dst):
+        """ Returns diff like header for this two files. """
+        template = "--- %s\t%s\tattributes: %s %s %s %s\tconfig channel: %s\trevision: %s"
+        first_row = template % (path, f_date(fsrc['modified']), ostr_to_sym(fsrc['filemode'], fsrc['label']),
+                        fsrc['username'], fsrc['groupname'], fsrc['selinux_ctx'], config_channel_src,
+                        fsrc['revision'],
+        )
+        second_row = template % (path, f_date(fdst['modified']), ostr_to_sym(fdst['filemode'], fdst['label']),
+                        fdst['username'], fdst['groupname'], fdst['selinux_ctx'], config_channel_dst,
+                        fdst['revision'],
+        )
+        return (first_row, second_row)
 
     def management_diff(self, dict):
         log_debug(1)
@@ -454,47 +472,31 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
                                 % (path, fsrc['label'], \
                                     config_channel_src, fdst['label'], config_channel_dst),
                 explain=0)
-        template = "--- %s\t%s\tconfig channel: %s\trevision: %s target: %s \n"
 
         if fsrc['label'] == 'symlink':
-            if  fsrc["symlink"] != fdst['symlink']:
-                first_row = template % (
-                    path, f_date(fsrc['modified']), config_channel_src,
-                    fsrc['revision'], fsrc["symlink"],
-                )
-                second_row = template % (
-                    path, f_date(fdst['modified']), config_channel_dst,
-                    fdst['revision'], fdst["symlink"],
-                )
-                return first_row +  second_row
+            if (fsrc["symlink"] != fdst['symlink']) or self.__attributes_differ(fsrc, fdst):
+                (first_row, second_row) = self.__header(path, fsrc, config_channel_src, fdst, config_channel_dst)
+                first_row += ' target: %s' % fsrc["symlink"]
+                second_row += ' target: %s' % fdst["symlink"]
+                return first_row + "\n" +  second_row + "\n"
             return ""
 
-        pipe = os.popen("/usr/bin/diff -u %s %s" % (fsrc['filename'],
-            fdst['filename']))
-        first_row = pipe.readline()
+        diff = difflib.unified_diff(fsrc['file_content'], fdst['file_content'], path, path, fsrc['modified'], fdst['modified'], lineterm='')
+        first_row = diff.next()
         if not first_row:
             return ""
 
         if not first_row.startswith('---'):
             # Hmm, weird
-            return first_row + pipe.read()
+            return first_row + '\n'.join(list(diff))
 
-        second_row = pipe.readline()
+        second_row = diff.next()
         if not second_row.startswith('+++'):
             # Hmm, weird
-            return second_row + pipe.read()
+            return second_row + '\n'.join(list(diff))
 
-        template = "--- %s\t%s\tconfig channel: %s\trevision: %s\n"
-
-        first_row = template % (
-            path, f_date(fsrc['modified']), config_channel_src, 
-            fsrc['revision'],
-        )
-        second_row = template % (
-            path, f_date(fdst['modified']), config_channel_dst, 
-            fdst['revision'],
-        )
-        return first_row + second_row + pipe.read()
+        (first_row, second_row) = self.__header(path, fsrc, config_channel_src, fdst, config_channel_dst)
+        return first_row + "\n" + second_row + '\n' + '\n'.join(list(diff))
 
     def _get_file_revision(self, config_channel, revision, path):
         if revision and not revision.isdigit():
@@ -517,12 +519,11 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         # seems to be invalid (bug 151220)
 
         # Empty files or directories may have NULL instead of lobs
-        fd, f['filename'] = tempfile.mkstemp(prefix = '/tmp/rhncfg-')
         fc_lob = f.get('file_contents')
         if fc_lob:
-            os.write(fd, rhnSQL.read_lob(fc_lob))
-        os.close(fd)
-        del fc_lob
+            f['file_content'] = rhnSQL.read_lob(fc_lob).splitlines()
+        else:
+            f['file_content'] = ''
         return f
 
     # Helper functions
@@ -550,7 +551,3 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
 
         raise rhnFault(4006, 
             "User is not a allowed to manage config files")
-
-def f_date(dbiDate):
-    return "%04d-%02d-%02d %02d:%02d:%02d" % (dbiDate.year, dbiDate.month, 
-        dbiDate.day, dbiDate.hour, dbiDate.minute, dbiDate.second)

@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.2.71
+Version:        1.4.13
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -32,6 +32,7 @@ Oracle tablespace name conversions have NOT been applied.
 %build
 make -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
 pod2man spacewalk-schema-upgrade spacewalk-schema-upgrade.1
+pod2man spacewalk-sql spacewalk-sql.1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -40,12 +41,16 @@ install -m 0755 -d $RPM_BUILD_ROOT%{oracle}
 install -m 0755 -d $RPM_BUILD_ROOT%{postgres}
 install -m 0644 oracle/main.sql $RPM_BUILD_ROOT%{oracle}
 install -m 0644 postgres/main.sql $RPM_BUILD_ROOT%{postgres}
+install -m 0644 oracle/end.sql $RPM_BUILD_ROOT%{oracle}/upgrade-end.sql
+install -m 0644 postgres/end.sql $RPM_BUILD_ROOT%{postgres}/upgrade-end.sql
 install -m 0755 -d $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 spacewalk-schema-upgrade $RPM_BUILD_ROOT%{_bindir}
+install -m 0755 spacewalk-sql $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 cp -r upgrade/* $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-schema-upgrade.1 $RPM_BUILD_ROOT%{_mandir}/man1
+cp -p spacewalk-sql.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -56,10 +61,157 @@ rm -rf $RPM_BUILD_ROOT
 %{postgres}
 %{rhnroot}/schema-upgrade
 %{_bindir}/spacewalk-schema-upgrade
+%{_bindir}/spacewalk-sql
 %{_mandir}/man1/spacewalk-schema-upgrade*
-%dir %{rhnroot}
+%{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Wed Mar 30 2011 Tomas Lestach <tlestach@redhat.com> 1.4.13-1
+- 671450 - delete rhel private channel families, if there're no certificate
+  entitlements available (tlestach@redhat.com)
+
+* Wed Mar 23 2011 Jan Pazdziora 1.4.12-1
+- In update, the column names should not contain table name (PostgreSQL).
+
+* Tue Mar 22 2011 Jan Pazdziora 1.4.11-1
+- There is no cursor() function for inline cursors in PostgreSQL, using custom
+  function get_hw_info_as_clob instead.
+
+* Thu Mar 10 2011 Jan Pazdziora 1.4.10-1
+- Using sequence_nextval instead of the .nextval.
+- update database to support SUSE distributions (ug@suse.de)
+- suse breed added to ksinstalltype (ug@suse.de)
+
+* Wed Mar 09 2011 Jan Pazdziora 1.4.9-1
+- Make the filename absolute so that it works even after we cd to root.
+
+* Fri Mar 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.8-1
+- added schema upgrade script for rhnBlacklistObsoletes
+- removed rhnBlacklistObsoletes table
+- created postgresql upgrade script for or rhnVirtualization.uuid index
+
+* Thu Mar 03 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.7-1
+- upgrade script for rhnVirtualization.uuid index
+- 468690 - added index to rhnVirtualization.uuid
+
+* Fri Feb 25 2011 Jan Pazdziora 1.4.6-1
+- Need to return new at the end of a trigger function.
+
+* Thu Feb 24 2011 Jan Pazdziora 1.4.5-1
+- Adding a schema upgrade script for the sat_node_probe drop.
+- Adding a schema upgrade script for the web_cust_notif_seq drop.
+
+* Wed Feb 23 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.4-1
+- schema upgrade script for dropped tables
+
+* Tue Feb 22 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.3-1
+- removed unused rhn_sat_node_probe table
+- rhn_synch_probe_state doesn't depend on rhn_satellite_state
+- removed unused table web_customer_notification
+
+* Fri Feb 18 2011 Jan Pazdziora 1.4.2-1
+- Make the index on rhnActionErrataUpdate (action_id, errata_id) unique.
+
+* Mon Feb 07 2011 Jan Pazdziora 1.4.1-1
+- Fixed rhn_ugm_applicant_fix_fun trigger function.
+
+* Thu Jan 27 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.18-1
+- 671464 - added schema upgrade for new keys 
+- added Fedora 14 key
+- added Fedora 13 key
+- added new Spacewalk key
+- 671464 - added RHEL6 key
+- For upgrades, missing PostgreSQL equivalent is an error.
+- Catch situation when both .sql and .sql.oracle or .sql.postgresql schema
+  upgrade scripts exist.
+
+* Tue Jan 25 2011 Jan Pazdziora 1.3.17-1
+- Add PostgreSQL schema upgrade scripts for 1.2 -> 1.3 upgrade.
+
+* Fri Jan 21 2011 Jan Pazdziora 1.3.16-1
+- The evr_t_as_vre_simple is not available on old Spacewalks, fixed.
+
+* Fri Jan 21 2011 Jan Pazdziora 1.3.15-1
+- Changed spacewalk-schema-upgrade to use spacewalk-sql, to run on PostgreSQL.
+
+* Thu Jan 20 2011 Tomas Lestach <tlestach@redhat.com> 1.3.14-1
+- updating Copyright years for year 2011 (tlestach@redhat.com)
+- The maximum pagesize is 50000 -- this will prevent the headings to be
+  repeated. (jpazdziora@redhat.com)
+- Add linesize 4000 to allow long enough lines to be returned.
+  (jpazdziora@redhat.com)
+
+* Wed Jan 19 2011 Jan Pazdziora 1.3.13-1
+- Using array should be faster than appending string.
+- Added --select-mode-direct option to print out the sqlplus/psql output right
+  when we get it.
+- Show --verbose and --select-mode options in usage; also show usage when
+  Getopt::Long::GetOptions fails.
+
+* Wed Jan 19 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.12-1
+- fixed failed 1.1 -> 1.3 upgrade test
+
+* Tue Jan 18 2011 Jan Pazdziora 1.3.11-1
+- The table rhnPackageChangelog is dropped in 103-rhnPackageChangeLog-
+  refactoring.sql, no need to alter it here.
+
+* Tue Jan 11 2011 Jan Pazdziora 1.3.10-1
+- Add spacewalk-sql which unifies sqlplus and psql invocation.
+
+* Fri Jan 07 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.9-1
+- 662563 - rhn_sndpb_pid_ptype_idx was used for rhn_sndpb_probe_id_pk enforcement
+- 662563 - rhn_efilectmp_cid_efid_idx was used for rhn_efilectmp_efid_cid_uq enforcement
+- 662563 - web_contact_id_oid_cust_luc was used for web_contact_pk enforcement
+- 662563 - rhn_package_path_idx was used for rhn_package_id_pk enforcement
+- 653510 - deleting a virt host had a virtual entitlement that would not properly
+  move its guests to flex entitled if it was available
+- 667232 - fixing issue where balancing of guests between flex an regular
+  entitlements did would not work correctly, making certificates very difficult
+  to activate
+
+* Thu Dec 23 2010 Jan Pazdziora 1.3.8-1
+- Mark PostgreSQL rhn_user schema as equivalent to the Oracle package.
+- Dropping rhn_user.add_users_to_usergroups as it is now used anymore.
+- Dropping rhn_user.remove_users_from_servergroups as it is not used anywhere.
+
+* Thu Dec 23 2010 Jan Pazdziora 1.3.7-1
+- Marking PostgreSQL rpm schema equivalent to the Oracle package.
+- Fix PostgreSQL rpm.vercmp to handle empty string epoch gracefully.
+- Removing vercmpCounter and vercmpResetCounter from rpm package as they are
+  not used anywhere.
+- Procedure channel_name_join not used anywhere, removing (together with the
+  channel_name_t type).
+- View rhnUsersInOrgOverview does not use web_user_site_info, fixing the deps.
+- Mark postgres/end.sql as equivalent to the oracle variant (even if they do
+  different things).
+- Function rhn_org.find_server_group_by_type not used anywhere, removing.
+- The rhn_package database package is not used, removing.
+
+* Wed Dec 22 2010 Jan Pazdziora 1.3.6-1
+- Fixed the rhnPackage.build_time type on PostgreSQL to
+  address rhnpush error.
+
+* Tue Dec 14 2010 Jan Pazdziora 1.3.5-1
+- 661109 - the schema upgrade script has to have extension .sql.
+
+* Tue Dec 14 2010 Jan Pazdziora 1.3.4-1
+- 661109 - fixing issue where channel subscription would not use a flex guest
+  subscription if the system already was using  a flex guest subscription for a
+  different channel (jsherril@redhat.com)
+
+* Wed Dec 01 2010 Jan Pazdziora 1.3.3-1
+- 650129 - don't change last_modified values during schema upgrade
+  (mzazrivec@redhat.com)
+- drop unused rhnDaemonState table (tlestach@redhat.com)
+
+* Mon Nov 22 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.2-1
+- 655509 - fixed namespace
+
+* Thu Nov 18 2010 Lukas Zapletal 1.3.1-1
+- Replacing rownum with limit-offset syntax 
+- 645694 - introducing cleanup-packagechangelog-data task 
+- Bumping package versions for 1.3. 
+
 * Sun Nov 14 2010 Tomas Lestach <tlestach@redhat.com> 1.2.69-1
 - create oracle compatible set of 'instr' functions for postgres(PG)
   (tlestach@redhat.com)

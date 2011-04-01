@@ -94,26 +94,6 @@ class rpmPackage(IncompletePackage):
             self['payload_size'] = 0
         return self
 
-    def _populateFromFile(self, f_path, relpath=None, org_id=None, channels=[],
-            source=None):
-	f_obj = file(f_path)
-        import server.rhnPackageUpload as rhnPackageUpload
-        header, payload_stream, header_start, header_end = \
-            rhnPackageUpload.load_package(f_obj)
-        if (source and not header.is_source) or (not source and header.is_source):
-            raise ValueError("Unexpected RPM package type")
-                    
-        # Get the size
-        size = os.path.getsize(f_path)
-        path = None
-        if relpath:
-            # Strip trailing slashes
-            path = "%s/%s" % (sanitizePath(relpath), os.path.basename(f_path))
-        checksum_type = header.checksum_type()
-        checksum = getFileChecksum(header.checksum_type(), file=payload_stream)
-        self.populate(header, size, checksum_type, checksum, path, org_id,
-                 header_start, header_end, channels)
-
 class rpmBinaryPackage(Package, rpmPackage):
     # Various mappings
     tagMap = rpmPackage.tagMap.copy()
@@ -163,9 +143,6 @@ class rpmBinaryPackage(Package, rpmPackage):
         self._populateChangeLog(header)
         # Channels
         self._populateChannels(channels)
-
-    def populateFromFile(self, file, relpath=None, org_id=None, channels=[]):
-        return self._populateFromFile(file, relpath, org_id, channels)
 
     def _populateFiles(self, header):
         self._populateTag(header, 'files', rpmFile)
@@ -295,9 +272,6 @@ class rpmSourcePackage(SourcePackage, rpmPackage):
         self['sigchecksum'] = string.join(
             map(lambda x: "%02x" % ord(x), self['sigchecksum']), '')
 
-    def populateFromFile(self, file, relpath=None, org_id=None, channels=[]):
-        return self._populateFromFile(file, relpath, org_id, channels, source=1)
-
 class rpmFile(File, ChangeLog):
     # Mapping from the attribute's names to rpm tags
     tagMap = {
@@ -406,15 +380,6 @@ class rpmChangeLog(ChangeLog):
             except UnicodeDecodeError:
                 self[i] = unicode(self[i], "iso-8859-1")
 
-def sanitizePath(path):
-    if not path:
-        return ""
-    while path:
-        if path[-1] != '/':
-            break
-        path = path[:-1]
-    return path
-
 def sanitizeList(l):
     if l is None:
          return []
@@ -441,14 +406,3 @@ def createPackage(header, size, checksum_type, checksum, relpath, org_id, header
         channels)
     return p
 
-def createPackageFromFile(filePath, relpath, org_id, channels, source=0):
-    """
-    Returns a populated instance of rpmBinaryPackage or rpmSourcePackage
-    """
-    if source:
-        p = rpmSourcePackage()
-    else:
-        p = rpmBinaryPackage()
-
-    p.populateFromFile(filePath, relpath, org_id, channels)
-    return p

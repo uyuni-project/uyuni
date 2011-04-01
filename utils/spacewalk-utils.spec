@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.2.9
+Version:	1.4.3
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -25,7 +25,7 @@ Requires:       initscripts
 %endif
 Requires:       iproute
 Requires:       net-tools
-Requires:       /usr/bin/sqlplus
+Requires:       /usr/bin/spacewalk-sql
 Requires:       perl-Satcon
 %if 0%{?suse_version}
 Requires:     perl = %{perl_version}
@@ -80,6 +80,33 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/rhn
 
 %changelog
+* Thu Mar 24 2011 Jan Pazdziora 1.4.3-1
+- In spacewalk-dump-schema, use the default Oracle connect information from
+  config file.
+
+* Thu Mar 10 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.2-1
+- made spacewalk-hostname-rename working on postgresql
+
+
+* Thu Feb 03 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.1-1
+- updated spacewalk-common-channel to spacewalk 1.3
+- Bumping package versions for 1.4
+
+* Tue Jan 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.4-1
+- fixed pylint errors
+
+* Tue Dec 14 2010 Jan Pazdziora 1.3.3-1
+- We need to check the return value of GetOptions and die if the parameters
+  were not correct.
+
+* Tue Nov 23 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.2-1
+- fixed pylint errors
+- added spacewalk 1.2 channels and repos
+
+* Fri Nov 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.1-1
+- re-added automatic external yum repo creation based on new API
+- Bumping package versions for 1.3
+
 * Fri Nov 05 2010 Miroslav Suchý <msuchy@redhat.com> 1.2.9-1
 - 491331 - move /etc/sysconfig/rhn-satellite-prep to /var/lib/rhn/rhn-
   satellite-prep (msuchy@redhat.com)

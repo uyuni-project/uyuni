@@ -15,6 +15,7 @@
 # config file-related error handling functions
 #
 
+from types import UnicodeType
 from spacewalk.common import log_debug, log_error, rhnFlags
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnServer import server_kickstart
@@ -256,40 +257,27 @@ def _lookup_action_revision_id(server_id, action_id, path):
         return None
     return row['id']
 
-_query_add_result_identical = rhnSQL.Statement("""
-    insert into rhnActionConfigRevisionResult
-           (action_config_revision_id, result)
-    values (:action_config_revision_id, NULL)
-""")
 _query_add_result_diff = rhnSQL.Statement("""
     insert into rhnActionConfigRevisionResult
            (action_config_revision_id, result)
-    values (:action_config_revision_id, empty_blob())
-""")
-_query_update_result = rhnSQL.Statement("""
-    select result from rhnActionConfigRevisionResult
-     where action_config_revision_id = :action_config_revision_id
-       for update of result
+    values (:action_config_revision_id, :result)
 """)
 def _add_result(action_config_revision_id, diff):
 
     log_debug(4, action_config_revision_id, diff)
     
-    if not diff:
-        # Just add an empty row
-        h = rhnSQL.prepare(_query_add_result_identical)
-        h.execute(action_config_revision_id=action_config_revision_id)
-        return
+    if diff:
+        blob_map = {'result': 'result'}
+        if type(diff) == UnicodeType:
+            diff = unicode.encode(diff,'utf-8')
+    else:
+        blob_map = None
+        diff = None
 
-    h = rhnSQL.prepare(_query_add_result_diff)
-    h.execute(action_config_revision_id=action_config_revision_id)
+    h = rhnSQL.prepare(_query_add_result_diff, blob_map=blob_map)
+    h.execute(action_config_revision_id=action_config_revision_id,
+              result=diff)
     
-    h = rhnSQL.prepare(_query_update_result)
-    h.execute(action_config_revision_id=action_config_revision_id)
-    row = h.fetchone_dict()
-    result = row['result']
-    result.write(diff)
-
 _query_lookup_old_diffs = rhnSQL.Statement("""
     select acr.id
       from rhnActionConfigRevision acr

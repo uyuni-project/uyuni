@@ -14,8 +14,7 @@
 #
 
 import sys
-import string
-from rhn.rpclib import xmlrpclib
+import xmlrpclib
 
 
 from cStringIO import StringIO
@@ -318,7 +317,7 @@ class rhnException(Exception):
     """
 
     def __init__(self, *args):
-        apply(Exception.__init__, (self, ) + args)
+        Exception.__init__(self, *args)
         self.args = args
 
     def __repr__(self):
@@ -404,12 +403,12 @@ class rhnFault(Exception):
         s = StringIO()
         s.write("\n")
         if self.text:
-            s.write(_("Error Message:\n    %s\n") % string.strip(self.text))
+            s.write(_("Error Message:\n    %s\n") % self.text.strip())
         if self.code:
             s.write(_("Error Class Code: %s\n") % self.code)
         if self.arrayText:
-            s.write(_("Error Class Info: %s\n") % \
-                    string.rstrip(self.arrayText % templateValues))
+            cinfo = self.arrayText % templateValues
+            s.write(_("Error Class Info: %s\n") % cinfo.rstrip())
         if self.explain:
             s.write(_("Explanation: %s") % Explain)
         if not self.code:

@@ -43,7 +43,7 @@ public class UpdateInfoWriter extends RepomdWriter {
      * @param writer xml writer object
      */
     public UpdateInfoWriter(Writer writer) {
-        super(writer);
+        super(writer, true);
     }
 
     /**

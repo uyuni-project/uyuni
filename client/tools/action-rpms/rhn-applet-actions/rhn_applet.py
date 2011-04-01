@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2008 Red Hat, Inc.
+# Copyright (c) 2008--2010 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -18,12 +18,9 @@ import os
 import sys
 import string
 import re
-import shutil
 
 sys.path.append("/usr/share/rhn")
-from up2date_client import up2date
 from up2date_client import config
-from up2date_client import configUtils
 from up2date_client import up2dateAuth
 
 from rhn import rpclib
@@ -102,26 +99,15 @@ def _create_server_obj(server_url):
 
 
 def read_cfg_val(obj, key):
-    """given up2date's rhel 2.1 vs 3 config 'obj', return the value"""
-    if hasattr(obj, 'readEntry'):
-        # rhel 2.1 style, obj.readEntry("serverURL")
-        return obj.readEntry(key)
-    if hasattr(obj, "__setitem__"):
-        # rhel 3 style, obj['serverURL']
-        if obj.has_key(key):
-            return obj[key]
-        return None
-    raise Exception("unknow up2date config object")
-
+    """ return obj[key] or None if key does not exist"""
+    if obj.has_key(key):
+        return obj[key]
+    return None
         
 def update_applet_cfg():
-
+    server_url = config.getServerlURL()[0]
     # get up2date's conf vals...
-    server_url = read_cfg_val(cfg, 'serverURL')
     new_ca = read_cfg_val(cfg, 'sslCACert')
-
-    if type(server_url) == type([]):
-        server_url = server_url[0]
 
     # TODO: applet needs to support failover 
     # for now patch the ca

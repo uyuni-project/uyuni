@@ -22,11 +22,17 @@ import re
 import psycopg2
 import hashlib
 
+# workaround for python-psycopg2 = 2.0.13 (RHEL6)
+# which does not import extensions by default
+if not hasattr(psycopg2, 'extensions'):
+    import psycopg2.extensions
+
 import sql_base
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL import sql_types
 
 from spacewalk.common import log_debug, log_error, UserDictCase
+from spacewalk.common.rhnException import rhnException
 from const import POSTGRESQL
 
 def convert_named_query_params(query):
@@ -177,7 +183,7 @@ class Database(sql_base.Database):
                       "Exception information: %s" % sys.exc_info()[1])
             self.connect() # only allow one try
 
-    def prepare(self, sql, force=0, params=None):
+    def prepare(self, sql, force=0, params=None, blob_map=None):
         if params != None:              # support for anonymour plpgsql
             sql = re.sub(r'/\*pg_cs\*/\s*cursor', '', sql)
             sql = re.sub(r'/\*pg (.+?)\*/', '\g<1>', sql)

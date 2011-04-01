@@ -4,7 +4,7 @@ Summary: Python libraries for the RHN project
 Name: rhnlib
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 2.5.28
+Version: 2.5.37
 Release: 1%{?dist}
 
 Group: Development/Libraries
@@ -17,6 +17,13 @@ BuildArch: noarch
 BuildRequires: python-devel
 
 Requires: pyOpenSSL 
+Conflicts: rhncfg < 5.9.37
+Conflicts: spacewalk-proxy-installer < 1.3.2
+Conflicts: rhn-client-tools < 1.3.3
+Conflicts: rhn-custom-info < 5.4.7
+Conflicts: rhnpush < 5.5.10
+Conflicts: rhnclient < 0.10
+Conflicts: spacewalk-proxy < 1.3.6
 
 %description
 rhnlib is a collection of python modules used by the 
@@ -54,6 +61,40 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/*
 
 %changelog
+* Wed Mar 30 2011 Jan Pazdziora 2.5.37-1
+- string does not exist, str is the correct thing to use here...
+  (jsherril@redhat.com)
+
+* Wed Mar 16 2011 Miroslav Suchý <msuchy@redhat.com> 2.5.36-1
+- code cleanup - remove HTTPResponse.read() override
+
+* Fri Mar 11 2011 Miroslav Suchý <msuchy@redhat.com> 2.5.35-1
+- 683200 - create idn_ascii_to_pune() and idn_pune_to_unicode(), which will
+  take care about corner cases of encodings.idna
+
+* Wed Feb 16 2011 Miroslav Suchý <msuchy@redhat.com> 2.5.34-1
+- Revert "Revert "get_server_capability() is defined twice in osad and rhncfg,
+  merge and move to rhnlib and make it member of rpclib.Server""
+  (msuchy@redhat.com)
+
+* Tue Feb 01 2011 Tomas Lestach <tlestach@redhat.com> 2.5.33-1
+- Revert "get_server_capability() is defined twice in osad and rhncfg, merge
+  and move to rhnlib and make it member of rpclib.Server" (tlestach@redhat.com)
+
+* Fri Jan 28 2011 Miroslav Suchý <msuchy@redhat.com> 2.5.32-1
+- get_server_capability() is defined twice in osad and rhncfg, merge and move
+  to rhnlib and make it member of rpclib.Server
+- Updating the copyright years to include 2010.
+
+* Mon Dec 20 2010 Michael Mraka <michael.mraka@redhat.com> 2.5.31-1
+- put crypto back
+
+* Mon Dec 20 2010 Miroslav Suchý <msuchy@redhat.com> 2.5.30-1
+- conflitcs with older versions
+
+* Wed Nov 24 2010 Michael Mraka <michael.mraka@redhat.com> 2.5.29-1
+- removed unused imports
+
 * Tue Nov 02 2010 Jan Pazdziora 2.5.28-1
 - Update copyright years in the rest of the repo.
 

@@ -15,9 +15,9 @@
 
 import sys
 import select
-import time
 import socket
 import SocketServer
+from rhn.connections import idn_ascii_to_pune
 from spacewalk.common import initCFG, CFG, initLOG, log_debug, log_error
 from spacewalk.server import rhnSQL
 
@@ -84,7 +84,7 @@ class Runner(jabber_lib.Runner):
         self._password = config.get('password')
         self._resource = 'superclient'
         js = config.get('jabber_server')
-        self._jabber_servers = [ js ]
+        self._jabber_servers = [ idn_ascii_to_pune(js) ]
 
     def fix_connection(self, c):
         "After setting up the connection, do whatever else is necessary"
@@ -111,7 +111,6 @@ class Runner(jabber_lib.Runner):
 
         client_jids = self._get_client_jids()
         client_jids = map(lambda x: x[0], client_jids)
-        c.subscribe_to_presence(client_jids)
         # Unsubscribe the dispatcher from any client jid that no longer exists
         self.cleanup_roster(c, client_jids)
         
@@ -175,7 +174,7 @@ class Runner(jabber_lib.Runner):
            set state_id = :offline_id
          where state_id = :online_id
            and last_ping_time is not null
-           and sysdate > next_action_time
+           and current_timestamp > next_action_time
     """)
     def reap_pinged_clients(self):
         # Get the online and offline ids
@@ -198,7 +197,7 @@ class Runner(jabber_lib.Runner):
     """)
     _query_update_clients_to_be_pinged = rhnSQL.Statement("""
         update rhnPushClient
-           set next_action_time = sysdate + :delta / 86400
+           set next_action_time = current_timestamp + numtodsinterval(:delta, 'second')
          where id = :client_id
     """)
     def _fetch_clients_to_be_pinged(self):
@@ -232,25 +231,28 @@ class Runner(jabber_lib.Runner):
     
 
     _query_register_dispatcher = rhnSQL.Statement("""
+        declare
+            i numeric;
         begin
             update rhnPushDispatcher
                set last_checkin = current_timestamp,
-                   hostname = :hostname,
-                   port = :port
-             where jabber_id = :jabber_id;
-            if sql%rowcount = 0 then
+                   hostname = :hostname_in,
+                   port = :port_in
+             where jabber_id = :jabber_id_in
+            returning id into i;
+            if i is null then
                 -- Have to insert the row
                 insert into rhnPushDispatcher 
                        (id, jabber_id, last_checkin, hostname, port)
-                values (rhn_pushdispatch_id_seq.nextval, :jabber_id, current_timestamp,
-                       :hostname, :port);
+                values (sequence_nextval('rhn_pushdispatch_id_seq'), :jabber_id_in, current_timestamp,
+                       :hostname_in, :port_in);
             end if;
         end;
     """)
 
     def _register_dispatcher(self, jabber_id, hostname, port):
-        h = rhnSQL.prepare(self._query_register_dispatcher)
-        h.execute(jabber_id=jabber_id, hostname=hostname, port=port)
+        h = rhnSQL.prepare(self._query_register_dispatcher, params = ( 'hostname_in varchar', 'port_in numeric', 'jabber_id_in varchar' ))
+        h.execute(jabber_id_in=jabber_id, hostname_in=hostname, port_in=port)
         rhnSQL.commit()
 
     _query_get_client_jids = rhnSQL.Statement("""
@@ -334,7 +336,7 @@ class UpstreamServer(SocketServer.TCPServer):
     # smaller than rhnAction
     _query_get_pending_clients = rhnSQL.Statement("""
         select a.id, sa.server_id, pc.jabber_id,
-               (earliest_action - sysdate) * 86400 delta
+               date_diff_in_days(current_timestamp, earliest_action) * 86400 delta
           from
                rhnServerAction sa,
                rhnAction a,

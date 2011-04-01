@@ -7,11 +7,9 @@ import up2dateErrors
 import config
 import rhnserver
 
-
 import gettext
-_ = gettext.gettext
-
-
+t = gettext.translation('rhn-client-tools', fallback=True)
+_ = t.ugettext
 
 # heh, dont get much more generic than this...
 class rhnChannel:
@@ -87,6 +85,7 @@ cmdline_pkgs = []
 global selected_channels
 selected_channels = None
 def getChannels(force=None, label_whitelist=None):
+    """ return rhnChannelList containing list of channel we are subscribed to """
     cfg = config.initUp2dateConfig()
     global selected_channels
     if not selected_channels and not force:
@@ -102,7 +101,7 @@ def getChannels(force=None, label_whitelist=None):
             if label_whitelist and not label_whitelist.has_key(chan['label']):
                 continue
                 
-            channel = rhnChannel(type = 'up2date', url = cfg["serverURL"])
+            channel = rhnChannel(type = 'up2date', url = config.getServerlURL())
             for key in chan.keys():
                 if key == "last_modified":
                     channel['version'] = chan['last_modified']
@@ -126,10 +125,10 @@ def setChannels(tempchannels):
 
 def subscribeChannels(channels,username,passwd):
     s = rhnserver.RhnServer()
-    s.up2date.subscribeChannels(up2dateAuth.getSystemId(), channels, username,
+    return s.up2date.subscribeChannels(up2dateAuth.getSystemId(), channels, username,
         passwd)
 
 def unsubscribeChannels(channels,username,passwd):
     s = rhnserver.RhnServer()
-    s.up2date.unsubscribeChannels(up2dateAuth.getSystemId(), channels,
+    return s.up2date.unsubscribeChannels(up2dateAuth.getSystemId(), channels,
         username, passwd)

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,10 +15,8 @@
 #
 
 # system module imports
-import cStringIO
 import os
 import stat
-import types
 
 from rhn import rpclib
 
@@ -197,7 +195,7 @@ class Repository(rhnRepository.Repository):
             log_debug(2, "Unknown repomd file requested: %s" % file_name)
             raise rhnFault(6)
 
-        output = rpclib.File(output, name=file_name)
+        output = rpclib.transports.File(output, name=file_name)
 
         rhnFlags.set('Content-Type', content_type)
 
@@ -211,7 +209,7 @@ class Repository(rhnRepository.Repository):
         if file_name in ["repomd.xml", "comps.xml"]:
             content_type = "text/xml"
         elif file_name not in ["primary.xml.gz", "other.xml.gz",
-                "filelists.xml.gz", "updateinfo.xml.gz"]:
+                "filelists.xml.gz", "updateinfo.xml.gz", "Packages.gz"]:
             log_debug(2, "Unknown repomd file requested: %s" % file_name)
             raise rhnFault(6)
 
@@ -302,9 +300,9 @@ class Repository(rhnRepository.Repository):
         return rhnPackage.get_all_package_paths(self.server_id, pkgFilename,
             self.channelName)
 
-    # Retrieves package source path
     def getSourcePackagePath(self, pkgFilename):
-        """Overloads getSourcePackagePath in common/rhnRepository.
+        """ Retrieves package source path
+            Overloads getSourcePackagePath in common/rhnRepository.
         """
         return rhnPackage.get_source_package_path(self.server_id, pkgFilename,
             self.channelName)

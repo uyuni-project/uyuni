@@ -4,7 +4,7 @@
 %endif
 
 Name:        spacewalk-remote-utils
-Version:     1.0.5
+Version:     1.4.5
 Release:     1%{?dist}
 Summary:     Utilities to interact with a RHN Satellite or Spacewalk server remotely.
 
@@ -15,6 +15,7 @@ Source:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.
 BuildRoot:   %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:   noarch
 
+Requires:    rhnlib >= 2.5.31
 BuildRequires: python-devel
 BuildRequires: docbook-utils
 
@@ -55,6 +56,26 @@ docbook2man ./spacewalk-create-channel/doc/spacewalk-create-channel.sgml -o ./sp
 %doc %{_mandir}/man1/spacewalk-create-channel.1.gz
 
 %changelog
+* Wed Mar 30 2011 Miroslav Suchý 1.4.5-1
+- 683200 - support IDN
+
+* Wed Mar 16 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.4-1
+- allowing input of 0 insteado f 'gold' in spacewalk-create-channel
+  (jsherril@redhat.com)
+- replace dead code with default from optparse
+
+* Tue Mar 08 2011 Justin Sherrill <jsherril@redhat.com> 1.4.3-1
+- adding new data files for spacewalk-create-channel (jsherril@redhat.com)
+- updating spacewalk-create-channel to properly support RHEL 6 and added
+  supplementary repos for it (jsherril@redhat.com)
+
+* Mon Mar 07 2011 Jan Pazdziora 1.4.2-1
+- Fixing description of the -u/--update option in spacewalk-create-channel man
+  page. (luc@delouw.ch)
+
+* Thu Feb 03 2011 Justin Sherrill <jsherril@redhat.com> 1.4.1-1
+- Adding RHEL 5.6 data files for spacewalk-create-channel (jsherril@redhat.com)
+
 * Tue Oct 12 2010 Jan Pazdziora 1.0.5-1
 - correct Summary and Description (msuchy@redhat.com)
 - correct URL and Source0 (msuchy@redhat.com)

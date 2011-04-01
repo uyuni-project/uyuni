@@ -1,6 +1,6 @@
 #!/usr/bin/python -u
 #
-# Copyright (c) 2008 Red Hat, Inc.
+# Copyright (c) 2008--2010 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,6 +19,7 @@ import sys
 import os
 import string
 import getpass
+import xmlrpclib
 
 from re import search
 from optparse import OptionParser
@@ -92,18 +93,11 @@ def create_server_obj(server_url):
 
 
 def read_cfg_val(obj, key):
-    """given up2date's rhel 2.1 vs 3 config 'obj', return the value"""
-    if hasattr(obj, 'readEntry'):
-        # rhel 2.1 style, obj.readEntry("serverURL")
-        return obj.readEntry(key)
-    elif hasattr(obj, "__setitem__"):
-        # rhel 3 style, obj['serverURL']
-        if obj.has_key(key):
-            return obj[key]
-        else:
-            raise "unknown config option:  %s" % key
+    """ return obj[key] or None if key does not exists """
+    if obj.has_key(key):
+        return obj[key]
     else:
-        raise "unknown up2date config object"
+        raise "unknown config option:  %s" % key
 
 
 def read_username():
@@ -229,7 +223,7 @@ def main():
         else:
             ret = s.system.set_custom_values(session, int(sid), values)
 
-    except rpclib.Fault, e:
+    except xmlrpclib.Fault, e:
         if e.faultCode == -1:
             system_exit(1, "Error code:  %s\nInvalid login information.\n" % e.faultCode)
         else:

@@ -370,6 +370,7 @@ SELECT  S.id, S.name
    AND  P.id = :pid
    AND  P.name_id = SP.name_id
    AND  P.evr_id = SP.evr_id
+   AND  P.package_arch_id = SP.package_arch_id
    AND  SP.server_id = S.id
    AND  EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
 ORDER BY  UPPER(NVL(S.NAME, '(none)')), S.ID
@@ -671,13 +672,6 @@ SELECT  DISTINCT SP.server_id id,
    AND  SP.evr_id = PE.id
    </elaborator>
 </mode>
-
-<write-mode name="insert_ssm_remove_server_package">
-   <query params="user_id, name_id, evr_id, arch_id">
-      INSERT INTO rhnSsmSystemPackages (user_id, name_id, evr_id, arch_id)
-      VALUES (:user_id, :name_id, :evr_id, :arch_id)
-   </query>
-</write-mode>
 
 <mode name="out_of_date" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="org_id, user_id">
@@ -1329,7 +1323,8 @@ SELECT PN.name,
        PE.release,
        coalesce(PE.epoch, ' ') as epoch,
        PA.name as arch,
-       SP.installtime
+       SP.installtime,
+       PN.id
   FROM rhnServerPackage SP inner join
        rhnPackageName PN on PN.id = SP.name_id inner join
        rhnPackageEVR PE on PE.id = SP.evr_id left join
@@ -1527,19 +1522,6 @@ SELECT 1
   </query>
 </mode>
 
-<write-mode name="delete_proxy_info">
-  <query params="server_id">
-delete from rhnProxyInfo where server_id = :server_id
-  </query>
-</write-mode>
-
-<write-mode name="insert_proxy_info">
-  <query params="server_id, version">
-INSERT INTO  rhnProxyInfo (server_id, proxy_evr_id)
-     VALUES  (:server_id, lookup_evr(NULL, :version, '1'))
-  </query>
-</write-mode>
-
 <callable-mode name="entitle_server">
   <query params="sid, entitlement">
 {call rhn_entitlements.entitle_server(:sid, :entitlement)}
@@ -1557,19 +1539,6 @@ INSERT INTO  rhnProxyInfo (server_id, proxy_evr_id)
 {call rhn_entitlements.remove_server_entitlement(:sid, :entitlement, :repoll)}
   </query>
 </callable-mode>
-
-<write-mode name="insert_satellite_info">
-  <query params="sid, product, owner, issued_string, expiration_string,version">
-INSERT INTO  rhnSatelliteInfo (server_id, cert, product, owner, issued_string, expiration_string, evr_id)
-     VALUES  (:sid, EMPTY_BLOB(), :product, :owner, :issued_string, :expiration_string, lookup_evr(NULL, :version, '1'))
-  </query>
-</write-mode>
-
-<write-mode name="delete_satellite_info">
-  <query params="sid">
-DELETE FROM  rhnSatelliteInfo WHERE  server_id = :sid
-  </query>
-</write-mode>
 
 <callable-mode name="remove_from_action">
   <query params="server_id, action_id">
@@ -1824,6 +1793,27 @@ DELETE FROM  rhnSatelliteInfo WHERE  server_id = :sid
       rhnServerNotes
     where server_id = :sid and id = :nid
   </query>
+</mode>
+
+<mode name="is_server_fve_eligible">
+    <query params="sid">
+    select 1
+        from rhnVirtualInstance vi
+             inner join rhnServer s on vi.virtual_system_id = s.id
+       where s.id = :sid and (
+             vi.host_system_id is null or
+             not exists (
+                select 1
+                  from rhnServerGroupMembers sgm
+                       inner join rhnServerGroup sg on sgm.server_group_id = sg.id
+                       inner join rhnServerGroupType sgt on sgt.id = sg.group_type
+                       inner join rhnServer s2 on s2.id = sgm.server_id
+                 where s2.id = vi.host_system_id
+                 and sgt.label in
+                 ('virtualization_host', 'virtualization_host_platform')
+                )
+             )
+    </query>
 </mode>
 
 <write-mode name="delete_note">

@@ -21,6 +21,7 @@ import gzip
 import string
 from optparse import Option, OptionParser
 from rhn import rpclib
+from rhn.connections import idn_ascii_to_pune
 
 # Recent rhnlib has support for timing out, rather than hanging.
 try:
@@ -79,7 +80,8 @@ def openGzippedFile(filename):
 def getXmlrpcServer(server, handler, proxy, proxyUser, proxyPass,
                     sslCertPath, sslYN=1):
     """ Return an XML-RPC Server connection object; no ssl if sslCertPath==None.
-        May return rpclib.Fault, rpclib.ProtocolError, or socket.error.
+        May return rpclib.xmlrpclib.Fault, rpclib.xmlrpclib.ProtocolError,
+        or socket.error.
     """
 
     _uri = server + handler
@@ -287,7 +289,7 @@ def activateSatellite_remote(options):
             if options.verbose:
                 print "Executing: remote XMLRPC deactivation (if necessary)."
             ret = s.satellite.deactivate_satellite(systemid, rhn_cert)
-        except rpclib.Fault, f:
+        except rpclib.xmlrpclib.Fault, f:
             # 1025 results in "satellite_not_activated"
             if abs(f.faultCode) != 1025:
                 sys.stderr.write('ERROR: unhandled XMLRPC fault upon '
@@ -303,7 +305,7 @@ def activateSatellite_remote(options):
         if options.verbose:
             print "Executing: remote XMLRPC activation call."
         ret = s.satellite.activate_satellite(systemid, rhn_cert)
-    except rpclib.Fault, f:
+    except rpclib.xmlrpclib.Fault, f:
         sys.stderr.write("Error reported from RHN: %s\n" % f)
 	# NOTE: we support the old (pre-cactus) web-handler API and the new.
 	# The old web handler used faultCodes of 1|-1 and the new API uses
@@ -500,10 +502,10 @@ def processCommandline():
         if not CFG.RHN_PARENT:
             sys.stderr.write("ERROR: rhn_parent is not set in /etc/rhn/rhn.conf\n")
             sys.exit(1)
-        options.server = string.split(rhnLib.parseUrl(CFG.RHN_PARENT)[1], ':')[0]
+        options.server = idn_ascii_to_pune(string.split(rhnLib.parseUrl(CFG.RHN_PARENT)[1], ':')[0])
         print 'RHN_PARENT: %s' % options.server
 
-    options.http_proxy = CFG.HTTP_PROXY
+    options.http_proxy = idn_ascii_to_pune(CFG.HTTP_PROXY)
     options.http_proxy_username = CFG.HTTP_PROXY_USERNAME
     options.http_proxy_password = CFG.HTTP_PROXY_PASSWORD
     options.ca_cert = CFG.CA_CHAIN
@@ -583,7 +585,7 @@ def main():
                         username=db_user, password=db_password, database=database)
             if options.verbose:
                 print ("Database connectioned initialized: refer to %s" % 
-                       CFG.file)
+                       CFG.filename)
             activateSatellite_local(options)
         except RHNCertLocalActivationException, e:
             writeError(e)
@@ -626,7 +628,7 @@ def main():
                 return 89
 
         # channel family stuff
-        if not options.disconnected:
+        if not options.disconnected and CFG.RHN_PARENT and not CFG.ISS_PARENT:
             try:
                 populateChannelFamilies(options)
             except PopulateChannelFamiliesException, e:

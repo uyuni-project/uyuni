@@ -27,7 +27,6 @@ from types import IntType, ListType, DictType
 from spacewalk.common import log_debug, log_error, rhnFault, rhnException, \
     rhnCache, rhnFlags, CFG, rhn_rpm
 from spacewalk.common.rhnTranslate import _
-from rhnDependency import MakeEvrError
 
 # local module
 import rhnUser, rhnSQL, rhnLib
@@ -512,45 +511,6 @@ class ChannelFamily(BaseChannelObject):
     _generic_fields = ['label', 'name', 'product_url']
 
 
-def create_channels(entries, update=0):
-    if not isinstance(entries, ListType):
-        raise InvalidEntryError(entries, "Not a list")
-    mandatory_fields = Channel._generic_fields + ['channel_arch']
-    for e in entries:
-        if not isinstance(e, DictType):
-            raise InvalidEntryError(e, "Entry is not a dictionary")
-
-        for f in mandatory_fields:
-            if not e.has_key(f):
-                raise InvalidEntryError(e, "Missing required field %s" % f)
-
-        parent_channel = e.get('parent_channel')
-        release = e.get('release')
-        if parent_channel and not release:
-            raise InvalidEntryError(e, "Attempting to create a base channel "
-                "without a distribution release")
-
-        c = Channel()
-        c.load_from_dict(e)
-        c.save(with_updates=update)
-
-def create_channel_families(entries, update=0):
-    if not isinstance(entries, ListType):
-        raise InvalidEntryError(entries, "Not a list")
-    mandatory_fields = ChannelFamily._generic_fields
-    for e in entries:
-        if not isinstance(e, DictType):
-            raise InvalidEntryError(e, "Entry is not a dictionary")
-
-        for f in mandatory_fields:
-            if not e.has_key(f):
-                raise InvalidEntryError(e, "Missing required field %s" % f)
-
-        c = ChannelFamily()
-        c.load_from_dict(e)
-        c.save(with_updates=update)
-
-
 def _load_by_id(query, item_object, pattern=None):
     if pattern:
         query += "and label like :pattern"
@@ -1017,7 +977,7 @@ def list_packages_source(channel_id):
             r = r['name']
             if string.find(r, ".rpm") != -1:
                 r = string.replace(r, ".rpm", "")
-                new_evr = make_evr(r,source=1)
+                new_evr = rhnLib.make_evr(r,source=1)
                 new_evr_list = [new_evr['name'], new_evr['version'], new_evr['release'],new_evr['epoch']]
             ret.append(new_evr_list)
 
@@ -1452,31 +1412,6 @@ def list_obsoletes(channel):
                         and c.label = :channel
                         and c.id = cp.channel_id
                         and cp.package_id = po.package_id
-                    minus
-                    -- obsoletes that are blacklisted follow
-                    select  cp.channel_id,
-                            po.package_id, po.capability_id, po.sense
-                    from    rhnPackageName pni,
-                            rhnPackageCapability pc,
-                            rhnBlacklistObsoletes bo,
-                            rhnPackage p,
-                            rhnPackageObsoletes po,
-                            rhnChannelPackage cp,
-                            rhnChannel c
-                    where   1=1
-                        and c.label = :channel
-                        and c.id = cp.channel_id
-                        -- find all the packages we have obsoletes for
-                        and cp.package_id = po.package_id
-                        -- now find the name, and get the blacklists that apply
-                        and po.package_id = p.id
-                        and p.name_id = bo.name_id
-                        and p.evr_id = bo.evr_id
-                        and p.package_arch_id = bo.package_arch_id
-                        -- now match the blacklisted names to the caps
-                        and po.capability_id = pc.id
-                        and pc.name = pni.name
-                        and bo.ignore_name_id = pni.id
                 ) p_info
         where   1=1
             and p_info.package_id = p.id
@@ -2026,31 +1961,6 @@ def system_reg_message(server):
         }
         return -1, no_entitlement_title, no_entitlement_message % params
     return 0, "", ""
-
-# IN: 'e:name-version-release' or 'name-version-release:e'
-# OUT: {'name':name, 'version':version, 'release':release, 'epoch':epoch }
-def make_evr(nvre, source=False):
-    import re
-    if ":" in nvre:
-        nvr, epoch = nvre.rsplit(":", 1)
-        if "-" in epoch:
-            nvr, epoch = epoch, nvr
-    else:
-        nvr, epoch = nvre, ""
-
-    nvr_parts = nvr.rsplit("-", 2)
-    if len(nvr_parts) != 3:
-        raise rhnFault(err_code = 21, err_text = \
-                       "NVRE is missing name, version, or release.")
-
-    result = dict(zip(["name", "version", "release"], nvr_parts))
-    result["epoch"] = epoch
-
-    if source and result["release"].endswith(".src"):
-        result["release"] = result["release"][:-4]
-
-    return result
-
 
 def subscribe_to_tools_channel(server_id):
     """

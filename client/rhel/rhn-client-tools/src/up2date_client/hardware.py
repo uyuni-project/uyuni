@@ -15,10 +15,9 @@
 
 # This thing gets the hardware configuraion out of a system
 """Used to read hardware info from kudzu, /proc, etc"""
-from socket import gethostname
-from socket import gethostbyname
+from socket import gethostname, AF_INET, AF_INET6
 import socket
-
+import re
 import os
 import sys
 import string
@@ -26,7 +25,8 @@ import config
 
 import ethtool
 import gettext
-_ = gettext.gettext
+t = gettext.translation('rhn-client-tools', fallback=True)
+_ = t.ugettext
 
 import dbus
 import dmidecode
@@ -138,7 +138,19 @@ def read_installinfo():
 
         installdict[vals[0]] = string.strip(string.join(vals[1:]))
     return installdict
+    
+def cpu_count():
+    """ returns number of CPU in system
 
+    Beware that it can be different from number of active CPU (e.g. on s390x architecture
+    """
+    try:
+        dir = os.listdir('/sys/devices/system/cpu/')
+    except OSError:
+        dir = []
+
+    re_cpu = re.compile(r"^cpu[0-9]+$")
+    return len([i for i in dir if re_cpu.match(i)])
 
 
 # This has got to be one of the ugliest fucntions alive
@@ -158,7 +170,7 @@ def read_cpuinfo():
                 continue
             count = count + 1
             if count > 1:
-                continue # just count the rest
+                break # no need to parse rest
             for cpu_attr in string.split(cpu, "\n"):
                 if not len(cpu_attr):
                     continue
@@ -168,7 +180,7 @@ def read_cpuinfo():
                     continue
                 name, value = string.strip(vals[0]), string.strip(vals[1])
                 tmpdict[string.lower(name)] = value
-        return [count, tmpdict]
+        return tmpdict
 
     if not os.access("/proc/cpuinfo", os.R_OK):
         return {}
@@ -181,6 +193,7 @@ def read_cpuinfo():
 
     cpulist = open("/proc/cpuinfo", "r").read()
     uname = string.lower(os.uname()[4])
+    count = cpu_count()
 
     # This thing should return a hwdict that has the following
     # members:
@@ -194,7 +207,7 @@ def read_cpuinfo():
                }
     if uname[0] == "i" and uname[-2:] == "86" or (uname == "x86_64"):
         # IA32 compatible enough
-        (count, tmpdict) = get_cpulist_as_dict(cpulist)
+        tmpdict = get_cpulist_as_dict(cpulist)
 
         if uname == "x86_64":
             hwdict['platform'] = 'x86_64'
@@ -220,7 +233,7 @@ def read_cpuinfo():
             hwdict['speed'] = -1
     elif uname in["alpha", "alphaev6"]:
         # Treat it as an an Alpha
-        (count, tmpdict) = get_cpulist_as_dict(cpulist)
+        tmpdict = get_cpulist_as_dict(cpulist)
 
         hwdict['platform']      = "alpha"
         hwdict['count']         = get_entry(tmpdict, 'cpus detected')
@@ -241,7 +254,7 @@ def read_cpuinfo():
         except ValueError:
             hwdict['speed'] = -1
     elif uname in ["ia64"]:
-        (count, tmpdict) = get_cpulist_as_dict(cpulist)
+        tmpdict = get_cpulist_as_dict(cpulist)
 
         hwdict['platform']      = uname
         hwdict['count']         = count
@@ -258,7 +271,7 @@ def read_cpuinfo():
         hwdict['other']         = get_entry(tmpdict, 'features')
 
     elif uname in ['ppc64']:
-        (count, tmpdict) = get_cpulist_as_dict(cpulist)
+        tmpdict = get_cpulist_as_dict(cpulist)
 
         hwdict['platform'] = uname
         hwdict['count'] = count
@@ -284,7 +297,7 @@ def read_cpuinfo():
         hwdict['platform']      = uname
         hwdict['type']          = get_entry(tmpdict,'vendor_id')
         hwdict['model']         = uname
-        hwdict['count']         = get_entry(tmpdict, '# processors')
+        hwdict['count']         = count
         hwdict['bogomips']      = get_entry(tmpdict, 'bogomips per cpu')
         hwdict['model_number']  = ""
         hwdict['model_ver']     = ""
@@ -297,7 +310,7 @@ def read_cpuinfo():
     else:
         # XXX: expand me. Be nice to others
         hwdict['platform']      = uname
-        hwdict['count']         = 1 # Good as any
+        hwdict['count']         = count
         hwdict['type']          = uname
         hwdict['model']         = uname
         hwdict['model_number']  = ""
@@ -389,9 +402,7 @@ def read_memory_2_6():
 
 def findHostByRoute():
     cfg = config.initUp2dateConfig()
-    sl = cfg['serverURL']
-    if type(sl) == type(""):
-        sl  = [sl]
+    sl = config.getServerlURL()
 
     st = {'https':443, 'http':80}
     hostname = None
@@ -469,7 +480,10 @@ def read_network():
 
     netdict['hostname'] = gethostname()
     try:
-        netdict['ipaddr'] = gethostbyname(gethostname())
+        list_of_addrs = getaddrinfo(gethostname(),None)
+        ipv4_addrs = filter(lambda x:x[0]==socket.AF_INET, list_of_addrs)
+        # take first ipv4 addr
+        netdict['ipaddr'] = ipv4_addrs[0][4][0]
     except:
         netdict['ipaddr'] = "127.0.0.1"
 
@@ -484,13 +498,15 @@ def read_network():
         if netdict['ipaddr'] == "127.0.0.1":
             netdict['ipaddr'] = ipaddr
 
+    if netdict['ipaddr'] is None:
+        netdict['ipaddr'] = ''
     return netdict
 
 def read_network_interfaces():
     intDict = {}
     intDict['class'] = "NETINTERFACES"
-
-    interfaces = ethtool.get_devices()
+    
+    interfaces = list(set(ethtool.get_devices() + ethtool.get_active_devices()))
     for interface in interfaces:
         try:
             hwaddr = ethtool.get_hwaddr(interface)
@@ -528,12 +544,25 @@ def read_network_interfaces():
             broadcast = ethtool.get_broadcast(interface)
         except:
             broadcast = ""
-
+            
+        ip6_list = []
+        try:
+            dev_info = ethtool.get_interfaces_info(interface)
+            # one interface may have more IPv6 addresses
+            for ip6 in dev_info.get_ipv6_addresses():
+                ip6_list.append({
+                    'scope':   ip6.scope,
+                    'addr':    ip6.address, 
+                    'netmask': ip6.netmask
+                })
+        except:  #this will does not work on el5, ignore it
+            pass
         intDict[interface] = {'hwaddr':hwaddr,
                               'ipaddr':ipaddr,
                               'netmask':netmask,
                               'broadcast':broadcast,
-                              'module': module}
+                              'module': module,
+                              'ipv6': ip6_list}
 
     return intDict
 

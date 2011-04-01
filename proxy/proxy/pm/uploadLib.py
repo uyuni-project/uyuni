@@ -1,6 +1,6 @@
 # Uploading function lib
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,15 +14,9 @@
 # in this software or its documentation.
 #
 
-# system imports
-import os
-import sys
-import string
-import fnmatch
-import getpass
-
 # RHN imports
 from spacewalk.common import rhn_mpm
+from spacewalk.common.checksum import getFileChecksum
 from rhnpush import uploadLib
 
 class UploadClass(uploadLib.UploadClass):
@@ -83,7 +77,7 @@ class UploadClass(uploadLib.UploadClass):
         #self.setServer()
         
         for filename in self.files:
-            fileinfo = uploadLib._processFile(filename,\
+            fileinfo = self._processFile(filename,\
                                     relativeDir=self.relativeDir, source=self.options.source,\
                                     nosig=self.options.nosig)
             self.processPackage(fileinfo['nvrea'], filename) 
@@ -111,7 +105,7 @@ class UploadClass(uploadLib.UploadClass):
         while self.files:
             chunk = self.files[:self.count]
             del self.files[:self.count]
-            uploadedPackages, headersList = uploadLib._processBatch(chunk,
+            uploadedPackages, headersList = self._processBatch(chunk,
                 relativeDir=self.relativeDir, source=self.options.source, 
                 verbose=self.options.verbose, nosig=self.options.nosig)
 
@@ -166,10 +160,16 @@ class UploadClass(uploadLib.UploadClass):
                     # Per-package post actions
                     self.processPackage(p, filename)
 
+    def _processFile(self, filename, relativeDir=None, source=None, nosig=None):
+        """ call parent _processFile and add to returned has md5sum """
+        hash = uploadLib.UploadClass._processFile(self, filename, relativeDir, source, nosig)
+        checksum = getFileChecksum('md5', filename=filename)
+        hash['md5sum'] = checksum
+        return hash
 
 
-# returns a header from a package file on disk.
 def get_header(file, fildes=None, source=None):
+    """ returns a header from a package file on disk """
     # rhn_mpm.get_package_header will choose the right thing to do - open the
     # file or use the provided open file descriptor)
     try:

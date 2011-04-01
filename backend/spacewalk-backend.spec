@@ -19,7 +19,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.2.74
+Version: 1.4.25
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -39,10 +39,10 @@ Requires(pre): httpd
 Requires: python, rpm-python
 # /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
 Requires: /etc/rhn
-Requires: rhnlib >= 1.8
+Requires: rhnlib >= 2.5.35
 # for Debian support
 Requires: python-debian
-Requires: %{name}-libs = %{version}-%{release}
+Requires: %{name}-libs >= 1.1.16-1
 BuildRequires: /usr/bin/msgfmt
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
@@ -203,7 +203,13 @@ BuildRequires: python-devel
 Requires: python-base
 %else
 BuildRequires: python2-devel
+Conflicts: %{name} < 0.8.28
+%if 0%{?rhel} && 0%{?rhel} < 5
+Requires: python-crypto
+BuildRequires: python-crypto
+%else
 Requires: python-hashlib
+BuildRequires: python-hashlib
 %endif
 
 %description libs
@@ -274,7 +280,7 @@ Requires: cobbler >= 1.4.3
 %if 0%{?rhel} && 0%{?rhel} < 5
 Requires: rhnlib  >= 2.1.4-14
 %else
-Requires: rhnlib  >= 2.5.22
+Requires: rhnlib  >= 2.5.35
 %endif
 Obsoletes: rhns-satellite-tools < 5.3.0
 Obsoletes: spacewalk-backend-satellite-tools <= 0.2.7
@@ -324,9 +330,13 @@ rm -fv $RPM_BUILD_ROOT/%{apacheconfd}/zz-spacewalk-server-python.conf
 %endif
 rm -f $RPM_BUILD_ROOT/%{_mandir}/man8/satellite-sync.8*
 
+%find_lang %{name}-server
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%check
+make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT/%{python_sitelib} test || :
 
 %pre server
 OLD_SECRET_FILE=%{_var}/www/rhns/server/secret/rhnSecret.py
@@ -365,9 +375,11 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
+%if ! (0%{?rhel} && 0%{?rhel} < 6)
+%{python_sitelib}/spacewalk_backend-%{version}-*.egg-info
+%endif
 %dir %{pythonrhnroot}
 %dir %{pythonrhnroot}/common
-%{pythonrhnroot}/common/__init__.py*
 %{pythonrhnroot}/common/apache.py*
 %{pythonrhnroot}/common/byterange.py*
 %{pythonrhnroot}/common/rhn_posix.py*
@@ -424,7 +436,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %doc PYTHON-LICENSES.txt LICENSE
 %{pythonrhnroot}/server/rhnSQL/driver_postgresql.py*
 
-%files server
+%files server -f %{name}-server.lang
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
 %if 0%{?suse_version}
@@ -441,7 +453,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/rhnCapability.py*
 %{pythonrhnroot}/server/rhnChannel.py*
 %{pythonrhnroot}/server/rhnKickstart.py*
-%{pythonrhnroot}/server/rhnDatabaseCache.py*
 %{pythonrhnroot}/server/rhnDependency.py*
 %{pythonrhnroot}/server/rhnPackage.py*
 %{pythonrhnroot}/server/rhnPackageUpload.py*
@@ -463,7 +474,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/importlib/backend.py*
 %{pythonrhnroot}/server/importlib/backendLib.py*
 %{pythonrhnroot}/server/importlib/backendOracle.py*
-%{pythonrhnroot}/server/importlib/blacklistImport.py*
 %{pythonrhnroot}/server/importlib/channelImport.py*
 %{pythonrhnroot}/server/importlib/debPackage.py*
 %{pythonrhnroot}/server/importlib/errataCache.py*
@@ -503,7 +513,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{rhnroot}/wsgi/config.py*
 %{rhnroot}/wsgi/config_tool.py*
 %{rhnroot}/wsgi/package_push.py*
-%{rhnroot}/wsgi/package_upload.py*
 %{rhnroot}/wsgi/sat.py*
 %{rhnroot}/wsgi/sat_dump.py*
 %{rhnroot}/wsgi/xmlrpc.py*
@@ -512,8 +521,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # logs and other stuff
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-server
-# translations
-%{rhnroot}/locale
 
 %files xmlrpc
 %defattr(-,root,root) 
@@ -603,7 +610,15 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files libs
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
-%{python_sitelib}/spacewalk*
+%{pythonrhnroot}/__init__.py*
+%dir %{pythonrhnroot}/common
+%{pythonrhnroot}/common/__init__.py*
+%{pythonrhnroot}/common/checksum.py*
+%{pythonrhnroot}/common/fileutils.py*
+%{pythonrhnroot}/common/rhn_deb.py*
+%{pythonrhnroot}/common/rhn_mpm.py*
+%{pythonrhnroot}/common/rhn_pkg.py*
+%{pythonrhnroot}/common/rhn_rpm.py*
 
 %files config-files-common
 %defattr(-,root,root)
@@ -671,6 +686,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/spacewalk-remove-channel*
 %attr(755,root,root) %{_bindir}/rhn-entitlement-report
 %attr(755,root,root) %{_bindir}/spacewalk-update-signatures
+%attr(755,root,root) %{_bindir}/spacewalk-data-fsck
 %{pythonrhnroot}/satellite_tools/SequenceServer.py*
 %{pythonrhnroot}/satellite_tools/messages.py*
 %{pythonrhnroot}/satellite_tools/progress_bar.py*
@@ -722,8 +738,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{pythonrhnroot}/satellite_tools
 %{pythonrhnroot}/satellite_tools/__init__.py*
 %{pythonrhnroot}/satellite_tools/geniso.py*
-%{pythonrhnroot}/satellite_tools/gentree.py*
-%{pythonrhnroot}/satellite_tools/xmlDiskDumper.py*
 # A bunch of modules shared with satellite-tools
 %{pythonrhnroot}/satellite_tools/connection.py*
 %{pythonrhnroot}/satellite_tools/diskImportLib.py*
@@ -732,19 +746,384 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/xmlSource.py*
 %dir %{pythonrhnroot}/satellite_tools/exporter
 %{pythonrhnroot}/satellite_tools/exporter/__init__.py*
-%{pythonrhnroot}/satellite_tools/exporter/exporter.py*
 %{pythonrhnroot}/satellite_tools/exporter/exportLib.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 # $Id$
 %changelog
-* Thu Nov 18 2010 Jan Pazdziora 1.2.74-1
-- Fixing error in backend spec (unpackaged file) (lzap+git@redhat.com)
+* Wed Mar 30 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.25-1
+- make_evr should accept source parameter
+- call transports directly
 
-* Thu Nov 18 2010 Jan Pazdziora 1.2.73-1
-- fixed iss (michael.mraka@redhat.com)
-- fixed mod_wsgi configuration (michael.mraka@redhat.com)
-- 652625 - fixed file path (michael.mraka@redhat.com)
+* Wed Mar 30 2011 Miroslav Suchý 1.4.24-1
+- always return RPC data in plain string (utf-8 encoded) (msuchy@redhat.com)
+- 683200 - support IDN
+
+* Wed Mar 30 2011 Jan Pazdziora 1.4.23-1
+- 688626 - export md5 attribute also for objects without a checksum
+  (mzazrivec@redhat.com)
+- use xmlrpclib directly (msuchy@redhat.com)
+
+* Wed Mar 23 2011 Jan Pazdziora 1.4.22-1
+- fixing stray comma breaking package profile sync (jsherril@redhat.com)
+- set envelope From to traceback email (msuchy@redhat.com)
+- remove every reference to "up2date --register" - even in comments
+  (msuchy@redhat.com)
+- remove text "or up2date --register on Red Hat Enterprise Linux 3 or later"
+  (msuchy@redhat.com)
+
+* Tue Mar 15 2011 Simon Lukasik <slukasik@redhat.com> 1.4.21-1
+- 687885 - do not treat expired token as a fault (slukasik@redhat.com)
+
+* Mon Mar 14 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.20-1
+- no more need for special insert when diff is empty
+- removed unused _query_get_output_row
+- set the blob directly in insert
+- support for direct blob insert for oracle
+- replaced 'connect by prior' with recursive function in python
+- 670793 - don't fail on non-ascii config files
+- fixed virtual KVM machines in the webui
+
+* Thu Mar 10 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.19-1
+- move server.mo from /usr/share/rhn/ to /usr/share/locale and rename it to
+  spacewalk-backend-server
+- posgtresql can't lock only one column
+- replaced (+) with ansi left join - made ompare files work on postgresql
+- 683546 - optparse isn't friendly to translations in unicode
+- The file attribute has been renamed to filename
+
+* Tue Mar 08 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.18-1
+- Fixed postgresql error in osad
+
+* Fri Mar 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.17-1
+- removed blacklists from sync
+- rhnBlacklistObsoletes is no more used
+- data from blacklist.xml are unused for quite long time
+- 679109 - localpath must be defined in except block
+
+* Thu Mar 03 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.16-1
+- removed rpm.readHeaderFromFD(), it brokes signatures
+
+* Wed Mar 02 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.15-1
+- merged/moved make_evr() implemetation into a single code
+- removed duplicated fetchTraceback()
+- The sanitizePath is not used after _populateFromFile removal, removing.
+
+* Wed Mar 02 2011 Jan Pazdziora 1.4.14-1
+- Prevent all nulls in a chunk (which are treated as strings) from affecting
+  the subsequent chunks.
+- Only try to show e.code when the exception is cx_Oracle._Error.
+
+* Mon Feb 28 2011 Jan Pazdziora 1.4.13-1
+- removed unused updateChannelFamilyInfo() (michael.mraka@redhat.com)
+- removed dead function check_with_seclist() (michael.mraka@redhat.com)
+- _populateFromFile() is dead after populateFromFile() removal
+  (michael.mraka@redhat.com)
+- populateFromFile is dead after createPackageFromFile() removal
+  (michael.mraka@redhat.com)
+- removed test for already removed createPackageFromFil()
+  (michael.mraka@redhat.com)
+- removed dead function createPackageFromFile() (michael.mraka@redhat.com)
+- removed test for already removed create_channel_families()
+  (michael.mraka@redhat.com)
+- removed dead function create_channel_families() (michael.mraka@redhat.com)
+- removed test for already removed create_channels() (michael.mraka@redhat.com)
+- removed dead function create_channels() (michael.mraka@redhat.com)
+- removed dead function dbiDate2timestamp() (michael.mraka@redhat.com)
+
+* Mon Feb 28 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.12-1
+- reverted bask to RHEL4 rpm read header code 
+* Thu Feb 24 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.11-1
+- RPMTransaction is dead after RPMReadOnlyTransaction removal
+- SharedStateTransaction is dead after RPMReadOnlyTransaction removal
+- RPMReadOnlyTransaction() is dead after get_package_header() change
+- use size instead of archivesize
+
+* Thu Feb 24 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.10-1
+- set timeout after unsuccessful login
+- removed unused/unsupported API
+
+* Thu Feb 17 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.9-1
+- fixed No module named common
+- 677549 - do not require spacewalk-backend-libs in the same version
+
+* Thu Feb 10 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.8-1
+- fixed packaging problem
+
+* Thu Feb 10 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.7-1
+- fixed leaked filedescriptor in reposync
+
+* Thu Feb 10 2011 Simon Lukasik <slukasik@redhat.com> 1.4.6-1
+- Introducing an interface common for rpm, deb and mpm packages
+  (slukasik@redhat.com)
+- 675912 - fixed typo (michael.mraka@redhat.com)
+
+* Tue Feb 08 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.5-1
+- 517173 - unlink packages with different orgid
+
+* Mon Feb 07 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.4-1
+- 675359 - modified attribute is not always present
+- l10n: Updates to German (de) translation
+
+* Fri Feb 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.3-1
+- 674510 - fixed procedure call (PG)
+- 674528 - don't read signatures when there is no rpm (--no-rpms)
+- With previous removals, getChannelAttribute is not used anymore, removing.
+- The listChannelErrata is dead code by now (after the ISO dumper removal).
+- The listChannelPackages is dead code by now (after the ISO dumper removal).
+- The getKickstartTree is dead code by now (after the ISO dumper removal).
+- With _lookup_last_modified gone, _lookup_last_modified_packages and
+  _lookup_last_modified_ks_trees are dead code, removing.
+
+* Fri Feb 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.2-1
+- fixed postgresql failure on RHEL6
+- 590608 - nullify jabber_ids from previous registrations
+
+* Thu Feb 03 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.1-1
+- shortened and narrowed package sync logic
+- moved checksum logic into ContentPackage
+- yum repo metadata says epoch="0" even if it's NULL
+- reformated sql query
+- spacewalk-repo-sync should not download package which is already on disk
+- fixed duplicated code
+- Bumping package versions for 1.4
+
+* Wed Feb 02 2011 Tomas Lestach <tlestach@redhat.com> 1.3.53-1
+- 671464 - prevent unsigned rpms not to be recognized as rpms
+  (tlestach@redhat.com)
+
+* Fri Jan 28 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.52-1
+- 671465 - fixed signature import
+
+* Thu Jan 27 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.51-1
+- 671464 - get right keyid for new Fedora keys
+- 671464 - get right keyid for new RHEL6 rpms
+- 671464 - although RHEL6 signature is SHA256 gpg it's marked as pgp in rpm
+- 671462 - fixed path in debug output
+
+* Wed Jan 26 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.50-1
+- fixed error message
+- 672277 - made --use-rhn-date and --use-sync-date mutually exclusive
+- Report errors even when not -v was specified.
+
+* Wed Jan 26 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.49-1
+- fixed AttributeError: ContentSource instance has no attribute 'proxy'
+- make osa ping work properly again
+
+* Mon Jan 24 2011 Jan Pazdziora 1.3.48-1
+- do not print TB if we get unknown type (msuchy@redhat.com)
+- Make rhn-schema-version work on PostgreSQL.
+
+* Fri Jan 21 2011 Miroslav Suchý <msuchy@redhat.com> 1.3.47-1
+- 657091 - honor http proxy setting for spacewalk-repo-sync
+
+* Fri Jan 21 2011 Miroslav Suchý <msuchy@redhat.com> 1.3.46-1
+- 671466 - use ansi syntax in left join
+
+* Thu Jan 20 2011 Tomas Lestach <tlestach@redhat.com> 1.3.45-1
+- updating Copyright years for year 2011 (tlestach@redhat.com)
+- update .po and .pot files for spacewalk-backend (tlestach@redhat.com)
+
+* Thu Jan 20 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.44-1
+- added spacewalk-data-fsck into rpm
+- 670746 - fix malformed query _query_action_verify_packages
+
+* Tue Jan 18 2011 Jan Pazdziora 1.3.43-1
+- Split to just two parts.
+- 670458 - check password policy only if we are really going to reserve user
+  (msuchy@redhat.com)
+
+* Tue Jan 18 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.42-1
+- 650165 - fixed kickstart incremental export
+
+* Mon Jan 17 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.41-1
+- rpmbuid failure
+
+* Mon Jan 17 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.40-1
+- 650165 - _ChannelDumper should also understand use_rhn_date
+- converted comments to docstrings
+- do not check throttle within each request
+- fixed whitespace
+
+* Tue Jan 11 2011 Jan Pazdziora 1.3.39-1
+- Use spacewalk-sql in satwho and satpasswd, thus making it work on PostgreSQL.
+- code cleanup: there is no proxy < 4.1 in real word (msuchy@redhat.com)
+- I wish python had a simple ternary operator (michael.mraka@redhat.com)
+
+* Wed Jan 05 2011 Miroslav Suchý <msuchy@redhat.com> 1.3.38-1
+- 666939 - Insert current_timestamp instead of sysdate
+- 666574 - autonomous_transaction not supported by PostgreSQL
+
+* Mon Jan 03 2011 Jan Pazdziora 1.3.37-1
+- With fix_url gone, exception InvalidUrlError gets unused, removing.
+- 655207 - exit after unsuccessful rpm header read (mzazrivec@redhat.com)
+- send with config file, its modified time (msuchy@redhat.com)
+- 655207 - print the exception details into stdout (mzazrivec@redhat.com)
+- hide cleartext password from traceback (michael.mraka@redhat.com)
+- added overall usage summary and flex guest entitlement details to rhn-
+  entitlement-report (michael.mraka@redhat.com)
+
+* Thu Dec 30 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.36-1
+- fixed a lot of pylint woarnings and errors
+- removed dead rhnDatabaseCache
+- Allow clients to retrieve debian packages
+
+* Sun Dec 26 2010 Jan Pazdziora 1.3.35-1
+- 619083 - we will try not to stringify the types.IntType and types.FloatType.
+
+* Thu Dec 23 2010 Jan Pazdziora 1.3.34-1
+- Need to stringify the epoch.
+- fix error from 3fcd9f7cf736e8e85994e45d8cd96943ab5a2832 (msuchy@redhat.com)
+- move function f_date from rhn_config_management.py to fileutils.py
+  (msuchy@redhat.com)
+
+* Wed Dec 22 2010 Jan Pazdziora 1.3.33-1
+- Allow clients to retrieve metadata of debian channels (slukasik@redhat.com)
+
+* Tue Dec 21 2010 Jan Pazdziora 1.3.32-1
+- Need to alias column with AS for PostgreSQL.
+- use difflib instead of external "diff -u" (msuchy@redhat.com)
+- move function ostr_to_sym from config_common/file_utils to spacewalk-backend-
+  libs (msuchy@redhat.com)
+- 634963 - print diffs for "rhncfg-manager diff-revisions" if we differ in
+  selinux context, ownership or attributes (msuchy@redhat.com)
+
+* Tue Dec 21 2010 Jan Pazdziora 1.3.31-1
+- Need to remove gentree from Makefile as well.
+
+* Mon Dec 20 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.30-1
+- removed obsoleted ISO generator code
+- 653163 - sort child channels
+
+* Fri Dec 17 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.29-1
+- fixed egg-info packaging
+- 658422 - rebuild errata cache after reposync finishes
+
+* Thu Dec 16 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.28-1
+- fixed %%files for spacewalk-backend-libs
+
+* Thu Dec 16 2010 Jan Pazdziora 1.3.27-1
+- Dropping satellite_tools/exporter/exporter.py from the Makefile and %files.
+
+* Wed Dec 15 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.26-1
+- 624092 - update package if pushing using --force and package with same NVREA
+  already exist
+- no need to lookup dictionary, when we have this information in local variable
+- make Table class more debugable
+
+* Wed Dec 15 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.25-1
+- removed dead code
+- fixed number of pylint reported errors
+- fixed Module sat doesn't support our API
+- remove block of code from for-loop
+
+* Mon Dec 13 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.24-1
+- fixed number of errors reported by pylint
+- 652852 - delete related RepoData when updating a package
+
+* Fri Dec 10 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.23-1
+- removed read code
+- fixed imports
+- 655207 - log corrupted package header read
+- 653814 - set X-RHN-Satellite-XML-Dump-Version header
+- update-packages: update package file list functionality
+
+* Fri Dec 03 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.22-1
+- 659348 - import checksum-type correctly
+- 659348 - <rhn-package-file> attribute is checksum-type not checksum_type
+
+* Fri Dec 03 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.21-1
+- Fault, ResponseError and ProtocolError import has been removed from rpclib
+- File import has been removed from rpclib
+- fixed column aliases (PG)
+
+* Wed Dec 01 2010 Jan Pazdziora 1.3.20-1
+- Ignore the %check results for now.
+
+* Wed Dec 01 2010 Lukas Zapletal 1.3.19-1
+- 644985 - SELinux context cleared from RHEL4 rhncfg-client
+- Correcting indentation for configFilesHandler.py
+- 656294 - sync channels only from rhn_parent
+
+* Wed Dec 01 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.18-1
+- add BuildRequires: python-hashlib (msuchy@redhat.com)
+
+* Wed Dec 01 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.17-1
+- fix import of xmlrpclib (msuchy@redhat.com)
+
+* Tue Nov 30 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.16-1
+- moved db backend selection into a single place
+- removed dead RegistrationNumber()
+- removed dead code together with its invalid comment
+- python 2.4+ (RHEL5+) has hasattr(gettext, 'GNUTranslations') == True
+
+* Mon Nov 29 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.15-1
+- fixed unit tests
+- run backend unit test in rpm build time
+
+* Thu Nov 25 2010 Lukas Zapletal 1.3.14-1
+- Fixing missing method parameter in rhn_config_management
+- fixed typo
+- don't require server unsubscribe when --skip-channels is used
+- added --skip-channels to spacewalk-remove-channel
+
+* Wed Nov 24 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.13-1
+- removed unused imports
+
+* Wed Nov 24 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.12-1
+- 653163 - fix typo (msuchy@redhat.com)
+
+* Tue Nov 23 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.11-1
+- removed unused imports
+- remove unused variable
+- remove unreachable code
+- fixed pylint warnings
+- Handle both the empty string (convert it to NULL) and numbers (convert them
+  to strings) in epochs.
+- added spacewalk-data-fsck
+
+* Mon Nov 22 2010 Lukas Zapletal 1.3.10-1
+- Reverting two commits on packages.py
+- Revert "Changing time to timestamp in SQL select (PG)"
+
+* Mon Nov 22 2010 Lukas Zapletal 1.3.9-1
+- Solving nonexisting Numeric->Varchar case in packages.py (PG)
+- Package data are being deleted from view rather than from table (PG)
+- Changing time to timestamp in SQL select (PG)
+
+* Fri Nov 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.8-1
+- 650165 - propagate use_rhn_date down to Dumper
+- fixed sgml documentation
+
+* Fri Nov 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.7-1
+- 650165 - let user specify which date for incremental export use
+
+* Fri Nov 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.6-1
+- removed redundant code
+- merged duplicate code
+- 652852 - dirs and links have no checksum
+- l10n: Updates to German (de) translation
+
+* Thu Nov 18 2010 Lukas Zapletal 1.3.5-1
+- 653163 - sort channels in output of satellite-sync
+
+* Thu Nov 18 2010 Lukas Zapletal 1.3.4-1
+- Fixing error in backend spec (unpackaged file)
+
+* Tue Nov 16 2010 Lukas Zapletal 1.3.3-1
+- Adding round brackets to evr (multiple commits)
+
+* Tue Nov 16 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.2-1
+- fixed iss
+- fixed mod_wsgi configuration
+- removed /PKG_UPLOAD leftovers
+- l10n: Updates to German (de) translation
+- 652613 - set ownership to apache:apache by default
+- 652625 - fixed file path
+
+* Mon Nov 15 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.1-1
+- 652815 - satellite-sync speed up
+- 652815 - don't resync packages with wrong path when called with --no-rpms
 
 * Sun Nov 14 2010 Michael Mraka <michael.mraka@redhat.com> 1.2.72-1
 - speed up satellite-sync - skip packages we already processed

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -23,18 +23,11 @@
 # $Id$
 
 import string
-from types import IntType, ListType, TupleType, StringType
 
-from spacewalk.common import rhnFault, log_error, log_debug
-from spacewalk.common.rhnTranslate import _
-
-################
-## FUNCTIONS
-################
-    
-# This statement builds a sql statement for an insert
-# of 'items' into "table" indexed by "hash_name"
 def build_sql_insert(table, hash_name, items):
+    """ This statement builds a sql statement for an insert
+        of 'items' into "table" indexed by "hash_name"
+    """
     sql = "insert into %s ( %s, %s ) values ( :p0, %s )" % (
         table, hash_name,
         string.join(map(lambda a: a[0], items), ", "),
@@ -43,9 +36,10 @@ def build_sql_insert(table, hash_name, items):
     map(pdict.update, map(lambda a : { "p_%s" % a[0] : a[1] }, items))
     return sql, pdict
 
-# This statement builds a sql statement for an update
-# of 'items' into "table" indexed by "hash_name"
 def build_sql_update(table, hash_name, items):
+    """ This statement builds a sql statement for an update
+        of 'items' into "table" indexed by "hash_name"
+    """
     sql = "update %s set %s where %s = :p0" % (
         table,
         string.join(map(lambda a: "%s = :p_%s" % (a, a),

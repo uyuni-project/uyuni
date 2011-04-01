@@ -1,6 +1,6 @@
 Summary: RHN support for yum
 Name: yum-rhn-plugin
-Version: 1.2.7
+Version: 1.4.8
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -47,6 +47,25 @@ make -f Makefile.yum-rhn-plugin install VERSION=%{version}-%{release} PREFIX=$RP
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%pre
+# 682820 - re-enable yum-rhn-plugin after package upgrade if the system is already registered
+export pluginconf='/etc/yum/pluginconf.d/rhnplugin.conf'
+if [ $1 -gt 1 ] && [ -f /etc/sysconfig/rhn/systemid ] && [ -f "$pluginconf" ]; then
+    if grep -q '^[[:space:]]*enabled[[:space:]]*=[[:space:]]*1[[:space:]]*$' \
+       "$pluginconf"; then
+        touch /var/tmp/enable-yum-rhn-plugin
+    fi
+fi
+
+%post
+# 682820 - re-enable yum-rhn-plugin after package upgrade if the system is already registered
+export pluginconf='/etc/yum/pluginconf.d/rhnplugin.conf'
+if [ $1 -gt 1 ] && [ -f "$pluginconf" ] && [ -f "/var/tmp/enable-yum-rhn-plugin" ]; then
+    sed -i 's/^\([[:space:]]*enabled[[:space:]]*=[[:space:]]*\)0\([[:space:]]*\)$/\11\2/'  \
+        "$pluginconf"
+    rm -f /var/tmp/enable-yum-rhn-plugin
+fi
+
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/yum/pluginconf.d/rhnplugin.conf
@@ -63,6 +82,75 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Mar 30 2011 Miroslav Suchý 1.4.8-1
+- 683200 - ssl cert can not be unicode string
+- fix variable typo
+- older yum do not have _repos_persistdir
+
+* Wed Mar 30 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.7-1
+- 683200 - support IDN
+
+* Thu Mar 24 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.6-1
+- 688870 - also check whether cached repo is valid
+
+* Wed Mar 23 2011 Jan Pazdziora 1.4.5-1
+- remove every reference to "up2date --register" - even in comments
+  (msuchy@redhat.com)
+- 684342 - beside repo.id, cache even repo.name (msuchy@redhat.com)
+
+* Thu Mar 10 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.4-1
+- 683546 - optparse isn't friendly to translations in unicode
+- 682820 - re-enable yum-rhn-plugin after package upgrade if the system is
+  already registered
+- forward port translations from RHEL6 to yum-rhn-plugin
+
+* Fri Feb 18 2011 Jan Pazdziora 1.4.3-1
+- handle installations of less recent package versions correctly
+  (mzazrivec@redhat.com)
+
+* Wed Feb 16 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.2-1
+- l10n: Updates to Russian (ru) translation (ypoyarko@fedoraproject.org)
+- repopulate package sack after initial setup (mzazrivec@redhat.com)
+
+* Mon Feb 14 2011 Jan Pazdziora 1.4.1-1
+- 675780 - remove installed packages from transaction (mzazrivec@redhat.com)
+- 671032 - specify RHN as "RHN Satellite or RHN Classic" (msuchy@redhat.com)
+- 671032 - disable rhnplugin by default and enable it only after successful
+  registration (msuchy@redhat.com)
+- Bumping package versions for 1.4 (tlestach@redhat.com)
+
+* Wed Feb 02 2011 Tomas Lestach <tlestach@redhat.com> 1.3.6-1
+- this was accidentaly commited in previous commit - reverting
+  (msuchy@redhat.com)
+- 648403 - do not require up2date on rhel5 (msuchy@redhat.com)
+
+* Mon Jan 31 2011 Tomas Lestach <tlestach@redhat.com> 1.3.5-1
+- 672471 - do not send info to rhnParent about removing packages if plugin is
+  enabled, but machine is not registred - i.e. getSystemId() returns None
+  (msuchy@redhat.com)
+
+* Thu Jan 20 2011 Tomas Lestach <tlestach@redhat.com> 1.3.4-1
+- updating Copyright years for year 2011 (tlestach@redhat.com)
+- update .po and .pot files for yum-rhn-plugin (tlestach@redhat.com)
+- 666545 - don't report empty transactions as a successful action
+  (mzazrivec@redhat.com)
+- fix expression semantics (mzazrivec@redhat.com)
+
+* Fri Jan 14 2011 Michael Mraka <michael.mraka@redhat.com> 1.3.3-1
+- switch off network communication in cache only mode
+- cache list of rhn channels so we can correctly clean our stuff
+- 627525 - moved communication with satellite server from init_hook to
+- 656380 - do not disable SSL server name check for XMLRPC communication
+- 652424 - code optimalization: use up2date_cfg as class atribute
+- 652424 - do not enable Akamai if you set useNoSSLForPackages option
+- 627525 - do not parse command line, leave it to yum itself
+
+* Mon Jan 03 2011 Miroslav Suchý <msuchy@redhat.com> 1.3.2-1
+- 666876 - respect metadata_expire setting from yum config
+
+* Wed Nov 24 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.1-1
+- removed unused imports
+
 * Mon Nov 15 2010 Jan Pazdziora 1.2.7-1
 - l10n: Updates to Italian (it) translation (tombo@fedoraproject.org)
 

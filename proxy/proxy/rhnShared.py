@@ -1,6 +1,6 @@
 # Shared (RHN Proxy/Redirect) handler code called by rhnApache.
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -292,7 +292,6 @@ class SharedHandler:
             hdrs[k] = req.headers_in[k]
         return hdrs
 
-    # Forward the server response to the client.
     def _forwardServer2Client(self):
         """ Forward headers, and bodyfd from server to the calling client.
             For most XMLRPC code, this function is called.

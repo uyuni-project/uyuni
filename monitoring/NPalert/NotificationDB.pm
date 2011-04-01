@@ -305,8 +305,7 @@ sub select_active_redirects {
         RECURRING_FREQUENCY,
         RECURRING_DURATION
       FROM   $table
-      WHERE  EXPIRATION >= SYSDATE
-      AND    START_DATE <= SYSDATE + 1
+      WHERE  SYSDATE < EXPIRATION
 EOSQL
 
   my $redirptr = $self->execute($sql, $table, FETCH_ARRAYREF);
@@ -332,8 +331,7 @@ EOSQL
       FROM 
         $table, $table2
       WHERE 
-        $table2.EXPIRATION >= SYSDATE
-        AND    $table2.START_DATE <= SYSDATE + 1
+        SYSDATE < $table2.EXPIRATION
         AND    $table.REDIRECT_ID = $table2.RECID
 EOSQL
 
@@ -357,8 +355,7 @@ EOSQL
       FROM 
         $table, $table2
       WHERE 
-               $table2.EXPIRATION >= SYSDATE
-        AND    $table2.START_DATE <= SYSDATE + 1
+        SYSDATE < $table2.EXPIRATION
         AND    $table.REDIRECT_ID = $table2.RECID
 EOSQL
 
@@ -381,8 +378,7 @@ EOSQL
       FROM 
         $table, $table2
       WHERE 
-               $table2.EXPIRATION >= SYSDATE
-        AND    $table2.START_DATE <= SYSDATE + 1
+        SYSDATE < $table2.EXPIRATION
         AND    $table.REDIRECT_ID = $table2.RECID
 EOSQL
 
@@ -416,8 +412,7 @@ sub select_active_redirect_criteria {
         $table.MATCH_VALUE,
         $table.INVERTED
       FROM   $table, $table2
-      WHERE  $table2.EXPIRATION >= SYSDATE
-      AND    $table2.START_DATE <= SYSDATE + 1
+      WHERE  SYSDATE < $table2.EXPIRATION
       AND    $table2.RECID = $table.REDIRECT_ID
       ORDER BY $table.REDIRECT_ID, $table.MATCH_PARAM
 EOSQL
@@ -1755,7 +1750,7 @@ B<NOCpulse::Probe::DataSource::Oracle>
 B<NOCpulse::Probe::Error>
 B<NOCpulse::Config>
 B<generate-config>
-B</var/www/cgi-bin/alertmgr.cgi>
-B</var/www/cgi-bin/redirmgr.cgi>
+B</usr/share/nocpulse/cgi-bin/alertmgr.cgi>
+B</usr/share/nocpulse/cgi-bin/redirmgr.cgi>
 
 =cut

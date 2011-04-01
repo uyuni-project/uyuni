@@ -18,9 +18,8 @@ Non-authenticated dumper
 
 import os
 import xmlrpclib
-import gzip, tempfile
-from spacewalk.common import log_debug, log_error, rhnFault, CFG, UserDictCase, rhnCache
-from spacewalk.common import rhnLib as rhnLib_common
+import gzip
+from spacewalk.common import log_debug, log_error, rhnFault, CFG, UserDictCase
 from spacewalk.server import rhnSQL, rhnLib
 from spacewalk.server.rhnHandler import rhnHandler
 from spacewalk.server.importlib.backendLib import localtime
@@ -162,7 +161,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
     def _get_channel_data(self, channels):
         writer = ContainerWriter()
-        d = ChannelsDumper(writer, channels=channels.values())
+        d = ChannelsDumper(writer, params=channels.values())
         d.dump()
         data = writer.get_data()
         # We don't care about <rhn-channels> here
@@ -243,7 +242,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
         writer = self._get_xml_writer()
         d = dumper.SatelliteDumper(writer, dumper.ChannelsDumperEx(writer,
-            channels=channels.values()))
+            params=channels.values()))
         d.dump()
         writer.flush()
         log_debug(4, "OK")
@@ -327,11 +326,6 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     def get_rpm(self, package, channel):
         log_debug(1, package, channel)
         return self._send_package_stream(package, channel)
-
-    def get_source_rpm(self, package):
-        log_debug(1, package)
-        return self._send_package_stream(package, "rhn-source-package-",
-            "rhnPackageSource")
 
     def get_comps_file(self, channel):
         comps_query = """
@@ -536,57 +530,13 @@ class ChannelsDumper(dumper.ChannelsDumper):
         c = exportLib.ChannelDumper(self._writer, data)
         c.dump()
 
-_query_lookup_last_modified_packages = rhnSQL.Statement("""
-    select TO_CHAR(last_modified, 'YYYY-MM-DD HH24:MI:SS') last_modified
-      from rhnPackage
-     where id = :id
-""")
-def _lookup_last_modified_packages(package_ids):
-    h = rhnSQL.prepare(_query_lookup_last_modified_packages)
-    ret = []
-    for pid in package_ids:
-        h.execute(id=pid)
-        row = h.fetchone_dict()
-        assert row, "Invalid package id %s" % pid
-        ret.append((pid, row['last_modified']))
-    return ret
-
-_query_lookup_last_modified_ks_trees = rhnSQL.Statement("""
-    select TO_CHAR(kt.last_modified, 'YYYY-MM-DD HH24:MI:SS') last_modified
-      from rhnKickstartableTree kt, rhnChannel c
-     where kt.channel_id = c.id
-       and c.label = :channel_label
-       and kt.label = :ks_label
-       and kt.org_id is null
-""")
-def _lookup_last_modified_ks_trees(channel_label, ks_trees):
-    h = rhnSQL.prepare(_query_lookup_last_modified_ks_trees)
-    ret = []
-    for klabel in ks_trees:
-        h.execute(channel_label=channel_label, ks_label=klabel)
-        row = h.fetchone_dict()
-        assert row, "Invalid kickstart label %s for channel %s" % (
-            klabel, channel_label)
-        ret.append((klabel, row['last_modified']))
-    return ret
-
 def _get_path_from_cursor(h):
     # Function shared between other retrieval functions
     rs = h.fetchall_dict()
     if not rs:
         raise InvalidPackageError
 
-    # It is unlikely for this query to return more than one row,
-    # but it is possible
-    # (having two packages with the same n, v, r, a and different epoch in
-    # the same channel is prohibited by the RPM naming scheme; but extra
-    # care won't hurt)
     max_row = rs[0]
-    for each in rs[1:]:
-        # Compare the epoch as string
-        if _none2emptyString(each['epoch']) > _none2emptyString(
-                max_row['epoch']):
-            max_row = each
 
     if max_row['path'] is None:
 

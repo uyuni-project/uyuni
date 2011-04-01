@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -39,12 +39,13 @@ class FileProcessor:
     def process(self, file_struct, directory=None, strict_ownership=1):
         # Older servers will not return directories; if filetype is missing,
         # assume file
-        if directory:
-            directory += os.path.split(file_struct['path'])[0]
 
     	if file_struct.get('filetype') == 'directory':
-                return directory, []
+                file_struct['path'] = directory + file_struct['path']
+                return file_struct['path'], []
 
+        if directory:
+            directory += os.path.split(file_struct['path'])[0]
         if file_struct.get('filetype') == 'symlink':
             if not file_struct.has_key('symlink'):
                 raise Exception, "Missing key symlink"
@@ -96,9 +97,11 @@ class FileProcessor:
         sectx_result = ''
         result = ''
 
-        if is_selinux_enabled():
+        try:
             cur_sectx = lgetfilecon(path)[1]
-        else:
+        except OSError: # workarounding BZ 690238
+            cur_sectx = None
+        if not is_selinux_enabled():
             cur_sectx = None
 
         if cur_sectx == None:

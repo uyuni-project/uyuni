@@ -1551,9 +1551,19 @@ public class SystemManager extends BaseManager {
         User user = UserFactory.findRandomOrgAdmin(orgIn);
         ValidatorResult result = new ValidatorResult();
 
-        // If this is a Satellite, subscribe to the virt channel if possible:
+        // If this is a Satellite
         if (!ConfigDefaults.get().isSpacewalk()) {
-            subscribeToVirtChannel(server, user, result);
+            // just install libvirt for RHEL6 base channel
+            Channel base = server.getBaseChannel();
+            if ((base != null) &&
+                 base.isRhelChannel() &&
+                 base.isReleaseXChannel(6)) {
+                // do some actions for RHEL6
+            }
+            else {
+                // otherwise subscribe to the virt channel if possible
+                subscribeToVirtChannel(server, user, result);
+            }
         }
 
         // Before we start looking to subscribe to a 'tools' channel for
@@ -1993,12 +2003,10 @@ public class SystemManager extends BaseManager {
             return true;
         }
 
-        // Otherwise check available subs
-        Long availableSubscriptions =
-            ChannelManager.getAvailableEntitlements(orgIn, channelIn);
+        Long availableSubscriptions = availableSystemChannelSubscriptions(serverIn,
+            channelIn, orgIn);
 
-        if (availableSubscriptions != null &&
-                (availableSubscriptions.longValue() < 1)) {
+        if (availableSubscriptions != null && (availableSubscriptions.longValue() < 1)) {
             log.debug("avail subscriptions is to small : " + availableSubscriptions);
             
             // Return true if serverIn has subs to a channel of channelIn's family
@@ -2019,6 +2027,38 @@ public class SystemManager extends BaseManager {
         }
         log.debug("canServerSubscribeToChannel true!");
         return true;
+    }
+
+    /**
+     * For given Server, Channel and Org return number of available subscriptions
+     * @param serverIn Server to check
+     * @param channelIn Channel to check
+     * @param orgIn Org to check
+     * @return number of subscriptions available
+     */
+    public static Long availableSystemChannelSubscriptions(Server serverIn,
+        Channel channelIn, Org orgIn) {
+        SelectMode m = ModeFactory.getMode("System_queries", "is_server_fve_eligible");
+        Map params = new HashMap();
+        params.put("sid", serverIn.getId());
+
+        Long availableSubscriptions = null;
+
+        /* If serverIn is fve eligible, check number of flex guest entitlements available */
+        if (m.execute(params).size() >= 1) {
+            availableSubscriptions =
+                ChannelManager.getAvailableFveEntitlements(orgIn, channelIn);
+        }
+
+        /* If the previous query did not result any data or the number of flex guest
+         * subscriptions is zero, check number of regular entitlements available
+         */
+        if ((availableSubscriptions == null) || (availableSubscriptions.longValue() < 1)) {
+            availableSubscriptions = ChannelManager.getAvailableEntitlements(orgIn,
+              channelIn);
+        }
+
+        return availableSubscriptions;
     }
 
     /**
@@ -2402,7 +2442,7 @@ public class SystemManager extends BaseManager {
         Map params = new HashMap();
         params.put("hw_id", hwId);
         DataResult<HardwareDeviceDto> dr = m.execute(params);
-        if (dr != null) {
+        if (dr != null && !dr.isEmpty()) {
             hwDto = dr.get(0);
         }
         return hwDto;

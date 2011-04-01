@@ -82,15 +82,19 @@ public class TaskoXmlRpcHandler {
         catch (SchedulerException se) {
             return null;
         }
+        if (!TaskoQuartzHelper.isValidCronExpression(cronExpression)) {
+            throw new InvalidParamException("Cron trigger: " + cronExpression);
+        }
         // create schedule
-        TaskoSchedule schedule = null;
-        schedule = new TaskoSchedule(orgId, bunch, jobLabel, params,
+        TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, jobLabel, params,
                 startTime, endTime, cronExpression);
         TaskoFactory.save(schedule);
+        TaskoFactory.commitTransaction();
         // create job
         Date scheduleDate = TaskoQuartzHelper.createJob(schedule);
         if (scheduleDate == null) {
             TaskoFactory.delete(schedule);
+            TaskoFactory.commitTransaction();
         }
         return scheduleDate;
     }
@@ -235,14 +239,15 @@ public class TaskoXmlRpcHandler {
             return null;
         }
         // create schedule
-        TaskoSchedule schedule = null;
-        schedule = new TaskoSchedule(orgId, bunch, jobLabel, params,
+        TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, jobLabel, params,
                 start, null, null);
         TaskoFactory.save(schedule);
+        TaskoFactory.commitTransaction();
         // create job
         Date scheduleDate = TaskoQuartzHelper.createJob(schedule);
         if (scheduleDate == null) {
             TaskoFactory.delete(schedule);
+            TaskoFactory.commitTransaction();
         }
         return scheduleDate;
     }

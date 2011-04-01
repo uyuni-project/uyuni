@@ -15,20 +15,18 @@ import up2dateErrors
 import up2dateUtils
 import up2dateAuth
 
+import xmlrpclib
 from rhn import rpclib
 
 import gettext
-_ = gettext.gettext
-
+t = gettext.translation('rhn-client-tools', fallback=True)
+_ = t.ugettext
 
 def stdoutMsgCallback(msg):
     print msg
 
 
 class RetryServer(rpclib.Server):
-    def foobar(self):
-        pass
-
     def addServerList(self, serverList):
         self.serverList = serverList
 
@@ -39,7 +37,7 @@ class RetryServer(rpclib.Server):
                 ret = self._request(methodname, params)
             except rpclib.InvalidRedirectionError:
                 raise
-            except rpclib.Fault:
+            except xmlrpclib.Fault:
                 raise
             except httplib.BadStatusLine:
                 self.log.log_me("Error: Server Unavailable. Please try later.") 
@@ -115,7 +113,7 @@ def getServer(refreshCallback=None):
     # The servers we're talking to need to have their certs
     # signed by one of these CA.
     ca = cfg["sslCACert"]
-    if type(ca) == type(""):
+    if isinstance(ca, basestring):
         ca = [ca]
 
     rhns_ca_certs = ca or ["/usr/share/rhn/RHNS-CA-CERT"]
@@ -124,12 +122,7 @@ def getServer(refreshCallback=None):
     else:
         proxyHost = None
 
-    serverUrls = cfg["serverURL"]
-
-    # the standard is to be a string, so list-a-fy in that case
-    if type(serverUrls) == type(""):
-        serverUrls = [serverUrls]
-
+    serverUrls = config.getServerlURL()
     serverList = ServerList(serverUrls)
 
     proxyUser = None
@@ -226,7 +219,7 @@ def doCall(method, *args, **kwargs):
             log.log_me(msg)
             raise up2dateErrors.CommunicationError(msg)
         
-        except rpclib.ProtocolError, e:
+        except xmlrpclib.ProtocolError, e:
             
             log.log_me("A protocol error occurred: %s , attempt #%s," % (
                 e.errmsg, attempt_count))
@@ -276,7 +269,7 @@ def doCall(method, *args, **kwargs):
                 else:
                     failure = 1
             
-        except rpclib.ResponseError:
+        except xmlrpclib.ResponseError:
             raise up2dateErrors.CommunicationError(
                 "Broken response from the server.")
 

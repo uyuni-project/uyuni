@@ -1281,19 +1281,15 @@ sub verify_channel_role {
 
   my $dbh = RHN::DB->connect;
   my $sth = $dbh->prepare(<<EOQ);
-BEGIN
-  :result := rhn_channel.user_role_check_debug(:cid, :user_id, :role, :reason);
-END;
+	select rhn_channel.user_role_check(:cid, :user_id, :role) from dual
 EOQ
 
-  my ($result, $reason);
-  $sth->execute_h(cid => $channel_id,
+  my $result = $sth->execute_h(cid => $channel_id,
 		  user_id => $self->id,
 		  role => $role,
-		  result => \$result,
-		  reason => \$reason);
+		);
 
-  return wantarray ? ($result, $reason) : $result;
+  return $result;
 }
 sub verify_errata_admin {
   my $self = shift;
@@ -1657,33 +1653,21 @@ sub grant_servergroup_permission {
   my $sgid = shift;
 
   my $dbh = RHN::DB->connect;
-  my $sth = $dbh->prepare(<<EOS);
-DECLARE
-    cursor usgps is
-        select  wc.id user_id,
-                sg.id server_group_id
-        from    rhnServerGroup sg,
-                web_contact wc
-        where   wc.id = :user_id
-            and sg.id = :server_group_id
+  if ($dbh->selectrow_array(<<EOS, {}, $uid, $sgid)) {
+        select  web_contact.id, rhnServerGroup.id
+        from    web_contact, rhnServerGroup
+        where   web_contact.id = ?
+            and rhnServerGroup.id = ?
             and not exists (
                 select  1
                 from    rhnUserServerGroupPerms usgp
-                where   usgp.user_id = :user_id
-                    and usgp.server_group_id = :server_group_id
-            );
-BEGIN
-    for usgp in usgps loop
-        begin
-            rhn_user.add_servergroup_perm(:user_id, :server_group_id);
-        exception
-            when others then null;
-        end;
-    end loop;
-END;
+                where   web_contact.id = usgp.user_id
+                    and rhnServerGroup.id = usgp.server_group_id
+            )
 EOS
+    $dbh->call_procedure('rhn_user.add_servergroup_perm', $uid, $sgid);
+  }
 
-  $sth->execute_h(user_id => $uid, server_group_id => $sgid);
   $dbh->commit;
 }
 
@@ -1700,32 +1684,23 @@ sub revoke_servergroup_permission {
   my $sgid = shift;
 
   my $dbh = RHN::DB->connect;
-  my $sth = $dbh->prepare(<<EOS);
-DECLARE
-  cursor usgps is
+  for my $row (@{ $dbh->selectall_arrayref(<<EOS, {}, $uid, $sgid) }) {
     select  usgp.server_group_id, usgp.user_id
     from    rhnUserServerGroupPerms usgp
-    where   usgp.server_group_id = :server_group_id
+    where   usgp.user_id = ?
+        and usgp.server_group_id = ?
         and exists (
             select  1
             from    rhnServerGroup  sg,
                     web_contact     wc
-            where   wc.id = :user_id
-                and sg.id = :server_group_id
+            where   wc.id = usgp.user_id
+                and sg.id = usgp.server_group_id
                 and sg.org_id = wc.org_id
             );
-BEGIN
-    for usgp in usgps loop
-        begin
-            rhn_user.remove_servergroup_perm(:user_id, :server_group_id);
-        exception
-            when others then null;
-        end;
-    end loop;
-END;
 EOS
+    $dbh->call_procedure('rhn_user.remove_servergroup_perm', $uid, $sgid);
+  }
 
-  $sth->execute_h(server_group_id => $sgid, user_id => $uid);
   $dbh->commit;
 }
 

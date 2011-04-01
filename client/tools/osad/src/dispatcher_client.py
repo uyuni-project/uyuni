@@ -14,7 +14,7 @@
 #
 
 import time
-from spacewalk.common import log_debug, log_error
+from spacewalk.common import log_debug
 from spacewalk.server import rhnSQL
 
 import jabber_lib
@@ -190,7 +190,7 @@ class Client(jabber_lib.JabberClient):
     _query_update_client_message_received = rhnSQL.Statement("""
         update rhnPushClient
            set state_id = :state_id,
-               last_message_time = sysdate,
+               last_message_time = current_timestamp,
                last_ping_time = NULL,
                next_action_time = NULL
          where jabber_id = :jid

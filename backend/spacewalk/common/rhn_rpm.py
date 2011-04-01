@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,8 +17,6 @@ import os
 import sys
 import rpm
 import struct
-
-import exceptions
 
 # Expose a bunch of useful constants from rpm
 error = rpm.error
@@ -56,75 +54,6 @@ PGPHASHALGO = {
 
 class InvalidPackageError(Exception):
     pass
-
-# wrapper/proxy class for rpm.Transaction so we can
-# instrument it, etc easily
-class RPMTransaction:
-    read_only = 0
-    def __init__(self):
-        self.ts = rpm.TransactionSet()
-        self.tsflags = []
-
-    def getMethod(self, method):
-        # in theory, we can override this with
-        # profile/etc info
-        return getattr(self.ts, method)
-
-    # push/pop methods so we don't lose the previous
-    # set value, and we can potentially debug a bit
-    # easier
-    def pushVSFlags(self, flags):
-        self.tsflags.append(flags)
-        self.ts.setVSFlags(self.tsflags[-1])
-
-    def popVSFlags(self):
-        del self.tsflags[-1]
-        self.ts.setVSFlags(self.tsflags[-1])
-
-    def addInstall(self, arg1, arg2, mode):
-        """Install a package"""
-        hdr = arg1.hdr
-        return self.ts.addInstall(hdr, arg2, mode)
-
-    def addErase(self, arg1):
-        """Erase a package"""
-        hdr = arg1.hdr
-        return self.ts.addErase(hdr)
-
-    def check(self):
-        """Check dependencies"""
-        return self.ts.check()
-
-    def setFlags(self, flag):
-        """Set transaction flags"""
-        return self.ts.setFlags(flag)
-
-    def setProbFilter(self, flag):
-        """Set problem flags"""
-        return self.ts.setProbFilter(flag)
-
-    def run(self, callback, user_data):
-        return self.ts.run(callback, user_data)
-
-    def hdrFromFdno(self, fd):
-	return self.ts.hdrFromFdno(fd)
-
-
-
-class SharedStateTransaction:
-    _shared_state = {}
-
-    def __init__(self):
-        self.__dict__ = self._shared_state
-
-class RPMReadOnlyTransaction(SharedStateTransaction, RPMTransaction):
-    read_only = 1
-    def __init__(self):
-        SharedStateTransaction.__init__(self)
-        if not hasattr(self, 'ts'):
-            RPMTransaction.__init__(self)
-            # FIXME: replace with macro defination
-            self.pushVSFlags(8)
 
 class RPM_Header:
     "Wrapper class for an rpm header - we need to store a flag is_source"
@@ -167,18 +96,19 @@ class RPM_Header:
         ]
         for ht, sig_type in header_tags:
             ret = self.hdr[ht]
-            if not ret or len(ret) < 17:
+            if not ret:
+                continue
+            ret_len = len(ret)
+            if ret_len < 17:
                 continue
             # Get the key id - hopefully we get it right
-            ver = ret[3]
-            ver_len = len(ver)
-            format = "%dB" % ver_len
-            t = struct.unpack(format, ver)
-            ver = "%d" % t
-            if ver == "3":
-                key_id = ret[10:18]
-            else:
+            elif ret_len <= 65: # V3 DSA signature
                 key_id = ret[9:17]
+            elif ret_len <= 72: # V4 DSA signature
+                key_id = ret[18:26]
+            else: # ret_len <= 536 # V3 RSA/SHA256 signature
+                key_id = ret[10:18]
+
             key_id_len = len(key_id)
             format = "%dB" % key_id_len
             t = struct.unpack(format, key_id)
@@ -242,11 +172,14 @@ def get_header_struct_size(package_file):
 
     return header_size
 
-# Loads the package header from a file / stream / file descriptor
-# Raises rpm.error if an error is found, or InvalidPacageError if package is
-# busted
-# XXX Deal with exceptions better
+SHARED_TS=None
 def get_package_header(filename=None, file=None, fd=None):
+    """ Loads the package header from a file / stream / file descriptor
+        Raises rpm.error if an error is found, or InvalidPacageError if package is
+        busted
+    """
+    global SHARED_TS
+    # XXX Deal with exceptions better
     if (filename is None and file is None and fd is None):
         raise ValueError, "No parameters passed"
 
@@ -264,25 +197,12 @@ def get_package_header(filename=None, file=None, fd=None):
     else:
         file_desc = f.fileno()
 
-# FIXME:
-    if None:
-        pass
-# - readHeaderFromFD() doesn't set hdr['archivesize'] which makes payload_size = 0
-#   for all imported packages
-# - this code was introduced as a fix of bz 487621; if it re-appears then uncomment
-#   and try to fix missing hdr['archivesize'] another way
-#    #if hasattr(rpm, 'readHeaderFromFD'):
-#
-#        header_start, header_end = \
-#                get_header_byte_range(os.fdopen(os.dup(file_desc)))
-#        os.lseek(file_desc, header_start, 0)
-#        hdr, offset = rpm.readHeaderFromFD(file_desc)
-    else:
-        # RHEL-4 and older, do the old way
-        ts = RPMReadOnlyTransaction()
-        ts.pushVSFlags(~(rpm.RPMVSF_NOMD5 | rpm.RPMVSF_NEEDPAYLOAD))
-        hdr = ts.hdrFromFdno(file_desc)
-        ts.popVSFlags()
+    # don't try to use rpm.readHeaderFromFD() here, it brokes signatures
+    # see commit message
+    if not SHARED_TS:
+        SHARED_TS = rpm.ts()
+    SHARED_TS.setVSFlags(-1)
+    hdr = SHARED_TS.hdrFromFdno(file_desc)
     if hdr is None:
         raise InvalidPackageError
     is_source = hdr[rpm.RPMTAG_SOURCEPACKAGE]

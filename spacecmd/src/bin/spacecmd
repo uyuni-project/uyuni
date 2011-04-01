@@ -24,7 +24,6 @@
 import logging, os, re, sys, xmlrpclib
 from ConfigParser import SafeConfigParser, NoOptionError
 from optparse import Option, OptionParser
-from pwd import getpwuid
 from spacecmd.shell import SpacewalkShell
     
 _INTRO = '''Welcome to spacecmd, a command-line interface to Spacewalk.
@@ -33,6 +32,8 @@ Type: 'help' for a list of commands
       'help <cmd>' for command-specific help
       'quit' to quit
 '''
+
+_SYSTEM_CONF_FILE = '/etc/spacecmd.conf'
 
 if __name__ == '__main__':
     optionsTable = [
@@ -58,56 +59,8 @@ if __name__ == '__main__':
 
     parser = OptionParser(option_list=optionsTable, usage=usage)
     (options, args) = parser.parse_args()
-    
-    # enable debugging as early as possible
-    if options.debug:
-        level = logging.DEBUG
 
-    # files are loaded from ~/.spacecmd/
-    userinfo = getpwuid(os.getuid())
-    conf_dir = os.path.join(userinfo[5], '.spacecmd')
-    conf_file = os.path.join(conf_dir, 'config')
-
-    # load options from a configuration file
-    if os.path.isfile(conf_file):
-        config = SafeConfigParser()
-        config.read(conf_file)    
-
-        boolean_opts = [ 'nossl' ]
-        string_opts = [ 'server', 'username', 'password' ]
-
-        for key in boolean_opts:
-            if not options.__dict__[key]:
-                try:
-                    options.__dict__[key] = config.getboolean('spacecmd', key)
-                except NoOptionError:
-                    pass
-
-        for key in string_opts:
-            if not options.__dict__[key]:
-                try:
-                    options.__dict__[key] = config.get('spacecmd', key)
-                except NoOptionError:
-                    pass
-    else:
-        try:
-            # create ~/.spacecmd
-            if not os.path.isdir(conf_dir):
-                logging.debug('Creating %s' % conf_dir)
-                os.mkdir(conf_dir, 0700)
-           
-            # create a template configuration file 
-            handle = open(conf_file, 'w')
-            handle.write('[spacecmd]\n')
-            handle.close()
-        except IOError:
-            logging.error('Could not create %s' % conf_file)
-
-    # set the default server to localhost
-    if not options.server:
-        options.server = 'localhost'
-
-    # reset the log level after parsing the config file
+    # determine the logging level
     if options.debug:
         level = logging.DEBUG
     elif options.quiet:
@@ -115,10 +68,49 @@ if __name__ == '__main__':
     else:
         level = logging.INFO
 
+    # configure logging
     logging.basicConfig(level=level, format='%(levelname)s: %(message)s')
 
+    # files are loaded from ~/.spacecmd/
+    conf_dir = os.path.expanduser('~/.spacecmd')
+    user_conf_file = os.path.join(conf_dir, 'config')
+
+    # server-specifics will be loaded from the configuration file later
+    config = SafeConfigParser()
+
     # create an instance of the shell
-    shell = SpacewalkShell(options)
+    shell = SpacewalkShell(options, conf_dir, config)
+
+    # set the default server to localhost
+    if shell.options.server:
+        shell.config['server'] = shell.options.server
+    else:
+        shell.config['server'] = 'localhost'
+
+    # create an empty configuration file if one's not present
+    if not os.path.isfile(user_conf_file):
+        try:
+            # create ~/.spacecmd
+            if not os.path.isdir(conf_dir):
+                logging.debug('Creating %s' % conf_dir)
+                os.mkdir(conf_dir, 0700)
+           
+            # create a template configuration file 
+            logging.debug('Creating configuration file: %s' % user_conf_file)
+            handle = open(user_conf_file, 'w')
+            handle.write('[spacecmd]\n')
+            handle.close()
+        except IOError:
+            logging.error('Could not create %s' % user_conf_file)
+
+    # load options from configuration files
+    files_read = config.read( [ _SYSTEM_CONF_FILE, user_conf_file ] )
+
+    for item in files_read:
+        logging.debug('Read configuration from %s' % item)
+
+    # load the default configuration section
+    shell.load_config_section('spacecmd')
 
     # run a single command from the command line
     if len(args):
@@ -133,7 +125,7 @@ if __name__ == '__main__':
             if isinstance(detail, xmlrpclib.Fault):
                 detail = detail.faultString
 
-            if options.debug:
+            if shell.options.debug:
                 # print the traceback when debugging
                 logging.exception(detail)
             else:
@@ -141,7 +133,7 @@ if __name__ == '__main__':
 
             sys.exit(1)
     else:
-        if not options.quiet:
+        if not shell.options.quiet:
             print _INTRO
 
         if not shell.do_login(''):
@@ -164,7 +156,7 @@ if __name__ == '__main__':
                     if re.search('Could not find session', detail, re.I):
                         shell.session = ''
 
-                if options.debug:
+                if shell.options.debug:
                     # print the traceback when debugging
                     logging.exception(detail)
                 else:

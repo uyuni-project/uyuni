@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,12 +17,12 @@ import os
 import sys
 import pwd
 import grp
-import time
 import types
 import shutil
 import string
 import subprocess
 import select
+import stat
 import tempfile
 from checksum import getFileChecksum
 
@@ -264,7 +264,7 @@ def makedirs(path,  mode=0755, user=None, group=None):
             # Changing permissions failed; ignore the error
             sys.stderr.write("Changing owner for %s failed\n" % dirname)
 
-def createPath(path, user='wwwrun', group='root', chmod=0755, logging=1):
+def createPath(path, user='wwwrun', group='www', chmod=0755, logging=1):
     """advanced makedirs
 
     Will create the path if necessary.
@@ -376,3 +376,45 @@ def getUidGid(user=None, group=None):
         gid = os.getgid()
     return uid, gid
 
+FILETYPE2CHAR = {
+    'file'      : '-',
+    'directory' : 'd',
+    'symlink'   : 'l',
+    'chardev'   : 'c',
+    'blockdev'  : 'b',
+}
+
+def _ifelse(cond, thenval, elseval):
+    if cond:
+        return thenval
+    else:
+        return elseval
+
+def ostr_to_sym(octstr, ftype):
+    """ Convert filemode in octets (like '644') to string like "ls -l" ("-rwxrw-rw-")
+        ftype is one of: file, directory, symlink, chardev, blockdev.
+    """
+    mode = int(str(octstr), 8)
+
+    symstr = FILETYPE2CHAR.get(ftype, '?')
+
+    symstr += _ifelse(mode & stat.S_IRUSR, 'r', '-')
+    symstr += _ifelse(mode & stat.S_IWUSR, 'w', '-')
+    symstr += _ifelse(mode & stat.S_IXUSR,
+                      _ifelse(mode & stat.S_ISUID, 's', 'x'),
+                      _ifelse(mode & stat.S_ISUID, 'S', '-'))
+    symstr += _ifelse(mode & stat.S_IRGRP, 'r', '-')
+    symstr += _ifelse(mode & stat.S_IWGRP, 'w', '-')
+    symstr += _ifelse(mode & stat.S_IXGRP,
+                      _ifelse(mode & stat.S_ISGID, 's', 'x'),
+                      _ifelse(mode & stat.S_ISGID, 'S', '-'))
+    symstr += _ifelse(mode & stat.S_IROTH, 'r', '-')
+    symstr += _ifelse(mode & stat.S_IWOTH, 'w', '-')
+    symstr += _ifelse(mode & stat.S_IXOTH,
+                      _ifelse(mode & stat.S_ISVTX, 't', 'x'),
+                      _ifelse(mode & stat.S_ISVTX, 'T', '-'))
+    return symstr
+
+def f_date(dbiDate):
+    return "%04d-%02d-%02d %02d:%02d:%02d" % (dbiDate.year, dbiDate.month,
+        dbiDate.day, dbiDate.hour, dbiDate.minute, dbiDate.second)

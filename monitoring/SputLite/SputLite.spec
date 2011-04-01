@@ -1,17 +1,11 @@
-%if 0%{?suse_version}
-%define cgi_bin        /srv/www/cgi-bin
-%define cgi_mod_perl   /srv/www/cgi-mod-perl
-%define templatedir    /srv/www/templates
-%else
-%define cgi_bin        /var/www/cgi-bin
-%define cgi_mod_perl   /var/www/cgi-mod-perl
-%define templatedir    /var/www/templates
-%endif
+%define cgi_bin        %{_datadir}/nocpulse/cgi-bin
+%define cgi_mod_perl   %{_datadir}/nocpulse/cgi-mod-perl
+%define templatedir    %{_datadir}/nocpulse/templates
 %define bin            %{_bindir}
 %define vardir         /var/lib/nocpulse
 Name:         SputLite
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      0.48.12
+Version:      1.4.2
 Release:      1%{?dist}
 Summary:      Command queue processor (Sputnik Lite)
 URL:          https://fedorahosted.org/spacewalk
@@ -119,6 +113,16 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Mar 18 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.2-1
+- fixed db connection in fetch_nocpulseini*.cgi (PG)
+
+* Fri Feb 18 2011 Jan Pazdziora 1.4.1-1
+- Localize the filehandle globs; also use three-parameter opens.
+
+* Sat Nov 20 2010 Miroslav Suchý <msuchy@redhat.com> 0.48.14-1
+- bumping version as tag SputLite-0.48.13-1 already exists (msuchy@redhat.com)
+- 474591 - move web data to /usr/share/nocpulse (msuchy@redhat.com)
+
 * Wed Mar 31 2010 Miroslav Suchý <msuchy@redhat.com> 0.48.12-1
 - do not care about sending email, transfer the worries to perl-MailTools
 

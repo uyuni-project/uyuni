@@ -1,5 +1,6 @@
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Red Hat Network.
+# Copyright (c) 2000--2011 Red Hat, Inc.
+# Cristian Gafton <gafton@redhat.com>, 2000, 2001.
 #
 # Michael Calmer <Michael.Calmer@gmx.de>, 2010.
 msgid ""

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,15 +15,13 @@
 
 import time
 import gzip
-import string
 import tempfile
-import re
 from types import ListType
 from cStringIO import StringIO
 
-from spacewalk.common import log_debug, log_error, rhnFault, UserDictCase, rhnCache, \
+from spacewalk.common import log_debug, log_error, rhnFault, rhnCache, \
     CFG, rhnLib, rhnFlags
-from spacewalk.server import rhnSQL, rhnDatabaseCache
+from spacewalk.server import rhnSQL
 from spacewalk.satellite_tools import constants
 from spacewalk.satellite_tools.exporter import exportLib, xmlWriter
 from string_buffer import StringBuffer
@@ -38,6 +36,9 @@ class XML_Dumper:
              select cf.id channel_family_id, to_number(null, null) quantity
              from rhnChannelFamily cf
         """
+        self.channel_ids = []
+        self.channel_ids_for_families = []
+
     def send(self, data):
         # to be overwritten in subclass
         pass
@@ -191,12 +192,12 @@ class XML_Dumper:
                 data_iterator=h, null_max_members=0)
         return 0
 
-    def dump_channels(self, channel_labels=None, start_date=None, end_date=None):
+    def dump_channels(self, channel_labels=None, start_date=None, end_date=None, use_rhn_date=True):
         log_debug(2)
         #channels = self._validate_channels(channel_labels=channel_labels)
 
         self._write_dump(ChannelsDumper,
-                channels=channel_labels, start_date=start_date, end_date=end_date)
+                channels=channel_labels, start_date=start_date, end_date=end_date, use_rhn_date=use_rhn_date)
         return 0
 
     def _send_headers(self, error=0, init_compressed_stream=1):
@@ -368,7 +369,7 @@ class XML_Dumper:
             for package in packages:
                 packages_hash[package['package_id']] = package
 
-        self._write_dump(dump_class, packages=packages_hash.values())
+        self._write_dump(dump_class, params=packages_hash.values())
         return 0
 
     def dump_errata(self, errata, verify_errata=False):
@@ -394,7 +395,7 @@ class XML_Dumper:
             for erratum in errata:
                 errata_hash[erratum['errata_id']] = erratum
 
-        self._write_dump(ErrataDumper, errata=errata_hash.values())
+        self._write_dump(ErrataDumper, params=errata_hash.values())
         return 0
 
     def dump_kickstartable_trees(self, kickstart_labels=None,
@@ -404,7 +405,7 @@ class XML_Dumper:
             kickstart_labels = self._validate_kickstarts(
                             kickstart_labels=kickstart_labels)
         
-        self._write_dump(KickstartableTreesDumper, kickstarts=kickstart_labels)
+        self._write_dump(KickstartableTreesDumper, params=kickstart_labels)
         return 0
     
     def _validate_channels(self, channel_labels=None):
@@ -439,9 +440,9 @@ class XML_Dumper:
                 if not (iss_slave_sha256_capable
                         or all_channels_hash[label]['checksum_type'] in [None, 'sha1']):
                     raise rhnFault(3001,
-                      "Channel %s has incompatible rpm checksum (%s). Please contact\n"
+                      ("Channel %s has incompatible rpm checksum (%s). Please contact\n"
                       + "SUSE Manager support for information about upgrade to newer version\n"
-                      + "of SUSE Manager Server which supports it." %
+                      + "of SUSE Manager Server which supports it.") %
                         (label, all_channels_hash[label]['checksum_type']))
                 channels[label] = all_channels_hash[label]
 
@@ -600,12 +601,15 @@ class CachedQueryIterator:
 
 
 class CachedDumper(exportLib.BaseDumper):
-    def __init__(self, writer, statement, params):
+    iterator_query = None
+    item_id_key = 'id'
+    hash_factor = 1
+    key_template = 'dump/%s/dump-%s.xml'
+    def __init__(self, writer, params):
+	statement = rhnSQL.prepare(self.iterator_query)
         iterator = CachedQueryIterator(statement, params,
             cache_get=self.cache_get)
         exportLib.BaseDumper.__init__(self, writer, data_iterator=iterator)
-        self.use_database_cache = CFG.USE_DATABASE_CACHE
-        log_debug(1, "Use database cache", self.use_database_cache)
         self.non_cached_class = self.__class__.__bases__[1]
 
     def _get_last_modified(self, params):
@@ -621,21 +625,14 @@ class CachedDumper(exportLib.BaseDumper):
         log_debug(4, params)
         key = self._get_key(params)
         last_modified = self._get_last_modified(params)
-        if not self.use_database_cache:
-            return rhnCache.get(key, modified=last_modified, raw=1)
-        return rhnDatabaseCache.get(key, modified=last_modified, raw=1,
-            compressed=1)
+        return rhnCache.get(key, modified=last_modified, raw=1)
 
     def cache_set(self, params, value):
         log_debug(4, params)
         last_modified = self._get_last_modified(params)
         key = self._get_key(params)
-        if not self.use_database_cache:
-            set_cache = rhnCache.set(key, value, modified=last_modified, \
+        return rhnCache.set(key, value, modified=last_modified, \
                         raw=1, user='wwwrun', group='www', mode=0755)
-            return set_cache
-        return rhnDatabaseCache.set(key, value, modified=last_modified, raw=1,
-            compressed=1)
 
     def dump_subelement(self, data):
         log_debug(2)
@@ -674,15 +671,16 @@ class ChannelsDumper(exportLib.ChannelsDumper):
            and c.channel_arch_id = ca.id
     """)
 
-    def __init__(self, writer, channels=[], start_date=None, end_date=None):
+    def __init__(self, writer, channels=[], start_date=None, end_date=None, use_rhn_date=True):
         exportLib.ChannelsDumper.__init__(self, writer, channels)
         self.start_date = start_date
         self.end_date = end_date
+        self.use_rhn_date = use_rhn_date
 
     def dump_subelement(self, data):
         log_debug(6, data)
         #return exportLib.ChannelsDumper.dump_subelement(self, data)
-        c = exportLib._ChannelDumper(self._writer, data, self.start_date, self.end_date)
+        c = exportLib._ChannelDumper(self._writer, data, self.start_date, self.end_date, self.use_rhn_date)
         c.dump()
 
     def set_iterator(self):
@@ -694,7 +692,7 @@ class ChannelsDumper(exportLib.ChannelsDumper):
         return QueryIterator(statement=h, params=self._channels)
 
 class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):
-    _query_list_channels = rhnSQL.Statement("""
+    iterator_query = rhnSQL.Statement("""
         select c.id, c.label, ca.label channel_arch, c.basedir, c.name,
                c.summary, c.description, c.gpg_key_url, c.org_id,
                TO_CHAR(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
@@ -712,24 +710,19 @@ class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):
          where c.id = :channel_id
            and c.channel_arch_id = ca.id
     """)
-    def __init__(self, writer, channels):
-        h = rhnSQL.prepare(self._query_list_channels)
-        CachedDumper.__init__(self, writer, statement=h, params=channels)
-
     def _get_key(self, params):
         channel_id = params['channel_id']
         return "xml-channels/rhn-channel-%d.xml" % channel_id
 
 class ShortPackagesDumper(CachedDumper, exportLib.ShortPackagesDumper):
-    def __init__(self, writer, packages):
-        h = rhnSQL.prepare("""
+    iterator_query = rhnSQL.Statement("""
             select 
                 p.id,
                 p.org_id,
                 pn.name,    
-                pe.evr.version as version,
-                pe.evr.release as release,
-                pe.evr.epoch as epoch,
+                (pe.evr).version as version,
+                (pe.evr).release as release,
+                (pe.evr).epoch as epoch,
                 pa.label as package_arch,
                 c.checksum_type,
                 c.checksum,
@@ -743,21 +736,19 @@ class ShortPackagesDumper(CachedDumper, exportLib.ShortPackagesDumper):
             and p.package_arch_id = pa.id
             and p.checksum_id = c.id
         """)
-        CachedDumper.__init__(self, writer, statement=h, params=packages)
-        self.item_id_key = 'package_id'
-        self.hash_factor = 2
-        self.key_template = 'xml-short-packages/%s/rhn-package-short-%s.xml'
+    item_id_key = 'package_id'
+    hash_factor = 2
+    key_template = 'xml-short-packages/%s/rhn-package-short-%s.xml'
 
 class PackagesDumper(CachedDumper, exportLib.PackagesDumper):
-    def __init__(self, writer, packages):
-        h = rhnSQL.prepare("""
+    iterator_query = rhnSQL.Statement("""
             select 
                 p.id, 
                 p.org_id,
                 pn.name,    
-                pe.evr.version as version,
-                pe.evr.release as release,
-                pe.evr.epoch as epoch,
+                (pe.evr).version as version,
+                (pe.evr).release as release,
+                (pe.evr).epoch as epoch,
                 pa.label as package_arch,
                 pg.name as package_group,
                 p.rpm_version, 
@@ -790,14 +781,12 @@ class PackagesDumper(CachedDumper, exportLib.PackagesDumper):
             and p.source_rpm_id = sr.id
             and p.checksum_id = c.id
         """)
-        CachedDumper.__init__(self, writer, statement=h, params=packages)
-        self.item_id_key = 'package_id'
-        self.hash_factor = 2
-        self.key_template = 'xml-packages/%s/rhn-package-%s.xml'
+    item_id_key = 'package_id'
+    hash_factor = 2
+    key_template = 'xml-packages/%s/rhn-package-%s.xml'
 
 class SourcePackagesDumper(CachedDumper, exportLib.SourcePackagesDumper):
-    def __init__(self, writer, packages):
-        h = rhnSQL.prepare("""
+    iterator_query = rhnSQL.Statement("""
             select 
                 ps.id, 
                 sr.name source_rpm, 
@@ -822,14 +811,12 @@ class SourcePackagesDumper(CachedDumper, exportLib.SourcePackagesDumper):
             and ps.checksum_id = c.id
             and ps.sigchecksum_id = sig.id
         """)
-        CachedDumper.__init__(self, writer, statement=h, params=packages)
-        self.item_id_key = 'package_id'
-        self.hash_factor = 2
-        self.key_template = 'xml-packages/%s/rhn-source-package-%s.xml'
+    item_id_key = 'package_id'
+    hash_factor = 2
+    key_template = 'xml-packages/%s/rhn-source-package-%s.xml'
 
 class ErrataDumper(CachedDumper, exportLib.ErrataDumper):
-    def __init__(self, writer, errata):
-        h = rhnSQL.prepare("""
+    iterator_query = rhnSQL.Statement("""
             select
                 e.id,
                 e.org_id,
@@ -850,13 +837,12 @@ class ErrataDumper(CachedDumper, exportLib.ErrataDumper):
             from rhnErrata e
             where e.id = :errata_id
         """)
-        CachedDumper.__init__(self, writer, statement=h, params=errata)
-        self.item_id_key = 'errata_id'
-        self.hash_factor = 1
-        self.key_template = 'xml-errata/%s/rhn-erratum-%s.xml'
+    item_id_key = 'errata_id'
+    hash_factor = 1
+    key_template = 'xml-errata/%s/rhn-erratum-%s.xml'
 
 class KickstartableTreesDumper(CachedDumper, exportLib.KickstartableTreesDumper):
-    _query_lookup_ks_tree = rhnSQL.Statement("""
+    iterator_query = rhnSQL.Statement("""
         select kt.id,
                c.label channel,
                kt.base_path "base-path",
@@ -877,10 +863,6 @@ class KickstartableTreesDumper(CachedDumper, exportLib.KickstartableTreesDumper)
            and kt.org_id is NULL
            and kt.label = :kickstart_label
     """)
-    def __init__(self, writer, kickstarts):
-        h = rhnSQL.prepare(self._query_lookup_ks_tree)
-        CachedDumper.__init__(self, writer, statement=h, params=kickstarts)
-
     def _get_key(self, params):
         kickstart_label = params['kickstart_label']
         return "xml-kickstartable-tree/%s.xml" % kickstart_label

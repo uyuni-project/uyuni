@@ -1,5 +1,5 @@
 Name:           oracle-lib-compat
-Version:        10.2.0.25
+Version:        11.2.0.3
 Release:        1%{?dist}
 Summary:        Compatibility package so that perl-DBD-Oracle will install
 Group:          Applications/Multimedia
@@ -15,21 +15,20 @@ BuildRoot:      %{_tmppath}/%{name}-root-%(%{__id_u} -n)
 
 %ifarch s390 s390x
 %define icversion 10.2.0.4
-%else
-%define icversion 10.2.0.4
-%endif
-
-%if 0%{?suse_version}
-BuildRequires:  oracle-instantclient-basic = %{icversion}
-BuildRequires:  oracle-instantclient-sqlplus = %{icversion}
-# execstack
-BuildRequires:  prelink
-%endif
-
+%define icdir %{icversion}
 Requires:       oracle-instantclient-basic = %{icversion}
 Requires:       oracle-instantclient-sqlplus = %{icversion}
+%define soversion 10
+%else
+%define icversion 11.2.0.2.0
+%define icdir 11.2
+Requires:       oracle-instantclient11.2-basic = %{icversion}
+Requires:       oracle-instantclient11.2-sqlplus = %{icversion}
+%define soversion 11
+%endif
 
 %if 0%{?suse_version}
+BuildRequires:  prelink
 Requires(post): prelink
 Requires(post): file
 Requires(post): findutils
@@ -42,11 +41,12 @@ Requires(post): /usr/bin/xargs
 
 %ifarch x86_64
 %define lib64 ()(64bit)
+Requires:       libaio.so.1%{lib64}
 %endif
-Provides:       libocci.so.10.1%{?lib64}   = %{icversion}
-Provides:       libnnz10.so%{?lib64}       = %{icversion}
-Provides:       libocijdbc10.so%{?lib64}   = %{icversion}
-Provides:       libclntsh.so.10.1%{?lib64} = %{icversion}
+Provides:       libocci.so.%{soversion}.1%{?lib64}   = %{icversion}
+Provides:       libnnz%{soversion}.so%{?lib64}       = %{icversion}
+Provides:       libocijdbc%{soversion}.so%{?lib64}   = %{icversion}
+Provides:       libclntsh.so.%{soversion}.1%{?lib64} = %{icversion}
 Provides:       libociei.so%{?lib64}       = %{icversion}
 Provides:       ojdbc14                    = %{icversion}
 Obsoletes:      rhn-oracle-jdbc           <= 1.0
@@ -67,10 +67,11 @@ mkdir -p $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_javadir}
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d
-echo %{_libdir}/oracle/%{icversion}/client/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/%{name}.conf
+echo %{_libdir}/oracle/%{icdir}/client/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/oracle-instantclient-%{icdir}.conf
+
 # do not replace /usr/lib with _libdir macro here
 # XE server is 32bit even on 64bit platforms
-echo /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/%{name}.conf
+echo /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/oracle-xe.conf
 
 %ifarch x86_64 s390x
 mkdir -p $RPM_BUILD_ROOT%{_bindir}
@@ -85,6 +86,19 @@ ln -s ../../lib/oracle/%{icversion}/client64/lib/ojdbc14.jar $RPM_BUILD_ROOT/%{_
 %else
 ln -s ../../%{_lib}/oracle/%{icversion}/client/lib/ojdbc14.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
 %endif
+
+mkdir -p $RPM_BUILD_ROOT%{_libdir}/oracle/%{icdir}
+ln -s ../../../lib/oracle/%{icdir}/client64 $RPM_BUILD_ROOT%{_libdir}/oracle/%{icdir}/client
+
+mkdir -p $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client64/lib/network/admin
+echo 'diag_adr_enabled = off' > $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client64/lib/network/admin/sqlnet.ora
+%else
+mkdir -p $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client/lib/network/admin
+echo 'diag_adr_enabled = off' > $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client/lib/network/admin/sqlnet.ora
+%endif
+
+mkdir -p $RPM_BUILD_ROOT/%{_javadir}
+ln -s ../../%{_lib}/oracle/%{icdir}/client/lib/ojdbc6.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
 
 %if 0%{?rhel} && 0%{?rhel} < 6
 %define tomcatname tomcat5
@@ -102,8 +116,12 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch x86_64 s390x
 %{_bindir}/sqlplus
 %{_libdir}/oracle
+/usr/lib/oracle/11.2/client64/lib/network/admin/sqlnet.ora
+%else
+/usr/lib/oracle/11.2/client/lib/network/admin/sqlnet.ora
 %endif
-%config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}.conf
+%config(noreplace) %{_sysconfdir}/ld.so.conf.d/oracle-instantclient-%{icdir}.conf
+%config(noreplace) %{_sysconfdir}/ld.so.conf.d/oracle-xe.conf
 %{_javadir}/ojdbc14.jar
 %{_datadir}/%{tomcatname}/bin/setenv.sh
 %if 0%{?suse_version}
@@ -115,11 +133,24 @@ rm -rf $RPM_BUILD_ROOT
 ldconfig
 
 # clear execstack on libs in oracle's provided instantclient rpm
-find %{_prefix}/lib/oracle/%{icversion} \
+find %{_prefix}/lib/oracle/%{icdir} \
         | xargs file | awk -F: '/ELF.*(executable|shared object)/ {print $1}' \
         | xargs execstack -c
 
 %changelog
+* Mon Jan 17 2011 Jan Pazdziora 11.2.0.3-1
+- Set diag_adr_enabled to off.
+
+* Mon Jan 10 2011 Jan Pazdziora 11.2.0.2-1
+- On x86_64, require 64bit version of libaio for InstantClient 11g.
+
+* Fri Jan 07 2011 Jan Pazdziora 11.2.0.1-1
+- Have separate ld.so.conf.d for InstantClient and for XE server.
+- InstantClient 11 contains ojdbc5 and ojdbc6, we will change the target of the
+  symlink for now.
+- Need to use the "11" in .so Provides as well.
+- Switch to Oracle InstantClient 11 in oracle-lib-compat.
+
 * Thu Sep 23 2010 Michael Mraka <michael.mraka@redhat.com> 10.2.0.25-1
 - instantclient on s390(x) upgraded to 10.2.0.4
 - switched to default VersionTagger

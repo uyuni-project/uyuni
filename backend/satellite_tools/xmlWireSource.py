@@ -153,7 +153,7 @@ class BaseWireSource:
             try:
                 stream = apply(func, params)
                 return stream
-            except rpclib.ProtocolError, e:
+            except rpclib.xmlrpclib.ProtocolError, e:
                 p = tuple(['<the systemid>'] + list(params[1:]))
                 lastErrorMsg = 'ERROR: server.%s%s: %s' % (method, p, e)
                 log2(-1, 2, lastErrorMsg, stream=sys.stderr)
@@ -162,7 +162,7 @@ class BaseWireSource:
                 # do not reraise this exception!
             except (KeyboardInterrupt, SystemExit):
                 raise
-            except rpclib.Fault, e:
+            except rpclib.xmlrpclib.Fault, e:
                 lastErrorMsg = e.faultString
                 break
             except Exception, e:
@@ -250,12 +250,6 @@ class MetadataWireSource(BaseWireSource):
         self._prepare()
         return self._openSocketStream("dump.errata", (self.systemid, erratumIds))
 
-    def getBlacklistsXmlStream(self):
-        "retrieve xml stream for blacklists"
-        self._prepare()
-        return self._openSocketStream("dump.blacklist_obsoletes", 
-            (self.systemid, ))
-
     def getKickstartsXmlStream(self, ksLabels):
         "retrieve xml stream for kickstart trees"
         self._prepare()
@@ -292,7 +286,7 @@ class XMLRPCWireSource(BaseWireSource):
         except TypeError, e:
             log(-1, 'ERROR: during "apply(getattr(BaseWireSource.serverObj, %s), %s)"' % (function, params))
             raise
-        except rpclib.ProtocolError, e:
+        except rpclib.xmlrpclib.ProtocolError, e:
             log2(-1, 2, 'ERROR: ProtocolError: %s' % e, stream=sys.stderr)
             raise
         return retval
@@ -308,7 +302,7 @@ class AuthWireSource(XMLRPCWireSource):
         log(2, '   +++ SUSE Manager Server synchronization tool checking in.')
         try:
             authYN = self._xmlrpc('authentication.check', (self.systemid,))
-        except (rpclib.ProtocolError, rpclib.Fault), e:
+        except (rpclib.xmlrpclib.ProtocolError, rpclib.xmlrpclib.Fault), e:
             # bug 141197: the logging of all exceptions is handled higher up in 
             # the call stack
 #            log2(-1, 1, '   ERROR: %s' % e, stream=sys.stderr)
@@ -333,7 +327,7 @@ class CertWireSource(XMLRPCWireSource):
         #log(2, '   +++ Satellite synchronization tool downloading certificate.')
         try:
             cert = self._xmlrpc("certificate.download", (self.systemid, ))
-        except rpclib.Fault, e:
+        except rpclib.xmlrpclib.Fault, e:
             log(-1, '   --- Unable to download the certificate')
             log(-1, '   ERROR: %s' % e, stream=sys.stderr)
             sys.exit(-1)
@@ -382,7 +376,7 @@ class RPCGetWireSource(BaseWireSource):
 
         try:
             login_token = self.getServer().authentication.login(self.systemid)
-        except rpclib.ProtocolError, e:
+        except rpclib.xmlrpclib.ProtocolError, e:
             log2(-1, 2, 'ERROR: ProtocolError: %s' % e, stream=sys.stderr)
             raise
         return login_token
@@ -396,19 +390,24 @@ class RPCGetWireSource(BaseWireSource):
     def _rpc_call(self, function_name, params):
         get_server_obj = self.login()
         # Try a couple of times
+        fault_count = 0
+        expired_token = 0
         cfg = config.initUp2dateConfig()
-        for i in range(cfg['networkRetries']):
+        while fault_count - expired_token < cfg['networkRetries']:
             try:
                 ret = apply(getattr(get_server_obj, function_name), params)
-            except rpclib.ProtocolError, e:
+            except rpclib.xmlrpclib.ProtocolError, e:
                 # We have two codes to check: the HTTP error code, and the
                 # combination (failtCode, faultString) encoded in the headers
                 # of the request.
                 http_error_code = e.errcode
                 fault_code, fault_string = rpclib.reportError(e.headers)
+                fault_count += 1
                 if http_error_code == 401 and fault_code == -34:
                     # Login token expired
                     get_server_obj = self.login(force=1)
+                    # allow exactly one respin for expired token
+                    expired_token = 1
                     continue
                 if http_error_code == 404 and fault_code == -17:
                     # File not found

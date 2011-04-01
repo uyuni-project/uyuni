@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
-<%@ taglib uri="http://jakarta.apache.org/struts/tags-bean" prefix="bean" %>
-<%@ taglib uri="http://jakarta.apache.org/struts/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
 <html:html xhtml="true">
@@ -23,7 +23,7 @@
 		<tr><th><label for="searchfor"><bean:message key="erratasearch.jsp.searchfor"/></label></th>
 			<td>
                 <html:text property="search_string" name="search_string" styleId="searchfor"
-                           value="${search_string}" maxlength="36" />
+                           value="${search_string}" maxlength="36" accesskey="4"/>
                 <html:submit>
                    <bean:message key="button.search" />
                 </html:submit>

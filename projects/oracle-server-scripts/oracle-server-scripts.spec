@@ -8,7 +8,7 @@
 
 Summary: Oracle 10g Database Server Enterprise Edition scripts
 Name: oracle-server-scripts
-Version: 10.2.0.51
+Version: 10.2.0.54
 Release: 1%{?dist}
 Source0: oracle-home.sh
 Source1: init-params.ora
@@ -24,6 +24,7 @@ Source10: embedded-createdb.tmpl
 Source11: rhnora.m4
 Source12: embedded-upgradedb.tmpl
 Source13: embedded-upgradedb-10g.tmpl
+Source14: oracle-compute-sga.sh
 License: Proprietary
 Group:   Oracle Server
 BuildArch: noarch
@@ -46,7 +47,7 @@ mkdir -p $RPM_BUILD_ROOT
 install -m755 -d $RPM_BUILD_ROOT%{oracle_admin}
 for f in %{SOURCE0} %{SOURCE1} %{SOURCE2} %{SOURCE3} \
 	 %{SOURCE4} %{SOURCE5} %{SOURCE9} %{SOURCE10} %{SOURCE11} \
-	 %{SOURCE12} %{SOURCE13}; do
+	 %{SOURCE12} %{SOURCE13} %{SOURCE14}; do
     install -m 755 $f $RPM_BUILD_ROOT%{oracle_admin}
 done
 
@@ -99,6 +100,15 @@ exit 0
 %{oracle_scripts}
 
 %changelog
+* Wed Mar 30 2011 Michael Mraka <michael.mraka@redhat.com> 10.2.0.54-1
+- oracle_sqlplus_t is not able to write to logs
+
+* Tue Mar 22 2011 Michael Mraka <michael.mraka@redhat.com> 10.2.0.53-1
+- new m4 (1.4.13-5) insists on having defines before template
+
+* Fri Nov 26 2010 Michael Mraka <michael.mraka@redhat.com> 10.2.0.52-1
+- 643368 - compute sga size dynamicaly
+
 * Thu Sep 23 2010 Michael Mraka <michael.mraka@redhat.com> 10.2.0.51-1
 - switched to default VersionTagger
 

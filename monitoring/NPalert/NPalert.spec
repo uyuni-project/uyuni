@@ -1,14 +1,6 @@
 %define install_prefix     %{_var}/lib/notification
 %define log_dir            %{_var}/log/notification
-%if 0%{?suse_version}
-%define httpd_prefix       /srv/www
-%define apache_user wwwrun
-%define apache_group www
-%else
-%define httpd_prefix       %{_var}/www
-%define apache_user wwwrun
-%define apache_group www
-%endif
+%define httpd_prefix       %{_datadir}/nocpulse
 %define notif_user         nocpulse
 %define log_rotate_prefix  %{_sysconfdir}/logrotate.d/
 
@@ -17,7 +9,7 @@ Name:         NPalert
 Summary:      NOCpulse notification system
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.126.16
+Version:      1.126.21
 Release:      1%{?dist}
 BuildArch:    noarch
 %if 0%{?suse_version}
@@ -64,6 +56,7 @@ mkdir -p --mode=755 $RPM_BUILD_ROOT%{_sysconfdir}/notification/generated
 mkdir -p --mode=755 $RPM_BUILD_ROOT%{_sysconfdir}/notification/static
 mkdir -p --mode=755 $RPM_BUILD_ROOT%{_sysconfdir}/notification/stage/config
 mkdir -p --mode=755 $RPM_BUILD_ROOT%{_sysconfdir}/notification
+mkdir -p --mode=755 $RPM_BUILD_ROOT%{_sysconfdir}/smrsh
 mkdir -p --mode=775 $RPM_BUILD_ROOT%install_prefix/queue/ack_queue
 mkdir -p --mode=775 $RPM_BUILD_ROOT%install_prefix/queue/ack_queue/.new
 mkdir -p --mode=775 $RPM_BUILD_ROOT%install_prefix/queue/alert_queue
@@ -75,6 +68,7 @@ mkdir -p --mode=755 $RPM_BUILD_ROOT%log_dir/ticketlog
 
 # Create symlinks
 ln -s ../../static                  $RPM_BUILD_ROOT%{_sysconfdir}/notification/stage/config/static
+ln -s /usr/bin/ack_enqueuer.pl      $RPM_BUILD_ROOT%{_sysconfdir}/smrsh/ack_enqueuer.pl
 
 # Install the perl modules
 mkdir -p $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse/Notif
@@ -132,12 +126,7 @@ fi
 %files
 %defattr(-,root,root,-)
 %{_sysconfdir}/cron.d/notification
-%{httpd_prefix}/htdocs/*
-%{httpd_prefix}/cgi-bin/*
-%{httpd_prefix}/cgi-mod-perl/*
-%{httpd_prefix}/templates/*
-%dir %{httpd_prefix}/templates
-%dir %{httpd_prefix}/cgi-mod-perl
+%{httpd_prefix}
 %dir %attr(-, %notif_user,%notif_user) %install_prefix
 %dir %{perl_vendorlib}/NOCpulse/Notif
 %{perl_vendorlib}/NOCpulse/Notif/*
@@ -157,6 +146,7 @@ fi
 %attr (755,%notif_user,%notif_user) %dir %log_dir/archive
 %attr (755,%notif_user,%notif_user) %dir %log_dir/ticketlog
 %attr(644,%notif_user,%notif_user) %{_sysconfdir}/notification/static/*
+%{_sysconfdir}/smrsh/ack_enqueuer.pl
 %{_sysconfdir}/notification/stage/config/static
 %{_mandir}/man3/monitor-queue*
 %{_mandir}/man3/queue_remote_check.pl*
@@ -165,6 +155,25 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Mar 18 2011 Michael Mraka <michael.mraka@redhat.com> 1.126.21-1
+- reuse RHN:DB for db connection in AlertDB.pm (PG)
+
+* Wed Mar 02 2011 Michael Mraka <michael.mraka@redhat.com> 1.126.20-1
+- 493028 - ack_enqueuer.pl must be linked from /etc/smrsh
+- 493028 - select all but expired redirects 
+- 493028 - empty TZ is interpreted as GMT not local timezone; it must be unset
+- 493028 - dates in db are in localtime not GMT
+- 493028 - fixed active redirects query condition
+
+* Fri Feb 18 2011 Jan Pazdziora 1.126.19-1
+- Localize the filehandle globs; also use three-parameter opens.
+
+* Tue Jan 25 2011 Jan Pazdziora 1.126.18-1
+- 493028 - simplified email check regexp (michael.mraka@redhat.com)
+
+* Sat Nov 20 2010 Miroslav Suchý <msuchy@redhat.com> 1.126.17-1
+- 474591 - move web data to /usr/share/nocpulse (msuchy@redhat.com)
+
 * Mon Sep 27 2010 Miroslav Suchý <msuchy@redhat.com> 1.126.16-1
 - 636211 - include man page for queue_remote_check.pl
 - 636211 - include man page for monitor-queue

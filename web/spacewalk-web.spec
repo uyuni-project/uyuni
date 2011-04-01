@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.2.31
+Version: 1.4.15
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -31,11 +31,7 @@ but it does generate a number of sub-packages
 %package -n spacewalk-html
 Summary: HTML document files for Spacewalk
 Group: Applications/Internet
-%if 0%{?suse_version}
 Requires: httpd
-%else
-Requires: webserver
-%endif
 Requires: spacewalk-branding
 Obsoletes: rhn-help < 5.3.0
 Provides: rhn-help = 5.3.0
@@ -54,14 +50,12 @@ Requires: spacewalk-pxt
 Provides: spacewalk(spacewalk-base-minimal) = %{version}-%{release}
 Provides: spacewalk(spacewalk-base) = %{version}-%{release}
 %if 0%{?suse_version}
-Requires: httpd
 Requires: perl-RPM2
 Requires: perl-Authen-PAM 
 Requires: perl-Digest-HMAC
 Requires: perl-Text-Diff
-%else
-Requires: webserver
 %endif
+Requires: httpd
 Obsoletes: rhn-base < 5.3.0
 Provides: rhn-base = 5.3.0
 
@@ -75,6 +69,12 @@ database.  This includes RHN::* and RHN::DB::*
 Summary: Minimal .pm's for %{name} package
 Group: Applications/Internet 
 Provides: spacewalk(spacewalk-base-minimal) = %{version}-%{release}
+%if (0%{?rhel} && 0%{?rhel} < 6) || (0%{?fedora} && 0%{?fedora} < 13)
+Requires: tomcat5
+%else
+Requires: tomcat6
+%endif
+Requires: httpd
 Obsoletes: rhn-base-minimal < 5.3.0
 Provides: rhn-base-minimal = 5.3.0
 Requires: perl-Params-Validate
@@ -86,6 +86,7 @@ Independent Perl modules in the RHN:: name-space.
 Summary: Perl modules and scripts to administer an Oracle database
 Group: Applications/Internet
 Requires: spacewalk-base
+Requires: httpd
 Obsoletes: rhn-dobby < 5.3.0
 Provides: rhn-dobby = 5.3.0
 
@@ -114,6 +115,7 @@ Requires:  perl-Apache2-Request
 Requires:  perl-BSD-Resource
 Requires:  perl-Cache-Cache
 %endif
+Requires: httpd
 Obsoletes: rhn-pxt < 5.3.0
 Provides:  rhn-pxt = 5.3.0
 
@@ -126,16 +128,6 @@ equlivalent to things like Apache::ASP and Mason
 %package -n spacewalk-sniglets
 Group: Applications/Internet 
 Summary: PXT Tag handlers
-%if 0%{?suse_version}
-Requires: apache2-mod_perl >= 2.0.0
-%else
-Requires: mod_perl >= 2.0.0
-%endif
-%if 0%{?rhel} == 4
-Requires: mod_jk-ap20
-%else
-Requires: httpd
-%endif
 Obsoletes: rhn-sniglets < 5.3.0
 Provides:  rhn-sniglets = 5.3.0
 
@@ -239,7 +231,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/TinyURL.pm
 %{perl_vendorlib}/RHN/Token.pm
 %{perl_vendorlib}/RHN/User.pm
-%{perl_vendorlib}/RHN/UserActions.pm
 %{perl_vendorlib}/RHN/Utils.pm
 %{_mandir}/man3/RHN::ContactGroup.3pm.gz
 %{_mandir}/man3/RHN::ContactMethod.3pm.gz
@@ -304,19 +295,185 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
-* Thu Dec 09 2010 Jan Pazdziora 1.2.31-1
-- Fix handling of eval (DBD::Oracle).
-- 658256 - Error 500 - ISE - when scheduling remote commands (proper fix)
-  (lzap+git@redhat.com)
+* Thu Mar 24 2011 Jan Pazdziora 1.4.15-1
+- Fixing previous taggable_systems_in_set fix (Oracle, this time).
+- update copyright years (msuchy@redhat.com)
+- implement common access keys (msuchy@redhat.com)
 
-* Wed Dec 01 2010 Michael Mraka <michael.mraka@redhat.com> 1.2.30-1
+* Thu Mar 24 2011 Jan Pazdziora 1.4.14-1
+- As PostgreSQL does not support table aliases in updates, remove them.
+
+* Tue Mar 22 2011 Jan Pazdziora 1.4.13-1
+- Moving the Requires: httpd from sniglets to base-minimal, dobby, and pxt
+  which actually have %files with apache group in them.
+- No need to require mod_perl explicitly in spacewalk-sniglets, we will get it
+  via perl(Apache2::Cookie) and perl-libapreq2 from spacewalk-pxt.
+- Removing RHEL 4 specific Requires as we no longer support Spacewalk on RHEL 4.
+- Fixing taggable_systems_in_set PostgreSQL issues.
+- Fixing custom_info_keys PostgreSQL issue.
+- Fixing the system_set_supports_reboot PostgreSQL issue.
+
+* Tue Mar 22 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.12-1
+- evaluate default_connection in runtime not in use RHN::DB time
+
+* Fri Mar 18 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.11-1
+- fixed package_removal_failures in postgresql
+
+* Wed Mar 16 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.10-1
+- made /network/systems/details/history/event.pxt work on postgresql
+- Fixing is_eoled, replacing sysdate with current_timestamp.
+
+* Wed Mar 09 2011 Jan Pazdziora 1.4.9-1
+- Fixing system group operations (PostgreSQL).
+- Using sequence_nextval instead of .nextval.
+
+* Wed Mar 02 2011 Tomas Lestach <tlestach@redhat.com> 1.4.8-1
+- consider also package arch when searching systems accorging to a package
+  (tlestach@redhat.com)
+- Removal of rhn-load-config.pl made
+  RHN::DB::SatInstall::get_nls_database_parameters unused, removing.
+  (jpazdziora@redhat.com)
+- Removal of rhn-load-config.pl made RHN::SatInstall::generate_secret unused,
+  removing. (jpazdziora@redhat.com)
+
+* Mon Feb 28 2011 Jan Pazdziora 1.4.7-1
+- Replacing date arithmetics with current_timestamp + numtodsinterval().
+- We need to use current_timestamp instead of sysdate.
+- Use sequence_nextval function.
+- PostgreSQL does not like table alias on insert.
+- We need to use global evr_t_as_vre_simple instead of PE.evr.as_vre_simple().
+- The use of verify_channel_role is always in scalar context, no need to user
+  the user_role_check_debug.
+- Prevent empty strings from being inserted to the database.
+- Adding the AS keyword to column aliases for PostgreSQL.
+
+* Fri Feb 25 2011 Jan Pazdziora 1.4.6-1
+- 680375 - we do not want the locked status (icon) to hide the the other
+  statuses, we add separate padlock icon.
+- Fixing systems_in_channel_family query for PostgreSQL.
+- The /network/systems/details/hardware.pxt was replaced by
+  /rhn/systems/details/SystemHardware.do.
+
+* Thu Feb 24 2011 Jan Pazdziora 1.4.5-1
+- The module Text::Diff is no longer needed, removing its use.
+
+* Fri Feb 18 2011 Jan Pazdziora 1.4.4-1
+- Localize the filehandle globs; also use three-parameter opens.
+
+* Wed Feb 16 2011 Miroslav Suchý <msuchy@redhat.com> 1.4.3-1
+- enable RHN Proxy 5.4 on RHEL6 (msuchy@redhat.com)
+- server_event_config_deploy just called server_event_config_revisions without
+  adding any value, removing. (jpazdziora@redhat.com)
+
+* Wed Feb 09 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.2-1
+- 552628 - implemented db-control reset-password
+- removed remote_dsn - it's always empty
+- 552628 - use database credentials from rhn.conf
+- The RHN::Utils::parametrize is not used anywhere, removing.
+
+* Wed Feb 02 2011 Tomas Lestach <tlestach@redhat.com> 1.4.1-1
+- bumping web.version to 1.4 nightly (tlestach@redhat.com)
+- Bumping package versions for 1.4 (tlestach@redhat.com)
+
+* Wed Feb 02 2011 Tomas Lestach <tlestach@redhat.com> 1.3.24-1
+- removing nightly from web.version (tlestach@redhat.com)
+
+* Thu Jan 20 2011 Tomas Lestach <tlestach@redhat.com> 1.3.23-1
+- updating Copyright years for year 2011 (tlestach@redhat.com)
+- Removing RHN::DB::SatInstall::clear_db, it was last referenced by rhn-
+  populate-database.pl. (jpazdziora@redhat.com)
+
+* Wed Jan 19 2011 Tomas Lestach <tlestach@redhat.com> 1.3.22-1
+- extending OS check expression (tlestach@redhat.com)
+
+* Wed Jan 19 2011 Tomas Lestach <tlestach@redhat.com> 1.3.21-1
+- adding tomcat require to spacewalk-base-minimal (tlestach@redhat.com)
+- 670185 - rephrasing the status information to be more clear
+  (tlestach@redhat.com)
+
+* Mon Jan 03 2011 Jan Pazdziora 1.3.20-1
+- token_channel_select.js not referenced, removing.
+- As RHN::DB::Search is gone, system_search_setbuilder.xml is not used,
+  removing.
+- subscribe_confirm.pxt not referenced, removing.
+- The RHL9 and RHEL 3 release notes are not referenced, removing.
+- countdown.js does not seem to be used, removing.
+- Since RHN::DataSource::ContactGroup is gone, contact_group_queries.xml is
+  unused, removing.
+- PXT::Debug::log_dump not used anywhere, removing.
+- RHN::Access::User not used anywhere, removing.
+
+* Thu Dec 23 2010 Aron Parsons <aparsons@redhat.com> 1.3.19-1
+- remove symlink that accidentily got added (aparsons@redhat.com)
+
+* Thu Dec 23 2010 Aron Parsons <aparsons@redhat.com> 1.3.18-1
+- bump API version number for recent API changes (aparsons@redhat.com)
+
+* Thu Dec 23 2010 Jan Pazdziora 1.3.17-1
+- Since ssm_channel_change_conf is gone, ssm_channel_change_conf_provider is
+  not used anymore, removing.
+- Package RHN::Access::Errata not used, removing.
+- RHN::UserActions not used anywhere, removing.
+
+* Tue Dec 21 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.16-1
+- 664487 - fixed space report query
+- fixed prototype-*.js reference
+
+* Fri Dec 17 2010 Jan Pazdziora 1.3.15-1
+- 656963 - the script has to start with #!/bin/sh.
+- 656963 - move "Generate jabberd config file" script to correct activity
+  (msuchy@redhat.com)
+- 663304 - we do not put alias in INSERTs since commit b950aa91
+  (msuchy@redhat.com)
+
+* Wed Dec 15 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.14-1
+- 663304 - we do not put alias in INSERTs since commit b950aa91
+- 656963 - wrap up run-script using activity
+
+* Tue Dec 14 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.13-1
+- fixed undefined variable
+
+* Mon Dec 13 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.12-1
+- 517455 - adding tablesizes to SYNOPSIS section of db-control man page.
+- 617305 - exit value 0 is returned by all db-control commands by default.
+- removed unused overview query
+- 656963 - create jabberd config via spacewalk-setup-jabberd
+
+* Tue Dec 07 2010 Lukas Zapletal 1.3.11-1
+- 642988 - ISE when setting Software Channel Entitlements
+
+* Thu Dec 02 2010 Lukas Zapletal 1.3.10-1
+- 658256 - Error 500 - ISE - when scheduling remote commands (proper fix)
+
+* Wed Dec 01 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.9-1
 - Reverted "658256 - Error 500 - ISE - when scheduling remote commands"
 
-* Wed Dec 01 2010 Lukas Zapletal 1.2.29-1
+* Wed Dec 01 2010 Lukas Zapletal 1.3.8-1
 - 658256 - Error 500 - ISE - when scheduling remote commands
 
-* Thu Nov 25 2010 Lukas Zapletal 1.2.28-1
+* Sat Nov 27 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.7-1
+- 649706 - execute all recomendations from segment advisor
+
+* Fri Nov 26 2010 Jan Pazdziora 1.3.6-1
+- Fix handling of eval (DBD::Oracle).
+- 642285 - introducing disabled TaskStatus page (tlestach@redhat.com)
+
+* Tue Nov 23 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.5-1
+- fixed Notification Methods (PG)
+
+* Mon Nov 22 2010 Lukas Zapletal 1.3.4-1
 - Adding missing monitoring state (UNKNOWN)
+
+* Fri Nov 19 2010 Lukas Zapletal 1.3.3-1
+- Removing from SQL clause (System_queries) causing bugs in monitoring
+
+* Fri Nov 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.3.2-1
+- fixed outer joins
+
+* Thu Nov 18 2010 Lukas Zapletal 1.3.1-1
+- Replacing DECODE function with CASE-SWITCH (4x)
+- Marking the master as nightly. 
+- Bumping package versions for 1.3. 
 
 * Mon Nov 15 2010 Jan Pazdziora 1.2.27-1
 - bumping api version (jsherril@redhat.com)

@@ -16,11 +16,9 @@
 # system imports:
 import os
 import sys
-import grp
-import pwd
 import time
 
-from cStringIO import StringIO
+from StringIO import StringIO
 
 # rhn imports:
 from spacewalk.common import CFG, log_clean, rhnLib

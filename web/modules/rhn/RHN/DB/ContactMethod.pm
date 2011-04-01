@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008 Red Hat, Inc.
+# Copyright (c) 2008--2010 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -175,7 +175,7 @@ sub commit {
     my $dbh = RHN::DB->connect;
 
     # Get the next recid from the sequence and set it as the id for this instance.
-    my $sth = $dbh->prepare("SELECT " . $self->get_sequence . ".nextval FROM DUAL");
+    my $sth = $dbh->prepare("SELECT sequence_nextval('" . $self->get_sequence . "') FROM DUAL");
     $sth->execute;
     my ($pk_value) = $sth->fetchrow;
     die "No new $type $pk from seq " . $self->get_sequence . " (possible error: " . $sth->errstr . ")" unless $pk_value;

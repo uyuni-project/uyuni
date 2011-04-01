@@ -5,6 +5,7 @@ use DBI;
 use NOCpulse::Config;
 use IO::AtomicFile;
 use LWP::UserAgent;
+use RHN::DB;
 
 use Class::MethodMaker
   get_set =>
@@ -39,15 +40,9 @@ sub remove_config_file {
 
 sub connect {
   my $self = shift;
-  my $dbd      = shift;
-  my $dbname   = shift;
-  my $username = shift;
-  my $password = shift;
-  my $orahome  = shift;
 
-  $ENV{'ORACLE_HOME'} = $orahome;  # base dir for Oracle
   # Make DB connection
-  my $dbh = DBI->connect("DBI:$dbd:$dbname", $username, $password);
+  my $dbh = RHN::DB->connect;
   # Set up for graceful exit
   $SIG{'INT'} = $self->can('bailout');
   unless (defined($dbh)) {
@@ -111,7 +106,7 @@ sub fetch_macros {
   # Fetch macros
   my $sql = q{
     SELECT   name, definition, description
-    FROM     config_macro
+    FROM     rhn_config_macro
   };
   my $list = $self->do_fetch_hash($sql);
   # First, create a database of unexpanded macros
@@ -135,10 +130,10 @@ sub fetch_params {
   # Fetch parameters from the database
   my $sql = q{
     SELECT   cgrp.description, cparam.group_name, cparam.name, cparam.value
-    FROM     config_group cgrp, config_parameter cparam
+    FROM     rhn_config_group cgrp, rhn_config_parameter cparam
     WHERE    cparam.group_name = cgrp.name
-    AND      ? = DECODE(cparam.security_type, 'ALL', ?,
-                                              cparam.security_type)
+    AND      ? = case cparam.security_type when 'ALL' then ?
+                                           else cparam.security_type end
     ORDER BY cparam.group_name, cparam.name};
   my $rv = $self->do_fetch($sql, $sec_type, $sec_type);
   # Create a parameter database, expanding macros as we go

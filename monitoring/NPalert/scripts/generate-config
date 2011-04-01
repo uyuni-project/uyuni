@@ -19,7 +19,6 @@ use Data::Dumper;
 
 my $bailout;
 $SIG{'INT'} = $SIG{'TERM'} = sub { $bailout = 1; };
-$ENV{TZ} = 'GMT';
 $| = 1;
 
 # Constants for time conversion
@@ -649,7 +648,11 @@ sub zonify_daily {
 
   } ## end foreach my $zone (sort(@zones...
 
-  $ENV{'TZ'} = $oldtz;
+  if ($oldtz) {
+    $ENV{'TZ'} = $oldtz;
+  } else {
+    delete $ENV{'TZ'};
+  }
 
   # Note:  log OK again
 } ## end sub zonify_daily

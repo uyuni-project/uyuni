@@ -25,15 +25,13 @@ from spacewalk.common import CFG, initCFG, rhnLog, fetchTraceback, rhnMail, rhn_
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhn_mpm import InvalidPackageError
 from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Checksum, Bug, Keyword
-from spacewalk.server.importlib.backendOracle import OracleBackend
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.errataImport import ErrataImport
+from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server import taskomatic
 from spacewalk.susemanager import suseLib
 from yum import Errors
 from yum.i18n import to_unicode, to_utf8
-
-from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 
 import socket
 hostname = socket.gethostname()
@@ -86,6 +84,9 @@ class RepoSync:
         #os.fchown isn't in 2.4 :/
         os.system("chgrp www " + default_log_location + log_filename)
 
+        if options.type not in ["yum"]:
+            print "Error: Unknown type %s" % options.type
+            sys.exit(2)
 
         quit = False
         if not options.url:
@@ -146,8 +147,7 @@ class RepoSync:
             if data['metadata_signed'] == 'N':
                 insecure = True;
             try:
-                plugin = self.load_plugin()(url.getURL(), self.channel_label, insecure, (not self.noninteractive),
-                        proxy=CFG.HTTP_PROXY, proxy_user=CFG.HTTP_PROXY_USERNAME, proxy_pass=CFG.HTTP_PROXY_PASSWORD)
+                plugin = self.load_plugin()(url.getURL(), self.channel_label, insecure, (not self.noninteractive))
                 self.import_packages(plugin, url.getURL())
                 self.import_updates(plugin, url.getURL())
             except ChannelTimeoutException, e:
@@ -372,16 +372,14 @@ class RepoSync:
         if not error:
           batch.append(e)
 
-      backend = OracleBackend()
-      backend.init()
+      backend = SQLBackend()
       importer = ErrataImport(batch, backend)
       importer.run()
       self.regen = True
 
     def import_packages(self, plug, url):
         packages = plug.list_packages()
-        to_link = []
-        to_download = []
+        to_process = []
         skipped = 0
         saveurl = suseLib.URL(url)
         if saveurl.password:
@@ -390,137 +388,95 @@ class RepoSync:
         compatArchs = self.compatiblePackageArchs()
 
         for pack in packages:
-                 if pack.arch in ['src', 'nosrc']:
-                     # skip source packages
-                     skipped += 1
-                     continue
-                 if pack.arch not in compatArchs:
-                     # skip packages with incompatible architecture
-                     skipped += 1
-                     continue
+            if pack.arch in ['src', 'nosrc']:
+                # skip source packages
+                skipped += 1
+                continue
+            if pack.arch not in compatArchs:
+                # skip packages with incompatible architecture
+                skipped += 1
+                continue
 
-                 # we have a few scenarios here:
-                 # 1.  package is not on the server (link and download)
-                 # 2.  package is in the server, but not in the channel (just link if we can)
-                 # 3.  package is in the server and channel, but not on the file system (just download)
-                 path = rhnPackage.get_path_for_package([pack.name, pack.version, pack.release,\
-                        pack.epoch, pack.arch], self.channel_label)
-                 if not path:
-                     path = rhnPackage.get_path_for_package([pack.name, pack.version, pack.release,\
-                        '', pack.arch], self.channel_label)
+            path, package_channel = rhnPackage.get_path_for_package(
+                   [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
+                   self.channel_label)
 
-                 if path:
-                     if os.path.exists(os.path.join(CFG.MOUNT_POINT, path)):
-                         continue
-                     else:
-                         to_download.append(pack)
-                         continue
+            to_download = False
+            to_link     = False
+            if not path:
+                # package is not on disk
+                to_download = True
+            else:
+                # a different package is on disk
+                pack.path = os.path.join(CFG.MOUNT_POINT, path)
+                if not self.match_package_checksum(pack.path,
+                                pack.checksum_type, pack.checksum):
+                    to_download = True
 
-                 # we know that it's not in the channel, lets try to check the server by checksum!
-                 #for some repos (sha256), we can check to see if we have them by
-                 #  checksum and not bother downloading.  For older repos, we only
-                 #  have sha1, which satellite doesn't track
-                 # regardless we have to link the package
-                 to_link.append(pack)
+            if package_channel != self.channel_label:
+                # package is not in the channel
+                to_link = True
 
-                 found = False
-                 for type,sum  in pack.checksums.items():
-                     if type == 'sha': #we use sha1 (instead of sha)
-                         type = 'sha1'
-                     path = rhnPackage.get_path_for_checksum(self.channel['org_id'],\
-                                type, sum)
-                     if path and os.path.exists(os.path.join(CFG.MOUNT_POINT, path)):
-                             found = True
-                             break
-                 if not found:
-                     to_download.append(pack)
+            if to_download or to_link:
+                to_process.append((pack, to_download, to_link))
 
-        if skipped > 0:
-            self.print_msg("Skip '%s' incompatible packages." % skipped)
-        if len(to_download) == 0:
-            self.print_msg("No new packages to download.")
-        else:
-            self.regen=True
+        num_to_process = len(to_process)
+        if num_to_process == 0:
+            self.print_msg("No new packages to sync.")
+            return
+
+        self.regen=True
         is_non_local_repo = (url.find("file://") < 0)
-        for (index, pack) in enumerate(to_download):
-            """download each package"""
-            # try/except/finally doesn't work in python 2.4 (RHEL5), so here's a hack
-            try:
-                try:
-                    self.print_msg(str(index+1) + "/" + str(len(to_download)) + " : "+ \
-                          pack.getNVREA())
-                    path = plug.get_package(pack)
-                    self.upload_package(pack, path)
-                    if pack in to_link:
-                        self.associate_package(pack)
-                except KeyboardInterrupt:
-                    raise
-                except Exception, e:
-                   self.error_msg(e)
-                   if self.fail:
-                       raise
-                   continue
-            finally:
-                if is_non_local_repo and path and os.path.exists(path):
-                    os.remove(path)
+        # try/except/finally doesn't work in python 2.4 (RHEL5), so here's a hack
+        def finally_remove(path):
+            if is_non_local_repo and path:
+                os.remove(path)
 
-        for (index, pack) in enumerate(to_link):
-            """Link each package that wasn't already linked in the previous step"""
+        for (index, what) in enumerate(to_process):
+            pack, to_download, to_link = what
+            localpath = None
             try:
-                if pack not in to_download:
-                    (pack.checksum_type, cs_type_orig, pack.checksum) = self.best_checksum_item(pack.checksums)
+                self.print_msg("%d/%d : %s" % (index+1, num_to_process, pack.getNVREA()))
+                if to_download:
+                    pack.path = localpath = plug.get_package(pack)
+                pack.load_checksum_from_header()
+                if to_download:
+                    self.upload_package(pack)
+                    finally_remove(localpath)
+                if to_link:
                     self.associate_package(pack)
             except KeyboardInterrupt:
+                finally_remove(localpath)
                 raise
             except Exception, e:
                 self.error_msg(e)
+                finally_remove(localpath)
                 if self.fail:
                     raise
                 continue
 
+    def match_package_checksum(self, abspath, checksum_type, checksum):
+        if (os.path.exists(abspath) and
+            getFileChecksum(checksum_type, filename=abspath) == checksum):
+            return 1
+        return 0
 
-    def upload_package(self, package, path):
-        temp_file = open(path, 'rb')
-        header, payload_stream, header_start, header_end = \
-                rhnPackageUpload.load_package(temp_file)
-        #
-        # Getting checksum_type from RPM header does not work.
-        # There is always the default 'md5' returned.
-        # But with this we will not find package by checksum, if we do not
-        # have the checksum from the metadata in the DB.
-        # so let's create the best checksum_type we have in the metadata
-        #
-        #package.checksum_type = header.checksum_type()
-        (package.checksum_type, cs_type_orig, md_checksum) = self.best_checksum_item(package.checksums)
-        package.checksum = getFileChecksum(package.checksum_type, file=temp_file)
-        #
-        # perform an additional check, if the checksums matches
-        #
-        if md_checksum and package.checksum != md_checksum:
-            raise Exception("Checksum missmatch")
+    def upload_package(self, package):
 
         rel_package_path = rhnPackageUpload.relative_path_from_header(
-                header, self.channel['org_id'],
+                package.header, self.channel['org_id'],
                 package.checksum_type, package.checksum)
-        package_path = os.path.join(CFG.MOUNT_POINT,
-                rel_package_path)
-        package_dict, diff_level = rhnPackageUpload.push_package(header,
-                payload_stream, package.checksum_type, package.checksum,
+        package_dict, diff_level = rhnPackageUpload.push_package(package.header,
+                package.payload_stream, package.checksum_type, package.checksum,
                 force=False,
-                header_start=header_start, header_end=header_end,
+                header_start=package.header_start, header_end=package.header_end,
                 relative_path=rel_package_path,
                 org_id=self.channel['org_id'])
-        temp_file.close()
+        package.payload_stream.close()
 
     def associate_package(self, pack):
         caller = "server.app.yumreposync"
-        if CFG.DB_BACKEND == ORACLE:
-            from spacewalk.server.importlib.backendOracle import OracleBackend
-            backend = OracleBackend()
-        elif CFG.DB_BACKEND == POSTGRESQL:
-            from spacewalk.server.importlib.backendOracle import PostgresqlBackend
-            backend = PostgresqlBackend()
-        backend.init()
+        backend = SQLBackend()
         package = {}
         package['name'] = pack.name
         package['version'] = pack.version
@@ -632,7 +588,6 @@ class ContentPackage:
 
     def __init__(self):
         # map of checksums
-        self.checksums = {}
         self.checksum_type = None
         self.checksum = None
 
@@ -644,6 +599,13 @@ class ContentPackage:
         self.release = None
         self.epoch = None
         self.arch = None
+
+        self.path = None
+        self.file = None
+        self.header = None
+        self.payload_stream = None
+        self.header_start = None
+        self.header_end = None
 
     def setNVREA(self, name, version, release, epoch, arch):
         self.name = name
@@ -658,3 +620,12 @@ class ContentPackage:
         else:
             return self.name + '-' + self.version + '-' + self.release + '.' + self.arch
 
+    def load_checksum_from_header(self):
+        if self.path is None:
+           raise rhnFault(50, "Unable to load package", explain=0)
+        self.file = open(self.path, 'rb')
+        self.header, self.payload_stream, self.header_start, self.header_end = \
+                rhnPackageUpload.load_package(self.file)
+        self.checksum_type = self.header.checksum_type()
+        self.checksum = getFileChecksum(self.checksum_type, file=self.file)
+        self.file.close()

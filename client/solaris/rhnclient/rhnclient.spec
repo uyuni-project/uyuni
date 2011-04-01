@@ -5,7 +5,7 @@
 Summary: Red Hat Network Client Utilities and Libraries
 Name: rhnclient
 Source0: %{name}-%{version}.tar.gz
-Version: 0.9
+Version: 0.13
 Release: 1
 License: GPLv2
 Group: Development/Libraries
@@ -13,7 +13,8 @@ BuildRoot: %{_tmppath}/%{name}-buildroot
 Prefix: %{_prefix}
 #BuildArch: noarch
 Requires: pyOpenSSL python
-BuildRequires: python-devel
+Requires: rhnlib >= 2.5.35
+BuildRequires: python-devel binutils-devel
 Url: http://rhn.redhat.com
 
 %description
@@ -29,10 +30,7 @@ client packages to communicate with RHN.
 make
 
 %install
-%{__python} setup.py install --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES
-sed -e 's|/[^/]*$||' INSTALLED_FILES | grep "site-packages/" | \
-    sort | uniq | awk '{ print "%attr(755,root,root) %dir " $1}' > INSTALLED_DIRS
-cat INSTALLED_FILES INSTALLED_DIRS > INSTALLED_OBJECTS
+%{__python} setup.py install --root=$RPM_BUILD_ROOT
 %{__install} -d -m 0755 $RPM_BUILD_ROOT/usr/sbin/
 %{__cp} -p rhn_check.py $RPM_BUILD_ROOT/usr/sbin/rhn_check
 %{__cp} -p rhnsd $RPM_BUILD_ROOT/usr/sbin/rhnsd
@@ -53,10 +51,12 @@ touch $RPM_BUILD_ROOT/var/run/.keep
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -f INSTALLED_OBJECTS
+%files
 %defattr(-,root,root)
 %{shareroot}/rhn/*
 /usr/sbin/*
+%{python_sitelib}/rhn/*
+%{python_sitelib}/rhnclient*
 %{rhnconf}/*
 /var/log/up2date
 /var/run/.keep
@@ -65,6 +65,22 @@ rm -rf $RPM_BUILD_ROOT
 #%doc ChangeLog COPYING README TODO
 
 %changelog
+* Wed Mar 30 2011 Miroslav Suchý 0.13-1
+- 683200 - instead of encodings.idna use wrapper from rhn.connections, which
+  workaround corner cases
+- 683200 - client/solaris - when making profile name from hostname, convert it
+  from Pune encoding
+
+* Tue Mar 08 2011 Miroslav Suchý <msuchy@redhat.com> 0.12-1
+- add binutils-devel as buildrequires
+
+* Tue Mar 08 2011 Miroslav Suchý <msuchy@redhat.com> 0.11-1
+- removing files from rhn subdir - they are not used
+- do not record installed files as it does not include .pyo files
+
+* Wed Dec 08 2010 Michael Mraka <michael.mraka@redhat.com> 0.10-1
+- import Fault, ResponseError and ProtocolError directly from xmlrpclib
+
 * Mon Apr 19 2010 Michael Mraka <michael.mraka@redhat.com> 0.9-1
 - updated copyrights
 

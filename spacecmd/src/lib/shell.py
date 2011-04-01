@@ -22,14 +22,13 @@
 
 import atexit, logging, os, readline, re, sys
 from cmd import Cmd
-from pwd import getpwuid
 from spacecmd.utils import *
 
 class SpacewalkShell(Cmd):
     __module_list = [ 'activationkey', 'configchannel', 'cryptokey',
                       'custominfo', 'distribution', 'errata',
                       'filepreservation', 'group', 'kickstart',
-                      'misc', 'package', 'report', 'schedule',
+                      'misc', 'org', 'package', 'repo', 'report', 'schedule',
                       'snippet', 'softwarechannel', 'ssm',
                       'system', 'user', 'utils' ]
 
@@ -49,26 +48,24 @@ class SpacewalkShell(Cmd):
     # do nothing on an empty line
     emptyline = lambda self: None
 
-    def __init__(self, options):
+    def __init__(self, options, conf_dir, config_parser):
         self.session = ''
-        self.username = ''
+        self.current_user = ''
         self.server = ''
         self.ssm = {}
+        self.config = {}
 
         self.postcmd(False, '')
 
         # make the options available everywhere
         self.options = options
 
-        userinfo = getpwuid(os.getuid())
-        self.conf_dir = os.path.join(userinfo[5], '.spacecmd')
+        # make the configuration file available everywhere
+        self.config_parser = config_parser
 
-        try:
-            if not os.path.isdir(self.conf_dir):
-                os.mkdir(self.conf_dir, 0700)
-        except OSError:
-            logging.error('Could not create directory %s' % self.conf_dir) 
-        
+        # this is used when loading and saving caches
+        self.conf_dir = conf_dir
+
         self.history_file = os.path.join(self.conf_dir, 'history')
 
         try:
@@ -115,7 +112,7 @@ class SpacewalkShell(Cmd):
         if not self.session:
             self.do_login('')
             if self.session == '': return ''
-        
+
         parts = line.split()
 
         if len(parts):

@@ -20,8 +20,9 @@
 
 # NOTE: the 'self' variable is an instance of SpacewalkShell
 
-import readline
+import logging, readline
 from getpass import getpass
+from ConfigParser import NoOptionError
 from spacecmd.utils import *
 
 # list of system selection options for the help output
@@ -72,7 +73,7 @@ ENTITLEMENTS = ['provisioning_entitled',
                 'virtualization_host_platform']
 
 SYSTEM_SEARCH_FIELDS = ['id', 'name', 'ip', 'hostname',
-                        'device', 'vendor', 'driver']
+                        'device', 'vendor', 'driver', 'uuid']
 
 ####################
 
@@ -109,7 +110,6 @@ def help_get_apiversion(self):
     print 'get_apiversion: Display the API version of the server'
     print 'usage: get_apiversion'
 
-
 def do_get_apiversion(self, args):
     print self.client.api.getVersion()
 
@@ -132,6 +132,18 @@ def help_get_certificateexpiration(self):
 def do_get_certificateexpiration(self, args):
     date = self.client.satellite.getCertificateExpirationDate(self.session)
     print date
+
+####################
+
+def help_get_session(self):
+    print 'get_session: Show the current session string'
+    print 'usage: get_session'
+
+def do_get_session(self, args):
+    if self.session:
+        print self.session
+    else:
+        logging.error('No session found')
 
 ####################
 
@@ -177,28 +189,39 @@ def do_login(self, args):
         logging.warning('You are already logged in')
         return True
 
-    if self.options.nossl:
+    # an argument passed to the function get precedence
+    if len(args) == 2:
+        server = args[1]
+    else:
+        # use the server we were already using
+        server = self.config['server']
+
+    # bail out if not server was given
+    if not server:
+        logging.warning('No server specified')
+        return False
+
+    # load the server-specific configuration
+    self.load_config_section(server)
+
+    # an argument passed to the function get precedence
+    if len(args):
+        username = args[0]
+    elif self.config.has_key('username'):
+        # use the username from before
+        username = self.config['username']
+    else:
+        username = ''
+
+    # set the protocol
+    if self.config.has_key('nossl') and self.config['nossl']:
         proto = 'http'
     else:
         proto = 'https'
 
-    # read the username from the arguments passed
-    if len(args):
-        username = args[0]
-    else:
-        username = ''
-
-    # read the server from the arguments passed
-    if len(args) == 2:
-        server = args[1]
-    elif self.options.server:
-        server = self.options.server
-    else:
-        logging.warning('No server specified')
-        return False
-
     server_url = '%s://%s/rpc/api' % (proto, server)
 
+    # this will enable spewing out all client/server traffic
     verbose_xmlrpc = False
     if self.options.debug > 1:
         verbose_xmlrpc = True
@@ -227,11 +250,14 @@ def do_login(self, args):
     session_file = os.path.join(self.conf_dir, server, 'session')
 
     # retrieve a cached session
-    if os.path.isfile(session_file):
+    # (skip this if username and password are provided on the command line)
+    if os.path.isfile(session_file) \
+       and not self.options.username \
+       and not self.options.password:
         try:
             sessionfile = open(session_file, 'r')
-           
-            # read the session (format = server:username:session)
+
+            # read the session (format = username:session)
             for line in sessionfile:
                 parts = line.split(':')
 
@@ -257,22 +283,15 @@ def do_login(self, args):
             self.client.user.listUsers(self.session)
         except:
             logging.warning('Cached credentials are invalid')
-            username = ''
+            self.current_user = ''
             self.session = ''
 
     # attempt to login if we don't have a valid session yet
     if not len(self.session):
         if len(username):
-            print 'Spacewalk Username: %s' % username
+            logging.info('Spacewalk Username: %s' % username)
         else:
-            if self.options.username:
-                username = self.options.username
-
-                # remove this from the options so that if 'login' is called
-                # again, the user is prompted for the information
-                self.options.username = None
-            else:
-                username = prompt_user('Spacewalk Username:', noblank = True)
+            username = prompt_user('Spacewalk Username:', noblank = True)
 
         if self.options.password:
             password = self.options.password
@@ -280,12 +299,17 @@ def do_login(self, args):
             # remove this from the options so that if 'login' is called
             # again, the user is prompted for the information
             self.options.password = None
+        elif self.config.has_key('password'):
+            password = self.config['password']
         else:
             password = getpass('Spacewalk Password: ')
 
         # login to the server
         try:
             self.session = self.client.auth.login(username, password)
+
+            # don't keep the password around
+            password = None
         except:
             logging.error('Invalid credentials')
             return False
@@ -305,13 +329,13 @@ def do_login(self, args):
             sessionfile.write(line)
             sessionfile.close()
         except IOError:
-            logging.error('Could not write cache file')
+            logging.error('Could not write session file')
 
     # load the system/package/errata caches
     self.load_caches(server)
 
     # keep track of who we are and who we're connected to
-    self.username = username
+    self.current_user = username
     self.server = server
 
     logging.info('Connected to %s as %s' % (server_url, username))
@@ -329,7 +353,7 @@ def do_logout(self, args):
         self.client.auth.logout(self.session)
 
     self.session = ''
-    self.username = ''
+    self.current_user = ''
     self.server = ''
     self.do_clear_caches('')
 
@@ -340,8 +364,8 @@ def help_whoami(self):
     print 'usage: whoami'
 
 def do_whoami(self, args):
-    if len(self.username):
-        print self.username
+    if len(self.current_user):
+        print self.current_user
     else:
         logging.warning("You are not logged in")
 
@@ -431,16 +455,21 @@ def generate_errata_cache(self, force=False):
     channels = [c.get('label') for c in channels]
 
     for c in channels:
-        errata = \
-            self.client.channel.software.listErrata(self.session, c)
+        try:
+            errata = \
+                self.client.channel.software.listErrata(self.session, c)
+        except:
+            logging.debug('No access to %s' % c)
+            continue
 
         for erratum in errata:
-            if erratum.get('advisory_name') not in self.all_errata: 
+            if erratum.get('advisory_name') not in self.all_errata:
                 self.all_errata[erratum.get('advisory_name')] = \
-                    { 'id'       : erratum.get('id'),
-                      'type'     : erratum.get('advisory_type'),
-                      'date'     : erratum.get('date'),
-                      'synopsis' : erratum.get('advisory_synopsis') }
+                    { 'id'                : erratum.get('id'),
+                      'advisory_name'     : erratum.get('advisory_name'),
+                      'advisory_type'     : erratum.get('advisory_type'),
+                      'date'              : erratum.get('date'),
+                      'advisory_synopsis' : erratum.get('advisory_synopsis') }
 
     self.errata_cache_expire = \
         datetime.now() + timedelta(self.ERRATA_CACHE_TTL)
@@ -453,8 +482,8 @@ def generate_errata_cache(self, force=False):
 
 
 def save_errata_cache(self):
-    save_cache(self.errata_cache_file, 
-               self.all_errata, 
+    save_cache(self.errata_cache_file,
+               self.all_errata,
                self.errata_cache_expire)
 
 
@@ -478,8 +507,12 @@ def generate_package_cache(self, force=False):
     channels = [c.get('label') for c in channels]
 
     for c in channels:
-        packages = \
-            self.client.channel.software.listAllPackages(self.session, c)
+        try:
+            packages = \
+                self.client.channel.software.listAllPackages(self.session, c)
+        except:
+            logging.debug('No access to %s' % c)
+            continue
 
         for p in packages:
             if not p.get('name') in self.all_packages_short:
@@ -489,8 +522,8 @@ def generate_package_cache(self, force=False):
 
             if not longname in self.all_packages:
                 self.all_packages[longname] = p.get('id')
-   
-    # keep a reverse dictionary so we can lookup package names by ID 
+
+    # keep a reverse dictionary so we can lookup package names by ID
     self.all_packages_by_id = \
         dict( (v, k) for k, v in self.all_packages.iteritems() )
 
@@ -507,15 +540,15 @@ def generate_package_cache(self, force=False):
 def save_package_caches(self):
     # store the cache to disk to speed things up
     save_cache(self.packages_short_cache_file,
-               self.all_packages_short, 
-               self.package_cache_expire)
-    
-    save_cache(self.packages_long_cache_file, 
-               self.all_packages, 
+               self.all_packages_short,
                self.package_cache_expire)
 
-    save_cache(self.packages_by_id_cache_file, 
-               self.all_packages_by_id, 
+    save_cache(self.packages_long_cache_file,
+               self.all_packages,
+               self.package_cache_expire)
+
+    save_cache(self.packages_by_id_cache_file,
+               self.all_packages_by_id,
                self.package_cache_expire)
 
 
@@ -578,8 +611,8 @@ def generate_system_cache(self, force=False):
 
 
 def save_system_cache(self):
-    save_cache(self.system_cache_file, 
-               self.all_systems, 
+    save_cache(self.system_cache_file,
+               self.all_systems,
                self.system_cache_expire)
 
 
@@ -616,15 +649,15 @@ def load_caches(self, server):
     (self.all_errata, self.errata_cache_expire) = \
         load_cache(self.errata_cache_file)
 
-    # load self.all_packages_short from disk 
+    # load self.all_packages_short from disk
     (self.all_packages_short, self.package_cache_expire) = \
         load_cache(self.packages_short_cache_file)
 
-    # load self.all_packages from disk 
+    # load self.all_packages from disk
     (self.all_packages, self.package_cache_expire) = \
         load_cache(self.packages_long_cache_file)
 
-    # load self.all_packages_by_id from disk 
+    # load self.all_packages_by_id from disk
     (self.all_packages_by_id, self.package_cache_expire) = \
         load_cache(self.packages_by_id_cache_file)
 
@@ -677,6 +710,11 @@ def get_system_name(self, system_id):
         return self.all_systems[system_id]
     except KeyError:
         return
+
+
+def get_org_id(self, name):
+    details = self.client.org.getDetails(self.session, name)
+    return details.get('id')
 
 
 def expand_errata(self, args):
@@ -738,7 +776,7 @@ def expand_systems(self, args):
             except ValueError:
                 # just a system name
                 systems.append(item)
-    
+
     matches = filter_results(self.get_system_names(), systems)
 
     return matches + system_ids
@@ -850,5 +888,35 @@ def replace_line_buffer(self, msg = None):
 
     # keep track of what is displayed so we can clear it later
     self.current_line = new_line
+
+
+def load_config_section(self, section):
+    config_opts = [ 'server', 'username', 'password', 'nossl' ]
+
+    if not self.config_parser.has_section(section):
+        logging.debug('Configuration section [%s] does not exist' % section)
+        return
+
+    logging.debug('Loading configuration section [%s]' % section)
+
+    for key in config_opts:
+        # don't override command-line options
+        if self.options.__dict__[key]:
+            # set the config value to the command-line argument
+            self.config[key] = self.options.__dict__[key]
+        else:
+            try:
+                self.config[key] = self.config_parser.get(section, key)
+            except NoOptionError:
+                pass
+
+    # handle the nossl boolean
+    if self.config.has_key('nossl'):
+        if re.match('^1|y|true$', self.config['nossl'], re.I):
+            self.config['nossl'] = True
+        else:
+            self.config['nossl'] = False
+
+    logging.debug('Current Configuration: %s' % self.config)
 
 # vim:ts=4:expandtab:

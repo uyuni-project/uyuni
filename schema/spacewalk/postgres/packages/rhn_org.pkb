@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 0cbe7350fd03e375f840735de481cf22d7b127bc
+-- oracle equivalent source sha1 78ceb7a44befb2120e46a7d40ac1cd32f1227f06
 --
 -- Copyright (c) 2008--2010 Red Hat, Inc.
 --
@@ -19,29 +19,6 @@
 -- setup search_path so that these functions are created in appropriate schema.
 update pg_settings set setting = 'rhn_org,' || setting where name = 'search_path';
 
-CREATE OR REPLACE FUNCTION find_server_group_by_type(org_id_in NUMERIC, group_label_in VARCHAR) 
-    RETURNS NUMERIC
-    AS
-    $$
-    DECLARE
-	server_group_by_label CURSOR (org_id_in NUMERIC, group_label_in VARCHAR) FOR
-           SELECT SG.*
-             FROM rhnServerGroupType SGT,
-                  rhnServerGroup SG
-            WHERE SG.group_type = SGT.id
-              AND SGT.label = group_label_in
-              AND SG.org_id = org_id_in;
-
-        server_group       record;
-    BEGIN
-        OPEN server_group_by_label(org_id_in, group_label_in);
-        FETCH server_group_by_label INTO server_group;
-        CLOSE server_group_by_label;
-
-        RETURN server_group.id;
-    END;
-    $$
-    LANGUAGE PLPGSQL;
 
 create or replace function delete_org (
         org_id_in in numeric
@@ -170,7 +147,7 @@ create or replace function delete_user(user_id_in in numeric, deleting_org in nu
             where    1=1
                 and org_id = our_org_id
                 and id != user_id_in
-                and rownum = 1;
+                limit 1;
         exception
             when no_data_found then
                 other_users := 0;
@@ -202,7 +179,7 @@ create or replace function delete_user(user_id_in in numeric, deleting_org in nu
                         and ugt.label = 'org_admin'
                         and ug.id = new_ugm.user_group_id
                         and new_ugm.user_id != user_id_in
-                        and rownum = 1;
+                        limit 1;
                 exception
                     when no_data_found then
                         -- If we're deleting the org, we don't want to raise

@@ -20,7 +20,7 @@ import time
 import string
 
 from spacewalk.common import rhnException, rhnFault, log_debug, log_error, \
-    CFG, rhnFlags, rhn_rpm
+    CFG, rhnFlags
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server import rhnChannel, rhnUser, rhnSQL, rhnLib, rhnAction, \
                    rhnVirtualization
@@ -32,7 +32,6 @@ import server_lib
 import server_token
 from server_certificate import Certificate, gen_secret
 from server_wrapper import ServerWrapper
-from satellite_cert import SatelliteCert
 
 class Server(ServerWrapper):
     """ Main Server class """
@@ -669,15 +668,7 @@ class Server(ServerWrapper):
         log_debug(3, self.server["id"])
 
         return server_lib.check_entitlement(self.server['id'])
-
-
-    # Given a dbiDate object, returns the UNIX representation (seconds since
-    # epoch)
-    def dbiDate2timestamp(self, dateobj):
-        timeString = '%s %s %s %s %s %s' % (dateobj.year, dateobj.month,
-            dateobj.day, dateobj.hour, dateobj.minute, dateobj.second)
-        return time.mktime(time.strptime(timeString, '%Y %m %d %H %M %S'))
-
+ 
     def validateSatCert(self):
         # make sure the cert is still valid
 

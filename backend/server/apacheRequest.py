@@ -19,7 +19,7 @@
 import sys
 import base64
 import string
-from rhn import rpclib
+import xmlrpclib
 from rhn.rpclib import transports
 
 # common modules
@@ -57,10 +57,11 @@ class apacheRequest:
         # grab an Input object
         self.input = transports.Input(req.headers_in)
         # make sure we have a parser and a decoder available
-        self.parser, self.decoder = rpclib.xmlrpclib.getparser()
+        self.parser, self.decoder = xmlrpclib.getparser()
         # Make sure the decoder doesn't assume UTF-8 data, that would break if
         # non-UTF-8 chars are sent (bug 139370)
         self.decoder._encoding = None
+        self.parser._parser.returns_unicode = 0
 
         # extract the server we're talking to and the root directory
         # from the request configuration options
@@ -99,7 +100,7 @@ class apacheRequest:
             msg = open(CFG.MESSAGE_TO_ALL).read()
             log_debug(3, "Sending message to all clients: %s" % msg)
             # Send the message as a fault.
-            response = rpclib.Fault(
+            response = xmlrpclib.Fault(
                 -1, _("IMPORTANT MESSAGE FOLLOWS:\n%s") % msg)
             # and now send everything back
             ret = self.response(response)
@@ -124,7 +125,7 @@ class apacheRequest:
             if sys.exc_type == UnknownXML:
                 fault = -1
             e_type, e_value = sys.exc_info()[:2]
-            response = rpclib.Fault(fault, _(
+            response = xmlrpclib.Fault(fault, _(
                 "While running '%s': caught\n%s : %s\n") % (
                 method, e_type, e_value))
             Traceback(method, self.req,
@@ -186,7 +187,7 @@ class apacheRequest:
     # convert a response to the right type for passing back to
     # rpclib.xmlrpclib.dumps
     def normalize(self, response):
-        if isinstance(response, rpclib.Fault):
+        if isinstance(response, xmlrpclib.Fault):
             return response
         return (response,)
 
@@ -240,7 +241,7 @@ class apacheRequest:
         self.req.headers_out["Content-Length"] = str(response_size)
 
         # if we loaded this from a real fd, set it as the X-Replace-Content
-        # check for "name" since sometimes we get xmlrpclib.File's that have
+        # check for "name" since sometimes we get xmlrpclib.transports.File's that have
         # a stringIO as the file_obj, and they dont have a .name (ie,
         # fileLists...)
         if response.name:
@@ -290,7 +291,7 @@ class apacheRequest:
         compress_response = rhnFlags.test("compress_response")
         # Init an output object; we'll use it for sending data in various
         # formats
-        if isinstance(response, rpclib.File):
+        if isinstance(response, transports.File):
             if not hasattr(response.file_obj, 'fileno') and compress_response:
                 # This is a StringIO that has to be compressed, so read it in
                 # memory; mark that we don't have to do any xmlrpc encoding
@@ -307,7 +308,7 @@ class apacheRequest:
             transfer=transports.lookupTransfer(self.input.transfer), 
             encoding=transports.lookupEncoding(self.input.encoding))
 
-        if isinstance(response, rpclib.Fault):
+        if isinstance(response, xmlrpclib.Fault):
             log_debug(4, "Return FAULT",
                       response.faultCode, response.faultString)
             # No compression for faults because we'd like them to pop
@@ -330,7 +331,7 @@ class apacheRequest:
             # Normalize the response
             response = self.normalize(response)
             try:
-                response = rpclib.xmlrpclib.dumps(response, methodresponse = 1)
+                response = xmlrpclib.dumps(response, methodresponse = 1)
             except TypeError, e:
                 log_debug(4, "Error \"%s\" encoding response = %s" % (e, response))
                 Traceback("apacheHandler.response", self.req,
@@ -387,7 +388,7 @@ class apachePOST(apacheRequest):
             self.parser.feed(data)
         except IndexError:
             # malformed XML data
-            raise rpclib.ResponseError
+            raise xmlrpclib.ResponseError
 
         self.parser.close()
         # extract the method and arguments; we pass the exceptions through
@@ -461,7 +462,7 @@ class apachePOST(apacheRequest):
         # Decode the request; avoid logging crappy responses
         try:
             params, method = self.decode(_body)
-        except rpclib.ResponseError:
+        except xmlrpclib.ResponseError:
             log_error("Got bad XML-RPC blob of len = %d" % len(_body))
             return apache.HTTP_BAD_REQUEST
         else:
@@ -569,7 +570,7 @@ class GetHandler(apacheRequest):
         # since we have to stick the error message in the HTTP header,
         # and to return an Apache error code
                 
-        if isinstance(response, rpclib.Fault):
+        if isinstance(response, xmlrpclib.Fault):
             log_debug(4, "Return FAULT",
                       response.faultCode, response.faultString)
             retcode = apache.HTTP_NOT_FOUND

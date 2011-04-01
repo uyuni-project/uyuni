@@ -159,7 +159,7 @@ sub channels_visible_to_org {
   my $sth;
 
   $query = <<EOQ;
-SELECT  ACh.channel_name NAME, ACh.channel_id ID, ACh.channel_depth DEPTH, C.org_id CHANNEL_ORG_ID
+SELECT  ACh.channel_name as NAME, ACh.channel_id as ID, ACh.channel_depth as DEPTH, C.org_id as CHANNEL_ORG_ID
   FROM  rhnAvailableChannels ACh, rhnChannel C
  WHERE  ACh.org_id = :org_id
    AND  C.id = ACh.channel_id
@@ -341,8 +341,8 @@ EOQ
 INSERT 
   INTO rhnRepoRegenQueue
         (id, channel_label, client, reason, force, bypass_filters, next_action, created, modified)
-VALUES (rhn_repo_regen_queue_id_seq.nextval,
-        :label, 'perl-web::clone_original_channel_packages', NULL, 'N', 'N', sysdate, sysdate, sysdate)
+VALUES (sequence_nextval('rhn_repo_regen_queue_id_seq'),
+        :label, 'perl-web::clone_original_channel_packages', NULL, 'N', 'N', current_timestamp, current_timestamp, current_timestamp)
 EOQ
 
   my $channel = RHN::Channel->lookup(-id => $to_cid); 
@@ -468,20 +468,16 @@ EOQ
 
   $sth->execute($cid);
 
-  my $now = RHN::Date->now->long_date;
-
-  $delay = $delay / (24*60*60);
-
   if ($sth->fetchrow) {
     $sth->finish;
 
     $sth = $dbh->prepare(<<EOQ);
 UPDATE rhnTaskQueue
-   SET earliest = TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS') + ?
+   SET earliest = current_timestamp + numtodsinterval(?, 'second')
  WHERE task_data = ?
 EOQ
 
-    $sth->execute($now, $delay, $cid);
+    $sth->execute($delay, $cid);
   }
   else {
     $sth->finish;
@@ -489,10 +485,10 @@ EOQ
     $sth = $dbh->prepare(<<EOQ);
 INSERT INTO rhnTaskQueue
        (org_id, task_name, task_data, priority, earliest)
-VALUES (?, 'update_errata_cache_by_channel', ?, 0, TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS') + ?)
+VALUES (?, 'update_errata_cache_by_channel', ?, 0, current_timestamp + numtodsinterval(?, 'second'))
 EOQ
 
-    $sth->execute($org_id, $cid, $now, $delay);
+    $sth->execute($org_id, $cid, $delay);
   }
 
   $dbh->commit;
@@ -730,8 +726,8 @@ EOQ
 INSERT 
   INTO rhnRepoRegenQueue
         (id, channel_label, client, reason, force, bypass_filters, next_action, created, modified)
-VALUES (rhn_repo_regen_queue_id_seq.nextval,
-        :label, 'perl-web::add_cloned_errata_to_channel', NULL, 'N', 'N', sysdate, sysdate, sysdate)
+VALUES (sequence_nextval('rhn_repo_regen_queue_id_seq'),
+        :label, 'perl-web::add_cloned_errata_to_channel', NULL, 'N', 'N', current_timestamp, current_timestamp, current_timestamp)
 EOQ
 
   my $channel = RHN::Channel->lookup(-id => $attr{to_cid}); 

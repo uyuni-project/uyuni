@@ -1191,6 +1191,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype
      *      #array()
      *          #struct("package")
+     *                 #prop("int", "id")
      *                 #prop("string", "name")
      *                 #prop("string", "version")
      *                 #prop("string", "release")
@@ -3931,10 +3932,14 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype
      *      $ChannelSerializer
      */
-    public Channel getSubscribedBaseChannel(String sessionKey, Integer sid) {
+    public Object getSubscribedBaseChannel(String sessionKey, Integer sid) {
         User loggedInUser = getLoggedInUser(sessionKey);
         Server server = lookupServer(loggedInUser, sid);
-        return server.getBaseChannel();
+        Channel base = server.getBaseChannel();
+        if (base == null) {
+            return new HashMap();
+        }
+        return base;
     }
 
 
@@ -4682,8 +4687,13 @@ public class SystemHandler extends BaseHandler {
         if (cf == null) {
             throw new InvalidEntitlementException();
         }
+        // we need long values to pass
+        List<Long> longServerIds = new ArrayList();
+        for (Iterator it = serverIds.iterator(); it.hasNext();) {
+            longServerIds.add(new Long((Integer) it.next()));
+        }
         return VirtualizationEntitlementsManager.getInstance().
-                            convertToFlex(serverIds, cf.getId(), user);
+                            convertToFlex(longServerIds, cf.getId(), user).size();
     }
 
     /**
@@ -4753,5 +4763,28 @@ public class SystemHandler extends BaseHandler {
         }
 
         return l;
+    }
+
+    /**
+     * Get the UUID for the given system ID.
+     * @param sessionKey of user making call
+     * @param serverId of the server
+     * @return UUID string
+     *
+     * @xmlrpc.doc Get the UUID from the given system ID.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "serverId")
+     * @xmlrpc.returntype string
+     */
+    public String getUuid(String sessionKey, Integer serverId) {
+        User loggedInUser = getLoggedInUser(sessionKey);
+        Server server = lookupServer(loggedInUser, serverId);
+
+        if (server.isVirtualGuest()) {
+            return server.getVirtualInstance().getUuid();
+        }
+        else {
+            return "";
+        }
     }
 }

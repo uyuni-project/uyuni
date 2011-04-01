@@ -1,0 +1,38 @@
+HOW TO BUILD DEBIAN PACKAGES
+
+python-rhnlib in client/rhel/rhnlib
+-----------------------------------
+cd client/rhel/rhnlib
+tito build --tgz
+copy rhnlib-2.5.27.tar.gz /tmp/python-rhnlib_2.5.27.orig.tar.gz
+cd -
+cd client/debian
+cp -a rhnlib /tmp/python-rhnlib-2.5.27
+cd /tmp/python-rhnlib-2.5.27
+debuild -i -S
+# and if you have configured dupload properly, then:
+dupload -t mentors python-rhnlib_2.5.27-1_source.changes 
+
+Similary for other packages.
+
+All packages available:
+python-rhnlib in client/rhel/rhnlib
+python-ethtool-0.5 in spec-tree/python-ethtool-0.5
+apt-spacewalk
+
+
+apt-spacewalk - instructions are little different:
+1) Create an upstream tarball
+  cd client/debian/apt-spacewalk/src
+  tito build --tgz
+2) Prepare your build dir elsewhere
+  tar xzf apt-spacewalk-$version.tar.gz
+  cd apt-spacewalk-$version/
+  cp -r client/debian/apt-spacewalk/debian ./
+3) Adjust the settings in debian/ directory
+3) Build the package
+  #build source package
+  debuild -i -S
+  #or build binary package
+  debuild -b
+

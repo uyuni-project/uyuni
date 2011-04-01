@@ -80,15 +80,6 @@ public class SystemListHelper {
             img.setAttribute("alt", message);
             img.setAttribute("title", message);
         }
-        else if (next.getLocked().intValue() == 1) {
-            //status = "locked";
-            url.setAttribute("href",
-                    "/rhn/help/reference/en-US/s1-sm-systems.jsp");
-            message = ls.getMessage("systemlist.jsp.locked");
-            img.setAttribute("src", "/img/icon_locked.gif");
-            img.setAttribute("alt", message);
-            img.setAttribute("title", message);
-        }
         else if (SystemManager.isKickstarting(user,
                  new Long(next.getId().longValue()))) {
             //status = "kickstarting";
@@ -166,6 +157,27 @@ public class SystemListHelper {
         else {
             statusDisplay = img.render();
         }
+
+        if (next.getLocked().intValue() == 1) {
+            HtmlTag lockedUrl = new HtmlTag("a");
+            HtmlTag lockedImg = new HtmlTag("img");
+
+            //status = "locked";
+            lockedUrl.setAttribute("href",
+                    "/rhn/help/reference/en-US/s1-sm-systems.jsp");
+            message = ls.getMessage("systemlist.jsp.locked");
+            lockedImg.setAttribute("src", "/img/icon_locked.gif");
+            lockedImg.setAttribute("alt", message);
+            lockedImg.setAttribute("title", message);
+            if (makeLinks) {
+                lockedUrl.addBody(lockedImg);
+                statusDisplay = statusDisplay + lockedUrl.render();
+            }
+            else {
+                statusDisplay = statusDisplay + lockedImg.render();
+            }
+        }
+
         next.setStatusDisplay(statusDisplay);
 
     }

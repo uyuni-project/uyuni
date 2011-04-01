@@ -44,6 +44,7 @@ import org.apache.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 
+import java.net.IDN;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
@@ -837,25 +838,23 @@ public class Server extends BaseDomainHelper implements Identifiable {
         if (!networkInterfaces.isEmpty()) {
             Iterator i = networkInterfaces.iterator();
             // First pass look for names
-            while (i.hasNext()) {
-                NetworkInterface n = (NetworkInterface) i.next();
-                boolean notEmpty = !n.isDisabled();
-                if (n.getName().equals("eth0") && notEmpty) {
-                    log.debug("Found eth0");
-                    return n;
-                }
-                if (n.getName().startsWith("eth0") && notEmpty) {
-                    log.debug("Found eth0*");
-                    return n;
-                }
-                if (n.getName().equals("eth1") && notEmpty) {
-                    log.debug("Found eth1");
-                    return n;
-                }
-                if (n.getName().startsWith("eth1") && notEmpty) {
-                    log.debug("Found eth1*");
-                    return n;
-                }
+            NetworkInterface ni = null;
+
+            ni = findActiveIfaceWithName("eth0", false);
+            if (ni != null) {
+                return ni;
+            }
+            ni = findActiveIfaceWithName("eth0", true);
+            if (ni != null) {
+                return ni;
+            }
+            ni = findActiveIfaceWithName("eth1", false);
+            if (ni != null) {
+                return ni;
+            }
+            ni = findActiveIfaceWithName("eth1", true);
+            if (ni != null) {
+                return ni;
             }
             // Second pass look for localhost
             i = networkInterfaces.iterator();
@@ -876,6 +875,30 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return null;
     }
 
+    private NetworkInterface findActiveIfaceWithName(String pattern, boolean startsWith) {
+        if (networkInterfaces.isEmpty()) {
+            return null;
+        }
+        for (Iterator i = networkInterfaces.iterator(); i.hasNext();) {
+            NetworkInterface ni = (NetworkInterface) i.next();
+            if (ni.isDisabled()) {
+                continue;
+            }
+            if (startsWith) {
+                if (ni.getName().startsWith(pattern)) {
+                    log.debug("Found " + pattern + "*");
+                    return ni;
+                }
+            }
+            else {
+                if (ni.getName().equals(pattern)) {
+                    log.debug("Found " + pattern);
+                    return ni;
+                }
+            }
+        }
+        return null;
+    }
 
     // Sometimes java really annoys me
     private Network findPrimaryNetwork() {
@@ -920,6 +943,15 @@ public class Server extends BaseDomainHelper implements Identifiable {
             return net.getHostname();
         }
         return null;
+    }
+
+    /**
+     * Get the primary hostname for this server
+     * If hostname is IDN, it is decoded from Pune encoding
+     * @return Returns the primary hostname for this server
+     */
+    public String getDecodedHostname() {
+        return IDN.toUnicode(getHostname());
     }
 
     /**

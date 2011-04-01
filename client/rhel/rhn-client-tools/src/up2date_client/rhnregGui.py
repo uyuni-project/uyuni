@@ -40,8 +40,8 @@ import gobject
 import sys
 import os
 import gettext
-_ = gettext.gettext
-gettext.textdomain("rhn-client-tools")
+t = gettext.translation('rhn-client-tools', fallback=True)
+_ = t.ugettext
 gtk.glade.bindtextdomain("rhn-client-tools")
 
 import rhnreg
@@ -57,6 +57,7 @@ import config
 import OpenSSL
 import up2dateLog
 from rhn import rpclib
+from rhn.connections import idn_pune_to_unicode
 import rhnreg_constants
 
 cfg = config.initUp2dateConfig()
@@ -82,7 +83,18 @@ class ReviewLog:
     def __init__(self):
         self._text = gtk.TextBuffer()
         self._boldTag = self._text.create_tag(weight=700)
-    
+
+    def prependBoldText(self, text):
+        """Adds a blob of bolded text to the beggining specified section. Adds a newline 
+        after the text.
+        """
+        self.prependText(text)
+        # Make it bold
+        startOfText = self._text.get_start_iter()
+        endOfText = self._text.get_start_iter()
+        endOfText.forward_chars(len(text) +1 )
+        self._text.apply_tag(self._boldTag, startOfText, endOfText)
+
     def addBoldText(self, text):
         """Adds a blob of bolded text to the specified section. Adds a newline 
         after the text.
@@ -94,7 +106,14 @@ class ReviewLog:
         startOfText.backward_chars(len(text) +1 )
         end = self._text.get_end_iter()
         self._text.apply_tag(self._boldTag, startOfText, end)
-    
+
+    def prependText(self, text):
+        """ Insert a blob of text at the beggining of section. Adds a newline
+            after the text.
+        """
+        start = self._text.get_start_iter()
+        self._text.insert(start, text + '\n')
+
     def addText(self, text):
         """Adds a blob of text to the specified section. Adds a newline after
         the text.
@@ -114,7 +133,28 @@ class ReviewLog:
         keys = ', '.join(keyName)
         self.addText(rhnreg_constants.ACTIVATION_KEY % (keys))
         self.addText('') # adds newline
-    
+
+    def yum_plugin_warning(self):
+        """ Add to review screen warning that yum-rhn-plugin is not installed """
+        # prepending -> reverse order
+        self.prependText('') # adds newline
+        self.prependText(rhnreg_constants.YUM_PLUGIN_WARNING)
+        self.prependBoldText(_("Warning"))
+
+    def yum_plugin_conf_changed(self):
+        """ Add to review screen warning that yum-rhn-plugin config file has been changed """
+        # prepending -> reverse order
+        self.prependText('') # adds newline
+        self.prependText(rhnreg_constants.YUM_PLUGIN_CONF_CHANGED)
+        self.prependBoldText(_("Notice"))
+
+    def yum_plugin_conf_error(self):
+        """ Add to review screen warning that yum-rhn-plugin config file can not be open """
+        # prepending -> reverse order
+        self.prependText('') # adds newline
+        self.prependText(rhnreg_constants.YUM_PLUGIN_CONF_ERROR)
+        self.prependBoldText(_("Warning"))
+
     def channels(self, subscribedChannels, failedChannels):
         self.addBoldText(rhnreg_constants.CHANNELS_TITLE)
         if len(subscribedChannels) > 0:
@@ -201,12 +241,7 @@ class ChooseServerPage:
         self.customServerBox = self.chooseServerXml.get_widget('customServerTable')
 
     def chooseServerPagePrepare(self):
-        # Prepopulate the server to use from the config
-        up2dateConfig = config.initUp2dateConfig()
-        self.server = up2dateConfig['serverURL']
-
-        if type(self.server) == type([]):
-            self.server = self.server[0]
+        self.server = config.getServerlURL()[0]
             
         log.log_debug("server is %s" % self.server)
         if "rhn.redhat.com/XMLRPC" in self.server:
@@ -251,11 +286,9 @@ class ChooseServerPage:
         global serverType
         up2dateConfig = config.initUp2dateConfig()
         if self.hostedButton.get_active():
-            up2dateConfig.set('serverURL', 
-                              'https://xmlrpc.rhn.redhat.com/XMLRPC')
+            config.setServerURL('https://xmlrpc.rhn.redhat.com/XMLRPC')
             if not cfg['sslCACert']:
                 up2dateConfig.set('sslCACert', '/usr/share/rhn/RHNS-CA-CERT')
-            serverType = 'hosted'
         else:
             customServer = self.customServerEntry.get_text()
             try:
@@ -267,12 +300,12 @@ class ChooseServerPage:
 
             # If they changed the value, write it back to the config file.
             if customServer != self.server:
-                up2dateConfig.set('serverURL', customServer)
+                config.setServerURL(customServer)
             if not cfg['sslCACert']:
                 up2dateConfig.set('sslCACert', 
                                   '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT')
-            serverType = 'satellite'    
-            
+
+        serverType = rhnreg.getServerType()
         
         NEED_SERVER_MESSAGE = _("You will not be able to successfully register "
                                 "this system without contacting a Red Hat Network server.")
@@ -293,10 +326,7 @@ class ChooseServerPage:
         except up2dateErrors.CommunicationError:
             setArrowCursor()
             log.log_exception(*sys.exc_info())
-            if isinstance(up2dateConfig['serverURL'], list):
-                protocol, host, path, parameters, query, fragmentIdentifier = urlparse.urlparse(up2dateConfig['serverURL'][0])
-            else:
-                protocol, host, path, parameters, query, fragmentIdentifier = urlparse.urlparse(up2dateConfig['serverURL'])
+            protocol, host, path, parameters, query, fragmentIdentifier = urlparse.urlparse(config.getServerlURL()[0])
             dialog = messageWindow.BulletedOkDialog()
             if serverType == 'hosted':
                 dialog.add_text(_("We could not contact Red Hat Network (%s).")
@@ -357,17 +387,13 @@ class LoginPage:
         is being used.
         
         """
-        up2dateConfig = config.initUp2dateConfig()
         assert serverType in ['hosted', 'satellite']
         instructionsLabel = self.loginXml.get_widget('instructionsLabel')
         forgotInfoHosted = self.loginXml.get_widget('forgotInfoHosted')
         forgotInfoSatellite = self.loginXml.get_widget('forgotInfoSatellite')
         tipIconHosted = self.loginXml.get_widget('tipIconHosted')
         tipIconSatellite = self.loginXml.get_widget('tipIconSatellite')
-        if isinstance(up2dateConfig['serverURL'], list):
-            server = up2dateConfig['serverURL'][0]
-        else:
-            server = up2dateConfig['serverURL']
+        server = config.getServerlURL()[0]
         if serverType == 'satellite':
             protocol, host, path, parameters, query, fragmentIdentifier = urlparse.urlparse(server)
             satelliteText = _("Please enter your account information for the <b>%s</b> Red Hat Network Satellite:") % host
@@ -837,6 +863,21 @@ class CreateProfilePage:
                 # no channels subscribe
                 self.noChannels = 1
 
+        # enable yum-rhn-plugin
+        try:
+            if rhnreg.YumRHNPluginPackagePresent():
+                if rhnreg.YumRHNPluginConfPresent():
+                    if not rhnreg.YumRhnPluginEnabled():
+                        rhnreg.enableYumRhnPlugin()
+                        reviewLog.yum_plugin_conf_changed()
+                else:
+                    rhnreg.createDefaultYumRHNPluginConf()
+                    reviewLog.yum_plugin_conf_changed()
+            else:
+                reviewLog.yum_plugin_warning()
+        except IOError, e:
+            errorWindow(_("Could not open /etc/yum/pluginconf.d/rhnplugin.conf\nyum-rhn-plugin is not enable.\n") + e.errmsg)
+            reviewLog.yum_plugin_conf_error()
         rhnreg.spawnRhnCheckForUI()
         pwin.setProgress(6,6)
         pwin.hide()
@@ -894,7 +935,7 @@ class ProvideCertificatePage:
         sets the security cert label's server url at runtime 
         """
         securityCertlabel = self.provideCertificateXml.get_widget("SecurityCertLabel")
-        securityCertlabel.set_text(self.orig_cert_label_template % cfg['serverURL'])
+        securityCertlabel.set_text(self.orig_cert_label_template % config.getServerlURL()[0] )
 
     def provideCertificatePageApply(self):
         """If the 'I have a cert' radio button is selected, this function will 
@@ -957,7 +998,7 @@ class ProvideCertificatePage:
             try:
                 rhnreg.getCaps()
             except up2dateErrors.SSLCertificateVerifyFailedError:
-                server_url = up2dateConfig['serverURL']
+                server_url = config.getServerlURL()[0]
                 #TODO: we could point the user to grab the cert from /pub if its sat
 
                 #bz439383 - Handle error message for expired certificate
@@ -1037,14 +1078,11 @@ class AlreadyRegisteredDialog:
         oldUsername = _('unknown')
         systemId = _('unknown')
         try:
-            server = cfg['serverURL']
-
             # If the serverURL config value is a list, we have no way of knowing
             # for sure which one the machine registered against, 
             # so default to the
             # first element.
-            if type(server) == type([]):
-                server = server[0]
+            server = config.getServerlURL()[0]
 
             if server.endswith('/XMLRPC'):
                 server = server[:-7] # don't display trailing /XMLRPC
@@ -1063,6 +1101,23 @@ class AlreadyRegisteredDialog:
             self.rc = 0
         self.dialog.destroy()
 
+class AlreadyRegisteredSubscriptionManagerDialog:
+    """ Window with text:
+        You are already subscribed using subscription manager. Exit. Continue
+    """
+
+    def __init__(self):
+        """Returns when dialog closes. Dialog.rc will be set to 1 if the user
+           clicked continue, or 0 if they clicked cancel or close the dialog.
+        """
+        self.xml = gtk.glade.XML(gladefile, "alreadyRegisteredSubscriptionManagerDialog",
+                                 domain="rhn-client-tools")
+        self.dialog = self.xml.get_widget("alreadyRegisteredSubscriptionManagerDialog")
+
+        self.rc = self.dialog.run()
+        if self.rc != 1:
+            self.rc = 0
+        self.dialog.destroy()
 
 class ConfirmQuitDialog:
     def __init__(self):
@@ -1135,7 +1190,7 @@ class HardwareDialog:
             elif hw['class'] == 'NETINFO':
                 label = self.hwXml.get_widget("hostnameLabel")
                 try:
-                    label.set_text(hw['hostname'])
+                    label.set_text(idn_pune_to_unicode(hw['hostname']))
                 except:
                     pass
                 label = self.hwXml.get_widget("ipLabel")
@@ -1301,6 +1356,7 @@ def unexpectedError(message, exc_info=None):
         unexpectedError(_("Your error here."), sys.exc_info())
     
     """
+    setArrowCursor()
     logFile = cfg['logFile'] or '/var/log/up2date'
     message = message + "\n" + (_("This error shouldn't have happened. If you'd "
                                  "like to help us improve this program, please "

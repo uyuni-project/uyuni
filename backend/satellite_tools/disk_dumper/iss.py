@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -25,7 +25,7 @@ from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
 from spacewalk.satellite_tools.exporter import xmlWriter
 from spacewalk.satellite_tools import xmlDiskSource, diskImportLib, progress_bar
-from spacewalk.satellite_tools.syncLib import initEMAIL_LOG, dumpEMAIL_LOG, log2email, log2stderr, log2stdout, log
+from spacewalk.satellite_tools.syncLib import initEMAIL_LOG, dumpEMAIL_LOG, log2email, log2stderr, log2stdout
 from iss_ui import UI
 from iss_actions import ActionDeps
 import shutil
@@ -33,7 +33,8 @@ import iss_isos
 from spacewalk.common.checksum import getFileChecksum
 
 import gettext
-_ = gettext.gettext
+t = gettext.translation('spacewalk-backend-server', fallback=True)
+_ = t.ugettext
 
 class ISSError(Exception):
     def __init__(self, msg, tb):
@@ -151,7 +152,7 @@ class FileMapper:
 """
 class Dumper(dumper.XML_Dumper): 
     def __init__(self, outputdir, channel_labels, hardlinks, start_date, \
-                  end_date):
+                  end_date, use_rhn_date):
         dumper.XML_Dumper.__init__(self)
         self.fm = FileMapper(outputdir)
         self.mp = outputdir
@@ -163,6 +164,7 @@ class Dumper(dumper.XML_Dumper):
 
 	self.start_date = start_date
 	self.end_date   = end_date
+        self.use_rhn_date = use_rhn_date
 
 	if self.start_date:
             dates = { 'start_date' : self.start_date,
@@ -196,7 +198,6 @@ class Dumper(dumper.XML_Dumper):
             
             #self.channel_ids contains the list of dictionaries that hold the channel information
             #The keys are 'channel_id', 'label', and 'last_modified'.
-            self.channel_ids = []
             self.channel_comps = {}
 
             #Channel_labels should be the list of channels passed into rhn-satellite-exporter by the user.
@@ -220,7 +221,6 @@ class Dumper(dumper.XML_Dumper):
             # that are already on disk, so that we do not lose those families with
             # "incremental" dumps. So we will gather list of channel ids for channels already
             # in dump.
-            self.channel_ids_for_families = []
             channel_labels_for_families = self.fm.filemap['channels'].list()
             print "Appending channels %s" % ( channel_labels_for_families )
             for ids in channel_labels_for_families:
@@ -246,13 +246,15 @@ class Dumper(dumper.XML_Dumper):
 		        and rcp.channel_id = :channel_id
                 """
             if self.start_date:
-                query += """
-                        and (rcp.modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
-                             or rp.last_modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
-                            )
-                        and (rcp.modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
-                             or rp.last_modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
-                            )
+                if self.use_rhn_date:
+                    query += """
+                        and rp.last_modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
+                        and rp.last_modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
+                        """
+                else:
+                    query += """
+                        and rcp.modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
+                        and rcp.modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
                         """
 	    self.brpm_query = rhnSQL.Statement(query)
             brpm_data = rhnSQL.prepare(self.brpm_query)
@@ -281,13 +283,15 @@ class Dumper(dumper.XML_Dumper):
 		    and rcp.package_id = rp.id
 		"""
 	    if self.start_date:
-                query += """
-                    and (rcp.modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
-                         or rp.last_modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
-                        )
-                    and (rcp.modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
-                         or rp.last_modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
-                        )
+                if self.use_rhn_date:
+                    query += """
+                    and rp.last_modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
+                    and rp.last_modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
+                    """
+                else:
+                    query += """
+                    and rcp.modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
+                    and rcp.modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
                     """
             self.package_query = rhnSQL.Statement(query)
             package_data = rhnSQL.prepare(self.package_query)
@@ -320,13 +324,15 @@ class Dumper(dumper.XML_Dumper):
                     from rhnPackageSource ps
 		"""
             if self.start_date:
-                query += """
-	           where (ps.modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
-                          or ps.last_modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
-                         )
-	             and (ps.modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
-                          or ps.last_modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
-                         )
+                if self.use_rhn_date:
+                   query += """
+	           where ps.last_modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
+	             and ps.last_modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
+                   """
+                else:
+                   query += """
+	           where ps.modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
+	             and ps.modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
                    """
             self.source_package_query = rhnSQL.Statement(query)
             source_package_data = rhnSQL.prepare(self.source_package_query)
@@ -356,13 +362,15 @@ class Dumper(dumper.XML_Dumper):
 		      and ce.errata_id = e.id
 		"""
             if self.start_date:
-                query += """
-                      and (ce.modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
-                           or e.last_modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
-                          )
-                      and (ce.modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
-                           or e.last_modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
-                          )
+                if self.use_rhn_date:
+                    query += """
+                      and e.last_modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
+                      and e.last_modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
+                      """
+                else:
+                    query += """
+                      and ce.modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
+                      and ce.modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
                       """
             self.errata_query = rhnSQL.Statement(query)
             errata_data = rhnSQL.prepare(self.errata_query)
@@ -391,13 +399,16 @@ class Dumper(dumper.XML_Dumper):
 		 where   kt.channel_id = :channel_id
 		 """
             if self.start_date:
-                query += """
-		   and (kt.last_modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
-		        or kt.modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
-                       )
-		   and (kt.last_modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
-                        or kt.modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
-                       )
+                if self.use_rhn_date:
+                   query += """
+		   and kt.last_modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
+		   and kt.last_modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
+		   and kt.org_id is Null
+                   """
+                else:
+                   query += """
+		   and kt.modified >= TO_DATE(:start_date, 'YYYYMMDDHH24MISS')
+		   and kt.modified <= TO_DATE(:end_date, 'YYYYMMDDHH24MISS')
 		   and kt.org_id is Null
                    """
             self.kickstart_trees_query = rhnSQL.Statement(query)
@@ -539,7 +550,7 @@ class Dumper(dumper.XML_Dumper):
             pb.printAll(1) 
             for channel in self.channel_ids:
                 self.set_filename(self.fm.getChannelsFile(channel['label']))
-                dumper.XML_Dumper.dump_channels(self, [channel], self.start_date, self.end_date)
+                dumper.XML_Dumper.dump_channels(self, [channel], self.start_date, self.end_date, self.use_rhn_date)
     
                 log2email(4, "Channel: %s" % channel['label'])
                 log2email(5, "Channel exported to %s" % self.fm.getChannelsFile(channel['label']))
@@ -910,8 +921,16 @@ class ExporterMain:
             sys.stdout.write("--dir not included!\n")
             sys.exit(0)
 
+        if self.options.use_sync_date and self.options.use_rhn_date:
+            sys.stderr.write("--use-rhn-date and --use-sync-date are mutually exclusive.\n")
+            sys.exit(1)
+        elif self.options.use_sync_date:
+            self.options.use_rhn_date=False
+        else:
+            self.options.use_rhn_date=True
+
         if self.options.end_date and not self.options.start_date:
-            sys.stderr.write("--end-date must be used with --start-date.")
+            sys.stderr.write("--end-date must be used with --start-date.\n")
             sys.exit(1)
 
         if self.options.end_date and len(self.options.end_date) < 8:
@@ -938,7 +957,7 @@ class ExporterMain:
         #verify mountpoint
         if os.access(self.outputdir, os.F_OK|os.R_OK|os.W_OK):
             if os.path.isdir(self.outputdir):
-                self.dumper = Dumper(self.outputdir, self.options.channel, self.options.hard_links, start_date=self.start_date, end_date=self.end_date)
+                self.dumper = Dumper(self.outputdir, self.options.channel, self.options.hard_links, start_date=self.start_date, end_date=self.end_date, use_rhn_date=self.options.use_rhn_date)
                 self.actionmap = {
                                     'arches'                :   {'dump' : self.dumper.dump_arches},
                                     'arches-extra'          :   {'dump' : self.dumper.dump_server_group_type_server_arches},

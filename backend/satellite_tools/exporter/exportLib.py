@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -201,10 +201,11 @@ class SatelliteDumper(BaseDumper):
 class _ChannelDumper(BaseRowDumper):
     tag_name = 'rhn-channel'
 
-    def __init__(self, writer, row, start_date=None, end_date=None):
+    def __init__(self, writer, row, start_date=None, end_date=None, use_rhn_date=True):
         BaseRowDumper.__init__(self, writer, row)
         self.start_date = start_date
         self.end_date = end_date
+        self.use_rhn_date = use_rhn_date
 
     def set_attributes(self):
         channel_id = self._row['id']
@@ -307,27 +308,35 @@ class _ChannelDumper(BaseRowDumper):
 
     _query_get_package_ids_by_date_limits = rhnSQL.Statement("""
         select package_id as id
+          from rhnChannelPackage rcp
+         where rcp.channel_id = :channel_id
+           and rcp.modified >= TO_Date(:lower_limit, 'YYYYMMDDHH24MISS')
+           and rcp.modified <= TO_Date(:upper_limit, 'YYYYMMDDHH24MISS')
+     """)
+
+    _query_get_package_ids_by_rhndate_limits = rhnSQL.Statement("""
+        select package_id as id
           from rhnPackage rp, rhnChannelPackage rcp
          where rcp.channel_id = :channel_id
-         and rcp.package_id = rp.id
-         and (rcp.modified >= TO_Date(:lower_limit, 'YYYYMMDDHH24MISS')
-              or rp.last_modified >= TO_Date(:lower_limit, 'YYYYMMDDHH24MISS')
-             )
-         and (rcp.modified <= TO_Date(:upper_limit, 'YYYYMMDDHH24MISS')
-              or rp.last_modified <= TO_Date(:upper_limit, 'YYYYMMDDHH24MISS')
-             )
+           and rcp.package_id = rp.id
+           and rp.last_modified >= TO_Date(:lower_limit, 'YYYYMMDDHH24MISS')
+           and rp.last_modified <= TO_Date(:upper_limit, 'YYYYMMDDHH24MISS')
      """)
 
 
     # Things that can be overwriten in subclasses
     def _get_package_ids(self):
         return self._get_ids(self._query_get_package_ids_by_date_limits,
+                             self._query_get_package_ids_by_rhndate_limits,
                              self._query_get_package_ids)
 
-    def _get_ids(self, query_with_limit, query_no_limits):
+    def _get_ids(self, query_with_limit, query_with_rhnlimit, query_no_limits):
         query_args = {'channel_id': self._row['id']}
         if self.start_date:
-            query = query_with_limit
+            if self.use_rhn_date:
+                query = query_with_rhnlimit
+            else:
+                query = query_with_limit
             query_args.update({'lower_limit': self.start_date,
                                'upper_limit': self.end_date})
         else:
@@ -365,17 +374,19 @@ class _ChannelDumper(BaseRowDumper):
 
     _query__get_errata_ids_by_limits = rhnSQL.Statement("""
          %s
-           and (ce.modified >= TO_Date(:lower_limit, 'YYYYMMDDHH24MISS')
-                or e.last_modified >= TO_Date(:lower_limit, 'YYYYMMDDHH24MISS')
-               )
-           and (ce.modified <= TO_Date(:upper_limit, 'YYYYMMDDHH24MISS')
-                or e.last_modified <= TO_Date(:upper_limit, 'YYYYMMDDHH24MISS')
-               )
+           and ce.modified >= TO_Date(:lower_limit, 'YYYYMMDDHH24MISS')
+           and ce.modified <= TO_Date(:upper_limit, 'YYYYMMDDHH24MISS')
     """ % _query__get_errata_ids)
 
+    _query__get_errata_ids_by_rhnlimits = rhnSQL.Statement("""
+         %s
+           and e.last_modified >= TO_Date(:lower_limit, 'YYYYMMDDHH24MISS')
+           and e.last_modified <= TO_Date(:upper_limit, 'YYYYMMDDHH24MISS')
+    """ % _query__get_errata_ids)
     
     def _get_errata_ids(self):
         return self._get_ids(self._query__get_errata_ids_by_limits,
+                             self._query__get_errata_ids_by_rhnlimits,
                              self._query__get_errata_ids)
 
     _query_get_kickstartable_trees = rhnSQL.Statement("""
@@ -385,16 +396,21 @@ class _ChannelDumper(BaseRowDumper):
            and kt.org_id is null
     """)
 
+    _query_get_kickstartable_trees_by_rhnlimits = rhnSQL.Statement("""
+         %s
+           and kt.last_modified >= TO_DATE(:lower_limit, 'YYYYMMDDHH24MISS')
+           and kt.last_modified <= TO_DATE(:upper_limit, 'YYYYMMDDHH24MISS')
+    """ % _query_get_kickstartable_trees)
+
     _query_get_kickstartable_trees_by_limits = rhnSQL.Statement("""
          %s
-           and  (kt.last_modified >= TO_DATE(:lower_limit, 'YYYYMMDDHH24MISS')
-                 or kt.modified >= TO_DATE(:lower_limit, 'YYYYMMDDHH24MISS'))
-           and  (kt.last_modified <= TO_DATE(:upper_limit, 'YYYYMMDDHH24MISS')
-                 or kt.modified <= TO_DATE(:upper_limit, 'YYYYMMDDHH24MISS'))
+           and kt.modified >= TO_DATE(:lower_limit, 'YYYYMMDDHH24MISS')
+           and kt.modified <= TO_DATE(:upper_limit, 'YYYYMMDDHH24MISS')
     """ % _query_get_kickstartable_trees)
 
     def _get_kickstartable_trees(self):
         ks_trees = self._get_ids(self._query_get_kickstartable_trees_by_limits,
+                                 self._query_get_kickstartable_trees_by_rhnlimits,
                                  self._query_get_kickstartable_trees)
         ks_trees.sort()
         return ks_trees
@@ -691,7 +707,7 @@ class _PackageDumper(BaseRowDumper):
         h = rhnSQL.prepare("""
             select 
                 name, text,
-                TO_CHAR(time, 'YYYYMMDDHH24MISS') time
+                TO_CHAR(time, 'YYYYMMDDHH24MISS') as time
             from rhnPackageChangeLog
             where package_id = :package_id
         """)
@@ -733,7 +749,8 @@ class _PackageDumper(BaseRowDumper):
                 pc.name, pf.device, pf.inode, pf.file_mode, pf.username,
                 pf.groupname, pf.rdev, pf.file_size,
                 TO_CHAR(mtime, 'YYYYMMDDHH24MISS') mtime,
-                c.checksum_type, c.checksum, pf.linkto, pf.flags, pf.verifyflags, pf.lang
+                c.checksum_type as "checksum-type",
+                c.checksum, pf.linkto, pf.flags, pf.verifyflags, pf.lang
             from rhnPackageFile pf
             left join rhnChecksumView c
               on pf.checksum_id = c.id,
@@ -748,48 +765,6 @@ class _PackageDumper(BaseRowDumper):
 class PackagesDumper(BaseSubelementDumper, BaseQueryDumper):
     tag_name = 'rhn-packages'
     subelement_dumper_class = _PackageDumper
-    iterator_query = """
-            select 
-                p.id,
-                p.org_id,
-                pn.name, 
-                pe.evr.version as version,
-                pe.evr.release as release,
-                pe.evr.epoch as epoch,
-                pa.label as package_arch,
-                pg.name as package_group,
-                p.rpm_version,
-                p.description,
-                p.summary,
-                p.package_size,
-                p.payload_size,
-                p.build_host,
-                TO_CHAR(p.build_time, 'YYYYMMDDHH24MISS') as build_time,
-                sr.name source_rpm,
-                c.checksum_type,
-                c.checksum,
-                p.vendor,
-                p.payload_format,
-                p.compat,
-                p.header_sig,
-                p.copyright,
-                p.cookie,
-                p.header_start,
-                p.header_end,
-                TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') as last_modified
-            from rhnPackage p, rhnPackageName pn, rhnPackageEVR pe, 
-                rhnPackageArch pa, rhnPackageGroup pg, rhnSourceRPM sr,
-                rhnChecksumView c
-            where p.name_id = pn.id
-            and p.evr_id = pe.id
-            and p.package_arch_id = pa.id
-            and p.package_group = pg.id
-            and p.source_rpm_id = sr.id
-            and p.path is not null
-            and p.checksum_id = c.id
-            and rownum < 3
-        """
-
     def set_iterator(self):
         return BaseQueryDumper.set_iterator(self)
 
@@ -817,61 +792,12 @@ class ShortPackageEntryDumper(BaseChecksumRowDumper):
 class ShortPackagesDumper(BaseSubelementDumper, BaseQueryDumper):
     tag_name = 'rhn-packages-short'
     subelement_dumper_class = ShortPackageEntryDumper
-    iterator_query = """
-            select
-                p.id,
-                pn.name,
-                pe.evr.version as version,
-                pe.evr.release as release,
-                pe.evr.epoch as epoch,
-                pa.label as package_arch,
-                c.checksum_type,
-                c.checksum,
-                p.org_id,
-                TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') as last_modified
-            from rhnPackage p, rhnPackageName pn, rhnPackageEVR pe,
-                rhnPackageArch pa, rhnChecksumView c
-            where p.name_id = pn.id
-            and p.evr_id = pe.id
-            and p.package_arch_id = pa.id
-            and p.path is not null
-            and p.checksum_id = c.id
-            and rownum < 3
-        """
-
     def set_iterator(self):
         return BaseQueryDumper.set_iterator(self)
 
 ##
 class SourcePackagesDumper(BaseQueryDumper):
     tag_name = 'rhn-source-packages'
-    iterator_query = """
-            select 
-                ps.id, 
-                sr.name source_rpm, 
-                pg.name package_group, 
-                ps.rpm_version, 
-                ps.payload_size,
-                ps.build_host, 
-                TO_CHAR(ps.build_time, 'YYYYMMDDHH24MISS') build_time,
-                sig.checksum sigchecksum,
-                sig.checksum_type sigchecksum_type,
-                ps.vendor,
-                ps.cookie,
-                ps.package_size,
-                c.checksum_type,
-                c.checksum,
-                TO_CHAR(ps.last_modified, 'YYYYMMDDHH24MISS') last_modified
-            from rhnPackageSource ps, rhnPackageGroup pg, rhnSourceRPM sr,
-                 rhnChecksumView c, rhnChecksumView sig
-            where ps.package_group = pg.id
-            and ps.source_rpm_id = sr.id
-            and ps.path is not null
-            and ps.checksum_id = c.id
-            and ps.sigchecksum_id = sig.id
-            and rownum < 3
-        """
-
     def dump_subelement(self, data):
         attributes = {}
         attrs = [
@@ -942,9 +868,9 @@ class _PackageFilesDumper(BaseDumper):
 
     def dump_subelement(self, data):
         data['mtime'] = _dbtime2timestamp(data['mtime'])
-        data['checksum_type'] = data['checksum_type'] or ""
+        data['checksum-type'] = data['checksum-type'] or ""
         data['checksum'] = data['checksum'] or ""
-        if data['checksum_type'] == 'md5':
+        if data['checksum-type'] in ('md5', ''):
             # generate md5="..." attribute
             # for compatibility with older satellites
             data['md5'] = data['checksum']
@@ -1372,25 +1298,13 @@ class ServerGroupTypeServerArchCompatDumper(RestrictedArchCompatDumper):
            %s
     """
 
-class BlacklistObsoletesDumper(BaseQueryDumper):
+class BlacklistObsoletesDumper(BaseDumper):
     tag_name = 'rhn-blacklist-obsoletes'
-    iterator_query = """
-            select pn1.name, pe.epoch, pe.version, pe.release, 
-                pa.name "package-arch", pn2.name "ignored-name"
-            from rhnBlacklistObsoletes bo, 
-                rhnPackageName pn1, rhnPackageEVR pe, rhnPackageArch pa,
-                rhnPackageName pn2
-            where bo.name_id = pn1.id
-                and bo.evr_id = pe.id
-                and bo.package_arch_id = pa.id
-                and bo.ignore_name_id = pn2.id
-        """
-
-    def dump_subelement(self, data):
-        if data['epoch'] is None:
-            data['epoch'] = ""
-        EmptyDumper(self._writer, 'rhn-blacklist-obsolete', data).dump()
-
+    def dump(self):
+        note = """\n<!-- This file is intentionally left empty.
+     Older Satellites and Spacewalks require this file to exist in the dump. -->\n"""
+        self._writer.stream.write(note)
+        self._writer.empty_tag(self.tag_name)
 
 class _KickstartableTreeDumper(BaseRowDumper):
     tag_name = 'rhn-kickstartable-tree'

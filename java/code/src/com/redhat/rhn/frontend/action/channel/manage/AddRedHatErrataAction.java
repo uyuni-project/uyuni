@@ -141,8 +141,7 @@ public class AddRedHatErrataAction extends RhnListAction {
 
         //If this is a clone, go ahead and pre-select the original Channel
         Channel original = ChannelFactory.lookupOriginalChannel(currentChan);
-        if (!requestContext.isSubmitted() && selectedChannel == null &&
-                original != null) {
+        if (!requestContext.isSubmitted() && original != null) {
             selectedChannel = original;
             selectedChannelStr = selectedChannel.getId().toString();
             /*
@@ -176,10 +175,6 @@ public class AddRedHatErrataAction extends RhnListAction {
                 sortChannelsAndChildify(channelSet, channelList, user, selectedChannelStr);
                 request.setAttribute(CHANNEL_LIST, channelList);
             }
-            if (channelList.size() > 0 && selectedVersionStr == null) {
-                selectedChannelStr = channelList.get(0).getId().toString();
-            }
-
         }
         */
 

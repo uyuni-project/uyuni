@@ -21,10 +21,11 @@ gtk.glade.bindtextdomain("rhn-client-tools", "/usr/share/locale")
 import gnome.ui
 
 import signal
-from rhn import rpclib
+import xmlrpclib
 
 import gettext
-_ = gettext.gettext
+t = gettext.translation('rhn-client-tools', fallback=True)
+_ = t.ugettext
 
 import up2dateErrors
 import config
@@ -106,6 +107,7 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         self.oemInfo = {}
         self.productInfo = {}
         self.already_registered_already_shown = False
+        self.rhsm_already_registered_already_shown = False
 
         self.druid = self.xml.get_widget("druid")
         self.mainWin = self.xml.get_widget("mainWin")
@@ -170,6 +172,12 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         if not manualPrepare:
             self.startPage.emit_stop_by_name("prepare")
         self.druid.set_buttons_sensitive(False, True, True, False)
+        if rhnreg.rhsm_registered() and not self.rhsm_already_registered_already_shown:
+            # Dialog constructor returns when dialog closes
+            dialog = rhnregGui.AlreadyRegisteredSubscriptionManagerDialog()
+            if dialog.rc == 0:
+                sys.exit(0)
+            self.rhsm_already_registered_already_shown = True
         if rhnreg.registered() and not self.already_registered_already_shown:
             # Dialog constructor returns when dialog closes
             dialog = rhnregGui.AlreadyRegisteredDialog()
@@ -337,7 +345,7 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except rpclib.ResponseError, e:
+    except xmlrpclib.ResponseError, e:
         print e
     except IOError, e:
         print _("There was some sort of I/O error: %s") % e.errmsg

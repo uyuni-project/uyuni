@@ -67,6 +67,8 @@
             <form-property name="usepam" type="java.lang.Boolean"/>
             <form-property name="no_scrub" type="java.lang.String"
             				 initial="desiredpassword, desiredpasswordConfirm"/>
+            <form-property name="preferredLocale" type="java.lang.String" />
+            <form-property name="timezone" type="java.lang.Integer"/>
         </form-bean>
         <form-bean name="userCreateForm"
             type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
@@ -1210,7 +1212,7 @@
         validate="false"
         input="/WEB-INF/pages/common/login.jsp"
         type="com.redhat.rhn.frontend.action.LoginAction">
-      <forward name="failure" path="/WEB-INF/pages/common/login.jsp" />
+      <forward name="failure" path="/WEB-INF/pages/common/relogin.jsp" />
       <forward name="loggedin" path="/YourRhn.do" redirect="true"/>
       <forward name="error" path="/WEB-INF/pages/common/errors/loginerror.jsp" />
     </action>
@@ -2413,7 +2415,7 @@
 
     <action path="/software/channels/Shared"
       scope="request"
-      input="/WEB-INF/pages/channel/all.jsp"
+      input="/WEB-INF/pages/channel/shared.jsp"
       type="com.redhat.rhn.frontend.action.channel.SharedChannelTreeAction">
       <forward name="default"
                path="/WEB-INF/pages/channel/shared.jsp" />
@@ -4034,11 +4036,6 @@
          type="com.redhat.rhn.frontend.action.systems.monitoring.ProbeGraphAction">
          <forward name="default"
                   path="/WEB-INF/pages/systems/probes/details.jsp"/>
-    </action>
-
-    <action path="/SetItemSelected"
-         scope="request"
-         type="com.redhat.rhn.frontend.action.rhnset.SetItemSelectionAction">
     </action>
 
     <action path="/systems/details/probes/ProbeDelete"
@@ -7243,6 +7240,16 @@
                  path="/ssm/ViewLog.do" redirect="true"/>
      </action>
 
+     <action path="/admin/TaskStatus"
+         scope="request"
+         name="datePickerForm"
+         input="/WEB-INF/pages/admin/taskStatus.jsp"
+         type="com.redhat.rhn.frontend.action.satellite.TaskStatusAction">
+        <forward name="default"
+                 path="/WEB-INF/pages/admin/taskStatus.jsp" />
+        <forward name="confirm"
+                 path="/ssm/Packages.do"/>
+     </action>
 
   </action-mappings>
 
