@@ -43,7 +43,7 @@ Requires(preun): initscripts
 Requires: python-jabberpy
 Requires(preun): %fillup_prereq %insserv_prereq
 %endif
-%description 
+%description
 OSAD agent receives commands over jabber protocol from Spacewalk Server and
 commands are instantly executed.
 
@@ -111,6 +111,7 @@ Requires: osa-dispatcher
 
 %description -n osa-dispatcher-selinux
 SELinux policy module supporting osa-dispatcher.
+%endif
 
 %prep
 %setup -q
@@ -206,6 +207,7 @@ if [ -f %{_sysconfdir}/init.d/osa-dispatcher ]; then
     /sbin/chkconfig --add osa-dispatcher
 fi
 
+%if %{include_selinux_package}
 %preun -n osa-dispatcher
 if [ $1 = 0 ]; then
     /sbin/service osa-dispatcher stop > /dev/null 2>&1
@@ -297,6 +299,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %doc LICENSE
 %doc PYTHON-LICENSES.txt
 
+%if %{include_selinux_package}
 %files -n osa-dispatcher-selinux
 %defattr(-,root,root,0755)
 %doc osa-dispatcher-selinux/%{modulename}.fc
@@ -307,6 +310,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %doc LICENSE
 %doc PYTHON-LICENSES.txt
 %attr(0755,root,root) %{_sbindir}/osa-dispatcher-selinux-enable
+%endif
 
 %changelog
 * Wed Mar 30 2011 Miroslav Suchý 5.10.7-1
@@ -432,7 +436,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 - fixed syntax error in init.d scripts
 
 * Fri Jan 15 2010 Michael Mraka <michael.mraka@redhat.com> 5.9.23-1
-- implement condrestart for osad init script 
+- implement condrestart for osad init script
 - make reload alias for restart
 - add osad-auth.conf as normal file with placeholder content
 
