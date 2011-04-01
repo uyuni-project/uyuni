@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Apr  1 12:33:28 CEST 2011 - jrenner@suse.de
+
+- Check if provisioning is enabled for this key (bnc#684414)
+
+-------------------------------------------------------------------
 Thu Mar 31 16:22:01 CEST 2011 - jrenner@suse.de
 
 - Do not show success message when pws don't match (bnc#675585)
