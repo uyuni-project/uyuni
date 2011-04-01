@@ -271,10 +271,10 @@ class RepoSync:
             'arch'          : pkg['arch'],
             'channel_label' : self.channel_label
             }
-          if pkg['epoch'] is None or pkg['epoch'] == '':
-            epochStatement = "is NULL"
+          if pkg['epoch'] is None or pkg['epoch'] == '' or pkg['epoch'] == '0':
+            epochStatement = "(pevr.epoch is NULL or pevr.epoch = 0)"
           else:
-            epochStatement = "= :epoch"
+            epochStatement = "pevr.epoch = :epoch"
             param_dict['epoch'] = pkg['epoch']
 
           if self.channel['org_id']:
@@ -283,7 +283,7 @@ class RepoSync:
           else:
             orgidStatement = " is NULL"
 
-          h = rhnSQL.prepare("""select p.id, c.checksum, c.checksum_type
+          h = rhnSQL.prepare("""select p.id, c.checksum, c.checksum_type, pevr.epoch
           from rhnPackage p,
           rhnPackagename pn,
           rhnpackageevr  pevr,
@@ -297,7 +297,7 @@ class RepoSync:
           and pevr.version = :version
           and pevr.release = :release
           and pa.label = :arch
-          and pevr.epoch %s
+          and %s
           and rat.label = 'rpm'
           and pa.arch_type_id = rat.id
           and p.checksum_id = c.id
@@ -331,7 +331,7 @@ class RepoSync:
           package = IncompletePackage()
           for k in pkg.keys():
             package[k] = pkg[k]
-          package['epoch'] = pkg.get('epoch', '')
+          package['epoch'] = cs['epoch']
           package['org_id'] = self.channel['org_id']
 
           package['checksums'] = {cs['checksum_type'] : cs['checksum']}
