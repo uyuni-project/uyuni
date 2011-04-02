@@ -57,6 +57,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
+%dir %{rhnroot}
 %{oracle}
 %{postgres}
 %{rhnroot}/schema-upgrade
