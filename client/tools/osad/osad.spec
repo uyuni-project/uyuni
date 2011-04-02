@@ -121,7 +121,7 @@ cp prog.init.SUSE prog.init
 
 %build
 make -f Makefile.osad all
-
+%if %{include_selinux_package}
 %{__perl} -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' osa-dispatcher-selinux/%{modulename}.te
 for selinuxvariant in %{selinux_variants}
 do
@@ -129,12 +129,13 @@ do
     mv osa-dispatcher-selinux/%{modulename}.pp osa-dispatcher-selinux/%{modulename}.pp.${selinuxvariant}
     make -C osa-dispatcher-selinux NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile clean
 done
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{rhnroot}
 make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot}
-
+%if %{include_selinux_package}
 for selinuxvariant in %{selinux_variants}
   do
     install -d %{buildroot}%{_datadir}/selinux/${selinuxvariant}
@@ -153,6 +154,7 @@ install -p -m 644 osa-dispatcher-selinux/%{modulename}.if \
 # Install osa-dispatcher-selinux-enable which will be called in %post
 install -d %{buildroot}%{_sbindir}
 install -p -m 755 osa-dispatcher-selinux/osa-dispatcher-selinux-enable %{buildroot}%{_sbindir}/osa-dispatcher-selinux-enable
+%endif
 
 %if 0%{?suse_version}
 %define _sysconfdir /etc
