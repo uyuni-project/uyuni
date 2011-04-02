@@ -140,8 +140,6 @@ fi
 %dir /etc/rhn
 %dir /usr/share/rhn
 %dir /usr/share/rhn/search
-%dir /usr/share/rhn/search/classes
-%dir /usr/share/rhn/search/classes/com
 %dir /usr/share/rhn/search/lib
 %attr(770,root,www) %dir /var/log/rhn
 
