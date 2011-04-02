@@ -11,7 +11,9 @@ Source0:    https://fedorahosted.org/releases/s/p/spacewalk/python-gzipstream-%{
 License: Python and GPLv2
 Group: Development/Libraries
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+%if !0%{?suse_version}
 BuildArch: noarch
+%endif
 BuildRequires: python-devel
 
 
@@ -29,7 +31,7 @@ to allow the processing of streaming data.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix %{_usr}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
