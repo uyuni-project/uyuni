@@ -150,6 +150,7 @@ fi
 %{_sysconfdir}/notification/stage/config/static
 %{_mandir}/man3/monitor-queue*
 %{_mandir}/man3/queue_remote_check.pl*
+%dir %{_sysconfdir}/smrsh
 
 %clean
 rm -rf $RPM_BUILD_ROOT
