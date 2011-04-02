@@ -92,6 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE answers.txt
 %dir %{_usr}/share/doc/proxy
 %dir %{_usr}/share/rhn
+%dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
 * Thu Jan 20 2011 Tomas Lestach <tlestach@redhat.com> 1.3.5-1
