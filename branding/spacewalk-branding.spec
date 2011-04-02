@@ -98,7 +98,6 @@ rm -rf %{buildroot}
 /%{wwwdocroot}/fonts/*
 %dir /%{wwwdocroot}/templates
 /%{wwwdocroot}/templates/*
-/%{wwwdocroot}/templates/.htaccess
 %dir /%{wwwdocroot}/nav/styles
 /%{wwwdocroot}/nav/styles/*
 %config(noreplace) %{apacheconfdir}/zz-spacewalk-branding.conf
