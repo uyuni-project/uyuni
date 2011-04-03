@@ -18,12 +18,16 @@ BuildRoot:      %{_tmppath}/%{name}-root-%(%{__id_u} -n)
 %define icdir %{icversion}
 Requires:       oracle-instantclient-basic = %{icversion}
 Requires:       oracle-instantclient-sqlplus = %{icversion}
+BuildRequires:       oracle-instantclient-basic = %{icversion}
+BuildRequires:       oracle-instantclient-sqlplus = %{icversion}
 %define soversion 10
 %else
 %define icversion 11.2.0.2.0
 %define icdir 11.2
 Requires:       oracle-instantclient11.2-basic = %{icversion}
 Requires:       oracle-instantclient11.2-sqlplus = %{icversion}
+BuildRequires:       oracle-instantclient11.2-basic = %{icversion}
+BuildRequires:       oracle-instantclient11.2-sqlplus = %{icversion}
 %define soversion 11
 %endif
 
@@ -64,8 +68,6 @@ Compatibility package so that perl-DBD-Oracle will install.
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 
-mkdir -p $RPM_BUILD_ROOT/%{_javadir}
-
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d
 echo %{_libdir}/oracle/%{icdir}/client/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/oracle-instantclient-%{icdir}.conf
 
@@ -74,21 +76,9 @@ echo %{_libdir}/oracle/%{icdir}/client/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so
 echo /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/oracle-xe.conf
 
 %ifarch x86_64 s390x
-mkdir -p $RPM_BUILD_ROOT%{_bindir}
-#ln -s ../%{_lib}/oracle/%{icversion}/client/bin/sqlplus $RPM_BUILD_ROOT%{_bindir}/sqlplus
-ln -s ../lib/oracle/%{icversion}/client64/bin/sqlplus $RPM_BUILD_ROOT%{_bindir}/sqlplus
-
-mkdir -p $RPM_BUILD_ROOT%{_libdir}/oracle/%{icversion}
-ln -s ../../../lib/oracle/%{icversion}/client64 $RPM_BUILD_ROOT%{_libdir}/oracle/%{icversion}/client
-ln -s ../../lib/oracle/%{icversion}/client64/lib/ojdbc14.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
-
-
-%else
-ln -s ../../%{_lib}/oracle/%{icversion}/client/lib/ojdbc14.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
-%endif
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/oracle/%{icdir}
-ln -s ../../../lib/oracle/%{icdir}/client64 $RPM_BUILD_ROOT%{_libdir}/oracle/%{icdir}/client
+ln -sf ../../../lib/oracle/%{icdir}/client64 $RPM_BUILD_ROOT%{_libdir}/oracle/%{icdir}/client
 
 mkdir -p $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client64/lib/network/admin
 echo 'diag_adr_enabled = off' > $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client64/lib/network/admin/sqlnet.ora
@@ -98,7 +88,11 @@ echo 'diag_adr_enabled = off' > $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client/lib/n
 %endif
 
 mkdir -p $RPM_BUILD_ROOT/%{_javadir}
-ln -s ../../%{_lib}/oracle/%{icdir}/client/lib/ojdbc6.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
+%if 0%{?suse_version}
+ln -sf ../../lib/oracle/%{icdir}/client64/lib/ojdbc5.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
+%else
+ln -sf ../../%{_lib}/oracle/%{icdir}/client/lib/ojdbc6.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
+%endif
 
 %if 0%{?rhel} && 0%{?rhel} < 6
 %define tomcatname tomcat5
@@ -114,10 +108,13 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %ifarch x86_64 s390x
-%{_bindir}/sqlplus
 %{_libdir}/oracle
+%dir /usr/lib/oracle/11.2/client64/lib/network
+%dir /usr/lib/oracle/11.2/client64/lib/network/admin
 /usr/lib/oracle/11.2/client64/lib/network/admin/sqlnet.ora
 %else
+%dir /usr/lib/oracle/11.2/client/lib/network
+%dir /usr/lib/oracle/11.2/client/lib/network/admin
 /usr/lib/oracle/11.2/client/lib/network/admin/sqlnet.ora
 %endif
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/oracle-instantclient-%{icdir}.conf
