@@ -163,13 +163,21 @@ def prereposetup_hook(conduit):
     for channel in svrChannels:
         if channel['version']:
             repo = RhnRepo(channel)
+            already_exists_repos = repos.findRepos(repo.id)
+            if already_exists_repos:
+                # there will be nearly always only one, and even if there is more
+                # repos, we can ignore them
+                if type(already_exists_repos[0]) == type(repo): # repo is type of RhnRepo
+                    continue # repo has been already initialized
+                else: # YumRepository from _init, made for caching
+                    repos.delete(repo.id)
             repo.basecachedir = cachedir
             repo.gpgcheck = gpgcheck
             repo.proxy = proxy_url
             repo.sslcacert = sslcacert
             repo.enablegroups = enablegroups
             repo.metadata_expire = metadata_expire
-            if hasattr(conduit.getConf(), _repos_persistdir):
+            if hasattr(conduit.getConf(), '_repos_persistdir'):
                 repo.base_persistdir = conduit.getConf()._repos_persistdir
             repoOptions = getRHNRepoOptions(conduit, repo.id)
             if repoOptions:
