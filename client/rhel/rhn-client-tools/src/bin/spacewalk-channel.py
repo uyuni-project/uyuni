@@ -47,7 +47,7 @@ if _LIBPATH not in sys.path:
     sys.path.append(_LIBPATH)
 
 from up2date_client.rhnChannel import subscribeChannels, unsubscribeChannels, getChannels
-from up2date_client import up2dateAuth, config, up2dateErrors, rhnserver
+from up2date_client import up2dateAuth, config, up2dateErrors
 
 def processCommandline():
     "process the commandline, setting the OPTIONS object"

@@ -99,7 +99,7 @@ case "$1" in
         start
         ;;
     condrestart|try-restart)
-        if [ -f /var/lock/subsys/rhnsd ]; then
+        if [ -f /var/lock/subsys/rhn-virtualization ]; then
             stop
 	    start
 	fi
