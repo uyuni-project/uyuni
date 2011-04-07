@@ -5,8 +5,8 @@
 # Required-Start: $network $syslog $remote_fs
 # Required-Stop:  $network $syslog $remote_fs
 # Default-Start:  3 5
-# Default-Stop:
-# Short-Description: Starts up xen domains when the host boots. 
+# Default-Stop: 0 1 6
+# Short-Description: Starts up xen domains when the host boots.
 # Description:    Starts up xen domains when the host boots.
 ### END INIT INFO
 
@@ -111,4 +111,3 @@ case "$1" in
         echo "Usage: service rhn-virtualization [start|stop|restart|condrestart|try-restart|reload|status]"
         ;;
 esac
-
