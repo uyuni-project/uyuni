@@ -7,7 +7,7 @@
 #		periodically to the Red Hat Network servers to \
 #		check for updates, notifications and perform system \
 #		monitoring tasks according to the service level that \
-#		this server is subscribed for		
+#		this server is subscribed for
 #
 # processname: rhnsd
 # pidfile: /var/run/rhnsd.pid
@@ -17,7 +17,7 @@
 # Provides: rhnsd
 # Required-Start: $local_fs $network $remote_fs $named $time
 # Required-Stop: $local_fs $network $remote_fs $named
-# Default-Start: 2 3 4 5
+# Default-Start: 2 3 5
 # Default-Stop: 0 1 6
 # Short-Description: Starts the Red Hat Network Daemon
 # Description: This is a daemon which handles the task of connecting
@@ -65,7 +65,7 @@ rc_reset
 
 start() {
     echo -n $"Starting SUSE Manager Network Daemon: "
-    startproc -f -p $RHNSD_PIDFILE $RHNSD
+    startproc -p $RHNSD_PIDFILE $RHNSD
     rc_status
     touch /var/lock/subsys/rhnsd
     rc_status -v
@@ -112,4 +112,3 @@ case "$1" in
         exit 2
 esac
 rc_exit
-
