@@ -20,10 +20,6 @@
 # Source function library.
 . /etc/rc.status
 
-# Source networking configuration.
-#. /etc/sysconfig/network
-
-
 prog="@@PROG@@"
 script="/usr/sbin/@@PROG@@"
 PIDFILE="/var/run/@@PROG@@.pid"
@@ -33,10 +29,10 @@ PIDFILE="/var/run/@@PROG@@.pid"
 start() {
     # Start daemon
     echo -n "Starting $prog: "
-    startproc -f -p $PIDFILE $script --pid-file="$PIDFILE"
+    startproc -p $PIDFILE $script --pid-file="$PIDFILE"
     rc_status
     touch /var/lock/subsys/$prog
-    rc_status -v 
+    rc_status -v
 }
 
 
@@ -45,7 +41,7 @@ stop() {
     echo -n "Shutting down $prog: "
     rm -f /var/lock/subsys/$prog
     killproc -p $PIDFILE $script
-    rc_status -v 
+    rc_status -v
 }
 
 # See how we were called.
@@ -61,7 +57,7 @@ case "$1" in
         start
         ;;
     status)
-        echo -n "Checking for service $prog: " 
+        echo -n "Checking for service $prog: "
         checkproc -p $PIDFILE $script
         rc_status -v
         ;;
@@ -77,4 +73,3 @@ case "$1" in
 esac
 
 rc_exit
-
