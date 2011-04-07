@@ -9,7 +9,7 @@ import ConfigParser
 import up2dateAuth
 import up2dateLog
 import rhnserver
-import rpmUtils
+import pkgUtils
 
 from suseRegister.info import getProductProfile, parseProductProfileFile
 
@@ -25,7 +25,7 @@ def updatePackageProfile():
     """ get a list of installed packages and send it to rhnServer """
     log = up2dateLog.initLog()
     log.log_me("Updating package profile")
-    packages = rpmUtils.getInstalledPackageList(getArch=1)
+    packages = pkgUtils.getInstalledPackageList(getArch=1)
     s = rhnserver.RhnServer()
     if not s.capabilities.hasCapability('xmlrpc.packages.extended_profile', 2):
         # for older satellites and hosted - convert to old format

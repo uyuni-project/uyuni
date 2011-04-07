@@ -7,7 +7,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalk-client-tools
-Version: 1.4.9
+Version: 1.4.12
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -17,7 +17,7 @@ BuildRequires: update-desktop-files
 Provides: rhn-client-tools = %{version}-%{release}
 Obsoletes: rhn-client-tools < %{version}-%{release}
 
-Requires: rhnlib >= 2.5.35
+Requires: rhnlib >= 2.5.38
 Requires: rpm >= 4.2.3-24_nonptl
 Requires: rpm-python 
 %if 0%{?rhel} && 0%{?rhel} <= 5
@@ -262,7 +262,9 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/rhn/up2date_client/up2dateAuth.*
 %{_datadir}/rhn/up2date_client/rpcServer.*
 %{_datadir}/rhn/up2date_client/rhnserver.*
+%{_datadir}/rhn/up2date_client/pkgUtils.*
 %{_datadir}/rhn/up2date_client/rpmUtils.*
+%{_datadir}/rhn/up2date_client/debUtils.*
 %{_datadir}/rhn/up2date_client/rhnPackageInfo.*
 %{_datadir}/rhn/up2date_client/rhnChannel.*
 %{_datadir}/rhn/up2date_client/rhnHardware.*
@@ -270,6 +272,7 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/rhn/up2date_client/clientCaps.*
 %{_datadir}/rhn/up2date_client/capabilities.*
 %{_datadir}/rhn/up2date_client/rhncli.*
+%{_datadir}/rhn/up2date_client/platform.*
 %{_datadir}/rhn/__init__.*
 
 %{_sbindir}/rhn-profile-sync
@@ -308,6 +311,7 @@ make -f Makefile.rhn-client-tools test
 %{_sbindir}/rhn-channel
 
 %{_datadir}/rhn/up2date_client/rhnreg.*
+%{_datadir}/rhn/up2date_client/yumPlugin.*
 %{_datadir}/rhn/up2date_client/tui.*
 %{_datadir}/rhn/up2date_client/rhnreg_constants.*
 
@@ -364,6 +368,28 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Wed Apr 06 2011 Simon Lukasik <slukasik@redhat.com> 1.4.12-1
+- Move code for enabling yum-rhn-plugin to separate module
+  (slukasik@redhat.com)
+- Extract method: setDebugVerbosity (slukasik@redhat.com)
+- Introduce pkgUtils as an abstraction of either debUtils or rpmUtils
+  (slukasik@redhat.com)
+- Introduce Debian equivalent of rpmUtils. (slukasik@redhat.com)
+- Removing packages.verifyAll capability; it was never used.
+  (slukasik@redhat.com)
+- OS information is platform dependent; introducing a platform interface.
+  (slukasik@redhat.com)
+- versionOverride applies only to version; moving to getVersion
+  (slukasik@redhat.com)
+- Updated unittests (slukasik@redhat.com)
+
+* Tue Apr 05 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.11-1
+- idn_unicode_to_pune() has to return string
+
+* Mon Apr 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.10-1
+- urlsplit returns tuple on RHEL5
+- 691188 - inherit SSLCertificateVerifyFailedError from RepoError
+
 * Wed Mar 30 2011 Miroslav Suchý 1.4.9-1
 - 683200 - support IDN
 - 691837 - default to RHN Classic in firstboot (mzazrivec@redhat.com)

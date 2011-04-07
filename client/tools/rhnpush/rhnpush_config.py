@@ -22,10 +22,6 @@
 import sys
 import ConfigParser
 
-True = 1
-False = 0
-
-
 #Class that contains the options read in from the config file.
 #Uses a ConfigParser to create a dictionary of the configuration options.
 #That dictionary is then used to add instance variables to the object dynamically.
@@ -84,14 +80,8 @@ class rhnpushConfigParser:
     
     #Use the ConfigParser to read in the configuration file.
     def _read_config_files(self):   
-        #try:
-            #file = open(self.filename, 'r')
-        #except IOError:
-        #   sys.exit(1)
-
         try:
             self.settings.read([self.filename])
-            #file.close()
         except IOError,e:
             print "Config File Error: line %s, file %s: $s" % (e.lineno, e.filename, e)
             sys.exit(1)

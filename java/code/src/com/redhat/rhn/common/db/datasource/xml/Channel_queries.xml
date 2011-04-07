@@ -736,7 +736,7 @@ SELECT  C.id, C.name, C.label, 1 AS IS_CUSTOM
 <mode name="base_eus_channels_by_version_release_server_arch"
      class="com.redhat.rhn.frontend.dto.EssentialChannelDto">
   <query params="product_name_label, version, server_arch, user_id, org_id">
-        select unique c.id,
+        select distinct c.id,
                c.label,
                c.name,
                rcm.release,
@@ -908,6 +908,18 @@ INSERT INTO  rhnPrivateChannelFamily
      VALUES  (:id, :org_id, NULL, 0)
   </query>
 </write-mode>
+
+<write-mode name="clone_newest_package">
+  <query params="from_cid, to_cid">
+  INSERT INTO rhnChannelNewestPackage
+    ( channel_id, name_id, evr_id, package_id, package_arch_id )
+    ( SELECT :to_cid, name_id, evr_id, package_id, package_arch_id
+        FROM rhnChannelNewestPackage
+        WHERE channel_id = :from_cid
+    )
+  </query>
+</write-mode>
+
 
 <!-- really should probably be mapped -->
 <!-- And negative logic SUCKS! -->

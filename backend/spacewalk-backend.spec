@@ -19,7 +19,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.4.25
+Version: 1.4.29
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -39,7 +39,7 @@ Requires(pre): httpd
 Requires: python, rpm-python
 # /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
 Requires: /etc/rhn
-Requires: rhnlib >= 2.5.35
+Requires: rhnlib >= 2.5.38
 # for Debian support
 Requires: python-debian
 Requires: %{name}-libs >= 1.1.16-1
@@ -281,7 +281,7 @@ Requires: cobbler >= 1.4.3
 %if 0%{?rhel} && 0%{?rhel} < 5
 Requires: rhnlib  >= 2.1.4-14
 %else
-Requires: rhnlib  >= 2.5.35
+Requires: rhnlib  >= 2.5.38
 %endif
 Obsoletes: rhns-satellite-tools < 5.3.0
 Obsoletes: spacewalk-backend-satellite-tools <= 0.2.7
@@ -752,6 +752,21 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Thu Apr 07 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.29-1
+- fixed variable name
+
+* Wed Apr 06 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.28-1
+- 663326 - return doesn't correctly trigger releaseLOCK()
+- 663326 - prevent spacewalk-remove-channel to run when spacewalk-repo-sync is
+  runnig
+
+* Tue Apr 05 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.27-1
+- idn_unicode_to_pune() has to return string
+
+* Tue Apr 05 2011 Jan Pazdziora 1.4.26-1
+- don't try to update signatures for non-rpm packages
+  (michael.mraka@redhat.com)
+
 * Wed Mar 30 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.25-1
 - make_evr should accept source parameter
 - call transports directly

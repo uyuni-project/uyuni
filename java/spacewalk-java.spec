@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.4.26
+Version: 1.4.30
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz 
@@ -620,6 +620,30 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Apr 07 2011 Jan Pazdziora 1.4.30-1
+- Removing packages.verifyAll capability; it was never used. (slukasik@redhat.com)
+- The nvl2 is not supported by PostgreSQL, replacing by case when in
+  non_managed_elaborator.
+- 693994 - correct bogus Franch translation (msuchy@redhat.com)
+- Merge branch 'master' into rhn-client-tools-deb2 (slukasik@redhat.com)
+- Removing packages.verifyAll capability; it was never used.
+  (slukasik@redhat.com)
+
+* Wed Apr 06 2011 Jan Pazdziora 1.4.29-1
+- 693889 - fix the update status icon not displayed in Chrome browser
+  (mmello@redhat.com)
+- SELECT UNIQUE is not supported by PostgreSQL, fixing.
+
+* Mon Apr 04 2011 Miroslav Suchý 1.4.28-1
+- when hostname is unknown print "unknown"
+- 683200 - IDN.toUnicode does not allow null value
+
+* Mon Apr 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.27-1
+- fixed queries on Virtual system Overview page
+- correct form property
+- Fix to remove message on entitlement consumption for virt guest subscribed to
+  cloned channels
+
 * Fri Apr 01 2011 Jan Pazdziora 1.4.26-1
 - 627791 - extending child channel selection area (tlestach@redhat.com)
 - Do not show success message when passwords don't match (jrenner@suse.de)
