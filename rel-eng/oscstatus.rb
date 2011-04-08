@@ -19,6 +19,7 @@ def usage
   puts "Options:"
   puts " -h, --help      This message."
   puts " -v, --verbose   Print unchanged packages too."
+  puts "     --nocolor   no colored output."
   puts ""
   puts 'oscstatus.rb [-v|--verbose]'; exit 0
   exit 0
@@ -26,17 +27,55 @@ end
 
 $opt_brief = true
 $opt_pkgfilter = nil
+$opt_color = true
+
+$c_red =
+$c_off = "\e[0m"
 
 ARGV.each do |arg|
   case arg
-  when '-v', '--verbose' then $opt_brief = false
-  when '-?', '-h', '--help' then usage
+  when '-v', '--verbose'	then $opt_brief = false
+  when '-?', '-h', '--help'	then usage
+  when '--nocolor'		then $opt_color = false
   else
     usage if not $opt_pkgfilter.nil?
     $opt_pkgfilter = Regexp.new(arg)
   end
 end
 
+# ======================================================================
+# colRed { puts "blah" }
+# colGreen { puts "fasel" }
+#
+def inCol( col )
+  print col if $opt_color
+  yield
+  print "\e[0m" if $opt_color
+end
+
+def colRed( &block )
+  inCol "\e[0;31m", &block
+end
+
+def colGreen( &block )
+  inCol "\e[0;32m", &block
+end
+
+def colBlue( &block )
+  inCol "\e[0;34m", &block
+end
+
+def colMagenta( &block )
+  inCol "\e[0;35m", &block
+end
+
+def colCyan( &block )
+  inCol "\e[0;36m", &block
+end
+
+def colYellow( &block )
+  inCol "\e[0;33m", &block
+end
 # ======================================================================
 class Prj
 
@@ -108,11 +147,10 @@ class Prj
   end
 
   def list(pkg)
-    ret = nil
+    ret = Hash.new
     `#{apiCmd} ls -e -v #{@name} #{pkg}`.each do |rel|
       # 133a3b08cf390d4ee5c48b44f01a6e07      77      3946 Feb 15 10:23 spacewalk-backend.changes
       values = rel.split;
-      ret = Hash.new if ret.nil?
       ret[values[6]] = values[0]
     end
     return ret
@@ -221,9 +259,11 @@ end
 
 def check_whether_to_submitt( src_prj, trg_prj, packages=nil )
   packages = src_prj.packages unless packages
-  puts "###"
-  puts "### SUBMISSION #{src_prj.name} ==> #{trg_prj.name}"
-  puts "###"
+  colBlue {
+    puts "###"
+    puts "### SUBMISSION #{src_prj.name} ==> #{trg_prj.name}"
+    puts "###"
+  }
   packages.each do |pkg|
 
     if not $opt_pkgfilter.nil? || pkg =~ $opt_pkgfilter
@@ -260,13 +300,17 @@ def check_whether_to_submitt( src_prj, trg_prj, packages=nil )
       if sub[:sta] == 'new' && rel[:rev] == sub[:ore]
 	puts "#NN #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
       else
+	colRed {
 	puts "#++ #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
 	puts "    #{trg_prj.apiCmd} submitreq --yes #{sub[:sta] == 'new'?"-s #{sub[:rid]}":""} -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
+	}
       end
 
     when :nag:
+      colMagenta {
       puts "#!! #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
       puts "#   #{trg_prj.apiCmd} submitreq --yes #{sub[:sta] == 'new'?"-s #{sub[:rid]}":""} -m \"update from #{src_prj.name}\" #{src_prj.name} #{rel[:nam]} #{trg_prj.name}"
+      }
 
     when :aggregated:
       puts "#AA #{rel[:nam]} (#{rel[:rev]}) <==> (#{sub[:ore]}) ##{sub[:rid]}:#{sub[:sta]} #{sub[:dat]}"
@@ -278,13 +322,10 @@ end
 
 # ======================================================================
 # input projects
-$src_prj = Prj.new('ibs://Devel:Galaxy:Server:Manager:1')
-$ins_prj = Prj.new('ibs://Devel:Galaxy:Install:Manager:1')
-$res_prj = Prj.new('ibs://Devel:Galaxy:RESClient:Manager:1')
+$src_prj = Prj.new('ibs://Devel:Galaxy:Manager:Head')
 
 # target projects
-$trg_prj = Prj.new('ibs://SUSE:SLE-11-SP1:Update:Manager:1.2')
-$cli_prj = Prj.new('ibs://SUSE:SLE-11-SP1:Update:Test')
+$trg_prj = Prj.new('ibs://SUSE:SLE-11-SP1:Update:Test')
 
 # check required submissions:
 # ======================================================================
@@ -292,7 +333,7 @@ $cli_prj = Prj.new('ibs://SUSE:SLE-11-SP1:Update:Test')
 #
 check_whether_to_submitt( $src_prj, $trg_prj )
 
-#
+# client packages
 $cli_packages = [
   'osad',
   'perl-Satcon',
@@ -315,15 +356,6 @@ $cli_packages = [
   'yum-rhn-plugin',
   'zypp-plugin-spacewalk'
 ]
-check_whether_to_submitt( $src_prj, $cli_prj, $cli_packages )
+# not special treatment by now
+#check_whether_to_submitt( $src_prj, $cli_prj, $cli_packages )
 
-#
-$ins_packages = [
-  'cobbler'
-]
-check_whether_to_submitt( $ins_prj, $cli_prj, $ins_packages )
-
-# required for RHEL but exists in SLES 'python-setuptools'
-$res_packages = [
-]
-check_whether_to_submitt( $res_prj, $cli_prj, $res_packages )
