@@ -16,7 +16,9 @@
 # Package import code on the app side
 #
 
-from spacewalk.common import rhnFault, log_debug, rhn_rpm, CFG
+from spacewalk.common import log_debug, rhn_rpm
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnException import rhnFault
 
 from spacewalk.server import rhnChannel, taskomatic, rhnSQL
 from spacewalk.server.importlib.headerSource import createPackage

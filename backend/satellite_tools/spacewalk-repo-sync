@@ -29,7 +29,7 @@ def systemExit(code, msg=None):
 
 try:
     from rhn import rhnLockfile
-    from spacewalk.common import CFG
+    from spacewalk.common.rhnConfig import CFG
     from spacewalk.common.rhnTB import fetchTraceback
     from spacewalk.satellite_tools import reposync
 except KeyboardInterrupt:

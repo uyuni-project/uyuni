@@ -28,6 +28,7 @@ import yum
 from yum import misc, Errors
 from yum.update_md import UpdateMetadata
 from yum.i18n import to_unicode
+from spacewalk.satellite_tools.reposync import ContentPackage
 
 from spacewalk.common import rhnLog
 from spacewalk.satellite_tools.reposync import ContentPackage, ChannelException, ChannelTimeoutException

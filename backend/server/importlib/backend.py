@@ -18,10 +18,10 @@
 
 import copy
 import string
-import re
-import sys
 
-from spacewalk.common import rhnFault, CFG, rhn_rpm
+from spacewalk.common import rhn_rpm
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL, rhnChannel, taskomatic
 from importLib import Diff, Package, IncompletePackage, Erratum, \
         AlreadyUploadedError, InvalidPackageError, TransactionError, \

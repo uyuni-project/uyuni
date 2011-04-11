@@ -27,8 +27,11 @@ from yum import Errors
 from yum.i18n import to_unicode
 
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
-from spacewalk.common import CFG, initCFG, rhnLog, fetchTraceback, rhnMail, rhn_rpm
+from spacewalk.common import rhnLog, log_debug, fetchTraceback, rhnMail
 from spacewalk.common.checksum import getFileChecksum
+from spacewalk.common.rhn_mpm import InvalidPackageError
+from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Checksum, Bug, Keyword
 from spacewalk.server.importlib.backendOracle import OracleBackend
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
