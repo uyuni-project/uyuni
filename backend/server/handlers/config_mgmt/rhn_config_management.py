@@ -18,8 +18,10 @@
 # $Id$
 
 import os
-from spacewalk.common import rhnFault, log_debug
 import tempfile
+
+from spacewalk.common.rhnLog import log_debug
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL, configFilesHandler
 
 class ConfigManagement(configFilesHandler.ConfigFilesHandler):

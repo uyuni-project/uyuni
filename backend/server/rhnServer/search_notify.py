@@ -17,7 +17,7 @@
 
 import sys
 import xmlrpclib
-from spacewalk.common import log_error
+from spacewalk.common.rhnLog import log_error
 
 class SearchNotify:
     def __init__(self, host="127.0.0.1", port="2828"):

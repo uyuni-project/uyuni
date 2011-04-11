@@ -25,11 +25,13 @@ import socket
 import string
 from rhn.rpclib import xmlrpclib
 
-from spacewalk.common import rhnFault, log_debug, log_error
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnException import rhnFault
 from server_lib import getServerSecret
 
-# Generate a secret
+
 def gen_secret():
+    """ Generate a secret """
     seed = repr(time.time())
     sum = hashlib.new('md5', seed)
     # feed some random numbers
