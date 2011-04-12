@@ -24,6 +24,7 @@ public class RhnActionMapping extends ActionMapping {
 
     private String acls;
     private String mixins;
+    private String postRequired;
 
 
     /**
@@ -53,5 +54,29 @@ public class RhnActionMapping extends ActionMapping {
      */
     public void setAcls(String aclsIn) {
         this.acls = aclsIn;
+    }
+
+    /**
+     * @return Returns the postRequired attribute.
+     */
+    public String getPostRequired() {
+        return postRequired;
+    }
+
+    /**
+     * @param postRequiredIn The postRequired attribute to set.
+     */
+    public void setPostRequired(String postRequiredIn) {
+        this.postRequired = postRequiredIn;
+    }
+
+    /**
+     * @return true if postRequired attribute is present and set to "true", false otherwise
+     */
+    public boolean postRequired() {
+        if (postRequired != null && postRequired.equals("true")) {
+            return true;
+        }
+        return false;
     }
 }

@@ -16,6 +16,7 @@
 package com.redhat.rhn.frontend.struts;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
@@ -68,6 +69,14 @@ public class RhnRequestProcessor extends RequestProcessor {
             if (originalMapping != null && originalMapping instanceof RhnActionMapping) {
                 //we need to process a list of acls
                 RhnActionMapping mapping = (RhnActionMapping) originalMapping;
+
+                // if postRequired="true", make sure we're using POST
+                if (mapping.postRequired() && !request.getMethod().equals("POST")) {
+                    // send HTTP 405 if POST wasn't used
+                    response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+                    return;
+                }
+
                 if (!AclManager.hasAcl(mapping.getAcls(), request, mapping.getMixins())) {
                     //an acl evaluated to false
                     PermissionException e = new PermissionException("Missing Acl");
