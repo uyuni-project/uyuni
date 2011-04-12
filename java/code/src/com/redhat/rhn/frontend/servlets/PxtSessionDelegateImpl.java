@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.manager.session.SessionManager;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -209,6 +210,9 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
         //updateWebUserId(request, response, null);
         WebSession pxtSession = getPxtSession(request);
         pxtSession.setWebUserId(null);
+
+        // Invalidate csrf_token
+        request.getSession().setAttribute("csrf_token", null);
 
         refreshPxtSession(request, response, 0);
     }
