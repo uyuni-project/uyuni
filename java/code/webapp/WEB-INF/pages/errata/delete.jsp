@@ -40,6 +40,8 @@
   <hr />
   <div align="right">
     <form action="/rhn/errata/manage/Delete.do?eid=${param.eid}">
+    <rhn:csrf />
+    <rhn:submitted />
     <input type="hidden" name="eid" value="<c:out value="${param.eid}"/>" />
       <html:submit property="dispatch">
         <bean:message key="delete.jsp.delete"/>

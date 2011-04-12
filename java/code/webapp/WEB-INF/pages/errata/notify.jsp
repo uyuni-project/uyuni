@@ -27,6 +27,7 @@
 
   <div align="right">
     <form action="/rhn/errata/manage/NotifySubmit.do">
+      <rhn:csrf />
       <input type="hidden" name="eid" value="<c:out value="${param.eid}"/>"/>
       <html:submit>
         <bean:message key="errata.edit.sendnotification"/>

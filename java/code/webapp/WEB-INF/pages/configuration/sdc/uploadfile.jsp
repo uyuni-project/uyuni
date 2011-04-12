@@ -24,6 +24,8 @@
     <html:form
         action="/systems/details/configuration/addfiles/UploadFile.do?sid=${system.id}"
         enctype="multipart/form-data">
+      <rhn:csrf />
+      <rhn:submitted />
       <%@ include file="/WEB-INF/pages/common/fragments/configuration/channel/upload.jspf" %>
     </html:form>
   </div>

@@ -15,6 +15,7 @@
 
 <div>
     <html:form action="/keys/CryptoKeyCreate" enctype="multipart/form-data">
+    <rhn:csrf />
     <html:hidden property="submitted" value="true"/>
     <html:hidden property="key_id" value="${cryptoKey.id}"/>
     <%@ include file="key-form.jspf" %>

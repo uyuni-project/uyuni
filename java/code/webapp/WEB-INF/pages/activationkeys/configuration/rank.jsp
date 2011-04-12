@@ -13,6 +13,7 @@
 	<html:form  method="post"
 					action="/activationkeys/configuration/Rank.do?tid=${param.tid}"
 					styleId="ranksForm">
+        <rhn:csrf />
 		<h2> <img src="${cfg:channelHeaderIcon('central')}"
 					alt="${cfg:channelAlt('central')}"/>
 			<bean:message key="sdc.config.rank.jsp.header"/></h2>
