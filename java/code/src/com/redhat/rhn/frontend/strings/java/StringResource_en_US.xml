@@ -1170,7 +1170,7 @@ http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd"
         </context-group>
       </trans-unit>
       <trans-unit id="taskomatic notif subject">
-<source>RHN TASKOMATIC NOTIFICATION</source>
+<source>SUSE MANAGER TASKOMATIC NOTIFICATION</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
