@@ -25,6 +25,7 @@ public class RhnActionMapping extends ActionMapping {
     private String acls;
     private String mixins;
     private String postRequired;
+    private String postRequiredIfSubmitted;
 
 
     /**
@@ -75,6 +76,30 @@ public class RhnActionMapping extends ActionMapping {
      */
     public boolean postRequired() {
         if (postRequired != null && postRequired.equals("true")) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return Returns the postRequiredIfSubmitted attribute.
+     */
+    public String getPostRequiredIfSubmitted() {
+        return postRequiredIfSubmitted;
+    }
+
+    /**
+     * @param postRequiredIfSubmittedIn The postRequiredIfSubmitted attribute to set.
+     */
+    public void setPostRequiredIfSubmitted(String postRequiredIfSubmittedIn) {
+        this.postRequiredIfSubmitted = postRequiredIfSubmittedIn;
+    }
+
+    /**
+     * @return true if postRequiredIfSubmitted attribute is present and set to "true", false otherwise
+     */
+    public boolean postRequiredIfSubmitted() {
+        if (postRequiredIfSubmitted != null && postRequiredIfSubmitted.equals("true")) {
             return true;
         }
         return false;
