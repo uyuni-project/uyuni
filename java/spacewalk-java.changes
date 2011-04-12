@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 12 11:49:33 CEST 2011 - mantel@suse.de
+
+- fix subject line of taskomatic notification mail
+
+-------------------------------------------------------------------
 Fri Apr  1 12:33:28 CEST 2011 - jrenner@suse.de
 
 - Check if provisioning is enabled for this key (bnc#684414)
