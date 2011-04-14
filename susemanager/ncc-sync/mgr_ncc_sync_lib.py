@@ -1253,9 +1253,8 @@ def sql_list(alist):
         # otherwise leave it as it is
         pass
     l = str(tuple(alist))
-    l.replace(",)", ")") # "('foo',)" should be "('foo')"
+    l = l.replace(",)", ")") # "('foo',)" should be "('foo')"
     return l
-
 
 def get_repo_path(repourl):
     """
