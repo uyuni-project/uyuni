@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 14 10:33:58 CEST 2011 - iartarisi@suse.cz
+
+- fix updating subscriptions which have only one available channel
+  family (bnc#687326)
+
+-------------------------------------------------------------------
 Tue Mar 29 13:45:15 CEST 2011 - iartarisi@suse.cz
 
 - handle unlimited channel subscription when updating subscriptions (bnc#682651)
