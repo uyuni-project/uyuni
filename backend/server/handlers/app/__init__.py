@@ -18,12 +18,10 @@
 __all__ = []
 
 import packages
-import channel
 import comps
 
 rpcClasses = {
     "packages"          : packages.Packages,
-    "channel"           : channel.Channel,
     "comps"             : comps.Comps,
     }
 
