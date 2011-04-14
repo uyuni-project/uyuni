@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr 14 13:44:07 CEST 2011 - mc@suse.de
+
+- more debranding
+
+-------------------------------------------------------------------
 Fri Apr  1 13:28:38 CEST 2011 - ma@suse.de
 
 - Invalidate loginInfo pickle cache if systemid changed (bnc#683801)
