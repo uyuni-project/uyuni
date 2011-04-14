@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr 14 15:19:47 CEST 2011 - jrenner@suse.de
+
+- Remove the channel APP handler (bnc#685078)
+
+-------------------------------------------------------------------
 Fri Apr  1 12:09:01 CEST 2011 - mc@suse.de
 
 - fix adding patches to a channel. Treat no epoch as the same as
