@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr 14 15:18:08 CEST 2011 - jrenner@suse.de
+
+- No proxying needed, just rewrite (bnc#685078)
+
+-------------------------------------------------------------------
 Fri Feb 11 07:20:00 UTC 2011 - dmacvicar@suse.de
 
 - debrand renew/ redirection rule (bnc#667911)
