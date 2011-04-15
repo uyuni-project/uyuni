@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Apr 15 16:15:01 CEST 2011 - jrenner@suse.de
+
+- Use isNotEmpty() instead of isEmpty()
+
+-------------------------------------------------------------------
 Tue Apr 12 11:49:33 CEST 2011 - mantel@suse.de
 
 - fix subject line of taskomatic notification mail
