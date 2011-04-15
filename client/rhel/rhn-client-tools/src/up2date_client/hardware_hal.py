@@ -17,6 +17,7 @@
 
 from haltree import HalTree, HalDevice
 import dbus
+import os.path
 
 #PCI DEVICE DEFINES
 # These are taken from pci_ids.h in the linux kernel source and used to
@@ -336,7 +337,12 @@ def check_hal_dbus_status():
     # check if hal and messagebus are running, if not warn the user
     import commands
     hal_status, msg = commands.getstatusoutput('/etc/init.d/haldaemon status')
-    dbus_status, msg = commands.getstatusoutput('/etc/init.d/messagebus status')
+    if os.path.exists('/etc/init.d/messagebus'):
+        dbus_status, msg = commands.getstatusoutput('/etc/init.d/messagebus status')
+    elif os.path.exists('/etc/init.d/dbus'):
+        dbus_status, msg = commands.getstatusoutput('/etc/init.d/dbus status')
+    else:
+        dbus_status, msg = (3, 'unused')
     return hal_status, dbus_status
 
 
