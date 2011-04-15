@@ -203,3 +203,17 @@ function sortColumn(sortByWidget, sortByValue, sortDirWidget, sortDirValue) {
      sortDir.value = sortDirValue;
      sortBy.form.submit();
 }
+
+/*
+ * Added for SuSE Manager
+ * by Eugene Trounev
+ * Do not autofill the forms where possible.
+ */
+function disableAutoComplete(){
+	for(var i = 0, l = document.getElementsByTagName('form').length; i < l; i++) {
+			document.getElementsByTagName('form').item(i).setAttribute('autocomplete', 'off');
+	};
+	for(var i = 0, l = document.getElementsByTagName('input').length; i < l; i++) {
+			document.getElementsByTagName('input').item(i).setAttribute('autocomplete', 'off');
+	};
+}
