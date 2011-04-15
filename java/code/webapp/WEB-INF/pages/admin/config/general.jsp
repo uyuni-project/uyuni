@@ -4,7 +4,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
 <html:html xhtml="true">
-<body>
+<%--  disableAutoComplete() huck added to prevent certain browsers from exposing sensitive data --%>
+<body onLoad="disableAutoComplete();">
 <rhn:toolbar base="h1" img="/img/rhn-icon-info.gif" imgAlt="info.alt.img">
   <bean:message key="general.jsp.toolbar"/>
 </rhn:toolbar>

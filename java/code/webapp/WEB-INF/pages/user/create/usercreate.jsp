@@ -4,7 +4,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <html:xhtml/>
 <html>
-<body>
+<%--  disableAutoComplete() huck added to prevent certain browsers from exposing sensitive data --%>
+<body onLoad="disableAutoComplete();">
 <script language="javascript" src="/javascript/display.js"></script>
 
 <%@ include file="/WEB-INF/pages/common/fragments/user/user_attribute_sizes.jspf"%>

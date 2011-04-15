@@ -5,7 +5,8 @@
 
 <html:xhtml/>
 <html>
-<body>
+<%--  disableAutoComplete() huck added to prevent certain browsers from exposing sensitive data --%>
+<body onLoad="disableAutoComplete();">
 <rhn:toolbar base="h1" img="/img/rhn-config_management.gif"
 	           helpUrl="">
     <bean:message key="generalconfig.jsp.header1"/>

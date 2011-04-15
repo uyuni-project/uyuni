@@ -4,7 +4,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
 <html>
-<body>
+<%--  disableAutoComplete() huck added to prevent certain browsers from exposing sensitive data --%>
+<body onLoad="disableAutoComplete();">
 
 <script language="javascript" src="/javascript/display.js"></script>
 <rhn:toolbar base="h1" img="/img/rhn-icon-info.gif">
