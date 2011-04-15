@@ -550,7 +550,7 @@ DIV.rounded-box H2 A
 .systeminfo-full IMG
 {
 	position: absolute;
-	top: 7px;
+	top: 9px;
 	left: 8px;
 }
 /** Fancy bar for complex/multiple submit buttons for a page's form. used on the system entitlements page, will be used on virt guest list **/
