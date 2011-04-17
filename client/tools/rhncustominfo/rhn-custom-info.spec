@@ -19,7 +19,6 @@ Requires: python-abi = %(%{__python} -c "import sys; print sys.version[:3]")
 Requires: rhnlib
 
 Requires: spacewalk-client-tools
-%else
 %if 0%{?rhel} >= 5 || 0%{?fedora} >= 1
 Requires: yum-rhn-plugin
 %else
