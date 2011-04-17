@@ -4,7 +4,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhnsd-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalksd
-Version: 4.9.9
+Version: 4.9.10
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -13,14 +13,17 @@ Provides: rhnsd = %{version}-%{release}
 Obsoletes: rhnsd < %{version}-%{release}
 
 Requires: rhn-check >= 0.0.8
-%if !0%{?suse_version}
+%if 0%{?suse_version}
+Requires(post): aaa_base
+Requires(preun): aaa_base
+BuildRequires: sysconfig
+Requires(preun): %fillup_prereq %insserv_prereq
+%else
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
 Requires(postun): initscripts
-%else
-Requires(preun): %fillup_prereq %insserv_prereq
 %endif
 
 %description
@@ -36,13 +39,11 @@ make -f Makefile.rhnsd %{?_smp_mflags} CFLAGS="%{optflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
+make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir} INIT_DIR=$RPM_BUILD_ROOT/%{_initrddir}
+
 %if 0%{?suse_version}
-mkdir -p $RPM_BUILD_ROOT/%{_initrddir}
-make INIT_DIR=$RPM_BUILD_ROOT/etc/init.d -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
 install -m 0755 rhnsd.init.SUSE $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
 rm -f $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhnsd.mo
-%else
-make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
 %endif
 
 # add rclink
@@ -85,10 +86,8 @@ rm -fr $RPM_BUILD_ROOT
 
 %files -f rhnsd.lang
 %defattr(-,root,root)
-%if 0%{?suse_version}
-%dir %{_sysconfdir}/sysconfig/rhn
-%endif
 %{_sbindir}/rcrhnsd
+%dir %{_sysconfdir}/sysconfig/rhn
 %config(noreplace) %{_sysconfdir}/sysconfig/rhn/rhnsd
 %{_sbindir}/rhnsd
 %{_initrddir}/rhnsd
@@ -96,6 +95,9 @@ rm -fr $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Apr 15 2011 Jan Pazdziora 4.9.10-1
+- changes to build rhnsd on SUSE (mc@suse.de)
+
 * Fri Feb 18 2011 Jan Pazdziora 4.9.9-1
 - l10n: Updates to Estonian (et) translation (mareklaane@fedoraproject.org)
 

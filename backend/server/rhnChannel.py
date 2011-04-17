@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -24,8 +24,10 @@ from spacewalk.susemanager import suseLib
 from types import IntType, ListType, DictType
 
 # common module
-from spacewalk.common import log_debug, log_error, rhnFault, rhnException, \
-    rhnCache, rhnFlags, CFG, rhn_rpm
+from spacewalk.common import rhnCache, rhnFlags, rhn_rpm
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 
 # local module
@@ -1225,7 +1227,7 @@ def list_all_packages_complete_sql(channel_id):
             pkgi[item["'provides'"]].append(dep)
     # process the results
     ret = map(lambda a: (a["name"], a["version"], a["release"], a["epoch"],
-                         a["arch"], a["package_size"], a['provides'],
+                         a["arch"], a["package_size"], a['provides'], 
                          a['requires'], a['conflicts'], a['obsoletes'], a['recommends'], a['suggests'], a['supplements']),
               __stringify(ret))
     return ret

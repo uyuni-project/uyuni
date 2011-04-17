@@ -5,7 +5,7 @@ Summary:       Common programs needed to be installed on the RHN servers/proxies
 Group:         Applications/System
 License:       GPLv2
 URL:           http://fedorahosted.org/spacewalk
-Version:       5.5.22
+Version:       5.5.26
 Release:       1%{?dist}
 Source0:       https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -13,13 +13,17 @@ BuildArch:     noarch
 Requires:      rpm-python
 Requires:      rhnlib >= 2.5.38
 Requires:      spacewalk-backend-libs >= 0.8.3
-BuildRequires: docbook-utils gettext
-BuildRequires: python-devel
 %if 0%{?rhel} && 0%{?rhel} < 5
 Requires:      up2date
 %else
 Requires:      rhn-client-tools
 %endif
+%if 0%{?suse_version}
+# provides rhn directories for filelist check in OBS
+BuildRequires:      rhn-client-tools
+%endif
+BuildRequires: docbook-utils, gettext
+BuildRequires: python-devel
 
 Summary: Package uploader for the Red Hat Network Satellite Server
 
@@ -68,6 +72,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/solaris2mpm.8*
 
 %changelog
+* Fri Apr 15 2011 Jan Pazdziora 5.5.26-1
+- build rhnpush on SUSE (mc@suse.de)
+
+* Tue Apr 12 2011 Miroslav Suchý 5.5.25-1
+- build rhnpush on SUSE (mc@suse.de)
+
+* Fri Apr 08 2011 Miroslav Suchý 5.5.24-1
+- Revert "idn_unicode_to_pune() have to return string" (msuchy@redhat.com)
+
+* Fri Apr 08 2011 Miroslav Suchý 5.5.23-1
+- update copyright years (msuchy@redhat.com)
+
 * Tue Apr 05 2011 Michael Mraka <michael.mraka@redhat.com> 5.5.22-1
 - idn_unicode_to_pune() has to return string
 - no need to define built-in constants

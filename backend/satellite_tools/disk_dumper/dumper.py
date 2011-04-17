@@ -19,8 +19,10 @@ import tempfile
 from types import ListType
 from cStringIO import StringIO
 
-from spacewalk.common import log_debug, log_error, rhnFault, rhnCache, \
-    CFG, rhnLib, rhnFlags
+from spacewalk.common import rhnCache, rhnLib, rhnFlags
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL
 from spacewalk.satellite_tools import constants
 from spacewalk.satellite_tools.exporter import exportLib, xmlWriter
@@ -833,7 +835,8 @@ class ErrataDumper(CachedDumper, exportLib.ErrataDumper):
                 TO_CHAR(e.update_date, 'YYYYMMDDHH24MISS') update_date,
                 TO_CHAR(e.last_modified, 'YYYYMMDDHH24MISS') last_modified,
                 e.refers_to,
-                e.notes
+                e.notes,
+                e.errata_from
             from rhnErrata e
             where e.id = :errata_id
         """)

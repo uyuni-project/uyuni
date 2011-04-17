@@ -7,7 +7,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalk-client-tools
-Version: 1.4.12
+Version: 1.5.5
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -47,7 +47,9 @@ Requires: logrotate
 Requires: python-dmidecode
 Requires: libxml2-python
 Requires: suseRegisterInfo
-%if 0%{?rhel}
+%if 0%{?suse_version}
+Requires: zypper
+%else
 Requires: yum
 %endif
 
@@ -87,7 +89,6 @@ Group: System Environment/Base
 Provides: rhn-check = %{version}-%{release}
 Obsoletes: rhn-check < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
-
 %if 0%{?suse_version}
 Requires: zypp-plugin-spacewalk
 %else
@@ -194,9 +195,8 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/man/man8/rhn_register.*
 %else
 desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications --vendor=rhn rhn_register.desktop
 %if 0%{?suse_version}
-%suse_update_desktop_file rhn_register Utility
+%suse_update_desktop_file -r rhn_register "Settings;System;SystemSetup;"
 rm -f $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhn-client-tools.mo
-%endif
 %endif
 
 %find_lang rhn-client-tools
@@ -329,6 +329,13 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/setuptool/setuptool.d/99rhn_register
 %endif
 
+%if 0%{?suse_version}
+# on SUSE directories not owned by any package
+%dir %{_sysconfdir}/security/console.apps
+%dir %{_datadir}/setuptool
+%dir %{_datadir}/setuptool/setuptool.d
+%endif
+
 %if ! %{without_rhn_register}
 %files -n spacewalk-client-setup-gnome
 %defattr(-,root,root,-)
@@ -367,7 +374,52 @@ make -f Makefile.rhn-client-tools test
 %endif
 %endif
 
+%if 0%{?suse_version}
+# on SUSE these directories are part of packages not installed
+# at buildtime. OBS failed with not owned by any package
+%dir %{_datadir}/icons/hicolor
+%dir %{_datadir}/icons/hicolor/16x16
+%dir %{_datadir}/icons/hicolor/16x16/apps
+%dir %{_datadir}/icons/hicolor/24x24
+%dir %{_datadir}/icons/hicolor/24x24/apps
+%dir %{_datadir}/icons/hicolor/32x32
+%dir %{_datadir}/icons/hicolor/32x32/apps
+%dir %{_datadir}/icons/hicolor/48x48
+%dir %{_datadir}/icons/hicolor/48x48/apps
+%dir %{_datadir}/rhn/up2date_client/firstboot
+%dir %{_datadir}/firstboot
+%dir %{_datadir}/firstboot/modules
+%endif
+
 %changelog
+* Sat Apr 16 2011 Simon Lukasik <slukasik@redhat.com> 1.5.5-1
+- Do not import yum on Debian platform (slukasik@redhat.com)
+
+* Fri Apr 15 2011 Jan Pazdziora 1.5.3-1
+- modify spec file to build rhn-client-tools on SUSE (mc@suse.de)
+- get model id from PRODUCT key (msuchy@redhat.com)
+- <type exceptions.UnboundLocalError>: local variable usb referenced before
+  assignment (msuchy@redhat.com)
+
+* Wed Apr 13 2011 Jan Pazdziora 1.5.2-1
+- Revert "some usb device may not return product" (msuchy@redhat.com)
+- fix typo in key "product" vs. "PRODUCT" (msuchy@redhat.com)
+- some usb device may not return product (msuchy@redhat.com)
+
+* Tue Apr 12 2011 Miroslav Suchý 1.5.1-1
+- enhance getOSVersionAndRelease to find SUSE distributions (mc@suse.de)
+- Bumping package versions for 1.5 (msuchy@redhat.com)
+
+* Fri Apr 08 2011 Miroslav Suchý 1.4.15-1
+- fix fr translation (msuchy@redhat.com)
+
+* Fri Apr 08 2011 Miroslav Suchý 1.4.14-1
+- Revert "idn_unicode_to_pune() have to return string" (msuchy@redhat.com)
+
+* Fri Apr 08 2011 Miroslav Suchý 1.4.13-1
+- update copyright years (msuchy@redhat.com)
+- download spacewalk.rhn-client-tools from Transifex (msuchy@redhat.com)
+
 * Wed Apr 06 2011 Simon Lukasik <slukasik@redhat.com> 1.4.12-1
 - Move code for enabling yum-rhn-plugin to separate module
   (slukasik@redhat.com)

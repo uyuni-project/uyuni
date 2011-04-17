@@ -4,7 +4,7 @@
 %endif
 
 Name:        spacewalk-remote-utils
-Version:     1.4.6
+Version:     1.5.1
 Release:     1%{?dist}
 Summary:     Utilities to interact with a RHN Satellite or Spacewalk server remotely.
 
@@ -18,6 +18,10 @@ BuildArch:   noarch
 Requires:    rhnlib >= 2.5.38
 BuildRequires: python-devel
 BuildRequires: docbook-utils
+%if 0%{?suse_version}
+# provide directories for filelist check in OBS
+BuildRequires: rhn-client-tools
+%endif
 
 %description
 Utilities to interact with a RHN Satellite or Spacewalk server remotely over XMLRPC.
@@ -56,6 +60,12 @@ docbook2man ./spacewalk-create-channel/doc/spacewalk-create-channel.sgml -o ./sp
 %doc %{_mandir}/man1/spacewalk-create-channel.1.gz
 
 %changelog
+* Fri Apr 15 2011 Jan Pazdziora 1.5.1-1
+- build spacewalk-remote-utils on SUSE (mc@suse.de)
+
+* Fri Apr 08 2011 Miroslav Suchý 1.4.7-1
+- Revert "idn_unicode_to_pune() have to return string" (msuchy@redhat.com)
+
 * Tue Apr 05 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.6-1
 - idn_unicode_to_pune() has to return string
 

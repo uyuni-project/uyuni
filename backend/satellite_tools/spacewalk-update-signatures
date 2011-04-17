@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # Authors: Pradeep Kilambi
 #
@@ -23,7 +23,9 @@ import time
 import shutil
 
 from optparse import Option, OptionParser
-from spacewalk.common import rhnLib, rhnLog, initLOG, CFG, initCFG
+from spacewalk.common import rhnLib
+from spacewalk.common.rhnLog import rhnLog, initLOG
+from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common import rhn_rpm
 from spacewalk.server.rhnLib import parseRPMFilename, get_package_path
 from spacewalk.server import rhnSQL

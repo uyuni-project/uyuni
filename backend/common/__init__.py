@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -16,13 +16,6 @@
 #
 
 
-# classes we make publicly available
-from UserDictCase import UserDictCase
-from RPC_Base import RPC_Base
-from rhnException import rhnFault, rhnException, xmlrpclib, redirectException
-from rhnTB import Traceback, fetchTraceback, exitWithTraceback, add_to_seclist, get_seclist
-from rhnConfig import CFG, initCFG
-
 # try to figure out if we're running under Apache or not
 try:
     from rhnApache import rhnApache
@@ -30,8 +23,5 @@ try:
 except ImportError:
     # no _apache available, not running under apache/mod_python
     pass
-
-# functions we want exposed
-from rhnLog import log_debug, log_error, log_clean, log_setreq, initLOG
 
 __all__ = []

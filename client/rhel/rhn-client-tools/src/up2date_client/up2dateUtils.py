@@ -44,7 +44,6 @@ else:
                     "are running.\nIf you get this error, try running \n\n"\
                     "\t\trpm --rebuilddb\n\n")
 
-
 def getVersion():
     '''
     Returns the version of redhat-release rpm
@@ -70,20 +69,23 @@ def getRelease():
     return release
 
 def getArch():
-    if not os.access("/etc/rpm/platform", os.R_OK):
-        return os.uname()[4]
+    if os.access("/etc/rpm/platform", os.R_OK):
+        fd = open("/etc/rpm/platform", "r")
+        platform = string.strip(fd.read())
 
-    fd = open("/etc/rpm/platform", "r")
-    platform = string.strip(fd.read())
-
-    #bz 216225
-    #handle some replacements..
-    replace = {"ia32e-redhat-linux": "x86_64-redhat-linux"}
-    if replace.has_key(platform):
-        platform = replace[platform]
-
-    return platform
-
+        #bz 216225
+        #handle some replacements..
+        replace = {"ia32e-redhat-linux": "x86_64-redhat-linux"}
+        if replace.has_key(platform):
+            platform = replace[platform]
+        return platform
+    arch = os.uname()[4]
+    if getPlatform() == 'deb':
+        # On debian we only support i386
+        if arch in ['i486', 'i586', 'i686']:
+            arch = 'i386'
+        arch += '-debian-linux'
+    return arch
 
 def version():
     # substituted to the real version by the Makefile at installation time.

@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.4.16
+Version: 1.5.2
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -295,6 +295,31 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Fri Apr 15 2011 Jan Pazdziora 1.5.2-1
+- show weak deps in Web UI (mc@suse.de)
+- 674806 - get / set oracle db optimizer (mzazrivec@redhat.com)
+
+* Mon Apr 11 2011 Miroslav Suchý 1.5.1-1
+- bump up version of Spacewalk - both in webUI and API version
+- Bumping package versions for 1.5
+
+* Fri Apr 08 2011 Jan Pazdziora 1.4.20-1
+- use new database columns errata_from and bug url also in the perl code
+  (mc@suse.de)
+
+* Fri Apr 08 2011 Jan Pazdziora 1.4.19-1
+- Putting back use RHN::Exception (with explicit import of throw).
+
+* Fri Apr 08 2011 Miroslav Suchý 1.4.18-1
+- update copyright years (msuchy@redhat.com)
+
+* Thu Apr 07 2011 Jan Pazdziora 1.4.17-1
+- replace (+) with ANSI left join (PG) (michael.mraka@redhat.com)
+- Removing .pxt and methods since custominfo were migrated to Java by now.
+- Cleanup of use in Perl modules.
+- Removing .pxt and methods after all activation key pages were migrated
+  to Java by now.
+
 * Tue Apr 05 2011 Jan Pazdziora 1.4.16-1
 - Fixing PostgreSQL distinct/order by issue in
   tags_for_provisioning_entitled_in_set.

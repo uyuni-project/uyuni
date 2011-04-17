@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.4.14
+Version:        1.5.1
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,26 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Apr 15 2011 Jan Pazdziora 1.5.1-1
+- Fix the oracle equivalent source sha1s for the weak dependencies schema
+  sources.
+- The schema upgrade for the weak dependencies is for Spacewalk 1.5.
+- database tables for weak dependencies (mc@suse.de)
+
+* Fri Apr 08 2011 Jan Pazdziora 1.4.18-1
+- Adding missing rhnErrataBuglistTmp schema upgrade scripts.
+
+* Fri Apr 08 2011 Jan Pazdziora 1.4.17-1
+- Add 'from' to Errata and 'href' to ErrataBuglist in database schema
+  (ug@suse.de)
+
+* Fri Apr 08 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.16-1
+- fixed checksum
+
+* Fri Apr 08 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.15-1
+- added schema upgrade for rhn_config.pkb on postgresql (PG)
+- postgresql doesn't support aliases in update query
+
 * Tue Apr 05 2011 Jan Pazdziora 1.4.14-1
 - Forcing strict order of processing in rhn_sg_del_trig, to avoid deadlock.
 

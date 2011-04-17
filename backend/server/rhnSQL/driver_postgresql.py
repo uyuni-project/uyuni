@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -31,8 +31,9 @@ import sql_base
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL import sql_types
 
-from spacewalk.common import log_debug, log_error, UserDictCase
+from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnException
+from spacewalk.common.UserDictCase import UserDictCase
 from const import POSTGRESQL
 
 def convert_named_query_params(query):

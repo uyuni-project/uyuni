@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -16,7 +16,7 @@
 
 import base64
 
-from spacewalk.common import log_debug
+from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL
 
 # the "exposed" functions
@@ -39,14 +39,15 @@ insert into rhnServerActionScriptResult (
     stop_date,
     return_code
   )
-select :server_id,
-       ascript.id,
+values (
+       :server_id,
+       (select ascript.id
+          from rhnActionScript ascript
+         where ascript.action_id = :action_id),
        :output,
        TO_DATE(:process_start, 'YYYY-MM-DD HH24:MI:SS'),
        TO_DATE(:process_end, 'YYYY-MM-DD HH24:MI:SS'),
-       :return_code
-  from rhnActionScript ascript
- where ascript.action_id = :action_id
+       :return_code)
 """)
 
 def run(server_id, action_id, data={}):

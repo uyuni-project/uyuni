@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -21,8 +21,9 @@ import time
 from StringIO import StringIO
 
 # rhn imports:
-from spacewalk.common import CFG, log_clean, rhnLib
-from spacewalk.common.rhnLog import log_time
+from spacewalk.common import rhnLib
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnLog import log_time, log_clean
 from spacewalk.common.fileutils import createPath, setPermsPath
 
 import messages

@@ -351,7 +351,7 @@ sub recommends {
   my $sth;
 
   $query = <<EOQ;
-SELECT  DISTINCT C.name, C.version, P.sense 
+SELECT  DISTINCT C.name, C.version, P.sense
   FROM  rhnPackageCapability C, rhnPackageRecommends P
  WHERE  P.package_id = ?
    AND  P.capability_id = C.id
@@ -378,7 +378,7 @@ sub suggests {
   my $sth;
 
   $query = <<EOQ;
-SELECT  DISTINCT C.name, C.version, P.sense 
+SELECT  DISTINCT C.name, C.version, P.sense
   FROM  rhnPackageCapability C, rhnPackageSuggests P
  WHERE  P.package_id = ?
    AND  P.capability_id = C.id
@@ -405,7 +405,7 @@ sub supplements {
   my $sth;
 
   $query = <<EOQ;
-SELECT  DISTINCT C.name, C.version, P.sense 
+SELECT  DISTINCT C.name, C.version, P.sense
   FROM  rhnPackageCapability C, rhnPackageSupplements P
  WHERE  P.package_id = ?
    AND  P.capability_id = C.id

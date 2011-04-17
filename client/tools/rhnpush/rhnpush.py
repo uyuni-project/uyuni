@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -36,7 +36,7 @@ import string
 import time
 import urlparse
 import rhnpush_confmanager
-from rhn.connections import idn_unicode_to_pune
+from rhn.connections import idn_ascii_to_pune
 
 try:
     from optparse import Option, OptionParser
@@ -104,7 +104,7 @@ def main():
         sys.exit(0)
 
     if options.proxy:
-        options.proxy = idn_unicode_to_pune(options.proxy)
+        options.proxy = idn_ascii_to_pune(options.proxy)
 
     if options.list:
         if not options.channel:
@@ -156,7 +156,7 @@ def main():
     
 class UploadClass(uploadLib.UploadClass):
     def setURL(self):
-        server = idn_unicode_to_pune(self.options.server)
+        server = idn_ascii_to_pune(self.options.server)
         if server is None:
             self.die(1, "Required parameter --server not supplied")
         scheme, netloc, path, params, query, fragment = urlparse.urlparse(server)

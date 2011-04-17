@@ -10,11 +10,15 @@ License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 
-Version:        5.4.20
+Version:        5.4.22
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python
+%if 0%{?suse_version}
+# make chkconfig work in OBS
+BuildRequires: sysconfig syslog
+%endif
 
 %description
 rhn-virtualization provides various RHN/Spacewalk actions for manipulation 
@@ -24,7 +28,12 @@ virtual machine guest images.
 Summary: Files needed by rhn-virtualization-host
 Group: System Environment/Base
 Requires: rhn-client-tools
-%if !0%{?suse_version}
+%if 0%{?suse_version}
+# aaa_base provide chkconfig
+Requires: aaa_base
+# provide directories for filelist check in obs
+BuildRequires: rhn-client-tools rhn-check
+%else
 Requires: chkconfig
 %endif
 
@@ -42,13 +51,13 @@ Requires:       cron
 PreReq:         %fillup_prereq %insserv_prereq
 %else
 Requires: /usr/sbin/crond
+%endif
 %if 0%{?rhel} && 0%{?rhel} < 6
 # in RHEL5 we need libvirt, but in RHEV@RHEL5 there should not be libvirt
 # as there is vdsm and bunch of other packages, but we have no clue how to
 # distinguish those two scenarios
 %else
 Requires: libvirt
-%endif
 %endif
 
 %description host
@@ -59,7 +68,7 @@ that is specific to the Host system (a.k.a. Dom0).
 %prep
 %setup -q
 %if 0%{?suse_version}
-mv scripts/rhn-virtualization-host.SUSE scripts/rhn-virtualization-host
+cp scripts/rhn-virtualization-host.SUSE scripts/rhn-virtualization-host
 %endif
 
 %build
@@ -68,12 +77,7 @@ make -f Makefile.rhn-virtualization
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT install
-
-%if 0%{?suse_version}
-mkdir -p $RPM_BUILD_ROOT/etc/init.d/
-mv $RPM_BUILD_ROOT/etc/rc.d/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/etc/init.d/rhn-virtualization-host
-%endif
+make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir} install
 
 # add rclink
 mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
@@ -96,12 +100,19 @@ rm -rf $RPM_BUILD_ROOT
 %else
 %post host
 /sbin/chkconfig --add rhn-virtualization-host
+%if 0%{?suse_version}
+/sbin/service cron try-restart ||:
+%else
 /sbin/service crond condrestart
+%endif
 
 %preun host
 /sbin/chkconfig --del rhn-virtualization-host
 
 %postun host
+%if 0%{?suse_version}
+/sbin/service cron try-restart ||:
+%else
 /sbin/service crond condrestart
 %endif
 
@@ -181,6 +192,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Apr 15 2011 Jan Pazdziora 5.4.22-1
+- build rhn-virtualization on SUSE (mc@suse.de)
+
+* Fri Apr 08 2011 Miroslav Suchý 5.4.21-1
+- update copyright years (msuchy@redhat.com)
+
 * Thu Mar 10 2011 Miroslav Suchý <msuchy@redhat.com> 5.4.20-1
 - 683546 - optparse isn't friendly to translations in unicode
 

@@ -17,7 +17,10 @@
 
 import sys
 
-from spacewalk.common import log_debug, rhnException, CFG, add_to_seclist
+from spacewalk.common.rhnLog import log_debug
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnException import rhnException
+from spacewalk.common.rhnTB import add_to_seclist
 
 # SQL objects
 import sql_table

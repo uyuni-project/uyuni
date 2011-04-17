@@ -1,7 +1,7 @@
 #
 # Decoding data from XML streams
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -21,7 +21,10 @@ import string
 from xml.sax import make_parser, SAXParseException, ContentHandler, \
     ErrorHandler
 
-from spacewalk.common import log_debug, Traceback, rhnFlags, CFG
+from spacewalk.common import rhnFlags
+from spacewalk.common.rhnLog import log_debug
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnTB import Traceback
 from spacewalk.server.importlib import importLib, backendLib
 
 # Terminology used throughout this file:
@@ -681,6 +684,7 @@ class BugItem(BaseItem):
     tagMap = {
         'rhn-erratum-bug-id'        : 'bug_id',
         'rhn-erratum-bug-summary'   : 'summary',
+        'rhn-erratum-bug-summary'   : 'href',
     }
 addItem(BugItem)
 
@@ -717,6 +721,7 @@ class ErratumItem(BaseItem):
         'rhn-erratum-cve'           : 'cve',
         'rhn-erratum-last-modified' : 'last_modified',
         'rhn-erratum-files'         : 'files',
+        'rhn-erratum-errata-from'   : 'errata_from',
         'cve-names'                 : 'cve',
     }
 addItem(ErratumItem)

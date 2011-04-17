@@ -18,7 +18,8 @@
 
 import string
 
-from spacewalk.common import UserDictCase, rhnException
+from spacewalk.common.rhnException import rhnException
+from spacewalk.common.UserDictCase import UserDictCase
 
 import sql_base
 import sql_lib

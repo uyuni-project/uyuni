@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.PackageSearchAction;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
+import com.redhat.rhn.frontend.action.errata.ErrataSearchAction;
 import com.redhat.rhn.frontend.action.systems.SystemSearchSetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -73,6 +74,7 @@ public class SearchAction extends RhnAction {
                 attributes.put(SystemSearchSetupAction.VIEW_MODE,
                                "systemsearch_name_and_description");
                 attributes.put(SystemSearchSetupAction.SEARCH_STRING, searchString);
+                attributes.put(SystemSearchSetupAction.FINE_GRAINED, "on");
                 performRedirect("/systems/Search.do",
                                 request.getContextPath(),
                                 response,
@@ -88,6 +90,7 @@ public class SearchAction extends RhnAction {
                 attributes.put("errata_type_bug", Boolean.TRUE);
                 attributes.put("errata_type_security", Boolean.TRUE);
                 attributes.put("errata_type_enhancement", Boolean.TRUE);
+                attributes.put(ErrataSearchAction.FINE_GRAINED, "on");
                 performRedirect("/errata/Search.do",
                                 request.getContextPath(),
                                 response,
@@ -113,7 +116,7 @@ public class SearchAction extends RhnAction {
                 defaultArches.add("channel-i386-sun-solaris");
 
                 attributes.put("channel_arch", defaultArches);
-
+                attributes.put(PackageSearchAction.FINE_GRAINED, "on");
                 performRedirect("/channels/software/Search.do",
                                 request.getContextPath(),
                                 response,

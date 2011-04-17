@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -49,34 +49,6 @@ foreach my $field ($cdk->method_names) {
 
   if ($@) {
     die $@;
-  }
-}
-
-sub delete_key {
-  my $class = shift;
-  my %params = validate(@_, {key_id => 1, user_id => 1, transaction => 0});
-  my $key_id = $params{key_id};
-  my $dbh = $params{transaction} || RHN::DB->connect();
-
-  my $sth = $dbh->prepare(<<EOQ);
-DECLARE
-BEGIN
-
-DELETE FROM rhnServerCustomDataValue
-      WHERE server_id IN (SELECT server_id FROM rhnUserServerPerms WHERE user_id = :user_id)
-        AND key_id = :key_id;
-
-DELETE FROM rhnCustomDataKey WHERE ID = :key_id;
-END;
-EOQ
-
-  $sth->execute_h(key_id => $key_id, user_id => $params{user_id});
-
-  if (defined $params{transaction}) {
-    return $dbh;
-  }
-  else {
-    $dbh->commit;
   }
 }
 

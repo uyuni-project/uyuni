@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -23,7 +23,7 @@ from importLib import File, Dependency, ChangeLog, Channel, \
     IncompletePackage, Package, SourcePackage
 from backendLib import gmtime, localtime
 from types import ListType, TupleType, IntType, LongType, StringType
-from spacewalk.common import log_debug
+from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.checksum import getFileChecksum, guess_checksum_type
 
 class rpmPackage(IncompletePackage):
@@ -203,7 +203,7 @@ class rpmBinaryPackage(Package, rpmPackage):
                     hash[k] = 0
                 else:
                     hash[k] = v[i]
-            
+
             # RPMSENSE_STRONG(1<<27) indicate recommends; if not set it is suggests only
             if tag == 'recommends' and not(hash['flags'] & (1 << 27)):
                 continue
@@ -321,25 +321,25 @@ class rpmRequires(Dependency):
 class rpmSuggests(Dependency):
     # More mappings
     tagMap = {
-        'name'      : 'suggestsname',
-        'version'   : 'suggestsversion',
-        'flags'     : 'suggestsflags',
+        'name'      : 1156, #'suggestsname',
+        'version'   : 1157, #'suggestsversion',
+        'flags'     : 1158, #'suggestsflags',
     }
 
 class rpmRecommends(Dependency):
     # More mappings
     tagMap = {
-        'name'      : 'suggestsname',
-        'version'   : 'suggestsversion',
-        'flags'     : 'suggestsflags',
+        'name'      : 1156, #'suggestsname',
+        'version'   : 1157, #'suggestsversion',
+        'flags'     : 1158, #'suggestsflags',
     }
 
 class rpmSupplements(Dependency):
     # More mappings
     tagMap = {
-        'name'      : 'enhancesname',
-        'version'   : 'enhancesversion',
-        'flags'     : 'enhancesflags',
+        'name'      : 1159, #'enhancesname',
+        'version'   : 1160, #'enhancesversion',
+        'flags'     : 1161, #'enhancesflags',
     }
 
 class rpmConflicts(Dependency):

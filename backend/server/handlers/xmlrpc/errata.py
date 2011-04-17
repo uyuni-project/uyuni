@@ -17,7 +17,9 @@
 
 # common modules imports
 from spacewalk.common.rhnTranslate import _
-from spacewalk.common import rhnFault, rhnFlags, log_debug, log_error
+from spacewalk.common import rhnFlags
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnException import rhnFault
 
 # server modules imports
 from spacewalk.server.rhnLib import parseRPMName

@@ -1,7 +1,7 @@
 #
 # Connection objects
 #
-# Copyright (c) 2002-2005 Red Hat, Inc.
+# Copyright (c) 2002--2011 Red Hat, Inc.
 #
 # Author: Mihai Ibanescu <misa@redhat.com>
 
@@ -214,17 +214,14 @@ def idn_pune_to_unicode(hostname):
     """ Convert Internationalized domain name from Pune encoding to Unicode """
     if hostname is None:
         return None
-    elif hostname == '':
-        return u''
     else:
-        return u'.'.join([encodings.idna.ToUnicode(x) for x in hostname.split('.')])
+        return hostname.decode('idna')
 
-def idn_unicode_to_pune(hostname):
-    """ Convert domain name to Pune encoding. Hostname can be instance of string or
-        Unicode. Returns (ascii) string. """
+def idn_ascii_to_pune(hostname):
+    """ Convert domain name to Pune encoding. Hostname can be instance of string or Unicode """
     if hostname is None:
         return None
     else:
         if not isinstance(hostname, unicode):
             hostname = unicode(hostname, 'utf-8')
-        return '.'.join([encodings.idna.ToASCII(x) for x in hostname.split('.')])
+        return hostname.encode('idna')

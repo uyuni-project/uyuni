@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -27,15 +27,17 @@ import types
 import exceptions
 import locale
 from optparse import Option, OptionParser
-from rhn.connections import idn_unicode_to_pune
+from rhn.connections import idn_ascii_to_pune
 
 import gettext
 t = gettext.translation('spacewalk-backend-server', fallback=True)
 _ = t.ugettext
 
 # __rhn imports__
-from spacewalk.common import CFG, initCFG, initLOG, exitWithTraceback, rhnMail, \
-    rhnLib, rhnFlags
+from spacewalk.common import rhnMail, rhnLib, rhnFlags
+from spacewalk.common.rhnLog import initLOG
+from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common.rhnTB import exitWithTraceback
 sys.path.append("/usr/share/rhn")
 from up2date_client import config
 from spacewalk.common import rhn_rpm
@@ -1920,7 +1922,10 @@ def _getImportedChannels():
     "Retrieves the channels already imported in the satellite's database"
 
     try:
-        h = rhnSQL.prepare("""select label from rhnChannel where org_id is null""")
+        if OPTIONS.include_custom_channels:
+            h = rhnSQL.prepare("""select label from rhnChannel""")
+        else:
+            h = rhnSQL.prepare("""select label from rhnChannel where org_id is null""")
         h.execute()
         return map(lambda x: x['label'], h.fetchall_dict() or [])
     except (SQLError, SQLSchemaError, SQLConnectError), e:
@@ -1969,6 +1974,8 @@ def processCommandline():
             help=_('process data for this channel only')),
         Option(     '--consider-full',       action='store_true',
             help=_('disk dump will be considered to be a full export; see "man satellite-sync" for more information.')),
+        Option(     '--include-custom-channels',       action='store_true',
+            help=_('existing custom channels will also be synced (unless -c is used)')),
         Option('-d','--db',                  action='store',
             help=_('alternative database connection string (username/password@sid)')),
         Option(     '--debug-level',         action='store',
@@ -2040,16 +2047,16 @@ def processCommandline():
     # process anything CFG related (db, debug, server, and print)
     #
     CFG.set("TRACEBACK_MAIL", OPTIONS.traceback_mail or CFG.TRACEBACK_MAIL)
-    CFG.set("RHN_PARENT", idn_unicode_to_pune(OPTIONS.iss_parent or OPTIONS.server or \
+    CFG.set("RHN_PARENT", idn_ascii_to_pune(OPTIONS.iss_parent or OPTIONS.server or \
              CFG.ISS_PARENT or CFG.RHN_PARENT))
     if OPTIONS.server and not OPTIONS.iss_parent:
         # server option on comman line should override ISS parent from config
         CFG.set("ISS_PARENT", None)
     else:
-        CFG.set("ISS_PARENT", idn_unicode_to_pune(OPTIONS.iss_parent or CFG.ISS_PARENT))
+        CFG.set("ISS_PARENT", idn_ascii_to_pune(OPTIONS.iss_parent or CFG.ISS_PARENT))
         CFG.set("ISS_CA_CHAIN", OPTIONS.ca_cert or CFG.ISS_CA_CHAIN or CFG.CA_CHAIN)
 
-    CFG.set("HTTP_PROXY", idn_unicode_to_pune(OPTIONS.http_proxy or CFG.HTTP_PROXY))
+    CFG.set("HTTP_PROXY", idn_ascii_to_pune(OPTIONS.http_proxy or CFG.HTTP_PROXY))
     CFG.set("HTTP_PROXY_USERNAME", OPTIONS.http_proxy_username or CFG.HTTP_PROXY_USERNAME)
     CFG.set("HTTP_PROXY_PASSWORD", OPTIONS.http_proxy_password or CFG.HTTP_PROXY_PASSWORD)
     CFG.set("CA_CHAIN", OPTIONS.ca_cert or CFG.CA_CHAIN)
@@ -2279,7 +2286,7 @@ if __name__ == '__main__':
     except (KeyboardInterrupt, SystemExit), e:
         sys.exit(e)
     except Exception:
-        from spacewalk.common import fetchTraceback
+        from spacewalk.common.rhnTB import fetchTraceback
         tb = 'TRACEBACK: ' + fetchTraceback(with_locals=1)
         log2disk(-1, tb)
         log2email(-1, tb)

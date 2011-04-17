@@ -19,7 +19,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.4.29
+Version: 1.5.9
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -311,7 +311,6 @@ sed -i 's/^INSTALL_DEST.*/INSTALL_DEST = \/etc\/httpd\/conf.d/' apache-conf/Make
 make -f Makefile.backend all
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
-%{__python} setup.py build
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -321,7 +320,6 @@ make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir}
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
-%{__python} setup.py install -O1 --root $RPM_BUILD_ROOT --prefix=%{_prefix}
 
 %if 0%{?rhel} && 0%{?rhel} < 6
 rm -fv $RPM_BUILD_ROOT/%{apacheconfd}/zz-spacewalk-server-wsgi.conf
@@ -376,9 +374,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %files
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
-%if ! (0%{?rhel} && 0%{?rhel} < 6)
-%{python_sitelib}/spacewalk_backend-%{version}-*.egg-info
-%endif
 %dir %{pythonrhnroot}
 %dir %{pythonrhnroot}/common
 %{pythonrhnroot}/common/apache.py*
@@ -752,6 +747,75 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri Apr 15 2011 Jan Pazdziora 1.5.9-1
+- use RPMTAG numbers instead of names. (mc@suse.de)
+- more weak deps stuff (mc@suse.de)
+- implement weak dependencies (mc@suse.de)
+
+* Thu Apr 14 2011 Jan Pazdziora 1.5.8-1
+- 604175 - add option --include-custom-channels to satellite-sync which will
+  sync all existing custom channels as well (unless -c is used).
+
+* Wed Apr 13 2011 Jan Pazdziora 1.5.7-1
+- Need to try cElementTree from xml.etree for RHEL 6.0 and SLES 11.
+- made insert work both in postgresql and oracle (michael.mraka@redhat.com)
+
+* Tue Apr 12 2011 Jan Pazdziora 1.5.6-1
+- CVE-2010-1171 / 584118 - removing the channel /APP handler.
+
+* Tue Apr 12 2011 Jan Pazdziora 1.5.5-1
+- As cElementTree_iterparse is not available on old yums, fallback to
+  cElementTree if needed.
+
+* Tue Apr 12 2011 Michael Mraka <michael.mraka@redhat.com> 1.5.4-1
+- fixed errata export / import
+
+* Mon Apr 11 2011 Michael Mraka <michael.mraka@redhat.com> 1.5.3-1
+- fixed sysdate (PG)
+- fixed non-numeric revision (PG)
+- unified_diff.next() throws StopIteration when there's no difference
+
+* Mon Apr 11 2011 Michael Mraka <michael.mraka@redhat.com> 1.5.2-1
+- import blob directly (PG)
+- postgresql doesn't understand for update of column (PG)
+
+* Mon Apr 11 2011 Michael Mraka <michael.mraka@redhat.com> 1.5.1-1
+- fixed test_timestamp_3
+- fixed packaging after spacewalk/common removal
+- put spacewalk/common/* and common/* together
+- fixed some more imports from spacewalk.common
+- removed implicit import of rhnLog from spacewalk.common
+- removed implicit import of rhnConfig from spacewalk.common
+- removed duplicated import
+- removed implicit import of rhnException from spacewalk.common
+- removed implicit import of rhnTB from spacewalk.common
+- removed implicit import of rhnException from spacewalk.common
+- removed implicit import of RPC_Base from spacewalk.common
+- removed implicit import of UserDictCase from spacewalk.common
+- remove duplicate PREFIX for locale installation
+
+* Fri Apr 08 2011 Miroslav Suchý 1.4.35-1
+- fixed typo (michael.mraka@redhat.com)
+
+* Fri Apr 08 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.34-1
+- having table twice in a select is generally not a good idea
+- replaced (+) with ANSI left join (PG)
+- merged _query_get_file_* which differ only in a single condition
+
+* Fri Apr 08 2011 Jan Pazdziora 1.4.33-1
+- implement updateinfo => Errata import for spacewalk-repo-sync (mc@suse.de)
+
+* Fri Apr 08 2011 Miroslav Suchý 1.4.32-1
+- fix cs translation (msuchy@redhat.com)
+
+* Fri Apr 08 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.31-1
+- replaced (+) with ANSI left join (PG)
+
+* Fri Apr 08 2011 Miroslav Suchý 1.4.30-1
+- Revert "idn_unicode_to_pune() have to return string" (msuchy@redhat.com)
+- update copyright years (msuchy@redhat.com)
+- download spacewalk.spacewalk-backend from Transifex (msuchy@redhat.com)
+
 * Thu Apr 07 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.29-1
 - fixed variable name
 

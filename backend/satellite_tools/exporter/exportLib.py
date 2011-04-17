@@ -17,7 +17,8 @@ import time
 import string
 from types import StringType
 
-from spacewalk.common import log_debug, rhnLib
+from spacewalk.common import rhnLib
+from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL
 
 class ArrayIterator:
@@ -937,7 +938,7 @@ class _ErratumDumper(BaseRowDumper):
             ('rhn-erratum-solution', 'solution', 4000),
             ('rhn-erratum-refers-to', 'refers_to', 4000),
             ('rhn-erratum-notes', 'notes', 4000),
-            ('rhn-erratum-errata_from', 'errata_from', 127),
+            ('rhn-erratum-errata-from', 'errata_from', 127),
         ]
         for k, v, b in mappings:
             arr.append(SimpleDumper(self._writer, k, self._row[v] or "", b))
@@ -1005,7 +1006,7 @@ class _ErratumBugDumper(BaseRowDumper):
             SimpleDumper(self._writer, 'rhn-erratum-bug-id', self._row['bug_id']),
             SimpleDumper(self._writer, 'rhn-erratum-bug-summary', 
                 self._row['summary'] or ""),
-            SimpleDumper(self._writer, 'rhn-erratum-bug-href', self._row['bug_href']),
+            SimpleDumper(self._writer, 'rhn-erratum-bug-href', self._row['href']),
         ]
         return ArrayIterator(arr)
 

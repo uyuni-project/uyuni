@@ -3,7 +3,7 @@ Name: spacewalk-koan
 Group: System Environment/Kernel
 License: GPLv2
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 0.2.16
+Version: 0.2.18
 Release: 1%{?dist}
 BuildArch : noarch
 URL:            https://fedorahosted.org/spacewalk
@@ -12,9 +12,12 @@ BuildArch:      noarch
 BuildRequires:  python
 Requires:       python >= 1.5
 Requires:       koan >= 1.4.3
+%if 0%{?suse_version}
+# provide directories for filelist check in OBS
+BuildRequires: rhn-client-tools
 Requires:       rhn-virtualization-common
 Requires:       rhn-virtualization-host
-
+%endif
 Conflicts: rhn-kickstart
 Conflicts: rhn-kickstart-common
 Conflicts: rhn-kickstart-virtualization
@@ -49,11 +52,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_sbindir}/*
 %{_datadir}/rhn/spacewalkkoan/
 %{_datadir}/rhn/actions/
-%dir %{_datadir}/rhn
-%dir %{_sysconfdir}/sysconfig/rhn
-%dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
 
 %changelog
+* Fri Apr 15 2011 Jan Pazdziora 0.2.18-1
+- build spacewalk-koan on SUSE (mc@suse.de)
+
+* Fri Apr 08 2011 Miroslav Suchý 0.2.17-1
+- update copyright years (msuchy@redhat.com)
+
 * Wed Feb 02 2011 Tomas Lestach <tlestach@redhat.com> 0.2.16-1
 - Fixed typo in import subprocess (mmello@redhat.com)
 

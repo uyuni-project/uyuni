@@ -1,6 +1,6 @@
 Summary: RHN support for yum
 Name: yum-rhn-plugin
-Version: 1.4.13
+Version: 1.5.2
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -82,6 +82,22 @@ fi
 
 
 %changelog
+* Tue Apr 12 2011 Miroslav Suchý 1.5.2-1
+- remove duplicate keyword (msuchy@redhat.com)
+
+* Tue Apr 12 2011 Miroslav Suchý 1.5.1-1
+- remove dead code
+- use default headers from yum class YumRepository
+- 690190 - yumdownloader set callbacks soon, save it to new repo
+- Bumping package versions for 1.5
+
+* Fri Apr 08 2011 Miroslav Suchý 1.4.15-1
+- fix cs translation (msuchy@redhat.com)
+
+* Fri Apr 08 2011 Miroslav Suchý 1.4.14-1
+- update copyright years (msuchy@redhat.com)
+- download spacewalk.yum-rhn-plugin from Transifex (msuchy@redhat.com)
+
 * Wed Apr 06 2011 Simon Lukasik <slukasik@redhat.com> 1.4.13-1
 - Removing packages.verifyAll capability; it was never used.
   (slukasik@redhat.com)

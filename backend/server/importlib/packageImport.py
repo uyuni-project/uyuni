@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -21,7 +21,8 @@ import os.path
 from importLib import GenericPackageImport, IncompletePackage, \
     Import, InvalidArchError, InvalidChannelError, \
     IncompatibleArchError
-from spacewalk.common import CFG, rhn_pkg
+from spacewalk.common import rhn_pkg
+from spacewalk.common.rhnConfig import CFG
 from spacewalk.server import taskomatic
 from spacewalk.server.rhnServer import server_packages
 

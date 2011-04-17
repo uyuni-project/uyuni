@@ -170,6 +170,8 @@ def prereposetup_hook(conduit):
                 if type(already_exists_repos[0]) == type(repo): # repo is type of RhnRepo
                     continue # repo has been already initialized
                 else: # YumRepository from _init, made for caching
+                    callback = already_exists_repos[0].callback
+                    repo.setCallback(callback)
                     repos.delete(repo.id)
             repo.basecachedir = cachedir
             repo.gpgcheck = gpgcheck
@@ -185,8 +187,6 @@ def prereposetup_hook(conduit):
                     setattr(repo, o[0], o[1])
                     conduit.info(5, "Repo '%s' setting option '%s' = '%s'" %
                             (repo.id, o[0], o[1]))
-            if repos.findRepos(repo.id):
-                repos.delete(repo.id)
             repos.add(repo)
             if cachefile:
                 cachefile.write("%s %s\n" % (repo.id, repo.name))
@@ -435,18 +435,17 @@ class RhnRepo(YumRepository):
     def _setupGrab(self):
         """sets up the grabber functions. We don't want to use mirrors."""
 
+        ugopts = self._default_grabopts()
+        del(ugopts["http_headers"])
         headers = tuple(YumRepository._YumRepository__headersListFromDict(self))
 
-        self._grabfunc = URLGrabber(keepalive=self.keepalive,
-                                   bandwidth=self.bandwidth,
-                                   retry=self.retries,
-                                   throttle=self.throttle,
+        self._grabfunc = URLGrabber(
                                    progress_obj=self.callback,
-                                   proxies = self.proxy_dict,
                                    interrupt_callback=self.interrupt_callback,
-                                   timeout=self.timeout,
+                                   copy_local=self.copy_local,
                                    http_headers=headers,
-                                   reget='simple')
+                                   reget='simple',
+                                   **ugopts)
         #bz453690 ensure that user-agent header matches for communication from
         #up2date library calls, as well as yum-rhn-plugin calls
         self._grabfunc.opts.user_agent = rhn.transports.Transport.user_agent

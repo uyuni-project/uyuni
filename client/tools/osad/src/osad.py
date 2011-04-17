@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -22,6 +22,7 @@ from rhn import rpclib
 import random
 
 from up2date_client.config import initUp2dateConfig
+from up2date_client import config
 
 from rhn_log import set_debug_level, log_debug, die, set_logfile
 
@@ -279,10 +280,7 @@ class Runner(jabber_lib.Runner):
         if enable_proxy:
             ret['enable_proxy'] = 1
 
-            proxy_url = self._config.get_option('httpProxy')
-            if proxy_url is None:
-                proxy_url = self.get_up2date_config()['httpProxy']
-            ret['proxy_url'] = proxy_url
+            ret['proxy_url'] = config.getProxySetting()
             
             enable_proxy_auth = self._config.get_option('enableProxyAuth')
             if enable_proxy_auth is None:

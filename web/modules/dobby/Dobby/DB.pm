@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -260,6 +260,30 @@ sub database_shutdown {
   }
 
   $self->sqlplus_nolog("SHUTDOWN $mode");
+}
+
+sub get_optimizer_mode {
+  my $self = shift;
+
+  my $dbh = $self->connect;
+
+  my $sql = q{
+  select value
+    from v$system_parameter
+   where name = 'optimizer_mode'
+  };
+
+  my @mode = $dbh->selectrow_array($sql, {}, ());
+
+  return $mode[0];
+}
+
+sub set_optimizer_mode {
+  my $self = shift;
+  my $mode = shift;
+
+  my $dbh = $self->connect;
+  my @mode = $dbh->do("alter system set optimizer_mode = '" . $mode . "'");
 }
 
 sub sqlplus_nolog {

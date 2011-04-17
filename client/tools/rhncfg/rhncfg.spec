@@ -8,7 +8,7 @@ Group:   Applications/System
 License: GPLv2 and Python
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.9.50
+Version: 5.10.2
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -16,14 +16,11 @@ BuildRequires: docbook-utils
 BuildRequires: python
 Requires: python
 Requires: rhnlib >= 2.5.32
-%if 0%{?suse_version}
-Requires: python-selinux
-%else
-# If this is rhel 4 or less we need up2date.
-%if 0%{?rhel} && "%rhel" < "5"
-Requires: up2date
-%else
 Requires: rhn-client-tools
+%if 0%{?suse_version}
+# provide rhn directories and no selinux on suse
+BuildRequires: rhn-client-tools
+%else
 Requires: libselinux-python
 %endif
 %endif
@@ -81,7 +78,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%dir %{rhnroot}
+%if 0%{?suse_version}
+%dir %{_sharedstatedir}
+%endif
+%dir %{_sharedstatedir}/rhncfg
 %{rhnroot}/config_common
 %doc LICENSE PYTHON-LICENSES.txt
 
@@ -109,19 +109,53 @@ rm -rf $RPM_BUILD_ROOT
 
 %files actions
 %defattr(-,root,root,-)
-%{rhnroot}/actions/*
-%if 0%{?suse_version}
-%dir %{rhnconf}
-%dir %{client_caps_dir}
-%dir /usr/share/rhn/actions
-%{_bindir}/mgr-actions-control
-%endif
+%{rhnroot}/actions
 %{_bindir}/rhn-actions-control
 %config(noreplace) %{client_caps_dir}/*
 %{_mandir}/man8/rhn-actions-control.8*
 
 # $Id$
 %changelog
+* Fri Apr 15 2011 Jan Pazdziora 5.10.2-1
+- add missing directories to filelist (mc@suse.de)
+- build rhncfg build on SUSE (mc@suse.de)
+- 683200 - ca is now unicode, check for basestring, which is parent for both
+  str and unicode type (msuchy@redhat.com)
+- 683200 - set the protocol correctly (msuchy@redhat.com)
+- 683200 - server_name and server_list should contain just hostname, not url
+  (msuchy@redhat.com)
+- 683200 - if value is int ConfigParser fails with interpolation
+  (msuchy@redhat.com)
+- 683200 - variable %proto is not used in up2date_cfg (msuchy@redhat.com)
+- removing .rhncfgrc - it is not packed, probably forgotten for long time
+  (msuchy@redhat.com)
+- add () if you want to get result of function (msuchy@redhat.com)
+
+* Wed Apr 13 2011 Miroslav Suchý 5.10.1-1
+- bump up version (msuchy@redhat.com)
+
+* Wed Apr 13 2011 Miroslav Suchý 5.9.55-1
+- code cleanup
+* Wed Apr 13 2011 Miroslav Suchý 5.9.54-1
+- dead code - module up2date_config_parser is not used any more
+- dead code - get_up2date_config() is not used any more
+- 695723, 683200 - use up2date_client.config instead of own parser
+  (utils.get_up2date_config)
+
+* Mon Apr 11 2011 Michael Mraka <michael.mraka@redhat.com> 5.9.53-1
+- fixed moved imports
+- don't make link target absolute
+- 683264 - fixed extraneous directory creation via rhncfg-manager
+
+* Fri Apr 08 2011 Michael Mraka <michael.mraka@redhat.com> 5.9.52-1
+- fixed symlink deployment via rhn_check
+- 683264 - rootdir is / when called from rhn_check
+
+* Fri Apr 08 2011 Michael Mraka <michael.mraka@redhat.com> 5.9.51-1
+- don't rollback transaction if symlink already exists
+- fixed traceback during rollback
+- don't fail if link points to directory
+
 * Thu Mar 24 2011 Jan Pazdziora 5.9.50-1
 - 688461 - try/except is workaround of BZ 690238 (msuchy@redhat.com)
 - 688461 - fixed python exception when comparing files using web UI and SELinux

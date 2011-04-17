@@ -12,7 +12,7 @@ Summary:        Red Hat Network Monitoring Daemon
 Name:           rhnmd
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:        5.3.8
+Version:        5.3.9
 Release:        1%{?dist}
 License:        GPLv2
 BuildArch:      noarch
@@ -21,7 +21,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       openssh
 %if 0%{?suse_version}
 PreReq:         pwdutils %fillup_prereq %insserv_prereq
-BuildRequires:  openssh
+# make chkconfig work during build
+BuildRequires:  sysconfig
 %else
 Requires:       openssh-server
 %endif
@@ -67,12 +68,14 @@ ln -sf ../../etc/init.d/rhnmd $RPM_BUILD_ROOT/%{_sbindir}/rcrhnmd
 %pre
 if [ $1 -eq 1 ] ; then
   getent group %{np_name} >/dev/null || groupadd -r %{np_name}
+%if !0%{?suse_version}
+  getent passwd %{np_name} >/dev/null || \
+  useradd -r -g %{np_name} -d %{_var}/lib/%{np_name} -c "NOCpulse user" %{np_name}
+  /usr/bin/passwd -l %{np_name} >/dev/null
+%else
+  # SUSE sshd do not allow to login into locked accounts
   getent passwd %{np_name} >/dev/null || \
   useradd -r -g %{np_name} -d %{_var}/lib/%{np_name} -c "NOCpulse user" %{np_name} -s /bin/bash
-%if 0%{?suse_version} == 0
-  # do not lock the account on SUSE.
-  # SUSE sshd do not allow a normal user to login to a locked account
-  /usr/bin/passwd -l %{np_name} >/dev/null
 %endif
   exit 0
 fi
@@ -99,10 +102,13 @@ fi
 %else
 
 %post
+# keygen is done in init script. Doing this in %post is bad for using this rpm in appliances.
+%if !0%{?suse_version}
 if [ ! -f %{identity} ]
 then
     /sbin/runuser -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f %{identity}" - %{np_name}
 fi
+%endif
 /sbin/chkconfig --add rhnmd
 
 %preun
@@ -130,6 +136,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Apr 15 2011 Jan Pazdziora 5.3.9-1
+- add nocpulse config dir to filelist (mc@suse.de)
+- build rhnmd on SUSE (mc@suse.de)
+
 * Thu Mar 10 2011 Miroslav Suchý <msuchy@redhat.com> 5.3.8-1
 - 538057 - add corresponding "Provides:" for the arch-specific packages
 - 538057 - versioned provides, substitute tabs with spaces

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,7 +17,10 @@ import os
 
 from types import ListType
 
-from spacewalk.common import log_debug, log_error, CFG, rhnFault, rhnFlags
+from spacewalk.common import rhnFlags
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server import rhnSQL
 from rhnLib import parseRPMFilename
@@ -330,7 +333,7 @@ def _none2emptyString(foo):
 if __name__ == '__main__':
     """Test code.
     """
-    from spacewalk.common import initLOG
+    from spacewalk.common.rhnLog import initLOG
     initLOG("stdout", 1)
     rhnSQL.initDB('rhnuser/rhnuser@webqa')
     print

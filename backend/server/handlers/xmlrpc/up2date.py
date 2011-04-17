@@ -21,8 +21,10 @@ import string
 
 from rhn import rpclib
 from types import ListType, TupleType, StringType, IntType
-from spacewalk.common import CFG, rhnFlags, rhnFault, log_debug, log_error, \
-    rhn_rpm
+from spacewalk.common import rhnFlags, rhn_rpm
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server.rhnLib import computeSignature
 from spacewalk.server.rhnHandler import rhnHandler

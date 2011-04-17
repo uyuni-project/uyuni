@@ -89,4 +89,3 @@ def guess_checksum_type(checksum):
         type = 'sha512'
 
     return type
-

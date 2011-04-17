@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -256,7 +256,7 @@ class RPC_Repository(Repository):
                 self.__proxy_password = self._local_config.get('proxyPassword')
 
         ca = self._local_config.get('sslCACert')
-        if type(ca) == type(""):
+        if isinstance(ca, basestring):
             ca = [ca]
 
         ca_certs = ca or ["/usr/share/rhn/RHNS-CA-CERT"]

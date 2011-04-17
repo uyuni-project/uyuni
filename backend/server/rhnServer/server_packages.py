@@ -21,7 +21,9 @@ import string
 import time
 from types import DictType
 
-from spacewalk.common import log_debug, rhnFault, rhn_rpm
+from spacewalk.common import rhn_rpm
+from spacewalk.common.rhnLog import log_debug
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL
 from server_lib import snapshot_server, check_entitlement
 

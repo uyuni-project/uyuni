@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,7 +17,7 @@
 
 import time
 
-from spacewalk.common import log_debug
+from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL, rhnServer
 from spacewalk.server.configFilesHandler import format_file_results
 from spacewalk.server.config_common.templated_document import var_interp_prep

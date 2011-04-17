@@ -21,7 +21,9 @@ import os
 import shutil
 
 from optparse import Option, OptionParser
-from spacewalk.common import rhnLog, initLOG, CFG, initCFG
+from spacewalk.common import rhnLog
+from spacewalk.common.rhnLog import initLOG
+from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common import rhn_rpm
 from spacewalk.server.rhnLib import parseRPMFilename, get_package_path
 from spacewalk.server import rhnSQL, rhnPackageUpload

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,9 +15,11 @@
 # Satellite specific authentication xmlrpc method.
 
 import time
-from rhn.connections import idn_unicode_to_pune
+from rhn.connections import idn_ascii_to_pune
 
-from spacewalk.common import CFG, rhnFault, log_debug
+from spacewalk.common.rhnLog import log_debug
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server.rhnHandler import rhnHandler
 from spacewalk.server import rhnLib
@@ -44,9 +46,9 @@ class Authentication(rhnHandler):
 
         if CFG.ALLOWED_ISS_SLAVES:
             if not isinstance(CFG.ALLOWED_ISS_SLAVES, list):
-                allowed_iss_slaves = map(lambda x: idn_unicode_to_pune(x), [CFG.ALLOWED_ISS_SLAVES])
+                allowed_iss_slaves = map(lambda x: idn_ascii_to_pune(x), [CFG.ALLOWED_ISS_SLAVES])
             else:
-                allowed_iss_slaves = idn_unicode_to_pune(CFG.ALLOWED_ISS_SLAVES)
+                allowed_iss_slaves = idn_ascii_to_pune(CFG.ALLOWED_ISS_SLAVES)
         else:
             allowed_iss_slaves = []
 

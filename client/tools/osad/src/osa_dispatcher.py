@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,8 +17,9 @@ import sys
 import select
 import socket
 import SocketServer
-from rhn.connections import idn_unicode_to_pune
-from spacewalk.common import initCFG, CFG, initLOG, log_debug, log_error
+from rhn.connections import idn_ascii_to_pune
+from spacewalk.common.rhnLog import initLOG, log_debug, log_error
+from spacewalk.common.rhnConfig import initCFG, CFG
 from spacewalk.server import rhnSQL
 
 import jabber_lib
@@ -84,7 +85,7 @@ class Runner(jabber_lib.Runner):
         self._password = config.get('password')
         self._resource = 'superclient'
         js = config.get('jabber_server')
-        self._jabber_servers = [ idn_unicode_to_pune(js) ]
+        self._jabber_servers = [ idn_ascii_to_pune(js) ]
 
     def fix_connection(self, c):
         "After setting up the connection, do whatever else is necessary"

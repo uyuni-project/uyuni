@@ -21,6 +21,7 @@ import local_config
 import rhn_log
 import utils
 import cfg_exceptions
+from urlparse import urlsplit
 
 try:
     from socket import gaierror
@@ -28,8 +29,10 @@ except:
     from socket import error
     gaierror = error
 
-from up2date_config_parser import ConfigFileAccessError
 from ConfigParser import InterpolationError
+
+sys.path.append('/usr/share/rhn')
+from up2date_client import config
 
 class BaseMain:
     modes = []
@@ -125,20 +128,14 @@ class BaseMain:
             handler.usage()
             return 0
 
-        up2date_cfg = {}
-        try:
-            up2date_cfg = utils.get_up2date_config()
-        except ConfigFileAccessError:
-            pass
-        except Exception:
-            raise
+        cfg = config.initUp2dateConfig()
+        up2date_cfg = dict(cfg.items())
 
+        server_name = config.getServerlURL()
+        up2date_cfg['proto'] = urlsplit(server_name[0])[0]
+        up2date_cfg['server_list'] = map(lambda x: urlsplit(x)[1], server_name)
         if server_name:
-            sn = utils.parse_url(server_name)[1]
-            if sn:
-                # Passed a full URL in
-                server_name = sn
-
+            server_name = urlsplit(server_name[0])[1]
             print "Using server name", server_name
             local_config.init(self.config_section, defaults=up2date_cfg, server_name=server_name)
         else:

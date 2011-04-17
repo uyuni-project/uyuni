@@ -1,6 +1,6 @@
 #!/usr/bin/python -u
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -48,7 +48,7 @@ def create_server_obj(server_url):
                                                                                        
     ca = cfg['sslCACert']
         
-    if isinstance(ca, str) or isinstance(ca, unicode):
+    if isinstance(ca, basestring):
         ca = [ca]
  
     ca_certs = ca or ["/usr/share/rhn/RHNS-CA-CERT"]

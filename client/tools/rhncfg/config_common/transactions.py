@@ -73,7 +73,7 @@ class DeployTransaction:
 
         if os.path.exists(path):
             # race
-            if os.path.isfile(path):
+            if os.path.isfile(path) or os.path.islink(path):
                 new_path = self._generate_backup_path(path)
                 log_debug(6, "renaming %s to backup %s ..." % (path, new_path))
 	        # os.renames will fail if the path and the new_path are on different partitions
@@ -284,10 +284,11 @@ class DeployTransaction:
 			raise cfg_exceptions.DirectoryEntryIsFile(dirname)
                     if os.path.isdir(dirname):
                         s = os.stat(dirname)
-                        entry = {}
-                        entry["filemode"] = "%o" % (s[0] & 07777)
-                        entry["uid"] = s[4]
-                        entry["gid"] = s[5]
+                        entry = { 'filemode': "%o" % (s[0] & 07777),
+                                  'uid': s[4],
+                                  'gid': s[5],
+                                  'filetype': 'directory',
+                                }
                         self.changed_dir_info[dirname] = entry
                         log_debug(3, "directory found, chowning and chmoding to %s as needed: %s" % (dirmode, dirname))
                         self._chown_chmod_chcon(dirname, dirname, directory)
@@ -320,7 +321,7 @@ class DeployTransaction:
                 # which ones are created... then i could clean created
                 # dirs on rollback
                 (directory, filename) = os.path.split(path)
-		if os.path.isdir(path):
+		if os.path.isdir(path) and not os.path.islink(path):
 		    raise cfg_exceptions.FileEntryIsDirectory(path)
                 if not os.path.exists(directory) and os.path.isdir(directory):
                     log_debug(7, "creating directories for %s ..." % directory)
@@ -330,7 +331,7 @@ class DeployTransaction:
                 
                 # write the new contents to a tmp file, and store the path of the
                 # new tmp file by it's eventual target path
-                self.newtemp_by_path[path], temp_new_dirs = fp.process(dep_file, directory=directory)
+                self.newtemp_by_path[path], temp_new_dirs = fp.process(dep_file, os.path.sep)
                 self.new_dirs.extend(temp_new_dirs or [])
                 
                 # properly chown and chmod it
@@ -343,7 +344,7 @@ class DeployTransaction:
 
             # 2.
             for path in paths:
-		if os.path.isdir(path):
+		if os.path.isdir(path) and not os.path.islink(path):
 		    raise cfg_exceptions.FileEntryIsDirectory(path)	
 		else:
                     self._rename_to_backup(path)

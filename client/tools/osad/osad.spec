@@ -1,7 +1,14 @@
 %define rhnroot /usr/share/rhn
 %define rhnconf /etc/sysconfig/rhn
 %define client_caps_dir /etc/sysconfig/rhn/clientCaps.d
-%{!?pythongen:%define pythongen %(%{__python} -c "import sys ; print sys.version[:3]")}
+
+%if 0%{?suse_version}
+%define apache_group www
+%define include_selinux_package 0
+%else
+%define apache_group apache
+%define include_selinux_package 1
+%endif
 
 %if 0%{?suse_version}
 %define apache_group www
@@ -15,7 +22,7 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.8
+Version: 5.10.12
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -23,13 +30,14 @@ BuildRequires: python-devel
 Requires: python
 Requires: rhnlib >= 2.5.38
 Requires: jabberpy
-%if 0%{?suse_version} == 0 && 0%{?rhel} <= 5
+%if 0%{?rhel} && 0%{?rhel} <= 5
 Requires: python-hashlib
 %endif
+%if 0%{?suse_version} >= 1140
+Requires: python-xml
+%else
 # This should have been required by rhnlib
 Requires: PyXML
-%if "%{pythongen}" == "1.5"
-Requires: python-iconv
 %endif
 Conflicts: osa-dispatcher < %{version}-%{release}
 Conflicts: osa-dispatcher > %{version}-%{release}
@@ -40,9 +48,15 @@ Requires: jabberpy
 # This is for /sbin/service
 Requires(preun): initscripts
 %else
+# provides chkconfig on SUSE
+Requires(post): aaa_base
+Requires(preun): aaa_base
+# to make chkconfig test work during build
+BuildRequires: sysconfig syslog
 Requires: python-jabberpy
 Requires(preun): %fillup_prereq %insserv_prereq
 %endif
+
 %description
 OSAD agent receives commands over jabber protocol from Spacewalk Server and
 commands are instantly executed.
@@ -63,9 +77,10 @@ Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
-Requires: jabberpy
 %else
-Requires: python-jabberpy logrotate
+# provides chkconfig on SUSE
+Requires(post): aaa_base
+Requires(preun): aaa_base
 Requires(preun): %fillup_prereq %insserv_prereq
 %endif
 
@@ -74,17 +89,7 @@ OSA dispatcher is supposed to run on the Spacewalk server. It gets information
 from the Spacewalk server that some command needs to be execute on the client;
 that message is transported via jabber protocol to OSAD agent on the clients.
 
-%if 0%{?rhel} && 0%{?rhel} <= 4
-%define include_selinux_package 0
-%else
-%if 0%{?suse_version}
-%define include_selinux_package 0
-%else
-%define include_selinux_package 1
-%endif
-%endif
-
-%if %{include_selinux_package}
+%if 0%{?include_selinux_package}
 %package -n osa-dispatcher-selinux
 %define selinux_variants mls strict targeted
 %define selinux_policyver %(sed -e 's,.*selinux-policy-\\([^/]*\\)/.*,\\1,' /usr/share/selinux/devel/policyhelp 2> /dev/null)
@@ -115,13 +120,14 @@ SELinux policy module supporting osa-dispatcher.
 
 %prep
 %setup -q
-%if 0%{?suse_version} > 0
+%if 0%{?suse_version}
 cp prog.init.SUSE prog.init
 %endif
 
 %build
 make -f Makefile.osad all
-%if %{include_selinux_package}
+
+%if 0%{?include_selinux_package}
 %{__perl} -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' osa-dispatcher-selinux/%{modulename}.te
 for selinuxvariant in %{selinux_variants}
 do
@@ -134,8 +140,9 @@ done
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{rhnroot}
-make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot}
-%if %{include_selinux_package}
+make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir}
+
+%if 0%{?include_selinux_package}
 for selinuxvariant in %{selinux_variants}
   do
     install -d %{buildroot}%{_datadir}/selinux/${selinuxvariant}
@@ -154,12 +161,6 @@ install -p -m 644 osa-dispatcher-selinux/%{modulename}.if \
 # Install osa-dispatcher-selinux-enable which will be called in %post
 install -d %{buildroot}%{_sbindir}
 install -p -m 755 osa-dispatcher-selinux/osa-dispatcher-selinux-enable %{buildroot}%{_sbindir}/osa-dispatcher-selinux-enable
-%endif
-
-%if 0%{?suse_version}
-%define _sysconfdir /etc
-%define _initrddir %{_sysconfdir}/init.d
-mv %{buildroot}%{_sysconfdir}/rc.d/init.d %{buildroot}%{_initrddir}
 %endif
 
 # add rclinks
@@ -216,6 +217,7 @@ if [ $1 = 0 ]; then
     /sbin/chkconfig --del osa-dispatcher
 fi
 
+%if 0%{?include_selinux_package}
 %post -n osa-dispatcher-selinux
 if /usr/sbin/selinuxenabled ; then
    %{_sbindir}/osa-dispatcher-selinux-enable
@@ -246,6 +248,7 @@ fi
 
 rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 /sbin/restorecon -vvi /var/log/rhn/osa-dispatcher.log
+%endif
 
 %endif
 %endif
@@ -273,6 +276,12 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(755,root,root) %{_initrddir}/osad
 %doc LICENSE
 %doc PYTHON-LICENSES.txt
+%if 0%{?suse_version}
+# provide directories not owned by any package during build
+%dir %{rhnroot}
+%dir %{_sysconfdir}/sysconfig/rhn
+%dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
+%endif
 
 %files -n osa-dispatcher
 %defattr(-,root,root)
@@ -300,8 +309,14 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(770,root,root) %dir %{_var}/log/rhn/oracle/osa-dispatcher
 %doc LICENSE
 %doc PYTHON-LICENSES.txt
+%if 0%{?suse_version}
+%dir %{_sysconfdir}/rhn
+%dir %{_sysconfdir}/rhn/default
+%dir %{_sysconfdir}/rhn/tns_admin
+%dir %{_var}/log/rhn
+%endif
 
-%if %{include_selinux_package}
+%if 0%{?include_selinux_package}
 %files -n osa-dispatcher-selinux
 %defattr(-,root,root,0755)
 %doc osa-dispatcher-selinux/%{modulename}.fc
@@ -315,6 +330,21 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Fri Apr 15 2011 Jan Pazdziora 5.10.12-1
+- require python-hashlib only on rhel and rhel <= 5 (mc@suse.de)
+- build osad on SUSE (mc@suse.de)
+- provide config (mc@suse.de)
+
+* Fri Apr 15 2011 Jan Pazdziora 5.10.11-1
+- Address the spacewalk.common.rhnLog and .rhnConfig castling in osa-dispacher.
+
+* Wed Apr 13 2011 Jan Pazdziora 5.10.10-1
+- utilize config.getProxySetting() (msuchy@redhat.com)
+
+* Fri Apr 08 2011 Miroslav Suchý 5.10.9-1
+- Revert "idn_unicode_to_pune() have to return string" (msuchy@redhat.com)
+- update copyright years (msuchy@redhat.com)
+
 * Tue Apr 05 2011 Michael Mraka <michael.mraka@redhat.com> 5.10.8-1
 - idn_unicode_to_pune() has to return string
 

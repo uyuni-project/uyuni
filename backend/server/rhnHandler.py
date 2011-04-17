@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,8 +14,11 @@
 #
 #
 
-from spacewalk.common import RPC_Base, rhnFault, log_debug, log_error, CFG
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
+from spacewalk.common.RPC_Base import RPC_Base
 
 from spacewalk.server import rhnServer
 

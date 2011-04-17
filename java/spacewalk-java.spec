@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.4.30
+Version: 1.5.5
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz 
@@ -51,6 +51,8 @@ Requires: jakarta-commons-codec
 Requires: jakarta-commons-discovery
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-el
+Requires: jakarta-commons-fileupload
+Requires: jakarta-commons-io
 Requires: jakarta-taglibs-standard
 Requires: jcommon
 Requires: jpam
@@ -126,6 +128,8 @@ BuildRequires: jakarta-commons-codec
 BuildRequires: jakarta-commons-collections
 BuildRequires: jakarta-commons-discovery
 BuildRequires: jakarta-commons-el
+BuildRequires: jakarta-commons-fileupload
+BuildRequires: jakarta-commons-io
 BuildRequires: jakarta-commons-validator
 BuildRequires: jakarta-taglibs-standard
 BuildRequires: jcommon
@@ -485,6 +489,8 @@ fi
 %{jardir}/commons-digester.jar
 %{jardir}/commons-discovery.jar
 %{jardir}/commons-el.jar
+%{jardir}/commons-fileupload.jar
+%{jardir}/commons-io.jar
 %{jardir}/commons-lang.jar
 %{jardir}/commons-logging.jar
 %{jardir}/commons-validator.jar
@@ -620,6 +626,48 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Apr 15 2011 Jan Pazdziora 1.5.5-1
+- generate weak-deps into primary.xml (mc@suse.de)
+- A bunch of fixes in pt_BR translation. (mmello@redhat.com)
+
+* Thu Apr 14 2011 Tomas Lestach <tlestach@redhat.com> 1.5.4-1
+- fixing ErrataManagerTest.testCreate (tlestach@redhat.com)
+- fixing ErrataSearchActionTest.testExecute (tlestach@redhat.com)
+- fixing EditActionTest.testUpdateErrata (tlestach@redhat.com)
+- adding jakarta-commons-io Require (tlestach@redhat.com)
+- adding jakarta-commons-fileupload Require from spacewalk-java
+  (tlestach@redhat.com)
+
+* Thu Apr 14 2011 Tomas Lestach <tlestach@redhat.com> 1.5.3-1
+- adding jakarta-commons-fileupload Require (tlestach@redhat.com)
+
+* Wed Apr 13 2011 Tomas Lestach <tlestach@redhat.com> 1.5.2-1
+- 644700 - do not return text file contents in case it contains xml invalid
+  chars (tlestach@redhat.com)
+
+* Wed Apr 13 2011 Jan Pazdziora 1.5.1-1
+- 648640 - introduce fine grained search (tlestach@redhat.com)
+
+* Fri Apr 08 2011 Jan Pazdziora 1.4.35-1
+- errata_from and bug url added to errata pages (ug@suse.de)
+
+* Fri Apr 08 2011 Jan Pazdziora 1.4.34-1
+- 679009 - replace tab by spaces (tlestach@redhat.com)
+
+* Fri Apr 08 2011 Miroslav Suchý 1.4.33-1
+- 679009 - fixing checkstyle issue (line length) with the previous commit.
+  (jpazdziora@redhat.com)
+- 679009 - update noSSLServerURL option as well, for RHEL 3 and 4.
+  (jpazdziora@redhat.com)
+
+* Thu Apr 07 2011 Jan Pazdziora 1.4.32-1
+- 694393 - provide original channel for cloned channels in
+  channel.software.getDatails API (tlestach@redhat.com)
+
+* Thu Apr 07 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.31-1
+- 688509 - generate errata cache when cloning channel via API
+- fixed javax.servlet.ServletException: Cannot specify "styleId"
+
 * Thu Apr 07 2011 Jan Pazdziora 1.4.30-1
 - Removing packages.verifyAll capability; it was never used. (slukasik@redhat.com)
 - The nvl2 is not supported by PostgreSQL, replacing by case when in

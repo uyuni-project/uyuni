@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -23,7 +23,7 @@ from backendLib import DBint, DBstring, DBdateTime, DBblob, Table, \
         TableCollection
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
-from spacewalk.common import CFG
+from spacewalk.common.rhnConfig import CFG
 
 class OracleBackend(Backend):
     tables = TableCollection(

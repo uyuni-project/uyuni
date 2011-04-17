@@ -19,7 +19,10 @@ from rhn.rpclib import xmlrpclib
 import random
 
 # common modules imports
-from spacewalk.common import rhnCache, rhnFlags, log_debug, CFG, rhnFault, rhn_rpm
+from spacewalk.common import rhnCache, rhnFlags, rhn_rpm
+from spacewalk.common.rhnLog import log_debug
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 
 # server modules imports

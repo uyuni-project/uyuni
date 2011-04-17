@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -30,8 +30,10 @@ import re
 import types
 
 from spacewalk.server import rhnSQL
-from spacewalk.common import rhnException, log_debug, log_error, rhnConfig, \
-    UserDictCase
+from spacewalk.common import rhnConfig
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnException import rhnException
+from spacewalk.common.UserDictCase import UserDictCase
 from sql_base import adjust_type
 from const import ORACLE
 
