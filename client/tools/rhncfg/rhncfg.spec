@@ -19,10 +19,9 @@ Requires: rhnlib >= 2.5.32
 Requires: rhn-client-tools
 %if 0%{?suse_version}
 # provide rhn directories and no selinux on suse
-BuildRequires: rhn-client-tools
+BuildRequires: spacewalk-client-tools
 %else
 Requires: libselinux-python
-%endif
 %endif
 
 %description 

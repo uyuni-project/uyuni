@@ -18,7 +18,6 @@ Requires: python-abi = %(%{__python} -c "import sys; print sys.version[:3]")
 %endif
 Requires: rhnlib
 
-%if 0%{?suse_version}
 Requires: spacewalk-client-tools
 %else
 %if 0%{?rhel} >= 5 || 0%{?fedora} >= 1
@@ -28,7 +27,7 @@ Requires: yum-rhn-plugin
 %if 0%{?suse_version}
 Requires: zypp-plugin-spacewalk
 # provide rhn directories for filelist check
-BuildRequires: rhn-client-tools
+BuildRequires: spacewalk-client-tools
 %else
 Requires: up2date
 %endif
