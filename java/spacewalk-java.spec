@@ -70,8 +70,13 @@ Requires: struts >= 1.2.9
 Requires: tomcat6
 Requires: tomcat6-lib
 Requires: tomcat6-servlet-2.5-api
+# SUSE does not yet have struts 1.3
+%if 0%{?suse_version}
+Requires: struts >= 1.2.9
+%else
 Requires: struts >= 1.3.0
 Requires: struts-taglib >= 1.3.0
+%endif
 %endif
 Requires: xalan-j2 >= 2.6.0
 Requires: xerces-j2
@@ -147,8 +152,13 @@ BuildRequires: struts >= 1.2.9
 BuildRequires: jsp
 BuildRequires: jasper5
 %else
+# SUSE does not yet have struts 1.3
+%if 0%{?suse_version}
+BuildRequires: struts >= 1.2.9
+%else
 BuildRequires: struts >= 1.3.0
 BuildRequires: struts-taglib >= 1.3.0
+%endif
 BuildRequires: tomcat6
 BuildRequires: tomcat6-lib
 %endif
@@ -552,7 +562,7 @@ fi
 %endif
 
 # EL5/F12 = Struts 1.2 and Tomcat 5, EL6+/F13+ = 1.3 and 6
-%if (0%{?rhel} && 0%{?rhel} < 6) || (0%{?fedora} && 0%{?fedora} < 13)
+%if (0%{?rhel} && 0%{?rhel} < 6) || (0%{?fedora} && 0%{?fedora} < 13) || (0%{suse_version})
 %{jardir}/struts.jar
 %else
 %{jardir}/struts.jar
