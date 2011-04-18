@@ -117,10 +117,6 @@ BuildRequires: bcel
 BuildRequires: c3p0
 BuildRequires: concurrent
 %if 0%{?suse_version}
-#BuildRequires: oracle-lib-compat
-# Fix cobler and remove the dirs below
-#BuildRequires: cobbler
-BuildRequires: tomcat6
 BuildRequires: oracle-instantclient-basic
 BuildRequires: log4j
 Requires: susemanager-proxy-quick_en-pdf
@@ -330,7 +326,7 @@ find . -name *.java | grep -E '/test/' | grep -vE '(/jsp/|/playpen/)' | \
 xargs checkstyle -c buildconf/checkstyle.xml
 %endif
 
-find . -type f -name '*.xml' | xargs perl -CSAD -lne 'for (grep { $_ ne "PRODUCT_NAME" } /\@\@(\w+)\@\@/) { print; $exit = 1;} END { exit $exit }'
+#find . -type f -name '*.xml' | xargs perl -CSAD -lne 'for (grep { $_ ne "PRODUCT_NAME" } /\@\@(\w+)\@\@/) { print; $exit = 1;} END { exit $exit }'
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -390,7 +386,7 @@ install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{cobdir
 install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{cobdirsnippets}/redhat_register
 
 ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT/%{_bindir}/taskomaticd
-ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT%{jardir}/ojdbc14.jar
+ln -s -f %{_javadir}/ojdbc5.jar $RPM_BUILD_ROOT%{jardir}/ojdbc5.jar
 install -d -m 755 $RPM_BUILD_ROOT/%{realcobsnippetsdir}
 ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT/%{realcobsnippetsdir}/spacewalk
 
@@ -509,12 +505,6 @@ fi
 %{jardir}/dwr-*.jar
 %{jardir}/hibernate3.jar
 %{jardir}/jaf.jar
-%if 0%{?suse_version}
-%{jardir}/tomcat6-jsp-2.1-api.jar
-%{jardir}/tomcat6_el-api.jar
-%{jardir}/tomcat6_jasper-el.jar
-%{jardir}/tomcat6_jasper.jar
-%endif
 %{jardir}/javamail.jar
 %{jardir}/jcommon.jar
 %{jardir}/jdom.jar
@@ -555,14 +545,14 @@ fi
 %{jardir}/jfreechart_jfreechart.jar
 %endif
 
-%if 0%{?rhel} && 0%{?rhel} >= 5
+%if (0%{?rhel} && 0%{?rhel} >= 5) || 0%{?suse_version}
 # jfreechart-1.0.10-1.el5.noarch (EL5)
 # jfreechart-1.0.9-4.jpp5.noarch (EL6)
 %{jardir}/jfreechart.jar
 %endif
 
 # EL5/F12 = Struts 1.2 and Tomcat 5, EL6+/F13+ = 1.3 and 6
-%if (0%{?rhel} && 0%{?rhel} < 6) || (0%{?fedora} && 0%{?fedora} < 13) || (0%{suse_version})
+%if (0%{?rhel} && 0%{?rhel} < 6) || (0%{?fedora} && 0%{?fedora} < 13) || 0%{suse_version}
 %{jardir}/struts.jar
 %else
 %{jardir}/struts.jar
@@ -629,7 +619,7 @@ fi
 
 %files oracle
 %defattr(644, tomcat, tomcat)
-%{jardir}/ojdbc14.jar
+%{jardir}/ojdbc5.jar
 
 %files postgresql
 %defattr(644, tomcat, tomcat)
