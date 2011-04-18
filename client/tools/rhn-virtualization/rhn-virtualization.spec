@@ -81,8 +81,8 @@ make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir
 
 # add rclink
 mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
-ln -sf ../../etc/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-virtualization-host 
- 
+ln -sf ../../etc/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-virtualization-host
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -114,6 +114,7 @@ rm -rf $RPM_BUILD_ROOT
 /sbin/service cron try-restart ||:
 %else
 /sbin/service crond condrestart
+%endif
 %endif
 
 %files common
