@@ -16,7 +16,7 @@ BuildRequires: docbook-utils
 BuildRequires: python
 Requires: python
 Requires: rhnlib >= 2.5.32
-Requires: rhn-client-tools
+Requires: spacewalk-client-tools
 %if 0%{?suse_version}
 # provide rhn directories and no selinux on suse
 BuildRequires: spacewalk-client-tools
@@ -77,10 +77,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%if 0%{?suse_version}
-%dir %{_sharedstatedir}
-%endif
-%dir %{_sharedstatedir}/rhncfg
 %{rhnroot}/config_common
 %doc LICENSE PYTHON-LICENSES.txt
 
@@ -89,7 +85,6 @@ rm -rf $RPM_BUILD_ROOT
 %{rhnroot}/config_client
 %{_bindir}/rhncfg-client
 %if 0%{?suse_version}
-%dir %{rhnconf}
 %{_bindir}/mgrcfg-client
 %endif
 %attr(644,root,root) %config(noreplace) %{rhnconf}/rhncfg-client.conf
@@ -99,7 +94,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{rhnroot}/config_management
 %if 0%{?suse_version}
-%dir %{rhnconf}
 %{_bindir}/mgrcfg-manager
 %endif
 %{_bindir}/rhncfg-manager
@@ -109,6 +103,9 @@ rm -rf $RPM_BUILD_ROOT
 %files actions
 %defattr(-,root,root,-)
 %{rhnroot}/actions
+%if 0%{?suse_version}
+%{_bindir}/mgr-actions-control
+%endif
 %{_bindir}/rhn-actions-control
 %config(noreplace) %{client_caps_dir}/*
 %{_mandir}/man8/rhn-actions-control.8*
