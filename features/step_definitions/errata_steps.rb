@@ -28,8 +28,6 @@ Then /^I should see three links to the errata in the list$/ do
                   "slessp1-aaa_base-sysvinit-2610-channel-x86_64"]
   end
   linknames.each() do |link|
-    within(:xpath, "//form/table/tbody/tr") do
-      fail if not find_link(link).visible?
-    end
+    fail if not has_xpath?("//form/table/tbody/tr/td/a[contains(.,'#{link}')]")
   end
 end
