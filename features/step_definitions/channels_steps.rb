@@ -15,9 +15,7 @@ When /^I check "([^"]*)" in the list$/ do |arg1|
 end
 
 Then /^I should see package "([^"]*)"$/ do |package|
-  within(:xpath, "//form/table/tbody/tr") do
-    fail if not find_link(package)
-  end
+  fail if not has_xpath?("//form/table/tbody/tr/td/a[contains(.,'#{package}')]")
 end
 
 Given /^I am on the manage software channels page$/ do
