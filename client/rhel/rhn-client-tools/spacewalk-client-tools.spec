@@ -104,7 +104,7 @@ Summary: Configure and register an Spacewalk client
 Group: System Environment/Base
 Provides: rhn-setup = %{version}-%{release}
 Obsoletes: rhn-setup < %{version}-%{release}
-%if ! %{without_rhn_register}
+%if ! 0%{?without_rhn_register}
 Requires: usermode >= 1.36
 %endif
 Requires: %{name} = %{version}-%{release}
@@ -115,7 +115,7 @@ Requires: suseRegisterInfo
 spacewalk-setup contains programs and utilities to configure a system to use
 SUSE Manager or Spacewalk.
 
-%if ! %{without_rhn_register}
+%if ! 0%{?without_rhn_register}
 %package -n spacewalk-client-setup-gnome
 Summary: A GUI interface for SUSE Manager/Spacewalk Registration
 Group: System Environment/Base
@@ -172,7 +172,7 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_register.*
 rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_*_*.*
 %endif
 
-%if %{without_rhn_register}
+%if 0%{?without_rhn_register}
 rm -rf $RPM_BUILD_ROOT/etc/pam.d
 rm -rf $RPM_BUILD_ROOT/etc/security/console.apps
 rm -rf $RPM_BUILD_ROOT/usr/share/setuptool
@@ -198,13 +198,14 @@ desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications --vendor=rh
 %suse_update_desktop_file -r rhn_register "Settings;System;SystemSetup;"
 rm -f $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhn-client-tools.mo
 %endif
+%endif
 
 %find_lang rhn-client-tools
 
 %post
 rm -f %{_localstatedir}/spool/up2date/loginAuth.pkl
 
-%if ! %{without_rhn_register}
+%if ! 0%{?without_rhn_register}
 %post -n spacewalk-client-setup-gnome
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
@@ -315,19 +316,13 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/rhn/up2date_client/tui.*
 %{_datadir}/rhn/up2date_client/rhnreg_constants.*
 
-%if ! %{without_rhn_register}
-%if 0%{?suse_version}
-%dir %{_sysconfdir}/security/console.apps
-%dir %{_datadir}/setuptool
-%dir %{_datadir}/setuptool/setuptool.d
-%endif
+%if ! 0%{?without_rhn_register}
 %{_mandir}/man8/rhn_register.8*
 %config(noreplace) %{_sysconfdir}/security/console.apps/rhn_register
 %config(noreplace) %{_sysconfdir}/pam.d/rhn_register
 %{_bindir}/rhn_register
 %{_sbindir}/rhn_register
 %{_datadir}/setuptool/setuptool.d/99rhn_register
-%endif
 
 %if 0%{?suse_version}
 # on SUSE directories not owned by any package
@@ -335,8 +330,9 @@ make -f Makefile.rhn-client-tools test
 %dir %{_datadir}/setuptool
 %dir %{_datadir}/setuptool/setuptool.d
 %endif
+%endif
 
-%if ! %{without_rhn_register}
+%if ! 0%{?without_rhn_register}
 %files -n spacewalk-client-setup-gnome
 %defattr(-,root,root,-)
 %{_datadir}/rhn/up2date_client/messageWindow.*
@@ -372,7 +368,6 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/rhn/up2date_client/firstboot/rhn_review_gui.*
 %{_datadir}/rhn/up2date_client/firstboot/rhn_finish_gui.*
 %endif
-%endif
 
 %if 0%{?suse_version}
 # on SUSE these directories are part of packages not installed
@@ -389,6 +384,7 @@ make -f Makefile.rhn-client-tools test
 %dir %{_datadir}/rhn/up2date_client/firstboot
 %dir %{_datadir}/firstboot
 %dir %{_datadir}/firstboot/modules
+%endif
 %endif
 
 %changelog
