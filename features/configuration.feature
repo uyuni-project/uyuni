@@ -9,8 +9,8 @@ Feature: Check configuration page/tab
   Scenario: Check configuration page content
     Given I am testing configuration
     Then I should see a "Configuration Overview" text
-     And I should see a "Clear" linkbutton
-     And I should see a "Manage" linkbutton
+     And I should see a "Clear" link in element "systembarinner"
+     And I should see a "Manage" link in element "systembarinner"
      And I should see a "Configuration Summary" text
      And I should see a "Configuration Actions" text
      And I should see a "Systems with Managed Configuration Files" text

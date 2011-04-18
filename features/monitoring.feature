@@ -21,6 +21,7 @@ Feature: Configure monitoring
 
   Scenario: Check monitoring scout public key
     Given I am on the Monitoring page
+     And I wait for "10" seconds
      And I follow "Scout Config Push"
      And I follow "SUSE Manager Monitoring Scout"
     Then I should see a "ssh-dss" text
