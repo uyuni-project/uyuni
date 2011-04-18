@@ -59,6 +59,12 @@ Then /^I should see a "([^"]*)" link in list "([^"]*)"$/ do |arg1, arg2|
   end
 end
 
+Then /^I should see a "([^"]*)" button in "([^"]*)" form$/ do |arg1, arg2|
+  within(:xpath, "//form[@id='#{arg2}']") do
+    fail if not find_button(arg1)
+  end
+end
+
 #
 # Test if an option is selected
 #

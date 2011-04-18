@@ -176,8 +176,8 @@ Feature: Check client registration
      And I should see a "baseentitlement" element in "systemDetailsForm" form
      And I should see a "monitoring_entitled" element in "systemDetailsForm" form
      And I should see a "provisioning_entitled" element in "systemDetailsForm" form
-     And I should see a "virtualization_host" element in "systemDetailsForm" form
-     And I should see a "virtualization_host_platform" element in "systemDetailsForm" form
+     #And I should see a "virtualization_host" element in "systemDetailsForm" form
+     #And I should see a "virtualization_host_platform" element in "systemDetailsForm" form
      And I should see a "receive_notifications" element in "systemDetailsForm" form
      And I should see a "summary" element in "systemDetailsForm" form
      And I should see a "autoerrataupdate" element in "systemDetailsForm" form
@@ -351,7 +351,8 @@ Feature: Check client registration
      And I follow "View/Modify Rankings" in class "content-nav"
     Then I should see a "View/Modify Configuration Channel Ranks" text
      And I should see a "selectedChannel" element in "ranksForm" form
-     And I should see a "dispatch" element in "ranksForm" form
+     And I should see a "up" button in "ranksForm" form
+     And I should see a "down" button in "ranksForm" form
      And I should see a "Update Channel Rankings" button
 
   Scenario: check tab links "Provisioning" => "Snapshots"
