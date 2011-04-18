@@ -8,9 +8,11 @@
     <script src="/javascript/focus.js" type="text/javascript"></script>
     <meta name="decorator" content="layout_equals" />
 </head>
-<body onLoad="formFocus('loginForm', 'username')">
-<c:if test="${requestScope.hasExpired != 'true'}">
+<body onLoad="disableAutoComplete();formFocus('loginForm', 'username');">
 <div id="login_page">
+
+<c:if test="${requestScope.hasExpired != 'true'}">
+
   <h1 id="rhn_welcome3"><span><bean:message key="login.jsp.welcomemessage"/></span></h1>
   <div class="clearBox">
   <div class="clearBoxInner">
@@ -18,13 +20,16 @@
 
     <html:form action="/LoginSubmit">
         <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf" %>
+
     </html:form>
   </div>
   </div>
   </div>
-</div> <!-- end login_page -->
+
 </c:if>
 
+</div> <!-- end login_page -->
 <div style="clear:both"></div><!-- Clearing div. Let's not have the footer over the context -->
+
 </body>
 </html>

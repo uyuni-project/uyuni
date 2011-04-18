@@ -7,16 +7,17 @@
 <head>
   <script src="/javascript/focus.js" type="text/javascript"></script>
 </head>
-<body onLoad="formFocus('loginForm', 'username')" id="relogin_page">
-
+<body onLoad="disableAutoComplete();formFocus('loginForm', 'username');">
+    <div id="relogin_page"> <!-- Trying to make relogin page look more like login -->
+    
 <rhn:require acl="not user_authenticated()">
 <c:if test="${requestScope.hasExpired != 'true'}">
-    <div id="relogin_page">
-     <h1><bean:message key="relogin.jsp.pleasesignin"/></h1>
 
+     <h1><bean:message key="relogin.jsp.pleasesignin"/></h1>
   <div class="clearBox">
   <div class="clearBoxInner">
   <div class="clearBoxBody">
+
     <html:form action="/ReLoginSubmit">
         <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf" %>
          <html:hidden property="url_bounce" />
@@ -24,9 +25,11 @@
   </div><!-- end clearBoxBody -->
   </div><!-- end clearBoxInner -->
   </div><!-- end clearBox -->
-    </div> <!-- Login Page -->
+
 </c:if>
 </rhn:require>
 
+    </div> <!-- Login Page -->
+    <div style="clear:both"></div><!-- Clearing div. Let's not have the footer over the context -->
 </body>
 </html>

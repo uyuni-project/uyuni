@@ -7,6 +7,7 @@
 <html>
 <%-- disableAutoComplete() hack added to prevent certain browsers from exposing sensitive data --%>
 <body onLoad="disableAutoComplete();">
+    
 <h1><bean:message key="usercreate.createFirstLogin" /></h1>
 
     <div class="page-summary">
@@ -18,7 +19,6 @@
   <jsp:param name="action_path" value="/newlogin/CreateFirstUserSubmit"/>
   <jsp:param name="account_type" value="create_sat"/>
 </jsp:include>
-
 
 </body>
 </html>
