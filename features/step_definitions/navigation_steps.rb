@@ -19,6 +19,10 @@ When /^I check "([^"]*)"$/ do |arg1|
   check(arg1)
 end
 
+When /^I uncheck "([^"]*)"$/ do |arg1|
+  uncheck(arg1)
+end
+
 When /^I select "([^"]*)" from "([^"]*)"$/ do |arg1, arg2|
   select(arg1, :from => arg2)
 end
