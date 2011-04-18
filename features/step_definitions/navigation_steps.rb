@@ -27,8 +27,8 @@ When /^I select "([^"]*)" from "([^"]*)"$/ do |arg1, arg2|
   select(arg1, :from => arg2)
 end
 
-When /^I choose "([^"]*)" from "([^"]*)"$/ do |arg1, arg2|
-  choose(arg2, :with => arg1)
+When /^I choose "([^"]*)"$/ do |arg1|
+  find(:xpath, "//input[@type='radio' and @value='#{arg1}']").set(true)
 end
 
 #

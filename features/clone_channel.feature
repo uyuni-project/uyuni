@@ -7,7 +7,7 @@ Feature: Clone a Channel
     Given I am on the manage software channels page
     When I follow "clone channel"
      And I select "SLES11-SP1-Updates x86_64 Channel" from "clone_from"
-     And I choose "original" from "clone_type"
+     And I choose "original"
      And I click on "Create Channel"
      And I should see a "Software Channel: New Channel" text
      And I should see a "Original channel with no updates" text
@@ -25,7 +25,7 @@ Feature: Clone a Channel
     Given I am on the manage software channels page
     When I follow "clone channel"
      And I select "SLES11-SP1-Updates x86_64 Channel" from "clone_from"
-     And I choose "current" from "clone_type"
+     And I choose "current"
      And I click on "Create Channel"
      And I should see a "Software Channel: New Channel" text
      And I should see a "Current state of the channel" text
@@ -45,7 +45,7 @@ Feature: Clone a Channel
     Given I am on the manage software channels page
     When I follow "clone channel"
      And I select "SLES11-SP1-Updates x86_64 Channel" from "clone_from"
-     And I choose "select_errata" from "clone_type"
+     And I choose "select_errata"
      And I click on "Create Channel"
      And I should see a "Software Channel: New Channel" text
      And I should see a "Select errata" text

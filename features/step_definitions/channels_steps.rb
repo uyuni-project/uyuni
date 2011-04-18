@@ -28,6 +28,6 @@ end
 
 When /^I choose "([^"]*)" for "([^"]*)"$/ do |arg1, arg2|
   within(:xpath, "//form/table/tbody/tr[.//a[contains(.,'#{arg2}')]]") do
-    find('//select').select(arg1)
+    find(:xpath, '//select').select(arg1)
   end
 end
