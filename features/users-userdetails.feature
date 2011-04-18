@@ -80,7 +80,7 @@ Feature: Watch/edit user details
 
   Scenario: Change Role (2)
     Given I am on the Details page
-      When I check "role_org_admin"
+      When I uncheck "role_org_admin"
         And I click on "Submit"
       Then I should see "role_org_admin" as unchecked
 
