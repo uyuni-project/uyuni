@@ -5,7 +5,8 @@
 
 <html:xhtml/>
 <html>
-<body>
+<%-- disableAutoComplete() hack added to prevent certain browsers from exposing sensitive data --%>
+<body onLoad="disableAutoComplete();">
 <h1><bean:message key="usercreate.createFirstLogin" /></h1>
 
     <div class="page-summary">

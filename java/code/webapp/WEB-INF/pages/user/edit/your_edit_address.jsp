@@ -7,7 +7,8 @@
 <head>
     <meta name="page-decorator" content="none" />
 </head>
-<body>
+<%-- disableAutoComplete() hack added to prevent certain browsers from exposing sensitive data --%>
+<body onLoad="disableAutoComplete();">
 <rhn:toolbar base="h1" img="/img/rhn-icon-users.gif" imgAlt="user.common.userAlt">
 <bean:message key="Addresses"/>
 </rhn:toolbar>

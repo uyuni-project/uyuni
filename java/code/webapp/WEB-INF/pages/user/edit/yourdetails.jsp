@@ -8,7 +8,8 @@
     <head>
         <meta name="page-decorator" content="none" />
     </head>
-<body>
+<%-- disableAutoComplete() hack added to prevent certain browsers from exposing sensitive data --%>
+<body onLoad="disableAutoComplete();">
 <rhn:toolbar base="h1" img="/img/rhn-icon-users.gif"
  helpUrl="/rhn/help/reference/en-US/s1-sm-your-rhn.jsp#s2-sm-your-rhn-account"
  imgAlt="users.jsp.imgAlt">
