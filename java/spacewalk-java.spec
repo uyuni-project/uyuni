@@ -32,7 +32,7 @@ Group: Applications/Internet
 # for RHEL6 we need to filter out several package versions
 %if  0%{?rhel} && 0%{?rhel} >= 6
 # cglib is not compatible with hibernate and asm from RHEL6
-Requires: cglib < 0:2.2
+Requires: cglib < 2.2
 # we dont want jfreechart from EPEL because it has different symlinks
 Requires: jfreechart < 1.0.13
 # workaround jpackage5 repo issue with missing msv-msv dependency
@@ -46,6 +46,7 @@ Requires: bcel
 Requires: c3p0
 Requires: hibernate3 >= 3.2.4
 Requires: java >= 1.6.0
+Requires: java-devel >= 1.6.0
 Requires: jakarta-commons-lang >= 2.1
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-discovery
@@ -70,7 +71,7 @@ Requires: struts >= 1.2.9
 Requires: tomcat6
 Requires: tomcat6-lib
 Requires: tomcat6-servlet-2.5-api
-# SUSE does not yet have struts 1.3
+# SUSE = 1.2 and Tomcat 6
 %if 0%{?suse_version}
 Requires: struts >= 1.2.9
 %else
@@ -148,7 +149,7 @@ BuildRequires: struts >= 1.2.9
 BuildRequires: jsp
 BuildRequires: jasper5
 %else
-# SUSE does not yet have struts 1.3
+# SUSE = Struts 1.2 and Tomcat 6
 %if 0%{?suse_version}
 BuildRequires: struts >= 1.2.9
 %else
@@ -233,7 +234,7 @@ Group: Applications/Internet
 # for RHEL6 we need to filter out several package versions
 %if  0%{?rhel} && 0%{?rhel} >= 6
 # cglib is not compatible with hibernate and asm from RHEL6
-Requires: cglib < 0:2.2
+Requires: cglib < 2.2
 # we dont want jfreechart from EPEL because it has different symlinks
 Requires: jfreechart < 1.0.13
 %else
@@ -245,6 +246,7 @@ Requires: bcel
 Requires: c3p0
 Requires: hibernate3 >= 3.2.4
 Requires: java >= 1.6.0
+Requires: java-devel >= 1.6.0
 Requires: jakarta-commons-lang >= 2.1
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
@@ -261,7 +263,6 @@ Requires: log4j
 Requires: oscache
 Requires: xalan-j2 >= 2.6.0
 Requires: xerces-j2
-BuildRequires: tanukiwrapper
 Requires: tanukiwrapper
 Requires: simple-core
 Requires: spacewalk-java-config
@@ -376,7 +377,6 @@ ln -sf ../../etc/init.d/taskomatic $RPM_BUILD_ROOT/%{_sbindir}/rctaskomatic
 sed -i -e 's/# Default-Start:/# Default-Start: 3 5/g' $RPM_BUILD_ROOT/%{_initrddir}/taskomatic
 %endif
 
-
 install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
 install -m 644 conf/log4j.properties.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j.properties
 
@@ -421,7 +421,6 @@ echo "#### SYMLINKS END ####"
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-
 %if 0%{?suse_version}
 %post -n spacewalk-taskomatic
 %{fillup_and_insserv taskomatic}
@@ -445,23 +444,16 @@ if [ $1 = 0 ] ; then
 fi
 %endif
 
-
-
 %files
 %defattr(-,root,root)
 %if 0%{?suse_version}
+%dir %{_localstatedir}/lib/rhn
 %dir %{_localstatedir}/lib/spacewalk
-#%dir %{_localstatedir}/lib/cobbler
-#%dir %{_localstatedir}/lib/cobbler/snippets
-#%dir %{realcobsnippetsdir}/spacewalk
-
+%dir %{_localstatedir}/lib/tomcat6
 # /etc/tomcat6/Catalina on suse is a link to /var/cache/tomcat6/Catalina
 # and we need write permissions for tomcat there. So give this dir
 # special owner and permissions.
 %dir %attr(755, tomcat, tomcat) /etc/tomcat6/Catalina/localhost
-
-%dir %{_localstatedir}/lib/rhn
-%dir %{_localstatedir}/lib/tomcat6
 %endif
 %defattr(644,tomcat,tomcat,775)
 %dir %{appdir}
