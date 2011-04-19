@@ -219,7 +219,7 @@ DIV.half-table-right
 TABLE.half-table
 {
 	padding: 0px;
-	margin: 0px;
+	margin: 0 0 10px 0;
 	border: 1px solid #CCC;
 	width: 97%;
 }
