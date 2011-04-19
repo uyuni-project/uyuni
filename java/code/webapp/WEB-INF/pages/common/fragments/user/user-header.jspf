@@ -6,12 +6,12 @@
 <c:if test="${not targetuser.disabled}">
    <c:set var="url" value="/rhn/users/DisableUser.do?uid=${param.uid}" />
    <c:set var="text" value="userdetails.jsp.disable" />
-   <c:set var="img" value="action-del.gif" />
+   <c:set var="img" value="action-disable-user.gif" />
 </c:if>
 <c:if test="${targetuser.disabled}">
    <c:set var="url" value="/rhn/users/EnableUser.do?uid=${param.uid}" />
    <c:set var="text" value="userdetails.jsp.enable" />
-   <c:set var="img" value="action-add.gif" />
+   <c:set var="img" value="action-enable-user.gif" />
 </c:if>
 
 <rhn:toolbar base="h1" img="/img/rhn-icon-users.gif"
