@@ -116,11 +116,6 @@ BuildRequires: asm
 BuildRequires: bcel
 BuildRequires: c3p0
 BuildRequires: concurrent
-%if 0%{?suse_version}
-BuildRequires: oracle-instantclient-basic
-BuildRequires: log4j
-Requires: susemanager-proxy-quick_en-pdf
-%endif
 BuildRequires: cglib
 BuildRequires: dom4j
 BuildRequires: hibernate3
@@ -142,6 +137,11 @@ BuildRequires: oscache
 BuildRequires: quartz
 BuildRequires: simple-core
 BuildRequires: stringtree-json
+# SUSE additional build requirements
+%if 0%{?suse_version}
+BuildRequires: oracle-instantclient11.2-basic
+BuildRequires: log4j
+%endif
 # EL5/F12 = Struts 1.2 and Tomcat 5, EL6+/F13+ = 1.3 and 6
 %if (0%{?rhel} && 0%{?rhel} < 6) || (0%{?fedora} && 0%{?fedora} < 13)
 BuildRequires: struts >= 1.2.9
@@ -201,7 +201,7 @@ and taskomatic process.
 %package oracle
 Summary: Oracle database backend support files for Spacewalk Java
 Group: Applications/Internet
-Requires: ojdbc14
+Requires: ojdbc5
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
 %else
