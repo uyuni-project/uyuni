@@ -50,12 +50,12 @@ Requires:       SputLite-server
 Requires:       ssl_bridge
 Requires:       status_log_acceptor
 Requires:       tsdb
-Requires: spacewalk-monitoring-selinux
 
 %if 0%{?suse_version}
 Requires(post): aaa_base
 Requires(preun): aaa_base
 %else
+Requires: spacewalk-monitoring-selinux
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
