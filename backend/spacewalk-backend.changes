@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 20 11:24:05 CEST 2011 - iartarisi@suse.cz
+
+- reposync - parse and insert zypper code10 patches into the database
+
+-------------------------------------------------------------------
 Thu Apr 14 15:19:47 CEST 2011 - jrenner@suse.de
 
 - Remove the channel APP handler (bnc#685078)
