@@ -209,11 +209,8 @@ class NCCSync(object):
         for family in etree.parse(CHANNEL_FAMILIES).getroot():
             if family.get('default_nodecount') == '-1':
                 label = family.get('label')
-                if label not in subscription_count:
-                    subscription_count[label] = {'consumed': 0,
-                                                 'nodecount': INFINITE}
-                else:
-                    subscription_count[label]['nodecount'] = INFINITE
+                subscription_count[label] = {'consumed': 0,
+                                             'nodecount': INFINITE}
 
         # delete subscriptions that are no longer available in NCC
         q = rhnSQL.prepare(
