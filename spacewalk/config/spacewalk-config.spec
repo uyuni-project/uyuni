@@ -12,7 +12,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 1.5.1
+Version: 1.5.2
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -168,6 +168,9 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 
 
 %changelog
+* Thu Apr 21 2011 Jan Pazdziora 1.5.2-1
+- Explicitly setting attributes of .../rhn-satellite-prep/etc/rhn.
+
 * Tue Apr 12 2011 Jan Pazdziora 1.5.1-1
 - CVE-2009-0788 / 491365 - no proxying is needed, just rewrite before ajp kicks in.
 
