@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 26 18:44:11 CEST 2011 - ma@suse.de
+
+- Abort if bootstrap.sh has no permission to write to CWD. (bnc#687490)
+
+-------------------------------------------------------------------
 Thu Mar 31 15:46:52 CEST 2011 - mantel@suse.de
 
 - more debranding
