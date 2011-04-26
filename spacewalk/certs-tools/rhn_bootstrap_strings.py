@@ -167,6 +167,15 @@ if [ -x /usr/bin/zypper ] ; then
 elif [ -x /usr/bin/yum ] ; then
     INSTALLER=yum
 fi
+
+if [ ! -w . ] ; then
+    echo ""
+    echo "*** ERROR: $(pwd):"
+    echo "    No permission to write to the current directory."
+    echo "    Please execute this script in a directory where downloaded files can be stored."
+    echo ""
+    exit 1
+fi
 """
 
 
