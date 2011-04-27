@@ -243,6 +243,21 @@ make -f Makefile.rhn-client-tools test
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/up2date_client
 %dir %{_localstatedir}/spool/up2date
+%if 0%{?suse_version} == 1010
+# locale dirs missing in SLE-10 filesystem package:
+%dir %{_datadir}/locale/as
+%dir %{_datadir}/locale/as/LC_MESSAGES
+%dir %{_datadir}/locale/hy
+%dir %{_datadir}/locale/hy/LC_MESSAGES
+%dir %{_datadir}/locale/my
+%dir %{_datadir}/locale/my/LC_MESSAGES
+%dir %{_datadir}/locale/or
+%dir %{_datadir}/locale/or/LC_MESSAGES
+%dir %{_datadir}/locale/si
+%dir %{_datadir}/locale/si/LC_MESSAGES
+%dir %{_datadir}/locale/ur
+%dir %{_datadir}/locale/ur/LC_MESSAGES
+%endif
 
 #files
 %{_datadir}/rhn/up2date_client/__init__.*
