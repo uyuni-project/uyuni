@@ -94,6 +94,21 @@ rm -fr $RPM_BUILD_ROOT
 %{_initrddir}/rhnsd
 %{_mandir}/man8/rhnsd.8*
 %doc LICENSE
+%if 0%{?suse_version} == 1010
+# locale dirs missing in SLE-10 filesystem package:
+%dir %{_datadir}/locale/as
+%dir %{_datadir}/locale/as/LC_MESSAGES
+%dir %{_datadir}/locale/hy
+%dir %{_datadir}/locale/hy/LC_MESSAGES
+%dir %{_datadir}/locale/my
+%dir %{_datadir}/locale/my/LC_MESSAGES
+%dir %{_datadir}/locale/or
+%dir %{_datadir}/locale/or/LC_MESSAGES
+%dir %{_datadir}/locale/si
+%dir %{_datadir}/locale/si/LC_MESSAGES
+%dir %{_datadir}/locale/ur
+%dir %{_datadir}/locale/ur/LC_MESSAGES
+%endif
 
 %changelog
 * Tue Nov 02 2010 Jan Pazdziora 4.9.7-1

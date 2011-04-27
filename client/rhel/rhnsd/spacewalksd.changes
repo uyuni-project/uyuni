@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Apr 27 14:48:55 CEST 2011 - ma@suse.de
+
+- Fix specfile to build on SLES10.
+
+-------------------------------------------------------------------
 Tue Mar 22 11:13:56 CET 2011 - mantel@suse.de
 
 - debrand startup message (bnc#672637)
@@ -17,12 +22,12 @@ Fri Jan 21 14:48:05 CET 2011 - ma@suse.de
 Wed Dec 15 14:41:07 CET 2010 - mc@suse.de
 
 - fix specfile
-- add Obsoletes: old name 
+- add Obsoletes: old name
 
 -------------------------------------------------------------------
 Wed Dec 15 13:42:58 CET 2010 - mc@suse.de
 
-- rename to spacewalksd 
+- rename to spacewalksd
 
 -------------------------------------------------------------------
 Thu Sep 16 08:34:28 CEST 2010 - mantel@suse.de
