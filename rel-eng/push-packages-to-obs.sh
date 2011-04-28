@@ -15,7 +15,7 @@ PACKAGE="$@"
 OSCRC=${OSCRC:+-c $OSCRC}
 
 OSC="osc $OSCRC -A https://api.suse.de"
-OBS_PROJ=${OBS_PROJ:-Devel:Galaxy:Server:Manager:T}
+OBS_PROJ=${OBS_PROJ:-Devel:Galaxy:Manager:T}
 
 FAKE_COMITTOBS=${FAKE_COMITTOBS:+1}
 
