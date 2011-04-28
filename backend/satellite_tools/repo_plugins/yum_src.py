@@ -16,19 +16,18 @@
 #
 import yum
 import shutil
-import subprocess
 import sys
 import os
-import xml.etree.cElementTree as etree
-
-import urlgrabber
-from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
-from rpmUtils.transaction import initReadOnlyTransaction
-from yum import misc, Errors
+from yum import config
 from yum.update_md import UpdateMetadata
-from yum.i18n import to_unicode
-
 from spacewalk.satellite_tools.reposync import ContentPackage, ChannelException, ChannelTimeoutException
+from urlgrabber.grabber import URLGrabber
+import urlgrabber
+from yum import misc, Errors
+from urlgrabber.grabber import default_grabber
+from yum.i18n import to_unicode, to_utf8
+from rpmUtils.transaction import initReadOnlyTransaction
+import subprocess
 
 class YumWarnings:
     def write(self, s):
@@ -80,7 +79,6 @@ class ContentSource:
         repo.setup(False, None, gpg_import_func=self.getKeyForRepo, confirm_func=self.askImportKey)
         self.initgpgdir( repo.gpgdir )
         sack = repo.getPackageSack()
-
         try:
             sack.populate(repo, 'metadata', None, 0)
         except Errors.RepoError,e :
@@ -115,52 +113,15 @@ class ContentSource:
         shutil.rmtree(directory, True)
         
     def get_updates(self):
-        if 'updateinfo' in self.repo.repoXML.repoData:
-            um = UpdateMetadata()
-            try:
-                um.add(self.repo, all=True)
-            except Errors.NoMoreMirrorsRepoError:
-                raise ChannelTimeoutException('No more mirrors to try.')
-            return ('updateinfo', um.notices)
-
-        elif 'patches' in self.repo.repoXML.repoData:
-            patches_path = self.repo.retrieveMD('patches')
-            os.mkdir(os.path.join(self.repo.cachedir, 'patches'))
-
-            # parse the patches.xml file and download every patch-xxx.xml file
-            notices = []
-            for patch in etree.parse(patches_path).getroot():
-                (checksum_elem, location_elem) = patch
-                relative = location_elem.get('href')
-                checksum_type = checksum_elem.get('type')
-                checksum = checksum_elem.text
-                filename = os.path.join(self.repo.cachedir, 'patches',
-                                        os.path.basename(relative))
-                self.repo.grab.urlgrab(misc.to_utf8(relative),
-                                       filename,
-                                       checkfunc=(self.patches_checksum_func,
-                                                  (checksum_type, checksum), {}))
-                notices.append(etree.parse(filename).getroot())
-            return ('patches', notices)
-
-    def patches_checksum_func(self, callback_obj, checksum_type, checksum):
-        """Simple function to checksum patches for urlgrabber
-
-        """
-        import types
-        # this is ugly code copy&pasted from yumRepo.YumRepository._checkMD
-        if type(callback_obj) == types.InstanceType: # urlgrabber check
-            filename = callback_obj.filename
-        else:
-            filename = callback_obj
-
-        local_checksum = self.repo._checksum(checksum_type, filename)
-
-        if local_checksum == checksum:
-            return 1
-        else:
-            raise URLGrabError(-1, 'Metadata file does not match checksum')
+      if not self.repo.repoXML.repoData.has_key('updateinfo'):
+        return []
+      um = UpdateMetadata()
+      try:
+          um.add(self.repo, all=True)
+      except Errors.NoMoreMirrorsRepoError:
+          raise ChannelTimeoutException('No more mirrors to try.')
           
+      return um.notices
 
     def getKeyForRepo(self, repo, callback=None):
         """
