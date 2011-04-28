@@ -7,15 +7,28 @@
     import "Popup";
     import "Stage";
     import "Wizard";
+    import "SpaceCalculation";
 
     map args = GetInstArgs::argmap ();
 
     // 2GB
     integer enough_memory = 2000000;
 
+    // 15GB
+    integer required_disk_space = 15 * 1024 * 1024;
+    integer free_disk_space     = 0;
+
     map meminfo = (map) SCR::Read (.proc.meminfo);
     //integer totalmem = meminfo["memtotal"]:0 + meminfo["swaptotal"]:0;
     integer totalmem = meminfo["memtotal"]:0;
+
+    list<map> p_info = (list<map>)(SpaceCalculation::GetPartitionInfo());
+    foreach( map m, p_info, ``{
+        if( m["name"]:"" == "/" ) {
+            free_disk_space = m["free"]:0;
+            break;
+        }
+    });
 
     y2milestone ("Memory: %1, Swap: %2, Total: %3",
       meminfo["memtotal"]:0, meminfo["swaptotal"]:0, totalmem
@@ -32,7 +45,7 @@
       }
     }
 
-    while (true) {
+    while (true) { // why a loop here?
         // do we have less memory than needed?
         if (totalmem < enough_memory) {
             if ( !Popup::AnyQuestionRichText(_("Not enough memory"), _("SUSE Manager requires 2G of memory to be installed and 8G for good perfomance. If you continue the product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
@@ -40,17 +53,17 @@
                 if (Popup::ConfirmAbort(`incomplete)) {
                     return `abort;
                 }
-                else {
-                    continue;
+            }
+        }
+        if( free_disk_space < required_disk_space ) {
+            if ( !Popup::AnyQuestionRichText(_("Not enough disk space"), _("SUSE Manager requires 15G of free disk space to be installed. If you continue the product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
+            {
+                if (Popup::ConfirmAbort(`incomplete)) {
+                    return `abort;
                 }
             }
-            else {
-                break;
-            }
         }
-        else {
-          break;
-        }
+        break; // why a loop here?
     }
     return `auto;
 }
