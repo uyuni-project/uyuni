@@ -7,7 +7,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalk-client-tools
-Version: 1.5.6
+Version: 1.5.7
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -388,6 +388,10 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Thu Apr 28 2011 Simon Lukasik <slukasik@redhat.com> 1.5.7-1
+- The Debian client on x86_64 should send amd64-debian-linux
+  (slukasik@redhat.com)
+
 * Sun Apr 17 2011 Simon Lukasik <slukasik@redhat.com> 1.5.6-1
 - Codename might not be always present within lsb_release on Debian
   (slukasik@redhat.com)
