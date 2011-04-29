@@ -110,9 +110,9 @@ cleanup_hostname() {
 
 setup_db() {
     echo -e "9055\n\n$SYS_DB_PASS\n$SYS_DB_PASS\n" | /etc/init.d/oracle-xe configure
-    sed -i "s/:\/usr\/lib\/oracle\/10.2.0.4\/client.*:/:\/usr\/lib\/oracle\/xe\/app\/oracle\/product\/10.2.0\/server:/g" /etc/oratab
+    #sed -i "s/:\/usr\/lib\/oracle\/10.2.0.4\/client.*:/:\/usr\/lib\/oracle\/xe\/app\/oracle\/product\/10.2.0\/server:/g" /etc/oratab
     . /etc/profile.d/oracle.sh
-    cp $ORACLE_HOME/network/admin/tnsnames.ora /etc
+    cp /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/network/admin/tnsnames.ora /etc
     restorecon -v /etc/tnsnames.ora
     /etc/init.d/oracle-xe start
 
