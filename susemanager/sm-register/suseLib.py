@@ -16,7 +16,8 @@ import tempfile
 import ConfigParser
 import urlparse
 from suseRegister.info import getProductProfile, parseProductProfileFile
-from spacewalk.common import log_debug, log_error, rhnFault
+from spacewalk.common.rhnException import rhnFault
+from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.server import rhnSQL
 
 def findProduct(product):

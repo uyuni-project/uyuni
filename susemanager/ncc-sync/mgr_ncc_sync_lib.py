@@ -23,8 +23,9 @@ from datetime import date
 
 from spacewalk.server import rhnSQL, taskomatic
 from spacewalk.common import initCFG, CFG, rhnLog
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.susemanager import suseLib
-from spacewalk.common import log_debug, log_error, rhnFault
+from spacewalk.common.rhnLog import log_debug, log_error
 
 CHANNELS = '/usr/share/susemanager/channels.xml'
 CHANNEL_FAMILIES = '/usr/share/susemanager/channel_families.xml'

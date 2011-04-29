@@ -12,7 +12,10 @@
 
 import string
 
-from spacewalk.common import UserDictCase, log_debug, log_error, rhnFault, Traceback
+from spacewalk.common import UserDictCase
+from spacewalk.common.rhnTB import Traceback
+from spacewalk.common.rhnException import rhnFault
+from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.server import rhnSQL
 
 class SuseData:
