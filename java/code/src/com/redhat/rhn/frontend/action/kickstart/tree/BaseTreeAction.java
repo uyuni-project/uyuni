@@ -38,8 +38,6 @@ import java.net.UnknownHostException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * TreeCreate class for creating Kickstart Trees
  * @version $Rev: 1 $

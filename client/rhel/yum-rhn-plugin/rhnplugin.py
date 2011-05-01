@@ -18,7 +18,7 @@ from urlgrabber.grabber import URLGrabber
 from urlgrabber.grabber import URLGrabError
 try:
     from urlgrabber.grabber import pycurl
-except:
+except ImportError:
     pycurl = None
 
 from iniparse import INIConfig
@@ -60,24 +60,26 @@ def init_hook(conduit):
     repos = conduit.getRepos()
     cachefilename = os.path.join(cachedir, cachedRHNReposFile)
     if os.access(cachefilename, os.R_OK):
-       cachefile = open(cachefilename, 'r')
-       repolist = [ line.rstrip().split(' ', 1) for line in cachefile.readlines()]
-       cachefile.close()
-       for repo_item in repolist:
-           if len(repo_item) == 1:
-               repo_item.append('')
-           (repoid, reponame) = repo_item
-           repodir = os.path.join(cachedir, repoid)
-           if os.path.isdir(repodir) and os.path.isfile(
+        cachefile = open(cachefilename, 'r')
+        repolist = [ line.rstrip().split(' ', 1) for line in cachefile.readlines()]
+        cachefile.close()
+        for repo_item in repolist:
+            if len(repo_item) == 1:
+                repo_item.append('')
+            (repoid, reponame) = repo_item
+            repodir = os.path.join(cachedir, repoid)
+            if os.path.isdir(repodir) and os.path.isfile(
                         os.path.join(repodir, 'repodata', 'repomd.xml')):
-               repo = YumRepository(repoid)
-               repo.basecachedir = cachedir
-               repo.baseurl = ['file:///' + repodir ]
-               repo.urls = repo.baseurl
-               repo.name = reponame
-               repo.enable()
-               if not repos.findRepos(repo.id):
-                   repos.add(repo)
+                repo = YumRepository(repoid)
+                repo.basecachedir = cachedir
+                repo.baseurl = ['file:///' + repodir ]
+                repo.urls = repo.baseurl
+                repo.name = reponame
+                if hasattr(conduit.getConf(), '_repos_persistdir'):
+                    repo.base_persistdir = conduit.getConf()._repos_persistdir
+                repo.enable()
+                if not repos.findRepos(repo.id):
+                    repos.add(repo)
 
 def prereposetup_hook(conduit):
     """
@@ -102,9 +104,9 @@ def prereposetup_hook(conduit):
         return
 
     up2date_cfg = config.initUp2dateConfig()
+    proxy_dict = {}
     try:
         proxy_url = get_proxy_url(up2date_cfg)
-        proxy_dict = {}
         if up2date_cfg['useNoSSLForPackages']:
             proxy_dict = {'HTTP' : proxy_url}
         else:
@@ -179,6 +181,7 @@ def prereposetup_hook(conduit):
             repo.sslcacert = sslcacert
             repo.enablegroups = enablegroups
             repo.metadata_expire = metadata_expire
+            repo.proxy_dict = proxy_dict
             if hasattr(conduit.getConf(), '_repos_persistdir'):
                 repo.base_persistdir = conduit.getConf()._repos_persistdir
             repoOptions = getRHNRepoOptions(conduit, repo.id)
@@ -197,10 +200,10 @@ def prereposetup_hook(conduit):
     opts = conduit.getCmdLine()[0]
     if opts:
         for opt, repoexp in opts.repos:
-           if opt == '--enablerepo':
-               conduit._base.repos.enableRepo(repoexp)
-           elif opt == '--disablerepo':
-               conduit._base.repos.disableRepo(repoexp)
+            if opt == '--enablerepo':
+                conduit._base.repos.enableRepo(repoexp)
+            elif opt == '--disablerepo':
+                conduit._base.repos.disableRepo(repoexp)
 
 
 def posttrans_hook(conduit):
@@ -221,9 +224,10 @@ def posttrans_hook(conduit):
                     str(e))
 
 def rewordError(e):
-    #This is compensating for hosted/satellite returning back an error
-    #message instructing RHEL5 clients to run "rhn_register"
-    #bz: 438175
+    """ This is compensating for hosted/satellite returning back an error
+        message instructing RHEL5 clients to run "rhn_register"
+        bz: 438175
+    """
     replacedText = _("Error Message:") + "\n\t" + \
         _("Please run rhn_register as root on this client")
     index = e.errmsg.find(": 9\n")
@@ -262,10 +266,10 @@ class RhnRepo(YumRepository):
         # support failover urls, #232567
         urls = []
         if type(channel['url']) == list:
-          for url in channel['url']:
-            urls.append(url + '/GET-REQ/' + self.id)
+            for url in channel['url']:
+                urls.append(url + '/GET-REQ/' + self.id)
         else: # type will be always list since Spacewalk 1.4, in future this will be dead coed
-          urls.append(channel['url'] + '/GET-REQ/' + self.id)
+            urls.append(channel['url'] + '/GET-REQ/' + self.id)
 
         self.baseurl = urls 
         self.urls = self.baseurl
@@ -361,7 +365,7 @@ class RhnRepo(YumRepository):
                 self.http_headers[AuthUserH] = "\nX-libcurl-Empty-Header-Workaround: *"
 
         # Turn our dict into a list of 2-tuples
-        headers = YumRepository._YumRepository__headersListFromDict(self)
+        headers = YumRepository._YumRepository__headersListFromDict(self)   # pylint: disable-msg=E1101
 
         # We will always prefer to send no-cache.
         if not (cache or self.http_headers.has_key('Pragma')):
@@ -447,7 +451,7 @@ class RhnRepo(YumRepository):
                 'proxies': self.proxy_dict,
                 'timeout': self.timeout,
             }
-        headers = tuple(YumRepository._YumRepository__headersListFromDict(self))
+        headers = tuple(YumRepository._YumRepository__headersListFromDict(self)) # pylint: disable-msg=E1101
 
         self._grabfunc = URLGrabber(
                                    progress_obj=self.callback,
@@ -483,10 +487,10 @@ class RhnRepo(YumRepository):
         cfg = INIConfig(file('/etc/yum/pluginconf.d/rhnplugin.conf'))
         # we cannot use directly cfg[channel].['enabled'], because
         # if that section do not exist it raise error
-        func=getattr(cfg, self.label)
-        func.enabled=value
-        f=open('/etc/yum/pluginconf.d/rhnplugin.conf', 'w')
-        print >>f, cfg
+        func = getattr(cfg, self.label)
+        func.enabled = value
+        f = open('/etc/yum/pluginconf.d/rhnplugin.conf', 'w')
+        print >> f, cfg
         f.close()
 
     def enablePersistent(self):
@@ -504,10 +508,9 @@ class RhnRepo(YumRepository):
         self.disable()
 
     def _getRepoXML(self):
-        import yum.Errors
         try:
             return YumRepository._getRepoXML(self)
-        except yum.Errors.RepoError, e:
+        except yum.Errors.RepoError:
             # Refresh our loginInfo then try again
             # possibly it's out of date
             up2dateAuth.updateLoginInfo()
@@ -683,7 +686,7 @@ def getRHNRepoOptions(conduit, repoid):
         if conduit:
             if hasattr(conduit, "_conf") and hasattr(conduit._conf, "items"):
                 return conduit._conf.items(repoid)
-    except NoSectionError, e:
+    except NoSectionError:
         pass
     return None
 

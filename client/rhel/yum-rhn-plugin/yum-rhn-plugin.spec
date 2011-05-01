@@ -1,6 +1,6 @@
 Summary: RHN support for yum
 Name: yum-rhn-plugin
-Version: 1.5.4
+Version: 1.5.5
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -82,6 +82,11 @@ fi
 
 
 %changelog
+* Fri Apr 29 2011 Miroslav Suchý 1.5.5-1
+- code cleanup
+- 691283 - create persistdir in _repos_persistdir instead of PWD
+  (msuchy@redhat.com)
+
 * Thu Apr 21 2011 Miroslav Suchý 1.5.4-1
 - in rhel5 http_header is not present
 
