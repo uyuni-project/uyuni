@@ -18,6 +18,7 @@ Requires: rhncfg-actions
 %if 0%{?suse_version}
 Requires: glibc
 Requires: aaa_base
+Requires: apache2
 %else
 Requires: glibc-common
 Requires: chkconfig
@@ -50,6 +51,12 @@ Run configure-proxy.sh after installation to configure proxy.
 %if 0%{?rhel} == 4
 perl -i -pe 's/access_log \S+ squid//;' squid.conf
 %endif
+
+%post
+%if 0%{?suse_version}
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
+%endif
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
