@@ -209,7 +209,7 @@ class Table:
 
     # get all keys
     def keys(self):
-        h = self.__db.prepare("select %s NAME from %s" % (
+        h = self.__db.prepare("select %s as NAME from %s" % (
             self.__hashid, self.__table))
         h.execute()
         data = h.fetchall_dict()
