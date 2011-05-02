@@ -22,7 +22,8 @@ import xml.etree.ElementTree as etree
 from datetime import date
 
 from spacewalk.server import rhnSQL, taskomatic
-from spacewalk.common import initCFG, CFG, rhnLog
+from spacewalk.common import rhnLog
+from spacewalk.common.rhnConfig import initCFG, CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.susemanager import suseLib
 from spacewalk.common.rhnLog import log_debug, log_error
