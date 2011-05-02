@@ -54,7 +54,9 @@ perl -i -pe 's/access_log \S+ squid//;' squid.conf
 
 %post
 %if 0%{?suse_version}
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
+if [ -f /etc/sysconfig/apache2 ]; then
+    sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
+fi
 %endif
 
 
