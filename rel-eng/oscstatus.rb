@@ -195,7 +195,32 @@ class Prj
 	'perl-NOCpulse-CLAC-git-8a223d8889b5eb7bdb8381f63beaed43a9ef74cb.tar.gz',
 	'perl-NOCpulse-Utils-git-aba88e44d4df65989367d43edf38fd58539b44ec.tar.gz',
 	'NOCpulsePlugins-git-42ebcab7f80134d2404055abb657a1d54ef45469.tar.gz',
-	'nocpulse-common-git-5f02cae65a6b7a48035b55f5126998d3b33bee73.tar.gz'
+	'nocpulse-common-git-5f02cae65a6b7a48035b55f5126998d3b33bee73.tar.gz',
+	'nocpulse-common-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'osad-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'perl-NOCpulse-Probe-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'python-hwdata-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'rhn-custom-info-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'rhn-kickstart-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'rhn-virtualization-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'rhncfg-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'rhnlib-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'rhnmd-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'rhnpush-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'SatConfig-bootstrap-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'SatConfig-general-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'scdb-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'sm-ncc-sync-data-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'spacewalk-branding-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'spacewalk-doc-indexes-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'spacewalk-koan-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'spacewalk-proxy-docs-git-d1c334a43e41f45f99fb2cf0cf1b6b0a140d39eb.tar.gz',
+	'spacewalk-remote-utils-git-7ed37420c2b84ba53ba742312094f295ae7ec445.tar.gz',
+	'spacewalk-ssl-cert-check-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'SputLite-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'susemanager-schema-git-d1c334a43e41f45f99fb2cf0cf1b6b0a140d39eb.tar.gz',
+	'suseRegisterInfo-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz',
+	'yum-rhn-plugin-git-5ae5d11d5f3ee6ec66e3e53bb03d54f853e77e48.tar.gz'
       ].include?(file)
 	puts "###     >>> #{file} skiped" if not $opt_brief
 	skiptar = true
