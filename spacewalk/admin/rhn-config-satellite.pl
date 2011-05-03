@@ -48,7 +48,7 @@ unlink $tmpfile if -e $tmpfile;
 umask 0027;
 open(TMP, "> $tmpfile") or die "Could not open $tmpfile for writing: $OS_ERROR";
 if ($tmpfile =~ m!^/etc/rhn/!) {
-  chown 0, scalar(getgrnam("apache")), $tmpfile;
+  chown 0, scalar(getgrnam("www")), $tmpfile;
 }
 
 while (my $line = <TARGET>) {
