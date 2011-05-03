@@ -4797,7 +4797,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.search.tip">
-<source>'kernel', 'RHBA-2007:0113'</source>
+<source>'kernel', 'slessp1-glibc'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
@@ -4857,7 +4857,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_advisory">
-<source>Patch Advisory (ex: RHBA-2007:0113)</source>
+<source>Patch Advisory (ex: slessp1-glibc)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
