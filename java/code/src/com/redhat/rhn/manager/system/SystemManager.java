@@ -2043,7 +2043,28 @@ public class SystemManager extends BaseManager {
         // Finally, check available physical subs
         // Note that for PHYS SUBS, NULL == UNLIMITED
         Long availableSubs = ChannelManager.getAvailableEntitlements(orgIn, channelIn);
-        return ((availableSubs == null) || (availableSubs.longValue() > 0));
+        if ((availableSubs == null) || (availableSubs.longValue() > 0)) {
+	    return true
+	}
+	else {
+            log.debug("avail subscriptions is to small : " + availableSubscriptions);
+
+            // Return true if serverIn has subs to a channel of channelIn's family
+            ChannelFamily family = channelIn.getChannelFamily();
+            if (family == null) {
+                return false;
+            }
+            else {
+                Set<Channel> channels = serverIn.getChannels();
+                for (Channel c : channels) {
+                    ChannelFamily f = c.getChannelFamily();
+                    if (f != null && f.equals(family)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 
     /**
