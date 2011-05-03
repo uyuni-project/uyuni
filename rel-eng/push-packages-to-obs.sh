@@ -234,6 +234,7 @@ while read PKG_NAME; do
 
   # update from obs (create missing package on the fly)
   for tries in 1 2 3; do
+    echo "Try: $tries"
     OBS_PKG_DIR="$OBS_PROJ/$PKG_NAME"
     rm -rf "$OBS_PKG_DIR"
     $OSC co -u "$OBS_PROJ" "$PKG_NAME" 2>"$T_LOG" || {
