@@ -2047,7 +2047,7 @@ public class SystemManager extends BaseManager {
 	    return true;
 	}
 	else {
-            log.debug("avail subscriptions is to small : " + vailableSubs);
+            log.debug("avail subscriptions is to small : " + availableSubs);
 
             // Return true if serverIn has subs to a channel of channelIn's family
             ChannelFamily family = channelIn.getChannelFamily();
