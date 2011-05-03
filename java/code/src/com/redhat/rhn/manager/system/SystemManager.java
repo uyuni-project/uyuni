@@ -2044,7 +2044,7 @@ public class SystemManager extends BaseManager {
         // Note that for PHYS SUBS, NULL == UNLIMITED
         Long availableSubs = ChannelManager.getAvailableEntitlements(orgIn, channelIn);
         if ((availableSubs == null) || (availableSubs.longValue() > 0)) {
-	    return true
+	    return true;
 	}
 	else {
             log.debug("avail subscriptions is to small : " + availableSubscriptions);
