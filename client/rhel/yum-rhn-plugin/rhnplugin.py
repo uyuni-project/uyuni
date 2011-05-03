@@ -107,10 +107,11 @@ def prereposetup_hook(conduit):
     proxy_dict = {}
     try:
         proxy_url = get_proxy_url(up2date_cfg)
-        if up2date_cfg['useNoSSLForPackages']:
-            proxy_dict = {'HTTP' : proxy_url}
-        else:
-            proxy_dict = {'HTTPS' : proxy_url}
+        if proxy_url:
+            if up2date_cfg['useNoSSLForPackages']:
+                proxy_dict = {'HTTP' : proxy_url}
+            else:
+                proxy_dict = {'HTTPS' : proxy_url}
     except BadProxyConfig:
         rhn_enabled = False
         PROXY_ERROR =  _("There was an error parsing the RHN proxy settings.") 
@@ -181,7 +182,7 @@ def prereposetup_hook(conduit):
             repo.sslcacert = sslcacert
             repo.enablegroups = enablegroups
             repo.metadata_expire = metadata_expire
-            repo.proxy_dict = proxy_dict
+            repo._proxy_dict = proxy_dict
             if hasattr(conduit.getConf(), '_repos_persistdir'):
                 repo.base_persistdir = conduit.getConf()._repos_persistdir
             repoOptions = getRHNRepoOptions(conduit, repo.id)

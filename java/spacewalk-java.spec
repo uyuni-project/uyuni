@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.5.13
+Version: 1.5.17
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz 
@@ -618,6 +618,21 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue May 03 2011 Miroslav Suchý 1.5.17-1
+- checkstyle - Line has trailing spaces (msuchy@redhat.com)
+
+* Tue May 03 2011 Miroslav Suchý 1.5.16-1
+- 673392 - alter channel subscriptions: display flex consumption
+
+* Mon May 02 2011 Tomas Lestach <tlestach@redhat.com> 1.5.15-1
+- removing unused imports (tlestach@redhat.com)
+
+* Mon May 02 2011 Tomas Lestach <tlestach@redhat.com> 1.5.14-1
+- 659138 - set start time for skipped queue jobs (tlestach@redhat.com)
+- 659138 - style id support for repeat-task-picker (tlestach@redhat.com)
+- 659138 - introduce WebUI interface for taskomatic schedule management
+  (tlestach@redhat.com)
+
 * Sat Apr 30 2011 Simon Lukasik <slukasik@redhat.com> 1.5.13-1
 - Remove the static comps file mapping for RHEL 5.0 trees (slukasik@redhat.com)
 
