@@ -29,7 +29,10 @@ import types
 from operator import truth
 
 ## common imports
-from spacewalk.common import rhnRepository, log_debug, log_error, CFG, rhnFault
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnException import rhnFault
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common import rhnRepository
 from spacewalk.common.rhnTranslate import _
 
 ## local imports

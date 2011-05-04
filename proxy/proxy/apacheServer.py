@@ -20,8 +20,10 @@
 import os
 
 # common module imports
-from spacewalk.common import CFG, initCFG, initLOG, log_setreq, Traceback, \
-    log_debug, apache
+from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common.rhnLog import initLOG, log_setreq, log_debug
+from spacewalk.common.rhnTB import Traceback
+from spacewalk.common import apache
 
 class HandlerWrap:
     """ Wrapper handlers to catch unwanted exceptions """
