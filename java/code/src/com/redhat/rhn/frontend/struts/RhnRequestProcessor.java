@@ -77,6 +77,15 @@ public class RhnRequestProcessor extends RequestProcessor {
                     return;
                 }
 
+                RequestContext requestContext = new RequestContext(request);
+                // if postRequiredIfSubmitted="true", make sure we're using POST
+                if (mapping.postRequiredIfSubmitted() && requestContext.isSubmitted() &&
+                        !request.getMethod().equals("POST")) {
+                    // send HTTP 405 if POST wasn't used
+                    response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+                    return;
+                }
+
                 if (!AclManager.hasAcl(mapping.getAcls(), request, mapping.getMixins())) {
                     //an acl evaluated to false
                     PermissionException e = new PermissionException("Missing Acl");
