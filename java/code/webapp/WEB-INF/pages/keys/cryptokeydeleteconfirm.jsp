@@ -16,6 +16,8 @@
 
 <div>
     <html:form action="/keys/CryptoKeyDelete" enctype="multipart/form-data">
+    <rhn:csrf />
+    <rhn:submitted />
     <%@ include file="key-form-disabled.jspf" %>
     </html:form>
 </div>

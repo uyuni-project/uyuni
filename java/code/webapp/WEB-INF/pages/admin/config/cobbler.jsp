@@ -27,6 +27,7 @@
 
 <div>
 <form action="/rhn/admin/config/Cobbler.do">
+    <rhn:csrf />
     <table class="details">
     <tr>
         <th>

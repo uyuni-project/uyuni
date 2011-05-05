@@ -26,6 +26,7 @@
 
     <rhn:require acl="user_role(satellite_admin)">
     <html:form action="/admin/config/MonitoringConfig" method="POST">
+      <rhn:csrf />
       <table class="details">
         <tr>
             <th>

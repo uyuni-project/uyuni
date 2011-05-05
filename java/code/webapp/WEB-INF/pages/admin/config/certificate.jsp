@@ -22,6 +22,7 @@
 
 <div>
 <html:form action="/admin/config/CertificateConfig" enctype="multipart/form-data">
+    <rhn:csrf />
     <table class="details">
     <tr>
         <th>

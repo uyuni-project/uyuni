@@ -15,6 +15,8 @@
 <html:form
 	action="/configuration/ChannelUploadFiles.do?ccid=${ccid}"
 	enctype="multipart/form-data">
+  <rhn:csrf />
+  <rhn:submitted />
   <%@ include file="/WEB-INF/pages/common/fragments/configuration/channel/upload.jspf" %>
 </html:form>
 </div>

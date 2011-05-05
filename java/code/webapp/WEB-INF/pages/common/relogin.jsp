@@ -19,6 +19,7 @@
   <div class="clearBoxBody">
 
     <html:form action="/ReLoginSubmit">
+        <rhn:csrf />
         <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf" %>
          <html:hidden property="url_bounce" />
     </html:form>

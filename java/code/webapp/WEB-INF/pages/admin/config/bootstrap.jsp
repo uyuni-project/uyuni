@@ -23,6 +23,7 @@
 
 <div>
 <html:form action="/admin/config/BootstrapConfig" enctype="multipart/form-data">
+    <rhn:csrf />
     <table class="details">
     <tr>
         <th>

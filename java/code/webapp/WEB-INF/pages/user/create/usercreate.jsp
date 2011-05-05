@@ -34,6 +34,7 @@
   </c:if>
 <html:form action="${action_path}">
 
+  <rhn:csrf />
   <h2><bean:message key="usercreate.login" /></h2>
 
   <table class="details" align="center">

@@ -11,6 +11,7 @@
 <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/manage_header.jspf" %>
 <form method="post" name="rhn_list"
 	action="/rhn/configuration/file/ManageRevisionSubmit.do?cfid=${file.id}">
+    <rhn:csrf />
 	<rhn:list pageList="${requestScope.pageList}"
 	          noDataText="manage.jsp.noRevisions">
 
@@ -55,6 +56,7 @@
 
 <html:form method="post" action="/configuration/file/ManageRevisionSubmit.do?cfid=${file.id}"
            enctype="multipart/form-data">
+  <rhn:csrf />
   <table class="details">
     <tr>
       <th><bean:message key="manage.jsp.uploadtab"/></th>
