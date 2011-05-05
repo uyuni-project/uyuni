@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May  5 14:48:34 CEST 2011 - iartarisi@suse.cz
+
+- Fixed parsing error and traceback which happened when the NCC xml page
+was replaced by an html page. (bnc#691635)
+
+-------------------------------------------------------------------
 Thu Apr 14 10:33:58 CEST 2011 - iartarisi@suse.cz
 
 - fix updating subscriptions which have only one available channel
