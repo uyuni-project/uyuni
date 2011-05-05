@@ -19,12 +19,12 @@ import sys
 import urllib
 import time
 import xml.etree.ElementTree as etree
+from xml.parsers.expat import ExpatError
 from datetime import date
 
 from spacewalk.server import rhnSQL, taskomatic
-from spacewalk.common import initCFG, CFG, rhnLog
+from spacewalk.common import initCFG, CFG, rhnLog, log_debug, log_error
 from spacewalk.susemanager import suseLib
-from spacewalk.common import log_debug, log_error, rhnFault
 
 CHANNELS = '/usr/share/susemanager/channels.xml'
 CHANNEL_FAMILIES = '/usr/share/susemanager/channel_families.xml'
@@ -95,54 +95,70 @@ class NCCSync(object):
 
         rhnSQL.initDB()
 
-    def _connect_ncc( self, url, send=None ):
-        """Connect the ncc with the given URL.
+    def _get_ncc_xml(self, url, send=None):
+        """Connect the ncc and return the parsed XML document
 
         :arg url: the url where the request will be sent
         :kwarg send: do a post-request when "send" is given.
 
-        Returns a file-like object.
+        Returns the root XML Element of the parsed document.
 
         """
         new_url = url
         try_counter = self.connect_retries
-        while new_url != "":
+        while new_url:
             try_counter -= 1
             o = urllib.URLopener()
             try:
-                log_debug(1, "trying to connect %s" % new_url)
+                log_debug(1, "Trying to connect to %s." % new_url)
                 f = o.open( new_url, send)
                 new_url = ""
             except IOError, e:
                 # 302 is a redirect
                 if try_counter <= 0:
-                    self.error_msg("connecting %s failed after %s tries with HTTP error code %s" % (new_url, self.connect_retries, e[1]))
+                    self.error_msg("Connecting to %s has failed after %s "
+                                   "tries with HTTP error code %s." %
+                                   (new_url, self.connect_retries, e[1]))
                     raise e
                 elif e[1] == 302:
                     log_debug(1, "got redirect")
                     new_url = e[3].dict["location"]
                 else:
-                    log_debug(1, "connecting %s failed with HTTP error code %s" % (new_url, e[1]))
-        return f
+                    log_debug(1, "Connecting to %s has failed with HTTP "
+                              "error code %s." % (new_url, e[1]))
+        try:
+            tree = etree.parse(f)
+        except ExpatError:
+            self.error_msg("Could not parse XML from %s. "
+                           "Please make sure that the URL is reachable."
+                           % new_url)
 
-    # OUT: [ {'consumed-virtual': '0',
-    #         'productlist': '2380,2502',
-    #         'start-date': '1167782194',
-    #         'end-date': '0',
-    #         'consumed': '1',
-    #         'substatus': 'ACTIVE',
-    #         'subid': '123452cdb3e6f82961cdc0561322423a',
-    #         'nodecount': '0',
-    #         'subname': 'SUSE Linux Enterprise Desktop 10',
-    #         'duration': '0',
-    #         'regcode': 'XXXXX@YYY-SLED-abc2c3def',
-    #         'type': 'FULL',
-    #         'server-class': 'OS',
-    #         'product-class': '7260'
-    #         }, { ... }, ... ]
+        return tree.getroot()
+
     def get_subscriptions_from_ncc(self):
-        """Returns all subscripts a customer has
-           that data can be used for consolidate_subscriptions()."""
+        """Returns all the subscriptions for this customer.
+
+        This is the format of the returned list of susbscriptions:
+        [{'consumed-virtual': '0',
+          'productlist': '2380,2502',
+          'start-date': '1167782194',
+          'end-date': '0',
+          'consumed': '1',
+          'substatus': 'ACTIVE',
+          'subid': '123452cdb3e6f82961cdc0561322423a',
+          'nodecount': '0',
+          'subname': 'SUSE Linux Enterprise Desktop 10',
+          'duration': '0',
+          'regcode': 'XXXXX@YYY-SLED-abc2c3def',
+          'type': 'FULL',
+          'server-class': 'OS',
+          'product-class': '7260'},
+          { ... },
+          ...]
+        
+        XXX: This method is tightly coupled with consolidate_subscriptions().
+
+        """
         send = ('<?xml version="1.0" encoding="UTF-8"?>'
                 '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
                 '<authuser>%(authuser)s</authuser>'
@@ -151,17 +167,15 @@ class NCCSync(object):
                 '</productdata>\n' % self.__dict__)
 
         self.print_msg("Downloading Subscription information")
-        f = self._connect_ncc( self.ncc_url_subs, send )
-        tree = etree.parse(f)
+        subscriptionlist = self._get_ncc_xml(self.ncc_url_subs, send)
         subscriptions = []
-        for row in tree.getroot():
-            if row.tag == ("{%s}subscription" % self.namespace):
-                subscription = {}
-                for col in row.getchildren():
-                    dummy = col.tag.split( '}' )
-                    key = dummy[1]
-                    subscription[key] = col.text
-                subscriptions.append(subscription)
+        for row in subscriptionlist.findall('{%s}subscription' % self.namespace):
+            subscription = {}
+            for col in row.getchildren():
+                dummy = col.tag.split( '}' )
+                key = dummy[1]
+                subscription[key] = col.text
+            subscriptions.append(subscription)
         return subscriptions
 
     #   FIXME: not sure about 'consumed' yet. We could calculate:
@@ -244,12 +258,10 @@ class NCCSync(object):
                 '</productdata>\n' % self.__dict__)
 
         self.print_msg("Downloading Product information")
-        f = self._connect_ncc(self.ncc_url_prods, send)
-        tree = etree.parse(f)
-        f.close()
+        productdata = self._get_ncc_xml(self.ncc_url_prods, send)
 
         suse_products = []
-        for row in tree.getroot():
+        for row in productdata:
             if row.tag == ("{%s}row" % self.namespace):
                 suseProduct = {}
                 for col in row.findall("{%s}col" % self.namespace):
@@ -666,7 +678,7 @@ class NCCSync(object):
         all_subs_in_db = self.do_subscription_calculation(
             all_subs_in_db, all_subs_sum, prod, data, cf_id)
 
-        for org in all_subs_in_db.keys():
+        for org in all_subs_in_db:
             if all_subs_in_db[org]["dirty"]:
                 update_sql = """
                     UPDATE RHNPRIVATECHANNELFAMILY SET max_members = :max_m
