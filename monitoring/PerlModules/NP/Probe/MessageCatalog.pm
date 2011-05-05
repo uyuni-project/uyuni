@@ -46,8 +46,8 @@ sub message {
 NOCpulse::Probe::MessageCatalog->status
   (
    user_data_not_found     => '%s: Cannot find match for "%s"',
-   internal_data_not_found => '%s: Internal problem: cannot find value. Please contact Red Hat',
-   internal_problem        => 'Internal problem executing check. Please contact Red Hat',
+   internal_data_not_found => '%s: Internal problem: cannot find value. Please contact Novell support',
+   internal_problem        => 'Internal problem executing check. Please contact Novell support',
    missing_program         => 'Cannot find %s. You must install it for this check to run', 
    command_status          => 'Command failed with status %d',
    command_status_err      => 'Command failed with status %d: %s',
@@ -150,7 +150,7 @@ NOCpulse::Probe::MessageCatalog->result
 NOCpulse::Probe::MessageCatalog->event
   (
    timed_out => 'Exceeded global timeout - ending run',
-   failed    => 'Internal problem executing check; please contact Red Hat',
+   failed    => 'Internal problem executing check; please contact Novell support',
   );
 
 NOCpulse::Probe::MessageCatalog->windows_update
