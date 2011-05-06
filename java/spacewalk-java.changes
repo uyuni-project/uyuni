@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May  6 10:11:52 CEST 2011 - ug@suse.de
+
+- set the architecture for virtual machines in cobbler
+  (bnc#682665)
+
+-------------------------------------------------------------------
 Tue May  3 11:26:39 CEST 2011 - jrenner@suse.de
 
 - Rebranding of example search terms (bnc#682601)
