@@ -2,6 +2,7 @@
 Thu Apr 14 15:19:47 CEST 2011 - jrenner@suse.de
 
 - Remove the channel APP handler (bnc#685078)
+  (CVE-2009-0788, CVE-2010-1171)
 
 -------------------------------------------------------------------
 Fri Apr  1 12:09:01 CEST 2011 - mc@suse.de
