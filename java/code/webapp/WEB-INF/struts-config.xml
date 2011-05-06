@@ -1256,7 +1256,6 @@
         validate="false"
         type="com.redhat.rhn.frontend.action.user.CreateUserSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-      <set-property property="postRequired" value="true" />
       <set-property property="acls"
                     value="need_first_user()"/>
       <forward name="default" path="/WEB-INF/pages/user/create/createsatellite.jsp" />
