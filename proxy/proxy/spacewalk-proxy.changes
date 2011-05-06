@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May  6 11:15:30 CEST 2011 - mc@suse.de
+
+- redirect all required xmlrpc calles (bnc#692212)
+
+-------------------------------------------------------------------
 Thu Mar 31 11:00:41 CEST 2011 - mantel@suse.de
 
 - more debranding
