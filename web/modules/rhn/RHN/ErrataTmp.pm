@@ -32,7 +32,7 @@ sub lookup_managed_errata {
   $errata = eval { RHN::ErrataTmp->lookup(@params) };
   return $errata if $errata;
 
-  throw "Could not find managed errata '@params' - $@";
+  throw "Could not find managed patch '@params' - $@";
 }
 
 1;

@@ -29,7 +29,7 @@
     <column name="Health" label="monitoring_icon" align="center" width="5%" />
   </rhn-require>
 
-  <column name="Errata" label="total_errata" align="center" width="5%">
+  <column name="Patches" label="total_errata" align="center" width="5%">
     <url>/network/systems/details/errata_list.pxt?sid={column:id}</url>
   </column>
   <column name="Packages" label="outdated_packages" align="center" width="5%">

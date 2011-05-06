@@ -71,7 +71,7 @@ sub errata_name {
   return $$errata->synopsis if $errata;
 
   my $eid = $pxt->param('eid');
-  return "no errata" unless $eid;
+  return "no patch" unless $eid;
 
   $errata = RHN::ErrataTmp->lookup_managed_errata(-id => $eid);
 
@@ -88,11 +88,11 @@ sub errata_advisory {
   return $$errata->advisory if $errata;
 
   my $eid = $pxt->param('eid');
-  return "no errata" unless $eid;
+  return "no patch" unless $eid;
 
   $errata = RHN::ErrataTmp->lookup_managed_errata(-id => $eid);
 
-  die "no valid errata" unless $errata;
+  die "no valid patch" unless $errata;
 
   $pxt->pnotes(errata => \$errata);
   return $errata->advisory;
@@ -118,7 +118,7 @@ sub errata_details {
 					       -release => $release);
 
     if ($release and @errata > 1) {
-      die "specific errata $advisory asked for, but returned multiple (@errata)";
+      die "specific patch $advisory asked for, but returned multiple (@errata)";
     }
     # there's only one, take it, or, returned list of matching errata.
     # take the first one, since it is in order of descending date
