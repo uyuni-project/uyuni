@@ -78,12 +78,21 @@ public class CobblerDistroCommand extends CobblerCommand {
             ksmeta.put("org", tree.getOrg().getId());
         }
 
+        // set architecture (fix 32bit vm's on a 64bit system)
+        // especially for SUSE where the kernel+initrd is under a patch that contains
+        // the $arch
+        String archName = tree.getChannel().getChannelArch().getName();
+        if (archName.equals("IA-32")) {
+            archName = "i386";
+        }
+
         //if the newly edited tree does para virt....
         if (tree.doesParaVirt()) {
             //IT does paravirt so we need to either update the xen distro or create one
             if (xen == null) {
                 xen = Distro.create(con, tree.getCobblerXenDistroName(),
                         tree.getKernelXenPath(), tree.getInitrdXenPath(), ksmeta);
+                xen.setArch(archName);
                 if (tree.getInstallType().isSUSE()) {
                     xen.setBreed("suse");
                 }
@@ -91,6 +100,7 @@ public class CobblerDistroCommand extends CobblerCommand {
                 tree.setCobblerXenId(xen.getId());
             }
             else {
+                xen.setArch(archName);
                 xen.setKernel(tree.getKernelXenPath());
                 xen.setInitrd(tree.getInitrdXenPath());
                 xen.setKsMeta(ksmeta);
@@ -99,7 +109,6 @@ public class CobblerDistroCommand extends CobblerCommand {
                 }
                 xen.save();
             }
-
         }
         else {
             //it doesn't do paravirt, so we need to delete the xen distro
@@ -110,6 +119,7 @@ public class CobblerDistroCommand extends CobblerCommand {
         }
 
         if (nonXen != null) {
+            nonXen.setArch(archName);
             nonXen.setInitrd(tree.getInitrdPath());
             nonXen.setKernel(tree.getKernelPath());
             nonXen.setKsMeta(ksmeta);
