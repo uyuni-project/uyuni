@@ -79,7 +79,7 @@ public class CobblerDistroCommand extends CobblerCommand {
         }
 
         // set architecture (fix 32bit vm's on a 64bit system)
-        // especially for SUSE where the kernel+initrd is under a patch that contains
+        // especially for SUSE where the kernel+initrd is under a path that contains
         // the $arch
         String archName = tree.getChannel().getChannelArch().getName();
         if (archName.equals("IA-32")) {
