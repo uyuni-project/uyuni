@@ -226,6 +226,7 @@ class PackageImport(ChannelPackageSubscription):
                 sys.stderr.write("!!! packageImport.PackageImport._processPackage: "
                                  "erronous depList for '%s', converting to []\n"%tag)
                 depList = []
+                package[tag] = []
             for dep in depList:
                 nv = []
                 for f in ('name', 'version'):
