@@ -550,6 +550,7 @@ class PackageItem(IncompletePackageItem):
     def populate(self, attributes, elements):
         item = IncompletePackageItem.populate(self, attributes, elements)
         # find out "primary" checksum
+	# FIXME: SUSE Manager uses other checksum without filedigest
         have_filedigests = len([1 for i in item['requires'] if i['name'] == 'rpmlib(FileDigests)'])
         if not have_filedigests:
             item['checksum_type'] = 'md5'
