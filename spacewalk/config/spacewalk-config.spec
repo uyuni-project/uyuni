@@ -12,7 +12,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 1.5.2
+Version: 1.5.3
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -153,21 +153,27 @@ if [ -f /etc/init.d/satellite-httpd ] ; then
     %{__perl} -i -ne 'print unless /satellite-httpd\.pid/' /etc/logrotate.d/httpd
 fi
 
+# Set the group to allow Apache to access the conf files ...
+chgrp %{apache_group} /etc/rhn /etc/rhn/rhn.conf /etc/rhn/cluster.ini || :
+# ... once we restrict access to some files that were too open in
+# the past.
+chmod o-rwx /etc/rhn/rhn.conf* /etc/rhn/cluster.ini* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-satellite-prep/* || :
+
 %if 0%{?suse_version}
 %post
-%define dest %{_sysconfdir}/sysconfig/apache2
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_ajp
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 
-%else
-%define dest %{_sysconfdir}/sysconfig/httpd
 %endif
 
-
 %changelog
+* Tue May 03 2011 Jan Pazdziora 1.5.3-1
+- We restrict access to some files that were too open in the past (some of them
+  are not tracked by rpm).
+
 * Thu Apr 21 2011 Jan Pazdziora 1.5.2-1
 - Explicitly setting attributes of .../rhn-satellite-prep/etc/rhn.
 

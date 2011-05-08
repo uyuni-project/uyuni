@@ -44,7 +44,7 @@ except ImportError:
     from optik import Option, OptionParser
 
 # RHN imports
-from spacewalk.common import CFG, initCFG
+from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnLib import parseUrl
 initCFG('proxy.package_manager')
 
@@ -76,6 +76,8 @@ def main():
         Option(     '--copyonly',  action='store_true', help="Only copy packages; don't reimport"),
         Option(     '--test',      action='store_true', help='Only print the packages to be pushed'),
         Option(     '--no-ssl',    action='store_true', help='Turn off SSL (not recommended).'),
+        Option(     '--no-session-caching',  action='store_true',
+            help='Disables session-token authentication.'),
         Option('-?','--usage',     action='store_true', help="Briefly describe the options"),
     ]
     # Process the command line arguments
