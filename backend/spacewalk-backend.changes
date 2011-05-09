@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May  9 10:23:05 CEST 2011 - mc@suse.de
+
+- fix errata export/import for sync
+- handle sync with older spacewalk server which do not support
+  weak dependencies
+
+-------------------------------------------------------------------
 Thu Apr 14 15:19:47 CEST 2011 - jrenner@suse.de
 
 - Remove the channel APP handler (bnc#685078)
