@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 13 13:46:55 CEST 2011 - iartarisi@suse.cz
+
+- added SLES10-SP[234] channels
+
+-------------------------------------------------------------------
 Mon Mar 28 16:05:47 CEST 2011 - iartarisi@suse.cz
 
 - fixed channels under VMWare all belonging to the VMWare family
