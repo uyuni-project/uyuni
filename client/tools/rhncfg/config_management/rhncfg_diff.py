@@ -21,7 +21,6 @@ import sys
 
 from config_common import handler_base, utils, cfg_exceptions
 from config_common.rhn_log import log_debug, die
-from config_common.file_utils import diff
 from spacewalk.common.fileutils import f_date, ostr_to_sym
 
 
@@ -38,11 +37,11 @@ class Handler(handler_base.HandlerBase):
          ),
         handler_base.HandlerBase._option_class(
             '-d', '--dest-file',    action="store",
-             help="Upload the file as this path",
+             help="Remote file to compare to",
          ),
         handler_base.HandlerBase._option_class(
             '-t', '--topdir',       action="store",
-             help="Make all files relative to this string",
+             help="Directory to which all file paths are relative",
          ),
     ]
     def run(self):
@@ -121,14 +120,14 @@ class Handler(handler_base.HandlerBase):
                 if info['encoding'] == 'base64':
                     info['file_contents'] = base64.decodestring(info['file_contents'])
                 else:
-                    die(9, 'Error: unknow encoding %s' % info['encoding'])
+                    die(9, 'Error: unknown encoding %s' % info['encoding'])
         except cfg_exceptions.RepositoryFileMissingError:
             die(2, "Error: no such file %s (revision %s) in config channel %s"
                 % (path, revision, channel))
         if os.path.islink(local_file) and info['filetype'] != 'symlink' :
-             die(8, "Cannot diff %s; the file on the system is a symbolic link while the file in the channel is not. " % local_file)
+            die(8, "Cannot diff %s; the file on the system is a symbolic link while the file in the channel is not. " % local_file)
         if  info['filetype'] == 'symlink' and not os.path.islink(local_file) :
-             die(8, "Cannot diff %s; the file on the system is not a symbolic link while the file in the channel is. " % local_file)             
+            die(8, "Cannot diff %s; the file on the system is not a symbolic link while the file in the channel is. " % local_file)
         if info['filetype'] == 'symlink':
             src_link = info['symlink']
             dest_link = os.readlink(local_file)
@@ -152,7 +151,7 @@ class Handler(handler_base.HandlerBase):
         if 'selinux_ctx' not in info:
             info['selinux_ctx'] = ''
         if not first_row and not self.__attributes_differ(info, local_info):
-             return ""
+            return ""
         else:
             template = "--- %s\t%s\tattributes: %s %s %s %s\tconfig channel: %s\trevision: %s"
             if not info.has_key('modified'):

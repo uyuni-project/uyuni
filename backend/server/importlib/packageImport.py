@@ -221,7 +221,7 @@ class PackageImport(ChannelPackageSubscription):
 
         for tag in ('recommends', 'suggests', 'supplements'):
             if type(package[tag]) != type([]):
-                # older spacewalk server do not export weak deps. 
+                # older spacewalk server do not export weak deps.
                 # lets create an empty list
                 package[tag] = []
 

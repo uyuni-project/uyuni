@@ -9,7 +9,7 @@ Name:         NPalert
 Summary:      NOCpulse notification system
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.126.22
+Version:      1.126.23
 Release:      1%{?dist}
 BuildArch:    noarch
 %if 0%{?suse_version}
@@ -19,7 +19,6 @@ Requires:     perl-Crypt-GeneratePassword
 %else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
-#Requires:     perl perl(Config::IniFiles) perl(DBI) perl(DBD::Oracle) perl(Class::MethodMaker) perl(Error) perl(Date::Manip) perl-TimeDate perl-MailTools perl-NOCpulse-Probe perl-libwww-perl perl(URI) perl(HTML::Parser) perl(FreezeThaw)
 Group:        Applications/Communications
 License:      GPLv2
 Requires:     nocpulse-common
@@ -156,6 +155,9 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri May 13 2011 Miroslav Suchý 1.126.23-1
+- removing unmaintained file with dependencies
+
 * Wed Apr 27 2011 Jan Pazdziora 1.126.22-1
 - Neither functions from File::Basename nor from File::Copy seem to be used by
   ack-processor, removing the uses.

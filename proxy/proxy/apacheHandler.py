@@ -171,8 +171,8 @@ class apacheHandler(rhnApache):
         # so that the content handler can use it later.
 
         log_debug(3, "Generated new kickstart URI: %s" % newURI)
-        req.headers_in.add(HEADER_ACTUAL_URI, req.uri)
-        req.headers_in.add(HEADER_EFFECTIVE_URI, newURI)
+        req.headers_in[HEADER_ACTUAL_URI] = req.uri
+        req.headers_in[HEADER_EFFECTIVE_URI] = newURI
 
         return apache.OK
 
@@ -202,16 +202,8 @@ class apacheHandler(rhnApache):
             is OK, and a checksum is not returned, the old BZ 158236 behavior will
             be used.
         """
-
-        # There isn't an easy way from within mod_python to definitely 
-        # determine which scheme was used to contact us, so we'll attempt to
-        # use some heuristics.  If a virtual server fielded the request and
-        # the port number is 443, we can probably assume it's HTTPS.  Since
-        # we're just making a connection to localhost, it's not the end of the 
-        # world if we get it wrong.
-
         scheme = SCHEME_HTTP
-        if req.server.is_virtual and req.server.port == 443:
+        if req.server.port == 443:
             scheme = SCHEME_HTTPS
         log_debug(6, "Using scheme: %s" % scheme)
 

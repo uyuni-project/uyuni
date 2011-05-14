@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.5.22
+Version: 1.5.28
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz 
@@ -380,6 +380,7 @@ sed -i -e 's/# Default-Start:/# Default-Start: 3 5/g' $RPM_BUILD_ROOT/%{_initrdd
 install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
 install -m 644 conf/log4j.properties.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j.properties
 
+install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{cobdirsnippets}/default_motd
 install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{cobdirsnippets}/keep_system_id
 install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{cobdirsnippets}/post_reactivation_key
 install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{cobdirsnippets}/post_delete_system
@@ -557,6 +558,7 @@ fi
 %dir %{cobprofdirup}
 %dir %{cobprofdirwiz}
 %dir %{cobdirsnippets}
+%config %{cobdirsnippets}/default_motd
 %config %{cobdirsnippets}/keep_system_id
 %config %{cobdirsnippets}/post_reactivation_key
 %config %{cobdirsnippets}/post_delete_system
@@ -618,6 +620,42 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri May 13 2011 Jan Pazdziora 1.5.28-1
+- introduce NoSuchConfigFilePathException for configchannel and server.config
+  APIs (tlestach@redhat.com)
+- 703143 - changed (+) to ANSI JOIN (michael.mraka@redhat.com)
+- 678721 - errata.cloneAsOriginal API call (mzazrivec@redhat.com)
+
+* Wed May 11 2011 Tomas Lestach <tlestach@redhat.com> 1.5.27-1
+- 659138 - change jsp rendering when taskomatic is down (tlestach@redhat.com)
+- 659138 - skip code, if taskomatic is down (tlestach@redhat.com)
+- 659138 - fix emptykey message (tlestach@redhat.com)
+
+* Tue May 10 2011 Tomas Lestach <tlestach@redhat.com> 1.5.26-1
+- repo generation quick fix (tlestach@redhat.com)
+
+* Tue May 10 2011 Jan Pazdziora 1.5.25-1
+- 678519 - moving MOTD into a separate kickstart snippent
+  (mario@mediatronix.de)
+
+* Tue May 10 2011 Jan Pazdziora 1.5.24-1
+- 638571 - set correctly the Channels column (tlestach@redhat.com)
+- 636614 - mark system_groups of org.listOrgs API as optional
+  (tlestach@redhat.com)
+- 636614 - fix system_groups for org.listOrgs API (tlestach@redhat.com)
+- 703064 - changing WebUI message (tlestach@redhat.com)
+- 659138 - fix button submit detection (tlestach@redhat.com)
+- 659138 - schedule description strings update (tlestach@redhat.com)
+
+* Mon May 09 2011 Tomas Lestach <tlestach@redhat.com> 1.5.23-1
+- 659138 - change runs ordering (tlestach@redhat.com)
+- 659138 - first schedule, then display (tlestach@redhat.com)
+- 659138 - update single run action message (tlestach@redhat.com)
+- 659138 - display times in current timezone (tlestach@redhat.com)
+- 659138 - fix scheduling of single runs for specific time
+  (tlestach@redhat.com)
+- 659138 - reinit for possible single task schedules (tlestach@redhat.com)
+
 * Fri May 06 2011 Jan Pazdziora 1.5.22-1
 - 673392 - correct entitlement count logic for custom channels
   (mzazrivec@redhat.com)

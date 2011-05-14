@@ -37,7 +37,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop_desc("int", "systems", "Number of systems in the organization.")
  *   #prop_desc("int", "trusts", "Number of trusted organizations.")
  *   #prop_desc("int", "system_groups",
- *                              "Number of system groups in the organization.")
+ *                              "Number of system groups in the organization. (optional)")
  *   #prop_desc("int", "activation_keys",
  *                              "Number of activation keys in the organization. (optional)")
  *   #prop_desc("int", "kickstart_profiles",
@@ -72,7 +72,7 @@ public class OrgDtoSerializer implements XmlRpcCustomSerializer {
         add(helper, "systems", dto.getSystems());
         add(helper, "trusts", dto.getTrusts());
         add(helper, "activation_keys", dto.getActivationKeys());
-        add(helper, "system_groups", dto.getActivationKeys());
+        add(helper, "system_groups", dto.getServerGroups());
         add(helper, "kickstart_profiles", dto.getKickstartProfiles());
         add(helper, "configuration_channels", dto.getConfigChannels());
         helper.writeTo(output);

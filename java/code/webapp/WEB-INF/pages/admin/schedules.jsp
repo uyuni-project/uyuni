@@ -3,6 +3,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html:xhtml/>
 <html>
@@ -14,10 +15,17 @@
              creationType="schedule"
              creationAcl="user_role(satellite_admin)"
 	         helpUrl="">
-    <bean:message key="task.status.title"/>
+    <bean:message key="schedule.edit.jsp.satschedules"/>
 </rhn:toolbar>
 
 <rl:listset name="scheduleList">
+
+    <h2><bean:message key="schedule.edit.jsp.satschedules"/></h2>
+    <div class="page-summary">
+           <bean:message key="schedules.jsp.introparagraph"/>
+    </div>
+
+    <br/>
 
     <rl:list
         emptykey="schedule.jsp.noschedules">
@@ -42,7 +50,7 @@
                            bound="false"
                            headerkey="schedule.edit.jsp.activefrom"
                            sortattr="active_from" >
-                        <c:out value="${current.active_from}" />
+                           <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss z" value="${current.active_from}"/>
                 </rl:column>
 
                 <rl:column bound="false"

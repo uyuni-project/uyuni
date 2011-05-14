@@ -9,7 +9,7 @@
 %endif
 
 Name:           spacewalk-setup
-Version:        1.5.4
+Version:        1.5.5
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -84,6 +84,7 @@ install -m 0644 share/ssl.conf.5 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/ssl.conf.6 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcatX.conf.1 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcatX.conf.2 %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/tomcatX.conf.3 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/context.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/web.xml.patch %{buildroot}/%{_datadir}/spacewalk/setup/
@@ -123,6 +124,10 @@ rm -rf %{buildroot}
 %attr(755, %{apache_user}, root) %{misc_path}/spacewalk
 
 %changelog
+* Wed May 11 2011 Jan Pazdziora 1.5.5-1
+- Actually package the new tomcatX.conf.3 (for the tomcat6 setenv.sh issue) in
+  the rpm.
+
 * Wed May 04 2011 Jan Pazdziora 1.5.4-1
 - On RHEL 6, tomcat6 no longer sources the setenv.sh so we need to source it
   ourselves.

@@ -19,7 +19,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.5.16
+Version: 1.5.21
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -100,6 +100,9 @@ Requires: %{name}-sql = %{version}-%{release}
 Requires: PyPAM
 Obsoletes: rhns-server < 5.3.0
 Provides: rhns-server = 1:%{version}-%{release}
+
+#this exists only on rhel5 and rhel6
+Conflicts: python-sgmlop
 
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: mod_python
@@ -747,6 +750,28 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri May 13 2011 Jan Pazdziora 1.5.21-1
+- 698567 - give the transaction that we have to use to read the file header a
+  sandbox database.
+
+* Fri May 13 2011 Miroslav Suchý 1.5.20-1
+- 695651 - mod_wsgi change header, flip it back to what we expect
+  (msuchy@redhat.com)
+- sgmlop parser could not return data in utf-8 (msuchy@redhat.com)
+- 695651 - mimic req.connection.local_addr from mod_python (msuchy@redhat.com)
+
+* Mon May 09 2011 Jan Pazdziora 1.5.19-1
+- rhn-satellite-exporter with start-date and end-date (jbrazdil@redhat.com)
+- fix utf-8 in emails (msuchy@redhat.com)
+
+* Mon May 09 2011 Jan Pazdziora 1.5.18-1
+- fix satsync with older spacewalk versions not providing weak deps
+  (mc@suse.de)
+
+* Mon May 09 2011 Michael Mraka <michael.mraka@redhat.com> 1.5.17-1
+- only one package per NVREA can be in channel, unlink the old one first
+- link package also when the checksum has changed
+
 * Thu May 05 2011 Miroslav Suchý 1.5.16-1
 - 683200 - send emails as utf-8
 - 683200 - convert hostname in subject from pune to unicode

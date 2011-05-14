@@ -8655,7 +8655,7 @@ Follow this url to see the full list of inactive systems:
         <source>Per-User subscription restrictions may be applied in the Subscribers tab</source>
      </trans-unit>
      <trans-unit id="message.bunch.singlescheduled">
-        <source>Single run of &lt;strong&gt;{0}&lt;/strong&gt; bunch was scheduled.</source>
+        <source>Single run of &lt;strong&gt;{0}&lt;/strong&gt; bunch was scheduled for {1}.</source>
      </trans-unit>
      <trans-unit id="message.schedulecreated">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
@@ -8674,6 +8674,9 @@ Follow this url to see the full list of inactive systems:
      </trans-unit>
      <trans-unit id="kickstart.cobbler.profile.invalidvirt">
         <source>Para-Virtualization is unsupported with the selected autoinstallable tree or distribution.</source>
+     </trans-unit>
+     <trans-unit id="kickstart.cobbler.profile.nodistribution">
+        <source>Selected kickstartable tree isn't available at the moment. Please check cobbler functionality.</source>
      </trans-unit>
      <trans-unit id="kickstart.cobbler.profile.invalidtreeforvirt">
         <source>You have selected a distribution or autoinstallable tree that is incompatible with the currently selected virtualization type.  Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>

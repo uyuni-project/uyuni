@@ -587,25 +587,24 @@ class RepoSync:
                 skipped += 1
                 continue
 
-            path, package_channel = rhnPackage.get_path_for_package(
+            db_pack = rhnPackage.get_info_for_package(
                    [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
                    self.channel_label)
 
-            to_download = False
-            to_link     = False
-            if not path:
-                # package is not on disk
-                to_download = True
-            else:
-                # a different package is on disk
-                pack.path = os.path.join(CFG.MOUNT_POINT, path)
-                if not self.match_package_checksum(pack.path,
+            to_download = True
+            to_link     = True
+            if db_pack['path']:
+                pack.path = os.path.join(CFG.MOUNT_POINT, db_pack['path'])
+                if self.match_package_checksum(pack.path,
                                 pack.checksum_type, pack.checksum):
-                    to_download = True
-
-            if package_channel != self.channel_label:
-                # package is not in the channel
-                to_link = True
+                    # package is already on disk
+                    to_download = False
+                    if db_pack['channel_label'] == self.channel_label:
+                        # package is already in the channel
+                        to_link = False
+		elif db_pack['channel_label'] == self.channel_label:
+		    # different package with SAME NVREA
+		    self.disassociate_package(db_pack)
 
             if to_download or to_link:
                 to_process.append((pack, to_download, to_link))
@@ -685,6 +684,21 @@ class RepoSync:
             self._importer_run(package, caller, backend)
 
         backend.commit()
+
+    def disassociate_package(self, pack):
+        h = rhnSQL.prepare("""
+            delete from rhnChannelPackage cp
+             where cp.channel_id = :channel_id
+               and cp.package_id in (select p.id
+                                       from rhnPackage p
+                                       join rhnChecksumView c
+                                         on p.checksum_id = c.id
+                                      where c.checksum = :checksum
+                                        and c.checksum_type = :checksum_type
+                                    )
+		""")
+        h.execute(channel_id=self.channel['id'],
+		  checksum_type=pack['checksum_type'], checksum=pack['checksum'])
 
     def _importer_run(self, package, caller, backend):
             importer = ChannelPackageSubscription(
