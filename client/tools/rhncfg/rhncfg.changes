@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May 16 15:00:51 CEST 2011 - iartarisi@suse.cz
+
+- fix staticmethod Syntax Error on systems with python < 2.4 (e.g. RHEL4)
+
+-------------------------------------------------------------------
 Mon May 16 09:14:56 CEST 2011 - iartarisi@suse.cz
 
 - fix usage documentation messages for topdir and dest-file (bnc#684390)
