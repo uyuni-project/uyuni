@@ -93,15 +93,17 @@ def read_user_config():
 
 def lookup_build_dir(user_config):
     """
-    Read build_dir in from ~/.spacewalk-build-rc if it exists, otherwise
-    return the current working directory.
+    Read build_dir from environment($RPMBUILD_BASEDIR) or ~/.spacewalk-build-rc if it exists,
+    otherwise return the DEFAULT_BUILD_DIR.
     """
-    build_dir = DEFAULT_BUILD_DIR
+    build_dir = os.getenv('RPMBUILD_BASEDIR')
+    if build_dir:
+      return build_dir
 
     if user_config.has_key('RPMBUILD_BASEDIR'):
-        build_dir = user_config["RPMBUILD_BASEDIR"]
+        return user_config["RPMBUILD_BASEDIR"]
 
-    return build_dir
+    return DEFAULT_BUILD_DIR
 
 
 
