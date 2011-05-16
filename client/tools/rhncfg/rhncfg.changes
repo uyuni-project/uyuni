@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Mon May 16 09:14:56 CEST 2011 - iartarisi@suse.cz
 
-- fix usage documentation messages for topdir and dest-file
+- fix usage documentation messages for topdir and dest-file (bnc#684390)
 
 -------------------------------------------------------------------
 Fri Mar 18 13:00:20 CET 2011 - iartarisi@suse.cz
