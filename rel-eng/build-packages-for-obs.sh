@@ -50,10 +50,11 @@ rm -rf "$SRPMBUILD_DIR"
 mkdir -p "$SRPMBUILD_DIR"
 trap "test -d \"$SRPMBUILD_DIR\" && /bin/rm -rf -- \"$SRPMBUILD_DIR\" " 0 1 2 3 13 15
 
-# not nice but tito does not take it via CLI
-cat <<EOF >~/.spacewalk-build-rc
-RPMBUILD_BASEDIR=$SRPMBUILD_DIR
-EOF
+# not nice but tito does not take it via CLI, via .rc
+# file prevents parallel execution for different OBS
+# projects.Thus we patched tito to take the builddir
+# from environment:
+export RPMBUILD_BASEDIR=$SRPMBUILD_DIR
 
 function git_package_defs() {
   # - "PKG_NAME PKG_VER PKG_DIR" from git:/rel-eng/packages/, using
