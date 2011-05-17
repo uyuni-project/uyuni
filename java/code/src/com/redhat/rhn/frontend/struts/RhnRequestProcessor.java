@@ -16,6 +16,7 @@
 package com.redhat.rhn.frontend.struts;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.security.CSRFTokenException;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.user.User;
@@ -72,7 +73,15 @@ public class RhnRequestProcessor extends RequestProcessor {
 
                 // validate security token to prevent CSRF type of attacks
                 if (request.getMethod().equals("POST")) {
-                    CSRFTokenValidator.validate(request);
+                    try {
+                        CSRFTokenValidator.validate(request);
+                    }
+                    catch (CSRFTokenException e) {
+                        // send HTTP 403 if security token validation failed
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                            e.getMessage());
+                        return;
+                    }
                 }
 
                 // if postRequired="true", make sure we're using POST
