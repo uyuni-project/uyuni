@@ -14,11 +14,11 @@
 #
 # $Id$
 
-import os
-import tempfile
+from rhn.UserDictCase import UserDictCase
 from spacewalk.common import apache
 
-from spacewalk.common import log_debug, rhnFault, UserDictCase
+from spacewalk.common.rhnLog import log_debug
+from spacewalk.common.rhnException import rhnFault
 
 
 class BasePackageUpload:

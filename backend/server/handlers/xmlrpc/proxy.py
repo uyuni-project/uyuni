@@ -17,7 +17,11 @@
 import time
 
 # common module imports
-from spacewalk.common import CFG, rhnFault, rhnFlags, log_debug, log_error, UserDictCase
+from rhn.UserDictCase import UserDictCase
+from spacewalk.common import rhnFlags
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _
 
 # local module imports

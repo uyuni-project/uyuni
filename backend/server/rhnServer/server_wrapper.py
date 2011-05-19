@@ -26,14 +26,15 @@ from server_history import History
 from server_solarispatches import SolarisPatches
 from server_suse import SuseData
 
-from spacewalk.common import UserDictCase
+from rhn.UserDictCase import UserDictCase
 from spacewalk.server import rhnSQL
 
-# This is a middle class that ties all the subclasses together, plus it
-# provides a cleaner way to keep all the wrapper functions in one place.
-# The main Server class is based on this one and it looks a little bit
-# cleaner that way.
 class ServerWrapper(Packages, Hardware, History, SolarisPatches, SuseData):
+    """ This is a middle class that ties all the subclasses together, plus it
+    provides a cleaner way to keep all the wrapper functions in one place.
+    The main Server class is based on this one and it looks a little bit
+    cleaner that way.
+    """
     def __init__(self):
         self.server = UserDictCase()
         Packages.__init__(self)

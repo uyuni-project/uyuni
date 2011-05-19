@@ -19,11 +19,14 @@
 
 import string
 
-from spacewalk.common import UserDictCase, log_debug, log_error, rhnFault, Traceback
+from rhn.UserDictCase import UserDictCase
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnException import rhnFault
+from spacewalk.common.rhnTB import Traceback
 from spacewalk.server import rhnSQL
 
-# this is a class we use to get the mapping for a kudzu entry
 def kudzu_mapping(dict = None):
+    """ this is a class we use to get the mapping for a kudzu entry """
     # This is the generic mapping we need    
     mapping = {
         'desc'        : 'description',

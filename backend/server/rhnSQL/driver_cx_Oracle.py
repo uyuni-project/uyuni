@@ -28,9 +28,11 @@ import string
 import os
 import types
 
+from rhn.UserDictCase import UserDictCase
 from spacewalk.server import rhnSQL
-from spacewalk.common import rhnException, log_debug, log_error, rhnConfig, \
-    UserDictCase
+from spacewalk.common import rhnConfig
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnException import rhnException
 from sql_base import adjust_type
 from const import ORACLE
 
