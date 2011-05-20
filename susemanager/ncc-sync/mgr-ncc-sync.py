@@ -41,12 +41,15 @@ def main():
                       help="Testmode")
     parser.add_option("-n", "--non_interactive", action="store_true",
                       help="Non-interactive mode, doesn't ask for confirmation")
+    parser.add_option("--from-dir", action="store", dest='fromdir',
+                      help="read data from directory instead of NCC")
 
     (options, args) = parser.parse_args()
 
     syncer = mgr_ncc_sync_lib.NCCSync(quiet=options.quiet,
                                       non_interactive=options.non_interactive,
-                                      debug=options.debug)
+                                      debug=options.debug,
+                                      fromdir=options.fromdir)
     if options.list:
         syncer.list_channels()
     elif options.channel:
