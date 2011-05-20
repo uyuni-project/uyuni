@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 20 13:41:22 CEST 2011 - iartarisi@suse.cz
+
+- use pycurl instead of urllib for remote requests (#694054)
+- catch cannot connect to database error
+
+-------------------------------------------------------------------
 Thu May  5 14:48:34 CEST 2011 - iartarisi@suse.cz
 
 - Fixed parsing error and traceback which happened when the NCC xml page
