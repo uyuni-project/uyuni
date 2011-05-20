@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 20 14:57:56 CEST 2011 - iartarisi@suse.cz
+
+- fixed a syntax error on redirects when debugging is turned on
+
+-------------------------------------------------------------------
 Fri May 20 14:27:28 CEST 2011 - mc@suse.de
 
 - implement disconnected population of vendor channels (bnc#674859)
