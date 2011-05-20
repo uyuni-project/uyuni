@@ -17,6 +17,7 @@
 
 import sys
 import time
+import os.path
 import xml.etree.ElementTree as etree
 from datetime import date
 try:
@@ -36,8 +37,6 @@ CHANNEL_FAMILIES = '/usr/share/susemanager/channel_families.xml'
 
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
-NCCREPOS = "https://%(authuser)s:%(authpass)s@nu.novell.com/repo/repoindex.xml"
-
 INFINITE = 200000 # a very big number that we use for unlimited subscriptions
 
 def memoize(function):
@@ -55,12 +54,13 @@ def memoize(function):
 class NCCSync(object):
     """This class is used to sync SUSE Manager Channels and NCC repositories"""
 
-    def __init__(self, quiet=False, non_interactive=False, debug=-1):
+    def __init__(self, quiet=False, non_interactive=False, debug=-1, fromdir=None):
         """Setup configuration"""
         self.quiet = quiet
         self.non_interactive = non_interactive
         self.debug = debug
         self.reset_ent_value = 10
+        self.fromdir = fromdir
 
         self.ncc_rhn_ent_mapping = {
             "sm_ent_mon_s"       : [ "monitoring_entitled" ],
@@ -94,8 +94,15 @@ class NCCSync(object):
         # FIXME:
         # self.ncc_url_prods = CFG.reg_url + "/?command=regdata&lang=en-US&version=1.0"
         # self.ncc_url_subs  = CFG.reg_url + "/?command=listsubscriptions&lang=en-US&version=1.0"
-        self.ncc_url_prods = "https://secure-www.novell.com/center/regsvc/?command=regdata&lang=en-US&version=1.0"
-        self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
+        if self.fromdir:
+            self.ncc_url_prods = os.path.join("file://", self.fromdir, "productdata.xml")
+            self.ncc_url_subs  = os.path.join("file://", self.fromdir, "listsubscriptions.xml")
+            self.ncc_repoindex = os.path.join("file://", self.fromdir, "repo/repoindex.xml")
+        else:
+            self.ncc_url_prods = "https://secure-www.novell.com/center/regsvc/?command=regdata&lang=en-US&version=1.0"
+            self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
+            self.ncc_repoindex = "https://%(authuser)s:%(authpass)s@nu.novell.com/repo/repoindex.xml"
+
         self.connect_retries = 10
 
         try:
@@ -187,16 +194,19 @@ class NCCSync(object):
           'product-class': '7260'},
           { ... },
           ...]
-        
+
         XXX: This method is tightly coupled with consolidate_subscriptions().
 
         """
-        send = ('<?xml version="1.0" encoding="UTF-8"?>'
-                '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
-                '<authuser>%(authuser)s</authuser>'
-                '<authpass>%(authpass)s</authpass>'
-                '<smtguid>%(smtguid)s</smtguid>'
-                '</productdata>\n' % self.__dict__)
+        if self.fromdir:
+            send = None
+        else:
+            send = ('<?xml version="1.0" encoding="UTF-8"?>'
+                    '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
+                    '<authuser>%(authuser)s</authuser>'
+                    '<authpass>%(authpass)s</authpass>'
+                    '<smtguid>%(smtguid)s</smtguid>'
+                    '</productdata>\n' % self.__dict__)
 
         self.print_msg("Downloading Subscription information...")
         subscriptionlist = self._get_ncc_xml(self.ncc_url_subs, send)
@@ -273,7 +283,7 @@ class NCCSync(object):
             % sql_list(subscription_count.keys()))
         q.execute()
         rhnSQL.commit()
-        
+
         return subscription_count
 
     def get_suse_products_from_ncc(self):
@@ -282,12 +292,15 @@ class NCCSync(object):
         Returns a list of dicts with all the keys the NCC has for a product
 
         """
-        send = ('<?xml version="1.0" encoding="UTF-8"?>'
-                '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
-                '<authuser>%(authuser)s</authuser>'
-                '<authpass>%(authpass)s</authpass>'
-                '<smtguid>%(smtguid)s</smtguid>'
-                '</productdata>\n' % self.__dict__)
+        if self.fromdir:
+            send = None
+        else:
+            send = ('<?xml version="1.0" encoding="UTF-8"?>'
+                    '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
+                    '<authuser>%(authuser)s</authuser>'
+                    '<authpass>%(authpass)s</authpass>'
+                    '<smtguid>%(smtguid)s</smtguid>'
+                    '</productdata>\n' % self.__dict__)
 
         self.print_msg("Downloading Product information...")
         productdata = self._get_ncc_xml(self.ncc_url_prods, send)
@@ -848,6 +861,17 @@ class NCCSync(object):
         for channel in channels:
             parent = channel.get('parent')
             if parent == 'BASE' or parent in c_labels:
+                if self.fromdir and channel.get('source_url'):
+                    uri = suseLib.URL(channel.get('source_url'))
+                    uri.scheme = "file"
+                    uri.host = None
+                    uri.port = None
+                    uri.username = None
+                    uri.password = None
+                    uri.query = None
+                    uri.fragment = None
+                    uri.path = os.path.normpath(self.fromdir + "/" + uri.path)
+                    channel.set('source_url', uri.getURL())
                 filtered.append(channel)
         return filtered
 
@@ -907,7 +931,7 @@ class NCCSync(object):
         becomes: "/SLED10-SP3-Pool/sled-10-i586"
 
         """
-        root = self._get_ncc_xml(NCCREPOS % self.__dict__)
+        root = self._get_ncc_xml(self.ncc_repoindex % self.__dict__)
 
         return [repo.get('path') for repo in root]
     get_mirrorable_repos = memoize(get_mirrorable_repos)
@@ -920,8 +944,12 @@ class NCCSync(object):
          - it is a fake channel (path is empty)
 
         """
-        channel_path = get_repo_path(channel.get('source_url'))
-        return channel_path in self.get_mirrorable_repos() or not channel_path
+        if self.fromdir:
+            channel_path = channel.get('source_url')
+            return not channel_path or os.path.exists(channel_path.split('file://')[1])
+        else:
+            channel_path = get_repo_path(channel.get('source_url'))
+            return channel_path in self.get_mirrorable_repos() or not channel_path
 
     def get_ncc_channel(self, channel_label):
         """Try getting the NCC channel for this user
