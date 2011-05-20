@@ -16,11 +16,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import sys
-import urllib
 import time
 import xml.etree.ElementTree as etree
-from xml.parsers.expat import ExpatError
 from datetime import date
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
+from xml.parsers.expat import ExpatError
+
+import pycurl
 
 from spacewalk.server import rhnSQL, taskomatic
 from spacewalk.common import rhnLog
@@ -102,7 +107,7 @@ class NCCSync(object):
             sys.exit(1)
 
     def _get_ncc_xml(self, url, send=None):
-        """Connect the ncc and return the parsed XML document
+        """Connect to ncc and return the parsed XML document
 
         :arg url: the url where the request will be sent
         :kwarg send: do a post-request when "send" is given.
@@ -110,34 +115,57 @@ class NCCSync(object):
         Returns the root XML Element of the parsed document.
 
         """
-        new_url = url
         try_counter = self.connect_retries
-        while new_url:
+        curl = pycurl.Curl()
+
+        curl.setopt(pycurl.URL, url)
+
+        if send is not None:
+            curl.setopt(pycurl.POSTFIELDS, send)
+
+        # We implement our own redirection-following, because pycurl
+        # 7.19 doesn't POST after it gets redirected. Ideally we'd be
+        # using pycurl.POSTREDIR here, but that's in 7.21.
+        curl.setopt(pycurl.FOLLOWLOCATION, False)
+
+
+        response = StringIO()
+        curl.setopt(pycurl.WRITEFUNCTION, response.write) # OIII
+
+        while True:
             try_counter -= 1
-            o = urllib.URLopener()
+            if try_counter <= 0:
+                self.error_msg("Connecting to %s has failed after %s "
+                               "tries with HTTP error code %s." %
+                               (url, self.connect_retries, status))
+                sys.exit(1)
+
             try:
-                log_debug(1, "Trying to connect to %s." % new_url)
-                f = o.open( new_url, send)
-                new_url = ""
-            except IOError, e:
-                # 302 is a redirect
-                if try_counter <= 0:
-                    self.error_msg("Connecting to %s has failed after %s "
-                                   "tries with HTTP error code %s." %
-                                   (new_url, self.connect_retries, e[1]))
-                    raise e
-                elif e[1] == 302:
-                    log_debug(1, "got redirect")
-                    new_url = e[3].dict["location"]
+                curl.perform()
+            except pycurl.error, e:
+                if e[0] == 60:
+                    self.error_msg("Peer certificate cannot be authenticated "
+                                   "with known CA certificates.")
                 else:
-                    log_debug(1, "Connecting to %s has failed with HTTP "
-                              "error code %s." % (new_url, e[1]))
+                    self.error_msg(e[1])
+                sys.exit(1)
+                
+            status = curl.getinfo(pycurl.HTTP_CODE)
+            if status == 200: # OK
+                break
+            elif status in (301, 302): # redirects
+                url = curl.getinfo(pycurl.REDIRECT_URL)
+                log_debug(1 "Got redirect to %s" % url)
+                curl.setopt(pycurl.URL, url)
+
+        # StringIO.write leaves the cursor at the end of the file
+        response.seek(0)
+
         try:
-            tree = etree.parse(f)
+            tree = etree.parse(response)
         except ExpatError:
-            self.error_msg("Could not parse XML from %s. "
-                           "Please make sure that the URL is reachable."
-                           % new_url)
+            self.error_msg("Could not parse XML from %s." % url)
+            sys.exit(1)
 
         return tree.getroot()
 
@@ -878,11 +906,9 @@ class NCCSync(object):
         becomes: "/SLED10-SP3-Pool/sled-10-i586"
 
         """
-        f = urllib.urlopen(NCCREPOS % self.__dict__)
-        tree = etree.parse(f)
-        f.close()
+        root = self._get_ncc_xml(NCCREPOS % self.__dict__)
 
-        return [repo.get('path') for repo in tree.getroot()]
+        return [repo.get('path') for repo in root]
     get_mirrorable_repos = memoize(get_mirrorable_repos)
 
     def is_mirrorable(self, channel):
