@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2009, 2010 Novell, Inc.
+# Copyright (C) 2009, 2010, 2011 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
 # it only under the terms of version 2.1 of the GNU Lesser General Public
 # License as published by the Free Software Foundation.
@@ -95,7 +95,11 @@ class NCCSync(object):
         self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
         self.connect_retries = 10
 
-        rhnSQL.initDB()
+        try:
+            rhnSQL.initDB()
+        except rhnSQL.SQLConnectError, e:
+            self.error_msg("Could not connect to the database. %s" % e)
+            sys.exit(1)
 
     def _get_ncc_xml(self, url, send=None):
         """Connect the ncc and return the parsed XML document
@@ -168,7 +172,7 @@ class NCCSync(object):
                 '<smtguid>%(smtguid)s</smtguid>'
                 '</productdata>\n' % self.__dict__)
 
-        self.print_msg("Downloading Subscription information")
+        self.print_msg("Downloading Subscription information...")
         subscriptionlist = self._get_ncc_xml(self.ncc_url_subs, send)
         subscriptions = []
         for row in subscriptionlist.findall('{%s}subscription' % self.namespace):
@@ -256,7 +260,7 @@ class NCCSync(object):
                 '<smtguid>%(smtguid)s</smtguid>'
                 '</productdata>\n' % self.__dict__)
 
-        self.print_msg("Downloading Product information")
+        self.print_msg("Downloading Product information...")
         productdata = self._get_ncc_xml(self.ncc_url_prods, send)
 
         suse_products = []
