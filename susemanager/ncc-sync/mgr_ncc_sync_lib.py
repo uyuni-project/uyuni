@@ -162,7 +162,7 @@ class NCCSync(object):
                 break
             elif status in (301, 302): # redirects
                 url = curl.getinfo(pycurl.REDIRECT_URL)
-                log_debug(1 "Got redirect to %s" % url)
+                log_debug(1, "Got redirect to %s" % url)
                 curl.setopt(pycurl.URL, url)
 
         # StringIO.write leaves the cursor at the end of the file
