@@ -15,6 +15,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
+import re
 import sys
 import time
 import os.path
@@ -38,6 +39,9 @@ CHANNEL_FAMILIES = '/usr/share/susemanager/channel_families.xml'
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
 INFINITE = 200000 # a very big number that we use for unlimited subscriptions
+
+# location of proxy credentials in yast-generated config
+YAST_PROXY = "/root/.curlrc" 
 
 def memoize(function):
     """Basic function memoizer"""
@@ -148,12 +152,34 @@ class NCCSync(object):
             try:
                 curl.perform()
             except pycurl.error, e:
-                if e[0] == 60:
+                if e[0] == 56: # Proxy requires authentication
+                    log_debug(1, e[1])
+                    # look for credentials in yast config
+                    try:
+                        f = open(YAST_PROXY)
+                    except IOError:
+                        self.error_msg("Proxy requires authentication. "
+                                       "Failed reading credentials from %s"
+                                       % YAST_PROXY)
+                        sys.exit(1)
+                    contents = f.read()
+                    try:
+                        creds = re.search('--proxy-user "([\w:]+)"',
+                                          contents).groups()[0]
+                    except AttributeError:
+                        self.error_msg("Proxy requires authentication. "
+                                       "Failed reading credentials from %s"
+                                       % YAST_PROXY)
+                        sys.exit(1)
+                    curl.setopt(pycurl.PROXYUSERPWD, creds)
+                        
+                elif e[0] == 60:
                     self.error_msg("Peer certificate cannot be authenticated "
                                    "with known CA certificates.")
+                    sys.exit(1)
                 else:
                     self.error_msg(e[1])
-                sys.exit(1)
+                    sys.exit(1)
                 
             status = curl.getinfo(pycurl.HTTP_CODE)
             if status == 200: # OK
