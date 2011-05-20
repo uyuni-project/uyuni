@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 20 14:27:28 CEST 2011 - mc@suse.de
+
+- implement disconnected population of vendor channels (bnc#674859)
+
+-------------------------------------------------------------------
 Fri May 20 13:41:22 CEST 2011 - iartarisi@suse.cz
 
 - use pycurl instead of urllib for remote requests (#694054)
