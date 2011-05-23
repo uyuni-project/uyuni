@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May 23 17:41:04 CEST 2011 -iartarisi@suse.cz
+
+- fix malformed url error from pycurl when trying to download products
+  and subscriptions with --from-dir and other minor issues
+
+-------------------------------------------------------------------
 Fri May 20 16:03:56 CEST 2011 - iartarisi@suse.cz
 
 - added proxy authentication to ncc-sync
