@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May 23 16:24:56 CEST 2011 - jrenner@suse.de
+
+- Protect web UI against Cross-Site Request Forgery (bnc#644074)
+
+-------------------------------------------------------------------
 Tue May  3 11:13:36 CEST 2011 - jrenner@suse.de
 
 - Rebranding of example search terms (bnc#682601)
