@@ -21,6 +21,7 @@ import time
 import os.path
 import xml.etree.ElementTree as etree
 from datetime import date
+from urlparse import urlparse, urljoin
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -66,6 +67,9 @@ class NCCSync(object):
         self.non_interactive = non_interactive
         self.debug = debug
         self.reset_ent_value = 10
+
+        if fromdir is not None:
+            fromdir = urljoin('file://', os.path.abspath(fromdir))
         self.fromdir = fromdir
 
         self.ncc_rhn_ent_mapping = {
@@ -101,9 +105,9 @@ class NCCSync(object):
         # self.ncc_url_prods = CFG.reg_url + "/?command=regdata&lang=en-US&version=1.0"
         # self.ncc_url_subs  = CFG.reg_url + "/?command=listsubscriptions&lang=en-US&version=1.0"
         if self.fromdir:
-            self.ncc_url_prods = os.path.join("file://", self.fromdir, "productdata.xml")
-            self.ncc_url_subs  = os.path.join("file://", self.fromdir, "listsubscriptions.xml")
-            self.ncc_repoindex = os.path.join("file://", self.fromdir, "repo/repoindex.xml")
+            self.ncc_url_prods = self.fromdir + "/productdata.xml"
+            self.ncc_url_subs  = self.fromdir + "/listsubscriptions.xml"
+            self.ncc_repoindex = self.fromdir + "/repo/repoindex.xml"
         else:
             self.ncc_url_prods = "https://secure-www.novell.com/center/regsvc/?command=regdata&lang=en-US&version=1.0"
             self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
@@ -139,9 +143,8 @@ class NCCSync(object):
         # using pycurl.POSTREDIR here, but that's in 7.21.
         curl.setopt(pycurl.FOLLOWLOCATION, False)
 
-
         response = StringIO()
-        curl.setopt(pycurl.WRITEFUNCTION, response.write) # OIII
+        curl.setopt(pycurl.WRITEFUNCTION, response.write)
 
         while True:
             try_counter -= 1
@@ -166,8 +169,8 @@ class NCCSync(object):
                         sys.exit(1)
                     contents = f.read()
                     try:
-                        creds = re.search('--proxy-user "([\w:]+)"',
-                                          contents).groups()[0]
+                        creds = re.search('--proxy-user "(\w+:\w+)"',
+                                          contents).group(1)
                     except AttributeError:
                         self.error_msg("Proxy requires authentication. "
                                        "Failed reading credentials from %s"
@@ -184,7 +187,7 @@ class NCCSync(object):
                     sys.exit(1)
                 
             status = curl.getinfo(pycurl.HTTP_CODE)
-            if status == 200: # OK
+            if status == 200 or (self.fromdir and status == 0): # OK or file
                 break
             elif status in (301, 302): # redirects
                 url = curl.getinfo(pycurl.REDIRECT_URL)
@@ -193,7 +196,6 @@ class NCCSync(object):
 
         # StringIO.write leaves the cursor at the end of the file
         response.seek(0)
-
         try:
             tree = etree.parse(response)
         except ExpatError:
@@ -880,24 +882,20 @@ class NCCSync(object):
         channels = filter(lambda c: c.get('family') in families,
                           channels_iter)
 
-        # filter out the channels whose parent isn't also in the channels list
+        # filter out the channels whose parent isn't also in the channel list
         c_labels = [c.get('label') for c in channels]
         filtered = []
         for channel in channels:
             parent = channel.get('parent')
             if parent == 'BASE' or parent in c_labels:
-                if self.fromdir and channel.get('source_url'):
-                    uri = suseLib.URL(channel.get('source_url'))
-                    uri.scheme = "file"
-                    uri.host = None
-                    uri.port = None
-                    uri.username = None
-                    uri.password = None
-                    uri.query = None
-                    uri.fragment = None
-                    uri.path = os.path.normpath(self.fromdir + "/" + uri.path)
-                    channel.set('source_url', uri.getURL())
                 filtered.append(channel)
+
+        # make the repository urls point to our local path defined in 'fromdir'
+        if self.fromdir:
+            for channel in filtered:
+                if channel.get('source_url'):
+                    path = urlparse(channel.get('source_url')).path
+                    channel.set('source_url', self.fromdir+path)
         return filtered
 
     def list_channels(self):
@@ -1150,7 +1148,6 @@ class NCCSync(object):
                                "WHERE name = :name")
         query.execute(name=channel.get('product_name'))
         return query.fetchone()[0]
-
 
     def add_channel(self, channel_label):
         """Add a new channel to the database
