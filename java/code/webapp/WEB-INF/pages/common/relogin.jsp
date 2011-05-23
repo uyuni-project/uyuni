@@ -9,6 +9,10 @@
 </head>
 <body onLoad="disableAutoComplete();formFocus('loginForm', 'username');">
     <div id="relogin_page"> <!-- Trying to make relogin page look more like login -->
+    <style> <%-- Rather ugly hack, but at the time being I don't see any other way to do this without breaking the backwards-compatibility --%>
+	.sidebar{display:none}
+	.page-content{padding-left:0;border-left:none}
+    </style> <%-- End of hack --%>
     
 <rhn:require acl="not user_authenticated()">
 <c:if test="${requestScope.hasExpired != 'true'}">
