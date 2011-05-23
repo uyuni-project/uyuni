@@ -26,7 +26,7 @@ from server_history import History
 from server_solarispatches import SolarisPatches
 from server_suse import SuseData
 
-from spacewalk.common.UserDictCase import UserDictCase
+from rhn.UserDictCase import UserDictCase
 from spacewalk.server import rhnSQL
 
 class ServerWrapper(Packages, Hardware, History, SolarisPatches):

@@ -12,7 +12,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 1.5.3
+Version: 1.5.4
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -169,6 +169,9 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 %endif
 
 %changelog
+* Tue May 17 2011 Miroslav Suchý 1.5.4-1
+- migrate .htaccess files to apache core configuration
+
 * Tue May 03 2011 Jan Pazdziora 1.5.3-1
 - We restrict access to some files that were too open in the past (some of them
   are not tracked by rpm).

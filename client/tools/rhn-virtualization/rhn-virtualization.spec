@@ -3,14 +3,14 @@
 %define cron_dir %{_sysconfdir}/cron.d
 
 Name:           rhn-virtualization 
-Summary:        RHN/Spacewalk action support for virualization
+Summary:        RHN/Spacewalk action support for virtualization
 
 Group:          System Environment/Base
 License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 
-Version:        5.4.22
+Version:        5.4.23
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
@@ -123,24 +123,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{rhn_dir}/actions
 %dir %{rhn_dir}/virtualization
 %dir %{rhn_conf_dir}
-%{rhn_dir}/virtualization/__init__.py
-%{rhn_dir}/virtualization/__init__.pyc
-%{rhn_dir}/virtualization/__init__.pyo
-%{rhn_dir}/virtualization/batching_log_notifier.py
-%{rhn_dir}/virtualization/batching_log_notifier.pyc
-%{rhn_dir}/virtualization/batching_log_notifier.pyo
-%{rhn_dir}/virtualization/constants.py
-%{rhn_dir}/virtualization/constants.pyc
-%{rhn_dir}/virtualization/constants.pyo
-%{rhn_dir}/virtualization/errors.py
-%{rhn_dir}/virtualization/errors.pyc
-%{rhn_dir}/virtualization/errors.pyo
-%{rhn_dir}/virtualization/notification.py
-%{rhn_dir}/virtualization/notification.pyc
-%{rhn_dir}/virtualization/notification.pyo
-%{rhn_dir}/virtualization/util.py
-%{rhn_dir}/virtualization/util.pyc
-%{rhn_dir}/virtualization/util.pyo
+%{rhn_dir}/virtualization/__init__.py*
+%{rhn_dir}/virtualization/batching_log_notifier.py*
+%{rhn_dir}/virtualization/constants.py*
+%{rhn_dir}/virtualization/errors.py*
+%{rhn_dir}/virtualization/notification.py*
+%{rhn_dir}/virtualization/util.py*
 %doc LICENSE
 
 %files host
@@ -150,49 +138,29 @@ rm -rf $RPM_BUILD_ROOT
 %{_initrddir}/rhn-virtualization-host
 %{_sbindir}/rcrhn-virtualization-host
 %config(noreplace) %attr(644,root,root) %{cron_dir}/rhn-virtualization.cron
-%{rhn_dir}/virtualization/domain_config.py
-%{rhn_dir}/virtualization/domain_config.pyc
-%{rhn_dir}/virtualization/domain_control.py
-%{rhn_dir}/virtualization/domain_control.pyc
-%{rhn_dir}/virtualization/domain_directory.py
-%{rhn_dir}/virtualization/domain_directory.pyc
-%{rhn_dir}/virtualization/get_config_value.py
-%{rhn_dir}/virtualization/get_config_value.pyc
-%{rhn_dir}/virtualization/init_action.py
-%{rhn_dir}/virtualization/init_action.pyc
-%{rhn_dir}/virtualization/poller.py
-%{rhn_dir}/virtualization/poller.pyc
-%{rhn_dir}/virtualization/schedule_poller.py
-%{rhn_dir}/virtualization/schedule_poller.pyc
-%{rhn_dir}/virtualization/poller_state_cache.py
-%{rhn_dir}/virtualization/poller_state_cache.pyc
-%{rhn_dir}/virtualization/start_domain.py
-%{rhn_dir}/virtualization/start_domain.pyc
-%{rhn_dir}/virtualization/state.py
-%{rhn_dir}/virtualization/state.pyc
-%{rhn_dir}/virtualization/support.py
-%{rhn_dir}/virtualization/support.pyc
-%{rhn_dir}/actions/virt.py
-%{rhn_dir}/actions/virt.pyc
-%{rhn_dir}/virtualization/domain_config.pyo
-%{rhn_dir}/virtualization/domain_control.pyo
-%{rhn_dir}/virtualization/domain_directory.pyo
-%{rhn_dir}/virtualization/get_config_value.pyo
-%{rhn_dir}/virtualization/init_action.pyo
-%{rhn_dir}/virtualization/poller.pyo
-%{rhn_dir}/virtualization/schedule_poller.pyo
-%{rhn_dir}/virtualization/poller_state_cache.pyo
-%{rhn_dir}/virtualization/start_domain.pyo
-%{rhn_dir}/virtualization/state.pyo
-%{rhn_dir}/virtualization/support.pyo
-%{rhn_dir}/virtualization/localvdsm.py
-%{rhn_dir}/virtualization/localvdsm.pyc
-%{rhn_dir}/virtualization/localvdsm.pyo
-%{rhn_dir}/actions/virt.pyo
+%{rhn_dir}/virtualization/domain_config.py*
+%{rhn_dir}/virtualization/domain_control.py*
+%{rhn_dir}/virtualization/domain_directory.py*
+%{rhn_dir}/virtualization/get_config_value.py*
+%{rhn_dir}/virtualization/init_action.py*
+%{rhn_dir}/virtualization/poller.py*
+%{rhn_dir}/virtualization/schedule_poller.py*
+%{rhn_dir}/virtualization/poller_state_cache.py*
+%{rhn_dir}/virtualization/start_domain.py*
+%{rhn_dir}/virtualization/state.py*
+%{rhn_dir}/virtualization/support.py*
+%{rhn_dir}/actions/virt.py*
+%{rhn_dir}/virtualization/localvdsm.py*
 %doc LICENSE
 
 
 %changelog
+* Thu May 19 2011 Miroslav Suchý 5.4.23-1
+- simplify spec
+- rhn-virtualization-host.noarch: E: incoherent-subsys /etc/rc.d/init.d/rhn-
+  virtualization-host rhn-virtualization
+- fix spelling error
+
 * Fri Apr 15 2011 Jan Pazdziora 5.4.22-1
 - build rhn-virtualization on SUSE (mc@suse.de)
 

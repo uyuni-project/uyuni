@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.5.8
+Version: 1.5.12
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -122,7 +122,7 @@ Provides:  rhn-pxt = 5.3.0
 %description -n spacewalk-pxt
 This package is the core software of the new Spacewalk site.  It is responsible
 for HTML, XML, WML, HDML, and SOAP output of data.  It is more or less
-equlivalent to things like Apache::ASP and Mason
+equivalent to things like Apache::ASP and Mason
 
 
 %package -n spacewalk-sniglets
@@ -254,6 +254,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
 %dir /etc/rhn
 %attr(750,root,%{apache_group}) %dir /etc/rhn/default
+%doc LICENSE
 
 %files -n spacewalk-dobby
 %defattr(644,root,root,755)
@@ -291,10 +292,23 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{www_path}/www/htdocs
 %endif
 %{www_path}/www/htdocs/*
-%{www_path}/www/htdocs/.htaccess
 
 # $Id$
 %changelog
+* Thu May 19 2011 Michael Mraka <michael.mraka@redhat.com> 1.5.12-1
+- made queries PostgreSQL compatible
+
+* Tue May 17 2011 Miroslav Suchý 1.5.11-1
+- spacewalk-pxt.noarch: W: spelling-error %description -l en_US equlivalent ->
+  equivalent, equivalence, univalent (msuchy@redhat.com)
+
+* Tue May 17 2011 Miroslav Suchý 1.5.10-1
+- add GPLv2 LICENSE
+- migrate .htaccess files to apache core configuration
+
+* Mon May 16 2011 Miroslav Suchý 1.5.9-1
+- cleanup - removing old files, and unused sections in .htaccess
+
 * Tue May 10 2011 Jan Pazdziora 1.5.8-1
 - Fix remote command schedule date on postgresql (Ville.Salmela@csc.fi)
 

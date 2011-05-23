@@ -21,6 +21,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -31,6 +32,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +43,8 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Rev$
  */
 public class ScheduleDetailAction extends RhnAction {
+
+    static final String SCHEDULE_NAME_REGEX = "^[a-z\\d][a-z\\d\\-\\.\\_]*$";
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -87,7 +91,7 @@ public class ScheduleDetailAction extends RhnAction {
         RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker(
                 request, "date", null);
 
-        if (picker.isDisabled()) {
+        if (picker.isDisabled() || StringUtils.isEmpty(picker.getCronEntry())) {
             if (scheduleId == null) {
                 prepDropdowns(ctx);
                 createErrorMessage(request, "message.scheduledisabled", null);
@@ -99,34 +103,67 @@ public class ScheduleDetailAction extends RhnAction {
                     mapping.findForward("disable"), params);
         }
 
-        String scheduleName = form.getString("schedulename");
         String bunchName = form.getString("bunch");
+        String scheduleName = form.getString("schedulename");
+        if (!Pattern.compile(SCHEDULE_NAME_REGEX).matcher(scheduleName).find()) {
+            createErrorMessage(request, "schedule.jsp.schedulenameregex", null);
+
+            return getStrutsDelegate().forwardParams(
+                    mapping.findForward("default"), params);
+        }
 
         try {
             TaskomaticApi tapi = new TaskomaticApi();
+            // check, whether there's not already a schedule of this name
+            if (scheduleId == null && tapi.satScheduleActive(scheduleName, loggedInUser)) {
+                createErrorMessage(request,
+                        "schedule.jsp.schedulenameinuse", scheduleName);
+                return getStrutsDelegate().forwardParams(
+                        mapping.findForward("default"), params);
+            }
+            // set the schedule
             tapi.scheduleSatBunch(loggedInUser,
                     scheduleName,
                     bunchName,
                     picker.getCronEntry()
                     );
-            if (ctx.hasParam("create_button")) {
-                createSuccessMessage(request, "message.schedulecreated", scheduleName);
-            }
-            else {
-                createSuccessMessage(request, "message.scheduleupdated", scheduleName);
-            }
+            // check, whether it was created
             Map schedule = tapi.lookupScheduleByBunchAndLabel(loggedInUser, bunchName,
                     scheduleName);
-            params.put("schid", schedule.get("id"));
-            return getStrutsDelegate().forwardParams(
-                    mapping.findForward("success"), params);
+            if (schedule != null) {
+                if (ctx.hasParam("create_button")) {
+                    createSuccessMessage(request, "message.schedulecreated", scheduleName);
+                }
+                else {
+                    createSuccessMessage(request, "message.scheduleupdated", scheduleName);
+                }
+                params.put("schid", schedule.get("id"));
+                return getStrutsDelegate().forwardParams(
+                        mapping.findForward("success"), params);
+            }
+            // something went wrong
+            tapi.unscheduleSatTask(scheduleName, loggedInUser);
+            createErrorMessage(request,
+                    "schedule.jsp.schedulefailed", scheduleName);
         }
         catch (TaskomaticApiException e) {
-            createErrorMessage(request,
-                    "repos.jsp.message.taskomaticdown", null);
-            return getStrutsDelegate().forwardParams(
-                    mapping.findForward("default"), params);
+            if (e.getMessage().contains("InvalidParamException")) {
+                if (e.getMessage().contains("Cron trigger")) {
+                    createErrorMessage(request,
+                            "repos.jsp.message.invalidcron", picker.getCronEntry());
+                }
+                else {
+                    createErrorMessage(request,
+                            "schedule.jsp.schedulefailed", scheduleName);
+                }
+            }
+            else {
+                createErrorMessage(request,
+                        "repos.jsp.message.taskomaticdown", null);
+            }
         }
+        return getStrutsDelegate().forwardParams(
+                mapping.findForward("default"), params);
     }
 
     private Boolean isActive(Map schedule) {

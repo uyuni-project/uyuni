@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.5.28
+Version: 1.5.34
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz 
@@ -620,6 +620,30 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri May 20 2011 Tomas Lestach <tlestach@redhat.com> 1.5.34-1
+- 659138 - extend schedule creation error handling (tlestach@redhat.com)
+- 659138 - do not forward parameter map in case of success
+  (tlestach@redhat.com)
+- 706399 - "<" is not the best thing in xml (tlestach@redhat.com)
+
+* Fri May 20 2011 Jan Pazdziora 1.5.33-1
+- 706399 - replacing rhnServerNeededView with custom subselect
+
+* Thu May 19 2011 Tomas Lestach <tlestach@redhat.com> 1.5.32-1
+- 659138 - fix Custom Quartz format error handling (tlestach@redhat.com)
+- 659138 - fix repeat-task-picker input tag (tlestach@redhat.com)
+
+* Wed May 18 2011 Tomas Lestach <tlestach@redhat.com> 1.5.31-1
+- 659138 - fix message on the schedule create page (tlestach@redhat.com)
+
+* Tue May 17 2011 Tomas Lestach <tlestach@redhat.com> 1.5.30-1
+- 643905 - make sure hibernate doesn't use cached kickstart trees, but takes
+  actual DB state (tlestach@redhat.com)
+
+* Mon May 16 2011 Michael Mraka <michael.mraka@redhat.com> 1.5.29-1
+- 704446 - removed unnecessary cast to string
+- fixed SQL typo
+
 * Fri May 13 2011 Jan Pazdziora 1.5.28-1
 - introduce NoSuchConfigFilePathException for configchannel and server.config
   APIs (tlestach@redhat.com)

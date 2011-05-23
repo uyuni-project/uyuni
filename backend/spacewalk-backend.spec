@@ -19,7 +19,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.5.21
+Version: 1.5.27
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -393,7 +393,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/rhnTB.py*
 %{pythonrhnroot}/common/rhnRepository.py*
 %{pythonrhnroot}/common/rhnTranslate.py*
-%{pythonrhnroot}/common/UserDictCase.py*
 %{pythonrhnroot}/common/RPC_Base.py*
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 # config files
@@ -750,6 +749,34 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri May 20 2011 Jan Pazdziora 1.5.27-1
+- Removing %{pythonrhnroot}/common/UserDictCase.py* from %files.
+
+* Fri May 20 2011 Michael Mraka <michael.mraka@redhat.com> 1.5.26-1
+- package path should contain epoch
+- 694735 - incremental exports: honor rhn_date / sync_date for ks files
+
+* Fri May 20 2011 Michael Mraka <michael.mraka@redhat.com> 1.5.25-1
+- merged backend/common/UserDictCase.py into rhnlib/rhn/UserDictCase.py
+
+* Thu May 19 2011 Michael Mraka <michael.mraka@redhat.com> 1.5.24-1
+- 705002 - made query pg compatible
+
+* Wed May 18 2011 Miroslav Suchý 1.5.23-1
+- do not remove /var/satellite/redhat directory, satellite-sync expect it
+- add missing function to pg Cursor
+- 217531 - fix package count
+- Refactoring of make_evr made MakeEvrError unused, removing.
+- Removal of create_channel_families and create_channels made InvalidEntryError
+  unused, removing.
+- 702684 - made MPM_Header compatible with RPM_Header
+
+* Mon May 16 2011 Michael Calmer <mc@suse.de> 1.5.22-1
+- inherit from DependencyItem like other dep classes (mc@suse.de)
+- test if checksum_type exists before accessing it (mc@suse.de)
+- use fix_encoding method (mc@suse.de)
+- fix encoding of package summary and description (mc@suse.de)
+
 * Fri May 13 2011 Jan Pazdziora 1.5.21-1
 - 698567 - give the transaction that we have to use to read the file header a
   sandbox database.
