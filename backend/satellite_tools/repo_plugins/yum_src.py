@@ -18,6 +18,7 @@ import yum
 import shutil
 import sys
 import os
+import re
 from yum import config
 from yum.update_md import UpdateMetadata
 from spacewalk.satellite_tools.reposync import ContentPackage, ChannelException, ChannelTimeoutException
@@ -75,7 +76,7 @@ class ContentSource:
         warnings.restore()
         for burl in repo.baseurl:
           repo.gpgkey = [burl + '/repodata/repomd.xml.key']
- 
+
         repo.setup(False, None, gpg_import_func=self.getKeyForRepo, confirm_func=self.askImportKey)
         self.initgpgdir( repo.gpgdir )
         sack = repo.getPackageSack()
@@ -83,7 +84,9 @@ class ContentSource:
             sack.populate(repo, 'metadata', None, 0)
         except Errors.RepoError,e :
             if "No more mirrors" in str(e):
-                raise ChannelTimeoutException('No more mirrors to try.')
+                reqFile = re.search('failure:\s+(.+)\s+from',
+                                    str(e)).groups()[0]
+                raise ChannelTimeoutException("Retrieving '%s' failed: File not found in repository '%s'" % (reqFile, repo))
             else:
                 raise
 
@@ -111,7 +114,7 @@ class ContentSource:
 
     def _clean_cache(self, directory):
         shutil.rmtree(directory, True)
-        
+
     def get_updates(self):
       if not self.repo.repoXML.repoData.has_key('updateinfo'):
         return []
@@ -119,8 +122,8 @@ class ContentSource:
       try:
           um.add(self.repo, all=True)
       except Errors.NoMoreMirrorsRepoError:
-          raise ChannelTimeoutException('No more mirrors to try.')
-          
+	  raise ChannelTimeoutException("Retrieving updateinfo failed: File not found")
+
       return um.notices
 
     def getKeyForRepo(self, repo, callback=None):
@@ -132,24 +135,16 @@ class ContentSource:
         @param callback: Callback function to use for asking for verification
                           of a key. Takes a dictionary of key info.
         """
-        keyurls = []
-        if self.interactive:
-            keyurls = repo.gpgkey
+        keyurls = repo.gpgkey
         key_installed = False
         for keyurl in keyurls:
             keys = self._retrievePublicKey(keyurl, repo)
             for info in keys:
                 # Check if key is already installed
                 if info['keyid'] in misc.return_keyids_from_pubring(repo.gpgdir):
-                    #print('GPG key at %s (0x%s) is already imported' % (
-                    #    keyurl, info['hexkeyid']))
                     continue
 
                 # Try installing/updating GPG key
-                #print('Importing GPG key 0x%s "%s" from %s' %
-                #                     (info['hexkeyid'],
-                #                     to_unicode(info['userid']),
-                #                     keyurl.replace("file://","")))
                 rc = False
                 if callback:
                     rc = callback({'repo':repo, 'userid':info['userid'],
@@ -159,8 +154,7 @@ class ContentSource:
 
 
                 if not rc:
-                    #raise ChannelException, "Not installing key for repo %s" % repo
-                    continue
+                    raise ChannelException, "GPG key(0x%s '%s') for repo %s rejected" % (info['hexkeyid'],info['userid'],repo)
 
                 # Import the key
                 result = misc.import_key_to_pubring(info['raw_key'], info['hexkeyid'], gpgdir=repo.gpgdir)
@@ -170,7 +164,6 @@ class ContentSource:
                 if not result:
                     raise ChannelException, 'Key import failed'
 
-                #print('Key imported successfully')
                 key_installed = True
 
         if not key_installed:
@@ -187,8 +180,6 @@ class ContentSource:
         Returns a list of dicts with all the keyinfo
         """
         key_installed = False
-
-        #print( 'Retrieving GPG key from %s') % keyurl
 
         # Go get the GPG key from the given URL
         try:
@@ -241,7 +232,7 @@ class ContentSource:
     def initgpgdir(self, gpgdir):
       if not os.path.exists(gpgdir):
         os.makedirs(gpgdir)
- 
+
       ts = initReadOnlyTransaction("/")
       for hdr in ts.dbMatch('name', 'gpg-pubkey'):
         if hdr['description'] != "":
