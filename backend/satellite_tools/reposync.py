@@ -151,23 +151,20 @@ class RepoSync:
                 self.import_packages(plugin, url.getURL())
                 self.import_updates(plugin, url.getURL())
             except ChannelTimeoutException, e:
-                self.print_msg("Repository server is not responding.")
-                if taskomatic.schedule_single_sat_repo_sync(int(self.channel['id'])):
-                    self.print_msg("Retriggered reposync.")
-                else:
-                    self.print_msg("Failed to retrigger reposync.")
+                self.print_msg(e)
+                self.sendErrorMail(str(e))
                 sys.exit(1)
             except ChannelException, e:
                 self.print_msg("ChannelException: %s" % e)
-                self.sendErrorMail(fetchTraceback())
+                self.sendErrorMail(str(e))
                 sys.exit(1)
             except Errors.YumGPGCheckError, e:
                 self.print_msg("YumGPGCheckError: %s" % e)
-                self.sendErrorMail(fetchTraceback())
+                self.sendErrorMail("YumGPGCheckError: %s" % e)
                 sys.exit(1)
             except Errors.RepoError, e:
                 self.print_msg("RepoError: %s" % e)
-                self.sendErrorMail(fetchTraceback())
+                self.sendErrorMail("RepoError: %s" % e)
                 sys.exit(1)
             except Errors.RepoMDError, e:
                 if "primary not available" in str(e):
@@ -175,13 +172,13 @@ class RepoSync:
                     sys.exit(0)
                 else:
                     self.print_msg("RepoMDError: %s" % e)
-                    self.sendErrorMail(fetchTraceback())
+                    self.sendErrorMail("RepoMDError: %s" % e)
                 sys.exit(1)
             except:
                 self.print_msg("Unexpected error: %s" % sys.exc_info()[0])
                 self.print_msg("%s" % traceback.format_exc())
                 self.sendErrorMail(fetchTraceback())
-              	sys.exit(1)
+                sys.exit(1)
 
         if self.regen:
             taskomatic.add_to_repodata_queue_for_channel_package_subscription(
