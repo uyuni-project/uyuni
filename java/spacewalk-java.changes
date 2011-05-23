@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May 23 17:18:33 CEST 2011 - jrenner@suse.de
+
+- Protect web UI against Cross-Site Request Forgery (bnc#644074)
+
+-------------------------------------------------------------------
 Fri May  6 10:11:52 CEST 2011 - ug@suse.de
 
 - set the architecture for virtual machines in cobbler
