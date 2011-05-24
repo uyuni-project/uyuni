@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 24 15:31:16 CEST 2011 - mc@suse.de
+
+- some wierd packages have files in iso8859-1 not utf-8
+- fix encoding of summary and description of a package if it is
+  wrong
+
+-------------------------------------------------------------------
 Mon May 23 17:22:18 CEST 2011 - mc@suse.de
 
 - Improve error message when gpg key is wrong or missing
