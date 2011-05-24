@@ -13,7 +13,7 @@ Mon May 23 17:22:18 CEST 2011 - mc@suse.de
 - do not trigger a resync is file is missing, can cause endless loop
   (bnc#695392)
 - do not send tracebacks as email if reposync failed. Send only
-  the error message.
+  the error message. (bnc#691579)
 
 -------------------------------------------------------------------
 Mon May  9 10:23:05 CEST 2011 - mc@suse.de
