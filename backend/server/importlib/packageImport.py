@@ -488,6 +488,8 @@ class PackageImport(ChannelPackageSubscription):
             object.id = object.first_package.id
 
     def _fix_encoding(self, text):
+        if text is None:
+            return None
         try:
             return text.decode('utf8')
         except UnicodeDecodeError:
