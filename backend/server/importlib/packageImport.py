@@ -241,7 +241,8 @@ class PackageImport(ChannelPackageSubscription):
         # Process files too
         fileList = package['files']
         for f in fileList:
-            nv = (f['name'], '')
+            filename = self._fix_encoding(f['name'])
+            nv = (filename, '')
             del f['name']
             f['capability'] = nv
             if not self.capabilities.has_key(nv):
