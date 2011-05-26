@@ -51,6 +51,7 @@ public class BootstrapConfigAction extends BaseConfigAction {
     public static final String HTTP_PROXY = "http-proxy";
     public static final String HTTP_PROXY_USERNAME = "http-proxy-username";
     public static final String HTTP_PROXY_PASSWORD = "http-proxy-password";
+    public static final String CSRF_TOKEN = "csrfToken";
 
 
     /** {@inheritDoc} */
@@ -97,6 +98,8 @@ public class BootstrapConfigAction extends BaseConfigAction {
             }
         }
         else {
+            request.setAttribute(CSRF_TOKEN,
+                request.getSession().getAttribute("csrf_token"));
             String docroot = Config.get().getString("documentroot");
             form.set(HOSTNAME, IDN.toUnicode(
                 Config.get().getString(ConfigDefaults.JABBER_SERVER)));
