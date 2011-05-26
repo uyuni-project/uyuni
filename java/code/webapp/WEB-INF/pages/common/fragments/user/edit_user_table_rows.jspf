@@ -2,7 +2,7 @@
 
   <tr>
     <th><bean:message key="username.displayname"/></th>
-    <td><c:out escapeXml="true" value="${user.login}" /></td>
+    <td id="login"><c:out escapeXml="true" value="${user.login}" /></td>
   </tr>
 
   <tr>
@@ -45,7 +45,14 @@
   <tr>
     <th><bean:message key="password.displayname"/></th>
     <td>
-      <html:password property="desiredpassword" size="20" maxlength="${passwordLength}"/>
+      <script language="javascript" src="/javascript/pwstrengthmeter.js"></script>
+      <div style="position:relative;">
+        <html:password property="desiredpassword" size="20" maxlength="${passwordLength}" styleId="desiredpass" onkeyup="checkPassword();"/>
+        <span id="pwstrength-result" style="position:absolute; left:165px; top:8px; font-size:11px;"></span><br/>
+        <span id="pwstrength-graybar" style="position:absolute; left:2px; top:30px; width:155px; height:4px; background:#DDDDDD;"></span>
+        <span id="pwstrength-colorbar" style="position:absolute; left:2px; top:30px; width:0px; height:4px; background-image: url(/img/pwstrength.png);"></span>
+        <span id="pwstrength-percent" style="position:absolute; left:165px; top:24px; font-size:11px;">0%</span>
+      </div>
     </td>
   </tr>
   <tr>
