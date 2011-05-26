@@ -50,6 +50,7 @@ public abstract class BaseCryptoKeyEditAction extends RhnAction {
     public static final String CONTENTS = "contents";
     public static final String TYPE = "type";
     public static final String TYPES = "types";
+    public static final String CSRF_TOKEN = "csrfToken";
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -115,6 +116,8 @@ public abstract class BaseCryptoKeyEditAction extends RhnAction {
                 form.set(DESCRIPTION, cmd.getCryptoKey().getDescription());
             }
             form.set(TYPE, cmd.getType());
+            request.setAttribute(CSRF_TOKEN,
+                request.getSession().getAttribute("csrf_token"));
         }
         return retval;
     }

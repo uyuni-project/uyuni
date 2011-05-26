@@ -42,6 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class BaseAddFilesAction extends RhnAction {
 
     public static final String MAX_SIZE = "maxbytes";
+    public static final String CSRF_TOKEN = "csrfToken";
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -62,6 +63,8 @@ public abstract class BaseAddFilesAction extends RhnAction {
             }
         }
         else {
+            request.setAttribute(CSRF_TOKEN,
+                request.getSession().getAttribute("csrf_token"));
             cff.setDefaults();
         }
         return getStrutsDelegate().forwardParams(

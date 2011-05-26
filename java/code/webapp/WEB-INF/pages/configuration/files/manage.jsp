@@ -54,7 +54,7 @@
 <bean:message key="manage.jsp.uploadsummary" arg0="${max_size}"/>
 </p>
 
-<html:form method="post" action="/configuration/file/ManageRevisionSubmit.do?cfid=${file.id}"
+<html:form method="post" action="/configuration/file/ManageRevisionSubmit.do?cfid=${file.id}&csrf_token=${csrfToken}"
            enctype="multipart/form-data">
   <rhn:csrf />
   <table class="details">

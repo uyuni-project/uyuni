@@ -13,7 +13,7 @@
 <!-- Upload file to channel  -->
 <h2><bean:message key="addfiles.jsp.upload-link" /> </h2>
 <html:form
-	action="/configuration/ChannelUploadFiles.do?ccid=${ccid}"
+	action="/configuration/ChannelUploadFiles.do?ccid=${ccid}&csrf_token=${csrfToken}"
 	enctype="multipart/form-data">
   <rhn:csrf />
   <rhn:submitted />
