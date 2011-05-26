@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 26 16:38:09 CEST 2011 - jrenner@suse.de
+
+- Add token into POST url for multipart forms (bnc#644074)
+
+-------------------------------------------------------------------
 Tue May 24 17:56:17 CEST 2011 - jrenner@suse.de
 
 - Prevent from phishing attacks via 'url_bounce' (bnc#644082)
