@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 26 17:02:07 CEST 2011 - jrenner@suse.de
+
+- Integrate password strength meter in webapp (bnc#685551/fate#312398)
+
+-------------------------------------------------------------------
 Thu May 26 16:38:09 CEST 2011 - jrenner@suse.de
 
 - Add token into POST url for multipart forms (bnc#644074)
