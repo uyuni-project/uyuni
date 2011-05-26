@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 26 11:59:54 CEST 2011 - jrenner@suse.de
+
+- Integrate password strength meter in webapp (bnc#685551/fate#312398)
+
+-------------------------------------------------------------------
 Tue May 24 17:48:59 CEST 2011 - jrenner@suse.de
 
 - Prevent from phishing attacks via 'url_bounce' (bnc#644082)
