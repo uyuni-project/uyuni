@@ -4,9 +4,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <html:xhtml/>
 <html>
+<link rel="stylesheet" type="text/css" href="/css/pwstrengthmeter.css" />
 <%--  disableAutoComplete() huck added to prevent certain browsers from exposing sensitive data --%>
 <body onLoad="disableAutoComplete();">
 <script language="javascript" src="/javascript/display.js"></script>
+<script language="javascript" src="/javascript/pwstrengthmeter.js"></script>
 
 <%@ include file="/WEB-INF/pages/common/fragments/user/user_attribute_sizes.jspf"%>
 
@@ -41,14 +43,20 @@
     <tr>
       <th><label for="login"><rhn:required-field key="desiredlogin"/>:</label></th>
       <td>
-        <html:text property="login" size="15" maxlength="${loginLength}" styleId="login"/>
+        <html:text property="login" size="15" maxlength="${loginLength}" styleId="login" onkeyup="checkPassword();"/>
       </td>
     </tr>
     <tr>
       <th><label for="desiredpass"><bean:message key="desiredpass" />
-       <span name="password-asterisk" class="required-form-field">*</span>:</th></label>
+       <span name="password-asterisk" class="required-form-field">*</span>:</label></th>
       <td>
-        <html:password property="desiredpassword" size="15" maxlength="${passwordLength}"/>
+        <div class="pwstrength-container">
+          <html:password property="desiredpassword" size="15" maxlength="${passwordLength}" styleId="desiredpass" onkeyup="checkPassword();"/>
+          <span class="pwstrength-result" id="pwstrength-result">Enter password</span><br/>
+          <span class="pwstrength-graybar" id="pwstrength-graybar"></span>
+          <span class="pwstrength-colorbar" id="pwstrength-colorbar"></span>
+          <span class="pwstrength-percent" id="pwstrength-percent">0%</span>
+        </div>
       </td>
     </tr>
     <tr>
