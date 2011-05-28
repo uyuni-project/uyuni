@@ -273,7 +273,7 @@ class Server(ServerWrapper):
         where sc.server_id = :server_id
           and sc.channel_id = c.id
           and c.parent_channel IS NULL
-          and sysdate - c.end_of_life > 0
+          and current_timestamp - c.end_of_life > 0
         """)
         h.execute(server_id = self.getid())
         ret = h.fetchone_dict()

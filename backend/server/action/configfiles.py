@@ -36,7 +36,7 @@ _query_upload_files = rhnSQL.Statement("""
 _query_mtime_upload_info = rhnSQL.Statement("""
     select TO_CHAR(start_date, 'YYYY-MM-DD HH24:MI:SS') as start_date,
            TO_CHAR(end_date, 'YYYY-MM-DD HH24:MI:SS') as end_date,
-           TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS') as now,
+           TO_CHAR(current_timestamp, 'YYYY-MM-DD HH24:MI:SS') as now,
            import_contents
       from rhnActionConfigDate
      where action_id = :action_id

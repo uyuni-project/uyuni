@@ -230,10 +230,10 @@ def checkin(server_id, commit=1, check_for_abuse=1):
         return 1
     # now check for abusers
     h = rhnSQL.prepare("""
-    select s.name, si.checkin_counter - ((sysdate - s.created) * 100) ticks
+    select s.name, si.checkin_counter - ((current_timestamp - s.created) * 100) ticks
     from rhnServer s, rhnServerInfo si
     where s.id = si.server_id
-    and sysdate - s.created > 7
+    and current_timestamp - s.created > 7
     and s.id = :server_id
     """)
     h.execute(server_id = server_id)
