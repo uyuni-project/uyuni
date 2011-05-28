@@ -359,7 +359,7 @@ EOQ
 UPDATE rhnKickstartScript
    SET interpreter = :interpreter 
        , data = :script_data 
-       , modified = sysdate
+       , modified = current_timestamp
    WHERE 1=1
    AND   kickstart_id = :ksid
    AND   script_type = :stype

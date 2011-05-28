@@ -117,7 +117,7 @@ SELECT COUNT(DISTINCT CPN.name_id||CPN.package_arch_id)
                 WHERE S.org_id = :org_id
                   AND S.server_arch_id = SCAC.server_arch_id
                   AND SCAC.channel_arch_id = UACh.channel_arch_id))
-   AND  (UACh.end_of_life is NULL OR UACh.end_of_life > sysdate)
+   AND  (UACh.end_of_life is NULL OR UACh.end_of_life > current_timestamp)
 ORDER BY rhn_channel.channel_priority(UACh.parent_or_self_id), UACh.parent_or_self_id DESC, UACh.channel_depth, 
          UPPER(UACh.channel_name)
   </query>
@@ -152,7 +152,7 @@ SELECT 1
                 WHERE S.org_id = :org_id
                   AND S.server_arch_id = SCAC.server_arch_id
                   AND SCAC.channel_arch_id = UACh.channel_arch_id))
-   AND  (UACh.end_of_life is NULL OR UACh.end_of_life > sysdate)
+   AND  (UACh.end_of_life is NULL OR UACh.end_of_life > current_timestamp)
 ORDER BY  rhn_channel.channel_priority(UACh.parent_or_self_id), UACh.parent_or_self_id, UACh.channel_depth, UPPER(UACh.channel_name)
   </query>
 </mode>
@@ -249,9 +249,9 @@ SELECT COUNT(DISTINCT CPN.name_id||CPN.package_arch_id)
   FROM  rhnChannel C,
         rhnUserAvailableChannels UACh
  WHERE  UACh.user_id = :user_id
-   AND  (UACh.end_of_life is NULL OR UACh.end_of_life > sysdate)
+   AND  (UACh.end_of_life is NULL OR UACh.end_of_life > current_timestamp)
    AND  UACh.channel_id = C.id
-   AND  NOT EXISTS (SELECT 1 FROM rhnChannel WHERE id = C.parent_channel AND end_of_life &lt;= sysdate)
+   AND  NOT EXISTS (SELECT 1 FROM rhnChannel WHERE id = C.parent_channel AND end_of_life &lt;= current_timestamp)
 ORDER BY  rhn_channel.channel_priority(UACh.parent_or_self_id), UACh.parent_or_self_id, UACh.channel_depth, UPPER(UACh.channel_name)
   </query>
   <elaborator name="visible_server_count"/>
@@ -277,9 +277,9 @@ SELECT COUNT(DISTINCT CPN.name_id||CPN.package_arch_id)
         rhnUserAvailableChannels UACh
  WHERE  UACh.user_id = :user_id
    AND  UACh.channel_id = C.id
-   AND  ( UACh.end_of_life &lt;= sysdate
+   AND  ( UACh.end_of_life &lt;= current_timestamp
           OR
-          EXISTS (SELECT 1 FROM rhnChannel WHERE id = C.parent_channel AND end_of_life &lt;= sysdate)
+          EXISTS (SELECT 1 FROM rhnChannel WHERE id = C.parent_channel AND end_of_life &lt;= current_timestamp)
         )
 ORDER BY  rhn_channel.channel_priority(UACh.parent_or_self_id), UACh.parent_or_self_id, UACh.channel_depth, UPPER(UACh.channel_name)
   </query>

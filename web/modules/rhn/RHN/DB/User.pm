@@ -1534,7 +1534,7 @@ sub mark_log_in {
 
   delete $self->{__pref_cache__}->{last_logged_in};
   my $dbh = RHN::DB->connect;
-  my $sth = $dbh->prepare("UPDATE rhnUserInfo SET last_logged_in = sysdate WHERE user_id = ?");
+  my $sth = $dbh->prepare("UPDATE rhnUserInfo SET last_logged_in = current_timestamp WHERE user_id = ?");
   $sth->execute($self->id);
   $dbh->commit;
 }

@@ -216,7 +216,7 @@ INSERT
   INTO rhnRepoRegenQueue
         (id, channel_label, client, reason, force, bypass_filters, next_action, created, modified)
 VALUES (rhn_repo_regen_queue_id_seq.nextval,
-        :label, 'perl-web::add_channel_packages', NULL, 'N', 'N', sysdate, sysdate, sysdate)
+        :label, 'perl-web::add_channel_packages', NULL, 'N', 'N', current_timestamp, current_timestamp, current_timestamp)
 EOQ
 
   my $channel = RHN::Channel->lookup(-id => $cid); 
@@ -255,7 +255,7 @@ INSERT
   INTO rhnRepoRegenQueue
         (id, channel_label, client, reason, force, bypass_filters, next_action, created, modified)
 VALUES (rhn_repo_regen_queue_id_seq.nextval,
-        :label, 'perl-web::remove_channel_packages', NULL, 'N', 'N', sysdate, sysdate, sysdate)
+        :label, 'perl-web::remove_channel_packages', NULL, 'N', 'N', current_timestamp, current_timestamp, current_timestamp)
 EOQ
 
   my $channel = RHN::Channel->lookup(-id => $cid); 
@@ -582,7 +582,7 @@ INSERT
   INTO rhnRepoRegenQueue
         (id, channel_label, client, reason, force, bypass_filters, next_action, created, modified)
 VALUES (rhn_repo_regen_queue_id_seq.nextval,
-        :label, 'perl-web::remove_errata_from_channel', NULL, 'N', 'N', sysdate, sysdate, sysdate)
+        :label, 'perl-web::remove_errata_from_channel', NULL, 'N', 'N', current_timestamp, current_timestamp, current_timestamp)
 EOQ
 
   my $channel = RHN::Channel->lookup(-id => $attr{cid}); 
@@ -651,7 +651,7 @@ INSERT
   INTO rhnRepoRegenQueue
         (id, channel_label, client, reason, force, bypass_filters, next_action, created, modified)
 VALUES (rhn_repo_regen_queue_id_seq.nextval,
-        :label, 'perl-web::add_errata_to_channel', NULL, 'N', 'N', sysdate, sysdate, sysdate)
+        :label, 'perl-web::add_errata_to_channel', NULL, 'N', 'N', current_timestamp, current_timestamp, current_timestamp)
 EOQ
 
   my $channel = RHN::Channel->lookup(-id => $attr{cid}); 
