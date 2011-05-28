@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.5.34
+Version: 1.5.40
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz 
@@ -120,6 +120,7 @@ BuildRequires: concurrent
 BuildRequires: cglib
 BuildRequires: dom4j
 BuildRequires: hibernate3
+BuildRequires: jaf
 BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-codec
 BuildRequires: jakarta-commons-collections
@@ -292,10 +293,15 @@ This package contains the Java version of taskomatic.
 %setup -q
 
 # missing tomcat juli JAR (needed for JSP precompilation) - bug 661244
-if test -d /usr/share/tomcat6 -a ! -h /usr/share/java/tomcat6/tomcat-juli.jar; then
+if test -d /usr/share/tomcat6; then
     mkdir -p build/build-lib
-    ln -s /usr/share/tomcat6/bin/tomcat-juli.jar \
-        build/build-lib/tomcat-juli.jar
+    if test ! -h /usr/share/java/tomcat6/tomcat-juli.jar; then
+        ln -s /usr/share/tomcat6/bin/tomcat-juli.jar \
+            build/build-lib/tomcat-juli.jar
+    else
+        ln -s /usr/share/java/tomcat6/tomcat-juli.jar \
+                build/build-lib/tomcat-juli.jar
+    fi
 fi
 
 
@@ -620,6 +626,27 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri May 27 2011 Tomas Lestach <tlestach@redhat.com> 1.5.40-1
+- 443126 - introduce notifications for custom errata (tlestach@redhat.com)
+
+* Fri May 27 2011 Jan Pazdziora 1.5.39-1
+- 703858 - virt. channel subscription: mimic the behavior of original channel
+  (mzazrivec@redhat.com)
+
+* Thu May 26 2011 Tomas Lestach <tlestach@redhat.com> 1.5.38-1
+- 708083 - clone Red Hat errata, when associating them into a cloned channel
+  (tlestach@redhat.com)
+- create special symlink for f15 tomcat-juli.jar (tlestach@redhat.com)
+
+* Thu May 26 2011 Tomas Lestach <tlestach@redhat.com> 1.5.37-1
+- adding jaf build require for spacewalk-java (tlestach@redhat.com)
+
+* Wed May 25 2011 Tomas Lestach <tlestach@redhat.com> 1.5.36-1
+- 707658 - generate errata cache for the correct erratum (tlestach@redhat.com)
+
+* Tue May 24 2011 Jan Pazdziora 1.5.35-1
+- 703273 - check, whether subscription is possible (tlestach@redhat.com)
+
 * Fri May 20 2011 Tomas Lestach <tlestach@redhat.com> 1.5.34-1
 - 659138 - extend schedule creation error handling (tlestach@redhat.com)
 - 659138 - do not forward parameter map in case of success
