@@ -205,7 +205,7 @@ class Client(jabber_lib.JabberClient):
 
     _query_update_client_message_sent = rhnSQL.Statement("""
         update rhnPushClient
-           set next_action_time = sysdate + :delta / 86400
+           set next_action_time = current_timestamp + :delta / 86400
          where jabber_id = :jid
     """)
     def update_client_message_sent(self, jid):
