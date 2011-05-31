@@ -105,6 +105,9 @@ install -m 0755 share/oracle/upgrade-db.sh %{buildroot}/%{_datadir}/spacewalk/se
 # create a directory for misc. Spacewalk things
 install -d -m 755 %{buildroot}/%{misc_path}/spacewalk
 
+mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
+/usr/bin/pod2man --section=8 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-make-mount-points | gzip > $RPM_BUILD_ROOT%{_mandir}/man8/spacewalk-make-mount-points.8.gz
+
 %check
 make test
 
@@ -124,6 +127,7 @@ rm -rf %{buildroot}
 %dir %{_datadir}/spacewalk
 %{_datadir}/spacewalk/*
 %attr(755, %{apache_user}, root) %{misc_path}/spacewalk
+%{_mandir}/man8/spacewalk-make-mount-points*
 
 %changelog
 * Mon Jul 11 2011 Jan Pazdziora 1.5.8-1
