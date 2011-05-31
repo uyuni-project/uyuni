@@ -63,9 +63,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{rhnroot}
 %{_sbindir}/spacewalk-service
 %{_sbindir}/rhn-satellite
-%if ! 0%{?suse_version}
-%{_initrddir}/rhn-satellite
-%endif
 %{_bindir}/validate-sat-cert.pl
 %{_bindir}/validate-sat-cert
 %{_bindir}/rhn-config-satellite.pl
