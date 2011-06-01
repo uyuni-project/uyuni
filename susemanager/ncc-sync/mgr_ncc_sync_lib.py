@@ -167,15 +167,16 @@ class NCCSync(object):
                         sys.exit(1)
                     contents = f.read()
                     try:
-                        creds = re.search('--proxy-user "(\w+:\w+)"',
+                        creds = re.search('proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
                                           contents).group(1)
+                        ucreds = re.sub('\\\\"', '"', creds)
                     except AttributeError:
                         self.error_msg("Proxy requires authentication. "
                                        "Failed reading credentials from %s"
                                        % YAST_PROXY)
                         sys.exit(1)
-                    curl.setopt(pycurl.PROXYUSERPWD, creds)
-                        
+                    curl.setopt(pycurl.PROXYUSERPWD, ucreds)
+
                 elif e[0] == 60:
                     self.error_msg("Peer certificate cannot be authenticated "
                                    "with known CA certificates.")
