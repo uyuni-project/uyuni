@@ -12,11 +12,13 @@ Thu May 26 11:59:54 CEST 2011 - jrenner@suse.de
 Tue May 24 17:48:59 CEST 2011 - jrenner@suse.de
 
 - Prevent from phishing attacks via 'url_bounce' (bnc#644082)
+- CVE-2011-1594
 
 -------------------------------------------------------------------
 Mon May 23 16:24:56 CEST 2011 - jrenner@suse.de
 
 - Protect web UI against Cross-Site Request Forgery (bnc#644074)
+- CVE-2009-4139
 
 -------------------------------------------------------------------
 Tue May  3 11:13:36 CEST 2011 - jrenner@suse.de
