@@ -5,8 +5,43 @@ var strongPass = 'Strong password'
 var sameAsUsername = 'Password is the same as login'
 var emptyPass = 'Enter password'
 
-function passwordStrength(password, username) {
+// Return the score for a given password
+function getScore(password, username) {
     score = 0
+    // password.length < 5
+    //if (password.length < 5) return score
+    // Return 0 if password is placeholder
+    if (password == '******') return score
+    // password == username
+    if (password.toLowerCase()==username.toLowerCase()) return score
+    // Password length
+    score += password.length * 4
+    score += (checkRepetition(1, password).length - password.length) * 1
+    score += (checkRepetition(2, password).length - password.length) * 1
+    score += (checkRepetition(3, password).length - password.length) * 1
+    score += (checkRepetition(4, password).length - password.length) * 1
+    // Password has 3 numbers
+    if (password.match(/(.*[0-9].*[0-9].*[0-9])/)) score += 5
+    // Password has 2 symbols
+    if (password.match(/(.*[!,@,#,$,%,^,&,*,?,_,~].*[!,@,#,$,%,^,&,*,?,_,~])/)) score += 5
+    // Password has upper and lower chars
+    if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) score += 10
+    // Password has number and char
+    if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) score += 15
+    // Password has number and symbol
+    if (password.match(/([!,@,#,$,%,^,&,*,?,_,~])/) && password.match(/([0-9])/)) score += 15
+    // Password has char and symbol
+    if (password.match(/([!,@,#,$,%,^,&,*,?,_,~])/) && password.match(/([a-zA-Z])/)) score += 15
+    // Password is just numbers or chars
+    if (password.match(/^\w+$/) || password.match(/^\d+$/)) score -= 10
+    // Verify 0 < score < 100
+    if (score < 0) score = 0
+    if (score > 100) score = 100
+    return score
+}
+
+// Return the message for a password and given score
+function getMessage(score, password, username) {
     // password.length == 0
     if (password.length == 0) return emptyPass
     // password.length < 5
@@ -15,71 +50,17 @@ function passwordStrength(password, username) {
     if (password == '******') return ''
     // password == username
     if (password.toLowerCase() == username.toLowerCase()) return sameAsUsername
-    // Password length
-    score += password.length * 4
-    score += ( checkRepetition(1,password).length - password.length ) * 1
-    score += ( checkRepetition(2,password).length - password.length ) * 1
-    score += ( checkRepetition(3,password).length - password.length ) * 1
-    score += ( checkRepetition(4,password).length - password.length ) * 1
-    // Password has 3 numbers
-    if (password.match(/(.*[0-9].*[0-9].*[0-9])/)) score += 5
-    // Password has 2 symbols
-    if (password.match(/(.*[!,@,#,$,%,^,&,*,?,_,~].*[!,@,#,$,%,^,&,*,?,_,~])/)) score += 5
-    // Password has upper and lower chars
-    if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) score += 10
-    // Password has numbers and chars
-    if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) score += 15
-    // Password has numbers and symbols
-    if (password.match(/([!,@,#,$,%,^,&,*,?,_,~])/) && password.match(/([0-9])/)) score += 15
-    // Password has chars and symbols
-    if (password.match(/([!,@,#,$,%,^,&,*,?,_,~])/) && password.match(/([a-zA-Z])/)) score += 15
-    // Password is just numbers or chars
-    if (password.match(/^\w+$/) || password.match(/^\d+$/)) score -= 10
     // Verify 0 < score < 100
     if (score < 0) score = 0
     if (score > 100) score = 100
-    // Return something
     if (score < 34 ) return badPass
     if (score < 68 ) return goodPass
     return strongPass;
 }
 
-function passwordStrengthPercent(password, username) {
-    score = 0
-    // Return no score if password < 5 chars
-    if (password.length < 5) return score
-    // Check placeholder
-    if (password == '******') return score
-    // Password == username
-    if (password.toLowerCase()==username.toLowerCase()) return score
-    // Password length
-    score += password.length * 4
-    score += ( checkRepetition(1,password).length - password.length ) * 1
-    score += ( checkRepetition(2,password).length - password.length ) * 1
-    score += ( checkRepetition(3,password).length - password.length ) * 1
-    score += ( checkRepetition(4,password).length - password.length ) * 1
-    // Password has 3 numbers
-    if (password.match(/(.*[0-9].*[0-9].*[0-9])/))  score += 5
-    // Password has 2 symbols
-    if (password.match(/(.*[!,@,#,$,%,^,&,*,?,_,~].*[!,@,#,$,%,^,&,*,?,_,~])/)) score += 5
-    // Password has upper and lower chars
-    if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) score += 10
-    // Password has number and chars
-    if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) score += 15 
-    // Password has number and symbol
-    if (password.match(/([!,@,#,$,%,^,&,*,?,_,~])/) && password.match(/([0-9])/))  score += 15
-    // Password has char and symbol
-    if (password.match(/([!,@,#,$,%,^,&,*,?,_,~])/) && password.match(/([a-zA-Z])/))  score += 15
-    // Password is just a nubers or chars
-    if (password.match(/^\w+$/) || password.match(/^\d+$/) )  score -= 10
-    // Return something
-    if (score > 100) score = 100
-    return score
-}
-
-// checkRepetition(1,'aaaaaaabcbc')   = 'abcbc'
-// checkRepetition(2,'aaaaaaabcbc')   = 'aabc'
-// checkRepetition(2,'aaaaaaabcdbcd') = 'aabcd'
+// checkRepetition(1, 'aaaaaaabcbc')   = 'abcbc'
+// checkRepetition(2, 'aaaaaaabcbc')   = 'aabc'
+// checkRepetition(2, 'aaaaaaabcdbcd') = 'aabcd'
 function checkRepetition(pLen, str) {
   res = ""
   for (i=0; i<str.length; i++) {
@@ -109,20 +90,20 @@ function getStyle(el, cssprop){
 
 // Return the width of the graybar as integer
 function getGraybarWidth() {
-  var graybar = document.getElementById("pwstrength-graybar");
+  graybar = document.getElementById("pwstrength-graybar");
   return parseInt(getStyle(graybar, "width"));
 }
 
 // Get the desired password
 function getDesiredPass() {
-  var element = document.getElementById("desiredpass");
+  element = document.getElementById("desiredpass");
   return element.value;
 }
 
 // Get the login, might be innerHTML
 function getLogin() {
-  var element = document.getElementById("login");
-  var login = element.value;
+  element = document.getElementById("login");
+  login = element.value;
   if (typeof(login) == "undefined") {
 	login = element.innerHTML;
   }
@@ -131,7 +112,7 @@ function getLogin() {
 
 // Set innerHTML of an element
 function setInnerHTML(element, value) {
-  var element = document.getElementById(element);
+  element = document.getElementById(element);
   element.innerHTML = value;
 }
 
@@ -144,12 +125,12 @@ function setColorbar(position, width) {
 
 // Call this 'onkeyup' for the login and password input fields
 function checkPassword() {
-    var login = getLogin();
-    var pass = getDesiredPass();
-    var factor = getGraybarWidth() / 100;
-    var result = passwordStrength(pass, login); 
-    setInnerHTML("pwstrength-result", result);
-    var perc = passwordStrengthPercent(pass, login);
-    setColorbar("0px -" + perc + "px", (perc * factor) + "px");
-    setInnerHTML("pwstrength-percent", " " + perc + "% ");
+  login = getLogin();
+  pass = getDesiredPass();
+  factor = getGraybarWidth()/100;
+  score = getScore(pass, login);
+  setColorbar("0px -" + score + "px", (score * factor) + "px");
+  setInnerHTML("pwstrength-percent", " " + score + "% ");
+  message = getMessage(score, pass, login); 
+  setInnerHTML("pwstrength-result", message);
 }
