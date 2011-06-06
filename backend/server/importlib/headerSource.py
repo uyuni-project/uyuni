@@ -86,7 +86,7 @@ class rpmPackage(IncompletePackage):
         # Fix some of the information up
         vendor = self['vendor']
         if vendor is None:
-            self['vendor'] = 'Red Hat, Inc.'
+            self['vendor'] = 'Not defined'
         payloadFormat = self['payload_format']
         if payloadFormat is None:
             self['payload_format'] = 'cpio'
