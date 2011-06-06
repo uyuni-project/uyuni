@@ -169,8 +169,8 @@ class NCCSync(object):
                         sys.exit(1)
                     contents = f.read()
                     try:
-                        creds = re.search('proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
-                                          contents).group(1)
+                        creds = re.search('^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
+                                          contents, re.M).group(1)
                         ucreds = re.sub('\\\\"', '"', creds)
                     except AttributeError:
                         self.error_msg("Proxy requires authentication. "
