@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun  6 17:10:46 CEST 2011 - mc@suse.de
+
+- set RPM vendor to "Not defined" if the RPM say "(none)"
+  (FATE#312378, bnc#693291)
+
+-------------------------------------------------------------------
 Tue May 24 15:31:16 CEST 2011 - mc@suse.de
 
 - some wierd packages have files in iso8859-1 not utf-8
