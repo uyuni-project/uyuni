@@ -31,3 +31,27 @@ When /^I choose "([^"]*)" for "([^"]*)"$/ do |arg1, arg2|
     find(:xpath, '//select').select(arg1)
   end
 end
+
+When /^I push package "([^"]*)" into "([^"]*)" channel$/ do |arg1, arg2|
+  srvurl = "http://#{ENV['TESTHOST']}/APP"
+  command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1}"
+  output = `#{command} 2>&1`
+  if ! $?.success?
+    raise "rhnpush failed '#{command}' #{$!}: #{output}"
+  end
+end
+
+Then /^I should see package "([^"]*)" in channel "([^"]*)"$/ do |arg1, arg2|
+  Given 'I am authorized as "admin" with password "admin"'
+  When 'I follow "Channels"'
+  When "I follow \"#{arg2}\""
+  When 'I follow "Packages"'
+  Then "I should see package \"#{arg1}\""
+end
+
+Then /^I should see a "([^"]*)" text in the "([^"]*)" column$/ do |arg1, arg2|
+  within(:xpath, "//table/tbody/tr[.//th[contains(.,'#{arg2}')]]") do
+    find("td", :text => "#{arg1}")
+  end
+end
+
