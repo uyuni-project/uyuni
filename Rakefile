@@ -17,6 +17,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/login.feature
                      features/mainpage.feature
                      features/channels_add.feature
+                     features/push_package.feature
                      features/create_repository.feature
                      features/systemspage.feature
                      features/create_activationkey.feature
@@ -36,7 +37,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/weak_deps.feature
                      features/check_registration.feature
                      features/check_errata.feature
-					 features/erratapage.feature
+                     features/erratapage.feature
                      features/install_package.feature
                      features/install_errata.feature
                      features/clone_channel.feature
