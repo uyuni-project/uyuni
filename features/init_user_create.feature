@@ -32,6 +32,9 @@ Feature: Create initial users
 
     # Then I should see a "The Spacewalk must be restarted to reflect these changes" text
 
+  Scenario: restart spacewalk service
+    Given I am root
+     Then I restart the spacewalk service
 
   @third
   Scenario: Create Testing username
@@ -62,4 +65,12 @@ Feature: Create initial users
        And I click on "Submit"
     Then I should see a "User information updated" text
      And I should see a "testing" text
+
+  Scenario: Activate monitoring scout
+    Given I am on the Admin page
+     When I follow "SUSE Manager Configuration"
+       And I follow "Monitoring" in class "content-nav"
+       And I check "Enable Monitoring Scout"
+       And I click on "Update Config"
+    Then I should see a "Configuration updated, Monitoring services restarted." text
 

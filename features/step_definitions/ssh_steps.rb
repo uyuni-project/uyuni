@@ -21,3 +21,11 @@ Then /^I want to get "([^"]*)"$/ do |arg1|
         raise "'#{arg1}' not found in output '#{$sshout}'"
     end
 end
+
+When /^I restart the spacewalk service$/ do
+    $sshout = ""
+    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST spacewalk-service restart 2>&1`
+    if ! $?.success?
+        raise "Execute command failed: #{$!}: #{$sshout}"
+    end
+end

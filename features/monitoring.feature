@@ -11,13 +11,16 @@ Feature: Configure monitoring
   I want to create a probe
   I want to add a system to the probe suite
 
-  Scenario: Activate monitoring scout
-    Given I am on the Admin page
-     When I follow "SUSE Manager Configuration"
-       And I follow "Monitoring" in class "content-nav"
-       And I check "Enable Monitoring Scout"
-       And I click on "Update Config"
-    Then I should see a "Configuration updated, Monitoring services restarted." text
+#
+# already done in init_user_create.feature
+#
+#  Scenario: Activate monitoring scout
+#    Given I am on the Admin page
+#     When I follow "SUSE Manager Configuration"
+#       And I follow "Monitoring" in class "content-nav"
+#       And I check "Enable Monitoring Scout"
+#       And I click on "Update Config"
+#    Then I should see a "Configuration updated, Monitoring services restarted." text
 
   Scenario: Check monitoring scout public key
     Given I am on the Monitoring page
