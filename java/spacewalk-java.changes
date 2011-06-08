@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun  8 13:41:45 CEST 2011 - ug@suse.de
+
+- settings the correct architecture in cobbler, needed by virt. 
+  SUSE installations (fate#312397 and bnc#682665)
+
+-------------------------------------------------------------------
 Thu May 26 16:42:41 CEST 2011 - jrenner@suse.de
 
 - Add token into POST url for multipart forms (bnc#644074)
