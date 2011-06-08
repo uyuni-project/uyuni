@@ -94,6 +94,17 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
                 tree.getCobblerDistroName(), tree.getKernelPath(),
                 tree.getInitrdPath(), ksmeta);
         // Setup the kickstart metadata so the URLs and activation key are setup
+
+        // set architecture (fix 32bit vm's on a 64bit system)
+        // especially for SUSE where the kernel+initrd is under a patch that contains
+        // the $arch
+        String archName = tree.getChannel().getChannelArch().getName();
+        if (archName.equals("IA-32")) {
+            archName = "i386";
+        }
+        distro.setArch(archName);
+        distro.save();
+
         tree.setCobblerId((String) distro.getUid());
         invokeCobblerUpdate();
 
@@ -102,6 +113,8 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
                 tree.getCobblerXenDistroName(), tree.getKernelXenPath(),
                 tree.getInitrdXenPath(), ksmeta);
             tree.setCobblerXenId(distroXen.getUid());
+            distroXen.setArch(archName);
+            distroXen.save();
         }
 
         if (syncProfiles) {
