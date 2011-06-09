@@ -3258,6 +3258,7 @@
         type="com.redhat.rhn.frontend.action.systems.sdc.SystemDeleteConfirmAction"
         name="submittedForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/systems/sdc/delete_confirm.jsp"/>
         <forward name="success"
@@ -3283,6 +3284,7 @@
         name="submittedForm"
         type="com.redhat.rhn.frontend.action.systems.SSMUpdateHardwareProfileConfirm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/ssm/systems/ssmhwrefresh.jsp"/>
         <forward name="success"
@@ -3295,6 +3297,7 @@
         name="submittedForm"
         type="com.redhat.rhn.frontend.action.systems.SSMUpdateSoftwareProfileConfirm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/ssm/systems/ssmswrefresh.jsp"/>
         <forward name="success"
@@ -3318,6 +3321,7 @@
         type="com.redhat.rhn.frontend.action.ssm.MigrateSystemsAction"
         name="ssmMigrateForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/ssm/systems/migrate.jsp"/>
                <forward name="confirm"
