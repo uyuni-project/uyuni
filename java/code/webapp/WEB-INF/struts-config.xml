@@ -3417,6 +3417,7 @@
         parameter="dispatch"
         type="com.redhat.rhn.frontend.action.systems.sdc.UpdateCustomDataAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default" path="/WEB-INF/pages/systems/sdc/updatecustomdata.jsp" />
         <forward name="updated" path="/systems/details/ListCustomData.do" redirect="true"/>
       </action>
@@ -3427,6 +3428,7 @@
         type="com.redhat.rhn.frontend.action.systems.sdc.DeleteCustomDataAction"
         name="submittedForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default" path="/WEB-INF/pages/systems/sdc/deletecustomdata.jsp" />
         <forward name="deleted" path="/systems/details/ListCustomData.do" redirect="true"/>
       </action>
@@ -7401,6 +7403,7 @@
         type="com.redhat.rhn.frontend.action.systems.customkey.DeleteCustomKeyAction"
         name="submittedForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default" path="/WEB-INF/pages/systems/customkey/deletekey.jsp" />
         <forward name="deleted" path="/systems/customdata/CustomDataList.do" redirect="true"/>
       </action>
@@ -7411,6 +7414,7 @@
         type="com.redhat.rhn.frontend.action.systems.customkey.UpdateCustomKeyAction"
         name="updateCustomKeyForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default" path="/WEB-INF/pages/systems/customkey/updatekey.jsp" />
         <forward name="updated" path="/systems/customdata/CustomDataList.do" redirect="true"/>
       </action>
