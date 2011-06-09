@@ -3528,6 +3528,7 @@
              parameter="dispatch"
              name="createSystemGroupForm"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+             <set-property property="postRequiredIfSubmitted" value="true" />
              <forward name="default"
                       path="/WEB-INF/pages/groups/create.jsp" />
              <forward name="error"
