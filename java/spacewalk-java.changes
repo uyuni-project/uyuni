@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun  9 09:59:03 CEST 2011 - jrenner@suse.de
+
+- Additional fixes for the CSRF security bugfix (bnc#644074)
+
+-------------------------------------------------------------------
 Thu May 26 16:42:41 CEST 2011 - jrenner@suse.de
 
 - Add token into POST url for multipart forms (bnc#644074)
