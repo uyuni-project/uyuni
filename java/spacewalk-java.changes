@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun  9 16:10:51 CEST 2011 - jrenner@suse.de
+
+- Additional fixes for the CSRF security bugfix (bnc#644074)
+
+-------------------------------------------------------------------
 Thu May 26 17:02:07 CEST 2011 - jrenner@suse.de
 
 - Integrate password strength meter in webapp (bnc#685551/fate#312398)
