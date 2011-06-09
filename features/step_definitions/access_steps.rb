@@ -90,3 +90,11 @@ Then /^no link should be broken$/ do
     raise "Failed pages:\n#{failed_pages}"
   end
 end
+
+Then /^I should be able to login$/ do
+    When 'I go to the home page'
+    And 'I enter "testing" as "username"'
+    And 'I enter "testing" as "password"'
+    And 'I click on "Sign In"'
+    Then 'I should be logged in'
+end

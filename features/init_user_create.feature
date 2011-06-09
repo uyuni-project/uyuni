@@ -34,7 +34,9 @@ Feature: Create initial users
 
   Scenario: restart spacewalk service
     Given I am root
-     Then I restart the spacewalk service
+    When I restart the spacewalk service
+     And I wait for "10" seconds
+    Then I should be able to login
 
   @third
   Scenario: Create Testing username
