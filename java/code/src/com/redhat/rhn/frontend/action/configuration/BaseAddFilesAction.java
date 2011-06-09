@@ -55,6 +55,8 @@ public abstract class BaseAddFilesAction extends RhnAction {
         request.setAttribute(MAX_SIZE,
                  StringUtil.displayFileSize(ConfigFile.getMaxFileSize()));
 
+        request.setAttribute(CSRF_TOKEN, request.getSession().getAttribute("csrf_token"));
+
         if (isSubmitted(cff)) {
             ConfigChannel channel = getConfigChannel(request);
 
@@ -63,8 +65,6 @@ public abstract class BaseAddFilesAction extends RhnAction {
             }
         }
         else {
-            request.setAttribute(CSRF_TOKEN,
-                request.getSession().getAttribute("csrf_token"));
             cff.setDefaults();
         }
         return getStrutsDelegate().forwardParams(
