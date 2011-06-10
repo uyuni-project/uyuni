@@ -26,6 +26,6 @@ Feature: Cleanup after testing monitoring
     Given I am on the Admin page
      When I follow "SUSE Manager Configuration"
        And I follow "Monitoring" in class "content-nav"
-       And I check "Enable Monitoring Scout"
+       And I uncheck "Enable Monitoring Scout"
        And I click on "Update Config"
     Then I should see a "Configuration updated, Monitoring services restarted." text
