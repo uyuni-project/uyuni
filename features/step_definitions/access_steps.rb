@@ -34,7 +34,10 @@ Then /^no link should be broken$/ do
     base = href.split("?")[0]
     $stderr.puts "Visiting '#{href}' '#{base}', #{hrefs.size} to go"
     visit href.to_s
-    if page.has_content?('Page Not Found') || page.has_content?('Internal Server Error')
+    # We have one page in our manual with has "Internal Server Error" in its text
+    # we need to mark this page as success.
+    if base != '/rhn/help/reference/en-US/ch-rhn-workgroup.jsp' &&
+       (page.has_content?('Page Not Found') || page.has_content?('Internal Server Error'))
       visited[base] = href
       $stderr.puts "-- ** failed"
     else
@@ -53,7 +56,12 @@ Then /^no link should be broken$/ do
         hbase = fhref.split("?")[0]
         next if visited[hbase]
         visited[hbase] = true
-        unless fhref[0,1] == "/"
+        if hbase.empty?
+              # Example: fhref = "?order=asc&sort=login"
+              fhref = base.concat(fhref)
+#             $stderr.puts "\t empyt hbase; new href is #{fhref}"
+        elsif fhref[0,1] != "/"
+              # Example: fhref = "delete_confirm.pxt?sgid=7"
 #	      $stderr.puts "From #{fhref} (#{base})"
 	      hsplit = base.split("/")
 	      hsplit.pop
