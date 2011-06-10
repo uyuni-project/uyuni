@@ -28,6 +28,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/register_client.feature
                      features/monitoring.feature
                      features/system_configuration.feature
+                     features/custom_system_info.feature
                      features/create_group.feature
                      features/add_sys_of_group_to_SSM.feature
                      features/configuration.feature
