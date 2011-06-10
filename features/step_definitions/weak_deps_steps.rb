@@ -5,6 +5,7 @@ When /^I refresh the metadata$/ do
    output = `rhn_check -vvv 2>&1`
    if ! $?.success?
        raise "rhn_check failed: #{$!}: #{output}"
+   end
    client_refresh_metadata
 end
 
