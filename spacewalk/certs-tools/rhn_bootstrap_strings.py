@@ -279,9 +279,12 @@ echo "  . up2date config file"
 
 def getGPGKeyImportSh():
     return """\
+echo
+echo "PREPARE GPG KEYS AND CORPORATE PUBLIC CA CERT"
+echo "-------------------------------------------------"
 if [ ! -z "$ORG_GPG_KEY" ] ; then
     echo
-    echo "* importing organizational GPG key"
+    echo "* importing organizational GPG keys"
     for GPG_KEY in $(echo "$ORG_GPG_KEY" | tr "," " "); do
 	rm -f ${GPG_KEY}
 	$FETCH ${HTTPS_PUB_DIRECTORY}/${GPG_KEY}
@@ -294,6 +297,8 @@ if [ ! -z "$ORG_GPG_KEY" ] ; then
 	    rpm --import $GPG_KEY
 	fi
     done
+else
+    echo "* no organizational GPG keys to import"
 fi
 
 """
@@ -302,8 +307,8 @@ fi
 def getCorpCACertSh():
     return """\
 echo
-echo "* attempting to install corporate public CA cert"
 if [ $USING_SSL -eq 1 ] ; then
+    echo "* attempting to install corporate public CA cert"
     if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
         rpm -Uvh --force --replacefiles --replacepkgs ${HTTP_PUB_DIRECTORY}/${ORG_CA_CERT}
     else
@@ -323,6 +328,8 @@ if [ $USING_SSL -eq 1 ] ; then
 	}
 	test -x /usr/bin/c_rehash && /usr/bin/c_rehash /etc/ssl/certs/ | grep "${ORG_CA_CERT}"
     fi
+else
+    echo "* configured not to use SSL: don't install corporate public CA cert"
 fi
 
 """
