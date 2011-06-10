@@ -11,7 +11,12 @@ Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?suse_version}
 Requires(pre):  apache2, /usr/sbin/useradd
 Requires(post): coreutils, openssh
-Requires:       perl-Crypt-SSLeay
+#
+# because of a secfix in perl-libwww-perl we must use IO-Socket-SSL
+# instead of perl-Crypt-SSLeay. Con: SSL via proxy will not work anymore
+#
+#Requires:       perl-Crypt-SSLeay
+Requires:       perl-IO-Socket-SSL
 Requires:       perl-DBI
 %else
 Requires(pre):  httpd, /usr/sbin/useradd
