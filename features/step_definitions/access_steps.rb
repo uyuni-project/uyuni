@@ -92,9 +92,13 @@ Then /^no link should be broken$/ do
 end
 
 Then /^I should be able to login$/ do
-    When 'I go to the home page'
-    And 'I enter "testing" as "username"'
-    And 'I enter "testing" as "password"'
-    And 'I click on "Sign In"'
-    Then 'I should be logged in'
+
+    (0..10).each() do |i|
+	visit Capybara.app_host
+        if page.has_content?('Welcome to SUSE Manager')
+	    break
+	end
+	sleep(5)
+    end
 end
+
