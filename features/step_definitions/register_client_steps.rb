@@ -33,7 +33,7 @@ When /^I register using "([^"]*)" key$/ do |arg1|
   command = "rhnreg_ks --serverUrl=#{regurl} --activationkey=#{arg1}"
   #print "Command: #{command}\n"
 
-  output = `#{command}`
+  output = `#{command} 2>&1`
   if ! $?.success?
     raise "Registration failed '#{command}' #{$!}: #{output}"
   end

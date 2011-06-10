@@ -104,7 +104,9 @@ Then /^I should see a "([^"]*)" element in "([^"]*)" form$/ do |arg1, arg2|
 end
 
 Then /^"([^"]*)" is installed$/ do |package|
-   `rpm -q #{package}`
-   fail if ! $?.success?
+   output = `rpm -q #{package} 2>&1`
+   if ! $?.success?
+       raise "exec rpm failed: #{$!}: #{$output}"
+   end
 end
 

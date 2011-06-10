@@ -9,6 +9,9 @@ When /^I wait for "(\d+)" seconds$/ do |arg1|
 end
 
 When /^I run rhn_check on this client$/ do
-  `rhn_check`
+  output = `rhn_check -vvv 2>&1`
+  if ! $?.success?
+      raise "rhn_check failed: #{$!}: #{output}"
+  end
 end
 

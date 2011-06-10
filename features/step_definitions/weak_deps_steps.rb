@@ -2,8 +2,9 @@
 # Licensed under the terms of the MIT license.
 
 When /^I refresh the metadata$/ do
-   `rhn_check`
-   fail if ! $?.success?
+   output = `rhn_check -vvv 2>&1`
+   if ! $?.success?
+       raise "rhn_check failed: #{$!}: #{output}"
    client_refresh_metadata
 end
 
