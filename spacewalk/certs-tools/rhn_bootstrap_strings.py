@@ -124,6 +124,16 @@ FULLY_UPDATE_THIS_BOX=%s
 #     PROFILENAME=`hostname -f`      # FQDN
 PROFILENAME=""   # Empty by default to let it be set automatically.
 
+# SUSE Manager Specific settings:
+#
+# - Alternate location of the client tool repo providing the zypp-plugin-spacewalk
+# and packges required for registration. Unless they are already installed on the
+# client this repo is expected to provide them for SLE-10/SLE-11 based clients.
+# If empty, the SUSE Manager repositories provided at https://${HOSTNAME}/pub/repositories
+# are used.
+SMGR_CODE_10_REPO_URL=
+SMGR_CODE_11_REPO_URL=
+
 #
 # -----------------------------------------------------------------------------
 # DO NOT EDIT BEYOND THIS POINT -----------------------------------------------
@@ -219,20 +229,58 @@ if [ "$INSTALLER" == zypper ]; then
     echo "  no packages missing."
   else
     echo "* going to install missing packages:"
+
+    # client codebase determines repo url to use and whether additional
+    # preparations are needed before installing the missing packages.
+    if rpm -q aaa_base --qf '%{DISTRIBUTION}\n' | grep -q 'Enterprise 10'; then
+      echo "* client codebase is SLE-10"
+      Z_CLIENT_REPO_URL=${SMGR_CODE_10_REPO_URL:-http://${HOSTNAME}/pub/repositories/${Z_CLIENT_REPO_NAME}-code10}
+
+      echo "* check whether to remove the ZMD stack first:"
+      Z_ZMD_STACK="zmd rug libzypp-zmd-backend suseRegister yast2-registration"
+      Z_ZMD_TODEL=""
+      for P in $Z_ZMD_STACK; do
+	rpm -q "$P" && Z_ZMD_TODEL="$Z_ZMD_TODEL $P"
+      done
+      if [ -z "$Z_ZMD_TODEL" ]; then
+	echo "  ZMD stack is not installed. No need to remove it."
+      else
+	echo "  Disable and remove the ZMD stack:"
+	# stop any running zmd
+	if [ -x /usr/sbin/rczmd ]; then
+	  /usr/sbin/rczmd stop
+	fi
+	rpm -e $Z_ZMD_TODEL
+      fi
+    else
+      echo "* Client codebase is SLE-11"
+      Z_CLIENT_REPO_URL=${SMGR_CODE_11_REPO_URL:-http://${HOSTNAME}/pub/repositories/${Z_CLIENT_REPO_NAME}}
+    fi
+
+    # way to add the client software repository depends on the zypp version
+    # installed (original code 10 via 'zypper sa', or code 11 like via .repo files)
     Z_CLIENT_REPO_NAME="susemanager-client-setup"
     Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/${Z_CLIENT_REPO_NAME}.repo"
-    echo "  adding client software repository $Z_CLIENT_REPO_NAME"
-    cat <<EOF >"$Z_CLIENT_REPO_FILE"
+    echo "  adding client software repository at $Z_CLIENT_REPO_URL"
+
+    if [ rpm -q zypper | grep 'zypper-0\.' ]; then
+      # code10 zypper has no --gpg-auto-import-keys and no reliable return codes.
+      zypper --non-interactive --no-gpg-checks sa $Z_CLIENT_REPO_URL $Z_CLIENT_REPO_NAME
+      zypper --non-interactive --no-gpg-checks refresh "$Z_CLIENT_REPO_NAME"
+      zypper --non-interactive in $Z_MISSING || exit 1
+    else
+      cat <<EOF >"$Z_CLIENT_REPO_FILE"
 [$Z_CLIENT_REPO_NAME]
 name=$Z_CLIENT_REPO_NAME
-baseurl=http://${HOSTNAME}/pub/repositories/${Z_CLIENT_REPO_NAME}
+baseurl=$Z_CLIENT_REPO_URL
 enabled=1
 autorefresh=1
 keeppackages=0
 gpgcheck=0
 EOF
-    zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME" || exit 1
-    zypper --non-interactive in $Z_MISSING || exit 1
+      zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME" || exit 1
+      zypper --non-interactive in $Z_MISSING || exit 1
+    fi
   fi
 fi
 
