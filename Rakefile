@@ -44,6 +44,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/monitoring2.feature
                      features/ncc-sync-channels.feature
                      features/delete_system_from_conf.feature
+                     features/delete_system_profile.feature
                      features/delete_config_channel.feature
                      features/users-deleteuser1.feature
                     }
