@@ -20,7 +20,7 @@
 
 # NOTE: the 'self' variable is an instance of SpacewalkShell
 
-import atexit, logging, os, readline, re, sys
+import atexit, logging, os, readline, re, shlex, sys
 from cmd import Cmd
 from spacecmd.utils import *
 
@@ -90,7 +90,7 @@ class SpacewalkShell(Cmd):
             pass
 
 
-    # handle commands that exit the shell
+    # handle shell exits and history substitution
     def precmd(self, line):
         # remove leading/trailing whitespace
         line = re.sub('^\s+|\s+$', '', line)
@@ -113,20 +113,15 @@ class SpacewalkShell(Cmd):
             self.do_login('')
             if self.session == '': return ''
 
-        parts = line.split()
+        parts = shlex.split(line)
 
         if len(parts):
             command = parts[0]
         else:
             return ''
 
-        if len(parts[1:]):
-            args = ' '.join(parts[1:])
-        else:
-            args = ''
-
-        # print the help message if the user passes '--help'
-        if re.search('--help', line):
+        # print the help message for a command if the user passed --help
+        if '--help' in parts:
             return 'help %s' % command
 
         # should we look for an item in the history?
@@ -177,7 +172,9 @@ class SpacewalkShell(Cmd):
 
         # append the arguments to the substituted command
         if history_match:
-            line += ' %s' % args
+            if len(parts[1:]):
+                for arg in parts[1:]:
+                    line += " '%s'" % arg
 
             readline.add_history(line)
             print line

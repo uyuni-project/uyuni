@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.5.40
+Version: 1.5.42
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz 
@@ -626,6 +626,12 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Jun 01 2011 Tomas Lestach <tlestach@redhat.com> 1.5.42-1
+- 709365 - fixed delete kickstart API docs (mmello@redhat.com)
+
+* Mon May 30 2011 Michael Mraka <michael.mraka@redhat.com> 1.5.41-1
+- made some queries PG compatible
+
 * Fri May 27 2011 Tomas Lestach <tlestach@redhat.com> 1.5.40-1
 - 443126 - introduce notifications for custom errata (tlestach@redhat.com)
 

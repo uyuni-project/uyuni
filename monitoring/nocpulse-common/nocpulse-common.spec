@@ -1,5 +1,5 @@
 Name:         nocpulse-common
-Version:      2.1.23
+Version:      2.1.24
 Release:      1%{?dist}
 Summary:      NOCpulse common
 License:      GPLv2
@@ -70,7 +70,7 @@ install -m644 nocpulse.logrotate \
    $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
 
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}
-install -m644 NOCpulse.ini $RPM_BUILD_ROOT/%{_sysconfdir}/%{package_name}/NOCpulse.ini
+install -m644 NOCpulse.ini $RPM_BUILD_ROOT/%{_sysconfdir}/NOCpulse.ini
 install -m755 -d $RPM_BUILD_ROOT/%{_sysconfdir}/%{package_name}/NOCpulse/tmp
 install -m644 forward $RPM_BUILD_ROOT/%{_var}/lib/%{package_name}/.forward
 mkdir -p $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse/Config/test
@@ -144,7 +144,7 @@ fi
 %files
 %defattr(-, root,root,-)
 %dir %{_sysconfdir}/nocpulse
-%config(missingok,noreplace) %{_sysconfdir}/%{package_name}/NOCpulse.ini
+%config(missingok,noreplace) %{_sysconfdir}/NOCpulse.ini
 %{_sysconfdir}/%{package_name}/NOCpulse
 %attr(-, %{package_name},%{package_name}) %{_sysconfdir}/%{package_name}/NOCpulse/tmp
 %config(missingok,noreplace) %attr(-, %{package_name},%{package_name}) %{_var}/lib/%{package_name}/.forward
@@ -161,6 +161,9 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Thu Jun 02 2011 Miroslav Suchý 2.1.24-1
+- 710002 - create initial NOCpulse.ini on correct place
+
 * Mon May 02 2011 Jan Pazdziora 2.1.23-1
 - The close of IO::AtomicFile can also die, we should catch it right there.
 
