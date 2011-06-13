@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2008--2010 Red Hat, Inc.
-# Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2010-2011 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -28,6 +28,7 @@ from yum import misc, Errors
 from yum.update_md import UpdateMetadata
 from yum.i18n import to_unicode
 
+from spacewalk.common import rhnLog
 from spacewalk.satellite_tools.reposync import ContentPackage, ChannelException, ChannelTimeoutException
 
 class YumWarnings:
@@ -44,7 +45,8 @@ class ContentSource:
     name = None
     repo = None
     cache_dir = '/var/cache/rhn/reposync/'
-    def __init__(self, url, name, insecure=False, interactive=True, proxy=None, proxy_user=None, proxy_pass=None):
+    def __init__(self, url, name, insecure=False, quiet=False, interactive=True,
+                 proxy=None, proxy_user=None, proxy_pass=None):
         self.url = url
         self.name = name
         self.insecure = insecure
@@ -136,11 +138,25 @@ class ContentSource:
                 checksum = checksum_elem.text
                 filename = os.path.join(self.repo.cachedir, 'patches',
                                         os.path.basename(relative))
-                self.repo.grab.urlgrab(misc.to_utf8(relative),
-                                       filename,
-                                       checkfunc=(self.patches_checksum_func,
-                                                  (checksum_type, checksum), {}))
-                notices.append(etree.parse(filename).getroot())
+                try:
+                    self.repo.grab.urlgrab(misc.to_utf8(relative),
+                                           filename,
+                                           checkfunc=(self.patches_checksum_func,
+                                                      (checksum_type, checksum),
+                                                      {}))
+                except URLGrabError, e:
+                    self.error_msg("Failed to download %s. [Errno %i] %s" %
+                                   (relative, e.errno, e.strerror))
+                    continue
+
+                try:
+                    notices.append(etree.parse(filename).getroot())
+                except SyntaxError, e:
+                    self.error_msg("Could not parse %s. "
+                                   "The file is not a valid XML document. %s" %
+                                   (filename, e.msg))
+                    continue
+
             return ('patches', notices)
 
     def patches_checksum_func(self, callback_obj, checksum_type, checksum):
@@ -300,3 +316,8 @@ class ContentSource:
       if sts == 0:
         return True
       return False
+
+    def error_msg(self, message):
+        rhnLog.log_clean(0, message)
+        if not self.quiet:
+            sys.stderr.write(str(message) + "\n")

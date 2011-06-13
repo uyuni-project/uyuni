@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2008--2010 Red Hat, Inc.
-# Copyright (c) 2010 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2010-2011 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -149,8 +149,12 @@ class RepoSync:
             if data['metadata_signed'] == 'N':
                 insecure = True
             try:
-                plugin = self.load_plugin()(url.getURL(), self.channel_label, insecure, (not self.noninteractive),
-                        proxy=CFG.HTTP_PROXY, proxy_user=CFG.HTTP_PROXY_USERNAME, proxy_pass=CFG.HTTP_PROXY_PASSWORD)
+                plugin = self.load_plugin()(url.getURL(), self.channel_label,
+                                            insecure, self.quiet,
+                                            (not self.noninteractive),
+                                            proxy=CFG.HTTP_PROXY,
+                                            proxy_user=CFG.HTTP_PROXY_USERNAME,
+                                            proxy_pass=CFG.HTTP_PROXY_PASSWORD)
                 self.import_packages(plugin, url.getURL())
                 self.import_updates(plugin, url.getURL())
             except ChannelTimeoutException, e:
