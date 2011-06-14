@@ -1,8 +1,7 @@
 -------------------------------------------------------------------
-Wed Jun  8 13:41:45 CEST 2011 - ug@suse.de
+Thu Jun  9 09:59:03 CEST 2011 - jrenner@suse.de
 
-- settings the correct architecture in cobbler, needed by virt. 
-  SUSE installations (fate#312397 and bnc#682665)
+- Additional fixes for the CSRF security bugfix (bnc#644074)
 
 -------------------------------------------------------------------
 Thu May 26 16:42:41 CEST 2011 - jrenner@suse.de

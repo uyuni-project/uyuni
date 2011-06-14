@@ -28,6 +28,7 @@
     </c:choose>
 
     <html:form action="/systems/ssm/misc/SoftwareRefresh.do">
+      <rhn:csrf />
       <html:hidden property="submitted" value="true"/>
         <div align="right">
           <html:submit>

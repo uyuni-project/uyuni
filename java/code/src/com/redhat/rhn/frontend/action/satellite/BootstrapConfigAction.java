@@ -64,6 +64,8 @@ public class BootstrapConfigAction extends BaseConfigAction {
 
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
+        request.setAttribute(CSRF_TOKEN, request.getSession().getAttribute("csrf_token"));
+
         if (isSubmitted(form)) {
             ActionErrors errors = RhnValidationHelper.validateDynaActionForm(
                               this, form);
@@ -97,8 +99,6 @@ public class BootstrapConfigAction extends BaseConfigAction {
             }
         }
         else {
-            request.setAttribute(CSRF_TOKEN,
-                request.getSession().getAttribute("csrf_token"));
             String docroot = Config.get().getString("documentroot");
             form.set(HOSTNAME, Config.get().getString(ConfigDefaults.JABBER_SERVER));
             form.set(SSL_CERT, docroot + DEFAULT_CERT_PATH);

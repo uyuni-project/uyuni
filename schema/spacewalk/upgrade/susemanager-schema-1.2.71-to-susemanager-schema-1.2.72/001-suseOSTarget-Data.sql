@@ -1,5 +1,4 @@
 --
--- Copyright (c) 2011 Novell
 -- Copyright (c) 2011 SUSE Linux Products GmbH, Nuremberg, Germany
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -10,27 +9,6 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 --
-
-insert into suseOSTarget (id, os, target, channel_arch_id) values
-(sequence_nextval('suse_ostarget_id_seq'), 'sle-11-i586', 'sle-11-i586', LOOKUP_CHANNEL_ARCH('channel-ia32'));
-
-insert into suseOSTarget (id, os, target, channel_arch_id) values
-(sequence_nextval('suse_ostarget_id_seq'), 'sle-11-ia64', 'sle-11-ia64', LOOKUP_CHANNEL_ARCH('channel-ia64'));
-
-insert into suseOSTarget (id, os, target, channel_arch_id) values
-(sequence_nextval('suse_ostarget_id_seq'), 'sle-11-ppc64', 'sle-11-ppc64', LOOKUP_CHANNEL_ARCH('channel-ppc'));
-
-insert into suseOSTarget (id, os, target, channel_arch_id) values
-(sequence_nextval('suse_ostarget_id_seq'), 'sle-11-s390x', 'sle-11-s390x', LOOKUP_CHANNEL_ARCH('channel-s390x'));
-
-insert into suseOSTarget (id, os, target, channel_arch_id) values
-(sequence_nextval('suse_ostarget_id_seq'), 'sle-11-x86_64', 'sle-11-x86_64', LOOKUP_CHANNEL_ARCH('channel-x86_64'));
-
-insert into suseOSTarget (id, os, target, channel_arch_id) values
-(sequence_nextval('suse_ostarget_id_seq'), 'i386', 'i386', LOOKUP_CHANNEL_ARCH('channel-ia32'));
-
-insert into suseOSTarget (id, os, target, channel_arch_id) values
-(sequence_nextval('suse_ostarget_id_seq'), 'x86_64', 'x86_64', LOOKUP_CHANNEL_ARCH('channel-x86_64'));
 
 insert into suseOSTarget (id, os, target, channel_arch_id) values
 (sequence_nextval('suse_ostarget_id_seq'), 'sled-10-i586', 'sled-10-i586', LOOKUP_CHANNEL_ARCH('channel-ia32'));
@@ -58,8 +36,4 @@ insert into suseOSTarget (id, os, target, channel_arch_id) values
 
 commit;
 
---
--- Revision 1.1  2008/07/02 23:42:28  jsherrill
--- Sequence; data to populate stuff
---
 
