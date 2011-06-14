@@ -2246,21 +2246,39 @@ public class SystemHandler extends BaseHandler {
             throw new FaultException(-3, "kickstartProfileNotFound",
                     "No Kickstart Profile found with label: " + profileName);
         }
-
-        String url = ksdata.getCommand("url").getArguments();
-        if (url == null) {
-            throw new FaultException(-1, "kickstartUrlNoHost",
-            "Kickstart profile requires a --url param.");
-        }
-        log.debug("url: " + url);
-        String[] split = StringUtils.split(url);
-        if (split.length < 2) {
-            throw new FaultException(-1, "kickstartUrlNoHost",
-                    "Kickstart --url requires a host.  Needs to be of the format: " +
-            "--url http://host.domain.com/rhn/kickstart/ks-rhel-i386-server-5");
+        String url = null;
+        String breed = ksdata.getTree().getInstallType().getLabel();
+        if (breed.equals("suse")) {
+            // what Red Hat has as url parameter has SUSE as install=... kernel option parameter
+            // there is no equivalent parameter in the autoyast XML file
+            String kopts = ksdata.getTree().getCobblerObject(loggedInUser).getKernelOptionsString();
+            Pattern KOPTS_INSTALL_REGEX = Pattern.compile("install=(\\S+)", Pattern.CASE_INSENSITIVE);
+            Matcher match = KOPTS_INSTALL_REGEX.matcher(kopts);
+            if (match.find()) {
+            	url = match.group(1);
+            }
+            if (url == null) {
+                throw new FaultException(-1, "kickstartUrlNoHost",
+                "could not find install=... parameter for AutoYaST installation");
+            }
+            log.debug("url: " + url);
+        } else {
+            url = ksdata.getCommand("url").getArguments();     	
+            if (url == null) {
+                throw new FaultException(-1, "kickstartUrlNoHost",
+                "Kickstart profile requires a --url param.");
+            }
+            log.debug("url: " + url);
+            String[] split = StringUtils.split(url);
+            if (split.length < 2) {
+                throw new FaultException(-1, "kickstartUrlNoHost",
+                        "Kickstart --url requires a host.  Needs to be of the format: " +
+                "--url http://host.domain.com/rhn/kickstart/ks-rhel-i386-server-5");
+            }
+            url = split[1];
         }
         try {
-            URI uri = new URI(split[1]);
+            URI uri = new URI(url);
             // Convert to host
             url = uri.getHost();
             log.debug("host: " + url);
