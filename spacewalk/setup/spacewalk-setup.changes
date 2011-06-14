@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 14 17:43:50 CEST 2011 - mc@suse.de
+
+- add /usr/lib and /usr/lib64 to lib path for tomcat to make
+  jpam work (bnc#691918, FATE#312400)
+
+-------------------------------------------------------------------
 Wed May 25 11:23:43 CEST 2011 - mc@suse.de
 
 - allow only secure SSLCipher and SSLProtocols (bnc#685550)
