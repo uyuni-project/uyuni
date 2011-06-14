@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 14 17:31:53 CEST 2011 - ug@suse.de
+
+- XML RPC API for creating virtual SUSE machines fixed
+  (fate#312369 and bnc#687323)
+
+-------------------------------------------------------------------
 Tue Jun 14 11:03:00 CEST 2011 - ug@suse.de
 
 - settings the correct architecture in cobbler, needed by virt. 
