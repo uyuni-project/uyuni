@@ -39,7 +39,7 @@
 
   <column name="Entitlement" label="entitlement_level" width="15%" align="center" />
 
-  <action name="Apply Erratum" url="/network/systems/groups/apply_errata_confirm.pxt" />
+  <action name="Apply Patch" url="/network/systems/groups/apply_errata_confirm.pxt" />
 </rhn-listview>
 
   </grail-canvas-template>

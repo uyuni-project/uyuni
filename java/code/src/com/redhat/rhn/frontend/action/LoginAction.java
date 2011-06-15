@@ -102,6 +102,11 @@ public class LoginAction extends RhnAction {
                 }
                 urlBounce = DEFAULT_URL_BOUNCE;
             }
+            // Prevent from phishing attacks by allowing '/rhn' paths only
+            if (!urlBounce.trim().startsWith("/rhn")) {
+                log.warn("Invalid value for url_bounce: " + urlBounce);
+                urlBounce = DEFAULT_URL_BOUNCE;
+            }
             if (urlBounce.trim().endsWith("Logout.do")) {
                 if (log.isDebugEnabled()) {
                     log.debug(" - handling special case of url_bounce=Logout.do");

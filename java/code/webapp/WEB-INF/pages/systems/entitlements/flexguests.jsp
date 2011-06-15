@@ -41,6 +41,9 @@
 		</p>
 
 <rl:listset name="FlexSet">
+
+<rhn:csrf />
+
 <rl:list
 	emptykey="${empty_msg}"
 	parentiselement = "false"

@@ -1,3 +1,4 @@
+<%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-html" prefix="html" %>
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-bean" prefix="bean" %>
 
@@ -17,6 +18,7 @@
 </div>
 
 <form method="POST" action="/rhn/users/EnableUserSubmit.do?uid=${param.uid}">
+<rhn:csrf />
 <div align="right">
       <hr />
       <html:submit>

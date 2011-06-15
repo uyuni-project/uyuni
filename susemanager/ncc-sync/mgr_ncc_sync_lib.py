@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2009, 2010 Novell, Inc.
+# Copyright (C) 2009, 2010, 2011 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
 # it only under the terms of version 2.1 of the GNU Lesser General Public
 # License as published by the Free Software Foundation.
@@ -15,25 +15,34 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
+import re
 import sys
-import urllib
 import time
+import os.path
 import xml.etree.ElementTree as etree
 from datetime import date
+from urlparse import urlparse, urljoin
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
+from xml.parsers.expat import ExpatError
+
+import pycurl
 
 from spacewalk.server import rhnSQL, taskomatic
-from spacewalk.common import initCFG, CFG, rhnLog
+from spacewalk.common import initCFG, CFG, rhnLog, log_debug, log_error
 from spacewalk.susemanager import suseLib
-from spacewalk.common import log_debug, log_error, rhnFault
 
 CHANNELS = '/usr/share/susemanager/channels.xml'
 CHANNEL_FAMILIES = '/usr/share/susemanager/channel_families.xml'
 
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
-NCCREPOS = "https://%(authuser)s:%(authpass)s@nu.novell.com/repo/repoindex.xml"
-
 INFINITE = 200000 # a very big number that we use for unlimited subscriptions
+
+# location of proxy credentials in yast-generated config
+YAST_PROXY = "/root/.curlrc" 
 
 def memoize(function):
     """Basic function memoizer"""
@@ -50,12 +59,16 @@ def memoize(function):
 class NCCSync(object):
     """This class is used to sync SUSE Manager Channels and NCC repositories"""
 
-    def __init__(self, quiet=False, non_interactive=False, debug=-1):
+    def __init__(self, quiet=False, non_interactive=False, debug=-1, fromdir=None):
         """Setup configuration"""
         self.quiet = quiet
         self.non_interactive = non_interactive
         self.debug = debug
         self.reset_ent_value = 10
+
+        if fromdir is not None:
+            fromdir = urljoin('file://', os.path.abspath(fromdir))
+        self.fromdir = fromdir
 
         self.ncc_rhn_ent_mapping = {
             "sm_ent_mon_s"       : [ "monitoring_entitled" ],
@@ -89,79 +102,151 @@ class NCCSync(object):
         # FIXME:
         # self.ncc_url_prods = CFG.reg_url + "/?command=regdata&lang=en-US&version=1.0"
         # self.ncc_url_subs  = CFG.reg_url + "/?command=listsubscriptions&lang=en-US&version=1.0"
-        self.ncc_url_prods = "https://secure-www.novell.com/center/regsvc/?command=regdata&lang=en-US&version=1.0"
-        self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
+        if self.fromdir:
+            self.ncc_url_prods = self.fromdir + "/productdata.xml"
+            self.ncc_url_subs  = self.fromdir + "/listsubscriptions.xml"
+            self.ncc_repoindex = self.fromdir + "/repo/repoindex.xml"
+        else:
+            self.ncc_url_prods = "https://secure-www.novell.com/center/regsvc/?command=regdata&lang=en-US&version=1.0"
+            self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
+            self.ncc_repoindex = "https://%(authuser)s:%(authpass)s@nu.novell.com/repo/repoindex.xml"
+
         self.connect_retries = 10
 
-        rhnSQL.initDB()
+        try:
+            rhnSQL.initDB()
+        except rhnSQL.SQLConnectError, e:
+            self.error_msg("Could not connect to the database. %s" % e)
+            sys.exit(1)
 
-    def _connect_ncc( self, url, send=None ):
-        """Connect the ncc with the given URL.
+    def _get_ncc_xml(self, url, send=None):
+        """Connect to ncc and return the parsed XML document
 
         :arg url: the url where the request will be sent
         :kwarg send: do a post-request when "send" is given.
 
-        Returns a file-like object.
+        Returns the root XML Element of the parsed document.
 
         """
-        new_url = url
         try_counter = self.connect_retries
-        while new_url != "":
+        curl = pycurl.Curl()
+
+        curl.setopt(pycurl.URL, url)
+
+        if send is not None:
+            curl.setopt(pycurl.POSTFIELDS, send)
+
+        # We implement our own redirection-following, because pycurl
+        # 7.19 doesn't POST after it gets redirected. Ideally we'd be
+        # using pycurl.POSTREDIR here, but that's in 7.21.
+        curl.setopt(pycurl.FOLLOWLOCATION, False)
+
+        response = StringIO()
+        curl.setopt(pycurl.WRITEFUNCTION, response.write)
+
+        while True:
             try_counter -= 1
-            o = urllib.URLopener()
+            if try_counter <= 0:
+                self.error_msg("Connecting to %s has failed after %s "
+                               "tries with HTTP error code %s." %
+                               (url, self.connect_retries, status))
+                sys.exit(1)
+
             try:
-                log_debug(1, "trying to connect %s" % new_url)
-                f = o.open( new_url, send)
-                new_url = ""
-            except IOError, e:
-                # 302 is a redirect
-                if try_counter <= 0:
-                    self.error_msg("connecting %s failed after %s tries with HTTP error code %s" % (new_url, self.connect_retries, e[1]))
-                    raise e
-                elif e[1] == 302:
-                    log_debug(1, "got redirect")
-                    new_url = e[3].dict["location"]
+                curl.perform()
+            except pycurl.error, e:
+                if e[0] == 56: # Proxy requires authentication
+                    log_debug(1, e[1])
+                    # look for credentials in yast config
+                    try:
+                        f = open(YAST_PROXY)
+                    except IOError:
+                        self.error_msg("Proxy requires authentication. "
+                                       "Failed reading credentials from %s"
+                                       % YAST_PROXY)
+                        sys.exit(1)
+                    contents = f.read()
+                    try:
+                        creds = re.search('^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
+                                          contents, re.M).group(1)
+                        ucreds = re.sub('\\\\"', '"', creds)
+                    except AttributeError:
+                        self.error_msg("Proxy requires authentication. "
+                                       "Failed reading credentials from %s"
+                                       % YAST_PROXY)
+                        sys.exit(1)
+                    curl.setopt(pycurl.PROXYUSERPWD, ucreds)
+
+                elif e[0] == 60:
+                    self.error_msg("Peer certificate cannot be authenticated "
+                                   "with known CA certificates.")
+                    sys.exit(1)
                 else:
-                    log_debug(1, "connecting %s failed with HTTP error code %s" % (new_url, e[1]))
-        return f
+                    self.error_msg(e[1])
+                    sys.exit(1)
+                
+            status = curl.getinfo(pycurl.HTTP_CODE)
+            if status == 200 or (self.fromdir and status == 0): # OK or file
+                break
+            elif status in (301, 302): # redirects
+                url = curl.getinfo(pycurl.REDIRECT_URL)
+                log_debug(1, "Got redirect to %s" % url)
+                curl.setopt(pycurl.URL, url)
 
-    # OUT: [ {'consumed-virtual': '0',
-    #         'productlist': '2380,2502',
-    #         'start-date': '1167782194',
-    #         'end-date': '0',
-    #         'consumed': '1',
-    #         'substatus': 'ACTIVE',
-    #         'subid': '123452cdb3e6f82961cdc0561322423a',
-    #         'nodecount': '0',
-    #         'subname': 'SUSE Linux Enterprise Desktop 10',
-    #         'duration': '0',
-    #         'regcode': 'XXXXX@YYY-SLED-abc2c3def',
-    #         'type': 'FULL',
-    #         'server-class': 'OS',
-    #         'product-class': '7260'
-    #         }, { ... }, ... ]
+        # StringIO.write leaves the cursor at the end of the file
+        response.seek(0)
+        try:
+            tree = etree.parse(response)
+        except ExpatError:
+            self.error_msg("Could not parse XML from %s." % url)
+            sys.exit(1)
+
+        return tree.getroot()
+
     def get_subscriptions_from_ncc(self):
-        """Returns all subscripts a customer has
-           that data can be used for consolidate_subscriptions()."""
-        send = ('<?xml version="1.0" encoding="UTF-8"?>'
-                '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
-                '<authuser>%(authuser)s</authuser>'
-                '<authpass>%(authpass)s</authpass>'
-                '<smtguid>%(smtguid)s</smtguid>'
-                '</productdata>\n' % self.__dict__)
+        """Returns all the subscriptions for this customer.
 
-        self.print_msg("Downloading Subscription information")
-        f = self._connect_ncc( self.ncc_url_subs, send )
-        tree = etree.parse(f)
+        This is the format of the returned list of susbscriptions:
+        [{'consumed-virtual': '0',
+          'productlist': '2380,2502',
+          'start-date': '1167782194',
+          'end-date': '0',
+          'consumed': '1',
+          'substatus': 'ACTIVE',
+          'subid': '123452cdb3e6f82961cdc0561322423a',
+          'nodecount': '0',
+          'subname': 'SUSE Linux Enterprise Desktop 10',
+          'duration': '0',
+          'regcode': 'XXXXX@YYY-SLED-abc2c3def',
+          'type': 'FULL',
+          'server-class': 'OS',
+          'product-class': '7260'},
+          { ... },
+          ...]
+
+        XXX: This method is tightly coupled with consolidate_subscriptions().
+
+        """
+        if self.fromdir:
+            send = None
+        else:
+            send = ('<?xml version="1.0" encoding="UTF-8"?>'
+                    '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
+                    '<authuser>%(authuser)s</authuser>'
+                    '<authpass>%(authpass)s</authpass>'
+                    '<smtguid>%(smtguid)s</smtguid>'
+                    '</productdata>\n' % self.__dict__)
+
+        self.print_msg("Downloading Subscription information...")
+        subscriptionlist = self._get_ncc_xml(self.ncc_url_subs, send)
         subscriptions = []
-        for row in tree.getroot():
-            if row.tag == ("{%s}subscription" % self.namespace):
-                subscription = {}
-                for col in row.getchildren():
-                    dummy = col.tag.split( '}' )
-                    key = dummy[1]
-                    subscription[key] = col.text
-                subscriptions.append(subscription)
+        for row in subscriptionlist.findall('{%s}subscription' % self.namespace):
+            subscription = {}
+            for col in row.getchildren():
+                dummy = col.tag.split( '}' )
+                key = dummy[1]
+                subscription[key] = col.text
+            subscriptions.append(subscription)
         return subscriptions
 
     #   FIXME: not sure about 'consumed' yet. We could calculate:
@@ -227,7 +312,7 @@ class NCCSync(object):
             % sql_list(subscription_count.keys()))
         q.execute()
         rhnSQL.commit()
-        
+
         return subscription_count
 
     def get_suse_products_from_ncc(self):
@@ -236,20 +321,21 @@ class NCCSync(object):
         Returns a list of dicts with all the keys the NCC has for a product
 
         """
-        send = ('<?xml version="1.0" encoding="UTF-8"?>'
-                '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
-                '<authuser>%(authuser)s</authuser>'
-                '<authpass>%(authpass)s</authpass>'
-                '<smtguid>%(smtguid)s</smtguid>'
-                '</productdata>\n' % self.__dict__)
+        if self.fromdir:
+            send = None
+        else:
+            send = ('<?xml version="1.0" encoding="UTF-8"?>'
+                    '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
+                    '<authuser>%(authuser)s</authuser>'
+                    '<authpass>%(authpass)s</authpass>'
+                    '<smtguid>%(smtguid)s</smtguid>'
+                    '</productdata>\n' % self.__dict__)
 
-        self.print_msg("Downloading Product information")
-        f = self._connect_ncc(self.ncc_url_prods, send)
-        tree = etree.parse(f)
-        f.close()
+        self.print_msg("Downloading Product information...")
+        productdata = self._get_ncc_xml(self.ncc_url_prods, send)
 
         suse_products = []
-        for row in tree.getroot():
+        for row in productdata:
             if row.tag == ("{%s}row" % self.namespace):
                 suseProduct = {}
                 for col in row.findall("{%s}col" % self.namespace):
@@ -666,7 +752,7 @@ class NCCSync(object):
         all_subs_in_db = self.do_subscription_calculation(
             all_subs_in_db, all_subs_sum, prod, data, cf_id)
 
-        for org in all_subs_in_db.keys():
+        for org in all_subs_in_db:
             if all_subs_in_db[org]["dirty"]:
                 update_sql = """
                     UPDATE RHNPRIVATECHANNELFAMILY SET max_members = :max_m
@@ -798,13 +884,20 @@ class NCCSync(object):
         channels = filter(lambda c: c.get('family') in families,
                           channels_iter)
 
-        # filter out the channels whose parent isn't also in the channels list
+        # filter out the channels whose parent isn't also in the channel list
         c_labels = [c.get('label') for c in channels]
         filtered = []
         for channel in channels:
             parent = channel.get('parent')
             if parent == 'BASE' or parent in c_labels:
                 filtered.append(channel)
+
+        # make the repository urls point to our local path defined in 'fromdir'
+        if self.fromdir:
+            for channel in filtered:
+                if channel.get('source_url'):
+                    path = urlparse(channel.get('source_url')).path
+                    channel.set('source_url', self.fromdir+path)
         return filtered
 
     def list_channels(self):
@@ -863,11 +956,9 @@ class NCCSync(object):
         becomes: "/SLED10-SP3-Pool/sled-10-i586"
 
         """
-        f = urllib.urlopen(NCCREPOS % self.__dict__)
-        tree = etree.parse(f)
-        f.close()
+        root = self._get_ncc_xml(self.ncc_repoindex % self.__dict__)
 
-        return [repo.get('path') for repo in tree.getroot()]
+        return [repo.get('path') for repo in root]
     get_mirrorable_repos = memoize(get_mirrorable_repos)
 
     def is_mirrorable(self, channel):
@@ -878,8 +969,12 @@ class NCCSync(object):
          - it is a fake channel (path is empty)
 
         """
-        channel_path = get_repo_path(channel.get('source_url'))
-        return channel_path in self.get_mirrorable_repos() or not channel_path
+        if self.fromdir:
+            channel_path = channel.get('source_url')
+            return not channel_path or os.path.exists(channel_path.split('file://')[1])
+        else:
+            channel_path = get_repo_path(channel.get('source_url'))
+            return channel_path in self.get_mirrorable_repos() or not channel_path
 
     def get_ncc_channel(self, channel_label):
         """Try getting the NCC channel for this user
@@ -1055,7 +1150,6 @@ class NCCSync(object):
                                "WHERE name = :name")
         query.execute(name=channel.get('product_name'))
         return query.fetchone()[0]
-
 
     def add_channel(self, channel_label):
         """Add a new channel to the database

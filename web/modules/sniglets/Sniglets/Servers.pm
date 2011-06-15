@@ -909,13 +909,13 @@ sub server_hardware_profile {
 }
 
 my @user_server_prefs = ( { name => 'receive_notifications',
-			    label => 'Receive Notifications of Updates/Errata' },
+			    label => 'Receive Notifications of Updates/Patches' },
 			  { name => 'include_in_daily_summary',
 			    label => 'Include system in Daily Summary'},
 			);
 
 my @server_prefs = ( { name => 'auto_update',
-		       label => 'Automatic application of relevant errata' },
+		       label => 'Automatic application of relevant patches' },
 		   );
 
 sub tri_state_system_pref_list {

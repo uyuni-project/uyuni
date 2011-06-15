@@ -1,4 +1,42 @@
 -------------------------------------------------------------------
+Wed Jun  1 17:37:27 CEST 2011 - mc@suse.de
+
+- fix parsing the proxy user from curlrc (bnc#697276)
+
+-------------------------------------------------------------------
+Mon May 23 17:41:04 CEST 2011 -iartarisi@suse.cz
+
+- fix malformed url error from pycurl when trying to download products
+  and subscriptions with --from-dir and other minor issues
+
+-------------------------------------------------------------------
+Fri May 20 16:03:56 CEST 2011 - iartarisi@suse.cz
+
+- added proxy authentication to ncc-sync
+
+-------------------------------------------------------------------
+Fri May 20 14:57:56 CEST 2011 - iartarisi@suse.cz
+
+- fixed a syntax error on redirects when debugging is turned on
+
+-------------------------------------------------------------------
+Fri May 20 14:27:28 CEST 2011 - mc@suse.de
+
+- implement disconnected population of vendor channels (bnc#674859)
+
+-------------------------------------------------------------------
+Fri May 20 13:41:22 CEST 2011 - iartarisi@suse.cz
+
+- use pycurl instead of urllib for remote requests (#694054)
+- catch cannot connect to database error
+
+-------------------------------------------------------------------
+Thu May  5 14:48:34 CEST 2011 - iartarisi@suse.cz
+
+- Fixed parsing error and traceback which happened when the NCC xml page
+was replaced by an html page. (bnc#691635)
+
+-------------------------------------------------------------------
 Thu Apr 14 10:33:58 CEST 2011 - iartarisi@suse.cz
 
 - fix updating subscriptions which have only one available channel

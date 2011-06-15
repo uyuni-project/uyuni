@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed May 25 13:26:16 CEST 2011 - mc@suse.de
+
+- allow only secure SSLCipher and SSLProtocols (bnc#685550)
+
+-------------------------------------------------------------------
+Mon May  2 17:25:35 CEST 2011 - ug@suse.de
+
+- apache has to load mod_proxy_http (bnc#683382)
+
+-------------------------------------------------------------------
 Thu Mar 31 15:45:30 CEST 2011 - mantel@suse.de
 
 - more debranding

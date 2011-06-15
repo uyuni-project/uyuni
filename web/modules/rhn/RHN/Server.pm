@@ -242,7 +242,7 @@ sub render {
 
   my $ret = $self->SUPER::render(@_);
 
-  $ret->{server_event_details} .= qq{<div class="action-summary-errata">Errata Affected:<br /><ul>\n};
+  $ret->{server_event_details} .= qq{<div class="action-summary-errata">Patches Affected:<br /><ul>\n};
 
   for my $errata (@{$self->{ERRATA}}) {
     $ret->{server_event_details} .= qq{  <li class="action-summary-errata-advisory">$errata->{ADVISORY} ($errata->{SYNOPSIS})</li>\n};

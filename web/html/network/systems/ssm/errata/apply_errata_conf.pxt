@@ -15,7 +15,7 @@
     <h2>Confirm Patch Update</h2>
 
     <div class="page-summary">
-      <p>The following errata will be applied to the relevant selected systems:</p>
+      <p>The following patches will be applied to the relevant selected systems:</p>
     </div>
 
 <rhn-listview class="Sniglets::ListView::ErrataList" mode="in_set_relevant_to_system_set">
@@ -40,7 +40,7 @@
 
 <pxt-form method="post">
 
-<p>You may schedule the errata updates to take place as soon as possible, or no earlier than a specified time:</p>
+<p>You may schedule the patch updates to take place as soon as possible, or no earlier than a specified time:</p>
 
 <rhn-schedule-action-interface action="schedule_errata_updates" callback="rhn:server_set_errata_set_actions_cb" label="Schedule Updates" />
 

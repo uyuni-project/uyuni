@@ -50,6 +50,7 @@ public class BootstrapConfigAction extends BaseConfigAction {
     public static final String HTTP_PROXY = "http-proxy";
     public static final String HTTP_PROXY_USERNAME = "http-proxy-username";
     public static final String HTTP_PROXY_PASSWORD = "http-proxy-password";
+    public static final String CSRF_TOKEN = "csrfToken";
 
 
     /** {@inheritDoc} */
@@ -62,6 +63,8 @@ public class BootstrapConfigAction extends BaseConfigAction {
         RequestContext requestContext = new RequestContext(request);
 
         StrutsDelegate strutsDelegate = getStrutsDelegate();
+
+        request.setAttribute(CSRF_TOKEN, request.getSession().getAttribute("csrf_token"));
 
         if (isSubmitted(form)) {
             ActionErrors errors = RhnValidationHelper.validateDynaActionForm(

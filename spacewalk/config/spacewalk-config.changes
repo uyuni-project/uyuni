@@ -2,6 +2,7 @@
 Thu Apr 14 15:18:08 CEST 2011 - jrenner@suse.de
 
 - No proxying needed, just rewrite (bnc#685078)
+  (CVE-2009-0788, CVE-2010-1171)
 
 -------------------------------------------------------------------
 Fri Feb 11 07:20:00 UTC 2011 - dmacvicar@suse.de

@@ -547,10 +547,11 @@ class PackageItem(IncompletePackageItem):
     def populate(self, attributes, elements):
         item = IncompletePackageItem.populate(self, attributes, elements)
         # find out "primary" checksum
-        have_filedigests = len([1 for i in item['requires'] if i['name'] == 'rpmlib(FileDigests)'])
-        if not have_filedigests:
-            item['checksum_type'] = 'md5'
-            item['checksum'] = item['checksums']['md5']
+        # let's use the best we have
+        #have_filedigests = len([1 for i in item['requires'] if i['name'] == 'rpmlib(FileDigests)'])
+        #if not have_filedigests:
+        #    item['checksum_type'] = 'md5'
+        #    item['checksum'] = item['checksums']['md5']
         return item
 addItem(PackageItem)
 
@@ -678,6 +679,7 @@ class BugItem(BaseItem):
     tagMap = {
         'rhn-erratum-bug-id'        : 'bug_id',
         'rhn-erratum-bug-summary'   : 'summary',
+        'rhn-erratum-bug-summary'   : 'href',
     }
 addItem(BugItem)
 
@@ -714,6 +716,7 @@ class ErratumItem(BaseItem):
         'rhn-erratum-cve'           : 'cve',
         'rhn-erratum-last-modified' : 'last_modified',
         'rhn-erratum-files'         : 'files',
+        'rhn-erratum-errata-from'   : 'errata_from',
         'cve-names'                 : 'cve',
     }
 addItem(ErratumItem)

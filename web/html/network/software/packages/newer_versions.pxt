@@ -24,7 +24,7 @@
   <column name="Providing Channel" label="channel_name" align="left">
     <url>/rhn/channels/ChannelDetail.do?cid={column:channel_id}</url>
   </column>
-  <column name="Related Errata" label="related_errata" align="left" />
+  <column name="Related Patch" label="related_errata" align="left" />
 
   <empty_list_message>No other versions.</empty_list_message>
 </rhn-listview>

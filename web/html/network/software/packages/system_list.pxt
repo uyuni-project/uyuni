@@ -25,7 +25,7 @@
 <rhn-listview class="Sniglets::ListView::SystemList" mode="systems_with_package">
   <formvars><var name="pid" /></formvars>
   <set name="users selected systems" label="system_list" />
-  <column name="Errata" label="total_errata" align="center">
+  <column name="Patches" label="total_errata" align="center">
     <url>/rhn/systems/details/ErrataList.do?sid={column:id}</url>
   </column>
   <column name="Packages" label="outdated_packages" align="center">

@@ -215,6 +215,12 @@ class PackageImport(ChannelPackageSubscription):
         # XXX
         package['copyright'] = package['license']
 
+        for tag in ('recommends', 'suggests', 'supplements'):
+            if type(package[tag]) != type([]):
+                # older spacewalk server do not export weak deps. 
+                # lets create an empty list
+                package[tag] = []
+
         # Creates all the data structures needed to insert capabilities
         for tag in ('provides', 'requires', 'conflicts', 'obsoletes', 'recommends', 'suggests', 'supplements'):
             depList = package[tag]
@@ -222,6 +228,7 @@ class PackageImport(ChannelPackageSubscription):
                 sys.stderr.write("!!! packageImport.PackageImport._processPackage: "
                                  "erronous depList for '%s', converting to []\n"%tag)
                 depList = []
+
             for dep in depList:
                 nv = []
                 for f in ('name', 'version'):
@@ -234,7 +241,8 @@ class PackageImport(ChannelPackageSubscription):
         # Process files too
         fileList = package['files']
         for f in fileList:
-            nv = (f['name'], '')
+            filename = self._fix_encoding(f['name'])
+            nv = (filename, '')
             del f['name']
             f['capability'] = nv
             if not self.capabilities.has_key(nv):
@@ -259,6 +267,10 @@ class PackageImport(ChannelPackageSubscription):
                 self.package_arches['sparc-solaris-patch'] = None
             else:
                 self.package_arches['i386-solaris-patch'] = None
+
+        # fix encoding issues in package summary and description
+        package['description'] = self._fix_encoding(package['description'])
+        package['summary'] = self._fix_encoding(package['summary'])
 
     def fix(self):
         # If capabilities are available, process them
@@ -474,6 +486,15 @@ class PackageImport(ChannelPackageSubscription):
         ChannelPackageSubscription._cleanup_object(self, object)
         if object.ignored:
             object.id = object.first_package.id
+
+    def _fix_encoding(self, text):
+        if text is None:
+            return None
+        try:
+            return text.decode('utf8')
+        except UnicodeDecodeError:
+            return text.decode('iso8859-1')
+
 
 class SourcePackageImport(Import):
     def __init__(self, batch, backend, caller=None, update_last_modified=0):

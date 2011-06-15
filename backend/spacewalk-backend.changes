@@ -1,4 +1,34 @@
 -------------------------------------------------------------------
+Mon Jun  6 17:10:46 CEST 2011 - mc@suse.de
+
+- set RPM vendor to "Not defined" if the RPM say "(none)"
+  (FATE#312378, bnc#693291)
+
+-------------------------------------------------------------------
+Tue May 24 15:31:16 CEST 2011 - mc@suse.de
+
+- some wierd packages have files in iso8859-1 not utf-8
+- fix encoding of summary and description of a package if it is
+  wrong
+
+-------------------------------------------------------------------
+Mon May 23 17:22:18 CEST 2011 - mc@suse.de
+
+- Improve error message when gpg key is wrong or missing
+  (bnc#693574)
+- do not trigger a resync if file is missing. This can cause
+  an endless loop (bnc#695392)
+- do not send tracebacks as email if reposync failed. Send only
+  the error message. (bnc#691579)
+
+-------------------------------------------------------------------
+Mon May  9 10:23:05 CEST 2011 - mc@suse.de
+
+- fix errata export/import for sync
+- handle sync with older spacewalk server which do not support
+  weak dependencies
+
+-------------------------------------------------------------------
 Wed Apr 20 11:24:05 CEST 2011 - iartarisi@suse.cz
 
 - reposync - parse and insert zypper code10 patches into the database
@@ -7,6 +37,7 @@ Wed Apr 20 11:24:05 CEST 2011 - iartarisi@suse.cz
 Thu Apr 14 15:19:47 CEST 2011 - jrenner@suse.de
 
 - Remove the channel APP handler (bnc#685078)
+  (CVE-2009-0788, CVE-2010-1171)
 
 -------------------------------------------------------------------
 Fri Apr  1 12:09:01 CEST 2011 - mc@suse.de

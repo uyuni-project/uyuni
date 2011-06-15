@@ -19,12 +19,12 @@ try:
 except ImportError:
     import sha
     class hashlib:
-        @staticmethod
         def new(checksum):
             if checksum == 'sha1':
                 return sha.new()
             else:
                 raise ValueError, "Incompatible checksum type"
+        new = staticmethod(new)
 import re
 import string
 import shutil

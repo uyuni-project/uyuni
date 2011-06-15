@@ -1,4 +1,48 @@
 -------------------------------------------------------------------
+Tue Jun 14 17:31:53 CEST 2011 - ug@suse.de
+
+- XML RPC API for creating virtual SUSE machines fixed
+  (fate#312369 and bnc#687323)
+
+-------------------------------------------------------------------
+Tue Jun 14 11:03:00 CEST 2011 - ug@suse.de
+
+- settings the correct architecture in cobbler, needed by virt. 
+  SUSE installations (fate#312397 and bnc#682665)
+
+-------------------------------------------------------------------
+Thu Jun  9 09:59:03 CEST 2011 - jrenner@suse.de
+
+- Additional fixes for the CSRF security bugfix (bnc#644074)
+
+-------------------------------------------------------------------
+Thu May 26 16:42:41 CEST 2011 - jrenner@suse.de
+
+- Add token into POST url for multipart forms (bnc#644074)
+
+-------------------------------------------------------------------
+Thu May 26 11:59:54 CEST 2011 - jrenner@suse.de
+
+- Integrate password strength meter in webapp (bnc#685551/fate#312398)
+
+-------------------------------------------------------------------
+Tue May 24 17:48:59 CEST 2011 - jrenner@suse.de
+
+- Prevent from phishing attacks via 'url_bounce' (bnc#644082)
+- CVE-2011-1594
+
+-------------------------------------------------------------------
+Mon May 23 16:24:56 CEST 2011 - jrenner@suse.de
+
+- Protect web UI against Cross-Site Request Forgery (bnc#644074)
+- CVE-2009-4139
+
+-------------------------------------------------------------------
+Tue May  3 11:13:36 CEST 2011 - jrenner@suse.de
+
+- Rebranding of example search terms (bnc#682601)
+
+-------------------------------------------------------------------
 Fri Apr 15 16:15:01 CEST 2011 - jrenner@suse.de
 
 - Use isNotEmpty() instead of isEmpty()

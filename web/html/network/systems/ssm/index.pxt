@@ -33,7 +33,7 @@
 	<tr>
 		<th><img src="/img/rhn-icon-errata.gif" alt="Patches" /></th>
 		<th>Patches:</th>
-                <td><a href="/network/systems/ssm/errata/index.pxt?pxt:trap=rhn:empty_set&amp;set_label=errata_list">Schedule errata updates</a>
+                <td><a href="/network/systems/ssm/errata/index.pxt?pxt:trap=rhn:empty_set&amp;set_label=errata_list">Schedule patch updates</a>
 		relevant to selected systems</td>
 	</tr>
 

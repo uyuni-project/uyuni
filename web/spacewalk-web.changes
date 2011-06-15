@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu May 26 12:03:11 CEST 2011 - jrenner@suse.de
+
+- Add javascript for password strength meter (bnc#685551/fate#312398)
+
+-------------------------------------------------------------------
+Fri May  6 14:03:25 CEST 2011 - mc@suse.de
+
+- more debranding (bnc#670318)
+
+-------------------------------------------------------------------
 Thu Mar 31 14:27:06 CEST 2011 - mantel@suse.de
 
 - debranding (bnc#683397)

@@ -233,26 +233,32 @@ while read PKG_NAME; do
   }
 
   # update from obs (create missing package on the fly)
-  OBS_PKG_DIR="$OBS_PROJ/$PKG_NAME"
-  rm -rf "$OBS_PKG_DIR"
-  $OSC co -u "$OBS_PROJ" "$PKG_NAME" 2>"$T_LOG" || {
-    if grep 'does not exist in project' "$T_LOG" || grep '404: Not Found' "$T_LOG"; then
-      test -d "$OBS_PROJ" || ( mkdir "$OBS_PROJ"; cd "$OBS_PROJ"; $OSC init "$OBS_PROJ"; )
-      ( set -e; cd "$OBS_PROJ"; $OSC mkpac "$PKG_NAME"; )
-    else
-      cat "$T_LOG"
-      log_and_add_failure "$PKG_NAME" "checkout"
+  for tries in 1 2 3; do
+    OBS_PKG_DIR="$OBS_PROJ/$PKG_NAME"
+    rm -rf "$OBS_PKG_DIR"
+    $OSC co -u "$OBS_PROJ" "$PKG_NAME" 2>"$T_LOG" || {
+      if grep 'does not exist in project' "$T_LOG" || grep '404: Not Found' "$T_LOG"; then
+        test -d "$OBS_PROJ" || ( mkdir "$OBS_PROJ"; cd "$OBS_PROJ"; $OSC init "$OBS_PROJ"; )
+        ( set -e; cd "$OBS_PROJ"; $OSC mkpac "$PKG_NAME"; )
+	break
+      elif [ $tries -eq 3 ]; then
+        cat "$T_LOG"
+        log_and_add_failure "$PKG_NAME" "checkout"
+        continue 2
+      fi
       continue
-    fi
-  }
-
-  for F in "$OBS_PKG_DIR"/*; do
-    test -e "$F" || continue
-    test -s "$F" || {
-      log_and_add_failure "$PKG_NAME" "zero size file in checkout : $F"
-      continue 2
     }
+    for F in "$OBS_PKG_DIR"/*; do
+      test -e "$F" || continue
+      test -s "$F" || test $tries -eq 3 || continue 2
+      test -s "$F" || {
+        log_and_add_failure "$PKG_NAME" "zero size file in checkout : $F"
+        continue 3
+      }
+    done
+    break
   done
+
 
   test -z "$FAKE_COMITTOBS" || {
     echo "FAKE: Not comitting to OBS..."

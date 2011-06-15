@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun 10 16:54:29 CEST 2011 - mc@suse.de
+
+- because of a secfix in perl-libwww-perl we must use IO-Socket-SSL
+  instead of perl-Crypt-SSLeay.(bnc#699235)
+
+-------------------------------------------------------------------
 Wed Mar  9 11:29:42 CET 2011 - mc@suse.de
 
 - add perl-DBI dependency (bnc#678069) 

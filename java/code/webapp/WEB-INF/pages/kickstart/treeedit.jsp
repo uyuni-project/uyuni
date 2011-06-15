@@ -33,6 +33,7 @@
 
 <div>
     <html:form method="post" action="/kickstart/TreeEdit.do" styleId="dist-tree-form">
+      <rhn:csrf />
       <%@ include file="tree-form.jspf" %>
       <hr/><table align="right">
            <c:if test="${requestScope.hidesubmit != 'true'}">
