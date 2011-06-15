@@ -249,6 +249,9 @@ def get_device_bus(node):
             bus = 'MISC'
         else:
             bus = node.properties['info.bus']
+    elif node.properties.has_key('info.subsystem'):
+        # hal 0.5.12 do not have info.bus (bnc#698986)
+        bus = node.properties['info.subsystem']
     else:
         bus = 'MISC'
 
