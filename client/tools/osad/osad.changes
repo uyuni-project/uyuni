@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 15 14:35:25 CEST 2011 - mc@suse.de
+
+- ensure presence subscription works with standard
+  jabberd setup.(bnc#695946)
+
+-------------------------------------------------------------------
 Mon Feb  7 15:31:07 CET 2011 - mc@suse.de
 
 - add rc links (bnc#669894) 
