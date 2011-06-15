@@ -1,13 +1,13 @@
 -------------------------------------------------------------------
-Thu Jun  9 16:10:51 CEST 2011 - jrenner@suse.de
-
-- Additional fixes for the CSRF security bugfix (bnc#644074)
-
--------------------------------------------------------------------
 Wed Jun 15 10:14:12 CEST 2011 - ug@suse.de
 
 - XML RPC API for creating virtual SUSE machines fixed
   (fate#312369 and bnc#687323)
+
+-------------------------------------------------------------------
+Thu Jun  9 16:10:51 CEST 2011 - jrenner@suse.de
+
+- Additional fixes for the CSRF security bugfix (bnc#644074)
 
 -------------------------------------------------------------------
 Thu May 26 17:02:07 CEST 2011 - jrenner@suse.de
