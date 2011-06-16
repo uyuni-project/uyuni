@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 16 15:52:06 CEST 2011 - jrenner@suse.de
+
+- Fix missing token in SSM (bnc#644074)
+
+-------------------------------------------------------------------
 Tue Jun 14 17:31:53 CEST 2011 - ug@suse.de
 
 - XML RPC API for creating virtual SUSE machines fixed
