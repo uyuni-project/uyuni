@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 16 10:24:57 CEST 2011 - mc@suse.de
+
+- add proxy module to firstboot
+
+-------------------------------------------------------------------
 Wed Jun  1 17:37:27 CEST 2011 - mc@suse.de
 
 - fix parsing the proxy user from curlrc (bnc#697276)
