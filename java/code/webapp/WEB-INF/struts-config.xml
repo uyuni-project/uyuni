@@ -3309,6 +3309,7 @@
         input="/WEB-INF/pages/ssm/systems/list.jsp"
         type="com.redhat.rhn.frontend.action.ssm.ListSystemsAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/ssm/systems/list.jsp"/>
                <forward name="confirm"
