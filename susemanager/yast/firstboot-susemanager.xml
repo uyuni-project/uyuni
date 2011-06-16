@@ -84,6 +84,7 @@
             <label>Network Configuration</label>
             <proposal_modules config:type="list">
                 <proposal_module>lan</proposal_module>
+                <proposal_module>proxy</proposal_module>
             </proposal_modules>
         </proposal>
     </proposals>
