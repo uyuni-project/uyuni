@@ -282,6 +282,15 @@ EOF
       zypper --non-interactive in $Z_MISSING || exit 1
     fi
   fi
+  if rpm -q aaa_base --qf '%{DISTRIBUTION}\n' | grep -q 'Enterprise 10'; then
+    test -e "/usr/share/zypp/migrate/10-11.migrate.products.sh" && {
+      echo "* check whether we have to to migrate metadata..."
+      sh /usr/share/zypp/migrate/10-11.migrate.products.sh || {
+       echo "ERROR: Failed to migrate product metadata."
+       exit 1
+      }
+    }
+  fi
 fi
 
 """
