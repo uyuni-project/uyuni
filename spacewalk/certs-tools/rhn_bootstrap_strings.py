@@ -232,7 +232,7 @@ if [ "$INSTALLER" == zypper ]; then
 
     # client codebase determines repo url to use and whether additional
     # preparations are needed before installing the missing packages.
-    if rpm -q aaa_base --qf '%{DISTRIBUTION}\n' | grep -q 'Enterprise 10'; then
+    if rpm -q aaa_base --qf '%{DISTRIBUTION}\\n' | grep -q 'Enterprise 10'; then
       echo "* client codebase is SLE-10"
       Z_CLIENT_REPO_URL=${SMGR_CODE_10_REPO_URL:-http://${HOSTNAME}/pub/repositories/${Z_CLIENT_REPO_NAME}-code10}
 
