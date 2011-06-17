@@ -229,6 +229,7 @@ if [ "$INSTALLER" == zypper ]; then
     echo "  no packages missing."
   else
     echo "* going to install missing packages:"
+    Z_CLIENT_REPO_NAME="susemanager-client-setup"
 
     # client codebase determines repo url to use and whether additional
     # preparations are needed before installing the missing packages.
@@ -259,9 +260,8 @@ if [ "$INSTALLER" == zypper ]; then
 
     # way to add the client software repository depends on the zypp version
     # installed (original code 10 via 'zypper sa', or code 11 like via .repo files)
-    Z_CLIENT_REPO_NAME="susemanager-client-setup"
-    Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/${Z_CLIENT_REPO_NAME}.repo"
     echo "  adding client software repository at $Z_CLIENT_REPO_URL"
+    Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/${Z_CLIENT_REPO_NAME}.repo"
 
     if [ rpm -q zypper | grep 'zypper-0\.' ]; then
       # code10 zypper has no --gpg-auto-import-keys and no reliable return codes.
