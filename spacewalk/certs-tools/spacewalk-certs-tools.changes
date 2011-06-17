@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 21 19:11:40 CET 2011 - ma@suse.de
+
+- Extra code to bootstrap code10 clients and migrate product metadata..
+
+-------------------------------------------------------------------
 Thu Nov  3 19:27:49 CET 2011 - ma@suse.de
 
 - Adapt dependencies to renamed packages (bnc#722052)
