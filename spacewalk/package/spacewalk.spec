@@ -1,7 +1,7 @@
 %define release_name Smile
 
 Name:           spacewalk
-Version:        1.5.0
+Version:        1.5.1
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 URL:            https://fedorahosted.org/spacewalk
@@ -90,9 +90,8 @@ Requires:       spacewalk-selinux
 %if 0%{?rhel} == 5
 Requires:       jabberd-selinux
 %endif
-# Work around for jabberd to work with stock RHEL-6.0 SELinux policy
 %if 0%{?rhel} == 6
-Requires:       jabberd-selinux-workaround
+Requires:       selinux-policy-base >= 3.7.19-93
 %endif
 
 
@@ -190,6 +189,10 @@ rm -rf %{buildroot}
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
 
 %changelog
+* Fri Jun 17 2011 Jan Pazdziora 1.5.1-1
+- No longer require jabberd-selinux-workaround now that RHEL 6.1 has been
+  released.
+
 * Mon Jan 31 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.3.3-1
 - Require jabberd-selinux-workaround on RHEL-6.0
 

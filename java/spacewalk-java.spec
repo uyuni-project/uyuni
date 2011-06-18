@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.5.42
+Version: 1.5.47
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz 
@@ -626,6 +626,25 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Jun 17 2011 Jan Pazdziora 1.5.47-1
+- 709724 - check session validity first, security token next
+  (mzazrivec@redhat.com)
+- CVE-2009-4139 - cross site request forging vulnerability fix
+  (mzazrivec@redhat.com)
+
+* Wed Jun 15 2011 Jan Pazdziora 1.5.46-1
+- Make the line shorter to pass checkstyle.
+
+* Tue Jun 14 2011 Miroslav Suchý 1.5.45-1
+- add missing semicolon (msuchy@redhat.com)
+
+* Tue Jun 14 2011 Miroslav Suchý 1.5.44-1
+- fix content-length setting (msuchy@redhat.com)
+- 711377 - remove confusing 'create schedule' link (tlestach@redhat.com)
+
+* Mon Jun 13 2011 Jan Pazdziora 1.5.43-1
+- content-length should be sent even for HEAD (msuchy@redhat.com)
+
 * Wed Jun 01 2011 Tomas Lestach <tlestach@redhat.com> 1.5.42-1
 - 709365 - fixed delete kickstart API docs (mmello@redhat.com)
 

@@ -8,7 +8,7 @@ Group:   Applications/System
 License: GPLv2 and Python
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.6
+Version: 5.10.8
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{rhnroot}
 make -f Makefile.rhncfg install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
+mkdir -p $RPM_BUILD_ROOT/%{_sharedstatedir}/rhncfg/backups
+mkdir -p $RPM_BUILD_ROOT/%{_localstatedir}/spool/rhn
 
 %if 0%{?suse_version}
 ln -s rhncfg-manager $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-manager
@@ -77,6 +79,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+%if 0%{?suse_version}
+%dir %{_sharedstatedir}
+%endif
+%dir %{_sharedstatedir}/rhncfg
+%dir %{_localstatedir}/spool/rhn
 %{rhnroot}/config_common
 %doc LICENSE PYTHON-LICENSES.txt
 
@@ -112,6 +119,12 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Thu Jun 16 2011 Jan Pazdziora 5.10.8-1
+- Creating the /var/spool/rhn in %build.
+
+* Thu Jun 16 2011 Jan Pazdziora 5.10.7-1
+- temp script file customizable dedicated directory (matteo.sessa@dbmsrl.com)
+
 * Tue May 31 2011 Jan Pazdziora 5.10.6-1
 - Fix python import (matteo.sessa@dbmsrl.com)
 

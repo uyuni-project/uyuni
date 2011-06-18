@@ -10,10 +10,6 @@
 <body>
 
 <rhn:toolbar base="h1" img="/img/rhn-icon-your_rhn.gif"
-             imgAlt="channels.overview.toolbar.imgAlt"
-             creationUrl="/rhn/admin/ScheduleDetail.do"
-             creationType="schedule"
-             creationAcl="user_role(satellite_admin)"
 	         helpUrl="">
     <bean:message key="bunch.edit.jsp.toolbar" arg0="${label}"/>
 </rhn:toolbar>
@@ -28,6 +24,7 @@
        <div align="right">
           <input type="submit" name="dispatch"
             value="<bean:message key="bunch.edit.jsp.button-schedule"/>" />
+            <rhn:csrf/>
           <rhn:submitted/>
        </div>
        <hr />
