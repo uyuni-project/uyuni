@@ -66,7 +66,6 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{rhnroot}
 make -f Makefile.rhncfg install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
-mkdir -p $RPM_BUILD_ROOT/%{_sharedstatedir}/rhncfg/backups
 mkdir -p $RPM_BUILD_ROOT/%{_localstatedir}/spool/rhn
 
 %if 0%{?suse_version}
@@ -79,10 +78,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%if 0%{?suse_version}
-%dir %{_sharedstatedir}
-%endif
-%dir %{_sharedstatedir}/rhncfg
 %dir %{_localstatedir}/spool/rhn
 %{rhnroot}/config_common
 %doc LICENSE PYTHON-LICENSES.txt
