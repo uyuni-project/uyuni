@@ -16,8 +16,6 @@
 package com.redhat.rhn.frontend.struts;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.security.CSRFTokenException;
-import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
@@ -70,19 +68,6 @@ public class RhnRequestProcessor extends RequestProcessor {
             if (originalMapping != null && originalMapping instanceof RhnActionMapping) {
                 //we need to process a list of acls
                 RhnActionMapping mapping = (RhnActionMapping) originalMapping;
-
-                // validate security token to prevent CSRF type of attacks
-                if (request.getMethod().equals("POST")) {
-                    try {
-                        CSRFTokenValidator.validate(request);
-                    }
-                    catch (CSRFTokenException e) {
-                        // send HTTP 403 if security token validation failed
-                        response.sendError(HttpServletResponse.SC_FORBIDDEN,
-                            e.getMessage());
-                        return;
-                    }
-                }
 
                 // if postRequired="true", make sure we're using POST
                 if (mapping.postRequired() && !request.getMethod().equals("POST")) {
