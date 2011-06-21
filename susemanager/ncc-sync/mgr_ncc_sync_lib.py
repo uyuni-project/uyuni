@@ -128,73 +128,11 @@ class NCCSync(object):
         Returns the root XML Element of the parsed document.
 
         """
-        try_counter = self.connect_retries
-        curl = pycurl.Curl()
-
-        curl.setopt(pycurl.URL, url)
-
-        if send is not None:
-            curl.setopt(pycurl.POSTFIELDS, send)
-
-        # We implement our own redirection-following, because pycurl
-        # 7.19 doesn't POST after it gets redirected. Ideally we'd be
-        # using pycurl.POSTREDIR here, but that's in 7.21.
-        curl.setopt(pycurl.FOLLOWLOCATION, False)
-
-        response = StringIO()
-        curl.setopt(pycurl.WRITEFUNCTION, response.write)
-
-        while True:
-            try_counter -= 1
-            if try_counter <= 0:
-                self.error_msg("Connecting to %s has failed after %s "
-                               "tries with HTTP error code %s." %
-                               (url, self.connect_retries, status))
-                sys.exit(1)
-
-            try:
-                curl.perform()
-            except pycurl.error, e:
-                if e[0] == 56: # Proxy requires authentication
-                    log_debug(1, e[1])
-                    # look for credentials in yast config
-                    try:
-                        f = open(YAST_PROXY)
-                    except IOError:
-                        self.error_msg("Proxy requires authentication. "
-                                       "Failed reading credentials from %s"
-                                       % YAST_PROXY)
-                        sys.exit(1)
-                    contents = f.read()
-                    try:
-                        creds = re.search('^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
-                                          contents, re.M).group(1)
-                        ucreds = re.sub('\\\\"', '"', creds)
-                    except AttributeError:
-                        self.error_msg("Proxy requires authentication. "
-                                       "Failed reading credentials from %s"
-                                       % YAST_PROXY)
-                        sys.exit(1)
-                    curl.setopt(pycurl.PROXYUSERPWD, ucreds)
-
-                elif e[0] == 60:
-                    self.error_msg("Peer certificate cannot be authenticated "
-                                   "with known CA certificates.")
-                    sys.exit(1)
-                else:
-                    self.error_msg(e[1])
-                    sys.exit(1)
-                
-            status = curl.getinfo(pycurl.HTTP_CODE)
-            if status == 200 or (self.fromdir and status == 0): # OK or file
-                break
-            elif status in (301, 302): # redirects
-                url = curl.getinfo(pycurl.REDIRECT_URL)
-                log_debug(1, "Got redirect to %s" % url)
-                curl.setopt(pycurl.URL, url)
-
-        # StringIO.write leaves the cursor at the end of the file
-        response.seek(0)
+        try:
+            response = suseLib.send(url, send)
+        except:
+            self.error_msg("NCC connection failed")
+            sys.exit(1)
         try:
             tree = etree.parse(response)
         except ExpatError:
