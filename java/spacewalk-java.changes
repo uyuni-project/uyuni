@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 21 17:22:16 CEST 2011 - jrenner@suse.de
+
+- Check session validity first, security token next (bnc#644074)
+- Merge with upstream spacewalk (bnc#644074) 
+
+-------------------------------------------------------------------
 Fri Jun 17 09:19:24 CEST 2011 - jrenner@suse.de
 
 - Fix missing token in SSM (bnc#644074)
