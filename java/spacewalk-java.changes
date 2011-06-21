@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 21 13:57:03 CEST 2011 - ug@suse.de
+
+- replaced 'anaconda' by 'autoinstallation'
+
+-------------------------------------------------------------------
 Tue Jun 21 13:27:43 CEST 2011 - ug@suse.de
 
 - track RPM installation during virtual machine setup by
