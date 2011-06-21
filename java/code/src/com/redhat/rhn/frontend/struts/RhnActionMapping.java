@@ -96,7 +96,7 @@ public class RhnActionMapping extends ActionMapping {
     }
 
     /**
-     * @return true if postRequiredIfSubmitted attribute is present and set to "true", false otherwise
+     * @return true if postRequiredIfSubmitted attribute is present and set to "true"
      */
     public boolean postRequiredIfSubmitted() {
         if (postRequiredIfSubmitted != null && postRequiredIfSubmitted.equals("true")) {

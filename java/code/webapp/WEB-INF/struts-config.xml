@@ -3398,6 +3398,7 @@
         input="/WEB-INF/pages/systems/sdc/createcustomdata.jsp"
         type="com.redhat.rhn.frontend.action.systems.sdc.CreateCustomDataAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default" path="/WEB-INF/pages/systems/sdc/createcustomdata.jsp" />
       </action>
 
