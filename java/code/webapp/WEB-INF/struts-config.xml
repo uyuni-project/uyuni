@@ -5288,6 +5288,7 @@
                 type="com.redhat.rhn.frontend.action.token.ActivationKeyChildChannelsAction"
                 className="com.redhat.rhn.frontend.struts.RhnActionMapping"
                 parameter="dispatch">
+        <set-property property="postRequiredIfSubmitted" value="true" />
         <set-property property="acls" value="user_role(activation_key_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/activationkeys/childchannels/listeditchannels.jsp"/>
