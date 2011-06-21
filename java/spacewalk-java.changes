@@ -1,10 +1,20 @@
 -------------------------------------------------------------------
+
+Tue Jun 21 16:29:55 CEST 2011 - jrenner@suse.de
+
+- Fix missing tokens when updating child channels (bnc#701157)
+- Check session validity first, security token next (bnc#644074)
+- Merge with upstream spacewalk (bnc#644074)
+
+-------------------------------------------------------------------
+
 Tue Jun 21 14:10:54 CEST 2011 - ug@suse.de
 
 - fix XML RPC call to install a virtual machine
   (fate#312369 and bnc#687323)
 
 -------------------------------------------------------------------
+
 Tue Jun 21 13:57:03 CEST 2011 - ug@suse.de
 
 - replaced 'anaconda' by 'autoinstallation'
