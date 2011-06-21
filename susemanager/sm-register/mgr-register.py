@@ -28,7 +28,7 @@ def systemExit(code, msgs=None):
 
 try:
     from rhn import rhnLockfile
-    from spacewalk.common import CFG, fetchTraceback
+    from spacewalk.common import CFG, initCFG, fetchTraceback
     from spacewalk.susemanager import mgr_register
 except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
@@ -59,10 +59,15 @@ def main():
         LOCK = rhnLockfile.Lockfile('/var/run/mgr-register.pid')
     except rhnLockfile.LockfileLockedException:
         systemExit(1, "ERROR: attempting to run more than one instance of mgr-register Exiting.")
+    initCFG('server.susemanager')
+    if not CFG.FORWARD_REGISTRATION:
+        releaseLOCK()
+        sys.exit(0)
     register = mgr_register.Register()
     if options.reseterrors:
         register.reset_errors()
     register.main()
+    releaseLOCK()
 
 if __name__ == '__main__':
     try:
