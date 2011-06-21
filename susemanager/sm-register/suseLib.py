@@ -18,6 +18,107 @@ import urlparse
 from suseRegister.info import getProductProfile, parseProductProfileFile
 from spacewalk.common import log_debug, log_error, rhnFault
 from spacewalk.server import rhnSQL
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
+
+import pycurl
+
+class TransferException(Exception):
+    """
+    Transfer Error.
+    """
+    def __init__(self, value=None):
+        Exception.__init__(self)
+        self.value = value
+    def __str__(self):
+        return "%s" %(self.value,)
+
+    def __unicode__(self):
+        return '%s' % to_unicode(self.value)
+
+
+def send(url, send=None):
+    """Connect to ncc and return the XML document as stringIO
+
+    :arg url: the url where the request will be sent
+    :kwarg send: do a post-request when "send" is given.
+
+    Returns the XML document as stringIO object.
+
+    """
+    YAST_PROXY = "/root/.curlrc"
+    connect_retries = 10
+    try_counter = connect_retries
+    curl = pycurl.Curl()
+
+    curl.setopt(pycurl.URL, url)
+    log_debug(2, "Connect to %s" % url)
+    if send is not None:
+        curl.setopt(pycurl.POSTFIELDS, send)
+
+    # We implement our own redirection-following, because pycurl
+    # 7.19 doesn't POST after it gets redirected. Ideally we'd be
+    # using pycurl.POSTREDIR here, but that's in 7.21.
+    curl.setopt(pycurl.FOLLOWLOCATION, False)
+
+    response = StringIO()
+    curl.setopt(pycurl.WRITEFUNCTION, response.write)
+
+    while True:
+        try_counter -= 1
+        if try_counter <= 0:
+            log_error("Connecting to %s has failed after %s "
+                      "tries with HTTP error code %s." %
+                      (url, connect_retries, status))
+            raise TransferException, "Connection failed after %s tries with HTTP error %s." % (connect_retries, status)
+
+        try:
+            curl.perform()
+        except pycurl.error, e:
+            if e[0] == 56: # Proxy requires authentication
+                log_debug(2, e[1])
+                # look for credentials in yast config
+                try:
+                    f = open(YAST_PROXY)
+                except IOError:
+                    log_error("Proxy requires authentication. "
+                              "Failed reading credentials from %s"
+                              % YAST_PROXY)
+                    raise
+                contents = f.read()
+                try:
+                    creds = re.search('^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
+                                      contents, re.M).group(1)
+                    ucreds = re.sub('\\\\"', '"', creds)
+                except AttributeError:
+                    log_error("Proxy requires authentication. "
+                              "Failed reading credentials from %s"
+                              % YAST_PROXY)
+                    raise TransferException, "Proxy requires authentication. Failed reading credentials from %s" % YAST_PROXY
+                curl.setopt(pycurl.PROXYUSERPWD, ucreds)
+
+            elif e[0] == 60:
+                log_error("Peer certificate cannot be authenticated "
+                          "with known CA certificates.")
+                raise TransferException, "Peer certificate cannot be authenticated with known CA certificates."
+            else:
+                log_error(e[1])
+                raise
+
+        status = curl.getinfo(pycurl.HTTP_CODE)
+        if status == 200 or (URL(url).scheme == "file" and status == 0): # OK or file
+            break
+        elif status in (301, 302): # redirects
+            url = curl.getinfo(pycurl.REDIRECT_URL)
+            log_debug(2, "Got redirect to %s" % url)
+            curl.setopt(pycurl.URL, url)
+
+    # StringIO.write leaves the cursor at the end of the file
+    response.seek(0)
+    return response
+
 
 def findProduct(product):
   q_version = ""
