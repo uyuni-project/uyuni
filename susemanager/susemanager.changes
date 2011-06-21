@@ -2,6 +2,8 @@
 Tue Jun 21 16:07:34 CEST 2011 - mc@suse.de
 
 - use pycurl send method also for mgr-register
+- add forward_registration variable to disable
+  mgr-register in disconnected setups
 
 -------------------------------------------------------------------
 Thu Jun 16 10:24:57 CEST 2011 - mc@suse.de
