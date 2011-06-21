@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun 21 13:27:43 CEST 2011 - ug@suse.de
+
+- track RPM installation during virtual machine setup by
+  using session install=.... parameter 
+  part of the fix for bnc#659093 and Fate#312372
+
+-------------------------------------------------------------------
 Thu Jun 16 15:52:06 CEST 2011 - jrenner@suse.de
 
 - Fix missing token in SSM (bnc#644074)
