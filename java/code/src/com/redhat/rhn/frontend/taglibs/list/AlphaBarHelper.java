@@ -19,7 +19,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -7,6 +7,10 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
  */
 package com.redhat.rhn.common.security;
 
@@ -22,8 +26,12 @@ import javax.servlet.http.HttpSession;
  */
 public final class CSRFTokenValidator {
 
-    private static String TOKEN_KEY = "csrf_token";
-    private static String DEFAULT_ALGORITHM = "SHA1PRNG";
+    private static String tokenKey = "csrf_token";
+    private static String defaultAlgorithm = "SHA1PRNG";
+
+    /* utility class, no public constructor  */
+    private CSRFTokenValidator() {
+    }
 
     /**
      * Create a new CSRF token using the given algorithm, throws a runtime
@@ -37,25 +45,26 @@ public final class CSRFTokenValidator {
         String tokenValue = null;
         try {
             tokenValue = String.valueOf(SecureRandom.getInstance(alg).nextLong());
-        } catch (NoSuchAlgorithmException e) {
+        }
+        catch (NoSuchAlgorithmException e) {
             throw new CSRFTokenException(e.getMessage(), e);
         }
         return tokenValue;
     }
 
     /**
-     * Return the CSRF token from the given session. Create a new token if
+     * Return the CSRF token from the given session, create a new token if
      * there is currently none associated with this session.
      *
-     * @param session
-     * @return token
+     * @param session HttpSession to retrieve the token from
+     * @return token Security token retrieved from the session
      */
     public static String getToken(HttpSession session) {
-        String tokenValue = (String) session.getAttribute(TOKEN_KEY);
+        String tokenValue = (String) session.getAttribute(tokenKey);
         if (tokenValue == null) {
             // Create new token if necessary
-            tokenValue = createNewToken(DEFAULT_ALGORITHM);
-            session.setAttribute(TOKEN_KEY, tokenValue);
+            tokenValue = createNewToken(defaultAlgorithm);
+            session.setAttribute(tokenKey, tokenValue);
         }
         return tokenValue;
     }
@@ -64,22 +73,21 @@ public final class CSRFTokenValidator {
      * Validate a given request within its own session, throws a runtime
      * exception leading to internal server error in case of failure.
      *
-     * @param request
-     * @param session
-     * @throws CSRFTokenException
+     * @param request HTTPServletRequest to validate the token for
+     * @throws CSRFTokenException In case the validation failed
      */
     public static void validate(HttpServletRequest request) throws CSRFTokenException {
         HttpSession session = request.getSession();
 
-        if (session.getAttribute(TOKEN_KEY) == null) {
+        if (session.getAttribute(tokenKey) == null) {
             throw new CSRFTokenException("Session does not contain a CSRF security token");
         }
 
-        if (request.getParameter(TOKEN_KEY) == null) {
+        if (request.getParameter(tokenKey) == null) {
             throw new CSRFTokenException("Request does not contain a CSRF security token");
         }
 
-        if (!session.getAttribute(TOKEN_KEY).equals(request.getParameter(TOKEN_KEY))) {
+        if (!session.getAttribute(tokenKey).equals(request.getParameter(tokenKey))) {
             throw new CSRFTokenException("Validation of CSRF security token failed");
         }
     }
