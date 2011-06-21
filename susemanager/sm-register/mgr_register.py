@@ -163,20 +163,7 @@ class Register:
     regurl.query = "command=bulkop&lang=en&version=1.0"
     new_url = regurl.getURL()
 
-    try_counter = 10
-    while new_url != "" and try_counter > 0:
-      try_counter -= 1
-      o = urllib.URLopener()
-      try:
-        f = o.open( new_url, xml)
-        new_url = ""
-      except IOError, e:
-        # 302 is a redirect
-        if e[1] == 302:
-          new_url = e[3].dict["location"]
-        else:
-          log_error("Error during registration: %s" % e[2])
-          raise e
+    f = suseLib.send(new_url, xml)
 
     # parse the answer
     for event, elem in iterparse(f):
