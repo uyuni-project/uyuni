@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun 22 11:07:08 CEST 2011 - ug@suse.de
+
+- replaced 'anaconda' string by 'autoinstallation'
+
+-------------------------------------------------------------------
 Tue Jun 21 17:22:16 CEST 2011 - jrenner@suse.de
 
 - Check session validity first, security token next (bnc#644074)
