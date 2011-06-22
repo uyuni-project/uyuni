@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 22 11:13:55 CEST 2011 - ug@suse.de
+
+- track RPM installation on SUSE installations
+  part of a fix for bnc#659093 and fate#312383
+
+-------------------------------------------------------------------
 Wed Jun 22 11:07:08 CEST 2011 - ug@suse.de
 
 - replaced 'anaconda' string by 'autoinstallation'
