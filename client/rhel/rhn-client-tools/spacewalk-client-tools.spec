@@ -1,13 +1,13 @@
 
 %define without_rhn_register 1
 
+Name: spacewalk-client-tools
 Summary: Support programs and libraries for Red Hat Network or Spacewalk
 License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Name: spacewalk-client-tools
-Version: 1.5.13
+Version: 1.5.14
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -388,6 +388,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Tue Jun 21 2011 Jan Pazdziora 1.5.14-1
+- 714113 - handle writing unicode to log file (msuchy@redhat.com)
+
 * Wed Jun 15 2011 Miroslav Suchý 1.5.13-1
 - forward port translation from RHEL6 (msuchy@redhat.com)
 - forward port translation from RHEL5 (msuchy@redhat.com)

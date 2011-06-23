@@ -43,7 +43,7 @@ def solinstall(adminfile, path, pkg, prog=None):
 
     if pkg.name.startswith("patch-"):
         # Patch and patch cluster install
-        tdir = tempfile.mkdtemp('-dir', 'solinstall-', '/tmp')
+        tdir = tempfile.mkdtemp('-dir', 'solinstall-', '/var/tmp')
         pkgdir = ""
         ret = 0
 
@@ -85,7 +85,7 @@ def solinstall(adminfile, path, pkg, prog=None):
                             (pkg.name, pkgdir))
 
             # change the permissions on the patch directory
-            cmdstr = "chmod -R 777 %s" % pkgdir
+            cmdstr = "chmod -R 777 %s" % tdir
             ret, x = commands.getstatusoutput(cmdstr)
 
             # default values
@@ -94,7 +94,12 @@ def solinstall(adminfile, path, pkg, prog=None):
             cmd = ""
 
             if pkg.name.startswith("patch-cluster-solaris-"):
-                cmd =  "%s/install_cluster -q" % pkgdir
+                if os.path.exists(os.path.join(pkgdir, 'install_cluster')):
+                    cmd =  "%s/install_cluster -q" % pkgdir
+                elif os.path.exists(os.path.join(pkgdir, 'installcluster')):
+                    cmd =  "%s/installcluster --s10cluster" % pkgdir
+                else:
+                    raise PatchaddException("Neither install_cluster nor installcluster script found.")
                 os.chdir(pkgdir)
             else:
                 cmd = "patchadd -u %s" % pkgdir
