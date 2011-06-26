@@ -15,7 +15,7 @@ columns:
 	type		Advisory type (Enhancement, Bug Fix, Security)
 	cve		List of CVE names (Common Vulnerabilities and Exposures Identifiers) addressed by the errata
 	synopsis	Synopsis of the errata
-	systems_affected	Number of systems to which this errata is applicable
+	systems_affected:i	Number of systems to which this errata is applicable
 
 multival_columns:
 
@@ -24,6 +24,7 @@ multival_columns:
 
 sql:
 
+	select * from (
 	select rhnErrata.advisory_name as advisory,
 		rhnErrata.advisory_type as type,
 		rhnCVE.name as cve,
@@ -40,4 +41,6 @@ sql:
 		rhnErrata.advisory_type,
 		rhnCVE.name,
 		rhnErrata.synopsis
-	order by rhnErrata.advisory_name, rhnCVE.name
+	) X
+	-- where placeholder
+	order by advisory, cve

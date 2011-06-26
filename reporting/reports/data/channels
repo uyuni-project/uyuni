@@ -12,13 +12,16 @@ columns:
 
 	channel_label		Channel label
 	channel_name		Channel name
-	number_of_packages	Number of packages in the channel
+	number_of_packages:i	Number of packages in the channel
 
 sql:
 
+	select * from (
 	select rhnchannel.label channel_label, rhnchannel.name channel_name, count(rhnchannelpackage.channel_id) number_of_packages
 	from rhnchannel left outer join rhnchannelpackage
 		on rhnchannel.id = rhnchannelpackage.channel_id
 	group by rhnchannel.id, rhnchannel.label, rhnchannel.name
-	order by rhnchannel.label
+	) X
+	-- where placeholder
+	order by channel_label
 
