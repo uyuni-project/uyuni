@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 28 11:46:51 CEST 2011 - ug@suse.de
+
+- fix XMLRPC call to raise a virtual machine
+  (bnc#687323 and fate#312369)
+
+-------------------------------------------------------------------
 Wed Jun 22 11:13:55 CEST 2011 - ug@suse.de
 
 - track RPM installation on SUSE installations
