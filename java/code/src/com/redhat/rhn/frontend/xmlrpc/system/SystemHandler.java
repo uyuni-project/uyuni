@@ -2248,7 +2248,6 @@ public class SystemHandler extends BaseHandler {
         }
         String url = null;
         String breed = ksdata.getTree().getInstallType().getLabel();
-        ksdata.
         if (breed.equals("suse")) {
             // what Red Hat has as url parameter has SUSE as install=... kernel option parameter
             // there is no equivalent parameter in the autoyast XML file
