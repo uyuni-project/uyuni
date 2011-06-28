@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun 28 16:35:44 CEST 2011 - mc@suse.de
+
+- allow setting null value as paramter (bnc#702641)
+
+-------------------------------------------------------------------
 Tue Jun 28 11:43:44 CEST 2011 - ug@suse.de
 
 - fix XMLRPC call to raise a virtual machine
