@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun 29 15:26:41 CEST 2011 - iartarisi@suse.cz
+
+- added errata.getErrataNamesById function to the XMLRPC API
+
+-------------------------------------------------------------------
 Mon Jun  6 17:10:46 CEST 2011 - mc@suse.de
 
 - set RPM vendor to "Not defined" if the RPM say "(none)"
