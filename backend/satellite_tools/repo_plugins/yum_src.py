@@ -161,6 +161,8 @@ class ContentSource:
                     continue
 
             return ('patches', notices)
+        else:
+            return ('', [])
 
     def patches_checksum_func(self, callback_obj, checksum_type, checksum):
         """Simple function to checksum patches for urlgrabber
@@ -310,5 +312,5 @@ class ContentSource:
 
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
-        if not self.quiet:
-            sys.stderr.write(str(message) + "\n")
+        #if not self.quiet:
+        sys.stderr.write(str(message) + "\n")
