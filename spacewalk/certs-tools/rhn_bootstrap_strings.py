@@ -237,8 +237,11 @@ if [ "$INSTALLER" == zypper ]; then
       echo "* client codebase is SLE-10"
       Z_CLIENT_REPO_URL=${SMGR_CODE_10_REPO_URL:-http://${HOSTNAME}/pub/repositories/${Z_CLIENT_REPO_NAME}-code10}
 
+      # we need the new suseRegister
+      Z_MISSING="$Z_MISSING suseRegister"
+
       echo "* check whether to remove the ZMD stack first:"
-      Z_ZMD_STACK="zmd rug libzypp-zmd-backend suseRegister yast2-registration"
+      Z_ZMD_STACK="zmd rug libzypp-zmd-backend suseRegister yast2-registration zen-updater zmd-inventory"
       Z_ZMD_TODEL=""
       for P in $Z_ZMD_STACK; do
 	rpm -q "$P" && Z_ZMD_TODEL="$Z_ZMD_TODEL $P"
@@ -263,11 +266,11 @@ if [ "$INSTALLER" == zypper ]; then
     echo "  adding client software repository at $Z_CLIENT_REPO_URL"
     Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/${Z_CLIENT_REPO_NAME}.repo"
 
-    if [ rpm -q zypper | grep 'zypper-0\.' ]; then
+    if rpm -q zypper | grep 'zypper-0\.' ; then
       # code10 zypper has no --gpg-auto-import-keys and no reliable return codes.
       zypper --non-interactive --no-gpg-checks sa $Z_CLIENT_REPO_URL $Z_CLIENT_REPO_NAME
       zypper --non-interactive --no-gpg-checks refresh "$Z_CLIENT_REPO_NAME"
-      zypper --non-interactive in $Z_MISSING || exit 1
+      zypper --non-interactive --no-gpg-checks in $Z_MISSING || exit 1
     else
       cat <<EOF >"$Z_CLIENT_REPO_FILE"
 [$Z_CLIENT_REPO_NAME]
