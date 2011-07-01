@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jul  1 18:16:57 CEST 2011 - mc@suse.de
+
+- don't package actions/errata.py on SUSE. zypp-plugin-spacewalk
+  has its own
+
+-------------------------------------------------------------------
 Wed Jun 15 17:01:20 CEST 2011 - mc@suse.de
 
 - adapt for newer hal version to show more infos in the UI
