@@ -151,6 +151,11 @@ mkdir -p $RPM_BUILD_ROOT/var/lib/up2date
 mkdir -pm700 $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date
 touch $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date/loginAuth.pkl
 
+%if 0%{?suse_version}
+# zypp-plugin-spacewalk has its own action/errata.py
+rm -f $RPM_BUILD_ROOT%{_datadir}/rhn/actions/errata.py*
+%endif
+
 %if 0%{?fedora} > 12 || 0%{?rhel} > 5
 rm $RPM_BUILD_ROOT%{_datadir}/rhn/up2date_client/hardware_hal.*
 %else
@@ -299,7 +304,10 @@ make -f Makefile.rhn-client-tools test
 # actions for rhn_check to run
 %{_datadir}/rhn/actions/__init__.*
 %{_datadir}/rhn/actions/hardware.*
+%if ! 0%{?suse_version}
+# zypp-plugin-spacewalk has its own errata.py
 %{_datadir}/rhn/actions/errata.*
+%endif
 %{_datadir}/rhn/actions/systemid.*
 %{_datadir}/rhn/actions/reboot.*
 %{_datadir}/rhn/actions/rhnsd.*
