@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.5.49
+Version: 1.5.52
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz 
@@ -626,6 +626,22 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Jun 28 2011 Tomas Lestach <tlestach@redhat.com> 1.5.52-1
+- 646802 - Fix to have consistent channel name max length to 256
+  (pmutha@redhat.com)
+
+* Tue Jun 28 2011 Tomas Lestach <tlestach@redhat.com> 1.5.51-1
+- fix never ending loop, when entering an invalid storage value
+  (tlestach@redhat.com)
+- rename localStorageMegabytes -> localStorageGigabytes (tlestach@redhat.com)
+- storage isn't set in MB, but in GB (ug@suse.de)
+- prevent setting virtual bridge to null (ug@suse.de)
+- 699505 - introduce channel.software.setUserManagable and
+  channel.software.isUserManagable API calls (tlestach@redhat.com)
+
+* Mon Jun 27 2011 Tomas Lestach <tlestach@redhat.com> 1.5.50-1
+- 710433 - fix kickstart via proxy from RHEL6 Satellite (tlestach@redhat.com)
+
 * Fri Jun 24 2011 Jan Pazdziora 1.5.49-1
 - 699523 - extend user.GetDetails by PAM usage info (tlestach@redhat.com)
 - let finish the kickstart profile creation by the Enter button
