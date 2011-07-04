@@ -22,7 +22,7 @@ BuildArch: noarch
 BuildRequires: python-devel
 Requires: python
 Requires: rhnlib >= 1.8-3
-%if 0%{?suse_version} == 0 && 0%{?rhel} <= 5
+%if 0%{?suse_version} < 1110 && 0%{?rhel} <= 5
 Requires: python-hashlib
 %endif
 # This should have been required by rhnlib
