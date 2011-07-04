@@ -463,7 +463,7 @@ public class DownloadFile extends DownloadAction {
             			newHeaderEnd = newHeaderEnd+8-modulo; 
             		}
             	}
-            	rpmPackage = ChannelFactory.lookupPackageByFilenameAndRage(channel, fileName, newHeaderStart, newHeaderEnd);
+            	rpmPackage = ChannelFactory.lookupPackageByFilenameAndRange(channel, fileName, newHeaderStart, newHeaderEnd);
             } else {
             	rpmPackage = ChannelFactory.lookupPackageByFilename(channel, fileName);         	
             }
