@@ -7,7 +7,7 @@ Tue Jul  5 15:11:10 CEST 2011 - ma@suse.de
 Fri Jul  1 18:16:57 CEST 2011 - mc@suse.de
 
 - don't package actions/errata.py on SUSE. zypp-plugin-spacewalk
-  has its own
+  has its own (bnc#692928)
 
 -------------------------------------------------------------------
 Wed Jun 15 17:01:20 CEST 2011 - mc@suse.de
