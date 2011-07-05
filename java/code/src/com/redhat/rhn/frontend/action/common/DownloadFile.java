@@ -456,11 +456,11 @@ public class DownloadFile extends DownloadAction {
             	int newHeaderStart = 0;
             	
             	if (match.find()) {
-            		newHeaderStart = Integer.parseInt( match.group(1) );
-            		newHeaderEnd   = Integer.parseInt( match.group(2) );
+            		newHeaderStart = Integer.parseInt(match.group(1));
+            		newHeaderEnd   = Integer.parseInt(match.group(2));
             		int modulo = newHeaderEnd % 8;
             		if (modulo > 0) {
-            			newHeaderEnd = newHeaderEnd+8-modulo; 
+            			newHeaderEnd = newHeaderEnd+8-modulo;
             		}
             	}
             	rpmPackage = ChannelFactory.lookupPackageByFilenameAndRange(channel, fileName, newHeaderStart, newHeaderEnd);

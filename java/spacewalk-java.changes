@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul  5 11:44:36 CEST 2011 - ug@suse.de
+
+- added a function to get a package but Name+Headerrange
+  (bnc#703475)
+
+-------------------------------------------------------------------
 Tue Jun 28 16:35:44 CEST 2011 - mc@suse.de
 
 - allow setting null value as paramter (bnc#702641)
