@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul  5 13:10:29 CEST 2011 - ug@suse.de
+
+- Kickstarting RHEL systems with RES (expanded support) 
+  repos fails (bnc#703475)
+
+-------------------------------------------------------------------
 Tue Jun 28 11:46:51 CEST 2011 - ug@suse.de
 
 - fix XMLRPC call to raise a virtual machine
