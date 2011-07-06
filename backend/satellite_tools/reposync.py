@@ -272,7 +272,7 @@ class RepoSync:
             
             e['errata_from'] = 'maint-coord@suse.de'
             e['advisory'] = e['advisory_name'] = '-'.join([notice.get('patchid'),
-                                                           version])
+                                                           self.channel['arch']])
             e['advisory_rel'] = version
             try:
                 e['advisory_type'] = typemap[category]
