@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul  6 14:33:24 CEST 2011 - mc@suse.de
+
+- fix requires for Code10
+
+-------------------------------------------------------------------
 Wed Jun 29 15:26:41 CEST 2011 - iartarisi@suse.cz
 
 - added errata.getErrataNamesById function to the XMLRPC API

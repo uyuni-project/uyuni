@@ -200,7 +200,12 @@ Summary: Spacewalk server and client tools libraries
 Group: Applications/Internet
 %if 0%{?suse_version}
 BuildRequires: python-devel
+%if 0%{?suse_version} >= 1110
 Requires: python-base
+%else
+Requires: python
+Requires: python-hashlib
+%endif
 %else
 BuildRequires: python2-devel
 Requires: python-hashlib
