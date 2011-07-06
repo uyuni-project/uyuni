@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul  6 17:49:36 CEST 2011 - mc@suse.de
+
+- add server capability xmlrpc.errata.patch_names'
+
+-------------------------------------------------------------------
 Wed Jul  6 14:33:24 CEST 2011 - mc@suse.de
 
 - fix requires for Code10
