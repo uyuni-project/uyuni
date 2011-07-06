@@ -186,6 +186,7 @@ def _set_server_capabilities():
         'rhncfg.filetype.directory'             : {'version' : 1, 'value' : 1},
         'xmlrpc.packages.extended_profile'      : {'version' : '1-2', 'value' : 1},
         'xmlrpc.packages.suse_products'         : {'version' : 1, 'value' : 1},
+        'xmlrpc.errata.patch_names'             : {'version' : 1, 'value' : 1},
         'staging_content'                       : {'version' : 1, 'value' : 1},
     }
     l = []
