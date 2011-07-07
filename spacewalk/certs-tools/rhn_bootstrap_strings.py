@@ -126,13 +126,13 @@ PROFILENAME=""   # Empty by default to let it be set automatically.
 
 # SUSE Manager Specific settings:
 #
-# - Alternate location of the client tool repo providing the zypp-plugin-spacewalk
+# - Alternate location of the client tool repos providing the zypp-plugin-spacewalk
 # and packges required for registration. Unless they are already installed on the
-# client this repo is expected to provide them for SLE-10/SLE-11 based clients.
+# client this repo is expected to provide them for SLE-10/SLE-11 based clients:
+#   ${Z_CLIENT_REPOS_ROOT}/sle/VERSION/PATCHLEVEL
 # If empty, the SUSE Manager repositories provided at https://${HOSTNAME}/pub/repositories
 # are used.
-SMGR_CODE_10_REPO_URL=
-SMGR_CODE_11_REPO_URL=
+Z_CLIENT_REPOS_ROOT=
 
 #
 # -----------------------------------------------------------------------------
@@ -219,59 +219,102 @@ if [ "$INSTALLER" == zypper ]; then
   echo
   echo "CHECKING THE REGISTRATION STACK"
   echo "-------------------------------------------------"
-  echo "* check for necessary packages being installed:"
-  Z_NEEDED="spacewalk-check spacewalk-client-setup spacewalk-client-tools zypp-plugin-spacewalk"
-  Z_MISSING=""
-  for P in $Z_NEEDED; do
-    rpm -q "$P" || Z_MISSING="$Z_MISSING $P"
-  done
+
+  function getZ_CLIENT_CODE_BASE() {
+    local BASE=""
+    local VERSION=""
+    local PATCHLEVEL=""
+    test -r /etc/SuSE-release && {
+      grep -q 'Enterprise' /etc/SuSE-release && BASE="sle"
+      eval $(grep '^\(VERSION\|PATCHLEVEL\)' /etc/SuSE-release | tr -d '[:blank:]')
+    }
+    Z_CLIENT_CODE_BASE="${BASE:-unknown}"
+    Z_CLIENT_CODE_VERSION="${VERSION:-unknown}"
+    Z_CLIENT_CODE_PATCHLEVEL="${PATCHLEVEL:-0}"
+  }
+
+  function getZ_MISSING() {
+    local NEEDED="spacewalk-check spacewalk-client-setup spacewalk-client-tools zypp-plugin-spacewalk"
+    Z_MISSING=""
+    for P in $NEEDED; do
+      rpm -q "$P" || Z_MISSING="$Z_MISSING $P"
+    done
+  }
+
+  function getZ_ZMD_TODEL() {
+    local ZMD_STACK="zmd rug libzypp-zmd-backend yast2-registration zen-updater zmd-inventory suseRegister-jeos"
+    if rpm -q suseRegister --qf '%{VERSION}' | grep -q '^\(0\.\|1\.[0-3]\)\(\..*\)\?$'; then
+      # we need the new suseRegister >= 1.4, so wipe an old one too
+      ZMD_STACK="$ZMD_STACK suseRegister suseRegisterInfo spacewalk-client-tools"
+    fi
+    Z_ZMD_TODEL=""
+    for P in $ZMD_STACK; do
+      rpm -q "$P" && Z_ZMD_TODEL="$Z_ZMD_TODEL $P"
+    done
+  }
+
+  echo "* check for necessary packages being installed..."
+  # client codebase determines repo url to use and whether additional
+  # preparations are needed before installing the missing packages.
+  getZ_CLIENT_CODE_BASE
+  echo "* client codebase is ${Z_CLIENT_CODE_BASE}-${Z_CLIENT_CODE_VERSION}-sp${Z_CLIENT_CODE_PATCHLEVEL}"
+
+  getZ_MISSING
   if [ -z "$Z_MISSING" ]; then
     echo "  no packages missing."
   else
-    echo "* going to install missing packages:"
+    echo "* going to install missing packages..."
+    Z_CLIENT_REPOS_ROOT="${Z_CLIENT_REPOS_ROOT:-http://${HOSTNAME}/pub/repositories}"
+    Z_CLIENT_REPO_URL="${Z_CLIENT_REPOS_ROOT}/${Z_CLIENT_CODE_BASE}/${Z_CLIENT_CODE_VERSION}/${Z_CLIENT_CODE_PATCHLEVEL}/bootstrap"
+    test "${Z_CLIENT_CODE_BASE}/${Z_CLIENT_CODE_VERSION}/${Z_CLIENT_CODE_PATCHLEVEL}" = "sle/11/1" && {
+      # use backward compatible URL for SLE11-SP1 repo
+      Z_CLIENT_REPO_URL="${Z_CLIENT_REPOS_ROOT}/susemanager-client-setup
+    }
     Z_CLIENT_REPO_NAME="susemanager-client-setup"
+    Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/$Z_CLIENT_REPO_NAME.repo"
 
-    # client codebase determines repo url to use and whether additional
-    # preparations are needed before installing the missing packages.
-    if rpm -q aaa_base --qf '%{DISTRIBUTION}\\n' | grep -q 'Enterprise 10'; then
-      echo "* client codebase is SLE-10"
-      Z_CLIENT_REPO_URL=${SMGR_CODE_10_REPO_URL:-http://${HOSTNAME}/pub/repositories/${Z_CLIENT_REPO_NAME}-code10}
-
-      # we need the new suseRegister
-      Z_MISSING="$Z_MISSING suseRegister"
-
-      echo "* check whether to remove the ZMD stack first:"
-      Z_ZMD_STACK="zmd rug libzypp-zmd-backend suseRegister yast2-registration zen-updater zmd-inventory"
-      Z_ZMD_TODEL=""
-      for P in $Z_ZMD_STACK; do
-	rpm -q "$P" && Z_ZMD_TODEL="$Z_ZMD_TODEL $P"
-      done
-      if [ -z "$Z_ZMD_TODEL" ]; then
-	echo "  ZMD stack is not installed. No need to remove it."
-      else
-	echo "  Disable and remove the ZMD stack:"
-	# stop any running zmd
-	if [ -x /usr/sbin/rczmd ]; then
-	  /usr/sbin/rczmd stop
+    # code10 requires removal of the ZMD stack first
+    if [ "$Z_CLIENT_CODE_BASE" == "sle" ]; then
+      if [ "$Z_CLIENT_CODE_VERSION" = "10" ]; then
+	echo "* check whether to remove the ZMD stack first..."
+	getZ_ZMD_TODEL
+	if [ -z "$Z_ZMD_TODEL" ]; then
+	  echo "  ZMD stack is not installed. No need to remove it."
+	else
+	  echo "  Disable and remove the ZMD stack..."
+	  # stop any running zmd
+	  if [ -x /usr/sbin/rczmd ]; then
+	    /usr/sbin/rczmd stop
+	  fi
+	  rpm -e $Z_ZMD_TODEL || {
+	    echo "ERROR: Failed remove the ZMD stack."
+	    exit 1
+	  }
 	fi
-	rpm -e $Z_ZMD_TODEL
       fi
-    else
-      echo "* Client codebase is SLE-11"
-      Z_CLIENT_REPO_URL=${SMGR_CODE_11_REPO_URL:-http://${HOSTNAME}/pub/repositories/${Z_CLIENT_REPO_NAME}}
     fi
 
-    # way to add the client software repository depends on the zypp version
+    # way to add the client software repository depends on the zypp version actually
     # installed (original code 10 via 'zypper sa', or code 11 like via .repo files)
+    #
+    # Note: We try to install the missing packages even if adding the repo fails.
+    # Might be some other system repo provides them instead.
     echo "  adding client software repository at $Z_CLIENT_REPO_URL"
-    Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/${Z_CLIENT_REPO_NAME}.repo"
+    if rpm -q zypper --qf '%{VERSION}' | grep -q '^0\(\..*\)\?$'; then
 
-    if rpm -q zypper | grep 'zypper-0\.' ; then
       # code10 zypper has no --gpg-auto-import-keys and no reliable return codes.
+      zypper --non-interactive --no-gpg-checks sd $Z_CLIENT_REPO_NAME
       zypper --non-interactive --no-gpg-checks sa $Z_CLIENT_REPO_URL $Z_CLIENT_REPO_NAME
       zypper --non-interactive --no-gpg-checks refresh "$Z_CLIENT_REPO_NAME"
-      zypper --non-interactive --no-gpg-checks in $Z_MISSING || exit 1
-    else
+      zypper --non-interactive --no-gpg-checks in $Z_MISSING
+      zypper --non-interactive --no-gpg-checks in $Z_MISSING
+      for P in $Z_MISSING; do
+	rpm -q "$P" || {
+	  echo "ERROR: Failed to install all missing packages."
+	  exit 1
+	}
+      done
+      # Now as code11 zypper is installed, create the .repo file
       cat <<EOF >"$Z_CLIENT_REPO_FILE"
 [$Z_CLIENT_REPO_NAME]
 name=$Z_CLIENT_REPO_NAME
@@ -281,18 +324,38 @@ autorefresh=1
 keeppackages=0
 gpgcheck=0
 EOF
-      zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME" || exit 1
-      zypper --non-interactive in $Z_MISSING || exit 1
+    else
+
+      # On code11 simply add the repo and then install
+      cat <<EOF >"$Z_CLIENT_REPO_FILE"
+[$Z_CLIENT_REPO_NAME]
+name=$Z_CLIENT_REPO_NAME
+baseurl=$Z_CLIENT_REPO_URL
+enabled=1
+autorefresh=1
+keeppackages=0
+gpgcheck=0
+EOF
+      zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME"
+      zypper --non-interactive in $Z_MISSING || {
+	  echo "ERROR: Failed to install all missing packages."
+	  exit 1
+	}
+
     fi
   fi
-  if rpm -q aaa_base --qf '%{DISTRIBUTION}\n' | grep -q 'Enterprise 10'; then
-    test -e "/usr/share/zypp/migrate/10-11.migrate.products.sh" && {
-      echo "* check whether we have to to migrate metadata..."
-      sh /usr/share/zypp/migrate/10-11.migrate.products.sh || {
-       echo "ERROR: Failed to migrate product metadata."
-       exit 1
+
+  # on code10 we need to convert metadata of installed products
+  if [ "$Z_CLIENT_CODE_BASE" == "sle" ]; then
+    if [ "$Z_CLIENT_CODE_VERSION" = "10" ]; then
+      test -e "/usr/share/zypp/migrate/10-11.migrate.products.sh" && {
+	echo "* check whether we have to to migrate metadata..."
+	sh /usr/share/zypp/migrate/10-11.migrate.products.sh || {
+	  echo "ERROR: Failed to migrate product metadata."
+	  exit 1
+	}
       }
-    }
+    fi
   fi
 fi
 
