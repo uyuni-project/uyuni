@@ -635,11 +635,9 @@ def generateBootstrapScript(options):
 
     # concat all those script-bits
 
-    newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh()
-
     # SLES: install packages required for registration on systems that do not have them installed
     newScript = newScript + getRegistrationStackSh()
-
+    newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh()
     newScript = newScript + getConfigFilesSh() + getUp2dateScriptsSh()
 
 
