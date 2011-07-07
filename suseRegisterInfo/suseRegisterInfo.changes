@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul  7 11:13:08 CEST 2011 - mc@suse.de
+
+- require suseRegister >= 1.4
+
+-------------------------------------------------------------------
 Wed Feb  2 11:55:40 CET 2011 - mc@suse.de
 
 - suseRegisterRES uses a different place for the NCCcredentails

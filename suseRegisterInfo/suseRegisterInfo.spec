@@ -15,7 +15,7 @@ Requires:       python
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 %if 0%{?suse_version}
-Requires: suseRegister
+Requires: suseRegister >= 1.4
 %else
 Requires: suseRegisterRES
 %endif
