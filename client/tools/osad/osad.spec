@@ -30,7 +30,7 @@ BuildRequires: python-devel
 Requires: python
 Requires: rhnlib >= 2.5.38
 Requires: jabberpy
-%if ( 0%{?suse_version} && 0%{?suse_version} < 1110 ) || ( 0%{?rhel} && 0%{?rhel} <= 5 )
+%if 0%{?suse_version} && 0%{?suse_version} < 1110 || 0%{?rhel} && 0%{?rhel} <= 5
 Requires: python-hashlib
 %endif
 %if 0%{?suse_version} >= 1140
