@@ -548,6 +548,12 @@ else
     echo "* ensuring $INSTALLER itself is updated"
 fi
 if [ "$INSTALLER" == zypper ] ; then
+    # disable all repos except the one provided by spacewalk server
+    echo "* Disable all repos not provided by SUSE Manager Server."
+    zypper mr -d --all
+    zypper mr -e --medium-type plugin
+    zypper mr -e "$Z_CLIENT_REPO_NAME"
+
     zypper ref -s
     zypper --non-interactive up zypper zypp-plugin-spacewalk
     if [ -x /usr/sbin/rhn-profile-sync ] ; then
