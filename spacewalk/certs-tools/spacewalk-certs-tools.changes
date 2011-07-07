@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Jul  7 18:16:55 CEST 2011 - ma@suse.de
+
+- Adapt bootstrap to new repository naming schema.
+- Migrate product metadata when bootstrapping SuSE code10 clients.
+- After registration disable all repositories not provided by 
+  SuSE Manager.
+
+-------------------------------------------------------------------
 Fri Jun 17 19:29:57 CEST 2011 - ma@suse.de
 
 - Extra code to bootstrap code10 clients and migrate product metadata.. 
