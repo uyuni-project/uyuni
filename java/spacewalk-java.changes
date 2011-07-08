@@ -3,6 +3,7 @@ Fri Jul  8 09:09:23 CEST 2011 - jrenner@suse.de
 
 - Refactor RedHat.do to Vendor.do (bnc#671239)
 - Refactor and deprecate API method (bnc#671239)
+- Include security token in system search filter
 
 -------------------------------------------------------------------
 Tue Jul  5 11:44:36 CEST 2011 - ug@suse.de
