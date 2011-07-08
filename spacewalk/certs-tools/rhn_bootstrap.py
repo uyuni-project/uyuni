@@ -637,8 +637,8 @@ def generateBootstrapScript(options):
 
     # SLES: install packages required for registration on systems that do not have them installed
     newScript = newScript + getRegistrationStackSh()
-    newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh()
     newScript = newScript + getConfigFilesSh() + getUp2dateScriptsSh()
+    newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh()
 
 
     newScript = newScript + getRegistrationSh(PRODUCT_NAME)
