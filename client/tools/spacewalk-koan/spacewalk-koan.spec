@@ -12,8 +12,10 @@ BuildArch:      noarch
 BuildRequires:  python
 Requires:       python >= 1.5
 Requires:       koan >= 1.4.3
+%if 0%{?suse_version} && 0%{?suse_version} >= 1110 || 0%{?rhel}
 Requires:       rhn-virtualization-common
 Requires:       rhn-virtualization-host
+%endif
 
 Conflicts: rhn-kickstart
 Conflicts: rhn-kickstart-common
