@@ -123,6 +123,10 @@ FULLY_UPDATE_THIS_BOX=%s
 #     PROFILENAME=`hostname -f`      # FQDN
 PROFILENAME=""   # Empty by default to let it be set automatically.
 
+# After registration, before updating the system (or at least the installer)
+# disable all repos not provided by SUSE Manager.
+DISABLE_LOCAL_REPOS=1
+
 #
 # -----------------------------------------------------------------------------
 # DO NOT EDIT BEYOND THIS POINT -----------------------------------------------
@@ -453,6 +457,22 @@ def getUp2dateTheBoxSh(productName):
 echo
 echo "OTHER ACTIONS"
 echo "------------------------------------------------------"
+if [ $DISABLE_LOCAL_REPOS -eq 1 ]; then
+    if [ "$INSTALLER" == zypper ] ; then
+	echo "* Disable all repos not provided by SUSE Manager Server."
+	zypper mr -d --all
+	zypper mr -e --medium-type plugin
+	zypper mr -e "$Z_CLIENT_REPO_NAME"
+    elif [ "$INSTALLER" == yum ] ; then
+        echo "* Disable all repos not provided by SUSE Manager Server.";
+	for F in /etc/yum.repos.d/*.repo; do
+	  test -f "$F" || continue
+	  sed -i 's/^enabled=1/enabled=0/' "$F"
+	done
+    else
+        ;
+    fi
+fi
 if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
     if [ "$INSTALLER" == zypper ] ; then
         echo "zypper --non-interactive up zypper zypp-plugin-spacewalk; rhn-profile-sync; zypper --non-interactive up (conditional)"
@@ -478,6 +498,7 @@ else
     echo "* ensuring $INSTALLER itself is updated"
 fi
 if [ "$INSTALLER" == zypper ] ; then
+    zypper lr -u
     zypper ref -s
     zypper --non-interactive up zypper zypp-plugin-spacewalk
     if [ -x /usr/sbin/rhn-profile-sync ] ; then
@@ -490,6 +511,7 @@ if [ "$INSTALLER" == zypper ] ; then
         zypper --non-interactive up
     fi
 elif [ "$INSTALLER" == yum ] ; then
+    yum repolist
     /usr/bin/yum -y upgrade yum yum-rhn-plugin
     if [ -x /usr/sbin/rhn-profile-sync ] ; then
         /usr/sbin/rhn-profile-sync
