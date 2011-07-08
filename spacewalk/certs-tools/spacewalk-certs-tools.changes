@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jul  8 11:06:29 CEST 2011 - ma@suse.de
+
+- After registration disable all repositories not provided by SuSE 
+  Manager. (bnc#692509)
+
+-------------------------------------------------------------------
 Tue Apr 26 18:44:11 CEST 2011 - ma@suse.de
 
 - Abort if bootstrap.sh has no permission to write to CWD. (bnc#687490)
