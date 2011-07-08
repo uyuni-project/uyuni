@@ -1,8 +1,13 @@
 -------------------------------------------------------------------
+Tue Jul  5 15:11:10 CEST 2011 - ma@suse.de
+
+- Require at least zypp-plugin-spacewalk 0.4, containing errata.py.
+
+-------------------------------------------------------------------
 Fri Jul  1 18:16:57 CEST 2011 - mc@suse.de
 
 - don't package actions/errata.py on SUSE. zypp-plugin-spacewalk
-  has its own
+  has its own (bnc#692928)
 
 -------------------------------------------------------------------
 Wed Jun 15 17:01:20 CEST 2011 - mc@suse.de
@@ -43,7 +48,7 @@ Mon Feb  7 14:53:17 CET 2011 - ma@suse.de
 -------------------------------------------------------------------
 Tue Feb  1 16:41:04 CET 2011 - mc@suse.de
 
-- fix build for RH4 
+- fix build for RH4
 
 -------------------------------------------------------------------
 Sun Jan 30 15:26:56 CET 2011 - mc@suse.de
@@ -63,7 +68,7 @@ Sat Jan 22 12:39:55 CET 2011 - mc@suse.de
 -------------------------------------------------------------------
 Tue Jan 18 12:38:43 CET 2011 - mc@suse.de
 
-- fix requires for SUSE 
+- fix requires for SUSE
 
 -------------------------------------------------------------------
 Tue Jan 18 11:46:21 CET 2011 - ug@suse.de
@@ -79,12 +84,12 @@ Wed Jan 12 10:09:22 CET 2011 - ma@suse.de
 Wed Dec 15 14:40:20 CET 2010 - mc@suse.de
 
 - fix specfile
-- add Obsoletes old packages 
+- add Obsoletes old packages
 
 -------------------------------------------------------------------
 Wed Dec 15 13:33:16 CET 2010 - mc@suse.de
 
-- rename package to spacewalk-client-tools 
+- rename package to spacewalk-client-tools
 
 -------------------------------------------------------------------
 Wed Sep 15 12:12:23 CEST 2010 - mantel@suse.de
