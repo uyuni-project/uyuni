@@ -268,7 +268,7 @@ if [ "$INSTALLER" == zypper ]; then
     Z_CLIENT_REPO_URL="${Z_CLIENT_REPOS_ROOT}/${Z_CLIENT_CODE_BASE}/${Z_CLIENT_CODE_VERSION}/${Z_CLIENT_CODE_PATCHLEVEL}/bootstrap"
     test "${Z_CLIENT_CODE_BASE}/${Z_CLIENT_CODE_VERSION}/${Z_CLIENT_CODE_PATCHLEVEL}" = "sle/11/1" && {
       # use backward compatible URL for SLE11-SP1 repo
-      Z_CLIENT_REPO_URL="${Z_CLIENT_REPOS_ROOT}/susemanager-client-setup
+      Z_CLIENT_REPO_URL="${Z_CLIENT_REPOS_ROOT}/susemanager-client-setup"
     }
     Z_CLIENT_REPO_NAME="susemanager-client-setup"
     Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/$Z_CLIENT_REPO_NAME.repo"
