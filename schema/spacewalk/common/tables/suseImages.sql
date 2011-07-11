@@ -21,7 +21,9 @@ CREATE TABLE suseImages
 			    ON DELETE CASCADE,
     name               VARCHAR2(254) NOT NULL,
     version            VARCHAR2(64) NOT NULL,
-    imgtype            VARCHAR2(10) NOT NULL,
+    arch               VARCHAR2(10) NOT NULL,
+    image_type         VARCHAR2(10) NOT NULL,
+    download_url       VARCHAR2(256) NOT NULL,
     path               VARCHAR2(1000) NOT NULL,
     checksum           VARCHAR2(128) NOT NULL,
     status             VARCHAR2(5) DEFAULT('NEW') NOT NULL
