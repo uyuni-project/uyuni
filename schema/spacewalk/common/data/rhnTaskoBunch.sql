@@ -78,4 +78,7 @@ INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
              VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'mgr-register-bunch', 'Runs mgr-register', 'Y');
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+             VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'image-download-bunch', 'Download images', null);
+
 commit;
