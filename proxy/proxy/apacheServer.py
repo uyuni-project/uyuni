@@ -42,6 +42,7 @@ class HandlerWrap:
         #       req object.
 
         if self.__init:
+            # pylint: disable=W0404
             from apacheHandler import getComponentType
             # We cannot trust the config files to tell us if we are in the
             # broker or in the redirect because we try to always pass
@@ -75,6 +76,7 @@ class HandlerWrap:
 
     def get_handler_factory(self, req):
         """ Handler factory. Redefine in your subclasses if so choose """
+        # pylint: disable=W0404
         from apacheHandler import apacheHandler
         return apacheHandler
 

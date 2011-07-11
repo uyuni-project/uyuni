@@ -155,6 +155,7 @@ class Shelf:
                 raise
 
             # Instantiate the exception object
+            # pylint: disable=W0404
             import new
             _dict = {'args' : args}
             raise new.instance(getattr(__builtins__, name), _dict)

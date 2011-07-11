@@ -22,6 +22,7 @@ import os
 import base64
 import string
 import xmlrpclib
+# pylint: disable=W0401
 from rhnConstants import *
 from rhn import rpclib, connections
 
@@ -343,10 +344,12 @@ class apacheHandler(rhnApache):
         log_debug(4, "Component", self._component)
 
         if self._component == COMPONENT_BROKER:
+            # pylint: disable=W0404
             from broker import rhnBroker
             handlerObj = rhnBroker.BrokerHandler(req)
         else:
             # Redirect
+            # pylint: disable=W0404
             from redirect import rhnRedirect
             handlerObj = rhnRedirect.RedirectHandler(req)
 
