@@ -24,6 +24,8 @@ CREATE TABLE suseImages
     imgtype            VARCHAR2(10) NOT NULL,
     path               VARCHAR2(1000) NOT NULL,
     checksum           VARCHAR2(128) NOT NULL,
+    status             VARCHAR2(5) DEFAULT('NEW') NOT NULL
+                                CHECK (status in ('NEW','DONE')),
     created            DATE
                            DEFAULT (sysdate) NOT NULL,
     modified           DATE
