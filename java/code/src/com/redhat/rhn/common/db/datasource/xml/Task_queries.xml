@@ -639,4 +639,20 @@ ORDER BY next_action DESC
   </query>
 </write-mode>
 
+<mode name="image_find_download">
+    <query params="">
+	SELECT *
+	FROM suseImages
+	WHERE status = 'NEW'
+    </query>
+</mode>
+
+<write-mode name="image_update_task_stat">
+  <query params="id, status">
+    UPDATE suseImages
+      SET status = :status
+      WHERE id = :id
+  </query>
+</write-mode>
+
 </datasource_modes>

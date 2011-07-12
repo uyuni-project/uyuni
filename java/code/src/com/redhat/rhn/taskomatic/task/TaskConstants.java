@@ -151,5 +151,11 @@ public class TaskConstants {
     public static final String TASK_QUERY_REPOMD_GENERATOR_PACKAGE_CHANGELOG =
         "repomdgenerator_package_changelog";
 
+    public static final String TASK_QUERY_IMAGE_DOWNLOAD =
+	"image_find_download";
+
+    public static final String TASK_UPDATE_IMAGE_STAT =
+	"image_update_task_stat";
+
     public static final String MODE_NAME = "Task_queries";
 }
