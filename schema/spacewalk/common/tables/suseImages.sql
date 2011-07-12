@@ -26,12 +26,12 @@ CREATE TABLE suseImages
     download_url       VARCHAR2(256) NOT NULL,
     path               VARCHAR2(1000) NOT NULL,
     checksum           VARCHAR2(128) NOT NULL,
-    status             VARCHAR2(5) DEFAULT('NEW') NOT NULL
-                            CHECK (status in ('NEW','DONE')),
+    status             VARCHAR2(10) DEFAULT('NEW') NOT NULL
+                            CHECK (status in ('NEW', 'PICKUP', 'RUNNING', 'DONE', 'ERROR')),
     created            DATE
                            DEFAULT (sysdate) NOT NULL,
     modified           DATE
-                           DEFAULT (sysdate) NOT NULL,
+                           DEFAULT (sysdate) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;
