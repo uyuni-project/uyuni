@@ -53,10 +53,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 			</set>
 		</subclass>
         <subclass name="com.redhat.rhn.domain.action.image.DeployImageAction"
-            lazy="true" discriminator-value="50">
-            <one-to-one name="details"
-                class="com.redhat.rhn.domain.action.image.DeployImageActionDetails"
-                outer-join="false" cascade="all" constrained="false" property-ref="parentAction"/>
+            lazy="true" discriminator-value="5">
+            <set name="images" outer-join="false" table="rhnActionImageDeploy">
+                <key column="action_id" />
+                <many-to-many column="image_id" outer-join="false"
+                    class="com.redhat.rhn.domain.image.Images" />
+            </set>
         </subclass>
 		<subclass
 				name="com.redhat.rhn.domain.action.Up2DateConfigGetAction"
