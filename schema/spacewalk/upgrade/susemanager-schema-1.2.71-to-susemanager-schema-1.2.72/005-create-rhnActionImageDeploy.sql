@@ -12,7 +12,6 @@
 
 CREATE TABLE rhnActionImageDeploy
 (
-    id         NUMBER NOT NULL PRIMARY KEY,
     action_id  NUMBER NOT NULL
                    CONSTRAINT rhn_act_idp_act_fk
                        REFERENCES rhnAction (id)
@@ -20,14 +19,10 @@ CREATE TABLE rhnActionImageDeploy
     image_id  NUMBER NOT NULL
                    CONSTRAINT rhn_act_idp_img_fk
                        REFERENCES suseImages (id)
-                       ON DELETE CASCADE,
-    vcpus     NUMBER DEFAULT(1) NOT NULL,
-    mem_kb    NUMBER DEFAULT(524288) NOT NULL
+                       ON DELETE CASCADE
 )
 ENABLE ROW MOVEMENT
 ;
-
-CREATE SEQUENCE rhn_action_image_deploy_id_seq;
 
 CREATE INDEX rhn_act_idp_aid_iid_idx
     ON rhnActionImageDeploy (action_id, image_id)
