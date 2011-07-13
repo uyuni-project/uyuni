@@ -45,7 +45,7 @@ import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.image.Images;
+import com.redhat.rhn.domain.image.Image;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -620,7 +620,7 @@ public class ActionManager extends BaseManager {
      * @param user The user scheduling image deployment
      * @param image The image pertaining to this action
      */
-    public static Action createDeployImageAction(User user, Images image) {
+    public static Action createDeployImageAction(User user, Image image) {
         DeployImageAction a = (DeployImageAction)ActionFactory
                              .createAction(ActionFactory.TYPE_DEPLOY_IMAGE);
         if (user != null) {

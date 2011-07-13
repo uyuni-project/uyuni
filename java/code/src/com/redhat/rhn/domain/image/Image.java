@@ -10,24 +10,14 @@
  */
 package com.redhat.rhn.domain.image;
 
-import org.apache.log4j.Logger;
-
 import com.redhat.rhn.domain.org.Org;
-
-//import com.redhat.rhn.domain.channel.Channel;
-//import com.redhat.rhn.domain.org.Org;
-//import com.redhat.rhn.domain.rhnpackage.Package;
-
-//import java.util.Date;
-//import java.util.List;
-//import java.util.Set;
 
 /**
  * Images - Class representation of the table suseImages.
  * @version $Rev$
  */
-public class Images {
-    private static Logger log = Logger.getLogger(Images.class);
+public class Image {
+    //private static Logger log = Logger.getLogger(Image.class);
     
     private Long id;
     private Org org;
