@@ -19,6 +19,12 @@ import com.redhat.rhn.domain.org.Org;
 public class Image {
     //private static Logger log = Logger.getLogger(Image.class);
     
+	public static String STATUS_NEW = "NEW";
+	public static String STATUS_PICKUP = "PICKUP";
+	public static String STATUS_RUNNING = "RUNNING";
+	public static String STATUS_DONE = "DONE";
+	public static String STATUS_ERROR = "ERROR";
+	
     private Long id;
     private Org org;
     private String name;

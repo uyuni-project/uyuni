@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.rhnpackage.profile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,12 +27,15 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
+import com.redhat.rhn.domain.image.Image;
+import com.redhat.rhn.domain.image.ImageFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnListAction;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.suse.studio.client.SUSEStudioClient;
 import com.suse.studio.client.data.Appliance;
+import com.suse.studio.client.data.Build;
 
 /**
  * This action will present the user with a list of all studio images
@@ -90,8 +94,32 @@ public class StudioImagesListAction extends RhnListAction implements Listable {
     			throw new RuntimeException(e);
     		}	
     	}
-
-        return ret;
+    	// Convert to image objects
+        return createImageList(ret);
+    }
+    
+    /**
+     * Create an {@link Image} object out of every build of an appliance.
+     * @param appliances
+     * @return
+     */
+    private List<Image> createImageList(List<Appliance> appliances) {
+    	List<Image> ret = new LinkedList<Image>();
+    	for (Appliance appliance : appliances) {
+    		// Create one image object for every build
+    		for (Build build : appliance.getBuilds()) {
+        		Image image = ImageFactory.createImage();
+        		// Appliance attributes
+        		image.setName(appliance.getName());
+        		image.setArch(appliance.getArch());
+        		// Build attributes
+        		image.setVersion(build.getVersion());
+        		image.setImageType(build.getImageType());
+        		image.setDownloadUrl(build.getDownloadURL());
+        		ret.add(image);
+    		}
+    	}
+    	return ret;
     }
     
     /**

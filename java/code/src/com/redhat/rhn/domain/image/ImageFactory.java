@@ -14,15 +14,9 @@
  */
 package com.redhat.rhn.domain.image;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.org.Org;
 
 /**
  * KickstartFactory
@@ -70,35 +64,5 @@ public class ImageFactory extends HibernateFactory {
      */
     public static void removeImage(Image image) {
         singleton.removeObject(image);
-    }
-    
-    public static List<Image> getDeployableImages(Org org) {
-    	Session session = null;
-        List<Image> retval = null;
-        
-        session = HibernateFactory.getSession();
-        Query q = session.getNamedQuery("Image.listVmxByOrg");
-        retval = q.setParameter("org", org).list();
-        return retval;
-    }
-    
-    public static Image lookupById(Long id) {
-        if (id == null) {
-            return null;
-        }
-
-        Session session = null;
-        try {
-            session = HibernateFactory.getSession();
-            return (Image) session.getNamedQuery("Image.findById")
-                .setParameter("id", id)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
-        }
-        catch (HibernateException e) {
-            log.error("Hibernate exception: " + e.toString());
-            throw e;
-        }
     }
 }
