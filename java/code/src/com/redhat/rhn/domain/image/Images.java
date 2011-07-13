@@ -37,6 +37,7 @@ public class Images {
     private String imageType;
     private String downloadUrl;
     private String path;
+    private String fileName;
     private String checksum;
     private String status;
     
@@ -112,6 +113,14 @@ public class Images {
         this.path = inPath;
     }
     
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public void setFileName(String inFileName) {
+        this.fileName = inFileName;
+    }
+
     public String getChecksum() {
         return this.checksum;
     }
