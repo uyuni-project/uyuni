@@ -20,6 +20,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           <property name="imageType" column="image_type" type="string" length="10" />
           <property name="downloadUrl" column="download_url" type="string" length="256" />
           <property name="path" column="path" type="string" length="1000" />
+          <property name="fileName" column="file_name" type="string" length="128" />
           <property name="checksum" column="checksum" type="string" length="128" />
           <property name="status" column="status" type="string" length="10" />
           <many-to-one name="org" class="com.redhat.rhn.domain.org.Org"
