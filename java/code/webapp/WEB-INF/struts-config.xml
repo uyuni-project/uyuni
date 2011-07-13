@@ -1134,18 +1134,8 @@
 
     <form-bean name="listStudioImagesForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-      <form-property name="studio_user"  type="java.lang.String" />
-      <form-property name="studio_api_key"  type="java.lang.String" />
-      <form-property name="submitted" type="java.lang.Boolean" />
-    </form-bean>
-    
-    <form-bean name="deployImagesForm"
-               type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-      <form-property name="sid" type="java.lang.Long" />
-      <form-property name="id" type="java.lang.Long" />
-      <form-property name="vcpus" type="java.lang.Long" />
-      <form-property name="memkb" type="java.lang.Long" />
-      <form-property name="submitted" type="java.lang.Boolean" />
+      <form-property name="studio_user"  type="java.lang.String"/>
+      <form-property name="studio_api_key"  type="java.lang.String"/>
     </form-bean>
   </form-beans>
 
@@ -6364,6 +6354,18 @@
         <set-property property="mixins" value="com.redhat.rhn.common.security.acl.MonitoringAclHandler" />
         <forward name="default"
                  path="/WEB-INF/pages/monitoring/probes.jsp"/>
+    </action>
+
+    <!-- SUSE Studio Pages -->
+
+    <action path="/studio/List"
+        name="listStudioImagesForm"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.rhnpackage.profile.StudioImagesListAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default" path="/WEB-INF/pages/studio/list.jsp"/>
+        <forward name="success" path="/studio/List.do" redirect = "true"/>
     </action>
 
     <!-- ===== CONFIGURATION ===== -->

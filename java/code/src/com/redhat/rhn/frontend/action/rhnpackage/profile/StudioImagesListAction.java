@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.action.rhnpackage.profile;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,15 +26,12 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
-import com.redhat.rhn.domain.image.Image;
-import com.redhat.rhn.domain.image.ImageFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnListAction;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.suse.studio.client.SUSEStudioClient;
 import com.suse.studio.client.data.Appliance;
-import com.suse.studio.client.data.Build;
 
 /**
  * This action will present the user with a list of all studio images
@@ -58,51 +54,32 @@ public class StudioImagesListAction extends RhnListAction implements Listable {
                                  HttpServletResponse response)
         throws Exception {
     	
-    	Boolean submitted = false;
-    	
     	// Determine credentials from the form
         if (actionForm instanceof DynaActionForm) {
         	DynaActionForm form = (DynaActionForm) actionForm;
         	studioUser = form.getString("studio_user");
         	studioAPIKey = form.getString("studio_api_key");
-        	
-        	// Get submitted
-        	submitted = (Boolean) form.get("submitted");
-            if (submitted == null) {
-            	submitted = Boolean.FALSE;
-            }
         }
     	
         ListHelper helper = new ListHelper(this, request);
         helper.setDataSetName(DATA_SET);
         helper.execute();
-                
-    	// Get the selection and store the images
-//    	String[] selected = ListTagHelper.getSelected(DATA_SET, request);
-//    	if (selected != null) {
-//        	storeImages(selected);	
-//    	}
         
-        // Always forward to default
+//        ActionForward forward;
+//        if (helper.isDispatched()) {
+//            // Nothing to do when dispatched, there is a confirmation page displayed next
+//            // that will do the actual work
+//            forward = actionMapping.findForward("continue");
+//        }
+//        else {
+//        	forward = actionMapping.findForward("default");
+//        }
+        
         ActionForward forward = actionMapping.findForward("default");
         return forward;
     }
 
-    /**
-     * Store images given by buildIDs as Strings.
-     * @param selected
-     */
-//    private void storeImages(String[] selected) {
-//    	for (Image i : images) {
-//        	for (String s : selected) {
-//        		if (s.equals(i.getBuildId().toString())) {
-//        			ImageFactory.saveImage(i);
-//        		}
-//        	}	
-//    	}
-//	}
-
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
     public List getResult(RequestContext context) {
         List<Appliance> ret = new ArrayList<Appliance>();
     	if (weHaveCredentials()) {
@@ -113,35 +90,8 @@ public class StudioImagesListAction extends RhnListAction implements Listable {
     			throw new RuntimeException(e);
     		}	
     	}
-    	// Convert to image objects
-        return createImageList(ret, context);
-    }
 
-    /**
-     * Create an {@link Image} object out of every build of an appliance.
-     * @param appliances
-     * @return
-     */
-    private List<Image> createImageList(List<Appliance> appliances, 
-    		RequestContext context) {
-    	List<Image> ret = new LinkedList<Image>();
-    	for (Appliance appliance : appliances) {
-    		// Create one image object for every build
-    		for (Build build : appliance.getBuilds()) {
-        		Image img = ImageFactory.createImage();
-        		img.setOrg(context.getCurrentUser().getOrg());
-        		// Appliance attributes
-        		img.setName(appliance.getName());
-        		img.setArch(appliance.getArch());
-        		// Build attributes
-        		img.setBuildId(new Long(build.getId()));
-        		img.setVersion(build.getVersion());
-        		img.setImageType(build.getImageType());
-        		img.setDownloadUrl(build.getDownloadURL());
-        		ret.add(img);
-    		}
-    	}
-    	return ret;
+        return ret;
     }
     
     /**

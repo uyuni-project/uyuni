@@ -23039,12 +23039,9 @@ given channel.</source>
         <source>There was an error reading the selected package changelog.  Please check that the package physically exists and has the correct permissions.</source>
      </trans-unit>
      
-     <!-- SUSE Studio -->
+     <!-- XXX: SUSE Studio -->
      <trans-unit id="studio.images.list.name">
         <source>Name</source>
-     </trans-unit>
-     <trans-unit id="studio.images.list.version">
-        <source>Version</source>
      </trans-unit>
      <trans-unit id="studio.images.list.arch">
         <source>Architecture</source>
@@ -23054,12 +23051,6 @@ given channel.</source>
      </trans-unit>
      <trans-unit id="studio.images.list.noimages">
         <source>No Images</source>
-     </trans-unit>
-     <trans-unit id="Studio Images">
-        <source>Studio Images</source>
-     </trans-unit>
-     <trans-unit id="Images">
-        <source>Images</source>
      </trans-unit>
   </body>
   </file>
