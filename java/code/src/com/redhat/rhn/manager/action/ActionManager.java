@@ -621,7 +621,7 @@ public class ActionManager extends BaseManager {
      * @param user The user scheduling image deployment
      * @param image The image pertaining to this action
      */
-    public static Action createDeployImageAction(User user, Image image) {
+    public static Action createDeployImageAction(User user, Image image, int vcpus, int memKb) {
         DeployImageAction a = (DeployImageAction)ActionFactory
                              .createAction(ActionFactory.TYPE_DEPLOY_IMAGE);
         if (user != null) {
@@ -629,6 +629,8 @@ public class ActionManager extends BaseManager {
             a.setOrg(user.getOrg());
         }
         a.addImage(image);
+        a.setVcpus(vcpus);
+        a.setMemKb(memKb);
 
         //Object[] args = new Object[2];
         //args[0] = errata.getAdvisory();
