@@ -19,7 +19,9 @@ CREATE TABLE rhnActionImageDeploy
     image_id  NUMBER NOT NULL
                    CONSTRAINT rhn_act_idp_img_fk
                        REFERENCES suseImages (id)
-                       ON DELETE CASCADE
+                       ON DELETE CASCADE,
+    vcpus     NUMBER DEFAULT(1) NOT NULL,
+    mem_kb    NUMBER DEFAULT(524288) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;
