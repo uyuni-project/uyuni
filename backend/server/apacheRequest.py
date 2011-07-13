@@ -534,9 +534,13 @@ class GetHandler(apacheRequest):
         # Init the repository
         server_id = rhnFlags.get("AUTH_SESSION_TOKEN")['X-RHN-Server-Id']
         username = rhnFlags.get("AUTH_SESSION_TOKEN")['X-RHN-Auth-User-Id']
-        repository = rhnRepository.Repository(self.channel, server_id,
-                                              username)
+        # for now treat datafile requests similar to getPackage
+        if ( self.channel and self.channel == "datafile" ):
+	    repository = rhnRepository.DataFile(server_id, username)
+	else:
+	    repository = rhnRepository.Repository(self.channel, server_id, username)
         repository.set_qos()
+        log_debug(3, self.server, method)
 
         f = repository.get_function(method)
         if f is None:

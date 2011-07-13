@@ -17,6 +17,9 @@
 # system module imports
 import os
 import stat
+import types
+import string
+import traceback
 
 from rhn import rpclib
 
@@ -32,6 +35,60 @@ from spacewalk.server import rhnChannel, rhnPackage, taskomatic, rhnSQL
 from rhnServer import server_lib
 from repomd import repository
 
+class DataFile(rhnRepository.Repository):
+    """ Perform GET requests for datafile/*
+
+    Basically handled similar to Repository.getPackage, just a
+    different path on disk is used. All data are determined from
+    the file system and oracle.
+    """
+    def __init__(self, server_id = None, username = None):
+        """Initialize the class
+        """
+        log_debug(3, "datafile", server_id)
+        rhnRepository.Repository.__init__(self, "datafile")
+        self.server_id = server_id
+        self.username = username
+        self.set_compress_headers(CFG.COMPRESS_HEADERS)
+        self.functions = [
+            'getVImage'
+        ]
+
+    def set_qos(self):
+        server_lib.set_qos(self.server_id)
+
+    def getVImage(self, img_spec, *args):
+        """ Retrieves image path
+	makes a call to query the db for image location
+        """
+        log_debug(3, img_spec)
+
+	if args:
+	    localpath = "/var/spacewalk/images/%s/%s" % (img_spec, string.join(list(args), '/'))
+	else:
+	    localpath = "/var/spacewalk/images/%s" % (img_spec,)
+
+	# if not os.path.exists(localpath):
+	# querydb
+
+        try:
+            return self.getPackage(localpath)
+        except:
+	    log_debug(3, "Error: %s" % traceback.format_exc())
+        raise rhnFault(17, "While looking for VImage file '%s'", localpath)
+
+    def getPackagePath(self, img_spec, redirect_capable=0):
+        """ Retrieves image path
+        Overloads getPackagePath in common/rhnRepository.
+	img_spec already contains the right localpath.
+        """
+        log_debug(2, img_spec, redirect_capable)
+        #check for re-direct check flag from header to issue package
+        #request from client in order to avoid failover loops.
+        skip_redirect = rhnFlags.get('x-rhn-redirect')
+        log_debug(3,"check flag for X-RHN-REDIRECT  ::",skip_redirect)
+	return img_spec
+
 class Repository(rhnRepository.Repository):
     """ Cache class to perform RHN server file system and DB actions.
 
@@ -39,16 +96,16 @@ class Repository(rhnRepository.Repository):
     All the functions that are performed upon GET requests are here (and
     since proxies perform these functions as well, a good chunk of code is
     in common/rhnRepository.py)
-    
+
     The listall code is here too, because it performs a lot of disk caching
     and here's the appropriate location for it
-    
+
     The dependency solving code is not handled in this repository -
     all the code we need is already in xmlrpc/up2date
     """
     def __init__(self, channelName = None, server_id = None, username = None):
         """Initialize the class, setting channel name and server
-        
+
         ID, that serial number (w/o ID-), if necessary.
         NOTE: server_id is a string.
         """
