@@ -30,11 +30,14 @@
             <rl:column headerkey="studio.images.list.name">
                 ${current.name}
             </rl:column>
+            <rl:column headerkey="studio.images.list.version">
+                ${current.version}
+            </rl:column>
             <rl:column headerkey="studio.images.list.arch">
                 ${current.arch}
             </rl:column>
             <rl:column headerkey="studio.images.list.type">
-                ${current.type}
+                ${current.imageType}
             </rl:column>
         </rl:list>
 
