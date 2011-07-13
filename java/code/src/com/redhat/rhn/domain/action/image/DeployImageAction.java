@@ -28,18 +28,30 @@ public class DeployImageAction extends Action {
 	private int vcpus;
 	private int memKb;
 
+    /**
+     * @return Returns the number of virtual cpus
+     */
 	public int getVCpus() {
 	    return vcpus;
 	}
 
+    /**
+     * @param inVCpus The number of cpus to set.
+     */
 	public void setVCpus(int inVCpus) {
 	    this.vcpus = inVCpus;
 	}
 
+    /**
+     * @return Returns the amount of memory in kb.
+     */
 	public int getMemKb() {
 	    return memKb;
 	}
 
+    /**
+     * @param inMemKb The amount of memory to set.
+     */
 	public void setMemKb(int inMemKb) {
 	    this.memKb = inMemKb;
 	}
