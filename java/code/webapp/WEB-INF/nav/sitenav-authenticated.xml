@@ -108,6 +108,7 @@
         <rhn-tab-url>/rhn/kickstart/cobbler/DefaultSnippetView.do</rhn-tab-url>
       </rhn-tab>
     </rhn-tab>
+    <rhn-tab name="Studio Images" url="/rhn/studio/List.do" />
   </rhn-tab>
   <rhn-tab name="Patches" url="/rhn/errata/Overview.do" active-image="tab-errata-selected.gif" inactive-image="tab-errata.gif" on-click="Sniglets::Lists->navi_empty_set" node-id="target_systems_list">
     <rhn-tab name="Patches" url="/rhn/errata/Overview.do" on-click="Sniglets::Lists->navi_empty_set" node-id="target_systems_list">

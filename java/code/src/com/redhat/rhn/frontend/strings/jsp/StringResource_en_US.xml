@@ -23038,6 +23038,20 @@ given channel.</source>
 	 <trans-unit id="channel.jsp.changelog.error">
         <source>There was an error reading the selected package changelog.  Please check that the package physically exists and has the correct permissions.</source>
      </trans-unit>
+     
+     <!-- XXX: SUSE Studio -->
+     <trans-unit id="studio.images.list.name">
+        <source>Name</source>
+     </trans-unit>
+     <trans-unit id="studio.images.list.arch">
+        <source>Architecture</source>
+     </trans-unit>
+     <trans-unit id="studio.images.list.type">
+        <source>Type</source>
+     </trans-unit>
+     <trans-unit id="studio.images.list.noimages">
+        <source>No Images</source>
+     </trans-unit>
   </body>
   </file>
 </xliff>

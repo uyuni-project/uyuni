@@ -1132,6 +1132,11 @@
       <form-property name="no_scrub" type="java.lang.String" initial="value"/>
     </form-bean>
 
+    <form-bean name="listStudioImagesForm"
+               type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+      <form-property name="studio_user"  type="java.lang.String"/>
+      <form-property name="studio_api_key"  type="java.lang.String"/>
+    </form-bean>
   </form-beans>
 
   <global-exceptions>
@@ -6349,6 +6354,18 @@
         <set-property property="mixins" value="com.redhat.rhn.common.security.acl.MonitoringAclHandler" />
         <forward name="default"
                  path="/WEB-INF/pages/monitoring/probes.jsp"/>
+    </action>
+
+    <!-- SUSE Studio Pages -->
+
+    <action path="/studio/List"
+        name="listStudioImagesForm"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.rhnpackage.profile.StudioImagesListAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default" path="/WEB-INF/pages/studio/list.jsp"/>
+        <forward name="success" path="/studio/List.do" redirect = "true"/>
     </action>
 
     <!-- ===== CONFIGURATION ===== -->
