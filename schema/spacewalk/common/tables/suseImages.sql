@@ -25,6 +25,7 @@ CREATE TABLE suseImages
     image_type         VARCHAR2(10) NOT NULL,
     download_url       VARCHAR2(256) NOT NULL,
     path               VARCHAR2(1000) NOT NULL,
+    file_name          VARCHAR2(128) NOT NULL,
     checksum           VARCHAR2(128) NOT NULL,
     status             VARCHAR2(10) DEFAULT('NEW') NOT NULL
                             CHECK (status in ('NEW', 'PICKUP', 'RUNNING', 'DONE', 'ERROR')),
@@ -38,10 +39,7 @@ ENABLE ROW MOVEMENT
 
 CREATE SEQUENCE suse_images_id_seq;
 
-<<<<<<< HEAD
 CREATE UNIQUE INDEX suse_img_file_name_checksum_uq
     ON suseImages (file_name, checksum)
         TABLESPACE [[2m_tbs]];
 
-=======
->>>>>>> add suseImages table
