@@ -58,7 +58,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <key column="action_id" />
                 <many-to-many column="image_id" outer-join="false"
                     class="com.redhat.rhn.domain.image.Images" />
-            </set>
+	    </set>
+	    <property name="vcpus" column="vcpus" type="int" />
+	    <property name="memKb" column="mem_kb" type="int" />
         </subclass>
 		<subclass
 				name="com.redhat.rhn.domain.action.Up2DateConfigGetAction"
