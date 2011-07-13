@@ -35,7 +35,7 @@ public class Appliance {
     /**
      * Directly return the contained list.
      * 
-     * @return list of builds
+     * @return
      */
     public List<Build> getBuilds() {
         return this.builds.getBuilds();
