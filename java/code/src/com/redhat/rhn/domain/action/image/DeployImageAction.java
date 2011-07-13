@@ -31,15 +31,15 @@ public class DeployImageAction extends Action {
     /**
      * @return Returns the number of virtual cpus
      */
-	public int getVCpus() {
+	public int getVcpus() {
 	    return vcpus;
 	}
 
     /**
      * @param inVCpus The number of cpus to set.
      */
-	public void setVCpus(int inVCpus) {
-	    this.vcpus = inVCpus;
+	public void setVcpus(int inVcpus) {
+	    this.vcpus = inVcpus;
 	}
 
     /**
