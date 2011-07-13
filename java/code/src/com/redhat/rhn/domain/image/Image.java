@@ -11,23 +11,15 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.frontend.dto.BaseDto;
 
 /**
  * Images - Class representation of the table suseImages.
  * @version $Rev$
  */
-public class Image extends BaseDto {
+public class Image {
     //private static Logger log = Logger.getLogger(Image.class);
     
-	public static String STATUS_NEW = "NEW";
-	public static String STATUS_PICKUP = "PICKUP";
-	public static String STATUS_RUNNING = "RUNNING";
-	public static String STATUS_DONE = "DONE";
-	public static String STATUS_ERROR = "ERROR";
-	
     private Long id;
-    private Long buildId;
     private Org org;
     private String name;
     private String version;
@@ -45,14 +37,6 @@ public class Image extends BaseDto {
 
     public void setId(Long inId) {
         this.id = inId;
-    }
-    
-    public Long getBuildId() {
-        return this.buildId;
-    }
-
-    public void setBuildId(Long buildId) {
-        this.buildId = buildId;
     }
     
     /**
@@ -142,9 +126,5 @@ public class Image extends BaseDto {
     public void setStatus(String inStatus) {
         this.status = inStatus;
     }
-
-	@Override
-	public String getSelectionKey() {
-		return getName()+getVersion()+getArch();
-	}
+    
 }

@@ -12,7 +12,7 @@ package com.redhat.rhn.domain.action.image;
 
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.ActionFormatter;
-import com.redhat.rhn.domain.image.Images;
+import com.redhat.rhn.domain.image.Image;
 
 import java.util.Set;
 
@@ -40,7 +40,7 @@ public class DeployImageActionFormatter extends ActionFormatter {
         StringBuffer retval = new StringBuffer();
         Set images = ((DeployImageAction) this.getAction()).getImages();
         if (images != null && images.size() > 0) {
-            Images image = (Images) images.toArray()[0];
+            Image image = (Image) images.toArray()[0];
             retval.append(StringUtil.htmlifyText(image.getName()));
             retval.append("<br/>");
         }

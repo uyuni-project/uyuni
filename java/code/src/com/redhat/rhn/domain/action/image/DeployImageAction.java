@@ -12,7 +12,7 @@ package com.redhat.rhn.domain.action.image;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
-import com.redhat.rhn.domain.image.Images;
+import com.redhat.rhn.domain.image.Image;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,19 +23,20 @@ import java.util.Set;
  */
 public class DeployImageAction extends Action {
 
-    private Set images;
+	private static final long serialVersionUID = -2655853160693467815L;
+	private Set<Image> images;
 
     /**
      * @return Returns the images.
      */
-    public Set getImages() {
+    public Set<Image> getImages() {
         return images;
     }
 
     /**
      * @param imagesIn The images to set.
      */
-    public void setImages(Set imagesIn) {
+    public void setImages(Set<Image> imagesIn) {
         this.images = imagesIn;
     }
 
@@ -43,9 +44,9 @@ public class DeployImageAction extends Action {
      * Add an images to this action.
      * @param i Image to add
      */
-    public void addImage(Images i) {
+    public void addImage(Image i) {
         if (images == null) {
-            images = new HashSet();
+            images = new HashSet<Image>();
         }
         images.add(i);
     }
