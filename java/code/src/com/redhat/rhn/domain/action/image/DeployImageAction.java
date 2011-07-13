@@ -25,6 +25,24 @@ public class DeployImageAction extends Action {
 
 	private static final long serialVersionUID = -2655853160693467815L;
 	private Set<Image> images;
+	private int vcpus;
+	private int memKb;
+
+	public int getVCpus() {
+	    return vcpus;
+	}
+
+	public void setVCpus(int inVCpus) {
+	    this.vcpus = inVCpus;
+	}
+
+	public int getMemKb() {
+	    return memKb;
+	}
+
+	public void setMemKb(int inMemKb) {
+	    this.memKb = inMemKb;
+	}
 
     /**
      * @return Returns the images.
