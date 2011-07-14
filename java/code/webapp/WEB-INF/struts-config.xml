@@ -1137,6 +1137,15 @@
       <form-property name="studio_user"  type="java.lang.String"/>
       <form-property name="studio_api_key"  type="java.lang.String"/>
     </form-bean>
+    
+    <form-bean name="deployImagesForm"
+               type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+      <form-property name="sid" type="java.lang.Long" />
+      <form-property name="id" type="java.lang.Long" />
+      <form-property name="vcpus" type="java.lang.Long" />
+      <form-property name="memkb" type="java.lang.Long" />
+      <form-property name="submitted" type="java.lang.Boolean" />
+    </form-bean>
   </form-beans>
 
   <global-exceptions>
@@ -6356,18 +6365,6 @@
                  path="/WEB-INF/pages/monitoring/probes.jsp"/>
     </action>
 
-    <!-- SUSE Studio Pages -->
-
-    <action path="/studio/List"
-        name="listStudioImagesForm"
-        scope="request"
-        type="com.redhat.rhn.frontend.action.rhnpackage.profile.StudioImagesListAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default" path="/WEB-INF/pages/studio/list.jsp"/>
-        <forward name="success" path="/studio/List.do" redirect = "true"/>
-    </action>
-
     <!-- ===== CONFIGURATION ===== -->
 
 	<!--
@@ -7728,6 +7725,29 @@
                  path="/ssm/ViewLog.do" redirect="true"/>
      </action>
 
+    <!-- SUSE Studio Pages -->
+
+    <action path="/studio/List"
+        name="listStudioImagesForm"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.rhnpackage.profile.StudioImagesListAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default" path="/WEB-INF/pages/studio/list.jsp"/>
+        <forward name="success" path="/studio/List.do" redirect = "true"/>
+    </action>
+
+    <action path="/systems/details/virtualization/ImageDeployment"
+        scope="request"
+		name="deployImagesForm"
+        type="com.redhat.rhn.frontend.action.systems.virtualization.ImageDeploymentAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/details/virtualization/provision/images.jsp"/>
+        <forward name="success"
+                 redirect="true" path="/systems/SystemList.do"/>
+    </action>
 
   </action-mappings>
 
