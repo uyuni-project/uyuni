@@ -12,6 +12,7 @@
 
 CREATE TABLE rhnActionImageDeploy
 (
+    id         NUMBER        NOT NULL PRIMARY KEY,
     action_id  NUMBER NOT NULL
                    CONSTRAINT rhn_act_idp_act_fk
                        REFERENCES rhnAction (id)
@@ -25,6 +26,8 @@ CREATE TABLE rhnActionImageDeploy
 )
 ENABLE ROW MOVEMENT
 ;
+
+CREATE SEQUENCE rhn_action_image_deploy_id_seq;
 
 CREATE INDEX rhn_act_idp_aid_iid_idx
     ON rhnActionImageDeploy (action_id, image_id)
