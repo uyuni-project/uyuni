@@ -180,6 +180,7 @@
     <rhn-tab-url>/rhn/systems/details/virtualization/VirtualGuestsList.do</rhn-tab-url>
     <rhn-tab name="Details" url="/rhn/systems/details/virtualization/VirtualGuestsList.do"/>
     <rhn-tab name="Provisioning" url="/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do"/>
+    <rhn-tab name="Images" url="/rhn/systems/details/virtualization/ImageDeployment.do"/>
   </rhn-tab>
 
   <rhn-tab name="Events">

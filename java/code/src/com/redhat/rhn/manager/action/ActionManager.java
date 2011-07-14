@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigUploadAction;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.image.DeployImageAction;
+import com.redhat.rhn.domain.action.image.DeployImageActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestAction;
@@ -45,8 +46,8 @@ import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.image.Image;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
+import com.redhat.rhn.domain.image.Image;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -620,22 +621,26 @@ public class ActionManager extends BaseManager {
      * @param user The user scheduling image deployment
      * @param image The image pertaining to this action
      */
-    public static Action createDeployImageAction(User user, Image image, int vcpus, int memKb) {
+    public static Action createDeployImageAction(User user, Image image, Long vcpus, Long memKb) {
         DeployImageAction a = (DeployImageAction)ActionFactory
                              .createAction(ActionFactory.TYPE_DEPLOY_IMAGE);
         if (user != null) {
             a.setSchedulerUser(user);
             a.setOrg(user.getOrg());
         }
-        a.addImage(image);
-        a.setVcpus(vcpus);
-        a.setMemKb(memKb);
+        
+        DeployImageActionDetails details = new DeployImageActionDetails();
+        details.setParentAction(a);
+        details.setImageId(image.getId());
+        details.setVcpus(vcpus);
+        details.setMemKb(memKb);
+        a.setDetails(details);
 
         //Object[] args = new Object[2];
         //args[0] = errata.getAdvisory();
         //args[1] = errata.getSynopsis();
         //a.setName(LocalizationService.getInstance().getMessage("action.name", args));
-        a.setName("Image deployment" + image.getName() + "-" + image.getVersion());
+        a.setName("Image deployment: " + image.getName() + "-" + image.getVersion());
         return a;
     }
 
