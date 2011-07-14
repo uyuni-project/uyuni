@@ -57,7 +57,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <set name="images" outer-join="false" table="rhnActionImageDeploy">
                 <key column="action_id" />
                 <many-to-many column="image_id" outer-join="false"
-                    class="com.redhat.rhn.domain.image.Images" />
+                    class="com.redhat.rhn.domain.image.Image" />
 	    </set>
 	    <property name="vcpus" column="vcpus" type="int" />
 	    <property name="memKb" column="mem_kb" type="int" />
