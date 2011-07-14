@@ -33,7 +33,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 and   i.org = :org]]>
     </query>
     <query name="Image.findById">
-        <![CDATA[from com.redhat.rhn.domain.image.Imaage as i where i.id = :id]]>
+        <![CDATA[from com.redhat.rhn.domain.image.Image as i where i.id = :id]]>
     </query>
     
 </hibernate-mapping>
