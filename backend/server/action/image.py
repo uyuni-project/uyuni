@@ -26,7 +26,7 @@ def deploy(serverId, actionId, dry_run=0):
     statement = """
         select si.file_name, si.checksum, aid.mem_kb, aid.vcpus, si.image_type
           from rhnActionImageDeploy aid
-	  join suseImage si ON aid.image_id = si.id
+	  join suseImages si ON aid.image_id = si.id
          where si.status = 'DONE'
 	   and aid.action_id = :action_id"""
     h = rhnSQL.prepare(statement)
@@ -45,7 +45,7 @@ def deploy(serverId, actionId, dry_run=0):
 	image_type = 'vmdk'
     elif row['image_type'] == 'xen':
 	image_type = 'xen'
-    else
+    else:
         raise InvalidAction("image.deploy: invalid image_type")
 
 
