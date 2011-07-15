@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.5.52
+Version: 1.5.56
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz 
@@ -626,6 +626,26 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Jul 14 2011 Miroslav Suchý 1.5.56-1
+- changing query to cursor mode - avoid loading all records (4M+ records) into
+  memory (msuchy@redhat.com)
+- 720282 - fix some issues when spacewalk-koan needs to be installed for
+  systems to kickstart (tlestach@redhat.com)
+
+* Wed Jul 13 2011 Jan Pazdziora 1.5.55-1
+- 720533 - replacing rhnServerNeededView with custom subselect which is
+  generally equivalent, in the erratamailer_get_relevant_servers context.
+
+* Tue Jul 12 2011 Jan Pazdziora 1.5.54-1
+- Using http://struts.apache.org/tags-* uris, fixing build issue on Fedoras and
+  RHEL 6.
+
+* Mon Jul 11 2011 Jan Pazdziora 1.5.53-1
+- 719632 - include security token in system search filter
+  (mzazrivec@redhat.com)
+- Refactor and deprecate API method to listVendorChannels (jrenner@suse.de)
+- Refactor RedHat.do to Vendor.do (jrenner@suse.de)
+
 * Tue Jun 28 2011 Tomas Lestach <tlestach@redhat.com> 1.5.52-1
 - 646802 - Fix to have consistent channel name max length to 256
   (pmutha@redhat.com)

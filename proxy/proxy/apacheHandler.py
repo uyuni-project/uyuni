@@ -20,15 +20,16 @@
 ## language imports
 import os
 import base64
-import string
 import xmlrpclib
-from rhnConstants import *
+from rhnConstants import HEADER_ACTUAL_URI, HEADER_EFFECTIVE_URI, \
+    HEADER_CHECKSUM, SCHEME_HTTP, SCHEME_HTTPS, URI_PREFIX_KS, \
+    URI_PREFIX_KS_CHECKSUM, COMPONENT_BROKER, COMPONENT_REDIRECT
 from rhn import rpclib, connections
 
 ## common imports
 from rhn.UserDictCase import UserDictCase
 from spacewalk.common.rhnConfig import CFG
-from spacewalk.common.rhnLog import initLOG, log_debug, log_error
+from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnApache import rhnApache
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnException import rhnFault, rhnException
@@ -54,8 +55,8 @@ def getComponentType(req):
 
     # pull server id out of "t:o:k:e:n:hostname1,t:o:k:e:n:hostname2,..."
     proxy_auth = req.headers_in['X-RHN-Proxy-Auth']
-    last_auth = string.split(proxy_auth, ',')[-1]
-    last_visited = string.split(last_auth, ':')[0]
+    last_auth = proxy_auth.split(',')[-1]
+    last_visited = last_auth.split(':')[0]
     proxy_server_id = get_proxy_auth().getProxyServerId()
     # is it the same box?
     try:
@@ -197,11 +198,11 @@ class apacheHandler(rhnApache):
         return apache.OK
 
     def _querySatelliteForChecksum(self, req):
-        """ Sends a HEAD request to the satellite for the purpose of obtaining the
-            checksum for the requested resource.  A (status, checksum) tuple is
-            returned.  If status is not apache.OK, checksum will be None.  If status
-            is OK, and a checksum is not returned, the old BZ 158236 behavior will
-            be used.
+        """ Sends a HEAD request to the satellite for the purpose of obtaining
+            the checksum for the requested resource.  A (status, checksum)
+            tuple is returned.  If status is not apache.OK, checksum will be
+            None.  If status is OK, and a checksum is not returned, the old
+            BZ 158236 behavior will be used.
         """
         scheme = SCHEME_HTTP
         if req.server.port == 443:
@@ -377,9 +378,9 @@ class apacheHandler(rhnApache):
 
         # find out the size of the file
         if response.length == 0:
-            response.file_obj.seek(0,2)
+            response.file_obj.seek(0, 2)
             size = response.file_obj.tell()
-            response.file_obj.seek(0,0)
+            response.file_obj.seek(0, 0)
         else:
             size = response.length
         req.headers_out["Content-Length"] = str(size)
@@ -397,7 +398,7 @@ class apacheHandler(rhnApache):
             req.headers_out["Accept-Ranges"] = "bytes"
             req.headers_out["Content-Range"] = get_content_range(start, end, size)
             size = end - start + 1
-            response.file_obj.seek(start,0)
+            response.file_obj.seek(start, 0)
             status = apache.HTTP_PARTIAL_CONTENT
         else:
             start = 0
@@ -496,15 +497,16 @@ class apacheHandler(rhnApache):
         output.process(response)
         # Copy the rest of the fields
         for k, v in output.headers.items():
-            if string.lower(k) == 'content-type':
+            if k.lower() == 'content-type':
                 # Content-type
                 req.content_type = v
             else:
                 setHeaderValue(req.headers_out, k, v)
 
-	if CFG.DEBUG == 4:
+        if CFG.DEBUG == 4:
             # I wrap this in an "if" so we don't parse a large file for no reason.
-            log_debug(4, "The response: %s[...SNIP (for sanity) SNIP...]%s" % (response[:100], response[-100:]))
+            log_debug(4, "The response: %s[...SNIP (for sanity) SNIP...]%s" %
+                (response[:100], response[-100:]))
         elif CFG.DEBUG >= 5:
             # if you absolutely must have that whole response in the log file
             log_debug(5, "The response: %s" % response)
@@ -525,10 +527,10 @@ class apacheHandler(rhnApache):
 
     def _response_fault_get(self, req, response):
         req.err_headers_out["X-RHN-Fault-Code"] = str(response.faultCode)
-        faultString = string.strip(base64.encodestring(response.faultString))
+        faultString = base64.encodestring(response.faultString).strip()
         # Split the faultString into multiple lines
-        for line in string.split(faultString, '\n'):
-            req.err_headers_out.add("X-RHN-Fault-String", string.strip(line))
+        for line in faultString.split('\n'):
+            req.err_headers_out.add("X-RHN-Fault-String", line.strip())
         # And then send all the other things
         for k, v in rhnFlags.get('outputTransportOptions').items():
             setHeaderValue(req.err_headers_out, k, v)

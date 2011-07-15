@@ -9,7 +9,7 @@
 %endif
 
 Name:           spacewalk-setup
-Version:        1.5.7
+Version:        1.5.8
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -126,6 +126,10 @@ rm -rf %{buildroot}
 %attr(755, %{apache_user}, root) %{misc_path}/spacewalk
 
 %changelog
+* Mon Jul 11 2011 Jan Pazdziora 1.5.8-1
+- Check for cases when loading of the DBD driver fails (so there is no DBI
+  error itself).
+
 * Fri May 27 2011 Jan Pazdziora 1.5.7-1
 - 708357 - If the mountpoint is on NFS, set cobbler_use_nfs.
 

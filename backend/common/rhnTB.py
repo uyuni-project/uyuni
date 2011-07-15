@@ -14,10 +14,10 @@
 #
 #
 
+import re
 import os
 import sys
 import time
-import string
 import traceback
 from StringIO import StringIO
 from rhn.connections import idn_pune_to_unicode
@@ -81,6 +81,10 @@ def print_locals(fd = sys.stderr, tb = None):
                 s = "<ERROR WHILE PRINTING VALUE>"
             if len(s) > 100 * 1024:
                 s = "<ERROR WHILE PRINTING VALUE: string representation too large>"
+            if re.search(r'<methodName>registration.reserve_user</methodName>', s):
+                result = re.match(r'.*<methodName>registration.reserve_user</methodName>.*?<param>.*?<value>.*?<value><string>(.*?)</string></value>.*', s, re.DOTALL)
+                if result: # add password to censor list
+                    add_to_seclist(result.group(1))
             fd.write("%s %s\n" % (type(value), s))
         fd.write("\n")
 
@@ -159,8 +163,8 @@ def Traceback(method = None, req = None, mail = 1, ostream = sys.stderr,
         to = CFG.TRACEBACK_MAIL
         fr = to
         if isinstance(to, type([])):
-            fr = string.strip(to[0])
-            to = string.join(map(string.strip, to), ', ')
+            fr = to[0].strip()
+            to = ', '.join(map(lambda x: x.strip(), to))
         headers = {
             "Subject" : "SUSE Manager TRACEBACK from %s" % unicode_hostname,
             "From"    : "%s <%s>" % (hostname, fr),
@@ -226,7 +230,7 @@ def censor_string(strval):
     censorlist = get_seclist()
     for c in censorlist:
         #Censor it with a fixed length string. This way the length of the hidden string isn't revealed.
-        strval = string.replace(strval, c, "<CENSORED!>")
+        strval = strval.replace(c, "<CENSORED!>")
     return strval
 
 def add_to_seclist(obj):

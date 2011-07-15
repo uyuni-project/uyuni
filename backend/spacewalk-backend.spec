@@ -19,7 +19,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.5.36
+Version: 1.5.40
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -754,6 +754,19 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Wed Jul 13 2011 Jan Pazdziora 1.5.40-1
+- 633400 - rhncfg-client lists lower-ranked config channel for file
+  (mmello@redhat.com)
+
+* Wed Jul 13 2011 Miroslav Suchý 1.5.39-1
+- 695282 - censor password from registration.reserve_user if it appears in TB
+
+* Mon Jul 11 2011 Miroslav Suchý 1.5.38-1
+- optparse is here since python 2.3 - remove optik (msuchy@redhat.com)
+
+* Fri Jul 08 2011 Miroslav Suchý 1.5.37-1
+- do not log every action_extra_data as error (msuchy@redhat.com)
+
 * Wed Jun 22 2011 Miroslav Suchý 1.5.36-1
 - in sat-sync ETA cut off miliseconds (msuchy@redhat.com)
 - make sat-sync ETA more precise (msuchy@redhat.com)
