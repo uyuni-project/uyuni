@@ -23055,6 +23055,12 @@ given channel.</source>
      <trans-unit id="studio.images.list.noimages">
         <source>No Images</source>
      </trans-unit>
+     <trans-unit id="Studio Images">
+        <source>Studio Images</source>
+     </trans-unit>
+     <trans-unit id="Images">
+        <source>Images</source>
+     </trans-unit>
   </body>
   </file>
 </xliff>
