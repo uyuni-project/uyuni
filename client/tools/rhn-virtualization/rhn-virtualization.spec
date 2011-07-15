@@ -161,6 +161,8 @@ rm -rf $RPM_BUILD_ROOT
 %{rhn_dir}/virtualization/support.pyc
 %{rhn_dir}/actions/virt.py
 %{rhn_dir}/actions/virt.pyc
+%{rhn_dir}/actions/image.py
+%{rhn_dir}/actions/image.pyc
 %{rhn_dir}/virtualization/domain_config.pyo
 %{rhn_dir}/virtualization/domain_control.pyo
 %{rhn_dir}/virtualization/domain_directory.pyo
