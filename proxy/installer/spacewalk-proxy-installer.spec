@@ -2,7 +2,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 1.5.2
+Version: 1.5.3
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -104,6 +104,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Fri Jul 15 2011 Miroslav Suchý 1.5.3-1
+- optparse is here since python 2.3 - remove optik (msuchy@redhat.com)
+
 * Thu Apr 28 2011 Miroslav Suchý 1.5.2-1
 - 648868 - do not put proxy_broker.conf and proxy_redirect.conf to
   configuration channel (mmello@redhat.com)
