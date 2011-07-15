@@ -16,34 +16,43 @@ import sun.misc.BASE64Encoder;
 import com.suse.studio.client.data.Appliance;
 import com.suse.studio.client.data.Appliances;
 
+/**
+ * Library class for the SUSE Studio REST API.
+ * TODO: Implement the REST of the API.
+ * 
+ * @author Johannes Renner
+ */
 public class SUSEStudioClient {
 
-    /* Store credentials for studio */
+    /* The credentials */
     private final String user;
     private final String apiKey;
 
+    // The base URL for accessing the API
+    private String baseURL = "http://susestudio.com/api/v2";
+    
     /**
      * Constructor
      */
     public SUSEStudioClient(String user, String apiKey) {
-        if (user != null && apiKey != null) {
-            this.user = user;
-            this.apiKey = apiKey;
-        } else {
-            throw new RuntimeException("We need the user and the API key!");
+        if (user == null || apiKey == null) {
+            throw new RuntimeException("We need the user and API key!");
         }
+    	this.user = user;
+        this.apiKey = apiKey;
     }
 
     /**
      * List all appliances of the current user.
+     * GET /api/v2/user/appliances
      * 
-     * @return The list of the current user's appliances.
+     * @return list of the current user's appliances
      */
     public List<Appliance> getAppliances() throws IOException {
         // Init the URL
         URL url;
         try {
-            url = new URL("http://susestudio.com/api/v2/user/appliances");
+            url = new URL(baseURL + "/user/appliances");
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -79,9 +88,9 @@ public class SUSEStudioClient {
     }
 
     /**
-     * Return the encoded credentials of the user.
+     * Return the encoded credentials.
      * 
-     * @return encoded credentials as a {@link String}
+     * @return encoded credentials as {@link String}
      */
     private String getEncodedCredentials() {
         BASE64Encoder encoder = new BASE64Encoder();
