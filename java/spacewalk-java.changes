@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jul 18 13:39:30 CEST 2011 - ug@suse.de
+
+- kernel-options field in kickstart upload page changed to
+  1024 chars (bnc#698166)
+
+-------------------------------------------------------------------
 Tue Jul  5 11:44:36 CEST 2011 - ug@suse.de
 
 - added a function to get a package but Name+Headerrange
