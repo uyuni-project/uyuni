@@ -82,7 +82,7 @@ Obsoletes: rhn-check < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 
 %if 0%{?suse_version}
-Requires: zypp-plugin-spacewalk
+Requires: zypp-plugin-spacewalk >= 0.4
 %else
 Requires: yum-rhn-plugin >= 1.1.2-1
 %endif

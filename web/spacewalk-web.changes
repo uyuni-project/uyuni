@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul  8 09:11:00 CEST 2011 - jrenner@suse.de
+
+- Refactor RedHat.do to Vendor.do (bnc#671239)
+
+-------------------------------------------------------------------
 Thu May 26 12:03:11 CEST 2011 - jrenner@suse.de
 
 - Add javascript for password strength meter (bnc#685551/fate#312398)
