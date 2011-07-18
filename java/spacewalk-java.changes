@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jul 18 13:51:33 CEST 2011 - ug@suse.de
+
+- changed the kernel-options field to 1024 in the web-ui 
+  (bnc#698166)
+
+-------------------------------------------------------------------
 Tue Jul  5 13:10:29 CEST 2011 - ug@suse.de
 
 - Kickstarting RHEL systems with RES (expanded support) 
