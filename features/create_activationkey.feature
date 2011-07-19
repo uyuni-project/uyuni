@@ -75,3 +75,47 @@ Feature: Create an activation key
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
 
+  Scenario: create an activation key with Channel and package list
+    Given I am on the Systems page
+      And I follow "Activation Keys" in the left menu
+      And I follow "create new key"
+    When I enter "SUSE Test PKG Key x86_64" as "description"
+     And I enter "SUSE-PKG-x86_64" as "key"
+     And I check "monitoring_entitled"
+     And I check "provisioning_entitled"
+     And I enter "20" as "usageLimit"
+     And I select "SLES11-SP1-Updates x86_64 Channel" from "selectedChannel"
+     And I click on "Create Activation Key"
+     And I follow "Packages"
+     And I enter "man" as "packages"
+     And I click on "Update Key"
+   Then I should see a "Activation key SUSE Test PKG Key x86_64 has been modified." text
+    And I should see a "Details" link
+    And I should see a "Child Channels" link
+    And I should see a "Packages" link
+    And I should see a "Configuration" link
+    And I should see a "Groups" link
+    And I should see a "Activated Systems" link
+
+  Scenario: create an activation key with Channel and package list
+    Given I am on the Systems page
+      And I follow "Activation Keys" in the left menu
+      And I follow "create new key"
+    When I enter "SUSE Test PKG Key i586" as "description"
+     And I enter "SUSE-PKG-i586" as "key"
+     And I check "monitoring_entitled"
+     And I check "provisioning_entitled"
+     And I enter "20" as "usageLimit"
+     And I select "SLES11-SP1-Updates i586 Channel" from "selectedChannel"
+     And I click on "Create Activation Key"
+     And I follow "Packages"
+     And I enter "man" as "packages"
+     And I click on "Update Key"
+   Then I should see a "Activation key SUSE Test PKG Key i586 has been modified." text
+    And I should see a "Details" link
+    And I should see a "Child Channels" link
+    And I should see a "Packages" link
+    And I should see a "Configuration" link
+    And I should see a "Groups" link
+    And I should see a "Activated Systems" link
+
