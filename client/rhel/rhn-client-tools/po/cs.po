@@ -752,7 +752,8 @@ msgstr ""
 msgid "It appears this system has already been set up for software updates:"
 msgstr ""
 
-#: ../src/up2date_client/rhnreg_constants.py:123
+#: ../src/up2date_client/rhnreg_constants.py:122
+#: ../data/rh_register.glade.h:42
 msgid "Are you sure you would like to continue?"
 msgstr ""
 
