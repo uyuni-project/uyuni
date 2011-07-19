@@ -14,28 +14,31 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-import sys, os, time, grp
-import os.path
 import hashlib
-from datetime import datetime
+import os
+import re
+import socket
+import sys
+import time
 import traceback
+from datetime import datetime
 from optparse import OptionParser
+
+from yum import Errors
+from yum.i18n import to_unicode
+
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
 from spacewalk.common import CFG, initCFG, rhnLog, fetchTraceback, rhnMail, rhn_rpm
 from spacewalk.common.checksum import getFileChecksum
-from spacewalk.common.rhn_mpm import InvalidPackageError
 from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Checksum, Bug, Keyword
 from spacewalk.server.importlib.backendOracle import OracleBackend
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
 from spacewalk.susemanager import suseLib
-from yum import Errors
-from yum.i18n import to_unicode, to_utf8
-
 from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 
-import socket
+
 hostname = socket.gethostname()
 
 default_log_location = '/var/log/rhn/reposync/'
@@ -60,80 +63,84 @@ class ChannelTimeoutException(ChannelException):
 
 
 class RepoSync:
-    parser = None
-    type = None
-    urls = None
-    channel_label = None
-    channel = None
-    fail = False
-    quiet = False
     regen = False
-    noninteractive = False
 
-    def main(self):
+    def __init__(self, channel_label, repo_type, url=None, fail=False,
+                 quiet=False, noninteractive=False):
+        self.fail = fail
+        self.quiet = quiet
+        self.interactive = not noninteractive
+
         initCFG('server.satellite')
         db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
         rhnSQL.initDB(db_string)
-        (options, args) = self.process_args()
 
+        # setup logging
         log_filename = 'reposync.log'
-        if options.channel_label:
-            date = time.localtime()
-            datestr = '%d.%02d.%02d-%02d:%02d:%02d' % (date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec)
-            log_filename = options.channel_label + '-' +  datestr + '.log'
-
+        date = time.localtime()
+        datestr = '%d.%02d.%02d-%02d:%02d:%02d' % (
+            date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
+            date.tm_min, date.tm_sec)
+        log_filename = channel_label + '-' +  datestr + '.log'
         rhnLog.initLOG(default_log_location + log_filename)
         #os.fchown isn't in 2.4 :/
         os.system("chgrp www " + default_log_location + log_filename)
 
-
-        quit = False
-        if not options.url:
-            if options.channel_label:
-                # TODO:need to look at user security across orgs
-                h = rhnSQL.prepare("""select s.source_url, s.metadata_signed
-                                      from rhnContentSource s,
-                                           rhnChannelContentSource cs,
-                                           rhnChannel c
-                                     where s.id = cs.source_id
-                                       and cs.channel_id = c.id
-                                       and c.label = :label""")
-                h.execute(label=options.channel_label)
-                source_urls = h.fetchall_dict() or []
-                if source_urls:
-                    self.urls = source_urls
-                else:
-                    if options.channel_label:
-                        # generate empty metadata
-                        taskomatic.add_to_repodata_queue_for_channel_package_subscription(
-                            [options.channel_label], [], "server.app.yumreposync")
-                        rhnSQL.commit()
-                    quit = True
-                    self.error_msg("Channel has no URL associated")
-        else:
-            self.urls = [{'source_url':options.url, 'metadata_signed' : 'N'}]
-        if not options.channel_label:
-            quit = True
-            self.error_msg("--channel must be specified")
-
         self.log_msg("\nSync started: %s" % (time.asctime(time.localtime())))
         self.log_msg(str(sys.argv))
 
+        if not url:
+            # TODO:need to look at user security across orgs
+            h = rhnSQL.prepare("""select s.source_url, s.metadata_signed
+                                  from rhnContentSource s,
+                                       rhnChannelContentSource cs,
+                                       rhnChannel c
+                                 where s.id = cs.source_id
+                                   and cs.channel_id = c.id
+                                   and c.label = :label""")
+            h.execute(label=channel_label)
+            source_urls = h.fetchall_dict()
+            if source_urls:
+                self.urls = source_urls
+            else:
+                # generate empty metadata and quit
+                taskomatic.add_to_repodata_queue_for_channel_package_subscription(
+                    [channel_label], [], "server.app.yumreposync")
+                rhnSQL.commit()
+                self.error_msg("Channel has no URL associated")
+                sys.exit(1)
+        else:
+            self.urls = [{'source_url': url, 'metadata_signed' : 'N'}]
 
-        if quit:
-            sys.exit(1)
+        self.repo_plugin = self.load_plugin(repo_type)
+        self.channel_label = channel_label
 
-        self.type = options.type
-        self.channel_label = options.channel_label
-        self.fail = options.fail
-        self.quiet = options.quiet
         self.channel = self.load_channel()
-        self.noninteractive = options.noninteractive
-
         if not self.channel:
-            print "Channel does not exist"
+            self.print_msg("Channel does not exist.")
             sys.exit(1)
 
+    def load_plugin(self, repo_type):
+        """Try to import the repository plugin required to sync the repository
+
+        :repo_type: type of the repository; only 'yum' is currently supported
+
+        """
+        name = repo_type + "_src"
+        mod = __import__('spacewalk.satellite_tools.repo_plugins',
+                         globals(), locals(), [name])
+        try:
+            submod = getattr(mod, name)
+        except AttributeError:
+            self.error_msg("Repository type %s is not supported. "
+                           "Could not import "
+                           "spacewalk.satellite_tools.repo_plugins.%s."
+                           % (repo_type, name))
+            sys.exit(1)
+        return getattr(submod, "ContentSource")
+
+    def sync(self):
+        """Trigger a reposync"""
         for data in self.urls:
             url = suseLib.URL(data['source_url'])
             if url.get_query_param("credentials"):
@@ -142,14 +149,17 @@ class RepoSync:
                 url.password = CFG.get("%s%s" % (url.get_query_param("credentials"), "_pass"))
                 initCFG('server.satellite')
             url.query = ""
-            insecure = False;
+            insecure = False
             if data['metadata_signed'] == 'N':
-                insecure = True;
+                insecure = True
             try:
-                plugin = self.load_plugin()(url.getURL(), self.channel_label, insecure, (not self.noninteractive),
-                        proxy=CFG.HTTP_PROXY, proxy_user=CFG.HTTP_PROXY_USERNAME, proxy_pass=CFG.HTTP_PROXY_PASSWORD)
-                self.import_packages(plugin, url.getURL())
-                self.import_updates(plugin, url.getURL())
+                repo = self.repo_plugin(url.getURL(), self.channel_label,
+                                        insecure, self.quiet, self.interactive,
+                                        proxy=CFG.HTTP_PROXY,
+                                        proxy_user=CFG.HTTP_PROXY_USERNAME,
+                                        proxy_pass=CFG.HTTP_PROXY_PASSWORD)
+                self.import_packages(repo, url.getURL())
+                self.import_updates(repo, url.getURL())
             except ChannelTimeoutException, e:
                 self.print_msg(e)
                 self.sendErrorMail(str(e))
@@ -195,21 +205,6 @@ class RepoSync:
                              where label = :channel""")
         h.execute(channel=self.channel['label'])
 
-    def process_args(self):
-        self.parser = OptionParser()
-        self.parser.add_option('-u', '--url', action='store', dest='url', help='The url to sync')
-        self.parser.add_option('-c', '--channel', action='store', dest='channel_label', help='The label of the channel to sync packages to')
-        self.parser.add_option('-t', '--type', action='store', dest='type', help='The type of repo, currently only "yum" is supported', default='yum')
-        self.parser.add_option('-f', '--fail', action='store_true', dest='fail', default=False , help="If a package import fails, fail the entire operation")
-        self.parser.add_option('-q', '--quiet', action='store_true', dest='quiet', default=False, help="Print no output, still logs output")
-        self.parser.add_option('-n', '--non-interactive', action='store_true', dest='noninteractive', default=False, help="Do not ask anything, use default answers automatically.")
-        return self.parser.parse_args()
-
-    def load_plugin(self):
-        name = self.type + "_src"
-        mod = __import__('spacewalk.satellite_tools.repo_plugins', globals(), locals(), [name])
-        submod = getattr(mod, name)
-        return getattr(submod, "ContentSource")
 
     def import_updates(self, plug, url):
         notices = plug.get_updates()
@@ -375,8 +370,8 @@ class RepoSync:
       importer.run()
       self.regen = True
 
-    def import_packages(self, plug, url):
-        packages = plug.list_packages()
+    def import_packages(self, repo, url):
+        packages = repo.list_packages()
         to_link = []
         to_download = []
         skipped = 0
@@ -446,7 +441,7 @@ class RepoSync:
                 try:
                     self.print_msg(str(index+1) + "/" + str(len(to_download)) + " : "+ \
                           pack.getNVREA())
-                    path = plug.get_package(pack)
+                    path = repo.get_package(pack)
                     self.upload_package(pack, path)
                     if pack in to_link:
                         self.associate_package(pack)
