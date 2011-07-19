@@ -106,7 +106,7 @@ end
 Then /^"([^"]*)" is installed$/ do |package|
    output = `rpm -q #{package} 2>&1`
    if ! $?.success?
-       raise "exec rpm failed: #{$!}: #{$output}"
+       raise "exec rpm failed (Code #{$?}): #{$!}: #{output}"
    end
 end
 
