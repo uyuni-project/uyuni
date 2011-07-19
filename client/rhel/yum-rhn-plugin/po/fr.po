@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Alain PORTAL <aportal@univ-montp2.fr>, 2006.
 # Audrey Simons <asimons@redhat.com>, 2004, 2005.
 # Bettina De Monti <bdemonti@redhat.it>, 2001.
@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-19 12:06+0200\n"
+"POT-Creation-Date: 2011-07-19 17:38+0200\n"
 "PO-Revision-Date: 2011-03-22 15:40+0000\n"
 "Last-Translator: jfenal <jfenal@gmail.com>\n"
 "Language-Team: French <trans-fr@lists.fedoraproject.org>\n"
@@ -85,4 +85,5 @@ msgstr "Veuillez exécuter rhn_register en tant que root sur ce client"
 msgid "Missing required login information for RHN: %s"
 msgstr "Absence d'informations de connexion requises par RHN : %s"
 
-
+#~ msgid "RHN support will be disabled."
+#~ msgstr "L'utilisation de RHN sera désactivée."
