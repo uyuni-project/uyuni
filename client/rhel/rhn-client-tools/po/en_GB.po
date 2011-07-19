@@ -8,11 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: up 2date\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-02 18:01+0200\n"
-"PO-Revision-Date: 2010-12-12 16:05+0100\n"
-"Last-Translator: Michael Calmer <Michael.Calmer@gmx.de>\n"
-"Language-Team: German <kde-i18n-de@kde.org>\n"
-"Language: de\n"
+"POT-Creation-Date: 2011-07-19 13:31+0200\n"
+"PO-Revision-Date: 2004-10-22 12:53-0400\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -50,7 +50,7 @@ msgstr ""
 #: ../src/up2date_client/rhnregGui.py:332
 #, fuzzy, python-format
 msgid "We could not contact Red Hat Network (%s)."
-msgstr "We could not contact Red Hat Network [GALAXY] (%s)."
+msgstr "Send Profile Information to Red Hat Network"
 
 #: ../src/up2date_client/rhnregGui.py:334
 #: ../src/up2date_client/rhnregGui.py:347
@@ -80,7 +80,7 @@ msgstr ""
 #: ../src/up2date_client/rhnregGui.py:357
 #, fuzzy
 msgid "There was an error communicating with Red Hat Network."
-msgstr "There was an error communicating with Red Hat Network [GALAXY]."
+msgstr "Send Profile Information to Red Hat Network"
 
 #: ../src/up2date_client/rhnregGui.py:358
 msgid "The server may be in outage mode. You may have to try connecting later."
@@ -95,9 +95,7 @@ msgstr ""
 msgid ""
 "Please enter your account information for the <b>%s</b> Red Hat Network "
 "Satellite:"
-msgstr ""
-"Please enter your account information for the <b>%s</b> Red Hat Network "
-"Satellite [GALAXY]:"
+msgstr "Registration information for: "
 
 #: ../src/up2date_client/rhnregGui.py:448
 msgid "You must enter a login."
@@ -134,14 +132,14 @@ msgid "You must choose a name for this profile."
 msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:718
+#, fuzzy
 msgid "There was an error while creating the profile."
-msgstr ""
+msgstr "Send Profile Information to Red Hat Network"
 
 #: ../src/up2date_client/rhnregGui.py:729
 #, fuzzy
 msgid "Sending your profile information to Red Hat Network.  Please wait."
-msgstr ""
-"Sending your profile information to Red Hat Network [GALAXY].  Please wait."
+msgstr "Send Profile Information to Red Hat Network"
 
 #: ../src/up2date_client/rhnregGui.py:748
 msgid "Registering System"
@@ -202,91 +200,95 @@ msgstr "Package Information"
 msgid "Problem sending package information."
 msgstr "Registration information for: "
 
-#: ../src/up2date_client/rhnregGui.py:879
+#: ../src/up2date_client/rhnregGui.py:874 ../src/up2date_client/tui.py:965
 msgid ""
 "Could not open /etc/yum/pluginconf.d/rhnplugin.conf\n"
-"yum-rhn-plugin is not enable.\n"
+"yum-rhn-plugin is not enabled.\n"
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:895
-#: ../src/up2date_client/rhnregGui.py:912 ../src/up2date_client/tui.py:909
+#: ../src/up2date_client/rhnregGui.py:890
+#: ../src/up2date_client/rhnregGui.py:907 ../src/up2date_client/tui.py:909
 #: ../src/up2date_client/tui.py:923
 #, fuzzy
 msgid "Problem registering personal information:\n"
 msgstr "Registration information for: "
+<<<<<<< HEAD
 
-#: ../src/up2date_client/rhnregGui.py:900
-#: ../src/up2date_client/rhnregGui.py:917 ../src/up2date_client/tui.py:915
+#: ../src/up2date_client/rhnregGui.py:895
+#: ../src/up2date_client/rhnregGui.py:912 ../src/up2date_client/tui.py:915
 #: ../src/up2date_client/tui.py:927
 msgid "Problem registering personal information"
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:959
+#: ../src/up2date_client/rhnregGui.py:954
+#, fuzzy
 msgid "There was an error while installing the certificate."
-msgstr ""
+msgstr "Send Profile Information to Red Hat Network"
 
-#: ../src/up2date_client/rhnregGui.py:985
+#: ../src/up2date_client/rhnregGui.py:980
 msgid "You must select a certificate."
 msgstr ""
 
 #. TODO Modify rhnlib to raise a unique exception for the not a
 #. cert file case.
-#: ../src/up2date_client/rhnregGui.py:1018
+#: ../src/up2date_client/rhnregGui.py:1013
 msgid ""
 "There was an SSL error. This could be because the file you picked was not a "
 "certificate file."
 msgstr ""
 
 #. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:1025
+#: ../src/up2date_client/rhnregGui.py:1020
 msgid "Something went wrong while installing the new certificate:\n"
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:1077
-#: ../src/up2date_client/rhnregGui.py:1078
-#: ../src/up2date_client/rhnregGui.py:1079
+#: ../src/up2date_client/rhnregGui.py:1072
+#: ../src/up2date_client/rhnregGui.py:1073
+#: ../src/up2date_client/rhnregGui.py:1074
 msgid "unknown"
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:1171
+#: ../src/up2date_client/rhnregGui.py:1166
+#, fuzzy
 msgid "There was an error getting the list of hardware."
-msgstr ""
+msgstr "Send Profile Information to Red Hat Network"
 
-#: ../src/up2date_client/rhnregGui.py:1183 ../src/up2date_client/tui.py:678
+#: ../src/up2date_client/rhnregGui.py:1178 ../src/up2date_client/tui.py:678
 #, python-format
 msgid "%d MHz"
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:1187
+#: ../src/up2date_client/rhnregGui.py:1182
 #, python-format
 msgid "%s MB"
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:1231
+#: ../src/up2date_client/rhnregGui.py:1226
+#, fuzzy
 msgid "There was an error building the list of packages."
-msgstr ""
+msgstr "Send Profile Information to Red Hat Network"
 
-#: ../src/up2date_client/rhnregGui.py:1246
+#: ../src/up2date_client/rhnregGui.py:1241
 msgid "Package"
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:1251
+#: ../src/up2date_client/rhnregGui.py:1246
 msgid "Arch"
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:1258
+#: ../src/up2date_client/rhnregGui.py:1253
 #, fuzzy
 msgid "Building a list of RPM packages installed on your system.  Please wait."
 msgstr ""
 "Below is a list of packages present on your system that RPM knows about:"
 
-#: ../src/up2date_client/rhnregGui.py:1289
+#: ../src/up2date_client/rhnregGui.py:1284
 msgid ""
 "There was an error loading your configuration.  Make sure that\n"
 "you have read access to /etc/sysconfig/rhn."
 msgstr ""
 
-#: ../src/up2date_client/rhnregGui.py:1331
+#: ../src/up2date_client/rhnregGui.py:1326
 #, python-format
 msgid ""
 "There was an error saving your configuration. Make sure that\n"
@@ -585,6 +587,8 @@ msgstr ""
 "[GALAXY]? You'll miss out on the benefits of a Red Hat Enterprise Linux "
 "subscription [GALAXY]:\n"
 
+=======
+>>>>>>> update .po and .pot files for rhn-client-tools
 #: ../src/up2date_client/rhnreg_constants.py:63
 msgid ""
 "You will not be able to take advantage of these subscription privileges "
@@ -608,18 +612,16 @@ msgid "Enter you account information"
 msgstr "Account Info"
 
 #: ../src/up2date_client/rhnreg_constants.py:70
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "Please enter your login information for the %s Red Hat Network Satellite:\n"
 "\n"
-msgstr ""
-"Please enter your login information for the %s Red Hat Network Satellite "
-"[GALAXY]:\n"
-"\n"
+msgstr "Registration information for: "
 
 #: ../src/up2date_client/rhnreg_constants.py:72
+#, fuzzy
 msgid "Red Hat Login:"
-msgstr "Red Hat [GALAXY] Login:"
+msgstr "Red Hat Login"
 
 #: ../src/up2date_client/rhnreg_constants.py:74
 #, fuzzy
@@ -739,6 +741,7 @@ msgstr "Retrieving Packages"
 
 #. Product Window
 #: ../src/up2date_client/rhnreg_constants.py:115
+#, fuzzy
 msgid ""
 "Please enter your login information for Red Hat Network (http://rhn.redhat."
 "com/):\n"
@@ -1030,13 +1033,6 @@ msgid ""
 "system entitlement to this system in RHN's web interface if you do not want "
 "virtual guests of this system to consume additional subscriptions."
 msgstr ""
-"<b>Warning:</b> Any guest systems you create on this system and register to "
-"RHN [GALAXY] will consume Red Hat Enterprise Linux [GALAXY] subscriptions "
-"beyond this host system's subscription. You will need to: (1) make a "
-"virtualization or virtualization platform system entitlement available and "
-"(2) apply that system entitlement to this system in RHN's [GALAXY] web "
-"interface if you do not want virtual guests of this system to consume "
-"additional subscriptions."
 
 #: ../src/up2date_client/rhnreg_constants.py:242
 msgid ""
@@ -1052,20 +1048,6 @@ msgid ""
 "may browse to this system's profile in the RHN web interface, delete the "
 "profile, and re-connect this system to Red Hat Network."
 msgstr ""
-"This system was unable to be associated with any RHN [GALAXY] service level "
-"modules. This system will not receive any software updates to keep it secure "
-"and supported. There are a few things you can try to resolve this "
-"situation:\n"
-"(1) Log in to http://rhn.redhat.com/ [GALAXY] and unentitle an inactive "
-"system at Your RHN [GALAXY] > Subscription Management > System "
-"Entitlements.\n"
-"(2) Purchase an additional Red Hat Enterprise Linux [GALAXY] subscription at "
-"http://www.redhat.com/store/ [GALAXY].\n"
-"(3) Activate a new installation number at http://www.redhat.com/now/ "
-"[GALAXY]. Once you make the appropriate active subscriptions available in "
-"your account, you may browse to this system's profile in the RHN [GALAXY] "
-"web interface, delete the profile, and re-connect this system to Red Hat "
-"Network [GALAXY]."
 
 #: ../src/up2date_client/rhnreg_constants.py:254
 #, python-format
@@ -1174,15 +1156,6 @@ msgid ""
 "universal default activation key. More details can be found in Red Hat "
 "Knowledgebase Article #7924 at http://kbase.redhat.com/faq/FAQ_61_7924.shtm "
 msgstr ""
-"Problem registering system.\n"
-"\n"
-"A universal default activation key limits the number of systems which can "
-"connect to the RHN [GALAXY] organization associated with your login. To "
-"allow this system to connect, please contact your RHN [GALAXY] organization "
-"administrator to increase the number of systems allowed to connect or to "
-"disable this universal default activation key. More details can be found in "
-"Red Hat [GALAXY] Knowledgebase Article #7924 at http://kbase.redhat.com/faq/"
-"FAQ_61_7924.shtm  [GALAXY]"
 
 #: ../src/up2date_client/rhnreg_constants.py:311
 msgid ""
@@ -1229,6 +1202,7 @@ msgstr "Channels"
 #, fuzzy
 msgid "No, Cancel"
 msgstr "Channels"
+<<<<<<< HEAD
 
 #: ../src/up2date_client/rhnreg_constants.py:334
 #: ../data/rh_register.glade.h:55
@@ -1287,6 +1261,30 @@ msgstr ""
 msgid "RPM dependency error. The message was:\n"
 msgstr ""
 
+=======
+
+#: ../src/up2date_client/rhnreg_constants.py:334
+#: ../data/rh_register.glade.h:55
+msgid "Yes, Continue"
+msgstr ""
+
+#: ../src/up2date_client/rhnreg_constants.py:335
+msgid "Press <space> to deselect the option."
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:31
+msgid "RPM error.  The message was:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:43
+msgid "Password error. The message was:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:56
+msgid "RPM dependency error. The message was:\n"
+msgstr ""
+
+>>>>>>> update .po and .pot files for rhn-client-tools
 #: ../src/up2date_client/up2dateErrors.py:65
 msgid "Error communicating with server. The message was:\n"
 msgstr ""
@@ -1312,7 +1310,7 @@ msgstr "Registration information for: "
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:277
+#: ../src/up2date_client/up2dateErrors.py:282
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to "
@@ -1436,11 +1434,11 @@ msgstr ""
 "Copyright (C) 1999--2010 Red Hat, Inc.\n"
 "Licensed under the terms of the GPLv2."
 
-#: ../src/up2date_client/rhncli.py:210
+#: ../src/up2date_client/rhncli.py:206
 msgid "An error has occurred:"
 msgstr ""
 
-#: ../src/up2date_client/rhncli.py:218
+#: ../src/up2date_client/rhncli.py:214
 #, fuzzy
 msgid "See /var/log/up2date for more information"
 msgstr "Included information"
@@ -1451,6 +1449,7 @@ msgid ""
 "This client requires the server to support %s, which the current server does "
 "not support"
 msgstr ""
+<<<<<<< HEAD
 
 #: ../src/up2date_client/gui.py:313
 #, fuzzy
@@ -1514,7 +1513,7 @@ msgstr ""
 #: ../src/firstboot/rhn_login_gui.py:41 ../src/firstboot/rhn_login_gui.py:42
 #, fuzzy
 msgid "Red Hat Login"
-msgstr "Red Hat [GALAXY] Login"
+msgstr "Red Hat Login"
 
 #: ../src/firstboot/rhn_login_gui.py:71
 #: ../src/firstboot/rhn_create_profile_gui.py:42
@@ -1525,8 +1524,9 @@ msgstr "Create Login"
 
 #: ../src/firstboot/rhn_login_gui.py:99
 #: ../src/firstboot/rhn_create_profile_gui.py:87
+#, fuzzy
 msgid "There was a communication error with the server:"
-msgstr ""
+msgstr "Send Profile Information to Red Hat Network"
 
 #: ../src/firstboot/rhn_login_gui.py:101
 #: ../src/firstboot/rhn_create_profile_gui.py:89
@@ -1552,6 +1552,8 @@ msgstr ""
 #: ../src/bin/rhnreg_ks.py:54
 msgid "Specify a url to use as a server"
 msgstr ""
+"Subscribe this system to the EUS channel tied to the system's redhat-release "
+"[GALAXY]"
 
 #: ../src/bin/rhnreg_ks.py:56
 msgid "Specify a file to use as the ssl CA cert"
@@ -1565,8 +1567,6 @@ msgstr ""
 msgid ""
 "Subscribe this system to the EUS channel tied to the system's redhat-release"
 msgstr ""
-"Subscribe this system to the EUS channel tied to the system's redhat-release "
-"[GALAXY]"
 
 #: ../src/bin/rhnreg_ks.py:62
 msgid "[Deprecated] Read contact info from stdin"
@@ -1616,17 +1616,17 @@ msgid ""
 "server web user Interface and update your contactinfo. "
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:183
+#: ../src/bin/rhnreg_ks.py:178
 msgid "Warning: yum-rhn-plugin is not present, could not enable it."
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:185
+#: ../src/bin/rhnreg_ks.py:180
 msgid ""
 "Warning: Could not open /etc/yum/pluginconf.d/rhnplugin.conf\n"
 "yum-rhn-plugin is not enabled.\n"
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:205
+#: ../src/bin/rhnreg_ks.py:200
 msgid ""
 "A profilename was not specified, and hostname and IP address could not be "
 "determined to use as a profilename, please specify one."
@@ -1850,13 +1850,14 @@ msgstr ""
 "https://www.redhat.com/wapps/sso/rhn/lostPassword.html [GALAXY]</small>"
 
 #: ../data/rh_register.glade.h:14
+#, fuzzy
 msgid "Advanced Network Configuration"
-msgstr ""
+msgstr "Red Hat Network Configuration"
 
 #: ../data/rh_register.glade.h:15
 #, fuzzy
 msgid "Advanced Network Configuration button"
-msgstr "SUSE Manager Configuration"
+msgstr "Red Hat Network Configuration"
 
 #: ../data/rh_register.glade.h:17
 msgid "Aplet screenshot"
@@ -1866,6 +1867,7 @@ msgstr ""
 #, fuzzy
 msgid "Choose Channel"
 msgstr "Channels"
+<<<<<<< HEAD
 
 #: ../data/rh_register.glade.h:20
 msgid "Choose minor release"
@@ -2022,6 +2024,152 @@ msgstr ""
 msgid "icon of aplet"
 msgstr ""
 
+=======
+
+#: ../data/rh_register.glade.h:20
+msgid "Choose minor release"
+msgstr ""
+
+#: ../data/rh_register.glade.h:21
+#, fuzzy
+msgid "Close"
+msgstr "Close"
+
+#: ../data/rh_register.glade.h:22
+msgid "Confirm operation system release selection"
+msgstr ""
+
+#: ../data/rh_register.glade.h:23
+#, fuzzy
+msgid "Create profile"
+msgstr "Create Login"
+
+#: ../data/rh_register.glade.h:24
+#, fuzzy
+msgid "Enter Your Account Information"
+msgstr "Account Info"
+
+#: ../data/rh_register.glade.h:25
+#, fuzzy
+msgid "Enter in the format hostname(:port)"
+msgstr "Enter in the format hostname(:port)"
+
+#: ../data/rh_register.glade.h:26
+msgid "Hardware Info"
+msgstr ""
+
+#: ../data/rh_register.glade.h:27
+msgid "I would like to connect to Red Hat Network via an _HTTP proxy."
+msgstr ""
+
+#: ../data/rh_register.glade.h:28
+#, fuzzy
+msgid "Limited updates"
+msgstr "United States"
+
+#: ../data/rh_register.glade.h:29
+msgid "Link To Subscription"
+msgstr ""
+
+#: ../data/rh_register.glade.h:30
+msgid "No thanks, I'll connect later."
+msgstr ""
+
+#: ../data/rh_register.glade.h:32
+#, fuzzy
+msgid "Package Information"
+msgstr "Package Information"
+
+#: ../data/rh_register.glade.h:33
+msgid "Provide a Security Certificate"
+msgstr ""
+
+#: ../data/rh_register.glade.h:34
+#, fuzzy
+msgid "RHN login field"
+msgstr "Red Hat Login"
+
+#: ../data/rh_register.glade.h:35
+msgid "RHN password field"
+msgstr ""
+
+#: ../data/rh_register.glade.h:36
+msgid "Review system..."
+msgstr ""
+
+#: ../data/rh_register.glade.h:37
+msgid "Select A File"
+msgstr ""
+
+#: ../data/rh_register.glade.h:38
+#, fuzzy
+msgid "Send hardware profile checkbox"
+msgstr "Included information"
+
+#: ../data/rh_register.glade.h:39
+#, fuzzy
+msgid "Send package profile checkbox"
+msgstr "Retrieving Packages"
+
+#: ../data/rh_register.glade.h:40
+msgid "Start Window"
+msgstr ""
+
+#: ../data/rh_register.glade.h:44
+msgid ""
+"This system will <b>not</b> be able to successfully receive software "
+"updates, including security updates, from Red Hat without connecting to a "
+"Red Hat Network server.\n"
+"\n"
+"To keep your system updated, secure, and supported, please register this "
+"system at your earliest convenience.\n"
+"\n"
+"You may access the RHN registration tool by running <b>RHN Registration</b> "
+"in the <b>System > Administration</b> menu.\n"
+"You may access the software update tool by running <b>Software Update</b> in "
+"the <b>System > Administration</b> menu."
+msgstr ""
+
+#: ../data/rh_register.glade.h:50
+#, fuzzy
+msgid "Use Authentication with HTTP Proxy"
+msgstr "Use Authentication"
+
+#: ../data/rh_register.glade.h:51
+#, fuzzy
+msgid "View Hardware Profile"
+msgstr "Included information"
+
+#: ../data/rh_register.glade.h:52
+#, fuzzy
+msgid "View Package Profile"
+msgstr "Retrieving Packages"
+
+#: ../data/rh_register.glade.h:56
+msgid ""
+"Your system will be subscribed to the base software channel.  You will not "
+"be able to move this system to an earlier minor release channel if you "
+"continue (you will be able to move to a later release.)"
+msgstr ""
+
+#: ../data/rh_register.glade.h:57
+#, fuzzy
+msgid "_Activate a subscription now..."
+msgstr "Channel Information"
+
+#: ../data/rh_register.glade.h:58
+msgid "_Minor release:"
+msgstr ""
+
+#: ../data/rh_register.glade.h:59
+msgid "_Operating system version:"
+msgstr ""
+
+#: ../data/rh_register.glade.h:60
+msgid "icon of aplet"
+msgstr ""
+
+>>>>>>> update .po and .pot files for rhn-client-tools
 #: ../data/rh_register.glade.h:61
 #, fuzzy
 msgid "installation number field"
@@ -2127,7 +2275,6 @@ msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
 msgstr ""
 
 #: ../data/rh_register.glade.h:81
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/legal/"
@@ -2137,14 +2284,11 @@ msgstr ""
 "com/legal/privacy_statement.html. [GALAXY]</small>"
 
 #: ../data/rh_register.glade.h:82
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "<small>Tip: Forgot your login or password? Contact your Satellite's "
 "<i>Organization Administrator</i>.</small>"
 msgstr ""
-"<small>Tip: Forgot your login or password? Look it up at \n"
-"https://www.redhat.com/wapps/sso/rhn/lostPassword.html [GALAXY]</small>"
 
 #: ../data/rh_register.glade.h:84
 #, no-c-format
@@ -2155,15 +2299,18 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:85
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "Access to the technical support experts at Red Hat or Red Hat's partners for "
 "help with any issues you might encounter with this system."
 msgstr ""
-"Access to the technical support experts at Red Hat [GALAXY] or Red Hat's "
-"[GALAXY] partners for help with any issues you might encounter with this "
-"system."
+
+#: ../data/rh_register.glade.h:85
+msgctxt "yes"
+msgid ""
+"Access to the technical support experts at Red Hat or Red Hat's partners for "
+"help with any issues you might encounter with this system."
+msgstr ""
 
 #: ../data/rh_register.glade.h:86
 msgctxt "yes"
@@ -2171,14 +2318,15 @@ msgid ""
 "Activate a previously purchased subscription you have not yet activated."
 msgstr ""
 
+=======
+>>>>>>> update .po and .pot files for rhn-client-tools
 #: ../data/rh_register.glade.h:87
 #, fuzzy
 msgctxt "yes"
 msgid "Advanced _Network Configuration ..."
-msgstr "SUSE Manager Configuration"
+msgstr "Red Hat Network Configuration"
 
 #: ../data/rh_register.glade.h:88
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "Are you sure you don't want to connect your system to Red Hat Network? "
@@ -2193,6 +2341,14 @@ msgctxt "yes"
 msgid "Are you sure you would like to continue?"
 msgstr ""
 
+<<<<<<< HEAD
+=======
+#: ../data/rh_register.glade.h:89
+msgctxt "yes"
+msgid "Are you sure you would like to continue?"
+msgstr ""
+
+>>>>>>> update .po and .pot files for rhn-client-tools
 #: ../data/rh_register.glade.h:90
 #, fuzzy
 msgctxt "yes"
@@ -2206,13 +2362,13 @@ msgid "CPU Speed:"
 msgstr "CPU speed:"
 
 #: ../data/rh_register.glade.h:92
+<<<<<<< HEAD
 #, fuzzy
 msgctxt "yes"
 msgid "Certificate _Location:"
-msgstr "Red Hat Network _Location [GALAXY]:"
+msgstr "Red Hat Network Configuration"
 
 #: ../data/rh_register.glade.h:93
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "Connecting your system to Red Hat Network allows you to take full advantage "
@@ -2222,7 +2378,6 @@ msgstr ""
 "the benefits of a paid subscription, including:"
 
 #: ../data/rh_register.glade.h:94
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "Download installation images for Red Hat Enterprise Linux releases, "
@@ -2272,7 +2427,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:101
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "I have access to a <b>Red Hat Network Satellite</b> or <b>Red Hat Network "
@@ -2287,19 +2441,15 @@ msgstr ""
 #, fuzzy
 msgctxt "yes"
 msgid "I have an <b>_SSL certificate</b> to communicate with Red Hat Network:"
-msgstr ""
-"I have an <b>_SSL certificate</b> to communicate with Red Hat Network "
-"[GALAXY]:"
+msgstr "Send Profile Information to Red Hat Network"
 
 #: ../data/rh_register.glade.h:103
 #, fuzzy
 msgctxt "yes"
 msgid "I would like to connect to Red Hat Network via an _HTTP proxy."
-msgstr ""
-"I would like to connect to Red Hat Network [GALAXY] via an _HTTP proxy."
+msgstr "Connect to Red Hat Network"
 
 #: ../data/rh_register.glade.h:104
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "I'd like to receive updates from <b>Red Hat Network</b>. (I don't have "
@@ -2334,7 +2484,6 @@ msgid "It appears this system has already been set up for software updates:"
 msgstr ""
 
 #: ../data/rh_register.glade.h:109
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
@@ -2383,7 +2532,6 @@ msgid "Proxy _Username:"
 msgstr "Username:"
 
 #: ../data/rh_register.glade.h:116
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "Purchase an additional Red Hat Enterprise Linux subscription at http://www."
@@ -2398,7 +2546,6 @@ msgid "RHN Classic Mode"
 msgstr ""
 
 #: ../data/rh_register.glade.h:118
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "Receive the latest software updates, including security updates, keeping "
@@ -2418,7 +2565,7 @@ msgstr "Red Hat Linux [GALAXY] Version:"
 #, fuzzy
 msgctxt "yes"
 msgid "Red Hat Network _Location:"
-msgstr "Red Hat Network _Location [GALAXY]:"
+msgstr "Red Hat Network Configuration"
 
 #: ../data/rh_register.glade.h:121
 #, fuzzy
@@ -2438,7 +2585,6 @@ msgid "Software update setup has been completed for this system."
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "Stay in compliance with your subscription agreement and manage subscriptions "
@@ -2454,7 +2600,6 @@ msgid "System _Name:"
 msgstr "Last name:"
 
 #: ../data/rh_register.glade.h:126
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system  to Red Hat "
@@ -2483,7 +2628,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:130
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "You may connect your system to <b>Red Hat Network</b> (https://rhn.redhat."
@@ -2495,7 +2639,6 @@ msgstr ""
 "<b>Red Hat Network Proxy [GALAXY]</b> in order to receive software updates."
 
 #: ../data/rh_register.glade.h:131
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "You will <b>not</b> be able to take advantage of these subscriptions "
@@ -2505,7 +2648,6 @@ msgstr ""
 "privileges without connecting your system to Red Hat Network [GALAXY]."
 
 #: ../data/rh_register.glade.h:132
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "You won't be able to receive software updates, including security updates, "
@@ -2522,7 +2664,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:134
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "You'll want to choose a name for this system so you'll be able to identify "
@@ -2643,10 +2784,9 @@ msgstr ""
 #, fuzzy
 msgctxt "yes"
 msgid "• A name for your system's Red Hat Network profile"
-msgstr "• A name for your system's Red Hat [GALAXY] Network profile"
+msgstr "Connect to Red Hat Network"
 
 #: ../data/rh_register.glade.h:155
-#, fuzzy
 msgctxt "yes"
 msgid "• The address to your Red Hat Network Satellite (optional)"
 msgstr "• The address to your Red Hat Network Satellite [GALAXY] (optional)"
@@ -2655,8 +2795,7 @@ msgstr "• The address to your Red Hat Network Satellite [GALAXY] (optional)"
 #, fuzzy
 msgctxt "yes"
 msgid "• Your Red Hat Network or Red Hat Network Satellite login "
-msgstr ""
-"• Your Red Hat Network [GALAXY] or Red Hat Network Satellite [GALAXY] login "
+msgstr "Create a new Red Hat Network account"
 
 #: ../rhn_register.desktop.in.h:1
 #, fuzzy
@@ -3160,10 +3299,6 @@ msgstr "Register to Spacewalk/Satellite/Red Hat Network. [GALAXY]"
 #, fuzzy
 #~ msgid "Create a _New Login"
 #~ msgstr "Create Login"
-
-#, fuzzy
-#~ msgid "Create a new Red Hat Network login"
-#~ msgstr "Create a new Red Hat Network account"
 
 #, fuzzy
 #~ msgid "Croatia"
@@ -3961,10 +4096,6 @@ msgstr "Register to Spacewalk/Satellite/Red Hat Network. [GALAXY]"
 
 #, fuzzy
 #~ msgid "re-connect this system to Red Hat Network."
-#~ msgstr "Connect to Red Hat Network"
-
-#, fuzzy
-#~ msgid "for your system's connection to Red Hat Network "
 #~ msgstr "Connect to Red Hat Network"
 
 #, fuzzy
