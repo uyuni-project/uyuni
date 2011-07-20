@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 20 13:48:34 CEST 2011 - iartarisi@suse.cz
+
+- set result_message SQL column size in BYTEs instead of CHARs
+  (bnc#700016)
+
+-------------------------------------------------------------------
 Wed Jun  8 15:31:43 CEST 2011 - mc@suse.de
 
 - version to 1.2.72
