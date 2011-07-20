@@ -469,8 +469,6 @@ if [ $DISABLE_LOCAL_REPOS -eq 1 ]; then
 	  test -f "$F" || continue
 	  sed -i 's/^enabled=1/enabled=0/' "$F"
 	done
-    else
-        ;
     fi
 fi
 if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
