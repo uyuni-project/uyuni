@@ -43,6 +43,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/install_errata.feature
                      features/clone_channel.feature
                      features/monitoring2.feature
+                     features/mgr-bootstrap.feature
                      features/ncc-sync-channels.feature
                      features/delete_system_from_conf.feature
                      features/delete_system_profile.feature
