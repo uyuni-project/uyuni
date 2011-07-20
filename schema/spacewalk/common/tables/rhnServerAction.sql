@@ -27,7 +27,7 @@ CREATE TABLE rhnServerAction
                          CONSTRAINT rhn_server_action_status_fk
                              REFERENCES rhnActionStatus (id),
     result_code      NUMBER,
-    result_msg       VARCHAR2(1024 CHAR),
+    result_msg       VARCHAR2(1024),
     pickup_time      DATE,
     remaining_tries  NUMBER
                          DEFAULT (5) NOT NULL,
