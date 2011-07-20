@@ -30,7 +30,7 @@ When /^I fetch "([^"]*)" from server$/ do |arg1|
 end
 
 When /^I execute "([^"]*)"$/ do |arg1|
-    output = `sh ./#{arg1}`
+    output = `sh ./#{arg1} 2>&1`
     if ! $?.success?
 	raise "Execute command (#{arg1}) failed(#{$?}): #{$!}: #{output}"
     end
