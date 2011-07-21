@@ -36,6 +36,20 @@ When /^I execute "([^"]*)"$/ do |arg1|
     end
 end
 
+When /^file "([^"]*)" exists on server$/ do |arg1|
+    $sshout = `echo | ssh -l root $TESTHOST test -f "#{arg1}" 2>&1`
+    if ! $?.success?
+        raise "File #{arg1} does not exist on server"
+    end
+end
+
+When /^file "([^"]*)" not exists on server$/ do |arg1|
+    $sshout = `echo | ssh -l root $TESTHOST test -f "#{arg1}" 2>&1`
+    if $?.success?
+        raise "File #{arg1} exists on server"
+    end
+end
+
 Then /^I want to get "([^"]*)"$/ do |arg1|
     found = false
     $sshout.each_line() do |line|
