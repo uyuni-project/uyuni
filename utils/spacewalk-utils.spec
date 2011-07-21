@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.6.0
+Version:	1.6.1
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -80,6 +80,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/rhn
 
 %changelog
+* Thu Jul 21 2011 Jan Pazdziora 1.6.1-1
+- Adding centos6 and fedora15 repos. (jonathan.hoser@helmholtz-muenchen.de)
+
 * Wed Jul 13 2011 Jan Pazdziora 1.5.4-1
 - We get either undefined value or BLOB for the blob columns type.
 
