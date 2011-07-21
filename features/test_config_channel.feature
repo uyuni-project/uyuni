@@ -50,5 +50,27 @@ Feature: Create a configuration channel
     When I follow "Configuration Files" in the left menu
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "1 system"
 
+  Scenario: Check Centrally Managed Files of this client
+   Given I am on the Systems overview page of this client
+    When I follow "Configuration" in class "content-nav"
+     And I follow "View/Modify Files" in class "contentnav-row2"
+     And I follow "Centrally-Managed Files" in class "content-nav"
+    Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "Revision 1"
 
+  Scenario: Deploy Centrally Managed Files
+   Given I am testing configuration
+     And I follow "Configuration Channels" in the left menu
+     And I follow "New Test Channel"
+     And I follow "Deploy all configuration files to all subscribed systems"
+    Then I should see a "/etc/mgr-test-file.cnf" link
+     And I should see this client as a link
+    When I click on "Deploy Files to Selected Systems"
+    Then I should see a "1 revision-deploy successfully scheduled." text
+     And I should see a "0 revision-deploys overridden." text
 
+  Scenario: Check File deployment
+    Given I am root
+     When I run rhn_check on this client
+     Then On this client the File "/etc/mgr-test-file.cnf" should exists
+      And On this client the File "/etc/mgr-test-file.cnf" should have the content "MGR_PROXY='yes'"
+      
