@@ -34,6 +34,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/configuration.feature
                      features/add_system_to_conf.feature
                      features/walk_hrefs.feature
+                     features/mgr-bootstrap.feature
                      features/channels.feature
                      features/weak_deps.feature
                      features/check_registration.feature
@@ -43,7 +44,6 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/install_errata.feature
                      features/clone_channel.feature
                      features/monitoring2.feature
-                     features/mgr-bootstrap.feature
                      features/ncc-sync-channels.feature
                      features/delete_system_from_conf.feature
                      features/delete_system_profile.feature
