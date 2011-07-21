@@ -9,7 +9,7 @@ Name:         NPalert
 Summary:      NOCpulse notification system
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.126.23
+Version:      1.126.24
 Release:      1%{?dist}
 BuildArch:    noarch
 %if 0%{?suse_version}
@@ -155,6 +155,10 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Thu Jul 21 2011 Miroslav Suchý 1.126.24-1
+- 723899 - run that cron task only if /etc/NOCpulse.ini contains something else
+  then comments
+
 * Fri May 13 2011 Miroslav Suchý 1.126.23-1
 - removing unmaintained file with dependencies
 
