@@ -51,6 +51,7 @@ class ChannelException(Exception):
     def __init__(self, value=None):
         Exception.__init__(self)
         self.value = value
+
     def __str__(self):
         return "%s" %(self.value,)
 
@@ -166,7 +167,7 @@ class RepoSync:
                 sys.exit(1)
             except ChannelException, e:
                 self.print_msg("ChannelException: %s" % e)
-                self.sendErrorMail(str(e))
+                self.sendErrorMail("ChannelException: %s" % str(e))
                 sys.exit(1)
             except Errors.YumGPGCheckError, e:
                 self.print_msg("YumGPGCheckError: %s" % e)
