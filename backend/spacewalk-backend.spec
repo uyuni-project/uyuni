@@ -10,7 +10,7 @@
 %define apache_user apache
 %define apache_group apache
 %endif
-%if 0%{?fedora} < 13 && 0%{?rhel} < 6
+%if 0%{?rhel} && 0%{?rhel} < 6
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %endif
 %global pythonrhnroot %{python_sitelib}/spacewalk
