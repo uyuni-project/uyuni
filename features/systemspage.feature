@@ -342,3 +342,9 @@ Feature: Explore the main landing page
       And I click on "Add IP Range"
     Then I should see a "10.10.0.100 - 10.10.0.200" text
 
+   @pxe_env
+   Scenario: testing for pxe environment files. Requires cobbler_ui tests to have run
+     Given cobblerd is running
+     Then file "/srv/tftpboot/pxelinux.cfg/default" exists on server
+      And file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1"
+      And file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile_upload:1"

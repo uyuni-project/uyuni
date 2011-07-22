@@ -50,6 +50,14 @@ When /^file "([^"]*)" not exists on server$/ do |arg1|
     end
 end
 
+When /^file "([^"]*)" contains "([^"]*)"$/ do |arg1, arg2|
+    $sshout = `echo | ssh -l root $TESTHOST grep "#{arg2}" "#{arg1}" 2>&1`
+    if ! $?.success?
+        raise "#{arg2} not found in File #{arg1}"
+    end
+end
+
+
 Then /^I want to get "([^"]*)"$/ do |arg1|
     found = false
     $sshout.each_line() do |line|
