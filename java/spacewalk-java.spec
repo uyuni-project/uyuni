@@ -45,11 +45,11 @@ Requires: jasper5
 %endif
 Requires: jcommon
 Requires: jfreechart >= 1.0.9
-Requires: jpam
 Requires: jta
 Requires: log4j
 Requires: redstone-xmlrpc
 Requires: oscache
+Requires: pam-modules
 Requires: servletapi5
 Requires: struts >= 1.2.9
 %if  0%{?rhel} && 0%{?rhel} < 6
@@ -75,7 +75,6 @@ BuildRequires: ant-contrib
 BuildRequires: ant-junit
 BuildRequires: ant-nodeps
 BuildRequires: antlr >= 2.7.6
-BuildRequires: jpam
 BuildRequires: tanukiwrapper
 %if  0%{?rhel} && 0%{?rhel} < 5
 BuildRequires: javamail
@@ -198,9 +197,9 @@ Requires: jakarta-commons-logging
 Requires: jakarta-taglibs-standard
 Requires: jcommon
 Requires: jfreechart >= 1.0.9
-Requires: jpam
 Requires: log4j
 Requires: oscache
+Requires: pam-modules
 Requires: xalan-j2 >= 2.6.0
 Requires: xerces-j2
 BuildRequires: tanukiwrapper
@@ -435,7 +434,6 @@ fi
 %{jardir}/jcommon.jar
 %{jardir}/jdom.jar
 %{jardir}/jfreechart*.jar
-%{jardir}/jpam.jar
 %{jardir}/jta.jar
 %{jardir}/log4j.jar
 %{jardir}/oro.jar
