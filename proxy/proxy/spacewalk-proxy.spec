@@ -37,22 +37,17 @@ Requires: squid
 Requires: spacewalk-backend >= 1.2.32
 # python-hashlib is optional for spacewalk-backend-libs
 # but we need made it mandatory here
-%if 0%{?suse_version}
-%else
+%if ! 0%{?suse_version}
 Requires: python-hashlib
 Requires: sos
 Requires(preun): initscripts
+Requires: spacewalk-proxy-selinux
 %endif
 Requires: %{name}-broker = %{version}
 Requires: %{name}-redirect = %{version}
 Requires: %{name}-common >= %{version}
 Requires: %{name}-docs
 Requires: %{name}-html
-%if 0%{?rhel} == 4 || 0%{?suse_version}
-#for rhel4 we have no selinux policy, everything else should have
-%else
-Requires: spacewalk-proxy-selinux
-%endif
 Requires: jabberd spacewalk-setup-jabberd
 Requires: httpd
 Obsoletes: rhns-proxy < 5.3.0

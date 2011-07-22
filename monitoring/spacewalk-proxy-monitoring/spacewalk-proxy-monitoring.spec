@@ -51,10 +51,6 @@ Requires: tsdb
 Requires: apache2-mod_perl
 %else
 Requires: mod_perl
-%endif
-%if 0%{?rhel} == 4 || 0%{?suse_version}
-#for rhel4 we have no selinux policy, everything else should have
-%else
 Requires: spacewalk-monitoring-selinux
 %endif
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
