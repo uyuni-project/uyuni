@@ -282,7 +282,7 @@ Feature: Explore the main landing page
     Then I should see a "testprofile" text
      And I should see a "testdistro" text
 
-  @cobbler
+  @cobbler_ui
   Scenario: create a distro with the UI (requires a base channel)
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
@@ -291,11 +291,11 @@ Feature: Explore the main landing page
     When I enter "fedora_kickstart_distro" as "label"
       And I enter "/install/Fedora_12_i386/" as "basepath"
       And I select "Fedora" from "installtype"
-      And I click on "Create Kickstart Distribution"
-    Then I should see a "Kickstartable Distributions" text
+      And I click on "Create Autoinstallable Distribution"
+    Then I should see a "Autoinstallable Distributions" text
      And I should see a "fedora_kickstart_distro" link
 
-  @cobbler
+  @cobbler_ui
   Scenario: create a profile with the UI (requires a base channel)
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
@@ -311,7 +311,7 @@ Feature: Explore the main landing page
      And I should see a "Kickstart Details" link
 
 
-  @cobbler
+  @cobbler_ui
   Scenario: upload a profile with the UI (requires a base channel)
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
@@ -324,7 +324,7 @@ Feature: Explore the main landing page
      And I should see a "Kickstart Details" text
 
 
-   @cobbler
+   @cobbler_ui
    Scenario: adding a bare metal range to a profile (requires fedora_kickstart_profile)
      Given I am on the Systems page
       And I follow "Kickstart" in the left menu
