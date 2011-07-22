@@ -14,6 +14,12 @@ When /^I check "([^"]*)" in the list$/ do |arg1|
   end
 end
 
+When /^I check "([^"]*)" text in the list$/ do |arg1|
+  within(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
+    find(:xpath, "//input[@type='checkbox']").set(true)
+  end
+end
+
 Then /^I should see package "([^"]*)"$/ do |package|
   fail if not has_xpath?("//form/table/tbody/tr/td/a[contains(.,'#{package}')]")
 end
