@@ -73,4 +73,22 @@ Feature: Create a configuration channel
      When I run rhn_check on this client
      Then On this client the File "/etc/mgr-test-file.cnf" should exists
       And On this client the File "/etc/mgr-test-file.cnf" should have the content "MGR_PROXY='yes'"
-      
+
+  Scenario: Change local file and compare
+    Given I am root
+     When I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY='no'"
+    Given I am on the Systems overview page of this client
+    When I follow "Configuration" in class "content-nav"
+     And I follow "Compare Files" in class "contentnav-row2"
+     And I check "/etc/mgr-test-file.cnf" text in the list
+     And I click on "Compare Files"
+     And I click on "Schedule Compare"
+    Then I should see a "1 files scheduled for comparison." text
+    When I run rhn_check on this client
+     And I wait for "2" seconds
+     And I follow "Events" in class "content-nav"
+     And I follow "History" in class "contentnav-row2"
+    Then I should see a "Show differences between profiled config files and deployed config files scheduled by admin" link
+    When I follow "Show differences between profiled config files and deployed config files"
+    Then I should see a "Differences exist" link
+    

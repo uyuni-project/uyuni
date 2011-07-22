@@ -9,11 +9,21 @@ Given /^I am testing configuration$/ do
   Given "I follow \"Configuration\""
 end
 
+When /^I change the local file "([^"]*)" to "([^"]*)"$/ do |file, content|
+    fail if not File.exists?(file)
+    fail if File.open(file, "w").write(content) <= 0
+end
+
 Then /^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/ do |arg1, arg2, arg3|
-#"/etc/mgr-test-file.cnf", "New Test Channel", "1 system"
   within(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
       fail if not find_link("#{arg2}")
       fail if not find_link("#{arg3}")
+  end
+end
+
+Then /^I should see a table line with "([^"]*)", "([^"]*)"$/ do |arg1, arg2|
+  within(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
+      fail if not find_link("#{arg2}")
   end
 end
 
