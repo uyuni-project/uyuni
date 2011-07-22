@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 22 15:04:24 CEST 2011 - jrenner@suse.de
+
+- Wrap around unix2_chkpwd instead of using jpam (bnc#705758)
+
+-------------------------------------------------------------------
 Mon Jul 18 13:39:30 CEST 2011 - ug@suse.de
 
 - kernel-options field in kickstart upload page changed to
