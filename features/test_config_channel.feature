@@ -124,3 +124,16 @@ Feature: Create a configuration channel
      And I follow "Local Sandbox" in class "content-nav"
     Then I should see a table line with "/etc/sysconfig/boot", "Revision 1"
 
+  Scenario: Copy Sandbox file to Centrally-Managed
+    Given I am on the Systems overview page of this client
+     When I follow "Configuration" in class "content-nav"
+      And I follow "View/Modify Files" in class "contentnav-row2"
+      And I follow "Local Sandbox" in class "content-nav"
+      And I check "/etc/mgr-test-file.cnf" text in the list
+      And I click on "Copy Latest to Central Channel"
+      And I check "New Test Channel" in the list
+      And I click on "Copy To Central Channels"
+     Then I should see a "1 file copied into 1 central configuration channel" text
+      And I should see a table line with "/etc/mgr-test-file.cnf", "Revision 2"
+
+
