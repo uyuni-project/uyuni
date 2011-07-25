@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jul 25 12:53:26 CEST 2011 - jrenner@suse.de
+
+- Use string array for creating the cmd + empty env (bnc#705758)
+- Return failure if user or passwd is null (bnc#705758)
+
+-------------------------------------------------------------------
 Fri Jul 22 15:04:24 CEST 2011 - jrenner@suse.de
 
 - Wrap around unix2_chkpwd instead of using jpam (bnc#705758)
