@@ -51,13 +51,6 @@ install -p man/rhn-sudo-load-ssl-cert.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 chmod 0644 $RPM_BUILD_ROOT%{_mandir}/man8/*.8*
 ln -s spacewalk-service $RPM_BUILD_ROOT%{_sbindir}/rhn-satellite
 
-%if 0%{?suse_version}
-%{__mkdir_p} $RPM_BUILD_ROOT%{_initrddir}
-# it is obsolete, in redhat only displays a warning, but the script is not lsb
-# compliant and therefore it does not build on SUSE
-rm $RPM_BUILD_ROOT/etc/rc.d/init.d/rhn-satellite
-%endif
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
