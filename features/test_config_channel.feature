@@ -91,7 +91,7 @@ Feature: Create a configuration channel
     Then I should see a "Show differences between profiled config files and deployed config files scheduled by admin" link
     When I follow "Show differences between profiled config files and deployed config files"
     Then I should see a "Differences exist" link
-    
+
   Scenario: Import the changed file
    Given I am on the Systems overview page of this client
     When I follow "Configuration" in class "content-nav"
@@ -107,4 +107,20 @@ Feature: Create a configuration channel
      And I follow "View/Modify Files" in class "contentnav-row2"
      And I follow "Local Sandbox" in class "content-nav"
     Then I should see a table line with "/etc/mgr-test-file.cnf", "Revision 1"
-    
+
+  Scenario: Import the changed file
+   Given I am on the Systems overview page of this client
+    When I follow "Configuration" in class "content-nav"
+     And I follow "Add Files" in class "contentnav-row2"
+     And I follow "Import Files" in class "content-nav"
+     And I enter "/etc/sysconfig/boot" as "contents"
+     And I click on "Import Configuration Files"
+     And I click on "Confirm"
+    Then I should see a "1 files scheduled for upload." text
+    When I run rhn_check on this client
+     And I wait for "2" seconds
+     And I follow "Configuration" in class "content-nav"
+     And I follow "View/Modify Files" in class "contentnav-row2"
+     And I follow "Local Sandbox" in class "content-nav"
+    Then I should see a table line with "/etc/sysconfig/boot", "Revision 1"
+
