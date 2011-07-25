@@ -50,6 +50,9 @@ public class Pam {
      */
     public PamReturnValue authenticate(String user, String passwd) {
         PamReturnValue ret = PamReturnValue.PAM_FAILURE;
+        if (user == null || passwd == null) {
+            return ret;
+        }
         try {
             // Execute the command
             Runtime rt = Runtime.getRuntime();
