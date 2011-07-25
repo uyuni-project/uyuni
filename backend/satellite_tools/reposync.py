@@ -243,9 +243,9 @@ class RepoSync:
             e['synopsis'] = notice['title']
             e['topic'] = ' '
             e['solution'] = ' '
-            e['issue_date'] = self._to_db_date(notice['issued'])
+            e['issue_date'] = _to_db_date(notice['issued'])
             if notice['updated']:
-                e['update_date'] = self._to_db_date(notice['updated'])
+                e['update_date'] = _to_db_date(notice['updated'])
             else:
                 e['update_date'] = e['issue_date']
             #e['last_modified'] = notice['']
@@ -616,14 +616,13 @@ class RepoSync:
         extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
         rhnMail.send(headers, extra + body)
 
-    def _to_db_date(self, date):
-        ret = ""
-        if date.isdigit():
-            ret = datetime.fromtimestamp(float(date)).isoformat(' ')
-        else:
-            # we expect to get ISO formated date
-            ret = date
-        return ret
+def _to_db_date(date):
+    if date.isdigit():
+        ret = datetime.fromtimestamp(float(date)).isoformat(' ')
+    else:
+        # we expect to get ISO formated date
+        ret = date
+    return ret
 
 class ContentPackage:
 
