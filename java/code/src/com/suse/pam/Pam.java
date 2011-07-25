@@ -51,9 +51,10 @@ public class Pam {
     public PamReturnValue authenticate(String user, String passwd) {
         PamReturnValue ret = PamReturnValue.PAM_FAILURE;
         try {
-            // Init the command execution
+            // Execute the command
             Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec(COMMAND + " " + this.authService + " " + user);
+            String[] command = {COMMAND, this.authService, user};
+            Process pr = rt.exec(command, new String[]{});
 
             // Write the password to the stdin of the program
             BufferedWriter output = new BufferedWriter(new OutputStreamWriter(
