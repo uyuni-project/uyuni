@@ -38,8 +38,7 @@ from spacewalk.server import taskomatic
 from spacewalk.susemanager import suseLib
 from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 
-
-hostname = socket.gethostname()
+HOSTNAME = socket.gethostname()
 
 default_log_location = '/var/log/rhn/reposync/'
 default_hash = 'sha256'
@@ -608,9 +607,10 @@ class RepoSync:
         if isinstance(to, type([])):
             fr = string.strip(to[0])
             to = string.join(map(string.strip, to), ', ')
+
         headers = {
-            "Subject" : "SUSE Manager repository sync failed (%s)" % hostname,
-            "From"    : "%s <%s>" % (hostname, fr),
+            "Subject" : "SUSE Manager repository sync failed (%s)" % HOSTNAME,
+            "From"    : "%s <%s>" % (HOSTNAME, fr),
             "To"      : to,
         }
         extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
