@@ -351,3 +351,12 @@ Feature: Explore the main landing page
       And file "/srv/tftpboot/images/fedora_kickstart_distro:1:SpacewalkDefaultOrganization/initrd.img" exists on server
       And file "/srv/tftpboot/images/fedora_kickstart_distro:1:SpacewalkDefaultOrganization/vmlinuz" exists on server
 
+   @pxe_env
+   Scenario: trigger the creation of a cobbler system record
+     Given I am authorized
+     When  I view system with id "1000010002"
+      And I follow "Provisioning"
+      And I click on "Create Cobbler System Record"
+     Then file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks="
+
+
