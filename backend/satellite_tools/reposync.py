@@ -336,35 +336,9 @@ class RepoSync:
                 package['package_id'] = cs['id']
                 e['packages'].append(package)
 
-            e['keywords'] = []
-            if notice['reboot_suggested']:
-                kw = Keyword()
-                kw.populate({'keyword':'reboot_suggested'})
-                e['keywords'].append(kw)
-            if notice['restart_suggested']:
-                kw = Keyword()
-                kw.populate({'keyword':'restart_suggested'})
-                e['keywords'].append(kw)
-            e['bugs'] = []
-            bzs = filter(lambda r: r['type'] == 'bugzilla', notice['references'])
-            if bzs:
-                tmp = {}
-                for bz in bzs:
-                    if bz['id'] not in tmp:
-                        bug = Bug()
-                        bug.populate({'bug_id': bz['id'],
-                                      'summary': bz['title'],
-                                      'href': bz['href']})
-                        e['bugs'].append(bug)
-                        tmp[bz['id']] = None
-            e['cve'] = []
-            cves = filter(lambda r: r['type'] == 'cve', notice['references'])
-            if cves:
-                tmp = {}
-                for cve in cves:
-                    if cve['id'] not in tmp:
-                        e['cve'].append(cve['id'])
-                        tmp[cve['id']] = None
+            e['keywords'] = _update_keywords(notice)
+            e['bugs'] = _update_bugs(notice)
+            e['cve'] = _update_cve(notice)
             e['locally_modified'] = None
             if not error:
                 batch.append(e)
@@ -624,6 +598,39 @@ def _to_db_date(date):
         ret = date
     return ret
 
+def _update_keywords(notice):
+    """Return a list of Keyword objects for the notice"""
+    keywords = []
+    if notice['reboot_suggested']:
+        kw = Keyword()
+        kw.populate({'keyword':'reboot_suggested'})
+        keywords.append(kw)
+    if notice['restart_suggested']:
+        kw = Keyword()
+        kw.populate({'keyword':'restart_suggested'})
+        keywords.append(kw)
+    return keywords
+
+def _update_bugs(notice):
+    """Return a list of Bug objects from the notice's references"""
+    bugs = {}
+    for bz in notice['references']:
+        if bz['type'] == 'bugzilla' and bz['id'] not in bugs:
+            bug = Bug()
+            bug.populate({'bug_id': bz['id'],
+                          'summary': bz['title'],
+                          'href': bz['href']})
+            bugs[bz['id']] = bug
+    return bugs.values()
+
+def _update_cve(notice):
+    """Return a list of unique ids from notice references of type 'cve'"""
+    cves = [cve['id'] for cve in notice['references'] if cve['type'] == 'cve']
+    # remove duplicates
+    cves = list(set(cves))
+
+    return cves
+    
 class ContentPackage:
 
     def __init__(self):
