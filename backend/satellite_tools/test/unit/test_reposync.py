@@ -271,6 +271,39 @@ class RepoSyncTest(unittest.TestCase):
                   'Subject': "SUSE Manager repository sync failed (testhost)"},
                  "Syncing Channel 'Label' failed:\n\nemail body"), {}))
         
+    def test_best_checksum_item_unknown(self):
+        checksums = {'no good checksum': None}
+
+        self.assertEqual(self.reposync._best_checksum_item(checksums),
+                         ('md5', None, None))
+
+    def test_best_checksum_item_md5(self):
+        checksums = {'md5': '12345'}
+        self.assertEqual(self.reposync._best_checksum_item(checksums),
+                         ('md5', 'md5', '12345'))
+
+    def test_best_checksum_item_sha1(self):
+        checksums = {'sha1': '12345'}
+        self.assertEqual(self.reposync._best_checksum_item(checksums),
+                         ('sha1', 'sha1', '12345'))
+
+    def test_best_checksum_item_sha(self):
+        checksums = {'sha': '12345'}
+        self.assertEqual(self.reposync._best_checksum_item(checksums),
+                         ('sha1', 'sha', '12345'))
+
+    def test_best_checksum_item_sha256(self):
+        checksums = {'sha256': '12345'}
+        self.assertEqual(self.reposync._best_checksum_item(checksums),
+                         ('sha256', 'sha256', '12345'))
+
+    def test_best_checksum_item_all(self):
+        checksums = {'sha1': 'xxx',
+                     'sha': 'xxx',
+                     'md5': 'xxx',
+                     'sha256': '12345'}
+        self.assertEqual(self.reposync._best_checksum_item(checksums),
+                         ('sha256', 'sha256', '12345'))
     def _create_mocked_reposync(self):
         rs = self.reposync.RepoSync("Label", RTYPE)
         rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]

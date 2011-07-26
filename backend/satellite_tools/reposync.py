@@ -647,7 +647,7 @@ class RepoSync:
         # so let's create the best checksum_type we have in the metadata
         #
         #package.checksum_type = header.checksum_type()
-        (package.checksum_type, cs_type_orig, md_checksum) = self.best_checksum_item(package.checksums)
+        (package.checksum_type, cs_type_orig, md_checksum) = _best_checksum_item(package.checksums)
         package.checksum = getFileChecksum(package.checksum_type, file=temp_file)
         #
         # perform an additional check, if the checksums matches
@@ -721,28 +721,6 @@ class RepoSync:
             compatArchs.append(arch['label'])
         return compatArchs
 
-    def best_checksum_item(self, checksums):
-        if checksums.has_key('sha256'):
-            checksum_type = 'sha256'
-            checksum_type_orig = 'sha256'
-            checksum = checksums[checksum_type_orig]
-        elif checksums.has_key('sha'):
-            checksum_type = 'sha1'
-            checksum_type_orig = 'sha'
-            checksum = checksums[checksum_type_orig]
-        elif checksums.has_key('sha1'):
-            checksum_type = 'sha1'
-            checksum_type_orig = 'sha1'
-            checksum = checksums[checksum_type_orig]
-        elif checksums.has_key('md5'):
-            checksum_type = 'md5'
-            checksum_type_orig = 'md5'
-            checksum = checksums[checksum_type_orig]
-        else:
-            checksum_type = 'md5'
-            checksum_type_orig = None
-            checksum = None
-        return (checksum_type, checksum_type_orig, checksum)
 
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
@@ -771,6 +749,29 @@ class RepoSync:
         }
         extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
         rhnMail.send(headers, extra + body)
+
+def _best_checksum_item(checksums):
+    if checksums.has_key('sha256'):
+        checksum_type = 'sha256'
+        checksum_type_orig = 'sha256'
+        checksum = checksums[checksum_type_orig]
+    elif checksums.has_key('sha'):
+        checksum_type = 'sha1'
+        checksum_type_orig = 'sha'
+        checksum = checksums[checksum_type_orig]
+    elif checksums.has_key('sha1'):
+        checksum_type = 'sha1'
+        checksum_type_orig = 'sha1'
+        checksum = checksums[checksum_type_orig]
+    elif checksums.has_key('md5'):
+        checksum_type = 'md5'
+        checksum_type_orig = 'md5'
+        checksum = checksums[checksum_type_orig]
+    else:
+        checksum_type = 'md5'
+        checksum_type_orig = None
+        checksum = None
+    return (checksum_type, checksum_type_orig, checksum)
 
 def _to_db_date(date):
     if date.isdigit():
