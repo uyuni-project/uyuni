@@ -354,6 +354,18 @@ Feature: Explore the main landing page
       And I follow "Autoinstallation File"
     Then I should see a "A_Test_String" text
 
+   @cobbler_ui
+   Scenario: adding a variable to the wizard profile (requires fedora_kickstart_profile)
+     Given I am on the Systems page
+      And I follow "Kickstart" in the left menu
+      And I follow "Profiles" in the left menu
+      And I follow "fedora_kickstart_profile"
+      And I follow "Variables"
+      And I enter "my_var=A_Test_String" as "variables"
+      And I click on "Update Variables"
+      And I follow "Autoinstallation File"
+    Then I should see a "A_Test_String" text
+
    @pxe_env
    Scenario: testing for pxe environment files. Requires cobbler_ui tests to have run
      Given cobblerd is running
