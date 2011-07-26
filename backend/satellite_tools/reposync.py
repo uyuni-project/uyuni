@@ -40,7 +40,6 @@ from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 HOSTNAME = socket.gethostname()
 
 default_log_location = '/var/log/rhn/reposync/'
-default_hash = 'sha256'
 
 class ChannelException(Exception):
     """
@@ -743,9 +742,6 @@ class RepoSync:
 
     def log_msg(self, message):
         rhnLog.log_clean(0, message)
-
-    def short_hash(self, str):
-        return hashlib.new(default_hash, str).hexdigest()[0:8]
 
     def sendErrorMail(self, body):
         to = CFG.TRACEBACK_MAIL
