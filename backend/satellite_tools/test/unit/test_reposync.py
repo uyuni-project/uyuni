@@ -183,6 +183,19 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs.print_msg.call_args,
                          ((exception, ), {}))
 
+    def test_sync_raises_unexpected_error(self):
+        rs = self._create_mocked_reposync()
+
+        rs.repo_plugin = Mock(side_effect=TypeError)
+        rs.sendErrorMail = Mock()
+        self.assertRaises(SystemExit, rs.sync)
+
+        error_string = rs.print_msg.call_args[0][0]
+        assert (error_string.startswith('Traceback') and
+                'TypeError' in error_string), (
+            "The error string does not contain the keywords "
+            "'Traceback' and 'TypeError':\n %s\n---end of assert" % error_string)
+        
     def test_update_bugs(self):
         notice = {'references': [{'type': 'bugzilla',
                                   'id': 'id1',
