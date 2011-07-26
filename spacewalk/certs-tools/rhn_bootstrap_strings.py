@@ -311,7 +311,6 @@ if [ "$INSTALLER" == zypper ]; then
       zypper --non-interactive --no-gpg-checks sa $Z_CLIENT_REPO_URL $Z_CLIENT_REPO_NAME
       zypper --non-interactive --no-gpg-checks refresh "$Z_CLIENT_REPO_NAME"
       zypper --non-interactive --no-gpg-checks in $Z_MISSING
-      zypper --non-interactive --no-gpg-checks in $Z_MISSING
       for P in $Z_MISSING; do
 	rpm -q "$P" || {
 	  echo "ERROR: Failed to install all missing packages."
@@ -593,6 +592,8 @@ echo "------------------------------------------------------"
 if [ $DISABLE_LOCAL_REPOS -eq 1 ]; then
     if [ "$INSTALLER" == zypper ] ; then
 	echo "* Disable all repos not provided by SUSE Manager Server."
+	zypper ms -d --all
+	zypper ms -e --medium-type plugin
 	zypper mr -d --all
 	zypper mr -e --medium-type plugin
 	zypper mr -e "$Z_CLIENT_REPO_NAME"
