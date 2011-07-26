@@ -41,8 +41,7 @@ from spacewalk.server import taskomatic
 from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 
 HOSTNAME = socket.gethostname()
-
-default_log_location = '/var/log/rhn/reposync/'
+LOG_LOCATION = '/var/log/rhn/reposync/'
 
 class ChannelException(Exception):
     """
@@ -53,7 +52,7 @@ class ChannelException(Exception):
         self.value = value
 
     def __str__(self):
-        return "%s" %(self.value,)
+        return "%s" % self.value
 
     def __unicode__(self):
         return '%s' % to_unicode(self.value)
@@ -83,9 +82,9 @@ class RepoSync:
             date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
             date.tm_min, date.tm_sec)
         log_filename = channel_label + '-' +  datestr + '.log'
-        rhnLog.initLOG(default_log_location + log_filename)
+        rhnLog.initLOG(LOG_LOCATION + log_filename)
         #os.fchown isn't in 2.4 :/
-        os.system("chgrp www " + default_log_location + log_filename)
+        os.system("chgrp www " + LOG_LOCATION + log_filename)
 
         self.log_msg("\nSync started: %s" % (time.asctime(time.localtime())))
         self.log_msg(str(sys.argv))
@@ -542,7 +541,8 @@ class RepoSync:
         saveurl = suseLib.URL(url)
         if saveurl.password:
             saveurl.password = "*******"
-        self.print_msg("Repo " + saveurl.getURL() + " has " + str(len(packages)) + " packages.")
+        self.print_msg("Repo %s has %s packages." %
+                       (saveurl.getURL(), len(packages)))
         compatArchs = self.compatiblePackageArchs()
 
         for pack in packages:
@@ -559,12 +559,13 @@ class RepoSync:
             # 1.  package is not on the server (link and download)
             # 2.  package is in the server, but not in the channel (just link if we can)
             # 3.  package is in the server and channel, but not on the file system (just download)
-            path = rhnPackage.get_path_for_package([pack.name, pack.version, pack.release,\
-                   pack.epoch, pack.arch], self.channel_label)
+            path = rhnPackage.get_path_for_package(
+                [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
+                self.channel_label)
             if not path:
-                path = rhnPackage.get_path_for_package([pack.name, pack.version, pack.release,\
-                   '', pack.arch], self.channel_label)
-
+                path = rhnPackage.get_path_for_package(
+                    [pack.name, pack.version, pack.release, '', pack.arch],
+                    self.channel_label)
             if path:
                 if os.path.exists(os.path.join(CFG.MOUNT_POINT, path)):
                     continue
@@ -689,7 +690,7 @@ class RepoSync:
                                  'id':self.channel['id']}]
         package['org_id'] = self.channel['org_id']
         try:
-           self._importer_run(package, caller, backend)
+            self._importer_run(package, caller, backend)
         except:
             package['epoch'] = ''
             self._importer_run(package, caller, backend)
@@ -701,7 +702,6 @@ class RepoSync:
                        [IncompletePackage().populate(package)],
                        backend, caller=caller, repogen=False)
             importer.run()
-
 
     def load_channel(self):
         return rhnChannel.channel_info(self.channel_label)
