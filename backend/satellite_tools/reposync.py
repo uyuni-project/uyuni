@@ -572,69 +572,25 @@ class RepoSync:
                 else:
                     to_download.append(pack)
                     continue
+            else:
+                # the package is not in the rhnPackage table, so we have
+                # to link it
+                to_link.append(pack)
 
-            # we know that it's not in the channel, lets try to check the server by checksum!
-            #for some repos (sha256), we can check to see if we have them by
-            #  checksum and not bother downloading.  For older repos, we only
-            #  have sha1, which satellite doesn't track
-            # regardless we have to link the package
-            to_link.append(pack)
-
-            found = False
-            for type,sum  in pack.checksums.items():
-                if type == 'sha': #we use sha1 (instead of sha)
-                    type = 'sha1'
-                path = rhnPackage.get_path_for_checksum(self.channel['org_id'],\
-                           type, sum)
-                if path and os.path.exists(os.path.join(CFG.MOUNT_POINT, path)):
-                        found = True
-                        break
-            if not found:
-                to_download.append(pack)
+                # try to find the package by checksum, otherwise download it
+                if not self._find_by_checksum(pack):
+                    to_download.append(pack)
 
         if skipped > 0:
             self.print_msg("Skip '%s' incompatible packages." % skipped)
-        if len(to_download) == 0:
-            self.print_msg("No new packages to download.")
+
+        if to_download:
+            self.regen = True
         else:
-            self.regen=True
-        is_non_local_repo = (url.find("file://") < 0)
-        for (index, pack) in enumerate(to_download):
-            """download each package"""
-            # try/except/finally doesn't work in python 2.4 (RHEL5), so here's a hack
-            try:
-                try:
-                    self.print_msg(str(index+1) + "/" + str(len(to_download)) + " : "+ \
-                          pack.getNVREA())
-                    path = repo.get_package(pack)
-                    self.upload_package(pack, path)
-                    if pack in to_link:
-                        self.associate_package(pack)
-                except KeyboardInterrupt:
-                    raise
-                except Exception, e:
-                   self.error_msg(e)
-                   if self.fail:
-                       raise
-                   continue
-            finally:
-                if is_non_local_repo and path and os.path.exists(path):
-                    os.remove(path)
+            self.print_msg("No new packages to download.")
 
-        for (index, pack) in enumerate(to_link):
-            """Link each package that wasn't already linked in the previous step"""
-            try:
-                if pack not in to_download:
-                    (pack.checksum_type, cs_type_orig, pack.checksum) = self.best_checksum_item(pack.checksums)
-                    self.associate_package(pack)
-            except KeyboardInterrupt:
-                raise
-            except Exception, e:
-                self.error_msg(e)
-                if self.fail:
-                    raise
-                continue
-
+        self._download_packages(to_download, url)
+        self._link_packages(to_link)
 
     def upload_package(self, package, path):
         temp_file = open(path, 'rb')
@@ -721,6 +677,64 @@ class RepoSync:
             compatArchs.append(arch['label'])
         return compatArchs
 
+    def _link_packages(self, packages):
+        """Create a record in the database for each package on our filesystem"""
+        for pack in packages:
+            try:
+                (pack.checksum_type, cs_type_orig, pack.checksum) = _best_checksum_item(pack.checksums)
+                self.associate_package(pack)
+            except KeyboardInterrupt:
+                raise
+            except Exception, e:
+                self.error_msg(e)
+                if self.fail:
+                    raise
+                continue
+
+    def _download_packages(self, packages, repo_url):
+        """Download packages
+
+        :packages: a list of ContentPackage objects that we need to download
+        :url: url of the repository
+
+        """
+        is_non_local_repo = (repo_url.find("file://") < 0)
+
+        for (index, pack) in enumerate(packages):
+            path = None # we might not reach the path assignment in 'try'
+            # try/except/finally doesn't work in python 2.4 (RHEL5)
+            try:
+                try:
+                    self.print_msg("%s/%s : %s" % (
+                            index+1, len(packages), pack.getNVREA()))
+                    path = repo.get_package(pack)
+                    self.upload_package(pack, path)
+                except KeyboardInterrupt:
+                    raise
+                except Exception, e:
+                   self.error_msg(e)
+                   if self.fail:
+                       raise
+                   continue
+            finally:
+                if is_non_local_repo and path and os.path.exists(path):
+                    os.remove(path)
+
+    def _find_by_checksum(self, pack):
+        # we know that it's not in the channel, lets try to
+        # check the server by checksum!
+        # for some repos (sha256), we can check to see if we have them by
+        # checksum and not bother downloading.  For older repos, we only
+        # have sha1, which satellite doesn't track
+        for (checksum_type, checksum) in pack.checksums.items():
+            if checksum_type == 'sha': #we use sha1 (instead of sha)
+                checksum_type = 'sha1'
+            path = rhnPackage.get_path_for_checksum(
+                self.channel['org_id'], checksum_type, checksum)
+            if path and os.path.exists(os.path.join(CFG.MOUNT_POINT, path)):
+                return True
+            else:
+                return False
 
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
