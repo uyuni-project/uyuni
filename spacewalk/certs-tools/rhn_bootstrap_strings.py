@@ -463,6 +463,8 @@ echo "------------------------------------------------------"
 if [ $DISABLE_LOCAL_REPOS -eq 1 ]; then
     if [ "$INSTALLER" == zypper ] ; then
 	echo "* Disable all repos not provided by SUSE Manager Server."
+	zypper ms -d --all
+	zypper ms -e --medium-type plugin
 	zypper mr -d --all
 	zypper mr -e --medium-type plugin
 	zypper mr -e "$Z_CLIENT_REPO_NAME"
