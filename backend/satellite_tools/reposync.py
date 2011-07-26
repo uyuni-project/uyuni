@@ -627,13 +627,9 @@ class RepoSync:
 
     def associate_package(self, pack):
         caller = "server.app.yumreposync"
-        if CFG.DB_BACKEND == ORACLE:
-            from spacewalk.server.importlib.backendOracle import OracleBackend
-            backend = OracleBackend()
-        elif CFG.DB_BACKEND == POSTGRESQL:
-            from spacewalk.server.importlib.backendOracle import PostgresqlBackend
-            backend = PostgresqlBackend()
+        backend = OracleBackend()
         backend.init()
+
         package = {}
         package['name'] = pack.name
         package['version'] = pack.version
