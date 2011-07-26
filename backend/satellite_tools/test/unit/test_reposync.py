@@ -270,6 +270,162 @@ class RepoSyncTest(unittest.TestCase):
                   'From': 'testhost <recipient>',
                   'Subject': "SUSE Manager repository sync failed (testhost)"},
                  "Syncing Channel 'Label' failed:\n\nemail body"), {}))
+
+    def test_updates_process_packages_simple(self):
+        rs = self._create_mocked_reposync()
+
+        rs.channel = {'org_id': None}
+        packages = [{'name': 'n1',
+                     'version': 'v1',
+                     'release': 'r1',
+                     'arch': 'a1',
+                     'channel_label': 'l1',
+                     'epoch': []},
+                    {'name': 'n2',
+                     'version': 'v2',
+                     'release': 'r2',
+                     'arch': 'a2',
+                     'channel_label': 'l2',
+                     'epoch': 'e2'}]
+        checksum = {'epoch': None,
+                    'checksum_type': None,
+                    'checksum': None,
+                    'id': None}
+        
+        _mock_rhnsql(self.reposync, checksum)
+        processed = rs._updates_process_packages(packages, 'a name')
+        for p in processed:
+            self.assertTrue(isinstance(p, self.reposync.IncompletePackage))
+
+    def test_updates_process_packages_returns_the_right_values(self):
+        rs = self._create_mocked_reposync()
+        rs.channel = {'org_id': 'org'}
+        packages = [{'name': 'n1',
+                     'version': 'v1',
+                     'release': 'r1',
+                     'arch': 'a1',
+                     'channel_label': 'l1',
+                     'epoch': []},
+                    {'name': 'n2',
+                     'version': 'v2',
+                     'release': 'r2',
+                     'arch': 'a2',
+                     'channel_label': 'l2',
+                     'epoch': 'e2'}]
+
+        checksum = {'epoch': 'cs_epoch',
+                    'checksum_type': 'md5',
+                    'checksum': '12345',
+                    'id': 'cs_package_id'}
+
+        _mock_rhnsql(self.reposync, checksum)
+        processed = rs._updates_process_packages(packages, 'patchy')
+
+        p1 = self.reposync.IncompletePackage()
+        p1.populate({'package_size': None,
+                     'channel_label': 'l1',
+                     'name': 'n1',
+                     'checksum_list': None,
+                     'md5sum': None,
+                     'org_id': 'org',
+                     'epoch': 'cs_epoch',
+                     'channels': None,
+                     'package_id': 'cs_package_id',
+                     'last_modified': None,
+                     'version': 'v1',
+                     'checksum_type': 'md5',
+                     'release': 'r1',
+                     'checksums': {'md5': '12345'},
+                     'checksum': '12345',
+                     'arch': 'a1'})
+        p2 = self.reposync.IncompletePackage()
+        p2.populate({'package_size': None,
+                     'channel_label': 'l2',
+                     'name': 'n2',
+                     'checksum_list': None,
+                     'md5sum': None,
+                     'org_id': 'org',
+                     'epoch': 'cs_epoch',
+                     'channels': None,
+                     'package_id': 'cs_package_id',
+                     'last_modified': None,
+                     'version': 'v2',
+                     'checksum_type': 'md5',
+                     'release': 'r2',
+                     'checksums': {'md5': '12345'},
+                     'checksum': '12345',
+                     'arch': 'a2'})
+        fixtures = [p1, p2]
+        for pkg, fix in zip(processed, fixtures):
+            self.assertEqual(pkg, fix)
+        
+    def test_updates_process_packages_checksum_not_found(self):
+        rs = self._create_mocked_reposync()
+
+        rs.channel = {'org_id': None}
+        packages = [{'name': 'n2',
+                     'version': 'v2',
+                     'release': 'r2',
+                     'arch': 'a2',
+                     'channel_label': 'l2',
+                     'epoch': 'e2'}]
+
+        _mock_rhnsql(self.reposync, [])
+        self.assertEqual(rs._updates_process_packages(packages, 'patchy'),
+                         [])
+        self.assertEqual(rs.print_msg.call_args,
+                         (("No checksum found for n2-e2:v2-r2.a2. "
+                           "Skipping Patch patchy", ),))
+
+    def test_updates_process_packages_checksum_not_found_no_epoch(self):
+        rs = self._create_mocked_reposync()
+
+        rs.channel = {'org_id': None}
+        packages = [{'name': 'n1',
+                     'version': 'v1',
+                     'release': 'r1',
+                     'arch': 'a1',
+                     'channel_label': 'l1',
+                     'epoch': []}]
+
+        _mock_rhnsql(self.reposync, [])
+        self.assertEqual(rs._updates_process_packages(packages, 'patchy'),
+                         [])
+        self.assertEqual(rs.print_msg.call_args,
+                         (("No checksum found for n1:v1-r1.a1. "
+                           "Skipping Patch patchy", ),))
+
+    def test_upload_updates_referenced_package_not_found(self):
+        timestamp1 = datetime.now().isoformat(' ')
+        notices = [{'from': 'from1',
+                    'update_id': 'update_id1',
+                    'version': 'version1',
+                    'type': 'security',
+                    'release': 'release1',
+                    'description': 'description1',
+                    'title': 'title1',
+                    'issued': timestamp1, # we mock _to_db_date anyway
+                    'updated': timestamp1,
+                    'pkglist': [{'packages': []}],
+                    'reboot_suggested': False
+                    }]
+        self.reposync._to_db_date = Mock(return_value=timestamp1)
+
+        # no packages related to this errata makes the ErrataImport be called
+        # with an empty list
+        self.reposync.RepoSync._updates_process_packages = Mock(return_value=[])
+
+        mocked_backend = Mock()
+        self.reposync.OracleBackend = Mock(return_value=mocked_backend)
+        self.reposync.ErrataImport = Mock()
+        rs = self._create_mocked_reposync()
+        rs.channel = {'org_id': 'org',
+                      'arch': 'arch'}
+
+        rs.upload_updates(notices)
+
+        self.assertEqual(self.reposync.ErrataImport.call_args,
+                         (([], mocked_backend), {}))
         
     def test_best_checksum_item_unknown(self):
         checksums = {'no good checksum': None}
