@@ -5,7 +5,7 @@
 # For more documentation, see: http://sial.org/howto/kickstart/
 
 install
-
+$my_var
 text
 
 nfs --server 192.0.2.1 --dir /install/fedora/2/i386/os
