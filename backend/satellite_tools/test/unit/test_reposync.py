@@ -427,6 +427,254 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(self.reposync.ErrataImport.call_args,
                          (([], mocked_backend), {}))
         
+    def test_best_checksum_item_unknown(self):
+        checksums = {'no good checksum': None}
+
+        self.assertEqual(self.reposync._best_checksum_item(checksums),
+                         ('md5', None, None))
+
+    def test_best_checksum_item_md5(self):
+        checksums = {'md5': '12345'}
+        self.assertEqual(self.reposync._best_checksum_item(checksums),
+                         ('md5', 'md5', '12345'))
+
+    def test_best_checksum_item_sha1(self):
+        checksums = {'sha1': '12345'}
+        self.assertEqual(self.reposync._best_checksum_item(checksums),
+                         ('sha1', 'sha1', '12345'))
+
+    def test_best_checksum_item_sha(self):
+        checksums = {'sha': '12345'}
+        self.assertEqual(self.reposync._best_checksum_item(checksums),
+                         ('sha1', 'sha', '12345'))
+
+    def test_best_checksum_item_sha256(self):
+        checksums = {'sha256': '12345'}
+        self.assertEqual(self.reposync._best_checksum_item(checksums),
+                         ('sha256', 'sha256', '12345'))
+
+    def test_best_checksum_item_all(self):
+        checksums = {'sha1': 'xxx',
+                     'sha': 'xxx',
+                     'md5': 'xxx',
+                     'sha256': '12345'}
+        self.assertEqual(self.reposync._best_checksum_item(checksums),
+                         ('sha256', 'sha256', '12345'))
+
+    def test_import_packages_2download(self):
+        p1 = self.reposync.ContentPackage()
+        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
+        p2 = self.reposync.ContentPackage()
+        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
+
+        # mock reposync methods
+        self.reposync.suseLib = Mock()
+
+        # this is how we mock getURL()
+        url = Mock()
+        url.getURL = Mock(return_value='http://some.url')
+        self.reposync.suseLib.URL = Mock(return_value=url)
+
+        self.reposync.rhnPackage.get_path_for_package = Mock(return_value=True)
+
+        # all packages have already been downloaded
+        self.reposync.os.path.exists = Mock(return_value = True)
+
+        # mock RepoSync object methods (we can't use the usual
+        # _mock_rhnsql method because that would mock the
+        # import_packages method)
+        rs = self.reposync.RepoSync("Label", RTYPE)
+        rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
+        rs.compatiblePackageArchs = Mock(return_value=['arch1', 'arch2'])
+        rs.print_msg = Mock()
+        rs._download_packages = Mock()
+        rs._link_packages = Mock()
+
+        repo = Mock()
+        repo.list_packages = Mock(return_value=[p1, p2])
+
+        # run the method we're testing
+        rs.import_packages(repo, "bogus-url")
+
+        self.assertEqual(rs.print_msg.call_args_list,
+                         [(("Repo http://some.url has 2 packages.",), {}),
+                          (("No new packages to download.", ), {})])
+        self.assertEqual(rs._link_packages.call_args,
+                         (([], ), {}))
+        self.assertEqual(rs._download_packages.call_args,
+                         (([], 'bogus-url'), {}))
+
+    def test_import_packages_2link(self):
+        p1 = self.reposync.ContentPackage()
+        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
+        p2 = self.reposync.ContentPackage()
+        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
+
+        # mock reposync methods
+        self.reposync.suseLib = Mock()
+
+        # this is how we mock getURL()
+        url = Mock()
+        url.getURL = Mock(return_value='http://some.url')
+        self.reposync.suseLib.URL = Mock(return_value=url)
+
+        self.reposync.rhnPackage.get_path_for_package = Mock(return_value=True)
+
+        # all packages have already been downloaded
+        self.reposync.os.path.exists = Mock(return_value=False)
+
+        # mock RepoSync object methods (we can't use the usual
+        # _mock_rhnsql method because that would mock the
+        # import_packages method)
+        rs = self.reposync.RepoSync("Label", RTYPE)
+        rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
+        rs.compatiblePackageArchs = Mock(return_value=['arch1', 'arch2'])
+        rs.print_msg = Mock()
+        rs._download_packages = Mock()
+        rs._link_packages = Mock()
+
+        repo = Mock()
+        repo.list_packages = Mock(return_value=[p1, p2])
+
+        # run the method we're testing
+        rs.import_packages(repo, "bogus-url")
+
+        self.assertEqual(rs.print_msg.call_args_list,
+                         [(("Repo http://some.url has 2 packages.",), {})])
+        self.assertEqual(rs._link_packages.call_args,
+                         (([], ), {}))
+        self.assertEqual(rs._download_packages.call_args,
+                         (([p1, p2], 'bogus-url'), {}))
+        
+    def test_import_packages_2link_differently_and_download(self):
+        p1 = self.reposync.ContentPackage()
+        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
+        p1.checksums = {'t1': 'c1'}
+        p2 = self.reposync.ContentPackage()
+        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
+
+        # mock reposync methods
+        self.reposync.suseLib = Mock()
+
+        # this is how we mock getURL()
+        url = Mock()
+        url.getURL = Mock(return_value='http://some.url')
+        self.reposync.suseLib.URL = Mock(return_value=url)
+
+        self.reposync.rhnPackage.get_path_for_package = Mock(return_value=False)
+        
+        # all packages have already been downloaded
+        self.reposync.rhnPackage.get_path_for_checksum = Mock(return_value=True)
+        self.reposync.os.path.exists = Mock(return_value=True)
+
+        # mock RepoSync object methods (we can't use the usual
+        # _mock_rhnsql method because that would mock the
+        # import_packages method)
+        rs = self.reposync.RepoSync("Label", RTYPE)
+        rs.channel = {'org_id': 'org'}
+        rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
+        rs.compatiblePackageArchs = Mock(return_value=['arch1', 'arch2'])
+        rs.print_msg = Mock()
+        rs._download_packages = Mock()
+        rs._link_packages = Mock()
+
+        repo = Mock()
+        repo.list_packages = Mock(return_value=[p1, p2])
+
+        # run the method we're testing
+        rs.import_packages(repo, "bogus-url")
+
+        self.assertEqual(rs.print_msg.call_args_list,
+                         [(("Repo http://some.url has 2 packages.",), {})])
+        self.assertEqual(rs._link_packages.call_args,
+                         (([p1, p2], ), {}))
+        self.assertEqual(rs._download_packages.call_args,
+                         (([p2], 'bogus-url'), {}))
+
+    def test_import_packages_2link_differently_no_download(self):
+        p1 = self.reposync.ContentPackage()
+        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
+        p2 = self.reposync.ContentPackage()
+        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
+
+        # mock reposync methods
+        self.reposync.suseLib = Mock()
+
+        # this is how we mock getURL()
+        url = Mock()
+        url.getURL = Mock(return_value='http://some.url')
+        self.reposync.suseLib.URL = Mock(return_value=url)
+
+        self.reposync.rhnPackage.get_path_for_package = Mock(return_value=False)
+
+        # all packages have already been downloaded
+        self.reposync.rhnPackage.get_path_for_checksum = Mock(return_value=True)
+        self.reposync.os.path.exists = Mock(return_value=False)
+
+        # mock RepoSync object methods (we can't use the usual
+        # _mock_rhnsql method because that would mock the
+        # import_packages method)
+        rs = self.reposync.RepoSync("Label", RTYPE)
+        rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
+        rs.compatiblePackageArchs = Mock(return_value=['arch1', 'arch2'])
+        rs.print_msg = Mock()
+
+        repo = Mock()
+        repo.list_packages = Mock(return_value=[p1, p2])
+        rs._download_packages = Mock()
+        rs._link_packages = Mock()
+
+        # run the method we're testing
+        rs.import_packages(repo, "bogus-url")
+
+        self.assertEqual(rs.print_msg.call_args_list,
+                         [(("Repo http://some.url has 2 packages.",), {})])
+        self.assertEqual(rs._link_packages.call_args,
+                         (([p1, p2], ), {}))
+        self.assertEqual(rs._download_packages.call_args,
+                         (([p1, p2], 'bogus-url'), {}))
+
+    def test_import_packages_2_skipped_bad_arches(self):
+        p1 = self.reposync.ContentPackage()
+        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'src')
+        p1.checksums = {'t1': 'c1'}
+        p2 = self.reposync.ContentPackage()
+        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'weird_arch')
+
+        # mock reposync methods
+        self.reposync.suseLib = Mock()
+
+        # this is how we mock getURL()
+        url = Mock()
+        url.getURL = Mock(return_value='http://some.url')
+        self.reposync.suseLib.URL = Mock(return_value=url)
+
+        # mock RepoSync object methods (we can't use the usual
+        # _mock_rhnsql method because that would mock the
+        # import_packages method)
+        rs = self.reposync.RepoSync("Label", RTYPE)
+        rs.channel = {'org_id': 'org'}
+        rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
+        rs.compatiblePackageArchs = Mock(return_value=['arch1', 'arch2'])
+        rs.print_msg = Mock()
+        rs._download_packages = Mock()
+        rs._link_packages = Mock()
+
+        repo = Mock()
+        repo.list_packages = Mock(return_value=[p1, p2])
+
+        # run the method we're testing
+        rs.import_packages(repo, "bogus-url")
+
+        self.assertEqual(rs.print_msg.call_args_list,
+                         [(("Repo http://some.url has 2 packages.",), {}),
+                          (("Skip '2' incompatible packages.", ), {}),
+                          (("No new packages to download.", ), {})])
+        self.assertEqual(rs._link_packages.call_args,
+                         (([], ), {}))
+        self.assertEqual(rs._download_packages.call_args,
+                         (([], 'bogus-url'), {}))
+
     def _create_mocked_reposync(self):
         rs = self.reposync.RepoSync("Label", RTYPE)
         rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
