@@ -18,20 +18,24 @@ class XMLRPCBaseTest
   #
   # Authenticate against the $HOST
   #
-  def auth(luser, password)
+  def login(luser, password)
     begin
       @sid = @connection.call("auth.login", luser, password)
-      puts @sid
+      return true
     rescue Exception => exception
       puts "Login failed. Try harder. :)"
+      return false
     end
   end
+
 
   def logout()
     begin
       @connection.call("auth.logout", @sid)
+      return true
     rescue Exception => exception
       puts "Well, you finished anyways..."
+      return false
     end
   end
 end
