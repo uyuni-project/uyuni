@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul 27 11:25:19 CEST 2011 - ma@suse.de
+
+- Do non-interactive zypper refresh.
+
+-------------------------------------------------------------------
 Fri Jul  8 11:06:29 CEST 2011 - ma@suse.de
 
 - After registration disable all repositories not provided by SuSE
