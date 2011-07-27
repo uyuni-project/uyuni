@@ -4,7 +4,7 @@
 Feature: Test XML-RPC "api" namespace.
 
   Scenario: Public API test
-    Given I am logged in via XML-RPC as user "admin" and password "admin"
+    Given I am logged in via XML-RPC/api as user "admin" and password "admin"
     When I call getVersion, I should get "10.15" as result
     When I call systemVersion, I should get "1.2" as result
     When I call getApiNamespaces, I should get 38 namespaces
