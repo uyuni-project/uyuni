@@ -366,6 +366,26 @@ Feature: Explore the main landing page
       And I follow "Autoinstallation File"
     Then I should see a "A_Test_String" text
 
+   @cobbler_ui
+   Scenario: adding a kernel option (requires fedora_kickstart_profile)
+     Given I am on the Systems page
+      And I follow "Kickstart" in the left menu
+      And I follow "Profiles" in the left menu
+      And I follow "fedora_kickstart_profile"
+      And I enter "kernel_option=a_value" as "kernel_options"
+      And I click on "Update Kickstart"
+    Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value"
+
+   @cobbler_ui
+   Scenario: adding a kernel option (requires fedora_kickstart_profile_upload)
+     Given I am on the Systems page
+      And I follow "Kickstart" in the left menu
+      And I follow "Profiles" in the left menu
+      And I follow "fedora_kickstart_profile_upload"
+      And I enter "kernel_option2=a_value2" as "kernel_options"
+      And I click on "Update Kickstart"
+    Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2"
+
    @pxe_env
    Scenario: testing for pxe environment files. Requires cobbler_ui tests to have run
      Given cobblerd is running
