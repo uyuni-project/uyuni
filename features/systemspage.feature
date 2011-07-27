@@ -355,18 +355,6 @@ Feature: Explore the main landing page
     Then I should see a "A_Test_String" text
 
    @cobbler_ui
-   Scenario: adding a variable to the wizard profile (requires fedora_kickstart_profile)
-     Given I am on the Systems page
-      And I follow "Kickstart" in the left menu
-      And I follow "Profiles" in the left menu
-      And I follow "fedora_kickstart_profile"
-      And I follow "Variables"
-      And I enter "my_var=A_Test_String" as "variables"
-      And I click on "Update Variables"
-      And I follow "Autoinstallation File"
-    Then I should see a "A_Test_String" text
-
-   @cobbler_ui
    Scenario: adding a kernel option (requires fedora_kickstart_profile)
      Given I am on the Systems page
       And I follow "Kickstart" in the left menu
@@ -383,7 +371,7 @@ Feature: Explore the main landing page
       And I follow "Profiles" in the left menu
       And I follow "fedora_kickstart_profile_upload"
       And I enter "kernel_option2=a_value2" as "kernel_options"
-      And I click on "Update Kickstart"
+      And I click on "Update"
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2"
 
    @pxe_env
