@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul 27 12:21:16 CEST 2011 - jrenner@suse.de
+
+- Fix taskomatic classpath to make it start again (bnc#705758)
+
+-------------------------------------------------------------------
 Mon Jul 25 12:53:26 CEST 2011 - jrenner@suse.de
 
 - Use string array for creating the cmd + empty env (bnc#705758)
