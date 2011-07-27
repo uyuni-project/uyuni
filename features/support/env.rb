@@ -20,6 +20,7 @@ def debrand_string(str)
     when 'suse'
       case str
         # do not replace
+        when "Update Kickstart" then str
         when "Kickstart Snippets" then str
         when "Create a New Kickstart Profile" then str
         when "Step 1: Create Kickstart Profile" then str
