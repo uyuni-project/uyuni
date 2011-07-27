@@ -499,7 +499,7 @@ else
 fi
 if [ "$INSTALLER" == zypper ] ; then
     zypper lr -u
-    zypper ref -s
+    zypper --non-interactive ref -s
     zypper --non-interactive up zypper zypp-plugin-spacewalk
     if [ -x /usr/sbin/rhn-profile-sync ] ; then
         /usr/sbin/rhn-profile-sync
