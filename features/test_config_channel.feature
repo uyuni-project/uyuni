@@ -88,7 +88,7 @@ Feature: Create a configuration channel
      And I wait for "2" seconds
      And I follow "Events" in class "content-nav"
      And I follow "History" in class "contentnav-row2"
-    Then I should see a "Show differences between profiled config files and deployed config files scheduled by admin" link
+    Then I should see a "Show differences between profiled config files and deployed config files scheduled by testing" link
     When I follow "Show differences between profiled config files and deployed config files"
     Then I should see a "Differences exist" link
 
