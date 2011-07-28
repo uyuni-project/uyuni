@@ -69,4 +69,40 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
 
     return res
   end
+
+
+  def setDetails(key)
+    res = false
+    begin
+      details = {
+        'description' => 'Test description of the key ' + key,
+#        'base_channel_label' => "", # <---- Insert here a valid channel
+        'usage_limit' => 10,
+        'universal_default' => false
+      }
+      res = @connection.call("activationkey.setDetails", @sid, key, details).to_i == 1
+    rescue Exception => ex
+      puts "Cannot set details to the key: " + ex
+    end
+
+    return res
+  end
+
+
+  def getDetails(key)
+    res = false
+    begin
+      keyinfo = @connection.call("activationkey.getDetails", @sid, key)
+      puts "      Key info for the key " + keyinfo['key']
+
+      keyinfo.each_pair do |k,v|
+        puts "        " + k.to_s + ": " + v.to_s
+      end
+
+      res = ('Test description of the key ' + key) == keyinfo['description']
+    rescue Exception => ex
+    end
+
+    return res
+  end
 end

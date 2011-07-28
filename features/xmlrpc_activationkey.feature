@@ -16,14 +16,10 @@ Feature: Test XML-RPC "api" namespace.
      Then I should get it listed with a call of listActivationKeys.
 
 
-#   Scenario: Channels
-#     Given I am logged in via XML-RPC/activationkey as user "admin" and password "admin"
-#     When I add config channels "foo" to a newly created key
-#     Then I have to see a new config channel "foo"
-#
-#     When I add a child channel "bar"
-#     Then I can see config child has been added.
-
+   Scenario: Details
+      Given I am logged in via XML-RPC/activationkey as user "admin" and password "admin"
+      When I call activationkey.setDetails() to the key
+      Then I have to see them by calling activationkey.getDetails()
      
    Scenario: Cleanup
      Then I should get key deleted.
