@@ -214,6 +214,7 @@ BuildRequires: python2-devel
 Conflicts: %{name} < 0.8.28
 Requires: python-hashlib
 BuildRequires: python-hashlib
+%endif
 
 %description libs
 Libraries required by both Spacewalk server and Spacewalk client tools.
