@@ -11,4 +11,11 @@ Feature: Register a client
     When I register using an activation key
     Then I should see this client in spacewalk
 
+   @pxe_env
+   Scenario: trigger the creation of a cobbler system record
+     Given I am authorized
+     When  I follow this client link
+      And I follow "Provisioning"
+      And I click on "Create Cobbler System Record"
+     Then file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks="
 
