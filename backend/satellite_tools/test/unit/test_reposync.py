@@ -515,7 +515,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs._link_packages.call_args,
                          (([], ), {}))
         self.assertEqual(rs._download_packages.call_args,
-                         (([], 'bogus-url'), {}))
+                         (([], repo, 'bogus-url'), {}))
 
     def test_import_packages_2link(self):
         p1 = self.reposync.ContentPackage()
@@ -557,7 +557,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs._link_packages.call_args,
                          (([], ), {}))
         self.assertEqual(rs._download_packages.call_args,
-                         (([p1, p2], 'bogus-url'), {}))
+                         (([p1, p2], repo, 'bogus-url'), {}))
         
     def test_import_packages_2link_differently_and_download(self):
         p1 = self.reposync.ContentPackage()
@@ -602,7 +602,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs._link_packages.call_args,
                          (([p1, p2], ), {}))
         self.assertEqual(rs._download_packages.call_args,
-                         (([p2], 'bogus-url'), {}))
+                         (([p2], repo, 'bogus-url'), {}))
 
     def test_import_packages_2link_differently_no_download(self):
         p1 = self.reposync.ContentPackage()
@@ -645,7 +645,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs._link_packages.call_args,
                          (([p1, p2], ), {}))
         self.assertEqual(rs._download_packages.call_args,
-                         (([p1, p2], 'bogus-url'), {}))
+                         (([p1, p2], repo, 'bogus-url'), {}))
 
     def test_import_packages_2_skipped_bad_arches(self):
         p1 = self.reposync.ContentPackage()
@@ -686,7 +686,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs._link_packages.call_args,
                          (([], ), {}))
         self.assertEqual(rs._download_packages.call_args,
-                         (([], 'bogus-url'), {}))
+                         (([], repo, 'bogus-url'), {}))
 
     def _create_mocked_reposync(self):
         rs = self.reposync.RepoSync("Label", RTYPE)

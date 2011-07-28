@@ -589,7 +589,7 @@ class RepoSync:
         else:
             self.print_msg("No new packages to download.")
 
-        self._download_packages(to_download, url)
+        self._download_packages(to_download, repo, url)
         self._link_packages(to_link)
 
     def upload_package(self, package, path):
@@ -687,10 +687,11 @@ class RepoSync:
                     raise
                 continue
 
-    def _download_packages(self, packages, repo_url):
+    def _download_packages(self, packages, repo, repo_url):
         """Download packages
 
         :packages: a list of ContentPackage objects that we need to download
+        :repo: repository (ContentSource) from which to download the packages
         :url: url of the repository
 
         """
