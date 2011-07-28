@@ -12,6 +12,7 @@ features_task = Cucumber::Rake::Task.new do |t|
   #cucumber_opts = cucumber_opts + %w{-o /tmp/cucumber.log}
 
   feature_files  = %w{
+                     features/database.feature
                      features/init_user_create.feature
                      features/running.feature
                      features/login.feature
@@ -50,6 +51,9 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/delete_system_profile.feature
                      features/delete_config_channel.feature
                      features/users-deleteuser1.feature
+                     features/xmlrpc_api.feature
+                     features/xmlrpc_activationkey.feature
+                     features/xmlrpc_channel.feature
                     }
   t.cucumber_opts = cucumber_opts + feature_files
 end
