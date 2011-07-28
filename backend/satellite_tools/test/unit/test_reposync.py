@@ -688,6 +688,135 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs._download_packages.call_args,
                          (([], 'bogus-url'), {}))
 
+    def test_link_packages(self):
+        p1 = self.reposync.ContentPackage()
+        p1.checksums = {'md5': '12345'}
+        p2 = self.reposync.ContentPackage()
+        p2.checksums =  {'md5': 'asdfg'}
+        
+        rs = self._create_mocked_reposync()
+        rs.associate_package = Mock()
+        rs.error_msg = Mock()
+
+        rs._link_packages([p1, p2])
+
+        self.assertFalse(rs.error_msg.called)
+        self.assertEqual(rs.associate_package.call_args_list,
+                         [((p1, ), {}), ((p2, ), {})])
+
+    def test_link_packages_logs_error_but_doesnt_die(self):
+        p1 = self.reposync.ContentPackage()
+        p1.checksums = {'md5': '12345'}
+
+        rs = self._create_mocked_reposync()
+        exc = Exception('error')
+        rs.associate_package = Mock(side_effect=exc) # make it raise an Exception
+        rs.error_msg = Mock()
+
+        rs._link_packages([p1])
+
+        self.assertTrue(rs.error_msg.called)
+        self.assertEqual(rs.error_msg.call_args,
+                         ((exc, ), {}))
+        self.assertEqual(rs.associate_package.call_args,
+                         ((p1, ), {}))
+
+    def test_link_packages_logs_error_and_dies(self):
+        p1 = self.reposync.ContentPackage()
+        p1.checksums = {'md5': '12345'}
+
+        rs = self._create_mocked_reposync()
+        exc = Exception('error')
+        rs.associate_package = Mock(side_effect=exc) # make it raise an Exception
+        rs.fail = True # make it die on the above Exception
+        rs.error_msg = Mock()
+
+        self.assertRaises(Exception, rs._link_packages, [p1])
+
+        self.assertTrue(rs.error_msg.called)
+        self.assertEqual(rs.error_msg.call_args,
+                         ((exc, ), {}))
+        self.assertEqual(rs.associate_package.call_args,
+                         ((p1, ), {}))
+
+    def test_download_packages(self):
+        p1 = self.reposync.ContentPackage()
+        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
+        p2 = self.reposync.ContentPackage()
+        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
+
+        rs = self._create_mocked_reposync()
+        rs.upload_package = Mock()
+        self.reposync.os.remove = Mock()
+        repo = Mock()
+        repo.get_package = Mock(return_value='pkg_path')
+
+        rs._download_packages([p1, p2], repo, "file://local_repo")
+
+        self.assertEqual(rs.upload_package.call_args_list,
+                         [((p1, 'pkg_path'), {}), ((p2, 'pkg_path'), {})])
+        self.assertFalse(self.reposync.os.remove.called)
+
+    def test_download_packages_non_local(self):
+        p1 = self.reposync.ContentPackage()
+        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
+        p2 = self.reposync.ContentPackage()
+        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
+
+        rs = self._create_mocked_reposync()
+        rs.upload_package = Mock()
+        self.reposync.os.remove = Mock()
+        repo = Mock()
+        repo.get_package = Mock(return_value='pkg_path')
+
+        rs._download_packages([p1, p2], repo, "http://remote_repo") # non-local
+
+        self.assertEqual(rs.upload_package.call_args_list,
+                         [((p1, 'pkg_path'), {}), ((p2, 'pkg_path'), {})])
+        self.assertEqual(self.reposync.os.remove.call_args,
+                         (('pkg_path', ), {}))
+
+    def test_download_packages_errors_and_dies(self):
+        p1 = self.reposync.ContentPackage()
+        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
+        p2 = self.reposync.ContentPackage()
+        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
+
+        rs = self._create_mocked_reposync()
+        rs.fail = True # make it die
+        exc = Exception('error')
+        rs.upload_package = Mock(side_effect=exc) # make it raise an exception
+        rs.error_msg = Mock()
+        repo = Mock()
+        repo.get_package = Mock(return_value='pkg_path')
+
+        self.assertRaises(Exception, rs._download_packages,
+                          [p1, p2], repo, "file://remote_repo")
+
+        self.assertEqual(rs.upload_package.call_args,
+                         ((p1, 'pkg_path'), {}))
+        self.assertEqual(rs.error_msg.call_args_list,
+                         [((exc, ), {})])
+
+    def test_download_packages_errors_and_continues(self):
+        p1 = self.reposync.ContentPackage()
+        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
+        p2 = self.reposync.ContentPackage()
+        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
+
+        rs = self._create_mocked_reposync()
+        exc = Exception('error')
+        rs.upload_package = Mock(side_effect=exc) # make it raise an exception
+        rs.error_msg = Mock()
+        repo = Mock()
+        repo.get_package = Mock(return_value='pkg_path')
+
+        rs._download_packages([p1, p2], repo, "file://remote_repo")
+        self.assertEqual(rs.upload_package.call_args_list,
+                         [((p1, 'pkg_path'), {}), ((p2, 'pkg_path'), {})])
+        self.assertEqual(rs.error_msg.call_args_list,
+                         [((exc, ), {}), ((exc, ), {})])
+        
     def _create_mocked_reposync(self):
         rs = self.reposync.RepoSync("Label", RTYPE)
         rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
