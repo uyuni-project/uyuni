@@ -44,3 +44,22 @@ end
 Then /^I can see config child has been added\.$/ do
   pending # express the regexp above with the code you wish you had
 end
+
+# Details
+When /^I call activationkey\.setDetails\(\) to the key$/ do
+  fail if not rpctest.setDetails(key)
+end
+
+Then /^I have to see them by calling activationkey\.getDetails\(\)$/ do
+  fail if not rpctest.getDetails(key)
+end
+
+
+# ToDO
+#   Scenario: Channels
+#     Given I am logged in via XML-RPC/activationkey as user "admin" and password "admin"
+#     When I add config channels "foo" to a newly created key
+#     Then I have to see a new config channel "foo"
+#
+#     When I add a child channel "bar"
+#     Then I can see config child has been added.
