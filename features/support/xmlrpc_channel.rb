@@ -14,8 +14,9 @@ class XMLRPCChannelTest < XMLRPCBaseTest
       ret = @connection.call("channel.software.create", @sid, label, name, summary, arch, parent)
     rescue Exception => ex
       puts "Something went wrong: " + ex
+    ensure
+      return ret
     end
-    return ret
   end
 
   #
@@ -27,9 +28,9 @@ class XMLRPCChannelTest < XMLRPCBaseTest
       ret = @connection.call("channel.software.delete", @sid, label)
     rescue Exception => ex
       puts "Something went wrong: " + ex
-      return false
+    ensure
+      return ret
     end
-    return ret
   end
 
   #
@@ -41,7 +42,7 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   end
  
   #
-  # Check if a certain software channel is in the list
+  # Check if a certain software channel is listed
   #
   def verifyChannel(label)
     channels = @connection.call("channel.listSoftwareChannels", @sid)
@@ -54,7 +55,24 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   end
 
   #
-  # Get the list of software channels and print some info
+  # Check if a software channel is the parent of a given child channel
+  #
+  def isParentChannel(child, parent)
+    ret = false
+    begin
+      channel = @connection.call("channel.software.getDetails", @sid, child)
+      if channel['parent_channel_label'] == parent
+        ret = true
+      end
+    rescue Exception => ex
+      puts "Something went wrong: " + ex
+    ensure
+      return ret
+    end
+  end
+
+  #
+  # Debug: Get the list of channels and print some info
   #
   def listSoftwareChannels()
     channels = @connection.call("channel.listSoftwareChannels", @sid)

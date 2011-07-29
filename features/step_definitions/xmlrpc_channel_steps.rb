@@ -26,3 +26,7 @@ Then /^"([^"]*)" should not get listed with a call of listSoftwareChannels$/ do 
   fail if rpctest.verifyChannel(label)
 end
 
+Then /^"([^"]*)" should be the parent channel of "([^"]*)"$/ do |parent, child|
+  fail if not rpctest.isParentChannel(child, parent)
+end
+
