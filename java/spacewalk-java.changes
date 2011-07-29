@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 29 16:04:36 CEST 2011 - jrenner@suse.de
+
+- Fix software rollback to profiles (bnc#701772)
+
+-------------------------------------------------------------------
 Mon Jul 18 13:51:33 CEST 2011 - ug@suse.de
 
 - changed the kernel-options field to 1024 in the web-ui 
