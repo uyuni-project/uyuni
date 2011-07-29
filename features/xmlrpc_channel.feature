@@ -1,33 +1,29 @@
 # Copyright (c) 2011 SUSE Linux Products GmbH
 # Licensed under the terms of the MIT license.
 
+@xmlrpc
 Feature: Test XML-RPC "channel" namespace und sub-namespaces.
 
-  @xmlrpc
   Scenario: Create a custom software channel
     Given I am logged in via XML-RPC/channel as user "admin" and password "admin"
     When I create a channel with label "foobar", name "foobar", summary "foobar", arch "channel-x86_64" and parent ""
     Then "foobar" should get listed with a call of listSoftwareChannels
   
-  @xmlrpc
   Scenario: Create a custom software channel as the child of another one
     Given I am logged in via XML-RPC/channel as user "admin" and password "admin"
     When I create a channel with label "foobar-child", name "foobar-child", summary "child of foobar", arch "channel-x86_64" and parent "foobar"
     Then "foobar-child" should get listed with a call of listSoftwareChannels
     And "foobar" should be the parent channel of "foobar-child"
 
-  @xmlrpc
   Scenario: List software channels
     Given I am logged in via XML-RPC/channel as user "admin" and password "admin"
     Then something should get listed with a call of listSoftwareChannels
   
-  @xmlrpc
   Scenario: Delete a child software channel
     Given I am logged in via XML-RPC/channel as user "admin" and password "admin"
     When I delete the software channel with label "foobar-child"
     Then "foobar-child" should not get listed with a call of listSoftwareChannels
 
-  @xmlrpc
   Scenario: Delete a software channel
     Given I am logged in via XML-RPC/channel as user "admin" and password "admin"
     When I delete the software channel with label "foobar"
