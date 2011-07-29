@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jul 29 15:27:03 CEST 2011 - jrenner@suse.de
+
+- Fix software rollback to profiles (bnc#701772)
+
+-------------------------------------------------------------------
 Wed Jul 27 12:21:16 CEST 2011 - jrenner@suse.de
 
 - Fix taskomatic classpath to make it start again (bnc#705758)
