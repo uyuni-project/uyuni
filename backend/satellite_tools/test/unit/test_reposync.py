@@ -440,6 +440,35 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(self.reposync.ErrataImport.call_args,
                          (([], mocked_backend), {}))
         
+    def test_associate_package(self):
+        pack = self.reposync.ContentPackage()
+        pack.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
+        pack.unique_id = 1
+        pack.checksum = 'checksum1'
+        pack.checksums[1] = 'checksum1'
+        pack.checksum_type = 'c_type1'
+
+        mocked_backend = Mock()
+        self.reposync.OracleBackend = Mock(return_value=mocked_backend)
+        rs = self._create_mocked_reposync()
+        rs._importer_run = Mock()
+        rs.channel_label = 'Label1'
+        rs.channel = {'id': 'channel1', 'org_id': 'org1'}
+
+        package = {'name': 'name1',
+                   'version': 'version1',
+                   'release': 'release1',
+                   'epoch': 'epoch1',
+                   'arch': 'arch1',
+                   'checksum': 'checksum1',
+                   'checksum_type': 'c_type1',
+                   'org_id': 'org1',
+                   'channels': [{'label': 'Label1', 'id': 'channel1'}]}
+
+        rs.associate_package(pack)
+        self.assertEqual(rs._importer_run.call_args,
+                         ((package, 'server.app.yumreposync', mocked_backend),
+                          {}))
     def test_best_checksum_item_unknown(self):
         checksums = {'no good checksum': None}
 
