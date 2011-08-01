@@ -6,7 +6,7 @@
 Name:        spacewalk-remote-utils
 Version:     1.0.5
 Release:     1%{?dist}
-Summary:     Utilities to interact with a RHN Satellite or Spacewalk server remotely.
+Summary:     Utilities to interact with a Spacewalk server remotely.
 
 Group:       Applications/System
 License:     GPLv3+
@@ -19,7 +19,7 @@ BuildRequires: python-devel
 BuildRequires: docbook-utils
 
 %description
-Utilities to interact with a RHN Satellite or Spacewalk server remotely over XMLRPC.
+Utilities to interact with a Spacewalk server remotely over XMLRPC.
 
 %prep
 %setup -q

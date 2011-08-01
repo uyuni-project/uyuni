@@ -1,7 +1,7 @@
 
 %define without_rhn_register 1
 
-Summary: Support programs and libraries for Red Hat Network or Spacewalk
+Summary: Support programs and libraries for Spacewalk
 License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
@@ -71,11 +71,11 @@ BuildRequires: rpm-python
 %endif
 
 %description
-Red Hat Network Client Tools provides programs and libraries to allow your
-system to receive software updates from Red Hat Network or Spacewalk.
+Spacewalk Client Tools provides programs and libraries to allow your
+system to receive software updates from Spacewalk.
 
 %package -n spacewalk-check
-Summary: Check for RHN actions
+Summary: Check for Spacewalk actions
 Group: System Environment/Base
 Provides: rhn-check = %{version}-%{release}
 Obsoletes: rhn-check < %{version}-%{release}

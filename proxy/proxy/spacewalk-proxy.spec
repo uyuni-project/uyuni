@@ -6,7 +6,7 @@ URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Version: 1.2.15
 Release: 1%{?dist}
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
 %if 0%{?suse_version}
 BuildRequires: apache2
@@ -31,7 +31,7 @@ Requires: httpd
 This package is never built.
 
 %package management
-Summary: Packages required by the SpacewalkManagement Proxy
+Summary: Packages required by the Spacewalk Management Proxy
 Group:   Applications/Internet
 Requires: squid
 Requires: spacewalk-backend >= 1.2.32
@@ -103,7 +103,7 @@ Obsoletes: rhns-proxy-broker < 5.3.0
 %description broker
 The Spacewalk Proxy Server allows package caching
 and local package delivery services for groups of local servers from
-Spacewalk Server. This service adds flexibility and economy of 
+Spacewalk Server. This service adds flexibility and economy of
 resources to package update and deployment.
 
 This package includes module, which request is cache-able and should
@@ -124,7 +124,7 @@ Spacewalk Server. This service adds flexibility and economy of
 resources to package update and deployment.
 
 This package includes module, which handle request passed through squid
-and assures a fully secure SSL connection is established and maintained 
+and assures a fully secure SSL connection is established and maintained
 between an Spacewalk Proxy Server and parent Spacewalk server.
 
 %package common
@@ -172,7 +172,7 @@ and local package delivery services for groups of local servers from
 Spacewalk Server. This service adds flexibility and economy of
 resources to package update and deployment.
 
-This package contains the Command rhn_package_manager, which  manages 
+This package contains the Command rhn_package_manager, which  manages
 an Spacewalk Proxy Server's custom channel.
 
 %prep
@@ -260,7 +260,7 @@ if rhncfg-client verify %{_sysconfdir}/rhn/rhn.conf 2>&1|grep 'Not found'; then
      %{_bindir}/rhncfg-client get %{_sysconfdir}/rhn/rhn.conf
 fi > /dev/null 2>&1
 if rhncfg-client verify %{_sysconfdir}/squid/squid.conf | grep -E '(modified|missing)'; then
-    rhncfg-client get %{_sysconfdir}/squid/squid.conf 
+    rhncfg-client get %{_sysconfdir}/squid/squid.conf
     rm -rf %{_var}/spool/squid/*
     %{_usr}/sbin/squid -z
     /sbin/service squid condrestart
@@ -556,7 +556,7 @@ fi
 - do not enable proxy if user previously disabled it
 
 * Wed Sep 10 2008 Miroslav Suchý <msuchy@redhat.com> 0.2.3-1
-- add rhnAuthProtocol.py back, we still need it 
+- add rhnAuthProtocol.py back, we still need it
 
 * Tue Sep  2 2008 Milan Zazrivec 0.2.2-1
 - fix requirements for proxy-broker and proxy-management
@@ -596,7 +596,7 @@ fi
 * Thu Dec 13 2006 Miroslav Suchy <msuchy@redhat.com>
 - BZ 220436 (tools require perl-DateTime to build)
 
-* Wed Dec 12 2006 Miroslav Suchy <msuchy@redhat.com> 
+* Wed Dec 12 2006 Miroslav Suchy <msuchy@redhat.com>
 - broker require squid
 
 * Thu Dec 09 2004 Todd Warner <taw@redhat.com> 3.6.0
@@ -643,7 +643,7 @@ fi
 - bugzilla: 125203 - updated requires for RHEL 3 support.
 
 * Fri May 28 2004 Todd Warner <taw@redhat.com>
-- pulling rhn_rpm.py* from package manager files. Using common's. 
+- pulling rhn_rpm.py* from package manager files. Using common's.
 - we don't use rhnHTTPlib.py anymore. Pulled from proxy/broker.
 - we don't use rhnAuthProtocol.py or xxmlrpclib.py in rhns-auth-daemon anymore.
 

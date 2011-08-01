@@ -2,8 +2,8 @@
 %define rhn_conf_dir %{_sysconfdir}/sysconfig/rhn
 %define cron_dir %{_sysconfdir}/cron.d
 
-Name:           rhn-virtualization 
-Summary:        RHN/Spacewalk action support for virualization
+Name:           rhn-virtualization
+Summary:        Spacewalk action support for virualization
 
 Group:          System Environment/Base
 License:        GPLv2
@@ -17,7 +17,7 @@ BuildArch:      noarch
 BuildRequires:  python
 
 %description
-rhn-virtualization provides various RHN/Spacewalk actions for manipulation 
+rhn-virtualization provides various Spacewalk actions for manipulation
 virtual machine guest images.
 
 %package common
@@ -33,7 +33,7 @@ This package contains files that are needed by the rhn-virtualization-host
 package.
 
 %package host
-Summary: RHN/Spacewalk Virtualization support specific to the Host system
+Summary: Spacewalk Virtualization support specific to the Host system
 Group: System Environment/Base
 Requires: libvirt-python
 Requires: rhn-virtualization-common = %{version}-%{release}
@@ -45,7 +45,7 @@ Requires: /usr/sbin/crond
 %endif
 
 %description host
-This package contains code for RHN's and Spacewalk's Virtualization support 
+This package contains code for Spacewalk's Virtualization support
 that is specific to the Host system (a.k.a. Dom0).
 
 
@@ -70,8 +70,8 @@ mv $RPM_BUILD_ROOT/etc/rc.d/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/etc/i
 
 # add rclink
 mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
-ln -sf ../../etc/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-virtualization-host 
- 
+ln -sf ../../etc/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-virtualization-host
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -214,9 +214,9 @@ rm -rf $RPM_BUILD_ROOT
 - fixing typo for server initialization for non ssl case in rhev code.
   (pkilambi@redhat.com)
 - cleaning up conflicts (pkilambi@redhat.com)
--  Feature support for rhn-virt-host to poll guests through VDSM. 
+-  Feature support for rhn-virt-host to poll guests through VDSM.
    libvirt is disabled in this case. if libvirt is disabled.
-   So the guest registration does'nt consume an entitlement following 
+   So the guest registration does'nt consume an entitlement following
    the xen/kvm business rules on server.(pkilambi@redhat.com)
 
 * Fri Oct 02 2009 Pradeep Kilambi <pkilambi@redhat.com> 5.3.0-5

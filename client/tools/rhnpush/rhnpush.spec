@@ -1,7 +1,7 @@
 %define rhnroot %{_datadir}/rhn
 
 Name:          rhnpush
-Summary:       Common programs needed to be installed on the RHN servers/proxies.
+Summary:       Common programs needed to be installed on the Spacewalk servers/proxies.
 Group:         Applications/System
 License:       GPLv2
 URL:           http://fedorahosted.org/spacewalk
@@ -14,10 +14,10 @@ Requires:      rpm-python rhnlib
 Requires:      spacewalk-backend-libs >= 0.8.3
 BuildRequires: docbook-utils gettext python-devel
 
-Summary: Package uploader for the Red Hat Network Satellite Server
+Summary: Package uploader for the Spacewalk Server
 
 %description
-rhnpush uploads package headers to the Red Hat Network servers into
+rhnpush uploads package headers to the Spacewalk servers into
 specified channels and allows for several other channel management
 operations relevant to controlling what packages are available per
 channel.
@@ -75,7 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 - removed dead code
 
 * Thu Jul 08 2010 Justin Sherrill <jsherril@redhat.com> 5.5.3-1
-- set default server for rhnpush to localhost instead of 
+- set default server for rhnpush to localhost instead of
   rhn.redhat.com (jsherril@redhat.com)
 
 * Thu Jul 01 2010 Miroslav Suchý <msuchy@redhat.com> 5.5.2-1
