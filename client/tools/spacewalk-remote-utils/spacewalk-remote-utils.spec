@@ -6,7 +6,7 @@
 Name:        spacewalk-remote-utils
 Version:     1.6.1
 Release:     1%{?dist}
-Summary:     Utilities to interact with a RHN Satellite or Spacewalk server remotely.
+Summary:     Utilities to interact with a Spacewalk server remotely.
 
 Group:       Applications/System
 License:     GPLv3+
@@ -24,7 +24,7 @@ BuildRequires: rhn-client-tools
 %endif
 
 %description
-Utilities to interact with a RHN Satellite or Spacewalk server remotely over XMLRPC.
+Utilities to interact with a Spacewalk server remotely over XMLRPC.
 
 %prep
 %setup -q

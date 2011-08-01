@@ -2,7 +2,7 @@
 %define rhnconf /etc/sysconfig/rhn
 
 
-Summary: Red Hat Network Client Utilities and Libraries
+Summary: Spacewalk Client Utilities and Libraries
 Name: rhnclient
 Source0: %{name}-%{version}.tar.gz
 Version: 0.13
@@ -18,9 +18,8 @@ BuildRequires: python-devel binutils-devel
 Url: http://rhn.redhat.com
 
 %description
-Red Hat Network Client Utilities
-Includes: rhn_check, action handler, and modules to allow
-client packages to communicate with RHN.
+Spacewalk Client Utilities Includes: rhn_check, action handler,
+and modules to allow client packages to communicate with Spacewalk.
 
 %prep
 %setup
@@ -99,7 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 
 * Fri Jul 01 2005 Joel Martin <jmartin@redhat.com> 4.0.0-8
 - Allow building on Solaris systems without getopt.h. Use local
-  getopt.h on Solaris. 
+  getopt.h on Solaris.
 
 * Thu Jun 30 2005 Joel Martin <jmartin@redhat.com> 4.0.0-7
 - Handle i86pc arch

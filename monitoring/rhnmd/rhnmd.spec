@@ -8,7 +8,7 @@
 %endif
 %endif
 
-Summary:        Red Hat Network Monitoring Daemon
+Summary:        Spacewalk Monitoring Daemon
 Name:           rhnmd
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -34,7 +34,7 @@ Provides:       rhnmd.x86_64 = %{version}
 
 %description
 rhnmd enables secure ssh-based communication between the monitoring
-scout and the monitored host. 
+scout and the monitored host.
 
 %prep
 %setup -q
@@ -170,7 +170,7 @@ rm -rf $RPM_BUILD_ROOT
 - 489573 - remove generating keys and leave it on nocpulse-common
 
 * Sat Feb 28 2009 Dennis Gilmore <dennis@ausil.us> 5.1.6-1
-- rebuild 
+- rebuild
 
 * Thu Feb 05 2009 jesus m. rodriguez <jesusr@redhat.com> 5.1.5-1
 - 479541, 483867 - replaced runuser with /sbin/runuser
@@ -185,7 +185,7 @@ rm -rf $RPM_BUILD_ROOT
 * Tue Oct 21 2008 Michael Mraka <michael.mraka@redhat.com> 5.1.1-1
 - resolves #467877 - use runuser instead of su
 
-* Fri Oct 17 2008 Miroslav Suchy <msuchy@redhat.com> 
+* Fri Oct 17 2008 Miroslav Suchy <msuchy@redhat.com>
 - cleanup spec
 
 * Wed Sep 12 2007 Pradeep Kilambi <pkilambi@redhat.com> - 5.1.0-1
@@ -207,7 +207,7 @@ rm -rf $RPM_BUILD_ROOT
 - enable building on multiple arches
 
 * Thu Jun  9 2005 Nick Hansen <nhansen@redhat.com>
-- BZ#159664: adding conflict on NPusers so this can't 
+- BZ#159664: adding conflict on NPusers so this can't
   be installed on Satellite or Proxy monitoring boxes
 
 * Wed Aug  4 2004 Nick Hansen <nhansen@redhat.com>

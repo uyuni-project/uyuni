@@ -16,7 +16,7 @@ Version: 1.6.4
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 BuildRequires: perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}
@@ -51,7 +51,7 @@ Provides: spacewalk(spacewalk-base-minimal) = %{version}-%{release}
 Provides: spacewalk(spacewalk-base) = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: perl-RPM2
-Requires: perl-Authen-PAM 
+Requires: perl-Authen-PAM
 Requires: perl-Digest-HMAC
 Requires: perl-Text-Diff
 %endif
@@ -67,7 +67,7 @@ database.  This includes RHN::* and RHN::DB::*
 
 %package -n spacewalk-base-minimal
 Summary: Minimal .pm's for %{name} package
-Group: Applications/Internet 
+Group: Applications/Internet
 Provides: spacewalk(spacewalk-base-minimal) = %{version}-%{release}
 %if 0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
@@ -96,7 +96,7 @@ database.
 
 
 %package -n spacewalk-grail
-Summary: Grail, a component framework for Red Hat Network
+Summary: Grail, a component framework for Spacewalk
 Requires: spacewalk-base
 Group: Applications/Internet
 Obsoletes: rhn-grail < 5.3.0
@@ -126,7 +126,7 @@ equivalent to things like Apache::ASP and Mason
 
 
 %package -n spacewalk-sniglets
-Group: Applications/Internet 
+Group: Applications/Internet
 Summary: PXT Tag handlers
 Obsoletes: rhn-sniglets < 5.3.0
 Provides:  rhn-sniglets = 5.3.0
@@ -272,7 +272,7 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/Grail.pm
 %{perl_vendorlib}/Grail/
 
-%files -n spacewalk-pxt 
+%files -n spacewalk-pxt
 %defattr(644,root,root,755)
 %{perl_vendorlib}/PXT.pm
 %attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
@@ -281,7 +281,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/rhn
 %dir /etc/rhn/default
 
-%files -n spacewalk-sniglets 
+%files -n spacewalk-sniglets
 %defattr(644,root,root,755)
 %{perl_vendorlib}/Sniglets.pm
 %{perl_vendorlib}/Sniglets/
@@ -629,10 +629,10 @@ rm -rf $RPM_BUILD_ROOT
   (lzap+git@redhat.com)
 
 * Thu Oct 21 2010 Lukas Zapletal 1.2.16-1
-- Sorting fix in packages for PostgreSQL 
-- Fix of evr_t_as_vre_simple PostgreSQL function 
-- Fix in package file list for PostgreSQL 
-- Changed SQL Perl generator joins to ANSI 
+- Sorting fix in packages for PostgreSQL
+- Fix of evr_t_as_vre_simple PostgreSQL function
+- Fix in package file list for PostgreSQL
+- Changed SQL Perl generator joins to ANSI
 
 * Wed Oct 20 2010 Lukas Zapletal 1.2.15-1
 - Function evr_t_as_vre_simple in all package queries now general
@@ -640,10 +640,10 @@ rm -rf $RPM_BUILD_ROOT
 * Wed Oct 20 2010 Lukas Zapletal 1.2.14-1
 - Fix in PostgreSQL (of previous commit)
 - All DECODE functions replaced with CASE-WHEN in System_queries
-- Fixing system overview list for PostgreSQL 
-- Port /network/systems/details/custominfo/edit.pxt 
-- Port /network/systems/details/custominfo/index.pxt 
-- Update Perl module to redirect to Java not PXT 
+- Fixing system overview list for PostgreSQL
+- Port /network/systems/details/custominfo/edit.pxt
+- Port /network/systems/details/custominfo/index.pxt
+- Update Perl module to redirect to Java not PXT
 - s|/network/systems/ssm/misc/index.pxt|/rhn/systems/ssm/misc/Index.do|
 
 * Wed Oct 13 2010 Jan Pazdziora 1.2.13-1
@@ -822,10 +822,10 @@ rm -rf $RPM_BUILD_ROOT
 - Removed a lot of code made unused by above removals.
 
 * Fri Jan 29 2010 Miroslav Suchý <msuchy@redhat.com> 0.8.10-1
-- No XMLRPC/SOAP processing in the web/Perl stack, 
+- No XMLRPC/SOAP processing in the web/Perl stack,
   removing. (jpazdziora@redhat.com)
-- 543879 - adding support to the proxy side to redirect to a url 
-  that will rewrite kickstarts with the proxy name for /cblr 
+- 543879 - adding support to the proxy side to redirect to a url
+  that will rewrite kickstarts with the proxy name for /cblr
   urls (jsherril@redhat.com)
 
 
@@ -876,7 +876,7 @@ rm -rf $RPM_BUILD_ROOT
 - Make spacewalk use the editarea RPM and remove supplied editarea files <colin.coe@gmail.com>
 
 * Thu Sep 17 2009 Miroslav Suchý <msuchy@redhat.com> 0.7.4-1
-- 476851 - removal of tables: rhn_db_environment, rhn_environment                                                              
+- 476851 - removal of tables: rhn_db_environment, rhn_environment
 - 520441 - don't apply ExtUtils::MY->fixin(shift) to perl executables
 
 * Tue Sep 01 2009 Michael Mraka <michael.mraka@redhat.com> 0.7.3-1
@@ -888,7 +888,7 @@ rm -rf $RPM_BUILD_ROOT
 
 * Thu Aug 20 2009 Miroslav Suchy <msuchy@redhat.com> 0.7.1-1
 - fix an ISE relating to config management w/selinux (Joshua Roys)
-- allow users to chat with spacewalk members on IRC via the web. (jesusr@redhat.com) 
+- allow users to chat with spacewalk members on IRC via the web. (jesusr@redhat.com)
 - 516608 - redirect output of rhn-ssl-tool to apache error log
 
 * Wed Aug 05 2009 John Matthews <jmatthew@redhat.com> 0.6.19-1
@@ -1069,7 +1069,7 @@ rm -rf $RPM_BUILD_ROOT
 - 483287 - Added ability to do a cobbler sync thru the UI
 - 465775 - adding synopsis to errata clone page
 - Use /usr/sbin/rhn-satellite for restart
-- Revert "code cleanup - enable_notification_cron and disable_notification_ cron are not used any more" 
+- Revert "code cleanup - enable_notification_cron and disable_notification_ cron are not used any more"
 
 * Thu Mar 05 2009 jesus m. rodriguez <jesusr@redhat.com> 0.5.15-1
 - 487563 - switching take_snapshots to enable_snapshots
@@ -1082,7 +1082,7 @@ rm -rf $RPM_BUILD_ROOT
 - rebuild
 
 * Thu Feb 19 2009 Miroslav Suchy <msuchy@redhat.com> 0.5.13-1
-- fix proxy webui installer 
+- fix proxy webui installer
 
 * Thu Feb 19 2009 Jan Pazdziora 0.5.12-1
 - 479742 - changes to make doc links from Help and About pages configurable (Brad B.)
@@ -1104,7 +1104,7 @@ rm -rf $RPM_BUILD_ROOT
 
 * Mon Feb 16 2009 Pradeep Kilambi <pkilambi@redhat.com> 0.5.11-1
 - yum repodata regen changes to taskomatic
- 
+
 * Thu Feb 12 2009 Jan Pazdziora 0.5.10-1
 - code cleanup - enable_notification_cron, disable_notification_cron,
   monitoring_available are not used any more (Miroslav S.)
@@ -1212,7 +1212,7 @@ rm -rf $RPM_BUILD_ROOT
 - remove remnants of test-conn
 
 * Wed Aug 13 2008 Mike McCune <mmccune@redhat.com 0.2-1
-- fix Requires: statement to reflect new spacewalk-pxt name 
+- fix Requires: statement to reflect new spacewalk-pxt name
 
 * Mon Aug  4 2008 Miroslav Suchy <msuchy@redhat.com> 0.2-0
 - rename package from rhn-* to spacewalk-*

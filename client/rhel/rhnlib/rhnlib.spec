@@ -1,6 +1,6 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
-Summary: Python libraries for the RHN project
+Summary: Python libraries for the Spacewalk project
 Name: rhnlib
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -26,8 +26,8 @@ Conflicts: rhnclient < 0.10
 Conflicts: spacewalk-proxy < 1.3.6
 
 %description
-rhnlib is a collection of python modules used by the 
-Red Hat Network (http://rhn.redhat.com) software.
+rhnlib is a collection of python modules used by the
+Spacewalk software.
 
 
 %prep
@@ -162,7 +162,7 @@ rm -rf $RPM_BUILD_ROOT
 - sha256 support
 
 * Fri Dec 04 2009 Michael Mraka <michael.mraka@redhat.com> 2.5.16-1
-- added rhn_rpm and rhn_mpm 
+- added rhn_rpm and rhn_mpm
 
 * Wed Nov 25 2009 Miroslav Suchý <msuchy@redhat.com> 2.5.15-1
 - aamt is not Null in most cases, move it more to right
@@ -173,7 +173,7 @@ rm -rf $RPM_BUILD_ROOT
 - fix build under opensuse
 
 * Thu Aug 06 2009 Pradeep Kilambi <pkilambi@redhat.com> 2.5.13-1
-- 
+-
 
 * Thu May 21 2009 jesus m. rodriguez <jesusr@redhat.com> 2.5.12-1
 - merging additional spec changes and minor edits from svn (pkilambi@redhat.com)
@@ -196,7 +196,7 @@ Resolves: #489920 #484245 #489921 #492638 #499858 #499860
 - replace "!#/usr/bin/env python" with "!#/usr/bin/python"
 
 * Tue Jan 27 2009 Dennis Gilmore <dennis@ausil.us> 2.5.8-1
-- clean up files section 
+- clean up files section
 
 * Tue Jan 27 2009 Miroslav Suchý <msuchy@redhat.com> 2.5.7-1
 - remove .egg-info file from spec - we do not provide it
@@ -205,7 +205,7 @@ Resolves: #489920 #484245 #489921 #492638 #499858 #499860
 - Remove usage of version and sources files.
 
 * Tue Sep 16 2008 Pradeep Kilambi <pkilambi@redhat.com> - 2.2.6-2
-Resolves: #211394 #250303 
+Resolves: #211394 #250303
 
 * Fri Jun 20 2008 Devan Goodwin <dgoodwin@redhat.com> - 2.2.5-5
 - Updating for Fedora 9.
@@ -325,7 +325,7 @@ Resolves: #211394 #250303
 - Removed debugging output (printing the SSL cert)
 
 * Tue Jul 30 2002 Mihai Ibanescu <misa@redhat.com>
-- User-Agent, X-Info and X-Client-Version were not present in the HTTP headers 
+- User-Agent, X-Info and X-Client-Version were not present in the HTTP headers
 
 * Tue Jul 23 2002 Mihai Ibanescu <misa@redhat.com>
 - Fixed #69518 (up2date seems to never properly reauthenticate after a auth
@@ -345,4 +345,4 @@ Resolves: #211394 #250303
 
 * Thu Jun 27 2002 Adrian Likins <alikins@redhat.com>
 - hack up distutils to build a sane spec file
-- make sure the SSL support always gets built 
+- make sure the SSL support always gets built

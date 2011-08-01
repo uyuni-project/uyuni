@@ -55,12 +55,12 @@ Provides: rhns-common = 1:%{version}-%{release}
 Obsoletes: spacewalk-backend-upload-server < 1.2.28
 Provides: spacewalk-backend-upload-server = 1:%{version}-%{release}
 
-%description 
+%description
 Generic program files needed by the Spacewalk server machines.
 This package includes the common code required by all servers/proxies.
 
 %package sql
-Summary: Core functions providing SQL connectivity for the RHN backend modules
+Summary: Core functions providing SQL connectivity for the Spacewalk backend modules
 Group: Applications/Internet
 Requires(pre): %{name} = %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
@@ -93,7 +93,7 @@ This package contains provides PostgreSQL connectivity for the Spacewalk
 backend modules.
 
 %package server
-Summary: Basic code that provides RHN Server functionality
+Summary: Basic code that provides Spacewalk Server functionality
 Group: Applications/Internet
 Requires(pre): %{name}-sql = %{version}-%{release}
 Requires: %{name}-sql = %{version}-%{release}
@@ -140,7 +140,7 @@ Provides: rhns-applet = 1:%{version}-%{release}
 
 %description applet
 These are the files required for running the /APPLET handler, which
-provides the functions for the RHN applet.
+provides the functions for the Spacewalk applet.
 
 %package app
 Summary: Handler for /APP
@@ -181,7 +181,7 @@ functionality for a variety of XML-RPC receivers. The architecture is
 modular so that you can plug/install additional modules for XML-RPC
 receivers and get them enabled automatically.
 
-This package contains /SAT handler, which provide Inter Spacewalk Sync 
+This package contains /SAT handler, which provide Inter Spacewalk Sync
 capability.
 
 %package iss-export
@@ -260,7 +260,7 @@ Provides: rhns-package-push-server = 1:%{version}-%{release}
 Listener for rhnpush (non-XMLRPC version)
 
 %package tools
-Summary: Red Hat Network Services Satellite Tools
+Summary: Spacewalk Services Tools
 Group: Applications/Internet
 Requires: %{name}-xmlrpc = %{version}-%{release}
 Requires: %{name}-app = %{version}-%{release}
@@ -288,10 +288,10 @@ Provides: spacewalk-backend-satellite-tools = %{version}-%{release}
 Provides: rhns-satellite-tools = 1:%{version}-%{release}
 
 %description tools
-Various utilities for the Red Hat Network Satellite Server.
+Various utilities for the Spacewalk Server.
 
 %package xml-export-libs
-Summary: Red Hat Network XML data exporter
+Summary: Spacewalk XML data exporter
 Group: Applications/Internet
 Requires: %{name}-server = %{version}-%{release}
 Obsoletes: rhns-xml-export-libs < 5.3.0
@@ -357,13 +357,13 @@ if grep -E -i $regex %{rhnconf}/rhn.conf > /dev/null 2>&1 ; then
     rm -f %{rhnconf}/rhnSecret.py*
     exit 0
 fi
-    
+
 # Generate a secret key if old one is not present
 if [ -f %{rhnconf}/rhnSecret.py ]; then
     secret_key=$(PYTHONPATH=%{rhnconf} %{__python} -c \
         "from rhnSecret import SECRET_KEY; print SECRET_KEY")
 else
-    secret_key=$(dd if=/dev/urandom bs=1024 count=1 2>/dev/null | sha1sum - | 
+    secret_key=$(dd if=/dev/urandom bs=1024 count=1 2>/dev/null | sha1sum - |
         awk '{print $1}')
 fi
 
@@ -517,7 +517,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-server
 
 %files xmlrpc
-%defattr(-,root,root) 
+%defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
 %dir %{rhnroot}/server/handlers/xmlrpc
 %{rhnroot}/server/handlers/xmlrpc/*
@@ -1373,20 +1373,20 @@ rm -f %{rhnconf}/rhnSecret.py*
 - do not raise exception in exception in case stream is None
 
 * Thu Nov 11 2010 Lukas Zapletal 1.2.69-1
-- Adding missing AS keyword to SELECT clause 
-- Force EVR to be strings in the backend 
+- Adding missing AS keyword to SELECT clause
+- Force EVR to be strings in the backend
 
 * Thu Nov 11 2010 Michael Mraka <michael.mraka@redhat.com> 1.2.68-1
 - removed dead unique() and intersection()
 - replaced own intersection() and unique() with faster builtin set operations
 
 * Thu Nov 11 2010 Lukas Zapletal 1.2.67-1
-- Fixing space in SQL bind parameter 
-- Keyword MINUS is not recognized by PostgreSQL 
-- Fixing indentation in spacewalk-remove-channel 
-- l10n: Updates to German 
-- Revert "l10n: Updates to Swedish 
-- l10n: Updates to Swedish 
+- Fixing space in SQL bind parameter
+- Keyword MINUS is not recognized by PostgreSQL
+- Fixing indentation in spacewalk-remove-channel
+- l10n: Updates to German
+- Revert "l10n: Updates to Swedish
+- l10n: Updates to Swedish
 
 * Thu Nov 11 2010 Jan Pazdziora 1.2.66-1
 - Update copyright years in backend.
@@ -1473,7 +1473,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - moved progress bar blocks into function
 
 * Thu Nov 04 2010 Lukas Zapletal 1.2.58-1
-- Adding missing colon in channelImport.py 
+- Adding missing colon in channelImport.py
 
 * Wed Nov 03 2010 Michael Mraka <michael.mraka@redhat.com> 1.2.57-1
 - merged simple sql fetches into a single command
@@ -1484,12 +1484,12 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 * Wed Nov 03 2010 Lukas Zapletal 1.2.56-1
 - Adding one parameter to to_number functions to be PG compatible
-- Fixing query in dumper to be PostgreSQL compatible 
-- Rewriting SQL JOIN to ANSI syntax in test-dump-channel 
-- Rewriting SQL JOIN to ANSI syntax in exporter 
-- Rewriting SQL JOIN to ANSI syntax in disk_dumper 
+- Fixing query in dumper to be PostgreSQL compatible
+- Rewriting SQL JOIN to ANSI syntax in test-dump-channel
+- Rewriting SQL JOIN to ANSI syntax in exporter
+- Rewriting SQL JOIN to ANSI syntax in disk_dumper
 - Rewriting SQL JOIN to ANSI syntax in spacewalk-remove-channel
-- 644239 - do not check minor version of xml_dump_version 
+- 644239 - do not check minor version of xml_dump_version
 
 * Wed Nov 03 2010 Jan Pazdziora 1.2.55-1
 - fixed couple of root_dir leftovers from commit
@@ -1594,22 +1594,22 @@ rm -f %{rhnconf}/rhnSecret.py*
 - Class ServerGroupTypeDumper not used anywhere, removing.
 
 * Wed Oct 27 2010 Lukas Zapletal 1.2.42-1
-- Fixing c89830b90cb36bd6a79641553c5091c57af8fb8e typo 
+- Fixing c89830b90cb36bd6a79641553c5091c57af8fb8e typo
 
 * Wed Oct 27 2010 Lukas Zapletal 1.2.41-1
-- Fixing typo in driver_postgresql.py 
+- Fixing typo in driver_postgresql.py
 - Class ReleaseChannelMapImport does not seem to be called, removing.
 - fixed NameError: name 'SourcePackageImport' is not defined
-- removed redundant empty tagMaps 
+- removed redundant empty tagMaps
 - reused load_sql
-- XXX: not used currently; removing 
+- XXX: not used currently; removing
 
 * Wed Oct 27 2010 Lukas Zapletal 1.2.40-1
 - In PostgreSQL NUMERIC types are returned as int or float now
-- Rewritten DECODE to ANSI CASE-WHEN syntax for yum 
+- Rewritten DECODE to ANSI CASE-WHEN syntax for yum
 - Class FileWireSource does not seem to be used, removing.
 - Class ChannelProductsDumper does not seem to be used, removing.
-  
+
 
 * Wed Oct 27 2010 Jan Pazdziora 1.2.39-1
 - Previous commit leaves __single_query unused, removing.
@@ -1730,13 +1730,13 @@ rm -f %{rhnconf}/rhnSecret.py*
 * Wed Oct 13 2010 Lukas Zapletal 1.2.24-1
 - Procedure call now general (update_needed_cache) in backend
 - Vn_constriant violation in Postgres (vn_rhnpackageevr_epoch)
-- Postgres reserved word fix 
-- Vn_constriant violation in Postgres 
-- Sysdate changed to current_timestamp 
-- ANSI syntax for outer join during system registration 
-- Debug log from postgresql backend driver removed 
-- Postgres python backend driver functions support 
-- Postgres savepoint support in backend code 
+- Postgres reserved word fix
+- Vn_constriant violation in Postgres
+- Sysdate changed to current_timestamp
+- ANSI syntax for outer join during system registration
+- Debug log from postgresql backend driver removed
+- Postgres python backend driver functions support
+- Postgres savepoint support in backend code
 
 * Wed Oct 13 2010 Michael Mraka <michael.mraka@redhat.com> 1.2.23-1
 - speed up queries
@@ -1827,7 +1827,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - 591050 - satellite sync report type of disk dump
 
 * Tue Aug 17 2010 Justin Sherrill <jsherril@redhat.com> 1.2.6-1
-- fixing small mistake where the wrong variable name was 
+- fixing small mistake where the wrong variable name was
   used (jsherril@redhat.com)
 
 * Tue Aug 17 2010 Justin Sherrill <jsherril@redhat.com> 1.2.5-1
@@ -2128,7 +2128,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - The checksumtype is now called checksum_type.
 
 * Tue Apr 27 2010 Michael Mraka <michael.mraka@redhat.com> 1.1.6-1
-- implemented dump version 3.6 in rhn-satellite-exporter 
+- implemented dump version 3.6 in rhn-satellite-exporter
 
 * Tue Apr 27 2010 Jan Pazdziora 1.1.5-1
 - 585233 - add support for syncing comps data.
@@ -2156,8 +2156,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 - 574334 - fixed Error: NameError caught!
 
 * Wed Mar 31 2010 Partha Aji <paji@redhat.com> 0.9.18-1
-- 575867 - Fixed a registration issue where config channels 
-  in reactivation key +  activation key combination got ranked 
+- 575867 - Fixed a registration issue where config channels
+  in reactivation key +  activation key combination got ranked
   the same value causing all sorts of errors. (paji@redhat.com)
 - 175155 - require specific version of rhnlib (msuchy@redhat.com)
 
@@ -2290,7 +2290,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - Force correct UTF-8 for changelog name and text.
 
 * Mon Jan 11 2010 Michael Mraka <michael.mraka@redhat.com> 0.8.21-1
-- fixed satsync -l over ISS 
+- fixed satsync -l over ISS
 - fixed failure of httpd to (re)start
 * Sat Jan 09 2010 Michael Mraka <michael.mraka@redhat.com> 0.8.20-1
 - fixed SHA256 packages import
@@ -2446,7 +2446,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - bumping versions to 0.7.0 (jmatthew@redhat.com)
 
 * Wed Aug 05 2009 Pradeep Kilambi <pkilambi@redhat.com> 0.6.30-1
-- 
+-
 
 * Wed Aug 05 2009 Jan Pazdziora 0.6.29-1
 - reporting: add the entitlements report
@@ -2481,7 +2481,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - backend/satellite_tools/repo_plugins/yum_src.py (jsherril@redhat.com)
 
 * Wed Jul 29 2009 Pradeep Kilambi <pkilambi@redhat.com> 0.6.28-1
-- 
+-
 
 * Mon Jul 27 2009 Devan Goodwin <dgoodwin@redhat.com> 0.6.27-1
 - Fix rhnSQL pgsql driver when sql not provided to Cursor class.
@@ -2818,7 +2818,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - 480252 - Raise meaningful exception instead of traceback on Oracle column size error.
 
 * Thu Mar 19 2009 Pradeep Kilambi <pkilambi@redhat.com> 0.5.25-1
-- 468686 - restricts deactivated accounts from registering systems and managing systems. 
+- 468686 - restricts deactivated accounts from registering systems and managing systems.
 - 485532 - Adding the overriding config values for apachec process sizelimit issue
 
 * Wed Mar 18 2009 Mike McCune <mmccune@gmail.com> 0.5.23-1
@@ -2870,7 +2870,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - 486186 - Update spacewalk spec files to require cobbler >= 1.4.2
 
 * Wed Feb 18 2009 Pradeep Kilambi <pkilambi@redhat.com> 0.5.8-1
-- Resolves: bz#446289 - create the private channel family at 
+- Resolves: bz#446289 - create the private channel family at
   org creation time
 
 * Mon Feb 16 2009 Pradeep Kilambi <pkilambi@redhat.com> 0.5.7-1
@@ -2883,7 +2883,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - bz#368711 bz#480063
 
 * Mon Feb 09 2009 Pradeep Kilambi <pkilambi@redhat.com> 0.5.4-1
-- bz475894:fixing the server code to filter out duplicate deps 
+- bz475894:fixing the server code to filter out duplicate deps
   when pushing fedora-10+ packages to channels
 
 * Thu Feb 05 2009 Pradeep Kilambi <pkilambi@redhat.com> 0.5.3-1
@@ -2906,7 +2906,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - bz461162 added rule to redirect port 80 requests to /rpc/api to /rhn/rpc/api
 
 * Tue Jan 13 2009 Mike McCune <mmccune@gmail.com> 0.4.15-1
-- 461162 - for some reason with our new httpd rework this rewrite rule needs 
+- 461162 - for some reason with our new httpd rework this rewrite rule needs
   to be in both config files.  Filed space05 bug: 479911 to address this.
 
 * Tue Jan 13 2009 Michael Mraka <michael.mraka@redhat.com> 0.4.13-1
@@ -2948,7 +2948,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - set close-on-exec on log files
 
 * Wed Dec 10 2008 Miroslav Suchy <msuchy@redhat.com> 0.4.7-1
-- fix build errors and finish removing of cobbler-spacewalk-sync and 
+- fix build errors and finish removing of cobbler-spacewalk-sync and
   spacewalk-cobbler-sync from tools subpackage
 
 * Mon Dec  8 2008 Michael Mraka <michael.mraka@redhat.com> 0.4.6-1
@@ -3269,11 +3269,11 @@ rm -f %{rhnconf}/rhnSecret.py*
 * Mon Jul 23 2001 Mihai Ibanescu <misa@redhat.com>
 - Added a requires for a specific version of rpm-python, since we are sending
   the headers with a digest attached.
-  
+
 * Thu Jul 12 2001 Mihai Ibanescu <misa@redhat.com>
 - siteConfig.py is now config(noreplace) since it was screwing up the
   already-installed siteConfig.py
-  
+
 * Mon Jul 10 2001 Todd Warner <taw@redhat.com>
 - /var/log/rhns --> /var/log/rhn to match rhnConfig.py
 
@@ -3310,14 +3310,14 @@ rm -f %{rhnconf}/rhnSecret.py*
 - make siteConfig common with the proxy package
 
 * Thu Jun 14 2001 Mihai Ibanescu <misa@redhat.com>
-- Added some files 
+- Added some files
 - Fixed the install stage
 - Added dependency on rhns-common
 
 * Tue Jun 12 2001 Cristian Gafton <gafton@redhat.com>
 - rework for the new layout
 
-* Fri Mar 16 2001 Cristian Gafton <gafton@redhat.com> 
+* Fri Mar 16 2001 Cristian Gafton <gafton@redhat.com>
 - deploy the new code layout
 - ship a compiled version of config as well
 - don't ship default config files that open holes to the world
@@ -3325,6 +3325,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 * Fri Mar 16 2001 Adrian Likins <alikins@redhat.com>
 - add the bugzilla_errata stuff to app packages
 
-* Mon Mar 12 2001 Cristian Gafton <gafton@redhat.com> 
+* Mon Mar 12 2001 Cristian Gafton <gafton@redhat.com>
 - get rid of the bsddbmodule source code (unused in the live site)
 

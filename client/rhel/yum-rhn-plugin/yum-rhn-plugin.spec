@@ -1,4 +1,4 @@
-Summary: RHN support for yum
+Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
 Version: 1.6.0
 Release: 1%{?dist}
@@ -29,7 +29,7 @@ Obsoletes: up2date < 5.0.0
 Provides: up2date = 5.0.0
 
 %description
-This yum plugin provides support for yum to access a Red Hat Network server for
+This yum plugin provides support for yum to access a Spacewalk server for
 software updates.
 
 %prep
@@ -40,7 +40,7 @@ make -f Makefile.yum-rhn-plugin
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make -f Makefile.yum-rhn-plugin install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir} 
+make -f Makefile.yum-rhn-plugin install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
 
 %find_lang %{name}
 
@@ -347,7 +347,7 @@ fi
   error due to 502 proxy errors (pkilambi@redhat.com)
 
 * Mon Jun 22 2009 Pradeep Kilambi <pkilambi@redhat.com> 0.5.4-10%{?dist}
-- Resolves: #484245 
+- Resolves: #484245
 
 * Fri Jun 12 2009 Pradeep Kilambi <pkilambi@redhat.com> 0.5.4-9%{?dist}
 - Resolves: #467866
@@ -415,7 +415,7 @@ fi
 - Resolves: #433781
 
 * Wed Jan 16 2008 Pradeep Kilambi <pkilambi@redhat.com> - 0.5.3-3
-- Resolves: #222327, #226151, #245013, #248385, #251915, #324141 
+- Resolves: #222327, #226151, #245013, #248385, #251915, #324141
 - Resolves: #331001, #332011, #378911
 
 * Fri Aug 17 2007 Pradeep Kilambi <pkilambi@redhat.com>  - 0.5.2-3

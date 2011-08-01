@@ -1,5 +1,5 @@
 %define rhnroot /%{_datadir}/rhn
-Summary: Various utility scripts and data files for RHN Satellite installations
+Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
 Version: 1.6.0
@@ -262,7 +262,7 @@ rm -rf $RPM_BUILD_ROOT
 
 * Wed Jan 21 2009 Michael Mraka <michael.mraka@redhat.com> 0.5.2-1
 - fixed branding stuff
- 
+
 * Mon Jan 19 2009 Jan Pazdziora 0.5.1-1
 - rebuilt for 0.5, after repository reorg
 
@@ -285,7 +285,7 @@ rm -rf $RPM_BUILD_ROOT
 - Remove RHN::GPG.
 
 * Thu Oct 30 2008 Michael Mraka <michael.mraka@redhat.com> 0.4.1-1
-- resolved #455421 
+- resolved #455421
 
 * Tue Oct 21 2008 Michael Mraka <michael.mraka@redhat.com> 0.3.2-1
 - resolved #467717 - fixed sysvinit scripts
