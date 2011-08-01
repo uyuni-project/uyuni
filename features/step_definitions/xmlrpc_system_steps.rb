@@ -14,6 +14,10 @@ When /^I call system\.listSystems\(\), I should get a list of them\.$/ do
   rabbit = servers[0]
 end
 
+When /^I check a sysinfo by a number of XML\-RPC calls, it just works\. :\-\)$/ do
+  fail if (rabbit == nil or !systest.getSysInfo(rabbit))
+end
+
 Then /^I logout from XML\-RPC\/system\.$/ do
   systest.logout()
 end
