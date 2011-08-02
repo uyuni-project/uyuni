@@ -278,7 +278,7 @@ class RepoSync:
                     break
             e['topic'] = ' '
             e['solution'] = ' '
-            e['issue_date'] = self._to_db_date(notice.get('timestamp'))
+            e['issue_date'] = _to_db_date(notice.get('timestamp'))
             e['update_date'] = e['issue_date']
             e['notes'] = ''
             e['org_id'] = self.channel['org_id']
