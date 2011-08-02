@@ -32,9 +32,8 @@ import com.redhat.rhn.domain.user.StateChange;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.user.UserManager;
-
-import net.sf.jpam.Pam;
-import net.sf.jpam.PamReturnValue;
+import com.suse.pam.Pam;
+import com.suse.pam.PamReturnValue;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;

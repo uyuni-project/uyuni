@@ -19,7 +19,6 @@ import shutil
 import subprocess
 import sys
 import os
-import re
 import xml.etree.cElementTree as etree
 
 import urlgrabber
@@ -32,6 +31,7 @@ from yum.i18n import to_unicode
 from spacewalk.common import rhnLog
 from spacewalk.satellite_tools.reposync import ContentPackage, ChannelException, ChannelTimeoutException
 
+CACHE_DIR = '/var/cache/rhn/reposync/'
 class YumWarnings:
     def write(self, s):
         pass
@@ -42,25 +42,26 @@ class YumWarnings:
         sys.stdout = self.saved_stdout
 
 class ContentSource:
-    url = None
-    name = None
-    repo = None
-    cache_dir = '/var/cache/rhn/reposync/'
     def __init__(self, url, name, insecure=False, quiet=False, interactive=True,
                  proxy=None, proxy_user=None, proxy_pass=None):
         self.url = url
         self.name = name
         self.insecure = insecure
+        self.quiet = quiet
         self.interactive = interactive
         self.proxy = proxy
         self.proxy_user = proxy_user
         self.proxy_pass = proxy_pass
-        self._clean_cache(self.cache_dir + name)
+        self._clean_cache(CACHE_DIR + name)
 
-    def list_packages(self):
-        """ list packages"""
         repo = yum.yumRepo.YumRepository(self.name)
         self.repo = repo
+        self.setup_repo(repo)
+        self.sack = None
+        self.setup_repo(repo)
+
+    def setup_repo(self, repo):
+        """Fetch repository metadata"""
         repo.proxy = self.proxy
         repo.proxy_username = self.proxy_user
         repo.proxy_password = self.proxy_pass
@@ -68,7 +69,7 @@ class ContentSource:
         repo.metadata_expire = 0
         repo.mirrorlist = self.url
         repo.baseurl = [self.url]
-        repo.basecachedir = self.cache_dir
+        repo.basecachedir = CACHE_DIR
         if self.insecure:
             repo.repo_gpgcheck = False
         else:
@@ -78,9 +79,10 @@ class ContentSource:
         repo.baseurlSetup()
         warnings.restore()
         for burl in repo.baseurl:
-          repo.gpgkey = [burl + '/repodata/repomd.xml.key']
-
-        repo.setup(False, None, gpg_import_func=self.getKeyForRepo, confirm_func=self.askImportKey)
+            repo.gpgkey = [burl + '/repodata/repomd.xml.key']
+ 
+        repo.setup(False, None, gpg_import_func=self.getKeyForRepo,
+                   confirm_func=self.askImportKey)
         self.initgpgdir( repo.gpgdir )
         sack = repo.getPackageSack()
 
@@ -93,8 +95,11 @@ class ContentSource:
                 raise ChannelTimeoutException("Retrieving '%s' failed: File not found in repository '%s'" % (reqFile, repo))
             else:
                 raise
+        self.sack = sack
 
-        list = sack.returnPackages()
+    def list_packages(self):
+        """ list packages"""
+        list = self.sack.returnPackages()
         to_return = []
         for pack in list:
             if pack.arch == 'src':
@@ -192,7 +197,9 @@ class ContentSource:
         @param callback: Callback function to use for asking for verification
                           of a key. Takes a dictionary of key info.
         """
-        keyurls = repo.gpgkey
+        keyurls = []
+        if self.interactive:
+            keyurls = repo.gpgkey
         key_installed = False
         for keyurl in keyurls:
             keys = self._retrievePublicKey(keyurl, repo)
@@ -312,5 +319,5 @@ class ContentSource:
 
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
-        #if not self.quiet:
-        sys.stderr.write(str(message) + "\n")
+        if not self.quiet:
+            sys.stderr.write(str(message) + "\n")

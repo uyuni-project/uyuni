@@ -38,8 +38,7 @@ from spacewalk.server import taskomatic
 from spacewalk.susemanager import suseLib
 from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 
-
-hostname = socket.gethostname()
+HOSTNAME = socket.gethostname()
 
 default_log_location = '/var/log/rhn/reposync/'
 default_hash = 'sha256'
@@ -51,6 +50,7 @@ class ChannelException(Exception):
     def __init__(self, value=None):
         Exception.__init__(self)
         self.value = value
+
     def __str__(self):
         return "%s" %(self.value,)
 
@@ -63,80 +63,84 @@ class ChannelTimeoutException(ChannelException):
 
 
 class RepoSync:
-    parser = None
-    type = None
-    urls = None
-    channel_label = None
-    channel = None
-    fail = False
-    quiet = False
     regen = False
-    noninteractive = False
 
-    def main(self):
+    def __init__(self, channel_label, repo_type, url=None, fail=False,
+                 quiet=False, noninteractive=False):
+        self.fail = fail
+        self.quiet = quiet
+        self.interactive = not noninteractive
+
         initCFG('server.satellite')
         db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
         rhnSQL.initDB(db_string)
-        (options, args) = self.process_args()
 
+        # setup logging
         log_filename = 'reposync.log'
-        if options.channel_label:
-            date = time.localtime()
-            datestr = '%d.%02d.%02d-%02d:%02d:%02d' % (date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec)
-            log_filename = options.channel_label + '-' +  datestr + '.log'
-
+        date = time.localtime()
+        datestr = '%d.%02d.%02d-%02d:%02d:%02d' % (
+            date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
+            date.tm_min, date.tm_sec)
+        log_filename = channel_label + '-' +  datestr + '.log'
         rhnLog.initLOG(default_log_location + log_filename)
         #os.fchown isn't in 2.4 :/
         os.system("chgrp www " + default_log_location + log_filename)
 
-
-        quit = False
-        if not options.url:
-            if options.channel_label:
-                # TODO:need to look at user security across orgs
-                h = rhnSQL.prepare("""select s.source_url, s.metadata_signed
-                                      from rhnContentSource s,
-                                           rhnChannelContentSource cs,
-                                           rhnChannel c
-                                     where s.id = cs.source_id
-                                       and cs.channel_id = c.id
-                                       and c.label = :label""")
-                h.execute(label=options.channel_label)
-                source_urls = h.fetchall_dict() or []
-                if source_urls:
-                    self.urls = source_urls
-                else:
-                    if options.channel_label:
-                        # generate empty metadata
-                        taskomatic.add_to_repodata_queue_for_channel_package_subscription(
-                            [options.channel_label], [], "server.app.yumreposync")
-                        rhnSQL.commit()
-                    quit = True
-                    self.error_msg("Channel has no URL associated")
-        else:
-            self.urls = [{'source_url':options.url, 'metadata_signed' : 'N'}]
-        if not options.channel_label:
-            quit = True
-            self.error_msg("--channel must be specified")
-
         self.log_msg("\nSync started: %s" % (time.asctime(time.localtime())))
         self.log_msg(str(sys.argv))
 
+        if not url:
+            # TODO:need to look at user security across orgs
+            h = rhnSQL.prepare("""select s.source_url, s.metadata_signed
+                                  from rhnContentSource s,
+                                       rhnChannelContentSource cs,
+                                       rhnChannel c
+                                 where s.id = cs.source_id
+                                   and cs.channel_id = c.id
+                                   and c.label = :label""")
+            h.execute(label=channel_label)
+            source_urls = h.fetchall_dict()
+            if source_urls:
+                self.urls = source_urls
+            else:
+                # generate empty metadata and quit
+                taskomatic.add_to_repodata_queue_for_channel_package_subscription(
+                    [channel_label], [], "server.app.yumreposync")
+                rhnSQL.commit()
+                self.error_msg("Channel has no URL associated")
+                sys.exit(1)
+        else:
+            self.urls = [{'source_url': url, 'metadata_signed' : 'N'}]
 
-        if quit:
-            sys.exit(1)
+        self.repo_plugin = self.load_plugin(repo_type)
+        self.channel_label = channel_label
 
-        self.type = options.type
-        self.channel_label = options.channel_label
-        self.fail = options.fail
-        self.quiet = options.quiet
         self.channel = self.load_channel()
-        self.noninteractive = options.noninteractive
-
         if not self.channel:
-            print "Channel does not exist"
+            self.print_msg("Channel does not exist.")
             sys.exit(1)
 
+    def load_plugin(self, repo_type):
+        """Try to import the repository plugin required to sync the repository
+
+        :repo_type: type of the repository; only 'yum' is currently supported
+
+        """
+        name = repo_type + "_src"
+        mod = __import__('spacewalk.satellite_tools.repo_plugins',
+                         globals(), locals(), [name])
+        try:
+            submod = getattr(mod, name)
+        except AttributeError:
+            self.error_msg("Repository type %s is not supported. "
+                           "Could not import "
+                           "spacewalk.satellite_tools.repo_plugins.%s."
+                           % (repo_type, name))
+            sys.exit(1)
+        return getattr(submod, "ContentSource")
+
+    def sync(self):
+        """Trigger a reposync"""
         for data in self.urls:
             url = suseLib.URL(data['source_url'])
             if url.get_query_param("credentials"):
@@ -149,21 +153,20 @@ class RepoSync:
             if data['metadata_signed'] == 'N':
                 insecure = True
             try:
-                plugin = self.load_plugin()(url.getURL(), self.channel_label,
-                                            insecure, self.quiet,
-                                            (not self.noninteractive),
-                                            proxy=CFG.HTTP_PROXY,
-                                            proxy_user=CFG.HTTP_PROXY_USERNAME,
-                                            proxy_pass=CFG.HTTP_PROXY_PASSWORD)
-                self.import_packages(plugin, url.getURL())
-                self.import_updates(plugin, url.getURL())
+                repo = self.repo_plugin(url.getURL(), self.channel_label,
+                                        insecure, self.quiet, self.interactive,
+                                        proxy=CFG.HTTP_PROXY,
+                                        proxy_user=CFG.HTTP_PROXY_USERNAME,
+                                        proxy_pass=CFG.HTTP_PROXY_PASSWORD)
+                self.import_packages(repo, url.getURL())
+                self.import_updates(repo, url.getURL())
             except ChannelTimeoutException, e:
                 self.print_msg(e)
                 self.sendErrorMail(str(e))
                 sys.exit(1)
             except ChannelException, e:
                 self.print_msg("ChannelException: %s" % e)
-                self.sendErrorMail(str(e))
+                self.sendErrorMail("ChannelException: %s" % str(e))
                 sys.exit(1)
             except Errors.YumGPGCheckError, e:
                 self.print_msg("YumGPGCheckError: %s" % e)
@@ -202,21 +205,6 @@ class RepoSync:
                              where label = :channel""")
         h.execute(channel=self.channel['label'])
 
-    def process_args(self):
-        self.parser = OptionParser()
-        self.parser.add_option('-u', '--url', action='store', dest='url', help='The url to sync')
-        self.parser.add_option('-c', '--channel', action='store', dest='channel_label', help='The label of the channel to sync packages to')
-        self.parser.add_option('-t', '--type', action='store', dest='type', help='The type of repo, currently only "yum" is supported', default='yum')
-        self.parser.add_option('-f', '--fail', action='store_true', dest='fail', default=False , help="If a package import fails, fail the entire operation")
-        self.parser.add_option('-q', '--quiet', action='store_true', dest='quiet', default=False, help="Print no output, still logs output")
-        self.parser.add_option('-n', '--non-interactive', action='store_true', dest='noninteractive', default=False, help="Do not ask anything, use default answers automatically.")
-        return self.parser.parse_args()
-
-    def load_plugin(self):
-        name = self.type + "_src"
-        mod = __import__('spacewalk.satellite_tools.repo_plugins', globals(), locals(), [name])
-        submod = getattr(mod, name)
-        return getattr(submod, "ContentSource")
 
     def import_updates(self, plug, url):
         (notices_type, notices) = plug.get_updates()
@@ -428,9 +416,9 @@ class RepoSync:
             e['synopsis'] = notice['title']
             e['topic'] = ' '
             e['solution'] = ' '
-            e['issue_date'] = self._to_db_date(notice['issued'])
+            e['issue_date'] = _to_db_date(notice['issued'])
             if notice['updated']:
-                e['update_date'] = self._to_db_date(notice['updated'])
+                e['update_date'] = _to_db_date(notice['updated'])
             else:
                 e['update_date'] = e['issue_date']
             #e['last_modified'] = notice['']
@@ -521,35 +509,9 @@ class RepoSync:
                 package['package_id'] = cs['id']
                 e['packages'].append(package)
 
-            e['keywords'] = []
-            if notice['reboot_suggested']:
-                kw = Keyword()
-                kw.populate({'keyword':'reboot_suggested'})
-                e['keywords'].append(kw)
-            if notice['restart_suggested']:
-                kw = Keyword()
-                kw.populate({'keyword':'restart_suggested'})
-                e['keywords'].append(kw)
-            e['bugs'] = []
-            bzs = filter(lambda r: r['type'] == 'bugzilla', notice['references'])
-            if bzs:
-                tmp = {}
-                for bz in bzs:
-                    if bz['id'] not in tmp:
-                        bug = Bug()
-                        bug.populate({'bug_id': bz['id'],
-                                      'summary': bz['title'],
-                                      'href': bz['href']})
-                        e['bugs'].append(bug)
-                        tmp[bz['id']] = None
-            e['cve'] = []
-            cves = filter(lambda r: r['type'] == 'cve', notice['references'])
-            if cves:
-                tmp = {}
-                for cve in cves:
-                    if cve['id'] not in tmp:
-                        e['cve'].append(cve['id'])
-                        tmp[cve['id']] = None
+            e['keywords'] = _update_keywords(notice)
+            e['bugs'] = _update_bugs(notice)
+            e['cve'] = _update_cve(notice)
             e['locally_modified'] = None
             if not error:
                 batch.append(e)
@@ -560,8 +522,8 @@ class RepoSync:
         importer.run()
         self.regen = True
 
-    def import_packages(self, plug, url):
-        packages = plug.list_packages()
+    def import_packages(self, repo, url):
+        packages = repo.list_packages()
         to_link = []
         to_download = []
         skipped = 0
@@ -572,50 +534,50 @@ class RepoSync:
         compatArchs = self.compatiblePackageArchs()
 
         for pack in packages:
-                 if pack.arch in ['src', 'nosrc']:
-                     # skip source packages
-                     skipped += 1
-                     continue
-                 if pack.arch not in compatArchs:
-                     # skip packages with incompatible architecture
-                     skipped += 1
-                     continue
+            if pack.arch in ['src', 'nosrc']:
+                # skip source packages
+                skipped += 1
+                continue
+            if pack.arch not in compatArchs:
+                # skip packages with incompatible architecture
+                skipped += 1
+                continue
 
-                 # we have a few scenarios here:
-                 # 1.  package is not on the server (link and download)
-                 # 2.  package is in the server, but not in the channel (just link if we can)
-                 # 3.  package is in the server and channel, but not on the file system (just download)
-                 path = rhnPackage.get_path_for_package([pack.name, pack.version, pack.release,\
-                        pack.epoch, pack.arch], self.channel_label)
-                 if not path:
-                     path = rhnPackage.get_path_for_package([pack.name, pack.version, pack.release,\
-                        '', pack.arch], self.channel_label)
+            # we have a few scenarios here:
+            # 1.  package is not on the server (link and download)
+            # 2.  package is in the server, but not in the channel (just link if we can)
+            # 3.  package is in the server and channel, but not on the file system (just download)
+            path = rhnPackage.get_path_for_package([pack.name, pack.version, pack.release,\
+                   pack.epoch, pack.arch], self.channel_label)
+            if not path:
+                path = rhnPackage.get_path_for_package([pack.name, pack.version, pack.release,\
+                   '', pack.arch], self.channel_label)
 
-                 if path:
-                     if os.path.exists(os.path.join(CFG.MOUNT_POINT, path)):
-                         continue
-                     else:
-                         to_download.append(pack)
-                         continue
+            if path:
+                if os.path.exists(os.path.join(CFG.MOUNT_POINT, path)):
+                    continue
+                else:
+                    to_download.append(pack)
+                    continue
 
-                 # we know that it's not in the channel, lets try to check the server by checksum!
-                 #for some repos (sha256), we can check to see if we have them by
-                 #  checksum and not bother downloading.  For older repos, we only
-                 #  have sha1, which satellite doesn't track
-                 # regardless we have to link the package
-                 to_link.append(pack)
+            # we know that it's not in the channel, lets try to check the server by checksum!
+            #for some repos (sha256), we can check to see if we have them by
+            #  checksum and not bother downloading.  For older repos, we only
+            #  have sha1, which satellite doesn't track
+            # regardless we have to link the package
+            to_link.append(pack)
 
-                 found = False
-                 for type,sum  in pack.checksums.items():
-                     if type == 'sha': #we use sha1 (instead of sha)
-                         type = 'sha1'
-                     path = rhnPackage.get_path_for_checksum(self.channel['org_id'],\
-                                type, sum)
-                     if path and os.path.exists(os.path.join(CFG.MOUNT_POINT, path)):
-                             found = True
-                             break
-                 if not found:
-                     to_download.append(pack)
+            found = False
+            for type,sum  in pack.checksums.items():
+                if type == 'sha': #we use sha1 (instead of sha)
+                    type = 'sha1'
+                path = rhnPackage.get_path_for_checksum(self.channel['org_id'],\
+                           type, sum)
+                if path and os.path.exists(os.path.join(CFG.MOUNT_POINT, path)):
+                        found = True
+                        break
+            if not found:
+                to_download.append(pack)
 
         if skipped > 0:
             self.print_msg("Skip '%s' incompatible packages." % skipped)
@@ -631,7 +593,7 @@ class RepoSync:
                 try:
                     self.print_msg(str(index+1) + "/" + str(len(to_download)) + " : "+ \
                           pack.getNVREA())
-                    path = plug.get_package(pack)
+                    path = repo.get_package(pack)
                     self.upload_package(pack, path)
                     if pack in to_link:
                         self.associate_package(pack)
@@ -775,7 +737,6 @@ class RepoSync:
         if not self.quiet:
             print message
 
-
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
         if not self.quiet:
@@ -793,23 +754,56 @@ class RepoSync:
         if isinstance(to, type([])):
             fr = string.strip(to[0])
             to = string.join(map(string.strip, to), ', ')
+
         headers = {
-            "Subject" : "SUSE Manager repository sync failed (%s)" % hostname,
-            "From"    : "%s <%s>" % (hostname, fr),
+            "Subject" : "SUSE Manager repository sync failed (%s)" % HOSTNAME,
+            "From"    : "%s <%s>" % (HOSTNAME, fr),
             "To"      : to,
         }
         extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
         rhnMail.send(headers, extra + body)
 
-    def _to_db_date(self, date):
-        ret = ""
-        if date.isdigit():
-            ret = datetime.fromtimestamp(float(date)).isoformat(' ')
-        else:
-            # we expect to get ISO formated date
-            ret = date
-        return ret
+def _to_db_date(date):
+    if date.isdigit():
+        ret = datetime.fromtimestamp(float(date)).isoformat(' ')
+    else:
+        # we expect to get ISO formated date
+        ret = date
+    return ret
 
+def _update_keywords(notice):
+    """Return a list of Keyword objects for the notice"""
+    keywords = []
+    if notice['reboot_suggested']:
+        kw = Keyword()
+        kw.populate({'keyword':'reboot_suggested'})
+        keywords.append(kw)
+    if notice['restart_suggested']:
+        kw = Keyword()
+        kw.populate({'keyword':'restart_suggested'})
+        keywords.append(kw)
+    return keywords
+
+def _update_bugs(notice):
+    """Return a list of Bug objects from the notice's references"""
+    bugs = {}
+    for bz in notice['references']:
+        if bz['type'] == 'bugzilla' and bz['id'] not in bugs:
+            bug = Bug()
+            bug.populate({'bug_id': bz['id'],
+                          'summary': bz['title'],
+                          'href': bz['href']})
+            bugs[bz['id']] = bug
+    return bugs.values()
+
+def _update_cve(notice):
+    """Return a list of unique ids from notice references of type 'cve'"""
+    cves = [cve['id'] for cve in notice['references'] if cve['type'] == 'cve']
+    # remove duplicates
+    cves = list(set(cves))
+
+    return cves
+    
 class ContentPackage:
 
     def __init__(self):

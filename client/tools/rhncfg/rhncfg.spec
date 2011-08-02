@@ -3,7 +3,7 @@
 %global client_caps_dir %{rhnconf}/clientCaps.d
 
 Name: rhncfg
-Summary: Red Hat Network Configuration Client Libraries
+Summary: Spacewalk Configuration Client Libraries
 Group:   Applications/System
 License: GPLv2 and Python
 URL:     https://fedorahosted.org/spacewalk
@@ -28,35 +28,34 @@ Requires: libselinux-python
 %endif
 %endif
 
-%description 
+%description
 The base libraries and functions needed by all rhncfg-* packages.
 
 %package client
-Summary: Red Hat Network Configuration Client
+Summary: Spacewalk Configuration Client
 Group:   Applications/System
 Requires: %{name} = %{version}-%{release}
 
 %description client
-A command line interface to the client features of the RHN Configuration
-Management system. 
+A command line interface to the client features of the Spacewalk Configuration
+Management system.
 
 %package management
-Summary: Red Hat Network Configuration Management Client
+Summary: Spacewalk Configuration Management Client
 Group:   Applications/System
 Requires: %{name} = %{version}-%{release}
 
 %description management
-A command line interface used to manage RHN configuration.
+A command line interface used to manage Spacewalk configuration.
 
 %package actions
-Summary: Red Hat Network Configuration Client Actions
+Summary: Spacewalk Configuration Client Actions
 Group:   Applications/System
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-client
 
 %description actions
-The code required to run configuration actions scheduled via the RHN website or
-RHN Satellite or Spacewalk.
+The code required to run configuration actions scheduled via Spacewalk.
 
 %prep
 %setup -q
@@ -275,11 +274,11 @@ rm -rf $RPM_BUILD_ROOT
 
 * Thu Jun 23 2005 Nick Hansen <nhansen@redhat.com>: 4.0.0-18
 - BZ#154746: make rhncfg-client diff work on solaris boxes
-  BZ#160559:  Changed the way repositories are instantiated so 
+  BZ#160559:  Changed the way repositories are instantiated so
   that the networking stuff won't get set up if --help is used with a mode.
 
 * Wed Jun 15 2005 Nick Hansen <nhansen@redhat.com>: 4.0-16
-- BZ#140501: catch outage mode message and report it nicely. 
+- BZ#140501: catch outage mode message and report it nicely.
 
 * Fri May 20 2005 John Wregglesworth <wregglej@redhat.com>: 4.0-9
 - Fixing True/False to work on AS 2.1

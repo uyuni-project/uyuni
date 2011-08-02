@@ -1,4 +1,36 @@
 -------------------------------------------------------------------
+Fri Jul 29 15:27:03 CEST 2011 - jrenner@suse.de
+
+- Fix software rollback to profiles (bnc#701772)
+
+-------------------------------------------------------------------
+Wed Jul 27 12:21:16 CEST 2011 - jrenner@suse.de
+
+- Fix taskomatic classpath to make it start again (bnc#705758)
+
+-------------------------------------------------------------------
+Mon Jul 25 12:53:26 CEST 2011 - jrenner@suse.de
+
+- Use string array for creating the cmd + empty env (bnc#705758)
+- Return failure if user or passwd is null (bnc#705758)
+
+-------------------------------------------------------------------
+Fri Jul 22 15:04:24 CEST 2011 - jrenner@suse.de
+
+- Wrap around unix2_chkpwd instead of using jpam (bnc#705758)
+
+-------------------------------------------------------------------
+Mon Jul 18 13:39:30 CEST 2011 - ug@suse.de
+
+- kernel-options field in kickstart upload page changed to
+  1024 chars (bnc#698166)
+
+-------------------------------------------------------------------
+Fri Jul  8 15:21:49 CEST 2011 - jrenner@suse.de
+
+- Fix bnc#704049 by backporting 2 patches
+
+-------------------------------------------------------------------
 Fri Jul  8 09:09:23 CEST 2011 - jrenner@suse.de
 
 - Refactor RedHat.do to Vendor.do (bnc#671239)

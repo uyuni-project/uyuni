@@ -4,6 +4,11 @@ Wed Jul 27 11:25:19 CEST 2011 - ma@suse.de
 - Do non-interactive zypper refresh.
 
 -------------------------------------------------------------------
+Wed Jul 20 12:59:00 CEST 2011 - mc@suse.de
+
+- remove empty else definition
+
+-------------------------------------------------------------------
 Fri Jul  8 11:06:29 CEST 2011 - ma@suse.de
 
 - After registration disable all repositories not provided by SuSE
