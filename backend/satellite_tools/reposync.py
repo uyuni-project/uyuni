@@ -22,7 +22,6 @@ import sys
 import time
 import traceback
 from datetime import datetime
-from optparse import OptionParser
 
 from yum import Errors
 from yum.i18n import to_unicode
