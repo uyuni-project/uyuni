@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug  3 15:45:41 CEST 2011 - iartarisi@suse.cz
+
+- reposync: fix ambiguous message when skipping a patch which references
+  a package that's not in the database (bnc#702932)
+
+-------------------------------------------------------------------
 Wed Jul  6 17:49:36 CEST 2011 - mc@suse.de
 
 - add server capability xmlrpc.errata.patch_names'
