@@ -343,9 +343,10 @@ class RepoSync:
 
                 if not cs:
                     self.print_msg(
-                        "No checksum found for "
+                        "The package "
                         "%(name)s-%(epoch)s:%(version)s-%(release)s.%(arch)s "
-                        "Skipping Patch %(patch)s" % dict(
+                        "which is referenced by patch %(patch)s was not found "
+                        "in the database. This patch has been skipped." % dict(
                             patch=e['advisory_name'],
                             **param_dict))
                     break
@@ -477,20 +478,24 @@ class RepoSync:
 
                 if not cs:
                     if 'epoch' in param_dict:
-                        self.print_msg("No checksum found for %s-%s:%s-%s.%s. "
-                                       "Skipping Patch %s" % (param_dict['name'],
-                                                              param_dict['epoch'],
-                                                              param_dict['version'],
-                                                              param_dict['release'],
-                                                              param_dict['arch'],
-                                                              e['advisory_name']))
+                        self.print_msg("The package %s-%s:%s-%s.%s. which is "
+                                       "referenced by patch %s was not found "
+                                       "in the database. This patch has been "
+                                       "skipped." % (param_dict['name'],
+                                                     param_dict['epoch'],
+                                                     param_dict['version'],
+                                                     param_dict['release'],
+                                                     param_dict['arch'],
+                                                     e['advisory_name']))
                     else:
-                        self.print_msg("No checksum found for %s-%s-%s.%s. "
-                                       "Skipping Patch %s" % (param_dict['name'],
-                                                              param_dict['version'],
-                                                              param_dict['release'],
-                                                              param_dict['arch'],
-                                                              e['advisory_name']))
+                        self.print_msg("The package %s-%s-%s.%s. which is "
+                                       "referenced by patch %s was not found "
+                                       "in the database. This patch has been "
+                                       "skipped." % (param_dict['name'],
+                                                     param_dict['version'],
+                                                     param_dict['release'],
+                                                     param_dict['arch'],
+                                                     e['advisory_name']))
                     error = True
                     break
 
