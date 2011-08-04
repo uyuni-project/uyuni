@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov 22 14:25:40 CET 2011 - mantel@suse.de
+
+- do not require oracle-xe, but oracle-sqlplus to allow full
+  Oracle database to be used
+
+-------------------------------------------------------------------
 Thu Oct 20 12:12:29 CEST 2011 - ug@suse.de
 
 - more strict file permissions for environment files
