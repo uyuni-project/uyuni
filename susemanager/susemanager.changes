@@ -1,10 +1,4 @@
 -------------------------------------------------------------------
-Thu Aug  4 12:21:28 CEST 2011 - mantel@suse.de
-
-- do not require oracle-xe, but oracle-sqlplus to allow full
-  Oracle database to be used
-
--------------------------------------------------------------------
 Tue Jun 21 16:07:34 CEST 2011 - mc@suse.de
 
 - use pycurl send method also for mgr-register
