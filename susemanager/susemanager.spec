@@ -14,8 +14,8 @@ Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
 Requires:       rsync less
 Requires:       susemanager-tools
-# needed for sqlplus
-Requires:       oracle-sqlplus
+# needed for migration.sh
+Requires:       /usr/bin/sqlplus
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %global pythonsmroot %{python_sitelib}/spacewalk
 

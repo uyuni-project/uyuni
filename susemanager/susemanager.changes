@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Aug  8 11:48:55 UTC 2011 - kkaempf@novell.com
+
+- fix sqlplus require to /usr/bin/sqlplus in order to keep
+  already installed sqlplus
+
+-------------------------------------------------------------------
 Thu Aug  4 12:21:28 CEST 2011 - mantel@suse.de
 
 - do not require oracle-xe, but oracle-sqlplus to allow full
