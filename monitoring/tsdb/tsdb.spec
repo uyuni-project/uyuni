@@ -21,7 +21,6 @@ Requires:     perl-NOCpulse-Utils perl(NOCpulse::Debug) perl(IO::Stringy) perl(C
 BuildArch:    noarch
 Group:        Applications/Databases
 License:      GPLv2
-Vendor:       Red Hat, Inc.
 Requires:     nocpulse-common
 %if 0%{?suse_version}
 Requires:     perl = %{perl_version}
