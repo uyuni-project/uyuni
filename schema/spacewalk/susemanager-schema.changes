@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug  8 16:36:27 CEST 2011 - ug@suse.de
+
+- fixed syntax error in schema upgrade (bnc#711007)
+
+-------------------------------------------------------------------
 Wed Jul 20 13:48:34 CEST 2011 - iartarisi@suse.cz
 
 - set result_message SQL column size in BYTEs instead of CHARs
