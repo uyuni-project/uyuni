@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Aug  9 10:26:35 CEST 2011 - iartarisi@suse.cz
+
+- fixed missing import of 're' module
+
+-------------------------------------------------------------------
 Wed Aug  3 15:45:41 CEST 2011 - iartarisi@suse.cz
 
 - reposync: fix ambiguous message when skipping a patch which references
