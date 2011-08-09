@@ -14,16 +14,17 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation. 
 #
-import yum
+import os
+import re
 import shutil
 import subprocess
 import sys
-import os
 import xml.etree.cElementTree as etree
 
 import urlgrabber
 from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
 from rpmUtils.transaction import initReadOnlyTransaction
+import yum
 from yum import misc, Errors
 from yum.update_md import UpdateMetadata
 from yum.i18n import to_unicode
