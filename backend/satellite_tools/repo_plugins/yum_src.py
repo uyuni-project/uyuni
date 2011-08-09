@@ -14,19 +14,19 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation. 
 #
-import yum
+import os
+import re
 import shutil
 import subprocess
 import sys
-import os
 import gzip
 import xml.etree.ElementTree as etree
-import re
 import urlgrabber
 from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
 from rpmUtils.transaction import initReadOnlyTransaction
 
-from yum import config, misc, Errors
+import yum
+from yum import misc, Errors
 from yum.i18n import to_unicode
 from yum.update_md import UpdateMetadata, UpdateNoticeException, UpdateNotice
 from yum.yumRepo import YumRepository
