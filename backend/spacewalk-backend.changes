@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 10 11:30:48 CEST 2011 - iartarisi@suse.cz
+
+- removed implicit imports to spacewalk.common
+
+-------------------------------------------------------------------
 Tue Aug  9 10:26:35 CEST 2011 - iartarisi@suse.cz
 
 - fixed missing import of 're' module
