@@ -15,7 +15,10 @@ from xml.etree import cElementTree
 
 from spacewalk.server import rhnSQL
 from spacewalk.susemanager import suseLib
-from spacewalk.common import CFG, initCFG, rhnLog, fetchTraceback, log_debug, log_error
+from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common import rhnLog
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnTB import fetchTraceback
 
 from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 default_log_location = '/var/log/rhn/'
