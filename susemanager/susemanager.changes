@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 10 11:02:00 CEST 2011 - iartarisi@suse.cz
+
+- fix imports after changes in spacewalk.common module layout
+
+-------------------------------------------------------------------
 Mon Aug  8 11:48:55 UTC 2011 - kkaempf@novell.com
 
 - fix sqlplus require to /usr/bin/sqlplus in order to keep
