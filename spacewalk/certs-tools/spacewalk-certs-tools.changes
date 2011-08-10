@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 10 15:01:04 UTC 2011 - kkaempf@novell.com
+
+- Fix the initCFG import path (bnc#711518)
+
+-------------------------------------------------------------------
 Wed Jul 27 11:25:19 CEST 2011 - ma@suse.de
 
 - Do non-interactive zypper refresh.
