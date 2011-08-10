@@ -17,7 +17,9 @@
 from spacewalk.common import apache
 
 # common module imports
-from spacewalk.common import CFG, initCFG, log_setreq, initLOG, Traceback
+from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common.rhnTB import Traceback
+from spacewalk.common.rhnLog import initLOG, log_setreq
 
 from apacheHandler import apacheHandler
 apache_server       = apacheHandler()

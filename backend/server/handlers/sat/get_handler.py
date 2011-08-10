@@ -16,7 +16,7 @@
 
 import auth
 
-from spacewalk.common import log_debug
+from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import apacheRequest
 
 class GetHandler(apacheRequest.GetHandler):

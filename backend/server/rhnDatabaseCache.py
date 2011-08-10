@@ -20,7 +20,8 @@ import string
 import cPickle
 import cStringIO
 
-from spacewalk.common import rhnCache, log_debug, log_error
+from spacewalk.common import rhnCache
+from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnLib import timestamp
 
 from spacewalk.server import rhnSQL
