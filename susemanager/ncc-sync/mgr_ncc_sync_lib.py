@@ -15,7 +15,6 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
-import re
 import sys
 import time
 import os.path
@@ -28,10 +27,10 @@ except ImportError:
     from StringIO import StringIO
 from xml.parsers.expat import ExpatError
 
-import pycurl
-
 from spacewalk.server import rhnSQL, taskomatic
-from spacewalk.common import initCFG, CFG, rhnLog, log_debug, log_error
+from spacewalk.common.rhnConfig import initCFG, CFG
+from spacewalk.common import rhnLog
+from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.susemanager import suseLib
 
 CHANNELS = '/usr/share/susemanager/channels.xml'
@@ -40,9 +39,6 @@ CHANNEL_FAMILIES = '/usr/share/susemanager/channel_families.xml'
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
 INFINITE = 200000 # a very big number that we use for unlimited subscriptions
-
-# location of proxy credentials in yast-generated config
-YAST_PROXY = "/root/.curlrc" 
 
 def memoize(function):
     """Basic function memoizer"""

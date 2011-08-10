@@ -10,20 +10,20 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
-import string
-import os
-import tempfile
-import ConfigParser
+import re
 import urlparse
+
+import pycurl
+
 from suseRegister.info import getProductProfile, parseProductProfileFile
-from spacewalk.common import log_debug, log_error, rhnFault
+from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL
 try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
 
-import pycurl
 
 class TransferException(Exception):
     """
