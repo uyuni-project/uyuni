@@ -28,7 +28,8 @@ def systemExit(code, msgs=None):
 
 try:
     from rhn import rhnLockfile
-    from spacewalk.common import CFG, initCFG, fetchTraceback
+    from spacewalk.common.rhnConfig import CFG, initCFG
+    from spacewalk.common.rhnTB import fetchTraceback
     from spacewalk.susemanager import mgr_register
 except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
