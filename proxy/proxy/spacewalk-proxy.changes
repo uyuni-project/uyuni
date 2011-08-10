@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 10 11:29:34 CEST 2011 - iartarisi@suse.cz
+
+- fix imports after module layout changes in spacewalk.common
+
+-------------------------------------------------------------------
 Fri May  6 11:15:30 CEST 2011 - mc@suse.de
 
 - redirect all required xmlrpc calles (bnc#692212)
