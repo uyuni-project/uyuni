@@ -16,6 +16,8 @@
 # system module import
 import time
 
+from rhn.UserDictCase import UserDictCase
+
 # common module imports
 from rhn.UserDictCase import UserDictCase
 from spacewalk.common import rhnFlags
