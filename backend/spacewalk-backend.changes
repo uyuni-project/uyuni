@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Thu Aug 11 11:13:46 CEST 2011 - iartarisi@suse.cz
 
-- fix imports on UserDictCase to point to rhn.UserDictCase
+- fix imports on UserDictCase to point to rhn.UserDictCase (bnc#711518)
 
 -------------------------------------------------------------------
 Wed Aug 10 11:30:48 CEST 2011 - iartarisi@suse.cz
@@ -12,7 +12,7 @@ Wed Aug 10 11:30:48 CEST 2011 - iartarisi@suse.cz
 -------------------------------------------------------------------
 Tue Aug  9 10:26:35 CEST 2011 - iartarisi@suse.cz
 
-- fixed missing import of 're' module
+- fixed missing import of 're' module (bnc#711188)
 
 -------------------------------------------------------------------
 Wed Aug  3 15:45:41 CEST 2011 - iartarisi@suse.cz
