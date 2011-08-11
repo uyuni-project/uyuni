@@ -30,7 +30,7 @@ import sql_base
 from spacewalk.server import rhnSQL
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnException
-from spacewalk.common.UserDictCase import UserDictCase
+from rhn.UserDictCase import UserDictCase
 from const import POSTGRESQL
 
 def convert_named_query_params(query):
