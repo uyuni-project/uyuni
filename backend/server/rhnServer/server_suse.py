@@ -10,7 +10,7 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
-from spacewakl.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.server import rhnSQL
