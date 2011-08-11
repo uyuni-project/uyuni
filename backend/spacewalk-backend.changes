@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Aug 11 11:13:46 CEST 2011 - iartarisi@suse.cz
+
+- fix imports on UserDictCase to point to rhn.UserDictCase
+
+-------------------------------------------------------------------
 Wed Aug 10 11:30:48 CEST 2011 - iartarisi@suse.cz
 
 - removed implicit imports to spacewalk.common (fixes bnc#711214,
