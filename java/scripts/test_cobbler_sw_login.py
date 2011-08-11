@@ -4,7 +4,7 @@ from xmlrpclib import Server
 
 sys.path.append('/usr/share/rhn')
 try:
-   from common import initCFG, CFG
+   from common.rhnConfig import initCFG, CFG
 except:
    print "Couldn't load needed libs, Are you sure you are running this on a satellite?"
    sys.exit(1)

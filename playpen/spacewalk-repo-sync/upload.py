@@ -10,7 +10,7 @@ if _LIBPATH not in sys.path:
     sys.path.append(_LIBPATH)
 
 from server.rhnLib import get_package_path
-from common import CFG, initCFG
+from common.rhnConfig import CFG, initCFG
 
 
 

@@ -11,7 +11,7 @@ if _LIBPATH not in sys.path:
 
 from server.rhnServer import server_packages 
 from server.rhnLib import get_package_path
-from common import CFG, initCFG, rhn_rpm
+from common.rhnConfig import CFG, initCFG, rhn_rpm
 
 
 initCFG('server.satellite');
