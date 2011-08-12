@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug 12 13:13:05 CEST 2011 - jrenner@suse.de
+
+- Remove trailing whitespace in new classes (bnc#705758)
+
+-------------------------------------------------------------------
 Fri Jul 29 15:27:03 CEST 2011 - jrenner@suse.de
 
 - Fix software rollback to profiles (bnc#701772)
