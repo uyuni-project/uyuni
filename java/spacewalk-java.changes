@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug 12 14:28:50 CEST 2011 - jrenner@suse.de
+
+- Wrap around unix2_chkpwd instead of using jpam (bnc#705758)
+
+-------------------------------------------------------------------
 Fri Jul 29 16:04:36 CEST 2011 - jrenner@suse.de
 
 - Fix software rollback to profiles (bnc#701772)
