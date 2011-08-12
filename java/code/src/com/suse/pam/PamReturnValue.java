@@ -48,7 +48,7 @@ public class PamReturnValue {
 
     /**
      * Private constructor.
-     * 
+     *
      * @param id
      * @param description
      */
@@ -59,7 +59,7 @@ public class PamReturnValue {
 
     /**
      * Return the {@link PamReturnValue} that matches a given id.
-     * 
+     *
      * @param id a valid Integer with a value between 0 and 1
      * @return the PamReturnValue matching the id
      * @throws IllegalArgumentException
@@ -91,7 +91,7 @@ public class PamReturnValue {
         }
         return true;
     }
-    
+
     /**
      * {@inheritDoc}
      */

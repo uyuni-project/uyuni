@@ -31,7 +31,7 @@ public class Pam {
 
     /**
      * Public constructor.
-     * 
+     *
      * @param authService
      *            The auth service to use for this instance
      */
@@ -41,7 +41,7 @@ public class Pam {
 
     /**
      * Perform the actual authentication by calling the 'unix2_chkpwd' binary.
-     * 
+     *
      * @param user
      *            The user to authenticate
      * @param passwd
