@@ -62,7 +62,7 @@
       value="bcel cglib commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
              commons-el commons-fileupload commons-io commons-lang commons-logging commons-validator hibernate3
-             mailapi smtp jdom jpam 
+             mailapi smtp jdom
              log4j oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg jcommon stringtree-json postgresql-jdbc
              ${jfreechart} taglibs-core logdriver quartz dwr slf4j-api slf4j-log4j12
@@ -107,7 +107,7 @@
       value="bcel cglib commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
              commons-el commons-fileupload commons-io commons-lang commons-logging commons-validator hibernate3
-             ${tomcat-jars} javamail jdom jpam
+             ${tomcat-jars} javamail jdom
              log4j oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc
              ${jfreechart} taglibs-core quartz
@@ -120,7 +120,7 @@
              commons-lang commons-logging
              commons-validator concurrent dom4j hibernate3 jta
              jaf ${jasper-jars} javamail jcommon jdom ${other-jars}
-             ${jfreechart} ${tomcat-jars} jpam log4j redstone-xmlrpc-client redstone-xmlrpc
+             ${jfreechart} ${tomcat-jars} log4j redstone-xmlrpc-client redstone-xmlrpc
              oro oscache quartz stringtree-json sitemesh ${struts-jars} taglibs-core
              taglibs-standard tanukiwrapper postgresql-jdbc
              xalan-j2 xerces-j2 xml-commons-apis simple-core" />
