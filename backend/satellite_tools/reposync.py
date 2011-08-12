@@ -27,7 +27,8 @@ from yum import Errors
 from yum.i18n import to_unicode
 
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
-from spacewalk.common import fetchTraceback, rhnMail
+from spacewalk.common.rhnTB import fetchTraceback
+from spacewalk.common import rhnMail
 from spacewalk.common import rhnLog
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.checksum import getFileChecksum

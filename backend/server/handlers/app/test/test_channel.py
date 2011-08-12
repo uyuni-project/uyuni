@@ -17,7 +17,7 @@
 import sys
 import unittest
 from spacewalk.server import rhnSQL
-from spacewalk.common import rhnFault
+from spacewalk.common.rhnException import rhnFault
 from spacewalk.server.handlers.app import channel
 
 #setup

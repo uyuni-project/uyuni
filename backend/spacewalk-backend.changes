@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug 12 07:20:58 UTC 2011 - kkaempf@novell.com
+
+- fix fetchTraceback and rhnFault import (bnc#711934)
+
+-------------------------------------------------------------------
 Thu Aug 11 15:08:03 CEST 2011 - iartarisi@suse.cz
 
 - fix more imports after the move from spacewalk.common
