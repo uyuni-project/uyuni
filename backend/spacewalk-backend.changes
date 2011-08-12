@@ -2,7 +2,7 @@
 Fri Aug 12 11:09:59 CEST 2011 - iartarisi@suse.cz
 
 - remove 'channel' from server.handlers.app as the sources have already
-  been deleted
+  been deleted (bnc#711967)
 
 -------------------------------------------------------------------
 Fri Aug 12 07:55:54 UTC 2011 - kkaempf@novell.com
