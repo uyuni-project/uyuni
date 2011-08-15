@@ -8,6 +8,7 @@
     import "Stage";
     import "Wizard";
     import "SpaceCalculation";
+    import "Hostname";
 
     map args = GetInstArgs::argmap ();
 
@@ -57,6 +58,14 @@
         }
         if( free_disk_space < required_disk_space ) {
             if ( !Popup::AnyQuestionRichText(_("Not enough disk space"), _("SUSE Manager requires 15G of free disk space to be installed. If you continue the product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
+            {
+                if (Popup::ConfirmAbort(`incomplete)) {
+                    return `abort;
+                }
+            }
+        }
+        if( Hostname::CurrentFQ() != tolower(Hostname::CurrentFQ()) ) {
+            if ( !Popup::AnyQuestionRichText(_("Illegal Hostname"), _("Your hostname contains upper case characters. The product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
             {
                 if (Popup::ConfirmAbort(`incomplete)) {
                     return `abort;
