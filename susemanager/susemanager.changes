@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 15 16:05:48 CEST 2011 - ug@suse.de
+
+- check hostname for lowercase bnc#703132
+
+-------------------------------------------------------------------
 Tue Jun 21 16:07:34 CEST 2011 - mc@suse.de
 
 - use pycurl send method also for mgr-register
