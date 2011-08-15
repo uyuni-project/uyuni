@@ -7,6 +7,7 @@
     import "Popup";
     import "Stage";
     import "Wizard";
+    import "Hostname";
 
     map args = GetInstArgs::argmap ();
 
@@ -40,8 +41,16 @@
                 if (Popup::ConfirmAbort(`incomplete)) {
                     return `abort;
                 }
-                else {
-                    continue;
+            }
+            else {
+                break;
+            }
+        }
+        if( Hostname::CurrentFQ() != tolower(Hostname::CurrentFQ()) ) {
+            if ( !Popup::AnyQuestionRichText(_("Illegal Hostname"), _("Your hostname contains upper case characters. The product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
+            {
+                if (Popup::ConfirmAbort(`incomplete)) {
+                    return `abort;
                 }
             }
             else {
