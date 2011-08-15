@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 15 16:01:43 CEST 2011 - ug@suse.de
+
+- check hostname for lowercase bnc#703132
+
+-------------------------------------------------------------------
 Wed Aug 10 11:28:18 CEST 2011 - iartarisi@suse.cz
 
 - fix more imports
