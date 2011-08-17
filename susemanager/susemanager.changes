@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 17 17:56:53 CEST 2011 - mantel@suse.de
+
+- add support for full Oracle DB to migration.sh
+
+-------------------------------------------------------------------
 Mon Aug 15 16:01:43 CEST 2011 - ug@suse.de
 
 - check hostname for lowercase bnc#703132
