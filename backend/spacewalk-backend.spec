@@ -661,6 +661,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %doc PYTHON-LICENSES.txt LICENSE
 %attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
+%dir %{_sysconfdir}/sysconfig/rhn
+%config(noreplace) %attr(644,root,root) %{_sysconfdir}/sysconfig/rhn/reposync
+%attr(755,root,root) %{_sysconfdir}/cron.daily/reposync
 %attr(755,root,root) %{_bindir}/rhn-charsets
 %attr(755,root,root) %{_bindir}/rhn-satellite-activate
 %attr(755,root,root) %{_bindir}/rhn-schema-version

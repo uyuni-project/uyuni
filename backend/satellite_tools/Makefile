@@ -30,11 +30,16 @@ MANS	= $(patsubst %.sgml,%.8,$(SGMLS))
 
 BINDIR	= /usr/bin
 MANDIR	?= /usr/man
+CRON_DAILY = /etc/cron.daily
+SYSCONFIG_DIR = /etc/sysconfig/rhn
 
-EXTRA_DIRS = $(MANDIR)/man8 $(BINDIR)
+EXTRA_DIRS = $(MANDIR)/man8 $(BINDIR) $(CRON_DAILY) $(SYSCONFIG_DIR)
 
 SAT_ACTIV       = rhn-satellite-activate
 CA_DBSTORE      = rhn-ssl-dbstore
+
+REPOSYNC_CRON = cron/reposync-cron
+REPOSYNC_SYSC = cron/reposync-sysconfig
 
 include $(TOP)/Makefile.defs
 
@@ -53,6 +58,11 @@ endif
 install :: $(SAT_ACTIV).inst
 
 install :: $(CA_DBSTORE).inst
+
+# cron
+install :: $(REPOSYNC_CRON) $(REPOSYNC_SYSC)
+	$(INSTALL_DATA) $(REPOSYNC_SYSC) $(PREFIX)/$(SYSCONFIG_DIR)/reposync
+	$(INSTALL_BIN) $(REPOSYNC_CRON) $(PREFIX)/$(CRON_DAILY)/reposync
 
 $(SAT_ACTIV).inst : $(SAT_ACTIV) $(SAT_ACTIV).new $(PREFIX)/$(BINDIR)
 	$(INSTALL_BIN) $(SAT_ACTIV).new $(PREFIX)/$(BINDIR)/$(SAT_ACTIV)
