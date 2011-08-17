@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 17 18:18:17 CEST 2011 - mantel@suse.de
+
+- do not use XE specific settings for full Oracle
+
+-------------------------------------------------------------------
 Wed Aug 17 17:56:53 CEST 2011 - mantel@suse.de
 
 - add support for full Oracle DB to migration.sh

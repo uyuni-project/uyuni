@@ -139,8 +139,6 @@ setup_db_full() {
     echo "create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace users;
 grant dba to $MANAGER_USER;
 alter system set processes = 400 scope=spfile;
-alter system set \"_optimizer_filter_pred_pullup\"=false scope=spfile;
-alter system set \"_optimizer_cost_based_transformation\"=off scope=spfile;
 quit
 " > /tmp/dbsetup.sql
 
