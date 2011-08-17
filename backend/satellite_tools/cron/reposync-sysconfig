@@ -1,0 +1,6 @@
+# Delete log files if they have not been accessed for more than this
+# number of days. If set to 0, then nothing will be deleted.
+MAX_DAYS="1"
+
+# The directory where the reposync log files are kept.
+REPOSYNC_LOG_DIR="/var/log/rhn/reposync"
