@@ -40,6 +40,11 @@
     </filter-class>
   </filter>
 
+  <filter>
+    <filter-name>AuditLogFilterStruts</filter-name>
+    <filter-class>com.redhat.rhn.frontend.servlets.AuditLogFilter</filter-class>
+  </filter>
+
   <!-- DumpFilter dumps the entire request to the log file as log debug. -->
   <!--
   <filter>
@@ -120,6 +125,11 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   -->
+
+  <filter-mapping>
+    <filter-name>AuditLogFilterStruts</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
 
   <!--
   If you need a filter to operate on more than one
@@ -291,6 +301,7 @@
     <resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
   </resource-env-ref>
   -->
+
   <!-- configuration for HttpSession timeout, defaults to 30 minutes -->
   <!--
   <session-config>
