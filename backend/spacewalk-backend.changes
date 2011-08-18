@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Aug 18 10:33:49 CEST 2011 - iartarisi@suse.cz
+
+- fixed an import error in diskImportLib.py
+
+-------------------------------------------------------------------
 Fri Aug 12 11:09:59 CEST 2011 - iartarisi@suse.cz
 
 - remove 'channel' from server.handlers.app as the sources have already
