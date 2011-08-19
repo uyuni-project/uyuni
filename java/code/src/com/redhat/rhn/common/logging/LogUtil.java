@@ -13,22 +13,22 @@ import javax.servlet.http.HttpServletRequest;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.org.CustomDataKey;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 /**
  * Utility methods for logging.
- *
- * @author jrenner
  */
 public class LogUtil {
 
     // Keys to be used for the extmap
     private static final String EXTMAP_KEY_EVTSRC = "EVT.SRC";
     private static final String EXTMAP_KEY_EVTTYPE = "EVT.TYPE";
+    private static final String EXTMAP_KEY_EVTURL = "EVT.URL";
     private static final String EXTMAP_KEY_USRID = "USR.ID";
     private static final String EXTMAP_KEY_USRORGID = "USR.ORGID";
-    private static final String EXTMAP_KEY_REQURL = "REQ.URL";
 
     // Values to be used for the extmap
     private static final String EXTMAP_VALUE_WEBUI = "WEBUI";
@@ -47,11 +47,12 @@ public class LogUtil {
     /**
      * Create a map of key/value pairs for logging of webui actions.
      *
+     * @param evtType
      * @param user
      * @param request
-     * @return {@link Map} of parameters (key, value)
+     * @return extMap
      */
-    public static Map<String, String> createExtMap(String eventType, User user,
+    public static Map<String, String> createExtMap(String evtType, User user,
             HttpServletRequest request) {
         // Setup the return map
         Map<String, String> extMap = new TreeMap<String, String>();
@@ -65,12 +66,12 @@ public class LogUtil {
 
         // Put information about the event
         extMap.put(EXTMAP_KEY_EVTSRC, EXTMAP_VALUE_WEBUI);
-        if (eventType != null) {
-            extMap.put(EXTMAP_KEY_EVTTYPE, eventType);
+        if (evtType != null) {
+            extMap.put(EXTMAP_KEY_EVTTYPE, evtType);
         }
+        extMap.put(EXTMAP_KEY_EVTURL, request.getRequestURI());
 
         // Put information about the request
-        extMap.put(EXTMAP_KEY_REQURL, request.getRequestURI());
         extMap.putAll(getParameterMap(request));
 
         return extMap;
@@ -120,11 +121,11 @@ public class LogUtil {
     /**
      * Create a map of key/value pairs for logging of API calls.
      *
-     * @param eventType
+     * @param evtType
      * @param user
-     * @return
+     * @return extMap
      */
-    public static Map<String, String> createExtMapAPI(String eventType, User user) {
+    public static Map<String, String> createExtMapAPI(String evtType, User user) {
         // Setup the return map
         Map<String, String> extMap = new TreeMap<String, String>();
 
@@ -137,8 +138,8 @@ public class LogUtil {
 
         // Put information about the event
         extMap.put(EXTMAP_KEY_EVTSRC, EXTMAP_VALUE_FRONTEND_API);
-        if (eventType != null) {
-            extMap.put(EXTMAP_KEY_EVTTYPE, eventType);
+        if (evtType != null) {
+            extMap.put(EXTMAP_KEY_EVTTYPE, evtType);
         }
 
         return extMap;
@@ -148,20 +149,24 @@ public class LogUtil {
      * Convert the {@link Object}s in an array to {@link String}
      * representations, but return them as {@link Object}s.
      *
-     * @param parameters
+     * @param params
      * @return array with {@link Object}s
      */
-    public static Object[] convertParameters(Object[] parameters) {
+    public static Object[] convertParameters(Object[] params) {
         List<String> ret = new LinkedList<String>();
-        for (Object o : parameters) {
+        for (Object o : params) {
             if (o instanceof String) {
                 ret.add((String) o);
             } else if (o instanceof Action) {
                 ret.add(LogUtil.getActionString((Action) o));
             } else if (o instanceof Channel) {
                 ret.add(LogUtil.getChannelString((Channel) o));
+            } else if (o instanceof CustomDataKey) {
+                ret.add(LogUtil.getCustomDataKeyString((CustomDataKey) o));
             } else if (o instanceof Errata) {
                 ret.add(LogUtil.getErrataString((Errata) o));
+            } else if (o instanceof Org) {
+                ret.add(LogUtil.getOrgString((Org) o));
             } else if (o instanceof Server) {
                 ret.add(LogUtil.getServerString((Server) o));
             } else if (o instanceof User) {
@@ -185,13 +190,13 @@ public class LogUtil {
     private static String getActionString(Action action) {
         String ret = "none";
         if (action != null) {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("'");
-            buffer.append(action.getName());
-            buffer.append("' (id ");
-            buffer.append(String.valueOf(action.getId()));
-            buffer.append(")");
-            ret = buffer.toString();
+            StringBuilder builder = new StringBuilder();
+            builder.append("'");
+            builder.append(action.getName());
+            builder.append("' (id ");
+            builder.append(String.valueOf(action.getId()));
+            builder.append(")");
+            ret = builder.toString();
         }
         return ret;
     }
@@ -205,13 +210,31 @@ public class LogUtil {
     private static String getChannelString(Channel channel) {
         String ret = "none";
         if (channel != null) {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("'");
-            buffer.append(channel.getName());
-            buffer.append("' (id ");
-            buffer.append(String.valueOf(channel.getId()));
-            buffer.append(")");
-            ret = buffer.toString();
+            StringBuilder builder = new StringBuilder();
+            builder.append("'");
+            builder.append(channel.getName());
+            builder.append("' (id ");
+            builder.append(String.valueOf(channel.getId()));
+            builder.append(")");
+            ret = builder.toString();
+        }
+        return ret;
+    }
+
+    /**
+     * Create a string representation of a given {@link CustomDataKey}.
+     *
+     * @param cdkey
+     * @return
+     */
+    private static String getCustomDataKeyString(CustomDataKey cdkey) {
+        String ret = "none";
+        if (cdkey != null) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("'");
+            builder.append(cdkey.getLabel());
+            builder.append("'");
+            ret = builder.toString();
         }
         return ret;
     }
@@ -225,11 +248,29 @@ public class LogUtil {
     private static String getErrataString(Errata errata) {
         String ret = "none";
         if (errata != null) {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("'");
-            buffer.append(errata.getAdvisoryName());
-            buffer.append("'");
-            ret = buffer.toString();
+            StringBuilder builder = new StringBuilder();
+            builder.append("'");
+            builder.append(errata.getAdvisoryName());
+            builder.append("'");
+            ret = builder.toString();
+        }
+        return ret;
+    }
+
+    /**
+     * Create a string representation of a given {@link Org}.
+     *
+     * @param org
+     * @return
+     */
+    private static String getOrgString(Org org) {
+        String ret = "none";
+        if (org != null) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("'");
+            builder.append(org.getName());
+            builder.append("'");
+            ret = builder.toString();
         }
         return ret;
     }
@@ -243,15 +284,15 @@ public class LogUtil {
     private static String getServerString(Server server) {
         String ret = "none";
         if (server != null) {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("'");
-            buffer.append(server.getName());
-            buffer.append("' (id ");
-            buffer.append(String.valueOf(server.getId()));
-            buffer.append(", org_id ");
-            buffer.append(String.valueOf(server.getOrg().getId()));
-            buffer.append(")");
-            ret = buffer.toString();
+            StringBuilder builder = new StringBuilder();
+            builder.append("'");
+            builder.append(server.getName());
+            builder.append("' (id ");
+            builder.append(String.valueOf(server.getId()));
+            builder.append(", org_id ");
+            builder.append(String.valueOf(server.getOrg().getId()));
+            builder.append(")");
+            ret = builder.toString();
         }
         return ret;
     }
@@ -265,15 +306,15 @@ public class LogUtil {
     private static String getUserString(User user) {
         String ret = "none";
         if (user != null) {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("'");
-            buffer.append(user.getLogin());
-            buffer.append("' (id ");
-            buffer.append(String.valueOf(user.getId()));
-            buffer.append(", org_id ");
-            buffer.append(String.valueOf(user.getOrg().getId()));
-            buffer.append(")");
-            ret = buffer.toString();
+            StringBuilder builder = new StringBuilder();
+            builder.append("'");
+            builder.append(user.getLogin());
+            builder.append("' (id ");
+            builder.append(String.valueOf(user.getId()));
+            builder.append(", org_id ");
+            builder.append(String.valueOf(user.getOrg().getId()));
+            builder.append(")");
+            ret = builder.toString();
         }
         return ret;
     }
