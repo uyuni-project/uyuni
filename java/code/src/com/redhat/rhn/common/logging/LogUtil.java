@@ -15,6 +15,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
@@ -165,6 +166,8 @@ public class LogUtil {
                 ret.add(LogUtil.getCustomDataKeyString((CustomDataKey) o));
             } else if (o instanceof Errata) {
                 ret.add(LogUtil.getErrataString((Errata) o));
+            } else if (o instanceof ManagedServerGroup) {
+                ret.add(LogUtil.getGroupString((ManagedServerGroup) o));
             } else if (o instanceof Org) {
                 ret.add(LogUtil.getOrgString((Org) o));
             } else if (o instanceof Server) {
@@ -251,6 +254,24 @@ public class LogUtil {
             StringBuilder builder = new StringBuilder();
             builder.append("'");
             builder.append(errata.getAdvisoryName());
+            builder.append("'");
+            ret = builder.toString();
+        }
+        return ret;
+    }
+
+    /**
+     * Create a string representation of a given {@link ManagedServerGroup}.
+     *
+     * @param group
+     * @return
+     */
+    private static String getGroupString(ManagedServerGroup group) {
+        String ret = "none";
+        if (group != null) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("'");
+            builder.append(group.getName());
             builder.append("'");
             ret = builder.toString();
         }
