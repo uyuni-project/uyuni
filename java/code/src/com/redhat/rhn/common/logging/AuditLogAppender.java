@@ -7,14 +7,13 @@ import java.util.List;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
-
-import com.redhat.rhn.common.conf.ConfigDefaults;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
+
+import com.redhat.rhn.common.conf.ConfigDefaults;
 
 /**
  * {@link Appender} for log4j that calls the locally running XMLRPC audit log
@@ -23,9 +22,6 @@ import redstone.xmlrpc.XmlRpcFault;
  * @author jrenner
  */
 public class AuditLogAppender extends AppenderSkeleton {
-
-    // Logger for this class
-    private static Logger log = Logger.getLogger(AuditLogAppender.class);
 
     // URL of the log daemon
     private String url;
@@ -69,11 +65,11 @@ public class AuditLogAppender extends AppenderSkeleton {
                     args.add(m.getExtmap() != null ? m.getExtmap() : new HashMap());
                     client.invoke("log", args);
                 } catch (MalformedURLException e) {
-                    log.error(e.getMessage(), e);
+                    throw new RuntimeException("Error sending log event", e);
                 } catch (XmlRpcException e) {
-                    log.error(e.getMessage(), e);
+                    throw new RuntimeException("Error sending log event", e);
                 } catch (XmlRpcFault e) {
-                    log.error(e.getMessage(), e);
+                    throw new RuntimeException("Error sending log event", e);
                 }
             }
         }.run();
