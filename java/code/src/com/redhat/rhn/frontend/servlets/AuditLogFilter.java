@@ -60,7 +60,7 @@ public class AuditLogFilter implements Filter {
             // Log POST requests that do not have errors
             if (request.getMethod().equals("POST")
                     && request.getAttribute(Globals.ERROR_KEY) == null) {
-                AuditLog.log(null, request, null);
+                AuditLog.getInstance().log(null, request, null);
             }
         }
     }

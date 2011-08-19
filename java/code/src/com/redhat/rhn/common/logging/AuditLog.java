@@ -12,10 +12,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 /**
- * Utility class providing static access to the audit log. Maybe make this a
- * factory for making it possible to exchange implementations.
- *
- * @author jrenner
+ * Singleton class for providing access to the audit log.
  */
 public class AuditLog {
 
@@ -28,6 +25,7 @@ public class AuditLog {
     public static String ASSIGNGRPROLE = "ASSIGN_GROUP_ROLE";
     public static String REVOKEGRPROLE = "REVOKE_GROUP_ROLE";
     public static String USERCREDUPDATE = "USER_CREDENTIAL_UPDATE";
+
     // General types of events
     public static String ACTION_CREATE = "ACTION_CREATE";
     public static String ACTION_CHANGE = "ACTION_CHANGE";
@@ -37,6 +35,9 @@ public class AuditLog {
     private static String LOGGER_NAME = "auditlog";
     private static Logger log = Logger.getLogger(AuditLog.LOGGER_NAME);
 
+    // The singleton instance
+    private static AuditLog instance = null;
+
     /**
      * Private constructor.
      */
@@ -44,47 +45,58 @@ public class AuditLog {
     }
 
     /**
+     * Static method to get the singleton {@link AuditLog} instance.
+     *
+     * @return the singleton instance
+     */
+    public static synchronized AuditLog getInstance() {
+        if (instance == null) {
+            instance = new AuditLog();
+        }
+        return instance;
+    }
+
+    /**
      * Log a Web UI action.
      *
-     * @param eventType
+     * @param evtType
      * @param request
-     * @param callerClass
+     * @param msgKey
      * @param parameters
      */
-    public static void log(String eventType, HttpServletRequest request,
-            Class callerClass, Object... parameters) {
+    public void log(String evtType, HttpServletRequest request, String msgKey,
+            Object... parameters) {
         if (!ConfigDefaults.get().isAuditEnabled()) {
             return;
         }
-        log(false, eventType, request, callerClass, parameters);
+        log(false, evtType, request, msgKey, parameters);
     }
 
     /**
      * Log a failed Web UI action.
      *
-     * @param eventType
+     * @param evtType
      * @param request
-     * @param callerClass
+     * @param msgKey
      * @param parameters
      */
-    public static void logFailure(String eventType, HttpServletRequest request,
-            Class callerClass, Object... parameters) {
+    public void logFailure(String evtType, HttpServletRequest request,
+            String msgKey, Object... parameters) {
         if (!ConfigDefaults.get().isAuditEnabled()) {
             return;
         }
-        log(true, eventType, request, callerClass, parameters);
+        log(true, evtType, request, msgKey, parameters);
     }
 
     /**
      * Method for logging API calls.
      *
-     * @param eventType
+     * @param evtType
      * @param user
      * @param message
      * @param host
      */
-    public static void logAPI(String eventType, User user, String message,
-            String host) {
+    public void logAPI(String eventType, User user, String message, String host) {
         if (!ConfigDefaults.get().isAuditEnabled()) {
             return;
         }
@@ -94,26 +106,24 @@ public class AuditLog {
     // PRIVATE METHODS ////////////////////////////////////////////////////////
 
     /**
-     * This is a proxy method for logging Web UI actions.
+     * This is a proxy method for logging web requests.
      *
      * @param failure
-     *            if false mark this as log of a failed action
+     * @param evtType
      * @param request
-     *            the {@link HttpServletRequest}
-     * @param callerClass
-     *            used as the key to lookup the log message
+     * @param msgKey
+     * @param parameters
      */
-    private static void log(boolean failure, String eventType,
-            HttpServletRequest request, Class callerClass, Object... parameters) {
+    private void log(boolean failure, String evtType,
+            HttpServletRequest request, String msgKey, Object... parameters) {
         // Determine the current user
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
 
         // Determine the message using the name of the class as key
         String message;
-        if (callerClass != null) {
-            message = LocalizationService.getInstance().getMessage(
-                    callerClass.getName(),
+        if (msgKey != null) {
+            message = LocalizationService.getInstance().getMessage(msgKey,
                     LogUtil.convertParameters(parameters));
         } else {
             message = request.getServletPath();
@@ -126,18 +136,18 @@ public class AuditLog {
 
         // Call the logger
         log(user, message, request.getRemoteAddr(),
-                LogUtil.createExtMap(eventType, user, request));
+                LogUtil.createExtMap(evtType, user, request));
     }
 
     /**
      * Perform the actual call to the logger.
      *
-     * @param uid
+     * @param user
      * @param message
      * @param host
      * @param extmap
      */
-    private static void log(User user, String message, String host,
+    private void log(User user, String message, String host,
             Map<String, String> extmap) {
         // Create the message object
         AuditLogMessage m = new AuditLogMessage();
