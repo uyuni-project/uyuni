@@ -10,6 +10,8 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
@@ -24,8 +26,9 @@ public class AuditLogAppender extends AppenderSkeleton {
 
     // Logger for this class
     private static Logger log = Logger.getLogger(AuditLogAppender.class);
-    // URL of the audit log daemon
-    private String url = "http://127.0.0.1:6888";
+
+    // URL of the log daemon
+    private String url;
 
     /**
      * {@inheritDoc}
@@ -48,6 +51,11 @@ public class AuditLogAppender extends AppenderSkeleton {
      */
     @Override
     protected void append(LoggingEvent event) {
+        if (url == null) {
+            // Lazy initialize the URL
+            int port = ConfigDefaults.get().getAuditPort();
+            url = "http://localhost:" + port;
+        }
         final AuditLogMessage m = (AuditLogMessage) event.getMessage();
         new Runnable() {
             @Override
