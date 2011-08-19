@@ -102,8 +102,8 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
             log.info(buf.toString());
 
             // Do audit logging
-            AuditLog.logAPI(null, getCaller(), "API: " + call.toString(),
-                    RhnXmlRpcServer.getCallerIp());
+            AuditLog.getInstance().logAPI(null, getCaller(),
+                    "API: " + call.toString(), RhnXmlRpcServer.getCallerIp());
         }
         catch (RuntimeException e) {
             log.error("postProcess error", e);
