@@ -36,7 +36,7 @@ class TransferException(Exception):
         return "%s" %(self.value,)
 
     def __unicode__(self):
-        return '%s' % to_unicode(self.value)
+        return '%s' % unicode(self.value, "utf-8")
 
 
 def send(url, send=None):
