@@ -274,11 +274,11 @@ class RepoSync:
 
             for desc_lang in notice.findall('%sdescription' % prefix['patch']):
                 if desc_lang.get('lang') == 'en':
-                    e['description'] = desc_lang.text
+                    e['description'] = desc_lang.text or ""
                     break
             for sum_lang in notice.findall('%ssummary' % prefix['patch']):
                 if sum_lang.get('lang') == 'en':
-                    e['synopsis'] = sum_lang.text
+                    e['synopsis'] = sum_lang.text or ""
                     break
             e['topic'] = ' '
             e['solution'] = ' '
