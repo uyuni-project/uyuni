@@ -12,6 +12,10 @@
 
 import re
 import urlparse
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 
 import pycurl
 
@@ -19,21 +23,15 @@ from suseRegister.info import getProductProfile, parseProductProfileFile
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnSQL
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
 
 
 class TransferException(Exception):
-    """
-    Transfer Error.
-    """
+    """Transfer Error"""
     def __init__(self, value=None):
-        Exception.__init__(self)
         self.value = value
+
     def __str__(self):
-        return "%s" %(self.value,)
+        return "%s" % self.value
 
     def __unicode__(self):
         return '%s' % unicode(self.value, "utf-8")
