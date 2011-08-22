@@ -280,7 +280,7 @@ class URL:
     def __setattr__(self, attr, value):
         if attr == "query":
             self.__dict__[attr] = value
-            self._parse_query
+            self._parse_query()
             return self.query
         elif attr == "paramsdict":
             return None
