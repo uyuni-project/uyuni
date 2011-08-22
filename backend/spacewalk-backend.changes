@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 22 16:35:42 CEST 2011 - iartarisi@suse.cz
+
+- fixed TypeError in find_bugs method caused by empty patch descriptions
+
+-------------------------------------------------------------------
 Thu Aug 18 10:33:49 CEST 2011 - iartarisi@suse.cz
 
 - fixed an import error in diskImportLib.py
