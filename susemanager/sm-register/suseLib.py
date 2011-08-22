@@ -80,25 +80,30 @@ def send(url, send=None):
                     f = open(YAST_PROXY)
                 except IOError:
                     log_error("Proxy requires authentication. "
-                              "Failed reading credentials from %s"
-                              % YAST_PROXY)
+                              "Could not open the file %s in order to get the "
+                              "credentials." % YAST_PROXY)
                     raise
                 contents = f.read()
                 try:
-                    creds = re.search('^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
-                                      contents, re.M).group(1)
+                    creds = re.search(
+                        '^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
+                        contents, re.M).group(1)
                     ucreds = re.sub('\\\\"', '"', creds)
                 except AttributeError:
                     log_error("Proxy requires authentication. "
                               "Failed reading credentials from %s"
                               % YAST_PROXY)
-                    raise TransferException, "Proxy requires authentication. Failed reading credentials from %s" % YAST_PROXY
+                    raise TransferException("Proxy requires authentication. "
+                                            "Failed reading credentials from "
+                                            "%s" % YAST_PROXY)
                 curl.setopt(pycurl.PROXYUSERPWD, ucreds)
 
             elif e[0] == 60:
-                log_error("Peer certificate cannot be authenticated "
+                log_error("Peer certificate could not be authenticated "
                           "with known CA certificates.")
-                raise TransferException, "Peer certificate cannot be authenticated with known CA certificates."
+                raise TransferException("Peer certificate could not be "
+                                        "authenticated with known CA "
+                                        "certificates.")
             else:
                 log_error(e[1])
                 raise
@@ -123,182 +128,186 @@ def send(url, send=None):
 
 
 def findProduct(product):
-  q_version = ""
-  q_release = ""
-  q_arch    = ""
-  product_id = None
-  product_lower = {}
-  product_lower['name'] = product['name'].lower()
+    q_version = ""
+    q_release = ""
+    q_arch    = ""
+    product_id = None
+    product_lower = {}
+    product_lower['name'] = product['name'].lower()
 
-  log_debug(2, "Search for product: %s" % product)
+    log_debug(2, "Search for product: %s" % product)
 
-  if 'version' in product and product['version'] != "":
-    q_version = "or sp.version = :version"
-    product_lower['version'] = product['version'].lower()
-  if 'release' in product and product['release'] != "":
-    q_release = "or sp.release = :release"
-    product_lower['release'] = product['release'].lower()
-  if 'arch' in product and product['arch'] != "":
-    q_arch = "or pat.label = :arch"
-    product_lower['arch'] = product['arch'].lower()
+    if 'version' in product and product['version'] != "":
+        q_version = "or sp.version = :version"
+        product_lower['version'] = product['version'].lower()
+    if 'release' in product and product['release'] != "":
+        q_release = "or sp.release = :release"
+        product_lower['release'] = product['release'].lower()
+    if 'arch' in product and product['arch'] != "":
+        q_arch = "or pat.label = :arch"
+        product_lower['arch'] = product['arch'].lower()
 
-  h = rhnSQL.prepare("""
+    h = rhnSQL.prepare("""
     SELECT sp.id, sp.name, sp.version, pat.label as arch, sp.release
       FROM suseProducts sp
- LEFT JOIN rhnPackageArch pat ON pat.id = sp.arch_type_id
-     WHERE sp.name = :name
+    LEFT JOIN rhnPackageArch pat ON pat.id = sp.arch_type_id
+      WHERE sp.name = :name
        AND (sp.version IS NULL %s)
        AND (sp.release IS NULL %s)
        AND (sp.arch_type_id IS NULL %s)
-  ORDER BY name, version, release, arch
-  """ % (q_version, q_release, q_arch))
-  apply(h.execute, (), product_lower)
-  rs = h.fetchall_dict()
+    ORDER BY name, version, release, arch
+    """ % (q_version, q_release, q_arch))
+    apply(h.execute, (), product_lower)
+    rs = h.fetchall_dict()
 
-  if not rs:
-    log_debug(1, "No Product Found")
-    return None
+    if not rs:
+        log_debug(1, "No Product Found")
+        return None
 
-  product_id = rs[0]['id']
+    product_id = rs[0]['id']
 
-  if len(rs) > 1:
-    # more than one product matches.
-    # search for an exact match or take the first
-    for p in rs:
-      if p['version'] == product['version'] and \
-         p['release'] == product['release'] and \
-         p['arch'] == product['arch']:
-        product_id = p['id']
-        break
+    if len(rs) > 1:
+        # more than one product matches.
+        # search for an exact match or take the first
+        for p in rs:
+            if (p['version'] == product['version'] and
+                p['release'] == product['release'] and
+                p['arch'] == product['arch']):
+                product_id = p['id']
+                break
 
-  return product_id
+    return product_id
 
-def channelForProduct(product, ostarget, parent_id=None, org_id=None, user_id=None):
-  """Find Channels for a given product and ostarget.
-     If parent_id is None, a base channel is requested.
-     Otherwise only channels are returned which have this id
-     as parent channel.
-     org_id and user_id are used to check for permissions. """
+def channelForProduct(product, ostarget, parent_id=None, org_id=None,
+                      user_id=None):
+    """Find Channels for a given product and ostarget.
 
-  product_id = findProduct(product)
-  if not product_id:
-    return None
+    If parent_id is None, a base channel is requested.
+    Otherwise only channels are returned which have this id
+    as parent channel.
+    org_id and user_id are used to check for permissions.
 
-  vals = {
-          'pid'      : product_id,
-          'ostarget' : ostarget,
-          'org_id'   : org_id,
-          'user_id'  : user_id
-         }
-  parent_statement = " IS NULL "
-  if parent_id:
-      parent_statement = " = :parent_id "
-      vals['parent_id'] = parent_id
+    """
+
+    product_id = findProduct(product)
+    if not product_id:
+        return None
+
+    vals = {
+        'pid'      : product_id,
+        'ostarget' : ostarget,
+        'org_id'   : org_id,
+        'user_id'  : user_id
+        }
+    parent_statement = " IS NULL "
+    if parent_id:
+        parent_statement = " = :parent_id "
+        vals['parent_id'] = parent_id
 
 
-  h = rhnSQL.prepare("""
-    SELECT ca.label arch,
-    c.id,
-    c.parent_channel,
-    c.org_id,
-    c.label,
-    c.name,
-    c.summary,
-    c.description,
-    to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
-    rhn_channel.available_chan_subscriptions(c.id, :org_id) available_subscriptions,
-    -- If user_id is null, then the channel is subscribable
-    rhn_channel.loose_user_role_check(c.id, :user_id, 'subscribe') subscribable
-    FROM rhnChannel c
-    JOIN suseProductChannel spc ON spc.channel_id = c.id
-    JOIN suseOSTarget sot ON sot.channel_arch_id = c.channel_arch_id
-    JOIN rhnChannelArch ca ON c.channel_arch_id = ca.id
-    WHERE spc.product_id = :pid
-      AND sot.os = :ostarget
-      AND c.parent_channel %s
-  """ % parent_statement)
-  h.execute(**vals)
-  rs = h.fetchall_dict()
-  if not rs:
-      log_debug(1, "No Channel Found")
-      return None
-  ret = []
-  for channel in rs:
-      subscribable = channel['subscribable']
-      del channel['subscribable']
+    h = rhnSQL.prepare("""
+        SELECT ca.label arch,
+        c.id,
+        c.parent_channel,
+        c.org_id,
+        c.label,
+        c.name,
+        c.summary,
+        c.description,
+        to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
+        rhn_channel.available_chan_subscriptions(c.id, :org_id) available_subscriptions,
+        -- If user_id is null, then the channel is subscribable
+        rhn_channel.loose_user_role_check(c.id, :user_id, 'subscribe') subscribable
+        FROM rhnChannel c
+        JOIN suseProductChannel spc ON spc.channel_id = c.id
+        JOIN suseOSTarget sot ON sot.channel_arch_id = c.channel_arch_id
+        JOIN rhnChannelArch ca ON c.channel_arch_id = ca.id
+        WHERE spc.product_id = :pid
+          AND sot.os = :ostarget
+          AND c.parent_channel %s""" % parent_statement)
+    h.execute(**vals)
+    rs = h.fetchall_dict()
+    if not rs:
+        log_debug(1, "No Channel Found")
+        return None
+    ret = []
+    for channel in rs:
+        subscribable = channel['subscribable']
+        del channel['subscribable']
 
-      if not subscribable:
-          # Not allowed to subscribe to this channel
-          continue
+        if not subscribable:
+            # Not allowed to subscribe to this channel
+            continue
 
-      ret.append(channel)
-      log_debug(1, "Found channel %s with id %d" % (channel['label'], channel['id']))
+        ret.append(channel)
+        log_debug(1, "Found channel %s with id %d" % (channel['label'], channel['id']))
 
-  if ret == []:
-      ret = None
-  return ret
+    if ret == []:
+        ret = None
+    return ret
 
 class URL:
-  scheme = ""
-  username = ""
-  password = ""
-  host = ""
-  port = ""
-  path = ""
-  query = ""
-  fragment = ""
-  paramsdict = {}
+    scheme = ""
+    username = ""
+    password = ""
+    host = ""
+    port = ""
+    path = ""
+    query = ""
+    fragment = ""
+    paramsdict = {}
 
-  def __init__(self, url):
-    u = urlparse.urlsplit(url)
-    self.scheme = u.scheme
-    self.username = u.username
-    self.password = u.password
-    self.host = u.hostname
-    self.port = u.port
-    self.path = u.path
-    self.query = u.query
-    self.fragment = u.fragment
+    def __init__(self, url):
+        u = urlparse.urlsplit(url)
+        self.scheme = u.scheme
+        self.username = u.username
+        self.password = u.password
+        self.host = u.hostname
+        self.port = u.port
+        self.path = u.path
+        self.query = u.query
+        self.fragment = u.fragment
 
-    if self.query:
-        self._parse_query()
+        if self.query:
+            self._parse_query()
 
-  def get_query_param(self, key, default=None):
-      ret = default
-      if self.paramsdict.has_key(key):
-          ret = self.paramsdict[key]
-      return ret
+    def get_query_param(self, key, default=None):
+        ret = default
+        if self.paramsdict.has_key(key):
+            ret = self.paramsdict[key]
+        return ret
 
-  def __setattr__(self, attr, value):
-      if attr == "query":
-          self.__dict__[attr] = value
-          self._parse_query
-          return self.query
-      elif attr == "paramsdict":
-          return None
-      else:
-          self.__dict__[attr] = value
+    def __setattr__(self, attr, value):
+        if attr == "query":
+            self.__dict__[attr] = value
+            self._parse_query
+            return self.query
+        elif attr == "paramsdict":
+            return None
+        else:
+            self.__dict__[attr] = value
 
-  def _parse_query(self):
-      self.paramsdict = {}
-      qp = self.query.split("&")
-      for q in qp:
-          (key, val) = q.split("=", 1)
-          self.paramsdict[key] = val
+    def _parse_query(self):
+        self.paramsdict = {}
+        qp = self.query.split("&")
+        for q in qp:
+            (key, val) = q.split("=", 1)
+            self.paramsdict[key] = val
 
-  def getURL(self):
-    netloc = ""
-    if self.username:
-      netloc = self.username
-    if self.password:
-      netloc = '%s:%s' % (netloc, self.password)
-    if self.host and netloc :
-      netloc = '%s@%s' % (netloc, self.host)
-    elif self.host:
-      netloc = self.host
+    def getURL(self):
+        netloc = ""
+        if self.username:
+            netloc = self.username
+        if self.password:
+            netloc = '%s:%s' % (netloc, self.password)
+        if self.host and netloc :
+            netloc = '%s@%s' % (netloc, self.host)
+        elif self.host:
+            netloc = self.host
 
-    if self.port:
-      netloc = '%s:%s' % (netloc, self.port)
+        if self.port:
+            netloc = '%s:%s' % (netloc, self.port)
 
-    return urlparse.urlunsplit((self.scheme, netloc, self.path, self.query, self.fragment))
+        return urlparse.urlunsplit((self.scheme, netloc, self.path,
+                                    self.query, self.fragment))
 
