@@ -67,14 +67,9 @@ def send(url, send=None):
     response = StringIO()
     curl.setopt(pycurl.WRITEFUNCTION, response.write)
 
-    while True:
+    try_counter = connect_retries
+    while try_counter:
         try_counter -= 1
-        if try_counter <= 0:
-            log_error("Connecting to %s has failed after %s "
-                      "tries with HTTP error code %s." %
-                      (url, connect_retries, status))
-            raise TransferException, "Connection failed after %s tries with HTTP error %s." % (connect_retries, status)
-
         try:
             curl.perform()
         except pycurl.error, e:
@@ -115,6 +110,12 @@ def send(url, send=None):
             url = curl.getinfo(pycurl.REDIRECT_URL)
             log_debug(2, "Got redirect to %s" % url)
             curl.setopt(pycurl.URL, url)
+    else:
+        log_error("Connecting to %s has failed after %s "
+                  "tries with HTTP error code %s." %
+                  (url, connect_retries, status))
+        raise TransferException("Connection failed after %s tries with "
+                                "HTTP error %s." % (connect_retries, status))
 
     # StringIO.write leaves the cursor at the end of the file
     response.seek(0)
