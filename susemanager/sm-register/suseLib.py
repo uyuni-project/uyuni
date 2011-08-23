@@ -27,6 +27,8 @@ from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.server import rhnSQL
 
+YAST_PROXY = "/root/.curlrc"
+
 class TransferException(Exception):
     """Transfer Error"""
     def __init__(self, value=None):
@@ -48,7 +50,6 @@ def send(url, send=None):
     Returns the XML document as stringIO object.
 
     """
-    YAST_PROXY = "/root/.curlrc"
     connect_retries = 10
     try_counter = connect_retries
     curl = pycurl.Curl()
@@ -74,29 +75,8 @@ def send(url, send=None):
         except pycurl.error, e:
             if e[0] == 56: # Proxy requires authentication
                 log_debug(2, e[1])
-                # look for credentials in yast config
-                try:
-                    f = open(YAST_PROXY)
-                except IOError:
-                    log_error("Proxy requires authentication. "
-                              "Could not open the file %s in order to get the "
-                              "credentials." % YAST_PROXY)
-                    raise
-                contents = f.read()
-                try:
-                    creds = re.search(
-                        '^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
-                        contents, re.M).group(1)
-                    ucreds = re.sub('\\\\"', '"', creds)
-                except AttributeError:
-                    log_error("Proxy requires authentication. "
-                              "Failed reading credentials from %s"
-                              % YAST_PROXY)
-                    raise TransferException("Proxy requires authentication. "
-                                            "Failed reading credentials from "
-                                            "%s" % YAST_PROXY)
-                curl.setopt(pycurl.PROXYUSERPWD, ucreds)
-
+                proxy_credentials = get_proxy_credentials()
+                curl.setopt(pycurl.PROXYUSERPWD, proxy_credentials)
             elif e[0] == 60:
                 log_error("Peer certificate could not be authenticated "
                           "with known CA certificates.")
@@ -125,6 +105,30 @@ def send(url, send=None):
     response.seek(0)
     return response
 
+def get_proxy_credentials():
+    """Return proxy credentials as a string in the form username:password"""
+    try:
+        f = open(YAST_PROXY)
+    except IOError:
+        log_error("Proxy requires authentication. "
+                  "Could not open the file %s in order to get the "
+                  "credentials." % YAST_PROXY)
+        raise
+    contents = f.read()
+    f.close()
+
+    try:
+        creds = re.search('^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
+                          contents, re.M).group(1)
+    except AttributeError:
+        log_error("Proxy requires authentication. "
+                  "Failed reading credentials from %s"
+                  % YAST_PROXY)
+        raise TransferException("Proxy requires authentication. "
+                                "Failed reading credentials from "
+                                "%s" % YAST_PROXY)
+    creds = re.sub('\\\\"', '"', creds)
+    return creds
 
 def findProduct(product):
     q_version = ""
