@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 23 17:34:30 CEST 2011 - ug@suse.de
+
+- mgr-ncc-sync does not work for system entitlements 
+  (bnc#713395)
+
+-------------------------------------------------------------------
 Mon Aug 15 16:05:48 CEST 2011 - ug@suse.de
 
 - check hostname for lowercase bnc#703132
