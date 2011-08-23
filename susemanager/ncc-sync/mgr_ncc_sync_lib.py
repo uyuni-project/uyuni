@@ -73,15 +73,15 @@ class NCCSync(object):
         self.fromdir = fromdir
 
         self.ncc_rhn_ent_mapping = {
-            "sm_ent_mon_s"       : [ "monitoring_entitled" ],
-            "sm_ent_prov_s"      : [ "provisioning_entitled" ],
-            "sm_ent_mgm_s"       : [ "enterprise_entitled" ],
-            "sm_ent_mgm_v"       : [ "virtualization_host_platform", "enterprise_entitled" ],
-            "sm_ent_mon_v"       : [ "monitoring_entitled" ],
-            "sm_ent_prov_v"      : [ "provisioning_entitled" ],
-            "sm_ent_mon_z"       : [ "monitoring_entitled" ],
-            "sm_ent_prov_z"      : [ "provisioning_entitled" ],
-            "sm_ent_mgm_z"       : [ "enterprise_entitled" ]
+            "SM_ENT_MON_S"       : [ "monitoring_entitled" ],
+            "SM_ENT_PROV_S"      : [ "provisioning_entitled" ],
+            "SM_ENT_MGM_S"       : [ "enterprise_entitled" ],
+            "SM_ENT_MGM_V"       : [ "virtualization_host_platform", "enterprise_entitled" ],
+            "SM_ENT_MON_V"       : [ "monitoring_entitled" ],
+            "SM_ENT_PROV_V"      : [ "provisioning_entitled" ],
+            "SM_ENT_MON_Z"       : [ "monitoring_entitled" ],
+            "SM_ENT_PROV_Z"      : [ "provisioning_entitled" ],
+            "SM_ENT_MGM_Z"       : [ "enterprise_entitled" ]
         }
 
         initCFG("server.susemanager")
@@ -224,11 +224,17 @@ class NCCSync(object):
                 if today >= start_date and (end == 0 or today <= end_date) and s["type"] != "PROVISIONAL":
                     # FIXME: for correct counting, remove the "or > 0" (bnc#670551)
                     if s["nodecount"] == "-1" or s["nodecount"] > 0 or True:
-                        subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : INFINITE }
+                        subscription_count[ p ] = { "consumed" : int(s["consumed"]),
+                                                    "nodecount" : INFINITE,
+                                                    "start-date" : s["start-date"],
+                                                    "end-date"   : s["end-date"] }
                     elif subscription_count.has_key( p ):
                         subscription_count[ p ]["nodecount"] += int(s["nodecount"])
                     else:
-                        subscription_count[ p ] = { "consumed" : int(s["consumed"]), "nodecount" : int(s["nodecount"]) }
+                        subscription_count[ p ] = { "consumed"   : int(s["consumed"]),
+                                                    "nodecount"  : int(s["nodecount"]),
+                                                    "start-date" : s["start-date"],
+                                                    "end-date"   : s["end-date"] }
 
         # get information about unlimited subscriptions from CHANNEL_FAMILIES
         for family in etree.parse(CHANNEL_FAMILIES).getroot():
