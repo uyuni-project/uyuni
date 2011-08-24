@@ -10,6 +10,8 @@ use NOCpulse::Config;
 use NOCpulse::Probe::DataSource::AbstractDatabase qw(:constants);
 use NOCpulse::Probe::Error;
 
+use RHN::DB;
+
 use base qw(NOCpulse::Probe::DataSource::AbstractDatabase);
 use Class::MethodMaker
   get_set =>
@@ -73,25 +75,8 @@ sub init {
 
 sub connect {
   my ($self, %paramHash) = @_;
-  my $cfg = new NOCpulse::Config;
-  $ENV{'ORACLE_HOME'} = $cfg->get('oracle', 'ora_home');
-  my $DBD     = $cfg->get('cf_db', 'dbd');
-  my $DBNAME  = $cfg->get('cf_db', 'name');
-  my $DBUNAME = $cfg->get('cf_db', 'notification_username');
-  my $DBPASS  = $cfg->get('cf_db', 'notification_password');
-
-  my $PrintError = $paramHash{PrintError} || 0;
-  my $RaiseError = $paramHash{RaiseError} || 0;
-  my $AutoCommit = $paramHash{AutoCommit} || 0;
-
-  # Disconnect prior session, if exists
-  if ($self->dbh) {
-    $self->disconnect;
-  }
-
   # Open a connection to the DB
-  $self->dbh(DBI->connect("DBI:$DBD:$DBNAME", $DBUNAME, $DBPASS,
-                 { RaiseError => $RaiseError, AutoCommit => $AutoCommit }));
+  $self->dbh(RHN::DB->connect);
 
   return $self->dbh;
 }
@@ -211,10 +196,11 @@ SELECT
     nvl(substr($table3.olson_name,1,40),'GMT') as olson_tz_id,
     $table.snmp_host, $table.snmp_port
 FROM 
-    $table, $table2, $table3
+    $table, $table2
+LEFT JOIN $table3
+  ON $table2.timezone_id = $table3.id
 WHERE
     $table.contact_id = $table2.user_id
-AND $table3.id (+) = $table2.timezone_id
 EOSQL
 
   return $self->execute($sql, $table, FETCH_ARRAYREF);
@@ -305,7 +291,7 @@ sub select_active_redirects {
         RECURRING_FREQUENCY,
         RECURRING_DURATION
       FROM   $table
-      WHERE  SYSDATE < EXPIRATION
+      WHERE  current_timestamp < EXPIRATION
 EOSQL
 
   my $redirptr = $self->execute($sql, $table, FETCH_ARRAYREF);
@@ -331,7 +317,7 @@ EOSQL
       FROM 
         $table, $table2
       WHERE 
-        SYSDATE < $table2.EXPIRATION
+        current_timestamp < $table2.EXPIRATION
         AND    $table.REDIRECT_ID = $table2.RECID
 EOSQL
 
@@ -355,7 +341,7 @@ EOSQL
       FROM 
         $table, $table2
       WHERE 
-        SYSDATE < $table2.EXPIRATION
+        current_timestamp < $table2.EXPIRATION
         AND    $table.REDIRECT_ID = $table2.RECID
 EOSQL
 
@@ -378,7 +364,7 @@ EOSQL
       FROM 
         $table, $table2
       WHERE 
-        SYSDATE < $table2.EXPIRATION
+        current_timestamp < $table2.EXPIRATION
         AND    $table.REDIRECT_ID = $table2.RECID
 EOSQL
 
@@ -412,7 +398,7 @@ sub select_active_redirect_criteria {
         $table.MATCH_VALUE,
         $table.INVERTED
       FROM   $table, $table2
-      WHERE  SYSDATE < $table2.EXPIRATION
+      WHERE  current_timestamp < $table2.EXPIRATION
       AND    $table2.RECID = $table.REDIRECT_ID
       ORDER BY $table.REDIRECT_ID, $table.MATCH_PARAM
 EOSQL
@@ -429,7 +415,7 @@ sub select_contact_groups {
     select g.*,  
            (contact_strategy || ':' || ack_completed  || 'Ack') as strategy
      from  $table g, 
-           strategies s
+           rhn_strategies s
      where g.strategy_id = s.recid
 EOSQL
 
@@ -497,10 +483,11 @@ sub select_schedule_and_zone_combos {
       distinct 
         schedule_id, 
         nvl(substr($support_table2.olson_name,1,40),'GMT') as olson_tz_id
-    FROM  $table, $support_table1, $support_table2
+    FROM  $table, $support_table1
+    LEFT  JOIN $support_table2
+      ON  $support_table1.timezone_id = $support_table2.id
     WHERE schedule_id is not null
     AND   $table.contact_id = $support_table1.user_id
-    AND   $support_table2.id (+) = $support_table1.timezone_id
 EOSQL
 
   return $self->execute($sql, undef, FETCH_ARRAYREF);
@@ -1207,16 +1194,12 @@ sub _select_table_primary_keys {
   my $table = 'ALL_CONSTRAINTS';
 
   my $sql = <<EOSQL;
-    SELECT ac.constraint_name,
-           ac.table_name,
-           acc.column_name
-    FROM   all_constraints ac,
-           all_cons_columns acc
-    WHERE  UPPER(ac.table_name) = UPPER(?)
-      AND  ac.constraint_type = 'P'
-      AND  ac.constraint_name = acc.constraint_name
-      AND  ac.owner = acc.owner
-    ORDER BY ac.constraint_name, acc.position
+    SELECT constraint_name,
+           table_name,
+           column_name
+    FROM   all_primary_keys
+    WHERE  UPPER(table_name) = UPPER(?)
+    ORDER BY constraint_name, column_name
 EOSQL
 
   my $result = $self->execute($sql, $table, FETCH_ARRAYREF, @args);

@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.6.0
+Version:        1.6.8
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,40 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Wed Aug 17 2011 Tomas Lestach <tlestach@redhat.com> 1.6.8-1
+- 722189 - adding upgrade script (tlestach@redhat.com)
+- 722189 - omit updates for packages installed in several versions (like
+  kernel) (tpapaioa@redhat.com)
+
+* Tue Aug 16 2011 Simon Lukasik <slukasik@redhat.com> 1.6.7-1
+- Drop the old function, when creating a new one with different argumeters
+  (slukasik@redhat.com)
+
+* Mon Aug 15 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.6-1
+- 700385 - schema upgrade scripts
+- 700385 - replaced synonym with original table_name
+- 700385 - created compatibility views for monitoring
+- 700385 - added all_tab_columns compatibility view
+
+* Thu Aug 11 2011 Simon Lukasik <slukasik@redhat.com> 1.6.5-1
+- Do not confuse people by filename, this is not an upgrade of package
+  (slukasik@redhat.com)
+- Apply necessary flex changes needed for submitting
+  OrgSoftwareSubscriptions.do (slukasik@redhat.com)
+
+* Thu Aug 11 2011 Tomas Lestach <tlestach@redhat.com> 1.6.4-1
+- 722189 - rewrite rhnServerNeededView to reflect all available errata
+  (tlestach@redhat.com)
+
+* Wed Aug 10 2011 Jan Pazdziora 1.6.3-1
+- We missed ON DELETE CASCADE in the past schema upgrade scripts -- fixing now.
+
+* Fri Jul 29 2011 Jan Pazdziora 1.6.2-1
+- Adding empty directory for upgrades to 1.6.
+
+* Fri Jul 29 2011 Jan Pazdziora 1.6.1-1
+- When versions match, it really is not an error.
+
 * Fri Jul 15 2011 Jan Pazdziora 1.5.6-1
 - 711064 - flip the order of iscsi and iscsiname in the kickstart file.
 

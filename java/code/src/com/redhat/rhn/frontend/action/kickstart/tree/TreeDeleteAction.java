@@ -72,8 +72,7 @@ public class TreeDeleteAction extends BaseTreeAction {
      * {@inheritDoc}
      */
     protected ValidatorError processCommandSetters(PersistOperation operation,
-                                                            DynaActionForm form,
-                                                            HttpServletRequest request) {
+            DynaActionForm form, HttpServletRequest request) {
        return null;
     }
 

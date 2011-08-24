@@ -34,9 +34,6 @@ from sslToolLib import getMachineName, daysTil18Jan2038, incSerial, fixSerial
 
 # defaults where we can see them (NOTE: directory is figured at write time)
 CERT_PATH = '/usr/share/rhn/certs/'
-if not os.path.exists(CERT_PATH):
-    # v3.4.0 and older
-    CERT_PATH = '/var/www/rhns/certs/'
 BUILD_DIR = cleanupNormPath('./ssl-build', dotYN=1)
 HOSTNAME = socket.gethostname()
 MACHINENAME = getMachineName(HOSTNAME)
@@ -58,9 +55,6 @@ CA_OPENSSL_CNF_NAME = 'rhn-ca-openssl.cnf'
 SERVER_OPENSSL_CNF_NAME = 'rhn-server-openssl.cnf'
 
 MD = 'sha1'
-#MD = 'md5'
-
-#CRYPTO = '-aes256' # openssl on AS2.1 (< v0.9.7a) can't understand aes256
 CRYPTO = '-des3'
 
 
@@ -336,6 +330,7 @@ def figureDEFS_distinguishing(options):
     # NOTE: --set-hostname set in figureDEFS_dirs()
     if getOption(options, 'set_email') is not None:
         DEFS['--set-email'] = getOption(options, 'set_email')
+    DEFS['--set-cname'] = getOption(options, 'set_cname') # this is list
 
     # remap to options object
     setOption(options, 'set_country', DEFS['--set-country'])
@@ -346,6 +341,7 @@ def figureDEFS_distinguishing(options):
     setOption(options, 'set_common_name', DEFS['--set-common-name'])
     #setOption(options, 'set_hostname', DEFS['--set-hostname'])
     setOption(options, 'set_email', DEFS['--set-email'])
+    setOption(options, 'set_cname', DEFS['--set-cname'])
 
 
 CONF_TEMPLATE_CA = """\
@@ -366,6 +362,7 @@ serial                  = $dir/serial
 
 # how closely we follow policy
 policy                  = policy_optional
+copy_extensions         = copy
 
 [ policy_optional ]
 countryName             = optional
@@ -418,6 +415,7 @@ default_bits            = 2048
 distinguished_name      = req_distinguished_name
 prompt                  = no
 x509_extensions         = req_server_x509_extensions
+req_extensions          = v3_req
 
 [ req_distinguished_name ]
 %s
@@ -431,9 +429,34 @@ nsCertType = server
 nsComment               = "RHN SSL Tool Generated Certificate"
 subjectKeyIdentifier    = hash
 authorityKeyIdentifier  = keyid, issuer:always
+
+[ v3_req ]
+# Extensions to add to a certificate request
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+
+# Some CAs do not yet support subjectAltName in CSRs.
+# Instead the additional names are form entries on web
+# pages where one requests the certificate...
+subjectAltName          = @alt_names
+
+[alt_names]
+%s
 #===========================================================================
 """
 
+
+def gen_req_alt_names(d):
+    """ generates the alt_names section of the *-openssl.cnf file """
+    i = 0
+    result = ''
+    if '--set-cname' in d and d['--set-cname']:
+        for name in d['--set-cname']:
+            i += 1
+            result += "DNS.%d = %s\n" % (i, name)
+    if not result:
+        result = "DNS.1 =\n"
+    return result
 
 def gen_req_distinguished_name(d):
     """ generates the rhn_distinguished section of the *-openssl.cnf file """
@@ -449,20 +472,6 @@ def gen_req_distinguished_name(d):
     return s
 
 
-def gen_signature(d):
-    """ generate a signature such as:
-        /C=US/ST=North Carolina/L=....
-
-        XXX NOT USED CURRENTLY
-    """
-    s = ""
-    keys = ('C', 'ST', 'L', 'O', 'OU', 'CN', 'emailAddress')
-    for key in keys:
-        if d.has_key(key) and string.strip(d[key]):
-            s = s + '/%s=%s' % (key, string.strip(d[key]))
-    return s
-
-
 def figureSerial(caCertFilename, serialFilename, indexFilename):
     """ for our purposes we allow the same serial number for server certs
         BUT WE DO NOT ALLOW server certs and CA certs to share the same
@@ -475,8 +484,10 @@ def figureSerial(caCertFilename, serialFilename, indexFilename):
     # what serial # is the ca cert using (we need to increment from that)
     ret, outstream, errstream = rhn_popen(['/usr/bin/openssl', 'x509', '-noout',
                                            '-serial', '-in', caCertFilename])
-    out = outstream.read(); outstream.close()
-    errstream.read(); errstream.close()
+    out = outstream.read()
+    outstream.close()
+    errstream.read()
+    errstream.close()
     assert not ret
     caSerial = string.split(string.strip(out), '=')
     assert len(caSerial) > 1
@@ -720,7 +731,7 @@ serial                  = $dir/serial
               )
         else:
             openssl_cnf = CONF_TEMPLATE_SERVER \
-              % gen_req_distinguished_name(rdn)
+              % (gen_req_distinguished_name(rdn), gen_req_alt_names(d))
 
         try:
             rotated = rotateFile(filepath=self.filename,verbosity=verbosity)

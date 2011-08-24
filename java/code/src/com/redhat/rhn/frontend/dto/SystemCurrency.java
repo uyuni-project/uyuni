@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,6 +25,14 @@ import java.util.Date;
  * @version $Rev: 1743 $
  */
 public class SystemCurrency extends BaseDto implements Serializable  {
+
+    private static Integer scCrit = ConfigDefaults.get().getSCCrit();
+    private static Integer scImp = ConfigDefaults.get().getSCImp();
+    private static Integer scMod = ConfigDefaults.get().getSCMod();
+    private static Integer scLow = ConfigDefaults.get().getSCLow();
+    private static Integer scBug = ConfigDefaults.get().getSCBug();
+    private static Integer scEnh = ConfigDefaults.get().getSCEnh();
+
 
     private String statusDisplay;
     private Long id;
@@ -140,6 +150,13 @@ public class SystemCurrency extends BaseDto implements Serializable  {
         return name;
     }
     /**
+     * another getter for name attribute
+     * @return Returns the name.
+     */
+    public String getServerName() {
+        return getName();
+    }
+    /**
      * @param nameIn The name to set.
      */
     public void setName(String nameIn) {
@@ -171,4 +188,11 @@ public class SystemCurrency extends BaseDto implements Serializable  {
         this.modified = modifiedIn;
     }
 
+    /**
+     * @return returns final score
+     */
+    public Long getScore() {
+        return this.enhancement * scEnh + this.bug * scBug + this.low * scLow +
+            this.moderate * scMod + this.important * scImp + this.critical * scCrit;
+    }
 }

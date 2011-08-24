@@ -6,6 +6,11 @@
 
 <div class="top-content"> <!--Added for the purpose of SuSE Manager. Header wrap [et]-->
   <div id="utility">
+<c:set var="custom_header" scope="page" value="${rhn:getConfig('web.custom_header')}" />
+<c:if test="${! empty custom_header}">
+    <center><p><c:out value="${custom_header}" escapeXml="false"/></p></center>
+</c:if>
+
 <rhn:require acl="user_authenticated()">
 	<!--div id="utilityLinks">
 

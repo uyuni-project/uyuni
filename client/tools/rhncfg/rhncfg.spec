@@ -8,7 +8,7 @@ Group:   Applications/System
 License: GPLv2 and Python
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.9
+Version: 5.10.14
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -113,6 +113,25 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Thu Aug 18 2011 Michael Mraka <michael.mraka@redhat.com> 5.10.14-1
+- 731284 - is_selinux_enabled is not defined on RHEL4
+
+* Fri Aug 12 2011 Miroslav Suchý 5.10.13-1
+- add proto, server_name and server_list to local_config overrides
+- None has not iteritems() method
+
+* Thu Aug 11 2011 Miroslav Suchý 5.10.12-1
+- True and False constants are defined since python 2.4
+- do not mask original error by raise in execption
+
+* Thu Aug 04 2011 Jan Pazdziora 5.10.11-1
+- 508936 - rhn-actions-control honor the allowed-actions/scripts/run for remote
+  commands (mmello@redhat.com)
+
+* Mon Aug 01 2011 Miroslav Suchý 5.10.10-1
+- get server_name from config only if it was not set on command line
+- remove rhn_rpc.py
+
 * Fri Jul 15 2011 Miroslav Suchý 5.10.9-1
 - optparse is here since python 2.3 - remove optik (msuchy@redhat.com)
 

@@ -15,10 +15,6 @@
 
 import os
 
-#Forgot about AS 2.1.
-True = 1
-False = 0
-
 #Base class for all modes.
 class BaseMode:
     def __init__(self):
@@ -70,8 +66,8 @@ class PathHandler:
             try:
                 f = open(os.path.join(self.rhn_root, filename), "w")
                 f.close()
-            except Exception, e:
-                raise e
+            except Exception:
+                raise
 
     #remove the file if it's present.
     def remove_file(self, filename):
@@ -79,8 +75,8 @@ class PathHandler:
         if self.check_for_file(filename):
             try:
                 os.remove(os.path.join(self.rhn_root, filename))
-            except Exception, e:
-                raise e
+            except Exception:
+                raise
 
     #Returns True if filename exists in /etc/sysconfig/rhn/allowed-actions/configfiles
     def check_for_file(self, filename):
@@ -119,6 +115,12 @@ class RunMode(ConfigFilesBaseMode):
         self.name = "run"
         self.ph.set_rhn_root("/etc/sysconfig/rhn/allowed-actions/script") 
 
+class RunAllMode(ConfigFilesBaseMode):
+    def __init__(self):
+        ConfigFilesBaseMode.__init__(self)
+        self.name = "all"
+        self.ph.set_rhn_root("/etc/sysconfig/rhn/allowed-actions/script")
+
 class AllMode(ConfigFilesBaseMode):
     def __init__(self):
         ConfigFilesBaseMode.__init__(self)
@@ -150,6 +152,12 @@ class SolarisRunMode(ConfigFilesBaseMode):
         ConfigFilesBaseMode.__init__(self)
         self.name = "run"
         self.ph.set_rhn_root("/opt/redhat/rhn/solaris/etc/sysconfig/rhn/allowed-actions/script") 
+
+class SolarisAllRunMode(ConfigFilesBaseMode):
+    def __init__(self):
+        ConfigFilesBaseMode.__init__(self)
+        self.name = "all"
+        self.ph.set_rhn_root("/opt/redhat/rhn/solaris/etc/sysconfig/rhn/allowed-actions/script")
 
 class SolarisAllMode(ConfigFilesBaseMode):
     def __init__(self):

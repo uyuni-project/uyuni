@@ -89,10 +89,19 @@ def get_available_channels(user, password):
     scheme, netloc, path, query, fragment = urlparse.urlsplit(satellite_url)
     satellite_url = urlparse.urlunsplit((scheme, netloc, '/rpc/api', query, fragment))
     client = xmlrpclib.Server(satellite_url, verbose=0)
-    key = client.auth.login(user, password)
+    try:
+        key = client.auth.login(user, password)
+    except xmlrpclib.Fault, exc:
+        systemExit(1, "Error during client authentication: %s" % exc.faultString)
+
     system_id = re.sub('^ID-', '', rpclib.xmlrpclib.loads(up2dateAuth.getSystemId())[0][0]['system_id'])
     result = []
-    for channel in client.system.listChildChannels(key, int(system_id)):
+    try:
+        channels = client.system.listChildChannels(key, int(system_id))
+    except xmlrpclib.Fault, exc:
+        systemExit(1, "Error when listing child channels: %s" % exc.faultString)
+
+    for channel in channels:
         if 'LABEL' in channel:
             result.extend([channel['LABEL']])
         else:

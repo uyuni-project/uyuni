@@ -44,7 +44,6 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
-import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.ProfileDto;
@@ -644,13 +643,6 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      *
      */
     private void storeActivationKeyInfo() {
-        // The host server will contain the tools channel necessary to kickstart the
-        // target system.
-        Channel toolsChannel =
-            getToolsChannel(this.ksdata, this.user, getHostServer());
-        log.debug("** Looked up tools channel: " + toolsChannel.getName());
-
-
         // If the target system exists already, remove any existing activation keys
         // it might have associated with it.
 
@@ -694,7 +686,6 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                 this.ksdata,
                 RegistrationType.NONE.equals(regType) ? null : getTargetServer(),
                 this.kickstartSession,
-                toolsChannel,
                 cfgMgmtFlag,
                 1L,
                 note);
@@ -851,7 +842,6 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      * @param ksdata associated with the key
      * @param server being kickstarted (can be null)
      * @param session associated with the kickstart (NOT NULL)
-     * @param toolsChannel containing up2date and autokickstart rpms
      * @param deployConfigs if you want to or not
      * @param note to add to key
      * @param usageLimit to apply to the key.  null for unlimited.
@@ -861,7 +851,6 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             KickstartData ksdata,
             Server server,
             KickstartSession session,
-            Channel toolsChannel,
             boolean deployConfigs,
             Long usageLimit,
             String note) {
@@ -889,30 +878,6 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             }
         }
 
-        //Only add the toolsChannel to the activation key if it exists.
-        //This can happen on a satellite that has synced a base channel
-        // but not the tools child channel, or when the kickstart channel
-        // is a custom channel.  See bug #201561
-        if (toolsChannel != null) {
-            key.addChannel(toolsChannel);
-        }
-
-        //fix for bugzilla 450954
-        // We set the reactivation key's base channel to whatever
-        //   an activation key's is set to (assuming there is one)
-        Channel chan = null;
-        for (Token token : ksdata.getDefaultRegTokens()) {
-            if (token.getBaseChannel() != null) {
-                chan = token.getBaseChannel();
-                break;
-            }
-        }
-        if (chan != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Setting reactivation key's base chan to " + chan.getLabel());
-            }
-            key.setBaseChannel(chan);
-        }
         log.debug("** Saving new token");
         ActivationKeyFactory.save(key);
         log.debug("** Saved new token: " + key.getId());

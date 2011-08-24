@@ -2,7 +2,6 @@
 # $Id$
 
 import time
-import string
 import config
 import traceback
 
@@ -14,14 +13,14 @@ class Log:
     def __init__(self):
         self.app = "up2date"
         self.cfg = config.initUp2dateConfig()
+        self.log_info = ''
     
     def set_app_name(self, name):
         self.app = str(name)
     
     def log_debug(self, *args):
         if self.cfg["debug"] > 1:
-            message ="D: " + string.join(map(lambda a: str(a), args), " ")
-            self.log_me(message)
+            self.log_me("D: ", *args)
     
     def log_me(self, *args):
         """General logging function.
@@ -29,9 +28,13 @@ class Log:
         
         """
         self.log_info = "[%s] %s" % (time.ctime(time.time()), self.app)
-        s = ""
+        s = u""
         for i in args:
-            s = s + "%s" % (i,)
+            if not isinstance(i, unicode):
+                # we really need unicode(str(i)) here, because i can be anything
+                # from string or int to list, dict or even class
+                i = unicode(str(i), 'utf-8')
+            s += i
         if self.cfg["debug"] > 1:
             print s
         self.write_log(s)
@@ -39,15 +42,15 @@ class Log:
     def trace_me(self):
         self.log_info = "[%s] %s" % (time.ctime(time.time()), self.app)
         x = traceback.extract_stack()
-        bar = string.join(traceback.format_list(x))
-        self.write_log(bar)
+        msg = ''.join(traceback.format_list(x))
+        self.write_log(msg)
 
-    def log_exception(self, type, value, tb):
+    def log_exception(self, logtype, value, tb):
         self.log_info = "[%s] %s" % (time.ctime(time.time()), self.app)
         output = ["\n"] # Accumulate the strings in a list
         output.append("Traceback (most recent call last):\n")
         output = output + traceback.format_list(traceback.extract_tb(tb))
-        output.append("%s: %s\n" % (type, value))
+        output.append("%s: %s\n" % (logtype, value))
         self.write_log("".join(output))
     
     def write_log(self, s):

@@ -76,8 +76,8 @@ def getOemInfo():
         try:
             (key, value) = i.split(':')
         except ValueError:
-            raise up2dateErrors.OemInfoFileError(i)
-
+            raise up2dateErrors.OemInfoFileError(i), None, sys.exc_info()[2]
+        
         info[key] = value.strip()
 
     return info
@@ -369,7 +369,7 @@ def getAvailableChannels(username, password):
                                                  server_release)
     except xmlrpclib.Fault, f:
         if f.faultCode == 99:
-            raise up2dateErrors.DelayError(f.faultString)
+            raise up2dateErrors.DelayError(f.faultString), None, sys.exc_info()[2]
         else:
             raise
 

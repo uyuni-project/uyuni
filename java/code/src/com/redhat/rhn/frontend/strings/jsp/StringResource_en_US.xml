@@ -18689,6 +18689,30 @@ new autoinstallable distribution.&lt;/strong&gt;
         <trans-unit id="exportcolumn.issueDate">
             <source>Issue Date</source>
         </trans-unit>
+        <trans-unit id="exportcolumn.serverName">
+            <source>System</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.critical">
+            <source>Security (Critical)</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.important">
+            <source>Security (Important)</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.moderate">
+            <source>Security (Moderate)</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.low">
+            <source>Security (Low)</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.bug">
+            <source>Bugfixes</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.enhancement">
+            <source>Enhancements</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.score">
+            <source>Score</source>
+        </trans-unit>
      </group>
 
     <trans-unit id="virtualization.provision.first.jsp.no.profiles">
@@ -19599,6 +19623,14 @@ new autoinstallable distribution.&lt;/strong&gt;
             <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
             </context-group>
          </trans-unit>
+
+         <trans-unit id="sdc.details.hardware.network_cname">
+            <source>CName alias:</source>
+            <context-group name="ctx">
+            <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+            </context-group>
+         </trans-unit>
+
 
          <trans-unit id="sdc.details.hardware.storage">
             <source>Storage</source>

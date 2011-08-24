@@ -17,6 +17,7 @@
 # system modules
 import string
 import os
+import sys
 
 from spacewalk.common import rhnFlags, rhnMail
 from spacewalk.common.rhnLog import log_debug, log_error
@@ -170,7 +171,7 @@ class Registration(rhnHandler):
             try:
                 org_id = int(str(org_id))
             except ValueError:
-                raise rhnFault(30, _faultValueString(org_id, "org_id"))
+                raise rhnFault(30, _faultValueString(org_id, "org_id")), None, sys.exc_info()[2]
         else:
             org_id = org_password = None
         username, password  = rhnUser.check_user_password(username, password)
@@ -388,11 +389,11 @@ class Registration(rhnHandler):
                 newserv.save(0, channel)
             except (rhnChannel.SubscriptionCountExceeded,
                     rhnChannel.NoBaseChannelError), channel_error:
-                raise rhnFault(70)
+                raise rhnFault(70), None, sys.exc_info()[2]
             except rhnChannel.BaseChannelDeniedError, channel_error:
-                raise rhnFault(71)
+                raise rhnFault(71), None, sys.exc_info()[2]
             except server_lib.rhnSystemEntitlementException, e:
-                raise rhnFault(90)
+                raise rhnFault(90), None, sys.exc_info()[2]
 
             # Process any kickstart data associated with this server
             # Do this before using/processing the token, as the
@@ -427,12 +428,12 @@ class Registration(rhnHandler):
             newserv.save(1, channel)
         except (rhnChannel.SubscriptionCountExceeded,
                 rhnChannel.NoBaseChannelError), channel_error:
-            raise rhnFault(70)
+            raise rhnFault(70), None, sys.exc_info()[2]
         except rhnChannel.BaseChannelDeniedError, channel_error:
-            raise rhnFault(71)
+            raise rhnFault(71), None, sys.exc_info()[2]
         except server_lib.rhnSystemEntitlementException, e:
             # right now, don't differentiate between general ent issues & rhnNoSystemEntitlementsException
-            raise rhnFault(90)
+            raise rhnFault(90), None, sys.exc_info()[2]
 
 
 
@@ -1346,11 +1347,11 @@ class Registration(rhnHandler):
                 org_id=user.contact['org_id'], user_id=user.getid())
         except rhnChannel.NoBaseChannelError:
             # ?? Invalid arch+release ??
-            raise rhnFault(19)
+            raise rhnFault(19), None, sys.exc_info()[2]
         except rhnChannel.BaseChannelDeniedError:
             raise rhnFault(71,
-                           _("Insufficient subscription permissions for release, arch (%s, %s)")
-                           % (release, arch))
+                           _("Insufficient subscription permissions for release, arch (%s, %s)") 
+                           % (release, arch)), None, sys.exc_info()[2]
 
 
         # we'll always have the info from the base channel, otherwise there

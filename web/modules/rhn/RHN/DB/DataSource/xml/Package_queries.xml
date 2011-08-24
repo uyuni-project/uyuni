@@ -34,44 +34,36 @@ SELECT PN.id AS NAME_ID,
        PE.epoch AS EPOCH,
        PN.name || '-' || evr_t_as_vre_simple(PE.evr) AS NVRE,
        UPPER(PN.name || '-' || evr_t_as_vre_simple(PE.evr)) AS U_NVRE
-  FROM rhnPackageName PN,
-       rhnPackageEVR PE,
-       rhnPackageNEVRA PNEVRA,
-       rhnSnapshotPackage SP,
-       rhnSnapshot S
+  FROM rhnSnapshot S
+  JOIN rhnSnapshotPackage SP
+    ON S.id = SP.snapshot_id
+  JOIN rhnPackageNEVRA PNEVRA
+    ON SP.nevra_id = PNEVRA.id
+  JOIN rhnPackageName PN
+    ON PNEVRA.name_id = PN.id
+  JOIN rhnPackageEVR PE
+    ON PNEVRA.evr_id = PE.id
+  LEFT JOIN (SELECT p.id, p.name_id, p.evr_id
+               FROM rhnPackage P,
+                    rhnChannelPackage CP,
+                    rhnSnapshotChannel SC
+              WHERE SC.snapshot_id = :ss_id
+                AND SC.channel_id = CP.channel_id
+                AND CP.package_id = P.id
+        ) SCP
+    ON SCP.name_id = PN.id
+   AND SCP.evr_id = PE.id
  WHERE S.id = :ss_id
    AND S.server_id = :sid
-   AND S.id = SP.snapshot_id
-   AND SP.nevra_id = PNEVRA.id
-   AND PNEVRA.name_id = PN.id
    AND NOT EXISTS (SELECT 1 FROM rhnPackageSyncBlacklist PSB WHERE
                      PSB.package_name_id = PN.id AND org_id is NULL OR org_id = :org_id)
-   AND PNEVRA.evr_id = PE.id
    AND NOT EXISTS (
 SELECT 1 FROM rhnServerPackage SP
  WHERE SP.server_id = :sid
    AND SP.name_id = PN.id
    AND SP.evr_id = PE.id
 )
-MINUS
-SELECT PN.id AS NAME_ID,
-       PE.id AS EVR_ID,
-       PN.name AS NAME,
-       PE.version AS VERSION,
-       PE.release AS RELEASE,
-       PE.epoch AS EPOCH,
-       PN.name || '-' || evr_t_as_vre_simple(PE.evr) AS NVRE,
-       UPPER(PN.name || '-' || evr_t_as_vre_simple(PE.evr)) AS U_NVRE
-  FROM rhnPackageName PN,
-       rhnPackageEVR PE,
-       rhnPackage P,
-       rhnChannelPackage CP,
-       rhnSnapshotChannel SC
- WHERE SC.snapshot_id = :ss_id
-   AND SC.channel_id = CP.channel_id
-   AND CP.package_id = P.id
-   AND P.name_id = PN.id
-   AND P.evr_id = PE.id
+   AND SCP.id IS NULL
 ORDER BY 8
   </query>
 </mode>
@@ -1454,19 +1446,20 @@ ORDER BY UPPER(PN.name), UPPER(PE.version), UPPER(PE.release), UPPER(PE.epoch)
 
 <mode name="system_upgradable_package_list">
   <query params="sid">
-SELECT  pn.id || '|' || lookup_evr(full_list.evr.epoch, full_list.evr.version, full_list.evr.release) ID,
-        full_list.server_id SERVER_ID, 
-        pn.id NAME_ID,
-        lookup_evr(full_list.evr.epoch, full_list.evr.version, full_list.evr.release) EVR_ID,
-        pn.name ||'-'|| full_list.evr.version || '-' || full_list.evr.release || DECODE(full_list.evr.epoch, NULL, '', ':' || full_list.evr.epoch) NVRE,
-        full_list.errata_id ERRATA_ID,
-        full_list.errata_advisory ERRATA_ADVISORY,
-        full_list.evr.epoch EPOCH,
-        full_list.evr.version VERSION,
-        full_list.evr.release RELEASE,
-        E.advisory_type ERRATA_ADVISORY_TYPE,
-        E.advisory_name ERRATA_ADVISORY_NAME
-  FROM  rhnErrata E,
+SELECT  pn.id || '|' || lookup_evr(full_list.evr.epoch, full_list.evr.version, full_list.evr.release) as ID,
+        full_list.server_id as SERVER_ID,
+        pn.id as NAME_ID,
+        lookup_evr(full_list.evr.epoch, full_list.evr.version, full_list.evr.release) as EVR_ID,
+        pn.name ||'-'|| full_list.evr.version || '-' || full_list.evr.release ||
+                CASE WHEN full_list.evr.epoch IS NOT NULL THEN ':' || full_list.evr.epoch END as NVRE,
+        full_list.errata_id as ERRATA_ID,
+        full_list.errata_advisory as ERRATA_ADVISORY,
+        full_list.evr.epoch as EPOCH,
+        full_list.evr.version as VERSION,
+        full_list.evr.release as RELEASE,
+        E.advisory_type as ERRATA_ADVISORY_TYPE,
+        E.advisory_name as ERRATA_ADVISORY_NAME
+  FROM
         (
          SELECT  SOP.package_name_id name_id, MAX(pe.evr) evr,
                  SOP.server_id server_id, SOP.errata_id errata_id, 
@@ -1477,8 +1470,9 @@ SELECT  pn.id || '|' || lookup_evr(full_list.evr.epoch, full_list.evr.version, f
        GROUP BY  SOP.package_name_id, SOP.server_id, SOP.errata_id, SOP.errata_advisory
         ) full_list,
         rhnPackageName PN
+  LEFT JOIN rhnErrata E
+    ON full_list.errata_id = E.id
  WHERE  full_list.name_id = PN.id
-   AND  full_list.errata_id = E.id (+)
 ORDER BY  UPPER(NVRE)
   </query>
 </mode>

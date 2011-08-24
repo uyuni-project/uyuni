@@ -102,10 +102,7 @@ ConfigParser -- responsible for for parsing a list of
 import re
 import types
 import string
-
-# Not available on python 1.5.2
-True = 1
-False = 0
+import sys
 
 __all__ = ["NoSectionError","DuplicateSectionError","NoOptionError",
            "InterpolationError","InterpolationDepthError","ParsingError",
@@ -228,7 +225,7 @@ class ConfigParser:
         try:
             opts = self.__sections[section].copy()
         except KeyError:
-            raise NoSectionError(section)
+            raise NoSectionError(section), None, sys.exc_info()[2]
         opts.update(self.__defaults)
         if opts.has_key('__name__'):
             del opts['__name__']
@@ -286,7 +283,7 @@ class ConfigParser:
             d.update(self.__sections[section])
         except KeyError:
             if section != DEFAULTSECT:
-                raise NoSectionError(section)
+                raise NoSectionError(section), None, sys.exc_info()[2]
         # Update with the entry specific variables
         if vars is not None:
             d.update(vars)
@@ -294,7 +291,7 @@ class ConfigParser:
         try:
             value = d[option]
         except KeyError:
-            raise NoOptionError(option, section)
+            raise NoOptionError(option, section), None, sys.exc_info()[2]
 
         if raw:
             return value
@@ -310,7 +307,7 @@ class ConfigParser:
                 try:
                     value = value % vars
                 except KeyError, key:
-                    raise InterpolationError(key, option, section, rawval)
+                    raise InterpolationError(key, option, section, rawval), None, sys.exc_info()[2]
             else:
                 break
         if string.find(value, "%(") != -1:
@@ -359,7 +356,7 @@ class ConfigParser:
             try:
                 sectdict = self.__sections[section]
             except KeyError:
-                raise NoSectionError(section)
+                raise NoSectionError(section), None, sys.exc_info()[2]
         sectdict[self.optionxform(option)] = value
 
     def write(self, fp):
@@ -385,7 +382,7 @@ class ConfigParser:
             try:
                 sectdict = self.__sections[section]
             except KeyError:
-                raise NoSectionError(section)
+                raise NoSectionError(section), None, sys.exc_info()[2]
         option = self.optionxform(option)
         existed = sectdict.has_key(option)
         if existed:

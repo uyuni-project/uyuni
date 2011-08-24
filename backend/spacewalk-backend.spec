@@ -19,7 +19,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.6.2
+Version: 1.6.12
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -103,6 +103,8 @@ Provides: rhns-server = 1:%{version}-%{release}
 
 #this exists only on rhel5 and rhel6
 Conflicts: python-sgmlop
+# cobbler-web is known to break our configuration
+Conflicts: cobbler-web
 
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: mod_python
@@ -745,6 +747,44 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri Aug 19 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.12-1
+- 593402 - cobbler-web is known to break our configuration
+
+* Thu Aug 18 2011 Miroslav Suchý 1.6.11-1
+- 723856 - remove unused variable
+- if we use 1024 as base, we should use kiB, MiB, GiB
+- 731692 - correct output of number beyond decimal point in sat-sync
+
+* Thu Aug 18 2011 Tomas Lestach <tlestach@redhat.com> 1.6.10-1
+- 658533 - remove default currency from backend part of rhn.conf
+  (tlestach@redhat.com)
+
+* Tue Aug 16 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.9-1
+- 730452 - fixed table aliasses
+
+* Mon Aug 15 2011 Miroslav Suchý 1.6.8-1
+- make satCerts.py work on PostgreSQL
+
+* Fri Aug 12 2011 Miroslav Suchý 1.6.7-1
+- add missing import - sys
+
+* Thu Aug 11 2011 Miroslav Suchý 1.6.6-1
+- True and False constants are defined since python 2.4
+- do not mask original error by raise in execption
+
+* Fri Aug 05 2011 Simon Lukasik <slukasik@redhat.com> 1.6.5-1
+- 725637 - documentation should correspond with the behavior
+  (slukasik@redhat.com)
+
+* Wed Aug 03 2011 Simon Lukasik <slukasik@redhat.com> 1.6.4-1
+- In any case, do not attempt to remove /var/satellite (slukasik@redhat.com)
+- extract method: unlink_package_file (slukasik@redhat.com)
+- 701232 - remove unnecessary directories (slukasik@redhat.com)
+- remove unused imports (slukasik@redhat.com)
+
+* Tue Aug 02 2011 Simon Lukasik <slukasik@redhat.com> 1.6.3-1
+- 673694 - process also child channels of custom channels (slukasik@redhat.com)
+
 * Wed Jul 27 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.2-1
 - import xmlrpclib directly
 - Applying the encoding fix to copyright as well.

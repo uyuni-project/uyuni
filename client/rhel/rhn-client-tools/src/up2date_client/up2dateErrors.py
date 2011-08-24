@@ -17,8 +17,11 @@ from platform import getPlatform
 
 class Error:
     """base class for errors"""
+    premsg = ''
     def __init__(self, errmsg):
-        self.errmsg = errmsg
+        if not isinstance(errmsg, unicode):
+            errmsg = unicode(errmsg, 'utf-8')
+        self.errmsg = self.premsg + errmsg
         self.log = up2dateLog.initLog()
 
     def __repr__(self):
@@ -27,67 +30,42 @@ class Error:
     
 class RpmError(Error):
     """rpm itself raised an error condition"""
-    def __repr__(self):
-        msg = _("RPM error.  The message was:\n") + self.errmsg
-        log = up2dateLog.initLog()
-        log.log_me(msg)
-        return msg
+    premsg = _("RPM error.  The message was:\n")
 
 class RhnServerException(Error):
     pass
 
 class PasswordError(RhnServerException):
     """Raise when the server responds with that a password is incorrect"""
-    def __repr__(self):
-        log = up2dateLog.initLog()
-        msg = _("Password error. The message was:\n") + self.errmsg
-        log.log_me(msg)
-        return msg
+    premsg = _("Password error. The message was:\n")
 
 class DependencyError(Error):
     """Raise when a rpm transaction set has a dependency error"""
+    premsg = _("RPM dependency error. The message was:\n")
     def __init__(self, msg, deps=None):
-        self.errmsg = msg
+        Error.__init__(self, msg)
         # just tag on the whole deps tuple, so we have plenty of info
         # to play with
         self.deps = deps
-        
-    def __repr__(self):
-        msg = _("RPM dependency error. The message was:\n") + self.errmsg
-        log = up2dateLog.initLog()
-        log.log_me(msg)
-        return msg
 
 
 class CommunicationError(RhnServerException):
     """Indicates a problem doing xml-rpc http communication with the server"""
-    def __repr__(self):
-        msg =  _("Error communicating with server. "\
-                 "The message was:\n") + self.errmsg
-        log = up2dateLog.initLog()
-        log.log_me(msg)
-        return msg
+    premsg = _("Error communicating with server. "\
+                 "The message was:\n")
 
 class FileNotFoundError(Error):
     """
     Raise when a package or header that is requested returns
     a 404 error code"""
-    def __repr__(self):
-        msg =  _("File Not Found: \n") + self.errmsg
-        log = up2dateLog.initLog()
-        log.log_me(msg)
-        return msg
+    premsg =  _("File Not Found: \n")
 
 
 class DelayError(RhnServerException):
     """
     Raise when the expected response from a xml-rpc call
     exceeds a timeout"""
-    def __repr__(self):
-        msg =  _("Delay error from server.  The message was:\n") + self.errmsg
-        log = up2dateLog.initLog()
-        log.log_me(msg)
-        return msg
+    premsg =  _("Delay error from server.  The message was:\n")
 
 class RpmRemoveError(Error):
     """
@@ -97,80 +75,55 @@ class RpmRemoveError(Error):
         self.args = args
         self.errmsg = ""
         for key in self.args.keys():
+            if not isinstance(errmsg, self.args[key]):
+                self.args[key] = unicode(self.args[key], 'utf-8')
             self.errmsg = self.errmsg + "%s failed because of %s\n" % (
                 key, self.args[key])
         self.data = self.args
     def __repr__(self):
         return self.errmsg
 
+class NoLogError(Error):
+    def __init__(self, msg):
+        if not isinstance(msg, unicode):
+            errmsg = unicode(msg, 'utf-8')
+        self.errmsg = self.premsg + msg
+
+    def __repr__(self):
+        return self.errmsg
+
 class AbuseError(Error):
-    def __init__(self, msg):
-        self.errmsg = msg
+    pass
 
-    def __repr__(self):
-        return self.errmsg
+class AuthenticationTicketError(NoLogError, RhnServerException):
+    pass
 
-class AuthenticationTicketError(RhnServerException):
-    def __init__(self, msg):
-        self.errmsg = msg
+class AuthenticationError(NoLogError):
+    pass
 
-    def __repr__(self):
-        return self.errmsg
-
-class AuthenticationError(Error):
-    def __init__(self, msg):
-        self.errmsg = msg
- 
-    def __repr__(self):
-        return self.errmsg
-
-class ValidationError(RhnServerException):
-    def __init__(self, errmsg):
-        Error.__init__(self, errmsg)
-
-    # indicates an error during server input validation
-    def __repr__(self):
-        return _("Error validating data at server:\n") + self.errmsg
+class ValidationError(NoLogError, RhnServerException):
+    """indicates an error during server input validation"""
+    premsg = _("Error validating data at server:\n")
 
 class InvalidRegistrationNumberError(ValidationError):
     pass
 
-class InvalidProductRegistrationError(Error):
-    def __init__(self, errmsg):
-        Error.__init__(self, errmsg)
-
-    # indicates an error during server input validation
-    def __repr__(self):
-        return _("The installation number is invalid") + self.errmsg
+class InvalidProductRegistrationError(NoLogError):
+    """indicates an error during server input validation"""
+    premsg = _("The installation number is invalid")
     
-class OemInfoFileError(Error):
-    def __init__(self,errmsg):
-        Error.__init__(self, errmsg)
+class OemInfoFileError(NoLogError):
+    premsg = _("Error parsing the oemInfo file at field:\n")
 
-    def __repr__(self):
-        return _("Error parsing the oemInfo file at field:\n") + self.errmsg
+class NoBaseChannelError(NoLogError, RhnServerException):
+    """No valid base channel was found for this system"""
+    pass
 
-class NoBaseChannelError(RhnServerException):
-    def __init__(self, errmsg):
-        Error.__init__(self, errmsg)
+class UnknownMethodException(NoLogError, RhnServerException):
+    pass
 
-    # No valid base channel was found for this system
-    def __repr__(self):
-        return self.errmsg
-
-class UnknownMethodException(RhnServerException):
-    def __init__(self, errmsg):
-        Error.__init__(self, errmsg)
-
-    def __repr__(self):
-        return self.errmsg
-
-class RhnUuidUniquenessError(RhnServerException):
-    def __init__(self, msg):
-        self.errmsg = msg
-
-    def __repr__(self):
-        return self.errmsg
+class RhnUuidUniquenessError(NoLogError, RhnServerException):
+    pass
 
 class ServerCapabilityError(Error):
     def __init__(self, msg, errorlist=None):
@@ -182,12 +135,8 @@ class ServerCapabilityError(Error):
     def __repr__(self):
         return self.errmsg
 
-class NoChannelsError(Error):
-    def __init__(self, msg):
-        self.errmsg = msg
-
-    def __repr__(self):
-        return self.errmsg
+class NoChannelsError(NoLogError):
+    pass
 
 if getPlatform() == 'deb':
     RepoError = Error
@@ -208,11 +157,10 @@ class SSLCertificateVerifyFailedError(RepoError):
             RepoError.__init__(self ,"The certificate %s is expired. Please ensure you have the correct"
                            " certificate and your system time is correct." % certFile)
         else:
-            RepoError.__init__(self, "The SSL certificate %s failed verification." % certFile)
+            RepoError.__init__(self, "The SSL certificate failed verification.")
 
 class SSLCertificateFileNotFound(Error):
-    def __init__(self, errmsg):
-        Error.__init__(self, errmsg)
+    pass
 
 
 class AuthenticationOrAccountCreationError(ValidationError):
@@ -235,40 +183,20 @@ class NotEntitlingError(Error):
 class InvalidProtocolError(Error):
     pass
 
-class UnableToCreateUser(Error):
-     def __init__(self, msg):
-        self.errmsg = msg
+class UnableToCreateUser(NoLogError):
+     pass
 
-     def __repr__(self):
-        return self.errmsg
+class ActivationKeyUsageLimitError(NoLogError):
+    pass
 
-class ActivationKeyUsageLimitError(Error):
-    def __init__(self, msg):
-        self.errmsg = msg
+class LoginMinLengthError(NoLogError):
+    pass
 
-    def __repr__(self):
-        return self.errmsg
+class PasswordMinLengthError(NoLogError):
+    pass
 
-class LoginMinLengthError(Error):
-    def __init__(self, msg):
-        self.errmsg = msg
-
-    def __repr__(self):
-        return self.errmsg
-
-class PasswordMinLengthError(Error):
-    def __init__(self, msg):
-        self.errmsg = msg
-
-    def __repr__(self):
-        return self.errmsg
-
-class PasswordMaxLengthError(Error):
-    def __init__(self, msg):
-        self.errmsg = msg
-
-    def __repr__(self):
-        return self.errmsg
+class PasswordMaxLengthError(NoLogError):
+    pass
 
 
 class InsuffMgmntEntsError(RhnServerException):
@@ -295,17 +223,9 @@ class InsuffMgmntEntsError(RhnServerException):
         loc = msg.rindex(term) + len(term)
         return msg[:loc] + newExpln 
 
-class NoSystemIdError(Error):
-    def __init__(self, msg):
-        self.errmsg = msg
+class NoSystemIdError(NoLogError):
+    pass
 
-    def __repr__(self):
-        return self.errmsg
-
-class InvalidRedirectionError(Error):
+class InvalidRedirectionError(NoLogError):
     """ Raise when redirect requests could'nt return a package"""
-    def __init__(self, msg ):
-        self.errmsg = msg
-
-    def __repr__(self):
-        return self.errmsg
+    pass

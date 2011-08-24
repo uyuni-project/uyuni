@@ -453,7 +453,7 @@ class Syncer:
                     and os.access(self._systemidPath, os.R_OK)):
                     self.systemid = open(self._systemidPath, 'rb').read()
                 else:
-                    raise RhnSyncException, _('ERROR: this server must be registered with RHN.')
+                    raise RhnSyncException, _('ERROR: this server must be registered with RHN.'), sys.exc_info()[2]
             # authorization check of the satellite
             auth = xmlWireSource.AuthWireSource(self.systemid, self.sslYN,
                                                 self.xml_dump_version)
@@ -525,7 +525,7 @@ class Syncer:
                     cert = open(self.rhn_cert).read()
                 except IOError, e:
                     raise RhnSyncException(_("Unable to open file %s: %s") % (
-                        self.rhn_cert, e))
+                        self.rhn_cert, e)), None, sys.exc_info()[2]
                 cert = string.strip(cert)
             else:
                 # Try to retrieve the certificate from the database
@@ -553,7 +553,7 @@ class Syncer:
             sat_cert.load(cert)
         except satellite_cert.ParseException:
             # XXX figure out what to do
-            raise RhnSyncException(_("Error parsing the satellite cert"))
+            raise RhnSyncException(_("Error parsing the satellite cert")), None, sys.exc_info()[2]
 
         # Compare certificate generation - should match the stream's
         generation = rhnFlags.get('stream-generation')
@@ -682,7 +682,7 @@ Please contact your RHN representative""") % (generation, sat_cert.generation))
 
         except InvalidChannelFamilyError:
             raise RhnSyncException(messages.invalid_channel_family_error %
-                string.join(requested_channels))
+                string.join(requested_channels)), None, sys.exc_info()[2]
         except MissingParentChannelError:
             raise
 
@@ -1812,13 +1812,13 @@ Please contact your RHN representative""") % (generation, sat_cert.generation))
         if (bytes/kilo == 0):
             return "%d bytes" %(bytes)
         elif (bytes/mega == 0):
-            return "%d kB" %(bytes / 1024)
+            return "%d kiB" %(bytes / 1024)
         elif (bytes/giga == 0):
             mega_value=bytes / mega
-            return "%d.%d MB" %(mega_value, (bytes % mega) / kilo)
+            return "%d.%03d MiB" %(mega_value, (bytes % mega) / kilo)
         else:
             giga_value=bytes / giga
-            return "%d.%d GB" %(giga_value, (bytes % giga) / mega)
+            return "%d.%03d GiB" %(giga_value, (bytes % giga) / mega)
 
     def _get_package_stream(self, channel, package_id, nvrea, sources):
         """ returns (filepath, stream), so in the case of a "wire source",
@@ -1908,7 +1908,7 @@ class ThreadDownload(threading.Thread):
                     # Mark the package as extinct
                     self.extinct_packages.put(package_id)
                     log(1, messages.package_fetch_extinct %
-                        (pkg_current, pkgs_total, os.path.basename(path)))
+                        (os.path.basename(path)))
                     break # inner for
 
                 try:
@@ -1926,7 +1926,7 @@ class ThreadDownload(threading.Thread):
                 # Mark the package as failed and move on
                 self.failed_fs_packages.put(package_id)
                 log(1, messages.package_fetch_failed %
-                    (pkg_current, pkgs_total, os.path.basename(path)))
+                    (os.path.basename(path)))
                 # Move to the next package
                 try:
                     self.queue.task_done()
@@ -2124,7 +2124,7 @@ def processCommandline():
         Option(     '--no-ssl',              action='store_true',
             help=_('turn off SSL (not recommended)')),
         Option(    '--orgid',                  action='store',
-            help=_('org to which the sync imports data. defaults to the org in the export')),
+            help=_('org to which the sync imports data. defaults to the admin account')),
         Option('-p','--print-configuration', action='store_true',
             help=_('print the configuration and exit')),
         Option(     '--rhn-cert',            action='store',
@@ -2187,7 +2187,7 @@ def processCommandline():
         try:
             debugLevel = int(OPTIONS.debug_level)
             if not (0 <= debugLevel <= debugRange):
-                raise RhnSyncException, "exception will be caught"
+                raise RhnSyncException, "exception will be caught", sys.exc_info()[2]
         except KeyboardInterrupt, e:
             raise
         except:
@@ -2321,7 +2321,7 @@ def processCommandline():
         except (ValueError, TypeError):
             # int(None) --> TypeError
             # int('a')  --> ValueError
-            raise ValueError(_("ERROR: --batch-size must have a value within the range: 1..50"))
+            raise ValueError(_("ERROR: --batch-size must have a value within the range: 1..50")), None, sys.exc_info()[2]
 
     OPTIONS.mount_point = fileutils.cleanupAbsPath(OPTIONS.mount_point)
     OPTIONS.rhn_cert = fileutils.cleanupAbsPath(OPTIONS.rhn_cert)

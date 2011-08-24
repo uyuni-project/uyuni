@@ -16,9 +16,6 @@
 import sys
 import string
 
-True = 1
-False = 0
-
 class ModeMissingException(Exception):
     pass
 
@@ -46,6 +43,9 @@ class ModeController:
     def all_on(self):
         for m in self.mode_list.keys():
             self.mode_list[m].on()
+
+        if self.mode_list['all'].is_on():
+            self.mode_list['all'].off()
 
     #Turn off all of the modes.
     def all_off(self):

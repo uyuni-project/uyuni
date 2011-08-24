@@ -1,6 +1,6 @@
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 1.6.0
+Version: 1.6.9
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -15,7 +15,7 @@ BuildRequires: intltool
 BuildRequires: gettext
 
 Requires: yum >= 3.2.19-15
-Requires: rhn-client-tools >= 0.4.20-2
+Requires: rhn-client-tools >= 1.6.6-1
 %if 0%{?suse_version}
 Requires: python-m2crypto >= 0.16-6
 %else
@@ -68,7 +68,7 @@ fi
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/yum/pluginconf.d/rhnplugin.conf
+%verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/yum/pluginconf.d/rhnplugin.conf
 %dir /var/lib/up2date
 %{_mandir}/man*/*
 %{_datadir}/yum-plugins/*
@@ -82,6 +82,41 @@ fi
 
 
 %changelog
+* Fri Aug 12 2011 Miroslav Suchý 1.6.9-1
+- do not verify md5, size and mtime for /etc/yum/pluginconf.d/rhnplugin.conf
+
+* Thu Aug 11 2011 Miroslav Suchý 1.6.8-1
+- do not mask original error by raise in execption
+
+* Fri Aug 05 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.7-1
+- parse commandline on our own
+
+* Thu Aug 04 2011 Miroslav Suchý 1.6.6-1
+- 690616 - fail to rollback if target package is not available
+
+* Thu Aug 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.5-1
+- the latest yum-rhn-plugin and rhn-client-tools require each other
+
+* Thu Aug 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.4-1
+- 710065 - exception messages are in unicode
+
+* Tue Aug 02 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.3-1
+- fixed package exclusion
+- 725496 - respect default plugin settings from [main]
+
+* Tue Aug 02 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.2-1
+- 701189 - make sure cachedir exists
+
+* Mon Aug 01 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.1-1
+- call conduit.getConf() only once
+- 691283 - create persistdir in _repos_persistdir instead of PWD
+- 684342 - beside repo.id, cache even repo.name
+- disable network in cache only mode
+- cache list of last seen channels so we can correctly clean them
+- 627525 - disable network communication with certain commands/options
+- reverted init_hook -> prereposetup_hook move
+- Bumping package versions for 1.6.
+
 * Tue Jul 19 2011 Jan Pazdziora 1.5.11-1
 - Merging Transifex changes for yum-rhn-plugin.
 - New translations from Transifex for yum-rhn-plugin.

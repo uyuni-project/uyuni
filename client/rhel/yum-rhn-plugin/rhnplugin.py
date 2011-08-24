@@ -22,12 +22,10 @@ except ImportError:
     pycurl = None
 
 from iniparse import INIConfig
+
 import gettext
 t = gettext.translation('yum-rhn-plugin', fallback=True)
 _ = t.ugettext
-
-sys.path.append('/usr/share/yum-cli')
-from output import YumTextMeter, CacheProgressCallback
 
 # TODO: Get the up2date stuff that we need in a better place,
 # so we don't have to do path magic.
@@ -54,49 +52,15 @@ COMMUNICATION_ERROR = _("There was an error communicating with RHN.")
 from M2Crypto.SSL import SSLError
 
 def init_hook(conduit):
-    """ 
-    Plugin initialization hook. We setup the RHN channels here. 
-
-    Read list of repos we've seen last time (from cache file)
     """
-    cachedir = conduit.getConf().cachedir
-    repos = conduit.getRepos()
-    cachefilename = os.path.join(cachedir, cachedRHNReposFile)
-    if os.access(cachefilename, os.R_OK):
-        cachefile = open(cachefilename, 'r')
-        repolist = [ line.rstrip().split(' ', 1) for line in cachefile.readlines()]
-        cachefile.close()
-        for repo_item in repolist:
-            if len(repo_item) == 1:
-                repo_item.append('')
-            (repoid, reponame) = repo_item
-            repodir = os.path.join(cachedir, repoid)
-            if os.path.isdir(repodir) and os.path.isfile(
-                        os.path.join(repodir, 'repomd.xml')):
-                repo = YumRepository(repoid)
-                repo.basecachedir = cachedir
-                repo.baseurl = ['file:///' + repodir ]
-                repo.urls = repo.baseurl
-                repo.name = reponame
-                if hasattr(conduit.getConf(), '_repos_persistdir'):
-                    repo.base_persistdir = conduit.getConf()._repos_persistdir
-                repo.enable()
-                if not repos.findRepos(repo.id):
-                    repos.add(repo)
+    Plugin initialization hook. We setup the RHN channels here.
 
-def prereposetup_hook(conduit):
-    """
     We get a list of RHN channels from the server, then make a repo object for
     each one. This list of repos is then added to yum's list of repos via the 
     conduit.
     """
 
     global rhn_enabled
-
-    if '-C' in sys.argv:
-        # don't communicate with RHN server but use cached repos
-        rhn_enabled = False
-        return
    
     RHN_DISABLED = _("RHN Satellite or RHN Classic support will be disabled.")
     
@@ -121,12 +85,36 @@ def prereposetup_hook(conduit):
         conduit.error(0, PROXY_ERROR + "\n" + RHN_DISABLED)
         return 
 
+    # check commands and options which don't need network communication
+    cmd_args = sys.argv[1:]
+    if ('--help' in cmd_args
+        or '--version' in cmd_args
+        or cmd_args == []):
+        rhn_enabled = False
+        conduit.info(10, _("Either --version, --help or no commands entered") +
+                 "\n" + RHN_DISABLED)
+        return
+    if 'clean' in cmd_args:
+        addCachedRepos(conduit)
+        conduit.info(10, _("Cleaning") + "\n" + RHN_DISABLED)
+        # cleanup cached login info
+        if os.path.exists(pcklAuthFileName):
+            os.unlink(pcklAuthFileName)
+        return
+    if ('-C' in cmd_args
+        or '--cacheonly' in cmd_args):
+        rhn_enabled = False
+        addCachedRepos(conduit)
+        conduit.info(10, _("Using list of RHN repos from cache") +
+                 "\n" + RHN_DISABLED)
+        return
+
     try:
         login_info = up2dateAuth.getLoginInfo()
     except up2dateErrors.RhnServerException, e:
         rewordError(e)
         conduit.error(0, COMMUNICATION_ERROR + "\n" + RHN_DISABLED + "\n" +
-            str(e))
+            unicode(e))
         rhn_enabled = False
         return
 
@@ -150,76 +138,81 @@ def prereposetup_hook(conduit):
         return
     except up2dateErrors.RhnServerException, e:
         conduit.error(0, COMMUNICATION_ERROR + "\n" + CHANNELS_DISABLED + 
-            "\n" + str(e))
+            "\n" + unicode(e))
         return
 
     repos = conduit.getRepos()
     conduit_conf = conduit.getConf()
     cachedir = conduit_conf.cachedir
-    default_gpgcheck = conduit_conf.gpgcheck
-    gpgcheck = conduit.confBool('main', 'gpgcheck', default_gpgcheck)
     sslcacert = get_ssl_ca_cert(up2date_cfg)
-    enablegroups = conduit_conf.enablegroups
-    metadata_expire = conduit_conf.metadata_expire
+    pluginOptions = getRHNRepoOptions(conduit, 'main')
 
     cachefilename = os.path.join(cachedir, cachedRHNReposFile)
-    cachefile_content = ''
-    create_cache_even_second_time = not (os.path.exists(cachefilename) and os.path.getsize(cachefilename))
+    try:
+        if not os.path.exists(cachedir):
+            os.makedirs(cachedir, 0755)
+        cachefile = open(cachefilename, 'w')
+    except:
+        cachefile = None
     for channel in svrChannels:
         if channel['version']:
             repo = RhnRepo(channel)
-            already_exists_repos = repos.findRepos(repo.id)
-            if already_exists_repos:
-                # there will be nearly always only one, and even if there is more
-                # repos, we can ignore them
-                if type(already_exists_repos[0]) == type(repo): # repo is type of RhnRepo
-                    # repo has been already initialized
-                    if create_cache_even_second_time:
-                         cachefile_content += already_exists_repos[0].id + "\n"
-                    continue
-                else: # YumRepository from _init, made for caching
-                    callback = already_exists_repos[0].callback
-                    repo.setCallback(callback)
-                    repos.delete(repo.id)
-            else: # no repo created in init - setup progressbar
-                if (not (conduit_conf.debuglevel < 2 or not sys.stdout.isatty())):
-                    progressbar = YumTextMeter(fo=sys.stdout)
-                    repo.setCallback(progressbar)
             repo.basecachedir = cachedir
-            repo.gpgcheck = gpgcheck
+            repo.gpgcheck = conduit_conf.gpgcheck
             repo.proxy = proxy_url
             repo.sslcacert = sslcacert
-            repo.enablegroups = enablegroups
-            repo.metadata_expire = metadata_expire
+            repo.enablegroups = conduit_conf.enablegroups
+            repo.metadata_expire = conduit_conf.metadata_expire
+            repo.exclude = conduit_conf.exclude
             repo._proxy_dict = proxy_dict
-            if hasattr(conduit.getConf(), '_repos_persistdir'):
-                repo.base_persistdir = conduit.getConf()._repos_persistdir
+            if hasattr(conduit_conf, '_repos_persistdir'):
+                repo.base_persistdir = conduit_conf._repos_persistdir
             repoOptions = getRHNRepoOptions(conduit, repo.id)
-            if repoOptions:
-                for o in repoOptions:
-                    setattr(repo, o[0], o[1])
-                    conduit.info(5, "Repo '%s' setting option '%s' = '%s'" %
+            for options in [pluginOptions, repoOptions]:
+                if options:
+                    for o in options:
+                        if o[0] == 'exclude': # extend current list
+                            setattr(repo, o[0], ",".join(repo.exclude) + ',' + o[1])
+                        else: # replace option
+                            setattr(repo, o[0], o[1])
+                        conduit.info(5, "Repo '%s' setting option '%s' = '%s'" %
                             (repo.id, o[0], o[1]))
             repos.add(repo)
-            cachefile_content += "%s %s\n" % (repo.id, repo.name)
-    if cachefile_content:
-        try:
-            cachefile = open(cachefilename, 'w')
-        except IOError:
-            cachefile = None #  this is not fatal, we can live without cache
-        if cachefile:
-            cachefile.write(cachefile_content)
-            cachefile.close()
+            if cachefile:
+                cachefile.write("%s %s\n" % (repo.id, repo.name))
+    if cachefile:
+        cachefile.close()
 
-    # resolve --enablerepo/--disablerepo for RHN repos
-    opts = conduit.getCmdLine()[0]
-    if opts:
-        for opt, repoexp in opts.repos:
-            if opt == '--enablerepo':
-                conduit._base.repos.enableRepo(repoexp)
-            elif opt == '--disablerepo':
-                conduit._base.repos.disableRepo(repoexp)
 
+def addCachedRepos(conduit):
+    """
+    Add list of repos we've seen last time (from cache file)
+    """
+    repos = conduit.getRepos()
+    cachedir = conduit.getConf().cachedir
+    cachefilename = os.path.join(cachedir, cachedRHNReposFile)
+    if not os.access(cachefilename, os.R_OK):
+        return
+    cachefile = open(cachefilename, 'r')
+    repolist = [ line.rstrip().split(' ', 1) for line in cachefile.readlines()]
+    cachefile.close()
+    urls = ["http://dummyvalue"]
+    for repo_item in repolist:
+        if len(repo_item) == 1:
+            repo_item.append('')
+        (repoid, reponame) = repo_item
+        repodir = os.path.join(cachedir, repoid)
+        if os.path.isdir(repodir):
+            repo = YumRepository(repoid)
+            repo.basecachedir = cachedir
+            repo.baseurl = urls
+            repo.urls = repo.baseurl
+            repo.name = reponame
+            if hasattr(conduit.getConf(), '_repos_persistdir'):
+                repo.base_persistdir = conduit.getConf()._repos_persistdir
+            repo.enable()
+            if not repos.findRepos(repo.id):
+                repos.add(repo)
 
 def posttrans_hook(conduit):
     """ Post rpm transaction hook. We update the RHN profile here. """
@@ -236,7 +229,7 @@ def posttrans_hook(conduit):
             except up2dateErrors.RhnServerException, e:
                 conduit.error(0, COMMUNICATION_ERROR + "\n" +
                     _("Package profile information could not be sent.") + "\n" + 
-                    str(e))
+                    unicode(e))
 
 def rewordError(e):
     """ This is compensating for hosted/satellite returning back an error
@@ -316,7 +309,7 @@ class RhnRepo(YumRepository):
         try:
             li = up2dateAuth.getLoginInfo()
         except up2dateErrors.RhnServerException, e:
-            raise yum.Errors.RepoError(str(e))
+            raise yum.Errors.RepoError(unicode(e)), None, sys.exc_info()[2]
 
         # TODO:  do evalution on li auth times to see if we need to obtain a
         # new session...
@@ -343,7 +336,7 @@ class RhnRepo(YumRepository):
                 try:
                     up2dateAuth.updateLoginInfo()
                 except up2dateErrors.RhnServerException, e:
-                    raise yum.Errors.RepoError(str(e))
+                    raise yum.Errors.RepoError(unicode(e)), None, sys.exc_info()[2]
 
                 return self._noExceptionWrappingGet(url, relative, local,
                     start, end, copy_local, checkfunc, text, reget, cache, size)
@@ -351,11 +344,11 @@ class RhnRepo(YumRepository):
         except URLGrabError, e:
             raise yum.Errors.RepoError, \
                 "failed to retrieve %s from %s\nerror was %s" % (relative,
-                self.id, e)
+                self.id, e), sys.exc_info()[2]
         except SSLError, e:
-            raise yum.Errors.RepoError(str(e))
+            raise yum.Errors.RepoError(unicode(e)), None, sys.exc_info()[2]
         except up2dateErrors.InvalidRedirectionError, e:
-            raise up2dateErrors.InvalidRedirectionError(e)
+            raise up2dateErrors.InvalidRedirectionError(e), None, sys.exc_info()[2]
     _YumRepository__get = _getFile
 
     # This code is copied from yum, we should get the original code to

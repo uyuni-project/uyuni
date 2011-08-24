@@ -75,24 +75,22 @@ public class ApiHandler extends BaseHandler {
      * @xmlrpc.doc Lists available API namespaces
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *   #array()
-     *      #struct("namespace")
-     *          #prop_desc("string", "namespace", "API namespace")
-     *          #prop_desc("string", "handler", "API Handler")
-     *     #struct_end()
-     *   #array_end()
+     *   #struct("namespace")
+     *        #prop_desc("string", "namespace", "API namespace")
+     *        #prop_desc("string", "handler", "API Handler")
+     *   #struct_end()
      */
     public Map getApiNamespaces(String sessionKey) {
-        Map namespacesList = new HashMap();
+        Map namespacesHash = new HashMap();
         HandlerFactory hf = new HandlerFactory();
 
         Iterator i = getNamespaces().iterator();
         while (i.hasNext()) {
                 String namespace = (String)i.next();
-                namespacesList.put(namespace, StringUtil.getClassNameNoPackage(
+                namespacesHash.put(namespace, StringUtil.getClassNameNoPackage(
                                                 hf.getHandler(namespace).getClass()));
         }
-        return namespacesList;
+        return namespacesHash;
     }
 
     /**
@@ -103,32 +101,28 @@ public class ApiHandler extends BaseHandler {
      * @xmlrpc.doc Lists all available api calls grouped by namespace
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *   #array()
-     *      #array()
-     *          #struct("method_info")
-     *              #prop_desc("string", "name", "method name")
-     *              #prop_desc("string", "parameters", "method parameters")
-     *              #prop_desc("string", "exceptions", "method exceptions")
-     *              #prop_desc("string", "return", "method return type")
-     *          #struct_end()
-     *      #array_end()
-     *   #array_end()
+     *   #struct("method_info")
+     *       #prop_desc("string", "name", "method name")
+     *       #prop_desc("string", "parameters", "method parameters")
+     *       #prop_desc("string", "exceptions", "method exceptions")
+     *       #prop_desc("string", "return", "method return type")
+     *   #struct_end()
      */
     public Map getApiCallList(String sessionKey) {
-        Map callList = new HashMap();
+        Map callHash = new HashMap();
         HandlerFactory hf = new HandlerFactory();
 
         Iterator i = getNamespaces().iterator();
         while (i.hasNext()) {
                 String namespace = (String)i.next();
             try {
-                callList.put(namespace, getApiNamespaceCallList(sessionKey, namespace));
+                callHash.put(namespace, getApiNamespaceCallList(sessionKey, namespace));
             }
             catch (ClassNotFoundException e) {
-                callList.put(namespace, "notFound");
+                callHash.put(namespace, "notFound");
             }
         }
-        return callList;
+        return callHash;
     }
 
     /**
@@ -142,14 +136,12 @@ public class ApiHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "namespace")
      * @xmlrpc.returntype
-     *   #array()
-     *      #struct("method_info")
-     *          #prop_desc("string", "name", "method name")
-     *          #prop_desc("string", "parameters", "method parameters")
-     *          #prop_desc("string", "exceptions", "method exceptions")
-     *          #prop_desc("string", "return", "method return type")
-     *     #struct_end()
-     *   #array_end()
+     *   #struct("method_info")
+     *        #prop_desc("string", "name", "method name")
+     *        #prop_desc("string", "parameters", "method parameters")
+     *        #prop_desc("string", "exceptions", "method exceptions")
+     *        #prop_desc("string", "return", "method return type")
+     *   #struct_end()
      */
     public Map getApiNamespaceCallList(String sessionKey, String namespace)
                                             throws ClassNotFoundException  {

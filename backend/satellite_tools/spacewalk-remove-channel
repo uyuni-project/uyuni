@@ -32,6 +32,7 @@ from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.common.rhnLog import initLOG, log_debug, log_error
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.server import rhnSQL
+from spacewalk.server.rhnPackage import unlink_package_file
 
 options_table = [
     Option("-v", "--verbose",       action="count", 
@@ -268,7 +269,6 @@ def __listChannels():
     sql = """
         select c1.label, c2.label parent_channel 
         from rhnChannel c1 left outer join rhnChannel c2 on c1.parent_channel = c2.id
-        where C1.org_id is null or C2.org_id is null
         order by c2.label desc, c1.label asc
     """
     h = rhnSQL.prepare(sql)
@@ -517,10 +517,7 @@ def _delete_files(relpaths):
         if not os.path.exists(path):
             log_debug(1, "Not removing %s: no such file" % path)
             continue
-        try:
-            os.unlink(path)
-        except OSError:
-            log_debug(1,  "Error unlinking %s;" % path)
+        unlink_package_file(path)
 
 def _bind_many(l):
     h = {}

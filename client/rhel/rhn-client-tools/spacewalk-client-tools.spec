@@ -7,7 +7,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.6.1
+Version: 1.6.15
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -54,7 +54,7 @@ Requires: yum
 %endif
 
 Conflicts: up2date < 5.0.0
-Conflicts: yum-rhn-plugin < 1.1.4-1
+Conflicts: yum-rhn-plugin < 1.6.4-1
 Conflicts: rhncfg < 5.9.23-1
 Conflicts: spacewalk-koan < 0.2.7-1
 Conflicts: rhn-kickstart < 5.4.3-1
@@ -92,7 +92,7 @@ Requires: %{name} = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: zypp-plugin-spacewalk >= 0.4
 %else
-Requires: yum-rhn-plugin >= 1.1.2-1
+Requires: yum-rhn-plugin >= 1.6.4-1
 %endif
 
 %description -n spacewalk-check
@@ -246,7 +246,7 @@ make -f Makefile.rhn-client-tools test
 %dir %{_sysconfdir}/sysconfig/rhn/allowed-actions
 %dir %{_sysconfdir}/sysconfig/rhn/allowed-actions/configfiles
 %dir %{_sysconfdir}/sysconfig/rhn/allowed-actions/script
-%config(noreplace) %{_sysconfdir}/sysconfig/rhn/up2date
+%verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sysconfig/rhn/up2date
 %config(noreplace) %{_sysconfdir}/logrotate.d/up2date
 %config(noreplace) %{_sysconfdir}/rpm/macros.up2date
 
@@ -394,6 +394,61 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Wed Aug 24 2011 Martin Minar <mminar@redhat.com> 1.6.15-1
+- Revert "727908 - registration: send correct hostname during kickstart"
+  (mzazrivec@redhat.com)
+
+* Wed Aug 17 2011 Martin Minar <mminar@redhat.com> 1.6.14-1
+- 729468 - TUI: polish registration messages (mzazrivec@redhat.com)
+
+* Fri Aug 12 2011 Miroslav Suchý 1.6.13-1
+- do not verify md5, size and mtime for /etc/sysconfig/rhn/up2date
+
+* Thu Aug 11 2011 Jan Pazdziora 1.6.12-1
+- 729161 - default to RHSM in firstboot registration (mzazrivec@redhat.com)
+- 729468 - firstboot dialogs polishing (mzazrivec@redhat.com)
+
+* Thu Aug 11 2011 Miroslav Suchý 1.6.11-1
+- do not mask original error by raise in execption
+
+* Thu Aug 11 2011 Martin Minar <mminar@redhat.com> 1.6.10-1
+- 702084 - always print trailing newline for error messages
+  (mzazrivec@redhat.com)
+
+* Wed Aug 10 2011 Martin Minar <mminar@redhat.com> 1.6.9-1
+- 684913 - fix SSLCertificateVerifyFailedError exception message
+  (mzazrivec@redhat.com)
+
+* Fri Aug 05 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.8-1
+- convert args to string first
+
+* Thu Aug 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.7-1
+- the latest yum-rhn-plugin and rhn-client-tools require each other
+
+* Thu Aug 04 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.6-1
+- 710065 - handle unicode log messages
+- 710065 - handle unicode error messages
+- merged duplicated code to NoLogError class
+- moved duplicated code to base Error class
+- 684250 - correct priority for initial registration screen
+
+* Thu Aug 04 2011 Martin Minar <mminar@redhat.com> 1.6.5-1
+- 727908 - registration: send correct hostname during kickstart
+  (mzazrivec@redhat.com)
+
+* Wed Aug 03 2011 Martin Minar <mminar@redhat.com> 1.6.4-1
+- 702107 - cogent error message for exception when listing child channels
+  (mzazrivec@redhat.com)
+
+* Tue Aug 02 2011 Martin Minar <mminar@redhat.com> 1.6.3-1
+- 702084 - rhn-channel: meaningful message when wrong username / password
+  (mzazrivec@redhat.com)
+
+* Thu Jul 28 2011 Jan Pazdziora 1.6.2-1
+- 713548 - enable running rhn-channel on RHEL5 (tlestach@redhat.com)
+- 713548 - enable running rhn-channel against both RHN and RHN Satellite
+  (tlestach@redhat.com)
+
 * Fri Jul 22 2011 Jan Pazdziora 1.6.1-1
 - The rhn-client-tools/doc/releases.txt is out of date, removing.
 - We only support version 5 and newer of RHEL, removing conditions for old

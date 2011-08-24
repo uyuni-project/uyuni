@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.4
+Version: 1.6.28
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -90,6 +90,7 @@ Requires: spacewalk-java-jdbc
 Requires: spacewalk-branding
 Requires: jpackage-utils >= 1.5
 Requires: cobbler >= 2.0.0
+Requires: dojo
 %if 0%{?fedora}
 Requires: apache-commons-logging
 %else
@@ -624,6 +625,128 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Aug 23 2011 Tomas Lestach <tlestach@redhat.com> 1.6.28-1
+- make the taskomatic cleanup delete faster for Postgresql (jonathan.hoser
+  @helmholtz-muenchen.de)
+
+* Mon Aug 22 2011 Miroslav Suchý 1.6.27-1
+- read cnames from rhn.conf and polish UI
+- show cnames aliases in hardware tab in webui
+- Allow to specify host for kickstart in free form
+
+* Mon Aug 22 2011 Tomas Lestach <tlestach@redhat.com> 1.6.26-1
+- fix deleting kickstart tree distribution (tlestach@redhat.com)
+- do not see a reason to set these attributes (tlestach@redhat.com)
+
+* Mon Aug 22 2011 Martin Minar <mminar@redhat.com> 1.6.25-1
+- 585010 - mark the Update List button with it so that we can disable it later.
+  (jpazdziora@redhat.com)
+- 691849 - forward only sid parameter (tlestach@redhat.com)
+- 691849 - it's not allowed to store empty string to the DB
+  (tlestach@redhat.com)
+- removing showImg attribute from SetTag (tlestach@redhat.com)
+
+* Thu Aug 18 2011 Tomas Lestach <tlestach@redhat.com> 1.6.24-1
+- 658533 - unify score computing for WebUI and API (tlestach@redhat.com)
+- 663697 - enable csv export of System Currency Report (tlestach@redhat.com)
+- removing eclipse.libsrc.dirs since the directory was removed
+  (tlestach@redhat.com)
+
+* Thu Aug 18 2011 Tomas Lestach <tlestach@redhat.com> 1.6.23-1
+- 658533 - remove default currency from backend part of rhn.conf
+  (tlestach@redhat.com)
+
+* Tue Aug 16 2011 Tomas Lestach <tlestach@redhat.com> 1.6.22-1
+- 654996 - sort activation key packages by name (tlestach@redhat.com)
+
+* Tue Aug 16 2011 Simon Lukasik <slukasik@redhat.com> 1.6.21-1
+- 570925 - provide only a day for the subject of daily summary mail
+  (slukasik@redhat.com)
+- Revert "do not reuse system CLASSPATH variable" (tlestach@redhat.com)
+- 729975 - do not allow to edit Red Hat errata (tlestach@redhat.com)
+- do not reuse system CLASSPATH variable (msuchy@redhat.com)
+
+* Thu Aug 11 2011 Simon Lukasik <slukasik@redhat.com> 1.6.20-1
+- 724918 - added missing acl checks (slukasik@redhat.com)
+
+* Thu Aug 11 2011 Jan Pazdziora 1.6.19-1
+- 728638 - Fixed kickstart.profile.setAdvancedOptions() to renderize the
+  kickstart after invocating method. (mmello@redhat.com)
+
+* Sun Aug 07 2011 Jan Pazdziora 1.6.18-1
+- Silencing checkstyle.
+
+* Fri Aug 05 2011 Tomas Lestach <tlestach@redhat.com> 1.6.17-1
+- 728572 - Number is a common interface for both Integer and Long
+  (tlestach@redhat.com)
+- 722454 - removing file attribute from PackageDto and introducing a common
+  method for getting filename from the package path (tlestach@redhat.com)
+
+* Fri Aug 05 2011 Jan Pazdziora 1.6.16-1
+- 710169 - correct documentation for api.getApiCallList() API call
+  (msuchy@redhat.com)
+- 710162 - correct documentation for api.getApiNamespaceCallList() API call
+  (msuchy@redhat.com)
+- 710152 - correct documentation for api.getApiNamespaces() API call
+  (msuchy@redhat.com)
+
+* Fri Aug 05 2011 Miroslav Suchý 1.6.15-1
+- checkstyle - Line is longer than 92 characters.
+
+* Thu Aug 04 2011 Aron Parsons <aparsons@redhat.com> 1.6.14-1
+- add support for custom messages in the header, footer and login pages
+  (aparsons@redhat.com)
+
+* Thu Aug 04 2011 Tomas Lestach <tlestach@redhat.com> 1.6.13-1
+- remove unused ChannelEditor method (tlestach@redhat.com)
+- remove unused OvalServlet method (tlestach@redhat.com)
+- remove unused SystemEntitlementsSubmitAction method (tlestach@redhat.com)
+- remove unused Token method (tlestach@redhat.com)
+- remove unused Server method (tlestach@redhat.com)
+- reuse unused copyKickstartCommands method (tlestach@redhat.com)
+- remove unused HibernateFactory method (tlestach@redhat.com)
+- fix PMD BrokenNullCheck (tlestach@redhat.com)
+- fix PMD BooleanInstantiation rule break (tlestach@redhat.com)
+
+* Thu Aug 04 2011 Simon Lukasik <slukasik@redhat.com> 1.6.12-1
+- 727984 - include static mappings for 6ComputeNode (slukasik@redhat.com)
+- 725889 - show only channels for which the user has entitlements
+  (slukasik@redhat.com)
+- listRedHatBaseChannelsByVersion() was never used, removing
+  (slukasik@redhat.com)
+
+* Thu Aug 04 2011 Jan Pazdziora 1.6.11-1
+- 508936 - rhn-actions-control honor the allowed-actions/scripts/run for remote
+  commands (mmello@redhat.com)
+- 679846 - regenerate kickstart file after modifying kickstart scripts
+  (mosvald@redhat.com)
+
+* Wed Aug 03 2011 Tomas Lestach <tlestach@redhat.com> 1.6.10-1
+- adding @param tag (tlestach@redhat.com)
+
+* Tue Aug 02 2011 Tomas Lestach <tlestach@redhat.com> 1.6.9-1
+- 723528 - make templating flag for kickstart scripts accessible also for API
+  (tlestach@redhat.com)
+
+* Mon Aug 01 2011 Tomas Lestach <tlestach@redhat.com> 1.6.8-1
+- 706416 - do not modify activation key base channel in kickstart stuff
+  (tlestach@redhat.com)
+- 706416 - do not add automatically tools channel to an activation key
+  (tlestach@redhat.com)
+
+* Mon Aug 01 2011 Jan Pazdziora 1.6.7-1
+- Fix software rollback to profiles (jrenner@suse.de)
+
+* Thu Jul 28 2011 Tomas Lestach <tlestach@redhat.com> 1.6.6-1
+- 658533,722455  - sort systems according to currency score
+  (tlestach@redhat.com)
+
+* Thu Jul 28 2011 Jan Pazdziora 1.6.5-1
+- 601524 - kickstart.profile.setAdvancedCall apidoc fix (tlestach@redhat.com)
+- 725555 - fix typo for test in c.size() to match the logging message
+  (mmello@redhat.com)
+- Fixed typo at Query bindParameters() (mmello@redhat.com)
+
 * Mon Jul 25 2011 Tomas Lestach <tlestach@redhat.com> 1.6.4-1
 - 722453 - fix sort according to Installed time on PackageList.do
   (tlestach@redhat.com)

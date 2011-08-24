@@ -9,12 +9,12 @@
 %endif
 
 Name: spacewalk-web
-Summary: Spacewalk Web site packages
+Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.4
+Version: 1.6.17
 Release: 1%{?dist}
-URL:          https://fedorahosted.org/spacewalk
+URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -25,8 +25,8 @@ BuildRequires: apache2
 
 %description
 This package contains the code for the Spacewalk Web Site.
-Normally this source rpm does not generate a %{name} binary package,
-but it does generate a number of sub-packages
+Normally this source RPM does not generate a %{name} binary package,
+but it does generate a number of sub-packages.
 
 %package -n spacewalk-html
 Summary: HTML document files for Spacewalk
@@ -37,7 +37,10 @@ Obsoletes: rhn-help < 5.3.0
 Provides: rhn-help = 5.3.0
 Obsoletes: rhn-html < 5.3.0
 Provides: rhn-html = 5.3.0
-
+# files html/javascript/{builder.js,controls.js,dragdrop.js,effects.js,
+# prototype-1.6.0.js,scriptaculous.js,slider.js,sound.js,unittest.js}
+# are licensed under MIT license
+License: GPLv2 and MIT
 
 %description -n spacewalk-html
 This package contains the HTML files for the Spacewalk web site.
@@ -62,18 +65,13 @@ Provides: rhn-base = 5.3.0
 
 %description -n spacewalk-base
 This package includes the core RHN:: packages necessary to manipulate
-database.  This includes RHN::* and RHN::DB::*
+database.  This includes RHN::* and RHN::DB::*.
 
 
 %package -n spacewalk-base-minimal
-Summary: Minimal .pm's for %{name} package
-Group: Applications/Internet
+Summary: Core of Perl modules for %{name} package
+Group: Applications/Internet 
 Provides: spacewalk(spacewalk-base-minimal) = %{version}-%{release}
-%if 0%{?rhel} && 0%{?rhel} < 6
-Requires: tomcat5
-%else
-Requires: tomcat6
-%endif
 Requires: httpd
 Obsoletes: rhn-base-minimal < 5.3.0
 Provides: rhn-base-minimal = 5.3.0
@@ -81,6 +79,8 @@ Requires: perl-Params-Validate
 
 %description -n spacewalk-base-minimal
 Independent Perl modules in the RHN:: name-space.
+This are very basic modules need to handle configuration files, database,
+sessions and exceptions.
 
 %package -n spacewalk-dobby
 Summary: Perl modules and scripts to administer an Oracle database
@@ -122,7 +122,7 @@ Provides:  rhn-pxt = 5.3.0
 %description -n spacewalk-pxt
 This package is the core software of the new Spacewalk site.  It is responsible
 for HTML, XML, WML, HDML, and SOAP output of data.  It is more or less
-equivalent to things like Apache::ASP and Mason
+equivalent to things like Apache::ASP and Mason.
 
 
 %package -n spacewalk-sniglets
@@ -132,18 +132,18 @@ Obsoletes: rhn-sniglets < 5.3.0
 Provides:  rhn-sniglets = 5.3.0
 
 %description -n spacewalk-sniglets
-This package contains the tag handlers for the PXT templates
+This package contains the tag handlers for the PXT templates.
 
 
 %prep
 %setup -q
 
 %build
-make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor"
+make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor"
+make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 make -C html install PREFIX=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
@@ -168,7 +168,6 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES apreq
 rm -rf $RPM_BUILD_ROOT
 
 %files -n spacewalk-base
-%defattr(644,root,root,755)
 %dir %{perl_vendorlib}/RHN
 %dir %{perl_vendorlib}/PXT
 %{perl_vendorlib}/RHN.pm
@@ -244,7 +243,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/RHN::TSDB.3pm.gz
 
 %files -n spacewalk-base-minimal
-%defattr(644,root,root,755)
 %dir %{perl_vendorlib}/RHN
 %dir %{perl_vendorlib}/PXT
 %{perl_vendorlib}/RHN/SessionSwap.pm
@@ -257,7 +255,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %files -n spacewalk-dobby
-%defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/db-control
 %{_mandir}/man1/db-control.1.gz
 %{perl_vendorlib}/Dobby.pm
@@ -268,7 +265,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/rhn/default
 
 %files -n spacewalk-grail
-%defattr(644,root,root,755)
 %{perl_vendorlib}/Grail.pm
 %{perl_vendorlib}/Grail/
 
@@ -277,6 +273,7 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/PXT.pm
 %attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
 %{perl_vendorlib}/PXT/
+%exclude %{perl_vendorlib}/PXT/Config.pm
 %{_mandir}/man3/PXT::ApacheHandler.3pm.gz
 %dir /etc/rhn
 %dir /etc/rhn/default
@@ -292,9 +289,71 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{www_path}/www/htdocs
 %endif
 %{www_path}/www/htdocs/*
+%doc LICENSE
 
 # $Id$
 %changelog
+* Wed Aug 24 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.17-1
+- fixed typo in sql query
+
+* Tue Aug 23 2011 Miroslav Suchý 1.6.16-1
+- 705363 - reformat description text for spacewalk-base-minimal not to exceed
+  80 columns
+- 705363 - do not provide perl(PXT::Config) by two packages
+
+* Mon Aug 22 2011 Martin Minar <mminar@redhat.com> 1.6.15-1
+- 585010 - mark the Update List button with it so that we can disable it later.
+  (jpazdziora@redhat.com)
+
+* Fri Aug 19 2011 Miroslav Suchý 1.6.14-1
+- 705363 - remove executable bit from modules and javascript
+- 705363 - Replace word "config" with "configuration" in spacewalk-base-minimal
+  description
+- 705363 - normalize home page URL
+
+* Fri Aug 12 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.13-1
+- removed unnecessary join
+
+* Thu Aug 11 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.12-1
+- fixed couple more joins
+- removed typo parenthesis
+
+* Wed Aug 10 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.11-1
+- COALESCE works in both db backends
+
+* Wed Aug 10 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.10-1
+- replace oracle specific syntax with ANSI one
+- made NVL2 work in both db backends
+
+* Mon Aug 08 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.9-1
+- fixed re-activation key in PostgreSQL
+
+* Thu Aug 04 2011 Aron Parsons <aparsons@redhat.com> 1.6.8-1
+- add support for custom messages in the header, footer and login pages
+  (aparsons@redhat.com)
+
+* Fri Jul 29 2011 Miroslav Suchý 1.6.7-1
+- Revert "adding tomcat require to spacewalk-base-minimal"
+
+* Fri Jul 29 2011 Miroslav Suchý 1.6.6-1
+- 705363 - remove obscure keys forgotten for ages
+- 705363 - Escape percentage symbol in changelog
+- 705363 - include LICENSE file in spacewalk-html
+- 705363 - defattr is not required any more if do not differ from default
+- 705363 - add _smp_mflags macro to make to utilize all CPUs while building
+- 705363 - require Perl for all subpackages with Perl modules
+- code cleanup - Proxy 4.x and older are not supported for some time, removing
+- 705363 - description must end with full stop
+- 705363 - spacewalk-web package summary contains lower-case `rpm'
+  abbreviation. Use upper case.
+- 705363 - clarify description and summary
+- 705363 - be more specific about license
+- 705363 - change summary of package
+
+* Fri Jul 29 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.5-1
+- 724963 - use ANSI joins
+- 724963 - use LEFT JOIN instead of MINUS
+
 * Wed Jul 27 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.4-1
 - fixed ORA-00904 in remote commands
 
@@ -325,7 +384,7 @@ rm -rf $RPM_BUILD_ROOT
 - made queries PostgreSQL compatible
 
 * Tue May 17 2011 Miroslav Suchý 1.5.11-1
-- spacewalk-pxt.noarch: W: spelling-error %description -l en_US equlivalent ->
+- spacewalk-pxt.noarch: W: spelling-error %%description -l en_US equlivalent ->
   equivalent, equivalence, univalent (msuchy@redhat.com)
 
 * Tue May 17 2011 Miroslav Suchý 1.5.10-1
