@@ -250,16 +250,7 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
     return ret
 
 class URL:
-    scheme = ""
-    username = ""
-    password = ""
-    host = ""
-    port = ""
-    path = ""
-    query = ""
-    fragment = ""
-    paramsdict = {}
-
+    """URL class that allows modifying the various attributes of a URL"""
     def __init__(self, url):
         u = urlparse.urlsplit(url)
         self.scheme = u.scheme
@@ -275,29 +266,39 @@ class URL:
             self._parse_query()
 
     def get_query_param(self, key, default=None):
-        ret = default
-        if self.paramsdict.has_key(key):
-            ret = self.paramsdict[key]
-        return ret
+        """Return a query parameter
+
+        Note: this assumes that the parameter contains at most a single
+        element (not a list).
+
+        """
+        # paramsdict has a list of elements as values, but we assume the
+        # most common case where the list has only one element
+        p = self.paramsdict.get(key, default)
+        if p:
+            assert len(p) == 1
+        return p[0]
 
     def __setattr__(self, attr, value):
         if attr == "query":
-            self.__dict__[attr] = value
+            self.__dict__[attr] = value.lstrip("?")
             self._parse_query()
-            return self.query
         elif attr == "paramsdict":
-            return None
+            # query should be used instead
+            raise AttributeError("can't set attribute")
         else:
             self.__dict__[attr] = value
 
     def _parse_query(self):
-        self.paramsdict = {}
-        qp = self.query.split("&")
-        for q in qp:
-            (key, val) = q.split("=", 1)
-            self.paramsdict[key] = val
+        """Parse self.query and populate self.paramsdict
+
+        self.paramsdict is a dict of key: [value1, value2, value3]
+
+        """
+        self.__dict__["paramsdict"] = urlparse.parse_qs(self.query)
 
     def getURL(self):
+        """Return the full url as a string"""
         netloc = ""
         if self.username:
             netloc = self.username
