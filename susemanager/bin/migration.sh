@@ -139,8 +139,14 @@ setup_db_full() {
     echo "create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace users;
 grant dba to $MANAGER_USER;
 alter system set processes = 400 scope=spfile;
+alter system set deferred_segment_creation=FALSE;
 quit
 " > /tmp/dbsetup.sql
+
+# See http://stackoverflow.com/questions/4153807/oracle-sequence-starting-with-2-instead-of-1
+#
+# alter system set deferred_segment_creation=FALSE;
+#
 
     su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba @/tmp/dbsetup.sql;"
     rm /tmp/dbsetup.sql
