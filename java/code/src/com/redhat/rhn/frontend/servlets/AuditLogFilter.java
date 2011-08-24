@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.Globals;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.logging.AuditLog;
 
@@ -55,7 +56,7 @@ public class AuditLogFilter implements Filter {
         chain.doFilter(req, resp);
 
         // Check if audit logging is enabled
-        if (ConfigDefaults.get().isAuditEnabled()) {
+        if (Config.get().getBoolean(ConfigDefaults.AUDIT)) {
             HttpServletRequest request = (HttpServletRequest) req;
             // Log POST requests that do not have errors
             if (request.getMethod().equals("POST")

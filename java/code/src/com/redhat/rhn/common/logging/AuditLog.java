@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
@@ -66,7 +67,7 @@ public class AuditLog {
      */
     public void log(String evtType, HttpServletRequest request, String msgKey,
             Object... parameters) {
-        if (!ConfigDefaults.get().isAuditEnabled()) {
+        if (!Config.get().getBoolean(ConfigDefaults.AUDIT)) {
             return;
         }
         log(false, evtType, request, msgKey, parameters);
@@ -82,7 +83,7 @@ public class AuditLog {
      */
     public void logFailure(String evtType, HttpServletRequest request,
             String msgKey, Object... parameters) {
-        if (!ConfigDefaults.get().isAuditEnabled()) {
+        if (!Config.get().getBoolean(ConfigDefaults.AUDIT)) {
             return;
         }
         log(true, evtType, request, msgKey, parameters);
@@ -97,7 +98,7 @@ public class AuditLog {
      * @param host
      */
     public void logAPI(String eventType, User user, String message, String host) {
-        if (!ConfigDefaults.get().isAuditEnabled()) {
+        if (!Config.get().getBoolean(ConfigDefaults.AUDIT)) {
             return;
         }
         log(user, message, host, LogUtil.createExtMapAPI(eventType, user));
