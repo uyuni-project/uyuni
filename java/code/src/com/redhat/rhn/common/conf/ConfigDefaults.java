@@ -168,6 +168,7 @@ public class ConfigDefaults {
 
     public static final String KS_PARTITION_DEFAULT = "kickstart.partition.default";
 
+    // Audit logging properties
     public static final String AUDIT = "audit";
     public static final String AUDIT_PORT = "audit.port";
 
@@ -541,19 +542,6 @@ public class ConfigDefaults {
      */
     public boolean isPostgresql() {
         return DB_BACKEND_POSTGRESQL.equals(Config.get().getString(DB_BACKEND));
-    }
-
-    /**
-     * Audit is enabled per default, so return true if not defined.
-     * @return false if so, else true
-     */
-    public boolean isAuditEnabled() {
-        String audit = Config.get().getString(ConfigDefaults.AUDIT);
-        if (audit == null) {
-            return true;
-        } else {
-            return Config.get().getBoolean(ConfigDefaults.AUDIT);
-        }
     }
 
     /**
