@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 24 11:25:40 CEST 2011 - mc@suse.de
+
+- jabberd: set keepalive and interval to 60
+
+-------------------------------------------------------------------
 Wed Sep 15 10:07:14 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-setup-jabberd
