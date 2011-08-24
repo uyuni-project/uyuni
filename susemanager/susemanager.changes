@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Aug 24 14:32:25 CEST 2011 - iartarisi@suse.cz
+
+- fixed TypeError in suseLib.URL.get_query_param
+
+-------------------------------------------------------------------
 Wed Aug 24 11:59:52 CEST 2011 - iartarisi@suse.cz
 
 - fixed ValueError in _parse_query in suseLib
