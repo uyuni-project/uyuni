@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 24 11:59:52 CEST 2011 - iartarisi@suse.cz
+
+- fixed ValueError in _parse_query in suseLib
+- refactored and added more comments to suseLib
+
+-------------------------------------------------------------------
 Wed Aug 24 10:36:21 CEST 2011 - mc@suse.de
 
 - disable deferred_segment_creation to let start sequences with 1
