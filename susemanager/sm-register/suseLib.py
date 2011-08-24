@@ -273,8 +273,11 @@ class URL:
         # most common case where the list has only one element
         p = self.paramsdict.get(key, default)
         if p:
-            assert len(p) == 1
-        return p[0]
+            assert len(p) == 1, ("The query parameter contains a list of "
+                                 "arguments instead of a single element. "
+                                 "%s : %s" % (key, p))
+            p = p[0]
+        return p
 
     def __setattr__(self, attr, value):
         if attr == "query":
