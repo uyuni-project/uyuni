@@ -168,6 +168,7 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES apreq
 rm -rf $RPM_BUILD_ROOT
 
 %files -n spacewalk-base
+%defattr(644,root,root,755)
 %dir %{perl_vendorlib}/RHN
 %dir %{perl_vendorlib}/PXT
 %{perl_vendorlib}/RHN.pm
@@ -243,6 +244,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/RHN::TSDB.3pm.gz
 
 %files -n spacewalk-base-minimal
+%defattr(644,root,root,755)
 %dir %{perl_vendorlib}/RHN
 %dir %{perl_vendorlib}/PXT
 %{perl_vendorlib}/RHN/SessionSwap.pm
@@ -255,6 +257,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %files -n spacewalk-dobby
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/db-control
 %{_mandir}/man1/db-control.1.gz
 %{perl_vendorlib}/Dobby.pm
@@ -265,6 +268,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/rhn/default
 
 %files -n spacewalk-grail
+%defattr(644,root,root,755)
 %{perl_vendorlib}/Grail.pm
 %{perl_vendorlib}/Grail/
 
