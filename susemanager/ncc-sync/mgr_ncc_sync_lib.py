@@ -556,13 +556,17 @@ class NCCSync(object):
                 start_date = date.fromtimestamp( start )
                 end_date = date.fromtimestamp( end )
                 today = date.today()
-                if end == 0 or today <= end_date:
+
+                # expired? leave it alone (keep the reset-value)
+                if today > end_date:
                     continue
 
+                # FIXME: setting always to INFINITE if in NCC
                 if True or data["nodecount"] > 0:
                     available = INFINITE # unlimited
                 else:
                     available = data["nodecount"]
+
                 update_sql = """
                     UPDATE RHNSERVERGROUP SET
                     max_members = :max_m
