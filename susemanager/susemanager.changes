@@ -1,5 +1,11 @@
 -------------------------------------------------------------------
-Tue Aug 23 17:34:30 CEST 2011 - ug@suse.de
+Wed Aug 24 11:59:52 CEST 2011 - iartarisi@suse.cz
+
+- fixed ValueError in _parse_query in suseLib
+- refactored and added more comments to suseLib
+
+-------------------------------------------------------------------
+Tue Aug 23 17:33:04 CEST 2011 - ug@suse.de
 
 - mgr-ncc-sync does not work for system entitlements 
   (bnc#713395)
