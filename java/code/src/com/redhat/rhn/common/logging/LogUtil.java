@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
@@ -164,6 +166,10 @@ public class LogUtil {
                 ret.add(LogUtil.getChannelString((Channel) o));
             } else if (o instanceof CustomDataKey) {
                 ret.add(LogUtil.getCustomDataKeyString((CustomDataKey) o));
+            } else if (o instanceof ConfigChannel) {
+                ret.add(LogUtil.getConfigChannelString((ConfigChannel) o));
+            } else if (o instanceof ConfigFile) {
+                ret.add(LogUtil.getConfigFileString((ConfigFile) o));
             } else if (o instanceof Errata) {
                 ret.add(LogUtil.getErrataString((Errata) o));
             } else if (o instanceof ManagedServerGroup) {
@@ -218,6 +224,46 @@ public class LogUtil {
             builder.append(channel.getName());
             builder.append("' (id ");
             builder.append(String.valueOf(channel.getId()));
+            builder.append(")");
+            ret = builder.toString();
+        }
+        return ret;
+    }
+
+    /**
+     * Create a string representation of a given {@link ConfigChannel}.
+     *
+     * @param configChannel
+     * @return
+     */
+    private static String getConfigChannelString(ConfigChannel configChannel) {
+        String ret = "none";
+        if (configChannel != null) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("'");
+            builder.append(configChannel.getName());
+            builder.append("' (id ");
+            builder.append(String.valueOf(configChannel.getId()));
+            builder.append(")");
+            ret = builder.toString();
+        }
+        return ret;
+    }
+
+    /**
+     * Create a string representation of a given {@link ConfigFile}.
+     *
+     * @param configFile
+     * @return
+     */
+    private static String getConfigFileString(ConfigFile configFile) {
+        String ret = "none";
+        if (configFile != null) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("'");
+            builder.append(configFile.getConfigFileName().getPath());
+            builder.append("' (id ");
+            builder.append(String.valueOf(configFile.getId()));
             builder.append(")");
             ret = builder.toString();
         }
