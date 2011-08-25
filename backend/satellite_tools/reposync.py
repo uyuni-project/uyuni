@@ -464,29 +464,22 @@ class RepoSync:
 
         h = rhnSQL.prepare("""
             select p.id, c.checksum, c.checksum_type, pevr.epoch
-            from rhnPackage p,
-            rhnPackagename pn,
-            rhnpackageevr  pevr,
-            rhnpackagearch pa,
-            rhnChecksumView c,
-            rhnChannel ch,
-            rhnChannelPackage cp,
-            rhnArchType rat
-            where pn.name = :name
-            and p.org_id %s
-            and pevr.version = :version
-            and pevr.release = :release
-            and pa.label = :arch
-            and %s
-            and rat.label = 'rpm'
-            and pa.arch_type_id = rat.id
-            and p.checksum_id = c.id
-            and p.name_id = pn.id
-            and p.evr_id = pevr.id
-            and p.package_arch_id = pa.id
-            and p.id = cp.package_id
-            and cp.channel_id = ch.id
-            and ch.label = :channel_label
+              from rhnPackage p
+              join rhnPackagename pn on p.name_id = pn.id
+              join rhnpackageevr pevr on p.evr_id = pevr.id
+              join rhnpackagearch pa on p.package_arch_id = pa.id
+              join rhnArchType at on pa.arch_type_id = at.id
+              join rhnChecksumView c on p.checksum_id = c.id
+              join rhnChannelPackage cp on p.id = cp.package_id
+              join rhnChannel ch on cp.channel_id = ch.id
+             where pn.name = :name
+               and p.org_id %s
+               and pevr.version = :version
+               and pevr.release = :release
+               and pa.label = :arch
+               and %s
+               and at.label = 'rpm'
+               and ch.label = :channel_label
             """ % (orgidStatement, epochStatement))
         h.execute(**param_dict)
         cs = h.fetchone_dict()
