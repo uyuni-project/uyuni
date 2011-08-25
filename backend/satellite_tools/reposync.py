@@ -291,6 +291,7 @@ class RepoSync:
             packages = atoms.findall('%spackage' % prefix['yum'])
 
             e['packages'] = self._patches_process_packages(packages, e['advisory_name'], prefix)
+            # an update can't have zero packages, so we skip this update
             if not e['packages']:
                 continue
 
@@ -394,7 +395,8 @@ class RepoSync:
                 'channel_label': self.channel_label}
             ret = self._process_package(param_dict, advisory_name)
             if not ret:
-                # skip broken patch
+                # This package could not be found in the database
+                # so we skip the broken patch.
                 return []
             erratum_packages.append(ret)
         return erratum_packages
@@ -428,7 +430,8 @@ class RepoSync:
             }
             ret = self._process_package(param_dict, advisory_name)
             if not ret:
-                # skip broken patch
+                # This package could not be found in the database
+                # so we skip the broken patch.
                 return []
             erratum_packages.append(ret)
         return erratum_packages
@@ -488,9 +491,8 @@ class RepoSync:
         h.execute(**param_dict)
         cs = h.fetchone_dict()
 
-        # if we can't find one of the packages by checksum, then
-        # this update is invalid
         if not cs:
+            # package could not be found in the database.
             if 'epoch' not in param_dict:
                 param_dict['epoch'] = ''
             else:
