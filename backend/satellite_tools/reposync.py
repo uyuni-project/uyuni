@@ -363,6 +363,12 @@ class RepoSync:
             e['keywords'] = _update_keywords(notice)
             e['bugs'] = _update_bugs(notice)
             e['cve'] = _update_cve(notice)
+            try:
+                e['security_impact'] = notice['severity']
+            except:
+                # 'severity' not available in older yum versions
+                # do nothing if this key does not exist
+                pass
             e['locally_modified'] = None
             batch.append(e)
 
