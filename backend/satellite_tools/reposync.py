@@ -365,7 +365,7 @@ class RepoSync:
             e['cve'] = _update_cve(notice)
             try:
                 e['security_impact'] = notice['severity']
-            except:
+            except KeyError:
                 # 'severity' not available in older yum versions
                 # do nothing if this key does not exist
                 pass
