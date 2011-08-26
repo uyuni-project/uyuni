@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Aug 26 13:03:20 CEST 2011 - mc@suse.de
+
+- start osa-dispatcher after oracle DB
+
+-------------------------------------------------------------------
 Thu Aug 11 15:11:07 CEST 2011 - iartarisi@suse.cz
 
 - fix some imports after moving modules out of spacewalk.common
