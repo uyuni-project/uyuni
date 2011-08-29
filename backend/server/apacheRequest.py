@@ -196,6 +196,9 @@ class apacheRequest:
         # and now send everything back
         ret = self.response(response)
 
+        # we only want to log successful actions at this time, that's
+        # why we do it here
+        auditlog_xmlrpc(func, method, params, self.req)
 
         log_debug(4, "Leave with return value", ret)
         return ret
