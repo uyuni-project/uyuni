@@ -33,6 +33,9 @@ from spacewalk.common.rhnTranslate import _
 from spacewalk.common.rhnLib import setHeaderValue
 from spacewalk.common.rhnTB import Traceback
 
+# server modules
+from spacewalk.server.auditlog import auditlog_xmlrpc
+
 # local modules
 import rhnRepository
 import rhnImport
@@ -179,6 +182,11 @@ class apacheRequest:
             rhnSQL.rollback()
         # and now send everything back
         ret = self.response(response)
+
+        # we only want to log successful actions at this time, that's
+        # why we do it here
+        auditlog_xmlrpc(func, method, params, self.req)
+
         log_debug(4, "Leave with return value", ret)
         return ret
 
