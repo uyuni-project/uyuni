@@ -11,9 +11,8 @@ features_task = Cucumber::Rake::Task.new do |t|
   cucumber_opts = %w{--format pretty}
   #cucumber_opts = cucumber_opts + %w{-o /tmp/cucumber.log}
 
-                     # does not work yet.
-                     #features/database.feature
   feature_files  = %w{
+                     features/database.feature
                      features/init_user_create.feature
                      features/running.feature
                      features/login.feature
