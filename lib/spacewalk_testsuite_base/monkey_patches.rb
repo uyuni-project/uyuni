@@ -3,7 +3,7 @@
 #
 # http://github.com/jnicklas/capybara/issues/labels/Feature%20request#issue/69
 
-class ::Capybara::Driver::Selenium
+class ::Capybara::Selenium::Driver
   def self.driver
     unless @driver
       @driver = Selenium::WebDriver.for(:remote, :desired_capabilities => @browser)

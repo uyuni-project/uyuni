@@ -73,11 +73,11 @@ Capybara.default_wait_time = 30
 
 # Register different browsers
 Capybara.register_driver :selenium_chrome do |app|
-  Capybara::Driver::Selenium.new(app, :browser => :chrome)
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
 end
 
 Capybara.register_driver :selenium_firefox do |app|
-  Capybara::Driver::Selenium.new(app, :browser => :firefox)
+  Capybara::Selenium::Driver.new(app, :browser => :firefox)
 end
 
 case browser
