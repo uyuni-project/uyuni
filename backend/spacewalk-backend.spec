@@ -538,6 +538,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/action/*
 %dir %{pythonrhnroot}/server/action_extra_data
 %{pythonrhnroot}/server/action_extra_data/*
+%{pythonrhnroot}/server/auditlog.py
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_xmlrpc.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-xmlrpc.conf
