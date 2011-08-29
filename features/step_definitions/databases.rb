@@ -8,7 +8,6 @@ require 'pg'
 require 'dbi'
 require 'oci8'
 
-
 #
 # Database direct connection tester class, which original purpose was to use in a Cucumber.
 #
@@ -47,10 +46,10 @@ class DatabaseTester
       @host = @host.sub(":", "") + ":" + DatabaseTester::ORA_PORT.to_s
     end
 
-    database = "//" + @host + "/XE"
+    db = "//" + @host + "/" + database
 
     begin
-      @connection = OCI8.new(user, password, database)
+      @connection = OCI8.new(user, password, db)
       puts "      SUCCESS: Connected to " + @vendor + " database."
     rescue Exception => exception
       puts "      ERROR: Can not connect to the " + @vendor + " database. " + exception.message
