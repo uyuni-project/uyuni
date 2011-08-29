@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug 29 11:50:18 CEST 2011 - iartarisi@suse.cz
+
+- added /etc/rhn/default/rhn_audit.conf for AuditLogging
+
+-------------------------------------------------------------------
 Thu Apr 14 15:18:08 CEST 2011 - jrenner@suse.de
 
 - No proxying needed, just rewrite (bnc#685078)
