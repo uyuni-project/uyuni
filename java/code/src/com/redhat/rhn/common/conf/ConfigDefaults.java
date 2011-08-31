@@ -173,8 +173,8 @@ public class ConfigDefaults {
     public static final String KS_PARTITION_DEFAULT = "kickstart.partition.default";
 
     // Audit logging properties
-    public static final String AUDIT = "audit";
-    public static final String AUDIT_PORT = "audit.port";
+    public static final String AUDIT_ENABLED = "audit.enabled";
+    public static final String AUDIT_SERVER = "audit.server";
 
     /**
      * System Currency defaults
@@ -562,13 +562,5 @@ public class ConfigDefaults {
      */
     public boolean isPostgresql() {
         return DB_BACKEND_POSTGRESQL.equals(Config.get().getString(DB_BACKEND));
-    }
-
-    /**
-     * Return the audit log daemon port or 6888 as the default.
-     * @return port
-     */
-    public int getAuditPort() {
-        return Config.get().getInt(ConfigDefaults.AUDIT_PORT, 6888);
     }
 }

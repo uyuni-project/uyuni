@@ -67,7 +67,7 @@ public class AuditLog {
      */
     public void log(String evtType, HttpServletRequest request, String msgKey,
             Object... parameters) {
-        if (!Config.get().getBoolean(ConfigDefaults.AUDIT)) {
+        if (!Config.get().getBoolean(ConfigDefaults.AUDIT_ENABLED)) {
             return;
         }
         log(false, evtType, request, msgKey, parameters);
@@ -83,7 +83,7 @@ public class AuditLog {
      */
     public void logFailure(String evtType, HttpServletRequest request,
             String msgKey, Object... parameters) {
-        if (!Config.get().getBoolean(ConfigDefaults.AUDIT)) {
+        if (!Config.get().getBoolean(ConfigDefaults.AUDIT_ENABLED)) {
             return;
         }
         log(true, evtType, request, msgKey, parameters);
@@ -98,7 +98,7 @@ public class AuditLog {
      * @param host
      */
     public void logAPI(String eventType, User user, String message, String host) {
-        if (!Config.get().getBoolean(ConfigDefaults.AUDIT)) {
+        if (!Config.get().getBoolean(ConfigDefaults.AUDIT_ENABLED)) {
             return;
         }
         log(user, message, host, LogUtil.createExtMapAPI(eventType, user));
