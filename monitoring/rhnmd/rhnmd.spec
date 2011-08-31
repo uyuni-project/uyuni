@@ -73,9 +73,13 @@ if [ $1 -eq 1 ] ; then
   useradd -r -g %{np_name} -d %{_var}/lib/%{np_name} -c "NOCpulse user" %{np_name}
   /usr/bin/passwd -l %{np_name} >/dev/null
 %else
-  # SUSE sshd do not allow to login into locked accounts
   getent passwd %{np_name} >/dev/null || \
   useradd -r -g %{np_name} -d %{_var}/lib/%{np_name} -c "NOCpulse user" %{np_name} -s /bin/bash
+%if 0%{?suse_version} && 0%{?suse_version} < 1110
+  # SLES 10 useradd create locked account
+  # SUSE sshd do not allow a normal user to login to a locked account
+  echo "%{np_name}:*" | /usr/sbin/chpasswd -e
+%endif
 %endif
   exit 0
 fi
