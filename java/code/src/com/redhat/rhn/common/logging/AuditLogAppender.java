@@ -12,6 +12,7 @@ import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
 /**
@@ -46,8 +47,7 @@ public class AuditLogAppender extends AppenderSkeleton {
     protected void append(LoggingEvent event) {
         if (url == null) {
             // Lazy initialize the URL
-            int port = ConfigDefaults.get().getAuditPort();
-            url = "http://localhost:" + port;
+            url = Config.get().getString(ConfigDefaults.AUDIT_SERVER);
         }
         AuditLogMessage m = (AuditLogMessage) event.getMessage();
         try {
