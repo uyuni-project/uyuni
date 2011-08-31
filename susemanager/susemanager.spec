@@ -39,7 +39,6 @@ This package contains SUSE Manager tools
 %setup -q
 
 %build
-make -C src all
 
 %install
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
@@ -52,9 +51,6 @@ install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_sysconfdir}
 install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 install -m 755 etc/init.d/susemanager %{buildroot}/%{_sysconfdir}/init.d
 make -C src install PREFIX=$RPM_BUILD_ROOT
-#mkdir -p %{buildroot}/%{_sbindir}/
-#install -m 0755 sm-register/mgr-register.py %{buildroot}/%{_sbindir}/mgr-register
-#install -m 0755 ncc-sync/mgr-ncc-sync.py %{buildroot}/%{_sbindir}/mgr-ncc-sync
 
 # YaST configuration
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
