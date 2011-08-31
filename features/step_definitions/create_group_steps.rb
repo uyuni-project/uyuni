@@ -7,9 +7,7 @@ Given /^I am on the groups page$/ do
 end
 
 When /^I check this client$/ do
-  within(:xpath, "//form/table/tbody/tr[.//a[contains(.,'#{$myhostname}')]]") do
-    find(:xpath, "//input[@type='checkbox']").set(true)
-  end
+  When 'I check "' + myhostname + '" in the list'
 end
 
 Then /^I should see this client as a link$/ do

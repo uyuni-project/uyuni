@@ -80,7 +80,7 @@ Feature: Create a configuration channel
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in class "content-nav"
      And I follow "Compare Files" in class "contentnav-row2"
-     And I check "/etc/mgr-test-file.cnf" text in the list
+     And I check "/etc/mgr-test-file.cnf" in the list
      And I click on "Compare Files"
      And I click on "Schedule Compare"
     Then I should see a "1 files scheduled for comparison." text
@@ -97,7 +97,7 @@ Feature: Create a configuration channel
     When I follow "Configuration" in class "content-nav"
      And I follow "Add Files" in class "contentnav-row2"
      And I follow "Import Files" in class "content-nav"
-     And I check "/etc/mgr-test-file.cnf" text in the list
+     And I check "/etc/mgr-test-file.cnf" in the list
      And I click on "Import Configuration Files"
      And I click on "Confirm"
     Then I should see a "1 files scheduled for upload." text
@@ -129,7 +129,7 @@ Feature: Create a configuration channel
      When I follow "Configuration" in class "content-nav"
       And I follow "View/Modify Files" in class "contentnav-row2"
       And I follow "Local Sandbox" in class "content-nav"
-      And I check "/etc/mgr-test-file.cnf" text in the list
+      And I check "/etc/mgr-test-file.cnf" in the list
       And I click on "Copy Latest to Central Channel"
       And I check "New Test Channel" in the list
       And I click on "Copy To Central Channels"

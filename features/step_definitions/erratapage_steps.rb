@@ -9,15 +9,11 @@ Given /^I am on the Errata page$/ do
 end
 
 When /^I check test channel$/ do
-  within(:xpath, "//form/table/tbody/tr[contains(.,'Test Base Channel')]") do
-    find(:xpath, "//input[@type='checkbox']").set(true)
-  end
+  When 'I check "Test Base Channel" in the list'
 end
 
 When /^I check "([^"]*)" erratum$/ do |arg1|
-  within(:xpath, "//form/table/tbody/tr[.//a[contains(.,'"+arg1+"')]]") do
-    find(:xpath, "//input[@type='checkbox']").set(true)
-  end
+  When 'I check "' + arg1 + '" in the list'
 end
 
 When /^I search for "([^"]*)"$/ do |arg1|

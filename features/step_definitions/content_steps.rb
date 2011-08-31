@@ -110,3 +110,9 @@ Then /^"([^"]*)" is installed$/ do |package|
    end
 end
 
+When /^I check "([^"]*)" in the list$/ do |arg1|
+  within(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
+    find(:xpath, ".//input[@type='checkbox']").set(true)
+  end
+end
+
