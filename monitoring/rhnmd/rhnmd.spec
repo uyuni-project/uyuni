@@ -67,9 +67,13 @@ if [ $1 -eq 1 ] ; then
   getent group %{np_name} >/dev/null || groupadd -r %{np_name}
   getent passwd %{np_name} >/dev/null || \
   useradd -r -g %{np_name} -d %{_var}/lib/%{np_name} -c "NOCpulse user" %{np_name} -s /bin/bash
-%if 0%{?suse_version} == 0
-  # do not lock the account on SUSE.
+%if 0%{?suse_version} && 0%{?suse_version} < 1110
+  # SLES 10 useradd create locked account
   # SUSE sshd do not allow a normal user to login to a locked account
+  echo "%{np_name}:*" | /usr/sbin/chpasswd -e
+%endif
+%if ! 0%{?suse_version}
+  # other distributions seems to work with locked accounts
   /usr/bin/passwd -l %{np_name} >/dev/null
 %endif
   exit 0
