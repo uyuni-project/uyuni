@@ -1,0 +1,6 @@
+In order to run the tests the following python modules are required:
+- mock
+- unittest2
+- nosetests (only as a convenience to collect, run and list results)
+
+The tests in this directory should be fully automated and isolated i.e. no output, no database access, no filesystem reads/writes.
