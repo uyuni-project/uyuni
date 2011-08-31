@@ -129,10 +129,17 @@ class NCCSync(object):
         except:
             self.error_msg("NCC connection failed")
             sys.exit(1)
+
         try:
             tree = etree.parse(response)
         except ExpatError:
-            self.error_msg("Could not parse XML from %s." % url)
+            self.error_msg("Could not parse XML from %s. The remote document "
+                           "does not appear to be a valid XML document. "
+                           "This document was written to the logfile: %s." %
+                           (url, rhnLog.LOG.file))
+            response.seek(0)
+            log_error("Invalid XML document (got ExpatError) from %s: %s" %
+                      (url, response.read()))
             sys.exit(1)
 
         return tree.getroot()
