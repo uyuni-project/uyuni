@@ -7,7 +7,7 @@ Given /^I am on the groups page$/ do
 end
 
 When /^I check this client$/ do
-  When 'I check "' + myhostname + '" in the list'
+  When 'I check "' + $myhostname + '" in the list'
 end
 
 Then /^I should see this client as a link$/ do
