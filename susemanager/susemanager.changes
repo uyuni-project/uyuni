@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Aug 31 16:18:26 CEST 2011 - iartarisi@suse.cz
+
+- log the invalid XML document from NCC when receiving an ExpatError
+  (bnc#711001)
+- added tests for the above bug
+
+-------------------------------------------------------------------
 Wed Aug 24 14:32:25 CEST 2011 - iartarisi@suse.cz
 
 - fixed TypeError in suseLib.URL.get_query_param
