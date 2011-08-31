@@ -152,7 +152,7 @@ public class AuditLog {
             Map<String, String> extmap) {
         // Create the message object
         AuditLogMessage m = new AuditLogMessage();
-        m.setUid(user != null ? user.getLogin() : "none");
+        m.setUid(user != null ? user.getLogin() : "");
         m.setMessage(message);
         m.setHost(host);
         m.setExtmap(extmap);
