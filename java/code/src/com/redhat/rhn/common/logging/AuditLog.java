@@ -4,37 +4,22 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 /**
- * Singleton class for providing access to the audit log.
+ * Singleton class providing access to the audit log.
  */
 public class AuditLog {
 
-    // Event types of user actions
-    public static String LOGIN = "LOGIN";
-    public static String LOGOUT = "LOGOUT";
-    public static String ADDUSER = "ADD_USER";
-    public static String EDITUSER = "EDIT_USER";
-    public static String REMOVEUSER = "REMOVE_USER";
-    public static String ASSIGNGRPROLE = "ASSIGN_GROUP_ROLE";
-    public static String REVOKEGRPROLE = "REVOKE_GROUP_ROLE";
-    public static String USERCREDUPDATE = "USER_CREDENTIAL_UPDATE";
-
-    // General types of events
-    public static String ACTION_CREATE = "ACTION_CREATE";
-    public static String ACTION_CHANGE = "ACTION_CHANGE";
-    public static String ACTION_DELETE = "ACTION_DELETE";
-
     // The name of the logger and a static reference
     private static String LOGGER_NAME = "auditlog";
-    private static Logger log = Logger.getLogger(AuditLog.LOGGER_NAME);
+    private static Logger logger = null;
 
     // The singleton instance
     private static AuditLog instance = null;
@@ -58,38 +43,6 @@ public class AuditLog {
     }
 
     /**
-     * Log a Web UI action.
-     *
-     * @param evtType
-     * @param request
-     * @param msgKey
-     * @param parameters
-     */
-    public void log(String evtType, HttpServletRequest request, String msgKey,
-            Object... parameters) {
-        if (!Config.get().getBoolean(ConfigDefaults.AUDIT_ENABLED)) {
-            return;
-        }
-        log(false, evtType, request, msgKey, parameters);
-    }
-
-    /**
-     * Log a failed Web UI action.
-     *
-     * @param evtType
-     * @param request
-     * @param msgKey
-     * @param parameters
-     */
-    public void logFailure(String evtType, HttpServletRequest request,
-            String msgKey, Object... parameters) {
-        if (!Config.get().getBoolean(ConfigDefaults.AUDIT_ENABLED)) {
-            return;
-        }
-        log(true, evtType, request, msgKey, parameters);
-    }
-
-    /**
      * Method for logging API calls.
      *
      * @param evtType
@@ -101,34 +54,24 @@ public class AuditLog {
         if (!Config.get().getBoolean(ConfigDefaults.AUDIT_ENABLED)) {
             return;
         }
-        log(user, message, host, LogUtil.createExtMapAPI(eventType, user));
+        log(user, message, host, AuditLogUtil.createExtMapAPI(eventType, user));
     }
 
-    // PRIVATE METHODS ////////////////////////////////////////////////////////
-
     /**
-     * This is a proxy method for logging web requests.
+     * Method for logging web requests.
      *
      * @param failure
      * @param evtType
      * @param request
-     * @param msgKey
-     * @param parameters
      */
-    private void log(boolean failure, String evtType,
-            HttpServletRequest request, String msgKey, Object... parameters) {
+    public void log(boolean failure, String evtType,
+            HttpServletRequest request) {
         // Determine the current user
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
 
-        // Determine the message using the name of the class as key
-        String message;
-        if (msgKey != null) {
-            message = LocalizationService.getInstance().getMessage(msgKey,
-                    LogUtil.convertParameters(parameters));
-        } else {
-            message = request.getServletPath();
-        }
+        // Create the message
+        String message = request.getServletPath();
 
         // Check if this is a failure log
         if (failure) {
@@ -137,7 +80,7 @@ public class AuditLog {
 
         // Call the logger
         log(user, message, request.getRemoteAddr(),
-                LogUtil.createExtMap(evtType, user, request));
+                AuditLogUtil.createExtMap(evtType, user, request));
     }
 
     /**
@@ -150,12 +93,27 @@ public class AuditLog {
      */
     private void log(User user, String message, String host,
             Map<String, String> extmap) {
+        if (logger == null) {
+            logger = createLogger();
+        }
         // Create the message object
         AuditLogMessage m = new AuditLogMessage();
         m.setUid(user != null ? user.getLogin() : "");
         m.setMessage(message);
         m.setHost(host);
         m.setExtmap(extmap);
-        log.info(m);
+        logger.info(m);
+    }
+
+    /**
+     * Create and configure the {@link Logger}.
+     */
+    private Logger createLogger() {
+        Logger rootLogger = Logger.getRootLogger();
+        Logger ret = rootLogger.getLoggerRepository().getLogger(LOGGER_NAME);
+        ret.setLevel(Level.INFO);
+        ret.addAppender(new AuditLogAppender());
+        ret.setAdditivity(false);
+        return ret;
     }
 }
