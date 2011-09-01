@@ -61,6 +61,7 @@ Requires: log4j
 Requires: redstone-xmlrpc
 Requires: oscache
 Requires: pam-modules
+Requires: snakeyaml
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
 %if 0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
@@ -134,6 +135,7 @@ BuildRequires: redstone-xmlrpc
 BuildRequires: oscache
 BuildRequires: quartz
 BuildRequires: simple-core
+BuildRequires: snakeyaml
 BuildRequires: stringtree-json
 # SUSE additional build requirements
 %if 0%{?suse_version}
@@ -369,6 +371,7 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 %endif
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
+install -m 644 conf/audit/auditlog-config.yaml $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit/auditlog-config.yaml
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
@@ -617,6 +620,9 @@ fi
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 %config %{_sysconfdir}/logrotate.d/rhn_web_api
+%dir %{_datadir}/spacewalk
+%dir %{_datadir}/spacewalk/audit
+%config %{_datadir}/spacewalk/audit/auditlog-config.yaml
 
 
 %files lib
