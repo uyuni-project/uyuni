@@ -51,6 +51,7 @@ Requires: redstone-xmlrpc
 Requires: oscache
 Requires: pam-modules
 Requires: servletapi5
+Requires: snakeyaml
 Requires: struts >= 1.2.9
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
@@ -123,6 +124,7 @@ BuildRequires: redstone-xmlrpc
 BuildRequires: oscache
 BuildRequires: quartz
 BuildRequires: simple-core
+BuildRequires: snakeyaml
 BuildRequires: stringtree-json
 BuildRequires: struts
 BuildRequires: sitemesh
@@ -291,6 +293,7 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 %endif
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
+install -m 644 conf/audit/auditlog-config.yaml $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit/auditlog-config.yaml
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/default/rhn_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/default/rhn_taskomatic_daemon.conf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/default/rhn_org_quartz.conf
@@ -504,11 +507,14 @@ fi
 %defattr(-,root,root)
 %dir /etc/rhn
 %dir /etc/rhn/default
+%dir %{_datadir}/spacewalk
+%dir %{_datadir}/spacewalk/audit
 %defattr(644, root, root)
 %config %{_sysconfdir}/rhn/default/rhn_hibernate.conf
 %config %{_sysconfdir}/rhn/default/rhn_taskomatic_daemon.conf
 %config %{_sysconfdir}/rhn/default/rhn_org_quartz.conf
 %config %{_sysconfdir}/logrotate.d/rhn_web_api
+%config %{_datadir}/spacewalk/audit/auditlog-config.yaml
 
 
 %files lib
