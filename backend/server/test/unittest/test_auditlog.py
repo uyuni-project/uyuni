@@ -101,11 +101,12 @@ class AuditLogTest(unittest.TestCase):
                               "SCRIPT_URI": "script_uri"}
         auditlog._get_server_id = Mock(return_value=
                                        ("system_id", ("arg1", "arg2")))
-        def api_method(system_id): pass
+        def api_method(system_id):
+            pass
 
         auditlog_xmlrpc(api_method, "api_method_name", ["args"], request)
 
-        self.assertEqual(self.auditlog_server.log.call_args,
+        self.assertEqual(self.auditlog_server.audit.log.call_args,
                          (('42(geeko)', "api_method_name('arg1', 'arg2')",
                            'server_name',
                            {'EVT.SRC': 'BACKEND_API',
@@ -132,7 +133,7 @@ class AuditLogTest(unittest.TestCase):
 
         auditlog_xmlrpc(api_method, "api_method_name", ["args"], request)
 
-        self.assertEqual(self.auditlog_server.log.call_args,
+        self.assertEqual(self.auditlog_server.audit.log.call_args,
                          (('42(geeko)', "api_method_name('arg1', 'arg2')",
                            'server_name',
                            {'EVT.SRC': 'BACKEND_API',
@@ -152,7 +153,7 @@ class AuditLogTest(unittest.TestCase):
                                        ("system_id", ("arg1", "arg2")))
         def api_method(system_id): pass
 
-        self.auditlog_server.log = Mock(side_effect=Error)
+        self.auditlog_server.audit.log = Mock(side_effect=Error)
 
         myerr = StringIO()
         with patch("sys.stderr", myerr):
@@ -172,7 +173,7 @@ class AuditLogTest(unittest.TestCase):
         def api_method(system_id): pass
 
         auditlog_xmlrpc(api_method, "method_name", ["args"], request)
-        self.assertEqual(self.auditlog_server.log.call_args,
+        self.assertEqual(self.auditlog_server.audit.log.call_args,
                          (('42(geeko)', "method_name('args',)", 'server_name',
                            {'EVT.SRC': 'BACKEND_API',
                             'REQ.SCRIPT_URI': '',
@@ -189,7 +190,7 @@ class AuditLogTest(unittest.TestCase):
         def api_method(system_id): pass
 
         auditlog_xmlrpc(api_method, "method_name", ["args"], request)
-        self.assertEqual(self.auditlog_server.log.call_args,
+        self.assertEqual(self.auditlog_server.audit.log.call_args,
                          (('42(geeko)', "method_name('args',)", 'server_name',
                            {'EVT.SRC': 'BACKEND_API',
                             'REQ.SCRIPT_URI': '',

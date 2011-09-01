@@ -99,7 +99,7 @@ def _get_uid():
 def _read_config():
     # we want to change the logging file to 'audit' and set it back
     # after we finished reading the config file
-    # XXX this is not cool
+    # TODO Changing the component twice on every request is not nice
     comp = CFG.getComponent()
     initCFG("audit")
 
