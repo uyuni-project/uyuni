@@ -21,8 +21,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
  */
 public class AuditLogAppender extends AppenderSkeleton {
 
-    // URL of the log daemon
-    private String url;
+    // The client object
+    private XmlRpcClient client = null;
     // The method to be called
     private final String method = "audit.log";
 
@@ -43,25 +43,42 @@ public class AuditLogAppender extends AppenderSkeleton {
     }
 
     /**
+     * Setup the {@link XmlRpcClient} for sending the events.
+     *
+     * @return client
+     */
+    private XmlRpcClient createClient() {
+        String url = Config.get().getString(ConfigDefaults.AUDIT_SERVER);
+        XmlRpcClient client = null;
+        try {
+            client = new XmlRpcClient(url, true);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error initializing XMLRPC client", e);
+        }
+        return client;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     protected void append(LoggingEvent event) {
-        if (url == null) {
-            // Lazy initialize the URL
-            url = Config.get().getString(ConfigDefaults.AUDIT_SERVER);
+        // Lazy initialize the client
+        if (client == null) {
+            client = createClient();
         }
+
+        // Setup the arguments
         AuditLogMessage m = (AuditLogMessage) event.getMessage();
+        List<Object> args = new ArrayList<Object>();
+        args.add(m.getUid());
+        args.add(m.getMessage());
+        args.add(m.getHost());
+        args.add(m.getExtmap() != null ? m.getExtmap() : new HashMap());
+
+        // Try to call the log method
         try {
-            XmlRpcClient client = new XmlRpcClient(url, true);
-            List<Object> args = new ArrayList<Object>();
-            args.add(m.getUid());
-            args.add(m.getMessage());
-            args.add(m.getHost());
-            args.add(m.getExtmap() != null ? m.getExtmap() : new HashMap());
             client.invoke(method, args);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Error sending log event", e);
         } catch (XmlRpcException e) {
             throw new RuntimeException("Error sending log event", e);
         } catch (XmlRpcFault e) {
