@@ -59,10 +59,7 @@ def auditlog_xmlrpc(method, method_name, args, request):
     # we only want to log the actions that require authentication 
     # (so far this means functions which require a system_id)
     if "system_id" in inspect.getargspec(method).args:
-        # the uid that we send is the current process's uid and name
-        euid = os.geteuid()
-        username = pwd.getpwuid(euid).pw_name
-        uid = "%s(%s)" % (euid, username)
+        uid = _get_uid()
 
         server_id, args = _get_server_id(method, args)
 
@@ -91,6 +88,13 @@ def auditlog_xmlrpc(method, method_name, args, request):
                                     "server at %s. Error was: %s"
                                     % (server_url, e))
         log_debug(2, "Logged method call %s to the AuditLog server" % message)
+
+def _get_uid():
+    """The uid that we send is the current process's uid and name"""
+    euid = os.geteuid()
+    username = pwd.getpwuid(euid).pw_name
+    uid = "%s(%s)" % (euid, username)
+    return uid
 
 def _read_config():
     # we want to change the logging file to 'audit' and set it back
