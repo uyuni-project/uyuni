@@ -23,6 +23,8 @@ public class AuditLogAppender extends AppenderSkeleton {
 
     // URL of the log daemon
     private String url;
+    // The method to be called
+    private final String method = "audit.log";
 
     /**
      * {@inheritDoc}
@@ -57,7 +59,7 @@ public class AuditLogAppender extends AppenderSkeleton {
             args.add(m.getMessage());
             args.add(m.getHost());
             args.add(m.getExtmap() != null ? m.getExtmap() : new HashMap());
-            client.invoke("log", args);
+            client.invoke(method, args);
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error sending log event", e);
         } catch (XmlRpcException e) {
