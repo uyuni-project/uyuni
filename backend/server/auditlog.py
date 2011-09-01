@@ -70,22 +70,22 @@ def auditlog_xmlrpc(method, method_name, args, request):
         hostname = headers["SERVER_NAME"]
 
         extmap = {"EVT.SRC": "BACKEND_API",
-                  "REQ.REMOTE_ADDR": headers["REMOTE_ADDR"],
-                  "REQ.SERVER_PORT": headers["SERVER_PORT"],
-                  "REQ.DOCUMENT_ROOT": headers["DOCUMENT_ROOT"],
-                  "REQ.SCRIPT_FILENAME": headers["SCRIPT_FILENAME"],
-                  "REQ.SCRIPT_URI": headers["SCRIPT_URI"]}
+                  "REQ.REMOTE_ADDR": headers.get("REMOTE_ADDR", ""),
+                  "REQ.SERVER_PORT": headers.get("SERVER_PORT", ""),
+                  "REQ.DOCUMENT_ROOT": headers.get("DOCUMENT_ROOT", ""),
+                  "REQ.SCRIPT_FILENAME": headers.get("SCRIPT_FILENAME", ""),
+                  "REQ.SCRIPT_URI": headers.get("SCRIPT_URI", "")}
 
         if "HTTP_X_RHN_PROXY_AUTH" in headers:
             extmap.update({
                     "REQ.PROXY": headers["HTTP_X_RHN_PROXY_AUTH"],
-                    "REQ.PROXY_VERSION": headers["HTTP_X_RHN_PROXY_VERSION"],
-                    "REQ.ORIGINAL_ADDR": headers["HTTP_X_RHN_IP_PATH"]})
+                    "REQ.PROXY_VERSION": headers.get("HTTP_X_RHN_PROXY_VERSION", ""),
+                    "REQ.ORIGINAL_ADDR": headers.get("HTTP_X_RHN_IP_PATH", "")})
         try:
             server.audit.log(uid, message, hostname, extmap)
         except (Error, error), e:
-            raise AuditLogException("Failed to log the event to the AuditLog "
-                                    "server at %s. Error was: %s"
+            raise AuditLogException("Got an error while talking to the "
+                                    "AuditLogging server at %s. Error was: %s"
                                     % (server_url, e))
         log_debug(2, "Logged method call %s to the AuditLog server" % message)
 
