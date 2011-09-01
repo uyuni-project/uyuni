@@ -85,7 +85,7 @@ def auditlog_xmlrpc(method, method_name, args, request):
                     "REQ.PROXY_VERSION": headers["HTTP_X_RHN_PROXY_VERSION"],
                     "REQ.ORIGINAL_ADDR": headers["HTTP_X_RHN_IP_PATH"]})
         try:
-            server.log(uid, message, hostname, extmap)
+            server.audit.log(uid, message, hostname, extmap)
         except (Error, error), e:
             raise AuditLogException("Failed to log the event to the AuditLog "
                                     "server at %s. Error was: %s"
