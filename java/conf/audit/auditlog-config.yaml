@@ -1,0 +1,360 @@
+###############################################################################
+# Login/Logout
+###############################################################################
+
+/LoginSubmit.do:
+    type: LOGIN
+    log_failures: true
+
+/ReLoginSubmit.do:
+    type: LOGIN
+    log_failures: true
+
+/Logout.do:
+    type: LOGOUT
+    log_before: true
+
+###############################################################################
+# User Management
+###############################################################################
+
+/newlogin/CreateFirstUserSubmit.do:
+    type: ADD_USER
+
+/newlogin/CreateSatelliteSubmit.do:
+    type: ADD_USER
+
+/users/UserDetailsSubmit.do:
+    type: EDIT_USER
+
+/account/UserDetailsSubmit.do:
+    type: EDIT_USER
+
+/users/LocalePreferences.do:
+    type: EDIT_USER
+    required: [preferredLocale]
+
+/account/LocalePreferences.do:
+    type: EDIT_USER
+    required: [preferredLocale]
+
+/users/PrefSubmit.do:
+    type: EDIT_USER
+
+/account/PrefSubmit.do:
+    type: EDIT_USER
+
+/users/EditAddressSubmit.do:
+    type: EDIT_USER
+
+/account/EditAddressSubmit.do:
+    type: EDIT_USER
+
+/users/AssignedSystemGroups.do:
+    type: EDIT_USER
+    required: [submit]
+
+/users/ChangeEmailSubmit.do:
+    type: EDIT_USER
+
+/account/ChangeEmailSubmit.do:
+    type: EDIT_USER
+
+/users/DisabledList.do:
+    type: EDIT_USER
+    required: [dispatch]
+
+/users/EnableConfirm.do:
+    type: EDIT_USER
+    required: [dispatch]
+
+/account/AccountDeactivationConfirm.do:
+    type: EDIT_USER
+    required: [submitted]
+
+/users/DisableUserSubmit.do:
+    type: EDIT_USER
+
+/users/DeleteUserSubmit.do:
+    type: REMOVE_USER
+
+/users/ChannelPermsSubmit.do:
+    type: EDIT_USER
+    dispatch: channelperms.jsp.submitpermissions # Update Permissions
+
+###############################################################################
+# Scheduling
+###############################################################################
+
+/schedule/CompletedActions.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/schedule/FailedActions.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/schedule/FailedSystemsSubmit.do:
+    type: ACTION_CHANGE
+
+/schedule/InProgressSystemsSubmit.do:
+    type: ACTION_CHANGE
+    required: [items_selected]
+    dispatch: actions.jsp.unscheduleaction # Unschedule Action
+
+/schedule/PendingActionsDeleteConfirm.do:
+    type: ACTION_DELETE
+    required: [dispatch]
+
+###############################################################################
+# Errata
+###############################################################################
+
+/errata/details/ErrataConfirmSubmit.do:
+    type: ACTION_CHANGE
+
+/errata/manage/CloneConfirmSubmit.do:
+    type: ACTION_CREATE
+
+/errata/manage/UnpublishedDeleteConfirmSubmit.do:
+    type: ACTION_DELETE
+
+/errata/manage/PublishedDeleteConfirmSubmit.do:
+    type: ACTION_DELETE
+
+/errata/manage/Delete.do:
+    type: ACTION_DELETE
+
+/errata/manage/CreateSubmit.do:
+    type: ACTION_CREATE
+
+/errata/manage/Edit.do:
+    type: ACTION_CHANGE
+    dispatch: errata.edit.updateerrata # Update Patch
+
+/errata/manage/SelectChannelsSubmit.do:
+    type: ACTION_CHANGE
+    dispatch: errata.publish.publisherrata # Publish Patches
+
+/errata/manage/ChannelsSubmit.do:
+    type: ACTION_CHANGE
+
+/errata/manage/PackagePushSubmit.do:
+    type: ACTION_CHANGE
+    dispatch: errata.publish.packagepush.continue # Continue
+
+/errata/manage/AddChannelPackagePushSubmit.do:
+    type: ACTION_CHANGE
+
+/errata/manage/AddPackagePackagePushSubmit.do:
+    type: ACTION_CHANGE
+
+/errata/manage/DeleteBug.do:
+    type: ACTION_DELETE
+
+/errata/manage/NotifySubmit.do:
+    type: ACTION_CREATE
+
+/errata/manage/AddPackagesConfirm.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/errata/manage/RemovePackagesSubmit.do:
+    type: ACTION_DELETE
+
+###############################################################################
+# Systems
+###############################################################################
+
+/systems/DuplicateSystemsCompare.do:
+    type: ACTION_DELETE
+
+/systems/details/SystemHardware.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/SystemEntitlementsSubmit.do:
+    type: ACTION_CHANGE
+
+/systems/details/packages/Packages.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/details/packages/InstallConfirm.do:
+    type: ACTION_CREATE
+
+/systems/details/packages/VerifyConfirm.do:
+    type: ACTION_CREATE
+
+/systems/details/packages/RemoveConfirm.do:
+    type: ACTION_CREATE
+
+/systems/details/packages/UpgradeConfirm.do:
+    type: ACTION_CREATE
+
+/systems/details/packages/ScheduleRemoteCommand.do:
+    type: ACTION_CREATE
+
+/systems/details/packages/patchsets/InstallPatchSetSubmit.do:
+    type: ACTION_CREATE
+
+/systems/details/packages/patches/PatchInstallConfirmSubmit.do:
+    type: ACTION_CREATE
+
+/systems/details/packages/patches/PatchConfirmSubmit.do:
+    type: ACTION_CREATE
+
+/systems/details/ErrataConfirm.do:
+    type: ACTION_CREATE
+    required: [dispatch]
+
+/systems/details/EditNote.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/DeleteNote.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/systems/details/DeleteConfirm.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/systems/ssm/DeleteConfirm.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/systems/ssm/misc/HardwareRefresh.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/ssm/misc/SoftwareRefresh.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/ssm/MigrateSystems.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/Edit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/UpdateCustomData.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/DeleteCustomData.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/systems/details/SystemMigrate.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/SystemChannels.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/groups/ListRemove.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/groups/Add.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/groups/AddSystems.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/groups/ListRemoveSystems.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/groups/CreateGroup.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/details/configuration/ViewModifyCentralPaths.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/configuration/ViewModifyLocalPaths.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/configuration/ViewModifySandboxPaths.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/configuration/SelectChannelsForFiles.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/configuration/RankChannels.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/configuration/ConfigChannelListUnsubscribeSubmit.do:
+    type: ACTION_CHANGE
+
+/systems/details/configuration/addfiles/CreateFile.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/details/configuration/addfiles/UploadFile.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/details/configuration/addfiles/ImportFileConfirmSubmit.do:
+    type: ACTION_CREATE
+
+/systems/details/configuration/DeployFileConfirmSubmit.do:
+    type: ACTION_CREATE
+
+/systems/details/configuration/DiffFileConfirmSubmit.do:
+    type: ACTION_CREATE
+
+/systems/details/virtualization/VirtualGuestsConfirmSubmit.do:
+    type: ACTION_CREATE
+
+###############################################################################
+# Monitoring
+###############################################################################
+
+/admin/config/MonitoringConfig.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/monitoring/config/notification/FiltersSubmit.do:
+    type: ACTION_CHANGE
+    required: [items_selected]
+    dispatch: filters.jsp.expirefilters # Expire Notification Filters
+
+/monitoring/config/notification/FilterCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/monitoring/config/notification/FilterEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/monitoring/config/ProbeSuitesRemoveConfirmSubmit.do:
+    type: ACTION_DELETE
+
+/monitoring/config/ProbeSuiteListProbes.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/monitoring/config/ProbeSuiteProbeCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/monitoring/config/ProbeSuiteProbeEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/monitoring/config/ProbeSuiteSystemsEditSubmit.do:
+    type: ACTION_CHANGE
+
