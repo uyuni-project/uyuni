@@ -87,8 +87,6 @@ class YumUpdateMetadata(UpdateMetadata):
                             no.add(un)
 
 class ContentSource:
-    url = None
-    name = None
     repo = None
     cache_dir = '/var/cache/rhn/reposync/'
     def __init__(self, url, name, insecure=False, interactive=True):
@@ -110,15 +108,12 @@ class ContentSource:
             self.proxy_url = "http://%s" %(self.proxy_addr)
         else:
             self.proxy_url = None
-
-    def list_packages(self):
-        """ list packages"""
-        repo = yum.yumRepo.YumRepository(self.name)
+        repo = yum.yumRepo.YumRepository(name)
         self.repo = repo
         repo.cache = 0
         repo.metadata_expire = 0
-        repo.mirrorlist = self.url
-        repo.baseurl = [self.url]
+        repo.mirrorlist = url
+        repo.baseurl = [url]
         repo.basecachedir = self.cache_dir
         if self.insecure:
             repo.repo_gpgcheck = False
@@ -136,7 +131,12 @@ class ContentSource:
 
         repo.setup(False, None, gpg_import_func=self.getKeyForRepo, confirm_func=self.askImportKey)
         self.initgpgdir( repo.gpgdir )
-        sack = repo.getPackageSack()
+        self.num_packages = 0
+        self.num_excluded = 0
+
+    def list_packages(self, filters):
+        """ list packages"""
+        sack = self.repo.getPackageSack()
 
         try:
             sack.populate(repo, 'metadata', None, 0)
@@ -148,7 +148,14 @@ class ContentSource:
             else:
                 raise
 
+
+
         list = sack.returnPackages()
+        self.num_packages = len(list)
+        if filters:
+            list = self._filter_packages(list, filters)
+            list = self._get_package_dependencies(sack, list)
+            self.num_excluded = self.num_packages - len(list)
         to_return = []
         for pack in list:
             if pack.arch == 'src':
@@ -163,6 +170,56 @@ class ContentSource:
             new_pack.checksum      = pack.checksums[0][1]
             to_return.append(new_pack)
         return to_return
+
+    def _filter_packages(self, packages, filters):
+        """ implement include / exclude logic
+            filters are: [ ('+', includelist1), ('-', excludelist1),
+                           ('+', includelist2), ... ]
+        """
+        if filters is None:
+            return
+
+        selected = []
+        excluded = []
+        if filters[0][0] == '-':
+            # first filter is exclude, start with full package list
+            # and then exclude from it
+            selected = packages
+        else:
+            excluded = packages
+
+        for filter in filters:
+            sense, pkg_list = filter
+            if sense == '+':
+                # include
+                exactmatch, matched, unmatched = yum.packages.parsePackages(
+                                                        excluded, pkg_list)
+                allmatched = yum.misc.unique(exactmatch + matched)
+                selected = yum.misc.unique(selected + allmatched)
+                for pkg in allmatched:
+                    if pkg in excluded:
+                        excluded.remove(pkg)
+            elif sense == '-':
+                # exclude
+                exactmatch, matched, unmatched = yum.packages.parsePackages(
+                                                        selected, pkg_list)
+                allmatched = yum.misc.unique(exactmatch + matched)
+                for pkg in allmatched:
+                    if pkg in selected:
+                        selected.remove(pkg)
+                excluded = yum.misc.unique(excluded + allmatched)
+            else:
+                raise UpdateNoticeException
+        return selected
+
+    def _get_package_dependencies(self, sack, packages):
+        yumbase = yum.YumBase()
+        yumbase.pkgSack = sack
+        resolved_deps = yumbase.findDeps(packages)
+        for (pkg,deps) in resolved_deps.items():
+            for (dep,dep_packages) in deps.items():
+                packages.extend(dep_packages)
+        return yum.misc.unique(packages)
 
     def get_package(self, package):
         """ get package """

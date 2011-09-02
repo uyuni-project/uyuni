@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.6.8
+Version:        1.6.11
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -11,8 +11,8 @@ Url:            http://fedorahosted.org/spacewalk/
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  chameleon
 BuildRequires:  perl(Digest::SHA1)
+BuildRequires:  python
 
 Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
@@ -67,6 +67,20 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Wed Aug 31 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.11-1
+- removed obsoleted warning
+- Fedora 15 needs explicit BuildRequires for python
+
+* Tue Aug 30 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.10-1
+- fixed rhnReleaseChannelMap upgrade from 0.5 to 0.6
+
+* Tue Aug 30 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.9-1
+- fixed rhn_command upgrade for schema <0.6
+- upgrade script for rhn_service_probe_origins
+- create contraint and its index at once
+- specify NOLOGGING directly
+- added sed script replacement for chameleon
+
 * Wed Aug 17 2011 Tomas Lestach <tlestach@redhat.com> 1.6.8-1
 - 722189 - adding upgrade script (tlestach@redhat.com)
 - 722189 - omit updates for packages installed in several versions (like

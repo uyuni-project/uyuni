@@ -187,6 +187,26 @@ is_hosted () {
     return $?
 }
 
+check_ca_conf () {
+    if awk '/^[[:space:]]*\[[[:space:]]*[_[:alnum:]]*[[:space:]]*]/ {CORRECT_SECTION=0} \
+        /^[[:space:]]*\[[[:space:]]*CA_default[[:space:]]*]/ {CORRECT_SECTION=1} \
+        /^[[:space:]]*copy_extensions[[:space:]]*=[[:space:]]*copy/ && CORRECT_SECTION==1 {exit 1}' \
+        /root/ssl-build/rhn-ca-openssl.cnf \
+		&& [ ${#SSL_CNAME_PARSED[@]} -gt 0 ];  then
+		cat <<WARNING
+It seems you tried to use the --set-cname option. On inspection we noticed that the openssl configuration file we use is missing a critically important option. Without this option, not only will multi host SSL certificates not work, but the planet Earth will implode in a massive rip in the time/space continuum. To avoid this failure, we choose to gracefully exit here and request for you to edit the openssl configuration file
+ /root/ssl-build/rhn-ca-openssl.cnf
+and add this line:
+ copy_extensions = copy
+in
+ [ CA_default ]
+section.
+Then re-run this script again.
+WARNING
+		exit 3
+	fi
+}
+
 #do we have yum or up2date?
 YUM_OR_UPDATE="up2date -i"
 UPGRADE="up2date -u"
@@ -256,7 +276,10 @@ CA_KEYS
 	exit 1
 fi
 
+check_ca_conf
+
 if ! /bin/su nobody -s /bin/sh --command="[ -r $CA_CHAIN ]" ; then
+
 	echo Error: File $CA_CHAIN is not readable by nobody user.
 	exit 1
 fi
@@ -304,12 +327,15 @@ default_or_input "Country code" SSL_COUNTRY ''
 default_or_input "Email" SSL_EMAIL "$TRACEBACK_EMAIL"
 
 if [ ${#SSL_CNAME_PARSED[@]} -eq 0 ]; then
-  default_or_input "Cname aliases (separated by space)" SSL_CNAME_ASK ''
-  CNAME=($SSL_CNAME_ASK)
-  local ALIAS
-  for ALIAS in ${CNAME[@]}; do
-	SSL_CNAME_PARSED[CNAME_INDEX++]=--set-cname=$ALIAS
-  done
+  VARIABLE_ISSET=$(set | grep "^SSL_CNAME=")
+  if [ -z $VARIABLE_ISSET ]; then
+    default_or_input "Cname aliases (separated by space)" SSL_CNAME_ASK ''
+    CNAME=($SSL_CNAME_ASK)
+    for ALIAS in ${CNAME[@]}; do
+      SSL_CNAME_PARSED[CNAME_INDEX++]=--set-cname=$ALIAS
+    done
+    check_ca_conf
+  fi
 fi
 
 /usr/bin/rhn-proxy-activate --server="$RHN_PARENT" \

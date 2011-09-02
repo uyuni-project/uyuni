@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.17
+Version: 1.6.18
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -50,7 +50,6 @@ This package contains the HTML files for the Spacewalk web site.
 Group: Applications/Internet
 Summary: Programs needed to be installed on the RHN Web base classes
 Requires: spacewalk-pxt
-Provides: spacewalk(spacewalk-base-minimal) = %{version}-%{release}
 Provides: spacewalk(spacewalk-base) = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: perl-RPM2
@@ -297,6 +296,10 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Thu Aug 25 2011 Miroslav Suchý 1.6.18-1
+- 705363 - spacewalk-base and spacewalk-base-minimal are now disjunctive
+  remove the provide from spacewalk-base
+
 * Wed Aug 24 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.17-1
 - fixed typo in sql query
 

@@ -5,7 +5,7 @@
 %define vardir         /var/lib/nocpulse
 Name:         SputLite
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.6.0
+Version:      1.6.1
 Release:      1%{?dist}
 Summary:      Command queue processor (Sputnik Lite)
 URL:          https://fedorahosted.org/spacewalk
@@ -92,7 +92,7 @@ fi
 
 %files server
 %defattr(-,root,root,-)
-%attr(755, root, root) %dir %templatedir
+%attr(755, nocpulse, nocpulse) %dir %templatedir
 %{perl_vendorlib}/NOCpulse/*
 %dir %{_datadir}/nocpulse
 %dir %{cgi_bin}
@@ -108,13 +108,15 @@ fi
 %attr(755,nocpulse,nocpulse) %dir %{vardir}/commands
 %attr(755,nocpulse,nocpulse) %dir %{vardir}/queue/commands
 %{_bindir}/*
-%dir %{perl_vendorlib}/NOCpulse/CommandQueue
 %{perl_vendorlib}/NOCpulse/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Aug 30 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.1-1
+- remove perl module files from the -server package
+
 * Fri Mar 18 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.2-1
 - fixed db connection in fetch_nocpulseini*.cgi (PG)
 

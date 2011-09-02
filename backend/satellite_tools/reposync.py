@@ -14,12 +14,11 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
+import sys, os, time
 import hashlib
-import os
-import re
 import socket
-import sys
-import time
+import re
+from datetime import datetime
 import traceback
 from datetime import datetime
 from optparse import OptionParser
@@ -65,8 +64,13 @@ class ChannelTimeoutException(ChannelException):
     """Channel timeout error e.g. a remote repository is not responding"""
     pass
 
+def set_filter_opt(option, opt_str, value, parser):
+    if opt_str in [ '--include', '-i']: f_type = '+'
+    else:                               f_type = '-'
+    parser.values.filters.append((f_type, re.split('[,\s]+', value)))
 
 class RepoSync:
+
     parser = None
     type = None
     urls = None
@@ -76,6 +80,7 @@ class RepoSync:
     quiet = False
     regen = False
     noninteractive = False
+    filters = []
 
     def main(self):
         initCFG('server.satellite')
@@ -126,6 +131,7 @@ class RepoSync:
             quit = True
             self.error_msg("--channel must be specified")
 
+        self.filters = options.filters
         self.log_msg("\nSync started: %s" % (time.asctime(time.localtime())))
         self.log_msg(str(sys.argv))
 
@@ -144,6 +150,7 @@ class RepoSync:
             print "Channel does not exist"
             sys.exit(1)
 
+        start_time = datetime.now()
         for data in self.urls:
             url = suseLib.URL(data['source_url'])
             if url.get_query_param("credentials"):
@@ -195,7 +202,9 @@ class RepoSync:
             taskomatic.add_to_erratacache_queue(self.channel_label)
         self.update_date()
         rhnSQL.commit()
-        self.print_msg("Sync complete")
+        total_time = datetime.now() - start_time
+        self.print_msg("Sync completed.")
+        self.print_msg("Total time: %s" % str(total_time).split('.')[0])
 
 
     def update_date(self):
@@ -212,6 +221,9 @@ class RepoSync:
         self.parser.add_option('-f', '--fail', action='store_true', dest='fail', default=False , help="If a package import fails, fail the entire operation")
         self.parser.add_option('-q', '--quiet', action='store_true', dest='quiet', default=False, help="Print no output, still logs output")
         self.parser.add_option('-n', '--non-interactive', action='store_true', dest='noninteractive', default=False, help="Do not ask anything, use default answers automatically.")
+        self.parser.add_option('-i', '--include', action='callback', callback=set_filter_opt, type='str', nargs=1, dest='filters', default=[], help="List of included packages")
+        self.parser.add_option('-e', '--exclude', action='callback', callback=set_filter_opt, type='str', nargs=1, dest='filters', default=[], help="List of excluded packages")
+
         return self.parser.parse_args()
 
     def load_plugin(self):
@@ -565,15 +577,18 @@ class RepoSync:
         self.regen = True
 
     def import_packages(self, plug, url):
-        packages = plug.list_packages()
+        packages = plug.list_packages(self.filters)
         to_process = []
         skipped = 0
         saveurl = suseLib.URL(url)
         if saveurl.password:
             saveurl.password = "*******"
-        self.print_msg("Repo " + saveurl.getURL() + " has " + str(len(packages)) + " packages.")
+        num_passed = len(packages)
+        self.print_msg("Repo URL: %s" % saveurl)
+        self.print_msg("Packages in repo:             %5d" % plug.num_packages)
+        if plug.num_excluded:
+            self.print_msg("Packages passed filter rules: %5d" % num_passed)
         compatArchs = self.compatiblePackageArchs()
-
         for pack in packages:
             if pack.arch in ['src', 'nosrc']:
                 # skip source packages
@@ -610,6 +625,10 @@ class RepoSync:
         if num_to_process == 0:
             self.print_msg("No new packages to sync.")
             return
+        else:
+            self.print_msg("Packages already synced:      %5d" % 
+                                                  (num_passed - num_to_process))
+            self.print_msg("Packages to sync:             %5d" % num_to_process)
 
         self.regen=True
         is_non_local_repo = (url.find("file://") < 0)

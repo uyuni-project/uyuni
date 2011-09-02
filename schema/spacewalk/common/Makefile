@@ -11,10 +11,6 @@
 # in this software or its documentation.
 #
 
-ifndef STYLE
-STYLE := oracle
-$(warning STYLE not defined, using $(STYLE))
-endif
 ifndef COMMON
 COMMON := ../../../common
 $(warning COMMON not defined, using $(COMMON))
@@ -26,7 +22,7 @@ endif
 SRCDIR    := $(shell find $(COMMON) -name $(NAME))
 SOURCES   := $(wildcard $(SRCDIR)/*)
 FILES     := $(notdir $(SOURCES))
-CHAMELEON := chameleon -fs $(STYLE) $(CFLAGS)
+ORA2PG    := ../../../spacewalk-oracle2postgresql
 RMLINKS   := find . -type l -delete
 RMTRASH   := rm -f lextab* parsetab* parser.out
 
@@ -38,7 +34,7 @@ files : $(FILES)
 	@$(RMTRASH)
 
 %.sql : %.cql
-	$(CHAMELEON) -o $@ $^
+	$(ORA2PG) $^ > $@
 
 links :
 	@$(RMLINKS)

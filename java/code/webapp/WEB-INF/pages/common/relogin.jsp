@@ -22,14 +22,20 @@
   <div class="clearBoxInner">
   <div class="clearBoxBody">
 
-    <html:form action="/ReLoginSubmit">
-        <rhn:csrf />
-        <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf" %>
-         <html:hidden property="url_bounce" />
-    </html:form>
-  </div><!-- end clearBoxBody -->
-  </div><!-- end clearBoxInner -->
-  </div><!-- end clearBox -->
+  <div id="contentLeft">
+    <div class="clearBox">
+    <div class="clearBoxInner">
+    <div class="clearBoxBody">
+      <html:form action="/ReLoginSubmit">
+          <rhn:csrf />
+          <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf" %>
+           <html:hidden property="url_bounce" />
+           <html:hidden property="request_method" />
+      </html:form>
+    </div><!-- end clearBoxBody -->
+    </div><!-- end clearBoxInner -->
+    </div><!-- end clearBox -->
+  </div> <!-- end contentLeft -->
 
 </c:if>
 </rhn:require>

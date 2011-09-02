@@ -2,7 +2,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 1.6.2
+Version: 1.6.3
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -100,6 +100,11 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Mon Aug 29 2011 Miroslav Suchý 1.6.3-1
+- check if "copy_extension=copy" is in correct section
+- do not ask for SSL_CNAME if it set in answer file to empty array
+- fail if CA configuration file do not copy extension
+
 * Mon Aug 22 2011 Miroslav Suchý 1.6.2-1
 - allow proxy installer to set cname alias
 

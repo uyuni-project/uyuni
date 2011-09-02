@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.28
+Version: 1.6.36
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -625,6 +625,45 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Sep 02 2011 Tomas Lestach <tlestach@redhat.com> 1.6.36-1
+- checkstyle fix (tlestach@redhat.com)
+
+* Fri Sep 02 2011 Martin Minar <mminar@redhat.com> 1.6.35-1
+- 734799 - New API: configchannel.getFileRevision (mzazrivec@redhat.com)
+- 734799 - New API: configchannel.getFileRevisions (mzazrivec@redhat.com)
+- 734799 - New API: configchannel.deleteFileRevisions (mzazrivec@redhat.com)
+
+* Wed Aug 31 2011 Tomas Lestach <tlestach@redhat.com> 1.6.34-1
+- fix NPE for KickstartDetailsEditAction (tlestach@redhat.com)
+
+* Wed Aug 31 2011 Tomas Lestach <tlestach@redhat.com> 1.6.33-1
+- 725059 - en/disable kickstart profiles using API (tlestach@redhat.com)
+- 725050 - en/disable activation keys using API (tlestach@redhat.com)
+
+* Tue Aug 30 2011 Tomas Lestach <tlestach@redhat.com> 1.6.32-1
+- 640535 - add extra spaces between topic, description and note in Errata Alert
+  e-mails (tlestach@redhat.com)
+- 640535 - lower amount of logging mailer messages (tlestach@redhat.com)
+- 640535 - prevent listing duplicate servers in the Errata Alert e-mails
+  (cperry@redhat.com)
+- 730999 - fixed bad indentation (michael.mraka@redhat.com)
+
+* Tue Aug 30 2011 Martin Minar <mminar@redhat.com> 1.6.31-1
+- update custom info changes (tlestach@redhat.com)
+- 699527 - introduce system.custominfo.updateKey API (tlestach@redhat.com)
+- 692797 - display asterisk explanation only when asterisk was used on the page
+  (tlestach@redhat.com)
+- 663697 - adding system id to system currency csv export (tlestach@redhat.com)
+- 709724 - bounce to default url for expired POST requests
+  (mzazrivec@redhat.com)
+
+* Thu Aug 25 2011 Tomas Lestach <tlestach@redhat.com> 1.6.30-1
+- 699489 - introduce kickstart.keys.update API (tlestach@redhat.com)
+
+* Wed Aug 24 2011 Tomas Lestach <tlestach@redhat.com> 1.6.29-1
+- 662200 - allow modification of selected channel attributes via API
+  (tlestach@redhat.com)
+
 * Tue Aug 23 2011 Tomas Lestach <tlestach@redhat.com> 1.6.28-1
 - make the taskomatic cleanup delete faster for Postgresql (jonathan.hoser
   @helmholtz-muenchen.de)

@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -405,6 +406,33 @@ public class ConfigurationFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         ConfigRevision a = (ConfigRevision)session.get(ConfigRevision.class, id);
         return a;
+    }
+
+
+    /**
+     * Finds a ConfigRevision for a given ConfigFile and given revision id
+     * @param ConfigFile The ConfigFile to look for.
+     * @param rev_id The ConfigFile revision to look for.
+     * @return ConfigRevision The sought for ConfigRevision.
+     */
+    public static ConfigRevision lookupConfigRevisionByRevId(ConfigFile cf, Long rev_id) {
+        Session session = HibernateFactory.getSession();
+        Query q = session.getNamedQuery("ConfigRevision.findByRevisionAndConfigFile");
+        q.setLong("rev", rev_id.longValue());
+        q.setEntity("cf", cf);
+        return (ConfigRevision) q.uniqueResult();
+    }
+
+    /**
+     * Finds configuration revisions for a given configuration file
+     * @param cf The ConfigFile to look for.
+     * @return List of configuration revisions for given configuration file.
+     */
+    public static List lookupConfigRevisions(ConfigFile cf) {
+        Session session = HibernateFactory.getSession();
+        Query q = session.getNamedQuery("ConfigRevision.findByConfigFile");
+        q.setEntity("cf", cf);
+        return (List<ConfigRevision>) q.list();
     }
 
     /**
