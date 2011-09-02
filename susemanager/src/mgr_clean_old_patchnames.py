@@ -28,7 +28,7 @@ class Cleaner:
             raise Exception("You need to specify either --all or --channel")
 
         initCFG("server.susemanager")
-        if self.debug == -1:
+        if self.debug == 0:
             self.debug = CFG.DEBUG
 
         rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'mgr-clean-old-patchnames.log', self.debug)
@@ -48,7 +48,7 @@ class Cleaner:
 
 
         for c in channels:
-            log_debug(2, "Remove old patches in channel '%s'" % c)
+            _printLog("Remove old patches in channel '%s'" % c)
             # search errata which ends with channel-* in this channel
             h = rhnSQL.prepare("""
                 SELECT e.id as errata_id,
@@ -68,12 +68,12 @@ class Cleaner:
             for patch in patches:
                 pattern = "-%s-%s-?[0-9]*$" % (patch['advisory_rel'], patch['channel_arch_label'])
                 if not re.search(pattern, patch['advisory']):
-                    log_debug(2, "Found new style patch 's'. Skip" % patch['advisory'])
+                    log_debug(2, "Found new style patch '%s'. Skip" % patch['advisory'])
                     # This is not an old style patch. Skip
                     continue
                 errata_id = patch['errata_id']
                 channel_id = patch['channel_id']
-                log_debug(2, "Remove patch '%s(%d)' from channel '%s(%d)'" %
+                log_debug(1, "Remove patch '%s(%d)' from channel '%s(%d)'" %
                     (patch['advisory'], errata_id, c, channel_id))
 
                 # delete channel from errata
@@ -102,8 +102,11 @@ class Cleaner:
             else:
                 log_debug(1, "No old style patches found in '%s'" % c)
 
-        log_debug(1, "Finished")
-        print "Finished"
+        _printLog("Finished")
+
+def _printLog(msg):
+    log_debug(0, msg)
+    print msg
 
 def _deleteChannelErrata(errata_id, channel_id):
     # delete channel from errata
