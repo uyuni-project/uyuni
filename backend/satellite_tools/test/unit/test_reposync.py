@@ -24,12 +24,19 @@ from spacewalk.satellite_tools import reposync
 
 RTYPE = 'yum' # a valid repotype
 
-# kill logging
-reposync.rhnLog.log_clean = Mock()
 
 class RepoSyncTest(unittest.TestCase):
 
     def setUp(self):
+        # kill logging
+        reposync.rhnLog.initLOG = Mock()
+        reposync.initLOG = Mock()
+        reposync.log_clean = Mock()
+
+        # don't read configs
+        reposync.initCFG = Mock()
+        reposync.CFG = Mock()
+
         # catching stdout
         # this could be assertRaisesRegexp in python>=2.7. just sayin'
         self.saved_stdout = sys.stdout
@@ -92,8 +99,6 @@ class RepoSyncTest(unittest.TestCase):
 
     def test_init_rhnlog(self):
         """Init rhnLog successfully"""
-        reposync.rhnLog.initLOG = Mock()
-
         rs = reposync.RepoSync('Label', RTYPE)
 
         self.assertTrue(reposync.rhnLog.initLOG.called)
@@ -267,15 +272,29 @@ class RepoSyncTest(unittest.TestCase):
 
 def test_channel_exceptions():
     """Test rasising all the different exceptions when syncing"""
-    reposync.RepoSync.sendErrorMail = backup = Mock()
-    rs = _create_mocked_reposync()
-    reposync.RepoSync.sendErrorMail = backup
+    # the only way to write a test generator with nose is if we put it
+    # outside the class, so we have to repeat all the Mocks
+    repoSync = spacewalk.satellite_tools.reposync
+    repoSync.rhnLog.initLOG = Mock()
+    repoSync.CFG = repoSync.initCFG = Mock()
+    backup_os = repoSync.os
+    repoSync.os = Mock()
+    rs = repoSync.RepoSync("Label", RTYPE)
+    rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
+    rs.import_packages = Mock()
+    rs.import_updates = Mock()
+    rs.print_msg = Mock()
+    rs.mocked_plugin = Mock()
+    rs.repo_plugin = Mock(return_value=rs.mocked_plugin)
+    rs.update_date = Mock()
+    rs.sendErrorMail = Mock()
+    repoSync.os = backup_os
 
     for exc_class, exc_name in [
-        (reposync.ChannelException, "ChannelException"),
-        (reposync.Errors.YumGPGCheckError, "YumGPGCheckError"),
-        (reposync.Errors.RepoError, "RepoError"),
-        (reposync.Errors.RepoMDError, "RepoMDError")]:
+        (repoSync.ChannelException, "ChannelException"),
+        (repoSync.Errors.YumGPGCheckError, "YumGPGCheckError"),
+        (repoSync.Errors.RepoError, "RepoError"),
+        (repoSync.Errors.RepoMDError, "RepoMDError")]:
         yield check_channel_exceptions, rs, exc_class, exc_name
 
 def check_channel_exceptions(rs, exc_class, exc_name):
