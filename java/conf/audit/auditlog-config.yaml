@@ -80,7 +80,6 @@
 
 /users/ChannelPermsSubmit.do:
     type: EDIT_USER
-    dispatch: channelperms.jsp.submitpermissions # Update Permissions
 
 ###############################################################################
 # Scheduling
@@ -100,7 +99,6 @@
 /schedule/InProgressSystemsSubmit.do:
     type: ACTION_CHANGE
     required: [items_selected]
-    dispatch: actions.jsp.unscheduleaction # Unschedule Action
 
 /schedule/PendingActionsDeleteConfirm.do:
     type: ACTION_DELETE
@@ -180,17 +178,37 @@
     type: ACTION_CREATE
     required: [submitted]
 
+/systems/details/packages/InstallPackages.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
 /systems/details/packages/InstallConfirm.do:
     type: ACTION_CREATE
+    required: [dispatch]
+
+/systems/details/packages/VerifyPackages.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
 
 /systems/details/packages/VerifyConfirm.do:
     type: ACTION_CREATE
+    required: [dispatch]
+
+/systems/details/packages/PackageList.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
 
 /systems/details/packages/RemoveConfirm.do:
     type: ACTION_CREATE
+    required: [dispatch]
+
+/systems/details/packages/UpgradableList.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
 
 /systems/details/packages/UpgradeConfirm.do:
     type: ACTION_CREATE
+    required: [dispatch]
 
 /systems/details/packages/ScheduleRemoteCommand.do:
     type: ACTION_CREATE
@@ -203,6 +221,10 @@
 
 /systems/details/packages/patches/PatchConfirmSubmit.do:
     type: ACTION_CREATE
+
+/systems/details/ErrataList.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
 
 /systems/details/ErrataConfirm.do:
     type: ACTION_CREATE
@@ -330,7 +352,6 @@
 /monitoring/config/notification/FiltersSubmit.do:
     type: ACTION_CHANGE
     required: [items_selected]
-    dispatch: filters.jsp.expirefilters # Expire Notification Filters
 
 /monitoring/config/notification/FilterCreate.do:
     type: ACTION_CREATE
@@ -340,12 +361,16 @@
     type: ACTION_CHANGE
     required: [submitted]
 
+/monitoring/config/ProbeSuites.do:
+    type: ACTION_DELETE
+    required: [dispatch]
+
 /monitoring/config/ProbeSuitesRemoveConfirmSubmit.do:
     type: ACTION_DELETE
 
 /monitoring/config/ProbeSuiteListProbes.do:
     type: ACTION_CHANGE
-    required: [submitted]
+    required: [dispatch]
 
 /monitoring/config/ProbeSuiteProbeCreate.do:
     type: ACTION_CREATE
@@ -356,5 +381,106 @@
     required: [submitted]
 
 /monitoring/config/ProbeSuiteSystemsEditSubmit.do:
+    type: ACTION_CHANGE
+    required: [items_selected]
+
+/monitoring/config/ProbeSuiteSystemsSubmit.do:
+    type: ACTION_CHANGE
+
+/monitoring/config/ProbeSuiteEdit.do:
+    type: ACTION_EDIT
+    required: [submitted]
+
+/monitoring/config/ProbeSuiteCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/details/probes/ProbeEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/probes/ProbeCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/details/probes/ProbeDelete.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+###############################################################################
+# Package Profiles
+###############################################################################
+
+/systems/details/packages/profiles/Create.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/details/packages/profiles/ShowProfiles.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/packages/profiles/DeleteProfile.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/systems/details/packages/profiles/CompareProfiles.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/packages/profiles/CompareProfilesSubmit.do:
+    type: ACTION_CHANGE
+
+/systems/details/packages/profiles/CompareSystems.do:
+    type: ACTION_CHANGE
+
+/systems/details/packages/profiles/CompareSystemsSubmit.do:
+    type: ACTION_CHANGE
+
+/systems/details/packages/profiles/SyncProfiles.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/packages/profiles/SyncProfilesSubmit.do:
+    type: ACTION_CHANGE
+
+/systems/details/packages/profiles/SyncSystems.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/packages/profiles/SyncSystemsSubmit.do:
+    type: ACTION_CHANGE
+
+/systems/details/packages/profiles/MissingPackages.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/packages/profiles/MissingPackageSubmit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+###############################################################################
+# System Set Manager
+###############################################################################
+
+/channel/ssm/ChildSubscriptions.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channel/ssm/ChildSubscriptionsConfirm.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channel/ssm/BaseChannelSubscribe.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/ssm/config/DiffSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/systems/ssm/config/DiffConfirm.do:
+    type: ACTION_CHANGE
+
+/systems/ssm/config/DiffConfirmSubmit.do:
     type: ACTION_CHANGE
 
