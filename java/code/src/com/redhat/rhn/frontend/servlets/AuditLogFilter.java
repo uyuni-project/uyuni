@@ -18,6 +18,8 @@ package com.redhat.rhn.frontend.servlets;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +57,13 @@ public class AuditLogFilter implements Filter {
     private final String KEY_LOG_BEFORE = "log_before";
     private final String KEY_LOG_FAILURES = "log_failures";
 
+    // Will contain a list of values for 'dispatch' to be globally ignored
+    private List<String> dispatchIgnored = null;
+
+    // Values will be looked up in the translation files using these keys
+    private String[] dispatchIgnoredValues = { "Go", "Select All",
+            "Unselect All", "Update List" };
+
     // Local boolean to check if logging is enabled
     private Boolean enabled = null;
 
@@ -81,6 +90,9 @@ public class AuditLogFilter implements Filter {
                 auditConfig = (HashMap) obj;
             }
         }
+
+        // Init ignored values for 'dispatch'
+        dispatchIgnored = createDispatchIgnored();
     }
 
     /** {@inheritDoc} */
@@ -194,22 +206,40 @@ public class AuditLogFilter implements Filter {
     }
 
     /**
-     * Check for a specific (internationalized!) value of 'dispatch'.
+     * Check for specific (internationalized!) values of 'dispatch'.
      *
      * @param uriConfig
      * @param request
-     * @return true if dispatch has the expected value, else false
+     * @return false if 'dispatch' contains a globally ignored value
      */
     private boolean dispatch(Map uriConfig, HttpServletRequest request) {
         boolean ret = true;
+        // Check 'dispatch' for an explicit value
+        String dispatch = request.getParameter("dispatch");
         if (uriConfig.containsKey(KEY_DISPATCH)) {
             String value = LocalizationService.getInstance().getMessage(
                     (String) uriConfig.get(KEY_DISPATCH));
-            String dispatch = request.getParameter("dispatch");
             if (dispatch == null || !value.equals(dispatch)) {
                 ret = false;
             }
+        } else if (dispatch != null && dispatchIgnored.contains(dispatch)) {
+            // Or check with the global ignored list
+            ret = false;
         }
         return ret;
+    }
+
+    /**
+     * If the 'dispatch' parameter has one of the values in this list, the
+     * request is not going to be logged.
+     *
+     * @return unmodifiable list
+     */
+    private List<String> createDispatchIgnored() {
+        List<String> values = new ArrayList<String>();
+        for (String s : dispatchIgnoredValues) {
+            values.add(LocalizationService.getInstance().getMessage(s));
+        }
+        return Collections.unmodifiableList(values);
     }
 }
