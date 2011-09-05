@@ -38,7 +38,7 @@ if not os.path.exists(CERT_PATH):
     # v3.4.0 and older
     CERT_PATH = '/var/www/rhns/certs/'
 BUILD_DIR = cleanupNormPath('./ssl-build', dotYN=1)
-HOSTNAME = socket.gethostname()
+HOSTNAME = socket.getfqdn()
 MACHINENAME = getMachineName(HOSTNAME)
 
 CA_KEY_NAME = 'RHN-ORG-PRIVATE-SSL-KEY'
