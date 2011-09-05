@@ -349,7 +349,7 @@ rm -f $RPM_BUILD_ROOT/%{_mandir}/man8/satellite-sync.8*
 
 %check
 # only run unittests on versions where we have all the right BuildRequires
-if 0%{?suse_version} >= 1100
+%if 0%{?suse_version} >= 1100
 PYTHONPATH=%{buildroot}%{python_sitelib} unit2 discover -s satellite_tools/test/unit
 %endif
 
