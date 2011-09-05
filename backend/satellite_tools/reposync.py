@@ -27,9 +27,8 @@ from yum import Errors
 from yum.i18n import to_unicode
 
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
-from spacewalk.common import rhnMail, rhn_rpm
+from spacewalk.common import rhnMail, rhnLog, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
-from spacewalk.common import rhnLog
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhn_mpm import InvalidPackageError
@@ -40,7 +39,6 @@ from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
-from spacewalk.susemanager import suseLib
 
 hostname = socket.gethostname()
 
