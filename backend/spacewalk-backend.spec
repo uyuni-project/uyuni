@@ -30,10 +30,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 %endif
 
-%if 0%{?suse_version}
-BuildRequires: spacewalk-config
-
-if 0%{?suse_version} >= 1100
+%if 0%{?suse_version} >= 1100
 # these are only needed for running the unittests in %check
 BuildRequires: python-mock
 BuildRequires: python-unittest2
@@ -43,6 +40,8 @@ BuildRequires: susemanager-tools
 BuildRequires: python-debian
 %endif
 
+%if 0%{?suse_version}
+BuildRequires: spacewalk-config
 Requires(pre): apache2
 PreReq:         %fillup_prereq
 %else
