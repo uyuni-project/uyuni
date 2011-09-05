@@ -8,6 +8,6 @@ TOP     = ..
 SUBDIR		= susemanager
 
 SPACEWALK_FILES		= __init__ \
-		  suseLib mgr_register
+		 mgr_register
 
 include $(TOP)/Makefile.defs

@@ -371,6 +371,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %doc PYTHON-LICENSES.txt LICENSE
 %dir %{pythonrhnroot}
 %dir %{pythonrhnroot}/common
+%{pythonrhnroot}/common/suseLib.py*
 %{pythonrhnroot}/common/apache.py*
 %{pythonrhnroot}/common/byterange.py*
 %{pythonrhnroot}/common/rhn_posix.py*

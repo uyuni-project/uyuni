@@ -28,8 +28,7 @@ from yum.i18n import to_unicode
 
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
 from spacewalk.common.rhnTB import fetchTraceback
-from spacewalk.common import rhnMail
-from spacewalk.common import rhnLog
+from spacewalk.common import rhnMail, rhnLog, suseLib
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhnConfig import CFG, initCFG
@@ -39,7 +38,6 @@ from spacewalk.server.importlib.backendOracle import OracleBackend
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
-from spacewalk.susemanager import suseLib
 from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 
 HOSTNAME = socket.gethostname()

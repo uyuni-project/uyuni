@@ -105,7 +105,6 @@ fi
 %attr(0755,root,root) %{_sbindir}/mgr-register
 %attr(0755,root,root) %{_sbindir}/mgr-ncc-sync
 %{pythonsmroot}/susemanager/__init__.py*
-%{pythonsmroot}/susemanager/suseLib.py*
 %{pythonsmroot}/susemanager/mgr_register.py*
 %{pythonsmroot}/susemanager/mgr_ncc_sync_lib.py*
 
