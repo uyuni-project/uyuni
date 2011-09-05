@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Sep  5 16:08:51 CEST 2011 - iartarisi@suse.cz
+
+- only run unittests during package build where we have the right
+  BuildRequires
+
+-------------------------------------------------------------------
 Mon Sep  5 11:31:49 CEST 2011 - iartarisi@suse.cz
 
 - added suseLib.py - library that deals with NCC/proxy configs/products
