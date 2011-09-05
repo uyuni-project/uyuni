@@ -32,6 +32,15 @@ BuildArch: noarch
 
 %if 0%{?suse_version}
 BuildRequires: spacewalk-config
+
+# these are only needed for running the unittests in %check
+BuildRequires: python-mock
+BuildRequires: python-unittest2
+BuildRequires: yum
+BuildRequires: rhnlib
+BuildRequires: susemanager-tools
+BuildRequires: python-debian
+
 Requires(pre): apache2
 PreReq:         %fillup_prereq
 %else
@@ -335,6 +344,9 @@ rm -fv $RPM_BUILD_ROOT/%{apacheconfd}/zz-spacewalk-server-python.conf
 rm -f $RPM_BUILD_ROOT/%{_mandir}/man8/satellite-sync.8*
 
 %find_lang %{name}-server
+
+%check
+PYTHONPATH=%{buildroot}%{python_sitelib} unit2 discover -s satellite_tools/test/unit
 
 %clean
 rm -rf $RPM_BUILD_ROOT
