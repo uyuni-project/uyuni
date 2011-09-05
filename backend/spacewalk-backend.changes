@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep  5 11:31:49 CEST 2011 - iartarisi@suse.cz
+
+- added suseLib.py - library that deals with NCC/proxy configs/products
+  etc.
+- make unittests run during package build
+
+-------------------------------------------------------------------
 Mon Aug 22 16:35:42 CEST 2011 - iartarisi@suse.cz
 
 - fixed TypeError in find_bugs method caused by empty patch descriptions
