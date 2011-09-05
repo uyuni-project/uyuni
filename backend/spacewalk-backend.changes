@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep  5 16:17:15 CEST 2011 - iartarisi@suse.cz
+
+- fix typo in specfile
+
+-------------------------------------------------------------------
 Mon Sep  5 16:08:51 CEST 2011 - iartarisi@suse.cz
 
 - only run unittests during package build where we have the right
