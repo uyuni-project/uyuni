@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2011 Novell
- * 
+ *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
  * implied, including the implied warranties of MERCHANTABILITY or FITNESS
@@ -28,19 +28,19 @@ import com.redhat.rhn.domain.user.User;
 /**
  * Create a cobbler system record for a bare metal system (via XMLRPC)
  * that is not (yet) registered with spacewalk.
- * 
+ *
  * @version $Rev$
  */
-public class CobblerUnregisteredSystemCommand extends CobblerSystemCreateCommand {
-	
+public class CobblerUnregisteredSystemCreateCommand extends CobblerSystemCreateCommand {
+
     /**
      * Constructor
-     * 
+     *
      * @param userIn
      * @param serverIn
      * @param nameIn
      */
-    public CobblerUnregisteredSystemCommand(User userIn, Server serverIn,
+    public CobblerUnregisteredSystemCreateCommand(User userIn, Server serverIn,
 			String nameIn) {
 		super(userIn, serverIn, nameIn);
 	}
