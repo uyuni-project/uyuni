@@ -22,6 +22,7 @@ BuildRequires: perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}
 BuildRequires: apache2
 %endif
+Requires: perl-auditlog-keeper-client
 
 %description
 This package contains the code for the Spacewalk Web Site.
