@@ -186,7 +186,7 @@ public class NetworkInterface extends BaseDomainHelper implements
     }
 
 
-    private boolean isIpValid() {
+    public boolean isIpValid() {
         try {
             IpAddress ip = new IpAddress(this.getIpaddr());
             return true;
@@ -196,7 +196,7 @@ public class NetworkInterface extends BaseDomainHelper implements
         }
     }
 
-    private boolean isMacValid() {
+    public boolean isMacValid() {
         return !(StringUtils.isEmpty(this.getHwaddr()) ||
                 this.getHwaddr().equals("00:00:00:00:00:00") ||
                 this.getHwaddr().equals("fe:ff:ff:ff:ff:ff"));

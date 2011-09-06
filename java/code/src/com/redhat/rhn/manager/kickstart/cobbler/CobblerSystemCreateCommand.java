@@ -59,8 +59,9 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     private String kickstartHost;
     private String kernelOptions;
     private String postKernelOptions;
-    private String networkInterface;
-    private boolean isDhcp;
+    private String comment;
+    protected String networkInterface;
+    protected boolean isDhcp;
     /**
      * @param dhcp true if the network type is dhcp
      * @param networkInterfaceIn The name of the network interface
@@ -267,6 +268,10 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         }
         rec.setKernelOptions(kernelOptions);
         rec.setKernelPostOptions(postKernelOptions);
+        // The comment is optional
+        if (comment != null) {
+            rec.setComment(comment);
+        }
         rec.save();
         server.setCobblerId(rec.getId());
         return null;
@@ -351,5 +356,21 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
 
     protected Action getScheduledAction() {
         return scheduledAction;
+    }
+
+    /**
+     * Setter for the comment.
+     * @param comment the comment
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    /**
+     * Getter for the comment.
+     * @return the comment
+     */
+    public String getComment() {
+        return this.comment;
     }
 }

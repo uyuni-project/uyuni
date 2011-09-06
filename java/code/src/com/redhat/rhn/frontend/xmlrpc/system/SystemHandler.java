@@ -62,6 +62,7 @@ import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -112,6 +113,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
 import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerUnregisteredSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.profile.ProfileManager;
@@ -4409,6 +4411,78 @@ public class SystemHandler extends BaseHandler {
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
         CobblerSystemCreateCommand cmd = new CobblerSystemCreateCommand(
                 loggedInUser, server, ksData.getCobblerObject(loggedInUser).getName());
+        cmd.store();
+
+        return 1;
+    }
+
+    /**
+     * Creates a cobbler system record for a system that is not (yet) registered.
+     * @param sessionKey session
+     * @param sysName server name
+     * @param ksLabel kickstart profile label
+     * @param kOptions kernel options
+     * @param comment comment
+     * @param netDevices list of network interfaces
+     * @return int - 1 on success, exception thrown otherwise.
+     *
+     * @xmlrpc.doc Creates a cobbler system record for a system that is not registered.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "sysName")
+     * @xmlrpc.param #param("string", "ksLabel")
+     * @xmlrpc.param #param("string", "kOptions")
+     * @xmlrpc.param #param("string", "comment")
+     * @xmlrpc.param
+     *      #array()
+     *          #struct("network device")
+     *              #prop("string", "name")
+     *              #prop("string", "mac")
+     *              #prop("string", "ip")
+     *          #struct_end()
+     *      #array_end()
+     * @xmlrpc.returntype int - #return_int_success()
+     */
+    public int createSystemRecord(String sessionKey, String sysName, String ksLabel,
+            String kOptions, String comment, List<HashMap<String, String>> netDevices) {
+        // Determine the user and lookup the kickstart profile
+        User loggedInUser = getLoggedInUser(sessionKey);
+        KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
+
+        // Create a server object
+        Server server = ServerFactory.createServer();
+        server.setName(sysName);
+        server.setOrg(loggedInUser.getOrg());
+
+        // Set network device information to the server
+        Set<NetworkInterface> set = new HashSet<NetworkInterface>();
+        NetworkInterface device;
+        for (HashMap<String, String> map : netDevices) {
+            device = new NetworkInterface();
+            device.setName(map.get("name"));
+            device.setIpaddr(map.get("ip"));
+            device.setHwaddr(map.get("mac"));
+            // Only add this interface, if either MAC or IP is valid
+            if (device.isMacValid() || device.isIpValid()) {
+                if (device.getName() == null || device.getName().isEmpty()) {
+                    throw new FaultException(-2, "networkDeviceError",
+                            "Network device name needs to be specified, e.g. 'eth0'");
+                }
+                set.add(device);
+            }
+        }
+        // One device is needed at least
+        if (set.size() == 0) {
+            throw new FaultException(-2, "networkDeviceError",
+                    "At least one valid network device is needed");
+        }
+        server.setNetworkInterfaces(set);
+
+        // Create a system record in cobbler
+        CobblerUnregisteredSystemCreateCommand cmd = new CobblerUnregisteredSystemCreateCommand(
+                loggedInUser, server, ksData.getCobblerObject(loggedInUser)
+                        .getName());
+        cmd.setKernelOptions(kOptions);
+        cmd.setComment(comment);
         cmd.store();
 
         return 1;
