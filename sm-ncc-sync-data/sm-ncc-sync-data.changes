@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Sep  6 10:34:44 CEST 2011 - mc@suse.de
+
+- add channel families STUDIOONSITERUNNER and HP-HWREF
+  (bnc#716053)
+
+-------------------------------------------------------------------
 Fri May 13 13:46:55 CEST 2011 - iartarisi@suse.cz
 
 - added SLES10-SP[234] channels
