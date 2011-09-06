@@ -14,9 +14,8 @@ import xml.etree.ElementTree as etree
 from xml.etree import cElementTree
 
 from spacewalk.server import rhnSQL
-from spacewalk.susemanager import suseLib
+from spacewalk.common import rhnLog, suseLib
 from spacewalk.common.rhnConfig import CFG, initCFG
-from spacewalk.common import rhnLog
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnTB import fetchTraceback
 
