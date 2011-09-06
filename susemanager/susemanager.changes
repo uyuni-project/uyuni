@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Sep  6 15:19:13 CEST 2011 - mantel@suse.de
+
+- use same tablespace name "data_tbs" for full Oracle as for XE to
+  allow for easy migration
+
+-------------------------------------------------------------------
 Tue Sep  6 11:12:48 CEST 2011 - mc@suse.de
 
 - do not create channel families for system entitlements
