@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Sep  6 11:12:48 CEST 2011 - mc@suse.de
+
+- do not create channel families for system entitlements
+  (bnc#716053)
+
+-------------------------------------------------------------------
 Tue Sep  6 10:51:28 CEST 2011 - iartarisi@suse.cz
 
 - fix import errors after moving suseLib
