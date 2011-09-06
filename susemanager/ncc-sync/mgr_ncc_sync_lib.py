@@ -28,12 +28,9 @@ except ImportError:
     from StringIO import StringIO
 from xml.parsers.expat import ExpatError
 
-import pycurl
-
 from spacewalk.server import rhnSQL, taskomatic
-from spacewalk.common import rhnLog
+from spacewalk.common import rhnLog, suseLib
 from spacewalk.common.rhnConfig import initCFG, CFG
-from spacewalk.susemanager import suseLib
 from spacewalk.common.rhnLog import log_debug, log_error
 
 CHANNELS = '/usr/share/susemanager/channels.xml'
