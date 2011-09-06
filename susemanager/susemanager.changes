@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov 22 14:50:19 CET 2011 - mantel@suse.de
+
+- use same tablespace name "data_tbs" for full Oracle as for XE to
+  allow for easy migration
+
+-------------------------------------------------------------------
 Tue Nov 22 14:47:03 CET 2011 - mantel@suse.de
 
 - do not use XE specific settings for full Oracle
