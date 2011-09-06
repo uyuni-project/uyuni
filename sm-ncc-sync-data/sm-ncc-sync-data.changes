@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep  6 12:01:58 CEST 2011 - iartarisi@suse.cz
+
+- added more SLES10 channels: tools, sdk and gplv3-extras
+
+-------------------------------------------------------------------
 Tue Sep  6 10:34:44 CEST 2011 - mc@suse.de
 
 - add channel families STUDIOONSITERUNNER and HP-HWREF
