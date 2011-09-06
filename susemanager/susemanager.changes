@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Sep  6 10:51:28 CEST 2011 - iartarisi@suse.cz
+
+- fix import errors after moving suseLib
+
+-------------------------------------------------------------------
+Mon Sep  5 12:10:28 CEST 2011 - iartarisi@suse.cz
+
+- removed suseLib.py
+
+-------------------------------------------------------------------
 Wed Aug 31 16:18:26 CEST 2011 - iartarisi@suse.cz
 
 - log the invalid XML document from NCC when receiving an ExpatError
