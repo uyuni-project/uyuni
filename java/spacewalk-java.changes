@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep  6 16:29:36 CEST 2011 - jrenner@suse.de
+
+- Fix broken API doc for channel.software (bnc#712793)
+
+-------------------------------------------------------------------
 Fri Aug 12 13:13:05 CEST 2011 - jrenner@suse.de
 
 - Remove trailing whitespace in new classes (bnc#705758)
