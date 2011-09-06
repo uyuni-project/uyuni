@@ -444,7 +444,8 @@ class NCCSync(object):
             channel_family_id = self.get_channel_family_id(
                 p["PRODUCT_CLASS"])
 
-            if not channel_family_id:
+            # add missing channel family definitions, but not the system entitlements
+            if not channel_family_id and p["PRODUCT_CLASS"] not in self.ncc_rhn_ent_mapping:
                channel_family_id = self.add_channel_family_row( p["PRODUCT_CLASS"])
 
             # NAME+VERSION+RELEASE+ARCH are uniq
