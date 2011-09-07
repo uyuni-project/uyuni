@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep  7 12:41:52 CEST 2011 - mc@suse.de
+
+- merge python modules into one directory
+
+-------------------------------------------------------------------
 Tue Sep  6 15:19:13 CEST 2011 - mantel@suse.de
 
 - use same tablespace name "data_tbs" for full Oracle as for XE to
