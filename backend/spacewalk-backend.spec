@@ -42,6 +42,7 @@ BuildRequires: python-debian
 %if 0%{?suse_version}
 BuildRequires: spacewalk-config
 Requires(pre): apache2
+PreReq:         %fillup_prereq
 %else
 Requires(pre): httpd
 %endif
@@ -382,6 +383,9 @@ fi
 echo "server.secret_key = $secret_key" >> %{rhnconf}/rhn.conf
 rm -f %{rhnconf}/rhnSecret.py*
 
+%post tools
+%{fillup_only -nd reposync rhn}
+
 %files
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
@@ -678,6 +682,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %doc PYTHON-LICENSES.txt LICENSE
 %attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
+/var/adm/fillup-templates/sysconfig.reposync
+%attr(755,root,root) %{_sysconfdir}/cron.daily/suse.de-clean-reposync-logs
 %attr(755,root,root) %{_bindir}/rhn-charsets
 %attr(755,root,root) %{_bindir}/rhn-satellite-activate
 %attr(755,root,root) %{_bindir}/rhn-schema-version

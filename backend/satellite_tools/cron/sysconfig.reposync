@@ -1,0 +1,18 @@
+# Path:        System/Cron
+## Description: days to keep old files in reposync log dir, 0 to disable
+## Type:        integer
+## Default:     0
+## Config:
+#
+# cron.daily can check for old files in reposync log dir.
+# It will delete all files not accessed for more than MAX_DAYS.
+# If MAX_DAYS is not set or set to 0, this feature will be disabled.
+#
+MAX_DAYS="0"
+
+## Type:        string
+## Default:     "/var/log/rhn/reposync"
+#
+# The directory where the reposync log files are kept.
+#
+REPOSYNC_LOG_DIR="/var/log/rhn/reposync"

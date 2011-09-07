@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+#
+# cleanup_reposync. This script was split off cron.daily
+# Please add your local changes to cron.daily.local
+# since this file will be overwritten, when updating your system.
+#
+# Copyright (c) 1996-2002 SuSE Linux AG, Nuernberg, Germany.
+# Copyright (c) 2011 SUSE LINUX Products GmbH, Germany.
+#
+#
+# Author: Burchard Steinbild, 1996
+#         Florian La Roche, 1996
+#         Ionut Artarisi, 2011
+#
+
+#
+# paranoia settings
+#
+umask 022
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+export PATH
+#
+# get information from /etc/sysconfig
+#
+if [ -f /etc/sysconfig/rhn/reposync ] ; then
+    . /etc/sysconfig/rhn/reposync
+fi
+
+cleanup_reposync ()
+{
+  MAX_DAYS=$1
+  DIR=$2
+
+  if [ "$MAX_DAYS" -gt 0 ]; then
+     test -x /usr/bin/safe-rm && {
+     find $DIR/. -name *.log ! -type d ! -type s ! -type p \
+       -atime +$MAX_DAYS -exec /usr/bin/safe-rm {} \;
+     } || echo "Error: Can not find /usr/bin/safe-rm"
+  fi
+}
+
+cleanup_reposync ${MAX_DAYS:-0} ${REPOSYNC_LOG_DIR:-/var/log/rhn/reposync}
+
+exit 0
