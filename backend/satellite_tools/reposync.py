@@ -499,7 +499,7 @@ class RepoSync:
                         "%(name)s%(epoch)s:%(version)s-%(release)s.%(arch)s "
                         "which is referenced by patch %(patch)s was not found "
                         "in the database. This patch has been skipped." % dict(
-                            patch='advisory_name',
+                            patch=advisory_name,
                             **param_dict))
             return None
 
