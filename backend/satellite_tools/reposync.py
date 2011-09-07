@@ -34,7 +34,7 @@ from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Checksum, Bug, Keyword
-from spacewalk.server.importlib.backendOracle import OracleBackend
+from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
@@ -310,7 +310,7 @@ class RepoSync:
 
             e['locally_modified'] = None
             batch.append(e)
-        backend = OracleBackend()
+        backend = SQLBackend()
         backend.init()
         importer = ErrataImport(batch, backend)
         importer.run()
@@ -370,7 +370,7 @@ class RepoSync:
             e['locally_modified'] = None
             batch.append(e)
 
-        backend = OracleBackend()
+        backend = SQLBackend()
         backend.init()
         importer = ErrataImport(batch, backend)
         importer.run()
@@ -611,7 +611,7 @@ class RepoSync:
 
     def associate_package(self, pack):
         caller = "server.app.yumreposync"
-        backend = OracleBackend()
+        backend = SQLBackend()
         backend.init()
 
         package = {}

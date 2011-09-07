@@ -29,6 +29,7 @@ from spacewalk.common.RPC_Base import RPC_Base
 
 from spacewalk.server import rhnSQL, rhnPackageUpload, rhnUser, rhnSession
 
+from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.importLib import Collection, IncompatibleArchError,\
     Channel, IncompletePackage, InvalidChannelError
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
@@ -37,7 +38,6 @@ from spacewalk.server.importlib.packageUpload import uploadPackages, listChannel
 from spacewalk.server.importlib.userAuth import UserAuth
 from spacewalk.server.importlib.errataCache import schedule_errata_cache_update
 from spacewalk.common.checksum import getFileChecksum
-from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 
 #12/22/05 wregglej 173287
 #I made a decent number of changes to this file to implement session authentication.
@@ -385,13 +385,7 @@ class Packages(RPC_Base):
 
         caller = "server.app.channelPackageSubscription"
 
-        if CFG.DB_BACKEND == ORACLE:
-            from spacewalk.server.importlib.backendOracle import OracleBackend
-            backend = OracleBackend()
-        elif CFG.DB_BACKEND == POSTGRESQL:
-            from spacewalk.server.importlib.backendOracle import PostgresqlBackend
-            backend = PostgresqlBackend()
-
+        backend = SQLBackend()
         backend.init()
         importer = ChannelPackageSubscription(batch, backend, caller=caller)
         try:
