@@ -293,7 +293,6 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 %endif
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
-install -m 644 conf/audit/auditlog-config.yaml $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit/auditlog-config.yaml
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/default/rhn_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/default/rhn_taskomatic_daemon.conf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/default/rhn_org_quartz.conf
@@ -323,6 +322,9 @@ ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT/%{_bindir}/taskomaticd
 ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT%{jardir}/ojdbc14.jar
 install -d -m 755 $RPM_BUILD_ROOT/%{realcobsnippetsdir}
 ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT/%{realcobsnippetsdir}/spacewalk
+
+install -d -m 755 $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit
+install -m 644 conf/audit/auditlog-config.yaml $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit/auditlog-config.yaml
 
 %if 0%{?suse_version}
 touch $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/systemlogs/audit-review.log
@@ -449,6 +451,7 @@ fi
 %{jardir}/rhn.jar
 %{jardir}/simple-core.jar
 %{jardir}/sitemesh.jar
+%{jardir}/snakeyaml.jar
 %{jardir}/stringtree-json.jar
 %{jardir}/struts.jar
 %{jardir}/taglibs-core.jar
