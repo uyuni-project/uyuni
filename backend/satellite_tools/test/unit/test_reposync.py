@@ -427,7 +427,7 @@ class RepoSyncTest(unittest.TestCase):
         self.reposync.RepoSync._updates_process_packages = Mock(return_value=[])
 
         mocked_backend = Mock()
-        self.reposync.OracleBackend = Mock(return_value=mocked_backend)
+        self.reposync.SQLBackend = Mock(return_value=mocked_backend)
         self.reposync.ErrataImport = Mock()
         rs = self._create_mocked_reposync()
         rs.channel = {'org_id': 'org',
@@ -447,7 +447,7 @@ class RepoSyncTest(unittest.TestCase):
         pack.checksum_type = 'c_type1'
 
         mocked_backend = Mock()
-        self.reposync.OracleBackend = Mock(return_value=mocked_backend)
+        self.reposync.SQLBackend = Mock(return_value=mocked_backend)
         rs = self._create_mocked_reposync()
         rs._importer_run = Mock()
         rs.channel_label = 'Label1'
