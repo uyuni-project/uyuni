@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep  7 12:41:52 CEST 2011 - mc@suse.de
+
+- merge python modules into one directory
+
+-------------------------------------------------------------------
 Tue Sep  6 11:12:48 CEST 2011 - mc@suse.de
 
 - do not create channel families for system entitlements
