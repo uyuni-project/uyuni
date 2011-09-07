@@ -46,9 +46,66 @@ use RHN::Mail;
 use PXT::Debug ();
 use RHN::DB ();
 
+use SUSEAuditlogClient;
+
+our $make_vile;
+use YAML::Syck;
+
+use constant false => 0;
+use constant true  => 1;
+
+sub get_log_event {
+    my ($path, $request) = @_;
+    my %event = ();
+
+    if (!defined($request->pnotes('pxt_request'))) {
+	return \%event;
+    }
+
+    if (!((-e $path) && (-r $path))) {
+	return \%event;
+    }
+    
+    my $yaml = YAML::Syck::LoadFile($path);
+    my $urlopts = ${$yaml}{$request->pnotes('pxt_request')->uri()};
+    my $reqparams = Apache2::Request->new($request, ())->param();
+
+    my $found_required = false;
+    for my $el (@{${$urlopts}{required}}) {
+	for my $rparam (keys %$reqparams) {
+	    if ($rparam eq $el) {
+		$found_required = true;
+		last;
+	    }
+	}
+    }
+
+    if (defined($urlopts) && $found_required) {
+	$event{"EVT.TYPE"} = ${$urlopts}{type};
+	for my $k (keys %$reqparams) {
+	    my $v = $reqparams->{$k} . " ";
+	    chomp($v);
+	    $event{"REQ." . $k} = $v;
+	}
+    }
+
+    return \%event;
+}
+
+
 sub handler {
   my $r = shift;
 
+  # Original request
+  #print STDERR "Method: " . $r->method() . ", Server: " . $r->server() . ", URI: " . $r->uri() .
+  #             ", Args: " . $r->args() . ", Hostname: " . $r->hostname() . ", Request: " . $r->the_request() . "\n";
+
+  my $extmap = get_log_event("/usr/share/spacewalk/audit/auditlog-config.yaml", $r);
+  if (keys(%{$extmap}) > 0) {
+      SUSEAuditlogClient->new("localhost", 6888)->log($r->user(), $r->uri(), $r->hostname(), $extmap);
+  }
+
+  local $make_vile = 0;
   $ENV{PATH} = "/bin:/usr/sbin";
 
   return DECLINED unless
