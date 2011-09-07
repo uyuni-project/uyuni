@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep  7 16:23:27 CEST 2011 - mc@suse.de
+
+- add cronjob to cleanup reposync log directory (bnc#712860)
+
+-------------------------------------------------------------------
 Wed Jul  6 17:49:36 CEST 2011 - mc@suse.de
 
 - add server capability xmlrpc.errata.patch_names'
