@@ -28,14 +28,14 @@ RTYPE = 'yum' # a valid repotype
 class RepoSyncTest(unittest.TestCase):
 
     def setUp(self):
+        self.reposync = spacewalk.satellite_tools.reposync
+
         # kill logging
-        reposync.rhnLog.initLOG = Mock()
-        reposync.initLOG = Mock()
-        reposync.log_clean = Mock()
+        self.reposync.rhnLog.initLOG = Mock()
 
         # don't read configs
-        reposync.initCFG = Mock()
-        reposync.CFG = Mock()
+        self.reposync.initCFG = Mock()
+        self.reposync.CFG = Mock()
 
         # catching stdout
         # this could be assertRaisesRegexp in python>=2.7. just sayin'
@@ -101,7 +101,7 @@ class RepoSyncTest(unittest.TestCase):
 
     def test_init_rhnlog(self):
         """Init rhnLog successfully"""
-        rs = reposync.RepoSync('Label', RTYPE)
+        rs = self.reposync.RepoSync('Label', RTYPE)
 
         self.assertTrue(self.reposync.rhnLog.initLOG.called)
 
@@ -317,13 +317,11 @@ class RepoSyncTest(unittest.TestCase):
                      'version': 'v1',
                      'release': 'r1',
                      'arch': 'a1',
-                     'channel_label': 'l1',
                      'epoch': []},
                     {'name': 'n2',
                      'version': 'v2',
                      'release': 'r2',
                      'arch': 'a2',
-                     'channel_label': 'l2',
                      'epoch': 'e2'}]
 
         checksum = {'epoch': 'cs_epoch',
@@ -336,7 +334,6 @@ class RepoSyncTest(unittest.TestCase):
 
         p1 = self.reposync.IncompletePackage()
         p1.populate({'package_size': None,
-                     'channel_label': 'l1',
                      'name': 'n1',
                      'checksum_list': None,
                      'md5sum': None,
@@ -353,7 +350,6 @@ class RepoSyncTest(unittest.TestCase):
                      'arch': 'a1'})
         p2 = self.reposync.IncompletePackage()
         p2.populate({'package_size': None,
-                     'channel_label': 'l2',
                      'name': 'n2',
                      'checksum_list': None,
                      'md5sum': None,
@@ -386,9 +382,10 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(self.reposync, [])
         self.assertEqual(rs._updates_process_packages(packages, 'patchy'),
                          [])
-        self.assertEqual(rs.print_msg.call_args,
-                         (("No checksum found for n2-e2:v2-r2.a2. "
-                           "Skipping Patch patchy", ),))
+        self.assertEqual(rs.print_msg.call_args, (
+                ("The package n2-e2:v2-r2.a2 "
+                 "which is referenced by patch patchy was not found "
+                 "in the database. This patch has been skipped.", ),{}))
 
     def test_updates_process_packages_checksum_not_found_no_epoch(self):
         rs = self._create_mocked_reposync()
@@ -404,9 +401,10 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(self.reposync, [])
         self.assertEqual(rs._updates_process_packages(packages, 'patchy'),
                          [])
-        self.assertEqual(rs.print_msg.call_args,
-                         (("No checksum found for n1:v1-r1.a1. "
-                           "Skipping Patch patchy", ),))
+        self.assertEqual(rs.print_msg.call_args, (
+                ("The package n1:v1-r1.a1 "
+                 "which is referenced by patch patchy was not found "
+                 "in the database. This patch has been skipped.", ),{}))
 
     def test_upload_updates_referenced_package_not_found(self):
         timestamp1 = datetime.now().isoformat(' ')
