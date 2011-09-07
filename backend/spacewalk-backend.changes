@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep  7 12:42:51 CEST 2011 - mc@suse.de
+
+- refactor reposync
+
+-------------------------------------------------------------------
 Mon Sep  5 16:22:04 CEST 2011 - iartarisi@suse.cz
 
 - fix another typo in the specfile
