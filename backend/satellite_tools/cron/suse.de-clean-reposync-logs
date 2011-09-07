@@ -1,3 +1,19 @@
+#!/bin/sh
+#
+#
+# cleanup_reposync. This script was split off cron.daily
+# Please add your local changes to cron.daily.local
+# since this file will be overwritten, when updating your system.
+#
+# Copyright (c) 1996-2002 SuSE Linux AG, Nuernberg, Germany.
+# Copyright (c) 2011 SUSE LINUX Products GmbH, Germany.
+#
+#
+# Author: Burchard Steinbild, 1996
+#         Florian La Roche, 1996
+#         Ionut Artarisi, 2011
+#
+
 #
 # paranoia settings
 #
