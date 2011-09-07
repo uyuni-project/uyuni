@@ -212,6 +212,7 @@
 
 /systems/details/packages/ScheduleRemoteCommand.do:
     type: ACTION_CREATE
+    required: [submitted]
 
 /systems/details/packages/patchsets/InstallPatchSetSubmit.do:
     type: ACTION_CREATE
@@ -407,6 +408,14 @@
     type: ACTION_DELETE
     required: [submitted]
 
+/monitoring/config/notification/MethodCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/monitoring/config/notification/MethodEdit.do:
+    type: ACTION_EDIT
+    required: [submitted]
+
 ###############################################################################
 # Package Profiles
 ###############################################################################
@@ -483,4 +492,163 @@
 
 /systems/ssm/config/DiffConfirmSubmit.do:
     type: ACTION_CHANGE
+
+/systems/ssm/config/DiffSystems.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/ssm/config/DiffFiles.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/ssm/config/DeploySubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/systems/ssm/config/DeployConfirmSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/systems/ssm/config/SubscribeSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/systems/ssm/config/Rank.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/systems/ssm/config/SubscribeConfirm.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/systems/ssm/config/UnsubscribeSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/systems/ssm/config/UnsubscribeConfirmSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/systems/ssm/config/EnableSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+###############################################################################
+# Configuration
+###############################################################################
+
+/admin/config/GeneralConfig.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/admin/config/CertificateConfig.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/admin/config/Restart.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/admin/config/Cobbler.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/admin/multiorg/OrgDetails.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/admin/multiorg/OrgConfigDetails.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/multiorg/channels/OrgList.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/admin/multiorg/OrgCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/admin/multiorg/OrgTrusts.do:
+    type: ACTION_CHANGE
+    required: [confirm]
+
+/admin/multiorg/ToggleSatAdmin.do:
+    type: EDIT_USER
+
+/admin/multiorg/SatRoleConfirm.do:
+    type: EDIT_USER
+    required: [submitted]
+
+/admin/multiorg/DeleteOrg.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/admin/multiorg/OrgSystemSubscriptions.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/admin/multiorg/OrgSoftwareSubscriptions.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/admin/multiorg/SoftwareEntitlementSubscriptions.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/admin/multiorg/EntitlementOrgs.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+###############################################################################
+# Activation Keys
+###############################################################################
+
+/activationkeys/Create.do:
+    type: ACTION_CREATE
+    required: [dispatch]
+
+/activationkeys/Edit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/activationkeys/Delete.do:
+    type: ACTION_DELETE
+    required: [dispatch]
+
+/activationkeys/channels/ChildChannels.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/activationkeys/packages/Packages.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/activationkeys/configuration/List.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/activationkeys/configuration/Subscribe.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/activationkeys/configuration/Rank.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/activationkeys/groups/List.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/activationkeys/groups/Add.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/activationkeys/systems/List.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+###############################################################################
+# Stored Profiles
+###############################################################################
 
