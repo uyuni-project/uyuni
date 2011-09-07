@@ -652,3 +652,52 @@
 # Stored Profiles
 ###############################################################################
 
+
+
+###############################################################################
+# PXT
+###############################################################################
+/network/systems/details/remote_commands.pxt:
+    type: ACTION_CHANGE
+    required: [schedule_remote_command]
+
+/network/systems/details/activation.pxt:
+    type: ACTION_CHANGE
+    required: [generate_new_key, delete_key]
+
+/network/systems/ssm/errata/index.pxt:
+    type: ACTION_CHANGE
+    required: [whoknowswhat]
+
+/network/systems/ssm/groups/index.pxt:
+    type: ACTION_CHANGE
+    required: [list_action_label_ssm_alter_group_membership]
+
+/network/systems/ssm/groups/create.pxt:
+    type: ACTION_CHANGE
+    required: [make_group]
+
+/network/systems/ssm/groups/alter_membership_conf.pxt:
+    type: ACTION_CHANGE
+    required: [confirm]
+
+/network/monitoring/scout/index.pxt:
+    type: ACTION_CHANGE
+    required: [list_action_label_push_config]
+
+/network/users/details/contact_methods/create.pxt:
+    type: ACTION_CREATE
+    required: [create_method]
+
+/network/users/details/contact_methods/edit.pxt:
+    type: ACTION_CHANGE
+    required: [update_method]
+
+/network/users/details/contact_methods/delete_confirm.pxt:
+    type: ACTION_DELETE
+    required: [delete_cm_confirm]
+
+/network/systems/ssm/provisioning/tag_systems.pxt:
+    type: ACTION_CHANGE
+    required: [tag]
+
