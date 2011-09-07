@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep  7 14:43:00 CEST 2011 - jrenner@suse.de
+
+- Create cobbler records for unregistered systems (fate#312329)
+
+-------------------------------------------------------------------
 Fri Aug 12 14:28:50 CEST 2011 - jrenner@suse.de
 
 - Wrap around unix2_chkpwd instead of using jpam (bnc#705758)
