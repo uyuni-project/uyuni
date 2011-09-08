@@ -282,9 +282,19 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n spacewalk-pxt
 %defattr(644,root,root,755)
-%{perl_vendorlib}/PXT.pm
 %attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
 %{_mandir}/man3/PXT::ApacheHandler.3pm.gz
+%{perl_vendorlib}/PXT.pm
+%{perl_vendorlib}/PXT/ACL.pm
+%{perl_vendorlib}/PXT/ApacheAuth.pm
+%{perl_vendorlib}/PXT/ApacheHandler.pm
+%{perl_vendorlib}/PXT/Debug.pm
+%{perl_vendorlib}/PXT/HTML.pm
+%{perl_vendorlib}/PXT/Handlers.pm
+%{perl_vendorlib}/PXT/Parser.pm
+%{perl_vendorlib}/PXT/Request.pm
+%{perl_vendorlib}/PXT/Trace.pm
+%{perl_vendorlib}/PXT/Utils.pm
 
 %files -n spacewalk-sniglets
 %defattr(644,root,root,755)
