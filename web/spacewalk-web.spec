@@ -284,10 +284,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{perl_vendorlib}/PXT.pm
 %attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
-%{perl_vendorlib}/PXT/
 %{_mandir}/man3/PXT::ApacheHandler.3pm.gz
-%dir /etc/rhn
-%dir /etc/rhn/default
 
 %files -n spacewalk-sniglets
 %defattr(644,root,root,755)
