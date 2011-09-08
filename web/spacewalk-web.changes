@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Sep  8 13:47:14 CEST 2011 - iartarisi@suse.cz
+
+- remove some files from spacewalk-pxt that are alread in
+  base-minimal (bnc#681219)
+
+-------------------------------------------------------------------
 Fri Jul  8 09:11:00 CEST 2011 - jrenner@suse.de
 
 - Refactor RedHat.do to Vendor.do (bnc#671239)
