@@ -51,9 +51,30 @@ use SUSEAuditlogClient;
 our $make_vile;
 use YAML::Syck;
 
-
 use constant false => 0;
 use constant true  => 1;
+
+
+sub is_auditkeeper_running {
+    open AKCONF, "<", "/etc/auditlog-keeper.conf" or die $!;
+    while (my $line = <AKCONF>) {
+	chomp($line);
+	if ($line =~ /server\.pid\.filename/) {
+	    $line =~ s/.*?\s+=\s+//g;
+	    if (-s $line) {
+		my $pid = do {
+		    local $/ = undef;
+		    open my $pidhandler, "<", $line or die $!;
+		    <$pidhandler>;
+		};
+		chomp($pid);
+		return (-d "/proc/$pid") ? 1 : 0;
+	    }
+	}
+    }
+
+    return 0;
+}
 
 
 sub get_log_event {
@@ -98,13 +119,12 @@ sub get_log_event {
 sub handler {
   my $r = shift;
 
-  # Original request
-  #print STDERR "Method: " . $r->method() . ", Server: " . $r->server() . ", URI: " . $r->uri() .
-  #             ", Args: " . $r->args() . ", Hostname: " . $r->hostname() . ", Request: " . $r->the_request() . "\n";
-
-  my $extmap = get_log_event("/usr/share/spacewalk/audit/auditlog-config.yaml", $r);
-  if (keys(%{$extmap}) > 0) {
-      SUSEAuditlogClient->new("localhost", 6888)->log($r->user(), $r->uri(), $r->hostname(), $extmap);
+  # Log the request
+  if (is_auditkeeper_running()) {
+      my $extmap = get_log_event("/usr/share/spacewalk/audit/auditlog-config.yaml", $r);
+      if (keys(%{$extmap}) > 0) {
+	  SUSEAuditlogClient->new("localhost", 6888)->log($r->user(), $r->uri(), $r->hostname(), $extmap);
+      }
   }
 
   local $make_vile = 0;
