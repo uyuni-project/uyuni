@@ -1,36 +1,36 @@
-/network/keys/edit.pxt - REMOVE
-/network/keys/key_list.pxt - REMOVE
-/network/keys/delete.pxt - REMOVE
+/network/keys/edit.pxt
+/network/keys/key_list.pxt
+/network/keys/delete.pxt
 monitoring scout
 
 /network/monitoring/scout/index.pxt
 /network/monitoring/scout/details.pxt
 Software Channel Management
 
-O /network/software/channels/patches.pxt
-O /network/software/channels/subscribers.pxt
-O /network/software/channels/patchsets.pxt
-O /network/software/channels/subscribe_confirm.pxt (Can be removed if license.pxf is removed).
-O /network/software/channels/managers.pxt
-O /network/software/channels/gpg_info.pxt
-O /network/software/channels/manage/edit.pxt
-O /network/software/channels/manage/patchsets/add_confirm.pxt
-O /network/software/channels/manage/patchsets/index.pxt
-O /network/software/channels/manage/patchsets/add.pxt
-O /network/software/channels/manage/subscribers.pxt
-O /network/software/channels/manage/clone.pxt
-O /network/software/channels/manage/managers.pxt
-O /network/software/channels/manage/packages/compare/sync_confirm.pxt
-O /network/software/channels/manage/packages/compare/index.pxt
-O /network/software/channels/manage/packages/compare/sync_preview.pxt
-O /network/software/channels/manage/packages/compare/sync_prompt.pxt
-O /network/software/channels/manage/errata/clone.pxt
-O /network/software/channels/manage/errata/clone_confirm.pxt
-O /network/software/channels/manage/patches/add_confirm.pxt
-O /network/software/channels/manage/patches/remove_confirm.pxt
-O /network/software/channels/manage/patches/patch_list.pxt
-O /network/software/channels/manage/patches/index.pxt
-O /network/software/channels/manage/patches/add.pxt
+/network/software/channels/patches.pxt
+/network/software/channels/subscribers.pxt
+/network/software/channels/patchsets.pxt
+/network/software/channels/subscribe_confirm.pxt
+/network/software/channels/managers.pxt
+/network/software/channels/gpg_info.pxt
+/network/software/channels/manage/edit.pxt
+/network/software/channels/manage/patchsets/add_confirm.pxt
+/network/software/channels/manage/patchsets/index.pxt
+/network/software/channels/manage/patchsets/add.pxt
+/network/software/channels/manage/subscribers.pxt
+/network/software/channels/manage/clone.pxt
+/network/software/channels/manage/managers.pxt
+/network/software/channels/manage/packages/compare/sync_confirm.pxt
+/network/software/channels/manage/packages/compare/index.pxt
+/network/software/channels/manage/packages/compare/sync_preview.pxt
+/network/software/channels/manage/packages/compare/sync_prompt.pxt
+/network/software/channels/manage/errata/clone.pxt
+/network/software/channels/manage/errata/clone_confirm.pxt
+/network/software/channels/manage/patches/add_confirm.pxt
+/network/software/channels/manage/patches/remove_confirm.pxt
+/network/software/channels/manage/patches/patch_list.pxt
+/network/software/channels/manage/patches/index.pxt
+/network/software/channels/manage/patches/add.pxt
 
 Packages
 /network/software/packages/system_list_for_patchset.pxt
