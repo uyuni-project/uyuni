@@ -701,3 +701,90 @@
     type: ACTION_CHANGE
     required: [tag]
 
+/network/account/activation_keys/child_channels.pxt:
+    type: ACTION_CHANGE
+    required: [edit_token_channels]
+
+/network/software/channels/manage/edit.pxt:
+    type: ACTION_CHANGE
+    required: [submit]
+
+/network/software/channels/manage/patches/add.pxt:
+    type: ACTION_ADD
+
+/network/software/channels/manage/patches/remove_confirm.pxt:
+    type: ACTION_REMOVE
+
+/network/software/channels/manage/patchsets/add_confirm.pxt:
+    type: ACTION_ADD
+
+/network/software/channels/subscribe_confirm.pxt:
+    type: ACTION_CHANGE
+
+/network/software/packages/install_confirm.pxt:
+    type: ACTION_CHANGE
+
+/network/software/packages/patch_packages.pxt:
+    type: ACTION_CHANGE
+
+/network/software/packages/patch_patchsets.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/custominfo/delete.pxt:
+    type: ACTION_DELETE
+
+/network/systems/custominfo/edit.pxt:
+    type: ACTION_EDIT
+
+/network/systems/details/custominfo/edit.pxt:
+    type: ACTION_EDIT
+
+/network/systems/details/history/snapshots/add_snapshot_tag.pxt:
+    type: ACTION_ADD
+
+/network/systems/details/history/snapshots/add_system_tag.pxt:
+    type: ACTION_ADD
+
+/network/systems/details/history/snapshots/remove_confirm.pxt:
+    type: ACTION_REMOVE
+\
+/network/systems/details/notes/delete_note_conf.pxt:
+    type: ACTION_DELETE
+
+/network/systems/details/notes/edit.pxt:
+    type: ACTION_EDIT
+
+/network/systems/details/proxy/install.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/details/reboot_confirm.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/groups/create.pxt:
+    type: ACTION_CREATE
+
+/network/systems/groups/delete_confirm.pxt:
+    type: ACTION_DELETE
+
+/network/systems/groups/edit_properties.pxt:
+    type: ACTION_EDIT
+
+/network/systems/ssm/errata/apply_errata_conf.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/groups/alter_membership_conf.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/groups/create.pxt:
+    type: ACTION_CREATE
+
+/network/systems/ssm/misc/change_sys_pref_conf.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/misc/hw_prof_update_conf.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/misc/change_sys_pref_conf.pxt:
+    type: ACTION_CHANGE
+
+
