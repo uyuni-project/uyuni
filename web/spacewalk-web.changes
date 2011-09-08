@@ -1,7 +1,13 @@
 -------------------------------------------------------------------
+Thu Sep  8 15:30:32 CEST 2011 - iartarisi@suse.cz
+
+- readd a lot of perl files that were accidentally deleted from the
+  spacewalk-pxt subpackage
+
+-------------------------------------------------------------------
 Thu Sep  8 13:47:14 CEST 2011 - iartarisi@suse.cz
 
-- remove some files from spacewalk-pxt that are alread in
+- remove some files from spacewalk-pxt that are already in
   base-minimal (bnc#681219)
 
 -------------------------------------------------------------------
