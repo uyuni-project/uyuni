@@ -92,13 +92,15 @@ sub get_log_event {
     my $yaml = YAML::Syck::LoadFile($path);
     my $urlopts = ${$yaml}{$request->pnotes('pxt_request')->uri()};
     my $reqparams = Apache2::Request->new($request, ())->param();
+    my $found_required = defined(${$urlopts}{required}) ? false : true;
 
-    my $found_required = false;
-    for my $el (@{${$urlopts}{required}}) {
-	for my $rparam (keys %$reqparams) {
-	    if ($rparam eq $el) {
-		$found_required = true;
-		last;
+    if (!$found_required) {
+	for my $el (@{${$urlopts}{required}}) {
+	    for my $rparam (keys %$reqparams) {
+		if ($rparam eq $el) {
+		    $found_required = true;
+		    last;
+		}
 	    }
 	}
     }
