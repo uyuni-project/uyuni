@@ -397,8 +397,10 @@ if [ -f "/etc/sysconfig/rhn/rhn_register" ] ; then
     echo "  . rhn_register config file"
     /usr/bin/python -u client_config_update.py /etc/sysconfig/rhn/rhn_register ${CLIENT_OVERRIDES}
 fi
-echo "  . up2date config file"
-/usr/bin/python -u client_config_update.py /etc/sysconfig/rhn/up2date ${CLIENT_OVERRIDES}
+if [ -f "/etc/sysconfig/rhn/up2date" ] ; then
+  echo "  . up2date config file"
+  /usr/bin/python -u client_config_update.py /etc/sysconfig/rhn/up2date ${CLIENT_OVERRIDES}
+fi
 
 """
 
@@ -435,13 +437,13 @@ def getCorpCACertSh():
 echo
 if [ $USING_SSL -eq 1 ] ; then
     echo "* attempting to install corporate public CA cert"
+    test -d /usr/share/rhn || mkdir -p /usr/share/rhn
     if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
         rpm -Uvh --force --replacefiles --replacepkgs ${HTTP_PUB_DIRECTORY}/${ORG_CA_CERT}
     else
         rm -f ${ORG_CA_CERT}
         $FETCH ${HTTP_PUB_DIRECTORY}/${ORG_CA_CERT}
         mv ${ORG_CA_CERT} /usr/share/rhn/
-
     fi
     if [ "$INSTALLER" == zypper ] ; then
 	if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then

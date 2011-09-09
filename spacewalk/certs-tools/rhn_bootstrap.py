@@ -634,12 +634,11 @@ def generateBootstrapScript(options):
     writeYN = 1
 
     # concat all those script-bits
-
-    # SLES: install packages required for registration on systems that do not have them installed
-    newScript = newScript + getRegistrationStackSh()
     newScript = newScript + getConfigFilesSh() + getUp2dateScriptsSh()
     newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh()
 
+    # SLES: install packages required for registration on systems that do not have them installed
+    newScript = newScript + getRegistrationStackSh() + getUp2dateScriptsSh()
 
     newScript = newScript + getRegistrationSh(PRODUCT_NAME)
 
