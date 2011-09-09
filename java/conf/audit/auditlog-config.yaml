@@ -184,7 +184,7 @@
 
 /systems/details/packages/InstallConfirm.do:
     type: ACTION_CREATE
-    required: [dispatch]
+    dispatch: installconfirm.jsp.confirm # Confirm
 
 /systems/details/packages/VerifyPackages.do:
     type: ACTION_CHANGE
@@ -200,7 +200,7 @@
 
 /systems/details/packages/RemoveConfirm.do:
     type: ACTION_CREATE
-    required: [dispatch]
+    dispatch: installconfirm.jsp.confirm # Confirm
 
 /systems/details/packages/UpgradableList.do:
     type: ACTION_CHANGE
@@ -208,7 +208,7 @@
 
 /systems/details/packages/UpgradeConfirm.do:
     type: ACTION_CREATE
-    required: [dispatch]
+    dispatch: installconfirm.jsp.confirm # Confirm
 
 /systems/details/packages/ScheduleRemoteCommand.do:
     type: ACTION_CREATE
@@ -652,11 +652,230 @@
 # Stored Profiles
 ###############################################################################
 
+/profiles/Details.do:
+    type: ACTION_CHANGE
+    required: [submitted]
 
+/profiles/Delete.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+###############################################################################
+# Kickstart Pages
+###############################################################################
+
+/systems/ssm/kickstart/KickstartableSystems.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/ssm/kickstart/ScheduleByProfile.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/ssm/kickstart/ScheduleByIp.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/KickstartDetailsEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/KickstartDelete.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/kickstart/KickstartSoftwareEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/KickstartOptionsEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/KickstartIpRangeEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/KickstartPartitionEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/SystemDetailsEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/KickstartPackagesEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/CreateProfileWizard.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/kickstart/AdvancedModeCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/kickstart/EditVariables.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/tree/EditVariables.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/AdvancedModeEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/KickstartCloneAdvanced.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/kickstart/KickstartDeleteAdvanced.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/kickstart/KickstartIpRangeEditAdvanced.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/cobbler/CobblerSnippetCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/kickstart/cobbler/CobblerSnippetEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/cobbler/CobblerSnippetDelete.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/keys/CryptoKeyCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/keys/CryptoKeyEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/keys/CryptoKeyDelete.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/systems/provisioning/preservation/PreservationListDeleteSubmit.do:
+    type: ACTION_DELETE
+    required: [dispatch, items_selected]
+
+/systems/provisioning/preservation/PreservationListDelete.do:
+    type: ACTION_DELETE
+    required: [dispatch]
+
+/systems/provisioning/preservation/PreservationListEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/provisioning/preservation/PreservationListCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/kickstart/KickstartCryptoKeysListSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/kickstart/ActivationKeysSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/kickstart/KickstartFilePreservationListsSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/kickstart/KickstartPackageProfileEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/TroubleshootingEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/LocaleEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/kickstart/ScheduleWizard.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/details/virtualization/ProvisionVirtualizationWizard.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/kickstart/KickstartScriptCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/kickstart/KickstartScriptEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/KickstartScriptDelete.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/kickstart/KickstartClone.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/details/kickstart/Variables.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/kickstart/SessionStatus.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/systems/details/kickstart/SessionCancel.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/kickstart/TreeCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/kickstart/TreeEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/kickstart/TreeDelete.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/monitoring/ProbeList.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+###############################################################################
+# Channel Pages
+###############################################################################
+
+/configuration/ChannelOverview.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/configuration/ChannelCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/configuration/DeleteChannel.do:
+    type: ACTION_DELETE
+    required: [submitted]
 
 ###############################################################################
 # PXT
 ###############################################################################
+
 /network/systems/details/remote_commands.pxt:
     type: ACTION_CHANGE
     required: [schedule_remote_command]
@@ -747,7 +966,7 @@
 
 /network/systems/details/history/snapshots/remove_confirm.pxt:
     type: ACTION_REMOVE
-\
+
 /network/systems/details/notes/delete_note_conf.pxt:
     type: ACTION_DELETE
 
