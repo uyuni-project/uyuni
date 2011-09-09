@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep  9 13:37:33 CEST 2011 - ma@suse.de
+
+- Bootstrap: Import GPG keys and CERT as soon as possible
+  (bnc#711428)
+
+-------------------------------------------------------------------
 Mon Sep  5 12:46:24 CEST 2011 - mc@suse.de
 
 - hostname default during certificate creation should be the FQDN
