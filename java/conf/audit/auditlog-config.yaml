@@ -467,6 +467,18 @@
     type: ACTION_CHANGE
     required: [submitted]
 
+/systems/customdata/CreateCustomKey.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/systems/customdata/DeleteCustomKey.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/systems/customdata/UpdateCustomKey.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
 ###############################################################################
 # System Set Manager
 ###############################################################################
@@ -532,6 +544,38 @@
 /systems/ssm/config/EnableSubmit.do:
     type: ACTION_CHANGE
     required: [dispatch]
+
+/ssm/PackageList.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/ssm/PackageSchedule.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/ssm/PackageRemove.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/ssm/PackageRemoveSchedule.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/ssm/PackageUpgrade.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/ssm/PackageUpgradeSchedule.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/ssm/PackageVerify.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/ssm/PackageVerifySchedule.do:
+    type: ACTION_CREATE
+    required: [submitted]
 
 ###############################################################################
 # Configuration
@@ -857,12 +901,16 @@
     required: [submitted]
 
 ###############################################################################
-# Channel Pages
+# Configuration Channels
 ###############################################################################
+
+/configuration/system/TargetSystemsSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
 
 /configuration/ChannelOverview.do:
     type: ACTION_CHANGE
-    required: [dispatch]
+    required: [submitted]
 
 /configuration/ChannelCreate.do:
     type: ACTION_CREATE
@@ -871,6 +919,182 @@
 /configuration/DeleteChannel.do:
     type: ACTION_DELETE
     required: [submitted]
+
+/configuration/ChannelFilesSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/configuration/channel/Copy2Systems.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/configuration/channel/Copy2Channels.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/configuration/channel/ChannelSystemsSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/configuration/channel/TargetSystemsSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/configuration/channel/ChooseFilesSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/configuration/channel/ChooseSystemsSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/configuration/ChannelUploadFiles.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/configuration/ChannelImportFilesSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/configuration/ChannelCreateFiles.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/configuration/file/ManageRevisionSubmit.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/configuration/file/CopyFileCentralSubmit.do:
+    type: ACTION_CREATE
+    required: [dispatch]
+
+/configuration/file/CopyFileLocalSubmit.do:
+    type: ACTION_CREATE
+    required: [dispatch]
+
+/configuration/file/CopyFileSandboxSubmit.do:
+    type: ACTION_CREATE
+    required: [dispatch]
+
+/configuration/file/FileDetails.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/configuration/file/DeleteRevision.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/configuration/file/DeleteFile.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/configuration/file/CompareDeployedSubmit.do:
+    type: ACTION_CREATE
+    required: [dispatch]
+
+/configuration/file/RevisionDeploy.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/configuration/file/GlobalRevisionDeploy.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/configuration/file/GlobalRevisionDeployConfirmSubmit.do:
+    type: ACTION_CREATE
+    required: [dispatch]
+
+###############################################################################
+# Channels Pages
+###############################################################################
+
+/channels/manage/errata/ListRemove.do:
+    type: ACTION_DELETE
+    required: [dispatch]
+
+/channels/manage/errata/ConfirmRemove.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/channels/manage/errata/AddRedHatErrata.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/manage/errata/AddCustomErrata.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/manage/errata/ConfirmErrataAdd.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/manage/errata/SyncErrata.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/manage/errata/ConfirmSyncPackages.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/manage/solaris/ListPatchSets.do:
+    type: ACTION_CHANGE
+    required: [dispatch]
+
+/channels/ChannelDetail.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/manage/Repositories.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/manage/Sync.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/manage/Delete.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/channels/manage/Edit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/manage/ChannelPackagesRemove.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/channels/manage/ChannelPackagesAdd.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/manage/ChannelPackagesAddConfirm.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/ConfirmTargetSystems.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/manage/repos/RepoCreate.do:
+    type: ACTION_CREATE
+    required: [submitted]
+
+/channels/manage/repos/RepoEdit.do:
+    type: ACTION_CHANGE
+    required: [submitted]
+
+/channels/manage/repos/RepoDelete.do:
+    type: ACTION_DELETE
+    required: [submitted]
+
+/software/manage/packages/PackageList.do:
+    type: ACTION_DELETE
+    required: [confirm]
+
+/software/manage/packages/ConfirmPackageRemove.do:
+    type: ACTION_DELETE
+    required: [dispatch]
 
 ###############################################################################
 # PXT
