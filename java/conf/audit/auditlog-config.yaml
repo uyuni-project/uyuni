@@ -1006,4 +1006,81 @@
 /network/systems/ssm/misc/change_sys_pref_conf.pxt:
     type: ACTION_CHANGE
 
+/network/systems/ssm/misc/lock_systems_conf.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/misc/pkg_prof_update_conf.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/misc/reboot_confirm.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/misc/reboot_systems.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/misc/remove_value.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/misc/set_value.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/misc/unlock_systems_conf.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/packages/upload_answer_file.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/patches/install_channel.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/patches/install_conf.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/patches/install.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/patches/remove_conf.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/patches/remove.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/patches/remove_system_list.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/patchsets/install_channel.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/patchsets/install_conf.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/patchsets/install.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/provisioning/remote_command_conf.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/provisioning/remote_command.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/provisioning/rollback_by_tag_conf.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/provisioning/rollback.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/provisioning/tag_systems.pxt:
+    type: ACTION_CHANGE
+
+/network/systems/ssm/work_with_group.pxt:
+    type: ACTION_CHANGE
+
+/network/users/details/contact_methods/create.pxt:
+    type: ACTION_CHANGE
+
+/network/users/details/contact_methods/delete_confirm.pxt:
+    type: ACTION_CHANGE
+
+/network/users/details/contact_methods/edit.pxt:
+    type: ACTION_CHANGE
 
