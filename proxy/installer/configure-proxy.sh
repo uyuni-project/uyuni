@@ -105,7 +105,7 @@ while [ $# -ge 1 ]; do
 			--ssl-password=*) SSL_PASSWORD=$(echo $1 | cut -d= -f2-);;
 			--install-monitoring=*) INSTALL_MONITORING=$(echo $1 | cut -d= -f2-);;
 			--enable-scout=*) ENABLE_SCOUT=$(echo $1 | cut -d= -f2-);;
-			--monitoring-parent=*) MONITORING_PARENT_IP=$(echo $1 | cut -d= -f2-);;
+			--monitoring-parent=*) MONITORING_PARENT=$(echo $1 | cut -d= -f2-);;
 			--monitoring-parent-ip=*) MONITORING_PARENT_IP=$(echo $1 | cut -d= -f2-);;
 			--populate-config-channel=*) POPULATE_CONFIG_CHANNEL=$(echo $1 | cut -d= -f2-);;
 			--start-services=*) START_SERVICES=$(echo $1 | cut -d= -f2-);;
