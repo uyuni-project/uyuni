@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Sep 12 13:47:36 CEST 2011 - iartarisi@suse.cz
+
+- remove extra toy targets that we don't use from Makefile.defs, which
+  were mangling the PYTHONPATH
+
+-------------------------------------------------------------------
 Mon Sep 12 11:24:58 CEST 2011 - iartarisi@suse.cz
 
 - run unittests and pylint from Makefile.backend at build time
