@@ -38,6 +38,11 @@ BuildRequires: yum
 BuildRequires: rhnlib
 BuildRequires: susemanager-tools
 BuildRequires: python-debian
+
+# for pylint
+BuildRequires: python-pylint
+BuildRequires: spacewalk-client-tools
+BuildRequires: python-gzipstream
 %endif
 
 %if 0%{?suse_version}
@@ -349,7 +354,9 @@ rm -f $RPM_BUILD_ROOT/%{_mandir}/man8/satellite-sync.8*
 %check
 # only run unittests on versions where we have all the right BuildRequires
 %if 0%{?suse_version} >= 1100
-PYTHONPATH=%{buildroot}%{python_sitelib} unit2 discover -s satellite_tools/test/unit
+export PYTHONPATH=%{buildroot}%{python_sitelib}:%{_datadir}/rhn
+make -f Makefile.backend pylint
+make -f Makefile.backend unittest
 %endif
 
 %clean
