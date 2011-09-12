@@ -1,6 +1,6 @@
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 1.6.9
+Version: 1.6.10
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -82,6 +82,9 @@ fi
 
 
 %changelog
+* Mon Sep 05 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.10-1
+- 734492, 734965, 735282 - check command line options only for yum
+
 * Fri Aug 12 2011 Miroslav Suchý 1.6.9-1
 - do not verify md5, size and mtime for /etc/yum/pluginconf.d/rhnplugin.conf
 

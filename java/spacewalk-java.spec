@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.36
+Version: 1.6.41
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -413,6 +413,11 @@ ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{_datadir}/rhn/li
 ln -s -f %{_javadir}/asm/asm.jar  $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
 %endif
 
+# 732350 - On Fedora 15, mchange's log stuff is no longer in c3p0.
+%if 0%{?fedora} >= 15
+ln -s -f %{_javadir}/mchange-commons.jar $RPM_BUILD_ROOT%{jardir}/mchange-commons.jar
+%endif
+
 # delete JARs which must not be deployed
 rm -rf $RPM_BUILD_ROOT%{jardir}/jspapi.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/jasper5-compiler.jar
@@ -509,6 +514,11 @@ fi
 %{jardir}/jdom.jar
 %{jardir}/jta.jar
 %{jardir}/log4j.jar
+
+%if 0%{?fedora} >= 15
+%{jardir}/mchange-commons.jar
+%endif
+
 %{jardir}/oro.jar
 %{jardir}/oscache.jar
 %{jardir}/quartz.jar
@@ -625,6 +635,24 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Sep 09 2011 Martin Minar <mminar@redhat.com> 1.6.41-1
+- 736381 - New API: system.deleteGuestProfiles() (mzazrivec@redhat.com)
+
+* Wed Sep 07 2011 Jan Pazdziora 1.6.40-1
+- Do not send error message in case of success (jrenner@suse.de)
+
+* Mon Sep 05 2011 Jan Pazdziora 1.6.39-1
+- 732350 - On Fedora 15, mchange's log stuff is no longer in c3p0.
+
+* Fri Sep 02 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.38-1
+- fixed column alias syntax
+- suite_id is number not string
+- replaced alias with table name
+
+* Fri Sep 02 2011 Miroslav Suchý 1.6.37-1
+- show cname aliases in hw tab from config file (msuchy@redhat.com)
+- Checkstyle fixes (mzazrivec@redhat.com)
+
 * Fri Sep 02 2011 Tomas Lestach <tlestach@redhat.com> 1.6.36-1
 - checkstyle fix (tlestach@redhat.com)
 
