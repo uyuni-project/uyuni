@@ -100,7 +100,7 @@ Mon Sep  5 12:10:28 CEST 2011 - iartarisi@suse.cz
 Wed Aug 31 16:18:26 CEST 2011 - iartarisi@suse.cz
 
 - log the invalid XML document from NCC when receiving an ExpatError
-  (bnc#711001)
+  (bnc#711010)
 - added tests for the above bug
 
 -------------------------------------------------------------------
