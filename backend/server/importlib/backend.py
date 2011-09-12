@@ -513,6 +513,7 @@ class Backend:
                 except InvalidPackageError, e:
                     exception = e
             if exception and not ignore_missing:
+                # pylint: disable=E0702
                 raise exception 
                     
 
