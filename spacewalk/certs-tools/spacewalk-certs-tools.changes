@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 12 13:29:30 CEST 2011 - ma@suse.de
+
+- Bootstrap: Read ORG_CA_CERT name from CLIENT_OVERRIDES
+
+-------------------------------------------------------------------
 Fri Sep  9 13:37:33 CEST 2011 - ma@suse.de
 
 - Bootstrap: Import GPG keys and CERT as soon as possible
