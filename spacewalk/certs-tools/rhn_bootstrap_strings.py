@@ -448,7 +448,7 @@ if [ $USING_SSL -eq 1 ] ; then
     if [ "$INSTALLER" == zypper ] ; then
 	if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
 	  # get name from config
-	  ORG_CA_CERT=$(basename $(sed -n 's/^sslCACert *= *//p' /etc/sysconfig/rhn/up2date))
+	  ORG_CA_CERT=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
 	fi
 	test -e "/etc/ssl/certs/${ORG_CA_CERT}.pem" || {
 	  test -d "/etc/ssl/certs" || mkdir -p "/etc/ssl/certs"
