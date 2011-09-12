@@ -260,8 +260,6 @@ class Cursor(sql_base.Cursor):
 
 
 class Procedure(sql_base.Procedure):
-    OracleError = cx_Oracle.DatabaseError
-
     def __init__(self, name, cursor):
         sql_base.Procedure.__init__(self, name, cursor)
         self._type_mapping = ORACLE_TYPE_MAPPING
@@ -275,6 +273,8 @@ class Procedure(sql_base.Procedure):
         retval = None
         try:
             retval = self._call_proc(args)
+        except cx_Oracle.NotSupportedError, error:
+            raise apply(sql_base.SQLError, error.args)
         except cx_Oracle.DatabaseError, e:
             if not hasattr(e, "args"):
                 raise sql_base.SQLError(self.name, args)
@@ -282,8 +282,6 @@ class Procedure(sql_base.Procedure):
                 
                raise apply(sql_base.SQLSchemaError, [e[0].code, str(e[0])])
             raise apply(sql_base.SQLError, [e[0].code, str(e[0])])
-        except cx_Oracle.NotSupportedError, error:
-            raise apply(sql_base.SQLError, error.args)
         return retval
 
     def _munge_args(self, args):
