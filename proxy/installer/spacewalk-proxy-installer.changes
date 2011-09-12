@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 12 11:28:48 CEST 2011 - mc@suse.de
+
+- fix example answer file (bnc#703980)
+
+-------------------------------------------------------------------
 Wed May 25 13:26:16 CEST 2011 - mc@suse.de
 
 - allow only secure SSLCipher and SSLProtocols (bnc#685550)
