@@ -16,7 +16,9 @@ BuildRequires: update-desktop-files
 %endif
 Provides: rhn-client-tools = %{version}-%{release}
 Obsoletes: rhn-client-tools < %{version}-%{release}
-
+%if %{without_rhn_register}
+Obsoletes: rhn-setup-gnome
+%endif
 Requires: rhnlib >= 2.5.38
 Requires: rpm >= 4.2.3-24_nonptl
 Requires: rpm-python 
