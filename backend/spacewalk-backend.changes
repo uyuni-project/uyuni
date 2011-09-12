@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 12 11:24:58 CEST 2011 - iartarisi@suse.cz
+
+- run unittests and pylint from Makefile.backend at build time
+
+-------------------------------------------------------------------
 Fri Sep  9 12:24:19 CEST 2011 - iartarisi@suse.cz
 
 - fixed E:442:XML_Dumper._validate_channels: Too many arguments for
