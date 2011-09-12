@@ -563,16 +563,10 @@ class GetHandler(apacheRequest):
     # send the response out for the GET requests
     def response(self, response):
         log_debug(3)
-        #pkilambi:if redirectException caught returns path(<str>)
-        if isinstance(response, str):
-            method, params = self._get_method_params()
-            if method == "getPackage":
-                return self.redirect(self.req, response)
 
         # GET requests resulting in a Fault receive special treatment
         # since we have to stick the error message in the HTTP header,
         # and to return an Apache error code
-                
         if isinstance(response, rpclib.Fault):
             log_debug(4, "Return FAULT",
                       response.faultCode, response.faultString)
@@ -600,20 +594,3 @@ class GetHandler(apacheRequest):
             setHeaderValue(self.req.headers_out, k, v)
         # and jump into the base handler
         return apacheRequest.response(self, response)
-
-    #pkilambi: redirect request back to client with edge network url
-    def redirect( self, req, url, temporary=1 ):
-        log_debug(3,"url input to redirect is ",url)
-        if req.sent_bodyct:
-            raise IOError, "Cannot redirect after headers have already been sent."
-        
-        #akamize the url with the new tokengen before sending the redirect response
-        import tokengen.Generator
-        arl = tokengen.Generator.generate_auth_url(url)
-        req.headers_out["Location"] = arl
-        log_debug(3,"Akamized url to redirect is ",arl)
-        if temporary:
-            req.status = apache.HTTP_MOVED_TEMPORARILY
-        else:
-            req.status = apache.HTTP_MOVED_PERMANENTLY
-        return req.status
