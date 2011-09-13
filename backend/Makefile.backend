@@ -38,4 +38,4 @@ pylint  ::
 # :E1102: *%s is not callable*
 # :E0203: *Access to member %r before its definition line %s*
 # ignore the test/ directory because it is full of brokenness that we don't use
-	pylint -E -e imports -d W,E0203,E0611,E1101,E1102 --ignore=test satellite_tools server common
+	pylint -E -e imports -d W,E0203,E0611,E1101,E1102 --ignore=test $(CODE_DIRS)
