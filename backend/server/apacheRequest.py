@@ -454,6 +454,7 @@ class apachePOST(apacheRequest):
             return apache.HTTP_BAD_REQUEST
 
         # Read the data from the request
+        # pylint: disable=E1103
         _body = fd.read()
         fd.close()
 
