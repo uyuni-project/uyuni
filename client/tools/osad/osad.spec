@@ -175,7 +175,11 @@ rm -rf $RPM_BUILD_ROOT
 %stop_on_removal osad
 
 %post
-%{fillup_and_insserv osad}
+%{fillup_and_insserv -f -y osad}
+if [ $1 -eq 1 ] ; then
+  # executed only in case of install
+  /etc/init.d/osad start
+fi
 
 %postun
 %restart_on_update osad
