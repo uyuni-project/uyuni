@@ -43,6 +43,9 @@ BuildRequires: python-debian
 BuildRequires: python-pylint
 BuildRequires: spacewalk-client-tools
 BuildRequires: python-gzipstream
+BuildRequires: python-psycopg2
+BuildRequires: python(:DBAPI:oracle)
+BuildRequires: PyPAM
 %endif
 
 %if 0%{?suse_version}
