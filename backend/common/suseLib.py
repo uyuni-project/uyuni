@@ -250,6 +250,8 @@ class URL:
     """URL class that allows modifying the various attributes of a URL"""
     def __init__(self, url):
         u = urlparse.urlsplit(url)
+        # pylint can't see inside the SplitResult class
+        # pylint: disable=E1103
         self.scheme = u.scheme
         self.username = u.username
         self.password = u.password

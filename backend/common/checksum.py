@@ -19,6 +19,8 @@ try:
 except ImportError:
     import md5
     import sha
+    # pylint: disable=F0401
+    # pylint can't find Crypto.Hash here, but it is present on older systems.
     from Crypto.Hash import SHA256 as sha256
     class hashlib:
         @staticmethod

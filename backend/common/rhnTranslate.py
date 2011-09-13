@@ -59,6 +59,7 @@ class i18n:
         # List of languages we support
         if not hasattr(self.cat, "getlangs"):
             return [ "C" ]
+        # pylint: disable=E1103
         return self.cat.getlangs()
 
     def setlangs(self, langs):
