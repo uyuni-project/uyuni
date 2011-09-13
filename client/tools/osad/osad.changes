@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 13 11:47:54 CEST 2011 - mc@suse.de
+
+- enable and start osad during installation (FATE#312379)
+
+-------------------------------------------------------------------
 Fri Aug 26 13:03:20 CEST 2011 - mc@suse.de
 
 - start osa-dispatcher after oracle DB
