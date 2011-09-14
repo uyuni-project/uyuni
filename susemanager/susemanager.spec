@@ -17,6 +17,7 @@ BuildRequires:  python-mock
 BuildRequires:  python-curl
 BuildRequires:  spacewalk-backend
 BuildRequires:  spacewalk-backend-server
+BuildRequires:  spacewalk-backend-sql-oracle
 BuildRequires:  suseRegisterInfo
 BuildRequires:  pyxml
 
