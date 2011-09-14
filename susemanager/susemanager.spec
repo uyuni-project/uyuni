@@ -73,7 +73,8 @@ install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
 rm -rf %{buildroot}
 
 %check
-export PYTHONPATH=%{buildroot}%{python_sitelib}:%{_datadir}/rhn
+# the pythonpath must have /spacewalk too because susemanager can't import 
+export PYTHONPATH=%{buildroot}%{python_sitelib}:%{buildroot}%{python_sitelib}/spacewalk:%{_datadir}/rhn
 make -f Makefile.susemanager unittest
 make -f Makefile.susemanager pylint
 
