@@ -68,6 +68,7 @@ install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
 rm -rf %{buildroot}
 
 %check
+export PYTHONPATH=%{buildroot}%{python_sitelib}:%{_datadir}/rhn
 make -f Makefile.susemanager unittest
 make -f Makefile.susemanager pylint
 
