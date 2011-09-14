@@ -35,7 +35,6 @@ BuildRequires: python-mock
 BuildRequires: python-unittest2
 BuildRequires: yum
 BuildRequires: rhnlib
-BuildRequires: susemanager-tools
 BuildRequires: python-debian
 
 # for pylint
