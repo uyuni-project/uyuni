@@ -12,6 +12,8 @@ BuildRequires:  python-devel
 
 # check section
 BuildRequires:  python-pylint
+BuildRequires:  python-unit2
+BuildRequires:  python-mock
 
 PreReq:         %fillup_prereq %insserv_prereq
 Requires:       dialog
@@ -66,7 +68,9 @@ install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
 rm -rf %{buildroot}
 
 %check
+make unittest
 make pylint
+
 
 %post
 %{fillup_and_insserv susemanager}
