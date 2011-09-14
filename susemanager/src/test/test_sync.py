@@ -35,6 +35,7 @@ class SyncTest(unittest.TestCase):
         del(self.sync)
 
     def test_get_ncc_xml_expat_error(self):
+        # pylint: disable=W0404
         from xml.parsers.expat import ExpatError
         ncc_sync.rhnLog.LOG = Mock()
         ncc_sync.rhnLog.LOG.file = "logfile.log"
@@ -53,6 +54,7 @@ class SyncTest(unittest.TestCase):
                       "<xml>is invalid", err)
 
     def test_get_ncc_xml_valid_xml(self):
+        # pylint: disable=W0404
         from xml.etree.ElementTree import Element
         ncc_sync.suseLib.send = Mock(return_value=StringIO("<xml>valid</xml>"))
 
