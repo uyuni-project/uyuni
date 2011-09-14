@@ -14,6 +14,11 @@ BuildRequires:  python-devel
 BuildRequires:  python-pylint
 BuildRequires:  python-unittest2
 BuildRequires:  python-mock
+BuildRequires:  python-curl
+BuildRequires:  spacewalk-backend
+BuildRequires:  spacewalk-backend-server
+BuildRequires:  suseRegisterInfo
+BuildRequires:  pyxml
 
 PreReq:         %fillup_prereq %insserv_prereq
 Requires:       dialog
