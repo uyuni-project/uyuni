@@ -21,10 +21,6 @@ import os.path
 import xml.etree.ElementTree as etree
 from datetime import date
 from urlparse import urlparse, urljoin
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
 from xml.parsers.expat import ExpatError
 
 from spacewalk.server import rhnSQL, taskomatic
