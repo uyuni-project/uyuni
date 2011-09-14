@@ -12,7 +12,7 @@ BuildRequires:  python-devel
 
 # check section
 BuildRequires:  python-pylint
-BuildRequires:  python-unit2
+BuildRequires:  python-unittest2
 BuildRequires:  python-mock
 
 PreReq:         %fillup_prereq %insserv_prereq
