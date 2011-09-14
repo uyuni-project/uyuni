@@ -145,15 +145,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/NOCpulse::Probe::Shell::SSH*
 %{_mandir}/man3/NOCpulse::Probe::Shell::Unix*
 %{_mandir}/man3/monitoring-data-cleanup*
+%{_mandir}/man3/NOCpulse::Probe::Shell::SQLPlus*
 %doc LICENSE
 
 %files Oracle
 %defattr(-,root,root,-)
-%{perl_vendorlib}/NOCpulse/Probe/Shell/SQLPlus.pm
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/CannedOracle.pm
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/Oracle.pm
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/test/TestOracle.pm
-%{_mandir}/man3/NOCpulse::Probe::Shell::SQLPlus*
 
 %changelog
 * Tue Nov 02 2010 Jan Pazdziora 1.184.5-1
