@@ -7,8 +7,12 @@ License:        GPLv2
 URL:            http://www.novell.com
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-#BuildArch:      noarch
+#BuildArch:      noarch - not noarch because of *ycp files
 BuildRequires:  python-devel
+
+# check section
+BuildRequires:  python-pylint
+
 PreReq:         %fillup_prereq %insserv_prereq
 Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
@@ -60,6 +64,9 @@ install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
 
 %clean
 rm -rf %{buildroot}
+
+%check
+make pylint
 
 %post
 %{fillup_and_insserv susemanager}
