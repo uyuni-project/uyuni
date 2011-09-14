@@ -68,8 +68,8 @@ install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
 rm -rf %{buildroot}
 
 %check
-make unittest
-make pylint
+make -f Makefile.susemanager unittest
+make -f Makefile.susemanager pylint
 
 
 %post
