@@ -846,6 +846,7 @@ class NCCSync(object):
         if self.fromdir:
             for channel in filtered:
                 if channel.get('source_url'):
+                    # pylint: disable=E1101
                     path = urlparse(channel.get('source_url')).path
                     channel.set('source_url', self.fromdir+path)
         return filtered
