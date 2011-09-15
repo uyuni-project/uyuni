@@ -20,6 +20,10 @@ Requires: spacewalk-client-tools
 %if 0%{?suse_version}
 # provide rhn directories and no selinux on suse
 BuildRequires: spacewalk-client-tools
+%if 0%{?suse_version} => 1110
+# Only on SLES11
+Requires: python-selinux
+%endif
 %else
 Requires: libselinux-python
 %endif
