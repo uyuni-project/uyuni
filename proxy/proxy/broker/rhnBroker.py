@@ -31,9 +31,9 @@ from spacewalk.common import rhnFlags, apache
 from spacewalk.common.rhnTranslate import _
 
 # local module imports
-from proxy.rhnShared import SharedHandler
-import rhnRepository
 import proxy.rhnProxyAuth
+from proxy.rhnShared import SharedHandler
+from proxy.broker import rhnRepository
 
 
 # the version should not be never decreased, never mind that spacewalk has different versioning
