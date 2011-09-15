@@ -10,6 +10,10 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
 %if 0%{?suse_version}
 BuildRequires: apache2
+
+# only required for pylint in %check
+BuildRequires: python-pylint
+BuildRequires: spacewalk-backend
 %endif
 BuildArch: noarch
 Requires: httpd
@@ -198,6 +202,10 @@ rm -fv $RPM_BUILD_ROOT%{httpdconf}/spacewalk-proxy-python.conf
 %endif
 
 ln -sf rhn-proxy $RPM_BUILD_ROOT%{_sbindir}/spacewalk-proxy
+
+%check
+export PYTHONPATH=%{buildroot}%{rhnroot}:%{rhnroot}
+make -f Makefile.proxy pylint
 
 %clean
 rm -rf $RPM_BUILD_ROOT
