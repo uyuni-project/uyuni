@@ -45,7 +45,7 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
   def verifyKey(kid)
     keys = @connection.call("activationkey.listActivationKeys", @sid)
     for key in keys
-      if kid == key['key']:
+      if kid == key['key']
           return true
       end
     end

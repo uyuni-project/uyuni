@@ -47,7 +47,7 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   def verifyChannel(label)
     channels = @connection.call("channel.listSoftwareChannels", @sid)
     for c in channels
-      if label == c['label']:
+      if label == c['label']
           return true
       end
     end
