@@ -17,7 +17,6 @@
 
 # system module imports
 import time
-import string
 import socket
 import re
 
@@ -70,7 +69,7 @@ class BrokerHandler(SharedHandler):
             hostname = socket.gethostname()
             log_debug(-1, 'WARNING: no hostname in the incoming headers; '
                           'punting: %s' % hostname)
-        hostname = string.split(parseUrl(hostname)[1], ':')[0]
+        hostname = parseUrl(hostname)[1].split(':')[0]
         self.proxyAuth =  proxy.rhnProxyAuth.get_proxy_auth(hostname)
 
         self._initConnectionVariables(req)
@@ -163,7 +162,7 @@ class BrokerHandler(SharedHandler):
         log_debug(5, 'X-RHN-Proxy-Auth currently set to: %s' % repr(_oto['X-RHN-Proxy-Auth']))
 
         if self.req.headers_in.has_key('X-RHN-Proxy-Auth'):
-            tokens = string.split(_oto['X-RHN-Proxy-Auth'], ',')
+            tokens = _oto['X-RHN-Proxy-Auth'].split(',')
             log_debug(5, 'Tokens: %s' % tokens)
 
         # GETs: authenticate user, and service local GETs.
@@ -185,13 +184,13 @@ class BrokerHandler(SharedHandler):
         if _oto.has_key('X-RHN-Proxy-Auth'):
             log_debug(5, 'XXX (auth token prior): %s'
                          % repr(_oto['X-RHN-Proxy-Auth']))
-            tokens = string.split(_oto['X-RHN-Proxy-Auth'], ',')
+            tokens = _oto['X-RHN-Proxy-Auth'].split(',')
 
         # list of tokens to be pushed into the headers.
         tokens.append(authToken)
         tokens = filter(lambda token: token, tokens)
 
-        _oto['X-RHN-Proxy-Auth'] = string.join(tokens, ',')
+        _oto['X-RHN-Proxy-Auth'] = ",".join(tokens)
         log_debug(5, 'XXX (auth token after): %s'
                       % repr(_oto['X-RHN-Proxy-Auth']))
 
@@ -221,7 +220,7 @@ class BrokerHandler(SharedHandler):
                 break
 
             # Expired/invalid auth token; go through the loop once again
-            error = string.split(respHeaders['X-RHN-Proxy-Auth-Error'], ':')[0]
+            error = respHeaders['X-RHN-Proxy-Auth-Error'].split(':')[0]
             if error == '1003': # invalid token
                 msg = "SUSE Manager Proxy Session Token INVALID -- bad!"
                 log_error(msg)
@@ -293,7 +292,7 @@ class BrokerHandler(SharedHandler):
         # URI should look something like:
         # /$RHN/redhat-linux-i386-7.1/getPackage/abiword-0.7.13.2.i386.rpm
         # NOTE: it splits to ['', '$RHN', label, channel, ...]
-        args = string.split(req.path_info, '/')
+        args = req.path_info.split('/')
         if not args or len(args) < 2 or (args[1] != '$RHN' and args[1] != 'GET-REQ'):
             # not a traditional RHN GET (i.e., it is an arbitrary get)
             # XXX: there has to be a more elegant way to do this
@@ -367,17 +366,13 @@ class BrokerHandler(SharedHandler):
 
         # The session token contains everything that begins with
         # "x-rhn-auth"
-        prefix = "x-rhn-auth"
-        l = len(prefix)
-        tokenKeys = filter(
-            lambda x, p = prefix, l = l: string.lower(x[:l]) == p,
-            headers.keys())
+        tokenKeys = [t for t in headers if t.startsswith("x-rhn-auth")]
         for k in tokenKeys:
-            if string.lower(k) == 'x-rhn-auth-channels':
+            if k.lower() == 'x-rhn-auth-channels':
                 # Multivalued header
                 #values = headers.getHeaderValues(k)
                 values = self._get_header(k)
-                token[k] = map(lambda x: string.split(x, ':'), values)
+                token[k] = [v.split(":") for v in values]
             else:
                 # Single-valued header
                 token[k] = headers[k]
@@ -491,14 +486,14 @@ class BrokerHandler(SharedHandler):
 
 def _dictEquals(d1, d2, exceptions=[]):
     """ Function that compare two dictionaries, ignoring certain keys """
-    exceptions = map(string.lower, exceptions)
+    exceptions = [e.lower() for e in exceptions]
     for k, v in d1.items():
-        if string.lower(k) in exceptions:
+        if k.lower() in exceptions:
             continue
         if not d2.has_key(k) or d2[k] != v:
             return 0
     for k, v in d2.items():
-        if string.lower(k) in exceptions:
+        if k.lower() in exceptions:
             continue
         if not d1.has_key(k) or d1[k] != v:
             return 0
