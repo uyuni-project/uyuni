@@ -17,7 +17,6 @@
 
 ## language imports
 import urllib
-import string
 import socket
 import sys
 from types import ListType, TupleType
@@ -64,7 +63,7 @@ class SharedHandler:
         if not self.httpProxyUsername:
             self.httpProxyPassword = ''
         self.rhnParent = CFG.RHN_PARENT or ''
-        self.rhnParent = string.split(rhnLib.parseUrl(self.rhnParent)[1], ':')[0]
+        self.rhnParent = rhnLib.parseUrl(self.rhnParent)[1].split(':')[0]
         CFG.set('RHN_PARENT', self.rhnParent)
 
         # can we resolve self.rhnParent?
@@ -180,7 +179,7 @@ class SharedHandler:
 
     def _serverCommo(self, data):
         """ Handler part 2
-        
+
             Server (or next proxy) communication.
             data is the self.req.read()
         """
@@ -191,7 +190,7 @@ class SharedHandler:
         # handler for this server
         # We add path_info to the put (GET, CONNECT, HEAD, PUT, POST) request.
         log_debug(2, self.req.method, self.uri)
-        self.responseContext.getConnection().putrequest(self.req.method, 
+        self.responseContext.getConnection().putrequest(self.req.method,
                                                              self.uri)
 
         # Send the headers, the body and expect a response
@@ -254,17 +253,17 @@ class SharedHandler:
             return headerObj.getheaders(k)
         # The pain of python 1.5.2
         headers = headerObj.getallmatchingheaders(k)
-        hname = string.lower(str(k)) + ':'
+        hname = str(k).lower() + ':'
         hlen = len(hname)
         ret = []
         for header in headers:
-            hn = string.lower(header[:hlen])
+            hn = header[:hlen].lower()
             if hn != hname:
                 log_debug(1, "Invalid header", header)
                 continue
-            ret.append(string.strip(header[hlen:]))
+            ret.append(header[hlen:].strip())
         return ret
-            
+
 
     def _clientCommo(self, status=apache.OK):
         """ Handler part 3
@@ -328,21 +327,23 @@ class SharedHandler:
         # Put the headers into the output connection object
         http_connection = self.responseContext.getConnection()
         for (k, vals) in hdrs.items():
-            if string.lower(k) in ['content_length', 'content_type']:
+            if k.lower() in ['content_length', 'content_type']:
                # mod_wsgi modifies incoming headers so we have to transform them back
                k = k.replace('_','-')
-            if not (string.lower(k)[:2] == 'x-' or
-                    string.lower(k) in [ #all but 'host'
-                            'accept', 'accept-charset', 'accept-encoding', 'accept-language',
-                            'accept-ranges', 'age', 'allow', 'authorization', 'cache-control',
-                            'connection', 'content-encoding', 'content-language', 'content-length',
-                            'content-location', 'content-md5', 'content-range', 'content-type',
-                            'date', 'etag', 'expect', 'expires', 'from', 'if-match',
-                            'if-modified-since', 'if-none-match', 'if-range', 'if-unmodified-since',
-                            'last-modified', 'location', 'max-forwards', 'pragma', 'proxy-authenticate',
-                            'proxy-authorization', 'range', 'referer', 'retry-after', 'server',
-                            'te', 'trailer', 'transfer-encoding', 'upgrade', 'user-agent', 'vary',
-                            'via', 'warning', 'www-authenticate']):
+            if not (k.lower()[:2] == 'x-' or
+                    k.lower() in [ #all but 'host'
+                    'accept', 'accept-charset', 'accept-encoding',
+                    'accept-language', 'accept-ranges', 'age', 'allow',
+                    'authorization', 'cache-control', 'connection',
+                    'content-encoding', 'content-language', 'content-length',
+                    'content-location', 'content-md5', 'content-range',
+                    'content-type', 'date', 'etag', 'expect', 'expires',
+                    'from', 'if-match', 'if-modified-since', 'if-none-match',
+                    'if-range', 'if-unmodified-since', 'last-modified',
+                    'location', 'max-forwards', 'pragma', 'proxy-authenticate',
+                    'proxy-authorization', 'range', 'referer', 'retry-after',
+                    'server', 'te', 'trailer', 'transfer-encoding', 'upgrade',
+                    'user-agent', 'vary', 'via', 'warning', 'www-authenticate']):
                 # filter out header we don't want to send
                 continue
             if type(vals) not in (ListType, TupleType):

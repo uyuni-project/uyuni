@@ -23,11 +23,9 @@ import re
 import os
 import time
 import glob
-import string
 import cPickle
 import sys
 import types
-from operator import truth
 import xmlrpclib
 
 ## common imports
@@ -267,7 +265,7 @@ def computePackagePath(nvrea, source=0, prepend=""):
         version = str(epoch) + ':' + version
     template = prepend + "/%s/%s-%s/%s/%s-%s-%s.%s.%s"
     # Sanitize the path: remove duplicated /
-    template = string.join(filter(truth, string.split(template, '/')), '/')
+    template = re.sub("/+", "/", template)
     return template % (name, version, release, dirarch, name, nvrea[1],
         release, pkgarch, extension)
 
@@ -285,7 +283,7 @@ def parseRPMName(pkgName):
         return [None, None, None, None]
     n, v, r = reg.group(1,2,3)
     e = ""
-    ind = string.find(r, ':')
+    ind = r.find(':')
     if ind < 0: # no epoch
         return [str(n), str(v), str(r), str(e)]
     e = r[ind+1:]
