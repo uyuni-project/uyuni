@@ -550,9 +550,9 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         if (!cobblerOnly) {
             kickstartSession = this.setupKickstartSession(packageAction);
             KickstartData data = getKsdata();
-            if (!data.isRawData()) {
+            //if (!data.isRawData()) {
                 storeActivationKeyInfo();
-            }
+            //}
         }
         Action kickstartAction = this.scheduleKickstartAction(packageAction);
         ActionFactory.save(packageAction);
