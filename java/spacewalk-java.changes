@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 16 13:46:40 CEST 2011 - ug@suse.de
+
+- added sles snippets
+- always create a tracking regkey (bnc#659093)
+
+-------------------------------------------------------------------
 Wed Sep  7 14:43:00 CEST 2011 - jrenner@suse.de
 
 - Create cobbler records for unregistered systems (fate#312329)
