@@ -68,8 +68,8 @@ require File.join(File.dirname(__FILE__), '/cobbler_test.rb')
 require 'culerity' if browser == :htmlunit
 
 #Capybara.app = Galaxy
-Capybara.default_wait_time = 5
-Capybara.default_wait_time = 30
+#Capybara.default_wait_time = 5
+Capybara.default_wait_time = 60
 
 # Register different browsers
 Capybara.register_driver :selenium_chrome do |app|
