@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 19 17:44:42 CEST 2011 - mc@suse.de
+
+- provide reports for SUSE Manager (bnc#673047, FATE#312367)
+
+-------------------------------------------------------------------
 Thu Aug 11 15:10:05 CEST 2011 - iartarisi@suse.cz
 
 - fix some imports after move from spacewalk.common
