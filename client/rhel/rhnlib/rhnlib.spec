@@ -16,7 +16,11 @@ BuildArch: noarch
 %endif
 BuildRequires: python-devel
 
+%if 0%{?suse_version}
+Requires: python-openssl
+%else
 Requires: pyOpenSSL
+%endif
 
 %description
 rhnlib is a collection of python modules used by the
