@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 20 14:20:13 CEST 2011 - iartarisi@suse.cz
+
+- remove all SLES10 SP2 channels
+
+-------------------------------------------------------------------
 Tue Sep  6 12:01:58 CEST 2011 - iartarisi@suse.cz
 
 - added more SLES10 channels: tools, sdk and gplv3-extras
