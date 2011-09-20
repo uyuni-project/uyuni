@@ -92,3 +92,11 @@ end
 # don't run own server on a random port
 Capybara.run_server = false
 # Remote::Capabilities.chrome
+
+# screenshots
+After do |scenario| 
+  if scenario.failed? && (Capybara.default_driver == :selenium_firefox) 
+    encoded_img = page.driver.browser.screenshot_as(:base64)
+    embed("data:image/png;base64,#{encoded_img}", 'image/png')
+  end
+end
