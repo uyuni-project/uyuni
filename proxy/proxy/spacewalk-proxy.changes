@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 20 17:38:11 CEST 2011 - iartarisi@suse.cz
+
+- use pylint instead of python-pylint for %checks
+
+-------------------------------------------------------------------
 Thu Aug 11 15:08:53 CEST 2011 - iartarisi@suse.cz
 
 - delete xxmlrpclib

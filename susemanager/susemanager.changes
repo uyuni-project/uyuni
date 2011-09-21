@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 20 17:36:23 CEST 2011 - iartarisi@suse.cz
+
+- use pylint instead of python-pylint for %checks
+
+-------------------------------------------------------------------
 Tue Sep 20 09:45:45 CEST 2011 - mc@suse.de
 
 - added option to test the NCC credentials (fate#312368, bnc#674848)
