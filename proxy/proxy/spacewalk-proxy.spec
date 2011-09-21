@@ -12,7 +12,7 @@ BuildRequires: python
 BuildRequires: apache2
 
 # only required for pylint in %check
-BuildRequires: python-pylint
+BuildRequires: pylint
 BuildRequires: spacewalk-backend
 %endif
 BuildArch: noarch

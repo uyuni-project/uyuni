@@ -11,7 +11,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  python-devel
 
 # check section
-BuildRequires:  python-pylint
+BuildRequires:  pylint
 BuildRequires:  python-unittest2
 BuildRequires:  python-mock
 BuildRequires:  python-curl

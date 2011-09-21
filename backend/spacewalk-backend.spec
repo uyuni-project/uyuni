@@ -39,7 +39,7 @@ BuildRequires: rhnlib
 BuildRequires: python-debian
 
 # for pylint
-BuildRequires: python-pylint
+BuildRequires: pylint
 BuildRequires: spacewalk-client-tools
 BuildRequires: python-gzipstream
 BuildRequires: python-psycopg2

@@ -1,5 +1,5 @@
 pylint ::
-	pylint -E -e imports src/
+	pylint -e --enable-msg-cat=imports src/
 
 unittest ::
 	unit2 discover src/
