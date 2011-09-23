@@ -82,5 +82,10 @@ CREATE INDEX rhn_package_nid_id_idx
     TABLESPACE [[2m_tbs]]
     NOLOGGING;
 
+CREATE INDEX rhn_package_chksum_id_idx
+    ON rhnPackage (checksum_id)
+    TABLESPACE [[2m_tbs]]
+    NOLOGGING;
+
 CREATE SEQUENCE rhn_package_id_seq;
 
