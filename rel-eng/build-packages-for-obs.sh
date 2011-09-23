@@ -108,7 +108,7 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   # The buildservice requires it this way.
   # Otherwise some errors are not seen during build
   #
-  sed -i 's/^BuildRoot.*$/BuildRoot: %{_tmppath}\/%{name}-%{version}-build/' $SRPM_DIR/$PKG_NAME/*.spec
+  sed -i 's/^BuildRoot.*$/BuildRoot:    %{_tmppath}\/%{name}-%{version}-build/i' $SRPM_DIR/$PKG_NAME/*.spec
   SUCCEED_CNT=$(($SUCCEED_CNT+1))
 done < <(git_package_defs)
 
