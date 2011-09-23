@@ -23,7 +23,7 @@ Version: 1.2.74
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot: %{_tmppath}/%{name}-%{version}-build
 
 %if !0%{?suse_version} || 0%{?suse_version} >= 1120
 BuildArch: noarch
