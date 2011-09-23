@@ -2,6 +2,8 @@
 Fri Sep 23 13:21:58 CEST 2011 - mc@suse.de
 
 - change BuildRoot to SUSE default required for BuildService
+- recompile python after unittests to remove buildroot path
+  in binaries
 
 -------------------------------------------------------------------
 Tue Sep 20 17:35:42 CEST 2011 - iartarisi@suse.cz
