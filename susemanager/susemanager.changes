@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 23 14:35:52 CEST 2011 - mc@suse.de
+
+- recompile python after check
+
+-------------------------------------------------------------------
 Tue Sep 20 17:36:23 CEST 2011 - iartarisi@suse.cz
 
 - use pylint instead of python-pylint for %checks
