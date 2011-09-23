@@ -338,6 +338,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %check
 make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT/%{python_sitelib} test || :
+pushd %{buildroot}
+find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
+popd
 
 %pre server
 OLD_SECRET_FILE=%{_var}/www/rhns/server/secret/rhnSecret.py
