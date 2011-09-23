@@ -78,7 +78,10 @@ rm -rf %{buildroot}
 export PYTHONPATH=%{buildroot}%{python_sitelib}:%{buildroot}%{python_sitelib}/spacewalk:%{_datadir}/rhn
 make -f Makefile.susemanager unittest
 make -f Makefile.susemanager pylint
-
+unset PYTHONPATH
+pushd %{buildroot}
+find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
+popd
 
 %post
 %{fillup_and_insserv susemanager}
