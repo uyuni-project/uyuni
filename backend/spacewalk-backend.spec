@@ -352,6 +352,7 @@ rm -f $RPM_BUILD_ROOT/%{_mandir}/man8/satellite-sync.8*
 %if 0%{?suse_version} >= 1100
 export PYTHONPATH=%{buildroot}%{python_sitelib}:%{_datadir}/rhn
 make -f Makefile.backend pylint
+make -f Makefile.backend unittest
 unset PYTHONPATH
 pushd %{buildroot}
 find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
