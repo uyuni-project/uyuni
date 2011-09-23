@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 23 14:36:11 CEST 2011 - mc@suse.de
+
+- add unittests to check again
+
+-------------------------------------------------------------------
 Fri Sep 23 13:21:58 CEST 2011 - mc@suse.de
 
 - change BuildRoot to SUSE default required for BuildService
