@@ -103,6 +103,12 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   test -z "$CHANGES" || mv "$CHANGES" "$T_DIR"
 
   mv "$T_DIR" "$SRPM_DIR/$PKG_NAME"
+  #
+  # change BuildRoot: in spec files to SUSE flavor.
+  # The buildservice requires it this way.
+  # Otherwise some errors are not seen during build
+  #
+  sed -i 's/^BuildRoot.*$/BuildRoot: %{_tmppath}\/%{name}-%{version}-build/' $SRPM_DIR/$PKG_NAME/*.spec
   SUCCEED_CNT=$(($SUCCEED_CNT+1))
 done < <(git_package_defs)
 
