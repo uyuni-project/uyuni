@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 26 10:45:05 CEST 2011 - mantel@suse.de
+
+- allow migration from SUSE Manager XE to SUSE Manager full Oracle
+
+-------------------------------------------------------------------
 Fri Sep 23 14:35:52 CEST 2011 - mc@suse.de
 
 - recompile python after check
