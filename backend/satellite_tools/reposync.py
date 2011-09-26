@@ -285,9 +285,9 @@ class RepoSync:
             e['notes'] = ''
             e['org_id'] = self.channel['org_id']
             e['refers_to'] = ''
+            e['channels'] = [{'label': self.channel_label}]
             if existing_errata:
-                e['channels'] = existing_errata['channels']
-            e['channels'].append({'label': self.channel_label})
+                e['channels'].extend(existing_errata['channels'])
             e['packages'] = []
             e['files'] = []
 
@@ -357,9 +357,9 @@ class RepoSync:
             e['notes'] = ''
             e['org_id'] = self.channel['org_id']
             e['refers_to'] = ''
+            e['channels'] = [{'label':self.channel_label}]
             if existing_errata:
-                e['channels'] = existing_errata['channels']
-            e['channels'].append({'label':self.channel_label})
+                e['channels'].extend(existing_errata['channels'])
             e['files'] = []
 
             e['packages'] = self._updates_process_packages(
