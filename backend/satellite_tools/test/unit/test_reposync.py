@@ -425,6 +425,7 @@ class RepoSyncTest(unittest.TestCase):
         # no packages related to this errata makes the ErrataImport be called
         # with an empty list
         self.reposync.RepoSync._updates_process_packages = Mock(return_value=[])
+        self.reposync.RepoSync.get_errata = Mock(return_value=None)
 
         mocked_backend = Mock()
         self.reposync.SQLBackend = Mock(return_value=mocked_backend)
