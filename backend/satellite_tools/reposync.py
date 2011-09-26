@@ -254,6 +254,8 @@ class RepoSync:
             except KeyError:
                 e['advisory_type'] = 'Product Enhancement Advisory'
 
+            existing_errata = self.get_errata(e['advisory'])
+
             # product name
             query = rhnSQL.prepare("""
                 SELECT p.friendly_name
@@ -283,7 +285,9 @@ class RepoSync:
             e['notes'] = ''
             e['org_id'] = self.channel['org_id']
             e['refers_to'] = ''
-            e['channels'] = [{'label': self.channel_label}]
+            if existing_errata:
+                e['channels'] = existing_errata['channels']
+            e['channels'].append({'label': self.channel_label})
             e['packages'] = []
             e['files'] = []
 
@@ -332,6 +336,8 @@ class RepoSync:
             e['advisory'] = e['advisory_name'] = '-'.join([notice['update_id'],
                                                            notice['version'],
                                                            self.channel['arch']])
+            existing_errata = self.get_errata(e['advisory'])
+
             e['advisory_rel'] = notice['version']
             if notice['type'] in typemap:
                 e['advisory_type'] = typemap[notice['type']]
@@ -351,7 +357,9 @@ class RepoSync:
             e['notes'] = ''
             e['org_id'] = self.channel['org_id']
             e['refers_to'] = ''
-            e['channels'] = [{'label':self.channel_label}]
+            if existing_errata:
+                e['channels'] = existing_errata['channels']
+            e['channels'].append({'label':self.channel_label})
             e['files'] = []
 
             e['packages'] = self._updates_process_packages(
@@ -745,6 +753,39 @@ class RepoSync:
         extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
         rhnMail.send(headers, extra + body)
 
+    def get_errata(self, update_id):
+        """Fetch an Errata dict from the database
+
+        Search in the database for the given advisory and return a dict
+        with important values.  If the advisory was not found it returns
+        None.
+
+        :update_id - the advisory (name)
+
+        """
+        h = rhnSQL.prepare("""
+            select e.id, e.advisory,
+                   e.advisory_name, e.advisory_rel
+              from rhnerrata e
+             where e.advisory = :name
+        """)
+        h.execute(name=update_id)
+        ret = h.fetchone_dict() or None
+        if not ret:
+            return None
+
+        h = rhnSQL.prepare("""
+            select distinct c.label
+              from rhnchannelerrata ce
+              join rhnchannel c on c.id = ce.channel_id
+             where ce.errata_id = :eid
+        """)
+        h.execute(eid=ret['id'])
+        ret['channels'] = h.fetchall_dict() or []
+
+        return ret
+
+
 def _best_checksum_item(checksums):
     if checksums.has_key('sha256'):
         checksum_type = 'sha256'
@@ -808,7 +849,7 @@ def _update_cve(notice):
     cves = list(set(cves))
 
     return cves
-    
+
 class ContentPackage:
 
     def __init__(self):
