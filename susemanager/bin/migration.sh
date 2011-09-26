@@ -18,6 +18,8 @@ SATELLITE_FQDN=""
 SATELLITE_IP=""
 
 ORACLE_VERSION="XE"
+SATELLITE_IS_RH=1
+KEYFILE="/root/migration-key"
 
 RSYNC_PASSWORD=""
 
@@ -190,7 +192,11 @@ ncc-email = $NCC_EMAIL
 
 drop_manager_db() {
     /usr/sbin/spacewalk-service stop
+if [ $ORACLE_VERSION = "XE" ]; then
     /etc/init.d/oracle-xe start
+else
+    /etc/init.d/oracle start
+fi
     echo "drop user $MANAGER_USER cascade;
 create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
 grant dba to $MANAGER_USER;
@@ -202,50 +208,36 @@ quit
 }
 
 dump_remote_db() {
+echo "Dumping remote database. Please wait..."
+ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - oracle -c \"exp \\\"$SATELLITE_DB_USER\\\"/\\\"$SATELLITE_DB_PASS\\\"@\\\"$SATELLITE_DB_SID\\\" owner=$SATELLITE_DB_USER compress=n consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log\""
 
-    if [ ! -f /tmp/sat.oracleXE.dmp ];then
-        echo "rrxe =
-  (DESCRIPTION =
-    (ADDRESS_LIST =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = $SATELLITE_IP)(PORT = 1521))
-    )
-    (CONNECT_DATA =
-      (SID = $SATELLITE_DB_SID)
-    )
-  )
-" >> /etc/tnsnames.ora
+echo "Copy remote database dump to local machine..."
+scp -i $KEYFILE root@$SATELLITE_IP:/tmp/sat.oracleXE.dmp /tmp
 
-        su - oracle -c "ORACLE_HOME=/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/ /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/bin/exp \"$SATELLITE_DB_USER\"/\"$SATELLITE_DB_PASS\"@rrxe owner=$SATELLITE_DB_USER compress=n consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log"
-    else
-        echo "database dump exists. Skipping dump of remote db"
-    fi;
+echo "Delete remote database dump..."
+ssh -i $KEYFILE root@$SATELLITE_IP "rm -f /tmp/sat.oracleXE.dmp"
 }
 
 import_db() {
+echo "Importing database dump. Please wait..."
     MANAGER_DB_NAME=`echo -n $MANAGER_DB_NAME|tr [:lower:] [:upper:]`
-    su - oracle -c "ORACLE_HOME=/usr/lib/oracle/xe/app/oracle/product/10.2.0/server PATH=$PATH:/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/bin imp system/$SYS_DB_PASS@$MANAGER_DB_NAME fromuser=$SATELLITE_DB_USER touser=$MANAGER_USER file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y"
-    # 'fix syntax HL
+    su -s /bin/bash - oracle -c "imp system/$SYS_DB_PASS@$MANAGER_DB_NAME fromuser=$SATELLITE_DB_USER touser=$MANAGER_USER file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y"
+if [ $? -eq 0 ]; then
+    echo "Database dump successfully imported."
+    rm -f /tmp/sat.oracleXE.dmp
+fi
 }
 
 upgrade_schema() {
     spacewalk-schema-upgrade
+if [ $ORACLE_VERSION = "XE" ]; then
     su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/rdbms/admin/utlrp.sql; exit;ENDPLUS"
+else
+    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @/opt/apps/oracle/product/11gR2/dbhome_1/rdbms/admin/utlrp.sql; exit;ENDPLUS"
+fi
 }
 
-copy_remote_files() {
-    echo -n "Files from the old satellite are copied now. You have to enter the Satellite root password multiple times. Press return now to start."; read dummy
-    # maybe add -H for hardlinks?
-    rsync -avz $SATELLITE_IP:/var/satellite/ /var/spacewalk/
-    chown -R wwwrun.www /var/spacewalk
-    # copy only new files (new kickstart profiles, snippets, trigger, etc.)
-    rsync -a -v -z --ignore-existing $SATELLITE_IP:/var/lib/cobbler/ /var/lib/cobbler/
-    # cobbler needs also running apache, so let's restart complete spacewalk
-    /etc/init.d/cobblerd restart
-    spacewalk-service restart
-    # wait for cobblerd
-    sleep 10
-    cobbler sync
-
+backup_files() {
     mkdir -p /root/backup/pub
     mkdir -p /root/backup/ssl/jabberd
     mv /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /root/backup/pub/
@@ -254,34 +246,56 @@ copy_remote_files() {
     cp /etc/apache2/ssl.crt/spacewalk.crt /root/backup/ssl/
     cp /etc/apache2/ssl.key/spacewalk.key /root/backup/ssl/
     cp /etc/pki/spacewalk/jabberd/server.pem /root/backup/ssl/jabberd/
+}
 
-    rsync -avz --ignore-existing $SATELLITE_IP:/var/www/html/pub/ /srv/www/htdocs/pub/
-    rsync -avz $SATELLITE_IP:/root/ssl-build /root/
+copy_remote_files_common() {
+    # copy only new files (new kickstart profiles, snippets, trigger, etc.)
+    rsync -e "ssh -i $KEYFILE -l root" -a -v -z --ignore-existing root@$SATELLITE_IP:/var/lib/cobbler/ /var/lib/cobbler/
+    # cobbler needs also running apache, so let's restart complete spacewalk
+    /etc/init.d/cobblerd restart
+    spacewalk-service restart
+    # wait for cobblerd
+    sleep 10
+    cobbler sync
 
-    # Copy the webserver cert and key from satellite to Manager
-    # On satellite look at /etc/httpd/conf.d/ssl.conf for the keys
-    # SSLCertificateFile and SSLCertificateKeyFile
-
-    # Copy the files given files to the Manager server to·
-    # SSLCertificateFile => /etc/apache2/ssl.crt/spacewalk.crt
-    # SSLCertificateFile => /etc/pki/spacewalk/jabberd/server.pem
-    # SSLCertificateKeyFile => /etc/apache2/ssl.key/spacewalk.key
-
-    scp root@$SATELLITE_IP:/etc/pki/tls/certs/spacewalk.crt /etc/apache2/ssl.crt/spacewalk.crt
-    cp /etc/apache2/ssl.crt/spacewalk.crt /etc/pki/spacewalk/jabberd/server.pem
-    scp root@$SATELLITE_IP:/etc/pki/tls/private/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
-
-    rsync -a -v -z $SATELLITE_IP:/var/lib/rhn/kickstarts /var/lib/rhn/
+    rsync -e "ssh -i $KEYFILE -l root" -a -v -z root@$SATELLITE_IP:/var/lib/rhn/kickstarts /var/lib/rhn/
     chown -R tomcat.tomcat /var/lib/rhn/kickstarts
-
-    rsync -a -v -z --exclude='libexec/*' $SATELLITE_IP:/var/lib/nocpulse/ /var/lib/nocpulse/
+    rsync -e "ssh -i $KEYFILE -l root" -a -v -z --exclude='libexec/*' root@$SATELLITE_IP:/var/lib/nocpulse/ /var/lib/nocpulse/
     chown -R nocpulse.nocpulse /var/lib/nocpulse
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/ssl-build /root/
+    scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/spacewalk/jabberd/server.pem /etc/pki/spacewalk/jabberd/server.pem
+    chmod 600 /etc/pki/spacewalk/jabberd/server.pem
+    chown jabber:jabber /etc/pki/spacewalk/jabberd/server.pem
+}
 
-    # You need to remove the extra line from /etc/hosts added·
-    # at the beginning.
+copy_remote_files_redhat() {
+    echo "Copy files from old satellite..."
+    # maybe add -H for hardlinks?
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/satellite/ /var/spacewalk/
+    chown -R wwwrun.www /var/spacewalk
+    rsync -e "ssh -i $KEYFILE -l root" -avz --ignore-existing root@$SATELLITE_IP:/var/www/html/pub/ /srv/www/htdocs/pub/
+
+    scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/tls/certs/spacewalk.crt /etc/apache2/ssl.crt/spacewalk.crt
+    scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/tls/private/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
+}
+
+copy_remote_files_suse() {
+    echo "Copy files from old SUSE Manager..."
+    # maybe add -H for hardlinks?
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/spacewalk/ /var/spacewalk/
+    chown -R wwwrun.www /var/spacewalk
+    rsync -e "ssh -i $KEYFILE -l root" -avz --ignore-existing root@$SATELLITE_IP:/srv/www/htdocs/pub/ /srv/www/htdocs/pub/
+
+    scp -i $KEYFILE root@$SATELLITE_IP:/etc/apache2/ssl.crt/spacewalk.crt /etc/apache2/ssl.crt/spacewalk.crt
+    scp -i $KEYFILE root@$SATELLITE_IP:/etc/apache2/ssl.key/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
 }
 
 do_migration() {
+    echo "Migration needs to execute several commands on the remote machine."
+    echo "Please enter the root password of the remote machine."
+    ssh-keygen -q -N "" -C "spacewalk-migration-key" -f $KEYFILE
+    ssh-copy-id -i $KEYFILE root@$SATELLITE_IP > /dev/null
+    
     if [ "x" = "x$SATELLITE_HOST" ]; then
         echo -n "SATELLITE_HOST:";   read SATELLITE_HOST
         echo -n "SATELLITE_DOMAIN:"; read SATELLITE_DOMAIN
@@ -304,20 +318,49 @@ do_migration() {
     CERT_EMAIL="dummy@example.net"
     MANAGER_ENABLE_TFTP="n"
 
+    # check for type of remote machine
+    ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/apache2/ssl.crt/spacewalk.crt"
+    if [ $? -eq 0 ]; then
+	echo "Remote machine is SUSE Manager"
+        SATELLITE_IS_RH=0
+    else
+	ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/pki/tls/certs/spacewalk.crt"
+	if [ $? -eq 0 ]; then
+	    echo "Remote machine is Red Hat Satellite"
+            SATELLITE_IS_RH=1
+	else
+	    echo "Remote machine appears to be neither SUSE Manager nor Red Hat Satellite. Exit."
+            exit
+	fi
+    fi
 
     if [ ! -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
         do_setup
     fi;
-    if [ $MANAGER_DB_NAME = "xe" -a $MANAGER_DB_HOST = "localhost" ]; then
-        drop_manager_db
+    sleep 10
+    if [ $ORACLE_VERSION = "FULL" -a $MANAGER_DB_HOST = "localhost" ]; then
+	    drop_manager_db
+    elif [ $MANAGER_DB_NAME = "xe" -a $MANAGER_DB_HOST = "localhost" ]; then
+	    drop_manager_db
+    elif [ $MANAGER_DB_NAME = "XE" -a $MANAGER_DB_HOST = "localhost" ]; then
+	    drop_manager_db
     fi;
     dump_remote_db
     import_db
     upgrade_schema
-    copy_remote_files
 
+    backup_files
+if [ $SATELLITE_IS_RH = "1" ];then
+    copy_remote_files_redhat
     mv /var/spacewalk/redhat /var/spacewalk/packages
+else
+    copy_remote_files_suse
+fi
+
+    copy_remote_files_common
     cleanup_hostname
+    ssh root@$SATELLITE_IP -i $KEYFILE "grep -v spacewalk-migration-key /root/.ssh/authorized_keys > /root/.ssh/authorized_keys.tmp && mv /root/.ssh/authorized_keys.tmp /root/.ssh/authorized_keys"
+    rm -f $KEYFILE
 }
 
 do_setup() {
@@ -368,11 +411,13 @@ do_setup() {
     cp /usr/share/syslinux/menu.c32 /srv/tftpboot/
     cp /usr/share/syslinux/pxelinux.0 /srv/tftpboot/
 
-    if [ ! -d "/var/spacewalk" ]; then
-        setup_spacewalk
-    else
-        echo "SUSE Manager is already initialized. Skipping setup."
-    fi;
+    setup_spacewalk
+
+#    if [ ! -d "/var/spacewalk" ]; then
+#        setup_spacewalk
+#    else
+#        echo "SUSE Manager is already initialized. Skipping setup."
+#    fi;
 }
 
 for p in $@; do

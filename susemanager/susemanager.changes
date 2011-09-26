@@ -1,5 +1,10 @@
 -------------------------------------------------------------------
-Tue Nov 22 14:50:19 CET 2011 - mantel@suse.de
+Tue Nov 22 14:52:28 CET 2011 - mantel@suse.de
+
+- allow migration from SUSE Manager XE to SUSE Manager full Oracle
+
+-------------------------------------------------------------------
+Fri Sep 23 14:35:52 CEST 2011 - mc@suse.de
 
 - use same tablespace name "data_tbs" for full Oracle as for XE to
   allow for easy migration
