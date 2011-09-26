@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Sep 26 17:57:36 CEST 2011 - iartarisi@suse.cz
+
+- fix e['channels'].append AttributeError in case existing_errata is None
+- fix failing unittest
+
+-------------------------------------------------------------------
 Mon Sep 26 17:06:15 CEST 2011 - mc@suse.de
 
 - fix loosing patches if a repository is synced into
