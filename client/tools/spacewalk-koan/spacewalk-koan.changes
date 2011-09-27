@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Sep 27 17:05:06 CEST 2011 - ug@suse.de
+
+- requires spacewalk-koan now
+
+-------------------------------------------------------------------
 Fri Jul  8 12:14:39 CEST 2011 - mc@suse.de
 
 - do not require rhn-virtualization on Code10
