@@ -18,9 +18,6 @@ BuildRequires: rhn-client-tools
 Requires:       rhn-virtualization-common
 Requires:       rhn-virtualization-host
 %endif
-%if 0%{?suse_version}
-Requires:       python-urlgrabber
-%endif
 
 Conflicts: rhn-kickstart
 Conflicts: rhn-kickstart-common
