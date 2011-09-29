@@ -468,7 +468,7 @@ SELECT s1.id,
               join rhnServerNeededCache SNC on E.id = SNC.errata_id
               left join rhnerrataseverity es on E.SEVERITY_ID = es.id) ERRATA
    ON S1.id = errata.server_id
-WHERE USP1.user_id = 1
+WHERE USP1.user_id = :uid
 GROUP by s1.id, s1.name
 ORDER by s1.name
     </query>
