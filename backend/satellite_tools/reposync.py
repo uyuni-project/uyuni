@@ -311,6 +311,8 @@ class RepoSync:
 
             e['bugs'] = find_bugs(e['description'])
             e['cve'] = find_cves(e['description'])
+            # set severity to Low to get a currency rating
+            e['security_impact'] = "Low"
 
             e['locally_modified'] = None
             batch.append(e)
@@ -372,9 +374,11 @@ class RepoSync:
             e['bugs'] = _update_bugs(notice)
             e['cve'] = _update_cve(notice)
             if notice['severity']:
-                # 'severity' not available in older yum versions
-                # do nothing if this key does not exist
                 e['security_impact'] = notice['severity']
+            else:
+                # 'severity' not available in older yum versions
+                # set default to Low to get a correct currency rating
+                e['security_impact'] = "Low"
             e['locally_modified'] = None
             batch.append(e)
 
