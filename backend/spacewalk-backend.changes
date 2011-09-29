@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Sep 29 13:52:25 CEST 2011 - mc@suse.de
+
+- set patch severity to Low if none is specified to get all
+  security patches listed in the currency report
+
+-------------------------------------------------------------------
 Mon Sep 26 17:57:36 CEST 2011 - iartarisi@suse.cz
 
 - fix e['channels'].append AttributeError in case existing_errata is None
