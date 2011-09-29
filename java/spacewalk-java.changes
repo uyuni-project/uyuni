@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 29 17:36:12 CEST 2011 - mc@suse.de
+
+- count system currency depending on severity stored in the DB
+
+-------------------------------------------------------------------
 Fri Sep 16 13:46:40 CEST 2011 - ug@suse.de
 
 - added sles snippets
