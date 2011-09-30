@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 30 10:54:21 CEST 2011 - mc@suse.de
+
+- enable sorting of the system currency page
+- enable csv export of System Currency Report
+
+-------------------------------------------------------------------
 Thu Sep 29 17:36:12 CEST 2011 - mc@suse.de
 
 - count system currency depending on severity stored in the DB
