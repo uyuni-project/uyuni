@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 30 12:39:33 CEST 2011 - mc@suse.de
+
+- remove default currency from backend part of rhn.conf
+
+-------------------------------------------------------------------
 Thu Sep 29 13:52:25 CEST 2011 - mc@suse.de
 
 - set patch severity to Low if none is specified to get all
