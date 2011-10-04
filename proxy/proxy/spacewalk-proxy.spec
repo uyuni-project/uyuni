@@ -300,7 +300,6 @@ fi
 %attr(750,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
 %attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_broker.conf
 %dir /usr/share/rhn
-%dir /usr/share/rhn/proxy
 %dir /usr/share/rhn/proxy/broker
 
 %files redirect
@@ -314,7 +313,6 @@ fi
 %attr(750,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
 %attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_redirect.conf
 %dir /usr/share/rhn
-%dir /usr/share/rhn/proxy
 %dir /usr/share/rhn/proxy/redirect
 
 %files common
@@ -335,7 +333,6 @@ fi
 # config files
 %attr(750,root,%{apache_group}) %dir %{rhnconf}
 %attr(640,root,%{apache_group}) %config %{rhnconf}/rhn.conf
-%attr(750,root,%{apache_group}) %dir %{rhnconf}/default
 %attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy.conf
 %attr(640,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy.conf
 # this file is created by either cli or webui installer
