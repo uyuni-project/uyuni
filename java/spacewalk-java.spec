@@ -611,8 +611,8 @@ fi
 %{_sbindir}/rctaskomatic
 
 %files config
-%defattr(-,root,root)
 %defattr(644, root, root)
+%dir %{_prefix}/share/rhn/config-defaults
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
