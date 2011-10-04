@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.6.15
+Version:        1.6.19
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,22 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Sep 30 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.19-1
+- 741782 - fixed data types in view
+
+* Tue Sep 27 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.18-1
+- drop function must be inside package body
+- fixed table alias in update query
+- fixed clear_subscriptions() call with optional parameters
+
+* Fri Sep 23 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.17-1
+- synced rhn_channel with oracle
+- synced rhn_entitlement with oracle
+
+* Thu Sep 15 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.16-1
+- 529064 - fixed update_needed_cache which wrongly updated cache if a package
+  was in more erratas
+
 * Fri Sep 09 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.15-1
 - added EPEL to the list of package providers
 - added rpm signing keys for F15, CentOS 6, Scientfic Linux 6 and EPEL

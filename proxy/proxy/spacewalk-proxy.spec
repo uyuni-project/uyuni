@@ -4,7 +4,7 @@ Group:   Applications/Internet
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 1.6.2
+Version: 1.6.3
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
@@ -297,9 +297,8 @@ fi
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %config(noreplace) %{_sysconfdir}/logrotate.d/rhn-proxy-broker
 # config files
-%attr(750,root,%{apache_group}) %dir %{rhnconf}
-%attr(750,root,%{apache_group}) %dir %{rhnconf}/default
-%attr(640,root,%{apache_group}) %{rhnconf}/default/rhn_proxy_broker.conf
+%attr(750,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
+%attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_broker.conf
 %dir /usr/share/rhn
 %dir /usr/share/rhn/proxy
 %dir /usr/share/rhn/proxy/broker
@@ -312,9 +311,8 @@ fi
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %config(noreplace) %{_sysconfdir}/logrotate.d/rhn-proxy-redirect
 # config files
-%attr(750,root,%{apache_group}) %dir %{rhnconf}
-%attr(750,root,%{apache_group}) %dir %{rhnconf}/default
-%attr(640,root,%{apache_group}) %{rhnconf}/default/rhn_proxy_redirect.conf
+%attr(750,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
+%attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_redirect.conf
 %dir /usr/share/rhn
 %dir /usr/share/rhn/proxy
 %dir /usr/share/rhn/proxy/redirect
@@ -338,7 +336,7 @@ fi
 %attr(750,root,%{apache_group}) %dir %{rhnconf}
 %attr(640,root,%{apache_group}) %config %{rhnconf}/rhn.conf
 %attr(750,root,%{apache_group}) %dir %{rhnconf}/default
-%attr(640,root,%{apache_group}) %{rhnconf}/default/rhn_proxy.conf
+%attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy.conf
 %attr(640,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy.conf
 # this file is created by either cli or webui installer
 %ghost %config %{httpdconf}/cobbler-proxy.conf
@@ -358,9 +356,8 @@ fi
 %files package-manager
 %defattr(-,root,root)
 # config files
-%attr(750,root,%{apache_group}) %dir %{rhnconf}
-%attr(750,root,%{apache_group}) %dir %{rhnconf}/default
-%attr(640,root,%{apache_group}) %config %{rhnconf}/default/rhn_proxy_package_manager.conf
+%attr(750,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
+%attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_package_manager.conf
 %{_bindir}/rhn_package_manager
 %{rhnroot}/PackageManager/rhn_package_manager.py*
 %{rhnroot}/PackageManager/uploadLib.py*
@@ -382,6 +379,9 @@ fi
 
 
 %changelog
+* Fri Sep 30 2011 Jan Pazdziora 1.6.3-1
+- 621531 - move /etc/rhn/default to /usr/share/rhn/config-defaults (proxy).
+
 * Thu Aug 11 2011 Miroslav Suchý 1.6.2-1
 - do not mask original error by raise in execption
 

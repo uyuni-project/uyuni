@@ -1,13 +1,6 @@
--- Note: this file is not a full equivalent of the Oracle sources.
--- Neither the flex stuff nor the update_family_countsYN was fully migrated.
--- Migrated functions or code paths:
+-- oracle equivalent source sha1 8fcbc1336a4b7f715fb1304875a38ebd0ae53565
 --
--- can_entitle_server
--- entitle_server
---   (code path of simple rhn-satellite-activate)
--- assign_channel_entitlement
---
--- Copyright (c) 2008--2010 Red Hat, Inc.
+-- Copyright (c) 2008--2011 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -602,12 +595,31 @@ as $$
                 order by sgm.modified desc
                 limit quantity_in;                
         
+        -- Get the orgs of Virtual guests
+        -- Since they may belong to different orgs
+        virt_guest_orgs cursor for
+                select  distinct (s.org_id)
+                from rhnServer s
+                    inner join  rhnVirtualInstance vi on vi.virtual_system_id = s.id
+                where
+                    vi.host_system_id = server_id_in
+                    and s.org_id <> (select s1.org_id from rhnServer s1 where s1.id = vi.host_system_id) ;
+
         org_id_val numeric;
         max_members_val numeric;
+        max_flex_val numeric;
         current_members_calc numeric;
         sg_id numeric;
-
+        is_virt numeric := 0;
     begin
+          select 1 into is_virt
+                from rhnServerEntitlementView
+           where server_id = server_id_in
+                 and label in ('virtualization_host', 'virtualization_host_platform');
+
+      if not found then
+          is_virt := 0;
+      end if;
 
         select org_id
         into org_id_val
@@ -616,6 +628,33 @@ as $$
 
         -- deal w/ channel entitlements first ...
         for family in families loop
+            if is_virt = 0 then
+            -- if the host_server does not have virt
+            --- find all possible flex slots
+            -- and set each of the flex eligible guests to Y
+                UPDATE rhnServerChannel sc set is_fve = 'Y'
+                where sc.server_id in (
+                            select vi.virtual_system_id
+                            from rhnServerFveCapable sfc
+                                inner join rhnVirtualInstance vi on vi.virtual_system_id = sfc.server_id
+                            where vi.host_system_id = server_id_in
+                                  and sfc.channel_family_id = family.channel_family_id
+                              order by vi.modified desc
+                            limit free_slots
+                );
+            else
+            -- if the host_server has virt
+            -- set all its flex guests to N
+                UPDATE rhnServerChannel sc set is_fve = 'N'
+                where
+                    sc.channel_id in (select cfm.channel_id from rhnChannelFamilyMembers cfm
+                                      where cfm.CHANNEL_FAMILY_ID = family.channel_family_id)
+                    and sc.is_fve = 'Y'
+                    and sc.server_id in
+                            (select vi.virtual_system_id  from rhnVirtualInstance vi
+                                    where vi.host_system_id = server_id_in);
+            end if;
+
             -- get the current (physical) members of the family
             current_members_calc := 
                 rhn_channel.channel_family_current_members(family.channel_family_id,
@@ -624,6 +663,12 @@ as $$
             -- get the max members of the family
             select max_members
             into max_members_val
+            from rhnPrivateChannelFamily
+            where channel_family_id = family.channel_family_id
+            and org_id = org_id_val;
+
+            select fve_max_members
+            into max_flex_val
             from rhnPrivateChannelFamily
             where channel_family_id = family.channel_family_id
             and org_id = org_id_val;
@@ -652,7 +697,8 @@ as $$
                     -- argh, transposed again?!
                     perform rhn_entitlements.set_family_count(org_id_val,
                                      family.channel_family_id,
-                                     max_members_val);
+                                     max_members_val, max_flex_val);
+                    --TODO calculate this correctly
                 end if; 
 
            end if;
@@ -663,6 +709,13 @@ as $$
             -- what's the difference of doing this vs the unavoidable set_family_count above?
             perform rhn_channel.update_family_counts(family.channel_family_id,
                                              org_id_val);
+
+            -- It is possible that the guests belong  to a different org than the host
+            -- so we are going to update the family counts in the guests orgs also
+            for org in virt_guest_orgs loop
+                    perform rhn_channel.update_family_counts(family.channel_family_id,
+                                             org.org_id);
+            end loop;
         end loop;
 
         for a_group_type in group_types loop
@@ -1016,7 +1069,7 @@ as $$
             -- if we're removing a base ent, then be sure to
             -- remove the server's channel subscriptions.
             if ( type_is_base = 'Y' ) then
-                   perform rhn_channel.clear_subscriptions(sgrecord.server_id, update_family_countsYN);
+                   perform rhn_channel.clear_subscriptions(sgrecord.server_id, 0, update_family_countsYN);
             end if;
 
             end loop;
@@ -1225,7 +1278,7 @@ as $$
         new_ent_count := from_org_prev_ent_count - quantity_in;
         new_ent_count_flex := from_org_prev_ent_count_flex - flex_in;
     
-        if from_org_prev_ent_count > new_ent_count then
+        if from_org_prev_ent_count >= new_ent_count then
             new_quantity := to_org_prev_ent_count + quantity_in;
         end if;
 
@@ -1314,10 +1367,15 @@ as $$
             perform rhn_exception.raise_exception(
                           'not_enough_entitlements_in_base_org');
         else
+            -- don't update family counts after every server
+            -- will do bulk update afterwards
             perform rhn_entitlements.set_group_count(org_id_in,
                                              'S',
                                              group_type,
-                                             quantity_in);
+                                             quantity_in,
+                                             0);
+            -- bulk update family counts
+            perform rhn_channel.update_group_family_counts(group_label_in, org_id_in);
         end if;
 
     end$$
@@ -1366,7 +1424,8 @@ as $$
                    select server_id
                    from rhnServerFveCapable
                        where SERVER_ORG_ID = org_id_in and
-                             channel_family_id = cfam_id;
+                             channel_family_id = cfam_id
+                       limit quantity;
 
     begin
 
@@ -1414,8 +1473,11 @@ as $$
                    -- We need to convert some systems from flex guest to regular
                    for system in to_convert_reg(cfam_id, org_id_in, reduce_quantity) loop
                       --rhn_channel.convert_to_regular(system.server_id, cfam_id);
-                      UPDATE rhnServerChannel sc set sc.is_fve = 'N'
-                           where sc.server_id = system.server_id;
+                      UPDATE rhnServerChannel sc set is_fve = 'N'
+                           where sc.server_id = system.server_id
+                                 and sc.channel_id in (select cfm.channel_id
+                                                          from rhnChannelFamilyMembers cfm
+                                                          where cfm.channel_family_id = cfam_id);
                    end loop;
 
                    --reset previous counts
@@ -1441,8 +1503,11 @@ as $$
                     reduce_quantity := prev_ent_count - quantity_in;
                     for system in to_convert_flex(cfam_id, org_id_in, reduce_quantity) loop
 --                          rhn_channel.convert_to_fve(system.server_id, cfam_id);
-                        UPDATE rhnServerChannel sc set sc.is_fve = 'Y'
-                           where sc.server_id = system.server_id;
+                        UPDATE rhnServerChannel sc set is_fve = 'Y'
+                           where sc.server_id = system.server_id
+                                 and sc.channel_id in (select cfm.channel_id
+                                                          from rhnChannelFamilyMembers cfm
+                                                          where cfm.channel_family_id = cfam_id);
                     end loop;
                     prev_ent_count := prev_ent_count - reduce_quantity;
                     prev_flex_count := prev_flex_count + reduce_quantity;
@@ -1577,8 +1642,8 @@ as $$
                                 and rs.org_id = customer_id_in
                                 and rs.id = rsc.server_id
                                 and rsc.channel_id = rcfm.channel_id
-                                and rcfm.channel_family_id =
-                                    channel_family_id_in
+                                and rcfm.channel_family_id =  channel_family_id_in
+                                and rsc.is_fve = is_fve_in
                                 -- we only want to grab servers consuming
                                 -- physical slots.
                                 and exists (
@@ -1601,12 +1666,12 @@ as $$
         is_fve_in := 'N';
 
         for sc in serverchannels loop
-            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id, 1, 1);
+            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id, 1, 1, 0, 0);
 
         tmp_quantity := flex_in;
         is_fve_in := 'Y';
         for sc in serverchannels loop
-            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id, 1, 1);
+            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id, 1, 1, 0, 0);
         end loop;
         end loop;
                 perform rhn_channel.update_family_counts(channel_family_id_in, customer_id_in);

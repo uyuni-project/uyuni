@@ -813,4 +813,47 @@ public class ServerFactory extends HibernateFactory {
                 new HashMap(), systemIds, "sids");
     }
 
+    /**
+     * Adds tag to the snapshot
+     * @param snpId snapshot id
+     * @param orgId org id
+     * @param tagName name of the tag
+     */
+    public static void addTagToSnapshot(Long snpId, Long orgId, String tagName) {
+        CallableMode m = ModeFactory.getCallableMode("System_queries",
+        "add_tag_to_snapshot");
+        Map inParams = new HashMap();
+        inParams.put("snapshot_id", snpId);
+        inParams.put("org_id", orgId);
+        inParams.put("tag_name", tagName);
+        m.execute(inParams, new HashMap());
+    }
+
+    /**
+     * Removes tag from system snapshot
+     * @param serverId server id
+     * @param tag snapshot tag
+     */
+    public static void removeTagFromSnapshot(Long serverId, SnapshotTag tag) {
+        CallableMode m = ModeFactory.getCallableMode("System_queries",
+        "remove_tag_from_snapshot");
+        Map inParams = new HashMap();
+        inParams.put("server_id", serverId);
+        inParams.put("tag_id", tag.getId());
+        m.execute(inParams, new HashMap());
+    }
+
+    /**
+     * Looks up snapshot tag by tag name
+     * @param tagName name of the tag
+     * @return snapshot tag
+     */
+    public static SnapshotTag lookupSnapshotTagbyName(String tagName) {
+        SnapshotTag retval = (SnapshotTag) HibernateFactory
+                .getSession().getNamedQuery("SnapshotTag.lookupByTagName")
+                .setString("tag_name", tagName)
+                // Retrieve from cache if there
+                .setCacheable(true).uniqueResult();
+        return retval;
+    }
 }

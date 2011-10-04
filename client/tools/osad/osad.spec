@@ -22,7 +22,7 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.21
+Version: 5.10.23
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -300,7 +300,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %{rhnroot}/osad/rhn_log.py*
 %config(noreplace) %{_sysconfdir}/sysconfig/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/logrotate.d/osa-dispatcher
-%config %{_sysconfdir}/rhn/default/rhn_osa-dispatcher.conf
+%{rhnroot}/config-defaults/rhn_osa-dispatcher.conf
 %if 0%{?suse_version}
 %dir %{_sysconfdir}/rhn
 %dir %{_sysconfdir}/rhn/tns_admin
@@ -316,7 +316,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %doc PYTHON-LICENSES.txt
 %if 0%{?suse_version}
 %dir %{_sysconfdir}/rhn
-%dir %{_sysconfdir}/rhn/default
+%dir %{rhnroot}/config-defaults
 %dir %{_sysconfdir}/rhn/tns_admin
 %dir %{_var}/log/rhn
 %endif
@@ -335,6 +335,13 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Fri Sep 30 2011 Jan Pazdziora 5.10.23-1
+- 689939 - match star in common name.
+
+* Fri Sep 30 2011 Jan Pazdziora 5.10.22-1
+- 621531 - move /etc/rhn/default to /usr/share/rhn/config-defaults (osa-
+  dispatcher).
+
 * Thu Aug 11 2011 Miroslav Suchý 5.10.21-1
 - True and False constants are defined since python 2.4
 - do not mask original error by raise in execption

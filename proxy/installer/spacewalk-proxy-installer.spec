@@ -2,7 +2,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 1.6.3
+Version: 1.6.5
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -24,6 +24,7 @@ Requires: glibc-common
 Requires: chkconfig
 %endif
 Requires: libxslt
+Requires: spacewalk-certs-tools >= 1.6.4
 BuildRequires: /usr/bin/docbook2man
 Obsoletes: proxy-installer < 5.3.0
 Provides: proxy-installer = 5.3.0
@@ -100,6 +101,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Wed Sep 21 2011 Miroslav Suchý 1.6.5-1
+- 737853 - if rhn-ca-openssl.cnf does not exist, then check should succeed
+- 737853 - do not print output of awk, we care just about exit code
+
+* Tue Sep 13 2011 Miroslav Suchý 1.6.4-1
+- require rhn-ssl-tool which can handle --set-cname option
+
 * Mon Aug 29 2011 Miroslav Suchý 1.6.3-1
 - check if "copy_extension=copy" is in correct section
 - do not ask for SSL_CNAME if it set in answer file to empty array

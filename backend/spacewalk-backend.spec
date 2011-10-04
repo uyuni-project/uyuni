@@ -1,4 +1,5 @@
 %define rhnroot %{_prefix}/share/rhn
+%global rhnconfigdefaults %{rhnroot}/config-defaults
 %define rhnconf %{_sysconfdir}/rhn
 %define httpdconf %{rhnconf}/satellite-httpd/conf
 %if 0%{?suse_version}
@@ -19,7 +20,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.6.16
+Version: 1.6.26
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -402,8 +403,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/RPC_Base.py*
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 # config files
-%attr(755,root,%{apache_group}) %dir %{rhnconf}/default
-%attr(644,root,%{apache_group}) %{rhnconf}/default/rhn.conf
+%attr(755,root,%{apache_group}) %dir %{rhnconfigdefaults}
+%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn.conf
 %attr(755,root,root) %{_bindir}/spacewalk-cfg-get
 %{_mandir}/man8/spacewalk-cfg-get.8.gz
 # wsgi stuff
@@ -503,7 +504,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 # the cache
 %attr(755,%{apache_user},%{apache_group}) %dir %{_var}/cache/rhn
 # config files
-%attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server.conf
+%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server.conf
 # main httpd config
 %attr(644,root,%{apache_group}) %config %{apacheconfd}/zz-spacewalk-server.conf
 
@@ -536,7 +537,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{pythonrhnroot}/server/action_extra_data
 %{pythonrhnroot}/server/action_extra_data/*
 # config files
-%attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_xmlrpc.conf
+%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_xmlrpc.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-xmlrpc.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xmlrpc
 %if 0%{?suse_version}
@@ -553,7 +554,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{rhnroot}/server/handlers/applet
 %{rhnroot}/server/handlers/applet/*
 # config files
-%attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_applet.conf
+%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_applet.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-applet.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-applet
 
@@ -566,7 +567,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{rhnroot}/server/handlers/app
 %{rhnroot}/server/handlers/app/*
 # config files
-%attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_app.conf
+%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_app.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-app.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-app
 
@@ -579,7 +580,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{rhnroot}/server/handlers/xp
 %{rhnroot}/server/handlers/xp/*
 # config files
-%attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_xp.conf
+%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_xp.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-xp.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xp
 
@@ -639,7 +640,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %endif
 %dir %{rhnroot}/server/handlers/config
 %{rhnroot}/server/handlers/config/*
-%attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_config-management.conf
+%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-config-management.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files
 
@@ -651,7 +652,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %endif
 %dir %{rhnroot}/server/handlers/config_mgmt
 %{rhnroot}/server/handlers/config_mgmt/*
-%attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_config-management-tool.conf
+%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management-tool.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-config-management-tool.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files-tool
 
@@ -663,15 +664,15 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{rhnroot}/upload_server/handlers
 %{rhnroot}/upload_server/handlers/__init__.py*
 %{rhnroot}/upload_server/handlers/package_push
-%attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_upload.conf
-%attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_upload_package-push.conf
+%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_upload.conf
+%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_upload_package-push.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-package-push-server
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-package-push.conf
 
 %files tools
 %defattr(-,root,root)
 %doc PYTHON-LICENSES.txt LICENSE
-%attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_satellite.conf
+%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
 /var/adm/fillup-templates/sysconfig.reposync
 %attr(755,root,root) %{_sysconfdir}/cron.daily/suse.de-clean-reposync-logs
@@ -720,7 +721,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,%{apache_group}) %dir %{_var}/log/rhn/reposync
 %{pythonrhnroot}/satellite_tools/repo_plugins/__init__.py*
 %{pythonrhnroot}/satellite_tools/repo_plugins/yum_src.py*
-%config %attr(644,root,%{apache_group}) %{rhnconf}/default/rhn_server_iss.conf
+%config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
 %{_mandir}/man8/rhn-satellite-exporter.8*
 %{_mandir}/man8/rhn-charsets.8*
 %{_mandir}/man8/rhn-satellite-activate.8*
@@ -757,6 +758,45 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Tue Oct 04 2011 Miroslav Suchý 1.6.26-1
+- 742905 - if thread will throw traceback do not forget to release lock, so
+  other threads can continue
+- 229836 - allow empty prefix for user
+
+* Mon Oct 03 2011 Jan Pazdziora 1.6.25-1
+- removed dead exception (michael.mraka@redhat.com)
+- removed dead queries (michael.mraka@redhat.com)
+- made syncCert() more readable (michael.mraka@redhat.com)
+
+* Fri Sep 30 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.24-1
+- 740542 - don't use executemany for queries with blobs
+
+* Fri Sep 30 2011 Jan Pazdziora 1.6.23-1
+- 621531 - update the path in the man page, plus some polishing.
+- 621531 - update backend rhnConfig to use the new /usr/share/rhn/config-
+  defaults location.
+- 621531 - move /etc/rhn/default to /usr/share/rhn/config-defaults (backend).
+
+* Wed Sep 28 2011 Aron Parsons <parsonsa@bit-sys.com> 1.6.22-1
+- use COALESCE instead of NVL for compatibility with PostgreSQL (parsonsa@bit-
+  sys.com)
+
+* Thu Sep 22 2011 Aron Parsons <parsonsa@bit-sys.com> 1.6.21-1
+- fix broken --list-channels option (parsonsa@bit-sys.com)
+- Fix nvl2/case conversion (Joshua.Roys@gtri.gatech.edu)
+
+* Mon Sep 19 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.20-1
+- 732325 - nvl2 replace with ANSI case
+
+* Mon Sep 19 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.19-1
+- implemented Database.execute()
+
+* Tue Sep 13 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.18-1
+- 736127 - fixed /var/log/rhn/rhn_server_xmlrpc.log does not log IP addresses
+
+* Mon Sep 12 2011 Miroslav Suchý 1.6.17-1
+- add missing import sys
+
 * Fri Sep 09 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.16-1
 - small reposync speedup
 

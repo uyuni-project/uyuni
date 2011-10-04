@@ -12,7 +12,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 1.6.1
+Version: 1.6.3
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -169,6 +169,12 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 %endif
 
 %changelog
+* Mon Oct 03 2011 Jan Pazdziora 1.6.3-1
+- 621531 - fixing rhn.conf(5) man page.
+
+* Fri Sep 16 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.2-1
+- 713477 - made session cookies httponly
+
 * Fri Aug 05 2011 Jan Pazdziora 1.6.1-1
 - Make monitoring .cgi live again in the /cgi-bin/ namespace, fixing scout
   config push.

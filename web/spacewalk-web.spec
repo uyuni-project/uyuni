@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.19
+Version: 1.6.25
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -149,13 +149,13 @@ find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
 find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
 
 mkdir -p $RPM_BUILD_ROOT/%{www_path}/www/htdocs/pub
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/default
+mkdir -p $RPM_BUILD_ROOT/%{_prefix}/share/rhn/config-defaults
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/init.d
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily
 
-install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/default
-install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/default
+install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
+install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-oracle-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-oracle-space-usage.sh
 
 %post -n spacewalk-pxt
@@ -250,9 +250,9 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/Exception.pm
 %{perl_vendorlib}/RHN/DB.pm
 %{perl_vendorlib}/PXT/Config.pm
-%attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
-%dir /etc/rhn
-%attr(750,root,%{apache_group}) %dir /etc/rhn/default
+%attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_web.conf
+%dir %{_prefix}/share/rhn
+%attr(750,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
 %doc LICENSE
 
 %files -n spacewalk-dobby
@@ -260,11 +260,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/db-control
 %{_mandir}/man1/db-control.1.gz
 %{perl_vendorlib}/Dobby.pm
-%attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_dobby.conf
+%attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_dobby.conf
 %attr(0755,root,root) %{_sysconfdir}/cron.daily/check-oracle-space-usage.sh
 %{perl_vendorlib}/Dobby/
-%dir /etc/rhn
-%dir /etc/rhn/default
+%dir %{_prefix}/share/rhn
+%dir %{_prefix}/share/rhn/config-defaults
 
 %files -n spacewalk-grail
 %defattr(644,root,root,755)
@@ -274,7 +274,6 @@ rm -rf $RPM_BUILD_ROOT
 %files -n spacewalk-pxt
 %defattr(644,root,root,755)
 %{perl_vendorlib}/PXT.pm
-%attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
 %{perl_vendorlib}/PXT/
 %exclude %{perl_vendorlib}/PXT/Config.pm
 %{_mandir}/man3/PXT::ApacheHandler.3pm.gz
@@ -296,6 +295,33 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Fri Sep 30 2011 Jan Pazdziora 1.6.25-1
+- 678118 - if system already is proxy, losen the ACL and show the tab.
+- Recent commit makes version_string_to_evr_array unused, dropping.
+- Removing proxy_evr_at_least, org_proxy_evr_at_least, aclOrgProxyEvrAtLeast as
+  they are no longer used.
+- Remove proxy_evr_at_least ACLs -- all supported proxy versions are 3+.
+- Make the pxt Connection acl match the java version -- new acl
+  org_has_proxies.
+
+* Fri Sep 30 2011 Jan Pazdziora 1.6.24-1
+- 621531 - update web Config to use the new /usr/share/rhn/config-defaults
+  location.
+- 621531 - move /etc/rhn/default to /usr/share/rhn/config-defaults (web).
+
+* Fri Sep 23 2011 Jan Pazdziora 1.6.23-1
+- The /etc/rhn/default/rhn_web.conf does not need to be provided by -pxt since
+  it is provided by -base-minimal.
+
+* Mon Sep 19 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.22-1
+- 723461 - let emails be sent to localhost by default
+
+* Fri Sep 16 2011 Jan Pazdziora 1.6.21-1
+- CVE-2011-3344, 731647 - HTML-encode the self-referencing link.
+
+* Thu Sep 15 2011 Jan Pazdziora 1.6.20-1
+- Revert "529483 - adding referer check to perl stack"
+
 * Fri Sep 09 2011 Jan Pazdziora 1.6.19-1
 - 616175 - observe the port specified in the URL even for https.
 

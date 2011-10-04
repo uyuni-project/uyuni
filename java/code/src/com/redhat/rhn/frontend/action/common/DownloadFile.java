@@ -63,8 +63,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -245,7 +245,6 @@ public class DownloadFile extends DownloadAction {
         else {
             tree = KickstartFactory.lookupKickstartTreeByLabel(label);
         }
-
 
         if (map.containsKey("child") &&
                       !Config.get().getBoolean("ks_restrict_child_channels")) {
@@ -490,6 +489,10 @@ public class DownloadFile extends DownloadAction {
             if (child == null) {
                 diskPath = kickstartMount + "/" + tree.getBasePath() + path;
             }
+            else if (path.endsWith("/comps.xml")) {
+                diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
+                    "/" + child.getComps().getRelativeFilename();
+            }
             else {
                 String[] split = StringUtils.split(path, '/');
                 if (split[0].equals("repodata")) {
@@ -644,17 +647,34 @@ public class DownloadFile extends DownloadAction {
             String diskPath, String range) {
 
         // bytes=440-25183
-        String[] bytesheader = StringUtils.split(range, "=");
-        String[] ranges = StringUtils.split(bytesheader[1], "-");
-        long start = Long.valueOf(ranges[0]).longValue();
-        long end = Long.valueOf(ranges[1]).longValue();
+        Pattern rangePattern = Pattern.compile("bytes=(\\d*)-(\\d*)");
+        Matcher rangeMatcher = rangePattern.matcher(range);
+
+        if (!rangeMatcher.matches()) {
+            // this will fail
+            rangeMatcher.group(1);
+        }
+
+        long start, end;
+        if (StringUtils.isEmpty(rangeMatcher.group(1))) {
+            start = 0;
+        }
+        else {
+            start = Long.valueOf(rangeMatcher.group(1)).longValue();
+        }
+        File actualFile = new File(diskPath);
+        long totalSize = actualFile.length();
+        if (StringUtils.isEmpty(rangeMatcher.group(2))) {
+            end = totalSize;
+        }
+        else {
+            end = Long.valueOf(rangeMatcher.group(2)).longValue();
+        }
         if (log.isDebugEnabled()) {
             log.debug("manualServeByteRange Start    : " + start);
             log.debug("manualServeByteRange End      : " + end);
         }
         long size = end - start + 1;
-        File actualFile = new File(diskPath);
-        long totalSize = actualFile.length();
 
         if (log.isDebugEnabled()) {
             log.debug("manualServeByteRange totalsize: " + totalSize);

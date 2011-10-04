@@ -22,6 +22,7 @@ import com.redhat.rhn.frontend.taglibs.list.decorators.ExtraButtonDecorator;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -165,7 +166,9 @@ public class ListTagUtil {
     /**
      * Returns a link containing the URL + ALL the parameters of the
      * request query string minus the sort links, and the alpha link +
-     * the additional params passed in the paramsToAdd map.
+     * the additional params passed in the paramsToAdd map. The resulting
+     * string is urlEncode'd with & encoded as &amp; so it can be used
+     * in a href directly.
      *
      * @param request the Servlet Request
      * @param listName the current list name
@@ -188,7 +191,7 @@ public class ListTagUtil {
             params.append("?");
         }
         else if (url.indexOf('?') != url.length() - 1) {
-            params.append("&");
+            params.append("&amp;");
         }
 
         for (Enumeration<String> en = request.getParameterNames(); en.hasMoreElements();) {
@@ -196,18 +199,18 @@ public class ListTagUtil {
             if (!sortByLabel.equals(paramName) && !sortByDir.equals(paramName) &&
                     !alphaKey.equals(paramName) && !paramsToIgnore.contains(paramName)) {
                 if (params.length() > 1) {
-                    params.append("&");
+                    params.append("&amp;");
                 }
-                params.append(paramName).append("=")
+                params.append(StringUtil.urlEncode(paramName)).append("=")
                             .append(StringUtil.urlEncode(request.getParameter(paramName)));
             }
         }
         for (String key : paramsToAdd.keySet()) {
             if (params.length() > 1) {
-                params.append("&");
+                params.append("&amp;");
             }
-            params.append(key).append("=")
-                        .append(paramsToAdd.get(key));
+            params.append(StringUtil.urlEncode(key)).append("=")
+                        .append(StringUtil.urlEncode(paramsToAdd.get(key)));
         }
 
         return url + params.toString();
@@ -636,7 +639,8 @@ public class ListTagUtil {
 
         //We set this so we know next time around what the old filter value was
         ListTagUtil.write(pageContext, String.format(HIDDEN_TEXT,
-                        makeOldFilterValueByLabel(uniqueName), filterValue));
+                        makeOldFilterValueByLabel(uniqueName),
+                        StringEscapeUtils.escapeHtml(filterValue)));
 
 
         ListTagUtil.write(pageContext, "<td");
@@ -681,7 +685,7 @@ public class ListTagUtil {
         ListTagUtil.write(pageContext, filterValueKey);
         ListTagUtil.write(pageContext, "\" length=\"40\" size=\"10\" value=\"");
         if (filterValue != null) {
-            ListTagUtil.write(pageContext, filterValue);
+            ListTagUtil.write(pageContext, StringEscapeUtils.escapeHtml(filterValue));
         }
         ListTagUtil.write(pageContext, "\" autofocus/>");
 

@@ -2,7 +2,7 @@ Name:         perl-NOCpulse-Probe
 Summary:      Monitoring probes for Spacewalk
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.184.10
+Version:      1.184.12
 Release:      1%{?dist}
 BuildArch:    noarch
 Group:        Development/Libraries
@@ -145,17 +145,28 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/NOCpulse::Probe::Shell::SSH*
 %{_mandir}/man3/NOCpulse::Probe::Shell::Unix*
 %{_mandir}/man3/monitoring-data-cleanup*
+%{_mandir}/man3/NOCpulse::Probe::Shell::SQLPlus*
 %doc LICENSE
 
 %files Oracle
 %defattr(-,root,root,-)
-%{perl_vendorlib}/NOCpulse/Probe/Shell/SQLPlus.pm
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/CannedOracle.pm
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/Oracle.pm
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/test/TestOracle.pm
-%{_mandir}/man3/NOCpulse::Probe::Shell::SQLPlus*
 
 %changelog
+* Wed Sep 14 2011 Jan Pazdziora 1.184.12-1
+- The NOCpulse::Probe::Shell::SQLPlus needs to be in perl-NOCpulse-Probe, not
+  in -Oracle.
+- Revert "remove duplicated SQLPlus.pm file from main package as it is already
+  in -Oracle" and "Addressing warning: File listed twice caused by the previous
+  commit."
+
+* Tue Sep 13 2011 Jan Pazdziora 1.184.11-1
+- Addressing warning: File listed twice caused by the previous commit.
+- remove duplicated SQLPlus.pm file from main package as it is already in
+  -Oracle (iartarisi@suse.cz)
+
 * Thu Aug 11 2011 Jan Pazdziora 1.184.10-1
 - The column names are always uppercase, due to the FetchHashKeyName setting.
 

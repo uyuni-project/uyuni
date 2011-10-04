@@ -64,9 +64,11 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 
@@ -957,7 +959,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #array_single("string", "channelLabel - labels of the channels to
      *              subscribe the system to.")
-     * @xmlrpc.returntype int - 1 on success, 0 otherwise
+     * @xmlrpc.returntype #return_int_success()
      */
     @Deprecated
     public int setSystemChannels(String sessionKey, Integer sid, List channelLabels)
@@ -2356,7 +2358,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.param #param_desc("string", "label", "label of repo wanted")
     * @xmlrpc.param #param_desc("string", "type", "type of repo wanted")
     * @xmlrpc.param #param_desc("string", "url", "url of repo wanted")
-    * @xmlrpc.returntype ContentSource
+    * @xmlrpc.returntype $ContentSourceSerializer
    **/
     public ContentSource createRepo(String sessionKey, String label, String type,
             String url) {
@@ -2383,7 +2385,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.doc Creates a ContentSource (repo)
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("long", "id", "ID of repo to be removed")
-    * @xmlrpc.returntype Integer
+    * @xmlrpc.returntype #return_int_success()
    **/
     public Integer removeRepo(String sessionKey, Integer id) {
         User user = getLoggedInUser(sessionKey);
@@ -2402,7 +2404,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.doc Creates a ContentSource (repo)
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("string", "label", "label of repo to be removed")
-    * @xmlrpc.returntype Integer
+    * @xmlrpc.returntype #return_int_success()
    **/
     public Integer removeRepo(String sessionKey, String label) {
         User user = getLoggedInUser(sessionKey);
@@ -2423,7 +2425,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("string", "chanLabel", "of the channel to use")
     * @xmlrpc.param #param_desc("string", "repoLabel", "of the repo to associate")
-    * @xmlrpc.returntype Channel
+    * @xmlrpc.returntype $ChannelSerializer
    **/
     public Channel associateRepo(String sessionKey, String chanLabel, String repoLabel) {
         User user = getLoggedInUser(sessionKey);
@@ -2448,7 +2450,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("string", "chanLabel", "of the channel to use")
     * @xmlrpc.param #param_desc("string", "repoLabel", "of the repo to disassociate")
-    * @xmlrpc.returntype Channel
+    * @xmlrpc.returntype $ChannelSerializer
    **/
     public Channel disassociateRepo(String sessionKey, String chanLabel, String repoLabel) {
         User user = getLoggedInUser(sessionKey);
@@ -2475,7 +2477,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("Long", "id", "of the repo to use")
     * @xmlrpc.param #param_desc("string", "url", "new URL to use")
-    * @xmlrpc.returntype ContentSource
+    * @xmlrpc.returntype $ContentSourceSerializer
    **/
     public ContentSource updateRepoUrl(String sessionKey, Integer id, String url) {
         User user = getLoggedInUser(sessionKey);
@@ -2496,7 +2498,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("string", "label", "of the repo to use")
     * @xmlrpc.param #param_desc("string", "url", "new URL to use")
-    * @xmlrpc.returntype ContentSource
+    * @xmlrpc.returntype $ContentSourceSerializer
    **/
     public ContentSource updateRepoUrl(String sessionKey, String label, String url) {
         User user = getLoggedInUser(sessionKey);
@@ -2517,7 +2519,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("Long", "id", "of the repo to use")
     * @xmlrpc.param #param_desc("string", "label", "new label to use")
-    * @xmlrpc.returntype ContentSource
+    * @xmlrpc.returntype $ContentSourceSerializer
    **/
     public ContentSource updateRepoLabel(String sessionKey, Integer id, String label) {
         User user = getLoggedInUser(sessionKey);
@@ -2540,7 +2542,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.param #param_desc("Long", "id", "of the repo to use")
     * @xmlrpc.param #param_desc("string", "label", "new label to use")
     * @xmlrpc.param #param_desc("string", "url", "new URL to use")
-    * @xmlrpc.returntype ContentSource
+    * @xmlrpc.returntype $ContentSourceSerializer
    **/
     public ContentSource updateRepo(String sessionKey, Integer id, String label,
             String url) {
@@ -2584,4 +2586,88 @@ public class ChannelSoftwareHandler extends BaseHandler {
         return ChannelFactory.lookupContentSource(new Long(id.longValue()));
     }
 
+    /**
+     * Lists associated repos with the given channel
+     * @param sessionKey session key
+     * @param channelLabel channel label
+     * @return list of associates repos
+     *
+     * @xmlrpc.doc Lists associated repos with the given channel
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
+     * @xmlrpc.returntype
+     *      #array()
+     *          $ContentSourceSerializer
+     *      #array_end()
+     */
+    public List<ContentSource> listChannelRepos(String sessionKey, String channelLabel) {
+        User loggedInUser = getLoggedInUser(sessionKey);
+        Channel channel = ChannelManager.lookupByLabel(loggedInUser.getOrg(),
+                channelLabel);
+        return ChannelFactory.lookupContentSources(loggedInUser.getOrg(), channel);
+    }
+
+    /**
+     * Trigger immediate repo synchronization
+     * @param sessionKey session key
+     * @param channelLabel channel label
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Trigger immediate repo synchronization
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
+     * @xmlrpc.returntype  #return_int_success()
+     */
+    public int syncRepo(String sessionKey, String channelLabel) {
+        User loggedInUser = getLoggedInUser(sessionKey);
+        Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
+        new TaskomaticApi().scheduleSingleRepoSync(chan, loggedInUser);
+        return 1;
+    }
+    /**
+     * Schedule periodic repo synchronization
+     * @param sessionKey session key
+     * @param channelLabel channel label
+     * @param cronExpr cron expression, if empty all periodic schedules will be disabled
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Schedule periodic repo synchronization
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
+     * @xmlrpc.param #param_desc("string", "cron expression",
+     *      "if empty all periodic schedules will be disabled")
+     * @xmlrpc.returntype  #return_int_success()
+     */
+    public int syncRepo(String sessionKey, String channelLabel, String cronExpr) {
+        User loggedInUser = getLoggedInUser(sessionKey);
+        Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
+        if (StringUtils.isEmpty(cronExpr)) {
+            new TaskomaticApi().unscheduleRepoSync(chan, loggedInUser);
+        }
+        else {
+            new TaskomaticApi().scheduleRepoSync(chan, loggedInUser, cronExpr);
+        }
+        return 1;
+    }
+
+    /**
+     * Returns repo synchronization cron expression
+     * @param sessionKey session key
+     * @param channelLabel channel label
+     * @return cron expression
+     *
+     * @xmlrpc.doc Returns repo synchronization cron expression
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
+     * @xmlrpc.return cron expression
+     */
+    public String getRepoSyncCronExpression(String sessionKey, String channelLabel) {
+        User loggedInUser = getLoggedInUser(sessionKey);
+        Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
+            String cronExpr = new TaskomaticApi().getRepoSyncSchedule(chan, loggedInUser);
+            if (StringUtils.isEmpty(cronExpr)) {
+                return new String("");
+            }
+            return cronExpr;
+    }
 }

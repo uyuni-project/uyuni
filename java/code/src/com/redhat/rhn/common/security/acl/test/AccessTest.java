@@ -15,16 +15,12 @@
 package com.redhat.rhn.common.security.acl.test;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -234,29 +230,6 @@ public class AccessTest extends RhnBaseTestCase {
     }
 
 
-
-    public void testOrgProxyEvrAtLeast() throws Exception {
-        Map context = new HashMap();
-        User user = UserTestUtils.findNewUser("testUser", "testOrg");
-        context.put("user", user);
-        String param = "org_proxy_evr_at_least(3.6-2)";
-        String param2 = "org_proxy_evr_at_least(3.6-3)";
-
-        Server server = ServerFactoryTest.createTestServer(user);
-        PackageEvr evr = PackageEvrFactory.createPackageEvr(null, "3.6", "2");
-
-        WriteMode m = ModeFactory.
-        getWriteMode("test_queries", "make_server_proxy");
-        Map params = new HashMap();
-        params.put("server_id", server.getId());
-        params.put("evr_id", evr.getId());
-        m.executeUpdate(params);
-
-        boolean access = acl.evalAcl(context, param);
-        assertTrue(access);
-        access = acl.evalAcl(context, param2);
-        assertFalse(access);
-    }
 
     public void testUnimplementedMethods() {
 

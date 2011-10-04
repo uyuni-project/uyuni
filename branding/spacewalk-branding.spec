@@ -7,7 +7,7 @@
 %define apacheconfdir %{_sysconfdir}/httpd/conf.d
 %endif
 Name:       spacewalk-branding
-Version:    1.6.3
+Version:    1.6.4
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -52,7 +52,7 @@ install -d -m 755 %{buildroot}%{_var}/lib/tomcat5/webapps/rhn/WEB-INF/lib/
 install -d -m 755 %{buildroot}%{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/
 %endif
 install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn
-install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn/default
+install -d -m 755 %{buildroot}/%{_prefix}/share/rhn/config-defaults
 cp -pR css %{buildroot}/%{wwwdocroot}/
 cp -pR img %{buildroot}/%{wwwdocroot}/
 cp -pR fonts %{buildroot}/%{wwwdocroot}/
@@ -70,7 +70,7 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/tomcat6/weba
 %endif
 
 %if  0%{?suse_version}
-cat > %{buildroot}/%{_sysconfdir}/rhn/default/rhn_docs.conf <<-ENDOFCONFIG
+cat > %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf <<-ENDOFCONFIG
 docs.quick_start=/rhn/help/quick/index.jsp
 docs.proxy_guide=/rhn/help/proxy-quick/index.jsp
 docs.reference_guide=/rhn/help/reference/index.jsp
@@ -81,7 +81,7 @@ docs.release_notes=/rhn/help/release-notes/manager/en-US/index.jsp
 docs.proxy_release_notes=http://www.novell.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/%{version_major}/
 ENDOFCONFIG
 %else
-cp -p conf/rhn_docs.conf %{buildroot}/%{_sysconfdir}/rhn/default/rhn_docs.conf
+cp -p conf/rhn_docs.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf
 %endif
 
 %clean
@@ -109,7 +109,7 @@ rm -rf %{buildroot}
 %else
 %{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/java-branding.jar
 %endif
-%{_sysconfdir}/rhn/default/rhn_docs.conf
+%{_prefix}/share/rhn/config-defaults/rhn_docs.conf
 %dir /etc/rhn
 %dir /etc/rhn/default
 %dir %{wwwdocroot}/nav
@@ -124,6 +124,9 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Fri Sep 30 2011 Jan Pazdziora 1.6.4-1
+- 621531 - move /etc/rhn/default to /usr/share/rhn/config-defaults (branding).
+
 * Fri Sep 02 2011 Jan Pazdziora 1.6.3-1
 - 558972 - making the navigational bar nice on 2000+ px wide screens.
 

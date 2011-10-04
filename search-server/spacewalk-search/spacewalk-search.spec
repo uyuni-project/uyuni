@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.1
+Version: 1.6.3
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -81,7 +81,7 @@ ant -Dant.build.javac.source=1.5 -Dant.build.javac.target=1.5 -Djar.version=%{ve
 %else
 ant -Djar.version=%{version} install
 %endif
-install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/rhn/search
+install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/indexes
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib
@@ -96,8 +96,8 @@ cp -d lib/* $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/lib
 install -p -m 644 src/config/etc/logrotate.d/rhn-search $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn-search
 install -p -m 755 src/config/rhn-search $RPM_BUILD_ROOT%{_initrddir}
 ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/rhnsearchd
-install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/search/rhn_search.conf
-install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/search/rhn_search_daemon.conf
+install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search.conf
+install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/spacewalk-search.jar
 
 # add rc link
@@ -134,10 +134,10 @@ fi
 %attr(755, root, root) %{_bindir}/rhnsearchd
 %{_sbindir}/rcrhn-search
 %dir %{_sysconfdir}/rhn/search/
-%config(noreplace) %{_sysconfdir}/rhn/search/rhn_search.conf
-%config(noreplace) %{_sysconfdir}/rhn/search/rhn_search_daemon.conf
+%{_prefix}/share/rhn/config-defaults/rhn_search.conf
+%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 %{_sysconfdir}/logrotate.d/rhn-search
-%dir /etc/rhn
+%dir %{_prefix}/share/rhn/config-defaults
 %dir /usr/share/rhn
 %dir /usr/share/rhn/search
 %dir /usr/share/rhn/search/lib
@@ -145,6 +145,17 @@ fi
 
 
 %changelog
+* Fri Sep 30 2011 Jan Pazdziora 1.6.3-1
+- 621531 - update startup scripts to use the new /usr/share/rhn/config-defaults
+  location.
+- 621531 - update search Configuration to use the new /usr/share/rhn/config-
+  defaults location.
+- 621531 - move /etc/rhn/search to /usr/share/rhn/config-defaults (search).
+
+* Fri Sep 30 2011 Jan Pazdziora 1.6.2-1
+- 621531 - fixing comment - the search server uses /etc/rhn/search, not
+  /etc/rhn/default.
+
 * Fri Jul 22 2011 Jan Pazdziora 1.6.1-1
 - We only support version 14 and newer of Fedora, removing conditions for old
   versions.

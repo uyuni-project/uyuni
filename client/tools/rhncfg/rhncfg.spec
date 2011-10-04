@@ -8,7 +8,7 @@ Group:   Applications/System
 License: GPLv2 and Python
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.14
+Version: 5.10.16
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -117,6 +117,13 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Thu Sep 29 2011 Miroslav Suchý 5.10.16-1
+- add save_traceback even into this branch
+
+* Fri Sep 23 2011 Martin Minar <mminar@redhat.com> 5.10.15-1
+- Fix `rhncfg-client verify' traceback for missing symlinks
+  (Joshua.Roys@gtri.gatech.edu)
+
 * Thu Aug 18 2011 Michael Mraka <michael.mraka@redhat.com> 5.10.14-1
 - 731284 - is_selinux_enabled is not defined on RHEL4
 

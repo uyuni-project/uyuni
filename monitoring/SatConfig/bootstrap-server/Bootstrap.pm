@@ -56,7 +56,7 @@ sub handler
 	my $satrec;
 	
 	if (defined($ssk)) {
-	    $satrec  = SatNodeRecord->LoadOneFromSql("select recid,ip,sat_cluster_id,scout_shared_key from sat_node where scout_shared_key = '$ssk'");
+	    $satrec  = SatNodeRecord->LoadOneFromSql("select recid,ip,sat_cluster_id,scout_shared_key from rhn_sat_node where scout_shared_key = '$ssk'");
 	    if (! defined($satrec)) {
 		return &Reject($request, "Couldn't look up record for Scout Shared Key $ssk: $@");
 	    } 
@@ -65,17 +65,17 @@ sub handler
 	my $clustid = $satrec->get_SAT_CLUSTER_ID;
 	my $satid = $satrec->get_RECID;
 	my $scout_shared_key = $satrec->get_SCOUT_SHARED_KEY;
-	my $clustrec = SatClusterRecord->LoadOneFromSql("select recid,description,customer_id from sat_cluster where recid = '$clustid'");
-	my $isll = CFDBRecord->LoadOneFromSql("select netsaint_id from ll_netsaint where netsaint_id = '$clustid'") ? 1 : 0;
+	my $clustrec = SatClusterRecord->LoadOneFromSql("select recid,description,customer_id from rhn_sat_cluster where recid = '$clustid'");
+	my $isll = CFDBRecord->LoadOneFromSql("select netsaint_id from rhn_ll_netsaint where netsaint_id = '$clustid'") ? 1 : 0;
 	CFDBRecord->ReleaseAllInstances;
 	
 	# Store the satellite public key if one was provided
 	if (defined($key)) {
-	    CFDBRecord->DatabaseConnection->prepare("update sat_cluster set public_key = '$key' where recid = $clustid")->execute;
+	    CFDBRecord->DatabaseConnection->prepare("update rhn_sat_cluster set public_key = '$key' where recid = $clustid")->execute;
 	    CFDBRecord->Commit;
 	}
 	if (defined($cert)) {
-	    CFDBRecord->DatabaseConnection->prepare("update sat_cluster set pem_public_key = '$cert', pem_public_key_hash = '$certHash' where recid = $clustid")->execute;
+	    CFDBRecord->DatabaseConnection->prepare("update rhn_sat_cluster set pem_public_key = '$cert', pem_public_key_hash = '$certHash' where recid = $clustid")->execute;
 	    CFDBRecord->Commit;
 	}
     

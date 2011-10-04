@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.41
+Version: 1.6.54
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -353,10 +353,10 @@ install -m 755 conf/rhn6.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/loca
 install -d -m 755 $RPM_BUILD_ROOT%{_initrddir}
 install -d -m 755 $RPM_BUILD_ROOT%{_bindir}
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/rhn
-install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/rhn/default
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/lib
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/classes
+install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdir}
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirup}
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirwiz}
@@ -369,9 +369,9 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 %endif
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
-install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/default/rhn_hibernate.conf
-install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/default/rhn_taskomatic_daemon.conf
-install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_sysconfdir}/rhn/default/rhn_org_quartz.conf
+install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
+install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
+install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 install -m 755 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_initrddir}
 
@@ -615,9 +615,9 @@ fi
 %dir /etc/rhn
 %dir /etc/rhn/default
 %defattr(644, root, root)
-%config %{_sysconfdir}/rhn/default/rhn_hibernate.conf
-%config %{_sysconfdir}/rhn/default/rhn_taskomatic_daemon.conf
-%config %{_sysconfdir}/rhn/default/rhn_org_quartz.conf
+%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
+%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
+%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 %config %{_sysconfdir}/logrotate.d/rhn_web_api
 
 
@@ -639,6 +639,87 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Mon Oct 03 2011 Miroslav Suchý 1.6.54-1
+- 229836 - allow empty prefix for user
+
+* Sun Oct 02 2011 Jan Pazdziora 1.6.53-1
+- Removing unused imports.
+
+* Sun Oct 02 2011 Jan Pazdziora 1.6.52-1
+- Removing unused imports.
+
+* Fri Sep 30 2011 Jan Pazdziora 1.6.51-1
+- 678118 - if system already is proxy, losen the ACL and show the tab.
+- Removing make_server_proxy query as it is no longer used.
+- Removing org_proxy_servers_evr query as it is no longer used.
+- Removing proxy_evr_at_least, org_proxy_evr_at_least, aclOrgProxyEvrAtLeast as
+  they are no longer used.
+- Remove proxy_evr_at_least ACLs -- all supported proxy versions are 3+.
+- 602179 - limit fake generated password to maximal password length
+  (tlestach@redhat.com)
+
+* Fri Sep 30 2011 Jan Pazdziora 1.6.50-1
+- 621531 - update java build configs to use the new /usr/share/rhn/config-
+  defaults location.
+- 621531 - update java Config and taskomatic to use the new /usr/share/rhn
+  /config-defaults location.
+- 621531 - move /etc/rhn/default to /usr/share/rhn/config-defaults (java).
+- fix xmlrpc returntypes (tlestach@redhat.com)
+- 682845 - schedule repo synchronization through API (tlestach@redhat.com)
+
+* Thu Sep 22 2011 Tomas Lestach <tlestach@redhat.com> 1.6.49-1
+- 610157 - introduce system.getScriptActionDetails API (tlestach@redhat.com)
+- 740427 - use sequence_nextval function (tlestach@redhat.com)
+- 610784 - adding 'updated' attribute to system.listNotes API
+  (tlestach@redhat.com)
+
+* Thu Sep 22 2011 Tomas Lestach <tlestach@redhat.com> 1.6.48-1
+- 680489 - introduce tag system tag related API calls (tlestach@redhat.com)
+- 680489 - intorduce system.provisioning.snapshot.addTagToSnapshot API call
+  (tlestach@redhat.com)
+- checkstyle issues (tlestach@redhat.com)
+- 740306 - fix delete -> register reprovisioning scenario
+  (mzazrivec@redhat.com)
+
+* Fri Sep 16 2011 Tomas Lestach <tlestach@redhat.com> 1.6.47-1
+- 717984 - list only ssm systems in SSM Selected Systems List tab
+  (tlestach@redhat.com)
+- update copyright info (mzazrivec@redhat.com)
+- 619723 - Add support for open ranges, like bytes=9500- or bytes=-500.
+  (jpazdziora@redhat.com)
+- 509563 - add missing import (mzazrivec@redhat.com)
+- 509563 - remove system profile from cobbler during system deletion
+  (mzazrivec@redhat.com)
+- 732350 - link mchange-commons jar to taskomatic (tlestach@redhat.com)
+
+* Fri Sep 16 2011 Jan Pazdziora 1.6.46-1
+- CVE-2011-2927, 730955 - remove markup from localized string resources as
+  well.
+- CVE-2011-2927, 730955 - remove markup from the error messages.
+- CVE-2011-2927, 730955 - replace <html:errors> with loop that can use c:out to
+  escape HTML.
+- CVE-2011-2927, 730955 - using struts quotes values properly.
+- CVE-2011-2920, 681032 - escape the hidden element value to avoid XSS.
+- Encode the & in makeParamsLink.
+- CVE-2011-2919, 713478 - URL-encode parameter names, not just values, in the
+  URL.
+- CVE-2011-1594, 672167 - only local redirects are allowed
+  (michael.mraka@redhat.com)
+
+* Thu Sep 15 2011 Miroslav Suchý 1.6.45-1
+- 719677 - download comps file of child channels during kickstart
+
+* Thu Sep 15 2011 Jan Pazdziora 1.6.44-1
+- Revert "529483 - adding referer check for HTTP requests to java stack"
+- We should not pass empty strings to SQL, use null instead.
+
+* Mon Sep 12 2011 Jan Pazdziora 1.6.43-1
+- 585010 - We need to render the object.
+
+* Mon Sep 12 2011 Jan Pazdziora 1.6.42-1
+- 554781 - add green check to Sync system to package profile when profile is
+  being synced.
+
 * Fri Sep 09 2011 Martin Minar <mminar@redhat.com> 1.6.41-1
 - 736381 - New API: system.deleteGuestProfiles() (mzazrivec@redhat.com)
 

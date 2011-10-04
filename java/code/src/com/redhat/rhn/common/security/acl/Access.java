@@ -24,7 +24,6 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -40,7 +39,6 @@ import com.redhat.rhn.manager.user.UserManager;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -260,48 +258,6 @@ public class Access extends BaseHandler implements AclHandler {
         Map map = (Map) ctx;
         Long sid = getAsLong(map.get("sid"));
         return ServerFactory.lookupById(sid).isSolaris();
-    }
-
-    /**
-     * FIXME not implemented. Currently this method
-     * is unimplemented and ALWAYS returns false
-     * @param ctx Context Map to pass in
-     * @param params Parameters to use to fetch from Context
-     * @return true if access is granted, false otherwise
-     */
-    public boolean aclOrgProxyEvrAtLeast(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        User user = (User) map.get("user");
-        String version = params[0];
-
-        //Generate the EVR from the parameter string
-        String[] temp = version.split("[:-]");
-        PackageEvr paramEVR;
-        if (temp.length > 2) {
-            paramEVR = new PackageEvr(temp[2], temp[0], temp[1]);
-        }
-        else {
-            paramEVR = new PackageEvr(null, temp[0], temp[1]);
-        }
-
-        //Get EVRs for each proxy server in this org
-        SelectMode m = ModeFactory.getMode("System_queries",
-        "org_proxy_servers_evr");
-        Map queryParams = new HashMap();
-        queryParams.put("org_id", user.getOrg().getId());
-        Iterator i = m.execute(queryParams).iterator();
-
-        //Loop through the dataresult and if one EVR is at least
-        //equal to the parameter EVR
-        while (i.hasNext()) {
-            PackageEvr next = (PackageEvr) i.next();
-            int j = next.compareTo(paramEVR);
-            if (j >= 0) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

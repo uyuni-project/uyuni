@@ -7,7 +7,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.6.16
+Version: 1.6.18
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -19,7 +19,7 @@ Obsoletes: rhn-client-tools < %{version}-%{release}
 %if %{without_rhn_register}
 Obsoletes: rhn-setup-gnome
 %endif
-Requires: rhnlib >= 2.5.38
+Requires: rhnlib >= 2.5.41
 Requires: rpm >= 4.2.3-24_nonptl
 Requires: rpm-python 
 %if 0%{?rhel} && 0%{?rhel} <= 5
@@ -396,6 +396,12 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Mon Oct 03 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.18-1
+- require rhnlib with IDN stuff
+
+* Mon Sep 19 2011 Martin Minar <mminar@redhat.com> 1.6.17-1
+- 688072 - polish registration welcome message a bit (mzazrivec@redhat.com)
+
 * Fri Sep 09 2011 Jan Pazdziora 1.6.16-1
 - 576223 - make rhn-profile-sync write errors to stderr.
 
