@@ -110,6 +110,7 @@ rm -rf %{buildroot}
 %{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/java-branding.jar
 %endif
 %{_prefix}/share/rhn/config-defaults/rhn_docs.conf
+%dir %{_prefix}/share/rhn/config-defaults
 %dir %{wwwdocroot}/nav
 %dir /usr/share/rhn
 %dir /usr/share/rhn/lib
