@@ -133,7 +133,6 @@ fi
 %attr(755, root, root) %{_initrddir}/rhn-search
 %attr(755, root, root) %{_bindir}/rhnsearchd
 %{_sbindir}/rcrhn-search
-%dir %{_sysconfdir}/rhn/search/
 %{_prefix}/share/rhn/config-defaults/rhn_search.conf
 %{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 %{_sysconfdir}/logrotate.d/rhn-search
