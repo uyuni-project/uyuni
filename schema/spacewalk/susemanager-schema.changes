@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Oct  4 17:26:17 CEST 2011 - iartarisi@suse.cz
+
+- allow setting VARCHAR2 size in CHARs and BYTEs explicitly
+- change rhnServerAction.result_msg column size from BYTE to CHAR
+
+-------------------------------------------------------------------
 Wed Jun  8 15:31:43 CEST 2011 - mc@suse.de
 
 - version to 1.2.72
