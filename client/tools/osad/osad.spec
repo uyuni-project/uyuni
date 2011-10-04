@@ -260,14 +260,8 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 
 %files
 %defattr(-,root,root)
-%dir %{rhnroot}
 %dir %{rhnroot}/osad
-%dir %{_sysconfdir}/sysconfig/rhn
-%if 0%{?suse_version}
-%dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
-%endif
 %attr(755,root,root) %{_sbindir}/osad
-%{_sbindir}/rcosad
 %{rhnroot}/osad/__init__.py*
 %{rhnroot}/osad/_ConfigParser.py*
 %{rhnroot}/osad/jabber_lib.py*
@@ -281,6 +275,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(755,root,root) %{_initrddir}/osad
 %doc LICENSE
 %doc PYTHON-LICENSES.txt
+%{_sbindir}/rcosad
 %if 0%{?suse_version}
 # provide directories not owned by any package during build
 %dir %{rhnroot}
@@ -292,7 +287,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %defattr(-,root,root)
 %dir %{rhnroot}/osad
 %attr(755,root,root) %{_sbindir}/osa-dispatcher
-%{_sbindir}/rcosa-dispatcher
 %{rhnroot}/osad/__init__.py*
 %{rhnroot}/osad/jabber_lib.py*
 %{rhnroot}/osad/osa_dispatcher.py*
@@ -301,12 +295,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %config(noreplace) %{_sysconfdir}/sysconfig/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/logrotate.d/osa-dispatcher
 %{rhnroot}/config-defaults/rhn_osa-dispatcher.conf
-%if 0%{?suse_version}
-%dir %{_sysconfdir}/rhn
-%dir %{_sysconfdir}/rhn/tns_admin
-%dir %{_sysconfdir}/rhn/default
-%attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
-%endif
 %config %{_sysconfdir}/rhn/tns_admin/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/rhn/tns_admin/osa-dispatcher/sqlnet.ora
 %attr(755,root,root) %{_initrddir}/osa-dispatcher
@@ -314,11 +302,12 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(770,root,root) %dir %{_var}/log/rhn/oracle/osa-dispatcher
 %doc LICENSE
 %doc PYTHON-LICENSES.txt
+%{_sbindir}/rcosa-dispatcher
 %if 0%{?suse_version}
 %dir %{_sysconfdir}/rhn
 %dir %{rhnroot}/config-defaults
 %dir %{_sysconfdir}/rhn/tns_admin
-%dir %{_var}/log/rhn
+%attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif
 
 %if 0%{?include_selinux_package}
