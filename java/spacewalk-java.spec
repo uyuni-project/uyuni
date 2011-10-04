@@ -612,8 +612,6 @@ fi
 
 %files config
 %defattr(-,root,root)
-%dir /etc/rhn
-%dir /etc/rhn/default
 %defattr(644, root, root)
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
