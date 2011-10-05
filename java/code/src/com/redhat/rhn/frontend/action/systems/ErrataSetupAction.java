@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.systems;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -245,7 +246,7 @@ public class ErrataSetupAction extends RhnAction implements Listable {
          User user = context.getLoggedInUser();
          Long sid = context.getRequiredParam("sid");
          String type = context.getParam(SELECTOR, false);
-         String synopsis = "";
+         String severity = "";
          Boolean currency = false;
 
          LocalizationService ls = LocalizationService.getInstance();
@@ -268,22 +269,22 @@ public class ErrataSetupAction extends RhnAction implements Listable {
          }
          else if (ls.getMessage(SECUR_CRIT).equals(type)) {
              eType = ErrataFactory.ERRATA_TYPE_SECURITY;
-             synopsis = "C";
+             severity = Severity.CRITICAL_LABEL;
              currency = true;
          }
          else if (ls.getMessage(SECUR_IMP).equals(type)) {
              eType = ErrataFactory.ERRATA_TYPE_SECURITY;
-             synopsis = "I";
+             severity = Severity.IMPORTANT_LABEL;
              currency = true;
          }
          else if (ls.getMessage(SECUR_MOD).equals(type)) {
              eType = ErrataFactory.ERRATA_TYPE_SECURITY;
-             synopsis = "M";
+             severity = Severity.MODERATE_LABEL;
              currency = true;
          }
          else if (ls.getMessage(SECUR_LOW).equals(type)) {
              eType = ErrataFactory.ERRATA_TYPE_SECURITY;
-             synopsis = "L";
+             severity = Severity.LOW_LABEL;
              currency = true;
          }
          else { // ALL
@@ -293,7 +294,7 @@ public class ErrataSetupAction extends RhnAction implements Listable {
          }
 
         if (currency) {
-            return SystemManager.relevantCurrencyErrata(user, sid, eType, synopsis);
+            return SystemManager.relevantCurrencyErrata(user, sid, eType, severity);
         }
         else {
             return SystemManager.relevantErrata(user, sid, typeList);
