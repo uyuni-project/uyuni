@@ -942,11 +942,14 @@ def check_channel_exceptions(rs, exc_class, exc_name):
                  (("%s: %s" % (exc_name, "error msg"), ), {}))
 
         
-def _mock_rhnsql(module, return_value):
+def _mock_rhnsql(module, return_values):
     """Method to mock the rhnSQL to return something for us
 
     :module: the module where rhnSQL is called from
-    :return_value: the value or object that rhnSQL's fetches should return
+    :return_values: a list of the consecutive values that rhnSQL
+    fetchall_dict/fetchone_dict will return. If it is just one value,
+    then that value will be returned for all calls to those two methods.
+    :return_value2: the second rhnSQL fetch will return this value
 
     rhnSQL's calls are a often a bit more complex. It usually goes
     like this: first an sql statement is prepared, then it is
@@ -960,10 +963,22 @@ def _mock_rhnsql(module, return_value):
     result = query.fetchall_dict()
 
     """
+    def side_effect(*args):
+        # Raises or returns each of the values in return_values until exhausted
+        # if return_values is not a list, the same value is returned ad infinitum
+        if isinstance(return_values, list) and return_values:
+            result = return_values.pop(0)
+        else:
+            result = return_values
+
+        if isinstance(result, Exception):
+            raise result
+        return result
+
     # we're making prepare() return an object with methods that
     # return our desired return value
     query = Mock()
-    returned_obj = Mock(return_value=return_value)
+    returned_obj = Mock(side_effect=side_effect)
     query.fetchall_dict = query.fetchone_dict = returned_obj
 
     module.rhnSQL.prepare = Mock(return_value=query)
