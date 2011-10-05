@@ -10,9 +10,6 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
-import string
-
-from spacewalk.common import UserDictCase
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug, log_error
