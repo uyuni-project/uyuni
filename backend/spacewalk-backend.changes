@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  5 19:01:45 CEST 2011 - mc@suse.de
+
+- drop incompatible packages of a patch
+
+-------------------------------------------------------------------
 Fri Sep 30 12:39:33 CEST 2011 - mc@suse.de
 
 - remove default currency from backend part of rhn.conf
