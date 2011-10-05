@@ -21,7 +21,7 @@ Feature: Adding repository to a channel
      And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
 
-  Scenario: Add repository to the channel
+  Scenario: Add repository to the i586 channel
    Given I am authorized as "testing" with password "testing"
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
@@ -31,7 +31,7 @@ Feature: Adding repository to a channel
      And I click on "Update Repositories"
     Then I should see a "SLES11-SP1-Updates i586 Channel repository information was successfully updated" text
 
-  Scenario: Sync the repository in the channel
+  Scenario: Sync the repository in the i586 channel
    Given I am authorized as "testing" with password "testing"
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
@@ -64,7 +64,7 @@ Feature: Adding repository to a channel
     Then I should see a "Repository updated successfully" text
      And I should see "metadataSigned" as unchecked
 
-  Scenario: Add repository to the channel
+  Scenario: Add repository to the x86_64 channel
    Given I am authorized as "testing" with password "testing"
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
@@ -74,7 +74,7 @@ Feature: Adding repository to a channel
      And I click on "Update Repositories"
     Then I should see a "SLES11-SP1-Updates x86_64 Channel repository information was successfully updated" text
 
-  Scenario: Sync the repository in the channel
+  Scenario: Sync the repository in the x86_64 channel
    Given I am authorized as "testing" with password "testing"
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
