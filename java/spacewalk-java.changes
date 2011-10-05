@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  5 16:33:20 CEST 2011 - jrenner@suse.de
+
+- Fix selection of errata for system currency report (bnc#721522)
+
+-------------------------------------------------------------------
 Wed Oct  5 14:23:36 CEST 2011 - mc@suse.de
 
 - prevent listing duplicate servers in the Patch Alert e-mails
