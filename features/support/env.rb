@@ -6,13 +6,15 @@
 #
 
 # :firefox requires MozillaFirefox 3.7 or later !!
-
+$: << File.join(File.dirname(__FILE__), "..", "..", "lib")
+require 'rubygems'
 require 'tmpdir'
 require 'base64'
+require 'capybara'
+require 'capybara/cucumber'
+require File.join(File.dirname(__FILE__), '/cobbler_test.rb')
 
-$: << File.join(File.dirname(__FILE__), "..", "..", "lib")
-
-browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :firefox #:htmlunit #:chrome #:firefox
+browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :chrome
 host = ENV['TESTHOST'] || 'andromeda.suse.de'
 
 # basic support for rebranding of strings in the UI
@@ -62,29 +64,24 @@ $myhostname.chomp!
 ENV['LANG'] = "en_US.UTF-8"
 ENV['IGNORECERT'] = "1"
 
-require 'rubygems'
-require 'capybara'
-require 'capybara/cucumber'
-require 'selenium-webdriver'
-require File.join(File.dirname(__FILE__), '/cobbler_test.rb')
-
-require 'culerity' if browser == :htmlunit
-
-#Capybara.app = Galaxy
-#Capybara.default_wait_time = 5
 Capybara.default_wait_time = 60
 
 # Register different browsers
-Capybara.register_driver :selenium_chrome do |app|
-  Capybara::Selenium::Driver.new(app, :browser => :chrome, :switches => ['--ignore-certificate-errors'])
-end
-
-Capybara.register_driver :selenium_firefox do |app|
-  Capybara::Selenium::Driver.new(app, :browser => :firefox)
+case browser
+  when :chrome
+    Capybara.register_driver :selenium do |app|
+      Capybara::Selenium::Driver.new(app, :browser => :chrome, :switches => ['--ignore-certificate-errors'])
+    end
+  when :firefox
+    #require 'selenium-webdriver'
+    Capybara.register_driver :selenium do |app|
+      Capybara::Selenium::Driver.new(app, :browser => :firefox)
+    end
 end
 
 case browser
 when :htmlunit
+  require 'culerity'
   Capybara.default_driver = :culerity
   Capybara.use_default_driver
 when :webkit
@@ -93,22 +90,25 @@ when :webkit
   Capybara.javascript_driver = :webkit
   Capybara.app_host = host
 else
-  Capybara.default_driver = "selenium_#{browser}".to_sym
+  Capybara.default_driver = :selenium
   Capybara.app_host = host
 end
 
 # don't run own server on a random port
 Capybara.run_server = false
-# Remote::Capabilities.chrome
 
 # screenshots
-After do |scenario| 
+After do |scenario|
+
   if scenario.failed?
-    case Capybara.default_driver
-    when :selenium_firefox 
-      encoded_img = page.driver.browser.screenshot_as(:base64)
-      embed("data:image/png;base64,#{encoded_img}", 'image/png')
-    when :webkit
+    case page.driver
+    when Capybara::Selenium::Driver
+      # chromiumdriver does not support screenshots yet
+      if page.driver.options[:browser] == :firefox
+        encoded_img = page.driver.browser.screenshot_as(:base64)
+        embed("data:image/png;base64,#{encoded_img}", 'image/png')
+      end
+    when Capybara::Driver::Webkit
       path = File.join(Dir.tmpdir, "testsuite.png")
       page.driver.render(path)
       embed("data:image/png;base64,#{Base64.encode64(File.read(path))}", 'image/png')
