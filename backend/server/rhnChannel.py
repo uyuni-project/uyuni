@@ -20,7 +20,6 @@ import string
 import rpm
 import sys
 import xmlrpclib
-from spacewalk.susemanager import suseLib
 
 from types import IntType, ListType, DictType
 
