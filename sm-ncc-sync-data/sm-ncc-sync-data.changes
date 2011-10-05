@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  5 10:03:44 CEST 2011 - iartarisi@suse.cz
+
+- fixed SLES10 Tools channels urls (sle-10-* vs. sles-10-*)
+
+-------------------------------------------------------------------
 Tue Sep 20 14:20:13 CEST 2011 - iartarisi@suse.cz
 
 - remove all SLES10 SP2 channels
