@@ -7,6 +7,9 @@
 
 # :firefox requires MozillaFirefox 3.7 or later !!
 
+require 'tmpdir'
+require 'base64'
+
 $: << File.join(File.dirname(__FILE__), "..", "..", "lib")
 
 browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :firefox #:htmlunit #:chrome #:firefox
@@ -73,7 +76,7 @@ Capybara.default_wait_time = 60
 
 # Register different browsers
 Capybara.register_driver :selenium_chrome do |app|
-  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+  Capybara::Selenium::Driver.new(app, :browser => :chrome, :switches => ['--ignore-certificate-errors'])
 end
 
 Capybara.register_driver :selenium_firefox do |app|
@@ -84,6 +87,11 @@ case browser
 when :htmlunit
   Capybara.default_driver = :culerity
   Capybara.use_default_driver
+when :webkit
+  require "capybara-webkit"
+  Capybara.default_driver = :webkit
+  Capybara.javascript_driver = :webkit
+  Capybara.app_host = host
 else
   Capybara.default_driver = "selenium_#{browser}".to_sym
   Capybara.app_host = host
@@ -95,8 +103,15 @@ Capybara.run_server = false
 
 # screenshots
 After do |scenario| 
-  if scenario.failed? && (Capybara.default_driver == :selenium_firefox) 
-    encoded_img = page.driver.browser.screenshot_as(:base64)
-    embed("data:image/png;base64,#{encoded_img}", 'image/png')
+  if scenario.failed?
+    case Capybara.default_driver
+    when :selenium_firefox 
+      encoded_img = page.driver.browser.screenshot_as(:base64)
+      embed("data:image/png;base64,#{encoded_img}", 'image/png')
+    when :webkit
+      path = File.join(Dir.tmpdir, "testsuite.png")
+      page.driver.render(path)
+      embed("data:image/png;base64,#{Base64.encode64(File.read(path))}", 'image/png')
+    end
   end
 end
