@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  5 14:23:36 CEST 2011 - mc@suse.de
+
+- prevent listing duplicate servers in the Patch Alert e-mails
+
+-------------------------------------------------------------------
 Fri Sep 30 10:54:21 CEST 2011 - mc@suse.de
 
 - enable sorting of the system currency page
