@@ -70,7 +70,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="s390x" description="SUSE-Manager-Tools" family="7261" is_signed="Y" label="sle10-sp4-suse-manager-tools-s390x" name="SLE10-SP4 SUSE-Manager-Tools s390x" optional="N" parent="sles10-sp4-pool-s390x" product_name="SUSE-Linux-Enterprise-Server-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sle-10-s390x" summary="SUSE-Manager-Tools">
+	<channel arch="s390x" description="SUSE-Manager-Tools" family="7261" is_signed="Y" label="sle10-sp4-suse-manager-tools-s390x" name="SLE10-SP4 SUSE-Manager-Tools s390x" optional="N" parent="sles10-sp4-pool-s390x" product_name="SUSE-Linux-Enterprise-Server-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sles-10-s390x" summary="SUSE-Manager-Tools">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP4">
 				2530
@@ -276,7 +276,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="ia64" description="SUSE-Manager-Tools" family="SLES-IA" is_signed="Y" label="sle10-sp4-suse-manager-tools-ia64" name="SLE10-SP4 SUSE-Manager-Tools ia64" optional="N" parent="sles10-sp4-pool-ia64" product_name="SUSE-Linux-Enterprise-Server-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sle-10-ia64" summary="SUSE-Manager-Tools">
+	<channel arch="ia64" description="SUSE-Manager-Tools" family="SLES-IA" is_signed="Y" label="sle10-sp4-suse-manager-tools-ia64" name="SLE10-SP4 SUSE-Manager-Tools ia64" optional="N" parent="sles10-sp4-pool-ia64" product_name="SUSE-Linux-Enterprise-Server-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sles-10-ia64" summary="SUSE-Manager-Tools">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP4">
 				2529
@@ -465,7 +465,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc" description="SUSE-Manager-Tools" family="SLES-PPC" is_signed="Y" label="sle10-sp4-suse-manager-tools-ppc" name="SLE10-SP4 SUSE-Manager-Tools ppc" optional="N" parent="sles10-sp4-pool-ppc" product_name="SUSE-Linux-Enterprise-Server-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sle-10-ppc" summary="SUSE-Manager-Tools">
+	<channel arch="ppc" description="SUSE-Manager-Tools" family="SLES-PPC" is_signed="Y" label="sle10-sp4-suse-manager-tools-ppc" name="SLE10-SP4 SUSE-Manager-Tools ppc" optional="N" parent="sles10-sp4-pool-ppc" product_name="SUSE-Linux-Enterprise-Server-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sles-10-ppc" summary="SUSE-Manager-Tools">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP4">
 				2527
@@ -533,7 +533,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc" description="SUSE-Manager-Tools" family="SLES-PPC" is_signed="Y" label="sle10-sp3-suse-manager-tools-ppc" name="SLE10-SP3 SUSE-Manager-Tools ppc" optional="N" parent="sles10-sp3-pool-ppc" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sle-10-ppc" summary="SUSE-Manager-Tools">
+	<channel arch="ppc" description="SUSE-Manager-Tools" family="SLES-PPC" is_signed="Y" label="sle10-sp3-suse-manager-tools-ppc" name="SLE10-SP3 SUSE-Manager-Tools ppc" optional="N" parent="sles10-sp3-pool-ppc" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sles-10-ppc" summary="SUSE-Manager-Tools">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
 				1505
@@ -908,7 +908,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="s390x" description="SUSE-Manager-Tools" family="SLES-Z" is_signed="Y" label="sle10-sp3-suse-manager-tools-s390x" name="SLE10-SP3 SUSE-Manager-Tools s390x" optional="N" parent="sles10-sp3-pool-s390x" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sle-10-s390x" summary="SUSE-Manager-Tools">
+	<channel arch="s390x" description="SUSE-Manager-Tools" family="SLES-Z" is_signed="Y" label="sle10-sp3-suse-manager-tools-s390x" name="SLE10-SP3 SUSE-Manager-Tools s390x" optional="N" parent="sles10-sp3-pool-s390x" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sles-10-s390x" summary="SUSE-Manager-Tools">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
 				1508
@@ -1029,7 +1029,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE-Manager-Tools" family="7261" is_signed="Y" label="sle10-sp3-suse-manager-tools-i586" name="SLE10-SP3 SUSE-Manager-Tools i586" optional="N" parent="sles10-sp3-pool-i586" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sle-10-i586" summary="SUSE-Manager-Tools">
+	<channel arch="i586" description="SUSE-Manager-Tools" family="7261" is_signed="Y" label="sle10-sp3-suse-manager-tools-i586" name="SLE10-SP3 SUSE-Manager-Tools i586" optional="N" parent="sles10-sp3-pool-i586" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sles-10-i586" summary="SUSE-Manager-Tools">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
 				1500
@@ -1192,7 +1192,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE-Manager-Tools" family="7261" is_signed="Y" label="sle10-sp4-suse-manager-tools-i586" name="SLE10-SP4 SUSE-Manager-Tools i586" optional="N" parent="sles10-sp4-pool-i586" product_name="SUSE-Linux-Enterprise-Server-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sle-10-i586" summary="SUSE-Manager-Tools">
+	<channel arch="i586" description="SUSE-Manager-Tools" family="7261" is_signed="Y" label="sle10-sp4-suse-manager-tools-i586" name="SLE10-SP4 SUSE-Manager-Tools i586" optional="N" parent="sles10-sp4-pool-i586" product_name="SUSE-Linux-Enterprise-Server-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sles-10-i586" summary="SUSE-Manager-Tools">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP4">
 				2522
@@ -1465,7 +1465,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE-Manager-Tools" family="7261" is_signed="Y" label="sle10-sp3-suse-manager-tools-x86_64" name="SLE10-SP3 SUSE-Manager-Tools x86_64" optional="N" parent="sles10-sp3-pool-x86_64" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sle-10-x86_64" summary="SUSE-Manager-Tools">
+	<channel arch="x86_64" description="SUSE-Manager-Tools" family="7261" is_signed="Y" label="sle10-sp3-suse-manager-tools-x86_64" name="SLE10-SP3 SUSE-Manager-Tools x86_64" optional="N" parent="sles10-sp3-pool-x86_64" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sles-10-x86_64" summary="SUSE-Manager-Tools">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
 				1504
@@ -1639,7 +1639,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="ia64" description="SUSE-Manager-Tools" family="SLES-IA" is_signed="Y" label="sle10-sp3-suse-manager-tools-ia64" name="SLE10-SP3 SUSE-Manager-Tools ia64" optional="N" parent="sles10-sp3-pool-ia64" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sle-10-ia64" summary="SUSE-Manager-Tools">
+	<channel arch="ia64" description="SUSE-Manager-Tools" family="SLES-IA" is_signed="Y" label="sle10-sp3-suse-manager-tools-ia64" name="SLE10-SP3 SUSE-Manager-Tools ia64" optional="N" parent="sles10-sp3-pool-ia64" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sles-10-ia64" summary="SUSE-Manager-Tools">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
 				1507
@@ -1701,7 +1701,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE-Manager-Tools" family="7261" is_signed="Y" label="sle10-sp4-suse-manager-tools-x86_64" name="SLE10-SP4 SUSE-Manager-Tools x86_64" optional="N" parent="sles10-sp4-pool-x86_64" product_name="SUSE-Linux-Enterprise-Server-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sle-10-x86_64" summary="SUSE-Manager-Tools">
+	<channel arch="x86_64" description="SUSE-Manager-Tools" family="7261" is_signed="Y" label="sle10-sp4-suse-manager-tools-x86_64" name="SLE10-SP4 SUSE-Manager-Tools x86_64" optional="N" parent="sles10-sp4-pool-x86_64" product_name="SUSE-Linux-Enterprise-Server-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sles-10-x86_64" summary="SUSE-Manager-Tools">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP4">
 				2526
