@@ -801,15 +801,15 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult<ErrataOverview> relevantCurrencyErrata(User user,
                                                Long sid, String type,
-                                               String synopsis) {
+                                               String severityLabel) {
         SelectMode m = ModeFactory.getMode("Errata_queries",
-                 "security_relevant_to_system_by_synopsis");
+                 "security_relevant_to_system_by_severity");
 
         Map params = new HashMap();
         params.put("user_id", user.getId());
         params.put("sid", sid);
         params.put("type", type);
-        params.put("synopsis", synopsis);
+        params.put("severity_label", severityLabel);
 
         Map elabParams = new HashMap();
         elabParams.put("sid", sid);
