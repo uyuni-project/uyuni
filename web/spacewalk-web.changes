@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 22 15:03:51 CET 2011 - mantel@suse.de
+
+- fix ORACLE_HOME for spacewalk-dobby
+
+-------------------------------------------------------------------
 Fri Nov 11 17:20:41 CET 2011 - jrenner@suse.de
 
 - Fix stacktraces produced by auditlog-keeper
