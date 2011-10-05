@@ -70,6 +70,7 @@ class RepoSync:
         self.fail = fail
         self.quiet = quiet
         self.interactive = not noninteractive
+        self.compatArchs = None
 
         initCFG('server.satellite')
         db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
@@ -401,6 +402,7 @@ class RepoSync:
 
         """
         erratum_packages = []
+        compatArchs = self.compatiblePackageArchs()
         for pkg in packages:
             param_dict = {
                 'name': pkg['name'],
@@ -409,6 +411,8 @@ class RepoSync:
                 'arch': pkg['arch'],
                 'epoch': pkg['epoch'],
                 'channel_label': self.channel_label}
+            if param_dict['arch'] not in compatArchs:
+                continue
             ret = self._process_package(param_dict, advisory_name)
             if not ret:
                 # This package could not be found in the database
@@ -431,6 +435,7 @@ class RepoSync:
 
         """
         erratum_packages = []
+        compatArchs = self.compatiblePackageArchs()
         for pkg in packages:
             nevr = pkg.find(
                 '%sformat' % prefix['yum']).find(
@@ -444,6 +449,8 @@ class RepoSync:
                 'arch': pkg.find('%sarch' % prefix['yum']).text,
                 'channel_label': self.channel_label
             }
+            if param_dict['arch'] not in compatArchs:
+                continue
             ret = self._process_package(param_dict, advisory_name)
             if not ret:
                 # This package could not be found in the database
@@ -655,6 +662,9 @@ class RepoSync:
         return rhnChannel.channel_info(self.channel_label)
 
     def compatiblePackageArchs(self):
+        if self.compatArchs:
+            return self.compatArchs
+
         h = rhnSQL.prepare("""select pa.label
                               from rhnChannelPackageArchCompat cpac,
                               rhnChannel c,
@@ -664,10 +674,10 @@ class RepoSync:
                               and cpac.package_arch_id = pa.id""")
         h.execute(channel_id=self.channel['id'])
         ca = h.fetchall_dict()
-        compatArchs = []
+        self.compatArchs = []
         for arch in ca:
-            compatArchs.append(arch['label'])
-        return compatArchs
+            self.compatArchs.append(arch['label'])
+        return self.compatArchs
 
     def _link_packages(self, packages):
         """Create a record in the database for each package on our filesystem"""
