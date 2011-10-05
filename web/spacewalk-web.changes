@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  5 11:54:16 CEST 2011 - mantel@suse.de
+
+- fix ORACLE_HOME for spacewalk-dobby
+
+-------------------------------------------------------------------
 Thu Sep  8 15:30:32 CEST 2011 - iartarisi@suse.cz
 
 - readd a lot of perl files that were accidentally deleted from the
