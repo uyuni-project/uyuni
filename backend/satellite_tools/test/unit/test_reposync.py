@@ -846,6 +846,23 @@ class RepoSyncTest(unittest.TestCase):
                          [((p1, 'pkg_path'), {}), ((p2, 'pkg_path'), {})])
         self.assertEqual(rs.error_msg.call_args_list,
                          [((exc, ), {}), ((exc, ), {})])
+
+    def test_get_errata_no_advisories_found(self):
+        rs = self._create_mocked_reposync()
+        _mock_rhnsql(self.reposync, None)
+        self.assertEqual(rs.get_errata('bogus'), None)
+
+    def test_get_errata_advisories_but_no_channels(self):
+        rs = self._create_mocked_reposync()
+        _mock_rhnsql(self.reposync, [{'id': 42}, []])
+        self.assertEqual(rs.get_errata('bogus'), {'channels': [], 'id': 42})
+
+    def test_get_errata_success(self):
+        rs = self._create_mocked_reposync()
+        _mock_rhnsql(self.reposync, [{'id': 42}, ['channel1', 'channel2']])
+        self.assertEqual(rs.get_errata('bogus'), {'id': 42,
+                                                  'channels': ['channel1',
+                                                               'channel2']})
         
     def _create_mocked_reposync(self):
         rs = self.reposync.RepoSync("Label", RTYPE)
