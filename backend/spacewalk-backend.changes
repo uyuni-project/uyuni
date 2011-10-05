@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct  5 13:28:38 CEST 2011 - iartarisi@suse.cz
+
+- fixed import errors in rhnServer/server_suse.py and rhnChannel.py
+
+-------------------------------------------------------------------
 Fri Sep 23 15:27:44 CEST 2011 - mc@suse.de
 
 - recompile python modules after check
