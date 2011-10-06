@@ -70,7 +70,6 @@ class RepoSync:
         self.fail = fail
         self.quiet = quiet
         self.interactive = not noninteractive
-        self.compatArchs = None
 
         initCFG('server.satellite')
         db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
@@ -120,6 +119,8 @@ class RepoSync:
         if not self.channel:
             self.print_msg("Channel does not exist.")
             sys.exit(1)
+
+        self.arches = get_compatible_arches(self.channel['id'])
 
     def load_plugin(self, repo_type):
         """Try to import the repository plugin required to sync the repository
@@ -402,7 +403,6 @@ class RepoSync:
 
         """
         erratum_packages = []
-        compatArchs = self.compatiblePackageArchs()
         for pkg in packages:
             param_dict = {
                 'name': pkg['name'],
@@ -411,7 +411,7 @@ class RepoSync:
                 'arch': pkg['arch'],
                 'epoch': pkg['epoch'],
                 'channel_label': self.channel_label}
-            if param_dict['arch'] not in compatArchs:
+            if param_dict['arch'] not in self.arches:
                 continue
             ret = self._process_package(param_dict, advisory_name)
             if not ret:
@@ -435,7 +435,6 @@ class RepoSync:
 
         """
         erratum_packages = []
-        compatArchs = self.compatiblePackageArchs()
         for pkg in packages:
             nevr = pkg.find(
                 '%sformat' % prefix['yum']).find(
@@ -449,7 +448,7 @@ class RepoSync:
                 'arch': pkg.find('%sarch' % prefix['yum']).text,
                 'channel_label': self.channel_label
             }
-            if param_dict['arch'] not in compatArchs:
+            if param_dict['arch'] not in self.arches:
                 continue
             ret = self._process_package(param_dict, advisory_name)
             if not ret:
@@ -546,14 +545,13 @@ class RepoSync:
             saveurl.password = "*******"
         self.print_msg("Repo %s has %s packages." %
                        (saveurl.getURL(), len(packages)))
-        compatArchs = self.compatiblePackageArchs()
 
         for pack in packages:
             if pack.arch in ['src', 'nosrc']:
                 # skip source packages
                 skipped += 1
                 continue
-            if pack.arch not in compatArchs:
+            if pack.arch not in self.arches:
                 # skip packages with incompatible architecture
                 skipped += 1
                 continue
@@ -660,24 +658,6 @@ class RepoSync:
 
     def load_channel(self):
         return rhnChannel.channel_info(self.channel_label)
-
-    def compatiblePackageArchs(self):
-        if self.compatArchs:
-            return self.compatArchs
-
-        h = rhnSQL.prepare("""select pa.label
-                              from rhnChannelPackageArchCompat cpac,
-                              rhnChannel c,
-                              rhnpackagearch pa
-                              where c.id = :channel_id
-                              and c.channel_arch_id = cpac.channel_arch_id
-                              and cpac.package_arch_id = pa.id""")
-        h.execute(channel_id=self.channel['id'])
-        ca = h.fetchall_dict()
-        self.compatArchs = []
-        for arch in ca:
-            self.compatArchs.append(arch['label'])
-        return self.compatArchs
 
     def _link_packages(self, packages):
         """Create a record in the database for each package on our filesystem"""
@@ -799,6 +779,19 @@ class RepoSync:
 
         return ret
 
+
+def get_compatible_arches(channel_id):
+    """Return a list of compatible package arch labels for this channel"""
+    h = rhnSQL.prepare("""select pa.label
+                          from rhnChannelPackageArchCompat cpac,
+                          rhnChannel c,
+                          rhnpackagearch pa
+                          where c.id = :channel_id
+                          and c.channel_arch_id = cpac.channel_arch_id
+                          and cpac.package_arch_id = pa.id""")
+    h.execute(channel_id=channel_id)
+    arches = [k['label'] for k in  h.fetchall_dict()]
+    return arches
 
 def _best_checksum_item(checksums):
     if checksums.has_key('sha256'):
