@@ -288,6 +288,7 @@ class RepoSyncTest(unittest.TestCase):
         rs = self._create_mocked_reposync()
 
         rs.channel = {'org_id': None}
+        rs.compatiblePackageArchs = Mock(return_value=['a1', 'a2'])
         packages = [{'name': 'n1',
                      'version': 'v1',
                      'release': 'r1',
@@ -313,6 +314,7 @@ class RepoSyncTest(unittest.TestCase):
     def test_updates_process_packages_returns_the_right_values(self):
         rs = self._create_mocked_reposync()
         rs.channel = {'org_id': 'org'}
+        rs.compatiblePackageArchs = Mock(return_value=['a1', 'a2'])
         packages = [{'name': 'n1',
                      'version': 'v1',
                      'release': 'r1',
@@ -378,6 +380,7 @@ class RepoSyncTest(unittest.TestCase):
                      'arch': 'a2',
                      'channel_label': 'l2',
                      'epoch': 'e2'}]
+        rs.compatiblePackageArchs = Mock(return_value=['a2'])
 
         _mock_rhnsql(self.reposync, [])
         self.assertEqual(rs._updates_process_packages(packages, 'patchy'),
@@ -397,6 +400,7 @@ class RepoSyncTest(unittest.TestCase):
                      'arch': 'a1',
                      'channel_label': 'l1',
                      'epoch': []}]
+        rs.compatiblePackageArchs = Mock(return_value=['a1'])
 
         _mock_rhnsql(self.reposync, [])
         self.assertEqual(rs._updates_process_packages(packages, 'patchy'),
@@ -433,6 +437,7 @@ class RepoSyncTest(unittest.TestCase):
         rs = self._create_mocked_reposync()
         rs.channel = {'org_id': 'org',
                       'arch': 'arch'}
+        rs.compatiblePackageArchs = Mock(return_value=['arch'])
 
         rs.upload_updates(notices)
 
