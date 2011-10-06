@@ -424,7 +424,7 @@ class RepoSyncTest(unittest.TestCase):
         # no packages related to this errata makes the ErrataImport be called
         # with an empty list
         self.reposync.RepoSync._updates_process_packages = Mock(return_value=[])
-        self.reposync.RepoSync.get_errata = Mock(return_value=None)
+        self.reposync.get_errata = Mock(return_value=None)
 
         mocked_backend = Mock()
         self.reposync.SQLBackend = Mock(return_value=mocked_backend)
@@ -838,21 +838,19 @@ class RepoSyncTest(unittest.TestCase):
                          [((exc, ), {}), ((exc, ), {})])
 
     def test_get_errata_no_advisories_found(self):
-        rs = self._create_mocked_reposync()
         _mock_rhnsql(self.reposync, None)
-        self.assertEqual(rs.get_errata('bogus'), None)
+        self.assertEqual(self.reposync.get_errata('bogus'), None)
 
     def test_get_errata_advisories_but_no_channels(self):
-        rs = self._create_mocked_reposync()
         _mock_rhnsql(self.reposync, [{'id': 42}, []])
-        self.assertEqual(rs.get_errata('bogus'), {'channels': [], 'id': 42})
+        self.assertEqual(self.reposync.get_errata('bogus'),
+                         {'channels': [], 'id': 42})
 
     def test_get_errata_success(self):
-        rs = self._create_mocked_reposync()
         _mock_rhnsql(self.reposync, [{'id': 42}, ['channel1', 'channel2']])
-        self.assertEqual(rs.get_errata('bogus'), {'id': 42,
-                                                  'channels': ['channel1',
-                                                               'channel2']})
+        self.assertEqual(self.reposync.get_errata('bogus'),
+                         {'id': 42, 'channels': ['channel1', 'channel2']})
+
     def test_get_compat_arches(self):
         _mock_rhnsql(self.reposync, ({'label': 'a1'}, {'label':'a2'}))
         self.assertEqual(self.reposync.get_compatible_arches(None),

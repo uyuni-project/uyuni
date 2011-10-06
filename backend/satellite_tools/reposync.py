@@ -256,7 +256,7 @@ class RepoSync:
             except KeyError:
                 e['advisory_type'] = 'Product Enhancement Advisory'
 
-            existing_errata = self.get_errata(e['advisory'])
+            existing_errata = get_errata(e['advisory'])
 
             # product name
             query = rhnSQL.prepare("""
@@ -340,7 +340,7 @@ class RepoSync:
             e['advisory'] = e['advisory_name'] = '-'.join([notice['update_id'],
                                                            notice['version'],
                                                            self.channel['arch']])
-            existing_errata = self.get_errata(e['advisory'])
+            existing_errata = get_errata(e['advisory'])
 
             e['advisory_rel'] = notice['version']
             if notice['type'] in typemap:
@@ -747,38 +747,38 @@ class RepoSync:
         extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
         rhnMail.send(headers, extra + body)
 
-    def get_errata(self, update_id):
-        """Fetch an Errata dict from the database
 
-        Search in the database for the given advisory and return a dict
-        with important values.  If the advisory was not found it returns
-        None.
+def get_errata(update_id):
+    """Fetch an Errata dict from the database
 
-        :update_id - the advisory (name)
+    Search in the database for the given advisory and return a dict
+    with important values.  If the advisory was not found it returns
+    None.
 
-        """
-        h = rhnSQL.prepare("""
-            select e.id, e.advisory,
-                   e.advisory_name, e.advisory_rel
-              from rhnerrata e
-             where e.advisory = :name
-        """)
-        h.execute(name=update_id)
-        ret = h.fetchone_dict() or None
-        if not ret:
-            return None
+    :update_id - the advisory (name)
 
-        h = rhnSQL.prepare("""
-            select distinct c.label
-              from rhnchannelerrata ce
-              join rhnchannel c on c.id = ce.channel_id
-             where ce.errata_id = :eid
-        """)
-        h.execute(eid=ret['id'])
-        ret['channels'] = h.fetchall_dict() or []
+    """
+    h = rhnSQL.prepare("""
+        select e.id, e.advisory,
+               e.advisory_name, e.advisory_rel
+          from rhnerrata e
+         where e.advisory = :name
+    """)
+    h.execute(name=update_id)
+    ret = h.fetchone_dict() or None
+    if not ret:
+        return None
 
-        return ret
+    h = rhnSQL.prepare("""
+        select distinct c.label
+          from rhnchannelerrata ce
+          join rhnchannel c on c.id = ce.channel_id
+         where ce.errata_id = :eid
+    """)
+    h.execute(eid=ret['id'])
+    ret['channels'] = h.fetchall_dict() or []
 
+    return ret
 
 def get_compatible_arches(channel_id):
     """Return a list of compatible package arch labels for this channel"""
