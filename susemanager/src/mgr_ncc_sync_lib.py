@@ -14,7 +14,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
-import re
+import socket
 import sys
 import time
 import os.path
@@ -762,12 +762,17 @@ class NCCSync(object):
         """
         channel_id = self.get_channel_id(channel_label)
         if channel_id:
-            if taskomatic.schedule_single_sat_repo_sync(channel_id):
-                self.print_msg("Scheduled repo sync for channel %s."
-                               % channel_label)
+            try:
+                scheduled = taskomatic.schedule_single_sat_repo_sync(channel_id)
+            except socket.error, e:
+                self.error_msg("Failed to connect to taskomatic. %s" % e)
             else:
-                self.error_msg("Failed to schedule repo sync for channel %s."
-                               % channel_label)
+                if scheduled:
+                    self.print_msg("Scheduled repo sync for channel %s."
+                                   % channel_label)
+                else:
+                    self.error_msg("Failed to schedule repo sync for channel %s."
+                                   % channel_label)
         else:
             self.log_msg("Did not schedule a repo sync for channel %s as "
                          "it could not be found in the databse."
