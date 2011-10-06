@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct  6 17:06:04 CEST 2011 - iartarisi@suse.cz
+
+- print a more descriptive error when scheduling a sync fails because of
+  a connection failed to taskomatic
+
+-------------------------------------------------------------------
 Mon Sep 26 10:45:05 CEST 2011 - mantel@suse.de
 
 - allow migration from SUSE Manager XE to SUSE Manager full Oracle
