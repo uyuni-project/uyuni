@@ -59,3 +59,16 @@ class SyncTest(unittest.TestCase):
         ncc_sync.suseLib.send = Mock(return_value=StringIO("<xml>valid</xml>"))
 
         self.assertEqual(self.sync._get_ncc_xml("some_url").text, "valid")
+
+    def test_sync_channel_taskomatic_socket_error(self):
+        """Test print error message when taskomatic raises socket error"""
+        import socket
+        self.sync.get_channel_id = Mock(return_value=1)
+        ncc_sync.taskomatic.schedule_single_sat_repo_sync = Mock(
+            side_effect=socket.error("FAIL"))
+
+        err = StringIO()
+        with patch("sys.stderr", err):
+            self.sync.sync_channel('channel_label')
+        err.seek(0)
+        self.assertIn("Failed to connect to taskomatic. FAIL", err.read())
