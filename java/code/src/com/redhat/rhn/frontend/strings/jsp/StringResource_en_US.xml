@@ -19098,6 +19098,13 @@ new autoinstallable distribution.&lt;/strong&gt;
         	</context-group>
 	     </trans-unit>
 
+       <trans-unit id="sdc.details.overview.installedproducts">
+	     	<source>Installed Products:</source>
+	     	<context-group name="ctx">
+	     	<context context-type="sourcefile">/systems/details/Overview.do</context>
+        	</context-group>
+	     </trans-unit>
+
 	     <trans-unit id="sdc.details.overview.location">
 	     	<source>Location:</source>
 	     	<context-group name="ctx">
