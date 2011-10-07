@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct  7 12:33:18 CEST 2011 - iartarisi@suse.cz
+
+ - fix bug when parsing a patches.xml file with an extra <category> tag
+
+-------------------------------------------------------------------
 Wed Oct  5 19:01:45 CEST 2011 - mc@suse.de
 
 - drop incompatible packages of a patch
