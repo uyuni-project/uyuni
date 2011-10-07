@@ -14,7 +14,9 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 
+import os
 import unittest
+from StringIO import StringIO
 from collections import namedtuple
 
 from mock import Mock
@@ -85,3 +87,28 @@ class YumSrcTest(unittest.TestCase):
                     self.assertEqual(getattr(pack, attr),
                                      getattr(mocked_pack, attr))
         
+    def test_get_updates_suse_patches(self):
+        cs = self._make_dummy_cs()
+
+        patches_xml = StringIO("""<?xml version="1.0" encoding="UTF-8"?>
+                <patches xmlns="http://novell.com/package/metadata/suse/patches">
+                  <patch id="smcl3-cobbler-7778">
+                    <checksum type="sha">ec34048ebda707a83190056d832d43c9fbb55ca6</checksum>
+                    <location href="/patch-smcl3-cobbler-7778.xml"/>
+                    <someother>weird element</someother>
+                  </patch>
+                  <patch id="smcl3-code11-update-stack-7779">
+                    <checksum type="sha">51a736a468ebf53d7a4084cf0ca72a87427cdeba</checksum>
+                    <location href="/patch-smcl3-code11-update-stack-7779.xml"/>
+                  </patch>
+                </patches>
+                """)
+        cs.repo.repoXML.repoData = 'patches'
+        cs.repo.retrieveMD = Mock(return_value=patches_xml)
+        cs.repo.cachedir = os.getcwd() + '/'
+        cs.repo.grab.urlgrab = Mock()
+        os.mkdir = Mock()
+
+        patches = cs.get_updates()
+        self.assertEqual(patches[0], 'patches')
+        self.assertEqual(len(patches[1]), 2)

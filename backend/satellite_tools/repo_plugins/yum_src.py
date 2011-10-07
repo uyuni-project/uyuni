@@ -34,6 +34,10 @@ from spacewalk.common import rhnLog
 from spacewalk.satellite_tools.reposync import ContentPackage, ChannelException, ChannelTimeoutException
 
 CACHE_DIR = '/var/cache/rhn/reposync/'
+
+# namespace prefix to parse patches.xml file
+PATCHES = '{http://novell.com/package/metadata/suse/patches}'
+
 class YumWarnings:
     def write(self, s):
         pass
@@ -142,7 +146,8 @@ class ContentSource:
             # parse the patches.xml file and download every patch-xxx.xml file
             notices = []
             for patch in etree.parse(patches_path).getroot():
-                (checksum_elem, location_elem) = patch
+                checksum_elem = patch.find(PATCHES+'checksum')
+                location_elem = patch.find(PATCHES+'location')
                 relative = location_elem.get('href')
                 checksum_type = checksum_elem.get('type')
                 checksum = checksum_elem.text
