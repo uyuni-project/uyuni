@@ -43,6 +43,12 @@ from spacewalk.server.rhnSQL.const import ORACLE, POSTGRESQL
 HOSTNAME = socket.gethostname()
 LOG_LOCATION = '/var/log/rhn/reposync/'
 
+# namespace prefixes for parsing SUSE patches XML files
+YUM = "{http://linux.duke.edu/metadata/common}"
+RPM = "{http://linux.duke.edu/metadata/rpm}"
+SUSE = "{http://novell.com/package/metadata/suse/common}"
+PATCH = "{http://novell.com/package/metadata/suse/patch}"
+
 class ChannelException(Exception):
     """
     Channel Error.
@@ -226,12 +232,6 @@ class RepoSync:
         :arg notices: a list of ElementTree roots from individual patch files
 
         """
-        prefix = {'yum': "{http://linux.duke.edu/metadata/common}",
-                  'rpm': "{http://linux.duke.edu/metadata/rpm}",
-                  'suse': "{http://novell.com/package/metadata/suse/common}",
-                  'patch': "{http://novell.com/package/metadata/suse/patch}"
-                  }
-
         typemap = {'security'    : 'Security Advisory',
                    'recommended' : 'Bug Fix Advisory',
                    'bugfix'      : 'Bug Fix Advisory',
@@ -244,8 +244,8 @@ class RepoSync:
             error = False
             e = Erratum()
 
-            version = notice.find('%sversion' % prefix['yum']).get('ver')
-            category = notice.find('%scategory' % prefix['patch']).text
+            version = notice.find(YUM+'version').get('ver')
+            category = notice.findtext(PATCH+'category')
 
             e['errata_from'] = 'maint-coord@suse.de'
             e['advisory'] = e['advisory_name'] = '-'.join([notice.get('patchid'),
@@ -272,11 +272,11 @@ class RepoSync:
             except TypeError:
                 e['product'] = 'unknown product'
 
-            for desc_lang in notice.findall('%sdescription' % prefix['patch']):
+            for desc_lang in notice.findall(PATCH+'description'):
                 if desc_lang.get('lang') == 'en':
                     e['description'] = desc_lang.text or ""
                     break
-            for sum_lang in notice.findall('%ssummary' % prefix['patch']):
+            for sum_lang in notice.findall(PATCH+'summary'):
                 if sum_lang.get('lang') == 'en':
                     e['synopsis'] = sum_lang.text or ""
                     break
@@ -293,20 +293,20 @@ class RepoSync:
             e['packages'] = []
             e['files'] = []
 
-            atoms = notice.find('%satoms' % prefix['patch'])
-            packages = atoms.findall('%spackage' % prefix['yum'])
+            atoms = notice.find(PATCH+'atoms')
+            packages = atoms.findall(YUM+'package')
 
-            e['packages'] = self._patches_process_packages(packages, e['advisory_name'], prefix)
+            e['packages'] = self._patches_process_packages(packages, e['advisory_name'])
             # an update can't have zero packages, so we skip this update
             if not e['packages']:
                 continue
 
             e['keywords'] = []
-            if notice.find('%sreboot-needed' % prefix['patch']) is not None:
+            if notice.find(PATCH+'reboot-needed') is not None:
                 kw = Keyword()
                 kw.populate({'keyword': 'reboot_suggested'})
                 e['keywords'].append(kw)
-            if notice.find('%spackage-manager' % prefix['patch']) is not None:
+            if notice.find(PATCH+'package-manager') is not None:
                 kw = Keyword()
                 kw.populate({'keyword': 'restart_suggested'})
                 e['keywords'].append(kw)
@@ -421,7 +421,7 @@ class RepoSync:
             erratum_packages.append(ret)
         return erratum_packages
 
-    def _patches_process_packages(self, packages, advisory_name, prefix):
+    def _patches_process_packages(self, packages, advisory_name):
         """Check if the packages are in the database
 
         Go through the list of 'packages' and for each of them
@@ -431,21 +431,17 @@ class RepoSync:
 
         :packages: a list of dicts that represent packages (patch style)
         :advisory_name: the name of the current erratum
-        :prefix xml namespace dict
 
         """
         erratum_packages = []
         for pkg in packages:
-            nevr = pkg.find(
-                '%sformat' % prefix['yum']).find(
-                '%srequires' % prefix['rpm']).find(
-                '%sentry' % prefix['rpm'])
+            nevr = pkg.find(YUM+'format').find(RPM+'requires').find(RPM+'entry')
             param_dict = {
                 'name': nevr.get('name'),
                 'version': nevr.get('ver'),
                 'release': nevr.get('rel'),
                 'epoch': nevr.get('epoch'),
-                'arch': pkg.find('%sarch' % prefix['yum']).text,
+                'arch': pkg.findtext(YUM+'arch'),
                 'channel_label': self.channel_label
             }
             if param_dict['arch'] not in self.arches:
