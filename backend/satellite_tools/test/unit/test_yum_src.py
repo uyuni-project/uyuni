@@ -105,9 +105,13 @@ class YumSrcTest(unittest.TestCase):
                 """)
         cs.repo.repoXML.repoData = 'patches'
         cs.repo.retrieveMD = Mock(return_value=patches_xml)
-        cs.repo.cachedir = os.getcwd() + '/'
         cs.repo.grab.urlgrab = Mock()
         os.mkdir = Mock()
+        # we can't just use return_value, because Mock caches the
+        # returned object and then subsequent reads to the StringIO
+        # object will return nothing, because the file pointer is at the
+        # end of the file
+        os.path.join = Mock(side_effect=lambda *args: StringIO("<xml></xml>"))
 
         patches = cs.get_updates()
         self.assertEqual(patches[0], 'patches')
