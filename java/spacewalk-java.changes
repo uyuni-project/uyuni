@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct  7 12:15:24 CEST 2011 - mc@suse.de
+
+- show installed products in system overview (bnc#711021)
+
+-------------------------------------------------------------------
 Wed Oct  5 16:33:20 CEST 2011 - jrenner@suse.de
 
 - Fix selection of errata for system currency report (bnc#721522)
