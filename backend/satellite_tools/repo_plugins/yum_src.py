@@ -42,6 +42,7 @@ except ImportError:
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException, ContentPackage
 
+
 class YumWarnings:
     def write(self, s):
         pass
@@ -251,7 +252,8 @@ class ContentSource:
             # parse the patches.xml file and download every patch-xxx.xml file
             notices = []
             for patch in etree.parse(patches_path).getroot():
-                (checksum_elem, location_elem) = patch
+                checksum_elem = patch.find(PATCHES+'checksum')
+                location_elem = patch.find(PATCHES+'location')
                 relative = location_elem.get('href')
                 checksum_type = checksum_elem.get('type')
                 checksum = checksum_elem.text
