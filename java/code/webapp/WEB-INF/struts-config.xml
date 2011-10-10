@@ -7791,7 +7791,7 @@
   <!-- ===================================== -->
 
   <controller
-      processorClass="com.redhat.rhn.frontend.struts.RhnRequestProcessor"
+      processorClass="com.redhat.rhn.common.logging.AuditLogRequestProcessor"
       nocache="false"
       locale="false" />
 
