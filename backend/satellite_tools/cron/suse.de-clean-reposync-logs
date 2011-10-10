@@ -35,7 +35,7 @@ cleanup_reposync ()
 
   if [ "$MAX_DAYS" -gt 0 ]; then
      test -x /usr/bin/safe-rm && {
-     find $DIR/. -name *.log ! -type d ! -type s ! -type p \
+     find $DIR/. -name '*.log' ! -type d ! -type s ! -type p \
        -atime +$MAX_DAYS -exec /usr/bin/safe-rm {} \;
      } || echo "Error: Can not find /usr/bin/safe-rm"
   fi
