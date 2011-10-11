@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct 11 15:59:36 CEST 2011 - mc@suse.de
+
+- adapt spacewalk-debug for SUSE Manager
+
+-------------------------------------------------------------------
 Wed Oct  5 13:28:38 CEST 2011 - iartarisi@suse.cz
 
 - fixed import errors in rhnServer/server_suse.py and rhnChannel.py
