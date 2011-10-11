@@ -349,6 +349,7 @@ def delete_channels(channelLabels, force=0, justdb=0, skip_packages=0):
         ['rhnServerProfile', 'base_channel'],
         ['rhnKickstartableTree', 'channel_id'],
         ['rhnReleaseChannelMap', 'channel_id'],
+        ['suseProductChannel', 'channel_id'],
         ['rhnChannel', 'id'],
     ]
 
