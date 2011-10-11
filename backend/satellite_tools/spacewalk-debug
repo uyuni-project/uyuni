@@ -250,10 +250,12 @@ fi
 if [ -f /usr/lib/oracle/xe/app/oracle/admin/XE/bdump/alert_XE.log ]; then
     echo "    * copying alert_XE.log"
     cp -fa /usr/lib/oracle/xe/app/oracle/admin/XE/bdump/alert_XE.log $DIR/database/
+    ls /usr/lib/oracle/xe/app/oracle/admin/XE/bdump/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database
 fi
 if [ -f /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/alert_susemanager.log ]; then
     echo "    * copying alert_susemanager.log"
     cp -fa /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/alert_susemanager.log $DIR/database/
+    ls /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database
 fi
 
 if [ -d /var/log/spacewalk/schema-upgrade ] ; then
