@@ -361,6 +361,7 @@ def delete_channels(channelLabels, force=0, justdb=0, skip_packages=0, skip_chan
 
     if not skip_channels:
         tables.extend([
+            ['suseProductChannel', 'channel_id'],
             ['rhnChannelFamilyMembers', 'channel_id'],
             ['rhnDistChannelMap', 'channel_id'],
             ['rhnReleaseChannelMap', 'channel_id'],
