@@ -125,7 +125,7 @@ sub handler {
   if (is_auditkeeper_running()) {
       my $extmap = get_log_event("/usr/share/spacewalk/audit/auditlog-config.yaml", $r);
       if (keys(%{$extmap}) > 0) {
-	  SUSEAuditlogClient->new("localhost", 6888)->log($r->user(), $r->uri(), $r->hostname(), $extmap);
+	  SUSEAuditlogClient->new("localhost", 6888)->log($r->user(), $r->uri(), $r->connection->remote_ip, $extmap);
       }
   }
 
