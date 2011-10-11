@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct 11 17:01:46 CEST 2011 - mc@suse.de
+
+- fix spacewalk-remove-channel to work on SUSE Manager (bnc#670206)
+
+-------------------------------------------------------------------
 Tue Oct 11 15:59:36 CEST 2011 - mc@suse.de
 
 - adapt spacewalk-debug for SUSE Manager
