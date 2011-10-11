@@ -389,7 +389,7 @@
     type: ACTION_CHANGE
 
 /monitoring/config/ProbeSuiteEdit.do:
-    type: ACTION_EDIT
+    type: ACTION_CHANGE
     required: [submitted]
 
 /monitoring/config/ProbeSuiteCreate.do:
@@ -413,7 +413,7 @@
     required: [submitted]
 
 /monitoring/config/notification/MethodEdit.do:
-    type: ACTION_EDIT
+    type: ACTION_CHANGE
     required: [submitted]
 
 ###############################################################################
@@ -1153,13 +1153,13 @@
     required: [submit]
 
 /network/software/channels/manage/patches/add.pxt:
-    type: ACTION_ADD
+    type: ACTION_CHANGE
 
 /network/software/channels/manage/patches/remove_confirm.pxt:
-    type: ACTION_REMOVE
+    type: ACTION_CHANGE
 
 /network/software/channels/manage/patchsets/add_confirm.pxt:
-    type: ACTION_ADD
+    type: ACTION_CHANGE
 
 /network/software/channels/subscribe_confirm.pxt:
     type: ACTION_CHANGE
@@ -1177,25 +1177,25 @@
     type: ACTION_DELETE
 
 /network/systems/custominfo/edit.pxt:
-    type: ACTION_EDIT
+    type: ACTION_CHANGE
 
 /network/systems/details/custominfo/edit.pxt:
-    type: ACTION_EDIT
+    type: ACTION_CHANGE
 
 /network/systems/details/history/snapshots/add_snapshot_tag.pxt:
-    type: ACTION_ADD
+    type: ACTION_CREATE
 
 /network/systems/details/history/snapshots/add_system_tag.pxt:
-    type: ACTION_ADD
+    type: ACTION_CREATE
 
 /network/systems/details/history/snapshots/remove_confirm.pxt:
-    type: ACTION_REMOVE
+    type: ACTION_DELETE
 
 /network/systems/details/notes/delete_note_conf.pxt:
     type: ACTION_DELETE
 
 /network/systems/details/notes/edit.pxt:
-    type: ACTION_EDIT
+    type: ACTION_CHANGE
 
 /network/systems/details/proxy/install.pxt:
     type: ACTION_CHANGE
@@ -1210,7 +1210,8 @@
     type: ACTION_DELETE
 
 /network/systems/groups/edit_properties.pxt:
-    type: ACTION_EDIT
+    type: ACTION_CHANGE
+    required: [name]
 
 /network/systems/ssm/errata/apply_errata_conf.pxt:
     type: ACTION_CHANGE
