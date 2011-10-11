@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct 11 15:59:36 CEST 2011 - mc@suse.de
+
+- adapt spacewalk-debug for SUSE Manager
+
+-------------------------------------------------------------------
 Mon Oct 10 15:19:31 CEST 2011 - mc@suse.de
 
 - fix typo in reposync cleanup script (bnc#712860)
