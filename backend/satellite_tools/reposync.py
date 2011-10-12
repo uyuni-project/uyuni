@@ -683,13 +683,14 @@ class RepoSync:
         """
         is_non_local_repo = (repo_url.find("file://") < 0)
 
-        for (index, pack) in enumerate(packages):
+        total_packages = len(packages)
+        for (index, pack) in enumerate(packages, start=1):
             path = None # we might not reach the path assignment in 'try'
             # try/except/finally doesn't work in python 2.4 (RHEL5)
             try:
                 try:
                     self.print_msg("%s/%s : %s" % (
-                            index+1, len(packages), pack.getNVREA()))
+                        index, total_packages, pack.getNVREA()))
                     path = repo.get_package(pack)
                     self.upload_package(pack, path)
                 except KeyboardInterrupt:
