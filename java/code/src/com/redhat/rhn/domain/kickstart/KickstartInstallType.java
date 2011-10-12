@@ -166,20 +166,19 @@ public class KickstartInstallType extends BaseDomainHelper {
     public int hashCode() {
         return new HashCodeBuilder().append(getLabel()).toHashCode();
     }
-    
+
     /**
      * get the string cobbler understands as breed
      * @return cobbler breed compatible string
      */
     public String getCobblerBreed() {
     	String breed = REDHAT;
-    	 	
+
     	if(getLabel().equals("generic_rpm")) {
     		breed = GENERIC;
     	} else if(getLabel().equals(SUSE)) {
     		breed = SUSE;
     	}
-    	
 
     	return breed;
     }
