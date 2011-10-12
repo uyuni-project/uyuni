@@ -697,8 +697,8 @@ class RepoSync:
                     raise
                 except Exception, e:
                    self.error_msg("Could not acquire package %s. "
-                                  "Please run %s again after this issue "
-                                  "is fixed. %s" %(pack.getNVREA(), __name__, e))
+                                  "Please rerun the reposync after this issue "
+                                  "is fixed. %s" %(pack.getNVREA(), e))
                    if pack in to_link:
                        to_link.remove(pack)
 
