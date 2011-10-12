@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 12 15:04:55 CEST 2011 - ug@suse.de
+
+- the breed in cobbler was not changed when a distro was edited
+
+-------------------------------------------------------------------
 Wed Oct 12 13:23:30 CEST 2011 - jrenner@suse.de
 
 - Fixed pam setting on user page not saving (bnc#705179)
