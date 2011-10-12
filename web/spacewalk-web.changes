@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 12 10:23:04 CEST 2011 - mc@suse.de
+
+- add missing Requires to perl-DataTime
+
+-------------------------------------------------------------------
 Thu May 26 17:02:47 CEST 2011 - jrenner@suse.de
 
 - Add javascript for password strength meter (bnc#685551/fate#312398)
