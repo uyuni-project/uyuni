@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct  7 12:15:24 CEST 2011 - mc@suse.de
+
+- show installed products in system overview (bnc#711021)
+
+-------------------------------------------------------------------
 Thu Sep 29 17:36:12 CEST 2011 - mc@suse.de
 
 - count system currency depending on severity stored in the DB
