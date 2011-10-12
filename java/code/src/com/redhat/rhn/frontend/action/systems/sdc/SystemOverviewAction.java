@@ -75,13 +75,6 @@ public class SystemOverviewAction extends RhnAction {
         if (s.getDescription() != null) {
             description = new String(s.getDescription()).replaceAll("\\n", "<br/>");
         }
-        
-        String installedProducts = new String();
-        if (s.getInstalledProducts() != null) {
-            for(String str : s.getInstalledProducts()) {
-            	installedProducts = installedProducts + str + "<br/>";
-            }
-        }
 
         // Secondary Channels
         List secondaryChannelList = secondaryChannelList(s.getChannels(),
@@ -121,7 +114,7 @@ public class SystemOverviewAction extends RhnAction {
         request.setAttribute("hasUpdates", hasUpdates);
         request.setAttribute("secondaryChannels", secondaryChannelList);
         request.setAttribute("description", description);
-        request.setAttribute("installedProducts", installedProducts);
+        request.setAttribute("installedProducts", s.getInstalledProducts());
         request.setAttribute("prefs", findUserServerPreferences(user, s));
         request.setAttribute("system", s);
         request.setAttribute("hasLocation",
