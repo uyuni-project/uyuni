@@ -48,6 +48,9 @@ public class SelfEditAction extends UserEditActionHelper {
 
         //If there are no errors, store the user and return the success mapping
         if (errors.isEmpty()) {
+            // Update the PAM Authentication attribute
+            updatePamAttribute(user, user, form);
+
             UserManager.storeUser(user);
 
             ActionMessages msgs = new ActionMessages();

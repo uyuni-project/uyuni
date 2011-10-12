@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.user;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
@@ -66,5 +69,26 @@ public abstract class UserEditActionHelper extends RhnAction {
         }
 
         return errors;
+    }
+
+    /**
+     * If pam is configured and the loggedInUser is an org_admin (and therefore
+     * the checkbox was displayed), we need to inspect the "usepam" field on the
+     * form and set the targetUser's pam auth attribute accordingly.
+     * @param loggedInUser The user who is currently logged in
+     * @param targetUser The user that will be updated
+     * @param form The form containing the attribute value to use
+     */
+    protected void updatePamAttribute(User loggedInUser, User targetUser, DynaActionForm form) {
+        String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
+        if (pamAuthService != null && pamAuthService.trim().length() > 0
+                && loggedInUser.hasRole(RoleFactory.ORG_ADMIN)) {
+            if (form.get("usepam") != null
+                    && ((Boolean) form.get("usepam")).booleanValue()) {
+                targetUser.setUsePamAuthentication(true);
+            } else {
+                targetUser.setUsePamAuthentication(false);
+            }
+        }
     }
 }
