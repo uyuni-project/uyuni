@@ -1834,4 +1834,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return SystemRecord.lookupById(con, getCobblerId());
     }
 
+    /**
+     * @return Returns the installed products.
+     */
+    public List<String> getInstalledProducts() {
+        return ServerFactory.getInstalledProducts(this);
+    }
+
 }

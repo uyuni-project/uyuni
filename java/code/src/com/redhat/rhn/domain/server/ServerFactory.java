@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.server;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.CallableMode;
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -854,6 +855,43 @@ public class ServerFactory extends HibernateFactory {
                 .setString("tag_name", tagName)
                 // Retrieve from cache if there
                 .setCacheable(true).uniqueResult();
+        return retval;
+    }
+
+    /**
+     * Returns a list of Installed Products on the server.
+     * @param server Server whose products we want.
+     * @return a list of products on the given server.
+     */
+    public static List<String> getInstalledProducts(Server server) {
+        SelectMode m = ModeFactory.getMode("System_queries",
+                "system_installed_products");
+
+        Map params = new HashMap();
+        params.put("serverid", server.getId());
+        DataResult<Map<String, Object>> result = m.execute(params);
+        List<String> retval = new ArrayList<String>();
+        
+        for (Map<String, Object> row : result) {
+        	String name = (String) row.get("name");
+        	String version = (String) row.get("version");
+        	String release = (String) row.get("release");
+        	String arch = (String) row.get("arch");
+        	
+        	SelectMode m2 = ModeFactory.getMode("System_queries",
+                    "find_suse_product");
+        	Map params2 = new HashMap();
+        	params2.put("name", name.toLowerCase());
+        	params2.put("version", version.toLowerCase());
+        	params2.put("release", release.toLowerCase());
+        	params2.put("arch", arch.toLowerCase());
+        	DataResult<Map<String, Object>> result2 = m2.execute(params2);
+        	if( ! result2.isEmpty() )
+        	{
+        		Map<String, Object> firstrow = result2.get(0);
+        		retval.add((String)firstrow.get("friendly_name"));
+        	}
+        }
         return retval;
     }
 }

@@ -299,6 +299,10 @@
         <td>${description}</td>
       </tr>
       <tr>
+        <th><bean:message key="sdc.details.overview.installedproducts"/></th>
+        <td>${installedProducts}</td>
+      </tr>
+      <tr>
         <th><bean:message key="sdc.details.overview.location"/></th>
         <td>
           <c:choose>

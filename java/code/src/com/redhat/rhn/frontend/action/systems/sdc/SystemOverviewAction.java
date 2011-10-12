@@ -73,6 +73,13 @@ public class SystemOverviewAction extends RhnAction {
         if (s.getDescription() != null) {
             description = new String(s.getDescription()).replaceAll("\\n", "<br/>");
         }
+        
+        String installedProducts = new String();
+        if (s.getInstalledProducts() != null) {
+            for(String str : s.getInstalledProducts()) {
+            	installedProducts = installedProducts + str + "<br/>";
+            }
+        }
 
         // System Channels
         Map baseChannel = new HashMap();
@@ -126,6 +133,7 @@ public class SystemOverviewAction extends RhnAction {
         request.setAttribute("baseChannel", baseChannel);
         request.setAttribute("childChannels", childChannels);
         request.setAttribute("description", description);
+        request.setAttribute("installedProducts", installedProducts);
         request.setAttribute("prefs", findUserServerPreferences(user, s));
         request.setAttribute("system", s);
         request.setAttribute("hasLocation",
