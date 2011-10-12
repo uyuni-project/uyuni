@@ -1835,10 +1835,16 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * @return Returns the installed products.
+     * @return Returns the installed products or null 
+     *         in case of no products found.
      */
     public List<String> getInstalledProducts() {
-        return ServerFactory.getInstalledProducts(this);
+	List<String> result = ServerFactory.getInstalledProducts(this);
+	if ( result.isEmpty() ) {
+            return null;
+	} else {
+            return result;
+	}
     }
 
 }

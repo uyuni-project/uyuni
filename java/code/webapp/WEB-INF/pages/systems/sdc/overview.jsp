@@ -144,6 +144,27 @@
         <td><c:out value="${system.id}" /></td>
       </tr>
       <tr>
+        <th><bean:message key="sdc.details.overview.installedproducts"/></th>
+        <td>
+        <c:choose>
+          <c:when test="${installedProducts == null}">
+            <bean:message key="sdc.details.overview.unknown"/>
+          </c:when>
+          <c:otherwise>
+            <table>
+              <tbody>
+                <c:forEach items="${installedProducts}" var="current" varStatus="loop">
+                  <tr>
+                    <td style="padding: 4px 0 4px 0;">${current}</td>
+                  </tr>
+                </c:forEach>
+              </tbody>
+            </table>
+          </c:otherwise>
+        </c:choose>
+        </td>
+      </tr>
+      <tr>
         <th><bean:message key="sdc.details.overview.lockstatus"/></th>
         <td>
         <c:choose>
@@ -297,10 +318,6 @@
       <tr>
         <th><bean:message key="sdc.details.overview.description"/></th>
         <td>${description}</td>
-      </tr>
-      <tr>
-        <th><bean:message key="sdc.details.overview.installedproducts"/></th>
-        <td>${installedProducts}</td>
       </tr>
       <tr>
         <th><bean:message key="sdc.details.overview.location"/></th>
