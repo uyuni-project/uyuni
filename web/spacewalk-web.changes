@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 22 15:10:30 CET 2011 . mantel@suse.de
+
+- add missing Requires "perl-Filesys-Df" for spacewalk-dobby
+
+-------------------------------------------------------------------
 Tue Nov 22 15:03:51 CET 2011 - mantel@suse.de
 
 - fix ORACLE_HOME for spacewalk-dobby
