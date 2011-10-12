@@ -59,6 +59,7 @@ Requires: perl-RPM2
 Requires: perl-Authen-PAM
 Requires: perl-Digest-HMAC
 Requires: perl-Text-Diff
+Requires: perl-DateTime
 %else
 Requires: webserver
 %endif
