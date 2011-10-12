@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 12 10:23:04 CEST 2011 - mc@suse.de
+
+- add missing Requires to perl-DataTime
+
+-------------------------------------------------------------------
 Wed Oct  5 11:54:16 CEST 2011 - mantel@suse.de
 
 - fix ORACLE_HOME for spacewalk-dobby
