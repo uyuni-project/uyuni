@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 12 15:07:05 CEST 2011 - ug@suse.de
+
+- breed in cobbler was not updated if a distro was edited
+
+-------------------------------------------------------------------
 Fri Oct  7 12:15:24 CEST 2011 - mc@suse.de
 
 - show installed products in system overview (bnc#711021)
