@@ -93,9 +93,7 @@ public class CobblerDistroCommand extends CobblerCommand {
                 xen = Distro.create(con, tree.getCobblerXenDistroName(),
                         tree.getKernelXenPath(), tree.getInitrdXenPath(), ksmeta);
                 xen.setArch(archName);
-                if (tree.getInstallType().isSUSE()) {
-                    xen.setBreed("suse");
-                }
+                xen.setBreed(tree.getInstallType().getCobblerBreed());
                 xen.save();
                 tree.setCobblerXenId(xen.getId());
             }
@@ -104,9 +102,7 @@ public class CobblerDistroCommand extends CobblerCommand {
                 xen.setKernel(tree.getKernelXenPath());
                 xen.setInitrd(tree.getInitrdXenPath());
                 xen.setKsMeta(ksmeta);
-                if (tree.getInstallType().isSUSE()) {
-                    xen.setBreed("suse");
-                }
+                xen.setBreed(tree.getInstallType().getCobblerBreed());
                 xen.save();
             }
         }
@@ -122,6 +118,7 @@ public class CobblerDistroCommand extends CobblerCommand {
             nonXen.setArch(archName);
             nonXen.setInitrd(tree.getInitrdPath());
             nonXen.setKernel(tree.getKernelPath());
+            nonXen.setBreed(tree.getInstallType().getCobblerBreed());
             nonXen.setKsMeta(ksmeta);
             nonXen.save();
         }
