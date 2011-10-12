@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 12 13:23:30 CEST 2011 - jrenner@suse.de
+
+- Fixed pam setting on user page not saving (bnc#705179)
+
+-------------------------------------------------------------------
 Tue Oct 11 13:19:06 CEST 2011 - jrenner@suse.de
 
 - Add fix for schedule command AFTER package install (bnc#712647)
