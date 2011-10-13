@@ -141,11 +141,6 @@
                     <enabled config:type="boolean">true</enabled>
                     <name>firstboot_license</name>
                   </module>
-                <module>
-                  <label>Product Requirements</label>
-                  <enabled config:type="boolean">true</enabled>
-                  <name>susemanager_reqs</name>
-                </module>
 
 <!--
                 <module>
