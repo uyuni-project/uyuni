@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 13 12:11:33 CEST 2011 - ug@suse.de
+
+- added sanity checks to susemanager_setup client (bnc#703132)
+
+-------------------------------------------------------------------
 Thu Oct  6 17:06:04 CEST 2011 - iartarisi@suse.cz
 
 - print a more descriptive error when scheduling a sync fails because of
