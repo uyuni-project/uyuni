@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct 13 14:51:29 CEST 2011 - iartarisi@suse.cz
+
+- fix reposync failure when trying to associate package which couldn't
+  be downloaded (bnc#722917)
+
+-------------------------------------------------------------------
 Tue Oct 11 17:01:46 CEST 2011 - mc@suse.de
 
 - fix spacewalk-remove-channel to work on SUSE Manager (bnc#670206)
