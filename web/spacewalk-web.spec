@@ -22,8 +22,6 @@ BuildRequires: perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}
 BuildRequires: apache2
 %endif
-Requires: perl-auditlog-keeper-client
-Requires: perl-YAML-Syck
 
 %description
 This package contains the code for the Spacewalk Web Site.
@@ -115,8 +113,10 @@ Group: Applications/Internet
 Requires: spacewalk(spacewalk-base-minimal)
 %if 0%{?suse_version}
 Requires:  perl-Apache2-Request
+Requires:  perl-auditlog-keeper-client
 Requires:  perl-BSD-Resource
 Requires:  perl-Cache-Cache
+Requires:  perl-YAML-Syck
 %endif
 Obsoletes: rhn-pxt < 5.3.0
 Provides:  rhn-pxt = 5.3.0
