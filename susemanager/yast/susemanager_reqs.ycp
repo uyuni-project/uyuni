@@ -33,32 +33,50 @@
       }
     }
 
-    while (true) {
-        // do we have less memory than needed?
-        if (totalmem < enough_memory) {
-            if ( !Popup::AnyQuestionRichText(_("Not enough memory"), _("SUSE Manager requires 2G of memory to be installed and 8G for good perfomance. If you continue the product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
-            {
-                if (Popup::ConfirmAbort(`incomplete)) {
-                    return `abort;
-                }
-            }
-            else {
-                break;
+    // do we have less memory than needed?
+    if (totalmem < enough_memory) {
+        if ( !Popup::AnyQuestionRichText(_("Not enough memory"), _("SUSE Manager requires 2G of memory to be installed and 8G for good perfomance. If you continue the product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
+        {
+            if (Popup::ConfirmAbort(`incomplete)) {
+                return `abort;
             }
         }
-        if( Hostname::CurrentFQ() != tolower(Hostname::CurrentFQ()) ) {
-            if ( !Popup::AnyQuestionRichText(_("Illegal Hostname"), _("Your hostname contains upper case characters. The product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
-            {
-                if (Popup::ConfirmAbort(`incomplete)) {
-                    return `abort;
-                }
-            }
-            else {
-                break;
+    }
+    if( Hostname::CurrentFQ() != tolower(Hostname::CurrentFQ()) ) {
+        if ( !Popup::AnyQuestionRichText(_("Illegal Hostname"), _("Your hostname contains upper case characters. The product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
+        {
+            if (Popup::ConfirmAbort(`incomplete)) {
+                return `abort;
             }
         }
-        else {
-          break;
+    }
+    map f_out = (map) SCR::Execute (.target.bash_output, "hostname -f", $[]);
+    if( f_out["exit"]:-1 != 0 ) {
+        if ( !Popup::AnyQuestionRichText(_("hostname command failed"), _("the execution of 'hostname -f' failed. The product will not install correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
+        {
+            if (Popup::ConfirmAbort(`incomplete)) {
+                return `abort;
+            }
+        }
+    }
+    if( size(filterchars(f_out["stdout"]:"", ".")) < 2 ) {
+        if ( !Popup::AnyQuestionRichText(_("illegal FQHN"), _("the FQHN must contain at least 2 dots. The product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
+        {
+            if (Popup::ConfirmAbort(`incomplete)) {
+                return `abort;
+            }
+        }
+    }
+    map h_out = (map) SCR::Execute (.target.bash_output, "hostname", $[]);
+    map d_out = (map) SCR::Execute (.target.bash_output, "hostname -d", $[]);
+    y2milestone("%1 == %2", sformat("%1.%2", h_out["stdout"]:"h", d_out["stdout"]:"d"), f_out["stdout"]:"x");
+    h_out["stdout"] = deletechars(h_out["stdout"]:"", "\n");
+    if( sformat("%1.%2", h_out["stdout"]:"h", d_out["stdout"]:"d") != f_out["stdout"]:"x" ) {
+        if ( !Popup::AnyQuestionRichText(_("illegal FQHN"), _("the output of 'hostname -f' does not match the real hostname. The product will not install correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
+        {
+            if (Popup::ConfirmAbort(`incomplete)) {
+                return `abort;
+            }
         }
     }
     return `auto;
