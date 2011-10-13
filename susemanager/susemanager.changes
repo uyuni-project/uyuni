@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 13 13:58:56 CEST 2011 - ug@suse.de
+
+- check disksize in susemanager_setup (bnc#688406)
+
+-------------------------------------------------------------------
 Thu Oct 13 12:11:33 CEST 2011 - ug@suse.de
 
 - added sanity checks to susemanager_setup client (bnc#703132)
