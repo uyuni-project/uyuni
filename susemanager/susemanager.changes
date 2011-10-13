@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 13 13:50:38 CEST 2011 - ug@suse.de
+
+- added sanity checks to susemanager_setup client (bnc#703132)
+
+-------------------------------------------------------------------
 Wed Sep  7 12:41:52 CEST 2011 - mc@suse.de
 
 - merge python modules into one directory
