@@ -542,10 +542,8 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs.print_msg.call_args_list,
                          [(("Repo http://some.url has 2 packages.",), {}),
                           (("No new packages to download.", ), {})])
-        self.assertEqual(rs._link_packages.call_args,
-                         (([], ), {}))
         self.assertEqual(rs._download_packages.call_args,
-                         (([], 'bogus-url'), {}))
+                         (([], [], repo, 'bogus-url'), {}))
 
     def test_import_packages_2link(self):
         p1 = self.reposync.ContentPackage()
@@ -584,10 +582,8 @@ class RepoSyncTest(unittest.TestCase):
 
         self.assertEqual(rs.print_msg.call_args_list,
                          [(("Repo http://some.url has 2 packages.",), {})])
-        self.assertEqual(rs._link_packages.call_args,
-                         (([], ), {}))
         self.assertEqual(rs._download_packages.call_args,
-                         (([p1, p2], 'bogus-url'), {}))
+                         (([p1, p2], [], repo, 'bogus-url'), {}))
         
     def test_import_packages_2link_differently_and_download(self):
         p1 = self.reposync.ContentPackage()
@@ -629,10 +625,8 @@ class RepoSyncTest(unittest.TestCase):
 
         self.assertEqual(rs.print_msg.call_args_list,
                          [(("Repo http://some.url has 2 packages.",), {})])
-        self.assertEqual(rs._link_packages.call_args,
-                         (([p1, p2], ), {}))
         self.assertEqual(rs._download_packages.call_args,
-                         (([p2], 'bogus-url'), {}))
+                         (([p2], [p1, p2], repo, 'bogus-url'), {}))
 
     def test_import_packages_2link_differently_no_download(self):
         p1 = self.reposync.ContentPackage()
@@ -672,10 +666,8 @@ class RepoSyncTest(unittest.TestCase):
 
         self.assertEqual(rs.print_msg.call_args_list,
                          [(("Repo http://some.url has 2 packages.",), {})])
-        self.assertEqual(rs._link_packages.call_args,
-                         (([p1, p2], ), {}))
         self.assertEqual(rs._download_packages.call_args,
-                         (([p1, p2], 'bogus-url'), {}))
+                         (([p1, p2], [p1, p2], repo, 'bogus-url'), {}))
 
     def test_import_packages_2_skipped_bad_arches(self):
         p1 = self.reposync.ContentPackage()
@@ -713,10 +705,8 @@ class RepoSyncTest(unittest.TestCase):
                          [(("Repo http://some.url has 2 packages.",), {}),
                           (("Skip '2' incompatible packages.", ), {}),
                           (("No new packages to download.", ), {})])
-        self.assertEqual(rs._link_packages.call_args,
-                         (([], ), {}))
         self.assertEqual(rs._download_packages.call_args,
-                         (([], 'bogus-url'), {}))
+                         (([], [], repo, 'bogus-url'), {}))
 
     def test_link_packages(self):
         p1 = self.reposync.ContentPackage()
@@ -781,7 +771,7 @@ class RepoSyncTest(unittest.TestCase):
         repo = Mock()
         repo.get_package = Mock(return_value='pkg_path')
 
-        rs._download_packages([p1, p2], repo, "file://local_repo")
+        rs._download_packages([p1, p2], [], repo, "file://local_repo")
 
         self.assertEqual(rs.upload_package.call_args_list,
                          [((p1, 'pkg_path'), {}), ((p2, 'pkg_path'), {})])
@@ -799,7 +789,7 @@ class RepoSyncTest(unittest.TestCase):
         repo = Mock()
         repo.get_package = Mock(return_value='pkg_path')
 
-        rs._download_packages([p1, p2], repo, "http://remote_repo") # non-local
+        rs._download_packages([p1, p2], [p1, p2], repo, "http://remote_repo") # non-local
 
         self.assertEqual(rs.upload_package.call_args_list,
                          [((p1, 'pkg_path'), {}), ((p2, 'pkg_path'), {})])
@@ -821,12 +811,15 @@ class RepoSyncTest(unittest.TestCase):
         repo.get_package = Mock(return_value='pkg_path')
 
         self.assertRaises(Exception, rs._download_packages,
-                          [p1, p2], repo, "file://remote_repo")
+                          [p1, p2], [], repo, "file://remote_repo")
 
         self.assertEqual(rs.upload_package.call_args,
                          ((p1, 'pkg_path'), {}))
         self.assertEqual(rs.error_msg.call_args_list,
-                         [((exc, ), {})])
+                         [(('Could not acquire package '
+                            'name1-version1-release1-epoch1.arch1. Please '
+                            'rerun the reposync after this issue is fixed. '
+                            'error', ), {})])
 
     def test_download_packages_errors_and_continues(self):
         p1 = self.reposync.ContentPackage()
@@ -841,11 +834,18 @@ class RepoSyncTest(unittest.TestCase):
         repo = Mock()
         repo.get_package = Mock(return_value='pkg_path')
 
-        rs._download_packages([p1, p2], repo, "file://remote_repo")
+        rs._download_packages([p1, p2], [], repo, "file://remote_repo")
         self.assertEqual(rs.upload_package.call_args_list,
                          [((p1, 'pkg_path'), {}), ((p2, 'pkg_path'), {})])
         self.assertEqual(rs.error_msg.call_args_list,
-                         [((exc, ), {}), ((exc, ), {})])
+                         [(('Could not acquire package '
+                            'name1-version1-release1-epoch1.arch1. Please '
+                            'rerun the reposync after this issue is fixed. '
+                            'error', ), {}),
+                          (('Could not acquire package '
+                            'name2-version2-release2-epoch2.arch2. Please '
+                            'rerun the reposync after this issue is fixed. '
+                            'error', ), {})])
 
     def test_get_errata_no_advisories_found(self):
         rs = self._create_mocked_reposync()
