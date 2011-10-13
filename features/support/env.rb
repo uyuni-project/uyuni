@@ -14,7 +14,7 @@ require 'capybara'
 require 'capybara/cucumber'
 require File.join(File.dirname(__FILE__), '/cobbler_test.rb')
 
-browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :chrome
+browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :firefox
 host = ENV['TESTHOST'] || 'andromeda.suse.de'
 
 # basic support for rebranding of strings in the UI
