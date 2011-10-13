@@ -33,7 +33,7 @@ from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnException import rhnFault
-from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Checksum, Bug, Keyword
+from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Checksum, Bug, Keyword, InvalidPackageError
 from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.errataImport import ErrataImport
@@ -640,7 +640,7 @@ class RepoSync:
         package['org_id'] = self.channel['org_id']
         try:
             self._importer_run(package, caller, backend)
-        except:
+        except InvalidPackageError:
             package['epoch'] = ''
             self._importer_run(package, caller, backend)
 
