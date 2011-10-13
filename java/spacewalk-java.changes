@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 13 15:44:27 CEST 2011 - jrenner@suse.de
+
+- Apply revised patch to fix pam setting not saved (bnc#705179)
+
+-------------------------------------------------------------------
 Wed Oct 12 15:04:55 CEST 2011 - ug@suse.de
 
 - the breed in cobbler was not changed when a distro was edited
