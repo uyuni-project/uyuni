@@ -586,7 +586,7 @@ class RepoSync:
         else:
             self.print_msg("No new packages to download.")
 
-        self._download_packages(to_download, repo, url)
+        to_link = self._download_packages(to_download, to_link, repo, url)
         self._link_packages(to_link)
 
     def upload_package(self, package, path):
@@ -669,35 +669,46 @@ class RepoSync:
                     raise
                 continue
 
-    def _download_packages(self, packages, repo, repo_url):
-        """Download packages
+    def _download_packages(self, packages, to_link, repo, repo_url):
+        """Download packages and return the list of packages that must be linked
+
+        If one of the packages contained in ``to_link`` can not be
+        downloaded it will be removed from that list.
 
         :packages: a list of ContentPackage objects that we need to download
+        :to_link: a list of ContentPackage objects which will be linked later
         :repo: repository (ContentSource) from which to download the packages
         :url: url of the repository
 
         """
         is_non_local_repo = (repo_url.find("file://") < 0)
 
-        for (index, pack) in enumerate(packages):
+        total_packages = len(packages)
+        for (index, pack) in enumerate(packages, start=1):
             path = None # we might not reach the path assignment in 'try'
             # try/except/finally doesn't work in python 2.4 (RHEL5)
             try:
                 try:
                     self.print_msg("%s/%s : %s" % (
-                            index+1, len(packages), pack.getNVREA()))
+                        index, total_packages, pack.getNVREA()))
                     path = repo.get_package(pack)
                     self.upload_package(pack, path)
                 except KeyboardInterrupt:
                     raise
                 except Exception, e:
-                   self.error_msg(e)
+                   self.error_msg("Could not acquire package %s. "
+                                  "Please rerun the reposync after this issue "
+                                  "is fixed. %s" %(pack.getNVREA(), e))
+                   if pack in to_link:
+                       to_link.remove(pack)
+
                    if self.fail:
                        raise
                    continue
             finally:
                 if is_non_local_repo and path and os.path.exists(path):
                     os.remove(path)
+        return to_link
 
     def _find_by_checksum(self, pack):
         # we know that it's not in the channel, lets try to
