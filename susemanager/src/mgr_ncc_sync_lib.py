@@ -987,11 +987,12 @@ class NCCSync(object):
 
         """
         channel_data = channel.attrib
-        if not rhnSQL.Row('RHNCONTENTSOURCE', 'label',
-                          channel_data['label']).data:
-            if not channel_data['source_url']:
-                # no URL, cannot create a content source
-                return
+        if not channel_data['source_url']:
+            return # no URL, cannot create a content source
+
+        contentsource = rhnSQL.Row('RHNCONTENTSOURCE', 'label',
+                                   channel_data['label'])
+        if not contentsource.data: # create it
             url = suseLib.URL(channel_data['source_url'])
             # nu.novell.com needs authentication using the mirror credentials
             if url.host == "nu.novell.com":
@@ -1004,25 +1005,23 @@ class NCCSync(object):
             # FIXME make a TYPE_ID for zypper?
             type_id = rhnSQL.Row("RHNCONTENTSOURCETYPE", "LABEL", "yum")['id']
 
-            if not rhnSQL.Table("RHNCONTENTSOURCE", "source_url"
-                                ).has_key(channel_data['source_url']):
-                query = rhnSQL.prepare(
-                    """INSERT INTO RHNCONTENTSOURCE
-                       ( ID, ORG_ID, TYPE_ID, SOURCE_URL, LABEL, METADATA_SIGNED)
-                   VALUES ( sequence_nextval('rhn_chan_content_src_id_seq'),
-                            NULL, :type_id, :source_url, :label, :is_signed )""")
-                query.execute(type_id=type_id, **channel_data)
-
-            # create relation between the new contentsource and the channel
-            contentsource_id = rhnSQL.Row(
-                "RHNCONTENTSOURCE", "source_url",
-                channel_data['source_url'])['id']
             query = rhnSQL.prepare(
-            """INSERT INTO RHNCHANNELCONTENTSOURCE (SOURCE_ID, CHANNEL_ID)
+                """INSERT INTO RHNCONTENTSOURCE
+                       (ID, ORG_ID, TYPE_ID, SOURCE_URL, LABEL, METADATA_SIGNED)
+                   VALUES (sequence_nextval('rhn_chan_content_src_id_seq'),
+                           NULL, :type_id, :source_url, :label, :is_signed )""")
+            query.execute(type_id=type_id, **channel_data)
+
+        # create relation between the new ContentSource and the Channel
+        source_id = rhnSQL.Row(
+            "RhnContentSource", "label", channel_data['label']
+            )['id']
+        if not rhnSQL.Row('RhnChannelContentSource',
+                          'source_id', source_id).data:
+            query = rhnSQL.prepare(
+            """INSERT INTO RhnChannelContentSource (SOURCE_ID, CHANNEL_ID)
                VALUES (:source_id, :channel_id)""")
-            query.execute(
-                source_id = contentsource_id,
-                channel_id = channel_id)
+            query.execute(source_id=source_id, channel_id=channel_id)
 
     def get_channel_arch_id(self, channel):
         """Return the RHNCHANNELARCH.ID for this channel"""
