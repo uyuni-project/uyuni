@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 14 17:11:02 CEST 2011 - iartarisi@suse.cz
+
+- mgr-ncc-sync shouldn't skip creating a rhnChannelContentSource just
+  because the corresponding rhnContentSource already exists
+
+-------------------------------------------------------------------
 Thu Oct 13 13:58:56 CEST 2011 - ug@suse.de
 
 - check disksize in susemanager_setup (bnc#688406)
