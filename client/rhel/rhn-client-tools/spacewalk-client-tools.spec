@@ -7,7 +7,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.6.18
+Version: 1.6.23
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -396,6 +396,21 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Tue Oct 11 2011 Tomas Lestach <tlestach@redhat.com> 1.6.23-1
+- 706148 - set _uri, when connecting to a different server (luvilla@redhat.com)
+
+* Fri Oct 07 2011 Miroslav Suchý 1.6.22-1
+- 743259 - if IPv6 is not present, send empty string instead of None
+
+* Thu Oct 06 2011 Miroslav Suchý 1.6.21-1
+- 743259 - send IPv6 addresses only if server support it
+
+* Thu Oct 06 2011 Miroslav Suchý 1.6.20-1
+- 743259 - really send ipv6 address
+
+* Tue Oct 04 2011 Miroslav Suchý 1.6.19-1
+- 743259 - support for IPv6
+
 * Mon Oct 03 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.18-1
 - require rhnlib with IDN stuff
 

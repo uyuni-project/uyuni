@@ -101,6 +101,7 @@ public class CobblerDistroCommand extends CobblerCommand {
                 xen.setArch(archName);
                 xen.setKernel(tree.getKernelXenPath());
                 xen.setInitrd(tree.getInitrdXenPath());
+                xen.setBreed(tree.getInstallType().getCobblerBreed());
                 xen.setKsMeta(ksmeta);
                 xen.setBreed(tree.getInstallType().getCobblerBreed());
                 xen.save();

@@ -20,7 +20,6 @@ import socket
 import re
 import os
 import sys
-import string
 import config
 
 import ethtool
@@ -86,7 +85,7 @@ def _initialize_dmi_data():
                 if dmi_warn:
                     dmidecode.clear_warnings()
                 return None
-            _dmi_data = data.xpathNewContext();
+            _dmi_data = data.xpathNewContext()
     return _dmi_data
 
 def get_dmi_data(path):
@@ -96,7 +95,7 @@ def get_dmi_data(path):
     """
     dmi_data = _initialize_dmi_data()
     if dmi_data is None:
-       return ''
+        return ''
     data = dmi_data.xpathEval(path)
     if data != []:
         return data[0].content
@@ -130,13 +129,13 @@ def read_installinfo():
     for info in installinfo:
         if not len(info):
             continue
-        vals = string.split(info, '=')
+        vals = info.split('=')
         if len(vals) <= 1:
             continue
-        strippedstring = string.strip(vals[0])
+        strippedstring = vals[0].strip()
         vals[0] = strippedstring
-
-        installdict[vals[0]] = string.strip(string.join(vals[1:]))
+        
+        installdict[vals[0]] = ''.join(vals[1:]).strip()
     return installdict
     
 def cpu_count():
@@ -145,18 +144,18 @@ def cpu_count():
     Beware that it can be different from number of active CPU (e.g. on s390x architecture
     """
     try:
-        dir = os.listdir('/sys/devices/system/cpu/')
+        cpu_dir = os.listdir('/sys/devices/system/cpu/')
     except OSError:
-        dir = []
+        cpu_dir = []
 
     re_cpu = re.compile(r"^cpu[0-9]+$")
-    return len([i for i in dir if re_cpu.match(i)])
+    return len([i for i in cpu_dir if re_cpu.match(i)])
 
 
 # This has got to be one of the ugliest fucntions alive
 def read_cpuinfo():
     def get_entry(a, entry):
-        e = string.lower(entry)
+        e = entry.lower()
         if not a.has_key(e):
             return ""
         return a[e]
@@ -165,21 +164,21 @@ def read_cpuinfo():
     def get_cpulist_as_dict(cpulist):
         count = 0
         tmpdict = {}
-        for cpu in string.split(cpulist, "\n\n"):
+        for cpu in cpulist.split("\n\n"):
             if not len(cpu):
                 continue
             count = count + 1
             if count > 1:
                 break # no need to parse rest
-            for cpu_attr in string.split(cpu, "\n"):
+            for cpu_attr in cpu.split("\n"):
                 if not len(cpu_attr):
                     continue
-                vals = string.split(cpu_attr, ":")
+                vals = cpu_attr.split(":")
                 if len(vals) != 2:
                     # XXX: make at least some effort to recover this data...
                     continue
-                name, value = string.strip(vals[0]), string.strip(vals[1])
-                tmpdict[string.lower(name)] = value
+                name, value = vals[0].strip(), vals[1].strip()
+                tmpdict[name.lower()] = value
         return tmpdict
 
     if not os.access("/proc/cpuinfo", os.R_OK):
@@ -192,7 +191,7 @@ def read_cpuinfo():
         locale.setlocale(locale.LC_NUMERIC, "C")
 
     cpulist = open("/proc/cpuinfo", "r").read()
-    uname = string.lower(os.uname()[4])
+    uname = os.uname()[4].lower()
     count = cpu_count()
 
     # This thing should return a hwdict that has the following
@@ -248,7 +247,7 @@ def read_cpuinfo():
         hwdict['other']         = get_entry(tmpdict, 'platform string')
         hz_speed                = get_entry(tmpdict, 'cycle frequency [Hz]')
         # some funky alphas actually report in the form "462375000 est."
-        hz_speed = string.split(hz_speed)
+        hz_speed = hz_speed.split()
         try:
             hwdict['speed']         = int(round(float(hz_speed[0]))) / 1000000
         except ValueError:
@@ -288,8 +287,8 @@ def read_cpuinfo():
 
     elif uname in ['s390', 's390x']:
         tmpdict = {}
-        for cpu in string.split(cpulist, "\n"):
-            vals = string.split(cpu, ": ")
+        for cpu in cpulist.split("\n"):
+            vals = cpu.split(cpu, ": ")
             if len(vals) != 2:
                 continue
             tmpdict[vals[0].strip()] = vals[1].strip()
@@ -349,9 +348,9 @@ def read_memory_2_4():
         return {}
 
     meminfo = open("/proc/meminfo", "r").read()
-    lines = string.split(meminfo,"\n")
+    lines = meminfo.split("\n")
     curline = lines[1]
-    memlist = string.split(curline)
+    memlist = curline.split()
     memdict = {}
     memdict['class'] = "MEMORY"
     megs = int(long(memlist[1])/(1024*1024))
@@ -361,7 +360,7 @@ def read_memory_2_4():
         megs = megs + (16 - (megs % 16))
     memdict['ram'] = str(megs)
     curline = lines[2]
-    memlist = string.split(curline)
+    memlist = curline.split()
     # otherwise, it breaks on > ~4gigs of swap
     megs = int(long(memlist[1])/(1024*1024))
     memdict['swap'] = str(megs)
@@ -371,27 +370,27 @@ def read_memory_2_6():
     if not os.access("/proc/meminfo", os.R_OK):
         return {}
     meminfo = open("/proc/meminfo", "r").read()
-    lines = string.split(meminfo,"\n")
-    dict = {}
+    lines = meminfo.split("\n")
+    meminfo_dict = {}
     for line in lines:
-        blobs = string.split(line, ":", 1)
+        blobs = line.split(":", 1)
         key = blobs[0]
         if len(blobs) == 1:
             continue
         #print blobs
-        value = string.strip(blobs[1])
-        dict[key] = value
-
+        value = blobs[1].strip()
+        meminfo_dict[key] = value
+        
     memdict = {}
     memdict["class"] = "MEMORY"
-
-    total_str = dict['MemTotal']
-    blips = string.split(total_str, " ")
+    
+    total_str = meminfo_dict['MemTotal']
+    blips = total_str.split(" ")
     total_k = long(blips[0])
     megs = long(total_k/(1024))
 
-    swap_str = dict['SwapTotal']
-    blips = string.split(swap_str, ' ')
+    swap_str = meminfo_dict['SwapTotal']
+    blips = swap_str.split(' ')
     swap_k = long(blips[0])
     swap_megs = long(swap_k/(1024))
 
@@ -401,57 +400,65 @@ def read_memory_2_6():
 
 
 def findHostByRoute():
+    """ returns [hostname, intf, intf6]
+
+        Where hostname is you FQDN of this machine.
+        And intf is numeric IPv4 address. And intf6 is IPv6 address.
+    """
     cfg = config.initUp2dateConfig()
     sl = config.getServerlURL()
 
     st = {'https':443, 'http':80}
     hostname = None
     intf = None
+    intf6 = None
     for serverUrl in sl:
-        s = socket.socket()
-        server = string.split(serverUrl, '/')[2]
-        servertype = string.split(serverUrl, ':')[0]
+        server = serverUrl.split('/')[2]
+        servertype = serverUrl.split(':')[0]
         port = st[servertype]
 
-        if cfg['enableProxy']:
-            server_port = config.getProxySetting()
-            (server, port) = string.split(server_port, ':')
-            port = int(port)
+        for family in (AF_INET, AF_INET6):
+            s = socket.socket(family)
 
-        try:
-            s.settimeout(5)
-            s.connect((server, port))
-            (intf, port) = s.getsockname()
-            hostname = socket.gethostbyaddr(intf)[0]
-        # I dislike generic excepts, but is the above fails
-        # for any reason, were not going to be able to
-        # find a good hostname....
-        except:
+            if cfg['enableProxy']:
+                server_port = config.getProxySetting()
+                (server, port) = server_port.split(':')
+                port = int(port)
+
+            try:
+                s.settimeout(5)
+                s.connect((server, port))
+                if family == AF_INET:
+                    intf = s.getsockname()[0]
+                else:
+                    intf6 = s.getsockname()[0]
+                hostname = socket.getfqdn(server)
+            except socket.error:
+                s.close()
+                continue
             s.close()
-            continue
-
-    # Override hostname with the one in /etc/sysconfig/network
+        
+    # Override hostname with the one in /etc/sysconfig/network 
     # for bz# 457953
-
-    if  os.path.isfile("/etc/sysconfig/network") and os.access("/etc/sysconfig/network", os.R_OK):
-	networkinfo = open("/etc/sysconfig/network", "r").readlines()
-
+    
+    if os.access("/etc/sysconfig/network", os.R_OK):
+        networkinfo = open("/etc/sysconfig/network", "r").readlines()
+	
         for info in networkinfo:
             if not len(info):
                 continue
-            vals = string.split(info, '=')
+            vals = info.split('=')
             if len(vals) <= 1:
                 continue
-            strippedstring = string.strip(vals[0])
+            strippedstring = vals[0].strip()
             vals[0] = strippedstring
             if vals[0] == "HOSTNAME":
-                hostname = string.strip(string.join(vals[1:]))
+                hostname = ''.join(vals[1:]).strip()
                 break
 
     if hostname == None or hostname == 'localhost.localdomain':
         hostname = "unknown"
-        s.close()
-    return hostname, intf
+    return hostname, intf, intf6
 
 def get_slave_hwaddr(master, slave):
     hwaddr = ""
@@ -462,12 +469,12 @@ def get_slave_hwaddr(master, slave):
 
     slave_found = False
     for line in bonding.readlines():
-        if slave_found and string.find(line, "Permanent HW addr: ") != -1:
-            hwaddr = string.split(line)[3]
+        if slave_found and line.find("Permanent HW addr: ") != -1:
+            hwaddr = line.split()[3]
             break
 
-        if string.find(line, "Slave Interface: ") != -1:
-            ifname = string.split(line)[2]
+        if line.find("Slave Interface: ") != -1:
+            ifname = line.split()[2]
             if ifname == slave:
                 slave_found = True
 
@@ -480,32 +487,44 @@ def read_network():
 
     netdict['hostname'] = gethostname()
     try:
-        list_of_addrs = getaddrinfo(gethostname(),None)
+        list_of_addrs = getaddrinfo(gethostname(), None)
         ipv4_addrs = filter(lambda x:x[0]==socket.AF_INET, list_of_addrs)
         # take first ipv4 addr
         netdict['ipaddr'] = ipv4_addrs[0][4][0]
     except:
         netdict['ipaddr'] = "127.0.0.1"
 
+    try:
+        list_of_addrs = getaddrinfo(gethostname(), None)
+        ipv6_addrs = filter(lambda x:x[0]==socket.AF_INET6, list_of_addrs)
+        # take first ipv6 addr
+        netdict['ip6addr'] = ipv6_addrs[0][4][0]
+    except:
+        netdict['ip6addr'] = "::1"
 
     if netdict['hostname'] == 'localhost.localdomain' or \
-    "." not in netdict['hostname'] or \
-    netdict['ipaddr'] == "127.0.0.1":
-        hostname, ipaddr = findHostByRoute()
+            "." not in netdict['hostname'] or \
+            netdict['ipaddr'] == "127.0.0.1" or \
+            netdict['ip6addr'] == "::1":
+        hostname, ipaddr, ip6addr = findHostByRoute()
 
         if netdict['hostname'] == 'localhost.localdomain' or "." not in netdict['hostname']:
             netdict['hostname'] = hostname
         if netdict['ipaddr'] == "127.0.0.1":
             netdict['ipaddr'] = ipaddr
+        if netdict['ip6addr'] == "::1":
+            netdict['ip6addr'] = ip6addr
 
     if netdict['ipaddr'] is None:
         netdict['ipaddr'] = ''
+    if netdict['ip6addr'] is None:
+        netdict['ip6addr'] = ''
     return netdict
 
 def read_network_interfaces():
     intDict = {}
     intDict['class'] = "NETINTERFACES"
-    
+
     interfaces = list(set(ethtool.get_devices() + ethtool.get_active_devices()))
     for interface in interfaces:
         try:
@@ -573,12 +592,12 @@ def read_dmi():
     dmidict["class"] = "DMI"
 
     # Try to obtain DMI info if architecture is i386, x86_64 or ia64
-    uname = string.lower(os.uname()[4])
+    uname = os.uname()[4].lower()
     if not (uname[0] == "i"  and  uname[-2:] == "86") and not (uname == "x86_64"):
         return dmidict
 
-    # System Information
-    vendor = dmi_vendor();
+    # System Information 
+    vendor = dmi_vendor()
     if vendor:
         dmidict["vendor"] = vendor
 

@@ -2,7 +2,7 @@
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.6.0
+Version: 1.6.1
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: GPLv2
@@ -43,7 +43,7 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8/
 %{_bindir}/pod2man --section=8 rhn-config-schema.pl > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-config-schema.pl.8
 %{_bindir}/pod2man --section=8 rhn-load-ssl-cert.pl > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-load-ssl-cert.pl.8
 %{_bindir}/pod2man --section=8 man/spacewalk-service.pod > $RPM_BUILD_ROOT%{_mandir}/man8/spacewalk-service.8
-%{_bindir}/pod2man --section=8 rhn-sat-restart-silent > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-sat-restart-silent.8
+%{_bindir}/pod2man --section=8 man/rhn-sat-restart-silent.pod > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-sat-restart-silent.8
 %{_bindir}/pod2man --section=8 rhn-config-satellite.pl > $RPM_BUILD_ROOT%{_mandir}/man8/rhn-config-satellite.pl.8
 install -p man/rhn-satellite.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 install -p man/validate-sat-cert.pl.8 $RPM_BUILD_ROOT%{_mandir}/man8/
@@ -81,6 +81,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/rhn-config-satellite.pl.8*
 
 %changelog
+* Tue Oct 04 2011 Miroslav Suchý 1.6.1-1
+- writing pod documentation to shell script is not smart, move it aside
+
 * Tue Jul 19 2011 Jan Pazdziora 1.5.5-1
 - Updating the copyright years.
 

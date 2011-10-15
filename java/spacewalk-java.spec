@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.54
+Version: 1.6.61
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -637,6 +637,35 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Oct 13 2011 Miroslav Suchý 1.6.61-1
+- 745102 - display IPv6 from networkinfo in SDC and in system search
+
+* Thu Oct 13 2011 Tomas Lestach <tlestach@redhat.com> 1.6.60-1
+- fixing checkstyle issues (tlestach@redhat.com)
+
+* Thu Oct 13 2011 Tomas Lestach <tlestach@redhat.com> 1.6.59-1
+- Fixed pam setting on user page not saving (jrenner@suse.de)
+- Set breed in cobbler correctly (ug@suse.de)
+
+* Wed Oct 12 2011 Jan Pazdziora 1.6.58-1
+- 691849 - Add missing fix for schedule command AFTER package install.
+  (jrenner@suse.de)
+
+* Mon Oct 10 2011 Jan Pazdziora 1.6.57-1
+- 741476, 743407 - it is the null dmi.getBios() which caused the problem in bug
+  452956 actually.
+- 421991 - in SSM add link to list of systems subscribed to channels
+  (msuchy@redhat.com)
+
+* Thu Oct 06 2011 Tomas Lestach <tlestach@redhat.com> 1.6.56-1
+- 738988 - erratum associated with an ActionMessage might be deleted in the
+  mean time (tlestach@redhat.com)
+
+* Tue Oct 04 2011 Tomas Lestach <tlestach@redhat.com> 1.6.55-1
+- 729784 - support for passalgo in advanced options of kickstart profiles
+  (tlestach@redhat.com)
+- add exception handling for server deletion (tlestach@redhat.com)
+
 * Mon Oct 03 2011 Miroslav Suchý 1.6.54-1
 - 229836 - allow empty prefix for user
 

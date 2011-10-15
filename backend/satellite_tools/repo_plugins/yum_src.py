@@ -119,6 +119,8 @@ class ContentSource:
             repo.repo_gpgcheck = False
         else:
             repo.repo_gpgcheck = True
+        if hasattr(repo, 'base_persistdir'):
+            repo.base_persistdir = self.cache_dir
         if self.proxy_url is not None:
             repo.proxy = self.proxy_url
 

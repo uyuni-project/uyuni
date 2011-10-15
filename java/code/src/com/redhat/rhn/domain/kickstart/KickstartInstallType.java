@@ -172,15 +172,16 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return cobbler breed compatible string
      */
     public String getCobblerBreed() {
-    	String breed = REDHAT;
+        String breed = REDHAT;
 
-    	if(getLabel().equals("generic_rpm")) {
-    		breed = GENERIC;
-    	} else if(getLabel().equals(SUSE)) {
-    		breed = SUSE;
-    	}
+        if (getLabel().equals("generic_rpm")) {
+            breed = GENERIC;
+        }
+        else if (getLabel().equals(SUSE)) {
+            breed = SUSE;
+        }
 
-    	return breed;
+        return breed;
     }
 
 }

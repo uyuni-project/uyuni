@@ -12,7 +12,7 @@ Summary:        Spacewalk Monitoring Daemon
 Name:           rhnmd
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:        5.3.9
+Version:        5.3.10
 Release:        1%{?dist}
 License:        GPLv2
 BuildArch:      noarch
@@ -31,6 +31,8 @@ Obsoletes:      rhnmd.i386 < 5.3.0-5
 Obsoletes:      rhnmd.x86_64 < 5.3.0-5
 Provides:       rhnmd.i386 = %{version}
 Provides:       rhnmd.x86_64 = %{version}
+
+Requires(post): /usr/sbin/semanage, /sbin/restorecon
 
 %description
 rhnmd enables secure ssh-based communication between the monitoring
@@ -114,6 +116,9 @@ then
 fi
 %endif
 /sbin/chkconfig --add rhnmd
+/usr/sbin/semanage fcontext -a -t sshd_key_t '/var/lib/nocpulse/\.ssh/nocpulse-identity' || :
+/usr/sbin/semanage fcontext -a -t ssh_home_t '/var/lib/nocpulse/\.ssh/authorized_keys' || :
+/sbin/restorecon -rvv /var/lib/nocpulse || :
 
 %preun
 if [ $1 = 0 ]; then
@@ -140,6 +145,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Oct 07 2011 Jan Pazdziora 5.3.10-1
+- 594647 - label rhnmd's files upon installation.
+
 * Fri Apr 15 2011 Jan Pazdziora 5.3.9-1
 - add nocpulse config dir to filelist (mc@suse.de)
 - build rhnmd on SUSE (mc@suse.de)

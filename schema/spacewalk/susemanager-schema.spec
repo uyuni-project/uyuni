@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.6.19
+Version:        1.6.21
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Oct 13 2011 Jan Pazdziora 1.6.21-1
+- Unspecified SHA1s have to be reported for upgrades.
+
+* Tue Oct 11 2011 Miroslav Suchý 1.6.20-1
+- 745102 - add ip6addr column to rhnServerNetwork
+
 * Fri Sep 30 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.19-1
 - 741782 - fixed data types in view
 

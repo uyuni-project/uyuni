@@ -189,6 +189,7 @@ def _set_server_capabilities():
         'xmlrpc.packages.suse_products'         : {'version' : 1, 'value' : 1},
         'xmlrpc.errata.patch_names'             : {'version' : 1, 'value' : 1},
         'staging_content'                       : {'version' : 1, 'value' : 1},
+        'ipv6'                                  : {'version' : 1, 'value' : 1},
     }
     l = []
     for name, hashval in capabilities.items():
