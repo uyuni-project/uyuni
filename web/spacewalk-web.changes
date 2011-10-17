@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Oct 17 17:25:47 CEST 2011 - ug@suse.de
+
+- fixed "Kickstart" to "Autoinstallation"
+  bnc#711527
+
+-------------------------------------------------------------------
 Mon Oct 17 13:07:23 CEST 2011 - jrenner@suse.de
 
 - CVE-2011-3344 - HTML-encode self-referencing link (brc#731647)
