@@ -1,10 +1,10 @@
 -------------------------------------------------------------------
 Mon Oct 17 13:13:21 CEST 2011 - jrenner@suse.de
 
-- CVE-2011-1594: only local redirects are allowed (brc#672167)
-- CVE-2011-2919: encode parameter names + values (brc#713478)
-- CVE-2011-2920: escape hidden element value, avoid XSS (brc#681032)
-- CVE-2011-2927: using struts quotes values properly (brc#730955)
+- CVE-2011-1594: Unintended Proxy/Open Redirects (bnc#644082)
+- CVE-2011-2919: XSS on SystemGroupList.do page (bnc#719133)
+- CVE-2011-2920: XSS flaw(s) in filter handling (bnc#719136)
+- CVE-2011-2927: XSS flaw in channels search (bnc#719127)
 
 -------------------------------------------------------------------
 Thu Oct 13 15:44:27 CEST 2011 - jrenner@suse.de

@@ -7,7 +7,7 @@ Mon Oct 17 17:25:47 CEST 2011 - ug@suse.de
 -------------------------------------------------------------------
 Mon Oct 17 13:07:23 CEST 2011 - jrenner@suse.de
 
-- CVE-2011-3344 - HTML-encode self-referencing link (brc#731647)
+- CVE-2011-3344 - XSS on the Lost Password Page (bnc#719130)
 
 -------------------------------------------------------------------
 Wed Oct 12 11:49:17 CEST 2011 - mantel@suse.de
