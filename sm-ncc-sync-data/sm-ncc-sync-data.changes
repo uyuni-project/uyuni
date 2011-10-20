@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 20 13:56:10 CEST 2011 - iartarisi@suse.cz
+
+- added OES2-SP3 Pool/Updates channels
+
+-------------------------------------------------------------------
 Wed Oct  5 10:03:44 CEST 2011 - iartarisi@suse.cz
 
 - fixed SLES10 Tools channels urls (sle-10-* vs. sles-10-*)
