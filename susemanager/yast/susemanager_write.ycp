@@ -22,6 +22,7 @@
 	    SCR::Execute (.target.remove, file);
 	}
     });
+    SCR::Execute (.target.bash, sformat ("/usr/bin/touch %1; /bin/chmod 0600 %1;", env_file));
 
     string migration_file	= Directory::tmpdir + "/susemanager_migration";
     boolean migration		= FileUtils::Exists (migration_file);
