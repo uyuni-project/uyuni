@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 20 17:10:05 CEST 2011 - mc@suse.de
+
+- enable auto implement of SQL profiles for oracle full DB
+
+-------------------------------------------------------------------
 Thu Oct 20 12:27:33 CEST 2011 - ug@suse.de
 
 - more strict file permissions for environment files
