@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct 20 12:27:33 CEST 2011 - ug@suse.de
+
+- more strict file permissions for environment files
+  (bnc#725221)
+
+-------------------------------------------------------------------
 Fri Oct 14 17:11:02 CEST 2011 - iartarisi@suse.cz
 
 - mgr-ncc-sync shouldn't skip creating a rhnChannelContentSource just
