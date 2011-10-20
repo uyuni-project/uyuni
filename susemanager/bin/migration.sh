@@ -143,6 +143,10 @@ create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace dat
 grant dba to $MANAGER_USER;
 alter system set processes = 400 scope=spfile;
 alter system set deferred_segment_creation=FALSE;
+BEGIN
+dbms_sqltune.set_auto_tuning_task_parameter( 'ACCEPT_SQL_PROFILES', 'TRUE');
+END;
+/
 quit
 " > /tmp/dbsetup.sql
 
