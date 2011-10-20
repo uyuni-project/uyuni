@@ -195,6 +195,7 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
     {
 	SCR::Execute (.target.remove, env_file);
     }
+    SCR::Execute (.target.bash, sformat ("/usr/bin/touch %1; /bin/chmod 0600 %1;", env_file));
 
     // read existing values, if present
     foreach (string key, string value, settings, {
