@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 21 16:31:28 CEST 2011 - ug@suse.de
+
+- catch an exception when libvirtd is not running (bnc#696294)
+
+-------------------------------------------------------------------
 Mon Feb  7 17:26:30 CET 2011 - mc@suse.de
 
 - add missing dir 
