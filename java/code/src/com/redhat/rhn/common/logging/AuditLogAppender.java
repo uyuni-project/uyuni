@@ -46,7 +46,7 @@ public class AuditLogAppender extends AppenderSkeleton {
      */
     @Override
     public void close() {
-        // nop
+        client = null;
     }
 
     /**
@@ -68,7 +68,7 @@ public class AuditLogAppender extends AppenderSkeleton {
         try {
             client = new XmlRpcClient(url, true);
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Error initializing XMLRPC client", e);
+            throw new AuditLogException("Error initializing XML-RPC client", e);
         }
         return client;
     }
@@ -95,9 +95,9 @@ public class AuditLogAppender extends AppenderSkeleton {
         try {
             client.invoke(method, args);
         } catch (XmlRpcException e) {
-            throw new RuntimeException("Error sending log event", e);
+            throw new AuditLogException("Error sending log event", e);
         } catch (XmlRpcFault e) {
-            throw new RuntimeException("Error sending log event", e);
+            throw new AuditLogException("Error sending log event", e);
         }
     }
 }
