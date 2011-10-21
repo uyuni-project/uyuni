@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.common.logging;
 
+import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -24,7 +26,16 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcFault;
+
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.events.TraceBackEvent;
+import com.redhat.rhn.frontend.struts.RequestContext;
 
 /**
  * Utility methods for logging.
@@ -51,6 +62,9 @@ public class AuditLogUtil {
                     "desiredpasswordConfirm", "rootPassword",
                     "rootPasswordConfirm", "lower", "prev_lower", "next_lower",
                     "first_lower", "last_lower"));
+
+    // Error message in case the backend is n/a
+    private final static String MSG_NOT_AVAILABLE = "Auditlog backend is not available: auditlog-keeper";
 
     /**
      * Create a map of key/value pairs for logging web requests.
@@ -150,5 +164,45 @@ public class AuditLogUtil {
         }
 
         return extMap;
+    }
+
+    /**
+     * Look for the backend: call ping() and do not care about the result.
+     *
+     * @return exception that occurred if any, else null.
+     */
+    public static void ping() throws AuditLogException {
+        String url = Config.get().getString(ConfigDefaults.AUDIT_SERVER);
+        XmlRpcClient client = null;
+        try {
+            client = new XmlRpcClient(url, true);
+            client.invoke("audit.ping", new ArrayList<Object>());
+        } catch (MalformedURLException e) {
+            throw new AuditLogException("Error initializing XML-RPC client", e);
+        } catch (XmlRpcException e) {
+            throw new AuditLogException(MSG_NOT_AVAILABLE, e);
+        } catch (XmlRpcFault e) {
+            throw new AuditLogException(MSG_NOT_AVAILABLE, e);
+        } finally {
+            client = null;
+        }
+    }
+
+    /**
+     * Send an error email.
+     *
+     * @param request
+     * @param t
+     */
+    public static void sendErrorEmail(HttpServletRequest request, Throwable t) {
+        TraceBackEvent evt = new TraceBackEvent();
+        if (request != null) {
+            RequestContext requestContext = new RequestContext(request);
+            User usr = requestContext.getLoggedInUser();
+            evt.setUser(usr);
+            evt.setRequest(request);
+        }
+        evt.setException(t);
+        MessageQueue.publish(evt);
     }
 }

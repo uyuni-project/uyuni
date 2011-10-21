@@ -40,12 +40,12 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.logging.AuditLog;
+import com.redhat.rhn.common.logging.AuditLogException;
 import com.redhat.rhn.common.logging.AuditLogMultipartRequest;
+import com.redhat.rhn.common.logging.AuditLogUtil;
 
 /**
  * AuditLogFilter for generic logging of HTTP requests.
- *
- * @version $Rev$
  */
 public class AuditLogFilter implements Filter {
 
@@ -69,32 +69,43 @@ public class AuditLogFilter implements Filter {
     // Local boolean to check if logging is enabled
     private Boolean enabled = null;
 
+    // Indicate that the backend is not available
+    private Boolean backendAvailable = false;
+
     // Configuration objects
     private HashMap auditConfig;
 
     /** {@inheritDoc} */
     public void init(FilterConfig filterConfig) {
-        // Put enabled into a local boolean
-        if (enabled == null) {
-            enabled = Config.get().getBoolean(ConfigDefaults.AUDIT_ENABLED);
-        }
+        // Put 'audit.enabled' into a local boolean
+        enabled = Config.get().getBoolean(ConfigDefaults.AUDIT_ENABLED);
 
-        // Load configuration from YAML file
-        if (auditConfig == null) {
+        // Do more stuff only if enabled
+        if (enabled) {
+            // Load configuration from YAML file
             Object obj = null;
             try {
                 Yaml yaml = new Yaml();
                 obj = yaml.load(new FileReader(configFile));
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                AuditLogUtil.sendErrorEmail(null, e);
             }
             if (obj instanceof HashMap) {
                 auditConfig = (HashMap) obj;
             }
-        }
 
-        // Init ignored values for 'dispatch'
-        dispatchIgnored = createDispatchIgnored();
+            // Init ignored values for parameter 'dispatch'
+            dispatchIgnored = createDispatchIgnored();
+
+            // Check if the backend is available
+            try {
+                AuditLogUtil.ping();
+                backendAvailable = true;
+            } catch (AuditLogException e) {
+                backendAvailable = false;
+                AuditLogUtil.sendErrorEmail(null, e);
+            }
+        }
     }
 
     /** {@inheritDoc} */
@@ -110,32 +121,39 @@ public class AuditLogFilter implements Filter {
         boolean isMultipart = false;
 
         // The current HTTP request and logging configuration
-        HttpServletRequest request = null;
+        HttpServletRequest request = (HttpServletRequest) req;
         Map uriConfig = null;
 
         if (enabled) {
-            request = (HttpServletRequest) req;
             // Get the configuration for this URI
-            if (auditConfig.containsKey(request.getServletPath())) {
-                uriConfig = (HashMap) auditConfig.get(request.getServletPath());
-                if (uriConfig != null) {
-                    // If content is 'multipart/form-data', wrap the request
-                    if (FileUpload.isMultipartContent(request)) {
-                        isMultipart = true;
-                        request = new AuditLogMultipartRequest(request);
+            uriConfig = (HashMap) auditConfig.get(request.getServletPath());
+            if (uriConfig != null) {
+                // Check if the backend is available now if it wasn't before
+                if (!backendAvailable) {
+                    try {
+                        AuditLogUtil.ping();
+                        // It is available again
+                        backendAvailable = true;
+                    } catch (AuditLogException e) {
+                        throw e;
                     }
+                }
 
-                    // Check the configuration for this URI
-                    if (!checkRequirements(uriConfig, request)) {
-                        // Do not log this request
-                    } else if (logBefore(uriConfig)) {
-                        // Log this request now
-                        AuditLog.getInstance().log(false,
-                                (String) uriConfig.get(KEY_TYPE), request);
-                    } else {
-                        // Log this request later
-                        log = true;
-                    }
+                // If content is 'multipart/form-data', wrap the request
+                if (FileUpload.isMultipartContent(request)) {
+                    isMultipart = true;
+                    request = new AuditLogMultipartRequest(request);
+                }
+
+                // Check the configuration for this URI
+                if (!checkRequirements(uriConfig, request)) {
+                    // Do not log this request
+                } else if (logBefore(uriConfig)) {
+                    // Log this request now
+                    log(false, (String) uriConfig.get(KEY_TYPE), request);
+                } else {
+                    // Log this request later
+                    log = true;
                 }
             }
         }
@@ -149,16 +167,30 @@ public class AuditLogFilter implements Filter {
             log = true;
         }
 
-        // Do the actual logging
+        // Perform logging after processing the request
         if (log) {
             if (request.getAttribute(Globals.ERROR_KEY) == null) {
-                // No failures, normal logging
-                AuditLog.getInstance().log(false,
-                        (String) uriConfig.get(KEY_TYPE), request);
+                log(false, (String) uriConfig.get(KEY_TYPE), request);
             } else if (logFailures(uriConfig)) {
-                AuditLog.getInstance().log(true,
-                        (String) uriConfig.get(KEY_TYPE), request);
+                log(true, (String) uriConfig.get(KEY_TYPE), request);
             }
+        }
+    }
+
+    /**
+     * Wrapper method for calls to the logger.
+     *
+     * @param failure
+     * @param evtType
+     * @param request
+     */
+    private void log(boolean failure, String evtType, HttpServletRequest request) {
+        try {
+            AuditLog.getInstance().log(failure, evtType, request);
+        } catch (AuditLogException e) {
+            backendAvailable = false;
+            AuditLogUtil.sendErrorEmail(request, e);
+            throw e;
         }
     }
 
