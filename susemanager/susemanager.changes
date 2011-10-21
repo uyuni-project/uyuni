@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 21 15:50:58 CEST 2011 - mc@suse.de
+
+- add some diagnostics DB tools
+
+-------------------------------------------------------------------
 Thu Oct 20 17:10:05 CEST 2011 - mc@suse.de
 
 - enable auto implement of SQL profiles for oracle full DB
