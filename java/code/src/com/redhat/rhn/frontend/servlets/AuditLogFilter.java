@@ -21,7 +21,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.Filter;
@@ -43,6 +45,7 @@ import com.redhat.rhn.common.logging.AuditLog;
 import com.redhat.rhn.common.logging.AuditLogException;
 import com.redhat.rhn.common.logging.AuditLogMultipartRequest;
 import com.redhat.rhn.common.logging.AuditLogUtil;
+import com.redhat.rhn.frontend.context.Context;
 
 /**
  * AuditLogFilter for generic logging of HTTP requests.
@@ -59,12 +62,9 @@ public class AuditLogFilter implements Filter {
     private final String KEY_LOG_BEFORE = "log_before";
     private final String KEY_LOG_FAILURES = "log_failures";
 
-    // Will contain a list of values for 'dispatch' to be globally ignored
-    private List<String> dispatchIgnored = null;
-
-    // Values will be looked up in the translation files using these keys
-    private String[] dispatchIgnoredValues = { "Go", "Select All",
-            "Unselect All", "Update List" };
+    // Values of 'dispatch' corresponding to these keys will be globally ignored
+    private String[] dispatchIgnoredKeys = { "Go", "Select All", "Unselect All", "Update List" };
+    private Map<Locale, List<String>> dispatchIgnoredValues = new LinkedHashMap<Locale, List<String>>();
 
     // Local boolean to check if logging is enabled
     private Boolean enabled = null;
@@ -80,7 +80,7 @@ public class AuditLogFilter implements Filter {
         // Put 'audit.enabled' into a local boolean
         enabled = Config.get().getBoolean(ConfigDefaults.AUDIT_ENABLED);
 
-        // Do more stuff only if enabled
+        // Continue only if enabled
         if (enabled) {
             // Load configuration from YAML file
             Object obj = null;
@@ -93,9 +93,6 @@ public class AuditLogFilter implements Filter {
             if (obj instanceof HashMap) {
                 auditConfig = (HashMap) obj;
             }
-
-            // Init ignored values for parameter 'dispatch'
-            dispatchIgnored = createDispatchIgnored();
 
             // Check if the backend is available
             try {
@@ -125,9 +122,11 @@ public class AuditLogFilter implements Filter {
         Map uriConfig = null;
 
         if (enabled) {
+
             // Get the configuration for this URI
             uriConfig = (HashMap) auditConfig.get(request.getServletPath());
             if (uriConfig != null) {
+
                 // Check if the backend is available now if it wasn't before
                 if (!backendAvailable) {
                     try {
@@ -248,9 +247,20 @@ public class AuditLogFilter implements Filter {
             if (dispatch == null || !value.equals(dispatch)) {
                 ret = false;
             }
-        } else if (dispatch != null && dispatchIgnored.contains(dispatch)) {
-            // Or check with the global ignored list
-            ret = false;
+        } else if (dispatch != null) {
+            // Lookup the given value on localized list
+            Locale locale = Context.getCurrentContext().getLocale();
+            List<String> ignoredValues = dispatchIgnoredValues.get(locale);
+            
+            // Lazy initialize values for the current locale if necessary
+            if (ignoredValues == null) {
+                ignoredValues = getDispatchIgnoredValues(locale);
+                dispatchIgnoredValues.put(locale, ignoredValues);
+            }
+
+            if (ignoredValues.contains(dispatch)) {
+                ret = false;
+            }
         }
         return ret;
     }
@@ -290,15 +300,15 @@ public class AuditLogFilter implements Filter {
     }
 
     /**
-     * If the 'dispatch' parameter has one of the values in this list, the
-     * request is not going to be logged.
+     * A request is not going to be logged, if the request parameter 'dispatch'
+     * has one of the values contained in these lists (one list per locale).
      *
      * @return unmodifiable list
      */
-    private List<String> createDispatchIgnored() {
+    private List<String> getDispatchIgnoredValues(Locale locale) {
         List<String> values = new ArrayList<String>();
-        for (String s : dispatchIgnoredValues) {
-            values.add(LocalizationService.getInstance().getMessage(s));
+        for (String s : dispatchIgnoredKeys) {
+            values.add(LocalizationService.getInstance().getMessage(s, locale));
         }
         return Collections.unmodifiableList(values);
     }
