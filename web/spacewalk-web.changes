@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 22 15:12:23 CET 2011 - mantel@suse.de
+
+- adapt spacewalk_dobby for SUSE Manager
+
+-------------------------------------------------------------------
 Tue Nov 22 15:10:30 CET 2011 . mantel@suse.de
 
 - add missing Requires "perl-Filesys-Df" for spacewalk-dobby

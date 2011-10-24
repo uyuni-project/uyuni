@@ -62,10 +62,12 @@ sub table_size_overview {
 
   my $dbh = $dobby->sysdba_connect;
 
+  my $uppercasesid=uc($ENV{ORACLE_SID});
+
   my $query = <<EOQ;
 SELECT de.segment_name AS NAME, SUM(de.bytes) AS TOTAL_BYTES
   FROM dba_tables dt, dba_extents de
- WHERE de.owner = 'RHNSAT'
+ WHERE de.owner = '$uppercasesid'
    AND dt.table_name = de.segment_name
 GROUP BY de.segment_name
 ORDER BY de.segment_name
