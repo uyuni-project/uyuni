@@ -89,13 +89,13 @@ sub oracle_homedir_relative {
 sub sp_file {
   my $self = shift;
 
-  return $self->oracle_homedir_relative("config/10.2.0/spfilerhnsat.ora");
+  return $self->oracle_homedir_relative("product/11gR2/dbhome_1/dbs/spfileembedded.ora");
 }
 
 sub lk_file {
   my $self = shift;
 
-  return $self->oracle_homedir_relative("config/10.2.0/lkRHNSAT");
+  return $self->oracle_homedir_relative("product/11gR2/dbhome_1/dbs/lkSUSEMANA");
 }
 
 sub tablespaces {

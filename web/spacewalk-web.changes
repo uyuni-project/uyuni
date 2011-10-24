@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Oct 24 15:14:08 CEST 2011 - mantel@suse.de
+
+- adapt spacewalk_dobby for SUSE Manager
+
+-------------------------------------------------------------------
 Mon Oct 17 17:25:47 CEST 2011 - ug@suse.de
 
 - fixed "Kickstart" to "Autoinstallation"
