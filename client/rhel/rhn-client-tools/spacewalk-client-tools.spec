@@ -7,7 +7,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.6.23
+Version: 1.6.27
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -22,11 +22,7 @@ Obsoletes: rhn-setup-gnome
 Requires: rhnlib >= 2.5.41
 Requires: rpm >= 4.2.3-24_nonptl
 Requires: rpm-python 
-%if 0%{?rhel} && 0%{?rhel} <= 5
-Requires: python-ethtool
-%else
 Requires: python-ethtool >= 0.4
-%endif
 Requires: gnupg
 Requires: sh-utils
 %if 0%{?suse_version}
@@ -300,10 +296,6 @@ make -f Makefile.rhn-client-tools test
 # actions for rhn_check to run
 %{_datadir}/rhn/actions/__init__.*
 %{_datadir}/rhn/actions/hardware.*
-%if ! 0%{?suse_version}
-# zypp-plugin-spacewalk has its own errata.py
-%{_datadir}/rhn/actions/errata.*
-%endif
 %{_datadir}/rhn/actions/systemid.*
 %{_datadir}/rhn/actions/reboot.*
 %{_datadir}/rhn/actions/rhnsd.*
@@ -396,6 +388,23 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Fri Oct 21 2011 Jan Pazdziora 1.6.27-1
+- Pass the verbose option (-vv) from rhnreg_ks to rhn_check as well.
+
+* Fri Oct 21 2011 Miroslav Suchý 1.6.26-1
+- 627809 - send xen virtual block devices to rhnParent
+- Revert "729161 - default to RHSM in firstboot registration"
+  (mzazrivec@redhat.com)
+
+* Wed Oct 19 2011 Miroslav Suchý 1.6.25-1
+- 743259 - RHEL5 now has python-ethtool 0.6 - simplify code
+- 743259 - get_ipv6_addresses does not return one item, but list
+- 745438 - up2date_config: use localhost to avoid confusion
+  (mzazrivec@redhat.com)
+
+* Tue Oct 18 2011 Miroslav Suchý 1.6.24-1
+- move errata.py action to the yum-rhn-plugin package (iartarisi@suse.cz)
+
 * Tue Oct 11 2011 Tomas Lestach <tlestach@redhat.com> 1.6.23-1
 - 706148 - set _uri, when connecting to a different server (luvilla@redhat.com)
 

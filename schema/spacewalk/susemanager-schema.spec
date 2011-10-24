@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.6.21
+Version:        1.6.24
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Oct 20 2011 Miroslav Suchý 1.6.24-1
+- 745102 - add missing constraint to upgrade script
+
+* Wed Oct 19 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.23-1
+- fixed rhnContentSourceFilter upgrade to match freshly created table
+
+* Tue Oct 18 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.22-1
+- rhnContentSourceFilter stores package filters for repos
+
 * Thu Oct 13 2011 Jan Pazdziora 1.6.21-1
 - Unspecified SHA1s have to be reported for upgrades.
 

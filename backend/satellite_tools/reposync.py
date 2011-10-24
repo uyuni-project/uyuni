@@ -104,7 +104,7 @@ class RepoSync:
         if not options.url:
             if options.channel_label:
                 # TODO:need to look at user security across orgs
-                h = rhnSQL.prepare("""select s.source_url, s.metadata_signed
+                h = rhnSQL.prepare("""select s.id, s.source_url, s.metadata_signed
                                       from rhnContentSource s,
                                            rhnChannelContentSource cs,
                                            rhnChannel c
@@ -112,9 +112,9 @@ class RepoSync:
                                        and cs.channel_id = c.id
                                        and c.label = :label""")
                 h.execute(label=options.channel_label)
-                source_urls = h.fetchall_dict() or []
-                if source_urls:
-                    self.urls = source_urls
+                source_data = h.fetchall_dict() or []
+                if source_data:
+                    self.urls = [(row['id'], row['source_url'], row['metadata_signed']) for row in source_data]
                 else:
                     if options.channel_label:
                         # generate empty metadata
@@ -124,7 +124,7 @@ class RepoSync:
                     quit = True
                     self.error_msg("Channel has no URL associated")
         else:
-            self.urls = [{'source_url':options.url, 'metadata_signed' : 'N'}]
+            self.urls = [(None, options.url, 'N')]
         if not options.channel_label:
             quit = True
             self.error_msg("--channel must be specified")
@@ -149,8 +149,8 @@ class RepoSync:
             sys.exit(1)
 
         start_time = datetime.now()
-        for data in self.urls:
-            url = suseLib.URL(data['source_url'])
+        for (id, source_url, metadata_signed) in self.urls:
+            url = suseLib.URL(source_url)
             if url.get_query_param("credentials"):
                 initCFG('server.susemanager')
                 url.username = CFG.get("%s%s" % (url.get_query_param("credentials"), "_user"))
@@ -158,11 +158,11 @@ class RepoSync:
                 initCFG('server.satellite')
             url.query = ""
             insecure = False
-            if data['metadata_signed'] == 'N':
+            if metadata_signed == 'N':
                 insecure = True
             try:
                 plugin = self.load_plugin()(url.getURL(), self.channel_label, insecure, (not self.noninteractive))
-                self.import_packages(plugin, url.getURL())
+                self.import_packages(plugin, id, url.getURL())
                 self.import_updates(plugin, url.getURL())
             except ChannelTimeoutException, e:
                 self.print_msg(e)
@@ -574,8 +574,21 @@ class RepoSync:
         importer.run()
         self.regen = True
 
-    def import_packages(self, plug, url):
-        packages = plug.list_packages(self.filters)
+    def import_packages(self, plug, source_id, url):
+        if (not self.filters) and source_id:
+            h = rhnSQL.prepare("""
+                    select flag, filter
+                      from rhnContentSourceFilter
+                     where source_id = :source_id
+                     order by sort_order """)
+            h.execute(source_id = source_id)
+            filter_data = h.fetchall_dict() or []
+            filters = [(row['flag'], re.split('[,\s]+', row['filter']))
+                                                         for row in filter_data]
+        else:
+            filters = self.filters
+
+        packages = plug.list_packages(filters)
         to_process = []
         skipped = 0
         saveurl = suseLib.URL(url)

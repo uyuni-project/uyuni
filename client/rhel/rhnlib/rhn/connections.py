@@ -8,16 +8,17 @@
 # $Id$
 
 
+import base64
 import SSL
 import nonblocking
 import httplib
 import xmlrpclib
 import encodings.idna
+import socket
+from platform import python_version
 
 # Import into the local namespace some httplib-related names
-_CS_REQ_SENT = httplib._CS_REQ_SENT
-_CS_IDLE = httplib._CS_IDLE
-ResponseNotReady = httplib.ResponseNotReady
+from httplib import _CS_REQ_SENT, _CS_IDLE, ResponseNotReady
 
 class HTTPResponse(httplib.HTTPResponse):
     def set_callback(self, rs, ws, ex, user_data, callback):
@@ -29,7 +30,6 @@ class HTTPConnection(httplib.HTTPConnection):
     response_class = HTTPResponse
     
     def __init__(self, host, port=None):
-        from platform import python_version
         if python_version() >= '2.6.1':
             httplib.HTTPConnection.__init__(self, host, port, timeout=SSL.DEFAULT_TIMEOUT)
         else:
@@ -140,7 +140,6 @@ class HTTPProxyConnection(HTTPConnection):
         if not self.__username:
             return
         # Authenticated proxy
-        import base64
         userpass = "%s:%s" % (self.__username, self.__password)
         enc_userpass = base64.encodestring(userpass).replace("\n", "")
         self.putheader("Proxy-Authorization", "Basic %s" % enc_userpass)
@@ -156,8 +155,6 @@ class HTTPSConnection(HTTPConnection):
 
     def connect(self):
         "Connect to a host on a given (SSL) port"
-        import socket
-
         results = socket.getaddrinfo(self.host, self.port,
             socket.AF_UNSPEC, socket.SOCK_STREAM)
 
