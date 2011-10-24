@@ -64,7 +64,10 @@ public class AuditLogUtil {
                     "first_lower", "last_lower"));
 
     // Error message in case the backend is n/a
-    private final static String MSG_NOT_AVAILABLE = "Auditlog backend is not available: auditlog-keeper";
+    private final static String MSG_NOT_AVAILABLE = "Log backend 'auditlog-keeper' is not available.";
+
+    // The API method for sending ping to the backend
+    private static final String METHOD_PING = "audit.ping";
 
     /**
      * Create a map of key/value pairs for logging web requests.
@@ -176,7 +179,7 @@ public class AuditLogUtil {
         XmlRpcClient client = null;
         try {
             client = new XmlRpcClient(url, true);
-            client.invoke("audit.ping", new ArrayList<Object>());
+            client.invoke(METHOD_PING, new ArrayList<Object>());
         } catch (MalformedURLException e) {
             throw new AuditLogException("Error initializing XML-RPC client", e);
         } catch (XmlRpcException e) {
