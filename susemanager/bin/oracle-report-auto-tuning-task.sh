@@ -10,6 +10,8 @@ echo "
 --
 -- return a report for the last auto tuning task
 --
+set linesize 150
+set pagesize 2000
 set long 80000
 col recs format a90
 select dbms_sqltune.report_auto_tuning_task() as recs from dual;
