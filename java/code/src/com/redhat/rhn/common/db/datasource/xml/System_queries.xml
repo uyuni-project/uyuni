@@ -456,7 +456,7 @@ SELECT s1.id,
        sum(case when errata.advisory_type = 'Security Advisory' and errata.severity = 'errata.sev.label.critical' then 1 else 0 end) critical,
        sum(case when errata.advisory_type = 'Security Advisory' and errata.severity = 'errata.sev.label.important' then 1 else 0 end) important,
        sum(case when errata.advisory_type = 'Security Advisory' and errata.severity = 'errata.sev.label.moderate' then 1 else 0 end) moderate,
-       sum(case when errata.advisory_type = 'Security Advisory' and errata.severity = 'errata.sev.label.low' or errata.severity is null then 1 else 0 end) low,
+       sum(case when errata.advisory_type = 'Security Advisory' and (errata.severity = 'errata.sev.label.low' or errata.severity is null) then 1 else 0 end) low,
        sum(case when errata.advisory_type = 'Bug Fix Advisory' then 1 else 0 end) bug,
        sum(case when errata.advisory_type = 'Product Enhancement Advisory' then 1 else 0 end) enhancement
  FROM rhnServer S1
