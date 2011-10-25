@@ -20,6 +20,7 @@ SATELLITE_IP=""
 ORACLE_VERSION="XE"
 SATELLITE_IS_RH=1
 KEYFILE="/root/migration-key"
+DOBBY_CONFIG="/etc/rhn/default/rhn_dobby.conf"
 
 RSYNC_PASSWORD=""
 
@@ -487,8 +488,17 @@ quit
     su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus $MANAGER_USER/\"$MANAGER_PASS\"@$MANAGER_DB_NAME @/tmp/changeorg.sql;"
     rm /tmp/changeorg.sql
 
-    if [ $ORACLE_VERSION = "FULL" ]; then
-        echo "# Oracle sys password: $SYS_DB_PASS" >> /etc/rhn/rhn.conf
+    if [ $ORACLE_VERSION = "FULL" -a $MANAGER_DB_HOST = "localhost" ]; then
+	echo "# Oracle sys password: $SYS_DB_PASS" >> /etc/rhn/rhn.conf
+	if [ -e $DOBBY_CONFIG ]; then
+	    sed -i -e "s/^sid.*$/sid = $MANAGER_DB_NAME/" $DOBBY_CONFIG
+	    sed -i -e "s/^sysdba_password.*$/sysdba_password = $SYS_DB_PASS/" $DOBBY_CONFIG
+	    sed -i -e "s/^normal_username.*$/normal_username = $MANAGER_USER/" $DOBBY_CONFIG
+	    sed -i -e "s/^normal_password.*$/normal_password = $MANAGER_PASS/" $DOBBY_CONFIG
+	else
+	    echo "$DOBBY_CONFIG not found."
+	    echo "Probably spacewalk-dobby is not installed."
+	fi
     fi
 
     # Finaly call mgr-ncc-sync

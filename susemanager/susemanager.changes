@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 22 15:13:56 CET 2011 - mantel@suse.de
+
+- write DB credentials to dobby configuration if using full Oracle
+
+-------------------------------------------------------------------
 Tue Nov 22 14:52:28 CET 2011 - mantel@suse.de
 
 - allow migration from SUSE Manager XE to SUSE Manager full Oracle
