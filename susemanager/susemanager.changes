@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct 25 16:02:27 CEST 2011 - mantel@suse.de
+
+- write DB credentials to dobby configuration if using full Oracle
+
+-------------------------------------------------------------------
 Fri Oct 21 15:50:58 CEST 2011 - mc@suse.de
 
 - add some diagnostics DB tools
