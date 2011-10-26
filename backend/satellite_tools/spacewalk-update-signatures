@@ -46,11 +46,13 @@ options_table = [
         help="DB string to connect to"),
     Option(   "--debug",            action="store_true",
         help="logs the debug information to a log file"),
+    Option(    "--clean-possible-wrong", action="store_true",
+        help="clean possible wrong calculated keyids"),
 ]
 
 
 def main():
-    global options_table, debug
+    global options_table, debug, verbose, clean_wrong
     parser = OptionParser(option_list=options_table)
 
     (options, args) = parser.parse_args()
@@ -73,6 +75,9 @@ def main():
     print "Connecting to %s" % options.db
     rhnSQL.initDB(options.db)
 
+    if options.clean_possible_wrong:
+        clean_wrong()
+
     process_package_data()
 
 
@@ -85,6 +90,46 @@ _get_needed_pkgs_query = """
    where PA.key_id is null
 """
 
+_get_possible_wrong_query = """
+   select X.key_id from (
+       select pa.key_id, count(pa.key_id) keycount, pk.provider_id
+         from rhnpackagekeyassociation pa
+         join rhnpackagekey pk on pk.id = pa.key_id
+        where pk.provider_id is null
+     group by pa.key_id, pk.provider_id
+     order by keycount DESC
+   ) X
+   where X.keycount < 20
+"""
+
+_delete_key_association_query = """
+  delete from rhnpackagekeyassociation
+   where key_id = :id
+"""
+
+_delete_key_query = """
+  delete from rhnpackagekey
+   where id = :id
+"""
+
+def clean_wrong():
+    query = rhnSQL.prepare(_get_possible_wrong_query)
+
+    query.execute()
+    keyids = query.fetchall_dict()
+
+    if not keyids:
+        # no possible wrong keyids found
+        return
+
+    del_keyass_query = rhnSQL.prepare(_delete_key_association_query)
+    del_key_query = rhnSQL.prepare(_delete_key_query)
+    for K in keyids:
+        del_keyass_query.execute(id=K['key_id'])
+        del_key_query.execute(id=K['key_id'])
+
+    rhnSQL.commit()
+    return
 
 def process_package_data():
     global verbose, debug
