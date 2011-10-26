@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Oct 26 13:43:36 CEST 2011 - iartarisi@suse.cz
+
+- fix 3 sle10-sp4-updates repo urls (bnc#725330)
+
+-------------------------------------------------------------------
 Wed Oct  5 10:03:44 CEST 2011 - iartarisi@suse.cz
 
 - fixed SLES10 Tools channels urls (sle-10-* vs. sles-10-*)
