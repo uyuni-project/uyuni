@@ -165,18 +165,19 @@ class RPM_Header:
         ]
         for ht, sig_type in header_tags:
             ret = self.hdr[ht]
-            if not ret or len(ret) < 17:
+            if not ret:
+                continue
+            ret_len = len(ret)
+            if ret_len < 17:
                 continue
             # Get the key id - hopefully we get it right
-            ver = ret[3]
-            ver_len = len(ver)
-            format = "%dB" % ver_len
-            t = struct.unpack(format, ver)
-            ver = "%d" % t
-            if ver == "3":
-                key_id = ret[10:18]
-            else:
+            elif ret_len <= 65: # V3 DSA signature
                 key_id = ret[9:17]
+            elif ret_len <= 72: # V4 DSA signature
+                key_id = ret[18:26]
+            else: # ret_len <= 536 # V3 RSA/SHA256 signature
+                key_id = ret[10:18]
+
             key_id_len = len(key_id)
             format = "%dB" % key_id_len
             t = struct.unpack(format, key_id)
