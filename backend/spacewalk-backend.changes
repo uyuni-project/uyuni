@@ -1,8 +1,10 @@
 -------------------------------------------------------------------
 Wed Oct 26 13:59:09 CEST 2011 - mc@suse.de
 
-- add support for V4 DSA rpm signatures to display correct
+- add support for V4 DSA and RSA rpm signatures to display correct
   content provider (bnc#726577)
+- enhance spacewalk-update-signatures to clean wrong keyids
+  before update starts
 
 -------------------------------------------------------------------
 Thu Oct 13 14:51:29 CEST 2011 - iartarisi@suse.cz
