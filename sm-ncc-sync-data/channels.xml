@@ -280,16 +280,10 @@
 			<product_id name="SUSE-Linux-Enterprise-SDK-SP3">
 				1541
 			</product_id>
-			<product_id name="SUSE-Linux-Enterprise-SDK-SP3">
-				1541
-			</product_id>
 		</products>
 	</channel>
 	<channel arch="i586" description="SUSE Linux 10 SP4 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle10-sdk-sp4-pool-i586" name="SLE10-SDK-SP4-Pool for i586" optional="N" parent="sles10-sp4-pool-i586" product_name="SUSE-Linux-Enterprise-SDK-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Pool/sles-10-i586/" summary="SUSE Linux 10 SP4 Software Development Kit">
 		<products>
-			<product_id name="SUSE-Linux-Enterprise-SDK-SP4">
-				2534
-			</product_id>
 			<product_id name="SUSE-Linux-Enterprise-SDK-SP4">
 				2534
 			</product_id>
@@ -403,6 +397,13 @@
 			</product_id>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP4">
 				2522
+			</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="Novell Open Enterprise Server 2 SP3" family="OES2" is_signed="Y" label="oes2-sp3-pool-i586" name="OES2-SP3-Pool for i586" optional="N" parent="sles10-sp4-pool-i586" product_name="Novell-Open-Enterprise-Server-SP3" product_version="2" source_url="https://nu.novell.com/repo/$RCE/OES2-SP3-Pool/sles-10-i586/" summary="Novell Open Enterprise Server 2 SP3">
+		<products>
+			<product_id name="Novell-Open-Enterprise-Server-SP3">
+				2500
 			</product_id>
 		</products>
 	</channel>
@@ -711,6 +712,13 @@
 			</product_id>
 		</products>
 	</channel>
+	<channel arch="i586" description="Novell Open Enterprise Server 2 SP3" family="OES2" is_signed="Y" label="oes2-sp3-updates-i586" name="OES2-SP3-Updates for i586" optional="N" parent="sles10-sp4-pool-i586" product_name="Novell-Open-Enterprise-Server-SP3" product_version="2" source_url="https://nu.novell.com/repo/$RCE/OES2-SP3-Updates/sles-10-i586/" summary="Novell Open Enterprise Server 2 SP3">
+		<products>
+			<product_id name="Novell-Open-Enterprise-Server-SP3">
+				2500
+			</product_id>
+		</products>
+	</channel>
 	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP1" family="SLES-IA" is_signed="Y" label="sles11-extras-ia64" name="SLES11-Extras for ia64" optional="Y" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-Extras/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP1">
 		<products>
 			<product_id name="SUSE_SLES">
@@ -790,9 +798,6 @@
 			<product_id name="SUSE-Linux-Enterprise-SDK-SP3">
 				1541
 			</product_id>
-			<product_id name="SUSE-Linux-Enterprise-SDK-SP3">
-				1541
-			</product_id>
 		</products>
 	</channel>
 	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP1" family="SLES-PPC" is_signed="Y" label="sle11-webyast-sp1-pool-ppc64" name="SLE11-WebYaST-SP1-Pool for ppc64" optional="Y" parent="sles11-sp1-pool-ppc64" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP1-Pool/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP1">
@@ -817,16 +822,10 @@
 			<product_id name="SUSE-Linux-Enterprise-SDK-SP3">
 				1541
 			</product_id>
-			<product_id name="SUSE-Linux-Enterprise-SDK-SP3">
-				1541
-			</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Linux 10 SP4 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle10-sdk-sp4-pool-x86_64" name="SLE10-SDK-SP4-Pool for x86_64" optional="N" parent="sles10-sp4-pool-x86_64" product_name="SUSE-Linux-Enterprise-SDK-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Pool/sles-10-x86_64/" summary="SUSE Linux 10 SP4 Software Development Kit">
 		<products>
-			<product_id name="SUSE-Linux-Enterprise-SDK-SP4">
-				2534
-			</product_id>
 			<product_id name="SUSE-Linux-Enterprise-SDK-SP4">
 				2534
 			</product_id>
@@ -1101,11 +1100,8 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux 10 SP4 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle10-sdk-sp4-updates-i586" name="SLE10-SDK-SP4-Updates for i586" optional="N" parent="sles10-sp4-pool-i586" product_name="SUSE-Linux-Enterprise-SDK-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Updates/sled-10-i586/" summary="SUSE Linux 10 SP4 Software Development Kit">
+	<channel arch="i586" description="SUSE Linux 10 SP4 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle10-sdk-sp4-updates-i586" name="SLE10-SDK-SP4-Updates for i586" optional="N" parent="sles10-sp4-pool-i586" product_name="SUSE-Linux-Enterprise-SDK-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Updates/sles-10-i586/" summary="SUSE Linux 10 SP4 Software Development Kit">
 		<products>
-			<product_id name="SUSE-Linux-Enterprise-SDK-SP4">
-				2534
-			</product_id>
 			<product_id name="SUSE-Linux-Enterprise-SDK-SP4">
 				2534
 			</product_id>
@@ -1424,11 +1420,8 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux 10 SP3 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle10-sdk-sp3-updates-x86_64" name="SLE10-SDK-SP3-Updates for x86_64" optional="N" parent="sles10-sp3-pool-x86_64" product_name="SUSE-Linux-Enterprise-SDK-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SDK-SP3-Updates/sled-10-x86_64/" summary="SUSE Linux 10 SP3 Software Development Kit">
+	<channel arch="x86_64" description="SUSE Linux 10 SP3 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle10-sdk-sp3-updates-x86_64" name="SLE10-SDK-SP3-Updates for x86_64" optional="N" parent="sles10-sp3-pool-x86_64" product_name="SUSE-Linux-Enterprise-SDK-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SDK-SP3-Updates/sles-10-x86_64/" summary="SUSE Linux 10 SP3 Software Development Kit">
 		<products>
-			<product_id name="SUSE-Linux-Enterprise-SDK-SP3">
-				1541
-			</product_id>
 			<product_id name="SUSE-Linux-Enterprise-SDK-SP3">
 				1541
 			</product_id>
@@ -1574,6 +1567,13 @@
 		<products>
 			<product_id name="sle-sdk">
 				1860
+			</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Novell Open Enterprise Server 2 SP3" family="OES2" is_signed="Y" label="oes2-sp3-updates-x86_64" name="OES2-SP3-Updates for x86_64" optional="N" parent="sles10-sp4-pool-x86_64" product_name="Novell-Open-Enterprise-Server-SP3" product_version="2" source_url="https://nu.novell.com/repo/$RCE/OES2-SP3-Updates/sles-10-x86_64/" summary="Novell Open Enterprise Server 2 SP3">
+		<products>
+			<product_id name="Novell-Open-Enterprise-Server-SP3">
+				2500
 			</product_id>
 		</products>
 	</channel>
@@ -1803,6 +1803,13 @@
 			</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="Novell Open Enterprise Server 2 SP3" family="OES2" is_signed="Y" label="oes2-sp3-pool-x86_64" name="OES2-SP3-Pool for x86_64" optional="N" parent="sles10-sp4-pool-x86_64" product_name="Novell-Open-Enterprise-Server-SP3" product_version="2" source_url="https://nu.novell.com/repo/$RCE/OES2-SP3-Pool/sles-10-x86_64/" summary="Novell Open Enterprise Server 2 SP3">
+		<products>
+			<product_id name="Novell-Open-Enterprise-Server-SP3">
+				2500
+			</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="AiO" is_signed="Y" label="sle11-sp1-debuginfo-updates-x86_64-sap-aio" name="SLE11-SP1-Debuginfo-Updates for x86_64 SAP-AiO" optional="Y" parent="sle11-sp1-sap-aio-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1">
 		<products>
 			<product_id name="SUSE_SLES_SAP">
@@ -1839,11 +1846,8 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux 10 SP4 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle10-sdk-sp4-updates-x86_64" name="SLE10-SDK-SP4-Updates for x86_64" optional="N" parent="sles10-sp4-pool-x86_64" product_name="SUSE-Linux-Enterprise-SDK-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Updates/sled-10-x86_64/" summary="SUSE Linux 10 SP4 Software Development Kit">
+	<channel arch="x86_64" description="SUSE Linux 10 SP4 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle10-sdk-sp4-updates-x86_64" name="SLE10-SDK-SP4-Updates for x86_64" optional="N" parent="sles10-sp4-pool-x86_64" product_name="SUSE-Linux-Enterprise-SDK-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Updates/sles-10-x86_64/" summary="SUSE Linux 10 SP4 Software Development Kit">
 		<products>
-			<product_id name="SUSE-Linux-Enterprise-SDK-SP4">
-				2534
-			</product_id>
 			<product_id name="SUSE-Linux-Enterprise-SDK-SP4">
 				2534
 			</product_id>
