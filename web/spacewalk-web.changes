@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 22 15:15:37 CET 2011 - mantel@suse.de
+
+- fix db-control tablesizes (owner is normal_user, not sid)
+
+-------------------------------------------------------------------
 Tue Nov 22 15:12:23 CET 2011 - mantel@suse.de
 
 - adapt spacewalk_dobby for SUSE Manager
