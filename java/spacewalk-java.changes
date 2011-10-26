@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Tue Oct 25 17:45:27 CEST 2011 - mc@suse.de
 
-- fix currency report if all patches are installed
+- fix currency report if all patches are installed (bnc#726543)
 
 -------------------------------------------------------------------
 Mon Oct 17 13:13:21 CEST 2011 - jrenner@suse.de
