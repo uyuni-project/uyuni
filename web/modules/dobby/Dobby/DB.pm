@@ -58,6 +58,12 @@ sub sid {
   return $self->config->get('sid');
 }
 
+sub normal_user {
+  my $self = shift;
+
+  return $self->config->get('normal_username');
+}
+
 sub database_started {
   my $self = shift;
 
