@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 27 10:39:28 CEST 2011 - ma@suse.de
+
+- bootstrap: make curl/wget print errors (bnc#723670)
+
+-------------------------------------------------------------------
 Mon Sep 12 13:29:30 CEST 2011 - ma@suse.de
 
 - Bootstrap: Read ORG_CA_CERT name from CLIENT_OVERRIDES
