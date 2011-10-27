@@ -17,6 +17,7 @@
 #
 # $Id$
 
+import string
 import os.path
 
 
@@ -127,6 +128,16 @@ PROFILENAME=""   # Empty by default to let it be set automatically.
 # disable all repos not provided by SUSE Manager.
 DISABLE_LOCAL_REPOS=1
 
+# SUSE Manager Specific settings:
+#
+# - Alternate location of the client tool repos providing the zypp-plugin-spacewalk
+# and packges required for registration. Unless they are already installed on the
+# client this repo is expected to provide them for SLE-10/SLE-11 based clients:
+#   ${Z_CLIENT_REPOS_ROOT}/sle/VERSION/PATCHLEVEL
+# If empty, the SUSE Manager repositories provided at https://${HOSTNAME}/pub/repositories
+# are used.
+Z_CLIENT_REPOS_ROOT=
+
 #
 # -----------------------------------------------------------------------------
 # DO NOT EDIT BEYOND THIS POINT -----------------------------------------------
@@ -143,9 +154,9 @@ if [ -x /usr/bin/wget ] ; then
     output=`LANG=en_US /usr/bin/wget --no-check-certificate 2>&1`
     error=`echo $output | grep "unrecognized option"`
     if [ -z "$error" ] ; then
-        FETCH="/usr/bin/wget -q -r -nd --no-check-certificate"
+        FETCH="/usr/bin/wget -nv -r -nd --no-check-certificate"
     else
-        FETCH="/usr/bin/wget -q -r -nd"
+        FETCH="/usr/bin/wget -nv -r -nd"
     fi
 
 else
@@ -153,9 +164,9 @@ else
         output=`LANG=en_US /usr/bin/curl -k 2>&1`
         error=`echo $output | grep "is unknown"`
         if [ -z "$error" ] ; then
-            FETCH="/usr/bin/curl -SksO"
+            FETCH="/usr/bin/curl -ksSO"
         else
-            FETCH="/usr/bin/curl -SsO"
+            FETCH="/usr/bin/curl -sSO"
         fi
     fi
 fi
@@ -212,30 +223,142 @@ if [ "$INSTALLER" == zypper ]; then
   echo
   echo "CHECKING THE REGISTRATION STACK"
   echo "-------------------------------------------------"
-  echo "* check for necessary packages being installed:"
-  Z_NEEDED="spacewalk-check spacewalk-client-setup spacewalk-client-tools zypp-plugin-spacewalk"
-  Z_MISSING=""
-  for P in $Z_NEEDED; do
-    rpm -q "$P" || Z_MISSING="$Z_MISSING $P"
-  done
+
+  function getZ_CLIENT_CODE_BASE() {
+    local BASE=""
+    local VERSION=""
+    local PATCHLEVEL=""
+    test -r /etc/SuSE-release && {
+      grep -q 'Enterprise' /etc/SuSE-release && BASE="sle"
+      eval $(grep '^\(VERSION\|PATCHLEVEL\)' /etc/SuSE-release | tr -d '[:blank:]')
+    }
+    Z_CLIENT_CODE_BASE="${BASE:-unknown}"
+    Z_CLIENT_CODE_VERSION="${VERSION:-unknown}"
+    Z_CLIENT_CODE_PATCHLEVEL="${PATCHLEVEL:-0}"
+  }
+
+  function getZ_MISSING() {
+    local NEEDED="spacewalk-check spacewalk-client-setup spacewalk-client-tools zypp-plugin-spacewalk"
+    Z_MISSING=""
+    for P in $NEEDED; do
+      rpm -q "$P" || Z_MISSING="$Z_MISSING $P"
+    done
+  }
+
+  function getZ_ZMD_TODEL() {
+    local ZMD_STACK="zmd rug libzypp-zmd-backend yast2-registration zen-updater zmd-inventory suseRegister-jeos"
+    if rpm -q suseRegister --qf '%{VERSION}' | grep -q '^\(0\.\|1\.[0-3]\)\(\..*\)\?$'; then
+      # we need the new suseRegister >= 1.4, so wipe an old one too
+      ZMD_STACK="$ZMD_STACK suseRegister suseRegisterInfo spacewalk-client-tools"
+    fi
+    Z_ZMD_TODEL=""
+    for P in $ZMD_STACK; do
+      rpm -q "$P" && Z_ZMD_TODEL="$Z_ZMD_TODEL $P"
+    done
+  }
+
+  echo "* check for necessary packages being installed..."
+  # client codebase determines repo url to use and whether additional
+  # preparations are needed before installing the missing packages.
+  getZ_CLIENT_CODE_BASE
+  echo "* client codebase is ${Z_CLIENT_CODE_BASE}-${Z_CLIENT_CODE_VERSION}-sp${Z_CLIENT_CODE_PATCHLEVEL}"
+
+  getZ_MISSING
   if [ -z "$Z_MISSING" ]; then
     echo "  no packages missing."
   else
-    echo "* going to install missing packages:"
+    echo "* going to install missing packages..."
+    Z_CLIENT_REPOS_ROOT="${Z_CLIENT_REPOS_ROOT:-http://${HOSTNAME}/pub/repositories}"
+    Z_CLIENT_REPO_URL="${Z_CLIENT_REPOS_ROOT}/${Z_CLIENT_CODE_BASE}/${Z_CLIENT_CODE_VERSION}/${Z_CLIENT_CODE_PATCHLEVEL}/bootstrap"
+    test "${Z_CLIENT_CODE_BASE}/${Z_CLIENT_CODE_VERSION}/${Z_CLIENT_CODE_PATCHLEVEL}" = "sle/11/1" && {
+      # use backward compatible URL for SLE11-SP1 repo
+      Z_CLIENT_REPO_URL="${Z_CLIENT_REPOS_ROOT}/susemanager-client-setup"
+    }
     Z_CLIENT_REPO_NAME="susemanager-client-setup"
-    Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/${Z_CLIENT_REPO_NAME}.repo"
-    echo "  adding client software repository $Z_CLIENT_REPO_NAME"
-    cat <<EOF >"$Z_CLIENT_REPO_FILE"
+    Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/$Z_CLIENT_REPO_NAME.repo"
+
+    # code10 requires removal of the ZMD stack first
+    if [ "$Z_CLIENT_CODE_BASE" == "sle" ]; then
+      if [ "$Z_CLIENT_CODE_VERSION" = "10" ]; then
+	echo "* check whether to remove the ZMD stack first..."
+	getZ_ZMD_TODEL
+	if [ -z "$Z_ZMD_TODEL" ]; then
+	  echo "  ZMD stack is not installed. No need to remove it."
+	else
+	  echo "  Disable and remove the ZMD stack..."
+	  # stop any running zmd
+	  if [ -x /usr/sbin/rczmd ]; then
+	    /usr/sbin/rczmd stop
+	  fi
+	  rpm -e $Z_ZMD_TODEL || {
+	    echo "ERROR: Failed remove the ZMD stack."
+	    exit 1
+	  }
+	fi
+      fi
+    fi
+
+    # way to add the client software repository depends on the zypp version actually
+    # installed (original code 10 via 'zypper sa', or code 11 like via .repo files)
+    #
+    # Note: We try to install the missing packages even if adding the repo fails.
+    # Might be some other system repo provides them instead.
+    echo "  adding client software repository at $Z_CLIENT_REPO_URL"
+    if rpm -q zypper --qf '%{VERSION}' | grep -q '^0\(\..*\)\?$'; then
+
+      # code10 zypper has no --gpg-auto-import-keys and no reliable return codes.
+      zypper --non-interactive --no-gpg-checks sd $Z_CLIENT_REPO_NAME
+      zypper --non-interactive --no-gpg-checks sa $Z_CLIENT_REPO_URL $Z_CLIENT_REPO_NAME
+      zypper --non-interactive --no-gpg-checks refresh "$Z_CLIENT_REPO_NAME"
+      zypper --non-interactive --no-gpg-checks in $Z_MISSING
+      for P in $Z_MISSING; do
+	rpm -q "$P" || {
+	  echo "ERROR: Failed to install all missing packages."
+	  exit 1
+	}
+      done
+      # Now as code11 zypper is installed, create the .repo file
+      cat <<EOF >"$Z_CLIENT_REPO_FILE"
 [$Z_CLIENT_REPO_NAME]
 name=$Z_CLIENT_REPO_NAME
-baseurl=http://${HOSTNAME}/pub/repositories/${Z_CLIENT_REPO_NAME}
+baseurl=$Z_CLIENT_REPO_URL
 enabled=1
 autorefresh=1
 keeppackages=0
 gpgcheck=0
 EOF
-    zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME" || exit 1
-    zypper --non-interactive in $Z_MISSING || exit 1
+    else
+
+      # On code11 simply add the repo and then install
+      cat <<EOF >"$Z_CLIENT_REPO_FILE"
+[$Z_CLIENT_REPO_NAME]
+name=$Z_CLIENT_REPO_NAME
+baseurl=$Z_CLIENT_REPO_URL
+enabled=1
+autorefresh=1
+keeppackages=0
+gpgcheck=0
+EOF
+      zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME"
+      zypper --non-interactive in $Z_MISSING || {
+	  echo "ERROR: Failed to install all missing packages."
+	  exit 1
+	}
+
+    fi
+  fi
+
+  # on code10 we need to convert metadata of installed products
+  if [ "$Z_CLIENT_CODE_BASE" == "sle" ]; then
+    if [ "$Z_CLIENT_CODE_VERSION" = "10" ]; then
+      test -e "/usr/share/zypp/migrate/10-11.migrate.products.sh" && {
+	echo "* check whether we have to to migrate metadata..."
+	sh /usr/share/zypp/migrate/10-11.migrate.products.sh || {
+	  echo "ERROR: Failed to migrate product metadata."
+	  exit 1
+	}
+      }
+    fi
   fi
 fi
 
@@ -274,17 +397,22 @@ if [ -f "/etc/sysconfig/rhn/rhn_register" ] ; then
     echo "  . rhn_register config file"
     /usr/bin/python -u client_config_update.py /etc/sysconfig/rhn/rhn_register ${CLIENT_OVERRIDES}
 fi
-echo "  . up2date config file"
-/usr/bin/python -u client_config_update.py /etc/sysconfig/rhn/up2date ${CLIENT_OVERRIDES}
+if [ -f "/etc/sysconfig/rhn/up2date" ] ; then
+  echo "  . up2date config file"
+  /usr/bin/python -u client_config_update.py /etc/sysconfig/rhn/up2date ${CLIENT_OVERRIDES}
+fi
 
 """
 
 
 def getGPGKeyImportSh():
     return """\
+echo
+echo "PREPARE GPG KEYS AND CORPORATE PUBLIC CA CERT"
+echo "-------------------------------------------------"
 if [ ! -z "$ORG_GPG_KEY" ] ; then
     echo
-    echo "* importing organizational GPG key"
+    echo "* importing organizational GPG keys"
     for GPG_KEY in $(echo "$ORG_GPG_KEY" | tr "," " "); do
 	rm -f ${GPG_KEY}
 	$FETCH ${HTTPS_PUB_DIRECTORY}/${GPG_KEY}
@@ -297,6 +425,8 @@ if [ ! -z "$ORG_GPG_KEY" ] ; then
 	    rpm --import $GPG_KEY
 	fi
     done
+else
+    echo "* no organizational GPG keys to import"
 fi
 
 """
@@ -305,25 +435,29 @@ fi
 def getCorpCACertSh():
     return """\
 echo
-echo "* attempting to install corporate public CA cert"
-if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
-    rpm -Uvh --force --replacefiles --replacepkgs ${HTTPS_PUB_DIRECTORY}/${ORG_CA_CERT}
-else
-    rm -f ${ORG_CA_CERT}
-    $FETCH ${HTTPS_PUB_DIRECTORY}/${ORG_CA_CERT}
-    mv ${ORG_CA_CERT} /usr/share/rhn/
-
-fi
-if [ "$INSTALLER" == zypper ] ; then
-    if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
-      # get name from config
-      ORG_CA_CERT=$(basename $(sed -n 's/^sslCACert *= *//p' /etc/sysconfig/rhn/up2date))
+if [ $USING_SSL -eq 1 ] ; then
+    echo "* attempting to install corporate public CA cert"
+    test -d /usr/share/rhn || mkdir -p /usr/share/rhn
+    if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
+        rpm -Uvh --force --replacefiles --replacepkgs ${HTTP_PUB_DIRECTORY}/${ORG_CA_CERT}
+    else
+        rm -f ${ORG_CA_CERT}
+        $FETCH ${HTTP_PUB_DIRECTORY}/${ORG_CA_CERT}
+        mv ${ORG_CA_CERT} /usr/share/rhn/
     fi
-    test -e "/etc/ssl/certs/${ORG_CA_CERT}.pem" || {
-      test -d "/etc/ssl/certs" || mkdir -p "/etc/ssl/certs"
-      ln -s "/usr/share/rhn/${ORG_CA_CERT}" "/etc/ssl/certs/${ORG_CA_CERT}.pem"
-    }
-    test -x /usr/bin/c_rehash && /usr/bin/c_rehash /etc/ssl/certs/ | grep "${ORG_CA_CERT}"
+    if [ "$INSTALLER" == zypper ] ; then
+	if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
+	  # get name from config
+	  ORG_CA_CERT=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
+	fi
+	test -e "/etc/ssl/certs/${ORG_CA_CERT}.pem" || {
+	  test -d "/etc/ssl/certs" || mkdir -p "/etc/ssl/certs"
+	  ln -s "/usr/share/rhn/${ORG_CA_CERT}" "/etc/ssl/certs/${ORG_CA_CERT}.pem"
+	}
+	test -x /usr/bin/c_rehash && /usr/bin/c_rehash /etc/ssl/certs/ | grep "${ORG_CA_CERT}"
+    fi
+else
+    echo "* configured not to use SSL: don't install corporate public CA cert"
 fi
 
 """
