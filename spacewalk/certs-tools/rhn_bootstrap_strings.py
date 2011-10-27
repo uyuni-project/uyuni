@@ -154,9 +154,9 @@ if [ -x /usr/bin/wget ] ; then
     output=`LANG=en_US /usr/bin/wget --no-check-certificate 2>&1`
     error=`echo $output | grep "unrecognized option"`
     if [ -z "$error" ] ; then
-        FETCH="/usr/bin/wget -q -r -nd --no-check-certificate"
+        FETCH="/usr/bin/wget -nv -r -nd --no-check-certificate"
     else
-        FETCH="/usr/bin/wget -q -r -nd"
+        FETCH="/usr/bin/wget -nv -r -nd"
     fi
 
 else
@@ -164,9 +164,9 @@ else
         output=`LANG=en_US /usr/bin/curl -k 2>&1`
         error=`echo $output | grep "is unknown"`
         if [ -z "$error" ] ; then
-            FETCH="/usr/bin/curl -SksO"
+            FETCH="/usr/bin/curl -ksSO"
         else
-            FETCH="/usr/bin/curl -SsO"
+            FETCH="/usr/bin/curl -sSO"
         fi
     fi
 fi
