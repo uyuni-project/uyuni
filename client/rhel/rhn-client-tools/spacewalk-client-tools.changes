@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Oct 28 11:21:23 CEST 2011 - ma@suse.de
+
+- Don't let 'unknown' hostname escape as profileName (bnc#700218)
+
+-------------------------------------------------------------------
 Mon Sep 12 16:06:55 CEST 2011 - ma@suse.de
 
 - Obsolete rhn-setup-gnome because the GUI is quite RHN specific,

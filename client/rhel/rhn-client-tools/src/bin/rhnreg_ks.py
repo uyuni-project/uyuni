@@ -39,6 +39,7 @@ from up2date_client import rpmUtils
 from up2date_client import up2dateErrors
 from up2date_client import rhncli
 
+from socket import gethostname
 
 class RegisterKsCli(rhncli.RhnCli):
 
@@ -186,13 +187,19 @@ class RegisterKsCli(rhncli.RhnCli):
             if hw['class'] == 'NETINFO':
                 hostname = hw.get('hostname')
                 ipaddr = hw.get('ipaddr')
-                
+
+	# bnc#700218: Don't let 'unknown' hostname escape.
+	if hostname and hostname == 'unknown':
+	    hostname = gethostname()
+	    if hostname == 'unknown' or hostname == 'localhost' or hostname == 'localhost.localdomain':
+		hostname == None
+
         if hostname:
             profileName = hostname
         else:
             if ipaddr:
                 profileName = ipaddr
-                
+
         if not profileName:
             print _("A profilename was not specified, "\
                     "and hostname and IP address could not be determined "\
