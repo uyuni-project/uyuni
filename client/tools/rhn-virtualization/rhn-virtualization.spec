@@ -10,7 +10,7 @@ License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 
-Version:        5.4.26
+Version:        5.4.29
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
@@ -155,6 +155,15 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Oct 27 2011 Milan Zazrivec <mzazrivec@redhat.com> 5.4.29-1
+- 742811 - domain_directory: R/O access to libvirtd is sufficient
+
+* Wed Oct 26 2011 Milan Zazrivec <mzazrivec@redhat.com> 5.4.28-1
+- 742811 - don't open RW connection to libvirt unless necessary
+
+* Wed Oct 26 2011 Milan Zazrivec <mzazrivec@redhat.com> 5.4.27-1
+- 742811 - RHEV: handle no-guests situation correctly
+
 * Wed Oct 05 2011 Martin Minar <mminar@redhat.com> 5.4.26-1
 - 742811 - check for running vdsm only (colin.coe@gmail.com)
 
