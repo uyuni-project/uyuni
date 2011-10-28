@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 28 12:00:23 CEST 2011 - ug@suse.de
+
+- Status of Virtual Machines is not properly recognized
+  (bnc#683075)
+
+-------------------------------------------------------------------
 Mon Feb  7 17:26:30 CET 2011 - mc@suse.de
 
 - add missing dir 
