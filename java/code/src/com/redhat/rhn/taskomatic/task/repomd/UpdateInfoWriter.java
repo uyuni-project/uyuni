@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2011 Red Hat, Inc.
+ * Copyright (c) 2011 SUSE Linux Products GmbH.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -112,8 +113,13 @@ public class UpdateInfoWriter extends RepomdWriter {
         attr.addAttribute("version", Long.toString(erratum.getAdvisoryRel()));
         handler.startElement("update", attr);
 
-        handler.addElementWithCharacters("id", sanitize(0, erratum
-                .getAdvisoryName()));
+        String id = new String();
+        if (channel.getUpdateTag() != null && channel.getUpdateTag().length() > 0) {
+            id += channel.getUpdateTag() + "-";
+        }
+        id += erratum.getAdvisoryName();
+
+        handler.addElementWithCharacters("id", sanitize(0, id));
         handler.addElementWithCharacters("title", sanitize(0, erratum
                 .getSynopsis()));
 

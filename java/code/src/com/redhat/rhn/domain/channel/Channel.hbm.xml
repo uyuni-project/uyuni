@@ -29,6 +29,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="maintainerPhone" type="string" column="maint_phone"/>
         <property name="supportPolicy" type="string" column="support_policy"/>
         <property name="lastSynced" type="timestamp" column="last_synced"/>
+        <property name="updateTag" type="string" column="update_tag"/>
         <property name="created" column="created" type="timestamp"
             insert="false" update="false"/>
         <property name="modified" column="modified" type="timestamp"
@@ -162,7 +163,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                     AND c.org_id is not null
                     AND uc.role = 'subscribe'
     				AND c.parent_channel is null
-    		    order by C.name]]>						
+    		    order by C.name]]>
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
     </sql-query>
     <sql-query name="Channel.findAllBaseChannels">
@@ -186,7 +187,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
    <query name="Channel.listAllChildren">
 	<![CDATA[
     			from com.redhat.rhn.domain.channel.Channel as c where c.parentChannel = :parent
-    						]]>						
+    						]]>
     </query>
 
     <sql-query name="Channel.findByIdAndUserId">
@@ -292,11 +293,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     <sql-query name="Channel.kickstartableChannels">
         <![CDATA[SELECT {c.*}
-				  FROM rhnChannel c LEFT OUTER JOIN 
+				  FROM rhnChannel c LEFT OUTER JOIN
 				  	   rhnChannelCloned c_1_ ON c.id = c_1_.id,
 				      rhnAvailableChannels ACh,
 					  rhnChannelArch CA
-		      
+
   				  WHERE CA.id = ACh.channel_arch_id
 				   AND ACh.org_id = :org_id
 				   AND ACH.channel_depth = 1
@@ -410,7 +411,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	<query name="Channel.lookupOriginal">
     	<![CDATA[ select c.original
     			from com.redhat.rhn.domain.channel.ClonedChannel as c where c = :clone
-    						]]>						
+    						]]>
     </query>
     <query name="Channel.findChannelArchLabelsSyncdChannels">
     	<![CDATA[select distinct c.channelArch.label from com.redhat.rhn.domain.channel.Channel as c]]>

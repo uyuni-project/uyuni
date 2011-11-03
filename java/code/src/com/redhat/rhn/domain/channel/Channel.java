@@ -94,6 +94,7 @@ public class Channel extends BaseDomainHelper implements Comparable {
     private String maintainerEmail;
     private String maintainerPhone;
     private String supportPolicy;
+    private String updateTag;
 
     /**
      * @param orgIn what org you want to know if it is globally subscribable in
@@ -887,7 +888,7 @@ public class Channel extends BaseDomainHelper implements Comparable {
 
     /**
      * Check if there is a corresponding suseProduct for a given channel.
-     * 
+     *
      * @param cid
      * @return true, if there is a suseProduct for the given channel, else false.
      */
@@ -931,5 +932,19 @@ public class Channel extends BaseDomainHelper implements Comparable {
             return null;
         }
         return checksumType.getLabel();
+    }
+
+    /**
+     * @return the updateTag
+     */
+    public String getUpdateTag() {
+        return updateTag;
+    }
+
+    /**
+     * @param updateTagIn the update tag
+     */
+    public void setUpdateTag(String updateTagIn) {
+        updateTag = updateTagIn;
     }
 }
