@@ -27,7 +27,11 @@ virtual machine guest images.
 %package common
 Summary: Files needed by rhn-virtualization-host
 Group: System Environment/Base
+%if 0%{?suse_version}
+Requires: spacewalk-client-tools
+%else
 Requires: rhn-client-tools
+%endif
 %if 0%{?suse_version}
 # aaa_base provide chkconfig
 Requires: aaa_base

@@ -16,7 +16,11 @@ BuildRequires: docbook-utils
 BuildRequires: python
 Requires: python
 Requires: rhnlib >= 2.5.32
+%if 0%{?suse_version}
 Requires: spacewalk-client-tools
+%else
+Requires: rhn-client-tools
+%endif
 %if 0%{?suse_version}
 # provide rhn directories and no selinux on suse
 BuildRequires: spacewalk-client-tools

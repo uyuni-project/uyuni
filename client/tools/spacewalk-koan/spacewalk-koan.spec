@@ -23,7 +23,11 @@ Conflicts: rhn-kickstart
 Conflicts: rhn-kickstart-common
 Conflicts: rhn-kickstart-virtualization
 
+%if 0%{?suse_version}
+Requires: spacewalk-check
+%else
 Requires: rhn-check
+%endif
 
 %description
 Support package for spacewalk koan interaction.

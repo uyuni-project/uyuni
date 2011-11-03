@@ -106,7 +106,11 @@ Obsoletes: rhn-setup < %{version}-%{release}
 Requires: usermode >= 1.36
 %endif
 Requires: %{name} = %{version}-%{release}
+%if 0%{?suse_version}
+Requires: spacewalksd
+%else
 Requires: rhnsd
+%endif
 Requires: suseRegisterInfo
 
 %description -n spacewalk-client-setup

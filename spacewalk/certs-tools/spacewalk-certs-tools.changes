@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov  3 19:27:49 CET 2011 - ma@suse.de
+
+- Adapt dependencies to renamed packages (bnc#722052)
+
+-------------------------------------------------------------------
 Mon Sep  5 12:46:24 CEST 2011 - mc@suse.de
 
 - hostname default during certificate creation should be the FQDN

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov  3 19:26:47 CET 2011 - ma@suse.de
+
+- Adapt dependencies to renamed packages (bnc#722052)
+
+-------------------------------------------------------------------
 Tue Mar 22 11:13:56 CET 2011 - mantel@suse.de
 
 - debrand startup message (bnc#672637)
