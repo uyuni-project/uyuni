@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov  3 19:24:12 CET 2011 - ma@suse.de
+
+- Adapt dependencies to renamed packages (bnc#722052)
+
+-------------------------------------------------------------------
 Fri Oct 28 11:59:00 CEST 2011 - ug@suse.de
 
 - Status of Virtual Machines is not properly recognized

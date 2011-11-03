@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov  3 19:27:49 CET 2011 - ma@suse.de
+
+- Adapt dependencies to renamed packages (bnc#722052)
+
+-------------------------------------------------------------------
 Thu Oct 27 10:39:28 CEST 2011 - ma@suse.de
 
 - bootstrap: make curl/wget print errors (bnc#723670)

@@ -26,7 +26,11 @@ Requires: python-selinux
 %if 0%{?rhel} && "%rhel" < "5"
 Requires: up2date
 %else
+%if 0%{?suse_version}
+Requires: spacewalk-client-tools
+%else
 Requires: rhn-client-tools
+%endif
 Requires: libselinux-python
 %endif
 %endif

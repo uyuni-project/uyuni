@@ -15,7 +15,11 @@ BuildRequires: intltool
 BuildRequires: gettext
 
 Requires: yum >= 3.2.19-15
+%if 0%{?suse_version}
+Requires: spacewalk-client-tools >= 0.4.20-2
+%else
 Requires: rhn-client-tools >= 0.4.20-2
+%endif
 %if 0%{?suse_version}
 Requires: python-m2crypto >= 0.16-6
 %else
@@ -24,7 +28,11 @@ Requires: m2crypto >= 0.16-6
 Requires: python-iniparse
 
 # Not really, but for upgrades we need these
+%if 0%{?suse_version}
+Requires: spacewalk-client-setup
+%else
 Requires: rhn-setup
+%endif
 Obsoletes: up2date < 5.0.0
 Provides: up2date = 5.0.0
 

@@ -14,7 +14,11 @@ Requires: openssl rpm
 Requires: openssl rpm-build
 %endif
 %if 0%{?suse_version} || 0%{?rhel} >= 5
+%if 0%{?suse_version}
+Requires: spacewalk-client-tools
+%else
 Requires: rhn-client-tools
+%endif
 %endif
 Requires: spacewalk-backend-libs >= 0.8.28
 BuildRequires: docbook-utils

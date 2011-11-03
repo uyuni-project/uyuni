@@ -19,12 +19,16 @@ Conflicts: auto-kickstart
 %if 0%{?rhel} && "%rhel" < "5"
 Requires: up2date
 %else
+%if 0%{?suse_version}
+Requires: spacewalk-check
+%else
 Requires: rhn-check
+%endif
 %endif
 
 %description
 Support scripts for auto-kickstarting systems
- 
+
 
 %package common
 Summary: Common support scripts for auto-kickstarting systems
@@ -34,7 +38,11 @@ Group: System Environment/Kernel
 %if 0%{?rhel} && "%rhel" < "5"
 Requires: up2date
 %else
+%if 0%{?suse_version}
+Requires: spacewalk-client-tools
+%else
 Requires: rhn-client-tools
+%endif
 %endif
 
 
@@ -48,7 +56,11 @@ Summary: Support scripts for auto-kickstarting virtual systems
 Group: System Environment/Kernel
 Requires: %{name}-common = %{version}-%{release}
 Requires: rhn-virtualization-host
+%if 0%{?suse_version}
+Requires: spacewalk-check
+%else
 Requires: rhn-check
+%endif
 Requires: libvirt >= 0.2.3
 
 %description virtualization
@@ -239,15 +251,15 @@ rm -rf $RPM_BUILD_ROOT
 - add rhel 2.1 U6
 - add rhel 3 U4
 
-* Wed Sep 15 2004 Chris MacLeod <cmacleod@redhat.com>  
+* Wed Sep 15 2004 Chris MacLeod <cmacleod@redhat.com>
 - add rhel 2.1 U5
 - add rhel 3 U3
 
-* Wed Sep 15 2004 Chris MacLeod <cmacleod@redhat.com>  
+* Wed Sep 15 2004 Chris MacLeod <cmacleod@redhat.com>
 - add rhel 2.1 U5
 - add rhel 3 U3
 
-* Wed Sep 15 2004 Chris MacLeod <cmacleod@redhat.com>  
+* Wed Sep 15 2004 Chris MacLeod <cmacleod@redhat.com>
 - add rhel 2.1 U5
 - add rhel 3 U3
 

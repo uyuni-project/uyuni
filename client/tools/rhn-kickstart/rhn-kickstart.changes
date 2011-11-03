@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov  3 19:25:57 CET 2011 - ma@suse.de
+
+- Adapt dependencies to renamed packages (bnc#722052)
+
+-------------------------------------------------------------------
 Tue Jan 11 16:26:52 CET 2011 - mc@suse.de
 
 - tag strings which needs changes 

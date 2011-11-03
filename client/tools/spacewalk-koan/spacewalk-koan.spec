@@ -25,7 +25,11 @@ Conflicts: rhn-kickstart-virtualization
 %if 0%{?rhel} && 0%{?rhel} < 5
 Requires: up2date
 %else
+%if 0%{?suse_version}
+Requires: spacewalk-check
+%else
 Requires: rhn-check
+%endif
 %endif
 
 %description

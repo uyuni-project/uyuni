@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov  3 19:25:06 CET 2011 - ma@suse.de
+
+- Adapt dependencies to renamed packages (bnc#722052)
+
+-------------------------------------------------------------------
 Thu Sep 15 17:02:28 CEST 2011 - mc@suse.de
 
 - do not require selinux on SLES10

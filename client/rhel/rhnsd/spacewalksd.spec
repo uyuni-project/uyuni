@@ -12,7 +12,11 @@ BuildRequires: gettext
 Provides: rhnsd = %{version}-%{release}
 Obsoletes: rhnsd < %{version}-%{release}
 
+%if 0%{?suse_version}
+Requires: spacewalk-check >= 0.0.8
+%else
 Requires: rhn-check >= 0.0.8
+%endif
 %if !0%{?suse_version}
 Requires(post): chkconfig
 Requires(preun): chkconfig
