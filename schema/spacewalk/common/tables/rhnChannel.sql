@@ -58,6 +58,7 @@ CREATE TABLE rhnChannel
     maint_email         VARCHAR2(128),
     maint_phone         VARCHAR2(128),
     support_policy      VARCHAR2(256),
+    update_tag          VARCHAR2(20),
     created             DATE
                             DEFAULT (sysdate) NOT NULL,
     modified            DATE
