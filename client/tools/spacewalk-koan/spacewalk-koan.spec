@@ -29,7 +29,7 @@ Conflicts: rhn-kickstart
 Conflicts: rhn-kickstart-common
 Conflicts: rhn-kickstart-virtualization
 
-Requires: %{rhn-check}
+Requires: %{rhn_check}
 
 %description
 Support package for spacewalk koan interaction.
