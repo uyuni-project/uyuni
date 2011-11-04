@@ -1,3 +1,9 @@
+# package renaming fun :(
+%define rhn_client_tools spacewalk-client-tools
+%define rhn_setup	 spacewalk-client-setup
+%define rhn_check	 spacewalk-check
+%define rhnsd		 spacewalksd
+#
 %global rhnroot %{_datadir}/rhn
 %global rhnconf %{_sysconfdir}/sysconfig/rhn
 %global client_caps_dir %{rhnconf}/clientCaps.d
@@ -26,11 +32,7 @@ Requires: python-selinux
 %if 0%{?rhel} && "%rhel" < "5"
 Requires: up2date
 %else
-%if 0%{?suse_version}
-Requires: spacewalk-client-tools
-%else
-Requires: rhn-client-tools
-%endif
+Requires: %{rhn_client_tools}
 Requires: libselinux-python
 %endif
 %endif

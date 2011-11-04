@@ -1,3 +1,9 @@
+# package renaming fun :(
+%define rhn_client_tools spacewalk-client-tools
+%define rhn_setup	 spacewalk-client-setup
+%define rhn_check	 spacewalk-check
+%define rhnsd		 spacewalksd
+#
 Name: spacewalk-certs-tools
 Summary: Spacewalk SSL Key/Cert Tool
 Group: Applications/Internet
@@ -14,11 +20,7 @@ Requires: openssl rpm
 Requires: openssl rpm-build
 %endif
 %if 0%{?suse_version} || 0%{?rhel} >= 5
-%if 0%{?suse_version}
-Requires: spacewalk-client-tools
-%else
-Requires: rhn-client-tools
-%endif
+Requires: %{rhn_client_tools}
 %endif
 Requires: spacewalk-backend-libs >= 0.8.28
 BuildRequires: docbook-utils

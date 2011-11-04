@@ -1,3 +1,9 @@
+# package renaming fun :(
+%define rhn_client_tools spacewalk-client-tools
+%define rhn_setup	 spacewalk-client-setup
+%define rhn_check	 spacewalk-check
+%define rhnsd		 spacewalksd
+#
 Summary: Spacewalk query daemon
 License: GPLv2
 Group: System Environment/Base
@@ -12,11 +18,7 @@ BuildRequires: gettext
 Provides: rhnsd = %{version}-%{release}
 Obsoletes: rhnsd < %{version}-%{release}
 
-%if 0%{?suse_version}
-Requires: spacewalk-check >= 0.0.8
-%else
-Requires: rhn-check >= 0.0.8
-%endif
+Requires: %{rhn_check} >= 0.0.8
 %if !0%{?suse_version}
 Requires(post): chkconfig
 Requires(preun): chkconfig

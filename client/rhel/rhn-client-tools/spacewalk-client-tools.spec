@@ -1,4 +1,9 @@
-
+# package renaming fun :(
+%define rhn_client_tools spacewalk-client-tools
+%define rhn_setup	 spacewalk-client-setup
+%define rhn_check	 spacewalk-check
+%define rhnsd		 spacewalksd
+#
 %define without_rhn_register 1
 
 Summary: Support programs and libraries for Spacewalk
@@ -102,11 +107,7 @@ Obsoletes: rhn-setup < %{version}-%{release}
 Requires: usermode >= 1.36
 %endif
 Requires: %{name} = %{version}-%{release}
-%if 0%{?suse_version}
-Requires: spacewalksd
-%else
-Requires: rhnsd
-%endif
+Requires: %{rhnsd}
 Requires: suseRegisterInfo
 
 %description -n spacewalk-client-setup
@@ -120,7 +121,7 @@ Group: System Environment/Base
 Provides: rhn-setup-gnome = %{version}-%{release}
 Obsoletes: rhn-setup-gnome < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
-Requires: spacewalk-client-setup = %{version}-%{release}
+Requires: %{rhn_setup} = %{version}-%{release}
 Requires: pam >= 0.72
 %if 0%{?suse_version}
 Requires: python-gnome python-gtk
