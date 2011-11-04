@@ -1130,13 +1130,13 @@ class NCCSync(object):
                                             CHANNEL_ARCH_ID, LABEL, NAME,
                                             SUMMARY, DESCRIPTION,
                                             CHANNEL_PRODUCT_ID, PRODUCT_NAME_ID,
-                                            CHECKSUM_TYPE_ID )
+                                            CHECKSUM_TYPE_ID, UPDATE_TAG )
                    VALUES ( sequence_nextval('rhn_channel_id_seq'), '/dev/null',
                            :parent_channel, :channel_arch_id, :label, :name,
                            :summary, :description, :channel_product_id,
                            :product_name_id,
                            (select id from RHNCHECKSUMTYPE
-                            where label = 'sha1') )""")
+                            where label = 'sha1'), :update_tag )""")
             query.execute(
                 channel_product_id = self.get_channel_product_id(channel),
                 product_name_id = self.get_product_name_id(channel),
@@ -1180,6 +1180,40 @@ class NCCSync(object):
                                % channel_label)
             else:
                 sys.exit("No channel added.")
+
+    def update_channels(self):
+        """Add update channel infos in the database """
+        # first look in the db to see if it's already there
+        channels_xml = {}
+        channels_iter = etree.parse(CHANNELS).getroot()
+        for c in channels_iter:
+            channels_xml[c.get('label')] = {
+                'name': c.get('name'),
+                'summary': c.get('summary'),
+                'description': c.get('description'),
+                'update_tag': c.get('update_tag')}
+
+        query = rhnSQL.prepare("SELECT label, name, summary, description, update_tag"
+                               "  FROM rhnChannel "
+                               " WHERE org_id IS NULL")
+        query.execute()
+        result = query.fetchall()
+        for label, name, summary, description, update_tag in result:
+            if label in channels_xml:
+                if (not(channels_xml[label]['name'] == name and
+                      channels_xml[label]['summary'] == summary and
+                      channels_xml[label]['description'] == description and
+                      channels_xml[label]['update_tag'] == update_tag)):
+                          print "Update Channel Information for %s" % label
+                          query = rhnSQL.prepare(
+                              """UPDATE RHNCHANNEL SET
+                                   NAME = :name,
+                                SUMMARY = :summary,
+                            DESCRIPTION = :description,
+                             UPDATE_TAG = :update_tag
+                                  WHERE LABEL = :label""")
+                          query.execute(label=label, **channels_xml[label])
+        rhnSQL.commit()
 
     def sync_suseproductchannel(self):
         """Sync the suseProductChannel relationships from the config file

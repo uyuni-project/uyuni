@@ -53,6 +53,7 @@ def main():
     if options.list:
         syncer.list_channels()
     elif options.channel:
+        syncer.update_channels()
         syncer.add_channel(options.channel)
         # schedule reposync even if the channel is already in the database
         syncer.sync_channel(options.channel)
@@ -66,6 +67,7 @@ def main():
     elif options.update_subscriptions:
         syncer.update_subscriptions()
     else:
+        syncer.update_channels()
         syncer.update_channel_family_table_by_config()
         suse_products = syncer.get_suse_products_from_ncc()
         syncer.update_suse_products_table(suse_products)
