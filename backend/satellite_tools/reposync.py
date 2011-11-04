@@ -1042,3 +1042,60 @@ def find_cves(text):
 
     """
     return list(set(re.findall('CVE-\d{4}-\d{4}', text)))
+
+def _delete_invalid_errata(errata_id):
+    """
+    Remove the errata from all channels
+    This should only be alled in case of a disaster
+    """
+    # first get a list of all channels where this errata exists
+    h = rhnSQL.prepare("""
+        SELECT channel_id
+          FROM rhnChannelErrata
+         WHERE errata_id = :errata_id
+    """)
+    h.execute(errata_id=errata_id)
+    channels = map(lambda x: x['channel_id'], h.fetchall_dict() or [])
+
+    # delete channel from errata
+    h = rhnSQL.prepare("""
+        DELETE FROM rhnChannelErrata
+         WHERE errata_id = :errata_id
+    """)
+    h.execute(errata_id=errata_id)
+
+    # delete all packages from errata
+    h = rhnSQL.prepare("""
+        DELETE FROM rhnErrataPackage ep
+         WHERE ep.errata_id = :errata_id
+    """)
+    h.execute(errata_id=errata_id)
+
+    # delete files from errata
+    h = rhnSQL.prepare("""
+        DELETE FROM rhnErrataFile
+         WHERE errata_id = :errata_id
+    """)
+    h.execute(errata_id=errata_id)
+
+    # delete erratatmp
+    h = rhnSQL.prepare("""
+        DELETE FROM rhnErrataTmp
+         WHERE id = :errata_id
+    """)
+    h.execute(errata_id=errata_id)
+
+    # delete errata
+    # removes also references from rhnErrataCloned
+    # and rhnServerNeededCache
+    h = rhnSQL.prepare("""
+        DELETE FROM rhnErrata
+         WHERE id = :errata_id
+    """)
+    h.execute(errata_id=errata_id)
+    rhnSQL.commit()
+    update_needed_cache = rhnSQL.Procedure("rhn_channel.update_needed_cache")
+
+    for cid in channels:
+        update_needed_cache(cid)
+    rhnSQL.commit()
