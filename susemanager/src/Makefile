@@ -8,8 +8,8 @@ TOP     = ..
 SUBDIR		= susemanager
 
 SPACEWALK_FILES		= mgr_ncc_sync_lib __init__ \
-                          mgr_register
-SCRIPTS  = mgr-ncc-sync mgr-register
+                          mgr_register mgr_clean_old_patchnames
+SCRIPTS  = mgr-ncc-sync mgr-register mgr-clean-old-patchnames
 
 SBINDIR  = /usr/sbin
 
