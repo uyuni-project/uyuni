@@ -1,3 +1,9 @@
+# package renaming fun :(
+%define rhn_client_tools spacewalk-client-tools
+%define rhn_setup	 spacewalk-client-setup
+%define rhn_check	 spacewalk-check
+%define rhnsd		 spacewalksd
+#
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
 Version: 1.6.14
@@ -15,11 +21,7 @@ BuildRequires: intltool
 BuildRequires: gettext
 
 Requires: yum >= 3.2.19-15
-%if 0%{?suse_version}
-Requires: spacewalk-client-tools >= 1.6.6-1
-%else
-Requires: rhn-client-tools >= 1.6.6-1
-%endif
+Requires: %{rhn_client_tools} >= 1.6.6-1
 %if 0%{?suse_version}
 Requires: python-m2crypto >= 0.16-6
 %else
@@ -28,11 +30,7 @@ Requires: m2crypto >= 0.16-6
 Requires: python-iniparse
 
 # Not really, but for upgrades we need these
-%if 0%{?suse_version}
-Requires: spacewalk-client-setup
-%else
-Requires: rhn-setup
-%endif
+Requires: %{rhn_setup}
 Obsoletes: up2date < 5.0.0
 Provides: up2date = 5.0.0
 

@@ -1,3 +1,9 @@
+# package renaming fun :(
+%define rhn_client_tools spacewalk-client-tools
+%define rhn_setup	 spacewalk-client-setup
+%define rhn_check	 spacewalk-check
+%define rhnsd		 spacewalksd
+#
 Summary: Support package for spacewalk koan interaction
 Name: spacewalk-koan
 Group: System Environment/Kernel
@@ -23,11 +29,7 @@ Conflicts: rhn-kickstart
 Conflicts: rhn-kickstart-common
 Conflicts: rhn-kickstart-virtualization
 
-%if 0%{?suse_version}
-Requires: spacewalk-check
-%else
-Requires: rhn-check
-%endif
+Requires: %{rhn-check}
 
 %description
 Support package for spacewalk koan interaction.

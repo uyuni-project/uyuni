@@ -1,3 +1,9 @@
+# package renaming fun :(
+%define rhn_client_tools spacewalk-client-tools
+%define rhn_setup	 spacewalk-client-setup
+%define rhn_check	 spacewalk-check
+%define rhnsd		 spacewalksd
+#
 %define rhnroot /usr/share/rhn
 
 Summary: Support scripts for auto-kickstarting systems
@@ -19,11 +25,7 @@ Conflicts: auto-kickstart
 %if 0%{?rhel} && "%rhel" < "5"
 Requires: up2date
 %else
-%if 0%{?suse_version}
-Requires: spacewalk-check
-%else
-Requires: rhn-check
-%endif
+Requires: %{rhn_check}
 %endif
 
 %description
@@ -38,11 +40,7 @@ Group: System Environment/Kernel
 %if 0%{?rhel} && "%rhel" < "5"
 Requires: up2date
 %else
-%if 0%{?suse_version}
-Requires: spacewalk-client-tools
-%else
-Requires: rhn-client-tools
-%endif
+Requires: %{rhn_client_tools}
 %endif
 
 
@@ -56,11 +54,7 @@ Summary: Support scripts for auto-kickstarting virtual systems
 Group: System Environment/Kernel
 Requires: %{name}-common = %{version}-%{release}
 Requires: rhn-virtualization-host
-%if 0%{?suse_version}
-Requires: spacewalk-check
-%else
-Requires: rhn-check
-%endif
+Requires: %{rhn_check}
 Requires: libvirt >= 0.2.3
 
 %description virtualization

@@ -1,3 +1,9 @@
+# package renaming fun :(
+%define rhn_client_tools spacewalk-client-tools
+%define rhn_setup	 spacewalk-client-setup
+%define rhn_check	 spacewalk-check
+%define rhnsd		 spacewalksd
+#
 %define rhn_dir %{_datadir}/rhn
 %define rhn_conf_dir %{_sysconfdir}/sysconfig/rhn
 %define cron_dir %{_sysconfdir}/cron.d
@@ -27,11 +33,7 @@ virtual machine guest images.
 %package common
 Summary: Files needed by rhn-virtualization-host
 Group: System Environment/Base
-%if 0%{?suse_version}
-Requires: spacewalk-client-tools
-%else
-Requires: rhn-client-tools
-%endif
+Requires: %{rhn_client_tools}
 %if 0%{?suse_version}
 # aaa_base provide chkconfig
 Requires: aaa_base

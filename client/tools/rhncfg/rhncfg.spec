@@ -1,3 +1,9 @@
+# package renaming fun :(
+%define rhn_client_tools spacewalk-client-tools
+%define rhn_setup	 spacewalk-client-setup
+%define rhn_check	 spacewalk-check
+%define rhnsd		 spacewalksd
+#
 %global rhnroot %{_datadir}/rhn
 %global rhnconf %{_sysconfdir}/sysconfig/rhn
 %global client_caps_dir %{rhnconf}/clientCaps.d
@@ -16,11 +22,7 @@ BuildRequires: docbook-utils
 BuildRequires: python
 Requires: python
 Requires: rhnlib >= 2.5.32
-%if 0%{?suse_version}
-Requires: spacewalk-client-tools
-%else
-Requires: rhn-client-tools
-%endif
+Requires: %{rhn_client_tools}
 %if 0%{?suse_version}
 # provide rhn directories and no selinux on suse
 BuildRequires: spacewalk-client-tools
