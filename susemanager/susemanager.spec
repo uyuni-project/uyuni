@@ -47,7 +47,7 @@ install -m 0755 bin/*.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/
 mkdir -p %{buildroot}/%{_sysconfdir}/rhn/default/
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
 mkdir -p %{buildroot}/%{_sysconfdir}/init.d
-install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_sysconfdir}/rhn/default/
+install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults
 install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 install -m 755 etc/init.d/susemanager %{buildroot}/%{_sysconfdir}/init.d
 make -C src install PREFIX=$RPM_BUILD_ROOT
@@ -93,9 +93,9 @@ fi
 %defattr(-,root,root,-)
 %dir %{pythonsmroot}
 %dir %{pythonsmroot}/susemanager
-%dir %{_sysconfdir}/rhn
-%dir %{_sysconfdir}/rhn/default
-%config %{_sysconfdir}/rhn/default/rhn_*.conf
+%dir %{_prefix}/share/rhn/
+%dir %{_prefix}/share/rhn/config-defaults
+%{_prefix}/share/rhn/config-defaults/rhn_*.conf
 %attr(0755,root,root) %{_sbindir}/mgr-register
 %attr(0755,root,root) %{_sbindir}/mgr-ncc-sync
 %{pythonsmroot}/susemanager/__init__.py*
