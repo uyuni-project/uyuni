@@ -1,51 +1,26 @@
 Work for SUSE Manager
 =====================
-- check, how to move entitlements to a sub organization
-  verify, that the calculation during update is correct
-  (
-    org1 = total - SUM(org > 1) 
-    if org1 < 0 reduce the entitlements for org > 1
-  )
 
-- add entitlement handling for monitoring, provisioning, virtual, ...
-  - add the numbers for the available entitlements
-  - everytime the admin add/remove such an entitlement to a client
-    add/remove the product for this entitlement to the suseServer
+* permissions on /etc/rhn/rhn.conf are "640 root.root"
+  but should be "640 root.www". Find out were the error is
 
-- mgr-ncc-sync called without options should do:
-  1) update channel families
-  2) update the suseProducts
-  3) update entitlements (Subscriptions)
-  4) walk over all existing channels with org_id == NULL
-     and trigger a reposync
+* Errors in apache configuration
+  - Some Alias do not work because default-server.conf specify a ScriptAlias
 
-- mgr-ncc-sync --list-channels or --channels should
-  only show the available channels for this customer.
-  the channels.xml file include all exiting channels,
-  but the customer may not have access to all of them.
-  The only way to get the customer channels is, to
-  download repo/repoindex.xml from nu.novell.com 
-  and compare it with channels.xml.
-  Only channels where the customer has access to all included
-  repositories are available to the customer.
-  Additionally we need to check, if the customer has access
-  to the base channel, if the available channel is a child channel.
+* schema migration from susemanager 1.2.X to susemanager 1.6.X
 
-- nu.novell.com requires authentication to download the repository.
-  find a way to "tag" the urls and modify spacewalk-repo-sync 
-  to read and add the credentials before the download starts.
-  (e.g. the URLs get a query parameter ?credentials=mirrcred
-   spacewalk-repo-sync look into the config for mirrcred_user
-   and mirrcred_pass and use the values as username and password
-   for the URL)
+DONE
+====
+* tomcat does not find webapps/rhn . appBase on SUSE seems to be
+  /usr/share/tomcat6/webapps which is a symlink to /srv/tomcat6/webapps
+  But rhn/ exists in /var/lib/tomcat6/webapps
+  See /etc/tomcat6/Catalina/localhost/rhn.xml 
+  docBase="/var/lib/tomcat6/webapps/rhn/" was removed
 
-- fill suseProductChannel
+* rhn_server_susemanager.conf is still in /etc/rhn/defaults; move to 
+  /usr/share/rhn/config-defaults/
 
-- implement auto channel assignment using suseProductChannel
+* Errors in apache configuration
+  - "Header" is used which requires mod_headers (add to sysconfig/apache)
 
-
-Work for the PROXY
-==================
-- implement suse product registration into proxy.
-- check, what else is needed for the proxy.
 
