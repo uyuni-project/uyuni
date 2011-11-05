@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.66
+Version: 1.6.72
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -637,6 +637,48 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Nov 04 2011 Tomas Lestach <tlestach@redhat.com> 1.6.72-1
+- 723528 - fix template attribute type in kickstart.profile API documentation
+  (tlestach@redhat.com)
+- 699505 - restrict manageable flag only for custom channels
+  (tlestach@redhat.com)
+- 699505 - fix typo: *managable -> *mangeable in channel.software APIs and
+  their doc (tlestach@redhat.com)
+- 593300 - handle directoriy and symlink config revision comparism
+  (tlestach@redhat.com)
+
+* Thu Nov 03 2011 Tomas Lestach <tlestach@redhat.com> 1.6.71-1
+- 725050 - fix activationkey.setDetails apidoc (tlestach@redhat.com)
+- 723528 - fix kickstart.profile.listScripts apidoc (tlestach@redhat.com)
+- 610784 - fix system.listNotes apidoc (tlestach@redhat.com)
+- 610157 - fix system.getScriptActionDetails apidoc (tlestach@redhat.com)
+- 751017 - item identifing user which scheduled the action is optional
+  (slukasik@redhat.com)
+
+* Wed Nov 02 2011 Tomas Lestach <tlestach@redhat.com> 1.6.70-1
+- introducing name for scripts in kickstart profiles in the webinterface
+  (berendt@b1-systems.de)
+
+* Mon Oct 31 2011 Tomas Lestach <tlestach@redhat.com> 1.6.69-1
+- 593300 - do not create same revision as the last one (tlestach@redhat.com)
+
+* Mon Oct 31 2011 Simon Lukasik <slukasik@redhat.com> 1.6.68-1
+- 662200 - Added validation of input map. (slukasik@redhat.com)
+
+* Fri Oct 28 2011 Jan Pazdziora 1.6.67-1
+- 600527 - for kickstart session (re)activation keys, always set the
+  deployConfigs to false.
+- The KickstartSessionCreateCommand is duplicated in KickstartWizardHelper.
+- For the default_session, use better note in rhnregtoken table.
+- declare net.sf.antcontrib.logic.For task to fix create-webapp-dir
+  (berendt@b1-systems.de)
+- adding xalan-j2 to the build.jar.dependencies property
+  (berendt@b1-systems.de)
+- When there are not ks-pre.log files, do not return error.
+- Doing replacement on all files is not nice.
+- The -n and -p are exclusive in perl, let us just settle on -p.
+- 748903 - extend search_string maxlenght (tlestach@redhat.com)
+
 * Wed Oct 26 2011 Martin Minar <mminar@redhat.com> 1.6.66-1
 - 737838 - allow org admins to unschedule repo sync (org tasks)
   (tlestach@redhat.com)

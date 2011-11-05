@@ -12,7 +12,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.6.27
+Version: 1.6.33
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -393,6 +393,25 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Thu Nov 03 2011 Miroslav Suchý 1.6.33-1
+- 595837 - add missing import
+
+* Wed Nov 02 2011 Miroslav Suchý 1.6.32-1
+- 595837 - all up2date bugs now inherit from YumBaseError so yum/pup can catch
+  them
+
+* Tue Nov 01 2011 Miroslav Suchý 1.6.31-1
+- 595837 - properly handle two exceptions (msuchy@redhat.com)
+
+* Tue Nov 01 2011 Tomas Lestach <tlestach@redhat.com> 1.6.30-1
+- 706148 - fix setting uri (luvilla@redhat.com)
+
+* Mon Oct 31 2011 Miroslav Suchý 1.6.29-1
+- 743259 - initialize variable before use
+
+* Fri Oct 28 2011 Jan Pazdziora 1.6.28-1
+- add missing import (mzazrivec@redhat.com)
+
 * Fri Oct 21 2011 Jan Pazdziora 1.6.27-1
 - Pass the verbose option (-vv) from rhnreg_ks to rhn_check as well.
 

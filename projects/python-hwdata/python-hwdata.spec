@@ -3,7 +3,7 @@
 %endif
 
 Name:		python-hwdata
-Version:	1.6.1
+Version:	1.6.2
 Release:	1%{?dist}
 Summary:	Python bindings to hwdata package
 %if ((!0%{?suse_version}) || (0%{?suse_version} >= 1120))
@@ -11,7 +11,7 @@ BuildArch: noarch
 %endif
 Group:		Development/Libraries
 License:	GPLv2
-URL:		https://fedorahosted.org/spacewalk
+URL:		https://fedorahosted.org/spacewalk/wiki/Projects/python-hwdata
 Source0:	https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -46,6 +46,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Oct 31 2011 Miroslav Suchý 1.6.2-1
+- point URL to specific python-hwdata page
+
 * Fri Jul 22 2011 Jan Pazdziora 1.6.1-1
 - We only support version 14 and newer of Fedora, removing conditions for old
   versions.
