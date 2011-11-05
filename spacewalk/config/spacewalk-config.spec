@@ -164,6 +164,7 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_ajp
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 
 %endif
