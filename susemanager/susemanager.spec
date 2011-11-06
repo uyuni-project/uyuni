@@ -44,7 +44,7 @@ This package contains SUSE Manager tools
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
 install -m 0755 bin/*.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/
 
-mkdir -p %{buildroot}/%{_sysconfdir}/rhn/default/
+mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
 mkdir -p %{buildroot}/%{_sysconfdir}/init.d
 install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults
