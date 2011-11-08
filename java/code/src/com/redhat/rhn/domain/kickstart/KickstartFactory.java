@@ -385,7 +385,8 @@ public class KickstartFactory extends HibernateFactory {
         else {
             log.debug("No ks meta for this profile.");
         }
-        String path = getKickstartTemplatePath(ksdataIn, p);
+        String path = ksdataIn.getCobblerFileName();
+
         log.debug("writing ks file to : " + path);
         FileUtils.writeStringToFile(fileData, path);
     }
