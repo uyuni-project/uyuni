@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov  8 15:14:14 CET 2011 - ug@suse.de
+
+- rename kickstart/autoyast files on harddisk too in case
+  the profile got a new label (bnc#706122)
+
+-------------------------------------------------------------------
 Tue Nov  8 09:18:37 CET 2011 - mantel@suse.de
 
 - rename kickstart to Autoinstallation (bnc#727517)
