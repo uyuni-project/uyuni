@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov  8 14:59:00 CET 2011 - ug@suse.de
+
+- rename kickstart/autoyast files on harddisk too when the
+  profile gets a new label (bnc#706122)
+
+-------------------------------------------------------------------
 Tue Nov  8 14:17:11 CET 2011 - jrenner@suse.de
 
 - Implement audit logging for webui and frontend API (fate#312607)
