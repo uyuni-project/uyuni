@@ -114,11 +114,13 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_var}/lib/cobbler/kickstarts/spacewalk-sample.ks
 %config(noreplace) %{_var}/lib/cobbler/snippets/spacewalk_file_preservation
 %attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
+%attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn/default
 %dir %{_sysconfdir}/rhn/satellite-httpd
 %dir %{_sysconfdir}/rhn/satellite-httpd/conf
 %dir %{_sysconfdir}/rhn/satellite-httpd/conf/rhn
 %ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/cluster.ini
 %attr(0640,root,%{apache_group}) %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/rhn.conf
+%attr(0640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_audit.conf
 # NOTE: If if you change these, you need to make a corresponding change in
 # spacewalk/install/Spacewalk-Setup/bin/spacewalk-setup
 %if 0%{?suse_version}

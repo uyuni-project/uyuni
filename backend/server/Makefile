@@ -19,7 +19,8 @@ SPACEWALK_FILES		= __init__ \
                   rhnHandler rhnImport rhnMapping rhnLib rhnPackage \
                   rhnKickstart \
                   rhnPackageUpload basePackageUpload rhnRepository \
-                  rhnSession rhnUser rhnVirtualization taskomatic
+                  rhnSession rhnUser rhnVirtualization taskomatic \
+                  auditlog
 SUBDIRS		= rhnSQL rhnServer action \
 			  handlers importlib action_extra_data \
 			  config_common repomd

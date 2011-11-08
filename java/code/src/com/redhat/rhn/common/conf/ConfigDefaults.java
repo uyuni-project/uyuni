@@ -172,6 +172,10 @@ public class ConfigDefaults {
 
     public static final String KS_PARTITION_DEFAULT = "kickstart.partition.default";
 
+    // Audit logging properties
+    public static final String AUDIT_ENABLED = "audit.enabled";
+    public static final String AUDIT_SERVER = "audit.server";
+
     /**
      * System Currency defaults
      */

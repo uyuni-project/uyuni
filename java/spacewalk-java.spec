@@ -51,6 +51,7 @@ Requires: redstone-xmlrpc
 Requires: oscache
 Requires: pam-modules
 Requires: servletapi5
+Requires: snakeyaml
 Requires: struts >= 1.2.9
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
@@ -123,6 +124,7 @@ BuildRequires: redstone-xmlrpc
 BuildRequires: oscache
 BuildRequires: quartz
 BuildRequires: simple-core
+BuildRequires: snakeyaml
 BuildRequires: stringtree-json
 BuildRequires: struts
 BuildRequires: sitemesh
@@ -321,6 +323,9 @@ ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT%{jardir}/ojdbc14.jar
 install -d -m 755 $RPM_BUILD_ROOT/%{realcobsnippetsdir}
 ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT/%{realcobsnippetsdir}/spacewalk
 
+install -d -m 755 $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit
+install -m 644 conf/audit/auditlog-config.yaml $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit/auditlog-config.yaml
+
 %if 0%{?suse_version}
 touch $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/systemlogs/audit-review.log
 %else
@@ -446,6 +451,7 @@ fi
 %{jardir}/rhn.jar
 %{jardir}/simple-core.jar
 %{jardir}/sitemesh.jar
+%{jardir}/snakeyaml.jar
 %{jardir}/stringtree-json.jar
 %{jardir}/struts.jar
 %{jardir}/taglibs-core.jar
@@ -504,11 +510,14 @@ fi
 %defattr(-,root,root)
 %dir /etc/rhn
 %dir /etc/rhn/default
+%dir %{_datadir}/spacewalk
+%dir %{_datadir}/spacewalk/audit
 %defattr(644, root, root)
 %config %{_sysconfdir}/rhn/default/rhn_hibernate.conf
 %config %{_sysconfdir}/rhn/default/rhn_taskomatic_daemon.conf
 %config %{_sysconfdir}/rhn/default/rhn_org_quartz.conf
 %config %{_sysconfdir}/logrotate.d/rhn_web_api
+%config %{_datadir}/spacewalk/audit/auditlog-config.yaml
 
 
 %files lib

@@ -15,8 +15,8 @@
 package com.redhat.rhn.frontend.xmlrpc;
 
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.logging.AuditLog;
 import com.redhat.rhn.common.translation.Translator;
-import com.redhat.rhn.domain.session.InvalidSessionIdException;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,7 +35,7 @@ import redstone.xmlrpc.XmlRpcInvocationInterceptor;
  */
 public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
     private static Logger log = Logger.getLogger(LoggingInvocationProcessor.class);
-    private static ThreadLocal caller = new ThreadLocal();
+    private static ThreadLocal<User> caller = new ThreadLocal<User>();
 
     private static ThreadLocal timer = new ThreadLocal() {
         protected synchronized Object initialValue() {
@@ -76,21 +76,22 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
     public Object after(XmlRpcInvocation invocation, Object returnValue) {
         StringBuffer buf = new StringBuffer();
         try {
+            // Create the call in a separate buffer for reuse
+            StringBuffer call = new StringBuffer();
+            call.append(invocation.getHandlerName());
+            call.append(".");
+            call.append(invocation.getMethodName());
+            call.append("(");
+            call.append(processArguments(invocation.getHandlerName(),
+                    invocation.getMethodName(), invocation.getArguments()));
+            call.append(")");
+
             buf.append("REQUESTED FROM: ");
-            buf.append("*callerIp*"); // TODO: what happened to the caller's IP
+            buf.append(RhnXmlRpcServer.getCallerIp());
             buf.append(" CALL: ");
-            buf.append(invocation.getHandlerName());
-            buf.append(".");
-            buf.append(invocation.getMethodName());
-            buf.append("(");
-
-            processArguments(invocation.getHandlerName(),
-                             invocation.getMethodName(),
-                             invocation.getArguments(),
-                             buf);
-
-            buf.append(") CALLER: (");
-            buf.append(getCaller());
+            buf.append(call);
+            buf.append(" CALLER: (");
+            buf.append(getCallerLogin());
             buf.append(") TIME: ");
 
             getStopWatch().stop();
@@ -99,6 +100,10 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
             buf.append(" seconds");
 
             log.info(buf.toString());
+
+            // Do audit logging
+            AuditLog.getInstance().logAPI(null, getCaller(), call.toString(),
+                    RhnXmlRpcServer.getCallerIp());
         }
         catch (RuntimeException e) {
             log.error("postProcess error", e);
@@ -114,20 +119,16 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
         StringBuffer buf = new StringBuffer();
         try {
             buf.append("REQUESTED FROM: ");
-            buf.append("*callerIp*"); // TODO: what happened to the caller's IP
+            buf.append(RhnXmlRpcServer.getCallerIp());
             buf.append(" CALL: ");
             buf.append(invocation.getHandlerName());
             buf.append(".");
             buf.append(invocation.getMethodName());
             buf.append("(");
-
-            processArguments(invocation.getHandlerName(),
-                             invocation.getMethodName(),
-                             invocation.getArguments(),
-                             buf);
-
+            buf.append(processArguments(invocation.getHandlerName(),
+                    invocation.getMethodName(), invocation.getArguments()));
             buf.append(") CALLER: (");
-            buf.append(getCaller());
+            buf.append(getCallerLogin());
             buf.append(") TIME: ");
 
             getStopWatch().stop();
@@ -142,8 +143,9 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
         }
     }
 
-    private void processArguments(String handler, String method,
-                                  List arguments, StringBuffer buf) {
+    private StringBuffer processArguments(String handler, String method,
+                                  List arguments) {
+        StringBuffer ret = new StringBuffer();
 
         // bug 199130: don't log password :)
         if ("auth.login".equals(handler + "." + method)) {
@@ -151,8 +153,8 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
                 String arg = (String) Translator.convert(
                         arguments.get(0), String.class);
 
-                buf.append(arg);
-                buf.append(", ********");
+                ret.append(arg);
+                ret.append(", ********");
             }
         }
         else {
@@ -162,14 +164,15 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
                     String arg = (String) Translator.convert(
                             arguments.get(i), String.class);
 
-                    buf.append(arg);
+                    ret.append(arg);
 
                     if ((i + 1) < size) {
-                        buf.append(", ");
+                        ret.append(", ");
                     }
                 }
             }
         }
+        return ret;
     }
 
     /**
@@ -178,26 +181,21 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
      * @param key potential sessionKey.
      * @return  username, (Invalid Session ID), or (unknown);
      */
-    private String getLoggedInUser(String key) {
+    private User getLoggedInUser(String key) {
         try {
             User user = BaseHandler.getLoggedInUser(key);
             if (user != null) {
-                return user.getLogin();
+                return user;
             }
         }
         catch (LookupException le) {
             // do nothing
         }
-
-        catch (InvalidSessionIdException e) {
-            return "(Invalid Session ID)";
-        }
-
         catch (Exception e) {
             log.error("problem with getting logged in user for logging", e);
         }
 
-        return "(unknown)";
+        return null;
     }
 
     /**
@@ -227,16 +225,19 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
         return (StopWatch) timer.get();
     }
 
-    private static String getCaller() {
-        String c = (String) caller.get();
-        if (c == null) {
-            return "none";
+    private String getCallerLogin() {
+        String ret = "none";
+        if (getCaller() != null) {
+            ret = getCaller().getLogin();
         }
-
-        return c;
+        return ret;
     }
 
-    private static void setCaller(String c) {
+    private static User getCaller() {
+        return (User) caller.get();
+    }
+
+    private static void setCaller(User c) {
         caller.set(c);
     }
 }

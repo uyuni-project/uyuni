@@ -46,11 +46,88 @@ use RHN::Mail;
 use PXT::Debug ();
 use RHN::DB ();
 
+use SUSEAuditlogClient;
+
 our $make_vile;
+use YAML::Syck;
+
+use constant false => 0;
+use constant true  => 1;
+
+
+sub is_auditkeeper_running {
+    open AKCONF, "<", "/etc/auditlog-keeper.conf" or die $!;
+    while (my $line = <AKCONF>) {
+	chomp($line);
+	if ($line =~ /server\.pid\.filename/) {
+	    $line =~ s/.*?\s+=\s+//g;
+	    if (-s $line) {
+		my $pid = do {
+		    local $/ = undef;
+		    open my $pidhandler, "<", $line or die $!;
+		    <$pidhandler>;
+		};
+		chomp($pid);
+		return (-d "/proc/$pid") ? 1 : 0;
+	    }
+	}
+    }
+
+    return 0;
+}
+
+
+sub get_log_event {
+    my ($path, $request) = @_;
+    my %event = ();
+
+    if (!defined($request->pnotes('pxt_request'))) {
+	return \%event;
+    }
+
+    if (!((-e $path) && (-r $path))) {
+	return \%event;
+    }
+    
+    my $yaml = YAML::Syck::LoadFile($path);
+    my $urlopts = ${$yaml}{$request->pnotes('pxt_request')->uri()};
+    my $reqparams = Apache2::Request->new($request, ())->param();
+    my $found_required = defined(${$urlopts}{required}) ? false : true;
+
+    if (!$found_required) {
+	for my $el (@{${$urlopts}{required}}) {
+	    for my $rparam (keys %$reqparams) {
+		if ($rparam eq $el) {
+		    $found_required = true;
+		    last;
+		}
+	    }
+	}
+    }
+
+    if (defined($urlopts) && $found_required) {
+	$event{"EVT.TYPE"} = ${$urlopts}{type};
+	for my $k (keys %$reqparams) {
+	    my $v = $reqparams->{$k} . " ";
+	    chomp($v);
+	    $event{"REQ." . $k} = $v;
+	}
+    }
+
+    return \%event;
+}
+
 
 sub handler {
   my $r = shift;
 
+  # Log the request
+  if (is_auditkeeper_running()) {
+      my $extmap = get_log_event("/usr/share/spacewalk/audit/auditlog-config.yaml", $r);
+      if (keys(%{$extmap}) > 0) {
+	  SUSEAuditlogClient->new("localhost", 6888)->log($r->user(), $r->uri(), $r->connection->remote_ip, $extmap);
+      }
+  }
 
   local $make_vile = 0;
   $ENV{PATH} = "/bin:/usr/sbin";
