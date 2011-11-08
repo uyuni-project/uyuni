@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Nov 22 15:16:53 CET 2011 - mantel@suse.de
+
+- name of system user is "sys", not "system"
+
+-------------------------------------------------------------------
+Tue Nov  8 14:11:44 CET 2011 - jrenner@suse.de
+
+- Implement audit logging for remaining .pxt pages (fate#312607)
+
+-------------------------------------------------------------------
 Tue Nov 22 15:15:37 CET 2011 - mantel@suse.de
 
 - fix db-control tablesizes (owner is normal_user, not sid)
