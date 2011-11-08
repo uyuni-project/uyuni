@@ -248,6 +248,7 @@ sub channel_edit_cb {
 
       if($from_channel){
           $channel->product_name_id($from_channel->product_name_id);
+          $channel->update_tag($from_channel->update_tag);
       }
 
       $channel->basedir('/dev/null');

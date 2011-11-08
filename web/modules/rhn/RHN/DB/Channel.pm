@@ -34,7 +34,7 @@ use RHN::Exception qw/throw/;
 # Channel Object code
 #######################################
 
-my @channel_fields = qw/ID PARENT_CHANNEL ORG_ID CHANNEL_ARCH_ID LABEL BASEDIR NAME SUMMARY DESCRIPTION GPG_KEY_URL GPG_KEY_ID GPG_KEY_FP PRODUCT_NAME_ID END_OF_LIFE:dayofyear LAST_MODIFIED:longdate CHANNEL_ACCESS/;
+my @channel_fields = qw/ID PARENT_CHANNEL ORG_ID CHANNEL_ARCH_ID LABEL BASEDIR NAME SUMMARY DESCRIPTION GPG_KEY_URL GPG_KEY_ID GPG_KEY_FP PRODUCT_NAME_ID END_OF_LIFE:dayofyear LAST_MODIFIED:longdate CHANNEL_ACCESS UPDATE_TAG/;
 my @arch_fields = qw/ID NAME LABEL/;
 
 my $c = new RHN::DB::TableClass("rhnChannel", "C", "", @channel_fields);
