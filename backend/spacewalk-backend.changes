@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov  8 14:09:44 CET 2011 - jrenner@suse.de
+
+- Implement audit logging for the backend API (fate#312607)
+
+-------------------------------------------------------------------
 Wed Oct 26 13:59:09 CEST 2011 - mc@suse.de
 
 - add support for V4 DSA and RSA rpm signatures to display correct

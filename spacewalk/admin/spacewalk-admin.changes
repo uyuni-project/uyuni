@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov  8 13:55:19 CET 2011 - jrenner@suse.de
+
+- Add support for audit logging in init script (fate#312607)
+
+-------------------------------------------------------------------
 Sun Jan 30 15:31:25 CET 2011 - mc@suse.de
 
 - backport upstrem fixes

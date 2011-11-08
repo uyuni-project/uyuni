@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov  8 14:11:44 CET 2011 - jrenner@suse.de
+
+- Implement audit logging for remaining .pxt pages (fate#312607)
+
+-------------------------------------------------------------------
 Wed Oct 26 14:45:36 CEST 2011 - mantel@suse.de
 
 - fix db-control tablesizes (owner is normal_user, not sid)
