@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.kickstart;
 
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -304,6 +305,12 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
             return;
         }
 
+        // if we use the wizard and changed the label, the file does not exist yet.
+        // we create an empty one, so cobbler will not complain
+        if (!ksdata.isRawData() && !prof.getKickstart().equals(ksdata.getCobblerFileName())) {
+        	FileUtils.writeStringToFile("", ksdata.getCobblerFileName());
+        }
+        prof.setKickstart(ksdata.getCobblerFileName());
         if (KickstartDetailsEditAction.canSaveVirtOptions(ksdata, form)) {
             prof.setVirtRam((Integer) form.get(VIRT_MEMORY));
             prof.setVirtCpus((Integer) form.get(VIRT_CPU));

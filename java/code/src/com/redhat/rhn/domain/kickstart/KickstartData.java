@@ -1311,16 +1311,6 @@ public class KickstartData {
      * @return the cobblerName
      */
     public String getCobblerFileName() {
-        if (getCobblerId() != null) {
-            Profile prof = Profile.lookupById(
-                   CobblerXMLRPCHelper.getConnection(
-                   Config.get().getString(ConfigDefaults.COBBLER_AUTOMATED_USER)),
-                       getCobblerId());
-            if (prof != null && !StringUtils.isBlank(prof.getKickstart())) {
-                return prof.getKickstart();
-            }
-        }
-
         String path = "";
 
         if (isRawData()) {
