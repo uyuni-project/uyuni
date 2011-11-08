@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov  8 09:18:37 CET 2011 - mantel@suse.de
+
+- rename kickstart to Autoinstallation (bnc#727517)
+
+-------------------------------------------------------------------
 Wed Oct 12 15:07:05 CEST 2011 - ug@suse.de
 
 - breed in cobbler was not updated if a distro was edited
