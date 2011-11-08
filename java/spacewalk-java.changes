@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov  8 08:52:23 CET 2011 - mantel@suse.de
+
+- rename "kickstart" to "Autoinstallation" (bnc#727517)
+
+-------------------------------------------------------------------
 Tue Oct 25 17:45:27 CEST 2011 - mc@suse.de
 
 - fix currency report if all patches are installed (bnc#726543)
