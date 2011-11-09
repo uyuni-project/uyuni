@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov  9 09:45:58 CET 2011 - mantel@suse.de
+
+- tag rhn_dobby.conf as "noreplace"
+
+-------------------------------------------------------------------
 Tue Nov  8 14:42:35 CET 2011 - mantel@suse.de
 
 - name of system user is "sys", not "system"
