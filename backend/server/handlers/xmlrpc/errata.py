@@ -263,22 +263,30 @@ class Errata(rhnHandler):
         sql_list, bound_vars = _bind_list(errata_ids)
         bound_vars.update({'server_id': self.server_id})
 
-        sql = """SELECT DISTINCT e.id, e.advisory_name
+        sql = """SELECT DISTINCT e.id, e.advisory_name, c.update_tag
                  FROM rhnErrata e,
                       rhnPackage p,
                       rhnChannelPackage cp,
                       rhnServerChannel sc,
-                      rhnErrataPackage ep
+                      rhnErrataPackage ep,
+                      rhnChannel c
                  WHERE e.id in (%s) AND
                        ep.errata_id = e.id AND
                        ep.package_id = p.id AND
                        sc.server_id = :server_id AND
                        sc.channel_id = cp.channel_id AND
-                       cp.package_id = p.id"""
+                       cp.package_id = p.id AND
+                       sc.channel_id = c.id"""
         h = rhnSQL.prepare(sql % sql_list)
         h.execute(**bound_vars)
-
-        return h.fetchall()
+        errata_list = h.fetchall()
+        result = []
+        for eid, name, update_tag in errata_list:
+            if update_tag:
+                name = "%s-%s" % (update_tag, name)
+            result.append((eid, name))
+        log_debug(2, self.server_id, errata_ids, result)
+        return result
 
 
 def _bind_list(elems):
