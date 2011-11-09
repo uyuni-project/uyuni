@@ -135,6 +135,34 @@ quit
     rm /tmp/dbsetup.sql
 }
 
+compute_oracle_mem() {
+  # SGA & PGA algo
+   sgamin=146800640
+   pgamin=16777216
+   TM=`cat /proc/meminfo | grep '^MemTotal' | awk '{print $2}'`
+   TM=`echo $TM / 1024 | bc`
+   TM=`echo 0.40 \* $TM | bc | sed "s/\..*//"`
+   TMSP=`echo $TM-40 | bc`
+   sga_target=`echo 0.75 \* $TMSP | bc`
+   pga_target=`echo 0.25 \* $TMSP | bc `
+   sga=`echo $sga_target \* 1048576  | bc | sed "s/\..*//"`
+   pga=`echo $pga_target \* 1048576  | bc | sed "s/\..*//"`
+   check=`echo $sga \< $sgamin | bc`
+   if test $check != 0
+   then
+           sga=$sgamin
+   fi
+
+   check=`echo $pga \< $pgamin | bc`
+   if test $check != 0
+   then
+           pga=$pgamin
+   fi
+
+   echo "sga=$sga"
+   echo "pga=$pga"
+}
+
 setup_db_full() {
     /opt/apps/oracle/setup "$SYS_DB_PASS"
     cp /opt/apps/oracle/product/11gR2/dbhome_1/network/admin/tnsnames.ora /etc
@@ -143,6 +171,13 @@ setup_db_full() {
 create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
 grant dba to $MANAGER_USER;
 alter system set processes = 400 scope=spfile;
+alter system set deferred_segment_creation=FALSE;
+alter system set sga_target=$sga scope=spfile;
+alter system set pga_aggregate_target=$pga scope=spfile;
+BEGIN
+dbms_sqltune.set_auto_tuning_task_parameter( 'ACCEPT_SQL_PROFILES', 'TRUE');
+END;
+/
 quit
 " > /tmp/dbsetup.sql
 
