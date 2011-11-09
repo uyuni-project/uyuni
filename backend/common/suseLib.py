@@ -25,7 +25,6 @@ except ImportError:
     from StringIO import StringIO
 
 YAST_PROXY = "/root/.curlrc"
-CREDENTIALS = "/etc/rhn/credentials.cfg"
 
 class TransferException(Exception):
     """Transfer Error"""
@@ -247,7 +246,7 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
         ret = None
     return ret
 
-class URL:
+class URL(object):
     """URL class that allows modifying the various attributes of a URL"""
     def __init__(self, url):
         u = urlparse.urlsplit(url)
