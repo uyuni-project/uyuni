@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov  9 17:03:41 CET 2011 - jrenner@suse.de
+
+- Implement audit logging for the backend API (fate#312607)
+
+-------------------------------------------------------------------
 Tue Oct 11 17:01:46 CEST 2011 - mc@suse.de
 
 - fix spacewalk-remove-channel to work on SUSE Manager (bnc#670206)

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov  9 17:05:31 CET 2011 - jrenner@suse.de
+
+- Implement audit logging for webui and frontend API (fate#312607)
+
+-------------------------------------------------------------------
 Tue Nov  8 15:14:14 CET 2011 - ug@suse.de
 
 - rename kickstart/autoyast files on harddisk too in case
