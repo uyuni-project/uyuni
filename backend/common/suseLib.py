@@ -10,10 +10,7 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
-import string
-import os
-import tempfile
-import ConfigParser
+import re
 import urlparse
 
 import pycurl
@@ -248,7 +245,7 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
         ret = None
     return ret
 
-class URL:
+class URL(object):
     """URL class that allows modifying the various attributes of a URL"""
     def __init__(self, url):
         u = urlparse.urlsplit(url)
