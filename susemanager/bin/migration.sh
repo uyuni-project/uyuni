@@ -166,8 +166,9 @@ compute_oracle_mem() {
 setup_db_full() {
     /opt/apps/oracle/setup "$SYS_DB_PASS"
     cp /opt/apps/oracle/product/11gR2/dbhome_1/network/admin/tnsnames.ora /etc
+    compute_oracle_mem
     echo "Create database user for SUSE Manager..."
-    echo "create smallfile tablespace data_tbs datafile '/opt/apps/oracle/oradata/embedded/data_01.dbf' size 500M autoextend on blocksize 8192;
+    echo "create smallfile tablespace data_tbs datafile '/opt/apps/oracle/oradata/susemanager/data_01.dbf' size 500M autoextend on blocksize 8192;
 create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
 grant dba to $MANAGER_USER;
 alter system set processes = 400 scope=spfile;
