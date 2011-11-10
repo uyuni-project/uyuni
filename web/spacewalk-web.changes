@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov 10 16:40:44 CET 2011 - jrenner@suse.de
+
+- Fix internal server errors by returning 0 instead of dying
+
+-------------------------------------------------------------------
 Wed Nov  9 17:10:22 CET 2011 - jrenner@suse.de
 
 - Implement audit logging for remaining .pxt pages (fate#312607)
