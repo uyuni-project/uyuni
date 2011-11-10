@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov 10 16:22:58 CET 2011 - jrenner@suse.de
+
+- Fix internal server errors by returning 0 instead of dying 
+
+-------------------------------------------------------------------
 Wed Nov  9 09:45:58 CET 2011 - mantel@suse.de
 
 - tag rhn_dobby.conf as "noreplace"
