@@ -56,7 +56,7 @@ use constant true  => 1;
 
 
 sub is_auditkeeper_running {
-    open AKCONF, "<", "/etc/auditlog-keeper.conf" or die $!;
+    open AKCONF, "<", "/etc/auditlog-keeper.conf" or return 0;
     while (my $line = <AKCONF>) {
 	chomp($line);
 	if ($line =~ /server\.pid\.filename/) {
