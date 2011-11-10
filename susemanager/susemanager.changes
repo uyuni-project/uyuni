@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Nov 10 17:36:12 CET 2011 - mantel@suse.de
+
+- use correct paths with new Oracle version
+- actually use the computed memory values for Oracle
+
+-------------------------------------------------------------------
 Wed Nov  9 10:02:09 CET 2011 - mantel@suse.de
 
 - compute sga and pga values for Oracle
