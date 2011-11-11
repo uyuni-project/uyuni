@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 11 16:16:49 CET 2011 - jrenner@suse.de
+
+- Fix rename Kickstart to Autoinstallation (bnc#727517)
+
+-------------------------------------------------------------------
 Thu Nov 10 16:40:44 CET 2011 - jrenner@suse.de
 
 - Fix internal server errors by returning 0 instead of dying

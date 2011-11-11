@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 11 16:14:26 CET 2011 - jrenner@suse.de
+
+- Fix rename Kickstart to Autoinstallation (bnc#727517)
+
+-------------------------------------------------------------------
 Wed Nov  9 17:05:31 CET 2011 - jrenner@suse.de
 
 - Implement audit logging for webui and frontend API (fate#312607)
