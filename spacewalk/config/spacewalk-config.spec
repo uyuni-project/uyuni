@@ -10,6 +10,9 @@
 %define apache_group apache
 %endif
 
+%global rhnroot %{_prefix}/share/rhn
+%global rhnconfigdefaults %{rhnroot}/config-defaults
+
 Name: spacewalk-config
 Summary: Spacewalk Configuration
 Version: 1.6.4
@@ -120,7 +123,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/rhn/satellite-httpd/conf/rhn
 %ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/cluster.ini
 %attr(0640,root,%{apache_group}) %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/rhn.conf
-%attr(0640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_audit.conf
+%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_audit.conf
+
 # NOTE: If if you change these, you need to make a corresponding change in
 # spacewalk/install/Spacewalk-Setup/bin/spacewalk-setup
 %if 0%{?suse_version}
