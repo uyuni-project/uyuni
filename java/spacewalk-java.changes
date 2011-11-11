@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 11 16:00:56 CET 2011 - jrenner@suse.de
+
+- Fix rename Kickstart -> Autoinstallation (bnc#727517)
+
+-------------------------------------------------------------------
 Fri Nov 11 10:43:13 CET 2011 - jrenner@suse.de
 
 - Remove markup in error message from all translation files
