@@ -105,7 +105,7 @@ sub get_log_event {
 	}
     }
 
-    if (defined($urlopts) && $found_required) {
+    if (defined($urlopts) && $found_required && ${$urlopts}{type}) {
 	$event{"EVT.TYPE"} = ${$urlopts}{type};
 	for my $k (keys %$reqparams) {
 	    my $v = $reqparams->{$k} . " ";
