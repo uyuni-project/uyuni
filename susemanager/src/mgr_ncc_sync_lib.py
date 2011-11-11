@@ -980,7 +980,11 @@ class NCCSync(object):
             return None
 
     def insert_channel(self, channel, channel_id):
-        """Insert an XML channel into the database as a ContentSource
+        """Insert an XML channel into the database
+
+        One source_url identifies an rhnContentSource entry, a label
+        identifies an rhnChannel entry and an rhnContentSource can
+        belong to multiple rhnChannels
 
         :arg channel: XML ETree elem which contains repository information
         :arg channel_id: DB id of the channel the repo should belong to
@@ -990,21 +994,15 @@ class NCCSync(object):
         if not channel_data['source_url']:
             return # no URL, cannot create a content source
 
-        contentsource = rhnSQL.Row('RHNCONTENTSOURCE', 'label',
-                                   channel_data['label'])
-        if not contentsource.data: # create it
-            url = suseLib.URL(channel_data['source_url'])
-            # nu.novell.com needs authentication using the mirror credentials
-            if url.host == "nu.novell.com":
-                qp = url.query
-                if qp:
-                    url.query = qp + "&credentials=mirrcred"
-                else:
-                    url.query = "credentials=mirrcred"
-                channel_data['source_url'] = url.getURL()
-            # FIXME make a TYPE_ID for zypper?
-            type_id = rhnSQL.Row("RHNCONTENTSOURCETYPE", "LABEL", "yum")['id']
+        _channel_add_mirrcred(channel_data)
 
+        # index the rhnContentSource by source_url, don't use the
+        # channel label, because multiple channels should be able to
+        # share the same repo and a repo is identified by its URL
+        contentsource = rhnSQL.Row('RHNCONTENTSOURCE', 'source_url',
+                                   channel_data['source_url'])
+        if not contentsource.data: # create it
+            type_id = rhnSQL.Row("RHNCONTENTSOURCETYPE", "LABEL", "yum")['id']
             query = rhnSQL.prepare(
                 """INSERT INTO RHNCONTENTSOURCE
                        (ID, ORG_ID, TYPE_ID, SOURCE_URL, LABEL, METADATA_SIGNED)
@@ -1012,12 +1010,19 @@ class NCCSync(object):
                            NULL, :type_id, :source_url, :label, :is_signed )""")
             query.execute(type_id=type_id, **channel_data)
 
-        # create relation between the new ContentSource and the Channel
+        # create association between the new ContentSource and the Channel
         source_id = rhnSQL.Row(
-            "RhnContentSource", "label", channel_data['label']
+            "RhnContentSource", "source_url", channel_data['source_url']
             )['id']
-        if not rhnSQL.Row('RhnChannelContentSource',
-                          'source_id', source_id).data:
+        channel_id = rhnSQL.Row(
+            "RhnChannel", "label", channel_data["label"])['id']
+
+        association = rhnSQL.prepare(
+            """SELECT source_id, channel_id FROM RhnChannelContentSource
+               WHERE source_id = :source_id and channel_id = :channel_id""")
+        association.execute(source_id=source_id, channel_id=channel_id)
+
+        if not association.fetchone():
             query = rhnSQL.prepare(
             """INSERT INTO RhnChannelContentSource (SOURCE_ID, CHANNEL_ID)
                VALUES (:source_id, :channel_id)""")
@@ -1285,6 +1290,17 @@ class NCCSync(object):
         rhnLog.log_clean(0, message)
 
 
+def _channel_add_mirrcred(channel):
+    """Add the mirrorcred query string to the url in channel['source_url']"""
+    url = suseLib.URL(channel['source_url'])
+    # nu.novell.com needs authentication using the mirror credentials
+    if url.host == "nu.novell.com":
+        if url.query:
+            url.query += "&credentials=mirrcred"
+        else:
+            url.query = "credentials=mirrcred"
+        channel['source_url'] = url.getURL()
+
 def sql_list(alist):
     """Transforms a python list into an SQL string of a list
 
@@ -1310,4 +1326,3 @@ def get_repo_path(repourl):
 
     """
     return repourl.split('repo/')[-1].rstrip('/')
-
