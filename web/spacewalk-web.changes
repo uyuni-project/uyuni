@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 11 17:15:03 CET 2011 - jrenner@suse.de
+
+- Fix stacktraces produced by auditlog-keeper
+
+-------------------------------------------------------------------
 Fri Nov 11 16:01:49 CET 2011 - jrenner@suse.de
 
 - Fix rename Kickstart -> Autoinstallation (bnc#727517)
