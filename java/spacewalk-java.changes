@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 11 10:43:13 CET 2011 - jrenner@suse.de
+
+- Remove markup in error message from all translation files
+
+-------------------------------------------------------------------
 Tue Nov  8 14:59:00 CET 2011 - ug@suse.de
 
 - rename kickstart/autoyast files on harddisk too when the
