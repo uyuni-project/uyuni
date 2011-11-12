@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.72
+Version: 1.6.76
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -646,6 +646,36 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Nov 09 2011 Tomas Lestach <tlestach@redhat.com> 1.6.76-1
+- 682845 - check the input parameters for repo related APIs
+  (tlestach@redhat.com)
+- 699489 - regenerate affected kickstart profiles, when updating crypto key
+  (tlestach@redhat.com)
+- This field is actually optional; it might not be specified.
+  (slukasik@redhat.com)
+
+* Wed Nov 09 2011 Tomas Lestach <tlestach@redhat.com> 1.6.75-1
+- precompile also apidoc jsp pages (tlestach@redhat.com)
+- 682845 - fix channel.software.listUserRepos API doc (tlestach@redhat.com)
+- 682845 - fix channel.software.getRepoSyncCronExpression API doc
+  (tlestach@redhat.com)
+- example with usage of xmlrpclib.DateTime is presented twice, remove one
+  (msuchy@redhat.com)
+
+* Mon Nov 07 2011 Tomas Lestach <tlestach@redhat.com> 1.6.74-1
+- 680489 - fix system.provisioning.snapshot.addTagToSnapshot API doc
+  (tlestach@redhat.com)
+- 680489 - fix system.deleteTagFromSnapshot API doc return type
+  (tlestach@redhat.com)
+- 680489 - fix system.tagLatestSnapshot API doc return type
+  (tlestach@redhat.com)
+- fix system.createSystemRecord API doc return type (tlestach@redhat.com)
+- delete redundant comments (tlestach@redhat.com)
+- 734799 - Correct API documentation (slukasik@redhat.com)
+
+* Sat Nov 05 2011 Simon Lukasik <slukasik@redhat.com> 1.6.73-1
+- 725050 - fix activationkey.[gs]etDetails apidoc (slukasik@redhat.com)
+
 * Fri Nov 04 2011 Tomas Lestach <tlestach@redhat.com> 1.6.72-1
 - 723528 - fix template attribute type in kickstart.profile API documentation
   (tlestach@redhat.com)

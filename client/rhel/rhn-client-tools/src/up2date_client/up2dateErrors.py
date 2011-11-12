@@ -28,12 +28,13 @@ class Error(YumBaseError):
     def __init__(self, errmsg):
         if not isinstance(errmsg, unicode):
             errmsg = unicode(errmsg, 'utf-8')
-        self.errmsg = self.premsg + errmsg
+        YumBaseError.__init__(self, errmsg)
+        self.value = self.premsg + errmsg
         self.log = up2dateLog.initLog()
 
     def __repr__(self):
-        self.log.log_me(self.errmsg)
-        return self.errmsg
+        self.log.log_me(self.value)
+        return self.value
     
 class RpmError(Error):
     """rpm itself raised an error condition"""
@@ -79,25 +80,25 @@ class RpmRemoveError(Error):
     Raise when we can't remove a package for some reason
     (failed deps, etc)"""
     def __init__(self, args):
+        Error.__init__(self, "")
         self.args = args
-        self.errmsg = ""
         for key in self.args.keys():
-            if not isinstance(errmsg, self.args[key]):
+            if not isinstance(self.args[key], unicode):
                 self.args[key] = unicode(self.args[key], 'utf-8')
-            self.errmsg = self.errmsg + "%s failed because of %s\n" % (
+            self.value = self.value + "%s failed because of %s\n" % (
                 key, self.args[key])
         self.data = self.args
     def __repr__(self):
-        return self.errmsg
+        return self.value
 
 class NoLogError(Error):
     def __init__(self, msg):
         if not isinstance(msg, unicode):
-            errmsg = unicode(msg, 'utf-8')
-        self.errmsg = self.premsg + msg
+            msg = unicode(msg, 'utf-8')
+        self.value = self.premsg + msg
 
     def __repr__(self):
-        return self.errmsg
+        return self.value
 
 class AbuseError(Error):
     pass
@@ -134,13 +135,13 @@ class RhnUuidUniquenessError(NoLogError, RhnServerException):
 
 class ServerCapabilityError(Error):
     def __init__(self, msg, errorlist=None):
-        self.errmsg = msg
+        Error.__init__(self, msg)
         self.errorlist = []
         if errorlist:
             self.errorlist=errorlist
 
     def __repr__(self):
-        return self.errmsg
+        return self.value
 
 class NoChannelsError(NoLogError):
     pass
@@ -207,10 +208,10 @@ class PasswordMaxLengthError(NoLogError):
 
 class InsuffMgmntEntsError(RhnServerException):
     def __init__(self, msg ):
-        self.errmsg = self.changeExplanation(msg)
+        RhnServerException.__init__(self, self.changeExplanation(msg))
 
     def __repr__(self):
-        return self.errmsg
+        return self.value
 
     def changeExplanation(self, msg):
         newExpln = _("""

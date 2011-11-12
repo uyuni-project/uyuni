@@ -236,6 +236,7 @@
   </servlet>
 
   <!-- add precompiled jsp servlets -->
+  <!-- add generated apidoc -->
 
   <!--
    =======================================

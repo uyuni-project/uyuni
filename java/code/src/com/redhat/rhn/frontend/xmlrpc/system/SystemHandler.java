@@ -4493,7 +4493,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("string", "ksLabel")
-     * @xmlrpc.returntype int - #return_int_success()
+     * @xmlrpc.returntype #return_int_success()
      */
     public int createSystemRecord(String sessionKey, Integer serverId, String ksLabel) {
         User loggedInUser = getLoggedInUser(sessionKey);
@@ -4841,21 +4841,6 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Creates a cobbler system record
-     * @param sessionKey session
-     * @param serverId the host system id
-     * @param ksLabel identifies the kickstart profile
-     *
-     * @return int - 1 on success, exception thrown otherwise.
-     *
-     * @xmlrpc.doc Creates a cobbler system record with the specified kickstart label
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("string", "ksLabel")
-     * @xmlrpc.returntype int - #return_int_success()
-     */
-
-    /**
      * Converts the given list of systems to use the flex entitlement.
      * @param sessionKey session
      * @param serverIds list of server ids whom
@@ -4986,7 +4971,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("string", "tagName")
-     * @xmlrpc.return int - #return_int_success()
+     * @xmlrpc.returntype #return_int_success()
      */
     public int tagLatestSnapshot(String sessionKey, Integer serverId, String tagName) {
         User loggedInUser = getLoggedInUser(sessionKey);
@@ -5018,7 +5003,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("string", "tagName")
-     * @xmlrpc.return int - #return_int_success()
+     * @xmlrpc.returntype #return_int_success()
      */
     public int deleteTagFromSnapshot(String sessionKey, Integer serverId, String tagName) {
         User loggedInUser = getLoggedInUser(sessionKey);
