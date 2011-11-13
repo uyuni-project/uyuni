@@ -1,5 +1,10 @@
+%if 0%{?suse_version}
+%define cgi_bin        /srv/www/cgi-bin
+%define cgi_mod_perl   /srv/www/cgi-mod-perl
+%else
 %define cgi_bin        %{_datadir}/nocpulse/cgi-bin
 %define cgi_mod_perl   %{_datadir}/nocpulse/cgi-mod-perl
+%endif
 Name:         SNMPAlerts
 Version:      0.5.6
 Release:      1%{?dist}

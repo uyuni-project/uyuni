@@ -1733,7 +1733,7 @@ B<NOCpulse::Probe::DataSource::Oracle>
 B<NOCpulse::Probe::Error>
 B<NOCpulse::Config>
 B<generate-config>
-B</usr/share/nocpulse/cgi-bin/alertmgr.cgi>
-B</usr/share/nocpulse/cgi-bin/redirmgr.cgi>
+B</srv/www/cgi-bin/alertmgr.cgi>
+B</srv/www/cgi-bin/redirmgr.cgi>
 
 =cut
