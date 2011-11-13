@@ -1,9 +1,6 @@
 Work for SUSE Manager
 =====================
 
-* Errors in apache configuration
-  - Some Alias do not work because default-server.conf specify a ScriptAlias
-
 * schema migration from susemanager 1.2.X to susemanager 1.6.X
 
 * susemanager requires oracle-xe-univ ; not needed in case of postgres
@@ -21,6 +18,7 @@ DONE
 
 * Errors in apache configuration
   - "Header" is used which requires mod_headers (add to sysconfig/apache)
+  - Some Alias do not work because default-server.conf specify a ScriptAlias
 
 * permissions on /etc/rhn/rhn.conf are "640 root.root"
   but should be "640 root.www". Find out were the error is
