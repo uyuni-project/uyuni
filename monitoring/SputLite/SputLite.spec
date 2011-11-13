@@ -100,7 +100,6 @@ fi
 %defattr(-,root,root,-)
 %attr(755, nocpulse, nocpulse) %dir %templatedir
 %{perl_vendorlib}/NOCpulse/*
-%dir %{_datadir}/nocpulse
 %dir %{cgi_bin}
 %cgi_bin/*
 %dir %{cgi_mod_perl}

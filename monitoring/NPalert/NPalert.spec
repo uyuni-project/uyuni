@@ -129,7 +129,14 @@ fi
 %files
 %defattr(-,root,root,-)
 %{_sysconfdir}/cron.d/notification
+%if 0%{?suse_version}
+%{httpd_prefix}/cgi-mod-perl
+%{httpd_prefix}/templates
+%{httpd_prefix}/htdocs/*
+%{httpd_prefix}/cgi-bin/*
+%else
 %{httpd_prefix}
+%endif
 %dir %attr(-, %notif_user,%notif_user) %install_prefix
 %dir %{perl_vendorlib}/NOCpulse/Notif
 %{perl_vendorlib}/NOCpulse/Notif/*
