@@ -91,7 +91,7 @@ sub process_file {
     my $mode =  (stat("$sourcedir/$relative_path"))[2] & 07770;
     chmod $mode, "$destdir/$relative_path";
     # chgrp apache
-    chown 0, scalar(getgrnam("apache")), "$destdir/$relative_path";
+    chown 0, scalar(getgrnam("www")), "$destdir/$relative_path";
 
     system '/sbin/restorecon', '-vv', "$destdir/$relative_path";
 
