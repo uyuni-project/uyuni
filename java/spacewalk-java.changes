@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 14 14:12:15 CET 2011 - ug@suse.de
+
+- use --force in the kickstart register snippet
+
+-------------------------------------------------------------------
 Fri Nov 11 16:00:56 CET 2011 - jrenner@suse.de
 
 - Fix rename Kickstart -> Autoinstallation (bnc#727517)
