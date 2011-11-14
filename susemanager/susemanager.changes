@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 14 16:53:08 CET 2011 - mantel@suse.de
+
+- explicitly set Oracle character set to UTF8
+
+-------------------------------------------------------------------
 Fri Nov 11 13:22:38 CET 2011 - iartarisi@suse.cz
 
 - fix bug with adding a new channel with the same repo url as an already
