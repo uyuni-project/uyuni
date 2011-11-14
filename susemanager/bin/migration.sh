@@ -168,7 +168,18 @@ setup_db_full() {
     cp /opt/apps/oracle/product/11gR2/dbhome_1/network/admin/tnsnames.ora /etc
     compute_oracle_mem
     echo "Create database user for SUSE Manager..."
-    echo "create smallfile tablespace data_tbs datafile '/opt/apps/oracle/oradata/susemanager/data_01.dbf' size 500M autoextend on blocksize 8192;
+    echo "select value from nls_database_parameters where parameter='NLS_CHARACTERSET';
+shutdown immediate;
+startup mount;
+alter system enable restricted session;
+alter system set job_queue_processes=0;
+alter database open;
+alter database character set UTF8;
+alter database character set internal_use utf8;
+shutdown immediate;
+startup;
+select value from nls_database_parameters where parameter='NLS_CHARACTERSET';
+create smallfile tablespace data_tbs datafile '/opt/apps/oracle/oradata/susemanager/data_01.dbf' size 500M autoextend on blocksize 8192;
 create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
 grant dba to $MANAGER_USER;
 alter system set processes = 400 scope=spfile;
@@ -187,7 +198,7 @@ quit
 # alter system set deferred_segment_creation=FALSE;
 #
 
-    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba @/tmp/dbsetup.sql;"
+    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus / as sysdba @/tmp/dbsetup.sql;"
     rm /tmp/dbsetup.sql
 }
 
