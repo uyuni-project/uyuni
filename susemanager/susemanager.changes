@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Nov 22 15:44:11 CET 2011 - mantel@suse.de
+
+- explicitly set Oracle character set to UTF8
+
+-------------------------------------------------------------------
+Fri Nov 22 15:32:38 CET 2011 - iartarisi@suse.cz
+
+- fix bug with adding a new channel with the same repo url as an already
+  existing channel, the new channel<->repo association wasn't being
+  inserted (bnc#729227)
+
+-------------------------------------------------------------------
 Tue Nov 22 15:30:19 CET 2011 - mantel@suse.de
 
 - use correct paths with new Oracle version
