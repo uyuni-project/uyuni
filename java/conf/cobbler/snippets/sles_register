@@ -28,9 +28,9 @@ redhat_management_key="$redhat_management_key"
 # if you don't want to register, set the 'dont_register' variable
 echo "export sm_registred=1" >> /var/adm/autoinstall/cache/SUSE_Manager_keys
 if [ \$key ]; then
-    rhnreg_ks --serverUrl=$endpoint --sslCACert=$mycert --activationkey=\$key,\$redhat_management_key
+    rhnreg_ks --serverUrl=$endpoint --sslCACert=$mycert --activationkey=\$key,\$redhat_management_key --force
 else
-     rhnreg_ks --serverUrl=$endpoint --sslCACert=$mycert --activationkey=\$redhat_management_key
+     rhnreg_ks --serverUrl=$endpoint --sslCACert=$mycert --activationkey=\$redhat_management_key --force
 fi
 #else
 # registration turned off
