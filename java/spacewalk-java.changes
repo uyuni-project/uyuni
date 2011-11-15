@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 15 13:55:46 CET 2011 - jrenner@suse.de
+
+- Remove markup from error message (bnc#730408)
+
+-------------------------------------------------------------------
 Mon Nov 14 14:12:15 CET 2011 - ug@suse.de
 
 - use --force in the kickstart register snippet
