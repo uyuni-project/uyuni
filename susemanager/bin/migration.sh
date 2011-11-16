@@ -185,6 +185,7 @@ alter system set processes = 400 scope=spfile;
 alter system set deferred_segment_creation=FALSE;
 alter system set sga_target=$sga scope=spfile;
 alter system set pga_aggregate_target=$pga scope=spfile;
+alter system set nls_territory='AMERICA' scope=spfile;
 BEGIN
 dbms_sqltune.set_auto_tuning_task_parameter( 'ACCEPT_SQL_PROFILES', 'TRUE');
 END;
