@@ -42,7 +42,7 @@ exit $status || 0;
 
 =head1 NAME
 
-db-control - utility for managing the RHN Satellite database
+db-control - utility for managing the SUSE Manager database
 
 =head1 SYNOPSIS
 
@@ -115,7 +115,7 @@ Shows the current status of the database, either "running" or "offline".
 
 =item B<stop>
 
-Stops the RHN Satellite database instance.  This is required to perform B<backup> or B<restore> actions.
+Stops the SUSE Manager database instance.  This is required to perform B<backup> or B<restore> actions.
 
 =item B<tablesizes>
 
