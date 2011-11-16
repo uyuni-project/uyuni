@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 16 16:03:39 CET 2011 - mantel@suse.de
+
+- force nls_territory=AMERICA
+
+-------------------------------------------------------------------
 Wed Nov 16 14:31:13 CET 2011 - mantel@suse.de
 
 - dobby_conf is only template; write dobby conf to rhn_conf
