@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Nov 16 14:30:51 CET 2011 - mantel@suse.de
+
+- dobby_conf is only template; write dobby conf to rhn_conf
+  during Oracle setup
+
+-------------------------------------------------------------------
 Wed Nov 16 11:43:46 CET 2011 - mantel@suse.de
 
 - rename RHN database to SUSE Manager database for dobby
