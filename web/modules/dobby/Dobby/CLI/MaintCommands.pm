@@ -28,13 +28,13 @@ sub register_dobby_commands {
   my $cli = shift;
 
   $cli->register_mode(-command => "extend",
-		      -description => "Increase the RHN Oracle Instance tablespace",
+		      -description => "Increase the SUSE Manager Oracle Instance tablespace",
 		      -handler => \&command_extend);
   $cli->register_mode(-command => "gather-stats",
-		      -description => "Gather statistics on RHN Oracle database objects",
+		      -description => "Gather statistics on SUSE Manager Oracle database objects",
 		      -handler => \&gather_stats);
   $cli->register_mode(-command => "shrink-segments",
-		      -description => "Shrink RHN Oracle database segments",
+		      -description => "Shrink SUSE Manager Oracle database segments",
 		      -handler => \&shrink_segments);
 }
 

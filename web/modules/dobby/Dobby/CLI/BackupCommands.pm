@@ -34,16 +34,16 @@ sub register_dobby_commands {
   my $cli = shift;
 
   $cli->register_mode(-command => "backup",
-		      -description => "Backup the RHN Oracle Instance",
+		      -description => "Backup the SUSE Manager Oracle Instance",
 		      -handler => \&command_backup);
   $cli->register_mode(-command => "restore",
-		      -description => "Restore the RHN Oracle Instance from backup",
+		      -description => "Restore the SUSE Manager Oracle Instance from backup",
 		      -handler => \&command_restore);
   $cli->register_mode(-command => "verify",
-		      -description => "Verify an RHN Oracle Instance backup",
+		      -description => "Verify an SUSE Manager Oracle Instance backup",
 		      -handler => \&command_restore);
   $cli->register_mode(-command => "examine",
-		      -description => "Display information about an RHN Oracle Instance backup",
+		      -description => "Display information about an SUSE Manager Oracle Instance backup",
 		      -handler => \&command_restore);
 }
 
