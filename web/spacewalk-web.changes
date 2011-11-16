@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Nov 16 14:35:50 CET 2011 - mantel@suse.de
+
+- "to_number" in new Oracle version cannot cope with a period and
+  errors. So we remove the period before trying to convert.
+
+-------------------------------------------------------------------
 Wed Nov 16 14:30:51 CET 2011 - mantel@suse.de
 
 - dobby_conf is only template; write dobby conf to rhn_conf

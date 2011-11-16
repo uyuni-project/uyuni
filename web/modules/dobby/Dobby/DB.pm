@@ -126,13 +126,13 @@ sub tablespace_datafiles {
   my $sth = $dbh->prepare(<<EOS);
 select file_name FILENAME, status STATUS, bytes BYTES,
        'DATAFILE' filetype,
-       to_number(regexp_substr(file_name, '[0-9]+\.')) FILENUMBER
+       to_number(regexp_substr(file_name, '[0-9]+')) FILENUMBER
   from dba_data_files
   where tablespace_name = :ts
 union
 select file_name FILENAME, status STATUS, bytes BYTES,
        'TEMPFILE' filetype,
-       to_number(regexp_substr(file_name, '[0-9]+\.')) FILENUMBER
+       to_number(regexp_substr(file_name, '[0-9]+')) FILENUMBER
   from dba_temp_files
   where tablespace_name = :ts
 order by filenumber nulls first
