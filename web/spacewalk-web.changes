@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 16 11:43:46 CET 2011 - mantel@suse.de
+
+- rename RHN database to SUSE Manager database for dobby
+
+-------------------------------------------------------------------
 Fri Nov 11 17:15:03 CET 2011 - jrenner@suse.de
 
 - Fix stacktraces produced by auditlog-keeper
