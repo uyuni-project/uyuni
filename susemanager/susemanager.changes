@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov 22 15:49:34 CET 2011 - mantel@suse.de
+
+- dobby_conf is only template; write dobby conf to rhn_conf
+  during Oracle setup
+
+-------------------------------------------------------------------
 Tue Nov 22 15:44:11 CET 2011 - mantel@suse.de
 
 - explicitly set Oracle character set to UTF8
