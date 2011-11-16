@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 16 10:00:08 CET 2011 - jrenner@suse.de
+
+- Fix ISE when deleting software channel (bnc#728894)
+
+-------------------------------------------------------------------
 Tue Nov 15 13:55:46 CET 2011 - jrenner@suse.de
 
 - Remove markup from error message (bnc#730408)
