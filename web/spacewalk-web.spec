@@ -264,7 +264,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/db-control
 %{_mandir}/man1/db-control.1.gz
 %{perl_vendorlib}/Dobby.pm
-%attr(640,root,%{apache_group}) %config(noreplace) %{_prefix}/share/rhn/config-defaults/rhn_dobby.conf
+%attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_dobby.conf
 %attr(0755,root,root) %{_sysconfdir}/cron.daily/check-oracle-space-usage.sh
 %{perl_vendorlib}/Dobby/
 %dir %{_prefix}/share/rhn
