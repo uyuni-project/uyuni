@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Tue Nov 22 15:45:50 CET 2011 - mantel@suse.de
+
+- rename RHN database to SUSE Manager database for dobby
+
+-------------------------------------------------------------------
+Fri Nov 11 17:15:03 CET 2011 - jrenner@suse.de
+
+- Fix stacktraces produced by auditlog-keeper
+
+-------------------------------------------------------------------
+Fri Nov 11 16:01:49 CET 2011 - jrenner@suse.de
+
+- Fix rename Kickstart -> Autoinstallation (bnc#727517)
+
+-------------------------------------------------------------------
+Thu Nov 10 16:22:58 CET 2011 - jrenner@suse.de
+
+- Fix internal server errors by returning 0 instead of dying 
+
+-------------------------------------------------------------------
 Tue Nov 22 15:20:25 CET 2011 - mantel@suse.de
 
 - tag rhn_dobby.conf as "noreplace"
