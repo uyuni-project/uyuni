@@ -595,7 +595,7 @@ class RepoSync:
         if saveurl.password:
             saveurl.password = "*******"
         num_passed = len(packages)
-        self.print_msg("Repo URL: %s" % saveurl)
+        self.print_msg("Repo URL: %s" % saveurl.getURL())
         self.print_msg("Packages in repo:             %5d" % plug.num_packages)
         if plug.num_excluded:
             self.print_msg("Packages passed filter rules: %5d" % num_passed)
