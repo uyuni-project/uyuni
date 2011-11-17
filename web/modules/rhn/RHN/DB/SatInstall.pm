@@ -89,7 +89,7 @@ sub valid_cert_countries {
   my $dbh = RHN::DB->connect;
   my $sth = $dbh->prepare(<<EOQ);
   SELECT VC.code AS VALUE,
-         nvl(TL.short_name_tl, VC.short_name) AS LABEL
+         COALESCE(TL.short_name_tl, VC.short_name) AS LABEL
     FROM valid_countries VC,
          valid_countries_tl TL
    WHERE TL.lang (+) = 'en'
