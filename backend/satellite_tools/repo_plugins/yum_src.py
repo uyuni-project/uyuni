@@ -141,7 +141,7 @@ class ContentSource:
         sack = self.repo.getPackageSack()
 
         try:
-            sack.populate(repo, 'metadata', None, 0)
+            sack.populate(self.repo, 'metadata', None, 0)
         except Errors.RepoError,e :
             if "No more mirrors" in str(e):
                 reqFile = re.search('failure:\s+(.+)\s+from',
