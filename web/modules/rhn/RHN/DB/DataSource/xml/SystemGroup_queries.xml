@@ -147,7 +147,7 @@ ORDER BY UPPER(SG.name)
 <mode name="user_permissions">
   <query params="formvar_uid, org_id">
 SELECT SG.id, SG.name AS GROUP_NAME,
-       NVL((SELECT MAX(1)
+       COALESCE((SELECT MAX(1)
               FROM rhnUserServerGroupPerms USGP 
              WHERE USGP.server_group_id = SG.id 
                AND USGP.user_id = :formvar_uid), 0) AS HAS_PERMISSION

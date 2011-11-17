@@ -40,7 +40,7 @@ SELECT DISTINCT S.id,
    AND USP.server_id = ST.element
    AND EXISTS (SELECT 1 FROM rhnServerEntitlementView SEV WHERE SEV.server_id = ST.element AND SEV.label = 'provisioning_entitled')
    AND USP.server_id = S.id
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -66,7 +66,7 @@ SELECT DISTINCT S.id,
    AND EXISTS (SELECT 1 FROM rhnServerChannelArchCompat 
                WHERE server_arch_id = S.server_arch_id
                AND C.channel_arch_id = channel_arch_id) 
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -98,7 +98,7 @@ SELECT DISTINCT S.id,
    AND SS.id = STag.snapshot_id
    AND STag.tag_id = :tag_id
    AND USP.server_id = S.id
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
 </mode>
@@ -153,7 +153,7 @@ SELECT S.id,
    AND USP.server_id = SCDV.server_id
    AND SCDV.key_id = :cikid
    AND USP.server_id = S.id
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
 </mode>
@@ -300,7 +300,7 @@ SELECT S.id, S.name
    AND S.id = SC.server_id
    AND SC.channel_id = :cid
    AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -316,7 +316,7 @@ SELECT S.id, S.name
    AND SC.channel_id = :cid
    AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
    AND EXISTS (SELECT 1 FROM rhnSet WHERE user_id = :user_id AND label = :set_label AND element = S.id)
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
 </mode>
@@ -331,7 +331,7 @@ SELECT SGM.server_id AS ID, S.name AS NAME
    AND EXISTS (SELECT 1 FROM rhnServerFeaturesView SFV
                WHERE SFV.server_id = S.id
                  AND SFV.label = 'ftr_system_grouping')
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -355,7 +355,7 @@ SELECT	S.id
         &lt;
         (SELECT EVR FROM rhnPackageEVR PE WHERE PE.id = P.evr_id)
    AND    EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
-ORDER BY  UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -391,7 +391,7 @@ SELECT	S.ID AS ID, S.name AS SERVER_NAME
    AND  ST.label = :set_label
    AND  ST.element = S.id
    AND  ST.user_id = :user_id
-ORDER BY  UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
 </mode>
@@ -409,7 +409,7 @@ SELECT ES.id
    AND SC.channel_id = C.parent_channel
    AND NOT EXISTS (SELECT 1 FROM rhnServerChannel WHERE server_id = ES.id AND channel_id = C.id)
    AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = ES.id)
-ORDER BY UPPER(NVL(ES.NAME, '(none)')), ES.ID
+ORDER BY UPPER(COALESCE(ES.NAME, '(none)')), ES.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -431,7 +431,7 @@ SELECT ES.id
    AND SC.channel_id = C.parent_channel
    AND NOT EXISTS (SELECT 1 FROM rhnServerChannel WHERE server_id = ES.id AND channel_id = C.id)
    AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = ES.id)
-ORDER BY UPPER(NVL(ES.NAME, '(none)')), ES.ID
+ORDER BY UPPER(COALESCE(ES.NAME, '(none)')), ES.ID
   </query>
   <elaborator name="system_overview" />
 </mode>
@@ -448,7 +448,7 @@ ORDER BY UPPER(NVL(ES.NAME, '(none)')), ES.ID
     FROM  rhnServer S, rhnUserServerPerms USP
    WHERE  USP.user_id = :formvar_uid
      AND  S.id = USP.server_id
-ORDER BY  UPPER(NVL(S.name, '(none)')), S.id
+ORDER BY  UPPER(COALESCE(S.name, '(none)')), S.id
 </query>
 
 
@@ -457,7 +457,7 @@ ORDER BY  UPPER(NVL(S.name, '(none)')), S.id
   <elaborator params="some_user_id" multiple="t">
 select  a.server_id             id,
         s.name                  server_name,
-        NVL(sg.name,'Org Admin access')     group_name
+        COALESCE(sg.name,'Org Admin access')     group_name
 from    rhnServer               s,
         (
         select  usg.user_id, sgm.server_id, sgm.server_group_id
@@ -505,7 +505,7 @@ where a.user_id = :some_user_id
      AND  S.id = USP.server_id
      AND  S.id = SNEC.server_id
   ) X
-ORDER BY  UPPER(NVL(X.name, '(none)')), X.id
+ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
   </query>
   <elaborator params="eid" multiple="t">
 SELECT SA.server_id as id, 
@@ -542,7 +542,7 @@ SELECT SA.server_id as id,
     AND EXISTS (SELECT 1 FROM rhnServerFeaturesView SFV
                  WHERE SFV.server_id = S.id
                    AND SFV.label = 'ftr_system_grouping')
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -561,7 +561,7 @@ ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
     AND ST.user_id = :user_id
     AND ST.label = 'system_list'
     AND ST.element = S.id
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -607,7 +607,7 @@ SELECT    DISTINCT S.ID AS ID,
    AND  SC.channel_id = C.id
    AND  C.id = CP.channel_id
    AND  CP.package_id = P.id
-ORDER BY  UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </elaborator>
 </mode>
 
@@ -789,7 +789,7 @@ SELECT  distinct(STR.server_id) ID
 SELECT    DISTINCT S.ID, S.NAME
   FROM    rhnServer S, rhnUserServerPerms USP, rhnServerNeededPackageCache SNPC
  WHERE    S.ORG_ID = :org_id AND S.ID = USP.server_id AND USP.user_id = :user_id AND S.id = SNPC.server_id
-ORDER BY  UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -802,7 +802,7 @@ SELECT    S.ID, S.NAME
  WHERE    S.ORG_ID = :org_id
    AND    EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
    AND    NOT EXISTS (SELECT 1 FROM rhnEntitledServers ES where ES.id = S.id)
-ORDER BY  UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -819,7 +819,7 @@ SELECT S.ID, S.NAME
                     WHERE SGM.server_id = S.id
                       AND SG.id = SGM.server_group_id
                       AND SG.group_type IS NULL)
-ORDER BY  UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -834,7 +834,7 @@ SELECT S.id, S.NAME
    AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
    AND SI.server_id = S.id
    AND SI.checkin &lt; current_timestamp - :checkin_threshold
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -896,7 +896,7 @@ SELECT distinct S.id, S.name
    AND CFM.channel_family_id = :cfam_id
    AND    EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
 ) X
-ORDER BY UPPER(NVL(X.NAME, '(none)')), X.ID
+ORDER BY UPPER(COALESCE(X.NAME, '(none)')), X.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -914,7 +914,7 @@ SELECT distinct S.id, S.name
    AND SC.is_fve = 'N'
    AND CFM.channel_family_id = :cfam_id
    AND    EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -932,7 +932,7 @@ SELECT distinct S.id, S.name
    AND SC.is_fve = 'Y'
    AND CFM.channel_family_id = :cfam_id
    AND    EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -952,7 +952,7 @@ SELECT S.id, S.name
    AND CFM.channel_family_id = :cfam_id
    AND NOT EXISTS (SELECT 1 FROM rhnServerChannel WHERE server_id = S.id AND channel_id = CFM.channel_id)
    AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -981,7 +981,7 @@ ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
           )
      AND  SA.status = AStat.id
      AND  SA.action_id = A.id
-ORDER BY  UPPER(NVL(S.name, '(none)')), S.ID
+ORDER BY  UPPER(COALESCE(S.name, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
 </mode>
@@ -1001,7 +1001,7 @@ ORDER BY  UPPER(NVL(S.name, '(none)')), S.ID
            WHERE  USP.user_id = :user_id 
              AND  USP.server_id = S.id
           )
-ORDER BY  UPPER(NVL(S.name, '(none)')), S.ID
+ORDER BY  UPPER(COALESCE(S.name, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
 </mode>
@@ -1021,7 +1021,7 @@ ORDER BY  UPPER(NVL(S.name, '(none)')), S.ID
            WHERE  USP.user_id = :user_id 
              AND  USP.server_id = S.id
           )
-ORDER BY  UPPER(NVL(S.name, '(none)')), S.ID
+ORDER BY  UPPER(COALESCE(S.name, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
 </mode>
@@ -1031,7 +1031,7 @@ ORDER BY  UPPER(NVL(S.name, '(none)')), S.ID
   SELECT  S.id, S.name
     FROM  rhnServer S
    WHERE  S.org_id = :support_org_id
-ORDER BY  UPPER(NVL(S.name, '(none)')), S.id
+ORDER BY  UPPER(COALESCE(S.name, '(none)')), S.id
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -1076,7 +1076,7 @@ select * from (
    WHERE  USP.user_id = :user_id
      AND  S.id = USP.server_id
      AND  Sinfo.server_id = S.id ) X
-ORDER BY  UPPER(NVL(X.name, '(none)')), X.id
+ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
 </query>
 
 
@@ -1094,7 +1094,7 @@ ORDER BY  UPPER(NVL(X.name, '(none)')), X.id
           WHERE  PS.probe_id = CP.probe_id
          GROUP BY CP.host_id ) MONITORING_STATUS ON OV.server_id = MONITORING_STATUS.host_id
    WHERE  server_id IN (%s)
-ORDER BY  UPPER(NVL(SERVER_NAME, '(none)')), SERVER_ID
+ORDER BY  UPPER(COALESCE(SERVER_NAME, '(none)')), SERVER_ID
 </query>
 
 <query name="entitlements" params="" multiple="t">
@@ -1116,7 +1116,7 @@ ORDER BY CASE SEV.is_base WHEN 'Y' THEN 1 WHEN 'N' THEN 2 END, SEV.label
      AND  ST.label = :set_label
      AND  ST.element = S.id
   ) X
-ORDER BY  UPPER(NVL(X.name, '(none)')), X.id
+ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
 </query>
 
 <query name="system_package_data_from_set" params="user_id, package_set_label">
@@ -1161,7 +1161,7 @@ SELECT    DISTINCT S.ID AS ID,
    AND  SC.channel_id = C.id
    AND  C.id = CP.channel_id
    AND  CP.package_id = P.id
-ORDER BY  UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
 </query>
 
 <mode name="target_systems_for_namespace">
@@ -1189,7 +1189,7 @@ SELECT SCC.server_id AS ID, SCC.position, S.name
  WHERE SCC.config_channel_id = :ccid
    AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = SCC.server_id)
    AND S.id = SCC.server_id
-ORDER BY UPPER(NVL(S.NAME, '(none)')), SCC.server_id
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), SCC.server_id
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
@@ -1199,7 +1199,7 @@ ORDER BY UPPER(NVL(S.NAME, '(none)')), SCC.server_id
   <query name="available_to_user" />
   <elaborator>
 SELECT S.id, 
-       NVL((SELECT SCC.config_channel_id
+       COALESCE((SELECT SCC.config_channel_id
               FROM rhnConfigChannelType CCT, rhnConfigChannel CC, rhnServerConfigChannel SCC
              WHERE SCC.server_id = S.id
                AND SCC.config_channel_id = CC.id
@@ -1212,13 +1212,13 @@ SELECT S.id,
            AND CC.confchan_type_id = CCT.id
            AND CF.config_channel_id = CC.id
            AND CCT.label = 'local_override') LOCAL_FILE_COUNT,
-       NVL((SELECT COUNT(SCC.config_channel_id)
+       COALESCE((SELECT COUNT(SCC.config_channel_id)
               FROM rhnConfigChannelType CCT, rhnConfigChannel CC, rhnServerConfigChannel SCC
              WHERE SCC.server_id = S.id
                AND SCC.config_channel_id = CC.id
                AND CC.confchan_type_id = CCT.id
                AND CCT.label = 'normal'), 0) CONF_CHANNEL_COUNT,
-       NVL((SELECT 1
+       COALESCE((SELECT 1
               FROM rhnServerFeaturesView SFV
              WHERE SFV.server_id = S.id
                AND SFV.label = 'ftr_config'), 0) AS SELECTABLE
@@ -1269,7 +1269,7 @@ SELECT S.id,
   SELECT 
 DISTINCT S.id,
          S.name AS SERVER_NAME,
-         NVL((SELECT 1
+         COALESCE((SELECT 1
                 FROM rhnServerFeaturesView SFV
                WHERE SFV.server_id = S.id
                  AND SFV.label = 'ftr_system_grouping'), 0) AS SELECTABLE
@@ -1371,7 +1371,7 @@ SELECT S.ID, S.NAME
                  FROM rhnUserServerPerms USP
                 WHERE USP.user_id = :user_id
                   AND USP.server_id = S.id)
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator params="pid">
 SELECT SA.server_id AS id,
@@ -1405,12 +1405,12 @@ SELECT S.ID, S.NAME
    AND SC.server_id = S.id
    AND SC.channel_id = CP.channel_id
    AND CP.package_id = :pid
-ORDER BY UPPER(NVL(S.NAME, '(none)')), S.ID
+ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator params="pid">
 SELECT SA.server_id AS id,
-       NVL(TO_CHAR(SA.completion_time, 'YYYY-MM-DD'),
-           NVL(TO_CHAR(SA.pickup_time, 'YYYY-MM-DD'),
+       COALESCE(TO_CHAR(SA.completion_time, 'YYYY-MM-DD'),
+           COALESCE(TO_CHAR(SA.pickup_time, 'YYYY-MM-DD'),
                TO_CHAR(SA.created, 'YYYY-MM-DD'))) AS TIMESTAMP,
        ACS.name AS ACTION_STATUS
   FROM rhnActionStatus ACS,

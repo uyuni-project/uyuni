@@ -656,7 +656,7 @@ SELECT	S.id
    AND  CP.package_id = P.id
    AND  PA.id = P.package_arch_id
    AND  AT.id = PA.arch_type_id
-   AND  (   (NVL((SELECT MAX(PE.evr)
+   AND  (   (COALESCE((SELECT MAX(PE.evr)
                     FROM rhnServerPackage SP, rhnPackageEvr PE
                    WHERE SP.name_id = P.name_id
                      AND SP.server_id = S.id

@@ -8,7 +8,7 @@
   <query name="default_search_query" />
   <elaborator params="" multiple="t">
   SELECT PN.id ID,
-         NVL(P.summary, ' ') MATCHING_FIELD
+         COALESCE(P.summary, ' ') MATCHING_FIELD
     FROM rhnPackageName PN,
          rhnPackage P
    WHERE PN.id IN (%s)
@@ -20,7 +20,7 @@
   <query name="default_search_query" />
   <elaborator params="" multiple="t">
   SELECT PN.id ID,
-         NVL(P.summary, ' ') MATCHING_FIELD
+         COALESCE(P.summary, ' ') MATCHING_FIELD
     FROM rhnPackageName PN,
          rhnPackage P
    WHERE PN.id IN (%s)

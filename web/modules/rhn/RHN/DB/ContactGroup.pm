@@ -320,7 +320,7 @@ INSERT INTO rhn_contact_group_members
    member_contact_group_id, last_update_user, last_update_date)
 VALUES
   (:group_id, 
-   (SELECT NVL(MAX(order_number)+1,0) FROM contact_group_members WHERE contact_group_id = :group_id),
+   (SELECT COALESCE(MAX(order_number)+1,0) FROM contact_group_members WHERE contact_group_id = :group_id),
    :method_id, NULL, :user_id, SYSDATE)
 EOQ
 

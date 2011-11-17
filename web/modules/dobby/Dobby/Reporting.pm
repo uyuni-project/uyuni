@@ -26,8 +26,8 @@ sub tablespace_overview {
 
   my $query = <<EOQ;
 SELECT DT.tablespace_name as NAME, DT.extent_management, DT.contents,
-       case DT.contents when 'TEMPORARY' then DF.total_bytes-NVL(DTF.used_bytes,0) else NVL(DFS.free_bytes,0) end as free_bytes,
-       case DT.contents when 'TEMPORARY' then NVL(DTF.used_bytes,0) else DF.total_bytes-NVL(DFS.free_bytes,0) end as used_bytes,
+       case DT.contents when 'TEMPORARY' then DF.total_bytes-NVL(DTF.used_bytes,0) else COALESCE(DFS.free_bytes,0) end as free_bytes,
+       case DT.contents when 'TEMPORARY' then COALESCE(DTF.used_bytes,0) else DF.total_bytes-NVL(DFS.free_bytes,0) end as used_bytes,
        DF.total_bytes
   FROM dba_tablespaces DT
   JOIN (SELECT tablespace_name, sum(bytes) as total_bytes
