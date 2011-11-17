@@ -207,12 +207,12 @@ sub commit {
     $query = get_table->update_query(get_table->methods_to_columns(@modified));
     $query .= get_table_alias . ".$pk_upper = ?";
     # adjust the query to update last_update_date
-    $query =~ s/SET (.*) WHERE/SET $1, $table_alias\.last_update_date = SYSDATE WHERE/;
+    $query =~ s/SET (.*) WHERE/SET $1, $table_alias\.last_update_date = current_timestamp WHERE/;
   }
   else {
     $query = get_table->insert_query(get_table->methods_to_columns(@modified));
     # adjust the query to update last_update_date
-    $query =~ s/\((.*)\) VALUES \((.*)\)/\($1, last_update_date\) VALUES \($2, SYSDATE\)/;
+    $query =~ s/\((.*)\) VALUES \((.*)\)/\($1, last_update_date\) VALUES \($2, current_timestamp\)/;
   }
   
   my $sth = $dbh->prepare($query);
@@ -321,7 +321,7 @@ INSERT INTO rhn_contact_group_members
 VALUES
   (:group_id, 
    (SELECT COALESCE(MAX(order_number)+1,0) FROM contact_group_members WHERE contact_group_id = :group_id),
-   :method_id, NULL, :user_id, SYSDATE)
+   :method_id, NULL, :user_id, current_timestamp)
 EOQ
 
   $sth->execute_h(group_id => $self->recid, method_id => $method_id, user_id => $user_id);

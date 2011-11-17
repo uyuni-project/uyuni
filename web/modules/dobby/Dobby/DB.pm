@@ -187,7 +187,7 @@ sub segadv_runtask {
 
   my $query = <<EOQ;
 DECLARE
-  taskname VARCHAR2(100) := 'SAT-SEGADV-' || to_char(sysdate, 'YYYYMMDDHH24MISS');
+  taskname VARCHAR2(100) := 'SAT-SEGADV-' || to_char(current_timestamp, 'YYYYMMDDHH24MISS');
   tbsname VARCHAR2(30);
   task_id NUMBER;
   oid NUMBER;
