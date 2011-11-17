@@ -29,7 +29,7 @@ from server_suse import SuseData
 from rhn.UserDictCase import UserDictCase
 from spacewalk.server import rhnSQL
 
-class ServerWrapper(Packages, Hardware, History, SolarisPatches):
+class ServerWrapper(Packages, Hardware, History, SolarisPatches, SuseData):
     """ This is a middle class that ties all the subclasses together, plus it
         provides a cleaner way to keep all the wrapper functions in one place.
         The main Server class is based on this one and it looks a little bit
