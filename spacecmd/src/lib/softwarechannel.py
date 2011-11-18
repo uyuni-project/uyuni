@@ -54,23 +54,45 @@ def do_softwarechannel_getentitlements(self, args):
 
 def help_softwarechannel_list(self):
     print 'softwarechannel_list: List all available software channels'
-    print 'usage: softwarechannel_list'
+    print '''usage: softwarechannel_list [options]'
+options:
+  -v verbose (display label and summary)
+  -t tree view (pretty-print child-channels)
+'''
 
 def do_softwarechannel_list(self, args, doreturn = False):
-    (args, options) = parse_arguments(args)
+    options = [ Option('-v', '--verbose', action='store_true'),
+                Option('-t', '--tree', action='store_true') ]
+    (args, options) = parse_arguments(args, options)
 
-    channels = self.client.channel.listAllChannels(self.session)
-    channels = [c.get('label') for c in channels]
+    if (options.tree):
+        labels = self.list_base_channels()
+    else:
+        channels = self.client.channel.listAllChannels(self.session)
+        labels = [c.get('label') for c in channels]
 
     # filter the list if arguments were passed
     if args:
-        channels = filter_results(channels, args, True)
+        labels = filter_results(labels, args, True)
 
     if doreturn:
-        return channels
+        return labels
     else:
-        if len(channels):
-            print '\n'.join(sorted(channels))
+        if len(labels):
+            if (options.verbose):
+                for l in sorted(labels):
+                    details = self.client.channel.software.getDetails(self.session, l)
+                    print "%s : %s" % (l,details['summary'])
+                    if (options.tree):
+                        for c in self.list_child_channels(parent=l):
+                            cdetails = self.client.channel.software.getDetails(self.session, c)
+                            print " |-%s : %s" % (c,cdetails['summary'])
+            else:
+                for l in sorted(labels):
+                    print "%s" % l
+                    if (options.tree):
+                        for c in self.list_child_channels(parent=l):
+                            print " |-%s" % c
 
 ####################
 
@@ -867,6 +889,73 @@ def do_softwarechannel_adderrata(self, args):
 
     # regenerate the errata cache since we just cloned errata
     self.generate_errata_cache(True)
+
+####################
+
+def help_softwarechannel_getorgaccess(self):
+    print 'Get the org-access for the software channel'
+    print 'usage : softwarechannel_getorgaccess : get org access for all channels'
+    print 'usage : softwarechannel_getorgaccess <channel_label(s)> : get org access for specific channel(s)'
+
+def complete_softwarechannel_getorgaccess(self, text, line, beg, end):
+    return tab_completer(self.do_softwarechannel_list('', True), text)
+
+def do_softwarechannel_getorgaccess(self, args):
+
+    (args, options) = parse_arguments(args)
+
+    # If no args are passed, we dump the org access for all channels
+    if not len(args):
+        channels = self.do_softwarechannel_list('', True)
+    else:
+        # allow globbing of software channel names
+        channels = filter_results(self.do_softwarechannel_list('', True), args)
+
+    for channel in channels:
+        logging.debug("Getting org-access for channel %s" % channel)
+        sharing = self.client.channel.access.getOrgSharing(self.session, channel)
+        print "%s : %s" % (channel, sharing)
+
+####################
+
+def help_softwarechannel_setorgaccess(self):
+    print 'Set the org-access for the software channel'
+    print '''usage : softwarechannel_setorgaccess <channel_label> [options]
+-d,--disable : disable org access (private, no org sharing)
+-e,--enable : enable org access (public access to all trusted orgs)'''
+
+def complete_softwarechannel_setorgaccess(self, text, line, beg, end):
+    return tab_completer(self.do_softwarechannel_list('', True), text)
+
+def do_softwarechannel_setorgaccess(self, args):
+    if not len(args):
+        self.help_softwarechannel_setorgaccess()
+        return
+    options = [ Option('-e', '--enable', action='store_true'),
+                Option('-d', '--disable', action='store_true') ]
+    (args, options) = parse_arguments(args, options)
+
+    if not len(args):
+        self.help_softwarechannel_setorgaccess()
+        return
+
+    # allow globbing of software channel names
+    channels = filter_results(self.do_softwarechannel_list('', True), args)
+
+    add_separator = False
+
+    for channel in channels:
+        # If they just specify a channel and --enable/--disable
+        # this implies public/private access
+        if (options.enable):
+            logging.info("Making org sharing public for channel : %s " % channel)
+            self.client.channel.access.setOrgSharing(self.session, channel, 'public')
+        elif (options.disable):
+            logging.info("Making org sharing private for channel : %s " % channel)
+            self.client.channel.access.setOrgSharing(self.session, channel, 'private')
+        else:
+            self.help_softwarechannel_setorgaccess()
+            return
 
 ####################
 

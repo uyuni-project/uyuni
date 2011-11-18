@@ -693,7 +693,7 @@ class VirtualizationEventHandler:
      
         update_sql = """
             UPDATE rhnVirtualInstanceInfo rvii
-            SET rvii.state=(
+            SET state=(
                 SELECT rvis.id 
                 FROM rhnVirtualInstanceState rvis
                 WHERE rvis.label=:state
