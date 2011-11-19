@@ -60,9 +60,18 @@ ORDER BY UPPER(SC.description)
 - if date executed is not null then an exit status of '0' is OK, '1' is warning, otherwise "error"
 -->
 <query name="config_push_status" params="org_id">
-SELECT distinct decode(
-       CQE.date_executed, null, decode(sign(SYSDATE - CQI.expiration_date), -1, 'PENDING', 'EXPIRED'),
-       decode(exit_status, 0, 'OK', 1, 'WARNING', 'ERROR')) AS CONFIG_STATUS,
+SELECT distinct (CASE CQE.date_executed 
+                 WHEN null 
+                 THEN CASE 
+                      WHEN (current_timestamp - cqi.expiration_date) &lt; INTERVAL '0' second THEN 'PENDING' 
+                      ELSE 'EXPIRED'
+                      END
+                 ELSE CASE exit_status 
+                      WHEN 0 THEN 'OK'
+                      WHEN 1 THEN 'WARNING'
+                      ELSE 'ERROR'
+                      END
+                 END) AS CONFIG_STATUS,
        SC.recid AS id,
        CQI.last_update_user,
        TO_CHAR(CQI.date_submitted, 'YYYY-MM-DD HH24:MI:SS') AS DATE_SUBMITTED,
@@ -80,7 +89,7 @@ SELECT distinct decode(
       FROM rhn_command_queue_execs
       WHERE netsaint_id = CQE.netsaint_id
       AND command_id = 1)
-  AND SC.deployed = 1
+  AND SC.deployed = '1'
 </query>
 
 
@@ -99,7 +108,7 @@ SELECT 1 AS PUSH_NEEDED,
        WHERE P.recid = CP.probe_id
        AND CP.sat_cluster_id = SC.recid)
   ) last_update,
-  (SELECT COALESCE(MAX(CQE.date_executed), to_date(1, 'J')) push_date
+  (SELECT COALESCE(MAX(CQE.date_executed), to_date('1', 'J')) push_date
       FROM rhn_command_queue_execs CQE,
            rhn_command_queue_instances CQI,
            rhn_sat_cluster SC
@@ -121,9 +130,18 @@ SELECT 1 AS PUSH_NEEDED,
 
 
 <query name="config_push_status_all" params="">
-SELECT distinct decode(
-       CQE.date_executed, null, decode(sign(SYSDATE - CQI.expiration_date), -1, 'PENDING', 'EXPIRED'),
-       decode(exit_status, 0, 'OK', 1, 'WARNING', 'ERROR')) AS CONFIG_STATUS,
+SELECT distinct (CASE CQE.date_executed 
+                 WHEN null 
+                 THEN CASE 
+                      WHEN (current_timestamp - cqi.expiration_date) &lt; INTERVAL '0' second THEN 'PENDING' 
+                      ELSE 'EXPIRED'
+                      END
+                 ELSE CASE exit_status 
+                      WHEN 0 THEN 'OK'
+                      WHEN 1 THEN 'WARNING'
+                      ELSE 'ERROR'
+                      END
+                 END) AS CONFIG_STATUS,
        SC.recid AS id,
        CQI.last_update_user,
        TO_CHAR(CQI.date_submitted, 'YYYY-MM-DD HH24:MI:SS') AS DATE_SUBMITTED,
@@ -140,7 +158,7 @@ SELECT distinct decode(
       FROM rhn_command_queue_execs
       WHERE netsaint_id = CQE.netsaint_id
       AND command_id = 1)
-  AND SC.deployed = 1
+  AND SC.deployed = '1'
 </query>
 
 
@@ -158,7 +176,7 @@ SELECT 1 AS PUSH_NEEDED,
        WHERE P.recid = CP.probe_id
        AND CP.sat_cluster_id = SC.recid)
   ) last_update,
-  (SELECT COALESCE(MAX(CQE.date_executed), to_date(1, 'J')) push_date
+  (SELECT COALESCE(MAX(CQE.date_executed), to_date('1', 'J')) push_date
       FROM rhn_command_queue_execs CQE,
            rhn_command_queue_instances CQI,
            rhn_sat_cluster SC
