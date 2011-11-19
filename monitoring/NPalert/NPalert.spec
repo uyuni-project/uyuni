@@ -2,8 +2,10 @@
 %define log_dir            %{_var}/log/notification
 %if 0%{?suse_version}
 %define httpd_prefix       /srv/www
+%define apache_user        wwwrun
 %else
 %define httpd_prefix       %{_datadir}/nocpulse
+%define apache_user        apache
 %endif
 %define notif_user         nocpulse
 %define log_rotate_prefix  %{_sysconfdir}/logrotate.d/
