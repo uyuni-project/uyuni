@@ -24,9 +24,9 @@
 create or replace function
 rhn_prepare_install
 (
-    username            in rhn_command_queue_instances.last_update_user%type,
-    command_instance_id in out rhn_command_queue_instances.recid%type,
-    install_command     in rhn_command_queue_instances.command_id%type
+    username            rhn_command_queue_instances.last_update_user%type,
+OUT command_instance_id rhn_command_queue_instances.recid%type,
+    install_command     rhn_command_queue_instances.command_id%type
 )
 as $$
 declare
