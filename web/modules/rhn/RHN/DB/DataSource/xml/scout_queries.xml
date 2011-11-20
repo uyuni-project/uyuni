@@ -60,13 +60,13 @@ ORDER BY UPPER(SC.description)
 - if date executed is not null then an exit status of '0' is OK, '1' is warning, otherwise "error"
 -->
 <query name="config_push_status" params="org_id">
-SELECT distinct (CASE CQE.date_executed 
-                 WHEN null 
-                 THEN CASE 
-                      WHEN (current_timestamp - cqi.expiration_date) &lt; INTERVAL '0' second THEN 'PENDING' 
+SELECT distinct (CASE
+                 WHEN CQE.date_executed is null
+                 THEN CASE
+                      WHEN (current_timestamp - cqi.expiration_date) &lt; INTERVAL '0' second THEN 'PENDING'
                       ELSE 'EXPIRED'
                       END
-                 ELSE CASE exit_status 
+                 ELSE CASE exit_status
                       WHEN 0 THEN 'OK'
                       WHEN 1 THEN 'WARNING'
                       ELSE 'ERROR'
@@ -130,13 +130,13 @@ SELECT 1 AS PUSH_NEEDED,
 
 
 <query name="config_push_status_all" params="">
-SELECT distinct (CASE CQE.date_executed 
-                 WHEN null 
-                 THEN CASE 
-                      WHEN (current_timestamp - cqi.expiration_date) &lt; INTERVAL '0' second THEN 'PENDING' 
+SELECT distinct (CASE
+                 WHEN CQE.date_executed is null
+                 THEN CASE
+                      WHEN (current_timestamp - cqi.expiration_date) &lt; INTERVAL '0' second THEN 'PENDING'
                       ELSE 'EXPIRED'
                       END
-                 ELSE CASE exit_status 
+                 ELSE CASE exit_status
                       WHEN 0 THEN 'OK'
                       WHEN 1 THEN 'WARNING'
                       ELSE 'ERROR'
