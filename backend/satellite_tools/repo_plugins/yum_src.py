@@ -263,6 +263,8 @@ class ContentSource:
                                                   (checksum_type, checksum), {}))
                 notices.append(etree.parse(filename).getroot())
             return ('patches', notices)
+        else:
+            return ('', [])
 
     def patches_checksum_func(self, callback_obj, checksum_type, checksum):
         """Simple function to checksum patches for urlgrabber
