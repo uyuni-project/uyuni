@@ -21,6 +21,8 @@ Requires:       koan >= 1.4.3
 %if 0%{?suse_version}
 # provide directories for filelist check in OBS
 BuildRequires: rhn-client-tools
+%endif
+%if 0%{?suse_version} && 0%{?suse_version} >= 1110 || 0%{?rhel}
 Requires:       rhn-virtualization-common
 Requires:       rhn-virtualization-host
 %endif

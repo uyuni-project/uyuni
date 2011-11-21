@@ -4,6 +4,11 @@ Thu Nov  3 19:25:33 CET 2011 - ma@suse.de
 - Adapt dependencies to renamed packages (bnc#722052)
 
 -------------------------------------------------------------------
+Fri Jul  8 12:14:39 CEST 2011 - mc@suse.de
+
+- do not require rhn-virtualization on Code10
+
+-------------------------------------------------------------------
 Tue Feb 15 11:54:03 CET 2011 - ug@suse.de
 
 - requires rhn-virtualization-host now
