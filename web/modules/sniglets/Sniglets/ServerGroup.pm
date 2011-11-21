@@ -65,7 +65,7 @@ sub system_group_status_interface {
   if (not ($counts->{SECURITY_ERRATA} or $counts->{BUG_ERRATA} or $counts->{ENHANCEMENT_ERRATA})) {
 
     $subst->{icon} = '<img src="/img/icon_up2date.gif" alt="up to date" />';
-    $subst->{status_str} = 'No applicable errata';
+    $subst->{status_str} = 'No applicable patch';
     $subst->{status_class} = 'system-status-up-to-date';
   }
   elsif ($counts->{SECURITY_ERRATA}) {

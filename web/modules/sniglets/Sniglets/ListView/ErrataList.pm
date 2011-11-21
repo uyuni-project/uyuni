@@ -45,7 +45,7 @@ sub trap {
   return "rhn:errata_list_cb";
 }
 
-sub list_of { return "errata" }
+sub list_of { return "patches" }
 
 sub _register_modes {
 

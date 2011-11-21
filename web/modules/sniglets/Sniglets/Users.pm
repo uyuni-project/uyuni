@@ -128,7 +128,7 @@ sub errata_summary {
     $replacement .= $copy;
   }
 
-  $replacement ||= '<tr class="graydata"><td align="center" colspan="3">No Relevant Errata</td></tr>';
+  $replacement ||= '<tr class="graydata"><td align="center" colspan="3">No Relevant Patch</td></tr>';
 
   my $show_applied = $pxt->user->get_pref('show_applied_errata') || 'N';
   my $total_errata = $pxt->user->errata_count || 0;
