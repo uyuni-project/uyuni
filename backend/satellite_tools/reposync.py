@@ -39,6 +39,7 @@ from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
+from spacewalk.susemanager import suseLib
 
 hostname = socket.gethostname()
 
@@ -80,18 +81,23 @@ class RepoSync:
     noninteractive = False
     filters = []
 
-    def main(self):
+    def __init__(self, channel_label, repo_type, url=None, fail=False,
+                 quiet=False, noninteractive=False):
+        self.fail = fail
+        self.quiet = quiet
+        self.interactive = not noninteractive
+
         initCFG('server.satellite')
         db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
         rhnSQL.initDB(db_string)
-        (options, args) = self.process_args()
 
+        # setup logging
         log_filename = 'reposync.log'
-        if options.channel_label:
-            date = time.localtime()
-            datestr = '%d.%02d.%02d-%02d:%02d:%02d' % (date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour, date.tm_min, date.tm_sec)
-            log_filename = options.channel_label + '-' +  datestr + '.log'
-
+        date = time.localtime()
+        datestr = '%d.%02d.%02d-%02d:%02d:%02d' % (
+            date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
+            date.tm_min, date.tm_sec)
+        log_filename = channel_label + '-' +  datestr + '.log'
         rhnLog.initLOG(default_log_location + log_filename)
         #os.fchown isn't in 2.4 :/
         os.system("chgrp www " + default_log_location + log_filename)
@@ -133,19 +139,35 @@ class RepoSync:
         self.log_msg("\nSync started: %s" % (time.asctime(time.localtime())))
         self.log_msg(str(sys.argv))
 
+        if not url:
+            # TODO:need to look at user security across orgs
+            h = rhnSQL.prepare("""select s.source_url, s.metadata_signed
+                                  from rhnContentSource s,
+                                       rhnChannelContentSource cs,
+                                       rhnChannel c
+                                 where s.id = cs.source_id
+                                   and cs.channel_id = c.id
+                                   and c.label = :label""")
+            h.execute(label=channel_label)
+            source_urls = h.fetchall_dict()
+            if source_urls:
+                self.urls = source_urls
+            else:
+                # generate empty metadata and quit
+                taskomatic.add_to_repodata_queue_for_channel_package_subscription(
+                    [channel_label], [], "server.app.yumreposync")
+                rhnSQL.commit()
+                self.error_msg("Channel has no URL associated")
+                sys.exit(1)
+        else:
+            self.urls = [{'source_url': url, 'metadata_signed' : 'N'}]
 
-        if quit:
-            sys.exit(1)
+        self.repo_plugin = self.load_plugin(repo_type)
+        self.channel_label = channel_label
 
-        self.type = options.type
-        self.channel_label = options.channel_label
-        self.fail = options.fail
-        self.quiet = options.quiet
         self.channel = self.load_channel()
-        self.noninteractive = options.noninteractive
-
         if not self.channel:
-            print "Channel does not exist"
+            self.print_msg("Channel does not exist.")
             sys.exit(1)
 
         start_time = datetime.now()

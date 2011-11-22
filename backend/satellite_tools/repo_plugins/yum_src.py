@@ -94,6 +94,7 @@ class ContentSource:
         self.url = url
         self.name = name
         self.insecure = insecure
+        self.quiet = quiet
         self.interactive = interactive
         self._clean_cache(self.cache_dir + name)
 
@@ -130,9 +131,10 @@ class ContentSource:
         repo.baseurlSetup()
         warnings.restore()
         for burl in repo.baseurl:
-          repo.gpgkey = [burl + '/repodata/repomd.xml.key']
-
-        repo.setup(False, None, gpg_import_func=self.getKeyForRepo, confirm_func=self.askImportKey)
+            repo.gpgkey = [burl + '/repodata/repomd.xml.key']
+ 
+        repo.setup(False, None, gpg_import_func=self.getKeyForRepo,
+                   confirm_func=self.askImportKey)
         self.initgpgdir( repo.gpgdir )
         self.num_packages = 0
         self.num_excluded = 0
@@ -309,7 +311,9 @@ class ContentSource:
         @param callback: Callback function to use for asking for verification
                           of a key. Takes a dictionary of key info.
         """
-        keyurls = repo.gpgkey
+        keyurls = []
+        if self.interactive:
+            keyurls = repo.gpgkey
         key_installed = False
         for keyurl in keyurls:
             keys = self._retrievePublicKey(keyurl, repo)

@@ -1,6 +1,7 @@
 #!/usr/bin/python -u
 #
 # Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2011 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,24 +15,19 @@
 # in this software or its documentation. 
 #
 
+import sys
+import os
+import socket
+from optparse import OptionParser
+
 LOCK = None
 
-if __name__ != '__main__':
-    raise ImportError, "module cannot be imported"
-
-import sys
-def systemExit(code, msgs=None):
+def systemExit(code, msg=None):
     "Exit with a code and optional message(s). Saved a few lines of code."
-    if msgs:
-        if type(msgs) not in [type([]), type(())]:
-            msgs = (msgs, )
-        for msg in msgs:
-            sys.stderr.write(str(msg)+'\n')
+    sys.stderr.write(str(msg)+'\n')
     sys.exit(code)
 
 try:
-    import os
-    import socket
     from rhn import rhnLockfile
     from spacewalk.common.rhnConfig import CFG
     from spacewalk.common.rhnTB import fetchTraceback
@@ -39,8 +35,8 @@ try:
 except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
 except ImportError:
-    sys.stderr.write("Unable to find code tree.\n"
-                     "Path not correct? '%s'\n" % _LIBPATH)
+    systemExit(1, "Unable to find code tree.\n"
+               "Path not correct? '%s'" % sys.path)
 
 def releaseLOCK():
     global LOCK
@@ -49,7 +45,6 @@ def releaseLOCK():
         LOCK = None
 
 def main():
-
     # quick check to see if you are a super-user.
     if os.getuid() != 0:
         sys.stderr.write('ERROR: must be root to execute\n')
@@ -61,10 +56,39 @@ def main():
         LOCK = rhnLockfile.Lockfile('/var/run/spacewalk-repo-sync.pid')
     except rhnLockfile.LockfileLockedException:
         systemExit(1, "ERROR: attempting to run more than one instance of spacewalk-repo-sync Exiting.")
-    sync = reposync.RepoSync()
-    sync.main()
+
+    parser = OptionParser()
+    parser.add_option('-u', '--url', action='store', dest='url',
+                      help='The url to sync')
+    parser.add_option('-c', '--channel', action='store',
+                      dest='channel_label',
+                      help='The label of the channel to sync packages to')
+    parser.add_option('-t', '--type', action='store', dest='repo_type',
+                      help='The type of repo, currently only "yum" is supported',
+                      default='yum')
+    parser.add_option('-f', '--fail', action='store_true', dest='fail',
+                      default=False ,
+                      help="If a package import fails, fail the entire operation")
+    parser.add_option('-q', '--quiet', action='store_true', dest='quiet',
+                      default=False, help="Print no output, still logs output")
+    parser.add_option('-n', '--non-interactive', action='store_true',
+                      dest='noninteractive', default=False,
+                      help="Do not ask anything, use default answers")
+    (options, args) = parser.parse_args()
+
+    if not options.channel_label:
+        systemExit(1, "--channel must be specified")
+
+    sync = reposync.RepoSync(channel_label=options.channel_label,
+                             repo_type=options.repo_type,
+                             url=options.url,
+                             fail=options.fail,
+                             quiet=options.quiet,
+                             noninteractive=options.noninteractive)
+    sync.sync()
     releaseLOCK()
     return 0
+
 
 if __name__ == '__main__':
     try:
