@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov 22 14:39:30 CET 2011 - mantel@suse.de
+
+- add support for full Oracle DB to migration.sh
+
+-------------------------------------------------------------------
 Tue Nov 22 14:25:40 CET 2011 - mantel@suse.de
 
 - do not require oracle-xe, but oracle-sqlplus to allow full

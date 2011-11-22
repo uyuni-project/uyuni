@@ -17,10 +17,13 @@ SATELLITE_DB_SID=""
 SATELLITE_FQDN=""
 SATELLITE_IP=""
 
+ORACLE_VERSION="XE"
+
 RSYNC_PASSWORD=""
 
 # setup_hostname()
-# setup_db()
+# setup_db_xe()
+# setup_db_full()
 # setup_spacewalk()
 # drop_manager_db()
 # dump_remote_db()
@@ -108,7 +111,7 @@ cleanup_hostname() {
     fi;
 }
 
-setup_db() {
+setup_db_xe() {
     echo -e "9055\n\n$SYS_DB_PASS\n$SYS_DB_PASS\n" | /etc/init.d/oracle-xe configure
     #sed -i "s/:\/usr\/lib\/oracle\/10.2.0.4\/client.*:/:\/usr\/lib\/oracle\/xe\/app\/oracle\/product\/10.2.0\/server:/g" /etc/oratab
     . /etc/profile.d/oracle.sh
@@ -123,10 +126,26 @@ alter system set processes = 400 scope=spfile;
 alter system set \"_optimizer_filter_pred_pullup\"=false scope=spfile;
 alter system set \"_optimizer_cost_based_transformation\"=off scope=spfile;
 quit
-" > /root/dbsetup.sql
+" > /tmp/dbsetup.sql
 
-    sqlplus sys/\"$MANAGER_PASS\"@$MANAGER_DB_NAME as sysdba @/root/dbsetup.sql
-    rm /root/dbsetup.sql
+    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$MANAGER_PASS\"@$MANAGER_DB_NAME as sysdba @/tmp/dbsetup.sql;"
+    rm /tmp/dbsetup.sql
+}
+
+setup_db_full() {
+    /opt/apps/oracle/setup "$SYS_DB_PASS"
+    cp /opt/apps/oracle/product/11gR2/dbhome_1/network/admin/tnsnames.ora /etc
+    echo "Create database user for SUSE Manager..."
+    echo "create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace users;
+grant dba to $MANAGER_USER;
+alter system set processes = 400 scope=spfile;
+alter system set \"_optimizer_filter_pred_pullup\"=false scope=spfile;
+alter system set \"_optimizer_cost_based_transformation\"=off scope=spfile;
+quit
+" > /tmp/dbsetup.sql
+
+    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba @/tmp/dbsetup.sql;"
+    rm /tmp/dbsetup.sql
 }
 
 setup_spacewalk() {
@@ -177,10 +196,10 @@ drop_manager_db() {
 create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
 grant dba to $MANAGER_USER;
 quit
-" > /root/dbnewspacewalkuser.sql
+" > /tmp/dbnewspacewalkuser.sql
 
-    sqlplus sys/\"${SYS_DB_PASS}\"@${MANAGER_DB_NAME} as sysdba @/root/dbnewspacewalkuser.sql
-    rm /root/dbnewspacewalkuser.sql
+    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"${SYS_DB_PASS}\"@${MANAGER_DB_NAME} as sysdba @/tmp/dbnewspacewalkuser.sql;"
+    rm /tmp/dbnewspacewalkuser.sql
 }
 
 dump_remote_db() {
@@ -211,7 +230,7 @@ import_db() {
 
 upgrade_schema() {
     spacewalk-schema-upgrade
-    su - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/rdbms/admin/utlrp.sql; exit;ENDPLUS"
+    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/rdbms/admin/utlrp.sql; exit;ENDPLUS"
 }
 
 copy_remote_files() {
@@ -331,12 +350,18 @@ do_setup() {
     fi;
     setup_swap
     setup_mail
-    if [ $MANAGER_DB_NAME = "xe" -a $MANAGER_DB_HOST = "localhost" ]; then
-        if [ -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
-            echo "Database already setup. Abort."
-            exit 1
+    if [ $MANAGER_DB_HOST = "localhost" ]; then
+        if [ $ORACLE_VERSION = "XE" ]; then
+            if [ -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
+                echo "Database already setup. Abort."
+                exit 1
+            fi
+            setup_db_xe
+        else
+            MANAGER_DB_NAME="susemanager"
+            SYS_DB_PASS=`dd if=/dev/urandom bs=16 count=4 2> /dev/null | md5sum | cut -b 1-8`
+            setup_db_full
         fi
-        setup_db
     fi
 
     # should be done by cobbler with "--sync" but we had a case where those
@@ -392,6 +417,13 @@ for p in $@; do
     esac
 done
 
+rpm -q oracle-xe-univ > /dev/null
+if [ $? -eq "0" ]; then
+    ORACLE_VERSION="XE"
+else
+    ORACLE_VERSION="FULL"
+fi
+
 if [ "$LOGFILE" != "0" ]; then
     #set -x
     exec >> >(tee $LOGFILE | sed 's/^/  /' ) 2>&1
@@ -406,10 +438,14 @@ if [ "$DO_SETUP" = "1" ]; then
     # rename the default org
     echo "UPDATE $MANAGER_USER.web_customer SET name = '$CERT_O' WHERE id = 1;
 quit
-" > /root/changeorg.sql
+" > /tmp/changeorg.sql
 
-    sqlplus $MANAGER_USER/\"$MANAGER_PASS\"@$MANAGER_DB_NAME @/root/changeorg.sql
-    rm /root/changeorg.sql
+    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus $MANAGER_USER/\"$MANAGER_PASS\"@$MANAGER_DB_NAME @/tmp/changeorg.sql;"
+    rm /tmp/changeorg.sql
+
+    if [ $ORACLE_VERSION = "FULL" ]; then
+        echo "# Oracle sys password: $SYS_DB_PASS" >> /etc/rhn/rhn.conf
+    fi
 
     # Finaly call mgr-ncc-sync
     /usr/sbin/mgr-ncc-sync
