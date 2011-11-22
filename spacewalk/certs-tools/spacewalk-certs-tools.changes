@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Tue Nov 22 10:10:43 CET 2011 - ma@suse.de
+
+- Ported from Manager-1.2:
+- bootstrap: make curl/wget print errors (bnc#723670)
+- Bootstrap: Read ORG_CA_CERT name from CLIENT_OVERRIDES
+- Bootstrap: Import GPG keys and CERT as soon as possible
+  (bnc#711428)
+- Do non-interactive zypper refresh.
+- After registration disable all repositories not provided by SuSE
+  Manager. (bnc#692509)
+- Adapt bootstrap to new repository naming schema.
+- Migrate product metadata when bootstrapping SuSE code10 clients.
+- After registration disable all repositories not provided by
+  SuSE Manager.
+
+-------------------------------------------------------------------
 Mon Nov 21 19:11:40 CET 2011 - ma@suse.de
 
 - Extra code to bootstrap code10 clients and migrate product metadata..
