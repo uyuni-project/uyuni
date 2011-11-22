@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
-# Copyright (c) 2010-2011 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2010--2011 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,10 +13,8 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation. 
 #
-import os
-import re
+import yum
 import shutil
-import subprocess
 import sys
 import gzip
 import xml.etree.ElementTree as etree
@@ -38,8 +35,6 @@ except ImportError:
     except ImportError:
         import cElementTree
     iterparse = cElementTree.iterparse
-
-from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException, ContentPackage
 
 
@@ -97,9 +92,7 @@ class YumUpdateMetadata(UpdateMetadata):
 class ContentSource:
     repo = None
     cache_dir = '/var/cache/rhn/reposync/'
-    def __init__(self, url, name, insecure=False, interactive=True):
-        self.url = url
-        self.name = name
+    def __init__(self, url, name, insecure=False, interactive=True, quiet=False):
         self.insecure = insecure
         self.quiet = quiet
         self.interactive = interactive
@@ -139,7 +132,7 @@ class ContentSource:
         warnings.restore()
         for burl in repo.baseurl:
             repo.gpgkey = [burl + '/repodata/repomd.xml.key']
- 
+
         repo.setup(False, None, gpg_import_func=self.getKeyForRepo,
                    confirm_func=self.askImportKey)
         self.initgpgdir( repo.gpgdir )
@@ -251,7 +244,6 @@ class ContentSource:
                 um.add(self.repo, all=True)
             except Errors.NoMoreMirrorsRepoError:
                 raise ChannelTimeoutException("Retrieving updateinfo failed: File not found")
-
             return ('updateinfo', um.notices)
 
         elif 'patches' in self.repo.repoXML.repoData:
@@ -308,7 +300,7 @@ class ContentSource:
             return 1
         else:
             raise URLGrabError(-1, 'Metadata file does not match checksum')
-          
+
     def getKeyForRepo(self, repo, callback=None):
         """
         Retrieve a key for a repository If needed, prompt for if the key should
