@@ -76,5 +76,8 @@ CREATE INDEX rhn_package_oid_id_idx
 CREATE INDEX rhn_package_nid_id_idx
     ON rhnPackage (name_id, id);
 
+CREATE INDEX rhn_package_chksum_id_idx
+    ON rhnPackage (checksum_id);
+
 CREATE SEQUENCE rhn_package_id_seq;
 
