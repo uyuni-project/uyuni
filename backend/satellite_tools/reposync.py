@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (c) 2008--2011 Red Hat, Inc.
 # Copyright (c) 2010--2011 SUSE Linux Products GmbH
@@ -22,10 +21,8 @@ from datetime import datetime
 import traceback
 from datetime import datetime
 from optparse import OptionParser
-
 from yum import Errors
 from yum.i18n import to_unicode
-
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
 from spacewalk.common import rhnMail, rhnLog, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
@@ -39,12 +36,17 @@ from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
-from spacewalk.susemanager import suseLib
 
 hostname = socket.gethostname()
 
 default_log_location = '/var/log/rhn/reposync/'
 default_hash = 'sha256'
+
+# namespace prefixes for parsing SUSE patches XML files
+YUM = "{http://linux.duke.edu/metadata/common}"
+RPM = "{http://linux.duke.edu/metadata/rpm}"
+SUSE = "{http://novell.com/package/metadata/suse/common}"
+PATCH = "{http://novell.com/package/metadata/suse/patch}"
 
 class ChannelException(Exception):
     """
@@ -87,57 +89,26 @@ class RepoSync:
         self.quiet = quiet
         self.interactive = not noninteractive
 
-        initCFG('server.satellite')
+        initCFG('server.susemanager')
         db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
         rhnSQL.initDB(db_string)
 
         # setup logging
         log_filename = 'reposync.log'
-        date = time.localtime()
-        datestr = '%d.%02d.%02d-%02d:%02d:%02d' % (
-            date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
-            date.tm_min, date.tm_sec)
-        log_filename = channel_label + '-' +  datestr + '.log'
+        if channel_label:
+            date = time.localtime()
+            datestr = '%d.%02d.%02d-%02d:%02d:%02d' % (
+                date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
+                date.tm_min, date.tm_sec)
+            log_filename = channel_label + '-' +  datestr + '.log'
+
         rhnLog.initLOG(default_log_location + log_filename)
         #os.fchown isn't in 2.4 :/
         os.system("chgrp www " + default_log_location + log_filename)
 
-        if options.type not in ["yum"]:
+        if repo_type not in ["yum"]:
             print "Error: Unknown type %s" % options.type
             sys.exit(2)
-
-        quit = False
-        if not options.url:
-            if options.channel_label:
-                # TODO:need to look at user security across orgs
-                h = rhnSQL.prepare("""select s.id, s.source_url, s.metadata_signed
-                                      from rhnContentSource s,
-                                           rhnChannelContentSource cs,
-                                           rhnChannel c
-                                     where s.id = cs.source_id
-                                       and cs.channel_id = c.id
-                                       and c.label = :label""")
-                h.execute(label=options.channel_label)
-                source_data = h.fetchall_dict() or []
-                if source_data:
-                    self.urls = [(row['id'], row['source_url'], row['metadata_signed']) for row in source_data]
-                else:
-                    if options.channel_label:
-                        # generate empty metadata
-                        taskomatic.add_to_repodata_queue_for_channel_package_subscription(
-                            [options.channel_label], [], "server.app.yumreposync")
-                        rhnSQL.commit()
-                    quit = True
-                    self.error_msg("Channel has no URL associated")
-        else:
-            self.urls = [(None, options.url, 'N')]
-        if not options.channel_label:
-            quit = True
-            self.error_msg("--channel must be specified")
-
-        self.filters = options.filters
-        self.log_msg("\nSync started: %s" % (time.asctime(time.localtime())))
-        self.log_msg(str(sys.argv))
 
         if not url:
             # TODO:need to look at user security across orgs
@@ -158,32 +129,41 @@ class RepoSync:
                     [channel_label], [], "server.app.yumreposync")
                 rhnSQL.commit()
                 self.error_msg("Channel has no URL associated")
-                sys.exit(1)
+		sys.exit(1)
         else:
             self.urls = [{'source_url': url, 'metadata_signed' : 'N'}]
 
-        self.repo_plugin = self.load_plugin(repo_type)
-        self.channel_label = channel_label
+        self.filters = options.filters
+        self.log_msg("\nSync started: %s" % (time.asctime(time.localtime())))
+        self.log_msg(str(sys.argv))
 
+        self.type = repo_type
+        self.channel_label = channel_label
         self.channel = self.load_channel()
+
         if not self.channel:
             self.print_msg("Channel does not exist.")
             sys.exit(1)
 
+        self.arches = get_compatible_arches(self.channel['id'])
+
+    def sync(self):
+        """Trigger a reposync"""
         start_time = datetime.now()
         for (id, source_url, metadata_signed) in self.urls:
             url = suseLib.URL(source_url)
             if url.get_query_param("credentials"):
-                initCFG('server.susemanager')
                 url.username = CFG.get("%s%s" % (url.get_query_param("credentials"), "_user"))
                 url.password = CFG.get("%s%s" % (url.get_query_param("credentials"), "_pass"))
-                initCFG('server.satellite')
             url.query = ""
             insecure = False
             if metadata_signed == 'N':
                 insecure = True
             try:
-                plugin = self.load_plugin()(url.getURL(), self.channel_label, insecure, (not self.noninteractive))
+                plugin = self.load_plugin()(url.getURL(), self.channel_label,
+                                            insecure=insecure,
+                                            interactive=self.interactive,
+                                            quiet=self.quiet)
                 self.import_packages(plugin, id, url.getURL())
                 self.import_updates(plugin, url.getURL())
             except ChannelTimeoutException, e:
@@ -192,7 +172,7 @@ class RepoSync:
                 sys.exit(1)
             except ChannelException, e:
                 self.print_msg("ChannelException: %s" % e)
-                self.sendErrorMail(str(e))
+		self.sendErrorMail("ChannelException: %s" % str(e))
                 sys.exit(1)
             except Errors.YumGPGCheckError, e:
                 self.print_msg("YumGPGCheckError: %s" % e)
@@ -233,19 +213,6 @@ class RepoSync:
                              where label = :channel""")
         h.execute(channel=self.channel['label'])
 
-    def process_args(self):
-        self.parser = OptionParser()
-        self.parser.add_option('-u', '--url', action='store', dest='url', help='The url to sync')
-        self.parser.add_option('-c', '--channel', action='store', dest='channel_label', help='The label of the channel to sync packages to')
-        self.parser.add_option('-t', '--type', action='store', dest='type', help='The type of repo, currently only "yum" is supported', default='yum')
-        self.parser.add_option('-f', '--fail', action='store_true', dest='fail', default=False , help="If a package import fails, fail the entire operation")
-        self.parser.add_option('-q', '--quiet', action='store_true', dest='quiet', default=False, help="Print no output, still logs output")
-        self.parser.add_option('-n', '--non-interactive', action='store_true', dest='noninteractive', default=False, help="Do not ask anything, use default answers automatically.")
-        self.parser.add_option('-i', '--include', action='callback', callback=set_filter_opt, type='str', nargs=1, dest='filters', default=[], help="List of included packages")
-        self.parser.add_option('-e', '--exclude', action='callback', callback=set_filter_opt, type='str', nargs=1, dest='filters', default=[], help="List of excluded packages")
-
-        return self.parser.parse_args()
-
     def load_plugin(self):
         name = self.type + "_src"
         mod = __import__('spacewalk.satellite_tools.repo_plugins', globals(), locals(), [name])
@@ -262,7 +229,7 @@ class RepoSync:
         if notices:
             if notices_type == 'updateinfo':
                 self.upload_updates(notices)
-            elif notices_type == 'patches' and notices:
+            elif notices_type == 'patches':
                 self.upload_patches(notices)
 
     def upload_patches(self, notices):
@@ -271,43 +238,36 @@ class RepoSync:
         :arg notices: a list of ElementTree roots from individual patch files
 
         """
-        prefix = {'yum': "{http://linux.duke.edu/metadata/common}",
-                  'rpm': "{http://linux.duke.edu/metadata/rpm}",
-                  'suse': "{http://novell.com/package/metadata/suse/common}",
-                  'patch': "{http://novell.com/package/metadata/suse/patch}"
-                  }
-
         typemap = {'security'    : 'Security Advisory',
                    'recommended' : 'Bug Fix Advisory',
                    'bugfix'      : 'Bug Fix Advisory',
-
                    'optional'    : 'Product Enhancement Advisory',
                    'feature'     : 'Product Enhancement Advisory',
                    'enhancement' : 'Product Enhancement Advisory'
                    }
+        skipped_updates = 0
         batch = []
         for notice in notices:
             e = Erratum()
 
-            version = notice.find('%sversion' % prefix['yum']).get('ver')
-            category = notice.find('%scategory' % prefix['patch']).text
-            
-            e['errata_from'] = 'maint-coord@suse.de'
-            e['advisory'] = e['advisory_name'] = '-'.join([notice.get('patchid'),
-                                                           self.channel['arch']])
+            version = notice.find(YUM+'version').get('ver')
+            category = notice.findtext(PATCH+'category')
+
+            e['advisory']     = e['advisory_name'] = self._patch_naming(notice)
+            e['errata_from']  = 'maint-coord@suse.de'
             e['advisory_rel'] = version
-            try:
-                e['advisory_type'] = typemap[category]
-            except KeyError:
-                e['advisory_type'] = 'Product Enhancement Advisory'
+            e['advisory_type'] = typemap.get(category,
+                                             'Product Enhancement Advisory')
+
+            existing_errata = get_errata(e['advisory'])
 
             # product name
             query = rhnSQL.prepare("""
                 SELECT p.friendly_name
-                FROM rhnchannel c, suseproductchannel pc, suseproducts p
-                WHERE pc.channel_id = c.id
-                  AND pc.product_id = p.id
-                  AND c.label = :label
+                  FROM suseproducts p
+                  JOIN suseproductchannel pc on p.id = pc.product_id
+                  JOIN rhnchannel c on pc.channel_id = c.id
+                 WHERE c.label = :label
                 """)
             query.execute(label=self.channel_label)
             try:
@@ -315,127 +275,62 @@ class RepoSync:
             except TypeError:
                 e['product'] = 'unknown product'
 
-            for desc_lang in notice.findall('%sdescription' % prefix['patch']):
+            for desc_lang in notice.findall(PATCH+'description'):
                 if desc_lang.get('lang') == 'en':
                     e['description'] = desc_lang.text or ""
                     break
-            for sum_lang in notice.findall('%ssummary' % prefix['patch']):
+            for sum_lang in notice.findall(PATCH+'summary'):
                 if sum_lang.get('lang') == 'en':
                     e['synopsis'] = sum_lang.text or ""
                     break
-            e['topic'] = ' '
-            e['solution'] = ' '
-            # XXX is there anything else that we can use as update_date?
-            e['issue_date'] = self._to_db_date(notice.get('timestamp'))
+            e['topic']       = ' '
+            e['solution']    = ' '
+            e['issue_date']  = _to_db_date(notice.get('timestamp'))
             e['update_date'] = e['issue_date']
-            e['notes'] = ''
-            e['org_id'] = self.channel['org_id']
-            e['refers_to'] = ''
-            e['channels'] = [{'label': self.channel_label}]
-            e['packages'] = []
-            e['files'] = []
+            e['notes']       = ''
+            e['org_id']      = self.channel['org_id']
+            e['refers_to']   = ''
+            e['channels']    = [{'label': self.channel_label}]
+            e['packages']    = []
+            e['files']       = []
+            if existing_errata:
+                e['channels'].extend(existing_errata['channels'])
+                e['packages'] = existing_errata['packages']
 
-            atoms = notice.find('%satoms' % prefix['patch'])
-            packages = atoms.findall('%spackage' % prefix['yum'])
-            for pkg in packages:
-                nevr = pkg.find(
-                    '%sformat' % prefix['yum']).find(
-                    '%srequires' % prefix['rpm']).find(
-                        '%sentry' % prefix['rpm'])
-                param_dict = {
-                    'name': nevr.get('name'),
-                    'version': nevr.get('ver'),
-                    'release': nevr.get('rel'),
-                    'epoch': nevr.get('epoch'),
-                    'arch': pkg.find('%sarch' % prefix['yum']).text,
-                    'channel_label': self.channel_label
-                    }
-                if self.channel['org_id']:
-                    orgidStatement = " = :org_id"
-                    param_dict['org_id'] = self.channel['org_id']
-                else:
-                    orgidStatement = " is NULL"
-                if not param_dict['epoch'] or param_dict['epoch'] == '0':
-                    epochStatement = "(pevr.epoch is NULL or pevr.epoch = 0)"
-                else:
-                    epochStatement = "pevr.epoch = :epoch"
+            atoms = notice.find(PATCH+'atoms')
+            packages = atoms.findall(YUM+'package')
 
-                h = rhnSQL.prepare("""
-                select p.id, c.checksum, c.checksum_type, pevr.epoch
-                from rhnPackage p,
-                rhnPackagename pn,
-                rhnpackageevr  pevr,
-                rhnpackagearch pa,
-                rhnChecksumView c,
-                rhnChannel ch,
-                rhnChannelPackage cp,
-                rhnArchType rat
-                where pn.name = :name
-                and p.org_id %s
-                and pevr.version = :version
-                and pevr.release = :release
-                and pa.label = :arch
-                and %s
-                and rat.label = 'rpm'
-                and pa.arch_type_id = rat.id
-                and p.checksum_id = c.id
-                and p.name_id = pn.id
-                and p.evr_id = pevr.id
-                and p.package_arch_id = pa.id
-                and p.id = cp.package_id
-                and cp.channel_id = ch.id
-                and ch.label = :channel_label
-                """ % (orgidStatement, epochStatement))
-
-                h.execute(**param_dict)
-                cs = h.fetchone_dict()
-
-                if not cs:
-                    self.print_msg(
-                        "No checksum found for "
-                        "%(name)s-%(epoch)s:%(version)s-%(release)s.%(arch)s "
-                        "Skipping Patch %(patch)s" % dict(
-                            patch=e['advisory_name'],
-                            **param_dict))
-                    break
-                package = IncompletePackage()
-                for k in ['name', 'version', 'release', 'arch']:
-                    package[k] = param_dict[k]
-                # get the epoch from the package, not from the patch
-                package['epoch'] = cs['epoch']
-                package['org_id'] = self.channel['org_id']
-                package['package_size'] = pkg.find('%ssize' % prefix['yum']
-                                                   ).get('package')
-                package['last_modified'] = pkg.find('%stime' % prefix['yum']
-                                                    ).get('file')
-                package['checksums'] = {cs['checksum_type']: cs['checksum']}
-                package['checksum_type'] = cs['checksum_type']
-                package['checksum'] = cs['checksum']
-                package['package_id'] = cs['id']
-                e['packages'].append(package)
-            else:
-                # there were no problems with the checksums
-                batch.append(e)
+            e['packages'] = self._patches_process_packages(packages, e['advisory_name'], e['packages'], prefix)
+            # an update can't have zero packages, so we skip this update
+            if not e['packages']:
+                skipped_updates = skipped_updates + 1
+                continue
 
             e['keywords'] = []
-            if notice.find('%sreboot-needed' % prefix['patch']) is not None:
+            if notice.find(PATCH+'reboot-needed') is not None:
                 kw = Keyword()
                 kw.populate({'keyword': 'reboot_suggested'})
                 e['keywords'].append(kw)
-            if notice.find('%spackage-manager' % prefix['patch']) is not None:
+            if notice.find(PATCH+'package-manager') is not None:
                 kw = Keyword()
                 kw.populate({'keyword': 'restart_suggested'})
                 e['keywords'].append(kw)
 
             e['bugs'] = find_bugs(e['description'])
             e['cve'] = find_cves(e['description'])
-            
+            # set severity to Low to get a currency rating
+            e['security_impact'] = "Low"
+
             e['locally_modified'] = None
+            batch.append(e)
+
+        if skipped_updates > 0:
+            self.print_msg("%d patches skipped because of incomplete package list." % skipped_updates)
         backend = SQLBackend()
         importer = ErrataImport(batch, backend)
         importer.run()
         self.regen = True
-            
+
     def upload_updates(self, notices):
         skipped_updates = 0
         batch = []
@@ -448,12 +343,28 @@ class RepoSync:
                   'enhancement' : 'Product Enhancement Advisory'
                   }
         for notice in notices:
-            notice = self.fix_notice(notice)
-            existing_errata = self.get_errata(notice['update_id'])
+            notice = _fix_notice(notice)
+            patch_name = self._patch_naming(notice)
+            existing_errata = get_errata(patch_name)
+            if existing_errata and not _is_old_suse_style(notice['from'], notice['version']):
+                if existing_errata['advisory_rel'] < notice['version']:
+                    # A disaster happens
+                    #
+                    # re-releasing an errata with a higher release number
+                    # only happens in case of a disaster.
+                    # This should force mirrored repos to remove the old
+                    # errata and take care that the new one is the only
+                    # available.
+                    # This mean a hard overwrite
+                    _delete_invalid_errata(existing_errata['id'])
+                elif existing_errata['advisory_rel'] > notice['version']:
+                    # the existing errata has a higher release than the now
+                    # parsed one. We need to skip the current errata
+                    continue
+                # else: release match, so we update the errata
             e = Erratum()
             e['errata_from']   = notice['from']
-            e['advisory']      = notice['update_id']
-            e['advisory_name'] = notice['update_id']
+            e['advisory'] = e['advisory_name'] = patch_name
             e['advisory_rel']  = notice['version']
             e['advisory_type'] = typemap.get(notice['type'], 'Product Enhancement Advisory')
             e['product']       = notice['release']
@@ -461,140 +372,235 @@ class RepoSync:
             e['synopsis']      = notice['title']
             e['topic']         = ' '
             e['solution']      = ' '
-            e['issue_date']    = self._to_db_date(notice['issued'])
+            e['issue_date']    = _to_db_date(notice['issued'])
             if notice['updated']:
-                e['update_date']   = self._to_db_date(notice['updated'])
+                e['update_date'] = _to_db_date(notice['updated'])
             else:
-                e['update_date']   = self._to_db_date(notice['issued'])
+                e['update_date'] = e['issue_date']
             e['org_id']        = self.channel['org_id']
             e['notes']         = ''
             e['refers_to']     = ''
-            e['channels']      = []
+            e['channels']      = [{'label':self.channel_label}]
             e['packages']      = []
             e['files']         = []
             if existing_errata:
-                e['channels'] = existing_errata['channels']
+                e['channels'].extend(existing_errata['channels'])
                 e['packages'] = existing_errata['packages']
-            e['channels'].append({'label':self.channel_label})
 
-            for pkg in notice['pkglist'][0]['packages']:
-                param_dict = {
-                             'name'          : pkg['name'],
-                             'version'       : pkg['version'],
-                             'release'       : pkg['release'],
-                             'arch'          : pkg['arch'],
-                             'channel_label' : self.channel_label
-                             }
-                if pkg['epoch'] is None or pkg['epoch'] == '':
-                    epochStatement = "is NULL"
-                else:
-                    epochStatement = "= :epoch"
-                    param_dict['epoch'] = pkg['epoch']
-                if self.channel['org_id']:
-                    param_dict['org_id'] = self.channel['org_id']
-                    orgStatement = "= :org_id"
-                else:
-                    orgStatement = "is NULL"
-
-                h = rhnSQL.prepare("""
-                    select p.id, c.checksum, c.checksum_type
-                      from rhnPackage p
-                      join rhnPackagename pn on p.name_id = pn.id
-                      join rhnpackageevr pevr on p.evr_id = pevr.id
-                      join rhnpackagearch pa on p.package_arch_id = pa.id
-                      join rhnArchType at on pa.arch_type_id = at.id
-                      join rhnChecksumView c on p.checksum_id = c.id
-                      join rhnChannelPackage cp on p.id = cp.package_id
-                      join rhnChannel ch on cp.channel_id = ch.id
-                     where pn.name = :name
-                       and p.org_id %s
-                       and pevr.version = :version
-                       and pevr.release = :release
-                       and pa.label = :arch
-                       and pevr.epoch %s
-                       and at.label = 'rpm'
-                       and ch.label = :channel_label
-                """ % (orgStatement, epochStatement))
-                h.execute(**param_dict)
-                cs = h.fetchone_dict() or None
-
-                if not cs:
-                    if param_dict.has_key('epoch'):
-                        log_debug(1, "No cheksum found for %s-%s:%s-%s.%s. Skipping Package" % (param_dict['name'],
-                                                                                                param_dict['epoch'],
-                                                                                                param_dict['version'],
-                                                                                                param_dict['release'],
-                                                                                                param_dict['arch']
-                                                                                               ))
-                    else:
-                        log_debug(1, "No cheksum found for %s-%s-%s.%s. Skipping Package" % (param_dict['name'],
-                                                                                             param_dict['version'],
-                                                                                             param_dict['release'],
-                                                                                             param_dict['arch'],
-                                                                                            ))
-                    continue
-
-                newpkgs = []
-                for oldpkg in e['packages']:
-                    if oldpkg['package_id'] != cs['id']:
-                        newpkgs.append(oldpkg)
-
-                package = IncompletePackage()
-                for k in pkg.keys():
-                    package[k] = pkg[k]
-                package['epoch'] = pkg.get('epoch', '')
-                package['org_id'] = self.channel['org_id']
-
-                package['checksums'] = {cs['checksum_type'] : cs['checksum']}
-                package['checksum_type'] = cs['checksum_type']
-                package['checksum'] = cs['checksum']
-
-                package['package_id'] = cs['id']
-                newpkgs.append(package)
-
-                e['packages'] = newpkgs
-
-            if len(e['packages']) == 0:
+            e['packages'] = self._updates_process_packages(
+                notice['pkglist'][0]['packages'], e['advisory_name'], e['packages'])
+            # One or more package references could not be found in the Database.
+            # To not provide incomplete patches we skip this update
+            if not e['packages']:
                 skipped_updates = skipped_updates + 1
                 continue
 
-            e['keywords'] = []
-            if notice['reboot_suggested']:
-                kw = Keyword()
-                kw.populate({'keyword':'reboot_suggested'})
-                e['keywords'].append(kw)
-            if notice['restart_suggested']:
-                kw = Keyword()
-                kw.populate({'keyword':'restart_suggested'})
-                e['keywords'].append(kw)
-            e['bugs'] = []
-            e['cve'] = []
-            if notice['references']:
-                bzs = filter(lambda r: r['type'] == 'bugzilla', notice['references'])
-                if len(bzs):
-                    tmp = {}
-                    for bz in bzs:
-                        if bz['id'] not in tmp:
-                            bug = Bug()
-                            bug.populate({'bug_id' : bz['id'], 'summary' : bz['title'], 'href' : bz['href']})
-                            e['bugs'].append(bug)
-                            tmp[bz['id']] = None
-                cves = filter(lambda r: r['type'] == 'cve', notice['references'])
-                if len(cves):
-                    tmp = {}
-                    for cve in cves:
-                        if cve['id'] not in tmp:
-                            e['cve'].append(cve['id'])
-                            tmp[cve['id']] = None
+            e['keywords'] = _update_keywords(notice)
+            e['bugs'] = _update_bugs(notice)
+            e['cve'] = _update_cve(notice)
+            if notice['severity']:
+                e['security_impact'] = notice['severity']
+            else:
+                # 'severity' not available in older yum versions
+                # set default to Low to get a correct currency rating
+                e['security_impact'] = "Low"
             e['locally_modified'] = None
             batch.append(e)
 
         if skipped_updates > 0:
-            self.print_msg("%d errata skipped because of empty package list." % skipped_updates)
+            self.print_msg("%d patches skipped because of empty package list." % skipped_updates)
         backend = SQLBackend()
         importer = ErrataImport(batch, backend)
         importer.run()
         self.regen = True
+
+    def _patch_naming(self, notice):
+        """Return the name of the patch according to our rules
+
+        :notice: a notice/patch object (this could be a dictionary
+        (new-style) or an ElementTree element (old code10 style))
+
+        """
+        try:
+            version = int(notice.find(YUM+'version').get('ver'))
+        except AttributeError:
+            # normal yum updates (dicts)
+            patch_name = notice['update_id']
+        else:
+            # code10 patches
+            if version >= 1000:
+                # old suse style patch naming
+                patch_name = notice.get('patchid')
+            else:
+                # new suse style patch naming
+                patch_name = notice.find(YUM+'name').text
+
+        # remove the channel-specific prefix
+        # this way we can merge patches from different channels like
+        # SDK, HAE and SLES
+        prefix = self.channel['update_tag']
+        if prefix and patch_name.startswith(prefix):
+            patch_name = patch_name[len(prefix)+1:] # +1 for the hyphen
+
+        return patch_name
+
+    def _updates_process_packages(self, packages, advisory_name,
+                                  existing_packages):
+        """Check if the packages are in the database
+
+        Go through the list of 'packages' and for each of them
+        check to see if it is already present in the database. If it is,
+        return a list of IncompletePackage objects, otherwise return an
+        empty list.
+
+        :packages: a list of dicts that represent packages (updateinfo style)
+        :advisory_name: the name of the current erratum
+        :existing_packages: list of already existing packages for this errata
+
+        """
+        erratum_packages = existing_packages
+        for pkg in packages:
+            param_dict = {
+                'name': pkg['name'],
+                'version': pkg['version'],
+                'release': pkg['release'],
+                'arch': pkg['arch'],
+                'epoch': pkg['epoch'],
+                'channel_label': self.channel_label}
+            if param_dict['arch'] not in self.arches:
+                continue
+            ret = self._process_package(param_dict, advisory_name)
+            if not ret:
+                # This package could not be found in the database
+                # so we skip the broken patch.
+                return []
+
+            # add new packages to the errata
+            found = False
+            for oldpkg in erratum_packages:
+                if oldpkg['package_id'] == ret['package_id']:
+                    found = True
+            if not found:
+                erratum_packages.append(ret)
+        return erratum_packages
+
+    def _patches_process_packages(self, packages, advisory_name, existing_packages):
+        """Check if the packages are in the database
+
+        Go through the list of 'packages' and for each of them
+        check to see if it is already present in the database. If it is,
+        return a list of IncompletePackage objects, otherwise return an
+        empty list.
+
+        :packages: a list of dicts that represent packages (patch style)
+        :advisory_name: the name of the current erratum
+        :existing_packages: list of already existing packages for this errata
+
+        """
+        erratum_packages = existing_packages
+        for pkg in packages:
+            nevr = pkg.find(YUM+'format').find(RPM+'requires').find(RPM+'entry')
+            param_dict = {
+                'name': nevr.get('name'),
+                'version': nevr.get('ver'),
+                'release': nevr.get('rel'),
+                'epoch': nevr.get('epoch'),
+                'arch': pkg.findtext(YUM+'arch'),
+                'channel_label': self.channel_label
+            }
+            if param_dict['arch'] not in self.arches:
+                continue
+            ret = self._process_package(param_dict, advisory_name)
+            if not ret:
+                # This package could not be found in the database
+                # so we skip the broken patch.
+                return []
+
+            # add new packages to the errata
+            found = False
+            for oldpkg in erratum_packages:
+                if oldpkg['package_id'] == ret['package_id']:
+                    found = True
+            if not found:
+                erratum_packages.append(ret)
+        return erratum_packages
+
+
+    def _process_package(self, param_dict, advisory_name):
+        """Search for a package in the the database
+
+        Search for the package specified by 'param_dict' to see if it is
+        already present in the database. If it is, return a
+        IncompletePackage objects, otherwise return None.
+
+        :param_dict: dict that represent packages (nerva + channel_label)
+        :advisory_name: the name of the current erratum
+
+        """
+        pkgepoch = param_dict['epoch']
+        del param_dict['epoch']
+
+        if not pkgepoch or pkgepoch == '0':
+            epochStatement = "(pevr.epoch is NULL or pevr.epoch = 0)"
+        else:
+            epochStatement = "pevr.epoch = :epoch"
+            param_dict['epoch'] = pkgepoch
+        if self.channel['org_id']:
+            orgidStatement = " = :org_id"
+            param_dict['org_id'] = self.channel['org_id']
+        else:
+            orgidStatement = " is NULL"
+
+        h = rhnSQL.prepare("""
+            select p.id, c.checksum, c.checksum_type, pevr.epoch
+              from rhnPackage p
+              join rhnPackagename pn on p.name_id = pn.id
+              join rhnpackageevr pevr on p.evr_id = pevr.id
+              join rhnpackagearch pa on p.package_arch_id = pa.id
+              join rhnArchType at on pa.arch_type_id = at.id
+              join rhnChecksumView c on p.checksum_id = c.id
+              join rhnChannelPackage cp on p.id = cp.package_id
+              join rhnChannel ch on cp.channel_id = ch.id
+             where pn.name = :name
+               and p.org_id %s
+               and pevr.version = :version
+               and pevr.release = :release
+               and pa.label = :arch
+               and %s
+               and at.label = 'rpm'
+               and ch.label = :channel_label
+            """ % (orgidStatement, epochStatement))
+        h.execute(**param_dict)
+        cs = h.fetchone_dict()
+
+        if not cs:
+            # package could not be found in the database.
+            if 'epoch' not in param_dict:
+                param_dict['epoch'] = ''
+            else:
+                param_dict['epoch'] = '-%s' % param_dict['epoch']
+            self.print_msg(
+                        "The package "
+                        "%(name)s%(epoch)s:%(version)s-%(release)s.%(arch)s "
+                        "which is referenced by patch %(patch)s was not found "
+                        "in the database. This patch has been skipped." % dict(
+                            patch=advisory_name,
+                            **param_dict))
+            return None
+
+        package = IncompletePackage()
+        for k in param_dict:
+            if k not in ['epoch', 'channel_label']:
+                package[k] = param_dict[k]
+        package['epoch'] = cs['epoch']
+        package['org_id'] = self.channel['org_id']
+
+        package['checksums'] = {cs['checksum_type'] : cs['checksum']}
+        package['checksum_type'] = cs['checksum_type']
+        package['checksum'] = cs['checksum']
+
+        package['package_id'] = cs['id']
+        return package
 
     def import_packages(self, plug, source_id, url):
         if (not self.filters) and source_id:
@@ -621,13 +627,13 @@ class RepoSync:
         self.print_msg("Packages in repo:             %5d" % plug.num_packages)
         if plug.num_excluded:
             self.print_msg("Packages passed filter rules: %5d" % num_passed)
-        compatArchs = self.compatiblePackageArchs()
+
         for pack in packages:
             if pack.arch in ['src', 'nosrc']:
                 # skip source packages
                 skipped += 1
                 continue
-            if pack.arch not in compatArchs:
+            if pack.arch not in self.arches:
                 # skip packages with incompatible architecture
                 skipped += 1
                 continue
@@ -677,7 +683,7 @@ class RepoSync:
                 self.print_msg("%d/%d : %s" % (index+1, num_to_process, pack.getNVREA()))
                 if to_download:
                     pack.path = localpath = plug.get_package(pack)
-                pack.load_checksum_from_header()
+		pack.load_header_and_find_best_checksum()
                 if to_download:
                     self.upload_package(pack)
                     finally_remove(localpath)
@@ -701,7 +707,6 @@ class RepoSync:
         return 0
 
     def upload_package(self, package):
-
         rel_package_path = rhnPackageUpload.relative_path_from_header(
                 package.header, self.channel['org_id'],
                 package.checksum_type, package.checksum)
@@ -768,43 +773,6 @@ class RepoSync:
     def load_channel(self):
         return rhnChannel.channel_info(self.channel_label)
 
-    def compatiblePackageArchs(self):
-        h = rhnSQL.prepare("""select pa.label
-                              from rhnChannelPackageArchCompat cpac,
-                              rhnChannel c,
-                              rhnpackagearch pa
-                              where c.id = :channel_id
-                              and c.channel_arch_id = cpac.channel_arch_id
-                              and cpac.package_arch_id = pa.id""")
-        h.execute(channel_id=self.channel['id'])
-        ca = h.fetchall_dict()
-        compatArchs = []
-        for arch in ca:
-            compatArchs.append(arch['label'])
-        return compatArchs
-
-    def best_checksum_item(self, checksums):
-        if checksums.has_key('sha256'):
-            checksum_type = 'sha256'
-            checksum_type_orig = 'sha256'
-            checksum = checksums[checksum_type_orig]
-        elif checksums.has_key('sha'):
-            checksum_type = 'sha1'
-            checksum_type_orig = 'sha'
-            checksum = checksums[checksum_type_orig]
-        elif checksums.has_key('sha1'):
-            checksum_type = 'sha1'
-            checksum_type_orig = 'sha1'
-            checksum = checksums[checksum_type_orig]
-        elif checksums.has_key('md5'):
-            checksum_type = 'md5'
-            checksum_type_orig = 'md5'
-            checksum = checksums[checksum_type_orig]
-        else:
-            checksum_type = 'md5'
-            checksum_type_orig = None
-            checksum = None
-        return (checksum_type, checksum_type_orig, checksum)
 
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
@@ -837,90 +805,172 @@ class RepoSync:
         extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
         rhnMail.send(headers, extra + body)
 
-    def _to_db_date(self, date):
-        ret = ""
-        if date.isdigit():
-            ret = datetime.fromtimestamp(float(date)).isoformat(' ')
-        else:
-            # we expect to get ISO formated date
-            ret = date
-        return ret
+def get_errata(update_id):
+    """ Return an Errata dict
 
-    def fix_notice(self, notice):
-        if "." in notice['version']:
-            new_version = 0
-            for n in notice['version'].split('.'):
-                new_version = (new_version + int(n)) * 100
-            try:
-                notice['version'] = new_version / 100
-            except TypeError: # yum in RHEL5 does not have __setitem__
-                notice._md['version'] = new_version / 100
-        if "suse" in notice['from'].lower():
-            # suse style; we need to append the version to id
-            try:
-                notice['update_id'] = notice['update_id'] + '-' + notice['version']
-            except TypeError: # yum in RHEL5 does not have __setitem__
-                notice._md['update_id'] = notice['update_id'] + '-' + notice['version']
-        return notice
+    search in the database for the given advisory and
+    return a dict with important values.
+    If the advisory was not found it returns None
 
-    def get_errata(self, update_id):
-        h = rhnSQL.prepare("""select
-            e.id, e.advisory, e.advisory_name, e.advisory_rel
-            from rhnerrata e
-            where e.advisory = :name
-        """)
-        h.execute(name=update_id)
-        ret = h.fetchone_dict() or None
-        if not ret:
-            return None
+    :update_id - the advisory (name)
+    """
+    h = rhnSQL.prepare("""
+        select e.id, e.advisory,
+               e.advisory_name, e.advisory_rel
+          from rhnerrata e
+         where e.advisory = :name
+    """)
+    h.execute(name=update_id)
+    ret = h.fetchone_dict()
+    if not ret:
+        return None
 
-        h = rhnSQL.prepare("""select distinct c.label
-            from rhnchannelerrata ce
-            join rhnchannel c on c.id = ce.channel_id
-            where ce.errata_id = :eid
-        """)
-        h.execute(eid=ret['id'])
-        channels = h.fetchall_dict() or []
+    h = rhnSQL.prepare("""
+        select distinct c.label
+          from rhnchannelerrata ce
+          join rhnchannel c on c.id = ce.channel_id
+         where ce.errata_id = :eid
+    """)
+    h.execute(eid=ret['id'])
+    ret['channels'] = h.fetchall_dict() or []
 
-        ret['channels'] = channels
-        ret['packages'] = []
+    ret['packages'] = []
 
-        h = rhnSQL.prepare("""
-            select p.id as package_id,
-                   pn.name,
-                   pevr.epoch,
-                   pevr.version,
-                   pevr.release,
-                   pa.label as arch,
-                   p.org_id,
-                   cv.checksum,
-                   cv.checksum_type
-              from rhnerratapackage ep
-              join rhnpackage p on p.id = ep.package_id
-              join rhnpackagename pn on pn.id = p.name_id
-              join rhnpackageevr pevr on pevr.id = p.evr_id
-              join rhnpackagearch pa on pa.id = p.package_arch_id
-              join rhnchecksumview cv on cv.id = p.checksum_id
-             where ep.errata_id = :eid
-        """)
-        h.execute(eid=ret['id'])
-        packages = h.fetchall_dict() or []
-        for pkg in packages:
-            ipackage = IncompletePackage()
-            for k in pkg.keys():
-                ipackage[k] = pkg[k]
-            ipackage['epoch'] = pkg.get('epoch', '')
+    h = rhnSQL.prepare("""
+        select p.id as package_id,
+               pn.name,
+               pevr.epoch,
+               pevr.version,
+               pevr.release,
+               pa.label as arch,
+               p.org_id,
+               cv.checksum,
+               cv.checksum_type
+          from rhnerratapackage ep
+          join rhnpackage p on p.id = ep.package_id
+          join rhnpackagename pn on pn.id = p.name_id
+          join rhnpackageevr pevr on pevr.id = p.evr_id
+          join rhnpackagearch pa on pa.id = p.package_arch_id
+          join rhnchecksumview cv on cv.id = p.checksum_id
+         where ep.errata_id = :eid
+    """)
+    h.execute(eid=ret['id'])
+    packages = h.fetchall_dict() or []
+    for pkg in packages:
+        ipackage = IncompletePackage().populate(pkg)
+        ipackage['epoch'] = pkg.get('epoch', '')
 
-            ipackage['checksums'] = {ipackage['checksum_type'] : ipackage['checksum']}
-            ret['packages'].append(ipackage)
+        ipackage['checksums'] = {ipackage['checksum_type'] : ipackage['checksum']}
+        ret['packages'].append(ipackage)
 
-        return ret
+    return ret
 
+def get_compatible_arches(channel_id):
+    """Return a list of compatible package arch labels for this channel"""
+    h = rhnSQL.prepare("""select pa.label
+                          from rhnChannelPackageArchCompat cpac,
+                          rhnChannel c,
+                          rhnpackagearch pa
+                          where c.id = :channel_id
+                          and c.channel_arch_id = cpac.channel_arch_id
+                          and cpac.package_arch_id = pa.id""")
+    h.execute(channel_id=channel_id)
+    arches = [k['label'] for k in  h.fetchall_dict()]
+    return arches
+
+def _best_checksum_item(checksums):
+    if checksums.has_key('sha256'):
+        checksum_type = 'sha256'
+        checksum_type_orig = 'sha256'
+        checksum = checksums[checksum_type_orig]
+    elif checksums.has_key('sha'):
+        checksum_type = 'sha1'
+        checksum_type_orig = 'sha'
+        checksum = checksums[checksum_type_orig]
+    elif checksums.has_key('sha1'):
+        checksum_type = 'sha1'
+        checksum_type_orig = 'sha1'
+        checksum = checksums[checksum_type_orig]
+    elif checksums.has_key('md5'):
+        checksum_type = 'md5'
+        checksum_type_orig = 'md5'
+        checksum = checksums[checksum_type_orig]
+    else:
+        checksum_type = 'md5'
+        checksum_type_orig = None
+        checksum = None
+    return (checksum_type, checksum_type_orig, checksum)
+
+def _to_db_date(date):
+    if date.isdigit():
+        ret = datetime.fromtimestamp(float(date)).isoformat(' ')
+    else:
+        # we expect to get ISO formated date
+        ret = date
+    return ret
+
+def _update_keywords(notice):
+    """Return a list of Keyword objects for the notice"""
+    keywords = []
+    if notice['reboot_suggested']:
+        kw = Keyword()
+        kw.populate({'keyword':'reboot_suggested'})
+        keywords.append(kw)
+    if notice['restart_suggested']:
+        kw = Keyword()
+        kw.populate({'keyword':'restart_suggested'})
+        keywords.append(kw)
+    return keywords
+
+def _update_bugs(notice):
+    """Return a list of Bug objects from the notice's references"""
+    bugs = {}
+    for bz in notice['references']:
+        if bz['type'] == 'bugzilla' and bz['id'] not in bugs:
+            bug = Bug()
+            bug.populate({'bug_id': bz['id'],
+                          'summary': bz['title'],
+                          'href': bz['href']})
+            bugs[bz['id']] = bug
+    return bugs.values()
+
+def _update_cve(notice):
+    """Return a list of unique ids from notice references of type 'cve'"""
+    cves = [cve['id'] for cve in notice['references'] if cve['type'] == 'cve']
+    # remove duplicates
+    cves = list(set(cves))
+
+    return cves
+
+def _fix_notice(notice):
+    if "." in notice['version']:
+        new_version = 0
+        for n in notice['version'].split('.'):
+            new_version = (new_version + int(n)) * 100
+        try:
+            notice['version'] = new_version / 100
+        except TypeError: # yum in RHEL5 does not have __setitem__
+            notice._md['version'] = new_version / 100
+    if _is_old_suse_style(notice['from'], notice['version']):
+        # old suse style; we need to append the version to id
+        # to get a seperate patch for every issue
+        try:
+            notice['update_id'] = notice['update_id'] + '-' + notice['version']
+        except TypeError: # yum in RHEL5 does not have __setitem__
+            notice._md['update_id'] = notice['update_id'] + '-' + notice['version']
+    return notice
+
+def _is_old_suse_style(notice_from, notice_version):
+    if "suse" in notice_from.lower() and int(notice_version) >= 1000:
+        # old style suse updateinfo starts with version >= 1000
+        return True
+    return False
 
 class ContentPackage:
 
     def __init__(self):
         # map of checksums
+        self.checksums = {}
         self.checksum_type = None
         self.checksum = None
 
@@ -960,6 +1010,16 @@ class ContentPackage:
         self.header, self.payload_stream, self.header_start, self.header_end = \
                 rhnPackageUpload.load_package(self.file)
         self.checksum_type = self.header.checksum_type()
+        self.checksum = getFileChecksum(self.checksum_type, file=self.file)
+        self.file.close()
+
+    def load_header_and_find_best_checksum(self):
+        if self.path is None:
+           raise rhnFault(50, "Unable to load package", explain=0)
+        self.file = open(self.path, 'rb')
+        self.header, self.payload_stream, self.header_start, self.header_end = \
+                rhnPackageUpload.load_package(self.file)
+        (self.checksum_type, cs_type_orig, md_checksum) = _best_checksum_item(self.checksums)
         self.checksum = getFileChecksum(self.checksum_type, file=self.file)
         self.file.close()
 
