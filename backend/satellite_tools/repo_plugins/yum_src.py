@@ -43,6 +43,13 @@ from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException, ContentPackage
 
 
+from spacewalk.common import rhnLog
+
+CACHE_DIR = '/var/cache/rhn/reposync/'
+
+# namespace prefix to parse patches.xml file
+PATCHES = '{http://novell.com/package/metadata/suse/patches}'
+
 class YumWarnings:
     def write(self, s):
         pass
