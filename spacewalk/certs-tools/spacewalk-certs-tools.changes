@@ -2,6 +2,7 @@
 Tue Nov 22 10:10:43 CET 2011 - ma@suse.de
 
 - Ported from Manager-1.2:
+- Adapt dependencies to renamed packages (bnc#722052)
 - bootstrap: make curl/wget print errors (bnc#723670)
 - Bootstrap: Read ORG_CA_CERT name from CLIENT_OVERRIDES
 - Bootstrap: Import GPG keys and CERT as soon as possible

@@ -33,6 +33,10 @@ Requires: python-selinux
 %else
 Requires: libselinux-python
 %endif
+# If this is rhel 4 or less we need up2date.
+%if 0%{?rhel} && "%rhel" < "5"
+Requires: up2date
+%endif
 
 %description
 The base libraries and functions needed by all rhncfg-* packages.

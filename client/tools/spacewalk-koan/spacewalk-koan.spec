@@ -31,7 +31,12 @@ Conflicts: rhn-kickstart
 Conflicts: rhn-kickstart-common
 Conflicts: rhn-kickstart-virtualization
 
+#this currently doesn't work for RHEL 2.1
+%if 0%{?rhel} && 0%{?rhel} < 5
+Requires: up2date
+%else
 Requires: %{rhn_check}
+%endif
 
 %description
 Support package for spacewalk koan interaction.
