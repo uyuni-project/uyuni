@@ -16,7 +16,11 @@ BuildArch: noarch
 %endif
 BuildRequires: python-devel
 
-Requires: pyOpenSSL 
+%if 0%{?suse_version}
+Requires: python-openssl
+%else
+Requires: pyOpenSSL
+%endif
 Conflicts: rhncfg < 5.9.37
 Conflicts: spacewalk-proxy-installer < 1.3.2
 Conflicts: rhn-client-tools < 1.3.3
