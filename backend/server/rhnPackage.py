@@ -324,7 +324,7 @@ def get_info_for_package(pkg, channel_label):
         on p.id = cp.package_id
       left join rhnChannel c
         on cp.channel_id = c.id
-       and p.org_id = c.org_id
+       and (p.org_id = c.org_id or (p.org_id IS NULL and c.org_id IS NULL))
        and c.label = :label
       join rhnChecksumView cv
         on p.checksum_id = cv.id
