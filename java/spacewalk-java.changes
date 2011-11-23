@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 23 13:59:17 CET 2011 - ug@suse.de
+
+- added --force to registration in snippet
+
+-------------------------------------------------------------------
 Fri Nov 11 16:21:11 CET 2011 - jrenner@suse.de
 
 - Removed markup in error message from all translation files
