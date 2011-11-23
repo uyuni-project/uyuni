@@ -35,6 +35,9 @@ except ImportError:
 from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException, ContentPackage
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common import rhnLog
+import os
+import re
+import subprocess
 
 # namespace prefix to parse patches.xml file
 PATCHES = '{http://novell.com/package/metadata/suse/patches}'
