@@ -84,7 +84,7 @@ class RepoSync:
     filters = []
 
     def __init__(self, channel_label, repo_type, url=None, fail=False,
-                 quiet=False, noninteractive=False):
+                 quiet=False, noninteractive=False, filters=[]):
         self.fail = fail
         self.quiet = quiet
         self.interactive = not noninteractive
@@ -112,7 +112,7 @@ class RepoSync:
 
         if not url:
             # TODO:need to look at user security across orgs
-            h = rhnSQL.prepare("""select s.source_url, s.metadata_signed
+            h = rhnSQL.prepare("""select s.id, s.source_url, s.metadata_signed
                                   from rhnContentSource s,
                                        rhnChannelContentSource cs,
                                        rhnChannel c
@@ -129,11 +129,11 @@ class RepoSync:
                     [channel_label], [], "server.app.yumreposync")
                 rhnSQL.commit()
                 self.error_msg("Channel has no URL associated")
-		sys.exit(1)
+                sys.exit(1)
         else:
-            self.urls = [{'source_url': url, 'metadata_signed' : 'N'}]
+            self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N'}]
 
-        self.filters = options.filters
+        self.filters = filters
         self.log_msg("\nSync started: %s" % (time.asctime(time.localtime())))
         self.log_msg(str(sys.argv))
 
@@ -150,8 +150,10 @@ class RepoSync:
     def sync(self):
         """Trigger a reposync"""
         start_time = datetime.now()
-        for (id, source_url, metadata_signed) in self.urls:
-            url = suseLib.URL(source_url)
+        for data in self.urls:
+            id = data['id']
+            metadata_signed = data['metadata_signed']
+            url = suseLib.URL(data['source_url'])
             if url.get_query_param("credentials"):
                 url.username = CFG.get("%s%s" % (url.get_query_param("credentials"), "_user"))
                 url.password = CFG.get("%s%s" % (url.get_query_param("credentials"), "_pass"))
@@ -172,7 +174,7 @@ class RepoSync:
                 sys.exit(1)
             except ChannelException, e:
                 self.print_msg("ChannelException: %s" % e)
-		self.sendErrorMail("ChannelException: %s" % str(e))
+                self.sendErrorMail("ChannelException: %s" % str(e))
                 sys.exit(1)
             except Errors.YumGPGCheckError, e:
                 self.print_msg("YumGPGCheckError: %s" % e)
@@ -650,12 +652,15 @@ class RepoSync:
                                 pack.checksum_type, pack.checksum):
                     # package is already on disk
                     to_download = False
+                    pack.load_header_and_set_checksum(db_pack['checksum_type'], db_pack['checksum'])
                     if db_pack['channel_label'] == self.channel_label:
                         # package is already in the channel
                         to_link = False
-		elif db_pack['channel_label'] == self.channel_label:
-		    # different package with SAME NVREA
-		    self.disassociate_package(db_pack)
+                elif db_pack['channel_label'] == self.channel_label:
+                    # different package with SAME NVREA
+                    self.disassociate_package(db_pack)
+            else:
+                pack.load_header_and_set_checksum()
 
             if to_download or to_link:
                 to_process.append((pack, to_download, to_link))
@@ -665,7 +670,7 @@ class RepoSync:
             self.print_msg("No new packages to sync.")
             return
         else:
-            self.print_msg("Packages already synced:      %5d" % 
+            self.print_msg("Packages already synced:      %5d" %
                                                   (num_passed - num_to_process))
             self.print_msg("Packages to sync:             %5d" % num_to_process)
 
@@ -683,7 +688,6 @@ class RepoSync:
                 self.print_msg("%d/%d : %s" % (index+1, num_to_process, pack.getNVREA()))
                 if to_download:
                     pack.path = localpath = plug.get_package(pack)
-		pack.load_header_and_find_best_checksum()
                 if to_download:
                     self.upload_package(pack)
                     finally_remove(localpath)
@@ -759,9 +763,9 @@ class RepoSync:
                                       where c.checksum = :checksum
                                         and c.checksum_type = :checksum_type
                                     )
-		""")
+        """)
         h.execute(channel_id=self.channel['id'],
-		  checksum_type=pack['checksum_type'], checksum=pack['checksum'])
+                  checksum_type=pack['checksum_type'], checksum=pack['checksum'])
 
     def _importer_run(self, package, caller, backend):
             importer = ChannelPackageSubscription(
@@ -1013,14 +1017,20 @@ class ContentPackage:
         self.checksum = getFileChecksum(self.checksum_type, file=self.file)
         self.file.close()
 
-    def load_header_and_find_best_checksum(self):
+    def load_header_and_set_checksum(self, checksum_type=None, checksum=None):
         if self.path is None:
            raise rhnFault(50, "Unable to load package", explain=0)
         self.file = open(self.path, 'rb')
         self.header, self.payload_stream, self.header_start, self.header_end = \
                 rhnPackageUpload.load_package(self.file)
-        (self.checksum_type, cs_type_orig, md_checksum) = _best_checksum_item(self.checksums)
-        self.checksum = getFileChecksum(self.checksum_type, file=self.file)
+        if checksum_type and checksum:
+            self.checksum_type = checksum_type
+            self.checksum = checksum
+            if not((checksum_type in self.checksums) and (self.checksums[checksum_type] == checksum)):
+                self.checksums[checksum_type] = checksum
+        else:
+            (self.checksum_type, cs_type_orig, md_checksum) = _best_checksum_item(self.checksums)
+            self.checksum = getFileChecksum(self.checksum_type, file=self.file)
         self.file.close()
 
 def find_bugs(text):

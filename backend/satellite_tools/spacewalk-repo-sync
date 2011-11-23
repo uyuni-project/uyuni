@@ -9,10 +9,10 @@
 # FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-# 
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation. 
+# in this software or its documentation.
 #
 
 import sys
@@ -74,6 +74,10 @@ def main():
     parser.add_option('-n', '--non-interactive', action='store_true',
                       dest='noninteractive', default=False,
                       help="Do not ask anything, use default answers")
+    parser.add_option('-i', '--include', action='callback', callback=reposync.set_filter_opt,
+                      type='str', nargs=1, dest='filters', default=[], help="List of included packages")
+    parser.add_option('-e', '--exclude', action='callback', callback=reposync.set_filter_opt,
+                      type='str', nargs=1, dest='filters', default=[], help="List of excluded packages")
     (options, args) = parser.parse_args()
 
     if not options.channel_label:
@@ -84,7 +88,8 @@ def main():
                              url=options.url,
                              fail=options.fail,
                              quiet=options.quiet,
-                             noninteractive=options.noninteractive)
+                             noninteractive=options.noninteractive,
+                             filters=options.filters)
     sync.sync()
     releaseLOCK()
     return 0
