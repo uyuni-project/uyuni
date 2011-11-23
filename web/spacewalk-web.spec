@@ -280,7 +280,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/PXT.pm
 %{perl_vendorlib}/PXT/
 %exclude %{perl_vendorlib}/PXT/Config.pm
-%attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
 
 %{_mandir}/man3/PXT::ApacheHandler.3pm.gz
 %{perl_vendorlib}/PXT.pm
