@@ -486,11 +486,9 @@ for p in $@; do
         . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`dig +short $SATELLITE_FQDN`
-        sed -i 's/^DHCLIENT_SET_HOSTNAME.*/DHCLIENT_SET_HOSTNAME="no"/' /etc/sysconfig/network/dhcp 2> /dev/null
        ;;
     -s)
         DO_SETUP=1
-        sed -i 's/^DHCLIENT_SET_HOSTNAME.*/DHCLIENT_SET_HOSTNAME="no"/' /etc/sysconfig/network/dhcp 2> /dev/null
        ;;
     -r)
         . $MIGRATION_ENV 2> /dev/null
