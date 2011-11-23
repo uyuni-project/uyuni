@@ -1,84 +1,110 @@
 -------------------------------------------------------------------
-Tue Nov 22 15:53:02 CET 2011 - mantel@suse.de
+Wed Nov 16 16:03:39 CET 2011 - mantel@suse.de
 
 - force nls_territory=AMERICA
 
 -------------------------------------------------------------------
-Tue Nov 22 15:49:34 CET 2011 - mantel@suse.de
+Wed Nov 16 14:31:13 CET 2011 - mantel@suse.de
 
 - dobby_conf is only template; write dobby conf to rhn_conf
   during Oracle setup
 
 -------------------------------------------------------------------
-Tue Nov 22 15:44:11 CET 2011 - mantel@suse.de
+Mon Nov 14 16:53:08 CET 2011 - mantel@suse.de
 
 - explicitly set Oracle character set to UTF8
 
 -------------------------------------------------------------------
-Fri Nov 22 15:32:38 CET 2011 - iartarisi@suse.cz
+Fri Nov 11 13:22:38 CET 2011 - iartarisi@suse.cz
 
 - fix bug with adding a new channel with the same repo url as an already
   existing channel, the new channel<->repo association wasn't being
   inserted (bnc#729227)
 
 -------------------------------------------------------------------
-Tue Nov 22 15:30:19 CET 2011 - mantel@suse.de
+Thu Nov 10 17:36:12 CET 2011 - mantel@suse.de
 
 - use correct paths with new Oracle version
 - actually use the computed memory values for Oracle
 
 -------------------------------------------------------------------
-Tue Nov 22 15:28:32 CET 2011 - mantel@suse.de
+Wed Nov  9 10:02:09 CET 2011 - mantel@suse.de
 
 - compute sga and pga values for Oracle
 
 -------------------------------------------------------------------
-Tue Nov 22 15:13:56 CET 2011 - mantel@suse.de
+Tue Oct 25 16:02:27 CEST 2011 - mantel@suse.de
 
 - write DB credentials to dobby configuration if using full Oracle
 
 -------------------------------------------------------------------
-Tue Nov 22 14:52:28 CET 2011 - mantel@suse.de
+Fri Oct 21 15:50:58 CEST 2011 - mc@suse.de
+
+- add some diagnostics DB tools
+
+-------------------------------------------------------------------
+Thu Oct 20 17:10:05 CEST 2011 - mc@suse.de
+
+- enable auto implement of SQL profiles for oracle full DB
+
+-------------------------------------------------------------------
+Thu Oct 20 12:27:33 CEST 2011 - ug@suse.de
+
+- more strict file permissions for environment files
+  (bnc#725221)
+
+-------------------------------------------------------------------
+Fri Oct 14 17:11:02 CEST 2011 - iartarisi@suse.cz
+
+- mgr-ncc-sync shouldn't skip creating a rhnChannelContentSource just
+  because the corresponding rhnContentSource already exists
+
+-------------------------------------------------------------------
+Thu Oct 13 13:58:56 CEST 2011 - ug@suse.de
+
+- check disksize in susemanager_setup (bnc#688406)
+
+-------------------------------------------------------------------
+Thu Oct 13 12:11:33 CEST 2011 - ug@suse.de
+
+- added sanity checks to susemanager_setup client (bnc#703132)
+
+-------------------------------------------------------------------
+Thu Oct  6 17:06:04 CEST 2011 - iartarisi@suse.cz
+
+- print a more descriptive error when scheduling a sync fails because of
+  a connection failed to taskomatic
+
+-------------------------------------------------------------------
+Mon Sep 26 10:45:05 CEST 2011 - mantel@suse.de
 
 - allow migration from SUSE Manager XE to SUSE Manager full Oracle
 
 -------------------------------------------------------------------
 Fri Sep 23 14:35:52 CEST 2011 - mc@suse.de
 
-- use same tablespace name "data_tbs" for full Oracle as for XE to
-  allow for easy migration
+- recompile python after check
 
 -------------------------------------------------------------------
-Tue Nov 22 14:47:03 CET 2011 - mantel@suse.de
+Tue Sep 20 17:36:23 CEST 2011 - iartarisi@suse.cz
 
-- do not use XE specific settings for full Oracle
-
--------------------------------------------------------------------
-Tue Nov 22 14:39:30 CET 2011 - mantel@suse.de
-
-- add support for full Oracle DB to migration.sh
+- use pylint instead of python-pylint for %checks
 
 -------------------------------------------------------------------
-Tue Nov 22 14:25:40 CET 2011 - mantel@suse.de
+Tue Sep 20 09:45:45 CEST 2011 - mc@suse.de
 
-- do not require oracle-xe, but oracle-sqlplus to allow full
-  Oracle database to be used
-
--------------------------------------------------------------------
-Thu Oct 20 12:12:29 CEST 2011 - ug@suse.de
-
-- more strict file permissions for environment files
-  (bnc#725221)
-
--------------------------------------------------------------------
-Thu Oct 13 13:50:38 CEST 2011 - ug@suse.de
-
-- added sanity checks to susemanager_setup client (bnc#703132)
+- added option to test the NCC credentials (fate#312368, bnc#674848)
 
 -------------------------------------------------------------------
 Wed Sep  7 12:41:52 CEST 2011 - mc@suse.de
 
 - merge python modules into one directory
+
+-------------------------------------------------------------------
+Tue Sep  6 15:19:13 CEST 2011 - mantel@suse.de
+
+- use same tablespace name "data_tbs" for full Oracle as for XE to
+  allow for easy migration
 
 -------------------------------------------------------------------
 Tue Sep  6 11:12:48 CEST 2011 - mc@suse.de
@@ -115,15 +141,60 @@ Wed Aug 24 11:59:52 CEST 2011 - iartarisi@suse.cz
 - refactored and added more comments to suseLib
 
 -------------------------------------------------------------------
+Wed Aug 24 10:36:21 CEST 2011 - mc@suse.de
+
+- disable deferred_segment_creation to let start sequences with 1
+  if we run with an internal full DB
+
+-------------------------------------------------------------------
 Tue Aug 23 17:33:04 CEST 2011 - ug@suse.de
 
 - mgr-ncc-sync does not work for system entitlements 
   (bnc#713395)
 
 -------------------------------------------------------------------
-Mon Aug 15 16:05:48 CEST 2011 - ug@suse.de
+Mon Aug 22 16:20:02 CEST 2011 - iartarisi@suse.cz
+
+- fixed an uncalled method _parse_query in URL.__setattr__
+- fixed undefined method error "to_unicode" in TransferException
+- minor style issues
+
+-------------------------------------------------------------------
+Wed Aug 17 18:18:17 CEST 2011 - mantel@suse.de
+
+- do not use XE specific settings for full Oracle
+
+-------------------------------------------------------------------
+Wed Aug 17 17:56:53 CEST 2011 - mantel@suse.de
+
+- add support for full Oracle DB to migration.sh
+
+-------------------------------------------------------------------
+Mon Aug 15 16:01:43 CEST 2011 - ug@suse.de
 
 - check hostname for lowercase bnc#703132
+
+-------------------------------------------------------------------
+Wed Aug 10 11:28:18 CEST 2011 - iartarisi@suse.cz
+
+- fix more imports
+
+-------------------------------------------------------------------
+Wed Aug 10 11:02:00 CEST 2011 - iartarisi@suse.cz
+
+- fix imports after changes in spacewalk.common module layout
+
+-------------------------------------------------------------------
+Mon Aug  8 11:48:55 UTC 2011 - kkaempf@novell.com
+
+- fix sqlplus require to /usr/bin/sqlplus in order to keep
+  already installed sqlplus
+
+-------------------------------------------------------------------
+Thu Aug  4 12:21:28 CEST 2011 - mantel@suse.de
+
+- do not require oracle-xe, but oracle-sqlplus to allow full
+  Oracle database to be used
 
 -------------------------------------------------------------------
 Tue Jun 21 16:07:34 CEST 2011 - mc@suse.de
@@ -174,16 +245,6 @@ Thu May  5 14:48:34 CEST 2011 - iartarisi@suse.cz
 
 - Fixed parsing error and traceback which happened when the NCC xml page
 was replaced by an html page. (bnc#691635)
-
--------------------------------------------------------------------
-Thu Apr 28 13:23:38 CEST 2011 - ug@suse.de
-
-- check disk size and warn if too small (bnc#688406)
-
--------------------------------------------------------------------
-Wed Apr 27 15:36:00 CEST 2011 - ug@suse.de
-
-- don't write 127.0.0.2 to /etc/hosts (bnc#688230)
 
 -------------------------------------------------------------------
 Thu Apr 14 10:33:58 CEST 2011 - iartarisi@suse.cz
@@ -274,7 +335,7 @@ Wed Feb 23 09:59:58 CET 2011 - iartarisi@suse.cz
 -------------------------------------------------------------------
 Mon Feb 21 17:34:22 CET 2011 - mc@suse.de
 
-- switch message color back to normal 
+- switch message color back to normal
 
 -------------------------------------------------------------------
 Mon Feb 21 15:33:23 CET 2011 - iartarisi@suse.cz
