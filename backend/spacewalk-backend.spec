@@ -354,21 +354,19 @@ rm -f $RPM_BUILD_ROOT/%{_mandir}/man8/satellite-sync.8*
 %find_lang %{name}-server
 
 %check
-# only run unittests on versions where we have all the right BuildRequires
-%if 0%{?suse_version} >= 1100
 export PYTHONPATH=%{buildroot}%{python_sitelib}:%{_datadir}/rhn
+# only run our unittests on versions where we have all the right BuildRequires
+%if 0%{?suse_version} >= 1100
 make -f Makefile.backend pylint
 make -f Makefile.backend unittest
 %endif
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%check
-make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT/%{python_sitelib} test || :
+make -f Makefile.backend test || :
 pushd %{buildroot}
 find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %pre server
 OLD_SECRET_FILE=%{_var}/www/rhns/server/secret/rhnSecret.py
