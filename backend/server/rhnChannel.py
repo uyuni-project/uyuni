@@ -576,6 +576,7 @@ def channel_info(channel):
         c.name,
         c.summary,
         c.description,
+        c.update_tag,
         to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
     from
         rhnChannel c,
