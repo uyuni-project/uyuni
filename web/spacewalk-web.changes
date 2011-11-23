@@ -1,17 +1,17 @@
 -------------------------------------------------------------------
-Tue Nov 22 15:50:56 CET 2011 - mantel@suse.de
+Wed Nov 16 14:35:50 CET 2011 - mantel@suse.de
 
 - "to_number" in new Oracle version cannot cope with a period and
   errors. So we remove the period before trying to convert.
 
 -------------------------------------------------------------------
-Tue Nov 22 15:49:57 CET 2011 - mantel@suse.de
+Wed Nov 16 14:30:51 CET 2011 - mantel@suse.de
 
 - dobby_conf is only template; write dobby conf to rhn_conf
   during Oracle setup
 
 -------------------------------------------------------------------
-Tue Nov 22 15:45:50 CET 2011 - mantel@suse.de
+Wed Nov 16 11:43:46 CET 2011 - mantel@suse.de
 
 - rename RHN database to SUSE Manager database for dobby
 
@@ -31,12 +31,12 @@ Thu Nov 10 16:22:58 CET 2011 - jrenner@suse.de
 - Fix internal server errors by returning 0 instead of dying 
 
 -------------------------------------------------------------------
-Tue Nov 22 15:20:25 CET 2011 - mantel@suse.de
+Wed Nov  9 09:45:58 CET 2011 - mantel@suse.de
 
 - tag rhn_dobby.conf as "noreplace"
 
 -------------------------------------------------------------------
-Tue Nov 22 15:16:53 CET 2011 - mantel@suse.de
+Tue Nov  8 14:42:35 CET 2011 - mantel@suse.de
 
 - name of system user is "sys", not "system"
 
@@ -46,50 +46,30 @@ Tue Nov  8 14:11:44 CET 2011 - jrenner@suse.de
 - Implement audit logging for remaining .pxt pages (fate#312607)
 
 -------------------------------------------------------------------
-Tue Nov 22 15:15:37 CET 2011 - mantel@suse.de
+Wed Oct 26 14:45:36 CEST 2011 - mantel@suse.de
 
 - fix db-control tablesizes (owner is normal_user, not sid)
 
 -------------------------------------------------------------------
-Tue Nov 22 15:12:23 CET 2011 - mantel@suse.de
+Mon Oct 24 15:14:08 CEST 2011 - mantel@suse.de
 
 - adapt spacewalk_dobby for SUSE Manager
 
 -------------------------------------------------------------------
-Tue Nov 22 15:10:30 CET 2011 . mantel@suse.de
+Mon Oct 17 17:25:47 CEST 2011 - ug@suse.de
+
+- fixed "Kickstart" to "Autoinstallation"
+  bnc#711527
+
+-------------------------------------------------------------------
+Mon Oct 17 13:07:23 CEST 2011 - jrenner@suse.de
+
+- CVE-2011-3344 - XSS on the Lost Password Page (bnc#719130)
+
+-------------------------------------------------------------------
+Wed Oct 12 11:49:17 CEST 2011 - mantel@suse.de
 
 - add missing Requires "perl-Filesys-Df" for spacewalk-dobby
-
--------------------------------------------------------------------
-Tue Nov 22 15:03:51 CET 2011 - mantel@suse.de
-
-- fix ORACLE_HOME for spacewalk-dobby
-
--------------------------------------------------------------------
-Fri Nov 11 17:20:41 CET 2011 - jrenner@suse.de
-
-- Fix stacktraces produced by auditlog-keeper
-
--------------------------------------------------------------------
-Fri Nov 11 16:16:49 CET 2011 - jrenner@suse.de
-
-- Fix rename Kickstart to Autoinstallation (bnc#727517)
-
--------------------------------------------------------------------
-Thu Nov 10 16:40:44 CET 2011 - jrenner@suse.de
-
-- Fix internal server errors by returning 0 instead of dying
-
--------------------------------------------------------------------
-Wed Nov  9 17:10:22 CET 2011 - jrenner@suse.de
-
-- Implement audit logging for remaining .pxt pages (fate#312607)
-
--------------------------------------------------------------------
-Mon Oct 17 17:27:17 CEST 2011 - ug@suse.de
-
-- changed "Kickstart" to "Autoinstallation"
-  bnc#711527
 
 -------------------------------------------------------------------
 Wed Oct 12 10:23:04 CEST 2011 - mc@suse.de
@@ -97,9 +77,36 @@ Wed Oct 12 10:23:04 CEST 2011 - mc@suse.de
 - add missing Requires to perl-DataTime
 
 -------------------------------------------------------------------
-Thu May 26 17:02:47 CEST 2011 - jrenner@suse.de
+Wed Oct  5 11:54:16 CEST 2011 - mantel@suse.de
+
+- fix ORACLE_HOME for spacewalk-dobby
+
+-------------------------------------------------------------------
+Thu Sep  8 15:30:32 CEST 2011 - iartarisi@suse.cz
+
+- readd a lot of perl files that were accidentally deleted from the
+  spacewalk-pxt subpackage
+
+-------------------------------------------------------------------
+Thu Sep  8 13:47:14 CEST 2011 - iartarisi@suse.cz
+
+- remove some files from spacewalk-pxt that are already in
+  base-minimal (bnc#681219)
+
+-------------------------------------------------------------------
+Fri Jul  8 09:11:00 CEST 2011 - jrenner@suse.de
+
+- Refactor RedHat.do to Vendor.do (bnc#671239)
+
+-------------------------------------------------------------------
+Thu May 26 12:03:11 CEST 2011 - jrenner@suse.de
 
 - Add javascript for password strength meter (bnc#685551/fate#312398)
+
+-------------------------------------------------------------------
+Fri May  6 14:03:25 CEST 2011 - mc@suse.de
+
+- more debranding (bnc#670318)
 
 -------------------------------------------------------------------
 Thu Mar 31 14:27:06 CEST 2011 - mantel@suse.de
