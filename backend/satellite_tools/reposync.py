@@ -19,10 +19,8 @@ import socket
 import re
 from datetime import datetime
 import traceback
-from datetime import datetime
-from optparse import OptionParser
+
 from yum import Errors
-from yum.i18n import to_unicode
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
 from spacewalk.common import rhnMail, rhnLog, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
@@ -49,9 +47,7 @@ SUSE = "{http://novell.com/package/metadata/suse/common}"
 PATCH = "{http://novell.com/package/metadata/suse/patch}"
 
 class ChannelException(Exception):
-    """
-    Channel Error.
-    """
+    """Channel Error"""
     def __init__(self, value=None):
         Exception.__init__(self)
         self.value = value
@@ -59,30 +55,13 @@ class ChannelException(Exception):
         return "%s" %(self.value,)
 
     def __unicode__(self):
-        return '%s' % to_unicode(self.value)
+        return '%s' % unicode(self.value, "utf-8")
 
 class ChannelTimeoutException(ChannelException):
     """Channel timeout error e.g. a remote repository is not responding"""
     pass
 
-def set_filter_opt(option, opt_str, value, parser):
-    if opt_str in [ '--include', '-i']: f_type = '+'
-    else:                               f_type = '-'
-    parser.values.filters.append((f_type, re.split('[,\s]+', value)))
-
 class RepoSync:
-
-    parser = None
-    type = None
-    urls = None
-    channel_label = None
-    channel = None
-    fail = False
-    quiet = False
-    regen = False
-    noninteractive = False
-    filters = []
-
     def __init__(self, channel_label, repo_type, url=None, fail=False,
                  quiet=False, noninteractive=False, filters=[]):
         self.fail = fail
@@ -107,7 +86,7 @@ class RepoSync:
         os.system("chgrp www " + default_log_location + log_filename)
 
         if repo_type not in ["yum"]:
-            print "Error: Unknown type %s" % options.type
+            print "Error: Unknown type %s" % repo_type
             sys.exit(2)
 
         if not url:
@@ -151,7 +130,6 @@ class RepoSync:
         """Trigger a reposync"""
         start_time = datetime.now()
         for data in self.urls:
-            id = data['id']
             metadata_signed = data['metadata_signed']
             url = suseLib.URL(data['source_url'])
             if url.get_query_param("credentials"):
@@ -166,7 +144,7 @@ class RepoSync:
                                             insecure=insecure,
                                             interactive=self.interactive,
                                             quiet=self.quiet)
-                self.import_packages(plugin, id, url.getURL())
+                self.import_packages(plugin, data['id'], url.getURL())
                 self.import_updates(plugin, url.getURL())
             except ChannelTimeoutException, e:
                 self.print_msg(e)
@@ -302,7 +280,9 @@ class RepoSync:
             atoms = notice.find(PATCH+'atoms')
             packages = atoms.findall(YUM+'package')
 
-            e['packages'] = self._patches_process_packages(packages, e['advisory_name'], e['packages'], prefix)
+            e['packages'] = self._patches_process_packages(packages,
+                                                           e['advisory_name'],
+                                                           e['packages'])
             # an update can't have zero packages, so we skip this update
             if not e['packages']:
                 skipped_updates = skipped_updates + 1
