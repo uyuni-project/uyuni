@@ -28,14 +28,14 @@ RTYPE = 'yum' # a valid repotype
 class RepoSyncTest(unittest.TestCase):
 
     def setUp(self):
+        self.reposync = spacewalk.satellite_tools.reposync
+
         # kill logging
-        reposync.rhnLog.initLOG = Mock()
-        reposync.initLOG = Mock()
-        reposync.log_clean = Mock()
+        self.reposync.rhnLog.initLOG = Mock()
 
         # don't read configs
-        reposync.initCFG = Mock()
-        reposync.CFG = Mock()
+        self.reposync.initCFG = Mock()
+        self.reposync.CFG = Mock()
 
         # catching stdout
         # this could be assertRaisesRegexp in python>=2.7. just sayin'
@@ -64,7 +64,7 @@ class RepoSyncTest(unittest.TestCase):
         reload(spacewalk.satellite_tools.reposync)
         
     def test_init_succeeds_with_correct_attributes(self):
-        rs = self.reposync.RepoSync('Label', RTYPE)
+        rs = self._init_reposync('Label', RTYPE)
 
         self.assertEqual(rs.channel_label, 'Label')
 
@@ -74,13 +74,13 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs.interactive, True)
 
     def test_init_with_custom_url(self):
-        rs = self.reposync.RepoSync('Label', RTYPE, url='http://example.com')
+        rs = self._init_reposync('Label', RTYPE, url='http://example.com')
 
         self.assertEqual(rs.urls, [{'source_url': 'http://example.com',
                                     'metadata_signed': 'N'}])
 
     def test_init_with_custom_flags(self):
-        rs = self.reposync.RepoSync('Label', RTYPE, fail=True, quiet=True,
+        rs = self._init_reposync('Label', RTYPE, fail=True, quiet=True,
                                noninteractive=True)
 
         self.assertEqual(rs.fail, True)
@@ -101,17 +101,19 @@ class RepoSyncTest(unittest.TestCase):
 
     def test_init_rhnlog(self):
         """Init rhnLog successfully"""
-        rs = reposync.RepoSync('Label', RTYPE)
+        rs = self._init_reposync('Label', RTYPE)
 
         self.assertTrue(self.reposync.rhnLog.initLOG.called)
 
     def test_init_channel(self):
         self.reposync.rhnChannel.channel_info = Mock(return_value=
-                                                {'name': 'mocked Channel'})
+                                                {'name': 'mocked Channel',
+                                                 'id': 1})
+        self.reposync.get_compatible_arches = Mock(return_value=['arch1', 'arch2'])
 
         rs = self.reposync.RepoSync('Label', RTYPE)
 
-        self.assertEqual(rs.channel, {'name': 'mocked Channel'})
+        self.assertEqual(rs.channel, {'name': 'mocked Channel', 'id': 1})
         
     def test_init_bad_channel(self):
         self.reposync.rhnChannel.channel_info = Mock(return_value=None)
@@ -128,7 +130,7 @@ class RepoSyncTest(unittest.TestCase):
                          self.stderr.getvalue())
 
     def test_sync_success_no_regen(self):
-        rs = self.reposync.RepoSync("Label", RTYPE)
+        rs = self._init_reposync()
 
         rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
 
@@ -154,7 +156,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertFalse(self.reposync.taskomatic.add_to_erratacache_queue.called)
 
     def test_sync_success_regen(self):
-        rs = self.reposync.RepoSync("Label", RTYPE)
+        rs = self._init_reposync()
 
         rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
 
@@ -287,17 +289,16 @@ class RepoSyncTest(unittest.TestCase):
     def test_updates_process_packages_simple(self):
         rs = self._create_mocked_reposync()
 
-        rs.channel = {'org_id': None}
         packages = [{'name': 'n1',
                      'version': 'v1',
                      'release': 'r1',
-                     'arch': 'a1',
+                     'arch': 'arch1',
                      'channel_label': 'l1',
                      'epoch': []},
                     {'name': 'n2',
                      'version': 'v2',
                      'release': 'r2',
-                     'arch': 'a2',
+                     'arch': 'arch2',
                      'channel_label': 'l2',
                      'epoch': 'e2'}]
         checksum = {'epoch': None,
@@ -312,18 +313,16 @@ class RepoSyncTest(unittest.TestCase):
 
     def test_updates_process_packages_returns_the_right_values(self):
         rs = self._create_mocked_reposync()
-        rs.channel = {'org_id': 'org'}
+
         packages = [{'name': 'n1',
                      'version': 'v1',
                      'release': 'r1',
-                     'arch': 'a1',
-                     'channel_label': 'l1',
+                     'arch': 'arch1',
                      'epoch': []},
                     {'name': 'n2',
                      'version': 'v2',
                      'release': 'r2',
-                     'arch': 'a2',
-                     'channel_label': 'l2',
+                     'arch': 'arch2',
                      'epoch': 'e2'}]
 
         checksum = {'epoch': 'cs_epoch',
@@ -336,7 +335,6 @@ class RepoSyncTest(unittest.TestCase):
 
         p1 = self.reposync.IncompletePackage()
         p1.populate({'package_size': None,
-                     'channel_label': 'l1',
                      'name': 'n1',
                      'checksum_list': None,
                      'md5sum': None,
@@ -350,10 +348,9 @@ class RepoSyncTest(unittest.TestCase):
                      'release': 'r1',
                      'checksums': {'md5': '12345'},
                      'checksum': '12345',
-                     'arch': 'a1'})
+                     'arch': 'arch1'})
         p2 = self.reposync.IncompletePackage()
         p2.populate({'package_size': None,
-                     'channel_label': 'l2',
                      'name': 'n2',
                      'checksum_list': None,
                      'md5sum': None,
@@ -367,7 +364,7 @@ class RepoSyncTest(unittest.TestCase):
                      'release': 'r2',
                      'checksums': {'md5': '12345'},
                      'checksum': '12345',
-                     'arch': 'a2'})
+                     'arch': 'arch2'})
         fixtures = [p1, p2]
         for pkg, fix in zip(processed, fixtures):
             self.assertEqual(pkg, fix)
@@ -375,38 +372,38 @@ class RepoSyncTest(unittest.TestCase):
     def test_updates_process_packages_checksum_not_found(self):
         rs = self._create_mocked_reposync()
 
-        rs.channel = {'org_id': None}
         packages = [{'name': 'n2',
                      'version': 'v2',
                      'release': 'r2',
-                     'arch': 'a2',
+                     'arch': 'arch2',
                      'channel_label': 'l2',
                      'epoch': 'e2'}]
 
         _mock_rhnsql(self.reposync, [])
         self.assertEqual(rs._updates_process_packages(packages, 'patchy'),
                          [])
-        self.assertEqual(rs.print_msg.call_args,
-                         (("No checksum found for n2-e2:v2-r2.a2. "
-                           "Skipping Patch patchy", ),))
+        self.assertEqual(rs.print_msg.call_args, (
+                ("The package n2-e2:v2-r2.arch2 "
+                 "which is referenced by patch patchy was not found "
+                 "in the database. This patch has been skipped.", ),{}))
 
     def test_updates_process_packages_checksum_not_found_no_epoch(self):
         rs = self._create_mocked_reposync()
 
-        rs.channel = {'org_id': None}
         packages = [{'name': 'n1',
                      'version': 'v1',
                      'release': 'r1',
-                     'arch': 'a1',
+                     'arch': 'arch1',
                      'channel_label': 'l1',
                      'epoch': []}]
 
         _mock_rhnsql(self.reposync, [])
         self.assertEqual(rs._updates_process_packages(packages, 'patchy'),
                          [])
-        self.assertEqual(rs.print_msg.call_args,
-                         (("No checksum found for n1:v1-r1.a1. "
-                           "Skipping Patch patchy", ),))
+        self.assertEqual(rs.print_msg.call_args, (
+                ("The package n1:v1-r1.arch1 "
+                 "which is referenced by patch patchy was not found "
+                 "in the database. This patch has been skipped.", ),{}))
 
     def test_upload_updates_referenced_package_not_found(self):
         timestamp1 = datetime.now().isoformat(' ')
@@ -427,14 +424,12 @@ class RepoSyncTest(unittest.TestCase):
         # no packages related to this errata makes the ErrataImport be called
         # with an empty list
         self.reposync.RepoSync._updates_process_packages = Mock(return_value=[])
-        self.reposync.RepoSync.get_errata = Mock(return_value=None)
+        self.reposync.get_errata = Mock(return_value=None)
 
         mocked_backend = Mock()
         self.reposync.SQLBackend = Mock(return_value=mocked_backend)
         self.reposync.ErrataImport = Mock()
         rs = self._create_mocked_reposync()
-        rs.channel = {'org_id': 'org',
-                      'arch': 'arch'}
 
         rs.upload_updates(notices)
 
@@ -526,9 +521,8 @@ class RepoSyncTest(unittest.TestCase):
         # mock RepoSync object methods (we can't use the usual
         # _mock_rhnsql method because that would mock the
         # import_packages method)
-        rs = self.reposync.RepoSync("Label", RTYPE)
+        rs = self._init_reposync("Label", RTYPE)
         rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
-        rs.compatiblePackageArchs = Mock(return_value=['arch1', 'arch2'])
         rs.print_msg = Mock()
         rs._download_packages = Mock()
         rs._link_packages = Mock()
@@ -567,9 +561,8 @@ class RepoSyncTest(unittest.TestCase):
         # mock RepoSync object methods (we can't use the usual
         # _mock_rhnsql method because that would mock the
         # import_packages method)
-        rs = self.reposync.RepoSync("Label", RTYPE)
+        rs = self._init_reposync("Label", RTYPE)
         rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
-        rs.compatiblePackageArchs = Mock(return_value=['arch1', 'arch2'])
         rs.print_msg = Mock()
         rs._download_packages = Mock()
         rs._link_packages = Mock()
@@ -609,10 +602,9 @@ class RepoSyncTest(unittest.TestCase):
         # mock RepoSync object methods (we can't use the usual
         # _mock_rhnsql method because that would mock the
         # import_packages method)
-        rs = self.reposync.RepoSync("Label", RTYPE)
+        rs = self._init_reposync("Label", RTYPE)
         rs.channel = {'org_id': 'org'}
         rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
-        rs.compatiblePackageArchs = Mock(return_value=['arch1', 'arch2'])
         rs.print_msg = Mock()
         rs._download_packages = Mock()
         rs._link_packages = Mock()
@@ -651,9 +643,8 @@ class RepoSyncTest(unittest.TestCase):
         # mock RepoSync object methods (we can't use the usual
         # _mock_rhnsql method because that would mock the
         # import_packages method)
-        rs = self.reposync.RepoSync("Label", RTYPE)
+        rs = self._init_reposync("Label", RTYPE)
         rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
-        rs.compatiblePackageArchs = Mock(return_value=['arch1', 'arch2'])
         rs.print_msg = Mock()
 
         repo = Mock()
@@ -687,10 +678,9 @@ class RepoSyncTest(unittest.TestCase):
         # mock RepoSync object methods (we can't use the usual
         # _mock_rhnsql method because that would mock the
         # import_packages method)
-        rs = self.reposync.RepoSync("Label", RTYPE)
+        rs = self._init_reposync("Label", RTYPE)
         rs.channel = {'org_id': 'org'}
         rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
-        rs.compatiblePackageArchs = Mock(return_value=['arch1', 'arch2'])
         rs.print_msg = Mock()
         rs._download_packages = Mock()
         rs._link_packages = Mock()
@@ -848,24 +838,36 @@ class RepoSyncTest(unittest.TestCase):
                             'error', ), {})])
 
     def test_get_errata_no_advisories_found(self):
-        rs = self._create_mocked_reposync()
         _mock_rhnsql(self.reposync, None)
-        self.assertEqual(rs.get_errata('bogus'), None)
+        self.assertEqual(self.reposync.get_errata('bogus'), None)
 
     def test_get_errata_advisories_but_no_channels(self):
-        rs = self._create_mocked_reposync()
         _mock_rhnsql(self.reposync, [{'id': 42}, []])
-        self.assertEqual(rs.get_errata('bogus'), {'channels': [], 'id': 42})
+        self.assertEqual(self.reposync.get_errata('bogus'),
+                         {'channels': [], 'id': 42})
 
     def test_get_errata_success(self):
-        rs = self._create_mocked_reposync()
         _mock_rhnsql(self.reposync, [{'id': 42}, ['channel1', 'channel2']])
-        self.assertEqual(rs.get_errata('bogus'), {'id': 42,
-                                                  'channels': ['channel1',
-                                                               'channel2']})
-        
+        self.assertEqual(self.reposync.get_errata('bogus'),
+                         {'id': 42, 'channels': ['channel1', 'channel2']})
+
+    def test_get_compat_arches(self):
+        _mock_rhnsql(self.reposync, ({'label': 'a1'}, {'label':'a2'}))
+        self.assertEqual(self.reposync.get_compatible_arches(None),
+                         ['a1', 'a2'])
+
+    def _init_reposync(self, label="Label", repo_type=RTYPE, **kwargs):
+        """Initialize the RepoSync object with some mocked attrs"""
+        self.reposync.get_compatible_arches = Mock(
+            return_value=['arch1', 'arch2'])
+        channel = {'org_id':'org', 'id':1, 'arch': 'arch1'}
+        self.reposync.RepoSync.load_channel = Mock(return_value=channel)
+        rs = self.reposync.RepoSync(label, repo_type, **kwargs)
+        return rs
+
     def _create_mocked_reposync(self):
-        rs = self.reposync.RepoSync("Label", RTYPE)
+        """Create a fully mocked RepoSync"""
+        rs = self._init_reposync()
         rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
         rs = self._mock_sync(rs)
 
@@ -907,12 +909,14 @@ class RepoSyncTest(unittest.TestCase):
         rs.import_updates = Mock()
         self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription = Mock()
         self.reposync.taskomatic.add_to_erratacache_queue = Mock()
+
         rs.print_msg = Mock()
 
         rs.mocked_plugin = Mock()
         rs.repo_plugin = Mock(return_value=rs.mocked_plugin)
 
         rs.update_date = Mock()
+
         self.reposync.initCFG = Mock()
         self.reposync.CFG.HTTP_PROXY = rs.mocked_proxy = Mock()
         self.reposync.CFG.HTTP_PROXY_USERNAME = rs.mocked_proxy_user = Mock()
