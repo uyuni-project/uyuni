@@ -8,10 +8,10 @@
 # FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-# 
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation. 
+# in this software or its documentation.
 #
 import yum
 import shutil
@@ -22,9 +22,6 @@ import urlgrabber
 from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
 from rpmUtils.transaction import initReadOnlyTransaction
 
-import yum
-from yum import misc, Errors
-from yum.i18n import to_unicode
 from yum.update_md import UpdateMetadata, UpdateNoticeException, UpdateNotice
 from yum.yumRepo import YumRepository
 try:
@@ -142,7 +139,7 @@ class ContentSource:
 
         try:
             sack.populate(self.repo, 'metadata', None, 0)
-        except Errors.RepoError,e :
+        except yum.Errors.RepoError,e :
             if "No more mirrors" in str(e):
                 reqFile = re.search('failure:\s+(.+)\s+from',
                                     str(e)).groups()[0]
@@ -161,7 +158,7 @@ class ContentSource:
             if pack.arch == 'src':
                 continue
             new_pack = ContentPackage()
-            new_pack.setNVREA(pack.name, pack.version, pack.release, 
+            new_pack.setNVREA(pack.name, pack.version, pack.release,
                               pack.epoch, pack.arch)
             new_pack.unique_id = pack
             new_pack.checksum_type = pack.checksums[0][0]
@@ -239,7 +236,7 @@ class ContentSource:
             um = YumUpdateMetadata()
             try:
                 um.add(self.repo, all=True)
-            except Errors.NoMoreMirrorsRepoError:
+            except yum.Errors.NoMoreMirrorsRepoError:
                 raise ChannelTimeoutException("Retrieving updateinfo failed: File not found")
             return ('updateinfo', um.notices)
 
@@ -258,7 +255,7 @@ class ContentSource:
                 filename = os.path.join(self.repo.cachedir, 'patches',
                                         os.path.basename(relative))
                 try:
-                    self.repo.grab.urlgrab(misc.to_utf8(relative),
+                    self.repo.grab.urlgrab(yum.misc.to_utf8(relative),
                                            filename,
                                            checkfunc=(self.patches_checksum_func,
                                                       (checksum_type, checksum),
@@ -315,7 +312,7 @@ class ContentSource:
             keys = self._retrievePublicKey(keyurl, repo)
             for info in keys:
                 # Check if key is already installed
-                if info['keyid'] in misc.return_keyids_from_pubring(repo.gpgdir):
+                if info['keyid'] in yum.misc.return_keyids_from_pubring(repo.gpgdir):
                     continue
 
                 # Try installing/updating GPG key
@@ -331,7 +328,7 @@ class ContentSource:
                     raise ChannelException, "GPG key(0x%s '%s') for repo %s rejected" % (info['hexkeyid'],info['userid'],repo)
 
                 # Import the key
-                result = misc.import_key_to_pubring(info['raw_key'], info['hexkeyid'], gpgdir=repo.gpgdir)
+                result = yum.misc.import_key_to_pubring(info['raw_key'], info['hexkeyid'], gpgdir=repo.gpgdir)
                 if not result:
                     raise ChannelException, 'Key import failed'
                 result = self.import_key_to_rpmdb(info['raw_key'], info['hexkeyid'], gpgdir=repo.gpgdir)
@@ -357,7 +354,7 @@ class ContentSource:
 
         # Go get the GPG key from the given URL
         try:
-            url = misc.to_utf8(keyurl)
+            url = yum.misc.to_utf8(keyurl)
             if repo is None:
                 rawkey = urlgrabber.urlread(url, limit=9999)
             else:
@@ -374,9 +371,9 @@ class ContentSource:
 
         except urlgrabber.grabber.URLGrabError, e:
             raise ChannelException('GPG key retrieval failed: ' +
-                                    to_unicode(str(e)))
+                                    yum.i18n.to_unicode(str(e)))
         # Parse the key
-        keys_info = misc.getgpgkeyinfo(rawkey, multiple=True)
+        keys_info = yum.misc.getgpgkeyinfo(rawkey, multiple=True)
         keys = []
         for keyinfo in keys_info:
             thiskey = {}
@@ -387,14 +384,15 @@ class ContentSource:
                       'GPG key parsing failed: key does not have value %s' % info
                 thiskey[info] = keyinfo[info]
             thiskey['keyid'] = str("%16x" % (thiskey['keyid'] & 0xffffffffffffffffL)).upper()
-            thiskey['hexkeyid'] = misc.keyIdToRPMVer(keyinfo['keyid']).upper()
+            thiskey['hexkeyid'] = yum.misc.keyIdToRPMVer(keyinfo['keyid']).upper()
             keys.append(thiskey)
 
         return keys
 
     def askImportKey(self, d ):
         if self.interactive:
-          print 'Do you want to import the GPG key 0x%s "%s" from %s? [y/n]:' % (d['hexkeyid'], to_unicode(d['userid']), d['keyurl'],)
+          print 'Do you want to import the GPG key 0x%s "%s" from %s? [y/n]:' % (d['hexkeyid'],
+              yum.i18n.to_unicode(d['userid']), d['keyurl'],)
           yn = sys.stdin.readline()
           yn = yn.strip()
 
@@ -410,7 +408,7 @@ class ContentSource:
       ts = initReadOnlyTransaction("/")
       for hdr in ts.dbMatch('name', 'gpg-pubkey'):
         if hdr['description'] != "":
-          misc.import_key_to_pubring(hdr['description'], hdr['version'], gpgdir=gpgdir)
+          yum.misc.import_key_to_pubring(hdr['description'], hdr['version'], gpgdir=gpgdir)
 
     def import_key_to_rpmdb(self, raw, keyid, gpgdir):
       if not os.path.exists(gpgdir):
