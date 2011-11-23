@@ -543,7 +543,7 @@ class RepoSync:
         del param_dict['epoch']
 
         if not pkgepoch or pkgepoch == '0':
-            epochStatement = "(pevr.epoch is NULL or pevr.epoch = 0)"
+            epochStatement = "(pevr.epoch is NULL or pevr.epoch = '0')"
         else:
             epochStatement = "pevr.epoch = :epoch"
             param_dict['epoch'] = pkgepoch
