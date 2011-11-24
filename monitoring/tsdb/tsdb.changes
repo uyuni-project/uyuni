@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Aug  8 12:13:55 UTC 2011 - kkaempf@novell.com
+
+- remove the explicit 'Vendor' tag, define it during build
+
+-------------------------------------------------------------------
 Mon Feb  7 15:56:59 CET 2011 - mc@suse.de
 
 - add rc link (bnc#669894) 
