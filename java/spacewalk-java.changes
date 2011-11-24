@@ -1,38 +1,76 @@
 -------------------------------------------------------------------
-Wed Nov 23 13:59:17 CET 2011 - ug@suse.de
+Wed Nov 16 10:00:08 CET 2011 - jrenner@suse.de
 
-- added --force to registration in snippet
-
--------------------------------------------------------------------
-Fri Nov 11 16:21:11 CET 2011 - jrenner@suse.de
-
-- Removed markup in error message from all translation files
+- Fix ISE when deleting software channel (bnc#728894)
 
 -------------------------------------------------------------------
-Fri Nov 11 16:14:26 CET 2011 - jrenner@suse.de
+Tue Nov 15 13:55:46 CET 2011 - jrenner@suse.de
 
-- Fix rename Kickstart to Autoinstallation (bnc#727517)
+- Remove markup from error message (bnc#730408)
 
 -------------------------------------------------------------------
-Wed Nov  9 17:05:31 CET 2011 - jrenner@suse.de
+Mon Nov 14 14:12:15 CET 2011 - ug@suse.de
+
+- use --force in the kickstart register snippet
+
+-------------------------------------------------------------------
+Fri Nov 11 16:00:56 CET 2011 - jrenner@suse.de
+
+- Fix rename Kickstart -> Autoinstallation (bnc#727517)
+
+-------------------------------------------------------------------
+Fri Nov 11 10:43:13 CET 2011 - jrenner@suse.de
+
+- Remove markup in error message from all translation files
+
+-------------------------------------------------------------------
+Tue Nov  8 14:59:00 CET 2011 - ug@suse.de
+
+- rename kickstart/autoyast files on harddisk too when the
+  profile gets a new label (bnc#706122)
+
+-------------------------------------------------------------------
+Tue Nov  8 14:17:11 CET 2011 - jrenner@suse.de
 
 - Implement audit logging for webui and frontend API (fate#312607)
 
 -------------------------------------------------------------------
-Tue Nov  8 15:14:14 CET 2011 - ug@suse.de
+Tue Nov  8 08:52:23 CET 2011 - mantel@suse.de
 
-- rename kickstart/autoyast files on harddisk too in case
-  the profile got a new label (bnc#706122)
-
--------------------------------------------------------------------
-Tue Nov  8 09:18:37 CET 2011 - mantel@suse.de
-
-- rename kickstart to Autoinstallation (bnc#727517)
+- rename "kickstart" to "Autoinstallation" (bnc#727517)
 
 -------------------------------------------------------------------
-Wed Oct 12 15:07:05 CEST 2011 - ug@suse.de
+Tue Oct 25 17:45:27 CEST 2011 - mc@suse.de
 
-- breed in cobbler was not updated if a distro was edited
+- fix currency report if all patches are installed (bnc#726543)
+
+-------------------------------------------------------------------
+Mon Oct 17 13:13:21 CEST 2011 - jrenner@suse.de
+
+- CVE-2011-1594: Unintended Proxy/Open Redirects (bnc#644082)
+- CVE-2011-2919: XSS on SystemGroupList.do page (bnc#719133)
+- CVE-2011-2920: XSS flaw(s) in filter handling (bnc#719136)
+- CVE-2011-2927: XSS flaw in channels search (bnc#719127)
+
+-------------------------------------------------------------------
+Thu Oct 13 15:44:27 CEST 2011 - jrenner@suse.de
+
+- Apply revised patch to fix pam setting not saved (bnc#705179)
+
+-------------------------------------------------------------------
+Wed Oct 12 15:04:55 CEST 2011 - ug@suse.de
+
+- the breed in cobbler was not changed when a distro was edited
+
+-------------------------------------------------------------------
+Wed Oct 12 13:23:30 CEST 2011 - jrenner@suse.de
+
+- Fixed pam setting on user page not saving (bnc#705179)
+
+-------------------------------------------------------------------
+Tue Oct 11 13:19:06 CEST 2011 - jrenner@suse.de
+
+- Add fix for schedule command AFTER package install (bnc#712647)
 
 -------------------------------------------------------------------
 Fri Oct  7 12:15:24 CEST 2011 - mc@suse.de
@@ -40,117 +78,185 @@ Fri Oct  7 12:15:24 CEST 2011 - mc@suse.de
 - show installed products in system overview (bnc#711021)
 
 -------------------------------------------------------------------
+Wed Oct  5 16:33:20 CEST 2011 - jrenner@suse.de
+
+- Fix selection of errata for system currency report (bnc#721522)
+
+-------------------------------------------------------------------
+Wed Oct  5 14:23:36 CEST 2011 - mc@suse.de
+
+- prevent listing duplicate servers in the Patch Alert e-mails
+
+-------------------------------------------------------------------
+Fri Sep 30 10:54:21 CEST 2011 - mc@suse.de
+
+- enable sorting of the system currency page
+- enable csv export of System Currency Report
+
+-------------------------------------------------------------------
 Thu Sep 29 17:36:12 CEST 2011 - mc@suse.de
 
 - count system currency depending on severity stored in the DB
 
 -------------------------------------------------------------------
-Fri Sep 16 13:46:40 CEST 2011 - ug@suse.de
+Fri Sep 16 13:21:39 CEST 2011 - ug@suse.de
 
 - added sles snippets
 - always create a tracking regkey (bnc#659093)
 
 -------------------------------------------------------------------
-Wed Sep  7 14:43:00 CEST 2011 - jrenner@suse.de
+Tue Sep 13 10:18:52 CEST 2011 - jrenner@suse.de
+
+- Fix ISE by backporting from upstream (bnc#712647, brc#691849)
+
+-------------------------------------------------------------------
+Tue Sep  6 16:53:31 CEST 2011 - jrenner@suse.de
 
 - Create cobbler records for unregistered systems (fate#312329)
+- Fix broken API doc for channel.software (bnc#712793)
 
 -------------------------------------------------------------------
-Fri Aug 12 14:28:50 CEST 2011 - jrenner@suse.de
+Fri Aug 12 13:13:05 CEST 2011 - jrenner@suse.de
 
-- Wrap around unix2_chkpwd instead of using jpam (bnc#705758)
+- Remove trailing whitespace in new classes (bnc#705758)
 
 -------------------------------------------------------------------
-Fri Jul 29 16:04:36 CEST 2011 - jrenner@suse.de
+Fri Jul 29 15:27:03 CEST 2011 - jrenner@suse.de
 
 - Fix software rollback to profiles (bnc#701772)
 
 -------------------------------------------------------------------
-Mon Jul 18 13:51:33 CEST 2011 - ug@suse.de
+Wed Jul 27 12:21:16 CEST 2011 - jrenner@suse.de
 
-- changed the kernel-options field to 1024 in the web-ui 
-  (bnc#698166)
-
--------------------------------------------------------------------
-Tue Jul  5 13:10:29 CEST 2011 - ug@suse.de
-
-- Kickstarting RHEL systems with RES (expanded support) 
-  repos fails (bnc#703475)
+- Fix taskomatic classpath to make it start again (bnc#705758)
 
 -------------------------------------------------------------------
-Tue Jun 28 11:46:51 CEST 2011 - ug@suse.de
+Mon Jul 25 12:53:26 CEST 2011 - jrenner@suse.de
+
+- Use string array for creating the cmd + empty env (bnc#705758)
+- Return failure if user or passwd is null (bnc#705758)
+
+-------------------------------------------------------------------
+Fri Jul 22 15:04:24 CEST 2011 - jrenner@suse.de
+
+- Wrap around unix2_chkpwd instead of using jpam (bnc#705758)
+
+-------------------------------------------------------------------
+Mon Jul 18 13:39:30 CEST 2011 - ug@suse.de
+
+- kernel-options field in kickstart upload page changed to
+  1024 chars (bnc#698166)
+
+-------------------------------------------------------------------
+Fri Jul  8 15:21:49 CEST 2011 - jrenner@suse.de
+
+- Fix bnc#704049 by backporting 2 patches
+
+-------------------------------------------------------------------
+Fri Jul  8 09:09:23 CEST 2011 - jrenner@suse.de
+
+- Refactor RedHat.do to Vendor.do (bnc#671239)
+- Refactor and deprecate API method (bnc#671239)
+- Include security token in system search filter
+
+-------------------------------------------------------------------
+Tue Jul  5 11:44:36 CEST 2011 - ug@suse.de
+
+- added a function to get a package but Name+Headerrange
+  (bnc#703475)
+
+-------------------------------------------------------------------
+Tue Jun 28 16:35:44 CEST 2011 - mc@suse.de
+
+- allow setting null value as paramter (bnc#702641)
+
+-------------------------------------------------------------------
+Tue Jun 28 11:43:44 CEST 2011 - ug@suse.de
 
 - fix XMLRPC call to raise a virtual machine
   (bnc#687323 and fate#312369)
 
 -------------------------------------------------------------------
-Wed Jun 22 11:13:55 CEST 2011 - ug@suse.de
+Tue Jun 21 16:29:55 CEST 2011 - jrenner@suse.de
 
-- track RPM installation on SUSE installations
-  part of a fix for bnc#659093 and fate#312383
-
--------------------------------------------------------------------
-Wed Jun 22 11:07:08 CEST 2011 - ug@suse.de
-
-- replaced 'anaconda' string by 'autoinstallation'
-
--------------------------------------------------------------------
-Tue Jun 21 17:22:16 CEST 2011 - jrenner@suse.de
-
+- Fix missing tokens when updating child channels (bnc#701157)
 - Check session validity first, security token next (bnc#644074)
-- Merge with upstream spacewalk (bnc#644074) 
+- Merge with upstream spacewalk (bnc#644074)
 
 -------------------------------------------------------------------
-Fri Jun 17 09:19:24 CEST 2011 - jrenner@suse.de
+Tue Jun 21 14:10:54 CEST 2011 - ug@suse.de
+
+- fix XML RPC call to install a virtual machine
+  (fate#312369 and bnc#687323)
+
+-------------------------------------------------------------------
+Tue Jun 21 13:57:03 CEST 2011 - ug@suse.de
+
+- replaced 'anaconda' by 'autoinstallation'
+
+-------------------------------------------------------------------
+Tue Jun 21 13:27:43 CEST 2011 - ug@suse.de
+
+- track RPM installation during virtual machine setup by
+  using session install=.... parameter 
+  part of the fix for bnc#659093 and Fate#312372
+
+-------------------------------------------------------------------
+Thu Jun 16 15:52:06 CEST 2011 - jrenner@suse.de
 
 - Fix missing token in SSM (bnc#644074)
 
 -------------------------------------------------------------------
-Wed Jun 15 10:14:12 CEST 2011 - ug@suse.de
+Tue Jun 14 17:31:53 CEST 2011 - ug@suse.de
 
 - XML RPC API for creating virtual SUSE machines fixed
   (fate#312369 and bnc#687323)
 
 -------------------------------------------------------------------
-Thu Jun  9 16:10:51 CEST 2011 - jrenner@suse.de
+Tue Jun 14 11:03:00 CEST 2011 - ug@suse.de
+
+- settings the correct architecture in cobbler, needed by virt. 
+  SUSE installations (fate#312397 and bnc#682665)
+
+-------------------------------------------------------------------
+Thu Jun  9 09:59:03 CEST 2011 - jrenner@suse.de
 
 - Additional fixes for the CSRF security bugfix (bnc#644074)
 
 -------------------------------------------------------------------
-Thu May 26 17:02:07 CEST 2011 - jrenner@suse.de
-
-- Integrate password strength meter in webapp (bnc#685551/fate#312398)
-
--------------------------------------------------------------------
-Thu May 26 16:38:09 CEST 2011 - jrenner@suse.de
+Thu May 26 16:42:41 CEST 2011 - jrenner@suse.de
 
 - Add token into POST url for multipart forms (bnc#644074)
 
 -------------------------------------------------------------------
-Tue May 24 17:56:17 CEST 2011 - jrenner@suse.de
+Thu May 26 11:59:54 CEST 2011 - jrenner@suse.de
+
+- Integrate password strength meter in webapp (bnc#685551/fate#312398)
+
+-------------------------------------------------------------------
+Tue May 24 17:48:59 CEST 2011 - jrenner@suse.de
 
 - Prevent from phishing attacks via 'url_bounce' (bnc#644082)
 - CVE-2011-1594
 
 -------------------------------------------------------------------
-Mon May 23 17:18:33 CEST 2011 - jrenner@suse.de
+Mon May 23 16:24:56 CEST 2011 - jrenner@suse.de
 
 - Protect web UI against Cross-Site Request Forgery (bnc#644074)
 - CVE-2009-4139
 
 -------------------------------------------------------------------
-Fri May  6 10:11:52 CEST 2011 - ug@suse.de
-
-- set the architecture for virtual machines in cobbler
-  (bnc#682665)
-
--------------------------------------------------------------------
-Tue May  3 11:26:39 CEST 2011 - jrenner@suse.de
+Tue May  3 11:13:36 CEST 2011 - jrenner@suse.de
 
 - Rebranding of example search terms (bnc#682601)
 
 -------------------------------------------------------------------
-Tue Apr 12 11:48:05 CEST 2011 - mantel@suse.de
+Fri Apr 15 16:15:01 CEST 2011 - jrenner@suse.de
+
+- Use isNotEmpty() instead of isEmpty()
+
+-------------------------------------------------------------------
+Tue Apr 12 11:49:33 CEST 2011 - mantel@suse.de
 
 - fix subject line of taskomatic notification mail
 
