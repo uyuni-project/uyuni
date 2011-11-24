@@ -1,4 +1,191 @@
 -------------------------------------------------------------------
+Tue Nov  8 14:09:44 CET 2011 - jrenner@suse.de
+
+- Implement audit logging for the backend API (fate#312607)
+
+-------------------------------------------------------------------
+Wed Oct 26 13:59:09 CEST 2011 - mc@suse.de
+
+- add support for V4 DSA and RSA rpm signatures to display correct
+  content provider (bnc#726577)
+- enhance spacewalk-update-signatures to clean wrong keyids
+  before update starts
+
+-------------------------------------------------------------------
+Thu Oct 13 14:51:29 CEST 2011 - iartarisi@suse.cz
+
+- fix reposync failure when trying to associate package which couldn't
+  be downloaded (bnc#722917)
+
+-------------------------------------------------------------------
+Tue Oct 11 17:01:46 CEST 2011 - mc@suse.de
+
+- fix spacewalk-remove-channel to work on SUSE Manager (bnc#670206)
+
+-------------------------------------------------------------------
+Tue Oct 11 15:59:36 CEST 2011 - mc@suse.de
+
+- adapt spacewalk-debug for SUSE Manager
+
+-------------------------------------------------------------------
+Mon Oct 10 15:19:31 CEST 2011 - mc@suse.de
+
+- fix typo in reposync cleanup script (bnc#712860)
+
+-------------------------------------------------------------------
+Fri Oct  7 12:33:18 CEST 2011 - iartarisi@suse.cz
+
+ - fix bug when parsing a patches.xml file with an extra <category> tag
+
+-------------------------------------------------------------------
+Wed Oct  5 19:01:45 CEST 2011 - mc@suse.de
+
+- drop incompatible packages of a patch
+
+-------------------------------------------------------------------
+Fri Sep 30 12:39:33 CEST 2011 - mc@suse.de
+
+- remove default currency from backend part of rhn.conf
+
+-------------------------------------------------------------------
+Thu Sep 29 13:52:25 CEST 2011 - mc@suse.de
+
+- set patch severity to Low if none is specified to get all
+  security patches listed in the currency report
+
+-------------------------------------------------------------------
+Mon Sep 26 17:57:36 CEST 2011 - iartarisi@suse.cz
+
+- fix e['channels'].append AttributeError in case existing_errata is None
+- fix failing unittest
+
+-------------------------------------------------------------------
+Mon Sep 26 17:06:15 CEST 2011 - mc@suse.de
+
+- fix loosing patches if a repository is synced into
+  different channels (bnc#720312)
+
+-------------------------------------------------------------------
+Fri Sep 23 14:36:11 CEST 2011 - mc@suse.de
+
+- add unittests to check again
+
+-------------------------------------------------------------------
+Fri Sep 23 13:21:58 CEST 2011 - mc@suse.de
+
+- change BuildRoot to SUSE default required for BuildService
+- recompile python after unittests to remove buildroot path
+  in binaries
+
+-------------------------------------------------------------------
+Tue Sep 20 17:35:42 CEST 2011 - iartarisi@suse.cz
+
+- use pylint instead of python-pylint for checks
+
+-------------------------------------------------------------------
+Mon Sep 12 13:47:36 CEST 2011 - iartarisi@suse.cz
+
+- remove extra toy targets that we don't use from Makefile.defs, which
+  were mangling the PYTHONPATH
+
+-------------------------------------------------------------------
+Mon Sep 12 11:24:58 CEST 2011 - iartarisi@suse.cz
+
+- run unittests and pylint from Makefile.backend at build time
+
+-------------------------------------------------------------------
+Fri Sep  9 12:24:19 CEST 2011 - iartarisi@suse.cz
+
+- fixed E:442:XML_Dumper._validate_channels: Too many arguments for
+  format string
+
+-------------------------------------------------------------------
+Wed Sep  7 16:23:27 CEST 2011 - mc@suse.de
+
+- add cronjob to cleanup reposync log directory (bnc#712860)
+
+-------------------------------------------------------------------
+Wed Sep  7 12:42:51 CEST 2011 - mc@suse.de
+
+- refactor reposync
+
+-------------------------------------------------------------------
+Mon Sep  5 16:22:04 CEST 2011 - iartarisi@suse.cz
+
+- fix another typo in the specfile
+
+-------------------------------------------------------------------
+Mon Sep  5 16:17:15 CEST 2011 - iartarisi@suse.cz
+
+- fix typo in specfile
+
+-------------------------------------------------------------------
+Mon Sep  5 16:08:51 CEST 2011 - iartarisi@suse.cz
+
+- only run unittests during package build where we have the right
+  BuildRequires
+
+-------------------------------------------------------------------
+Mon Sep  5 11:31:49 CEST 2011 - iartarisi@suse.cz
+
+- added suseLib.py - library that deals with NCC/proxy configs/products
+  etc.
+- make unittests run during package build
+
+-------------------------------------------------------------------
+Mon Aug 22 16:35:42 CEST 2011 - iartarisi@suse.cz
+
+- fixed TypeError in find_bugs method caused by empty patch descriptions
+
+-------------------------------------------------------------------
+Thu Aug 18 10:33:49 CEST 2011 - iartarisi@suse.cz
+
+- fixed an import error in diskImportLib.py
+
+-------------------------------------------------------------------
+Fri Aug 12 11:09:59 CEST 2011 - iartarisi@suse.cz
+
+- remove 'channel' from server.handlers.app as the sources have already
+  been deleted (bnc#711967)
+
+-------------------------------------------------------------------
+Fri Aug 12 07:55:54 UTC 2011 - kkaempf@novell.com
+
+- Remove 'comps' from Makefile (bnc#711938)
+
+-------------------------------------------------------------------
+Fri Aug 12 07:20:58 UTC 2011 - kkaempf@novell.com
+
+- fix fetchTraceback and rhnFault import (bnc#711934)
+
+-------------------------------------------------------------------
+Thu Aug 11 15:08:03 CEST 2011 - iartarisi@suse.cz
+
+- fix more imports after the move from spacewalk.common
+
+-------------------------------------------------------------------
+Thu Aug 11 11:13:46 CEST 2011 - iartarisi@suse.cz
+
+- fix imports on UserDictCase to point to rhn.UserDictCase (bnc#711518)
+
+-------------------------------------------------------------------
+Wed Aug 10 11:30:48 CEST 2011 - iartarisi@suse.cz
+
+- removed implicit imports to spacewalk.common (fixes bnc#711214,
+  bnc#711211, bnc#711434)
+
+-------------------------------------------------------------------
+Tue Aug  9 10:26:35 CEST 2011 - iartarisi@suse.cz
+
+- fixed missing import of 're' module (bnc#711188)
+
+-------------------------------------------------------------------
+Wed Aug  3 15:45:41 CEST 2011 - iartarisi@suse.cz
+
+- reposync: fix ambiguous message when skipping a patch which references
+  a package that's not in the database (bnc#702932)
+
+-------------------------------------------------------------------
 Wed Jul  6 17:49:36 CEST 2011 - mc@suse.de
 
 - add server capability xmlrpc.errata.patch_names'
@@ -44,14 +231,15 @@ Mon May  9 10:23:05 CEST 2011 - mc@suse.de
   weak dependencies
 
 -------------------------------------------------------------------
-Thu Apr 21 10:55:09 CEST 2011 - iartarisi@suse.cz
+Wed Apr 20 11:24:05 CEST 2011 - iartarisi@suse.cz
 
-- Parse and insert Code10 zypper patches into the database
+- reposync - parse and insert zypper code10 patches into the database
 
 -------------------------------------------------------------------
 Thu Apr 14 15:19:47 CEST 2011 - jrenner@suse.de
 
 - Remove the channel APP handler (bnc#685078)
+  (CVE-2009-0788, CVE-2010-1171)
 
 -------------------------------------------------------------------
 Fri Apr  1 12:09:01 CEST 2011 - mc@suse.de
