@@ -1,8 +1,36 @@
--------------------------------------------------------------------
-Tue Oct  4 17:26:17 CEST 2011 - iartarisi@suse.cz
+--------------------------------------------------------------------
+Thu Nov 24 12:35:34 CET 2011 - iartarisi@suse.cz
 
 - allow setting VARCHAR2 size in CHARs and BYTEs explicitly
-- change rhnServerAction.result_msg column size from BYTE to CHAR
+
+-------------------------------------------------------------------
+Fri Sep 23 10:04:17 CEST 2011 - mc@suse.de
+
+- add index on rhnPackage checksum_id
+
+-------------------------------------------------------------------
+Thu Sep  8 16:21:55 CEST 2011 - iartarisi@suse.cz
+
+- set result_message SQL column size in CHARs instead of BYTEs
+  (bnc#700016)
+
+-------------------------------------------------------------------
+Wed Aug 10 09:07:05 UTC 2011 - kkaempf@novell.com
+
+- add sles-10-i686 and sles-10-i686 to suseostarget
+  bnc#711429
+- version to 1.2.73
+
+-------------------------------------------------------------------
+Mon Aug  8 16:36:27 CEST 2011 - ug@suse.de
+
+- fixed syntax error in schema upgrade (bnc#711007)
+
+-------------------------------------------------------------------
+Wed Jul 20 13:48:34 CEST 2011 - iartarisi@suse.cz
+
+- set result_message SQL column size in BYTEs instead of CHARs
+  (bnc#700016)
 
 -------------------------------------------------------------------
 Wed Jun  8 15:31:43 CEST 2011 - mc@suse.de
