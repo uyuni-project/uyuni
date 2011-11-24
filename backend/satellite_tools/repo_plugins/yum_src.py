@@ -15,6 +15,7 @@
 #
 import yum
 import shutil
+import subprocess
 import sys
 import gzip
 import xml.etree.ElementTree as etree
@@ -37,10 +38,11 @@ from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common import rhnLog
 import os
 import re
-import subprocess
 
 # namespace prefix to parse patches.xml file
 PATCHES = '{http://novell.com/package/metadata/suse/patches}'
+
+CACHE_DIR = '/var/cache/rhn/reposync/'
 
 class YumWarnings:
     def write(self, s):
@@ -87,41 +89,43 @@ class YumUpdateMetadata(UpdateMetadata):
                             no.add(un)
 
 class ContentSource:
-    repo = None
-    cache_dir = '/var/cache/rhn/reposync/'
-    def __init__(self, url, name, insecure=False, interactive=True, quiet=False):
+    def __init__(self, url, name, insecure=False, quiet=False, interactive=True,
+                 proxy=None, proxy_user=None, proxy_pass=None):
+        self.url = url
+        self.name = name
         self.insecure = insecure
         self.quiet = quiet
         self.interactive = interactive
-        self._clean_cache(self.cache_dir + name)
+        self.proxy = proxy
+        self.proxy_user = proxy_user
+        self.proxy_pass = proxy_pass
+        self._clean_cache(CACHE_DIR + name)
 
-        # read the proxy configuration in /etc/rhn/rhn.conf
-        initCFG('server.satellite')
-        self.proxy_addr = CFG.http_proxy
-        self.proxy_user = CFG.http_proxy_username
-        self.proxy_pass = CFG.http_proxy_password
-
-        if (self.proxy_user is not None and self.proxy_pass is not None and self.proxy_addr is not None):
-            self.proxy_url = "http://%s:%s@%s" %(self.proxy_user, self.proxy_pass, self.proxy_addr)
-        elif (self.proxy_addr is not None):
-            self.proxy_url = "http://%s" %(self.proxy_addr)
-        else:
-            self.proxy_url = None
         repo = yum.yumRepo.YumRepository(name)
         self.repo = repo
+        self.setup_repo(repo)
+        self.num_packages = 0
+        self.num_excluded = 0
+        self.sack = None
+
+    def setup_repo(self, repo):
+        """Fetch repository metadata"""
+        repo.proxy = self.proxy
+        repo.proxy_username = self.proxy_user
+        repo.proxy_password = self.proxy_pass
         repo.cache = 0
         repo.metadata_expire = 0
-        repo.mirrorlist = url
-        repo.baseurl = [url]
-        repo.basecachedir = self.cache_dir
+        repo.mirrorlist = self.url
+        repo.baseurl = [self.url]
+        repo.basecachedir = CACHE_DIR
         if self.insecure:
             repo.repo_gpgcheck = False
         else:
             repo.repo_gpgcheck = True
         if hasattr(repo, 'base_persistdir'):
-            repo.base_persistdir = self.cache_dir
-        if self.proxy_url is not None:
-            repo.proxy = self.proxy_url
+            repo.base_persistdir = CACHE_DIR
+        if self.proxy is not None:
+            repo.proxy = self.proxy
 
         warnings = YumWarnings()
         warnings.disable()
@@ -129,32 +133,28 @@ class ContentSource:
         warnings.restore()
         for burl in repo.baseurl:
             repo.gpgkey = [burl + '/repodata/repomd.xml.key']
-
         repo.setup(False, None, gpg_import_func=self.getKeyForRepo,
                    confirm_func=self.askImportKey)
         self.initgpgdir( repo.gpgdir )
-        self.num_packages = 0
-        self.num_excluded = 0
+        self.sack = self.repo.getPackageSack()
 
     def list_packages(self, filters):
         """ list packages"""
-        sack = self.repo.getPackageSack()
-
         try:
-            sack.populate(self.repo, 'metadata', None, 0)
+            self.sack.populate(self.repo, 'metadata', None, 0)
         except yum.Errors.RepoError,e :
             if "No more mirrors" in str(e):
                 reqFile = re.search('failure:\s+(.+)\s+from',
                                     str(e)).groups()[0]
-                raise ChannelTimeoutException("Retrieving '%s' failed: File not found in repository '%s'" % (reqFile, repo))
+                raise ChannelTimeoutException("Retrieving '%s' failed: File not found in repository '%s'" % (reqFile, self.repo))
             else:
                 raise
 
-        list = sack.returnPackages()
+        list = self.sack.returnPackages()
         self.num_packages = len(list)
         if filters:
             list = self._filter_packages(list, filters)
-            list = self._get_package_dependencies(sack, list)
+            list = self._get_package_dependencies(self.sack, list)
             self.num_excluded = self.num_packages - len(list)
         to_return = []
         for pack in list:

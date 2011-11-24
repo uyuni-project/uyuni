@@ -13,20 +13,24 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-import sys, os, time
 import hashlib
-import socket
+import os
 import re
-from datetime import datetime
+import socket
+import sys
+import time
 import traceback
+from datetime import datetime
+from optparse import OptionParser
 
 from yum import Errors
+from yum.i18n import to_unicode
+
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
 from spacewalk.common import rhnMail, rhnLog, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.checksum import getFileChecksum
-from spacewalk.common.rhn_mpm import InvalidPackageError
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Checksum, Bug, Keyword
@@ -64,9 +68,11 @@ class ChannelTimeoutException(ChannelException):
 class RepoSync:
     def __init__(self, channel_label, repo_type, url=None, fail=False,
                  quiet=False, noninteractive=False, filters=[]):
+        self.regen = False
         self.fail = fail
         self.quiet = quiet
         self.interactive = not noninteractive
+        self.filters = filters
 
         initCFG('server.susemanager')
         db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
@@ -74,20 +80,17 @@ class RepoSync:
 
         # setup logging
         log_filename = 'reposync.log'
-        if channel_label:
-            date = time.localtime()
-            datestr = '%d.%02d.%02d-%02d:%02d:%02d' % (
-                date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
-                date.tm_min, date.tm_sec)
-            log_filename = channel_label + '-' +  datestr + '.log'
-
+        date = time.localtime()
+        datestr = '%d.%02d.%02d-%02d:%02d:%02d' % (
+            date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
+            date.tm_min, date.tm_sec)
+        log_filename = channel_label + '-' +  datestr + '.log'
         rhnLog.initLOG(default_log_location + log_filename)
         #os.fchown isn't in 2.4 :/
         os.system("chgrp www " + default_log_location + log_filename)
 
-        if repo_type not in ["yum"]:
-            print "Error: Unknown type %s" % repo_type
-            sys.exit(2)
+        self.log_msg("\nSync started: %s" % (time.asctime(time.localtime())))
+        self.log_msg(str(sys.argv))
 
         if not url:
             # TODO:need to look at user security across orgs
@@ -112,40 +115,55 @@ class RepoSync:
         else:
             self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N'}]
 
-        self.filters = filters
-        self.log_msg("\nSync started: %s" % (time.asctime(time.localtime())))
-        self.log_msg(str(sys.argv))
-
-        self.type = repo_type
+        self.repo_plugin = self.load_plugin(repo_type)
         self.channel_label = channel_label
-        self.channel = self.load_channel()
 
+        self.channel = self.load_channel()
         if not self.channel:
             self.print_msg("Channel does not exist.")
             sys.exit(1)
 
         self.arches = get_compatible_arches(self.channel['id'])
 
+    def load_plugin(self, repo_type):
+        """Try to import the repository plugin required to sync the repository
+
+        :repo_type: type of the repository; only 'yum' is currently supported
+
+        """
+        name = repo_type + "_src"
+        mod = __import__('spacewalk.satellite_tools.repo_plugins',
+                         globals(), locals(), [name])
+        try:
+            submod = getattr(mod, name)
+        except AttributeError:
+            self.error_msg("Repository type %s is not supported. "
+                           "Could not import "
+                           "spacewalk.satellite_tools.repo_plugins.%s."
+                           % (repo_type, name))
+            sys.exit(1)
+        return getattr(submod, "ContentSource")
+
     def sync(self):
         """Trigger a reposync"""
         start_time = datetime.now()
         for data in self.urls:
-            metadata_signed = data['metadata_signed']
             url = suseLib.URL(data['source_url'])
             if url.get_query_param("credentials"):
                 url.username = CFG.get("%s%s" % (url.get_query_param("credentials"), "_user"))
                 url.password = CFG.get("%s%s" % (url.get_query_param("credentials"), "_pass"))
             url.query = ""
             insecure = False
-            if metadata_signed == 'N':
+            if data['metadata_signed'] == 'N':
                 insecure = True
             try:
-                plugin = self.load_plugin()(url.getURL(), self.channel_label,
-                                            insecure=insecure,
-                                            interactive=self.interactive,
-                                            quiet=self.quiet)
-                self.import_packages(plugin, data['id'], url.getURL())
-                self.import_updates(plugin, url.getURL())
+                repo = self.repo_plugin(url.getURL(), self.channel_label,
+                                        insecure, self.quiet, self.interactive,
+                                        proxy=CFG.HTTP_PROXY,
+                                        proxy_user=CFG.HTTP_PROXY_USERNAME,
+                                        proxy_pass=CFG.HTTP_PROXY_PASSWORD)
+                self.import_packages(repo, data['id'], url.getURL())
+                self.import_updates(repo, url.getURL())
             except ChannelTimeoutException, e:
                 self.print_msg(e)
                 self.sendErrorMail(str(e))
@@ -192,12 +210,6 @@ class RepoSync:
         h = rhnSQL.prepare( """update rhnChannel set LAST_SYNCED = current_timestamp
                              where label = :channel""")
         h.execute(channel=self.channel['label'])
-
-    def load_plugin(self):
-        name = self.type + "_src"
-        mod = __import__('spacewalk.satellite_tools.repo_plugins', globals(), locals(), [name])
-        submod = getattr(mod, name)
-        return getattr(submod, "ContentSource")
 
     def import_updates(self, plug, url):
         (notices_type, notices) = plug.get_updates()
@@ -656,14 +668,16 @@ class RepoSync:
 
         self.regen=True
         is_non_local_repo = (url.find("file://") < 0)
-        # try/except/finally doesn't work in python 2.4 (RHEL5), so here's a hack
+
         def finally_remove(path):
             if is_non_local_repo and path and os.path.exists(path):
                 os.remove(path)
 
+        # try/except/finally doesn't work in python 2.4 (RHEL5), so here's a hack
         for (index, what) in enumerate(to_process):
             pack, to_download, to_link = what
             localpath = None
+
             try:
                 self.print_msg("%d/%d : %s" % (index+1, num_to_process, pack.getNVREA()))
                 if to_download:
