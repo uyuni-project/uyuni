@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Wed Oct 26 13:43:36 CEST 2011 - iartarisi@suse.cz
+
+- fix 3 sle10-sp4-updates repo urls (bnc#725330)
+
+-------------------------------------------------------------------
+Wed Oct  5 10:03:44 CEST 2011 - iartarisi@suse.cz
+
+- fixed SLES10 Tools channels urls (sle-10-* vs. sles-10-*)
+
+-------------------------------------------------------------------
+Tue Sep 20 14:20:13 CEST 2011 - iartarisi@suse.cz
+
+- remove all SLES10 SP2 channels
+
+-------------------------------------------------------------------
+Tue Sep  6 12:01:58 CEST 2011 - iartarisi@suse.cz
+
+- added more SLES10 channels: tools, sdk and gplv3-extras
+
+-------------------------------------------------------------------
 Tue Sep  6 10:34:44 CEST 2011 - mc@suse.de
 
 - add channel families STUDIOONSITERUNNER and HP-HWREF
