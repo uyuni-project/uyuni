@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Sep  8 13:42:39 CEST 2011 - iartarisi@suse.cz
+
+- remove Shell/SQLPlus.pm from main package, because it is in the
+  -Oracle sub-package (bnc#681219)
+
+-------------------------------------------------------------------
 Thu May  5 12:46:40 CEST 2011 - iartarisi@suse.cz
 
 - rebranding
