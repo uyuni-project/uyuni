@@ -1,5 +1,5 @@
 -------------------------------------------------------------------
-Wed Nov  9 17:07:06 CET 2011 - jrenner@suse.de
+Tue Nov  8 13:55:19 CET 2011 - jrenner@suse.de
 
 - Add support for audit logging in init script (fate#312607)
 
