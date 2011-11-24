@@ -793,8 +793,9 @@ class RepoSync:
         to = CFG.TRACEBACK_MAIL
         fr = to
         if isinstance(to, type([])):
-            fr = string.strip(to[0])
-            to = string.join(map(string.strip, to), ', ')
+            fr = to[0].strip()
+            to = ', '.join([s.strip() for s in to])
+
         headers = {
             "Subject" : "SUSE Manager repository sync failed (%s)" % hostname,
             "From"    : "%s <%s>" % (hostname, fr),
