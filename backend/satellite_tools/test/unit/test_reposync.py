@@ -77,6 +77,7 @@ class RepoSyncTest(unittest.TestCase):
         rs = self._init_reposync('Label', RTYPE, url='http://example.com')
 
         self.assertEqual(rs.urls, [{'source_url': 'http://example.com',
+                                    'id': None,
                                     'metadata_signed': 'N'}])
 
     def test_init_with_custom_flags(self):
@@ -132,7 +133,7 @@ class RepoSyncTest(unittest.TestCase):
     def test_sync_success_no_regen(self):
         rs = self._init_reposync()
 
-        rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
+        rs.urls = [{"source_url": "bogus-url", "id": 42, "metadata_signed": "N"}]
 
         rs = self._mock_sync(rs)
         rs.sync()
@@ -142,10 +143,10 @@ class RepoSyncTest(unittest.TestCase):
                           {'proxy_pass': rs.mocked_proxy_pass,
                            'proxy_user': rs.mocked_proxy_user,
                            'proxy': rs.mocked_proxy}))
-        self.assertEqual(rs.print_msg.call_args, (("Sync complete",), {}))
+        self.assertEqual(rs.print_msg.call_args, (("Total time: 0:00:00",), {}))
 
         self.assertEqual(rs.import_packages.call_args,
-                         ((rs.mocked_plugin, "bogus-url"), {}))
+                         ((rs.mocked_plugin, 42, "bogus-url"), {}))
         self.assertEqual(rs.import_updates.call_args,
                          ((rs.mocked_plugin, "bogus-url"), {}))
 
@@ -158,7 +159,7 @@ class RepoSyncTest(unittest.TestCase):
     def test_sync_success_regen(self):
         rs = self._init_reposync()
 
-        rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
+        rs.urls = [{"source_url": "bogus-url", "id": 42, "metadata_signed": "N"}]
 
         rs = self._mock_sync(rs)
         rs.regen = True
@@ -166,9 +167,10 @@ class RepoSyncTest(unittest.TestCase):
 
         # don't test everything we already tested in sync_success_no_regen, just
         # see if the operation was successful
-        self.assertEqual(rs.print_msg.call_args, (("Sync complete",), {}))
+        self.assertEqual(rs.print_msg.call_args, (("Total time: 0:00:00",), {}))
 
-        self.assertEqual(self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription.call_args, ((["Label"], [], "server.app.yumreposync"), {}))
+        self.assertEqual(self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription.call_args,
+                         ((["Label"], [], "server.app.yumreposync"), {}))
         self.assertEqual(self.reposync.taskomatic.add_to_erratacache_queue.call_args,
                          (("Label", ), {}))
 
@@ -275,7 +277,7 @@ class RepoSyncTest(unittest.TestCase):
     def test_send_error_mail(self):
         self.reposync.rhnMail.send = Mock()
         self.reposync.CFG.TRACEBACK_MAIL = 'recipient'
-        self.reposync.HOSTNAME = 'testhost'
+        self.reposync.hostname = 'testhost'
         rs = self._create_mocked_reposync()
 
         rs.sendErrorMail('email body')
@@ -307,7 +309,7 @@ class RepoSyncTest(unittest.TestCase):
                     'id': None}
         
         _mock_rhnsql(self.reposync, checksum)
-        processed = rs._updates_process_packages(packages, 'a name')
+        processed = rs._updates_process_packages(packages, 'a name', [])
         for p in processed:
             self.assertTrue(isinstance(p, self.reposync.IncompletePackage))
 
@@ -331,7 +333,7 @@ class RepoSyncTest(unittest.TestCase):
                     'id': 'cs_package_id'}
 
         _mock_rhnsql(self.reposync, checksum)
-        processed = rs._updates_process_packages(packages, 'patchy')
+        processed = rs._updates_process_packages(packages, 'patchy', [])
 
         p1 = self.reposync.IncompletePackage()
         p1.populate({'package_size': None,
@@ -380,7 +382,7 @@ class RepoSyncTest(unittest.TestCase):
                      'epoch': 'e2'}]
 
         _mock_rhnsql(self.reposync, [])
-        self.assertEqual(rs._updates_process_packages(packages, 'patchy'),
+        self.assertEqual(rs._updates_process_packages(packages, 'patchy', []),
                          [])
         self.assertEqual(rs.print_msg.call_args, (
                 ("The package n2-e2:v2-r2.arch2 "
@@ -398,7 +400,7 @@ class RepoSyncTest(unittest.TestCase):
                      'epoch': []}]
 
         _mock_rhnsql(self.reposync, [])
-        self.assertEqual(rs._updates_process_packages(packages, 'patchy'),
+        self.assertEqual(rs._updates_process_packages(packages, 'patchy', []),
                          [])
         self.assertEqual(rs.print_msg.call_args, (
                 ("The package n1:v1-r1.arch1 "
@@ -429,7 +431,9 @@ class RepoSyncTest(unittest.TestCase):
         mocked_backend = Mock()
         self.reposync.SQLBackend = Mock(return_value=mocked_backend)
         self.reposync.ErrataImport = Mock()
+
         rs = self._create_mocked_reposync()
+        rs._patch_naming = Mock(return_value='package-name')
 
         rs.upload_updates(notices)
 
@@ -499,344 +503,6 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(self.reposync._best_checksum_item(checksums),
                          ('sha256', 'sha256', '12345'))
 
-    def test_import_packages_2download(self):
-        p1 = self.reposync.ContentPackage()
-        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
-        p2 = self.reposync.ContentPackage()
-        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
-
-        # mock reposync methods
-        self.reposync.suseLib = Mock()
-
-        # this is how we mock getURL()
-        url = Mock()
-        url.getURL = Mock(return_value='http://some.url')
-        self.reposync.suseLib.URL = Mock(return_value=url)
-
-        self.reposync.rhnPackage.get_path_for_package = Mock(return_value=True)
-
-        # all packages have already been downloaded
-        self.reposync.os.path.exists = Mock(return_value = True)
-
-        # mock RepoSync object methods (we can't use the usual
-        # _mock_rhnsql method because that would mock the
-        # import_packages method)
-        rs = self._init_reposync("Label", RTYPE)
-        rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
-        rs.print_msg = Mock()
-        rs._download_packages = Mock()
-        rs._link_packages = Mock()
-
-        repo = Mock()
-        repo.list_packages = Mock(return_value=[p1, p2])
-
-        # run the method we're testing
-        rs.import_packages(repo, "bogus-url")
-
-        self.assertEqual(rs.print_msg.call_args_list,
-                         [(("Repo http://some.url has 2 packages.",), {}),
-                          (("No new packages to download.", ), {})])
-        self.assertEqual(rs._download_packages.call_args,
-                         (([], [], repo, 'bogus-url'), {}))
-
-    def test_import_packages_2link(self):
-        p1 = self.reposync.ContentPackage()
-        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
-        p2 = self.reposync.ContentPackage()
-        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
-
-        # mock reposync methods
-        self.reposync.suseLib = Mock()
-
-        # this is how we mock getURL()
-        url = Mock()
-        url.getURL = Mock(return_value='http://some.url')
-        self.reposync.suseLib.URL = Mock(return_value=url)
-
-        self.reposync.rhnPackage.get_path_for_package = Mock(return_value=True)
-
-        # all packages have already been downloaded
-        self.reposync.os.path.exists = Mock(return_value=False)
-
-        # mock RepoSync object methods (we can't use the usual
-        # _mock_rhnsql method because that would mock the
-        # import_packages method)
-        rs = self._init_reposync("Label", RTYPE)
-        rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
-        rs.print_msg = Mock()
-        rs._download_packages = Mock()
-        rs._link_packages = Mock()
-
-        repo = Mock()
-        repo.list_packages = Mock(return_value=[p1, p2])
-
-        # run the method we're testing
-        rs.import_packages(repo, "bogus-url")
-
-        self.assertEqual(rs.print_msg.call_args_list,
-                         [(("Repo http://some.url has 2 packages.",), {})])
-        self.assertEqual(rs._download_packages.call_args,
-                         (([p1, p2], [], repo, 'bogus-url'), {}))
-        
-    def test_import_packages_2link_differently_and_download(self):
-        p1 = self.reposync.ContentPackage()
-        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
-        p1.checksums = {'t1': 'c1'}
-        p2 = self.reposync.ContentPackage()
-        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
-
-        # mock reposync methods
-        self.reposync.suseLib = Mock()
-
-        # this is how we mock getURL()
-        url = Mock()
-        url.getURL = Mock(return_value='http://some.url')
-        self.reposync.suseLib.URL = Mock(return_value=url)
-
-        self.reposync.rhnPackage.get_path_for_package = Mock(return_value=False)
-        
-        # all packages have already been downloaded
-        self.reposync.rhnPackage.get_path_for_checksum = Mock(return_value=True)
-        self.reposync.os.path.exists = Mock(return_value=True)
-
-        # mock RepoSync object methods (we can't use the usual
-        # _mock_rhnsql method because that would mock the
-        # import_packages method)
-        rs = self._init_reposync("Label", RTYPE)
-        rs.channel = {'org_id': 'org'}
-        rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
-        rs.print_msg = Mock()
-        rs._download_packages = Mock()
-        rs._link_packages = Mock()
-
-        repo = Mock()
-        repo.list_packages = Mock(return_value=[p1, p2])
-
-        # run the method we're testing
-        rs.import_packages(repo, "bogus-url")
-
-        self.assertEqual(rs.print_msg.call_args_list,
-                         [(("Repo http://some.url has 2 packages.",), {})])
-        self.assertEqual(rs._download_packages.call_args,
-                         (([p2], [p1, p2], repo, 'bogus-url'), {}))
-
-    def test_import_packages_2link_differently_no_download(self):
-        p1 = self.reposync.ContentPackage()
-        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
-        p2 = self.reposync.ContentPackage()
-        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
-
-        # mock reposync methods
-        self.reposync.suseLib = Mock()
-
-        # this is how we mock getURL()
-        url = Mock()
-        url.getURL = Mock(return_value='http://some.url')
-        self.reposync.suseLib.URL = Mock(return_value=url)
-
-        self.reposync.rhnPackage.get_path_for_package = Mock(return_value=False)
-
-        # all packages have already been downloaded
-        self.reposync.rhnPackage.get_path_for_checksum = Mock(return_value=True)
-        self.reposync.os.path.exists = Mock(return_value=False)
-
-        # mock RepoSync object methods (we can't use the usual
-        # _mock_rhnsql method because that would mock the
-        # import_packages method)
-        rs = self._init_reposync("Label", RTYPE)
-        rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
-        rs.print_msg = Mock()
-
-        repo = Mock()
-        repo.list_packages = Mock(return_value=[p1, p2])
-        rs._download_packages = Mock()
-        rs._link_packages = Mock()
-
-        # run the method we're testing
-        rs.import_packages(repo, "bogus-url")
-
-        self.assertEqual(rs.print_msg.call_args_list,
-                         [(("Repo http://some.url has 2 packages.",), {})])
-        self.assertEqual(rs._download_packages.call_args,
-                         (([p1, p2], [p1, p2], repo, 'bogus-url'), {}))
-
-    def test_import_packages_2_skipped_bad_arches(self):
-        p1 = self.reposync.ContentPackage()
-        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'src')
-        p1.checksums = {'t1': 'c1'}
-        p2 = self.reposync.ContentPackage()
-        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'weird_arch')
-
-        # mock reposync methods
-        self.reposync.suseLib = Mock()
-
-        # this is how we mock getURL()
-        url = Mock()
-        url.getURL = Mock(return_value='http://some.url')
-        self.reposync.suseLib.URL = Mock(return_value=url)
-
-        # mock RepoSync object methods (we can't use the usual
-        # _mock_rhnsql method because that would mock the
-        # import_packages method)
-        rs = self._init_reposync("Label", RTYPE)
-        rs.channel = {'org_id': 'org'}
-        rs.urls = [{"source_url": "bogus-url", "metadata_signed": "N"}]
-        rs.print_msg = Mock()
-        rs._download_packages = Mock()
-        rs._link_packages = Mock()
-
-        repo = Mock()
-        repo.list_packages = Mock(return_value=[p1, p2])
-
-        # run the method we're testing
-        rs.import_packages(repo, "bogus-url")
-
-        self.assertEqual(rs.print_msg.call_args_list,
-                         [(("Repo http://some.url has 2 packages.",), {}),
-                          (("Skip '2' incompatible packages.", ), {}),
-                          (("No new packages to download.", ), {})])
-        self.assertEqual(rs._download_packages.call_args,
-                         (([], [], repo, 'bogus-url'), {}))
-
-    def test_link_packages(self):
-        p1 = self.reposync.ContentPackage()
-        p1.checksums = {'md5': '12345'}
-        p2 = self.reposync.ContentPackage()
-        p2.checksums =  {'md5': 'asdfg'}
-        
-        rs = self._create_mocked_reposync()
-        rs.associate_package = Mock()
-        rs.error_msg = Mock()
-
-        rs._link_packages([p1, p2])
-
-        self.assertFalse(rs.error_msg.called)
-        self.assertEqual(rs.associate_package.call_args_list,
-                         [((p1, ), {}), ((p2, ), {})])
-
-    def test_link_packages_logs_error_but_doesnt_die(self):
-        p1 = self.reposync.ContentPackage()
-        p1.checksums = {'md5': '12345'}
-
-        rs = self._create_mocked_reposync()
-        exc = Exception('error')
-        rs.associate_package = Mock(side_effect=exc) # make it raise an Exception
-        rs.error_msg = Mock()
-
-        rs._link_packages([p1])
-
-        self.assertTrue(rs.error_msg.called)
-        self.assertEqual(rs.error_msg.call_args,
-                         ((exc, ), {}))
-        self.assertEqual(rs.associate_package.call_args,
-                         ((p1, ), {}))
-
-    def test_link_packages_logs_error_and_dies(self):
-        p1 = self.reposync.ContentPackage()
-        p1.checksums = {'md5': '12345'}
-
-        rs = self._create_mocked_reposync()
-        exc = Exception('error')
-        rs.associate_package = Mock(side_effect=exc) # make it raise an Exception
-        rs.fail = True # make it die on the above Exception
-        rs.error_msg = Mock()
-
-        self.assertRaises(Exception, rs._link_packages, [p1])
-
-        self.assertTrue(rs.error_msg.called)
-        self.assertEqual(rs.error_msg.call_args,
-                         ((exc, ), {}))
-        self.assertEqual(rs.associate_package.call_args,
-                         ((p1, ), {}))
-
-    def test_download_packages(self):
-        p1 = self.reposync.ContentPackage()
-        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
-        p2 = self.reposync.ContentPackage()
-        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
-
-        rs = self._create_mocked_reposync()
-        rs.upload_package = Mock()
-        self.reposync.os.remove = Mock()
-        repo = Mock()
-        repo.get_package = Mock(return_value='pkg_path')
-
-        rs._download_packages([p1, p2], [], repo, "file://local_repo")
-
-        self.assertEqual(rs.upload_package.call_args_list,
-                         [((p1, 'pkg_path'), {}), ((p2, 'pkg_path'), {})])
-        self.assertFalse(self.reposync.os.remove.called)
-
-    def test_download_packages_non_local(self):
-        p1 = self.reposync.ContentPackage()
-        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
-        p2 = self.reposync.ContentPackage()
-        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
-
-        rs = self._create_mocked_reposync()
-        rs.upload_package = Mock()
-        self.reposync.os.remove = Mock()
-        repo = Mock()
-        repo.get_package = Mock(return_value='pkg_path')
-
-        rs._download_packages([p1, p2], [p1, p2], repo, "http://remote_repo") # non-local
-
-        self.assertEqual(rs.upload_package.call_args_list,
-                         [((p1, 'pkg_path'), {}), ((p2, 'pkg_path'), {})])
-        self.assertEqual(self.reposync.os.remove.call_args,
-                         (('pkg_path', ), {}))
-
-    def test_download_packages_errors_and_dies(self):
-        p1 = self.reposync.ContentPackage()
-        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
-        p2 = self.reposync.ContentPackage()
-        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
-
-        rs = self._create_mocked_reposync()
-        rs.fail = True # make it die
-        exc = Exception('error')
-        rs.upload_package = Mock(side_effect=exc) # make it raise an exception
-        rs.error_msg = Mock()
-        repo = Mock()
-        repo.get_package = Mock(return_value='pkg_path')
-
-        self.assertRaises(Exception, rs._download_packages,
-                          [p1, p2], [], repo, "file://remote_repo")
-
-        self.assertEqual(rs.upload_package.call_args,
-                         ((p1, 'pkg_path'), {}))
-        self.assertEqual(rs.error_msg.call_args_list,
-                         [(('Could not acquire package '
-                            'name1-version1-release1-epoch1.arch1. Please '
-                            'rerun the reposync after this issue is fixed. '
-                            'error', ), {})])
-
-    def test_download_packages_errors_and_continues(self):
-        p1 = self.reposync.ContentPackage()
-        p1.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
-        p2 = self.reposync.ContentPackage()
-        p2.setNVREA('name2', 'version2', 'release2', 'epoch2', 'arch2')
-
-        rs = self._create_mocked_reposync()
-        exc = Exception('error')
-        rs.upload_package = Mock(side_effect=exc) # make it raise an exception
-        rs.error_msg = Mock()
-        repo = Mock()
-        repo.get_package = Mock(return_value='pkg_path')
-
-        rs._download_packages([p1, p2], [], repo, "file://remote_repo")
-        self.assertEqual(rs.upload_package.call_args_list,
-                         [((p1, 'pkg_path'), {}), ((p2, 'pkg_path'), {})])
-        self.assertEqual(rs.error_msg.call_args_list,
-                         [(('Could not acquire package '
-                            'name1-version1-release1-epoch1.arch1. Please '
-                            'rerun the reposync after this issue is fixed. '
-                            'error', ), {}),
-                          (('Could not acquire package '
-                            'name2-version2-release2-epoch2.arch2. Please '
-                            'rerun the reposync after this issue is fixed. '
-                            'error', ), {})])
-
     def test_get_errata_no_advisories_found(self):
         _mock_rhnsql(self.reposync, None)
         self.assertEqual(self.reposync.get_errata('bogus'), None)
@@ -844,12 +510,13 @@ class RepoSyncTest(unittest.TestCase):
     def test_get_errata_advisories_but_no_channels(self):
         _mock_rhnsql(self.reposync, [{'id': 42}, []])
         self.assertEqual(self.reposync.get_errata('bogus'),
-                         {'channels': [], 'id': 42})
+                         {'channels': [], 'id': 42, 'packages': []})
 
     def test_get_errata_success(self):
         _mock_rhnsql(self.reposync, [{'id': 42}, ['channel1', 'channel2']])
         self.assertEqual(self.reposync.get_errata('bogus'),
-                         {'id': 42, 'channels': ['channel1', 'channel2']})
+                         {'id': 42, 'channels': ['channel1', 'channel2'],
+                          'packages': []})
 
     def test_get_compat_arches(self):
         _mock_rhnsql(self.reposync, ({'label': 'a1'}, {'label':'a2'}))
@@ -913,6 +580,7 @@ class RepoSyncTest(unittest.TestCase):
         rs.print_msg = Mock()
 
         rs.mocked_plugin = Mock()
+        rs.mocked_plugin.num_packages = 0
         rs.repo_plugin = Mock(return_value=rs.mocked_plugin)
 
         rs.update_date = Mock()

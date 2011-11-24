@@ -35,6 +35,7 @@ class YumSrcTest(unittest.TestCase):
         yum_src.ContentSource.initgpgdir = Mock()
 
         cs = yum_src.ContentSource("http://example.com", "test_repo")
+        cs.sack = Mock()
 
         yum_src.yum = real_yum
         yum_src.ContentSource.setup_repo = real_setup_repo
@@ -55,7 +56,7 @@ class YumSrcTest(unittest.TestCase):
         mocked_sack = Mock(return_value=[])
         cs.sack.returnPackages = mocked_sack
 
-        self.assertEqual(cs.list_packages(), [])
+        self.assertEqual(cs.list_packages(filters=None), [])
 
     def test_list_packages_with_pack(self):
         cs = self._make_dummy_cs()
@@ -67,7 +68,7 @@ class YumSrcTest(unittest.TestCase):
                         Package('n2', 'v2', 'r2', 'e2', 'a2', [('c2', 'cs')])]
         cs.sack.returnPackages = Mock(return_value=mocked_packs)
 
-        listed_packages = cs.list_packages()
+        listed_packages = cs.list_packages(filters=None)
 
         self.assertEqual(len(listed_packages), 2)
         for pack, mocked_pack in zip(listed_packages, mocked_packs):
