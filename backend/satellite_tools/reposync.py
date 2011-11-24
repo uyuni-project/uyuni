@@ -1043,6 +1043,11 @@ def find_cves(text):
     """
     return list(set(re.findall('CVE-\d{4}-\d{4}', text)))
 
+def set_filter_opt(option, opt_str, value, parser):
+    if opt_str in [ '--include', '-i']: f_type = '+'
+    else:                               f_type = '-'
+    parser.values.filters.append((f_type, re.split('[,\s]+', value)))
+
 def _delete_invalid_errata(errata_id):
     """
     Remove the errata from all channels
