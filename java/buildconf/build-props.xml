@@ -35,9 +35,11 @@
   <!-- IVY Properties -->
   <property name="ivyserver" value="http://partha.fedorapeople.org" />
   <property name="ivy.log.module.when.found" value="false"/>
-  <property name="ivy.log.resolved.revision" value="false"/>  
-
+  <property name="ivy.log.resolved.revision" value="false"/>
+  <property name="ivy.dep.file" value="${rhn-home}/buildconf/ivy/ivy-suse.xml" />
+  <property name="ivy.settings.file" value="${rhn-home}/buildconf/ivy/ivyconf.xml" />
   <!-- END IVY Properties -->
+
   <property name="rhn.war" value="${build.dir}/webapp/rhnjava.war"/>
   <property name="megajar.jar" value="${run.lib.dir}/rhn.jar" />
 
