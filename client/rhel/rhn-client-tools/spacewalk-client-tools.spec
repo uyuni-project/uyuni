@@ -12,7 +12,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.6.34
+Version: 1.6.37
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -408,6 +408,16 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Thu Nov 24 2011 Jan Pazdziora 1.6.37-1
+- 735346 - add space after do_call in cases like
+  do_callpackages.checkNeedUpdate(rhnsd=1,){}.
+
+* Mon Nov 21 2011 Miroslav Suchý 1.6.36-1
+- 751760 - make errmsg as an alias to value (for setter too)
+
+* Mon Nov 21 2011 Miroslav Suchý 1.6.35-1
+- 751760 - make errmsg as an alias to value
+
 * Mon Nov 07 2011 Miroslav Suchý 1.6.34-1
 - call parent's constructor
 - 751760 - use attribute value, which our ancestor use

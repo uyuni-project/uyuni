@@ -20,7 +20,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.6.40
+Version: 1.6.43
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -784,6 +784,18 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri Nov 25 2011 Miroslav Suchý 1.6.43-1
+- Ubuntu send request for translations, send 404 back and do not raise
+  traceback (msuchy@redhat.com)
+- Take Debian's alternative package names into account (slukasik@redhat.com)
+
+* Wed Nov 23 2011 Aron Parsons <parsonsa@bit-sys.com> 1.6.42-1
+- improve performance of query_client_get_file on PostgreSQL (parsonsa@bit-
+  sys.com)
+
+* Wed Nov 23 2011 Jan Pazdziora 1.6.41-1
+- Need to name a subselect.
+
 * Tue Nov 15 2011 Miroslav Suchý 1.6.40-1
 - move common code to common function
 

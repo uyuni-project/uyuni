@@ -235,8 +235,7 @@ def _run(archives=sys.argv[1:]):
                 raise MPMInputError("'%s' does not appear to contain Solaris content")
 
         except Exception, e:
-            print "Error creating mpm for %s:" % archive
-            # print str(e)
+            print "Error creating mpm for %s: %s" % (archive, repr(e))
 
         # cleanup as we go
         if options.CLEANUP:
@@ -370,11 +369,12 @@ def create_patch_mpm(archive_parser, prefix="", archive=""):
         header.update(dct)
 
     # a patch can patch multiple packages
-    subdir = ''
+    patch_path = prefix
+    patch_path_with_subdir = os.path.join('patches/', patch_path)
     # recent format has files in patches subdir
-    if os.path.isdir(os.path.join(archive_parser._archive_dir, 'patches/', prefix)):
-        subdir = 'patches/'
-    pkgs, x = archive_parser.list(os.path.join(subdir, prefix))
+    if os.path.isdir(os.path.join(archive_parser._archive_dir, patch_path_with_subdir)):
+        patch_path = patch_path_with_subdir
+    pkgs, x = archive_parser.list(patch_path)
 
     for pkg in pkgs:
         pkginfo_file = os.path.join(prefix, pkg, 'pkginfo')
@@ -408,7 +408,7 @@ def create_patch_mpm(archive_parser, prefix="", archive=""):
         header['package_size'] = os.path.getsize(archive)
         package.payload_stream = open(archive)
     else:
-        zip_file = archive_parser.zip(os.path.join(subdir,prefix))
+        zip_file = archive_parser.zip(patch_path)
         _temp_files.append(zip_file)
 
         header['package_name'] = os.path.basename(zip_file)
@@ -665,7 +665,12 @@ def md5sum_for_stream(data_stream):
     format"""
 
     md5obj = hashlib.new('md5')
-    md5obj.update(data_stream.read())
+    while True:
+        buf = data_stream.read(1024000)
+        if buf:
+            md5obj.update(buf)
+        else:
+            break
     data_stream.seek(0)
 
     return md5obj.hexdigest()

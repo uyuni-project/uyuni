@@ -21,3 +21,12 @@ file_filter = backend/po/<lang>.po
 source_file = backend/po/server.pot
 source_lang = en
 
+[spacewalk.java_jsp]
+file_filter = java/code/src/com/redhat/rhn/frontend/strings/jsp/StringResource_<lang>.xml
+source_file = java/code/src/com/redhat/rhn/frontend/strings/jsp/StringResource_en_US.xml
+source_lang = en
+
+[spacewalk.java_java]
+file_filter = java/code/src/com/redhat/rhn/frontend/strings/java/StringResource_<lang>.xml
+source_file = java/code/src/com/redhat/rhn/frontend/strings/java/StringResource_en_US.xml
+source_lang = en

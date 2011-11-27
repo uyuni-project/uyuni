@@ -917,4 +917,341 @@ def do_activationkey_setuniversaldefault(self, args):
 
     self.client.activationkey.setDetails(self.session, key, details)
 
+####################
+
+def help_activationkey_export(self):
+    print 'activationkey_export: Export activation key(s) to JSON format file'
+    print '''usage: activationkey_export [options] [<KEY> ...]
+
+options:
+    -f outfile.json : specify an output filename, defaults to <KEY>.json
+                      if exporting a single key, akeys.json for multiple keys,
+                      or akey_all.json of no KEY specified (export ALL)
+
+Note : KEY list is optional, default is to export ALL keys '''
+
+def complete_activationkey_export(self, text, line, beg, end):
+    return tab_completer(self.do_activationkey_list('', True), text)
+
+def export_activationkey_getdetails(self, key):
+    # Get the key details
+    logging.info("Getting activation key details for %s" % key)
+    details = self.client.activationkey.getDetails(self.session, key)
+
+    # Get the key config-channel data, add it to the existing details
+    logging.debug("activationkey.listConfigChannels %s" % key)
+    ccdlist = []
+    try:
+        ccdlist = self.client.activationkey.listConfigChannels(self.session, \
+            key)
+    except Exception, E:
+        logging.debug("activationkey.listConfigChannel threw an exeception, \
+            probably not provisioning entitled, setting config_channels=False")
+
+    cclist = [ c['label'] for c in ccdlist ]
+    logging.debug("Got config channel label list of %s" % cclist)
+    details['config_channels'] = cclist
+
+    logging.debug("activationkey.checkConfigDeployment %s" % key) 
+    details['config_deploy'] = \
+        self.client.activationkey.checkConfigDeployment(self.session, key)
+
+    # Get group details, as the server group IDs are not necessarily the same
+    # across servers, so we need the group name on import
+    details['server_groups'] = []
+    if len(details['server_group_ids']) != 0:
+        grp_detail_list=[]
+        for grp in details['server_group_ids']:
+            grp_details = self.client.systemgroup.getDetails(self.session, grp)
+
+            if grp_details:
+                grp_detail_list.append(grp_details)
+
+        details['server_groups'] = [ g['name'] for g in grp_detail_list ]
+
+    # Now append the details dict describing the key to the specified file
+    return details
+
+def do_activationkey_export(self, args):
+    options = [ Option('-f', '--file', action='store') ]
+    (args, options) = parse_arguments(args, options)
+
+    filename=""
+    if options.file != None:
+        logging.debug("Passed filename do_activationkey_export %s" % \
+            options.file)
+        filename=options.file
+
+    # Get the list of keys to export and sort out the filename if required
+    keys=[]
+    if not len(args):
+        if len(filename) == 0:
+            filename="akey_all.json"
+        logging.info("Exporting ALL activation keys to %s" % filename)
+        keys = self.do_activationkey_list('', True)
+    else:
+        # allow globbing of activationkey channel names
+        keys = filter_results(self.do_activationkey_list('', True), args)
+        logging.debug("activationkey_export called with args %s, keys=%s" % \
+            (args, keys))
+
+        if (len(keys) == 0):
+            logging.error("Invalid activation key passed")
+            return
+
+        if len(filename) == 0:
+            # No filename arg, so we try to do something sensible:
+            # If we are exporting exactly one key, we default to keyname.json
+            # otherwise, generic akeys.json name
+            if len(keys) == 1:
+                filename="%s.json" % keys[0]
+            else:
+                filename="akeys.json"
+
+    # Dump as a list of dict
+    keydetails_list=[]
+    for k in keys:
+        logging.info("Exporting key %s to %s" % (k, filename))
+        keydetails_list.append(self.export_activationkey_getdetails(k))
+
+    logging.debug("About to dump %d keys to %s" % \
+        (len(keydetails_list), filename))
+
+    # Check if filepath exists, if it is an existing file
+    # we prompt the user for confirmation
+    if os.path.isfile(filename):
+        if not self.user_confirm("File %s exists, confirm overwrite file? (y/n)" % \
+                    filename):
+            return 
+
+    if json_dump_to_file(keydetails_list, filename) != True:
+        logging.error("Failed to save exported keys to file" % filename)
+        return
+
+####################
+
+def help_activationkey_import(self):
+    print 'activationkey_import: import activation key(s) from JSON file(s)'
+    print '''usage: activationkey_import <JSONFILE ...>'''
+
+def do_activationkey_import(self, args):
+    (args, options) = parse_arguments(args)
+
+    if len(args) == 0:
+        logging.error("No filename passed")
+        self.help_activationkey_import() 
+        return
+
+    for filename in args:
+        logging.debug("Passed filename do_activationkey_import %s" % filename)
+        keydetails_list = json_read_from_file(filename)
+
+        if len(keydetails_list) == 0:
+            logging.error("Could not read json data from %s" % filename)
+            return
+
+        for keydetails in keydetails_list:
+            if self.import_activationkey_fromdetails(keydetails) != True:
+                logging.error("Failed to import key %s" % \
+                    keydetails['key'])
+
+# create a new key based on the dict from export_activationkey_getdetails
+def import_activationkey_fromdetails(self, keydetails):
+    # First we check that an existing key with the same name does not exist
+    existing_keys = self.do_activationkey_list('', True)
+
+    if keydetails['key'] in existing_keys:
+        logging.warning("%s already exists! Skipping!" % keydetails['key'])
+        return False
+    else:
+        # create the key, we need to drop the org prefix from the key name
+        keyname = re.sub('^[0-9]-', '', keydetails['key'])
+        logging.info("Found key %s, importing as %s" % \
+            (keydetails['key'], keyname))
+
+        if keydetails['usage_limit'] != 0:
+            newkey = self.client.activationkey.create(self.session,
+                                           keyname,
+                                           keydetails['description'],
+                                           keydetails['base_channel_label'],
+                                           keydetails['usage_limit'],
+                                           keydetails['entitlements'],
+                                           keydetails['universal_default'])
+        else:
+            newkey = self.client.activationkey.create(self.session,
+                                           keyname,
+                                           keydetails['description'],
+                                           keydetails['base_channel_label'],
+                                           keydetails['entitlements'],
+                                           keydetails['universal_default'])
+        if len(newkey) == 0:
+            logging.error("Failed to import key %s" % \
+                keyname)
+            return False
+
+        # add child channels
+        self.client.activationkey.addChildChannels(self.session, newkey,\
+            keydetails['child_channel_labels'])
+
+        # set config channel options and channels (missing are skipped)
+        if keydetails['config_deploy'] != 0:
+            self.client.activationkey.enableConfigDeployment(self.session,\
+                newkey)
+        else:
+            self.client.activationkey.disableConfigDeployment(self.session,\
+                newkey)
+
+        if len(keydetails['config_channels']) > 0:
+            self.client.activationkey.addConfigChannels(self.session, [newkey],\
+                keydetails['config_channels'], False)
+
+        # set groups (missing groups are created)
+        gids = []
+        for grp in keydetails['server_groups']:
+            grpdetails = self.client.systemgroup.getDetails(self.session, grp)
+            if grpdetails == None:
+                logging.info("System group %s doesn't exist, creating" % grp)
+                grpdetails = self.client.systemgroup.create(self.session, grp,\
+                     grp)
+            gids.append(grpdetails.get('id'))
+
+        logging.debug("Adding groups %s to key %s" % (gids, newkey)) 
+        self.client.activationkey.addServerGroups(self.session, newkey, gids)
+
+        # Finally add the package list
+        self.client.activationkey.addPackages(self.session, newkey, \
+            keydetails['packages'])
+
+        return True
+
+####################
+
+def help_activationkey_clone(self):
+    print 'activationkey_clone: Clone an activation key'
+    print '''usage: activationkey_clone [options]
+
+options:
+  -n NAME        : Name of the key to be cloned
+  -c CLONE_NAME  : Name of the resulting key
+  -x "s/foo/bar" : Optional regex replacement, replaces foo with bar in the
+                   clone description, base-channel label, child-channel
+                   labels, config-channel names '''
+
+def complete_activationkey_clone(self, text, line, beg, end):
+    return tab_completer(self.do_activationkey_list('', True), text)
+
+def do_activationkey_clone(self, args):
+    options = [ Option('-n', '--name', action='store'),
+                Option('-c', '--clonename', action='store'),
+                Option('-x', '--regex', action='store') ]
+
+    (args, options) = parse_arguments(args, options)
+    allkeys = self.do_activationkey_list('', True)
+
+    if is_interactive(options):
+        print
+        print 'Activation Keys'
+        print '------------------'
+        print '\n'.join(sorted(allkeys))
+        print
+
+        options.name = prompt_user('Original Key:', noblank = True)
+
+        options.clonename = prompt_user('Cloned Key:', noblank = True)
+    else:
+        if not options.name:
+            logging.error('The --name option is required')
+            return
+
+        if not options.clonename:
+            logging.error('The --clonename option is required')
+            return
+
+    if not options.name in allkeys:
+        logging.error("Key %s does not exist" % options.name)
+        return
+
+    if options.clonename in allkeys:
+        logging.error("Key %s already exists" % options.clonename)
+        return
+
+    # Replace the key-name with the clonename specified by the user
+    keydetails = self.export_activationkey_getdetails(options.name)
+    keydetails['key'] = options.clonename
+
+    # If the -x/--regex option is passed, do a sed-style replacement over
+    # everything contained by the key.  This makes it easier to clone when 
+    # content is based on a known naming convention
+    if options.regex:
+        # Expect this option to be formatted like a sed-replacement, s/foo/bar
+        findstr = options.regex.split("/")[1]
+        replacestr = options.regex.split("/")[2]
+        logging.debug("Regex option selected with %s, replacing %s with %s" % \
+            (options.regex, findstr, replacestr))
+
+        # First we do the description
+        newdesc = re.sub(findstr, replacestr, keydetails['description'])
+        keydetails['description'] = newdesc
+
+        # Then the base-channel label
+        newbasech = re.sub(findstr, replacestr, \
+            keydetails['base_channel_label'])
+        if newbasech in self.list_base_channels():
+            keydetails['base_channel_label'] = newbasech
+            # Now iterate over any child-channel labels
+            # Since we have the new base-channel, we can check if the new child
+            # label exists under the new base-channel:
+            # If it doesn't we can only skip it and print a warning
+            all_childch = self.list_child_channels(system=None,\
+                parent=newbasech, subscribed=False)
+
+            new_child_channel_labels = []
+            for c in keydetails['child_channel_labels']:
+                newc = re.sub(findstr, replacestr, c)
+                if newc in all_childch:
+                    logging.debug("Found child channel %s for key %s, " % \
+                         (c, keydetails['key']) + \
+                         "replacing with %s" % newc)
+
+                    new_child_channel_labels.append(newc)
+                else:
+                    logging.warning("Found child channel %s key %s, but %s" % \
+                         (c, keydetails['key'], newc) + \
+                         " does not exist, skipping!")
+
+            logging.debug("Processed all child channels, " + \
+                 "new_child_channel_labels=%s" % new_child_channel_labels)
+
+            keydetails['child_channel_labels'] = new_child_channel_labels
+        else:
+            logging.error("Regex-replacement results in new " + \
+                "base-channel %s which does not exist!" % newbasech)
+
+        # Finally, any config-channels 
+        new_config_channels = []
+        allccs =  self.do_configchannel_list('', True)
+        for cc in keydetails['config_channels']:
+            newcc = re.sub(findstr, replacestr, cc)
+
+            if newcc in allccs:
+                logging.debug("Found config channel %s for key %s, " % \
+                    (cc, keydetails['key']) + \
+                    "replacing with %s" % newcc)
+
+                new_config_channels.append(newcc)
+            else:
+                logging.warning("Found config channel %s for key %s, but %s " % \
+                     (cc, keydetails['key'], newcc) + \
+                    "does not exist, skipping!")
+
+        logging.debug("Processed all config channels, " + \
+            "new_config_channels = %s" % new_config_channels)
+
+        keydetails['config_channels'] = new_config_channels
+
+    # Finally : import the key from the modified keydetails dict
+    if self.import_activationkey_fromdetails(keydetails) != True:
+        logging.error("Failed to clone %s to %s" % \
+         (options.name, options.clonename))
+
 # vim:ts=4:expandtab:

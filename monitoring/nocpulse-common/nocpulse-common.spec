@@ -1,5 +1,5 @@
 Name:         nocpulse-common
-Version:      2.1.24
+Version:      2.2.1
 Release:      1%{?dist}
 Summary:      NOCpulse common
 License:      GPLv2
@@ -66,9 +66,13 @@ mkdir -p %{buildroot}%{_var}/lib/%{package_name}/.ssh
 
 # install log rotation stuff
 mkdir -p $RPM_BUILD_ROOT/etc/logrotate.d
-install -m644 nocpulse.logrotate \
+%if 0%{?fedora} && 0%{?fedora} >= 16
+install -m644 nocpulse.logrotate.new \
    $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
-
+%else
+install -m644 nocpulse.logrotate.old \
+   $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
+%endif
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}
 install -m644 NOCpulse.ini $RPM_BUILD_ROOT/%{_sysconfdir}/NOCpulse.ini
 install -m755 -d $RPM_BUILD_ROOT/%{_sysconfdir}/%{package_name}/NOCpulse/tmp
@@ -161,6 +165,10 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Nov 22 2011 Miroslav Suchý 2.2.1-1
+- bump up version
+- 755963 - logrotate nocpulse even on Fedora 16
+
 * Thu Jun 02 2011 Miroslav Suchý 2.1.24-1
 - 710002 - create initial NOCpulse.ini on correct place
 

@@ -20,6 +20,8 @@ import subprocess
 import shutil
 import tempfile
 import select
+import zipfile
+import tarfile
 
 # exceptions -------------------------------------------------------------
 
@@ -200,9 +202,11 @@ class ArchiveParser(object):
         os.chdir(parent_dir)
 
         zip_file = os.path.join(self._parent_dir, "%s.zip" % zip_dir)
-
-        cmd = "zip -q -r %s %s" % (zip_file, zip_dir)
-        stat = _my_popen(cmd)
+        fd = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED)
+        for base, dirs, files in os.walk(zip_dir):
+            fd.write(base)
+            for f in files:
+                fd.write(os.path.join(base, f))
 
         os.chdir(cwd)
 
@@ -227,41 +231,44 @@ class ArchiveParser(object):
 # parser for zip archives ------------------------------------------------
 
 class ZipParser(ArchiveParser):
+    def __init__(self, archive, tempdir="/tmp/"):
+        self.zip_file = zipfile.ZipFile(archive, 'r')
+        ArchiveParser.__init__(self, archive, tempdir)
 
     def _get_archive_dir(self):
-        list_cmd = "unzip -l %s" % (self._archive,)
-        file = os.popen(list_cmd).readlines()[3].split()[3][:-1]
-        # file is usually top most dir... but not always
-        # take first directory from relative path
-        return file.split('/')[0]
+        return self.zip_file.namelist()[0]
 
-    def _explode_cmd(self):
-        """Return the appropriate command for exploding a zip archive"""
-
-        if not _has_executable("unzip"):
-            raise ArchiveException("cannot open %s, 'unzip' not found" % self._archive)
-
+    def _explode(self, archive):
+        """Explode zip archive"""
         self._archive_dir = os.path.join(self._temp_dir, self._get_archive_dir())
 
-        return "unzip -q -n %s -d %s" % (self._archive, self._temp_dir)
+        try:
+            self.zip_file.extractall(self._temp_dir)
+        except Exception, e:
+            raise InvalidArchiveError("Archive did not expand to %s: %s" %
+                                                (self._archive_dir, str(e)))
+        return
 
 # parser for tar archives ------------------------------------------------
 
 class TarParser(ArchiveParser):
+    def __init__(self, archive, tempdir="/tmp/"):
+        self.tar_file = tarfile.open(archive, 'r')
+        ArchiveParser.__init__(self, archive, tempdir)
 
     def _get_archive_dir(self):
-        list_cmd = "tar -tf %s" % (self._archive,)
-        return os.popen(list_cmd).readlines()[0][:-2]
+        return self.tar_file.getnames()[0]
 
-    def _explode_cmd(self):
-        """Return the appropriate command for exploding a tar archive"""
-
-        if not _has_executable("tar"):
-            raise ArchiveException("cannot open %s, 'tar' not found" % self._archive)
-
+    def _explode(self, archive):
+        """Explode tar archive"""
         self._archive_dir = os.path.join(self._temp_dir, self._get_archive_dir())
 
-        return "cd %s; tar xf %s" % (self._temp_dir, self._archive)
+        try:
+            self.tar_file.extractall(path=self._temp_dir)
+        except Exception, e:
+            raise InvalidArchiveError("Archive did not expand to %s: %s" %
+                                                (self._archive_dir, str(e)))
+        return
 
 # parser for cpio archives -----------------------------------------------
 

@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.28
+Version: 1.6.30
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -309,6 +309,16 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Fri Nov 25 2011 Jan Pazdziora 1.6.30-1
+- Replace nvl with coalesce.
+- Matching the to_char prototype.
+- Matching the varchar column to varchar literal.
+- Replace decode with case when.
+- Replace sysdate with current_timestamp.
+
+* Wed Nov 23 2011 Jan Pazdziora 1.6.29-1
+- Fixing cancel a scheduled action on a server.
+
 * Wed Nov 16 2011 Tomas Lestach <tlestach@redhat.com> 1.6.28-1
 - 754379 - fix deletion-url in pxt pages (tlestach@redhat.com)
 
