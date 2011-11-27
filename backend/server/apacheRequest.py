@@ -192,7 +192,7 @@ class apacheRequest:
             rhnSQL.rollback()
             Traceback(method, self.req,
                       extra="AuditLogging error: %s" % e)
-            raise apache.HTTP_INTERNAL_SERVER_ERROR
+            return apache.HTTP_INTERNAL_SERVER_ERROR
 
         # and now send everything back
         ret = self.response(response)
