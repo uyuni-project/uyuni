@@ -67,4 +67,4 @@ clean :: clean-code clean-conf
 
 pylint ::
 # :E1101: *%s %r has no %r member*
-	pylint --errors-only --disable-msg=E1101 --enable-msg-cat=imports *py broker/
+	pylint --errors-only --disable-msg=E1101 --enable-msg-cat=imports *py broker/ || pylint --errors-only --disable=E1101 --enable=imports *py broker/
