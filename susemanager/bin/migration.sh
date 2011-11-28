@@ -202,6 +202,22 @@ quit
     rm /tmp/dbsetup.sql
 }
 
+
+setup_db_postgres() {
+    insserv postgresql
+    rcpostgresql start
+    su - postgres -c "createdb $MANAGER_DB_NAME ; createlang plpgsql $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
+
+    echo "local $MANAGER_DB_NAME $MANAGER_USER md5
+host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/8 md5
+host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
+" > /tmp/pg_hba.conf
+    cat /var/lib/pgsql/data/pg_hba.conf >> /tmp/pg_hba.conf
+    mv /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
+    mv /tmp/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf
+    rcpostgresql reload
+}
+
 setup_spacewalk() {
     CERT_COUNTRY=`echo -n $CERT_COUNTRY|tr [:lower:] [:upper:]`
 
@@ -247,8 +263,11 @@ drop_manager_db() {
     /usr/sbin/spacewalk-service stop
 if [ $ORACLE_VERSION = "XE" ]; then
     /etc/init.d/oracle-xe start
-else
+elif [ $ORACLE_VERSION = "FULL" ]; then
     /etc/init.d/oracle start
+else
+    echo "Not yet supported!"
+    exit 1
 fi
     echo "drop user $MANAGER_USER cascade;
 create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
@@ -285,9 +304,10 @@ upgrade_schema() {
     spacewalk-schema-upgrade
 if [ $ORACLE_VERSION = "XE" ]; then
     su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/rdbms/admin/utlrp.sql; exit;ENDPLUS"
-else
+elif [ $ORACLE_VERSION = "FULL" ]; then
     su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @/opt/apps/oracle/product/11gR2/dbhome_1/rdbms/admin/utlrp.sql; exit;ENDPLUS"
 fi
+# FIXME: not needed for postgres ?
 }
 
 backup_files() {
@@ -348,7 +368,7 @@ do_migration() {
     echo "Please enter the root password of the remote machine."
     ssh-keygen -q -N "" -C "spacewalk-migration-key" -f $KEYFILE
     ssh-copy-id -i $KEYFILE root@$SATELLITE_IP > /dev/null
-    
+
     if [ "x" = "x$SATELLITE_HOST" ]; then
         echo -n "SATELLITE_HOST:";   read SATELLITE_HOST
         echo -n "SATELLITE_DOMAIN:"; read SATELLITE_DOMAIN
@@ -452,10 +472,14 @@ do_setup() {
                 exit 1
             fi
             setup_db_xe
-        else
+        elif [ $ORACLE_VERSION = "FULL" ]; then
             MANAGER_DB_NAME="susemanager"
             SYS_DB_PASS=`dd if=/dev/urandom bs=16 count=4 2> /dev/null | md5sum | cut -b 1-8`
             setup_db_full
+        else
+            MANAGER_DB_NAME="susemanager"
+            SYS_DB_PASS=`dd if=/dev/urandom bs=16 count=4 2> /dev/null | md5sum | cut -b 1-8`
+            setup_db_postgres
         fi
     fi
 
@@ -516,7 +540,12 @@ rpm -q oracle-xe-univ > /dev/null
 if [ $? -eq "0" ]; then
     ORACLE_VERSION="XE"
 else
-    ORACLE_VERSION="FULL"
+    rpm -q oracle-server > /dev/null
+    if [ $? -eq "0" ]; then
+        ORACLE_VERSION="FULL"
+    else
+        ORACLE_VERSION="PG"
+    fi
 fi
 
 if [ "$LOGFILE" != "0" ]; then
@@ -535,7 +564,11 @@ if [ "$DO_SETUP" = "1" ]; then
 quit
 " > /tmp/changeorg.sql
 
-    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus $MANAGER_USER/\"$MANAGER_PASS\"@$MANAGER_DB_NAME @/tmp/changeorg.sql;"
+    if [ $ORACLE_VERSION = "PG"
+        su - postgres -c "psql /tmp/changeorg.sql;"
+    else
+        su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus $MANAGER_USER/\"$MANAGER_PASS\"@$MANAGER_DB_NAME @/tmp/changeorg.sql;"
+    fi
     rm /tmp/changeorg.sql
 
     if [ $ORACLE_VERSION = "FULL" -a $MANAGER_DB_HOST = "localhost" ]; then
