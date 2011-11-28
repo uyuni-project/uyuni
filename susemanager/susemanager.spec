@@ -26,8 +26,9 @@ Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
 Requires:       rsync less
 Requires:       susemanager-tools
-# needed for migration.sh
-Requires:       /usr/bin/sqlplus
+# migration.sh need either sqlplus or psql, but we don't have
+# yet a virtual provides for this selection.
+# maybe we want to enhance spacewalk.spec to have this
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %global pythonsmroot %{python_sitelib}/spacewalk
 
@@ -74,7 +75,7 @@ install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
 rm -rf %{buildroot}
 
 %check
-# the pythonpath must have /spacewalk too because susemanager can't import 
+# the pythonpath must have /spacewalk too because susemanager can't import
 export PYTHONPATH=%{buildroot}%{python_sitelib}:%{buildroot}%{python_sitelib}/spacewalk:%{_datadir}/rhn
 make -f Makefile.susemanager unittest
 make -f Makefile.susemanager pylint
