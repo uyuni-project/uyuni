@@ -560,13 +560,14 @@ fi;
 if [ "$DO_SETUP" = "1" ]; then
     do_setup
     # rename the default org
-    echo "UPDATE $MANAGER_USER.web_customer SET name = '$CERT_O' WHERE id = 1;
-quit
-" > /tmp/changeorg.sql
 
     if [ $ORACLE_VERSION = "PG"
-        su - postgres -c "psql /tmp/changeorg.sql;"
+        echo "UPDATE web_customer SET name = '$CERT_O' WHERE id = 1;" > /tmp/changeorg.sql
+        su - postgres -c "psql $MANAGER_DB_NAME -f /tmp/changeorg.sql;"
     else
+        echo "UPDATE $MANAGER_USER.web_customer SET name = '$CERT_O' WHERE id = 1;
+quit
+" > /tmp/changeorg.sql
         su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus $MANAGER_USER/\"$MANAGER_PASS\"@$MANAGER_DB_NAME @/tmp/changeorg.sql;"
     fi
     rm /tmp/changeorg.sql
