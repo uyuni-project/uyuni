@@ -152,7 +152,6 @@ def Traceback(method = None, req = None, mail = 1, ostream = sys.stderr,
     if ostream:
         ostream.write("%s\n" % exc.getvalue().encode('utf-8'))
 
-    ret = 0                             # default return value
     if mail:
         # print the stack frames for the mail we send out
         print_locals(exc)
@@ -183,7 +182,6 @@ def Traceback(method = None, req = None, mail = 1, ostream = sys.stderr,
 	rhnMail.send(headers, outstring)
 
     exc.close()   
-    return ret
 
 
 def fetchTraceback(method=None, req=None, extra=None, with_locals=0):
