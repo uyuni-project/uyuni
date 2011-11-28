@@ -233,7 +233,7 @@ ssl-set-email = $CERT_EMAIL
 ssl-config-sslvhost = Y
 ssl-ca-cert-expiration = 10
 ssl-server-cert-expiration = 10
-db-backend=oracle
+db-backend=$DB_BACKEND
 db-user=$MANAGER_USER
 db-password=$MANAGER_PASS
 db-name=$MANAGER_DB_NAME
@@ -443,7 +443,7 @@ do_setup() {
             SYS_DB_PASS=$MANAGER_PASS
         fi
     else
-        echo -n "MANAGER_IP=";          read MANAGER_IP
+        #echo -n "MANAGER_IP=";          read MANAGER_IP
         echo -n "MANAGER_USER=";        read MANAGER_USER
         echo -n "MANAGER_PASS=";        read MANAGER_PASS
         echo -n "MANAGER_ADMIN_EMAIL="; read MANAGER_ADMIN_EMAIL
@@ -539,12 +539,15 @@ done
 rpm -q oracle-xe-univ > /dev/null
 if [ $? -eq "0" ]; then
     ORACLE_VERSION="XE"
+    DB_BACKEND="oracle"
 else
     rpm -q oracle-server > /dev/null
     if [ $? -eq "0" ]; then
         ORACLE_VERSION="FULL"
+        DB_BACKEND="oracle"
     else
         ORACLE_VERSION="PG"
+        DB_BACKEND="postgresql"
     fi
 fi
 
@@ -561,7 +564,7 @@ if [ "$DO_SETUP" = "1" ]; then
     do_setup
     # rename the default org
 
-    if [ $ORACLE_VERSION = "PG"
+    if [ $ORACLE_VERSION = "PG" ]; then
         echo "UPDATE web_customer SET name = '$CERT_O' WHERE id = 1;" > /tmp/changeorg.sql
         su - postgres -c "psql $MANAGER_DB_NAME -f /tmp/changeorg.sql;"
     else
