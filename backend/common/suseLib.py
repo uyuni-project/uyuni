@@ -18,6 +18,8 @@ import pycurl
 # pylint: disable=W0611
 from suseRegister.info import getProductProfile, parseProductProfileFile
 from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnException import rhnFault
+from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
 from spacewalk.server import rhnSQL
 try:
     from cStringIO import StringIO
@@ -232,6 +234,7 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
     org_id and user_id are used to check for permissions.
 
     """
+
     product_id = findProduct(product)
     if not product_id:
         return None
@@ -362,3 +365,44 @@ class URL(object):
 
         return urlparse.urlunsplit((self.scheme, netloc, self.path,
                                     self.query, self.fragment))
+def get_mirror_credentials():
+    """Return a list of mirror credential tuples (user, pass)
+
+    N.B. The config values will be read from the global configuration:
+     server.susemanager.mirrcred_user
+     server.susemanager.mirrcred_pass
+     server.susemanager.mirrcred_user_1
+     server.susemanager.mirrcred_pass_1
+     etc.
+
+    The credentials are read sequentially, when the first value is found
+    to be missing, the process is aborted and the list of credentials
+    that have been read so far are returned. For example if
+    server.susemanager.mirrcred_pass_1 can not be read, only the first
+    pair of default mirrcreds will be returned, even though
+    mirrcred_user_2, mirrcred_pass_2 etc. might still exist.
+
+    """
+    initCFG("server.susemanager")
+
+    creds = []
+
+    # the default values should at least always be there
+    if not CFG["mirrcred_user"] or not CFG["mirrcred_pass"]:
+        raise ConfigParserError("Could not read default mirror credentials: "
+                                "server.susemanager.mirrcred_user, "
+                                "server.susemanager.mirrcred_pass.")
+
+    creds.append((CFG["mirrcred_user"], CFG["mirrcred_pass"]))
+
+    # increment the credentials number, until we can't read one
+    n = 1
+    while True:
+        try:
+            creds.append((CFG["mirrcred_user_%s" % n],
+                          CFG["mirrcred_pass_%s" % n]))
+        except (KeyError, AttributeError):
+            break
+        n += 1
+    return creds
+        

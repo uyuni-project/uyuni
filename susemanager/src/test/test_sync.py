@@ -27,6 +27,7 @@ class SyncTest(unittest.TestCase):
         ncc_sync.initCFG = ncc_sync.CFG = Mock()
         ncc_sync.rhnSQL.initDB = Mock()
         ncc_sync.rhnLog.initLOG = Mock()
+        ncc_sync.suseLib.get_mirror_credentials = Mock(return_value=[("user", "pass")])
         ncc_sync.suseLib.getProductProfile = Mock(return_value=
                                                   {"guid":"bogus_guid"})
         self.sync = ncc_sync.NCCSync()
@@ -44,13 +45,13 @@ class SyncTest(unittest.TestCase):
 
         myerr = StringIO()
         with patch("sys.stderr", myerr):
-            self.assertRaises(SystemExit, self.sync._get_ncc_xml, "some_url")
+            self.assertRaises(SystemExit, self.sync._multi_get_ncc_xml, "some_url")
         myerr.seek(0)
         err = myerr.read()
-        self.assertIn("Could not parse XML from some_url. The remote document "
+        self.assertIn("Could not parse XML. The remote document "
                       "does not appear to be a valid XML document. This "
                       "document was written to the logfile: logfile.log.", err)
-        self.assertIn("Invalid XML document (got ExpatError) from some_url: "
+        self.assertIn("Invalid XML document (got ExpatError): "
                       "<xml>is invalid", err)
 
     def test_get_ncc_xml_valid_xml(self):
@@ -58,7 +59,9 @@ class SyncTest(unittest.TestCase):
         from xml.etree.ElementTree import Element
         ncc_sync.suseLib.send = Mock(return_value=StringIO("<xml>valid</xml>"))
 
-        self.assertEqual(self.sync._get_ncc_xml("some_url").text, "valid")
+        xmls = self.sync._multi_get_ncc_xml("some_url")
+        for (user_id, xml) in xmls:
+            self.assertEqual(xml.text, "valid")
 
     def test_sync_channel_taskomatic_socket_error(self):
         """Test print error message when taskomatic raises socket error"""

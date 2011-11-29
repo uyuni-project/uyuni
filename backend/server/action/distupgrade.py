@@ -43,7 +43,7 @@ _query_products = rhnSQL.Statement("""
       FROM rhnActionDupProduct adp
       JOIN suseProducts p1 ON adp.from_pdid = p1.id
       JOIN suseProducts p2 ON adp.to_pdid = p2.id
-      JOIN rhnPackageArch pa ON pa.id = p2.arch_type_id
+ LEFT JOIN rhnPackageArch pa ON pa.id = p2.arch_type_id
      WHERE adp.action_dup_id = :action_dup_id
 """)
 

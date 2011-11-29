@@ -147,20 +147,16 @@ class RepoSync(object):
         """Trigger a reposync"""
         start_time = datetime.now()
         for data in self.urls:
-            url = suseLib.URL(data['source_url'])
-            if url.get_query_param("credentials"):
-                url.username = CFG.get("%s%s" % (url.get_query_param("credentials"), "_user"))
-                url.password = CFG.get("%s%s" % (url.get_query_param("credentials"), "_pass"))
-            url.query = ""
+            self.set_repo_credentials(data)
             insecure = False
             if data['metadata_signed'] == 'N':
                 insecure = True
             try:
-                repo = self.repo_plugin(url.getURL(), self.channel_label,
+                repo = self.repo_plugin(data['source_url'], self.channel_label,
                                         insecure, self.quiet, self.interactive)
-                self.import_packages(repo, data['id'], url.getURL())
+                self.import_packages(repo, data['id'], data['source_url'])
                 self.import_products(repo)
-                self.import_updates(repo, url.getURL())
+                self.import_updates(repo, data['source_url'])
                 self.import_susedata(repo)
             except ChannelTimeoutException, e:
                 self.print_msg(e)
@@ -202,6 +198,39 @@ class RepoSync(object):
         self.print_msg("Sync completed.")
         self.print_msg("Total time: %s" % str(total_time).split('.')[0])
 
+    def set_repo_credentials(self, url_dict):
+        """Set the credentials in the url_dict['source_url'] from the config file
+
+        We look for the `credentials` query argument and use its value
+        as the location of the username and password in the current
+        configuration file.
+
+        Examples:
+        ?credentials=mirrcred - read 'mirrcred_user' and 'mirrcred_pass'
+        ?credeentials=mirrcred_5 - read 'mirrcred_user_5' and 'mirrcred_pass_5'
+        
+        """
+        url = suseLib.URL(url_dict['source_url'])
+        creds = url.get_query_param('credentials')
+        if creds:
+            # switch config so we can read the mirror credentials
+            initCFG('server.susemanager')
+            namespace = creds.split("_")[0]
+            try:
+                creds_no = int(creds.split("_")[1])
+            except IndexError: # default credentials don't have a number
+                url.username = CFG.get(namespace+"_user")
+                url.password = CFG.get(namespace+"_pass")
+            except ValueError: # we got something after the "_", but not an int
+                self.error_msg("Could not figure out which credentials to use "
+                               "for this URL: "+url.getURL())
+                sys.exit(1)
+            else:
+                url.username = CFG.get("%s_user_%s" % (namespace, creds_no))
+                url.password = CFG.get("%s_pass_%s" % (namespace, creds_no))
+            initCFG('server.satellite')
+        url.query = ""
+        url_dict['source_url'] = url.getURL()
 
     def update_date(self):
         """ Updates the last sync time"""
@@ -926,6 +955,7 @@ class RepoSync(object):
         extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
         rhnMail.send(headers, extra + body)
 
+
 def get_errata(update_id):
     """ Return an Errata dict
 
@@ -1163,6 +1193,7 @@ class ContentPackage:
             self.predef_checksum = checksum
             if not((checksum_type in self.checksums) and (self.checksums[checksum_type] == checksum)):
                 self.checksums[checksum_type] = checksum
+
 
 def find_bugs(text):
     """Find and return a list of Bug objects from the bug ids in the `text`

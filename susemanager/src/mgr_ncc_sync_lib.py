@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2009, 2010, 2011 Novell, Inc.
+# Copyright (C) 2009, 2010, 2011, 2012 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
 # it only under the terms of version 2.1 of the GNU Lesser General Public
 # License as published by the Free Software Foundation.
@@ -52,6 +52,8 @@ def memoize(function):
             return val
     return decorated_function
 
+class ChannelNotMirrorable(Exception): pass
+
 class NCCSync(object):
     """This class is used to sync SUSE Manager Channels and NCC repositories"""
 
@@ -91,6 +93,11 @@ class NCCSync(object):
         self.smtguid  = suseLib.getProductProfile()['guid']
         self.authuser = CFG.mirrcred_user
         self.authpass = CFG.mirrcred_pass
+        if not self.authuser or not self.authpass:
+            raise Exception("Could not read mirror credentials. Please make "
+                            "sure that server.susemanager.mirrcred_user and "
+                            "server.susemanager.mirrcred_pass are set correctly "
+                            "in the configuration file.")
 
         self.namespace = "http://www.novell.com/xml/center/regsvc-1_0"
 
@@ -101,11 +108,27 @@ class NCCSync(object):
             self.ncc_url_prods = self.fromdir + "/productdata.xml"
             self.ncc_url_subs  = self.fromdir + "/listsubscriptions.xml"
             self.ncc_repoindex = self.fromdir + "/repo/repoindex.xml"
+            self.subs_req = None
+            self.prod_req = None
         else:
             self.ncc_url_prods = "https://secure-www.novell.com/center/regsvc/?command=regdata&lang=en-US&version=1.0"
             self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
             self.ncc_repoindex = "https://%(authuser)s:%(authpass)s@nu.novell.com/repo/repoindex.xml"
-
+            # XML documents which are used in POST requests to the NCC
+            self.subs_req = ('<?xml version="1.0" encoding="UTF-8"?>'
+                             '<listsubscriptions xmlns="%(namespace)s" '
+                             'client_version="1.2.3" lang="en">'
+                             '<authuser>%(authuser)s</authuser>'
+                             '<authpass>%(authpass)s</authpass>'
+                             '<smtguid>%(smtguid)s</smtguid>'
+                             '</listsubscriptions>\n')
+            self.prod_req = ('<?xml version="1.0" encoding="UTF-8"?>'
+                             '<productdata xmlns="%(namespace)s" '
+                             'client_version="1.2.3" lang="en">'
+                             '<authuser>%(authuser)s</authuser>'
+                             '<authpass>%(authpass)s</authpass>'
+                             '<smtguid>%(smtguid)s</smtguid>'
+                             '</productdata>\n')
         self.connect_retries = 10
 
         try:
@@ -115,9 +138,16 @@ class NCCSync(object):
             sys.exit(1)
 
     def dump_to(self, path):
-        """Dump NCC xml data to path
+        """Dump NCC XML data about subscriptions, products and repos
 
-        :arg path: the destination path
+        For each available credential, a new directory is created under
+        :path: and the following three files are downloaded from NCC
+        into that directory: listsubscriptions.xml, productdata.xml,
+        repoindex.xml.
+
+        :arg path: the destination directory path (will be created if it
+        does not exist)
+
         """
         if not os.path.exists(path):
             os.makedirs(path)
@@ -125,83 +155,99 @@ class NCCSync(object):
             self.error_msg("'%s' is not a directory." % path)
             sys.exit(1)
 
-        if self.fromdir:
-            send = None
-        else:
-            send = ('<?xml version="1.0" encoding="UTF-8"?>'
-                    '<listsubscriptions xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
-                    '<authuser>%(authuser)s</authuser>'
-                    '<authpass>%(authpass)s</authpass>'
-                    '<smtguid>%(smtguid)s</smtguid>'
-                    '</listsubscriptions>\n' % self.__dict__)
-
+        for user_id in range(len(suseLib.get_mirror_credentials())):
+            os.makedirs('%s/%s' % (path, user_id))
+            
         self.print_msg("Downloading Subscription information...")
-        try:
-            subs = io.FileIO(path + '/listsubscriptions.xml', 'w')
-            response = suseLib.send(self.ncc_url_subs, send)
-            subs.write(response.read())
-            subs.close()
-        except Exception, e:
-            self.error_msg("NCC connection failed: %s" % e)
-            sys.exit(1)
-
-        if self.fromdir:
-            send = None
-        else:
-            send = ('<?xml version="1.0" encoding="UTF-8"?>'
-                    '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
-                    '<authuser>%(authuser)s</authuser>'
-                    '<authpass>%(authpass)s</authpass>'
-                    '<smtguid>%(smtguid)s</smtguid>'
-                    '</productdata>\n' % self.__dict__)
+        for user, subs in self._multi_get_ncc(self.ncc_url_subs, self.subs_req):
+            sub_path = '%s/%s/listsubscriptions.xml' % (path, user)
+            with io.FileIO(sub_path, 'w') as f:
+                f.write(subs.read())
 
         self.print_msg("Downloading Product information...")
-        try:
-            prod = io.FileIO(path + '/productdata.xml', 'w')
-            response = suseLib.send(self.ncc_url_prods, send)
-            prod.write(response.read())
-            prod.close()
-        except:
-            self.error_msg("NCC connection failed")
-            sys.exit(1)
+        for user, prds in self._multi_get_ncc(self.ncc_url_prods, self.prod_req):
+            prod_path = '%s/%s/productdata.xml' % (path, user)
+            with io.FileIO(prod_path, 'w') as f:
+                f.write(prds.read())
+        
+        for user, idx in self._multi_get_ncc(self.ncc_repoindex):
+            idx_path = '%s/%s/repoindex.xml' % (path, user)
+            with io.FileIO(idx_path, 'w') as f:
+                f.write(idx.read())
 
-        try:
-            idx = io.FileIO(path + '/repoindex.xml', 'w')
-            response = suseLib.send(self.ncc_repoindex % self.__dict__)
-            idx.write(response.read())
-            idx.close()
-        except:
-            self.error_msg("NCC connection failed")
-            sys.exit(1)
-
-    def _get_ncc_xml(self, url, send=None):
-        """Connect to ncc and return the parsed XML document
+    def _get_ncc(self, url, send=None):
+        """Connect to NCC and return a file descriptor of an XML document
 
         :arg url: the url where the request will be sent
-        :kwarg send: do a post-request when "send" is given.
-
-        Returns the root XML Element of the parsed document.
+        :kwarg send: do a POST request when "send" is given.
 
         """
         try:
-            response = suseLib.send(url, send)
+            return suseLib.send(url, send)
         except:
-            self.error_msg("NCC connection failed")
+            self.error_msg("NCC connection failed.")
             sys.exit(1)
 
+    def _parse_ncc_xml(self, xml):
+        """Parse an NCC XML document returning the root xml.ElementTree object"""
         try:
-            tree = etree.parse(response)
+            tree = etree.parse(xml)
         except ExpatError:
-            self.error_msg("Could not parse XML from %s. The remote document "
+            self.error_msg("Could not parse XML. The remote document "
                            "does not appear to be a valid XML document. "
                            "This document was written to the logfile: %s." %
-                           (url, rhnLog.LOG.file))
-            response.seek(0)
-            log_error("Invalid XML document (got ExpatError) from %s: %s" %
-                      (url, response.read()))
+                           (rhnLog.LOG.file))
+            xml.seek(0)
+            log_error("Invalid XML document (got ExpatError): %s" %
+                      (xml.read()))
             sys.exit(1)
 
         return tree.getroot()
+
+    def _multi_get_ncc(self, url, send=None):
+        """Returns a list of (user_id, document) tuples
+
+        Returns:
+        :user_id: string
+        :document: file descriptor of an XML document from NCC
+
+        """
+        # trivial case: no credentials are used
+        if self.fromdir:
+            return [self._get_ncc(url, send)]
+
+        # other case: iterate through the list of credentials and return
+        # a list of tuples (authuser, xml document)
+        creds = suseLib.get_mirror_credentials()
+        xml_list = []
+
+        for (user_id, (authuser, authpass)) in enumerate(creds):
+            user_id = str(user_id)
+            self.log_msg(
+                "Downloading NCC data from %s using credentials #%s" %
+                (url, user_id))
+
+            sub_url = url % {'authuser': authuser, 'authpass': authpass}
+            if send:
+                sub_send = send % {'authuser': authuser,
+                                   'authpass': authpass,
+                                   'namespace': self.namespace,
+                                   'smtguid': self.smtguid}
+            else:
+                sub_send = None
+            xml_list.append((user_id, self._get_ncc(sub_url, sub_send)))
+        return xml_list
+
+    def _multi_get_ncc_xml(self, url, send=None):
+        """Returns a list of (user_id, document) tuples
+
+        Returns:
+        :user_id: string
+        :document: xml.ElementTree object of a parsed XML document from NCC
+
+        """
+        xmls = self._multi_get_ncc(url, send)
+        return [(user, self._parse_ncc_xml(xml)) for (user, xml) in xmls]
 
     def get_subscriptions_from_ncc(self):
         """Returns all the subscriptions for this customer.
@@ -227,26 +273,24 @@ class NCCSync(object):
         XXX: This method is tightly coupled with consolidate_subscriptions().
 
         """
-        if self.fromdir:
-            send = None
-        else:
-            send = ('<?xml version="1.0" encoding="UTF-8"?>'
-                    '<listsubscriptions xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
-                    '<authuser>%(authuser)s</authuser>'
-                    '<authpass>%(authpass)s</authpass>'
-                    '<smtguid>%(smtguid)s</smtguid>'
-                    '</listsubscriptions>\n' % self.__dict__)
-
         self.print_msg("Downloading Subscription information...")
-        subscriptionlist = self._get_ncc_xml(self.ncc_url_subs, send)
+        xmls = self._multi_get_ncc_xml(self.ncc_url_subs, self.subs_req)
         subscriptions = []
-        for row in subscriptionlist.findall('{%s}subscription' % self.namespace):
-            subscription = {}
-            for col in row.getchildren():
-                dummy = col.tag.split( '}' )
-                key = dummy[1]
-                subscription[key] = col.text
-            subscriptions.append(subscription)
+        # iterate through all the xml documents we got from NCC and then
+        # through the individual subscriptions in those documents,
+        # adding all the matching subscriptions to a flat list
+        for (user_id, xml) in xmls:
+            for row in xml.findall('{%s}subscription' % self.namespace):
+                subscription = {}
+                for col in row.getchildren():
+                    dummy = col.tag.split( '}' )
+                    key = dummy[1]
+                    subscription[key] = col.text
+                subscriptions.append(subscription)
+
+        self.print_msg("Found %d subscriptions using %d mirror credentials."
+                       % (len(subscriptions), len(xmls)))
+
         return subscriptions
 
     #   FIXME: not sure about 'consumed' yet. We could calculate:
@@ -324,33 +368,34 @@ class NCCSync(object):
         Returns a list of dicts with all the keys the NCC has for a product
 
         """
-        if self.fromdir:
-            send = None
-        else:
-            send = ('<?xml version="1.0" encoding="UTF-8"?>'
-                    '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
-                    '<authuser>%(authuser)s</authuser>'
-                    '<authpass>%(authpass)s</authpass>'
-                    '<smtguid>%(smtguid)s</smtguid>'
-                    '</productdata>\n' % self.__dict__)
-
         self.print_msg("Downloading Product information...")
-        productdata = self._get_ncc_xml(self.ncc_url_prods, send)
+        xmls = self._multi_get_ncc_xml(self.ncc_url_prods, self.prod_req)
 
+        # we can't index dictionaries, so we'll use a set of
+        # PRODUCTDATAIDs to keep the product dictionaries unique in the
+        # suse_products list
         suse_products = []
-        for row in productdata:
-            if row.tag == ("{%s}row" % self.namespace):
-                suseProduct = {}
-                for col in row.findall("{%s}col" % self.namespace):
-                    key = col.get("name")
-                    if key in ["start-date", "end-date"]:
-                        suseProduct[key] = float(col.text)
-                    else:
-                        suseProduct[key] = col.text
-                if suseProduct["PRODUCT_CLASS"]:
-                    # FIXME: skip buggy NCC entries. Some have no
-                    # product_class, which is invalid data
-                    suse_products.append(suseProduct)
+        product_ids = set()
+        for (user_id, productdata) in xmls:
+            for row in productdata:
+                if row.tag == ("{%s}row" % self.namespace):
+                    suseProduct = {}
+                    for col in row.findall("{%s}col" % self.namespace):
+                        key = col.get("name")
+                        if key in ["start-date", "end-date"]:
+                            suseProduct[key] = float(col.text)
+                        else:
+                            suseProduct[key] = col.text
+                    if (suseProduct["PRODUCT_CLASS"] and
+                        suseProduct['PRODUCTDATAID'] not in product_ids):
+                        # FIXME: skip buggy NCC entries. Some have no
+                        # product_class, which is invalid data
+                        suse_products.append(suseProduct)
+                        product_ids.add(suseProduct['PRODUCTDATAID'])
+
+        self.print_msg("Found %d products using %d mirror credentials."
+                       % (len(suse_products), len(xmls)))
+
         return suse_products
 
     def get_arch_id(self, arch):
@@ -383,7 +428,8 @@ class NCCSync(object):
             if d_nc == -1:
                 d_nc = INFINITE
             cf_id = self.edit_channel_family_table(label, name)
-            select_sql = ("SELECT max_members, org_id, current_members from RHNPRIVATECHANNELFAMILY "
+            select_sql = ("SELECT max_members, org_id, current_members "
+                          "FROM RHNPRIVATECHANNELFAMILY "
                           "WHERE channel_family_id = %s order by org_id" % cf_id)
             query = rhnSQL.prepare(select_sql)
             query.execute()
@@ -791,7 +837,6 @@ class NCCSync(object):
         Expects a product like from consolidate_subscriptions()
 
         """
-
         cf_id = (self.get_channel_family_id(prod) or
                  self.add_channel_family_row(prod))
 
@@ -1067,31 +1112,64 @@ class NCCSync(object):
         Their presence in NCC means they are currently mirrorable and available
         to the user.
 
-        Returns a list of repo paths split after '$RCE':
+        Returns a dict of {repo_path: user_id}. Paths are split after '$RCE':
         NCC path="$RCE/SLED10-SP3-Pool/sled-10-i586"
         becomes: "/SLED10-SP3-Pool/sled-10-i586"
 
-        """
-        root = self._get_ncc_xml(self.ncc_repoindex % self.__dict__)
+        Returns:
+        {"/SLED10-SP3-Pool/sled-10-i586": "1",
+         "/SLED10-SP3-Pool/sled-10-x86_64": "0", ...}
 
-        return [repo.get('path') for repo in root]
+        """
+        xmls = self._multi_get_ncc_xml(self.ncc_repoindex)
+
+        repos = {}
+        for (user_id, xml) in xmls:
+            for repo in xml:
+                repo_path = repo.get('path')
+                # use the first set of valid credentials for each repo
+                try:
+                    repos[repo.get('path')]
+                except KeyError:
+                    repos[repo.get('path')] = user_id
+        return repos
+
     get_mirrorable_repos = memoize(get_mirrorable_repos)
 
     def is_mirrorable(self, channel):
-        """Return a boolean if the etree Element channel is mirrorable or not
+        """Check if the channel is mirrorable (we have access to it on NCC)
 
         A channel is mirrorable if:
-         - its repo path is in the repoindex.xml from NCC or
          - it is a fake channel (path is empty)
+         - its repo path is in the repoindex.xml from NCC or
+
+        Returns:
+         - user_id - string user_id of the credentials for NCC if it is
+           mirrorable
+         - True - if it is a local repository or a fake channel
+         - False - if the repository does not exist or is not mirrorable
 
         """
-        if self.fromdir:
-            channel_path = channel.get('source_url')
-            return not channel_path or os.path.exists(channel_path.split('file://')[1])
-        else:
+        source_url = channel.get('source_url')
+        if not source_url: # fake channel
+            return True
+
+        if self.fromdir: # local repository
+            channel_path = channel.get('source_url').split('file://')[1]
+            return os.path.exists(channel_path)
+        else: # remote repository
             channel_path = get_repo_path(channel.get('source_url'))
-            return (channel_path in self.get_mirrorable_repos() or not channel_path or
-                    suseLib.accessible(channel.get('source_url') + '/repodata/repomd.xml'))
+            try:
+                return self.get_mirrorable_repos()[channel_path]
+            except KeyError:
+                if channel_path and channel_path.startswith('$RCE'):
+                    # channel_path starting with $RCE have to be part of repoindex.xml
+                    # if we get here, the repo is not mirrorable
+                    # no need to do the accessible check
+                    return False
+                return (not channel_path
+                        or suseLib.accessible(channel.get('source_url')
+                                              + '/repodata/repomd.xml'))
 
     def get_ncc_channel(self, channel_label):
         """Try getting the NCC channel for this user
@@ -1154,11 +1232,11 @@ class NCCSync(object):
         :arg channel_id: DB id of the channel the repo should belong to
 
         """
+        self._channel_add_mirrcred(channel)
+
         channel_data = channel.attrib
         if not channel_data['source_url']:
             return # no URL, cannot create a content source
-
-        _channel_add_mirrcred(channel_data)
 
         # index the rhnContentSource by source_url, don't use the
         # channel label, because multiple channels should be able to
@@ -1278,83 +1356,89 @@ class NCCSync(object):
         :arg channel_label: the label of the channel that should be added
 
         """
-        # first look in the db to see if it's already there
-        if self.get_channel_id(channel_label):
+        channel = self.get_ncc_channel(channel_label)
+
+        if rhnSQL.Row('RHNCHANNEL', 'label', channel_label).data:
             self.print_msg("Channel %s is already in the database. "
-                            % channel_label)
+                           % channel_label)
             return
 
-        channel = self.get_ncc_channel(channel_label)
-        # then look if it's mirrorable
         if not self.is_mirrorable(channel):
             self.print_msg("Channel %s is not mirrorable." % channel_label)
-        else:
-            query = rhnSQL.prepare(
-                """INSERT INTO RHNCHANNEL ( ID, BASEDIR, PARENT_CHANNEL,
-                                            CHANNEL_ARCH_ID, LABEL, NAME,
-                                            SUMMARY, DESCRIPTION,
-                                            CHANNEL_PRODUCT_ID, PRODUCT_NAME_ID,
-                                            CHECKSUM_TYPE_ID, UPDATE_TAG )
-                   VALUES ( sequence_nextval('rhn_channel_id_seq'), '/dev/null',
-                           :parent_channel, :channel_arch_id, :label, :name,
-                           :summary, :description, :channel_product_id,
-                           :product_name_id,
-                           (select id from RHNCHECKSUMTYPE
-                            where label = 'sha1'), :update_tag )""")
-            query.execute(
-                channel_product_id = self.get_channel_product_id(channel),
-                product_name_id = self.get_product_name_id(channel),
-                parent_channel = self.get_parent_id(channel),
-                channel_arch_id = self.get_channel_arch_id(channel),
-                # XXX - org_id = ??
-                **channel.attrib)
+            return
 
-            # welcome to the family: create relation between the new channel
-            # and corresponding channel family
-            channel_id = rhnSQL.Row("RHNCHANNEL", "LABEL", channel_label)['id']
-            channel_family_id = rhnSQL.Row(
-                "RHNCHANNELFAMILY", "LABEL", channel.get('family'))['id']
+        query = rhnSQL.prepare(
+            """INSERT INTO RHNCHANNEL ( ID, BASEDIR, PARENT_CHANNEL,
+                                        CHANNEL_ARCH_ID, LABEL, NAME,
+                                        SUMMARY, DESCRIPTION,
+                                        CHANNEL_PRODUCT_ID, PRODUCT_NAME_ID,
+                                        CHECKSUM_TYPE_ID, UPDATE_TAG )
+               VALUES ( sequence_nextval('rhn_channel_id_seq'), '/dev/null',
+                       :parent_channel, :channel_arch_id, :label, :name,
+                       :summary, :description, :channel_product_id,
+                       :product_name_id,
+                       (select id from RHNCHECKSUMTYPE
+                        where label = 'sha1'), :update_tag )""")
+        query.execute(
+            channel_product_id = self.get_channel_product_id(channel),
+            product_name_id = self.get_product_name_id(channel),
+            parent_channel = self.get_parent_id(channel),
+            channel_arch_id = self.get_channel_arch_id(channel),
+            # XXX - org_id = ??
+            **channel.attrib)
 
-            query = rhnSQL.prepare(
-                """INSERT INTO RHNCHANNELFAMILYMEMBERS
-                       (CHANNEL_ID, CHANNEL_FAMILY_ID)
-                   VALUES (:channel_id, :channel_family_id)""")
-            query.execute(
-                channel_id = channel_id,
-                channel_family_id = channel_family_id)
+        # welcome to the family: create relation between the new channel
+        # and corresponding channel family
+        channel_id = rhnSQL.Row("RHNCHANNEL", "LABEL", channel_label)['id']
+        channel_family_id = rhnSQL.Row(
+            "RHNCHANNELFAMILY", "LABEL", channel.get('family'))['id']
 
-            # add repos to the database
-            self.insert_channel(channel, channel_id)
+        query = rhnSQL.prepare(
+            """INSERT INTO RHNCHANNELFAMILYMEMBERS
+                   (CHANNEL_ID, CHANNEL_FAMILY_ID)
+               VALUES (:channel_id, :channel_family_id)""")
+        query.execute(
+            channel_id = channel_id,
+            channel_family_id = channel_family_id)
 
-            # register this channel's products in the database
-            for product in channel.find('products'):
-                product_id = int(product.text)
-                self.map_channel_to_products(channel, channel_id, product_id)
+        # add repos to the database
+        self.insert_channel(channel, channel_id)
 
-            for child in channel:
-                if child.tag == 'dist':
-                    self.add_dist_channel_map(channel_id,
-                                              self.get_channel_arch_id(channel),
-                                              child)
-            rhnSQL.commit()
-            self.print_msg("Added channel '%s' to the database."
-                           % channel_label)
+        # register this channel's products in the database
+        for product in channel.find('products'):
+            product_id = int(product.text)
+            self.map_channel_to_products(channel, channel_id, product_id)
+
+        for child in channel:
+            if child.tag == 'dist':
+                self.add_dist_channel_map(channel_id,
+                                          self.get_channel_arch_id(channel),
+                                          child)
+        rhnSQL.commit()
+        self.print_msg("Added channel '%s' to the database."
+                       % channel_label)
 
     def update_channels(self):
-        """Add update channel infos in the database """
-        # first look in the db to see if it's already there
+        """Update channel information in the database"""
         channels_xml = {}
-        channels_iter = etree.parse(CHANNELS).getroot()
-        for c in channels_iter:
+        for c in etree.parse(CHANNELS).getroot():
             udt = c.get('update_tag')
             if udt == '':
                 udt = None
+            try:
+                creds = self._channel_add_mirrcred(c)
+            except ChannelNotMirrorable:
+                # handle unmirrorable channels later
+                continue
             channels_xml[c.get('label')] = {
                 'name': c.get('name'),
                 'summary': c.get('summary'),
                 'description': c.get('description'),
+                'source_url': c.get('source_url'),
                 'update_tag': udt}
 
+        updated_channels = []
+        disabled_channels = []
         query = rhnSQL.prepare("SELECT label, name, summary, description, update_tag"
                                "  FROM rhnChannel "
                                " WHERE org_id IS NULL")
@@ -1362,20 +1446,57 @@ class NCCSync(object):
         result = query.fetchall()
         for label, name, summary, description, update_tag in result:
             if label in channels_xml:
-                if (not(channels_xml[label]['name'] == name and
-                      channels_xml[label]['summary'] == summary and
-                      channels_xml[label]['description'] == description and
-                      channels_xml[label]['update_tag'] == update_tag)):
-                          print "Update Channel Information for %s" % label
-                          query = rhnSQL.prepare(
-                              """UPDATE RHNCHANNEL SET
-                                   NAME = :name,
-                                SUMMARY = :summary,
-                            DESCRIPTION = :description,
-                             UPDATE_TAG = :update_tag
-                                  WHERE LABEL = :label""")
-                          query.execute(label=label, **channels_xml[label])
+                if not (channels_xml[label]['name'] == name and
+                        channels_xml[label]['summary'] == summary and
+                        channels_xml[label]['description'] == description and
+                        channels_xml[label]['update_tag'] == update_tag):
+                    updated_channels.append(label)
+                    query = rhnSQL.prepare(
+                        """UPDATE RHNCHANNEL SET
+                             NAME = :name,
+                          SUMMARY = :summary,
+                      DESCRIPTION = :description,
+                       UPDATE_TAG = :update_tag
+                            WHERE LABEL = :label""")
+                    query.execute(label=label, **channels_xml[label])
+            else:
+                # we leave channels which are no longer mirrorable in
+                # the database, but warn the user about it
+                disabled_channels.append(label)
         rhnSQL.commit()
+
+        if updated_channels:
+            self.print_msg("The following channel(s) have updated metadata: ")
+            for c in updated_channels:
+                self.print_msg(c)
+        if disabled_channels:
+            self.print_msg("The following channel(s) are no longer mirrorable: ")
+            for c in disabled_channels:
+                self.print_msg(c)
+
+        query = rhnSQL.prepare("SELECT label, source_url "
+                               "FROM rhnContentSource")
+        query.execute()
+        result = query.fetchall()
+        updated_creds = []
+        for label, source_url in result:
+            if label in channels_xml:
+                channel = channels_xml[label]
+                if channel['source_url'] != source_url:
+                    # remove the credentials from the URL
+                    query = rhnSQL.prepare("UPDATE RHNCONTENTSOURCE "
+                                           "SET source_url = :new_url "
+                                           "WHERE source_url LIKE :old_url")
+                    query.execute(new_url=channel['source_url'],
+                                  old_url=source_url)
+                    updated_creds.append(label)
+        rhnSQL.commit()
+
+        if updated_creds:
+            self.print_msg(
+                "Updated mirror credentials / channel source URL for: ")
+            for c in updated_creds:
+                self.print_msg(c)
 
     def sync_suseproductchannel(self):
         """Sync the suseProductChannel relationships from the config file
@@ -1454,6 +1575,33 @@ class NCCSync(object):
     def is_entitlement(self, product):
         return product in self.ncc_rhn_ent_mapping
 
+    def _channel_add_mirrcred(self, channel):
+        """Add the mirrorcred query string to the url in channel['source_url']"""
+        channel_url = channel.get('source_url')
+
+        # if we don't have a source_url, then we don't need to do
+        # anything since we won't put anything in the database anyway
+        if not channel_url:
+            return
+
+        url = suseLib.URL(channel_url)
+
+        # nu.novell.com needs authentication using the mirror credentials
+        if url.host == "nu.novell.com":
+            # add the user to the credentials query parameter if it's non-zero
+            user_id = self.is_mirrorable(channel)
+            if not user_id:
+                raise ChannelNotMirrorable
+            credstring = "credentials=mirrcred"
+            if user_id != '0':
+                credstring += "_" + user_id
+
+            if url.query:
+                url.query += "&"+credstring
+            else:
+                url.query = credstring
+            channel.set('source_url', url.getURL())
+
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
         if not self.quiet:
@@ -1489,16 +1637,6 @@ class NCCSync(object):
                            """)
         q.execute(cf_id=cf_id)
 
-def _channel_add_mirrcred(channel):
-    """Add the mirrorcred query string to the url in channel['source_url']"""
-    url = suseLib.URL(channel['source_url'])
-    # nu.novell.com needs authentication using the mirror credentials
-    if url.host == "nu.novell.com":
-        if url.query:
-            url.query += "&credentials=mirrcred"
-        else:
-            url.query = "credentials=mirrcred"
-        channel['source_url'] = url.getURL()
 
 def sql_list(alist):
     """Transforms a python list into an SQL string of a list
@@ -1519,11 +1657,12 @@ def sql_list(alist):
 
 def get_repo_path(repourl):
     """
-    https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Updates/sle-11-ppc64/
+    https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Updates/sle-11-ppc64/?credentials=mirrcred_1
     becomes:
     $RCE/SLE11-SP1-Debuginfo-Updates/sle-11-ppc64
 
     """
-    return repourl.split('repo/')[-1].rstrip('/')
+    return repourl.split('repo/')[-1].split('/?credentials')[0].rstrip('/')
+
 
 
