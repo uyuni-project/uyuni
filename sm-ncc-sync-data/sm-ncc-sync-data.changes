@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Nov 30 18:14:39 CET 2011 - iartarisi@suse.cz
+
+- added the update_tag attribute to channels
+
+-------------------------------------------------------------------
 Wed Oct 26 13:43:36 CEST 2011 - iartarisi@suse.cz
 
 - fix 3 sle10-sp4-updates repo urls (bnc#725330)
