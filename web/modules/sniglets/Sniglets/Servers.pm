@@ -55,17 +55,6 @@ sub register_tags {
 
   $pxt->register_tag('rhn-tri-state-system-pref-list' => \&tri_state_system_pref_list);
 
-  $pxt->register_tag('rhn-server-hardware-profile' => \&server_hardware_profile);
-  $pxt->register_tag('rhn-dmi-info' => \&server_dmi_info, 1);
-  $pxt->register_tag('rhn-server-device' => \&server_device, 1);
-
-  # has to run after server_details
-  $pxt->register_tag('rhn-server-network-details' => \&server_network_details, 2);
-  # slightly different than the rhn-server-network-details, this gives access to
-  # more detailed info about the network interfaces, as opposed to just hostname/ipaddy
-  $pxt->register_tag('rhn-server-network-interfaces' => \&server_network_interfaces, 2);
-
-
   $pxt->register_tag('rhn-server-history-event-details' => \&server_history_event_details);
 
   $pxt->register_tag('rhn-proxy-entitlement-form' => \&proxy_entitlement_form);
@@ -88,11 +77,7 @@ sub register_callbacks {
 
   $pxt->register_callback('rhn:server_prefs_form_cb' => \&server_prefs_form_cb);
 
-  $pxt->register_callback('rhn:server_hardware_list_refresh_cb' => \&server_hardware_list_refresh_cb);
-
   $pxt->register_callback('rhn:ssm_change_system_prefs_cb' => \&ssm_change_system_prefs_cb);
-
-  $pxt->register_callback('rhn:delete_servers_cb' => \&delete_servers_cb);
 
   $pxt->register_callback('rhn:system-activation-key-cb' => \&system_activation_key_cb);
 
@@ -364,25 +349,6 @@ sub cancel_scheduled_proxy_install {
   $pxt->redirect($url . "?sid=$sid");
 }
 
-sub server_hardware_list_refresh_cb {
-  my $pxt = shift;
-
-  my $sid = $pxt->param('sid');
-  die "no server id" unless $sid;
-
-  my $earliest_date = RHN::Date->now->long_date;
-  my $action_id = RHN::Scheduler->schedule_hardware_refresh(-org_id => $pxt->user->org_id,
-							   -user_id => $pxt->user->id,
-							   -earliest => $earliest_date,
-							   -server_id => $sid);
-
-  my $system = RHN::Server->lookup(-id => $sid);
-
-  $pxt->push_message(site_info => sprintf("You have successfully scheduled a hardware profile refresh for <strong>%s</strong>.", PXT::Utils->escapeHTML($system->name)));
-
-  return;
-}
-
 sub server_name {
   my $pxt = shift;
 
@@ -597,36 +563,6 @@ sub server_history_event_details {
   return $params{__block__};
 }
 
-sub base_entitlement {
-  my $pxt = shift;
-  my $server = shift;
-
-  my ($base_entitlement) = grep { $_->{IS_BASE} eq 'Y' } $server->entitlements;
-
-  if ($base_entitlement) {
-    return $pxt->user->org->slot_name($base_entitlement->{LABEL});
-  }
-  else {
-    return "None";
-  }
-}
-
-sub addon_entitlements {
-  my $pxt = shift;
-  my $server = shift;
-
-  my @system_entitlements = $server->entitlements;
-  my @addon_entitlements = grep { $_->{IS_BASE} eq 'N' } @system_entitlements;
-
-  @addon_entitlements = map { $pxt->user->org->slot_name($_->{LABEL}) } @addon_entitlements;
-
-  unless (@addon_entitlements) {
-    push @addon_entitlements, "None";
-  }
-
-  return join(", ", @addon_entitlements);
-}
-
 sub reboot_server_cb {
   my $pxt = shift;
   my $sid = $pxt->param('sid');
@@ -650,271 +586,6 @@ sub reboot_server_cb {
 #
 #  $pxt->push_message(site_info => $message);
   $pxt->redirect("/rhn/systems/details/Overview.do?sid=$sid&message=system.reboot.scheduled&messagep1=" . $server->name . "&messagep2=" . $pretty_earliest_date . "&messagep3=" . $action_id);
-}
-
-sub server_network_details {
-  my $pxt = shift;
-  my %params = @_;
-  my $ret = '';
-  my $current;
-
-  my $server = $pxt->pnotes('server');
-
-  throw "No server." unless $server;
-
-  my @netinfos = $server->get_net_infos;
-
-  my %subst;
-
-  if (not @netinfos) {
-
-    %subst = (counter => '', ip => 'unknown', hostname => 'unknown');
-    PXT::Debug->log(7, "subst:  " . Data::Dumper->Dump([(\%subst)]));
-    return PXT::Utils->perform_substitutions($params{__block__}, \%subst);
-  }
-
-  PXT::Debug->log(7, "got netinfos...");
-
-  my $counter = 1;
-
-  my $html = $params{__block__};
-
-  foreach my $netinfo (@netinfos) {
-    my %subst;
-
-    $subst{ip} = defined $netinfo->ipaddr ? $netinfo->ipaddr : "";
-    $subst{hostname} = defined $netinfo->hostname ? $netinfo->hostname : "";
-    $subst{counter} = $counter > 1 ? " ".$counter : "";
-
-    PXT::Utils->escapeHTML_multi(\%subst);
-
-    $ret .= PXT::Utils->perform_substitutions($html, \%subst);
-  }
-
-  return $ret;
-}
-
-
-sub server_network_interfaces {
-  my $pxt = shift;
-  my %params = @_;
-  my $ret = '';
-  my $current;
-
-  my $server = $pxt->pnotes('server');
-
-  throw "No server." unless $server;
-
-  my @net_interfaces = $server->get_net_interfaces;
-
-  my %subst;
-
-  if (not @net_interfaces) {
-    return '';
-  }
-
-  PXT::Debug->log(7, "got net_interfaces...");
-
-  my $block = $params{__block__};
-  $block =~ m/<rhn-interface-data>(.*?)<\/rhn-interface-data>/gism;
-  my $device_data_block = $1;
-
-
-  my $unknown = '<span class="no-details">(unknown)</span>';
-  my $html = '';
-  my $counter = 1;
-  foreach my $interface (@net_interfaces) {
-
-    my %subst;
-    if ($counter % 2) {
-      $subst{row_class} = 'list-row-odd';
-    }
-    else {
-      $subst{row_class} = 'list-row-even';
-    }
-
-
-    $subst{interface_name} = $interface->name; # NOT NULL
-    $subst{interface_ip_addr} = defined $interface->ip_addr ? PXT::Utils->escapeHTML($interface->ip_addr) : $unknown;
-    $subst{interface_netmask} = defined $interface->netmask ? PXT::Utils->escapeHTML($interface->netmask) : $unknown;
-    $subst{interface_broadcast} = defined $interface->broadcast ? PXT::Utils->escapeHTML($interface->broadcast) : $unknown;
-    $subst{interface_hw_addr} = defined $interface->hw_addr ? PXT::Utils->escapeHTML($interface->hw_addr) : $unknown;
-    $subst{interface_module} = defined $interface->module ? PXT::Utils->escapeHTML($interface->module) : $unknown;
-
-    $html .= PXT::Utils->perform_substitutions($device_data_block, \%subst);
-    $counter++;
-  }
-
-  PXT::Debug->log(7, "html:  $html");
-
-  $block =~ s{<rhn-interface-data>.*?<\/rhn-interface-data>}{$html}ism;
-
-  return $block;
-}
-
-# must happen *after* server_hardware_profile... so use tags
-# correctly!
-sub server_device {
-  my $pxt = shift;
-  my %params = @_;
-
-  my $current;
-  my $devices_html = '';
-
-  my $class = $params{'class'};
-
-  my $server_devices = $pxt->pnotes("server_devices");
-
-  my $device_list = $server_devices->{$class};
-
-  if (!$device_list) {
-    return '';
-  }
-
-  my %valid_attribs = (HwDevice =>[qw/driver description pcitype bus vendor_id subdevice_id/,
-				   qw/detached subvendor_id device device_id vendorstring/],
-		       StorageDevice => [qw/driver physical pcitype description bus logical detached device/]);
-
-  my $counter = 0;
-  my $block = $params{__block__};
-  $block =~ m/<rhn-device-data>(.*?)<\/rhn-device-data>/gism;
-  my $device_data_block = $1;
-
-  foreach my $device (@{$device_list}) {
-
-    my %subst;
-
-    if ($counter % 2) {
-      $subst{row_class} = 'list-row-even';
-    } else {
-      $subst{row_class} = 'list-row-odd';
-    }
-
-    foreach my $attrib (@{$valid_attribs{(split /::/, ref $device)[-1]}}) {
-      $subst{lc($class) . "_${attrib}"} = defined $device->$attrib() ? $device->$attrib() : "";
-    }
-    $counter++;
-
-    PXT::Utils->escapeHTML_multi(\%subst);
-
-    $devices_html .= PXT::Utils->perform_substitutions($device_data_block, \%subst);
-  }
-
-
-  $block =~ s/<rhn-device-data>.*?<\/rhn-device-data>/$devices_html/gism;
-
-  return $block;
-}
-
-sub server_dmi_info {
-  my $pxt = shift;
-  my %params = @_;
-
-  my $block = $params{__block__};
-  my $server = $pxt->pnotes('server');
-
-  throw "No server found." unless $server;
-
-  my $subst;
-
-  my @dmi_fields = qw/vendor system product bios_vendor board bios_release bios_version asset/;
-
-  my $got_dmi;
-
-  foreach my $field (@dmi_fields) {
-
-    my $fn = 'dmi_' . $field;
-    my $temp = $server->$fn();
-
-    if ($temp) {
-
-      $subst->{$fn} = PXT::Utils->escapeHTML($temp);
-      $got_dmi = 1;
-    }
-    else {
-      $subst->{$fn} = '&#160;';
-    }
-  }
-
-  return '' if not $got_dmi;
-
-  $block = PXT::Utils->perform_substitutions($block, $subst);
-  return $block;
-}
-
-sub server_hardware_profile {
-  my $pxt = shift;
-  my %params = @_;
-
-  my $sid = $pxt->param('sid');
-  die "no server id" unless ($sid);
-
-  my $server = RHN::Server->lookup(-id => $sid);
-
-  $pxt->pnotes(server => $server);
-
-  if (not $server->has_hardware_profile) {
-    return "<div align=\"center\"><strong>Hardware not yet profiled.</strong></div>";
-  }
-
-
-  my $ret = $params{__block__};
-
-  my @storage_devices = $server->get_storage_devices;
-  my @cd_devices = $server->get_cd_devices;
-
-  # Hardware devices can have the following classes (note
-  # that these could have been changed in the db after I
-  # write this!!):
-
-  #  CLASS
-  #  ----------------
-  # AUDIO
-  # MODEM
-  # MOUSE
-  # NETWORK
-  # OTHER
-  # SCSI
-  # SOCKET
-  # USB
-  # VIDEO
-
-
-  my @hardware_devices = $server->get_hw_devices;
-
-  # USB fix
-  foreach my $hw_device (@hardware_devices) {
-    if (defined $hw_device->bus() and $hw_device->bus eq 'USB') {
-#      warn "HW USB fix... class from: " . $hw_device->class;
-      $hw_device->class('USB');
-#      warn "to:  " . $hw_device->class;
-    }
-  }
-
-  my %hw_dev_sorted;
-
-  # we're mushing these all to be handled by a subtag
-  push @{ $hw_dev_sorted{$_->class} }, $_ foreach (@hardware_devices, @storage_devices, @cd_devices);
-
-  my %subst;
-
-  # take care of the one-off's here...
-  $subst{server_name} = PXT::Utils->escapeHTML($server->name || '');
-
-  foreach (qw/cpu_model cpu_mhz cpu_bogomips cpu_arch_name cpu_vendor cpu_cache cpu_stepping cpu_family memory_ram memory_swap/) {
-    $subst{$_} = defined $server->$_() ? $server->$_() : '';
-    $subst{cpu_arch_name} = $server->get_cpu_arch_name || '';
-  }
-
-  $subst{cpu_count} = defined $server->cpu_nrcpu() ? $server->cpu_nrcpu() : '';
-
-  PXT::Utils->escapeHTML_multi(\%subst);
-
-  $pxt->pnotes('server_devices' => \%hw_dev_sorted);
-
-  return PXT::Utils->perform_substitutions($ret, \%subst);
-  #return Data::Dumper->Dump([($server)]);
-  #return "<pre>".Data::Dumper->Dump([(%hw_dev_sorted)])."</pre>";
 }
 
 my @user_server_prefs = ( { name => 'receive_notifications',
@@ -1146,24 +817,6 @@ sub server_set_lock_cb {
 
   $pxt->push_message(site_info => $msg);
   $pxt->redirect("index.pxt");
-}
-
-sub ks_session_redir {
-  my $class = shift;
-  my $node = shift;
-  my $pxt = shift;
-
-  my $sid = $pxt->param('sid');
-  throw 'no sid' unless $sid;
-
-  my $session = RHN::Kickstart::Session->lookup(-sid => $sid, -org_id => $pxt->user->org_id, -soft => 1);
-  my $state = $session ? $session->session_state_label : '';
-
-  if ($session and $state ne 'complete' and $state ne 'failed') {
-    $pxt->redirect('/network/systems/details/kickstart/session_status.pxt?sid=' . $sid);
-  }
-
-  return;
 }
 
 sub remote_command_form {

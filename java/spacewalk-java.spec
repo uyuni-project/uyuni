@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.79
+Version: 1.6.82
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -646,6 +646,28 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Nov 29 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.6.82-1
+- unit test fix (mzazrivec@redhat.com)
+
+* Tue Nov 29 2011 Miroslav Suchý 1.6.81-1
+- IPv6: disabled interface - take IPv6 addresses into account
+  (mzazrivec@redhat.com)
+- IPv6: unit test fixes (mzazrivec@redhat.com)
+- IPv6: also browse through NIC's IPv6 addresses (mzazrivec@redhat.com)
+- IPv6: duplicate system comparison based on IPv6 (webui)
+  (mzazrivec@redhat.com)
+- IPv6: find system duplicates based on IPv6 (mzazrivec@redhat.com)
+- IPv6: fix duplicates based on IP comparison (mzazrivec@redhat.com)
+- IPv6: system.getNetworkDevices() modifications (API) (mzazrivec@redhat.com)
+- api doc: typo fix (mzazrivec@redhat.com)
+- IPv6: system.getNetwork() modifications (API) (mzazrivec@redhat.com)
+- IPv6: SystemHardware.do (webui) modifications (mzazrivec@redhat.com)
+- IPv6: update NetworkInterface.* (mzazrivec@redhat.com)
+- IPv6: updated hibernate mappings for network tables (mzazrivec@redhat.com)
+
+* Mon Nov 28 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.80-1
+- 747037 - disable connects to svn.terracotta.org
+
 * Wed Nov 23 2011 Jan Pazdziora 1.6.79-1
 - No scrubbing of key description and custom key value, also escape the value
   which can now contain full range of characters.

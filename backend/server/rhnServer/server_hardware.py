@@ -173,10 +173,10 @@ def cleanse_ip_addr(ip_addr):
     
 class GenericDevice:
     """ A generic device class """
-    def __init__(self, table):
+    table = "override-GenericDevice"
+    def __init__(self):
         self.id = 0
         self.status = 1 # just added
-        self.__table = table
         self.data = {}
         # default to the hardware seq...
         self.sequence = "rhn_hw_dev_id_seq"
@@ -193,10 +193,10 @@ class GenericDevice:
         return 1
     def save(self, sysid):
         """ save data in the rhnDevice table """
-        log_debug(4, self.__table, self.status, self.data)
+        log_debug(4, self.table, self.status, self.data)
         if not self.must_save():
             return 0
-        t = rhnSQL.Table(self.__table, "id")
+        t = rhnSQL.Table(self.table, "id")
         # check if we have to delete
         if self.status == 2 and self.id:
             # delete the entry
@@ -217,13 +217,13 @@ class GenericDevice:
         """ reload from rhnDevice table based on devid """
         if not devid:
             return -1
-        self.__init__(self.__table)
-        t = rhnSQL.Table(self.__table, "id")
+        t = rhnSQL.Table(self.table, "id")
         self.data = t[devid]
         # clean up fields we don't want
-        for k in ["created", "modified"]:
-            if self.data.has_key(k):
-                del self.data[k]
+        if self.data:
+            for k in ["created", "modified"]:
+                if self.data.has_key(k):
+                    del self.data[k]
         self.id = devid
         self.status = 0
         return 0
@@ -251,13 +251,13 @@ class Device(GenericDevice):
         table. The mapping allows transformation from whatever comes in to
         valid fields in the table Looks complicated but it isn't -- gafton
     """
-    def __init__(self, table, fields, dict = None, mapping = None):
-        GenericDevice.__init__(self, table)
+    def __init__(self, fields, dict = None, mapping = None):
+        GenericDevice.__init__(self)
         x = {}
         for k in fields:
             x[k] = None
         self.data = UserDictCase(x)
-        if dict is None:
+        if not dict:
             return
         # make sure we get a UserDictCase to work with
         if type(dict) == type({}):
@@ -305,6 +305,7 @@ class Device(GenericDevice):
                                 
 class HardwareDevice(Device):
     """ A more specific device based on the Device class """
+    table = "rhnDevice"
     def __init__(self, dict = None):
         fields = ['class', 'bus', 'device', 'driver', 'detached',
                   'description', 'pcitype', 'prop1', 'prop2',
@@ -312,13 +313,14 @@ class HardwareDevice(Device):
         # get a processed mapping
         mapping = kudzu_mapping(dict)
         # ... and do little to no work
-        Device.__init__(self, "rhnDevice", fields, dict, mapping)
+        Device.__init__(self, fields, dict, mapping)
         # use the hardware id sequencer
         self.sequence = "rhn_hw_dev_id_seq"
         
 class CPUDevice(Device):
     """ A class for handling CPU - mirrors the rhnCPU structure """
-    def __init__(self, dict = {}):
+    table = "rhnCPU"
+    def __init__(self, dict = None):
         fields = ['cpu_arch_id',  'architecture', 'bogomips', 'cache',
                   'family', 'mhz', 'stepping', 'flags', 'model',
                   'version', 'vendor', 'nrcpu', 'acpiVersion',
@@ -340,7 +342,10 @@ class CPUDevice(Device):
             'class' : None,
             }
         # now instantiate this class
-        Device.__init__(self, "rhnCPU", fields, dict, mapping)
+        Device.__init__(self, fields, dict, mapping)
+        self.sequence = "rhn_cpu_id_seq"
+        if not dict:
+            return
         if self.data.get("cpu_arch_id") is not None:
             return # all fine, we have the arch
         # if we don't have an architecture, guess it        
@@ -355,8 +360,6 @@ class CPUDevice(Device):
             raise AttributeError, "Invalid architecture for CPU: `%s'" % arch
         self.data["cpu_arch_id"] = row["id"]
         del self.data["architecture"]
-        # use our own sequence
-        self.sequence = "rhn_cpu_id_seq"
         if self.data.has_key("nrcpu"): # make sure this is a number
             try:
                 self.data["nrcpu"] = int(self.data["nrcpu"])
@@ -367,10 +370,11 @@ class CPUDevice(Device):
                 
 class NetworkInformation(Device):
     """ This is a wrapper class for the Network Information (rhnServerNetwork) """
+    table = "rhnServerNetwork"
     def __init__(self, dict = None):
         fields = ["hostname", "ipaddr", "ip6addr"]
         mapping = { 'class' : None }
-        Device.__init__(self, "rhnServerNetwork", fields, dict, mapping)
+        Device.__init__(self, fields, dict, mapping)
         self._autonull = ('ipaddr', 'ip6addr')
         # use our own sequence
         self.sequence = "rhn_server_net_id_seq"
@@ -381,17 +385,15 @@ class NetworkInformation(Device):
 
 class NetIfaceInformation(Device):
     key_mapping = {
-        'ipaddr'    : 'ip_addr',
         'hwaddr'    : 'hw_addr',
         'module'    : 'module',
-        'netmask'   : 'netmask',
-        'broadcast' : 'broadcast',
     }
     def __init__(self, dict=None):
+        log_debug(4, dict)
         self.ifaces = {}
         self.db_ifaces = []
         # parameters which are not allowed to be empty and set to NULL
-        self._autonull = ('ip_addr','netmask','broadcast','hw_addr','module')
+        self._autonull = ('hw_addr','module')
         if not dict:
             return
         for name, info in dict.items():
@@ -412,11 +414,11 @@ class NetIfaceInformation(Device):
                     raise rhnFault(53, "Unable to find required field %s"
                             % key)
                 val = info[k]
-                if mapping in ['ip_addr', 'netmask', 'broadcast']:
-                    # bugzilla: 129840 kudzu (rhpl) will sometimes pad octets
-                    # with leading zeros, causing confusion; clean those up
-                    val = cleanse_ip_addr(val)
                 vdict[mapping] = val
+            if 'ipaddr' in info and info['ipaddr']:
+                vdict['ipv4'] = NetIfaceAddress4([{'ipaddr': info['ipaddr'], 'broadcast': info['broadcast'], 'netmask': info['netmask']}])
+            if 'ipv6' in info and info['ipv6']:
+                vdict['ipv6'] = NetIfaceAddress6(info["ipv6"])
             self.ifaces[name] = vdict
 
     def save(self, server_id):
@@ -437,29 +439,59 @@ class NetIfaceInformation(Device):
                 deletes.append({'server_id' : server_id, 'name' : name})
                 continue
 
-            uploaded_iface = ifaces[name]
+            uploaded_iface = ifaces[name].copy()
             del ifaces[name]
             if _hash_eq(uploaded_iface, iface):
                 # Same value
                 continue
             uploaded_iface.update({'name' : name, 'server_id' : server_id})
+            if 'ipv4' in uploaded_iface:
+                del(uploaded_iface['ipv4'])
+            if 'ipv6' in uploaded_iface:
+                del(uploaded_iface['ipv6'])
             updates.append(uploaded_iface)
 
         # Everything else in self.ifaces has to be inserted
-        for name, iface in ifaces.items():
+        for name, info in ifaces.items():
+            iface = {}
             iface['name'] = name
             iface['server_id'] = server_id
+            iface['hw_addr'] = info['hw_addr']
+            iface['module'] = info['module']
             inserts.append(iface)
 
         log_debug(4, "Deletes", deletes)
         log_debug(4, "Updates", updates)
         log_debug(4, "Inserts", inserts)
 
-        self._delete(deletes)
         self._update(updates)
         self._insert(inserts)
-
+        ifaces = self.ifaces.copy()
+        for name, info in ifaces.items():
+            if not 'ipv6' in info:
+                info['ipv6'] = NetIfaceAddress6()
+            info['ipv6'].save(self.get_server_id(server_id, name))
+            if not 'ipv4' in info:
+                info['ipv4'] = NetIfaceAddress4()
+            info['ipv4'].save(self.get_server_id(server_id, name))
+        # delete address (if any) of deleted interaces
+        for d in deletes:
+            interface = NetIfaceAddress6()
+            interface.save(self.get_server_id(server_id, d['name']))
+            interface = NetIfaceAddress4()
+            interface.save(self.get_server_id(server_id, d['name']))
+        self._delete(deletes)
         return 0
+
+    def get_server_id(self, server_id, name):
+        """ retrieve id for given server_id and name """
+        h = rhnSQL.prepare("select id from rhnServerNetInterface where server_id=:server_id and name=:name")
+        h.execute(server_id=server_id, name=name)
+        row = h.fetchone_dict()
+        if row:
+            return row['id']
+        else:
+            return None
 
     def _insert(self, params):
         q = """insert into rhnServerNetInterface
@@ -470,7 +502,7 @@ class NetIfaceInformation(Device):
         columns.sort()
         bind_params = string.join(map(lambda x: ':' + x, columns), ", ")
         h = rhnSQL.prepare(q % (string.join(columns, ", "), bind_params))
-        return self._dml(h, params)
+        return _dml(h, params)
 
     def _delete(self, params):
         q = """delete from rhnServerNetInterface
@@ -479,7 +511,7 @@ class NetIfaceInformation(Device):
         columns = ['server_id', 'name']
         wheres = map(lambda x: '%s = :%s' % (x, x), columns) 
         h = rhnSQL.prepare(q % string.join(wheres, " and "))
-        return self._dml(h, params)
+        return _dml(h, params)
 
     def _update(self, params):
         q = """update rhnServerNetInterface
@@ -497,17 +529,8 @@ class NetIfaceInformation(Device):
         updates = string.join(updates, ", ")
         
         h = rhnSQL.prepare(q % (updates, wheres))
-        return self._dml(h, params)
+        return _dml(h, params)
 
-    def _dml(self, statement, params):
-        log_debug(5, params)
-        if not params:
-            return 0
-        params = _transpose(params)
-        rowcount = apply(statement.executemany, (), params)
-        log_debug(5, "Affected rows", rowcount)
-        return rowcount
-            
     def reload(self, server_id):
         h = rhnSQL.prepare("""
             select * 
@@ -520,13 +543,188 @@ class NetIfaceInformation(Device):
             row = h.fetchone_dict()
             if not row:
                 break
-            hval = { 'name' : row['name'], 'server_id' : server_id }
+            hval = { 'primary_id' : row['id'], 'name' : row['name'], 'server_id' : server_id }
+            for key in self.key_mapping.values():
+                hval[key] = row[key]
+            hval['ipv4'] = NetIfaceAddress4()
+            hval['ipv4'].reload(hval['primary_id'])
+            hval['ipv6'] = NetIfaceAddress6()
+            hval['ipv6'].reload(hval['primary_id'])
+            self.db_ifaces.append(hval)
+
+        self.status = 0
+        return 0
+
+class NetIfaceAddress(Device):
+    key_mapping = {
+        'netmask'    : 'netmask',
+        'address'    : 'address',
+    }
+    unique = ['address'] # to be overriden by child
+    table = 'rhnServerNetAddress' # to be overriden by child
+    def __init__(self, list_ifaces=None):
+        log_debug(4, list_ifaces)
+        self.ifaces = {}
+        self.db_ifaces = []
+        # parameters which are not allowed to be empty and set to NULL
+        self._autonull = ('address','netmask')
+        self.sequence = "rhn_srv_net_iface_id_seq"
+        if not list_ifaces:
+            return
+        for info in list_ifaces:
+            if not isinstance(info, type({})):
+                raise rhnFault(53, "Unexpected format for interface %s" %
+                    info)
+            vdict = {}
+            for key, mapping in self.key_mapping.items():
+                # Look at the mapping first; if not found, look for the key
+                if info.has_key(mapping):
+                    k = mapping
+                else:
+                    k = key
+                if not info.has_key(k):
+                    raise rhnFault(53, "Unable to find required field %s"
+                            % (key))
+                val = info[k]
+                if mapping in ['ip_addr', 'netmask', 'broadcast', 'address']:
+                    # bugzilla: 129840 kudzu (rhpl) will sometimes pad octets
+                    # with leading zeros, causing confusion; clean those up
+                    val = self.cleanse_ip_addr(val)
+                vdict[mapping] = val
+            self.ifaces[vdict['address']] = vdict
+
+    def cleanse_ip_addr(self, val):
+        """ to be overriden by child """
+        return val
+
+    def save(self, interface_id):
+        log_debug(4, self.ifaces)
+        self.reload(interface_id)
+        log_debug(4, "Net addresses in DB", self.db_ifaces)
+
+        # Compute updates, deletes and inserts
+        inserts = []
+        updates = []
+        deletes = []
+        ifaces = self.ifaces.copy()
+        for iface in self.db_ifaces:
+            address = iface['address']
+            if not self.ifaces.has_key(iface['address']):
+                # To be deleted
+                # filter out params, which are not used in query
+                iface = dict((column, iface[column]) for column in self.unique)
+                deletes.append(iface)
+                continue
+            uploaded_iface = ifaces[address]
+            del ifaces[address]
+            # FIXME this is inefficient for IPv4 as it row is present it will be always update
+            if _hash_eq(uploaded_iface, iface):
+                # Same value
+                continue
+            uploaded_iface.update({'interface_id' : interface_id})
+            updates.append(uploaded_iface)
+
+        # Everything else in self.ifaces has to be inserted
+        for name, iface in ifaces.items():
+            iface['address'] = iface['address']
+            iface['interface_id'] = interface_id
+            inserts.append(iface)
+
+        log_debug(4, "Deletes", deletes)
+        log_debug(4, "Updates", updates)
+        log_debug(4, "Inserts", inserts)
+
+        self._delete(deletes)
+        self._update(updates)
+        self._insert(inserts)
+
+    def _insert(self, params):
+        q = """insert into %s
+            (%s) values (%s)"""
+        self._null_columns(params, self._autonull)
+
+        columns = self.key_mapping.values() + ['interface_id']
+        columns.sort()
+        bind_params = string.join(map(lambda x: ':' + x, columns), ", ")
+        h = rhnSQL.prepare(q % (self.table, string.join(columns, ", "), bind_params))
+        return _dml(h, params)
+
+    def _delete(self, params):
+        q = """delete from %s
+            where %s"""
+
+        columns = self.unique
+        wheres = map(lambda x: '%s = :%s' % (x, x), columns)
+        h = rhnSQL.prepare(q % (self.table, string.join(wheres, " and ")))
+        return _dml(h, params)
+
+    def _update(self, params):
+        q = """update %s
+            set %s
+            where %s"""
+        self._null_columns(params, self._autonull)
+
+        wheres = self.unique
+        wheres = map(lambda x: '%s = :%s' % (x, x), wheres)
+        wheres = string.join(wheres, " and ")
+
+        updates = self.key_mapping.values()
+        updates.sort()
+        updates = map(lambda x: '%s = :%s' % (x, x), updates)
+        updates = string.join(updates, ", ")
+
+        h = rhnSQL.prepare(q % (self.table, updates, wheres))
+        return _dml(h, params)
+
+    def reload(self, interface_id):
+        h = rhnSQL.prepare("""
+            select *
+            from %s
+            where interface_id = :interface_id
+        """ % self.table)
+        h.execute(interface_id=interface_id)
+        self.db_ifaces = []
+        while 1:
+            row = h.fetchone_dict()
+            if not row:
+                break
+            hval = { 'interface_id' : row['interface_id']}
             for key in self.key_mapping.values():
                 hval[key] = row[key]
             self.db_ifaces.append(hval)
 
         self.status = 0
         return 0
+
+class NetIfaceAddress6(NetIfaceAddress):
+    """ IPv6 Network interface """
+    key_mapping = {
+        'netmask' : 'netmask',
+        'addr'    : 'address',
+        'scope'   : 'scope',
+    }
+    table = 'rhnServerNetAddress6'
+    unique = ['interface_id', 'address', 'scope']
+    def __init__(self, addr_dict=None):
+        NetIfaceAddress.__init__(self, addr_dict)
+        self._autonull = ('address', 'netmask', 'scope')
+
+class NetIfaceAddress4(NetIfaceAddress):
+    """ IPv4 Network interface """
+    key_mapping = {
+        'netmask'   : 'netmask',
+        'ipaddr'    : 'address',
+        'broadcast' : 'broadcast',
+    }
+    table = 'rhnServerNetAddress4'
+    unique = ['interface_id']
+    def __init__(self, addr_dict=None):
+        NetIfaceAddress.__init__(self, addr_dict)
+        self._autonull = ('address', 'netmask', 'broadcast')
+
+    def cleanse_ip_addr(self, val):
+        return cleanse_ip_addr(val)
+
 
 def _hash_eq(h1, h2):
     """ Compares two hashes and return 1 if the first is a subset of the second """
@@ -537,6 +735,15 @@ def _hash_eq(h1, h2):
         if h2[k] != v:
             return 0
     return 1
+
+def _dml(statement, params):
+    log_debug(5, params)
+    if not params:
+        return 0
+    params = _transpose(params)
+    rowcount = apply(statement.executemany, (), params)
+    log_debug(5, "Affected rows", rowcount)
+    return rowcount
 
 def _transpose(hasharr):
     """ Transpose the array of hashes into a hash of arrays """
@@ -549,18 +756,24 @@ def _transpose(hasharr):
 
     for hval in hasharr:
         for k in keys:
-            result[k].append(hval[k])
+            if hval.has_key(k):
+                result[k].append(hval[k])
+            else:
+                result[k].append(None)
 
     return result
 
 class MemoryInformation(Device):
     """ Memory information """
+    table = "rhnRAM"
     def __init__(self, dict = None):
         fields = ["ram", "swap"]
         mapping = { "class" : None }
-        Device.__init__(self, "rhnRAM", fields, dict, mapping)
+        Device.__init__(self, fields, dict, mapping)
         # use our own sequence
         self.sequence = "rhn_ram_id_seq"
+        if not dict:
+            return
         # Sometimes we get sent a NNNNL number and we need to strip the L
         for k in fields:
             if not self.data.has_key(k):
@@ -573,13 +786,16 @@ class MemoryInformation(Device):
 
 class DMIInformation(Device):
     """ DMI information """
+    table = "rhnServerDMI"
     def __init__(self, dict = None):
         fields = ["vendor", "system", "product", "asset", "board",
                   "bios_vendor", "bios_version", "bios_release"]
         mapping = { "class" : None }
-        Device.__init__(self, "rhnServerDMI", fields, dict, mapping)
+        Device.__init__(self, fields, dict, mapping)
         # use our own sequence
         self.sequence = "rhn_server_dmi_id_seq"
+        if not dict:
+            return
 
         # deal with hardware with insanely long dmi strings...
         for key, value in self.data.items():
@@ -589,6 +805,7 @@ class DMIInformation(Device):
 
 class InstallInformation(Device):
     """ Install information """
+    table = "rhnServerInstallInfo"
     def __init__(self, dict = None):
         fields = ['install_method', 'iso_status', 'mediasum']
         mapping = { 
@@ -597,7 +814,7 @@ class InstallInformation(Device):
             'isostatus'     : 'iso_status',
             'mediasum'      : 'mediasum',
         }
-        Device.__init__(self, "rhnServerInstallInfo", fields, dict, mapping)
+        Device.__init__(self, fields, dict, mapping)
         self.sequence = 'rhn_server_install_info_id_seq'
 
 class Hardware:
@@ -703,29 +920,20 @@ class Hardware:
         self.__changed = 0
         return 0
 
-    def __load_from_db(self, db, DevClass, sysid):
+    def __load_from_db(self, DevClass, sysid):
         """ Load a certain hardware class from the database """
         if not self.__hardware.has_key(DevClass):
             self.__hardware[DevClass] = []
-        
-        h = rhnSQL.prepare("select * from %s where server_id = :sysid" % db)
+
+        h = rhnSQL.prepare("select id from %s where server_id = :sysid" % DevClass.table)
         h.execute(sysid = sysid)
         rows = h.fetchall_dict() or []
-        
+
         for device in rows:
             dev_id = device['id']
-                
-            # get rid of the keys we do not support
-            for k in ["server_id", "created", "modified", "id"]:
-                if device.has_key(k):
-                    del device[k]
-            dev = DevClass(device)
-
-            # we know better
-            dev.id = dev_id
-            dev.status = 0
+            dev = DevClass()
+            dev.reload(dev_id)
             self.__hardware[DevClass].append(dev)
-        return 0
     
     def reload_hardware_byid(self, sysid):
         """ load all hardware devices for a server """
@@ -734,19 +942,16 @@ class Hardware:
             return -1
         self.__hardware = {} # discard what was already loaded
         # load from all hardware databases
-        self.__load_from_db("rhnDevice", HardwareDevice, sysid)
-        self.__load_from_db("rhnCPU", CPUDevice, sysid)
-        self.__load_from_db("rhnServerDMI", DMIInformation, sysid)        
-        self.__load_from_db("rhnServerNetwork", NetworkInformation, sysid)        
-        self.__load_from_db("rhnRAM", MemoryInformation, sysid)        
-        self.__load_from_db("rhnServerInstallInfo", InstallInformation, sysid)
+        self.__load_from_db(HardwareDevice, sysid)
+        self.__load_from_db(CPUDevice, sysid)
+        self.__load_from_db(DMIInformation, sysid)
+        self.__load_from_db(NetworkInformation, sysid)
+        self.__load_from_db(MemoryInformation, sysid)
+        self.__load_from_db(InstallInformation, sysid)
 
         net_iface_info = NetIfaceInformation()
         net_iface_info.reload(sysid)
-        
-        self.__hardware[NetIfaceInformation] = []
-        self.__hardware[NetIfaceInformation].append(net_iface_info)
-        
+
         # now set the flag
         self.__changed = 0
         self.__loaded = 1

@@ -25,7 +25,6 @@ use RHN::DB::Server::CdDevice;
 use RHN::DB::Server::HwDevice;
 use RHN::DB::Server::StorageDevice;
 use RHN::DB::Server::NetInfo;
-use RHN::DB::Server::NetInterface;
 use RHN::DB::TableClass;
 
 use RHN::DataSource::Errata;
@@ -1382,14 +1381,6 @@ sub get_net_infos {
 
   my @net_infos = RHN::DB::Server::NetInfo->lookup_net_info_by_server($self->id);
   return @net_infos;
-}
-
-# returns an array of all the net info objects related to a server
-sub get_net_interfaces {
-  my $self = shift;
-
-  my @net_interfaces = RHN::DB::Server::NetInterface->lookup_net_interface_by_server($self->id);
-  return @net_interfaces;
 }
 
 

@@ -1616,18 +1616,20 @@ SELECT 1
 
 <mode name="duplicate_system_ids_ip" class="com.redhat.rhn.frontend.dto.NetworkDto">
     <query params="uid, inactive_date">
-        SELECT distinct S.id as id, S.name as name, NI.ip_addr as key, si.checkin as last_checkin,
+        SELECT distinct S.id as id, S.name as name, sa4.address as key, si.checkin as last_checkin,
 		 (select count(*)  from rhnServerInfo Si2 where  S.id = Si2.server_id and Si2.checkin &lt; :inactive_date) as inactive
         from rhnServer S inner join
 		 rhnUserServerPerms USP on S.id = USP.server_id inner join
 		 rhnServerNetInterface NI on NI.server_id = S.id inner join
           	 rhnServerInfo si on si.server_id = S.id inner join
-		 ( Select NI2.ip_addr, count(distinct NI2.server_id) as syscount
+             rhnServerNetAddress4 sa4 on sa4.interface_id = NI.id inner join
+		 ( Select sa4_2.address, count(distinct NI2.server_id) as syscount
 			from rhnServerNetInterface NI2 inner join
-          	 		rhnUserServerPerms USP2 on NI2.server_id = USP2.server_id
+                    rhnUserServerPerms USP2 on NI2.server_id = USP2.server_id inner join
+                    rhnServerNetAddress4 sa4_2 on sa4_2.interface_id = ni2.id
 			where USP2.user_id = :uid and
-				NI2.ip_addr not in(%s) and NI2.name not like 'vnet%' and NI2.name not like 'virbr%'
-				group by NI2.ip_addr having count(distinct NI2.server_id) > 1) SUMM on SUMM.ip_addr = NI.ip_addr
+				sa4_2.address not in(%s) and NI2.name not like 'vnet%' and NI2.name not like 'virbr%'
+				group by sa4_2.address having count(distinct NI2.server_id) > 1) SUMM on SUMM.address = sa4.address
         where USP.user_id = :uid
     </query>
 </mode>
@@ -1639,12 +1641,58 @@ SELECT 1
 			inner join rhnUserServerPerms USP on S.id = USP.server_id
         	 	inner join rhnServerNetInterface NI on NI.server_id = S.id
         	 	inner join rhnServerInfo si on si.server_id = S.id
+                inner join rhnServerNetAddress4 sa4 on sa4.interface_id = NI.id
         where
 		 USP.user_id = :uid
-        	 and NI.ip_addr = :key
+     and sa4.address = :key
     </query>
 </mode>
 
+<mode name="duplicate_system_ids_ipv6" class="com.redhat.rhn.frontend.dto.NetworkDto">
+    <query params="uid, inactive_date">
+        select distinct s.id as id,
+               s.name as name,
+               sa6.address as key,
+               si.checkin as last_checkin,
+               (select count(*)
+                  from rhnserverinfo si2
+                 where s.id = si2.server_id and
+                       si2.checkin &lt; :inactive_date) as inactive
+          from rhnserver s inner join
+               rhnuserserverperms usp on s.id = usp.server_id inner join
+               rhnservernetinterface ni on ni.server_id = s.id inner join
+               rhnserverinfo si on si.server_id = s.id inner join
+               rhnservernetaddress6 sa6 on sa6.interface_id = ni.id inner join
+              (select sa6_2.address,
+                      sa6_2.scope,
+                      count(distinct ni2.server_id) as syscount
+                 from rhnservernetinterface ni2 inner join
+                      rhnuserserverperms usp2 on ni2.server_id = usp2.server_id inner join
+                      rhnservernetaddress6 sa6_2 on sa6_2.interface_id = ni2.id
+                where usp2.user_id = :uid and
+                      sa6_2.address not in(%s) and
+                      ni2.name not like 'vnet%' and ni2.name not like 'virbr%'
+				group by sa6_2.address, sa6_2.scope
+               having count(distinct ni2.server_id) > 1) summ on summ.address = sa6.address and summ.scope = sa6.scope
+         where usp.user_id = :uid
+    </query>
+</mode>
+
+<mode name="duplicate_system_ids_ipv6_key" class="com.redhat.rhn.frontend.dto.SystemOverview">
+    <query params="uid, key">
+        select distinct s.id as id,
+               s.name as name,
+               si.checkin as last_checkin,
+               1 as selectable
+          from rhnserver s inner join
+               rhnuserserverperms usp on s.id = usp.server_id inner join
+               rhnservernetinterface ni on ni.server_id = s.id inner join
+               rhnserverinfo si on si.server_id = s.id inner join
+               rhnservernetaddress6 sa6 on sa6.interface_id = ni.id
+         where usp.user_id = :uid and
+               sa6.address = :key
+    </query>
+</mode>
 
 <mode name="duplicate_system_ids_mac" class="com.redhat.rhn.frontend.dto.NetworkDto">
     <query params="uid, inactive_date">

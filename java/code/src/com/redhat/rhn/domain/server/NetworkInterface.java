@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.manager.kickstart.IpAddress;
 
@@ -21,7 +22,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import org.hibernate.Session;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * NetworkInterface
@@ -30,27 +34,26 @@ import java.io.Serializable;
 public class NetworkInterface extends BaseDomainHelper implements
     Serializable {
 
+    private Long interfaceId;
     private Server server;
     private String name;
-    private String ipaddr;
-    private String netmask;
-    private String broadcast;
     private String hwaddr;
     private String module;
-
+    private ServerNetAddress4 sa4 = null;
+    private ArrayList<ServerNetAddress6> sa6 = null;
 
     /**
-     * @return Returns the broadcast.
+     * @return Returns the interfaceid.
      */
-    public String getBroadcast() {
-        return broadcast;
+    public Long getInterfaceId() {
+        return interfaceId;
     }
 
     /**
-     * @param b The broadcast to set.
+     * @param id The interfaceId to set.
      */
-    public void setBroadcast(String b) {
-        this.broadcast = b;
+    public void setInterfaceId(Long id) {
+        this.interfaceId = id;
     }
 
     /**
@@ -65,20 +68,6 @@ public class NetworkInterface extends BaseDomainHelper implements
      */
     public void setHwaddr(String h) {
         this.hwaddr = h;
-    }
-
-    /**
-     * @return Returns the ipddr.
-     */
-    public String getIpaddr() {
-        return ipaddr;
-    }
-
-    /**
-     * @param i The ipddr to set.
-     */
-    public void setIpaddr(String i) {
-        this.ipaddr = i;
     }
 
     /**
@@ -110,20 +99,6 @@ public class NetworkInterface extends BaseDomainHelper implements
     }
 
     /**
-     * @return Returns the netmask.
-     */
-    public String getNetmask() {
-        return netmask;
-    }
-
-    /**
-     * @param n The netmask to set.
-     */
-    public void setNetmask(String n) {
-        this.netmask = n;
-    }
-
-    /**
      * @return Returns the server.
      */
     public Server getServer() {
@@ -147,9 +122,6 @@ public class NetworkInterface extends BaseDomainHelper implements
         NetworkInterface castOther = (NetworkInterface) other;
         return new EqualsBuilder().append(this.getServer(), castOther.getServer())
                                   .append(this.getName(), castOther.getName())
-                                  .append(this.getIpaddr(), castOther.getIpaddr())
-                                  .append(this.getNetmask(), castOther.getNetmask())
-                                  .append(this.getBroadcast(), castOther.getBroadcast())
                                   .append(this.getHwaddr(), castOther.getHwaddr())
                                   .append(this.getModule(), castOther.getModule())
                                   .isEquals();
@@ -161,9 +133,6 @@ public class NetworkInterface extends BaseDomainHelper implements
     public int hashCode() {
         return new HashCodeBuilder().append(this.getServer())
                                     .append(this.getName())
-                                    .append(this.getIpaddr())
-                                    .append(this.getNetmask())
-                                    .append(this.getBroadcast())
                                     .append(this.getHwaddr())
                                     .append(this.getModule())
                                     .toHashCode();
@@ -173,7 +142,90 @@ public class NetworkInterface extends BaseDomainHelper implements
      * {@inheritDoc}
      */
     public String toString() {
-        return "NetworkInterface - name: " + this.getName() + " ip: " + this.getIpaddr();
+        return "NetworkInterface - name: " + this.getName();
+    }
+
+
+    /**
+     * findServerNetAddress4
+     * @param id Id of the network interface to search on.
+     */
+    private void findServerNetAddress4(Long id) {
+        if (sa4 != null) {
+            return;
+        }
+
+        Session session = HibernateFactory.getSession();
+        sa4 = (ServerNetAddress4) session.getNamedQuery("ServerNetAddress4.lookup")
+                                         .setParameter("interface_id", this.interfaceId)
+                                         .uniqueResult();
+    }
+
+    /**
+     * @return Returns the IP address (IPv4 compatibility).
+     */
+    public String getIpaddr() {
+        findServerNetAddress4(this.getInterfaceId());
+
+        if (sa4 == null) {
+            return null;
+        }
+
+        return sa4.getAddress();
+    }
+
+    /**
+     * @return Returns the netmask (IPv4 compatibility).
+     */
+    public String getNetmask() {
+        findServerNetAddress4(this.getInterfaceId());
+
+        if (sa4 == null) {
+            return null;
+        }
+
+        return sa4.getNetmask();
+   }
+
+    /**
+     * @return Returns the broadcast (IPv4 compatibility).
+     */
+    public String getBroadcast() {
+        findServerNetAddress4(this.getInterfaceId());
+
+        if (sa4 == null) {
+            return null;
+        }
+
+        return sa4.getBroadcast();
+    }
+
+    /**
+     * findServerNetAddress6ByScope
+     * @param scope Address scope to search for.
+     * @return Returns IPv6 address of the given scope for the given interface.
+     */
+    private String findServerNetAddress6ByScope(String scope) {
+        Session session = HibernateFactory.getSession();
+        ServerNetAddress6 ad6 = (ServerNetAddress6)
+            session.getNamedQuery("ServerNetAddress6.lookup_by_scope_and_id")
+            .setParameter("interface_id", this.interfaceId)
+            .setParameter("scope", scope)
+            .uniqueResult();
+
+        if (ad6 == null) {
+            return null;
+        }
+        else {
+            return ad6.getAddress();
+        }
+    }
+
+    /**
+     * @return If available, returns a global IPv6 address.
+     */
+    public String getIp6Addr() {
+        return findServerNetAddress6ByScope("universe");
     }
 
     /**
@@ -181,8 +233,12 @@ public class NetworkInterface extends BaseDomainHelper implements
      * @return if it's empty or not
      */
     public boolean isDisabled() {
-        return this.getIpaddr() == null || this.getIpaddr().equals("0") ||
-                this.getIpaddr().equals("");
+        return (this.getIpaddr() == null ||
+                this.getIpaddr().equals("0") ||
+                this.getIpaddr().equals("")) &&
+               (this.getIp6Addr() == null ||
+                this.getIp6Addr().equals("") ||
+                this.getIp6Addr().equals("0"));
     }
 
 
@@ -219,6 +275,21 @@ public class NetworkInterface extends BaseDomainHelper implements
     public boolean isPublic() {
         return isValid() && !(getIpaddr().equals("127.0.0.1") ||
                                         getIpaddr().equals("0.0.0.0"));
+    }
+
+    /**
+     * Retrieve list of IPv6 addresses
+     * @return List of ServerNetAddress6 objects
+     */
+    public ArrayList<ServerNetAddress6> getIPv6Addresses() {
+        if (sa6 == null) {
+            Session session = HibernateFactory.getSession();
+            sa6 = (ArrayList<ServerNetAddress6>)
+                session.getNamedQuery("ServerNetAddress6.lookup_by_id")
+                .setParameter("interface_id", this.interfaceId).list();
+        }
+
+        return sa6;
     }
 
 }
