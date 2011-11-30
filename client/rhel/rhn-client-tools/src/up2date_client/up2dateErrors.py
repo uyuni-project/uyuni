@@ -13,14 +13,19 @@ t = gettext.translation('rhn-client-tools', fallback=True)
 _ = t.ugettext
 import OpenSSL
 import config
-from platform import getPlatform
 
-if getPlatform() == 'deb':
-    RepoError = Error
-    class YumBaseError:
-        pass
-else:
-    from yum.Errors import RepoError, YumBaseError
+try:
+    from yum.Errors import YumBaseError
+except ImportError:
+    class YumBaseError(Exception):
+        def __init__(self, value=None):
+            Exception.__init__(self)
+            self.value = value
+        def __str__(self):
+            return "%s" %(self.value,)
+
+        def __unicode__(self):
+            return '%s' % to_unicode(self.value)
 
 class Error(YumBaseError):
     """base class for errors"""
@@ -49,7 +54,12 @@ class Error(YumBaseError):
             self.__dict__['value'] = value
         else:
             YumBaseError.__setattr__(self, name, value)
-    
+
+try:
+    from yum.Errors import RepoError
+except ImportError:
+    RepoError = Error
+
 class RpmError(Error):
     """rpm itself raised an error condition"""
     premsg = _("RPM error.  The message was:\n")
