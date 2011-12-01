@@ -486,7 +486,7 @@ def read_network():
     netdict = {}
     netdict['class'] = "NETINFO"
 
-    netdict['hostname'] = gethostname()
+    netdict['hostname'] = socket.getfqdn()
     try:
         list_of_addrs = getaddrinfo(gethostname(), None)
         ipv4_addrs = filter(lambda x:x[0]==socket.AF_INET, list_of_addrs)
