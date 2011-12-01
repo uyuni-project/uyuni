@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.5
+Version: 1.6.6
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -29,7 +29,11 @@ Requires: jakarta-commons-logging
 %endif
 Requires: jpackage-utils >= 1.5
 Requires: log4j
+%if 0%{?fedora} >= 16
+Requires: jakarta-oro
+%else
 Requires: oro
+%endif
 #Requires: lucene
 Requires: quartz
 Requires: redstone-xmlrpc
@@ -50,7 +54,11 @@ BuildRequires: jakarta-commons-logging
 %endif
 BuildRequires: java-devel >= 1.6.0
 BuildRequires: log4j
+%if 0%{?fedora} >= 16
+BuildRequires: jakarta-oro
+%else
 BuildRequires: oro
+%endif
 #BuildRequires: lucene
 BuildRequires: quartz
 BuildRequires: redstone-xmlrpc
@@ -144,6 +152,10 @@ fi
 
 
 %changelog
+* Wed Nov 30 2011 Martin Minar <mminar@redhat.com> 1.6.6-1
+- jakarta-oro package in Fedora 16 no longer provides oro dependency. Let's
+  require jakarta-oro instead of oro. (mminar@redhat.com)
+
 * Mon Oct 24 2011 Jan Pazdziora 1.6.5-1
 - 745102 - fixing typo.
 
