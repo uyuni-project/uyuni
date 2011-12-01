@@ -651,8 +651,6 @@ class RepoSync:
                 elif db_pack['channel_label'] == self.channel_label:
                     # different package with SAME NVREA
                     self.disassociate_package(db_pack)
-            else:
-                pack.load_header_and_set_checksum()
 
             if to_download or to_link:
                 to_process.append((pack, to_download, to_link))
@@ -682,6 +680,7 @@ class RepoSync:
                 self.print_msg("%d/%d : %s" % (index+1, num_to_process, pack.getNVREA()))
                 if to_download:
                     pack.path = localpath = plug.get_package(pack)
+                    pack.load_header_and_set_checksum()
                 if to_download:
                     self.upload_package(pack)
                     finally_remove(localpath)
