@@ -158,10 +158,7 @@ class RepoSync:
                 insecure = True
             try:
                 repo = self.repo_plugin(url.getURL(), self.channel_label,
-                                        insecure, self.quiet, self.interactive,
-                                        proxy=CFG.HTTP_PROXY,
-                                        proxy_user=CFG.HTTP_PROXY_USERNAME,
-                                        proxy_pass=CFG.HTTP_PROXY_PASSWORD)
+                                        insecure, self.quiet, self.interactive)
                 self.import_packages(repo, data['id'], url.getURL())
                 self.import_updates(repo, url.getURL())
             except ChannelTimeoutException, e:

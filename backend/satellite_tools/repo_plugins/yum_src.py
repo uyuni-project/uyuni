@@ -13,16 +13,19 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-import yum
+
 import shutil
 import subprocess
 import sys
+import os
+import re
 import gzip
 import xml.etree.ElementTree as etree
+
 import urlgrabber
 from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
 from rpmUtils.transaction import initReadOnlyTransaction
-
+import yum
 from yum.update_md import UpdateMetadata, UpdateNoticeException, UpdateNotice
 from yum.yumRepo import YumRepository
 try:
@@ -36,8 +39,6 @@ except ImportError:
 from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException, ContentPackage
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common import rhnLog
-import os
-import re
 
 # namespace prefix to parse patches.xml file
 PATCHES = '{http://novell.com/package/metadata/suse/patches}'
@@ -89,30 +90,41 @@ class YumUpdateMetadata(UpdateMetadata):
                             no.add(un)
 
 class ContentSource:
-    def __init__(self, url, name, insecure=False, quiet=False, interactive=True,
-                 proxy=None, proxy_user=None, proxy_pass=None):
+    def __init__(self, url, name, insecure=False, quiet=False, interactive=True):
         self.url = url
         self.name = name
         self.insecure = insecure
         self.quiet = quiet
         self.interactive = interactive
-        self.proxy = proxy
-        self.proxy_user = proxy_user
-        self.proxy_pass = proxy_pass
         self._clean_cache(CACHE_DIR + name)
+
+        # read the proxy configuration in /etc/rhn/rhn.conf
+        initCFG('server.satellite')
+        self.proxy_addr = CFG.http_proxy
+        self.proxy_user = CFG.http_proxy_username
+        self.proxy_pass = CFG.http_proxy_password
+
+        if (self.proxy_user is not None and
+            self.proxy_pass is not None and
+            self.proxy_addr is not None):
+            self.proxy_url = "http://%s:%s@%s" % (
+                self.proxy_user, self.proxy_pass, self.proxy_addr)
+        elif self.proxy_addr is not None:
+            self.proxy_url = "http://" + self.proxy_addr
+        else:
+            self.proxy_url = None
+
+        self.sack = None
 
         repo = yum.yumRepo.YumRepository(name)
         self.repo = repo
         self.setup_repo(repo)
         self.num_packages = 0
         self.num_excluded = 0
-        self.sack = None
+
 
     def setup_repo(self, repo):
         """Fetch repository metadata"""
-        repo.proxy = self.proxy
-        repo.proxy_username = self.proxy_user
-        repo.proxy_password = self.proxy_pass
         repo.cache = 0
         repo.metadata_expire = 0
         repo.mirrorlist = self.url
@@ -124,8 +136,8 @@ class ContentSource:
             repo.repo_gpgcheck = True
         if hasattr(repo, 'base_persistdir'):
             repo.base_persistdir = CACHE_DIR
-        if self.proxy is not None:
-            repo.proxy = self.proxy
+        if self.proxy_url is not None:
+            repo.proxy = self.proxy_url
 
         warnings = YumWarnings()
         warnings.disable()
