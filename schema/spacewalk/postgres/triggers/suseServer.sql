@@ -37,7 +37,7 @@ $$
 begin
     insert into suseDelServer ( guid ) values ( old.guid );
 
-    return new;
+    return old;
 end;
 $$
 language plpgsql;
