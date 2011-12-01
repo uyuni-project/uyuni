@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec  1 13:39:57 CET 2011 - ug@suse.de
+
+- fix display of XML snippets in the web ui
+  (bnc#731304)
+
+-------------------------------------------------------------------
 Wed Nov 16 10:00:08 CET 2011 - jrenner@suse.de
 
 - Fix ISE when deleting software channel (bnc#728894)
