@@ -6,7 +6,7 @@ Feature: Test Oracle and PostgreSQL databases connections.
     And I define user "spacewalk" for Oracle DB
     And I define password "spacewalk" for Oracle DB
     And I select the database "susemanager" for Oracle DB
-    And I define user "spaceuser" for Postgres
-    And I define password "spacepassword" for Postgres
-    And I select the database "spaceschema" for Postgres
+    And I define user "spacewalk" for Postgres
+    And I define password "spacewalk" for Postgres
+    And I select the database "susemanager" for Postgres
     Then I should connect and see at least one result back
