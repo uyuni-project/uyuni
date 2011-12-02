@@ -27,7 +27,11 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/users-userdetails.feature
                      features/create_config_channel.feature
                      features/register_client.feature
-                     features/monitoring.feature
+  }
+  if not ENV['MANAGER_BRANCH']
+      feature_files << "features/monitoring.feature"
+  end
+  feature_files << %w{
                      features/system_configuration.feature
                      features/custom_system_info.feature
                      features/create_group.feature
@@ -40,12 +44,23 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/channels.feature
                      features/weak_deps.feature
                      features/check_registration.feature
-                     features/check_errata.feature
+  }
+  if ENV['MANAGER_BRANCH']
+      feature_files << "features/check_errata-npn.feature"
+  else
+      feature_files << "features/check_errata.feature"
+  end
+  feature_files << %w{
                      features/erratapage.feature
                      features/install_package.feature
                      features/install_errata.feature
-                     features/clone_channel.feature
-                     features/monitoring2.feature
+  }
+  if ENV['MANAGER_BRANCH']
+      feature_files << "features/clone_channel-npn.feature"
+  else
+      feature_files << "features/clone_channel.feature" << "features/monitoring2.feature"
+  end
+  feature_files << %w{
                      features/test_config_channel.feature
                      features/ncc-sync-channels.feature
                      features/delete_system_profile.feature
@@ -69,13 +84,13 @@ namespace :cucumber do
       trap("SIGINT", "IGNORE")
       exec(*arglist)
     end
- 
+
     while ! File.exist?("/tmp/.X98-lock")
       STDERR.puts "waiting for virtual X server to settle.."
       sleep 1
     end
     trap ("SIGINT") do
-      Process.kill("HUP", pid)      
+      Process.kill("HUP", pid)
     end
 
     #############################################
@@ -103,7 +118,7 @@ task :install => :build do
 end
 
 Rake::TestTask.new do |t|
-  t.libs << File.expand_path('../test', __FILE__)	
+  t.libs << File.expand_path('../test', __FILE__)
   t.libs << File.expand_path('../', __FILE__)
   t.test_files = FileList['test/**/test*.rb']
   t.verbose = true
