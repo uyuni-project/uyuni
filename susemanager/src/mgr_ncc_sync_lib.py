@@ -50,10 +50,9 @@ def memoize(function):
 class NCCSync(object):
     """This class is used to sync SUSE Manager Channels and NCC repositories"""
 
-    def __init__(self, quiet=False, non_interactive=False, debug=-1, fromdir=None):
+    def __init__(self, quiet=False, debug=-1, fromdir=None):
         """Setup configuration"""
         self.quiet = quiet
-        self.non_interactive = non_interactive
         self.debug = debug
         self.reset_ent_value = 10
 
@@ -1172,14 +1171,9 @@ class NCCSync(object):
                     self.add_dist_channel_map(channel_id,
                                               self.get_channel_arch_id(channel),
                                               child)
-            if self.confirm("Warning! Once added, Novell channels can not "
-                            "be deleted. Only custom channels can be deleted. "
-                            "Do you wish to proceed?"):
                 rhnSQL.commit()
                 self.print_msg("Added channel '%s' to the database."
                                % channel_label)
-            else:
-                sys.exit("No channel added.")
 
     def sync_suseproductchannel(self):
         """Sync the suseProductChannel relationships from the config file
@@ -1254,27 +1248,6 @@ class NCCSync(object):
 
     def is_entitlement(self, product):
         return product in self.ncc_rhn_ent_mapping
-
-    def confirm(self, message):
-        """Ask the user for confirmation before doing something
-
-        :arg message: message string to show to the user
-
-        Returns: a boolean which is True when the user gave confirmation
-        and False otherwise. Initializing the NCCSync object with
-        interactive=False makes this function return True without asking
-        the user anything.
-
-        """
-        if self.non_interactive:
-            return True
-        else:
-            sys.stdout.write(message)
-            choice = raw_input(' [y/n] (y): ').lower()
-            if choice == 'y' or choice == '':
-                return True
-            else:
-                return False
 
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
