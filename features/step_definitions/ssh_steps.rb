@@ -78,3 +78,19 @@ Then /^I restart the spacewalk service$/ do
         raise "Execute command failed: #{$!}: #{$sshout}"
     end
 end
+
+Then /^I execute spacewalk-debug on the server$/ do
+    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST spacewalk-debug 2>&1`
+    if ! $?.success?
+        raise "Execute command failed: #{$!}: #{$sshout}"
+    end
+end
+
+When /^I copy "([^"]*)"$/ do |arg1|
+    user = "root@"
+    $sshout = `echo | scp -o StrictHostKeyChecking=no #{user}$TESTHOST:#{arg1} . 2>&1`
+    if ! $?.success?
+        raise "Execute command failed: #{$!}: #{$sshout}"
+    end
+end
+

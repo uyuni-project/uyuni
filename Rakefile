@@ -54,6 +54,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/xmlrpc_api.feature
                      features/xmlrpc_activationkey.feature
                      features/xmlrpc_channel.feature
+                     features/spacewalk-debug.feature
                     }
   t.cucumber_opts = cucumber_opts + feature_files
 end
