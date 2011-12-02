@@ -196,22 +196,10 @@ public class CobblerSnippet implements Comparable {
      * @return String to get
     */
     public String getContents() {
-    	String result = null;
-
         if (path.exists()) {
-        	result = FileUtils.readStringFromFile(path.getAbsolutePath());
-        	if (!isEditable()) {
-        		/* 
-        		 * HTML escape Snippets
-        		 * only needed for the read-only display in the web ui
-        		 */
-        		result = result.replace("&", "&amp;");
-        		result = result.replace("<", "&lt;");
-        		result = result.replace(">", "&gt;");
-
-        	}
+        	return FileUtils.readStringFromFile(path.getAbsolutePath());
         }
-        return result;
+        return null;
     }
 
     /**
