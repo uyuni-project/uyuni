@@ -7,6 +7,10 @@ require "rake/clean"
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "spacewalk_testsuite_base/version"
 
+if ENV['MANAGER_BRANCH']
+  ENV['LD_LIBRARY_PATH'] = "/usr/lib64/oracle/10.2.0.4/client/lib/"
+end
+
 features_task = Cucumber::Rake::Task.new do |t|
   cucumber_opts = %w{--format pretty}
   #cucumber_opts = cucumber_opts + %w{-o /tmp/cucumber.log}
