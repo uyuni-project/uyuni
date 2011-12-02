@@ -34,6 +34,10 @@ class YumSrcTest(unittest.TestCase):
         real_setup_repo = yum_src.ContentSource.setup_repo
         yum_src.ContentSource.initgpgdir = Mock()
 
+        # don't read configs
+        yum_src.initCFG = Mock()
+        yum_src.CFG = Mock()
+
         cs = yum_src.ContentSource("http://example.com", "test_repo")
         cs.sack = Mock()
 
