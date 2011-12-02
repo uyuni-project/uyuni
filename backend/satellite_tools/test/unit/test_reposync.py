@@ -140,9 +140,7 @@ class RepoSyncTest(unittest.TestCase):
 
         self.assertEqual(rs.repo_plugin.call_args,
                          (('bogus-url', rs.channel_label, True, False, True),
-                          {'proxy_pass': rs.mocked_proxy_pass,
-                           'proxy_user': rs.mocked_proxy_user,
-                           'proxy': rs.mocked_proxy}))
+                          {}))
         self.assertEqual(rs.print_msg.call_args, (("Total time: 0:00:00",), {}))
 
         self.assertEqual(rs.import_packages.call_args,
@@ -586,9 +584,6 @@ class RepoSyncTest(unittest.TestCase):
         rs.update_date = Mock()
 
         self.reposync.initCFG = Mock()
-        self.reposync.CFG.HTTP_PROXY = rs.mocked_proxy = Mock()
-        self.reposync.CFG.HTTP_PROXY_USERNAME = rs.mocked_proxy_user = Mock()
-        self.reposync.CFG.HTTP_PROXY_PASSWORD = rs.mocked_proxy_pass = Mock()
         return rs
 
 def test_channel_exceptions():
