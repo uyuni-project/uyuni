@@ -66,4 +66,26 @@ public class CobblerUnregisteredSystemCreateCommand extends CobblerSystemCreateC
 		}
 		rec.setNetworkInterfaces(ifaces);
 	}
+
+	/**
+	 * Define this class here since it should only be used to passing on data to cobbler.
+	 */
+	public class CobblerNetworkInterface extends NetworkInterface {
+
+	    private static final long serialVersionUID = -8764861534739929941L;
+	    private String ipAddress;
+
+	    /**
+	     * Allow to set the IP directly for passing it on to cobbler.
+	     * @param ip
+	     */
+	    public void setIpaddr(String ip) {
+	        this.ipAddress = ip;
+	    }
+
+	    @Override
+	    public String getIpaddr() {
+	        return this.ipAddress;
+	    }
+	}
 }

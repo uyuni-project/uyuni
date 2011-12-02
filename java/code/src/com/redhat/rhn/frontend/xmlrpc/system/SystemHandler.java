@@ -117,9 +117,10 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
 import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerUnregisteredSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerUnregisteredSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerUnregisteredSystemCreateCommand.CobblerNetworkInterface;
 import com.redhat.rhn.manager.profile.ProfileManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.DuplicateSystemGrouping;
@@ -4547,7 +4548,7 @@ public class SystemHandler extends BaseHandler {
      *              #prop("string", "ip")
      *          #struct_end()
      *      #array_end()
-     * @xmlrpc.returntype int - #return_int_success()
+     * @xmlrpc.returntype #return_int_success()
      */
     public int createSystemRecord(String sessionKey, String sysName, String ksLabel,
             String kOptions, String comment, List<HashMap<String, String>> netDevices) {
@@ -4560,11 +4561,15 @@ public class SystemHandler extends BaseHandler {
         server.setName(sysName);
         server.setOrg(loggedInUser.getOrg());
 
+        // Create cobbler command
+        CobblerUnregisteredSystemCreateCommand cmd = new CobblerUnregisteredSystemCreateCommand(
+                loggedInUser, server, ksData.getCobblerObject(loggedInUser)
+                        .getName());
+
         // Set network device information to the server
         Set<NetworkInterface> set = new HashSet<NetworkInterface>();
-        NetworkInterface device;
         for (HashMap<String, String> map : netDevices) {
-            device = new NetworkInterface();
+            CobblerNetworkInterface device = cmd.new CobblerNetworkInterface();
             device.setName(map.get("name"));
             device.setIpaddr(map.get("ip"));
             device.setHwaddr(map.get("mac"));
@@ -4574,20 +4579,16 @@ public class SystemHandler extends BaseHandler {
                     throw new FaultException(-2, "networkDeviceError",
                             "Network device name needs to be specified, e.g. 'eth0'");
                 }
-                set.add(device);
+                server.addNetworkInterface(device);
             }
         }
         // One device is needed at least
-        if (set.size() == 0) {
+        if (server.getNetworkInterfaces().size() == 0) {
             throw new FaultException(-2, "networkDeviceError",
                     "At least one valid network device is needed");
         }
-        server.setNetworkInterfaces(set);
 
-        // Create a system record in cobbler
-        CobblerUnregisteredSystemCreateCommand cmd = new CobblerUnregisteredSystemCreateCommand(
-                loggedInUser, server, ksData.getCobblerObject(loggedInUser)
-                        .getName());
+        // Store the command
         cmd.setKernelOptions(kOptions);
         cmd.setComment(comment);
         cmd.store();
