@@ -57,12 +57,16 @@ features_task = Cucumber::Rake::Task.new do |t|
   feature_files << %w{
                      features/erratapage.feature
                      features/install_package.feature
-                     features/install_errata.feature
   }
   if ENV['MANAGER_BRANCH']
+      feature_files << "features/install_errata-npn.feature"
       feature_files << "features/clone_channel-npn.feature"
   else
-      feature_files << "features/clone_channel.feature" << "features/monitoring2.feature"
+      feature_files << %w{
+                          features/install_errata.feature
+                          features/clone_channel.feature
+                          features/monitoring2.feature
+      }
   end
   feature_files << %w{
                      features/test_config_channel.feature
