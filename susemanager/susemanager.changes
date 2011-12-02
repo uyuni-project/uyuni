@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Dec  2 13:19:37 CET 2011 - iartarisi@suse.cz
+
+- remove confirmation dialog when adding a channel (bnc#732517)
+
+-------------------------------------------------------------------
 Mon Nov 28 16:09:26 CET 2011 - mantel@suse.de
 
 - only set character set to utf8 for "internal_use"
