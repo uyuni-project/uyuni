@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.6.33
+Version:        1.6.36
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -11,8 +11,7 @@ Url:            http://fedorahosted.org/spacewalk/
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  python
-BuildRequires:  perl(Digest::SHA1)
+BuildRequires:  perl(Digest::SHA)
 BuildRequires:  python
 
 Provides:       spacewalk-schema = %{version}
@@ -68,6 +67,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Dec 02 2011 Jan Pazdziora 1.6.36-1
+- 633975 - mark probe as updated if server IP address changed.
+
+* Fri Dec 02 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.6.35-1
+- schema sanity check: use newer Digest::SHA module
+
+* Fri Dec 02 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.6.34-1
+- spacewalk-sql: use exec to launch psql in direct mode
+- schema upgrade: run spacewalk-sql in direct mode
+- pgsql schema upgrade fix
+
 * Thu Dec 01 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.6.33-1
 - update oracle equivalent sha1 sums
 
