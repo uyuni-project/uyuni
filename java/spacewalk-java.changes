@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Dec  5 17:49:48 CET 2011 - jrenner@suse.de
+
+- Ensure all chars are displayed properly (bnc#734164, CVE-2011-4346)
+
+-------------------------------------------------------------------
 Thu Dec  1 13:39:57 CET 2011 - ug@suse.de
 
 - fix display of XML snippets in the web ui
