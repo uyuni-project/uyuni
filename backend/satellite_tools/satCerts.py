@@ -75,12 +75,21 @@ _queryLookupOrgId = rhnSQL.Statement("""
       FROM web_customer
 """)
 
+_queryLookupBaseOrgId = rhnSQL.Statement("""
+    SELECT min(id) as id
+      FROM web_customer
+""")
+
 def get_org_id():
     """
      Fetch base org id
     """
-    rows = get_all_orgs()
-    return rows[0]['id']
+    h = rhnSQL.prepare(_queryLookupBaseOrgId)
+    h.execute()
+    row = h.fetchone_dict()
+    if not row or not row['id']:
+        raise NoOrgIdError("Unable to look up org_id")
+    return row['id']
 
 def create_first_org(owner):
     """ create first org_id if needed
@@ -103,14 +112,6 @@ def create_first_org(owner):
         create_first_private_chan_family()
         verify_family_permissions()
     return get_org_id()
-
-_query_get_slot_types = rhnSQL.Statement("""
-    select sg.group_type slot_type_id, sgt.label slot_name
-      from rhnServerGroup sg,
-           rhnServerGroupType sgt
-     where sg.org_id = :org_id
-       and sg.group_type = sgt.id
-""")
 
 _query_get_allorg_slot_types = rhnSQL.Statement("""
     select sg.org_id,sg.group_type as slot_type_id, 

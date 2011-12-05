@@ -421,6 +421,15 @@ class NetIfaceInformation(Device):
                 vdict['ipv6'] = NetIfaceAddress6(info["ipv6"])
             self.ifaces[name] = vdict
 
+    def __str__(self):
+        return "<%s Class at %d: %s>\n" % (
+            self.__class__.__name__,
+            id(self), {
+            "self.ifaces" : self.ifaces,
+            "self.db_ifaces" : self.db_ifaces,
+            })
+    __repr__ = __str__
+
     def save(self, server_id):
         log_debug(4, self.ifaces)
         self.reload(server_id)
@@ -592,6 +601,15 @@ class NetIfaceAddress(Device):
                     val = self.cleanse_ip_addr(val)
                 vdict[mapping] = val
             self.ifaces[vdict['address']] = vdict
+
+    def __str__(self):
+        return "<%s Class at %d: %s>\n" % (
+            self.__class__.__name__,
+            id(self), {
+            "self.ifaces" : self.ifaces,
+            "self.db_ifaces" : self.db_ifaces,
+            })
+    __repr__ = __str__
 
     def cleanse_ip_addr(self, val):
         """ to be overriden by child """
@@ -951,6 +969,7 @@ class Hardware:
 
         net_iface_info = NetIfaceInformation()
         net_iface_info.reload(sysid)
+        self.__hardware[NetIfaceInformation] = [net_iface_info]
 
         # now set the flag
         self.__changed = 0

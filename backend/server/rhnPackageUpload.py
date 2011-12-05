@@ -33,14 +33,16 @@ from spacewalk.server.rhnLib import get_package_path, \
 from spacewalk.server.rhnServer import server_packages
 
 
-def write_temp_file(req, buffer_size, packaging=None):
+def write_temp_file(req, buffer_size, dir, prefix, packaging=None):
     """ Write request to temporary file (write max. buffer_size at once).
         Returns the file object.
     """ 
     suffix = ''
     if packaging == 'deb':
         suffix = '.deb'
-    t = tempfile.NamedTemporaryFile(suffix=suffix)
+    t = tempfile.NamedTemporaryFile(
+                        dir=dir, prefix=prefix + '.',
+                        suffix=suffix)
     while 1:
         buf = req.read(buffer_size)
         if not buf:
@@ -125,7 +127,7 @@ def relative_path_from_nevra_without_package_name(nevra, org_id, checksum_type, 
     return get_package_path_without_package_name(nevra, org_id,
                                      CFG.PREPENDED_DIR, checksum_type, checksum)
 
-def push_package(header, payload_stream, checksum_type, checksum, org_id=None, force=None,
+def push_package(header, temp_path, payload_stream, checksum_type, checksum, org_id=None, force=None,
     header_start=None, header_end=None, channels=[], relative_path=None):
     """Uploads an RPM package
     """
@@ -138,7 +140,7 @@ def push_package(header, payload_stream, checksum_type, checksum, org_id=None, f
 
     # First write the package to the filesystem to final location
     try:
-        importLib.copy_package(payload_stream.fileno(), basedir=CFG.MOUNT_POINT,
+        importLib.move_package(temp_path, basedir=CFG.MOUNT_POINT,
             relpath=relative_path, checksum_type=checksum_type, checksum=checksum, force=1)
     except OSError, e:
         raise rhnFault(50, "Package upload failed: %s" % e), None, sys.exc_info()[2]
