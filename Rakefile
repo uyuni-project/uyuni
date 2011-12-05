@@ -15,7 +15,9 @@ features_task = Cucumber::Rake::Task.new do |t|
   cucumber_opts = %w{--format pretty}
   #cucumber_opts = cucumber_opts + %w{-o /tmp/cucumber.log}
   if ENV['MANAGER_BRANCH']
-      cucumber_opts << %w{--tags ~@monitoring}
+      cucumber_opts << %w{--tags ~@monitoring --tags ~@manager12}
+  else
+      cucumber_opts << %w{--tags ~@without_monitoring --tags ~@manager16}
   end
   feature_files  = %w{
                      features/database.feature
