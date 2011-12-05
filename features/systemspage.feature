@@ -388,7 +388,7 @@ Feature: Explore the main landing page
       And I click on "Update"
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2"
 
-   @pxe_env
+   @pxe_env @manager12
    Scenario: testing for pxe environment files. Requires cobbler_ui tests to have run
      Given cobblerd is running
      Then file "/srv/tftpboot/pxelinux.cfg/default" exists on server
@@ -396,6 +396,15 @@ Feature: Explore the main landing page
       And file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile_upload:1"
       And file "/srv/tftpboot/images/fedora_kickstart_distro:1:SpacewalkDefaultOrganization/initrd.img" exists on server
       And file "/srv/tftpboot/images/fedora_kickstart_distro:1:SpacewalkDefaultOrganization/vmlinuz" exists on server
+
+   @pxe_env @manager16
+   Scenario: testing for pxe environment files. Requires cobbler_ui tests to have run
+     Given cobblerd is running
+     Then file "/srv/tftpboot/pxelinux.cfg/default" exists on server
+      And file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1"
+      And file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile_upload:1"
+      And file "/srv/tftpboot/images/fedora_kickstart_distro:1:Novell/initrd.img" exists on server
+      And file "/srv/tftpboot/images/fedora_kickstart_distro:1:Novell/vmlinuz" exists on server
 
 
 
