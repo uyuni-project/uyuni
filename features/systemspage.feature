@@ -27,6 +27,7 @@ Feature: Explore the main landing page
      And I should see a "Download CSV" link
      And I should see a "Sign Out" link
 
+  @monitoring
   Scenario: Completeness of the main navigation bar
     Given I am authorized
     When I follow "Systems"
@@ -38,6 +39,19 @@ Feature: Explore the main landing page
      And I should see a "Schedule" link in the tab bar
      And I should see a "Users" link in the tab bar
      And I should see a "Monitoring" link in the tab bar
+     And I should see a "Help" link in the tab bar
+
+  @without_monitoring
+  Scenario: Completeness of the main navigation bar
+    Given I am authorized
+    When I follow "Systems"
+    Then I should see a "Overview" link in the tab bar
+     And I should see a "Systems" link in the tab bar
+     And I should see a "Errata" link in the tab bar
+     And I should see a "Channels" link in the tab bar
+     And I should see a "Configuration" link in the tab bar
+     And I should see a "Schedule" link in the tab bar
+     And I should see a "Users" link in the tab bar
      And I should see a "Help" link in the tab bar
 
   Scenario: Check sidebar link destination for Systems

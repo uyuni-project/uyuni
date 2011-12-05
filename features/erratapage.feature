@@ -25,7 +25,7 @@ Feature: Explore the main landing page
      And I should see a "Security Errata" link
      And I should see a "Sign Out" link
 
-  @errata
+  @errata @monitoring
   Scenario: Completeness of the main navigation bar
     Given I am authorized
     When I follow "Errata"
@@ -37,6 +37,19 @@ Feature: Explore the main landing page
      And I should see a "Schedule" link in the tab bar
      And I should see a "Users" link in the tab bar
      And I should see a "Monitoring" link in the tab bar
+     And I should see a "Help" link in the tab bar
+
+  @errata @without_monitoring
+  Scenario: Completeness of the main navigation bar
+    Given I am authorized
+    When I follow "Errata"
+    Then I should see a "Overview" link in the tab bar
+     And I should see a "Systems" link in the tab bar
+     And I should see a "Errata" link in the tab bar
+     And I should see a "Channels" link in the tab bar
+     And I should see a "Configuration" link in the tab bar
+     And I should see a "Schedule" link in the tab bar
+     And I should see a "Users" link in the tab bar
      And I should see a "Help" link in the tab bar
 
   @errata
