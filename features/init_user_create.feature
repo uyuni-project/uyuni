@@ -21,7 +21,7 @@ Feature: Create initial users
     And I click on "Create Login"
     Then I am logged-in
 
-  @second
+  @second @monitoring
   Scenario: Enable Monitoring
     Given I am authorized as "admin" with password "admin"
     When I go to the admin configuration page
@@ -32,6 +32,7 @@ Feature: Create initial users
 
     # Then I should see a "The Spacewalk must be restarted to reflect these changes" text
 
+  @monitoring
   Scenario: restart spacewalk service
     Given I am root
     When I restart the spacewalk service
@@ -67,6 +68,7 @@ Feature: Create initial users
     Then I should see a "User information updated" text
      And I should see a "testing" text
 
+  @monitoring
   Scenario: Activate monitoring scout
     Given I am on the Admin page
      When I follow "SUSE Manager Configuration"
