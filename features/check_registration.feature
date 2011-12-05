@@ -117,7 +117,7 @@ Feature: Check client registration
 # if cobbler test was running there is a profile
 #     And I should see a "No profiles found that are compatible with this System. Either you haven't created any Kickstart Profiles or this system does not have a Base Channel." text
 
-
+  @monitoring
   Scenario: check tab links "Monitoring"
     Given I am on the Systems overview page of this client
     When I follow "Monitoring" in class "content-nav"
