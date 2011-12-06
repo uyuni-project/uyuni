@@ -397,6 +397,27 @@ Feature: Explore the main landing page
       And I follow "spacewalk/sles_no_signature_checks"
     Then I should see a "<signature-handling>" text
 
+   @cobbler_ui
+   Scenario: create a snippet
+     Given I am on the Systems page
+      And I follow "Autoinstallation" in the left menu
+      And I follow "Kickstart Snippets" in the left menu
+      And I follow "create new snippet"
+      And I enter "created_test_snippet" as "name"
+      And I enter "<test_element>a text string</test_element>" as contents
+      And I click on "Create Snippet"
+   Then I should see a "Kickstart snippet created_test_snippet created successfully." text
+
+   @cobbler_ui
+   Scenario: delete a snippet (requires "create a snippet" test was run)
+     Given I am on the Systems page
+      And I follow "Autoinstallation" in the left menu
+      And I follow "Kickstart Snippets" in the left menu
+      And I follow "created_test_snippet"
+      And I follow "delete snippet"
+      And I click on "Delete Snippet"
+   Then I should see a "Kickstart snippet created_test_snippet deleted successfully." text
+
    @pxe_env @manager12
    Scenario: testing for pxe environment files. Requires cobbler_ui tests to have run
      Given cobblerd is running
