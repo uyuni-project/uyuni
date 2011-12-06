@@ -37,21 +37,21 @@ When /^I execute "([^"]*)"$/ do |arg1|
 end
 
 When /^file "([^"]*)" exists on server$/ do |arg1|
-    $sshout = `echo | ssh -l root $TESTHOST test -f "#{arg1}" 2>&1`
+    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST test -f "#{arg1}" 2>&1`
     if ! $?.success?
         raise "File #{arg1} does not exist on server"
     end
 end
 
 When /^file "([^"]*)" not exists on server$/ do |arg1|
-    $sshout = `echo | ssh -l root $TESTHOST test -f "#{arg1}" 2>&1`
+    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST test -f "#{arg1}" 2>&1`
     if $?.success?
         raise "File #{arg1} exists on server"
     end
 end
 
 When /^file "([^"]*)" contains "([^"]*)"$/ do |arg1, arg2|
-    $sshout = `echo | ssh -l root $TESTHOST grep "#{arg2}" "#{arg1}" 2>&1`
+    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST grep "#{arg2}" "#{arg1}" 2>&1`
     if ! $?.success?
         raise "#{arg2} not found in File #{arg1}"
     end
