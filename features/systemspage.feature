@@ -388,6 +388,15 @@ Feature: Explore the main landing page
       And I click on "Update"
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2"
 
+   @cobbler_ui
+   Scenario: checking default snippets
+     Given I am on the Systems page
+      And I follow "Autoinstallation" in the left menu
+      And I follow "Kickstart Snippets" in the left menu
+      And I follow "Default Snippets" in the left menu
+      And I follow "spacewalk/sles_no_signature_checks"
+    Then I should see a "<signature-handling>" text
+
    @pxe_env @manager12
    Scenario: testing for pxe environment files. Requires cobbler_ui tests to have run
      Given cobblerd is running
