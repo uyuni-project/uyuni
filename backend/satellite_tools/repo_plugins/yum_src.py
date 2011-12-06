@@ -45,6 +45,8 @@ PATCHES = '{http://novell.com/package/metadata/suse/patches}'
 
 CACHE_DIR = '/var/cache/rhn/reposync/'
 
+YUMSRC_CONF='/etc/rhn/spacewalk-repo-sync/yum.conf'
+
 class YumWarnings:
     def write(self, s):
         pass
@@ -96,6 +98,11 @@ class ContentSource:
         self.insecure = insecure
         self.quiet = quiet
         self.interactive = interactive
+        self.yumbase = yum.YumBase()
+        self.yumbase.preconf.fn=YUMSRC_CONF
+        if not os.path.exists(YUMSRC_CONF):
+            self.yumbase.preconf.fn='/dev/null'
+        self.configparser = ConfigParser()
         self._clean_cache(CACHE_DIR + name)
 
         # read the proxy configuration in /etc/rhn/rhn.conf
@@ -117,6 +124,7 @@ class ContentSource:
         self.sack = None
 
         repo = yum.yumRepo.YumRepository(name)
+        repo.populate(self.configparser, name, self.yumbase.conf)
         self.repo = repo
         self.setup_repo(repo)
         self.num_packages = 0
