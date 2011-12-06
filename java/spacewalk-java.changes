@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Dec  6 10:00:01 CET 2011 - jrenner@suse.de
+
+- Fix query to determine config channels in SSM (bnc#732845)
+
+-------------------------------------------------------------------
 Mon Dec  5 17:49:48 CET 2011 - jrenner@suse.de
 
 - Ensure all chars are displayed properly (bnc#734164, CVE-2011-4346)
