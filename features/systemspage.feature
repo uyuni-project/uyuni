@@ -393,7 +393,7 @@ Feature: Explore the main landing page
      Given I am on the Systems page
       And I follow "Autoinstallation" in the left menu
       And I follow "Kickstart Snippets" in the left menu
-      And I follow "Default Snippets" in the left menu
+      And I follow "Default Snippets"
       And I follow "spacewalk/sles_no_signature_checks"
     Then I should see a "<signature-handling>" text
 
@@ -404,7 +404,7 @@ Feature: Explore the main landing page
       And I follow "Kickstart Snippets" in the left menu
       And I follow "create new snippet"
       And I enter "created_test_snippet" as "name"
-      And I enter "<test_element>a text string</test_element>" as contents
+      And I enter "<test_element>a text string</test_element>" as "contents"
       And I click on "Create Snippet"
    Then I should see a "Kickstart snippet created_test_snippet created successfully." text
 
