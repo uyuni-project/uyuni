@@ -130,7 +130,6 @@ class ContentSource:
         repo.mirrorlist = self.url
         repo.baseurl = [self.url]
         repo.basecachedir = CACHE_DIR
-        repo._dirSetAttr('pkgdir', os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, '1'))
         if self.insecure:
             repo.repo_gpgcheck = False
         else:
