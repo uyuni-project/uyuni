@@ -37,6 +37,8 @@ class YumSrcTest(unittest.TestCase):
         # don't read configs
         yum_src.initCFG = Mock()
         yum_src.CFG = Mock()
+        yum_src.CFG.MOUNT_POINT = ''
+        yum_src.CFG.PREPENDED_DIR = ''
 
         cs = yum_src.ContentSource("http://example.com", "test_repo")
         cs.sack = Mock()
