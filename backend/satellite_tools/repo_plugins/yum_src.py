@@ -26,6 +26,7 @@ import urlgrabber
 from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
 from rpmUtils.transaction import initReadOnlyTransaction
 import yum
+from yum.config import ConfigParser
 from yum.update_md import UpdateMetadata, UpdateNoticeException, UpdateNotice
 from yum.yumRepo import YumRepository
 try:
