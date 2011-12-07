@@ -397,6 +397,15 @@ Feature: Explore the main landing page
       And I follow "spacewalk/sles_no_signature_checks"
     Then I should see a "<signature-handling>" text
 
+   @cobbler_ui @manager16
+   Scenario: checking default snippets
+     Given I am on the Systems page
+      And I follow "Autoinstallation" in the left menu
+      And I follow "Autoinstallation Snippets" in the left menu
+      And I follow "Default Snippets"
+      And I follow "spacewalk/sles_no_signature_checks"
+    Then I should see a "<signature-handling>" text
+
    @cobbler_ui @manager12
    Scenario: create a snippet
      Given I am on the Systems page
