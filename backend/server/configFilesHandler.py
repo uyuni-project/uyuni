@@ -192,10 +192,15 @@ class ConfigFilesHandler(rhnHandler):
             if row:
                 file['selinux_ctx'] = row['selinux_ctx']
             else:
-                file['selinux_ctx'] = ''
+                # postgres does not work with empty string
+                file['selinux_ctx'] = None
         else:
             # RHEL5+ with enabled selinux - set from the incoming request
-            file['selinux_ctx'] = selinux_ctx_or_none
+            if selinux_ctx_or_none == '':
+                # postgres does not work with empty string
+                file['selinux_ctx'] = None
+            else:
+                file['selinux_ctx'] = selinux_ctx_or_none
         result = {}
 
         try:
