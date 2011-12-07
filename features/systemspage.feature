@@ -186,6 +186,7 @@ Feature: Explore the main landing page
      And I should see a "create new key" link
      And I should see a "No Custom Info Keys Found" text
 
+  @manager12
   Scenario: Check sidebar link destination for Systems => Kickstart
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
@@ -196,6 +197,23 @@ Feature: Explore the main landing page
      And I should see a "Distributions" link in the left menu
      And I should see a "File Preservation" link in the left menu
      And I should see a "Kickstart Snippets" link in the left menu
+     And I should see a "create new kickstart profile" link
+     And I should see a "upload new kickstart file" link
+     And I should see a "View a List of Kickstart Profiles" link
+     And I should see a "Create a New Kickstart Profile" link
+     And I should see a "Upload a New Kickstart File" link
+
+   @manager16
+   Scenario: Check sidebar link destination for Systems => Kickstart
+    Given I am on the Systems page
+      And I follow "Kickstart" in the left menu
+    Then I should see a "Kickstart Overview" text
+     And I should see a "Profiles" link in the left menu
+     And I should see a "Bare Metal" link in the left menu
+     And I should see a "GPG and SSL Keys" link in the left menu
+     And I should see a "Distributions" link in the left menu
+     And I should see a "File Preservation" link in the left menu
+     And I should see a "Autoinstallation Snippets" link in the left menu
      And I should see a "create new kickstart profile" link
      And I should see a "upload new kickstart file" link
      And I should see a "View a List of Kickstart Profiles" link
@@ -242,11 +260,24 @@ Feature: Explore the main landing page
      And I should see a "RHN Reference Guide" link
      And I should see a "create new file preservation list" link
 
+  @manager12
   Scenario: Check sidebar link destination for Systems => Kickstart => Kickstart Snippets
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
       And I follow "Kickstart Snippets" in the left menu
     Then I should see a "Kickstart Snippets" text
+     And I should see a "No kickstart snippets found." text
+     And I should see a "create new snippet" link
+     And I should see a "Default Snippets" link in element "content-nav"
+     And I should see a "Custom Snippets" link in element "content-nav"
+     And I should see a "All Snippets" link in element "content-nav"
+
+  @manager16
+  Scenario: Check sidebar link destination for Systems => Kickstart => Kickstart Snippets
+    Given I am on the Systems page
+      And I follow "Kickstart" in the left menu
+      And I follow "Kickstart Snippets" in the left menu
+    Then I should see a "Autoinstallation Snippets" text
      And I should see a "No kickstart snippets found." text
      And I should see a "create new snippet" link
      And I should see a "Default Snippets" link in element "content-nav"
@@ -418,15 +449,6 @@ Feature: Explore the main landing page
    Then I should see a "created_test_snippet created successfully." text
 
    @cobbler_ui @manager16
-   Scenario: checking default snippets
-     Given I am on the Systems page
-      And I follow "Autoinstallation" in the left menu
-      And I follow "Autoinstallation Snippets" in the left menu
-      And I follow "Default Snippets"
-      And I follow "spacewalk/sles_no_signature_checks"
-    Then I should see a "<signature-handling>" text
-
-   @cobbler_ui @manager16
    Scenario: create a snippet
      Given I am on the Systems page
       And I follow "Autoinstallation" in the left menu
@@ -437,11 +459,21 @@ Feature: Explore the main landing page
       And I click on "Create Snippet"
    Then I should see a "created_test_snippet created successfully." text
 
-   @cobbler_ui
+   @cobbler_ui @manager12
    Scenario: delete a snippet (requires "create a snippet" test was run)
      Given I am on the Systems page
       And I follow "Autoinstallation" in the left menu
       And I follow "Kickstart Snippets" in the left menu
+      And I follow "created_test_snippet"
+      And I follow "delete snippet"
+      And I click on "Delete Snippet"
+   Then I should see a "created_test_snippet deleted successfully." text
+
+   @cobbler_ui @manager16
+   Scenario: delete a snippet (requires "create a snippet" test was run)
+     Given I am on the Systems page
+      And I follow "Autoinstallation" in the left menu
+      And I follow "Autoinstallation Snippets" in the left menu
       And I follow "created_test_snippet"
       And I follow "delete snippet"
       And I click on "Delete Snippet"
