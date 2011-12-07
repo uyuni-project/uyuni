@@ -587,7 +587,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #array()
-     *          #struct()
+     *          #struct("erratum")
      *              #prop("int", "id")
      *              #prop("int", "published")
      *              #prop("string", "advisory")
