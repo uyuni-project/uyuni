@@ -2064,21 +2064,21 @@ available for this kickstart profile to function properly.
       </trans-unit>
 
      <trans-unit id="cobblersnippet.update.success">
-        <source>Kickstart snippet &lt;strong&gt;{0}&lt;/strong&gt; updated successfully.</source>
+        <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; updated successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetCreate</context>
         </context-group>
       </trans-unit>
 
     <trans-unit id="cobblersnippet.create.success">
-        <source>Kickstart snippet &lt;strong&gt;{0}&lt;/strong&gt; created successfully.</source>
+        <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; created successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
       </trans-unit>
 
     <trans-unit id="cobblersnippet.delete.success">
-        <source>Kickstart snippet &lt;strong&gt;{0}&lt;/strong&gt; deleted successfully.</source>
+        <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; deleted successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
@@ -2099,14 +2099,14 @@ available for this kickstart profile to function properly.
        </trans-unit>
 
       <trans-unit id="cobbler.snippet.filenameexists.message">
-       <source>Kickstart snippet with the name &lt;strong&gt;{0}&lt;/strong&gt; already exists.</source>
+       <source>Snippet with the name &lt;strong&gt;{0}&lt;/strong&gt; already exists.</source>
          <context-group name="ctx">
            <context context-type="sourcefile">Kickstart Profile Details pages.</context>
          </context-group>
        </trans-unit>
 
       <trans-unit id="cobbler.snippet.invalidfilename.message">
-       <source>The requested kickstart snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or  begin with a period(.)</source>
+       <source>The requested snippet filename is not valid. The autoinstallation snippet file name cannot contain slash (/) or  begin with a period(.)</source>
          <context-group name="ctx">
            <context context-type="sourcefile">Kickstart Profile Details pages.</context>
          </context-group>
