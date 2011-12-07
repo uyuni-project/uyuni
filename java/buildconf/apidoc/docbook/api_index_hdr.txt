@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.docbook.org/xml/4.5/docbookx.dtd">
+
+<book>
+  <title>SUSE Manager API Documentation</title>
+  <bookinfo>
+    <abstract>
+      <para>
+        Welcome to the SUSE Manager API. By using the included API calls, you can easily automate many of the tasks you perform everyday. All API calls are grouped by common functionality.
+      </para>
+    </abstract>
+  </bookinfo>
+
