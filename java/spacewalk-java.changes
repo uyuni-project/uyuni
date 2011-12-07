@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec  7 16:56:46 CET 2011 - jrenner@suse.de
+
+- Add basic support for generating API documentation as docbook xml
+
+-------------------------------------------------------------------
 Tue Dec  6 10:00:01 CET 2011 - jrenner@suse.de
 
 - Fix query to determine config channels in SSM (bnc#732845)
