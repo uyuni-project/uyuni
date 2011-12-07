@@ -406,7 +406,7 @@ Feature: Explore the main landing page
       And I enter "created_test_snippet" as "name"
       And I enter "<test_element>a text string</test_element>" as "contents"
       And I click on "Create Snippet"
-   Then I should see a "Kickstart snippet created_test_snippet created successfully." text
+   Then I should see a "created_test_snippet created successfully." text
 
    @cobbler_ui
    Scenario: delete a snippet (requires "create a snippet" test was run)
@@ -416,7 +416,7 @@ Feature: Explore the main landing page
       And I follow "created_test_snippet"
       And I follow "delete snippet"
       And I click on "Delete Snippet"
-   Then I should see a "Kickstart snippet created_test_snippet deleted successfully." text
+   Then I should see a "created_test_snippet deleted successfully." text
 
    @pxe_env @manager12
    Scenario: testing for pxe environment files. Requires cobbler_ui tests to have run
