@@ -134,6 +134,8 @@ class ContentSource:
             repo.repo_gpgcheck = False
         else:
             repo.repo_gpgcheck = True
+        repo.pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, '1')
+
         if hasattr(repo, 'base_persistdir'):
             repo.base_persistdir = CACHE_DIR
         if self.proxy_url is not None:
