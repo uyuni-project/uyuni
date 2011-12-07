@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Dec  7 11:07:07 CET 2011 - ug@suse.de
+
+- fixed autoinstall branding for snippets
+
+-------------------------------------------------------------------
 Thu Dec  1 13:41:19 CET 2011 - ug@suse.de
 
 - fix display of XML snippets in the web ui 
