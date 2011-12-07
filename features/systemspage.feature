@@ -388,7 +388,7 @@ Feature: Explore the main landing page
       And I click on "Update"
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2"
 
-   @cobbler_ui
+   @cobbler_ui @manager12
    Scenario: checking default snippets
      Given I am on the Systems page
       And I follow "Autoinstallation" in the left menu
@@ -397,11 +397,31 @@ Feature: Explore the main landing page
       And I follow "spacewalk/sles_no_signature_checks"
     Then I should see a "<signature-handling>" text
 
-   @cobbler_ui
+   @cobbler_ui @manager12
    Scenario: create a snippet
      Given I am on the Systems page
       And I follow "Autoinstallation" in the left menu
       And I follow "Kickstart Snippets" in the left menu
+      And I follow "create new snippet"
+      And I enter "created_test_snippet" as "name"
+      And I enter "<test_element>a text string</test_element>" as "contents"
+      And I click on "Create Snippet"
+   Then I should see a "created_test_snippet created successfully." text
+
+   @cobbler_ui @manager16
+   Scenario: checking default snippets
+     Given I am on the Systems page
+      And I follow "Autoinstallation" in the left menu
+      And I follow "Autoinstallation Snippets" in the left menu
+      And I follow "Default Snippets"
+      And I follow "spacewalk/sles_no_signature_checks"
+    Then I should see a "<signature-handling>" text
+
+   @cobbler_ui @manager16
+   Scenario: create a snippet
+     Given I am on the Systems page
+      And I follow "Autoinstallation" in the left menu
+      And I follow "Autoinstallation Snippets" in the left menu
       And I follow "create new snippet"
       And I enter "created_test_snippet" as "name"
       And I enter "<test_element>a text string</test_element>" as "contents"
