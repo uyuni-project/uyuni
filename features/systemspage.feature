@@ -276,9 +276,9 @@ Feature: Explore the main landing page
   Scenario: Check sidebar link destination for Systems => Kickstart => Kickstart Snippets
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
-      And I follow "Kickstart Snippets" in the left menu
+      And I follow "Autoinstallation Snippets" in the left menu
     Then I should see a "Autoinstallation Snippets" text
-     And I should see a "No kickstart snippets found." text
+     And I should see a "No autoinstallation snippets found." text
      And I should see a "create new snippet" link
      And I should see a "Default Snippets" link in element "content-nav"
      And I should see a "Custom Snippets" link in element "content-nav"
