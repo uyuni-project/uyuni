@@ -425,7 +425,6 @@ Feature: Explore the main landing page
       And I follow "Autoinstallation" in the left menu
       And I follow "Kickstart Snippets" in the left menu
       And I follow "Default Snippets"
-      And I click on "Next Page"
       And I follow "spacewalk/sles_no_signature_checks"
     Then I should see a "<signature-handling>" text
 
