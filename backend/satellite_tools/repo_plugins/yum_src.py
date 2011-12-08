@@ -100,9 +100,14 @@ class ContentSource:
         self.quiet = quiet
         self.interactive = interactive
         self.yumbase = yum.YumBase()
-        self.yumbase.preconf.fn=YUMSRC_CONF
+        global YUMSRC_CONF
         if not os.path.exists(YUMSRC_CONF):
-            self.yumbase.preconf.fn='/dev/null'
+            YUMSRC_CONF = '/dev/null'
+        try:
+            self.yumbase.preconf.fn=YUMSRC_CONF
+        except AttributeError: # older yum versions don't have the preconf attr
+            self.yumbase.doConfigSetup(fn=YUMSRC_CONF)
+
         self.configparser = ConfigParser()
         self._clean_cache(CACHE_DIR + name)
 
