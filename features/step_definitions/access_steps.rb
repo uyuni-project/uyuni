@@ -56,7 +56,7 @@ Then /^no link should be broken$/ do
         hbase = fhref.split("?")[0]
         next if visited[hbase]
         visited[hbase] = true
-        if hbase.empty?
+        if hbase.nil? or hbase.empty?
               # Example: fhref = "?order=asc&sort=login"
               fhref = base.concat(fhref)
 #             $stderr.puts "\t empyt hbase; new href is #{fhref}"
