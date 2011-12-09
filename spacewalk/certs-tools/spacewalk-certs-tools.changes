@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Dec  9 14:58:15 CET 2011 - ug@suse.de
+
+- pimp bootstrap.sh script in combintation with autoyast
+
+-------------------------------------------------------------------
 Tue Nov 22 10:10:43 CET 2011 - ma@suse.de
 
 - Ported from Manager-1.2:
