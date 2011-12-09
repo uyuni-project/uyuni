@@ -144,6 +144,24 @@ Z_CLIENT_REPOS_ROOT=
 # -----------------------------------------------------------------------------
 #
 
+#
+# maybe autoyast has written a tracking key for us
+#
+if [ -f "/var/adm/autoinstall/cache/SUSE_Manager_keys" ]; then
+    . /var/adm/autoinstall/cache/SUSE_Manager_keys
+    if [ "x$redhat_management_key" != "x" ]; then
+        ACTIVATION_KEYS="$ACTIVATION_KEYS,$redhat_management_key"
+    fi
+
+    if [ "x$registration_key" != "x" ]; then
+        ACTIVATION_KEYS="$ACTIVATION_KEYS,$registration_key"
+    fi
+
+    # remove leading ','
+    ACTIVATION_KEYS=${ACTIVATION_KEYS#,}
+fi
+
+
 # an idea from Erich Morisse (of Red Hat).
 # use either wget *or* curl
 # Also check to see if the version on the
