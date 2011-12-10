@@ -60,15 +60,19 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     private String kernelOptions;
     private String postKernelOptions;
     private String comment;
-    protected String networkInterface;
-    protected boolean isDhcp;
+    private String networkInterface;
+    private boolean isDhcp;
+    private boolean useIpv6Gateway;
     /**
      * @param dhcp true if the network type is dhcp
      * @param networkInterfaceIn The name of the network interface
+     * @param useIpv6GatewayIn whether to use ipv6 gateway
      */
-    public void setNetworkInfo(boolean dhcp, String networkInterfaceIn) {
+    public void setNetworkInfo(boolean dhcp, String networkInterfaceIn,
+        boolean useIpv6GatewayIn) {
         isDhcp = dhcp;
         networkInterface = networkInterfaceIn;
+        useIpv6Gateway = useIpv6GatewayIn;
     }
 
     /**
@@ -260,6 +264,8 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                     getKickstartHost());
         }
         ksmeta.remove(KickstartFormatter.STATIC_NETWORK_VAR);
+        ksmeta.put(KickstartFormatter.USE_IPV6_GATEWAY,
+            this.useIpv6Gateway ? "true" : "false");
         rec.setKsMeta(ksmeta);
         if (rec.getProfile().getDistro().getBreed().equals("suse")) {
         	if (kernelOptions != null && !kernelOptions.contains("install=")) {

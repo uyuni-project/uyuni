@@ -65,7 +65,7 @@ class ChannelTimeoutException(ChannelException):
     """Channel timeout error e.g. a remote repository is not responding"""
     pass
 
-class RepoSync:
+class RepoSync(object):
     def __init__(self, channel_label, repo_type, url=None, fail=False,
                  quiet=False, noninteractive=False, filters=[]):
         self.regen = False
@@ -758,21 +758,18 @@ class RepoSync:
                   checksum_type=pack['checksum_type'], checksum=pack['checksum'])
 
     def _importer_run(self, package, caller, backend):
-            importer = ChannelPackageSubscription(
-                       [IncompletePackage().populate(package)],
-                       backend, caller=caller, repogen=False)
-            importer.run()
-
+        importer = ChannelPackageSubscription(
+            [IncompletePackage().populate(package)],
+            backend, caller=caller, repogen=False)
+        importer.run()
 
     def load_channel(self):
         return rhnChannel.channel_info(self.channel_label)
-
 
     def print_msg(self, message):
         rhnLog.log_clean(0, message)
         if not self.quiet:
             print message
-
 
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
@@ -1000,7 +997,7 @@ class ContentPackage:
 
     def load_checksum_from_header(self):
         if self.path is None:
-           raise rhnFault(50, "Unable to load package", explain=0)
+            raise rhnFault(50, "Unable to load package", explain=0)
         self.file = open(self.path, 'rb')
         self.header, self.payload_stream, self.header_start, self.header_end = \
                 rhnPackageUpload.load_package(self.file)

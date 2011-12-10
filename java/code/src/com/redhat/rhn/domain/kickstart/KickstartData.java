@@ -1311,17 +1311,29 @@ public class KickstartData {
      * @return the cobblerName
      */
     public String getCobblerFileName() {
-        String path = "";
+        if (getCobblerId() != null) {
+            Profile prof = Profile.lookupById(
+                   CobblerXMLRPCHelper.getConnection(
+                   Config.get().getString(ConfigDefaults.COBBLER_AUTOMATED_USER)),
+                       getCobblerId());
+            if (prof != null && !StringUtils.isBlank(prof.getKickstart())) {
+                return prof.getKickstart();
+            }
+        }
 
+        return buildCobblerFileName();
+    }
+
+    /**
+     * Build std kickstart cfg template path
+     * @return ks cfg template path
+     */
+    public String buildCobblerFileName() {
         if (isRawData()) {
             return CobblerCommand.makeCobblerFileName(RAW_DIR + "/" + getLabel(), getOrg());
         }
-        else {
-            return CobblerCommand.makeCobblerFileName(WIZARD_DIR + "/" + getLabel(),
-                    getOrg());
-        }
+        return CobblerCommand.makeCobblerFileName(WIZARD_DIR + "/" + getLabel(), getOrg());
     }
-
 
     /**
      * @return Returns if up2date/yum should be verbose

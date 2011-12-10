@@ -268,54 +268,6 @@ sub trusted_orgs {
 # Channel package functions
 ################################
 
-my %proxy_chans_by_version = (
-                   '5.0' => ['redhat-rhn-proxy-5.0-as-i386-4'],
-                   '5.1' => ['redhat-rhn-proxy-5.1-as-i386-4',
-                             'redhat-rhn-proxy-5.1-as-x86_64-4',
-                             'redhat-rhn-proxy-5.1-as-s390-4',
-                             'redhat-rhn-proxy-5.1-as-s390x-4'],
-                   '5.2' => ['redhat-rhn-proxy-5.2-as-i386-4',
-                             'redhat-rhn-proxy-5.2-as-x86_64-4',
-                             'redhat-rhn-proxy-5.2-as-s390-4',
-                             'redhat-rhn-proxy-5.2-as-s390x-4',
-                             'redhat-rhn-proxy-5.2-server-i386-5',
-                             'redhat-rhn-proxy-5.2-server-x86_64-5',
-                             'redhat-rhn-proxy-5.2-server-s390x-5',
-                            ],
-                   '5.3' => ['redhat-rhn-proxy-5.3-as-i386-4',
-                         'redhat-rhn-proxy-5.3-as-x86_64-4',
-                         'redhat-rhn-proxy-5.3-as-s390-4',
-                         'redhat-rhn-proxy-5.3-as-s390x-4',
-                         'redhat-rhn-proxy-5.3-server-i386-5',
-                         'redhat-rhn-proxy-5.3-server-x86_64-5',
-                         'redhat-rhn-proxy-5.3-server-s390x-5',
-                            ],
-                   '5.4' => [ 'redhat-rhn-proxy-5.4-server-i386-5',
-                         'redhat-rhn-proxy-5.4-server-x86_64-5',
-                         'redhat-rhn-proxy-5.4-server-s390x-5',
-                         'redhat-rhn-proxy-5.4-server-i386-6',
-                         'redhat-rhn-proxy-5.4-server-x86_64-6',
-                         'redhat-rhn-proxy-5.4-server-s390x-6',
-                            ],
-
-			     );
-
-
-sub proxy_channel_versions {
-  my $class = shift;
-  return sort(keys %proxy_chans_by_version);
-}
-
-sub proxy_channels_by_version {
-  my $class = shift;
-  my %params = validate(@_, { version => {type => Params::Validate::SCALAR } });
-
-  if (not exists $proxy_chans_by_version{$params{version}}) {
-    die "invalid proxy version";
-  }
-
-  return @{$proxy_chans_by_version{$params{version}}};
-}
 
 sub has_downloads {
   my $class = shift;

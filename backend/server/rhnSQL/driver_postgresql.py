@@ -81,7 +81,15 @@ class Function(sql_base.Procedure):
         query = "SELECT %s(%s)" % (self.name, positional_args)
 
         log_debug(2, query, args)
-        ret = self.cursor.execute(query, args)
+        try:
+            ret = self.cursor.execute(query, args)
+        except psycopg2.Error, e:
+            error_code = 99999
+            m = re.match('ERROR: +-([0-9]+)', e.pgerror)
+            if m:
+                error_code = int(m.group(1))
+            raise sql_base.SQLError(error_code, e.pgerror, e)
+
         if self.ret_type == None:
             return ret
         else:
@@ -199,7 +207,7 @@ class Database(sql_base.Database):
                 c.execute()
             qparams = ','.join(map(lambda x: re.sub(r'^(\w+).*', ':\g<1>', x), params))
             sql = "select rhn_asdf_%s(%s)" % (sha1, qparams)
-        return Cursor(dbh=self.dbh, sql=sql, force=force)
+        return Cursor(dbh=self.dbh, sql=sql, force=force, blob_map=blob_map)
 
     def execute(self, sql, *args, **kwargs):
         cursor = self.prepare(sql)
@@ -242,9 +250,10 @@ class Database(sql_base.Database):
 class Cursor(sql_base.Cursor):
     """ PostgreSQL specific wrapper over sql_base.Cursor. """
 
-    def __init__(self, dbh=None, sql=None, force=None):
+    def __init__(self, dbh=None, sql=None, force=None, blob_map=None):
 
         sql_base.Cursor.__init__(self, dbh, sql, force)
+        self.blob_map = blob_map
 
         # Accept Oracle style named query params, but convert for python-pgsql
         # under the hood:
@@ -264,6 +273,9 @@ class Cursor(sql_base.Cursor):
                   % (self.sql, params))
         if self.sql is None:
             raise rhnException("Cannot execute empty cursor")
+        if self.blob_map:
+            for blob_var in self.blob_map.keys():
+                 kw[blob_var] = kw[blob_var].replace('\\', '\\\\')
 
         try:
             retval = apply(function, p, kw)

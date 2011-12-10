@@ -20,7 +20,7 @@ A utility to create and manage channels at different update levels.
 <RefSynopsisDiv>
 <Synopsis>
     <cmdsynopsis>
-        <command>spaceawlk-create-channel</command>
+        <command>spacewalk-create-channel</command>
         <arg>options <replaceable>...</replaceable></arg>
         <arg>-l<replaceable>USER</replaceable></arg>
         <arg>--username=<replaceable>USER</replaceable></arg>
@@ -62,7 +62,7 @@ A utility to create and manage channels at different update levels.
         <arg>--sourceChannel=<replaceable>SOURCE_CHANNEL</replaceable></arg>
     </cmdsynopsis>
     <cmdsynopsis>
-        <arg>-p <replaceable>PARENT_CHANNEL</replaceable></arg>
+        <arg>-P <replaceable>PARENT_CHANNEL</replaceable></arg>
         <arg>--parent=<replaceable>PARENT_CHANNEL</replaceable></arg>
     </cmdsynopsis>
     <cmdsynopsis>
@@ -132,9 +132,9 @@ the Spacewalk or Satellite server.
         </listitem>
     </varlistentry>
     <varlistentry>
-        <term>-u<replaceable>UPDATE</replaceable>, --update=<replaceable>UPDATE</replaceable></term>
+        <term>-u<replaceable>UPDATE_LEVEL</replaceable>, --update=<replaceable>UPDATE_LEVEL</replaceable></term>
         <listitem>
-            <para>The update level of a channel to create (e.g. gold,u1,u2,u3,u4,u5,u6,u7,u8,u9), where gold stands for the initial release.</para>
+            <para>The update level of a channel to create (e.g. GOLD, U1, U2, U3, U4, U5, U6, U7, U8, U9), where GOLD stands for the initial release.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -207,20 +207,20 @@ the Spacewalk or Satellite server.
 </RefSect1>
 
 <RefSect1><Title>Examples</Title>
-        <para>Creating a channel 'my-stable-channel' for RHEL 4 AS u3 i386: 
+        <para>Creating a channel 'my-stable-channel' for RHEL 6 Server Gold x86_64: 
           <simplelist>
-            <member><command>spacewalk-create-channel</command>  --user=admin --server=myserver.example.com --version=4 --update=u3 --release=AS --arch=i386   --destChannel=my-stable-channel</member>
- 	    <member><command>spacewalk-create-channel</command>  -l admin -s myserver.example.com  -D /usr/share/rhn/channel-data/4-U3-AS-i386  -d my-stable-channel</member>
+            <member><command>spacewalk-create-channel</command>  --user=admin --server=myserver.example.com --version=6 --update=gold --release=Server --arch=x86_64   --destChannel=my-stable-channel</member>
+ 	    <member><command>spacewalk-create-channel</command>  -l admin -s myserver.example.com  -D /usr/share/rhn/channel-data/6-gold-server-x86_64  -d my-stable-channel</member>
           </simplelist>
         </para>
-        <para>Upgrade previously created channel 'my-stable-channel' to RHEL 4 AS u4 i386:
+        <para>Upgrade previously created channel 'my-stable-channel' to RHEL 6 Server u1 i386:
           <simplelist>
-       	    <member><command>spacewalk-create-channel</command>  -l admin -s myserver.example.com -v 4 -u u4 -r AS -a i386   -d my-stable-channel</member>
+       	    <member><command>spacewalk-create-channel</command>  -l admin -s myserver.example.com -v 6 -u u1 -r server -a x86_64   -d my-stable-channel</member>
           </simplelist>
         </para>
-        <para>Add the extra's channel as a child channel of 'my-stable-channel':
+        <para>Add the Supplementary's channel as a child channel of 'my-stable-channel':
            <simplelist>
-	    <member><command>spacewalk-create-channel</command>  -l admin -s myserver.example.com -v 4 -u u4 -r AS -a i386 -e extras  -p my-stable-channel -d my-stable-extras</member>
+	    <member><command>spacewalk-create-channel</command>  -l admin -s myserver.example.com -v 6 -u u1 -r Server -a x86_64 -e Supplementary  -p my-stable-channel -d my-stable-extras</member>
            </simplelist>
         </para>
 </RefSect1>

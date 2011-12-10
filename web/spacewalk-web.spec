@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.32
+Version: 1.6.33
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -178,7 +178,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/Access.pm
 %{perl_vendorlib}/RHN/Access/
 %{perl_vendorlib}/RHN/Action.pm
-%{perl_vendorlib}/RHN/AppInstall/
 %{perl_vendorlib}/RHN/Cache/
 %{perl_vendorlib}/RHN/Cert.pm
 %{perl_vendorlib}/RHN/Channel.pm
@@ -212,7 +211,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/Package/
 %{perl_vendorlib}/RHN/Postal.pm
 %{perl_vendorlib}/RHN/Profile.pm
-%{perl_vendorlib}/RHN/ProxyInstall.pm
 %{perl_vendorlib}/RHN/SCDB.pm
 %{perl_vendorlib}/RHN/SatCluster.pm
 %{perl_vendorlib}/RHN/SatInstall.pm
@@ -309,6 +307,10 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Wed Dec 07 2011 Miroslav Suchý 1.6.33-1
+- code cleanup
+- do not allow to configure or activate proxy from WebUI
+
 * Tue Dec 06 2011 Jan Pazdziora 1.6.32-1
 - IPv6: reprovisioning with static network interface (mzazrivec@redhat.com)
 - code cleanup - function base_entitlement is not used anymore

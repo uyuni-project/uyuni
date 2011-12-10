@@ -948,17 +948,17 @@ sub show_history {
 # standard where clause
   my $where = "
 AND  rhn_sat_cluster.customer_id = customer.recid
-AND  rhn_command_queue_execs.instance_id = rhn_command_queue_instances.recid 
+AND  rhn_command_queue_execs.instance_id = rhn_command_queue_instances.recid
 AND  rhn_command_queue_instances.command_id = rhn_command_queue_commands.recid\n";
 
 # clusters
 my $where1 = 
-"AND  rhn_sat_cluster.recid = rhn_command_queue_execs.netsaint_id 
+"AND  rhn_sat_cluster.recid = rhn_command_queue_execs.netsaint_id
 AND rhn_command_queue_execs.target_type = 'cluster'\n";
 
 # nodes
 my $where2 = 
-"AND rhn_sat_node.recid = rhn_command_queue_execs.netsaint_id 
+"AND rhn_sat_node.recid = rhn_command_queue_execs.netsaint_id
 AND rhn_command_queue_execs.target_type = 'node'
 AND rhn_sat_node.sat_cluster_id = rhn_sat_cluster.recid\n";
   

@@ -15,12 +15,12 @@
 # in this software or its documentation.
 #
 
+LOCK = None
 import sys
 import os
 import socket
 from optparse import OptionParser
 
-LOCK = None
 
 def systemExit(code, msg=None):
     "Exit with a code and optional message(s). Saved a few lines of code."
@@ -36,7 +36,7 @@ except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
 except ImportError:
     systemExit(1, "Unable to find code tree.\n"
-               "Path not correct? '%s'" % sys.path)
+               "Path not correct? " + sys.path)
 
 def releaseLOCK():
     global LOCK
@@ -67,17 +67,21 @@ def main():
                       help='The type of repo, currently only "yum" is supported',
                       default='yum')
     parser.add_option('-f', '--fail', action='store_true', dest='fail',
-                      default=False ,
+                      default=False,
                       help="If a package import fails, fail the entire operation")
     parser.add_option('-q', '--quiet', action='store_true', dest='quiet',
                       default=False, help="Print no output, still logs output")
     parser.add_option('-n', '--non-interactive', action='store_true',
                       dest='noninteractive', default=False,
                       help="Do not ask anything, use default answers")
-    parser.add_option('-i', '--include', action='callback', callback=reposync.set_filter_opt,
-                      type='str', nargs=1, dest='filters', default=[], help="List of included packages")
-    parser.add_option('-e', '--exclude', action='callback', callback=reposync.set_filter_opt,
-                      type='str', nargs=1, dest='filters', default=[], help="List of excluded packages")
+    parser.add_option('-i', '--include', action='callback',
+                      callback=reposync.set_filter_opt, type='str', nargs=1,
+                      dest='filters', default=[],
+                      help="List of included packages")
+    parser.add_option('-e', '--exclude', action='callback',
+                      callback=reposync.set_filter_opt,
+                      type='str', nargs=1, dest='filters', default=[],
+                      help="List of excluded packages")
     (options, args) = parser.parse_args()
 
     if not options.channel_label:
