@@ -290,6 +290,8 @@ class Procedure(sql_base.Procedure):
         retval = None
         try:
             retval = self._call_proc(args)
+        except cx_Oracle.NotSupportedError, error:
+            raise sql_base.SQLError(*error.args), None, sys.exc_info()[2]
         except cx_Oracle.DatabaseError, e:
             if not hasattr(e, "args"):
                 raise sql_base.SQLError(self.name, args), None, sys.exc_info()[2]
@@ -297,8 +299,6 @@ class Procedure(sql_base.Procedure):
                 
                raise sql_base.SQLSchemaError(e[0].code, str(e[0])), None, sys.exc_info()[2]
             raise sql_base.SQLError(e[0].code, str(e[0])), None, sys.exc_info()[2]
-        except cx_Oracle.NotSupportedError, error:
-            raise sql_base.SQLError(*error.args), None, sys.exc_info()[2]
         return retval
 
     def _munge_args(self, args):
