@@ -60,8 +60,8 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     private String kernelOptions;
     private String postKernelOptions;
     private String comment;
-    private String networkInterface;
-    private boolean isDhcp;
+    protected String networkInterface;
+    protected boolean isDhcp;
     private boolean useIpv6Gateway;
     /**
      * @param dhcp true if the network type is dhcp
