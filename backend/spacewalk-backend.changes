@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Dec 12 17:31:32 CET 2011 - iartarisi@suse.cz
+
+- Add new --deep-copy option to spacewalk-repo-sync to allow skipping
+  the re-calculation of package checksums
+
+-------------------------------------------------------------------
 Tue Nov  8 14:09:44 CET 2011 - jrenner@suse.de
 
 - Implement audit logging for the backend API (fate#312607)
