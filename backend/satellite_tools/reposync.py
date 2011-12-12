@@ -67,12 +67,14 @@ class ChannelTimeoutException(ChannelException):
 
 class RepoSync(object):
     def __init__(self, channel_label, repo_type, url=None, fail=False,
-                 quiet=False, noninteractive=False, filters=[]):
+                 quiet=False, noninteractive=False, filters=[],
+                 deep_verify=False):
         self.regen = False
         self.fail = fail
         self.quiet = quiet
         self.interactive = not noninteractive
         self.filters = filters
+        self.deep_verify = deep_verify
 
         initCFG('server.susemanager')
         db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
@@ -636,9 +638,7 @@ class RepoSync(object):
             to_download = True
             to_link     = True
             if db_pack['path']:
-                pack.path = os.path.join(CFG.MOUNT_POINT, db_pack['path'])
-                if self.match_package_checksum(pack.path,
-                                pack.checksum_type, pack.checksum):
+                if self.match_package_checksum(pack, db_pack):
                     # package is already on disk
                     to_download = False
                     pack.load_header_and_set_checksum(db_pack['checksum_type'], db_pack['checksum'])
@@ -694,11 +694,21 @@ class RepoSync(object):
                     raise
                 continue
 
-    def match_package_checksum(self, abspath, checksum_type, checksum):
-        if (os.path.exists(abspath) and
-            getFileChecksum(checksum_type, filename=abspath) == checksum):
-            return 1
-        return 0
+    def match_package_checksum(self, md_pack, db_pack):
+      """compare package checksum"""
+
+        if (self.deep_verify or 
+            md_pack.checksum_type != db_pack['checksum_type'] or
+            pack.checksum != db_pack.checksum):
+
+            abspath = os.path.join(CFG.MOUNT_POINT, db_pack['path'])
+            if (os.path.exists(abspath) and
+                getFileChecksum(md_pack.checksum_type, filename=abspath) == md_pack['checksum']):
+
+                return True
+            else:
+                return False
+        return True
 
     def upload_package(self, package):
         rel_package_path = rhnPackageUpload.relative_path_from_header(

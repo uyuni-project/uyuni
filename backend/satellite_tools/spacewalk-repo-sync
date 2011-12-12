@@ -82,6 +82,9 @@ def main():
                       callback=reposync.set_filter_opt,
                       type='str', nargs=1, dest='filters', default=[],
                       help="List of excluded packages")
+    parser.add_option('-Y', '--deep-verify', action='store_true',
+                      dest='deep_verify', default=False,
+                      help='Do not use cached package checksums')
     (options, args) = parser.parse_args()
 
     if not options.channel_label:
@@ -93,7 +96,8 @@ def main():
                              fail=options.fail,
                              quiet=options.quiet,
                              noninteractive=options.noninteractive,
-                             filters=options.filters)
+                             filters=options.filters,
+                             deep_verify=options.deep_verify)
     sync.sync()
     releaseLOCK()
     return 0
