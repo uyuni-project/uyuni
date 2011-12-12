@@ -25,8 +25,10 @@ import traceback
 from rhn import rpclib
 
 # common modules imports
-from spacewalk.common import log_debug, CFG, rhnFault, rhnRepository, rhnFlags, \
-    rhnCache, redirectException
+from spacewalk.common import rhnRepository, rhnFlags, rhnCache
+from spacewalk.common.rhnLog import log_debug
+from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnException import rhnFault, redirectException
 from spacewalk.common.rhnLib import rfc822time, timestamp
 
 # local modules imports
