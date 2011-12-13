@@ -31,11 +31,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * Cleans up orphaned packages
- *
- * @version $Rev $
+ * {@link RhnJavaJob} for downloading image files.
  */
-
 public class ImageDownloadTask extends RhnJavaJob {
 
     /**
@@ -58,15 +55,14 @@ public class ImageDownloadTask extends RhnJavaJob {
                 if (log.isDebugEnabled()) {
                     log.debug("No images to download");
                 }
-            }
-            else if (log.isDebugEnabled()) {
+            } else if (log.isDebugEnabled()) {
                 log.debug("Found " + candidates.size() + " images to download");
             }
 
             // download images
             for (Iterator iter = candidates.iterator(); iter.hasNext();) {
                 Map row = (Map) iter.next();
-		long id = (Long) row.get("id");
+                long id = (Long) row.get("id");
                 String path = (String) row.get("path");
                 String url = (String) row.get("download_url");
                 if (log.isDebugEnabled()) {
@@ -75,52 +71,49 @@ public class ImageDownloadTask extends RhnJavaJob {
                 if (path == null) {
                     continue;
                 }
-		updateImage(id, "RUNNING");
+                updateImage(id, "RUNNING");
                 if (downloadImage(pkgDir, path, url)) {
-		    updateImage(id, "DONE");
-		}
-		else {
-		    updateImage(id, "ERROR");
-		}
+                    updateImage(id, "DONE");
+                } else {
+                    updateImage(id, "ERROR");
+                }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new JobExecutionException(e);
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void updateImage(long id, String status) {
         Map params = new HashMap();
         params.put("id", id);
-	params.put("status", status);
+        params.put("status", status);
         WriteMode update = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_UPDATE_IMAGE_STAT);
         update.executeUpdate(params);
-	HibernateFactory.commitTransaction();
-	HibernateFactory.closeSession();
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
     }
 
     private boolean downloadImage(String pkgDir, String path, String url) {
-	boolean ret = false;
+        boolean ret = false;
         File f = new File(pkgDir, path);
-        if (! f.exists() ) {
-	    try {
+        if (!f.exists()) {
+            try {
                 ret = DownloadUtils.downloadToFile(url, f.getAbsolutePath());
-	    }
-	    catch (DownloadException e) {
-		log.error(e.getMessage(), e);
-		ret = false;
-	    }
-	    if( !ret ) {
-		log.error("Download error");
-	    }
-        }
-        else {
+            } catch (DownloadException e) {
+                log.error(e.getMessage(), e);
+                ret = false;
+            }
+            if (!ret) {
+                log.error("Download error");
+            }
+        } else {
             log.error(f.getAbsolutePath() + " already exists");
-	    ret = true;
+            ret = true;
         }
-	return ret;
+        return ret;
     }
 
     private List findCandidates() {
@@ -129,5 +122,4 @@ public class ImageDownloadTask extends RhnJavaJob {
         DataResult dr = query.execute(Collections.EMPTY_MAP);
         return dr;
     }
-
 }
