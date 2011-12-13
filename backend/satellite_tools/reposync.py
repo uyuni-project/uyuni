@@ -697,11 +697,11 @@ class RepoSync(object):
     def match_package_checksum(self, md_pack, db_pack):
         """compare package checksum"""
 
+        md_pack.path = abspath = os.path.join(CFG.MOUNT_POINT, db_pack['path'])
         if (self.deep_verify or 
             md_pack.checksum_type != db_pack['checksum_type'] or
-            md_pack.checksum != db_pack.checksum):
+            md_pack.checksum != db_pack['checksum']):
 
-            abspath = os.path.join(CFG.MOUNT_POINT, db_pack['path'])
             if (os.path.exists(abspath) and
                 getFileChecksum(md_pack.checksum_type, filename=abspath) == md_pack['checksum']):
 
