@@ -699,7 +699,7 @@ class RepoSync(object):
 
         if (self.deep_verify or 
             md_pack.checksum_type != db_pack['checksum_type'] or
-            pack.checksum != db_pack.checksum):
+            md_pack.checksum != db_pack.checksum):
 
             abspath = os.path.join(CFG.MOUNT_POINT, db_pack['path'])
             if (os.path.exists(abspath) and
