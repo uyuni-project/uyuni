@@ -196,7 +196,7 @@ def prepare(sql, params=None, blob_map=None):
     return db.prepare(sql, params=params, blob_map=blob_map)
 def execute(sql, *args, **kwargs):
     db = __test_DB()
-    return apply(db.execute, (sql, ) + args, kwargs)
+    return db.execute(sql, *args, **kwargs)
 def fetchall_dict(sql, *args, **kwargs):
     h = prepare(sql)
     h.execute(sql, *args, **kwargs)
@@ -216,13 +216,13 @@ def transaction(name):
     return db.transaction(name)
 def TimestampFromTicks(*args, **kwargs):
     db = __test_DB()
-    return apply(db.TimestampFromTicks, args, kwargs)
+    return db.TimestampFromTicks(*args, **kwargs)
 def DateFromTicks(*args, **kwargs):
     db = __test_DB()
-    return apply(db.DateFromTicks, args, kwargs)
+    return db.DateFromTicks(*args, **kwargs)
 def Date(*args, **kwargs):
     db = __test_DB()
-    return apply(db.Date, args, kwargs)
+    return db.Date(*args, **kwargs)
 
 def read_lob(lob):
     if not lob:

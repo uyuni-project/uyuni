@@ -278,7 +278,7 @@ class Cursor(sql_base.Cursor):
                  kw[blob_var] = kw[blob_var].replace('\\', '\\\\')
 
         try:
-            retval = apply(function, p, kw)
+            retval = function(*p, **kw)
         except psycopg2.ProgrammingError, e:
             # TODO: Constructor for this exception expects a first arg of db,
             # and yet the Oracle driver passes it an errno? Suspect it's not
@@ -330,7 +330,7 @@ class Cursor(sql_base.Cursor):
                                              column_name, where_clause)
         c = rhnSQL.prepare(sql)
         kwargs[column_name] = data
-        apply(c.execute, (), kwargs)
+        c.execute(**kwargs)
 
     def close(self):
         pass

@@ -115,7 +115,7 @@ class Table:
             args.append(clause)
 	sql = "select * from %s where " % self.__table
 	cursor = self.__db.prepare(sql + string.join(args, " and "))
-	apply(cursor.execute, (), row)
+	cursor.execute(**row)
 	rows = cursor.fetchall_dict()
         if rows is None:
             return None
@@ -182,7 +182,7 @@ class Table:
         # import the value of the hash key
         pdict["p0"] =  key
         h = self.__db.prepare(sql)
-        apply(h.execute, (), pdict)
+        h.execute(**pdict)
 	try:
 	    value[self.__hashid] = key
 	    self.__cache[key] = value
