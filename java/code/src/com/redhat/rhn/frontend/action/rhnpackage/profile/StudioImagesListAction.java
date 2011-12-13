@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2011 Novell
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,14 +26,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.image.Image;
 import com.redhat.rhn.domain.image.ImageFactory;
+import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.frontend.struts.RhnListAction;
-import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
-import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
+import com.redhat.rhn.frontend.struts.RhnAction;
+import com.redhat.rhn.frontend.struts.RhnListSetHelper;
+import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.suse.studio.client.SUSEStudioClient;
 import com.suse.studio.client.data.Appliance;
 import com.suse.studio.client.data.Build;
@@ -40,87 +45,107 @@ import com.suse.studio.client.data.Build;
 /**
  * This action will present the user with a list of all studio images
  * and allow one to be selected.
- *
- * @version $Revision$
  */
-public class StudioImagesListAction extends RhnListAction implements Listable {
+public class StudioImagesListAction extends RhnAction {
 
+    private static final String LIST_NAME = "images";
     private static final String DATA_SET = "pageList";
 
-    // The credentials
-    private String studioUser;
-    private String studioAPIKey;
+    private List<Image> images;
     
+    /**
+     * Return the set declaration used for this action.
+     * @return the set declaration
+     */
+    protected RhnSetDecl getDecl() {
+        return RhnSetDecl.IMAGES;
+    }
+
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
                                  HttpServletResponse response)
-        throws Exception {
-    	
-    	Boolean submitted = false;
-    	
-    	// Determine credentials from the form
-        if (actionForm instanceof DynaActionForm) {
-        	DynaActionForm form = (DynaActionForm) actionForm;
-        	studioUser = form.getString("studio_user");
-        	studioAPIKey = form.getString("studio_api_key");
-        	
-        	// Get submitted
-        	submitted = (Boolean) form.get("submitted");
-            if (submitted == null) {
-            	submitted = Boolean.FALSE;
+            throws Exception {
+
+    	// Init the context and current user
+        RequestContext context = new RequestContext(request);
+        User user = context.getLoggedInUser();
+        RhnSet set = getDecl().get(user);
+
+        // If not submitted, initialize the set
+        if (!context.isSubmitted()) {
+            set.clear();
+            for (Object o : getImages(context)) {
+                set.add(o);
             }
+            RhnSetManager.store(set);
         }
-    	
-        ListHelper helper = new ListHelper(this, request);
-        helper.setDataSetName(DATA_SET);
-        helper.execute();
-                
-    	// Get the selection and store the images
-//    	String[] selected = ListTagHelper.getSelected(DATA_SET, request);
-//    	if (selected != null) {
-//        	storeImages(selected);	
-//    	}
-        
-        // Always forward to default
-        ActionForward forward = actionMapping.findForward("default");
+
+        RhnListSetHelper helper = new RhnListSetHelper(request);
+
+        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
+        request.setAttribute(DATA_SET, images);
+        ListTagHelper.bindSetDeclTo(LIST_NAME, getDecl(), request);
+
+        ActionForward forward;
+        if (context.isSubmitted()) {
+            // Store selected images
+            helper.updateSet(set, LIST_NAME);
+            storeImages(set.getElementValues());
+            forward = actionMapping.findForward("success");
+        } else {
+            forward = actionMapping.findForward("default");
+        }
+
         return forward;
     }
 
     /**
-     * Store images given by buildIDs as Strings.
+     * Store images given by buildIDs as {@link Long}.
      * @param selected
      */
-//    private void storeImages(String[] selected) {
-//    	for (Image i : images) {
-//        	for (String s : selected) {
-//        		if (s.equals(i.getBuildId().toString())) {
-//        			ImageFactory.saveImage(i);
-//        		}
-//        	}	
-//    	}
-//	}
+    private void storeImages(Set<Long> selected) {
+        for (Long s : selected) {
+            // Lookup the selected images
+            for (Image i : images) {
+                if (s.equals(i.getBuildId())) {
+                    ImageFactory.saveImage(i);
+                }
+            }
+        }
+	}
 
-	/** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+	/**
+	 * Get the {@link Image} DTOs.
+	 */
+    public List getImages(RequestContext context) {
         List<Appliance> ret = new ArrayList<Appliance>();
-    	if (weHaveCredentials()) {
-        	SUSEStudioClient client = new SUSEStudioClient(studioUser, studioAPIKey);
+
+        // FIXME: Read the credentials from config for now
+        String user = Config.get().getString("susestudio.user");
+        String apikey = Config.get().getString("susestudio.api_key");
+
+        // Get appliance builds from studio
+    	if (user != null && apikey != null) {
+        	SUSEStudioClient client = new SUSEStudioClient(user, apikey);
     		try {
     			ret = client.getAppliances();
     		} catch (IOException e) {
     			throw new RuntimeException(e);
     		}	
     	}
+
     	// Convert to image objects
-        return createImageList(ret, context);
+        images = createImageList(ret, context);
+        return images;
     }
 
     /**
      * Create an {@link Image} object out of every build of an appliance.
      * @param appliances
-     * @return
+     * @return list of images
      */
     private List<Image> createImageList(List<Appliance> appliances, 
     		RequestContext context) {
@@ -138,18 +163,12 @@ public class StudioImagesListAction extends RhnListAction implements Listable {
         		img.setVersion(build.getVersion());
         		img.setImageType(build.getImageType());
         		img.setDownloadUrl(build.getDownloadURL());
+        		// TODO
+        		// img.setFileName("");
+        		// img.setChecksum("");
         		ret.add(img);
     		}
     	}
     	return ret;
-    }
-    
-    /**
-     * Check if we currently have valid credentials.
-     * @return true or false
-     */
-    private boolean weHaveCredentials() {
-    	return studioUser != null && !studioUser.isEmpty() && 
-		studioAPIKey != null && !studioAPIKey.isEmpty();
     }
 }

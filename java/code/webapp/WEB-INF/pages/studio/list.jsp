@@ -16,16 +16,8 @@
 
     <rl:listset name="groupSet">
         <rhn:csrf />
-        <p>
-            User:<input type="text" name="studio_user" value="${form.studio_user}" /><br />
-            Key:<input type="text" name="studio_api_key" value="${form.studio_api_key}" />
-            <html:submit>
-                List Images
-            </html:submit>
-            <br/>
-        </p>
-
-        <rl:list dataset="pageList" 
+        <rl:list dataset="pageList"
+                 name="images"
                  emptykey="studio.images.list.noimages">
             <rl:selectablecolumn value="${current.selectionKey}"
             	selected="${current.selected}"

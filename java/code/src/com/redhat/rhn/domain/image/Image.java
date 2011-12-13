@@ -143,8 +143,9 @@ public class Image extends BaseDto {
         this.status = inStatus;
     }
 
-	@Override
-	public String getSelectionKey() {
-		return getName()+getVersion()+getArch();
-	}
+    /** {@inheritDoc} */
+    @Override
+    public String getSelectionKey() {
+        return String.valueOf(getBuildId());
+    }
 }
