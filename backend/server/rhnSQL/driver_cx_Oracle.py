@@ -105,7 +105,7 @@ class Cursor(sql_base.Cursor):
         modified_params = self._munge_args(kw)
 
         try:
-            retval = apply(function, p, kw)
+            retval = function(*p, **kw)
         except self.OracleError, e:
             ret = self._get_oracle_error_info(e)
             if isinstance(ret, types.StringType):
@@ -121,10 +121,10 @@ class Cursor(sql_base.Cursor):
                     raise sql_base.SQLError(*args), None, sys.exc_info()[2]
                 self._real_cursor = self.dbh.prepare(self.sql)
                 self.reparsed = 1
-                apply(self._execute_wrapper, (function, ) + p, kw)
+                self._execute_wrapper(function, *p, **kw)
             elif 20000 <= errno <= 20999: # error codes we know we raise as schema errors
                 raise sql_base.SQLSchemaError(*ret), None, sys.exc_info()[2]
-            raise apply(sql_base.SQLError, ret), None, sys.exc_info()[2]
+            raise sql_base.SQLError(*ret), None, sys.exc_info()[2]
         except ValueError:
             # this is not good.Let the user know
             raise
@@ -268,7 +268,7 @@ class Cursor(sql_base.Cursor):
         sql = "SELECT %s FROM %s %s FOR update of %s" % \
             (column_name, table_name, where_clause, column_name)
         c= rhnSQL.prepare(sql)
-        apply(c.execute, (), kwargs)
+        c.execute(**kwargs)
         row = c.fetchone_dict()
         blob = row[column_name]
         blob.write(data)
