@@ -695,7 +695,7 @@ class RepoSync(object):
                 continue
 
     def match_package_checksum(self, md_pack, db_pack):
-      """compare package checksum"""
+        """compare package checksum"""
 
         if (self.deep_verify or 
             md_pack.checksum_type != db_pack['checksum_type'] or
