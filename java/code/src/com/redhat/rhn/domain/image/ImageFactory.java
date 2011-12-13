@@ -77,7 +77,7 @@ public class ImageFactory extends HibernateFactory {
         List<Image> retval = null;
         
         session = HibernateFactory.getSession();
-        Query q = session.getNamedQuery("Image.listVmxByOrg");
+        Query q = session.getNamedQuery("Image.listImagesByOrg");
         retval = q.setParameter("org", org).list();
         return retval;
     }
