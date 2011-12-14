@@ -24,7 +24,7 @@ __rhnexport__ = ['deploy']
 def deploy(serverId, actionId, dry_run=0):
     log_debug(3)
     statement = """
-        select si.file_name, si.checksum, aid.mem_kb, aid.vcpus, si.image_type
+        select si.file_name, si.checksum, aid.mem_kb, aid.vcpus, si.image_type, aid.bridge_device
           from rhnActionImageDeploy aid
 	  join suseImages si ON aid.image_id = si.id
          where si.status = 'DONE'
@@ -41,6 +41,7 @@ def deploy(serverId, actionId, dry_run=0):
     checksum  = row['checksum']
     mem_kb    = row['mem_kb']
     vcpus     = row['vcpus']
+    bridge_device = row['bridge_device']
     if row['image_type'] == 'vmx':
 	image_type = 'vmdk'
     elif row['image_type'] == 'xen':
@@ -49,5 +50,5 @@ def deploy(serverId, actionId, dry_run=0):
         raise InvalidAction("image.deploy: invalid image_type")
 
 
-    return (file_name, checksum, mem_kb, vcpus, image_type)
+    return (file_name, checksum, mem_kb, vcpus, image_type, bridge_device)
 
