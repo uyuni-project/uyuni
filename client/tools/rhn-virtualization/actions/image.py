@@ -19,8 +19,9 @@ from up2date_client import rhnserver
 from up2date_client import up2dateAuth
 
 
-import subprocess
+# import subprocess
 import hashlib 
+import pycurl
 
 log = up2dateLog.initLog()
 IMAGE_BASE_PATH = "/var/lib/libvirt/images/"
@@ -52,7 +53,7 @@ KVM_CREATE_TEMPLATE = """
 <!--
       <mac address=''/>
 -->
-      <source bridge='br0'/>
+      <source bridge='%(virtBridge)s'/>
     </interface>
     <serial type='pty'>
       <target port='0'/>
@@ -70,32 +71,56 @@ KVM_CREATE_TEMPLATE = """
 """
 
 
+XEN_CREATE_TEMPLATE = """
+<domain type='xen'>
+  <name>%(name)s</name>
+  <uuid>%(uuid)s</uuid>
+  <memory>%(mem_kb)s</memory>
+  <vcpu>%(vcpus)s</vcpu>
+<!--
+  <currentMemory>307200</currentMemory>
+-->
+  <bootloader>/usr/bin/pygrub</bootloader>
+  <os>
+    <type arch='%(arch)s' machine='xenpv'>linux</type>
+  </os>
+  <clock offset='utc'/>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>restart</on_crash>
+  <devices>
+    <disk type='file' device='disk'>
+      <driver name='tap' type='aio'/>
+      <source file='%(disk)s'/>
+      <target dev='xvda' bus='xen'/>
+      <address type='drive' controller='0' bus='0' unit='0'/>
+    </disk>
+<!--
+     <disk type='file' device='disk'>
+      <driver name='tap' type='aio'/>
+      <source file='/var/lib/xen/images/rhel5pv.img'/>
+      <target dev='xvda' bus='xen'/>
+    </disk>
+-->
+    <interface type='bridge'>
+<!--
+      <mac address='00:16:3e:60:36:ba'/>
+-->
+      <source bridge='%(virtBridge)s'/>
+    </interface>
+    <console type='pty'>
+      <target port='0'/>
+    </console>
+    <input type='mouse' bus='xen'/>
+    <graphics type='vnc' port='-1' autoport='yes' listen='0.0.0.0'/>
+  </devices>
+</domain>
+"""
+
 # mark this module as acceptable
 __rhnexport__ = [
     'deploy'
 ]
-
-def _extractTar( source, dest ):
-    param = "xf"
-    if not os.path.exists( source ):
-        log.log_debug("file not found: ", source)
-        return -1
-
-    if not os.path.exists( dest ):
-        log.log_debug("path not found: ", dest)
-        return -1
-
-    if( source.endswith("gz") ):
-        param = param + "z"
-    elif( source.endswith("bz2") ):
-        param = param + "j"
-
-    cmd = "tar %s %s -C %s " % ( param, source, dest )
-    log.log_debug(cmd)
-    if os.system( cmd ) != 0:
-        log.log_debug( "%s failed" % cmd )
-
-    return 0
 
 # download and extract tar.gz file with image
 def _getImage(imageName,orgID,checksum):
@@ -131,18 +156,25 @@ def _getImage(imageName,orgID,checksum):
         url = "%s/GET-REQ/%s?head_requests=no" % (serverUrl,'datafile/getVImage/%s/%s/%s' % (orgID, checksum, imageName) )
         log.log_debug(url)
 
-        cmd = "curl -k -v -o /%s/%s" % (IMAGE_BASE_PATH, imageName)
-	# /var/lib/libvirt/images
-	for k in auth_headers:
-	    cmd = "%s -H \"%s: %s\"" % (cmd,k,auth_headers[k])
-	cmd = "%s %s" % (cmd,url)
-	log.log_debug(cmd)
-        if os.system( cmd ) != 0:
-            log.log_debug( "%s failed" % cmd )
+        # get the file via pycurl
+        c = pycurl.Curl()
+        c.setopt(pycurl.URL, url)
+        headers = []
+        for k in auth_headers:
+            headers.append( ("%s:%s" % (k, auth_headers[k])) )
+        c.setopt(pycurl.HTTPHEADER, headers)
+	## /var/lib/libvirt/images
+        filePath = "/%s/%s" % (IMAGE_BASE_PATH, imageName)
+        f = open(filePath, 'w')
+        c.setopt(pycurl.WRITEFUNCTION, f.write)
+        c.setopt(pycurl.SSL_VERIFYPEER, 0)
+        # FIXME: set proxy too
+        c.perform()
+        f.close()
 
-        _extractTar( "/%s/%s" % (IMAGE_BASE_PATH, imageName), IMAGE_BASE_PATH )
+        _extractTar( filePath, IMAGE_BASE_PATH )
+
 	return 42
-
 
 def _generate_uuid():
     """Generate a random UUID and return it."""
@@ -172,6 +204,28 @@ def _connect_to_hypervisor():
 
     return connection
 
+def _extractTar( source, dest ):
+    param = "xf"
+    if not os.path.exists( source ):
+        log.log_debug("file not found: ", source)
+        return -1
+
+    if not os.path.exists( dest ):
+        log.log_debug("path not found: ", dest)
+        return -1
+
+    if( source.endswith("gz") ):
+        param = param + "z"
+    elif( source.endswith("bz2") ):
+        param = param + "j"
+
+    cmd = "tar %s %s -C %s " % ( param, source, dest )
+    log.log_debug(cmd)
+    if os.system( cmd ) != 0:
+        log.log_debug( "%s failed" % cmd )
+
+    return 0
+
 def _md5(path):
     f = open(path, "rb")
     sum = hashlib.md5()
@@ -190,7 +244,7 @@ def _imageExists(name, md5Sum):
 # download/extract and start a new image
 # imageName = myImage.x86_64.
 #
-def deploy(fileName, checksum, memKB="524288", vCPUs="1", imageType="vmdk", extraParams="",cache_only=None):
+def deploy(fileName, checksum, memKB="524288", vCPUs="1", imageType="vmdk", virtBridge="xenbr0", extraParams="",cache_only=None):
     """start and connect a local image with SUSE Manager"""
 
     # fileName = workshop_test_sles11sp1.i686-0.0.1.vmx.tar.gz
@@ -203,8 +257,7 @@ def deploy(fileName, checksum, memKB="524288", vCPUs="1", imageType="vmdk", extr
 
     imageArch = m.group(1) 
     imageVer  = m.group(2)
-#    imageType = m.group(3)
-    imageType = "vmdk"
+    imageType = m.group(3)
 
     if len(imageName) < 1:
         log.log_debug("invalid image name")
@@ -220,7 +273,10 @@ def deploy(fileName, checksum, memKB="524288", vCPUs="1", imageType="vmdk", extr
 
     connection = _connect_to_hypervisor()
     uuid = _generate_uuid()
-    fileName = imageName + "-" + imageVer + "/" + imageName + "." + imageArch + "-" + imageVer + ".vmdk"
+    studioFileExtension = "vmdk"
+    if imageType == "xen":
+        studioFileExtension = "raw"
+    fileName = imageName + "-" + imageVer + "/" + imageName + "." + imageArch + "-" + imageVer + "." + studioFileExtension
     # FIXME
     imagePath = IMAGE_BASE_PATH + "/" + fileName
     log.log_debug("working on image in %s" % imagePath)
@@ -235,11 +291,15 @@ def deploy(fileName, checksum, memKB="524288", vCPUs="1", imageType="vmdk", extr
                       'uuid'           : uuid,
                       'disk'           : imagePath,
                       'imageType'      : imageType,
+                      'virtBridge'     : virtBridge,
 #                     'mac'            : mac,
 #                     'syslog'         : syslog 
                     }
-
-    create_xml = KVM_CREATE_TEMPLATE % create_params
+    create_xml = ""
+    if imageType == "xen":
+        create_xml = XEN_CREATE_TEMPLATE % create_params
+    else:
+        create_xml = KVM_CREATE_TEMPLATE % create_params
     domain = connection.defineXML(create_xml)
     domain.create()
     virt_support.refresh()
