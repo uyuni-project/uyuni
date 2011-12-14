@@ -163,12 +163,32 @@ public class ScheduleImageDownloadAction extends RhnAction {
         		img.setVersion(build.getVersion());
         		img.setImageType(build.getImageType());
         		img.setDownloadUrl(build.getDownloadURL());
-        		// TODO
-        		// img.setFileName("");
-        		// img.setChecksum("");
+        		// Take filename and checksum from the URL
+        		img.setFileName(getFilename(img.getDownloadUrl()));
+        		img.setChecksum(getChecksum(img.getDownloadUrl()));
         		ret.add(img);
     		}
     	}
     	return ret;
+    }
+
+    /**
+     * Parse the filename from the URL.
+     * @param downloadURL
+     * @return checksum
+     */
+    private String getFilename(String downloadURL) {
+        String[] parts = downloadURL.split("/");
+        return parts[parts.length-1];
+    }
+
+    /**
+     * Parse the checksum from the URL.
+     * @param downloadURL
+     * @return checksum
+     */
+    private String getChecksum(String downloadURL) {
+        String[] parts = downloadURL.split("/");
+        return parts[parts.length-2];
     }
 }

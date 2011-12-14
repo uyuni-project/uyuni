@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2011 Novell
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -25,13 +25,15 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 
 /**
- * KickstartFactory
- * @version $Rev$
+ * ImageFactory
  */
 public class ImageFactory extends HibernateFactory {
 
     private static ImageFactory singleton = new ImageFactory();
     private static Logger log = Logger.getLogger(ImageFactory.class);
+
+    // The base path for downloading images
+    private static String IMAGE_PATH = "images/";
 
     /**
      * Constructor
@@ -57,11 +59,15 @@ public class ImageFactory extends HibernateFactory {
         retval.setStatus(Image.STATUS_NEW);
         return retval;
     }
-    
+
     /**
-     * @param p KickstartPackage to add to DB
+     * Store an image to the database.
+     * @param image The image that will be written to the DB
      */
     public static void saveImage(Image image) {
+        // Set the image path before saving object
+        image.setPath(IMAGE_PATH + image.getOrg().getId() + "/" +
+                image.getChecksum() + "/" + image.getFileName());
         singleton.saveObject(image);
     }
 
@@ -72,6 +78,7 @@ public class ImageFactory extends HibernateFactory {
         singleton.removeObject(image);
     }
     
+    @SuppressWarnings("unchecked")
     public static List<Image> getDeployableImages(Org org) {
     	Session session = null;
         List<Image> retval = null;
@@ -81,7 +88,7 @@ public class ImageFactory extends HibernateFactory {
         retval = q.setParameter("org", org).list();
         return retval;
     }
-    
+
     public static Image lookupById(Long id) {
         if (id == null) {
             return null;
