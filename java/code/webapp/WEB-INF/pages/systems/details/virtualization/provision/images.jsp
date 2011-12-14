@@ -36,8 +36,8 @@
             </rl:column>
         </rl:list>
 
-        <p>VCpus: <input type="text" name="vcpus" /></p>
-        <p>MemKb: <input type="text" name="memkb" /></p>
+        <p>VCpus: <input type="text" name="vcpus" value="1" /></p>
+        <p>MemKb: <input type="text" name="memkb" value="524288" /></p>
 
         <div align="right">
             <rhn:submitted/>
