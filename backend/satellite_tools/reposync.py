@@ -641,7 +641,7 @@ class RepoSync(object):
                 if self.match_package_checksum(pack, db_pack):
                     # package is already on disk
                     to_download = False
-                    pack.load_header_and_set_checksum(db_pack['checksum_type'], db_pack['checksum'])
+                    pack.set_checksum(db_pack['checksum_type'], db_pack['checksum'])
                     if db_pack['channel_label'] == self.channel_label:
                         # package is already in the channel
                         to_link = False
@@ -677,7 +677,7 @@ class RepoSync(object):
                 self.print_msg("%d/%d : %s" % (index+1, num_to_process, pack.getNVREA()))
                 if to_download:
                     pack.path = localpath = plug.get_package(pack)
-                    pack.load_header_and_set_checksum()
+                pack.load_checksum_from_header()
                 if to_download:
                     self.upload_package(pack)
                     finally_remove(localpath)
@@ -698,7 +698,7 @@ class RepoSync(object):
         """compare package checksum"""
 
         md_pack.path = abspath = os.path.join(CFG.MOUNT_POINT, db_pack['path'])
-        if (self.deep_verify or 
+        if (self.deep_verify or
             md_pack.checksum_type != db_pack['checksum_type'] or
             md_pack.checksum != db_pack['checksum']):
 
@@ -1011,25 +1011,17 @@ class ContentPackage:
         self.file = open(self.path, 'rb')
         self.header, self.payload_stream, self.header_start, self.header_end = \
                 rhnPackageUpload.load_package(self.file)
-        self.checksum_type = self.header.checksum_type()
-        self.checksum = getFileChecksum(self.checksum_type, file=self.file)
+        if not self.checksum_type and not self.checksum:
+            self.checksum_type = self.header.checksum_type()
+            self.checksum = getFileChecksum(self.checksum_type, file=self.file)
         self.file.close()
 
-    def load_header_and_set_checksum(self, checksum_type=None, checksum=None):
-        if self.path is None:
-           raise rhnFault(50, "Unable to load package", explain=0)
-        self.file = open(self.path, 'rb')
-        self.header, self.payload_stream, self.header_start, self.header_end = \
-                rhnPackageUpload.load_package(self.file)
+    def set_checksum(self, checksum_type=None, checksum=None):
         if checksum_type and checksum:
             self.checksum_type = checksum_type
             self.checksum = checksum
             if not((checksum_type in self.checksums) and (self.checksums[checksum_type] == checksum)):
                 self.checksums[checksum_type] = checksum
-        else:
-            (self.checksum_type, cs_type_orig, md_checksum) = _best_checksum_item(self.checksums)
-            self.checksum = getFileChecksum(self.checksum_type, file=self.file)
-        self.file.close()
 
 def find_bugs(text):
     """Find and return a list of Bug objects from the bug ids in the `text`
