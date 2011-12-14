@@ -128,8 +128,12 @@ class ChannelPackageSubscription(GenericPackageImport):
             self.backend.rollback()
             raise
         self.compute_affected_channels(affected_channels)
+        names = []
+        for pkg in self.batch:
+            names.append(pkg['name_id'])
+
         self.backend.update_newest_package_cache(caller=self.caller, 
-            affected_channels=self.affected_channel_packages)
+            affected_channels=self.affected_channel_packages, name_ids=names)
         # Now that channel is updated, schedule the repo generation
         if self.repogen:
             taskomatic.add_to_repodata_queue_for_channel_package_subscription(
@@ -327,8 +331,12 @@ class PackageImport(ChannelPackageSubscription):
         affected_channels = self.backend.subscribeToChannels(self.batch)
         # Fill the list of affected channels
         self.compute_affected_channels(affected_channels)
+        names = []
+        for pkg in self.batch:
+            names.append(pkg['name_id'])
+
         self.backend.update_newest_package_cache(caller=self.caller, 
-            affected_channels=self.affected_channel_packages)
+            affected_channels=self.affected_channel_packages, name_ids=names)
         taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                 self.affected_channels, self.batch, self.caller)
         self.backend.commit()
