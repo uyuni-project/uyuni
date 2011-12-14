@@ -23,6 +23,7 @@ public class DeployImageActionDetails extends ActionChild {
 	private Long imageId;
 	private Long vcpus;
 	private Long memKb;
+	private String bridgeDevice;
 
 	public Long getId() {
 		return id;
@@ -72,5 +73,21 @@ public class DeployImageActionDetails extends ActionChild {
      */
     public void setImageId(Long imageId) {
         this.imageId = imageId;
+    }
+
+    /**
+     * Set the bridge device.
+     * @param bridgeDevice
+     */
+    public void setBridgeDevice(String bridgeDevice) {
+        this.bridgeDevice = bridgeDevice;
+    }
+
+    /**
+     * Return the bridge device.
+     * @param bridgeDevice
+     */
+    public String getBridgeDevice() {
+        return bridgeDevice;
     }
 }

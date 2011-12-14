@@ -621,7 +621,8 @@ public class ActionManager extends BaseManager {
      * @param user The user scheduling image deployment
      * @param image The image pertaining to this action
      */
-    public static Action createDeployImageAction(User user, Image image, Long vcpus, Long memKb) {
+    public static Action createDeployImageAction(User user, Image image, Long vcpus,
+            Long memKb, String bridgeDevice) {
         DeployImageAction a = (DeployImageAction)ActionFactory
                              .createAction(ActionFactory.TYPE_DEPLOY_IMAGE);
         if (user != null) {
@@ -634,6 +635,7 @@ public class ActionManager extends BaseManager {
         details.setImageId(image.getId());
         details.setVcpus(vcpus);
         details.setMemKb(memKb);
+        details.setBridgeDevice(bridgeDevice);
         a.setDetails(details);
 
         //Object[] args = new Object[2];

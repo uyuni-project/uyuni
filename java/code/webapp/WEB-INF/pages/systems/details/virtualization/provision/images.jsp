@@ -8,14 +8,13 @@
     <body>
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
     <br/>
-	<rhn:toolbar base="h1" img="/img/rhn-icon-errata.gif">
-        Image Deployment
-    </rhn:toolbar>
+
+	<rhn:toolbar base="h1" img="/img/susestudio.png">  Image Deployment</rhn:toolbar>
 
 	<div class="page-summary">
-      <p>Please choose one of these images.</p>
-	</dpiv>
-	
+      <p>Please choose one of the SUSE Studio images below for deployment to this virtual host.</p>
+	</div>
+
     <rl:listset name="groupSet">
         <rhn:csrf />
 		<html:hidden property="sid" value="${param.sid}" />
@@ -36,15 +35,33 @@
             </rl:column>
         </rl:list>
 
-        <p>VCpus: <input type="text" name="vcpus" value="1" /></p>
-        <p>MemKb: <input type="text" name="memkb" value="524288" /></p>
+        <table class="details" align="center">
+          <tr>
+            <th>Number of VCPUs:</th>
+            <td>
+              <html:text property="vcpus" value="1" />
+            </td>
+          <tr>
+          <tr>
+            <th>Memory (Kb):</th>
+            <td>
+              <html:text property="memkb" value="524288" />
+            </td>
+          </tr>
+          <tr>
+            <th>Bridge Device:</th>
+            <td>
+              <html:text property="bridge" value="br0" />
+            </td>
+          </tr>
+        </table>
 
         <div align="right">
             <rhn:submitted/>
             <hr/>
             <input type="submit"
                    name="dispatch"
-                   value="Deploy Image" />
+                   value="Schedule Deployment" />
         </div>
     </rl:listset>
 

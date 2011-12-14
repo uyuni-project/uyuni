@@ -54,6 +54,7 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
     	Boolean submitted = false;
     	Long vcpus = null;
     	Long memkb = null;
+    	String bridge = null;
     	Long sid = null;
     	
     	// Read parameters from the form
@@ -65,6 +66,7 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
             }
         	vcpus = (Long) form.get("vcpus");
         	memkb = (Long) form.get("memkb");
+        	bridge = (String) form.getString("bridge");
         	sid = (Long) form.get("sid");
         }
     	
@@ -81,7 +83,7 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
         	Image image = ImageFactory.lookupById(new Long(id));
         	// Create the action and store it
             Action deploy = ActionManager.createDeployImageAction(
-            		ctx.getCurrentUser(), image, vcpus, memkb);
+            		ctx.getCurrentUser(), image, vcpus, memkb, bridge);
             ActionManager.addServerToAction(sid, deploy);
             ActionManager.storeAction(deploy);
         	forward = actionMapping.findForward("success");

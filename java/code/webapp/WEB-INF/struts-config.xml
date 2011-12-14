@@ -1143,6 +1143,7 @@
       <form-property name="id" type="java.lang.Long" />
       <form-property name="vcpus" type="java.lang.Long" />
       <form-property name="memkb" type="java.lang.Long" />
+      <form-property name="bridge" type="java.lang.String" />
       <form-property name="submitted" type="java.lang.Boolean" />
     </form-bean>
   </form-beans>

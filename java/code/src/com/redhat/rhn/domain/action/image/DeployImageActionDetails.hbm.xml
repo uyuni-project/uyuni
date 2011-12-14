@@ -20,5 +20,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 		<property name="imageId" type="long" column="image_id" />
 	    <property name="memKb" type="long" column="mem_kb" />
         <property name="vcpus" type="long" column="vcpus" />
+        <property name="bridgeDevice" type="string" column="bridge_device" />
     </class>
 </hibernate-mapping>
