@@ -18,7 +18,6 @@ import com.redhat.rhn.frontend.dto.BaseDto;
  * @version $Rev$
  */
 public class Image extends BaseDto {
-    //private static Logger log = Logger.getLogger(Image.class);
     
 	public static String STATUS_NEW = "NEW";
 	public static String STATUS_PICKUP = "PICKUP";
@@ -55,19 +54,11 @@ public class Image extends BaseDto {
     public void setBuildId(Long buildId) {
         this.buildId = buildId;
     }
-    
-    /**
-     * Getter for orgId
-     * @return Long to get
-     */
+
     public Org getOrg() {
         return this.org;
     }
 
-    /**
-     * Setter for org
-     * @param orgIn to set
-     */
     public void setOrg(Org orgIn) {
         this.org = orgIn;
     }
@@ -148,13 +139,11 @@ public class Image extends BaseDto {
         this.selectable = value;
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean isSelectable() {
         return selectable;
     }
 
-    /** {@inheritDoc} */
     @Override
     public String getSelectionKey() {
         return String.valueOf(getBuildId());
@@ -162,12 +151,13 @@ public class Image extends BaseDto {
 
     @Override
     public boolean equals(Object obj) {
+        boolean ret = false;
         if (obj instanceof Image) {
             Image image = (Image) obj;
             if (this.getChecksum().equals(image.getChecksum())) {
-                return true;
+                ret = true;
             }
         }
-        return super.equals(obj);
+        return ret;
     }
 }
