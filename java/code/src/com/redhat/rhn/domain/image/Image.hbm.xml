@@ -38,9 +38,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 and   i.imageType = 'xen'
                 and   i.org = :org]]>
     </query>
-    <query name="Image.listImagesByOrg">
+    <query name="Image.listDeployableImagesByOrg">
         <![CDATA[from com.redhat.rhn.domain.image.Image as i
                 where i.status = 'DONE'
+                and   i.org = :org]]>
+    </query>
+    <query name="Image.listAllImagesByOrg">
+        <![CDATA[from com.redhat.rhn.domain.image.Image as i
+                where i.status != 'ERROR'
                 and   i.org = :org]]>
     </query>
     <query name="Image.findById">

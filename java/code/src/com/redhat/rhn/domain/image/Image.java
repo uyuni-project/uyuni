@@ -38,6 +38,7 @@ public class Image extends BaseDto {
     private String fileName;
     private String checksum;
     private String status;
+    private boolean selectable = true;
     
     public Long getId() {
         return this.id;
@@ -143,9 +144,30 @@ public class Image extends BaseDto {
         this.status = inStatus;
     }
 
+    public void setSelectable(boolean value) {
+        this.selectable = value;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isSelectable() {
+        return selectable;
+    }
+
     /** {@inheritDoc} */
     @Override
     public String getSelectionKey() {
         return String.valueOf(getBuildId());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Image) {
+            Image image = (Image) obj;
+            if (this.getChecksum().equals(image.getChecksum())) {
+                return true;
+            }
+        }
+        return super.equals(obj);
     }
 }

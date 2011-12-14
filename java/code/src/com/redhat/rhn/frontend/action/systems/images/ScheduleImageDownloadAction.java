@@ -139,6 +139,17 @@ public class ScheduleImageDownloadAction extends RhnAction {
 
     	// Convert to image objects
         images = createImageList(ret, context);
+        
+        // Check which of these images are already available
+        List<Image> available = ImageFactory.getAllImages(
+                context.getCurrentUser().getOrg());
+        for (Image i : images) {
+            if (available.contains(i)) {
+                // Make these not selectable
+                i.setSelectable(false);
+            }
+        }
+
         return images;
     }
 

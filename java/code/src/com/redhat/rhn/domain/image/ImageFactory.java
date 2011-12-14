@@ -82,9 +82,20 @@ public class ImageFactory extends HibernateFactory {
     public static List<Image> getDeployableImages(Org org) {
     	Session session = null;
         List<Image> retval = null;
-        
+
         session = HibernateFactory.getSession();
-        Query q = session.getNamedQuery("Image.listImagesByOrg");
+        Query q = session.getNamedQuery("Image.listDeployableImagesByOrg");
+        retval = q.setParameter("org", org).list();
+        return retval;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<Image> getAllImages(Org org) {
+        Session session = null;
+        List<Image> retval = null;
+
+        session = HibernateFactory.getSession();
+        Query q = session.getNamedQuery("Image.listAllImagesByOrg");
         retval = q.setParameter("org", org).list();
         return retval;
     }
