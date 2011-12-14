@@ -22,7 +22,8 @@ CREATE TABLE rhnActionImageDeploy
                        REFERENCES suseImages (id)
                        ON DELETE CASCADE,
     vcpus     NUMBER DEFAULT(1) NOT NULL,
-    mem_kb    NUMBER DEFAULT(524288) NOT NULL
+    mem_kb    NUMBER DEFAULT(524288) NOT NULL,
+    bridge_device VARCHAR(24) DEFAULT('br0') NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;
