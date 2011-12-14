@@ -6,12 +6,12 @@
 
 <html:html xhtml="true">
     <body>
-	<rhn:toolbar base="h1" img="/img/rhn-icon-errata.gif">
-        SUSE Studio Images
+    <rhn:toolbar base="h1" img="/img/susestudio.png">
+      Download Images
     </rhn:toolbar>
 
 	<div class="page-summary">
-      <p>Please enter SUSE Studio credentials to list your images from SUSE Studio.</p>
+      <p>Please choose one or more of the images below for scheduling downloads from SUSE Studio.</p>
 	</div>
 
     <rl:listset name="groupSet">
@@ -42,7 +42,7 @@
             <hr/>
             <input type="submit"
                    name="dispatch"
-                   value="Schedule Download" />
+                   value="Schedule Downloads" />
         </div>
     </rl:listset>
 

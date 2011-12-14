@@ -9,10 +9,10 @@
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
     <br/>
 
-	<rhn:toolbar base="h1" img="/img/susestudio.png">  Image Deployment</rhn:toolbar>
+	<rhn:toolbar base="h1" img="/img/susestudio.png"></rhn:toolbar>
 
 	<div class="page-summary">
-      <p>Please choose one of the SUSE Studio images below for deployment to this virtual host.</p>
+      <p>Please choose one of the available SUSE Studio images below for deployment to this virtual host.</p>
 	</div>
 
     <rl:listset name="groupSet">
