@@ -703,7 +703,7 @@ class RepoSync(object):
             md_pack.checksum != db_pack['checksum']):
 
             if (os.path.exists(abspath) and
-                getFileChecksum(md_pack.checksum_type, filename=abspath) == md_pack['checksum']):
+                getFileChecksum(md_pack.checksum_type, filename=abspath) == md_pack.checksum):
 
                 return True
             else:
