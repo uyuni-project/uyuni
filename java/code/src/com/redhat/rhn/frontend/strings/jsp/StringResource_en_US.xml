@@ -23055,8 +23055,8 @@ given channel.</source>
      <trans-unit id="studio.images.list.noimages">
         <source>No Images</source>
      </trans-unit>
-     <trans-unit id="Studio Images">
-        <source>Studio Images</source>
+     <trans-unit id="SUSE Studio">
+        <source>SUSE Studio</source>
      </trans-unit>
      <trans-unit id="Images">
         <source>Images</source>
