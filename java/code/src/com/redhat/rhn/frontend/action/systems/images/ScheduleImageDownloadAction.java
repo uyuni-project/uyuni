@@ -1,0 +1,174 @@
+/**
+ * Copyright (c) 2011 Novell
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.frontend.action.systems.images;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.image.Image;
+import com.redhat.rhn.domain.image.ImageFactory;
+import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnAction;
+import com.redhat.rhn.frontend.struts.RhnListSetHelper;
+import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.suse.studio.client.SUSEStudioClient;
+import com.suse.studio.client.data.Appliance;
+import com.suse.studio.client.data.Build;
+
+/**
+ * This action will present the user with a list of all studio images
+ * and allow one to be selected.
+ */
+public class ScheduleImageDownloadAction extends RhnAction {
+
+    private static final String LIST_NAME = "images";
+    private static final String DATA_SET = "pageList";
+
+    private List<Image> images;
+    
+    /**
+     * Return the set declaration used for this action.
+     * @return the set declaration
+     */
+    protected RhnSetDecl getDecl() {
+        return RhnSetDecl.IMAGES;
+    }
+
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    public ActionForward execute(ActionMapping actionMapping,
+                                 ActionForm actionForm,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response)
+            throws Exception {
+
+    	// Init the context and current user
+        RequestContext context = new RequestContext(request);
+        User user = context.getLoggedInUser();
+        RhnSet set = getDecl().get(user);
+
+        // If not submitted, initialize the set
+        if (!context.isSubmitted()) {
+            set.clear();
+            for (Object o : getImages(context)) {
+                set.add(o);
+            }
+            RhnSetManager.store(set);
+        }
+
+        RhnListSetHelper helper = new RhnListSetHelper(request);
+
+        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
+        request.setAttribute(DATA_SET, images);
+        ListTagHelper.bindSetDeclTo(LIST_NAME, getDecl(), request);
+
+        ActionForward forward;
+        if (context.isSubmitted()) {
+            // Store selected images
+            helper.updateSet(set, LIST_NAME);
+            storeImages(set.getElementValues());
+            forward = actionMapping.findForward("success");
+        } else {
+            forward = actionMapping.findForward("default");
+        }
+
+        return forward;
+    }
+
+    /**
+     * Store images given by buildIDs as {@link Long}.
+     * @param selected
+     */
+    private void storeImages(Set<Long> selected) {
+        for (Long s : selected) {
+            // Lookup the selected images
+            for (Image i : images) {
+                if (s.equals(i.getBuildId())) {
+                    ImageFactory.saveImage(i);
+                }
+            }
+        }
+	}
+
+	/**
+	 * Get the {@link Image} DTOs.
+	 */
+    public List getImages(RequestContext context) {
+        List<Appliance> ret = new ArrayList<Appliance>();
+
+        // FIXME: Read the credentials from config for now
+        String user = Config.get().getString("susestudio.user");
+        String apikey = Config.get().getString("susestudio.api_key");
+
+        // Get appliance builds from studio
+    	if (user != null && apikey != null) {
+        	SUSEStudioClient client = new SUSEStudioClient(user, apikey);
+    		try {
+    			ret = client.getAppliances();
+    		} catch (IOException e) {
+    			throw new RuntimeException(e);
+    		}	
+    	}
+
+    	// Convert to image objects
+        images = createImageList(ret, context);
+        return images;
+    }
+
+    /**
+     * Create an {@link Image} object out of every build of an appliance.
+     * @param appliances
+     * @return list of images
+     */
+    private List<Image> createImageList(List<Appliance> appliances, 
+    		RequestContext context) {
+    	List<Image> ret = new LinkedList<Image>();
+    	for (Appliance appliance : appliances) {
+    		// Create one image object for every build
+    		for (Build build : appliance.getBuilds()) {
+        		Image img = ImageFactory.createImage();
+        		img.setOrg(context.getCurrentUser().getOrg());
+        		// Appliance attributes
+        		img.setName(appliance.getName());
+        		img.setArch(appliance.getArch());
+        		// Build attributes
+        		img.setBuildId(new Long(build.getId()));
+        		img.setVersion(build.getVersion());
+        		img.setImageType(build.getImageType());
+        		img.setDownloadUrl(build.getDownloadURL());
+        		// TODO
+        		// img.setFileName("");
+        		// img.setChecksum("");
+        		ret.add(img);
+    		}
+    	}
+    	return ret;
+    }
+}

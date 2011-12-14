@@ -1132,7 +1132,7 @@
       <form-property name="no_scrub" type="java.lang.String" initial="value"/>
     </form-bean>
 
-    <form-bean name="listStudioImagesForm"
+    <form-bean name="downloadImagesForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
       <form-property name="submitted" type="java.lang.Boolean" />
     </form-bean>
@@ -7728,8 +7728,8 @@
 
     <action path="/studio/List"
         scope="request"
-        name="listStudioImagesForm"
-        type="com.redhat.rhn.frontend.action.rhnpackage.profile.StudioImagesListAction"
+        name="downloadImagesForm"
+        type="com.redhat.rhn.frontend.action.systems.images.ScheduleImageDownloadAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
@@ -7742,7 +7742,7 @@
     <action path="/systems/details/virtualization/ImageDeployment"
         scope="request"
 		name="deployImagesForm"
-        type="com.redhat.rhn.frontend.action.systems.virtualization.ImageDeploymentAction"
+        type="com.redhat.rhn.frontend.action.systems.images.ScheduleImageDeploymentAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"

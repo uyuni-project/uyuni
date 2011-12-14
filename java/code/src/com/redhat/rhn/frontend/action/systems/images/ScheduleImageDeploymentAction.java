@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2011 Novell
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.systems.virtualization;
+package com.redhat.rhn.frontend.action.systems.images;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ import com.redhat.rhn.manager.action.ActionManager;
  *
  * @version $Revision$
  */
-public class ImageDeploymentAction extends RhnListAction implements Listable {
+public class ScheduleImageDeploymentAction extends RhnListAction implements Listable {
 
     private static final String DATA_SET = "pageList";
     
