@@ -4,7 +4,8 @@
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-html" prefix="html" %>
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-bean" prefix="bean" %>
 
-<html:html xhtml="true">
+<html:xhtml/>
+<html>
     <body>
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
     <br/>
@@ -43,9 +44,9 @@
             </td>
           <tr>
           <tr>
-            <th>Memory (MB):</th>
+            <th>Memory (Kb):</th>
             <td>
-              <html:text property="mem_mb" value="512" />
+              <html:text property="memkb" value="524288" />
             </td>
           </tr>
           <tr>
@@ -66,4 +67,4 @@
     </rl:listset>
 
     </body>
-</html:html>
+</html>
