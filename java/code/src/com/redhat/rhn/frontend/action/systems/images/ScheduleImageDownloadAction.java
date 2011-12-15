@@ -50,6 +50,7 @@ public class ScheduleImageDownloadAction extends RhnAction {
 
     private static final String LIST_NAME = "images";
     private static final String DATA_SET = "pageList";
+    private static final String SUCCESS_KEY = "studio.download.scheduled";
 
     private List<Image> images;
     
@@ -94,6 +95,7 @@ public class ScheduleImageDownloadAction extends RhnAction {
             // Store selected images
             helper.updateSet(set, LIST_NAME);
             storeImages(set.getElementValues());
+            createSuccessMessage(request, SUCCESS_KEY, String.valueOf(set.size()));
             forward = actionMapping.findForward("success");
         } else {
             forward = actionMapping.findForward("default");

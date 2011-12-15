@@ -7737,7 +7737,7 @@
                  path="/WEB-INF/pages/studio/list.jsp" />
         <forward name="success" 
                  redirect="true" 
-                 path="/systems/SystemList.do" />
+                 path="/studio/List.do" />
     </action>
 
     <action path="/systems/details/virtualization/ImageDeployment"
@@ -7750,7 +7750,7 @@
                  path="/WEB-INF/pages/systems/details/virtualization/images.jsp" />
         <forward name="success"
                  redirect="true"
-                 path="/systems/SystemList.do" />
+                 path="/systems/details/virtualization/ImageDeployment.do" />
     </action>
 
   </action-mappings>
