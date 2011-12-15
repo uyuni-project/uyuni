@@ -162,6 +162,7 @@ class RepoSync(object):
                 repo = self.repo_plugin(url.getURL(), self.channel_label,
                                         insecure, self.quiet, self.interactive)
                 self.import_packages(repo, data['id'], url.getURL())
+                self.import_products(repo)
                 self.import_updates(repo, url.getURL())
             except ChannelTimeoutException, e:
                 self.print_msg(e)
@@ -406,6 +407,61 @@ class RepoSync(object):
         importer = ErrataImport(batch, backend)
         importer.run()
         self.regen = True
+
+    def import_products(self, repo):
+        products = repo.get_products()
+        for product in products:
+            query = rhnSQL.prepare("""
+                select spf.id
+                  from suseProductFile spf
+                  join rhnpackageevr pe on pe.id = spf.evr_id
+                  join rhnpackagearch pa on pa.id = spf.package_arch_id
+                 where spf.name = :name
+                   and spf.evr_id = LOOKUP_EVR(:epoch, :version, :release)
+                   and spf.package_arch_id = LOOKUP_PACKAGE_ARCH(:arch)
+                   and spf.summary = :summary
+                   and spf.description = :description
+            """)
+            query.execute(**product)
+            row = query.fetchone_dict()
+            if not row or not row.has_key('id'):
+                get_id_q = rhnSQL.prepare("""SELECT sequence_nextval('suse_prod_file_id_seq') as id FROM dual""")
+                get_id_q.execute()
+                row = get_id_q.fetchone_dict() or {}
+                if not row or not row.has_key('id'):
+                    print "no id for sequence suse_prod_file_id_seq"
+                    continue
+
+            h = rhnSQL.prepare("""
+                    insert into suseProductFile (id, name, evr_id, package_arch_id, summary, description)
+                    VALUES (:id, :name, LOOKUP_EVR(:epoch, :version, :release), LOOKUP_PACKAGE_ARCH(:arch), :summary, :description)
+            """)
+            h.execute(id=row['id'], **product)
+
+            query = rhnSQL.prepare("""
+                select p.id
+                  from rhnPackage p
+                  join rhnPackageProvides pp on pp.package_id = p.id
+                  join rhnPackageCapability pc on pc.id = pp.capability_id
+                  join rhnChannelPackage cp on cp.package_id = p.id
+                  join rhnChannel c on c.id = cp.channel_id
+                 where pc.name = :product_cap
+                   and pc.version = :cap_version
+                   and c.label = :channel_label
+            """)
+            product_cap = "product(%s)" % product['name']
+            cap_version = product['version'] + "-" + product['release']
+
+            query.execute(product_cap=product_cap, cap_version=cap_version, channel_label=self.channel_label)
+            packrow = query.fetchone_dict()
+            if not packrow or not packrow.has_key('id'):
+                print "no id for package"
+                continue
+
+            h = rhnSQL.prepare("""insert into susePackageProductFile (package_id, prodfile_id)
+                VALUES (:package_id, :product_id)
+            """)
+            h.execute(package_id=packrow['id'], product_id=row['id'])
 
     def _patch_naming(self, notice):
         """Return the name of the patch according to our rules

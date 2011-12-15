@@ -262,6 +262,23 @@ class ContentSource:
     def _clean_cache(self, directory):
         shutil.rmtree(directory, True)
 
+    def get_products(self):
+        products = []
+        if 'products' in self.repo.repoXML.repoData:
+            prod_path = self.repo.retrieveMD('products')
+            for product in etree.parse(prod_path).getroot():
+                p = {}
+                p['name'] = product.find('name').text
+                p['arch'] = product.find('arch').text
+                version = product.find('version')
+                p['version'] = version.get('ver')
+                p['release'] = version.get('rel')
+                p['epoch'] = version.get('epoch')
+                p['summary'] = product.find('summary').text
+                p['description'] = product.find('description').text
+                products.append(p)
+        return products
+
     def get_updates(self):
         if 'updateinfo' in self.repo.repoXML.repoData:
             um = YumUpdateMetadata()
