@@ -44,9 +44,9 @@
             </td>
           <tr>
           <tr>
-            <th>Memory (Kb):</th>
+            <th>Memory (MB):</th>
             <td>
-              <html:text property="memkb" value="524288" />
+              <html:text property="mem_mb" value="512" />
             </td>
           </tr>
           <tr>
