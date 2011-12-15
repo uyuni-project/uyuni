@@ -65,7 +65,7 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
             	submitted = Boolean.FALSE;
             }
         	vcpus = (Long) form.get("vcpus");
-        	memkb = (Long) form.get("memkb");
+        	memkb = (Long) form.get("mem_mb") * 1024;
         	bridge = (String) form.getString("bridge");
         	sid = (Long) form.get("sid");
         }
