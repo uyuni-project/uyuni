@@ -37,8 +37,6 @@ import com.redhat.rhn.manager.action.ActionManager;
 /**
  * This action will present the user with a list of all studio images
  * and allow one to be selected.
- *
- * @version $Revision$
  */
 public class ScheduleImageDeploymentAction extends RhnListAction implements Listable {
 
@@ -64,10 +62,12 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
             if (submitted == null) {
             	submitted = Boolean.FALSE;
             }
-        	vcpus = (Long) form.get("vcpus");
-        	memkb = (Long) form.get("mem_mb") * 1024;
-        	bridge = (String) form.getString("bridge");
-        	sid = (Long) form.get("sid");
+            if (submitted) {
+                vcpus = (Long) form.get("vcpus");
+                memkb = (Long) form.get("mem_mb") * 1024;
+                bridge = (String) form.getString("bridge");
+                sid = (Long) form.get("sid");
+            }
         }
     	
         String id = ListTagHelper.getRadioSelection(ListHelper.LIST, request);
