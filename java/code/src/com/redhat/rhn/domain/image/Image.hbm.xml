@@ -41,7 +41,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <query name="Image.listDeployableImagesByOrg">
         <![CDATA[from com.redhat.rhn.domain.image.Image as i
                 where i.status = 'DONE'
-                and   i.org = :org]]>
+                and   i.org = :org
+                order by i.name, i.version desc]]>
     </query>
     <query name="Image.listAllImagesByOrg">
         <![CDATA[from com.redhat.rhn.domain.image.Image as i
