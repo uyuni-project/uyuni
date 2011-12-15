@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Dec 15 12:11:27 UTC 2011 - mc@suse.de
+
+- generate solv files for channels
+
+-------------------------------------------------------------------
 Wed Dec  7 11:07:07 CET 2011 - ug@suse.de
 
 - fixed autoinstall branding for snippets
