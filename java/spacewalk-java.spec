@@ -281,6 +281,7 @@ Provides: taskomatic-sat = %{version}-%{release}
 %if 0%{?suse_version}
 Requires(post): %fillup_prereq %insserv_prereq
 Requires(preun): %fillup_prereq %insserv_prereq
+Requires: satsolver-tools
 %else
 Requires(post): chkconfig
 Requires(preun): chkconfig
