@@ -168,7 +168,6 @@ def _getImage(imageName,orgID,checksum):
         f = open(filePath, 'w')
         c.setopt(pycurl.WRITEFUNCTION, f.write)
         c.setopt(pycurl.SSL_VERIFYPEER, 0)
-        # FIXME: set proxy too
         c.perform()
         f.close()
 
@@ -204,6 +203,10 @@ def _connect_to_hypervisor():
 
     return connection
 
+#
+# this is not nice but tarfile.py does not support
+# sparse file writing :(
+#
 def _extractTar( source, dest ):
     param = "xf"
     if not os.path.exists( source ):
@@ -269,7 +272,7 @@ def deploy(fileName, checksum, memKB="524288", vCPUs="1", imageType="vmdk", virt
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
         log.log_debug("fetching the image failed")
 
-    # image exists in /var/lib/libvirt/images/name.vmdk now
+    # image exists in /var/lib/libvirt/images/image-name now
 
     connection = _connect_to_hypervisor()
     uuid = _generate_uuid()
