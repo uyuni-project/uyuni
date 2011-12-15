@@ -147,6 +147,8 @@ class RepoSyncTest(unittest.TestCase):
                          ((rs.mocked_plugin, 42, "bogus-url"), {}))
         self.assertEqual(rs.import_updates.call_args,
                          ((rs.mocked_plugin, "bogus-url"), {}))
+        self.assertEqual(rs.import_products.call_args,
+                         ((rs.mocked_plugin,), {}))
 
         # for the rest just check if they were called or not
         self.assertTrue(rs.update_date.called)
@@ -572,6 +574,7 @@ class RepoSyncTest(unittest.TestCase):
         """
         rs.import_packages = Mock()
         rs.import_updates = Mock()
+        rs.import_products = Mock()
         self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription = Mock()
         self.reposync.taskomatic.add_to_erratacache_queue = Mock()
 
