@@ -154,7 +154,7 @@ class ContentSource:
             repo.base_persistdir = CACHE_DIR
         pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, '1', 'stage')
         if not os.path.isdir(pkgdir):
-            fileutils.makedirs(pkgdir, user='apache', group='apache')
+            fileutils.makedirs(pkgdir, user='wwwrun', group='www')
         repo.pkgdir = pkgdir
 
         if self.proxy_url is not None:
