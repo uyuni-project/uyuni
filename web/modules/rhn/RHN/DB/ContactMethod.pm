@@ -327,7 +327,7 @@ sub has_probe_dependencies {
   my ($sth, $query);
 
   $query = <<EOQ;
-SELECT CASE count(*) WHEN 0 THEN 0 ELSE 1 END
+SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
   FROM     rhn_probe P, rhn_contact_group_members CGM
   WHERE    P.contact_group_id = CGM.contact_group_id
   AND      CGM.member_contact_method_id = :method_id

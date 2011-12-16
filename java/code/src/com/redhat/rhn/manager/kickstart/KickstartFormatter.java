@@ -19,6 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartData;
+import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
@@ -35,6 +36,7 @@ import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.download.DownloadManager;
 
 import org.apache.commons.lang.StringUtils;
@@ -150,6 +152,7 @@ public class KickstartFormatter {
     private static final String REDHAT_MGMT_SERVER = "$redhat_management_server";
     public static final String STATIC_NETWORK_VAR = "static_network";
     public static final String USE_IPV6_GATEWAY = "use_ipv6_gateway";
+    public static final String KS_DISTRO = "ks_distro";
     private static final String STATIC_NETWORK_COMMAND = "network --bootproto static" +
                                                  " " + "--device %s" +
                                                  " " + "--gateway %s" +
@@ -232,7 +235,15 @@ public class KickstartFormatter {
         addEnd(buf);
         buf.append(NEWLINE);
         buf.append("%" + KickstartScript.TYPE_PRE);
-        buf.append("$kickstart_start");
+        buf.append(NEWLINE);
+
+        if (CobblerXMLRPCHelper.getCobblerVersion() >= 2.2) {
+            addCobblerSnippet(buf, "kickstart_start");
+        }
+        else {
+            buf.append("$kickstart_start");
+        }
+
         addCobblerSnippet(buf, "pre_install_network_config");
         buf.append(NEWLINE);
 
@@ -268,7 +279,14 @@ public class KickstartFormatter {
         addCobblerSnippet(buf, "post_install_kernel_options");
         addCobblerSnippet(buf, "koan_environment");
         buf.append(NEWLINE);
-        buf.append("$kickstart_done");
+
+        if (CobblerXMLRPCHelper.getCobblerVersion() >= 2.2) {
+            addCobblerSnippet(buf, "kickstart_done");
+        }
+        else {
+            buf.append("$kickstart_done");
+        }
+
         buf.append(NEWLINE);
         addEnd(buf);
         String retval = buf.toString();
@@ -393,11 +411,13 @@ public class KickstartFormatter {
      * @param nm6 the ipv6 netmask of the interface
      * @param gw6 the ipv6 gateway
      * @param preferIpv6Gateway whether or not should ipv6 gateway be prefered
+     * @param ksDistro distro to be provisioned
      * @return the network* line for a static host
      */
     public static String makeStaticNetworkCommand(String device, String hostName,
             String nameServer, String ip4, String nm4, String gw4,
-            String ip6, String nm6, String gw6, boolean preferIpv6Gateway) {
+            String ip6, String nm6, String gw6, boolean preferIpv6Gateway,
+            String ksDistro) {
 
         String gateway;
         if (preferIpv6Gateway && gw6 != null && gw6.length() != 0) {
@@ -413,9 +433,15 @@ public class KickstartFormatter {
         if (ip4 != null && ip4.length() > 0 && nm4 != null && nm4.length() > 0) {
             command += String.format(STATIC_NETWORK_COMMAND1, ip4, nm4);
         }
+        else {
+            command += " --noipv4";
+        }
 
-        if (ip6 != null && ip6.length() > 0) {
-            if (nm6 == null || nm6.length() == 0) {
+        if (ip6 != null && ip6.length() > 0 &&
+            (KickstartInstallType.FEDORA.equals(ksDistro) ||
+             KickstartInstallType.RHEL_6.equals(ksDistro))) {
+            if (nm6 == null || nm6.length() == 0 ||
+                !KickstartInstallType.FEDORA.equals(ksDistro)) {
                 command += String.format(STATIC_NETWORK_COMMAND2, ip6);
             }
             else {

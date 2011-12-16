@@ -20,7 +20,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.6.57
+Version: 1.6.63
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -784,6 +784,34 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri Dec 16 2011 Jan Pazdziora 1.6.63-1
+- Allow systemid to be unicode.
+- Revert "always return RPC data in plain string (utf-8 encoded)"
+
+* Thu Dec 15 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.62-1
+- persistdir have to be set before pkgdir
+- call sync() which does the real work
+
+* Thu Dec 15 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.61-1
+- 676369 - create pkgdir with appropriate user and group
+- 676369 - put downloaded packages into stage
+
+* Wed Dec 14 2011 Jan Pazdziora 1.6.60-1
+- 731912 - do not skip base channel detection based just on release change
+  (tlestach@redhat.com)
+
+* Tue Dec 13 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.59-1
+- 747631 - exit loop when all packages are finished
+
+* Mon Dec 12 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.58-1
+- use global LOCK
+- use systemExit instead of calling sys.stderr.write directly
+- move repository setup to a separate method
+- word-wrap to <80 chars and fix string concatenation
+- CACHE_DIR is a constant so we declare it at the top of the file
+- fixed indentation and whitespace
+- move third-party module import yum lower
+
 * Fri Dec 09 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.57-1
 - postgresql bytea doesn't like backslashes
 

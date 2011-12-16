@@ -592,7 +592,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             cmd.setKernelOptions(getExtraOptions());
             cmd.setPostKernelOptions(postKernelOptions);
             cmd.setScheduledAction(kickstartAction);
-            cmd.setNetworkInfo(isDhcp, networkInterface, this.useIpv6Gateway());
+            cmd.setNetworkInfo(isDhcp, networkInterface, this.useIpv6Gateway(),
+                ksdata.getInstallType().getLabel());
             ValidatorError cobblerError = cmd.store();
             if (cobblerError != null) {
                 return cobblerError;
@@ -606,7 +607,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             cmd.setKernelOptions(kernelOptions);
             cmd.setPostKernelOptions(postKernelOptions);
             cmd.setScheduledAction(kickstartAction);
-            cmd.setNetworkInfo(isDhcp, networkInterface, this.useIpv6Gateway());
+            cmd.setNetworkInfo(isDhcp, networkInterface, this.useIpv6Gateway(),
+                ksdata.getInstallType().getLabel());
             ValidatorError cobblerError = cmd.store();
             if (cobblerError != null) {
                 return cobblerError;
@@ -903,7 +905,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         static:146.108.30.184, static:auto, static:eth0
          */
         if (!StringUtils.isBlank(networkInterface)) {
-            if (isDhcp && !LINK_NETWORK_TYPE.equals(networkInterface)) {
+            if (!LINK_NETWORK_TYPE.equals(networkInterface)) {
                 // Get rid of the dhcp:
                 String params = " ksdevice=" + networkInterface;
                 if (!kOptions.contains("ksdevice")) {

@@ -708,4 +708,302 @@ def do_configchannel_verifyfile(self, args):
 
     logging.info('Action ID: %i' % action_id)
 
+####################
+
+def help_configchannel_export(self):
+    print 'configchannel_export: export config channel(s) to json format file'
+    print '''usage: configchannel_export <CHANNEL>... [options]
+options:
+    -f outfile.json : specify an output filename, defaults to <CHANNEL>.json
+                      if exporting a single channel, ccs.json for multiple
+                      channels, or cc_all.json if no CHANNEL specified
+                      e.g (export ALL)
+
+Note : CHANNEL list is optional, default is to export ALL'''
+
+def complete_configchannel_export(self, text, line, beg, end):
+    return tab_completer(self.do_configchannel_list('', True), text)
+
+def export_configchannel_getdetails(self, channel):
+    # Get the cc details
+    logging.info("Getting config channel details for %s" % channel)
+    details = self.client.configchannel.getDetails(self.session, channel)
+    files = self.client.configchannel.listFiles(self.session, channel)
+    details['files'] = []
+    paths = [f['path'] for f in files]
+    logging.debug("Found files %s for %s" % (paths, channel))
+    fileinfo = self.client.configchannel.lookupFileInfo(self.session, \
+                    channel, paths)
+    # Now we strip the datetime fields from the Info structs, as they
+    # are not JSON serializable with the default encoder, and we don't
+    # need them on import anyway
+    # We also strip some other fields which are not useful on import
+    # This is a bit complicated because the createOrUpdateFoo functions
+    # take two different struct formats, which are both different to 
+    # the format returned by lookupFileInfo, doh!
+    # We get:                         We need:
+    #                                 (file/dir)      (symlink)
+    # string "type"                   Y               Y
+    # string "path"                   Y               Y
+    # string "target_path"            N               Y
+    # string "channel"                N               N
+    # string "contents"               Y               N
+    # int "revision"                  N (auto)        N (auto)
+    # dateTime.iso8601 "creation"     N               N
+    # dateTime.iso8601 "modified"     N               N
+    # string "owner"                  Y               N
+    # string "group"                  Y               N
+    # int "permissions"               Y (as string!)  N
+    # string "permissions_mode"       N               N
+    # string "selinux_ctx"            Y               Y
+    # boolean "binary"                N               N
+    # string "md5"                    N               N
+    # string "macro-start-delimiter"  Y               N
+    # string "macro-end-delimiter"    Y               N
+    for f in fileinfo:
+        for k in [ 'channel', 'revision', 'creation', 'modified', \
+                        'permissions_mode', 'binary', 'md5' ]:
+            if f.has_key(k):
+                del f[k]
+        if f['type'] == 'symlink':
+            for k in [ 'contents', 'owner', 'group', 'permissions', \
+                            'macro-start-delimiter', 'macro-end-delimiter' ]:
+                if f.has_key(k):
+                    del f[k]
+        else:
+            if f.has_key('target_path'):
+                del f['target_path']
+            f['permissions'] = str(f['permissions'])
+
+    details['files'] = fileinfo
+    return details
+
+def do_configchannel_export(self, args):
+    options = [ Option('-f', '--file', action='store') ]
+    (args, options) = parse_arguments(args, options)
+
+    filename=""
+    if options.file != None:
+        logging.debug("Passed filename do_configchannel_export %s" % \
+            options.file)
+        filename=options.file
+
+    # Get the list of ccs to export and sort out the filename if required
+    ccs=[]
+    if not len(args):
+        if len(filename) == 0:
+            filename="cc_all.json"
+        logging.info("Exporting ALL config channels to %s" % filename)
+        ccs = self.do_configchannel_list('', True)
+    else:
+        # allow globbing of configchannel channel names
+        ccs = filter_results(self.do_configchannel_list('', True), args)
+        logging.debug("configchannel_export called with args %s, ccs=%s" % \
+            (args, ccs))
+        if (len(ccs) == 0):
+            logging.error("Error, no valid config channel passed, " + \
+                "check name is  correct with spacecmd configchannel_list")
+            return
+        if len(filename) == 0:
+            # No filename arg, so we try to do something sensible:
+            # If we are exporting exactly one cc, we default to ccname.json
+            # otherwise, generic ccs.json name
+            if len(ccs) == 1:
+                filename="%s.json" % ccs[0]
+            else:
+                filename="ccs.json"
+
+    # Dump as a list of dict
+    ccdetails_list=[]
+    for c in ccs:
+        logging.info("Exporting cc %s to %s" % (c, filename))
+        ccdetails_list.append(self.export_configchannel_getdetails(c))
+
+    logging.debug("About to dump %d ccs to %s" % \
+        (len(ccdetails_list), filename))
+    # Check if filepath exists, if it is an existing file
+    # we prompt the user for confirmation
+    if os.path.isfile(filename):
+        if not self.user_confirm("File %s exists, " % filename + \
+                    "confirm overwrite file? (y/n)"):
+            return
+    if json_dump_to_file(ccdetails_list, filename) != True:
+        logging.error("Error saving exported config channels to file" % \
+            filename)
+        return
+
+####################
+
+def help_configchannel_import(self):
+    print 'configchannel_import: import config channel(s) from json file'
+    print '''usage: configchannel_import <JSONFILES...>'''
+
+def do_configchannel_import(self, args):
+    (args, options) = parse_arguments(args)
+
+    if len(args) == 0:
+        logging.error("Error, no filename passed")
+        self.help_configchannel_import()
+        return
+
+    for filename in args:
+        logging.debug("Passed filename do_configchannel_import %s" % filename)
+        ccdetails_list = json_read_from_file(filename)
+        if len(ccdetails_list) == 0:
+            logging.error("Error, could not read json data from %s" % filename)
+            return
+        for ccdetails in ccdetails_list:
+            if self.import_configchannel_fromdetails(ccdetails) != True:
+                logging.error("Error importing configchannel %s" % \
+                    ccdetails['name'])
+
+# create a new cc based on the dict from export_configchannel_getdetails
+def import_configchannel_fromdetails(self, ccdetails):
+
+    # First we check that an existing channel with the same name does not exist
+    existing_ccs = self.do_configchannel_list('', True)
+    if ccdetails['name'] in existing_ccs:
+        logging.error("ERROR : config channel %s already exists! Skipping!" % \
+            ccdetails['name'])
+        return False
+    else:
+        # create the cc, we need to drop the org prefix from the cc name
+        logging.info("Importing config channel  %s" % ccdetails['name'])
+
+        # Create the channel
+        self.client.configchannel.create(self.session,
+                                 ccdetails['label'],
+                                 ccdetails['name'],
+                                 ccdetails['description'])
+        for filedetails in ccdetails['files']:
+            path = filedetails['path']
+            del filedetails['path']
+            logging.info("Found %s %s for cc %s" % \
+                (filedetails['type'], path, ccdetails['name']))
+            ret = None
+            if filedetails['type'] == 'symlink':
+                del filedetails['type']
+                logging.debug("Adding symlink %s" % filedetails)
+                ret = self.client.configchannel.createOrUpdateSymlink(\
+                    self.session, ccdetails['label'], path, filedetails)
+            else:
+                if filedetails['type'] == 'directory':
+                    isdir = True
+                else:
+                    isdir = False
+                logging.debug("Creating %s %s" % \
+                    (filedetails['type'], filedetails))
+                del filedetails['type']
+                ret = self.client.configchannel.createOrUpdatePath(\
+                    self.session, ccdetails['label'], path, isdir, filedetails)
+            if ret != None:
+                logging.debug("Added file %s to %s" %\
+                    (ret['path'],ccdetails['name']))
+            else:
+                logging.error("Error adding file %s to %s" % \
+                    (filedetails['path'], ccdetails['label']))
+                continue
+
+    return True
+
+####################
+
+def help_configchannel_clone(self):
+    print 'configchannel_clone: Clone config channel(s)'
+    print '''usage examples:
+                 configchannel_clone foo_label -c bar_label
+                 configchannel_clone foo_label1 foo_label2 -c prefix
+                 configchannel_clone foo_label -x "s/foo/bar"
+                 configchannel_clone foo_label1 foo_label2 -x "s/foo/bar"
+
+options:
+  -c CLONE_LABEL : name/label of the resulting cc (note does not update
+                   description, see -x option), treated as a prefix if
+                   multiple keys are passed
+  -x "s/foo/bar" : Optional regex replacement, replaces foo with bar in the
+                   clone name, label and description
+  Note : If no -c or -x option is specified, interactive is assumed'''
+
+def complete_configchannel_clone(self, text, line, beg, end):
+    return tab_completer(self.do_configchannel_list('', True), text)
+
+def do_configchannel_clone(self, args):
+    options = [ Option('-c', '--clonelabel', action='store'),
+                Option('-x', '--regex', action='store') ]
+
+    (args, options) = parse_arguments(args, options)
+    allccs = self.do_configchannel_list('', True)
+
+    if is_interactive(options):
+        print
+        print 'Config Channels'
+        print '------------------'
+        print '\n'.join(sorted(allccs))
+        print
+
+        if len(args) == 1:
+            print "Channel to clone: %s" % args[0]
+        else:
+            # Clear out any args as interactive doesn't handle multiple ccs
+            args = []
+            args.append(prompt_user('Channel to clone:', noblank = True))
+        options.clonelabel = prompt_user('Clone label:', noblank = True)
+    else:
+        if not options.clonelabel and not options.regex:
+            logging.error("Error - must specify either -c or -x options!")
+            self.help_configchannel_clone()
+        else:
+            logging.debug("%s : %s" % (options.clonelabel, options.regex))
+
+    if not len(args):
+        logging.error("Error no channel label passed!")
+        self.help_configchannel_clone()
+        return
+    logging.debug("Got args=%s %d" % (args, len(args)))
+    # allow globbing of configchannel channel names
+    ccs = filter_results(self.do_configchannel_list('', True), args)
+    logging.debug("Filtered ccs %s" % ccs)
+    for cc in ccs:
+        logging.debug("Cloning %s" % cc)
+        ccdetails = self.export_configchannel_getdetails(cc)
+
+        # If the -x/--regex option is passed, do a sed-style replacement over
+        # the name, label and description.  This makes it easier to clone when
+        # content is based on a known naming convention
+        if options.regex:
+            # Expect option to be formatted like a sed-replacement, s/foo/bar
+            findstr = options.regex.split("/")[1]
+            replacestr = options.regex.split("/")[2]
+            logging.debug("--regex selected with %s, replacing %s with %s" % \
+                (options.regex, findstr, replacestr))
+
+            newname = re.sub(findstr, replacestr, ccdetails['name'])
+            ccdetails['name'] = newname
+            newlabel = re.sub(findstr, replacestr, ccdetails['label'])
+            ccdetails['label'] = newlabel
+            newdesc = re.sub(findstr, replacestr, ccdetails['description'])
+            ccdetails['description'] = newdesc
+            logging.debug("regex mode : %s %s %s" % (ccdetails['name'], \
+                ccdetails['label'], ccdetails['description']))
+        elif options.clonelabel:
+            if len(args) > 1:
+                newlabel = options.clonelabel + ccdetails['label']
+                ccdetails['label'] = newlabel
+                newname = options.clonelabel + ccdetails['name']
+                ccdetails['name'] = newname
+                logging.debug("clonelabel mode with >1 channel : %s" % \
+                    ccdetails['label'])
+            else:
+                newlabel = options.clonelabel
+                ccdetails['label'] = newlabel
+                newname = options.clonelabel
+                ccdetails['name'] = newname
+                logging.debug("clonelabel mode with 1 channel : %s" % \
+                    ccdetails['label'])
+
+        # Finally : import the cc from the modified ccdetails
+        if self.import_configchannel_fromdetails(ccdetails) != True:
+            logging.error("Failed to clone %s to %s" % \
+             (options.name, options.clonelabel))
+
 # vim:ts=4:expandtab:

@@ -19,6 +19,7 @@ package com.redhat.rhn.domain.kickstart;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
@@ -31,6 +32,7 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -39,6 +41,8 @@ import java.util.Date;
  */
 public class KickstartableTree extends BaseDomainHelper {
 
+    private static final String INVALID_INITRD = "kickstart.tree.invalidinitrd";
+    private static final String INVALID_KERNEL = "kickstart.tree.invalidkernel";
     private String basePath;
     private Channel channel;
     private Long id;
@@ -267,12 +271,10 @@ public class KickstartableTree extends BaseDomainHelper {
     }
 
     /**
-     * Returns the kernel path
-     * includes the mount point
-     * its an absolute path.
-     * @return the kernel path
+     * Returns default kernel path
+     * @return default kernel path
      */
-    public String getKernelPath() {
+    public String getDefaultKernelPath() {
         String arch = this.getChannel().getChannelArch().getLabel();
         if (arch.equals("channel-s390") || arch.endsWith("channel-s390x")) {
             return StringUtil.addPath(getAbsolutePath(), "/images/kernel.img");
@@ -294,30 +296,61 @@ public class KickstartableTree extends BaseDomainHelper {
     }
 
     /**
-     * Returns the Initrd path
-     * includes the mount point
-     * its an absolute path.
-     * @return the Initrd path
+     * Returns valid kernel path or throws an exception
+     * @return valid kernel path
      */
-    public String getInitrdPath() {
+    public String getKernelPath() {
+        String defaultPath = getDefaultKernelPath();
+        if (pathExists(defaultPath)) {
+            return defaultPath;
+        }
+        throw new ValidatorException(INVALID_KERNEL, defaultPath);
+    }
+
+    /**
+     * Returns default initrd paths
+     * @return default initrd paths
+     */
+    public String[] getDefaultInitrdPath() {
         String arch = this.getChannel().getChannelArch().getLabel();
         if (arch.equals("channel-s390") || arch.endsWith("channel-s390x")) {
-            return StringUtil.addPath(getAbsolutePath(), "/images/initrd.img");
+            return new String[] {
+                    StringUtil.addPath(getAbsolutePath(), "/images/initrd.img")};
         }
         else if (arch.equals("channel-ppc")) {
-            return StringUtil.addPath(getAbsolutePath(), "/ppc/ppc64/ramdisk.image.gz");
+            return new String[] {
+                    StringUtil.addPath(getAbsolutePath(), "/ppc/ppc64/ramdisk.image.gz"),
+                    StringUtil.addPath(getAbsolutePath(), "/ppc/ppc64/initrd.img")};
         }
         else if (this.installType.isSUSE()) {
             String archName = this.getChannel().getChannelArch().getName();
             if (archName.equals("IA-32")) {
                 archName = "i386";
             }
-            return StringUtil.addPath(getAbsolutePath(), "/boot/" +
-                archName + "/loader/initrd");
+            return new String[] {StringUtil.addPath(getAbsolutePath(), "/boot/" +
+                archName + "/loader/initrd")};
         }
         else {
-            return StringUtil.addPath(getAbsolutePath(), "/images/pxeboot/initrd.img");
+            return new String[] {
+                    StringUtil.addPath(getAbsolutePath(), "/images/pxeboot/initrd.img")};
         }
+    }
+
+    /**
+     * Returns valid Initrd path or throws an exception
+     * @return the Initrd path
+     */
+    public String getInitrdPath() {
+        String[] defaultPaths = getDefaultInitrdPath();
+        for (String initrdPath : defaultPaths) {
+            if (pathExists(initrdPath)) {
+                return initrdPath;
+            }
+        }
+        ValidatorException.raiseException(INVALID_INITRD,
+                StringUtil.join(", ", Arrays.asList(defaultPaths)));
+        // we'll never get here, just a compiler required line
+        return "";
     }
 
     /**
@@ -439,7 +472,14 @@ public class KickstartableTree extends BaseDomainHelper {
      * @return true if valid
      */
     public boolean isPathsValid() {
-        return pathExists(getInitrdPath()) && pathExists(getKernelPath());
+        try {
+            getInitrdPath();
+            getKernelPath();
+            return true;
+        }
+        catch (ValidatorException e) {
+            return false;
+        }
     }
 
 }

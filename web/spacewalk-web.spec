@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.33
+Version: 1.6.35
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -307,6 +307,20 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Mon Dec 12 2011 Tomas Lestach <tlestach@redhat.com> 1.6.35-1
+- add missing requires (tlestach@redhat.com)
+- fix 500 Error - ISE on network/systems/ssm/provisioning/remote_command.pxt
+  (tlestach@redhat.com)
+
+* Mon Dec 12 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.34-1
+- fix Package queries
+- fix ORDER BY expression in DISTINCT select
+- use real table name rhn_check_probe
+- replace (+) with ANSI left join (PG)
+- set selinux_ctx to undef if it is empty
+- No need to convert numeric values to upper.
+- convert decode to case
+
 * Wed Dec 07 2011 Miroslav Suchý 1.6.33-1
 - code cleanup
 - do not allow to configure or activate proxy from WebUI

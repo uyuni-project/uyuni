@@ -153,10 +153,7 @@ class Server(ServerWrapper):
     # change the base channel of a server
     def change_base_channel(self, new_rel):
         log_debug(3, self.server["id"], new_rel)
-        old_rel = self.server["release"]
-        # test noops
-        if old_rel == new_rel:
-            return 1
+        old_rel = self.server["release"]       
         current_channels = rhnChannel.channels_for_server(self.server["id"])
         # Extract the base channel off of
         old_base = filter(lambda x: not x['parent_channel'],

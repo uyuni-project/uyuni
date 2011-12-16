@@ -66,7 +66,8 @@ use constant DB_INSTALL_LOG_FILE =>
 use constant DB_POP_LOG_FILE =>
   '/var/log/rhn/populate_db.log';
 
-use constant DB_POP_LOG_SIZE => 2500000;
+use constant PG_POP_LOG_SIZE => 156503;
+use constant ORA_POP_LOG_SIZE => 132243;
 
 use constant RHN_LOG_DIR =>
   '/var/log/rhn';
@@ -597,7 +598,6 @@ EOQ
 }
 
 
-my $progress_callback_length;
 sub print_progress {
 	my %params = validate(@_, { init_message => 1,
 		log_file_name => 1,
@@ -614,56 +614,36 @@ sub print_progress {
 		exit $params{err_code};
 	};
 
-	local $SIG{'ALRM'};
+	$| = 1;
 	my $orig_stdout = select LOGFILE;
 	$| = 1;
 	select $orig_stdout;
 	print loc($params{init_message});
 	local *PROCESS_OUT;
-	set_progress_callback($params{log_file_size});
+	my $progress_hashes_done = 0;
+	my $progress_callback_length = 0;
 	my $pid = open3(gensym, \*PROCESS_OUT, \*PROCESS_OUT, @{$params{system_opts}});
 	while (<PROCESS_OUT>) {
 		print LOGFILE $_;
 		$progress_callback_length += length;
+		if (-t STDOUT and $params{log_file_size}) {
+			my $target_hashes = int(60 * $progress_callback_length / $params{log_file_size});
+			if ($target_hashes > $progress_hashes_done) {
+				print "#" x ($target_hashes - $progress_hashes_done);
+				$progress_hashes_done = $target_hashes;
+			}
+		}
 	}
+	close PROCESS_OUT;
 	waitpid($pid, 0);
 	my $ret = $?;
 	close LOGFILE;
-	alarm 0;
 	print "\n";
 
 	if ($ret) {
 		print loc($params{err_message});
 		exit $params{err_code};
 	}
-}
-
-my $progress_hashes_done;
-sub progress_callback {
-	my $target_length = shift;
-	my $target_hashes = 0;
-	if ($target_length) {
-		$target_hashes = int(60 * $progress_callback_length / $target_length);
-	}
-	if ($target_hashes > $progress_hashes_done) {
-		my $old = select STDOUT;
-		$| = 1;
-		select $old;
-		print STDOUT "#" x ($target_hashes - $progress_hashes_done);
-		$progress_hashes_done = $target_hashes;
-	}
-	alarm 1;
-}
-
-sub set_progress_callback {
-	if (not -t STDOUT) {
-		return;
-	}
-	$progress_callback_length = 0;
-	$progress_hashes_done = 0;
-	my $target_length = shift;
-	$SIG{'ALRM'} = sub { progress_callback($target_length) };
-	alarm 1;
 }
 
 # Format connect data to connect string.
@@ -981,7 +961,7 @@ sub postgresql_populate_db {
 
     print_progress(-init_message => "*** Progress: #",
         -log_file_name => Spacewalk::Setup::DB_POP_LOG_FILE,
-        -log_file_size => Spacewalk::Setup::DB_POP_LOG_SIZE,
+        -log_file_size => Spacewalk::Setup::PG_POP_LOG_SIZE,
         -err_message => "Could not populate database.\n",
         -err_code => 23,
         -system_opts => [@opts]);
@@ -1429,7 +1409,7 @@ sub oracle_populate_db {
     }
     print_progress(-init_message => "*** Progress: #",
         -log_file_name => DB_POP_LOG_FILE,
-        -log_file_size => DB_POP_LOG_SIZE,
+        -log_file_size => ORA_POP_LOG_SIZE,
         -err_message => "Could not populate database.\n",
         -err_code => 23,
         -system_opts => [@opts]);

@@ -59,13 +59,20 @@ SELECT
        CCon.delim_start,
        CCon.delim_end
   FROM rhnConfigRevision CR
-  join rhnConfigInfo CI ON CI.id = CR.config_info_id
-  join rhnConfigFile CF ON CF.id = CR.config_file_id
-  join rhnConfigFileName CFN ON CFN.id = CF.config_file_name_id
-  join rhnConfigChannel CC ON CC.id = CF.config_channel_id
-  join rhnConfigFileType CFT ON CFT.id = CR.config_file_type_id
-left outer join rhnConfigContent CCon ON CR.config_content_id = CCon.id
-left outer join rhnChecksum Csum ON CCon.checksum_id = Csum.id
+  JOIN rhnConfigInfo CI
+    ON CI.id = CR.config_info_id
+  JOIN rhnConfigFile CF
+    ON CF.id = CR.config_file_id
+  JOIN rhnConfigFileName CFN
+    ON CFN.id = CF.config_file_name_id
+  JOIN rhnConfigChannel CC
+    ON CC.id = CF.config_channel_id
+  JOIN rhnConfigFileType CFT
+    ON CFT.id = CR.config_file_type_id
+  LEFT JOIN rhnConfigContent CCon
+    ON CR.config_content_id = CCon.id
+  LEFT JOIN rhnChecksum Csum
+    ON CCon.checksum_id = Csum.id
  WHERE CR.id = :id
 EOS
   my $sth = $dbh->prepare($query);

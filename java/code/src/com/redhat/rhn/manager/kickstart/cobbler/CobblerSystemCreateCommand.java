@@ -63,16 +63,19 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     protected String networkInterface;
     protected boolean isDhcp;
     private boolean useIpv6Gateway;
+    private String ksDistro;
     /**
      * @param dhcp true if the network type is dhcp
      * @param networkInterfaceIn The name of the network interface
      * @param useIpv6GatewayIn whether to use ipv6 gateway
+     * @param ksDistroIn distro to be provisioned
      */
     public void setNetworkInfo(boolean dhcp, String networkInterfaceIn,
-        boolean useIpv6GatewayIn) {
+        boolean useIpv6GatewayIn, String ksDistroIn) {
         isDhcp = dhcp;
         networkInterface = networkInterfaceIn;
         useIpv6Gateway = useIpv6GatewayIn;
+        ksDistro = ksDistroIn;
     }
 
     /**
@@ -266,6 +269,9 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         ksmeta.remove(KickstartFormatter.STATIC_NETWORK_VAR);
         ksmeta.put(KickstartFormatter.USE_IPV6_GATEWAY,
             this.useIpv6Gateway ? "true" : "false");
+        if (this.ksDistro != null) {
+            ksmeta.put(KickstartFormatter.KS_DISTRO, this.ksDistro);
+        }
         rec.setKsMeta(ksmeta);
         if (rec.getProfile().getDistro().getBreed().equals("suse")) {
         	if (kernelOptions != null && !kernelOptions.contains("install=")) {
@@ -300,7 +306,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         if (serverIn.getNetworkInterfaces() != null) {
             for (NetworkInterface n : serverIn.getNetworkInterfaces()) {
                 if (n.isPublic()) {
-                    Network net = new Network(n.getName());
+                    Network net = new Network(getCobblerConnection(), n.getName());
                     net.setIpAddress(n.getIpaddr());
                     net.setMacAddress(n.getHwaddr());
                     net.setNetmask(n.getNetmask());

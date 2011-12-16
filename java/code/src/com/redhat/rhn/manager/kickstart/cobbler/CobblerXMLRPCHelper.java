@@ -111,4 +111,15 @@ public class CobblerXMLRPCHelper implements XMLRPCInvoker {
     public static CobblerConnection getAutomatedConnection() {
         return getConnection(ConfigDefaults.get().getCobblerAutomatedUser());
     }
+
+    /**
+     * Returns the cobbler version number
+     * @return the cobbler version number
+     */
+    public static Double getCobblerVersion() {
+        CobblerConnection connection =
+            getConnection(ConfigDefaults.get().getCobblerAutomatedUser());
+
+        return connection.getVersion();
+    }
 }

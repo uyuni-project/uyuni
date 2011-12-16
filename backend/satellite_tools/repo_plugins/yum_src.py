@@ -26,9 +26,11 @@ import urlgrabber
 from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
 from rpmUtils.transaction import initReadOnlyTransaction
 import yum
+from spacewalk.common import fileutils
 from yum.config import ConfigParser
 from yum.update_md import UpdateMetadata, UpdateNoticeException, UpdateNotice
 from yum.yumRepo import YumRepository
+
 try:
     from yum.misc import cElementTree_iterparse as iterparse
 except ImportError:
@@ -46,7 +48,6 @@ from spacewalk.common import rhnLog
 PATCHES = '{http://novell.com/package/metadata/suse/patches}'
 
 CACHE_DIR = '/var/cache/rhn/reposync/'
-
 YUMSRC_CONF='/etc/rhn/spacewalk-repo-sync/yum.conf'
 
 class YumWarnings:
@@ -128,15 +129,14 @@ class ContentSource:
         else:
             self.proxy_url = None
 
-        self.sack = None
-
         repo = yum.yumRepo.YumRepository(name)
         repo.populate(self.configparser, name, self.yumbase.conf)
         self.repo = repo
+        self.sack = None
+
         self.setup_repo(repo)
         self.num_packages = 0
         self.num_excluded = 0
-
 
     def setup_repo(self, repo):
         """Fetch repository metadata"""
@@ -149,10 +149,14 @@ class ContentSource:
             repo.repo_gpgcheck = False
         else:
             repo.repo_gpgcheck = True
-        repo.pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, '1')
 
         if hasattr(repo, 'base_persistdir'):
             repo.base_persistdir = CACHE_DIR
+        pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, '1', 'stage')
+        if not os.path.isdir(pkgdir):
+            fileutils.makedirs(pkgdir, user='apache', group='apache')
+        repo.pkgdir = pkgdir
+
         if self.proxy_url is not None:
             repo.proxy = self.proxy_url
 

@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.89
+Version: 1.6.96
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -35,8 +35,6 @@ Group: Applications/Internet
 Requires: cglib < 2.2
 # we dont want jfreechart from EPEL because it has different symlinks
 Requires: jfreechart < 1.0.13
-# workaround jpackage5 repo issue with missing msv-msv dependency
-Requires: msv-workaround
 %else
 Requires: cglib
 Requires: jfreechart >= 1.0.9
@@ -647,6 +645,49 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Dec 15 2011 Tomas Lestach <tlestach@redhat.com> 1.6.96-1
+- 756097 - there're several valid initrd paths for kickstart trees
+  (tlestach@redhat.com)
+
+* Thu Dec 15 2011 Michael Mraka <michael.mraka@redhat.com> 1.6.95-1
+- msv-workaround has been replaced by spacewalk-jpp-workaround
+
+* Wed Dec 14 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.6.94-1
+- IPv6: allow multiple IPv6 addresses per net. interface
+
+* Wed Dec 14 2011 Tomas Lestach <tlestach@redhat.com> 1.6.93-1
+- remove spring-dedicated conflict of spacewalk-java (tlestach@redhat.com)
+- fix ksdevice cmd line argument for static intf. provisioning
+  (mzazrivec@redhat.com)
+- IPv6: fix static intf. provisioning using SSM (mzazrivec@redhat.com)
+- fix the spring issue (tlestach@redhat.com)
+- make ScalableFileSystem repository available for RHEL6 kickstarts
+  (tlestach@redhat.com)
+
+* Tue Dec 13 2011 Tomas Lestach <tlestach@redhat.com> 1.6.92-1
+- prevent yum to update fedora spring with broken version numbering
+  (tlestach@redhat.com)
+- IPv6: fix static network line syntax for particular distros
+  (mzazrivec@redhat.com)
+- IPv6: add --noipv4 to ks.cfg in case interface does not have an IPv4 address
+  (mzazrivec@redhat.com)
+
+* Mon Dec 12 2011 Miroslav Suchý 1.6.91-1
+- fix checkstyle
+- IPv6: --ipv6 is not a valid ks option in RHEL-5 (mzazrivec@redhat.com)
+- introduce setSelectable(Integer) method for VisibleSystems
+  (pcasenove@gmail.com)
+
+* Sun Dec 11 2011 Aron Parsons <aronparsons@gmail.com> 1.6.90-1
+- use a stanza/snippet accordingly for kickstart_{start,done}
+  (aronparsons@gmail.com)
+- add a static method to return the Cobbler version (aronparsons@gmail.com)
+- pass a CobblerConnection object to Network so it can determine the Cobbler
+  version (aronparsons@gmail.com)
+- account for the rename of the subnet variable to netmask in Cobbler 2.2
+  (aronparsons@gmail.com)
+- added getVersion method to CobblerConnection (aronparsons@gmail.com)
+
 * Fri Dec 09 2011 Jan Pazdziora 1.6.89-1
 - Checkstyle fixes.
 
