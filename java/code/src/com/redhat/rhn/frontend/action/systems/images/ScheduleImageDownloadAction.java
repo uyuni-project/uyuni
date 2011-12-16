@@ -27,9 +27,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.image.Image;
 import com.redhat.rhn.domain.image.ImageFactory;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -125,9 +125,11 @@ public class ScheduleImageDownloadAction extends RhnAction {
     public List getImages(RequestContext context) {
         List<Appliance> ret = new ArrayList<Appliance>();
 
-        // FIXME: Read the credentials from config for now
-        String user = Config.get().getString("susestudio.user");
-        String apikey = Config.get().getString("susestudio.api_key");
+        Org org = context.getCurrentUser().getOrg();
+
+        // Take credentials stored with the org
+        String user = org.getStudioUser();
+        String apikey = org.getStudioKey();
 
         // Get appliance builds from studio
     	if (user != null && apikey != null) {
@@ -143,11 +145,11 @@ public class ScheduleImageDownloadAction extends RhnAction {
         images = createImageList(ret, context);
         
         // Check which of these images are already available
-        List<Image> available = ImageFactory.getAllImages(
-                context.getCurrentUser().getOrg());
+        List<Image> available = ImageFactory.getAllImages(org);
         for (Image i : images) {
             if (available.contains(i)) {
                 // Make these not selectable
+                i.setSelected(true);
                 i.setSelectable(false);
             }
         }

@@ -23061,6 +23061,9 @@ given channel.</source>
      <trans-unit id="Images">
         <source>Images</source>
      </trans-unit>
+     <trans-unit id="Studio">
+        <source>Studio</source>
+     </trans-unit>
      <trans-unit id="studio.deployment.scheduled">
         <source>Scheduled image deployment: {0}</source>
      </trans-unit>

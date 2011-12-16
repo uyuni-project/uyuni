@@ -81,6 +81,10 @@ public class Org extends BaseDomainHelper {
     private Set monitoringScouts;
     private Set contactGroups;
 
+    // Studio properties
+    private String studioUser;
+    private String studioKey;
+    
     /**
      * Construct new Org
      */
@@ -672,5 +676,21 @@ public class Org extends BaseDomainHelper {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         return result;
+    }
+
+    public void setStudioUser(String studioUser) {
+        this.studioUser = studioUser;
+    }
+
+    public String getStudioUser() {
+        return studioUser;
+    }
+
+    public void setStudioKey(String studioKey) {
+        this.studioKey = studioKey;
+    }
+
+    public String getStudioKey() {
+        return studioKey;
     }
 }

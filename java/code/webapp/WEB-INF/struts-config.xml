@@ -7753,6 +7753,20 @@
                  path="/systems/details/virtualization/ImageDeployment.do" />
     </action>
 
+    <action path="/admin/multiorg/OrgStudioDetails"
+        scope="request"
+        input="/WEB-INF/pages/admin/multiorg/studio.jsp"
+        type="com.redhat.rhn.frontend.action.multiorg.OrgStudioConfigAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <set-property property="acls" value="user_role(satellite_admin)"/>
+      <forward name="default" path="/WEB-INF/pages/admin/multiorg/studio.jsp" />
+      <forward name="success"
+               path="/admin/multiorg/OrgStudioDetails.do" redirect="true" />
+      <forward name="error"
+               path="/WEB-INF/pages/admin/multiorg/studio.jsp" />
+    </action>
+
   </action-mappings>
 
   <!-- ===================================== -->
