@@ -39,6 +39,8 @@ class YumSrcTest(unittest.TestCase):
         yum_src.CFG = Mock()
         yum_src.CFG.MOUNT_POINT = ''
         yum_src.CFG.PREPENDED_DIR = ''
+        yum_src.fileutils.makedirs = Mock()
+        yum_src.os.path.isdir = Mock()
 
         cs = yum_src.ContentSource("http://example.com", "test_repo")
         cs.sack = Mock()
