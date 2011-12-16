@@ -271,7 +271,7 @@ public class NetworkInterface extends BaseDomainHelper implements
         }
     }
 
-    private boolean isIpv6Valid() {
+    public boolean isIpv6Valid() {
         try {
             for (ServerNetAddress6 addr6 : getIPv6Addresses()) {
                 InetAddress ia = InetAddress.getByName(addr6.getAddress());
@@ -286,7 +286,7 @@ public class NetworkInterface extends BaseDomainHelper implements
         return true;
     }
 
-    private boolean isMacValid() {
+    public boolean isMacValid() {
         return !(StringUtils.isEmpty(this.getHwaddr()) ||
                 this.getHwaddr().equals("00:00:00:00:00:00") ||
                 this.getHwaddr().equals("fe:ff:ff:ff:ff:ff"));
