@@ -53,7 +53,7 @@ public class CobblerUnregisteredSystemCreateCommand extends CobblerSystemCreateC
 		List<Network> ifaces = new LinkedList<Network>();
 		if (serverIn.getNetworkInterfaces() != null) {
 			for (NetworkInterface n : serverIn.getNetworkInterfaces()) {
-				Network net = new Network(n.getName());
+				Network net = new Network(getCobblerConnection(), n.getName());
 				net.setIpAddress(n.getIpaddr());
 				net.setMacAddress(n.getHwaddr());
 				net.setNetmask(n.getNetmask());
