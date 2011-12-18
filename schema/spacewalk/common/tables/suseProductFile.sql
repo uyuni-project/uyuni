@@ -13,18 +13,16 @@ create table suseProductFile
 (
   id number NOT NULL PRIMARY KEY,
   name character varying(256) NOT NULL,
-  evr_id numeric NOT NULL,
+  evr_id numeric NOT NULL
+    CONSTRAINT suse_prod_file_eid_fk
+    REFERENCES rhnpackageevr (id),
   package_arch_id numeric NOT NULL,
+    CONSTRAINT suse_prod_file_paid_fk
+    REFERENCES rhnpackageevr (id),
   summary character varying(4000),
   description character varying(4000),
   created     date default(sysdate) not null,
   modified    date default(sysdate) not null
-  CONSTRAINT suse_prod_file_eid_fk FOREIGN KEY (evr_id)
-    REFERENCES rhnpackageevr (id) MATCH SIMPLE
-    ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT suse_prod_file_paid_fk FOREIGN KEY (package_arch_id)
-      REFERENCES rhnpackagearch (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
 CREATE SEQUENCE suse_prod_file_id_seq START WITH 100;
