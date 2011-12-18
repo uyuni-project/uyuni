@@ -16,9 +16,9 @@ create table suseProductFile
   evr_id numeric NOT NULL
     CONSTRAINT suse_prod_file_eid_fk
     REFERENCES rhnpackageevr (id),
-  package_arch_id numeric NOT NULL,
+  package_arch_id numeric NOT NULL
     CONSTRAINT suse_prod_file_paid_fk
-    REFERENCES rhnpackageevr (id),
+    REFERENCES rhnpackagearch (id),
   summary character varying(4000),
   description character varying(4000),
   created     date default(sysdate) not null,
