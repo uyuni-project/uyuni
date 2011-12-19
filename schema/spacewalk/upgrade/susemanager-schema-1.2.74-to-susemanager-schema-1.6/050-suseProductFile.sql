@@ -11,18 +11,19 @@
 --
 create table suseProductFile
 (
-  id number NOT NULL PRIMARY KEY,
-  name character varying(256) NOT NULL,
-  evr_id numeric NOT NULL
-    CONSTRAINT suse_prod_file_eid_fk
-    REFERENCES rhnpackageevr (id),
-  package_arch_id numeric NOT NULL
-    CONSTRAINT suse_prod_file_paid_fk
-    REFERENCES rhnpackagearch (id),
-  summary character varying(4000),
-  description character varying(4000),
-  created     date default(sysdate) not null,
-  modified    date default(sysdate) not null
+  id              NUMBER NOT NULL PRIMARY KEY,
+  name            VARCHAR2(256) NOT NULL,
+  evr_id          NUMBER NOT NULL
+                         CONSTRAINT suse_prod_file_eid_fk
+                         REFERENCES rhnpackageevr (id),
+  package_arch_id NUMBER NOT NULL
+                         CONSTRAINT suse_prod_file_paid_fk
+                         REFERENCES rhnpackagearch (id),
+  vendor          VARCHAR2(256),
+  summary         VARCHAR2(4000),
+  description     VARCHAR2(4000),
+  created         date default(sysdate) not null,
+  modified        date default(sysdate) not null
 );
 
 CREATE SEQUENCE suse_prod_file_id_seq START WITH 100;

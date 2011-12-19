@@ -278,6 +278,7 @@ class ContentSource:
                 p['version'] = version.get('ver')
                 p['release'] = version.get('rel')
                 p['epoch'] = version.get('epoch')
+                p['vendor'] = product.find('vendor').text
                 p['summary'] = product.find('summary').text
                 p['description'] = product.find('description').text
                 products.append(p)

@@ -419,6 +419,7 @@ class RepoSync(object):
                  where spf.name = :name
                    and spf.evr_id = LOOKUP_EVR(:epoch, :version, :release)
                    and spf.package_arch_id = LOOKUP_PACKAGE_ARCH(:arch)
+                   and spf.vendor = :vendor
                    and spf.summary = :summary
                    and spf.description = :description
             """)
@@ -433,8 +434,10 @@ class RepoSync(object):
                     continue
 
             h = rhnSQL.prepare("""
-                    insert into suseProductFile (id, name, evr_id, package_arch_id, summary, description)
-                    VALUES (:id, :name, LOOKUP_EVR(:epoch, :version, :release), LOOKUP_PACKAGE_ARCH(:arch), :summary, :description)
+                    insert into suseProductFile
+                        (id, name, evr_id, package_arch_id, vendor, summary, description)
+                    VALUES (:id, :name, LOOKUP_EVR(:epoch, :version, :release),
+                            LOOKUP_PACKAGE_ARCH(:arch), :vendor, :summary, :description)
             """)
             h.execute(id=row['id'], **product)
 
