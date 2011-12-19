@@ -163,6 +163,7 @@ rm -rf $RPM_BUILD_ROOT
 %{rhn_dir}/actions/virt.py
 %{rhn_dir}/actions/virt.pyc
 %{rhn_dir}/actions/image.py
+%{rhn_dir}/actions/image.pyo
 %{rhn_dir}/actions/image.pyc
 %{rhn_dir}/virtualization/domain_config.pyo
 %{rhn_dir}/virtualization/domain_control.pyo
@@ -179,7 +180,7 @@ rm -rf $RPM_BUILD_ROOT
 %{rhn_dir}/virtualization/localvdsm.pyc
 %{rhn_dir}/virtualization/localvdsm.pyo
 %{rhn_dir}/actions/virt.pyo
-%{rhn_dir}/studio-*-template.xml
+%{rhn_conf_dir}/studio-*-template.xml
 %doc LICENSE
 
 
