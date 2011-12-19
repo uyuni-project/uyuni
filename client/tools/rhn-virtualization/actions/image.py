@@ -25,97 +25,22 @@ import pycurl
 
 log = up2dateLog.initLog()
 IMAGE_BASE_PATH = "/var/lib/libvirt/images/"
+STUDIO_KVM_TEMPLATE = "/etc/sysconfig/rhn/studio-kvm-template.xml"
+STUDIO_XEN_TEMPLATE = "/etc/sysconfig/rhn/studio-xen-template.xml"
 
-KVM_CREATE_TEMPLATE = """
-<domain type='kvm'>
-  <name>%(name)s</name>
-  <uuid>%(uuid)s</uuid>
-  <memory>%(mem_kb)s</memory>
-  <vcpu>%(vcpus)s</vcpu>
-  <os>
-    <type arch='%(arch)s' machine='pc-0.12'>hvm</type>
-    <boot dev='hd'/>
-  </os>
-  <clock offset='utc'/>
-  <on_poweroff>destroy</on_poweroff>
-  <on_reboot>restart</on_reboot>
-  <on_crash>restart</on_crash>
-  <devices>
-    <emulator>/usr/bin/qemu-kvm</emulator>
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='%(imageType)s'/>
-      <source file='%(disk)s'/>
-      <target dev='hda' bus='ide'/>
-      <address type='drive' controller='0' bus='0' unit='0'/>
-    </disk>
-    <controller type='ide' index='0'/>
-    <interface type='bridge'>
-<!--
-      <mac address=''/>
--->
-      <source bridge='%(virtBridge)s'/>
-    </interface>
-    <serial type='pty'>
-      <target port='0'/>
-    </serial>
-    <console type='pty'>
-      <target port='0'/>
-    </console>
-    <input type='mouse' bus='ps2'/>
-    <graphics type='vnc' port='-1' autoport='yes' keymap='en-us'/>
-    <video>
-      <model type='cirrus' vram='9216' heads='1'/>
-    </video>
-  </devices>
-</domain>
-"""
+KVM_CREATE_TEMPLATE = ""
+XEN_CREATE_TEMPLATE = ""
 
+if os.path.isfile(STUDIO_KVM_TEMPLATE):
+        f = open(STUDIO_KVM_TEMPLATE, 'r')
+        KVM_CREATE_TEMPLATE = f.read()
+        f.close()
 
-XEN_CREATE_TEMPLATE = """
-<domain type='xen'>
-  <name>%(name)s</name>
-  <uuid>%(uuid)s</uuid>
-  <memory>%(mem_kb)s</memory>
-  <vcpu>%(vcpus)s</vcpu>
-<!--
-  <currentMemory>307200</currentMemory>
--->
-  <bootloader>/usr/bin/pygrub</bootloader>
-  <os>
-    <type arch='%(arch)s' machine='xenpv'>linux</type>
-  </os>
-  <clock offset='utc'/>
-  <on_poweroff>destroy</on_poweroff>
-  <on_reboot>restart</on_reboot>
-  <on_crash>restart</on_crash>
-  <devices>
-    <disk type='file' device='disk'>
-      <driver name='tap' type='aio'/>
-      <source file='%(disk)s'/>
-      <target dev='xvda' bus='xen'/>
-      <address type='drive' controller='0' bus='0' unit='0'/>
-    </disk>
-<!--
-     <disk type='file' device='disk'>
-      <driver name='tap' type='aio'/>
-      <source file='/var/lib/xen/images/rhel5pv.img'/>
-      <target dev='xvda' bus='xen'/>
-    </disk>
--->
-    <interface type='bridge'>
-<!--
-      <mac address='00:16:3e:60:36:ba'/>
--->
-      <source bridge='%(virtBridge)s'/>
-    </interface>
-    <console type='pty'>
-      <target port='0'/>
-    </console>
-    <input type='mouse' bus='xen'/>
-    <graphics type='vnc' port='-1' autoport='yes' listen='0.0.0.0'/>
-  </devices>
-</domain>
-"""
+if os.path.isfile(STUDIO_XEN_TEMPLATE):
+        f = open(STUDIO_XEN_TEMPLATE, 'r')
+        XEN_CREATE_TEMPLATE = f.read()
+        f.close()
+
 
 # mark this module as acceptable
 __rhnexport__ = [
@@ -171,7 +96,6 @@ def _getImage(imageName,orgID,checksum):
         c.perform()
         f.close()
 
-        _extractTar( filePath, IMAGE_BASE_PATH )
 
 	return 42
 
@@ -271,6 +195,7 @@ def deploy(fileName, checksum, memKB="524288", vCPUs="1", imageType="vmdk", virt
         _getImage(fileName,"1",checksum)
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
         log.log_debug("fetching the image failed")
+    _extractTar( IMAGE_BASE_PATH+fileName, IMAGE_BASE_PATH )
 
     # image exists in /var/lib/libvirt/images/image-name now
 
@@ -312,6 +237,5 @@ def deploy(fileName, checksum, memKB="524288", vCPUs="1", imageType="vmdk", virt
 # just for testing
 if __name__ == "__main__":
 
-    print "Transaction args:"
     deploy("workshop_test_sles11sp1.i686-0.0.1.vmx.tar.gz", "f7c59ca83c5ffdff5e0455add9fea51f")
 

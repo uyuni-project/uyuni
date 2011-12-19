@@ -132,6 +132,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files host
 %defattr(-,root,root,-)
+%dir %{rhn_conf_dir}
 %dir %{rhn_conf_dir}/virt
 %dir %{rhn_conf_dir}/virt/auto
 %{_initrddir}/rhn-virtualization-host
@@ -178,6 +179,7 @@ rm -rf $RPM_BUILD_ROOT
 %{rhn_dir}/virtualization/localvdsm.pyc
 %{rhn_dir}/virtualization/localvdsm.pyo
 %{rhn_dir}/actions/virt.pyo
+%{rhn_dir}/studio-*-template.xml
 %doc LICENSE
 
 
