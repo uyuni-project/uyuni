@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Dec 19 15:36:20 CET 2011 - mc@suse.de
+
+- parse products.xml during reposync and store values in the
+  Database (bnc#644678)
+
+-------------------------------------------------------------------
 Mon Dec 12 17:31:32 CET 2011 - iartarisi@suse.cz
 
 - Add new --deep-copy option to spacewalk-repo-sync to allow skipping

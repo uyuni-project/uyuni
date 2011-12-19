@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Dec 19 15:37:27 CET 2011 - mc@suse.de
+
+- generate products.xml for channel metadata (bnc#644678)
+
+-------------------------------------------------------------------
 Thu Dec 15 12:11:27 UTC 2011 - mc@suse.de
 
 - generate solv files for channels
