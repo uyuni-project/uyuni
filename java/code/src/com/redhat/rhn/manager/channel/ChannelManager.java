@@ -3039,4 +3039,14 @@ public class ChannelManager extends BaseManager {
         DataResult ret  = makeDataResult(params, new HashMap(), null, m3);
         return ret;
     }
+    
+    public static DataResult listSuseProductsInChannel(Channel channel)
+    {
+        String mode = "suse_products_in_channel";
+        Map params = new HashMap();
+        params.put("channel_id", channel.getId());
+        
+        SelectMode m = ModeFactory.getMode("Package_queries", mode, Map.class);
+        return m.execute(params);
+    }
 }

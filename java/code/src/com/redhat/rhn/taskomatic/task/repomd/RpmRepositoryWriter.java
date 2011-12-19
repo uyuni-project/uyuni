@@ -23,6 +23,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.security.DigestInputStream;
+import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -51,6 +52,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
     private static final String OTHER_FILE = "other.xml.gz.new";
     private static final String REPOMD_FILE = "repomd.xml.new";
     private static final String UPDATEINFO_FILE = "updateinfo.xml.gz.new";
+    private static final String PRODUCTS_FILE = "products.xml";
     private static final String NOREPO_FILE = "noyumrepo.txt";
     private static final String SOLV_FILE = "solv.new";
     private static final String REPO2SOLV = "/usr/bin/repo2solv.sh";
@@ -209,6 +211,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         }
         RepomdIndexData updateinfoData = generateUpdateinfo(channel,
                 prefix, checksumAlgo);
+        RepomdIndexData productsData = generateProducts(channel, prefix, checksumAlgo);
 
         RepomdIndexData groupsData = loadCompsFile(channel, checksumAlgo);
 
@@ -223,6 +226,9 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         if (groupsData != null) {
             groupsData.setType(checksumLabel);
         }
+        if (productsData != null) {
+            productsData.setType(checksumLabel);
+        }
 
         FileWriter indexFile;
 
@@ -234,7 +240,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         }
 
         RepomdIndexWriter index = new RepomdIndexWriter(indexFile, primaryData,
-                filelistsData, otherData, updateinfoData, groupsData);
+                filelistsData, otherData, updateinfoData, groupsData, productsData);
 
         index.writeRepomdIndex();
 
@@ -246,7 +252,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         }
 
         renameFiles(prefix, channel.getLastModified().getTime(),
-                updateinfoData != null);
+                updateinfoData != null, productsData != null);
 
         log.info("Repository metadata generation for '" +
                 channel.getLabel() + "' finished in " +
@@ -411,13 +417,59 @@ public class RpmRepositoryWriter extends RepositoryWriter {
     }
 
     /**
+     * Generates product info for given channel
+     * @param channel channel info
+     * @param checksumtype checksum type
+     * @return repodata index
+     */
+    private RepomdIndexData generateProducts(Channel channel, String prefix,
+    		String checksumtypeIn) {
+
+        DigestOutputStream productsFile;
+        try {
+            productsFile = new DigestOutputStream(
+                    new FileOutputStream(prefix + PRODUCTS_FILE),
+                    MessageDigest.getInstance(checksumtypeIn));
+        }
+        catch (FileNotFoundException e) {
+            throw new RepomdRuntimeException(e);
+        }
+        catch (NoSuchAlgorithmException e) {
+            throw new RepomdRuntimeException(e);
+        }
+        catch (IOException e) {
+            throw new RepomdRuntimeException(e);
+        }
+        BufferedWriter productsBufferedWriter = new BufferedWriter(
+                new OutputStreamWriter(productsFile));
+        SuseProductWriter products = new SuseProductWriter(
+                productsBufferedWriter);
+        String ret = products.getProducts(channel);
+        try {
+            productsBufferedWriter.close();
+        }
+        catch (IOException e) {
+            throw new RepomdRuntimeException(e);
+        }
+        if (ret == null) {
+            return null;
+        }
+        
+        RepomdIndexData productsData = new RepomdIndexData(
+        		StringUtil.getHexString(productsFile.getMessageDigest().digest()),
+        		StringUtil.getHexString(productsFile.getMessageDigest().digest()),
+        		channel.getLastModified());
+        return productsData;
+    }
+
+    /**
      * Renames the repo cache files
      * @param prefix path prefix
      * @param lastModified file last_modified
      * @param doUpdateinfo
      */
     private void renameFiles(String prefix, Long lastModified,
-            Boolean doUpdateinfo) {
+            Boolean doUpdateinfo, Boolean hasProducts) {
         File primary = new File(prefix + PRIMARY_FILE);
         File filelists = new File(prefix + FILELISTS_FILE);
         File other = new File(prefix + OTHER_FILE);
@@ -426,10 +478,12 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         File updateinfo = null;
         if (doUpdateinfo) {
             updateinfo = new File(prefix + UPDATEINFO_FILE);
-        }
-
-        if (doUpdateinfo) {
             updateinfo.setLastModified(lastModified);
+        }
+        File products = null;
+        if (hasProducts) {
+            products = new File(prefix + PRODUCTS_FILE);
+            products.setLastModified(lastModified);
         }
 
         primary.setLastModified(lastModified);
@@ -440,7 +494,15 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         if (doUpdateinfo) {
             updateinfo.renameTo(new File(prefix + "updateinfo.xml.gz"));
         }
-
+        if (hasProducts) {
+            products.renameTo(new File(prefix + "products.xml"));
+        } else {
+            File p = new File(prefix + "products.xml");
+            if (p.exists()) {
+                p.delete();
+            }
+        }
+                
         primary.renameTo(new File(prefix + "primary.xml.gz"));
         filelists.renameTo(new File(prefix + "filelists.xml.gz"));
         other.renameTo(new File(prefix + "other.xml.gz"));

@@ -1962,4 +1962,27 @@ WHERE p.id IN (%s)
     </query>
 </mode>
 
+<mode name="suse_products_in_channel">
+	<query params="channel_id">
+SELECT SPF.name,
+       PE.epoch,
+       PE.version,
+       PE.release,
+       PA.label as arch,
+       SPF.vendor,
+       SPF.summary,
+       SPF.description
+  FROM rhnPackageArch PA, rhnPackageName PN, rhnPackageEVR PE, rhnPackage P,
+       rhnChannelPackage CP, susePackageProductFile SPPF, suseProductFile SPF
+ WHERE CP.channel_id = :channel_id
+   AND CP.package_id = P.id
+   AND P.name_id = PN.id
+   AND P.id = SPPF.package_id
+   AND SPPF.prodfile_id = SPF.id
+   AND SPF.evr_id = PE.id
+   AND PA.id = SPF.package_arch_id
+ORDER BY UPPER(PN.name)
+	</query>
+</mode>
+
 </datasource_modes>
