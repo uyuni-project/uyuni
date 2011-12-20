@@ -6,5 +6,7 @@ use RHN::DB;
 
 use Apache2::ServerUtil ();
 Apache2::ServerUtil->server->push_handlers(PerlChildInitHandler => sub { RHN::DB->apache_child_init_handler } );
+use PXT::ApacheHandler;
+use PXT::ApacheAuth;
 
 1;
