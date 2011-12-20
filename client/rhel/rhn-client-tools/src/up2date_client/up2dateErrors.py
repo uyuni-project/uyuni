@@ -17,16 +17,13 @@ import config
 try:
     from yum.Errors import YumBaseError
 except ImportError:
-    from i18n import to_unicode
     class YumBaseError(Exception):
-        def __init__(self, value=None):
-            Exception.__init__(self)
-            self.value = value
-        def __str__(self):
-            return "%s" %(self.value,)
-
-        def __unicode__(self):
-            return '%s' % to_unicode(self.value)
+        def __init__(self, errmsg):
+            self.value = errmsg
+        def __getattribute__(self, name):
+            raise AttributeError(_("class %s has no attribute '%s'") % (self.__class__.__name__, name))
+        def __setattr__(self, name, value):
+            raise AttributeError(_("class %s has no attribute '%s'") % (self.__class__.__name__, name))
 
 class Error(YumBaseError):
     """base class for errors"""
