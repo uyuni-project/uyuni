@@ -17,6 +17,7 @@ import config
 try:
     from yum.Errors import YumBaseError
 except ImportError:
+    from i18n import to_unicode
     class YumBaseError(Exception):
         def __init__(self, value=None):
             Exception.__init__(self)
