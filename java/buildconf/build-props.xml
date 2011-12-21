@@ -115,7 +115,7 @@
              concurrent simple-core snakeyaml" />
 
   <property name="dist.jar.dependencies"
-      value="ant ant-launcher antlr ${asm} bcel c3p0 cglib
+      value="antlr ${asm} bcel c3p0 cglib
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              commons-lang commons-logging
