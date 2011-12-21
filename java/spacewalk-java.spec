@@ -601,8 +601,6 @@ fi
 %ghost %attr(644, tomcat, root) %{_localstatedir}/lib/spacewalk/systemlogs/audit-review.log
 %dir %{appdir}/rhn/WEB-INF
 %dir %{jardir}
-%{jardir}/ant-launcher.jar
-%{jardir}/ant.jar
 %else
 %attr(755, tomcat, root) %{_var}/spacewalk/systemlogs
 %ghost %attr(644, tomcat, root) %{_var}/spacewalk/systemlogs/audit-review.log
