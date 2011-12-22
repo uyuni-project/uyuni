@@ -185,7 +185,6 @@ rm -rf $RPM_BUILD_ROOT/usr/share/setuptool
 rm -f $RPM_BUILD_ROOT/usr/bin/rhn_register
 rm -f $RPM_BUILD_ROOT/usr/sbin/rhn_register
 rm -f $RPM_BUILD_ROOT/usr/share/man/man8/rhn_register.8.gz
-rm -f $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhn-client-tools.mo
 #spacewalk-client-setup-gnome
 rm -rf $RPM_BUILD_ROOT/%{_datadir}/firstboot
 rm -rf $RPM_BUILD_ROOT/%{_datadir}/pixmaps
@@ -202,6 +201,8 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/man/man8/rhn_register.*
 desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications --vendor=rhn rhn_register.desktop
 %if 0%{?suse_version}
 %suse_update_desktop_file -r rhn_register "Settings;System;SystemSetup;"
+%endif
+%endif
 
 # remove all unsupported translations
 cd $RPM_BUILD_ROOT
@@ -211,9 +212,6 @@ for d in usr/share/locale/*; do
   fi
 done
 cd -
-
-%endif
-%endif
 
 %find_lang rhn-client-tools
 
