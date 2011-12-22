@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Dec 22 14:59:55 CET 2011 - mantel@suse.de
+
+- rename Novell to SUSE (#708333)
+
+-------------------------------------------------------------------
 Mon Dec 19 15:37:27 CET 2011 - mc@suse.de
 
 - generate products.xml for channel metadata (bnc#644678)

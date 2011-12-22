@@ -1395,16 +1395,16 @@ Operating systems that have reached End of Life are no longer
 receiving maintenance support (patches), which may make them
 unsuitable to your needs.
 
-For more information regarding Novell support, please go to:
+For more information regarding SUSE support, please go to:
 
-http://www.novell.com/support/
+http://www.suse.com/support/
 
-If you are interested in an operating system of Novell with
+If you are interested in an operating system of SUSE with
 a longer release lifecycle, 5+ year maintenance period, ISV
-support, and enhanced functionality, check out Novell SUSE
+support, and enhanced functionality, check out SUSE
 Linux Enterprise products at:
 
-http://www.novell.com/linux/products.html
+http://www.suse.com/products/
 
 Thank you for using SUSE Manager.
 """

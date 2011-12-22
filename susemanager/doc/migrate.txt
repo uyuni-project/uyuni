@@ -87,7 +87,7 @@ $> sqlplus "sys/$TEMP_MANAGER_PASS@xe as sysdba" @/tmp/dbsetup.sql
 $> rm /tmp/dbsetup.sql
 
 $> echo "admin-email = galaxy-devel@suse.de
-ssl-set-org = Novell
+ssl-set-org = SUSE
 ssl-set-org-unit = suse
 ssl-set-city = Nuernberg
 ssl-set-state = Bayern

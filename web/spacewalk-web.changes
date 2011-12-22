@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Dec 22 14:59:55 CET 2011 - mantel@suse.de
+
+- rename Novell to SUSE (#708333)
+
+-------------------------------------------------------------------
 Wed Nov 16 14:35:50 CET 2011 - mantel@suse.de
 
 - "to_number" in new Oracle version cannot cope with a period and

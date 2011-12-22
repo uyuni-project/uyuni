@@ -167,7 +167,7 @@ on this system."),
      # 70-80: channel subscription errors
      70: _("""
      All available subscriptions for the requested channel have been exhausted.
-     Please contact a Novell sales representative.
+     Please contact a SUSE sales representative.
      """),
      71: _("""
      You do not have subscription permission to the designated channel.

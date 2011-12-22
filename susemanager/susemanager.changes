@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Dec 22 14:59:55 CET 2011 - mantel@suse.de
+
+- rename Novell to SUSE (#708333)
+
+-------------------------------------------------------------------
 Fri Dec  2 13:19:37 CET 2011 - iartarisi@suse.cz
 
 - remove confirmation dialog when adding a channel (bnc#732517)
