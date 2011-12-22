@@ -2,18 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
+# Translators:
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER, 2006.
-# Sree Ganesh <sthottem@redhat.com>, 2006, 2007.
-# Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Krishna Babu K <kkrothap@redhat.com>, 2010.
 # Krishnababu Krothapalli <kkrothap@redhat.com>, 2011.
+# Miroslav Suchý <msuchy@redhat.com>, 2011.
+# Sree Ganesh <sthottem@redhat.com>, 2006, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-19 17:38+0200\n"
-"PO-Revision-Date: 2011-03-22 15:40+0000\n"
-"Last-Translator: msuchy <msuchy@redhat.com>\n"
+"POT-Creation-Date: 2011-12-21 12:25+0100\n"
+"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Telugu (http://www.transifex.net/projects/p/fedora/team/te/)\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
@@ -21,17 +22,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../rhnplugin.py:52
+#: ../rhnplugin.py:50
 msgid "There was an error communicating with RHN."
 msgstr "RHNతో సంప్రదించటంలో దోషం ఉంది."
 
-#: ../rhnplugin.py:101
-#, fuzzy
+#: ../rhnplugin.py:65
 msgid "RHN Satellite or RHN Classic support will be disabled."
-msgstr "RHN చానల్ మద్దతు కుదరదు."
+msgstr ""
 
 #. If non-root notify user RHN repo not accessible
-#: ../rhnplugin.py:105
+#: ../rhnplugin.py:69
 msgid ""
 "*Note* Red Hat Network repositories are not listed below. You must run this "
 "command as root to access RHN repositories."
@@ -39,40 +39,52 @@ msgstr ""
 "*గమనిక* Red Hat నెట్వర్కు రిపోజిటరీలు కిందన జాబితా చేసిలేవు. RHN రిపోజిటరీలను వాడుకొనుటకు మీరు యీ "
 "ఆదేశమును root గా నడుపవలెను."
 
-#: ../rhnplugin.py:120
+#: ../rhnplugin.py:84
 msgid "There was an error parsing the RHN proxy settings."
 msgstr "RHN proxy అమర్పుల నిరూపణలో దోషం ఉంది."
 
-#: ../rhnplugin.py:134
+#: ../rhnplugin.py:96
+msgid "Either --version, --help or no commands entered"
+msgstr ""
+
+#: ../rhnplugin.py:101
+msgid "Cleaning"
+msgstr ""
+
+#: ../rhnplugin.py:110
+msgid "Using list of RHN repos from cache"
+msgstr ""
+
+#: ../rhnplugin.py:124
 msgid "This system is not registered with RHN."
 msgstr "ఈ కంప్యూటరు RHNతో నమోదు కాలేదు."
 
-#: ../rhnplugin.py:139
+#: ../rhnplugin.py:130
 msgid "RHN channel support will be disabled."
 msgstr "RHN చానల్ మద్దతు కుదరదు."
 
-#: ../rhnplugin.py:143
+#: ../rhnplugin.py:134
 msgid "This system is not subscribed to any channels."
 msgstr "ఈ కంప్యూటరు ఏ చానళ్లకీ అనుమతించబడాలేదు."
 
-#: ../rhnplugin.py:147
+#: ../rhnplugin.py:139
 msgid ""
 "This system may not be a registered to RHN. SystemId could not be acquired.\n"
 msgstr "ఈ సిస్టమ్ RHN తో నమోదై వుండకపోవచ్చును. సిస్టమ్ఐడి పొందలేక పోవుచున్నది.\n"
 
-#: ../rhnplugin.py:238
+#: ../rhnplugin.py:245
 msgid "Package profile information could not be sent."
 msgstr "ప్యాకేజీ రూప సమాచారం పంపబడలేదు."
 
-#: ../rhnplugin.py:246
+#: ../rhnplugin.py:253
 msgid "Error Message:"
 msgstr "దోషం సందేశం:"
 
-#: ../rhnplugin.py:247
+#: ../rhnplugin.py:254
 msgid "Please run rhn_register as root on this client"
 msgstr "దయచేసి ఈ క్లైంట్ పై root గా rhn_register నడుపుము"
 
-#: ../rhnplugin.py:326
+#: ../rhnplugin.py:333
 #, python-format
 msgid "Missing required login information for RHN: %s"
 msgstr "RHN కోసం కావలసిన ప్రవేశ సమాచారం తప్పిపోయింది: %s"

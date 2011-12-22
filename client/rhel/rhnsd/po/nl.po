@@ -2,17 +2,18 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
+# Translators:
 # Bart Couvreur <bercie23@yahoo.com>, 2005.
+# Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Peter van Egdom <p.van.egdom@gmail.com>, 2003, 2004, 2005, 2006, 2007.
 # Petit Gregory <thunderbirds@pandora.be>, 2003.
-# Miroslav Suchý <msuchy@redhat.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-06 16:17+0200\n"
+"POT-Creation-Date: 2011-12-21 12:22+0100\n"
 "PO-Revision-Date: 2011-03-22 15:44+0000\n"
-"Last-Translator: msuchy <msuchy@redhat.com>\n"
+"Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Dutch (http://www.transifex.net/projects/p/fedora/team/nl/)\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -20,25 +21,42 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: rhnsd.c:116
+#: ../rhnsd.c:55
+msgid "MINS"
+msgstr ""
+
+#: ../rhnsd.c:56
+msgid "Connect to Red Hat Network every MINS minutes"
+msgstr ""
+
+#: ../rhnsd.c:58
+msgid "Run in foreground"
+msgstr ""
+
+#. Short description of program.
+#: ../rhnsd.c:63
+msgid "Red Hat Network Services Daemon"
+msgstr ""
+
+#: ../rhnsd.c:116
 #, c-format
 msgid "Only root can run this program\n"
 msgstr "Alleen root kan dit programma uitvoeren\n"
 
-#: rhnsd.c:136
+#: ../rhnsd.c:136
 msgid "wrong number of arguments"
 msgstr "verkeerd aantal argumenten"
 
-#: rhnsd.c:143
+#: ../rhnsd.c:143
 msgid "already running"
 msgstr "wordt reeds uitgevoerd"
 
-#: rhnsd.c:243
+#: ../rhnsd.c:243
 #, c-format
 msgid "Copyright (C) %s Red Hat, Inc.\n"
 msgstr "Copyright (C) %s Red Hat, Inc.\n"
 
-#: rhnsd.c:246
+#: ../rhnsd.c:246
 #, c-format
 msgid "Written by %s.\n"
 msgstr "Geschreven door %s.\n"

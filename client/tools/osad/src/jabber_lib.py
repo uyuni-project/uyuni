@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2011 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,7 +19,6 @@ import sys
 import time
 import select
 import socket
-import jabber
 import random
 import string
 import fnmatch
@@ -29,6 +28,13 @@ from cStringIO import StringIO
 from rhn import SSL
 
 from rhn_log import log_debug, log_error
+
+import warnings
+try:
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    import jabber
+finally:
+    warnings.resetwarnings()
 
 NS_RHN = "http://jabber.rhn.redhat.com/jabber"
 NS_RHN_SIGNED = "%s/signed" % NS_RHN

@@ -12,7 +12,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.6.43
+Version: 1.6.46
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -408,6 +408,16 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Wed Dec 21 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.6.46-1
+- update copyright info
+- 751760 - use __getattr__ rather then __getattribute__ (msuchy@redhat.com)
+
+* Wed Dec 21 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.6.45-1
+- updated translations
+
+* Tue Dec 20 2011 Miroslav Suchý 1.6.44-1
+- 744111 - notify subscription-manager to recheck compliance status
+
 * Fri Dec 16 2011 Jan Pazdziora 1.6.43-1
 - Revert "always return RPC data in plain string (utf-8 encoded)"
 
