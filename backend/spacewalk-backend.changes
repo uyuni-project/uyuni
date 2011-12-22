@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Dec 22 10:50:34 CET 2011 - mc@suse.de
+
+- remove all unsupported translations
+
+-------------------------------------------------------------------
 Mon Dec 19 15:36:20 CET 2011 - mc@suse.de
 
 - parse products.xml during reposync and store values in the

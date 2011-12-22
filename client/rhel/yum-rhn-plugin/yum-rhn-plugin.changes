@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Dec 22 10:48:23 CET 2011 - mc@suse.de
+
+- remove all unsupported translations
+
+-------------------------------------------------------------------
 Thu Nov  3 19:27:20 CET 2011 - ma@suse.de
 
 - Adapt dependencies to renamed packages (bnc#722052)
