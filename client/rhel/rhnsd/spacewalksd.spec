@@ -49,7 +49,14 @@ make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_R
 
 %if 0%{?suse_version}
 install -m 0755 rhnsd.init.SUSE $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
-rm -f $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhnsd.mo
+# remove all unsupported translations
+cd $RPM_BUILD_ROOT
+for d in usr/share/locale/*; do
+  if [ ! -d "/$d" ]; then
+    rm -rfv "./$d"
+  fi
+done
+cd -
 %endif
 
 # add rclink
@@ -99,21 +106,6 @@ rm -fr $RPM_BUILD_ROOT
 %{_initrddir}/rhnsd
 %{_mandir}/man8/rhnsd.8*
 %doc LICENSE
-%if 0%{?suse_version} == 1010
-# locale dirs missing in SLE-10 filesystem package:
-%dir %{_datadir}/locale/as
-%dir %{_datadir}/locale/as/LC_MESSAGES
-%dir %{_datadir}/locale/hy
-%dir %{_datadir}/locale/hy/LC_MESSAGES
-%dir %{_datadir}/locale/my
-%dir %{_datadir}/locale/my/LC_MESSAGES
-%dir %{_datadir}/locale/or
-%dir %{_datadir}/locale/or/LC_MESSAGES
-%dir %{_datadir}/locale/si
-%dir %{_datadir}/locale/si/LC_MESSAGES
-%dir %{_datadir}/locale/ur
-%dir %{_datadir}/locale/ur/LC_MESSAGES
-%endif
 
 %changelog
 * Wed Dec 21 2011 Milan Zazrivec <mzazrivec@redhat.com> 4.9.14-1

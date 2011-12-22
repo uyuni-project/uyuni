@@ -351,6 +351,15 @@ rm -fv $RPM_BUILD_ROOT/%{apacheconfd}/zz-spacewalk-server-python.conf
 %endif
 rm -f $RPM_BUILD_ROOT/%{_mandir}/man8/satellite-sync.8*
 
+# remove all unsupported translations
+cd $RPM_BUILD_ROOT
+for d in usr/share/locale/*; do
+  if [ ! -d "/$d" ]; then
+    rm -rfv "./$d"
+  fi
+done
+cd -
+
 %find_lang %{name}-server
 
 %check

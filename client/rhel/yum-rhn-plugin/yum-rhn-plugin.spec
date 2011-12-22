@@ -48,6 +48,15 @@ make -f Makefile.yum-rhn-plugin
 rm -rf $RPM_BUILD_ROOT
 make -f Makefile.yum-rhn-plugin install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
 
+# remove all unsupported translations
+cd $RPM_BUILD_ROOT
+for d in usr/share/locale/*; do
+  if [ ! -d "/$d" ]; then
+    rm -rfv "./$d"
+  fi
+done
+cd -
+
 %find_lang %{name}
 
 %clean

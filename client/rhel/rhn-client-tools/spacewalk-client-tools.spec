@@ -202,7 +202,16 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/man/man8/rhn_register.*
 desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications --vendor=rhn rhn_register.desktop
 %if 0%{?suse_version}
 %suse_update_desktop_file -r rhn_register "Settings;System;SystemSetup;"
-rm -f $RPM_BUILD_ROOT/usr/share/locale/no/LC_MESSAGES/rhn-client-tools.mo
+
+# remove all unsupported translations
+cd $RPM_BUILD_ROOT
+for d in usr/share/locale/*; do
+  if [ ! -d "/$d" ]; then
+    rm -rfv "./$d"
+  fi
+done
+cd -
+
 %endif
 %endif
 
@@ -257,22 +266,6 @@ make -f Makefile.rhn-client-tools test
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/up2date_client
 %dir %{_localstatedir}/spool/up2date
-%if 0%{?suse_version} == 1010
-# locale dirs missing in SLE-10 filesystem package:
-%dir %{_datadir}/locale/as
-%dir %{_datadir}/locale/as/LC_MESSAGES
-%dir %{_datadir}/locale/hy
-%dir %{_datadir}/locale/hy/LC_MESSAGES
-%dir %{_datadir}/locale/my
-%dir %{_datadir}/locale/my/LC_MESSAGES
-%dir %{_datadir}/locale/or
-%dir %{_datadir}/locale/or/LC_MESSAGES
-%dir %{_datadir}/locale/si
-%dir %{_datadir}/locale/si/LC_MESSAGES
-%dir %{_datadir}/locale/ur
-%dir %{_datadir}/locale/ur/LC_MESSAGES
-%endif
-
 #files
 %{_datadir}/rhn/up2date_client/__init__.*
 %{_datadir}/rhn/up2date_client/config.*
