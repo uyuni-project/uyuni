@@ -20,7 +20,7 @@ except ImportError:
     class YumBaseError(Exception):
         def __init__(self, errmsg):
             self.value = errmsg
-        def __getattribute__(self, name):
+        def __getattr__(self, name):
             raise AttributeError(_("class %s has no attribute '%s'") % (self.__class__.__name__, name))
         def __setattr__(self, name, value):
             raise AttributeError(_("class %s has no attribute '%s'") % (self.__class__.__name__, name))
