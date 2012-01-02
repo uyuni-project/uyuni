@@ -1213,6 +1213,10 @@
     type: ACTION_CHANGE
     required: [name]
 
+/network/systems/groups/admin_list.pxt:
+    type: ACTION_CHANGE
+    required: [list_action_label_update_system_group_membership]
+
 /network/systems/ssm/errata/apply_errata_conf.pxt:
     type: ACTION_CHANGE
 
