@@ -1245,17 +1245,17 @@ class Backend:
         # This function returns the channels that were affected
         return affected_channels
 
-    def update_newest_package_cache(self, caller, affected_channels, name_ids=None):
+    def update_newest_package_cache(self, caller, affected_channels, name_ids=[]):
         # affected_channels is a hash keyed on the channel id, and with a
         # tuple (added_package_list, deleted_package_list) as values
-        if name_ids:
+        if len(name_ids) > 0:
             refresh_newest_package = self.dbmodule.Procedure('rhn_channel.refresh_newest_package_light')
         else:
             refresh_newest_package = self.dbmodule.Procedure('rhn_channel.refresh_newest_package')
         update_channel = self.dbmodule.Procedure('rhn_channel.update_channel')
         for channel_id, (added_packages_list, deleted_packages_list) in affected_channels.items():
             try:
-                if name_ids:
+                if len(name_ids) > 0:
                     for id in name_ids:
                         refresh_newest_package(channel_id, id, caller)
                 else:
@@ -1267,7 +1267,7 @@ class Backend:
             else:
                 invalidate_ss = 0
             update_channel(channel_id, invalidate_ss)
-            
+
 
     def processSourcePackages(self, packages, uploadForce=0, ignoreUploaded=0,
                 forceVerify=0, transactional=0):
