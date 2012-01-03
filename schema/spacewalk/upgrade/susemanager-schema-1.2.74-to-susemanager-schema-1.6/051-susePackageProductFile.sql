@@ -35,12 +35,12 @@ CREATE INDEX sppf_pid_idx
     NOLOGGING;
 
 create or replace trigger
-suse_pack_product_file_mod_trig
+suse_pack_prod_file_mod_trig
 before insert or update on susePackageProductFile
 for each row
 begin
 	:new.modified := sysdate;
-end suse_pack_product_file_mod_trig;
+end suse_pack_prod_file_mod_trig;
 /
 show errors
 

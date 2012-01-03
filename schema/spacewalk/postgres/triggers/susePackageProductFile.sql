@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 7c1e11869feea6172a6a4d76fc47633a62f649b8
+-- oracle equivalent source sha1 aba2f3093fc69ec05d31750ce088e7c1862fc3ee
 -- retrieved from ./1240273396/cea26e10fb65409287d4579c2409403b45e5e838/schema/spacewalk/oracle/triggers/susePackageProductFile.sql
 --
 -- Copyright (c) 2011 Novell
@@ -14,7 +14,7 @@
 
 
 
-create or replace function suse_pack_product_file_mod_trig_fun() returns trigger as
+create or replace function suse_pack_prod_file_mod_trig_fun() returns trigger as
 $$
 begin
 	new.modified := current_timestamp;
@@ -25,7 +25,7 @@ $$ language plpgsql;
 
 
 create trigger
-suse_pack_product_file_mod_trig
+suse_pack_prod_file_mod_trig
 before insert or update on susePackageProductFile
 for each row
-execute procedure suse_pack_product_file_mod_trig_fun();
+execute procedure suse_pack_prod_file_mod_trig_fun();
