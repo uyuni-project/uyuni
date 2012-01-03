@@ -98,7 +98,7 @@ IS
 
     PROCEDURE refresh_newest_package(channel_id_in in number, caller_in in varchar2 := '(unknown)');
 
-    PROCEDURE refresh_newest_package_light(channel_id_in in number, package_name_id in number, caller_in in varchar2 := '(unknown)');
+    PROCEDURE refresh_newest_package_light(channel_id_in in number, package_name_id_in in number, caller_in in varchar2 := '(unknown)');
 
     FUNCTION get_org_id(channel_id_in in number) return number;
     PRAGMA RESTRICT_REFERENCES(get_org_id, WNDS, RNPS, WNPS);
