@@ -32,8 +32,11 @@ BACKUP_EXT=.rnmbck
 
 if [ -x /etc/init.d/oracle ]; then
     DB_SERVICE="oracle"
+elif [ -x /etc/init.d/oracle-xe ]; then
+    DB_SERVICE="oracle-xe"
+elif [ -x /etc/init.d/postgresql ]; then
+    DB_SERVICE="postgresql"
 fi
-
 MONITORING_ENABLED=`awk -F= '! /[[:space:]]*#/ && /web.is_monitoring_backend/ {gsub(/[[:space:]]*/,""); print $2}' $RHN_CONF_FILE`
 MONITORING_SCOUT_ENABLED=`awk -F= '! /[[:space:]]*#/ && /web.is_monitoring_scout/ {gsub(/[[:space:]]*/,""); print $2}' $RHN_CONF_FILE`
 NOCPULSE_PRIVATE_KEY_FILE=~nocpulse/.ssh/nocpulse-identity
@@ -41,6 +44,8 @@ NOCPULSE_PUBLIC_KEY_FILE=${NOCPULSE_PRIVATE_KEY_FILE}.pub
 
 ORACLE_XE_LISTENER_ORA_FILE=/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/network/admin/listener.ora
 ORACLE_XE_TNSNAMES_ORA_FILE=/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/network/admin/tnsnames.ora
+ORACLE_LISTENER_ORA_FILE=/opt/apps/oracle/product/11gR2/dbhome_1/network/admin/listener.ora
+ORACLE_TNSNAMES_ORA_FILE=/opt/apps/oracle/product/11gR2/dbhome_1/network/admin/tnsnames.ora
 
 SPW_SETUP_JABBERD=/usr/bin/spacewalk-setup-jabberd
 
@@ -106,6 +111,15 @@ function initial_system_hostname_check {
         return 1
     fi
 
+    if [ "$(hostname).$(hostname -d)" != "$(hostname -f)" ]
+    then
+        echo_err "Wrong hostname command output: \"$(hostname -f)\""
+        return 1
+    fi
+
+    # set HOSTNAME to long hostname
+    HOSTNAME=`hostname -f`
+
     # check for uppercase chars in hostname
     if [ "$HOSTNAME" != "$(echo $HOSTNAME | tr '[:upper:]' '[:lower:]')" ]
     then
@@ -113,12 +127,16 @@ function initial_system_hostname_check {
         return 1
     fi
 
-    # check /etc/sysconfig/network
-    HN_NETWORK=`awk -F= '/HOSTNAME/ {print $2}' /etc/sysconfig/network`
+    if [ -f /etc/sysconfig/network ]; then
+        # check /etc/sysconfig/network
+        HN_NETWORK=`awk -F= '/HOSTNAME/ {print $2}' /etc/sysconfig/network`
+    elif [ -f /etc/HOSTNAME ]; then
+        HN_NETWORK=`cat /etc/HOSTNAME`
+    fi
 
     if [ "$HOSTNAME" != "$HN_NETWORK" ]
     then
-        echo_err "Wrong hostname in /etc/sysconfig/network: \"$HN_NETWORK\""
+        echo_err "Wrong hostname in /etc/sysconfig/network or /etc/HOSTNAME: \"$HN_NETWORK\""
         return 1
     fi
 
@@ -380,9 +398,13 @@ echo "=============================================" | tee -a $LOG
 
 initial_system_hostname_check || bye
 
+echo "=============================================" | tee -a $LOG
+echo "hostname: $HOSTNAME" | tee -a $LOG
+echo "=============================================" | tee -a $LOG
+
 # stop services
-echo -n "Stopping rhn-satellite services ... " | tee -a $LOG
-/usr/sbin/rhn-satellite stop >> $LOG 2>&1
+echo -n "Stopping spacewalk-service services ... " | tee -a $LOG
+/usr/sbin/spacewalk-service stop >> $LOG 2>&1
 if [ "$DB_SERVICE" != "" ]
 then
     /sbin/service $DB_SERVICE start >> $LOG 2>&1
@@ -398,18 +420,39 @@ fi
 if [ -e $ORACLE_XE_TNSNAMES_ORA_FILE ]
 then
     sed -i$BACKUP_EXT 's/\(.*(HOST[[:space:]]*=[[:space:]]*\)[^)]*\().*$\)/\1localhost\2/' $ORACLE_XE_TNSNAMES_ORA_FILE
+    if [ -e /etc/tnsnames.ora ]; then
+        cp $ORACLE_TNSNAMES_ORA_FILE /etc/tnsnames.ora
+    fi
     if [ -x /etc/init.d/oracle-xe ]; then
         /sbin/service oracle-xe restart >> $LOG 2>&1
     fi
 fi
+if [ -e "$ORACLE_LISTENER_ORA_FILE" ]
+then
+    sed -i$BACKUP_EXT "s/\(.*(HOST[[:space:]]*=[[:space:]]*\)[^)]*\().*$\)/\1$HOSTNAME\2/" $ORACLE_LISTENER_ORA_FILE
+fi
+if [ -e $ORACLE_TNSNAMES_ORA_FILE ]
+then
+    sed -i$BACKUP_EXT "s/\(.*(HOST[[:space:]]*=[[:space:]]*\)[^)]*\().*$\)/\1$HOSTNAME\2/" $ORACLE_TNSNAMES_ORA_FILE
+    if [ -e /etc/tnsnames.ora ]; then
+        cp $ORACLE_TNSNAMES_ORA_FILE /etc/tnsnames.ora
+    fi
+    if [ -x /etc/init.d/oracle ]; then
+        /sbin/service oracle restart >> $LOG 2>&1
+    fi
+fi
 
-SQL_RET=$(
+if [ "$DB_SERVICE" == "postgresql" ]; then
+    SQL_RET=$(echo "select 0 from dual;"  | spacewalk-sql --select-mode -)
+else
+    SQL_RET=$(
 echo "set feed off;
 set pages 0;
 select 0 from dual;
 exit;
 "  | spacewalk-sql --select-mode -
 )
+fi
 # SQL_RET="${SQL_RET#"${SQL_RET%%[![:space:]]*}"}"
 print_status "${SQL_RET}" "Your database isn't running."
 
@@ -507,12 +550,16 @@ else
 fi
 print_status $?
 
-echo -n "Starting rhn-satellite services ... " | tee -a $LOG
+echo -n "Starting spacewalk-service services ... " | tee -a $LOG
 if [ "$DB_SERVICE" != "" ]
 then
-    /sbin/service $DB_SERVICE stop >> $LOG 2>&1
+/sbin/service $DB_SERVICE stop >> $LOG 2>&1
 fi
-/usr/sbin/rhn-satellite start >> $LOG 2>&1
+if [ "$DB_SERVICE" == "postgresql" ]
+then
+/sbin/service $DB_SERVICE start >> $LOG 2>&1
+fi
+/usr/sbin/spacewalk-service start >> $LOG 2>&1
 print_status 0  # just simulate end
 
 echo "[$(date)]: $(basename $0) finished sucessfully." >> $LOG
