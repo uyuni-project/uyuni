@@ -75,6 +75,7 @@ features_task = Cucumber::Rake::Task.new do |t|
   feature_files << %w{
                      features/test_config_channel.feature
                      features/ncc-sync-channels.feature
+                     features/xmlrpc_system.feature
                      features/delete_system_profile.feature
                      features/delete_config_channel.feature
                      features/users-deleteuser1.feature
