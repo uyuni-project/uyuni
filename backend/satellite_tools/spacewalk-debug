@@ -270,6 +270,12 @@ if [ -f /var/log/audit/audit.log ] ; then
 	cp -fa /var/log/audit/audit.log $DIR/audit-log
 fi
 
+if [ $IS_SUSE -eq 1 ]; then
+    echo "    * requesting NCC data"
+    mkdir -p $DIR/nccdata
+    /usr/sbin/mgr-ncc-sync -D $DIR/nccdata
+fi
+
 echo "    * timestamping"
 echo "Spacewalk debug created on $(date)" > $DIR/timestamp
 
