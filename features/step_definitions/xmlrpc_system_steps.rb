@@ -18,6 +18,21 @@ When /^I check a sysinfo by a number of XML\-RPC calls, it just works\. :\-\)$/ 
   fail if (rabbit == nil or !systest.getSysInfo(rabbit))
 end
 
+When /^I call system\.createSystemRecord\(\) with sysName "([^"]*)", ksLabel "([^"]*)", ip "([^"]*)", mac "([^"]*)"$/ do |sysName, ksLabel, ip, mac|
+  result = systest.createSystemRecord(sysName, ksLabel, ip, mac)
+  fail if !result
+end
+
+Then /^there is a system record in cobbler named "([^"]*)"$/ do |sysName|
+  ct = CobblerTest.new()
+  if !ct.is_running
+    raise "cobblerd is not running"
+  end
+  if !ct.system_exists(sysName)
+    raise "cobbler system record does not exist: " + sysName
+  end
+end
+
 Then /^I logout from XML\-RPC\/system\.$/ do
   systest.logout()
 end
