@@ -51,7 +51,7 @@ def main():
                                       fromdir=options.fromdir)
     if options.list:
         syncer.list_channels()
-    elif len(options.dumppath) > 0:
+    elif options.dumppath:
         syncer.dump_to(options.dumppath)
     elif options.channel:
         syncer.update_channels()
