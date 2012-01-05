@@ -143,7 +143,13 @@ sub select_sat_cluster { shift->_select_record('RHN_SAT_CLUSTER',         @_) }
 sub select_snmp_alert  { shift->_select_record('RHN_SNMP_ALERT',          @_) }
 
 # Multiple record selection
-sub select_contacts  { shift->_select_records('RHN_CONTACT_MONITORING',  @_) }
+#sub select_contacts  { shift->_select_records('RHN_CONTACT_MONITORING',  @_) }
+sub select_contacts  {
+    my $self = shift;
+    my $r = $self->_select_records('RHN_CONTACT_MONITORING',  @_);
+    $self->commit();
+    return $r;
+}
 sub select_customers { shift->_select_records('RHN_CUSTOMER_MONITORING', @_) }
 sub select_hosts     { shift->_select_records('RHN_HOST_MONITORING',     @_) }
 
