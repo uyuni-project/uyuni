@@ -39,6 +39,8 @@ def main():
                       help="debugging")
     parser.add_option("-t", "--test", action="store_true",
                       help="Testmode")
+    parser.add_option('-D', '--dump', dest="dumppath", action="store",
+                      help='Dump NCC xml data into the given directory')
     parser.add_option("--from-dir", action="store", dest='fromdir',
                       help="read data from directory instead of NCC")
 
@@ -49,6 +51,8 @@ def main():
                                       fromdir=options.fromdir)
     if options.list:
         syncer.list_channels()
+    elif len(options.dumppath) > 0:
+        syncer.dump_to(options.dumppath)
     elif options.channel:
         syncer.add_channel(options.channel)
         # schedule reposync even if the channel is already in the database

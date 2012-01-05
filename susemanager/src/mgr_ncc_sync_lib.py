@@ -17,7 +17,8 @@
 import socket
 import sys
 import time
-import os.path
+import os
+import io
 import xml.etree.ElementTree as etree
 from datetime import date
 from urlparse import urlparse, urljoin
@@ -109,6 +110,66 @@ class NCCSync(object):
             self.error_msg("Could not connect to the database. %s" % e)
             sys.exit(1)
 
+    def dump_to(self, path):
+        """Dump NCC xml data to path
+
+        :arg path: the destination path
+        """
+        if not os.path.exists(path):
+            os.makedirs(path)
+        if not os.path.isdir(path):
+            self.error_msg("'%s' is not a directory." % path)
+            sys.exit(1)
+
+        if self.fromdir:
+            send = None
+        else:
+            send = ('<?xml version="1.0" encoding="UTF-8"?>'
+                    '<listsubscriptions xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
+                    '<authuser>%(authuser)s</authuser>'
+                    '<authpass>%(authpass)s</authpass>'
+                    '<smtguid>%(smtguid)s</smtguid>'
+                    '</listsubscriptions>\n' % self.__dict__)
+
+        self.print_msg("Downloading Subscription information...")
+        try:
+            subs = io.FileIO(path + '/listsubscriptions.xml', 'w')
+            response = suseLib.send(self.ncc_url_subs, send)
+            subs.write(response.read())
+            subs.close()
+        except Exception, e:
+            self.error_msg("NCC connection failed: %s" % e)
+            sys.exit(1)
+
+        if self.fromdir:
+            send = None
+        else:
+            send = ('<?xml version="1.0" encoding="UTF-8"?>'
+                    '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
+                    '<authuser>%(authuser)s</authuser>'
+                    '<authpass>%(authpass)s</authpass>'
+                    '<smtguid>%(smtguid)s</smtguid>'
+                    '</productdata>\n' % self.__dict__)
+
+        self.print_msg("Downloading Product information...")
+        try:
+            prod = io.FileIO(path + '/productdata.xml', 'w')
+            response = suseLib.send(self.ncc_url_prods, send)
+            prod.write(response.read())
+            prod.close()
+        except:
+            self.error_msg("NCC connection failed")
+            sys.exit(1)
+
+        try:
+            idx = io.FileIO(path + '/repoindex.xml', 'w')
+            response = suseLib.send(self.ncc_repoindex % self.__dict__)
+            idx.write(response.read())
+            idx.close()
+        except:
+            self.error_msg("NCC connection failed")
+            sys.exit(1)
+
     def _get_ncc_xml(self, url, send=None):
         """Connect to ncc and return the parsed XML document
 
@@ -166,11 +227,11 @@ class NCCSync(object):
             send = None
         else:
             send = ('<?xml version="1.0" encoding="UTF-8"?>'
-                    '<productdata xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
+                    '<listsubscriptions xmlns="%(namespace)s" client_version="1.2.3" lang="en">'
                     '<authuser>%(authuser)s</authuser>'
                     '<authpass>%(authpass)s</authpass>'
                     '<smtguid>%(smtguid)s</smtguid>'
-                    '</productdata>\n' % self.__dict__)
+                    '</listsubscriptions>\n' % self.__dict__)
 
         self.print_msg("Downloading Subscription information...")
         subscriptionlist = self._get_ncc_xml(self.ncc_url_subs, send)
