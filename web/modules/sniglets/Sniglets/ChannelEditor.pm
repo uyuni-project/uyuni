@@ -23,6 +23,8 @@ use RHN::Exception;
 use PXT::Utils;
 use Sniglets::Channel;
 
+use RHN::Form::Widget::RadiobuttonGroup;
+
 use RHN::DataSource::Package;
 use RHN::DataSource::Channel;
 
