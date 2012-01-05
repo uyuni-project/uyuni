@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jan  4 17:36:43 CET 2012 - mc@suse.de
+
+- add --dump option to mgr-ncc-sync to dump NCC data as XML into
+  a directory.
+
+-------------------------------------------------------------------
 Fri Dec  2 13:19:37 CET 2011 - iartarisi@suse.cz
 
 - remove confirmation dialog when adding a channel (bnc#732517)
