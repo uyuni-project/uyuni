@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan  5 10:10:01 CET 2012 - mc@suse.de
+
+- spacewalk-debug should package NCC data dump into the tar ball
+
+-------------------------------------------------------------------
 Tue Nov  8 14:09:44 CET 2011 - jrenner@suse.de
 
 - Implement audit logging for the backend API (fate#312607)
