@@ -132,49 +132,6 @@
     </c:forEach>
   </select>
   </div>
-
-  <h2><bean:message key="preferences.jsp.lang" /></h2>
-  <p><bean:message key="preferences.jsp.langs" /></p>
-
-  <div class="preference">
-  <c:set var="counter" value="0" />
-  <table width="75%" cellpadding="0">
-    <tr>
-      <td width="50%">
-        <input type="radio" name="preferredLocale" value="<c:out value="${noLocale.languageCode}" />"
-        <c:if test="${noLocale.languageCode == currentLocale}">
-          checked="checked"
-        </c:if>/>
-        <c:out value="${noLocale.localizedName}" />
-        <br />
-        <br />
-      </td>
-     </tr>
-  <c:forEach var="item" items="${supportedLocales}">
-    <c:if test="${counter == 0}">
-      <tr>
-    </c:if>
-    <td width="50%">
-      <input type="radio" name="preferredLocale" value="<c:out value="${item.key}" />"
-        <c:if test="${item.key == currentLocale}">
-          checked="checked"
-        </c:if>/>
-       <img src="<c:out value="${item.value.imageUri}" />" alt="<c:out value="${item.value.localizedName}" />" />&nbsp;(<c:out value="${item.value.localizedName}" />)
-    </td>
-    <c:if test="${counter == 1}">
-      </tr>
-    </c:if>
-    <c:set var="counter" value="${counter + 1}" />
-    <c:if test="${counter == 2}">
-      <c:set var="counter" value="0" />
-    </c:if>
-  </c:forEach>
-
-  <c:if test="${counter == 1}">
-          </tr>
-  </c:if>
-  </table>
-  </div>
 </c:if>
 
 <div align="right">
