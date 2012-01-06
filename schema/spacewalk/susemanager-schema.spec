@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.6.42
+Version:        1.7.4
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,20 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Jan 06 2012 Jan Pazdziora 1.7.4-1
+- Dropping the prune_group procedure with the old prototype.
+
+* Tue Jan 03 2012 Jan Pazdziora 1.7.3-1
+- Upon drop, the default must not be specified.
+
+* Tue Jan 03 2012 Jan Pazdziora 1.7.2-1
+- Prevent output from being printed out for the second time to STDERR upon
+  error, for direct mode.
+
+* Mon Jan 02 2012 Jan Pazdziora 1.7.1-1
+- The rhn_entitlements.set_group_count is always called with type S in our
+  code, removing the user group calls.
+
 * Thu Dec 22 2011 Jan Pazdziora 1.6.42-1
 - Fix typo in source file name, add oracle equivalent source sha1.
 

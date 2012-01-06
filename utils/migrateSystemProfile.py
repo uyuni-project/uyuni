@@ -13,7 +13,6 @@ Author: Pradeep Kilambi <pkilambi@redhat.com>
 
 import os
 import sys
-import string
 import getpass
 import xmlrpclib
 
@@ -48,10 +47,10 @@ _csv_fields = [ 'systemId', 'to-org-id' ]
 
 
 def main():
-    global options_table, client, DEBUG
+    global client, DEBUG
     parser = OptionParser(option_list=options_table)
 
-    (options, args) = parser.parse_args()
+    (options, _args) = parser.parse_args()
 
     if options.satellite:
         SATELLITE_HOST = options.satellite
@@ -96,16 +95,16 @@ def main():
 
     for server_id, to_org_id in migrate_data:
         if type(server_id) == type([]):
-            server_id = map(lambda a:int(a), server_id)
+            server_id = map(int, server_id)
         else:
             server_id = [int(server_id)]
         try:
             migrate_system(sessionKey, int(to_org_id), server_id)
-        except Exception, e:
+        except Exception:
             raise
-            #sys.stderr.write(e.msg)
     
-    if DEBUG: print "Migration Completed successfully"
+    if DEBUG:
+        print "Migration Completed successfully"
     logout(sessionKey)
 
 def login(username, password):
@@ -130,7 +129,8 @@ def migrate_system(key, newOrgId, server_ids):
     """
     Call to migrate given system to new org
     """
-    if DEBUG: print "Migrating systemIds %s to Org %s" % (server_ids, newOrgId)
+    if DEBUG:
+        print "Migrating systemIds %s to Org %s" % (server_ids, newOrgId)
     try:
         client.org.migrateSystems(key, newOrgId, server_ids)
     except xmlrpclib.Fault, e:
@@ -157,13 +157,13 @@ def getUsernamePassword(cmdlineUsername, cmdlinePassword):
         try:
             username = tty.readline()
         except KeyboardInterrupt:
-                tty.write("\n")
-                sys.exit(0)
+            tty.write("\n")
+            sys.exit(0)
         if username is None:
             # EOF
             tty.write("\n")
             sys.exit(0)
-        username = string.strip(username)
+        username = username.strip()
         if username:
             break
 

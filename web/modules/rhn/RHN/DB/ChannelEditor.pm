@@ -215,7 +215,7 @@ EOQ
 INSERT 
   INTO rhnRepoRegenQueue
         (id, channel_label, client, reason, force, bypass_filters, next_action, created, modified)
-VALUES (rhn_repo_regen_queue_id_seq.nextval,
+VALUES (sequence_nextval('rhn_repo_regen_queue_id_seq'),
         :label, 'perl-web::add_channel_packages', NULL, 'N', 'N', current_timestamp, current_timestamp, current_timestamp)
 EOQ
 

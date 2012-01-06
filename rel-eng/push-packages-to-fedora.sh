@@ -7,7 +7,7 @@ TOP_DIR_FEDORA=$1
 # top dir of spacewalk git checkout
 TOP_DIR_GIT=$2
 
-PACKAGE_LIST="rhnlib rhn-client-tools rhnsd yum-rhn-plugin rhncfg spacewalk-koan rhnpush nocpulse-common perl-Satcon perl-NOCpulse-CLAC perl-NOCpulse-Debug perl-NOCpulse-Gritch perl-NOCpulse-Object perl-NOCpulse-SetID perl-NOCpulse-Utils spacewalk-proxy-html spacewalk-proxy-docs spacecmd spacewalk-backend spacewalk-certs-tools rhn-custom-info spacewalk-config rhnmd spacewalk-branding python-gzipstream"
+PACKAGE_LIST="rhnlib rhn-client-tools rhnsd yum-rhn-plugin rhncfg spacewalk-koan rhnpush nocpulse-common perl-Satcon perl-NOCpulse-CLAC perl-NOCpulse-Debug perl-NOCpulse-Gritch perl-NOCpulse-Object perl-NOCpulse-SetID perl-NOCpulse-Utils spacewalk-proxy-html spacewalk-proxy-docs spacecmd spacewalk-backend spacewalk-certs-tools rhn-custom-info spacewalk-config rhnmd spacewalk-branding python-gzipstream spacewalk-web"
 
 
 if [ -z "$TOP_DIR_FEDORA" -o ! -d "$TOP_DIR_FEDORA" ]; then
@@ -46,12 +46,17 @@ for package in $PACKAGE_LIST; do
 			echo "Importing version: $NVR_GIT"
 			fedpkg import $SRC_RPM || exit $?
             fedpkg commit -m "Rebase to $BASENAME in rawhide."
-			git tag $BASENAME
 			echo "Review your changes and hit ENTER to continue or Ctrl+C to stop"
             read
 			git push || ( echo 'Error: could not push changes' && exit 1 )
-            git push --tags
-			fedpkg build --nowait
+            if [ $package == "spacewalk-backend" ]; then
+				echo "WARNING: please manualy comment out subpackage spacewalk-backend-sql-oracle in fedora dist-git and build the package. Hit ENTER to continue"
+                read
+            else
+                fedpkg tag -c
+                git push --tags
+				fedpkg build --nowait
+			fi
 		else
 			echo "$NVR_DISTGIT already imported - skipping."
 		fi

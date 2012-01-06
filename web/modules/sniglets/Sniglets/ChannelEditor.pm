@@ -23,10 +23,9 @@ use RHN::Exception;
 use PXT::Utils;
 use Sniglets::Channel;
 
-use RHN::Form::Widget::RadiobuttonGroup;
-
 use RHN::DataSource::Package;
 use RHN::DataSource::Channel;
+use RHN::Form::Widget::RadiobuttonGroup;
 
 sub register_tags {
   my $class = shift;

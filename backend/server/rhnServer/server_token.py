@@ -15,10 +15,7 @@
 # this module handles the token registration code for a server
 #
 
-import string
 import sys
-
-from cStringIO import StringIO
 
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
@@ -577,7 +574,7 @@ class ActivationTokens:
         token_names = map(lambda x: x[0], self.entitlements)
         if not token_names:
             return None
-        return string.join(token_names, ",")
+        return ",".join(token_names)
 
     def get_tokens(self):
         tokens = []
@@ -813,7 +810,7 @@ def fetch_token(token_string):
     log_debug(3, token_string)
     # A token should always be passed to this function
     assert token_string
-    tokens = string.split(token_string, ',')
+    tokens = token_string.split(',')
     h = rhnSQL.prepare(_query_token)
     result = []
     rereg_token_found = 0
@@ -925,12 +922,12 @@ def fetch_token(token_string):
     if rereg_token_found and len(result) > 1:
         log_debug(4,"re-activation stacked with activationkeys")
         kwargs['remove_entitlements'] = entitlements_remove
-        return apply(ReRegistrationActivationToken, (result, ), kwargs)
+        return ReRegistrationActivationToken(result, **kwargs)
     elif rereg_token_found:
         log_debug(4,"simple re-activation")
-        return apply(ReRegistrationToken, ([ rereg_token_found ], ), kwargs)
+        return ReRegistrationToken([rereg_token_found], **kwargs)
 
-    return apply(ActivationTokens, (result, ), kwargs)
+    return ActivationTokens(result, **kwargs)
 
 # always be sure this query has matching columns as _query_token above...
 _query_org_default_token = rhnSQL.Statement("""
@@ -982,7 +979,7 @@ def fetch_org_token(org_id):
         }
         tokens.append(token_entry)
 
-    return apply(ActivationTokens, (tokens, ), kwargs)
+    return ActivationTokens(tokens, **kwargs)
 
 
 
@@ -1063,60 +1060,42 @@ def process_token(server, server_arch, tokens_obj, virt_type = None):
 
 def history_report(history):
     """ build a mildly html-ized version of the history as a report """
-    report = StringIO()
     # header information
-    report.write("Entitlement Information:\n")
-    report.write("<ul><li>%s</li></ul>" % history["entitlement"])
-    report.write("\n")
+    report = "Entitlement Information:\n"
+    report += "<ul><li>%s</li></ul>" % history["entitlement"]
+    report += "\n"
     # print out channels
-    report.write("Channel Subscription Information:\n")
-    report.write("<ul>\n")
-    for c in history["channels"]:
-        report.write("<li>%s</li>\n" % c)
-    if len(history["channels"]) == 0:
-        report.write("<li>The token does not include default "
-                     "Channel Subscriptions</li>\n")
-    report.write("</ul>\n")
+    report += history_subreport(history, "groups",
+              "Channel Subscription Information:",
+              "The token does not include default Channel Subscriptions")
+
     # print out the groups
-    if history.has_key("groups"):
-        report.write("System Group Membership Information:\n")
-        report.write("<ul>\n")
-        for g in history["groups"]:
-            report.write("<li>%s</li>\n" % g)
-        if len(history["groups"]) == 0:
-            report.write("<li>The token does not include default "\
-                         "System Group Membership</li>\n")
-        report.write("</ul>\n")
+    report += history_subreport(history, "groups",
+              "System Group Membership Information:",
+              "The token does not include default System Group Membership")
 
     # auto-installed packages...
-    if history.has_key("packages"):
-        report.write("Packages Scheduled for Installation:\n")
-        report.write("<ul>\n")
-
-        for p in history['packages']:
-            report.write("<li>%s</li>\n" % p)
-
-        if len(history['packages']) == 0:
-            report.write("<li>No packages scheduled for automatic installation</li>\n")
-
-        report.write("</ul>\n")
+    report += history_subreport(history, "packages",
+              "Packages Scheduled for Installation:",
+              "No packages scheduled for automatic installation")
 
     # config channels...
-    if history.has_key('config_channels'):
-        report.write("Config Channel Subscription Information:\n")
-        report.write("<ul>\n")
+    report += history_subreport(history, 'config_channels',
+              "Config Channel Subscription Information:",
+              "The token does not include default configuration channels")
 
-        for c in history['config_channels']:
-            report.write("<li>%s</li>\n" % c)
+    return report
 
-        if len(history['config_channels']) == 0:
-            report.write("<li>The token does not include default configuration channels</li>\n")
+def history_subreport(history, key, title, emptymsg):
+    if history.has_key(key):
+        subreport = title + "\n"
+        subreport += "<ul>\n"
 
-        report.write("</ul>\n")
+        for c in history[key]:
+            subreport += "<li>%s</li>\n" % c
 
-    ret = report.getvalue()
-    report.close()
-    del report
-    # return what we got
-    return ret
+        if len(history[key]) == 0:
+            subreport += "<li>%s</li>\n" % emptymsg
 
+        subreport += "</ul>\n"
+    return subreport

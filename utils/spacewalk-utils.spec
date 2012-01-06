@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.6.6
+Version:	1.7.3
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -15,6 +15,7 @@ BuildArch:      noarch
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  docbook-utils
 BuildRequires:  python
+BuildRequires:  pylint
 
 Requires:       bash
 Requires:       cobbler
@@ -55,6 +56,10 @@ Generic utilities that may be run against a Spacewalk server.
 %build
 make all
 
+# check coding style
+find -name '*.py' \
+    | xargs pylint -rn -iy --bad-functions=apply,input \
+                   --disable C0111,C0103,C0301,R0801,R0912,W0511,W0603
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -80,6 +85,16 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/rhn
 
 %changelog
+* Thu Jan 05 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.3-1
+- removed map and filter from bad-function list
+
+* Thu Jan 05 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.2-1
+- pylint is required for coding style check
+
+* Wed Jan 04 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.1-1
+- fixed coding style and pylint warnings
+- added spacewalk-nightly-*-fedora16 definitions
+
 * Wed Dec 21 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.6.6-1
 - Channel definitions for Spacewalk 1.6
 

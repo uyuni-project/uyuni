@@ -121,6 +121,52 @@ _query_get_allorg_slot_types = rhnSQL.Statement("""
      where sg.group_type = sgt.id
 """)
 
+_query_get_slots = rhnSQL.Statement("""
+select org, slot_name, sum(max_members) as max_members, sum(current_members) as current_members
+from (
+select case when rhnServerGroup.org_id = :base_org_id then 'base' else 'other' end as org,
+       rhnServerGroupType.label as slot_name,
+       rhnServerGroup.max_members,
+       rhnServerGroup.current_members
+  from rhnServerGroup, rhnServerGroupType
+ where rhnServerGroup.group_type = rhnServerGroupType.id
+) X
+group by org, slot_name
+""")
+
+_query_get_family_counts = rhnSQL.Statement("""
+select org, label,
+	sum(current_members) as current_members,
+	sum(max_members) as max_members,
+	sum(fve_current_members) as fve_current_members,
+	sum(fve_max_members) as fve_max_members,
+	sum(physical_count) as physical_count,
+	sum(virtual_count) as virtual_count
+from (
+        select case when CFO.org_id = :base_org_id then 'base' else 'other' end as org,
+        CFO.label,
+           CFO.current_members, coalesce(CFO.max_members, 0) as max_members,
+           CFO.fve_current_members, coalesce(CFO.fve_max_members, 0) as fve_max_members,
+           (select count(CFS.server_id)
+            from rhnChannelFamilyServers CFS
+            where CFS.customer_id = CFO.org_id
+              and CFS.channel_family_id = CFO.id
+              and CFS.server_id not in
+                 (select virtual_system_id from rhnVirtualInstance)) as physical_count,
+            (select count(CFS.server_id)
+            from rhnChannelFamilyServers CFS
+            where CFS.customer_id = CFO.org_id
+              and CFS.channel_family_id = CFO.id
+              and CFS.server_id in
+                 (select virtual_system_id from rhnVirtualInstance)
+              and CFS.server_id not in
+                 (select SV.server_id from rhnChannelFamilyServerVirtual SV
+                                       where SV.CHANNEL_FAMILY_ID = CFO.id)) as virtual_count
+        from  rhnChannelFamilyOverview CFO
+) X
+group by org, label
+""")
+
 
 def set_slots_from_cert(cert):
     """ populates database with entitlements from an RHN certificate
@@ -129,10 +175,164 @@ def set_slots_from_cert(cert):
     """
 
     org_id = get_org_id()
+    counts = {}
+    slot_table = rhnSQL.Table("rhnServerGroupType", "label")
+
+    h = rhnSQL.prepare(_query_get_slots)
+    h.execute(base_org_id = org_id)
+    rows = h.fetchall_dict()
+
+    for entry in rows:
+        if not counts.has_key(entry['slot_name']):
+            counts[entry['slot_name']] = { 'base' : ( 0, 0 ), 'other' : ( 0, 0 ) }
+
+        counts[entry['slot_name']][entry['org']] = ( entry['max_members'], entry['current_members'] )
+
+    has_error = False
+    for slot_type in cert.get_slot_types():
+        slots = cert.get_slots(slot_type)
+        db_label = slots.get_db_label()
+        quantity = slots.get_quantity()
+        # Do not pass along a NULL quantity - NULL for
+        # rhnServerGroup.max_members means 'no maximum' BZ #160046
+        if not quantity:
+            quantity = 0
+        else:
+            quantity = int(quantity)
+
+        if not counts.has_key(db_label):
+            continue
+
+        allocated = counts[db_label]['base'][1] + counts[db_label]['other'][0]
+        if allocated > quantity:
+            has_error = True
+            sys.stderr.write("Certificate specifies %s of %s entitlements.\n" % ( quantity, db_label ))
+            sys.stderr.write("    There are ")
+            if counts[db_label]['base'][1]:
+                sys.stderr.write("%s entitlements used by systems in the base (id %s) organization" % ( counts[db_label]['base'][1], org_id ))
+            if counts[db_label]['base'][1] and counts[db_label]['other'][0]:
+                sys.stderr.write(",\n    plus ")
+            if counts[db_label]['other'][0]:
+                sys.stderr.write("%s entitlements allocated to non-base org(s) (%s used)" % ( counts[db_label]['other'][0], counts[db_label]['other'][1] ))
+            sys.stderr.write(".\n")
+
+            sys.stderr.write("    You might need to ")
+            if counts[db_label]['base'][1]:
+                sys.stderr.write("unentitle some systems in the base organization")
+            if counts[db_label]['base'][1] and counts[db_label]['other'][0]:
+                sys.stderr.write(",\n    or ")
+            if counts[db_label]['other'][0]:
+                sys.stderr.write("deallocate some entitlements from non-base organization(s)")
+            sys.stderr.write(".\n")
+            sys.stderr.write("    You need to free %s entitlements to match the new certificate.\n" % (allocated - quantity))
+            if slot_table.has_key(db_label):
+                entitlement_name = slot_table[db_label]['name']
+                entitlement_name = entitlement_name.replace(' Entitled Servers', '')
+                entitlement_name = entitlement_name.replace('Spacewalk ', '')
+                entitlement_name = entitlement_name.replace('RHN ', '')
+                sys.stderr.write("    In the WebUI, the entitlement is named %s.\n" % entitlement_name)
+
+    h = rhnSQL.prepare(_query_get_family_counts)
+    h.execute(base_org_id = org_id)
+    rows = h.fetchall_dict()
+
+    families = {}
+    for entry in rows:
+        if not families.has_key(entry['label']):
+            families[entry['label']] = { 'base' : ( 0, 0, 0, 0, 0, 0 ), 'other' : ( 0, 0, 0, 0, 0, 0 ) }
+
+        families[entry['label']][entry['org']] = [ entry[i] for i in ( 'current_members',
+							'max_members',
+							'fve_current_members',
+							'fve_max_members',
+							'physical_count',
+							'virtual_count'
+                                                 )]
+
+    for cf in cert.channel_families:
+        if not families.has_key(cf.name):
+            continue
+        flex = cf.flex
+        if not flex:
+            flex = 0
+        flex = int(flex)
+
+        quantity = cf.quantity
+        if not quantity:
+            quantity = 0
+        quantity = int(quantity)
+
+        existing_base = families[cf.name]['base'][4] + families[cf.name]['base'][5]
+        allocated_other = families[cf.name]['other'][1] + families[cf.name]['other'][3]
+
+        if quantity < existing_base + allocated_other:
+            has_error = True
+            sys.stderr.write("Certificate specifies %s of %s channel family entitlements" % ( quantity, cf.name ))
+            if flex:
+                sys.stderr.write(",\n    of which %s are flex entitlements.\n" % flex)
+            else:
+                sys.stderr.write(".\n")
+            sys.stderr.write("    There are")
+            if existing_base:
+                sys.stderr.write(" %s systems in the base organization" % existing_base)
+                if not families[cf.name]['base'][4]:
+                    sys.stderr.write(", all virtual (flex-capable)")
+                elif families[cf.name]['base'][5]:
+                    sys.stderr.write("\n    of which %s are virtual (flex-capable)" % families[cf.name]['base'][5])
+
+                if allocated_other:
+                    sys.stderr.write(",\n    plus")
+                else:
+                    sys.stderr.write(".\n")
+
+            if allocated_other:
+                sys.stderr.write(" %s entitlements allocated to non-base org(s) (%s used).\n" % (allocated_other, families[cf.name]['other'][0] + families[cf.name]['other'][2]))
+
+            sys.stderr.write("    You might need to ")
+            if existing_base:
+                sys.stderr.write("unentitle some systems in the base organization")
+            if existing_base and allocated_other:
+                sys.stderr.write(",\n    or ")
+            if allocated_other:
+                sys.stderr.write("deallocate some entitlements from non-base organization(s)")
+            sys.stderr.write(".\n")
+            sys.stderr.write("    You need to free %s entitlements to match the new certificate.\n" % (existing_base + allocated_other - quantity))
+
+        elif quantity - flex < families[cf.name]['base'][4] + families[cf.name]['other'][1]:
+            has_error = True
+            sys.stderr.write("Certificate specifies %s of %s non-flex entitlements.\n" % ( quantity - flex, cf.name ))
+
+            sys.stderr.write("    There are")
+            if families[cf.name]['base'][4]:
+                sys.stderr.write(" %s non-flex systems in the base organization" % families[cf.name]['base'][4])
+
+                if families[cf.name]['other'][1]:
+                    sys.stderr.write(",\n    plus")
+                else:
+                    sys.stderr.write(".\n")
+
+            if families[cf.name]['other'][1]:
+                sys.stderr.write(" %s non-flex entitlements allocated to non-base org(s) (%s used).\n" % (families[cf.name]['other'][1], families[cf.name]['other'][0]))
+
+            sys.stderr.write("    You might need to ")
+            if families[cf.name]['base'][4]:
+                sys.stderr.write("unentitle some systems in the base organization")
+            if families[cf.name]['base'][4] and families[cf.name]['other'][1]:
+                sys.stderr.write(",\n    or ")
+            if families[cf.name]['other'][1]:
+                sys.stderr.write("deallocate some entitlements from non-base organization(s)")
+            sys.stderr.write(".\n")
+            sys.stderr.write("    You need to free %s entitlements to match the new certificate.\n" % (families[cf.name]['base'][4] + families[cf.name]['other'][1] - (quantity - flex)))
+
+    if has_error:
+        sys.stderr.write("Activation failed, will now exit with no changes.\n")
+        sys.exit(1)
+
+
+
     activate_system_entitlement = rhnSQL.Procedure(
                                 "rhn_entitlements.activate_system_entitlement")
     org_service_proc = rhnSQL.Procedure("rhn_entitlements.modify_org_service")
-    slot_table = rhnSQL.Table("rhnServerGroupType", "label")
     # Fetch all available entitlements; the ones that are not present in the
     # cert will have to be set to zero
     h = rhnSQL.prepare(_query_get_allorg_slot_types)

@@ -47,10 +47,12 @@ from spacewalk.common import rhnLog
 # namespace prefix to parse patches.xml file
 PATCHES = '{http://novell.com/package/metadata/suse/patches}'
 
-CACHE_DIR = '/var/cache/rhn/reposync/'
-YUMSRC_CONF='/etc/rhn/spacewalk-repo-sync/yum.conf'
+CACHE_DIR   = '/var/cache/rhn/reposync/'
+YUMSRC_CONF = '/etc/rhn/spacewalk-repo-sync/yum.conf'
 
 class YumWarnings:
+    def __init__(self):
+        self.saved_stdout = None
     def write(self, s):
         pass
     def disable(self):
@@ -78,7 +80,7 @@ class YumUpdateMetadata(UpdateMetadata):
         else:   # obj is a file object
             infile = obj
 
-        for event, elem in iterparse(infile):
+        for _event, elem in iterparse(infile):
             if elem.tag == 'update':
                 un = UpdateNotice(elem)
                 key = un['update_id']
@@ -87,11 +89,11 @@ class YumUpdateMetadata(UpdateMetadata):
                 if not self._notices.has_key(key):
                     self._notices[key] = un
                     for pkg in un['pkglist']:
-                        for file in pkg['packages']:
-                            self._cache['%s-%s-%s' % (file['name'],
-                                                      file['version'],
-                                                      file['release'])] = un
-                            no = self._no_cache.setdefault(file['name'], set())
+                        for pkgfile in pkg['packages']:
+                            self._cache['%s-%s-%s' % (pkgfile['name'],
+                                                      pkgfile['version'],
+                                                      pkgfile['release'])] = un
+                            no = self._no_cache.setdefault(pkgfile['name'], set())
                             no.add(un)
 
 class ContentSource:
@@ -109,7 +111,6 @@ class ContentSource:
             self.yumbase.preconf.fn=YUMSRC_CONF
         except AttributeError: # older yum versions don't have the preconf attr
             self.yumbase.doConfigSetup(fn=YUMSRC_CONF)
-
         self.configparser = ConfigParser()
         self._clean_cache(CACHE_DIR + name)
 
@@ -183,14 +184,14 @@ class ContentSource:
             else:
                 raise
 
-        list = self.sack.returnPackages()
-        self.num_packages = len(list)
+        pkglist = self.sack.returnPackages()
+        self.num_packages = len(pkglist)
         if filters:
-            list = self._filter_packages(list, filters)
-            list = self._get_package_dependencies(self.sack, list)
-            self.num_excluded = self.num_packages - len(list)
+            pkglist = self._filter_packages(pkglist, filters)
+            pkglist = self._get_package_dependencies(self.sack, pkglist)
+            self.num_excluded = self.num_packages - len(pkglist)
         to_return = []
-        for pack in list:
+        for pack in pkglist:
             if pack.arch == 'src':
                 continue
             new_pack = ContentPackage()
@@ -223,11 +224,11 @@ class ContentSource:
         else:
             excluded = packages
 
-        for filter in filters:
-            sense, pkg_list = filter
+        for filter_item in filters:
+            sense, pkg_list = filter_item
             if sense == '+':
                 # include
-                exactmatch, matched, unmatched = yum.packages.parsePackages(
+                exactmatch, matched, _unmatched = yum.packages.parsePackages(
                                                         excluded, pkg_list)
                 allmatched = yum.misc.unique(exactmatch + matched)
                 selected = yum.misc.unique(selected + allmatched)
@@ -236,7 +237,7 @@ class ContentSource:
                         excluded.remove(pkg)
             elif sense == '-':
                 # exclude
-                exactmatch, matched, unmatched = yum.packages.parsePackages(
+                exactmatch, matched, _unmatched = yum.packages.parsePackages(
                                                         selected, pkg_list)
                 allmatched = yum.misc.unique(exactmatch + matched)
                 for pkg in allmatched:
@@ -250,14 +251,14 @@ class ContentSource:
     def _get_package_dependencies(self, sack, packages):
         self.yumbase.pkgSack = sack
         resolved_deps = self.yumbase.findDeps(packages)
-        for (pkg,deps) in resolved_deps.items():
-            for (dep,dep_packages) in deps.items():
+        for (_pkg, deps) in resolved_deps.items():
+            for (_dep, dep_packages) in deps.items():
                 packages.extend(dep_packages)
         return yum.misc.unique(packages)
 
     def get_package(self, package):
         """ get package """
-        check = (self.verify_pkg, (package.unique_id ,1), {})
+        check = (self.verify_pkg, (package.unique_id, 1), {})
         return self.repo.getPackage(package.unique_id, checkfunc=check)
 
     def verify_pkg(self, fo, pkg, fail):

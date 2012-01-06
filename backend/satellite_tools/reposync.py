@@ -33,7 +33,7 @@ from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnException import rhnFault
-from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Checksum, Bug, Keyword
+from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Bug, Keyword
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.errataImport import ErrataImport

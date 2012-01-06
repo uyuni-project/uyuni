@@ -110,7 +110,6 @@ class Registration(rhnHandler):
         self.functions.append("register_osad")
         self.functions.append("register_osad_jid")
         self.functions.append("register_product")
-        self.functions.append("remaining_subscriptions")
         self.functions.append("reserve_user")
         self.functions.append("send_serial")
         self.functions.append("upgrade_version")
@@ -1319,62 +1318,6 @@ class Registration(rhnHandler):
         return {'default_channel' : default_channel,
                 'receiving_updates' : receiving_updates,
                 'channels' : eus_channels}
-
-    def remaining_subscriptions(self, username, password, arch, release):
-        """ given username, password, os release, and arch, say how many available
-            entitlements remain for the org.
-            o  return -1 in case of infinite entitlements
-        """
-        arch = normalize_server_arch(arch)
-
-        user = rhnUser.search(username)
-
-        if user is None:
-            log_error("invalid username", username)
-            raise rhnFault(2)
-
-        if not user.check_password(password):
-            log_error("User password check failed", username)
-            raise rhnFault(2)
-
-        # bugzilla #238444, jslagle
-        # Clients are currently broken in that they are using this call
-        # to determine if they should show the "activate a subscription" page.
-        # That is very confusing for satellites, so just return 1 here.
-        # Once clients are fixed, we can remove this and allow the original
-        # code to execute.
-        return 1
-
-        try:
-            channels = rhnChannel.channels_for_release_arch(release, arch,
-                org_id=user.contact['org_id'], user_id=user.getid())
-        except rhnChannel.NoBaseChannelError:
-            # ?? Invalid arch+release ??
-            raise rhnFault(19), None, sys.exc_info()[2]
-        except rhnChannel.BaseChannelDeniedError:
-            raise rhnFault(71,
-                           _("Insufficient subscription permissions for release, arch (%s, %s)") 
-                           % (release, arch)), None, sys.exc_info()[2]
-
-
-        # we'll always have the info from the base channel, otherwise there
-        # would have been an exception above...
-        ret = channels[0]['available_subscriptions']
-
-        # if infinite entitlements, return -1.
-        if not ret:
-            ret = -1
-
-        log_debug(4, 'remaining subs is %s' % ret)
-        return ret
-
-    def suse_update_products(self, system_id, guid, secret, target, products):
-      log_debug(5, system_id, guid, target, products)
-      server = self.auth_system(system_id)
-      log_debug(1, server.getid(), guid)
-      server.update_suse_products(guid, secret, target, products)
-      return 0
-
 
 def _faultValueString(value, name):
     return _("Invalid value '%s' for %s (%s)") % (

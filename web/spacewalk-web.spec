@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.6.36
+Version: 1.7.5
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -187,7 +187,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/ConfigRevision.pm
 %{perl_vendorlib}/RHN/ContactGroup.pm
 %{perl_vendorlib}/RHN/ContactMethod.pm
-%{perl_vendorlib}/RHN/CryptoKey.pm
 %{perl_vendorlib}/RHN/CustomInfoKey.pm
 %{perl_vendorlib}/RHN/DB/
 %{perl_vendorlib}/RHN/DataSource.pm
@@ -307,6 +306,28 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Wed Jan 04 2012 Tomas Lestach <tlestach@redhat.com> 1.7.5-1
+- 771634 - remove semi-colon at the end of queries (tlestach@redhat.com)
+
+* Tue Jan 03 2012 Jan Pazdziora 1.7.4-1
+- The RHN::Form::Widget::Multiple, RHN::Form::Widget::Password, and
+  RHN::Form::Widget::Spacer seem not used, removing.
+- After removal of RHN::CryptoKey, RHN::DB::CryptoKey is no longer used,
+  removing.
+- After removal of RHN::AppInstall::Parser, RHN::Form::Parser is no longer
+  used, removing.
+- After removal of RHN::ProxyInstall, RHN::CryptoKey is no longer used,
+  removing.
+
+* Mon Jan 02 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.3-1
+- fixed merging channels
+
+* Mon Jan 02 2012 Tomas Lestach <tlestach@redhat.com> 1.7.2-1
+- 771214 - add missing widget require (tlestach@redhat.com)
+
+* Thu Dec 22 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.7.1-1
+- web.version: 1.7 nightly
+
 * Wed Dec 21 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.6.36-1
 - update copyright info
 
