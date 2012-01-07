@@ -302,6 +302,7 @@ Feature: Check client registration
     When I follow "Add Files" in class "contentnav-row2"
     When I follow "Create File" in class "content-nav"
     Then I should see a "Create Local File" text
+     And I uncheck "edit_area_toggle_checkbox_contents"
      And I should see a "file_radio" element in "configFileForm" form
      And I should see a "dir_radio" element in "configFileForm" form
      And I should see a "symlink_radio" element in "configFileForm" form
