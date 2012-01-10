@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 10 15:34:38 CET 2012 - ma@suse.de
+
+- Bootstrap: Offer to disable YAST Automatic Online Update if it is
+  enabled on the client. (bnc#738054)
+
+-------------------------------------------------------------------
 Thu Nov  3 19:27:49 CET 2011 - ma@suse.de
 
 - Adapt dependencies to renamed packages (bnc#722052)

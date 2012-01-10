@@ -128,6 +128,11 @@ PROFILENAME=""   # Empty by default to let it be set automatically.
 # disable all repos not provided by SUSE Manager.
 DISABLE_LOCAL_REPOS=1
 
+# Disable yasts automatic online update feature in case it is enabled
+# on the client. Leaving automatic online update enabled, the client would
+# continue to update himself independently from SUSE Manager requests.
+DISABLE_YAST_AUTOMATIC_ONLINE_UPDATE=1
+
 # SUSE Manager Specific settings:
 #
 # - Alternate location of the client tool repos providing the zypp-plugin-spacewalk
@@ -591,6 +596,13 @@ def getUp2dateTheBoxSh(productName):
 echo
 echo "OTHER ACTIONS"
 echo "------------------------------------------------------"
+if [ $DISABLE_YAST_AUTOMATIC_ONLINE_UPDATE -eq 1 ]; then
+    YAOU_SYSCFGFILE="/etc/sysconfig/automatic_online_update"
+    if [ -f "$YAOU_SYSCFGFILE" ]; then
+      echo "* Disable YAST automatic online update."
+      sed -i 's/^ *AOU_ENABLE_CRONJOB.*/AOU_ENABLE_CRONJOB="false"/' "$YAOU_SYSCFGFILE"
+    fi
+fi
 if [ $DISABLE_LOCAL_REPOS -eq 1 ]; then
     if [ "$INSTALLER" == zypper ] ; then
 	echo "* Disable all repos not provided by SUSE Manager Server."
