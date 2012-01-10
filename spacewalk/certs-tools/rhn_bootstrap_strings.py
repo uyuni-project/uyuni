@@ -628,6 +628,9 @@ if [ $DISABLE_YAST_AUTOMATIC_ONLINE_UPDATE -eq 1 ]; then
     if [ -f "$YAOU_SYSCFGFILE" ]; then
       echo "* Disable YAST automatic online update."
       sed -i 's/^ *AOU_ENABLE_CRONJOB.*/AOU_ENABLE_CRONJOB="false"/' "$YAOU_SYSCFGFILE"
+      for D in /etc/cron.*; do
+	test -L $D/opensuse.org-online_update && rm $D/opensuse.org-online_update
+      done
     fi
 fi
 if [ $DISABLE_LOCAL_REPOS -eq 1 ]; then
