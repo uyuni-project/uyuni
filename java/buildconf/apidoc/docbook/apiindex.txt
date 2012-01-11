@@ -1,6 +1,5 @@
-#foreach ($handler in $handlers)
-#set ($path = "handlers/")
+#set ($path = "")
 #set ($xml = ".xml")
+#foreach ($handler in $handlers)
   <xi:include href="$path$handler.className$xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 #end
-

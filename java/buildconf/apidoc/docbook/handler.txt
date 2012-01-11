@@ -1,70 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.docbook.org/xml/4.5/docbookx.dtd">
 
+## One chapter per handler
 <chapter>
-<title>Namespace '$handler.name'</title>
-
-<sect1>
-  <title>Description</title>
-  <para>Namespace: $handler.name</para>
-  <para>$handler.desc</para>
-</sect1>
-
-<sect1>
-  <title>Available Methods</title>
-  <itemizedlist>
-    #foreach ($call in $handler.calls)
-      <listitem><para>$call.name</para></listitem>
-    #end
-  </itemizedlist>
-</sect1>
+<title>Namespace: '$handler.name'</title>
+<para>$handler.desc</para>
 
 #foreach ($call in $handler.calls)
 <sect1>
-  <title>Method: $call.name</title>
-  <sect2>
-    <title>Description</title>
-    <para>$call.doc</para>
-    #if ($call.deprecated)
-      <para>Deprecated - $call.deprecatedReason</para>
-    #end
-    #if ($call.sinceAvailable)
-      <para>Available since: $call.sinceVersion</para>
-    #end
-  </sect2>
+  <title>$call.name</title>
+  <para/>
 
-  <sect2>
-    <title>Parameters</title>
-    <itemizedlist>
-      #if ($call.params.size() <= 0)
-        <listitem><para>None</para></listitem>
-      #else
-        #foreach($param in $call.params)
-          #if ($param.trim().startsWith('<listitem>'))
-            $param
-          #else
-            <listitem><para>$param</para></listitem>
+  <variablelist>
+    ## The description of this call
+    <varlistentry>
+      <term>Description</term>
+      <listitem>
+        <para>$call.doc</para>
+      #if ($call.deprecated)
+        <para>Deprecated - $call.deprecatedReason</para>
+      #end
+      #if ($call.sinceAvailable)
+        <para>Available since: $call.sinceVersion</para>
+      #end
+      </listitem>
+    </varlistentry>
+
+    ## The parameters
+    <varlistentry>
+      <term>Parameters</term>
+      <listitem>
+      <itemizedlist>
+        #if ($call.params.size() <= 0)
+          <listitem><para>None</para></listitem>
+        #else
+          #foreach($param in $call.params)
+            #if ($param.trim().startsWith('<listitem>'))
+              $param
+            #else
+              <listitem><para>$param</para></listitem>
+            #end
           #end
         #end
-      #end
-    </itemizedlist>
-  </sect2>
+      </itemizedlist>
+      </listitem>
+    </varlistentry>
 
-  <sect2>
-    <title>Return Value</title>
-    <itemizedlist>
-      ## Find out if we need to put a <para> here
-      #if (!$call.returnDoc.trim().startsWith('<') && !$call.returnDoc.trim().startsWith('$'))
-        <listitem><para>
-      #end
-      $call.returnDoc
-      #if (!$call.returnDoc.trim().startsWith('<') && !$call.returnDoc.trim().startsWith('$'))
-        </para></listitem>
-      #end
-    </itemizedlist>
-  </sect2>
+    ## The return value
+    <varlistentry>
+      <term>Return Value</term>
+      <listitem>
+        <itemizedlist>
+        ## Find out if we need to put a <para> here
+        #if (!$call.returnDoc.trim().startsWith('<') && !$call.returnDoc.trim().startsWith('$'))
+          <listitem><para>
+        #end
+        $call.returnDoc
+        #if (!$call.returnDoc.trim().startsWith('<') && !$call.returnDoc.trim().startsWith('$'))
+          </para></listitem>
+        #end
+        </itemizedlist>
+      </listitem>
+    </varlistentry>
+  </variablelist>
 </sect1>
 #end
 
 </chapter>
-

@@ -59,7 +59,7 @@
 </listitem>
 #end
 #macro(options)
-<listitem override="none">
+<listitem>
   <itemizedlist>
 #end
 #macro(item $item)
