@@ -41,7 +41,7 @@ public class DocBookWriter extends DocWriter {
         // Lets do the index first
         writeFile(DOCBOOK_OUTPUT + "book.xml", generateIndex(handlers, DOCBOOK_TEMPLATES));
         for (Handler handler : handlers) {
-            writeFile(DOCBOOK_OUTPUT + "handlers/" + handler.getClassName() + ".xml",
+            writeFile(DOCBOOK_OUTPUT + handler.getClassName() + ".xml",
                     generateHandler(handler, DOCBOOK_TEMPLATES));
         }
 
@@ -65,8 +65,8 @@ public class DocBookWriter extends DocWriter {
         ret = ret.replaceAll("</i>", "");
         ret = ret.replaceAll("<br/>", " ");
         // Transform lists
-        ret = ret.replaceAll("<ul>", "<itemizedlist>");
-        ret = ret.replaceAll("</ul>", "</itemizedlist>");
+        ret = ret.replaceAll("<ul>", "</para><itemizedlist>");
+        ret = ret.replaceAll("</ul>", "</itemizedlist><para>");
         ret = ret.replaceAll("<li>", "<listitem><para>");
         ret = ret.replaceAll("</li>", "</para></listitem>");
         // Remove arbitrary stuff
