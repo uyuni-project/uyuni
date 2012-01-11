@@ -4,6 +4,8 @@
 <book lang="en">
   <title>SUSE Manager API Documentation</title>
   <bookinfo>
+    <productname>SUSE Manager</productname>
+    <productnumber>1.2.1</productnumber>
     <abstract>
       <para>
         Welcome to the SUSE Manager API. By using the included API calls, you can easily automate many of the tasks you perform everyday. All API calls are grouped by common functionality.

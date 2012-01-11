@@ -30,7 +30,7 @@
     <varlistentry>
       <term>Parameters</term>
       <listitem>
-      <itemizedlist>
+      <itemizedlist spacing="compact">
         #if ($call.params.size() <= 0)
           <listitem><para>None</para></listitem>
         #else
@@ -50,7 +50,7 @@
     <varlistentry>
       <term>Return Value</term>
       <listitem>
-        <itemizedlist>
+        <itemizedlist spacing="compact">
         ## Find out if we need to put a <para> here
         #if (!$call.returnDoc.trim().startsWith('<') && !$call.returnDoc.trim().startsWith('$'))
           <listitem><para>
