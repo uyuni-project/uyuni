@@ -12,6 +12,7 @@ export PYTHONUNBUFFERED=1
 
 declare -a PACKAGES
 
+echo 'Gathering data ...'
 for tag in $TAGS; do
   rel-eng/koji-missing-builds.py $KOJI_MISSING_BUILD_BREW_ARG --no-extra $tag | \
     perl -lne '/^\s+(.+)-.+-.+$/ and print $1' | \

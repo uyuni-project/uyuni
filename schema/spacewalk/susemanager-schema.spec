@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.7.4
+Version:        1.7.7
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Jan 13 2012 Miroslav Suchý 1.7.7-1
+- Avoid using CURRENT_ALERTS_RECID_SEQ.NEXTVAL Oracle syntax.
+- Avoing rhnChecksum_seq.nextval Oracle syntax.
+
+* Fri Jan 13 2012 Tomas Lestach <tlestach@redhat.com> 1.7.6-1
+- 701767 - fixing sha1 of PG upgrade file (tlestach@redhat.com)
+
+* Fri Jan 13 2012 Tomas Lestach <tlestach@redhat.com> 1.7.5-1
+- 701767 - an org shall access a channel even with a flex entitlement
+  (tlestach@redhat.com)
+
 * Fri Jan 06 2012 Jan Pazdziora 1.7.4-1
 - Dropping the prune_group procedure with the old prototype.
 

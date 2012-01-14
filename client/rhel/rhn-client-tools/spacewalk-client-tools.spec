@@ -12,7 +12,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.7.1
+Version: 1.7.4
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -399,6 +399,22 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Thu Jan 12 2012 Miroslav Suchý 1.7.4-1
+- 746983 - in spacewalk_channel print to STDERR only error message, TB + error
+  goes to log file
+- 745095 - provide virtualization info when registering via rhn_register
+  (tlestach@redhat.com)
+
+* Tue Jan 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.3-1
+- 748876 - convert paths to absolute before saving
+- 748876 - simplify ConfigFile.save() loop
+- 751893 - fix typo
+
+* Mon Jan 09 2012 Miroslav Suchý 1.7.2-1
+- 771167 - verify login/password just after user will file it in
+- do not print yum-rhn-plugin warning if zypp-plugin is used
+- removed dead remaining_subscriptions() (michael.mraka@redhat.com)
+
 * Fri Dec 30 2011 Aron Parsons <parsonsa@bit-sys.com> 1.7.1-1
 - continue to search for the hostname if IPv6 is disabled (parsonsa@bit-
   sys.com)
