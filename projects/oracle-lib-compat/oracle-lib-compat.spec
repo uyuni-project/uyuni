@@ -87,11 +87,13 @@ mkdir -p $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client/lib/network/admin
 echo 'diag_adr_enabled = off' > $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client/lib/network/admin/sqlnet.ora
 %endif
 
+%ifnarch s390x
 mkdir -p $RPM_BUILD_ROOT/%{_javadir}
 %if 0%{?suse_version}
 ln -sf ../../lib/oracle/%{icdir}/client64/lib/ojdbc5.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
 %else
 ln -sf ../../%{_lib}/oracle/%{icdir}/client/lib/ojdbc6.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
+%endif
 %endif
 
 %if 0%{?rhel} && 0%{?rhel} < 6
@@ -109,17 +111,19 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %ifarch x86_64 s390x
 %{_libdir}/oracle
-%dir /usr/lib/oracle/11.2/client64/lib/network
-%dir /usr/lib/oracle/11.2/client64/lib/network/admin
-/usr/lib/oracle/11.2/client64/lib/network/admin/sqlnet.ora
+%dir /usr/lib/oracle/%{icdir}/client64/lib/network
+%dir /usr/lib/oracle/%{icdir}/client64/lib/network/admin
+/usr/lib/oracle/%{icdir}/client64/lib/network/admin/sqlnet.ora
 %else
-%dir /usr/lib/oracle/11.2/client/lib/network
-%dir /usr/lib/oracle/11.2/client/lib/network/admin
-/usr/lib/oracle/11.2/client/lib/network/admin/sqlnet.ora
+%dir /usr/lib/oracle/%{icdir}/client/lib/network
+%dir /usr/lib/oracle/%{icdir}/client/lib/network/admin
+/usr/lib/oracle/%{icdir}/client/lib/network/admin/sqlnet.ora
 %endif
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/oracle-instantclient-%{icdir}.conf
 %config(noreplace) %{_sysconfdir}/ld.so.conf.d/oracle-xe.conf
+%ifnarch s390x
 %{_javadir}/ojdbc14.jar
+%endif
 %{_datadir}/%{tomcatname}/bin/setenv.sh
 %if 0%{?suse_version}
 %dir %{_datadir}/%{tomcatname}
