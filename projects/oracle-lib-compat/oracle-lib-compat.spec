@@ -80,11 +80,11 @@ echo /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/lib >>$RPM_BUILD_ROOT%{
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/oracle/%{icdir}
 ln -sf ../../../lib/oracle/%{icdir}/client64 $RPM_BUILD_ROOT%{_libdir}/oracle/%{icdir}/client
 
-mkdir -p $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client64/lib/network/admin
-echo 'diag_adr_enabled = off' > $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client64/lib/network/admin/sqlnet.ora
+mkdir -p $RPM_BUILD_ROOT/usr/lib/oracle/%{icdir}/client64/lib/network/admin
+echo 'diag_adr_enabled = off' > $RPM_BUILD_ROOT/usr/lib/oracle/%{icdir}/client64/lib/network/admin/sqlnet.ora
 %else
-mkdir -p $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client/lib/network/admin
-echo 'diag_adr_enabled = off' > $RPM_BUILD_ROOT/usr/lib/oracle/11.2/client/lib/network/admin/sqlnet.ora
+mkdir -p $RPM_BUILD_ROOT/usr/lib/oracle/%{icdir}/client/lib/network/admin
+echo 'diag_adr_enabled = off' > $RPM_BUILD_ROOT/usr/lib/oracle/%{icdir}/client/lib/network/admin/sqlnet.ora
 %endif
 
 %ifnarch s390x
