@@ -633,6 +633,9 @@ if [ $DISABLE_YAST_AUTOMATIC_ONLINE_UPDATE -eq 1 ]; then
       done
     fi
 fi
+if [ "$INSTALLER" == zypper ] ; then
+  test -d /var/lib/suseRegister && touch /var/lib/suseRegister/neverRegisterOnBoot
+fi
 if [ $DISABLE_LOCAL_REPOS -eq 1 ]; then
     if [ "$INSTALLER" == zypper ] ; then
 	echo "* Disable all repos not provided by SUSE Manager Server."
