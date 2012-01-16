@@ -35,6 +35,9 @@
             <rl:column headerkey="studio.images.list.type">
                 ${current.imageType}
             </rl:column>
+            <rl:column headerkey="studio.images.list.status">
+                ${current.status}
+            </rl:column>
         </rl:list>
 
         <div align="right">

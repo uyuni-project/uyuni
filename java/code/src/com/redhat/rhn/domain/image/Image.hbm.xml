@@ -46,8 +46,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </query>
     <query name="Image.listAllImagesByOrg">
         <![CDATA[from com.redhat.rhn.domain.image.Image as i
-                where i.status != 'ERROR'
-                and   i.org = :org]]>
+                where i.org = :org]]>
     </query>
     <query name="Image.findById">
         <![CDATA[from com.redhat.rhn.domain.image.Image as i where i.id = :id]]>

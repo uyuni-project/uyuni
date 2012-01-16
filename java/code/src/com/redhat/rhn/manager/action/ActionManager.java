@@ -638,10 +638,7 @@ public class ActionManager extends BaseManager {
         details.setBridgeDevice(bridgeDevice);
         a.setDetails(details);
 
-        //Object[] args = new Object[2];
-        //args[0] = errata.getAdvisory();
-        //args[1] = errata.getSynopsis();
-        //a.setName(LocalizationService.getInstance().getMessage("action.name", args));
+        // TODO: Use LocalizationService.getInstance().getMessage()
         a.setName("Image deployment: " + image.getName() + "-" + image.getVersion());
         return a;
     }

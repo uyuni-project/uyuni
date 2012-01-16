@@ -23052,6 +23052,9 @@ given channel.</source>
      <trans-unit id="studio.images.list.type">
         <source>Type</source>
      </trans-unit>
+     <trans-unit id="studio.images.list.status">
+        <source>Status</source>
+     </trans-unit>
      <trans-unit id="studio.images.list.noimages">
         <source>No Images</source>
      </trans-unit>

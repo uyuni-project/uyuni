@@ -22,6 +22,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.image.Image;
 
 import java.io.File;
 import java.util.Collections;
@@ -71,11 +72,11 @@ public class ImageDownloadTask extends RhnJavaJob {
                 if (path == null) {
                     continue;
                 }
-                updateImage(id, "RUNNING");
+                updateImageStatus(id, Image.STATUS_RUNNING);
                 if (downloadImage(pkgDir, path, url)) {
-                    updateImage(id, "DONE");
+                    updateImageStatus(id, Image.STATUS_DONE);
                 } else {
-                    updateImage(id, "ERROR");
+                    updateImageStatus(id, Image.STATUS_ERROR);
                 }
             }
         } catch (Exception e) {
@@ -85,7 +86,7 @@ public class ImageDownloadTask extends RhnJavaJob {
     }
 
     @SuppressWarnings("unchecked")
-    private void updateImage(long id, String status) {
+    private void updateImageStatus(long id, String status) {
         Map params = new HashMap();
         params.put("id", id);
         params.put("status", status);
@@ -107,7 +108,7 @@ public class ImageDownloadTask extends RhnJavaJob {
                 ret = false;
             }
             if (!ret) {
-                log.error("Download error");
+                log.error("Error downloading image from " + url);
             }
         } else {
             log.error(f.getAbsolutePath() + " already exists");

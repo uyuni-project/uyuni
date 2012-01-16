@@ -110,9 +110,10 @@ public class ScheduleImageDownloadAction extends RhnAction {
      */
     private void storeImages(Set<Long> selected) {
         for (Long s : selected) {
-            // Lookup the selected images
+            // Write selected image builds to the DB
             for (Image i : images) {
                 if (s.equals(i.getBuildId())) {
+                    i.setStatus(Image.STATUS_PICKUP);
                     ImageFactory.saveImage(i);
                 }
             }
@@ -148,9 +149,14 @@ public class ScheduleImageDownloadAction extends RhnAction {
         List<Image> available = ImageFactory.getAllImages(org);
         for (Image i : images) {
             if (available.contains(i)) {
-                // Make these not selectable
-                i.setSelected(true);
-                i.setSelectable(false);
+                // This one is already in our DB, get the status
+                String s = available.get(available.indexOf(i)).getStatus();
+                i.setStatus(s);
+                // Only allow to select images with status new or error
+                if (!(s.equals(Image.STATUS_NEW) || s.equals(Image.STATUS_ERROR))) {
+                    i.setSelected(true);
+                    i.setSelectable(false);
+                }
             }
         }
 

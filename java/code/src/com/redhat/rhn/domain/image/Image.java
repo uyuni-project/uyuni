@@ -18,13 +18,13 @@ import com.redhat.rhn.frontend.dto.BaseDto;
  * @version $Rev$
  */
 public class Image extends BaseDto {
-    
+
 	public static String STATUS_NEW = "NEW";
 	public static String STATUS_PICKUP = "PICKUP";
 	public static String STATUS_RUNNING = "RUNNING";
 	public static String STATUS_DONE = "DONE";
 	public static String STATUS_ERROR = "ERROR";
-	
+
     private Long id;
     private Long buildId;
     private Org org;
@@ -38,7 +38,7 @@ public class Image extends BaseDto {
     private String checksum;
     private String status;
     private boolean selectable = true;
-    
+
     public Long getId() {
         return this.id;
     }
