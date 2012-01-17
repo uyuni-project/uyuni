@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.7.7
+Version:        1.7.9
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Tue Jan 17 2012 Jan Pazdziora 1.7.9-1
+- Fully qualify the rhn_cache.update_perms_for_user call.
+
+* Mon Jan 16 2012 Miroslav Suchý 1.7.8-1
+- Revert "Avoing rhnChecksum_seq.nextval Oracle syntax."
+- Revert "Avoid using CURRENT_ALERTS_RECID_SEQ.NEXTVAL Oracle syntax."
+
 * Fri Jan 13 2012 Miroslav Suchý 1.7.7-1
 - Avoid using CURRENT_ALERTS_RECID_SEQ.NEXTVAL Oracle syntax.
 - Avoing rhnChecksum_seq.nextval Oracle syntax.

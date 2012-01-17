@@ -22,7 +22,7 @@ import hardware
 from rhnPackageInfo import convertPackagesFromHashToList
 from suseRegister.info import getProductProfile;
 from types import ListType, TupleType, StringType, UnicodeType, DictType, DictionaryType
-from platform import getPlatform
+from pkgplatform import getPlatform
 
 import xmlrpclib
 

@@ -12,7 +12,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.7.4
+Version: 1.7.5
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -285,7 +285,7 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/rhn/up2date_client/clientCaps.*
 %{_datadir}/rhn/up2date_client/capabilities.*
 %{_datadir}/rhn/up2date_client/rhncli.*
-%{_datadir}/rhn/up2date_client/platform.*
+%{_datadir}/rhn/up2date_client/pkgplatform.*
 %{_datadir}/rhn/__init__.*
 
 %{_sbindir}/rhn-profile-sync
@@ -399,6 +399,10 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Tue Jan 17 2012 Jan Pazdziora 1.7.5-1
+- Renaming platform to pkgplatform, to avoid clash with the standard python
+  module.
+
 * Thu Jan 12 2012 Miroslav Suchý 1.7.4-1
 - 746983 - in spacewalk_channel print to STDERR only error message, TB + error
   goes to log file

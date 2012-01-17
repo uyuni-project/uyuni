@@ -13,7 +13,7 @@ t = gettext.translation('rhn-client-tools', fallback=True)
 _ = t.ugettext
 import OpenSSL
 import config
-from up2date_client.platform import getPlatform
+from pkgplatform import getPlatform
 from platform import dist
 
 if getPlatform() == 'deb' or dist()[0] == 'SuSE':
