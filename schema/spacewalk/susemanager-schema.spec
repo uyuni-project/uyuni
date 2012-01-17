@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.7.9
+Version:        1.7.13
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Tue Jan 17 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.13-1
+- fixed checksums
+
+* Tue Jan 17 2012 Michael Mraka <michael.mraka@redhat.com>
+- fixed checksums
+
+* Tue Jan 17 2012 Jan Pazdziora 1.7.11-1
+- 782430 - avoid no_data_found from propagating out.
+
+* Tue Jan 17 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.10-1
+- enhanced procedure refresh_newest_package
+
 * Tue Jan 17 2012 Jan Pazdziora 1.7.9-1
 - Fully qualify the rhn_cache.update_perms_for_user call.
 

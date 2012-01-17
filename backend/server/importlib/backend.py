@@ -1255,11 +1255,11 @@ class Backend:
         update_channel = self.dbmodule.Procedure('rhn_channel.update_channel')
         for channel_id, (added_packages_list, deleted_packages_list) in affected_channels.items():
             try:
-                if len(name_ids) > 0:
+                if name_ids:
                     for id in name_ids:
-                        refresh_newest_package(channel_id, id, caller)
+                        refresh_newest_package(channel_id, caller, id)
                 else:
-                    refresh_newest_package(channel_id, caller)
+                    refresh_newest_package(channel_id, caller, None)
             except rhnSQL.SQLError, e:
                 raise rhnFault(23, str(e[1]), explain=0), None, sys.exc_info()[2]
             if deleted_packages_list:
@@ -1267,7 +1267,6 @@ class Backend:
             else:
                 invalidate_ss = 0
             update_channel(channel_id, invalidate_ss)
-
 
     def processSourcePackages(self, packages, uploadForce=0, ignoreUploaded=0,
                 forceVerify=0, transactional=0):
