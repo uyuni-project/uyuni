@@ -583,30 +583,26 @@ class NCCSync(object):
                 id = row["id"]
         return id
 
-    def reset_entitlements_in_table( self ):
-        update_sql = """
-            UPDATE RHNSERVERGROUP SET
-            max_members = :val
-            """
-        query = rhnSQL.prepare(update_sql)
-        log_debug(2, "SQL: " % query )
-        query.execute(
-            val   = self.reset_ent_value
-        )
-        rhnSQL.commit()
+    def reset_entitlements_in_table(self):
+        """Reset all the entitlements to the our default small value"""
 
-        # Testcode (bnc#671167)
-        #id = self.get_entitlement_id("virtualization_host")
-        #update_sql = """
-        #    UPDATE RHNSERVERGROUP SET max_members = 0
-        #    WHERE GROUP_TYPE = :gid
-        #"""
-        #query = rhnSQL.prepare(update_sql)
-        #log_debug(2, "SQL: " % query )
-        #query.execute(
-        #    gid   = id
-        #)
-        #rhnSQL.commit()
+        # Entitlements are stored in the same table as Server Groups (as
+        # created from the WebUI). Server Groups should have GROUP_TYPE
+        # = NULL. We don't want to touch these.
+        query = rhnSQL.prepare("""
+            UPDATE RHNSERVERGROUP SET max_members = :val
+            WHERE GROUP_TYPE IS NOT NULL""")
+        log_debug(2, "SQL: " + query.sql)
+        query.execute(val=self.reset_ent_value)
+
+        # this is a backward fix for bnc#740813. We used to wrongly set
+        # the max_members of a system group to the "demo" entitlements
+        # value.
+        query = rhnSQL.prepare("""
+            UPDATE RHNSERVERGROUP SET max_members = NULL
+            WHERE GROUP_TYPE IS NULL""")
+        query.execute()
+        rhnSQL.commit()
 
     def edit_entitlement_in_table( self, prod, data ):
         if self.is_entitlement( prod ):
