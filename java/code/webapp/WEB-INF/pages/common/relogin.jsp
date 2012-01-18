@@ -25,10 +25,11 @@
 <c:if test="${requestScope.hasExpired != 'true'}">
 
      <h1 id="rhn_welcome3"><span><bean:message key="relogin.jsp.pleasesignin"/></span></h1>
-  <div class="clearBox">
-  <div class="clearBoxInner">
-  <div class="clearBoxBody">
 
+    <div class="clearBox">
+    <div class="clearBoxInner">
+    <div class="clearBoxBody">
+		    
       <html:form action="/ReLoginSubmit">
           <rhn:csrf />
           <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf" %>
