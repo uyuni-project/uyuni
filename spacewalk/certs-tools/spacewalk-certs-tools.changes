@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 16 15:29:28 CET 2012 - ma@suse.de
+
+- Prevent monthly registration on SUSE Manager clients (FATE#312315)
+
+-------------------------------------------------------------------
 Tue Jan 10 15:34:38 CET 2012 - ma@suse.de
 
 - Bootstrap: Offer to disable YAST Automatic Online Update if it is
