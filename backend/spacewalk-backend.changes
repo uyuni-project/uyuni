@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Thu Jan 19 12:17:49 CET 2012 - jrenner@suse.de
 
-- Setting up seclist in registration.py (bnc#782819, brc#749890)
+- Setting up seclist in registration.py (bnc#742145)
 - CVE-2012-0059
 
 -------------------------------------------------------------------
