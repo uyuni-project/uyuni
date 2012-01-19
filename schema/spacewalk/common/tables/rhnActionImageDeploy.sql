@@ -17,23 +17,18 @@ CREATE TABLE rhnActionImageDeploy
                    CONSTRAINT rhn_act_idp_act_fk
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE,
-    image_id  NUMBER NOT NULL
-                   CONSTRAINT rhn_act_idp_img_fk
-                       REFERENCES suseImages (id)
-                       ON DELETE CASCADE,
-    vcpus     NUMBER DEFAULT(1) NOT NULL,
-    mem_kb    NUMBER DEFAULT(524288) NOT NULL,
-    bridge_device VARCHAR(24) DEFAULT('br0') NOT NULL
+    vcpus         NUMBER DEFAULT(1) NOT NULL,
+    mem_kb        NUMBER DEFAULT(524288) NOT NULL,
+    bridge_device VARCHAR2(32)  DEFAULT('br0') NOT NULL,
+    image_type    VARCHAR2(32)  NOT NULL,
+    download_url  VARCHAR2(256) NOT NULL,
+    proxy_server  VARCHAR2(64),
+    proxy_user    VARCHAR2(32),
+    proxy_pass    VARCHAR2(64)
 )
 ENABLE ROW MOVEMENT
 ;
 
 CREATE SEQUENCE rhn_action_image_deploy_id_seq;
 
-CREATE INDEX rhn_act_idp_aid_iid_idx
-    ON rhnActionImageDeploy (action_id, image_id)
-    TABLESPACE [[8m_tbs]];
 
-CREATE INDEX rhn_act_idp_iid_idx
-    ON rhnActionImageDeploy (image_id)
-    TABLESPACE [[8m_tbs]];

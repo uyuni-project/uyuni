@@ -48,56 +48,32 @@ __rhnexport__ = [
 ]
 
 # download and extract tar.gz file with image
-def _getImage(imageName,orgID,checksum):
-
-        spacewalk_auth_headers = ['X-RHN-Server-Id',
-                                  'X-RHN-Auth-User-Id',
-                                  'X-RHN-Auth',
-                                  'X-RHN-Auth-Server-Time',
-                                  'X-RHN-Auth-Expire-Offset']
-
-        if not os.geteuid() == 0:
-            # you can't access auth data if you are not root
-            log.log_debug("Can't access server without root access")
-            return 42
-
-        auth_headers = {}
-        login_info = up2dateAuth.getLoginInfo()
-        for k,v in login_info.items():
-            if k in spacewalk_auth_headers:
-	        if not v:
-		    v = "\nX-libcurl-Empty-Header-Workaround: *"
-                    log.log_debug("*****%s=%s\n" % (k,v))
-                auth_headers[k] = v
-
-        cfg = config.initUp2dateConfig()
-	# serverURL may be a list in the config file, so by default, grab the
-	# first element.
-	if type(cfg['serverURL']) == type([]):
-	    serverUrl = cfg['serverURL'][0]
-	else:
-	    serverUrl = cfg['serverURL']
-
-        url = "%s/GET-REQ/%s?head_requests=no" % (serverUrl,'datafile/getVImage/%s/%s/%s' % (orgID, checksum, imageName) )
-        log.log_debug(url)
+def _getImage(imageName,serverUrl,proxySettings):
+        log.log_debug(serverUrl)
 
         # get the file via pycurl
         c = pycurl.Curl()
-        c.setopt(pycurl.URL, url)
-        headers = []
-        for k in auth_headers:
-            headers.append( ("%s:%s" % (k, auth_headers[k])) )
-        c.setopt(pycurl.HTTPHEADER, headers)
-	## /var/lib/libvirt/images
+        c.setopt(pycurl.URL, serverUrl)
+
+        # proxy settings
+        if proxySetting["proxyServer"] != None and proxySetting["proxyServer"] != "":
+            server = proxySetting["proxyServer"]
+            port   = proxySetting["proxyPort"]
+            # proxy-host.com:8080
+            c.setopt(pycurl.PROXY, "%s:%s" % (server,port) )
+            if proxySetting["proxyUser"] != None and proxySetting["proxyUser"] != "":
+                user     = proxySetting["proxyUser"]
+                password = proxySetting["proxyPass"]
+                c.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (user,password) )
+
+        ## /var/lib/libvirt/images
         filePath = "/%s/%s" % (IMAGE_BASE_PATH, imageName)
         f = open(filePath, 'w')
         c.setopt(pycurl.WRITEFUNCTION, f.write)
         c.setopt(pycurl.SSL_VERIFYPEER, 0)
         c.perform()
         f.close()
-
-
-	return 42
+    return 42
 
 def _generate_uuid():
     """Generate a random UUID and return it."""
@@ -171,8 +147,15 @@ def _imageExists(name, md5Sum):
 # download/extract and start a new image
 # imageName = myImage.x86_64.
 #
-def deploy(fileName, checksum, memKB="524288", vCPUs="1", imageType="vmdk", virtBridge="xenbr0", extraParams="",cache_only=None):
+def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB="524288", vCPUs="1", imageType="vmdk", virtBridge="xenbr0", extraParams="",cache_only=None):
     """start and connect a local image with SUSE Manager"""
+
+    proxySetting = { 'proxyURL' : proxyURL,
+                     'proxyUser': proxyUser,
+                     'proxyPass': proxyPass }
+
+    urlParts  = downloadURL.split('/')
+    filename  = urlParts[-1]
 
     # fileName = workshop_test_sles11sp1.i686-0.0.1.vmx.tar.gz
     nameParts = fileName.split('.',1)
@@ -182,7 +165,7 @@ def deploy(fileName, checksum, memKB="524288", vCPUs="1", imageType="vmdk", virt
     imageName = nameParts[0]
     m = re.search( '([^-]+)-(\d+\.\d+\.\d+)\.([^.]+)', nameParts[1] )
 
-    imageArch = m.group(1) 
+    imageArch = m.group(1)
     imageVer  = m.group(2)
     imageType = m.group(3)
 
@@ -192,7 +175,7 @@ def deploy(fileName, checksum, memKB="524288", vCPUs="1", imageType="vmdk", virt
         log.log_debug("invalid image arch")
 
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
-        _getImage(fileName,"1",checksum)
+        _getImage(fileName,serverURL,proxySettings)
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
         log.log_debug("fetching the image failed")
     _extractTar( IMAGE_BASE_PATH+fileName, IMAGE_BASE_PATH )

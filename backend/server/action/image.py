@@ -24,11 +24,10 @@ __rhnexport__ = ['deploy']
 def deploy(serverId, actionId, dry_run=0):
     log_debug(3)
     statement = """
-        select si.file_name, si.checksum, aid.mem_kb, aid.vcpus, si.image_type, aid.bridge_device
+        select aid.mem_kb, aid.vcpus, aid.image_type, aid.bridge_device,aid.download_url,
+               aid.proxy_server, aid.proxy_user, aid.proxy_pass
           from rhnActionImageDeploy aid
-	  join suseImages si ON aid.image_id = si.id
-         where si.status = 'DONE'
-	   and aid.action_id = :action_id"""
+	   where aid.action_id = :action_id"""
     h = rhnSQL.prepare(statement)
     h.execute(action_id = actionId)
     row = h.fetchone_dict()
@@ -37,18 +36,21 @@ def deploy(serverId, actionId, dry_run=0):
         raise InvalidAction("image.deploy: No image found for action id "
             "%s and server %s" % (actionId, serverId))
 
-    file_name = row['file_name']
-    checksum  = row['checksum']
-    mem_kb    = row['mem_kb']
-    vcpus     = row['vcpus']
+    url           = row['download_url']
+    proxy_server  = row['proxy_server']
+    proxy_user    = row['proxy_user']
+    proxy_pass    = row['proxy_pass']
+    mem_kb        = row['mem_kb']
+    vcpus         = row['vcpus']
     bridge_device = row['bridge_device']
+
     if row['image_type'] == 'vmx':
-	image_type = 'vmdk'
+        image_type = 'vmdk'
     elif row['image_type'] == 'xen':
-	image_type = 'xen'
+        image_type = 'xen'
     else:
         raise InvalidAction("image.deploy: invalid image_type")
 
 
-    return (file_name, checksum, mem_kb, vcpus, image_type, bridge_device)
+    return (url, proxy_server, proxy_user, proxy_pass, mem_kb, vcpus, image_type, bridge_device)
 
