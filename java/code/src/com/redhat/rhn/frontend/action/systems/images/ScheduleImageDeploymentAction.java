@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.systems.images;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +31,7 @@ import org.apache.struts.action.DynaActionForm;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.image.Image;
 import com.redhat.rhn.domain.image.ImageFactory;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -37,10 +41,13 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.suse.studio.client.SUSEStudioClient;
+import com.suse.studio.client.data.Appliance;
+import com.suse.studio.client.data.Build;
 
 /**
- * This action will present the user with a list of all studio images
- * and allow one to be selected.
+ * This action will present the user with a list of available images
+ * and allow one to be selected for provisioning.
  */
 public class ScheduleImageDeploymentAction extends RhnListAction implements Listable {
 
@@ -48,65 +55,82 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
     private static final String SUCCESS_KEY = "studio.deployment.scheduled";
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
                                  HttpServletResponse response)
         throws Exception {
-    	
+
     	Boolean submitted = false;
+        Long sid = null;
     	Long vcpus = null;
     	Long memkb = null;
     	String bridge = null;
-    	Long sid = null;
-
-    	// Initialize the context first
-        RequestContext ctx = new RequestContext(request);
 
     	// Read parameters from the form
         if (actionForm instanceof DynaActionForm) {
-        	DynaActionForm form = (DynaActionForm) actionForm;
-        	submitted = (Boolean) form.get("submitted");
-            if (submitted == null) {
-            	submitted = Boolean.FALSE;
-            }
+            DynaActionForm form = (DynaActionForm) actionForm;
             sid = (Long) form.get("sid");
+
+            // Read submitted
+            submitted = (Boolean) form.get("submitted");
+            submitted = submitted ==  null ? false : submitted;
+
             if (submitted) {
+                // Get the form parameters
                 vcpus = (Long) form.get("vcpus");
                 memkb = (Long) form.get("mem_mb") * 1024;
                 bridge = (String) form.getString("bridge");
             }
         }
 
-        // Put the server to the request
+        // Get the current user
+        RequestContext ctx = new RequestContext(request);
         User user = ctx.getLoggedInUser();
-        Server server = SystemManager.lookupByIdAndUser(sid, user);
-        request.setAttribute("system", server);
-
-        // Get the selection
-        String id = ListTagHelper.getRadioSelection(ListHelper.LIST, request);
-
-        ListHelper helper = new ListHelper(this, request);
-        helper.setDataSetName(DATA_SET);
-        helper.execute();
 
         ActionForward forward;
         if (submitted) {
-        	// Get the image from the id
-        	Image image = ImageFactory.lookupById(new Long(id));
+            // Schedule image deployment
+            String buildId = ListTagHelper.getRadioSelection(ListHelper.LIST, request);
+
+            // Get the images from the session and find the selected one
+            List<Image> images = (List<Image>) request.getSession().getAttribute("images");
+            request.getSession().removeAttribute("images");
+            Image image = null;
+            for (Image i : images) {
+                if (i.getBuildId().equals(new Long(buildId))) {
+                    image = i;
+                    break;
+                }
+            }
+
         	// Create the action and store it
             Action deploy = ActionManager.createDeployImageAction(
-            		ctx.getCurrentUser(), image, vcpus, memkb, bridge);
+                    user, image, vcpus, memkb, bridge);
             ActionManager.addServerToAction(sid, deploy);
             ActionManager.storeAction(deploy);
+            // Put a success message to the request
             createSuccessMessage(request, SUCCESS_KEY, image.getName());
 
-            // Forward the sid as parameter
+            // Forward the sid as a request parameter
             Map forwardParams = makeParamMap(request);
             forwardParams.put("sid", sid);
             forward = getStrutsDelegate().forwardParams(
                     actionMapping.findForward("success"), forwardParams);
         } else {
+            // Put the server to the request for the header
+            Server server = SystemManager.lookupByIdAndUser(sid, user);
+            request.setAttribute("system", server);
+
+            // Setup the list of images
+            ListHelper helper = new ListHelper(this, request);
+            helper.setDataSetName(DATA_SET);
+            helper.execute();
+
+            // Temporarily write images to the session
+            request.getSession().setAttribute("images", helper.getDataSet());
+
             forward = actionMapping.findForward("default");
         }
         return forward;
@@ -114,6 +138,51 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
 
     /** {@inheritDoc} */
     public List getResult(RequestContext context) {
-        return ImageFactory.getDeployableImages(context.getCurrentUser().getOrg());
+        List<Appliance> ret = new ArrayList<Appliance>();
+
+        // Take credentials stored with the org
+        Org org = context.getCurrentUser().getOrg();
+        String user = org.getStudioUser();
+        String apikey = org.getStudioKey();
+
+        // Get appliance builds from studio
+        if (user != null && apikey != null) {
+            SUSEStudioClient client = new SUSEStudioClient(user, apikey);
+            try {
+                ret = client.getAppliances();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        // Convert to a list of images
+        return createImageList(ret, context);
+    }
+
+    /**
+     * Create an {@link Image} object out of every build of an appliance.
+     * @param appliances
+     * @return list of images
+     */
+    private List<Image> createImageList(List<Appliance> appliances,
+            RequestContext context) {
+        List<Image> ret = new LinkedList<Image>();
+        for (Appliance appliance : appliances) {
+            // Create one image object for every build
+            for (Build build : appliance.getBuilds()) {
+                Image img = ImageFactory.createImage();
+                img.setOrg(context.getCurrentUser().getOrg());
+                // Appliance attributes
+                img.setName(appliance.getName());
+                img.setArch(appliance.getArch());
+                // Build attributes
+                img.setBuildId(new Long(build.getId()));
+                img.setVersion(build.getVersion());
+                img.setImageType(build.getImageType());
+                img.setDownloadUrl(build.getDownloadURL());
+                ret.add(img);
+            }
+        }
+        return ret;
     }
 }

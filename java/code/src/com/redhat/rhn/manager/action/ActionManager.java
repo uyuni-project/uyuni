@@ -616,13 +616,17 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Creates an image deploy action
+     * Schedule deployment of an image to a vhost.
+     *
      * @return The created action
      * @param user The user scheduling image deployment
-     * @param image The image pertaining to this action
+     * @param image The image that will be deployed
+     * @param vcpus number of vcpus
+     * @param memKb memory in Kb
+     * @param br bridge device
      */
     public static Action createDeployImageAction(User user, Image image, Long vcpus,
-            Long memKb, String bridgeDevice) {
+            Long memKb, String br) {
         DeployImageAction a = (DeployImageAction)ActionFactory
                              .createAction(ActionFactory.TYPE_DEPLOY_IMAGE);
         if (user != null) {
@@ -632,14 +636,14 @@ public class ActionManager extends BaseManager {
         
         DeployImageActionDetails details = new DeployImageActionDetails();
         details.setParentAction(a);
-        details.setImageId(image.getId());
+        details.setDownloadUrl(image.getDownloadUrl());
         details.setVcpus(vcpus);
         details.setMemKb(memKb);
-        details.setBridgeDevice(bridgeDevice);
+        details.setBridgeDevice(br);
         a.setDetails(details);
 
         // TODO: Use LocalizationService.getInstance().getMessage()
-        a.setName("Image deployment: " + image.getName() + "-" + image.getVersion());
+        a.setName("Image deployment: " + image.getName() + " - " + image.getVersion());
         return a;
     }
 

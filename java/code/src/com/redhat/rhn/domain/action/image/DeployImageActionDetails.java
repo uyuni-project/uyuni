@@ -13,17 +13,16 @@ package com.redhat.rhn.domain.action.image;
 import com.redhat.rhn.domain.action.ActionChild;
 
 /**
- * DeployImageAction - Class representation of the table rhnAction.
+ * DeployImageActionDetails - Class representation of the table rhnActionImageDeploy.
  * @version $Rev$
  */
 public class DeployImageActionDetails extends ActionChild {
 
-	private static final long serialVersionUID = -2655853160693467815L;
 	private Long id;
-	private Long imageId;
 	private Long vcpus;
 	private Long memKb;
 	private String bridgeDevice;
+	private String downloadUrl;
 
 	public Long getId() {
 		return id;
@@ -62,20 +61,6 @@ public class DeployImageActionDetails extends ActionChild {
 	}
 
     /**
-     * @return Returns the images.
-     */
-    public Long getImageId() {
-        return this.imageId;
-    }
-
-    /**
-     * @param imagesIn The images to set.
-     */
-    public void setImageId(Long imageId) {
-        this.imageId = imageId;
-    }
-
-    /**
      * Set the bridge device.
      * @param bridgeDevice
      */
@@ -89,5 +74,21 @@ public class DeployImageActionDetails extends ActionChild {
      */
     public String getBridgeDevice() {
         return bridgeDevice;
+    }
+
+    /**
+     * Set the download URL.
+     * @param downloadUrl
+     */
+    public String getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    /**
+     * Return the download URL.
+     * @param downloadUrl
+     */
+    public void setDownloadUrl(String downloadUrl) {
+        this.downloadUrl = downloadUrl;
     }
 }

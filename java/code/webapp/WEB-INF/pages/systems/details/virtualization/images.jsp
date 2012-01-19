@@ -18,10 +18,10 @@
 
     <rl:listset name="groupSet">
         <rhn:csrf />
-		<html:hidden property="sid" value="${param.sid}" />
-        <rl:list dataset="pageList" 
+        <html:hidden property="sid" value="${param.sid}" />
+        <rl:list dataset="pageList"
                  emptykey="studio.images.list.noimages">
-            <rl:radiocolumn value="${current.id}" styleclass="first-column"/>
+            <rl:radiocolumn value="${current.buildId}" styleclass="first-column"/>
             <rl:column headerkey="studio.images.list.name">
                 ${current.name}
             </rl:column>
