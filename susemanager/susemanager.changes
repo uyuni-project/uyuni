@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jan 19 17:31:02 CET 2012 - ug@suse.de
+
+- remove setuid bits on oracle binary bnc#736240
+
+-------------------------------------------------------------------
 Wed Jan 18 15:10:02 CET 2012 - mantel@suse.de
 
 - fix workflow for migration: system must not be restarted between
