@@ -59,6 +59,7 @@ import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.systems.images.ProxyConfig;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.BaseManager;
@@ -625,25 +626,30 @@ public class ActionManager extends BaseManager {
      * @param memKb memory in Kb
      * @param br bridge device
      */
-    public static Action createDeployImageAction(User user, Image image, Long vcpus,
-            Long memKb, String br) {
-        DeployImageAction a = (DeployImageAction)ActionFactory
-                             .createAction(ActionFactory.TYPE_DEPLOY_IMAGE);
+    public static Action createDeployImageAction(User user, Image image,
+            Long vcpus, Long memkb, String bridge, ProxyConfig proxy) {
+        DeployImageAction a = (DeployImageAction) ActionFactory
+                .createAction(ActionFactory.TYPE_DEPLOY_IMAGE);
         if (user != null) {
             a.setSchedulerUser(user);
             a.setOrg(user.getOrg());
         }
-        
+
         DeployImageActionDetails details = new DeployImageActionDetails();
         details.setParentAction(a);
-        details.setDownloadUrl(image.getDownloadUrl());
         details.setVcpus(vcpus);
-        details.setMemKb(memKb);
-        details.setBridgeDevice(br);
+        details.setMemKb(memkb);
+        details.setBridgeDevice(bridge);
+        details.setImageType(image.getImageType());
+        details.setDownloadUrl(image.getDownloadUrl());
+        details.setProxyServer(proxy.getServer());
+        details.setProxyUser(proxy.getUser());
+        details.setProxyPass(proxy.getPass());
         a.setDetails(details);
 
         // TODO: Use LocalizationService.getInstance().getMessage()
-        a.setName("Image deployment: " + image.getName() + " - " + image.getVersion());
+        a.setName("Image deployment: " + image.getName() + " - "
+                + image.getVersion());
         return a;
     }
 

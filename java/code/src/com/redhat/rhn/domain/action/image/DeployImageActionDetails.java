@@ -22,7 +22,11 @@ public class DeployImageActionDetails extends ActionChild {
 	private Long vcpus;
 	private Long memKb;
 	private String bridgeDevice;
+	private String imageType;
 	private String downloadUrl;
+	private String proxyServer;
+	private String proxyUser;
+	private String proxyPass;
 
 	public Long getId() {
 		return id;
@@ -42,8 +46,8 @@ public class DeployImageActionDetails extends ActionChild {
     /**
      * @param inVCpus The number of cpus to set.
      */
-	public void setVcpus(Long inVcpus) {
-	    this.vcpus = inVcpus;
+	public void setVcpus(Long vcpus) {
+	    this.vcpus = vcpus;
 	}
 
     /**
@@ -54,11 +58,19 @@ public class DeployImageActionDetails extends ActionChild {
 	}
 
     /**
-     * @param inMemKb The amount of memory to set.
+     * @param memkb The amount of memory to set.
      */
-	public void setMemKb(Long inMemKb) {
-	    this.memKb = inMemKb;
+	public void setMemKb(Long memkb) {
+	    this.memKb = memkb;
 	}
+
+    /**
+     * Return the bridge device.
+     * @param bridgeDevice
+     */
+    public String getBridgeDevice() {
+        return bridgeDevice;
+    }
 
     /**
      * Set the bridge device.
@@ -68,12 +80,12 @@ public class DeployImageActionDetails extends ActionChild {
         this.bridgeDevice = bridgeDevice;
     }
 
-    /**
-     * Return the bridge device.
-     * @param bridgeDevice
-     */
-    public String getBridgeDevice() {
-        return bridgeDevice;
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
     }
 
     /**
@@ -90,5 +102,29 @@ public class DeployImageActionDetails extends ActionChild {
      */
     public void setDownloadUrl(String downloadUrl) {
         this.downloadUrl = downloadUrl;
+    }
+
+    public String getProxyServer() {
+        return proxyServer;
+    }
+
+    public void setProxyServer(String proxyServer) {
+        this.proxyServer = proxyServer;
+    }
+
+    public String getProxyUser() {
+        return proxyUser;
+    }
+
+    public void setProxyUser(String proxyUser) {
+        this.proxyUser = proxyUser;
+    }
+
+    public String getProxyPass() {
+        return proxyPass;
+    }
+
+    public void setProxyPass(String proxyPass) {
+        this.proxyPass = proxyPass;
     }
 }

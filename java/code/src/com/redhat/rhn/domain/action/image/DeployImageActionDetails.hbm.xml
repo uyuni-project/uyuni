@@ -20,6 +20,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	  <property name="memKb" type="long" column="mem_kb" />
     <property name="vcpus" type="long" column="vcpus" />
     <property name="bridgeDevice" type="string" column="bridge_device" />
+    <property name="imageType" type="string" column="image_type" />
     <property name="downloadUrl" type="string" column="download_url" />
+    <property name="proxyServer" type="string" column="proxy_server" />
+    <property name="proxyUser" type="string" column="proxy_user" />
+    <property name="proxyPass" type="string" column="proxy_pass" />
   </class>
 </hibernate-mapping>

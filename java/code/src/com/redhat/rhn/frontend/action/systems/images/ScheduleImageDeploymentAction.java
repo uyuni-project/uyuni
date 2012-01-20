@@ -61,12 +61,17 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
                                  HttpServletRequest request,
                                  HttpServletResponse response)
         throws Exception {
-
-    	Boolean submitted = false;
+        // The id of the current server and submitted flag
         Long sid = null;
-    	Long vcpus = null;
-    	Long memkb = null;
-    	String bridge = null;
+        Boolean submitted = false;
+
+        // Form parameters
+        Long vcpus = null;
+        Long memkb = null;
+        String bridge = null;
+        String proxyServer = null;
+        String proxyUser = null;
+        String proxyPass = null;
 
     	// Read parameters from the form
         if (actionForm instanceof DynaActionForm) {
@@ -78,10 +83,13 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
             submitted = submitted ==  null ? false : submitted;
 
             if (submitted) {
-                // Get the form parameters
+                // Get all form parameters
                 vcpus = (Long) form.get("vcpus");
                 memkb = (Long) form.get("mem_mb") * 1024;
                 bridge = (String) form.getString("bridge");
+                proxyServer = (String) form.getString("proxy_server");
+                proxyUser = (String) form.getString("proxy_user");
+                proxyPass = (String) form.getString("proxy_pass");
             }
         }
 
@@ -105,9 +113,15 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
                 }
             }
 
+            // Set up the proxy configuration
+            ProxyConfig proxy = null;
+            if (proxyServer != null) {
+                proxy = new ProxyConfig(proxyServer, proxyUser, proxyPass);
+            }
+
         	// Create the action and store it
             Action deploy = ActionManager.createDeployImageAction(
-                    user, image, vcpus, memkb, bridge);
+                    user, image, vcpus, memkb, bridge, proxy);
             ActionManager.addServerToAction(sid, deploy);
             ActionManager.storeAction(deploy);
             // Put a success message to the request
@@ -160,8 +174,8 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
     }
 
     /**
-     * Create an {@link Image} object out of every build of an appliance.
-     * @param appliances
+     * Create an {@link Image} object out of every build of an {@link Appliance}.
+     * @param appliances list of appliances
      * @return list of images
      */
     private List<Image> createImageList(List<Appliance> appliances,
