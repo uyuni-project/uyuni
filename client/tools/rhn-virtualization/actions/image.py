@@ -48,31 +48,33 @@ __rhnexport__ = [
 ]
 
 # download and extract tar.gz file with image
-def _getImage(imageName,serverUrl,proxySettings):
-        log.log_debug(serverUrl)
+def _getImage(imageName,serverUrl,proxySetting):
+    log.log_debug(serverUrl)
 
-        # get the file via pycurl
-        c = pycurl.Curl()
-        c.setopt(pycurl.URL, serverUrl)
+    # get the file via pycurl
+    c = pycurl.Curl()
+    c.setopt(pycurl.URL, serverUrl)
 
-        # proxy settings
-        if proxySetting["proxyServer"] != None and proxySetting["proxyServer"] != "":
-            server = proxySetting["proxyServer"]
-            port   = proxySetting["proxyPort"]
-            # proxy-host.com:8080
-            c.setopt(pycurl.PROXY, "%s:%s" % (server,port) )
-            if proxySetting["proxyUser"] != None and proxySetting["proxyUser"] != "":
-                user     = proxySetting["proxyUser"]
-                password = proxySetting["proxyPass"]
-                c.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (user,password) )
+    # proxy settings
+    if proxySetting["proxyServer"] != None and proxySetting["proxyServer"] != "":
+        server = proxySetting["proxyServer"]
+        # FIXME: port
+        port = "3128" 
+        #port   = proxySetting["proxyPort"]
+        # proxy-host.com:8080
+        c.setopt(pycurl.PROXY, "%s:%s" % (server,port) )
+        if proxySetting["proxyUser"] != None and proxySetting["proxyUser"] != "":
+            user     = proxySetting["proxyUser"]
+            password = proxySetting["proxyPass"]
+            c.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (user,password) )
 
-        ## /var/lib/libvirt/images
-        filePath = "/%s/%s" % (IMAGE_BASE_PATH, imageName)
-        f = open(filePath, 'w')
-        c.setopt(pycurl.WRITEFUNCTION, f.write)
-        c.setopt(pycurl.SSL_VERIFYPEER, 0)
-        c.perform()
-        f.close()
+    ## /var/lib/libvirt/images
+    filePath = "/%s/%s" % (IMAGE_BASE_PATH, imageName)
+    f = open(filePath, 'w')
+    c.setopt(pycurl.WRITEFUNCTION, f.write)
+    c.setopt(pycurl.SSL_VERIFYPEER, 0)
+    c.perform()
+    f.close()
     return 42
 
 def _generate_uuid():
@@ -147,27 +149,27 @@ def _imageExists(name, md5Sum):
 # download/extract and start a new image
 # imageName = myImage.x86_64.
 #
-def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB="524288", vCPUs="1", imageType="vmdk", virtBridge="xenbr0", extraParams="",cache_only=None):
+def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, vCPUs=1, imageType="vmdk", virtBridge="xenbr0", extraParams="",cache_only=None):
     """start and connect a local image with SUSE Manager"""
 
-    proxySetting = { 'proxyURL' : proxyURL,
-                     'proxyUser': proxyUser,
-                     'proxyPass': proxyPass }
+    proxySettings = { 'proxyServer' : proxyURL,
+                      'proxyUser'   : proxyUser,
+                      'proxyPass'   : proxyPass }
 
     urlParts  = downloadURL.split('/')
-    filename  = urlParts[-1]
+    fileName  = urlParts[-1]
+    checksum  = urlParts[-2]
 
     # fileName = workshop_test_sles11sp1.i686-0.0.1.vmx.tar.gz
-    nameParts = fileName.split('.',1)
+    # fileName = Just_enough_OS_openSUSE_12.1.x86_64-0.0.1.xen.tar.gz
+    m = re.search( '(.*)\.(x86_64|i\d86)-(\d+\.\d+\.\d+)\.(xen|vmx)', fileName )
 
-    # nameParts[0] = workshop_test_sles11sp1
-    # nameParts[1] = i686-0.0.1.vmx.tar.gz
-    imageName = nameParts[0]
-    m = re.search( '([^-]+)-(\d+\.\d+\.\d+)\.([^.]+)', nameParts[1] )
+    imageName = m.group(1)
+    imageArch = m.group(2)
+    imageVer  = m.group(3)
+    imageType = m.group(4)
 
-    imageArch = m.group(1)
-    imageVer  = m.group(2)
-    imageType = m.group(3)
+    log.log_debug( "name=%s arch=%s ver=%s type=%s" % (imageName,imageArch,imageVer,imageType) )
 
     if len(imageName) < 1:
         log.log_debug("invalid image name")
@@ -175,7 +177,7 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB="524288",
         log.log_debug("invalid image arch")
 
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
-        _getImage(fileName,serverURL,proxySettings)
+        _getImage(fileName,downloadURL,proxySettings)
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
         log.log_debug("fetching the image failed")
     _extractTar( IMAGE_BASE_PATH+fileName, IMAGE_BASE_PATH )
@@ -211,6 +213,7 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB="524288",
         create_xml = XEN_CREATE_TEMPLATE % create_params
     else:
         create_xml = KVM_CREATE_TEMPLATE % create_params
+    log.log_debug("libvirt XML: %s" % create_xml)
     domain = connection.defineXML(create_xml)
     domain.create()
     virt_support.refresh()
