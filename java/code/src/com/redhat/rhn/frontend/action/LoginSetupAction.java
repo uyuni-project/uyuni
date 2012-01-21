@@ -51,6 +51,9 @@ public class LoginSetupAction extends RhnAction {
 
         String rpmSchemaVersion = getRpmSchemaVersion("satellite-schema");
         if (rpmSchemaVersion == null) {
+            rpmSchemaVersion = getRpmSchemaVersion("susemanager-schema");
+        }
+        if (rpmSchemaVersion == null) {
             rpmSchemaVersion = getRpmSchemaVersion("spacewalk-schema");
         }
 
