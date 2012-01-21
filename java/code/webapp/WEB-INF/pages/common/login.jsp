@@ -11,6 +11,12 @@
 <body onLoad="disableAutoComplete();formFocus('loginForm', 'username');">
 <div id="login_page">
 
+<c:if test="${schemaUpgradeRequired == 'true'}">
+    <div class="site-alert">
+        <bean:message key="login.jsp.schemaupgraderequired" />
+    </div>
+</c:if>
+
 <c:if test="${requestScope.hasExpired != 'true'}">
 
   <h1 id="rhn_welcome3"><span><bean:message key="login.jsp.welcomemessage"/></span></h1>

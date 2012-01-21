@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.7.5
+Version: 1.7.7
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -643,6 +643,14 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Jan 18 2012 Tomas Lestach <tlestach@redhat.com> 1.7.7-1
+- 725889 - cannot compare an Object with null using equals
+  (tlestach@redhat.com)
+
+* Tue Jan 17 2012 Tomas Lestach <tlestach@redhat.com> 1.7.6-1
+- reinitialize schedules at the taskomatic start when detecting runs in the
+  future (tlestach@redhat.com)
+
 * Tue Jan 17 2012 Tomas Lestach <tlestach@redhat.com> 1.7.5-1
 - set includeantruntime to true (tlestach@redhat.com)
 
