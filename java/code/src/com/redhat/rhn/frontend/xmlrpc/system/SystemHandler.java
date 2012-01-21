@@ -140,6 +140,8 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Date;
