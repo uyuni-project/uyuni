@@ -15,15 +15,12 @@
 package com.redhat.rhn.common.util.download;
 
 
-import org.apache.log4j.Logger;
+
 import org.jfree.io.IOUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
@@ -36,8 +33,6 @@ import java.net.URL;
  * @version $Rev$
  */
 public class DownloadUtils {
-
-    private static final Logger LOGGER = Logger.getLogger(DownloadUtils.class);
 
     private DownloadUtils() {
 
@@ -80,66 +75,6 @@ public class DownloadUtils {
         }
         return toReturn.toString();
     }
-
-    public static boolean downloadToFile(String url, String path) {
-	URL u;
-        InputStream is = null;
-        FileOutputStream out = null;
-	try {
-           u = new URL(url);
-           HttpURLConnection conn = (HttpURLConnection)u.openConnection();
-           if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-	       LOGGER.error(toString(conn.getErrorStream()));
-               throw new DownloadException(url,
-                               toString(conn.getErrorStream()),
-                               conn.getResponseCode());
-           }
-           File f = new File(path);
-	   if( ! f.getParentFile().exists() && ! f.getParentFile().mkdirs() ) {
-               LOGGER.error("Creating directories failed");
-               return false;
-           }
-           boolean exist = f.createNewFile();
-           if (!exist) {
-	       LOGGER.error("File already exists");
-               throw new DownloadException(url, "File already exists.", 500);
-           }
-           else {
-             out = new FileOutputStream(f);
-             int read = 0;
-             byte[] bytes = new byte[1024];
-             is = conn.getInputStream();
-             while ((read = is.read(bytes)) != -1) {
-               out.write(bytes, 0, read);
-             }
-           }
-        }
-        catch (MalformedURLException mue) {
-	    LOGGER.error(mue.getMessage(), mue);
-            return false;
-        }
-        catch (IOException ioe) {
-	    LOGGER.error(ioe.getMessage(), ioe);
-            return false;
-        }
-        finally {
-           try {
-              if (is != null) {
-                  is.close();
-              }
-              if (out != null) {
-                  out.flush();
-                  out.close();
-              }
-           }
-           catch (IOException ioe) {
-	       LOGGER.error(ioe.getMessage(), ioe);
-               return false;
-           }
-        }
-        return true;
-    }
-
 
     private static String toString(InputStream stream) throws IOException {
         StringWriter writer = new StringWriter();

@@ -1132,11 +1132,6 @@
       <form-property name="no_scrub" type="java.lang.String" initial="value"/>
     </form-bean>
 
-    <form-bean name="downloadImagesForm"
-               type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-      <form-property name="submitted" type="java.lang.Boolean" />
-    </form-bean>
-    
     <form-bean name="deployImageForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
       <form-property name="sid" type="java.lang.Long" />
@@ -7728,19 +7723,6 @@
      </action>
 
     <!-- SUSE Studio Pages -->
-
-    <action path="/studio/List"
-        scope="request"
-        name="downloadImagesForm"
-        type="com.redhat.rhn.frontend.action.systems.images.ScheduleImageDownloadAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/studio/list.jsp" />
-        <forward name="success" 
-                 redirect="true" 
-                 path="/studio/List.do" />
-    </action>
 
     <action path="/systems/details/virtualization/ImageDeployment"
         scope="request"

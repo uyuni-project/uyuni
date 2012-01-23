@@ -77,7 +77,4 @@ INSERT INTO rhnTaskoTask (id, name, class)
 INSERT INTO rhnTaskoTask (id, name, class)
          VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'mgr-register', 'com.redhat.rhn.taskomatic.task.NccRegisterTask');
 
-INSERT INTO rhnTaskoTask (id, name, class)
-         VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'image-download', 'com.redhat.rhn.taskomatic.task.ImageDownloadTask');
-
 commit;

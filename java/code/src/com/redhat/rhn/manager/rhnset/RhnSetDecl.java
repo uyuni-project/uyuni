@@ -372,8 +372,6 @@ public class RhnSetDecl {
     public static final RhnSetDecl SSM_CHANNEL_UNSUBSCRIBE = make(
             "ssm_channel_unsubscribe", SetCleanup.NOOP);
 
-    public static final RhnSetDecl IMAGES = make("images", SetCleanup.NOOP);
-    
     private SetCleanup cleanup;
     private String label;
 
