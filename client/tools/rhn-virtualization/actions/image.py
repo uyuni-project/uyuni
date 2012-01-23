@@ -113,11 +113,11 @@ def _extractTar( source, dest ):
     param = "xf"
     if not os.path.exists( source ):
         log.log_debug("file not found: ", source)
-        return -1
+        return 1
 
     if not os.path.exists( dest ):
         log.log_debug("path not found: ", dest)
-        return -1
+        return 2
 
     if( source.endswith("gz") ):
         param = param + "z"
@@ -128,6 +128,7 @@ def _extractTar( source, dest ):
     log.log_debug(cmd)
     if os.system( cmd ) != 0:
         log.log_debug( "%s failed" % cmd )
+        return 3
 
     return 0
 
@@ -173,19 +174,25 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, v
 
     if len(imageName) < 1:
         log.log_debug("invalid image name")
+        return (1, "invalid image name: name=%s arch=%s ver=%s type=%s" % (imageName,imageArch,imageVer,imageType), {})
     if len(imageArch) < 1:
         log.log_debug("invalid image arch")
+        return (1, "invalid image arch: name=%s arch=%s ver=%s type=%s" % (imageName,imageArch,imageVer,imageType), {})
 
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
         _getImage(fileName,downloadURL,proxySettings)
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
         log.log_debug("fetching the image failed")
-    _extractTar( IMAGE_BASE_PATH+fileName, IMAGE_BASE_PATH )
+        return (1, "fetching the image failed", {})
+    extractTarStatus = _extractTar( IMAGE_BASE_PATH+fileName, IMAGE_BASE_PATH )
+    if _extractTarStatus != 0:
+        return (1, "extracting the image tarball failed with error code %s" % extractTarStatus, {})
 
     # image exists in /var/lib/libvirt/images/image-name now
 
     connection = _connect_to_hypervisor()
     uuid = _generate_uuid()
+    # FIXME: check for the extensions. There might be more
     studioFileExtension = "vmdk"
     if imageType == "xen":
         studioFileExtension = "raw"
@@ -193,6 +200,8 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, v
     # FIXME
     imagePath = IMAGE_BASE_PATH + "/" + fileName
     log.log_debug("working on image in %s" % imagePath)
+    if not os.path.exists( imagePath ):
+        return (1, "extracted image not found at %s" % imagePath, {})
     if imageArch in ( 'i386', 'i486', 'i568' ):
         imageArch = 'i686'
 
@@ -214,7 +223,12 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, v
     else:
         create_xml = KVM_CREATE_TEMPLATE % create_params
     log.log_debug("libvirt XML: %s" % create_xml)
-    domain = connection.defineXML(create_xml)
+    domain = None
+    try:
+        domain = connection.defineXML(create_xml)
+    except Exception, e:
+        return (1, "failed to pass XML to libvirt: %s" % e, {})
+
     domain.create()
     virt_support.refresh()
 
