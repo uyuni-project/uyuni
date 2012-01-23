@@ -32,7 +32,8 @@ Including the site-wide font set*/
 }
 #top-wrap
 {
-	background: #83B354 url(/img/bg-header.png) no-repeat 50% 41px;
+	background: #83B354;
+	/* url(/img/bg-header.png) no-repeat 50% 41px;*/
 	width: 100%;
 	min-width: 80em;
 }
