@@ -1329,6 +1329,13 @@ class Registration(rhnHandler):
                 'receiving_updates' : receiving_updates,
                 'channels' : eus_channels}
 
+    def suse_update_products(self, system_id, guid, secret, target, products):
+        log_debug(5, system_id, guid, target, products)
+        server = self.auth_system(system_id)
+        log_debug(1, server.getid(), guid)
+        server.update_suse_products(guid, secret, target, products)
+        return 0
+
 def _faultValueString(value, name):
     return _("Invalid value '%s' for %s (%s)") % (
         str(value), str(name), type(value))
