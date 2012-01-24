@@ -1248,10 +1248,7 @@ class Backend:
     def update_newest_package_cache(self, caller, affected_channels, name_ids=[]):
         # affected_channels is a hash keyed on the channel id, and with a
         # tuple (added_package_list, deleted_package_list) as values
-        if len(name_ids) > 0:
-            refresh_newest_package = self.dbmodule.Procedure('rhn_channel.refresh_newest_package_light')
-        else:
-            refresh_newest_package = self.dbmodule.Procedure('rhn_channel.refresh_newest_package')
+        refresh_newest_package = self.dbmodule.Procedure('rhn_channel.refresh_newest_package')
         update_channel = self.dbmodule.Procedure('rhn_channel.update_channel')
         for channel_id, (added_packages_list, deleted_packages_list) in affected_channels.items():
             try:
