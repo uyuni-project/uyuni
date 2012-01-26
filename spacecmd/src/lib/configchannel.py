@@ -24,6 +24,7 @@ from optparse import Option
 from datetime import datetime
 from time import strftime
 from spacecmd.utils import *
+import base64
 
 def help_configchannel_list(self):
     print 'configchannel_list: List all configuration channels'
@@ -364,6 +365,22 @@ def do_configchannel_delete(self, args):
 
 ####################
 
+def file_needs_b64_enc(self, contents):
+
+    # we try to catch files automatically which will not work
+    # correctly via the API so that they get uploaded correctly
+
+    # Files with trailing newlines, which the API strips from files
+    # uploaded as text, to avoid this we upload them as base64 encoded
+    if contents != contents.rstrip():
+        logging.info("trailing newlines detected, uploading as binary")
+        return True
+
+    # TODO : Add other exceptions here, e.g those containing characters which
+    # are valid ascii but not valid XML (e.g the escape character)
+
+    return False
+
 def help_configchannel_addfile(self):
     print 'configchannel_addfile: Create a configuration file'
     print '''usage: configchannel_addfile [CHANNEL] [options]
@@ -378,8 +395,14 @@ options:
   -x SELINUX_CONTEXT
   -d path is a directory
   -s path is a symlink
+  -b path is a binary (or other file which needs base64 encoding)
   -t SYMLINK_TARGET
-  -f local path to file contents'''
+  -f local path to file contents
+
+  Note re binary/base64: Some text files, notably those containing blank lines
+  and those containing ASCII escape characters (or other charaters not allowed
+  or processed correctly as text via the XMLRPC API) need to be sent as binary
+'''
 
 def complete_configchannel_addfile(self, text, line, beg, end):
     return tab_completer(self.do_configchannel_list('', True), text)
@@ -395,6 +418,7 @@ def do_configchannel_addfile(self, args, update_path=''):
                 Option('-f', '--file', action='store'),
                 Option('-r', '--revision', action='store'),
                 Option('-s', '--symlink', action='store_true'),
+                Option('-b', '--binary', action='store_true'),
                 Option('-d', '--directory', action='store_true') ]
 
     (args, options) = parse_arguments(args, options)
@@ -520,6 +544,16 @@ def do_configchannel_addfile(self, args, update_path=''):
 
                     contents = editor(template = template, delete = True)
     else:
+        # the channel name can be passed in without -c
+        if len(args):
+            options.channel = args[0]
+
+        if not options.channel:
+            logging.error("The channel name is required")
+            return
+
+        logging.debug("Using channel %s" % options.channel)
+
         if not options.path:
             logging.error('The path is required')
             return
@@ -527,6 +561,16 @@ def do_configchannel_addfile(self, args, update_path=''):
         if not options.symlink and not options.directory:
             if options.file:
                 contents = read_file(options.file)
+                # If binary mode explicitly specified, we always base64 encode
+                # we also check the file contents to see if we detect a file
+                # which needs encoding
+                if options.binary:
+                    logging.debug("Binary selected, base64 encoding contents")
+                    contents = base64.b64encode(contents)
+                elif self.file_needs_b64_enc(contents):
+                    logging.debug("Detected file needs base64 encoding")
+                    contents = base64.b64encode(contents)
+                    options.binary = True
             else:
                 logging.error('You must provide the file contents')
                 return
@@ -565,6 +609,9 @@ def do_configchannel_addfile(self, args, update_path=''):
                       'selinux_ctx' : options.selinux_ctx,
                       'permissions' : options.mode }
 
+        if options.binary:
+            file_info['contents_enc64'] = True
+
         print 'Path:            %s' % options.path
         print 'Directory:       %s' % options.directory
         print 'Owner:           %s' % file_info['owner']
@@ -579,7 +626,10 @@ def do_configchannel_addfile(self, args, update_path=''):
 
         if not options.directory:
             print
-            print 'Contents'
+            if options.binary:
+                print 'Contents (base64 encoded)'
+            else:
+                print 'Contents'
             print '--------'
             print file_info['contents']
 
@@ -891,9 +941,34 @@ def import_configchannel_fromdetails(self, ccdetails):
                     isdir = True
                 else:
                     isdir = False
+                    # If binary files (or those containing characters which are
+                    # invalid in XML, e.g the ascii escape character) are
+                    # exported, you end up with a file with no "contents" key
+                    # I guess the best thing to do here flag an error and
+                    # import everything else
+                    if not filedetails.has_key('contents'):
+                        logging.error("Failed trying to import file %s" % path)
+                        logging.error("if it is a binary file, or contains" +
+                            " characters not valid in XML these can't be" +\
+                            " exported correctly via the API")
+                        continue
+                    # Now we check if the file needs base64 encoding
+                    # This will be because of trailing newlines (which get
+                    # eaten by the API), since as mentioned above, binary
+                    # and other problematic files can't be exported (there's
+                    # no option to export in base64 encoded format AFAICS)
+                    elif self.file_needs_b64_enc(filedetails['contents']):
+                        logging.debug("Detected file needs base64 encoding")
+                        filedetails['contents'] =\
+                            base64.b64encode(filedetails['contents'])
+                        filedetails['contents_enc64'] = True
+
                 logging.debug("Creating %s %s" % \
                     (filedetails['type'], filedetails))
-                del filedetails['type']
+                if filedetails.has_key('type'):
+                    del filedetails['type']
+                if filedetails.has_key('binary'):
+                    del filedetails['binary']
                 ret = self.client.configchannel.createOrUpdatePath(\
                     self.session, ccdetails['label'], path, isdir, filedetails)
             if ret != None:

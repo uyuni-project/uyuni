@@ -14,11 +14,16 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.config.ConfigRevision;
+import com.redhat.rhn.domain.config.EncodedConfigRevision;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
+import org.apache.commons.codec.binary.Base64;
+
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.text.DecimalFormat;
 
@@ -43,7 +48,9 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop_desc("string", "target_path","Symbolic link Target File Path.
  *                              Present for Symbolic links only.")
  *   #prop_desc("string", "channel","Channel Name")
- *   #prop_desc("string", "contents","File contents for text files only.")
+ *   #prop_desc("string", "contents","File contents (base64 encoded according
+                to the contents_enc64 attribute)")
+ *   #prop_desc("boolean", "contents_enc64"," Identifies base64 encoded content")
  *   #prop_desc("int", "revision","File Revision")
  *   #prop_desc($date, "creation","Creation Date")
  *   #prop_desc($date, "modified","Last Modified Date")
@@ -118,17 +125,45 @@ public class ConfigRevisionSerializer implements XmlRpcCustomSerializer {
         if (rev.isFile()) {
             helper.add(BINARY, rev.getConfigContent().isBinary());
             helper.add("md5", rev.getConfigContent().getChecksum().getChecksum());
-            if (!rev.getConfigContent().isBinary()) {
-                String content = rev.getConfigContent().getContentsString();
-                if (!StringUtil.containsInvalidXmlChars2(content)) {
-                    helper.add(CONTENTS, content);
-                }
-                helper.add(MACRO_START, rev.getConfigContent().getDelimStart());
-                helper.add(MACRO_END, rev.getConfigContent().getDelimEnd());
+            if (rev instanceof EncodedConfigRevision) {
+                addEncodedFileContent(rev, helper);
             }
+            else {
+                addFileContent(rev, helper);
+            }
+
         }
         helper.add("channel", rev.getConfigFile().getConfigChannel().getName());
         helper.writeTo(output);
     }
 
+    protected void addFileContent(ConfigRevision rev, SerializerHelper helper) {
+        if (!rev.getConfigContent().isBinary()) {
+            String content = rev.getConfigContent().getContentsString();
+            if (!StringUtil.containsInvalidXmlChars2(content)) {
+                helper.add(CONTENTS, content);
+                helper.add(CONTENTS_ENC64, Boolean.FALSE);
+            }
+            helper.add(MACRO_START, rev.getConfigContent().getDelimStart());
+            helper.add(MACRO_END, rev.getConfigContent().getDelimEnd());
+        }
+    }
+
+    protected void addEncodedFileContent(ConfigRevision rev, SerializerHelper helper) {
+        String content = rev.getConfigContent().getContentsString();
+        try {
+            helper.add(CONTENTS, new String(Base64.encodeBase64(content.getBytes("UTF-8")),
+                    "UTF-8"));
+        }
+         catch (UnsupportedEncodingException e) {
+             String msg = "Following errors were encountered " +
+                     "when creating the config file.\n" + e.getMessage();
+                 throw new FaultException(1023, "ConfgFileError", msg);
+        }
+        helper.add(CONTENTS_ENC64, Boolean.TRUE);
+        if (!rev.getConfigContent().isBinary()) {
+            helper.add(MACRO_START, rev.getConfigContent().getDelimStart());
+            helper.add(MACRO_END, rev.getConfigContent().getDelimEnd());
+        }
+    }
 }

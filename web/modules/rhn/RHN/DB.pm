@@ -84,8 +84,8 @@ sub apache_child_init_handler {
   my @aliases = @_ ? @_ : ($RHN::DB::default_handle);
 
   for my $alias (@aliases) {
-    if (RHN::DB->lookup_alias($alias)) {
-      RHN::DB->connect($alias);
+    if ($class->lookup_alias($alias)) {
+      $class->connect($alias);
     }
   }
 }
@@ -144,7 +144,7 @@ sub connect {
   # TODO: Once upon a time these aliases were just Oracle dsn's, if the incoming
   # alias is in this format, convert it to an Oracle dbi string?
 
-  $alias ||= ($RHN::DB::default_connection ||= RHN::DB->get_dbi_connection_string(
+  $alias ||= ($RHN::DB::default_connection ||= $class->get_dbi_connection_string(
                                                     PXT::Config->get("db_backend"),
                                                     PXT::Config->get("db_host"),
                                                     PXT::Config->get("db_port"),
@@ -168,10 +168,10 @@ sub connect {
     $ENV{NLS_LANG} = $nls_lang;
   }
 
-  RHN::DB->add_alias($alias, PXT::Config->get("db_user"),
+  $class->add_alias($alias, PXT::Config->get("db_user"),
                      PXT::Config->get("db_password"), { });
 
-  my $alias_data = RHN::DB->lookup_alias($alias);
+  my $alias_data = $class->lookup_alias($alias);
   Carp::croak "RHN::DB->connect($alias): No such alias '$alias'" unless $alias_data;
 
   my $params;
@@ -394,17 +394,12 @@ sub ping {
     $dbh = shift;
   }
 
-  eval {
-    my $ping_query;
+  my $ret = eval {
+    if ($dbh->{Driver}->{Name} eq 'Pg') {
+      return $dbh->SUPER::ping();
+    }
 
-    # again, we only do different if the db explicitly is Pg, not if
-    # it isn't just Oracle.  defensive.
-    if ($dbh->{Driver}->{Name} eq 'Pg' or $dbh->{Driver}->{Name} eq 'mysql' or $dbh->{Driver}->{Name} eq 'SQLite') {
-      $ping_query = "SELECT 1 + 2";
-    }
-    else {
-      $ping_query = "SELECT 1 + 2 FROM DUAL";
-    }
+    my $ping_query = "SELECT 1 + 2 FROM DUAL";
 
     my $sth = $dbh->prepare_cached($ping_query);
     return 0 unless $sth;
@@ -421,7 +416,7 @@ sub ping {
     return 0;
   }
   else {
-    return 1;
+    return $ret;
   }
 }
 

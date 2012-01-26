@@ -673,7 +673,7 @@ class BugItem(BaseItem):
     tagMap = {
         'rhn-erratum-bug-id'        : 'bug_id',
         'rhn-erratum-bug-summary'   : 'summary',
-        'rhn-erratum-bug-summary'   : 'href',
+        'rhn-erratum-bug-href'      : 'href',
     }
 addItem(BugItem)
 

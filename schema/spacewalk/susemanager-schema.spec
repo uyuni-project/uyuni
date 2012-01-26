@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.7.14
+Version:        1.7.20
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,25 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Wed Jan 25 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.20-1
+- 756918 - fix data for package_group
+
+* Mon Jan 23 2012 Jan Pazdziora 1.7.19-1
+- Dropping rhn_bl_obs_mod_trig_fun which was not dropped when
+  rhnBlacklistObsoletes was being removed.
+
+* Mon Jan 23 2012 Jan Pazdziora 1.7.18-1
+- Drop any three-parameter rhn_prepare_install.
+
+* Mon Jan 23 2012 Jan Pazdziora 1.7.17-1
+- 783223 - we need to drop the original smallint-ish functions.
+
+* Mon Jan 23 2012 Jan Pazdziora 1.7.16-1
+- 783223 - We need to regenerate rhn_install_satellite and rhn_prepare_install.
+
+* Mon Jan 23 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.15-1
+- 756918 - fix data for package_group
+
 * Wed Jan 18 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.14-1
 - drop old refresh_newest_package prototype
 
