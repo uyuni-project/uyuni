@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 Novell
+ * Copyright (c) 2012 Novell
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,9 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.systems.images;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,28 +27,22 @@ import org.apache.struts.action.DynaActionForm;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.image.Image;
-import com.redhat.rhn.domain.image.ImageFactory;
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.renderers.ImagesRenderer;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.frontend.struts.RhnListAction;
+import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
-import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.suse.studio.client.SUSEStudioClient;
-import com.suse.studio.client.data.Appliance;
-import com.suse.studio.client.data.Build;
 
 /**
  * This action will present the user with a list of available images
  * and allow one to be selected for provisioning.
  */
-public class ScheduleImageDeploymentAction extends RhnListAction implements Listable {
+public class ScheduleImageDeploymentAction extends RhnAction {
 
-    private static final String DATA_SET = "pageList";
     private static final String SUCCESS_KEY = "studio.deployment.scheduled";
 
     /** {@inheritDoc} */
@@ -103,8 +94,9 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
             String buildId = ListTagHelper.getRadioSelection(ListHelper.LIST, request);
 
             // Get the images from the session and find the selected one
-            List<Image> images = (List<Image>) request.getSession().getAttribute("images");
-            request.getSession().removeAttribute("images");
+            List<Image> images = (List<Image>) request.getSession().getAttribute(
+                    ImagesRenderer.IMAGES_LIST);
+            request.getSession().removeAttribute(ImagesRenderer.IMAGES_LIST);
             Image image = null;
             for (Image i : images) {
                 if (i.getBuildId().equals(new Long(buildId))) {
@@ -133,70 +125,12 @@ public class ScheduleImageDeploymentAction extends RhnListAction implements List
             forward = getStrutsDelegate().forwardParams(
                     actionMapping.findForward("success"), forwardParams);
         } else {
-            // Put the server to the request for the header
+            // Put the server to the request (needed for system header)
             Server server = SystemManager.lookupByIdAndUser(sid, user);
             request.setAttribute("system", server);
-
-            // Setup the list of images
-            ListHelper helper = new ListHelper(this, request);
-            helper.setDataSetName(DATA_SET);
-            helper.execute();
-
-            // Temporarily write images to the session
-            request.getSession().setAttribute("images", helper.getDataSet());
 
             forward = actionMapping.findForward("default");
         }
         return forward;
-    }
-
-    /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
-        List<Appliance> ret = new ArrayList<Appliance>();
-
-        // Take credentials stored with the org
-        Org org = context.getCurrentUser().getOrg();
-        String user = org.getStudioUser();
-        String apikey = org.getStudioKey();
-
-        // Get appliance builds from studio
-        if (user != null && apikey != null) {
-            SUSEStudioClient client = new SUSEStudioClient(user, apikey);
-            try {
-                ret = client.getAppliances();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        // Convert to a list of images
-        return createImageList(ret, context);
-    }
-
-    /**
-     * Create an {@link Image} object out of every build of an {@link Appliance}.
-     * @param appliances list of appliances
-     * @return list of images
-     */
-    private List<Image> createImageList(List<Appliance> appliances,
-            RequestContext context) {
-        List<Image> ret = new LinkedList<Image>();
-        for (Appliance appliance : appliances) {
-            // Create one image object for every build
-            for (Build build : appliance.getBuilds()) {
-                Image img = ImageFactory.createImage();
-                img.setOrg(context.getCurrentUser().getOrg());
-                // Appliance attributes
-                img.setName(appliance.getName());
-                img.setArch(appliance.getArch());
-                // Build attributes
-                img.setBuildId(new Long(build.getId()));
-                img.setVersion(build.getVersion());
-                img.setImageType(build.getImageType());
-                img.setDownloadUrl(build.getDownloadURL());
-                ret.add(img);
-            }
-        }
-        return ret;
     }
 }
