@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jan 26 13:06:16 CET 2012 - mantel@suse.de
+
+- the file /etc/NOCpulse.ini contains passwords so it must not be
+  world-readable (BNC#742924)
+
+-------------------------------------------------------------------
 Fri Jun 10 16:54:29 CEST 2011 - mc@suse.de
 
 - because of a secfix in perl-libwww-perl we must use IO-Socket-SSL

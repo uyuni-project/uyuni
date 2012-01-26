@@ -65,7 +65,13 @@ sub save {
 WARNING
   $fh->close() or die "Error closing $filename: $!";
   # Be sure to make the file world-readable!
-  chmod(0644, $filename) or die "Couldn't chmod $filename: $!";
+  # chmod(0644, $filename) or die "Couldn't chmod $filename: $!";
+  #
+  # This file contains passwords, so it MUST NOT be world-readable!
+  #
+  eval { system("chgrp", "www", $filename); };
+  die "Couldn't chgrp $filename: $!" if $@;
+  chmod(0640, $filename) or die "Couldn't chmod $filename: $!";
 }
 
 # return content of NOCpulse.ini (as fetched from db).
