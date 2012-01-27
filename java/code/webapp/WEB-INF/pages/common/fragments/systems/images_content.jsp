@@ -3,6 +3,12 @@
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-html" prefix="html" %>
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-bean" prefix="bean" %>
 
+<rhn:toolbar base="h1" img="/img/susestudio.png"></rhn:toolbar>
+
+<div class="page-summary">
+    <p>Please choose one of the available images below for deployment to this virtual host.</p>
+</div>
+
 <rl:listset name="groupSet">
     <rhn:csrf />
     <html:hidden property="sid" value="${param.sid}" />

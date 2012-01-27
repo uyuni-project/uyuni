@@ -14,22 +14,12 @@
 
 <body>
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
-  <br/>
 
-	<rhn:toolbar base="h1" img="/img/susestudio.png"></rhn:toolbar>
-
-	<div class="page-summary">
-      <p>Please choose one of the available SUSE Studio images below for deployment to this virtual host.</p>
-	</div>
-
-  <div style="clear: both;">
-    <div id="images-content" class="full-width-wrapper">
-      <div style="text-align:center"><img src="/img/please-wait.gif" alt="Please Wait" /></div>
-      <script type="text/javascript">
-        ImagesRenderer.renderAsync(makeAjaxCallback("images-content", false));
-      </script>
-    </div>
+  <div id="images-content">
+    <div style="text-align:center">Contacting SUSE Studio, please wait!<br /><img src="/img/spinner.gif" /></div>
+    <script type="text/javascript">
+      ImagesRenderer.renderAsync(makeAjaxCallback("images-content", false));
+    </script>
   </div>
-
 </body>
 </html>
