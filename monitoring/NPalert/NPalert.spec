@@ -15,7 +15,7 @@ Name:         NPalert
 Summary:      NOCpulse notification system
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.126.28
+Version:      1.126.29
 Release:      1%{?dist}
 BuildArch:    noarch
 %if 0%{?suse_version}
@@ -168,6 +168,9 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Jan 27 2012 Jan Pazdziora 1.126.29-1
+- 730305 - Upon start, wait for generate-config to generate the config.
+
 * Tue Jan 24 2012 Jan Pazdziora 1.126.28-1
 - When we rollback before going to sleep, we won't keep transaction active.
 
