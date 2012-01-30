@@ -277,7 +277,7 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/Dobby.pm
 %attr(640,root,%{apache_group}) %{_sysconfdir}/rhn/default/rhn_dobby.conf
 %attr(0755,root,root) %{_sysconfdir}/cron.daily/check-oracle-space-usage.sh
-%config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/oracle
+%config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/susemanager-database
 %{perl_vendorlib}/Dobby/
 %dir /etc/rhn
 %dir /etc/rhn/default

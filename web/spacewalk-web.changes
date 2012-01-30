@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 30 14:58:09 CET 2012 - mantel@suse.de
+
+- fix filelist in specfile
+
+-------------------------------------------------------------------
 Mon Jan 30 13:51:51 CET 2012 - mantel@suse.de
 
 - modify etc/sysconfig/SuSEfirewall2.d/services/oracle so it gets
