@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan 30 13:51:51 CET 2012 - mantel@suse.de
+
+- modify etc/sysconfig/SuSEfirewall2.d/services/oracle so it gets
+  displayed correctly in YaST
+
+-------------------------------------------------------------------
 Wed Jan 18 15:56:43 CET 2012 - mantel@suse.de
 
 - add etc/sysconfig/SuSEfirewall2.d/services/oracle

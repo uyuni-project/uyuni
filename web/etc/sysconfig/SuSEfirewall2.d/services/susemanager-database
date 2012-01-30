@@ -1,0 +1,5 @@
+## Name: SUSE Manager Database                                                                                                                                                                                 
+## Description: remote access to SUSE Manager embedded database                                                                                                                                                
+
+# space separated list of allowed TCP ports
+TCP="1521"
