@@ -437,7 +437,7 @@ def activateProxy(options, apiVersion):
         
     if errorCode != 0:
         if not errorString:
-            errorString = ("An unknown error occured. Consult with your Novell representative.\n")
+            errorString = ("An unknown error occured. Consult with your SUSE representative.\n")
         sys.stderr.write("\nThere was a problem activating the SUSE Manager Proxy entitlement:\n%s\n" % errorString)
         sys.exit(abs(errorCode))
         
@@ -573,7 +573,7 @@ def main():
         errorCode, errorString = createMonitoringScout(options)
         if errorCode != 0:
             if not errorString:
-                errorString = ("An unknown error occured. Consult with your Novell representative.\n")
+                errorString = ("An unknown error occured. Consult with your SUSE representative.\n")
             sys.stderr.write("\nThere was a problem activating Monitoring Scout:\n%s\n" % errorString)
             sys.exit(abs(errorCode))
         else:
