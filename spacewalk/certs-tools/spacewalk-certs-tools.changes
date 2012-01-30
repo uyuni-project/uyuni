@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jan 30 15:50:46 CET 2012 - ma@suse.de
+
+- Enforce removal of zmd stack to support OES management (bnc#743955)
+
+-------------------------------------------------------------------
 Mon Jan 16 15:29:28 CET 2012 - ma@suse.de
 
 - Prevent monthly registration on SUSE Manager clients (FATE#312315)

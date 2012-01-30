@@ -313,7 +313,7 @@ if [ "$INSTALLER" == zypper ]; then
 	  if [ -x /usr/sbin/rczmd ]; then
 	    /usr/sbin/rczmd stop
 	  fi
-	  rpm -e $Z_ZMD_TODEL || {
+	  rpm -e --nodeps $Z_ZMD_TODEL || {
 	    echo "ERROR: Failed remove the ZMD stack."
 	    exit 1
 	  }
