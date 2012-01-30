@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan 30 14:13:37 CET 2012 - mantel@suse.de
+
+- fix spelling in
+  /etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server
+
+-------------------------------------------------------------------
 Thu Jan 19 17:31:02 CET 2012 - ug@suse.de
 
 - remove setuid bits on oracle binary bnc#736240

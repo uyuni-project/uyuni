@@ -1,5 +1,5 @@
-## Name: suse-manager-server
-## Description: opens ports requied ports for SUSE Manager Server
+## Name: SUSE Manager Server
+## Description: required ports for SUSE Manager Server
 
 # space separated list of allowed TCP ports
 TCP="http https ssh xmpp-client xmpp-server tftp"
