@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jan 31 16:17:00 CET 2012 - mantel@suse.de
+
+- some more renames Novell --> SUSE
+
+-------------------------------------------------------------------
 Thu Sep  8 13:42:39 CEST 2011 - iartarisi@suse.cz
 
 - remove Shell/SQLPlus.pm from main package, because it is in the
