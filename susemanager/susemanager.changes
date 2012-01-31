@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 31 14:47:49 CET 2012 - mantel@suse.de
+
+- reset job_queue_processes to default value of 1000 after
+  adjusting character set
+
+-------------------------------------------------------------------
 Mon Jan 30 14:13:37 CET 2012 - mantel@suse.de
 
 - fix spelling in
