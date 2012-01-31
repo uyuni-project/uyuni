@@ -179,6 +179,7 @@ alter database character set internal_use utf8;
 shutdown immediate;
 startup;
 select value from nls_database_parameters where parameter='NLS_CHARACTERSET';
+alter system set job_queue_processes=1000;
 create smallfile tablespace data_tbs datafile '/opt/apps/oracle/oradata/susemanager/data_01.dbf' size 500M autoextend on blocksize 8192;
 create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
 grant dba to $MANAGER_USER;
