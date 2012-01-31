@@ -68,8 +68,10 @@ Requires: tomcat6
 Requires: xalan-j2 >= 2.6.0
 Requires: xerces-j2
 Requires: simple-core
+Requires: simple-xml
 Requires: sitemesh
 Requires: stringtree-json
+Requires: susestudio-java-client
 Requires: spacewalk-java-config
 Requires: spacewalk-java-lib
 Requires: spacewalk-java-jdbc
@@ -131,9 +133,11 @@ BuildRequires: redstone-xmlrpc
 BuildRequires: oscache
 BuildRequires: quartz
 BuildRequires: simple-core
+BuildRequires: simple-xml
 BuildRequires: snakeyaml
 BuildRequires: stringtree-json
 BuildRequires: struts
+BuildRequires: susestudio-java-client
 BuildRequires: sitemesh
 BuildRequires: postgresql-jdbc
 # the following line is for spell checking script

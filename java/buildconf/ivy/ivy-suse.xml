@@ -63,6 +63,7 @@
         <dependency org="suse" name="regexp" rev="1.4" />
         <dependency org="suse" name="sitemesh" rev="2.1" />
         <dependency org="suse" name="simple-core" rev="3.1.3" />
+        <dependency org="suse" name="simple-xml" rev="2.6.2" />
         <!-- dependency org="suse" name="slf4j-api" rev="1.6.1" /-->
         <!-- dependency org="suse" name="slf4j-log4j12" rev="1.5.10" /-->
         <!-- dependency org="suse" name="smtp" rev="1.3.1" /-->
@@ -70,6 +71,7 @@
         <dependency org="suse" name="stringtree-json" rev="2.0.9" />
         <dependency org="suse" name="struts" rev="1.2.9" />
         <dependency org="suse" name="strutstest" rev="2.1.3" />
+        <dependency org="suse" name="susestudio-java-client" rev="0.1.0" />
         <dependency org="suse" name="taglibs-core" rev="1.1.1" />
         <dependency org="suse" name="taglibs-standard" rev="1.1.1" />
         <dependency org="suse" name="tanukiwrapper" rev="3.2.3" />

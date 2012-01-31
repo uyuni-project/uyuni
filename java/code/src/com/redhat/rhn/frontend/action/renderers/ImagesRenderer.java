@@ -28,7 +28,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
-import com.suse.studio.client.SUSEStudioClient;
+import com.suse.studio.client.SUSEStudio;
 import com.suse.studio.client.data.Appliance;
 import com.suse.studio.client.data.Build;
 
@@ -73,9 +73,9 @@ public class ImagesRenderer extends BaseFragmentRenderer {
 
         // Get appliance builds from studio
         if (user != null && apikey != null) {
-            SUSEStudioClient client = new SUSEStudioClient(usr, apikey);
+            SUSEStudio studio = new SUSEStudio(usr, apikey);
             try {
-                ret = client.getAppliances();
+                ret = studio.getAppliances();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -105,7 +105,7 @@ public class ImagesRenderer extends BaseFragmentRenderer {
                 img.setBuildId(new Long(build.getId()));
                 img.setVersion(build.getVersion());
                 img.setImageType(build.getImageType());
-                img.setDownloadUrl(build.getDownloadURL());
+                img.setDownloadUrl(build.getDownloadUrl());
                 ret.add(img);
             }
         }

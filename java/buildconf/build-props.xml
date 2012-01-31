@@ -108,7 +108,7 @@
              tomcat6/jasper tomcat6/jasper-el ../tomcat6/bin/tomcat6-juli tomcat6-jsp-2.1-api tomcat6/el-api javamail jdom
              log4j oro redstone-xmlrpc-client redstone-xmlrpc servletapi5 struts 
              jcommon stringtree-json postgresql-jdbc
-             jfreechart taglibs-core quartz snakeyaml
+             jfreechart taglibs-core quartz snakeyaml simple-xml susestudio-java-client
              commons-fileupload concurrent simple-core" />
 
   <property name="dist.jar.dependencies"
@@ -120,7 +120,7 @@
              jaf tomcat6/jasper tomcat6/jasper-el tomcat6-jsp-2.1-api tomcat6/el-api javamail jcommon jdom
              jfreechart log4j redstone-xmlrpc-client redstone-xmlrpc
              oro oscache quartz stringtree-json sitemesh struts taglibs-core
-             taglibs-standard tanukiwrapper  postgresql-jdbc snakeyaml
+             taglibs-standard tanukiwrapper  postgresql-jdbc snakeyaml simple-xml susestudio-java-client
              xalan-j2 xerces-j2 xml-commons-apis simple-core" />
 
   <path id="bootjars">
