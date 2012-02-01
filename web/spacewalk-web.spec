@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.7.9
+Version: 1.7.14
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -252,6 +252,7 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/SessionSwap.pm
 %{perl_vendorlib}/RHN/Exception.pm
 %{perl_vendorlib}/RHN/DB.pm
+%{perl_vendorlib}/RHN/DBI.pm
 %{perl_vendorlib}/PXT/Config.pm
 %attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_web.conf
 %dir %{_prefix}/share/rhn
@@ -309,6 +310,31 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Wed Feb 01 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.14-1
+- fixing string quoting
+
+* Tue Jan 31 2012 Miroslav Suchý 1.7.13-1
+- port usage of sequences to PostgreSQL
+
+* Tue Jan 31 2012 Jan Pazdziora 1.7.12-1
+- code cleanup: users are not created in web any more (msuchy@redhat.com)
+- The RHN::DB::connect does not accept any arguments anymore.
+- Factor the connection parameters config read to RHN::DBI, start to use it in
+  RHN::DB, also support just one database connection.
+- Removing code which is long commented out.
+- Removing the web.debug_disable_database option -- it is not supported beyond
+  RHN::DB anyway.
+
+* Mon Jan 30 2012 Jan Pazdziora 1.7.11-1
+- One sequence_nextval fix.
+- Refactored the evr_t(null, ...) and null and max.
+- The $rhn_class is always empty, removing.
+
+* Mon Jan 30 2012 Miroslav Suchý 1.7.10-1
+- In Spacewalk do not test presence of rhn-proxy family, if we want to display
+  list of Proxies
+- The target_systems.pxt was migrated to Java years ago.
+
 * Thu Jan 26 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.9-1
 - delete server sets at once
 

@@ -379,7 +379,7 @@ EOQ
 
       $query = <<EOQ;
 INSERT INTO rhnActionPackage (id, action_id, name_id, evr_id)
-SELECT  rhn_act_p_id_seq.nextval,
+SELECT  sequence_nextval('rhn_act_p_id_seq'),
         :action_id,
         P.name_id,
         P.evr_id
@@ -477,7 +477,7 @@ EOQ
     $query = <<EOQ;
 INSERT INTO rhnActionPackage (id, action_id, name_id, evr_id)
 (
-SELECT  rhn_act_p_id_seq.nextval, ?, SP.name_id, SP.evr_id
+SELECT  sequence_nextval('rhn_act_p_id_seq'), ?, SP.name_id, SP.evr_id
   FROM  rhnServerPackage SP, rhnSet PACKAGE_LIST
  WHERE  PACKAGE_LIST.user_id = ?
    AND  PACKAGE_LIST.label = '$label'
@@ -575,7 +575,7 @@ EOQ
     $sth = $dbh->prepare(<<EOQ);
 INSERT
   INTO rhnActionPackage (id, action_id, name_id, evr_id)
-VALUES (rhn_act_p_id_seq.nextval, :aid, :name_id, :evr_id)
+VALUES (sequence_nextval('rhn_act_p_id_seq'), :aid, :name_id, :evr_id)
 EOQ
 
     foreach my $package (@packages) {
@@ -634,8 +634,6 @@ sub schedule_package_install {
   my $query;
   my $sth;
 
-  my $rhn_class = '';
-
   if ($package_id and $server_set) {
     $query = <<EOQ;
 INSERT INTO rhnServerAction (server_id, action_id, status)
@@ -656,14 +654,15 @@ SELECT	S.id
    AND  CP.package_id = P.id
    AND  PA.id = P.package_arch_id
    AND  AT.id = PA.arch_type_id
-   AND  (   (COALESCE((SELECT MAX(PE.evr)
-                    FROM rhnServerPackage SP, rhnPackageEvr PE
-                   WHERE SP.name_id = P.name_id
-                     AND SP.server_id = S.id
-                     AND SP.evr_id = PE.id), ${rhn_class}EVR_T(NULL, 0, 0))
-             <
-             (SELECT EVR FROM rhnPackageEVR PE WHERE PE.id = P.evr_id)
-            )
+   AND  (not exists(
+         select 1
+	 from rhnServerPackage, rhnPackageEvr evr_installed, rhnPackageEvr evr_new
+	 where P.name_id = rhnServerPackage.name_id
+	       and S.id = rhnServerPackage.server_id
+	       and rhnServerPackage.evr_id = evr_installed.id
+	       and P.evr_id = evr_new.id
+	       and evr_installed.evr >= evr_new.evr
+         )
          OR AT.label = 'solaris-patch'
          OR AT.label = 'solaris-patch-cluster'
         )
@@ -700,7 +699,7 @@ EOQ
   if ($package_set) {
     $query = <<EOQ;
 INSERT INTO rhnActionPackage (id, action_id, name_id, evr_id)
-(SELECT rhn_act_p_id_seq.nextval, ?, element, element_two FROM rhnSet WHERE user_id = ? AND label = ?)
+(SELECT sequence_nextval('rhn_act_p_id_seq'), ?, element, element_two FROM rhnSet WHERE user_id = ? AND label = ?)
 EOQ
     $sth = $dbh->prepare($query);
     #  warn "ins query:  $query\n$id, $user_id, ".$packages->label;
@@ -709,7 +708,7 @@ EOQ
   elsif ($package_id) {
     $query = <<EOQ;
 INSERT INTO rhnActionPackage (id, action_id, name_id, evr_id)
-(SELECT rhn_act_p_id_seq.nextval, ?, P.name_id, P.evr_id FROM rhnPackage P WHERE P.id = ?)
+(SELECT sequence_nextval('rhn_act_p_id_seq'), ?, P.name_id, P.evr_id FROM rhnPackage P WHERE P.id = ?)
 EOQ
     $sth = $dbh->prepare($query);
     #  warn "ins query:  $query\n$id, $user_id, ".$packages->label;
@@ -718,7 +717,7 @@ EOQ
   elsif ($package_ids) {
     $query =<<EOQ;
 INSERT INTO rhnActionPackage (id, action_id, name_id, evr_id)
-(SELECT rhn_act_p_id_seq.nextval, ?, P.name_id, P.evr_id FROM rhnPackage P WHERE P.id = ?)
+(SELECT sequence_nextval('rhn_act_p_id_seq'), ?, P.name_id, P.evr_id FROM rhnPackage P WHERE P.id = ?)
 EOQ
     $sth = $dbh->prepare($query);
 
@@ -843,7 +842,7 @@ EOQ
       ($label eq 'patchset_installable_list')) {
     $query = <<EOQ;
 INSERT INTO rhnActionPackage (id, action_id, name_id, evr_id, package_arch_id)
-SELECT rhn_act_p_id_seq.nextval,
+SELECT sequence_nextval('rhn_act_p_id_seq'),
        :action_id,
        P.name_id,
        P.evr_id,
@@ -869,7 +868,7 @@ EOQ
   } else {
     $query = <<EOQ;
 INSERT INTO rhnActionPackage (id, action_id, name_id, evr_id, package_arch_id)
-SELECT rhn_act_p_id_seq.nextval,
+SELECT sequence_nextval('rhn_act_p_id_seq'),
        :action_id,
        P.name_id,
        P.evr_id,
@@ -953,7 +952,7 @@ EOQ
   if ($package_set) {
     $sth = $dbh->prepare(<<EOQ);
 INSERT INTO rhnActionPackage (id, action_id, name_id, evr_id)
-(SELECT rhn_act_p_id_seq.nextval, ?, element, element_two FROM rhnSet WHERE user_id = ? AND label = ?)
+(SELECT sequence_nextval('rhn_act_p_id_seq'), ?, element, element_two FROM rhnSet WHERE user_id = ? AND label = ?)
 EOQ
     $sth->execute($id, $user_id, $package_set->label);
   }
@@ -966,7 +965,7 @@ EOQ
 INSERT
   INTO rhnActionPackage
        (id, action_id, name_id, evr_id)
-VALUES (rhn_act_p_id_seq.nextval, ?, ?, ?)
+VALUES (sequence_nextval('rhn_act_p_id_seq'), ?, ?, ?)
 EOQ
 
     foreach my $pid_combo (@{$package_id_combos}) {
@@ -1242,7 +1241,7 @@ sub schedule_package_sync {
 
   my $sth;
   $sth = $dbh->prepare(<<EOS);
-SELECT rhn_packagedelta_id_seq.nextval FROM DUAL
+SELECT sequence_nextval('rhn_packagedelta_id_seq') FROM DUAL
 EOS
   $sth->execute_h();
   my ($delta_id) = $sth->fetchrow;
@@ -1413,7 +1412,7 @@ sub schedule_config_action {
 INSERT
   INTO rhnActionConfigRevision
        (id, action_id, server_id, config_revision_id)
-VALUES (rhn_actioncr_id_seq.nextval, :aid, :server_id, :revision_id)
+VALUES (sequence_nextval('rhn_actioncr_id_seq'), :aid, :server_id, :revision_id)
 EOQ
 
     $sth = $dbh->prepare($query);

@@ -11,7 +11,7 @@
 %define vardir         /var/lib/nocpulse
 Name:         SputLite
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.7.0
+Version:      1.7.1
 Release:      1%{?dist}
 Summary:      Command queue processor (Sputnik Lite)
 URL:          https://fedorahosted.org/spacewalk
@@ -117,6 +117,10 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Feb 01 2012 Jan Pazdziora 1.7.1-1
+- Make the Completed value not truncated to day which makes the scout config
+  push actually green.
+
 * Fri Dec 09 2011 Jan Pazdziora 1.6.5-1
 - replace synonyms with real table names (mc@suse.de)
 

@@ -15,7 +15,7 @@ Name:         NPalert
 Summary:      NOCpulse notification system
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.126.29
+Version:      1.127.2
 Release:      1%{?dist}
 BuildArch:    noarch
 %if 0%{?suse_version}
@@ -168,6 +168,20 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Feb 01 2012 Miroslav Suchý 1.127.2-1
+- bump up version (msuchy@redhat.com)
+- get rid of PhoneContactMethod - is is not even in DB
+- rip off SNMP notification method
+
+* Tue Jan 31 2012 Jan Pazdziora 1.126.31-1
+- In monitoring, use RHN::DBI instead of RHN::DB because we do not want to
+  reuse the connection.
+
+* Mon Jan 30 2012 Jan Pazdziora 1.126.30-1
+- Avoid having the messages on different lines than their timestamps.
+- Avoid having the output both in generate_config.log and GenerateNotifConfig-
+  error.log.
+
 * Fri Jan 27 2012 Jan Pazdziora 1.126.29-1
 - 730305 - Upon start, wait for generate-config to generate the config.
 

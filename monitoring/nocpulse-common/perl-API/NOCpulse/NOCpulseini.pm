@@ -4,7 +4,7 @@ use strict;
 use DBI;
 use IO::AtomicFile;
 use LWP::UserAgent;
-use RHN::DB;
+use RHN::DBI;
 
 use Class::MethodMaker
   get_set =>
@@ -39,7 +39,7 @@ sub connect {
   my $self = shift;
 
   # Make DB connection
-  my $dbh = RHN::DB->connect;
+  my $dbh = RHN::DBI->connect;
   # Set up for graceful exit
   $SIG{'INT'} = $self->can('bailout');
   unless (defined($dbh)) {
@@ -47,6 +47,15 @@ sub connect {
   }
   $self->dbh($dbh);
   return $dbh;
+}
+
+sub disconnect {
+  my $self = shift;
+  my $dbh = $self->dbh;
+  if (defined $dbh) {
+    $dbh->disconnect;
+  }
+  $self->dbh(undef);
 }
 
 sub save {

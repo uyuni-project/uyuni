@@ -107,7 +107,7 @@ sub commit {
   my $mode = 'update';
 
   if (not $self->id) {
-    my $sth = $dbh->prepare("SELECT rhn_ks_id_seq.nextval FROM DUAL");
+    my $sth = $dbh->prepare("SELECT sequence_nextval('rhn_ks_id_seq') FROM DUAL");
     $sth->execute;
     my ($id) = $sth->fetchrow;
     die "No new id from seq rhn_ks_id_seq (possible error: " . $sth->errstr . ")" unless $id;
@@ -380,7 +380,7 @@ INSERT
         , script_type
         , interpreter
 		, data)
-  VALUES (rhn_ksscript_id_seq.nextval
+  VALUES (sequence_nextval('rhn_ksscript_id_seq')
           , :ksid
           , :position
           , :stype

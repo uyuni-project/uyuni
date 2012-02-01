@@ -10,7 +10,7 @@ use NOCpulse::Config;
 use NOCpulse::Probe::DataSource::AbstractDatabase qw(:constants);
 use NOCpulse::Probe::Error;
 
-use RHN::DB;
+use RHN::DBI;
 
 use base qw(NOCpulse::Probe::DataSource::AbstractDatabase);
 use Class::MethodMaker
@@ -76,7 +76,7 @@ sub init {
 sub connect {
   my ($self, %paramHash) = @_;
   # Open a connection to the DB
-  $self->dbh(RHN::DB->connect);
+  $self->dbh(RHN::DBI->connect);
 
   return $self->dbh;
 }
@@ -102,12 +102,6 @@ sub create_redirect_group_target {
 
 sub create_redirect_method_target {
   shift->_create('RHN_REDIRECT_METHOD_TARGETS', @_);
-}
-
-# Records requiring sequence
-sub create_snmp_alert {
-  shift->_create_with_seq('RECID', 'RHN_SNMP_ALERT_RECID_SEQ', 'SNMP_ALERT',
-                          @_);
 }
 
 sub create_current_alert {

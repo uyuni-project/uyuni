@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.7.20
+Version:        1.7.22
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Wed Feb 01 2012 Jan Pazdziora 1.7.22-1
+- Fixing oracle equivalent source sha1.
+
+* Wed Feb 01 2012 Miroslav Suchý 1.7.21-1
+- rip off SNMP notification method
+
 * Wed Jan 25 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.20-1
 - 756918 - fix data for package_group
 

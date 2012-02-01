@@ -3,7 +3,7 @@ package NOCpulse::AcceptStatusLog;
 
 use strict;
 
-use DBI;
+use RHN::DBI;
 use CGI;
 use NOCpulse::Config;
 use LWP::UserAgent;
@@ -22,8 +22,8 @@ sub store_probe_state
     # print "storing probe state...\n";
 
     my $update_probe = $cs_dbh->prepare(q{
-      UPDATE PROBE_STATE 
-      SET    LAST_CHECK = TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS'),
+      UPDATE RHN_PROBE_STATE
+      SET    LAST_CHECK = to_timestamp(?, 'YYYY-MM-DD HH24:MI:SS'),
              STATE = ?,
              OUTPUT = ?
       WHERE  SCOUT_ID = ?
@@ -31,10 +31,10 @@ sub store_probe_state
     });
     
     my $insert_probe = $cs_dbh->prepare(q{
-      INSERT INTO PROBE_STATE 
+      INSERT INTO RHN_PROBE_STATE
         (LAST_CHECK, STATE, OUTPUT, SCOUT_ID, PROBE_ID) 
       VALUES 
-        (TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS'), ?, ?, ?, ?)
+        (to_timestamp(?, 'YYYY-MM-DD HH24:MI:SS'), ?, ?, ?, ?)
     });
     
     my @lines = split("\n", $probe_state);
@@ -96,11 +96,11 @@ sub store_program
                      min_latency avg_latency );
 
     my $update_sql = 
-        "UPDATE SATELLITE_STATE SET LAST_CHECK = SYSDATE";
+        "UPDATE RHN_SATELLITE_STATE SET LAST_CHECK = CURRENT_TIMESTAMP";
 
     my $insert_sql = sprintf(
-       "INSERT INTO SATELLITE_STATE (SATELLITE_ID, LAST_CHECK, %s) " . 
-       "VALUES (?, SYSDATE", join(",\n", @params));
+       "INSERT INTO RHN_SATELLITE_STATE (SATELLITE_ID, LAST_CHECK, %s) " .
+       "VALUES (?, CURRENT_TIMESTAMP", join(",\n", @params));
 
     my @bindvars;
 
@@ -206,10 +206,7 @@ sub handler
 	{
 	    # print "connecting to current state database...\n";
 	    
-	    $cs_dbh = DBI->connect("DBI:$cs_dbd:$cs_dbname",
-				   $cs_dbuname,
-				   $cs_dbpass,
-				   { RaiseError => 1, AutoCommit => 0 });
+	    $cs_dbh = RHN::DBI->connect();
 	};
 	if( not defined $cs_dbh )
 	{

@@ -1,7 +1,7 @@
 Summary: Spacewalk packages yum repository configuration
 Name: spacewalk-repo
 Version: 1.7
-Release: 1%{?dist}
+Release: 4%{?dist}
 License: GPLv2
 Group: System Environment/Base
 # This src.rpm is cannonical upstream
@@ -40,19 +40,21 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d
 cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk.repo <<REPO
 [spacewalk]
 name=Spacewalk
-baseurl=http://spacewalk.redhat.com/yum/%{version}/%{reposubdir}/\$basearch/
+#baseurl=http://spacewalk.redhat.com/yum/%{version}/%{reposubdir}/\$basearch/
+baseurl=http://spacewalk.redhat.com/yum/nightly/%{reposubdir}/\$basearch/
 gpgkey=http://spacewalk.redhat.com/yum/RPM-GPG-KEY-spacewalk-2010
 enabled=1
-gpgcheck=1
+gpgcheck=0
 REPO
 
 cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk-client.repo <<REPO
 [spacewalk-client]
 name=Spacewalk Client Tools
-baseurl=http://spacewalk.redhat.com/yum/%{version}-client/%{reposubdir}/\$basearch/
+#baseurl=http://spacewalk.redhat.com/yum/%{version}-client/%{reposubdir}/\$basearch/
+baseurl=http://spacewalk.redhat.com/yum/nightly-client/%{reposubdir}/\$basearch/
 gpgkey=http://spacewalk.redhat.com/yum/RPM-GPG-KEY-spacewalk-2010
 enabled=1
-gpgcheck=1
+gpgcheck=0
 REPO
 
 cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk-source.repo <<REPO
@@ -78,6 +80,16 @@ rm -rf $RPM_BUILD_ROOT
 %config %{_sysconfdir}/yum.repos.d/spacewalk-client.repo
 
 %changelog
+* Wed Feb 01 2012 Jan Pazdziora 1.7-4
+- Revert "add Source0"
+
+* Wed Feb 01 2012 Miroslav Suchý 1.7-3
+- do not check gpg at nightly - it is not signed
+
+* Wed Feb 01 2012 Miroslav Suchý 1.7-2
+- add Source0
+- point spacewalk-repo to nightly
+
 * Thu Dec 22 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.7-1
 - Spacewalk 1.7
 
