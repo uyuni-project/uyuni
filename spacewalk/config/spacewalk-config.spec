@@ -132,7 +132,12 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/pki/tls/certs/spacewalk.crt
 %endif
 %config(noreplace) %{_sysconfdir}/satname
-%{_var}/lib/rhn
+%dir %{_var}/lib/rhn
+%dir %{_var}/lib/rhn/rhn-satellite-prep
+%dir %attr(0750,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep/etc
+%attr(0750,root,%{apache_group}) %dir %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn
+%attr(0640,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn/cluster.ini
+%attr(0640,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 %dir %{_prefix}/share/rhn
 %attr(0755,root,root) %{_prefix}/share/rhn/satidmap.pl
 %attr(0755,root,root) %{_prefix}/share/rhn/startup.pl
@@ -148,6 +153,12 @@ if [ -f /etc/init.d/satellite-httpd ] ; then
     /sbin/chkconfig --del satellite-httpd
     %{__perl} -i -ne 'print unless /satellite-httpd\.pid/' /etc/logrotate.d/httpd
 fi
+# Set the group to allow Apache to access the conf files ...
+chgrp %{apache_group} /etc/rhn /etc/rhn/rhn.conf /etc/rhn/cluster.ini 2> /dev/null || :
+# ... once we restrict access to some files that were too open in
+# the past.
+chmod o-rwx /etc/rhn/rhn.conf* /etc/rhn/cluster.ini* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-satellite-prep/* 2> /dev/null || :
+
 
 %if 0%{?suse_version}
 %post

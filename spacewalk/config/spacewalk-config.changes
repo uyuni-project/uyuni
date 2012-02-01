@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb  1 14:21:23 CET 2012 - ug@suse.de
+
+- fixed file permissions of some config files
+  (bnc#742939)
+
+-------------------------------------------------------------------
 Mon Aug 29 11:50:18 CEST 2011 - iartarisi@suse.cz
 
 - Add /etc/rhn/default/rhn_audit.conf for AuditLogging (fate#312607)
