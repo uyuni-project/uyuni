@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.7.6
+Version:	1.7.7
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -85,11 +85,17 @@ rm -rf $RPM_BUILD_ROOT
 %{rhnroot}/utils/__init__.py*
 %{rhnroot}/utils/systemSnapshot.py*
 %{rhnroot}/utils/migrateSystemProfile.py*
+%{rhnroot}/utils/cloneByDate.py*
+%{rhnroot}/utils/depsolver.py*
 %{_mandir}/man8/*
 %dir /etc/rhn
 %dir %{_datadir}/rhn
 
 %changelog
+* Thu Feb 02 2012 Justin Sherrill <jsherril@redhat.com> 1.7.7-1
+- errata date clone - fixing packaging to clone properly (jsherril@redhat.com)
+- errata date clone - adding validate to man page (jsherril@redhat.com)
+
 * Thu Feb 02 2012 Justin Sherrill <jsherril@redhat.com> 1.7.6-1
 - errata date clone - fixing a few errors from pylint fixes
   (jsherril@redhat.com)
