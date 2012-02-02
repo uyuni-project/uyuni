@@ -134,7 +134,7 @@ fi
 %config(noreplace) %{_sysconfdir}/rhn/search/rhn_search.conf
 %config(noreplace) %{_sysconfdir}/rhn/search/rhn_search_daemon.conf
 %{_sysconfdir}/logrotate.d/rhn-search
-%dir /etc/rhn
+%dir %attr(750, root, www) /etc/rhn
 %dir /usr/share/rhn
 %dir /usr/share/rhn/search
 %dir /usr/share/rhn/search/classes
