@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb  2 14:24:27 CET 2012 - ug@suse.de
+
+- fixed permissions of /etc/rhn
+
+-------------------------------------------------------------------
 Tue Sep 13 11:47:54 CEST 2011 - mc@suse.de
 
 - enable and start osad during installation (FATE#312379)
