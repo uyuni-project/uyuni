@@ -162,7 +162,7 @@ find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
 find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
 
 mkdir -p $RPM_BUILD_ROOT/%{www_path}/www/htdocs/pub
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/default
+install -d -m 750 $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/default
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/init.d
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily
@@ -267,7 +267,7 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/DB.pm
 %{perl_vendorlib}/PXT/Config.pm
 %attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
-%dir /etc/rhn
+%dir %attr(750,root,%{apache_group}) /etc/rhn
 %attr(750,root,%{apache_group}) %dir /etc/rhn/default
 
 %files -n spacewalk-dobby
