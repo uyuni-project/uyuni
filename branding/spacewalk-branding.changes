@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb  2 14:18:10 CET 2012 - ug@suse.de
+
+- fixed permissions of /etc/rhn
+
+-------------------------------------------------------------------
 Thu May 26 12:01:20 CEST 2011 - jrenner@suse.de
 
 - Add files for password strength meter (bnc#685551/fate#312398)

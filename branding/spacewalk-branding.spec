@@ -45,8 +45,8 @@ install -d -m 755 %{buildroot}%{_var}/lib/tomcat5/webapps/rhn/WEB-INF/lib/
 %else
 install -d -m 755 %{buildroot}%{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/
 %endif
-install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn
-install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn/default
+install -d -m 750 %{buildroot}/%{_sysconfdir}/rhn
+install -d -m 750 %{buildroot}/%{_sysconfdir}/rhn/default
 cp -R css %{buildroot}/%{wwwdocroot}/
 cp -R img %{buildroot}/%{wwwdocroot}/
 cp -R fonts %{buildroot}/%{wwwdocroot}/
@@ -102,8 +102,8 @@ rm -rf %{buildroot}
 %{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/java-branding.jar
 %endif
 %{_sysconfdir}/rhn/default/rhn_docs.conf
-%dir /etc/rhn
-%dir /etc/rhn/default
+%dir %attr(0750, root, www) /etc/rhn
+%dir %attr(0750, root, www) /etc/rhn/default
 %dir %{wwwdocroot}/nav
 %dir /usr/share/rhn
 %dir /usr/share/rhn/lib
