@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.7.3
+Version:	1.7.6
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -44,6 +44,8 @@ Requires:       spacewalk-admin
 Requires:       spacewalk-certs-tools
 Requires:       spacewalk-config
 Requires:       spacewalk-setup
+Requires:       spacewalk-backend
+Requires:       yum-utils
 
 %description
 Generic utilities that may be run against a Spacewalk server.
@@ -59,10 +61,10 @@ make all
 # check coding style
 find -name '*.py' \
     | xargs pylint -rn -iy --bad-functions=apply,input \
-                   --disable C0111,C0103,C0301,R0801,R0912,W0511,W0603 \
+                   --disable C0111,C0103,C0301,R0801,R0912,W0511,W0603,F0401,R0913,R0902,R0201,R0903,W0702,W0102,W0612 \
 || find -name '*.py' \
     | xargs pylint -rn -iy --bad-functions=apply,input \
-                   --disable-msg-cat C0111,C0103,C0301,R0801,R0912,W0511,W0603
+                   --disable-msg-cat C0111,C0103,C0301,R0801,R0912,W0511,W0603,F0401,R0913,R0902,R0201,R0903,W0702,W0102,W0612
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -88,6 +90,16 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/rhn
 
 %changelog
+* Thu Feb 02 2012 Justin Sherrill <jsherril@redhat.com> 1.7.6-1
+- errata date clone - fixing a few errors from pylint fixes
+  (jsherril@redhat.com)
+
+* Wed Feb 01 2012 Justin Sherrill <jsherril@redhat.com> 1.7.5-1
+- pylint fixes (jsherril@redhat.com)
+
+* Wed Feb 01 2012 Justin Sherrill <jsherril@redhat.com> 1.7.4-1
+- adding initial spacewalk-clone-by-date (jsherril@redhat.com)
+
 * Thu Jan 05 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.3-1
 - removed map and filter from bad-function list
 

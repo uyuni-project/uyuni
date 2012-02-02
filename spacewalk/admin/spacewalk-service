@@ -77,7 +77,8 @@ forward_services() {
                 if /usr/bin/lsof /proc > /dev/null ; then
                     echo "Waiting for tomcat to be ready ..."
                     while [ -f "/var/run/$TOMCAT.pid" ] ; do
-                        /usr/bin/lsof -t -i TCP:8009 -p $(cat /var/run/$TOMCAT.pid) > /dev/null && break
+                        read pid < /var/run/$TOMCAT.pid
+                        /usr/bin/lsof -t -i TCP:8009 -p $pid > /dev/null && break
                         sleep 1
                     done
                 else
