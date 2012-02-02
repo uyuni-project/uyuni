@@ -1,5 +1,11 @@
 %{!?__redhat_release:%define __redhat_release UNKNOWN}
 
+%if 0%{?suse_version}
+%define apache_group www
+%else
+%define apache_group apache
+%endif
+
 Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
@@ -134,13 +140,13 @@ fi
 %config(noreplace) %{_sysconfdir}/rhn/search/rhn_search.conf
 %config(noreplace) %{_sysconfdir}/rhn/search/rhn_search_daemon.conf
 %{_sysconfdir}/logrotate.d/rhn-search
-%dir %attr(750, root, www) /etc/rhn
+%dir %attr(750, root, %{apache_group}) /etc/rhn
 %dir /usr/share/rhn
 %dir /usr/share/rhn/search
 %dir /usr/share/rhn/search/classes
 %dir /usr/share/rhn/search/classes/com
 %dir /usr/share/rhn/search/lib
-%attr(770,root,www) %dir /var/log/rhn
+%attr(770,root,%{apache_group}) %dir /var/log/rhn
 
 
 %changelog
