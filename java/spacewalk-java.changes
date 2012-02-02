@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb  2 14:53:17 CET 2012 - ug@suse.de
+
+- fixed permissions of /etc/rhn
+
+-------------------------------------------------------------------
 Mon Jan  2 13:50:42 CET 2012 - jrenner@suse.de
 
 - Add missing URL to auditlog configuration (bnc#737649)

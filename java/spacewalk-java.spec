@@ -14,6 +14,13 @@
 %define jardir          %{_localstatedir}/lib/tomcat6/webapps/rhn/WEB-INF/lib
 %endif
 
+%if 0%{?suse_version}
+%define apache_group www
+%else
+%define apache_group apache
+%endif
+
+
 Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
@@ -508,8 +515,8 @@ fi
 
 %files config
 %defattr(-,root,root)
-%dir /etc/rhn
-%dir /etc/rhn/default
+%dir %attr(750, root, %{apache_group}) %{_sysconfdir}/rhn
+%dir %attr(750, root, %{apache_group}) %{_sysconfdir}/rhn/default
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/audit
 %defattr(644, root, root)
