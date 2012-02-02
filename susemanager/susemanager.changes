@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb  2 14:48:55 CET 2012 - ug@suse.de
+
+- fixed permissions of /etc/rhn
+
+-------------------------------------------------------------------
 Tue Jan 31 14:47:49 CET 2012 - mantel@suse.de
 
 - reset job_queue_processes to default value of 1000 after

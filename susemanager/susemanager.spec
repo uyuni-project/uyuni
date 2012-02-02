@@ -1,3 +1,9 @@
+%if 0%{?suse_version}
+%define apache_group www
+%else
+%define apache_group apache
+%endif
+
 Name:           susemanager
 Version:        1.2.0
 Release:        1%{?dist}
@@ -56,7 +62,7 @@ This package contains SUSE Manager tools
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
 install -m 0755 bin/*.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/
 
-mkdir -p %{buildroot}/%{_sysconfdir}/rhn/default/
+install -d -m 0750 %{buildroot}/%{_sysconfdir}/rhn/default/
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
 mkdir -p %{buildroot}/%{_sysconfdir}/init.d
 install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_sysconfdir}/rhn/default/
@@ -115,8 +121,8 @@ fi
 %defattr(-,root,root,-)
 %dir %{pythonsmroot}
 %dir %{pythonsmroot}/susemanager
-%dir %{_sysconfdir}/rhn
-%dir %{_sysconfdir}/rhn/default
+%attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
+%attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn/default
 %config %{_sysconfdir}/rhn/default/rhn_*.conf
 %attr(0755,root,root) %{_sbindir}/mgr-register
 %attr(0755,root,root) %{_sbindir}/mgr-ncc-sync
