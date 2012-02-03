@@ -18,7 +18,7 @@ import os
 import sys
 import tempfile
 
-from spacewalk.common import rhn_mpm, rhn_deb
+from spacewalk.common import rhn_mpm, rhn_deb, rhn_pkg
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
@@ -32,26 +32,6 @@ from spacewalk.server.rhnLib import get_package_path, \
     get_package_path_without_package_name
 from spacewalk.server.rhnServer import server_packages
 
-
-def write_temp_file(req, buffer_size, dir, prefix, packaging=None):
-    """ Write request to temporary file (write max. buffer_size at once).
-        Returns the file object.
-    """ 
-    suffix = ''
-    if packaging == 'deb':
-        suffix = '.deb'
-    if not os.path.isdir(dir):
-        os.makedirs(dir)
-    t = tempfile.NamedTemporaryFile(
-                        dir=dir, prefix=prefix + '.',
-                        suffix=suffix)
-    while 1:
-        buf = req.read(buffer_size)
-        if not buf:
-            break
-        t.write(buf)
-    t.seek(0, 0)
-    return t
 
 def authenticate(username, password, channels=[], null_org=None, force=None):
     log_debug(4, username, force)
@@ -129,21 +109,14 @@ def relative_path_from_nevra_without_package_name(nevra, org_id, checksum_type, 
     return get_package_path_without_package_name(nevra, org_id,
                                      CFG.PREPENDED_DIR, checksum_type, checksum)
 
-def push_package(header, temp_path, payload_stream, checksum_type, checksum, org_id=None, force=None,
-    header_start=None, header_end=None, channels=[], relative_path=None):
-    """Uploads an RPM package
-    """
-
-    # Get the payload size
-    log_debug(3, CFG.MOUNT_POINT, relative_path, force, org_id)
-    payload_stream.seek(0, 2)
-    payload_size = payload_stream.tell()
-    payload_stream.seek(0, 0)
+def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None):
+    """Uploads a package"""
 
     # First write the package to the filesystem to final location
     try:
-        importLib.move_package(temp_path, basedir=CFG.MOUNT_POINT,
-            relpath=relative_path, checksum_type=checksum_type, checksum=checksum, force=1)
+        importLib.move_package(a_pkg.payload_stream.name, basedir=CFG.MOUNT_POINT,
+            relpath=relative_path,
+            checksum_type=a_pkg.checksum_type, checksum=a_pkg.checksum, force=1)
     except OSError, e:
         raise rhnFault(50, "Package upload failed: %s" % e), None, sys.exc_info()[2]
     except importLib.FileConflictError:
@@ -151,10 +124,10 @@ def push_package(header, temp_path, payload_stream, checksum_type, checksum, org
     except:
         raise rhnFault(50, "File error"), None, sys.exc_info()[2]
 
-    pkg = mpmSource.create_package(header, size=payload_size,
-        checksum_type=checksum_type, checksum=checksum,
-        relpath=relative_path, org_id=org_id, header_start=header_start,
-        header_end=header_end, channels=channels)
+    pkg = mpmSource.create_package(a_pkg.header, size=a_pkg.payload_size,
+        checksum_type=a_pkg.checksum_type, checksum=a_pkg.checksum,
+        relpath=relative_path, org_id=org_id, header_start=a_pkg.header_start,
+        header_end=a_pkg.header_end, channels=channels)
 
     batch = importLib.Collection()
     batch.append(pkg)
@@ -166,7 +139,7 @@ def push_package(header, temp_path, payload_stream, checksum_type, checksum, org
     else:
         upload_force = 0
     importer = packageImport.packageImporter(batch, backend,
-        source=header.is_source, caller="server.app.uploadPackage")
+        source=a_pkg.header.is_source, caller="server.app.uploadPackage")
     importer.setUploadForce(upload_force)
     importer.run()
 
@@ -182,17 +155,12 @@ def push_package(header, temp_path, payload_stream, checksum_type, checksum, org
         orig_path = os.path.join(CFG.MOUNT_POINT, orig_path)
         log_debug(4, "Original package", orig_path)
 
-        # Determine the type of packaging that was used to create the package.
-        packaging = 'rpm'
-        if hasattr(header, 'packaging'):
-            packaging = header.packaging
-
         # MPMs do not store their headers on disk, so we must avoid performing
         # operations which rely on information only contained in the headers
         # (such as header signatures).
-        if os.path.exists(orig_path) and packaging != 'mpm':
-            oh = rhn_mpm.get_package_header(orig_path)
-            _diff_header_sigs(header, oh, pdict['diff']['diff'])
+        if os.path.exists(orig_path) and a_pkg.header.packaging != 'mpm':
+            oh = rhn_pkg.get_package_header(orig_path)
+            _diff_header_sigs(a_pkg.header, oh, pdict['diff']['diff'])
 
         return pdict, package.diff.level
 
@@ -230,12 +198,12 @@ def push_package(header, temp_path, payload_stream, checksum_type, checksum, org
                  (ps.org_id is null and :org_id is null)
                 )
             """
-        if header.is_source:
+        if a_pkg.header.is_source:
             h_package_table = 'rhnPackageSource'
         else:
             h_package_table = 'rhnPackage'
         h_path = rhnSQL.prepare(h_path_sql % h_package_table)
-        h_path.execute(ctype=checksum_type, csum=checksum, org_id = org_id)
+        h_path.execute(ctype=a_pkg.checksum_type, csum=a_pkg.checksum, org_id = org_id)
 
         rs_path = h_path.fetchall_dict()
         path_dict = {}
@@ -253,15 +221,17 @@ def push_package(header, temp_path, payload_stream, checksum_type, checksum, org
                                  where c.checksum = :csum
                                    and c.checksum_type = :ctype)
             """)
-            h_upd.execute(path=relative_path, ctype=checksum_type, csum=checksum)
+            h_upd.execute(path=relative_path, ctype=a_pkg.checksum_type,
+                                              csum=a_pkg.checksum)
 
     # commit the transactions
     rhnSQL.commit()
-    if not header.is_source:
+    if not a_pkg.header.is_source:
         # Process Package Key information
-        server_packages.processPackageKeyAssociations(header, checksum_type, checksum)
+        server_packages.processPackageKeyAssociations(a_pkg.header,
+                                        a_pkg.checksum_type, a_pkg.checksum)
 
-    if not header.is_source:
+    if not a_pkg.header.is_source:
         errataCache.schedule_errata_cache_update(importer.affected_channels)
                         
     log_debug(2, "Returning")
@@ -288,6 +258,30 @@ def _key_ids(sigs):
     l = h.keys()
     l.sort()
     return l
+
+def save_uploaded_package(stream, nevra, org_id, packaging,
+                          checksum_type=None, checksum=None):
+    a_pkg = rhn_pkg.package_from_stream(stream, packaging=packaging)
+    a_pkg.read_header()
+
+    temp_dir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org_id, 'stage')
+    if not os.path.isdir(temp_dir):
+        os.makedirs(temp_dir)
+    temp_stream = tempfile.NamedTemporaryFile(dir = temp_dir,
+                        prefix = '-'.join((nevra[0], nevra[2], nevra[3], nevra[4])))
+    a_pkg.save_payload(temp_stream)
+
+    if checksum_type and checksum:
+        # verify checksum
+        if not (checksum_type == a_pkg.checksum_type
+                and checksum == a_pkg.checksum):
+            log_debug(1, "Mismatching checksums: expected %s:%s got %s:%s" %
+                          (checksum_type, checksum,
+                           a_pkg.checksum_type, a_pkg.checksum))
+            raise rhnFault(104, "Mismatching information")
+
+    temp_stream.delete=False
+    return a_pkg
 
 def load_package(package_stream):
     if package_stream.name.endswith('.deb'):

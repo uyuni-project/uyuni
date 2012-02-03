@@ -24,6 +24,9 @@ import fileutils
 
 from types import ListType, TupleType
 
+import checksum
+from rhn_pkg import A_Package, InvalidPackageError
+
 MPM_CHECKSUM_TYPE = 'md5'       # FIXME: this should be a configuration option
 
 def labelCompare(l1, l2):
@@ -82,7 +85,7 @@ def load_rpm(stream):
 
     try:
         header = rhn_rpm.get_package_header(file=stream)
-    except rhn_rpm.InvalidPackageError, e:
+    except InvalidPackageError, e:
         raise InvalidPackageError(*e.args), None, sys.exc_info()[2]
     except rhn_rpm.error, e:
         raise InvalidPackageError(e), None, sys.exc_info()[2]
@@ -121,22 +124,32 @@ class MPM_Header:
     def unload(self):
         return None
 
-class InvalidPackageError(Exception):
-    pass
-
 MPM_HEADER_COMPRESSED_GZIP = 1
 MPM_PAYLOAD_COMPRESSED_GZIP = 1
 
-class MPM_Package:
+class MPM_Package(A_Package):
     _lead_format = '!16sB3s4L92s'
     _magic = 'mpmpackage012345'
-    def __init__(self):
-        self.header = None
-        self.payload_stream = None
+    def __init__(self, input_stream = None):
+        A_Package.__init__(self, input_stream)
         self.header_flags = MPM_HEADER_COMPRESSED_GZIP
+        self.header_size = 0
         self.payload_flags = 0
         assert(len(self._magic) == 16)
         self._buffer_size = 16384
+        self.file_size = 0
+
+    def read_header(self):
+        arr = self._read_lead(self.input_stream)
+        magic = arr[0]
+        if magic != self._magic:
+            raise InvalidPackageError()
+        header_len, payload_len = int(arr[5]), int(arr[6])
+        self.header_flags, self.payload_flags = arr[3], arr[4]
+        self.file_size = 128 + header_len + payload_len
+        header_data = self._read_bytes(self.input_stream, header_len)
+        self._read_header(header_data, self.header_flags)
+        self.checksum_type = self.header.checksum_type()
 
     def _read_lead(self, stream):
         # Lead has the following format:
@@ -158,33 +171,16 @@ class MPM_Package:
     def load(self, input_stream):
         # Clean up
         self.__init__()
-        arr = self._read_lead(input_stream)
-        magic = arr[0]
-        if magic != self._magic:
-            raise InvalidPackageError()
-        header_len, payload_len = int(arr[5]), int(arr[6])
-        header_flags, payload_flags = arr[3], arr[4]
-        file_size = 128 + header_len + payload_len
-        input_stream.seek(file_size)
-        if file_size != input_stream.tell():
-            raise InvalidPackageError()
+        self.input_stream = input_stream
         # Read the header
-        input_stream.seek(128, 0)
-        header_data = self._read_bytes(input_stream, header_len)
+        self.read_header()
+
         payload_stream = fileutils.payload(input_stream.name, input_stream.tell())
+        input_stream.seek(self.file_size)
+        if self.file_size != input_stream.tell():
+            raise InvalidPackageError()
 
-        self._read_header(header_data, header_flags)
-        self._read_payload(payload_stream, payload_flags)
-
-    def _read_bytes(self, stream, amt):
-        ret = ""
-        while amt:
-            buf = stream.read(min(amt, self._buffer_size))
-            if not buf:
-                return ret
-            ret = ret + buf
-            amt = amt - len(buf)
-        return ret
+        self._read_payload(payload_stream, self.payload_flags)
 
     def _read_header(self, header_data, header_flags):
         if header_flags & MPM_HEADER_COMPRESSED_GZIP:
@@ -207,7 +203,7 @@ class MPM_Package:
         if payload_flags & MPM_PAYLOAD_COMPRESSED_GZIP:
             g = gzip.GzipFile(None, "r", 0, payload_stream)
             t = tempfile.TemporaryFile()
-            self.stream_copy(g, t)
+            self._stream_copy(g, t)
             g.close()
             payload_stream = t
 
@@ -217,21 +213,23 @@ class MPM_Package:
         if self.header is None:
             raise Exception()
 
-        header_stream, header_size = self._encode_header()
-        payload_stream, payload_size = self._encode_payload()
+        output_stream.seek(128, 0)
+        self._encode_header(output_stream)
+        self._encode_payload(output_stream)
 
+        # now we know header and payload size so rewind back and write lead
         lead_arr = (self._magic, 1, "\0" * 3, self.header_flags,
-            self.payload_flags, header_size, payload_size, '\0' * 92)
+            self.payload_flags, self.header_size, self.payload_size, '\0' * 92)
         # lead
         lead = apply(struct.pack, (self._lead_format, ) + lead_arr)
+        output_stream.seek(0, 0)
         output_stream.write(lead)
-        self.stream_copy(header_stream, output_stream)
-        self.stream_copy(payload_stream, output_stream)
+        output_stream.seek(0, 2)
 
-    def _encode_header(self):
+    def _encode_header(self, stream):
         assert(self.header is not None)
-        stream = tempfile.TemporaryFile()
         data = xmlrpclib.dumps((_replace_null(self.header), ))
+        start = stream.tell()
         if self.header_flags & MPM_HEADER_COMPRESSED_GZIP:
             f = gzip.GzipFile(None, "wb", 9, stream)
             f.write(data)
@@ -239,33 +237,28 @@ class MPM_Package:
         else:
             stream.write(data)
         stream.flush()
-        stream.seek(0, 2)
-        size = stream.tell()
-        stream.seek(0, 0)
-        return stream, size
+        self.header_size = stream.tell() - start
 
-    def _encode_payload(self):
+    def _encode_payload(self, stream, hash=None):
         assert(self.payload_stream is not None)
-        stream = tempfile.TemporaryFile()
-        if self.payload_flags & MPM_PAYLOAD_COMPRESSED_GZIP:
+        if stream:
+            start = stream.tell()
+        if stream and self.payload_flags & MPM_PAYLOAD_COMPRESSED_GZIP:
             f = gzip.GzipFile(None, "wb", 9, stream)
-            self.stream_copy(self.payload_stream, f)
+            self._stream_copy(self.payload_stream, f, hash)
             f.close()
         else:
-            stream = self.payload_stream
-        stream.flush()
-        stream.seek(0, 2)
-        size = stream.tell()
-        stream.seek(0, 0)
-        return stream, size
+            self._stream_copy(self.payload_stream, stream, hash)
+        if stream:
+            self.payload_size = stream.tell() - start
 
-    def stream_copy(self, source, dest):
-        "Copies data from the source stream to the destination stream"
-        while 1:
-            buf = source.read(self._buffer_size)
-            if not buf:
-                break
-            dest.write(buf)
+    def save_payload(self, output_stream):
+        self.payload_stream = self.input_stream
+        hash = checksum.hashlib.new(self.header.checksum_type())
+        self._encode_payload(output_stream, hash)
+        self.checksum = hash.hexdigest()
+        if output_stream:
+            self.payload_stream = output_stream
 
 
 def _replace_null(obj):

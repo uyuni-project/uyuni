@@ -2,7 +2,7 @@
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.7.1
+Version: 1.7.3
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: GPLv2
@@ -73,8 +73,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/spacewalk-service.8*
 %{_mandir}/man8/rhn-sat-restart-silent.8*
 %{_mandir}/man8/rhn-config-satellite.pl.8*
+%config(noreplace) %{_sysconfdir}/rhn/service-list
 
 %changelog
+* Fri Feb 03 2012 Jan Pazdziora 1.7.3-1
+- 784158 - make it possible to customize list of services managed by the
+  spacewalk-service command.
+- Purging trailing whitespaces.
+
+* Fri Feb 03 2012 Jan Pazdziora 1.7.2-1
+- Revert "cat /var/run/.pid nondeterministically failes with 'cat: write error:
+  Broken pipe', thus it's better to do it in two separate steps."
+
 * Thu Feb 02 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.1-1
 - fixed write error: Broken pipe
 

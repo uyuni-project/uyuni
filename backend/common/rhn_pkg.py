@@ -13,21 +13,103 @@
 # in this software or its documentation.
 #
 
-import rhn_rpm
-import rhn_mpm
-import rhn_deb
-
-def rhn_pkg(filename=None, file=None, fd=None):
-    if filename:
-        if filename.endswith('.deb'):
-            return rhn_deb
-        elif filename.endswith('.rpm'):
-            return rhn_rpm
-        else:
-            return rhn_mpm
-    # XXX recognize backend also by file/fd
-    return rhn_rpm
+import checksum
 
 def get_package_header(filename=None, file=None, fd=None):
-    return rhn_pkg(filename=filename, file=file, fd=fd) \
-        .get_package_header(filename=filename, file=file, fd=fd)
+    if filename is not None:
+        stream = open(filename)
+        need_close = True
+    elif file is not None:
+        stream = file
+    else:
+        stream = os.fdopen(os.dup(fd), "r")
+        need_close = True
+
+    if stream.name.endswith('.deb'):
+        packaging = 'deb'
+    elif stream.name.endswith('.rpm'):
+        packaging = 'rpm'
+    else:
+        packaging = 'mpm'
+
+    a_pkg = package_from_stream(stream, packaging)
+    a_pkg.read_header()
+    if need_close:
+        stream.close()
+    return a_pkg.header
+
+def package_from_stream(stream, packaging):
+    if packaging == 'deb':
+        import rhn_deb
+        a_pkg = rhn_deb.DEB_Package(stream)
+    elif packaging == 'rpm':
+        import rhn_rpm
+        a_pkg = rhn_rpm.RPM_Package(stream)
+    elif packaging == 'mpm':
+        import rhn_mpm
+        a_pkg = rhn_mpm.MPM_Package(stream)
+    else:
+        a_pkg = None
+    return a_pkg
+
+BUFFER_SIZE = 16384
+DEFAULT_CHECKSUM_TYPE = 'md5'
+
+class A_Package:
+    """virtual class that implements shared methods for RPM/MPM/DEB package object"""
+    def __init__(self, input_stream = None):
+        self.header = None
+        self.header_start = 0
+        self.header_end = 0
+        self.input_stream = input_stream
+        self.checksum_type = DEFAULT_CHECKSUM_TYPE
+        self.checksum = None
+        self.payload_stream = None
+        self.payload_size = None
+
+    def read_header(self):
+        """reads header from self.input_file"""
+        pass
+
+    def save_payload(self, output_stream):
+        """saves payload to output_stream"""
+        hash = checksum.hashlib.new(self.checksum_type)
+        if output_stream:
+            output_start = output_stream.tell()
+        self._stream_copy(self.input_stream, output_stream, hash)
+        self.checksum = hash.hexdigest()
+        if output_stream:
+            self.payload_stream = output_stream
+            self.payload_size = output_stream.tell() - output_start
+
+    def payload_checksum(self):
+        # just read and compute checksum
+        start = self.input_stream.tell()
+        self.save_payload(None)
+        self.payload_size = self.input_stream.tell() - start
+        self.payload_stream = self.input_stream
+
+
+    def _stream_copy(self, source, dest, hash=None):
+        """copies data from the source stream to the destination stream"""
+        while True:
+            buf = source.read(BUFFER_SIZE)
+            if not buf:
+                break
+            if dest:
+                dest.write(buf)
+            if hash:
+                hash.update(buf)
+
+    def _read_bytes(self, stream, amt):
+        ret = ""
+        while amt:
+            buf = stream.read(min(amt, BUFFER_SIZE))
+            if not buf:
+                return ret
+            ret = ret + buf
+            amt = amt - len(buf)
+        return ret
+
+class InvalidPackageError(Exception):
+    pass

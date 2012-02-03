@@ -59,6 +59,9 @@ if [ -x /etc/init.d/auditlog-keeper ]; then
 fi
 
 SERVICES="jabberd $SUSE_AUDITLOG $DB_SERVICE osa-dispatcher $TOMCAT $HTTPD Monitoring MonitoringScout rhn-search cobblerd taskomatic"
+if [ -f /etc/rhn/service-list ] ; then
+   . /etc/rhn/service-list
+fi
 
 #. /etc/init.d/functions
 
@@ -78,7 +81,7 @@ forward_services() {
                     echo "Waiting for tomcat to be ready ..."
                     while [ -f "/var/run/$TOMCAT.pid" ] ; do
                         read pid < /var/run/$TOMCAT.pid
-                        /usr/bin/lsof -t -i TCP:8009 -p $pid > /dev/null && break
+                        /usr/bin/lsof -t -i TCP:8009 -p $(cat /var/run/$TOMCAT.pid) > /dev/null && break
                         sleep 1
                     done
                 else

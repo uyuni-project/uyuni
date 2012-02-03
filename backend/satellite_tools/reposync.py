@@ -27,7 +27,7 @@ from yum import Errors
 from yum.i18n import to_unicode
 
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
-from spacewalk.common import rhnMail, rhnLog, suseLib
+from spacewalk.common import rhnMail, rhnLog, suseLib, rhn_pkg
 from spacewalk.common.rhnTB import fetchTraceback
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.checksum import getFileChecksum
@@ -738,9 +738,8 @@ class RepoSync(object):
                     pack.path = localpath = plug.get_package(pack)
                 pack.load_checksum_from_header()
                 if to_download:
-                    self.upload_package(pack)
+                    pack.upload_package(self.channel)
                     finally_remove(localpath)
-                pack.payload_stream.close()
                 if to_link:
                     self.associate_package(pack)
             except KeyboardInterrupt:
@@ -769,17 +768,6 @@ class RepoSync(object):
                 return False
         return True
 
-    def upload_package(self, package):
-        rel_package_path = rhnPackageUpload.relative_path_from_header(
-                package.header, self.channel['org_id'],
-                package.checksum_type, package.checksum)
-        package_dict, diff_level = rhnPackageUpload.push_package(package.header,
-                package.path, package.payload_stream, package.checksum_type, package.checksum,
-                force=False,
-                header_start=package.header_start, header_end=package.header_end,
-                relative_path=rel_package_path,
-                org_id=self.channel['org_id'])
-
     def associate_package(self, pack):
         caller = "server.app.yumreposync"
         backend = SQLBackend()
@@ -788,8 +776,8 @@ class RepoSync(object):
         package['version'] = pack.version
         package['release'] = pack.release
         package['arch'] = pack.arch
-        package['checksum'] = pack.checksum
-        package['checksum_type'] = pack.checksum_type
+        package['checksum'] = pack.a_pkg.checksum
+        package['checksum_type'] = pack.a_pkg.checksum_type
         package['channels']  = [{'label':self.channel_label,
                                  'id':self.channel['id']}]
         package['org_id'] = self.channel['org_id']
@@ -1032,8 +1020,8 @@ class ContentPackage:
     def __init__(self):
         # map of checksums
         self.checksums = {}
-        self.checksum_type = None
-        self.checksum = None
+        #self.checksum_type = None
+        #self.checksum = None
 
         #unique ID that can be used by plugin
         self.unique_id = None
@@ -1046,10 +1034,8 @@ class ContentPackage:
 
         self.path = None
         self.file = None
-        self.header = None
-        self.payload_stream = None
-        self.header_start = None
-        self.header_end = None
+
+        self.a_pkg = None
 
     def setNVREA(self, name, version, release, epoch, arch):
         self.name = name
@@ -1068,17 +1054,25 @@ class ContentPackage:
         if self.path is None:
             raise rhnFault(50, "Unable to load package", explain=0)
         self.file = open(self.path, 'rb')
-        self.header, self.payload_stream, self.header_start, self.header_end = \
-                rhnPackageUpload.load_package(self.file)
-        if not self.checksum_type and not self.checksum:
-            self.checksum_type = self.header.checksum_type()
-            self.checksum = getFileChecksum(self.checksum_type, file=self.file)
+        self.a_pkg = rhn_pkg.package_from_stream(self.file, packaging='rpm')
+        self.a_pkg.read_header()
+        if not self.a_pkg.checksum:
+            self.a_pkg.payload_checksum()
         self.file.close()
+
+    def upload_package(self, channel):
+        rel_package_path = rhnPackageUpload.relative_path_from_header(
+                self.a_pkg.header, channel['org_id'],
+                self.a_pkg.checksum_type, self.a_pkg.checksum)
+        package_dict, diff_level = rhnPackageUpload.push_package(self.a_pkg,
+                force=False,
+                relative_path=rel_package_path,
+                org_id=channel['org_id'])
 
     def set_checksum(self, checksum_type=None, checksum=None):
         if checksum_type and checksum:
-            self.checksum_type = checksum_type
-            self.checksum = checksum
+            self.a_pkg.checksum_type = checksum_type
+            self.a_pkg.checksum = checksum
             if not((checksum_type in self.checksums) and (self.checksums[checksum_type] == checksum)):
                 self.checksums[checksum_type] = checksum
 

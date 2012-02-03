@@ -293,41 +293,41 @@ class Packages(RPC_Base):
             for k in package_keys:
                 if not package.has_key(k):
                     raise Exception("Missing key %s" % k)
+                if k == 'epoch':
+                    if package[k] is not None:
+                        if package[k] == '':
+                            package[k] = None
+                        else:
+                            package[k] = str(package[k])
+                else:
+                    package[k] = str(package[k])
+
             if package['arch'] == 'src' or package['arch'] == 'nosrc':
                 # Source package - no reason to continue
                 continue
             _checksum_sql_filter = ""
-            checksum_exists = 0
             if 'md5sum' in package: # for old rhnpush compatibility
                 package['checksum_type'] = 'md5'
                 package['checksum'] = package['md5sum']
 
+            exec_args = {
+                'pkg_name':    package['name'],
+                'pkg_epoch':   package['epoch'],
+                'pkg_version': package['version'],
+                'pkg_rel':     package['release'],
+                'pkg_arch':    package['arch'],
+                'orgid':       org_id
+            }
+
             if package.has_key('checksum') and CFG.ENABLE_NVREA:
-                checksum_exists = 1
                 _checksum_sql_filter = """and c.checksum = :checksum
                                           and c.checksum_type = :checksum_type"""
+                exec_args.update({'checksum_type': package['checksum_type'],
+                                  'checksum':      package['checksum']})
 
             h = rhnSQL.prepare(self._get_pkg_info_query % \
                                 _checksum_sql_filter)
-            pkg_epoch =  None
-            if package['epoch'] is not None and package['epoch'] != '':
-                pkg_epoch = str(package['epoch'])
-
-            if checksum_exists:
-                h.execute(pkg_name=package['name'], \
-                pkg_epoch=pkg_epoch, \
-                pkg_version=package['version'], \
-                pkg_rel=package['release'],pkg_arch=package['arch'], \
-                orgid = org_id, \
-                checksum_type = package['checksum_type'], \
-                checksum = package['checksum'])
-            else:
-                h.execute(pkg_name=package['name'], \
-                pkg_epoch=pkg_epoch, \
-                pkg_version=package['version'], \
-                pkg_rel=package['release'], \
-                pkg_arch=package['arch'], orgid = org_id )
-
+            h.execute(**exec_args)
             row = h.fetchone_dict()
 
             package['checksum_type'] = row['checksum_type']
