@@ -900,6 +900,13 @@ class NCCSync(object):
             if parent == 'BASE' or parent in c_labels:
                 filtered.append(channel)
 
+        # update_tag can be '', but empty string is not allowed in the DB
+        # we have to set it to None
+        for channel in filtered:
+            udt = channel.get('update_tag')
+            if udt == '':
+                channel.set('update_tag', None)
+
         # make the repository urls point to our local path defined in 'fromdir'
         if self.fromdir:
             for channel in filtered:
@@ -1238,11 +1245,14 @@ class NCCSync(object):
         channels_xml = {}
         channels_iter = etree.parse(CHANNELS).getroot()
         for c in channels_iter:
+            udt = c.get('update_tag')
+            if udt == '':
+                udt = None
             channels_xml[c.get('label')] = {
                 'name': c.get('name'),
                 'summary': c.get('summary'),
                 'description': c.get('description'),
-                'update_tag': c.get('update_tag')}
+                'update_tag': udt}
 
         query = rhnSQL.prepare("SELECT label, name, summary, description, update_tag"
                                "  FROM rhnChannel "
