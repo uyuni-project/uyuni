@@ -1235,9 +1235,9 @@ class NCCSync(object):
                     self.add_dist_channel_map(channel_id,
                                               self.get_channel_arch_id(channel),
                                               child)
-                rhnSQL.commit()
-                self.print_msg("Added channel '%s' to the database."
-                               % channel_label)
+            rhnSQL.commit()
+            self.print_msg("Added channel '%s' to the database."
+                           % channel_label)
 
     def update_channels(self):
         """Add update channel infos in the database """
