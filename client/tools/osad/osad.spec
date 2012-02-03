@@ -304,7 +304,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %doc PYTHON-LICENSES.txt
 %{_sbindir}/rcosa-dispatcher
 %if 0%{?suse_version}
-%dir %{_sysconfdir}/rhn
+%dir %attr(750, root, %{apache_group}) %{_sysconfdir}/rhn
 %dir %{rhnroot}/config-defaults
 %dir %{_sysconfdir}/rhn/tns_admin
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn

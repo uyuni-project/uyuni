@@ -51,7 +51,6 @@ install -d -m 755 %{buildroot}%{_var}/lib/tomcat5/webapps/rhn/WEB-INF/lib/
 %else
 install -d -m 755 %{buildroot}%{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/
 %endif
-install -d -m 755 %{buildroot}/%{_sysconfdir}/rhn
 install -d -m 755 %{buildroot}/%{_prefix}/share/rhn/config-defaults
 cp -pR css %{buildroot}/%{wwwdocroot}/
 cp -pR img %{buildroot}/%{wwwdocroot}/
