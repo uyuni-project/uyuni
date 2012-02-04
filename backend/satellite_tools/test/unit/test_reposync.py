@@ -22,6 +22,7 @@ from datetime import datetime
 from mock import Mock
 
 import spacewalk.satellite_tools.reposync
+from spacewalk.common import rhn_rpm
 
 RTYPE = 'yum' # a valid repotype
 
@@ -444,9 +445,10 @@ class RepoSyncTest(unittest.TestCase):
         pack = self.reposync.ContentPackage()
         pack.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
         pack.unique_id = 1
-        pack.checksum = 'checksum1'
+        pack.a_pkg = rhn_rpm.RPM_Package(None)
+        pack.a_pkg.checksum = 'checksum1'
+        pack.a_pkg.checksum_type = 'c_type1'
         pack.checksums[1] = 'checksum1'
-        pack.checksum_type = 'c_type1'
 
         mocked_backend = Mock()
         self.reposync.SQLBackend = Mock(return_value=mocked_backend)
