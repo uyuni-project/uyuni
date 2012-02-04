@@ -14,7 +14,9 @@ import re
 import urlparse
 
 import pycurl
-
+# prevent build dependency cycles
+# pylint: disable=W0611
+from suseRegister.info import getProductProfile, parseProductProfileFile
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.server import rhnSQL
 try:
