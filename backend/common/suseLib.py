@@ -15,8 +15,6 @@ import urlparse
 
 import pycurl
 
-from suseRegister.info import getProductProfile, parseProductProfileFile
-from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.server import rhnSQL
 try:
@@ -29,6 +27,7 @@ YAST_PROXY = "/root/.curlrc"
 class TransferException(Exception):
     """Transfer Error"""
     def __init__(self, value=None):
+        Exception.__init__(self)
         self.value = value
 
     def __str__(self):
@@ -38,11 +37,11 @@ class TransferException(Exception):
         return '%s' % unicode(self.value, "utf-8")
 
 
-def send(url, send=None):
+def send(url, sendData=None):
     """Connect to ncc and return the XML document as stringIO
 
     :arg url: the url where the request will be sent
-    :kwarg send: do a post-request when "send" is given.
+    :kwarg sendData: do a post-request when "sendData" is given.
 
     Returns the XML document as stringIO object.
 
@@ -53,8 +52,8 @@ def send(url, send=None):
 
     curl.setopt(pycurl.URL, url)
     log_debug(2, "Connect to %s" % url)
-    if send is not None:
-        curl.setopt(pycurl.POSTFIELDS, send)
+    if sendData is not None:
+        curl.setopt(pycurl.POSTFIELDS, sendData)
 
     # We implement our own redirection-following, because pycurl
     # 7.19 doesn't POST after it gets redirected. Ideally we'd be
@@ -157,7 +156,7 @@ def findProduct(product):
        AND (sp.arch_type_id IS NULL %s)
     ORDER BY name, version, release, arch
     """ % (q_version, q_release, q_arch))
-    apply(h.execute, (), product_lower)
+    h.execute(**product_lower)
     rs = h.fetchall_dict()
 
     if not rs:
@@ -250,7 +249,7 @@ class URL(object):
     def __init__(self, url):
         u = urlparse.urlsplit(url)
         # pylint can't see inside the SplitResult class
-        # pylint: disable=E1103
+        # pylint: disable=E1103,R0902
         self.scheme = u.scheme
         self.username = u.username
         self.password = u.password
@@ -284,6 +283,7 @@ class URL(object):
         if attr == "query":
             self.__dict__[attr] = value.lstrip("?")
             self._parse_query()
+	# pylint: disable=E1101
         elif attr == "paramsdict":
             # query should be used instead
             raise AttributeError("can't set attribute")
