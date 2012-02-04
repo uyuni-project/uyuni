@@ -1,4 +1,9 @@
 %define rhnroot /%{_datadir}/rhn
+%if 0%{?suse_version}
+%define apache_group www
+%else
+%define apache_group apache
+%endif
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
@@ -55,6 +60,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %dir %{rhnroot}
+%attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
 %{_sbindir}/spacewalk-service
 %{_sbindir}/rhn-satellite
 %{_bindir}/validate-sat-cert.pl
