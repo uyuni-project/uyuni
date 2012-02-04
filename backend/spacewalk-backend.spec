@@ -338,7 +338,10 @@ export PYTHON_MODULE_VERSION=%{version}
 # right now we check only common/*.py, others aren't clean yet
 find common -name '*.py' \
     | xargs pylint -rn -iy --bad-functions=apply,input \
-                   --disable C0111,C0103,C0301,F0401,I0011,R0801,R0902,R0903,R0911,R0912,R0913,R0914,W0142,W0403,W0511,W0603,E1101
+                   --disable C0111,C0103,C0301,F0401,I0011,R0801,R0902,R0903,R0911,R0912,R0913,R0914,W0142,W0403,W0511,W0603,E1101 || \
+find common -name '*.py' \
+    | xargs pylint -rn -iy --bad-functions=apply,input \
+                   --disable-msg=C0111,C0103,C0301,F0401,I0011,R0801,R0902,R0903,R0911,R0912,R0913,R0914,W0142,W0403,W0511,W0603,E1101
 
 %install
 rm -rf $RPM_BUILD_ROOT
