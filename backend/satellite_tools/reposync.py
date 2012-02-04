@@ -1020,8 +1020,8 @@ class ContentPackage:
     def __init__(self):
         # map of checksums
         self.checksums = {}
-        #self.checksum_type = None
-        #self.checksum = None
+        self.predef_checksum_type = None
+        self.predef_checksum = None
 
         #unique ID that can be used by plugin
         self.unique_id = None
@@ -1056,6 +1056,9 @@ class ContentPackage:
         self.file = open(self.path, 'rb')
         self.a_pkg = rhn_pkg.package_from_stream(self.file, packaging='rpm')
         self.a_pkg.read_header()
+        if self.predef_checksum and self.predef_checksum_type:
+            self.a_pkg.checksum = self.predef_checksum
+            self.a_pkg.checksum_type = self.predef_checksum_type
         if not self.a_pkg.checksum:
             self.a_pkg.payload_checksum()
         self.file.close()
@@ -1071,8 +1074,8 @@ class ContentPackage:
 
     def set_checksum(self, checksum_type=None, checksum=None):
         if checksum_type and checksum:
-            self.a_pkg.checksum_type = checksum_type
-            self.a_pkg.checksum = checksum
+            self.predef_checksum_type = checksum_type
+            self.predef_checksum = checksum
             if not((checksum_type in self.checksums) and (self.checksums[checksum_type] == checksum)):
                 self.checksums[checksum_type] = checksum
 
