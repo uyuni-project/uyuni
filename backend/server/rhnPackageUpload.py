@@ -291,7 +291,7 @@ def load_package(package_stream):
             raise rhnFault(50, "Unable to load package", explain=0), None, sys.exc_info()[2]
     else:
         try:
-            header, payload_stream = rhn_mpm.load(file=package_stream)
+            header, payload_stream = rhn_mpm.load(file_obj=package_stream)
         except:
             raise rhnFault(50, "Unable to load package", explain=0), None, sys.exc_info()[2]
 
