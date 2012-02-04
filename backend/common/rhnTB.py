@@ -74,6 +74,7 @@ def print_locals(fd = sys.stderr, tb = None):
             # We have to be careful not to cause a new error in our error
             # printer! Calling str() on an unknown object could cause an
             # error we don't want.
+            # pylint: disable=W0702
             try:
                 s = str(value)
             except:
@@ -119,7 +120,7 @@ def Traceback(method = None, req = None, mail = 1, ostream = sys.stderr,
         if QUIET_MAIL == 0: # make sure we don't mail
             mail = 0
         
-    e_type, e_value = sys.exc_info()[:2]
+    e_type = sys.exc_info()[:2][0]
     t = time.ctime(time.time())
     exc = StringIO()
 
@@ -174,9 +175,10 @@ def Traceback(method = None, req = None, mail = 1, ostream = sys.stderr,
         #5/18/05 wregglej - 151158 Go through every string in the security list and censor it out of the debug information.
         outstring = censor_string(outstring)
  
-	rhnMail.send(headers, outstring)
+        rhnMail.send(headers, outstring)
 
     exc.close()   
+    return
 
 
 def fetchTraceback(method=None, req=None, extra=None, with_locals=0):

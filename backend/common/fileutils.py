@@ -164,8 +164,6 @@ def rhn_popen(cmd, progressCallback=None, bufferSize=16384, outputLog=None):
         outputLog --> optional log file file object write method
     """
 
-    subprocess._cleanup()
-
     cmd_is_list = type(cmd) in (types.ListType, types.TupleType)
     if cmd_is_list:
         cmd = map(str, cmd)
@@ -359,7 +357,7 @@ def getUidGid(user=None, group=None):
     if uid != 0:
         # Don't bother to change the owner, it will fail anyway
         # group ownership may work though
-        user=None
+        user = None
     else:
         uid = gc.getuid(user)
 
@@ -434,13 +432,17 @@ class payload:
     def tell(self):
         return self.fileobj.tell() - self.skip
 
-    def truncate(self, size=-1):
+    @staticmethod
+    def truncate(size=-1):
+        # pylint: disable=W0613
         raise AttributeError("'Payload' object do not implement this method")
 
-    def write(self, str):
+    @staticmethod
+    def write(_s):
         raise AttributeError("'Payload' object do not implement this method")
 
-    def writelines(self, seq):
+    @staticmethod
+    def writelines(_seq):
         raise AttributeError("'Payload' object do not implement this method")
 
     def __getattr__(self, x):

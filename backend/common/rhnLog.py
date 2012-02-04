@@ -65,6 +65,8 @@ def set_close_on_exec(fd):
     s = fcntl.fcntl(fd, fcntl.F_GETFD)
     fcntl.fcntl(fd, fcntl.F_SETFD, s | fcntl.FD_CLOEXEC)
 
+# pylint: disable=W0702
+
 # Init the log
 def initLOG(log_file = "stderr", level = 0):
     global LOG
@@ -110,9 +112,8 @@ def initLOG(log_file = "stderr", level = 0):
 # Convenient macro-type debugging function
 def log_debug(level, *args):
     # Please excuse the style inconsistencies.
-    global LOG   
     if LOG and LOG.level >= level:
-        apply(LOG.logMessage, args)
+        LOG.logMessage(*args)
 
 # Dump some information to stderr.
 def log_stderr(*args):
@@ -124,27 +125,21 @@ def log_stderr(*args):
 
 # Convenient error logging function
 def log_error(*args):
-    global LOG
     if not args:
         return
-    err_args = ["ERROR"]
-    for a in args:
-        err_args.append(a)
     if LOG:
-        apply(LOG.logMessage, err_args)
+        LOG.logMessage("ERROR", *args)
     # log to stderr too
     log_stderr(str(args))
     
 # Log a string with no extra info.
 def log_clean(level, msg):
-    global LOG
     if LOG and LOG.level >= level:
         LOG.writeToLog(msg)
 
 # set the request object for the LOG so we don't have to expose the
 # LOG object externally
 def log_setreq(req):
-    global LOG
     if LOG:
         LOG.set_req(req)
 
@@ -220,7 +215,7 @@ class rhnLog:
     # send a message to the log file.
     def writeToLog(self, msg):
         # this is for debugging in case of errors
-        fd = self.fd # no-op, but useful for dumping the current data
+        #fd = self.fd # no-op, but useful for dumping the current data
         self.fd.write("%s\n" % msg)
 
     # Reinitialize req info if req has changed.

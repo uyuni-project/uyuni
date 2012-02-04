@@ -24,6 +24,8 @@ from rhn_pkg import A_Package, InvalidPackageError
 
 # Expose a bunch of useful constants from rpm
 error = rpm.error
+
+sym, val = None, None
 for sym, val in rpm.__dict__.items():
     if sym[:3] == 'RPM':
         # A constant, probably - import it into our namespace
@@ -79,10 +81,10 @@ class RPM_Header:
 
     def checksum_type(self):
         if self.hdr[rpm.RPMTAG_FILEDIGESTALGO] \
-           and PGPHASHALGO.has_key(self.hdr[rpm.RPMTAG_FILEDIGESTALGO]):
-           checksum_type = PGPHASHALGO[self.hdr[rpm.RPMTAG_FILEDIGESTALGO]]
+            and PGPHASHALGO.has_key(self.hdr[rpm.RPMTAG_FILEDIGESTALGO]):
+            checksum_type = PGPHASHALGO[self.hdr[rpm.RPMTAG_FILEDIGESTALGO]]
         else:
-           checksum_type = 'md5'
+            checksum_type = 'md5'
         return checksum_type
 
     def is_signed(self):
@@ -119,10 +121,10 @@ class RPM_Header:
                 key_id = ret[19:27]
 
             key_id_len = len(key_id)
-            format = "%dB" % key_id_len
-            t = struct.unpack(format, key_id)
-            format = "%02x" * key_id_len
-            key_id = format % t
+            fmt = "%dB" % key_id_len
+            t = struct.unpack(fmt, key_id)
+            fmt = "%02x" * key_id_len
+            key_id = fmt % t
             self.signatures.append({
                 'signature_type'    : sig_type,
                 'key_id'            : key_id,
@@ -130,6 +132,7 @@ class RPM_Header:
             })
 
 class RPM_Package(A_Package):
+    # pylint: disable=R0902
     def __init__(self, input_stream = None):
         A_Package.__init__(self, input_stream)
         self.header_data = tempfile.SpooledTemporaryFile()
@@ -137,7 +140,7 @@ class RPM_Package(A_Package):
     def read_header(self):
         self._get_header_byte_range()
         try:
-            self.header = get_package_header(file=self.header_data)
+            self.header = get_package_header(file_obj=self.header_data)
         except InvalidPackageError, e:
             raise InvalidPackageError(*e.args), None, sys.exc_info()[2]
         except error, e:
@@ -181,7 +184,8 @@ class RPM_Package(A_Package):
         buf = self._read_bytes(self.input_stream, header_size - struct_lead_size)
         self.header_data.write(buf)
 
-    def _get_header_struct_size(self, struct_lead):
+    @staticmethod
+    def _get_header_struct_size(struct_lead):
         """
         Compute the size in bytes of the rpm header struct starting at the current
         position in package_file.
@@ -205,13 +209,13 @@ class RPM_Package(A_Package):
         return header_size
 
     def save_payload(self, output_stream):
-        hash = checksum.hashlib.new(self.checksum_type)
+        c_hash = checksum.hashlib.new(self.checksum_type)
         if output_stream:
             output_start = output_stream.tell()
-        self.header_data.seek(0,0)
-        self._stream_copy(self.header_data, output_stream, hash)
-        self._stream_copy(self.input_stream, output_stream, hash)
-        self.checksum = hash.hexdigest()
+        self.header_data.seek(0, 0)
+        self._stream_copy(self.header_data, output_stream, c_hash)
+        self._stream_copy(self.input_stream, output_stream, c_hash)
+        self.checksum = c_hash.hexdigest()
         self.header_data.close()
         if output_stream:
             self.payload_stream = output_stream
@@ -269,21 +273,21 @@ def get_header_struct_size(package_file):
 
     return header_size
 
-SHARED_TS=None
-def get_package_header(filename=None, file=None, fd=None):
+SHARED_TS = None
+def get_package_header(filename=None, file_obj=None, fd=None):
     """ Loads the package header from a file / stream / file descriptor
         Raises rpm.error if an error is found, or InvalidPacageError if package is
         busted
     """
     global SHARED_TS
     # XXX Deal with exceptions better
-    if (filename is None and file is None and fd is None):
+    if (filename is None and file_obj is None and fd is None):
         raise ValueError, "No parameters passed"
 
     if filename is not None:
         f = open(filename)
-    elif file is not None:
-        f = file
+    elif file_obj is not None:
+        f = file_obj
         f.seek(0, 0)
     else: # fd is not None
         f = None
@@ -327,6 +331,7 @@ class MatchIterator:
         m_args = (tag_name,)
         if value:
             m_args += (value,)
+        # pylint: disable=E1101
         self.mi = self.ts.dbMatch(*m_args)
 
     def pattern(self, tag_name, mode, pattern):
@@ -399,9 +404,9 @@ def sortRPMs(rpms):
 def getInstalledHeader(rpmName):
     """ quieries the RPM DB for a header matching rpmName. """
 
-    mi = MatchIterator("name")
-    mi.pattern("name", rpm.RPMMIRE_STRCMP, rpmName)
-    return mi.next()
+    matchiter = MatchIterator("name")
+    matchiter.pattern("name", rpm.RPMMIRE_STRCMP, rpmName)
+    return matchiter.next()
 
 
 if __name__ == '__main__':
@@ -413,10 +418,10 @@ if __name__ == '__main__':
             break
         print h['name']
     sys.exit(1)
-    hdr = get_package_header(filename="/tmp/python-1.5.2-42.72.i386.rpm")
-    print dir(hdr)
+    hdrX = get_package_header(filename="/tmp/python-1.5.2-42.72.i386.rpm")
+    print dir(hdrX)
     # Sources
-    hdr = get_package_header(filename="/tmp/python-1.5.2-42.72.src.rpm")
-    hdr2 = headerLoad(hdr.unload())
-    print hdr2
-    print len(hdr2.keys())
+    hdrX = get_package_header(filename="/tmp/python-1.5.2-42.72.src.rpm")
+    hdrY = headerLoad(hdrX.unload())
+    print hdrY
+    print len(hdrY.keys())

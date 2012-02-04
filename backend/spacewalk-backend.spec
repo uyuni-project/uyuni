@@ -20,7 +20,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.7.13
+Version: 1.7.14
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -333,6 +333,12 @@ sed -i 's/^INSTALL_DEST.*/INSTALL_DEST = \/etc\/httpd\/conf.d/' apache-conf/Make
 make -f Makefile.backend all
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
+
+# check coding style
+# right now we check only common/*.py, others aren't clean yet
+find common -name '*.py' \
+    | xargs pylint -rn -iy --bad-functions=apply,input \
+                   --disable C0111,C0103,C0301,F0401,I0011,R0801,R0903,R0911,R0912,R0913,R0914,W0142,W0403,W0511,W0603
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -793,6 +799,11 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Sat Feb 04 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.14-1
+- fixed macros in changelog
+- check common/* for pylint errors
+- fixed pylint errors and warnings in common/*.py
+
 * Fri Feb 03 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.13-1
 - simplified checksum_exists condition
 - merged duplicated h.execute() call
@@ -1195,7 +1206,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - We need to specifically check for None when calling decode.
 
 * Fri May 20 2011 Jan Pazdziora 1.5.27-1
-- Removing %{pythonrhnroot}/common/UserDictCase.py* from %files.
+- Removing %%{pythonrhnroot}/common/UserDictCase.py* from %%files.
 
 * Fri May 20 2011 Michael Mraka <michael.mraka@redhat.com> 1.5.26-1
 - package path should contain epoch
@@ -1613,7 +1624,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - fixed %%files for spacewalk-backend-libs
 
 * Thu Dec 16 2010 Jan Pazdziora 1.3.27-1
-- Dropping satellite_tools/exporter/exporter.py from the Makefile and %files.
+- Dropping satellite_tools/exporter/exporter.py from the Makefile and %%files.
 
 * Wed Dec 15 2010 Miroslav Suchý <msuchy@redhat.com> 1.3.26-1
 - 624092 - update package if pushing using --force and package with same NVREA
@@ -1648,7 +1659,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - fixed column aliases (PG)
 
 * Wed Dec 01 2010 Jan Pazdziora 1.3.20-1
-- Ignore the %check results for now.
+- Ignore the %%check results for now.
 
 * Wed Dec 01 2010 Lukas Zapletal 1.3.19-1
 - 644985 - SELinux context cleared from RHEL4 rhncfg-client

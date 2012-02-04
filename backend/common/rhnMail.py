@@ -16,11 +16,9 @@
 #
 
 import os
-import sys
 import smtplib
 
 from rhnConfig import CFG
-from rhnLog import log_error
 from rhn.connections import idn_pune_to_unicode
 
 # check if the headers have the minimum required fields
@@ -35,7 +33,7 @@ def __check_headers(h):
     else:
         to = h["To"]
     if not ("Content-Type" in h):
-	h["Content-Type"] = "text/plain; charset=utf-8"
+        h["Content-Type"] = "text/plain; charset=utf-8"
     if type(to) in [type([]), type(())]:
         toaddrs = to
         to = ', '.join(to)
@@ -45,7 +43,7 @@ def __check_headers(h):
     return [h, toaddrs]
 
 # check the headers for sanity cases and send the mail
-def send(headers, body, sender = None, lazy = 0):
+def send(headers, body, sender = None):
     (headers, toaddrs) = __check_headers(headers)
     if sender is None:
         sender = headers["From"]

@@ -342,6 +342,7 @@ class redirectException(Exception):
     """
 
     def __init__(self, redirectpath = ""):
+        Exception.__init__(self)
         self.path = redirectpath
 
     def __str__(self):
@@ -387,9 +388,6 @@ class rhnFault(Exception):
                                                               self.text)
 
     def getxml(self):
-        global FaultArray
-        global Explain
-        global templateValues
 
         # see if there were any template strings loaded from the db,
         # {label:value}

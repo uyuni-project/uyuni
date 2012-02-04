@@ -22,7 +22,7 @@ except ImportError:
     # pylint: disable=F0401
     # pylint can't find Crypto.Hash here, but it is present on older systems.
     from Crypto.Hash import SHA256 as sha256
-    class hashlib:
+    class hashlib(object):
         @staticmethod
         def new(checksum):
             if checksum == 'md5':
@@ -35,7 +35,7 @@ except ImportError:
                 raise ValueError, "Incompatible checksum type"
 
 
-def getFileChecksum(hashtype, filename=None, fd=None, file=None, buffer_size=None):
+def getFileChecksum(hashtype, filename=None, fd=None, file_obj=None, buffer_size=None):
     """ Compute a file's checksum
         Used by rotateFile()
     """
@@ -45,10 +45,10 @@ def getFileChecksum(hashtype, filename=None, fd=None, file=None, buffer_size=Non
     if buffer_size is None:
         buffer_size = 65536
 
-    if filename is None and fd is None and file is None:
+    if filename is None and fd is None and file_obj is None:
         raise ValueError("no file specified")
-    if file:
-        f = file
+    if file_obj:
+        f = file_obj
     elif fd is not None:
         f = os.fdopen(os.dup(fd), "r")
     else:
@@ -57,14 +57,14 @@ def getFileChecksum(hashtype, filename=None, fd=None, file=None, buffer_size=Non
     f.seek(0, 0)
     m = hashlib.new(hashtype)
     while 1:
-        buffer = f.read(buffer_size)
-        if not buffer:
+        buf = f.read(buffer_size)
+        if not buf:
             break
-        m.update(buffer)
+        m.update(buf)
 
     # cleanup time
-    if file is not None:
-        file.seek(0, 0)
+    if file_obj is not None:
+        file_obj.seek(0, 0)
     else:
         f.close()
     return m.hexdigest()

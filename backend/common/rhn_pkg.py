@@ -13,14 +13,15 @@
 # in this software or its documentation.
 #
 
+import os
 import checksum
 
-def get_package_header(filename=None, file=None, fd=None):
+def get_package_header(filename=None, file_obj=None, fd=None):
     if filename is not None:
         stream = open(filename)
         need_close = True
-    elif file is not None:
-        stream = file
+    elif file_obj is not None:
+        stream = file_obj
     else:
         stream = os.fdopen(os.dup(fd), "r")
         need_close = True
@@ -57,6 +58,7 @@ DEFAULT_CHECKSUM_TYPE = 'md5'
 
 class A_Package:
     """virtual class that implements shared methods for RPM/MPM/DEB package object"""
+    # pylint: disable=R0902
     def __init__(self, input_stream = None):
         self.header = None
         self.header_start = 0
@@ -73,11 +75,11 @@ class A_Package:
 
     def save_payload(self, output_stream):
         """saves payload to output_stream"""
-        hash = checksum.hashlib.new(self.checksum_type)
+        c_hash = checksum.hashlib.new(self.checksum_type)
         if output_stream:
             output_start = output_stream.tell()
-        self._stream_copy(self.input_stream, output_stream, hash)
-        self.checksum = hash.hexdigest()
+        self._stream_copy(self.input_stream, output_stream, c_hash)
+        self.checksum = c_hash.hexdigest()
         if output_stream:
             self.payload_stream = output_stream
             self.payload_size = output_stream.tell() - output_start
@@ -89,8 +91,8 @@ class A_Package:
         self.payload_size = self.input_stream.tell() - start
         self.payload_stream = self.input_stream
 
-
-    def _stream_copy(self, source, dest, hash=None):
+    @staticmethod
+    def _stream_copy(source, dest, c_hash=None):
         """copies data from the source stream to the destination stream"""
         while True:
             buf = source.read(BUFFER_SIZE)
@@ -98,10 +100,11 @@ class A_Package:
                 break
             if dest:
                 dest.write(buf)
-            if hash:
-                hash.update(buf)
+            if c_hash:
+                c_hash.update(buf)
 
-    def _read_bytes(self, stream, amt):
+    @staticmethod
+    def _read_bytes(stream, amt):
         ret = ""
         while amt:
             buf = stream.read(min(amt, BUFFER_SIZE))

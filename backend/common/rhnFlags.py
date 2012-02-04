@@ -15,72 +15,50 @@
 # used to hold the flags gets initialized on demand
 #
 
+__F = {}
 
 def set(name, value = 1):
     """
     set value
     """
-
+    # pylint: disable=W0622,W0602
     global __F
     if not name:
         return None
     name = name.lower()
-    try:
-        __F[name] = value
-    except NameError:
-        __F = {name: value}
+    __F[name] = value
     return None
-
 
 def get(name):
     """
     get value
     """
-    global __F
     if not name:
         return None
     name = name.lower()
-    try:
-        return __F.get(name)
-    except NameError:
-        __F = {}
-    return None
+    return __F.get(name)
 
 
 def test(name):
     """
     test value
     """
-    global __F
     if not name:
         return 0
     name = name.lower()
-    try:
-        return __F.has_key(name) and __F[name]
-    except NameError:
-        __F = {}
-    return 0
+    return __F.has_key(name) and __F[name]
 
 
 def reset():
     """
     reset all
     """
-    global __F
-    try:
-        __F.clear()
-    except NameError:
-        __F = {}
-    return
+    __F.clear()
 
 
 def all():
     """
     return all flags in a dict
     """
-    global __F
-    try:
-        return __F
-    except NameError:
-        __F = {}
+    # pylint: disable=W0622
     return __F

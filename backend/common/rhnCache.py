@@ -79,6 +79,7 @@ def get(name, modified = None, raw = None, compressed=None, missing_is_null=1):
     
 def set(name, value, modified = None, raw = None, compressed=None, \
         user='root', group='root', mode=0755):
+    # pylint: disable=W0622
     cache = __get_cache(raw, compressed)
 
     cache.set(name, value, modified, user, group, mode)
@@ -198,7 +199,7 @@ class LockedFile(object):
 
 class ReadLockedFile(LockedFile):
 
-    def get_fd(self, name, user, group, mode):
+    def get_fd(self, name, _user, _group, _mode):
         if not os.access(self.fname, os.R_OK):
             raise KeyError(name)
         fd = open(self.fname, "r")
@@ -254,7 +255,8 @@ class Cache:
         fd.write(value)
         fd.close()
 
-    def has_key(self, name, modified = None):
+    @staticmethod
+    def has_key(name, modified = None):
         fname = _fname(name)
         if modified is not None:
             modified = timestamp(modified)
@@ -266,7 +268,8 @@ class Cache:
             return False
         return True
 
-    def delete(self, name):
+    @staticmethod
+    def delete(name):
         fname = _fname(name)
         # test for valid entry
         if not os.access(fname, os.R_OK):
@@ -276,11 +279,13 @@ class Cache:
             raise OSError, "Read-Only access for cache entry: %s" % name
         os.unlink(fname)
 
-    def get_file(self, name, modified = None):
+    @staticmethod
+    def get_file(name, modified = None):
         fd = ReadLockedFile(name, modified)
         return fd
 
-    def set_file(self, name, modified = None, user='root', group='root', \
+    @staticmethod
+    def set_file(name, modified = None, user='root', group='root', \
                  mode=0755):
         fd = WriteLockedFile(name, modified, user, group, mode)
         return fd
@@ -367,9 +372,9 @@ class ObjectCache:
     def delete(self, name):
         self.cache.delete(name)
         
-    def get_file(self, name, modified = None):
-        """ Getting a file descriptor for an object makes no sense. """
-        raise NotImplementedError
+    @staticmethod
+    def get_file(*_args):
+        raise RuntimeError("Getting a file descriptor for an object makes no sense.")
 
 class NullCache:
     """ A cache that returns None rather than raises a KeyError. """

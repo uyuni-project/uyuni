@@ -37,18 +37,18 @@ def labelCompare(l1, l2):
         return -1
     return rhn_rpm.labelCompare(l1, l2)
 
-def get_package_header(filename=None, file=None, fd=None):
-    return load(filename=filename, file=file, fd=fd)[0]
+def get_package_header(filename=None, file_obj=None, fd=None):
+    return load(filename=filename, file_obj=file_obj, fd=fd)[0]
 
-def load(filename=None, file=None, fd=None):
+def load(filename=None, file_obj=None, fd=None):
     """ Loads an MPM and returns its header and its payload """
-    if (filename is None and file is None and fd is None):
+    if (filename is None and file_obj is None and fd is None):
         raise ValueError, "No parameters passed"
 
     if filename is not None:
         f = open(filename)
-    elif file is not None:
-        f = file
+    elif file_obj is not None:
+        f = file_obj
     else: # fd is not None
         f = os.fdopen(os.dup(fd), "r")
 
@@ -84,7 +84,7 @@ def load_rpm(stream):
     stream.seek(0, 0)
 
     try:
-        header = rhn_rpm.get_package_header(file=stream)
+        header = rhn_rpm.get_package_header(file_obj=stream)
     except InvalidPackageError, e:
         raise InvalidPackageError(*e.args), None, sys.exc_info()[2]
     except rhn_rpm.error, e:
@@ -115,19 +115,23 @@ class MPM_Header:
     def __getattr__(self, name):
         return getattr(self.hdr, name)
 
-    def is_signed(self):
+    @staticmethod
+    def is_signed():
         return 0
 
-    def checksum_type(self):
+    @staticmethod
+    def checksum_type():
         return MPM_CHECKSUM_TYPE
 
-    def unload(self):
+    @staticmethod
+    def unload():
         return None
 
 MPM_HEADER_COMPRESSED_GZIP = 1
 MPM_PAYLOAD_COMPRESSED_GZIP = 1
 
 class MPM_Package(A_Package):
+    # pylint: disable=R0902
     _lead_format = '!16sB3s4L92s'
     _magic = 'mpmpackage012345'
     def __init__(self, input_stream = None):
@@ -191,7 +195,7 @@ class MPM_Package(A_Package):
             t.close()
 
         try:
-            params, foo = xmlrpclib.loads(header_data)
+            params, _x = xmlrpclib.loads(header_data)
         except:
             # XXX
             raise
@@ -221,7 +225,7 @@ class MPM_Package(A_Package):
         lead_arr = (self._magic, 1, "\0" * 3, self.header_flags,
             self.payload_flags, self.header_size, self.payload_size, '\0' * 92)
         # lead
-        lead = apply(struct.pack, (self._lead_format, ) + lead_arr)
+        lead = struct.pack(self._lead_format, *lead_arr)
         output_stream.seek(0, 0)
         output_stream.write(lead)
         output_stream.seek(0, 2)
@@ -239,24 +243,24 @@ class MPM_Package(A_Package):
         stream.flush()
         self.header_size = stream.tell() - start
 
-    def _encode_payload(self, stream, hash=None):
+    def _encode_payload(self, stream, c_hash=None):
         assert(self.payload_stream is not None)
         if stream:
             start = stream.tell()
         if stream and self.payload_flags & MPM_PAYLOAD_COMPRESSED_GZIP:
             f = gzip.GzipFile(None, "wb", 9, stream)
-            self._stream_copy(self.payload_stream, f, hash)
+            self._stream_copy(self.payload_stream, f, c_hash)
             f.close()
         else:
-            self._stream_copy(self.payload_stream, stream, hash)
+            self._stream_copy(self.payload_stream, stream, c_hash)
         if stream:
             self.payload_size = stream.tell() - start
 
     def save_payload(self, output_stream):
         self.payload_stream = self.input_stream
-        hash = checksum.hashlib.new(self.header.checksum_type())
-        self._encode_payload(output_stream, hash)
-        self.checksum = hash.hexdigest()
+        c_hash = checksum.hashlib.new(self.header.checksum_type())
+        self._encode_payload(output_stream, c_hash)
+        self.checksum = c_hash.hexdigest()
         if output_stream:
             self.payload_stream = output_stream
 
@@ -269,8 +273,8 @@ def _replace_null(obj):
     if isinstance(obj, TupleType):
         return tuple(_replace_null(list(obj)))
     if hasattr(obj, 'items'):
-        dict = {}
+        obj_dict = {}
         for k, v in obj.items():
-            dict[_replace_null(k)] = _replace_null(v)
-        return dict
+            obj_dict[_replace_null(k)] = _replace_null(v)
+        return obj_dict
     return obj
