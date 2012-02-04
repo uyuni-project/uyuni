@@ -85,7 +85,7 @@ class apacheHandler(rhnApache):
 
     def _setSessionToken(self, req):
         # extended to always return a token, even if an empty one
-        ret = rhnApache._setSessionToken(self, req)
+        ret = rhnApache._setSessionToken(req)
         if ret:
             log_debug(4, "Returning", ret)
             return ret
