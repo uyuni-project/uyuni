@@ -165,6 +165,14 @@ The invalid characters are: %1"), invalid_pw_chars));
 		UI::SetFocus (`id ("MANAGER_PASS"));
 		continue;
 	    }
+ 	    string cracklib_check_result = (string)SCR::Execute(.crack, pw1);
+	    if (cracklib_check_result != "")
+	    {
+		Popup::Error (sformat (_("The password failed the cracklib check with:
+'%1'"), cracklib_check_result));
+		UI::SetFocus (`id ("MANAGER_PASS"));
+		continue;
+	    }
 	    boolean localdb = UI::QueryWidget (`id (`rb), `CurrentButton) == `localdb;
 	    foreach (string key, string value, settings, {
 		string val	= (string) UI::QueryWidget (`id (key), `Value);
