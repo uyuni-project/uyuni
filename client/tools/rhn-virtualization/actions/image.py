@@ -109,12 +109,12 @@ def _connect_to_hypervisor():
 def _extractTar( source, dest ):
     param = "xf"
     if not os.path.exists( source ):
-        log.log_debug("file not found: ", source)
-        return 1
+        log.log_debug("file not found: %s" % source)
+        raise Exception("file not found: %s" % source)
 
     if not os.path.exists( dest ):
-        log.log_debug("path not found: ", dest)
-        return 2
+        log.log_debug("path not found: %s" % dest)
+        raise Exception("path not found: %s" % dest)
 
     if( source.endswith("gz") ):
         param = param + "z"
@@ -125,7 +125,7 @@ def _extractTar( source, dest ):
     log.log_debug(cmd)
     if os.system( cmd ) != 0:
         log.log_debug( "%s failed" % cmd )
-        return 3
+        raise Exception("%s failed" % cmd)
 
     return 0
 
@@ -185,9 +185,10 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, v
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
         log.log_debug("fetching the image failed")
         return (1, "fetching the image failed", {})
-    extractTarStatus = _extractTar( IMAGE_BASE_PATH+fileName, IMAGE_BASE_PATH )
-    if _extractTarStatus != 0:
-        return (1, "extracting the image tarball failed with error code %s" % extractTarStatus, {})
+    try:
+        _extractTar( IMAGE_BASE_PATH+fileName, IMAGE_BASE_PATH )
+    except Exception as e:
+        return (1, "extracting the image tarball failed with: %s" % e, {})
 
     # image exists in /var/lib/libvirt/images/image-name now
 
