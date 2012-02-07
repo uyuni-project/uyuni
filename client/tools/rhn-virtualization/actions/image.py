@@ -58,11 +58,8 @@ def _getImage(imageName,serverUrl,proxySetting):
     # proxy settings
     if proxySetting["proxyServer"] != None and proxySetting["proxyServer"] != "":
         server = proxySetting["proxyServer"]
-        # FIXME: port
-        port = "3128" 
-        #port   = proxySetting["proxyPort"]
         # proxy-host.com:8080
-        c.setopt(pycurl.PROXY, "%s:%s" % (server,port) )
+        c.setopt(pycurl.PROXY, server )
         if proxySetting["proxyUser"] != None and proxySetting["proxyUser"] != "":
             user     = proxySetting["proxyUser"]
             password = proxySetting["proxyPass"]
