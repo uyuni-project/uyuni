@@ -23,11 +23,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.redhat.rhn.domain.image.Image;
-import com.redhat.rhn.domain.image.ImageFactory;
+import com.redhat.rhn.domain.org.Credentials;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
+import com.redhat.rhn.manager.org.CredentialsFactory;
 import com.suse.studio.client.SUSEStudio;
 import com.suse.studio.client.data.Appliance;
 import com.suse.studio.client.data.Build;
@@ -45,7 +46,12 @@ public class ImagesRenderer extends BaseFragmentRenderer {
     @Override
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         // Get the images
-        List images = getImages(user);
+        List images = null;
+        try {
+            images = getImages(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Store list of images to the request
         request.setAttribute(IMAGES_LIST, images);
@@ -63,22 +69,25 @@ public class ImagesRenderer extends BaseFragmentRenderer {
      * @param user
      * @return list of {@link Image} objects
      */
-    private List getImages(User user) {
+    private List getImages(User user) throws IOException {
         List<Appliance> ret = new ArrayList<Appliance>();
 
-        // Take credentials stored with the org
+        // Load credentials and host configuration
         Org org = user.getOrg();
-        String usr = org.getStudioUser();
-        String apikey = org.getStudioKey();
+        Credentials creds = CredentialsFactory.lookupByOrg(org);
+        String studioUser = creds.getUsername();
+        String studioKey = creds.getPassword();
+        String studioHost = creds.getHostname();
 
         // Get appliance builds from studio
-        if (user != null && apikey != null) {
-            SUSEStudio studio = new SUSEStudio(usr, apikey);
-            try {
-                ret = studio.getAppliances();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        if (studioUser != null && studioKey != null) {
+            SUSEStudio studio;
+            if (studioHost != null) {
+                studio = new SUSEStudio(studioUser, studioKey, studioHost);
+            } else {
+                studio = new SUSEStudio(studioUser, studioKey);
             }
+            ret = studio.getAppliances();
         }
 
         // Convert to a list of images
@@ -96,7 +105,7 @@ public class ImagesRenderer extends BaseFragmentRenderer {
         for (Appliance appliance : appliances) {
             // Create one image object for every build
             for (Build build : appliance.getBuilds()) {
-                Image img = ImageFactory.createImage();
+                Image img = new Image();
                 img.setOrg(user.getOrg());
                 // Appliance attributes
                 img.setName(appliance.getName());

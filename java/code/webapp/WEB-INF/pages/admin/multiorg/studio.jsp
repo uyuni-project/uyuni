@@ -47,13 +47,19 @@
   <tr>
     <th><label for="studioUser">User</label></th>
     <td>
-      <input type="text" name="studioUser" id="studioUser" value="${org.studioUser}" />
+      <input type="text" name="studioUser" id="studioUser" value="${creds.username}" />
     </td>
   </tr>
   <tr>
     <th><label for="studioKey">Key</label></th>
     <td>
-      <input type="text" name="studioKey" id="studioKey" value="${org.studioKey}" />
+      <input type="text" name="studioKey" id="studioKey" value="${creds.password}" />
+    </td>
+  </tr>
+  <tr>
+    <th><label for="studioHost">Host</label></th>
+    <td>
+      <input type="text" name="studioHost" id="studioHost" value="${creds.hostname}" />
     </td>
   </tr>
  </table>

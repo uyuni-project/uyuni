@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 Novell
+ * Copyright (c) 2012 Novell
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,9 +14,11 @@
  */
 package com.redhat.rhn.frontend.action.multiorg;
 
+import com.redhat.rhn.domain.org.Credentials;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
+import com.redhat.rhn.manager.org.CredentialsFactory;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -38,11 +40,24 @@ public class OrgStudioConfigAction extends RhnAction {
             HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         RequestContext ctx = new RequestContext(request);
+
+        // Get credentials for this organization
         Org org = ctx.lookupAndBindOrg();
+        Credentials creds = CredentialsFactory.lookupByOrg(org);
+        if (creds == null) {
+            creds = CredentialsFactory.createNewCredentials(org);
+            creds.setOrg(org);
+        }
+        // Bind the credentials as well
+        request.setAttribute("creds", creds);
+
         if (ctx.isSubmitted()) {
-            // Set the Studio credentials to the Organizations
-            org.setStudioUser(request.getParameter("studioUser"));
-            org.setStudioKey(request.getParameter("studioKey"));
+            // Store the credentials
+            creds.setType(Credentials.TYPE_STUDIO);
+            creds.setUsername(request.getParameter("studioUser"));
+            creds.setPassword(request.getParameter("studioKey"));
+            creds.setHostname(request.getParameter("studioHost"));
+            CredentialsFactory.storeCredentials(creds);
 
             ActionMessages msg = new ActionMessages();
             msg.add(ActionMessages.GLOBAL_MESSAGE,
