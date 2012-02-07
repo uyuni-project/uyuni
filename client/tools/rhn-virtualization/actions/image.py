@@ -181,10 +181,13 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, v
         return (1, "invalid image arch: name=%s arch=%s ver=%s type=%s" % (imageName,imageArch,imageVer,imageType), {})
 
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
-        _getImage(fileName,downloadURL,proxySettings)
+        try:
+            _getImage(fileName,downloadURL,proxySettings)
+        except Exception as e:
+            return ( 1, "getting the image failed with: %s" % e )
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
-        log.log_debug("fetching the image failed")
-        return (1, "fetching the image failed", {})
+        log.log_debug("image file is not there")
+        return (1, "image file is not there: %s" % IMAGE_BASE_PATH+fileName, {})
     try:
         _extractTar( IMAGE_BASE_PATH+fileName, IMAGE_BASE_PATH )
     except Exception as e:
@@ -234,7 +237,7 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, v
     domain.create()
     virt_support.refresh()
 
-    return (0, "image deployed and started", {})
+    return (0, "image '%s' deployed and started" % imageName, {})
 
 # just for testing
 if __name__ == "__main__":
