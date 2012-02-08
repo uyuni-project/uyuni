@@ -209,29 +209,35 @@ sub init_statements {
 
   $self->dbprepare(
     'select_next_redirect_recid',
-    "select REDIRECTS_RECID_SEQ.nextval
+    "select sequence_nextval('rhn_redirects_recid_seq')
                                  from DUAL"
                   );
   $self->dbprepare(
     'create_redirect',
-    "insert into REDIRECTS (
+    "insert into rhn_redirects (
                                    RECID, CUSTOMER_ID, CONTACT_ID, REDIRECT_TYPE,
-                                   DESCRIPTION, REASON, START_DATE, EXPIRATION,
+                                   DESCRIPTION, REASON,
+                                   START_DATE,
+                                   EXPIRATION,
                                    LAST_UPDATE_USER, LAST_UPDATE_DATE )
                                  values ( ?, ?, ?, ?,
-                                   ?, ?, TO_DATE(?, 'MM-DD-YYYY HH24:MI:SS'), TO_DATE(?, 'MM-DD-YYYY HH24:MI:SS'),
-                                   ?, sysdate)"
+                                   ?, ?,
+                                   TO_TIMESTAMP(?, 'MM-DD-YYYY HH24:MI:SS'),
+                                   TO_TIMESTAMP(?, 'MM-DD-YYYY HH24:MI:SS'),
+                                   ?, current_timestamp)"
                   );
   $self->dbprepare(
     'create_redirect_criterion',
-    "insert into REDIRECT_CRITERIA (
+    "insert into rhn_redirect_criteria (
                                    RECID, REDIRECT_ID, MATCH_PARAM, MATCH_VALUE)
-                                 select REDIRECT_CRITERIA_RECID_SEQ.nextval, ?, ?, ?
+                                 select
+                                 sequence_nextval('rhn_redirect_crit_recid_seq'),
+                                 ?, ?, ?
                                  from DUAL"
                   );
   $self->dbprepare(
     'create_redirect_email_target',
-    "insert into REDIRECT_EMAIL_TARGETS (
+    "insert into rhn_redirect_email_targets (
                                    REDIRECT_ID, EMAIL_ADDRESS)
                                  values ( ?, ?)"
                   );
@@ -262,8 +268,8 @@ sub init_statements {
   $self->dbprepare(
     'select_command_by_probe_id',
     "select c.recid, c.name, c.description, c.group_name 
-      from command c,
-        probe p
+      from rhn_command c,
+        rhn_probe p
       where p.command_id = c.recid
         and p.recid = ?"
                   );
