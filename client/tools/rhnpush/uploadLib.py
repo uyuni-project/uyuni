@@ -24,7 +24,7 @@ import rhnpush_cache
 import struct
 import xmlrpclib
 from spacewalk.common import rhn_mpm
-from spacewalk.common.checksum import getFileChecksum
+from spacewalk.common.rhn_pkg import package_from_filename, get_package_header
 from up2date_client import rhnserver
 
 try:
@@ -45,8 +45,6 @@ HEADERS_PER_CALL = 25
 # Exception class
 class UploadError(Exception):
     pass
-
-InvalidPackageError = rhn_mpm.InvalidPackageError
 
 class ServerFault(Exception):
     def __init__(self, faultCode=None, faultString="", faultExplanation=""):
@@ -184,17 +182,11 @@ class UploadClass:
         self.authenticate()
 
         if self.options.source:
-            if self.new_sat_test():
-                list = listChannelSourceBySession(self.server, self.session.getSessionString(), self.channels)
-            else:
-                list = listChannelSource(self.server, self.username, self.password, self.channels)
+            list = listChannelSourceBySession(self.server, self.session.getSessionString(), self.channels)
             #self.die(1, "Listing source rpms not supported")
         else:
             # List the channel's contents
-            if self.new_sat_test():
-                list = listChannelBySession(self.server, self.session.getSessionString(), self.channels)
-            else:
-                list = listChannel(self.server, self.username, self.password, self.channels)
+            list = listChannelBySession(self.server, self.session.getSessionString(), self.channels)
 
         for p in list:
             print p[:6]
@@ -263,10 +255,7 @@ class UploadClass:
             same_names_hash[nvrea] = filename
 
         # Now get the list from the server
-        if self.new_sat_test():
-            pkglist = listChannelBySession(self.server, self.session.getSessionString(), self.channels)
-        else:
-            pkglist = listChannel(self.server, self.username, self.password, self.channels)
+        pkglist = listChannelBySession(self.server, self.session.getSessionString(), self.channels)
 
         for p in pkglist:
             name = p[0]
@@ -308,10 +297,7 @@ class UploadClass:
             localPackagesHash[os.path.basename(filename)] = filename
         
         # Now get the list from the server
-        if self.new_sat_test():
-            pkglist = listMissingSourcePackagesBySession(self.server, self.session.getSessionString(), self.channels)
-        else:
-            pkglist = listMissingSourcePackages(self.server, self.username, self.password, self.channels)
+        pkglist = listMissingSourcePackagesBySession(self.server, self.session.getSessionString(), self.channels)
 
         to_push = []
         for pkg in pkglist:
@@ -382,20 +368,11 @@ class UploadClass:
                     ReportError("\t\t%s" % p)
 
             if source:
-                if self.new_sat_test():
-                    method = self.server.packages.uploadSourcePackageInfoBySession
-                else:
-                    method = self.server.packages.uploadSourcePackageInfo
+                method = self.server.packages.uploadSourcePackageInfoBySession
             else:
-                if self.new_sat_test():
-                    method = self.server.packages.uploadPackageInfoBySession
-                else:
-                    method = self.server.packages.uploadPackageInfo
+                method = self.server.packages.uploadPackageInfoBySession
 
-            if self.new_sat_test():
-                ret = call(method, self.session.getSessionString(), hash)
-            else:
-                ret = call(method, self.username, self.password, hash)
+            ret = call(method, self.session.getSessionString(), hash)
 
             if ret is None:
                self.die(-1, "Upload attempt failed")
@@ -459,31 +436,18 @@ class UploadClass:
     # and generate new session
     def authenticate(self):
         #Only use the session token stuff if we're talking to a sat that supports session-token authentication.
-        if self.new_sat_test():
-            self.readSession()
-            if self.session and not self.options.new_cache and self.options.username == self.username:
-                chksession = self.checkSession(self.session.getSessionString())
-                if not chksession:
-                    self.setUsernamePassword()
-                    sessstr = call(self.server.packages.login, self.username, self.password)
-                    self.writeSession(sessstr)
-            else:
+        self.readSession()
+        if self.session and not self.options.new_cache and self.options.username == self.username:
+            chksession = self.checkSession(self.session.getSessionString())
+            if not chksession:
                 self.setUsernamePassword()
                 sessstr = call(self.server.packages.login, self.username, self.password)
                 self.writeSession(sessstr)
         else:
             self.setUsernamePassword()
+            sessstr = call(self.server.packages.login, self.username, self.password)
+            self.writeSession(sessstr)
 
-    def new_sat_test(self):
-        """ test if we can use session caching
-
-            Historically this function was used to test if rhnParent can handle session token authentication.
-            All curent satellites (4.0.6+) can do that. So it only return False, if we use --no-session-cachine.
-        """
-        if self.new_sat is None:
-            self.new_sat = not self.options.no_session_caching
-        return self.new_sat
- 
     def _processFile(self, filename, relativeDir=None, source=None, nosig=None):
         """ Processes a file
             Returns a hash containing:
@@ -502,28 +466,23 @@ class UploadClass:
 
         # Size
         size = os.path.getsize(filename)
-        # Open the file
-        f = open(filename, "r")
-        # Read the header
-        h = get_header(None, f.fileno(), source)
-        (header_start, header_end) = get_header_byte_range(f);
-        # Rewind the file
-        f.seek(0, 0)
-        # Compute digest
-        checksum_type = h.checksum_type()
-        checksum = getFileChecksum(checksum_type, file_obj=f)
-        f.close()
-        if h is None:
-            raise UploadError("%s is not a valid RPM file" % filename)
 
-        if nosig is None and not h.is_signed():
+        try:
+            a_pkg = package_from_filename(filename)
+            a_pkg.read_header()
+            a_pkg.payload_checksum()
+            assert a_pkg.header
+        except:
+            raise UploadError("%s is not a valid package" % filename), None, sys.exc_info()[2]
+
+        if nosig is None and not a_pkg.header.is_signed():
             raise UploadError("ERROR: %s: unsigned rpm (use --nosig to force)"
                 % filename)
 
         # Get the name, version, release, epoch, arch
         lh = []
         for k in ['name', 'version', 'release', 'epoch']:
-            lh.append(h[k])
+            lh.append(a_pkg.header[k])
         # Fix the epoch
         if lh[3] is None:
             lh[3] = ""
@@ -536,12 +495,12 @@ class UploadClass:
             lh.append(h['arch'])
 
         # Build the header hash to be sent
-        hash = { 'header' : Binary(h.unload()),
-                'checksum_type' : checksum_type,
-                'checksum' : checksum,
+        hash = { 'header' : Binary(a_pkg.header.unload()),
+                'checksum_type' : a_pkg.checksum_type,
+                'checksum' : a_pkg.checksum,
                 'packageSize' : size,
-                'header_start' : header_start,
-                'header_end' : header_end}
+                'header_start' : a_pkg.header_start,
+                'header_end' : a_pkg.header_end}
         if relativeDir:
             # Append the relative dir too
             hash["relativePath"] = "%s/%s" % (relativeDir,
@@ -737,9 +696,10 @@ def packageCompare(pkg1, pkg2, is_mpm=None):
 
 # returns a header from a package file on disk.
 def get_header(file, fildes=None, source=None):
-    # rhn_mpm.get_package_header will choose the right thing to do - open the
-    # file or use the provided open file descriptor)
-    h = rhn_mpm.get_package_header(filename=file, fd=fildes)
+    try:
+        h = get_package_header(filename=file, fd=fildes)
+    except:
+        raise UploadError("Package is invalid"), None, sys.exc_info()[2]
         
     # Verify that this is indeed a binary/source. xor magic
     # xor doesn't work with None values, so compare the negated values - the

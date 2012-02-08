@@ -4,14 +4,14 @@ Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
 URL:           http://fedorahosted.org/spacewalk
-Version:       5.5.37
+Version:       5.5.39
 Release:       1%{?dist}
 Source0:       https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:     noarch
 Requires:      rpm-python
 Requires:      rhnlib >= 2.5.38
-Requires:      spacewalk-backend-libs >= 0.8.3
+Requires:      spacewalk-backend-libs >= 1.7.17
 Requires:      rhn-client-tools
 %if 0%{?suse_version}
 # provides rhn directories for filelist check in OBS
@@ -67,6 +67,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/solaris2mpm.8*
 
 %changelog
+* Tue Feb 07 2012 Michael Mraka <michael.mraka@redhat.com> 5.5.39-1
+- updated uploadLib to use A_Package interface
+- removed legacy code for satellite < 4.0.6 support
+- converted rhnpush to use A_Package interface
+- InvalidPackageError is now in rhn_pkg
+- removed support for satellite < 4.1.0
+
+* Mon Feb 06 2012 Michael Mraka <michael.mraka@redhat.com> 5.5.38-1
+- require new spacewalk-backend-libs
+
 * Sat Feb 04 2012 Michael Mraka <michael.mraka@redhat.com> 5.5.37-1
 - fixed pylint errors / warnings
 

@@ -52,7 +52,7 @@ for my $c (sort keys %{ $files{common} }) {
 for my $c (sort keys %{ $files{oracle} }) {
 	next unless $c =~ /\.(sql|pks|pkb)$/;
 	if (not exists $files{postgres}{$c}) {
-		if ($c =~ /^upgrade/) {
+		if ($c =~ /^upgrade|^packages|^tables|^class|^data/) {
 			print "Oracle file [$c] is not in PostgreSQL variant\n";
 			$error = 1;
 		} else {
@@ -73,8 +73,8 @@ for my $c (sort keys %{ $files{postgres} }) {
 	my $first_line = <FILE>;
 	close FILE;
 	if (not defined $first_line or not $first_line =~ /^-- oracle equivalent source (?:(none)|sha1 ([0-9a-f]{40}))$/) {
-		print "PostgreSQL file [$c] does not specify SHA1 of Oracle source nor none\n" if $show_ignored or $c =~ /^upgrade/;
-		$error = 1 if $c =~ /^upgrade/;
+		print "PostgreSQL file [$c] does not specify SHA1 of Oracle source nor none\n" if $show_ignored or $c !~ /^procs/;
+		$error = 1 if $c !~ /^procs/;
 		next;
 	}
 	my $oracle_sha1 = $2;

@@ -12,14 +12,6 @@
   </attribute>
 
   <attribute name="recurring_duration">
-    <simpleType baseType="string">
-        <requiredIf field="recurring" value="true"/>
-        <minLength value="1"/>
-        <maxLength value="2"/>
-    </simpleType>
-  </attribute>
-
-  <attribute name="recurring_duration">
     <simpleType baseType="long">
       <requiredIf field="recurring" value="true"/>
       <minInclusive value="1" />

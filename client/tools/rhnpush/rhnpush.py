@@ -40,9 +40,8 @@ from rhn.connections import idn_ascii_to_pune
 
 from optparse import Option, OptionParser
 from rhn import rpclib
-from spacewalk.common import rhn_mpm
 from spacewalk.common.checksum import getFileChecksum
-
+from spacewalk.common.rhn_pkg import InvalidPackageError, package_from_filename
 import uploadLib
 import rhnpush_v2
 
@@ -259,10 +258,7 @@ class UploadClass(uploadLib.UploadClass):
         print "Testing connection and authentication:   %s" % test_auth
 
     def _test_access(self):
-        if self.new_sat_test():
-            access_ret = callable(self.server.packages.channelPackageSubscriptionBySession)
-        else:
-            access_ret = callable(self.server.packages.channelPackageSubscription)
+        access_ret = callable(self.server.packages.channelPackageSubscriptionBySession)
 
         if access_ret == 1:
             test_access = "Passed"
@@ -325,14 +321,13 @@ class UploadClass(uploadLib.UploadClass):
 
         # a little fault tolarence is in order
         random.seed()
-        checkpkgflag = 0
         tries = 3
 
-        #pkilambi:check if the Sat version we are talking to has this capability.
-        #If not use the normal way to talk to older satellites(< 4.1.0).
-        if headerinfo.getheader('X-RHN-Check-Package-Exists'):
-            checkpkgflag = 1
-            (server_digest_hash, pkgs_info, digest_hash) = self.check_package_exists()
+        # satellites < 4.1.0 are no more supported
+        if not headerinfo.getheader('X-RHN-Check-Package-Exists'):
+            self.die(-1, "Pushing to Satellite < 4.1.0 is not supported.")
+
+        (server_digest_hash, pkgs_info, digest_hash) = self.check_package_exists()
             
         for pkg in self.files:
             ret = None #pkilambi:errors off as not initialized.this fixes it.
@@ -340,57 +335,35 @@ class UploadClass(uploadLib.UploadClass):
             #temporary fix for picking pkgs instead of full paths
             pkg_key = (pkg.strip()).split('/')[-1]
 
-            if checkpkgflag :
-                # it's newer satellite, compute checksum checks on client.
-                if not server_digest_hash.has_key(pkg_key):
-                    continue
-                
-                checksum_type, checksum = digest = digest_hash[pkg_key]
-                server_digest = tuple(server_digest_hash[pkg_key])
+            if not server_digest_hash.has_key(pkg_key):
+                continue
 
-                # compare checksums for existance check
-                if server_digest == digest and not self.options.force:
-                    channel_packages.append(pkgs_info[pkg_key])
-                    self.warn(1, "Package %s already exists on the SUSE Manager Server -- Skipping Upload...." % pkg)
-                    continue
+            checksum_type, checksum = digest = digest_hash[pkg_key]
+            server_digest = tuple(server_digest_hash[pkg_key])
 
-                elif server_digest == ():
-                    self.warn(1,"Package %s Not Found on SUSE Manager Server -- Uploading" % pkg)
+            # compare checksums for existance check
+            if server_digest == digest and not self.options.force:
+                channel_packages.append(pkgs_info[pkg_key])
+                self.warn(1, "Package %s already exists on the SUSE Manager Server-- Skipping Upload...." % pkg)
+                continue
 
-                elif server_digest == "on-disk" and not self.options.force:
-                    channel_packages.append(pkgs_info[pkg_key])
-                    self.warn(0,"Package on disk but not on db -- Skipping Upload "%pkg)
-                    continue
-                
-                elif server_digest != digest:
-                    if self.options.force:
-                        self.warn(1,"Package checksum %s mismatch  -- Forcing Upload"% pkg)
-                    else:
-                        msg = """Error: Package %s already exists on the server with a different checksum. Skipping upload to prevent overwriting existing package. (You may use rhnpush with the --force option to force this upload if the force_upload option is enabled on your server.)\n"""% pkg
-                        if not self.options.tolerant:
-                            self.die(-1, msg)
-                        self.warn(0, msg)
-                        continue
-            else:
-                # it's an older satellite(< 4.1.0). Just do the push the usual old way,
-                # without checksum pre-check.
-                try:
-                    f = open(pkg)
-                    header, payload_stream = rhn_mpm.load(file=f)
-                    checksum_type = header.checksum_type()
-                except rhn_mpm.InvalidPackageError, e:
+            elif server_digest == ():
+                self.warn(1,"Package %s Not Found on SUSE Manager Server -- Uploading" % pkg)
+
+            elif server_digest == "on-disk" and not self.options.force:
+                channel_packages.append(pkgs_info[pkg_key])
+                self.warn(0,"Package on disk but not on db -- Skipping Upload "%pkg)
+                continue
+
+            elif server_digest != digest:
+                if self.options.force:
+                    self.warn(1,"Package checksum %s mismatch  -- Forcing Upload"% pkg)
+                else:
+                    msg = """Error: Package %s already exists on the server with a different checksum. Skipping upload to prevent overwriting existing package. (You may use rhnpush with the --force option to force this upload if the force_upload option is enabled on your server.)\n"""% pkg
                     if not self.options.tolerant:
-                        self.die(-1, "ERROR: %s: This file doesn't appear to be a package" % pkg)
-                    self.warn(2, "ERROR: %s: This file doesn't appear to be a package" % pkg)
+                        self.die(-1, msg)
+                    self.warn(0, msg)
                     continue
-                except IOError:
-                    if not self.options.tolerant:
-                        self.die(-1, "ERROR: %s: No such file or directory available" % pkg)
-                    self.warn(2, "ERROR: %s: No such file or directory available" % pkg)
-                    continue
-                
-                checksum = getFileChecksum(checksum_type, file_obj=payload_stream)
-                f.close()
                 
             for t in range(0, tries):
                 try:
@@ -455,14 +428,9 @@ class UploadClass(uploadLib.UploadClass):
     
         #2/3/06 wregglej 173287 Added check to see if we can use session tokens.
         if channel_packages:
-            if self.new_sat_test():
-                #12/22/05 wregglej 173287  Changed the XMLRPC function to the new session-based one.
-                self.authenticate()
-                uploadLib.call(self.server.packages.channelPackageSubscriptionBySession,
+            self.authenticate()
+            uploadLib.call(self.server.packages.channelPackageSubscriptionBySession,
                                 self.session.getSessionString(), info)
-            else:
-                uploadLib.call(self.server.packages.channelPackageSubscription, self.username,
-                                self.password, info)
         return 0
 
     # does an existance check of the packages to be uploaded and returns their checksum and other info
@@ -481,10 +449,10 @@ class UploadClass(uploadLib.UploadClass):
                 self.warn(-1, "Could not read file %s" % pkg)
                 continue
             try:
-                f = open(pkg)
-                header, payload_stream = rhn_mpm.load(file=f)
-                checksum_type = header.checksum_type()
-            except rhn_mpm.InvalidPackageError, e:
+                a_pkg = package_from_filename(pkg)
+                a_pkg.read_header()
+                a_pkg.payload_checksum()
+            except InvalidPackageError, e:
                 if not self.options.tolerant:
                     self.die(-1, "ERROR: %s: This file doesn't appear to be a package" % pkg)
                 self.warn(2, "ERROR: %s: This file doesn't appear to be a package" % pkg)
@@ -495,26 +463,25 @@ class UploadClass(uploadLib.UploadClass):
                 self.warn(2, "ERROR: %s: No such file or directory available" % pkg)
                 continue
                         
-            checksum = getFileChecksum(checksum_type, file_obj=payload_stream)
-            digest_hash[pkg_key] =  (checksum_type, checksum)
-            f.close()
+            digest_hash[pkg_key] =  (a_pkg.checksum_type, a_pkg.checksum)
+            a_pkg.input_stream.close()
             
             for tag in ('name', 'version', 'release', 'epoch', 'arch'):
-                val = header[tag]
+                val = a_pkg.header[tag]
                 if val is None:
                     val = ''
                 pkg_info[tag] = val
             #b195903:the arch for srpms should be obtained by is_source check
             #instead of checking arch in header
-            if header.is_source:
+            if a_pkg.header.is_source:
                 if not self.options.source:
                     self.die(-1, "ERROR: Trying to Push src rpm, Please re-try with --source.") 
-                if RPMTAG_NOSOURCE in header.keys():
+                if RPMTAG_NOSOURCE in a_pkg.header.keys():
                     pkg_info['arch'] = 'nosrc'
                 else:
                     pkg_info['arch'] = 'src'
-            pkg_info['checksum_type'] = checksum_type
-            pkg_info['checksum'] = checksum
+            pkg_info['checksum_type'] = a_pkg.checksum_type
+            pkg_info['checksum'] = a_pkg.checksum
             pkg_hash[pkg_key] = pkg_info
 
         if self.options.nullorg:
@@ -531,32 +498,24 @@ class UploadClass(uploadLib.UploadClass):
             }
         # rpc call to get checksum info for all the packages to be uploaded
         if not self.options.source:
-            if self.new_sat_test():
-                # computing checksum and other info is expensive process and session
-                # could have expired.Make sure its re-authenticated.
-                self.authenticate()
-                if uploadLib.exists_getPackageChecksumBySession(self.server):
-                    checksum_data = uploadLib.getPackageChecksumBySession(self.server, self.session.getSessionString(), info)
-                else:
-                    # old server only md5 capable
-                    checksum_data = uploadLib.getPackageMD5sumBySession(self.server, self.session.getSessionString(), info)
+            # computing checksum and other info is expensive process and session
+            # could have expired.Make sure its re-authenticated.
+            self.authenticate()
+            if uploadLib.exists_getPackageChecksumBySession(self.server):
+                checksum_data = uploadLib.getPackageChecksumBySession(self.server, self.session.getSessionString(), info)
             else:
-                # even older server without session authentication
-                checksum_data = uploadLib.getPackageMD5sum(self.server, self.username, self.password, info)
+                # old server only md5 capable
+                checksum_data = uploadLib.getPackageMD5sumBySession(self.server, self.session.getSessionString(), info)
         else:
-            if self.new_sat_test():
-                # computing checksum and other info is expensive process and session
-                # could have expired.Make sure its re-authenticated.
-                self.authenticate()
-                if uploadLib.exists_getPackageChecksumBySession(self.server):
-                    checksum_data = uploadLib.getSourcePackageChecksumBySession(self.server, self.session.getSessionString(), info)
-                else:
-                    # old server only md5 capable
-                    checksum_data = uploadLib.getSourcePackageMD5sumBySession(self.server, self.session.getSessionString(), info)
+            # computing checksum and other info is expensive process and session
+            # could have expired.Make sure its re-authenticated.
+            self.authenticate()
+            if uploadLib.exists_getPackageChecksumBySession(self.server):
+                checksum_data = uploadLib.getSourcePackageChecksumBySession(self.server, self.session.getSessionString(), info)
             else:
-                # even older server without session authentication
-                checksum_data = uploadLib.getSourcePackageMD5sum(self.server, self.username, self.password, info)
-                
+                # old server only md5 capable
+                checksum_data = uploadLib.getSourcePackageMD5sumBySession(self.server, self.session.getSessionString(), info)
+
         return (checksum_data, pkg_hash, digest_hash)
 
 
@@ -614,10 +573,7 @@ class UploadClass(uploadLib.UploadClass):
         self.warn(1, "Using POST request")
         pu = rhnpush_v2.PackageUpload(self.url_v2, self.options.proxy)
 
-        if self.new_sat_test():
-            pu.set_session(self.session.getSessionString())
-        else:
-            pu.set_auth(self.username, self.password)
+        pu.set_session(self.session.getSessionString())
         pu.set_force(self.options.force)
         pu.set_null_org(self.options.nullorg)
 

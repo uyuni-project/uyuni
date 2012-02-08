@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008 Red Hat, Inc.
+-- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,9 +12,6 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation. 
 --
---
---
---
 
 create or replace package
 rhn_quota
@@ -23,15 +20,6 @@ is
 		org_id_in in number
 	) return number;
 
-	function get_org_for_config_content (
-		config_content_id_in in number
-	) return number;
-
-	procedure set_org_quota_total (
-		org_id_in in number,
-		total_in in number
-	);
-
 	procedure update_org_quota (
 		org_id_in in number
 	);
@@ -39,11 +27,3 @@ end rhn_quota;
 /
 show errors
 
---
---
--- Revision 1.2  2004/01/07 20:52:36  pjones
--- bugzilla: 113029 -- helper function to do updates of used quota total
---
--- Revision 1.1  2003/12/19 22:07:30  pjones
--- bugzilla: 112392 -- quota support for config files
---

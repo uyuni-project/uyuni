@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.7.22
+Version:        1.7.24
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,26 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Tue Feb 07 2012 Jan Pazdziora 1.7.24-1
+- The delete_server proc is the last unverified source file.
+- PostgreSQL rhn_config_channel schema is equivalent to Oracle package body.
+- PostgreSQL rhn_server schema is equivalent to Oracle package body.
+- Creating the schema (for the package) goes into .pks.
+- Package rhn_date_manip only exists in Oracle and not used, removing.
+- No need to create the stub functions, PostgreSQL will compile stuff on-demand
+  anyway.
+- Fixing typo in the stub exception message.
+- Removing get_org_for_config_content and set_org_quota_total from rhn_quota as
+  it is not used.
+
+* Mon Feb 06 2012 Jan Pazdziora 1.7.23-1
+- PostgreSQL packages have the same dependencies as the Oracle ones.
+- Fixing typo.
+- Removing the last three occurrences of rhn_set.set_iterator, and the whole
+  package.
+- None of the files listed in the .gitignore exists or is produced, removing.
+- The header.txt file does not seem to be used anywhere, removing.
+
 * Wed Feb 01 2012 Jan Pazdziora 1.7.22-1
 - Fixing oracle equivalent source sha1.
 

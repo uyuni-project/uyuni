@@ -27,7 +27,6 @@ NOCPULSE_INI=/etc/NOCpulse.ini
 BOOTSTRAP_SH=/srv/www/htdocs/pub/bootstrap/bootstrap.sh
 BOOTSTRAP_CCO=/srv/www/htdocs/pub/bootstrap/client-config-overrides.txt
 SAT_LOCAL_RULES_CONF=/var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf
-COBBLER_SETTINGS_FILE="/etc/cobbler/settings"
 BACKUP_EXT=.rnmbck
 DB_QUIT="QUIT"
 

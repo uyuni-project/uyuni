@@ -26,6 +26,7 @@ import glob
 import cPickle
 import sys
 import types
+from operator import truth
 import xmlrpclib
 
 ## common imports
@@ -48,6 +49,7 @@ class NotLocalError(Exception):
 
 
 class Repository(rhnRepository.Repository):
+    # pylint: disable=R0902
     """ Proxy local package repository lookup and manipulation code. """
 
     def __init__(self,
@@ -176,7 +178,7 @@ class Repository(rhnRepository.Repository):
         if not params:
             stringObject = dataProducer()
         else:
-            stringObject = apply(dataProducer, params)
+            stringObject = dataProducer(*params)
         # Cache the thing
         cache(stringObject, fileDir, fileName, version)
         # Return the string
@@ -223,7 +225,7 @@ class Repository(rhnRepository.Repository):
             filePath = computePackagePath(package, source=0, prepend=PREFIX)
             _hash[filename] = filePath
 
-        if CFG.DEBUG>4:
+        if CFG.DEBUG > 4:
             log_debug(5, "Mapping: %s[...snip snip...]%s" % (str(_hash)[:40], str(_hash)[-40:]))
         return cPickle.dumps(_hash, 1)
 
@@ -265,7 +267,7 @@ def computePackagePath(nvrea, source=0, prepend=""):
         version = str(epoch) + ':' + version
     template = prepend + "/%s/%s-%s/%s/%s-%s-%s.%s.%s"
     # Sanitize the path: remove duplicated /
-    template = re.sub("/+", "/", template)
+    template = '/'.join(filter(truth, template.split('/')))
     return template % (name, version, release, dirarch, name, nvrea[1],
         release, pkgarch, extension)
 
@@ -281,7 +283,7 @@ def parseRPMName(pkgName):
     reg = re_rpmName.match(pkgName)
     if reg == None:
         return [None, None, None, None]
-    n, v, r = reg.group(1,2,3)
+    n, v, r = reg.group(1, 2, 3)
     e = ""
     ind = r.find(':')
     if ind < 0: # no epoch
@@ -291,13 +293,13 @@ def parseRPMName(pkgName):
     return [str(n), str(v), str(r), str(e)]
 
 
-def cache(stringObject, dir, filename, version):
+def cache(stringObject, directory, filename, version):
     """ Caches stringObject into a file and removes older files """
 
     # The directory should be readable, writable, seekable
-    if not os.access(dir, os.R_OK | os.W_OK | os.X_OK):
-        os.makedirs(dir)
-    filePath = "%s/%s-%s" % (dir, filename, version)
+    if not os.access(directory, os.R_OK | os.W_OK | os.X_OK):
+        os.makedirs(directory)
+    filePath = "%s/%s-%s" % (directory, filename, version)
     # Create a temp file based on the filename, version and stuff
     tempfile = "%s-%.20f" % (filePath, time.time())
     # Try to create the temp file
@@ -327,7 +329,7 @@ def cache(stringObject, dir, filename, version):
     # Now rename the temp file
     os.rename(tempfile, filePath)
     # Expire the cached copies
-    _list = glob.glob("%s/%s-*" % (dir, filename))
+    _list = glob.glob("%s/%s-*" % (directory, filename))
     for _file in _list:
         if _file < filePath:
             # Older than this

@@ -17,6 +17,7 @@ import os
 import checksum
 
 def get_package_header(filename=None, file_obj=None, fd=None):
+    # pylint: disable=E1103
     if filename is not None:
         stream = open(filename)
         need_close = True
@@ -52,6 +53,16 @@ def package_from_stream(stream, packaging):
     else:
         a_pkg = None
     return a_pkg
+
+def package_from_filename(filename):
+    if filename.endswith('.deb'):
+        packaging = 'deb'
+    elif filename.endswith('.rpm'):
+        packaging = 'rpm'
+    else:
+        packaging = 'mpm'
+    stream = open(filename)
+    return package_from_stream(stream, packaging)
 
 BUFFER_SIZE = 16384
 DEFAULT_CHECKSUM_TYPE = 'md5'

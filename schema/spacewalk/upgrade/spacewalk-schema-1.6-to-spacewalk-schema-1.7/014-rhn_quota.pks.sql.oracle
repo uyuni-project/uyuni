@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008 Red Hat, Inc.
+-- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,23 +12,18 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation. 
 --
---
---
---
 
-CREATE OR REPLACE
-PACKAGE rhn_set
-IS
-    CURSOR set_iterator(set_label_in IN VARCHAR2, set_user_id_in IN NUMBER) IS
-    	   SELECT user_id, label, element, element_two
-	     FROM rhnSet
-	    WHERE label = set_label_in
-	      AND user_id = set_user_id_in;
-END rhn_set;
+create or replace package
+rhn_quota
+is
+	function recompute_org_quota_used (
+		org_id_in in number
+	) return number;
+
+	procedure update_org_quota (
+		org_id_in in number
+	);
+end rhn_quota;
 /
-SHOW ERRORS
+show errors
 
---
--- Revision 1.3  2002/05/10 22:08:23  pjones
--- id/log
---

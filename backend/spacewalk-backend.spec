@@ -20,7 +20,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.7.14
+Version: 1.7.17
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -331,11 +331,11 @@ Libraries required by various exporting tools
 sed -i 's/^INSTALL_DEST.*/INSTALL_DEST = \/etc\/httpd\/conf.d/' apache-conf/Makefile
 %endif
 make -f Makefile.backend all
-export PYTHON_MODULE_NAME=%{name}
-export PYTHON_MODULE_VERSION=%{version}
 
 # check coding style
 # right now we check only common/*.py, others aren't clean yet
+ln -s . spacewalk       # silly workaround - added 'spacewalk' into path
+                        # because we search for modules in spacewalk.common
 find common -name '*.py' \
     | xargs pylint -rn -iy --bad-functions=apply,input \
                    --disable C0111,C0103,C0301,F0401,I0011,R0801,R0902,R0903,R0911,R0912,R0913,R0914,W0142,W0403,W0511,W0603,E1101 || \
@@ -802,6 +802,20 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Tue Feb 07 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.17-1
+- fixed KeyError during deb package push
+- fixed ERROR: unhandled exception occurred: ('epoch').
+- fixed InvalidPackageErrorduring push of deb package
+- converted rhnpush to use A_Package interface
+
+* Mon Feb 06 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.16-1
+- fixed rpmbuild on RHEL5
+
+* Mon Feb 06 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.15-1
+- fixed nsglms errors
+- fixed pylint error on Fedora 16
+- fixed tempfile error on RHEL5
+
 * Sat Feb 04 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.14-1
 - fixed macros in changelog
 - check common/* for pylint errors
