@@ -2,13 +2,13 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.docbook.org/xml/4.5/docbookx.dtd">
 
 ## One chapter per handler
-<chapter>
-<title>Namespace: '$handler.name'</title>
-<para>$handler.desc</para>
+<chapter role="namespace">
+<title>$handler.name</title>
+<abstract><para>$handler.desc</para></abstract>
 
 #foreach ($call in $handler.calls)
 <sect1>
-  <title>$call.name</title>
+  <title><function>$call.name</function></title>
   <para/>
 
   <variablelist>

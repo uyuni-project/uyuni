@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 Novell
+ * Copyright (c) 2012 Novell
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -26,8 +26,7 @@ public class DocBookWriter extends DocWriter {
 
     private static final String DOCBOOK_OUTPUT = "./build/reports/apidocs/docbook/";
     private static final String DOCBOOK_TEMPLATES = "./buildconf/apidoc/docbook/";
-    // TODO: Add faqs and scripts here
-    private static final String[] OTHER_FILES = {};
+    private static final String[] OTHER_FILES = {"faqs", "scripts"};
 
     /**
      * {@inheritDoc}
