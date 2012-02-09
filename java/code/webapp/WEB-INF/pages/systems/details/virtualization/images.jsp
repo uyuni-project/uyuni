@@ -16,7 +16,7 @@
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
   <div id="images-content">
-    <div style="text-align:center">Contacting SUSE Studio, please wait!<br /><img src="/img/spinner.gif" /></div>
+    <rhn:toolbar base="h1" img="/img/spinner.gif"></rhn:toolbar>
     <script type="text/javascript">
       ImagesRenderer.renderAsync(makeAjaxCallback("images-content", false));
     </script>
