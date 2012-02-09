@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.org;
 
+import org.apache.commons.codec.binary.Base64;
+
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
@@ -32,7 +34,7 @@ public class Credentials extends BaseDomainHelper {
     private String type;
     private String hostname;
     private String username;
-    private String password;
+    private String encodedPassword;
 
     /**
      * Get the ID of this object.
@@ -111,14 +113,38 @@ public class Credentials extends BaseDomainHelper {
     /**
      * @return the password
      */
-    public String getPassword() {
-        return password;
+    public String getEncodedPassword() {
+        return encodedPassword;
     }
 
     /**
      * @param password the password to set
      */
+    public void setEncodedPassword(String password) {
+        this.encodedPassword = password;
+    }
+
+    /**
+     * Return the decoded password.
+     * @return the password
+     */
+    public String getPassword() {
+        if (this.encodedPassword != null) {
+            return new String(Base64.decodeBase64(this.encodedPassword.getBytes()));
+        } else {
+            return this.encodedPassword;
+        }
+    }
+
+    /**
+     * Set the password after encoding it to Base64.
+     * @param password the password to set
+     */
     public void setPassword(String password) {
-        this.password = password;
+        if (password != null) {
+            this.encodedPassword = new String(Base64.encodeBase64(password.getBytes()));
+        } else {
+            this.encodedPassword = null;
+        }
     }
 }
