@@ -345,19 +345,6 @@ Feature: Check client registration
      And I follow "Subscribe to Channels" in class "content-nav"
     Then I should see a "Configuration Channel Subscriptions" text
 
-  @manager12
-  Scenario: check tab links "Configuration" => "Manage Configuration Channels" => "View/Modify Rankings"
-    Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
-     And I follow "Manage Configuration Channels" in class "contentnav-row2"
-     And I follow "View/Modify Rankings" in class "content-nav"
-    Then I should see a "View/Modify Configuration Channel Ranks" text
-     And I should see a "selectedChannel" element in "ranksForm" form
-     And I should see a "up" button in "ranksForm" form
-     And I should see a "down" button in "ranksForm" form
-     And I should see a "Update Channel Rankings" button
-
-  @manager16
   Scenario: check tab links "Configuration" => "Manage Configuration Channels" => "View/Modify Rankings"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in class "content-nav"

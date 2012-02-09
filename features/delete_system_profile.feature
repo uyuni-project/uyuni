@@ -6,15 +6,6 @@ Feature: Delete a system profile
   As the testing user
   I want to delete this client's system profile
 
-  @manager12
-  Scenario: Delete a system profile
-    Given I am on the Systems overview page of this client
-    When I follow "delete system"
-     And I should see a "Confirm System Profile Deletion" text
-     And I click on "Delete Profile"
-     Then I should see a "System profile deleted." text
-
-  @manager16
   Scenario: Delete a system profile
     Given I am on the Systems overview page of this client
     When I follow "delete system"

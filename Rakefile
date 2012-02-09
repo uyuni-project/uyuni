@@ -15,9 +15,9 @@ features_task = Cucumber::Rake::Task.new do |t|
   cucumber_opts = %w{--format pretty}
   #cucumber_opts = cucumber_opts + %w{-o /tmp/cucumber.log}
   if ENV['MANAGER_BRANCH']
-      cucumber_opts << %w{--tags ~@monitoring --tags ~@manager12}
+      cucumber_opts << %w{--tags ~@monitoring}
   else
-      cucumber_opts << %w{--tags ~@without_monitoring --tags ~@manager16}
+      cucumber_opts << %w{--tags ~@without_monitoring}
   end
   feature_files  = %w{
                      features/database.feature
@@ -52,25 +52,21 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/channels.feature
                      features/weak_deps.feature
                      features/check_registration.feature
+		     features/check_errata-npn.feature
   }
-  if ENV['MANAGER_BRANCH']
-      feature_files << "features/check_errata-npn.feature"
-  else
-      feature_files << "features/check_errata.feature"
-  end
+  # old patch naming style
+  #feature_files << "features/check_errata.feature"
   feature_files << %w{
                      features/erratapage.feature
                      features/install_package.feature
   }
-  if ENV['MANAGER_BRANCH']
-      feature_files << "features/install_errata-npn.feature"
-      feature_files << "features/clone_channel-npn.feature"
-  else
-      feature_files << %w{
-                          features/install_errata.feature
-                          features/clone_channel.feature
-                          features/monitoring2.feature
-      }
+  feature_files << "features/install_errata-npn.feature"
+  feature_files << "features/clone_channel-npn.feature"
+  # old patch naming style
+  #                        features/install_errata.feature
+  #                        features/clone_channel.feature
+  if not ENV['MANAGER_BRANCH']
+         feature_files << "features/monitoring2.feature"
   end
   feature_files << %w{
                      features/test_config_channel.feature
