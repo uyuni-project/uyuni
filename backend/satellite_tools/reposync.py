@@ -433,13 +433,13 @@ class RepoSync(object):
                     print "no id for sequence suse_prod_file_id_seq"
                     continue
 
-            h = rhnSQL.prepare("""
+                h = rhnSQL.prepare("""
                     insert into suseProductFile
                         (id, name, evr_id, package_arch_id, vendor, summary, description)
                     VALUES (:id, :name, LOOKUP_EVR(:epoch, :version, :release),
                             LOOKUP_PACKAGE_ARCH(:arch), :vendor, :summary, :description)
-            """)
-            h.execute(id=row['id'], **product)
+                """)
+                h.execute(id=row['id'], **product)
 
             query = rhnSQL.prepare("""
                 select p.id
@@ -451,20 +451,25 @@ class RepoSync(object):
                  where pc.name = :product_cap
                    and pc.version = :cap_version
                    and c.label = :channel_label
+                   and p.org_id = :channel_org
             """)
             product_cap = "product(%s)" % product['name']
             cap_version = product['version'] + "-" + product['release']
 
-            query.execute(product_cap=product_cap, cap_version=cap_version, channel_label=self.channel_label)
+            query.execute(product_cap=product_cap, cap_version=cap_version, channel_label=self.channel_label, channel_org=self.channel['org_id'])
             packrow = query.fetchone_dict()
             if not packrow or not packrow.has_key('id'):
-                print "no id for package"
+                # package not in DB
                 continue
 
-            h = rhnSQL.prepare("""insert into susePackageProductFile (package_id, prodfile_id)
-                VALUES (:package_id, :product_id)
-            """)
-            h.execute(package_id=packrow['id'], product_id=row['id'])
+            h = rhnSQL.prepare("""select 1 from susePackageProductFile where package_id = :paid and prodfile_id = :prid""")
+            h.execute(paid=packrow['id'], prid=row['id'])
+            ex = h.fetchone_dict() or None
+            if not ex:
+                h = rhnSQL.prepare("""insert into susePackageProductFile (package_id, prodfile_id)
+                    VALUES (:package_id, :product_id)
+                """)
+                h.execute(package_id=packrow['id'], product_id=row['id'])
 
     def _patch_naming(self, notice):
         """Return the name of the patch according to our rules
