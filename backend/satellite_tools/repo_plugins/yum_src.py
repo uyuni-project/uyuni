@@ -282,6 +282,8 @@ class ContentSource:
                 p['vendor'] = product.find('vendor').text
                 p['summary'] = product.find('summary').text
                 p['description'] = product.find('description').text
+		if p['epoch'] == '0':
+                    p['epoch'] = None
                 products.append(p)
         return products
 
