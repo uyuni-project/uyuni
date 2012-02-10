@@ -13,11 +13,12 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.org;
+package com.redhat.rhn.domain.credentials;
 
 import org.apache.commons.codec.binary.Base64;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.user.User;
 
 /**
  * Credentials - Java representation of the table SUSECREDENTIALS.
@@ -30,9 +31,9 @@ public class Credentials extends BaseDomainHelper {
     public static String TYPE_STUDIO = "STUDIO";
 
     private Long id;
-    private Org org;
+    private User user;
     private String type;
-    private String hostname;
+    private String url;
     private String username;
     private String encodedPassword;
 
@@ -56,16 +57,16 @@ public class Credentials extends BaseDomainHelper {
      * Get this object's Organization.
      * @return Organization associated with this pair of credentials
      */
-    public Org getOrg() {
-        return this.org;
+    public User getUser() {
+        return this.user;
     }
 
     /**
      * Set the Org on this object.
      * @param org the Org we want to set as the parent of this object
      */
-    public void setOrg(Org org) {
-        this.org = org;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**
@@ -83,17 +84,17 @@ public class Credentials extends BaseDomainHelper {
     }
 
     /**
-     * @return the hostname
+     * @return the url
      */
-    public String getHostname() {
-        return hostname;
+    public String getUrl() {
+        return url;
     }
 
     /**
-     * @param hostname the hostname to set
+     * @param url the url to set
      */
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     /**

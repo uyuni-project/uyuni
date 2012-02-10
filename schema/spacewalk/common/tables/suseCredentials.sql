@@ -2,12 +2,12 @@ CREATE TABLE suseCredentials
 (
     id       NUMBER NOT NULL
                  CONSTRAINT suse_credentials_pk PRIMARY KEY,
-    org_id   NUMBER NOT NULL UNIQUE
+    user_id  NUMBER NOT NULL UNIQUE
                  CONSTRAINT suse_credentials_oid_fk
-                 REFERENCES web_customer (id)
+                 REFERENCES web_contact (id)
                  ON DELETE CASCADE,
     type     VARCHAR2(32) NOT NULL,
-    hostname VARCHAR2(256),
+    url      VARCHAR2(256),
     username VARCHAR2(64) NOT NULL,
     password VARCHAR2(64) NOT NULL,
     created  DATE DEFAULT (sysdate) NOT NULL,

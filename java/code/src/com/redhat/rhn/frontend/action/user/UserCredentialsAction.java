@@ -12,13 +12,10 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.multiorg;
+package com.redhat.rhn.frontend.action.user;
 
-import com.redhat.rhn.domain.org.Credentials;
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.frontend.struts.RhnAction;
-import com.redhat.rhn.manager.org.CredentialsFactory;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -26,13 +23,16 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnAction;
 
 /**
- * Configuration of SUSE Studio details.
+ * Configuration of credentials for external APIs like e.g. SUSE Studio.
  */
-public class OrgStudioConfigAction extends RhnAction {
+public class UserCredentialsAction extends RhnAction {
 
     /** {@inheritDoc} */
     @Override
@@ -41,31 +41,28 @@ public class OrgStudioConfigAction extends RhnAction {
     throws Exception {
         RequestContext ctx = new RequestContext(request);
 
-        // Get credentials for this organization
-        Org org = ctx.lookupAndBindOrg();
-        Credentials creds = CredentialsFactory.lookupByOrg(org);
+        // Get this user's studio credentials
+        User user = ctx.getCurrentUser();
+        Credentials creds = CredentialsFactory.lookupByUser(user);
         if (creds == null) {
-            creds = CredentialsFactory.createNewCredentials(org);
-            creds.setOrg(org);
+            creds = CredentialsFactory.createNewCredentials(user);
+            creds.setType(Credentials.TYPE_STUDIO);
         }
-        // Bind the credentials as well
+        // Bind the credentials
         request.setAttribute("creds", creds);
 
         if (ctx.isSubmitted()) {
             // Store the credentials
-            creds.setType(Credentials.TYPE_STUDIO);
             creds.setUsername(request.getParameter("studioUser"));
             creds.setPassword(request.getParameter("studioKey"));
-            creds.setHostname(request.getParameter("studioHost"));
+            creds.setUrl(request.getParameter("studioUrl"));
             CredentialsFactory.storeCredentials(creds);
 
             ActionMessages msg = new ActionMessages();
-            msg.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("message.org_name_updated", org.getName()));
+            msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                    "yourcredentials.message.updated"));
             getStrutsDelegate().saveMessages(request, msg);
-            return getStrutsDelegate().forwardParam(mapping.findForward("success"),
-                    RequestContext.ORG_ID,
-                    org.getId().toString());
+            return mapping.findForward("success");
         }
         return mapping.findForward("default");
     }

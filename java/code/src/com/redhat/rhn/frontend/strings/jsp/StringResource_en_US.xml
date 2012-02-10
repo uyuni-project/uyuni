@@ -23038,7 +23038,7 @@ given channel.</source>
 	 <trans-unit id="channel.jsp.changelog.error">
         <source>There was an error reading the selected package changelog.  Please check that the package physically exists and has the correct permissions.</source>
      </trans-unit>
-     
+
      <!-- SUSE Studio -->
      <trans-unit id="studio.images.list.name">
         <source>Name</source>
@@ -23058,20 +23058,27 @@ given channel.</source>
      <trans-unit id="studio.images.list.noimages">
         <source>No Images</source>
      </trans-unit>
-     <trans-unit id="SUSE Studio">
+     <trans-unit id="studio.deployment.scheduled">
+        <source>Image deployment scheduled: {0}</source>
+     </trans-unit>
+     <trans-unit id="yourcredentials.jsp.summary">
+        <source>External system or API credentials associated with your SUSE Manager account are listed below.</source>
+     </trans-unit>
+     <trans-unit id="yourcredentials.jsp.studio">
         <source>SUSE Studio</source>
+     </trans-unit>
+     <trans-unit id="yourcredentials.jsp.submit">
+        <source>Update Credentials</source>
+     </trans-unit>
+     <trans-unit id="yourcredentials.message.updated">
+        <source>Your credentials were successfully updated.</source>
+     </trans-unit>
+     <!-- Navigation -->
+     <trans-unit id="Credentials">
+        <source>Credentials</source>
      </trans-unit>
      <trans-unit id="Images">
         <source>Images</source>
-     </trans-unit>
-     <trans-unit id="Studio">
-        <source>Studio</source>
-     </trans-unit>
-     <trans-unit id="studio.deployment.scheduled">
-        <source>Scheduled image deployment: {0}</source>
-     </trans-unit>
-     <trans-unit id="studio.download.scheduled">
-        <source>Downloading {0} image(s) from SUSE Studio</source>
      </trans-unit>
   </body>
   </file>

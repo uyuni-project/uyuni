@@ -13,15 +13,16 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.manager.org;
+package com.redhat.rhn.domain.credentials;
+
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.org.Credentials;
-import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.user.User;
 
 /**
  * CredentialsFactory
@@ -36,13 +37,13 @@ public class CredentialsFactory extends HibernateFactory {
     }
 
     /**
-     * Create a new pair of credentials for a given organization.
-     * @param org
+     * Create a new pair of credentials for a given user.
+     * @param user
      * @return
      */
-    public static Credentials createNewCredentials(Org org) {
+    public static Credentials createNewCredentials(User user) {
         Credentials creds = new Credentials();
-        creds.setOrg(org);
+        creds.setUser(user);
         return creds;
     }
 
@@ -50,6 +51,7 @@ public class CredentialsFactory extends HibernateFactory {
      * Store a pair of credentials to the database.
      */
     public static void storeCredentials(Credentials creds) {
+        creds.setModified(new Date());
         singleton.saveObject(creds);
     }
 
@@ -62,19 +64,19 @@ public class CredentialsFactory extends HibernateFactory {
 
     /**
      * Load a pair of credentials given by org ID.
-     * @param orgID
-     * @return
+     * @param user
+     * @return credentials or null
      */
-    public static Credentials lookupByOrg(Org org) {
-        if (org == null) {
+    public static Credentials lookupByUser(User user) {
+        if (user == null) {
             return null;
         }
 
         Session session = null;
         try {
             session = HibernateFactory.getSession();
-            return (Credentials) session.getNamedQuery("Credentials.findByOrg")
-                    .setParameter("org", org)
+            return (Credentials) session.getNamedQuery("Credentials.findByUser")
+                    .setParameter("user", user)
                     // Retrieve from cache if there
                     .setCacheable(true).uniqueResult();
         } catch (HibernateException e) {

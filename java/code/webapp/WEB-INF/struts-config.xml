@@ -7737,18 +7737,17 @@
                  path="/systems/details/virtualization/VirtualGuestsList.do" />
     </action>
 
-    <action path="/admin/multiorg/OrgStudioDetails"
+    <action path="/account/Credentials"
         scope="request"
-        input="/WEB-INF/pages/admin/multiorg/studio.jsp"
-        type="com.redhat.rhn.frontend.action.multiorg.OrgStudioConfigAction"
+        input="/WEB-INF/pages/user/edit/yourcredentials.jsp"
+        type="com.redhat.rhn.frontend.action.user.UserCredentialsAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
       <set-property property="postRequiredIfSubmitted" value="true" />
-      <set-property property="acls" value="user_role(satellite_admin)"/>
-      <forward name="default" path="/WEB-INF/pages/admin/multiorg/studio.jsp" />
+      <forward name="default" path="/WEB-INF/pages/user/edit/yourcredentials.jsp" />
       <forward name="success"
-               path="/admin/multiorg/OrgStudioDetails.do" redirect="true" />
+               path="/account/Credentials.do" redirect="true" />
       <forward name="error"
-               path="/WEB-INF/pages/admin/multiorg/studio.jsp" />
+               path="/WEB-INF/pages/user/edit/yourcredentials.jsp" />
     </action>
 
   </action-mappings>

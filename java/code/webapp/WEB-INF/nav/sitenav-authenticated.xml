@@ -9,6 +9,7 @@
         <rhn-tab-url>/rhn/account/EditAddress.do</rhn-tab-url>
       </rhn-tab>
       <rhn-tab name="Change Email" url="/rhn/account/ChangeEmail.do" />
+      <rhn-tab name="Credentials" url="/rhn/account/Credentials.do" />
       <rhn-tab name="Account Deactivation" url="/rhn/account/AccountDeactivation.do"/>
     </rhn-tab>
     <rhn-tab name="Your Preferences" url="/rhn/account/UserPreferences.do" />
@@ -236,7 +237,6 @@
     <rhn-tab name="Organizations" acl="user_role(satellite_admin)" url="/rhn/admin/multiorg/Organizations.do">
         <rhn-tab-url>/rhn/admin/multiorg/OrgDetails.do</rhn-tab-url>
         <rhn-tab-url>/rhn/admin/multiorg/OrgConfigDetails.do</rhn-tab-url>
-        <rhn-tab-url>/rhn/admin/multiorg/OrgStudioDetails.do</rhn-tab-url>
         <rhn-tab-url>/rhn/admin/multiorg/OrgUsers.do</rhn-tab-url>
         <rhn-tab-url>/rhn/admin/multiorg/DeleteOrg.do</rhn-tab-url>
         <rhn-tab-url>/rhn/admin/multiorg/OrgSystemSubscriptions.do</rhn-tab-url>
