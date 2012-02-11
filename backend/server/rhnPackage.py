@@ -312,7 +312,7 @@ def get_info_for_package(pkg, channel_label):
         epochStatement = "epoch = :epoch"
     statement = """
     select p.path, c.label as channel_label,
-           cv.checksum_type, cv.checksum, org_id
+           cv.checksum_type, cv.checksum, p.org_id
       from rhnPackage p
       join rhnPackageName pn
         on p.name_id = pn.id
