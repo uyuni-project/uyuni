@@ -441,6 +441,17 @@ class RepoSync(object):
                 """)
                 h.execute(id=row['id'], **product)
 
+            params = {
+                'product_cap'   : "product(%s)" % product['name'],
+                'cap_version'   : product['version'] + "-" + product['release'],
+                'channel_label' : self.channel_label
+            }
+            if self.channel['org_id']:
+                org_statement = "and p.org_id = :channel_org"
+                params['org_id'] = self.channel['org_id']
+            else:
+                org_statement = "and p.org_id is NULL"
+
             query = rhnSQL.prepare("""
                 select p.id
                   from rhnPackage p
@@ -451,12 +462,10 @@ class RepoSync(object):
                  where pc.name = :product_cap
                    and pc.version = :cap_version
                    and c.label = :channel_label
-                   and p.org_id = :channel_org
-            """)
-            product_cap = "product(%s)" % product['name']
-            cap_version = product['version'] + "-" + product['release']
+                   %s
+            """ % org_statement)
 
-            query.execute(product_cap=product_cap, cap_version=cap_version, channel_label=self.channel_label, channel_org=self.channel['org_id'])
+            query.execute(**params)
             packrow = query.fetchone_dict()
             if not packrow or not packrow.has_key('id'):
                 # package not in DB
