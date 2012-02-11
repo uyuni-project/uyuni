@@ -14,7 +14,6 @@
 # in this software or its documentation.
 #
 
-import sys
 # RHN imports
 from spacewalk.common.checksum import getFileChecksum
 from rhnpush import uploadLib
@@ -22,6 +21,7 @@ from rhnpush import uploadLib
 class UploadClass(uploadLib.UploadClass):
     """ Functionality for an uploading tool """
 
+    # pylint: disable=R0904
     def list(self):
         # set the URL
         self.setURL()
@@ -36,9 +36,10 @@ class UploadClass(uploadLib.UploadClass):
             self.die(1, "Listing source rpms not supported")
         else:
             # List the channel's contents
-            list = uploadLib.listChannel(self.server, self.username, self.password,
+            channel_list = uploadLib.listChannel(self.server,
+                self.username, self.password,
                 self.channels)
-        for p in list:
+        for p in channel_list:
             print p[:6]
 
     def newest(self):
@@ -77,8 +78,9 @@ class UploadClass(uploadLib.UploadClass):
         #self.setServer()
         
         for filename in self.files:
-            fileinfo = self._processFile(filename,\
-                                    relativeDir=self.relativeDir, source=self.options.source,\
+            fileinfo = self._processFile(filename,
+                                    relativeDir=self.relativeDir,
+                                    source=self.options.source,
                                     nosig=self.options.nosig)
             self.processPackage(fileinfo['nvrea'], filename) 
             
@@ -114,15 +116,15 @@ class UploadClass(uploadLib.UploadClass):
                 continue
 
             # Send the big hash
-            hash = {'packages' : headersList}
+            info = {'packages' : headersList}
             if self.orgId > 0 or self.orgId == '':
-                hash['orgId'] = self.orgId
+                info['orgId'] = self.orgId
 
             if self.force:
-                hash['force'] = self.force
+                info['force'] = self.force
 
             if self.channels:
-                hash['channels'] = self.channels
+                info['channels'] = self.channels
 
             # Some feedback
             if self.options.verbose:
@@ -135,9 +137,9 @@ class UploadClass(uploadLib.UploadClass):
             else:
                 method = self.server.packages.uploadPackageInfo
 
-            ret = uploadLib.call(method, self.username, self.password, hash)
+            ret = uploadLib.call(method, self.username, self.password, info)
             if ret is None:
-               self.die(-1, "Upload attempt failed")
+                self.die(-1, "Upload attempt failed")
 
             # Append the package information
             alreadyUploaded, newPackages = ret
@@ -162,7 +164,7 @@ class UploadClass(uploadLib.UploadClass):
 
     def _processFile(self, filename, relativeDir=None, source=None, nosig=None):
         """ call parent _processFile and add to returned has md5sum """
-        hash = uploadLib.UploadClass._processFile(self, filename, relativeDir, source, nosig)
+        info = uploadLib.UploadClass._processFile(self, filename, relativeDir, source, nosig)
         checksum = getFileChecksum('md5', filename=filename)
-        hash['md5sum'] = checksum
-        return hash
+        info['md5sum'] = checksum
+        return info

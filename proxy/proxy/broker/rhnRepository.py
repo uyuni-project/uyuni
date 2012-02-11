@@ -70,7 +70,7 @@ class Repository(rhnRepository.Repository):
         self.httpProxyPassword = httpProxyPassword
         self.caChain = caChain
 
-    def getPackagePath(self, pkgFilename):
+    def getPackagePath(self, pkgFilename, redirect=0):
         """ OVERLOADS getPackagePath in common/rhnRepository.
             Returns complete path to an RPM file.
         """
@@ -175,16 +175,16 @@ class Repository(rhnRepository.Repository):
             return data
 
         # The file's not there; query the DB or whatever dataproducer used.
-        if not params:
-            stringObject = dataProducer()
-        else:
-            stringObject = dataProducer(*params)
+        if params is None:
+            params = ()
+        stringObject = dataProducer(*params)
         # Cache the thing
         cache(stringObject, fileDir, fileName, version)
         # Return the string
         return stringObject
 
-    def _getPkgListDir(self):
+    @staticmethod
+    def _getPkgListDir():
         """ Creates and returns the directory for cached lists of packages.
             Used by _cacheObj.
 

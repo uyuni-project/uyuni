@@ -64,13 +64,15 @@ class HandlerWrap:
             else:
                 raise Exception("Class has no attribute %s" % self.__name)
         except:
+            # pylint: disable=W0702
             Traceback(self.__name, req, extra = "Unhandled exception type",
                       severity="unhandled")
             return apache.HTTP_INTERNAL_SERVER_ERROR
         else:
             return ret
 
-    def get_handler_factory(self, req):
+    @staticmethod
+    def get_handler_factory(_req):
         """ Handler factory. Redefine in your subclasses if so choose """
         from apacheHandler import apacheHandler
         return apacheHandler

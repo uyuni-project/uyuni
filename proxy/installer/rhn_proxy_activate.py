@@ -25,9 +25,7 @@
 
 ## core lang imports
 import os
-import re
 import sys
-import string
 import socket
 import urlparse
 import xmlrpclib
@@ -37,26 +35,6 @@ from rhn import rpclib, SSL
 from optparse import Option, OptionParser
 
 DEFAULT_WEBRPC_HANDLER_v3_x = '/rpc/api'
-
-## from rhns-3.6.*+ server code
-# reg exp for splitting package names.
-re_rpmName = re.compile("^(.*)-([^-]*)-([^-]*)$")
-def parseRPMName(pkgName):
-    """ IN:  Package string in, n-n-n-v.v.v-r.r_r, format.
-        OUT: Four strings (in a tuple): name, version, release, epoch.
-    """
-    reg = re_rpmName.match(pkgName)
-    if reg == None:
-        return None, None, None, None
-    n, v, r = reg.group(1,2,3)
-    e = ""
-    ind = string.find(r, ':')
-    if ind < 0: # no epoch
-        return str(n), str(v), str(r), str(e)
-    e = r[ind+1:]
-    r = r[0:ind]
-    return str(n), str(v), str(r), str(e)
-
 
 def getSystemId():
     """ returns content of systemid file """
@@ -139,38 +117,38 @@ def _getActivationError(e):
     errorString = ''
     errorCode = 1
 
-    if string.find(e.faultString, 'proxy_invalid_systemid') != -1:
+    if e.faultString.find('proxy_invalid_systemid') != -1:
         errorString = ("this server does not seem to be registered or "
                        "/etc/sysconfig/rhn/systemid is corrupt.")
         errorCode = 2
-    elif string.find(e.faultString, 'proxy_no_provisioning_entitlements') != -1:
+    elif e.faultString.find('proxy_no_provisioning_entitlements') != -1:
         # possible future error message?
         errorString = ("no Provisioning entitlements available. There must "
                        "be at least one free Management/Provisioning slot "
                        "available in your NCC account.")
         errorCode = 3
-    elif string.find(e.faultString, 'proxy_no_management_entitlements') != -1:
+    elif e.faultString.find('proxy_no_management_entitlements') != -1:
         errorString = ("no Management entitlements available. There must be "
                        "at least one free Management/Provisioning slot "
                        "available in your NCC account.")
         errorCode = 4
-    elif string.find(e.faultString, 'proxy_no_enterprise_entitlements') != -1:
+    elif e.faultString.find('proxy_no_enterprise_entitlements') != -1:
         # legacy error message
         errorString = ("no Management entitlements available. There must be "
                        "at least one free Management/Provisioning slot "
                        "available in your NCC account.")
         errorCode = 5
-    elif string.find(e.faultString, 'proxy_no_channel_entitlements') != -1:
+    elif e.faultString.find('proxy_no_channel_entitlements') != -1:
         errorString = ("no SUSE Manager Proxy entitlements available. There must be "
                        "at least one free SUSE Manager Proxy entitlement "
                        "available in your NCC account.")
         errorCode = 6
-    elif string.find(e.faultString, 'proxy_no_proxy_child_channel') != -1:
+    elif e.faultString.find('proxy_no_proxy_child_channel') != -1:
         errorString = ("no SUSE Manager Proxy entitlements available for this "
                        "server's version (or requested version) of SUSE Linux "
                        "Enterprise Server.")
         errorCode = 7
-    elif string.find(e.faultString, 'proxy_not_activated') != -1:
+    elif e.faultString.find('proxy_not_activated') != -1:
         errorString = "this server not an activated SUSE Manager Proxy yet."
         errorCode = 8
     else:
@@ -237,7 +215,7 @@ def _errorHandler(pre='', post=''):
 def resolveHostnamePort(hostnamePort=''):
     """ hostname:port sanity check """
 
-    hostname = string.split(urlparse.urlparse(hostnamePort)[1],':')
+    hostname = urlparse.urlparse(hostnamePort)[1].split(':')
     port = ''
     if len(hostname) > 1:
         hostname, port = hostname[:2]
@@ -257,56 +235,21 @@ def resolveHostnamePort(hostnamePort=''):
         try:
             socket.getaddrinfo(hostname, None)
         except:
+            # pylint: disable=W0702
             errorCode, errorString = _errorHandler()
             sys.stderr.write(errorString + '\n')
             sys.exit(errorCode)
 
-
-def getAPIVersion(options):
-    """ get's the API version, if fails, default back to 3.2
-        returns [x,y,z]
-    """
-
-    version = '3.2'
-
-    s = getServer(options, DEFAULT_WEBRPC_HANDLER_v3_x)
-
-    try:
-        version = s.api.system_version()    # 3.1+ API
-    except (SystemExit, KeyboardInterrupt):
-        raise
-    except xmlrpclib.Fault:
-        sys.stderr.write("warning: can't check API version. Assuming at least API version 3.0.0\n")
-        version = '3.0.0'
-    except SSL.SSL.Error:
-        errorCode, errorString = _errorHandler()
-        sys.stderr.write(errorString + '\n')
-        sys.exit(errorCode)
-    except (xmlrpclib.ProtocolError, socket.error):
-        errorCode, errorString = _errorHandler()
-        sys.stderr.write(errorString + '\n')
-        sys.exit(errorCode)
-    except:
-        errorCode, errorString = _errorHandler('Exception raised, assuming the 3.2 API\n')
-        sys.stderr.write('%s\n' % errorString)
-        # not sure... punting
-        version = '3.2'
-
-    if not options.quiet:
-        print "API version: %s" % version
-    return string.split(version, '.')
-
-
-def activateProxy_api_v3_x(options, apiVersion):
+def activateProxy_api_v3_x(options):
     """ API version 3.*, 4.* - deactivate, then activate
     """
 
-    (errorCode, errorString) = _deactivateProxy_api_v3_x(options, apiVersion)
+    (errorCode, errorString) = _deactivateProxy_api_v3_x(options)
     if errorCode == 0:
-        (errorCode, errorString) = _activateProxy_api_v3_x(options, apiVersion)
+        (errorCode, errorString) = _activateProxy_api_v3_x(options)
     return (errorCode, errorString)
 
-def _deactivateProxy_api_v3_x(options, apiVersion):
+def _deactivateProxy_api_v3_x(options):
     """ Deactivate this machine as Proxy """
     
     s = getServer(options, DEFAULT_WEBRPC_HANDLER_v3_x)
@@ -321,10 +264,12 @@ def _deactivateProxy_api_v3_x(options, apiVersion):
     except:
         # api do not have proxy.is_proxy is implemented or it is hosted
         # ignore error and try to deactivate
+        # pylint: disable=W0702
         pass
     try:
         s.proxy.deactivate_proxy(systemid)       # proxy 3.0+ API
     except:
+        # pylint: disable=W0702
         errorCode, errorString = _errorHandler()
         try:
             raise
@@ -351,7 +296,7 @@ def _deactivateProxy_api_v3_x(options, apiVersion):
             sys.stdout.write("SUSE Manager Proxy successfully deactivated.\n")
     return (errorCode, errorString)
 
-def _activateProxy_api_v3_x(options, apiVersion):
+def _activateProxy_api_v3_x(options):
     """ Activate this machine as Proxy.
         Do not check if has been already activated. For such case
         use activateProxy_api_v3_x method instead.
@@ -366,6 +311,7 @@ def _activateProxy_api_v3_x(options, apiVersion):
         if options.enable_monitoring:
             s.proxy.create_monitoring_scout(systemid)
     except:
+        # pylint: disable=W0702
         errorCode, errorString = _errorHandler()
         try:
             raise
@@ -402,6 +348,7 @@ def createMonitoringScout(options):
         ssk = s.proxy.create_monitoring_scout(systemid)
         print "Scout shared key: %s" % ssk
     except:
+        # pylint: disable=W0702
         errorCode, errorString = _errorHandler()
         try:
             raise
@@ -424,12 +371,12 @@ def createMonitoringScout(options):
             sys.stdout.write("Monitoring Scout successfully created.\n")
     return (errorCode, errorString)
 
-def activateProxy(options, apiVersion):
+def activateProxy(options):
     """ Activate proxy. Decide how to do it upon apiVersion. Currently we 
         support only API v.3.1+. Support for 3.0 and older has been removed.
     """
     # errorCode == 0 means activated!
-    errorCode, errorString = activateProxy_api_v3_x(options, apiVersion)
+    errorCode, errorString = activateProxy_api_v3_x(options)
         
     if errorCode != 0:
         if not errorString:
@@ -441,13 +388,14 @@ def listAvailableProxyChannels(options):
     """ return list of version available to this system """
 
     server = getServer(options, DEFAULT_WEBRPC_HANDLER_v3_x)
-    systemid=getSystemId()
+    systemid = getSystemId()
 
     errorCode, errorString = 0, ''
-    list = []
+    channel_list = []
     try:
-        list=server.proxy.list_available_proxy_channels(systemid)
+        channel_list = server.proxy.list_available_proxy_channels(systemid)
     except:
+        # pylint: disable=W0702
         errorCode, errorString = _errorHandler()
         try:
             raise
@@ -457,8 +405,8 @@ def listAvailableProxyChannels(options):
             sys.exit(errorCode)
     else:
         errorCode = 0
-        if not options.quiet and list:
-            sys.stdout.write("\n".join(list)+"\n")
+        if not options.quiet and channel_list:
+            sys.stdout.write("\n".join(channel_list)+"\n")
 
 def processCommandline():
     # FIXME: we should populate this keys from /etc/sysconfig/rhn/up2date
@@ -471,7 +419,7 @@ def processCommandline():
     if not httpProxyUsername:
         httpProxyPassword = ''
     ca_cert = ''
-    defaultVersion='5.2'
+    defaultVersion = '5.2'
 
     # parse options
     optionsTable = [
@@ -490,7 +438,7 @@ def processCommandline():
         Option('-q', '--quiet',     action='store_true', help='quiet non-interactive mode.'),
     ]
     parser = OptionParser(option_list=optionsTable)
-    options, args = parser.parse_args()
+    options, _args = parser.parse_args()
 
     if options.server:
         if options.server.find('http') != 0:
@@ -507,13 +455,13 @@ def processCommandline():
 
     if not options.http_proxy_username:
         options.http_proxy_password = ''
-    exploded_version = string.split(options.version, '.')
+    exploded_version = options.version.split('.')
     # Pad it to be at least 2 components
     if len(exploded_version) == 1:
         exploded_version.append('0')
     
     # Make it a string
-    options.version = string.join(exploded_version[:2], '.')
+    options.version = '.'.join(exploded_version[:2])
 
     if options.quiet:
         options.non_interactive = 1
@@ -525,9 +473,9 @@ def yn(prompt):
     _yn = ''
     while _yn == '':
         _yn = raw_input(prompt)
-        if _yn and string.lower(_yn[0]) not in ('y', 'n'):
+        if _yn and _yn[0].lower() not in ('y', 'n'):
             _yn = ''
-    return string.lower(_yn[0]) == 'y'
+    return _yn[0].lower() == 'y'
 
 
 def main():
@@ -598,14 +546,11 @@ def main():
     if not options.http_proxy:
         resolveHostnamePort(options.server)
 
-    # snag the apiVersion
-    apiVersion = getAPIVersion(options)
-
     if options.deactivate:
-        _deactivateProxy_api_v3_x(options, apiVersion)
+        _deactivateProxy_api_v3_x(options)
     else:
         # ACTIVATE!!!!!!!!
-        activateProxy(options, apiVersion)
+        activateProxy(options)
 
     return 0
 

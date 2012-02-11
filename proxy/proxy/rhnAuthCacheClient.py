@@ -46,8 +46,8 @@ class _Method:
         Supports "nested" methods (e.g. examples.getStateName).
     """
 
-    def __init__(self, send, name):
-        self.__send = send
+    def __init__(self, msend, name):
+        self.__send = msend
         self.__name = name
 
     def __getattr__(self, name):
@@ -75,6 +75,7 @@ class Shelf:
         self.serverAddr = server_addr
 
     def __request(self, methodname, params):
+        # pylint: disable=R0915
         log_debug(6, methodname, params)
         # Init the socket
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -96,7 +97,7 @@ class Shelf:
         wfile = sock.makefile("w")
 
         try:
-            apply(send, (wfile, methodname, None) + params)
+            send(wfile, methodname, None, *params)
         except CommunicationError:
             wfile.close()
             sock.close()

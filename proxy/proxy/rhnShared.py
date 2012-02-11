@@ -43,6 +43,7 @@ class SharedHandler:
         *** only inherited ***
     """
 
+    # pylint: disable=R0902
     def __init__(self, req):
         """ init with http request object """
         
@@ -141,7 +142,7 @@ class SharedHandler:
 
     def _create_connection(self):
         """ Returns a Connection object """
-        scheme, host, port, uri = self._parse_url(self.rhnParent)
+        scheme, host, port, _uri = self._parse_url(self.rhnParent)
         # Build the list of params
         params = {
             'host'  :   host,
@@ -167,11 +168,12 @@ class SharedHandler:
                 conn_class = connections.HTTPConnection
 
         log_debug(5, "Using connection class", conn_class, 'Params:', params)
-        return apply(conn_class, (), params)
+        return conn_class(**params)
 
-    def _parse_url(self, url):
+    @staticmethod
+    def _parse_url(url):
         """ Returns scheme, host, port, path. """
-        scheme, netloc, path, params, query, frag = rhnLib.parseUrl(url)
+        scheme, netloc, path, _params, _query, _frag = rhnLib.parseUrl(url)
         host, port = urllib.splitnport(netloc)
         if (port <= 0):
             port = None
@@ -286,7 +288,8 @@ class SharedHandler:
 
     # --- PROTECTED METHODS ---
 
-    def _getHeaders(self, req):
+    @staticmethod
+    def _getHeaders(req):
         """ Copy the incoming headers. """
 
         hdrs = UserDictCase()
@@ -328,22 +331,20 @@ class SharedHandler:
         http_connection = self.responseContext.getConnection()
         for (k, vals) in hdrs.items():
             if k.lower() in ['content_length', 'content_type']:
-               # mod_wsgi modifies incoming headers so we have to transform them back
-               k = k.replace('_','-')
+                # mod_wsgi modifies incoming headers so we have to transform them back
+                k = k.replace('_','-')
             if not (k.lower()[:2] == 'x-' or
                     k.lower() in [ #all but 'host'
-                    'accept', 'accept-charset', 'accept-encoding',
-                    'accept-language', 'accept-ranges', 'age', 'allow',
-                    'authorization', 'cache-control', 'connection',
-                    'content-encoding', 'content-language', 'content-length',
-                    'content-location', 'content-md5', 'content-range',
-                    'content-type', 'date', 'etag', 'expect', 'expires',
-                    'from', 'if-match', 'if-modified-since', 'if-none-match',
-                    'if-range', 'if-unmodified-since', 'last-modified',
-                    'location', 'max-forwards', 'pragma', 'proxy-authenticate',
-                    'proxy-authorization', 'range', 'referer', 'retry-after',
-                    'server', 'te', 'trailer', 'transfer-encoding', 'upgrade',
-                    'user-agent', 'vary', 'via', 'warning', 'www-authenticate']):
+                            'accept', 'accept-charset', 'accept-encoding', 'accept-language',
+                            'accept-ranges', 'age', 'allow', 'authorization', 'cache-control',
+                            'connection', 'content-encoding', 'content-language', 'content-length',
+                            'content-location', 'content-md5', 'content-range', 'content-type',
+                            'date', 'etag', 'expect', 'expires', 'from', 'if-match',
+                            'if-modified-since', 'if-none-match', 'if-range', 'if-unmodified-since',
+                            'last-modified', 'location', 'max-forwards', 'pragma', 'proxy-authenticate',
+                            'proxy-authorization', 'range', 'referer', 'retry-after', 'server',
+                            'te', 'trailer', 'transfer-encoding', 'upgrade', 'user-agent', 'vary',
+                            'via', 'warning', 'www-authenticate']):
                 # filter out header we don't want to send
                 continue
             if type(vals) not in (ListType, TupleType):
@@ -361,7 +362,7 @@ class SharedHandler:
         # We now wait for the response
         try:
             response = http_connection.getresponse() 
-        except TimeoutException, e:
+        except TimeoutException:
             log_error("Connection timed out")
             return apache.HTTP_GATEWAY_TIME_OUT, None, None     
         headers = response.msg
@@ -377,7 +378,8 @@ class SharedHandler:
         else:
             return self.req.uri
 
-    def _determineHTTPBodySize(self, headers):
+    @staticmethod
+    def _determineHTTPBodySize(headers):
         """ This routine attempts to determine the size of an HTTP body by searching
             the headers for a "Content-Length" field.  The size is returned, if
             found, otherwise -1 is returned.

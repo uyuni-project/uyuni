@@ -53,7 +53,7 @@ class ProxyAuth:
 
     __serverid = None
     __systemid = None
-    __systemid_mtime= None
+    __systemid_mtime = None
     __systemid_filename = '/etc/sysconfig/rhn/systemid'
 
     __nRetries = 3 # number of login retries
@@ -102,7 +102,7 @@ class ProxyAuth:
                         "Please contact your system administrator.")), None, sys.exc_info()[2]
 
         # get serverid
-        sysid, cruft = xmlrpclib.loads(ProxyAuth.__systemid)
+        sysid, _cruft = xmlrpclib.loads(ProxyAuth.__systemid)
         ProxyAuth.__serverid = sysid[0]['system_id'][3:]
 
         log_debug(7, 'SystemId: "%s[...snip  snip...]%s"' \
@@ -223,6 +223,7 @@ problems, isn't running, or the token is somehow corrupt.
             rightmost token was the last token hit by a client request.
            
         """
+        # pylint: disable=R0915
 
         log_debug(3)
         server = self.__getXmlrpcServer()
@@ -231,7 +232,7 @@ problems, isn't running, or the token is somehow corrupt.
         # update the systemid/serverid if need be.
         self.__processSystemid()
         # Makes three attempts to login
-        for i in range(self.__nRetries):
+        for _i in range(self.__nRetries):
             try:
                 token = server.proxy.login(self.__systemid)
             except (socket.error, socket.sslerror), e:
@@ -326,7 +327,8 @@ problems, isn't running, or the token is somehow corrupt.
 
     # __private methods__
 
-    def __getXmlrpcServer(self):
+    @staticmethod
+    def __getXmlrpcServer():
         """ get an xmlrpc server object
         
             WARNING: if CFG.USE_SSL is off, we are sending info
@@ -376,6 +378,8 @@ def get_auth_shelf():
 
 class AuthLocalBackend:
     _cache_prefix = "proxy-auth"
+    def __init__(self):
+        pass
 
     def has_key(self, key):
         rkey = self._compute_key(key)

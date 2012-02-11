@@ -16,7 +16,6 @@
 # $Id: rhnRedirect.py,v 1.59.2.2 2007/08/01 15:07:26 msuchy Exp $
 
 # language imports
-import string
 import socket
 import re
 from urlparse import urlparse, urlunparse
@@ -24,10 +23,8 @@ from urlparse import urlparse, urlunparse
 # common module imports
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTB import Traceback
 from spacewalk.common import rhnFlags, rhnLib, apache
-from spacewalk.common.rhnTranslate import _
 
 # local module imports
 from proxy.rhnShared import SharedHandler
@@ -53,8 +50,9 @@ class RedirectHandler(SharedHandler):
         SharedHandler.__init__(self, req)
         self.componentType = 'proxy.redirect'
         self._initConnectionVariables(req)
+        self.rhnParentXMLRPC = None
         
-    def _initConnectionVariables(self, req):
+    def _initConnectionVariables(self, _req):
         """ set connection variables 
             NOTE: self.{caChain,rhnParent,httpProxy*} are initialized
                   in SharedHandler
@@ -78,7 +76,6 @@ class RedirectHandler(SharedHandler):
 
         log_debug(4, 'In redirect handler')
         self._prepHandler()
-        #self.__checkLegalRedirect()
 
         # Rebuild the X-Forwarded-For header so that it reflects the actual
         # path of the request.  We must do this because squid is unable to
@@ -129,8 +126,8 @@ class RedirectHandler(SharedHandler):
                         if m:
                             # pull server name out of "t:o:k:e:n:hostname1,t:o:k:e:n:hostname2,..."
                             proxy_auth = self.req.headers_in['X-RHN-Proxy-Auth']
-                            last_auth = string.split(proxy_auth, ',')[-1]
-                            server_name = string.split(last_auth, ':')[-1]
+                            last_auth = proxy_auth.split(',')[-1]
+                            server_name = last_auth.split(':')[-1]
                             log_debug(1, "Redirecting to SSL version of login page")
                             rhnLib.setHeaderValue(self.req.headers_out, 'Location',
                                 "https://%s%s" % (server_name, m.group(1)))
@@ -172,17 +169,6 @@ class RedirectHandler(SharedHandler):
         else:
             # Otherwise, revert to default behavior.
             return SharedHandler._handleServerResponse(self, status)
-
-    def __checkLegalRedirect(self):
-        """ Check request to see if this coming from a RHN Proxy.
-        
-            THIS SHOULD NEVER FAIL!!!
-            Probably not necessary, but stymies the casual abuser.
-        """
-        if not rhnFlags.get('outputTransportOptions').has_key('X-RHN-Proxy-Version'):
-            log_debug(-1, 'THIS SHOULD NEVER HAPPEN!!!')
-            raise rhnFault(1000,
-                _("RHN Proxy Error: No SSL Redirect Request found!"))
 
     def __redirectToNextLocation(self, loopProtection = False):
         """ This function will perform a redirection to the next location, as 
@@ -296,7 +282,7 @@ class RedirectHandler(SharedHandler):
         # Tear apart the redirect URL.  We need the scheme, the host, the 
         # port (if not the default), and the URI.
 
-        scheme, host, port, uri = self._parse_url(redirectLocation)
+        _scheme, host, port, uri = self._parse_url(redirectLocation)
 
         # Add any params onto the URI since _parse_url doesn't include them.
         if redirectLocation.find('?') > -1:
@@ -352,7 +338,7 @@ class RedirectHandler(SharedHandler):
 
             for hdr in self.req.headers_in.keys():
                 if hdr.lower().startswith("x-rhn"):
-            	    connection.putheader(hdr, self.req.headers_in[hdr])
+                    connection.putheader(hdr, self.req.headers_in[hdr])
                     log_debug(4, "Passing request header: ",
                                  hdr,
                                  self.req.headers_in[hdr])

@@ -4,7 +4,7 @@ Group:   Applications/Internet
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 1.7.3
+Version: 1.7.4
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
@@ -17,6 +17,10 @@ BuildRequires: spacewalk-backend
 %endif
 BuildArch: noarch
 Requires: httpd
+# pylint check
+BuildRequires: pylint
+BuildRequires: rhnpush >= 5.5.40
+BuildRequires: spacewalk-backend-libs >= 1.7.1
 
 %define rhnroot %{_usr}/share/rhn
 %define destdir %{rhnroot}/proxy
@@ -179,6 +183,22 @@ an Spacewalk Proxy Server's custom channel.
 
 %build
 make -f Makefile.proxy
+
+# check coding style
+export PYTHONPATH=/usr/share/rhn
+PYLINT_BADFUNC="apply,input"
+PYLINT_DISABLE="C0103,C0111,C0301"
+PYLINT_DISABLE+=",E1101"
+PYLINT_DISABLE+=",I0011"
+PYLINT_DISABLE+=",R0801,R0903,R0911,R0912,R0913,R0914"
+PYLINT_DISABLE+=",W0142,W0403,W0511,W0603"
+ln -s . proxy   # workaround - added 'proxy' into path so pylint can find modules
+find -name '*.py' \
+    | xargs pylint -rn -iy --bad-functions="$PYLINT_BADFUNC" \
+                   --disable "$PYLINT_DISABLE" || \
+find -name '*.py' \
+    | xargs pylint -rn -iy --bad-functions="$PYLINT_BADFUNC" \
+                   --disable-msg "$PYLINT_DISABLE"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -384,6 +404,9 @@ fi
 
 
 %changelog
+* Fri Feb 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.4-1
+- check proxy for pylint errors in rpm build time
+- fixed pylint errors/warnings
 * Tue Feb 07 2012 Miroslav Suchý 1.7.3-1
 - clean up code style
 

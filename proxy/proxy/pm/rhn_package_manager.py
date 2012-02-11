@@ -34,7 +34,6 @@ This script performs various management operations on the RHN proxy:
 # system imports
 import os
 import sys
-import string
 import shutil
 from operator import truth
 from rhnpush.uploadLib import UploadError, listChannel
@@ -127,6 +126,7 @@ def main():
 
 
 class UploadClass(uploadLib.UploadClass):
+    # pylint: disable=R0904
     def setURL(self):
         # overloaded for uploadlib.py
         if not CFG.RHN_PARENT:
@@ -137,7 +137,7 @@ class UploadClass(uploadLib.UploadClass):
             # i.e., --no-ssl overrides the USE_SSL config variable.
             scheme = 'https://'
         self.url = CFG.RHN_PARENT or ''
-        self.url = string.split(parseUrl(self.url)[1], ':')[0]
+        self.url = parseUrl(self.url)[1].split(':')[0]
         self.url = scheme + self.url + '/XP'
 
     def setProxyUsernamePassword(self):
@@ -169,20 +169,20 @@ class UploadClass(uploadLib.UploadClass):
         self.setServer()
 
         # List the channel's contents
-        list = listChannel(self.server, self.username, self.password,
+        channel_list = listChannel(self.server, self.username, self.password,
                                      self.channels)
 
         # Convert it to a hash of hashes
         remotePackages = {}
         for channel in self.channels:
             remotePackages[channel] = {}
-        for p in list:
+        for p in channel_list:
             channelName = p[5]
             key = tuple(p[:5])
             remotePackages[channelName][key] = None
 
         missing = []
-        for package in list:
+        for package in channel_list:
             packagePath = getPackagePath(package, 0, PREFIX)
             packagePath = "%s/%s" % (CFG.PKG_DIR, packagePath)
             if not os.path.isfile(packagePath):
@@ -248,7 +248,7 @@ def getPackagePath(nvrea, source=0, prepend=""):
         version = str(epoch) + ':' + version
     template = prepend + "/%s/%s-%s/%s/%s-%s-%s.%s.rpm"
     # Sanitize the path: remove duplicated /
-    template = string.join(filter(truth, string.split(template, '/')), '/')
+    template = '/'.join(filter(truth, template.split('/')))
     return template % (name, version, release, dirarch, name, nvrea[1],
         release, pkgarch)
 
@@ -256,6 +256,6 @@ def getPackagePath(nvrea, source=0, prepend=""):
 if __name__ == '__main__':
     try:
         main()
-    except SystemExit, e:
-        sys.exit(e.code)
+    except SystemExit, se:
+        sys.exit(se.code)
 

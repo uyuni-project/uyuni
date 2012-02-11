@@ -54,6 +54,7 @@ class BrokerHandler(SharedHandler):
         This way we got all request cached localy by squid.
     """
 
+    # pylint: disable=R0902
     def __init__(self, req):
         SharedHandler.__init__(self, req)
 
@@ -62,6 +63,7 @@ class BrokerHandler(SharedHandler):
         self.cachedClientInfo = None # headers - session token
         self.authChannels = None
         self.clientServerId = None
+        self.rhnParentXMLRPC = None
         hostname = ''
         if req.headers_in.has_key('Host'):
             hostname = req.headers_in['Host'] or ''
@@ -138,6 +140,7 @@ class BrokerHandler(SharedHandler):
     def handler(self):
         """ Main handler to handle all requests pumped through this server. """
 
+        # pylint: disable=R0915
         log_debug(1)
         self._prepHandler()
 
@@ -191,9 +194,9 @@ class BrokerHandler(SharedHandler):
         tokens.append(authToken)
         tokens = filter(lambda token: token, tokens)
 
-        _oto['X-RHN-Proxy-Auth'] = ",".join(tokens)
-        log_debug(5, 'XXX (auth token after): %s'
-                  % repr(_oto['X-RHN-Proxy-Auth']))
+        _oto['X-RHN-Proxy-Auth'] = ','.join(tokens)
+        log_debug(5, '    (auth token after): %s'
+                      % repr(_oto['X-RHN-Proxy-Auth']))
 
         log_debug(3, 'Trying to connect to parent')
         data = self.req.read()
@@ -202,7 +205,7 @@ class BrokerHandler(SharedHandler):
         #   o If no errors, the loop is broken and we move on.
         #   o If an error, either we get a new token and try again,
         #     or we get a critical error and we fault.
-        for i in range(2):
+        for _i in range(2):
             self._connectToParent()  # part 1
 
             log_debug(4, 'after _connectToParent')
@@ -259,7 +262,8 @@ class BrokerHandler(SharedHandler):
         """ prep handler and check PROXY_AUTH's expiration. """
         SharedHandler._prepHandler(self)
 
-    def _split_url(self, req):
+    @staticmethod
+    def _split_url(req):
         """ read url from incoming url and return (req_type, channel, action, params)
             URI should look something like:
             /GET-REQ/rhel-i386-server-5/getPackage/autofs-5.0.1-0.rc2.143.el5_5.6.i386.rpm
@@ -325,7 +329,7 @@ class BrokerHandler(SharedHandler):
 
         # Is this channel local?
         for ch in self.authChannels:
-            channel, version, isBaseChannel, isLocalChannel = ch[:4]
+            channel, _version, _isBaseChannel, isLocalChannel = ch[:4]
             if channel == reqchannel and str(isLocalChannel) == '1':
                 # Local channel
                 break
@@ -347,7 +351,8 @@ class BrokerHandler(SharedHandler):
 
         return result
 
-    def __getSessionToken(self):
+    @staticmethod
+    def __getSessionToken():
         """ Get/test-for session token in headers (rhnFlags) """
         log_debug(1)
         if not rhnFlags.test("AUTH_SESSION_TOKEN"):
@@ -371,13 +376,15 @@ class BrokerHandler(SharedHandler):
 
         # The session token contains everything that begins with
         # "x-rhn-auth"
-        tokenKeys = [t for t in headers if t.startsswith("x-rhn-auth")]
+        prefix = "x-rhn-auth"
+        l = len(prefix)
+        tokenKeys = [ x for x in headers.keys() if x[:l].lower() == prefix]
         for k in tokenKeys:
             if k.lower() == 'x-rhn-auth-channels':
                 # Multivalued header
                 #values = headers.getHeaderValues(k)
                 values = self._get_header(k)
-                token[k] = [v.split(":") for v in values]
+                token[k] = map(lambda x: x.split(':'), values)
             else:
                 # Single-valued header
                 token[k] = headers[k]
@@ -430,11 +437,10 @@ class BrokerHandler(SharedHandler):
                 _("RHN Proxy configuration error: invalid function %s") % funct)
 
         log_debug(3, "Calling %s(%s)" % (funct, params))
+        if params is None:
+            params = ()
         try:
-            if params:
-                ret = apply(f, params)
-            else:
-                ret = f()
+            ret = f(*params)
         except rhnRepository.NotLocalError:
             # The package is not local
             return None
@@ -488,9 +494,9 @@ class BrokerHandler(SharedHandler):
             raise rhnFault(35, _('Unauthorized channel access requested.'))
 
 
-def _dictEquals(d1, d2, exceptions=[]):
+def _dictEquals(d1, d2, exceptions=None):
     """ Function that compare two dictionaries, ignoring certain keys """
-    exceptions = [e.lower() for e in exceptions]
+    exceptions = [x.lower() for x in (exceptions or [])]
     for k, v in d1.items():
         if k.lower() in exceptions:
             continue

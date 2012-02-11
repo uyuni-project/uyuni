@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.7.24
+Version: 1.7.26
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -643,6 +643,15 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Feb 09 2012 Tomas Lestach <tlestach@redhat.com> 1.7.26-1
+- select first probe by deafult, when creating new notification filter in
+  probes scope (tlestach@redhat.com)
+
+* Wed Feb 08 2012 Tomas Lestach <tlestach@redhat.com> 1.7.25-1
+- no need to call selectScope on body load (tlestach@redhat.com)
+- workaround a jsp bug (tlestach@redhat.com)
+- do not disable recurring_frequency by default (tlestach@redhat.com)
+
 * Wed Feb 08 2012 Tomas Lestach <tlestach@redhat.com> 1.7.24-1
 - keep the other xsd entry for recurring_duration (tlestach@redhat.com)
 - do not validate data type for empty strings, but validate empty numbers

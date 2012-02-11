@@ -2,7 +2,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 1.7.0
+Version: 1.7.2
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -26,6 +26,9 @@ Requires: chkconfig
 Requires: libxslt
 Requires: spacewalk-certs-tools >= 1.6.4
 BuildRequires: /usr/bin/docbook2man
+# pylint check
+BuildRequires: pylint
+
 Obsoletes: proxy-installer < 5.3.0
 Provides: proxy-installer = 5.3.0
 
@@ -49,13 +52,28 @@ Run configure-proxy.sh after installation to configure proxy.
 /usr/bin/docbook2man configure-proxy.sh.sgml
 /usr/bin/gzip configure-proxy.sh.8
 
+# check coding style
+export PYTHONPATH=/usr/share/rhn
+PYLINT_BADFUNC="apply,input"
+PYLINT_DISABLE="C0103,C0111,C0301"
+PYLINT_DISABLE+=",E1101"
+PYLINT_DISABLE+=",I0011"
+PYLINT_DISABLE+=",R0801,R0903,R0911,R0912,R0913,R0914"
+PYLINT_DISABLE+=",W0142,W0403,W0511,W0603"
+find -name '*.py' \
+    | xargs pylint -rn -iy --bad-functions="$PYLINT_BADFUNC" \
+                       --disable "$PYLINT_DISABLE" || \
+find -name '*.py' \
+    | xargs pylint -rn -iy --bad-functions="$PYLINT_BADFUNC" \
+                       --disable-msg "$PYLINT_DISABLE"
+
+
 %post
 %if 0%{?suse_version}
 if [ -f /etc/sysconfig/apache2 ]; then
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
 fi
 %endif
-
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -101,6 +119,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Fri Feb 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.2-1
+- added pylint check to specfile
+- fixed pylint errors/warnings
+* Fri Feb 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.1-1
+- code cleanup
+
 * Wed Oct 26 2011 Miroslav Suchý 1.6.7-1
 - there is no rhn-proxy-debug for some time
 
