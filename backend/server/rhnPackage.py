@@ -344,7 +344,10 @@ def get_info_for_package(pkg, channel_label):
                 'channel_label': None,
                 'checksum_type': None,
                 'checksum':      None,
+                'org_id':        ''
                }
+    if ret['org_id'] == None:
+        ret['org_id'] = ''
     return ret
 
 
