@@ -69,7 +69,8 @@ def main():
     if not m.search(conf_lines):
         system ("echo 'cobbler.host = %s' >> %s " % (answers['server'],
                       rhnConfig._CONFIG_FILE))
-    system("cobbler sync")
+    if system("/etc/init.d/cobblerd status > /dev/null 2>&1") == 0:
+        system("cobbler sync")
 
     
 if __name__=="__main__":

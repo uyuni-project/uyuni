@@ -248,8 +248,6 @@ ncc-pass = $NCC_PASS
 ncc-email = $NCC_EMAIL
 " > /root/spacewalk-answers
 
-    /etc/init.d/cobblerd start
-    rcapache2 start
     /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
         MY_DOMAIN=`hostname -d`
