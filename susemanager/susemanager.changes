@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 13 15:28:10 CET 2012 - ug@suse.de
+
+- avoid cobbler exception during startup
+  (bnc#746718)
+
+-------------------------------------------------------------------
 Mon Feb  6 17:42:26 CET 2012 - ug@suse.de
 
 - added cracklib check to DB password dialog (bnc#744983)

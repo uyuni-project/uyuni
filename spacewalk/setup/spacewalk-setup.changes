@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 13 15:27:31 CET 2012 - ug@suse.de
+
+- avoid cobbler exception during startup
+  (bnc#746718)
+
+-------------------------------------------------------------------
 Thu Aug 18 14:30:05 CEST 2011 - iartarisi@suse.cz
 
 - fixed AttributeError: 'module' object has no attribute 'rhnConfig'
