@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 13 15:37:12 CET 2012 - ug@suse.de
+
+- avoid cobbler exception during startup
+  (bnc#746718)
+
+-------------------------------------------------------------------
 Wed Dec 21 14:34:21 CET 2011 - ug@suse.de
 
 - switched spacewalk-setup to atftpd
