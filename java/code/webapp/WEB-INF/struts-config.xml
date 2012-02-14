@@ -7723,7 +7723,7 @@
      </action>
 
     <!-- SUSE Studio Pages -->
-    <action path="/systems/details/virtualization/ImageDeployment"
+    <action path="/systems/details/virtualization/Images"
         scope="request"
         name="deployImageForm"
         type="com.redhat.rhn.frontend.action.systems.images.ScheduleImageDeploymentAction"
