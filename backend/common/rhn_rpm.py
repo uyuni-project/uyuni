@@ -151,7 +151,8 @@ class RPM_Package(A_Package):
             raise InvalidPackageError(e), None, sys.exc_info()[2]
         except:
             raise InvalidPackageError, None, sys.exc_info()[2]
-        self.checksum_type = self.header.checksum_type()
+        if self.checksum_type == 'md5':
+            self.checksum_type = self.header.checksum_type()
 
     def _get_header_byte_range(self):
         """

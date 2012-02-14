@@ -722,7 +722,7 @@ class RepoSync(object):
                 elif db_pack['channel_label'] == self.channel_label:
                     # different package with SAME NVREA
                     self.disassociate_package(db_pack)
-
+                
             if to_download or to_link:
                 to_process.append((pack, to_download, to_link))
 
@@ -772,11 +772,11 @@ class RepoSync(object):
 
         md_pack.path = abspath = os.path.join(CFG.MOUNT_POINT, db_pack['path'])
         if (self.deep_verify or
-            md_pack.checksum_type != db_pack['checksum_type'] or
-            md_pack.checksum != db_pack['checksum']):
+            md_pack.predef_checksum_type != db_pack['checksum_type'] or
+            md_pack.predef_checksum != db_pack['checksum']):
 
             if (os.path.exists(abspath) and
-                getFileChecksum(md_pack.checksum_type, filename=abspath) == md_pack.checksum):
+                getFileChecksum(md_pack.predef_checksum_type, filename=abspath) == md_pack.predef_checksum):
 
                 return True
             else:
@@ -1071,12 +1071,13 @@ class ContentPackage:
         self.file = open(self.path, 'rb')
         self.a_pkg = rhn_pkg.package_from_stream(self.file, packaging='rpm')
         self.a_pkg.read_header()
-        if self.predef_checksum and self.predef_checksum_type:
-            self.a_pkg.checksum = self.predef_checksum
-            self.a_pkg.checksum_type = self.predef_checksum_type
+	if self.predef_checksum_type:
+            self.a_pkg.set_checksum_type(self.predef_checksum_type)
         if not self.a_pkg.checksum:
             self.a_pkg.payload_checksum()
         self.file.close()
+        if self.predef_checksum != self.a_pkg.checksum:
+            raise rhnFault(50, "checksums did not match %s vs %s" % (self.predef_checksum, self.a_pkg.checksum), explain=0)
 
     def upload_package(self, channel):
         rel_package_path = rhnPackageUpload.relative_path_from_header(

@@ -102,6 +102,17 @@ class A_Package:
         self.payload_size = self.input_stream.tell() - start + self.header_end
         self.payload_stream = self.input_stream
 
+    def set_checksum_type(self, ctype=None):
+        """set ctype as checksum type. If ctype is None; reset to default"""
+	if self.checksum_type == ctype:
+            return
+	if ctype == None and DEFAULT_CHECKSUM_TYPE != self.checksum_type:
+            self.checksum_type = DEFAULT_CHECKSUM_TYPE
+	    self.payload_checksum()
+        elif self.checksum_type != ctype:
+	    self.checksum_type = ctype
+            self.payload_checksum()
+
     @staticmethod
     def _stream_copy(source, dest, c_hash=None):
         """copies data from the source stream to the destination stream"""
