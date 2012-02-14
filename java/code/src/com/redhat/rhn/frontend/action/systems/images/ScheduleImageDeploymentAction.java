@@ -91,15 +91,15 @@ public class ScheduleImageDeploymentAction extends RhnAction {
         ActionForward forward;
         if (submitted) {
             // Schedule image deployment
-            String buildId = ListTagHelper.getRadioSelection(ListHelper.LIST, request);
+            String id = ListTagHelper.getRadioSelection(ListHelper.LIST, request);
 
             // Get the images from the session and find the selected one
             List<Image> images = (List<Image>) request.getSession().getAttribute(
-                    ImagesRenderer.IMAGES_LIST);
-            request.getSession().removeAttribute(ImagesRenderer.IMAGES_LIST);
+                    ImagesRenderer.ATTRIB_IMAGES_LIST);
+            request.getSession().removeAttribute(ImagesRenderer.ATTRIB_IMAGES_LIST);
             Image image = null;
             for (Image i : images) {
-                if (i.getBuildId().equals(new Long(buildId))) {
+                if (i.getId().equals(new Long(id))) {
                     image = i;
                     break;
                 }

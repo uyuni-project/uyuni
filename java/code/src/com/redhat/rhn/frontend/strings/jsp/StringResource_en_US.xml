@@ -23070,8 +23070,18 @@ given channel.</source>
      <trans-unit id="yourcredentials.jsp.submit">
         <source>Update Credentials</source>
      </trans-unit>
+     <!-- Java -->
      <trans-unit id="yourcredentials.message.updated">
         <source>Your credentials were successfully updated.</source>
+     </trans-unit>
+     <trans-unit id="yourcredentials.message.incomplete">
+        <source>Your credentials are incomplete, at least a username and a password is needed.</source>
+     </trans-unit>
+     <trans-unit id="images.message.error.nocreds">
+        <source>It looks like you did not enter valid credentials for talking to the SUSE Studio API, please check &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt;.</source>
+     </trans-unit>
+     <trans-unit id="images.message.error.connection">
+        <source>There was a problem connecting to SUSE Studio, you might want to review your configuration &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt; or try again later.</source>
      </trans-unit>
      <!-- Navigation -->
      <trans-unit id="Credentials">

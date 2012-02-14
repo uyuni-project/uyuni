@@ -22,6 +22,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.image.Image;
@@ -37,7 +39,10 @@ import com.suse.studio.client.data.Build;
  */
 public class ImagesRenderer extends BaseFragmentRenderer {
 
-    public static final String IMAGES_LIST = "imagesList";
+    private static Logger logger = Logger.getLogger(ImagesRenderer.class);
+
+    public static final String ATTRIB_IMAGES_LIST = "imagesList";
+    public static final String ATTRIB_ERROR_MSG = "errorMsg";
 
     /**
      * {@inheritDoc}
@@ -47,19 +52,20 @@ public class ImagesRenderer extends BaseFragmentRenderer {
         // Get the images
         List images = null;
         try {
-            images = getImages(user);
+            images = getImages(user, request);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+            request.setAttribute(ATTRIB_ERROR_MSG, "images.message.error.connection");
         }
 
         // Store list of images to the request
-        request.setAttribute(IMAGES_LIST, images);
+        request.setAttribute(ATTRIB_IMAGES_LIST, images);
         // Set the "parentUrl" for the form (in rl:listset)
         request.setAttribute(ListTagHelper.PARENT_URL, "");
 
-        // Store the set of images to the session as well
-        if (!images.isEmpty()) {
-            request.getSession().setAttribute(IMAGES_LIST, images);
+        // Store the set of images (if any) to the session as well
+        if (images != null && !images.isEmpty()) {
+            request.getSession().setAttribute(ATTRIB_IMAGES_LIST, images);
         }
     }
 
@@ -68,28 +74,25 @@ public class ImagesRenderer extends BaseFragmentRenderer {
      * @param user
      * @return list of {@link Image} objects
      */
-    private List getImages(User user) throws IOException {
+    private List getImages(User user, HttpServletRequest request) throws IOException {
         List<Appliance> ret = new ArrayList<Appliance>();
 
-        // Lookup credentials and studio url
+        // Lookup credentials and url
         Credentials creds = CredentialsFactory.lookupByUser(user);
-        String studioUser = creds.getUsername();
-        String studioKey = creds.getPassword();
-        String studioHost = creds.getUrl();
+        if (creds != null && creds.isComplete()) {
+            String studioUser = creds.getUsername();
+            String studioKey = creds.getPassword();
+            String studioUrl = creds.getUrl();
 
-        // Get appliance builds from studio
-        if (studioUser != null && studioKey != null) {
-            SUSEStudio studio;
-            if (studioHost != null) {
-                studio = new SUSEStudio(studioUser, studioKey, studioHost);
-            } else {
-                studio = new SUSEStudio(studioUser, studioKey);
-            }
+            // Get appliance builds from studio
+            SUSEStudio studio = new SUSEStudio(studioUser, studioKey, studioUrl);
             ret = studio.getAppliances();
+        } else {
+            request.setAttribute(ATTRIB_ERROR_MSG, "images.message.error.nocreds");
         }
 
         // Convert to a list of images
-        return convertAppliances(ret, user);
+        return convertAppliances(ret);
     }
 
     /**
@@ -97,19 +100,18 @@ public class ImagesRenderer extends BaseFragmentRenderer {
      * @param appliances list of appliances
      * @return list of images
      */
-    private List<Image> convertAppliances(List<Appliance> appliances,
-            User user) {
+    private List<Image> convertAppliances(List<Appliance> appliances) {
         List<Image> ret = new LinkedList<Image>();
         for (Appliance appliance : appliances) {
             // Create one image object for every build
             for (Build build : appliance.getBuilds()) {
                 Image img = new Image();
-                img.setOrg(user.getOrg());
                 // Appliance attributes
                 img.setName(appliance.getName());
                 img.setArch(appliance.getArch());
+                img.setEditUrl(appliance.getEditUrl());
                 // Build attributes
-                img.setBuildId(new Long(build.getId()));
+                img.setId(new Long(build.getId()));
                 img.setVersion(build.getVersion());
                 img.setImageType(build.getImageType());
                 img.setDownloadUrl(build.getDownloadUrl());

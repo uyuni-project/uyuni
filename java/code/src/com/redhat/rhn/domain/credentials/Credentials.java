@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.credentials;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.user.User;
@@ -147,5 +148,28 @@ public class Credentials extends BaseDomainHelper {
         } else {
             this.encodedPassword = null;
         }
+    }
+
+    /**
+     * Credentials are considered as valid as soon as we have a user and a
+     * password.
+     *
+     * @return true if we have a user and a password, else false
+     */
+    public boolean isComplete() {
+        return !StringUtils.isEmpty(username)
+                && !StringUtils.isEmpty(encodedPassword);
+    }
+
+    /**
+     * Check if these credentials are empty regarding username, password and
+     * url.
+     *
+     * @return true if we have a user and a password, else false
+     */
+    public boolean isEmpty() {
+        return StringUtils.isEmpty(username)
+                && StringUtils.isEmpty(encodedPassword)
+                && StringUtils.isEmpty(url);
     }
 }

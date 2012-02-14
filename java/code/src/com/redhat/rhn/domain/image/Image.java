@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 Novell
+ * Copyright (c) 2012 Novell
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -10,33 +10,21 @@
  */
 package com.redhat.rhn.domain.image;
 
-import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.dto.BaseDto;
 
 /**
- * Images - Class representation of the table suseImages.
- * @version $Rev$
+ * Images for deployment to virtual host systems. Currently such image objects
+ * are not being persisted, but they rather exist in memory only.
  */
 public class Image extends BaseDto {
 
-	public static String STATUS_NEW = "NEW";
-	public static String STATUS_PICKUP = "PICKUP";
-	public static String STATUS_RUNNING = "RUNNING";
-	public static String STATUS_DONE = "DONE";
-	public static String STATUS_ERROR = "ERROR";
-
     private Long id;
-    private Long buildId;
-    private Org org;
     private String name;
     private String version;
     private String arch;
     private String imageType;
     private String downloadUrl;
-    private String path;
-    private String fileName;
-    private String checksum;
-    private String status;
+    private String editUrl;
     private boolean selectable = true;
 
     public Long getId() {
@@ -46,23 +34,7 @@ public class Image extends BaseDto {
     public void setId(Long inId) {
         this.id = inId;
     }
-    
-    public Long getBuildId() {
-        return this.buildId;
-    }
 
-    public void setBuildId(Long buildId) {
-        this.buildId = buildId;
-    }
-
-    public Org getOrg() {
-        return this.org;
-    }
-
-    public void setOrg(Org orgIn) {
-        this.org = orgIn;
-    }
-    
     public String getName() {
         return this.name;
     }
@@ -70,7 +42,7 @@ public class Image extends BaseDto {
     public void setName(String inName) {
         this.name = inName;
     }
-    
+
     public String getVersion() {
         return this.version;
     }
@@ -78,7 +50,7 @@ public class Image extends BaseDto {
     public void setVersion(String inVersion) {
         this.version = inVersion;
     }
-    
+
     public String getArch() {
         return this.arch;
     }
@@ -86,7 +58,7 @@ public class Image extends BaseDto {
     public void setArch(String inArch) {
         this.arch = inArch;
     }
-    
+
     public String getImageType() {
         return this.imageType;
     }
@@ -94,7 +66,7 @@ public class Image extends BaseDto {
     public void setImageType(String inImageType) {
         this.imageType = inImageType;
     }
-    
+
     public String getDownloadUrl() {
         return this.downloadUrl;
     }
@@ -102,37 +74,13 @@ public class Image extends BaseDto {
     public void setDownloadUrl(String inDownloadUrl) {
         this.downloadUrl = inDownloadUrl;
     }
-    
-    public String getPath() {
-        return this.path;
+
+    public String getEditUrl() {
+        return this.editUrl;
     }
 
-    public void setPath(String inPath) {
-        this.path = inPath;
-    }
-    
-    public String getFileName() {
-        return this.fileName;
-    }
-
-    public void setFileName(String inFileName) {
-        this.fileName = inFileName;
-    }
-
-    public String getChecksum() {
-        return this.checksum;
-    }
-
-    public void setChecksum(String inChecksum) {
-        this.checksum = inChecksum;
-    }
-    
-    public String getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(String inStatus) {
-        this.status = inStatus;
+    public void setEditUrl(String inEditUrl) {
+        this.editUrl = inEditUrl;
     }
 
     public void setSelectable(boolean value) {
@@ -146,7 +94,7 @@ public class Image extends BaseDto {
 
     @Override
     public String getSelectionKey() {
-        return String.valueOf(getBuildId());
+        return String.valueOf(getId());
     }
 
     @Override
@@ -154,7 +102,7 @@ public class Image extends BaseDto {
         boolean ret = false;
         if (obj instanceof Image) {
             Image image = (Image) obj;
-            if (this.getChecksum().equals(image.getChecksum())) {
+            if (this.getId().equals(image.getId())) {
                 ret = true;
             }
         }

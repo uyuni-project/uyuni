@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.user;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -34,6 +35,11 @@ import com.redhat.rhn.frontend.struts.RhnAction;
  */
 public class UserCredentialsAction extends RhnAction {
 
+    private static String ATTRIB_CREDS = "creds";
+    private static String PARAM_USER = "studioUser";
+    private static String PARAM_KEY = "studioKey";
+    private static String PARAM_URL = "studioUrl";
+
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
@@ -41,28 +47,48 @@ public class UserCredentialsAction extends RhnAction {
     throws Exception {
         RequestContext ctx = new RequestContext(request);
 
-        // Get this user's studio credentials
+        // Lookup this user's credentials
         User user = ctx.getCurrentUser();
         Credentials creds = CredentialsFactory.lookupByUser(user);
         if (creds == null) {
+            // Create new credentials if necessary
             creds = CredentialsFactory.createNewCredentials(user);
             creds.setType(Credentials.TYPE_STUDIO);
         }
-        // Bind the credentials
-        request.setAttribute("creds", creds);
+        request.setAttribute(ATTRIB_CREDS, creds);
 
         if (ctx.isSubmitted()) {
-            // Store the credentials
-            creds.setUsername(request.getParameter("studioUser"));
-            creds.setPassword(request.getParameter("studioKey"));
-            creds.setUrl(request.getParameter("studioUrl"));
-            CredentialsFactory.storeCredentials(creds);
+            // The form was submitted
+            Credentials newCreds = CredentialsFactory.createNewCredentials(user);
+            newCreds.setUsername(request.getParameter(PARAM_USER).trim());
+            newCreds.setPassword(request.getParameter(PARAM_KEY).trim());
+            newCreds.setUrl(request.getParameter(PARAM_URL).trim());
 
-            ActionMessages msg = new ActionMessages();
-            msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
-                    "yourcredentials.message.updated"));
-            getStrutsDelegate().saveMessages(request, msg);
-            return mapping.findForward("success");
+            // Check for completeness
+            if (newCreds.isEmpty() || newCreds.isComplete()) {
+                if (newCreds.isEmpty()) {
+                    // Delete from DB
+                    CredentialsFactory.removeCredentials(creds);
+                    request.setAttribute(ATTRIB_CREDS, newCreds);
+                } else {
+                    // Store the credentials
+                    creds.setUsername(newCreds.getUsername());
+                    creds.setPassword(newCreds.getPassword());
+                    creds.setUrl(newCreds.getUrl());
+                    CredentialsFactory.storeCredentials(creds);
+                }
+                ActionMessages messages = new ActionMessages();
+                messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                        "yourcredentials.message.updated"));
+                getStrutsDelegate().saveMessages(request, messages);
+            } else {
+                // Incomplete credentials, show an error
+                ActionErrors errors = new ActionErrors();
+                errors.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("yourcredentials.message.incomplete"));
+                getStrutsDelegate().saveMessages(request, errors);
+                request.setAttribute(ATTRIB_CREDS, newCreds);
+            }
         }
         return mapping.findForward("default");
     }

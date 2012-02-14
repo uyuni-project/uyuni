@@ -7723,7 +7723,6 @@
      </action>
 
     <!-- SUSE Studio Pages -->
-
     <action path="/systems/details/virtualization/ImageDeployment"
         scope="request"
         name="deployImageForm"
@@ -7742,12 +7741,9 @@
         input="/WEB-INF/pages/user/edit/yourcredentials.jsp"
         type="com.redhat.rhn.frontend.action.user.UserCredentialsAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-      <set-property property="postRequiredIfSubmitted" value="true" />
-      <forward name="default" path="/WEB-INF/pages/user/edit/yourcredentials.jsp" />
-      <forward name="success"
-               path="/account/Credentials.do" redirect="true" />
-      <forward name="error"
-               path="/WEB-INF/pages/user/edit/yourcredentials.jsp" />
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/user/edit/yourcredentials.jsp" />
     </action>
 
   </action-mappings>
