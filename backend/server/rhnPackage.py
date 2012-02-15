@@ -348,6 +348,8 @@ def get_info_for_package(pkg, channel_label):
                }
     if ret['org_id'] == None:
         ret['org_id'] = ''
+    else:
+        ret['org_id'] = str(ret['org_id'])
     return ret
 
 
