@@ -9,7 +9,7 @@
         <rhn-tab-url>/rhn/account/EditAddress.do</rhn-tab-url>
       </rhn-tab>
       <rhn-tab name="Change Email" url="/rhn/account/ChangeEmail.do" />
-      <rhn-tab name="API Credentials" url="/rhn/account/Credentials.do" />
+      <rhn-tab name="Credentials" url="/rhn/account/Credentials.do" />
       <rhn-tab name="Account Deactivation" url="/rhn/account/AccountDeactivation.do"/>
     </rhn-tab>
     <rhn-tab name="Your Preferences" url="/rhn/account/UserPreferences.do" />

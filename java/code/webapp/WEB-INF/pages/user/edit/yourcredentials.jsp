@@ -9,7 +9,7 @@
 
 <rhn:toolbar base="h1" img="/img/rhn-icon-users.gif" imgAlt="users.jsp.imgAlt"
     helpUrl="/rhn/help/reference/en-US/s1-sm-your-rhn.jsp#s2-sm-your-rhn-account">
-  <bean:message key="API Credentials"/>
+  <bean:message key="Credentials"/>
 </rhn:toolbar>
 
 <p><bean:message key="yourcredentials.jsp.summary" /></p>

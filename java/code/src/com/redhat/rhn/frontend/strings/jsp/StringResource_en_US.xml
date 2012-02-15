@@ -23062,7 +23062,7 @@ given channel.</source>
         <source>Image deployment scheduled: {0}</source>
      </trans-unit>
      <trans-unit id="yourcredentials.jsp.summary">
-        <source>External API credentials associated with your SUSE Manager account are listed below.</source>
+        <source>External system or API credentials associated with your SUSE Manager account are listed below.</source>
      </trans-unit>
      <trans-unit id="yourcredentials.jsp.studio">
         <source>SUSE Studio</source>
@@ -23084,8 +23084,8 @@ given channel.</source>
         <source>There was a problem connecting to SUSE Studio, you might want to review your configuration &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt; or try again later.</source>
      </trans-unit>
      <!-- Navigation -->
-     <trans-unit id="API Credentials">
-        <source>API Credentials</source>
+     <trans-unit id="Credentials">
+        <source>Credentials</source>
      </trans-unit>
      <trans-unit id="Images">
         <source>Images</source>
