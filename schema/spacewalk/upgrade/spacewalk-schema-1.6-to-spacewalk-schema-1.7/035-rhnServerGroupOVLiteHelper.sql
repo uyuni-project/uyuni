@@ -15,39 +15,16 @@
 --
 --
 --
+-- this is a helper for rhnServerGroupOverviewLite and it's Vis brother.
 
-CREATE OR REPLACE FUNCTION
-NAME_JOIN(sep_in IN VARCHAR2, ugi_in IN user_group_name_t)
-RETURN VARCHAR2
-deterministic
-IS
-	ret	VARCHAR2(4000);
-	i	BINARY_INTEGER;
-BEGIN
-	ret := '';
-	i := ugi_in.FIRST;
+create or replace view
+rhnServerGroupOVLiteHelper as
+select	sgm.server_group_id						as server_group_id,
+		e.advisory_type							as advisory_type
+from	rhnErrata								e,
+		rhnServerNeededPackageCache				snpc,
+		rhnServerGroupMembers					sgm
+where   sgm.server_id = snpc.server_id
+	and snpc.errata_id = e.id
+;
 
-	IF i IS NULL
-	THEN
-		RETURN ret;
-	END IF;
-
-	ret := ugi_in(i);
-	i := ugi_in.NEXT(i);
-
-	WHILE i IS NOT NULL
-	LOOP
-		ret := ret || sep_in || ugi_in(i);
-		i := ugi_in.NEXT(i);
-	END LOOP;
-
-	RETURN ret;
-END;
-/
-SHOW ERRORS
-
---
--- Revision 1.2  2002/05/13 22:53:38  pjones
--- cvs id/log
--- some (note enough) readability fixes
---

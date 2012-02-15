@@ -24,6 +24,8 @@ import tempfile
 import xmlrpclib
 import pprint
 import subprocess
+import datetime
+import re
 
 
 from depsolver import DepSolver
@@ -54,7 +56,8 @@ def confirm(txt, options):
             response = raw_input(txt)
         if response.lower() == "n":
             print "Cancelling"
-            sys.exit(0)        
+            sys.exit(0)
+        print ""
 
 
 def validate(channel_labels):
@@ -127,7 +130,7 @@ def main(options):
     needed_channels = []
     for channel_list in options.channels:
         tree_cloner = ChannelTreeCloner(channel_list, xmlrpc, db, 
-                                        options.to_date, options.blacklist)
+                                        options.to_date, options.blacklist, options.removelist)
         cloners.append(tree_cloner)
         needed_channels += tree_cloner.needing_create().values()
 
@@ -160,10 +163,10 @@ def main(options):
         print ("\nNothing to do.")
         sys.exit(0)
 
-    confirm("\nContinue with clone (y/n)?", options)            
+    confirm("\nContinue with clone (y/n)?", options)
     for cloner in cloners:
         cloner.clone()        
-        cloner.remove_blacklisted()
+        cloner.remove_packages()
     
 
 class ChannelTreeCloner:
@@ -173,13 +176,14 @@ class ChannelTreeCloner:
         a.prepare()
         a.clone()
          """
-    def __init__(self, channels, remote_api, db_api, to_date, blacklist):
+    def __init__(self, channels, remote_api, db_api, to_date, blacklist, removelist):
         self.remote_api = remote_api
         self.db_api = db_api
         self.channel_map = channels
         self.to_date = to_date
         self.cloners = []
-        self.blacklist = blacklist      
+        self.blacklist = blacklist
+        self.removelist = removelist
         self.dest_parent = None
         self.src_parent = None
         self.channel_details = None
@@ -295,14 +299,17 @@ class ChannelTreeCloner:
             added_pkgs += pkg_diff
             log_clean(0, "")
             log_clean(0, "%i packages were added to %s as a result of clone:" % (len(pkg_diff), cloner.dest_label()))
-            log_clean(0, "\n".join([pkg['nvrea'] for pkg in pkg_diff]))            
-        self.dep_solve([pkg['nvrea'] for pkg in added_pkgs])
+            log_clean(0, "\n".join([pkg['nvrea'] for pkg in pkg_diff]))  
+        if len(added_pkgs) > 0:          
+            self.dep_solve([pkg['nvrea'] for pkg in added_pkgs])
             
 
     def dep_solve(self, nvrea_list, labels=None):             
         if not labels:
             labels = self.channel_map.keys()
         repos = [{"id":label, "relative_path":repodata(label)} for label in labels]
+
+        print "Copying repodata, please wait."
 
         # dep solver expects the metadata to be in /repodata directory;
         # create temporary symlinks
@@ -314,9 +321,9 @@ class ChannelTreeCloner:
         
         solver = DepSolver(repos, nvrea_list)
         dep_results = solver.processResults(solver.getDependencylist())
-            
+        solver.cleanup()
         self.process_deps(dep_results)
-
+        
         # clean up temporary symlinks
         for link in temp_repo_links:
             remove_repodata_link(link)
@@ -358,11 +365,12 @@ class ChannelTreeCloner:
             if len(needed) > 0:
                 cloner.process_deps(needed)
                                   
-    def remove_blacklisted(self):     
-        if self.blacklist:
-            for cloner in self.cloners:
+    def remove_packages(self):
+        for cloner in self.cloners:
+            if self.removelist:
+                cloner.remove_removelist(self.removelist)
+            if self.blacklist:
                 cloner.remove_blacklisted(self.blacklist)
-        
 
 class ChannelCloner:
     def __init__(self, from_label, to_label, to_date, remote_api, db_api):
@@ -412,7 +420,6 @@ class ChannelCloner:
     
     def process(self):
         self.clone()
-        self.reset_new_pkgs()                                 
         #print "New packages added: %i" % (len(self.new_pkg_hash) - len(self.old_pkg_hash))
                                    
     def process_deps(self, needed_pkgs):                                
@@ -474,6 +481,8 @@ class ChannelCloner:
             self.remote_api.clone_errata(self.to_label, errata_set)
             pb.addTo(bunch_size)
             pb.printIncrement()
+            
+        self.reset_new_pkgs()
         pb.printComplete()
                 
     def get_errata(self):
@@ -487,22 +496,45 @@ class ChannelCloner:
         
         return (to_clone, available_errata)   
         
-    
-    def remove_blacklisted(self, pkg_names):                
+        
+    def __remove_packages(self, names_dict, pkg_list, name):
+        """Base removal of packages
+            names_dict  - dict containing  list of package names, with channel lables as keys
+            pkg_list  -  list of package dicts to consider
+            name   - name of removal  'blacklist' or 'removelist', for display
+        """
         found_ids  = []
-        found_names = []
-        for pkg in self.reset_new_pkgs().values():
-            if pkg['name'] in pkg_names:
+        found_names = []        
+        if not names_dict:
+            return 
+        
+        full_pkgs = []
+        if names_dict.has_key("ALL"):
+            full_pkgs += names_dict["ALL"]
+        if names_dict.has_key(self.dest_label()):
+            full_pkgs += names_dict[self.dest_label()]
+
+        #add dollar signs to each one, other wise  foo would match foobar
+        reg_ex = re.compile("$|".join(full_pkgs) + '$')
+        for pkg in pkg_list:
+            if reg_ex.match(pkg['name']):
                 found_ids.append(pkg['id'])
                 found_names.append(pkg['nvrea'])      
 
         log_clean(0, "")                  
-        log_clean(0, "Removing %i packages from %s." % (len(found_ids), self.to_label))        
+        log_clean(0, "%s: Removing %i packages from %s." % (name, len(found_ids), self.to_label))        
         log_clean(0, "\n".join(found_names))
                           
         if len(found_ids) > 0:
-            print "Removing %i packages from %s" % (len(found_ids), self.to_label)
+            print "%s: Removing %i packages from %s" % (name, len(found_ids), self.to_label)
             self.remote_api.remove_packages(self.to_label, found_ids)
+    
+    def remove_removelist(self, pkg_names):
+        self.__remove_packages(pkg_names, self.reset_new_pkgs().values(), "Removelist")
+                            
+    def remove_blacklisted(self, pkg_names):
+        self.reset_new_pkgs()
+        self.__remove_packages(pkg_names, self.pkg_diff(), "Blacklist")
             
 
 class RemoteApi:
@@ -512,12 +544,29 @@ class RemoteApi:
     
     def __init__(self, server_url, username, password):
         self.client = xmlrpclib.Server(server_url)
+        self.auth_time = None
+        self.auth_token = None
         try:
-            self.auth_token = self.client.auth.login(username, password)
+            self.username = username
+            self.password = password            
+            self.__login()            
         except xmlrpclib.Fault, e:
             raise UserError(e.faultString)
+
+    def auth_check(self):
+        """ makes sure that more than an hour hasn't passed since we 
+             logged in and will relogin if it has
+        """        
+        if not self.auth_time or (datetime.datetime.now() - self.auth_time).seconds > 60*15: #15 minutes
+            self.__login() 
+         
+        
+    def __login(self):                
+        self.auth_token = self.client.auth.login(self.username, self.password)
+        self.auth_time = datetime.datetime.now()
         
     def list_channel_labels(self):
+        self.auth_check()
         key = "chan_labels"
         if self.cache.has_key(key):
             return self.cache[key] 
@@ -530,6 +579,7 @@ class RemoteApi:
         return to_ret
     
     def channel_details(self, label_hash, keys=True, values=True):
+        self.auth_check()
         to_ret = {}
         for src, dst in label_hash.items():          
             if keys:  
@@ -539,6 +589,7 @@ class RemoteApi:
         return to_ret
 
     def list_packages(self, label):
+        self.auth_check()
         pkg_list = self.client.channel.software.listAllPackages(self.auth_token, label)
         #name-ver-rel.arch,
         for pkg in pkg_list:
@@ -546,27 +597,32 @@ class RemoteApi:
         return pkg_list
     
     def clone_errata(self, to_label, errata_list):
+        self.auth_check()
         self.client.errata.cloneAsOriginal(self.auth_token, to_label, errata_list)
     
     def get_details(self, label):
+        self.auth_check()
         try:
             return self.client.channel.software.getDetails(self.auth_token, label)
         except xmlrpclib.Fault, e:
             raise UserError(e.faultString + ": " + label)
         
-    def add_packages(self, label, package_ids):        
+    def add_packages(self, label, package_ids):
+        self.auth_check()        
         while(len(package_ids) > 0):
             pkg_set = package_ids[:20]
             del package_ids[:20]        
             self.client.channel.software.addPackages(self.auth_token, label, pkg_set)
 
     def remove_packages(self, label, package_ids):
+        self.auth_check()
         while(len(package_ids) > 0):
             pkg_set = package_ids[:20]
             del package_ids[:20]        
             self.client.channel.software.removePackages(self.auth_token, label, pkg_set)
                         
     def clone_channel(self, original_label, new_label, parent):
+        self.auth_check()
         details = {'name': new_label, 'label':new_label, 'summary': new_label}
         if parent and parent != '':
             details['parent_label'] = parent

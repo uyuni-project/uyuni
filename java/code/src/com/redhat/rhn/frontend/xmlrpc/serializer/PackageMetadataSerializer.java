@@ -32,6 +32,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *  #struct("Package Metadata")
  *      #prop("int", "package_name_id")
  *      #prop("string", "package_name")
+ *      #prop("string", "package_arch")
  *      #prop_desc("string", "this_system", "Version of package on this system.")
  *      #prop_desc("string", "other_system", "Version of package on the other system.")
  *      #prop("int", "comparison")
@@ -61,6 +62,7 @@ public class PackageMetadataSerializer implements XmlRpcCustomSerializer {
         SerializerHelper helper = new SerializerHelper(builtInSerializer);
         helper.add("package_name_id", pkg.getId());
         helper.add("package_name", pkg.getName());
+        helper.add("package_arch", pkg.getArch());
         helper.add("this_system", pkg.getSystemEvr());
         helper.add("other_system", pkg.getOtherEvr());
         helper.add("comparison", pkg.getComparisonAsInt());

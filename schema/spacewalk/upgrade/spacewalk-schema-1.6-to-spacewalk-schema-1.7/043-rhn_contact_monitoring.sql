@@ -15,39 +15,23 @@
 --
 --
 --
-
-CREATE OR REPLACE FUNCTION
-ID_JOIN(sep_in IN VARCHAR2, ugi_in IN user_group_id_t)
-RETURN VARCHAR2
-deterministic
-IS
-	ret	VARCHAR2(4000);
-	i	BINARY_INTEGER;
-BEGIN
-	ret := '';
-	i := ugi_in.FIRST;
-
-	IF i IS NULL
-	THEN
-		RETURN ret;
-	END IF;
-
-	ret := ugi_in(i);
-	i := ugi_in.NEXT(i);
-
-	WHILE i IS NOT NULL
-	LOOP
-		ret := ret || sep_in || ugi_in(i);
-		i := ugi_in.NEXT(i);
-	END LOOP;
-
-	RETURN ret;
-END;
-/
-SHOW ERRORS
-
 --
--- Revision 1.2  2002/05/13 22:53:38  pjones
--- cvs id/log
--- some (note enough) readability fixes
---
+
+create or replace view rhn_contact_monitoring as
+select	u.id			as recid,
+	u.org_id		as customer_id,
+	wupi.last_name		as contact_last_name,
+	wupi.first_names	as contact_first_name,
+	rhn_user.find_mailable_address(u.id)
+				as email_address,
+	u.login			as username,
+	u.password		as password,
+	1			as schedule_id,
+	'GMT'			as preferred_time_zone
+from 
+	web_user_personal_info wupi,
+	web_contact u
+where	u.id = wupi.web_user_id
+	--  and some logic here to check org id for entitlements?
+;
+

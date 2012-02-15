@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 1.7.0
+Version: 1.7.1
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -76,8 +76,7 @@ fi
 # 682820 - re-enable yum-rhn-plugin after package upgrade if the system is already registered
 export pluginconf='/etc/yum/pluginconf.d/rhnplugin.conf'
 if [ $1 -gt 1 ] && [ -f "$pluginconf" ] && [ -f "/var/tmp/enable-yum-rhn-plugin" ]; then
-    sed -i 's/^\([[:space:]]*enabled[[:space:]]*=[[:space:]]*\)0\([[:space:]]*\)$/\11\2/'  \
-        "$pluginconf"
+    sed -i '/\[main]/,/^$/{/enabled/s/0/1/}' "$pluginconf"
     rm -f /var/tmp/enable-yum-rhn-plugin
 fi
 
@@ -97,6 +96,10 @@ fi
 
 
 %changelog
+* Tue Feb 14 2012 Miroslav Suchý 1.7.1-1
+- 788903 - do not change "enable" outside of [main]
+- Bumping package versions for 1.7.
+
 * Wed Dec 21 2011 Miroslav Suchý 1.6.16-1
 - 759786 - wrap SSL.SysCallError in yum error
 

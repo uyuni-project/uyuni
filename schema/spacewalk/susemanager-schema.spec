@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.7.25
+Version:        1.7.28
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,49 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Wed Feb 15 2012 Jan Pazdziora 1.7.28-1
+- When upgrading from 1.6, the (smallint, numeric) variant is no longer there.
+
+* Tue Feb 14 2012 Jan Pazdziora 1.7.27-1
+- Regenerate rhn_contact_monitoring.
+- Regenerate rhnWebContactDisabled.
+- Regenerate rhnVisServerGroupMembership.
+- Regenerate rhnUserChannelTreeView.
+- Regenerate rhnUserChannel.
+- Regenerate rhnUserActionOverview.
+- Regenerate rhnSharedChannelView.
+- Regenerate rhnSharedChannelTreeView.
+- Regenerate rhnServerGroupOVLiteHelper.
+- Regenerate rhnServerGroupMembership.
+- Regenerate rhnOrgChannelTreeView.
+- Regenerate rhnOrgChannelFamilyPermissions.
+- Regenerate rhnChannelTreeView.
+- Regenerate rhnChannelPermissions.
+- Regenerate rhnChannelFamilyServers.
+- Regenerate rhnActionOverview.
+- Fix wrong Oracle source SHA1 values.
+- properly mark the delete probe (mzazrivec@redhat.com)
+- forgotten trigger: time_series_purge_mod_trig (mzazrivec@redhat.com)
+- schema upgrade: cast columns to correct data type (numeric)
+  (mzazrivec@redhat.com)
+- delete orphaned monitoring data during schema upgrade (mzazrivec@redhat.com)
+- rename upgrade script to avoid numbering conflict (mzazrivec@redhat.com)
+- rename scripts to avoid number conflicts (mzazrivec@redhat.com)
+- time_series revamped: schema upgrade (mzazrivec@redhat.com)
+- time_series revamped: new schema (mzazrivec@redhat.com)
+- Fixing typo in schema upgrade script; also, rhnServerOverview is not database
+  specific.
+
+* Tue Feb 14 2012 Jan Pazdziora 1.7.26-1
+- Fixing whitespaces, replacing spaces with tabs.
+- Silence NOTICEs and stuff.
+- The types directories are no more.
+- The user_group_id_t, user_group_label_t, and user_group_name_t no longer
+  used, removing.
+- Removing rhnUserTypeArray which is no longer used.
+- The id_join, label_join, and name_join no longer used, removing.
+- Removing rhnUserTypeCommaView which is no longer used.
+
 * Wed Feb 08 2012 Jan Pazdziora 1.7.25-1
 - Use rhn_user.role_names instead of rhnUserTypeCommaView.
 

@@ -38,7 +38,15 @@ SAMPLE_CONFIG = """
  "password":"redhat",
  "assumeyes":true,
  "to_date": "2011-10-01",
- "blacklist": ["foo", "bar"],
+ "blacklist": {
+                 "ALL":["sendmail"],
+                 "my-rhel5-x86_64-clone":["emacs"],
+                 "my-rhel5-i386-clone":["vi", "postfix.*"]
+              },
+ "removelist": {
+                 "ALL":["compiz", "compiz-gnome"],
+                 "my-rhel5-x86_64-clone":["boost.*"]
+              },
  "channels":[
              {
                 "rhel-x86_64-server-5":"my-rhel5-x86_64-clone",
@@ -66,15 +74,31 @@ def merge_config(options):
     
     #if soemthing is in the config and not passed in as an argument
     #   add it to options
-    overwrite = ["username", "password", "blacklist", "channels", "server", "assumeyes", "to_date"]
+    overwrite = ["username", "password", "blacklist", "removelist", "channels", 
+                 "server", "assumeyes", "to_date"]
     for key in overwrite:
         if config.has_key(key) and not getattr(options, key):
             setattr(options, key, config[key])
         
     if type(options.channels) == dict:
         options.channels =  [options.channels] 
+    
+    validate_list_dict("blacklist", options.blacklist)
+    validate_list_dict("removelist", options.removelist)
+    
     return options
    
+
+    
+def validate_list_dict(name, pkg_dict):
+    """
+        Validates a removelist or blacklist to be map with lists as values    
+    """
+    if type(pkg_dict) != type({}):
+        raise UserError("%s  is not formatted correctly" % name)
+    for key, value in pkg_dict.items():
+        if type(value) != type([]):
+            raise UserError("Channel %s in %s packages not formatted correctly" % (key, name))
       
 # Using --channels as an argument only supports a single channel 'tree'
 #  So we need to convert a 2-tuple list of channel labels into an array with a hash
@@ -96,8 +120,9 @@ def parse_args():
     parser.add_option("-u", "--username", dest="username", help="Username")
     parser.add_option("-p", "--password", dest="password", help="Password")
     parser.add_option("-s", "--server", dest="server", help="Server URL to use for api connections (defaults to https://localhost/rpc/api)", default="https://localhost/rpc/api")
-    parser.add_option("-l", "--channels", dest="channels", nargs=2, action="append", help="Original channel and clone channel labels space seperated (e.g. --channels=rhel-i386-server-5 myclone).  Can be specified multiple times.")
-    parser.add_option("-b", "--blacklist", dest="blacklist",  help="Comman separated list of package names")
+    parser.add_option("-l", "--channels", dest="channels", nargs=2, action="append", help="Original channel and clone channel labels space separated (e.g. --channels=rhel-i386-server-5 myclone).  Can be specified multiple times.")
+    parser.add_option("-b", "--blacklist", dest="blacklist",  help="Comma separated list of package names (or regular expressions) to exclude from cloned errata (Only added packages will be considered).")
+    parser.add_option("-r", "--removelist", dest="removelist",  help="Comma separated list of package names (or regular expressions) to remove from destination channel (All packages are available for removal).")
     parser.add_option("-d", "--to_date", dest="to_date", help="Clone errata to the specified date (YYYY-MM-DD)")
     parser.add_option("-y", "--assumeyes", dest='assumeyes', action='store_true', help="Assume yes for any prompts (unattended).")
     parser.add_option("-m", "--sample-config", dest='sample', action='store_true', help="Print a sample full configuration file and exit.")
@@ -113,7 +138,10 @@ def parse_args():
         raise UserError("Cannot specify both --channels and --config.")
     
     if options.blacklist:
-        options.blacklist = options.blacklist.split(",")
+        options.blacklist = {"ALL":options.blacklist.split(",")}
+        
+    if options.removelist:
+        options.removelist = {"ALL":options.removelist.split(",")}        
     
     options = merge_config(options)
     

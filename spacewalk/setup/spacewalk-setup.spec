@@ -9,7 +9,7 @@
 %endif
 
 Name:           spacewalk-setup
-Version:        1.7.3
+Version:        1.7.4
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -131,6 +131,9 @@ rm -rf %{buildroot}
 %{_mandir}/man8/spacewalk-make-mount-points*
 
 %changelog
+* Tue Feb 14 2012 Tomas Lestach <tlestach@redhat.com> 1.7.4-1
+- rename rhn-installation.log to rhn_installation.log (tlestach@redhat.com)
+
 * Tue Jan 31 2012 Jan Pazdziora 1.7.3-1
 - Monitoring uses RHN::DB, so no need to have the extra connect parameters.
 

@@ -1,5 +1,3 @@
--- oracle equivalent source sha1 a67701be270afd89aa457bffa73e67220020b57e
--- retrieved from ./1242148739/5b0d12b97e5fd08c735eda344779d685aebd6409/schema/spacewalk/oracle/tables/time_series.sql
 --
 -- Copyright (c) 2008--2010 Red Hat, Inc.
 --
@@ -14,20 +12,29 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation. 
 --
+--
+--
+--
 
-CREATE TABLE time_series
-(
-    o_id        VARCHAR(64) NOT NULL, 
-    entry_time  NUMERIC NOT NULL, 
-    data        VARCHAR(1024)
-)
-;
-
-CREATE INDEX time_series_probe_id_idx
-  ON time_series(substring(o_id FROM position('-' IN o_id) + 1
-                            FOR position('-' IN substring(o_id FROM position('-' IN o_id) + 1)) - 1));
-
-CREATE INDEX time_series_oid_entry_idx
-    ON time_series (o_id, entry_time)
-;
+create or replace view rhnOrgChannelFamilyPermissions as
+	select	pcf.channel_family_id,
+		u.org_id as org_id,
+		to_number(null, null) as max_members,
+		0 as current_members,
+		to_number(null, null) as fve_max_members,
+		0 as fve_current_members,
+		pcf.created,
+		pcf.modified
+	from	rhnPublicChannelFamily pcf,
+		web_contact u
+	union
+	select	channel_family_id,
+		org_id,
+		max_members,
+		current_members,
+		fve_max_members,
+		fve_current_members,
+		created,
+		modified
+	from	rhnPrivateChannelFamily;
 

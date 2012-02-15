@@ -45,6 +45,7 @@ class DepSolver:
         self.pkgs = pkgs_in
         self.repos = repos
         self._repostore = RepoStorage(self)
+        self.cleanup() #call cleanup before and after, to ensure no stale metadata
         self.setup()
         self.loadPackages()
         self.yrepo =  None
@@ -72,7 +73,10 @@ class DepSolver:
         """
         for repo in self._repostore.repos:
             cachedir = "%s/%s" % (CACHE_DIR, repo)
-            shutil.rmtree(cachedir)
+            try:
+                shutil.rmtree(cachedir)
+            except IOError:
+                pass
 
     def getDependencylist(self):
         """
@@ -124,11 +128,11 @@ class DepSolver:
     def __locateDeps(self, pkgs):
         results = {}
         regex_filename_match = re.compile('[/*?]|\[[^]]*/[^]]*\]').match
-        
+                
         print("Solving Dependencies (%i): " % len(pkgs))
         pb = ProgressBar(prompt='', endTag=' - complete',
                      finalSize=len(pkgs), finalBarLength=40, stream=sys.stdout)
-        pb.printAll(1)    
+        pb.printAll(1)
                 
         for pkg in pkgs:
             pb.addTo(1)

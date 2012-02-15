@@ -12,24 +12,22 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation. 
 --
+--
+--
+--
 
-CREATE TABLE time_series
-(
-    o_id        VARCHAR2(64) NOT NULL, 
-    entry_time  NUMBER NOT NULL, 
-    data        VARCHAR2(1024)
-)
-ENABLE ROW MOVEMENT
-;
-
-CREATE INDEX time_series_probe_id_idx
-  ON time_series(SUBSTR(O_ID, INSTR(O_ID, '-') + 1,
-   (INSTR(O_ID, '-', INSTR(O_ID, '-') + 1) - INSTR(O_ID, '-')) - 1
-  ))
-  TABLESPACE [[64k_tbs]]
-  NOLOGGING;
-
-CREATE INDEX time_series_oid_entry_idx
-    ON time_series (o_id, entry_time)
-    TABLESPACE [[64k_tbs]];
+create or replace view rhnChannelFamilyServers as
+	select	rs.org_id			as customer_id,
+		rcfm.channel_family_id		as channel_family_id,
+		rsc.server_id			as server_id,
+		rsc.created			as created,
+		rsc.modified			as modified
+	from	rhnChannelFamilyMembers		rcfm,
+		rhnChannelFamily		rcf,
+		rhnServerChannel		rsc,
+		rhnServer			rs
+	where
+		rcfm.channel_id = rsc.channel_id
+		and rcfm.channel_family_id = rcf.id
+		and rsc.server_id = rs.id;
 

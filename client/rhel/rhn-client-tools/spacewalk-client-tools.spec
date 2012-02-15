@@ -12,7 +12,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.7.8
+Version: 1.7.9
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -399,6 +399,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Tue Feb 14 2012 Miroslav Suchý 1.7.9-1
+- 781421 - avoid TB if error is in unicode
+
 * Fri Jan 27 2012 Miroslav Suchý 1.7.8-1
 - 729342 - fix another TB with errmsg instance
 

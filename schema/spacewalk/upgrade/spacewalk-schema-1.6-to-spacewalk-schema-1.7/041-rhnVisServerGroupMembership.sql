@@ -12,23 +12,16 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation. 
 --
---
---
-create or replace view rhnUserTypeCommaView (
-       user_id, ids, labels, names
+CREATE OR REPLACE VIEW rhnVisServerGroupMembership (
+         ORG_ID, SERVER_ID, GROUP_ID, GROUP_NAME, GROUP_TYPE, CURRENT_MEMBERS, MAX_MEMBERS
 )
-as
-select
-    uta.user_id,
-    id_join(', ', uta.type_id_t),
-    label_join(', ', uta.type_label_t),
-    name_join(', ', uta.type_name_t)
-from	   
-    rhnUserTypeArray uta
-/
+AS
+SELECT   SG.org_id, SGM.server_id, SG.id, SG.name, SGT.label, SG.current_members, SG.max_members
+  FROM
+	 rhnServerGroupMembers SGM
+            right outer join
+    	 rhnVisibleServerGroup SG on (SG.id = SGM.server_group_id)
+            left outer join
+         rhnServerGroupType SGT on (SG.group_type = SGT.id)
+;
 
-
---
--- Revision 1.3  2001/06/27 02:05:25  gafton
--- add Log too
---
