@@ -48,6 +48,7 @@ import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.image.Image;
+import com.redhat.rhn.domain.image.ProxyConfig;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -59,7 +60,6 @@ import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.systems.images.ProxyConfig;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.BaseManager;
@@ -642,9 +642,11 @@ public class ActionManager extends BaseManager {
         details.setBridgeDevice(bridge);
         details.setImageType(image.getImageType());
         details.setDownloadUrl(image.getDownloadUrl());
-        details.setProxyServer(proxy.getServer());
-        details.setProxyUser(proxy.getUser());
-        details.setProxyPass(proxy.getPass());
+        if (proxy != null) {
+            details.setProxyServer(proxy.getServer());
+            details.setProxyUser(proxy.getUser());
+            details.setProxyPass(proxy.getPass());
+        }
         a.setDetails(details);
 
         // TODO: Use LocalizationService.getInstance().getMessage()
