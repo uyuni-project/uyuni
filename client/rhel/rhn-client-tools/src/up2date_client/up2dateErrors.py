@@ -66,10 +66,7 @@ class Error(YumBaseError):
             else:
                 self.__dict__[name] = value
 
-if getPlatform() == 'deb' or dist()[0] == 'SuSE':
-    RepoError = Error
-else:
-    from yum.Errors import RepoError
+RepoError = Error
 
 class RpmError(Error):
     """rpm itself raised an error condition"""
@@ -185,7 +182,7 @@ class NetworkError(Error):
     """ some generic network error occured, e.g. connection reset by peer """
     premsg = _("Network error: ")
 
-class SSLCertificateVerifyFailedError(RepoError, Error):
+class SSLCertificateVerifyFailedError(RepoError):
     def __init__(self):
         # Need to override __init__ because the base class requires a message arg
         # and this exception shouldn't.
