@@ -16,7 +16,7 @@ import com.redhat.rhn.frontend.dto.BaseDto;
  * Images for deployment to virtual host systems. Currently such image objects
  * are not being persisted, but they rather exist in memory only.
  */
-public class Image extends BaseDto {
+public class Image extends BaseDto implements Comparable<Image> {
 
     private Long id;
     private String name;
@@ -105,6 +105,21 @@ public class Image extends BaseDto {
             if (this.getId().equals(image.getId())) {
                 ret = true;
             }
+        }
+        return ret;
+    }
+
+    @Override
+    public int compareTo(Image image) {
+        int ret = 0;
+        if (!this.name.equals(image.getName())) {
+            ret = this.name.compareTo(image.name);
+        } else if (!this.version.equals(image.getVersion())) {
+            ret = this.version.compareTo(image.version);
+        } else if (!this.arch.equals(image.getArch())) {
+            ret = this.arch.compareTo(image.getArch());
+        } else if (!this.imageType.equals(image.getImageType())) {
+            ret = this.imageType.compareTo(image.getImageType());
         }
         return ret;
     }

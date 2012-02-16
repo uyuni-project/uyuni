@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.renderers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,21 +50,22 @@ public class ImagesRenderer extends BaseFragmentRenderer {
      */
     @Override
     protected void render(User user, PageControl pc, HttpServletRequest request) {
-        // Get the images
-        List images = null;
+        List<Image> images = null;
         try {
+            // Get the list of images and sort it
             images = getImages(user, request);
+            Collections.sort(images);
+
+            // Set the "parentUrl" for the form (in rl:listset)
+            request.setAttribute(ListTagHelper.PARENT_URL, "");
+
+            // Store the set of images (if any) to the session
+            if (images != null && !images.isEmpty()) {
+                request.getSession().setAttribute(ATTRIB_IMAGES_LIST, images);
+            }
         } catch (IOException e) {
             logger.error(e.getMessage());
             request.setAttribute(ATTRIB_ERROR_MSG, "images.message.error.connection");
-        }
-
-        // Set the "parentUrl" for the form (in rl:listset)
-        request.setAttribute(ListTagHelper.PARENT_URL, "");
-
-        // Store the set of images (if any) to the session
-        if (images != null && !images.isEmpty()) {
-            request.getSession().setAttribute(ATTRIB_IMAGES_LIST, images);
         }
     }
 
@@ -72,7 +74,7 @@ public class ImagesRenderer extends BaseFragmentRenderer {
      * @param user
      * @return list of {@link Image} objects
      */
-    private List getImages(User user, HttpServletRequest request) throws IOException {
+    private List<Image> getImages(User user, HttpServletRequest request) throws IOException {
         List<Appliance> ret = new ArrayList<Appliance>();
 
         // Lookup credentials and url
