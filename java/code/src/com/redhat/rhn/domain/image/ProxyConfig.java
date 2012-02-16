@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 Novell
+ * Copyright (c) 2012 Novell
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.systems.images;
+package com.redhat.rhn.domain.image;
 
 /**
  * Simple class representing a proxy configuration.
@@ -22,7 +22,7 @@ public class ProxyConfig {
     private String server;
     private String user;
     private String pass;
-    
+
     public ProxyConfig(String server, String user, String pass) {
         this.setServer(server);
         this.setUser(user);

@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -27,6 +28,7 @@ import org.apache.struts.action.DynaActionForm;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.image.Image;
+import com.redhat.rhn.domain.image.ProxyConfig;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.renderers.ImagesRenderer;
@@ -48,15 +50,10 @@ public class ScheduleImageDeploymentAction extends RhnAction {
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     public ActionForward execute(ActionMapping actionMapping,
-                                 ActionForm actionForm,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
-        // The id of the current server and submitted flag
-        Long sid = null;
-        Boolean submitted = false;
+            ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
 
-        // Form parameters
+        // Deployment parameters
         Long vcpus = null;
         Long memkb = null;
         String bridge = null;
@@ -64,73 +61,85 @@ public class ScheduleImageDeploymentAction extends RhnAction {
         String proxyUser = null;
         String proxyPass = null;
 
-    	// Read parameters from the form
-        if (actionForm instanceof DynaActionForm) {
+        // Read form parameters if we are 'dispatched'
+        Boolean dispatched = request.getParameter(RequestContext.DISPATCH) != null;
+        if (dispatched && actionForm instanceof DynaActionForm) {
             DynaActionForm form = (DynaActionForm) actionForm;
-            sid = (Long) form.get("sid");
-
-            // Read submitted
-            submitted = (Boolean) form.get("submitted");
-            submitted = submitted ==  null ? false : submitted;
-
-            if (submitted) {
-                // Get all form parameters
-                vcpus = (Long) form.get("vcpus");
-                memkb = (Long) form.get("mem_mb") * 1024;
-                bridge = (String) form.getString("bridge");
-                proxyServer = (String) form.getString("proxy_server");
-                proxyUser = (String) form.getString("proxy_user");
-                proxyPass = (String) form.getString("proxy_pass");
-            }
+            vcpus = (Long) form.get("vcpus");
+            memkb = (Long) form.get("mem_mb") * 1024;
+            bridge = (String) form.getString("bridge");
+            proxyServer = (String) form.getString("proxy_server");
+            proxyUser = (String) form.getString("proxy_user");
+            proxyPass = (String) form.getString("proxy_pass");
         }
 
         // Get the current user
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getLoggedInUser();
 
-        ActionForward forward;
-        if (submitted) {
-            // Schedule image deployment
-            String id = ListTagHelper.getRadioSelection(ListHelper.LIST, request);
+        // Put the server to the request (needed for system header)
+        Long sid = new Long(request.getParameter(RequestContext.SID));
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        request.setAttribute("system", server);
 
-            // Get the images from the session and find the selected one
-            List<Image> images = (List<Image>) request.getSession().getAttribute(
-                    ImagesRenderer.ATTRIB_IMAGES_LIST);
-            request.getSession().removeAttribute(ImagesRenderer.ATTRIB_IMAGES_LIST);
-            Image image = null;
-            for (Image i : images) {
-                if (i.getId().equals(new Long(id))) {
-                    image = i;
-                    break;
-                }
-            }
+        ActionForward forward;
+        if (dispatched) {
+            // Actually schedule the image deployment
+            String imageId = ListTagHelper.getRadioSelection(ListHelper.LIST,
+                    request);
+            Image image = findImage(new Long(imageId), request);
 
             // Set up the proxy configuration
             ProxyConfig proxy = null;
-            if (proxyServer != null) {
+            if (StringUtils.isNotEmpty(proxyServer)) {
                 proxy = new ProxyConfig(proxyServer, proxyUser, proxyPass);
             }
 
-        	// Create the action and store it
-            Action deploy = ActionManager.createDeployImageAction(
-                    user, image, vcpus, memkb, bridge, proxy);
-            ActionManager.addServerToAction(sid, deploy);
-            ActionManager.storeAction(deploy);
-            // Put a success message to the request
+            // Create the action and store it
+            Action action = ActionManager.createDeployImageAction(user, image,
+                    vcpus, memkb, bridge, proxy);
+            ActionManager.addServerToAction(sid, action);
+            ActionManager.storeAction(action);
             createSuccessMessage(request, SUCCESS_KEY, image.getName());
 
             // Forward the sid as a request parameter
             Map forwardParams = makeParamMap(request);
             forwardParams.put("sid", sid);
             forward = getStrutsDelegate().forwardParams(
-                    actionMapping.findForward("success"), forwardParams);
-        } else {
-            // Put the server to the request (needed for system header)
-            Server server = SystemManager.lookupByIdAndUser(sid, user);
-            request.setAttribute("system", server);
-
+                    actionMapping.findForward("submitted"), forwardParams);
+        } else if (ctx.isSubmitted()) {
+            // The "parentUrl" is needed for rl:listset
+            request.setAttribute(ListTagHelper.PARENT_URL,
+                    request.getRequestURI());
             forward = actionMapping.findForward("default");
+        } else {
+            // The page is called for the first time
+            forward = actionMapping.findForward("first");
         }
         return forward;
+    }
+
+    /**
+     * Get the list of images from the session and find the selected one.
+     * @param imageId
+     * @param request
+     * @return
+     */
+    private Image findImage(Long imageId, HttpServletRequest request) {
+        @SuppressWarnings("unchecked")
+        List<Image> images = (List<Image>) request.getSession().getAttribute(
+                ImagesRenderer.ATTRIB_IMAGES_LIST);
+        Image image = null;
+        for (Image i : images) {
+            if (i.getId().equals(imageId)) {
+                image = i;
+                break;
+            }
+        }
+        // Clear images from memory if image was found
+        if (image != null) {
+            request.getSession().removeAttribute(ImagesRenderer.ATTRIB_IMAGES_LIST);
+        }
+        return image;
     }
 }

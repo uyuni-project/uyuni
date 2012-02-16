@@ -2,7 +2,7 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-html" prefix="html" %>
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-bean" prefix="bean" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <rhn:toolbar base="h1" img="/img/susestudio.png"></rhn:toolbar>
 
@@ -22,7 +22,9 @@
       <rhn:csrf />
       <html:hidden property="sid" value="${param.sid}" />
 
-      <rl:list dataset="imagesList" emptykey="studio.images.list.noimages">
+      <rl:list dataset="imagesList"
+               emptykey="studio.images.list.noimages">
+        <rl:decorator name="PageSizeDecorator"/>
         <rl:radiocolumn value="${current.id}" styleclass="first-column"/>
         <rl:column headerkey="studio.images.list.name">
             <a href="${current.editUrl}">${current.name}</a>
@@ -88,7 +90,7 @@
         <html:submit
             property="dispatch"
             value="Schedule Deployment"
-            disabled="${empty requestScope.imagesList}" />
+            disabled="${empty sessionScope.imagesList}" />
       </div>
     </rl:listset>
   </c:otherwise>

@@ -58,12 +58,10 @@ public class ImagesRenderer extends BaseFragmentRenderer {
             request.setAttribute(ATTRIB_ERROR_MSG, "images.message.error.connection");
         }
 
-        // Store list of images to the request
-        request.setAttribute(ATTRIB_IMAGES_LIST, images);
         // Set the "parentUrl" for the form (in rl:listset)
         request.setAttribute(ListTagHelper.PARENT_URL, "");
 
-        // Store the set of images (if any) to the session as well
+        // Store the set of images (if any) to the session
         if (images != null && !images.isEmpty()) {
             request.getSession().setAttribute(ATTRIB_IMAGES_LIST, images);
         }

@@ -1134,14 +1134,12 @@
 
     <form-bean name="deployImageForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-      <form-property name="sid" type="java.lang.Long" />
       <form-property name="vcpus" type="java.lang.Long" />
       <form-property name="mem_mb" type="java.lang.Long" />
       <form-property name="bridge" type="java.lang.String" />
       <form-property name="proxy_server" type="java.lang.String" />
       <form-property name="proxy_user" type="java.lang.String" />
       <form-property name="proxy_pass" type="java.lang.String" />
-      <form-property name="submitted" type="java.lang.Boolean" />
     </form-bean>
   </form-beans>
 
@@ -7726,12 +7724,15 @@
     <action path="/systems/details/virtualization/Images"
         scope="request"
         name="deployImageForm"
+        parameter="dispatch"
         type="com.redhat.rhn.frontend.action.systems.images.ScheduleImageDeploymentAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="first"
+                 path="/WEB-INF/pages/systems/details/virtualization/images_ajax.jsp" />
         <forward name="default"
                  path="/WEB-INF/pages/systems/details/virtualization/images.jsp" />
-        <forward name="success"
+        <forward name="submitted"
                  redirect="true"
                  path="/systems/details/virtualization/VirtualGuestsList.do" />
     </action>
