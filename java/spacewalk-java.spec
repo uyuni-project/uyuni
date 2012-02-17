@@ -641,6 +641,7 @@ fi
 %config %{_datadir}/spacewalk/audit/auditlog-config.yaml
 
 %files tests
+%defattr(-,root,root)
 %{_datadir}/rhn/lib/rhn-test.jar
 %{_datadir}/rhn/unittest.xml
 %{jardir}/mockobjects*.jar
