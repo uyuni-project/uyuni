@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 17 12:28:52 CET 2012 - mc@suse.de
+
+- execute commands with full user information including
+  secondary groups (bnc#742924)
+
+-------------------------------------------------------------------
 Thu Sep  8 13:21:45 CEST 2011 - iartarisi@suse.cz
 
 - remove perl module files from the -server package
