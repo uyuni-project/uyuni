@@ -248,10 +248,11 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
 
 class URL(object):
     """URL class that allows modifying the various attributes of a URL"""
+    # pylint: disable=R0902
     def __init__(self, url):
         u = urlparse.urlsplit(url)
         # pylint can't see inside the SplitResult class
-        # pylint: disable=E1103,R0902
+        # pylint: disable=E1103
         self.scheme = u.scheme
         self.username = u.username
         self.password = u.password
@@ -273,6 +274,7 @@ class URL(object):
         """
         # paramsdict has a list of elements as values, but we assume the
         # most common case where the list has only one element
+        # pylint: disable=E1101
         p = self.paramsdict.get(key, default)
         if p:
             assert len(p) == 1, ("The query parameter contains a list of "
