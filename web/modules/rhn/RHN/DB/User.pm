@@ -17,7 +17,6 @@ use strict;
 
 package RHN::DB::User;
 
-use Authen::PAM;
 use Carp;
 use Date::Parse;
 use POSIX;
@@ -355,77 +354,7 @@ sub set_password {
   }
 }
 
-sub validate_password {
-  my $self = shift;
-  my $pw = shift;
-
-  # first; pam and user has pam enabled?
-  if (PXT::Config->get('pam_auth_service') and $self->get_pref('use_pam_authentication') eq 'Y') {
-    return $self->validate_password_pam($pw);
-  }
-
-  # no pam, okay, auth against the db, encrypted or otherwise
-  if (PXT::Config->get('encrypted_passwords')) {
-    return crypt($pw, $self->password) eq $self->password;
-  }
-  else {
-    return $pw eq $self->password;
-  }
-}
-
 # closures would be a pain; simply store it in a global
-
-our $global_pam_pw = undef;
-
-sub pam_conversation_func {
-  my @ret;
-
-  die "gruesome death: global_pam_pw is not defined in pam_conversation_func"
-    unless defined $global_pam_pw;
-
-  while(@_) {
-    my $msg_type = shift;
-    my $msg = shift;
-
-    if ($msg_type == Authen::PAM::PAM_ERROR_MSG()) {
-      warn "PAM error: $msg";
-    }
-
-    if ($msg_type == Authen::PAM::PAM_PROMPT_ECHO_ON() or
-	$msg_type == Authen::PAM::PAM_PROMPT_ECHO_OFF()) {
-      push @ret, Authen::PAM::PAM_SUCCESS(), $global_pam_pw;
-    }
-    else {
-      push @ret, Authen::PAM::PAM_SUCCESS(), "";
-    }
-  }
-
-  push @ret, Authen::PAM::PAM_SUCCESS();
-
-  return @ret;
-}
-
-sub validate_password_pam {
-  my $self = shift;
-  my $pw = shift;
-
-  $global_pam_pw = undef;
-  local $global_pam_pw = $pw;
-
-  my $service = PXT::Config->get('pam_auth_service');
-  my $pam = new Authen::PAM($service, $self->login, \&pam_conversation_func);
-
-  my $ret = $pam->pam_authenticate;
-
-  if ($ret != Authen::PAM::PAM_SUCCESS) {
-    warn "PAM auth failure: " . $pam->pam_strerror($ret);
-    return 0;
-  }
-  else {
-    return 1;
-  }
-
-}
 
 sub org {
   my $self = shift;
@@ -643,26 +572,6 @@ sub selection_details {
   }
 
   return @ret;
-}
-
-sub clear_selections {
-  my $self = shift;
-  my @sets_to_skip = @_;
-
-  my $to_skip = join(',', map { "'" . $_ . "'" } @sets_to_skip);
-
-  my $dbh = RHN::DB->connect;
-  my $sth;
-
-  if ($to_skip eq '') {
-    $sth = $dbh->prepare("DELETE FROM rhnSet WHERE user_id = ?");
-  }
-  else {
-    $sth = $dbh->prepare("DELETE FROM rhnSet WHERE user_id = ? AND label NOT IN ($to_skip)");
-  }
-  $sth->execute($self->id);
-
-  $dbh->commit;
 }
 
 sub verify_probe_access {
@@ -1487,16 +1396,6 @@ sub last_logged_in {
   return $val;
 }
 
-sub mark_log_in {
-  my $self = shift;
-
-  delete $self->{__pref_cache__}->{last_logged_in};
-  my $dbh = RHN::DB->connect;
-  my $sth = $dbh->prepare("UPDATE rhnUserInfo SET last_logged_in = current_timestamp WHERE user_id = ?");
-  $sth->execute($self->id);
-  $dbh->commit;
-}
-
 sub get_pref {
   my $self = shift;
   my $pref = shift;
@@ -1582,21 +1481,6 @@ EOQ
   return $count;
 }
 
-
-sub has_incomplete_info {
-  my $self = shift;
-
-  my ($site) = $self->sites('M');
-
-  if ($self->first_names eq 'Valued' or $self->last_name eq 'Customer') {
-    return "details";
-  }
-  elsif ($site and ($site->site_city eq '.' or $site->site_address1 eq '.')) {
-    return "address";
-  }
-
-  return 0;
-}
 
 sub grant_servergroup_permission {
   my $self = shift;
@@ -1788,27 +1672,6 @@ EOQ
     return 1 if $userIsDisabled;
 
     return 0; #user is active
-}
-
-sub verify_file_access {
-  my $self = shift;
-  my $file_path = shift;
-
-  my $dbh = RHN::DB->connect();
-  my $sth = $dbh->prepare(<<EOQ);
-SELECT 1
-  FROM rhnUserChannelFamilyPerms UCFP, rhnDownloads D
- WHERE UCFP.user_id = :user_id
-   AND D.channel_family_id = UCFP.channel_family_id
-   AND D.file_id = (SELECT id FROM rhnFile WHERE path = :file_path)
-EOQ
-  $sth->execute_h(user_id => $self->id, file_path => $file_path);
-  my ($file_access) = $sth->fetchrow;
-  $sth->finish;
-
-  return 1 if defined  $file_access;
-
-  return 0;
 }
 
 1;

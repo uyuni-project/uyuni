@@ -4,7 +4,7 @@ Group:   Applications/Internet
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 1.7.4
+Version: 1.7.6
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
@@ -17,10 +17,13 @@ BuildRequires: spacewalk-backend
 %endif
 BuildArch: noarch
 Requires: httpd
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5
 # pylint check
-BuildRequires: pylint
+BuildRequires: spacewalk-pylint
 BuildRequires: rhnpush >= 5.5.40
 BuildRequires: spacewalk-backend-libs >= 1.7.1
+BuildRequires: spacewalk-backend >= 1.7.1
+%endif
 
 %define rhnroot %{_usr}/share/rhn
 %define destdir %{rhnroot}/proxy
@@ -184,22 +187,6 @@ an Spacewalk Proxy Server's custom channel.
 %build
 make -f Makefile.proxy
 
-# check coding style
-export PYTHONPATH=/usr/share/rhn
-PYLINT_BADFUNC="apply,input"
-PYLINT_DISABLE="C0103,C0111,C0301"
-PYLINT_DISABLE+=",E1101"
-PYLINT_DISABLE+=",I0011"
-PYLINT_DISABLE+=",R0801,R0903,R0911,R0912,R0913,R0914"
-PYLINT_DISABLE+=",W0142,W0403,W0511,W0603"
-ln -s . proxy   # workaround - added 'proxy' into path so pylint can find modules
-find -name '*.py' \
-    | xargs pylint -rn -iy --bad-functions="$PYLINT_BADFUNC" \
-                   --disable "$PYLINT_DISABLE" || \
-find -name '*.py' \
-    | xargs pylint -rn -iy --bad-functions="$PYLINT_BADFUNC" \
-                   --disable-msg "$PYLINT_DISABLE"
-
 %install
 rm -rf $RPM_BUILD_ROOT
 make -f Makefile.proxy install PREFIX=$RPM_BUILD_ROOT
@@ -218,12 +205,16 @@ rm -fv $RPM_BUILD_ROOT%{httpdconf}/spacewalk-proxy-python.conf
 
 ln -sf rhn-proxy $RPM_BUILD_ROOT%{_sbindir}/spacewalk-proxy
 
-%check
-export PYTHONPATH=%{buildroot}%{rhnroot}:%{rhnroot}
-make -f Makefile.proxy pylint
-
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%check
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
+# check coding style
+export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:$RPM_BUILD_ROOT%{python_sitelib}:/usr/share/rhn
+spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
+%endif
+
 
 %post broker
 if [ -f %{_sysconfdir}/sysconfig/rhn/systemid ]; then
@@ -404,6 +395,15 @@ fi
 
 
 %changelog
+* Wed Feb 15 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.6-1
+- skip check also on Fedora 15
+
+* Wed Feb 15 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.5-1
+- skip pylint checks on RHEL5
+- pylint needs python modules from spacewalk-backend
+- fixed pylint errors
+- pylint check has been moved to spacewalk-pylint package
+
 * Fri Feb 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.4-1
 - check proxy for pylint errors in rpm build time
 - fixed pylint errors/warnings

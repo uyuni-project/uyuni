@@ -25,6 +25,7 @@ from operator import itemgetter
 from optparse import Option
 from urllib2 import urlopen, HTTPError
 from spacecmd.utils import *
+import re
 
 KICKSTART_OPTIONS = ['autostep', 'interactive', 'install', 'upgrade',
                      'text', 'network', 'cdrom', 'harddrive', 'nfs',
@@ -192,6 +193,12 @@ def do_kickstart_import(self, args):
                 Option('-f', '--file', action='store') ]
 
     (args, options) = parse_arguments(args, options)
+
+    for a in args:
+        if re.search("\.json$", a):
+            logging.warning("Argument %s looks like a JSON format " % a +\
+                "filename, use kickstart_importjson to import JSON files exported by " +\
+                "kickstart_export")
 
     if is_interactive(options):
         options.name = prompt_user('Name:', noblank = True)
@@ -425,6 +432,26 @@ def do_kickstart_details(self, args):
 
 ####################
 
+def kickstart_getcontents(self, profile):
+
+    kickstart = None
+    if self.check_api_version('10.11'):
+        kickstart = self.client.kickstart.profile.downloadRenderedKickstart(\
+                                                       self.session, profile)
+    else:
+        # old versions of th API don't return a rendered Kickstart,
+        # so grab it in a hacky way
+        url = 'http://%s/ks/cfg/label/%s' % (self.server, profile)
+
+        try:
+            logging.debug('Retrieving %s' % url)
+            response = urlopen(url)
+            kickstart = response.read()
+        except HTTPError:
+            logging.error('Could not retrieve the Kickstart file')
+
+    return kickstart
+
 def help_kickstart_getcontents(self):
     print 'kickstart_getcontents: Show the contents of a Kickstart profile'
     print '                   as they would be presented to a client'
@@ -442,23 +469,10 @@ def do_kickstart_getcontents(self, args):
 
     profile = args[0]
 
-    if self.check_api_version('10.11'):
-        kickstart = self.client.kickstart.profile.downloadRenderedKickstart(\
-                                                       self.session, profile)
-    else:
-        # old versions of th API don't return a rendered Kickstart,
-        # so grab it in a hacky way
-        url = 'http://%s/ks/cfg/label/%s' % (self.server, profile)
+    kickstart = self.kickstart_getcontents(profile)
 
-        try:
-            logging.debug('Retrieving %s' % url)
-            response = urlopen(url)
-            kickstart = response.read()
-        except HTTPError:
-            logging.error('Could not retrieve the Kickstart file')
-            return
-
-    print kickstart
+    if kickstart:
+        print kickstart
 
 ####################
 
@@ -1788,5 +1802,329 @@ def do_kickstart_clone(self, args):
     self.client.kickstart.cloneProfile(self.session,
                                         options.name,
                                         options.clonename)
+
+####################
+
+def help_kickstart_export(self):
+    print 'kickstart_export: export kickstart profile(s) to json format file'
+    print '''usage: kickstart_export <KSPROFILE>... [options]
+options:
+    -f outfile.json : specify an output filename, defaults to <KSPROFILE>.json
+                      if exporting a single kickstart, profiles.json for multiple
+                      kickstarts, or ks_all.json if no KSPROFILE specified
+                      e.g (export ALL)
+
+Note : KSPROFILE list is optional, default is to export ALL'''
+
+def complete_kickstart_export(self, text, line, beg, end):
+    return tab_completer(self.do_kickstart_list('', True), text)
+
+def export_kickstart_getdetails(self, profile, kickstarts):
+
+    # Get the initial ks details struct from the kickstarts list-of-struct,
+    # which is returned from kickstart.listKickstarts()
+    logging.debug("Getting kickstart profile details for %s" % profile)
+    details = None
+    for k in kickstarts:
+        if k.get('label') == profile:
+            details = k
+            break
+    logging.debug("Got basic details for %s : %s" % (profile, details))
+
+    # Now use the various other API functions to build up a more complete
+    # details struct for export.  Note there are a some ommisions from the API
+    # e.g the "template" option which enables cobbler templating on scripts
+    details['child_channels'] = \
+        self.client.kickstart.profile.getChildChannels(self.session, profile)
+    details['advanced_opts'] = \
+        self.client.kickstart.profile.getAdvancedOptions(self.session, profile)
+    details['software_list'] = \
+        self.client.kickstart.profile.software.getSoftwareList(self.session,\
+            profile)
+    details['custom_opts'] = \
+        self.client.kickstart.profile.getCustomOptions(self.session, profile)
+    details['script_list'] = \
+        self.client.kickstart.profile.listScripts(self.session, profile)
+    details['ip_ranges'] = \
+        self.client.kickstart.profile.listIpRanges(self.session, profile)
+    logging.debug("About to get variable_list for %s" % profile)
+    details['variable_list'] = \
+        self.client.kickstart.profile.getVariables(self.session, profile)
+    logging.debug("done variable_list for %s = %s" % (profile,\
+        details['variable_list']))
+    # just export the key names, then look for one with the same name on import
+    details['activation_keys'] = [ k['key'] for k in \
+        self.client.kickstart.profile.keys.getActivationKeys(self.session,\
+            profile) ]
+    details['partitioning_scheme'] = \
+        self.client.kickstart.profile.system.getPartitioningScheme(\
+            self.session, profile)
+    details['reg_type'] = \
+        self.client.kickstart.profile.system.getRegistrationType(self.session,\
+            profile)
+    details['config_mgmt'] = \
+        self.client.kickstart.profile.system.checkConfigManagement(\
+            self.session, profile)
+    details['remote_cmds'] = \
+        self.client.kickstart.profile.system.checkRemoteCommands(\
+            self.session, profile)
+    # Just export the file preservation list names, then look for one with the
+    # same name on import
+    details['file_preservations'] = [ f['name'] for f in \
+        self.client.kickstart.profile.system.listFilePreservations(\
+            self.session, profile) ]
+    # just export the key description/names , then look for one with the same
+    # name on import
+    details['gpg_ssl_keys'] = [ k['description'] for k in \
+        self.client.kickstart.profile.system.listKeys(self.session, profile) ]
+
+    # There's a setLogging() but no getLogging(), so we look in the rendered
+    # kickstart to figure out if pre/post logging is enabled
+    kscontents = self.kickstart_getcontents(profile)
+    if re.search("pre --logfile", kscontents):
+        logging.debug("Detected pre script logging")
+        details['pre_logging'] = True
+    else:
+        details['pre_logging'] = False
+    if re.search("post --logfile", kscontents):
+        logging.debug("Detected post script logging")
+        details['post_logging'] = True
+    else:
+        details['post_logging'] = False
+
+    # There's also no way to get the "Kernel Options" and "Post Kernel Options"
+    # The Post options can be derived from the grubby --default-kernel` --args
+    # line in the kickstart, ugly but at least we can then show some of what's
+    # missing in the warnings that get printed on import
+    if re.search("`/sbin/grubby --default-kernel` --args=", kscontents):
+        post_kopts = \
+            kscontents.split("`/sbin/grubby --default-kernel` --args=")[1].\
+                split("\"")[1]
+        logging.debug("Post kernel options %s detected" % post_kopts)
+        details['post_kopts'] = post_kopts
+
+    return details
+
+def do_kickstart_export(self, args):
+    options = [ Option('-f', '--file', action='store') ]
+    (args, options) = parse_arguments(args, options)
+
+    filename=""
+    if options.file != None:
+        logging.debug("Passed filename do_kickstart_export %s" % \
+            options.file)
+        filename=options.file
+
+    # Get the list of profiles to export and sort out the filename if required
+    profiles=[]
+    if not len(args):
+        if len(filename) == 0:
+            filename="ks_all.json"
+        logging.info("Exporting ALL kickstart profiles to %s" % filename)
+        profiles = self.do_kickstart_list('', True)
+    else:
+        # allow globbing of kickstart kickstart names
+        profiles = filter_results(self.do_kickstart_list('', True), args)
+        logging.debug("kickstart_export called with args %s, profiles=%s" % \
+            (args, profiles))
+        if (len(profiles) == 0):
+            logging.error("Error, no valid kickstart profile passed, " + \
+                "check name is  correct with spacecmd kickstart_list")
+            return
+        if len(filename) == 0:
+            # No filename arg, so we try to do something sensible:
+            # If we are exporting exactly one ks, we default to ksname.json
+            # otherwise, generic ks_profiles.json name
+            if len(profiles) == 1:
+                filename="%s.json" % profiles[0]
+            else:
+                filename="ks_profiles.json"
+
+    # First grab the list of basic details about all kickstarts because you
+    # can't get details-per-label, call here to avoid potential duplicate calls
+    # in export_kickstart_getdetails for multi-profile exports
+    kickstarts = self.client.kickstart.listKickstarts(self.session)
+
+    # Dump as a list of dict
+    ksdetails_list=[]
+    for p in profiles:
+        logging.info("Exporting ks %s to %s" % (p, filename))
+        ksdetails_list.append(self.export_kickstart_getdetails(p, kickstarts))
+
+    logging.debug("About to dump %d ks profiles to %s" % \
+        (len(ksdetails_list), filename))
+    # Check if filepath exists, if an existing file we prompt for confirmation
+    if os.path.isfile(filename):
+        if not self.user_confirm("File %s exists, " % filename + \
+                    "confirm overwrite file? (y/n)"):
+            return
+    if json_dump_to_file(ksdetails_list, filename) != True:
+        logging.error("Error saving exported kickstart profiles to file" % \
+            filename)
+        return
+
+####################
+
+def help_kickstart_importjson(self):
+    print 'kickstart_import: import kickstart profile(s) from json file'
+    print '''usage: kickstart_import <JSONFILES...>'''
+
+def do_kickstart_importjson(self, args):
+    (args, options) = parse_arguments(args)
+
+    if len(args) == 0:
+        logging.error("Error, no filename passed")
+        self.help_kickstart_import()
+        return
+
+    for filename in args:
+        logging.debug("Passed filename do_kickstart_import %s" % filename)
+        ksdetails_list = json_read_from_file(filename)
+        if len(ksdetails_list) == 0:
+            logging.error("Error, could not read json data from %s" % filename)
+            return
+        for ksdetails in ksdetails_list:
+            if self.import_kickstart_fromdetails(ksdetails) != True:
+                logging.error("Error importing kickstart %s" % \
+                    ksdetails['name'])
+
+# create a new ks based on the dict from export_kickstart_getdetails
+def import_kickstart_fromdetails(self, ksdetails):
+
+    # First we check that an existing kickstart with the same name does not exist
+    existing_profiles = self.do_kickstart_list('', True)
+    if ksdetails['name'] in existing_profiles:
+        logging.error("ERROR : kickstart profile %s already exists! Skipping!"\
+            % ksdetails['name'])
+        return False
+    # create the ks, we need to drop the org prefix from the ks name
+    logging.info("Found ks %s" % ksdetails['name'])
+
+    # Create the kickstart
+    # for adding new profiles, we require a root password.
+    # This is overridden when we set the 'advanced options'
+    tmppw = 'foobar'
+    virt_type = 'none'  # assume none as there's no API call to read this info
+    ks_host = ''
+    self.client.kickstart.createProfile(self.session, ksdetails['label'],\
+        virt_type, ksdetails['tree_label'], ks_host, tmppw)
+    # Now set other options
+    self.client.kickstart.profile.setChildChannels(self.session,\
+        ksdetails['label'], ksdetails['child_channels'])
+    self.client.kickstart.profile.setAdvancedOptions(self.session,\
+        ksdetails['label'], ksdetails['advanced_opts'])
+    self.client.kickstart.profile.system.setPartitioningScheme(self.session,\
+        ksdetails['label'], ksdetails['partitioning_scheme'])
+    self.client.kickstart.profile.software.setSoftwareList(self.session,\
+        ksdetails['label'], ksdetails['software_list'])
+    self.client.kickstart.profile.setCustomOptions(self.session,\
+        ksdetails['label'], ksdetails['custom_opts'])
+    self.client.kickstart.profile.setVariables(self.session,\
+        ksdetails['label'], ksdetails['variable_list'])
+    self.client.kickstart.profile.system.setRegistrationType(self.session,\
+        ksdetails['label'], ksdetails['reg_type'])
+    if ksdetails['config_mgmt']:
+        self.client.kickstart.profile.system.enableConfigManagement(\
+            self.session, ksdetails['label'])
+    if ksdetails['remote_cmds']:
+        self.client.kickstart.profile.system.enableRemoteCommands(self.session,\
+            ksdetails['label'])
+    # Add the scripts
+    for script in ksdetails['script_list']:
+        # Somewhere between spacewalk-java-1.2.39-85 and 1.2.39-108,
+        # two new versions of listScripts and addScripts were added, which
+        # allows us to correctly set the "template" checkbox on import
+        # However, we can't detect this capability via API version since
+        # the API version number is the same (10.11)
+        # So, we look for the template key in the script dict and use the "new"
+        # API call if we find it.  This will obviously break if migrating
+        # kickstarts from a server with the new API call to one without it,
+        # so ensure the target satellite is at least as up-to-date as the
+        # satellite where the export was performed.
+        if script.has_key('template'):
+            ret = self.client.kickstart.profile.addScript(self.session,\
+            ksdetails['label'], script['contents'], script['interpreter'],\
+            script['script_type'], script['chroot'], script['template'])
+        else:
+            ret = self.client.kickstart.profile.addScript(self.session,\
+            ksdetails['label'], script['contents'], script['interpreter'],\
+            script['script_type'], script['chroot'])
+        if ret:
+            logging.debug("Added %s script to profile" % script['script_type'])
+        else:
+            logging.error("Error adding %s script" % script['script_type'])
+    # Specify ip ranges
+    for iprange in ksdetails['ip_ranges']:
+        if self.client.kickstart.profile.addIpRange(self.session,\
+            ksdetails['label'], iprange['min'], iprange['max']):
+            logging.debug("added ip range %s-%s" %\
+                iprange['min'], iprange['max'])
+        else:
+            logging.warning("failed to add ip range %s-%s, continuing" %\
+                iprange['min'], iprange['max'])
+            continue
+    # File preservations, only if the list exists
+    existing_file_preservations = [ x['name'] for x in \
+        self.client.kickstart.filepreservation.listAllFilePreservations(\
+            self.session) ]
+    if len(ksdetails['file_preservations']) != 0:
+        for fp in ksdetails['file_preservations']:
+            if fp in existing_file_preservations:
+                if self.client.kickstart.profile.system.addFilePreservations(\
+                    self.session, ksdetails['label'], [ fp ]):
+                    logging.debug("added file preservation '%s'" % fp)
+                else:
+                    logging.warning("failed to add file preservation %s, skipping" % fp)
+            else:
+                logging.warning("file preservation list %s doesn't exist, skipping" % fp)
+
+    # Now add activationkeys, only if they exist
+    existing_act_keys = [ k['key'] for k in \
+        self.client.activationkey.listActivationKeys(self.session) ]
+    for akey in ksdetails['activation_keys']:
+        if akey in existing_act_keys:
+            logging.debug("Adding activation key %s to profile" % akey)
+            self.client.kickstart.profile.keys.addActivationKey(self.session,\
+                ksdetails['label'], akey)
+        else:
+            logging.warning("Actvationkey %s does not exist on the " % akey +\
+                "satellite, skipping")
+
+    # The GPG/SSL keys, only if they exist
+    existing_gpg_ssl_keys = \
+        [ x['description'] for x in \
+            self.client.kickstart.keys.listAllKeys(self.session) ]
+    for key in ksdetails['gpg_ssl_keys']:
+        if key in existing_gpg_ssl_keys:
+            logging.debug("Adding GPG/SSL key %s to profile" % key)
+            self.client.kickstart.profile.system.addKeys(self.session,\
+                ksdetails['label'], [ key ])
+        else:
+            logging.warning("GPG/SSL key %s does not exist on the " +\
+                "satellite, skipping" % key)
+
+    # The pre/post logging settings
+    self.client.kickstart.profile.setLogging(self.session, ksdetails['label'],\
+        ksdetails['pre_logging'], ksdetails['post_logging'])
+
+    # There are some frustrating ommisions from the API which means we can't
+    # export/import some settings, so we post a warning that some manual
+    # fixup may be required
+    logging.warning("Due to API ommissions, there are some settings which" +\
+        " cannot be imported, please check and fixup manually if necessary")
+    logging.warning(" * Details->Preserve ks.cfg")
+    logging.warning(" * Details->Comment")
+    # Org default gets exported but no way to set it, so we can just show this
+    # warning if they are trying to import an org_default profile
+    if ksdetails['org_default'] == True:
+        logging.warning(" * Details->Organization Default Profile")
+    # No way to set the kernel options
+    logging.warning(" * Details->Kernel Options")
+    # We can export Post kernel options (sort of, see above)
+    # if they exist on import, flag a warning
+    if ksdetails.has_key('post_kopts'):
+        logging.warning(" * Details->Post Kernel Options : %s" %\
+            ksdetails['post_kopts'])
+    return True
 
 # vim:ts=4:expandtab:

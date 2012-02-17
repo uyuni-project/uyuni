@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.7.28
+Version:        1.7.33
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,35 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Feb 16 2012 Jan Pazdziora 1.7.33-1
+- Need to re-create the view.
+
+* Thu Feb 16 2012 Jan Pazdziora 1.7.32-1
+- Both oracle/views/views.deps and postgres/views/views.deps are noops by now,
+  removing.
+- The view rhnOrgChannelFamilyPermissions is in common, fixing the deps.
+- A fast way to force the preferred_time_zone to be string.
+- The view rhn_customer_monitoring is the same on both database backends.
+- The view rhnWebContactEnabled can be rewritten to be the same on both
+  database backends.
+- The view rhnUserChannelFamilyPerms is the same on both database backends.
+
+* Thu Feb 16 2012 Jan Pazdziora 1.7.31-1
+- View rhnServerNeededPackageView no longer used after update_cache_for_server
+  was removed.
+
+* Thu Feb 16 2012 Jan Pazdziora 1.7.30-1
+- Removing note_count column from rhnVisServerGroupOverviewLite.
+- View rhnVisServerGroupOverview not used, removing.
+- Removing note_count column from rhnServerOverview.
+- Removing note_count column from rhnServerGroupOverview.
+
+* Wed Feb 15 2012 Jan Pazdziora 1.7.29-1
+- No SHA1 of Oracle source in common files.
+- Catch situations when common or Oracle files claim SHA1 of Oracle source.
+- Adding oracle equivalent source sha1.
+- The rhnHistoryView* views do not seem to be used, removing.
+
 * Wed Feb 15 2012 Jan Pazdziora 1.7.28-1
 - When upgrading from 1.6, the (smallint, numeric) variant is no longer there.
 

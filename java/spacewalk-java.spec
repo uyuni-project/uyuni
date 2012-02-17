@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.7.29
+Version: 1.7.33
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -106,6 +106,8 @@ BuildRequires: tanukiwrapper
 Requires: classpathx-mail
 BuildRequires: classpathx-mail
 BuildRequires: checkstyle
+BuildRequires:  gsbase
+BuildRequires:  jmock
 
 # Sadly I need these to symlink the jars properly.
 BuildRequires: asm
@@ -227,6 +229,18 @@ Provides: spacewalk-java-jdbc = %{version}-%{release}
 
 %description postgresql
 This package contains PostgreSQL database backend files for the Spacewalk Java.
+
+
+%package tests
+Summary: Test Classes for testing spacewalk-java
+Group:  Applications/Internet
+
+Requires: jmock
+Requires: gsbase
+
+%description tests
+This package contains testing files of spacewalk-java.  
+
 
 %package -n spacewalk-taskomatic
 Summary: Java version of taskomatic
@@ -384,7 +398,9 @@ ln -sf ../../etc/init.d/taskomatic $RPM_BUILD_ROOT/%{_sbindir}/rctaskomatic
 sed -i -e 's/# Default-Start:/# Default-Start: 3 5/g' $RPM_BUILD_ROOT/%{_initrddir}/taskomatic
 %endif
 
+install -m 755 scripts/unittest.xml $RPM_BUILD_ROOT/%{_datadir}/rhn/
 install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
+install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn-test.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
 install -m 644 conf/log4j.properties.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j.properties
 
 install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{cobdirsnippets}/default_motd
@@ -624,6 +640,11 @@ fi
 %dir %{_datadir}/spacewalk/audit
 %config %{_datadir}/spacewalk/audit/auditlog-config.yaml
 
+%files tests
+%{_datadir}/rhn/lib/rhn-test.jar
+%{_datadir}/rhn/unittest.xml
+%{jardir}/mockobjects*.jar
+%{jardir}/strutstest*.jar
 
 %files lib
 %defattr(-,root,root)
@@ -643,6 +664,37 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Feb 16 2012 Justin Sherrill <jsherril@redhat.com> 1.7.33-1
+- adding jmock and gsbase as build requires (jsherril@redhat.com)
+
+* Thu Feb 16 2012 Justin Sherrill <jsherril@redhat.com> 1.7.32-1
+- moving strutstest to tempjars (jsherril@redhat.com)
+- adding mockobjects to tempjars (jsherril@redhat.com)
+- adding unit test ant file to java-test package (jsherril@redhat.com)
+- initial work go create a java-testing rpm (jsherril@redhat.com)
+
+* Thu Feb 16 2012 Tomas Lestach <tlestach@redhat.com> 1.7.31-1
+- remove <isRequired> from xsd, as it is completelly ignored
+  (tlestach@redhat.com)
+- several tokens may by associated with one server (tlestach@redhat.com)
+- advisoryTypeLabels must be pre-filled, when there're form validation errors
+  on the errata/manage/Edit page (tlestach@redhat.com)
+- current value does not matter by checking RequiredIf (tlestach@redhat.com)
+- check date type only if attribute's requiredIf is fulfilled
+  (tlestach@redhat.com)
+- validate int attributes in the same way as long attributes
+  (tlestach@redhat.com)
+- 787223 - do not offer to display graph for probes without metrics
+  (tlestach@redhat.com)
+- correct column aliasing (mzazrivec@redhat.com)
+- use ansi outer join syntax (mzazrivec@redhat.com)
+
+* Wed Feb 15 2012 Jan Pazdziora 1.7.30-1
+- The noteCount attribute is not used anywhere, removing.
+- Removing unused imports.
+- The note_count value is nowhere used in the application code, removing from
+  selects.
+
 * Wed Feb 15 2012 Milan Zazrivec <mzazrivec@redhat.com> 1.7.29-1
 - time_series revamped: fully async deletion of monitoring data
 - 784911 - add package_arch to PackageMetadataSerializer

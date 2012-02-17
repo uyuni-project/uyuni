@@ -20,7 +20,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.7.19
+Version: 1.7.20
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -35,11 +35,8 @@ BuildArch: noarch
 BuildRequires: python-mock
 BuildRequires: python-unittest2
 BuildRequires: yum
-BuildRequires: rhnlib
-BuildRequires: python-debian
 
 # for pylint
-BuildRequires: pylint
 BuildRequires: spacewalk-client-tools
 BuildRequires: python-gzipstream
 BuildRequires: python-psycopg2
@@ -65,6 +62,13 @@ Requires: %{name}-libs >= 1.1.16-1
 BuildRequires: /usr/bin/msgfmt
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
+BuildRequires: spacewalk-pylint
+BuildRequires: rhnlib >= 2.5.38
+BuildRequires: rpm-python
+BuildRequires: python-crypto
+BuildRequires: python-debian
+%endif
 # we don't really want to require this redhat-release, so we protect
 # against installations on other releases using conflicts...
 Obsoletes: rhns-common < 5.3.0
@@ -332,17 +336,6 @@ sed -i 's/^INSTALL_DEST.*/INSTALL_DEST = \/etc\/httpd\/conf.d/' apache-conf/Make
 %endif
 make -f Makefile.backend all
 
-# check coding style
-# right now we check only common/*.py, others aren't clean yet
-ln -s . spacewalk       # silly workaround - added 'spacewalk' into path
-                        # because we search for modules in spacewalk.common
-find common -name '*.py' \
-    | xargs pylint -rn -iy --bad-functions=apply,input \
-                   --disable C0111,C0103,C0301,F0401,I0011,R0801,R0902,R0903,R0911,R0912,R0913,R0914,W0142,W0403,W0511,W0603,E1101 || \
-find common -name '*.py' \
-    | xargs pylint -rn -iy --bad-functions=apply,input \
-                   --disable-msg=C0111,C0103,C0301,F0401,I0011,R0801,R0902,R0903,R0911,R0912,R0913,R0914,W0142,W0403,W0511,W0603,E1101
-
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{rhnroot}
@@ -371,6 +364,9 @@ cd -
 
 %find_lang %{name}-server
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
 %check
 export PYTHONPATH=%{buildroot}%{python_sitelib}:%{_datadir}/rhn
 # only run our unittests on versions where we have all the right BuildRequires
@@ -379,12 +375,16 @@ make -f Makefile.backend pylint
 make -f Makefile.backend unittest
 %endif
 make -f Makefile.backend test || :
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
+# check coding style
+export PYTHONPATH=$RPM_BUILD_ROOT/%{python_sitelib}:/usr/lib/rhn
+spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common
+%endif
+
 pushd %{buildroot}
 find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
 
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %pre server
 OLD_SECRET_FILE=%{_var}/www/rhns/server/secret/rhnSecret.py
@@ -802,6 +802,11 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Wed Feb 15 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.20-1
+- use spacewalk-pylint for coding style check
+- fixed pylint errors
+- removed unused function
+
 * Fri Feb 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.19-1
 - empty epoch have to be None
 - compute payload_size including its header

@@ -2,7 +2,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 1.7.3
+Version: 1.7.4
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -27,7 +27,7 @@ Requires: libxslt
 Requires: spacewalk-certs-tools >= 1.6.4
 BuildRequires: /usr/bin/docbook2man
 # pylint check
-BuildRequires: pylint
+BuildRequires: spacewalk-pylint
 BuildRequires: rhnlib
 
 Obsoletes: proxy-installer < 5.3.0
@@ -52,22 +52,6 @@ Run configure-proxy.sh after installation to configure proxy.
 /usr/bin/gzip rhn-proxy-activate.8
 /usr/bin/docbook2man configure-proxy.sh.sgml
 /usr/bin/gzip configure-proxy.sh.8
-
-# check coding style
-export PYTHONPATH=/usr/share/rhn
-PYLINT_BADFUNC="apply,input"
-PYLINT_DISABLE="C0103,C0111,C0301"
-PYLINT_DISABLE+=",E1101"
-PYLINT_DISABLE+=",I0011"
-PYLINT_DISABLE+=",R0801,R0903,R0911,R0912,R0913,R0914"
-PYLINT_DISABLE+=",W0142,W0403,W0511,W0603"
-find -name '*.py' \
-    | xargs pylint -rn -iy --bad-functions="$PYLINT_BADFUNC" \
-                       --disable "$PYLINT_DISABLE" || \
-find -name '*.py' \
-    | xargs pylint -rn -iy --bad-functions="$PYLINT_BADFUNC" \
-                       --disable-msg "$PYLINT_DISABLE"
-
 
 %post
 %if 0%{?suse_version}
@@ -99,6 +83,11 @@ install -m 640 jabberd/sm.xml jabberd/c2s.xml $RPM_BUILD_ROOT%{_usr}/share/rhn/i
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%check
+# check coding style
+export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:/usr/share/rhn
+spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
+
 %files
 %defattr(-,root,root,-)
 %dir %{defaultdir}
@@ -120,6 +109,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Wed Feb 15 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.4-1
+- fixed pylint errors
+- use spacewalk-pylint for coding style check
+
 * Mon Feb 13 2012 Miroslav Suchý 1.7.3-1
 - add rhnlib as buildrequires
 

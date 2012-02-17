@@ -378,7 +378,7 @@
     <mkdir dir="${build.dir}/webapp" />
   </target>
 
-  <target name="pack" depends="init,init-pack,pack-megajar,pack-webapp"
+  <target name="pack" depends="init,init-pack,pack-megajar,pack-testjar,pack-webapp"
           description="Create jars and copy descriptors" />
 
   <target name="pack-all"
@@ -410,10 +410,11 @@
   </target>
 
   <!-- Anything below this line should not generally be run from the command
+
        line.  These are the tasks that actually implement the public tasks -->
 
   <!-- ============== Compile tasks ================== -->
-  <target name="compile" depends="init, compile-main, compile-notests"
+  <target name="compile" depends="init, compile-main, compile-all"
           description="Compile source" />
 
   <target name="compile-playpen" depends="init,compile-main"
@@ -502,7 +503,7 @@
     </if>
   </target>
 
-  <target name="compile-notests" depends="link-jars,prepare"
+  <target name="compile-all" depends="link-jars,prepare"
           description="compiles the main codebase without testcases"
           if="installbuild">
     <mkdir dir="${build.dir}/classes" />
@@ -522,8 +523,6 @@
         <path location="code/src" />
         <path location="code/scripts/src" />
       </src>
-      <exclude name="**/test/**" />
-      <exclude name="**/*/testing/**" />
     </javac>
 
     <copy toDir="${build.dir}/classes">
@@ -687,6 +686,7 @@ delete from rhnChannel where label like 'ChannelLabel%';
         <exclude name="**/*.tld" />
         <exclude name="**/*.html" />
         <exclude name="**/test/*" />
+        <exclude name="**/*/testing/**" />
         <exclude name="**/log4j.properties" />
         <exclude name="**/*.conf" />
         <exclude name="**/*.conf.rpmsave" />
@@ -704,6 +704,20 @@ delete from rhnChannel where label like 'ChannelLabel%';
     </jar>
   </target>
 
+  <target name="pack-testjar" depends="megajar-init, compile">
+    <delete file="${testjar.jar}" />
+    <jar destfile="${testjar.jar}">
+      <fileset dir="${build.dir}/classes">
+        <!-- internal is not for publication; tlds go in META-INF;
+             html go as javadoc elsewhere -->
+        <include name="**/test/*" />
+        <include name="**/*/testing/**" />
+      </fileset>
+
+    </jar>
+  </target>
+
+
   <target name="pack-playpen" depends="compile-playpen" />
 
   <target name="pack-webapp" depends="compile">
@@ -717,6 +731,7 @@ delete from rhnChannel where label like 'ChannelLabel%';
       </classes>
       <lib dir="${run.lib.dir}">
         <include name="rhn.jar"/>
+        <include name="rhn-test.jar"/>
       </lib>
       <lib dir="${run-external.lib.dir}">
         <!-- Don't want the Oracle drivers which use JNI in the war. -->
@@ -857,7 +872,7 @@ delete from rhnChannel where label like 'ChannelLabel%';
   </target>
 
   <target name="install"
-          depends="init-install,init,compile-notests,pack,apidoc-jsp,apidoc-install,jspcompile"
+          depends="init-install,init,compile-all,pack,apidoc-jsp,apidoc-install,jspcompile"
           description="Install the webapp to the directory specified by $prefix">
     <delete dir="${prefix}/usr/share/rhn/lib" />
     <mkdir dir="${prefix}/usr/share/rhn/lib" />

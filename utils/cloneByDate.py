@@ -27,6 +27,8 @@ import subprocess
 import datetime
 import re
 
+from yum.Errors import RepoError
+
 
 from depsolver import DepSolver
 
@@ -160,7 +162,9 @@ def main(options):
         total += cloner.pending()        
     
     if total == 0:
-        print ("\nNothing to do.")
+        print ("\nNo errata to clone, checking removelist.")
+        for cloner in cloners:
+            cloner.remove_packages()
         sys.exit(0)
 
     confirm("\nContinue with clone (y/n)?", options)
@@ -270,9 +274,9 @@ class ChannelTreeCloner:
             if self.channel_details[label]['parent_channel_label'] == '':
                 found_list.append(label)
         if len(found_list) == 0:
-            UserError("Parent Channel not specified.")
+            raise UserError("Parent Channel not specified.")
         if len(found_list) > 1:
-            UserError("Multiple parent channels specified within the same channel tree.")
+            raise UserError("Multiple parent channels specified within the same channel tree.")
         return found_list[0]
 
     def ordered_labels(self):
@@ -318,11 +322,15 @@ class ChannelTreeCloner:
             yum_repodata_path = "%s/repodata" % (repo['relative_path'])
             create_repodata_link(repo['relative_path'], yum_repodata_path)
             temp_repo_links.append(yum_repodata_path)
-        
-        solver = DepSolver(repos, nvrea_list)
-        dep_results = solver.processResults(solver.getDependencylist())
-        solver.cleanup()
-        self.process_deps(dep_results)
+        try:
+            solver = DepSolver(repos, nvrea_list)
+            dep_results = solver.processResults(solver.getDependencylist())
+            solver.cleanup()
+            self.process_deps(dep_results)
+        except RepoError, e:
+            raise UserError("""Unable to read repository information.
+                Please verify repodata has been generated in /var/cache/rhn/repodata/LABEL.
+                Error from yum: %s""" % e.value)
         
         # clean up temporary symlinks
         for link in temp_repo_links:
@@ -354,11 +362,7 @@ class ChannelTreeCloner:
                 if not found:
                     unsolved_deps.append((pkg))
         pb.printComplete()
-
-#        print "Unsolved deps: %i" % len(unsolved_deps)  
-#        print "Needed deps: "
-#        for label in needed_list.keys():
-#            print "%s: %i" % (label, len(needed_list[label]))      
+   
                             
         for cloner in self.cloners:
             needed = needed_list[cloner.dest_label()]

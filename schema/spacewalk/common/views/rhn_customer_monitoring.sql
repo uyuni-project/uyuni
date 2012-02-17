@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008 Red Hat, Inc.
+-- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,42 +12,16 @@
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation. 
 --
--- 
---
---
 
-create or replace view
-rhnWebContactEnabled
-as
-select
-   wcon.id,
-   wcon.org_id,
-   wcon.login,
-   wcon.login_uc,
-   wcon.password,
-   wcon.old_password,
-   wcon.oracle_contact_id,
-   wcon.created,
-   wcon.modified,
-   wcon.ignore_flag
+create or replace view rhn_customer_monitoring as
+select	org.id			as recid,
+	org.name		as description,
+	1			as schedule_id,	--24 x 7
+	0			as def_ack_wait,
+	1			as def_strategy,	--Broadcast, No Ack
+	'GMT' || ''		as preferred_time_zone,
+	0			as auto_update	--Windows only
 from
-   web_contact wcon
-minus
-select
-   wcd.id,
-   wcd.org_id,
-   wcd.login,
-   wcd.login_uc,
-   wcd.password,
-   wcd.old_password,
-   wcd.oracle_contact_id,
-   wcd.created,
-   wcd.modified,
-   wcd.ignore_flag
-from
-   rhnWebContactDisabled wcd;
+	web_customer org
+;
 
-
---
---
---

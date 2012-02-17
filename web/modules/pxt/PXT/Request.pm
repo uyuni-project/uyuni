@@ -486,12 +486,6 @@ sub session {
   return $self->{session};
 }
 
-sub clear_user {
-  my $self = shift;
-
-  delete $self->{__user__};
-}
-
 sub clear_session {
   my $self = shift;
 
@@ -503,23 +497,6 @@ sub clear_session {
   my $session = new RHN::Session $self->{apache}->hostname, $self->{apache}->connection->remote_ip;
   $session->serialize(-new => 1);
   $self->session($session);
-}
-
-sub log_user_in {
-  my $self = shift;
-  my $user = shift;
-  my @sets_to_skip = @_;
-
-  PXT::Debug->log(2, sprintf("Logging in user: '%s'.",
-			     $user->id(),
-			    ));
-
-  $self->session->uid($user->id);
-  $self->cleanse_params();
-  $self->session->unset('last_nav_location');
-  $user->clear_selections(@sets_to_skip);
-  $user->mark_log_in;
-#  $user->org->join_rhn;
 }
 
 sub user {

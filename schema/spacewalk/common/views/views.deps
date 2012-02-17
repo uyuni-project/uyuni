@@ -106,3 +106,14 @@ rhnServerOverview                :: rhnUserServerPerms \
                                     rhnServerErrataTypeView \
                                     rhn_entitlements.pks
 time_series                      :: time_series_data
+rhnServerGroupOverview           :: rhnErrata rhnUserManagedServerGroups \
+                                    rhnServerGroupMembers rhnServerGroup rhnServerFeaturesView
+rhnVisServerGroupOverviewLite    :: rhnVisibleServerGroup rhnServerGroupMembers \
+                                    rhnUserManagedServerGroups \
+                                    rhnServerGroupOVLiteHelper
+rhnUserChannelFamilyPerms        :: rhnPrivateChannelFamily \
+                                    rhnPublicChannelFamily web_contact
+rhnWebContactEnabled             :: web_contact rhnWebContactDisabled
+rhn_customer_monitoring          :: web_customer
+rhnOrgChannelFamilyPermissions   :: rhnPublicChannelFamily web_contact \
+                                    rhnPrivateChannelFamily
