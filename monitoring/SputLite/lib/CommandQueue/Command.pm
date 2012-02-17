@@ -226,12 +226,24 @@ sub shellcmd {
     open(STDOUT, ">/tmp/$$.STDOUT");
     open(STDERR, ">/tmp/$$.STDERR");
 
+    # we need to find the secondary group membership of the new user
+    my(@groups, $gr_nam, $gr_gid, $gr_members);
+    my $username = $self->effective_user;
+    endgrent();
+    while (($gr_nam, undef, $gr_gid, $gr_members) = getgrent()) {
+        if (grep(/^$username$/, split(/\s+/, $gr_members))) {
+            push(@groups, $gr_gid);
+        }
+    }
+    endgrent();
+
     # Set real and effective user and group IDs
     my $id = NOCpulse::SetID->new(
            ruid   => $self->effective_user,
            euid   => $self->effective_user,
            rgid   => $self->effective_group,
-           egid   => $self->effective_group);
+           egid   => $self->effective_group,
+           groups => \@groups);
 
     $id->su(permanent => 1);
 
