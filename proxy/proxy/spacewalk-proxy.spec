@@ -17,7 +17,7 @@ BuildRequires: spacewalk-backend
 %endif
 BuildArch: noarch
 Requires: httpd
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} > 1100
 # pylint check
 BuildRequires: spacewalk-pylint
 BuildRequires: rhnpush >= 5.5.40
