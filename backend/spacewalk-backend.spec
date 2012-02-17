@@ -20,7 +20,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2 and Python
-Version: 1.7.20
+Version: 1.7.22
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -378,7 +378,8 @@ make -f Makefile.backend test || :
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT/%{python_sitelib}:/usr/lib/rhn
-spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common
+spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
+                 $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
 %endif
 
 pushd %{buildroot}
@@ -802,6 +803,12 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri Feb 17 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.22-1
+- wsgi should be pylint clean from now
+- pylint cleanup in backend/wsgi
+* Fri Feb 17 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.21-1
+- insert empty strings as NULL for postgresql
+
 * Wed Feb 15 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.20-1
 - use spacewalk-pylint for coding style check
 - fixed pylint errors

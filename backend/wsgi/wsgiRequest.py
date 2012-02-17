@@ -21,6 +21,7 @@ import httplib
 
 
 class WsgiRequest:
+    # pylint: disable=R0902
 
     def __init__(self, env, start_response):
         self.method = env['REQUEST_METHOD']
@@ -50,10 +51,10 @@ class WsgiRequest:
         return self.options
 
     def get_config(self):
-        return ""  #FIXME
+        return repr(self.__dict__)
 
-    def write(self, str):
-        self.output.append(str)
+    def write(self, msg):
+        self.output.append(msg)
 
     def send_http_header(self, status=None):
         self.sent_header = 1
@@ -69,7 +70,7 @@ class WsgiRequest:
         self.status = self.status + " " +  httplib.responses[int(self.status)]
 
         if len(self.content_type) > 0:
-           self.headers_out['Content-Type'] = self.content_type
+            self.headers_out['Content-Type'] = self.content_type
         #default to text/xml
         if not self.headers_out.has_key('Content-Type'):
             self.headers_out['Content-Type'] = 'text/xml'
@@ -77,24 +78,27 @@ class WsgiRequest:
         self.start_response(self.status, self.headers_out.items())
         return
 
-    def get_remote_host(self, rev=""):
+    def get_remote_host(self, _rev=""):
         host = self.headers_in['REMOTE_ADDR']
         try:
             host = socket.gethostbyaddr(host)[0]
         except:
+            # pylint: disable=W0702
             pass
         return host
 
-    def read(self, buffer=-1):
-        return self.headers_in['wsgi.input'].read(buffer)
+    def read(self, buf=-1):
+        return self.headers_in['wsgi.input'].read(buf)
 
 
 class WsgiServer:
+    # pylint: disable=R0903
     def __init__(self, hostname, port):
         self.server_hostname = hostname
         self.port = int(port)
 
 class WsgiConnection:
+    # pylint: disable=R0903
     def __init__(self, env):
         self.remote_ip = env['REMOTE_ADDR']
         self.local_addr = (env['SERVER_NAME'], env['SERVER_PORT'])
@@ -126,18 +130,18 @@ class WsgiMPtable:
 
     def __getitem__(self, key):
         if len(self.dict[key]) == 1:
-           return self.dict[key][0]
+            return self.dict[key][0]
         return self.dict[key]
 
     def __setitem__(self, key, value):
         self.dict[key] = [str(value)]
 
     def items(self):
-        list = []
-        for k,v in self.dict.items():
+        ilist = []
+        for k, v in self.dict.items():
             for vi in v:
-                list.append((k,vi))
-        return list
+                ilist.append((k, vi))
+        return ilist
 
     def has_key(self, key):
         return self.dict.has_key(key)
