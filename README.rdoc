@@ -17,8 +17,6 @@ bundle install
   server.
 * BROWSER environment variable can be passed to change the default
   browser: chrome, htmlunit, chrome, firefox
-* MANAGER_BRANCH environment variable can be defined to run testcases
-  specially designed for the new Manager branch
 
 To run all tests:
 
