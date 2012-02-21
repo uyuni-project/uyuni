@@ -37,8 +37,6 @@ rhnActionPackageRemovalFailure :: rhnServer rhnAction rhnPackageName \
                                   rhnPackageEVR rhnPackageCapability
 rhnActivationKey               :: rhnRegToken rhnKickstartSession
 rhnArchTypeActions             :: rhnArchType rhnActionType
-rhnAppInstallSession           :: rhnAppInstallInstance rhnChecksum
-rhnAppInstallSessionData       :: rhnAppInstallSession
 rhnChannel                     :: web_customer rhnChannelArch rhnChannelProduct \
                                   rhnProductName rhnChecksum
 rhnChannelArch                 :: rhnArchType
