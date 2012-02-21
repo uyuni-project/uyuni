@@ -72,6 +72,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.cobbler.Profile;
 
@@ -645,7 +646,8 @@ public class ActionManager extends BaseManager {
         if (proxy != null) {
             details.setProxyServer(proxy.getServer());
             details.setProxyUser(proxy.getUser());
-            details.setProxyPass(proxy.getPass());
+            details.setProxyPass(new String(Base64.encodeBase64(
+                    proxy.getPass().getBytes())));
         }
         a.setDetails(details);
 
