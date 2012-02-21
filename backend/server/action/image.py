@@ -36,6 +36,10 @@ def deploy(serverId, actionId, dry_run=0):
         raise InvalidAction("image.deploy: No image found for action id "
             "%s and server %s" % (actionId, serverId))
 
+    for key in [ 'download_url', 'proxy_server', 'proxy_user', 'proxy_pass', 'bridge_device' ]:
+        if row[key] == None:
+            row[key] = ""
+
     url           = row['download_url']
     proxy_server  = row['proxy_server']
     proxy_user    = row['proxy_user']
