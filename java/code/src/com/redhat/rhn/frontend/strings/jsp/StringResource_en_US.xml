@@ -23040,41 +23040,65 @@ given channel.</source>
      </trans-unit>
 
      <!-- SUSE Studio -->
-     <trans-unit id="studio.images.list.name">
+     <trans-unit id="images.jsp.summary">
+        <source>Please choose one of the available images below for deployment to this virtual host. All of the additional deployment parameters are optional.</source>
+     </trans-unit>
+     <trans-unit id="images.jsp.name">
         <source>Name</source>
      </trans-unit>
-     <trans-unit id="studio.images.list.version">
+     <trans-unit id="images.jsp.version">
         <source>Version</source>
      </trans-unit>
-     <trans-unit id="studio.images.list.arch">
+     <trans-unit id="images.jsp.arch">
         <source>Architecture</source>
      </trans-unit>
-     <trans-unit id="studio.images.list.type">
+     <trans-unit id="images.jsp.type">
         <source>Type</source>
      </trans-unit>
-     <trans-unit id="studio.images.list.status">
+     <trans-unit id="images.jsp.status">
         <source>Status</source>
      </trans-unit>
-     <trans-unit id="studio.images.list.noimages">
+     <trans-unit id="images.jsp.noimages">
         <source>No Images</source>
      </trans-unit>
      <trans-unit id="studio.deployment.scheduled">
         <source>Image deployment scheduled: {0}</source>
      </trans-unit>
-     <trans-unit id="yourcredentials.jsp.summary">
-        <source>External system or API credentials associated with your SUSE Manager account are listed below.</source>
-     </trans-unit>
-     <trans-unit id="yourcredentials.jsp.studio">
+     <trans-unit id="credentials.jsp.susestudio">
         <source>SUSE Studio</source>
      </trans-unit>
-     <trans-unit id="yourcredentials.jsp.submit">
+     <trans-unit id="credentials.jsp.edit.summary">
+        <source>External system or API credentials associated with your SUSE Manager account are listed below.</source>
+     </trans-unit>
+     <trans-unit id="credentials.jsp.edit.dispatch">
         <source>Update Credentials</source>
      </trans-unit>
+     <trans-unit id="credentials.jsp.delete.summary">
+        <source>The external system or API credentials below will be deleted. This action cannot be undone.</source>
+     </trans-unit>
+     <trans-unit id="credentials.jsp.delete.dispatch">
+        <source>Delete Credentials</source>
+     </trans-unit>
+     <trans-unit id="toolbar.delete.credentials">
+        <source>delete credentials</source>
+     </trans-unit>
+     <trans-unit id="credentials.jsp.username">
+        <source>Username</source>
+     </trans-unit>
+     <trans-unit id="credentials.jsp.apikey">
+        <source>API Key</source>
+     </trans-unit>
+     <trans-unit id="credentials.jsp.url">
+        <source>URL</source>
+     </trans-unit>
      <!-- Java -->
-     <trans-unit id="yourcredentials.message.updated">
+     <trans-unit id="credentials.message.updated">
         <source>Your credentials were successfully updated.</source>
      </trans-unit>
-     <trans-unit id="yourcredentials.message.incomplete">
+     <trans-unit id="credentials.message.deleted">
+        <source>Your credentials were successfully deleted.</source>
+     </trans-unit>
+     <trans-unit id="credentials.message.incomplete">
         <source>Your credentials are incomplete, at least a username and a password is needed.</source>
      </trans-unit>
      <trans-unit id="images.message.error.nocreds">
