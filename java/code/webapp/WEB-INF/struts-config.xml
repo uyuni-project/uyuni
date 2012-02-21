@@ -7739,12 +7739,26 @@
 
     <action path="/account/Credentials"
         scope="request"
-        input="/WEB-INF/pages/user/edit/yourcredentials.jsp"
-        type="com.redhat.rhn.frontend.action.user.UserCredentialsAction"
+        input="/WEB-INF/pages/credentials/edit.jsp"
+        type="com.redhat.rhn.frontend.action.user.UserCredentialsEditAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
-                 path="/WEB-INF/pages/user/edit/yourcredentials.jsp" />
+                 path="/WEB-INF/pages/credentials/edit.jsp" />
+    </action>
+
+    <action path="/account/DeleteCredentials"
+        scope="request"
+        input="/WEB-INF/pages/credentials/delete.jsp"
+        type="com.redhat.rhn.frontend.action.user.UserCredentialsDeleteAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping"
+        parameter="dispatch">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/credentials/delete.jsp" />
+        <forward name="success"
+                 redirect="true"
+                 path="/account/Credentials.do" />
     </action>
 
   </action-mappings>

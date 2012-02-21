@@ -31,20 +31,20 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 
 /**
- * Configuration of credentials for external APIs like e.g. SUSE Studio.
+ * Create and edit credentials for external systems or APIs.
  */
-public class UserCredentialsAction extends RhnAction {
+public class UserCredentialsEditAction extends RhnAction {
 
     private static String ATTRIB_CREDS = "creds";
-    private static String PARAM_USER = "studioUser";
-    private static String PARAM_KEY = "studioKey";
-    private static String PARAM_URL = "studioUrl";
+    private static String PARAM_USER = "studio_user";
+    private static String PARAM_KEY = "studio_key";
+    private static String PARAM_URL = "studio_url";
 
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
             HttpServletRequest request, HttpServletResponse response)
-    throws Exception {
+            throws Exception {
         RequestContext ctx = new RequestContext(request);
 
         // Lookup this user's credentials
@@ -59,7 +59,8 @@ public class UserCredentialsAction extends RhnAction {
 
         if (ctx.isSubmitted()) {
             // The form was submitted
-            Credentials newCreds = CredentialsFactory.createNewCredentials(user);
+            Credentials newCreds = CredentialsFactory
+                    .createNewCredentials(user);
             newCreds.setUsername(request.getParameter(PARAM_USER).trim());
             newCreds.setPassword(request.getParameter(PARAM_KEY).trim());
             newCreds.setUrl(request.getParameter(PARAM_URL).trim());
@@ -79,13 +80,13 @@ public class UserCredentialsAction extends RhnAction {
                 }
                 ActionMessages messages = new ActionMessages();
                 messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
-                        "yourcredentials.message.updated"));
+                        "credentials.message.updated"));
                 getStrutsDelegate().saveMessages(request, messages);
             } else {
                 // Incomplete credentials, show an error
                 ActionErrors errors = new ActionErrors();
-                errors.add(ActionMessages.GLOBAL_MESSAGE,
-                        new ActionMessage("yourcredentials.message.incomplete"));
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                        "credentials.message.incomplete"));
                 getStrutsDelegate().saveMessages(request, errors);
                 request.setAttribute(ATTRIB_CREDS, newCreds);
             }
