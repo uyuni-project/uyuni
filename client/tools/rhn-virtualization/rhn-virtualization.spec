@@ -45,6 +45,8 @@ Requires: libvirt-python
 Requires: rhn-virtualization-common = %{version}-%{release}
 %if 0%{?suse_version}
 Requires:       cron
+# python-curl for SUSE Studio download
+Requires:       python-curl
 PreReq:         %fillup_prereq %insserv_prereq
 %else
 Requires: /usr/sbin/crond
