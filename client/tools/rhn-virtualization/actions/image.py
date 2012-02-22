@@ -71,8 +71,10 @@ def _getImage(imageName,serverUrl,proxySetting):
     c.setopt(pycurl.WRITEFUNCTION, f.write)
     c.setopt(pycurl.SSL_VERIFYPEER, 0)
     c.perform()
+    # FIXME: throw an exception if != 200?
+    log.log_debug("curl got HTTP code: %s" % c.getinfo(pycurl.HTTP_CODE)
     f.close()
-    return 42
+    return c.getinfo(pycurl.HTTP_CODE)
 
 def _generate_uuid():
     """Generate a random UUID and return it."""
@@ -176,13 +178,14 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, v
         log.log_debug("invalid image arch")
         return (1, "invalid image arch: name=%s arch=%s ver=%s type=%s" % (imageName,imageArch,imageVer,imageType), {})
 
+    http_response_code = -1
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
         try:
-            _getImage(fileName,downloadURL,proxySettings)
+            http_response_code = _getImage(fileName,downloadURL,proxySettings)
         except Exception as e:
             return ( 1, "getting the image failed with: %s" % e )
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
-        log.log_debug("image file is not there")
+        log.log_debug("image file is not there. HTTP Code is: %s" % http_response_code)
         return (1, "image file is not there: %s" % IMAGE_BASE_PATH+fileName, {})
     try:
         _extractTar( IMAGE_BASE_PATH+fileName, IMAGE_BASE_PATH )
