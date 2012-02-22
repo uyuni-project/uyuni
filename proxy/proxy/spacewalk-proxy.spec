@@ -4,7 +4,7 @@ Group:   Applications/Internet
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 1.7.8
+Version: 1.7.10
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
@@ -21,8 +21,8 @@ Requires: httpd
 # pylint check
 BuildRequires: spacewalk-pylint
 BuildRequires: rhnpush >= 5.5.40
-BuildRequires: spacewalk-backend-libs >= 1.7.1
-BuildRequires: spacewalk-backend >= 1.7.1
+BuildRequires: spacewalk-backend-libs >= 1.7.24
+BuildRequires: spacewalk-backend >= 1.7.24
 %endif
 
 %define rhnroot %{_usr}/share/rhn
@@ -45,7 +45,7 @@ This package is never built.
 Summary: Packages required by the Spacewalk Management Proxy
 Group:   Applications/Internet
 Requires: squid
-Requires: spacewalk-backend >= 1.2.32
+Requires: spacewalk-backend >= 1.7.24
 # python-hashlib is optional for spacewalk-backend-libs
 # but we need made it mandatory here
 %if ! 0%{?suse_version}
@@ -147,7 +147,7 @@ Requires: mod_python
 Requires: mod_wsgi
 %endif
 Requires: %{name}-broker >= %{version}
-Requires: spacewalk-backend >= 1.2.32
+Requires: spacewalk-backend >= 1.7.24
 Requires: policycoreutils
 Obsoletes: rhns-proxy-common < 5.3.0
 
@@ -163,7 +163,7 @@ Spacewalk Proxy components.
 %package package-manager
 Summary: Custom Channel Package Manager for the Spacewalk Proxy Server
 Group:   Applications/Internet
-Requires: spacewalk-backend >= 1.2.32
+Requires: spacewalk-backend >= 1.7.24
 Requires: rhnlib
 Requires: python
 Requires: rhnpush
@@ -395,6 +395,13 @@ fi
 
 
 %changelog
+* Wed Feb 22 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.10-1
+- fixed pylint error during rpm check
+
+* Wed Feb 22 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.9-1
+- proxy now requires updated modules from the latest spacewalk-backend
+- reused parseRPMName() from spacewalk-backend
+
 * Mon Feb 20 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.8-1
 - fixing  Undefined variable 'info'
 

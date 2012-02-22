@@ -19,6 +19,7 @@ import hashlib
 import string
 import base64
 
+from spacewalk.common.rhnLib import parseRPMName
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 
@@ -34,32 +35,14 @@ def computeSignature(*fields):
     return base64.encodestring(m.digest()).rstrip()
 
 
-# reg exp for splitting package names.
-re_rpmName = re.compile("^(.*)-([^-]*)-([^-]*)$")
-def parseRPMName(pkgName):
-    """ IN:  Package string in, n-n-n-v.v.v-r.r_r, format.
-        OUT: Four strings (in a tuple): name, epoch, version, release.
-    """
-    reg = re_rpmName.match(pkgName)
-    if reg == None:
-        return None, None, None, None
-    n, v, r = reg.group(1,2,3)
-    e = None
-    ind = string.find(r, ':')
-    if ind >= 0: # epoch found
-        e = r[ind+1:]
-        r = r[0:ind]
-    return str(n), e, str(v), str(r)
-
-
 # 'n_n-n-v.v.v-r_r.r:e.ARCH.rpm' ---> [n,v,r,e,a]
 def parseRPMFilename(pkgFilename):
     """
     IN: Package Name: xxx-yyy-ver.ver.ver-rel.rel_rel:e.ARCH.rpm (string)
     Understood rules:
-    	o Name can have nearly any char, but end in a - (well seperated by).
+       o Name can have nearly any char, but end in a - (well seperated by).
          Any character; may include - as well.
-    	o Version cannot have a -, but ends in one.
+       o Version cannot have a -, but ends in one.
        o Release should be an actual number, and can't have any -'s.
        o Release can include the Epoch, e.g.: 2:4 (4 is the epoch)
        o Epoch: Can include anything except a - and the : seperator???

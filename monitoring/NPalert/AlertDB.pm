@@ -177,7 +177,7 @@ sub init_statements {
 
   $self->dbprepare(
     'clear_alert',
-    "UPDATE current_alerts
+    "UPDATE rhn_current_alerts
                               SET  date_completed   = sysdate,
                                    last_update_date = sysdate
                               WHERE ticket_id  = ?"
@@ -185,13 +185,13 @@ sub init_statements {
 
   $self->dbprepare(
     'create_current_alert',
-    "INSERT INTO current_alerts
+    "INSERT INTO rhn_current_alerts
                                  (recid, date_submitted, last_server_change, date_completed,
                                  original_server, current_server, tel_args, message, ticket_id,
                                  destination_name, escalation_level, host_probe_id, host_state,
                                  service_probe_id, service_state, customer_id, netsaint_id,
                                  probe_type, last_update_date, event_timestamp)
-                               SELECT sequence_nextval('CURRENT_ALERTS_RECID_SEQ'), sysdate, sysdate, NULL,
+                               SELECT sequence_nextval('RHN_CURRENT_ALERTS_RECID_SEQ'), sysdate, sysdate, NULL,
                                  ?, ?, ?, ?, ?,
                                  ?, 0, ?, ?,
                                  ?, ?, ?, ?,
@@ -200,9 +200,9 @@ sub init_statements {
 
   $self->dbprepare(
     'escalate_current_alert',
-    "UPDATE current_alerts
+    "UPDATE rhn_current_alerts
                                SET escalation_level =(select NVL(max(escalation_level),0) + 1 
-                                                     from current_alerts where ticket_id = ?),
+                                                     from rhn_current_alerts where ticket_id = ?),
 	                           last_update_date = sysdate
                                WHERE TICKET_ID = ?"
                   );

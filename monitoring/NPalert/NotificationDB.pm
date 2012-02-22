@@ -128,7 +128,6 @@ sub create_redirect_criteria {
 
 # # Single record selection
 sub select_contact_group { shift->_select_record('RHN_CONTACT_GROUPS', @_) }
-sub select_current_alert { shift->_select_record('RHN_CURRENT_ALERTS', @_) }
 sub select_customer    { shift->_select_record('RHN_CUSTOMER_MONITORING', @_) }
 sub select_host        { shift->_select_record('RHN_HOST_MONITORING',     @_) }
 sub select_probe       { shift->_select_record('RHN_PROBE',               @_) }
@@ -668,23 +667,6 @@ EOSQL
   return $self->execute($sql, $table, FETCH_ARRAYREF, $id);
 } ## end sub select_redirect_criteria_by_redirect_id
 
-#######################################
-sub select_current_alert_by_ticket_id {
-#######################################
-  my $self  = shift;
-  my $id    = shift;
-  my $table = 'RHN_CURRENT_ALERTS';
-
-  my $sql = <<EOSQL;
-    SELECT *
-    FROM   $table
-    WHERE  ticket_id = ?
-EOSQL
-
-  my $records = $self->execute($sql, $table, FETCH_ARRAYREF, $id);
-  return $records->[0];
-} ## end sub select_current_alert_by_ticket_id
-
 ###########################################
 sub select_contact_methods_by_customer_id {
 ###########################################
@@ -767,7 +749,6 @@ sub delete_redirect_method_targets {
 #          );
 #
 # # Single record update
-sub update_current_alert { shift->_update_record('RHN_CURRENT_ALERTS', @_) }
 sub update_redirect      { shift->_update_record('RHN_REDIRECTS',      @_) }
 
 # # Multiple record update
@@ -777,42 +758,6 @@ sub update_redirect      { shift->_update_record('RHN_REDIRECTS',      @_) }
 # ######################
 # # COMPLEX OPERATIONS #
 # ######################
-
-#######################################
-sub update_current_alert_by_ticket_id {
-#######################################
-  my ($self, %args) = @_;
-
-  my $ticket_id = $args{TICKET_ID};
-  unless ($ticket_id) {
-    throw NOCpulse::Probe::DataSource::ConfigError(
-                                          "ticket_id not defined as parameter");
-  }
-
-  my $escalate;
-  if ($args{'escalate'}) {
-    $escalate = $args{'escalate'};
-    delete($args{'escalate'});
-  }
-
-  my $record = $self->select_current_alert_by_ticket_id($ticket_id);
-  unless ($record) {
-    throw NOCpulse::Probe::DataSource::ConfigError(
-                  "current alerts record for ticket_id $ticket_id not found\n");
-  }
-
-  delete($args{TICKET_ID});
-  $args{RECID} = $record->{RECID};
-
-  if ($escalate) {
-    my $hashptr = $args{set};
-    $hashptr = {} unless $hashptr;
-    $hashptr->{ESCALATION_LEVEL} = $record->{ESCALATION_LEVEL} + $escalate;
-    $args{set} = $hashptr;
-  }
-
-  $self->update_current_alert(%args);
-} ## end sub update_current_alert_by_ticket_id
 
 sub select_max_last_update_date {
   my ($self, $table) = @_;
@@ -1464,7 +1409,7 @@ The C<NotificationDB> object is provides an interface to query, create, update, 
 
 =item create_current_alert ( %args )
 
-Create a row in the database in the current_alerts table, where the keys of %args represent the column names and the values of %args represent the respective values for that column.  Automatically generates a recid without having to pass one as a parameter in %args.
+Create a row in the database in the rhn_current_alerts table, where the keys of %args represent the column names and the values of %args represent the respective values for that column.  Automatically generates a recid without having to pass one as a parameter in %args.
 
 =item create_redirect ( %args )
 
@@ -1561,14 +1506,6 @@ Return a reference to an array of hashes containing the contact methods that bel
 =item select_contacts ( %args )
 
 Return a reference to an array of hashes containing the contacts specified by the given arguments.
-
-=item select_current_alert ( %args )
-
-Return a reference to a hash containing the contact group specified by the given arguments.
-
-=item select_current_alert_by_ticket_id ( $ticket_id )
-
-Return a reference to a hash containing the current alert information with the given ticket id.
 
 =item select_customer ( %args )
 
@@ -1701,14 +1638,6 @@ Given a date string, return the corresponding UNIX timestamp.
 =item timestamp_to_string ( $timestamp )
 
 Given a timestamp, return a string containing the date and time reprsented by the timestamp.
-
-=item update_current_alert ( %args )
-
-Update the database record, specified by the given arguments, in the current_alerts table with information specified in the 'set' portion of the argument hash.
-
-=item update_current_alert_by_ticket_id {
-
-Update the database record, specified by the given arguments, in the current_alerts table with information specified in the 'TICKET_ID' portion of the argument hash.
 
 =item update_redirect ( %args )
 

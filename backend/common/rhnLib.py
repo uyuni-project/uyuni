@@ -13,6 +13,7 @@
 # in this software or its documentation.
 #
 
+import re
 import time
 import types
 import urlparse
@@ -148,4 +149,23 @@ def hash_object_id(object_id, factor):
     # get last 'factor' numbers
     num_id = num_id[-factor:]
     return num_id.rjust(factor,'0')
+
+
+# reg exp for splitting package names.
+re_rpmName = re.compile("^(.*)-([^-]*)-([^-]*)$")
+def parseRPMName(pkgName):
+    """ IN:  Package string in, n-n-n-v.v.v-r.r_r, format.
+        OUT: Four strings (in a tuple): name, epoch, version, release.
+    """
+    reg = re_rpmName.match(pkgName)
+    if reg == None:
+        return None, None, None, None
+    n, v, r = reg.group(1, 2, 3)
+    e = None
+    ind = r.find(':')
+    if ind >= 0: # epoch found
+        e = r[ind+1:]
+        r = r[0:ind]
+    return str(n), e, str(v), str(r)
+
 

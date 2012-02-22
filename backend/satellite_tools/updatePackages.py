@@ -21,8 +21,7 @@ import os
 import shutil
 
 from optparse import Option, OptionParser
-from spacewalk.common import rhnLog
-from spacewalk.common.rhnLog import initLOG
+from spacewalk.common.rhnLog import initLOG, rhnLog
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common import rhn_rpm
 from spacewalk.server.rhnLib import parseRPMFilename, get_package_path
@@ -127,7 +126,7 @@ def process_package_data():
     global verbose, debug
 
     if debug:
-        Log = rhnLog.rhnLog('/var/log/rhn/update-packages.log', 5)
+        Log = rhnLog('/var/log/rhn/update-packages.log', 5)
 
     _get_path_sql = rhnSQL.prepare(_get_path_query)
     _update_package_path = rhnSQL.prepare(_update_pkg_path_query)
@@ -291,7 +290,7 @@ def process_sha256_packages():
     global verbose, debug
 
     if debug:
-        Log = rhnLog.rhnLog('/var/log/rhn/update-packages.log', 5)
+        Log = rhnLog('/var/log/rhn/update-packages.log', 5)
 
     _get_sha256_packages_sql = rhnSQL.prepare(_get_sha256_packages_query)
     _get_sha256_packages_sql.execute()
@@ -479,7 +478,7 @@ def process_package_files():
     def delete_package_repodata(id):
         package_repodata_h.execute(pid=id)
 
-    Log = rhnLog.rhnLog('/var/log/rhn/update-packages.log', 5)
+    Log = rhnLog('/var/log/rhn/update-packages.log', 5)
 
     package_query_h = rhnSQL.prepare(package_query)
     package_query_h.execute()
