@@ -48,6 +48,7 @@ from spacewalk.common import rhnLog
 PATCHES = '{http://novell.com/package/metadata/suse/patches}'
 
 CACHE_DIR   = '/var/cache/rhn/reposync/'
+GPG_DIR     = '/var/lib/spacewalk/gpgdir'
 YUMSRC_CONF = '/etc/rhn/spacewalk-repo-sync/yum.conf'
 
 class YumWarnings:
@@ -169,6 +170,8 @@ class ContentSource:
             repo.gpgkey = [burl + '/repodata/repomd.xml.key']
         repo.setup(False, None, gpg_import_func=self.getKeyForRepo,
                    confirm_func=self.askImportKey)
+        # use a fix dir for repo metadata sig checks
+        repo.gpgdir = GPG_DIR
         self.initgpgdir( repo.gpgdir )
         self.sack = self.repo.getPackageSack()
 
@@ -387,9 +390,6 @@ class ContentSource:
                 result = yum.misc.import_key_to_pubring(info['raw_key'], info['hexkeyid'], gpgdir=repo.gpgdir)
                 if not result:
                     raise ChannelException, 'Key import failed'
-                result = self.import_key_to_rpmdb(info['raw_key'], info['hexkeyid'], gpgdir=repo.gpgdir)
-                if not result:
-                    raise ChannelException, 'Key import failed'
 
                 key_installed = True
 
@@ -458,28 +458,15 @@ class ContentSource:
         return False
 
     def initgpgdir(self, gpgdir):
-      if not os.path.exists(gpgdir):
-        os.makedirs(gpgdir)
-
-      ts = initReadOnlyTransaction("/")
-      for hdr in ts.dbMatch('name', 'gpg-pubkey'):
-        if hdr['description'] != "":
-          yum.misc.import_key_to_pubring(hdr['description'], hdr['version'], gpgdir=gpgdir)
-
-    def import_key_to_rpmdb(self, raw, keyid, gpgdir):
-      if not os.path.exists(gpgdir):
-        os.makedirs(gpgdir)
-      tmpfile = os.path.join(gpgdir, keyid)
-      fp = open(tmpfile, 'w')
-      fp.write(raw)
-      fp.close()
-      cmd = ['/bin/rpm', '--import', tmpfile]
-      p = subprocess.Popen(cmd)
-      sts = os.waitpid(p.pid, 0)[1]
-      os.remove(tmpfile)
-      if sts == 0:
-        return True
-      return False
+        if not os.path.exists(gpgdir):
+            # initially we trust all keys which are in the RPM DB.
+            # If gpgdir does not exist, we create the keyring
+            # with all keys from the RPM DB
+            os.makedirs(gpgdir)
+            ts = initReadOnlyTransaction("/")
+            for hdr in ts.dbMatch('name', 'gpg-pubkey'):
+                if hdr['description'] != "":
+                    yum.misc.import_key_to_pubring(hdr['description'], hdr['version'], gpgdir=gpgdir)
 
     def error_msg(self, message):
         rhnLog.log_clean(0, message)
