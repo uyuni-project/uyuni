@@ -650,10 +650,8 @@ public class ActionManager extends BaseManager {
                     proxy.getPass().getBytes())));
         }
         a.setDetails(details);
-
-        // TODO: Use LocalizationService.getInstance().getMessage()
-        a.setName("Image deployment: " + image.getName() + " - "
-                + image.getVersion());
+        a.setName("Image Deployment: " + image.getName()
+                + " - " + image.getVersion());
         return a;
     }
 
