@@ -18,10 +18,9 @@ from up2date_client import config
 from up2date_client import rhnserver
 from up2date_client import up2dateAuth
 
-
-# import subprocess
-import hashlib 
+import hashlib
 import pycurl
+import base64
 
 log = up2dateLog.initLog()
 IMAGE_BASE_PATH = "/var/lib/libvirt/images/"
@@ -62,7 +61,7 @@ def _getImage(imageName,serverUrl,proxySetting):
         c.setopt(pycurl.PROXY, server )
         if proxySetting["proxyUser"] != None and proxySetting["proxyUser"] != "":
             user     = proxySetting["proxyUser"]
-            password = proxySetting["proxyPass"]
+            password = base64.b64decode( proxySetting["proxyPass"] )
             c.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (user,password) )
 
     ## /var/lib/libvirt/images
@@ -72,7 +71,7 @@ def _getImage(imageName,serverUrl,proxySetting):
     c.setopt(pycurl.SSL_VERIFYPEER, 0)
     c.perform()
     # FIXME: throw an exception if != 200?
-    log.log_debug("curl got HTTP code: %s" % c.getinfo(pycurl.HTTP_CODE)
+    log.log_debug("curl got HTTP code: %s" % c.getinfo(pycurl.HTTP_CODE))
     f.close()
     return c.getinfo(pycurl.HTTP_CODE)
 
