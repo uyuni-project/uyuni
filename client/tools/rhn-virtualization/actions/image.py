@@ -154,10 +154,6 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, v
                       'proxyUser'   : proxyUser,
                       'proxyPass'   : proxyPass }
 
-    # remove multiple '/'
-    rgx = re.compile('/+')
-    downloadURL = rgx.sub('/', downloadURL)
-
     urlParts  = downloadURL.split('/')
     fileName  = urlParts[-1]
     checksum  = urlParts[-2]
