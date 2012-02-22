@@ -23040,8 +23040,8 @@ given channel.</source>
      </trans-unit>
 
      <!-- SUSE Studio -->
-     <trans-unit id="images.jsp.summary">
-        <source>Please choose one of the available images below for deployment to this virtual host. All of the additional deployment parameters are optional.</source>
+     <trans-unit id="images.jsp.select">
+        <source>Select an Image</source>
      </trans-unit>
      <trans-unit id="images.jsp.name">
         <source>Name</source>
@@ -23058,8 +23058,35 @@ given channel.</source>
      <trans-unit id="images.jsp.status">
         <source>Status</source>
      </trans-unit>
+     <trans-unit id="images.jsp.vmsetup">
+        <source>Virtual Machine Setup</source>
+     </trans-unit>
      <trans-unit id="images.jsp.noimages">
         <source>No Images</source>
+     </trans-unit>
+     <trans-unit id="images.jsp.vcpus">
+        <source>Number of VCPUs:</source>
+     </trans-unit>
+     <trans-unit id="images.jsp.memory">
+        <source>Memory (MB):</source>
+     </trans-unit>
+     <trans-unit id="images.jsp.bridge">
+        <source>Bridge Device:</source>
+     </trans-unit>
+     <trans-unit id="images.jsp.proxyconfig">
+        <source>Proxy Configuration</source>
+     </trans-unit>
+     <trans-unit id="images.jsp.proxyserver">
+        <source>Proxy Server:</source>
+     </trans-unit>
+     <trans-unit id="images.jsp.proxyuser">
+        <source>Proxy User:</source>
+     </trans-unit>
+     <trans-unit id="images.jsp.proxypass">
+        <source>Proxy Password:</source>
+     </trans-unit>
+     <trans-unit id="images.jsp.dispatch">
+        <source>Schedule Deployment</source>
      </trans-unit>
      <trans-unit id="studio.deployment.scheduled">
         <source>Image deployment scheduled: {0}</source>
