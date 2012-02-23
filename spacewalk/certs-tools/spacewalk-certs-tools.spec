@@ -7,8 +7,8 @@
 Name: spacewalk-certs-tools
 Summary: Spacewalk SSL Key/Cert Tool
 Group: Applications/Internet
-License: GPLv2 and Python
-Version: 1.7.1
+License: GPLv2
+Version: 1.7.2
 Release: 1%{?dist}
 URL:      https://fedorahosted.org/spacewalk
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -75,7 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/rhn-ssl-tool
 %attr(755,root,root) %{_bindir}/rhn-bootstrap
 %doc %{_mandir}/man1/rhn-*.1*
-%doc LICENSE PYTHON-LICENSES.txt
+%doc LICENSE
 %doc ssl-howto-simple.txt ssl-howto.txt
 %if 0%{?suse_version}
 %dir /srv/www/htdocs/pub
@@ -91,6 +91,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Feb 23 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.2-1
+- we are now just GPL
+
 * Fri Feb 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.1-1
 - code cleanup
 

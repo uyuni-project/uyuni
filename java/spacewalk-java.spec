@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.7.39
+Version: 1.7.40
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -106,8 +106,6 @@ BuildRequires: tanukiwrapper
 Requires: classpathx-mail
 BuildRequires: classpathx-mail
 BuildRequires: checkstyle
-BuildRequires:  gsbase
-BuildRequires:  jmock
 
 # Sadly I need these to symlink the jars properly.
 BuildRequires: asm
@@ -231,16 +229,26 @@ Provides: spacewalk-java-jdbc = %{version}-%{release}
 This package contains PostgreSQL database backend files for the Spacewalk Java.
 
 
+%if ! 0%{?omit_tests} > 0
 %package tests
 Summary: Test Classes for testing spacewalk-java
 Group:  Applications/Internet
 
+BuildRequires:  gsbase
+BuildRequires:  jmock
 Requires: jmock
 Requires: gsbase
 
 %description tests
 This package contains testing files of spacewalk-java.  
 
+%files tests
+%defattr(-,root,root)
+%{_datadir}/rhn/lib/rhn-test.jar
+%{_datadir}/rhn/unittest.xml
+%{jardir}/mockobjects*.jar
+%{jardir}/strutstest*.jar
+%endif
 
 %package -n spacewalk-taskomatic
 Summary: Java version of taskomatic
@@ -400,7 +408,9 @@ sed -i -e 's/# Default-Start:/# Default-Start: 3 5/g' $RPM_BUILD_ROOT/%{_initrdd
 
 install -m 755 scripts/unittest.xml $RPM_BUILD_ROOT/%{_datadir}/rhn/
 install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
+%if ! 0%{?omit_tests} > 0
 install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn-test.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
+%endif
 install -m 644 conf/log4j.properties.taskomatic $RPM_BUILD_ROOT%{_datadir}/rhn/classes/log4j.properties
 
 install -m 644 conf/cobbler/snippets/default_motd  $RPM_BUILD_ROOT%{cobdirsnippets}/default_motd
@@ -445,6 +455,12 @@ rm -rf $RPM_BUILD_ROOT%{jardir}/jspapi.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/jasper5-compiler.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/jasper5-runtime.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/tomcat6*.jar
+%if 0%{?omit_tests} > 0
+rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/lib/rhn-test.jar
+rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/unittest.xml
+rm -rf $RPM_BUILD_ROOT%{jardir}/mockobjects*.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/strutstest*.jar
+%endif
 
 # show all JAR symlinks
 echo "#### SYMLINKS START ####"
@@ -640,13 +656,6 @@ fi
 %dir %{_datadir}/spacewalk/audit
 %config %{_datadir}/spacewalk/audit/auditlog-config.yaml
 
-%files tests
-%defattr(-,root,root)
-%{_datadir}/rhn/lib/rhn-test.jar
-%{_datadir}/rhn/unittest.xml
-%{jardir}/mockobjects*.jar
-%{jardir}/strutstest*.jar
-
 %files lib
 %defattr(-,root,root)
 %dir %{_datadir}/rhn
@@ -665,6 +674,12 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Feb 23 2012 Jan Pazdziora 1.7.40-1
+- The com.redhat.rhn.taskomatic.task.CleanCurrentAlerts is not longer needed
+  because nothing inserts to rhn_current_alerts, removing.
+- optionaly omit building spacewalk-java-tests subpackage (tlestach@redhat.com)
+- Use table RHN_CURRENT_ALERTS directly instead of the synonym.
+
 * Wed Feb 22 2012 Tomas Lestach <tlestach@redhat.com> 1.7.39-1
 - remove unused method (tlestach@redhat.com)
 - remove unused action (tlestach@redhat.com)

@@ -22,7 +22,7 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.35
+Version: 5.10.38
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -274,7 +274,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %config(noreplace) %{client_caps_dir}/*
 %attr(755,root,root) %{_initrddir}/osad
 %doc LICENSE
-%doc PYTHON-LICENSES.txt
 %{_sbindir}/rcosad
 %if 0%{?suse_version}
 # provide directories not owned by any package during build
@@ -301,7 +300,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn/oracle
 %attr(770,root,root) %dir %{_var}/log/rhn/oracle/osa-dispatcher
 %doc LICENSE
-%doc PYTHON-LICENSES.txt
 %{_sbindir}/rcosa-dispatcher
 %if 0%{?suse_version}
 %dir %attr(750, root, %{apache_group}) %{_sysconfdir}/rhn
@@ -319,11 +317,13 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %{_datadir}/selinux/*/%{modulename}.pp
 %{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
 %doc LICENSE
-%doc PYTHON-LICENSES.txt
 %attr(0755,root,root) %{_sbindir}/osa-dispatcher-selinux-enable
 %endif
 
 %changelog
+* Thu Feb 23 2012 Michael Mraka <michael.mraka@redhat.com> 5.10.38-1
+- we are now just GPL
+
 * Tue Feb 07 2012 Jan Pazdziora 5.10.35-1
 - Make sure that in case only NETWORKING_IPV6 is set, we do not get bash 'unary
   operator expected' error (jhutar@redhat.com)

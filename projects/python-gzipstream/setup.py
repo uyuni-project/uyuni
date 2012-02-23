@@ -6,7 +6,7 @@
 from distutils.core import setup
 
 setup(name = "gzipstream",
-      version = "1.6.2",
+      version = "1.7.1",
       description = "Streaming zlib (gzip) support for python",
       long_description = """\
 A streaming gzip handler.
@@ -17,5 +17,5 @@ to allow the processing of streaming data.
       author_email = 'taw@redhat.com',
       url = 'http://rhn.redhat.com',
       py_modules = ["gzipstream"],
-      license = "Python and GPLv2",
+      license = "GPLv2",
       )
