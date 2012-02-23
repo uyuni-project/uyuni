@@ -204,10 +204,48 @@ quit
     rm /tmp/dbsetup.sql
 }
 
+compute_pg_mem() {
+    # shared_buffer, effective_cache_size and work_mem algo
+    # min values in MB
+    sbufmin=32
+    ecsmin=128
+    wmmin=1
+    TM=`cat /proc/meminfo | grep '^MemTotal' | awk '{print $2}'`
+    TMMB=`echo $TM / 1024 | bc`
+    TMMB=`echo $TMMB-1024 | bc`
+    SBUF=`echo 0.25 \* $TM | bc | sed "s/\..*//"`
+    ECS=`echo $TM \* 0.5 | bc`
+    sbuf=`echo $SBUF / 1024  | bc | sed "s/\..*//"`
+    ecs=`echo $ECS / 1024  | bc | sed "s/\..*//"`
+    wm=`echo $TMMB / 1000 | bc`
+    check=`echo $sbuf \< $sbufmin | bc`
+    if test $check != 0
+    then
+        sbuf=$sbufmin
+    fi
+
+    check=`echo $ecs \< $ecsmin | bc`
+    if test $check != 0
+    then
+        ecs=$ecsmin
+    fi
+
+    check=`echo $wm \< $wmmin | bc`
+    if test $check != 0
+    then
+        wm=$wmmin
+    fi
+
+    echo "sbuf=$sbuf"
+    echo "ecs=$ecs"
+    echo "wm=$wm"
+}
+
 
 setup_db_postgres() {
     insserv postgresql
     rcpostgresql start
+    compute_pg_mem
     su - postgres -c "createdb $MANAGER_DB_NAME ; createlang plpgsql $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
 
     echo "local $MANAGER_DB_NAME $MANAGER_USER md5
@@ -217,7 +255,16 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
     cat /var/lib/pgsql/data/pg_hba.conf >> /tmp/pg_hba.conf
     mv /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
     mv /tmp/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf
-    rcpostgresql reload
+    echo -n "shared_buffers = $sbuf" >> /var/lib/pgsql/data/postgresql.conf
+    echo "MB" >> /var/lib/pgsql/data/postgresql.conf
+    echo -n "effective_cache_size = $ecs" >> /var/lib/pgsql/data/postgresql.conf
+    echo "MB" >> /var/lib/pgsql/data/postgresql.conf
+    echo "checkpoint_segments = 16" >> /var/lib/pgsql/data/postgresql.conf
+    echo "checkpoint_completion_target = 0.9" >> /var/lib/pgsql/data/postgresql.conf
+    echo -n "work_mem = $wm" >> /var/lib/pgsql/data/postgresql.conf
+    echo "MB" >> /var/lib/pgsql/data/postgresql.conf
+
+    rcpostgresql restart
 }
 
 setup_spacewalk() {

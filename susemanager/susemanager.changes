@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 23 13:10:43 CET 2012 - mc@suse.de
+
+- postgres db tuning added to migration.sh
+
+-------------------------------------------------------------------
 Tue Feb 14 14:24:09 CET 2012 - ug@suse.de
 
 - fixed default db port for postgres (bnc#741247)
