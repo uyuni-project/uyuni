@@ -91,13 +91,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%if 0%{?suse_version}
-%dir %{_sharedstatedir}
-%endif
-%dir %{_sharedstatedir}/rhncfg
 %dir %{_localstatedir}/spool/rhn
 %{rhnroot}/config_common
-%{_sharedstatedir}/rhncfg/backups
 %doc LICENSE
 
 %files client
