@@ -30,6 +30,7 @@ from yum.repos import RepoStorage
 try:    
     from spacewalk.satellite_tools.progress_bar import ProgressBar
 except ImportError:
+    # pylint: disable=F0401
     _LIBPATH = "/usr/share/rhn"
     if _LIBPATH not in sys.path:
         sys.path.append(_LIBPATH)    
@@ -41,8 +42,8 @@ log = logging.getLogger(__name__)
 CACHE_DIR = "/tmp/cache/yum"
 
 class DepSolver:
-    def __init__(self, repos, pkgs_in=[]):
-        self.pkgs = pkgs_in
+    def __init__(self, repos, pkgs_in=None):
+        self.pkgs = pkgs_in or []
         self.repos = repos
         self._repostore = RepoStorage(self)
         self.cleanup() #call cleanup before and after, to ensure no stale metadata
@@ -87,7 +88,7 @@ class DepSolver:
          epoch:name-ver-rel.arch, name-epoch:ver-rel.arch
         """                    
         
-        ematch, match, unmatch = parsePackages(self._repostore.pkgSack, self.pkgs)
+        ematch, match, _unmatch = parsePackages(self._repostore.pkgSack, self.pkgs)
         pkgs = []
         for po in ematch + match:
             pkgs.append(po)
@@ -115,9 +116,9 @@ class DepSolver:
             found = self.processResults(results)[0]
             solved += to_solve
             to_solve = []
-            for dep, pkgs in found.items():
+            for _dep, pkgs in found.items():
                 for pkg in pkgs:
-                    name, version, epoch, release, arch = pkg
+                    name, version, _epoch, release, arch = pkg
                     ndep = "%s-%s-%s.%s" % (name, version, release, arch)
                     solved = list(set(solved))
                     if ndep not in solved:
@@ -161,9 +162,11 @@ class DepSolver:
             return ListPackageSack(self._repostore.pkgSack.searchProvides((name, flags, version)))
         except:
             #perhaps we're on older version of yum try old style
+            # pylint: disable=W0702
             return ListPackageSack(self._repostore.pkgSack.searchProvides(name))
 
-    def processResults(self, results):
+    @staticmethod
+    def processResults(results):
         reqlist = {}
         notfound = {}
         for pkg in results:
@@ -185,7 +188,8 @@ class DepSolver:
                     found[req].append(dep)
         return found, notfound
 
-    def printable_result(self, results):
+    @staticmethod
+    def printable_result(results):
         print_doc_str = ""
         for pkg in results:
             if len(results[pkg]) == 0:

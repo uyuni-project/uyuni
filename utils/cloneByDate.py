@@ -39,6 +39,7 @@ try:
     from spacewalk.satellite_tools.progress_bar import ProgressBar
     from spacewalk.server import rhnSQL
 except ImportError:
+    # pylint: disable=F0401
     _LIBPATH = "/usr/share/rhn"
     if _LIBPATH not in sys.path:
         sys.path.append(_LIBPATH)
@@ -181,6 +182,7 @@ class ChannelTreeCloner:
         a.prepare()
         a.clone()
          """
+    # pylint: disable=R0902
     def __init__(self, channels, remote_api, db_api, to_date, blacklist, 
                                             removelist):
         self.remote_api = remote_api
@@ -380,6 +382,7 @@ class ChannelTreeCloner:
                 cloner.remove_blacklisted(self.blacklist)
 
 class ChannelCloner:
+    # pylint: disable=R0902
     def __init__(self, from_label, to_label, to_date, remote_api, db_api):
         self.remote_api = remote_api
         self.db_api = db_api
@@ -412,7 +415,7 @@ class ChannelCloner:
         return self.new_pkg_hash
         
     def reset_from_pkgs(self):
-        self.from_pkg_hash = dict((pkg['nvrea'], pkg) for pkg in self.remote_api.list_packages(self.from_label))         
+        self.from_pkg_hash = dict((pkg['nvrea'], pkg) for pkg in self.remote_api.list_packages(self.from_label))
             
     def prepare(self):        
         self.reset_original_pkgs()
@@ -423,7 +426,8 @@ class ChannelCloner:
         return len(self.errata_to_clone)
         
     def pre_summary(self):
-        print "  %s -> %s  (%i/%i Errata)" % (self.from_label, self.to_label, len(self.errata_to_clone), len(self.available_errata))
+        print "  %s -> %s  (%i/%i Errata)" % (self.from_label, self.to_label,
+                                 len(self.errata_to_clone), len(self.available_errata))
     
     def process(self):
         self.clone()
@@ -456,7 +460,8 @@ class ChannelCloner:
     def dest_pkg_exist(self, needed_list):
         return self.pkg_exists(needed_list, self.new_pkg_hash)
             
-    def pkg_exists(self, needed_list, pkg_list):
+    @staticmethod
+    def pkg_exists(needed_list, pkg_list):
         """Given a list of packages in [N, V, E, R, A] format, do any of them exist
             in the pkg_hash with key of N-V-R.A  format"""            
         for i in needed_list:
@@ -649,8 +654,9 @@ class DBApi:
         initCFG('server')
         db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
         rhnSQL.initDB(db_string)        
-                
-    def applicable_errata(self, from_label, to_label):
+
+    @staticmethod
+    def applicable_errata(from_label, to_label):
         """list of errata that is applicable to be cloned, used db because we 
             need to exclude cloned errata too"""
         h = rhnSQL.prepare("""

@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.7.13
+Version:	1.7.14
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -15,13 +15,19 @@ BuildArch:      noarch
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  docbook-utils
 BuildRequires:  python
-BuildRequires:  pylint
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} > 1100
+# pylint check
+BuildRequires:  spacewalk-pylint
+BuildRequires:  yum
+BuildRequires:  spacewalk-backend >= 1.7.24
+BuildRequires:  spacewalk-backend-libs >= 1.7.24
+BuildRequires:  spacewalk-backend-tools >= 1.7.24
+%endif
 
 Requires:       bash
 Requires:       cobbler
 Requires:       coreutils
-%if 0%{?suse_version}
-%else
+%if ! 0%{?suse_version}
 Requires:       initscripts
 %endif
 Requires:       iproute
@@ -36,8 +42,7 @@ Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version
 Requires:       python, rpm-python
 Requires:       rhnlib >= 2.5.20
 Requires:       rpm
-%if 0%{?suse_version}
-%else
+%if ! 0%{?suse_version}
 Requires:       setup
 %endif
 Requires:       spacewalk-admin
@@ -45,6 +50,8 @@ Requires:       spacewalk-certs-tools
 Requires:       spacewalk-config
 Requires:       spacewalk-setup
 Requires:       spacewalk-backend
+Requires:       spacewalk-backend-libs
+Requires:       spacewalk-backend-tools
 Requires:       yum-utils
 
 %description
@@ -58,14 +65,6 @@ Generic utilities that may be run against a Spacewalk server.
 %build
 make all
 
-# check coding style
-find -name '*.py' \
-    | xargs pylint -rn -iy --bad-functions=apply,input \
-                   --disable C0111,C0103,C0301,R0801,R0912,W0511,W0603,F0401,R0913,R0902,R0201,R0903,W0702,W0102,W0612 \
-|| find -name '*.py' \
-    | xargs pylint -rn -iy --bad-functions=apply,input \
-                   --disable-msg-cat C0111,C0103,C0301,R0801,R0912,W0511,W0603,F0401,R0913,R0902,R0201,R0903,W0702,W0102,W0612
-
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{rhnroot}
@@ -76,6 +75,11 @@ make install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%check
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} > 1100
+# check coding style
+spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
+%endif
 
 %files
 %defattr(-,root,root)
@@ -92,6 +96,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/rhn
 
 %changelog
+* Fri Feb 24 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.14-1
+- fixed pylint errors
+- use spacewalk-pylint for coding style check
+
 * Thu Feb 23 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.13-1
 - we are now just GPL
 
