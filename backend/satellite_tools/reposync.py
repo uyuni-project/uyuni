@@ -763,6 +763,7 @@ class RepoSync(object):
             except Exception, e:
                 self.error_msg(e)
                 finally_remove(localpath)
+                pack.clear_header()
                 if self.fail:
                     raise
                 continue
