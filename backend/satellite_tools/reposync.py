@@ -766,6 +766,7 @@ class RepoSync(object):
                 if self.fail:
                     raise
                 continue
+            pack.clear_header()
 
     def match_package_checksum(self, md_pack, db_pack):
         """compare package checksum"""
@@ -1050,6 +1051,10 @@ class ContentPackage:
         self.path = None
         self.file = None
 
+        self.a_pkg = None
+
+    def clear_header(self):
+        """a_pkg hold the header data. Remove it to not waste memory"""
         self.a_pkg = None
 
     def setNVREA(self, name, version, release, epoch, arch):
