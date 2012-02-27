@@ -183,6 +183,7 @@ class rpmBinaryPackage(Package, rpmPackage):
         # actually single elements
         fix = {}
         itemcount = 0
+        checksum_type = RPM_Header(header).checksum_type()
 
         for f, rf in Class.tagMap.items():
             v = sanitizeList(header[rf])
@@ -229,8 +230,7 @@ class rpmBinaryPackage(Package, rpmPackage):
                     continue
             else:
                 if tag == 'files':
-                    rh = RPM_Header(header)
-                    hash['checksum_type'] = rh.checksum_type()
+                    hash['checksum_type'] = checksum_type
                 obj.populate(hash)
                 self[tag].append(obj)
 
