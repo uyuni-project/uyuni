@@ -105,7 +105,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc doc/* Changes license.txt
+%doc doc/* Changes license.txt susemanager121
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %dir /etc/YaST2
