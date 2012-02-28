@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 28 11:38:53 CET 2012 - mantel@suse.de
+
+- rename "Oracle" to "Database" in db-control tools
+
+-------------------------------------------------------------------
 Tue Jan 31 16:52:57 CET 2012 - mantel@suse.de
 
 - add etc/sysconfig/SuSEfirewall2.d/services/susemanager-database
