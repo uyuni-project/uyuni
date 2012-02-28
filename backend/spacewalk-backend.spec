@@ -664,6 +664,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{pythonrhnroot}/common
 %{pythonrhnroot}/common/__init__.py*
 %{pythonrhnroot}/common/checksum.py*
+%{pythonrhnroot}/common/cli.py*
 %{pythonrhnroot}/common/fileutils.py*
 %{pythonrhnroot}/common/rhn_deb.py*
 %{pythonrhnroot}/common/rhn_mpm.py*

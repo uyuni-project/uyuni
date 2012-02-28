@@ -25,6 +25,7 @@ SPACEWALK_FILES	=   __init__ \
             RPC_Base \
             suseLib \
 	    checksum \
+	    cli \
 	    fileutils \
 	    rhn_deb \
 	    rhn_mpm \
