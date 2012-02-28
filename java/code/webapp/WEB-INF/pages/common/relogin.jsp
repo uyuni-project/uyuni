@@ -6,8 +6,9 @@
 <html>
 <head>
   <script src="/javascript/focus.js" type="text/javascript"></script>
+  <script src="/javascript/legalnote.js" type="text/javascript"></script>
 </head>
-<body onLoad="formFocus('loginForm', 'username')" id="relogin_page">
+<body onLoad="formFocus('loginForm', 'username'); putLegalNote('${rhn:localize('footer.jsp.legalNote')}');" id="relogin_page">
 
 <rhn:require acl="not user_authenticated()">
 <c:if test="${requestScope.hasExpired != 'true'}">

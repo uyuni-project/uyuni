@@ -6,9 +6,10 @@
 <html>
 <head>
     <script src="/javascript/focus.js" type="text/javascript"></script>
+    <script src="/javascript/legalnote.js" type="text/javascript"></script>
     <meta name="decorator" content="layout_equals" />
 </head>
-<body onLoad="formFocus('loginForm', 'username')">
+<body onLoad="formFocus('loginForm', 'username'); putLegalNote('${rhn:localize('footer.jsp.legalNote')}');">
 <c:if test="${requestScope.hasExpired != 'true'}">
 <div id="login_page">
   <h1 id="rhn_welcome3"><span><bean:message key="login.jsp.welcomemessage"/></span></h1>
