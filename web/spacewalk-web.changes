@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 28 16:44:18 CET 2012 - jrenner@suse.de
+
+- Show legal note in the footer of all login pages
+
+-------------------------------------------------------------------
 Tue Feb 28 11:38:53 CET 2012 - mantel@suse.de
 
 - rename "Oracle" to "Database" in db-control tools
