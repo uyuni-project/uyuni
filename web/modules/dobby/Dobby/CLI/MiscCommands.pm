@@ -26,10 +26,10 @@ sub register_dobby_commands {
   my $cli = shift;
 
   $cli->register_mode(-command => "stop",
-		      -description => "Stop the SUSE Manager Oracle Instance",
+		      -description => "Stop the SUSE Manager Database Instance",
 		      -handler => \&command_startstop);
   $cli->register_mode(-command => "start",
-		      -description => "Start the SUSE Manager Oracle Instance",
+		      -description => "Start the SUSE Manager Database Instance",
 		      -handler => \&command_startstop);
 
   $cli->register_mode(-command => "status",

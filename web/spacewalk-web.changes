@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Feb 28 11:38:53 CET 2012 - mantel@suse.de
+
+- rename "Oracle" to "Database" in db-control tools
+
+-------------------------------------------------------------------
 Wed Feb  8 10:39:11 CET 2012 - mc@suse.de
 
 - pick oversight changes in license texts from upstream
