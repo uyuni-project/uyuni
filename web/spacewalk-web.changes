@@ -9,6 +9,11 @@ Wed Feb  8 10:39:11 CET 2012 - mc@suse.de
 - pick oversight changes in license texts from upstream
 
 -------------------------------------------------------------------
+Mon Feb  6 17:16:10 CET 2012 - mc@suse.de
+
+- show eula in copyright page according to the installed product
+
+-------------------------------------------------------------------
 Thu Feb  2 14:36:54 CET 2012 - ug@suse.de
 
 - fixed some permissions

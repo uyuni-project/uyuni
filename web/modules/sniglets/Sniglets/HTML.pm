@@ -7,10 +7,10 @@
 # FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-# 
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation. 
+# in this software or its documentation.
 #
 
 use strict;
@@ -41,6 +41,8 @@ sub register_tags {
 
   $pxt->register_tag("rhn-autorefresh-widget", \&rhn_autorefresh_widget);
   $pxt->register_tag("rhn-return-link", \&return_link);
+
+  $pxt->register_tag("rhn-eula-links", \&rhn_eula_links);
 }
 
 
@@ -86,7 +88,7 @@ sub toolbar {
     $img = PXT::HTML->img(-src => $params{img},
                           -alt => $params{'alt'} || '');
   }
-  
+
 
   if (defined $params{'help-url'}) {
     $help = rhn_help($pxt, (href => $params{'help-url'},
@@ -187,6 +189,43 @@ sub render_help_link {
   }
 
   return $link;
+}
+
+sub rhn_eula_links {
+  my $pxt = shift;
+  my $ret = "";
+  my $is_xe = 0;
+  my $is_full = 0;
+  my $vendor = `rpm -q --qf '%{VENDOR}' oracle-server 2>/dev/null`;
+  $vendor = "" if ($? != 0);
+
+  $is_xe = 1 if ( -e "/usr/share/doc/oracle_xe/licenses/license.txt" );
+  $is_full = 1 if ( -d "/opt/apps/oracle/oradata/susemanager" && $vendor =~ /SUSE/i );
+
+  if ( ! $is_full && ! $is_xe )
+  {
+      # old SUSE Manager EULA
+      $ret .= qq{<li><a href="/help/eula.pxt">SUSE MANAGER LICENSE AGREEMENT</a></li>};
+  }
+  elsif ( $is_xe && ! $is_full )
+  {
+      # old SUSE Manager EULA + Oracle XE EULA
+      $ret .= qq{<li><a href="/help/eula.pxt">SUSE MANAGER LICENSE AGREEMENT</a></li>};
+      $ret .= qq{<li><a href="/help/xe_eula.pxt">ORACLE DATABASE 10g EXPRESS EDITION LICENSE AGREEMENT</a></li>};
+
+  }
+  elsif ( $is_full && ! $is_xe )
+  {
+      # new SUSE Manager EULA (incl. Oracle)
+      $ret .= qq{<li><a href="/help/eula121.pxt">SUSE MANAGER LICENSE AGREEMENT</a></li>};
+  }
+  else
+  {
+      # both are installed. Should never happen.
+      $ret .= qq{<li><a href="/help/eula121.pxt">SUSE MANAGER LICENSE AGREEMENT</a></li>};
+      $ret .= qq{<li><a href="/help/xe_eula.pxt">ORACLE DATABASE 10g EXPRESS EDITION LICENSE AGREEMENT</a></li>};
+  }
+  return "$ret";
 }
 
 sub if_var {

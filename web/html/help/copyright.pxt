@@ -10,9 +10,8 @@
 <p>Copyright (c) 2011 Novell, Inc</p>
 
 <ul>
-  <li><a href="/help/eula.pxt">SUSE MANAGER LICENSE AGREEMENT</a></li>
-  <li><a href="/help/xe_eula.pxt">ORACLE DATABASE 10g EXPRESS EDITION LICENSE AGREEMENT</a></li>
-</ul> 
+  <rhn-eula-links />
+</ul>
 
 <p>This software is a modular operating system comprised of numerous components
 that may be accompanied by separate license terms. The software is a
