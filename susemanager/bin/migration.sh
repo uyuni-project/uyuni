@@ -265,20 +265,7 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
       echo "MB" >> /var/lib/pgsql/data/postgresql.conf
     else
       mv /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.orig
-      #/root/pgtune-0.9.3/pgtune -T Mixed -i /var/lib/pgsql/data/postgresql.conf.orig -o /var/lib/pgsql/data/postgresql.conf
-      # lets hardcode some values
-     
-      echo "" >> /var/lib/pgsql/data/postgresql.conf 
-      echo "default_statistics_target = 50" >> /var/lib/pgsql/data/postgresql.conf
-      echo "maintenance_work_mem = 144MB" >> /var/lib/pgsql/data/postgresql.conf
-      echo "constraint_exclusion = on" >> /var/lib/pgsql/data/postgresql.conf
-      echo "checkpoint_completion_target = 0.9" >> /var/lib/pgsql/data/postgresql.conf
-      echo "effective_cache_size = 576MB" >> /var/lib/pgsql/data/postgresql.conf
-      echo "work_mem = 15MB" >> /var/lib/pgsql/data/postgresql.conf
-      echo "wal_buffers = 8MB" >> /var/lib/pgsql/data/postgresql.conf
-      echo "checkpoint_segments = 16" >> /var/lib/pgsql/data/postgresql.conf
-      echo "shared_buffers = 576MB" >> /var/lib/pgsql/data/postgresql.conf
-      echo "max_connections = 80" >> /var/lib/pgsql/data/postgresql.conf
+      /root/pgtune-0.9.3/pgtune -T Mixed -i /var/lib/pgsql/data/postgresql.conf.orig -o /var/lib/pgsql/data/postgresql.conf
     fi
     rcpostgresql restart
 }
