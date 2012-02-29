@@ -37,6 +37,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+%dir %{_datadir}/openscap
+%dir %{_datadir}/openscap/xsl
+%dir %{_datadir}/rhn
+%dir %{_datadir}/rhn/actions
 %{_datadir}/rhn/actions/scap.*
 %{_datadir}/openscap/xsl/xccdf-resume.xslt
 
