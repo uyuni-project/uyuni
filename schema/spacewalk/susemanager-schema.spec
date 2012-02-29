@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.7.47
+Version:        1.7.49
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -67,6 +67,33 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Wed Feb 29 2012 Jan Pazdziora 1.7.49-1
+- Need to stop blend from attempting to expanding the \i dblink.sql in build
+  time.
+
+* Wed Feb 29 2012 Jan Pazdziora 1.7.48-1
+- Creating the dblink function(s) upon schema population, in schema public.
+- lookup_transaction_package: schema upgrade (mzazrivec@redhat.com)
+- use pg_dblink_exec to exec insert inside lookup_transaction_package
+  (mzazrivec@redhat.com)
+- use autonomous_transaction for insert only (mzazrivec@redhat.com)
+- lookup_tag_name: schema upgrade (mzazrivec@redhat.com)
+- fix proc dependencies (mzazrivec@redhat.com)
+- use pg_dblink_exec to execute insert inside lookup_tag_name
+  (mzazrivec@redhat.com)
+- fix proc dependencies (mzazrivec@redhat.com)
+- use autonomous_transaction for insert only (mzazrivec@redhat.com)
+- lookup_tag: schema upgrade (mzazrivec@redhat.com)
+- use pg_dblink_exec to execute insert inside lookup_tag (mzazrivec@redhat.com)
+- fix proc dependencies (mzazrivec@redhat.com)
+- use autonomous_transaction for insert only (mzazrivec@redhat.com)
+- fix sha1 sums (mzazrivec@redhat.com)
+- lookup_source_name: schema upgrade (mzazrivec@redhat.com)
+- use pg_dblink_exec to execute insert inside lookup_source_name
+  (mzazrivec@redhat.com)
+- fix proc dependencies (mzazrivec@redhat.com)
+- use autonomous_transaction in insert only (mzazrivec@redhat.com)
+
 * Wed Feb 29 2012 Jan Pazdziora 1.7.47-1
 - fix lookup_config_info return (mzazrivec@redhat.com)
 - no need for autonomous_transaction in lookup_snapshot_invalid_reason

@@ -1,5 +1,5 @@
 Name:		spacewalk-oscap
-Version:	0.0.3
+Version:	0.0.4
 Release:	1%{?dist}
 Summary:	OpenSCAP plug-in for rhn-check
 
@@ -41,11 +41,15 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/openscap/xsl
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/actions
+%config  /etc/sysconfig/rhn/clientCaps.d/scap
 %{_datadir}/rhn/actions/scap.*
 %{_datadir}/openscap/xsl/xccdf-resume.xslt
 
 
 %changelog
+* Wed Feb 29 2012 Simon Lukasik <slukasik@redhat.com> 0.0.4-1
+- Send capabilities to server. (slukasik@redhat.com)
+
 * Tue Feb 28 2012 Simon Lukasik <slukasik@redhat.com> 0.0.3-1
 - Do not unlink file, tempfile will do that automatically.
   (slukasik@redhat.com)

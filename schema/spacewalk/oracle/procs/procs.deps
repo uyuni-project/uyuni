@@ -65,6 +65,10 @@ insert_config_info              :: rhnConfigInfo
 insert_evr                      :: rhnPackageEVR
 insert_package_nevra            :: rhnPackageNEVRA
 insert_source_name              :: rhnSourceRPM
+insert_tag                      :: rhnTag
+insert_tag_name                 :: rhnTagName
+insert_transaction_package      :: rhnTransactionPackage
+insert_xccdf_benchmark          :: rhnXccdfBenchmark
 is_user_applicant               :: rhnUserGroupType web_contact rhnUserGroup \
                                    rhnUserGroupMembers
 lookup_arch_type                :: data/rhnArchType rhn_exception.pks
@@ -103,12 +107,14 @@ lookup_server_arch              :: rhn_exception.pks data/rhnException rhnServer
 lookup_sg_type                  :: rhnServerGroupType
 lookup_snapshot_invalid_reason  :: rhnSnapshotInvalidReason
 lookup_source_name              :: insert_source_name rhnSourceRPM
-lookup_tag                      :: rhnTag lookup_tag_name
-lookup_tag_name                 :: rhnTagName
+lookup_tag                      :: rhnTag lookup_tag_name insert_tag
+lookup_tag_name                 :: rhnTagName insert_tag_name
 lookup_transaction_package      :: rhnTransactionOperation lookup_package_name \
                                    lookup_evr lookup_package_arch \
-                                   rhnTransactionPackage rhn_exception.pks
+                                   rhnTransactionPackage rhn_exception.pks \
+                                   insert_transaction_package
 lookup_virt_sub_level           :: rhnVirtSubLevel                                
+lookup_xccdf_benchmark          :: insert_xccdf_benchmark rhnXccdfBenchmark
 pxt_session_cleanup             :: PXTSessions
 queue_server                    :: rhnServerNeededPackageCache rhnTaskQueue \
                                    rhnServer \

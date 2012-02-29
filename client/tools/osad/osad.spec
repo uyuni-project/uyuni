@@ -22,7 +22,7 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.38
+Version: 5.10.39
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -61,7 +61,7 @@ Requires(preun): %fillup_prereq %insserv_prereq
 OSAD agent receives commands over jabber protocol from Spacewalk Server and
 commands are instantly executed.
 
-This package effectively replaces the behaviour of rhnsd/rhn_check that
+This package effectively replaces the behavior of rhnsd/rhn_check that
 only poll the Spacewalk Server from time to time.
 
 %package -n osa-dispatcher
@@ -136,6 +136,9 @@ do
     make -C osa-dispatcher-selinux NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile clean
 done
 %endif
+mkdir -p %{buildroot}%{_var}/log/rhn
+touch %{buildroot}%{_var}/log/osad
+touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -275,6 +278,8 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(755,root,root) %{_initrddir}/osad
 %doc LICENSE
 %{_sbindir}/rcosad
+%config(noreplace) %{_sysconfdir}/logrotate.d/osad
+%ghost %attr(600,root,root) %{_var}/log/osad
 %if 0%{?suse_version}
 # provide directories not owned by any package during build
 %dir %{rhnroot}
@@ -294,13 +299,15 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %config(noreplace) %{_sysconfdir}/sysconfig/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/logrotate.d/osa-dispatcher
 %{rhnroot}/config-defaults/rhn_osa-dispatcher.conf
-%config %{_sysconfdir}/rhn/tns_admin/osa-dispatcher
+%dir %{_sysconfdir}/rhn/tns_admin
+%dir %{_sysconfdir}/rhn/tns_admin/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/rhn/tns_admin/osa-dispatcher/sqlnet.ora
 %attr(755,root,root) %{_initrddir}/osa-dispatcher
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn/oracle
 %attr(770,root,root) %dir %{_var}/log/rhn/oracle/osa-dispatcher
 %doc LICENSE
 %{_sbindir}/rcosa-dispatcher
+%ghost %attr(640,apache,root) %{_var}/log/rhn/osa-dispatcher.log
 %if 0%{?suse_version}
 %dir %attr(750, root, %{apache_group}) %{_sysconfdir}/rhn
 %dir %{rhnroot}/config-defaults
@@ -321,6 +328,14 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Wed Feb 29 2012 Miroslav Suchý 5.10.39-1
+- log file may contain password, set chmod to 600
+- by default log to /var/log/osad
+- /etc/rhn/tns_admin/osa-dispatcher is directory, not config file
+- fix typo in description
+- mark log file osa-dispatcher.log as ghost owned
+- add logrotate for /var/log/osad and own this file (as ghost)
+
 * Thu Feb 23 2012 Michael Mraka <michael.mraka@redhat.com> 5.10.38-1
 - we are now just GPL
 
