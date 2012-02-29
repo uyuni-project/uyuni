@@ -136,9 +136,6 @@ do
     make -C osa-dispatcher-selinux NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile clean
 done
 %endif
-mkdir -p %{buildroot}%{_var}/log/rhn
-touch %{buildroot}%{_var}/log/osad
-touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -165,6 +162,10 @@ install -p -m 644 osa-dispatcher-selinux/%{modulename}.if \
 install -d %{buildroot}%{_sbindir}
 install -p -m 755 osa-dispatcher-selinux/osa-dispatcher-selinux-enable %{buildroot}%{_sbindir}/osa-dispatcher-selinux-enable
 %endif
+
+mkdir -p %{buildroot}%{_var}/log/rhn
+touch %{buildroot}%{_var}/log/osad
+touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
 
 # add rclinks
 ln -sf ../../etc/init.d/osad %{buildroot}%{_sbindir}/rcosad
