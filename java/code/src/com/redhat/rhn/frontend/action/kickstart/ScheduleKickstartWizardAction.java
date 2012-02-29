@@ -674,25 +674,20 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
 
         CobblerConnection con  = CobblerXMLRPCHelper.
                             getConnection(user);
-        log.error("uwe1");
         if (KERNEL_PARAMS_CUSTOM.equals(paramsType)) {
             return customOptions;
         }
-        log.error("uwe2");
         org.cobbler.Profile profile = org.cobbler.Profile.lookupById(con,
                 cobblerId);
         CobblerObject ret = profile;
 
         if (KERNEL_PARAMS_DISTRO.equals(paramsType)) {
-            log.error("uwe3");
             ret = profile.getDistro();
         }
         if (!isPost) {
-            log.error("uwe4 "+ret.getKernelOptionsString());
             return ret.getKernelOptionsString();
         }
         else {
-            log.error("uwe5");
             return ret.getKernelPostOptionsString();
         }
 
