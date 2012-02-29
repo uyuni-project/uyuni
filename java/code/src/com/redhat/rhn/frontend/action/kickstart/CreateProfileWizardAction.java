@@ -166,55 +166,53 @@ public class CreateProfileWizardAction extends RhnWizardAction {
         if (!validateInput(form, fields, ctx)) {
             return this.dispatch(step.getPrevious(), mapping, form, ctx, response);
         }
-        else {
+        try {
+
+            String kickstartLabel = form.getString(KICKSTART_LABEL_PARAM);
+            KickstartBuilder builder = new KickstartBuilder(ctx.getLoggedInUser());
+
             try {
-
-                String kickstartLabel = form.getString(KICKSTART_LABEL_PARAM);
-                KickstartBuilder builder = new KickstartBuilder(ctx.getLoggedInUser());
-
-                try {
-                    builder.validateNewLabel(kickstartLabel);
-                }
-                catch (ValidatorException ve) {
-                    getStrutsDelegate().saveMessages(ctx.getRequest(), ve.getResult());
-                    return this.dispatch(step.getPrevious(), mapping, form, ctx, response);
-                }
-
-
-                KickstartHelper helper = new KickstartHelper(ctx.getRequest());
-
-                Long treeId = (Long) form.get(KSTREE_ID_PARAM);
-                KickstartWizardHelper cmd = new KickstartWizardHelper(ctx.getCurrentUser());
-                ActionForward retval = null;
-                form.set(PREV_STEP_PARAM, "first");
-                form.set(NEXT_STEP_PARAM, "third");
-                form.set(DEFAULT_DOWNLOAD_LOCN, getDefaultDisplayDownloadLocation(
-                        cmd.getKickstartableTree(treeId), helper.getKickstartHost()));
-
-                KickstartableTree tree = cmd.getKickstartableTree(treeId);
-                ctx.getRequest().setAttribute("selectedTree", tree);
-
-                //validate we have a distro for the tree + virt type combination
-                String typeParam = form.getString(VIRTUALIZATION_TYPE_LABEL_PARAM);
-                KickstartVirtualizationType vType =
-                    KickstartFactory.lookupKickstartVirtualizationTypeByLabel(typeParam);
-                Distro distro = CobblerProfileCommand.getCobblerDistroForVirtType(tree,
-                        vType, ctx.getLoggedInUser());
-                if (distro == null) {
-                    ValidatorException.raiseException(
-                            "kickstart.cobbler.profile.nodistribution");
-                }
-
-                if (form.get(DEFAULT_DOWNLOAD_PARAM) == null) {
-                    form.set(DEFAULT_DOWNLOAD_PARAM, Boolean.TRUE);
-                }
-                retval = mapping.findForward("second");
-                return retval;
+                builder.validateNewLabel(kickstartLabel);
             }
             catch (ValidatorException ve) {
                 getStrutsDelegate().saveMessages(ctx.getRequest(), ve.getResult());
                 return this.dispatch(step.getPrevious(), mapping, form, ctx, response);
             }
+
+
+            KickstartHelper helper = new KickstartHelper(ctx.getRequest());
+
+            Long treeId = (Long) form.get(KSTREE_ID_PARAM);
+            KickstartWizardHelper cmd = new KickstartWizardHelper(ctx.getCurrentUser());
+            ActionForward retval = null;
+            form.set(PREV_STEP_PARAM, "first");
+            form.set(NEXT_STEP_PARAM, "third");
+            form.set(DEFAULT_DOWNLOAD_LOCN, getDefaultDisplayDownloadLocation(
+                    cmd.getKickstartableTree(treeId), helper.getKickstartHost()));
+
+            KickstartableTree tree = cmd.getKickstartableTree(treeId);
+            ctx.getRequest().setAttribute("selectedTree", tree);
+
+            //validate we have a distro for the tree + virt type combination
+            String typeParam = form.getString(VIRTUALIZATION_TYPE_LABEL_PARAM);
+            KickstartVirtualizationType vType =
+                KickstartFactory.lookupKickstartVirtualizationTypeByLabel(typeParam);
+            Distro distro = CobblerProfileCommand.getCobblerDistroForVirtType(tree,
+                    vType, ctx.getLoggedInUser());
+            if (distro == null) {
+                ValidatorException.raiseException(
+                        "kickstart.cobbler.profile.nodistribution");
+            }
+
+            if (form.get(DEFAULT_DOWNLOAD_PARAM) == null) {
+                form.set(DEFAULT_DOWNLOAD_PARAM, Boolean.TRUE);
+            }
+            retval = mapping.findForward("second");
+            return retval;
+        }
+        catch (ValidatorException ve) {
+            getStrutsDelegate().saveMessages(ctx.getRequest(), ve.getResult());
+            return this.dispatch(step.getPrevious(), mapping, form, ctx, response);
         }
 
     }
@@ -237,17 +235,15 @@ public class CreateProfileWizardAction extends RhnWizardAction {
                 form.set(DEFAULT_DOWNLOAD_PARAM, Boolean.FALSE);
                 return this.dispatch(step.getPrevious(), mapping, form, ctx, response);
             }
-            else {
-                String userDownload = form.getString(USER_DOWNLOAD_PARAM);
-                userDownload = userDownload.toLowerCase();
-                if (!userDownload.startsWith("http://") &&
-                        !userDownload.startsWith("ftp://")) {
-                    ActionErrors errs = new ActionErrors();
-                    errs.add(ActionMessages.GLOBAL_MESSAGE,
-                            new ActionMessage("invalidUserDefinedDownload"));
-                    saveMessages(ctx.getRequest(), errs);
-                    return this.dispatch(step.getPrevious(), mapping, form, ctx, response);
-                }
+            String userDownload = form.getString(USER_DOWNLOAD_PARAM);
+            userDownload = userDownload.toLowerCase();
+            if (!userDownload.startsWith("http://") &&
+                    !userDownload.startsWith("ftp://")) {
+                ActionErrors errs = new ActionErrors();
+                errs.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("invalidUserDefinedDownload"));
+                saveMessages(ctx.getRequest(), errs);
+                return this.dispatch(step.getPrevious(), mapping, form, ctx, response);
             }
         }
         form.set(PREV_STEP_PARAM, "second");
@@ -269,30 +265,28 @@ public class CreateProfileWizardAction extends RhnWizardAction {
                               form.getString(ROOT_PASSWORD_CONFIRM_PARAM), ctx)) {
             return this.dispatch(step.getPrevious(), mapping, form, ctx, response);
         }
-        else {
-            KickstartableTree tree = cmd.getKickstartableTree(
-                    (Long)form.get(KSTREE_ID_PARAM));
-            Boolean useDefault = (Boolean) form.get(DEFAULT_DOWNLOAD_PARAM);
-            String downloadUrl = null;
-            if (useDefault != null && Boolean.TRUE.equals(useDefault)) {
-                downloadUrl = getDefaultDownloadLocation(tree);
-            }
-            else {
-                downloadUrl = form.getString(USER_DOWNLOAD_PARAM);
-            }
-            log.debug("Using default download location: " + downloadUrl);
-            String ksLabel = form.getString(KICKSTART_LABEL_PARAM);
-            String rootPass = form.getString(ROOT_PASSWORD_PARAM);
-            String virtType = form.getString(VIRTUALIZATION_TYPE_LABEL_PARAM);
-            KickstartBuilder builder = new KickstartBuilder(ctx.getCurrentUser());
-            KickstartData ksdata = builder.create(ksLabel, tree, virtType, downloadUrl,
-                    rootPass, helper.getKickstartHost());
-
-            String url = ctx.getRequest().getContextPath() + "/kickstart/" +
-                "KickstartDetailsEdit.do?ksid=" + ksdata.getId();
-            response.sendRedirect(url);
-            return null;
+        KickstartableTree tree = cmd.getKickstartableTree(
+                (Long)form.get(KSTREE_ID_PARAM));
+        Boolean useDefault = (Boolean) form.get(DEFAULT_DOWNLOAD_PARAM);
+        String downloadUrl = null;
+        if (useDefault != null && Boolean.TRUE.equals(useDefault)) {
+            downloadUrl = getDefaultDownloadLocation(tree);
         }
+        else {
+            downloadUrl = form.getString(USER_DOWNLOAD_PARAM);
+        }
+        log.debug("Using default download location: " + downloadUrl);
+        String ksLabel = form.getString(KICKSTART_LABEL_PARAM);
+        String rootPass = form.getString(ROOT_PASSWORD_PARAM);
+        String virtType = form.getString(VIRTUALIZATION_TYPE_LABEL_PARAM);
+        KickstartBuilder builder = new KickstartBuilder(ctx.getCurrentUser());
+        KickstartData ksdata = builder.create(ksLabel, tree, virtType, downloadUrl,
+                rootPass, helper.getKickstartHost());
+
+        String url = ctx.getRequest().getContextPath() + "/kickstart/" +
+            "KickstartDetailsEdit.do?ksid=" + ksdata.getId();
+        response.sendRedirect(url);
+        return null;
     }
 
     private void loadTrees(KickstartWizardHelper cmd, DynaActionForm form,
@@ -306,18 +300,11 @@ public class CreateProfileWizardAction extends RhnWizardAction {
             }
             else {
                 form.set(KSTREES_PARAM, trees);
-                if (trees != null && trees.size() > 0) {
-                    if (!currentChanId.equals(prevChanId)) {
-                        form.set(PREV_CHAN_ID, currentChanId);
-                        if (trees == null || trees.size() == 0) {
-                            form.set(KSTREE_ID_PARAM, null);
-                        }
-                        else {
-                            KickstartableTree tree = (KickstartableTree)
-                                trees.get(trees.size() - 1);
-                            form.set(KSTREE_ID_PARAM, tree.getId());
-                        }
-                    }
+                if (!currentChanId.equals(prevChanId)) {
+                    form.set(PREV_CHAN_ID, currentChanId);
+                    KickstartableTree tree = (KickstartableTree)
+                        trees.get(trees.size() - 1);
+                    form.set(KSTREE_ID_PARAM, tree.getId());
                 }
             }
         }
@@ -385,9 +372,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
         if (tree != null) {
             return tree.getDefaultDownloadLocation(host);
         }
-        else {
-            return "";
-        }
+        return "";
     }
 
     /**

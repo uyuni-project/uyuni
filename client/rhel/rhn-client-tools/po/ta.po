@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Tamil <tamil-users@lists.fedoraproject.org>\n"
 "Language: ta\n"
@@ -770,9 +770,8 @@ msgstr "*மின்னஞ்சல் முகவரி:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "கணினி ஏற்கனவே பதிவு செய்யப்பட்டாலும் பதிவு செய்யவும்"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -783,7 +782,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "தொடர வேண்டுமா?"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -795,15 +793,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"இந்த சிஸ்டம் RHN-உடன் RHN சான்றிதழ்-அடிப்படையான உரிம தொழில்நுட்பத்தைப் பயன்படுத்தி ஏற்கனவே "
-"பதிவு செய்யப்பட்டுள்ளது. இந்த கருவிக்கு RHN கிளாஸிக் தொழில்நுட்பத்தை பயன்படுத்தி பதிவு "
-"தேவைப்படுகிறது.\n"
-"\n"
-"சில வழக்கத்தை தவிர, Red Hat RHN-உடன் ஒருமுறை பதிவு செய்ய வாடிக்கையாளர்களை பரிந்துரை "
-"செய்கிறது.\n"
-"\n"
-"மேலும் தகவலுக்கு, மாற்று கருவிகள் உட்பட, இந்த கட்டுரையை பார்க்கவும்: https://access."
-"redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -2354,7 +2343,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2362,14 +2350,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"இந்த உதவியாளர் உங்கள் கணினியை Red Hat Network (RHN) உடன் இணைத்து மென்பொருள் "
-"மேம்படுத்தல்களான பாதுகாப்பு மேம்படுத்தல்கள் போன்றவற்றால் உங்கள் முழு துணையை பெற உதவுவார். "
-"நீங்கள் பின்வருவனற்றை இந்த நேரத்தில் கொண்டிருக்க வேண்டும்:\n"
-"\n"
-" * ஒரு பிணைய இணைப்பு\n"
-" * உங்கள் Red Hat புகுபதிவு மற்றும் கடவுச்சொல்\n"
-" * Red Hat Network சேட்டிலைட் அல்லது பதிலாளின் இடம் (விருப்பப்படி)\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2541,10 +2521,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Red Hat Network இடம்:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2569,6 +2548,3 @@ msgstr ""
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "Spacewalk/Satellite/Red Hat Network யுடன் பதிவு செய்யவும்."
-
-#~ msgid "System software updates already set up"
-#~ msgstr "கணினி மென்பொருள் மேம்படுத்தல்கள் ஏற்கனவே அமைக்கப்பட்டது"

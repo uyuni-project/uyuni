@@ -134,9 +134,7 @@ public class Channel extends BaseDomainHelper implements Comparable {
             return cfam.getLabel().startsWith(
                     ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL);
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     /**
@@ -563,9 +561,7 @@ public class Channel extends BaseDomainHelper implements Comparable {
         if (trustedOrgs != null) {
             return trustedOrgs.size();
         }
-        else {
-            return 0;
-        }
+        return 0;
     }
 
     /**

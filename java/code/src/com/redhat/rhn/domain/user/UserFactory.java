@@ -304,9 +304,7 @@ public  class UserFactory extends HibernateFactory {
         if (dr != null && dr.size() != 0) {
             return getLongValue(dr, USER_ID);
         }
-        else {
-            return -1;
-        }
+        return -1;
     }
 
     /**
@@ -695,7 +693,7 @@ public  class UserFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", inOrg.getId());
-        return (List<User>)listObjectsByNamedQuery("User.findAllUsersByOrg", params);
+        return listObjectsByNamedQuery("User.findAllUsersByOrg", params);
     }
 
     /**
@@ -708,7 +706,7 @@ public  class UserFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", inOrg.getId());
-        return (List<User>)listObjectsByNamedQuery("User.findAllOrgAdmins", params);
+        return listObjectsByNamedQuery("User.findAllOrgAdmins", params);
     }
 
     /**

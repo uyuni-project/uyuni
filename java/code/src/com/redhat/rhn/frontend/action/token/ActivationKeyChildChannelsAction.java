@@ -47,10 +47,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ActivationKeyChildChannelsAction extends RhnAction {
     private static final String CHANNELS = "channels";
-    private static final Long DEFAULT_CHANNEL_ID = -1L;
-    private static final String POSSIBLE_CHANNELS = "possibleChannels";
-    private static final String SELECTED_CHANNEL = "selectedChannel";
-
     /**
      *
      * {@inheritDoc}
@@ -125,7 +121,7 @@ public class ActivationKeyChildChannelsAction extends RhnAction {
                     key.getBaseChannel().getName());
         }
         else {
-            finalList = (ArrayList)channelList;
+            finalList = channelList;
         }
         context.getRequest().setAttribute(CHANNELS, finalList);
         form.set(CHANNELS, finalList);

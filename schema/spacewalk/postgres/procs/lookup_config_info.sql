@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 66ef8ae50f983aa465ebe116c6c5d0d44f4073ea
+-- oracle equivalent source sha1 3f919d54835de5605f895ca1c76f90e6deb80bfb
 --
 -- Copyright (c) 2008--2010 Red Hat, Inc.
 --
@@ -46,10 +46,22 @@ begin
         return r.id;
     end loop;
     -- If we got here, we don't have the id
-    select nextval('rhn_confinfo_id_seq') into v_id;
-    insert into rhnConfigInfo
-        (id, username, groupname, filemode, selinux_ctx, symlink_target_filename_id)
-    values (v_id, username_in, groupname_in, filemode_in, selinux_ctx_in, symlink_target_id);
+    v_id := nextval('rhn_confinfo_id_seq');
+    begin
+        perform pg_dblink_exec(
+            'insert into rhnConfigInfo ' ||
+            '(id, username, groupname, filemode, selinux_ctx, symlink_target_filename_id)' ||
+            'values (' || v_id || ', ' ||
+            coalesce(quote_literal(username_in), 'NULL') || ', ' ||
+            coalesce(quote_literal(groupname_in), 'NULL') || ', ' ||
+            coalesce(quote_literal( filemode_in), 'NULL') || ', ' ||
+            coalesce(quote_literal(selinux_ctx_in), 'NULL') || ', ' ||
+            coalesce(quote_literal(symlink_target_id), 'NULL') || ')');
+    exception when unique_violation then
+        for r in lookup_cursor loop
+            return r.id;
+        end loop;
+    end;
     return v_id;
 end;
-$$ language plpgsql;
+$$ language plpgsql immutable;

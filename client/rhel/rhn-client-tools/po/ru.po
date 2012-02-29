@@ -4,6 +4,7 @@
 #
 # Translators:
 # Andrew Martynov <andrewm@inventa.ru>, 2004, 2005.
+# Artyom Kunyov <artkun@guitarplayer.ru>, 2012.
 # Leonid Kanter <leon@geon.donetsk.ua>, 2003.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Vladimir Lazarenko <vlad@lazarenko.net>, 2004.
@@ -14,8 +15,8 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
-"Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
+"PO-Revision-Date: 2012-02-28 11:16+0000\n"
+"Last-Translator: Artyom Kunyov <artkun@guitarplayer.ru>\n"
 "Language-Team: Russian <trans-ru@lists.fedoraproject.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -777,9 +778,8 @@ msgstr "*Эл.адрес:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "Зарегистрировать систему, даже если она была зарегистрирована ранее"
+msgstr "Система уже зарегистрирована"
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -791,7 +791,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "Вы действительно хотите продолжить?"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -803,13 +802,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"Система уже зарегистрирована в RHN c использованием полномочий сертификатов. "
-"Эта программа требует регистрации в режиме RHN Classic.\n"
-"\n"
-"Red Hat напоминает, что регистрацию стоит осуществлять всего один раз.\n"
-"\n"
-"За дальнейшей информацией обратитесь к следующей статье в базе данных: "
-"https://access.redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -1322,7 +1314,7 @@ msgstr "Ошибка обработки файла oemInfo в поле:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:181
 msgid "Network error: "
-msgstr ""
+msgstr "Ошибка сети: "
 
 #: ../src/up2date_client/up2dateErrors.py:247
 msgid ""
@@ -1728,7 +1720,7 @@ msgstr ""
 
 #: ../src/bin/spacewalk-channel.py:157
 msgid "User interrupted process."
-msgstr ""
+msgstr "Прервано пользователем"
 
 #: ../src/bin/rhn-profile-sync.py:35
 msgid ""
@@ -2060,17 +2052,17 @@ msgstr ""
 #: ../data/rh_register.glade.h:69
 msgctxt "yes"
 msgid "<b>HTTP Proxy</b>"
-msgstr ""
+msgstr "<b>HTTP Proxy</b>"
 
 #: ../data/rh_register.glade.h:70
 msgctxt "yes"
 msgid "<b>Login:</b>"
-msgstr ""
+msgstr "<b>Логин:</b>"
 
 #: ../data/rh_register.glade.h:71
 msgctxt "yes"
 msgid "<b>Red Hat Network Location:</b>"
-msgstr ""
+msgstr "<b>Red Hat Network Location:</b>"
 
 #: ../data/rh_register.glade.h:72
 msgctxt "yes"
@@ -2080,7 +2072,7 @@ msgstr ""
 #: ../data/rh_register.glade.h:73
 msgctxt "yes"
 msgid "<b>Support:</b>"
-msgstr ""
+msgstr "<b>Поддержка:</b>"
 
 #: ../data/rh_register.glade.h:74
 msgctxt "yes"
@@ -2090,7 +2082,7 @@ msgstr ""
 #: ../data/rh_register.glade.h:75
 msgctxt "yes"
 msgid "<b>Warning</b>"
-msgstr ""
+msgstr "<b>Внимание</b>"
 
 #: ../data/rh_register.glade.h:76
 msgctxt "yes"
@@ -2100,22 +2092,22 @@ msgstr ""
 #: ../data/rh_register.glade.h:77
 msgctxt "yes"
 msgid "<big><b>System Name</b></big>"
-msgstr ""
+msgstr "<big><b>Имя системы</b></big>"
 
 #: ../data/rh_register.glade.h:78
 msgctxt "yes"
 msgid "<small><b>Example:</b> https://satellite.example.com</small>"
-msgstr ""
+msgstr "<small><b>Пример:</b> https://satellite.example.com</small>"
 
 #: ../data/rh_register.glade.h:79
 msgctxt "yes"
 msgid "<small><b>Example:</b> squid.example.com:3128</small>"
-msgstr ""
+msgstr "<small><b>Пример:</b> squid.example.com:3128</small>"
 
 #: ../data/rh_register.glade.h:80
 msgctxt "yes"
 msgid "<small><b>Example</b>: XXXX-XXXX-XXXX-XXXX</small>"
-msgstr ""
+msgstr "<small><b>Пример</b>: XXXX-XXXX-XXXX-XXXX</small>"
 
 #: ../data/rh_register.glade.h:81
 msgctxt "yes"
@@ -2123,6 +2115,8 @@ msgid ""
 "<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/legal/"
 "privacy_statement.html.</small>"
 msgstr ""
+"<small><b>Tip:</b> Red Hat ценит вашу личную информацию: http://www.redhat."
+"com/legal/privacy_statement.html.</small>"
 
 #: ../data/rh_register.glade.h:82
 msgctxt "yes"
@@ -2137,7 +2131,7 @@ msgctxt "yes"
 msgid ""
 "A security certificate compatible with <b>%s</b> was not found on this "
 "system."
-msgstr ""
+msgstr "Сертификат безопасности, совместимый с <b>%s</b>, не найден."
 
 #: ../data/rh_register.glade.h:85
 msgctxt "yes"
@@ -2145,12 +2139,14 @@ msgid ""
 "Access to the technical support experts at Red Hat or Red Hat's partners for "
 "help with any issues you might encounter with this system."
 msgstr ""
+"Доступ к технической поддержке Red Hat или ее партнеров для разрешения любых "
+"возникших проблем."
 
 #: ../data/rh_register.glade.h:86
 msgctxt "yes"
 msgid ""
 "Activate a previously purchased subscription you have not yet activated."
-msgstr ""
+msgstr "Активировать уже приобретенную подписку"
 
 #: ../data/rh_register.glade.h:87
 msgctxt "yes"
@@ -2167,17 +2163,17 @@ msgstr ""
 #: ../data/rh_register.glade.h:89
 msgctxt "yes"
 msgid "Are you sure you would like to continue?"
-msgstr ""
+msgstr "Вы точно хотите продолжить?"
 
 #: ../data/rh_register.glade.h:90
 msgctxt "yes"
 msgid "CPU Model:"
-msgstr ""
+msgstr "Модель CPU"
 
 #: ../data/rh_register.glade.h:91
 msgctxt "yes"
 msgid "CPU Speed:"
-msgstr ""
+msgstr "Частота CPU"
 
 #: ../data/rh_register.glade.h:92
 msgctxt "yes"
@@ -2197,11 +2193,13 @@ msgid ""
 "Download installation images for Red Hat Enterprise Linux releases, "
 "including new releases."
 msgstr ""
+"Загрузить установочные образы Red Hat Enterprise Linux, включая новейшие "
+"выпуски"
 
 #: ../data/rh_register.glade.h:95
 msgctxt "yes"
 msgid "ERROR"
-msgstr ""
+msgstr "ОШИБКА"
 
 #: ../data/rh_register.glade.h:96
 msgctxt "yes"
@@ -2219,6 +2217,8 @@ msgid ""
 "I <b>_don't</b> have an SSL certificate. I will contact my system "
 "administrator for assistance and will register at a later time."
 msgstr ""
+"У меня <b>_нет</b> сертификата SSL. Я обращусь к системному администратору и "
+"зарегистрируюсь позже."
 
 #: ../data/rh_register.glade.h:99
 msgctxt "yes"
@@ -2248,7 +2248,7 @@ msgstr ""
 #: ../data/rh_register.glade.h:103
 msgctxt "yes"
 msgid "IP Address:"
-msgstr ""
+msgstr "IP-адрес"
 
 #: ../data/rh_register.glade.h:104
 msgctxt "yes"
@@ -2258,7 +2258,7 @@ msgstr ""
 #: ../data/rh_register.glade.h:105
 msgctxt "yes"
 msgid "It appears this system has already been set up for software updates:"
-msgstr ""
+msgstr "Система уже настроена для получения обновлений:"
 
 #: ../data/rh_register.glade.h:106
 msgctxt "yes"
@@ -2270,7 +2270,7 @@ msgstr ""
 #: ../data/rh_register.glade.h:107
 msgctxt "yes"
 msgid "Memory:"
-msgstr ""
+msgstr "Память:"
 
 #: ../data/rh_register.glade.h:108
 msgctxt "yes"
@@ -2287,7 +2287,7 @@ msgstr ""
 #: ../data/rh_register.glade.h:110
 msgctxt "yes"
 msgid "Please review the subscription details below:"
-msgstr ""
+msgstr "Просмотрите информацию о подписке:"
 
 #: ../data/rh_register.glade.h:111
 msgctxt "yes"
@@ -2341,7 +2341,7 @@ msgstr ""
 #: ../data/rh_register.glade.h:120
 msgctxt "yes"
 msgid "Software update setup has been completed for this system."
-msgstr ""
+msgstr "Настройка обновлений завершена."
 
 #: ../data/rh_register.glade.h:121
 msgctxt "yes"
@@ -2364,7 +2364,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2372,14 +2371,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"Помощник поможет подключить систему к Red Hat Network (RHN) для получения "
-"обновлений, включая обновления безопасности для защиты системы. Для этого "
-"необходимо:\n"
-"\n"
-" * Сетевое соединение\n"
-" * Имя входа и пароль Red Hat\n"
-" * Адрес Red Hat Network Satellite или Proxy (необязательно)\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2498,12 +2489,12 @@ msgstr ""
 #: ../data/rh_register.glade.h:143
 msgctxt "yes"
 msgid "_No, I prefer to register at a later time."
-msgstr ""
+msgstr "_Нет, я зарегистрируюсь позже."
 
 #: ../data/rh_register.glade.h:144
 msgctxt "yes"
 msgid "_Password:"
-msgstr ""
+msgstr "_Пароль:"
 
 #: ../data/rh_register.glade.h:145
 msgctxt "yes"
@@ -2513,12 +2504,12 @@ msgstr ""
 #: ../data/rh_register.glade.h:146
 msgctxt "yes"
 msgid "_Take me back to the registration"
-msgstr ""
+msgstr "_Вернуться к регистрации"
 
 #: ../data/rh_register.glade.h:147
 msgctxt "yes"
 msgid "_Take me back to the setup process."
-msgstr ""
+msgstr "_Вернуться к установке."
 
 #: ../data/rh_register.glade.h:148
 msgctxt "yes"
@@ -2533,12 +2524,12 @@ msgstr ""
 #: ../data/rh_register.glade.h:150
 msgctxt "yes"
 msgid "_Yes, Continue"
-msgstr ""
+msgstr "_Да, продолжить"
 
 #: ../data/rh_register.glade.h:151
 msgctxt "yes"
 msgid "_Yes, I'd like to register now."
-msgstr ""
+msgstr "_Да, я хочу зарегистрироваться сейчас."
 
 #: ../data/rh_register.glade.h:152
 msgctxt "yes"
@@ -2548,13 +2539,12 @@ msgstr ""
 #: ../data/rh_register.glade.h:153
 msgctxt "yes"
 msgid "•"
-msgstr ""
+msgstr "•"
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Адрес Red Hat Network:"
+msgstr "• Сетевое соединение"
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2579,6 +2569,3 @@ msgstr ""
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "Регистрация в Spacewalk/Satellite/Red Hat Network."
-
-#~ msgid "System software updates already set up"
-#~ msgstr "Программные обновления системы уже настроены"

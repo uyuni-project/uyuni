@@ -24,9 +24,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.util.Map;
 import java.util.Set;
 
@@ -34,9 +31,7 @@ import java.util.Set;
  * ActivationKeyAclHandler
  * @version $Rev$
  */
-public class PackageAclHandler extends BaseHandler implements AclHandler {
-
-    private final Log log = LogFactory.getLog(this.getClass());
+public class PackageAclHandler extends BaseHandler {
 
     /**
      * Returns true if the Token whose id matches the given tid,

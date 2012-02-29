@@ -12,9 +12,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
-"Language-Team: Telugu (http://www.transifex.net/projects/p/fedora/team/te/)\n"
+"Language-Team: Telugu (http://www.transifex.net/projects/p/fedora/language/"
+"te/)\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -757,9 +758,8 @@ msgstr "*ఈటపా చిరునామా:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "అది ఇప్పటికే నమోదైనా కంప్యూటరును నమోదుచేయి"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -770,7 +770,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "మీరు నిజంగా కొనసాగించాలనుకుంటున్నారా?"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -782,13 +781,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"RHN ధృవీకరణపత్ర-ఆధారిత యెంటైటిల్‌మెంట్ సాంకేతికతను వుపయోగించి RHN తో యీ సిస్టమ్ యిప్పిటికే నమోదైవున్నట్లు "
-"అనిపిస్తోంది. ఈ సాధనంకు RHN క్లాసిక్ సాంకేతికత వుపయోగించి నమోదు చేయవలసివుంది.\n"
-"\n"
-"కొన్ని సందర్భాలలో తప్పించి, Red Hat వినియోగదారులను RHN తో వొకసారి మాత్రమే నమోదు కమ్మని చెబుతుంది.\n"
-"\n"
-"అధిక సమాచారము కొరకు, ప్రత్యామ్నాయ సాధనములతో కలిపి, యీ సమాచార నిధిని సంప్రదించుము ప్రకరణము: https://"
-"access.redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -2314,7 +2306,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2322,14 +2313,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"ఈ సహాయం మిమ్మల్ని Red Hat Network (RHN)కు సాఫ్టువేరు నవీకరణలను పొందటానికి సూచనలను ఇస్తుంది, "
-"మీ కంప్యూటరు రక్షణలకు సంబంధించిన రక్షణ నవీకరణలతోసహా.  మీరు ఈ సమయంలో కింది వాటిని అనుసరించవలసి "
-"ఉంది:\n"
-"\n"
-" * ఒక నెట్వర్కు అనుసంధానం\n"
-" * మీ Red Hat ప్రవేశం & అనుమతిపదం\n"
-" * Red Hat Network Satellite లేదా Proxy (ఐచ్చికం) యొక్క స్థానం\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2501,10 +2484,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Red Hat Network స్థానం:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2527,6 +2509,3 @@ msgstr "సాఫ్టువేర్ నవీకరణల కొరకు Spa
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "Spacewalk/Satellite/Red Hat Network కు నమోదుకండి."
-
-#~ msgid "System software updates already set up"
-#~ msgstr "కంప్యూరు సాఫ్టువేరు నవీకరణలు ఇప్పటికే అమర్చబడ్డాయి"

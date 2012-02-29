@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
-"Last-Translator: noriko <noriko@fedoraproject.org>\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
+"Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -783,9 +783,8 @@ msgstr "* Email アドレス:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "すでに登録済の場合でもシステムを登録する"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -796,7 +795,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "本当に続行しますか?"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -808,15 +806,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"このシステムは、既に RHN 証明書ベースのエンタイトルメント技術を使用して 登録"
-"されているようです。このツールには RHN クラッシック技術を 使用した登録が必要"
-"です。\n"
-"\n"
-"一部のケース以外は、Red Hat はお客様が RHN に一度だけ登録されることを 推奨し"
-"ています。\n"
-"\n"
-"代替のツールを含む詳細情報には、ナレッジベースの記事をご覧下さい: https://"
-"access.redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -2387,7 +2376,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2395,14 +2383,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"本アシスタントでは、セキュリティ更新などのソフトウェア更新を取得してご使用の"
-"システムが常にサポートされるようシステムを Red Hat Network (RHN) に接続する方"
-"法を案内していきます。 ここでは、次の事項が必要になります。\n"
-"\n"
-" * ネットワーク接続\n"
-" * Red Hat ログインとパスワード\n"
-" * Red Hat Network Satellite または Proxy の場所(オプション)\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2574,10 +2554,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Red Hat Network の場所:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2600,6 +2579,3 @@ msgstr "Spacewalk/Satellite/Red Hat Network からソフトウェア更新用に
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "Spacewalk/Satellite/Red Hat Network に登録する"
-
-#~ msgid "System software updates already set up"
-#~ msgstr "システムのソフトウェア更新はすでに設定されています"

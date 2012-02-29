@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008 Red Hat, Inc.
+-- Copyright (c) 2008-2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -11,36 +11,31 @@
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation. 
---
---
---
---
 
-CREATE OR REPLACE FUNCTION
-LOOKUP_CONFIG_FILENAME(name_in IN VARCHAR2)
-RETURN NUMBER
-IS
-	PRAGMA AUTONOMOUS_TRANSACTION;
-	name_id		NUMBER;
-BEGIN
-	SELECT id
-          INTO name_id
-          FROM rhnConfigFileName
-         WHERE path = name_in;
+create or replace function
+lookup_config_filename(name_in in varchar2)
+return number
+is
+    pragma autonomous_transaction;
+    name_id		number;
+begin
+    select id
+      into name_id
+      from rhnConfigFileName
+     where path = name_in;
 
-	RETURN name_id;
-EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-            INSERT INTO rhnConfigFileName (id, path) 
-                VALUES (rhn_cfname_id_seq.nextval, name_in)
-                RETURNING id INTO name_id;
-            COMMIT;
-	RETURN name_id;
-END;
+    return name_id;
+exception when no_data_found then
+    begin
+        select insert_config_filename(name_in) into name_id from dual;
+    exception when dup_val_on_index then
+        select id
+          into name_id
+          from rhnConfigFileName
+         where path = name_in;
+    end;
+
+	return name_id;
+end;
 /
-SHOW ERRORS
-
---
--- Revision 1.1  2003/07/31 16:55:34  cturner
--- lookup helper function and blob for configfiles
---
+show errors

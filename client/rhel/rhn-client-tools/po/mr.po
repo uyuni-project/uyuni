@@ -12,9 +12,9 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
-"Language-Team: Marathi (http://www.transifex.net/projects/p/fedora/team/"
+"Language-Team: Marathi (http://www.transifex.net/projects/p/fedora/language/"
 "mr/)\n"
 "Language: mr\n"
 "MIME-Version: 1.0\n"
@@ -766,9 +766,8 @@ msgstr "*ईमेल पत्ता:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "प्रणाली आधिच नोंदवली असेल तरीही नोंदवा"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -779,7 +778,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "तुमची खात्री आहे तुम्ही चालू ठेवू इच्छिता?"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -791,13 +789,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"RHN सर्टिफिकेट-बेस्ड् एंटाइटलमेंट तंत्राचा वापर करून ही प्रणाली आधिपासूनच RHN सह नोंदणीकृत "
-"आहे असे आढळते. या साधणाला RHN क्लासिक तंत्राचा वापर करून नोंदणी करणे आवश्यक आहे.\n"
-"\n"
-"ठराविक घटनांना वगळता, Red Hat ग्राहकांना RHN सह फक्त एकदाच नोंदणी करायला सूचवतो.\n"
-"\n"
-"वैकल्पिक साधणांसह अधिक माहितीकरीता, हा नॉलेज बेस लेख पहा: https://access.redhat."
-"com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -2330,7 +2321,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2338,14 +2328,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"हा सहाय्यक तुम्हास तुमची प्रणाली Red Hat Network (RHN) शी सॉफ्टवेयर अद्यतने "
-"मिळवण्यासाठी, ज्यात सुरक्षा अद्यतने समाविष्ट आहेत, जोडण्यास मार्गदर्शन करेल, ज्यामुळे तुमची "
-"प्रणाली समर्थित आणि सुसंगत राहील.  तुम्हास या वेळी खालील आवश्यक असेल:\n"
-"\n"
-" * संजाळ जोडणी\n"
-" * तुमचे Red Hat लॉगीन आणि गुप्तशब्द\n"
-" * Red Hat Network Satellite किंवा Proxy (वैकल्पिक) चे ठिकाण\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2517,10 +2499,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Red Hat Network ठिकाण:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2543,6 +2524,3 @@ msgstr "Spacewalk/Satellite/Red Hat Network पासून सॉफ्टव�
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "Spacewalk/Satellite/Red Hat Network शी नोंदणी करा."
-
-#~ msgid "System software updates already set up"
-#~ msgstr "प्रणाली सॉफ्टवेयर अद्यतने आधिच व्यवस्थित"

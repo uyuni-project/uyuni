@@ -313,7 +313,7 @@ def do_activationkey_listchildchannels(self, args):
     details = self.client.activationkey.getDetails(self.session, key)
 
     if len(details.get('child_channel_labels')):
-        print '\n'.join(details.get('child_channel_labels'))
+        print '\n'.join(sorted(details.get('child_channel_labels')))
 
 ####################
 
@@ -654,11 +654,23 @@ def do_activationkey_delete(self, args):
         self.help_activationkey_delete()
         return
 
-    key = args[0]
+    # allow globbing of activationkey names
+    keys = filter_results(self.do_activationkey_list('', True), args)
+    logging.debug("activationkey_delete called with args %s, keys=%s" % \
+        (args,keys))
 
-    if not self.user_confirm('Delete this activation key [y/N]:'): return
+    if not len(keys):
+        logging.error("No keys matched argument %s" % args)
+        return
 
-    self.client.activationkey.delete(self.session, key)
+    # Print the keys prior to the confimation
+    print '\n'.join(sorted(keys))
+
+    if not self.user_confirm('Delete activation key(s) [y/N]:'): return
+
+    for key in keys:
+        logging.debug("Deleting key %s" % key)
+        self.client.activationkey.delete(self.session, key)
 
 ####################
 
@@ -778,7 +790,7 @@ def do_activationkey_details(self, args):
         print '-----------------'
         print details.get('base_channel_label')
 
-        for channel in details.get('child_channel_labels'):
+        for channel in sorted(details.get('child_channel_labels')):
             print ' |-- %s' % channel
 
         print
@@ -800,7 +812,7 @@ def do_activationkey_details(self, args):
         print
         print 'Packages'
         print '--------'
-        for package in details.get('packages'):
+        for package in sorted(details.get('packages')):
             name = package.get('name')
 
             if package.get('arch'):
@@ -1051,7 +1063,7 @@ def do_activationkey_export(self, args):
         logging.info("Exporting ALL activation keys to %s" % filename)
         keys = self.do_activationkey_list('', True)
     else:
-        # allow globbing of activationkey channel names
+        # allow globbing of activationkey names
         keys = filter_results(self.do_activationkey_list('', True), args)
         logging.debug("activationkey_export called with args %s, keys=%s" % \
             (args, keys))

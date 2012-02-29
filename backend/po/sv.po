@@ -4,6 +4,7 @@
 #
 # Translators:
 # Christian Rose <menthos@menthos.com>, 2002, 2003, 2004, 2005.
+# Göran Uddeborg <goeran@uddeborg.se>, 2012.
 # Magnus Larsson <fedoratrans@gmail.com>, 2006, 2007.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 msgid ""
@@ -11,9 +12,9 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:18+0100\n"
-"PO-Revision-Date: 2011-03-22 15:47+0000\n"
-"Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
-"Language-Team: Swedish (http://www.transifex.net/projects/p/fedora/team/"
+"PO-Revision-Date: 2012-02-19 18:39+0000\n"
+"Last-Translator: Göran Uddeborg <goeran@uddeborg.se>\n"
+"Language-Team: Swedish (http://www.transifex.net/projects/p/fedora/language/"
 "sv/)\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
@@ -1332,11 +1333,11 @@ msgstr "Fullständig sökväg till filen måste anges"
 
 #: ../common/rhnException.py:324
 msgid "Invalid revision number"
-msgstr ""
+msgstr "Ogiltigt revisionsnummer"
 
 #: ../common/rhnException.py:325
 msgid "Cannot compare files of different file type"
-msgstr ""
+msgstr "Kan inte jämföra filer med olika filtyp"
 
 #. 5000 - 5099: entitlement mapper errors
 #: ../common/rhnException.py:328

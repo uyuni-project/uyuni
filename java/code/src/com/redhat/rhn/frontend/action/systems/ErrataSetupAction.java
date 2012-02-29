@@ -129,7 +129,7 @@ public class ErrataSetupAction extends RhnAction implements Listable {
 
     private List<Map<String, Object>> getComboList(HttpServletRequest request) {
 
-        String selected = (String) request.getParameter(SELECTOR);
+        String selected = request.getParameter(SELECTOR);
 
         List<Map<String, Object>> combo = new ArrayList<Map<String, Object>>();
 
@@ -296,9 +296,7 @@ public class ErrataSetupAction extends RhnAction implements Listable {
         if (currency) {
             return SystemManager.relevantCurrencyErrata(user, sid, eType, severity);
         }
-        else {
-            return SystemManager.relevantErrata(user, sid, typeList);
-        }
+        return SystemManager.relevantErrata(user, sid, typeList);
     }
 
 }

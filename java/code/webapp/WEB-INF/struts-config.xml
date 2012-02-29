@@ -1564,17 +1564,6 @@
       <forward name="default" path="/WEB-INF/pages/admin/users/userlist.jsp" />
     </action>
 
-     <action path="/users/UserListSubmit"
-         scope="request"
-         input="/WEB-INF/pages/admin/users/userlist.jsp"
-         type="com.redhat.rhn.frontend.action.user.UserListAction"
-         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
-         parameter="dispatch">
-       <set-property property="acls"
-                    value="user_role(org_admin)"/>
-       <forward name="default" path="/users/UserList.do" redirect="true" />
-     </action>
-
     <action path="/users/ActiveList"
         scope="request"
         input="/WEB-INF/pages/admin/users/activelist.jsp"
@@ -1597,18 +1586,6 @@
       <forward name="default" path="/WEB-INF/pages/admin/users/disabledlist.jsp" />
 	  <forward name="enable" path="/users/EnableConfirm.do" redirect="true" />
     </action>
-
-     <action path="/users/DisabledListSubmit"
-         scope="request"
-         input="/WEB-INF/pages/admin/users/disabledlist.jsp"
-         type="com.redhat.rhn.frontend.action.user.DisabledListSetupAction"
-         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
-         parameter="dispatch">
-       <set-property property="acls"
-                    value="user_role(org_admin)"/>
-       <forward name="default" path="/users/DisabledList.do" redirect="true" />
-       <forward name="enable" path="/users/EnableConfirm.do" redirect="true" />
-     </action>
 
     <action path="/users/EnableConfirm"
         scope="request"
@@ -2615,16 +2592,6 @@
                  path="/WEB-INF/pages/systems/systemlist.jsp"/>
     </action>
 
-     <action path="/systems/SystemListSubmit"
-         scope="request"
-         input="/WEB-INF/pages/systems/systemlist.jsp"
-         type="com.redhat.rhn.frontend.action.systems.SystemListAction"
-         parameter="dispatch">
-         <forward name="default"
-                  path="/systems/SystemList.do"
-                  redirect="true"/>
-     </action>
-
     <action path="/systems/DuplicateIPList"
         scope="request"
         input="/WEB-INF/pages/systems/duplicate/duplicatesystems.jsp"
@@ -2716,16 +2683,6 @@
                  path="/WEB-INF/pages/systems/outofdatelist.jsp"/>
     </action>
 
-     <action path="/systems/OutOfDateSubmit"
-         scope="request"
-         input="/WEB-INF/pages/systems/outofdatelist.jsp"
-         type="com.redhat.rhn.frontend.action.systems.OutOfDateAction"
-         parameter="dispatch">
-         <forward name="default"
-                  path="/systems/OutOfDate.do"
-                  redirect="true"/>
-     </action>
-
     <action path="/systems/Unentitled"
         scope="request"
         input="/WEB-INF/pages/systems/unentitledlist.jsp"
@@ -2735,16 +2692,6 @@
         <forward name="default"
                  path="/WEB-INF/pages/systems/unentitledlist.jsp"/>
     </action>
-
-     <action path="/systems/UnentitledSubmit"
-         scope="request"
-         input="/WEB-INF/pages/systems/unentitledlist.jsp"
-         type="com.redhat.rhn.frontend.action.systems.UnentitledAction"
-         parameter="dispatch">
-         <forward name="default"
-                  path="/systems/Unentitled.do"
-                  redirect="true"/>
-     </action>
 
     <action path="/systems/Ungrouped"
         scope="request"
@@ -2758,16 +2705,6 @@
                  path="/WEB-INF/pages/systems/ungroupedlist.jsp"/>
     </action>
 
-     <action path="/systems/UngroupedSubmit"
-         scope="request"
-         input="/WEB-INF/pages/systems/ungroupedlist.jsp"
-         type="com.redhat.rhn.frontend.action.systems.UngroupedAction"
-         parameter="dispatch">
-         <forward name="default"
-                  path="/systems/Ungrouped.do"
-                  redirect="true"/>
-     </action>
-
     <action path="/systems/Inactive"
         scope="request"
         input="/WEB-INF/pages/systems/inactivelist.jsp"
@@ -2777,16 +2714,6 @@
         <forward name="default"
                  path="/WEB-INF/pages/systems/inactivelist.jsp"/>
     </action>
-
-     <action path="/systems/InactiveSubmit"
-         scope="request"
-         input="/WEB-INF/pages/systems/inactivelist.jsp"
-         type="com.redhat.rhn.frontend.action.systems.InactiveAction"
-         parameter="dispatch">
-         <forward name="default"
-                  path="/systems/Inactive.do"
-                  redirect="true"/>
-     </action>
 
     <action path="/systems/Registered"
         scope="request"
@@ -2835,16 +2762,6 @@
                  path="/WEB-INF/pages/systems/proxylist.jsp"/>
     </action>
 
-     <action path="/systems/ProxyListSubmit"
-         scope="request"
-         input="/WEB-INF/pages/systems/proxylist.jsp"
-         type="com.redhat.rhn.frontend.action.systems.ProxyListAction"
-         parameter="dispatch">
-         <forward name="default"
-                  path="/systems/ProxyList.do"
-                  redirect="true"/>
-     </action>
-
     <action path="/systems/VirtualSystemsList"
         scope="request"
         input="/WEB-INF/pages/systems/virtuallist.jsp"
@@ -2876,16 +2793,6 @@
         <forward name="default"
                  path="/WEB-INF/pages/systems/grouplist.jsp"/>
     </action>
-
-     <action path="/systems/SystemGroupListSubmit"
-         scope="request"
-         input="/WEB-INF/pages/systems/grouplist.jsp"
-         type="com.redhat.rhn.frontend.action.systems.SystemGroupListAction"
-         parameter="dispatch">
-         <forward name="default"
-                  path="/systems/SystemGroupList.do"
-                  redirect="true"/>
-     </action>
 
     <action path="/systems/SystemEntitlements"
 	name="systemEntitlementsForm"
@@ -4348,20 +4255,6 @@
         <forward name="error" path="/systems/details/packages/profiles/CompareProfiles.do" redirect="true" />
     </action>
 
-    <action path="/systems/details/packages/profiles/CompareProfilesSubmit"
-        scope="request"
-        input="/WEB-INF/pages/systems/details/packages/profiles/compareprofiles.jsp"
-        type="com.redhat.rhn.frontend.action.rhnpackage.profile.CompareProfileAction"
-        parameter="dispatch">
-        <forward name="default"
-                 path="/systems/details/packages/profiles/CompareProfiles.do"
-                 redirect="true" />
-        <forward name="sync"
-                 path="/systems/details/packages/profiles/SyncProfiles.do"
-                 redirect="true" />
-
-    </action>
-
     <action path="/systems/details/packages/profiles/CompareSystems"
         scope="request"
         input="/WEB-INF/pages/systems/details/packages/profiles/comparesystems.jsp"
@@ -4373,19 +4266,6 @@
                  path="/systems/details/packages/profiles/SyncSystems.do"
                  redirect="true" />
         <forward name="error" path="/systems/details/packages/profiles/CompareSystems.do" redirect="true" />
-    </action>
-
-    <action path="/systems/details/packages/profiles/CompareSystemsSubmit"
-        scope="request"
-        input="/WEB-INF/pages/systems/details/packages/profiles/comparesystems.jsp"
-        type="com.redhat.rhn.frontend.action.rhnpackage.profile.CompareSystemAction"
-        parameter="dispatch">
-        <forward name="default"
-                 path="/systems/details/packages/profiles/CompareSystems.do"
-                 redirect="true" />
-        <forward name="sync"
-                 path="/systems/details/packages/profiles/SyncSystems.do"
-                 redirect="true" />
     </action>
 
     <action path="/systems/details/packages/profiles/SyncProfiles"
@@ -5557,16 +5437,6 @@
                  path="/WEB-INF/pages/kickstart/kickstartoverview.jsp"/>
     </action>
 
-    <action path="/kickstart/KickstartsSubmit"
-        scope="request"
-        input="/WEB-INF/pages/kickstart/kickstarts.jsp"
-        type="com.redhat.rhn.frontend.action.kickstart.KickstartsSubmitAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/kickstart/kickstarts.jsp"/>
-    </action>
-
   <action path="/kickstart/KickstartDetailsEdit"
         scope="request"
         name="kickstartDetailsForm"
@@ -6132,10 +6002,6 @@
          <forward name="success"
                  path="/kickstart/KickstartPackageProfileEdit.do" redirect="true"/>
     </action>
-
-    <action path="/kickstart/DownloadLog"
-        scope="request"
-        type="com.redhat.rhn.frontend.action.kickstart.RenderKickstartLogAction" />
 
     <!-- This action should not be called directly by the client.
          Instead, this url should be invoked via a mod_rewrite RewriteRule.
@@ -6725,17 +6591,6 @@
 	  		path="/configuration/channel/DeployConfirm.do"/>
 	</action>
 
-	<action path="/configuration/DeleteChannelSubmit"
-        scope="request"
-        input="/WEB-INF/pages/configuration/channel/deleteChannel.jsp"
-        type="com.redhat.rhn.frontend.action.configuration.DeleteChannelSubmitAction"
-		name="submittedForm"
-		className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(config_admin);"/>
-        <forward name="default" redirect="true"
-			path="/configuration/GlobalConfigChannelList.do"/>
-    </action>
-
     <action path="/configuration/ChannelUploadFiles"
         scope="request"
 		name="configFileForm"
@@ -7088,13 +6943,6 @@
 	<!-- ===== END CONFIGURATION ===== -->
 	
 	<!-- ===== START ISO DOWNLOAD ===== -->
-	<action path="/software/downloads/Help"
-        scope="request"
-        input="/WEB-INF/pages/software/downloads/isohelp.jsp"
-		type="com.redhat.rhn.frontend.action.channel.ISOTreeAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <forward name="default" path="/WEB-INF/pages/software/downloads/isohelp.jsp"/>
-    </action>
 	<action path="/software/channel/downloads/Download"
         scope="request"
         input="/WEB-INF/pages/software/downloads/download.jsp"
@@ -7541,12 +7389,6 @@
 
     <action path="/admin/config/Orgs"
             forward="/WEB-INF/pages/admin/config/multiorg.jsp" />
-    <action path="/account/VerificationSent"
-            forward="/WEB-INF/pages/common/email_sent.jsp" />
-    <action path="/users/VerificationSent"
-            forward="/WEB-INF/pages/common/email_sent.jsp" />
-    <action path="/users/RPCPlaceholder"
-            forward="/WEB-INF/pages/common/placeholders/rpc-placeholder.jsp" />
     <action path="/errors/Permission"
             forward="/WEB-INF/pages/common/errors/permission.jsp" />
     <action path="/Load"

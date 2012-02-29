@@ -12,7 +12,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.7.10
+Version: 1.7.13
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -48,7 +48,6 @@ Requires: newt
 %endif
 Requires: logrotate
 Requires: python-dmidecode
-Requires: libxml2-python
 Requires: suseRegisterInfo
 %if 0%{?suse_version}
 Requires: zypper
@@ -399,6 +398,17 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Tue Feb 28 2012 Jan Pazdziora 1.7.13-1
+- Update .po and .pot files for rhn-client-tools.
+- Download translations from Transifex for rhn-client-tools.
+
+* Mon Feb 27 2012 Simon Lukasik <slukasik@redhat.com> 1.7.12-1
+- Do not require libxml2-python (slukasik@redhat.com)
+
+* Mon Feb 27 2012 Jan Pazdziora 1.7.11-1
+- 790748 - prevent introspection.
+- Make indent more clear.
+
 * Thu Feb 23 2012 Jan Pazdziora 1.7.10-1
 - removed unused file (michael.mraka@redhat.com)
 

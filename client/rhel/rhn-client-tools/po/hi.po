@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Hindi <indlinux-hindi@lists.sourceforge.net>\n"
 "Language: hi\n"
@@ -761,9 +761,8 @@ msgstr "*ई-डाक पता:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "अगर पहले से पंजीकृत है फिर भी सिस्टम को पंजीकृत करें"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -774,7 +773,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "क्या आप जारी रखने के लिये निश्चित हैं?"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -786,14 +784,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"ऐसा लगता है कि यह सिस्टम पहले से RHN से RHN प्रमाणपत्र आधारित एंटाइटेलमेंट प्रौद्योगिकी के "
-"उपयोग से पंजीकृत है. इस औज़ार के लिए RHN क्लासिक प्रौद्योगिकी के उपयोग से पंजीयन जरूरी "
-"है.\n"
-"\n"
-"सिवाय कुछ स्थितियों के, Red Hat की अनुशंसा है कि केवल ग्राहक RHN से एकबार पंजीकृत होएँ.\n"
-"\n"
-"अधिक जानकारी के लिए, वैकल्पिक औज़ारों सहित, इस नॉलेज बेस आलेख का संदर्भ लें: https://"
-"access.redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -2323,7 +2313,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2331,14 +2320,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"यह सहायक आपके सिस्टम को Red Hat Network (RHN) से संबंधित करने में गाइड करेगा सॉफ्टवेयर "
-"अद्यतन पाने के लिये, सुरक्षा अद्यतन के साथ, आपके सिस्मट को समर्थित व संगत रखने के लिये. "
-"आपको अभी निम्नलिखित की जरूरत होगी:\n"
-"\n"
-" * एक संजाल संबंधन\n"
-" * आपका Red Hat लॉगिन व शब्दकूट\n"
-" * Red Hat Network सैटेलाइट या प्रॉक्सी (वैकल्पिक) का स्थान\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2510,10 +2491,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Red Hat नेटवर्क स्थान:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2536,6 +2516,3 @@ msgstr "Spacewalk/Satellite/Red Hat Network से सॉफ्टवेयर �
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "Spacewalk/Satellite/Red Hat Network में पंजीकृत करें."
-
-#~ msgid "System software updates already set up"
-#~ msgstr "सिस्टम सॉफ्टवेयर अद्यतन पहले से सेटअप"

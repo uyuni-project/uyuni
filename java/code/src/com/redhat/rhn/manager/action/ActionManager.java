@@ -34,6 +34,8 @@ import com.redhat.rhn.domain.action.kickstart.KickstartGuestActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
+import com.redhat.rhn.domain.action.scap.ScapAction;
+import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.solaris.SolarisPackagePatchClusterInstallAction;
 import com.redhat.rhn.domain.action.solaris.SolarisPackagePatchInstallAction;
@@ -1018,89 +1020,87 @@ public class ActionManager extends BaseManager {
         pd.setLabel("delta-" + System.currentTimeMillis());
         PackageFactory.save(pd);
 
-        if (pkgs != null) {
-          // this is SOOOO WRONG, we need to get rid of DataSource
-          WriteMode m = ModeFactory.getWriteMode("Action_queries",
-                  "insert_package_delta_element");
-          for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
-              PackageMetadata pm = (PackageMetadata) itr.next();
-              Map params = new HashMap();
-              params.put("delta_id", pd.getId());
-              if (pm.getComparisonAsInt() == PackageMetadata.KEY_THIS_ONLY) {
+        // this is SOOOO WRONG, we need to get rid of DataSource
+        WriteMode m = ModeFactory.getWriteMode("Action_queries",
+                "insert_package_delta_element");
+        for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
+            PackageMetadata pm = (PackageMetadata) itr.next();
+            Map params = new HashMap();
+            params.put("delta_id", pd.getId());
+            if (pm.getComparisonAsInt() == PackageMetadata.KEY_THIS_ONLY) {
 
-                  if (log.isDebugEnabled()) {
-                      log.debug("compare returned [KEY_THIS_ONLY]; " +
-                                "deleting package from system");
-                  }
+                if (log.isDebugEnabled()) {
+                    log.debug("compare returned [KEY_THIS_ONLY]; " +
+                            "deleting package from system");
+                }
 
-                  params.put("operation", ActionFactory.TXN_OPERATION_DELETE);
-                  params.put("n", pm.getName());
-                  params.put("v", pm.getSystem().getVersion());
-                  params.put("r", pm.getSystem().getRelease());
-                  String epoch = pm.getSystem().getEpoch();
-                  params.put("e", epoch == "" ? null : epoch);
-                  params.put("a", pm.getSystem().getArch() != null ?
-                          pm.getSystem().getArch() : "");
-                  m.executeUpdate(params);
-              }
-              else if (pm.getComparisonAsInt() == PackageMetadata.KEY_OTHER_ONLY) {
+                params.put("operation", ActionFactory.TXN_OPERATION_DELETE);
+                params.put("n", pm.getName());
+                params.put("v", pm.getSystem().getVersion());
+                params.put("r", pm.getSystem().getRelease());
+                String epoch = pm.getSystem().getEpoch();
+                params.put("e", epoch == "" ? null : epoch);
+                params.put("a", pm.getSystem().getArch() != null ?
+                        pm.getSystem().getArch() : "");
+                m.executeUpdate(params);
+            }
+            else if (pm.getComparisonAsInt() == PackageMetadata.KEY_OTHER_ONLY) {
 
-                  if (log.isDebugEnabled()) {
-                      log.debug("compare returned [KEY_OTHER_ONLY]; " +
-                                "installing package to system: " +
-                                pm.getName() + "-" + pm.getOtherEvr());
-                  }
+                if (log.isDebugEnabled()) {
+                    log.debug("compare returned [KEY_OTHER_ONLY]; " +
+                            "installing package to system: " +
+                            pm.getName() + "-" + pm.getOtherEvr());
+                }
 
-                  params.put("operation", ActionFactory.TXN_OPERATION_INSERT);
-                  params.put("n", pm.getName());
-                  params.put("v", pm.getOther().getVersion());
-                  params.put("r", pm.getOther().getRelease());
-                  String epoch = pm.getOther().getEpoch();
-                  params.put("e", epoch == "" ? null : epoch);
-                  params.put("a", pm.getOther().getArch() != null ?
-                          pm.getOther().getArch() : "");
-                  m.executeUpdate(params);
+                params.put("operation", ActionFactory.TXN_OPERATION_INSERT);
+                params.put("n", pm.getName());
+                params.put("v", pm.getOther().getVersion());
+                params.put("r", pm.getOther().getRelease());
+                String epoch = pm.getOther().getEpoch();
+                params.put("e", epoch == "" ? null : epoch);
+                params.put("a", pm.getOther().getArch() != null ?
+                        pm.getOther().getArch() : "");
+                m.executeUpdate(params);
 
-              }
-              else if (pm.getComparisonAsInt() == PackageMetadata.KEY_THIS_NEWER ||
-                       pm.getComparisonAsInt() == PackageMetadata.KEY_OTHER_NEWER) {
+            }
+            else if (pm.getComparisonAsInt() == PackageMetadata.KEY_THIS_NEWER ||
+                    pm.getComparisonAsInt() == PackageMetadata.KEY_OTHER_NEWER) {
 
-                  if (log.isDebugEnabled()) {
-                      log.debug("compare returned [KEY_THIS_NEWER OR KEY_OTHER_NEWER]; " +
-                                "deleting package ["  + pm.getName() + "-" +
-                                pm.getSystemEvr() + "] from system " +
-                                "installing package ["  + pm.getName() + "-" +
-                                pm.getOther().getEvr() + "] to system");
-                  }
+                if (log.isDebugEnabled()) {
+                    log.debug("compare returned [KEY_THIS_NEWER OR KEY_OTHER_NEWER]; " +
+                            "deleting package ["  + pm.getName() + "-" +
+                            pm.getSystemEvr() + "] from system " +
+                            "installing package ["  + pm.getName() + "-" +
+                            pm.getOther().getEvr() + "] to system");
+                }
 
-                  String epoch;
-                  if (isPackageRemovable(pm.getName())) {
-                      params.put("operation", ActionFactory.TXN_OPERATION_DELETE);
-                      params.put("n", pm.getName());
-                      params.put("v", pm.getSystem().getVersion());
-                      params.put("r", pm.getSystem().getRelease());
-                      epoch = pm.getSystem().getEpoch();
-                      params.put("e", epoch == "" ? null : epoch);
-                      params.put("a", pm.getSystem().getArch() != null ?
-                          pm.getOther().getArch() : "");
-                      m.executeUpdate(params);
-                  }
+                String epoch;
+                if (isPackageRemovable(pm.getName())) {
+                    params.put("operation", ActionFactory.TXN_OPERATION_DELETE);
+                    params.put("n", pm.getName());
+                    params.put("v", pm.getSystem().getVersion());
+                    params.put("r", pm.getSystem().getRelease());
+                    epoch = pm.getSystem().getEpoch();
+                    params.put("e", epoch == "" ? null : epoch);
+                    params.put("a", pm.getSystem().getArch() != null ?
+                            pm.getOther().getArch() : "");
+                    m.executeUpdate(params);
+                }
 
-                  params.put("operation", ActionFactory.TXN_OPERATION_INSERT);
-                  params.put("n", pm.getName());
-                  params.put("v", pm.getOther().getVersion());
-                  params.put("r", pm.getOther().getRelease());
-                  epoch = pm.getOther().getEpoch();
-                  params.put("e", epoch == "" ? null : epoch);
-                  params.put("a", pm.getOther().getArch() != null ?
-                          pm.getOther().getArch() : "");
-                  m.executeUpdate(params);
-              }
-          }
+                params.put("operation", ActionFactory.TXN_OPERATION_INSERT);
+                params.put("n", pm.getName());
+                params.put("v", pm.getOther().getVersion());
+                params.put("r", pm.getOther().getRelease());
+                epoch = pm.getOther().getEpoch();
+                params.put("e", epoch == "" ? null : epoch);
+                params.put("a", pm.getOther().getArch() != null ?
+                        pm.getOther().getArch() : "");
+                m.executeUpdate(params);
+            }
         }
 
         // this is SOOOO WRONG, we need to get rid of DataSource
-        WriteMode m = ModeFactory.getWriteMode("Action_queries",
+        m = ModeFactory.getWriteMode("Action_queries",
             "insert_action_package_delta");
         Map params = new HashMap();
         params.put("action_id", action.getId());
@@ -1136,10 +1136,8 @@ public class ActionManager extends BaseManager {
             return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
                 ActionFactory.TYPE_PACKAGES_REMOVE, earliestAction);
         }
-        else {
-            return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
-                ActionFactory.TYPE_SOLARISPKGS_REMOVE, earliestAction);
-        }
+        return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
+            ActionFactory.TYPE_SOLARISPKGS_REMOVE, earliestAction);
     }
 
 
@@ -1157,10 +1155,8 @@ public class ActionManager extends BaseManager {
             return (PackageAction) schedulePackageAction(scheduler, pkgs,
                 ActionFactory.TYPE_PACKAGES_REMOVE, earliestAction, srvr);
         }
-        else {
-            return (PackageAction) schedulePackageAction(scheduler, pkgs,
-                ActionFactory.TYPE_SOLARISPKGS_REMOVE, earliestAction, srvr);
-        }
+        return (PackageAction) schedulePackageAction(scheduler, pkgs,
+            ActionFactory.TYPE_SOLARISPKGS_REMOVE, earliestAction, srvr);
     }
 
     /**
@@ -1241,10 +1237,8 @@ public class ActionManager extends BaseManager {
             return (PackageAction) schedulePackageAction(scheduler, pkgs,
                 ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction, srvr);
         }
-        else {
-            return (PackageAction) schedulePackageAction(scheduler, pkgs,
-                ActionFactory.TYPE_SOLARISPKGS_INSTALL, earliestAction, srvr);
-        }
+        return (PackageAction) schedulePackageAction(scheduler, pkgs,
+            ActionFactory.TYPE_SOLARISPKGS_INSTALL, earliestAction, srvr);
     }
 
     /**
@@ -1292,10 +1286,8 @@ public class ActionManager extends BaseManager {
             return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
                     ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction);
         }
-        else {
-            return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
-                    ActionFactory.TYPE_SOLARISPKGS_INSTALL, earliestAction);
-        }
+        return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
+                ActionFactory.TYPE_SOLARISPKGS_INSTALL, earliestAction);
     }
 
     /**
@@ -1810,5 +1802,33 @@ public class ActionManager extends BaseManager {
         );
     }
 
+    /**
+     * Schedules Xccdf evaluation.
+     * @param scheduler User scheduling the action.
+     * @param srvr Server for which the action affects.
+     * @param path Path for the Xccdf content.
+     * @param parameters Additional parameters for oscap tool.
+     * @param earliestAction Date of earliest action to be executed.
+     * @return scheduled Scap Action
+     */
+    public static ScapAction scheduleXccdfEval(User scheduler, Server srvr, String path,
+            String parameters, Date earliestAction) {
+        if (!SystemManager.hasEntitlement(srvr.getId(),
+                    EntitlementManager.MANAGEMENT)) {
+            throw new MissingEntitlementException(
+                    EntitlementManager.MANAGEMENT.getHumanReadableLabel());
+        }
+
+        Set<Long> serverIds = new HashSet<Long>();
+        serverIds.add(srvr.getId());
+        ScapActionDetails scapDetails = new ScapActionDetails(path, parameters);
+        ScapAction action = (ScapAction) scheduleAction(scheduler,
+            ActionFactory.TYPE_SCAP_XCCDF_EVAL,
+            ActionFactory.TYPE_SCAP_XCCDF_EVAL.getName(),
+            earliestAction, serverIds);
+        action.setScapActionDetails(scapDetails);
+        ActionFactory.save(action);
+        return action;
+    }
 
 }

@@ -20,7 +20,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.7.30
+Version: 1.7.36
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -803,6 +803,29 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Tue Feb 28 2012 Jan Pazdziora 1.7.36-1
+- Update .po and .pot files for spacewalk-backend.
+- Download translations from Transifex for spacewalk-backend.
+- Remove unstructured debugging outputs. (slukasik@redhat.com)
+
+* Tue Feb 28 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.35-1
+- fixed 'speeded up searching whether package is already synced'
+
+* Tue Feb 28 2012 Jan Pazdziora 1.7.34-1
+- Avoid vn_rhnpackageevr_epoch violation.
+
+* Mon Feb 27 2012 Simon Lukasik <slukasik@redhat.com> 1.7.33-1
+- OpenSCAP integration -- Backend API interface. (slukasik@redhat.com)
+- convert empty string to NULL for postgresql (michael.mraka@redhat.com)
+
+* Mon Feb 27 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.32-1
+- use already known channel id
+- speeded up searching whether package is already synced
+
+* Mon Feb 27 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.31-1
+- merged solve_dependencies_arch() and solve_dependencies()
+- merged listChannelsSource() and listChannels()
+
 * Fri Feb 24 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.30-1
 - 727979 - don't hardcode package suffix
 

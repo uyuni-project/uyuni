@@ -18,15 +18,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.session.SessionManager;
 
-import org.apache.log4j.Logger;
-
 /**
  * A web session
  * @version $Rev$
  */
 public class WebSessionImpl implements WebSession {
-    private static Logger log = Logger.getLogger(WebSessionImpl.class);
-
     private Long id;
     private long expires;
     private Long webUserId;
@@ -71,9 +67,7 @@ public class WebSessionImpl implements WebSession {
         if (webUserId != null) {
             return UserFactory.lookupById(webUserId);
         }
-        else {
-            return null;
-        }
+        return null;
     }
 
     /** {@inheritDoc} */

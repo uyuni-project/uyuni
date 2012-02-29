@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.action.kickstart.KickstartInitiateGuestAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -363,6 +364,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_VIRTUALIZATION_GUEST_SUBSCRIBE_TO_TOOLS_CHANNEL)) {
             retval = new KickstartGuestToolsChannelSubscriptionAction();
         }
+        else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
+            retval = new ScapAction();
+        }
 
         else {
             retval = new Action();
@@ -643,7 +647,7 @@ public class ActionFactory extends HibernateFactory {
         Map params = new HashMap();
         params.put("orgId", user.getOrg().getId());
         params.put("server", serverIn);
-        return (List) singleton.listObjectsByNamedQuery(
+        return singleton.listObjectsByNamedQuery(
                                         "Action.findByServerAndOrgId", params);
     }
 
@@ -655,7 +659,7 @@ public class ActionFactory extends HibernateFactory {
     public static List listServerActionsForServer(Server serverIn) {
         Map params = new HashMap();
         params.put("server", serverIn);
-        return (List) singleton.listObjectsByNamedQuery(
+        return singleton.listObjectsByNamedQuery(
                                         "ServerAction.findByServer", params);
     }
 
@@ -665,7 +669,7 @@ public class ActionFactory extends HibernateFactory {
      * @param tries the number of tries to set (should be set to 5)
      */
     public static void rescheduleFailedServerActions(Action action, Long tries) {
-        singleton.getSession().getNamedQuery("Action.rescheduleFailedActions")
+        HibernateFactory.getSession().getNamedQuery("Action.rescheduleFailedActions")
                 .setParameter("action", action)
                 .setParameter("tries", tries)
                 .setParameter("failed", ActionFactory.STATUS_FAILED)
@@ -678,7 +682,7 @@ public class ActionFactory extends HibernateFactory {
      * @param tries the number of tries to set (should be set to 5)
      */
     public static void rescheduleAllServerActions(Action action, Long tries) {
-        singleton.getSession().getNamedQuery("Action.rescheduleAllActions")
+        HibernateFactory.getSession().getNamedQuery("Action.rescheduleAllActions")
                 .setParameter("action", action)
                 .setParameter("tries", tries)
                 .setParameter("queued", ActionFactory.STATUS_QUEUED).executeUpdate();
@@ -997,6 +1001,9 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_GUEST_SUBSCRIBE_TO_TOOLS_CHANNEL =
             lookupActionTypeByLabel("kickstart_guest.add_tools_channel");
+
+    public static final ActionType TYPE_SCAP_XCCDF_EVAL =
+            lookupActionTypeByLabel("scap.xccdf_eval");
 
     public static final String TXN_OPERATION_INSERT = "insert";
     public static final String TXN_OPERATION_DELETE = "delete";

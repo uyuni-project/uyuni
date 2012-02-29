@@ -5,6 +5,7 @@
 # Translators:
 # David Barzilay <barzilay@redhat.com>, 2004, 2005.
 # Igor Pires Soares <igor@projetofedora.org>, 2007.
+# Marcos Lauande <marcoslauande@gmail.com>, 2012.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Pedro Fernandes Macedo <webmaster@margo.bijoux.nom.br>, 2004.
 # Pedro Macedo <pmacedo@intel.dcc.ufmg.br>, 2005.
@@ -14,9 +15,9 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
-"Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
-"Language-Team: Portuguese (Brazilian) <trans-pt_br@lists.fedoraproject.org>\n"
+"PO-Revision-Date: 2012-02-24 13:32+0000\n"
+"Last-Translator: Marcos Lauande <marcoslauande@gmail.com>\n"
+"Language-Team: Portuguese (Brazil) <trans-pt_br@lists.fedoraproject.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -789,9 +790,8 @@ msgstr "*Endereço de E-mail:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "Registrar o sistema mesmo que já esteja registrado"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -803,7 +803,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "Tem certeza que gostaria de continuar?"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -815,15 +814,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"Aparentemente este sistema já está registrado com o RHN usando a tecnologia "
-"RHN de direitos com base em certificado. Esta ferramenta requer registro "
-"usando a tecnologia RHN Classic.\n"
-"\n"
-"Exceto em poucos casos, a Red Hat recomenda clientes somente registrar com o "
-"RHN uma vez.\n"
-"\n"
-"Para mais informações, incluindo ferramentas alternativas, consulte esse "
-"artigo de base de conhecimento: https://access.redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -1687,7 +1677,7 @@ msgstr "Não tentar usar o X"
 
 #: ../src/bin/spacewalk-channel.py:42
 msgid "ERROR: must be root to execute\n"
-msgstr ""
+msgstr "ERRO: você deve ser root para executar\n"
 
 #: ../src/bin/spacewalk-channel.py:56
 msgid "name of channel you want to (un)subscribe"
@@ -2406,7 +2396,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2414,15 +2403,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"O assistente vai guiá-lo através do processo de conexão do seu sistema ao "
-"Red Hat Network (RHN) para receber atualizações de software, incluindo "
-"atualizações de segurança, para manter o seu sistema suportado e em "
-"conformidade.  À esta altura, você precisará do seguinte:\n"
-"\n"
-" * Uma conexão de rede\n"
-" * Seu Login & senha da Red Hat\n"
-" * A localização de um Red Hat Network Satellite or Proxy (opcional)\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2594,10 +2574,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Localização do Red Hat Network:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2621,6 +2600,3 @@ msgstr ""
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "Registrar no Spacewalk/Satellite/Red Hat Network."
-
-#~ msgid "System software updates already set up"
-#~ msgstr "Atualizações de software do sistema já configuradas"

@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Spanish (Castilian) <trans-es@lists.fedoraproject.org>\n"
 "Language: es\n"
@@ -791,9 +791,8 @@ msgstr "*Dirección de correo-e:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "Registre el sistema incluso si ya ha sido registrado"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -806,7 +805,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "¿Está seguro de querer continuar?"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -818,15 +816,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"Parece que este sistema ya ha sido registrado a RHN mediante la Tecnología "
-"de derechos basada en certificado de RHN.\n"
-"\n"
-"A excepción de algunos casos, Red Hat le recomienda a los usuarios "
-"registrarse a RHN una vez.\n"
-"\n"
-"Para obtener mayor información, incluyendo herramientas alternativas, "
-"consulte el artículo: https://access.redhat.com/kb/docs/DOC-45563 de la base "
-"de conocimientos"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -2413,7 +2402,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2421,15 +2409,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"Este asistente los guiará a través de la conexión de su sistema a Red Hat "
-"Network (RHN) para recibir actualizaciones de software, incluyendo "
-"actualizaciones de seguridad que mantendrán su sistema soportado. En estos "
-"momentos necesitará lo siguiente:\n"
-"\n"
-" * Una conexión a red\n"
-" * Su nombre de cuenta de Red Hat & contraseña\n"
-" * La ubicación de Red Hat Network Satellite o Proxy (opcional)\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2601,10 +2580,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Ubicación de Red Hat Network:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2627,7 +2605,3 @@ msgstr "Registro a Spacewalk/Satellite/Red Hat Network."
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "Registrarse a Spacewalk/Satellite/Red Hat Network."
-
-#~ msgid "System software updates already set up"
-#~ msgstr ""
-#~ "Las actualizaciones de software del sistema ya han sido configuradas"

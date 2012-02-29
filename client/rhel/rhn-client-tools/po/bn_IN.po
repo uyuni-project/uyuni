@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Bengali (India) <anubad@lists.ankur.org.in>\n"
 "Language: bn_IN\n"
@@ -782,9 +782,8 @@ msgstr "*ই-মেইল ঠিকানা:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "সিস্টেমটি পূর্বে নিবন্ধিত হয়ে থাকলেও পুনরায় নিবন্ধন করুন"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -795,7 +794,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "আপনি কি নিশ্চিতরূপে এগিয়ে যেতে ইচ্ছুক?"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -807,15 +805,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"এই সিস্টেমটি RHN Certificate-Based Entitlement প্রযুক্তি সহযোগে পূর্বেই সম্ভবত RHN-"
-"এ নিবন্ধন করা হয়েছে। কিন্তু এই সরঞ্জামটি ব্যবহারের জন্য RHN Classic প্রযুক্তি ব্যবহার "
-"করা আবশ্যক।\n"
-"\n"
-"কিছু পরিস্থিতি ব্যতীত, Red Hat দ্বারা গ্রাহকদেরকে শুধুমাত্র একবার RHN-এ নিবন্ধন করার "
-"প্রস্তাব দেওয়া হয়।\n"
-"\n"
-"অন্যান্য সামগ্রী প্রভৃতি অধিক বিবরণের জন্য Knowledge Base-র এই নথিটি পড়ুন: https://"
-"access.redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -2377,7 +2366,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2385,14 +2373,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"এই সহায়তা ব্যবস্থা প্রয়োগ করে আপনার সিস্টেমটি Red Hat Network (RHN)'র সাথে সংযোগ "
-"করে সফ্টওয়্যার আপডেট যেমন নিরাপত্তা সংক্রান্ত আপডেট প্রভৃতি প্রাপ্ত করে আপনাট "
-"সিস্টেমটি সমর্থনের অধীন ও সুসংগত রাখা যাবে।এই মুহূর্তে নিম্নলিখিত বস্তুগুলি প্রয়োজন:\n"
-"\n"
-" * একটি নেটওয়ার্ক সংযোগ\n"
-" * আপনার Red Hat লগ-ইন ও পাসওয়ার্ড\n"
-"* Red Hat Network Satellite অথবা Proxy'র অবস্থান (ঐচ্ছিক)\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2564,10 +2544,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Red Hat Network-র অবস্থান:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2592,6 +2571,3 @@ msgstr ""
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "Spacewalk/Satellite/Red Hat Network-এ নিবন্ধন করুন।"
-
-#~ msgid "System software updates already set up"
-#~ msgstr "সিস্টেম সফ্টওয়্যার আপডেট নির্ধারিত"

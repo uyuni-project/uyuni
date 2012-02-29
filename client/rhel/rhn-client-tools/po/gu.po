@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Gujarati <trans-gu@lists.fedoraproject.org>\n"
 "Language: gu\n"
@@ -767,9 +767,8 @@ msgstr "*ઈમેઈલ સરનામું:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "જો પહેલાથી જ રજીસ્ટર થયેલ હોય તો પણ સિસ્ટમ રજીસ્ટર કરો"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -780,7 +779,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "શું તમે ખરેખર ચાલુ રાખવા માંગો છો?"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -792,14 +790,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"તમારી સિસ્ટમને પહેલેથી જ RHN પ્રમાણપત્ર-આધારિત ઉમેદવારી ટૅકનોલોજિની મદદથી RHN સાથે "
-"રજીસ્ટર કરી દેવામાં આવી છે. આ સાધનને RHN ક્લાસિક ટૅકનોલોજિની મદદથી રજીસ્ટ્રેશનની જરૂર "
-"છે.\n"
-"\n"
-"અમુક સ્થિતિઓને બાદ કરતા, Red Hat ઘરાકને એકવાર RHN સાથે રજીસ્ટર કરવાનો આગ્રહ રાખે છે.\n"
-"\n"
-"વધારે જાણકારી માટે, વૈકલ્પિક સાધનોને સમાવી રહ્યા છે, આ નૉલેજ બેસનો સંપર્ક કરો લેખ: "
-"https://access.redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -2330,7 +2320,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2338,14 +2327,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"આ માર્ગદર્શન તમને સોફ્ટવેર સુધારાઓ મેળવવા માટે, સુરક્ષા સુધારાઓનો સમાવેશ કરીને, તમારી "
-"સિસ્ટમને આધારભૂત અને સુસંગત રાખવા માટે Red Hat Network (RHN) સાથે જોડાવા મારફતે સહાય "
-"કરશે.  આ સમયે તમને નીચેની વસ્તુઓ જરૂરી રહેશે:\n"
-"\n"
-" * નેટવર્ક જોડાણ\n"
-" * તમારો Red Hat પ્રવેશ & પાસવર્ડ\n"
-" * Red Hat Network Satellite અથવા Proxy (વૈકલ્પિક) નું સ્થાન\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2517,10 +2498,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Red Hat Network સ્થાન:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2543,6 +2523,3 @@ msgstr "સ્પેસવૉક/સેટેલાઇટ/Red Hat નેટવ�
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "સ્પેસવૉક/સેટેલાઇટ/Red Hat નેટવર્કમાં રજીસ્ટર કરો."
-
-#~ msgid "System software updates already set up"
-#~ msgstr "સોફ્ટવેર સિસ્ટમ સુધારાઓ પહેલાંથી જ સુયોજિત છે"

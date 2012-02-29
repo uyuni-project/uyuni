@@ -65,10 +65,8 @@ public abstract class BaseTreeAction extends BaseEditAction {
             rctx.getRequest().setAttribute(HIDE_SUBMIT, "true");
             return;
         }
-        else {
-            rctx.getRequest().setAttribute(CHANNELS,
-                    createLabelValueList(i, "getName", "getId"));
-        }
+        rctx.getRequest().setAttribute(CHANNELS,
+                createLabelValueList(i, "getName", "getId"));
 
         Channel selectedBaseChannel = getSelectedBaseChannel(rctx);
         if (selectedBaseChannel == null) {

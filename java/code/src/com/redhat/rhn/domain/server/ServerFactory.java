@@ -114,7 +114,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<CustomDataValue> lookupCustomDataValues(CustomDataKey key) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("key", key);
-        return (List<CustomDataValue>) singleton.listObjectsByNamedQuery(
+        return singleton.listObjectsByNamedQuery(
                 "CustomDataValue.findByKey", params);
     }
 
@@ -143,7 +143,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<Device> lookupStorageDevicesByServer(Server s) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("server", s);
-        return (List<Device>) singleton.listObjectsByNamedQuery(
+        return singleton.listObjectsByNamedQuery(
                 "Device.findStorageByServer", params);
     }
 
@@ -560,7 +560,7 @@ public class ServerFactory extends HibernateFactory {
                 "Server.listProxies", params);
         List<Server> servers = new ArrayList(ids.size());
         for (Number id : ids) {
-            servers.add((Server) lookupById(id.longValue()));
+            servers.add(lookupById(id.longValue()));
         }
         return servers;
     }
@@ -605,7 +605,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of config enabled systems
      */
     public static List<Server> listConfigEnabledSystems() {
-        return (List<Server>) singleton.listObjectsByNamedQuery(
+        return singleton.listObjectsByNamedQuery(
                         "Server.listConfigEnabledSystems", Collections.EMPTY_MAP);
     }
 
@@ -616,7 +616,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of config-diff enabled systems
      */
     public static List<Server> listConfigDiffEnabledSystems() {
-        return (List<Server>) singleton.listObjectsByNamedQuery(
+        return singleton.listObjectsByNamedQuery(
                         "Server.listConfigDiffEnabledSystems", Collections.EMPTY_MAP);
     }
 
@@ -712,7 +712,7 @@ public class ServerFactory extends HibernateFactory {
     public static void deleteSnapshots(Org org, Date startDate, Date endDate) {
 
         if ((startDate != null) && (endDate != null)) {
-            singleton.getSession()
+            HibernateFactory.getSession()
                 .getNamedQuery("ServerSnapshot.deleteBetweenDates")
                 .setParameter("org", org)
                 .setParameter("start_date", startDate)
@@ -720,14 +720,14 @@ public class ServerFactory extends HibernateFactory {
                 .executeUpdate();
         }
         else if (startDate != null) {
-            singleton.getSession()
+            HibernateFactory.getSession()
                 .getNamedQuery("ServerSnapshot.deleteAfterDate")
                 .setParameter("org", org)
                 .setParameter("start_date", startDate)
                 .executeUpdate();
         }
         else {
-            singleton.getSession()
+            HibernateFactory.getSession()
                 .getNamedQuery("ServerSnapshot.delete")
                 .setParameter("org", org)
                 .executeUpdate();
@@ -755,7 +755,7 @@ public class ServerFactory extends HibernateFactory {
             Date startDate, Date endDate) {
 
         if ((startDate != null) && (endDate != null)) {
-            singleton.getSession()
+            HibernateFactory.getSession()
                 .getNamedQuery("ServerSnapshot.deleteForServerBetweenDates")
                 .setParameter("org", org)
                 .setParameter("server", server)
@@ -764,7 +764,7 @@ public class ServerFactory extends HibernateFactory {
                 .executeUpdate();
         }
         else if (startDate != null) {
-            singleton.getSession()
+            HibernateFactory.getSession()
                 .getNamedQuery("ServerSnapshot.deleteForServerAfterDate")
                 .setParameter("org", org)
                 .setParameter("server", server)
@@ -772,7 +772,7 @@ public class ServerFactory extends HibernateFactory {
                 .executeUpdate();
         }
         else {
-            singleton.getSession()
+            HibernateFactory.getSession()
                 .getNamedQuery("ServerSnapshot.deleteForServer")
                 .setParameter("org", org)
                 .setParameter("server", server)

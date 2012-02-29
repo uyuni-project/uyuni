@@ -26,7 +26,6 @@ import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayOutputStream;
@@ -47,8 +46,6 @@ public class PrimaryXmlWriter extends RepomdWriter {
     private PackageCapabilityIterator recommendsIterator;
     private PackageCapabilityIterator suggestsIterator;
     private PackageCapabilityIterator supplementsIterator;
-    private static Logger log = Logger.getLogger(PrimaryXmlWriter.class);
-
     /**
      *
      * @param writer The writer object for primary xml

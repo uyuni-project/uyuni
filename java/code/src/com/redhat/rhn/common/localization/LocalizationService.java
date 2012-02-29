@@ -146,14 +146,12 @@ public class LocalizationService {
             LocaleInfo li = new LocaleInfo(locale);
             this.supportedLocales.put(locale, li);
         }
-        if (compoundLocales != null) {
-            for (Iterator iter = compoundLocales.iterator(); iter.hasNext();) {
-                String cl = (String) iter.next();
-                String[] parts = cl.split("_");
-                LocaleInfo li = new LocaleInfo(parts[0], cl);
-                if (this.supportedLocales.get(parts[0]) == null) {
-                    this.supportedLocales.put(parts[0], li);
-                }
+        for (Iterator iter = compoundLocales.iterator(); iter.hasNext();) {
+            String cl = (String) iter.next();
+            String[] parts = cl.split("_");
+            LocaleInfo li = new LocaleInfo(parts[0], cl);
+            if (this.supportedLocales.get(parts[0]) == null) {
+                this.supportedLocales.put(parts[0], li);
             }
         }
     }
@@ -176,10 +174,8 @@ public class LocalizationService {
             initService();
             return true;
         }
-        else {
-            log.error("Tried to reload XML StringResource files but " +
-                    "we aren't in web.development_environment mode");
-        }
+        log.error("Tried to reload XML StringResource files but " +
+                "we aren't in web.development_environment mode");
         return false;
     }
 
@@ -277,17 +273,13 @@ public class LocalizationService {
             if (!keyToBundleMap.containsKey(messageId)) {
                 return getMissingMessageString(messageId);
             }
-            else {
-                if (mess == null) {
-                    z = Class.forName((String) keyToBundleMap.get(messageId));
-                    // If we already determined that there aren't an bundles
-                    // for this Locale then we shouldn't repeatedly fail
-                    // attempts to parse the bundle. Instead just force a
-                    // call to the default Locale.
-                    mess = XmlMessages.getInstance().format(z, locale,
-                            messageId, args);
-                }
-            }
+            z = Class.forName((String) keyToBundleMap.get(messageId));
+            // If we already determined that there aren't an bundles
+            // for this Locale then we shouldn't repeatedly fail
+            // attempts to parse the bundle. Instead just force a
+            // call to the default Locale.
+            mess = XmlMessages.getInstance().format(z, locale,
+                    messageId, args);
         }
         catch (MissingResourceException e) {
             // Try again with DEFAULT_LOCALE
@@ -679,8 +671,6 @@ public class LocalizationService {
         if (context != null && context.getLocale() != null) {
             return Collator.getInstance(context.getLocale());
         }
-        else {
-            return Collator.getInstance();
-        }
+        return Collator.getInstance();
     }
 }

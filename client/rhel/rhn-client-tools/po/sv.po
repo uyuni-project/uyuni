@@ -12,9 +12,9 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
-"Language-Team: Swedish (http://www.transifex.net/projects/p/fedora/team/"
+"Language-Team: Swedish (http://www.transifex.net/projects/p/fedora/language/"
 "sv/)\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
@@ -779,9 +779,8 @@ msgstr "*E-postadress:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "Registrera systemet även om det redan är registrerat"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -2359,7 +2358,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2367,15 +2365,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"Denna assistent kommer guida dig genom uppkopplingen av ditt system till Red "
-"Hat Network (RHN) för att ta emot programuppdateringar, inklusive "
-"säkerhetsuppdateringar, för att hålla ditt system stött och regelrätt.  Du "
-"kommer behöva följande nu:\n"
-"\n"
-" * En nätverksanslutning\n"
-" * Din inloggning och ditt lösenord på Red Hat\n"
-" * Adressen till en Red Hat Network satellit eller proxy (ej nödvändigt)\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2547,10 +2536,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Red Hat Network-plats:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2575,6 +2563,3 @@ msgstr ""
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "Registrera i Spacewalk/satellit/Red Hat Network"
-
-#~ msgid "System software updates already set up"
-#~ msgstr "Systemprogramuppdateringar är redan uppsatta"

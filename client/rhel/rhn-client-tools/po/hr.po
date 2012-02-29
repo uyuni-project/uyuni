@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: hr\n"
@@ -766,9 +766,8 @@ msgstr "*Adresa e-pošte:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "Registriraj sustav čak i ako je već registriran"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -2280,7 +2279,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2288,15 +2286,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"Ovaj će vas pomoćnik voditi kroz postupak povezivanja vašeg sustava s Red "
-"Hat mrežom (RHN) radi primanja ažuriranja softvera, uključujući i "
-"sigurnosnih nadogradnja, da bi vaš sustav bio podržan i usklađen. Bit će vam "
-"potrebno sljedeće:\n"
-"\n"
-" * Mrežna povezanost\n"
-" * Vaše Red Hat korisničko ime i lozinka\n"
-" * Lokacija Red Hat Mrežnog Satelita ili Proxyja (opcionalno)\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2493,6 +2482,3 @@ msgstr ""
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr ""
-
-#~ msgid "System software updates already set up"
-#~ msgstr "Ažuriranja softvera koja su već prilagođena"

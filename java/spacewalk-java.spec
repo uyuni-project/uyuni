@@ -18,7 +18,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.7.40
+Version: 1.7.48
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -674,6 +674,274 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Feb 28 2012 Tomas Lestach <tlestach@redhat.com> 1.7.48-1
+- remove unnecessary else statements in
+  java/code/src/com/redhat/rhn/testing/TestUtils.java (tlestach@redhat.com)
+- remove unnecessary else statements in java/code/src/com/redhat/rhn/manager/
+  (tlestach@redhat.com)
+- remove unnecessary else statements in
+  java/code/src/com/redhat/rhn/manager/system/ (tlestach@redhat.com)
+- remove unnecessary else statements in
+  java/code/src/com/redhat/rhn/manager/kickstart/ (tlestach@redhat.com)
+- remove unnecessary else statements in
+  java/code/src/com/redhat/rhn/manager/channel/ChannelManager.java
+  (tlestach@redhat.com)
+- remove unnecessary else statements in
+  java/code/src/com/redhat/rhn/taskomatic/ (tlestach@redhat.com)
+- remove unnecessary else statements in rest of
+  java/code/src/com/redhat/rhn/frontend/ (tlestach@redhat.com)
+- remove unnecessary else statements in
+  java/code/src/com/redhat/rhn/frontend/xmlrpc/ (tlestach@redhat.com)
+- remove unnecessary else statements in
+  java/code/src/com/redhat/rhn/frontend/action/ (tlestach@redhat.com)
+- remove unnecessary else statements in
+  java/code/src/com/redhat/rhn/frontend/dto/ (tlestach@redhat.com)
+- remove unnecessary else statements in
+  java/code/src/com/redhat/rhn/frontend/action/configuration/
+  (tlestach@redhat.com)
+- remove unnecessary else statements in java/code/src/com/redhat/rhn/domain/
+  (tlestach@redhat.com)
+- remove unnecessary else statements in
+  java/code/src/com/redhat/rhn/domain/kickstart/ (tlestach@redhat.com)
+- remove unnecessary else statements in rest of
+  java/code/src/com/redhat/rhn/common/ (tlestach@redhat.com)
+- remove unnecessary else statements in
+  java/code/src/com/redhat/rhn/common/validator/ (tlestach@redhat.com)
+- remove unnecessary else statements in
+  java/code/src/com/redhat/rhn/common/util/ (tlestach@redhat.com)
+- remove unnecessary else statements in
+  java/code/internal/src/com/redhat/rhn/internal/doclet (tlestach@redhat.com)
+
+* Tue Feb 28 2012 Tomas Lestach <tlestach@redhat.com> 1.7.47-1
+- access static fields in a static way (tlestach@redhat.com)
+- access static fields in a static way (tlestach@redhat.com)
+- access static fields in a static way (tlestach@redhat.com)
+- access static fields in a static way (tlestach@redhat.com)
+- access static fields in a static way (tlestach@redhat.com)
+- access static fields in a static way (tlestach@redhat.com)
+- access static fields in a static way (tlestach@redhat.com)
+
+* Tue Feb 28 2012 Tomas Lestach <tlestach@redhat.com> 1.7.46-1
+- remove unused class (tlestach@redhat.com)
+- remove unused private attribute (tlestach@redhat.com)
+- removing unused method (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private log (tlestach@redhat.com)
+- remove unused private final log (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private static array (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private attribute (tlestach@redhat.com)
+- remove unused private static final attributes (tlestach@redhat.com)
+- remove unused static final LOG (tlestach@redhat.com)
+- remove unused private attribute (tlestach@redhat.com)
+- remove empty test (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private attribute (tlestach@redhat.com)
+- remove unused private final log (tlestach@redhat.com)
+- remove unused private attribute (tlestach@redhat.com)
+- remove unused private log (tlestach@redhat.com)
+- remove unused private attributes (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private static log (tlestach@redhat.com)
+- remove unused private final attributes (tlestach@redhat.com)
+- remove unused private static final attribute (tlestach@redhat.com)
+- remove unused private static final attributes (tlestach@redhat.com)
+- remove unused test part (tlestach@redhat.com)
+- remove unused private static sttribute (tlestach@redhat.com)
+- remove unused private logger (tlestach@redhat.com)
+- remove unused private logger (tlestach@redhat.com)
+- remove unused private logger (tlestach@redhat.com)
+- remove unused private logger (tlestach@redhat.com)
+- remove unused private logger (tlestach@redhat.com)
+- remove unused private static final attribute (tlestach@redhat.com)
+- remove unused private attribute (tlestach@redhat.com)
+- remove unused logger (tlestach@redhat.com)
+- remove unused private static final attribute (tlestach@redhat.com)
+- remove unused private static attribute (tlestach@redhat.com)
+- remove unused private static attributes (tlestach@redhat.com)
+- remove unused method (tlestach@redhat.com)
+- remove unused method (tlestach@redhat.com)
+- remove unused private methods (tlestach@redhat.com)
+- remove unused private method (tlestach@redhat.com)
+- removing unused private method from SystemEntitlementsSubmitAction
+  (tlestach@redhat.com)
+
+* Mon Feb 27 2012 Simon Lukasik <slukasik@redhat.com> 1.7.45-1
+- OpenSCAP integration -- Frontend API for scan schedule. (slukasik@redhat.com)
+- checkstyle: allow Copyright 2012. (slukasik@redhat.com)
+
+* Mon Feb 27 2012 Tomas Lestach <tlestach@redhat.com> 1.7.44-1
+- remove redundant interfaces (tlestach@redhat.com)
+- remove redundant assignments (tlestach@redhat.com)
+- binaryInput cannot be null at this location (tlestach@redhat.com)
+- baos cannot be null at this location (tlestach@redhat.com)
+- remove redundant assignements (tlestach@redhat.com)
+- toChannel cannot be null at this location (tlestach@redhat.com)
+- user cannot be null at this location (tlestach@redhat.com)
+- selectedChannel can only be null at this location (tlestach@redhat.com)
+- regCount cannot be null at this location (tlestach@redhat.com)
+- pkgs cannot be null at this location (tlestach@redhat.com)
+- parent cannot be null at this location (tlestach@redhat.com)
+- pAdded cannot be null at this location (tlestach@redhat.com)
+- mtime cannot be null at this location (tlestach@redhat.com)
+- mess can only be null at this location (tlestach@redhat.com)
+- kss cannot be null at this location (tlestach@redhat.com)
+- key cannot be null at this location (tlestach@redhat.com)
+- info cannot be null at this location (tlestach@redhat.com)
+- currentErrata cannot be null at this location (tlestach@redhat.com)
+- cr cannot be null at this location (tlestach@redhat.com)
+- cr cannot be null at this location (tlestach@redhat.com)
+- count cannot be null at this location (tlestach@redhat.com)
+- compoundLocales cannot be null at this location (tlestach@redhat.com)
+- channel cannot be null at this location (tlestach@redhat.com)
+- updates cannot be null at this location (tlestach@redhat.com)
+- optimize code based on null and non-empty conditions (tlestach@redhat.com)
+- rebootAction cannot be null at this location (tlestach@redhat.com)
+- proposed cannot be null at this location (tlestach@redhat.com)
+- o can only be null at this location (tlestach@redhat.com)
+- is can only be null at this location (tlestach@redhat.com)
+- name cannot be null at this location (tlestach@redhat.com)
+- hostDir cannot be null at this location (tlestach@redhat.com)
+- epoch cannot be null at this location (tlestach@redhat.com)
+- desc cannot be null at this location (tlestach@redhat.com)
+- do not allocate object that will never be used in UpdateErrataCacheCommand
+  (tlestach@redhat.com)
+- do not allocate object that will never be used in SystemHandler
+  (tlestach@redhat.com)
+- remove dead code in DeleteFileAction (tlestach@redhat.com)
+- remove dead code in PatchConfirmInstallAction (tlestach@redhat.com)
+- remove dead code in PatchConfirmAction (tlestach@redhat.com)
+- remove dead code in KickstartFormatter (tlestach@redhat.com)
+- remove dead code in ErrataQueueWorker (tlestach@redhat.com)
+- remove dead code in ActionExecutor (tlestach@redhat.com)
+- remove unnecessary semicolons (tlestach@redhat.com)
+- remove unnecessary casts (tlestach@redhat.com)
+- do not check whether Org expression is an instance of Org
+  (tlestach@redhat.com)
+
+* Mon Feb 27 2012 Tomas Lestach <tlestach@redhat.com> 1.7.43-1
+- remove unused hbm query - TaskoBunch.lookupById (tlestach@redhat.com)
+- remove unused hbm query - TaskoTask.lookupByName (tlestach@redhat.com)
+- remove unused hbm query - TaskoTask.lookupById (tlestach@redhat.com)
+- remove unused hbm query - TaskoRun.listRunsWithStatus (tlestach@redhat.com)
+- remove unused hbm query - UserState.lookupById (tlestach@redhat.com)
+- remove unused hbm query - User.findAllUsers (tlestach@redhat.com)
+- remove unused hbm query - Address.findById (tlestach@redhat.com)
+- remove unused hbm query - VirtualInstance.findAllUnregisteredGuests
+  (tlestach@redhat.com)
+- remove unused hbm query - VirtualInstance.findAllRegisteredGuests
+  (tlestach@redhat.com)
+- remove unused hbm query - PushClientState.findByLabel (tlestach@redhat.com)
+- remove unused hbm sql-query - ServerGroup.lookupByTypeLabelAndOrg2
+  (tlestach@redhat.com)
+- remove unused hbm query - PackageProvider.findById (tlestach@redhat.com)
+- remove unused hbm query - PackageDelta.findById (tlestach@redhat.com)
+- remove unused hbm query - PackageKey.findById (tlestach@redhat.com)
+- remove unused hbm query - PackageCapability.findById (tlestach@redhat.com)
+- remove unused hbm query - PackageName.findById (tlestach@redhat.com)
+- remove unused hbm query - ProfileType.loadAll (tlestach@redhat.com)
+- remove unused hbm query - Role.loadRoles (tlestach@redhat.com)
+- remove unused hbm query - UserGroup.findByRole (tlestach@redhat.com)
+- remove unused hbm query - OrgEntitlementType.findAll (tlestach@redhat.com)
+- remove unused hbm query - Task.deleteTaskQueue (tlestach@redhat.com)
+- remove unused hbm query - PackageActionResult.findByKey (tlestach@redhat.com)
+- remove unused hbm query - ActionStatus.loadAll (tlestach@redhat.com)
+- remove unused hbm query - ActionType.findByName (tlestach@redhat.com)
+- remove unused hbm query - ActionType.loadAll (tlestach@redhat.com)
+- remove unused hbm query - ConfigFileName.findByPath (tlestach@redhat.com)
+- remove unused hbm query - Severity.findByLabel (tlestach@redhat.com)
+- remove unused hbm query - PublishedErrataFile.listByErrata
+  (tlestach@redhat.com)
+- remove unused hbm query - UnpublishedBug.findById (tlestach@redhat.com)
+- remove unused hbm query - UnpublishedErrata.findByAdvisoryType
+  (tlestach@redhat.com)
+- remove unused hbm query - UnpublishedErrataFile.listByErrata
+  (tlestach@redhat.com)
+- remove unused hbm query - PublishedBug.findById (tlestach@redhat.com)
+- remove unused hbm query - KickstartSessionHistory.findById
+  (tlestach@redhat.com)
+- remove unused hbm query - KickstartTreeType.findByName (tlestach@redhat.com)
+- remove unused hbm query - KickstartTreeType.loadAll (tlestach@redhat.com)
+- remove unused hbm query - KickstartInstallType.findByName
+  (tlestach@redhat.com)
+- remove unused hbm query - KickstartSession.findById (tlestach@redhat.com)
+- remove unused hbm query - KickstartIpRange.findById (tlestach@redhat.com)
+- remove unused hbm query - KickstartSessionState.findById
+  (tlestach@redhat.com)
+- remove unused hbm query - KickstartVirtualizationType.findById
+  (tlestach@redhat.com)
+- remove unused hbm query - Channel.findById (tlestach@redhat.com)
+- remove unused hbm query - ProvisionState.findById (tlestach@redhat.com)
+- remove unused hbm query - ArchType.findByName (tlestach@redhat.com)
+- remove unused hbm query - ArchType.loadAll (tlestach@redhat.com)
+- remove unused hbm query - ChecksumType.loadAll (tlestach@redhat.com)
+- remove unused hbm query - FileList.findById (tlestach@redhat.com)
+- remove unused hbm query - Probe.listForOrg (tlestach@redhat.com)
+- remove unused KickstartFactory public static methods (tlestach@redhat.com)
+- audit: cache search results (Joshua.Roys@gtri.gatech.edu)
+
+* Mon Feb 27 2012 Tomas Lestach <tlestach@redhat.com> 1.7.42-1
+- remove unused jsp - pages/user/create/createaccount.jsp (tlestach@redhat.com)
+- remove unused jsp - pages/software/downloads/isotree.jsp
+  (tlestach@redhat.com)
+- remove unused jsp - pages/configuration/channel/addfiles.jsp
+  (tlestach@redhat.com)
+- remove unused jsp - pages/kickstart/pre.jsp (tlestach@redhat.com)
+- remove unused jsp - pages/kickstart/post.jsp (tlestach@redhat.com)
+- remove unused jsp - pages/channel/relevant.jsp (tlestach@redhat.com)
+- remove unused jsp - pages/common/errors/service.jsp (tlestach@redhat.com)
+- remove unreferenced do page and appropriate jsp - /users/RPCPlaceholder
+  (tlestach@redhat.com)
+- remove unused jsp - /common/email_sent.jsp (tlestach@redhat.com)
+- remove unreferenced do page - /users/VerificationSent (tlestach@redhat.com)
+- remove unreferenced do page - /account/VerificationSent (tlestach@redhat.com)
+- remove unused KickstartGuestInstallLog class and appropriate hbm.xml file
+  (tlestach@redhat.com)
+- remove unreferenced do page together with appropriate action -
+  /kickstart/DownloadLog (tlestach@redhat.com)
+
+* Mon Feb 27 2012 Tomas Lestach <tlestach@redhat.com> 1.7.41-1
+- remove unreferenced do page together with appropriate action and jsp -
+  /software/downloads/Help (tlestach@redhat.com)
+- remove unreferenced do page - /configuration/DeleteChannelSubmit
+  (tlestach@redhat.com)
+- remove unreferenced do page together with appropriate action -
+  /kickstart/KickstartsSubmit (tlestach@redhat.com)
+- remove unreferenced do page together with appropriate action -
+  /systems/details/packages/profiles/CompareSystemsSubmit (tlestach@redhat.com)
+- remove unreferenced do page together with appropriate action -
+  /systems/details/packages/profiles/CompareProfilesSubmit
+  (tlestach@redhat.com)
+- remove unreferenced do page - /systems/SystemGroupListSubmit
+  (tlestach@redhat.com)
+- remove unreferenced do page together with appropriate action and test -
+  /systems/ProxyListSubmit (tlestach@redhat.com)
+- remove unreferenced do page together with appropriate action and test -
+  /systems/InactiveSubmit (tlestach@redhat.com)
+- remove unreferenced do page together with appropriate action and test -
+  /systems/UngroupedSubmit (tlestach@redhat.com)
+- remove unreferenced do page together with appropriate action and test -
+  /systems/UnentitledSubmit (tlestach@redhat.com)
+- remove unreferenced do page together with appropriate action and test -
+  /systems/OutOfDateSubmit (tlestach@redhat.com)
+- remove unreferenced do page - /systems/SystemListSubmit (tlestach@redhat.com)
+- remove unreferenced do page - /users/DisabledListSubmit (tlestach@redhat.com)
+- delete unused do page and appropriate action - /users/UserListSubmit
+  (tlestach@redhat.com)
+- remove unused action - BaseFilterAction (tlestach@redhat.com)
+- remove unused method - listAllFilesWithTotalSize (tlestach@redhat.com)
+- remove unused action - QuotaAction (tlestach@redhat.com)
+- removing unused action VirtualSystemsListAction (tlestach@redhat.com)
+- removing unused action - ConfigDateAction (tlestach@redhat.com)
+
 * Thu Feb 23 2012 Jan Pazdziora 1.7.40-1
 - The com.redhat.rhn.taskomatic.task.CleanCurrentAlerts is not longer needed
   because nothing inserts to rhn_current_alerts, removing.

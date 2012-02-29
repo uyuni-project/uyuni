@@ -16,10 +16,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.net/projects/p/fedora/"
-"team/zh_CN/)\n"
+"language/zh_CN/)\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -743,9 +743,8 @@ msgstr "*电子邮件地址："
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "注册系统，即便它已经注册了"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -756,7 +755,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "您确定要继续吗？"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -768,13 +766,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"这个系统已经使用 RHN 证书式授权技术在 RHN 中注册。这个工具要求使用 RHN 传统技"
-"术注册。\n"
-"\n"
-"除少数情况外，红帽建议客户只在 RHN 中注册一次。\n"
-"\n"
-"有关详情，包括备用工具，请参考知识库文章：https://access.redhat.com/kb/docs/"
-"DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -2266,7 +2257,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2274,13 +2264,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"这个程序会引导您通过把您的系统与红帽网络（RHN）相连来接收　包括安全更新在内的"
-"软件更新。您此时需要以下配置：\n"
-"\n"
-" * 一个网络联接\n"
-" * 您的红帽登录和密码\n"
-" * 红帽网络 Satellite 服务器或代理服务器的位置（可选）\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2452,10 +2435,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "红帽网络位置："
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2478,6 +2460,3 @@ msgstr "在 Spacewalk/Satellite/红帽网络中注册软件更新"
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "在 Spacewalk/Satellite/Red Hat 网络注册。"
-
-#~ msgid "System software updates already set up"
-#~ msgstr "系统软件更新已被设置"

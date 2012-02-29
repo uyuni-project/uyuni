@@ -12,9 +12,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-12-14 09:21+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
-"Language-Team: Czech (http://www.transifex.net/projects/p/fedora/team/cs/)\n"
+"Language-Team: Czech (http://www.transifex.net/projects/p/fedora/language/"
+"cs/)\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2175,7 +2176,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2183,15 +2183,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"Pomocí průvodce projdete nastavení pro připojení k RHN (Red Hat Network), "
-"které umožňuje přijímat aktualizace programů včetně bezpečnostních "
-"aktualizací, které budou udržovat váš systém v vyhovujícím podporovaném "
-"stavu. K tomu budete potřebovat:\n"
-"\n"
-" * Připojení k Internetu\n"
-" * Vaše přihlašovací jméno a heslo k RHN\n"
-" * Umístění Red Hat Network Satellite nebo Proxy (volitelně)\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2363,10 +2354,9 @@ msgid "•"
 msgstr "•"
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Adresa Red Hat Network:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"

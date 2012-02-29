@@ -31,7 +31,7 @@ import java.util.Map;
  * Some acl implementation for configuration management
  * @version $Rev$
  */
-public class ConfigAclHandler extends BaseHandler implements AclHandler {
+public class ConfigAclHandler extends BaseHandler {
 
     /**
      * Tell whether a file is a directory.
@@ -161,22 +161,17 @@ public class ConfigAclHandler extends BaseHandler implements AclHandler {
             }
             return cm.lookupConfigRevision(user, crid);
         }
-        else {
-            crid = getAsLong(map.get("crid"));
-            //Case 2:
-            if (crid != null) {
+        crid = getAsLong(map.get("crid"));
+        //Case 2:
+        if (crid != null) {
 
-                return cm.lookupConfigRevision(user, crid);
-            }
-            //Case 3:
-            else {
-                Long cfid = getAsLong(map.get("cfid"));
-                if (cfid == null) {
-                    throw new BadParameterException("Missing crid and cfid!");
-                }
-                return cm.lookupConfigFile(user, cfid).getLatestConfigRevision();
-            }
+            return cm.lookupConfigRevision(user, crid);
         }
+        Long cfid = getAsLong(map.get("cfid"));
+        if (cfid == null) {
+            throw new BadParameterException("Missing crid and cfid!");
+        }
+        return cm.lookupConfigFile(user, cfid).getLatestConfigRevision();
     }
 
     private ConfigChannel getChannel(Map map, String[] params) {

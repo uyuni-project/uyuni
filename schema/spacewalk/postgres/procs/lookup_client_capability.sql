@@ -1,7 +1,6 @@
--- oracle equivalent source sha1 1479717b112ec16b3127c38fa4ee72bfb44bafc3
--- retrieved from ./1241042199/53fa26df463811901487b608eecc3f77ca7783a1/schema/spacewalk/oracle/procs/lookup_client_capability.sql
+-- oracle equivalent source sha1 2791c71c582fbcee45ecfcecfefba45b1a839631
 --
--- Copyright (c) 2008--2010 Red Hat, Inc.
+-- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,28 +12,34 @@
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation. 
---
---
---
---
 
-CREATE OR REPLACE FUNCTION
-LOOKUP_CLIENT_CAPABILITY(name_in IN VARCHAR)
-RETURNS NUMERIC
-AS $$
-DECLARE
-        cap_name_id             NUMERIC;
-BEGIN
-        SELECT id
-          INTO cap_name_id
-          FROM rhnClientCapabilityName
-         WHERE name = name_in;
+create or replace function
+lookup_client_capability(name_in in varchar)
+returns numeric
+as $$
+declare
+    cap_name_id     numeric;
+begin
+    select id
+      into cap_name_id
+      from rhnclientcapabilityname
+     where name = name_in;
 
-        IF NOT FOUND THEN
-                INSERT INTO rhnClientCapabilityName (id, name) VALUES (nextval('rhn_client_capname_id_seq'), name_in);
-                cap_name_id := currval('rhn_client_capname_id_seq');
-        END IF;
+    if not found then
+        cap_name_id := nextval('rhn_client_capname_id_seq');
+        begin
+            perform pg_dblink_exec(
+                'insert into rhnClientCapabilityName(id, name) values (' ||
+                cap_name_id  || ' ,' ||
+                coalesce(quote_literal(name_in), 'NULL') || ')');
+        exception when unique_violation then
+            select id
+              into strict cap_name_id
+              from rhnclientcapabilityname
+            where name = name_in;
+        end;
+    end if;
 
-        RETURN cap_name_id;
-END;
-$$ LANGUAGE plpgsql;
+    return cap_name_id;
+end;
+$$ language plpgsql immutable;

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Malayalam <discuss@lists.smc.org.in>\n"
 "Language: ml\n"
@@ -766,9 +766,8 @@ msgstr "*ഈ-മെയില്‍ വിലാസം:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "ഒരിക്കല്‍ രജിസ്ടര്‍ ചെയ്ത സിസ്റ്റം ആണേലും വീണ്ടും രജിസ്ടര്‍ ചെയ്യുക"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -779,7 +778,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "നിങ്ങള്‍ക്ക് മുമ്പോട്ട് പോകണമോ?"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -791,15 +789,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"ആര്‍എച്എന്‍ സര്‍ട്ടിഫിക്കേറ്റ് രീതിയിലുള്ള എന്റൈറ്റില്‍മെന്റ് ടെക്നോളജി ഉപയോഗിച്ചു് ഈ സിസ്റ്റം "
-"ആര്‍എച്എനുമായി നിലവില്‍ രജിസ്ടര്‍ ചെയ്തിരിയ്ക്കുന്നു. ഈ പ്രയോഗത്തിനു് ആര്‍എച്എന്‍ ക്ലാസ്സിക് "
-"ടെക്നോളജിയുമായി രജിസ്ട്രേഷന്‍ ആവശ്യമുണ്ടു്.\n"
-"\n"
-"ചില സാഹചര്യങ്ങള്‍ ഒഴിച്ചു്, മിക്കവാറും ആര്‍എച്എനുമായി രജിസ്ടര്‍ ചെയ്യുവാന്‍ ഒരിക്കല്‍ മാത്രേ Red Hat "
-"ആവശ്യപ്പെടുന്നുള്ളൂ.\n"
-"\n"
-"മറ്റു് ഉപകരണങ്ങള്‍ ഉള്‍പ്പടെയുള്ള മറ്റു് വിവരങ്ങളെപ്പറ്റി അറിയുന്നതിനായി നോളഡ്ജ് ബെയിസ് ലേഖനം "
-"വായിയ്ക്കുക: https://access.redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -2350,7 +2339,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2358,15 +2346,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"നിങ്ങളുടെ സിസ്റ്റം പിന്തുണയിലും ക്രമത്തിലും ആയിരിക്കേണ്ടതിനായി ആവശ്യമുളള, സെക്യൂരിറ്റി "
-"അപ്ഡേറ്റുകള്‍ ഉല്‍പ്പെടുന്ന സോഫ്റ്റ്‌വെയര്‍ പരിഷ്കരണങ്ങള്‍ക്കായി നിങ്ങളുടെ സിസ്റ്റം Red Hat "
-"നെറ്റ്‌വര്‍ക്കിലേക്ക് (RHN) കണക്ട് ചെയ്യുക. ഇതിനായി നിങ്ങളെ ഈ അസിസ്റ്റന്റ് സഹായിക്കു- ന്നതാണ്. "
-"താഴെ പറയുന്നവ ഇപ്പോള്‍ ആവശ്യമുളളതാണ് :\n"
-"\n"
-" * ഒരു നെറ്റ് വര്‍ക്ക് കണ്ക്ഷന്‍\n"
-" * നിങ്ങളുടെ Red Hat ലോഗിനും രഹസ്യവാക്കും * Red Hat നെറ്റ് വര്‍ക്ക് സാറ്റിലൈറ്റ് അല്ലെങ്കില്‍ "
-"പ്രോക്സിയുടെ സ്ഥാനം\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2538,10 +2517,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Red Hat നെറ്റ്‌വര്‍ക്ക് സ്ഥാനം:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2566,6 +2544,3 @@ msgstr ""
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "സ്പെയിസ്‌വോക്ക്/സാറ്റിലൈറ്റ്/Red Hat നെറ്റ്‌വര്‍ക്ക് രജിസ്ടര്‍ ചെയ്യുക."
-
-#~ msgid "System software updates already set up"
-#~ msgstr "സിസ്റ്റം സോഫ്റ്റ്‌വെയര്‍ പരിഷ്കരണങ്ങള്‍ ക്രമീകരിച്ചിരിക്കുന്നു "

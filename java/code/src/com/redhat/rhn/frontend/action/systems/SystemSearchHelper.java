@@ -99,7 +99,7 @@ public class SystemSearchHelper {
     public static final String SERVER_CUSTOM_INFO_INDEX = "serverCustomInfo";
     public static final Double PACKAGE_SCORE_THRESHOLD = 0.5;
 
-    protected SystemSearchHelper() { };
+    protected SystemSearchHelper() { }
 
     /**
      * Returns a DataResult of SystemSearchResults which are based on the user's search
@@ -162,8 +162,8 @@ public class SystemSearchHelper {
          * Determine what index to search and form the query
          */
         Map<String, String> params = preprocessSearchString(searchString, viewMode);
-        String query = (String)params.get("query");
-        String index = (String)params.get("index");
+        String query = params.get("query");
+        String index = params.get("index");
         /**
          * Contact the XMLRPC search server and get back the results
          */
@@ -517,7 +517,7 @@ public class SystemSearchHelper {
                 matchingField = "id";
             }
             serverItem.put("matchingField", matchingField);
-            serverItem.put("matchingFieldValue", (String)result.get("matchingFieldValue"));
+            serverItem.put("matchingFieldValue", result.get("matchingFieldValue"));
             if (log.isDebugEnabled()) {
                 log.debug("creating new map for system id: " + result.get("id") +
                         " new map = " + serverItem);
@@ -555,7 +555,7 @@ public class SystemSearchHelper {
                 matchingField = (String)result.get("name");
             }
             serverItem.put("matchingField", matchingField);
-            serverItem.put("matchingFieldValue", (String)result.get("matchingFieldValue"));
+            serverItem.put("matchingFieldValue", result.get("matchingFieldValue"));
             if (log.isDebugEnabled()) {
                 log.debug("creating new map for serverId = " + result.get("serverId") +
                         ", hwdevice id: " + result.get("id") + " new map = " +
@@ -583,7 +583,7 @@ public class SystemSearchHelper {
                 matchingField = (String)result.get("name");
             }
             serverItem.put("matchingField", matchingField);
-            serverItem.put("matchingFieldValue", (String)result.get("matchingFieldValue"));
+            serverItem.put("matchingFieldValue", result.get("matchingFieldValue"));
             if (log.isDebugEnabled()) {
                 log.debug("creating new map for serverId = " + result.get("serverId") +
                         ", snapshotID: " + result.get("snapshotId") + " new map = " +
@@ -952,9 +952,7 @@ public class SystemSearchHelper {
                 if (sortLowToHigh) {
                     return lng1.compareTo(lng2);
                 }
-                else {
-                    return lng2.compareTo(lng1);
-                }
+                return lng2.compareTo(lng1);
             }
             catch (NumberFormatException e) {
                 // String isn't a Long so continue;
@@ -965,9 +963,7 @@ public class SystemSearchHelper {
                 if (sortLowToHigh) {
                     return doub1.compareTo(doub2);
                 }
-                else {
-                    return doub2.compareTo(doub1);
-                }
+                return doub2.compareTo(doub1);
             }
             catch (NumberFormatException e) {
                 // String isn't a Double so continue;
@@ -976,9 +972,7 @@ public class SystemSearchHelper {
             if (sortLowToHigh) {
                 return val1.compareTo(val2);
             }
-            else {
-                return val2.compareTo(val1);
-            }
+            return val2.compareTo(val1);
         }
     }
 }

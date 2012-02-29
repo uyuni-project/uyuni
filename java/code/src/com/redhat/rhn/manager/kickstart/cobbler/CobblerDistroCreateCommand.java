@@ -105,7 +105,7 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
         distro.setArch(archName);
         distro.save();
 
-        tree.setCobblerId((String) distro.getUid());
+        tree.setCobblerId(distro.getUid());
         invokeCobblerUpdate();
 
         if (tree.doesParaVirt()) {

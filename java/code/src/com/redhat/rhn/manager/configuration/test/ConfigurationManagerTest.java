@@ -455,38 +455,6 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         return false;
     }
 
-    public void testListAllFiles() throws Exception {
-
-        //Only Config Admins can use this manager function.
-        //Making the user a config admin will also automatically
-        //give him access to the file and channel we are about to create.
-        UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
-        UserTestUtils.addProvisioning(user.getOrg());
-
-        //find the current state of things
-        int current = cm.listAllFilesWithTotalSize(user, pc).getTotalSize();
-
-        // Create a config revision, config content, config info, config file,
-        // and config channel.
-        ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
-        ConfigurationFactory.commit(cr);
-
-        //Make sure that everything was created and committed correctly.
-        assertTrue(cr.getId().longValue() > 0);
-        assertNotNull(cr.getConfigFile());
-        assertNotNull(cr.getConfigContent());
-        assertNotNull(cr.getConfigInfo());
-        assertTrue(cr.getConfigFile().getId().longValue() > 0);
-        assertNotNull(cr.getConfigFile().getConfigChannel());
-        assertTrue(cr.getConfigFile().getConfigChannel().getId().longValue() > 0);
-
-        //Call the function we are testing
-        DataResult dr = cm.listAllFilesWithTotalSize(user, pc);
-        //the number before the test plus the one we added.
-        assertEquals(current + 1, dr.getTotalSize());
-        assertTrue(dr.get(0) instanceof ConfigFileDto);
-    }
-
     public void testListManagedSystemsAndFiles() throws Exception {
         //Create a config file, along with a config channel
         ConfigFile cf = ConfigTestUtils.createConfigFile(user.getOrg());
@@ -694,7 +662,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
 
         assertEquals(EXPECTED_COUNT, actual);
 
-        final ConfigChannel c = (ConfigChannel) s.getConfigChannels().get(0);
+        final ConfigChannel c = s.getConfigChannels().get(0);
 
         SortedSet files = c.getConfigFiles();
         assertEquals(files.size(), EXPECTED_COUNT.getFiles() +
@@ -764,9 +732,8 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
                                 ConfigChannelType.local());
 
 
-        ConfigChannel c = (ConfigChannel) s.getConfigChannels().get(0);
-        String path = ((ConfigFile)c.getConfigFiles().first()).
-                                        getConfigFileName().getPath();
+        ConfigChannel c = s.getConfigChannels().get(0);
+        String path = c.getConfigFiles().first().getConfigFileName().getPath();
         ConfigFile fl = local.createConfigFile(
                                 ConfigFileState.normal(),
                                 path);
@@ -1428,7 +1395,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
             assertNotNull(gcc2);
             assertNotNull(gcc2.getConfigFiles());
             assertEquals(1, gcc2.getConfigFiles().size());
-            ConfigFile fl = (ConfigFile)gcc2.getConfigFiles().first();
+            ConfigFile fl = gcc2.getConfigFiles().first();
             assertEquals(g1f1.getConfigFileName(), fl.getConfigFileName());
             assertEquals(g1f1.getLatestConfigRevision().getConfigFileType(),
                                fl.getLatestConfigRevision().getConfigFileType());

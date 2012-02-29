@@ -81,24 +81,22 @@ public class CobblerSyncTask extends RhnJavaJob {
                 LAST_UPDATED.get());
             //If we got an mtime from cobbler and that mtime is before our last update
             // Then don't update anything
-            if (mtime != null && mtime.longValue() < CobblerSyncTask.LAST_UPDATED.get()) {
+            if (mtime.longValue() < CobblerSyncTask.LAST_UPDATED.get()) {
                 log.debug("Cobbler mtime is less than last change, skipping");
                 return;
             }
-            else {
-                log.debug("Syncing distros and profiles.");
+            log.debug("Syncing distros and profiles.");
 
-                ve = distSync.store();
-                if (ve != null) {
-                    TaskHelper.sendErrorEmail(log, ve.getMessage());
-                }
-
-                CobblerProfileSyncCommand profSync = new CobblerProfileSyncCommand();
-                profSync.store();
-
-                CobblerSystemSyncCommand systemSync = new CobblerSystemSyncCommand();
-                systemSync.store();
+            ve = distSync.store();
+            if (ve != null) {
+                TaskHelper.sendErrorEmail(log, ve.getMessage());
             }
+
+            CobblerProfileSyncCommand profSync = new CobblerProfileSyncCommand();
+            profSync.store();
+
+            CobblerSystemSyncCommand systemSync = new CobblerSystemSyncCommand();
+            systemSync.store();
 
             LAST_UPDATED.set((new Date()).getTime() / 1000 + 1);
         }
@@ -112,9 +110,7 @@ public class CobblerSyncTask extends RhnJavaJob {
                 log.error("re-throwing exception since we havent yet.");
                 throw re;
             }
-            else {
-                log.error("Not re-throwing any more errors.");
-            }
+            log.error("Not re-throwing any more errors.");
         }
     }
 

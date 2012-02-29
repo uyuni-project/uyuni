@@ -216,7 +216,6 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
             log.debug("Packages: " + pkgs);
         }
 
-        new ArrayList();
         List pAdded = new ArrayList();
 
 
@@ -235,7 +234,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
         }
 
         Map retval = new HashMap();
-        if (pAdded != null && !pAdded.isEmpty()) {
+        if (!pAdded.isEmpty()) {
             retval.put("packages", new LinkedList(pAdded));
         }
 
@@ -263,7 +262,7 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
     private void scheduleAutoUpdates(Long sid, Org org, Map updates) {
         log.debug("Scheduling auto updates");
         List errataAdded = (List) updates.get("errata");
-        if (updates == null || errataAdded == null) {
+        if (errataAdded == null) {
             return;
         }
         log.debug("Have errata - scheduling");

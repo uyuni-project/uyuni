@@ -1,5 +1,4 @@
---
--- Copyright (c) 2008 Red Hat, Inc.
+-- Copyright (c) 2008-2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -11,42 +10,29 @@
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation. 
---
---
---
---
 
-CREATE OR REPLACE FUNCTION
-LOOKUP_CVE(name_in IN VARCHAR2)
-RETURN NUMBER
-IS
-	PRAGMA AUTONOMOUS_TRANSACTION;
-	name_id		NUMBER;
-BEGIN
-	SELECT id
-          INTO name_id
-          FROM rhnCve
-         WHERE name = name_in;
+create or replace function
+lookup_cve(name_in in varchar2)
+return number
+is
+    name_id		number;
+begin
+    select id
+      into name_id
+      from rhnCVE
+     where name = name_in;
 
-	RETURN name_id;
-EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-            INSERT INTO rhnCve (id, name) 
-                VALUES (rhn_cve_id_seq.nextval, name_in)
-                RETURNING id INTO name_id;
-            COMMIT;
-	RETURN name_id;
-END LOOKUP_CVE;
+    return name_id;
+exception when no_data_found then
+    begin
+        name_id := insert_cve(name_in);
+    exception when dup_val_on_index then
+        select id
+          into name_id
+          from rhnCVE
+         where name = name_in;
+    end;
+    return name_id;
+end;
 /
-SHOW ERRORS
-
---
--- Revision 1.2  2004/07/07 21:48:25  pjones
--- bugzilla: 123370 -- "end lookup_cve", to be consistent with the dbchange way
---
--- Revision 1.1  2004/07/07 17:27:36  bretm
--- bugzilla:  123370
---
--- lookup_cve utility function
---
---
+show errors

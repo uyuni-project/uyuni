@@ -12,9 +12,9 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
-"Language-Team: Kannada (http://www.transifex.net/projects/p/fedora/team/"
+"Language-Team: Kannada (http://www.transifex.net/projects/p/fedora/language/"
 "kn/)\n"
 "Language: kn\n"
 "MIME-Version: 1.0\n"
@@ -782,9 +782,8 @@ msgstr "*ಇ-ಮೈಲ್ ವಿಳಾಸ:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "ಗಣಕವು ಈಗಾಗಲಿ ನೋಂದಾಯಿಸಿದ್ದರೂ ಸಹ ಇನ್ನೊಮ್ಮೆ ನೋಂದಾಯಿಸಿ"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -795,7 +794,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "ಮುಂದುವರೆಯ ಬೇಕೆಂದು ನೀವು ಖಚಿತವೆ?"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -807,15 +805,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"RHN ಸರ್ಟಿಫಿಕೇಟ್-ಬೇಸ್ಡ್‍ ಎಂಟೈಟಲ್ಮೆಂಟ್ ತಂತ್ರಜ್ಞಾನವನ್ನು ಬಳಸಿಕೊಂಡು ಈ ವ್ಯವಸ್ಥೆಯನ್ನು ಈಗಾಗಲೆ RHN "
-"ನೊಂದಿಗೆ ನೋಂದಾಯಿಸಲಾಗಿದೆ ಎಂದು ತೋರುತ್ತಿದೆ. ಈ ಉಪಕರಣಕ್ಕಾಗಿ RHN ಕ್ಲಾಸಿಕ್ ತಂತ್ರಜ್ಞಾನದ "
-"ನೆರವಿನಿಂದ ನೋಂದಾಯಿಸುವುದು ಅಗತ್ಯವಿರುತ್ತದೆ.\n"
-"\n"
-"ಕೆಲವು ಸನ್ನಿವೇಶಗಳನ್ನು ಹೊರತುಪಡಿಸಿದರೆ, Red Hat ಸಾಮಾನ್ಯವಾಗಿ ತನ್ನ ಬಳಕೆದಾರರಿಗೆ ಕೇವಲ "
-"ಒಮ್ಮೆ ಮಾತ್ರ RHN ನೊಂದಿಗೆ ಚಂದಾದಾರರಾಗಿಸಿ ಎಂದು ಸಲಹೆ ಮಾಡಲಾಗುತ್ತದೆ\n"
-"\n"
-"ಪರ್ಯಾಯ ಉಪಕರಣಗಳು ಸೇರಿದಂತೆ, ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗಾಗಿ ಈ ನಾಲೆಜ್ ಬೇಸ್ ಲೇಖನವನ್ನು ನೋಡಿ: "
-"https://access.redhat.com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -2374,7 +2363,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2382,15 +2370,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"ನಿಮ್ಮ ಗಣಕವನ್ನು ಬೆಂಬಲಿತವಾಗಿಡಲು ಹಾಗು ಅನುವರ್ತಿತವಾಗಿಡಲು ಅಗತ್ಯವಿರುವ ಸುರಕ್ಷತಾ "
-"ಅಪ್ಡೇಟುಗಳನ್ನು ಒಳಗೊಂಡ ತಂತ್ರಾಂಶ ಅಪ್ಡೇಟುಗಳನ್ನು ಪಡೆದುಕೊಳ್ಳುವಂತೆ ಈ ಸಹಾಯಕವು ನಿಮಗೆ ನಿಮ್ಮ "
-"ಗಣಕವನ್ನು Red Hat Network (RHN) ಕ್ಕೆ ಸಂಪರ್ಕ ಕಲ್ಪಿಸಲು ಮಾರ್ಗದರ್ಶನವನ್ನು ಒದಗಿಸುತ್ತದೆ.  "
-"ಇದಕ್ಕಾಗಿ ಈ ಸಮಯದಲ್ಲಿ ನಿಮಗೆ ಈ ಕೆಳಗಿನವುಗಳ ಅಗತ್ಯವಿದೆ:\n"
-"\n"
-" * ಒಂದು ಜಾಲಬಂಧ ಸಂಪರ್ಕ\n"
-" * ನಿಮ್ಮ Red Hat ಲಾಗಿನ್ & ಗುಪ್ತಪದ\n"
-" * Red Hat Network Satellite ಅಥವ Proxy (ಐಚ್ಛಿಕ) ಯು ಇರುವ ಸ್ಥಳ\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2562,10 +2541,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Red Hat Network ತಾಣ:"
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2589,6 +2567,3 @@ msgstr ""
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "Red Hat Networkನೊಂದಿಗೆ ನೋಂದಾಯಿಸಿ"
-
-#~ msgid "System software updates already set up"
-#~ msgstr "ಗಣಕ ತಂತ್ರಾಂಶ ಅಪ್ಡೇಟುಗಳು ಈಗಾಗಲೆ ಸಂಯೋಜಿಸಲ್ಪಟ್ಟಿದೆ"

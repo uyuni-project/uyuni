@@ -793,7 +793,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         rebootAction.setEarliestAction(this.getScheduleDate());
         rebootAction.setOrg(this.getUser().getOrg());
         rebootAction.setName(rebootAction.getActionType().getName());
-        log.debug("** saving reboot action: " + (rebootAction == null));
+        log.debug("** saving reboot action: " + rebootAction.getName());
         ActionFactory.save(rebootAction);
         log.debug("** Saved rebootAction: " + rebootAction.getId());
 
@@ -997,13 +997,11 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             log.debug("  ** getToolsChannel() returning ksdata's channel");
             return ksdata.getChannel();
         }
-        else {
-            log.debug("  ** getToolsChannel() looking for tools channel as a child");
-            Channel kschannel = ksdata.getChannel();
-            Channel toolsChannel = ChannelManager.getToolsChannel(kschannel, user);
-            if (toolsChannel != null) {
-                return toolsChannel;
-            }
+        log.debug("  ** getToolsChannel() looking for tools channel as a child");
+        Channel kschannel = ksdata.getChannel();
+        Channel toolsChannel = ChannelManager.getToolsChannel(kschannel, user);
+        if (toolsChannel != null) {
+            return toolsChannel;
         }
         log.error("Tools channel not found!  " +
                 "This means we can't find the rhn-kickstart package.");

@@ -55,7 +55,6 @@ public class Package extends BaseDomainHelper {
     private String copyright;
     private String cookie;
     private Date lastModified;
-    private String sourcePath;
     private Set<PublishedErrata> publishedErrata = new HashSet<PublishedErrata>();
     private Set<UnpublishedErrata> unpublishedErrata = new HashSet<UnpublishedErrata>();
     private Set<Channel> channels = new HashSet<Channel>();
@@ -477,9 +476,7 @@ public class Package extends BaseDomainHelper {
                     otherPack.getPackageArch()).append(this.getPackageEvr(),
                     this.getPackageEvr()).isEquals();
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     /**

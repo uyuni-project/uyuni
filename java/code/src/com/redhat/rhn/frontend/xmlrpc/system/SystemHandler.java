@@ -1954,7 +1954,6 @@ public class SystemHandler extends BaseHandler {
      */
     public List listSystemEvents(String sessionKey, Integer sid) {
 
-        new LinkedList();
         // Get the logged in user and server
         User loggedInUser = getLoggedInUser(sessionKey);
         Server server = lookupServer(loggedInUser, sid);
@@ -2536,10 +2535,8 @@ public class SystemHandler extends BaseHandler {
             if (server.getRunningKernel() != null) {
                 return server.getRunningKernel();
             }
-            else {
-                return LocalizationService.getInstance().getMessage(
-                "server.runningkernel.unknown");
-            }
+            return LocalizationService.getInstance().getMessage(
+            "server.runningkernel.unknown");
         }
         catch (LookupException e) {
             throw new NoSuchSystemException(e);
@@ -3541,9 +3538,7 @@ public class SystemHandler extends BaseHandler {
                     !map.containsValue(country)) {
                 throw new UnrecognizedCountryException(country);
             }
-            else {
-                server.getLocation().setCountry(country);
-            }
+            server.getLocation().setCountry(country);
         }
         if (details.containsKey("building")) {
             server.getLocation().setBuilding((String)details.get("building"));
@@ -4994,9 +4989,7 @@ public class SystemHandler extends BaseHandler {
         if (server.isVirtualGuest()) {
             return server.getVirtualInstance().getUuid();
         }
-        else {
-            return "";
-        }
+        return "";
     }
 
     /**

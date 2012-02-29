@@ -12,9 +12,9 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
-"Language-Team: Sinhala (http://www.transifex.net/projects/p/fedora/team/"
+"Language-Team: Sinhala (http://www.transifex.net/projects/p/fedora/language/"
 "si/)\n"
 "Language: si\n"
 "MIME-Version: 1.0\n"
@@ -754,9 +754,8 @@ msgstr "*විද්‍යුත් ලිපිනය:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "පද්ධතිය මීට පෙර ලියාපදිංචි කර තිබුනද නැවත ලියාපදිංචි කරන්න"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -2241,7 +2240,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2249,14 +2247,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"ඔබේ පද්ධතිය ආරක්‍ෂිතව තබාගැනීමට අවශ්‍ය ප්‍රගමනයන් ඇතුලත්ව මෘදුකාංග ප්‍රගමනයන් ලබාගැනීම හා "
-"නිසියාකාරව පද්ධතිය පවත්වාගැනීම සඳහා මෙම සහයක විසින් Red Hat Network (RHN) වෙත සම්බන්ධ "
-"වන අයුරු පෙන්වනු ලැබේ.  මේ සඳහා පහත සඳහන් සියල්ල ඔබහට අවශ්‍ය වේ:\n"
-"\n"
-" * අන්තර්ජාල සම්බන්ධතාවයක්\n"
-" * ඔබේ Red Hat පිවිසුම සහ රහස්පදය\n"
-" * Red Hat Network Satellite හෝ ප්‍රොක්සියේ ස්ථානය (අත්‍යවශ්‍ය නොවේ)\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2453,6 +2443,3 @@ msgstr ""
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr ""
-
-#~ msgid "System software updates already set up"
-#~ msgstr "පද්ධතියේ මෘදුකාංග නවීකරණය මීට පෙර සකසා ඇත"

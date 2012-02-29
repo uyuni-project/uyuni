@@ -222,8 +222,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
     @Override
     protected KickstartScheduleCommand getKickstartScheduleCommand(Long sid,
                                                                    User currentUser) {
-        return (KickstartScheduleCommand)
-            new ProvisionVirtualInstanceCommand(sid, currentUser);
+        return new ProvisionVirtualInstanceCommand(sid, currentUser);
     }
 
 

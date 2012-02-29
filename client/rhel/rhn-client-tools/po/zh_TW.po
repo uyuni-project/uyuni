@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Chinese (Taiwan) <trans-zh_TW@lists.fedoraproject.org>\n"
 "Language: zh_TW\n"
@@ -743,9 +743,8 @@ msgstr "*電子郵件地址："
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "註冊系統；即使已經註冊過了"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -756,7 +755,6 @@ msgid "Are you sure you would like to continue?"
 msgstr "您確定要繼續嗎？"
 
 #: ../src/up2date_client/rhnreg_constants.py:125
-#, fuzzy
 msgid ""
 "This system has already been registered with RHN using RHN certficate-based "
 "technology.\n"
@@ -768,13 +766,6 @@ msgid ""
 "To learn more about RHN registration and technologies please consult this "
 "Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
 msgstr ""
-"這部系統似乎已透過使用 RHN Certificate-Based Entitlement 技術來向 RHN 註冊"
-"了。此工具需要透過使用 RHN Classic 技術來進行註冊。\n"
-"\n"
-"除了某些情況下，Red Hat 建議使用者只向 RHN 進行一次註冊。\n"
-"\n"
-"欲取得更多資訊（包括額外工具），請參閱此知識庫文件：https://access.redhat."
-"com/kb/docs/DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:134
@@ -2271,7 +2262,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2279,13 +2269,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"這助理程式會引領您將系統連上 Red Hat Network（RHN），收取軟理更新，包括安全性"
-"更新，好讓您的系統保持在受支援、相容的狀態。現在您需要以下：\n"
-"\n"
-" * 網路連線\n"
-" * 您的 Red Hat 登入帳號與密碼\n"
-" * Red Hat 衛星伺服器或代理伺服器的位置（選用）\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2457,10 +2440,9 @@ msgid "•"
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-#, fuzzy
 msgctxt "yes"
 msgid "• A network connection"
-msgstr "Red Hat Network 的位置："
+msgstr ""
 
 #: ../data/rh_register.glade.h:155
 msgctxt "yes"
@@ -2483,6 +2465,3 @@ msgstr "註冊以取得來自於 Spacewalk/Satellite/Red Hat Network 的軟體�
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr "向 Spacewalk/Satellite/Red Hat Network 註冊。"
-
-#~ msgid "System software updates already set up"
-#~ msgstr "系統軟體更新已經設定"

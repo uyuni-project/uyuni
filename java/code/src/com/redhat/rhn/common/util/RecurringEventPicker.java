@@ -53,13 +53,6 @@ public class RecurringEventPicker {
      */
     public static final String USE_DATE = "use_date";
 
-
-
-    private static final String MONTH = "month";
-    private static final String DAY = "day";
-    private static final String HOUR = "hour";
-    private static final String MINUTE = "minute";
-
     private static final String STATUS_DISABLED = "disabled";
 
 
@@ -304,9 +297,7 @@ public class RecurringEventPicker {
         if (StringUtils.isNumeric(st)) {
             return Long.parseLong(st);
         }
-        else {
-            return -1L;
-        }
+        return -1L;
     }
 
 
@@ -320,9 +311,7 @@ public class RecurringEventPicker {
                 Integer.parseInt(num) < 1) {
             return null;
         }
-        else {
-            return getDayNames()[Integer.parseInt(num) - 1];
-        }
+        return getDayNames()[Integer.parseInt(num) - 1];
     }
 
 
@@ -343,9 +332,7 @@ public class RecurringEventPicker {
         if (StringUtils.isNumeric(st)) {
             return Long.parseLong(st);
         }
-        else {
-            return -1L;
-        }
+        return -1L;
     }
 
 
@@ -366,9 +353,7 @@ public class RecurringEventPicker {
         if (StringUtils.isNumeric(st)) {
             return Long.parseLong(st);
         }
-        else {
-            return -1L;
-        }
+        return -1L;
     }
 
 
@@ -380,9 +365,7 @@ public class RecurringEventPicker {
         if (slot >= array.length) {
             return null;
         }
-        else {
-            return array[slot];
-        }
+        return array[slot];
     }
 
     /**

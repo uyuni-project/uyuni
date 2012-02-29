@@ -208,9 +208,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     return strutsDelegate.forwardParams(mapping.findForward("success"),
                             new HashMap());
                 }
-                else {
-                    newBase = ChannelManager.lookupByIdAndUser(newBaseChannelId, user);
-                }
+                newBase = ChannelManager.lookupByIdAndUser(newBaseChannelId, user);
             }
 
             if (oldBase != null) {
@@ -471,7 +469,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         StringBuffer valuesBuf = new StringBuffer();
 
         while (names.hasMoreElements()) {
-            String aName = (String) names.nextElement();
+            String aName = names.nextElement();
             String aValue = request.getParameter(aName);
 
             if (aName.startsWith(PREFIX) && !NO_CHG.equals(aValue)) {

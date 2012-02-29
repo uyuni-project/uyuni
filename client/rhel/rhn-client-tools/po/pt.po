@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 13:07+0100\n"
-"PO-Revision-Date: 2011-07-20 00:39+0000\n"
+"PO-Revision-Date: 2012-02-14 13:00+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Portuguese <trans-pt@lists.fedoraproject.org>\n"
 "Language: pt\n"
@@ -764,9 +764,8 @@ msgstr "*Endereço de E-mail:"
 
 #: ../src/up2date_client/rhnreg_constants.py:121
 #: ../data/rh_register.glade.h:41
-#, fuzzy
 msgid "System already registered"
-msgstr "Registar o sistema mesmo que já esteja registado"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:122
 msgid "It appears this system has already been set up for software updates:"
@@ -2277,7 +2276,6 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:124
-#, fuzzy
 msgctxt "yes"
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
@@ -2285,15 +2283,6 @@ msgid ""
 "keep your system supported and compliant. You will need the following at "
 "this time:"
 msgstr ""
-"Este assistente guiá-lo-á pela ligação do seu sistema à Red Hat Network "
-"(RHN) para receber as actualizações das aplicações, incluindo as "
-"actualizações de segurança, para manter o seu sistema suportado e "
-"compatível. Será necessário o seguinte nesta altura:\n"
-"\n"
-" * Uma ligação à rede\n"
-" * A sua conta e senha na Red Hat\n"
-" * A localização de um Satélite ou 'Proxy' da Red Hat (opcional)\n"
-"\n"
 
 #: ../data/rh_register.glade.h:125
 msgctxt "yes"
@@ -2490,6 +2479,3 @@ msgstr ""
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Satellite/Red Hat Network."
 msgstr ""
-
-#~ msgid "System software updates already set up"
-#~ msgstr "As actualizações do 'software' do sistema já estão configuradas"

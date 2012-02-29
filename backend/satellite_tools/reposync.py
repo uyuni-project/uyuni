@@ -94,16 +94,20 @@ class RepoSync(object):
         self.log_msg("\nSync started: %s" % (time.asctime(time.localtime())))
         self.log_msg(str(sys.argv))
 
+        self.channel_label = channel_label
+        self.channel = self.load_channel()
+        if not self.channel:
+            self.print_msg("Channel does not exist or is not custom.")
+            sys.exit(1)
+
         if not url:
             # TODO:need to look at user security across orgs
             h = rhnSQL.prepare("""select s.id, s.source_url, s.metadata_signed
                                   from rhnContentSource s,
-                                       rhnChannelContentSource cs,
-                                       rhnChannel c
+                                       rhnChannelContentSource cs
                                  where s.id = cs.source_id
-                                   and cs.channel_id = c.id
-                                   and c.label = :label""")
-            h.execute(label=channel_label)
+                                   and cs.channel_id = :channel_id""")
+            h.execute(channel_id=self.channel['id'])
             source_urls = h.fetchall_dict()
             if source_urls:
                 self.urls = source_urls
@@ -118,12 +122,6 @@ class RepoSync(object):
             self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N'}]
 
         self.repo_plugin = self.load_plugin(repo_type)
-        self.channel_label = channel_label
-
-        self.channel = self.load_channel()
-        if not self.channel:
-            self.print_msg("Channel does not exist.")
-            sys.exit(1)
 
         self.arches = get_compatible_arches(self.channel['id'])
 
@@ -258,10 +256,9 @@ class RepoSync(object):
                 SELECT p.friendly_name
                   FROM suseproducts p
                   JOIN suseproductchannel pc on p.id = pc.product_id
-                  JOIN rhnchannel c on pc.channel_id = c.id
-                 WHERE c.label = :label
+                 WHERE pc.channel_id = :channel_id
                 """)
-            query.execute(label=self.channel_label)
+            query.execute(channel_id=self.channel['id'])
             try:
                 e['product'] = query.fetchone()[0]
             except TypeError:
@@ -444,7 +441,7 @@ class RepoSync(object):
             params = {
                 'product_cap'   : "product(%s)" % product['name'],
                 'cap_version'   : product['version'] + "-" + product['release'],
-                'channel_label' : self.channel_label
+                'channel_id' : self.channel['id']
             }
             if self.channel['org_id']:
                 org_statement = "and p.org_id = :channel_org"
@@ -458,10 +455,9 @@ class RepoSync(object):
                   join rhnPackageProvides pp on pp.package_id = p.id
                   join rhnPackageCapability pc on pc.id = pp.capability_id
                   join rhnChannelPackage cp on cp.package_id = p.id
-                  join rhnChannel c on c.id = cp.channel_id
                  where pc.name = :product_cap
                    and pc.version = :cap_version
-                   and c.label = :channel_label
+                   and cp.channel_id = :channel_id
                    %s
             """ % org_statement)
 
@@ -532,7 +528,7 @@ class RepoSync(object):
                 'release': pkg['release'],
                 'arch': pkg['arch'],
                 'epoch': pkg['epoch'],
-                'channel_label': self.channel_label}
+                'channel_id': self.channel['id']}
             if param_dict['arch'] not in self.arches:
                 continue
             ret = self._process_package(param_dict, advisory_name)
@@ -572,7 +568,7 @@ class RepoSync(object):
                 'release': nevr.get('rel'),
                 'epoch': nevr.get('epoch'),
                 'arch': pkg.findtext(YUM+'arch'),
-                'channel_label': self.channel_label
+                'channel_id': self.channel['id']
             }
             if param_dict['arch'] not in self.arches:
                 continue
@@ -599,7 +595,7 @@ class RepoSync(object):
         already present in the database. If it is, return a
         IncompletePackage objects, otherwise return None.
 
-        :param_dict: dict that represent packages (nerva + channel_label)
+        :param_dict: dict that represent packages (nerva + channel_id)
         :advisory_name: the name of the current erratum
 
         """
@@ -626,7 +622,6 @@ class RepoSync(object):
               join rhnArchType at on pa.arch_type_id = at.id
               join rhnChecksumView c on p.checksum_id = c.id
               join rhnChannelPackage cp on p.id = cp.package_id
-              join rhnChannel ch on cp.channel_id = ch.id
              where pn.name = :name
                and p.org_id %s
                and pevr.version = :version
@@ -634,7 +629,7 @@ class RepoSync(object):
                and pa.label = :arch
                and %s
                and at.label = 'rpm'
-               and ch.label = :channel_label
+               and cp.channel_id = :channel_id
             """ % (orgidStatement, epochStatement))
         h.execute(**param_dict)
         cs = h.fetchone_dict()
@@ -656,7 +651,7 @@ class RepoSync(object):
 
         package = IncompletePackage()
         for k in param_dict:
-            if k not in ['epoch', 'channel_label']:
+            if k not in ['epoch', 'channel_label', 'channel_id']:
                 package[k] = param_dict[k]
         package['epoch'] = cs['epoch']
         package['org_id'] = self.channel['org_id']
@@ -706,7 +701,7 @@ class RepoSync(object):
 
             db_pack = rhnPackage.get_info_for_package(
                    [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
-                   self.channel_label)
+                   self.channel['id'])
 
             to_download = True
             to_link     = True
@@ -716,10 +711,10 @@ class RepoSync(object):
                     # package is already on disk
                     to_download = False
                     pack.set_checksum(db_pack['checksum_type'], db_pack['checksum'])
-                    if db_pack['channel_label'] == self.channel_label:
+                    if db_pack['channel_id'] == self.channel['id']:
                         # package is already in the channel
                         to_link = False
-                elif db_pack['channel_label'] == self.channel_label:
+                elif db_pack['channel_id'] == self.channel['id']:
                     # different package with SAME NVREA
                     self.disassociate_package(db_pack)
                 
