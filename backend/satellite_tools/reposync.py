@@ -95,6 +95,7 @@ class RepoSync(object):
         self.log_msg(str(sys.argv))
 
         self.channel_label = channel_label
+        self.repo_plugin = self.load_plugin(repo_type)
         self.channel = self.load_channel()
         if not self.channel:
             self.print_msg("Channel does not exist or is not custom.")
@@ -120,8 +121,6 @@ class RepoSync(object):
                 sys.exit(1)
         else:
             self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N'}]
-
-        self.repo_plugin = self.load_plugin(repo_type)
 
         self.arches = get_compatible_arches(self.channel['id'])
 
