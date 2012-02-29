@@ -22,6 +22,7 @@ public class Image extends BaseDto implements Comparable<Image> {
     private String name;
     private String version;
     private String arch;
+    private String imageSize;
     private String imageType;
     private String downloadUrl;
     private String editUrl;
@@ -57,6 +58,14 @@ public class Image extends BaseDto implements Comparable<Image> {
 
     public void setArch(String inArch) {
         this.arch = inArch;
+    }
+
+    public String getImageSize() {
+        return this.imageSize;
+    }
+
+    public void setImageSize(String inImageSize) {
+        this.imageSize = inImageSize;
     }
 
     public String getImageType() {

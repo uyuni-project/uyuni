@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.renderers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,8 +33,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.suse.studio.client.SUSEStudio;
-import com.suse.studio.client.data.Appliance;
-import com.suse.studio.client.data.Build;
+import com.suse.studio.client.model.Appliance;
+import com.suse.studio.client.model.Build;
 
 /**
  * Asynchronously render the page content for image selection and deployment.
@@ -42,8 +43,12 @@ public class ImagesRenderer extends BaseFragmentRenderer {
 
     private static Logger logger = Logger.getLogger(ImagesRenderer.class);
 
+    // Attribute keys
     public static final String ATTRIB_IMAGES_LIST = "imagesList";
     public static final String ATTRIB_ERROR_MSG = "errorMsg";
+
+    // Collection of all valid image types
+    private static List<String> validImageTypes = Arrays.asList("vmx", "xen");
 
     /**
      * {@inheritDoc}
@@ -105,16 +110,21 @@ public class ImagesRenderer extends BaseFragmentRenderer {
         for (Appliance appliance : appliances) {
             // Create one image object for every build
             for (Build build : appliance.getBuilds()) {
+                // Skip this build if image type is unsupported
+                if (!validImageTypes.contains(build.getImageType())) {
+                    continue;
+                }
                 Image img = new Image();
                 // Appliance attributes
-                img.setName(appliance.getName());
                 img.setArch(appliance.getArch());
                 img.setEditUrl(appliance.getEditUrl());
+                img.setName(appliance.getName());
                 // Build attributes
-                img.setId(new Long(build.getId()));
-                img.setVersion(build.getVersion());
-                img.setImageType(build.getImageType());
                 img.setDownloadUrl(build.getDownloadUrl());
+                img.setId(new Long(build.getId()));
+                img.setImageSize(build.getImageSize());
+                img.setImageType(build.getImageType());
+                img.setVersion(build.getVersion());
                 ret.add(img);
             }
         }
