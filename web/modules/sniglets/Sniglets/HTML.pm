@@ -200,7 +200,7 @@ sub rhn_eula_links {
   $vendor = "" if ($? != 0);
 
   $is_xe = 1 if ( -e "/usr/share/doc/oracle_xe/licenses/license.txt" );
-  $is_full = 1 if ( -d "/opt/apps/oracle/oradata/susemanager" && $vendor =~ /SUSE/i );
+  $is_full = 1 if ( $vendor =~ /SUSE/i );
 
   if ( ! $is_full && ! $is_xe )
   {
