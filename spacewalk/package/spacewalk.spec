@@ -144,8 +144,13 @@ Conflicts: spacewalk-oracle
 Requires: spacewalk-java-postgresql
 Requires: perl(DBD::Pg)
 Requires: spacewalk-backend-sql-postgresql
+%if 0%{?suse_version}
+Requires: postgresql
+Requires: postgresql-contrib
+%else
 Requires: /usr/bin/psql
 Requires: /usr/share/pgsql/contrib/dblink.sql
+%endif
 
 %description postgresql
 Spacewalk is a systems management application that will 
