@@ -41,6 +41,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/openscap/xsl
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/actions
+%dir /etc/sysconfig/rhn
+%dir /etc/sysconfig/rhn/clientCaps.d/
 %config  /etc/sysconfig/rhn/clientCaps.d/scap
 %{_datadir}/rhn/actions/scap.*
 %{_datadir}/openscap/xsl/xccdf-resume.xslt
