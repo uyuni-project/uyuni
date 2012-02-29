@@ -21,7 +21,7 @@ BuildRequires:  spacewalk-backend-sql-oracle
 BuildRequires:  suseRegisterInfo
 BuildRequires:  pyxml
 
-PreReq:         %fillup_prereq %insserv_prereq
+PreReq:         %fillup_prereq %insserv_prereq atftp
 Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
 Requires:       rsync less
@@ -91,8 +91,10 @@ if [ -f /etc/sysconfig/atftpd ]; then
   if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
     sysconf_addword -r /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/tftpboot"
     sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/srv/tftpboot"
-    mkdir -p /srv/tftpboot
   fi
+fi
+if [ ! -d /srv/tftpboot ]; then
+  mkdir -p /srv/tftpboot
 fi
 
 %postun

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 29 17:17:43 CET 2012 - mc@suse.de
+
+- PreRequire atftp
+- create /srv/tftpboot if it does not exist
+
+-------------------------------------------------------------------
 Thu Feb 23 13:10:43 CET 2012 - mc@suse.de
 
 - postgres db tuning added to migration.sh
