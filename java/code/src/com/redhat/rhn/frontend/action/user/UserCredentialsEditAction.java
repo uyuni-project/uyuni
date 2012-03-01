@@ -39,6 +39,7 @@ public class UserCredentialsEditAction extends RhnAction {
     private static String PARAM_USER = "studio_user";
     private static String PARAM_KEY = "studio_key";
     private static String PARAM_URL = "studio_url";
+    private static String DEFAULT_URL = "http://susestudio.com";
 
     /** {@inheritDoc} */
     @Override
@@ -54,6 +55,7 @@ public class UserCredentialsEditAction extends RhnAction {
             // Create new credentials if necessary
             creds = CredentialsFactory.createNewCredentials(user);
             creds.setType(Credentials.TYPE_STUDIO);
+            creds.setUrl(DEFAULT_URL);
         }
         request.setAttribute(ATTRIB_CREDS, creds);
 
