@@ -23040,8 +23040,11 @@ given channel.</source>
      </trans-unit>
 
      <!-- SUSE Studio -->
-     <trans-unit id="images.jsp.select">
+     <trans-unit id="images.jsp.select.title">
         <source>Select an Image</source>
+     </trans-unit>
+     <trans-unit id="images.jsp.select.summary">
+        <source>Please choose from the images below to create a new virtual system.</source>
      </trans-unit>
      <trans-unit id="images.jsp.name">
         <source>Name</source>
@@ -23055,23 +23058,26 @@ given channel.</source>
      <trans-unit id="images.jsp.type">
         <source>Type</source>
      </trans-unit>
-     <trans-unit id="images.jsp.status">
-        <source>Status</source>
+     <trans-unit id="images.jsp.noimages">
+        <source>No Images</source>
+     </trans-unit>
+     <trans-unit id="images.jsp.deploy.title">
+        <source>Image Deployment: </source>
+     </trans-unit>
+     <trans-unit id="images.jsp.deploy.summary">
+        <source>Please submit the form to schedule the deployment of image &lt;span id="image-string"&gt;&lt;/span&gt;.</source>
      </trans-unit>
      <trans-unit id="images.jsp.vmsetup">
         <source>Virtual Machine Setup</source>
      </trans-unit>
-     <trans-unit id="images.jsp.noimages">
-        <source>No Images</source>
-     </trans-unit>
      <trans-unit id="images.jsp.vcpus">
-        <source>Number of VCPUs:</source>
+        <source>Number of VCPUs&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
      </trans-unit>
      <trans-unit id="images.jsp.memory">
-        <source>Memory (MB):</source>
+        <source>Memory (MB)&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
      </trans-unit>
      <trans-unit id="images.jsp.bridge">
-        <source>Bridge Device:</source>
+        <source>Bridge Device&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
      </trans-unit>
      <trans-unit id="images.jsp.proxyconfig">
         <source>Proxy Configuration</source>
@@ -23085,11 +23091,11 @@ given channel.</source>
      <trans-unit id="images.jsp.proxypass">
         <source>Proxy Password:</source>
      </trans-unit>
+     <trans-unit id="images.jsp.cancel">
+        <source>Cancel</source>
+     </trans-unit>
      <trans-unit id="images.jsp.dispatch">
         <source>Schedule Deployment</source>
-     </trans-unit>
-     <trans-unit id="studio.deployment.scheduled">
-        <source>Image deployment scheduled: {0}</source>
      </trans-unit>
      <trans-unit id="credentials.jsp.susestudio">
         <source>SUSE Studio</source>
@@ -23101,7 +23107,7 @@ given channel.</source>
         <source>Update Credentials</source>
      </trans-unit>
      <trans-unit id="credentials.jsp.delete.summary">
-        <source>The external system or API credentials below will be deleted. This action cannot be undone.</source>
+        <source>These external system or API credentials will be deleted. This action cannot be undone.</source>
      </trans-unit>
      <trans-unit id="credentials.jsp.delete.dispatch">
         <source>Delete Credentials</source>
@@ -23129,10 +23135,13 @@ given channel.</source>
         <source>Your credentials are incomplete, at least a username and a password is needed.</source>
      </trans-unit>
      <trans-unit id="images.message.error.nocreds">
-        <source>It looks like you did not enter valid credentials for talking to the SUSE Studio API, please check &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt;.</source>
+        <source>It looks like you did not enter valid credentials for talking to SUSE Studio, please check &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt;.</source>
      </trans-unit>
      <trans-unit id="images.message.error.connection">
         <source>There was a problem connecting to SUSE Studio, you might want to review your configuration &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt; or try again later.</source>
+     </trans-unit>
+     <trans-unit id="studio.deployment.scheduled">
+        <source>Image deployment scheduled: {0}</source>
      </trans-unit>
      <!-- Navigation -->
      <trans-unit id="Credentials">

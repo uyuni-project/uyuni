@@ -35,7 +35,6 @@ import com.redhat.rhn.frontend.action.renderers.ImagesRenderer;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
-import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -82,11 +81,12 @@ public class ScheduleImageDeploymentAction extends RhnAction {
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         request.setAttribute("system", server);
 
+        // Can be used to detect if we are currently clearing the filter
+        Boolean filterCleared = request.getParameter("image_id") != null;
+
         ActionForward forward;
         if (dispatched) {
-            // Actually schedule the image deployment
-            String imageId = ListTagHelper.getRadioSelection(ListHelper.LIST,
-                    request);
+            String imageId = request.getParameter("image_id");
             Image image = findImage(new Long(imageId), request);
 
             // Set up the proxy configuration
@@ -107,7 +107,7 @@ public class ScheduleImageDeploymentAction extends RhnAction {
             forwardParams.put("sid", sid);
             forward = getStrutsDelegate().forwardParams(
                     actionMapping.findForward("submitted"), forwardParams);
-        } else if (ctx.isSubmitted()) {
+        } else if (ctx.isSubmitted() || filterCleared) {
             // The "parentUrl" is needed for rl:listset
             request.setAttribute(ListTagHelper.PARENT_URL,
                     request.getRequestURI());
