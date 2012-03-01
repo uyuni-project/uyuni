@@ -14,7 +14,5 @@
 -- in this software or its documentation.
 --
 
--- The spaces in front of \i are needed to stop blend from expanding
--- in build time.
-   \i /usr/share/postgresql/extension/dblink--1.0.sql
+CREATE EXTENSION dblink;
 
