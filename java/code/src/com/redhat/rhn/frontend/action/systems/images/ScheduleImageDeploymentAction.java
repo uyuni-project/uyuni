@@ -95,6 +95,17 @@ public class ScheduleImageDeploymentAction extends RhnAction {
                 proxy = new ProxyConfig(proxyServer, proxyUser, proxyPass);
             }
 
+            // Put defaults for deployment parameters
+            if (StringUtils.isEmpty(bridge)) {
+                bridge = "br0";
+            }
+            if (vcpus <= 0) {
+                vcpus = Long.valueOf(1);
+            }
+            if (memkb <= 0) {
+                memkb = Long.valueOf(524288);
+            }
+
             // Create the action and store it
             Action action = ActionManager.createDeployImageAction(user, image,
                     vcpus, memkb, bridge, proxy);
