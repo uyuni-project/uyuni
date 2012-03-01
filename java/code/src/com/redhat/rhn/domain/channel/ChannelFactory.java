@@ -20,7 +20,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.Org;
@@ -29,7 +28,6 @@ import com.redhat.rhn.domain.user.User;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Projections;
@@ -612,36 +610,6 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
-     *
-     * @param cIn Channel coming in
-     * @param userIn User coming in
-     * @param pkgIn Package Name coming in
-     * @return Package object for latest in channel
-     */
-    public static Package lookupLatestPackage(Channel cIn, User userIn, String pkgIn) {
-        Session session = null;
-        List retval;
-        try {
-            session = HibernateFactory.getSession();
-            retval =  session.getNamedQuery("Channel.latestPackage")
-                                          .setString("package_name", pkgIn)
-                                          .setLong("user_id", userIn.getId().longValue())
-                                          .setLong("channel_id", cIn.getId().longValue())
-                                          .list();
-        }
-        catch (HibernateException e) {
-            log.error(e);
-            throw new
-                HibernateRuntimeException("Error looking up latest package in channel");
-        }
-
-        if (retval.size() > 0) {
-            return (Package)retval.get(0);
-        }
-        return null;
-    }
-
-    /**
      * Returns true if the given name is in use.
      * @param name name
      * @return true if the given name is in use.
@@ -677,20 +645,6 @@ public class ChannelFactory extends HibernateFactory {
         params.put("user_id", user.getId());
         return singleton.listObjectsByNamedQuery(
                 "Channel.findCustomBaseChannels", params);
-    }
-
-
-
-    /**
-     * Find all trees using a given channel
-     * @param channel channel
-     * @return List of KickstartableTrees instances
-     */
-    public static List getTreesForChannel(Channel channel) {
-        Map params = new HashMap();
-        params.put("channel_id", channel.getId());
-        return singleton.listObjectsByNamedQuery(
-                "KickstartableTree.findTreesForChannel", params);
     }
 
     /**
@@ -741,21 +695,6 @@ public class ChannelFactory extends HibernateFactory {
         return (ChannelArch)
             singleton.lookupObjectByNamedQuery("ChannelArch.findByName", params);
     }
-
-    /**
-     * Lookup list of server ids associated with this channel.
-     * @param cid Channel id
-     * @return List of server ids associated with this channel.
-     */
-    public static List getServerIds(Long cid) {
-        if (cid == null) {
-            return Collections.EMPTY_LIST;
-        }
-        Map params = new HashMap();
-        params.put("cid", cid);
-        return singleton.listObjectsByNamedQuery("Channel.getServerIds", params);
-    }
-
 
     /**
      * Get package ids for a channel

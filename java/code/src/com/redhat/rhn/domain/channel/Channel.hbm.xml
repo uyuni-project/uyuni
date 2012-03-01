@@ -304,29 +304,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
     </sql-query>
 
-    <sql-query name="Channel.latestPackage">
-      <![CDATA[SELECT {p.*}
-          FROM rhnPackage {p},
-               rhnPackageName PN,
-               rhnPackageEVR PE,
-               rhnChannelPackage CP,
-               rhnChannel C,
-               rhnUserAvailableChannels UAC
-          WHERE UAC.user_id = :user_id
-            AND UAC.channel_id = C.id
-            AND (C.id = :channel_id OR C.parent_channel = :channel_id)
-            AND CP.channel_id = C.id
-            AND CP.package_id = p.id
-            AND p.evr_id = PE.id
-            AND p.name_id = PN.id
-            AND PN.name = :package_name
-            AND UPPER(UAC.channel_label) NOT LIKE '%BETA%'
-            AND UPPER(UAC.channel_name) NOT LIKE '%BETA%'
-            ORDER BY PE.evr DESC
-        ]]>
-  <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
-  </sql-query>
-
     <sql-query name="Channel.packageByFileName">
       <![CDATA[SELECT {p.*}
           FROM rhnPackage {p}
@@ -341,29 +318,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
     </sql-query>
-
-    <sql-query name="Channel.packageByFileNameAndRange">
-      <![CDATA[SELECT {p.*}
-          FROM rhnPackage {p}
-             left join rhnSolarisPatchSet P_2_ on p.id = P_2_.package_id
-             left join rhnSolarisPatch P_1_ on p.id = P_1_.package_id,
-             rhnChannelPackage CP,
-             rhnChannel C
-             WHERE (C.id = :channel_id OR C.parent_channel = :channel_id)
-               AND (CP.channel_id = C.id  OR CP.channel_id = C.parent_channel)
-               AND CP.package_id = P.id
-               AND P.path LIKE :pathlike
-               AND P.header_start = :headerStart
-               AND P.header_end   = :headerEnd
-        ]]>
-    <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
-    </sql-query>
-
-    <sql-query name="Channel.getServerIds">
-        <return-scalar type="long" column="server_id"/>
-        <![CDATA[select server_id from rhnServerChannel where channel_id = :cid]]>
-    </sql-query>
-
 
     <sql-query name="Channel.getPackageCount">
         <return-scalar type="int" column="package_count"/>

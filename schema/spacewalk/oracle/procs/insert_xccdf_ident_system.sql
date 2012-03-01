@@ -1,4 +1,3 @@
---
 -- Copyright (c) 2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -11,21 +10,17 @@
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
---
 
-CREATE TABLE rhnXccdfIdentsystem
-(
-    id      NUMBER NOT NULL
-                CONSTRAINT rhn_xccdf_identsytem_id_pk PRIMARY KEY
-                USING INDEX TABLESPACE [[64k_tbs]],
-    system  VARCHAR2(80) NOT NULL
-)
-ENABLE ROW MOVEMENT
-;
-
-CREATE UNIQUE INDEX rhn_xccdf_identsystem_id_uq
-    ON rhnXccdfIdentsystem (system)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
-
-CREATE SEQUENCE rhn_xccdf_identsytem_id_seq;
+create or replace function insert_xccdf_ident_system(system_in varchar2)
+return number
+is
+    pragma autonomous_transaction;
+    ident_sys_id number;
+begin
+    insert into rhnXccdfIdentSystem (id, system)
+    values (rhn_xccdf_identsytem_id_seq.nextval, system_in) returning id into ident_sys_id;
+    commit;
+    return ident_sys_id;
+end;
+/
+show errors

@@ -52,7 +52,7 @@ import org.apache.log4j.Logger;
  * @version $Rev$
  */
 public class RepoDetailsAction extends RhnAction {
-    public static final String ORG = "org";
+
     public static final String CREATE_MODE = "create_mode";
     public static final String REPO = "repo";
     public static final String URL = "url";
