@@ -23040,6 +23040,9 @@ given channel.</source>
      </trans-unit>
 
      <!-- SUSE Studio -->
+     <trans-unit id="image.deploy">
+        <source>Image Deployment</source>
+     </trans-unit>
      <trans-unit id="images.jsp.select.title">
         <source>Select an Image</source>
      </trans-unit>
