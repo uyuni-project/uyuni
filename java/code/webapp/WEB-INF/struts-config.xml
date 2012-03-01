@@ -7729,9 +7729,9 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="first"
-                 path="/WEB-INF/pages/systems/details/virtualization/images_first.jsp" />
+                 path="/WEB-INF/pages/systems/details/virtualization/images/images_first.jsp" />
         <forward name="default"
-                 path="/WEB-INF/pages/systems/details/virtualization/images.jsp" />
+                 path="/WEB-INF/pages/systems/details/virtualization/images/images.jsp" />
         <forward name="submitted"
                  redirect="true"
                  path="/systems/details/virtualization/VirtualGuestsList.do" />
