@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.7.51
+Version:        1.7.54
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -30,6 +30,9 @@ Oracle tablespace name conversions have NOT been applied.
 %setup -q
 
 %build
+%if 0%{?fedora} >= 16
+find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
+%endif
 make -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
 pod2man spacewalk-schema-upgrade spacewalk-schema-upgrade.1
 pod2man spacewalk-sql spacewalk-sql.1
@@ -67,6 +70,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Mar 01 2012 Milan Zazrivec <mzazrivec@redhat.com> 1.7.54-1
+- use pg_dblink_exec to execute insert inside create_pxt_session
+
+* Thu Mar 01 2012 Jan Pazdziora 1.7.53-1
+- On Fedora 16, we need to CREATE EXTENSION dblink.
+
+* Thu Mar 01 2012 Jan Pazdziora 1.7.52-1
+- Create the dblink* functions during schema upgrade as well.
+- lookup_xccdf_profile: schema upgrade (mzazrivec@redhat.com)
+- use pg_dblink_exec to execute insert inside lookup_xccdf_profile
+  (mzazrivec@redhat.com)
+- use autonomous_transaction for insert only (mzazrivec@redhat.com)
+
 * Wed Feb 29 2012 Jan Pazdziora 1.7.51-1
 - Blend is case sensitive, let's try to play by its rules.
 - remove unused data from the rhnUserGroupType table (tlestach@redhat.com)

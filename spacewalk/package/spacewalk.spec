@@ -1,7 +1,7 @@
 %define release_name Smile
 
 Name:           spacewalk
-Version:        1.7.1
+Version:        1.7.3
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 URL:            https://fedorahosted.org/spacewalk
@@ -22,7 +22,7 @@ License: GPLv2
 Obsoletes: spacewalk < 0.7.0
 
 %if 0%{?suse_version}
-Provides: spacewalk
+Provides: spacewalk = %{version}-%{release}
 %endif
 
 BuildRequires:  python
@@ -144,12 +144,11 @@ Conflicts: spacewalk-oracle
 Requires: spacewalk-java-postgresql
 Requires: perl(DBD::Pg)
 Requires: spacewalk-backend-sql-postgresql
-%if 0%{?suse_version}
-Requires: postgresql
-Requires: postgresql-contrib
-%else
 Requires: /usr/bin/psql
-Requires: /usr/share/pgsql/contrib/dblink.sql
+%if 0%{?rhel} == 5
+Requires: postgresql84-contrib
+%else
+Requires: postgresql-contrib >= 8.4
 %endif
 
 %description postgresql
@@ -195,6 +194,13 @@ rm -rf %{buildroot}
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
 
 %changelog
+* Fri Mar 02 2012 Jan Pazdziora 1.7.3-1
+- On RHEL 5, we need to explicitly name postgresql84-contrib.
+
+* Thu Mar 01 2012 Jan Pazdziora 1.7.2-1
+- The path is different on PostgreSQL 9.1/Fedora 16, luckily the postgresql-
+  contrib package name is the same.
+
 * Wed Feb 29 2012 Jan Pazdziora 1.7.1-1
 - Creating the dblink function(s) upon schema population, in schema public.
 

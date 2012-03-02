@@ -22,7 +22,7 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.39
+Version: 5.10.40
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -141,6 +141,9 @@ done
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{rhnroot}
 make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir}
+mkdir -p %{buildroot}%{_var}/log/rhn
+touch %{buildroot}%{_var}/log/osad
+touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
 
 %if 0%{?include_selinux_package}
 for selinuxvariant in %{selinux_variants}
@@ -329,6 +332,9 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Thu Mar 01 2012 Miroslav Suchý 5.10.40-1
+- creating files for %%ghost should be done in %%install instead of %%build
+
 * Wed Feb 29 2012 Miroslav Suchý 5.10.39-1
 - log file may contain password, set chmod to 600
 - by default log to /var/log/osad

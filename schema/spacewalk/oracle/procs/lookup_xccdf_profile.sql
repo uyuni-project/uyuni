@@ -1,4 +1,3 @@
---
 -- Copyright (c) 2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -11,29 +10,28 @@
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
 -- in this software or its documentation.
---
 
-CREATE OR REPLACE FUNCTION
-lookup_xccdf_profile(identifier_in IN VARCHAR2, title_in IN VARCHAR2)
-RETURN NUMBER
-IS
-    PRAGMA AUTONOMOUS_TRANSACTION;
-    profile_id NUMBER;
-BEGIN
-    SELECT id
-        INTO profile_id
-        FROM rhnXccdfProfile
-        WHERE identifier = identifier_in
-            AND title = title_in;
-    RETURN profile_id;
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        INSERT INTO rhnXccdfProfile (id, identifier, title)
-            VALUES (rhn_xccdf_profile_id_seq.nextval,
-                identifier_in, title_in)
-            RETURNING id INTO profile_id;
-        COMMIT;
-    RETURN profile_id;
-END lookup_xccdf_profile;
+create or replace function
+lookup_xccdf_profile(identifier_in in varchar2, title_in in varchar2)
+return number
+is
+    profile_id  number;
+begin
+    select id
+      into profile_id
+      from rhnXccdfProfile
+     where identifier = identifier_in and title = title_in;
+    return profile_id;
+exception when no_data_found then
+    begin
+        profile_id := insert_xccdf_profile(identifier_in, title_in);
+    exception when dup_val_on_index then
+        select id
+          into profile_id
+          from rhnXccdfProfile
+         where identifier = identifier_in and title = title_in;
+    end;
+    return profile_id;
+end lookup_xccdf_profile;
 /
-SHOW ERRORS
+show errors
