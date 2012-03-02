@@ -790,7 +790,7 @@ class RepoSync(object):
         package['checksum'] = pack.a_pkg.checksum
         package['checksum_type'] = pack.a_pkg.checksum_type
         package['channels']  = [{'label':self.channel_label,
-                                 'id':int(self.channel['id'])}]
+                                 'id':self.channel['id']}]
         package['org_id'] = self.channel['org_id']
 
         imported = False
