@@ -1,6 +1,6 @@
 -- oracle equivalent source sha1 7ae203d67e90ba93847c0c5a69cdc70bede4ce7b
 --
--- Copyright (c) 2008--2011 Red Hat, Inc.
+-- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or

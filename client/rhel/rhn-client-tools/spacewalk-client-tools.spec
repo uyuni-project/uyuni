@@ -12,7 +12,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.7.13
+Version: 1.7.14
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -398,6 +398,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Fri Mar 02 2012 Jan Pazdziora 1.7.14-1
+- Update the copyright year info.
+
 * Tue Feb 28 2012 Jan Pazdziora 1.7.13-1
 - Update .po and .pot files for rhn-client-tools.
 - Download translations from Transifex for rhn-client-tools.
