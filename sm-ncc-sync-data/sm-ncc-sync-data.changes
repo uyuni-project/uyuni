@@ -1,7 +1,8 @@
 -------------------------------------------------------------------
-Wed Nov 30 18:14:39 CET 2011 - iartarisi@suse.cz
+Fri Mar  2 15:08:13 CET 2012 - iartarisi@suse.cz
 
-- added the update_tag attribute to channels
+- enable SP2 channels (bnc#749525)
+- enable SUSE Linux Enterprise Desktop SP2 channels (bnc#749525)
 
 -------------------------------------------------------------------
 Wed Oct 26 13:43:36 CEST 2011 - iartarisi@suse.cz
