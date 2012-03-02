@@ -1,8 +1,8 @@
 -------------------------------------------------------------------
 Fri Mar  2 15:08:13 CET 2012 - iartarisi@suse.cz
 
-- enable SP2 channels
-- enable SUSE Linux Enterprise Desktop SP2 channels
+- enable SP2 channels (bnc#749525)
+- enable SUSE Linux Enterprise Desktop SP2 channels (bnc#749525)
 
 -------------------------------------------------------------------
 Wed Oct 26 13:43:36 CEST 2011 - iartarisi@suse.cz
