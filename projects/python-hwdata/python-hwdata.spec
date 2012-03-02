@@ -3,7 +3,7 @@
 %endif
 
 Name:		python-hwdata
-Version:	1.7.2
+Version:	1.7.3
 Release:	1%{?dist}
 Summary:	Python bindings to hwdata package
 %if ((!0%{?suse_version}) || (0%{?suse_version} >= 1120))
@@ -27,12 +27,11 @@ It allows you to get human readable description of USB and PCI devices.
 
 
 %build
-#nothing to do here
+%{__python} setup.py build
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/%{python_sitelib}
-install -p -m 644 hwdata.py $RPM_BUILD_ROOT/%{python_sitelib}
+%{__python} setup.py install --prefix=%{_prefix} --root=%{buildroot}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -46,6 +45,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Mar 02 2012 Miroslav Suchý 1.7.3-1
+- 798375 - fix PCI device name translation (Joshua.Roys@gtri.gatech.edu)
+- use setup from distutils
+
 * Fri Mar 02 2012 Jan Pazdziora 1.7.2-1
 - Update the copyright year info.
 

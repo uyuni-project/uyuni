@@ -108,7 +108,7 @@ class RepoSync(object):
                                        rhnChannelContentSource cs
                                  where s.id = cs.source_id
                                    and cs.channel_id = :channel_id""")
-            h.execute(channel_id=self.channel['id'])
+            h.execute(channel_id=int(self.channel['id']))
             source_urls = h.fetchall_dict()
             if source_urls:
                 self.urls = source_urls
@@ -122,7 +122,7 @@ class RepoSync(object):
         else:
             self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N'}]
 
-        self.arches = get_compatible_arches(self.channel['id'])
+        self.arches = get_compatible_arches(int(self.channel['id']))
 
     def load_plugin(self, repo_type):
         """Try to import the repository plugin required to sync the repository
@@ -257,7 +257,7 @@ class RepoSync(object):
                   JOIN suseproductchannel pc on p.id = pc.product_id
                  WHERE pc.channel_id = :channel_id
                 """)
-            query.execute(channel_id=self.channel['id'])
+            query.execute(channel_id=int(self.channel['id']))
             try:
                 e['product'] = query.fetchone()[0]
             except TypeError:
@@ -440,7 +440,7 @@ class RepoSync(object):
             params = {
                 'product_cap'   : "product(%s)" % product['name'],
                 'cap_version'   : product['version'] + "-" + product['release'],
-                'channel_id' : self.channel['id']
+                'channel_id'    : int(self.channel['id'])
             }
             if self.channel['org_id']:
                 org_statement = "and p.org_id = :channel_org"
@@ -527,7 +527,7 @@ class RepoSync(object):
                 'release': pkg['release'],
                 'arch': pkg['arch'],
                 'epoch': pkg['epoch'],
-                'channel_id': self.channel['id']}
+                'channel_id': int(self.channel['id'])}
             if param_dict['arch'] not in self.arches:
                 continue
             ret = self._process_package(param_dict, advisory_name)
@@ -567,7 +567,7 @@ class RepoSync(object):
                 'release': nevr.get('rel'),
                 'epoch': nevr.get('epoch'),
                 'arch': pkg.findtext(YUM+'arch'),
-                'channel_id': self.channel['id']
+                'channel_id': int(self.channel['id'])
             }
             if param_dict['arch'] not in self.arches:
                 continue
@@ -687,7 +687,7 @@ class RepoSync(object):
         self.print_msg("Packages in repo:             %5d" % plug.num_packages)
         if plug.num_excluded:
             self.print_msg("Packages passed filter rules: %5d" % num_passed)
-
+        channel_id = int(self.channel['id'])
         for pack in packages:
             if pack.arch in ['src', 'nosrc']:
                 # skip source packages
@@ -700,7 +700,7 @@ class RepoSync(object):
 
             db_pack = rhnPackage.get_info_for_package(
                    [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
-                   self.channel['id'])
+                   channel_id)
 
             to_download = True
             to_link     = True
@@ -710,10 +710,10 @@ class RepoSync(object):
                     # package is already on disk
                     to_download = False
                     pack.set_checksum(db_pack['checksum_type'], db_pack['checksum'])
-                    if db_pack['channel_id'] == self.channel['id']:
+                    if db_pack['channel_id'] == channel_id:
                         # package is already in the channel
                         to_link = False
-                elif db_pack['channel_id'] == self.channel['id']:
+                elif db_pack['channel_id'] == channel_id:
                     # different package with SAME NVREA
                     self.disassociate_package(db_pack)
                 
@@ -790,7 +790,7 @@ class RepoSync(object):
         package['checksum'] = pack.a_pkg.checksum
         package['checksum_type'] = pack.a_pkg.checksum_type
         package['channels']  = [{'label':self.channel_label,
-                                 'id':self.channel['id']}]
+                                 'id':int(self.channel['id'])}]
         package['org_id'] = self.channel['org_id']
 
         imported = False
@@ -822,7 +822,7 @@ class RepoSync(object):
                                         and c.checksum_type = :checksum_type
                                     )
         """)
-        h.execute(channel_id=self.channel['id'],
+        h.execute(channel_id=int(self.channel['id']),
                   checksum_type=pack['checksum_type'], checksum=pack['checksum'])
 
     def _importer_run(self, package, caller, backend):
