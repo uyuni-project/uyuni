@@ -26,6 +26,7 @@ Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
 Requires:       rsync less
 Requires:       susemanager-tools
+Recommends:     pgtune
 # migration.sh need either sqlplus or psql, but we don't have
 # yet a virtual provides for this selection.
 # maybe we want to enhance spacewalk.spec to have this

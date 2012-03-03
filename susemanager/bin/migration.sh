@@ -204,43 +204,6 @@ quit
     rm /tmp/dbsetup.sql
 }
 
-compute_pg_mem() {
-    # shared_buffer, effective_cache_size and work_mem algo
-    # min values in MB
-    sbufmin=32
-    ecsmin=128
-    wmmin=1
-    TM=`cat /proc/meminfo | grep '^MemTotal' | awk '{print $2}'`
-    TMMB=`echo $TM / 1024 | bc | sed "s/\..*//"`
-    sbuf=`echo 0.25 \* $TMMB | bc | sed "s/\..*//"` # 25% of Total
-
-    FREEMB=`echo $TMMB-1024 | bc | sed "s/\..*//"`  # leave 1G for System
-    ecs=`echo $FREEMB \* 0.5 | bc | sed "s/\..*//"` # 50% of free
-    wm=`echo $FREEMB / 1000 | bc | sed "s/\..*//"`  # /(10*100) connections
-    check=`echo $sbuf \< $sbufmin | bc`
-    if test $check != 0
-    then
-        sbuf=$sbufmin
-    fi
-
-    check=`echo $ecs \< $ecsmin | bc`
-    if test $check != 0
-    then
-        ecs=$ecsmin
-    fi
-
-    check=`echo $wm \< $wmmin | bc`
-    if test $check != 0
-    then
-        wm=$wmmin
-    fi
-
-    echo "sbuf=$sbuf"
-    echo "ecs=$ecs"
-    echo "wm=$wm"
-}
-
-
 setup_db_postgres() {
     insserv postgresql
     rcpostgresql start
@@ -253,19 +216,9 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
     cat /var/lib/pgsql/data/pg_hba.conf >> /tmp/pg_hba.conf
     mv /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
     mv /tmp/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf
-    if [ ! -e "/root/pgtune-0.9.3/pgtune" ]; then
-      compute_pg_mem
-      echo -n "shared_buffers = $sbuf" >> /var/lib/pgsql/data/postgresql.conf
-      echo "MB" >> /var/lib/pgsql/data/postgresql.conf
-      echo -n "effective_cache_size = $ecs" >> /var/lib/pgsql/data/postgresql.conf
-      echo "MB" >> /var/lib/pgsql/data/postgresql.conf
-      echo "checkpoint_segments = 16" >> /var/lib/pgsql/data/postgresql.conf
-      echo "checkpoint_completion_target = 0.9" >> /var/lib/pgsql/data/postgresql.conf
-      echo -n "work_mem = $wm" >> /var/lib/pgsql/data/postgresql.conf
-      echo "MB" >> /var/lib/pgsql/data/postgresql.conf
-    else
+    if [ -x "/usr/bin/pgtune" ]; then
       mv /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.orig
-      /root/pgtune-0.9.3/pgtune -T Mixed -i /var/lib/pgsql/data/postgresql.conf.orig -o /var/lib/pgsql/data/postgresql.conf
+      /usr/bin/pgtune -T Mixed -i /var/lib/pgsql/data/postgresql.conf.orig -o /var/lib/pgsql/data/postgresql.conf
     fi
     rcpostgresql restart
 }
