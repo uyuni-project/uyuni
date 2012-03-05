@@ -44,6 +44,7 @@ class VersionTagger(object):
 
         self.full_project_dir = os.getcwd()
         self.spec_file_name = find_spec_file()
+        self.changes_file_name = self.spec_file_name.replace('.spec', '.changes')
         self.project_name = get_project_name(tag=None)
 
         self.relative_project_dir = self._get_relative_project_dir(
@@ -51,12 +52,12 @@ class VersionTagger(object):
 
         self.spec_file = os.path.join(self.full_project_dir,
                 self.spec_file_name)
+        self.changes_file = os.path.join(self.full_project_dir,
+                self.changes_file_name)
         self.keep_version = keep_version
 
-        self.today = strftime("%a %b %d %Y")
+        self.today = strftime("%a %b %d %T %Z %Y")
         (self.git_user, self.git_email) = self._get_git_user_info()
-        self.changelog_regex = re.compile('\\*\s%s\s%s(\s<%s>)?' % (self.today,
-            self.git_user, self.git_email))
 
         self._no_auto_changelog = False
 
@@ -77,125 +78,74 @@ class VersionTagger(object):
         """
         Tag a new version of the package. (i.e. x.y.z+1)
         """
-        self._check_today_in_changelog()
+        if not self._no_auto_changelog:
+            self._make_changelog()
+
         new_version = self._bump_version()
         self._check_tag_does_not_exist(self._get_new_tag(new_version))
-        self._update_changelog(new_version)
 
         self._update_package_metadata(new_version)
-
-    def _check_today_in_changelog(self):
-        """ 
-        Verify that there is a changelog entry for today's date and the git 
-        user's name and email address.
-
-        i.e. * Thu Nov 27 2008 My Name <me@example.com>
-        """
-        f = open(self.spec_file, 'r')
-        found_changelog = False
-        for line in f.readlines():
-            match = self.changelog_regex.match(line)
-            if not found_changelog and match:
-                found_changelog = True
-        f.close()
-
-        if not found_changelog:
-            if self._no_auto_changelog:
-                error_out("No changelog entry found: '* %s %s <%s>'" % (
-                    self.today, self.git_user, self.git_email))
-            else:
-                self._make_changelog()
-        else:
-            debug("Found changelog entry.")
 
     def _make_changelog(self):
         """
         Create a new changelog entry in the spec, with line items from git
         """
-        in_f = open(self.spec_file, 'r')
-        out_f = open(self.spec_file + ".new", 'w')
+        in_f = open(self.changes_file, 'r')
+        out_f = open(self.changes_file + ".new", 'w')
 
-        found_changelog = False
+        old_version = get_latest_tagged_version(self.project_name)
+
+        # don't die if this is a new package with no history
+        if old_version != None:
+            last_tag = "%s-%s" % (self.project_name, old_version)
+            patch_command = \
+                    "git log --pretty=format:%%s\ \(%%ae\)" \
+                    " --relative %s..%s -- %s" % \
+                    (last_tag, "HEAD", ".")
+            output = run_command(patch_command)
+        else:
+            output = "new package"
+
+        fd, name = tempfile.mkstemp()
+        os.write(fd, "# No changelog entry found; please edit the following\n")
+        header = "%s - %s\n\n" % (self.today, self.git_email)
+
+        os.write(fd, "-------------------------------------------------------------------\n")
+        os.write(fd, header)
+
+        for cmd_out in output.split("\n"):
+            os.write(fd, "- ")
+            os.write(fd, "\n  ".join(textwrap.wrap(cmd_out, 77)))
+            os.write(fd, "\n")
+
+        os.write(fd, "\n")
+
+        editor = 'vi'
+        if os.environ.has_key("EDITOR"):
+            editor = os.environ["EDITOR"]
+
+        subprocess.call([editor, name])
+
+        os.lseek(fd, 0, 0)
+        file = os.fdopen(fd)
+
+        for line in file.readlines():
+            if not line.startswith("#"):
+                out_f.write(line)
+
+        output = file.read()
+
+        file.close()
+        os.unlink(name)
+
         for line in in_f.readlines():
             out_f.write(line)
 
-            if not found_changelog and line.startswith("%changelog"):
-                found_changelog = True
-
-                old_version = get_latest_tagged_version(self.project_name)
-
-                # don't die if this is a new package with no history
-                if old_version != None:
-                    last_tag = "%s-%s" % (self.project_name, old_version)
-                    patch_command = \
-                            "git log --pretty=format:%%s\ \(%%ae\)" \
-                            " --relative %s..%s -- %s" % \
-                            (last_tag, "HEAD", ".")
-                    output = run_command(patch_command)
-                else:
-                    output = "new package"
-
-                fd, name = tempfile.mkstemp()
-                os.write(fd, "# No changelog entry found; please edit the following\n")
-                header = "* %s %s <%s>\n" % (self.today, self.git_user,
-                        self.git_email)
-
-                os.write(fd, header)
-
-                for cmd_out in output.split("\n"):
-                    os.write(fd, "- ")
-                    os.write(fd, "\n  ".join(textwrap.wrap(cmd_out, 77)))
-                    os.write(fd, "\n")
-
-                os.write(fd, "\n")
-
-                editor = 'vi'
-                if os.environ.has_key("EDITOR"):
-                    editor = os.environ["EDITOR"]
-
-                subprocess.call([editor, name])
-
-                os.lseek(fd, 0, 0)
-                file = os.fdopen(fd)
-
-                for line in file.readlines():
-                    if not line.startswith("#"):
-                        out_f.write(line)
-
-                output = file.read()
-
-                file.close()
-                os.unlink(name)
 
         in_f.close()
         out_f.close()
 
-        shutil.move(self.spec_file + ".new", self.spec_file)
-
-    def _update_changelog(self, new_version):
-        """
-        Update the changelog with the new version.
-        """
-        # Not thrilled about having to re-read the file here but we need to
-        # check for the changelog entry before making any modifications, then
-        # bump the version, then update the changelog.
-        f = open(self.spec_file, 'r')
-        buf = StringIO.StringIO()
-        found_match = False
-        for line in f.readlines():
-            match = self.changelog_regex.match(line)
-            if match and not found_match:
-                buf.write("%s %s\n" % (match.group(), new_version))
-                found_match = True
-            else:
-                buf.write(line)
-        f.close()
-
-        # Write out the new file contents with our modified changelog entry:
-        f = open(self.spec_file, 'w')
-        f.write(buf.getvalue())
-        f.close()
-        buf.close()
+        shutil.move(self.changes_file + ".new", self.changes_file)
 
     def _get_relative_project_dir(self, git_root):
         """
@@ -269,6 +219,10 @@ class VersionTagger(object):
         run_command("git add %s" % metadata_file)
         run_command("git add %s" % os.path.join(self.full_project_dir,
             self.spec_file_name))
+	if not self._no_auto_changelog:
+            run_command("git add %s" % os.path.join(self.full_project_dir,
+                self.changes_file_name))
+
 
         # Just an informative message appearing in the commit log:
         release_type = "release"
@@ -361,11 +315,12 @@ class ReleaseTagger(VersionTagger):
         """
         Tag a new release of the package. (i.e. x.y.z-r+1)
         """
-        self._check_today_in_changelog()
+        if not self._no_auto_changelog:
+            self._make_changelog()
+
         new_version = self._bump_version(release=True)
 
         self._check_tag_does_not_exist(self._get_new_tag(new_version))
-        self._update_changelog(new_version)
         self._update_package_metadata(new_version, release=True)
 
 
