@@ -27,6 +27,7 @@ rhnActionConfigRevision        :: rhnAction rhnServer rhnConfigRevision rhnConfi
 rhnActionConfigRevisionResult  :: rhnActionConfigRevision
 rhnActionDaemonConfig          :: rhnAction
 rhnActionErrataUpdate          :: rhnAction rhnErrata
+rhnActionImageDeploy           :: rhnAction
 rhnActionKickstart             :: rhnAction rhnKickstartableTree
 rhnActionKickstartFileList     :: rhnActionKickstart rhnFileList
 rhnActionKickstartGuest        :: rhnActionKickstart rhnKickstartSession rhnKickstartableTree 
