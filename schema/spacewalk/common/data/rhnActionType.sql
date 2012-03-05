@@ -69,7 +69,7 @@ insert into rhnActionType values (47, 'kickstart_guest.add_tools_channel', 'Subs
 insert into rhnActionType values (48, 'virt.setVCPUs', 'Sets the Vcpu usage for a virtual domain.', 'N', 'N');
 commit;
 insert into rhnActionType values (49, 'proxy.deactivate', 'Deactivate Proxy', 'N', 'N');
-insert into rhnActionType values (50, 'image.deploy', 'Deploy an image to a virtual Machine.', 'N', 'N');
+insert into rhnActionType values (50, 'image.deploy', 'Deploy an image to a virtual host.', 'N', 'N');
 commit;
 --
 --
