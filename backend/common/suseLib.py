@@ -103,6 +103,49 @@ def send(url, sendData=None):
     response.seek(0)
     return response
 
+def accessible(url):
+    """Try if url is accessible
+
+    :arg url: the url which is tried to access
+
+    Returns True if url is accessible, otherwise False.
+
+    """
+    curl = pycurl.Curl()
+
+    curl.setopt(pycurl.URL, url)
+    log_debug(2, "Connect to %s" % url)
+
+    # We implement our own redirection-following, because pycurl
+    # 7.19 doesn't POST after it gets redirected. Ideally we'd be
+    # using pycurl.POSTREDIR here, but that's in 7.21.
+    curl.setopt(pycurl.FOLLOWLOCATION, False)
+    curl.setopt(pycurl.NOBODY, True)
+
+    try_counter = 5
+    while try_counter:
+        try_counter -= 1
+        try:
+            curl.perform()
+        except pycurl.error, e:
+            if e[0] == 56: # Proxy requires authentication
+                log_debug(2, e[1])
+                proxy_credentials = get_proxy_credentials()
+                curl.setopt(pycurl.PROXYUSERPWD, proxy_credentials)
+            else:
+                break
+
+        status = curl.getinfo(pycurl.HTTP_CODE)
+        if status == 200 or (URL(url).scheme == "file" and status == 0): # OK or file
+            return True
+        elif status in (301, 302): # redirects
+            url = curl.getinfo(pycurl.REDIRECT_URL)
+            log_debug(2, "Got redirect to %s" % url)
+            curl.setopt(pycurl.URL, url)
+        elif status >= 400:
+            break
+    return False
+
 def get_proxy_credentials():
     """Return proxy credentials as a string in the form username:password"""
     try:
