@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar  5 12:43:18 CET 2012 - mc@suse.de
+
+- add ATI and nVidia channels for SLED
+
+-------------------------------------------------------------------
 Fri Mar  2 15:08:13 CET 2012 - iartarisi@suse.cz
 
 - enable SP2 channels (bnc#749525)

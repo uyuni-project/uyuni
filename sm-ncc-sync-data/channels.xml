@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <channels>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Desktop 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-updates-x86_64" name="SLE11-SP2-Debuginfo-Updates for x86_64" optional="Y" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Desktop 11 SP2" update_tag="dbgsp2">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sle11-sp2-debuginfo-updates-x86_64" name="SLE11-SP2-Debuginfo-Updates for x86_64" optional="Y" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLES">
 				3009
@@ -23,7 +23,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise Desktop 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-updates-i586" name="SLE11-SP2-Debuginfo-Updates for i586" optional="Y" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Desktop 11 SP2" update_tag="dbgsp2">
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sle11-sp2-debuginfo-updates-i586" name="SLE11-SP2-Debuginfo-Updates for i586" optional="Y" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLES">
 				3005
@@ -236,13 +236,19 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="s390x" description="SUSE Linux Enterprise Server 10 SP3" family="SLES-Z" is_signed="Y" label="sles10-sp3-pool-s390x" name="SLES10-SP3-Pool for s390x" optional="N" parent="BASE" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLES10-SP3-Pool/sles-10-s390x/" summary="SUSE Linux Enterprise Server 10 SP3" update_tag="slesp3">
+	<channel arch="i586" description="ATI Driver for SLE11-SP2" family="7260" is_signed="Y" label="ati-driver-sle11-sp2-i586" name="ATI-Driver-SLE11-SP2 i586" optional="N" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="http://www2.ati.com/suse/sle11sp2" summary="ATI Driver for SLE11-SP2" update_tag="">
 		<products>
-			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
-				1508
+			<product_id name="SUSE_SLED">
+				3000
 			</product_id>
-			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
-				1509
+			<product_id name="SUSE_SLED">
+				3001
+			</product_id>
+			<product_id name="SUSE_SLED">
+				3002
+			</product_id>
+			<product_id name="SUSE_SLED">
+				3003
 			</product_id>
 		</products>
 	</channel>
@@ -442,7 +448,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Desktop 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-core-x86_64" name="SLE11-SP2-Debuginfo-Core for x86_64" optional="Y" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Desktop 11 SP2" update_tag="dbgsp2">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sle11-sp2-debuginfo-core-x86_64" name="SLE11-SP2-Debuginfo-Core for x86_64" optional="Y" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLES">
 				3009
@@ -1156,7 +1162,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise Desktop 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-core-i586-sled" name="SLE11-SP2-Debuginfo-Core for i586 SLED" optional="Y" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-i586/" summary="SUSE Linux Enterprise Desktop 11 SP2" update_tag="dbgsp2">
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-core-i586-sled" name="SLE11-SP2-Debuginfo-Core for i586 SLED" optional="Y" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLED">
 				3000
@@ -1475,10 +1481,13 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-core-x86_64" name="SLES11-SP2-Core for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
+	<channel arch="s390x" description="SUSE Linux Enterprise Server 10 SP3" family="SLES-Z" is_signed="Y" label="sles10-sp3-pool-s390x" name="SLES10-SP3-Pool for s390x" optional="N" parent="BASE" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLES10-SP3-Pool/sles-10-s390x/" summary="SUSE Linux Enterprise Server 10 SP3" update_tag="slesp3">
 		<products>
-			<product_id name="SUSE_SLES">
-				3009
+			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
+				1508
+			</product_id>
+			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
+				1509
 			</product_id>
 		</products>
 	</channel>
@@ -1596,6 +1605,22 @@
 			</product_id>
 		</products>
 	</channel>
+	<channel arch="i586" description="nVidia Driver for SLE11-SP2" family="7260" is_signed="Y" label="nvidia-driver-sle11-sp2-i586" name="nVidia-Driver-SLE11-SP2 i586" optional="N" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="http://download.nvidia.com/novell/sle11sp2" summary="nVidia Driver for SLE11-SP2" update_tag="">
+		<products>
+			<product_id name="SUSE_SLED">
+				3000
+			</product_id>
+			<product_id name="SUSE_SLED">
+				3001
+			</product_id>
+			<product_id name="SUSE_SLED">
+				3002
+			</product_id>
+			<product_id name="SUSE_SLED">
+				3003
+			</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension 11 SP2" family="SLE-HAE-X86" is_signed="Y" label="sle11-hae-sp2-pool-x86_64-vmware" name="SLE11-HAE-SP2-Pool for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-hae" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP2-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP2" update_tag="sleshasp2">
 		<products>
 			<product_id name="sle-hae">
@@ -1640,7 +1665,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise Desktop 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-updates-i586-sled" name="SLE11-SP2-Debuginfo-Updates for i586 SLED" optional="Y" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Desktop 11 SP2" update_tag="dbgsp2">
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-updates-i586-sled" name="SLE11-SP2-Debuginfo-Updates for i586 SLED" optional="Y" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLED">
 				3000
@@ -1852,7 +1877,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise Desktop 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-core-i586" name="SLE11-SP2-Debuginfo-Core for i586" optional="Y" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-i586/" summary="SUSE Linux Enterprise Desktop 11 SP2" update_tag="dbgsp2">
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sle11-sp2-debuginfo-core-i586" name="SLE11-SP2-Debuginfo-Core for i586" optional="Y" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLES">
 				3005
@@ -2023,6 +2048,13 @@
 			</product_id>
 		</products>
 		<dist os="Red Hat Linux" release="5Server"/>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-core-x86_64" name="SLES11-SP2-Core for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
+		<products>
+			<product_id name="SUSE_SLES">
+				3009
+			</product_id>
+		</products>
 	</channel>
 	<channel arch="x86_64" description="Red Hat Expanded Support for RHEL 6" family="RES" is_signed="N" label="rhel-x86_64-server-6" name="RHEL x86_64 Server 6" optional="N" parent="BASE" product_name="RES" product_version="6" source_url="" summary="Red Hat Expanded Support for RHEL 6" update_tag="">
 		<products>
@@ -2196,7 +2228,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Desktop 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-core-x86_64-sled" name="SLE11-SP2-Debuginfo-Core for x86_64 SLED" optional="Y" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Desktop 11 SP2" update_tag="dbgsp2">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-core-x86_64-sled" name="SLE11-SP2-Debuginfo-Core for x86_64 SLED" optional="Y" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLED">
 				3004
@@ -2338,6 +2370,13 @@
 			</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="ATI Driver for SLE11-SP2" family="7260" is_signed="Y" label="ati-driver-sle11-sp2-x86_64" name="ATI-Driver-SLE11-SP2 x86_64" optional="N" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.2" source_url="http://www2.ati.com/suse/sle11sp2" summary="ATI Driver for SLE11-SP2" update_tag="">
+		<products>
+			<product_id name="SUSE_SLED">
+				3004
+			</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-updates-x86_64" name="SLE11-SDK-SP1-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit" update_tag="sdksp1">
 		<products>
 			<product_id name="sle-sdk">
@@ -2345,6 +2384,13 @@
 			</product_id>
 			<product_id name="sle-sdk">
 				3040
+			</product_id>
+		</products>
+	</channel>
+	<channel arch="ia64" description="SUSE Linux 10 SP3 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle10-sdk-sp3-pool-ia64" name="SLE10-SDK-SP3-Pool for ia64" optional="N" parent="sles10-sp3-pool-ia64" product_name="SUSE-Linux-Enterprise-SDK-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-ia64/" summary="SUSE Linux 10 SP3 Software Development Kit" update_tag="sdkp3">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-SDK-SP3">
+				1541
 			</product_id>
 		</products>
 	</channel>
@@ -2574,13 +2620,6 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="ia64" description="SUSE Linux 10 SP3 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle10-sdk-sp3-pool-ia64" name="SLE10-SDK-SP3-Pool for ia64" optional="N" parent="sles10-sp3-pool-ia64" product_name="SUSE-Linux-Enterprise-SDK-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-ia64/" summary="SUSE Linux 10 SP3 Software Development Kit" update_tag="sdkp3">
-		<products>
-			<product_id name="SUSE-Linux-Enterprise-SDK-SP3">
-				1541
-			</product_id>
-		</products>
-	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 10 SP3" family="7261" is_signed="Y" label="sles10-sp3-pool-x86_64" name="SLES10-SP3-Pool for x86_64" optional="N" parent="BASE" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLES10-SP3-Pool/sles-10-x86_64/" summary="SUSE Linux Enterprise Server 10 SP3" update_tag="slesp3">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
@@ -2644,6 +2683,13 @@
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP4">
 				2526
+			</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="nVidia Driver for SLE11-SP2" family="7260" is_signed="Y" label="nvidia-driver-sle11-sp2-x86_64" name="nVidia-Driver-SLE11-SP2 x86_64" optional="N" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.2" source_url="http://download.nvidia.com/novell/sle11sp2" summary="nVidia Driver for SLE11-SP2" update_tag="">
+		<products>
+			<product_id name="SUSE_SLED">
+				3004
 			</product_id>
 		</products>
 	</channel>
@@ -2865,7 +2911,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Desktop 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-updates-x86_64-sled" name="SLE11-SP2-Debuginfo-Updates for x86_64 SLED" optional="Y" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Desktop 11 SP2" update_tag="dbgsp2">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-updates-x86_64-sled" name="SLE11-SP2-Debuginfo-Updates for x86_64 SLED" optional="Y" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLED">
 				3004
