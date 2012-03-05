@@ -461,10 +461,12 @@ fi
 %{jardir}/redstone-xmlrpc.jar
 %{jardir}/rhn.jar
 %{jardir}/simple-core.jar
+%{jardir}/simple-xml.jar
 %{jardir}/sitemesh.jar
 %{jardir}/snakeyaml.jar
 %{jardir}/stringtree-json.jar
 %{jardir}/struts.jar
+%{jardir}/susestudio-java-client.jar
 %{jardir}/taglibs-core.jar
 %{jardir}/taglibs-standard.jar
 %{jardir}/tanukiwrapper.jar
