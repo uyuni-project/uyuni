@@ -68,7 +68,7 @@
    - (Overrides 'install' in build.xml)
    -->
   <target name="install"
-          depends="init-install,init,compile-notests,pack,apidoc-jsp,apidoc-install,jspcompile"
+          depends="init-install,init,compile-all,pack,apidoc-jsp,apidoc-install,jspcompile"
           description="(Re-)Install the webapp to the directory specified by $prefix">
     <echo message="install (${ant.file})" />
     <mkdir dir="${prefix}/usr/share/rhn/lib" />
