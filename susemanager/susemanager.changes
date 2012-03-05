@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Mar  5 12:39:37 CET 2012 - mc@suse.de
+
+- enhance is_mirrorable with connect check required for external
+  repositories.
+
+-------------------------------------------------------------------
 Wed Feb 29 17:17:43 CET 2012 - mc@suse.de
 
 - PreRequire atftp
