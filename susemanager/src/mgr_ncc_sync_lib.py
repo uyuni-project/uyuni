@@ -990,7 +990,8 @@ class NCCSync(object):
             return not channel_path or os.path.exists(channel_path.split('file://')[1])
         else:
             channel_path = get_repo_path(channel.get('source_url'))
-            return channel_path in self.get_mirrorable_repos() or not channel_path
+            return (channel_path in self.get_mirrorable_repos() or not channel_path or
+                    suseLib.accessible(channel.get('source_url') + '/repodata/repomd.xml'))
 
     def get_ncc_channel(self, channel_label):
         """Try getting the NCC channel for this user
