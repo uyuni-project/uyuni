@@ -26,10 +26,8 @@ Requires:       dialog
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
 Requires:       rsync less
 Requires:       susemanager-tools
-Recommends:     pgtune
-# migration.sh need either sqlplus or psql, but we don't have
-# yet a virtual provides for this selection.
-# maybe we want to enhance spacewalk.spec to have this
+# migration.sh need either sqlplus or psql
+Requires:       spacewalk-db-virtual
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %global pythonsmroot %{python_sitelib}/spacewalk
 

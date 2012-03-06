@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar  6 14:35:49 CET 2012 - mc@suse.de
+
+- require spacewalk-db-virtual
+- move pgtune requirement to spacewalk-postgresql
+
+-------------------------------------------------------------------
 Mon Mar  5 16:48:13 CET 2012 - mc@suse.de
 
 - set DB PASSWORD_LIFE_TIME to unlimited
