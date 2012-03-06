@@ -44,7 +44,7 @@ import com.redhat.rhn.manager.system.SystemManager;
  */
 public class ScheduleImageDeploymentAction extends RhnAction {
 
-    private static final String SUCCESS_KEY = "studio.deployment.scheduled";
+    private static final String SUCCESS_KEY = "images.message.success.scheduled";
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
