@@ -78,15 +78,14 @@ class VersionTagger(object):
         """
         Tag a new version of the package. (i.e. x.y.z+1)
         """
-        if not self._no_auto_changelog:
-            self._make_changelog()
-
         new_version = self._bump_version()
         self._check_tag_does_not_exist(self._get_new_tag(new_version))
+        if not self._no_auto_changelog:
+            self._make_changelog(new_version)
 
         self._update_package_metadata(new_version)
 
-    def _make_changelog(self):
+    def _make_changelog(self, new_version):
         """
         Create a new changelog entry in the spec, with line items from git
         """
@@ -112,6 +111,7 @@ class VersionTagger(object):
 
         os.write(fd, "-------------------------------------------------------------------\n")
         os.write(fd, header)
+        os.write(fd, "- version %s\n" % new_version)
 
         for cmd_out in output.split("\n"):
             os.write(fd, "- ")
@@ -315,12 +315,12 @@ class ReleaseTagger(VersionTagger):
         """
         Tag a new release of the package. (i.e. x.y.z-r+1)
         """
-        if not self._no_auto_changelog:
-            self._make_changelog()
-
         new_version = self._bump_version(release=True)
 
         self._check_tag_does_not_exist(self._get_new_tag(new_version))
+        if not self._no_auto_changelog:
+            self._make_changelog(new_version)
+
         self._update_package_metadata(new_version, release=True)
 
 
