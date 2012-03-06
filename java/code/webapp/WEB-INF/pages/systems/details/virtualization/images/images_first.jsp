@@ -17,7 +17,10 @@
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
   <div id="images-content">
-    <rhn:toolbar base="h1" img="/img/spinner.gif"></rhn:toolbar>
+    <div style="padding: 1em;">
+      <img src="/img/spinner.gif" style="vertical-align: middle;" />
+      <span style="padding-left: 0.3em;">Loading ...</span>
+    </div>
     <script type="text/javascript">
       ImagesRenderer.renderAsync(makeAjaxCallback("images-content", false));
     </script>
