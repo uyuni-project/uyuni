@@ -110,6 +110,7 @@ License: GPLv2
 Obsoletes: spacewalk < 0.7.0
 Requires:  spacewalk-common = %{version}-%{release}
 Conflicts: spacewalk-postgresql
+Provides:  spacewalk-db-virtual = %{version}-%{release}
 
 Requires: oracle-instantclient11.2-basic
 Requires: oracle-instantclient11.2-sqlplus
@@ -140,6 +141,7 @@ License: GPLv2
 Obsoletes: spacewalk < 0.7.0
 Requires:  spacewalk-common = %{version}-%{release}
 Conflicts: spacewalk-oracle
+Provides:  spacewalk-db-virtual = %{version}-%{release}
 
 Requires: spacewalk-java-postgresql
 Requires: perl(DBD::Pg)
@@ -150,6 +152,7 @@ Requires: postgresql84-contrib
 %else
 Requires: postgresql-contrib >= 8.4
 %endif
+Requires: pgtune
 
 %description postgresql
 Spacewalk is a systems management application that will 

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar  6 14:30:46 CET 2012 - mc@suse.de
+
+- the db subpackages now provide spacewalk-db-virtual
+- spacewalk-postgresql requires now pgtune
+
+-------------------------------------------------------------------
 Fri Jan 14 16:59:10 CET 2011 - mc@suse.de
 
 - do not require a special release 
