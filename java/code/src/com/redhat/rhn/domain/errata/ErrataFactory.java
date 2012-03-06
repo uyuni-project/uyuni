@@ -373,8 +373,8 @@ public class ErrataFactory extends HibernateFactory {
     public static Errata createClone(Org org, Errata e) {
 
 
-        String baseClonedAdvisoryName = "CL" + e.getAdvisoryName().substring(3);
-        String baseClonedAdvisory = "CL" + e.getAdvisory().substring(3);
+        String baseClonedAdvisoryName = "CL-" + e.getAdvisoryName();
+        String baseClonedAdvisory = "CL-" + e.getAdvisory();
         String clonedAdvisory = baseClonedAdvisory;
         String clonedAdvisoryName = baseClonedAdvisoryName;
         boolean unusedNameFound = false;

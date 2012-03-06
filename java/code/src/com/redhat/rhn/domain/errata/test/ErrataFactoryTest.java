@@ -333,8 +333,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
        published.addChannel(baseChannel);
        Errata clone = ErrataFactory.createClone(user.getOrg(), published);
-       String clonedAdvisoryName = "CL" + published.getAdvisoryName().substring(3);
-       String clonedAdvisory = "CL" + published.getAdvisory().substring(3);
+       String clonedAdvisoryName = "CL-" + published.getAdvisoryName();
+       String clonedAdvisory = "CL-" + published.getAdvisory();
 
        assertNotNull(clone.getId());
        assertFalse(published.isCloned());

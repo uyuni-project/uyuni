@@ -107,8 +107,8 @@ public class PublishErrataHelper {
         }
 
 
-        String baseClonedAdvisoryName = "CL" + original.getAdvisoryName().substring(3);
-        String baseClonedAdvisory = "CL" + original.getAdvisory().substring(3);
+        String baseClonedAdvisoryName = "CL-" + original.getAdvisoryName();
+        String baseClonedAdvisory = "CL-" + original.getAdvisory();
         String clonedAdvisory = baseClonedAdvisory;
         String clonedAdvisoryName = baseClonedAdvisoryName;
         boolean unusedNameFound = false;
