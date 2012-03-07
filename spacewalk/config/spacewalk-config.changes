@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar  7 14:43:57 CET 2012 - ug@suse.de
+
+- fixed permissions of /var/lib/rhn/rhn-satellite-prep/etc
+
+-------------------------------------------------------------------
 Wed Feb  1 14:21:23 CET 2012 - ug@suse.de
 
 - fixed file permissions of some config files
