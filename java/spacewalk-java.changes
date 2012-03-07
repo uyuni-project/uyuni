@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed Mar  7 16:05:19 UTC 2012 - dmacvicar@suse.de
+
+- All Patches -> All Types (bnc#732538)
+- Remove the page errata/Overview.do as it is a duplicate
+  of errata/RelevantErrata.do
+  Together with the change of wording described above it makes
+  the Patches menu more intuitive and clear.
+  See
+  https://www.redhat.com/archives/spacewalk-devel/2012-March/thread.html#00002
+
+-------------------------------------------------------------------
 Tue Mar  6 17:21:44 CET 2012 - jrenner@suse.de
 
 - Fix naming of cloned patches to not remove the first 3 chars
