@@ -101,6 +101,8 @@ fi
 if [ ! -d /srv/tftpboot ]; then
   mkdir -p /srv/tftpboot
 fi
+# XE appliance overlay file created this with different user
+chown root.root /etc/sysconfig
 
 %postun
 %{insserv_cleanup}
