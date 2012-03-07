@@ -37,9 +37,9 @@ Feature: Clone a Channel
       And I follow "Clone 2 of SLES11-SP1-Updates x86_64 Channel"
      When I follow "Errata" in class "content-nav"
       And I follow "List/Remove Errata"
-     Then I should see a "CLssp1-kernel-3280-channel-x86_64" link
-      And I should see a "CLssp1-suseRegister-2953-channel-x86_64" link
-      And I should see a "CLssp1-aaa_base-sysvinit-2610-channel-x86_64" link
+     Then I should see a "CL-slessp1-kernel-3280-channel-x86_64" link
+      And I should see a "CL-slessp1-suseRegister-2953-channel-x86_64" link
+      And I should see a "CL-slessp1-aaa_base-sysvinit-2610-channel-x86_64" link
 
   Scenario: Clone a Channel with selected errata
     Given I am on the manage software channels page
@@ -51,33 +51,33 @@ Feature: Clone a Channel
      And I should see a "Select errata" text
      And I click on "Create Channel"
      And I should see a "Software Channel: Clone 3 of SLES11-SP1-Updates x86_64 Channel" text
-     And I choose "Merge w/CLssp1-aaa_base-sysvinit-2610-channel-x86_64" for "slessp1-aaa_base-sysvinit-2610-channel-x86_64"
-     And I choose "Clone as CLssp1-suseRegister-2953-channel-x86_64-1" for "slessp1-suseRegister-2953-channel-x86_64"
+     And I choose "Merge w/CL-slessp1-aaa_base-sysvinit-2610-channel-x86_64" for "slessp1-aaa_base-sysvinit-2610-channel-x86_64"
+     And I choose "Clone as CL-slessp1-suseRegister-2953-channel-x86_64-1" for "slessp1-suseRegister-2953-channel-x86_64"
      And I choose "Do Nothing" for "slessp1-kernel-3280-channel-x86_64"
      And I click on "Clone Errata"
      And I click on "Update Errata"
      And I follow "List/Remove Errata"
-    Then I should see a "CLssp1-suseRegister-2953-channel-x86_64-1" link
-     And I should see a "CLssp1-aaa_base-sysvinit-2610-channel-x86_64" link
+    Then I should see a "CL-slessp1-suseRegister-2953-channel-x86_64-1" link
+     And I should see a "CL-slessp1-aaa_base-sysvinit-2610-channel-x86_64" link
 
   Scenario: check new errata exists
     Given I am on the errata page
      When I follow "All" in the left menu
-     Then I should see a "CLssp1-kernel-3280-channel-x86_64" link
-      And I should see a "CLssp1-suseRegister-2953-channel-x86_64" link
-      And I should see a "CLssp1-suseRegister-2953-channel-x86_64-1" link
-      And I should see a "CLssp1-aaa_base-sysvinit-2610-channel-x86_64" link
+     Then I should see a "CL-slessp1-kernel-3280-channel-x86_64" link
+      And I should see a "CL-slessp1-suseRegister-2953-channel-x86_64" link
+      And I should see a "CL-slessp1-suseRegister-2953-channel-x86_64-1" link
+      And I should see a "CL-slessp1-aaa_base-sysvinit-2610-channel-x86_64" link
 
-  Scenario: check CLssp1-suseRegister-2953-channel-x86_64 errata
-    Given I am on the "CLssp1-suseRegister-2953-channel-x86_64" errata Details page
-     Then I should see a "CLssp1-suseRegister-2953-channel-x86_64 - Bug Fix Advisory" text
+  Scenario: check CL-slessp1-suseRegister-2953-channel-x86_64 errata
+    Given I am on the "CL-slessp1-suseRegister-2953-channel-x86_64" errata Details page
+     Then I should see a "CL-slessp1-suseRegister-2953-channel-x86_64 - Bug Fix Advisory" text
       And I should see a "maint-coord@suse.de" text
       And I should see a "bug number 546142" link
       And I should see a "restart_suggested" text
 
-  Scenario: check CLssp1-suseRegister-2953-channel-x86_64-1 errata
-    Given I am on the "CLssp1-suseRegister-2953-channel-x86_64-1" errata Details page
-     Then I should see a "CLssp1-suseRegister-2953-channel-x86_64-1 - Bug Fix Advisory" text
+  Scenario: check CL-slessp1-suseRegister-2953-channel-x86_64-1 errata
+    Given I am on the "CL-slessp1-suseRegister-2953-channel-x86_64-1" errata Details page
+     Then I should see a "CL-slessp1-suseRegister-2953-channel-x86_64-1 - Bug Fix Advisory" text
       And I should see a "maint-coord@suse.de" text
       And I should see a "bug number 546142" link
       And I should see a "restart_suggested" text
