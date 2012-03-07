@@ -134,7 +134,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/satname
 %dir %{_var}/lib/rhn
 %dir %{_var}/lib/rhn/rhn-satellite-prep
-%dir %attr(0750,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep/etc
+%dir %attr(0755,root,root) %{_var}/lib/rhn/rhn-satellite-prep/etc
 %attr(0750,root,%{apache_group}) %dir %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn
 %attr(0640,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn/cluster.ini
 %attr(0640,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
