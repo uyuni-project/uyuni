@@ -163,6 +163,7 @@ chgrp %{apache_group} /etc/rhn /etc/rhn/rhn.conf /etc/rhn/cluster.ini 2> /dev/nu
 # ... once we restrict access to some files that were too open in
 # the past.
 chmod o-rwx /etc/rhn/rhn.conf* /etc/rhn/cluster.ini* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-satellite-prep/* 2> /dev/null || :
+chmod 755 /var/lib/rhn/rhn-satellite-prep/etc
 
 %if 0%{?suse_version}
 %post
