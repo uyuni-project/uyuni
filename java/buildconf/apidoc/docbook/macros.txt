@@ -84,4 +84,3 @@
 #macro(return_int_success)
 <listitem><para>int - 1 on success, exception thrown otherwise.</para></listitem>
 #end
-
