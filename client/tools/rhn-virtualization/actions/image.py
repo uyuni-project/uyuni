@@ -239,6 +239,6 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, v
 
 # just for testing
 if __name__ == "__main__":
-
-    deploy("workshop_test_sles11sp1.i686-0.0.1.vmx.tar.gz", "f7c59ca83c5ffdff5e0455add9fea51f")
+    # test code
+    log.log_debug("actions/image.py called")
 
