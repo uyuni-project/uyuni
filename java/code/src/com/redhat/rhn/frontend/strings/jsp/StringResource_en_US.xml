@@ -11088,6 +11088,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <source>create new channel</source>
       </trans-unit>
 
+      <trans-unit id="toolbar.clone.channel">
+        <source>clone channel</source>
+      </trans-unit>
 
       <trans-unit id="kickstart.troubleshooting.jsp.header1">
         <source>Troubleshooting</source>
