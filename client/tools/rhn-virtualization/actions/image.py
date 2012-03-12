@@ -241,4 +241,6 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, v
 if __name__ == "__main__":
     # test code
     log.log_debug("actions/image.py called")
+    print "You can not run this module by itself"
+    sys.exit(-1)
 
