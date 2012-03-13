@@ -38,14 +38,21 @@ function help() {
 Usage: $0 [OPTION]
 helper script to do migration or setup of SUSE Manager
 
-  -l LOGFILE     write a log to LOGFILE
   -m             full migration of an existing RHN Satellite
   -s             fresh setup of the SUSE Manager installation
   -r             only sync remote files (useful for migration only)
   -w             wait between steps (in case you do -r -m)
+  -l LOGFILE     write a log to LOGFILE
   -h             this help screen
 
 "
+}
+
+wait_step() {
+    if [ $WAIT_BETWEEN_STEPS = "1" ];then
+        echo "Press Return to continue"
+        read
+    fi;
 }
 
 setup_swap() {
@@ -315,26 +322,22 @@ fi
 }
 
 backup_files() {
-    mkdir -p /root/backup/pub
-    mkdir -p /root/backup/ssl/jabberd
-    mv /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /root/backup/pub/
-    mv /srv/www/htdocs/pub/rhn-org-trusted-ssl-cert*.rpm /root/backup/pub/
-    mv /root/ssl-build /root/backup/
-    cp /etc/apache2/ssl.crt/spacewalk.crt /root/backup/ssl/
-    cp /etc/apache2/ssl.key/spacewalk.key /root/backup/ssl/
-    cp /etc/pki/spacewalk/jabberd/server.pem /root/backup/ssl/jabberd/
+    DATE=`date +"%Y-%m-%d-%H-%M"`
+    BACKUPDIR="backup-$DATE"
+
+    mkdir -p /root/$BACKUPDIR/pub
+    mkdir -p /root/$BACKUPDIR/ssl/jabberd
+    mv /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /root/$BACKUPDIR/pub/ 2> /dev/null
+    mv /srv/www/htdocs/pub/rhn-org-trusted-ssl-cert*.rpm /root/$BACKUPDIR/pub/ 2> /dev/null
+    mv /root/ssl-build /root/$BACKUPDIR/ 2> /dev/null
+    cp /etc/apache2/ssl.crt/spacewalk.crt /root/$BACKUPDIR/ssl/ 2> /dev/null
+    cp /etc/apache2/ssl.key/spacewalk.key /root/$BACKUPDIR/ssl/ 2> /dev/null
+    cp /etc/pki/spacewalk/jabberd/server.pem /root/$BACKUPDIR/ssl/jabberd/ 2> /dev/null
 }
 
 copy_remote_files_common() {
     # copy only new files (new kickstart profiles, snippets, trigger, etc.)
     rsync -e "ssh -i $KEYFILE -l root" -a -v -z --ignore-existing root@$SATELLITE_IP:/var/lib/cobbler/ /var/lib/cobbler/
-    # cobbler needs also running apache, so let's restart complete spacewalk
-    /etc/init.d/cobblerd restart
-    spacewalk-service restart
-    # wait for cobblerd
-    sleep 10
-    cobbler sync
-
     rsync -e "ssh -i $KEYFILE -l root" -a -v -z root@$SATELLITE_IP:/var/lib/rhn/kickstarts /var/lib/rhn/
     chown -R tomcat.tomcat /var/lib/rhn/kickstarts
     rsync -e "ssh -i $KEYFILE -l root" -a -v -z --exclude='libexec/*' root@$SATELLITE_IP:/var/lib/nocpulse/ /var/lib/nocpulse/
@@ -367,11 +370,49 @@ copy_remote_files_suse() {
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/apache2/ssl.key/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
 }
 
-do_migration() {
-    echo "Migration needs to execute several commands on the remote machine."
+create_ssh_key() {
     echo "Please enter the root password of the remote machine."
     ssh-keygen -q -N "" -C "spacewalk-migration-key" -f $KEYFILE
     ssh-copy-id -i $KEYFILE root@$SATELLITE_IP > /dev/null
+}
+
+remove_ssh_key() {
+    ssh root@$SATELLITE_IP -i $KEYFILE "grep -v spacewalk-migration-key /root/.ssh/authorized_keys > /root/.ssh/authorized_keys.tmp && mv /root/.ssh/authorized_keys.tmp /root/.ssh/authorized_keys"
+    rm -f $KEYFILE
+}
+
+check_remote_type() {
+    ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/apache2/ssl.crt/spacewalk.crt"
+    if [ $? -eq 0 ]; then
+       echo "Remote machine is SUSE Manager"
+        SATELLITE_IS_RH=0
+    else
+       ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/pki/tls/certs/spacewalk.crt"
+       if [ $? -eq 0 ]; then
+           echo "Remote machine is Red Hat Satellite"
+            SATELLITE_IS_RH=1
+       else
+           echo "Remote machine appears to be neither SUSE Manager nor Red Hat Satellite. Exit."
+            exit
+       fi
+    fi
+}
+
+copy_remote_files() {
+    backup_files
+if [ $SATELLITE_IS_RH = "1" ];then
+    copy_remote_files_redhat
+    mv /var/spacewalk/redhat /var/spacewalk/packages
+else
+    copy_remote_files_suse
+fi
+    copy_remote_files_common
+}
+
+
+do_migration() {
+    echo "Migration needs to execute several commands on the remote machine."
+    create_ssh_key
 
     if [ "x" = "x$SATELLITE_HOST" ]; then
         echo -n "SATELLITE_HOST:";   read SATELLITE_HOST
@@ -395,26 +436,14 @@ do_migration() {
     CERT_EMAIL="dummy@example.net"
     MANAGER_ENABLE_TFTP="n"
 
-    # check for type of remote machine
-    ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/apache2/ssl.crt/spacewalk.crt"
-    if [ $? -eq 0 ]; then
-	echo "Remote machine is SUSE Manager"
-        SATELLITE_IS_RH=0
-    else
-	ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/pki/tls/certs/spacewalk.crt"
-	if [ $? -eq 0 ]; then
-	    echo "Remote machine is Red Hat Satellite"
-            SATELLITE_IS_RH=1
-	else
-	    echo "Remote machine appears to be neither SUSE Manager nor Red Hat Satellite. Exit."
-            exit
-	fi
-    fi
+    check_remote_type
+    wait_step
 
     if [ ! -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
         do_setup
     fi;
     sleep 10
+    wait_step
     if [ $ORACLE_VERSION = "FULL" -a $MANAGER_DB_HOST = "localhost" ]; then
 	    drop_manager_db
     elif [ $MANAGER_DB_NAME = "xe" -a $MANAGER_DB_HOST = "localhost" ]; then
@@ -422,22 +451,17 @@ do_migration() {
     elif [ $MANAGER_DB_NAME = "XE" -a $MANAGER_DB_HOST = "localhost" ]; then
 	    drop_manager_db
     fi;
+    wait_step
     dump_remote_db
+    wait_step
     import_db
+    wait_step
     upgrade_schema
-
-    backup_files
-if [ $SATELLITE_IS_RH = "1" ];then
-    copy_remote_files_redhat
-    mv /var/spacewalk/redhat /var/spacewalk/packages
-else
-    copy_remote_files_suse
-fi
-
-    copy_remote_files_common
+    wait_step
+    copy_remote_files
+    wait_step
     cleanup_hostname
-    ssh root@$SATELLITE_IP -i $KEYFILE "grep -v spacewalk-migration-key /root/.ssh/authorized_keys > /root/.ssh/authorized_keys.tmp && mv /root/.ssh/authorized_keys.tmp /root/.ssh/authorized_keys"
-    rm -f $KEYFILE
+    remove_ssh_key
 }
 
 do_setup() {
@@ -514,6 +538,9 @@ for p in $@; do
         . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`dig +short $SATELLITE_FQDN`
+        if [ "$LOGFILE" = "0" ]; then
+            LOGFILE=/tmp/migration.log
+        fi
        ;;
     -s)
         DO_SETUP=1
@@ -523,7 +550,11 @@ for p in $@; do
         . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
         SATELLITE_IP=`dig +short $SATELLITE_FQDN`
+        create_ssh_key
+        check_remote_type
+        backup_files
         copy_remote_files
+        remove_ssh_key
        ;;
     -h)
         help
@@ -560,10 +591,8 @@ if [ "$LOGFILE" != "0" ]; then
     exec >> >(tee $LOGFILE | sed 's/^/  /' ) 2>&1
 fi
 
-if [ $WAIT_BETWEEN_STEPS = "1" ];then
-    echo "Press Return to continue"
-    read
-fi;
+wait_step
+
 if [ "$DO_SETUP" = "1" ]; then
     do_setup
     # rename the default org
@@ -600,15 +629,11 @@ dobby.oracle_user = oracle
     # Finaly call mgr-ncc-sync
     /usr/sbin/mgr-ncc-sync
 fi
-if [ $WAIT_BETWEEN_STEPS = "1" ];then
-    echo "Press Return to continue"
-    read
-fi;
+wait_step
 if [ "$DO_MIGRATION" = "1" ]; then
     do_migration
     # Finaly call mgr-ncc-sync
     /usr/sbin/mgr-ncc-sync
 fi
-
 
 # vim: set expandtab:
