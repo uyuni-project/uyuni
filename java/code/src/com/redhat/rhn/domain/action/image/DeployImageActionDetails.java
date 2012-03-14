@@ -35,7 +35,7 @@ public class DeployImageActionDetails extends ActionChild {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
     /**
      * @return Returns the number of virtual cpus
      */

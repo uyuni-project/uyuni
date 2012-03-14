@@ -29,4 +29,3 @@ install:
 	for r in $(CONF) ; do \
 		install -m 644 $$r $(DESTDIR)/$(SYSCONF_DIR)/$$r; \
 	done
-

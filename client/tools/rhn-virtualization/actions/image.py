@@ -218,7 +218,7 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, v
                       'imageType'      : imageType,
                       'virtBridge'     : virtBridge,
 #                     'mac'            : mac,
-#                     'syslog'         : syslog 
+#                     'syslog'         : syslog
                     }
     create_xml = ""
     if imageType == "xen":
