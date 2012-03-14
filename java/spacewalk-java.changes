@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 14 17:18:12 CET 2012 - jrenner@suse.de
+
+- Enable deployment of SUSE Studio images
+
+-------------------------------------------------------------------
 Fri Mar  2 17:24:44 CET 2012 - jrenner@suse.de
 
 - Fix problem with cloned channels and patches (bnc#748715)

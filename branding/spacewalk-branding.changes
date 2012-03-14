@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 14 17:23:44 CET 2012 - jrenner@suse.de
+
+- Enable deployment of SUSE Studio images (new spinner.gif)
+
+-------------------------------------------------------------------
 Thu Feb  2 14:18:10 CET 2012 - ug@suse.de
 
 - fixed permissions of /etc/rhn
