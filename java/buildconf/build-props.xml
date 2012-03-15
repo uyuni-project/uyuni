@@ -119,7 +119,7 @@
              log4j oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc
              ${jfreechart} taglibs-core quartz
-             concurrent simple-core snakeyaml" />
+             concurrent simple-core snakeyaml simple-xml susestudio-java-client" />
 
   <property name="dist.jar.dependencies"
       value="antlr ${asm} bcel c3p0 cglib
@@ -130,7 +130,7 @@
              jaf ${jasper-jars} javamail jcommon jdom ${other-jars}
              ${jfreechart} ${tomcat-jars} log4j redstone-xmlrpc-client redstone-xmlrpc
              oro oscache quartz stringtree-json sitemesh ${struts-jars} taglibs-core
-             taglibs-standard tanukiwrapper postgresql-jdbc snakeyaml
+             taglibs-standard tanukiwrapper postgresql-jdbc snakeyaml simple-xml susestudio-java-client
              xalan-j2 xerces-j2 xml-commons-apis simple-core" />
 
   <path id="bootjars">

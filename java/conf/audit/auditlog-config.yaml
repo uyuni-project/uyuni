@@ -1097,6 +1097,22 @@
     required: [dispatch]
 
 ###############################################################################
+# Image Deployment
+###############################################################################
+
+/systems/details/virtualization/Images.do:
+    type: ACTION_CREATE
+    required: [dispatch]
+
+/account/Credentials.do:
+    type: ACTION_CHANGE
+    required: [studio_user, studio_key]
+
+/account/DeleteCredentials.do:
+    type: ACTION_DELETE
+    required: [dispatch]
+
+###############################################################################
 # PXT
 ###############################################################################
 
