@@ -54,6 +54,8 @@ Requires: libvirt-python
 Requires: rhn-virtualization-common = %{version}-%{release}
 %if 0%{?suse_version}
 Requires:       cron
+# python-curl for SUSE Studio download
+Requires:       python-curl
 PreReq:         %fillup_prereq %insserv_prereq
 %else
 Requires: /usr/sbin/crond
@@ -139,6 +141,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files host
 %defattr(-,root,root,-)
+%dir %{rhn_conf_dir}
 %dir %{rhn_conf_dir}/virt
 %dir %{rhn_conf_dir}/virt/auto
 %{_initrddir}/rhn-virtualization-host
@@ -156,7 +159,9 @@ rm -rf $RPM_BUILD_ROOT
 %{rhn_dir}/virtualization/state.py*
 %{rhn_dir}/virtualization/support.py*
 %{rhn_dir}/actions/virt.py*
+%{rhn_dir}/actions/image.py*
 %{rhn_dir}/virtualization/localvdsm.py*
+%{rhn_conf_dir}/studio-*-template.xml
 %doc LICENSE
 
 
