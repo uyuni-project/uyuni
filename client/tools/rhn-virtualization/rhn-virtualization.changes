@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 15 10:43:40 CET 2012 - ug@suse.de
+
+- fixed python syntax for SLES10 build
+
+-------------------------------------------------------------------
 Wed Mar 14 17:26:13 CET 2012 - jrenner@suse.de
 
 - Enable deployment of SUSE Studio images
