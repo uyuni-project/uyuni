@@ -67,9 +67,8 @@ insert into rhnActionType values (45, 'kickstart_guest.schedule_virt_guest_pkg_i
 insert into rhnActionType values (46, 'kickstart_host.add_tools_channel', 'Subscribes a server to the Spacewalk Tools channel associated with its base channel.', 'N', 'N');
 insert into rhnActionType values (47, 'kickstart_guest.add_tools_channel', 'Subscribes a virtualization guest to the Spacewalk Tools channel associated with its base channel.', 'N', 'N');
 insert into rhnActionType values (48, 'virt.setVCPUs', 'Sets the Vcpu usage for a virtual domain.', 'N', 'N');
-commit;
 insert into rhnActionType values (49, 'proxy.deactivate', 'Deactivate Proxy', 'N', 'N');
-insert into rhnActionType values (50, 'image.deploy', 'Deploy an image to a virtual host.', 'N', 'N');
+insert into rhnActionType values (500, 'image.deploy', 'Deploy an image to a virtual host.', 'N', 'N');
 commit;
 --
 --

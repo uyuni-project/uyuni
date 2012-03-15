@@ -1006,7 +1006,7 @@ public class ActionFactory extends HibernateFactory {
     public static final String TXN_OPERATION_DELETE = "delete";
 
     /**
-     * The constant representing Image deploy action.  [ID:50]
+     * The constant representing Image deploy action.  [ID:500]
      */
     public static final ActionType TYPE_DEPLOY_IMAGE =
             lookupActionTypeByLabel("image.deploy");

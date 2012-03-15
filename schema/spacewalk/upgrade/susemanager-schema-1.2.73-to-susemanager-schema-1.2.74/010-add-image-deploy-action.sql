@@ -10,5 +10,5 @@
 --
 --
 
-insert into rhnActionType values (50, 'image.deploy', 'Deploy an image to a virtual host.', 'N', 'N');
+insert into rhnActionType values (500, 'image.deploy', 'Deploy an image to a virtual host.', 'N', 'N');
 commit;
