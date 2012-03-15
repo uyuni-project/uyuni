@@ -181,14 +181,14 @@ def deploy(downloadURL, proxyURL="", proxyUser="", proxyPass="", memKB=524288, v
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
         try:
             http_response_code = _getImage(fileName,downloadURL,proxySettings)
-        except Exception as e:
+        except Exception, e:
             return ( 1, "getting the image failed with: %s" % e )
     if not _imageExists(IMAGE_BASE_PATH+fileName, checksum):
         log.log_debug("image file is not there. HTTP Code is: %s" % http_response_code)
         return (1, "image file is not there: %s" % IMAGE_BASE_PATH+fileName, {})
     try:
         _extractTar( IMAGE_BASE_PATH+fileName, IMAGE_BASE_PATH )
-    except Exception as e:
+    except Exception, e:
         return (1, "extracting the image tarball failed with: %s" % e, {})
 
     # image exists in /var/lib/libvirt/images/image-name now
