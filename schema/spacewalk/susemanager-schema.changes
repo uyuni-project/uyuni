@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 15 17:17:28 CET 2012 - jrenner@suse.de
+
+- Add support for studio image deployments
+
+-------------------------------------------------------------------
 Mon Dec 19 15:36:54 CET 2011 - mc@suse.de
 
 - new tables for storing package products (bnc#644678)

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 15 17:14:01 CET 2012 - jrenner@suse.de
+
+- Add support for studio image deployments
+
+-------------------------------------------------------------------
 Thu Nov  3 19:24:12 CET 2011 - ma@suse.de
 
 - Adapt dependencies to renamed packages (bnc#722052)

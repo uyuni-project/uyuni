@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 15 17:15:37 CET 2012 - jrenner@suse.de
+
+- Add support for studio image deployments
+
+-------------------------------------------------------------------
 Thu May 26 17:03:34 CEST 2011 - jrenner@suse.de
 
 - Add files for password strength meter (bnc#685551/fate#312398)

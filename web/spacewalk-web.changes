@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 15 17:16:04 CET 2012 - jrenner@suse.de
+
+- Add support for studio image deployments
+
+-------------------------------------------------------------------
 Wed Mar  7 11:12:05 CET 2012 - mc@suse.de
 
 - Fix naming of cloned patches to not remove the first 3 chars

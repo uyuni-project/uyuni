@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 15 16:25:25 CET 2012 - jrenner@suse.de
+
+- Add support for studio image deployments
+
+-------------------------------------------------------------------
 Wed Mar  7 16:05:19 UTC 2012 - dmacvicar@suse.de
 
 - All Patches -> All Types (bnc#732538)

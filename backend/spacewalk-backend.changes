@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 15 17:14:40 CET 2012 - jrenner@suse.de
+
+- Add support for studio image deployments
+
+-------------------------------------------------------------------
 Mon Mar  5 12:42:12 CET 2012 - mc@suse.de
 
 - add suseLib.accessible() doing a HEAD request to test 
