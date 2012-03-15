@@ -48,4 +48,3 @@ def deploy(serverId, actionId, dry_run=0):
         "domainName"    : "",
         "virtBridge"    : row['bridge_device'] }
     return (params)
-
