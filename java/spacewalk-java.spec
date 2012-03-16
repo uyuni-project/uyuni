@@ -14,6 +14,11 @@
 %define jardir          %{_localstatedir}/lib/tomcat6/webapps/rhn/WEB-INF/lib
 %endif
 
+%if 0%{?rhel} && 0%{?rhel} < 6
+# checkstyle is broken on Fedora 14 - we skip for now
+%define run_checkstyle  1
+%endif
+
 Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
@@ -107,7 +112,9 @@ BuildRequires: antlr >= 2.7.6
 BuildRequires: tanukiwrapper
 Requires: classpathx-mail
 BuildRequires: classpathx-mail
+%if 0%{?run_checkstyle}
 BuildRequires: checkstyle
+%endif
 
 # Sadly I need these to symlink the jars properly.
 BuildRequires: asm
@@ -337,8 +344,7 @@ fi
 # compile only java sources (no packing here)
 ant -Dprefix=$RPM_BUILD_ROOT init-install compile
 
-# checkstyle is broken on Fedora 14 - we skip for now
-%if 0%{?rhel} && 0%{?rhel} < 6
+%if 0%{?run_checkstyle}
 echo "Running checkstyle on java main sources"
 export CLASSPATH="build/classes"
 export BASE_OPTIONS="-Djavadoc.method.scope=public \
