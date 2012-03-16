@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 16 16:10:15 CET 2012 - ug@suse.de
+
+- replace passwords in debug files (bnc#752467)
+
+-------------------------------------------------------------------
 Wed Mar 14 17:25:24 CET 2012 - jrenner@suse.de
 
 - Enable deployment of SUSE Studio images
