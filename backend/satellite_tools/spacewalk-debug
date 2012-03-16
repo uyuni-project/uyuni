@@ -26,7 +26,6 @@ sub replaceLine {
 
     open(OLD, "< $old")             or die "can't open $old: $!";
     open(NEW, "> $new")             or die "can't open $new: $!";
-    # Correct typos, preserving case
     while (<OLD>) {
         eval( "s/$regex/$replace/" );
         (print NEW $_)          or die "can't write to $new: $!";
