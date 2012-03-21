@@ -25,11 +25,11 @@ test -z "$GIT_DIR" || cd "$GIT_DIR"
 GIT_DIR=$(pwd)
 
 # check presence of tito
-test -x "$GIT_DIR/rel-eng/bin/tito" || {
-  echo "Missing '$GIT_DIR/rel-eng/bin/tito' needed for build." >&2
+test -x "/usr/bin/tito" || {
+  echo "Missing '/usr/bin/tito' needed for build." >&2
   exit 2
 }
-TITO="$GIT_DIR/rel-eng/bin/tito"
+TITO="/usr/bin/tito"
 
 # check for unrpm
 which unrpm &> /dev/null || {
