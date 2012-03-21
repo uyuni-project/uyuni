@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Mar 21 13:30:12 CET 2012 - mc@suse.de
+
+- Remove the page errata/Overview.do
+
+-------------------------------------------------------------------
 Wed Mar 14 17:24:04 CET 2012 - jrenner@suse.de
 
 - Enable deployment of SUSE Studio images (new images.js)
