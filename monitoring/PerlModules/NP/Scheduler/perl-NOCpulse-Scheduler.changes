@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:54:59 CET 2012 - mc@suse.de
+
+- version 1.58.12.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Tue Sep 14 17:41:50 CEST 2010 - mantel@suse.de
 
 - Initial release of perl-NOCpulse-Scheduler
