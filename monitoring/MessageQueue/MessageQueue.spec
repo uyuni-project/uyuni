@@ -7,7 +7,7 @@
 %define snmp_qdir      %queue_dir/snmp
 
 Name:         MessageQueue
-Version:      3.26.7
+Version:      3.26.7.1
 Release:      1%{?dist}
 Summary:      Message buffer/relay system
 URL:          https://fedorahosted.org/spacewalk
