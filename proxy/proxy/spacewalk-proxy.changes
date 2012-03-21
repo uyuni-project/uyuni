@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:47:50 CET 2012 - mc@suse.de
+
+- version 1.7.12.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Tue Feb  7 16:31:28 CET 2012 - mantel@suse.de
 
 - enable option FollowSymLinks, else SLES10-SP4 clients will
