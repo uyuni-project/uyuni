@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 18:02:57 CET 2012 - mc@suse.de
+
+- version 1.7.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Tue Mar 13 16:52:30 CET 2012 - mantel@suse.de
 
 - update migration.sh to state of maintained branch
