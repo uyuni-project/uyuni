@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 14:53:49 CET 2012 - mc@suse.de
+
+- version 1.9.3.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Wed Sep 15 10:17:07 CEST 2010 - mantel@suse.de
 
 - Initial release of ssl_bridge
