@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 16:59:21 CET 2012 - mc@suse.de
+
+- version 1.27.27.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Mon Aug  8 12:13:55 UTC 2011 - kkaempf@novell.com
 
 - remove the explicit 'Vendor' tag, define it during build
