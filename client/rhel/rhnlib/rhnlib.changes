@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:06:43 CET 2012 - mc@suse.de
+
+- version 2.5.51.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Mon Sep 19 15:36:29 CEST 2011 - mc@suse.de
 
 - require python-openssl on SUSE
