@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:33:17 CET 2012 - mc@suse.de
+
+- version 1.7.38.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Fri Mar 16 16:06:31 CET 2012 - ug@suse.de
 
 - replace passwords in debug files (bnc#752467)
