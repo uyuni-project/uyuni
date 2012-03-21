@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:27:41 CET 2012 - mc@suse.de
+
+- version 1.7.0.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Fri Sep 17 17:31:56 CEST 2010 - ma@suse.de
 
 - Initial release of MessageQueue
