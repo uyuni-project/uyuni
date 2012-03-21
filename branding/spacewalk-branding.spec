@@ -7,7 +7,7 @@
 %define apacheconfdir %{_sysconfdir}/httpd/conf.d
 %endif
 Name:       spacewalk-branding
-Version:    1.7.1
+Version:    1.7.1.1
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
