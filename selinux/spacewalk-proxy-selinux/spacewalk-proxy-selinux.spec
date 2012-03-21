@@ -7,7 +7,7 @@
 %define modulename spacewalk-proxy
 
 Name:           spacewalk-proxy-selinux
-Version:        1.7.0
+Version:        1.7.0.1
 Release:        1%{?dist}
 Summary:        SELinux policy module supporting Spacewalk Proxy
 

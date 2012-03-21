@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:08:27 CET 2012 - mc@suse.de
+
+- version 1.7.0.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Wed Sep 15 09:45:52 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-proxy-selinux
