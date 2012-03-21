@@ -10,7 +10,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhnsd-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalksd
-Version: 4.9.15
+Version: 4.9.15.1
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 

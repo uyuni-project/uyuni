@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:42:11 CET 2012 - mc@suse.de
+
+- version 4.9.15.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Thu Dec 22 10:44:34 CET 2011 - mc@suse.de
 
 - remove all unsupported translations
