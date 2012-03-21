@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 16:33:10 CET 2012 - mc@suse.de
+
+- version 1.216.28.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Tue Mar 15 16:09:36 CET 2011 - mc@suse.de
 
 - create correct symlinks for MonitoringScout (bnc#679386)
