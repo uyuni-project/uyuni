@@ -14,7 +14,7 @@ Feature: Explore the main landing page
   Scenario: Completeness of the side navigation bar and the content frame
     Given I am authorized
     When I follow "Errata"
-    Then I should see a "Errata Overview" text
+    Then I should see a "Errata Relevant to Your Systems" text
      And I should see a "Relevant" link in the left menu
      And I should see a "All" link in the left menu
      And I should see a "Advanced Search" link in the left menu
@@ -98,7 +98,7 @@ Feature: Explore the main landing page
     And I click on "Publish Errata"
     And I check test channel
     And I click on "Publish Errata"
-    Then I should see a "All Errata" text
+    Then I should see a "All Types" text
     And I should see a "Test Erratum" text
 
 #  @errata
