@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:53:09 CET 2012 - mc@suse.de
+
+- version 1.7.0.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Thu Mar 17 16:37:00 CET 2011 - jrenner@suse.de
 
 - Add proxy docs to be indexed as well (bnc#676704)
