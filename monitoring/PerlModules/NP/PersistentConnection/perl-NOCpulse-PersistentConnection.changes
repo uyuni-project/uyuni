@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 16:55:50 CET 2012 - mc@suse.de
+
+- version 1.7.0.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Tue Sep 14 17:38:01 CEST 2010 - mantel@suse.de
 
 - Initial release of perl-NOCpulse-PersistentConnection
