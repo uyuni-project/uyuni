@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:31:15 CET 2012 - mc@suse.de
+
+- version 1.28.26.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Tue Sep 14 17:37:08 CEST 2010 - mantel@suse.de
 
 - Initial release of perl-NOCpulse-OracleDB
