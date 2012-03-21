@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:49:57 CET 2012 - mc@suse.de
+
+- version 1.7.2.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Wed Mar  7 14:43:57 CET 2012 - ug@suse.de
 
 - fixed permissions of /var/lib/rhn/rhn-satellite-prep/etc
