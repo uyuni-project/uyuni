@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:37:48 CET 2012 - mc@suse.de
+
+- version 1.7.2.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Wed Sep 15 09:36:24 CEST 2010 - mantel@suse.de
 
 - Initial release of spacewalk-monitoring-selinux
