@@ -1,6 +1,6 @@
 Name:         nocpulse-db-perl
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      3.6.5
+Version:      3.6.5.1
 Release:      1%{?dist}
 Summary:      NOCpulse bindings for database to insert and fetch data
 URL:          https://fedorahosted.org/spacewalk
