@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 16:55:04 CET 2012 - mc@suse.de
+
+- version 1.7.1.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Mon Sep 19 17:44:42 CEST 2011 - mc@suse.de
 
 - provide reports for SUSE Manager (bnc#673047, FATE#312367)
