@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 16:27:05 CET 2012 - mc@suse.de
+
+- version 1.7.2.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Fri Feb 17 12:28:52 CET 2012 - mc@suse.de
 
 - execute commands with full user information including
