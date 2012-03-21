@@ -3,7 +3,7 @@ Name:         SatConfig-installer
 Summary:      Satellite Configuration System - command line installer
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      3.24.6
+Version:      3.24.6.1
 Release:      1%{?dist}
 BuildArch:    noarch
 %if 0%{?suse_version}
