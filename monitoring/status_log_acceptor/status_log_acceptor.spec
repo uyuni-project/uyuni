@@ -1,6 +1,6 @@
 Name:         status_log_acceptor
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      0.12.10
+Version:      0.12.10.1
 Release:      1%{?dist}
 Summary:      Current state log acceptor
 URL:          https://fedorahosted.org/spacewalk
