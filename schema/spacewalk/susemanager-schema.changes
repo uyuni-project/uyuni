@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 18:12:33 CET 2012 - mc@suse.de
+
+- version 1.7.56.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Thu Mar 15 17:17:28 CET 2012 - jrenner@suse.de
 
 - Add support for studio image deployments
