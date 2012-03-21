@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:30:29 CET 2012 - mc@suse.de
+
+- version 1.7.4.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Tue Nov  8 13:55:19 CET 2011 - jrenner@suse.de
 
 - Add support for audit logging in init script (fate#312607)
