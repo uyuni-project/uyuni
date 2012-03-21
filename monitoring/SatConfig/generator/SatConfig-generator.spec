@@ -2,7 +2,7 @@
 %define install_prefix %{perl_vendorlib}/NOCpulse/SatConfig
 
 Name:         SatConfig-generator
-Version:      2.29.14
+Version:      2.29.14.1
 Release:      1%{?dist}
 Summary:      Satellite Configuration System - Server
 URL:          https://fedorahosted.org/spacewalk
