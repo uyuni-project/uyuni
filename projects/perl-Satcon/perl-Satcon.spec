@@ -1,6 +1,6 @@
 Name:           perl-Satcon
 Summary:        Framework for configuration files
-Version:        1.19
+Version:        1.19.1
 Release:        1%{?dist}
 License:        GPLv2
 Group:          Applications/System
