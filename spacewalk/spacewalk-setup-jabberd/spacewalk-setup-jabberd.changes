@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 14:31:21 CET 2012 - mc@suse.de
+
+- version 1.7.0.1-1
+- Bumping package versions
+
+-------------------------------------------------------------------
 Wed Aug 24 11:25:40 CEST 2011 - mc@suse.de
 
 - jabberd: set keepalive and interval to 60
