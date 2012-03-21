@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:49:17 CET 2012 - mc@suse.de
+
+- version 5.4.14.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Mon Feb 14 13:52:07 CET 2011 - ma@suse.de
 
 - Fix specfile; don't require up2date on SLE 
