@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:39:43 CET 2012 - mc@suse.de
+
+- version 5.3.10.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Wed Aug 31 13:25:55 CEST 2011 - mc@suse.de
 
 - do not create nocpule user with locked account
