@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 21 17:36:16 CET 2012 - mc@suse.de
+
+- version 2.2.4.1-1
+- Bumping package version
+
+-------------------------------------------------------------------
 Thu Jan 26 13:06:16 CET 2012 - mantel@suse.de
 
 - the file /etc/NOCpulse.ini contains passwords so it must not be
