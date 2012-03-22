@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Mar 22 16:09:03 CET 2012 - mc@suse.de
+
+- rotate logfiles as user nocpulse (bnc#681980) CVE-2011-1550
+
+-------------------------------------------------------------------
 Thu Jan 26 13:06:16 CET 2012 - mantel@suse.de
 
 - the file /etc/NOCpulse.ini contains passwords so it must not be
