@@ -8,6 +8,7 @@
     notifempty
     missingok
     size 100M
+    su wwwrun www
 }
 
 /var/log/rhn/oracle/osa-dispatcher/sqlnet.ora {
