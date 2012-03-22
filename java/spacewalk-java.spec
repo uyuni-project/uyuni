@@ -19,7 +19,7 @@
 %define run_checkstyle  1
 %endif
 %if 0%{?suse_version}
-%define run_checkstyle  1
+%define run_checkstyle  0
 %endif
 
 Name: spacewalk-java
