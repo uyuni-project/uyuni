@@ -10,6 +10,7 @@
     notifempty
     missingok
     size=10M
+    su wwwrun www
 }
 
 /var/log/rhn/reposync/*.log {

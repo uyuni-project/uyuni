@@ -10,4 +10,5 @@
     notifempty
     missingok
     size=10M
+    su wwwrun www
 }
