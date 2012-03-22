@@ -256,6 +256,7 @@ This package contains testing files of spacewalk-java.
 
 %files tests
 %defattr(-,root,root)
+%dir %{_datadir}/rhn/unit-tests
 %{_datadir}/rhn/lib/rhn-test.jar
 %{_datadir}/rhn/unit-tests/*
 %{_datadir}/rhn/unittest.xml
