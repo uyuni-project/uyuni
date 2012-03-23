@@ -2377,7 +2377,6 @@ available for this kickstart profile to function properly.
             <context context-type="sourcefile">Errata edit page</context>
         </context-group>
       </trans-unit>
-<<<<<<< HEAD
 
      <trans-unit id="toolbar.delete.kickstart">
         <source>delete autoinstallation</source>
