@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2010 Novell
+-- Copyright (c) 2012 SUSE Linux Products GmbH, Nuremberg, Germany
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -10,22 +10,6 @@
 --
 --
 
-create table
-suseServerInstalledProduct
-(
-    rhn_server_id     number
-                      CONSTRAINT suseserver_ip_rhns_id_fk
-                      REFERENCES rhnServer (id)
-                      ON DELETE CASCADE
-                      not null,
-    suse_installed_product_id   number
-                                CONSTRAINT ssip_sip_id_fk
-                                REFERENCES suseInstalledProduct (id)
-                                not null,
-    created     date default(sysdate) not null,
-    modified    date default(sysdate) not null
-);
-
 CREATE UNIQUE INDEX suse_srv_inprod_uq
     ON suseServerInstalledProduct (rhn_server_id, suse_installed_product_id)
     TABLESPACE [[64k_tbs]];
@@ -35,3 +19,4 @@ CREATE INDEX suse_srv_inprod_pkg_idx
     TABLESPACE [[64k_tbs]]
     NOLOGGING;
 
+commit;
