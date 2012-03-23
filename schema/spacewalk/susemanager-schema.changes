@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 23 10:16:38 CET 2012 - mc@suse.de
+
+- add indexes for suseServerInstalledProduct and suseProductChannel
+
+-------------------------------------------------------------------
 Wed Mar 21 16:45:18 CET 2012 - jrenner@suse.de
 
 - Fix rhnServerNeededView to reflect all errata (bnc#752459)
