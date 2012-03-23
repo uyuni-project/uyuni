@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Mar 23 10:16:38 CET 2012 - mc@suse.de
+
+- add indexes for suseServerInstalledProduct and suseProductChannel
+
+-------------------------------------------------------------------
 Wed Mar 21 18:12:33 CET 2012 - mc@suse.de
 
 - version 1.7.56.1-1
