@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Mar 24 15:57:24 CET 2012 - mc@suse.de
+
+- parameters should not be None
+
+-------------------------------------------------------------------
 Thu Mar 22 16:06:49 CET 2012 - mc@suse.de
 
 - rotate logfiles with user www (bnc#681984) CVE-2011-1550
