@@ -55,6 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
+%doc LICENSE
 %dir %{rhnroot}
 %attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
 %{_sbindir}/spacewalk-service
