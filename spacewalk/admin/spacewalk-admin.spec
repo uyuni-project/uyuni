@@ -1,4 +1,4 @@
-%define rhnroot /%{_datadir}/rhn
+%global rhnroot /%{_datadir}/rhn
 %if 0%{?suse_version}
 %define apache_group www
 %else
