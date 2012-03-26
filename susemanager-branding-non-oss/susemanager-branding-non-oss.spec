@@ -9,6 +9,7 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 Provides:       susemanager-branding = %{version}-%{release}
+Conflicts:      susemanager-branding-oss
 
 %description
 A collection of files which are specific for
