@@ -22,7 +22,7 @@ SUSE Manager non-oss flavors.
 
 %install
 mkdir -p $RPM_BUILD_ROOT/srv/www/htdocs/help/
-install -m 644 eula121.txt $RPM_BUILD_ROOT/srv/www/htdocs/help/eula.pxt
+install -m 644 eula121.pxt $RPM_BUILD_ROOT/srv/www/htdocs/help/eula.pxt
 
 %clean
 rm -rf %{buildroot}
@@ -31,7 +31,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc license.txt
 %dir /srv/www/htdocs/help
-/srv/www/htdocs/help/eula.txt
+/srv/www/htdocs/help/eula.pxt
 
 %changelog
 
