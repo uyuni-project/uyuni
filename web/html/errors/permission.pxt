@@ -38,5 +38,13 @@ To sign in, click <a href="/">here</a>.
 </rhn-require>
 
   </grail-canvas-template>
+
+<rhn-require acl="not user_authenticated()">
+  <script src="/javascript/legalnote.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    putLegalNote('If you have licensed the SUSE Manager Server with Database product, then your use of the embedded Oracle database is subject to a restricted use license and can only be used in conjunction with the SUSE Manager Server with Database product.')
+  </script>
+</rhn-require>
+
 </pxt-passthrough>
 

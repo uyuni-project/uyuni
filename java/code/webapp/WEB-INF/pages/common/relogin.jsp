@@ -6,8 +6,9 @@
 <html>
 <head>
   <script src="/javascript/focus.js" type="text/javascript"></script>
+  <script src="/javascript/legalnote.js" type="text/javascript"></script>
 </head>
-<body onLoad="disableAutoComplete();formFocus('loginForm', 'username');">
+<body onLoad="disableAutoComplete();formFocus('loginForm', 'username');putLegalNote('${rhn:localize('footer.jsp.legalNote')}');">
     <div id="relogin_page"> <!-- Trying to make relogin page look more like login -->
     <style> <%-- Rather ugly hack, but at the time being I don't see any other way to do this without breaking the backwards-compatibility --%>
 	.sidebar{display:none}

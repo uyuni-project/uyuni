@@ -6,9 +6,10 @@
 <html>
 <head>
     <script src="/javascript/focus.js" type="text/javascript"></script>
+    <script src="/javascript/legalnote.js" type="text/javascript"></script>
     <meta name="decorator" content="layout_equals" />
 </head>
-<body onLoad="disableAutoComplete();formFocus('loginForm', 'username');">
+<body onLoad="disableAutoComplete();formFocus('loginForm', 'username');putLegalNote('${rhn:localize('footer.jsp.legalNote')}');">
 <div id="login_page">
 
 <c:if test="${schemaUpgradeRequired == 'true'}">

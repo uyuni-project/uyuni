@@ -1146,6 +1146,12 @@
           <context context-type="sourcefile">./includes/footer.jsp</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="footer.jsp.legalNote">
+<source>If you have licensed the SUSE Manager Server with Database product, then your use of the embedded Oracle database is subject to a restricted use license and can only be used in conjunction with the SUSE Manager Server with Database product.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">./includes/footer.jsp</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="footer.jsp.legalStatement">
 <source>Legal statement</source>
         <context-group name="ctx">
