@@ -28,6 +28,7 @@ Requires:       rsync less
 Requires:       susemanager-tools
 # migration.sh need either sqlplus or psql
 Requires:       spacewalk-db-virtual
+Requires:       susemanager-branding
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %global pythonsmroot %{python_sitelib}/spacewalk
 
@@ -103,7 +104,7 @@ chown root.root /etc/sysconfig
 
 %files
 %defattr(-,root,root,-)
-%doc doc/* Changes license.txt
+%doc doc/*
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %dir /etc/YaST2
