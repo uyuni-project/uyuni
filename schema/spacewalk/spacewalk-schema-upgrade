@@ -60,16 +60,12 @@ my $target_schema = join '-', $my_schema_name, $my_schema_version, $my_schema_re
 
 print "Schema upgrade: [$start_schema] -> [$target_schema]\n";
 
+my $foundtarget = 0;
 my $retried = 0;
 RETRY:
 
-if ($start_schema_norm eq $target_schema_norm) {
-	warn "Your database schema already matches the schema package version [$target_schema_norm].\n";
-	exit;
-}
-if ($start_schema ne $start_schema_norm
-	or $target_schema ne $target_schema_norm) {
-	print "Searching for upgrade path: [$start_schema_norm] -> [$target_schema_norm]\n";
+if (!$foundtarget) {
+	print "Searching for upgrade path to: [$target_schema_norm]\n";
 }
 
 my %upgrade_path;
@@ -78,6 +74,7 @@ while (@queue) {
 	my $t = shift @queue;
 	my @lookup = glob "$SCHEMA_UPGRADE_DIR/*-to-$t";
 	for (@lookup) {
+		$foundtarget = 1;
 		s!^\Q$SCHEMA_UPGRADE_DIR/\E!!;
 		s!-to-\Q$t\E$!!;
 		## print "  [$_] -> [$t]\n";
@@ -89,19 +86,15 @@ while (@queue) {
 	}
 }
 
-if (not exists $upgrade_path{$start_schema_norm}) {
+if (!$foundtarget) {
 	if (not $retried) {
-		if ($start_schema_norm =~ s!^(.+-.+)-\d+(\.\d+)*$!$1!
-			and $target_schema_norm =~ s!^(.+-.+)-\d+(\.\d+)*$!$1!) {
+		if ($target_schema_norm =~ s!^(.+-.+)-\d+(\.\d+)*$!$1!) {
 			$retried++;
 			goto RETRY;
 		}
 	}
 	if ($retried) {
 		my $trunc_version = 0;
-		if ($start_schema_norm =~ s!^(.+-.+\..+)\.[^.-]+$!$1!) {
-			$trunc_version = 1;
-		}
 		if ($target_schema_norm =~ s!^(.+-.+\..+)\.[^.-]+$!$1!) {
 			$trunc_version = 1;
 		}
@@ -111,6 +104,36 @@ if (not exists $upgrade_path{$start_schema_norm}) {
 	}
 	die "Was not able to find upgrade path in directory [$SCHEMA_UPGRADE_DIR].\n";
 }
+
+$retried = 0;
+RETRYSOURCE:
+
+if ($start_schema_norm eq $target_schema_norm) {
+	warn "Your database schema already matches the schema package version [$target_schema_norm].\n";
+	exit;
+}
+
+print "Searching for start path:  [$start_schema_norm]\n";
+
+if (not exists $upgrade_path{$start_schema_norm}) {
+	if (not $retried) {
+		if ($start_schema_norm =~ s!^(.+-.+)-\d+(\.\d+)*$!$1!) {
+			$retried++;
+			goto RETRYSOURCE;
+		}
+	}
+	if ($retried) {
+		my $trunc_version = 0;
+		if (! $foundtarget && $target_schema_norm =~ s!^(.+-.+\..+)\.[^.-]+$!$1!) {
+			$trunc_version = 1;
+		}
+		if ($trunc_version) {
+			goto RETRYSOURCE;
+		}
+	}
+	die "Was not able to find upgrade path in directory [$SCHEMA_UPGRADE_DIR].\n";
+}
+
 
 my @path = get_shortest_path($upgrade_path{$start_schema_norm}, $target_schema_norm);
 print "The path: ", (join " -> ", map "[$_]", $start_schema_norm, @path), "\n";
