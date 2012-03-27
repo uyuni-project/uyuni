@@ -1,1 +1,0 @@
--- This file is intentionally left empty, trigger already existed in Oracle.
