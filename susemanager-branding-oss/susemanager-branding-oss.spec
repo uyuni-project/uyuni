@@ -8,8 +8,9 @@ URL:            http://www.novell.com
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
-Provides:       susemanager-branding = %{version}-%{release}
-Conflicts:      susemanager-branding-non-oss
+Provides:       susemanager-branding = %{version}
+Conflicts:      otherproviders(susemanager-branding)
+Conflicts:      oracle-server
 
 %description
 A collection of files which are specific for
