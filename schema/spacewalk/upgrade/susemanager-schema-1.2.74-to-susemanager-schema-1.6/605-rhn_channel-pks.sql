@@ -142,6 +142,7 @@ IS
 
     PROCEDURE update_needed_cache(channel_id_in in number);
 
+    FUNCTION server_has_family_subscription(server_id_in IN NUMBER, channel_family_id_in IN NUMBER) RETURN NUMBER;
 
 END rhn_channel;
 /

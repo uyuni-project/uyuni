@@ -60,6 +60,7 @@ IS
         server_org_id_val       NUMBER;
         available_subscriptions NUMBER;
         available_fve_subs      NUMBER;
+        has_family_subscription NUMBER;
         consenting_user         NUMBER;
         allowed                 number := 0;
         is_fve                  CHAR(1) := 'N';
@@ -139,11 +140,13 @@ IS
 
         available_subscriptions := rhn_channel.available_family_subscriptions(channel_family_id_val, server_org_id_val);
         available_fve_subs := rhn_channel.available_fve_family_subs(channel_family_id_val, server_org_id_val);
+        has_family_subscription := rhn_channel.server_has_family_subscription(server_id_in, channel_family_id_val);
 
         IF available_subscriptions IS NULL OR
             available_subscriptions > 0 or
             can_server_consume_virt_channl(server_id_in, channel_family_id_val) = 1 OR
-            (available_fve_subs > 0 AND can_server_consume_fve(server_id_in) = 1)
+            (available_fve_subs > 0 AND can_server_consume_fve(server_id_in) = 1) OR
+            has_family_subscription > 0
         THEN
             if can_server_consume_virt_channl(server_id_in, channel_family_id_val) = 0 AND available_fve_subs > 0 AND can_server_consume_fve(server_id_in) = 1 THEN
                 is_fve := 'Y';
@@ -1215,6 +1218,24 @@ IS
          commit;
       end loop;
    end update_needed_cache;
+
+   -- return true if the given server has a subs to a channel of channel_family_id_in
+   FUNCTION server_has_family_subscription(server_id_in IN NUMBER, channel_family_id_in IN NUMBER)
+   RETURN NUMBER
+   IS
+      CURSOR fam_entries IS
+         SELECT DISTINCT cfm.channel_family_id
+           FROM rhnchannelfamilymembers cfm
+           JOIN rhnserverchannel sc on sc.channel_id = cfm.channel_id
+          WHERE sc.server_id =  server_id_in
+            AND cfm.channel_family_id = channel_family_id_in;
+      fam_count NUMBER;
+   BEGIN
+      FOR fam_entry IN fam_entries LOOP
+         RETURN 1;
+      END LOOP;
+      RETURN 0;
+   END server_has_family_subscription;
 
 END rhn_channel;
 /
