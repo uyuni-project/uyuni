@@ -1,0 +1,64 @@
+commit 2a7ab533777c6d375ce52979c8c53b37636fcad2
+Author: bo <bo@helios.suse.de>
+Date:   Tue May 3 14:09:49 2011 +0200
+
+    Ported to PostgreSQL function "server_has_family_subscription" from Oracle.
+
+diff --git a/schema/spacewalk/postgres/packages/rhn_channel.pkb b/schema/spacewalk/postgres/packages/rhn_channel.pkb
+index ab6deba..5a99bf4 100644
+--- a/schema/spacewalk/postgres/packages/rhn_channel.pkb
++++ b/schema/spacewalk/postgres/packages/rhn_channel.pkb
+@@ -91,7 +91,13 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
+         for update;
+     end$$ language plpgsql;
+ 
+-    CREATE OR REPLACE FUNCTION subscribe_server(server_id_in IN NUMERIC, channel_id_in NUMERIC, immediate_in NUMERIC default 1, user_id_in in numeric default null, recalcfamily_in NUMERIC default 1) returns void
++
++
++    CREATE OR REPLACE FUNCTION subscribe_server(server_id_in IN NUMERIC, 
++                                                channel_id_in NUMERIC, 
++                                                immediate_in NUMERIC default 1, 
++                                                user_id_in in numeric default null, 
++                                                recalcfamily_in NUMERIC default 1) returns void
+     AS $$
+     declare
+         channel_parent_val      rhnChannel.parent_channel%TYPE;
+@@ -171,9 +177,10 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
+         available_fve_subs := rhn_channel.available_fve_family_subs(channel_family_id_val, server_org_id_val);
+         
+         IF available_subscriptions IS NULL OR 
+-           available_subscriptions > 0 or
++           available_subscriptions > 0 OR
+            rhn_channel.can_server_consume_virt_channl(server_id_in, channel_family_id_val) = 1 OR
+-            (available_fve_subs > 0 AND rhn_channel.can_server_consume_fve(server_id_in) = 1)
++           (available_fve_subs > 0 AND rhn_channel.can_server_consume_fve(server_id_in) = 1) OR
++           server_has_family_subscription(server_id_in, channel_family_id_val) > 0
+         THEN
+             if rhn_channel.can_server_consume_virt_channl(server_id_in, channel_family_id_val) = 0
+                 AND available_subscriptions> 0 AND rhn_channel.can_server_consume_fve(server_id_in) = 1 THEN
+@@ -1142,5 +1149,25 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
+       end loop;
+    end$$ language plpgsql;
+ 
++
++CREATE OR REPLACE FUNCTION server_has_family_subscription(server_id_in DECIMAL, 
++                                                          channel_family_id_in DECIMAL) 
++          RETURNS INTEGER AS $$
++  DECLARE
++    fam_entry RECORD;
++
++  BEGIN
++    FOR fam_entry IN SELECT DISTINCT cfm.channel_family_id
++                       FROM rhnchannelfamilymembers AS cfm
++                       JOIN rhnserverchannel AS sc ON sc.channel_id = cfm.channel_id
++                      WHERE sc.server_id = server_id_in
++                        AND cfm.channel_family_id = channel_family_id_in
++    LOOP
++      return 1;
++    END LOOP;
++    RETURN 0;
++  END;
++$$ LANGUAGE plpgsql;
++
+ -- restore the original setting
+ update pg_settings set setting = overlay( setting placing '' from 1 for (length('rhn_channel')+1) ) where name = 'search_path';
