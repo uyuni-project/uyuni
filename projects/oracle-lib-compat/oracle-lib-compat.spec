@@ -22,7 +22,7 @@ BuildRequires:       oracle-instantclient-basic = %{icversion}
 BuildRequires:       oracle-instantclient-sqlplus = %{icversion}
 %define soversion 10
 %else
-%define icversion 11.2.0.2.0
+%define icversion 11.2.0.3.0
 %define icdir 11.2
 Requires:       oracle-instantclient11.2-basic = %{icversion}
 Requires:       oracle-instantclient11.2-sqlplus = %{icversion}
@@ -68,12 +68,12 @@ Compatibility package so that perl-DBD-Oracle will install.
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d
-echo %{_libdir}/oracle/%{icdir}/client/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/oracle-instantclient-%{icdir}.conf
+#mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d
+#echo %{_libdir}/oracle/%{icdir}/client/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/oracle-instantclient-%{icdir}.conf
 
 # do not replace /usr/lib with _libdir macro here
 # XE server is 32bit even on 64bit platforms
-echo /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/oracle-xe.conf
+#echo /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/lib >>$RPM_BUILD_ROOT%{_sysconfdir}/ld.so.conf.d/oracle-xe.conf
 
 %ifarch x86_64 s390x
 
@@ -119,8 +119,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/lib/oracle/%{icdir}/client/lib/network/admin
 /usr/lib/oracle/%{icdir}/client/lib/network/admin/sqlnet.ora
 %endif
-%config(noreplace) %{_sysconfdir}/ld.so.conf.d/oracle-instantclient-%{icdir}.conf
-%config(noreplace) %{_sysconfdir}/ld.so.conf.d/oracle-xe.conf
+#%config(noreplace) %{_sysconfdir}/ld.so.conf.d/oracle-instantclient-%{icdir}.conf
+#%config(noreplace) %{_sysconfdir}/ld.so.conf.d/oracle-xe.conf
 %ifnarch s390x
 %{_javadir}/ojdbc14.jar
 %endif
