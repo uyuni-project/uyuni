@@ -55,7 +55,7 @@ env CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 
 %install
 export ORACLE_HOME=%{oracle_home}
-%{__python} setup.py install --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES
+%{__python} setup.py install --root=$RPM_BUILD_ROOT --prefix=%{_prefix} --record=INSTALLED_FILES
 
 %clean
 rm -rf $RPM_BUILD_ROOT
