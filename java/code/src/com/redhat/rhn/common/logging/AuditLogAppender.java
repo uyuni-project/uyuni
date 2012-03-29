@@ -64,13 +64,14 @@ public class AuditLogAppender extends AppenderSkeleton {
      */
     private XmlRpcClient createClient() {
         String url = Config.get().getString(ConfigDefaults.AUDIT_SERVER);
-        XmlRpcClient client = null;
+        XmlRpcClient ret = null;
         try {
-            client = new XmlRpcClient(url, true);
-        } catch (MalformedURLException e) {
+            ret = new XmlRpcClient(url, true);
+        }
+        catch (MalformedURLException e) {
             throw new AuditLogException("Error initializing XML-RPC client", e);
         }
-        return client;
+        return ret;
     }
 
     /**
@@ -94,9 +95,11 @@ public class AuditLogAppender extends AppenderSkeleton {
         // Try to call the log method
         try {
             client.invoke(method, args);
-        } catch (XmlRpcException e) {
+        }
+        catch (XmlRpcException e) {
             throw new AuditLogException("Error sending log event", e);
-        } catch (XmlRpcFault e) {
+        }
+        catch (XmlRpcFault e) {
             throw new AuditLogException("Error sending log event", e);
         }
     }

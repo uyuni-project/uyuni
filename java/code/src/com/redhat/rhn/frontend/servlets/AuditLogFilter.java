@@ -63,8 +63,10 @@ public class AuditLogFilter implements Filter {
     private final String KEY_LOG_FAILURES = "log_failures";
 
     // Values of 'dispatch' corresponding to these keys will be globally ignored
-    private String[] dispatchIgnoredKeys = { "Go", "Select All", "Unselect All", "Update List" };
-    private Map<Locale, List<String>> dispatchIgnoredValues = new LinkedHashMap<Locale, List<String>>();
+    private String[] dispatchIgnoredKeys = {
+            "Go", "Select All", "Unselect All", "Update List" };
+    private Map<Locale, List<String>> dispatchIgnoredValues =
+            new LinkedHashMap<Locale, List<String>>();
 
     // Local boolean to check if logging is enabled
     private Boolean enabled = null;
@@ -87,7 +89,8 @@ public class AuditLogFilter implements Filter {
             try {
                 Yaml yaml = new Yaml();
                 obj = yaml.load(new FileReader(configFile));
-            } catch (FileNotFoundException e) {
+            }
+            catch (FileNotFoundException e) {
                 AuditLogUtil.sendErrorEmail(null, e);
             }
             if (obj instanceof HashMap) {
@@ -98,7 +101,8 @@ public class AuditLogFilter implements Filter {
             try {
                 AuditLogUtil.ping();
                 backendAvailable = true;
-            } catch (AuditLogException e) {
+            }
+            catch (AuditLogException e) {
                 backendAvailable = false;
                 AuditLogUtil.sendErrorEmail(null, e);
             }
@@ -122,7 +126,6 @@ public class AuditLogFilter implements Filter {
         Map uriConfig = null;
 
         if (enabled) {
-
             // Get the configuration for this URI
             uriConfig = (HashMap) auditConfig.get(request.getServletPath());
             if (uriConfig != null) {
@@ -133,7 +136,8 @@ public class AuditLogFilter implements Filter {
                         AuditLogUtil.ping();
                         // It is available again
                         backendAvailable = true;
-                    } catch (AuditLogException e) {
+                    }
+                    catch (AuditLogException e) {
                         throw e;
                     }
                 }
@@ -147,10 +151,12 @@ public class AuditLogFilter implements Filter {
                 // Check the configuration for this URI
                 if (!checkRequirements(uriConfig, request)) {
                     // Do not log this request
-                } else if (logBefore(uriConfig)) {
+                }
+                else if (logBefore(uriConfig)) {
                     // Log this request now
                     log(false, (String) uriConfig.get(KEY_TYPE), request);
-                } else {
+                }
+                else {
                     // Log this request later
                     log = true;
                 }
@@ -170,7 +176,8 @@ public class AuditLogFilter implements Filter {
         if (log) {
             if (request.getAttribute(Globals.ERROR_KEY) == null) {
                 log(false, (String) uriConfig.get(KEY_TYPE), request);
-            } else if (logFailures(uriConfig)) {
+            }
+            else if (logFailures(uriConfig)) {
                 log(true, (String) uriConfig.get(KEY_TYPE), request);
             }
         }
@@ -186,7 +193,8 @@ public class AuditLogFilter implements Filter {
     private void log(boolean failure, String evtType, HttpServletRequest request) {
         try {
             AuditLog.getInstance().log(failure, evtType, request);
-        } catch (AuditLogException e) {
+        }
+        catch (AuditLogException e) {
             backendAvailable = false;
             AuditLogUtil.sendErrorEmail(request, e);
             throw e;
@@ -202,8 +210,8 @@ public class AuditLogFilter implements Filter {
      * @return true if all requirements are met, else false.
      */
     private boolean checkRequirements(Map uriConfig, HttpServletRequest request) {
-        boolean success = hasRequiredParams(uriConfig, request)
-                && dispatch(uriConfig, request);
+        boolean success = hasRequiredParams(uriConfig, request) &&
+                dispatch(uriConfig, request);
         return success;
     }
 
@@ -247,11 +255,12 @@ public class AuditLogFilter implements Filter {
             if (dispatch == null || !value.equals(dispatch)) {
                 ret = false;
             }
-        } else if (dispatch != null) {
+        }
+        else if (dispatch != null) {
             // Lookup the given value on localized list
             Locale locale = Context.getCurrentContext().getLocale();
             List<String> ignoredValues = dispatchIgnoredValues.get(locale);
-            
+
             // Lazy initialize values for the current locale if necessary
             if (ignoredValues == null) {
                 ignoredValues = getDispatchIgnoredValues(locale);

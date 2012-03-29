@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 Novell
+ * Copyright (c) 2011--2012 Novell
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,6 +17,9 @@ package com.redhat.rhn.common.logging;
 
 import java.util.Map;
 
+/**
+ * Class representation of a single log message.
+ */
 public class AuditLogMessage {
 
     private String uid;
@@ -24,27 +27,66 @@ public class AuditLogMessage {
     private String host;
     private Map<String, String> extmap;
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    /**
+     * Set the uid.
+     * @param uidIn uid
+     */
+    public void setUid(String uidIn) {
+        this.uid = uidIn;
     }
+
+    /**
+     * Return the uid.
+     * @return uid
+     */
     public String getUid() {
         return uid;
     }
-    public void setMessage(String message) {
-        this.message = message;
+
+    /**
+     * Set the message.
+     * @param messageIn message
+     */
+    public void setMessage(String messageIn) {
+        this.message = messageIn;
     }
+
+    /**
+     * Return the message.
+     * @return message
+     */
     public String getMessage() {
         return message;
     }
-    public void setHost(String host) {
-        this.host = host;
+
+    /**
+     * Set the host.
+     * @param hostIn host
+     */
+    public void setHost(String hostIn) {
+        this.host = hostIn;
     }
+
+    /**
+     * Return the host.
+     * @return host
+     */
     public String getHost() {
         return host;
     }
-    public void setExtmap(Map<String, String> extmap) {
-        this.extmap = extmap;
+
+    /**
+     * Set the extmap.
+     * @param extmapIn extmap
+     */
+    public void setExtmap(Map<String, String> extmapIn) {
+        this.extmap = extmapIn;
     }
+
+    /**
+     * Return the extmap.
+     * @return extmap
+     */
     public Map<String, String> getExtmap() {
         return extmap;
     }

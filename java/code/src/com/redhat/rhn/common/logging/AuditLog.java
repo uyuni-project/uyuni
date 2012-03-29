@@ -33,7 +33,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 public class AuditLog {
 
     // The name of the logger and a static reference
-    private static String LOGGER_NAME = "auditlog";
+    private static final String LOGGER_NAME = "auditlog";
     private static Logger logger = null;
 
     // The singleton instance
@@ -60,10 +60,10 @@ public class AuditLog {
     /**
      * Method for logging API calls.
      *
-     * @param evtType
-     * @param user
-     * @param message
-     * @param host
+     * @param eventType type of the event
+     * @param user user
+     * @param message message
+     * @param host host
      */
     public void logAPI(String eventType, User user, String message, String host) {
         if (!Config.get().getBoolean(ConfigDefaults.AUDIT_ENABLED)) {
@@ -75,11 +75,11 @@ public class AuditLog {
     /**
      * Method for logging web requests.
      *
-     * @param failure
-     * @param evtType
-     * @param request
+     * @param failure failure
+     * @param eventType type of the event
+     * @param request request
      */
-    public void log(boolean failure, String evtType,
+    public void log(boolean failure, String eventType,
             HttpServletRequest request) {
         // Determine the current user
         RequestContext context = new RequestContext(request);
@@ -95,7 +95,7 @@ public class AuditLog {
 
         // Call the logger
         log(user, message, request.getRemoteAddr(),
-                AuditLogUtil.createExtMap(evtType, user, request));
+                AuditLogUtil.createExtMap(eventType, user, request));
     }
 
     /**

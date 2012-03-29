@@ -26,7 +26,7 @@ public class AuditLogException extends RuntimeException {
 
     /**
      * Constructor that takes a message only.
-     * @param msg
+     * @param msg message
      */
     public AuditLogException(String msg) {
         super(msg);
@@ -34,7 +34,7 @@ public class AuditLogException extends RuntimeException {
 
     /**
      * Constructor that takes a {@link Throwable} only.
-     * @param t
+     * @param t throwable
      */
     public AuditLogException(Throwable t) {
         super(t);
@@ -42,8 +42,8 @@ public class AuditLogException extends RuntimeException {
 
     /**
      * Constructor that takes a message and a {@link Throwable}.
-     * @param msg
-     * @param t
+     * @param msg message
+     * @param t throwable
      */
     public AuditLogException(String msg, Throwable t) {
         super(msg, t);

@@ -56,7 +56,7 @@ public class AuditLogUtil {
     private static final String EXTMAP_PREFIX_REQUEST = "REQ.";
 
     // Request parameters that will not go into logs
-    private static List<String> IGNORED_PARAMS = Collections
+    private static final List<String> IGNORED_PARAMS = Collections
             .unmodifiableList(Arrays.asList("csrf_token", "login_cb",
                     "pxt:trap", "password", "desiredpassword",
                     "desiredpasswordConfirm", "rootPassword",
@@ -64,17 +64,21 @@ public class AuditLogUtil {
                     "first_lower", "last_lower"));
 
     // Error message in case the backend is n/a
-    private final static String MSG_NOT_AVAILABLE = "Log backend 'auditlog-keeper' is not available.";
+    private static final String MSG_NOT_AVAILABLE =
+            "Log backend 'auditlog-keeper' is not available.";
 
     // The API method for sending ping to the backend
     private static final String METHOD_PING = "audit.ping";
 
+    private AuditLogUtil() {
+    }
+
     /**
      * Create a map of key/value pairs for logging web requests.
      *
-     * @param evtType
-     * @param user
-     * @param request
+     * @param evtType type of the event
+     * @param user user
+     * @param request request
      * @return extMap
      */
     public static Map<String, String> createExtMap(String evtType, User user,
@@ -105,7 +109,7 @@ public class AuditLogUtil {
      * Create a generic key/value map of request parameters from a
      * {@link HttpServletRequest}.
      *
-     * @param request
+     * @param request request
      * @return {@link Map} of parameters (key, value)
      */
     private static Map<String, String> getParameterMap(
@@ -145,8 +149,8 @@ public class AuditLogUtil {
     /**
      * Create a map of key/value pairs for logging of API calls.
      *
-     * @param evtType
-     * @param user
+     * @param evtType type of the event
+     * @param user user
      * @return extMap
      */
     public static Map<String, String> createExtMapAPI(String evtType, User user) {
@@ -172,7 +176,7 @@ public class AuditLogUtil {
     /**
      * Look for the backend: call ping() and do not care about the result.
      *
-     * @return exception that occurred if any, else null.
+     * @throws AuditLogException if backend is not available
      */
     public static void ping() throws AuditLogException {
         String url = Config.get().getString(ConfigDefaults.AUDIT_SERVER);
@@ -180,13 +184,17 @@ public class AuditLogUtil {
         try {
             client = new XmlRpcClient(url, true);
             client.invoke(METHOD_PING, new ArrayList<Object>());
-        } catch (MalformedURLException e) {
+        }
+        catch (MalformedURLException e) {
             throw new AuditLogException("Error initializing XML-RPC client", e);
-        } catch (XmlRpcException e) {
+        }
+        catch (XmlRpcException e) {
             throw new AuditLogException(MSG_NOT_AVAILABLE, e);
-        } catch (XmlRpcFault e) {
+        }
+        catch (XmlRpcFault e) {
             throw new AuditLogException(MSG_NOT_AVAILABLE, e);
-        } finally {
+        }
+        finally {
             client = null;
         }
     }
@@ -194,8 +202,8 @@ public class AuditLogUtil {
     /**
      * Send an error email.
      *
-     * @param request
-     * @param t
+     * @param request request
+     * @param t throwable
      */
     public static void sendErrorEmail(HttpServletRequest request, Throwable t) {
         TraceBackEvent evt = new TraceBackEvent();

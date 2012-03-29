@@ -39,8 +39,8 @@ public class AuditLogMultipartRequest extends HttpServletRequestWrapper {
 
     /**
      * Constructor.
-     * 
-     * @param request
+     *
+     * @param request request
      */
     public AuditLogMultipartRequest(HttpServletRequest request) {
         super(request);
@@ -59,8 +59,8 @@ public class AuditLogMultipartRequest extends HttpServletRequestWrapper {
             allParameterNames.add(baseParams.nextElement());
         }
         // Add multipart parameters names
-        Collection multipartParams = this.multipartParams.keySet();
-        Iterator iterator = multipartParams.iterator();
+        Collection multiParams = this.multipartParams.keySet();
+        Iterator iterator = multiParams.iterator();
         while (iterator.hasNext()) {
             allParameterNames.add(iterator.next());
         }
@@ -113,8 +113,8 @@ public class AuditLogMultipartRequest extends HttpServletRequestWrapper {
      * Set the multipart form parameters from the MultipartRequestWrapper object
      * after the stream was parsed in the RequestProcessor's processPopulate()
      * method.
-     * 
-     * @param parameters
+     *
+     * @param parameters parameters
      */
     public void setMultipartParameters(Map parameters) {
         this.multipartParams = parameters;
