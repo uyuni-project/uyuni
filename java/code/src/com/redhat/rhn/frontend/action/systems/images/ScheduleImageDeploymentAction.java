@@ -118,12 +118,14 @@ public class ScheduleImageDeploymentAction extends RhnAction {
             forwardParams.put("sid", sid);
             forward = getStrutsDelegate().forwardParams(
                     actionMapping.findForward("submitted"), forwardParams);
-        } else if (ctx.isSubmitted() || filterCleared) {
+        }
+        else if (ctx.isSubmitted() || filterCleared) {
             // The "parentUrl" is needed for rl:listset
             request.setAttribute(ListTagHelper.PARENT_URL,
                     request.getRequestURI());
             forward = actionMapping.findForward("default");
-        } else {
+        }
+        else {
             // The page is called for the first time
             forward = actionMapping.findForward("first");
         }

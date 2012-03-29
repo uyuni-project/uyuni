@@ -23,33 +23,63 @@ public class ProxyConfig {
     private String user;
     private String pass;
 
-    public ProxyConfig(String server, String user, String pass) {
-        this.setServer(server);
-        this.setUser(user);
-        this.setPass(pass);
+    /**
+     * Constructor for creating a proxy configuration.
+     * @param serverIn server
+     * @param userIn user
+     * @param passIn password
+     */
+    public ProxyConfig(String serverIn, String userIn, String passIn) {
+        this.setServer(serverIn);
+        this.setUser(userIn);
+        this.setPass(passIn);
     }
 
+    /**
+     * Return the server.
+     * @return server
+     */
     public String getServer() {
         return server;
     }
 
-    public void setServer(String server) {
-        this.server = server;
+    /**
+     * Set the server.
+     * @param serverIn server
+     */
+    public void setServer(String serverIn) {
+        this.server = serverIn;
     }
 
+    /**
+     * Return the user.
+     * @return user
+     */
     public String getUser() {
         return user;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    /**
+     * Set the user.
+     * @param userIn user
+     */
+    public void setUser(String userIn) {
+        this.user = userIn;
     }
 
+    /**
+     * Return the password.
+     * @return password
+     */
     public String getPass() {
         return pass;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    /**
+     * Set the password.
+     * @param passIn password
+     */
+    public void setPass(String passIn) {
+        this.pass = passIn;
     }
 }

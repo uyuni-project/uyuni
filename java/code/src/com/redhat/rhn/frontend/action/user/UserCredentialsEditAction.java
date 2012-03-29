@@ -35,11 +35,11 @@ import com.redhat.rhn.frontend.struts.RhnAction;
  */
 public class UserCredentialsEditAction extends RhnAction {
 
-    private static String ATTRIB_CREDS = "creds";
-    private static String PARAM_USER = "studio_user";
-    private static String PARAM_KEY = "studio_key";
-    private static String PARAM_URL = "studio_url";
-    private static String DEFAULT_URL = "http://susestudio.com";
+    private static final String ATTRIB_CREDS = "creds";
+    private static final String PARAM_USER = "studio_user";
+    private static final String PARAM_KEY = "studio_key";
+    private static final String PARAM_URL = "studio_url";
+    private static final String DEFAULT_URL = "http://susestudio.com";
 
     /** {@inheritDoc} */
     @Override
@@ -73,7 +73,8 @@ public class UserCredentialsEditAction extends RhnAction {
                     // Delete from DB
                     CredentialsFactory.removeCredentials(creds);
                     request.setAttribute(ATTRIB_CREDS, newCreds);
-                } else {
+                }
+                else {
                     // Store the credentials
                     creds.setUsername(newCreds.getUsername());
                     creds.setPassword(newCreds.getPassword());
@@ -84,7 +85,8 @@ public class UserCredentialsEditAction extends RhnAction {
                 messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "credentials.message.updated"));
                 getStrutsDelegate().saveMessages(request, messages);
-            } else {
+            }
+            else {
                 // Incomplete credentials, show an error
                 ActionErrors errors = new ActionErrors();
                 errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(

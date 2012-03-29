@@ -38,8 +38,8 @@ public class CredentialsFactory extends HibernateFactory {
 
     /**
      * Create a new pair of credentials for a given user.
-     * @param user
-     * @return
+     * @param user user to associate with these credentials
+     * @return new pair of credentials
      */
     public static Credentials createNewCredentials(User user) {
         Credentials creds = new Credentials();
@@ -49,6 +49,7 @@ public class CredentialsFactory extends HibernateFactory {
 
     /**
      * Store a pair of credentials to the database.
+     * @param creds credentials
      */
     public static void storeCredentials(Credentials creds) {
         creds.setModified(new Date());
@@ -57,14 +58,15 @@ public class CredentialsFactory extends HibernateFactory {
 
     /**
      * Delete a pair of credentials from the database.
+     * @param creds credentials
      */
     public static void removeCredentials(Credentials creds) {
         singleton.removeObject(creds);
     }
 
     /**
-     * Load a pair of credentials given by org ID.
-     * @param user
+     * Load credentials for a given {@link User}.
+     * @param user user
      * @return credentials or null
      */
     public static Credentials lookupByUser(User user) {
@@ -79,7 +81,8 @@ public class CredentialsFactory extends HibernateFactory {
                     .setParameter("user", user)
                     // Retrieve from cache if there
                     .setCacheable(true).uniqueResult();
-        } catch (HibernateException e) {
+        }
+        catch (HibernateException e) {
             log.error("Hibernate exception: " + e.toString());
             throw e;
         }
