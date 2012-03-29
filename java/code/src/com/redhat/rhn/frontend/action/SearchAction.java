@@ -132,7 +132,7 @@ public class SearchAction extends RhnAction {
                                 request.getContextPath(),
                                 response,
                                 attributes);
-                
+
                 return null;
             }
             else {

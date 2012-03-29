@@ -1,6 +1,5 @@
 /**
  * Copyright (c) 2009--2011 Red Hat, Inc.
- * Copyright (c) 2011 SUSE Linux Products GmbH.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or

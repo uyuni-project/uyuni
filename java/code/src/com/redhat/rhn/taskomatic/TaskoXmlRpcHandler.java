@@ -289,18 +289,18 @@ public class TaskoXmlRpcHandler {
      * @param channelId database id of the channel to sync
      * @return start date of the newly created job
      * @throws NoSuchBunchTaskException
-     *		thrown if "repo-sync-bunch" is not found in the database
-     * @throws InvalidParamException
+     *      thrown if "repo-sync-bunch" is not found in the database
+     * @throws InvalidParamException on error
      */
     public Date scheduleSingleSatRepoSync(Integer channelId)
-    		throws NoSuchBunchTaskException, InvalidParamException {
+            throws NoSuchBunchTaskException, InvalidParamException {
         // repo-sync-bunch is an organizational bunch. The following code
         // works around this and forces creation of a repo sync job
         // as a sattelite job (orgId == null).
-    	String bunchName = "repo-sync-bunch";
-    	Integer orgId = null;
+        String bunchName = "repo-sync-bunch";
+        Integer orgId = null;
 
-    	// TaskoSchedule parameters. Need to pass the channel_id here.
+        // TaskoSchedule parameters. Need to pass the channel_id here.
         Map params = new HashMap();
         params.put("channel_id", channelId.toString());
 
@@ -320,8 +320,9 @@ public class TaskoXmlRpcHandler {
 
             // modified doBasicCheck() to cope with null orgid
             bunch = TaskoFactory.lookupOrgBunchByName(bunchName);
-	        if (bunch == null)
-	            throw new NoSuchBunchTaskException(bunchName);
+            if (bunch == null) {
+                throw new NoSuchBunchTaskException(bunchName);
+            }
 
             if (!TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel).isEmpty() ||
                     (SchedulerKernel.getScheduler().getTrigger(jobLabel,

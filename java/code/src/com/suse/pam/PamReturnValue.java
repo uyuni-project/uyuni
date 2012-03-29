@@ -31,8 +31,8 @@ public class PamReturnValue {
     public static final PamReturnValue PAM_SUCCESS = new PamReturnValue(0,
             "The password is correct.");
     public static final PamReturnValue PAM_FAILURE = new PamReturnValue(1,
-            "unix2_chkpwd was inappropriately called from the command line "
-                    + "or the password is incorrect.");
+            "unix2_chkpwd was inappropriately called from the command line " +
+            "or the password is incorrect.");
 
     private static final PamReturnValue[] PRIVATE_VALUES = { PAM_SUCCESS,
             PAM_FAILURE };
@@ -49,12 +49,12 @@ public class PamReturnValue {
     /**
      * Private constructor.
      *
-     * @param id
-     * @param description
+     * @param idIn id
+     * @param descriptionIn description
      */
-    private PamReturnValue(int id, String description) {
-        this.id = id;
-        this.description = description;
+    private PamReturnValue(int idIn, String descriptionIn) {
+        this.id = idIn;
+        this.description = descriptionIn;
     }
 
     /**
@@ -68,8 +68,8 @@ public class PamReturnValue {
     public static PamReturnValue fromId(int id) throws IllegalArgumentException {
         int maxId = VALUES.size() - 1;
         if (id > maxId || id < 0) {
-            throw new IllegalArgumentException("id " + id
-                    + " is not between 0 and " + maxId);
+            throw new IllegalArgumentException("id " + id +
+                    " is not between 0 and " + maxId);
         }
         return (PamReturnValue) VALUES.get(id);
     }

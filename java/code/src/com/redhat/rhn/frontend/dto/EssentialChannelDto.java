@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-
 import com.redhat.rhn.domain.channel.Channel;
 
 
@@ -155,11 +153,37 @@ public class EssentialChannelDto extends BaseDto {
     /**
      * {@inheritDoc}
      */
-    public boolean equals(final Object other) {
-        if (!(other instanceof EssentialChannelDto)) {
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        EssentialChannelDto castOther = (EssentialChannelDto) other;
-        return new EqualsBuilder().append(getId(), castOther.getId()).isEquals();
+        if (!(obj instanceof EssentialChannelDto)) {
+            return false;
+        }
+        EssentialChannelDto other = (EssentialChannelDto) obj;
+        if (id == null) {
+            if (other.id != null) {
+                return false;
+            }
+        }
+        else if (!id.equals(other.id)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
     }
 }

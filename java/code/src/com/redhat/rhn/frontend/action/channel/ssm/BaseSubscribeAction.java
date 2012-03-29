@@ -185,9 +185,11 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
                     if (newBase == null) {
                         // lets search for suse systems
-                        List<EssentialChannelDto> dr = ChannelManager.listPossibleSuseBaseChannelsForServer(s);
-                        if( dr != null && dr.get(0) != null) {
-                            newBase = ChannelFactory.lookupByIdAndUser(dr.get(0).getId(), user);
+                        List<EssentialChannelDto> dr = ChannelManager.
+                                listPossibleSuseBaseChannelsForServer(s);
+                        if (dr != null && dr.get(0) != null) {
+                            newBase = ChannelFactory.lookupByIdAndUser(
+                                    dr.get(0).getId(), user);
                         }
                     }
                 }

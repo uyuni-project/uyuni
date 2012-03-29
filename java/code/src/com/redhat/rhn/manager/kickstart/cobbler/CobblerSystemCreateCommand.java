@@ -281,9 +281,10 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         }
         rec.setKsMeta(ksmeta);
         if (rec.getProfile().getDistro().getBreed().equals("suse")) {
-        	if (kernelOptions != null && !kernelOptions.contains("install=")) {
-        		kernelOptions = kernelOptions + " install=http://" + kickstartHost + mediaPath;
-        	}
+            if (kernelOptions != null && !kernelOptions.contains("install=")) {
+                kernelOptions = kernelOptions + " install=http://" + kickstartHost +
+                        mediaPath;
+            }
         }
         rec.setKernelOptions(kernelOptions);
         rec.setKernelPostOptions(postKernelOptions);
@@ -389,10 +390,10 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
 
     /**
      * Setter for the comment.
-     * @param comment the comment
+     * @param commentIn the comment
      */
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComment(String commentIn) {
+        this.comment = commentIn;
     }
 
     /**

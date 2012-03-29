@@ -262,8 +262,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         renameSolv(prefix, channel.getLastModified().getTime());
     }
 
-    private void generateSolv(Channel channel)
-    {
+    private void generateSolv(Channel channel) {
         String repodir  = mountPoint + File.separator + pathPrefix +
                           File.separator + channel.getLabel() + File.separator;
         String solvout  = repodir + SOLV_FILE;
@@ -276,12 +275,14 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             // Determine the exit value
             int exitVal = pr.waitFor();
             if (exitVal != 0) {
-                log.error("Unable to create the solv file for '"+
+                log.error("Unable to create the solv file for '" +
                           channel.getLabel() + "'");
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         log.info("Solv file successfully create for '" + channel.getLabel() + "'");
@@ -423,7 +424,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
      * @return repodata index
      */
     private RepomdIndexData generateProducts(Channel channel, String prefix,
-    		String checksumtypeIn) {
+            String checksumtypeIn) {
 
         DigestOutputStream productsFile;
         try {
@@ -454,11 +455,11 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         if (ret == null) {
             return null;
         }
-        
+
         RepomdIndexData productsData = new RepomdIndexData(
-        		StringUtil.getHexString(productsFile.getMessageDigest().digest()),
-        		StringUtil.getHexString(productsFile.getMessageDigest().digest()),
-        		channel.getLastModified());
+                StringUtil.getHexString(productsFile.getMessageDigest().digest()),
+                StringUtil.getHexString(productsFile.getMessageDigest().digest()),
+                channel.getLastModified());
         return productsData;
     }
 
@@ -496,13 +497,14 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         }
         if (hasProducts) {
             products.renameTo(new File(prefix + "products.xml"));
-        } else {
+        }
+        else {
             File p = new File(prefix + "products.xml");
             if (p.exists()) {
                 p.delete();
             }
         }
-                
+
         primary.renameTo(new File(prefix + "primary.xml.gz"));
         filelists.renameTo(new File(prefix + "filelists.xml.gz"));
         other.renameTo(new File(prefix + "other.xml.gz"));

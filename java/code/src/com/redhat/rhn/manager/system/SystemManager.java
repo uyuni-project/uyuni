@@ -857,7 +857,7 @@ public class SystemManager extends BaseManager {
      * @param user The user
      * @param sid System Id
      * @param type of errata to include
-     * @param synopsis to filter by
+     * @param severityLabel to filter by
      * @return a list of ErrataOverviews
      */
     public static DataResult<ErrataOverview> relevantCurrencyErrata(User user,
@@ -2027,9 +2027,9 @@ public class SystemManager extends BaseManager {
         // Note that for PHYS SUBS, NULL == UNLIMITED
         Long availableSubs = ChannelManager.getAvailableEntitlements(orgIn, channelIn);
         if ((availableSubs == null) || (availableSubs.longValue() > 0)) {
-	    return true;
-	}
-	else {
+            return true;
+        }
+        else {
             log.debug("avail subscriptions is to small : " + availableSubs);
 
             // Return true if serverIn has subs to a channel of channelIn's family

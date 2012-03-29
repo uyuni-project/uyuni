@@ -58,7 +58,7 @@ public class RepomdIndexWriter {
         this.updateinfo = updateinfoIn;
         this.group = groupIn;
         this.products = productsIn;
-        
+
         OutputFormat of = new OutputFormat();
 
         XMLSerializer serializer = new XMLSerializer(writerIn, of);
@@ -116,7 +116,8 @@ public class RepomdIndexWriter {
         // special case for comps file
         if (type.equals("group")) {
             location = "comps.xml";
-        } else if(type.equals("products")) {
+        }
+        else if (type.equals("products")) {
             location = "products.xml";
         }
 

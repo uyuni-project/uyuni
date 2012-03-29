@@ -4581,9 +4581,9 @@ public class SystemHandler extends BaseHandler {
         server.setOrg(loggedInUser.getOrg());
 
         // Create cobbler command
-        CobblerUnregisteredSystemCreateCommand cmd = new CobblerUnregisteredSystemCreateCommand(
-                loggedInUser, server, ksData.getCobblerObject(loggedInUser)
-                        .getName());
+        CobblerUnregisteredSystemCreateCommand cmd;
+        cmd = new CobblerUnregisteredSystemCreateCommand(loggedInUser, server,
+                ksData.getCobblerObject(loggedInUser).getName());
 
         // Set network device information to the server
         Set<NetworkInterface> set = new HashSet<NetworkInterface>();

@@ -33,8 +33,6 @@ import org.apache.struts.util.LabelValueBean;
 
 import java.util.Iterator;
 import java.util.List;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import javax.servlet.http.HttpServletRequest;
 

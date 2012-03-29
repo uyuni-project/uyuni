@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelVersion;
 import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.SelectableChannel;
-import com.redhat.rhn.domain.channel.SelectableChannelVersion;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;

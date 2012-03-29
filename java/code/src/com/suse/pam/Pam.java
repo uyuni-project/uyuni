@@ -25,18 +25,18 @@ import java.io.OutputStreamWriter;
 public class Pam {
 
     /* Path to the command, can be made configurable as well */
-    private static String COMMAND = "/sbin/unix2_chkpwd";
+    private static final String COMMAND = "/sbin/unix2_chkpwd";
     /* The specific authentication service to use for this instance */
     private final String authService;
 
     /**
      * Public constructor.
      *
-     * @param authService
+     * @param authServiceIn
      *            The auth service to use for this instance
      */
-    public Pam(String authService) {
-        this.authService = authService;
+    public Pam(String authServiceIn) {
+        this.authService = authServiceIn;
     }
 
     /**
@@ -70,9 +70,11 @@ public class Pam {
             if (exitVal == 0) {
                 ret = PamReturnValue.PAM_SUCCESS;
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         return ret;

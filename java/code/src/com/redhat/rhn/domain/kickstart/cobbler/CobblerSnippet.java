@@ -195,7 +195,7 @@ public class CobblerSnippet implements Comparable {
     */
     public String getContents() {
         if (path.exists()) {
-        	return FileUtils.readStringFromFile(path.getAbsolutePath());
+            return FileUtils.readStringFromFile(path.getAbsolutePath());
         }
         return null;
     }

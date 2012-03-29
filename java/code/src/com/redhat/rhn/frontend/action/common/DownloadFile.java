@@ -442,28 +442,31 @@ public class DownloadFile extends DownloadAction {
             if (child != null) {
                 channel = child;
             }
-            
-            String byte_range = request.getHeader("Range");
-            if ( byte_range != null ) {
-            	Pattern RANGE_REGEX = Pattern.compile("bytes=(\\d+)-(\\d+)", Pattern.CASE_INSENSITIVE);
-            	Matcher match = RANGE_REGEX.matcher(byte_range);
-            	int newHeaderEnd = 0;
-            	int newHeaderStart = 0;
-            	
-            	if (match.find()) {
-            		newHeaderStart = Integer.parseInt( match.group(1) );
-            		newHeaderEnd   = Integer.parseInt( match.group(2) );
-            		int modulo = newHeaderEnd % 8;
-            		if (modulo > 0) {
-            			newHeaderEnd = newHeaderEnd+8-modulo; 
-            		}
-            	}
-            	rpmPackage = ChannelFactory.lookupPackageByFilenameAndRange(channel, fileName, newHeaderStart, newHeaderEnd);
-            } else {
-            	rpmPackage = ChannelFactory.lookupPackageByFilename(channel, fileName);         	
+
+            String byteRange = request.getHeader("Range");
+            if (byteRange != null) {
+                Pattern rangeRegex = Pattern.compile("bytes=(\\d+)-(\\d+)",
+                        Pattern.CASE_INSENSITIVE);
+                Matcher match = rangeRegex.matcher(byteRange);
+                int newHeaderEnd = 0;
+                int newHeaderStart = 0;
+
+                if (match.find()) {
+                    newHeaderStart = Integer.parseInt(match.group(1));
+                    newHeaderEnd = Integer.parseInt(match.group(2));
+                    int modulo = newHeaderEnd % 8;
+                    if (modulo > 0) {
+                        newHeaderEnd = newHeaderEnd + 8 - modulo;
+                    }
+                }
+                rpmPackage = ChannelFactory.lookupPackageByFilenameAndRange(
+                        channel, fileName, newHeaderStart, newHeaderEnd);
             }
-            
-            
+            else {
+                rpmPackage = ChannelFactory.lookupPackageByFilename(
+                        channel, fileName);
+            }
+
             if (rpmPackage != null) {
                 diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" +
                     rpmPackage.getPath();

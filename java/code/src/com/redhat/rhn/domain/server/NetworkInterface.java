@@ -259,7 +259,9 @@ public class NetworkInterface extends BaseDomainHelper implements
             !ipv6Available);
     }
 
-
+    /**
+     * @return true if valid
+     */
     public boolean isIpValid() {
         try {
             IpAddress ip = new IpAddress(this.getIpaddr());
@@ -270,6 +272,9 @@ public class NetworkInterface extends BaseDomainHelper implements
         }
     }
 
+    /**
+     * @return true if valid
+     */
     public boolean isIpv6Valid() {
         try {
             for (ServerNetAddress6 addr6 : getIPv6Addresses()) {
@@ -284,6 +289,9 @@ public class NetworkInterface extends BaseDomainHelper implements
         return true;
     }
 
+    /**
+     * @return true if valid
+     */
     public boolean isMacValid() {
         return !(StringUtils.isEmpty(this.getHwaddr()) ||
                 this.getHwaddr().equals("00:00:00:00:00:00") ||

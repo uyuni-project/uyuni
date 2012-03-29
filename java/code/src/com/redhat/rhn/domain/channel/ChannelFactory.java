@@ -969,6 +969,8 @@ public class ChannelFactory extends HibernateFactory {
      * Lookup a Package based on the channel, package file name and range
      * @param channel to look in
      * @param fileName to look up
+     * @param headerStart start of header
+     * @param headerEnd end of header
      * @return Package if found
      */
     public static Package lookupPackageByFilenameAndRange(Channel channel,
@@ -989,7 +991,6 @@ public class ChannelFactory extends HibernateFactory {
         }
     }
 
-    
     /**
      * Method to check if the channel contains any kickstart distributions
      * associated to it.

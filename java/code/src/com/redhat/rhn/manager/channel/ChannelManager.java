@@ -1786,9 +1786,9 @@ public class ChannelManager extends BaseManager {
             c = ChannelFactory.lookupByIdAndUser(guessedId, usr);
         }
 
-        if(c == null) {
+        if (c == null) {
             List<EssentialChannelDto> dr = listPossibleSuseBaseChannelsForServer(s);
-            if(dr != null && !dr.isEmpty()) {
+            if (dr != null && !dr.isEmpty()) {
                 c = ChannelFactory.lookupByIdAndUser(dr.get(0).getId(), usr);
             }
         }
@@ -2038,8 +2038,7 @@ public class ChannelManager extends BaseManager {
         }
 
         DataResult dr = listPossibleSuseBaseChannelsForServer(s);
-        if( dr != null)
-        {
+        if (dr != null) {
             channelDtos.addAll(dr);
         }
 
@@ -2877,12 +2876,17 @@ public class ChannelManager extends BaseManager {
         return toRet;
     }
 
+    /**
+     * List possible SUSE Base channels for a given server.
+     * @param s server
+     * @return result
+     */
     public static DataResult listPossibleSuseBaseChannelsForServer(Server s) {
         log.debug("listPossibleSuseBaseChannelsForServer called");
 
-        Long server_id = s.getId();
+        Long serverId = s.getId();
         Map params = new HashMap();
-        params.put("sid", server_id);
+        params.put("sid", serverId);
 
         SelectMode m = ModeFactory.getMode("Channel_queries",
                     "installed_base_product_on_server");
@@ -2895,22 +2899,26 @@ public class ChannelManager extends BaseManager {
 
         params = new HashMap();
         params.put("name", product.get("name").toLowerCase());
-        if(product.get("version") != null) {
+        if (product.get("version") != null) {
             params.put("version", product.get("version").toLowerCase());
-        } else {
+        }
+        else {
             params.put("version", "");
         }
-        if(product.get("release") != null) {
+        if (product.get("release") != null) {
             params.put("release", product.get("release").toLowerCase());
-        } else {
+        }
+        else {
             params.put("release", "");
         }
-        if(product.get("arch_type_id") != null) {
+        if (product.get("arch_type_id") != null) {
             params.put("arch_type_id", product.get("arch_type_id"));
-        } else {
+        }
+        else {
             params.put("arch_type_id", "");
         }
-        log.debug("Search for: " + params.get("name") + " " + params.get("version") + " " + params.get("release") + " " + params.get("arch_type_id"));
+        log.debug("Search for: " + params.get("name") + " " + params.get("version") +
+                " " + params.get("release") + " " + params.get("arch_type_id"));
         SelectMode m2 = ModeFactory.getMode("Channel_queries",
                     "best_suse_product_for_installed_product");
         List<Map> dr2 =  m2.execute(params);
@@ -2928,13 +2936,17 @@ public class ChannelManager extends BaseManager {
         DataResult ret  = makeDataResult(params, new HashMap(), null, m3);
         return ret;
     }
-    
-    public static DataResult listSuseProductsInChannel(Channel channel)
-    {
+
+    /**
+     * List SUSE products in a given channel.
+     * @param channel channel
+     * @return result
+     */
+    public static DataResult listSuseProductsInChannel(Channel channel) {
         String mode = "suse_products_in_channel";
         Map params = new HashMap();
         params.put("channel_id", channel.getId());
-        
+
         SelectMode m = ModeFactory.getMode("Package_queries", mode, Map.class);
         return m.execute(params);
     }
