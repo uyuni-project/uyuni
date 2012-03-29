@@ -19,7 +19,7 @@
 %define run_checkstyle  1
 %endif
 %if 0%{?suse_version}
-%define run_checkstyle  0
+%define run_checkstyle  1
 %endif
 
 Name: spacewalk-java
@@ -359,7 +359,7 @@ ant -Dprefix=$RPM_BUILD_ROOT init-install compile
 
 %if 0%{?run_checkstyle}
 echo "Running checkstyle on java main sources"
-export CLASSPATH="build/classes"
+export CLASSPATH="build/classes:build/build-lib/*"
 export BASE_OPTIONS="-Djavadoc.method.scope=public \
 -Djavadoc.type.scope=package \
 -Djavadoc.var.scope=package \
