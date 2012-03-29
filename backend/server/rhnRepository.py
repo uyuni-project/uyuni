@@ -209,7 +209,7 @@ class Repository(rhnRepository.Repository):
 
         content_type = "application/x-gzip"
 
-        if file_name in ["repomd.xml", "comps.xml"]:
+        if file_name in ["repomd.xml", "comps.xml", "products.xml"]:
             content_type = "text/xml"
         elif file_name not in ["primary.xml.gz", "other.xml.gz",
                 "filelists.xml.gz", "updateinfo.xml.gz", "Packages.gz"]:
