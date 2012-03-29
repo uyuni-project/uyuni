@@ -624,8 +624,9 @@ public class ActionManager extends BaseManager {
      * @param user The user scheduling image deployment
      * @param image The image that will be deployed
      * @param vcpus number of vcpus
-     * @param memKb memory in Kb
-     * @param br bridge device
+     * @param memkb memory in Kb
+     * @param bridge device
+     * @param proxy proxy configuration
      */
     public static Action createDeployImageAction(User user, Image image,
             Long vcpus, Long memkb, String bridge, ProxyConfig proxy) {
@@ -650,8 +651,8 @@ public class ActionManager extends BaseManager {
                     proxy.getPass().getBytes())));
         }
         a.setDetails(details);
-        a.setName("Image Deployment: " + image.getName()
-                + " - " + image.getVersion());
+        a.setName("Image Deployment: " + image.getName() + " - " +
+                image.getVersion());
         return a;
     }
 

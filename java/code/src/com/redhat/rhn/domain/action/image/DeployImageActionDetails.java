@@ -7,6 +7,10 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
  */
 package com.redhat.rhn.domain.action.image;
 
@@ -18,55 +22,67 @@ import com.redhat.rhn.domain.action.ActionChild;
  */
 public class DeployImageActionDetails extends ActionChild {
 
-	private Long id;
-	private Long vcpus;
-	private Long memKb;
-	private String bridgeDevice;
-	private String imageType;
-	private String downloadUrl;
-	private String proxyServer;
-	private String proxyUser;
-	private String proxyPass;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private Long id;
+    private Long vcpus;
+    private Long memKb;
+    private String bridgeDevice;
+    private String imageType;
+    private String downloadUrl;
+    private String proxyServer;
+    private String proxyUser;
+    private String proxyPass;
 
     /**
-     * @return Returns the number of virtual cpus
+     * Return the ID.
+     * @return id
      */
-	public Long getVcpus() {
-	    return vcpus;
-	}
+    public Long getId() {
+        return id;
+    }
 
     /**
-     * @param inVCpus The number of cpus to set.
+     * Set the ID.
+     * @param idIn id
      */
-	public void setVcpus(Long vcpus) {
-	    this.vcpus = vcpus;
-	}
+    public void setId(Long idIn) {
+        this.id = idIn;
+    }
 
     /**
-     * @return Returns the amount of memory in kb.
+     * Return the number of virtual CPUs.
+     * @return vcpus
      */
-	public Long getMemKb() {
-	    return memKb;
-	}
+    public Long getVcpus() {
+        return vcpus;
+    }
 
     /**
-     * @param memkb The amount of memory to set.
+     * Set the number of virtual CPUs.
+     * @param vcpusIn vcpus
      */
-	public void setMemKb(Long memkb) {
-	    this.memKb = memkb;
-	}
+    public void setVcpus(Long vcpusIn) {
+        this.vcpus = vcpusIn;
+    }
+
+    /**
+     * Return the amount of memory in KB.
+     * @return memKb
+     */
+    public Long getMemKb() {
+        return memKb;
+    }
+
+    /**
+     * Set the amount of memory in KB.
+     * @param memkb memory in KB
+     */
+    public void setMemKb(Long memkb) {
+        this.memKb = memkb;
+    }
 
     /**
      * Return the bridge device.
-     * @param bridgeDevice
+     * @return bridgeDevice
      */
     public String getBridgeDevice() {
         return bridgeDevice;
@@ -74,23 +90,31 @@ public class DeployImageActionDetails extends ActionChild {
 
     /**
      * Set the bridge device.
-     * @param bridgeDevice
+     * @param bridgeDeviceIn bridge device
      */
-    public void setBridgeDevice(String bridgeDevice) {
-        this.bridgeDevice = bridgeDevice;
+    public void setBridgeDevice(String bridgeDeviceIn) {
+        this.bridgeDevice = bridgeDeviceIn;
     }
 
+    /**
+     * Return the image type.
+     * @return imageType
+     */
     public String getImageType() {
         return imageType;
     }
 
-    public void setImageType(String imageType) {
-        this.imageType = imageType;
+    /**
+     * Set the image type.
+     * @param imageTypeIn image type
+     */
+    public void setImageType(String imageTypeIn) {
+        this.imageType = imageTypeIn;
     }
 
     /**
      * Set the download URL.
-     * @param downloadUrl
+     * @return downloadUrl
      */
     public String getDownloadUrl() {
         return downloadUrl;
@@ -98,33 +122,57 @@ public class DeployImageActionDetails extends ActionChild {
 
     /**
      * Return the download URL.
-     * @param downloadUrl
+     * @param downloadUrlIn download URL
      */
-    public void setDownloadUrl(String downloadUrl) {
-        this.downloadUrl = downloadUrl;
+    public void setDownloadUrl(String downloadUrlIn) {
+        this.downloadUrl = downloadUrlIn;
     }
 
+    /**
+     * Return the proxy server.
+     * @return proxyServer
+     */
     public String getProxyServer() {
         return proxyServer;
     }
 
-    public void setProxyServer(String proxyServer) {
-        this.proxyServer = proxyServer;
+    /**
+     * Set the proxy server.
+     * @param proxyServerIn proxy server
+     */
+    public void setProxyServer(String proxyServerIn) {
+        this.proxyServer = proxyServerIn;
     }
 
+    /**
+     * Return the proxy user.s
+     * @return proxyUser
+     */
     public String getProxyUser() {
         return proxyUser;
     }
 
-    public void setProxyUser(String proxyUser) {
-        this.proxyUser = proxyUser;
+    /**
+     * Set the proxy user.
+     * @param proxyUserIn proxy user
+     */
+    public void setProxyUser(String proxyUserIn) {
+        this.proxyUser = proxyUserIn;
     }
 
+    /**
+     * Return the proxy password.
+     * @return proxyPass
+     */
     public String getProxyPass() {
         return proxyPass;
     }
 
-    public void setProxyPass(String proxyPass) {
-        this.proxyPass = proxyPass;
+    /**
+     * Set the proxy password.
+     * @param proxyPassIn proxy password
+     */
+    public void setProxyPass(String proxyPassIn) {
+        this.proxyPass = proxyPassIn;
     }
 }

@@ -29,7 +29,7 @@ import com.redhat.rhn.domain.user.User;
  */
 public class Credentials extends BaseDomainHelper {
 
-    public static String TYPE_STUDIO = "STUDIO";
+    public static final String TYPE_STUDIO = "STUDIO";
 
     private Long id;
     private User user;
@@ -40,7 +40,7 @@ public class Credentials extends BaseDomainHelper {
 
     /**
      * Get the ID of this object.
-     * @return ID
+     * @return id
      */
     public Long getId() {
         return this.id;
@@ -48,71 +48,78 @@ public class Credentials extends BaseDomainHelper {
 
     /**
      * Set the ID of this object.
-     * @param id
+     * @param idIn id
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     /**
-     * Get this object's Organization.
-     * @return Organization associated with this pair of credentials
+     * Get the associated {@link User}.
+     * @return user
      */
     public User getUser() {
         return this.user;
     }
 
     /**
-     * Set the Org on this object.
-     * @param org the Org we want to set as the parent of this object
+     * Set the associated {@link User}.
+     * @param userIn user
      */
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(User userIn) {
+        this.user = userIn;
     }
 
     /**
-     * @return the type
+     * Return the type.
+     * @return type
      */
     public String getType() {
         return type;
     }
 
     /**
-     * @param type the type to set
+     * Set the type.
+     * @param typeIn type
      */
-    public void setType(String type) {
-        this.type = type;
+    public void setType(String typeIn) {
+        this.type = typeIn;
     }
 
     /**
-     * @return the url
+     * Return the URL.
+     * @return url
      */
     public String getUrl() {
         return url;
     }
 
     /**
-     * @param url the url to set
+     * Set the url.
+     * @param urlIn url
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrl(String urlIn) {
+        this.url = urlIn;
     }
 
     /**
-     * @return the username
+     * Return the username
+     * @return username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * @param username the username to set
+     * Set the username.
+     * @param usernameIn username
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String usernameIn) {
+        this.username = usernameIn;
     }
 
     /**
+     * Return the encoded password.
      * @return the password
      */
     public String getEncodedPassword() {
@@ -120,6 +127,7 @@ public class Credentials extends BaseDomainHelper {
     }
 
     /**
+     * Set the password.
      * @param password the password to set
      */
     public void setEncodedPassword(String password) {
@@ -133,7 +141,8 @@ public class Credentials extends BaseDomainHelper {
     public String getPassword() {
         if (this.encodedPassword != null) {
             return new String(Base64.decodeBase64(this.encodedPassword.getBytes()));
-        } else {
+        }
+        else {
             return this.encodedPassword;
         }
     }
@@ -145,7 +154,8 @@ public class Credentials extends BaseDomainHelper {
     public void setPassword(String password) {
         if (password != null) {
             this.encodedPassword = new String(Base64.encodeBase64(password.getBytes()));
-        } else {
+        }
+        else {
             this.encodedPassword = null;
         }
     }
@@ -157,8 +167,8 @@ public class Credentials extends BaseDomainHelper {
      * @return true if we have a user and a password, else false
      */
     public boolean isComplete() {
-        return !StringUtils.isEmpty(username)
-                && !StringUtils.isEmpty(encodedPassword);
+        return !StringUtils.isEmpty(username) &&
+                !StringUtils.isEmpty(encodedPassword);
     }
 
     /**
@@ -168,8 +178,8 @@ public class Credentials extends BaseDomainHelper {
      * @return true if we have a user and a password, else false
      */
     public boolean isEmpty() {
-        return StringUtils.isEmpty(username)
-                && StringUtils.isEmpty(encodedPassword)
-                && StringUtils.isEmpty(url);
+        return StringUtils.isEmpty(username) &&
+                StringUtils.isEmpty(encodedPassword) &&
+                StringUtils.isEmpty(url);
     }
 }

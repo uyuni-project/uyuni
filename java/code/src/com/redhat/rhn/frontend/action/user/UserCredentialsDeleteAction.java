@@ -34,7 +34,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
  */
 public class UserCredentialsDeleteAction extends RhnAction {
 
-    private static String ATTRIB_CREDS = "creds";
+    private static final String ATTRIB_CREDS = "creds";
 
     /** {@inheritDoc} */
     @Override

@@ -68,7 +68,8 @@ public class ImagesRenderer extends BaseFragmentRenderer {
             if (images != null && !images.isEmpty()) {
                 request.getSession().setAttribute(ATTRIB_IMAGES_LIST, images);
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             logger.error(e.getMessage());
             request.setAttribute(ATTRIB_ERROR_MSG, "images.message.error.connection");
         }
@@ -79,7 +80,8 @@ public class ImagesRenderer extends BaseFragmentRenderer {
      * @param user
      * @return list of {@link Image} objects
      */
-    private List<Image> getImages(User user, HttpServletRequest request) throws IOException {
+    private List<Image> getImages(User user, HttpServletRequest request)
+            throws IOException {
         List<Appliance> ret = new ArrayList<Appliance>();
 
         // Lookup credentials and url
@@ -92,7 +94,8 @@ public class ImagesRenderer extends BaseFragmentRenderer {
             // Get appliance builds from studio
             SUSEStudio studio = new SUSEStudio(studioUser, studioKey, studioUrl);
             ret = studio.getAppliances();
-        } else {
+        }
+        else {
             request.setAttribute(ATTRIB_ERROR_MSG, "images.message.error.nocreds");
         }
 
