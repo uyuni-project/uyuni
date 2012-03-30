@@ -31,4 +31,3 @@
     <graphics type='vnc' port='-1' autoport='yes' listen='0.0.0.0'/>
   </devices>
 </domain>
-

@@ -60,7 +60,7 @@ PreReq:         %fillup_prereq %insserv_prereq
 %else
 Requires: /usr/sbin/crond
 Requires: python-hashlib
-Requires:       python-pycurl
+Requires: python-pycurl
 %endif
 %if 0%{?rhel} && 0%{?rhel} < 6
 # in RHEL5 we need libvirt, but in RHEV@RHEL5 there should not be libvirt
