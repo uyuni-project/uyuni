@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Mar 30 15:21:11 CEST 2012 - mc@suse.de
+
+- version 1.7.28.2-1
+- Fixing regular_systems_in_channel_family for PostgreSQL.
+- fixed rhn_server.delete_from_servergroup() call
+- OpenSCAP integration -- Show results for system on web.
+
+-------------------------------------------------------------------
 Mon Mar 26 16:57:06 CEST 2012 - jrenner@suse.de
 
 - Show legal note in the footer of all login pages
