@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Mar 30 16:49:41 CEST 2012 - mc@suse.de
+
+- version 1.7.2-1
+- remove release-notes - we have a seperate package for it
+- remove unused dialog based UIs and outdated documentation
+- move license.txt into the branding package
+
+-------------------------------------------------------------------
 Wed Mar 21 18:02:57 CET 2012 - mc@suse.de
 
 - version 1.7.1-1
