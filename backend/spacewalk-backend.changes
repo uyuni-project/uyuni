@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Fri Mar 30 14:55:29 CEST 2012 - mc@suse.de
+
+- version 1.7.38.2-1
+- Truncate data which are longer than db allows
+- Store also @idref of xccdf:rule-result element
+- We want to store all idents per rule-result
+- return products.xml metadata on request
+- fixing sql queries with alias
+- need to use timestamp datatype to preserve the precision.
+- cast to string to force lookup_evr prototype.
+- spacewalk-repo-sync documentation fix : add include/exclude options to
+  manpage
+- add default value for taskomatic.channel_repodata_workers
+- created module for usefull cli functions
+
+-------------------------------------------------------------------
 Sat Mar 24 15:57:24 CET 2012 - mc@suse.de
 
 - parameters should not be None
