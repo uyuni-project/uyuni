@@ -13,6 +13,5 @@
 -- in this software or its documentation.
 --
 
-insert into suseCredentialsType (id, label, name) values
-	(sequence_nextval('suse_credtype_id_seq'), 'susestudio', 'SUSE Studio');
+insert into rhnActionType values (500, 'image.deploy', 'Deploy an image to a virtual host.', 'N', 'N');
 commit;
