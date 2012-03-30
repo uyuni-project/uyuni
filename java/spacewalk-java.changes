@@ -1,4 +1,45 @@
 -------------------------------------------------------------------
+Fri Mar 30 15:03:14 CEST 2012 - mc@suse.de
+
+- version 1.7.54.2-1
+- New web page -- details of the xccdf:rule-result
+- Fixing ISE on selecting None yum checksum type for channel
+- Auto-import the RHEL RPM GPG key for systems we have kickstarted
+- Fix checkstyle errors
+- Fix testcases
+- rename Filter.isRecurring to Filter.isRecurringBool
+- fix text for Brazil timezone
+- If our channel is a clone of a clone we need to find the channel
+  that contains the patch we are cloning
+- fixin cobbler version issue
+- fix parameter type
+- Make Virtualization tab of system profile independent of
+  Virtualization (Platform) entitlements
+- The org_id colum is numeric, do not cast parameter to string.
+- reload config revision from DB before returning it
+- Config file diffs result in Out Of Memory for large files
+- fix for configchannel.deployAllSystems
+- Taught SSM to look at flex as well as regular entitlements when
+  trying to add child channels
+- Show legend on details page; suggesting what to search for
+- Polish api documentation for system.scap APIs.
+- OpenSCAP integration
+- fix ISE on rhn/admin/multiorg/OrgSoftwareSubscriptions.do page
+- update createOrUpradePath api documentation
+- Removing rule to help system overview listing happen faster,
+  improving performance of api queries
+- Fixing sorting by date without replying on the inapplicable
+  listdisplay-new.jspf
+- fix binary file uploads
+- Making a default selection of no Proxy when kickstarting a server
+- Added new XMLRPC API method to allow people to change the kickstart
+  preserve ks.cfg option
+- Fixed incorrect sorting of archived action timestamp
+- throw appropriate error if deleting nonexistant kickstart key
+- remove DB values from monitoring scout configuration
+- save kickstart data after modifying ks profile child channels
+
+-------------------------------------------------------------------
 Mon Mar 26 16:56:47 CEST 2012 - jrenner@suse.de
 
 - Show legal note in the footer of all login pages
