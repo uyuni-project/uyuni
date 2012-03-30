@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Mar 30 16:48:36 CEST 2012 - mc@suse.de
+
+- version 11.2.0.6.1-1
+- use instant client version 11.2.0.3.0
+- remove ld config - should be part of instantclient
+
+-------------------------------------------------------------------
 Sat Jan 14 15:27:55 UTC 2012 - mc@suse.com
 
 - fix oracle version for s390x packages 
