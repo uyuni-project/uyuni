@@ -22,4 +22,3 @@ function showImages() {
     $('edit-link').setAttribute('href', '');
     $('edit-link').update();
 }
-
