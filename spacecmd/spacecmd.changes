@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Fri Mar 30 15:00:21 CEST 2012 - mc@suse.de
+
+- version 1.7.7.2-1
+- softwarechannel_clone avoid ISE on duplicate name
+- softwarechannel_adderrata mergeErrata should be
+  cloneErrataAsOriginal
+- Add globbing support to distribution_details
+- Add globbing support to distribution_delete
+- Cleanup some typos in comments
+- custominfo_details add support for globbing key names
+- custominfo_deletekey add support for globbing key names
+- Add cryptokey_details globbing support
+- cryptokey_delete add support for globbing
+- Workaround missing date key in recent spacewalk listErrata
+- Add validation to softwarechannel_adderrata channel args
+- softwarechannel_adderrata add --skip mode
+- Add --quick mode to softwarechannel_adderrata
+- Allow config-channel export of b64 encoded files
+- Update the spacecmd copyright years
+
+-------------------------------------------------------------------
 Wed Mar 21 17:47:00 CET 2012 - mc@suse.de
 
 - version 1.7.7.1-1
