@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Mar 30 15:16:13 CEST 2012 - mc@suse.de
+
+- version 1.7.56.2-1
+- copy spacewalk schema updates 1.3, 1.4, 1.5, 1.6, 1.7 to
+  susemanager schema 1.7 update
+- copy some current upstream schema migrations
+- fix spacewalk-schema-upgrade tool
+
+-------------------------------------------------------------------
 Fri Mar 23 10:16:38 CET 2012 - mc@suse.de
 
 - add indexes for suseServerInstalledProduct and suseProductChannel
