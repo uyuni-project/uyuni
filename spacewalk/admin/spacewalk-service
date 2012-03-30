@@ -58,7 +58,7 @@ if [ -x /etc/init.d/auditlog-keeper ]; then
    fi
 fi
 
-SERVICES="jabberd $SUSE_AUDITLOG $DB_SERVICE osa-dispatcher $TOMCAT $HTTPD Monitoring MonitoringScout rhn-search cobblerd taskomatic"
+SERVICES="jabberd $SUSE_AUDITLOG $DB_SERVICE $TOMCAT $HTTPD osa-dispatcher Monitoring MonitoringScout rhn-search cobblerd taskomatic"
 if [ -f /etc/rhn/service-list ] ; then
    . /etc/rhn/service-list
 fi
