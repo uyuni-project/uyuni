@@ -716,7 +716,7 @@ class RepoSync(object):
                 elif db_pack['channel_id'] == channel_id:
                     # different package with SAME NVREA
                     self.disassociate_package(db_pack)
-                
+
             if to_download or to_link:
                 to_process.append((pack, to_download, to_link))
 
@@ -935,7 +935,9 @@ def get_compatible_arches(channel_id):
                           and c.channel_arch_id = cpac.channel_arch_id
                           and cpac.package_arch_id = pa.id""")
     h.execute(channel_id=channel_id)
-    arches = [k['label'] for k in  h.fetchall_dict()]
+    # We do not mirror source packages. If they are listed in patches
+    # we need to know, that it is safe to skip them
+    arches = [k['label'] for k in  h.fetchall_dict() if k['label'] not in ['src', 'nosrc']]
     return arches
 
 def _best_checksum_item(checksums):
