@@ -987,6 +987,8 @@ def _update_keywords(notice):
 def _update_bugs(notice):
     """Return a list of Bug objects from the notice's references"""
     bugs = {}
+    if notice['references'] is None:
+        return []
     for bz in notice['references']:
         if bz['type'] == 'bugzilla' and bz['id'] not in bugs:
             bug = Bug()
@@ -998,6 +1000,8 @@ def _update_bugs(notice):
 
 def _update_cve(notice):
     """Return a list of unique ids from notice references of type 'cve'"""
+    if notice['references'] is None:
+        return []
     cves = [cve['id'] for cve in notice['references'] if cve['type'] == 'cve']
     # remove duplicates
     cves = list(set(cves))
