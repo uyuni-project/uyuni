@@ -37,7 +37,11 @@ Then /^no link should be broken$/ do
     # We have one page in our manual with has "Internal Server Error" in its text
     # we need to mark this page as success.
     if base != '/rhn/help/reference/en-US/ch-rhn-workgroup.jsp' &&
-       (page.has_content?('Page Not Found') || page.has_content?('Internal Server Error'))
+       (page.has_content?('Page Not Found') ||
+        page.has_content?('File Not Found') ||
+        page.has_content?('Internal Server Error') ||
+        page.has_content?('Permission Error')
+       )
       visited[base] = href
       $stderr.puts "-- ** failed"
     else
