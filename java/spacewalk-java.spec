@@ -68,6 +68,7 @@ Requires: redstone-xmlrpc
 Requires: oscache
 Requires: pam-modules
 Requires: snakeyaml
+Requires: sudo
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
 %if 0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
