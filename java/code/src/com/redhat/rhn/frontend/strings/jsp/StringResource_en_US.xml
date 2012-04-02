@@ -19777,6 +19777,12 @@ given channel.</source>
  	  <trans-unit id="help.jsp.release.title">
         <source>@@PRODUCT_NAME@@ Release Notes</source>
       </trans-unit>
+    <trans-unit id="help.jsp.quickstart.title">
+        <source>@@PRODUCT_NAME@@ Quick Start</source>
+    </trans-unit>
+    <trans-unit id="help.jsp.quickstart.detailed">
+        <source>Guides you step-by-step through the installation and basic configuration of @@PRODUCT_NAME@@.</source>
+    </trans-unit>
 
       <trans-unit id="iprange.emptylist">
         <source>No Ip Ranges Found</source>
