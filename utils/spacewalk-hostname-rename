@@ -28,16 +28,24 @@ BOOTSTRAP_SH=/srv/www/htdocs/pub/bootstrap/bootstrap.sh
 BOOTSTRAP_CCO=/srv/www/htdocs/pub/bootstrap/client-config-overrides.txt
 SAT_LOCAL_RULES_CONF=/var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf
 BACKUP_EXT=.rnmbck
-DB_QUIT="QUIT"
+
+if [ "$(spacewalk-cfg-get db_backend)" = "oracle" ]; then
+    DBSHELL_QUIT="QUIT"
+    DBSHELL_QUIET="
+set feed off;
+set pages 0;"
+
+elif [ "$(spacewalk-cfg-get db_backend)" = "postgresql" ]; then
+    DBSHELL_QUIT="\q"
+    DBSHELL_QUIET="
+\set QUIET on
+\t"
+fi
 
 if [ -x /etc/init.d/oracle ]; then
     DB_SERVICE="oracle"
-elif [ -x /etc/init.d/oracle-xe ]; then
-    DB_SERVICE="oracle-xe"
-elif [ -x /etc/init.d/postgresql ]; then
-    DB_SERVICE="postgresql"
-    DB_QUIT=""
 fi
+
 MONITORING_ENABLED=`awk -F= '! /[[:space:]]*#/ && /web.is_monitoring_backend/ {gsub(/[[:space:]]*/,""); print $2}' $RHN_CONF_FILE`
 MONITORING_SCOUT_ENABLED=`awk -F= '! /[[:space:]]*#/ && /web.is_monitoring_scout/ {gsub(/[[:space:]]*/,""); print $2}' $RHN_CONF_FILE`
 NOCPULSE_PRIVATE_KEY_FILE=~nocpulse/.ssh/nocpulse-identity
@@ -351,7 +359,7 @@ function update_monitoring_data {
 UPDATE rhn_sat_cluster SET vip = '$IP' WHERE public_key LIKE '${NOCPULSE_OLD_PUBLIC_KEY}%';
 UPDATE rhn_sat_node SET ip = '$IP' WHERE EXISTS (SELECT 1 FROM rhn_sat_cluster RSC WHERE RSC.public_key LIKE '${NOCPULSE_OLD_PUBLIC_KEY}%' AND sat_cluster_id = RSC.recid);
 COMMIT;
-$DB_QUIT
+$DBSHELL_QUIT
 EOS
 }
 
@@ -450,21 +458,12 @@ then
     fi
 fi
 
-if [ "$DB_SERVICE" == "postgresql" ]; then
-    SQL_RET=$(
-echo "\set QUIET true
-\a
-\t
-select 0 from dual;"  | spacewalk-sql --select-mode -)
-else
-    SQL_RET=$(
-echo "set feed off;
-set pages 0;
+SQL_RET=$(
+echo "$DBSHELL_QUIET
 select 0 from dual;
-exit;
+$DBSHELL_QUIT
 "  | spacewalk-sql --select-mode -
 )
-fi
 # SQL_RET="${SQL_RET#"${SQL_RET%%[![:space:]]*}"}"
 print_status "${SQL_RET}" "Your database isn't running."
 
@@ -499,7 +498,7 @@ then
 UPDATE rhn_config_macro SET definition='$HOSTNAME' WHERE name='RHN_SAT_HOSTNAME';
 UPDATE rhn_config_macro SET definition='$HOSTNAME' WHERE name='MDOM';
 COMMIT;
-$DB_QUIT
+$DBSHELL_QUIT
 EOS
     print_status 0  # just simulate end
 fi
@@ -528,7 +527,7 @@ echo -n "Updating other DB entries ... " | tee -a $LOG
 spacewalk-sql --select-mode - >>$LOG <<EOS
 UPDATE rhntemplatestring SET value='$HOSTNAME' WHERE label='hostname';
 COMMIT;
-$DB_QUIT
+$DBSHELL_QUIT
 EOS
 print_status 0  # just simulate end
 
@@ -542,7 +541,7 @@ echo -n "Changing jabberd settings ... " | tee -a $LOG
 spacewalk-sql --select-mode - >>$LOG <<EOS
 DELETE FROM rhnPushDispatcher WHERE hostname != '$HOSTNAME';
 COMMIT;
-$DB_QUIT
+$DBSHELL_QUIT
 EOS
 
 for jabber_config_file in c2s.xml s2s.xml sm.xml
