@@ -19,9 +19,11 @@
 
     // oracle default port   = 1521
     // postgres default port = 5432
-    string db_default_port = "1521";
-    if (SCR::Read(.target.size, "/etc/init.d/postgresql") >= 0 )
-        db_default_port = "5432";
+    string localdb = "postgres";
+    if (FileUtils::Exists ("/etc/init.d/oracle") )
+    {
+        localdb = "oracle";
+    }
 
     string invalid_pw_chars	= "\"'!+%`=@/";
 
@@ -72,7 +74,7 @@
 	    `VSpacing (0.4),
 	    `Left (`RadioButton(`id(`localdb), `opt (`notify),
 		// radio button label
-		_("Local Database"), settings["MANAGER_DB_HOST"]:"" == "localhost")),
+		sformat ("%1 (%2)", _("Local Database"), localdb), settings["MANAGER_DB_HOST"]:"" == "localhost")),
 	    text_mode ? `Empty () : `VSpacing (),
 	    `Left (`RadioButton(`id(`remotedb), `opt (`notify),
 		// radio button label
