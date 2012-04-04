@@ -17,17 +17,27 @@ SATELLITE_DB_SID=""
 SATELLITE_FQDN=""
 SATELLITE_IP=""
 
-ORACLE_VERSION="XE"
 SATELLITE_IS_RH=1
 KEYFILE="/root/migration-key"
 
 RSYNC_PASSWORD=""
 
+# oracle only
+DEFAULT_TABLESPACE="data_tbs"
+
+LOCAL_DB=1
+DB_BACKEND="postgresql"
+
+rpm -q oracle-server > /dev/null
+if [ $? -eq "0" ]; then
+    DB_BACKEND="oracle"
+fi
+
+
 # setup_hostname()
 # setup_db_xe()
 # setup_db_full()
 # setup_spacewalk()
-# drop_manager_db()
 # dump_remote_db()
 # import_db()
 # upgrade_schema()
@@ -120,27 +130,6 @@ cleanup_hostname() {
     fi;
 }
 
-setup_db_xe() {
-    echo -e "9055\n\n$SYS_DB_PASS\n$SYS_DB_PASS\n" | /etc/init.d/oracle-xe configure
-    #sed -i "s/:\/usr\/lib\/oracle\/10.2.0.4\/client.*:/:\/usr\/lib\/oracle\/xe\/app\/oracle\/product\/10.2.0\/server:/g" /etc/oratab
-    . /etc/profile.d/oracle.sh
-    cp /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/network/admin/tnsnames.ora /etc
-    restorecon -v /etc/tnsnames.ora
-    /etc/init.d/oracle-xe start
-
-    echo "create smallfile tablespace data_tbs datafile '/usr/lib/oracle/xe/oradata/XE/data_01.dbf' SIZE 3800M;
-create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
-grant dba to $MANAGER_USER;
-alter system set processes = 400 scope=spfile;
-alter system set \"_optimizer_filter_pred_pullup\"=false scope=spfile;
-alter system set \"_optimizer_cost_based_transformation\"=off scope=spfile;
-quit
-" > /tmp/dbsetup.sql
-
-    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$MANAGER_PASS\"@$MANAGER_DB_NAME as sysdba @/tmp/dbsetup.sql;"
-    rm /tmp/dbsetup.sql
-}
-
 compute_oracle_mem() {
   # SGA & PGA algo
    sgamin=146800640
@@ -169,7 +158,8 @@ compute_oracle_mem() {
    echo "pga=$pga"
 }
 
-setup_db_full() {
+# setup a local oracle database
+setup_db_oracle() {
     /opt/apps/oracle/setup "$SYS_DB_PASS"
     # remove suid bits for bnc#736240
     find /opt/apps/oracle/product/ -perm -4000 -exec chmod -s {} \;
@@ -188,8 +178,8 @@ startup;
 select value from nls_database_parameters where parameter='NLS_CHARACTERSET';
 alter system set job_queue_processes=1000;
 alter profile DEFAULT limit PASSWORD_LIFE_TIME unlimited;
-create smallfile tablespace data_tbs datafile '/opt/apps/oracle/oradata/susemanager/data_01.dbf' size 500M autoextend on blocksize 8192;
-create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
+create smallfile tablespace $DEFAULT_TABLESPACE datafile '/opt/apps/oracle/oradata/susemanager/data_01.dbf' size 500M autoextend on blocksize 8192;
+create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace $DEFAULT_TABLESPACE;
 grant dba to $MANAGER_USER;
 alter system set processes = 400 scope=spfile;
 alter system set deferred_segment_creation=FALSE;
@@ -210,6 +200,23 @@ quit
 
     su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus / as sysdba @/tmp/dbsetup.sql;"
     rm /tmp/dbsetup.sql
+
+    echo "###########################
+# Dobby configuration
+###########################
+dobby.sid = susemanager
+dobby.sysdba_username = sys
+dobby.sysdba_password = $SYS_DB_PASS
+dobby.normal_username = $MANAGER_USER
+dobby.normal_password = $MANAGER_PASS
+dobby.remote_dsn =
+dobby.oracle_home = /opt/apps/oracle/product/11gR2/dbhome_1
+dobby.data_dir_format = /opt/apps/oracle/oradata/susemanager
+dobby.hot_backup_dir_format =
+dobby.archive_dir_format = /opt/apps/oracle/flash_recovery_area/susemanager
+dobby.oracle_user = oracle
+###########################" >> /etc/rhn/rhn.conf
+
 }
 
 setup_db_postgres() {
@@ -233,7 +240,6 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
 
 setup_spacewalk() {
     CERT_COUNTRY=`echo -n $CERT_COUNTRY|tr [:lower:] [:upper:]`
-
 
     echo "admin-email = $MANAGER_ADMIN_EMAIL
 ssl-set-org = $CERT_O
@@ -259,10 +265,14 @@ ncc-pass = $NCC_PASS
 ncc-email = $NCC_EMAIL
 " > /root/spacewalk-answers
 
-    /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers
+    if [ "$DO_MIGRATION" = "1" ]; then
+        /usr/bin/spacewalk-setup --ncc --skip-db-population --answer-file=/root/spacewalk-answers
+    else
+        /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers
+    fi
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
         MY_DOMAIN=`hostname -d`
-        MANAGER_MAIL_FROM="SUSE Manager <root@$MY_DOMAIN>"
+        MANAGER_MAIL_FROM="SUSE Manager ($REALHOSTNAME) <root@$MY_DOMAIN>"
     fi
     if ! grep "^web.default_mail_from" /etc/rhn/rhn.conf > /dev/null; then
         echo "web.default_mail_from = $MANAGER_MAIL_FROM" >> /etc/rhn/rhn.conf
@@ -270,54 +280,35 @@ ncc-email = $NCC_EMAIL
     rm /root/spacewalk-answers
 }
 
-drop_manager_db() {
-    /usr/sbin/spacewalk-service stop
-if [ $ORACLE_VERSION = "XE" ]; then
-    /etc/init.d/oracle-xe start
-elif [ $ORACLE_VERSION = "FULL" ]; then
-    /etc/init.d/oracle start
-else
-    echo "Not yet supported!"
-    exit 1
-fi
-    echo "drop user $MANAGER_USER cascade;
-create user $MANAGER_USER identified by \"$MANAGER_PASS\" default tablespace data_tbs;
-grant dba to $MANAGER_USER;
-quit
-" > /tmp/dbnewspacewalkuser.sql
-
-    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"${SYS_DB_PASS}\"@${MANAGER_DB_NAME} as sysdba @/tmp/dbnewspacewalkuser.sql;"
-    rm /tmp/dbnewspacewalkuser.sql
-}
-
 dump_remote_db() {
-echo "Dumping remote database. Please wait..."
-ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - oracle -c \"exp \\\"$SATELLITE_DB_USER\\\"/\\\"$SATELLITE_DB_PASS\\\"@\\\"$SATELLITE_DB_SID\\\" owner=$SATELLITE_DB_USER compress=n consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log\""
+    echo "Dumping remote database. Please wait..."
+    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - oracle -c \"exp \\\"$SATELLITE_DB_USER\\\"/\\\"$SATELLITE_DB_PASS\\\"@\\\"$SATELLITE_DB_SID\\\" owner=$SATELLITE_DB_USER compress=n consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log\""
 
-echo "Copy remote database dump to local machine..."
-scp -i $KEYFILE root@$SATELLITE_IP:/tmp/sat.oracleXE.dmp /tmp
+    echo "Copy remote database dump to local machine..."
+    scp -i $KEYFILE root@$SATELLITE_IP:/tmp/sat.oracleXE.dmp /tmp
 
-echo "Delete remote database dump..."
-ssh -i $KEYFILE root@$SATELLITE_IP "rm -f /tmp/sat.oracleXE.dmp"
+    echo "Delete remote database dump..."
+    ssh -i $KEYFILE root@$SATELLITE_IP "rm -f /tmp/sat.oracleXE.dmp"
 }
 
 import_db() {
-echo "Importing database dump. Please wait..."
+    echo "Importing database dump. Please wait..."
     MANAGER_DB_NAME=`echo -n $MANAGER_DB_NAME|tr [:lower:] [:upper:]`
     su -s /bin/bash - oracle -c "imp system/$SYS_DB_PASS@$MANAGER_DB_NAME fromuser=$SATELLITE_DB_USER touser=$MANAGER_USER file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y"
-if [ $? -eq 0 ]; then
-    echo "Database dump successfully imported."
-    rm -f /tmp/sat.oracleXE.dmp
-fi
+    if [ $? -eq 0 ]; then
+        echo "Database dump successfully imported."
+        rm -f /tmp/sat.oracleXE.dmp
+    fi
 }
 
 upgrade_schema() {
     spacewalk-schema-upgrade
-if [ $ORACLE_VERSION = "XE" ]; then
-    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @/usr/lib/oracle/xe/app/oracle/product/10.2.0/server/rdbms/admin/utlrp.sql; exit;ENDPLUS"
-elif [ $ORACLE_VERSION = "FULL" ]; then
-    su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @/opt/apps/oracle/product/11gR2/dbhome_1/rdbms/admin/utlrp.sql; exit;ENDPLUS"
-fi
+    if [ "$LOCAL_DB" != "0" ]; then
+        su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASSWORD\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @/opt/apps/oracle/product/11gR2/dbhome_1/rdbms/admin/utlrp.sql; exit;ENDPLUS"
+    else
+        echo "You may need to recompile the schema on your database host using:"
+        echo "su -s /bin/bash - oracle -c \"ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\\\"<SYS_DB_PASSWORD>\\\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @\$ORACLE_HOME/rdbms/admin/utlrp.sql; exit;ENDPLUS\""
+    fi
 # FIXME: not needed for postgres ?
 }
 
@@ -393,19 +384,19 @@ check_remote_type() {
             SATELLITE_IS_RH=1
        else
            echo "Remote machine appears to be neither SUSE Manager nor Red Hat Satellite. Exit."
-            exit
+           exit
        fi
     fi
 }
 
 copy_remote_files() {
     backup_files
-if [ $SATELLITE_IS_RH = "1" ];then
-    copy_remote_files_redhat
-    mv /var/spacewalk/redhat /var/spacewalk/packages
-else
-    copy_remote_files_suse
-fi
+    if [ $SATELLITE_IS_RH = "1" ];then
+        copy_remote_files_redhat
+        mv /var/spacewalk/redhat /var/spacewalk/packages
+    else
+        copy_remote_files_suse
+    fi
     copy_remote_files_common
 }
 
@@ -439,27 +430,22 @@ do_migration() {
     check_remote_type
     wait_step
 
-    if [ ! -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
-        do_setup
-    fi;
+    do_setup
     sleep 10
     wait_step
-    if [ $ORACLE_VERSION = "FULL" -a $MANAGER_DB_HOST = "localhost" ]; then
-	    drop_manager_db
-    elif [ $MANAGER_DB_NAME = "xe" -a $MANAGER_DB_HOST = "localhost" ]; then
-	    drop_manager_db
-    elif [ $MANAGER_DB_NAME = "XE" -a $MANAGER_DB_HOST = "localhost" ]; then
-	    drop_manager_db
-    fi;
-    wait_step
+
     dump_remote_db
     wait_step
+
     import_db
     wait_step
+
     upgrade_schema
     wait_step
+
     copy_remote_files
     wait_step
+
     cleanup_hostname
     remove_ssh_key
 }
@@ -467,11 +453,8 @@ do_migration() {
 do_setup() {
     if [ -f $SETUP_ENV ]; then
         . $SETUP_ENV
-        if [ -z $SYS_DB_PASS ]; then
-            SYS_DB_PASS=$MANAGER_PASS
-        fi
     else
-        #echo -n "MANAGER_IP=";          read MANAGER_IP
+        # ask for the needed values if the setup_env file does not exist
         echo -n "MANAGER_USER=";        read MANAGER_USER
         echo -n "MANAGER_PASS=";        read MANAGER_PASS
         echo -n "MANAGER_ADMIN_EMAIL="; read MANAGER_ADMIN_EMAIL
@@ -482,6 +465,8 @@ do_setup() {
         echo -n "CERT_COUNTRY="       ; read CERT_COUNTRY
         echo -n "CERT_EMAIL="         ; read CERT_EMAIL
         echo -n "CERT_PASS="          ; read CERT_PASS
+        echo -n "LOCAL_DB="           ; read LOCAL_DB
+        echo -n "DB_BACKEND="         ; read DB_BACKEND
         echo -n "MANAGER_DB_NAME="    ; read MANAGER_DB_NAME
         echo -n "MANAGER_DB_HOST="    ; read MANAGER_DB_HOST
         echo -n "MANAGER_DB_PORT="    ; read MANAGER_DB_PORT
@@ -491,24 +476,23 @@ do_setup() {
         echo -n "NCC_PASS="           ; read NCC_PASS
         echo -n "NCC_EMAIL="          ; read NCC_EMAIL
     fi;
+    if [ -z "$SYS_DB_PASS" ]; then
+        SYS_DB_PASS=`dd if=/dev/urandom bs=16 count=4 2> /dev/null | md5sum | cut -b 1-8`
+    fi
+    if [ -z "$MANAGER_DB_NAME" ]; then
+        MANAGER_DB_NAME="susemanager"
+    fi
+    if [ "$DB_BACKEND" != "oracle" -a "$DB_BACKEND" != "postgresql" ]; then
+        echo "Unknown dabase backend '$DB_BACKEND'. Allowed values: oracle, postgresql"
+        exit 1
+    fi
+
     setup_swap
     setup_mail
-    if [ $MANAGER_DB_HOST = "localhost" ]; then
-        if [ $ORACLE_VERSION = "XE" ]; then
-            if [ -f "/usr/lib/oracle/xe/oradata/XE/data_01.dbf" ]; then
-                echo "Database already setup. Abort."
-                exit 1
-            fi
-            setup_db_xe
-        elif [ $ORACLE_VERSION = "FULL" ]; then
-            MANAGER_DB_NAME="susemanager"
-            SYS_DB_PASS=`dd if=/dev/urandom bs=16 count=4 2> /dev/null | md5sum | cut -b 1-8`
-            setup_db_full
-        else
-            MANAGER_DB_NAME="susemanager"
-            SYS_DB_PASS=`dd if=/dev/urandom bs=16 count=4 2> /dev/null | md5sum | cut -b 1-8`
-            setup_db_postgres
-        fi
+    if [ "$LOCAL_DB" != "0" -a "$DB_BACKEND" = "postgresql" ]; then
+        setup_db_postgres
+    elif [ "$LOCAL_DB" != "0" -a "$DB_BACKEND" = "oracle" ]; then
+        setup_db_oracle
     fi
 
     # should be done by cobbler with "--sync" but we had a case where those
@@ -517,12 +501,6 @@ do_setup() {
     cp /usr/share/syslinux/pxelinux.0 /srv/tftpboot/
 
     setup_spacewalk
-
-#    if [ ! -d "/var/spacewalk" ]; then
-#        setup_spacewalk
-#    else
-#        echo "SUSE Manager is already initialized. Skipping setup."
-#    fi;
 }
 
 for p in $@; do
@@ -571,21 +549,6 @@ for p in $@; do
     esac
 done
 
-rpm -q oracle-xe-univ > /dev/null
-if [ $? -eq "0" ]; then
-    ORACLE_VERSION="XE"
-    DB_BACKEND="oracle"
-else
-    rpm -q oracle-server > /dev/null
-    if [ $? -eq "0" ]; then
-        ORACLE_VERSION="FULL"
-        DB_BACKEND="oracle"
-    else
-        ORACLE_VERSION="PG"
-        DB_BACKEND="postgresql"
-    fi
-fi
-
 if [ "$LOGFILE" != "0" ]; then
     #set -x
     exec >> >(tee $LOGFILE | sed 's/^/  /' ) 2>&1
@@ -595,45 +558,24 @@ wait_step
 
 if [ "$DO_SETUP" = "1" ]; then
     do_setup
+
     # rename the default org
-
-    if [ $ORACLE_VERSION = "PG" ]; then
-        echo "UPDATE web_customer SET name = '$CERT_O' WHERE id = 1;" > /tmp/changeorg.sql
-        su - postgres -c "psql $MANAGER_DB_NAME -f /tmp/changeorg.sql;"
-    else
-        echo "UPDATE $MANAGER_USER.web_customer SET name = '$CERT_O' WHERE id = 1;
-quit
-" > /tmp/changeorg.sql
-        su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus $MANAGER_USER/\"$MANAGER_PASS\"@$MANAGER_DB_NAME @/tmp/changeorg.sql;"
-    fi
+    echo "UPDATE web_customer SET name = '$CERT_O' WHERE id = 1;" > /tmp/changeorg.sql
+    echo "COMMIT;" >> /tmp/changeorg.sql
+    /usr/bin/spacewalk-sql --verbose --select-mode-direct /tmp/changeorg.sql
     rm /tmp/changeorg.sql
-
-    if [ $ORACLE_VERSION = "FULL" -a $MANAGER_DB_HOST = "localhost" ]; then
-echo "###########################
-# Dobby configuration
-###########################
-dobby.sid = susemanager
-dobby.sysdba_username = sys
-dobby.sysdba_password = $SYS_DB_PASS
-dobby.normal_username = $MANAGER_USER
-dobby.normal_password = $MANAGER_PASS
-dobby.remote_dsn =
-dobby.oracle_home = /opt/apps/oracle/product/11gR2/dbhome_1
-dobby.data_dir_format = /opt/apps/oracle/oradata/susemanager
-dobby.hot_backup_dir_format =
-dobby.archive_dir_format = /opt/apps/oracle/flash_recovery_area/susemanager
-dobby.oracle_user = oracle
-###########################" >> /etc/rhn/rhn.conf
-    fi
-
-    # Finaly call mgr-ncc-sync
-    /usr/sbin/mgr-ncc-sync
 fi
 wait_step
+
 if [ "$DO_MIGRATION" = "1" ]; then
+    if [ -z "$DB_BACKEND" -o "$DB_BACKEND" != "oracle" ]; then
+        echo "Migration only supported with oracle DB Backend"
+        exit 1
+    fi
     do_migration
-    # Finaly call mgr-ncc-sync
-    /usr/sbin/mgr-ncc-sync
 fi
+
+# Finaly call mgr-ncc-sync
+/usr/sbin/mgr-ncc-sync
 
 # vim: set expandtab:
