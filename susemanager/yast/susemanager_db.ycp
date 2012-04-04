@@ -26,9 +26,10 @@
     string invalid_pw_chars	= "\"'!+%`=@/";
 
     map<string,string> settings	= $[
+        "DB_BACKEND"            : "postgresql",
 	"MANAGER_DB_NAME"	: "",
 	"MANAGER_DB_HOST"	: "",
-	"MANAGER_DB_PORT"	: db_default_port,
+	"MANAGER_DB_PORT"	: "",
 	"MANAGER_DB_PROTOCOL"	: "TCP",
 	"MANAGER_USER"		: "susemanager",
 	"MANAGER_PASS"		: "",
@@ -36,9 +37,8 @@
     ];
 
     map<string,string> local_db	= $[
-	"MANAGER_DB_NAME"	: "xe",
+	"MANAGER_DB_NAME"	: "susemanager",
 	"MANAGER_DB_HOST"	: "localhost",
-	"MANAGER_DB_PORT"	: db_default_port,
 	"MANAGER_DB_PROTOCOL"	: "TCP",
     ];
 
@@ -79,6 +79,13 @@
 		_("Remote Database"), settings["MANAGER_DB_HOST"]:"" != "localhost")),
 	    `HBox (`HSpacing (3), `VBox (
 		`VSpacing (0.5),
+                `Left (`RadioButtonGroup (`id("DB_BACKEND"), `HBox (`HSpacing (0.2),
+                    `RadioButton(`id(`postgres), `opt (`notify),
+                    // radio button label
+                    _("postgres Database"), settings["DB_BACKEND"]:"" == "postgresql"),
+                    `RadioButton(`id(`oracle), `opt (`notify),
+                    // radio button label
+                    _("oracle Database"), settings["DB_BACKEND"]:"" == "oracle")))),
 		// text entry label
 		`InputField (`id ("MANAGER_DB_NAME"), `opt (`hstretch), _("&Database SID"),
 		    settings["MANAGER_DB_NAME"]:""),
@@ -133,6 +140,8 @@ If you use the local database, set a user name and a password for the SUSE Manag
 	    foreach (string key, string value, local_db, {
 		UI::ChangeWidget (`id (key), `Enabled, ret == `remotedb);
 	    });
+            UI::ChangeWidget (`id ("DB_BACKEND"), `Enabled, ret == `remotedb);
+            UI::ChangeWidget (`id ("MANAGER_DB_PORT"), `Enabled, ret == `remotedb);
 	}
 	if (ret == `back)
 	{
@@ -181,14 +190,72 @@ The invalid characters are: %1"), invalid_pw_chars));
 	    }
 	    boolean localdb = UI::QueryWidget (`id (`rb), `CurrentButton) == `localdb;
 	    foreach (string key, string value, settings, {
-		string val	= (string) UI::QueryWidget (`id (key), `Value);
-		if (localdb && haskey (local_db, key))
+                string val = "";
+                if (key == "DB_BACKEND")
+                {
+                    if (localdb)
+                    {
+                        if (FileUtils::Exists ("/etc/init.d/oracle"))
+                        {
+                            y2milestone("local db oracle detected");
+                            val = "oracle";
+                        }
+                        else
+                        {
+                            y2milestone("local db postgres detected");
+                            val = "postgresql";
+                        }
+                    }
+                    else if ( UI::QueryWidget (`id (key), `CurrentButton) == `postgres )
+                    {
+                        y2milestone("remote db postgres detected");
+                        val = "postgresql";
+                    }
+                    else
+                    {
+                        y2milestone("remote db oracle detected");
+                        val = "oracle";
+                    }
+                }
+                else
+                {
+                    val	= (string) UI::QueryWidget (`id (key), `Value);
+                }
+		if (localdb)
 		{
-		    val		= local_db[key]:"";
+                    if (haskey (local_db, key))
+                    {
+                        val = local_db[key]:"";
+                    }
+                    else if (val == "postgresql")
+                    {
+                        setenv("MANAGER_DB_PORT", "5432", true);
+                        SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", "MANAGER_DB_PORT", "5432", env_file));
+                    }
+                    else if (val == "oracle")
+                    {
+                        setenv("MANAGER_DB_PORT", "1521", true);
+                        SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", "MANAGER_DB_PORT", "1521", env_file));
+                    }
+                    else if (key == "MANAGER_DB_PORT")
+                    {
+                        continue;
+                    }
 		}
+
 		setenv (key, val, true);
 		SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", key, val, env_file));
 	    });
+            if (localdb)
+            {
+                setenv ("LOCAL_DB", "1", true);
+                SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", "LOCAL_DB", "1", env_file));
+            }
+            else
+            {
+                setenv ("LOCAL_DB", "0", true);
+                SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", "LOCAL_DB", "0", env_file));
+            }
 
 	    break;
 	}
