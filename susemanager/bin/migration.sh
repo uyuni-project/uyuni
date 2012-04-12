@@ -562,7 +562,7 @@ if [ "$DO_SETUP" = "1" ]; then
     # rename the default org
     echo "UPDATE web_customer SET name = '$CERT_O' WHERE id = 1;" > /tmp/changeorg.sql
     echo "COMMIT;" >> /tmp/changeorg.sql
-    /usr/bin/spacewalk-sql --verbose --select-mode-direct /tmp/changeorg.sql
+    /usr/bin/spacewalk-sql --select-mode-direct /tmp/changeorg.sql
     rm /tmp/changeorg.sql
 fi
 wait_step
