@@ -575,7 +575,9 @@ if [ "$DO_MIGRATION" = "1" ]; then
     do_migration
 fi
 
-# Finaly call mgr-ncc-sync
-/usr/sbin/mgr-ncc-sync
+if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
+    # Finaly call mgr-ncc-sync
+    /usr/sbin/mgr-ncc-sync
+fi
 
 # vim: set expandtab:
