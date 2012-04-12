@@ -24,14 +24,18 @@ SUSE Manager oss flavors.
 
 %install
 mkdir -p $RPM_BUILD_ROOT/srv/www/htdocs/help/
+mkdir -p $RPM_BUILD_ROOT/%_defaultdocdir/susemanager/
 install -m 644 eula.pxt $RPM_BUILD_ROOT/srv/www/htdocs/help/
+install -m 644 license.txt $RPM_BUILD_ROOT/%_defaultdocdir/susemanager/
 
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc license.txt
+%docdir %_defaultdocdir/susemanager
+%dir %_defaultdocdir/susemanager
+%_defaultdocdir/susemanager/license.txt
 %dir /srv/www/htdocs/help
 /srv/www/htdocs/help/eula.pxt
 
