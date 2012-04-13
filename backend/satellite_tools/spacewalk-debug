@@ -110,7 +110,9 @@ sed -i 's/^web.session_swap_secret_.*/web.session_swap_secret_N = <replaced_by_d
 sed -i 's/^db_password.*/db_password = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^server.satellite.http_proxy_password.*/server.satellite.http_proxy_password = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 cp -fapRd /etc/sysconfig/rhn $DIR/conf/rhn/sysconfig
-cp -fapRd /etc/tnsnames.ora $DIR/conf
+if [ -f /etc/tnsnames.ora ] ; then
+    cp -fad /etc/tnsnames.ora $DIR/conf
+fi
 
 echo "    * copying logs"
 if [ $IS_SUSE -eq 1 ]; then
