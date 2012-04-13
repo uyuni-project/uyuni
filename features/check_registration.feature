@@ -95,8 +95,6 @@ Feature: Check client registration
      And I should see a "Upload config files" link
      And I should see a "Import all managed files from system" link
      And I should see a "Import selected files from system" link
-     And I should see a "Schedule Deploy Action" link
-     And I should see a "Schedule System Comparison" link
      #And I should see a "Virtualization" link in element "content-nav"
 
   Scenario: check tab links "Provisioning"
