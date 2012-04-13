@@ -271,6 +271,10 @@ if [ -f /var/lib/pgsql/pgstartup.log ] ; then
 	echo "    * copying pgstartup.log"
 	cp -fa /var/lib/pgsql/pgstartup.log $DIR/database
 fi
+if [ -f /var/lib/pgsql/initlog ] ; then
+	echo "    * copying initlog"
+	cp -fa /var/lib/pgsql/initlog $DIR/database
+fi
 
 ls /var/lib/pgsql/data/*.conf /var/lib/pgsql/data/pg_log/* 2>/dev/null | xargs -I file cp -fa file $DIR/database
 
