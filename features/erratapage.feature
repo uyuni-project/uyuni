@@ -5,7 +5,7 @@
 # Explore the systems page
 #
 
-Feature: Explore the main landing page
+Feature: Explore the Errata page
   In Order to validate completeness of the errata page
   As a authorized user
   I want to see all the texts and links
@@ -72,6 +72,7 @@ Feature: Explore the main landing page
     And I enter "Enhancement Topic" as "topic"
     And I enter "Enhancement Description" as "description"
     And I enter "Enhancement Solution" as "solution"
+    And I enter "1234" as "buglistId"
     And I enter "Enhancement Summary" as "buglistSummary"
     And I enter "Enhancement,keywords" as "keywords"
     And I enter "Enhancement Reference" as "refersTo"
