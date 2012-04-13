@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Fri Apr 13 15:40:37 CEST 2012 - mc@suse.de
+
+- version 1.7.54.3-1
+- replace \r\n with \n for CustomDataValues
+- Activation Key does not have to have a base channel to add Child
+  Channels
+- OpenSCAP: view latest results of whole infrastructure
+- Reduce languages available in editarea to only common / useful ones.
+- improved performance of repomd generation
+- do not show the Schedule Deploy Action and Schedule System
+  Comparison links in the left pane -- the right pane has them with correct
+  ACLs.
+- Make automatically-scheduled tasks visible on Failed and Archived
+  tabs
+
+-------------------------------------------------------------------
 Fri Mar 30 15:03:14 CEST 2012 - mc@suse.de
 
 - version 1.7.54.2-1
