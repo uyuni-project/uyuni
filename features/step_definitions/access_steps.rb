@@ -21,18 +21,22 @@ Then /^no link should be broken$/ do
   Capybara.default_wait_time = 1
   visit Capybara.app_host
 
+  relation = Hash.new
+
   hrefs = collect_all_hrefs
+  hrefs.each() do |url|
+      relation[url.to_s] = "/"
+  end
 
   visited = Hash.new
   failed_other_reason = Array.new
 
-  relation = Hash.new
 
   loop do
     href = hrefs.shift
     next if href.nil?
     base = href.split("?")[0]
-    $stderr.puts "Visiting '#{href}' '#{base}', #{hrefs.size} to go"
+    $stderr.puts "Visiting '#{href}' '#{base}', #{hrefs.size} to go, found at '#{relation[href.to_s]}'"
     visit href.to_s
     # We have one page in our manual with has "Internal Server Error" in its text
     # we need to mark this page as success.
@@ -52,30 +56,30 @@ Then /^no link should be broken$/ do
       #if page.has_content?('Errata') || page.has_content?('Erratum')
       #    $stderr.puts "-- ** failed (Errata)"
       #    failed_other_reason << href
-      #end 
-      relation[href.to_s] = Array.new
+      #end
       collect_all_hrefs.each do |fhref|
-        next if fhref[0,1] == "#" # relative link
-        next if hrefs.include?(fhref)
-        hbase = fhref.split("?")[0]
-        next if visited[hbase]
-        visited[hbase] = true
-        if hbase.nil? or hbase.empty?
+          next if fhref[0,1] == "#" # relative link
+          next if hrefs.include?(fhref)
+          hbase = fhref.split("?")[0]
+          next if visited[hbase]
+          visited[hbase] = true
+          if hbase.nil? or hbase.empty?
               # Example: fhref = "?order=asc&sort=login"
               fhref = base.concat(fhref)
 #             $stderr.puts "\t empyt hbase; new href is #{fhref}"
-        elsif fhref[0,1] != "/"
+          elsif fhref[0,1] != "/"
               # Example: fhref = "delete_confirm.pxt?sgid=7"
-#	      $stderr.puts "From #{fhref} (#{base})"
-	      hsplit = base.split("/")
-	      hsplit.pop
-	      hsplit << fhref
-	      fhref = hsplit.join("/")
-#	      $stderr.puts "\t to #{fhref}"
-	    end
-#	    $stderr.puts "Adding #{fhref}"
-	    hrefs << fhref
-        relation[href.to_s] << fhref
+#             $stderr.puts "From #{fhref} (#{base})"
+              hsplit = base.split("/")
+              hsplit.pop
+              hsplit << fhref
+              fhref = hsplit.join("/")
+#             $stderr.puts "\t to #{fhref}"
+          end
+#         $stderr.puts "Adding #{fhref}"
+          hrefs << fhref
+          relation[fhref.to_s] = href.to_s
+          #$stderr.puts "add rel #{fhref.to_s} => #{relation[fhref.to_s]}"
       end
     end
     break if hrefs.empty?
@@ -92,12 +96,6 @@ Then /^no link should be broken$/ do
       $stderr.puts "\tother_reason: #{f}"
   end
   $stderr.puts "End of failed pages"
-  #relation.each do |key, value|
-  #  $stderr.puts "On page #{key} we found:\n"
-  #  value.each do |url|
-  #    $stderr.puts "\t#{url}\n"
-  #  end
-  #end
   if ! failed_pages.empty?
     raise "Failed pages:\n#{failed_pages}"
   end
@@ -106,11 +104,11 @@ end
 Then /^I should be able to login$/ do
 
     (0..10).each() do |i|
-	visit Capybara.app_host
+        visit Capybara.app_host
         if page.has_content?('Welcome to SUSE Manager')
-	    break
-	end
-	sleep(5)
+            break
+        end
+        sleep(5)
     end
 end
 
