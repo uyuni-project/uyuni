@@ -200,7 +200,13 @@ quit
 
     su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus / as sysdba @/tmp/dbsetup.sql;"
     rm /tmp/dbsetup.sql
+}
 
+setup_dobby() {
+    if [ -z "$DB_BACKEND" -o "$DB_BACKEND" != "oracle" ]; then
+        # currently only supported for oracle
+        return
+    fi
     echo "###########################
 # Dobby configuration
 ###########################
@@ -304,10 +310,10 @@ import_db() {
 upgrade_schema() {
     spacewalk-schema-upgrade
     if [ "$LOCAL_DB" != "0" ]; then
-        su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASSWORD\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @/opt/apps/oracle/product/11gR2/dbhome_1/rdbms/admin/utlrp.sql; exit;ENDPLUS"
+        su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @/opt/apps/oracle/product/11gR2/dbhome_1/rdbms/admin/utlrp.sql; exit;ENDPLUS"
     else
         echo "You may need to recompile the schema on your database host using:"
-        echo "su -s /bin/bash - oracle -c \"ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\\\"<SYS_DB_PASSWORD>\\\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @\$ORACLE_HOME/rdbms/admin/utlrp.sql; exit;ENDPLUS\""
+        echo "su -s /bin/bash - oracle -c \"ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\\\"<SYS_DB_PASS>\\\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @\$ORACLE_HOME/rdbms/admin/utlrp.sql; exit;ENDPLUS\""
     fi
 # FIXME: not needed for postgres ?
 }
@@ -576,6 +582,7 @@ if [ "$DO_MIGRATION" = "1" ]; then
 fi
 
 if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
+    setup_dobby
     # Finaly call mgr-ncc-sync
     /usr/sbin/mgr-ncc-sync
 fi
