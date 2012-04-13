@@ -1,4 +1,4 @@
 [buildconfig]
 builder = spacewalk.releng.builder.NoTgzBuilder
-tagger = spacewalk.releng.tagger.ReleaseTagger
+tagger = tito.susetagger.SUSETagger
 
