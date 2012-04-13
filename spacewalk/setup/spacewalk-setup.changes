@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Apr 13 15:46:24 CEST 2012 - mc@suse.de
+
+- version 1.7.9.2-1
+- fixed clearing db for postgresql installation
+- remove RHN_DB_USERNAME from monitoring scout configuration
+- remove RHN_DB_PASSWD from monitoring scout configuration
+- remove RHN_DB_NAME from monitoring scout configuration
+- remove tableowner from monitoring scout configuration
+
+-------------------------------------------------------------------
 Wed Mar 21 17:05:55 CET 2012 - mc@suse.de
 
 - version 1.7.9.1-1
