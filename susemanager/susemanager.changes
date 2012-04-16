@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Apr 16 17:37:39 CEST 2012 - ug@suse.de
+
+- added system requirement check to susemanager_setup
+
+-------------------------------------------------------------------
 Fri Mar 30 16:49:41 CEST 2012 - mc@suse.de
 
 - version 1.7.2-1
