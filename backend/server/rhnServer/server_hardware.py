@@ -373,7 +373,8 @@ class CPUDevice(Device):
 class NetworkInformation(Device):
     def __init__(self, dict = None):
         fields = ["hostname", "ipaddr"]
-        mapping = { 'class' : None }
+        # ignore ip6addr: not supported in SUSE Manager 1.2
+        mapping = { 'class' : None, 'ip6addr' : None }
         Device.__init__(self, "rhnServerNetwork", fields, dict, mapping)
         # use our own sequence
         self.sequence = "rhn_server_net_id_seq"

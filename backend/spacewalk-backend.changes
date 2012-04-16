@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Apr 16 17:45:39 CEST 2012 - mc@suse.de
+
+- ignore ip6addr if provided with hw_refresh from newer
+  client versions
+
+-------------------------------------------------------------------
 Fri Apr 13 13:13:38 CEST 2012 - ug@suse.de
 
 - fixed packaging of spacewalk-backend-xmlrpc
