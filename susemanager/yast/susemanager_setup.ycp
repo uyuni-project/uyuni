@@ -6,6 +6,7 @@
     Wizard::CreateDialog();
 
     list dialog = [
+    "susemanager_reqs",
 	"susemanager_ask",
 	"susemanager_migration",
 	"susemanager_manager",
