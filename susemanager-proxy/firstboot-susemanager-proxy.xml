@@ -84,6 +84,7 @@
             <label>Network Configuration</label>
             <proposal_modules config:type="list">
                 <proposal_module>lan</proposal_module>
+                <proposal_module>proxy</proposal_module>
             </proposal_modules>
         </proposal>
     </proposals>
@@ -105,32 +106,6 @@
                     <name>firstboot_language_keyboard</name>
                 </module>
                 <module>
-                    <label>Root Password</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>inst_root</name>
-                </module>
-<!--
-                <module>
-                    <label>Language</label>
-                    <enabled config:type="boolean">false</enabled>
-                    <name>firstboot_language</name>
-                </module>
-                <module>
-                    <label>Keyboard Layout</label>
-                    <enabled config:type="boolean">false</enabled>
-                    <name>firstboot_keyboard</name>
-                </module>
-                <module>
-                    <label>Welcome</label>
-                    <name>firstboot_welcome</name>
-                </module>
--->
-                <module>
-                    <label>License Agreements</label>
-                    <enabled config:type="boolean">false</enabled>
-                    <name>firstboot_licenses</name>
-                </module>
-                <module>
                     <label>License Agreement</label>
                     <enabled config:type="boolean">true</enabled>
                     <name>firstboot_license_novell</name>
@@ -139,43 +114,18 @@
                     <label>License Agreement</label>
                     <enabled config:type="boolean">false</enabled>
                     <name>firstboot_license</name>
-                  </module>
-                <module>
-                  <label>Product Requirements</label>
-                  <enabled config:type="boolean">false</enabled>
-                  <name>susemanager_reqs</name>
-                </module>
-
-<!--
-                <module>
-                    <label>Host Name</label>
-                    <enabled config:type="boolean">false</enabled>
-                    <name>inst_hostname</name>
                 </module>
                 <module>
-                    <label>Network</label>
-		     this step only restarts service 'network'
-                    <name>firstboot_network_write</name>
-                    <enabled config:type="boolean">false</enabled>
-                </module>
-                <module>
+                    <label>Root Password</label>
                     <enabled config:type="boolean">true</enabled>
-                    <name>firstboot_ssh</name>
+                    <name>inst_root</name>
                 </module>
--->
                 <module>
                     <label>Network</label>
                     <name>inst_proposal</name>
                     <enabled config:type="boolean">true</enabled>
                     <proposal>firstboot_network</proposal>
                 </module>
-<!--
-                 <module>
-                    <label>Automatic Configuration</label>
-                    <name>inst_automatic_configuration</name>
-                    <enabled config:type="boolean">false</enabled>
-                  </module>
--->
                 <module>
                     <label>Time and Date</label>
                     <enabled config:type="boolean">true</enabled>
@@ -186,39 +136,6 @@
                     <enabled config:type="boolean">true</enabled>
                     <name>firstboot_ntp</name>
                 </module>
-<!--
-                <module>
-                    <label>Desktop</label>
-                    <enabled config:type="boolean">false</enabled>
-                    <name>firstboot_desktop</name>
-                </module>
-                <module>
-                    <label>Network</label>
-                    <name>inst_proposal</name>
-                    <enabled config:type="boolean">false</enabled>
-                    <proposal>firstboot_network</proposal>
-                </module>
-                <module>
-                    <label>Users</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>inst_auth</name>
-                </module>
-                <module>
-                    <label>Users</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>inst_user</name>
-                </module>
-                <module>
-                    <label>Customer Center</label>
-                    <name>inst_suse_register</name>
-                </module>
-                <module>
-                    <label>Hardware</label>
-                    <name>inst_proposal</name>
-                    <enabled config:type="boolean">false</enabled>
-                    <proposal>firstboot_hardware</proposal>
-                </module>
--->
                 <module>
                     <label>Finish Setup</label>
                     <name>firstboot_write</name>
@@ -231,43 +148,6 @@
                     <enable_back>no</enable_back>
                     <enable_next>no</enable_next>
                   </module>
-
-
-->
-
-<!-- We let the user run manually the SUSE Manager setup part
-because he may want to do a migration instead -->
-
-<!--
-                <module>
-                    <label>SUSE Manager</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>susemanager_manager</name>
-                </module>
-                <module>
-                    <label>SUSE Manager: Certificates</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>susemanager_cert</name>
-                </module>
-                <module>
-                    <label>SUSE Manager: Database</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>susemanager_db</name>
-                </module>
-                <module>
-                    <label>SUSE Manager: NCC</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>susemanager_ncc</name>
-                </module>
-                <module>
-                    <label>SUSE Manager: Write Settings</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>susemanager_write</name>
-                </module>
-
--->
-
-
                 <module>
                     <label>Finish Setup</label>
                     <name>inst_congratulate</name>
