@@ -52,7 +52,6 @@ Requires: bcel
 Requires: c3p0
 Requires: hibernate3 >= 3.2.4
 Requires: java >= 1.6.0
-Requires: java-devel >= 1.6.0
 Requires: jakarta-commons-lang >= 2.1
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-discovery
@@ -287,7 +286,6 @@ Requires: bcel
 Requires: c3p0
 Requires: hibernate3 >= 3.2.4
 Requires: java >= 1.6.0
-Requires: java-devel >= 1.6.0
 Requires: jakarta-commons-lang >= 2.1
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
