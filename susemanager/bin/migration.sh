@@ -101,7 +101,7 @@ fi
 if [ -n "$REALHOSTNAME" ]; then
         echo "$REALHOSTNAME" > /etc/HOSTNAME
 fi
-SuSEconfig --module postfix
+/usr/sbin/SuSEconfig.postfix
 }
 
 setup_hostname() {
