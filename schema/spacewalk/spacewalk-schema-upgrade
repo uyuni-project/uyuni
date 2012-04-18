@@ -108,9 +108,13 @@ if (!$foundtarget) {
 $retried = 0;
 RETRYSOURCE:
 
-if ($start_schema_norm eq $target_schema_norm) {
-	warn "Your database schema already matches the schema package version [$target_schema_norm].\n";
+if ($start_schema eq $target_schema) {
+	warn "Your database schema already matches the schema package version [$target_schema].\n";
 	exit;
+}
+if ($start_schema_norm eq $target_schema_norm) {
+       print "The schema version is the same, except for the dist tag.\n";
+       $upgrade_path{$target_schema_norm} = undef;
 }
 
 print "Searching for start path:  [$start_schema_norm]\n";
