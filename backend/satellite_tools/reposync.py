@@ -993,7 +993,7 @@ def _update_bugs(notice):
         if bz['type'] == 'bugzilla' and bz['id'] not in bugs:
             bug = Bug()
             bug.populate({'bug_id': bz['id'],
-                          'summary': bz['title'],
+                          'summary': bz['title'] or ("Bug %s" % bz['id']),
                           'href': bz['href']})
             bugs[bz['id']] = bug
     return bugs.values()
