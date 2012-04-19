@@ -219,7 +219,7 @@ and taskomatic process.
 %package oracle
 Summary: Oracle database backend support files for Spacewalk Java
 Group: Applications/Internet
-Requires: ojdbc5
+Requires: ojdbc14
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
 %else
@@ -448,7 +448,7 @@ install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{cobdirsni
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{cobdirsnippets}/sles_no_signature_checks
 
 ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT/%{_bindir}/taskomaticd
-ln -s -f %{_javadir}/ojdbc5.jar $RPM_BUILD_ROOT%{jardir}/ojdbc5.jar
+ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT%{jardir}/ojdbc14.jar
 install -d -m 755 $RPM_BUILD_ROOT/%{realcobsnippetsdir}
 ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT/%{realcobsnippetsdir}/spacewalk
 
@@ -696,7 +696,7 @@ fi
 
 %files oracle
 %defattr(644, tomcat, tomcat)
-%{jardir}/ojdbc5.jar
+%{jardir}/ojdbc14.jar
 
 %files postgresql
 %defattr(644, tomcat, tomcat)
