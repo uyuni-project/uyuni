@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr 19 16:25:05 CEST 2012 - mantel@suse.de
+
+- fix broken squid/http_proxy require
+
+-------------------------------------------------------------------
 Thu Apr 19 14:17:58 CEST 2012 - mantel@suse.de
 
 - require http_proxy instead of squid to allow use of squid3
