@@ -47,11 +47,14 @@ Requires(post): /usr/bin/xargs
 %define lib64 ()(64bit)
 Requires:       libaio.so.1%{lib64}
 %endif
-Provides:       libocci.so.%{soversion}.1%{?lib64}   = %{icversion}
-Provides:       libnnz%{soversion}.so%{?lib64}       = %{icversion}
-Provides:       libocijdbc%{soversion}.so%{?lib64}   = %{icversion}
-Provides:       libclntsh.so.%{soversion}.1%{?lib64} = %{icversion}
-Provides:       libociei.so%{?lib64}       = %{icversion}
+# These Provides are fullfilled by instantclient-basic
+# having them multiple times cause trouble in the buildservice
+#
+#Provides:       libocci.so.%{soversion}.1%{?lib64}   = %{icversion}
+#Provides:       libnnz%{soversion}.so%{?lib64}       = %{icversion}
+#Provides:       libocijdbc%{soversion}.so%{?lib64}   = %{icversion}
+#Provides:       libclntsh.so.%{soversion}.1%{?lib64} = %{icversion}
+#Provides:       libociei.so%{?lib64}       = %{icversion}
 Provides:       ojdbc14                    = %{icversion}
 Obsoletes:      rhn-oracle-jdbc           <= 1.0
 Requires:       libstdc++.so.5%{?lib64}
