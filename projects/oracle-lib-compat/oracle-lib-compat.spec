@@ -16,16 +16,16 @@ BuildRoot:      %{_tmppath}/%{name}-root-%(%{__id_u} -n)
 %ifarch s390 s390x
 %define icversion 10.2.0.4.0
 %define icdir %{icversion}
-Requires:       oracle-instantclient-basic = %{icversion}
-Requires:       oracle-instantclient-sqlplus = %{icversion}
+Requires(pre):       oracle-instantclient-basic = %{icversion}
+Requires(pre):       oracle-instantclient-sqlplus = %{icversion}
 BuildRequires:       oracle-instantclient-basic = %{icversion}
 BuildRequires:       oracle-instantclient-sqlplus = %{icversion}
 %define soversion 10
 %else
 %define icversion 11.2.0.3.0
 %define icdir 11.2
-Requires:       oracle-instantclient11.2-basic = %{icversion}
-Requires:       oracle-instantclient11.2-sqlplus = %{icversion}
+Requires(pre):       oracle-instantclient11.2-basic = %{icversion}
+Requires(pre):       oracle-instantclient11.2-sqlplus = %{icversion}
 BuildRequires:       oracle-instantclient11.2-basic = %{icversion}
 BuildRequires:       oracle-instantclient11.2-sqlplus = %{icversion}
 %define soversion 11
