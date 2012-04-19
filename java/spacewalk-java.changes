@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Thu Apr 19 15:17:34 CEST 2012 - jrenner@suse.de
+
+- version 1.7.54.4-1
+- Roll back ojdbc5 -> ojdbc14 for compatibility with upstream
+- Removed double-dash from WebUI copyright notice.
+- fix PackageEvr handling
+- increase taskomatic memory
+- Show systems that need reboot because of an errata.
+- Remove the 'Require' on java-devel since it shouldn't be required
+- fix the ErrataHandler.clone method
+- make system snapshot when changing server entitlements using API
+- do not scrub search_string
+- making errata.clone api not requires cloned channels
+
+-------------------------------------------------------------------
 Tue Apr 17 16:18:10 CEST 2012 - jrenner@suse.de
 
 - Fix broken link to organization page (bnc#757041)
