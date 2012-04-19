@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Apr 19 14:17:58 CEST 2012 - mantel@suse.de
+
+- require http_proxy instead of squid to allow use of squid3
+
+-------------------------------------------------------------------
 Fri Mar 23 11:29:59 CET 2012 - mc@suse.de
 
 - rotate logfiles as user wwwrun (bnc#681984) CVE-2011-1550

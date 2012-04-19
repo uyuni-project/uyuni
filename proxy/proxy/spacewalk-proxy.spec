@@ -44,7 +44,6 @@ This package is never built.
 %package management
 Summary: Packages required by the Spacewalk Management Proxy
 Group:   Applications/Internet
-Requires: squid
 Requires: spacewalk-backend >= 1.7.24
 # python-hashlib is optional for spacewalk-backend-libs
 # but we need made it mandatory here
@@ -53,6 +52,7 @@ Requires: python-hashlib
 Requires: sos
 Requires(preun): initscripts
 Requires: spacewalk-proxy-selinux
+Requires: http_proxy
 %endif
 Requires: %{name}-broker = %{version}
 Requires: %{name}-redirect = %{version}
@@ -61,6 +61,7 @@ Requires: %{name}-docs
 Requires: %{name}-html
 Requires: jabberd spacewalk-setup-jabberd
 Requires: httpd
+Requires: squid
 Obsoletes: rhns-proxy < 5.3.0
 Obsoletes: rhns-proxy-management < 5.3.0
 BuildRequires: /usr/bin/docbook2man
@@ -83,15 +84,16 @@ This package require all needed packages for Spacewalk Proxy Server.
 %package broker
 Group:   Applications/Internet
 Summary: The Broker component for the Spacewalk Proxy Server
-Requires: squid
 Requires: spacewalk-certs-tools
 Requires: spacewalk-proxy-package-manager
 Requires: spacewalk-ssl-cert-check
 Requires: httpd
 %if 0%{?suse_version}
 Requires: apache2-prefork
+Requires: http_proxy
 %else
 Requires: mod_ssl
+Requires: squid
 %endif
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: mod_python
