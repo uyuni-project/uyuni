@@ -415,9 +415,7 @@ else
 fi
 
 ln -sf /etc/pki/spacewalk/jabberd/server.pem /etc/jabberd/server.pem
-ln -sf /etc/pki/spacewalk/jabberd/server.pem /etc/jabberd/server.pem
-sed -e "s/\${session.hostname}/$HOSTNAME/g" </usr/share/rhn/installer/jabberd/c2s.xml >/etc/jabberd/c2s.xml
-sed -e "s/\${session.hostname}/$HOSTNAME/g" </usr/share/rhn/installer/jabberd/sm.xml >/etc/jabberd/sm.xml
+/usr/bin/spacewalk-setup-jabberd --macros "hostname:$HOSTNAME"
 
 # size of squid disk cache will be 60% of free space on /var/cache/squid
 # df -P give free space in kB
