@@ -93,7 +93,11 @@ echo 'diag_adr_enabled = off' > $RPM_BUILD_ROOT/usr/lib/oracle/%{icdir}/client/l
 %ifnarch s390x
 mkdir -p $RPM_BUILD_ROOT/%{_javadir}
 %if 0%{?suse_version}
+%ifarch x86_64
 ln -sf ../../lib/oracle/%{icdir}/client64/lib/ojdbc5.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
+%else
+ln -sf ../../lib/oracle/%{icdir}/client/lib/ojdbc5.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
+%endif
 %else
 ln -sf ../../%{_lib}/oracle/%{icdir}/client/lib/ojdbc6.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
 %endif
