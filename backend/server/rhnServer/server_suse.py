@@ -179,21 +179,25 @@ class SuseData:
 
 
   def get_installed_product_id(self, product):
+    version_query = "sip.version = :version"
+    release_query = "sip.release = :release"
     if not product['version']:
-       product['version'] = '' 
+       product['version'] = ''
+       version_query = "(sip.version = :version or sip.version is NULL)"
     if not product['release']:
        product['release'] = ''
+       release_query = "(sip.release = :release or sip.release is NULL)"
 
     h = rhnSQL.prepare("""
       SELECT sip.id
         FROM suseInstalledProduct sip
          JOIN rhnPackageArch rpa ON sip.arch_type_id = rpa.id
        WHERE sip.name = :name
-         AND sip.version = :version
+         AND %s
          AND rpa.label = :arch
-         AND sip.release = :release
+         AND %s
          AND sip.is_baseproduct = :baseproduct
-    """)
+    """ % (version_query, release_query))
     apply(h.execute, (), product)
     d = h.fetchone_dict()
     if not d:
