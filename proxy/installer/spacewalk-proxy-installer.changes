@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 19 13:46:08 CEST 2012 - mantel@suse.de
+
+- squid stores its data in /var/cache/squid, not in
+  /var/spool/squid
+
+-------------------------------------------------------------------
 Fri Mar 30 14:50:00 CEST 2012 - mc@suse.de
 
 - version 1.7.6.2-1

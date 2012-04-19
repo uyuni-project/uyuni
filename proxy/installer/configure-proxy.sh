@@ -419,12 +419,12 @@ ln -sf /etc/pki/spacewalk/jabberd/server.pem /etc/jabberd/server.pem
 sed -e "s/\${session.hostname}/$HOSTNAME/g" </usr/share/rhn/installer/jabberd/c2s.xml >/etc/jabberd/c2s.xml
 sed -e "s/\${session.hostname}/$HOSTNAME/g" </usr/share/rhn/installer/jabberd/sm.xml >/etc/jabberd/sm.xml
 
-# size of squid disk cache will be 60% of free space on /var/spool/squid
+# size of squid disk cache will be 60% of free space on /var/cache/squid
 # df -P give free space in kB
 # * 60 / 100 is 60% of that space
 # / 1024 is to get value in MB
-SQUID_SIZE=$(df -P /var/spool/squid | awk '{a=$4} END {printf("%d", a * 60 / 100 / 1024)}')
-SQUID_REWRITE="s|cache_dir ufs /var/spool/squid 15000 16 256|cache_dir ufs /var/spool/squid $SQUID_SIZE 16 256|g;"
+SQUID_SIZE=$(df -P /var/cache/squid | awk '{a=$4} END {printf("%d", a * 60 / 100 / 1024)}')
+SQUID_REWRITE="s|cache_dir ufs /var/cache/squid 15000 16 256|cache_dir ufs /var/cache/squid $SQUID_SIZE 16 256|g;"
 SQUID_VER_MAJOR=$(squid -v | awk -F'[ .]' '/Version/ {print $4}')
 if [ $SQUID_VER_MAJOR -ge 3 ] ; then
     # squid 3.X has acl 'all' built-in
