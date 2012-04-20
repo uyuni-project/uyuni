@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Apr 20 15:42:31 CEST 2012 - mc@suse.de
+
+- version 1.7.14.2-1
+- not all msgs are CommunicationError objects
+- fix typo in man page
+- correct path to rhsm's certlib
+
+-------------------------------------------------------------------
 Wed Mar 21 17:02:27 CET 2012 - mc@suse.de
 
 - version 1.7.14.1-1
