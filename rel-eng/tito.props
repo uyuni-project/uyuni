@@ -10,5 +10,5 @@ obs_options = -A https://api.suse.de
 
 [Devel:Galaxy:Manager:Head]
 disttag =
-blacklist=jabberd-selinux-workaround msv-workaround spacewalk-jpp-workaround spacewalk-oro-compat
+blacklist=heirloom-pkgtools oracle-server-admin oracle-server-scripts rhnclient smartpm jabberd-selinux-workaround jabberd-selinux oracle-rhnsat-selinux oracle-selinux oracle-xe-selinux spacewalk-monitoring-selinux spacewalk-proxy-selinux spacewalk-selinux cx_Oracle apt-spacewalk perl-DBD-Oracle msv-workaround spacewalk-jpp-workaround spacewalk-oro-compat
 
