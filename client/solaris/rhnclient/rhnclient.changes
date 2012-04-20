@@ -1,0 +1,7 @@
+-------------------------------------------------------------------
+Fri Apr 20 15:37:39 CEST 2012 - mc@suse.de
+
+- version 0.14.1-1
+- Fix summary of client tools packages using "Spacewalk" instead of "RHN"
+  (bnc#671741)
+

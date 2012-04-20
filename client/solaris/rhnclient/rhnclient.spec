@@ -5,7 +5,7 @@
 Summary: Spacewalk Client Utilities and Libraries
 Name: rhnclient
 Source0: %{name}-%{version}.tar.gz
-Version: 0.14
+Version: 0.14.1
 Release: 1
 License: GPLv2
 Group: Development/Libraries
