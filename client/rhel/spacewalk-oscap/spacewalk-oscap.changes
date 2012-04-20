@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Apr 20 15:46:26 CEST 2012 - mc@suse.de
+
+- version 0.0.4.2-1
+- When errors occur submit them back to the server.
+- Store also @idref of xccdf:rule-result element
+- We want to store all idents per rule-result
+- Only one Profile element is useful
+- Make sure only one TestResult element is used
+
+-------------------------------------------------------------------
 Wed Mar 21 16:54:15 CET 2012 - mc@suse.de
 
 - version 0.0.4.1-1
