@@ -5,7 +5,7 @@
 %define modulename oracle-xe
 
 Name:            oracle-xe-selinux
-Version:         10.2.0.23
+Version:         10.2.0.23.1
 Release:         1%{?dist}
 Summary:         SELinux policy module supporting Oracle XE
 Group:           System Environment/Base
