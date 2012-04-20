@@ -11857,6 +11857,18 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
      </group>
 
      <group>
+       <context-group>
+         <context context-type="sourcefile">Page for a new SCAP scan schedule for SSM</context>
+       </context-group>
+       <trans-unit id="ssm.audit.xccdf.targetedsystems">
+         <source>Targeted Systems</source>
+       </trans-unit>
+       <trans-unit id="ssm.audit.xccdf.capability">
+         <source>OpenSCAP Scan Capability</source>
+       </trans-unit>
+     </group>
+
+     <group>
        <context-group name="ctx">
          <context context-type="sourcefile">View of SCAP scans for given system</context>
        </context-group>
