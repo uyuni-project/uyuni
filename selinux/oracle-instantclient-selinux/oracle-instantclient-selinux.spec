@@ -1,6 +1,6 @@
 
 Name:		oracle-instantclient-selinux
-Version:	11.2.0.1
+Version:	11.2.0.1.1
 Release:	1%{?dist}
 Summary:	SELinux support for Oracle Instant Client 11g
 Group:		System Environment/Base
