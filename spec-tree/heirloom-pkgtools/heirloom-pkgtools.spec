@@ -6,7 +6,7 @@ Summary:	Heirloom Packaging Tools
 Group:		Development/Tools
 License:	CDDL
 Version:	1.%{heriloom_pkgtools_version}
-Release:	6%{?dist}
+Release:	7%{?dist}
 
 URL:		http://heirloom.sourceforge.net/pkgtools.html
 Source0:	%{name}-%{heriloom_pkgtools_version}.tar.bz2
@@ -98,6 +98,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_var}/sadm/install/admin/default
 
 %changelog
+* Fri Apr 20 2012 Michael Calmer <mc@suse.de> 1.070227-7
+- Revert "Extend original release number by OBS release."
+- Extend original release number by OBS release.
+
 * Fri Feb 27 2009 Jan Pazdziora 1.070227-6
 - fixed pkgmk producing wrong checksums in pkgmap on 64bit
 
