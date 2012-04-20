@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Apr 20 14:54:34 CEST 2012 - mc@suse.de
+
+- version 0.2.2-1
+- require docbook-style-xsl only on RHEL
+- add man page
+- Description lines must not exceed 80 characters
+- Summary-must-begin-with-capital-letter
+
+-------------------------------------------------------------------
 Wed Mar 21 17:26:16 CET 2012 - mc@suse.de
 
 - version 0.2.1-1
