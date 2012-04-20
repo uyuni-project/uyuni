@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Apr 20 15:29:36 CEST 2012 - mc@suse.de
+
+- version 1.7.3-1
+- fix running SuSEconfig.postfix in SLE11-SP2
+- cleanup firstboot config - move License Agreement after Language
+- call mgr-ncc-sync only after setup or migration
+- show the local db backend in UI
+- add radio buttons for selecting remote DB backend type
+
+-------------------------------------------------------------------
 Mon Apr 16 17:37:39 CEST 2012 - ug@suse.de
 
 - added system requirement check to susemanager_setup
