@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Apr 20 15:31:39 CEST 2012 - mc@suse.de
+
+- version 1.7.15.2-1
+- make generated SSL certificate publicly available
+- new option to list snapshot details
+- support for psql syntax
+- added spacewalk-manage-channel-lifecycle script
+- spacewalk-clone-by-date manpage bugfixes/cleanups
+- reused function from spacewalk.common.cli
+
+-------------------------------------------------------------------
 Wed Mar 21 17:54:26 CET 2012 - mc@suse.de
 
 - version 1.7.15.1-1
