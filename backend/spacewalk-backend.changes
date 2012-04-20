@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Fri Apr 20 15:34:23 CEST 2012 - mc@suse.de
+
+- version 1.7.38.4-1
+- Fix inserting installed products
+- set a bug title if we do not get one
+- The mod_wsgi insists on having something after the numeric value on the
+  Status line.
+- Workaround httplib in 2.4 which did not have the responses dictionary.
+- write nicer error message in case you are missing rpm files
+- update man-pages
+- copy postgres initlog in SUSE
+- adding PostgreSQL configuration and log files to the debug.
+- updating rhn-charsets man page -- update list of value names, no
+  command line options.
+- make rhn-charsets working on PostgreSQL as well; the output format
+  changed even for Oracle.
+
+-------------------------------------------------------------------
 Fri Apr 13 15:43:45 CEST 2012 - mc@suse.de
 
 - version 1.7.38.3-1
