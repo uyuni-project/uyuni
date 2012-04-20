@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Apr 20 14:11:49 CEST 2012 - mc@suse.de
+
+- version 11.2.0.6.2-1
+- link correct directory on i586
+- drop useless provides
+- instantclient packages need a pre requires
+
+-------------------------------------------------------------------
 Fri Mar 30 16:48:36 CEST 2012 - mc@suse.de
 
 - version 11.2.0.6.1-1
