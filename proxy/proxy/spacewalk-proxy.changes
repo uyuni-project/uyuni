@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 20 15:33:19 CEST 2012 - mc@suse.de
+
+- version 1.7.12.2-1
+- refresh proxy auth cache for hostname changes
+
+-------------------------------------------------------------------
 Thu Apr 19 16:25:05 CEST 2012 - mantel@suse.de
 
 - fix broken squid/http_proxy require
