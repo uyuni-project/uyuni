@@ -3,7 +3,7 @@
 
 Name: apt-spacewalk
 Summary: Spacewalk plugin for Advanced Packaging tool.
-Version: 1.0.4
+Version: 1.0.4.1
 Release: 1%{?dist}
 License: GPLv2
 Source0: https://example.com/%{name}-%{version}.tar.gz

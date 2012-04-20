@@ -1,0 +1,9 @@
+-------------------------------------------------------------------
+Fri Apr 20 14:24:42 CEST 2012 - mc@suse.de
+
+- version 1.0.4.1-1
+- The method can be killed by the keyboard interrupt
+- Introducing actions.packages dispatcher
+- Do not use rpmUtils on Debian
+- Skip the extra lines sent by Apt
+
