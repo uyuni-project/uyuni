@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Fri Apr 20 15:40:14 CEST 2012 - mc@suse.de
+
+- version 1.7.4.2-1
+- change service startup order so jabberd can finish before osa-
+  dispatcher starts
+- add man page for rhn-install-ssl-cert.pl
+- add man page for rhn-deploy-ca-cert.pl
+- add man page for rhn-generate-pem.pl
+- sudo and restorecon is not needed any more
+- using packages rather than filedesps
+
+-------------------------------------------------------------------
 Wed Mar 21 17:30:29 CET 2012 - mc@suse.de
 
 - version 1.7.4.1-1
