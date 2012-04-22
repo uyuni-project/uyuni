@@ -35,7 +35,7 @@ Requires: dbus-1-python
 %else
 Requires: dbus-python
 %endif
-%if 0%{?fedora} || 0%{?rhel} > 5
+%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
 Requires: python-gudev
 Requires: python-hwdata
 %else
