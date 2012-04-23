@@ -1763,7 +1763,7 @@ SUSE Manager administrator and request a satellite-sync for the rhn-tools channe
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
-Make sure the rhn-kickstart* packages corresponding to this kickstart are
+Make sure the spacewalk-koan package corresponding to this kickstart are
 available in the kickstart's base channel's 'rhn-tools' channel. If not, you
 will need to make them available for this kickstart profile to function properly.
 &lt;/li&gt;
