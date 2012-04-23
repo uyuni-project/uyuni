@@ -146,7 +146,6 @@ Provides:  spacewalk-db-virtual = %{version}-%{release}
 Requires: spacewalk-java-postgresql
 Requires: perl(DBD::Pg)
 Requires: spacewalk-backend-sql-postgresql
-Requires: /usr/bin/psql
 %if 0%{?rhel} == 5
 Requires: postgresql84-contrib
 %else
