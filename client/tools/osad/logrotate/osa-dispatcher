@@ -7,7 +7,7 @@
     compress
     notifempty
     missingok
-    size 100M
+    size 10M
     su wwwrun www
 }
 
@@ -18,5 +18,5 @@
     compress
     notifempty
     missingok
-    size 100M
+    size 10M
 }
