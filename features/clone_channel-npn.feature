@@ -52,12 +52,12 @@ Feature: Clone a Channel
      And I click on "Create Channel"
      And I should see a "Software Channel: Clone 3 of SLES11-SP1-Updates x86_64 Channel" text
      And I choose "Merge w/CL-slessp1-aaa_base-sysvinit-2610" for "slessp1-aaa_base-sysvinit-2610"
-     And I choose "Clone as CL-slessp1-suseRegister-2953-1" for "slessp1-suseRegister-2953"
+     And I choose "Clone as CM-slessp1-suseRegister-2953" for "slessp1-suseRegister-2953"
      And I choose "Do Nothing" for "slessp1-kernel-3280"
      And I click on "Clone Errata"
      And I click on "Update Errata"
      And I follow "List/Remove Errata"
-    Then I should see a "CL-slessp1-suseRegister-2953-1" link
+    Then I should see a "CM-slessp1-suseRegister-2953" link
      And I should see a "CL-slessp1-aaa_base-sysvinit-2610" link
 
   Scenario: check new errata exists
@@ -65,7 +65,7 @@ Feature: Clone a Channel
      When I follow "All" in the left menu
      Then I should see a "CL-slessp1-kernel-3280" link
       And I should see a "CL-slessp1-suseRegister-2953" link
-      And I should see a "CL-slessp1-suseRegister-2953-1" link
+      And I should see a "CM-slessp1-suseRegister-2953" link
       And I should see a "CL-slessp1-aaa_base-sysvinit-2610" link
 
   Scenario: check CL-slessp1-suseRegister-2953 errata
@@ -75,9 +75,9 @@ Feature: Clone a Channel
       And I should see a "bug number 546142" link
       And I should see a "restart_suggested" text
 
-  Scenario: check CL-slessp1-suseRegister-2953-1 errata
-    Given I am on the "CL-slessp1-suseRegister-2953-1" errata Details page
-     Then I should see a "CL-slessp1-suseRegister-2953-1 - Bug Fix Advisory" text
+  Scenario: check CM-slessp1-suseRegister-2953 errata
+    Given I am on the "CM-slessp1-suseRegister-2953" errata Details page
+     Then I should see a "CM-slessp1-suseRegister-2953 - Bug Fix Advisory" text
       And I should see a "maint-coord@suse.de" text
       And I should see a "bug number 546142" link
       And I should see a "restart_suggested" text
