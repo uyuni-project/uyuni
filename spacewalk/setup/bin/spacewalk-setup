@@ -364,8 +364,9 @@ sub setup_cobbler {
       #system("chkconfig xinetd on");
       system("chkconfig atftpd on");
   }
-
-  system("cobbler sync");
+  if ( system("/sbin/checkproc /usr/bin/cobblerd") == 0 ) {
+      system("cobbler sync");
+  }
 }
 
 sub setup_admin_email {

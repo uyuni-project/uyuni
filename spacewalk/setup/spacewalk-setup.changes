@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Apr 24 11:48:16 CEST 2012 - ug@suse.de
+
+- avoid "cobbler not running" warning during setup when
+  cobbler version greater than 2.0 is in use
+
+-------------------------------------------------------------------
 Fri Apr 13 15:46:24 CEST 2012 - mc@suse.de
 
 - version 1.7.9.2-1
