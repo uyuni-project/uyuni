@@ -123,7 +123,7 @@ rm -rf %{buildroot}
 %{perl_vendorlib}/*
 %{_bindir}/spacewalk-setup
 %{_bindir}/spacewalk-make-mount-points
-%{_bindir}/cobbler-setup
+%{_bindir}/cobbler20-setup
 %{_mandir}/man[13]/*.[13]*
 %dir %{_datadir}/spacewalk
 %{_datadir}/spacewalk/*
