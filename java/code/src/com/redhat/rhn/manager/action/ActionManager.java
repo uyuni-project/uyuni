@@ -1859,6 +1859,8 @@ public class ActionManager extends BaseManager {
             return null;
         }
         for (Long serverId : serverIds) {
+            Server server = SystemManager.lookupByIdAndUser(serverId, scheduler);
+
             if (!SystemManager.hasEntitlement(serverId,
                     EntitlementManager.MANAGEMENT)) {
                 throw new MissingEntitlementException(
