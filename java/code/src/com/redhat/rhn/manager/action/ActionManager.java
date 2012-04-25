@@ -1861,6 +1861,9 @@ public class ActionManager extends BaseManager {
         for (Long serverId : serverIds) {
             Server server = SystemManager.lookupByIdAndUser(serverId, scheduler);
 
+            if (!SystemManager.clientCapable(serverId, "scap.xccdf_eval")) {
+                throw new MissingCapabilityException("OpenSCAP", server);
+            }
             if (!SystemManager.hasEntitlement(serverId,
                     EntitlementManager.MANAGEMENT)) {
                 throw new MissingEntitlementException(
