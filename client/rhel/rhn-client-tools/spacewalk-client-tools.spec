@@ -113,6 +113,16 @@ Requires: %{name} = %{version}-%{release}
 Requires: %{rhnsd}
 Requires: suseRegisterInfo
 
+%if 0%{?rhel} == 5
+Requires: newt
+%endif
+%if 0%{?suse_version}
+Requires: python-newt
+%endif
+%if 0%{?fedora} || 0%{?rhel} > 5
+Requires: newt-python
+%endif
+
 %description -n spacewalk-client-setup
 spacewalk-setup contains programs and utilities to configure a system to use
 SUSE Manager or Spacewalk.
