@@ -9,7 +9,7 @@ Thu Apr 26 11:39:19 CEST 2012 - mc@suse.de
 - API: SCAP scan schedule for multiple systems
 - Put the reboot notification at the end. Make it not mutually exclusive with
   other notifications.
-- This should fix bug #739530
+- fix login page layout (bnc#739530)
 - Hide the 'Schedule' tab for systems without management ent.
 - force repo regeneration, when removing package
 - OpenSCAP integration -- schedule new scan in SSM
