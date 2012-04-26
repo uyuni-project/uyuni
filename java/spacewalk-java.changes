@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Thu Apr 26 11:39:19 CEST 2012 - mc@suse.de
+
+- version 1.7.54.5-1
+- fixed error in redhat_register snippet
+- Ensure that given system has OpenSCAP capability.
+- Ensure that given systems is available to user.
+- Repack and throw MissingEntitlementException when occurs.
+- API: SCAP scan schedule for multiple systems
+- Put the reboot notification at the end. Make it not mutually exclusive with
+  other notifications.
+- This should fix bug #739530
+- Hide the 'Schedule' tab for systems without management ent.
+- force repo regeneration, when removing package
+- OpenSCAP integration -- schedule new scan in SSM
+- do not list ks session related activation keys
+- prevent sending XML invalid chars in system.getScriptResults API
+- do not check CSRF token for login pages
+- fix errata clone name generation
+- fix message about kickstart package - we have spacewalk-koan
+- When displaying errata available for adding to channel, make sure a
+  clone is not already in the channel.
+
+-------------------------------------------------------------------
 Thu Apr 19 15:17:34 CEST 2012 - jrenner@suse.de
 
 - version 1.7.54.4-1
