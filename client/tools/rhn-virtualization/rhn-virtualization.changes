@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:28:52 CEST 2012 - mc@suse.de
+
+- version 5.4.34.2-1
+- rhn-virtualization-host should not delete chkconfig settings on
+  upgrade
+
+-------------------------------------------------------------------
 Wed Mar 21 18:14:26 CET 2012 - mc@suse.de
 
 - version 5.4.34.1-1
