@@ -17,5 +17,6 @@ Feature: mgr-bootstrap generation and registration
       And I execute "bootstrap-test.sh"
      Then I should see this client in spacewalk
       And "man" is installed
-
+      And config-actions are enabled
+      And remote-commands are enabled
 

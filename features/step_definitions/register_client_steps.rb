@@ -60,3 +60,15 @@ end
 When /^I follow this client link$/ do
   When "I follow \"#{$myhostname}\""
 end
+
+Then /^config-actions are enabled$/ do
+    if not File.exists?('/etc/sysconfig/rhn/allowed-actions/configfiles/all')
+        raise "config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist"
+    end
+end
+
+Then /^remote-commands are enabled$/ do
+    if not File.exists?('/etc/sysconfig/rhn/allowed-actions/script/run')
+        raise "remote-commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist"
+    end
+end
