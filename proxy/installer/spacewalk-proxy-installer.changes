@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:54:44 CEST 2012 - mc@suse.de
+
+- version 1.7.6.3-1
+- fix jabberd setup in configure-proxy
+
+-------------------------------------------------------------------
 Thu Apr 19 13:46:08 CEST 2012 - mantel@suse.de
 
 - squid stores its data in /var/cache/squid, not in
