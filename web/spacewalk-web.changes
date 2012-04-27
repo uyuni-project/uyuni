@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:06:27 CEST 2012 - mc@suse.de
+
+- version 1.7.28.3-1
+- add AS syntax for PostgreSQL
+- Fix errata clone name generation
+- Update perl channel-select-dropdowns to use the same hierarchical
+  sort as java pages
+- fix links pointing to not existing pages
+- remove link to xe eula
+- remove eula files; they are part of the branding packages now
+
+-------------------------------------------------------------------
 Fri Mar 30 15:21:11 CEST 2012 - mc@suse.de
 
 - version 1.7.28.2-1
