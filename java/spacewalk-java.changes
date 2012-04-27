@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:23:41 CEST 2012 - mc@suse.de
+
+- version 1.7.54.6-1
+- API: List Xccdf Scans for given machine.
+- use arch label in distchannel.setDefaultMap API as stated in the API doc
+- add missing acl to SSM
+- add missing links about Solaris Patches to SSM
+
+-------------------------------------------------------------------
 Thu Apr 26 11:39:19 CEST 2012 - mc@suse.de
 
 - version 1.7.54.5-1
