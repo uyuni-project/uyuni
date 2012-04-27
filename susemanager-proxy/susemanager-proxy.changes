@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:51:46 CEST 2012 - mc@suse.de
+
+- version 1.7.2-1
+- cleanup firstboot config - move License Agreement after Language
+
+-------------------------------------------------------------------
 Wed Mar 21 17:52:03 CET 2012 - mc@suse.de
 
 - version 1.7.1-1
