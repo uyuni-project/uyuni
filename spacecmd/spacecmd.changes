@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:11:14 CEST 2012 - mc@suse.de
+
+- version 1.7.7.3-1
+- enhancement add system_addconfigfile
+- Fix usage for configchannel_addfile
+- enhancement Add system_listconfigfiles
+- add option to allow templating for spacecmd kickstarting
+
+-------------------------------------------------------------------
 Fri Mar 30 15:00:21 CEST 2012 - mc@suse.de
 
 - version 1.7.7.2-1
