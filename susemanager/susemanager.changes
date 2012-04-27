@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:09:51 CEST 2012 - mc@suse.de
+
+- version 1.7.4-1
+- postgresql init script was reanmed - use the new name now
+
+-------------------------------------------------------------------
 Fri Apr 20 15:29:36 CEST 2012 - mc@suse.de
 
 - version 1.7.3-1
