@@ -226,8 +226,8 @@ dobby.oracle_user = oracle
 }
 
 setup_db_postgres() {
-    insserv postgresql
-    rcpostgresql start
+    insserv postgresql91
+    rcpostgresql91 start
     su - postgres -c "createdb $MANAGER_DB_NAME ; createlang plpgsql $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
 
     echo "local $MANAGER_DB_NAME $MANAGER_USER md5
@@ -241,7 +241,7 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
       mv /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.orig
       /usr/bin/pgtune -T Mixed -i /var/lib/pgsql/data/postgresql.conf.orig -o /var/lib/pgsql/data/postgresql.conf
     fi
-    rcpostgresql restart
+    rcpostgresql91 restart
 }
 
 setup_spacewalk() {
