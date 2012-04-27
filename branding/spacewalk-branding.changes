@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:22:59 CEST 2012 - mc@suse.de
+
+- version 1.7.1.2-1
+- Missing icon for the systems that need reboot list
+
+-------------------------------------------------------------------
 Tue Apr 17 16:15:05 CEST 2012 - jrenner@suse.de
 
 - Fix broken link to organization page (bnc#757041)
