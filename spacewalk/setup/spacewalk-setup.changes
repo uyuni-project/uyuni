@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:15:13 CEST 2012 - mc@suse.de
+
+- version 1.7.9.3-1
+- call cobbler sync only once
+- modify Makefile.PL for new cobbler setup layout
+- spacewalk-setup-cobbler: script to configure cobbler for Spacewalk
+- Rename cobbler-setup to cobbler20-setup
+- Create deploy.sql on PostgreSQL as well
+
+-------------------------------------------------------------------
 Tue Apr 24 11:48:16 CEST 2012 - ug@suse.de
 
 - avoid "cobbler not running" warning during setup when
