@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:08:16 CEST 2012 - mc@suse.de
+
+- version 1.7.56.4-1
+- fixing postgresql schema and adding appropriate schema upgrade
+  scripts
+- remove rhnContentSource row when delete row in oracle pkg
+- add unique constraint on rhnChannelArch.name
+- make sure that rows are unique before creating unique index
+- We need to use to_timestamp, so that we do not miss the hour-to-second part
+  on PostgreSQL.
+- Quote newlines to match the Oracle behaviour.
+- assign number of free slots
+
+-------------------------------------------------------------------
 Fri Apr 20 15:38:41 CEST 2012 - mc@suse.de
 
 - version 1.7.56.3-1
