@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:57:57 CEST 2012 - mc@suse.de
+
+- version 1.7.14.3-1
+- include package dependency on newt
+- require python-gudev and python-hwdata also on SUSE >= 1140
+
+-------------------------------------------------------------------
 Fri Apr 20 15:42:31 CEST 2012 - mc@suse.de
 
 - version 1.7.14.2-1
