@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:13:22 CEST 2012 - mc@suse.de
+
+- version 1.7.38.5-1
+- update monitoring probes in small batches to reduce the chance of a
+  deadlock
+- raise SQLSchemaError alike oracle driver does
+- fix sql query with --use-sync-date and --start-date of
+  rhn-satellite-exporter
+
+-------------------------------------------------------------------
 Fri Apr 20 15:34:23 CEST 2012 - mc@suse.de
 
 - version 1.7.38.4-1
