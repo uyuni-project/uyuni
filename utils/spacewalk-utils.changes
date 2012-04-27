@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:24:46 CEST 2012 - mc@suse.de
+
+- version 1.7.15.3-1
+- Better regex for getting system_id in apply_errata
+- determine the advisory type by parsing "advisory_type"
+- implement -n for apply_errata
+
+-------------------------------------------------------------------
 Fri Apr 20 15:31:39 CEST 2012 - mc@suse.de
 
 - version 1.7.15.2-1
