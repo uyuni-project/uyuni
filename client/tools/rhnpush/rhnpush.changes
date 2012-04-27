@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:54:01 CEST 2012 - mc@suse.de
+
+- version 5.5.42.2-1
+- removed unused get_header_struct_size()
+- removed unused function get_header_byte_range()
+
+-------------------------------------------------------------------
 Wed Mar 21 17:35:17 CET 2012 - mc@suse.de
 
 - version 5.5.42.1-1
