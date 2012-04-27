@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Apr 27 16:59:22 CEST 2012 - mc@suse.de
+
+- version 1.7.1.2-1
+- Rework reporting to correspond with 0-n rule/ident mapping
+- concatenation with null gives null on PostgreSQL, fixing.
+
+-------------------------------------------------------------------
 Wed Mar 21 16:55:04 CET 2012 - mc@suse.de
 
 - version 1.7.1.1-1
