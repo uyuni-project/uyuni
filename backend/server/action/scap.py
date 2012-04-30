@@ -31,13 +31,7 @@ def xccdf_eval(server_id, action_id, dry_run=0):
     if not dict:
         raise InvalidAction("scap.xccdf_eval: Unknown action id "
             "%s for server %s" % (action_id, server_id))
-    p = rhnSQL.read_lob(dict['parameters'])
-    if p is None:
-        p = ""
-    data = {
-        'params': p,
-        'path': dict['path']}
     return ({
         'path': dict['path'],
-        'params': p
+        'params': rhnSQL.read_lob(dict['parameters'])
         },)
