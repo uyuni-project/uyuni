@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 02 14:20:42 CEST 2012 - mc@suse.de
+
+- version 0.0.4.4-1
+- Do not pass empty string as parameter to oscap tool.
+
+-------------------------------------------------------------------
 Fri Apr 27 17:02:16 CEST 2012 - mc@suse.de
 
 - version 0.0.4.3-1
