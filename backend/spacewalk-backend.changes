@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed May 02 14:23:29 CEST 2012 - mc@suse.de
+
+- version 1.7.38.6-1
+- no fileprovide of gettext in SUSE
+- Assign a dummy profile when none is selected.
+- xccdf_eval should not send null value
+
+-------------------------------------------------------------------
 Fri Apr 27 16:13:22 CEST 2012 - mc@suse.de
 
 - version 1.7.38.5-1
