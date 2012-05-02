@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed May 02 14:25:48 CEST 2012 - mc@suse.de
+
+- version 1.7.56.5-1
+- Update existing rhn_notification_formats with the new newlines
+  matching Oracle.
+- Using PostgreSQL version of rhn_org.delete_org in upgrade scripts.
+- We cannot specify tablespace for PostgreSQL.
+
+-------------------------------------------------------------------
 Fri Apr 27 16:08:16 CEST 2012 - mc@suse.de
 
 - version 1.7.56.4-1
