@@ -59,7 +59,11 @@ Requires: rhnlib >= 2.5.38
 # for Debian support
 Requires: python-debian
 Requires: %{name}-libs >= 1.1.16-1
+%if 0%{?suse_version}
+BuildRequires: gettext
+%else
 BuildRequires: /usr/bin/msgfmt
+%endif
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
