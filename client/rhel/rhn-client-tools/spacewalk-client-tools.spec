@@ -159,6 +159,11 @@ patch -p1 < patches/rhel4-static.dif
 %endif
 
 %build
+%if 0%{?suse_version} < 1110
+# SLE10 gettext does not work with context feature feature
+# remove duplicate translation blocks
+for i in po/*.po; do sed -i -n '/^msgctxt/,/^$/d;p' "$i"; done
+%endif
 make -f Makefile.rhn-client-tools
 
 %install
