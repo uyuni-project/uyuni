@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed May 02 14:24:18 CEST 2012 - mc@suse.de
+
+- version 1.7.54.7-1
+- Remove a code which duplicates ensureAvailableToUser() method.
+- API: list results for XCCDF scan.
+- fixed the Brazilian time zone
+- Do not divide by zero. It prints a question mark.
+- API: Show OpenSCAP XCCDF Details.
+- proper use of xml entities in documentation
+
+-------------------------------------------------------------------
 Fri Apr 27 16:23:41 CEST 2012 - mc@suse.de
 
 - version 1.7.54.6-1
