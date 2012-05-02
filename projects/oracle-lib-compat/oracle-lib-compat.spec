@@ -143,7 +143,7 @@ ldconfig
 # clear execstack on libs in oracle's provided instantclient rpm
 find %{_prefix}/lib/oracle/%{icdir} \
         | xargs file | awk -F: '/ELF.*(executable|shared object)/ {print $1}' \
-        | xargs execstack -c
+        | xargs execstack -c ||:
 
 %changelog
 * Fri Feb 03 2012 Jan Pazdziora 11.2.0.6-1
