@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed May 02 14:21:17 CEST 2012 - mc@suse.de
+
+- version 1.7.14.4-1
+- fix package dependency on newt
+- require correct hal version for SLE10
+- remove duplicate translation blocks using context feature on SLE10
+
+-------------------------------------------------------------------
 Fri Apr 27 16:57:57 CEST 2012 - mc@suse.de
 
 - version 1.7.14.3-1
