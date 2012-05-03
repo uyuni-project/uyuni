@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May 03 17:43:31 CEST 2012 - mc@suse.de
+
+- version 1.7.56.6-1
+- make columns unique before adding a unique index - copy from sw1.6
+
+-------------------------------------------------------------------
 Wed May 02 14:25:48 CEST 2012 - mc@suse.de
 
 - version 1.7.56.5-1
