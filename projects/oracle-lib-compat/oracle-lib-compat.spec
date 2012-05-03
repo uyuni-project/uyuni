@@ -14,7 +14,7 @@ Source0:	https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.
 BuildRoot:      %{_tmppath}/%{name}-root-%(%{__id_u} -n)
 
 %ifarch s390 s390x
-%define icversion 10.2.0.4.0
+%define icversion 10.2.0.2
 %define icdir %{icversion}
 Requires(pre):       oracle-instantclient-basic = %{icversion}
 Requires(pre):       oracle-instantclient-sqlplus = %{icversion}
