@@ -366,7 +366,7 @@ class BrokerHandler(SharedHandler):
 
         # The session token contains everything that begins with
         # "x-rhn-auth"
-        tokenKeys = [t for t in headers if t.startsswith("x-rhn-auth")]
+        tokenKeys = [t for t in headers if t.startswith("x-rhn-auth")]
         for k in tokenKeys:
             if k.lower() == 'x-rhn-auth-channels':
                 # Multivalued header
