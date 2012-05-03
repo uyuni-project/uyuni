@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu May 03 17:40:33 CEST 2012 - mc@suse.de
+
+- version 1.7.54.8-1
+- make spacewalk-java exclusive arch x86_64
+- checkstyle fixes
+
+-------------------------------------------------------------------
 Wed May 02 14:24:18 CEST 2012 - mc@suse.de
 
 - version 1.7.54.7-1
