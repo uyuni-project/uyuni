@@ -45,11 +45,10 @@ public class UserCredentialsDeleteAction extends RhnAction {
 
         // Lookup this user's credentials
         User user = ctx.getCurrentUser();
-        Credentials creds = CredentialsFactory.lookupByUser(user);
+        Credentials creds = CredentialsFactory.lookupStudioCredentials(user);
         if (creds == null) {
             // Create new credentials if necessary
-            creds = CredentialsFactory.createNewCredentials(user);
-            creds.setType(Credentials.TYPE_STUDIO);
+            creds = CredentialsFactory.createStudioCredentials(user);
         }
         request.setAttribute(ATTRIB_CREDS, creds);
 

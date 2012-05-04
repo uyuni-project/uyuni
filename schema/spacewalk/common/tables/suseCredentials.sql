@@ -8,17 +8,18 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
---
 
 CREATE TABLE suseCredentials
 (
     id       NUMBER NOT NULL
                  CONSTRAINT suse_credentials_pk PRIMARY KEY,
     user_id  NUMBER NOT NULL UNIQUE
-                 CONSTRAINT suse_credentials_oid_fk
+                 CONSTRAINT suse_credentials_user_fk
                  REFERENCES web_contact (id)
                  ON DELETE CASCADE,
-    type     VARCHAR2(32) NOT NULL,
+    type_id  NUMBER NOT NULL UNIQUE
+                 CONSTRAINT suse_credentials_type_fk
+                 REFERENCES suseCredentialsType (id),
     url      VARCHAR2(256),
     username VARCHAR2(64) NOT NULL,
     password VARCHAR2(64) NOT NULL,
@@ -28,5 +29,5 @@ CREATE TABLE suseCredentials
 ENABLE ROW MOVEMENT
 ;
 
-CREATE SEQUENCE suse_credentials_id_seq START WITH 100;
+CREATE SEQUENCE suse_credentials_id_seq;
 
