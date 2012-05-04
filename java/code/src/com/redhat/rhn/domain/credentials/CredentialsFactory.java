@@ -65,6 +65,7 @@ public class CredentialsFactory extends HibernateFactory {
     /**
      * Load {@link Credentials} for a given {@link User} and type label.
      * @param user user
+     * @param typeLabel type label
      * @return credentials or null
      */
     public static Credentials lookupByUserAndType(User user, String typeLabel) {
@@ -109,6 +110,7 @@ public class CredentialsFactory extends HibernateFactory {
 
     /**
      * Helper method for looking up SUSE Studio credentials.
+     * @param user user
      * @return credentials or null
      */
     public static Credentials lookupStudioCredentials(User user) {
