@@ -7734,8 +7734,9 @@
             type="com.redhat.rhn.frontend.action.systems.images.ScheduleImageDeploymentAction"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
       <set-property property="postRequiredIfSubmitted" value="true" />
-      <forward name="first"
-               path="/WEB-INF/pages/systems/details/virtualization/images/images_first.jsp" />
+      <set-property property="acls" value="not system_is_virtual(); system_has_management_entitlement()" />
+      <forward name="load-async"
+               path="/WEB-INF/pages/systems/details/virtualization/images/images-loading.jsp" />
       <forward name="default"
                path="/WEB-INF/pages/systems/details/virtualization/images/images.jsp" />
       <forward name="submitted"

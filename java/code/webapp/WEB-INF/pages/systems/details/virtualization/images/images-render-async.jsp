@@ -4,15 +4,14 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
-<html>
+<c:choose>
+  <c:when test="${requestScope.errorMsg != null}">
+    <div class="page-summary">
+      <p><bean:message key="${requestScope.errorMsg}" /></p>
+    </div>
+  </c:when>
 
-<head>
-  <script type="text/javascript" src="/javascript/images.js"></script>
-</head>
-
-<body>
-  <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
-  <%@ include file="/WEB-INF/pages/systems/details/virtualization/images/images-content.jspf" %>
-</body>
-</html>
+  <c:otherwise>
+    <%@ include file="/WEB-INF/pages/systems/details/virtualization/images/images-content.jspf" %>
+  </c:otherwise>
+</c:choose>

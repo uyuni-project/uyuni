@@ -141,6 +141,6 @@ public class ImagesRenderer extends BaseFragmentRenderer {
      */
     @Override
     protected String getPageUrl() {
-        return "/WEB-INF/pages/systems/details/virtualization/images/images_content.jsp";
+        return "/WEB-INF/pages/systems/details/virtualization/images/images-render-async.jsp";
     }
 }
