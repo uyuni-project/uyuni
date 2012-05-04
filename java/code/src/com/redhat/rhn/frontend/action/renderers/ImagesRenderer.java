@@ -17,10 +17,10 @@ package com.redhat.rhn.frontend.action.renderers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,6 +29,8 @@ import org.apache.log4j.Logger;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.image.Image;
+import com.redhat.rhn.domain.image.ImageType;
+import com.redhat.rhn.domain.image.ImageTypeFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
@@ -47,8 +49,8 @@ public class ImagesRenderer extends BaseFragmentRenderer {
     public static final String ATTRIB_IMAGES_LIST = "imagesList";
     public static final String ATTRIB_ERROR_MSG = "errorMsg";
 
-    // Collection of all valid image types
-    private static List<String> validImageTypes = Arrays.asList("vmx", "xen");
+    // HashMap containing all valid image types
+    private static Map<String, ImageType> mapImgTypes = ImageTypeFactory.getImageTypesMap();
 
     /**
      * {@inheritDoc}
@@ -85,7 +87,7 @@ public class ImagesRenderer extends BaseFragmentRenderer {
         List<Appliance> ret = new ArrayList<Appliance>();
 
         // Lookup credentials and url
-        Credentials creds = CredentialsFactory.lookupByUser(user);
+        Credentials creds = CredentialsFactory.lookupStudioCredentials(user);
         if (creds != null && creds.isComplete()) {
             String studioUser = creds.getUsername();
             String studioKey = creds.getPassword();
@@ -114,7 +116,7 @@ public class ImagesRenderer extends BaseFragmentRenderer {
             // Create one image object for every build
             for (Build build : appliance.getBuilds()) {
                 // Skip this build if image type is unsupported
-                if (!validImageTypes.contains(build.getImageType())) {
+                if (!mapImgTypes.keySet().contains(build.getImageType())) {
                     continue;
                 }
                 Image img = new Image();
@@ -126,7 +128,7 @@ public class ImagesRenderer extends BaseFragmentRenderer {
                 img.setDownloadUrl(build.getDownloadUrl());
                 img.setId(new Long(build.getId()));
                 img.setImageSize(build.getImageSize());
-                img.setImageType(build.getImageType());
+                img.setImageType(mapImgTypes.get(build.getImageType()));
                 img.setVersion(build.getVersion());
                 ret.add(img);
             }

@@ -25,7 +25,7 @@
         </div>
         <rl:list dataset="imagesList" emptykey="images.jsp.noimages">
           <rl:column headerkey="images.jsp.name" filterattr="name">
-            <a href="javascript:void();" onclick="showForm('${current.id}','${current.name}','${current.version}','${current.arch}','${current.imageType}','${current.editUrl}');"><c:out value="${current.name}" /></a>
+            <a href="javascript:void();" onclick="showForm('${current.id}','${current.name}','${current.version}','${current.arch}','${current.imageType.label}','${current.editUrl}');"><c:out value="${current.name}" /></a>
           </rl:column>
           <rl:column headerkey="images.jsp.version">
             <c:out value="${current.version}" />
@@ -34,7 +34,7 @@
             <c:out value="${current.arch}" />
           </rl:column>
           <rl:column headerkey="images.jsp.type">
-            <c:out value="${current.imageType}" />
+            <c:out value="${current.imageType.label}" />
           </rl:column>
         </rl:list>
       </div>
