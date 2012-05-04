@@ -29,11 +29,12 @@ import com.redhat.rhn.domain.user.User;
  */
 public class Credentials extends BaseDomainHelper {
 
-    public static final String TYPE_STUDIO = "STUDIO";
+    // Available type labels
+    public static final String TYPE_SUSESTUDIO = "susestudio";
 
     private Long id;
     private User user;
-    private String type;
+    private CredentialsType type;
     private String url;
     private String username;
     private String encodedPassword;
@@ -74,7 +75,7 @@ public class Credentials extends BaseDomainHelper {
      * Return the type.
      * @return type
      */
-    public String getType() {
+    public CredentialsType getType() {
         return type;
     }
 
@@ -82,7 +83,7 @@ public class Credentials extends BaseDomainHelper {
      * Set the type.
      * @param typeIn type
      */
-    public void setType(String typeIn) {
+    public void setType(CredentialsType typeIn) {
         this.type = typeIn;
     }
 

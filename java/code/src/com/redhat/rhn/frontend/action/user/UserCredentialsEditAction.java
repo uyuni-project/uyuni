@@ -50,19 +50,17 @@ public class UserCredentialsEditAction extends RhnAction {
 
         // Lookup this user's credentials
         User user = ctx.getCurrentUser();
-        Credentials creds = CredentialsFactory.lookupByUser(user);
+        Credentials creds = CredentialsFactory.lookupStudioCredentials(user);
         if (creds == null) {
             // Create new credentials if necessary
-            creds = CredentialsFactory.createNewCredentials(user);
-            creds.setType(Credentials.TYPE_STUDIO);
+            creds = CredentialsFactory.createStudioCredentials(user);
             creds.setUrl(DEFAULT_URL);
         }
         request.setAttribute(ATTRIB_CREDS, creds);
 
         if (ctx.isSubmitted()) {
-            // The form was submitted
-            Credentials newCreds = CredentialsFactory
-                    .createNewCredentials(user);
+            // The form was submitted, create a temporary object
+            Credentials newCreds = CredentialsFactory.createCredentials();
             newCreds.setUsername(request.getParameter(PARAM_USER).trim());
             newCreds.setPassword(request.getParameter(PARAM_KEY).trim());
             newCreds.setUrl(request.getParameter(PARAM_URL).trim());

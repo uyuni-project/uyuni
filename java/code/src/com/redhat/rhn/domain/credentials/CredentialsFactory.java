@@ -16,10 +16,10 @@
 package com.redhat.rhn.domain.credentials;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
@@ -37,18 +37,16 @@ public class CredentialsFactory extends HibernateFactory {
     }
 
     /**
-     * Create a new pair of credentials for a given user.
-     * @param user user to associate with these credentials
-     * @return new pair of credentials
+     * Create new empty {@link Credentials}.
+     * @return new empty credentials
      */
-    public static Credentials createNewCredentials(User user) {
+    public static Credentials createCredentials() {
         Credentials creds = new Credentials();
-        creds.setUser(user);
         return creds;
     }
 
     /**
-     * Store a pair of credentials to the database.
+     * Store {@link Credentials} to the database.
      * @param creds credentials
      */
     public static void storeCredentials(Credentials creds) {
@@ -57,7 +55,7 @@ public class CredentialsFactory extends HibernateFactory {
     }
 
     /**
-     * Delete a pair of credentials from the database.
+     * Delete {@link Credentials} from the database.
      * @param creds credentials
      */
     public static void removeCredentials(Credentials creds) {
@@ -65,27 +63,56 @@ public class CredentialsFactory extends HibernateFactory {
     }
 
     /**
-     * Load credentials for a given {@link User}.
+     * Load {@link Credentials} for a given {@link User} and type label.
      * @param user user
      * @return credentials or null
      */
-    public static Credentials lookupByUser(User user) {
-        if (user == null) {
+    public static Credentials lookupByUserAndType(User user, String typeLabel) {
+        if (user == null || typeLabel == null) {
             return null;
         }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user", user);
+        params.put("label", typeLabel);
+        return (Credentials) singleton.lookupObjectByNamedQuery(
+                "Credentials.findByUserAndTypeLabel", params);
+    }
 
-        Session session = null;
-        try {
-            session = HibernateFactory.getSession();
-            return (Credentials) session.getNamedQuery("Credentials.findByUser")
-                    .setParameter("user", user)
-                    // Retrieve from cache if there
-                    .setCacheable(true).uniqueResult();
+    /**
+     * Find a {@link CredentialsType} by a given label.
+     * @param label label
+     * @return CredentialsType instance for given label
+     */
+    public static CredentialsType findCredentialsTypeByLabel(String label) {
+        if (label == null) {
+            return null;
         }
-        catch (HibernateException e) {
-            log.error("Hibernate exception: " + e.toString());
-            throw e;
-        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("label", label);
+        return (CredentialsType) singleton.lookupObjectByNamedQuery(
+                "CredentialsType.findByLabel", params);
+    }
+
+    /**
+     * Helper method for creating new SUSE Studio {@link Credentials} for a
+     * given user.
+     * @param user user to associate with these credentials
+     * @return new credentials for SUSE Studio
+     */
+    public static Credentials createStudioCredentials(User user) {
+        Credentials creds = createCredentials();
+        creds.setUser(user);
+        creds.setType(CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_SUSESTUDIO));
+        return creds;
+    }
+
+    /**
+     * Helper method for looking up SUSE Studio credentials.
+     * @return credentials or null
+     */
+    public static Credentials lookupStudioCredentials(User user) {
+        return lookupByUserAndType(user, Credentials.TYPE_SUSESTUDIO);
     }
 
     @Override
