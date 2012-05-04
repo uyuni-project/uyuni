@@ -52,6 +52,10 @@ public class ImagesRenderer extends BaseFragmentRenderer {
     // HashMap containing all valid image types
     private static Map<String, ImageType> mapImgTypes = ImageTypeFactory.getImageTypesMap();
 
+    // The URL of the page to render
+    private static final String PAGE_URL =
+            "/WEB-INF/pages/systems/details/virtualization/images/images-render-async.jsp";
+
     /**
      * {@inheritDoc}
      */
@@ -141,6 +145,6 @@ public class ImagesRenderer extends BaseFragmentRenderer {
      */
     @Override
     protected String getPageUrl() {
-        return "/WEB-INF/pages/systems/details/virtualization/images/images-render-async.jsp";
+        return PAGE_URL;
     }
 }

@@ -91,9 +91,9 @@ public class ImageType extends BaseDomainHelper implements Comparable {
         return id != null ? id.hashCode() : 0;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int compareTo(Object arg0) {
-        // TODO Auto-generated method stub
-        return 0;
+        return label.compareTo(((ImageType) arg0).getLabel());
     }
 }
