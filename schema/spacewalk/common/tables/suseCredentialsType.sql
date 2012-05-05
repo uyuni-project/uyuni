@@ -16,7 +16,7 @@
 CREATE TABLE suseCredentialsType
 (
     id        NUMBER NOT NULL
-                  CONSTRAINT suse_credentialstype_id_pk PRIMARY KEY
+                  CONSTRAINT suse_credtype_id_pk PRIMARY KEY
                   USING INDEX TABLESPACE [[64k_tbs]],
     label     VARCHAR2(64) NOT NULL,
     name      VARCHAR2(128) NOT NULL,
@@ -28,12 +28,12 @@ CREATE TABLE suseCredentialsType
 ENABLE ROW MOVEMENT
 ;
 
-CREATE INDEX suse_credentialstype_label_id_idx
+CREATE INDEX suse_credtype_label_id_idx
     ON suseCredentialsType (label, id)
     TABLESPACE [[64k_tbs]];
 
-CREATE SEQUENCE suse_credentialstype_id_seq;
+CREATE SEQUENCE suse_credtype_id_seq;
 
 ALTER TABLE suseCredentialsType
-    ADD CONSTRAINT suse_credentialstype_label_uq UNIQUE (label);
+    ADD CONSTRAINT suse_credtype_label_uq UNIQUE (label);
 

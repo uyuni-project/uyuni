@@ -14,6 +14,6 @@
 --
 
 insert into suseCredentialsType (id, label, name) values
-	(sequence_nextval('suse_credentialstype_id_seq'), 'susestudio', 'SUSE Studio');
+	(sequence_nextval('suse_credtype_id_seq'), 'susestudio', 'SUSE Studio');
 commit;
 
