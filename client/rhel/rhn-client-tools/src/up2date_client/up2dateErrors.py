@@ -198,7 +198,7 @@ class SSLCertificateVerifyFailedError(RepoError):
         else:
             RepoError.__init__(self, "The SSL certificate failed verification.")
 
-    __getattr__ = Error.__getattr__
+        self.errmsg = self.value
 
 class SSLCertificateFileNotFound(Error):
     pass
