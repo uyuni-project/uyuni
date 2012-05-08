@@ -867,7 +867,7 @@ public class ServerFactory extends HibernateFactory {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "system_installed_products");
 
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("serverid", server.getId());
         DataResult<Map<String, Object>> result = m.execute(params);
         List<String> retval = new ArrayList<String>();
@@ -880,11 +880,11 @@ public class ServerFactory extends HibernateFactory {
 
             SelectMode m2 = ModeFactory.getMode("System_queries",
                     "find_suse_product");
-            Map params2 = new HashMap();
+            Map<String, Object> params2 = new HashMap<String, Object>();
             params2.put("name", name.toLowerCase());
-            params2.put("version", version.toLowerCase());
-            params2.put("release", release.toLowerCase());
-            params2.put("arch", arch.toLowerCase());
+            params2.put("version", version != null ? version.toLowerCase() : "");
+            params2.put("release", release != null ? release.toLowerCase() : "");
+            params2.put("arch", arch != null ? arch.toLowerCase() : "");
             DataResult<Map<String, Object>> result2 = m2.execute(params2);
             if (!result2.isEmpty()) {
                 Map<String, Object> firstrow = result2.get(0);
