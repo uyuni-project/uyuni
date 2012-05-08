@@ -110,6 +110,12 @@ Tue Jan 31 16:16:31 CET 2012 - mantel@suse.de
 - some more renames Novell --> SUSE
 
 -------------------------------------------------------------------
+Thu Jan 19 12:17:49 CET 2012 - jrenner@suse.de
+
+- Setting up seclist in registration.py (bnc#782819, brc#749890)
+- CVE-2012-0059
+
+-------------------------------------------------------------------
 Thu Jan  5 10:10:01 CET 2012 - mc@suse.de
 
 - spacewalk-debug should package NCC data dump into the tar ball
