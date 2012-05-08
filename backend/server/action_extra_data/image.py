@@ -15,7 +15,7 @@
 # errata-related error handling functions
 #
 
-from spacewalk.common.rhnLog import log_error
+from spacewalk.common.rhnLog import log_debug
 
 # the "exposed" functions
 __rhnexport__ = ['deploy']
@@ -23,5 +23,5 @@ __rhnexport__ = ['deploy']
 def deploy(server_id, action_id, data={}):
     if not data:
         return
-    log_error("action_error.image.deploy: Should do something "
+    log_debug("action_error.image.deploy: Should do something "
         "useful with this data", server_id, action_id, data)

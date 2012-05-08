@@ -59,6 +59,7 @@ Requires:       python-curl
 PreReq:         %fillup_prereq %insserv_prereq
 %else
 Requires: /usr/sbin/crond
+Requires: python-hashlib
 %endif
 %if 0%{?rhel} && 0%{?rhel} < 6
 # in RHEL5 we need libvirt, but in RHEV@RHEL5 there should not be libvirt
@@ -98,6 +99,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %post host
 %{fillup_only -n rhn-virtualization-host}
+if [ -d /proc/xen ]; then
+    # xen kernel is running
+    # change the default template to the xen version
+    sed -i 's@^IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-kvm-template.xml@IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-xen-template.xml@' /etc/sysconfig/rhn/image.cfg
+fi
 
 %preun host
 %{stop_on_removal rhn-virtualization-host}
@@ -113,6 +119,11 @@ rm -rf $RPM_BUILD_ROOT
 %else
 /sbin/service crond condrestart
 %endif
+if [ -d /proc/xen ]; then
+    # xen kernel is running
+    # change the default template to the xen version
+    sed -i 's@^IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-kvm-template.xml@IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-xen-template.xml@' /etc/sysconfig/rhn/image.cfg
+fi
 
 %preun host
 if [ $1 = 0 ]; then
@@ -132,7 +143,9 @@ fi
 %dir %{rhn_dir}/
 %dir %{rhn_dir}/actions
 %dir %{rhn_dir}/virtualization
+%if 0%{?suse_version}
 %dir %{rhn_conf_dir}
+%endif
 %{rhn_dir}/virtualization/__init__.py*
 %{rhn_dir}/virtualization/batching_log_notifier.py*
 %{rhn_dir}/virtualization/constants.py*
@@ -143,7 +156,9 @@ fi
 
 %files host
 %defattr(-,root,root,-)
+%if 0%{?suse_version}
 %dir %{rhn_conf_dir}
+%endif
 %dir %{rhn_conf_dir}/virt
 %dir %{rhn_conf_dir}/virt/auto
 %{_initrddir}/rhn-virtualization-host
