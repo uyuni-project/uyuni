@@ -642,7 +642,6 @@ public class ActionManager extends BaseManager {
         details.setVcpus(vcpus);
         details.setMemKb(memkb);
         details.setBridgeDevice(bridge);
-        details.setImageType(image.getImageType());
         details.setDownloadUrl(image.getDownloadUrl());
         if (proxy != null) {
             details.setProxyServer(proxy.getServer());

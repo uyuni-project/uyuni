@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.action.image;
 
 import com.redhat.rhn.domain.action.ActionChild;
-import com.redhat.rhn.domain.image.ImageType;
 
 /**
  * DeployImageActionDetails - Class representation of the table rhnActionImageDeploy.
@@ -27,7 +26,6 @@ public class DeployImageActionDetails extends ActionChild {
     private Long vcpus;
     private Long memKb;
     private String bridgeDevice;
-    private ImageType imageType;
     private String downloadUrl;
     private String proxyServer;
     private String proxyUser;
@@ -95,22 +93,6 @@ public class DeployImageActionDetails extends ActionChild {
      */
     public void setBridgeDevice(String bridgeDeviceIn) {
         this.bridgeDevice = bridgeDeviceIn;
-    }
-
-    /**
-     * Return the image type.
-     * @return imageType
-     */
-    public ImageType getImageType() {
-        return imageType;
-    }
-
-    /**
-     * Set the image type.
-     * @param imageTypeIn image type
-     */
-    public void setImageType(ImageType imageTypeIn) {
-        this.imageType = imageTypeIn;
     }
 
     /**

@@ -17,9 +17,6 @@ CREATE TABLE rhnActionImageDeploy
                       CONSTRAINT rhn_act_idp_act_fk
                       REFERENCES rhnAction (id)
                       ON DELETE CASCADE,
-    image_type_id NUMBER NOT NULL
-                      CONSTRAINT rhn_act_idp_imgtype_fk
-                      REFERENCES suseImageType (id),
     vcpus         NUMBER NOT NULL,
     mem_kb        NUMBER NOT NULL,
     bridge_device VARCHAR2(32),

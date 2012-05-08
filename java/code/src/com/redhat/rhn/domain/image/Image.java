@@ -27,7 +27,7 @@ public class Image extends BaseDto implements Comparable<Image> {
     private String version;
     private String arch;
     private String imageSize;
-    private ImageType imageType;
+    private String imageType;
     private String downloadUrl;
     private String editUrl;
     private boolean selectable = true;
@@ -116,7 +116,7 @@ public class Image extends BaseDto implements Comparable<Image> {
      * Return the image type.
      * @return image type
      */
-    public ImageType getImageType() {
+    public String getImageType() {
         return this.imageType;
     }
 
@@ -124,7 +124,7 @@ public class Image extends BaseDto implements Comparable<Image> {
      * Set the image type.
      * @param imageTypeIn image type
      */
-    public void setImageType(ImageType imageTypeIn) {
+    public void setImageType(String imageTypeIn) {
         this.imageType = imageTypeIn;
     }
 
