@@ -110,6 +110,11 @@ Tue Jan 31 16:16:31 CET 2012 - mantel@suse.de
 - some more renames Novell --> SUSE
 
 -------------------------------------------------------------------
+Thu Jan  5 10:10:01 CET 2012 - mc@suse.de
+
+- spacewalk-debug should package NCC data dump into the tar ball
+
+-------------------------------------------------------------------
 Thu Dec 22 15:48:30 CET 2011 - mantel@suse.de
 
 - do not change server.pot
