@@ -15,15 +15,18 @@
 
 create or replace function pg_dblink_exec(in_sql in varchar) returns void as
 $$
+declare
+    conn text[];
 begin
-    perform dblink_connect('at_conn', 'dbname=' || current_database());
+    conn := dblink_get_connections();
+    if conn is NULL or NOT(conn @> '{at_conn}') then
+        perform dblink_connect('at_conn', 'dbname=' || current_database());
+    end if;
     begin
         perform dblink_exec('at_conn', in_sql, true);
     exception when others then
-        perform dblink_disconnect('at_conn');
         raise;
     end;
-    perform dblink_disconnect('at_conn');
 end;
 $$
 language plpgsql;
