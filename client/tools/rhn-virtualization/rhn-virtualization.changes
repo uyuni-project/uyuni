@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May  8 14:46:41 CEST 2012 - ug@suse.de
+
+- added generate_uuid to utils.py
+- inegrated upstream feedback to studio integration
+
+-------------------------------------------------------------------
 Fri Apr 27 16:28:52 CEST 2012 - mc@suse.de
 
 - version 5.4.34.2-1
