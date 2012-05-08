@@ -17,12 +17,6 @@ Fri Apr 27 16:13:22 CEST 2012 - mc@suse.de
   rhn-satellite-exporter
 
 -------------------------------------------------------------------
-Fri Apr 13 13:13:38 CEST 2012 - ug@suse.de
-
-- fixed packaging of spacewalk-backend-xmlrpc
-- fixed python bug in SUSE Studio image deployment
-
--------------------------------------------------------------------
 Fri Apr 20 15:34:23 CEST 2012 - mc@suse.de
 
 - version 1.7.38.4-1
@@ -54,7 +48,8 @@ Fri Apr 13 15:43:45 CEST 2012 - mc@suse.de
 -------------------------------------------------------------------
 Fri Apr 13 13:46:19 CEST 2012 - ug@suse.de
 
-- fixed Studio Image deployment (packaging and syntax error)
+- fixed packaging of spacewalk-backend-xmlrpc
+- fixed python bug in SUSE Studio image deployment
 
 -------------------------------------------------------------------
 Fri Mar 30 14:55:29 CEST 2012 - mc@suse.de
