@@ -11,10 +11,14 @@
 %define apache_user apache
 %define apache_group apache
 %endif
-%if 0%{?rhel} && 0%{?rhel} < 6 || 0%{?suse_version}
+%if 0%{?rhel} || 0%{?suse_version}
 %{!?py_ver:     %define py_ver     %(python -c "import sys; v=sys.version_info[:2]; print '%%d.%%d'%%v" 2>/dev/null || echo PYTHON-NOT-FOUND)}
 %{!?py_prefix:  %define py_prefix  %(python -c "import sys; print sys.prefix" 2>/dev/null || echo PYTHON-NOT-FOUND)}
+%if 0%{?rhel} > 5
+%{!?py_libdir:  %define py_libdir  %{py_prefix}/lib/python%{py_ver}}
+%else
 %{!?py_libdir:  %define py_libdir  %{py_prefix}/%{_lib}/python%{py_ver}}
+%endif
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %endif
 %global pythonrhnroot %{python_sitelib}/spacewalk
