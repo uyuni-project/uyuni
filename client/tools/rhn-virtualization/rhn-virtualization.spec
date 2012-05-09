@@ -198,6 +198,7 @@ fi
 %{rhn_dir}/virtualization/localvdsm.pyo
 %{rhn_dir}/actions/virt.pyo
 %{rhn_conf_dir}/studio-*-template.xml
+%{rhn_conf_dir}/image.cfg
 %doc LICENSE
 
 
