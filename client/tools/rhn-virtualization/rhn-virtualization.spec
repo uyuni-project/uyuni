@@ -179,6 +179,7 @@ fi
 %{rhn_dir}/actions/image.py*
 %{rhn_dir}/virtualization/localvdsm.py*
 %{rhn_conf_dir}/studio-*-template.xml
+%{rhn_conf_dir}/image.cfg
 %doc LICENSE
 
 

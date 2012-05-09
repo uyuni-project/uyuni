@@ -6,7 +6,7 @@ CONF_DIR_AUTO = /etc/sysconfig/rhn/virt/auto
 
 SCRIPTS = rhn-virtualization-host
 OTHER = rhn-virtualization.cron
-CONF = studio-kvm-template.xml studio-xen-template.xml
+CONF = studio-kvm-template.xml studio-xen-template.xml image.cfg
 
 all: 
 	echo "Nothing to do"
