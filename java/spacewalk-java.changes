@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Wed May 09 13:43:16 CEST 2012 - mc@suse.de
+
+- version 1.7.54.9-1
+- Completely remove the image type from deployment action details
+- Fix NPE when one of (version|release|arch) is null (bnc#761161)
+- synonym rhnUser does not exist anymore - use web_contact instead
+- Refactor jsp files and make bridge device optional
+- Normalize image types by creating new table suseImageType
+- Normalize credentials types by creating new table suseCredentialsType
+- remember pre-filled form attributes in case of form validation error
+- marking Script Name as required filed on the KickstartScriptEdit
+  page
+- make newly introduced rhn tag functions available
+- When kickstarting a system there is an option that allows you to
+  create or re-create a network bond.
+- fix listSharedChannels to only show this org's channels
+- fix my_channel_tree query
+- fix channel.listRedHatChannels shows custom channels
+
+-------------------------------------------------------------------
 Thu May 03 17:40:33 CEST 2012 - mc@suse.de
 
 - version 1.7.54.8-1
