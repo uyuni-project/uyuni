@@ -20,7 +20,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager
      Then I should see a "Details of XCCDF Scan" text
       And I should see a "RHEL6-Default" text
       And I should see a "XCCDF Rule Results" text
-      And I should see a "CCE-3918-0" text
-      And I should see a "rule-1010" link
+      And I should see a "CCE-" text
+      And I should see a "rule-" link
 
 
