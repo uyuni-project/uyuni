@@ -17,7 +17,7 @@ CREATE TABLE suseCredentials
                  CONSTRAINT suse_credentials_user_fk
                  REFERENCES web_contact (id)
                  ON DELETE CASCADE,
-    type_id  NUMBER NOT NULL UNIQUE
+    type_id  NUMBER NOT NULL
                  CONSTRAINT suse_credentials_type_fk
                  REFERENCES suseCredentialsType (id),
     url      VARCHAR2(256),
