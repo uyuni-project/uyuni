@@ -334,8 +334,10 @@ gpgcheck=0
 EOF
     else
 
-      # On code11 simply add the repo and then install
-      cat <<EOF >"$Z_CLIENT_REPO_FILE"
+      # On code11 sp1 simply add the repo
+      # on SP2, skip this step
+      if [ "${Z_CLIENT_CODE_VERSION}" = "11" -a ${Z_CLIENT_CODE_PATCHLEVEL} -le 1 ]; then
+        cat <<EOF >"$Z_CLIENT_REPO_FILE"
 [$Z_CLIENT_REPO_NAME]
 name=$Z_CLIENT_REPO_NAME
 baseurl=$Z_CLIENT_REPO_URL
@@ -344,7 +346,9 @@ autorefresh=1
 keeppackages=0
 gpgcheck=0
 EOF
-      zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME"
+        zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME"
+      fi
+      # install missing packages
       zypper --non-interactive in $Z_MISSING || {
 	  echo "ERROR: Failed to install all missing packages."
 	  exit 1
