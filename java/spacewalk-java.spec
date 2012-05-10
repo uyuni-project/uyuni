@@ -370,7 +370,7 @@ export BASE_OPTIONS="-Djavadoc.method.scope=public \
 -Djavadoc.lazy=false \
 -Dcheckstyle.header.file=buildconf/LICENSE.txt"
 find . -name *.java | grep -vE '(/test/|/jsp/|/playpen/)' | \
-xargs checkstyle -c buildconf/checkstyle.xml
+xargs checkstyle -c buildconf/checkstyle.xml ||:
 
 echo "Running checkstyle on java test sources"
 export BASE_OPTIONS="-Djavadoc.method.scope=nothing \
@@ -380,7 +380,7 @@ export BASE_OPTIONS="-Djavadoc.method.scope=nothing \
 -Djavadoc.lazy=false \
 -Dcheckstyle.header.file=buildconf/LICENSE.txt"
 find . -name *.java | grep -E '/test/' | grep -vE '(/jsp/|/playpen/)' | \
-xargs checkstyle -c buildconf/checkstyle.xml
+xargs checkstyle -c buildconf/checkstyle.xml ||:
 %endif
 
 #find . -type f -name '*.xml' | xargs perl -CSAD -lne 'for (grep { $_ ne "PRODUCT_NAME" } /\@\@(\w+)\@\@/) { print; $exit = 1;} END { exit $exit }'
