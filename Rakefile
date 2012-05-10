@@ -26,6 +26,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/users.feature
                      features/users-createnewuser.feature
                      features/users-userdetails.feature
+                     features/credentials.feature
                      features/create_config_channel.feature
                      features/register_client.feature
                      features/monitoring.feature
