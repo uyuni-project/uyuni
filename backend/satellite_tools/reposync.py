@@ -265,11 +265,11 @@ class RepoSync(object):
 
             for desc_lang in notice.findall(PATCH+'description'):
                 if desc_lang.get('lang') == 'en':
-                    e['description'] = desc_lang.text or ""
+                    e['description'] = desc_lang.text or 'not set'
                     break
             for sum_lang in notice.findall(PATCH+'summary'):
                 if sum_lang.get('lang') == 'en':
-                    e['synopsis'] = sum_lang.text or ""
+                    e['synopsis'] = sum_lang.text or 'not set'
                     break
             e['topic']       = ' '
             e['solution']    = ' '
@@ -358,8 +358,8 @@ class RepoSync(object):
             e['advisory_rel']  = notice['version']
             e['advisory_type'] = typemap.get(notice['type'], 'Product Enhancement Advisory')
             e['product']       = notice['release']
-            e['description']   = notice['description']
-            e['synopsis']      = notice['title']
+            e['description']   = notice['description'] or 'not set'
+            e['synopsis']      = notice['title'] or 'not set'
             e['topic']         = ' '
             e['solution']      = ' '
             e['issue_date']    = _to_db_date(notice['issued'])
@@ -1002,7 +1002,7 @@ def _update_cve(notice):
     """Return a list of unique ids from notice references of type 'cve'"""
     if notice['references'] is None:
         return []
-    cves = [cve['id'] for cve in notice['references'] if cve['type'] == 'cve']
+    cves = [cve['id'][:13] for cve in notice['references'] if cve['type'] == 'cve']
     # remove duplicates
     cves = list(set(cves))
 
