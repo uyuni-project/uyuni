@@ -111,8 +111,6 @@ chown root.root /etc/sysconfig
 %dir /etc/YaST2
 %dir %{_datadir}/YaST2
 %dir %{_datadir}/YaST2/clients
-%dir %{_datadir}/applications
-%dir %{_datadir}/applications/YaST2
 %{_prefix}/lib/susemanager/bin/*
 %{_datadir}/YaST2/clients/*.ycp
 %config /etc/YaST2/firstboot-susemanager.xml
