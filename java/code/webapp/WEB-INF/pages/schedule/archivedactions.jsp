@@ -42,7 +42,7 @@
                            defaultsort="asc"
                            styleclass="first-column list-fat-column-50"
                            filterattr="actionName">
-				<a href="/rhn/schedule/CompletedSystems.do?aid=${current.id}">${current.actionName}</a>
+				<a href="/rhn/schedule/CompletedSystems.do?aid=${current.id}"><c:out value="${current.actionName}" /></a>
                 </rl:column>
 
 
