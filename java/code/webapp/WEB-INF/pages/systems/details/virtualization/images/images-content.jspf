@@ -1,4 +1,5 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <rl:listset name="groupSet">
   <rhn:csrf />
@@ -13,7 +14,10 @@
     </div>
     <rl:list dataset="imagesList" emptykey="images.jsp.noimages">
       <rl:column headerkey="images.jsp.name" filterattr="name">
-        <a href="javascript:void();" onclick="showForm('${current.id}','${current.name}','${current.version}','${current.arch}','${current.imageType}','${current.editUrl}');"><c:out value="${current.name}" /></a>
+        <c:set var="nameJS" value="${fn:escapeXml(rhn:escapeJS(current.name))}" />
+        <a href="javascript:void();" onclick="showForm('${current.id}','${nameJS}','${current.version}','${current.arch}','${current.imageType}','${current.editUrl}');">
+          <c:out value="${current.name}" />
+        </a>
       </rl:column>
       <rl:column headerkey="images.jsp.version">
         <c:out value="${current.version}" />
