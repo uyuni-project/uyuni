@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May 10 15:19:29 CEST 2012 - ug@suse.de
+
+- added desktop file for susemanager_setup yast
+  module (bnc#753326)
+
+-------------------------------------------------------------------
 Wed Mar  7 15:07:46 CET 2012 - mc@suse.de
 
 - fix wrong owner of etc/sysconfig introduced by an
