@@ -1,0 +1,23 @@
+[Desktop Entry]
+X-SuSE-translate=true
+X-SuSE-DocTeamID=ycc_susemanager_setup
+Type=Application
+Categories=Settings;System;Qt;X-SuSE-YaST;
+
+X-KDE-HasReadOnlyMode=false
+X-KDE-Library=yast2
+X-SuSE-YaST-Call=susemanager_setup
+
+X-SuSE-YaST-Group=Net_advanced
+X-SuSE-YaST-Argument=
+X-SuSE-YaST-RootOnly=true
+X-SuSE-YaST-Geometry=
+X-SuSE-YaST-SortKey=
+
+Icon=
+Exec=/sbin/yast2 susemanager_setup
+
+Name=SUSE Manager Setup
+GenericName=Configure SUSE Manager
+StartupNotify=true
+

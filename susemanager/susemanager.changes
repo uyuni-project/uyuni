@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May 10 14:56:13 CEST 2012 - ug@suse.de
+
+- added desktop file for susemanager_setup yast module
+  (bnc#753326)
+
+-------------------------------------------------------------------
 Fri Apr 27 16:09:51 CEST 2012 - mc@suse.de
 
 - version 1.7.4-1
