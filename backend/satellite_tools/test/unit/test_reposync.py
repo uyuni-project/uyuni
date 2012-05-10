@@ -229,15 +229,15 @@ class RepoSyncTest(unittest.TestCase):
 
     def test_update_cves(self):
         notice = {'references': [{'type': 'cve',
-                                  'id': 1},
+                                  'id': "CVE-1234-5678"},
                                  {'type': 'cve',
-                                  'id': 2},
+                                  'id': "CVE-1234-1234:"},
                                  {'type': 'cve',
-                                  'id': 2},
+                                  'id': "CVE-1234-5678"},
                                  {'type': 'this should be skipped'}]}
         cves = self.reposync._update_cve(notice)
 
-        self.assertEqual(cves, [1, 2])
+        self.assertEqual(cves, ["CVE-1234-5678", "CVE-1234-1234"])
 
     def test_update_keywords_reboot(self):
         notice = {'reboot_suggested': True,
