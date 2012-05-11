@@ -181,13 +181,13 @@ def findProduct(product):
 
     log_debug(2, "Search for product: %s" % product)
 
-    if 'version' in product and product['version'] != "":
+    if 'version' in product and product['version'] != None and product['version'] != "":
         q_version = "or sp.version = :version"
         product_lower['version'] = product['version'].lower()
-    if 'release' in product and product['release'] != "":
+    if 'release' in product and product['release'] != None and product['release'] != "":
         q_release = "or sp.release = :release"
         product_lower['release'] = product['release'].lower()
-    if 'arch' in product and product['arch'] != "":
+    if 'arch' in product and product['arch'] != None and product['arch'] != "":
         q_arch = "or pat.label = :arch"
         product_lower['arch'] = product['arch'].lower()
 
