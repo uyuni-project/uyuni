@@ -1004,7 +1004,6 @@ sub postgresql_test_db_schema {
 my $POSTGRESQL_CLEAR_SCHEMA = <<EOS;
 	drop schema if exists rpm cascade ;
 	drop schema if exists rhn_exception cascade ;
-	drop schema if exists rhn_quota cascade ;
 	drop schema if exists rhn_config cascade ;
 	drop schema if exists rhn_server cascade ;
 	drop schema if exists rhn_entitlements cascade ;
