@@ -181,12 +181,12 @@ class SuseData:
   def get_installed_product_id(self, product):
     version_query = "sip.version = :version"
     release_query = "sip.release = :release"
-    if not product['version']:
-       product['version'] = ''
-       version_query = "(sip.version = :version or sip.version is NULL)"
-    if not product['release']:
-       product['release'] = ''
-       release_query = "(sip.release = :release or sip.release is NULL)"
+    if product['version'] is None or product['version'] == '':
+       product['version'] = None
+       version_query = "(sip.version is NULL)"
+    if product['release'] is None or product['release'] == '':
+       product['release'] = None
+       release_query = "(sip.release is NULL)"
 
     h = rhnSQL.prepare("""
       SELECT sip.id
