@@ -43,8 +43,8 @@ def _downloadFile(imageName,serverUrl,proxySetting):
     #                  proxyPass : s3cr3t }
     # proxyUser and proxyPass are optional
     #
-    if proxySetting.has_key("proxyServer") and proxySetting["proxyServer"] != None and proxySetting["proxyServer"] != "":
-        server = proxySetting["proxyServer"]
+    if proxySetting.has_key("proxyURL") and proxySetting["proxyURL"] != None and proxySetting["proxyURL"] != "":
+        server = proxySetting["proxyURL"]
         c.setopt(pycurl.PROXY, server )
         if proxySetting.has_key("proxyUser") and proxySetting["proxyUser"] != None and proxySetting["proxyUser"] != "":
             user     = proxySetting["proxyUser"]
