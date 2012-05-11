@@ -10,6 +10,23 @@
 --
 --
 
+declare
+    cursor product_to_channel is
+    select distinct  product_id, channel_id
+    from suseProductCHannel;
+
+begin
+
+    for ps in product_to_channel loop
+
+        delete from suseproductchannel where product_id = ps.product_id and channel_id = ps.channel_id;
+        insert into suseproductchannel (product_id, channel_id) values (ps.product_id, ps.channel_id);
+
+    end loop;
+
+end;
+
+
 CREATE UNIQUE INDEX suse_prd_chan_uq
     ON suseProductChannel (product_id, channel_id)
     TABLESPACE [[64k_tbs]];
