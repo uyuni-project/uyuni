@@ -13,7 +13,7 @@ CREATE TABLE suseCredentials
 (
     id       NUMBER NOT NULL
                  CONSTRAINT suse_credentials_pk PRIMARY KEY,
-    user_id  NUMBER NOT NULL UNIQUE
+    user_id  NUMBER NOT NULL
                  CONSTRAINT suse_credentials_user_fk
                  REFERENCES web_contact (id)
                  ON DELETE CASCADE,
