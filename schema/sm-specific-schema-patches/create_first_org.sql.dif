@@ -1,0 +1,13 @@
+--- susemanager-schema-1.2.74-to-susemanager-schema-1.7/845-create_first_org.sql	2012-05-12 15:53:00.395735392 +0200
++++ ../oracle/procs/create_first_org.sql	2012-05-12 15:49:00.269697071 +0200
+@@ -114,8 +134,8 @@
+ 		description,
+ 		max_members, group_type, org_id
+ 	) values (
+-		group_val, 'Satellite Administrators',
+-		'Satellite Administrators for Org ' || name_in || ' (1)',
++		group_val, 'SUSE Manager Administrators',
++		'SUSE Manager Administrators for Org ' || name_in || ' (1)',
+ 		NULL, ug_type, 1
+ 	);
+ 
