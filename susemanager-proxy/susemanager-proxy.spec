@@ -27,6 +27,9 @@ install -m 0644 suse-manager-proxy %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfir
 mkdir -p %{buildroot}/etc/YaST2
 install -m 0644 firstboot-susemanager-proxy.xml %{buildroot}/etc/YaST2
 
+# enable beta license
+cp license-beta.txt license.txt
+
 %clean
 rm -rf %{buildroot}
 
