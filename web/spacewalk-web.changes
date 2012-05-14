@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May 14 10:43:28 CEST 2012 - mc@suse.de
+
+- version 1.7.28.4-1
+- Escape image name to allow quotes and prevent XSS (bnc#761165)
+- Split OpenSCAP and AuditReviewing up
+
+-------------------------------------------------------------------
 Fri Apr 27 16:06:27 CEST 2012 - mc@suse.de
 
 - version 1.7.28.3-1
