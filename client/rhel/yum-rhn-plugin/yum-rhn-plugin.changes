@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May 14 10:59:50 CEST 2012 - mc@suse.de
+
+- version 1.7.2.2-1
+- fix reports for auto-errata application already installed
+
+-------------------------------------------------------------------
 Wed Mar 21 16:48:30 CET 2012 - mc@suse.de
 
 - version 1.7.2.1-1
