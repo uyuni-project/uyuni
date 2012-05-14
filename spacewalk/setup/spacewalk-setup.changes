@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May 14 10:59:03 CEST 2012 - mc@suse.de
+
+- version 1.7.9.4-1
+- remove usage of rhn_quota package
+- spacewalk-setup-cobbler: extend verbose output
+
+-------------------------------------------------------------------
 Fri Apr 27 16:15:13 CEST 2012 - mc@suse.de
 
 - version 1.7.9.3-1
