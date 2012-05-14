@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon May 14 10:54:49 CEST 2012 - mc@suse.de
+
+- version 1.7.38.8-1
+- better check for empty version, release and arch
+- with postgres empty varchar has to be null
+- fix CVE test in testsuite
+- improve patch handling for broken updateinfo files
+
+-------------------------------------------------------------------
 Wed May 09 13:41:34 CEST 2012 - mc@suse.de
 
 - version 1.7.38.7-1
