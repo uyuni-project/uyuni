@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May 14 10:58:28 CEST 2012 - mc@suse.de
+
+- version 1.27.9.2-1
+- return mac address of the first available interface
+
+-------------------------------------------------------------------
 Wed Mar 21 17:07:41 CET 2012 - mc@suse.de
 
 - version 1.27.9.1-1
