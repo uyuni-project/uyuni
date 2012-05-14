@@ -279,7 +279,7 @@ def snapshot_server(server_id, reason):
 
 
 def check_entitlement(server_id):
-    h = rhnSQL.prepare("""select server_id, label from rhnServerEntitlementView where server_id = :server_id""")
+    h = rhnSQL.prepare("""select server_id, label, is_base from rhnServerEntitlementView where server_id = :server_id order by is_base DESC""")
     h.execute(server_id = server_id)
 
     # if I read the old code correctly, this should do about the same thing. Basically "entitled? yay/nay" -akl.  UPDATE 12/08/06: akl says "nay".  It's official
