@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon May 14 10:50:14 CEST 2012 - mc@suse.de
+
+- version 1.7.15.4-1
+- The plan_table is not part of our schema, do not dump it.
+- added dist_map_release for automatic OS->base channel mapping
+- set dist release map via setDefaultMap
+- removed fedora12/13/14 which are long time EOL
+
+-------------------------------------------------------------------
 Fri Apr 27 16:24:46 CEST 2012 - mc@suse.de
 
 - version 1.7.15.3-1
