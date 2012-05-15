@@ -4,23 +4,21 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
   <class name="com.redhat.rhn.domain.action.image.DeployImageActionDetails"
-        table="rhnActionImageDeploy">
-
-		<id name="id" type="long" column="id">
-			<meta attribute="scope-set">protected</meta>
-			<generator class="sequence">
+         table="rhnActionImageDeploy">
+    <id name="id" type="long" column="id">
+      <meta attribute="scope-set">protected</meta>
+      <generator class="sequence">
         <param name="sequence">RHN_ACTION_IMAGE_DEPLOY_ID_SEQ</param>
       </generator>
-		</id>
-
-		<many-to-one name="parentAction" column="action_id"
-		    class="com.redhat.rhn.domain.action.Action" outer-join="true"
-		    not-null="true" insert="true" update="false" />
-
-	  <property name="memKb" type="long" column="mem_kb" />
+    </id>
+    <many-to-one name="parentAction" column="action_id"
+                 class="com.redhat.rhn.domain.action.Action" outer-join="true"
+                 not-null="true" insert="true" update="false" />
+    <many-to-one name="imageType" column="image_type_id"
+                 class="com.redhat.rhn.domain.image.ImageType" />
+    <property name="memKb" type="long" column="mem_kb" />
     <property name="vcpus" type="long" column="vcpus" />
     <property name="bridgeDevice" type="string" column="bridge_device" />
-    <property name="imageType" type="string" column="image_type" />
     <property name="downloadUrl" type="string" column="download_url" />
     <property name="proxyServer" type="string" column="proxy_server" />
     <property name="proxyUser" type="string" column="proxy_user" />

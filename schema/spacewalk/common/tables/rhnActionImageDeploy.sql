@@ -14,13 +14,15 @@ CREATE TABLE rhnActionImageDeploy
 (
     id            NUMBER NOT NULL PRIMARY KEY,
     action_id     NUMBER NOT NULL
-                   CONSTRAINT rhn_act_idp_act_fk
-                       REFERENCES rhnAction (id)
-                       ON DELETE CASCADE,
-    vcpus         NUMBER DEFAULT(1) NOT NULL,
-    mem_kb        NUMBER DEFAULT(524288) NOT NULL,
-    bridge_device VARCHAR2(32)  DEFAULT('br0') NOT NULL,
-    image_type    VARCHAR2(32)  NOT NULL,
+                      CONSTRAINT rhn_act_idp_act_fk
+                      REFERENCES rhnAction (id)
+                      ON DELETE CASCADE,
+    image_type_id NUMBER NOT NULL
+                      CONSTRAINT rhn_act_idp_imgtype_fk
+                      REFERENCES suseImageType (id),
+    vcpus         NUMBER NOT NULL,
+    mem_kb        NUMBER NOT NULL,
+    bridge_device VARCHAR2(32),
     download_url  VARCHAR2(256) NOT NULL,
     proxy_server  VARCHAR2(64),
     proxy_user    VARCHAR2(32),
