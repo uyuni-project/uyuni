@@ -52,7 +52,6 @@ def _downloadFile(imageName,serverUrl,proxySetting):
             c.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (user,password) )
     # default IMAGE_BASE_PATH is /var/lib/libvirt/images
     filePath = "/%s/%s" % (IMAGE_BASE_PATH, imageName)
-    print filePath
     f = open(filePath, 'w')
     c.setopt(pycurl.WRITEFUNCTION, f.write)
     c.setopt(pycurl.SSL_VERIFYPEER, 0)
