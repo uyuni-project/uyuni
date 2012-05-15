@@ -96,9 +96,6 @@ public class ScheduleImageDeploymentAction extends RhnAction {
             }
 
             // Put defaults for deployment parameters
-            if (StringUtils.isEmpty(bridge)) {
-                bridge = "br0";
-            }
             if (vcpus <= 0) {
                 vcpus = Long.valueOf(1);
             }
@@ -127,7 +124,7 @@ public class ScheduleImageDeploymentAction extends RhnAction {
         }
         else {
             // The page is called for the first time
-            forward = actionMapping.findForward("first");
+            forward = actionMapping.findForward("load-async");
         }
         return forward;
     }

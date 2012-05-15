@@ -23080,7 +23080,7 @@ given channel.</source>
         <source>Memory (MB)&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
      </trans-unit>
      <trans-unit id="images.jsp.bridge">
-        <source>Bridge Device&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
+        <source>Bridge Device:</source>
      </trans-unit>
      <trans-unit id="images.jsp.proxyconfig">
         <source>Proxy Configuration</source>

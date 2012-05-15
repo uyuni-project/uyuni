@@ -7688,45 +7688,46 @@
                  path="/ssm/ViewLog.do" redirect="true"/>
      </action>
 
-    <!-- SUSE Studio Pages -->
+    <!-- Image Deployment -->
     <action path="/systems/details/virtualization/Images"
-        scope="request"
-        name="deployImageForm"
-        parameter="dispatch"
-        type="com.redhat.rhn.frontend.action.systems.images.ScheduleImageDeploymentAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="first"
-                 path="/WEB-INF/pages/systems/details/virtualization/images/images_first.jsp" />
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/details/virtualization/images/images.jsp" />
-        <forward name="submitted"
-                 redirect="true"
-                 path="/systems/details/virtualization/VirtualGuestsList.do" />
+            scope="request"
+            name="deployImageForm"
+            parameter="dispatch"
+            type="com.redhat.rhn.frontend.action.systems.images.ScheduleImageDeploymentAction"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <set-property property="acls" value="not system_is_virtual(); system_has_management_entitlement()" />
+      <forward name="load-async"
+               path="/WEB-INF/pages/systems/details/virtualization/images/images-loading.jsp" />
+      <forward name="default"
+               path="/WEB-INF/pages/systems/details/virtualization/images/images.jsp" />
+      <forward name="submitted"
+               redirect="true"
+               path="/systems/details/virtualization/VirtualGuestsList.do" />
     </action>
 
     <action path="/account/Credentials"
-        scope="request"
-        input="/WEB-INF/pages/credentials/edit.jsp"
-        type="com.redhat.rhn.frontend.action.user.UserCredentialsEditAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/credentials/edit.jsp" />
+            scope="request"
+            input="/WEB-INF/pages/credentials/edit.jsp"
+            type="com.redhat.rhn.frontend.action.user.UserCredentialsEditAction"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <forward name="default"
+               path="/WEB-INF/pages/credentials/edit.jsp" />
     </action>
 
     <action path="/account/DeleteCredentials"
-        scope="request"
-        input="/WEB-INF/pages/credentials/delete.jsp"
-        type="com.redhat.rhn.frontend.action.user.UserCredentialsDeleteAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping"
-        parameter="dispatch">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default"
-                 path="/WEB-INF/pages/credentials/delete.jsp" />
-        <forward name="success"
-                 redirect="true"
-                 path="/account/Credentials.do" />
+            scope="request"
+            input="/WEB-INF/pages/credentials/delete.jsp"
+            type="com.redhat.rhn.frontend.action.user.UserCredentialsDeleteAction"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping"
+            parameter="dispatch">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <forward name="default"
+               path="/WEB-INF/pages/credentials/delete.jsp" />
+      <forward name="success"
+               redirect="true"
+               path="/account/Credentials.do" />
     </action>
 
   </action-mappings>
