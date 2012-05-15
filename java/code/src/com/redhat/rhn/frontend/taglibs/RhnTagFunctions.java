@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
@@ -99,4 +101,13 @@ public class RhnTagFunctions {
         return StringUtil.urlEncode(param);
     }
 
+    /**
+     * Escape the characters in a String using JavaScript String rules.
+     *
+     * @param param to be escaped
+     * @return escaped string
+     */
+    public static String escapeJS(String param) {
+        return StringEscapeUtils.escapeJavaScript(param);
+    }
 }
