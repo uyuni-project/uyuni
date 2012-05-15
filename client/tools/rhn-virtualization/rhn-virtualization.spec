@@ -50,6 +50,7 @@ Requires:       python-curl
 PreReq:         %fillup_prereq %insserv_prereq
 %else
 Requires: /usr/sbin/crond
+Requires: python-hashlib
 %endif
 
 %description host
@@ -87,6 +88,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %post host
 %{fillup_only -n rhn-virtualization-host}
+if [ -d /proc/xen ]; then
+    # xen kernel is running
+    # change the default template to the xen version
+    sed -i 's@^IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-kvm-template.xml@IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-xen-template.xml@' /etc/sysconfig/rhn/image.cfg
+fi
 
 %preun host
 %{stop_on_removal rhn-virtualization-host}
@@ -98,6 +104,11 @@ rm -rf $RPM_BUILD_ROOT
 %post host
 /sbin/chkconfig --add rhn-virtualization-host
 /sbin/service crond condrestart
+if [ -d /proc/xen ]; then
+    # xen kernel is running
+    # change the default template to the xen version
+    sed -i 's@^IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-kvm-template.xml@IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-xen-template.xml@' /etc/sysconfig/rhn/image.cfg
+fi
 
 %preun host
 /sbin/chkconfig --del rhn-virtualization-host
@@ -111,7 +122,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{rhn_dir}/
 %dir %{rhn_dir}/actions
 %dir %{rhn_dir}/virtualization
+%if 0%{?suse_version}
 %dir %{rhn_conf_dir}
+%endif
 %{rhn_dir}/virtualization/__init__.py
 %{rhn_dir}/virtualization/__init__.pyc
 %{rhn_dir}/virtualization/__init__.pyo
@@ -134,7 +147,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files host
 %defattr(-,root,root,-)
+%if 0%{?suse_version}
 %dir %{rhn_conf_dir}
+%endif
 %dir %{rhn_conf_dir}/virt
 %dir %{rhn_conf_dir}/virt/auto
 %{_initrddir}/rhn-virtualization-host

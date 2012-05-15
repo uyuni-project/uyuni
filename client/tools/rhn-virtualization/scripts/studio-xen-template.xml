@@ -3,9 +3,6 @@
   <uuid>%(uuid)s</uuid>
   <memory>%(mem_kb)s</memory>
   <vcpu>%(vcpus)s</vcpu>
-<!--
-  <currentMemory>307200</currentMemory>
--->
   <bootloader>/usr/bin/pygrub</bootloader>
   <os>
     <type arch='%(arch)s' machine='xenpv'>linux</type>
@@ -21,19 +18,12 @@
       <target dev='xvda' bus='xen'/>
       <address type='drive' controller='0' bus='0' unit='0'/>
     </disk>
-<!--
-     <disk type='file' device='disk'>
-      <driver name='tap' type='aio'/>
-      <source file='/var/lib/xen/images/rhel5pv.img'/>
-      <target dev='xvda' bus='xen'/>
-    </disk>
--->
+
+    <!-- if you don't want a bridge, remove this interface -->
     <interface type='bridge'>
-<!--
-      <mac address='00:16:3e:60:36:ba'/>
--->
       <source bridge='%(virtBridge)s'/>
     </interface>
+
     <console type='pty'>
       <target port='0'/>
     </console>

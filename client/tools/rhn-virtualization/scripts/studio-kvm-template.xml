@@ -20,12 +20,12 @@
       <address type='drive' controller='0' bus='0' unit='0'/>
     </disk>
     <controller type='ide' index='0'/>
+
+    <!-- if you don't want a bridge, remove this interface -->
     <interface type='bridge'>
-<!--
-      <mac address=''/>
--->
       <source bridge='%(virtBridge)s'/>
     </interface>
+
     <serial type='pty'>
       <target port='0'/>
     </serial>
