@@ -285,10 +285,33 @@ class ContentSource:
                 p['vendor'] = product.find('vendor').text
                 p['summary'] = product.find('summary').text
                 p['description'] = product.find('description').text
-		if p['epoch'] == '0':
+                if p['epoch'] == '0':
                     p['epoch'] = None
                 products.append(p)
         return products
+
+    def get_susedata(self):
+        susedata = []
+        if 'susedata' in self.repo.repoXML.repoData:
+            data_path = self.repo.retrieveMD('susedata')
+            infile = data_path.endswith('.gz') and gzip.open(data_path) or open(data_path, 'rt')
+            for package in etree.parse(infile).getroot():
+                d = {}
+                d['pkgid'] = package.get('pkgid')
+                d['name'] = package.get('name')
+                d['arch'] = package.get('arch')
+                version = package.find('version')
+                d['version'] = version.get('ver')
+                d['release'] = version.get('rel')
+                d['epoch'] = version.get('epoch')
+                if d['epoch'] == '0':
+                    d['epoch'] = None
+                d['keywords'] = []
+                keywords = package.findall('keyword')
+                for kw in keywords:
+                    d['keywords'].append(kw.text)
+                susedata.append(d)
+        return susedata
 
     def get_updates(self):
         if 'updateinfo' in self.repo.repoXML.repoData:
