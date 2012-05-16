@@ -54,6 +54,7 @@ rm -rf $RPM_BUILD_ROOT
 %if 0%{?suse_version} != 1010
 %doc %{_mandir}/man8/spacewalk-pylint.8*
 %endif
+%doc LICENSE
 
 %changelog
 * Wed Feb 15 2012 Michael Mraka <michael.mraka@redhat.com> 0.2-1
