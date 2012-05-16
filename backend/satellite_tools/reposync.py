@@ -161,6 +161,7 @@ class RepoSync(object):
                 self.import_packages(repo, data['id'], url.getURL())
                 self.import_products(repo)
                 self.import_updates(repo, url.getURL())
+                self.import_susedata(repo)
             except ChannelTimeoutException, e:
                 self.print_msg(e)
                 self.sendErrorMail(str(e))
@@ -474,6 +475,66 @@ class RepoSync(object):
                     VALUES (:package_id, :product_id)
                 """)
                 h.execute(package_id=packrow['id'], product_id=row['id'])
+
+    def import_susedata(self, repo):
+        kwcache = {}
+        susedata = repo.get_susedata()
+        for package in susedata:
+            query = rhnSQL.prepare("""
+                SELECT p.id
+                  FROM rhnPackage p
+                  JOIN rhnPackagename pn ON p.name_id = pn.id
+                  JOIN rhnChecksumView c ON p.checksum_id = c.id
+                  JOIN rhnChannelPackage cp ON p.id = cp.package_id
+                 WHERE pn.name = :name
+                   AND p.evr_id = LOOKUP_EVR(:epoch, :version, :release)
+                   AND p.package_arch_id = LOOKUP_PACKAGE_ARCH(:arch)
+                   AND cp.channel_id = :channel_id
+                   AND c.checksum = :pkgid
+                """)
+            query.execute(name=package['name'], epoch=package['epoch'],
+                          version=package['version'], release=package['release'],
+                          arch=package['arch'], pkgid=package['pkgid'],
+                          channel_id=int(self.channel['id']))
+            row = query.fetchone_dict() or None
+            if not row or not row.has_key('id'):
+                # package not found in DB
+                continue
+
+            h = rhnSQL.prepare("""
+                SELECT smk.id, smk.label
+                  FROM suseMdData smd
+                  JOIN suseMdKeyword smk ON smk.id = smd.keyword_id
+                 WHERE smd.package_id = :package_id
+                   AND smd.channel_id = :channel_id
+            """)
+            h.execute(package_id=row['id'], channel_id=int(self.channel['id']))
+            ret = h.fetchall_dict() or {}
+            pkgkws = {}
+            for row in ret:
+                pkgkws[row['label']] = False
+                kwcache[row['label']] = row['id']
+
+            for keyword in package['keywords']:
+                if keyword not in kwcache:
+                    kw = rhnSQL.prepare("""select LOOKUP_MD_KEYWORD(:label) id from dual""")
+                    kw.execute(label=keyword)
+                    kwid = kw.fetchone_dict()['id']
+                    kwcache[keyword] = kwid
+
+                if keyword in pkgkws:
+                    pkgkws[keyword] = True
+                else:
+                    kadd = rhnSQL.prepare("""INSERT INTO suseMdData (package_id, channel_id, keyword_id)
+                                              VALUES(:package_id, :channel_id, :keyword_id)""")
+                    kadd.execute(package_id=row['id'], channel_id=int(self.channel['id']), keyword_id=kwcache[keyword])
+
+            # delete all removed keywords
+            for label in pkgkws:
+                if not pkgkws[label]:
+                    kdel = rhnSQL.prepare("""DELETE FROM suseMdData WHERE package_id = :package_id
+                                             AND channel_id = :channel_id AND keyword_id = :keyword_id""")
+                    kdel.execute(package_id=row['id'], channel_id=int(self.channel['id']), keyword_id=kwcache[label])
 
     def _patch_naming(self, notice):
         """Return the name of the patch according to our rules
