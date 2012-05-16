@@ -255,6 +255,7 @@ suseCredentials                :: suseCredentialsType web_contact
 suseOSTarget                   :: rhnChannelArch
 suseServer                     :: rhnServer suseOSTarget
 suseInstalledProduct           :: rhnPackageArch
+suseMdData                     :: rhnChannel rhnPackage suseMdKeyword
 susePackageProductFile         :: suseProductFile rhnPackage
 suseProducts                   :: rhnPackageArch
 suseProductChannel             :: suseProducts rhnChannel

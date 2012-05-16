@@ -63,6 +63,7 @@ insert_checksum                 :: rhnChecksum rhnChecksumType
 insert_config_filename          :: rhnConfigFileName
 insert_config_info              :: rhnConfigInfo
 insert_evr                      :: rhnPackageEVR
+insert_md_keyword               :: suseMdKeyword
 insert_package_name             :: rhnPackageName
 insert_package_nevra            :: rhnPackageNEVRA
 insert_package_capability       :: rhnPackageCapability
@@ -100,6 +101,7 @@ lookup_functions                :: lookup_evr lookup_package_name \
                                    lookup_snapshot_invalid_reason \
                                    lookup_tag_name lookup_sg_type \
                                    lookup_tag lookup_arch_type
+lookup_md_keyword               :: insert_md_keyword
 lookup_package_arch             :: rhn_exception.pks data/rhnException rhnPackageArch \
                                    data/rhnPackageArch
 lookup_package_capability       :: rhnPackageCapability insert_package_capability
