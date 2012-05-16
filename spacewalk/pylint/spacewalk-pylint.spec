@@ -33,7 +33,7 @@ a2x -d manpage -f manpage spacewalk-pylint.8.asciidoc
 %endif
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 install -d -m 755 %{buildroot}/%{_bindir}
 install -p -m 755 spacewalk-pylint %{buildroot}/%{_bindir}/
 install -d -m 755 %{buildroot}/%{_sysconfdir}
@@ -44,7 +44,7 @@ install -m 644 spacewalk-pylint.8 %{buildroot}/%{_mandir}/man8
 %endif
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 
 %files
