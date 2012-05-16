@@ -53,6 +53,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
     private static final String REPOMD_FILE = "repomd.xml.new";
     private static final String UPDATEINFO_FILE = "updateinfo.xml.gz.new";
     private static final String PRODUCTS_FILE = "products.xml";
+    private static final String SUSEDATA_FILE = "susedata.xml.gz.new";
     private static final String NOREPO_FILE = "noyumrepo.txt";
     private static final String SOLV_FILE = "solv.new";
     private static final String REPO2SOLV = "/usr/bin/repo2solv.sh";
@@ -136,6 +137,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         CompressingDigestOutputWriter primaryFile;
         CompressingDigestOutputWriter filelistsFile;
         CompressingDigestOutputWriter otherFile;
+        CompressingDigestOutputWriter susedataFile;
 
         try {
             primaryFile = new CompressingDigestOutputWriter(
@@ -146,6 +148,8 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                     checksumAlgo);
             otherFile = new CompressingDigestOutputWriter(
                     new FileOutputStream(prefix + OTHER_FILE), checksumAlgo);
+            susedataFile = new CompressingDigestOutputWriter(
+                    new FileOutputStream(prefix + SUSEDATA_FILE), checksumAlgo);
         }
         catch (IOException e) {
             throw new RepomdRuntimeException(e);
@@ -160,25 +164,32 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                 new OutputStreamWriter(filelistsFile));
         BufferedWriter otherBufferedWriter = new BufferedWriter(
                 new OutputStreamWriter(otherFile));
+        BufferedWriter susedataBufferedWriter = new BufferedWriter(
+                new OutputStreamWriter(susedataFile));
         PrimaryXmlWriter primary = new PrimaryXmlWriter(
                 primaryBufferedWriter);
         FilelistsXmlWriter filelists = new FilelistsXmlWriter(
                 filelistsBufferedWriter);
         OtherXmlWriter other = new OtherXmlWriter(otherBufferedWriter);
+        SuseDataXmlWriter susedata = new SuseDataXmlWriter(
+                susedataBufferedWriter);
         Date start = new Date();
 
         primary.begin(channel);
         filelists.begin(channel);
         other.begin(channel);
+        susedata.begin(channel);
 
         for (PackageDto pkgDto : TaskManager.getChannelPackageDtos(channel)) {
             primary.addPackage(pkgDto);
             filelists.addPackage(pkgDto);
             other.addPackage(pkgDto);
+            susedata.addPackage(pkgDto);
             try {
                 primaryFile.flush();
                 filelistsFile.flush();
                 otherFile.flush();
+                susedataFile.flush();
             }
             catch (IOException e) {
                 throw new RepomdRuntimeException(e);
@@ -187,10 +198,12 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         primary.end();
         filelists.end();
         other.end();
+        susedata.end();
         try {
             primaryBufferedWriter.close();
             filelistsBufferedWriter.close();
             otherBufferedWriter.close();
+            susedataBufferedWriter.close();
         }
         catch (IOException e) {
             throw new RepomdRuntimeException(e);
@@ -204,6 +217,9 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                 .getUncompressedChecksum(), channel.getLastModified());
         RepomdIndexData otherData = new RepomdIndexData(otherFile
                 .getCompressedChecksum(), otherFile
+                .getUncompressedChecksum(), channel.getLastModified());
+        RepomdIndexData susedataData = new RepomdIndexData(susedataFile
+                .getCompressedChecksum(), susedataFile
                 .getUncompressedChecksum(), channel.getLastModified());
 
         if (log.isDebugEnabled()) {
@@ -219,6 +235,9 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         primaryData.setType(checksumLabel);
         filelistsData.setType(checksumLabel);
         otherData.setType(checksumLabel);
+        if (susedataData != null) {
+            susedataData.setType(checksumLabel);
+        }
         if (updateinfoData != null) {
             updateinfoData.setType(checksumLabel);
         }
@@ -240,7 +259,8 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         }
 
         RepomdIndexWriter index = new RepomdIndexWriter(indexFile, primaryData,
-                filelistsData, otherData, updateinfoData, groupsData, productsData);
+                filelistsData, otherData, susedataData, updateinfoData,
+                groupsData, productsData);
 
         index.writeRepomdIndex();
 
@@ -474,6 +494,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         File primary = new File(prefix + PRIMARY_FILE);
         File filelists = new File(prefix + FILELISTS_FILE);
         File other = new File(prefix + OTHER_FILE);
+        File susedata = new File(prefix + SUSEDATA_FILE);
         File repomd = new File(prefix + REPOMD_FILE);
 
         File updateinfo = null;
@@ -490,6 +511,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         primary.setLastModified(lastModified);
         filelists.setLastModified(lastModified);
         other.setLastModified(lastModified);
+        susedata.setLastModified(lastModified);
         repomd.setLastModified(lastModified);
 
         if (doUpdateinfo) {
@@ -508,6 +530,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         primary.renameTo(new File(prefix + "primary.xml.gz"));
         filelists.renameTo(new File(prefix + "filelists.xml.gz"));
         other.renameTo(new File(prefix + "other.xml.gz"));
+        susedata.renameTo(new File(prefix + "susedata.xml.gz"));
         repomd.renameTo(new File(prefix + "repomd.xml"));
     }
 

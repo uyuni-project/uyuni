@@ -33,6 +33,7 @@ public class RepomdIndexWriter {
     private RepomdIndexData primary;
     private RepomdIndexData filelists;
     private RepomdIndexData other;
+    private RepomdIndexData susedata;
     private RepomdIndexData updateinfo;
     private RepomdIndexData group;
     private RepomdIndexData products;
@@ -43,14 +44,16 @@ public class RepomdIndexWriter {
      * @param primaryIn primary.xml data
      * @param filelistsIn filelists.xml data
      * @param otherIn other.xml data
+     * @param susedataDataIn susedata.xml data
      * @param updateinfoIn updateinfo.xml data
      * @param groupIn group data
      * @param productsIn products data
+     * @param productsData
      */
     public RepomdIndexWriter(Writer writerIn, RepomdIndexData primaryIn,
             RepomdIndexData filelistsIn, RepomdIndexData otherIn,
-            RepomdIndexData updateinfoIn, RepomdIndexData groupIn,
-            RepomdIndexData productsIn) {
+            RepomdIndexData susedataDataIn, RepomdIndexData updateinfoIn,
+            RepomdIndexData groupIn, RepomdIndexData productsIn) {
 
         this.primary = primaryIn;
         this.filelists = filelistsIn;
@@ -58,6 +61,7 @@ public class RepomdIndexWriter {
         this.updateinfo = updateinfoIn;
         this.group = groupIn;
         this.products = productsIn;
+        this.susedata = susedataDataIn;
 
         OutputFormat of = new OutputFormat();
 
@@ -85,6 +89,9 @@ public class RepomdIndexWriter {
         writeData("primary", primary);
         writeData("filelists", filelists);
         writeData("other", other);
+        if (susedata != null) {
+            writeData("susedata", susedata);
+        }
 
         // updateinfo is optional (channels with no errata)
         if (updateinfo != null) {

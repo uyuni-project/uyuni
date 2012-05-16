@@ -725,6 +725,18 @@ where rhnChannelErrata.errata_id = rhnErrataPackage.errata_id
    </query>
 </mode>
 
+<mode name="repomdgenerator_package_keywords">
+   <query params="channel_id, package_id">
+  SELECT smd.package_id, smk.label as keyword
+    FROM suseMdData smd
+    JOIN suseMdKeyword smk ON smk.id = smd.keyword_id
+    WHERE
+         smd.channel_id = :channel_id
+  ORDER BY smd.package_id
+   </query>
+</mode>
+
+
 <mode name="find_channel_in_task_queue">
 	<query params="cid">
 		SELECT task_data
