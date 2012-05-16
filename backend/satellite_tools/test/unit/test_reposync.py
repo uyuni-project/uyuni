@@ -63,7 +63,7 @@ class RepoSyncTest(unittest.TestCase):
         sys.stderr = self.saved_stderr
 
         reload(spacewalk.satellite_tools.reposync)
-        
+
     def test_init_succeeds_with_correct_attributes(self):
         rs = self._init_reposync('Label', RTYPE)
 
@@ -116,7 +116,7 @@ class RepoSyncTest(unittest.TestCase):
         rs = self.reposync.RepoSync('Label', RTYPE)
 
         self.assertEqual(rs.channel, {'name': 'mocked Channel', 'id': 1})
-        
+
     def test_init_bad_channel(self):
         self.reposync.rhnChannel.channel_info = Mock(return_value=None)
 
@@ -200,7 +200,7 @@ class RepoSyncTest(unittest.TestCase):
                 'TypeError' in error_string), (
             "The error string does not contain the keywords "
             "'Traceback' and 'TypeError':\n %s\n---end of assert" % error_string)
-        
+
     def test_update_bugs(self):
         notice = {'references': [{'type': 'bugzilla',
                                   'id': 'id1',
@@ -308,7 +308,7 @@ class RepoSyncTest(unittest.TestCase):
                     'checksum_type': None,
                     'checksum': None,
                     'id': None}
-        
+
         _mock_rhnsql(self.reposync, checksum)
         processed = rs._updates_process_packages(packages, 'a name', [])
         for p in processed:
@@ -371,7 +371,7 @@ class RepoSyncTest(unittest.TestCase):
         fixtures = [p1, p2]
         for pkg, fix in zip(processed, fixtures):
             self.assertEqual(pkg, fix)
-        
+
     def test_updates_process_packages_checksum_not_found(self):
         rs = self._create_mocked_reposync()
 
@@ -440,7 +440,7 @@ class RepoSyncTest(unittest.TestCase):
 
         self.assertEqual(self.reposync.ErrataImport.call_args,
                          (([], mocked_backend), {}))
-        
+
     def test_associate_package(self):
         pack = self.reposync.ContentPackage()
         pack.setNVREA('name1', 'version1', 'release1', 'epoch1', 'arch1')
@@ -577,6 +577,7 @@ class RepoSyncTest(unittest.TestCase):
         rs.import_packages = Mock()
         rs.import_updates = Mock()
         rs.import_products = Mock()
+        rs.import_susedata = Mock()
         self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription = Mock()
         self.reposync.taskomatic.add_to_erratacache_queue = Mock()
 
@@ -630,7 +631,7 @@ def check_channel_exceptions(rs, exc_class, exc_name):
     assert_equal(rs.print_msg.call_args,
                  (("%s: %s" % (exc_name, "error msg"), ), {}))
 
-        
+
 def _mock_rhnsql(module, return_values):
     """Method to mock the rhnSQL to return something for us
 
