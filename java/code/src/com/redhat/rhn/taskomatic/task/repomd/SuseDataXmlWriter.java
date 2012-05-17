@@ -97,6 +97,10 @@ public class SuseDataXmlWriter extends RepomdWriter {
      */
     public void addPackage(PackageDto pkgDto) {
         long pkgId = pkgDto.getId().longValue();
+        if (! keywordIterator.hasNextForPackage(pkgId)) {
+            // this package has no keywords
+            return;
+        }
         try {
             ByteArrayOutputStream st = new ByteArrayOutputStream();
             SimpleContentHandler tmpHandler = getTemporaryHandler(st);
@@ -109,7 +113,14 @@ public class SuseDataXmlWriter extends RepomdWriter {
 
             tmpHandler.startElement("package", attr);
 
-            addBasicPackageDetails(pkgDto, tmpHandler);
+            attr.clear();
+            attr.addAttribute("ver", sanitize(pkgId, pkgDto.getVersion()));
+            attr.addAttribute("rel", sanitize(pkgId, pkgDto.getRelease()));
+            attr.addAttribute("epoch", sanitize(pkgId, getPackageEpoch(pkgDto
+                .getEpoch())));
+            tmpHandler.startElement("version", attr);
+            tmpHandler.endElement("version");
+ 
             addKeywords(pkgDto, tmpHandler);
             tmpHandler.endElement("package");
             tmpHandler.endDocument();
@@ -125,34 +136,16 @@ public class SuseDataXmlWriter extends RepomdWriter {
     /**
      *
      * @param pkgDto pkg info to add to xml
-     * @throws SAXException sax exception
-     */
-    private void addBasicPackageDetails(PackageDto pkgDto,
-            SimpleContentHandler localHandler) throws SAXException {
-        long pkgId = pkgDto.getId().longValue();
-
-        SimpleAttributesImpl attr = new SimpleAttributesImpl();
-        attr.addAttribute("ver", sanitize(pkgId, pkgDto.getVersion()));
-        attr.addAttribute("rel", sanitize(pkgId, pkgDto.getRelease()));
-        attr.addAttribute("epoch", sanitize(pkgId, getPackageEpoch(pkgDto
-                .getEpoch())));
-        localHandler.startElement("version", attr);
-        localHandler.endElement("version");
-    }
-
-    /**
-     *
-     * @param pkgDto pkg info to add to xml
      * @throws SAXException
      */
     private void addKeywords(PackageDto pkgDto,
             SimpleContentHandler localHandler) throws SAXException {
         long pkgId = pkgDto.getId().longValue();
-        while (keywordIterator.hasNextForPackage(pkgId)) {
+        do {
             localHandler.startElement("keyword");
             localHandler.addCharacters(sanitize(pkgId,
                     keywordIterator.getString("keyword")));
             localHandler.endElement("keyword");
-        }
+        } while (keywordIterator.hasNextForPackage(pkgId));
     }
 }
