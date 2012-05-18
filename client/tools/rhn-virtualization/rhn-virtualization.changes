@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 18 10:37:14 CEST 2012 - jrenner@suse.de
+
+- Merged studio integration modifications
+
+-------------------------------------------------------------------
 Thu Mar 15 10:43:40 CET 2012 - ug@suse.de
 
 - fixed python syntax for SLES10 build

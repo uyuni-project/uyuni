@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 18 10:41:11 CEST 2012 - jrenner@suse.de
+
+- Merged studio integration modifications
+
+-------------------------------------------------------------------
 Mon Apr 16 17:45:39 CEST 2012 - mc@suse.de
 
 - ignore ip6addr if provided with hw_refresh from newer

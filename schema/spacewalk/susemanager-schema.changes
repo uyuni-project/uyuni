@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 18 10:45:43 CEST 2012 - jrenner@suse.de
+
+- Merged studio integration modifications
+
+-------------------------------------------------------------------
 Fri May 11 11:44:25 CEST 2012 - mc@suse.de
 
 - make values in suseProductChannel unique before adding a
