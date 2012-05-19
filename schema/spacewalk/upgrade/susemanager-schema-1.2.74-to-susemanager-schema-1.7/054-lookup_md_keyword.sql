@@ -40,7 +40,7 @@ begin
             select id
               into md_keyword_id
               from suseMdKeyword
-             where system = label_in;
+             where label = label_in;
         end;
     end;
 
