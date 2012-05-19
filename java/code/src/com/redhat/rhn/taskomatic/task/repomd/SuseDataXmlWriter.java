@@ -97,7 +97,7 @@ public class SuseDataXmlWriter extends RepomdWriter {
      */
     public void addPackage(PackageDto pkgDto) {
         long pkgId = pkgDto.getId().longValue();
-        if (! keywordIterator.hasNextForPackage(pkgId)) {
+        if (!keywordIterator.hasNextForPackage(pkgId)) {
             // this package has no keywords
             return;
         }
@@ -120,7 +120,7 @@ public class SuseDataXmlWriter extends RepomdWriter {
                 .getEpoch())));
             tmpHandler.startElement("version", attr);
             tmpHandler.endElement("version");
- 
+
             addKeywords(pkgDto, tmpHandler);
             tmpHandler.endElement("package");
             tmpHandler.endDocument();
