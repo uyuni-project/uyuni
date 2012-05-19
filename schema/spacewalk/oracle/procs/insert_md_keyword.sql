@@ -8,7 +8,7 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-create or replace function insert_md_keyword(label_id in varchar2)
+create or replace function insert_md_keyword(label_in in varchar2)
 return number
 is
     pragma autonomous_transaction;
@@ -20,3 +20,4 @@ begin
     return md_keyword_id;
 end;
 /
+show errors
