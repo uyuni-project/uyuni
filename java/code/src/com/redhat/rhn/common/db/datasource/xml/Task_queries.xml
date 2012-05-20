@@ -726,7 +726,7 @@ where rhnChannelErrata.errata_id = rhnErrataPackage.errata_id
 </mode>
 
 <mode name="repomdgenerator_package_keywords">
-   <query params="channel_id, package_id">
+   <query params="channel_id">
   SELECT smd.package_id, smk.label as keyword
     FROM suseMdData smd
     JOIN suseMdKeyword smk ON smk.id = smd.keyword_id
