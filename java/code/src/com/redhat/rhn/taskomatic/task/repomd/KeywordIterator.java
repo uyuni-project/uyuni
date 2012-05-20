@@ -67,22 +67,59 @@ public class KeywordIterator {
         String query = NamedPreparedStatement.replaceBindParams(modeIn.getQuery()
                 .getOrigQuery(), new HashMap());
 
+        SelectMode modeCC = ModeFactory.getMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CLONED_FROM);
+        String cCQuery = NamedPreparedStatement.replaceBindParams(modeCC.getQuery()
+                .getOrigQuery(), new HashMap());
+
         row = new HashMap();
         goBack = false;
-        hasMoreRows = true;
+        long channelId = ch.getId();
+        boolean hasMoreClones = true;
+        hasMoreRows = executeStatementWithChannelId(query, channelId);
+        if (!hasMoreRows) {
+            do {
+                try {
+                    PreparedStatement ps = HibernateFactory.getSession().connection()
+                        .prepareStatement(cCQuery, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                            ResultSet.CONCUR_READ_ONLY);
+                    ps.setLong(1, channelId);
+                    ResultSet crs = ps.executeQuery();
+                    if (crs.next()) {
+                        channelId = crs.getLong("original_id");
+                        hasMoreRows = executeStatementWithChannelId(query, channelId);
+                    }
+                    else {
+                        hasMoreClones = false;
+                    }
+                }
+                catch (SQLException sqle) {
+                    log.error("SQLexception", sqle);
+                }
+            } while(hasMoreClones && !hasMoreRows);
+        }
+    }
+
+    private boolean executeStatementWithChannelId(String query, long channelId) {
+        boolean ret = false;
         try {
             PreparedStatement ps = HibernateFactory.getSession().connection()
-                    .prepareStatement(query);
-            ps.setLong(1, ch.getId());
+                .prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            ps.setLong(1, channelId);
             ps.setFetchSize(200);
             rs = ps.executeQuery();
             rsmd = rs.getMetaData();
+            ret = rs.first();
+            if (ret) {
+                rs.beforeFirst();
+            }
         }
         catch (SQLException sqle) {
             log.error("SQLexception", sqle);
         }
+        return ret;
     }
-
     /**
      *
      * @param pkgId package Id

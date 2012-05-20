@@ -736,6 +736,11 @@ where rhnChannelErrata.errata_id = rhnErrataPackage.errata_id
    </query>
 </mode>
 
+<mode name="repomdgenerator_channel_cloned_from">
+    <query params="channel_id">
+  SELECT original_id FROM rhnChannelCloned WHERE id = :channel_id
+    </query>
+</mode>
 
 <mode name="find_channel_in_task_queue">
 	<query params="cid">

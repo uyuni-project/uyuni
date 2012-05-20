@@ -164,4 +164,7 @@ public class TaskConstants {
 
     public static final String TASK_QUERY_REPOMD_GENERATOR_KEYWORDS =
         "repomdgenerator_package_keywords";
+
+    public static final String TASK_QUERY_REPOMD_GENERATOR_CLONED_FROM =
+        "repomdgenerator_channel_cloned_from";
 }
