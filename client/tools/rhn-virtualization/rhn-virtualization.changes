@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May 21 16:15:49 CEST 2012 - ug@suse.de
+
+- requires python-pycurl on redhat/fedora systems now
+
+-------------------------------------------------------------------
 Fri May 18 10:37:14 CEST 2012 - jrenner@suse.de
 
 - Merged studio integration modifications

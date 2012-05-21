@@ -49,6 +49,7 @@ Requires:       cron
 Requires:       python-curl
 PreReq:         %fillup_prereq %insserv_prereq
 %else
+Requires: python-pycurl
 Requires: /usr/sbin/crond
 Requires: python-hashlib
 %endif
