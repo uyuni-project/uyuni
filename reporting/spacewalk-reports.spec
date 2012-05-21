@@ -38,11 +38,9 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/spacewalk-report
-%dir %{_prefix}/share/spacewalk
-%dir %{_prefix}/share/spacewalk/reports
-%dir %{_prefix}/share/spacewalk/reports/data
-%{_prefix}/share/spacewalk/reports.py*
-%{_prefix}/share/spacewalk/reports/data/*
+%dir %{_datadir}/share/spacewalk
+%{_datadir}/spacewalk/reports.py*
+%{_datadir}/spacewalk/reports
 %{_mandir}/man8/spacewalk-report.8*
 
 %changelog
