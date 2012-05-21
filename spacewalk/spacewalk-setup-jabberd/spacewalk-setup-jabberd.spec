@@ -16,6 +16,7 @@ Requires:       jabberd
 %if 0%{?suse_version}
 Requires:       jabberd-db
 %endif
+Requires:       spacewalk-branding
 
 %description
 Script, which setup Jabberd for Spacewalk. Used during installation of
