@@ -60,8 +60,7 @@ rm -rf %{buildroot}
 %dir %{_datadir}/spacewalk
 %{_datadir}/spacewalk/*
 %dir %{_sysconfdir}/pki
-%dir %{_sysconfdir}/pki/spacewalk
-%dir %{_sysconfdir}/pki/spacewalk/jabberd
+%{_sysconfdir}/pki/spacewalk
 
 %changelog
 * Wed Dec 21 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.6.5-1
