@@ -41,8 +41,9 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/mgr-bootstrap.feature
                      features/channels.feature
                      features/weak_deps.feature
+                     features/check_support_data.feature
                      features/check_registration.feature
-		     features/check_errata-npn.feature
+                     features/check_errata-npn.feature
                      features/erratapage.feature
                      features/install_package.feature
                      features/install_errata-npn.feature

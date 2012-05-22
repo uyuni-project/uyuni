@@ -19,3 +19,11 @@ Then /^I should have "([^"]*)" in the metadata$/ do |text|
    fail if ! $?.success?
 end
 
+Then /^"([^"]*)" should exists in the metadata$/ do |file|
+    arch=`uname -m`
+    arch.chomp!
+    if arch != "x86_64"
+        arch = "i586"
+    end
+    fail if not File.exists?("#{client_raw_repodata_dir("sles11-sp1-updates-#{arch}-channel")}/#{file}")
+
