@@ -21268,7 +21268,7 @@ given channel.</source>
         <source>SUSE Studio</source>
      </trans-unit>
      <trans-unit id="credentials.jsp.edit.summary">
-        <source>External system or API credentials associated with your SUSE Manager account are listed below.</source>
+        <source>External system or API credentials associated with your @@PRODUCT_NAME@@ account are listed below.</source>
      </trans-unit>
      <trans-unit id="credentials.jsp.edit.dispatch">
         <source>Update Credentials</source>
