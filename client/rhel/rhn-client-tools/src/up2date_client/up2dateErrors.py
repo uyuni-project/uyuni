@@ -18,12 +18,23 @@ from platform import dist
 
 if getPlatform() == 'deb' or dist()[0] == 'SuSE':
     class YumBaseError(Exception):
-        def __init__(self, errmsg):
-            self.value = errmsg
-        def __getattr__(self, name):
-            raise AttributeError(_("class %s has no attribute '%s'") % (self.__class__.__name__, name))
-        def __setattr__(self, name, value):
-            raise AttributeError(_("class %s has no attribute '%s'") % (self.__class__.__name__, name))
+        """
+        Base Yum Error. All other Errors thrown should inherit from
+        this.
+        """
+        def __init__(self, value=None):
+            Exception.__init__(self)
+            self.value = value
+        def __str__(self):
+            return "%s" %(self.value,)
+
+        def __unicode__(self):
+            ret = self.value
+            if isinstance(ret, basestring):
+                if not isinstance(ret, unicode):
+                    ret = unicode(ret, 'utf-8', 'replace')
+            return "%s" %(ret,)
+
 else:
     from yum.Errors import YumBaseError
 
