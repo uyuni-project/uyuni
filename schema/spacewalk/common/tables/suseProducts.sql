@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2010 Novell
+-- Copyright (c) 2010-2012 Novell
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -30,3 +30,8 @@ suseProducts
 );
 
 CREATE SEQUENCE suse_products_id_seq START WITH 100;
+
+CREATE INDEX suseprod_pdid_idx
+ON suseProducts (product_id)
+TABLESPACE [[64k_tbs]];
+

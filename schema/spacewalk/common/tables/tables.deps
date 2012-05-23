@@ -26,6 +26,9 @@ rhnActionConfigFileName        :: rhnServerAction rhnConfigFileName rhnConfigFil
 rhnActionConfigRevision        :: rhnAction rhnServer rhnConfigRevision rhnConfigFileFailure
 rhnActionConfigRevisionResult  :: rhnActionConfigRevision
 rhnActionDaemonConfig          :: rhnAction
+rhnActionDup                   :: rhnAction rhnServer
+rhnActionDupChannel            :: rhnAction rhnChannel
+rhnActionDupProduct            :: rhnAction suseProducts
 rhnActionErrataUpdate          :: rhnAction rhnErrata
 rhnActionImageDeploy           :: rhnAction
 rhnActionKickstart             :: rhnAction rhnKickstartableTree
@@ -260,6 +263,7 @@ susePackageProductFile         :: suseProductFile rhnPackage
 suseProducts                   :: rhnPackageArch
 suseProductChannel             :: suseProducts rhnChannel
 suseServerInstalledProduct     :: rhnServer suseInstalledProduct
+suseUpgradePath                :: suseProducts
 time_series_data               :: time_series_purge
 time_series_purge              :: rhn_probe
 web_contact                    :: web_customer

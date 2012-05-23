@@ -16,16 +16,22 @@ suseProductChannel
     product_id number        not null
                              CONSTRAINT spc_pid_fk
                              REFERENCES suseProducts (id),
-    channel_id number        not null
-                             CONSTRAINT spc_rhn_cid_fk
+    channel_id number        CONSTRAINT spc_rhn_cid_fk
                              REFERENCES rhnChannel (id),
+    channel_label VARCHAR2(128) NOT NULL,
+    parent_channel_label VARCHAR2(128),
     created     date default(sysdate) not null,
     modified    date default(sysdate) not null
 );
 
-CREATE UNIQUE INDEX suse_prd_chan_uq
-    ON suseProductChannel (product_id, channel_id)
+CREATE UNIQUE INDEX suse_prd_chan_label_uq
+    ON suseProductChannel (product_id, channel_label)
     TABLESPACE [[64k_tbs]];
+
+CREATE INDEX suse_prd_chan_pcl_idx
+    ON suseProductChannel (parent_channel_label)
+    TABLESPACE [[64k_tbs]]
+    NOLOGGING;
 
 CREATE INDEX suse_prd_chan_chan_idx
     ON suseProductChannel (channel_id)

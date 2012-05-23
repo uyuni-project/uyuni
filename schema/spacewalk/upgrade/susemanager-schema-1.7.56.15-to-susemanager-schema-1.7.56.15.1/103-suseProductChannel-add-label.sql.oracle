@@ -1,0 +1,42 @@
+--
+-- Copyright (c) 2010-2012 Novell
+--
+-- This software is licensed to you under the GNU General Public License,
+-- version 2 (GPLv2). There is NO WARRANTY for this software, express or
+-- implied, including the implied warranties of MERCHANTABILITY or FITNESS
+-- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+-- along with this software; if not, see
+-- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+--
+--
+
+drop index suse_prd_chan_uq;
+
+alter table suseProductChannel modify channel_id NULL;
+
+alter table suseProductChannel add channel_label VARCHAR2(128) DEFAULT '' NOT NULL;
+alter table suseProductChannel add parent_channel_label VARCHAR2(128);
+
+update suseProductChannel
+   set channel_label = ( select c.label
+                           from rhnChannel c
+                          where c.id = suseProductChannel.channel_id);
+
+update suseProductChannel
+   set parent_channel_label = ( select c.label
+                                  from rhnChannel c
+                                 where c.id = (select c2.parent_channel
+                                                 from rhnChannel c2
+                                                where c2.id = suseProductChannel.channel_id));
+
+CREATE UNIQUE INDEX suse_prd_chan_label_uq
+ON suseProductChannel (product_id, channel_label)
+TABLESPACE [[64k_tbs]];
+
+alter table suseProductChannel modify channel_label DEFAULT (null);
+
+CREATE INDEX suse_prd_chan_pcl_idx
+ON suseProductChannel (parent_channel_label)
+TABLESPACE [[64k_tbs]]
+NOLOGGING;
+

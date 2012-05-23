@@ -71,6 +71,7 @@ commit;
 insert into rhnActionType values (49, 'proxy.deactivate', 'Deactivate Proxy', 'N', 'N');
 insert into rhnActionType values (50, 'scap.xccdf_eval', 'OpenSCAP xccdf scanning', 'N', 'Y');
 insert into rhnActionType values (500, 'image.deploy', 'Deploy an image to a virtual host.', 'N', 'N');
+insert into rhnActionType values (501, 'distupgrade.upgrade', 'Service Pack Migration', 'N', 'N');
 --
 --
 -- Revision 1.25  2004/10/29 05:07:52  pjones
