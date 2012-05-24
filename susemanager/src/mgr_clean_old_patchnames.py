@@ -10,6 +10,7 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 import re
+import sys
 
 from spacewalk.common import rhnLog
 from spacewalk.common.rhnLog import log_debug, log_error
@@ -25,7 +26,8 @@ class Cleaner:
         self.debug = debug
 
         if not all and not channel:
-            raise Exception("You need to specify either --all or --channel")
+            print "You need to specify either --all or --channel"
+            sys.exit(1)
 
         initCFG("server.susemanager")
         if self.debug == 0:
