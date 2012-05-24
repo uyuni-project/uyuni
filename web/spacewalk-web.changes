@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May 24 14:40:53 CEST 2012 - mc@suse.de
+
+- fix owner and permissions of /etc/rhn for spacewalk-dobby
+  (bnc#763878)
+
+-------------------------------------------------------------------
 Mon May 14 10:43:28 CEST 2012 - mc@suse.de
 
 - version 1.7.28.4-1
