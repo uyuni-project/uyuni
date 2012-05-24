@@ -87,7 +87,7 @@ Independent Perl modules in the RHN:: name-space.
 Summary: Perl modules and scripts to administer an Oracle database
 Group: Applications/Internet
 Requires: spacewalk-base
-Requires: perl-Filesys-Df
+Requires: perl-Filesys-Df oracle-update
 Obsoletes: rhn-dobby < 5.3.0
 Provides: rhn-dobby = 5.3.0
 

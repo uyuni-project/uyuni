@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May 24 15:53:39 CEST 2012 - mantel@suse.de
+
+- spacewalk-dobby now requires oracle-update, since this
+  requirement is missing from oracle-server
+
+-------------------------------------------------------------------
 Thu May 24 14:40:53 CEST 2012 - mc@suse.de
 
 - fix owner and permissions of /etc/rhn for spacewalk-dobby
