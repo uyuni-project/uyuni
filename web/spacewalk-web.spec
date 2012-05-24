@@ -256,7 +256,7 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/PXT/Config.pm
 %attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_web.conf
 %dir %{_prefix}/share/rhn
-%attr(750,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
+%dir %attr(750,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 %doc LICENSE
 
 %files -n spacewalk-dobby
@@ -269,7 +269,7 @@ rm -rf $RPM_BUILD_ROOT
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/susemanager-database
 %{perl_vendorlib}/Dobby/
 %dir %{_prefix}/share/rhn
-%dir %{_prefix}/share/rhn/config-defaults
+%dir %attr(750,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 
 %files -n spacewalk-grail
 %defattr(644,root,root,755)
