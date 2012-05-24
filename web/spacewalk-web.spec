@@ -268,7 +268,7 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/PXT/Config.pm
 %attr(640,root,%{apache_group}) %config %{_sysconfdir}/rhn/default/rhn_web.conf
 %dir %attr(750,root,%{apache_group}) /etc/rhn
-%attr(750,root,%{apache_group}) %dir /etc/rhn/default
+%dir %attr(750,root,%{apache_group}) /etc/rhn/default
 
 %files -n spacewalk-dobby
 %defattr(644,root,root,755)
@@ -279,8 +279,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) %{_sysconfdir}/cron.daily/check-oracle-space-usage.sh
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/susemanager-database
 %{perl_vendorlib}/Dobby/
-%dir /etc/rhn
-%dir /etc/rhn/default
+%dir %attr(750,root,%{apache_group}) /etc/rhn
+%dir %attr(750,root,%{apache_group}) /etc/rhn/default
 
 %files -n spacewalk-grail
 %defattr(644,root,root,755)
