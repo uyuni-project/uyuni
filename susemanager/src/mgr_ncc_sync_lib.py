@@ -31,6 +31,7 @@ from spacewalk.common.rhnLog import log_debug, log_error
 
 CHANNELS = '/usr/share/susemanager/channels.xml'
 CHANNEL_FAMILIES = '/usr/share/susemanager/channel_families.xml'
+UPGRADE_PATHS = '/usr/share/susemanager/upgrade_paths.xml'
 
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
@@ -404,6 +405,70 @@ class NCCSync(object):
                     current_m = 0
                 )
                 rhnSQL.commit()
+
+    def __get_id_from_product_id(self, product_id):
+        select_id = rhnSQL.prepare("""SELECT id FROM suseProducts WHERE product_id = :product_id""")
+        select_id.execute(product_id=product_id)
+        r = select_id.fetchone_dict() or None
+        if r:
+            return r['id']
+        return None
+
+    def update_upgrade_pathes_by_config(self):
+        """Update table suseUpgradePath with values read from XML config
+
+        Upgrade path information are read from UPGRADE_PATHS .xml
+        file and the table suseUpgradePath is updated according to it
+
+        """
+        self.print_msg("Updating Upgrade Path Information")
+
+        select_sql = ("SELECT from_pdid, to_pdid from suseUpgradePath")
+        query = rhnSQL.prepare(select_sql)
+        query.execute()
+        result = query.fetchall_dict() or []
+        pathes = {}
+        for row in result:
+            key = "%s-%s" % (row['from_pdid'], row['to_pdid'])
+            pathes[key] = 1
+
+        tree = etree.parse(UPGRADE_PATHS)
+        for upgrade in tree.getroot():
+            from_pdid = self.__get_id_from_product_id(int(upgrade.get("from_pdid")))
+            to_pdid   = self.__get_id_from_product_id(int(upgrade.get("to_pdid")))
+            if not from_pdid or not to_pdid:
+                continue
+
+            key = "%s-%s" % (from_pdid, to_pdid)
+            if pathes.has_key(key):
+                log_debug(1, "found existing entry for upgrade path %s => %s - skip" % (from_pdid, to_pdid))
+                del pathes[key]
+            else:
+                log_debug(1, "no entry for upgrade path %s => %s - adding" % (from_pdid, to_pdid))
+                # missing in the DB
+                insert_sql = """
+                    INSERT INTO suseUpgradePath (from_pdid, to_pdid)
+                    VALUES ( :from_pdid, :to_pdid )
+                """
+                query = rhnSQL.prepare(insert_sql)
+                query.execute(
+                    from_pdid = from_pdid,
+                    to_pdid = to_pdid
+                )
+
+        for key in pathes:
+            # all entries here needs to be removed
+            (from_pdid, to_pdid) = key.split('-', 1)
+            log_debug(1, "obsolete entry for upgrade path %s => %s - removing" % (from_pdid, to_pdid))
+            delete_sql = """DELETE FROM suseUpgradePath
+                            WHERE from_pdid = :from_pdid AND to_pdid = :to_pdid"""
+            query = rhnSQL.prepare(delete_sql)
+            query.execute(
+                from_pdid = from_pdid,
+                to_pdid = to_pdid
+            )
+        rhnSQL.commit()
+
 
     def add_channel_family_row(self, label, name=None, org_id=None, url="some url"):
         """Insert a new channel_family row"""
@@ -805,19 +870,47 @@ class NCCSync(object):
         query.execute(product_id=product_id)
         arch_name = query.fetchone()
         arch_text = ' (%s)' % arch_name[0] if arch_name else ''
+        channel_label = channel.get('label')
+        parent_label = channel.get('parent')
+        if parent_label == 'BASE':
+            parent_label = None
         if channel.get('optional') == 'N':
             suse_id = self.get_suse_product_id(product_id)
-            query = rhnSQL.prepare(
-                "INSERT INTO suseproductchannel (product_id, channel_id) "
-                "VALUES (:product_id, :channel_id)")
+            query = rhnSQL.prepare("""
+                SELECT 1
+                  FROM suseProductChannel
+                 WHERE product_id = :product_id
+                   AND channel_label = :channel_label""")
             query.execute(product_id=suse_id,
-                          channel_id=channel_id)
+                          channel_label=channel_label)
+            e = query.fetchone_dict() or None
+            if e:
+                # update
+                query = rhnSQL.prepare(
+                    "UPDATE suseProductChannel "
+                    "   SET channel_id = :channel_id, "
+                    "       parent_channel_label = :parent_label "
+                    " WHERE product_id = :product_id "
+                    "   AND channel_label = :channel_label")
+                query.execute(product_id=suse_id,
+                              channel_id=channel_id,
+                              channel_label=channel_label,
+                              parent_label=parent_label)
+            else:
+                # insert
+                query = rhnSQL.prepare(
+                    "INSERT INTO suseproductchannel (product_id, channel_id, channel_label, parent_channel_label) "
+                    "VALUES (:product_id, :channel_id, :channel_label, :parent_label)")
+                query.execute(product_id=suse_id,
+                              channel_id=channel_id,
+                              channel_label=channel_label,
+                              parent_label=parent_label)
             self.log_msg("Registered channel %s to SuseProductChannel%s."
-                         % (channel.get('label'), arch_text))
+                         % (channel_label, arch_text))
         else:
             self.log_msg("Did NOT register optional channel %s to "
                          "SuseProductChannel%s." %
-                         (channel.get('label'), arch_text))
+                         (channel_label, arch_text))
 
     def sync_channel(self, channel_label):
         """Schedule a repo sync for the specified database channel.
@@ -1291,49 +1384,52 @@ class NCCSync(object):
         channel's current optional status.
 
         """
-        q = rhnSQL.prepare("SELECT c.label "
-                           "FROM rhnchannel c, suseproductchannel s "
-                           "WHERE c.id = s.channel_id")
+        q = rhnSQL.prepare("SELECT spc.product_id, spc.channel_label "
+                           "FROM suseproductchannel spc "
+                           "JOIN suseproducts sp ON spc.product_id = sp.id")
         q.execute()
-        channel_labels = [tup[0] for tup in q.fetchall()]
-        delete_channel_labels = []
-        add_channels = []
+        existing_product_channels = [("%s-%s" % (tup[0], tup[1])) for tup in q.fetchall()]
 
-        installed_channels = rhnSQL.Table("RHNCHANNEL", "LABEL")
         for channel in self.get_available_channels():
-            # we only care about the ones that we already have installed
-            if installed_channels.has_key(channel.get('label')):
-                if channel.get('label') in channel_labels:
-                    if channel.get('optional') == 'Y':
-                        delete_channel_labels.append(channel.get('label'))
-                else:
-                    if channel.get('optional') == 'N':
-                        add_channels.append(channel)
-
-        # add channel-product relationships
-        for channel in add_channels:
+            if channel.get('optional') == 'Y':
+                # we store only not optional channels
+                continue
+            installed_channels = rhnSQL.Table("RHNCHANNEL", "LABEL")
             channel_label = channel.get('label')
-            channel_id = rhnSQL.Row("rhnchannel", "label", channel_label)['id']
+            parent_label = channel.get('parent')
+            if parent_label == 'BASE':
+                parent_label = None
             for product in channel.find('products'):
-                product_id = rhnSQL.Row("suseproducts", 'product_id',
-                                        int(product.text))['id']
-                q = rhnSQL.prepare("INSERT INTO suseproductchannel "
-                                   "(channel_id, product_id) "
-                                   "VALUES (:channel_id, :product_id)")
-                q.execute(channel_id=channel_id, product_id=product_id)
+                product_id = self.get_suse_product_id(int(product.text))
+                channel_id = None
+                if installed_channels.has_key(channel_label):
+                    channel_id = rhnSQL.Row("rhnchannel", "label", channel_label)['id']
+                key = "%s-%s" % (product_id, channel_label)
+                if key in existing_product_channels:
+                    # update
+                    q = rhnSQL.prepare("UPDATE suseproductchannel "
+                                       "SET channel_id = :channel_id, "
+                                       "    parent_channel_label = :parent_label "
+                                       "WHERE product_id=:product_id AND channel_label=:channel_label")
+                    q.execute(channel_id=channel_id, product_id=product_id,
+                              channel_label=channel_label, parent_label=parent_label)
+                    existing_product_channels.remove(key)
+                else:
+                    # insert
+                    q = rhnSQL.prepare("INSERT INTO suseproductchannel "
+                                       "(channel_id, product_id, channel_label, parent_channel_label) "
+                                       "VALUES (:channel_id, :product_id, :channel_label, :parent_label)")
+                    q.execute(channel_id=channel_id, product_id=product_id,
+                              channel_label=channel_label, parent_label=parent_label)
 
-        # delete channel-product relationships we don't want anymore
-        if delete_channel_labels:
-            q = rhnSQL.prepare("SELECT id FROM rhnchannel "
-                               "WHERE label in %s" %
-                               sql_list(delete_channel_labels))
-            q.execute()
-            delete_channel_ids = [i[0] for i in q.fetchall()]
-
+        for pc in existing_product_channels:
+            # drop
+            (product_id, channel_label) = pc.split('-', 1)
             q = rhnSQL.prepare("DELETE FROM suseproductchannel "
-                               "WHERE channel_id IN %s" %
-                               sql_list(delete_channel_ids))
-            q.execute()
+                               "WHERE product_id=:product_id AND channel_label=:channel_label")
+            q.execute(product_id=product_id, channel_label=channel_label)
+
+
         rhnSQL.commit()
 
     def add_dist_channel_map(self, channel_id, channel_arch_id, dist):

@@ -43,6 +43,8 @@ def main():
                       "information without triggering any reposyncs")
     parser.add_option("-m", "--migrate_res", action="store_true",
                       help="migrate to RES subscriptions")
+    parser.add_option('-u', "--update_up", action="store_true",
+                      help="update upgrade paths by XML config")
     parser.add_option('-q', '--quiet', action='store_true', dest='quiet',
                       help="Print no output, still logs output")
     parser.add_option('-d', '--debug', dest='debug', default=-1,
@@ -74,6 +76,8 @@ def main():
         syncer.update_suse_products_table(suse_products)
     elif options.update_cf:
         syncer.update_channel_family_table_by_config()
+    elif options.update_up:
+        syncer.update_upgrade_pathes_by_config()
     elif options.test:
         syncer.test_subscription_calculation()
     elif options.update_subscriptions:
@@ -95,6 +99,7 @@ def main():
         syncer.update_subscriptions()
         syncer.sync_installed_channels()
         syncer.sync_suseproductchannel()
+        syncer.update_upgrade_pathes_by_config()
 
 if __name__ == "__main__":
     try:
