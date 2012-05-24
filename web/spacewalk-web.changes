@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 24 14:40:53 CEST 2012 - mc@suse.de
+
+- fix owner and permissions of /etc/rhn for spacewalk-dobby
+
+-------------------------------------------------------------------
 Fri May 18 10:45:01 CEST 2012 - jrenner@suse.de
 
 - Merged studio integration modifications
