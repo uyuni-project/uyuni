@@ -52,40 +52,27 @@ public class ScheduleImageDeploymentAction extends RhnAction {
             ActionForm actionForm, HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        // Deployment parameters
-        Long vcpus = null;
-        Long memkb = null;
-        String bridge = null;
-        String proxyServer = null;
-        String proxyUser = null;
-        String proxyPass = null;
-
-        // Read form parameters if we are 'dispatched'
-        Boolean dispatched = request.getParameter(RequestContext.DISPATCH) != null;
-        if (dispatched && actionForm instanceof DynaActionForm) {
-            DynaActionForm form = (DynaActionForm) actionForm;
-            vcpus = (Long) form.get("vcpus");
-            memkb = (Long) form.get("mem_mb") * 1024;
-            bridge = (String) form.getString("bridge");
-            proxyServer = (String) form.getString("proxy_server");
-            proxyUser = (String) form.getString("proxy_user");
-            proxyPass = (String) form.getString("proxy_pass");
-        }
-
         // Get the current user
         RequestContext ctx = new RequestContext(request);
-        User user = ctx.getLoggedInUser();
+        User user = ctx.getCurrentUser();
 
-        // Put the server to the request (needed for system header)
+        // Put the server object to the request (for system header)
         Long sid = new Long(request.getParameter(RequestContext.SID));
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         request.setAttribute("system", server);
 
-        // Can be used to detect if we are currently clearing the filter
-        Boolean filterCleared = request.getParameter("image_id") != null;
-
         ActionForward forward;
-        if (dispatched) {
+        if (request.getParameter(RequestContext.DISPATCH) != null) {
+            // Read the form parameters
+            DynaActionForm form = (DynaActionForm) actionForm;
+            Long vcpus = (Long) form.get("vcpus");
+            Long memkb = (Long) form.get("mem_mb") * 1024;
+            String bridge = (String) form.getString("bridge");
+            String proxyServer = (String) form.getString("proxy_server");
+            String proxyUser = (String) form.getString("proxy_user");
+            String proxyPass = (String) form.getString("proxy_pass");
+
+            // Find the requested image
             String imageId = request.getParameter("image_id");
             Image image = findImage(new Long(imageId), request);
 
@@ -112,19 +99,23 @@ public class ScheduleImageDeploymentAction extends RhnAction {
 
             // Forward the sid as a request parameter
             Map forwardParams = makeParamMap(request);
-            forwardParams.put("sid", sid);
+            forwardParams.put(RequestContext.SID, sid);
+            forwardParams.put("load_async", false);
             forward = getStrutsDelegate().forwardParams(
                     actionMapping.findForward("submitted"), forwardParams);
         }
-        else if (ctx.isSubmitted() || filterCleared) {
-            // The "parentUrl" is needed for rl:listset
-            request.setAttribute(ListTagHelper.PARENT_URL,
-                    request.getRequestURI());
-            forward = actionMapping.findForward("default");
-        }
         else {
-            // The page is called for the first time
-            forward = actionMapping.findForward("load-async");
+            // Load images asynchronously if 'sid' is the only parameter
+            if (loadAsync(request)) {
+                request.setAttribute("loadAsync", true);
+            }
+            else {
+                // The 'parentUrl' is needed for the 'listset' tag
+                request.setAttribute(ListTagHelper.PARENT_URL,
+                        request.getRequestURI());
+            }
+            // Find the default destination
+            forward = actionMapping.findForward("default");
         }
         return forward;
     }
@@ -146,10 +137,20 @@ public class ScheduleImageDeploymentAction extends RhnAction {
                 break;
             }
         }
-        // Clear images from memory if image was found
-        if (image != null) {
-            request.getSession().removeAttribute(ImagesRenderer.ATTRIB_IMAGES_LIST);
-        }
         return image;
+    }
+
+    /**
+     * Return true if there is only one parameter contained in the request.
+     * @param request
+     * @return true if there is only one parameter, else false
+     */
+    private boolean loadAsync(HttpServletRequest request) {
+        boolean ret = false;
+        Map params = request.getParameterMap();
+        if (params.size() == 1) {
+            ret = true;
+        }
+        return ret;
     }
 }
