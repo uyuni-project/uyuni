@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 29 17:41:23 CEST 2012 - mc@suse.de
+
+- add missing schema migration for rhnErrataBuglistTmp
+  (bnc#764544)
+
+-------------------------------------------------------------------
 Fri May 18 10:45:43 CEST 2012 - jrenner@suse.de
 
 - Merged studio integration modifications (bnc#764532)
