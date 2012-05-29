@@ -164,6 +164,7 @@ setup_db_oracle() {
     # remove suid bits for bnc#736240
     find /opt/apps/oracle/product/ -perm -4000 -exec chmod -s {} \;
     cp /opt/apps/oracle/product/11gR2/dbhome_1/network/admin/tnsnames.ora /etc
+    smdba-netswitch localhost
     compute_oracle_mem
     echo "Create database user for SUSE Manager..."
     echo "select value from nls_database_parameters where parameter='NLS_CHARACTERSET';

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 29 09:18:46 CEST 2012 - mantel@suse.de
+
+- after a local Oracle database has been set up, switch the
+  listener to localhost only mode (CVE-2012-1675)
+  (bnc#760074, bnc#736238, bnc#757705)
+
+-------------------------------------------------------------------
 Mon May 14 10:48:19 CEST 2012 - mc@suse.de
 
 - version 1.7.5-1
