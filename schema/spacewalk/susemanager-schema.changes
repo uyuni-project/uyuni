@@ -26,10 +26,12 @@ Wed May 09 13:45:17 CEST 2012 - mc@suse.de
 - version 1.7.56.7-1
 - use persistent dblink connection
 - Completely remove the image type from deployment action details
-- rename suse_credentialstype index and sequence names
-- fix table dependencies
+- rename suse_credentialstype index and sequence names (bnc#764532)
+- fix table dependencies (bnc#764532)
 - Normalize image types by creating new table suseImageType
-- Normalize credentials types by creating new table suseCredentialsType
+  (bnc#764532)
+- Normalize credentials types by creating new table
+  suseCredentialsType (bnc#764532)
 
 -------------------------------------------------------------------
 Thu May 03 17:43:31 CEST 2012 - mc@suse.de

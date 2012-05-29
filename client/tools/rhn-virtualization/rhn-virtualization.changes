@@ -19,7 +19,7 @@ Wed May 09 13:46:45 CEST 2012 - mc@suse.de
 Tue May  8 14:46:41 CEST 2012 - ug@suse.de
 
 - added generate_uuid to utils.py
-- inegrated upstream feedback to studio integration
+- inegrated upstream feedback to studio integration (bnc#764532)
 
 -------------------------------------------------------------------
 Fri Apr 27 16:28:52 CEST 2012 - mc@suse.de
