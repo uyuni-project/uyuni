@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 29 17:43:10 CEST 2012 - mc@suse.de
+
+- add missing schema migration for rhnErrataBuglistTmp
+  (bnc#764544)
+
+-------------------------------------------------------------------
 Mon May 14 10:44:12 CEST 2012 - mc@suse.de
 
 - version 1.7.56.8-1
