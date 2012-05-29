@@ -13,7 +13,7 @@ Thu May 24 14:40:53 CEST 2012 - mc@suse.de
 -------------------------------------------------------------------
 Fri May 18 10:45:01 CEST 2012 - jrenner@suse.de
 
-- Merged studio integration modifications
+- Merged studio integration modifications (bnc#764532)
 - Escape image names to prevent XSS (bnc#761165, CVE-2012-0414)
 
 -------------------------------------------------------------------
