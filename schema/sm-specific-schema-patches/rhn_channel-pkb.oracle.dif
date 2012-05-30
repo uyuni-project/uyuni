@@ -1,4 +1,4 @@
---- 801-rhn_channel.pkb.sql	2012-03-27 14:40:32.000000000 +0200
+--- 851-rhn_channel.pkb.sql	2012-03-27 14:40:32.000000000 +0200
 +++ ../../oracle/packages/rhn_channel.pkb	2012-03-22 10:41:43.000000000 +0100
 @@ -60,6 +60,7 @@
          server_org_id_val       NUMBER;
