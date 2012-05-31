@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu May 31 10:53:01 CEST 2012 - mc@suse.de
+
+- version 1.7.15.5-1
+- spacewalk-clone-by-date failes with TypeError when on Postgres
+  database.
+- use spacewalk-setup-cobbler instead of outdated cobbler-setup
+- Revert "set localhost instead of hostname to tnsnames.ora and listener.ora"
+- added version for scientific linux default channel mapping
+
+-------------------------------------------------------------------
 Mon May 14 10:50:14 CEST 2012 - mc@suse.de
 
 - version 1.7.15.4-1
