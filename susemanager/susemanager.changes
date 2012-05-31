@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu May 31 17:56:11 CEST 2012 - mc@suse.de
+
+- version 1.7.7-1
+- switch database specific packages if a different db is requested
+  than the appliance is build for (bnc#764898)
+
+-------------------------------------------------------------------
 Thu May 31 10:51:26 CEST 2012 - mc@suse.de
 
 - version 1.7.6-1
