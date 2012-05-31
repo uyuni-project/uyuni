@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu May 31 10:56:09 CEST 2012 - mc@suse.de
+
+- version 1.7.38.10-1
+- decode unicode string on IDN machines
+- mock import_susedata
+- allow retrieving susedata.xml.gz
+- implement get_susedata()
+- implement import_susedata()
+
+-------------------------------------------------------------------
 Mon May 14 15:16:11 CEST 2012 - mc@suse.de
 
 - version 1.7.38.9-1
