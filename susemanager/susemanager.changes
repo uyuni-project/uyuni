@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May 31 10:51:26 CEST 2012 - mc@suse.de
+
+- version 1.7.6-1
+- do not raise an exception on wrong parameter usage
+
+-------------------------------------------------------------------
 Tue May 29 09:18:46 CEST 2012 - mantel@suse.de
 
 - after a local Oracle database has been set up, switch the
