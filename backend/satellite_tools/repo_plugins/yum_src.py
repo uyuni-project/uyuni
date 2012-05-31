@@ -164,7 +164,11 @@ class ContentSource:
 
         warnings = YumWarnings()
         warnings.disable()
-        repo.baseurlSetup()
+        try:
+            repo.baseurlSetup()
+        except:
+            warnings.restore()
+            raise
         warnings.restore()
         for burl in repo.baseurl:
             repo.gpgkey = [burl + '/repodata/repomd.xml.key']
