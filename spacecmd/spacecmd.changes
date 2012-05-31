@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Thu May 31 10:53:52 CEST 2012 - mc@suse.de
+
+- version 1.7.7.4-1
+- kickstart_getcontents fix character encoding error
+- activationkey_import don't add empty package/group lists
+- fix activationkey_import when no base-channel specified
+- Fix reference to non-existent variable
+- improve configchannel_export operation on old API versions
+- *diff functions allow python 2.4 compatibility
+- changed get_string_diff_dicts to better fitting replacement method
+- remove reference to stage function
+- add do_SPACEWALKCOMPONENT_diff functions
+- system_comparewithchannel filter system packagelist
+- argument validation needed for configchannel_addfile
+- configchannel_addfile don't display b64 file contents
+
+-------------------------------------------------------------------
 Fri Apr 27 16:11:14 CEST 2012 - mc@suse.de
 
 - version 1.7.7.3-1
