@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu May 31 11:00:47 CEST 2012 - mc@suse.de
+
+- version 1.7.0.2-1
+- simplify pki declaration
+- require spacewalk-branding
+
+-------------------------------------------------------------------
 Wed Mar 21 14:31:21 CET 2012 - mc@suse.de
 
 - version 1.7.0.1-1
