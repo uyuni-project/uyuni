@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Thu May 31 10:48:40 CEST 2012 - mc@suse.de
+
+- version 1.7.56.9-1
+- get rid of out parameters in user_role_check_debug
+- forgotten rhnPackageSource update
+- Schema upgrade script for the rhn_versioninfo_nid_eid_uq drop.
+- No need to enforce unique (name_id, evr_id) on rhnVersionInfo.
+- Database migration files for studio integration (suseCredentialsType etc.)
+- fix various issues in PG variant of rhn_channel.convert_to_fve
+- Improve upgrade time_series data move
+- Fix rhnPackageChangeLog upgrade logic.
+- remove unused cursor
+- store suse metadata keywords
+
+-------------------------------------------------------------------
 Tue May 29 17:43:10 CEST 2012 - mc@suse.de
 
 - add missing schema migration for rhnErrataBuglistTmp
