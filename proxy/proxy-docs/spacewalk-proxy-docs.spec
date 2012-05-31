@@ -8,6 +8,9 @@ Version: 1.7.0.1
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
+BuildRequires: susemanager-client-config_en-pdf
+BuildRequires: susemanager-proxy-quick_en-pdf
+BuildRequires: susemanager-reference_en-pdf
 Obsoletes: rhns-proxy-docs < 5.3.0
 Provides: rhns-proxy-docs = 5.3.0
 
@@ -26,15 +29,34 @@ and Enterprise User Reference guides.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -m 755 -d $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT/%_defaultdocdir/%{name}
+if [ -e %{_datadir}/doc/manual/susemanager-client-config_en-pdf/susemanager-client-config_en.pdf ]; then
+cp %{_datadir}/doc/manual/susemanager-client-config_en-pdf/susemanager-client-config_en.pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
+else
+cp susemanager-client-config_en.pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
+fi
+if [ -e %{_datadir}/doc/manual/susemanager-proxy-quick_en-pdf/susemanager-proxy-quick_en.pdf ]; then
+cp %{_datadir}/doc/manual/susemanager-proxy-quick_en-pdf/susemanager-proxy-quick_en.pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
+else
+cp susemanager-proxy-quick_en.pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
+fi
+if [ -e %{_datadir}/doc/manual/susemanager-reference_en-pdf/susemanager-reference_en.pdf ]; then
+cp %{_datadir}/doc/manual/susemanager-reference_en-pdf/susemanager-reference_en.pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
+else
+cp susemanager-reference_en.pdf $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
+fi
+
+install -m 644 LICENSE $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
+install -m 644 squid.conf.sample $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc *.pdf
-%doc LICENSE
-%doc squid.conf.sample
+%docdir %_defaultdocdir/%{name}
+%dir %_defaultdocdir/%{name}
+%_defaultdocdir/%{name}/*
 
 # $Id: proxy.spec,v 1.290 2007/08/08 07:03:05 msuchy Exp $
 %changelog
