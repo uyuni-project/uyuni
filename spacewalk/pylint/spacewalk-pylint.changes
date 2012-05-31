@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu May 31 10:57:11 CEST 2012 - mc@suse.de
+
+- version 0.2.4-1
+- consistently use macros
+- include license file
+
+-------------------------------------------------------------------
 Wed May 02 14:22:10 CEST 2012 - mc@suse.de
 
 - version 0.2.3-1
