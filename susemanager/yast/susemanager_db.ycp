@@ -4,6 +4,8 @@
     import "Directory";
     import "FileUtils";
     import "GetInstArgs";
+    import "Message";
+    import "Package";
     import "Popup";
     import "Stage";
     import "Wizard";
@@ -43,6 +45,19 @@
 	"MANAGER_DB_HOST"	: "localhost",
 	"MANAGER_DB_PROTOCOL"	: "TCP",
     ];
+
+    list<string> FilterPackageList(list<string> in, boolean doRemove) {
+        list<string> ret = [];
+
+        foreach( string pkg, in, {
+            if ((Package::Installed(pkg) && doRemove) ||
+                (!Package::Installed(pkg) && !doRemove))
+            {
+                ret = add(ret, pkg);
+            }
+        });
+        return ret;
+    }
 
     string env_file	= Directory::tmpdir + "/env_db";
     if (FileUtils::Exists (env_file))
@@ -218,6 +233,35 @@ The invalid characters are: %1"), invalid_pw_chars));
                         y2milestone("remote db oracle detected");
                         val = "oracle";
                     }
+
+                    list<string> oraclepkgs   = [ "spacewalk-oracle", "spacewalk-java-oracle", "spacewalk-backend-sql-oracle" ];
+                    list<string> postgrespkgs = [ "spacewalk-postgresql", "spacewalk-java-postgresql", "spacewalk-backend-sql-postgresql" ];
+                    if (val == "oracle")
+                    {
+                        // install oracle packages
+                        list<string> install_packages = FilterPackageList(oraclepkgs, false);
+                        list<string> remove_packages  = FilterPackageList(postgrespkgs, true);
+                        if (size (install_packages) > 0 || size (remove_packages) > 0)
+                        {
+                            if (!Package::DoInstallAndRemove(install_packages, remove_packages))
+                            {
+                                Popup::Error (Message::FailedToInstallPackages ());
+                            }
+                        }
+                    }
+                    else if(val == "postgresql")
+                    {
+                        // install postgresql packages
+                        list<string> install_packages = FilterPackageList(postgrespkgs, false);
+                        list<string> remove_packages  = FilterPackageList(oraclepkgs, true);
+                        if (size (install_packages) > 0 || size (remove_packages) > 0)
+                        {
+                            if (!Package::DoInstallAndRemove(install_packages, remove_packages))
+                            {
+                                Popup::Error (Message::FailedToInstallPackages ());
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -258,6 +302,7 @@ The invalid characters are: %1"), invalid_pw_chars));
                 setenv ("LOCAL_DB", "0", true);
                 SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", "LOCAL_DB", "0", env_file));
             }
+
 
 	    break;
 	}
