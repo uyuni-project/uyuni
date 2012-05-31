@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu May 31 10:43:07 CEST 2012 - mc@suse.de
+
+- version 5.4.34.5-1
+- requires python-pycurl on redhat/fedora now
+- remove debugging code
+
+-------------------------------------------------------------------
 Mon May 14 10:42:43 CEST 2012 - mc@suse.de
 
 - version 5.4.34.4-1
