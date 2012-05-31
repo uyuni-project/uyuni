@@ -96,7 +96,7 @@ Requires(pre): %{name} = %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Obsoletes: rhns-sql < 5.3.0
 Provides: rhns-sql = 1:%{version}-%{release}
-Requires: %{name}-sql-virtual = %{version}-%{release}
+Requires: %{name}-sql-virtual = %{version}
 
 %description sql
 This package contains the basic code that provides SQL connectivity for
@@ -106,7 +106,7 @@ the Spacewalk backend modules.
 Summary: Oracle backend for Spacewalk
 Group: Applications/Internet
 Requires: python(:DBAPI:oracle)
-Provides: %{name}-sql-virtual = %{version}-%{release}
+Provides: %{name}-sql-virtual = %{version}
 
 %description sql-oracle
 This package contains provides Oracle connectivity for the Spacewalk backend
@@ -116,7 +116,7 @@ modules.
 Summary: Postgresql backend for Spacewalk
 Group: Applications/Internet
 Requires: python-psycopg2
-Provides: %{name}-sql-virtual = %{version}-%{release}
+Provides: %{name}-sql-virtual = %{version}
 
 %description sql-postgresql
 This package contains provides PostgreSQL connectivity for the Spacewalk
