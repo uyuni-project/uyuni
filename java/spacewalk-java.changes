@@ -1,4 +1,26 @@
 -------------------------------------------------------------------
+Thu May 31 10:45:20 CEST 2012 - mc@suse.de
+
+- version 1.7.54.11-1
+- omit accessible parameter
+- modified java stack to use new user_role_check_debug()
+- Fail gracefully on empty list of systems
+- OpenSCAP integration -- A simple search page.
+- add an extra entitlement check before the key creation
+- Enhancements pt_BR localization at webUI
+- Return to Images.do instead of VirtualGuestList.do
+- store also config revision changed_by_id
+- API *must* check for compatible channels in system.setBaseChannel()
+- check cloned channels if no keywords are found for this channel
+- fix ISE on copy file to central config channel
+- Fix incorrect text fields.
+- rewrite revision creation by config file update
+- Don't show empty table, if there is not ident assigned.
+- Extend input cell for 20 characters.
+- prevent system.config.createOrUpdatePath causing deadlock
+- add generator for susedata.xml.gz metadata
+
+-------------------------------------------------------------------
 Mon May 14 10:45:56 CEST 2012 - mc@suse.de
 
 - version 1.7.54.10-1
