@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu May 31 10:44:13 CEST 2012 - mc@suse.de
+
+- version 1.7.28.5-1
+- OpenSCAP integration -- Add simple search page.
+- Sometimes the return_link on the SSM Clear button does not
+  work
+
+-------------------------------------------------------------------
 Thu May 24 14:40:53 CEST 2012 - mc@suse.de
 
 - fix owner and permissions of /etc/rhn for spacewalk-dobby
