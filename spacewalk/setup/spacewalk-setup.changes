@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May 31 10:58:02 CEST 2012 - mc@suse.de
+
+- version 1.7.9.5-1
+- get rid of jabberd xsl templates in spacewalk-setup
+
+-------------------------------------------------------------------
 Mon May 14 10:59:03 CEST 2012 - mc@suse.de
 
 - version 1.7.9.4-1
