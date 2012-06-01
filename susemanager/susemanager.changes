@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jun  1 16:35:34 CEST 2012 - mc@suse.de
+
+- add option to migrate channels to RES subscriptions (bnc#765053)
+
+-------------------------------------------------------------------
 Thu May 10 15:19:29 CEST 2012 - ug@suse.de
 
 - added desktop file for susemanager_setup yast
