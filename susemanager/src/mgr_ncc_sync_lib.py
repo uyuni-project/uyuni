@@ -1357,3 +1357,22 @@ def get_repo_path(repourl):
 
     """
     return repourl.split('repo/')[-1].rstrip('/')
+
+def migrate_res():
+    """Migrate channel families from rhel to RES subscriptions"""
+
+    cf_id = rhnSQL.Row("rhnChannelFamily", 'label', 'RES')['id']
+    if not cf_id:
+        self.error_msg("ID of SUSE Linux Enterprise RedHat Expanded Support not found")
+        sys.exit(1)
+
+    q = rhnSQL.prepare("UPDATE rhnChannelFamilyMembers
+                           SET channel_family_id=:cf_id
+                         WHERE channel_family_id IN (
+                             SELECT rcfin.id
+                               FROM rhnChannelFamily rcfin
+                              WHERE rcfin.label IN
+                                  ('rhel-server', 'rhel-server-6', 'rhel-cluster',
+                                   'rhel-server-cluster', 'rhel-server-cluster-storage',
+                                   'rhel-server-vt'))")
+    q.execute(cf_id=cf_id)
