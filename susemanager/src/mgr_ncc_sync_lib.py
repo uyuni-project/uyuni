@@ -1358,7 +1358,7 @@ def get_repo_path(repourl):
     """
     return repourl.split('repo/')[-1].rstrip('/')
 
-def migrate_res():
+def migrate_res(self):
     """Migrate channel families from rhel to RES subscriptions"""
 
     cf_id = rhnSQL.Row("rhnChannelFamily", 'label', 'RES')['id']
