@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun  1 18:19:38 CEST 2012 - mc@suse.de
+
+- fix ISE during registration because of duplicate ids
+  (bnc#765123)
+
+-------------------------------------------------------------------
 Thu May 31 10:56:09 CEST 2012 - mc@suse.de
 
 - version 1.7.38.10-1
