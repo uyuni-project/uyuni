@@ -92,7 +92,7 @@ class SuseData:
         sot.target as ostarget,
         s.ncc_sync_required
       FROM suseServer s
-      JOIN suseOSTarget sot ON s.ostarget_id = sot.id
+      LEFT JOIN suseOSTarget sot ON s.ostarget_id = sot.id
       WHERE rhn_server_id = :sysid
     """)
     h.execute(sysid = sysid)
