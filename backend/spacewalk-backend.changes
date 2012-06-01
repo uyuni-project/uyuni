@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun  1 18:18:13 CEST 2012 - mc@suse.de
+
+- fix ISE during registration because of duplicate ids
+  (bnc#765123)
+
+-------------------------------------------------------------------
 Fri May 18 10:41:11 CEST 2012 - jrenner@suse.de
 
 - Merged studio integration modifications (bnc#764532)
