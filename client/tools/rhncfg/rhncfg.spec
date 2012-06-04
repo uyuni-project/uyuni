@@ -77,6 +77,8 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{rhnroot}
 make -f Makefile.rhncfg install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
+mkdir -p $RPM_BUILD_ROOT/%{_localstatedir}/log
+touch $RPM_BUILD_ROOT/%{_localstatedir}/log/rhncfg-actions
 
 %if 0%{?suse_version}
 ln -s rhncfg-manager $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-manager
@@ -85,6 +87,13 @@ ln -s rhn-actions-control $RPM_BUILD_ROOT/%{_bindir}/mgr-actions-control
 %endif
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+if [ -f %{_localstatedir}/log/rhncfg-actions ]
+then 
+chown root %{_localstatedir}/log/rhncfg-actions
+chmod 600 %{_localstatedir}/log/rhncfg-actions
+fi
 
 %files
 %defattr(-,root,root,-)
@@ -126,6 +135,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/rhn-actions-control
 %config(noreplace) %{client_caps_dir}/*
 %{_mandir}/man8/rhn-actions-control.8*
+%ghost %attr(600,root,root) %{_localstatedir}/log/rhncfg-actions
 
 # $Id$
 %changelog
