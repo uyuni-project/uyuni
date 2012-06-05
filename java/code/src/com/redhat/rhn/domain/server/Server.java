@@ -29,6 +29,8 @@ import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -1872,8 +1874,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * Return the installed products or null in case of no products found.
      * @return installed products
      */
-    public List<String> getInstalledProducts() {
-        List<String> result = ServerFactory.getInstalledProducts(this);
+    public SUSEProductSet getInstalledProducts() {
+        SUSEProductSet result = SUSEProductFactory.getInstalledProducts(this);
         if (result.isEmpty()) {
             return null;
         }

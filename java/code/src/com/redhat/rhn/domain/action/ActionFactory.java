@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigUploadAction;
 import com.redhat.rhn.domain.action.config.ConfigUploadMtimeAction;
 import com.redhat.rhn.domain.action.config.DaemonConfigAction;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.image.DeployImageAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestToolsChannelSubscriptionAction;
@@ -265,6 +266,25 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Check if there is a pending service pack migration in the schedule. Return the
+     * action ID if available or null otherwise.
+     * @param serverId server
+     * @return ID of a possibly scheduled migration or null.
+     */
+    public static Action isMigrationScheduledForServer(Long serverId) {
+        Action ret = null;
+        Query query = HibernateFactory.getSession().getNamedQuery(
+                "ServerAction.findPendingKickstartsForServer");
+        query.setParameter("serverId", serverId);
+        query.setParameter("label", "distupgrade.upgrade");
+        List<ServerAction> list = query.list();
+        if (list != null && list.size() > 0) {
+            ret = list.get(0).getParentAction();
+        }
+        return ret;
+    }
+
+    /**
      * Create a new Action from scratch.
      * @param typeIn the type of Action we want to create
      * @return the Action created
@@ -370,6 +390,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_DEPLOY_IMAGE)) {
             retval = new DeployImageAction();
+        }
+        else if (typeIn.equals(TYPE_DIST_UPGRADE)) {
+            retval = new DistUpgradeAction();
         }
 
         else {
@@ -1002,5 +1025,10 @@ public class ActionFactory extends HibernateFactory {
     public static final ActionType TYPE_DEPLOY_IMAGE =
             lookupActionTypeByLabel("image.deploy");
 
+    /**
+     * The constant representing distribution upgrade action.  [ID:501]
+     */
+    public static final ActionType TYPE_DIST_UPGRADE =
+            lookupActionTypeByLabel("distupgrade.upgrade");
 }
 

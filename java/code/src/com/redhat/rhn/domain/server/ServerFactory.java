@@ -858,40 +858,4 @@ public class ServerFactory extends HibernateFactory {
                 .uniqueResult();
         return retval;
     }
-
-    /**
-     * Returns a list of Installed Products on the server.
-     * @param server Server whose products we want.
-     * @return a list of products on the given server.
-     */
-    public static List<String> getInstalledProducts(Server server) {
-        SelectMode m = ModeFactory.getMode("System_queries",
-                "system_installed_products");
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("serverid", server.getId());
-        DataResult<Map<String, Object>> result = m.execute(params);
-        List<String> retval = new ArrayList<String>();
-
-        for (Map<String, Object> row : result) {
-            String name = (String) row.get("name");
-            String version = (String) row.get("version");
-            String release = (String) row.get("release");
-            String arch = (String) row.get("arch");
-
-            SelectMode m2 = ModeFactory.getMode("System_queries",
-                    "find_suse_product");
-            Map<String, Object> params2 = new HashMap<String, Object>();
-            params2.put("name", name.toLowerCase());
-            params2.put("version", version != null ? version.toLowerCase() : "");
-            params2.put("release", release != null ? release.toLowerCase() : "");
-            params2.put("arch", arch != null ? arch.toLowerCase() : "");
-            DataResult<Map<String, Object>> result2 = m2.execute(params2);
-            if (!result2.isEmpty()) {
-                Map<String, Object> firstrow = result2.get(0);
-                retval.add((String) firstrow.get("friendly_name"));
-            }
-        }
-        return retval;
-    }
 }

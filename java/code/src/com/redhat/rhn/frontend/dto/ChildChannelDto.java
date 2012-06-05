@@ -30,6 +30,7 @@ public class ChildChannelDto {
     private Long availableSubscriptions;
     private Long availableFveSubscriptions;
     private Long systemCount;
+    private boolean mandatory;
 
     /**
      * Constructor
@@ -219,4 +220,17 @@ public class ChildChannelDto {
         this.systemCount = systemCountIn;
     }
 
+    /**
+     * @return true if this is a mandatory channel
+     */
+    public boolean getMandatory() {
+        return mandatory;
+    }
+
+    /**
+     * @param mandatory the mandatory to set
+     */
+    public void setMandatory(boolean mandatory) {
+        this.mandatory = mandatory;
+    }
 }

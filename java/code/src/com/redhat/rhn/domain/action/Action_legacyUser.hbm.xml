@@ -407,6 +407,13 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
         </subclass>
 
+        <!-- DistUpgradeAction -->
+        <subclass name="com.redhat.rhn.domain.action.dup.DistUpgradeAction"
+            lazy="true" discriminator-value="501">
+            <one-to-one name="details"
+                class="com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails"
+                outer-join="false" cascade="all" constrained="false" property-ref="parentAction"/>
+        </subclass>
     </class>
     <query name="Action.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>

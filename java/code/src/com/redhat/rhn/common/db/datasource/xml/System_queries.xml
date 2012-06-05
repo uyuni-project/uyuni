@@ -1950,9 +1950,31 @@ ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   <elaborator name="system_monitoring" />
 </mode>
 
-<mode name="find_suse_product">
+<mode name="system_installed_base_product">
+  <query params="sid">
+  SELECT sip.name, sip.version, at.label arch, sip.release, sip.is_baseproduct
+    FROM suseInstalledProduct sip
+    JOIN suseServerInstalledProduct ssip ON sip.id = ssip.suse_installed_product_id
+    JOIN rhnPackageArch at ON sip.arch_type_id = at.id
+   WHERE ssip.rhn_server_id = :sid
+     AND sip.is_baseproduct = 'Y'
+  </query>
+</mode>
+
+<mode name="system_installed_child_products">
+  <query params="sid">
+  SELECT sip.name, sip.version, at.label arch, sip.release, sip.is_baseproduct
+    FROM suseInstalledProduct sip
+    JOIN suseServerInstalledProduct ssip ON sip.id = ssip.suse_installed_product_id
+    JOIN rhnPackageArch at ON sip.arch_type_id = at.id
+   WHERE ssip.rhn_server_id = :sid
+     AND sip.is_baseproduct = 'N'
+  </query>
+</mode>
+
+<mode name="find_suse_product_id">
   <query params="name, version, release, arch">
-    SELECT sp.id, sp.name, sp.version, pat.label as arch, sp.release, sp.friendly_name
+    SELECT sp.id, sp.name, sp.version, sp.release, pat.label arch
      FROM suseProducts sp
 LEFT JOIN rhnPackageArch pat ON pat.id = sp.arch_type_id
     WHERE sp.name = :name
@@ -2028,6 +2050,5 @@ WHERE pkgnm.name IS NOT NULL
 ORDER BY pkgnm.name asc
   </query>
 </mode>
-
 </datasource_modes>
 

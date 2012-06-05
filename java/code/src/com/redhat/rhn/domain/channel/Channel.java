@@ -95,6 +95,7 @@ public class Channel extends BaseDomainHelper implements Comparable {
     private String maintainerPhone;
     private String supportPolicy;
     private String updateTag;
+    private Set<ClonedChannel> clonedChannels = new HashSet<ClonedChannel>();
 
     /**
      * @param orgIn what org you want to know if it is globally subscribable in
@@ -917,5 +918,19 @@ public class Channel extends BaseDomainHelper implements Comparable {
      */
     public void setUpdateTag(String updateTagIn) {
         updateTag = updateTagIn;
+    }
+
+    /**
+     * @return the clonedChannels
+     */
+    public Set<ClonedChannel> getClonedChannels() {
+        return clonedChannels;
+    }
+
+    /**
+     * @param clonedChannels the clonedChannels to set
+     */
+    public void setClonedChannels(Set<ClonedChannel> clonedChannels) {
+        this.clonedChannels = clonedChannels;
     }
 }

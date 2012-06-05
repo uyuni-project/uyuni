@@ -1205,6 +1205,23 @@
       <form-property name="proxy_pass" type="java.lang.String" />
     </form-bean>
 
+    <form-bean name="servicePackMigrationForm"
+               type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+      <form-property name="step" type="java.lang.String" />
+      <form-property name="baseProduct" type="java.lang.Long" />
+      <form-property name="addonProducts" type="java.lang.Long[]" />
+      <form-property name="baseChannel" type="java.lang.Long" />
+      <form-property name="childChannels" type="java.lang.Long[]" />
+      <form-property name="submitted" type="java.lang.Boolean" />
+      <!-- Date picker fields -->
+      <form-property name="use_date" type="java.lang.Boolean" />
+      <form-property name="date_year" type="java.lang.Integer" />
+      <form-property name="date_month" type="java.lang.Integer" />
+      <form-property name="date_day" type="java.lang.Integer" />
+      <form-property name="date_hour" type="java.lang.Integer" />
+      <form-property name="date_minute" type="java.lang.Integer" />
+      <form-property name="date_am_pm" type="java.lang.Integer" />
+    </form-bean>
   </form-beans>
 
   <global-exceptions>
@@ -7814,6 +7831,22 @@
         <forward name="default" path="/WEB-INF/pages/systems/non-compliant-system-packages-list.jsp"/>
     </action>
 
+    <!-- Service Pack Migration -->
+    <action path="/systems/details/SPMigration"
+            scope="request"
+            name="servicePackMigrationForm"
+            type="com.redhat.rhn.frontend.action.systems.SPMigrationAction"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping"
+            parameter="dispatch">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <forward name="setup"
+               path="/WEB-INF/pages/systems/spmigration/spmigration-setup.jsp" />
+      <forward name="confirm"
+               path="/WEB-INF/pages/systems/spmigration/spmigration-confirm.jsp" />
+      <forward name="schedule"
+               redirect="true"
+               path="/systems/details/Overview.do" />
+    </action>
   </action-mappings>
 
   <!-- ===================================== -->

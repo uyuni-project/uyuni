@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping
+PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails"
+         table="rhnActionDup">
+    <id name="id" type="long" column="id">
+      <meta attribute="scope-set">protected</meta>
+      <generator class="sequence">
+        <param name="sequence">RHN_ACTIONDUP_ID_SEQ</param>
+      </generator>
+    </id>
+    <!-- Reference to the parent action -->
+    <many-to-one name="parentAction" column="action_id"
+                 class="com.redhat.rhn.domain.action.Action" outer-join="true"
+                 not-null="true" insert="true" update="false" />
+    <!-- Set of product upgrades to perform -->
+    <set name="productUpgrades" lazy="true" inverse="true" order-by="to_pdid asc" cascade="all">
+      <key column="action_dup_id" />
+      <one-to-many class="com.redhat.rhn.domain.product.SUSEProductUpgrade" />
+    </set>
+    <!-- Set of tasks to perform on channels -->
+    <set name="channelTasks" lazy="true" inverse="true" order-by="task asc" cascade="all">
+      <key column="action_dup_id" />
+      <one-to-many class="com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask" />
+    </set>
+    <property name="dryRun" column="dry_run" type="char" />
+    <property name="fullUpdate" column="full_update" type="char" />
+  </class>
+</hibernate-mapping>

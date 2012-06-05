@@ -180,9 +180,12 @@
           <c:otherwise>
             <table>
               <tbody>
-                <c:forEach items="${installedProducts}" var="current" varStatus="loop">
+                <tr>
+                  <td style="padding: 4px 0 4px 0;">${installedProducts.baseProduct.friendlyName}</td>
+                </tr>
+                <c:forEach items="${installedProducts.addonProducts}" var="current" varStatus="loop">
                   <tr>
-                    <td style="padding: 4px 0 4px 0;">${current}</td>
+                    <td style="padding: 4px 0 4px 0;">${current.friendlyName}</td>
                   </tr>
                 </c:forEach>
               </tbody>

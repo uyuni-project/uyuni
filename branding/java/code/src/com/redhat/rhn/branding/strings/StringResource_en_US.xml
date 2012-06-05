@@ -5,8 +5,80 @@
     version="1.1">
   <file source-language="en" datatype="plaintext" original="">
     <body>
-    <!-- empty for now.  Any spacewalk specific branding strings can go here 
-      -->
+      <!-- Service Pack Migrations -->
+      <trans-unit id="distupgrade.upgrade">
+        <source>Service Pack Migration</source>
+      </trans-unit>
+      <trans-unit id="SP-Migration">
+        <source>SP-Migration</source>
+      </trans-unit>
+      <!-- Setup -->
+      <trans-unit id="spmigration.jsp.setup.title">
+        <source>Service Pack Migration</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.installed-products">
+        <source>Installed Products:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.target-products">
+        <source>Target Products:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.base-channel">
+        <source>Target Base Channel:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.mandatory-channels">
+        <source>Mandatory Child Channels:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.optional-channels">
+        <source>Optional Child Channels:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.none">
+        <source>None</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.setup.submit">
+        <source>Schedule Migration</source>
+      </trans-unit>
+      <!-- Errors -->
+      <trans-unit id="spmigration.jsp.error.unsupported">
+        <source>Service Pack Migrations are supported for &lt;strong&gt;SUSE&lt;/strong&gt; systems only.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.update-zypp-plugin">
+        <source>Service Pack Migrations are currently not supported for this system, please install the latest version of &lt;strong&gt;zypp-plugin-spacewalk&lt;/strong&gt;.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.scheduled">
+        <source>A Service Pack Migration is already &lt;a href="/network/systems/details/history/event.pxt?sid={0}&amp;hid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.up-to-date">
+        <source>This system is currently at the &lt;strong&gt;latest&lt;/strong&gt; Service Pack level.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.missing-channels">
+        <source>The following channels are &lt;strong&gt;mandatory&lt;/strong&gt; for this migration, please synchronize using &lt;strong&gt;mgr-ncc-sync -c&lt;/strong&gt;:</source>
+      </trans-unit>
+      <!-- Confirm -->
+      <trans-unit id="spmigration.jsp.confirm.title">
+        <source>Service Pack Migration - Confirm</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.description">
+        <source>Please confirm below to schedule the migration of this system to the following products:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.channels-after-migration">
+        <source>Channel subscriptions after the migration:</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.back">
+        <source>Go Back</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.submit.dry-run">
+        <source>Dry Run</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.submit">
+        <source>Confirm</source>
+      </trans-unit>
+      <!-- Messages -->
+      <trans-unit id="spmigration.message.scheduled">
+        <source>This system is &lt;a href="/network/systems/details/history/event.pxt?sid={0}&amp;hid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.message.scheduled.dry-run">
+        <source>This system is &lt;a href="/network/systems/details/history/event.pxt?sid={0}&amp;hid={1}"&gt;scheduled&lt;/a&gt; for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

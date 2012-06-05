@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping
+PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.redhat.rhn.domain.product.SUSEProduct"
+         table="suseProducts">
+    <id name="id" type="long" column="id">
+      <meta attribute="scope-set">protected</meta>
+      <generator class="sequence">
+        <param name="sequence">SUSE_PRODUCTS_ID_SEQ</param>
+      </generator>
+    </id>
+    <many-to-one name="arch"
+                 column="arch_type_id"
+                 class="com.redhat.rhn.domain.rhnpackage.PackageArch" />
+    <property name="name" column="name" type="string" />
+    <property name="version" column="version" type="string" />
+    <property name="friendlyName" column="friendly_name" type="string" />
+    <property name="release" column="release" type="string" />
+    <property name="channelFamilyId" column="channel_family_id" type="string" />
+    <property name="productList" column="product_list" type="char" />
+    <property name="productId" column="product_id" type="int" />
+  </class>
+  <query name="SUSEProduct.findByProductId">
+    <![CDATA[from com.redhat.rhn.domain.product.SUSEProduct as p where p.productId = :id]]>
+  </query>
+</hibernate-mapping>
