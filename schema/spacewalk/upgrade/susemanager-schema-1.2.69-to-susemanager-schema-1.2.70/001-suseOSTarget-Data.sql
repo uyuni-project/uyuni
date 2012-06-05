@@ -11,10 +11,10 @@
 --
 
 insert into suseOSTarget (id, os, target, channel_arch_id) values
-(sequence_nextval('suse_ostarget_id_seq'), 'i386', 'i386', LOOKUP_CHANNEL_ARCH('channel-ia32'))
+(sequence_nextval('suse_ostarget_id_seq'), 'i386', 'i386', LOOKUP_CHANNEL_ARCH('channel-ia32'));
 
 insert into suseOSTarget (id, os, target, channel_arch_id) values
-(sequence_nextval('suse_ostarget_id_seq'), 'x86_64', 'x86_64', LOOKUP_CHANNEL_ARCH('channel-x86_64'))
+(sequence_nextval('suse_ostarget_id_seq'), 'x86_64', 'x86_64', LOOKUP_CHANNEL_ARCH('channel-x86_64'));
 
 commit;
 
