@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Jun  5 12:11:43 CEST 2012 - mc@suse.de
+
+- fix wrong transaction name in unsubscribe_channels
+
+-------------------------------------------------------------------
 Fri Jun  1 18:18:13 CEST 2012 - mc@suse.de
 
 - fix ISE during registration because of duplicate ids
