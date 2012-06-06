@@ -278,19 +278,26 @@ def snapshot_server(server_id, reason):
        return rhnSQL.Procedure("rhn_server.snapshot_server")(server_id, reason)
 
 
-def check_entitlement(server_id):
+def check_entitlement(server_id,want_array=False):
     h = rhnSQL.prepare("""select server_id, label, is_base from rhnServerEntitlementView where server_id = :server_id order by is_base DESC""")
+    #h = rhnSQL.prepare("""select server_id, label from rhnServerEntitlementView where server_id = :server_id""")
     h.execute(server_id = server_id)
 
     # if I read the old code correctly, this should do about the same thing. Basically "entitled? yay/nay" -akl.  UPDATE 12/08/06: akl says "nay".  It's official
     rows = h.fetchall_dict()
     ents = {}
+    ents_array = []
 
     if rows:
-	    for row in rows:
-	        ents[row['label']] = row['label']
-	    return ents
+        for row in rows:
+            ents[row['label']] = row['label']
+            ents_array.append( row['label'] )
+        if want_array:
+            return ents_array
+        return ents
 
+    if want_array:
+        return ents_array
     # Empty dictionary - will act as False
     return ents
 

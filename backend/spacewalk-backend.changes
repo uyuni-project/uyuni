@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun  6 11:58:16 CEST 2012 - ug@suse.de
+
+- added a workaround for bnc#761350
+  registering of a VM does not work
+
+-------------------------------------------------------------------
 Fri Jun  1 18:19:38 CEST 2012 - mc@suse.de
 
 - fix ISE during registration because of duplicate ids

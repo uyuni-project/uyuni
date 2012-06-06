@@ -1010,8 +1010,8 @@ class EntitlementVirtualizationListener(VirtualizationListener):
         # rhnSQL.commit()
 
     def guest_registered(self, host_sid, guest_sid):
-        host_system_slots = server_lib.check_entitlement(host_sid)
-        host_system_slots = host_system_slots.keys()
+        host_system_slots = server_lib.check_entitlement(host_sid, True)
+        #host_system_slots = host_system_slots.keys()
 
         try:
             host_system_slots.remove("virtualization_host")
