@@ -304,16 +304,18 @@ class ContentSource:
                 d['pkgid'] = package.get('pkgid')
                 d['name'] = package.get('name')
                 d['arch'] = package.get('arch')
-                version = package.find('version')
-                d['version'] = version.get('ver')
-                d['release'] = version.get('rel')
-                d['epoch'] = version.get('epoch')
-                if d['epoch'] == '0':
-                    d['epoch'] = None
                 d['keywords'] = []
-                keywords = package.findall('keyword')
-                for kw in keywords:
-                    d['keywords'].append(kw.text)
+                for child in package:
+                    # we use "endswith" because sometimes it has a namespace
+                    # and sometimes not :-(
+                    if child.tag.endswith('version'):
+                        d['version'] = child.get('ver')
+                        d['release'] = child.get('rel')
+                        d['epoch'] = child.get('epoch')
+                        if d['epoch'] == '0' or d['epoch'] == '':
+                            d['epoch'] = None
+                    elif child.tag.endswith('keyword'):
+                        d['keywords'].append(child.text)
                 susedata.append(d)
         return susedata
 
