@@ -23,3 +23,15 @@ Feature: sm-ncc-sync channel listing and enablement
      Then I want to get "[P] sles11-sp1-pool-x86_64"
       And I want to get "    [P] sles11-sp1-updates-x86_64"
 
+  Scenario: enable sles11-sp2-core-x86_64
+     When I execute ncc-sync "--channel sles11-sp2-core-x86_64"
+      And I execute ncc-sync "--list-channels"
+     Then I want to get "[P] sles11-sp1-pool-x86_64"
+      And I want to get "    [P] sles11-sp2-core-x86_64"
+
+  Scenario: enable sles11-sp2-updates-x86_64
+     When I execute ncc-sync "--channel sles11-sp2-updates-x86_64"
+      And I execute ncc-sync "--list-channels"
+     Then I want to get "[P] sles11-sp1-pool-x86_64"
+      And I want to get "    [P] sles11-sp2-updates-x86_64"
+
