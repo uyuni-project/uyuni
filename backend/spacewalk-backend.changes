@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jun 15 16:55:07 CEST 2012 - mc@suse.de
+
+- fix call of save_suse_products()
+
+-------------------------------------------------------------------
 Tue Jun  5 12:11:43 CEST 2012 - mc@suse.de
 
 - fix wrong transaction name in unsubscribe_channels
