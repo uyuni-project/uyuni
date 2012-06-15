@@ -126,4 +126,4 @@ class ServerWrapper(Packages, Hardware, History, SolarisPatches, SuseData):
 	  "products"	: products
 	}
         self.add_suse_products(suse_products)
-        return self.save_suse_products
+        return self.save_suse_products()
