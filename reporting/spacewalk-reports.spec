@@ -43,6 +43,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/spacewalk/reports.py*
 %{_datadir}/spacewalk/reports
 %{_mandir}/man8/spacewalk-report.8*
+%doc COPYING
 
 %changelog
 * Mon Feb 27 2012 Simon Lukasik <slukasik@redhat.com> 1.7.1-1
