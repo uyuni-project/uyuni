@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Sun Jun 17 18:07:24 CEST 2012 - mc@suse.de
+
+- fixed insecure permissions used for /var/log/rhncfg-actions file
+  CVE-2012-2679 (bnc#766148) 
+
+-------------------------------------------------------------------
 Thu May 31 10:52:19 CEST 2012 - mc@suse.de
 
 - version 5.10.27.4-1
