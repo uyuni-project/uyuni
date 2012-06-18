@@ -29,31 +29,38 @@ class SuseData:
 
   def get_suse_products(self):
       if len(self.suse_products) == 0:
-          h= rhnSQL.prepare("""
-            SELECT s.guid,
-                   s.secret,
-                   ost.target ostarget
-              FROM suseServer s
-         LEFT JOIN suseOSTarget ost ON s.ostarget_id = ost.id
-             WHERE s.rhn_server_id = :sysid
-          """)
-          h.execute(sysid = self.server["id"])
-          self.suse_products = h.fetchone_dict() or {}
-          if len(self.suse_products) > 0:
-              h = rhnSQL.prepare("""
-                SELECT sip.name,
-                       sip.version,
-                       rpa.label arch,
-                       sip.release,
-                       sip.is_baseproduct baseproduct
-                  FROM suseServerInstalledProduct ssip
-                  JOIN suseInstalledProduct sip ON ssip.suse_installed_product_id = sip.id
-                  JOIN rhnPackageArch rpa ON sip.arch_type_id = rpa.id
-                 WHERE ssip.rhn_server_id = :sysid
-              """)
-              h.execute(sysid = self.server["id"])
-              self.suse_products['products'] = h.fetchall_dict() or []
+          self.suse_products = {}
+          self.load_suse_products()
       return self.suse_products
+
+  def load_suse_products(self):
+      log_debug(1, "load suse_products")
+      if not self.server['id']:
+          return
+      h = rhnSQL.prepare("""
+              SELECT s.guid,
+                     s.secret,
+                     ost.target ostarget
+                FROM suseServer s
+           LEFT JOIN suseOsTarget ost ON s.ostarget_id = ost.id
+               WHERE s.rhn_server_id = :server_id
+      """)
+      h.execute(server_id = self.server['id'])
+      self.suse_products = h.fetchone_dict() or {}
+      if len(self.suse_products) > 0:
+          h = rhnSQL.prepare("""
+          SELECT sip.name,
+                 sip.version,
+                 sip.release,
+                 rpa.label arch,
+                 sip.is_baseproduct baseproduct
+            FROM suseInstalledProduct sip
+             JOIN rhnPackageArch rpa ON sip.arch_type_id = rpa.id
+             JOIN suseServerInstalledProduct ssip ON sip.id = ssip.suse_installed_product_id
+           WHERE ssip.rhn_server_id = :server_id
+          """)
+          h.execute(server_id = self.server['id'])
+          self.suse_products['products'] = h.fetchall_dict() or []
 
 
   def add_suse_products(self, suse_products):
