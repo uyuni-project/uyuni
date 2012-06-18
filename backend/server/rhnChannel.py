@@ -1587,6 +1587,9 @@ class LiteServer:
         self.arch = server.archname
         return self
 
+    def get_suse_products(self):
+        return self.suse_products
+
     def __repr__(self):
         dict = {}
         for attr in self._attributes:
@@ -1596,7 +1599,8 @@ class LiteServer:
 
 
 def guess_suse_channels_for_server(server, org_id=None, user_id=None, none_ok=0, raise_exceptions=0):
-    suse_products = server.suse_products
+    log_debug(3, server)
+    suse_products = server.get_suse_products()
     if suse_products == {}:
         return None
 
