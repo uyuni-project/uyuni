@@ -363,7 +363,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
      */
     private void addEssentialPackageFiles(long pkgId,
             SimpleContentHandler hndlr) throws SAXException {
-        String regex = ".*bin/.*|^/etc/.*|^/usr/lib.sendmail$";
+        String regex = ".*bin/.*|^/etc/.*|^/usr/lib.sendmail$|^/lib/cpp$";
         while (filesIterator.hasNextForPackage(pkgId)) {
             String path = sanitize(pkgId, filesIterator.getString("name"));
             if (path.matches(regex)) {
