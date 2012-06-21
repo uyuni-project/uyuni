@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 21 11:10:55 CEST 2012 - jrenner@suse.de
+
+- version 5.4.34.6-1
+- Support for studio image deployments, upstream integration
+
+-------------------------------------------------------------------
 Thu May 31 10:43:07 CEST 2012 - mc@suse.de
 
 - version 5.4.34.5-1
