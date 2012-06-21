@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 21 11:31:57 CEST 2012 - jrenner@suse.de
+
+- version 2.1.2-1
+- for multiple recipient email addresses, join them with comma.
+
+-------------------------------------------------------------------
 Wed Mar 21 16:58:33 CET 2012 - mc@suse.de
 
 - version 2.1.1-1
