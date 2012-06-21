@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 21 11:16:28 CEST 2012 - jrenner@suse.de
+
+- version 5.10.27.5-1
+
+-------------------------------------------------------------------
 Sun Jun 17 18:07:24 CEST 2012 - mc@suse.de
 
 - fixed insecure permissions used for /var/log/rhncfg-actions file
