@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 21 11:46:31 CEST 2012 - jrenner@suse.de
+
+- version 0.0.4.5-1
+- Forbid oscap args other than --profile and --skip-valid
+
+-------------------------------------------------------------------
 Wed May 02 14:20:42 CEST 2012 - mc@suse.de
 
 - version 0.0.4.4-1
