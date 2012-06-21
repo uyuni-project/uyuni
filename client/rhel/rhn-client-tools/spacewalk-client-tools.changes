@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Jun 21 11:30:01 CEST 2012 - jrenner@suse.de
+
+- version 1.7.14.7-1
+- allow linking against openssl
+- fix files header, filese are not released under GPLv2+ but only GPLv2
+- fix files headers. our code is under gplv2 license
+
+-------------------------------------------------------------------
 Thu May 31 10:58:40 CEST 2012 - mc@suse.de
 
 - version 1.7.14.6-1
