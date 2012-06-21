@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Jun 21 11:04:11 CEST 2012 - jrenner@suse.de
+
+- version 1.7.56.10-1
+- Add index on ident_id for better performance
+- Add index on testresult_id for better performance.
+- We cannot use markup in formatted text (synopsis).
+- lookup_tag: schema upgrade
+- lookup_tag: don't call lookup_tag_name twice
+- remove rhnRedHatCanonVersion table during upgrade
+- removed support for Red Hat Linux 6.2 and 7.[0123]
+- Temporarily disable triggers during schema upgrades
+
+-------------------------------------------------------------------
 Thu May 31 10:48:40 CEST 2012 - mc@suse.de
 
 - version 1.7.56.9-1
