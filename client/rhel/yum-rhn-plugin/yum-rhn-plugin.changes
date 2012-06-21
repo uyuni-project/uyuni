@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 21 11:45:41 CEST 2012 - jrenner@suse.de
+
+- version 1.7.2.3-1
+- fix files headers. our code is under gplv2 license
+
+-------------------------------------------------------------------
 Mon May 14 10:59:50 CEST 2012 - mc@suse.de
 
 - version 1.7.2.2-1
