@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 21 11:09:42 CEST 2012 - jrenner@suse.de
+
+- version 1.7.8-1
+- add option to migrate channels to RES subscriptions (bnc#765053)
+
+-------------------------------------------------------------------
 Thu May 31 17:56:11 CEST 2012 - mc@suse.de
 
 - version 1.7.7-1
