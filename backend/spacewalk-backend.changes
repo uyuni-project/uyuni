@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Jun 21 11:35:17 CEST 2012 - jrenner@suse.de
+
+- version 1.7.38.11-1
+- removed functions which were orphaned by client v1 API removal
+- fix call of save_suse_products()
+- do not entitle virt guests twice during registration
+- fix parsing susedata (bnc#765667)
+- removed support for Red Hat Linux 6.2 and 7.[0123]
+- print reasonable error message when something wrong with repo
+
+-------------------------------------------------------------------
 Wed Jun  6 11:58:16 CEST 2012 - ug@suse.de
 
 - added a workaround for bnc#761350
