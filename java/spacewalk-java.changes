@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Thu Jun 21 11:22:15 CEST 2012 - jrenner@suse.de
+
+- version 1.7.54.12-1
+- update API documentation
+- do not create multiple default ks sessions
+- system.config.listFiles could take > 8 minutes if there were lots of
+  revisions on lots of config files
+- don't sync virt bridge nic w/ cobbler
+- correctly report kernel not being found at distro creation
+- fix fileprovides during repodata generation
+- Improve SCAP search: Return list of xccdf:TestResults-s
+- Improve SCAP search: searching by scan's result and scan date
+- Add a link for easy scan reschedule.
+
+-------------------------------------------------------------------
 Thu May 31 10:45:20 CEST 2012 - mc@suse.de
 
 - version 1.7.54.11-1
