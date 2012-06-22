@@ -6,7 +6,7 @@ Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
 Group:		Applications/Internet
-License:	GPLv2
+License:	GPLv2 and GPLv3+
 URL:		https://fedorahosted.org/spacewalk
 Source0:	https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -94,6 +94,7 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %{_mandir}/man8/*
 %dir /etc/rhn
 %dir %{_datadir}/rhn
+%doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
 * Fri Mar 02 2012 Jan Pazdziora 1.7.15-1
