@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun 25 10:22:27 CEST 2012 - mc@suse.de
+
+- version 5.5.42.5-1
+- removed commented out code and obsoleted comments
+
+-------------------------------------------------------------------
 Thu Jun 21 10:52:17 CEST 2012 - jrenner@suse.de
 
 - version 5.5.42.4-1
