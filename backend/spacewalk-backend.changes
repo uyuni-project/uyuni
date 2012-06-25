@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 25 10:21:36 CEST 2012 - mc@suse.de
+
+- version 1.7.38.12-1
+- handle locally exception in entitle_server()
+- made error message more detailed
+
+-------------------------------------------------------------------
 Thu Jun 21 11:35:17 CEST 2012 - jrenner@suse.de
 
 - version 1.7.38.11-1
