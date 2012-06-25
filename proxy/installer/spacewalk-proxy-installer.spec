@@ -19,6 +19,7 @@ Requires: rhncfg-actions
 Requires: glibc
 Requires: aaa_base
 Requires: apache2
+Requires(pre): spacewalk-proxy-common
 %else
 Requires: glibc-common
 Requires: chkconfig
