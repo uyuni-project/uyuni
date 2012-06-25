@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 25 10:24:30 CEST 2012 - mc@suse.de
+
+- version 1.7.15.6-1
+- adding license files for gpl v2+v3 (bnc#764869)
+- system.list_user_systems() now returns localtime
+
+-------------------------------------------------------------------
 Thu May 31 10:53:01 CEST 2012 - mc@suse.de
 
 - version 1.7.15.5-1
