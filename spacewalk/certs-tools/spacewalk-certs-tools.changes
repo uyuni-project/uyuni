@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun 25 12:33:49 CEST 2012 - mc@suse.de
+
+- version 1.7.3.4-1
+- put bootstrap tool sm-client-tools.rpm on SUSE Manager Server
+
+-------------------------------------------------------------------
 Mon May 14 10:51:37 CEST 2012 - mc@suse.de
 
 - version 1.7.3.3-1
