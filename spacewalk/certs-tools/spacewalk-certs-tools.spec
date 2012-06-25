@@ -1,3 +1,6 @@
+
+# needsbinariesforbuild
+
 # package renaming fun :(
 %define rhn_client_tools spacewalk-client-tools
 %define rhn_setup	 spacewalk-client-setup
@@ -16,6 +19,8 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 %if 0%{?suse_version}
 Requires: openssl rpm
+# put our new bootstrap rpm on the appliance
+BuildRequires: sm-client-tools
 %else
 Requires: openssl rpm-build
 %endif
@@ -56,6 +61,10 @@ make PUB_BOOTSTRAP_DIR=/srv/www/htdocs/pub/bootstrap -f Makefile.certs install P
 ln -s rhn-bootstrap $RPM_BUILD_ROOT/%{_bindir}/mgr-bootstrap
 ln -s rhn-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-ssl-tool
 ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
+
+# fetch sm-client-tools and put it in the bootstrap dir
+install -m 0644 /.build.binaries/sm-client-tools.rpm $RPM_BUILD_ROOT/srv/www/htdocs/pub/bootstrap/
+
 %else
 make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
@@ -82,6 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir /srv/www/htdocs/pub/bootstrap
 %dir /usr/share/rhn
 /srv/www/htdocs/pub/bootstrap/client_config_update.py*
+/srv/www/htdocs/pub/bootstrap/sm-client-tools.rpm
 %{_bindir}/mgr-bootstrap
 %{_bindir}/mgr-ssl-tool
 %{_bindir}/mgr-sudo-ssl-tool
