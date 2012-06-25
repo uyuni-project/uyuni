@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 25 10:25:08 CEST 2012 - mc@suse.de
+
+- version 1.7.54.13-1
+- handle spoiled browsers separatelly
+- enable filtering by synopsis for all the errata tabs
+
+-------------------------------------------------------------------
 Thu Jun 21 11:22:15 CEST 2012 - jrenner@suse.de
 
 - version 1.7.54.12-1
