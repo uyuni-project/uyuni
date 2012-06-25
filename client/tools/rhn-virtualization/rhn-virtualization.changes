@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 25 10:26:37 CEST 2012 - mc@suse.de
+
+- version 5.4.34.7-1
+- better support VirtualBox using listDefinedDomains in poller
+  tool
+
+-------------------------------------------------------------------
 Thu Jun 21 11:10:55 CEST 2012 - jrenner@suse.de
 
 - version 5.4.34.6-1
