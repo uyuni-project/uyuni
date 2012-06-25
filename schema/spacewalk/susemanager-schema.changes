@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 25 10:25:52 CEST 2012 - mc@suse.de
+
+- version 1.7.56.11-1
+- Make the .postgresql schema upgrade script actually use the
+  PostgreSQL syntax.
+
+-------------------------------------------------------------------
 Thu Jun 21 11:04:11 CEST 2012 - jrenner@suse.de
 
 - version 1.7.56.10-1
