@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun 25 13:53:41 CEST 2012 - mantel@suse.de
+
+- proxy-installer should pre-require proxy-common to ensure correct
+  order of apache modules
+
+-------------------------------------------------------------------
 Mon Jan 30 15:44:46 CET 2012 - mantel@suse.de
 
 - some more renames Novell --> SUSE
