@@ -86,13 +86,14 @@ def poll_hypervisor():
 
     domainIDs = conn.listDomainsID()
 
-    if not domainIDs or domainIDs == []:
-        domainIDs = conn.listDefinedDomains()
+    if not domainIDs:
+        domainIDs = []
+    domainIDs.extend(conn.listDefinedDomains())
 
     state = {}
 
     for domainID in domainIDs:
-        if domainID == type(int):
+        if type(domainID) == int:
             try:
                 domain = conn.lookupByID(domainID)
             except libvirt.libvirtError, lve:
@@ -117,7 +118,7 @@ def poll_hypervisor():
         virt_type = VirtualizationType.PARA
         if is_fully_virt(domain):
             virt_type = VirtualizationType.FULLY
-       
+
         # we need to filter out the small per/minute KB changes
         # that occur inside a vm.  To do this we divide by 1024 to
         # drop our precision down to megabytes with an int then
