@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun 27 13:54:13 CEST 2012 - iartarisi@suse.cz
+
+- fix user_create when using the --pam option (bnc#768099)
+
+-------------------------------------------------------------------
 Fri Feb 11 16:24:52 CET 2011 - mantel@suse.de
 
 - debranding
