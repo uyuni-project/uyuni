@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jun 28 15:21:06 CEST 2012 - mc@suse.de
+
+- All IP addresses which start with 127. are localhost addresses.
+  When searching for the IP address to contact SUSE Manager try
+  to find a better one. (bnc#768771)
+
+-------------------------------------------------------------------
 Thu Nov  3 19:26:27 CET 2011 - ma@suse.de
 
 - Adapt dependencies to renamed packages (bnc#722052)
