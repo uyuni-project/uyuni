@@ -399,7 +399,8 @@ public class SystemCompareDto {
         for (NetworkInterface n : system.getNetworkInterfaces()) {
             String addr = n.getIpaddr();
             if (addr != null &&
-                !addr.equals("127.0.0.1")) {
+                !addr.equals("127.0.0.1") &&
+                !addr.equals("127.0.0.2")) {
                 macs.add(n.getHwaddr());
             }
         }
@@ -411,7 +412,8 @@ public class SystemCompareDto {
         for (NetworkInterface n : system.getNetworkInterfaces()) {
             String addr = n.getIpaddr();
             if (addr != null &&
-                !addr.equals("127.0.0.1")) {
+                !addr.equals("127.0.0.1") &&
+                !addr.equals("127.0.0.2")) {
                 macs.add(addr);
             }
         }
