@@ -476,12 +476,12 @@ def read_network():
 
     if netdict['hostname'] == 'localhost.localdomain' or \
     "." not in netdict['hostname'] or \
-    netdict['ipaddr'] == "127.0.0.1":
+    netdict['ipaddr'].startswith("127."):
         hostname, ipaddr = findHostByRoute()
 
         if netdict['hostname'] == 'localhost.localdomain' or "." not in netdict['hostname']:
             netdict['hostname'] = hostname
-        if netdict['ipaddr'] == "127.0.0.1":
+        if netdict['ipaddr'].startswith("127."):
             netdict['ipaddr'] = ipaddr
 
     return netdict
