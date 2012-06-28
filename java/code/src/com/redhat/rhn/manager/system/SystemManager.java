@@ -1551,10 +1551,11 @@ public class SystemManager extends BaseManager {
         User user = UserFactory.findRandomOrgAdmin(orgIn);
         ValidatorResult result = new ValidatorResult();
 
+        // Do not automatically subscribe to virt channels (bnc#768856)
         // If this is a Satellite, subscribe to the virt channel if possible:
-        if (!ConfigDefaults.get().isSpacewalk()) {
-            subscribeToVirtChannel(server, user, result);
-        }
+        // if (!ConfigDefaults.get().isSpacewalk()) {
+        //    subscribeToVirtChannel(server, user, result);
+        // }
 
         // Before we start looking to subscribe to a 'tools' channel for
         // rhn-virtualization-host, check if the server already has a package by this
