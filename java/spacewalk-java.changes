@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 28 16:27:23 CEST 2012 - mc@suse.de
+
+- ignore 127.0.0.2 IP addresses (bnc#768771)
+
+-------------------------------------------------------------------
 Thu Jun 28 11:12:55 CEST 2012 - jrenner@suse.de
 
 - Do not automatically subscribe to virt channels (bnc#768856)
