@@ -313,23 +313,23 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp1-suse-manager-tools-i586" name="SLES11-SP1-SUSE-Manager-Tools i586" optional="N" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp1">
+	<channel arch="i586" description="nVidia Driver for SLE11-SP2" family="7260" is_signed="Y" label="nvidia-driver-sle11-sp2-i586" name="nVidia-Driver-SLE11-SP2 i586" optional="N" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="http://download.nvidia.com/novell/sle11sp2" summary="nVidia Driver for SLE11-SP2" update_tag="">
 		<products>
-			<product_id name="SUSE_SLES">
-				1825
+			<product_id name="SUSE_SLED">
+				3000
 			</product_id>
-			<product_id name="SUSE_SLES">
-				1827
+			<product_id name="SUSE_SLED">
+				3001
 			</product_id>
-			<product_id name="SUSE_SLES">
-				1826
+			<product_id name="SUSE_SLED">
+				3002
 			</product_id>
-			<product_id name="SUSE_SLES">
-				1828
+			<product_id name="SUSE_SLED">
+				3003
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-IA" is_signed="Y" label="sle11-webyast-sp2-pool-ia64" name="SLE11-WebYaST-SP2-Pool for ia64" optional="N" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Pool/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
+	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-IA" is_signed="Y" label="sle11-webyast-sp2-pool-ia64" name="SLE11-WebYaST-SP2-Pool for ia64" optional="Y" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Pool/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
 		<products>
 			<product_id name="SUSE_SLES">
 				3012
@@ -519,14 +519,14 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sle11-webyast-sp2-pool-x86_64" name="SLE11-WebYaST-SP2-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sle11-webyast-sp2-pool-x86_64" name="SLE11-WebYaST-SP2-Pool for x86_64" optional="Y" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
 		<products>
 			<product_id name="SUSE_SLES">
 				3009
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="s390x" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-Z" is_signed="Y" label="sle11-webyast-sp2-pool-s390x" name="SLE11-WebYaST-SP2-Pool for s390x" optional="N" parent="sles11-sp1-pool-s390x" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Pool/sle-11-s390x/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
+	<channel arch="s390x" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-Z" is_signed="Y" label="sle11-webyast-sp2-pool-s390x" name="SLE11-WebYaST-SP2-Pool for s390x" optional="Y" parent="sles11-sp1-pool-s390x" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Pool/sle-11-s390x/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
 		<products>
 			<product_id name="SUSE_SLES">
 				3013
@@ -620,7 +620,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-PPC" is_signed="Y" label="sle11-webyast-sp2-pool-ppc64" name="SLE11-WebYaST-SP2-Pool for ppc64" optional="N" parent="sles11-sp1-pool-ppc64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Pool/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-PPC" is_signed="Y" label="sle11-webyast-sp2-pool-ppc64" name="SLE11-WebYaST-SP2-Pool for ppc64" optional="Y" parent="sles11-sp1-pool-ppc64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Pool/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
 		<products>
 			<product_id name="SUSE_SLES">
 				3010
@@ -940,7 +940,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sle11-webyast-sp2-updates-x86_64" name="SLE11-WebYaST-SP2-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sle11-webyast-sp2-updates-x86_64" name="SLE11-WebYaST-SP2-Updates for x86_64" optional="Y" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
 		<products>
 			<product_id name="SUSE_SLES">
 				3009
@@ -990,7 +990,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="s390x" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-Z" is_signed="Y" label="sle11-webyast-sp2-updates-s390x" name="SLE11-WebYaST-SP2-Updates for s390x" optional="N" parent="sles11-sp1-pool-s390x" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-s390x/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
+	<channel arch="s390x" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-Z" is_signed="Y" label="sle11-webyast-sp2-updates-s390x" name="SLE11-WebYaST-SP2-Updates for s390x" optional="Y" parent="sles11-sp1-pool-s390x" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-s390x/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
 		<products>
 			<product_id name="SUSE_SLES">
 				3013
@@ -1105,7 +1105,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sle11-webyast-sp2-pool-i586" name="SLE11-WebYaST-SP2-Pool for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sle11-webyast-sp2-pool-i586" name="SLE11-WebYaST-SP2-Pool for i586" optional="Y" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
 		<products>
 			<product_id name="SUSE_SLES">
 				3005
@@ -1178,7 +1178,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-IA" is_signed="Y" label="sle11-webyast-sp2-updates-ia64" name="SLE11-WebYaST-SP2-Updates for ia64" optional="N" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
+	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-IA" is_signed="Y" label="sle11-webyast-sp2-updates-ia64" name="SLE11-WebYaST-SP2-Updates for ia64" optional="Y" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
 		<products>
 			<product_id name="SUSE_SLES">
 				3012
@@ -1605,19 +1605,10 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="nVidia Driver for SLE11-SP2" family="7260" is_signed="Y" label="nvidia-driver-sle11-sp2-i586" name="nVidia-Driver-SLE11-SP2 i586" optional="N" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="http://download.nvidia.com/novell/sle11sp2" summary="nVidia Driver for SLE11-SP2" update_tag="">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-core-x86_64" name="SLES11-SP2-Core for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
 		<products>
-			<product_id name="SUSE_SLED">
-				3000
-			</product_id>
-			<product_id name="SUSE_SLED">
-				3001
-			</product_id>
-			<product_id name="SUSE_SLED">
-				3002
-			</product_id>
-			<product_id name="SUSE_SLED">
-				3003
+			<product_id name="SUSE_SLES">
+				3009
 			</product_id>
 		</products>
 	</channel>
@@ -1746,7 +1737,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-PPC" is_signed="Y" label="sle11-webyast-sp2-updates-ppc64" name="SLE11-WebYaST-SP2-Updates for ppc64" optional="N" parent="sles11-sp1-pool-ppc64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-PPC" is_signed="Y" label="sle11-webyast-sp2-updates-ppc64" name="SLE11-WebYaST-SP2-Updates for ppc64" optional="Y" parent="sles11-sp1-pool-ppc64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
 		<products>
 			<product_id name="SUSE_SLES">
 				3010
@@ -2049,13 +2040,6 @@
 		</products>
 		<dist os="Red Hat Linux" release="5Server"/>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-core-x86_64" name="SLES11-SP2-Core for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
-		<products>
-			<product_id name="SUSE_SLES">
-				3009
-			</product_id>
-		</products>
-	</channel>
 	<channel arch="x86_64" description="Red Hat Expanded Support for RHEL 6" family="RES" is_signed="N" label="rhel-x86_64-server-6" name="RHEL x86_64 Server 6" optional="N" parent="BASE" product_name="RES" product_version="6" source_url="" summary="Red Hat Expanded Support for RHEL 6" update_tag="">
 		<products>
 			<product_id name="RES">
@@ -2190,6 +2174,22 @@
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-SDK-SP3">
 				1541
+			</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp1-suse-manager-tools-i586" name="SLES11-SP1-SUSE-Manager-Tools i586" optional="N" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp1">
+		<products>
+			<product_id name="SUSE_SLES">
+				1825
+			</product_id>
+			<product_id name="SUSE_SLES">
+				1827
+			</product_id>
+			<product_id name="SUSE_SLES">
+				1826
+			</product_id>
+			<product_id name="SUSE_SLES">
+				1828
 			</product_id>
 		</products>
 	</channel>
@@ -2858,7 +2858,7 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sle11-webyast-sp2-updates-i586" name="SLE11-WebYaST-SP2-Updates for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sle11-webyast-sp2-updates-i586" name="SLE11-WebYaST-SP2-Updates for i586" optional="Y" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slewystsp1">
 		<products>
 			<product_id name="SUSE_SLES">
 				3005
