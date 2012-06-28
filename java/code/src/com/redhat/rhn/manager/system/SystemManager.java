@@ -1640,7 +1640,8 @@ public class SystemManager extends BaseManager {
             }
             else {
                 // otherwise subscribe to the virt channel if possible
-                subscribeToVirtChannel(server, user, result);
+                // Do not automatically subscribe to virt channels (bnc#768856)
+                // subscribeToVirtChannel(server, user, result);
             }
         }
 

@@ -39,10 +39,10 @@
 	<family default_nodecount="0" label="ZOS" name="ZENworks Orchestrator"/>
 	<family default_nodecount="0" label="Moblin-2-Samsung" name="Moblin for Samsung"/>
 	<family default_nodecount="-1" label="nVidia" name="nVidia"/>
+	<family default_nodecount="0" label="STUDIOONSITERUNNER" name="SUSE Studio OnSite Runner"/>
 	<family default_nodecount="0" label="SLE-HAE-Z" name="SUSE Linux Enterprise High Availability Extension (Z-Series)"/>
 	<family default_nodecount="0" label="SLE-HAE-X86" name="SUSE Linux Enterprise High Availability Extension (x86)"/>
 	<family default_nodecount="0" label="SLE-TC" name="SUSE Linux Enterprise Thin Client"/>
 	<family default_nodecount="0" label="SLES-IA" name="SUSE Linux Enterprise Server (Itanium)"/>
 	<family default_nodecount="0" label="HP-HWREF" name="SUSE Linux Enterprise Desktop HW Refresh 2011A"/>
-	<family default_nodecount="0" label="STUDIOONSITERUNNER" name="SUSE Studio OnSite Runner"/>
 </channelfamilies>

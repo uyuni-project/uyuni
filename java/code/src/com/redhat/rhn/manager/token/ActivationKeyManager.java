@@ -594,7 +594,8 @@ public class ActivationKeyManager {
             key.addPackage(PackageManager.lookupPackageName(ChannelManager.
                     RHN_VIRT_HOST_PACKAGE_NAME), null);
         }
-        subscribeToChildChannelWithPackageName(key,
-                ChannelManager.VIRT_CHANNEL_PACKAGE_NAME);
+        // Do not automatically subscribe to virt channels (bnc#768856)
+        // subscribeToChildChannelWithPackageName(key,
+        //         ChannelManager.VIRT_CHANNEL_PACKAGE_NAME);
     }
 }
