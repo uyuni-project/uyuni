@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jun 28 11:12:55 CEST 2012 - jrenner@suse.de
+
+- Do not automatically subscribe to virt channels (bnc#768856)
+
+-------------------------------------------------------------------
 Sun Jun 10 15:59:49 CEST 2012 - mc@suse.de
 
 - improved performance of repomd generation 
