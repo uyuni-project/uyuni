@@ -2696,6 +2696,7 @@ public class SystemManager extends BaseManager {
         List ignoreIps = new ArrayList();
         ignoreIps.add("127.0.0.1");
         ignoreIps.add("127.0.0.01");
+        ignoreIps.add("127.0.0.2");
         ignoreIps.add("0");
         return listDuplicates(user, "duplicate_system_ids_ip", ignoreIps, inactiveHours);
     }
