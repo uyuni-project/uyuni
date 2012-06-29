@@ -19,14 +19,6 @@
     map display_info	= UI::GetDisplayInfo ();
     boolean text_mode	= display_info["TextMode"]:false;
 
-    // oracle default port   = 1521
-    // postgres default port = 5432
-    string localdb = "postgres";
-    if (FileUtils::Exists ("/etc/init.d/oracle") )
-    {
-        localdb = "oracle";
-    }
-
     string invalid_pw_chars	= "\"'!+%`=@/";
 
     map<string,string> settings	= $[
@@ -89,7 +81,7 @@
 	    `VSpacing (0.4),
 	    `Left (`RadioButton(`id(`localdb), `opt (`notify),
 		// radio button label
-		sformat ("%1 (%2)", _("Local Database"), localdb), settings["MANAGER_DB_HOST"]:"" == "localhost")),
+		_("Embedded Database"), settings["MANAGER_DB_HOST"]:"" == "localhost")),
 	    text_mode ? `Empty () : `VSpacing (),
 	    `Left (`RadioButton(`id(`remotedb), `opt (`notify),
 		// radio button label
