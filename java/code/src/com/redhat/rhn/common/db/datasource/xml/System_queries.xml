@@ -1976,5 +1976,44 @@ SELECT sip.name, sip.version, at.label as arch, sip.release
   </query>
 </mode>
 
+<mode name="foreign_packages_get_noncompliant_systems">
+  <query params="">
+SELECT distinct s.id, s.org_id, s.digital_server_id, 
+                s.server_arch_id, s.os, s.release, 
+                s.name, s.description, s.info, 
+                s.secret, s.creator_id, s.auto_deliver, 
+                s.auto_update, s.running_kernel,
+                s.last_boot, s.provision_state_id,
+                s.channels_changed, s.cobbler_id,
+                s.created, s.modified
+FROM rhnServer as s 
+WHERE EXISTS 
+    (SELECT * 
+     FROM rhnServerPackage sp 
+     WHERE NOT EXISTS 
+              (SELECT * 
+               FROM rhnPackage p, 
+                    rhnPackageName pn 
+               WHERE p.name_id=pn.id AND p.evr_id=sp.evr_id AND sp.name_id=pn.id) 
+               AND sp.server_id=s.id);
+  </query>
+</mode>
+
+<mode name="foreign_packages_get_noncompliant_packages_per_system">
+  <query params="serverid">
+  SELECT
+     spkg.server_id, spkg.name_id, spkg.evr_id, 
+     spkg.package_arch_id, spkg.created, spkg.installtime, pkgnm.name, pkgnm.id
+  FROM rhnserverpackage AS spkg
+LEFT JOIN rhnpackagename AS pkgnm ON (spkg.name_id = pkgnm.id) AND NOT EXISTS
+                 (SELECT *
+                  FROM rhnPackage AS p, rhnPackageName AS pkn
+                  WHERE p.name_id=pkn.id AND p.evr_id=spkg.evr_id AND spkg.name_id=pkn.id) 
+                  AND spkg.server_id = :serverid
+WHERE pkgnm.name IS NOT NULL
+ORDER BY pkgnm.name asc
+  </query>
+</mode>
+
 </datasource_modes>
 
