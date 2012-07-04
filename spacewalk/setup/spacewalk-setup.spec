@@ -112,6 +112,35 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=8 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-make-mount-points | gzip > $RPM_BUILD_ROOT%{_mandir}/man8/spacewalk-make-mount-points.8.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-cobbler | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-cobbler.1.gz
 
+%post
+if [ ${FIRST_ARG:-0} -gt 1 ]; then
+    # in case of upgrade
+    # fix the old LD_LIBRARY_PATH in tomcat6.conf
+    # it has to point to the new Oracle Home
+    # this step is only relevant when Oracle version changes and the
+    # path written by spacewalk-setup is not valid anymore
+    cp /etc/tomcat6/tomcat6.conf /etc/tomcat6/tomcat6.conf.post-script-backup
+    . /etc/tomcat6/tomcat6.conf
+    NEW_LD_PATH=""
+
+    if ! grep "$ORACLE_HOME" /etc/tomcat6/tomcat6.conf >/dev/null; then
+        # our current ORACLE_HOME is not in LD_LIBRARY_PATH
+        if [ "x$LD_LIBRARY_PATH" != "x" ]; then
+            # the LD_LIBRARY_PATH is not empty, so we have to fix it
+            for p in `echo $LD_LIBRARY_PATH|awk --field-separator=: '{ for(i = 1; i <= NF; i++){print $i; } }'`; do
+                if [ -d $p ]; then
+                    if [ "x$NEW_LD_PATH" == "x" ]; then
+                        NEW_LD_PATH="$p"
+                    else
+                        NEW_LD_PATH="$NEW_LD_PATH:$p";
+                    fi;
+                fi;
+            done
+            NEW_LD_PATH="$NEW_LD_PATH:$ORACLE_HOME/lib"
+        fi
+    fi
+fi
+
 %check
 make test
 

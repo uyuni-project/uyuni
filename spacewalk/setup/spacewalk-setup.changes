@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul  4 16:49:45 CEST 2012 - ug@suse.de
+
+- fix LD_LIBRARY_PATH in tomcat6.conf in case of upgrade
+  (bnc#769909)
+
+-------------------------------------------------------------------
 Thu Jun 21 11:14:13 CEST 2012 - jrenner@suse.de
 
 - version 1.7.9.6-1
