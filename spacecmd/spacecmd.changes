@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul  5 11:34:41 CEST 2012 - ug@suse.de
+
+- "suse" was missing in the helptext of the CLI for
+  distributions (bnc#769108)
+
+-------------------------------------------------------------------
 Mon Jun 25 10:23:03 CEST 2012 - mc@suse.de
 
 - version 1.7.7.6-1

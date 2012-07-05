@@ -31,7 +31,7 @@ options:
   -n NAME
   -p path to tree
   -b base channel to associate with
-  -t install type [fedora|rhel_4/5/6|generic_rpm]'''
+  -t install type [fedora|rhel_4/5/6|suse|generic_rpm]'''
 
 def do_distribution_create(self, args, update = False):
     options = [ Option('-n', '--name', action='store'),
@@ -249,7 +249,7 @@ def help_distribution_update(self):
 options:
   -d path to tree
   -b base channel to associate with
-  -t install type [fedora|rhel_4/5/6|generic_rpm]'''
+  -t install type [fedora|rhel_4/5/6|suse|generic_rpm]'''
 
 def complete_distribution_update(self, text, line, beg, end):
     if len(line.split(' ')) <= 2:
