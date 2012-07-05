@@ -123,6 +123,10 @@ if [ ${FIRST_ARG:-0} -gt 1 ]; then
     . /etc/tomcat6/tomcat6.conf
     NEW_LD_PATH=""
 
+    # in case oracle is not updated yet, we hardcode the oracle version of 1.7 here
+    # not really nice
+    export ORACLE_HOME="/usr/lib/oracle/11.2/client64"
+
     if ! grep "$ORACLE_HOME" /etc/tomcat6/tomcat6.conf >/dev/null; then
         # our current ORACLE_HOME is not in LD_LIBRARY_PATH
         if [ "x$LD_LIBRARY_PATH" != "x" ]; then
@@ -137,6 +141,7 @@ if [ ${FIRST_ARG:-0} -gt 1 ]; then
                 fi;
             done
             NEW_LD_PATH="$NEW_LD_PATH:$ORACLE_HOME/lib"
+            sed -i "s/^LD_LIBRARY_PATH.*/LD_LIBRARY_PATH=$NEW_LD_PATH/" /etc/tomcat6/tomcat6.conf
         fi
     fi
 fi
