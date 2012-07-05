@@ -7796,6 +7796,15 @@
                path="/account/Credentials.do" />
     </action>
 
+    <action path="/systems/NonCompliantSystems"
+        scope="request"
+        input="/WEB-INF/pages/systems/noncompliantsystems.jsp"
+        type="com.redhat.rhn.frontend.action.systems.NonCompliantSystemsAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/noncompliantsystemslist.jsp"/>
+    </action>
+
   </action-mappings>
 
   <!-- ===================================== -->

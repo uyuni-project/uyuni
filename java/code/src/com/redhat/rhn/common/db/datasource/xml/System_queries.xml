@@ -1976,30 +1976,28 @@ SELECT sip.name, sip.version, at.label as arch, sip.release
   </query>
 </mode>
 
-<mode name="foreign_packages_get_noncompliant_systems">
+<mode name="foreign_packages_get_noncompliant_systems" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="">
-SELECT distinct s.id, s.org_id, s.digital_server_id, 
-                s.server_arch_id, s.os, s.release, 
-                s.name, s.description, s.info, 
-                s.secret, s.creator_id, s.auto_deliver, 
-                s.auto_update, s.running_kernel,
-                s.last_boot, s.provision_state_id,
-                s.channels_changed, s.cobbler_id,
-                s.created, s.modified
-FROM rhnServer as s 
-WHERE EXISTS 
-    (SELECT * 
-     FROM rhnServerPackage sp 
-     WHERE NOT EXISTS 
-              (SELECT * 
-               FROM rhnPackage p, 
-                    rhnPackageName pn 
-               WHERE p.name_id=pn.id AND p.evr_id=sp.evr_id AND sp.name_id=pn.id) 
+  SELECT distinct s.id, s.name
+FROM rhnServer as s
+WHERE EXISTS
+    (SELECT *
+     FROM rhnServerPackage sp
+     WHERE NOT EXISTS
+              (SELECT *
+               FROM rhnPackage p,
+                    rhnPackageName pn
+               WHERE p.name_id=pn.id AND p.evr_id=sp.evr_id AND sp.name_id=pn.id)
                AND sp.server_id=s.id);
   </query>
+  <elaborator name="system_overview" />
+  <elaborator name="entitlements" />
+  <elaborator name="is_virtual_guest" />
+  <elaborator name="is_virtual_host" />
 </mode>
 
-<mode name="foreign_packages_get_noncompliant_packages_per_system">
+
+<mode name="foreign_packages_get_noncompliant_packages_per_system" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="serverid">
   SELECT
      spkg.server_id, spkg.name_id, spkg.evr_id, 
@@ -2013,6 +2011,12 @@ LEFT JOIN rhnpackagename AS pkgnm ON (spkg.name_id = pkgnm.id) AND NOT EXISTS
 WHERE pkgnm.name IS NOT NULL
 ORDER BY pkgnm.name asc
   </query>
+  <!-- 
+  <elaborator name="system_overview" />
+  <elaborator name="entitlements" />
+  <elaborator name="is_virtual_guest" />
+  <elaborator name="is_virtual_host" />
+  -->
 </mode>
 
 </datasource_modes>

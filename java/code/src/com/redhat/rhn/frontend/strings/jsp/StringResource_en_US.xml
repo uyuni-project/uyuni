@@ -5107,6 +5107,14 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
 
+      <trans-unit id="noncompliantsystemslist.jsp.header">
+        <source>Non Compliant Systems</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/NonCompliantSystems.do</context>
+          <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
+        </context-group>
+      </trans-unit>
+
       <trans-unit id="inactivelist.jsp.header">
 <source>Inactive Systems</source>
         <context-group name="ctx">

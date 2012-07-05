@@ -226,9 +226,51 @@ public class SystemManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
         params.put("keyword", "reboot_suggested");
-        Map<String, Object> elabParams = new HashMap<String, Object>();
-        return makeDataResult(params, elabParams, pc, m);
+        return makeDataResult(params, new HashMap<String, Object>(), pc, m);
     }
+    
+    
+    /**
+     * Returns a list of systems that are not compliant against foreign packages check.
+     * 
+     * @param user
+     *            Currently logged in user.
+     *            
+     * @param pc
+     *            Page control
+     *            
+     * @return list of SystemOverviews.
+     */
+    @SuppressWarnings("unchecked")
+	public static DataResult<SystemOverview> getForeignPackagesSystems(User user, PageControl pc) {
+    	SelectMode mode = ModeFactory.getMode("System_queries", 
+    			"foreign_packages_get_noncompliant_systems");
+    	return makeDataResult(new HashMap<String, Object>(), new HashMap<String, Object>(), pc, mode);
+    }
+
+    
+    /**
+     * Returns a list of foreign packages that are installed on not compliant system.
+     * 
+     * @param serverid
+     *            Server ID.
+     *            
+     * @param user
+     *            Currently logged in user.
+     *            
+     * @param pc
+     *            Page control
+     *            
+     * @return list of SystemOverviews.
+     */
+    public static DataResult<SystemOverview> getForeignPackagesOnSystem(Long serverid, User user, PageControl pc) {
+    	SelectMode mode = ModeFactory.getMode("System_queries", 
+    			"foreign_packages_get_noncompliant_packages_per_system");
+    	Map<String, Object> params = new HashMap<String, Object>();
+    	params.put("server_id", serverid);
+    	return makeDataResult(params, new HashMap<String, Object>(), pc, mode);
+    }
+
 
     /**
      * Gets the latest upgradable packages for a system
