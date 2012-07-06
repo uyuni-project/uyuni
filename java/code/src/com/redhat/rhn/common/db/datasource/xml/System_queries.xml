@@ -1979,7 +1979,7 @@ SELECT sip.name, sip.version, at.label as arch, sip.release
 <mode name="foreign_packages_get_noncompliant_systems" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="">
   SELECT distinct s.id, s.name
-FROM rhnServer as s
+FROM rhnServer s
 WHERE EXISTS
     (SELECT *
      FROM rhnServerPackage sp
