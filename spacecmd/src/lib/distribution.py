@@ -247,7 +247,7 @@ def help_distribution_update(self):
     print '''usage: distribution_update NAME [options]
 
 options:
-  -d path to tree
+  -p path to tree
   -b base channel to associate with
   -t install type [fedora|rhel_4/5/6|suse|generic_rpm]'''
 

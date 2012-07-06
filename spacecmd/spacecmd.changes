@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jul  6 09:46:42 CEST 2012 - ug@suse.de
+
+- command line parameter for "distribution path" was
+  documented wrong in help text
+  (bnc#769106)
+
+-------------------------------------------------------------------
 Thu Jul  5 11:34:41 CEST 2012 - ug@suse.de
 
 - "suse" was missing in the helptext of the CLI for
