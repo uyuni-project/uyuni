@@ -141,7 +141,7 @@ if [ $1 = 2 ]; then
                 fi;
             done
             NEW_LD_PATH="$NEW_LD_PATH:$ORACLE_HOME/lib"
-            sed -i "s/^LD_LIBRARY_PATH.*/LD_LIBRARY_PATH=$NEW_LD_PATH/" /etc/tomcat6/tomcat6.conf
+            sed -i "s@^LD_LIBRARY_PATH.*@LD_LIBRARY_PATH=$NEW_LD_PATH@" /etc/tomcat6/tomcat6.conf
         fi
     fi
 fi
