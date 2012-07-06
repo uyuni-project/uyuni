@@ -113,7 +113,7 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-cobbler | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-cobbler.1.gz
 
 %post
-if [ $1 = 2 ]; then
+if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
     # in case of upgrade
     # fix the old LD_LIBRARY_PATH in tomcat6.conf
     # it has to point to the new Oracle Home
