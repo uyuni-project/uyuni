@@ -36,7 +36,7 @@
                         key="packagelist.jsp.notspecified"/></c:otherwise>
             </c:choose>
         </rl:column>
-
+        
     </rl:list>
 
 </rl:listset>

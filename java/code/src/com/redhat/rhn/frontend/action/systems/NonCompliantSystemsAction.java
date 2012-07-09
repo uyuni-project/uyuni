@@ -14,7 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.systems;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -27,6 +33,15 @@ import com.redhat.rhn.manager.system.SystemManager;
  * @version $Rev$
  */
 public class NonCompliantSystemsAction extends BaseSystemsAction {
+
+	
+	
+	@Override
+	public ActionForward execute(ActionMapping mapping, ActionForm formIn,
+			HttpServletRequest request, HttpServletResponse response) {
+		request.setAttribute("nonCompliantMode", Boolean.TRUE);
+		return super.execute(mapping, formIn, request, response);
+	}
 
 	@Override
 	protected DataResult<SystemOverview> getDataResult(User user, PageControl pc, ActionForm formIn) {
