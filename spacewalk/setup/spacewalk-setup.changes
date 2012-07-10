@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 10 15:02:27 CEST 2012 - ug@suse.de
+
+- changed cobbler-setup to use the FQDN as hostname
+  (bnc#768135)
+
+-------------------------------------------------------------------
 Wed Jul  4 16:49:45 CEST 2012 - ug@suse.de
 
 - fix LD_LIBRARY_PATH in tomcat6.conf in case of upgrade
