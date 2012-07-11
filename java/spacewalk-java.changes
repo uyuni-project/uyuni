@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jul 11 17:06:59 CEST 2012 - ug@suse.de
+
+- kernel options in the web UI are not added to the xen distri
+  (bnc#764679)
+
+-------------------------------------------------------------------
 Mon Jun 25 10:25:08 CEST 2012 - mc@suse.de
 
 - version 1.7.54.13-1
