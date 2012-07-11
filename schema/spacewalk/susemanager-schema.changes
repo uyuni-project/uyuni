@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jul 11 10:34:50 CEST 2012 - ug@suse.de
+
+- added mac_address column to rhnactionkickstartguest
+
+-------------------------------------------------------------------
 Mon Jun 25 10:25:52 CEST 2012 - mc@suse.de
 
 - version 1.7.56.11-1
