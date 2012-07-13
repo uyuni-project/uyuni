@@ -638,9 +638,7 @@ fi
 %if 0%{?rhel} && 0%{?rhel} < 6 || 0%{suse_version}
 %{jardir}/struts.jar
 %else
-%{jardir}/struts.jar
-%{jardir}/struts-taglib.jar
-%{jardir}/struts-extras.jar
+%{jardir}/struts*.jar
 %{jardir}/commons-chain.jar
 %endif
 
