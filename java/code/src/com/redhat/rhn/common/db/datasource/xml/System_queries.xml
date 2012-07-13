@@ -1978,7 +1978,7 @@ SELECT sip.name, sip.version, at.label as arch, sip.release
 
 <mode name="foreign_packages_get_noncompliant_systems" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="">
-  SELECT distinct s.id, s.name
+  SELECT distinct s.id, s.name, 1 selectable
 FROM rhnServer s
 WHERE EXISTS
     (SELECT *
@@ -1996,27 +1996,38 @@ WHERE EXISTS
   <elaborator name="is_virtual_host" />
 </mode>
 
+<mode name="foreign_packages_get_noncompliant_packages_per_system_count">
+  <query params="serverid">
+SELECT count(pkgnm.id) foreignpkgcount
+FROM rhnserverpackage spkg
+LEFT JOIN rhnpackagename pkgnm ON (spkg.name_id = pkgnm.id) AND NOT EXISTS
+                 (SELECT *
+                  FROM rhnPackage p, rhnPackageName pkn
+                  WHERE p.name_id=pkn.id AND p.evr_id=spkg.evr_id AND spkg.name_id=pkn.id) 
+                  AND spkg.server_id = :serverid
+WHERE pkgnm.name IS NOT NULL
+  </query>
+</mode>
+
 
 <mode name="foreign_packages_get_noncompliant_packages_per_system">
   <query params="serverid">
   SELECT
-     spkg.server_id, spkg.name_id, spkg.evr_id, 
-     spkg.package_arch_id, spkg.created, spkg.installtime, pkgnm.name, pkgnm.id
-  FROM rhnserverpackage AS spkg
-LEFT JOIN rhnpackagename AS pkgnm ON (spkg.name_id = pkgnm.id) AND NOT EXISTS
+     spkg.created, spkg.installtime,
+     pkgnm.name, pkgnm.id,
+     pkgarc.name arch,
+     pkgnm.name || '-' || pkgevr.version || '-' || pkgevr.release nvre
+  FROM rhnserverpackage spkg
+LEFT JOIN rhnpackagename pkgnm ON (spkg.name_id = pkgnm.id) AND NOT EXISTS
                  (SELECT *
-                  FROM rhnPackage AS p, rhnPackageName AS pkn
+                  FROM rhnPackage p, rhnPackageName pkn
                   WHERE p.name_id=pkn.id AND p.evr_id=spkg.evr_id AND spkg.name_id=pkn.id) 
                   AND spkg.server_id = :serverid
+LEFT JOIN rhnpackagearch pkgarc ON (spkg.package_arch_id = pkgarc.id)
+LEFT JOIN rhnpackageevr pkgevr ON (spkg.evr_id = pkgevr.id)
 WHERE pkgnm.name IS NOT NULL
 ORDER BY pkgnm.name asc
   </query>
-  <!-- 
-  <elaborator name="system_overview" />
-  <elaborator name="entitlements" />
-  <elaborator name="is_virtual_guest" />
-  <elaborator name="is_virtual_host" />
-  -->
 </mode>
 
 </datasource_modes>

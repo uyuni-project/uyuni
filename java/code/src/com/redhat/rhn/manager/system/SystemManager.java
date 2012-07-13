@@ -198,7 +198,7 @@ public class SystemManager extends BaseManager {
      */
     public static boolean requiresReboot(User user, Long sid) {
         SelectMode m = ModeFactory.getMode("System_queries",
-                "has_errata_with_keyword_applied_since_last_reboot");
+        "has_errata_with_keyword_applied_since_last_reboot");
         Map params = new HashMap();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
@@ -243,35 +243,43 @@ public class SystemManager extends BaseManager {
      */
     @SuppressWarnings("unchecked")
 	public static DataResult<SystemOverview> getForeignPackagesSystems(User user, PageControl pc) {
-    	SelectMode mode = ModeFactory.getMode("System_queries", 
-    			"foreign_packages_get_noncompliant_systems");
-    	return makeDataResult(new HashMap<String, Object>(), new HashMap<String, Object>(), pc, mode);
+        SelectMode hostMode = ModeFactory.getMode("System_queries",
+                                                  "foreign_packages_get_noncompliant_packages_per_system_count");
+    	DataResult<SystemOverview> result = makeDataResult(new HashMap<String, Object>(), 
+                                                           new HashMap<String, Object>(), pc, 
+                                                           ModeFactory.getMode("System_queries",
+                                                        		               "foreign_packages_get_noncompliant_systems"));
+    	for	(int i = 0; i < result.size(); i++) {
+    		SystemOverview overview = result.get(i);
+            Map params = new HashMap();
+            params.put("serverid", overview.getId());
+            DataResult hostResult = hostMode.execute(params);
+            if (!hostResult.isEmpty()) {
+            	overview.setForeignPackagesCount((Long) ((Map) hostResult.get(0)).get("foreignpkgcount"));
+            }
+    	}
+
+    	return result;
+    }
+
+
+    /**
+     * Returns the list of non-compliant (foreign) packages per a system.
+     * @param serverid
+     * @return
+     */
+    public static DataResult listProfileForeignPackages(Long serverid) {
+        SelectMode m = ModeFactory.getMode("System_queries", 
+                                           "foreign_packages_get_noncompliant_packages_per_system");
+        Map params = new HashMap();
+        params.put("serverid", serverid);
+        Map elabParams = new HashMap();
+
+        DataResult dataResult = makeDataResult(params, elabParams, null, m);
+        return dataResult;
     }
 
     
-    /**
-     * Returns a list of foreign packages that are installed on not compliant system.
-     * 
-     * @param serverid
-     *            Server ID.
-     *            
-     * @param user
-     *            Currently logged in user.
-     *            
-     * @param pc
-     *            Page control
-     *            
-     * @return list of SystemOverviews.
-     */
-    public static DataResult<SystemOverview> getForeignPackagesOnSystem(Long serverid, User user, PageControl pc) {
-    	SelectMode mode = ModeFactory.getMode("System_queries", 
-    			"foreign_packages_get_noncompliant_packages_per_system");
-    	Map<String, Object> params = new HashMap<String, Object>();
-    	params.put("server_id", serverid);
-    	return makeDataResult(params, new HashMap<String, Object>(), pc, mode);
-    }
-
-
     /**
      * Gets the latest upgradable packages for a system
      * @param sid The id for the system we want packages for

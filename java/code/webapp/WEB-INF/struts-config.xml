@@ -7803,7 +7803,15 @@
         type="com.redhat.rhn.frontend.action.systems.NonCompliantSystemsAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <forward name="default"
-                 path="/WEB-INF/pages/systems/noncompliantsystemslist.jsp"/>
+                 path="/WEB-INF/pages/systems/non-compliant-systems-list.jsp"/>
+    </action>
+
+    <action path="/systems/NonCompliantPackageList"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.systems.NonCompliantPackageListAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default" path="/WEB-INF/pages/systems/non-compliant-system-packages-list.jsp"/>
     </action>
 
   </action-mappings>

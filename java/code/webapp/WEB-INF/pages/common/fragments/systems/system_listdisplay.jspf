@@ -79,24 +79,35 @@
 		</rl:column>
 	    </c:if>
 	    
-	   <c:if test = "${empty noPackages}">
+		<c:if test = "${empty noPackages} and !${nonCompliantMode}">
 		<!-- Packages Column -->
 		<rl:column sortable="false"
 				   bound="false"
 		           headerkey="systemlist.jsp.packages"
 		           styleclass="center"
 		           headerclass="thin-column">
-
-		        <c:choose>
-		    		<c:when test="${(current.outdatedPackages) == 0}">
-		        		<c:out value="0" />
-		        	</c:when>
-		        	<c:otherwise>
-						<c:out value="<a href=\"/rhn/systems/details/packages/UpgradableList.do?sid=${current.id}\">${current.outdatedPackages}</a>" escapeXml="false" />
-		        	</c:otherwise>
-		        </c:choose>
+		           	<c:choose>
+		   		    	<c:when test="${(current.outdatedPackages) == 0}">
+	        		    	<c:out value="0" />
+		        	    </c:when>
+		        	    <c:otherwise>
+						    <c:out value="<a href=\"/rhn/systems/details/packages/UpgradableList.do?sid=${current.id}\">${current.outdatedPackages}</a>" escapeXml="false" />
+	    	    	    </c:otherwise>
+	        		</c:choose>
 		</rl:column>
 		</c:if>
+
+		<c:if test = "${nonCompliantMode}">
+		<!-- Non-compliant packages Column -->
+		<rl:column sortable="false"
+				   bound="false"
+		           headerkey="systemlist.jsp.packages"
+		           styleclass="center"
+		           headerclass="thin-column">
+					<c:out value="<a href='/rhn/systems/NonCompliantPackageList.do?sid=${current.id}'>${current.foreignPackagesCount}</a>" escapeXml="false" />
+		</rl:column>
+		</c:if>
+
 		<c:if test = "${empty noConfigFiles} and !${nonCompliantMode}">
 			<rl:column sortable="false"
 				   bound="false"
@@ -126,7 +137,7 @@
            <%@ include file="/WEB-INF/pages/common/fragments/channel/channel_list_fragment.jspf" %>
 		</rl:column>
 		
-		<c:if test="${empty nonCompliantMode}">
+		<c:if test="!${nonCompliantMode}">
 		<!-- Entitlement Column -->
 		<rl:column sortable="false"
 				   bound="false"
@@ -135,9 +146,7 @@
                       <c:out value="${current.entitlementLevel}" escapeXml="false"/>
 		</rl:column>
 		</c:if>
-	
-	
-	
+
 	</rl:list>
 	<c:if test = "${empty noCsv}">
 	<rl:csv dataset="pageList"
