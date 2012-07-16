@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:10:16 CEST 2012 - ug@suse.de
+
+- version 1.7.38.13-1
+- postgresql don't know about decode
+- fixed ERROR: subquery in FROM must have an alias
+- fixed AttributeError: 'buffer' object has no attribute 'write'
+- Correct SQL query for installing and removing solaris patches
+- Correct query for PGSQL, addressing: SQL syntax error
+- man page fix and root-level user warning for rhn-satellite-exporter
+
+-------------------------------------------------------------------
 Mon Jun 25 10:21:36 CEST 2012 - mc@suse.de
 
 - version 1.7.38.12-1
