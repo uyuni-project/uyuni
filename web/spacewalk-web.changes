@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:29:50 CEST 2012 - ug@suse.de
+
+- version 1.7.28.8-1
+- Fix ISE on pgsql: Error message: RHN::Exception: DBD::Pg::st execute failed:
+  ERROR: syntax error at or near "NAME" at character 40
+- cross-database references are not implemented: pe.evr.as_vre_simple
+- ORDER BY expressions must appear in select list
+- error messages in PostgreSQL have different pattern
+
+-------------------------------------------------------------------
 Mon Jun 25 10:27:43 CEST 2012 - mc@suse.de
 
 - version 1.7.28.7-1
