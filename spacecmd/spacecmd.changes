@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:27:39 CEST 2012 - ug@suse.de
+
+- version 1.7.7.7-1
+- Fix kickstart_export with old API versions
+
+-------------------------------------------------------------------
 Fri Jul  6 09:46:42 CEST 2012 - ug@suse.de
 
 - command line parameter for "distribution path" was
