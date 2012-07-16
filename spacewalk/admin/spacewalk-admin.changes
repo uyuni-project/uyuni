@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:13:58 CEST 2012 - ug@suse.de
+
+- version 1.7.4.4-1
+- remove database start from spacewalk-service
+
+-------------------------------------------------------------------
 Tue Jun 26 11:40:52 CEST 2012 - mantel@suse.de
 
 - remove database start from spacewalk-service
