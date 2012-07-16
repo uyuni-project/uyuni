@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:16:08 CEST 2012 - ug@suse.de
+
+- version 5.10.27.6-1
+- check symlink not target file existence
+- value of selinux context is important
+
+-------------------------------------------------------------------
 Thu Jun 21 11:16:28 CEST 2012 - jrenner@suse.de
 
 - version 5.10.27.5-1
