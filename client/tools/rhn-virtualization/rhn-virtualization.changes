@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:27:10 CEST 2012 - ug@suse.de
+
+- version 5.4.34.9-1
+- rhn-profile-sync exits with status 1 if libvirtd is not running
+
+-------------------------------------------------------------------
 Mon Jun 25 13:38:05 CEST 2012 - mc@suse.de
 
 - version 5.4.34.8-1
