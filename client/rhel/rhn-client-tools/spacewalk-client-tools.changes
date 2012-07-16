@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:34:43 CEST 2012 - ug@suse.de
+
+- version 1.7.14.8-1
+- if the exception is <type 'instance'>, just plain if will fail.
+- rhn-profile-sync exits with status 1 if libvirtd is not running
+- Add missing space to log message
+- Fix missing exception scope
+- Fix typo in 'Fatal error in Python code occured'
+- read memory information even on kernels 3.x
+
+-------------------------------------------------------------------
 Thu Jun 21 11:30:01 CEST 2012 - jrenner@suse.de
 
 - version 1.7.14.7-1
