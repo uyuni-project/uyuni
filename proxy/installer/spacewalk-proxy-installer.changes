@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:21:43 CEST 2012 - ug@suse.de
+
+- version 1.7.6.5-1
+- proxy-installer should pre-require proxy-common to ensure correct order of
+  apache modules
+
+-------------------------------------------------------------------
 Mon Jun 25 13:58:26 CEST 2012 - mantel@suse.de
 
 - proxy-installer should pre-require proxy-common to ensure correct
