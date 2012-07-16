@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:30:34 CEST 2012 - ug@suse.de
+
+- version 1.7.54.14-1
+- Finished non-compliant systems overview feature.
+- COALESCE instead of NVL keyword for pgsql compatibility
+- work around for if hibernate loads a clonedchannel as its own
+  original
+- Allow user to set MAC Address when provisioning a virtual guest
+- Oracle does not supports 'AS' keyword in SQL.
+- Return list of non-compliant systems (where packages are foreign)
+- Added queries for finding non-compliant systems. At this moment queries are
+  unused orphans.
+- add API doc for channel.software.listErrata update_date attribute
+- remove "date" from the channel.software.listErrata API doc
+- adding conflicts for quartz >= 2.0
+- ignore also 127.0.0.2 IP addresses (bnc#768771)
+- Merge branch 'Manager' of github.com:SUSE/spacewalk into Manager
+- Wrong information on proxy configuration (bnc#697517)
+- Do not automatically subscribe to virt channels (bnc#768856)
+- requre quartz version lower than 2.0
+- Each dataset must have a different name.
+- Add CSV downloader for several pages
+- Correcting two ISE on postgresql: NVRE not found
+
+-------------------------------------------------------------------
 Wed Jul 11 17:06:59 CEST 2012 - ug@suse.de
 
 - kernel options in the web UI are not added to the xen distri
