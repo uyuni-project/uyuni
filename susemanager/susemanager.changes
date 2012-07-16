@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:20:03 CEST 2012 - ug@suse.de
+
+- version 1.7.9-1
+- do not tell the type of the embedded database
+
+-------------------------------------------------------------------
 Thu Jun 21 11:09:42 CEST 2012 - jrenner@suse.de
 
 - version 1.7.8-1
