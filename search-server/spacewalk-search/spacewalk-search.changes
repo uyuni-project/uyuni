@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:22:43 CEST 2012 - ug@suse.de
+
+- version 1.7.3.6-1
+- add support for external PostgreSQL database in search server.
+- search needs quartz < 2.0 as well
+
+-------------------------------------------------------------------
 Thu May 31 11:00:02 CEST 2012 - mc@suse.de
 
 - version 1.7.3.5-1
