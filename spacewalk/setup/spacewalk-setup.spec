@@ -9,7 +9,7 @@
 %endif
 
 Name:           spacewalk-setup
-Version:        1.7.9.6
+Version:        1.7.9.7
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 

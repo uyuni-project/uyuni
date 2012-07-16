@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:28:31 CEST 2012 - ug@suse.de
+
+- version 1.7.9.7-1
+- Exit if starting tomcat did not pass.
+
+-------------------------------------------------------------------
 Tue Jul 10 15:02:27 CEST 2012 - ug@suse.de
 
 - changed cobbler-setup to use the FQDN as hostname
