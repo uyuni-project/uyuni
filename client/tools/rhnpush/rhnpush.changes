@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:17:44 CEST 2012 - ug@suse.de
+
+- version 5.5.42.6-1
+- solaris2mpm on RHEL5 is not supported
+- solaris2mpm needs zipfile with ZIP64 extension
+- remove trailing '/' from from archive dir
+- reuse UploadError from uploadLib
+- simplified authentication code
+
+-------------------------------------------------------------------
 Mon Jun 25 10:22:27 CEST 2012 - mc@suse.de
 
 - version 5.5.42.5-1
