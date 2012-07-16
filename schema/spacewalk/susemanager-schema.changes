@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Jul 16 15:23:34 CEST 2012 - ug@suse.de
+
+- version 1.7.56.12-1
+- Add the PostgreSQL specific mad_address upgrade script.
+- We mustn't serialize object into string in lookup_evr, we need to only create
+  it once within the link.
+- Allow user to set MAC Address when provisioning a virtual guest
+- Make the resulting data order more deterministic.
+
+-------------------------------------------------------------------
 Wed Jul 11 10:34:50 CEST 2012 - ug@suse.de
 
 - added mac_address column to rhnactionkickstartguest
