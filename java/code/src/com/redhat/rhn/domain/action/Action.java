@@ -33,6 +33,8 @@ import java.util.Set;
  */
 public class Action extends BaseDomainHelper implements Serializable {
 
+    public static final Integer NAME_LENGTH_LIMIT = 128;
+
     private Long id;
     private String name;
     // private Long scheduler;
@@ -116,11 +118,7 @@ public class Action extends BaseDomainHelper implements Serializable {
      * @param nameIn to set
     */
     public void setName(String nameIn) {
-        // Shorten the name to 128 chars if necessary
-        if (nameIn != null && nameIn.length() > 128) {
-            nameIn = nameIn.substring(0, 128);
-        }
-        this.name = nameIn;
+        this.name = nameIn.substring(0, NAME_LENGTH_LIMIT);
     }
 
     /**
