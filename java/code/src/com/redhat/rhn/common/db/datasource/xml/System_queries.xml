@@ -1978,17 +1978,14 @@ SELECT sip.name, sip.version, at.label as arch, sip.release
 
 <mode name="foreign_packages_get_noncompliant_systems" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="">
-  SELECT distinct s.id, s.name, 1 selectable
-FROM rhnServer s
-WHERE EXISTS
-    (SELECT *
-     FROM rhnServerPackage sp
-     WHERE NOT EXISTS
-              (SELECT *
-               FROM rhnPackage p,
-                    rhnPackageName pn
-               WHERE p.name_id=pn.id AND p.evr_id=sp.evr_id AND sp.name_id=pn.id)
-               AND sp.server_id=s.id);
+SELECT distinct s.id, s.name, 1 selectable
+FROM rhnServer s WHERE EXISTS 
+           (SELECT *
+            FROM rhnServerPackage sp
+            WHERE NOT EXISTS 
+                  (SELECT * FROM rhnPackage p, rhnPackageName pn
+                   WHERE p.name_id=pn.id AND p.evr_id=sp.evr_id AND sp.name_id=pn.id)
+            AND sp.server_id=s.id)
   </query>
   <elaborator name="system_overview" />
   <elaborator name="entitlements" />
