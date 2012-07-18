@@ -45,6 +45,16 @@
       }
     }
 
+    // test if we did a setup already
+    if (SCR::Read(.target.size, "/root/.MANAGER_SETUP_COMPLETE") >= 0 ) {
+        if ( !Popup::AnyQuestionRichText(_("already setup"), _("SUSE Manager is already setup. A second attempt to run the setup will fail."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
+        {
+            if (Popup::ConfirmAbort(`incomplete)) {
+                return `abort;
+            }
+        }
+    }
+
     // do we have less memory than needed?
     if (totalmem < enough_memory) {
         if ( !Popup::AnyQuestionRichText(_("Not enough memory"), _("SUSE Manager requires 2G of memory to be installed and 8G for good perfomance. If you continue the product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
