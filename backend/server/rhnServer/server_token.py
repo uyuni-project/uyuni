@@ -641,7 +641,7 @@ class ActivationTokens:
                     #ORA-20220: (servergroup_max_members) - Server group membership
                     #cannot exceed maximum membership
                     raise rhnFault(91,
-                        _("Registration failed: RHN Software Management service entitlements exhausted"))
+                        _("Registration failed: SUSE Manager Software Management service entitlements exhausted"))
                 #No idea what error may be here...
                 raise rhnFault(90, e.errmsg)
             except rhnSQL.SQLError, e:
