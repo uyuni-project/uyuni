@@ -7,6 +7,7 @@ WAIT_BETWEEN_STEPS=0
 
 MIGRATION_ENV="/root/migration_env.sh"
 SETUP_ENV="/root/setup_env.sh"
+MANAGER_COMPLETE="/root/.MANAGER_SETUP_COMPLETE"
 
 SATELLITE_HOST=""
 SATELLITE_DOMAIN=""
@@ -59,7 +60,11 @@ helper script to do migration or setup of SUSE Manager
 }
 
 wait_step() {
-    if [ $WAIT_BETWEEN_STEPS = "1" ];then
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi
+
+    if [ "$WAIT_BETWEEN_STEPS" = "1" ];then
         echo "Press Return to continue"
         read
     fi;
@@ -510,6 +515,11 @@ do_setup() {
     setup_spacewalk
 }
 
+if [ -f $MANAGER_COMPLETE ]; then
+    echo "SUSE Manager is already set up. Exit."
+    exit 1
+fi
+
 for p in $@; do
     if [ "$LOGFILE" = "1" ]; then
         LOGFILE=$p
@@ -587,5 +597,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     # Finaly call mgr-ncc-sync
     /usr/sbin/mgr-ncc-sync
 fi
+
+echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
 
 # vim: set expandtab:
