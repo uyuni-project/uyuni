@@ -55,6 +55,16 @@
 			</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64" description="SUSE Manager Tools" family="SLES-PPC" is_signed="Y" label="sles11-sp2-suse-manager-tools-ppc64" name="SLES11-SP2-SUSE-Manager-Tools ppc64" optional="N" parent="sles11-sp1-pool-ppc64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-ppc64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+		<products>
+			<product_id name="SUSE_SLES">
+				3010
+			</product_id>
+			<product_id name="SUSE_SLES">
+				3011
+			</product_id>
+		</products>
+	</channel>
 	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-IA" is_signed="Y" label="sle11-sp2-debuginfo-core-ia64" name="SLE11-SP2-Debuginfo-Core for ia64" optional="Y" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLES">
@@ -219,6 +229,20 @@
 			</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64" name="SLES11-SP2-SUSE-Manager-Tools x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+		<products>
+			<product_id name="SUSE_SLES">
+				3009
+			</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools" family="SMP" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-proxy" name="SLES11-SP2-SUSE-Manager-Tools x86_64 Proxy" optional="N" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+		<products>
+			<product_id name="SUSE-Manager-Proxy">
+				2680
+			</product_id>
+		</products>
+	</channel>
 	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP1" family="SLES-IA" is_signed="Y" label="sles11-sp1-pool-ia64" name="SLES11-SP1-Pool for ia64" optional="N" parent="BASE" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Pool/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
 		<products>
 			<product_id name="SUSE_SLES">
@@ -320,19 +344,19 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="nVidia Driver for SLE11-SP2" family="7260" is_signed="Y" label="nvidia-driver-sle11-sp2-i586" name="nVidia-Driver-SLE11-SP2 i586" optional="N" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="http://download.nvidia.com/novell/sle11sp2" summary="nVidia Driver for SLE11-SP2" update_tag="">
+	<channel arch="i586" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp1-suse-manager-tools-i586" name="SLES11-SP1-SUSE-Manager-Tools i586" optional="N" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp1">
 		<products>
-			<product_id name="SUSE_SLED">
-				3000
+			<product_id name="SUSE_SLES">
+				1825
 			</product_id>
-			<product_id name="SUSE_SLED">
-				3001
+			<product_id name="SUSE_SLES">
+				1827
 			</product_id>
-			<product_id name="SUSE_SLED">
-				3002
+			<product_id name="SUSE_SLES">
+				1826
 			</product_id>
-			<product_id name="SUSE_SLED">
-				3003
+			<product_id name="SUSE_SLES">
+				1828
 			</product_id>
 		</products>
 	</channel>
@@ -350,12 +374,13 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i386" description="SUSE-Manager-Tools" family="RES" is_signed="Y" label="res4-as-suse-manager-tools-i386" name="RES4 AS SUSE-Manager-Tools i386" optional="N" parent="rhel-i386-as-4" product_name="RES" product_version="4" source_url="https://nu.novell.com/repo/$RCE/RES4-SUSE-Manager-Tools/i386/" summary="SUSE-Manager-Tools" update_tag="res4ct">
+	<channel arch="x86_64" description="Red Hat Expanded Support for RHEL 6" family="RES" is_signed="N" label="rhel-x86_64-server-6" name="RHEL x86_64 Server 6" optional="N" parent="BASE" product_name="RES" product_version="6" source_url="" summary="Red Hat Expanded Support for RHEL 6" update_tag="">
 		<products>
 			<product_id name="RES">
-				1321
+				2580
 			</product_id>
 		</products>
+		<dist os="RHEL Server" release="6Server"/>
 	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP1" family="7261" is_signed="Y" label="sles11-extras-i586" name="SLES11-Extras for i586" optional="Y" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-Extras/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="">
 		<products>
@@ -610,6 +635,22 @@
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
 				1507
+			</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp2-suse-manager-tools-i586" name="SLES11-SP2-SUSE-Manager-Tools i586" optional="N" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+		<products>
+			<product_id name="SUSE_SLES">
+				3005
+			</product_id>
+			<product_id name="SUSE_SLES">
+				3007
+			</product_id>
+			<product_id name="SUSE_SLES">
+				3006
+			</product_id>
+			<product_id name="SUSE_SLES">
+				3008
 			</product_id>
 		</products>
 	</channel>
@@ -1223,6 +1264,13 @@
 			</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Mono Extension 2.4" family="MONO" is_signed="Y" label="sle11-mono-2.4-pool-x86_64-vmware" name="SLE11-Mono-2.4-Pool for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-mono" product_version="11.0.2.4" source_url="https://nu.novell.com/repo/$RCE/SLE11-Mono-2.4-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Mono Extension 2.4" update_tag="slesmonosp0">
+		<products>
+			<product_id name="sle-mono">
+				1341
+			</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise 11 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-i586" name="SLE11-SMT-Updates for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 Subscription Managment Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">
@@ -1630,10 +1678,19 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-core-x86_64" name="SLES11-SP2-Core for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
+	<channel arch="i586" description="nVidia Driver for SLE11-SP2" family="7260" is_signed="Y" label="nvidia-driver-sle11-sp2-i586" name="nVidia-Driver-SLE11-SP2 i586" optional="N" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="http://download.nvidia.com/novell/sle11sp2" summary="nVidia Driver for SLE11-SP2" update_tag="">
 		<products>
-			<product_id name="SUSE_SLES">
-				3009
+			<product_id name="SUSE_SLED">
+				3000
+			</product_id>
+			<product_id name="SUSE_SLED">
+				3001
+			</product_id>
+			<product_id name="SUSE_SLED">
+				3002
+			</product_id>
+			<product_id name="SUSE_SLED">
+				3003
 			</product_id>
 		</products>
 	</channel>
@@ -1836,6 +1893,13 @@
 			</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools" family="AiO" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-sap-aio" name="SLES11-SP2-SUSE-Manager-Tools x86_64 SAP-AiO" optional="N" parent="sle11-sp1-sap-aio-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+		<products>
+			<product_id name="SUSE_SLES_SAP">
+				3520
+			</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc" description="SUSE Linux Enterprise Server 10 SP3" family="SLES-PPC" is_signed="Y" label="sles10-sp3-pool-ppc" name="SLES10-SP3-Pool for ppc" optional="N" parent="BASE" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLES10-SP3-Pool/sles-10-ppc/" summary="SUSE Linux Enterprise Server 10 SP3" update_tag="slesp3">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
@@ -1843,6 +1907,22 @@
 			</product_id>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">
 				1506
+			</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="SUSE Manager Tools" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-suse-manager-tools-i586-vmware" name="SLES11-SP2-SUSE-Manager-Tools i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+		<products>
+			<product_id name="SUSE_SLES">
+				3005
+			</product_id>
+			<product_id name="SUSE_SLES">
+				3007
+			</product_id>
+			<product_id name="SUSE_SLES">
+				3006
+			</product_id>
+			<product_id name="SUSE_SLES">
+				3008
 			</product_id>
 		</products>
 	</channel>
@@ -1978,31 +2058,10 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP1" family="7261" is_signed="Y" label="sle11-sp1-debuginfo-pool-i586" name="SLE11-SP1-Debuginfo-Pool for i586" optional="Y" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
+	<channel arch="x86_64" description="SUSE Manager Tools" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-vmware" name="SLES11-SP2-SUSE-Manager-Tools x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLES">
-				1825
-			</product_id>
-			<product_id name="SUSE_SLES">
-				1826
-			</product_id>
-			<product_id name="SUSE_SLES">
-				1827
-			</product_id>
-			<product_id name="SUSE_SLES">
-				1828
-			</product_id>
-			<product_id name="SUSE_SLES">
-				3005
-			</product_id>
-			<product_id name="SUSE_SLES">
-				3006
-			</product_id>
-			<product_id name="SUSE_SLES">
-				3007
-			</product_id>
-			<product_id name="SUSE_SLES">
-				3008
+				3009
 			</product_id>
 		</products>
 	</channel>
@@ -2049,10 +2108,10 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Mono Extension 2.4" family="MONO" is_signed="Y" label="sle11-mono-2.4-pool-x86_64-vmware" name="SLE11-Mono-2.4-Pool for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-mono" product_version="11.0.2.4" source_url="https://nu.novell.com/repo/$RCE/SLE11-Mono-2.4-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Mono Extension 2.4" update_tag="slesmonosp0">
+	<channel arch="ia64" description="SUSE Manager Tools" family="SLES-IA" is_signed="Y" label="sles11-sp2-suse-manager-tools-ia64" name="SLES11-SP2-SUSE-Manager-Tools ia64" optional="N" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-ia64/" summary="SUSE Manager Tools" update_tag="slesctsp21">
 		<products>
-			<product_id name="sle-mono">
-				1341
+			<product_id name="SUSE_SLES">
+				3012
 			</product_id>
 		</products>
 	</channel>
@@ -2098,13 +2157,19 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="Red Hat Expanded Support for RHEL 6" family="RES" is_signed="N" label="rhel-x86_64-server-6" name="RHEL x86_64 Server 6" optional="N" parent="BASE" product_name="RES" product_version="6" source_url="" summary="Red Hat Expanded Support for RHEL 6" update_tag="">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-core-x86_64" name="SLES11-SP2-Core for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
 		<products>
-			<product_id name="RES">
-				2580
+			<product_id name="SUSE_SLES">
+				3009
 			</product_id>
 		</products>
-		<dist os="RHEL Server" release="6Server"/>
+	</channel>
+	<channel arch="i386" description="SUSE-Manager-Tools" family="RES" is_signed="Y" label="res4-as-suse-manager-tools-i386" name="RES4 AS SUSE-Manager-Tools i386" optional="N" parent="rhel-i386-as-4" product_name="RES" product_version="4" source_url="https://nu.novell.com/repo/$RCE/RES4-SUSE-Manager-Tools/i386/" summary="SUSE-Manager-Tools" update_tag="res4ct">
+		<products>
+			<product_id name="RES">
+				1321
+			</product_id>
+		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Manager Proxy 1.7" family="SMP" is_signed="Y" label="sle11-sp1-debuginfo-pool-x86_64-proxy-1.7" name="SLE11-SP1-Debuginfo-Pool for x86_64 Proxy 1.7" optional="Y" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Manager Proxy 1.7" update_tag="dbgsp1">
 		<products>
@@ -2249,19 +2314,13 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp1-suse-manager-tools-i586" name="SLES11-SP1-SUSE-Manager-Tools i586" optional="N" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp1">
+	<channel arch="s390x" description="SUSE Manager Tools" family="SLES-Z" is_signed="Y" label="sles11-sp2-suse-manager-tools-s390x" name="SLES11-SP2-SUSE-Manager-Tools s390x" optional="N" parent="sles11-sp1-pool-s390x" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-s390x/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLES">
-				1825
+				3013
 			</product_id>
 			<product_id name="SUSE_SLES">
-				1827
-			</product_id>
-			<product_id name="SUSE_SLES">
-				1826
-			</product_id>
-			<product_id name="SUSE_SLES">
-				1828
+				3014
 			</product_id>
 		</products>
 	</channel>
@@ -2762,6 +2821,34 @@
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP4">
 				2526
+			</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP1" family="7261" is_signed="Y" label="sle11-sp1-debuginfo-pool-i586" name="SLE11-SP1-Debuginfo-Pool for i586" optional="Y" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
+		<products>
+			<product_id name="SUSE_SLES">
+				1825
+			</product_id>
+			<product_id name="SUSE_SLES">
+				1826
+			</product_id>
+			<product_id name="SUSE_SLES">
+				1827
+			</product_id>
+			<product_id name="SUSE_SLES">
+				1828
+			</product_id>
+			<product_id name="SUSE_SLES">
+				3005
+			</product_id>
+			<product_id name="SUSE_SLES">
+				3006
+			</product_id>
+			<product_id name="SUSE_SLES">
+				3007
+			</product_id>
+			<product_id name="SUSE_SLES">
+				3008
 			</product_id>
 		</products>
 	</channel>
