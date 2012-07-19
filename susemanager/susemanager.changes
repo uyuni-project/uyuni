@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jul 19 14:40:05 CEST 2012 - ug@suse.de
+
+- version 1.7.10-1
+- create tnsname.ora file for remote oracle DB (bnc#772062)
+- Ensure that setup cannot be run twice (bnc#772003)
+
+-------------------------------------------------------------------
 Mon Jul 16 15:20:03 CEST 2012 - ug@suse.de
 
 - version 1.7.9-1
