@@ -106,7 +106,7 @@ fi
 if [ -n "$REALHOSTNAME" ]; then
         echo "$REALHOSTNAME" > /etc/HOSTNAME
 fi
-/usr/sbin/SuSEconfig.postfix
+/usr/sbin/SuSEconfig.postfix 2>&1
 }
 
 setup_hostname() {
@@ -250,9 +250,12 @@ dobby.oracle_user = oracle
 }
 
 setup_db_postgres() {
-    insserv postgresql91
+    if ! chkconfig -c postgresql91 ; then
+        insserv postgresql91
+    fi
     rcpostgresql91 start
-    su - postgres -c "createdb $MANAGER_DB_NAME ; createlang plpgsql $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
+    su - postgres -c "createdb $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
+    # "createlang plpgsql $MANAGER_DB_NAME" not needed on SUSE. plpgsql is already enabled
 
     echo "local $MANAGER_DB_NAME $MANAGER_USER md5
 host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/8 md5
