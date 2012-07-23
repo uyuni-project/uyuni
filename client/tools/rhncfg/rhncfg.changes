@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Jul 23 14:33:45 CEST 2012 - mc@suse.de
+
+- fix deployed file create new directory structure (bnc#771382)
+
+-------------------------------------------------------------------
 Sun Jun 17 18:05:03 CEST 2012 - mc@suse.de
 
 - fixed insecure permissions used for /var/log/rhncfg-actions file
