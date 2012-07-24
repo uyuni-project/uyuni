@@ -183,6 +183,9 @@ EOT
 
 # setup a local oracle database
 setup_db_oracle() {
+    if ! chkconfig -c oracle ; then
+        insserv oracle
+    fi
     /opt/apps/oracle/setup "$SYS_DB_PASS"
     # remove suid bits for bnc#736240
     find /opt/apps/oracle/product/ -perm -4000 -exec chmod -s {} \;
