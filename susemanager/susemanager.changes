@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul 26 16:25:51 CEST 2012 - mc@suse.de
+
+- put migrate_res() into NCCSync class (bnc#773244)
+
+-------------------------------------------------------------------
 Fri Jun  1 16:35:34 CEST 2012 - mc@suse.de
 
 - add option to migrate channels to RES subscriptions (bnc#765053)
