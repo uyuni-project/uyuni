@@ -1030,7 +1030,7 @@ def _to_db_date(date):
     else:
         # we expect to get ISO formated date
         ret = date
-    return ret
+    return ret[:19] #return 1st 19 letters of date, therefore preventing ORA-01830 caused by fractions of seconds
 
 def _update_keywords(notice):
     """Return a list of Keyword objects for the notice"""
