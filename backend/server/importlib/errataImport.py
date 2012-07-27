@@ -128,12 +128,15 @@ class ErrataImport(GenericPackageImport):
             self._fix_erratum_severity(erratum)
             #fix oval info to populate the relevant dbtables
             self._fix_erratum_oval_info(erratum)
-            
+
         self.backend.lookupPackages(self.packages.values(), self.checksums, self.ignoreMissing)
         for erratum in self.batch:
+            if erratum.ignored:
+                # Skip it
+                continue
             self._fix_erratum_packages(erratum)
             self._fix_erratum_file_channels(erratum)
-    
+
 
     def _fixCVE(self):
         # Look up and insert the missing CVE's
