@@ -10,6 +10,7 @@
     <h2><bean:message key="sdc.details.overview.systemstatus"/></h2>
 
       <div class="systeminfo">
+    <rhn:require acl="not system_has_bootstrap_entitlement();">
       <div class="systeminfo-full">
 
       <c:choose>
@@ -61,6 +62,7 @@
           </div>
         </div>
       </c:if>
+    </rhn:require>
 
       <div class="systeminfo-clear" />
       </div>
@@ -408,6 +410,7 @@
       </table>
     </div>
   </rhn:require>
+  <rhn:require acl="not system_has_bootstrap_entitlement();">
   <div style="clear: left; width: 45%; float: left; line-height: 200%">
     <h2><bean:message key="sdc.details.overview.subscribedchannels" arg0="/rhn/systems/details/SystemChannels.do?sid=${system.id}"/></h2>
 
@@ -432,5 +435,6 @@
     </ul>
     </c:if>
   </div>
+  </rhn:require>
 </body>
 </html:html>
