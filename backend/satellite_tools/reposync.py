@@ -337,7 +337,7 @@ class RepoSync(object):
             notice = _fix_notice(notice)
             patch_name = self._patch_naming(notice)
             existing_errata = get_errata(patch_name)
-            if existing_errata and not _is_old_suse_style(notice['from'], notice['version']):
+            if existing_errata and not _is_old_suse_style(notice):
                 if existing_errata['advisory_rel'] < notice['version']:
                     # A disaster happens
                     #
@@ -1078,7 +1078,7 @@ def _fix_notice(notice):
             notice['version'] = new_version / 100
         except TypeError: # yum in RHEL5 does not have __setitem__
             notice._md['version'] = new_version / 100
-    if _is_old_suse_style(notice['from'], notice['version']):
+    if _is_old_suse_style(notice):
         # old suse style; we need to append the version to id
         # to get a seperate patch for every issue
         try:
@@ -1087,9 +1087,11 @@ def _fix_notice(notice):
             notice._md['update_id'] = notice['update_id'] + '-' + notice['version']
     return notice
 
-def _is_old_suse_style(notice_from, notice_version):
-    if "suse" in notice_from.lower() and int(notice_version) >= 1000:
-        # old style suse updateinfo starts with version >= 1000
+def _is_old_suse_style(notice):
+    if ("suse" in notice['from'].lower() and
+        (int(notice['version']) >= 1000 or notice['update_id'].startswith('res'))):
+        # old style suse updateinfo starts with version >= 1000 or
+        # have the res update_tag
         return True
     return False
 
