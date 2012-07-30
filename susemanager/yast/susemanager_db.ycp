@@ -87,7 +87,7 @@
 		// radio button label
 		_("Remote Database"), settings["MANAGER_DB_HOST"]:"" != "localhost")),
 	    `HBox (`HSpacing (3), `VBox (
-		`VSpacing (0.5),
+		`VSpacing (0.4),
                 `Left (`RadioButtonGroup (`id("DB_BACKEND"), `HBox (`HSpacing (0.2),
                     `RadioButton(`id(`postgres), `opt (`notify),
                     // radio button label
@@ -123,7 +123,7 @@
 	    settings["MANAGER_PASS"]:""),
 
 
-	`VSpacing (0.5)
+	`VSpacing (0.4)
     ), `HSpacing (1));
 
     // help text
