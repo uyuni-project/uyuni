@@ -3,7 +3,7 @@
 Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
-License: GPLv2
+License: GPL-2.0 and Apache-2.0
 Version: 1.7.3.6
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
