@@ -1,120 +1,141 @@
-SUSE(R) Manager 
-Novell(R) Software License Agreement
+SUSE(R) Manager Server
+SUSE Manager Server with Database
+SUSE Software License Agreement
 
-PLEASE READ THIS AGREEMENT CAREFULLY. BY INSTALLING OR OTHERWISE 
-USING THE SOFTWARE (INCLUDING ITS COMPONENTS), YOU AGREE TO THE 
-TERMS OF THIS AGREEMENT. IF YOU DO NOT AGREE WITH THESE TERMS, DO 
-NOT DOWNLOAD, INSTALL OR USE THE SOFTWARE.RIGHTS AND LICENSES
+PLEASE READ THIS AGREEMENT CAREFULLY. BY PURCHASING, INSTALLING 
+AND/OR USING THE SOFTWARE (INCLUDING ITS COMPONENTS), YOU AGREE TO 
+THE TERMS OF THIS AGREEMENT AND ACKNOWLEDGE THAT YOU HAVE READ AND 
+UNDERSTAND THIS AGREEMENT. IF YOU DO NOT AGREE WITH THESE TERMS, DO 
+NOT DOWNLOAD, INSTALL OR USE THE SOFTWARE. AN INDIVIDUAL ACTING ON 
+BEHALF OF AN ENTITY REPRESENTS THAT HE OR SHE HAS THE AUTHORITY TO 
+ENTER INTO THIS AGREEMENT ON BEHALF OF THAT ENTITY.
 
-This Novell Software License Agreement ("Agreement") is a legal 
-agreement between You (an entity or a person) and Novell, Inc. 
-("Novell"). The software product identified in the title of this 
-Agreement, any media and accompanying documentation (collectively 
-the "Software") is protected by the copyright laws and treaties of 
-the United States ("U.S.") and other countries and is subject to the 
-terms of this Agreement.  Any update or support release to the 
-Software that You may download or receive that is not accompanied by 
-a license agreement expressly superseding this Agreement is Software 
-and governed by this Agreement.  If the Software is an update or 
-support release, then You must have validly licensed the version and 
-quantity of the Software being updated or supported in order to 
-install or use the update or support release. 
+This SUSE Software License Agreement ("Agreement") is a legal 
+agreement between You (an entity or a person) and Novell, Inc., SUSE 
+business unit ("SUSE"). The software product identified in the title 
+of this Agreement, its structure, organization, and accompanying 
+documentation (collectively the "Software") is protected by the 
+copyright laws and treaties of the United States and other countries 
+and is subject to the terms of this Agreement. Any modification, 
+update, enhancement or upgrade to the Software that You may download 
+or receive that are not accompanied by a SUSE software license 
+agreement expressly is included as Software and governed by this 
+Agreement. 
 
-The Software is a modular operating system comprised of numerous 
-components that may be accompanied by separate license terms.  The 
-Software is a collective work of Novell; although Novell does not 
-own the copyright to every component of the Software, Novell owns 
-the collective work copyright for the Software.  
+LICENSES. The Software and each of its components are owned by SUSE 
+or other licensors and are protected under copyright laws and other 
+applicable laws. Subject to compliance with the terms and conditions 
+of this Agreement and the restrictions on use of the Database (as 
+set forth below), SUSE grants to You a perpetual, non-transferable, 
+worldwide license to reproduce and use copies of the Software within 
+Your Organization (as defined below). Many of the individual 
+components included in the Software are licensed pursuant to an open 
+source license identified in the documentation or located in the 
+source code or binary code for the component.  This Agreement does 
+not limit Your rights under such licenses or supersede or conflict 
+with the license terms or obligations for use of any individual open 
+source component.  
 
-Most of the components are open source packages, developed 
-independently, and accompanied by separate license terms.  Your 
-license rights with respect to individual components accompanied by 
-separate license terms are defined by those terms; nothing in this 
-agreement shall restrict, limit, or otherwise affect any rights or 
-obligations You may have, or conditions to which You may be subject, 
-under such license terms; however, if You distribute copies of any 
-component independent of the Software, You must remove all Novell 
-trademarks, trade dress, and logos from each copy.
+"Organization" means a legal entity, excluding subsidiaries and 
+affiliates with a separate existence for tax purposes or for legal 
+personality purposes. An example of an Organization in the private 
+sector would be a corporation, partnership, or trust, excluding any 
+subsidiaries or affiliates of the organization with a separate tax 
+identification number or company registration number. In the public 
+sector, an example of Organization would be a specific government 
+body or local government authority.
 
-You may make and use unlimited copies of the Software within your 
-Organization. The term "Organization" means a legal entity, 
-excluding subsidiaries and affiliates with a separate existence for 
-tax purposes or for legal personality purposes. An example of an 
-Organization in the private sector would be a corporation, 
-partnership, or trust, excluding any subsidiaries or affiliates of 
-the organization with a separate tax identification number or 
-company registration number. In the public sector, an example of 
-Organization would be a specific government body or local government 
-authority.
+MARKS. No right or license, express or implied, is granted under 
+this Agreement with respect to any trademark, trade name or service 
+mark of SUSE or its affiliates or licensors ("Mark"). If You 
+distribute any open source component of the Software, You must 
+remove all Marks except those used to identify SUSE's ownership or 
+licensing of the component.
 
-OTHER LICENSE TERMS AND RESTRICTIONS
+SUBSCRIPTION SERVICES.  SUSE sells Subscription Services for the 
+Software that entitle You to fee based technical support and 
+internal use of Software updates provided during the Subscription 
+Service period purchased and subject to the terms of the applicable 
+Subscription Service offering. The fee charged for Subscription 
+Services for this Software is based on the total number of Instances 
+of the Software You deploy, install or use. An "Instance" is defined 
+as the initial copy of the Software necessary for execution of the 
+Software and each additional copy (or partial copy) of the Software 
+stored or loaded in memory or virtual memory.  For the avoidance of 
+doubt, the following activities are not authorized under 
+Subscription Services and are a material breach of this Agreement:  
+(1) Providing updates received under Subscription Services to a 
+third party, (2) purchasing or renewing Subscription Services for 
+less than the total number of Instances of the Software You deploy, 
+install or use, and (3) using Subscription Services to provide 
+support to third parties.
 
-The Software is protected by the copyright laws and treaties of the 
-United States ("U.S.") and other countries and is subject to the 
-terms of this Agreement. The Software is licensed to You, not sold.
+PROPRIETARY DATABASE SOFTWARE. This paragraph applies to You only if 
+You have purchased the SUSE Manager Server with Database offering. 
+The Software includes a version of the Oracle database software 
+("Database"). For each Instance of Subscription Services You have 
+purchased for the Software, You are authorized to use one Instance 
+of the Database solely for use with the Software for which You have 
+purchased the Subscription.  In addition to the terms of this 
+Agreement, Your use of the Database is subject to the Third Party 
+Addendum included with this Agreement.
 
-The Software may be bundled with other software programs ("Bundled 
-Programs"). Your license rights with respect to Bundled Programs 
-accompanied by separate license terms are defined by those terms; 
-nothing in this Agreement shall restrict, limit, or otherwise affect 
-any rights or obligations You may have, or conditions to which You 
-may be subject, under such license terms.  
+TERMS AND RESTRICTIONS
 
-Novell reserves all rights not expressly granted to You. You may 
-not: (1) reverse engineer, decompile, or disassemble the Software 
-except and only to the extent it is expressly permitted by 
-applicable law ; or (2) transfer the Software or Your license rights 
-under this Agreement, in whole or in part.
+SUSE reserves all rights not expressly granted to You. You may not: 
+(1) reverse engineer, decompile, or disassemble the Software except 
+and only to the extent it is expressly permitted by applicable law; 
+or (2) transfer the Software or Your license rights under this 
+Agreement, in whole or in part.
 
-MAINTENANCE AND SUPPORT
-
-Novell has no obligation to provide support or maintenance unless 
-You purchase an offering that expressly includes support or 
-maintenance services.  If You make such a purchase and no separate 
-agreement specifically applies to the support or maintenance 
-services, then the terms of this Agreement will govern the provision 
-of such support or maintenance services ("Services").  For more 
-information on Novell's current support offerings, see 
-http://www.novell.com/support.
+SUSE has no obligation to provide support or maintenance unless You 
+purchase an offering that expressly includes support or maintenance 
+services. If You make such a purchase and no separate agreement 
+specifically applies to the support or maintenance services, then 
+the terms of this Agreement will govern the provision of such 
+support or maintenance services ("Services"). For more information 
+on SUSE's current support offerings, see http://www.suse.com/support.
 
 OWNERSHIP RIGHTS
 
-No title to or ownership of the Software is transferred to You.  
-Novell and/or its licensors retain all right, title and interest in 
-and to all intellectual property rights in the Software and 
-Services, including any adaptations or copies thereof.  Any 
-materials You receive as part of the Services that are not 
-accompanied by terms expressly superseding this Agreement are 
-Software and governed by this Agreement.  You acquire only a 
-conditional license to use the Software.
+No title to or ownership of the Software is transferred to You. SUSE 
+and/or its licensors retain all right, title and interest in and to 
+all intellectual property rights in the Software and Services, 
+including any adaptations or copies thereof. Any materials You 
+receive as part of the Services that are not accompanied by terms 
+expressly superseding this Agreement are Software and governed by 
+this Agreement. You acquire only a conditional license to use the 
+Software. The Software is licensed (not sold) to You.
 
 LIMITED WARRANTY
 
-For ninety (90) days from Your date of purchase, Novell warrants 
-that (1) any media on which the Software is delivered is free from 
-physical defects; and (2) the Software will substantially conform to 
-the documentation accompanying the  Software. If the defective items 
-are returned to Novell or if You report the nonconformity to Novell 
-within ninety (90) days from the date of purchase, Novell will at 
-its sole discretion either resolve the nonconformity or refund the 
-license fees You paid for the Software. Any unauthorized use or 
-modification of the Software voids this warranty. THE FOREGOING 
-WARRANTY IS YOUR SOLE AND EXCLUSIVE REMEDY AND IS IN LIEU OF ALL 
-OTHER WARRANTIES, EXPRESS OR IMPLIED.  (The foregoing warranty does 
-not apply to Software provided free of charge.  SUCH SOFTWARE IS 
-PROVIDED "AS IS" WITHOUT ANY WARRANTIES OF ANY KIND.)
+Except as agreed to under a separate written agreement with SUSE or 
+as may be set forth in the license terms accompanying a particular 
+component, to the maximum extent permitted under applicable law, the 
+Software is provided and licensed "AS IS" WITHOUT ANY WARRANTIES OF 
+ANY KIND, express or implied, including any implied warranties of 
+merchantability, non-infringement, or fitness for a particular 
+purpose.  For sixty (60) days from the date of delivery, SUSE 
+warrants that any media on which the Software is delivered is free 
+from physical defects under normal use.  If the defective items are 
+returned to SUSE or if You report the nonconformity to SUSE within 
+the sixty (60) day warranty period, SUSE will at its option either 
+replace the media or refund the fees You paid for the media. This 
+warranty extends only to media provided by SUSE.  Any unauthorized 
+use or modification of the Software voids this warranty.
 
-Services.  Novell warrants that any Services purchased will be 
-supplied in a professional manner in accordance with generally 
-accepted industry standards.  This warranty will be effective for 
-ninety (90) days following delivery of the Services.  Upon any 
-breach of this warranty, Novell's only obligation is to either 
-correct the Services so that they comply with this warranty or at 
-its option refund the amount You paid to Novell for the portion of 
-the Services that fail to comply with this warranty.  As files may 
-be altered or damaged in the course of Novell providing technical 
-services, You agree to take appropriate measures to isolate and back 
-up Your systems.
+Other Services. SUSE warrants that any consulting or technical 
+support services purchased absent a separate written agreement for 
+such services will be supplied in a professional manner in 
+accordance with generally accepted industry standards. This warranty 
+will be effective for ninety (90) days following delivery of the 
+Services. Upon any breach of this warranty, SUSE's only obligation 
+is to either correct the Services so that they comply with this 
+warranty or at its option refund the amount You paid to SUSE for the 
+portion of the Services that fail to comply with this warranty. As 
+files may be altered or damaged in the course of SUSE providing 
+technical services, You agree to take appropriate measures to 
+isolate and back up Your systems.
 
 THE SOFTWARE IS NOT DESIGNED, MANUFACTURED OR INTENDED FOR USE OR 
 DISTRIBUTION WITH ON-LINE CONTROL EQUIPMENT IN HAZARDOUS 
@@ -127,145 +148,223 @@ DAMAGE.
 
 THE SOFTWARE IS ONLY COMPATIBLE WITH CERTAIN COMPUTERS AND OPERATING 
 SYSTEMS. THE SOFTWARE IS NOT WARRANTED FOR NON-COMPATIBLE SYSTEMS. 
-Call Novell or Your reseller for information about compatibility.
+Call SUSE or Your reseller for information about compatibility.
 
-Non-Novell Products. The Software may include or be bundled with 
+Non-SUSE Products. The Software may include or be bundled with 
 hardware or other software programs or services licensed or sold by 
-a entity other than Novell. NOVELL DOES NOT WARRANT NON-NOVELL 
-PRODUCTS OR SERVICES. ANY SUCH PRODUCTS  OR SERVICES ARE PROVIDED ON 
-AN "AS IS" BASIS. WARRANTY SERVICE IF ANY FOR NON-NOVELL PRODUCTS IS 
-PROVIDED BY THE PRODUCT LICENSOR IN ACCORDANCE WITH THE APPLICABLE 
-LICENSOR WARRANTY.
+an entity other than SUSE. SUSE DOES NOT WARRANT NON-SUSE PRODUCTS 
+OR SERVICES. ANY SUCH PRODUCTS OR SERVICES ARE PROVIDED ON AN "AS 
+IS" BASIS. WARRANTY SERVICE IF ANY FOR NON-SUSE PRODUCTS IS PROVIDED 
+BY THE PRODUCT LICENSOR IN ACCORDANCE WITH THE APPLICABLE LICENSOR 
+WARRANTY.
 
-EXCEPT AS OTHERWISE RESTRICTED BY LAW, NOVELL DISCLAIMS AND EXCLUDES 
+EXCEPT AS OTHERWISE RESTRICTED BY LAW, SUSE DISCLAIMS AND EXCLUDES 
 ANY AND ALL IMPLIED WARRANTIES INCLUDING ANY WARRANTIES OF 
 MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, OR 
-NON-INFRINGEMENT. NOVELL MAKES NO WARRANTY, REPRESENTATION OR 
-PROMISE NOT EXPRESSLY SET FORTH IN THIS LIMITED WARRANTY. NOVELL 
-DOES NOT WARRANT THAT THE SOFTWARE OR SERVICES WILL SATISFY YOUR 
-REQUIREMENTS OR THAT THE OPERATION OF THE SOFTWARE OR SERVCIES WILL 
-BE UNINTERRUPTED.  Some jurisdictions do not allow certain 
-disclaimers and limitations of warranties, so portions of the above 
-limitations may not apply to You. This limited warranty gives You 
-specific rights and You may also have other rights which vary by 
-state or jurisdiction.
+NON-INFRINGEMENT. SUSE MAKES NO WARRANTY, REPRESENTATION OR PROMISE 
+NOT EXPRESSLY SET FORTH IN THIS LIMITED WARRANTY. SUSE DOES NOT 
+WARRANT THAT THE SOFTWARE OR SERVICES WILL SATISFY YOUR REQUIREMENTS 
+OR THAT THE OPERATION OF THE SOFTWARE OR SERVICES WILL BE 
+UNINTERRUPTED. Some jurisdictions do not allow certain disclaimers 
+and limitations of warranties, so portions of the above limitations 
+may not apply to You. This limited warranty gives You specific 
+rights and You may also have other rights which vary by state or 
+jurisdiction.
 
 LIMITATION OF LIABILITY
 
-(a) Consequential Losses. NEITHER NOVELL NOR ANY OF ITS LICENSORS, 
-SUBSIDIARIES, OR EMPLOYEES WILL IN ANY CASE BE LIABLE FOR ANY 
-SPECIAL, INCIDENTAL, CONSEQUENTIAL, INDIRECT, TORT, ECONOMIC OR 
-PUNITIVE DAMAGES ARISING OUT OF THE USE OF OR INABILITY TO USE THE 
-SOFTWARE OR SERVICES, INCLUDING WITHOUT LIMITATION LOSS OF PROFITS, 
-BUSINESS OR DATA, EVEN IF ADVISED OF THE POSSIBILITY OF THOSE 
-DAMAGES.
-(b) Direct Damages. IN NO EVENT WILL NOVELL'S AGGREGATE LIABILITY 
-FOR DIRECT DAMAGES TO PROPERTY OR PERSON (WHETHER IN ONE INSTANCE OR 
-A SERIES OF INSTANCES) EXCEED 1.25 TIMES THE AMOUNT PAID BY YOU FOR 
-THE SOFTWARE OR SERVICES OUT OF WHICH SUCH CLAIM AROSE [OR $50 
-(U.S.) IF YOU RECEIVED THE SOFTWARE FREE OF CHARGE].  The above 
-exclusions and limitations will not apply to claims relating to 
-death or personal injury. In those jurisdictions that do not allow 
-the exclusion or limitation of damages, Novell's liability shall be 
-limited or excluded to the maximum extent allowed within those 
-jurisdictions.
+(a) Consequential Losses. 
+NEITHER SUSE NOR ANY OF ITS LICENSORS, SUBSIDIARIES, OR EMPLOYEES 
+WILL IN ANY CASE BE LIABLE FOR ANY SPECIAL, INCIDENTAL, 
+CONSEQUENTIAL, INDIRECT, TORT, ECONOMIC OR PUNITIVE DAMAGES ARISING 
+OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE OR SERVICES, 
+INCLUDING WITHOUT LIMITATION LOSS OF PROFITS, BUSINESS OR DATA, EVEN 
+IF ADVISED OF THE POSSIBILITY OF THOSE DAMAGES.
+(b) Direct Damages. 
+IN NO EVENT WILL SUSE'S AGGREGATE LIABILITY FOR DIRECT DAMAGES TO 
+PROPERTY OR PERSON (WHETHER IN ONE INSTANCE OR A SERIES OF 
+INSTANCES) EXCEED 1.25 TIMES THE AMOUNT PAID BY YOU FOR THE SOFTWARE 
+OR SERVICES OUT OF WHICH SUCH CLAIM AROSE [OR $50 (U.S.) IF YOU 
+RECEIVED THE SOFTWARE FREE OF CHARGE]. The above exclusions and 
+limitations will not apply to claims relating to death or personal 
+injury. In those jurisdictions that do not allow the exclusion or 
+limitation of damages, SUSE's liability shall be limited or excluded 
+to the maximum extent allowed within those jurisdictions.
 
 GENERAL TERMS
 
-Term.  This Agreement becomes effective on the date You legally 
-acquire the Software and will automatically terminate if You breach 
-any of its terms.  
+Term. 
+This Agreement becomes effective on the date You legally acquire the 
+Software and will automatically terminate if You breach any of its 
+terms. 
 
-Benchmark Testing.  This benchmark testing restriction applies to 
-You if You are a software developer or licensor or if You are 
-performing testing on the Software at the direction of or on behalf 
-of a software developer or licensor.  You may not, without Novell's 
-prior written consent not to be unreasonably withheld, publish or 
-disclose to any third party the results of any benchmark test of the 
-Software. If You are a licensor of products that are functionally 
-similar to or compete with the Software ("Similar Products"), or are 
-acting on behalf of such a licensor, and You publish or disclose 
-benchmark information on the Software in violation of this 
-restriction, then notwithstanding anything to the contrary in the 
-Similar Product's end user license agreement, and in addition to any 
-other remedies Novell may have, Novell shall have the right to 
-perform benchmark testing on Similar Products and to disclose and 
-publish that benchmark information and You hereby represent that You 
-have authority to grant such right to Novell.
+Verification. 
+SUSE may, upon fifteen (15) days' advance notice and at its expense, 
+conduct an annual audit, during your normal business hours, of your 
+use of the Software and Documentation to verify compliance with this 
+Agreement.  You agree to implement internal safeguards to prevent 
+any unauthorized copying, distribution, installation, or use of, or 
+access to, the Software.  You further agree to keep records 
+sufficient to certify your compliance with this Agreement, and, upon 
+request of SUSE, provide and certify metrics and/or reports based 
+upon such records and accounting both numbers of copies (by product 
+and version) and network architectures as they may reasonably relate 
+to your licensing and deployment of the Software.  You shall provide 
+SUSE or an authorized representative with access to records, 
+hardware and employees in order to perform the audit.  Upon SUSE's 
+or its authorized representative's presentation of their reasonable 
+written commitment(s) to safeguard your confidential information, 
+you shall fully cooperate with such audit and provide any necessary 
+assistance and access to records and computers.  If an audit reveals 
+that you have or at any time have had unlicensed installation, use 
+of, or access to the Software, You will promptly acquire sufficient 
+licenses to cover any shortage.  If a material license shortage of 
+5% or more is found, you must reimburse SUSE for the costs incurred 
+in the audit and acquire the necessary additional licenses within 30 
+days without the benefit of any otherwise applicable discount.  
 
-Open Source.  Nothing in this Agreement shall restrict, limit or 
-otherwise affect any rights or obligations You may have, or 
-conditions to which You may be subject, under any applicable open 
-sources licenses to any open source code contained in the Software.
+Benchmark Testing. 
+This benchmark testing restriction applies to You if You are a 
+software developer or licensor or if You are performing testing on 
+the Software at the direction of or on behalf of a software 
+developer or licensor. You may not, without SUSE's prior written 
+consent not to be unreasonably withheld, publish or disclose to any 
+third party the results of any benchmark test of the Software. If 
+You are a licensor of products that are functionally similar to or 
+compete with the Software ("Similar Products"), or are acting on 
+behalf of such a licensor, and You publish or disclose benchmark 
+information on the Software in violation of this restriction, then 
+notwithstanding anything to the contrary in the Similar Product's 
+end user license agreement, and in addition to any other remedies 
+SUSE may have, SUSE shall have the right to perform benchmark 
+testing on Similar Products and to disclose and publish that 
+benchmark information and You hereby represent that You have 
+authority to grant such right to SUSE.
 
-Transfer.  This Agreement may not be transferred or assigned without 
-the prior written approval of Novell.
+Transfer. 
+This Agreement may not be transferred or assigned without the prior 
+written approval of SUSE.
 
-Law and Jurisdiction.  This Agreement is governed by the laws of the 
-State of Utah, U.S. Any action at law relating to this Agreement may 
-only be brought before the courts of competent jurisdiction of the 
-State of Utah.  If, however, Your country of principal residence is 
-a member state of the European Union or the European Free Trade 
-Association, this Agreement is governed by the laws of that country, 
-and any action at law may only be brought before a court of 
-competent jurisdiction of that country.
+Law and Jurisdiction. 
+This Agreement is governed by the laws of the State of Utah, U.S. 
+Any action at law relating to this Agreement may only be brought 
+before the courts of competent jurisdiction of the State of Utah. 
+If, however, Your country of principal residence is a member state 
+of the European Union or the European Free Trade Association, this 
+Agreement is governed by the laws of that country, and any action at 
+law may only be brought before a court of competent jurisdiction of 
+that country.
 
-Entire Agreement.  This Agreement sets forth the entire 
-understanding and agreement between You and Novell and may be 
-amended or modified only by a written agreement agreed to by You and 
-an authorized representative of Novell.  NO LICENSOR, DISTRIBUTOR, 
-DEALER, RETAILER, RESELLER, SALES PERSON, OR EMPLOYEE IS AUTHORIZED 
-TO MODIFY THIS AGREEMENT OR TO MAKE ANY REPRESENTATION OR PROMISE 
-THAT IS DIFFERENT FROM, OR IN ADDITION TO, THE TERMS OF THIS 
-AGREEMENT.
+Entire Agreement. 
+This Agreement sets forth the entire understanding and agreement 
+between You and SUSE and may be amended or modified only by a 
+written agreement agreed to by You and an authorized representative 
+of SUSE. NO LICENSOR, DISTRIBUTOR, DEALER, RETAILER, RESELLER, SALES 
+PERSON, OR EMPLOYEE IS AUTHORIZED TO MODIFY THIS AGREEMENT OR TO 
+MAKE ANY REPRESENTATION OR PROMISE THAT IS DIFFERENT FROM, OR IN 
+ADDITION TO, THE TERMS OF THIS AGREEMENT.
 
-Waiver.  No waiver of any right under this Agreement will be 
-effective unless in writing, signed by a duly authorized 
-representative of the party to be bound. No waiver of any past or 
-present right arising from any breach or failure to perform will be 
-deemed to be a waiver of any future right arising under this 
-Agreement.
+Waiver. 
+No waiver of any right under this Agreement will be effective unless 
+in writing, signed by a duly authorized representative of the party 
+to be bound. No waiver of any past or present right arising from any 
+breach or failure to perform will be deemed to be a waiver of any 
+future right arising under this Agreement.
 
-Severability.  If any provision in this Agreement is invalid or 
-unenforceable, that provision will be construed, limited, modified 
-or, if necessary, severed, to the extent necessary, to eliminate its 
-invalidity or unenforceability, and the other provisions of this 
-Agreement will remain unaffected.
+Severability. 
+If any provision in this Agreement is invalid or unenforceable, that 
+provision will be construed, limited, modified or, if necessary, 
+severed, to the extent necessary, to eliminate its invalidity or 
+unenforceability, and the other provisions of this Agreement will 
+remain unaffected.
 
-Export Compliance.  Any products or technical information provided 
-under this Agreement may be subject to U.S. export controls and the 
-trade laws of other countries.  The parties agree to comply with all 
-export control regulations and to obtain any required licenses or 
-classification to export, re-export or import deliverables.  The 
-parties agree not to export or re-export to entities on the current 
-U.S. export exclusion lists or to any embargoed or terrorist 
-countries as specified in the U.S. export laws.  The parties will 
-not use deliverables for prohibited nuclear, missile, or chemical 
-biological weaponry end uses.  Please consult the Bureau of Industry 
-and Security web page www.bis.doc.gov before exporting Novell 
-products from the U.S. Please refer to 
-http://www.novell.com/company/legal/ for more information on 
-exporting Novell software.  Upon request, Novell will provide You 
-specific information regarding applicable restrictions.  However, 
-Novell assumes no responsibility for Your failure to obtain any 
+Export Compliance. 
+Any products or technical information provided under this Agreement 
+may be subject to U.S. export controls and the trade laws of other 
+countries. The parties agree to comply with all export control 
+regulations and to obtain any required licenses or classification to 
+export, re-export or import deliverables. The parties agree not to 
+export or re-export to entities on the current U.S. export exclusion 
+lists or to any embargoed or terrorist countries as specified in the 
+U.S. export laws. The parties will not use deliverables for 
+prohibited nuclear, missile, or chemical biological weaponry end 
+uses. Please consult the Bureau of Industry and Security web page 
+www.bis.doc.gov before exporting SUSE products from the U.S. Please 
+refer to http://www.novell.com/company/legal/ for more information 
+on exporting SUSE software. Upon request, SUSE will provide You 
+specific information regarding applicable restrictions. However, 
+SUSE assumes no responsibility for Your failure to obtain any 
 necessary export approvals.
 
-U.S. Government Restricted Rights.  Use, duplication, or disclosure 
-by the U.S. Government is subject to the restrictions in FAR 
-52.227-14 (June 1987) Alternate III (June 1987), FAR 52.227-19 (June 
-1987), or DFARS 252.227-7013(b)(3) (Nov 1995), or applicable 
-successor clauses. 
+U.S. Government Restricted Rights. 
+Use, duplication, or disclosure by the U.S. Government is subject to 
+the restrictions in FAR 52.227-14 (June 1987) Alternate III (June 
+1987), FAR 52.227-19 (June 1987), or DFARS 252.227-7013(b)(3) (Nov 
+1995), or applicable successor clauses. 
 
 Contractor/ Manufacturer is Novell, Inc., 1800 South Novell Place, 
 Provo, Utah 84606.
 
-Other.  The application of the United Nations Convention of 
-Contracts for the International Sale of Goods is expressly excluded.
+Other. 
+The application of the United Nations Convention of Contracts for 
+the International Sale of Goods is expressly excluded.
 
-(c)1993, 2000-2010 Novell, Inc. All Rights Reserved.
-(021111)
+(c)1993, 2000-2012 SUSE or its affiliates.  All Rights Reserved.
+(071612)
 
-Novell, SLES and SUSE are registered trademarks of Novell, Inc. in 
-the United States and other countries. 
+SUSE is a registered trademark of SUSE or its affiliates in the 
+United States and other countries. 
 
 All third party trademarks are property of their respective owners.
+
+
+
+THIRD PARTY ADDENDUM
+
+The Software contains database software licensed by SUSE or its 
+affiliates from Oracle America, Inc. ("Oracle"). For purposes of 
+this addendum, the term "program" refers to the Oracle database 
+software. Oracle requires that You agree to the following terms 
+regarding use of the program. You may only use the Oracle program in 
+conjunction with the SUSE Manager Server with Database Software and 
+not as a general purpose database in support of other applications. 
+You agree to comply with the following:
+
+1) Use of the program is limited to the legal entity that executed 
+the SUSE Manager with Database Software License Agreement.
+2) Use of the program is restricted to the scope of the application 
+package with which You received it and to Your internal business 
+operations. You may permit agents or contractors (including, without 
+limitation, outsourcers) to use the application package on Your 
+behalf. You are responsible for Your agent's, contractor's, 
+outsourcer's, customer's and supplier's use of the application 
+package and compliance with the end user license agreement.
+3) Oracle or its licensor retains all ownership and intellectual 
+property rights to the program.
+4) The following are prohibited: 
+(a) use of the program for rental, timesharing, subscription 
+service, hosting, or outsourcing; 
+(b) the removal or modification of any program markings or any 
+notice of Oracle's or its licensors' proprietary rights; 
+(c) making the programs available in any manner to any third party 
+for use in the third party's business operations (unless such access 
+is expressly permitted for the specific program license); 
+(d) reverse engineering (unless required by law for 
+interoperability), disassembly or decompilation of the programs (the 
+foregoing prohibition includes but is not limited to review of data 
+structures or similar materials produced by programs); and 
+(e) publication of any results of benchmark tests run on the 
+programs.
+
+To the extent permitted by applicable law, Oracle disclaims 
+liability for (a) any damages, whether direct, indirect, incidental, 
+special, punitive or consequential, and (b) any loss of profits, 
+revenue, data or data use, arising from the use of the programs. You 
+agree to permit SUSE to audit Your use of the programs and report 
+the audit results to Oracle or allow Oracle to perform the audit at 
+Your cost. Oracle is a third party beneficiary of this addendum and 
+the end user license agreement (with respect only to the program). 
+The application of the Uniform Computer Information Transactions Act 
+is excluded.
+
+(rev July 2012)
