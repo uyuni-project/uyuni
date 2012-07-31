@@ -236,13 +236,6 @@
 			</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Tools" family="SMP" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-proxy" name="SLES11-SP2-SUSE-Manager-Tools x86_64 Proxy" optional="N" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
-		<products>
-			<product_id name="SUSE-Manager-Proxy">
-				2680
-			</product_id>
-		</products>
-	</channel>
 	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP1" family="SLES-IA" is_signed="Y" label="sles11-sp1-pool-ia64" name="SLES11-SP1-Pool for ia64" optional="N" parent="BASE" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Pool/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
 		<products>
 			<product_id name="SUSE_SLES">

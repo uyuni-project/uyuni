@@ -22,6 +22,7 @@
 	<family default_nodecount="0" label="ATI" name="ATI"/>
 	<family default_nodecount="0" label="SLES-X86-VMWARE" name="SUSE Linux Enterprise Server for VMware"/>
 	<family default_nodecount="0" label="13319" name="SUSE Linux Enterprise Real Time"/>
+	<family default_nodecount="0" label="SLE-HAE-GEO" name="GEO Clustering for SLE HA Extension"/>
 	<family default_nodecount="0" label="18962" name="Novell ZENworks Configuration Management"/>
 	<family default_nodecount="0" label="AiO" name="SUSE Linux Enterprise Server for SAP"/>
 	<family default_nodecount="0" label="SLES-PPC" name="SUSE Linux Enterprise Server (PPC)"/>
@@ -31,6 +32,7 @@
 	<family default_nodecount="0" label="STUDIOONSITE" name="SUSE Studio Onsite"/>
 	<family default_nodecount="0" label="SLMS" name="SUSE Lifecycle Management Server"/>
 	<family default_nodecount="0" label="SLES-Z" name="SUSE Linux Enterprise Server (Z-Series)"/>
+	<family default_nodecount="0" label="RES-HA" name="SUSE Linux Enterprise RedHat Expanded Support HA"/>
 	<family default_nodecount="0" label="WebYast-SLMS" name="WebYaST for SUSE Appliance Toolkit"/>
 	<family default_nodecount="0" label="SLE-HAE-IA" name="SUSE Linux Enterprise High Availability Extension (Itanium)"/>
 	<family default_nodecount="0" label="WEBYAST" name="WebYaST for SUSE Linux Enterprise"/>
