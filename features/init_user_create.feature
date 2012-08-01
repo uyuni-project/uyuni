@@ -15,6 +15,7 @@ Feature: Create initial users
     And I enter "admin" as "login"
     And I enter "admin" as "desiredpassword"
     And I enter "admin" as "desiredpasswordConfirm"
+    And I select "Mr." from "prefix"
     And I enter "Admin" as "firstNames"
     And I enter "Admin" as "lastName"
     And I enter "galaxy-noise@suse.de" as "email"
