@@ -12,5 +12,3 @@
 
 ALTER TABLE rhnChannel ADD update_tag varchar2(20);
 
-show errors
-
