@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Aug  2 17:37:53 CEST 2012 - mc@suse.de
+
+- fix another bug in schema upgrade files (bnc#774097)
+
+-------------------------------------------------------------------
 Tue Jun  5 12:11:22 CEST 2012 - mc@suse.de
 
 - fix schema upgrade
