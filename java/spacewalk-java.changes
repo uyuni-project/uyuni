@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug  2 16:22:37 CEST 2012 - ug@suse.de
+
+-  kernel options in the web UI are not added to the xen distri
+   (bnc#764679)
+
+-------------------------------------------------------------------
 Thu Aug  2 10:22:10 CEST 2012 - jrenner@suse.de
 
 - Construct GMT ms value if DB does not store timezone (bnc#773767)
