@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug 02 16:30:03 CEST 2012 - mc@suse.de
+
+- version 1.7.2.5-1
+- Updated yum info messages to play nice with Subscription Management
+
+-------------------------------------------------------------------
 Mon Jul 16 15:26:22 CEST 2012 - ug@suse.de
 
 - version 1.7.2.4-1
