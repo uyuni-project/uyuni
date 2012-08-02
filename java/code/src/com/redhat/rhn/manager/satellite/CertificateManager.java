@@ -32,6 +32,9 @@ public class CertificateManager extends BaseManager {
     public static final int GRACE_PERIOD_IN_DAYS = 7;
     private static final long MILLISECONDS_IN_DAY =  86400000;
 
+    // ALWAYS_VALID means no grace period either
+    public static final boolean CERT_ALWAYS_VALID = true;
+
     /**
      * Default constructor
      */
@@ -54,7 +57,10 @@ public class CertificateManager extends BaseManager {
      */
     public boolean isSatelliteCertExpired() {
         Date now = Calendar.getInstance().getTime();
-        return now.after(getGracePeriodEndDate());
+        boolean ret = false;
+        if (!CERT_ALWAYS_VALID)
+            ret = now.after(getGracePeriodEndDate());
+        return ret;
     }
 
     /**
@@ -65,8 +71,11 @@ public class CertificateManager extends BaseManager {
      */
     public boolean isSatelliteCertInGracePeriod() {
         Date now = Calendar.getInstance().getTime();
-        return now.after(getGracePeriodBeginDate()) &&
-               now.before(getGracePeriodEndDate());
+        boolean ret = false;
+        if (!CERT_ALWAYS_VALID)
+            ret = now.after(getGracePeriodBeginDate()) &&
+                  now.before(getGracePeriodEndDate());
+        return ret;
     }
 
     protected Date getGracePeriodBeginDate() {
