@@ -151,6 +151,7 @@ fi
 %dir /usr/share/rhn/search
 %dir /usr/share/rhn/search/lib
 %attr(770,root,www) %dir /var/log/rhn
+%doc licenses/*
 
 
 %changelog
