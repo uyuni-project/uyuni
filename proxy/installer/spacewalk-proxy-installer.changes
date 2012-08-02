@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Aug 02 16:22:54 CEST 2012 - mc@suse.de
+
+- version 1.7.6.6-1
+- make sure username/password is correct
+- reuse already assigned variable
+
+-------------------------------------------------------------------
 Mon Jul 16 15:21:43 CEST 2012 - ug@suse.de
 
 - version 1.7.6.5-1
