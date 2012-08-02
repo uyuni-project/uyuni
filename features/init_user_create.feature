@@ -47,6 +47,7 @@ Feature: Create initial users
      And I enter "testing" as "login"
      And I enter "testing" as "desiredpassword"
      And I enter "testing" as "desiredpasswordConfirm"
+     And I select "Mr." from "prefix"
      And I enter "Test" as "firstNames"
      And I enter "User" as "lastName"
      And I enter "galaxy-noise@suse.de" as "email"
