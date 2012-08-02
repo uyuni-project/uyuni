@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Aug 02 16:34:21 CEST 2012 - mc@suse.de
+
+- version 1.7.38.15-1
+- Truncating date string and therefore preventing ORA-01830
+- skip ignored errata also in the second step (bnc#773108)
+- fix detection of old suse style patches (bnc#773108)
+- Fixing placeholder syntax in sql statement
+
+-------------------------------------------------------------------
 Thu Jul 19 14:39:32 CEST 2012 - ug@suse.de
 
 - version 1.7.38.14-1
