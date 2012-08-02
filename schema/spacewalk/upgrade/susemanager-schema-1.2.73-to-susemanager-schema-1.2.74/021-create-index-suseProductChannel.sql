@@ -23,9 +23,9 @@ begin
         insert into suseproductchannel (product_id, channel_id) values (ps.product_id, ps.channel_id);
 
     end loop;
-
+    commit;
 end;
-
+/
 
 CREATE UNIQUE INDEX suse_prd_chan_uq
     ON suseProductChannel (product_id, channel_id)
