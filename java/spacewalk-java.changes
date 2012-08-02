@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Aug  2 10:22:10 CEST 2012 - jrenner@suse.de
+
+- Construct GMT ms value if DB does not store timezone (bnc#773767)
+
+-------------------------------------------------------------------
 Thu Jun 28 16:27:23 CEST 2012 - mc@suse.de
 
 - ignore 127.0.0.2 IP addresses (bnc#768771)
