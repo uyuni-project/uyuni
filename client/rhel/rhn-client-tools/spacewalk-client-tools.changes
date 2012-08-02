@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug 02 16:26:33 CEST 2012 - mc@suse.de
+
+- version 1.7.14.9-1
+- Make multi-line lists in conf files parse correctly
+
+-------------------------------------------------------------------
 Mon Jul 16 15:34:43 CEST 2012 - ug@suse.de
 
 - version 1.7.14.8-1
