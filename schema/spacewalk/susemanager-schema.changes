@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Aug 02 16:53:31 CEST 2012 - mc@suse.de
+
+- version 1.7.56.13-1
+- fix schema upgrade scripts
+- Properly name the primary index constraint/index for rhnActionImageDeploy.
+- provide schema migration to full version
+- check if cleanup-data-bunch exists and create it if not (bnc#772620)
+- Preventing whole SQL string from being NULL
+- If by accident pg_dblink_exec is given NULL string (e.g concatenation of
+  string and NULL in pgsql) it raises an error.
+
+-------------------------------------------------------------------
 Mon Jul 16 15:23:34 CEST 2012 - ug@suse.de
 
 - version 1.7.56.12-1
