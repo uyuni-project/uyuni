@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Aug 02 16:55:17 CEST 2012 - mc@suse.de
+
+- version 1.7.11-1
+- fix DB installation screen hides embedded db option on small windows
+  (bnc#773062)
+- put migrate_res() into NCCSync class (bnc#773244)
+- ensure that oracle is insserv'd
+- fix info displayed in error window (bnc#771989)
+- remove runlevel 4 from default start (bnc#771989)
+
+-------------------------------------------------------------------
 Tue Jul 24 14:12:15 CEST 2012 - mantel@suse.de
 
 - ensure that oracle is insserv'd
