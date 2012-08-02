@@ -1,5 +1,5 @@
 Name:           susemanager-branding-non-oss
-Version:        1.7.3
+Version:        1.7.4
 Release:        1%{?dist}
 Summary:        SUSE Manager non-oss branding specific files
 Group:          Applications/System
