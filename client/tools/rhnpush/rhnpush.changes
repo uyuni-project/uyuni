@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Aug 02 16:23:54 CEST 2012 - mc@suse.de
+
+- version 5.5.42.7-1
+- code cleanup
+- fixed man page
+- removed dead --no-cache option
+- fixed --no-session-caching option
+
+-------------------------------------------------------------------
 Mon Jul 16 15:17:44 CEST 2012 - ug@suse.de
 
 - version 5.5.42.6-1
