@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Aug  2 15:36:12 CEST 2012 - mc@suse.de
+
+- fix prevent 'notifying clients' starvation (bnc#772584)
+
+-------------------------------------------------------------------
 Thu Mar 22 16:14:48 CET 2012 - mc@suse.de
 
 - osa-dispatcher: rotate logfiles as user www 
