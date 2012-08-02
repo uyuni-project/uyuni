@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Aug 02 16:29:05 CEST 2012 - mc@suse.de
+
+- version 1.7.3.7-1
+- Add license files for Apache and GPL (bnc#764868)
+- Fix license to "GPL-2.0 and Apache-2.0" (bnc#764868)
+
+-------------------------------------------------------------------
 Mon Jul 16 15:22:43 CEST 2012 - ug@suse.de
 
 - version 1.7.3.6-1
