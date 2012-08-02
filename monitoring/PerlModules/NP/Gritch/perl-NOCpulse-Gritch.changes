@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Aug 02 16:32:55 CEST 2012 - mc@suse.de
+
+- version 1.27.9.3-1
+- Mail::Send does not handle From as special case, need to set with
+  set.
+
+-------------------------------------------------------------------
 Mon May 14 10:58:28 CEST 2012 - mc@suse.de
 
 - version 1.27.9.2-1
