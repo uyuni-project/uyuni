@@ -24,8 +24,8 @@
     map<string,string> settings	= $[
         "DB_BACKEND"            : "postgresql",
 	"MANAGER_DB_NAME"	: "",
-	"MANAGER_DB_HOST"	: "",
-	"MANAGER_DB_PORT"	: "",
+	"MANAGER_DB_HOST"	: "localhost",
+	"MANAGER_DB_PORT"	: "5432",
 	"MANAGER_DB_PROTOCOL"	: "TCP",
 	"MANAGER_USER"		: "susemanager",
 	"MANAGER_PASS"		: "",
