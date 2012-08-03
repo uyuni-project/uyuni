@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Aug 03 18:28:37 CEST 2012 - mc@suse.de
+
+- version 1.7.9.9-1
+- update tomcat java opts with Parameters.MAX_COUNT
+- added tftp server options to cobbler modules.conf file
+
+-------------------------------------------------------------------
 Thu Aug 02 16:31:17 CEST 2012 - mc@suse.de
 
 - version 1.7.9.8-1
