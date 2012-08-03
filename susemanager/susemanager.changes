@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Aug 03 18:45:18 CEST 2012 - mc@suse.de
+
+- version 1.7.12-1
+- call smdba system-check and enable the db archive mode
+- do not set the port
+- preselect embedded database
+
+-------------------------------------------------------------------
 Thu Aug 02 16:55:17 CEST 2012 - mc@suse.de
 
 - version 1.7.11-1
