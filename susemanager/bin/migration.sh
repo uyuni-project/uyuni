@@ -619,6 +619,7 @@ if [ "$DO_MIGRATION" = "1" ]; then
 fi
 
 if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
+    /usr/bin/smdba system-check
     setup_dobby
     # Finaly call mgr-ncc-sync
     /usr/sbin/mgr-ncc-sync
