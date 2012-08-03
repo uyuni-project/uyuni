@@ -144,6 +144,9 @@ if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
             sed -i "s@^LD_LIBRARY_PATH.*@LD_LIBRARY_PATH=$NEW_LD_PATH@" /etc/tomcat6/tomcat6.conf
         fi
     fi
+    if ! grep -F '\-Dorg.apache.tomcat.util.http.Parameters.MAX_COUNT' /etc/tomcat6/tomcat6.conf > /dev/null; then
+        sed -i 's/-XX:MaxNewSize=256/-Dorg.apache.tomcat.util.http.Parameters.MAX_COUNT=1024 -XX:MaxNewSize=256/' /etc/tomcat6/tomcat6.conf
+    fi
     if ! grep '\[tftpd\]' /etc/cobbler/modules.conf > /dev/null 2>&1; then
         echo                                                >> /etc/cobbler/modules.conf
         echo '# added by susemanager-setup RPM post-script' >> /etc/cobbler/modules.conf
