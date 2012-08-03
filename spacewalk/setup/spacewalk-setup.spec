@@ -144,6 +144,12 @@ if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
             sed -i "s@^LD_LIBRARY_PATH.*@LD_LIBRARY_PATH=$NEW_LD_PATH@" /etc/tomcat6/tomcat6.conf
         fi
     fi
+    if ! grep '\[tftpd\]' /etc/cobbler/modules.conf > /dev/null 2>&1; then
+        echo                                                >> /etc/cobbler/modules.conf
+        echo '# added by susemanager-setup RPM post-script' >> /etc/cobbler/modules.conf
+        echo '[tftpd]'                                      >> /etc/cobbler/modules.conf
+        echo 'module = manage_in_tftpd'                     >> /etc/cobbler/modules.conf
+    fi
 fi
 
 %check
