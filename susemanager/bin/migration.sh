@@ -253,10 +253,10 @@ dobby.oracle_user = oracle
 }
 
 setup_db_postgres() {
-    if ! chkconfig -c postgresql91 ; then
-        insserv postgresql91
+    if ! chkconfig -c postgresql ; then
+        insserv postgresql
     fi
-    rcpostgresql91 start
+    rcpostgresql start
     su - postgres -c "createdb $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
     # "createlang plpgsql $MANAGER_DB_NAME" not needed on SUSE. plpgsql is already enabled
 
@@ -271,7 +271,7 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
       mv /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.orig
       /usr/bin/pgtune -T Mixed -i /var/lib/pgsql/data/postgresql.conf.orig -o /var/lib/pgsql/data/postgresql.conf
     fi
-    rcpostgresql91 restart
+    rcpostgresql restart
 }
 
 setup_spacewalk() {
