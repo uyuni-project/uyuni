@@ -619,7 +619,13 @@ if [ "$DO_MIGRATION" = "1" ]; then
 fi
 
 if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
-    /usr/bin/smdba system-check
+    if [ "$LOCAL_DB" != "0" ]; then 
+        if [ "$DB_BACKEND" = "oracle" ]; then
+            /usr/bin/smdba system-check
+        elif ["$DB_BACKEND" = "postgresql" ]; then
+            /usr/bin/smdba system-check autotuning
+        fi
+    fi
     setup_dobby
     # Finaly call mgr-ncc-sync
     /usr/sbin/mgr-ncc-sync
