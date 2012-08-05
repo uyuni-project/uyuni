@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Sun Aug 05 17:32:19 CEST 2012 - mc@suse.de
+
+- version 1.7.13-1
+- call smdba only with local db
+- do autotuning with postgres DB backend
+- postgresql init script has the old name again
+
+-------------------------------------------------------------------
 Fri Aug 03 18:45:18 CEST 2012 - mc@suse.de
 
 - version 1.7.12-1
