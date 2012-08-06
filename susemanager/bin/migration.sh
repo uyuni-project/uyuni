@@ -622,7 +622,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     if [ "$LOCAL_DB" != "0" ]; then 
         if [ "$DB_BACKEND" = "oracle" ]; then
             /usr/bin/smdba system-check
-        elif ["$DB_BACKEND" = "postgresql" ]; then
+        elif [ "$DB_BACKEND" = "postgresql" ]; then
             /usr/bin/smdba system-check autotuning
         fi
     fi
