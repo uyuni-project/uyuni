@@ -1,6 +1,7 @@
 -------------------------------------------------------------------
 Mon Aug  6 09:47:02 CEST 2012 - mc@suse.de
 
+- version 1.7.56.13-1
 - add schema upgrade for SUSE Manager 1.7 Beta3 to RC1
 - add schema upgrade for SUSE Manager 1.7 RC1 to GMC
 
