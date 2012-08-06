@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Aug 06 15:35:09 CEST 2012 - mc@suse.de
+
+- version 1.7.14-1
+- changed SERVICE_NAME to SID in tnsnames.ora file
+- fix syntax error in bash script
+
+-------------------------------------------------------------------
 Sun Aug 05 17:32:19 CEST 2012 - mc@suse.de
 
 - version 1.7.13-1
