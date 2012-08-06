@@ -1,7 +1,12 @@
 -------------------------------------------------------------------
+Mon Aug  6 09:47:02 CEST 2012 - mc@suse.de
+
+- add schema upgrade for SUSE Manager 1.7 Beta3 to RC1
+- add schema upgrade for SUSE Manager 1.7 RC1 to GMC
+
+-------------------------------------------------------------------
 Thu Aug 02 16:53:31 CEST 2012 - mc@suse.de
 
-- version 1.7.56.13-1
 - fix schema upgrade scripts
 - Properly name the primary index constraint/index for rhnActionImageDeploy.
 - provide schema migration to full version
