@@ -140,6 +140,8 @@ If you use the local database, set a user name and a password for the SUSE Manag
     foreach (string key, string value, local_db, {
 	UI::ChangeWidget (`id (key), `Enabled, settings["MANAGER_DB_HOST"]:"" != "localhost");
     });
+    UI::ChangeWidget (`id ("MANAGER_DB_PORT"), `Enabled, settings["MANAGER_DB_HOST"]:"" != "localhost");
+    UI::ChangeWidget (`id ("DB_BACKEND"), `Enabled, settings["MANAGER_DB_HOST"]:"" != "localhost");
 
     while (true)
     {
