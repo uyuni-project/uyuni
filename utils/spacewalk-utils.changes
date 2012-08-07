@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 07 16:41:16 CEST 2012 - mc@suse.de
+
+- version 1.7.15.7-1
+- prevent spacewalk-hostname-rename to fail with an IPv6 address
+
+-------------------------------------------------------------------
 Mon Jun 25 10:24:30 CEST 2012 - mc@suse.de
 
 - version 1.7.15.6-1
