@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Aug 10 15:55:06 CEST 2012 - mc@suse.de
+
+- version 1.7.0.4-1
+- use FQDN as default hostname
+- use IPv6 only, if a global IPv6 address is available
+- generate a random password for jabberd
+
+-------------------------------------------------------------------
 Thu Jun 21 11:33:04 CEST 2012 - jrenner@suse.de
 
 - version 1.7.0.3-1
