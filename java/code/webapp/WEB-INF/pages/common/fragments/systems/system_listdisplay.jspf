@@ -45,7 +45,7 @@
 		</rl:column>
 		
 		
-		<c:if test = "${empty noUpdates} and !${nonCompliantMode}">
+		<c:if test = "${empty noUpdates and empty nonCompliantMode}">
 		<!--Updates Column -->
 		<rl:column sortable="false"
 				   bound="false"
@@ -56,12 +56,12 @@
 		</rl:column>		
 		</c:if>	
 		
-		<c:if test = "${empty noMonitoring} and !${nonCompliantMode}">
+		<c:if test = "${empty noMonitoring and empty nonCompliantMode}">
 		<!-- Health Column -->
     <%@ include file="monitoring_status_systems.jspf" %>
 		</c:if>
 
-		<c:if test = "${empty noErrata} and !${nonCompliantMode}">
+		<c:if test = "${empty noErrata and empty nonCompliantMode}">
 		<!-- errata Column -->
 		<rl:column sortable="false"
 				   bound="false"
@@ -79,7 +79,7 @@
 		</rl:column>
 	    </c:if>
 	    
-		<c:if test = "${empty noPackages} and !${nonCompliantMode}">
+		<c:if test = "${empty noPackages and empty nonCompliantMode}">
 		<!-- Packages Column -->
 		<rl:column sortable="false"
 				   bound="false"
@@ -108,7 +108,7 @@
 		</rl:column>
 		</c:if>
 
-		<c:if test = "${empty noConfigFiles} and !${nonCompliantMode}">
+		<c:if test = "${empty noConfigFiles and empty nonCompliantMode}">
 			<rl:column sortable="false"
 				   bound="false"
 				   headerkey="systemlist.jsp.configfiles"
@@ -137,7 +137,7 @@
            <%@ include file="/WEB-INF/pages/common/fragments/channel/channel_list_fragment.jspf" %>
 		</rl:column>
 		
-		<c:if test="!${nonCompliantMode}">
+		<c:if test="${empty nonCompliantMode}">
 		<!-- Entitlement Column -->
 		<rl:column sortable="false"
 				   bound="false"
