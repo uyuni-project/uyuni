@@ -52,6 +52,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/test_config_channel.feature
                      features/openscap_audit.feature
                      features/ncc-sync-channels.feature
+                     features/systemspage2.feature
                      features/xmlrpc_system.feature
                      features/delete_system_profile.feature
                      features/delete_config_channel.feature

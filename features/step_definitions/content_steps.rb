@@ -116,3 +116,6 @@ When /^I check "([^"]*)" in the list$/ do |arg1|
   end
 end
 
+Then /^The table should have a column named "([^"]+)"$/ do |arg1|
+  find(:xpath, "//form/table/thead[.//th[contains(.,'#{arg1}')]] | //form/div/table/thead[.//th[contains(.,'#{arg1}')]]")
+end
