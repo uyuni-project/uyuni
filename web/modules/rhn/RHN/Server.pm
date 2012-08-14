@@ -491,8 +491,9 @@ sub render {
   # sigh.  there has to be an easier way to filter out ansi control codes...
   $output->{OUTPUT} =~ s{\x1B\[(\d+[ABCDG]|[suK]|2J|(\d+;)*\d+m|=\d+[hl])}{}gism;
 
+  my $script = pack("(H2)*", (substr($action->script_script, 1) =~ m/../g));
   $ret->{server_event_details} .=
-    sprintf(<<EOQ, $run_as, $action->script_timeout || 0, PXT::HTML->htmlify_text($action->script_script));
+    sprintf(<<EOQ, $run_as, $action->script_timeout || 0, PXT::HTML->htmlify_text($script));
 <br/><br/>
 Run as: <strong>%s</strong><br/>
 Timeout: <strong>%d</strong> seconds<br/><br/>
