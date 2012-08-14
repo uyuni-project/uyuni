@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Aug 14 11:31:32 CEST 2012 - mc@suse.de
+
+- version 1.7.0.5-1
+- osad dispatcher password moved from rhn.conf to DB.
+  We have to delete the jabberd database
+
+-------------------------------------------------------------------
 Fri Aug 10 15:55:06 CEST 2012 - mc@suse.de
 
 - version 1.7.0.4-1
