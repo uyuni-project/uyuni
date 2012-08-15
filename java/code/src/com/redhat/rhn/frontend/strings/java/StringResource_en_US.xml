@@ -7853,6 +7853,14 @@ Follow this url to see the full list of inactive systems:
           <source>MAC Addresses must be unique. This MAC Address has already been recorded. Please choose a different MAC Address.</source>
       </trans-unit>
 
+       <trans-unit id="frontend.actions.systems.virt.duplicateipaddressvalue">
+          <source>IP Addresses must be unique. This IP Address has already been recorded. Please choose a different IP Address.</source>
+      </trans-unit>
+
+       <trans-unit id="frontend.actions.systems.virt.invalidregexp">
+          <source>Guest name can only contain alphanumeric characters, hyphens ('-'), periods ('.') and underscores ('_')</source>
+      </trans-unit>
+
        <trans-unit id="frontend.actions.channels.manager.add.viewChannels">
           <source>View Associated Channels</source>
       </trans-unit>
