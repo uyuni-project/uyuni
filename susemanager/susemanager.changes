@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 15 14:42:17 CEST 2012 - mantel@suse.de
+
+- check for already completed setup only when appropriate (eg. not
+  when migration.sh was called with "-h" for help)
+
+-------------------------------------------------------------------
 Tue Aug 07 16:42:03 CEST 2012 - mc@suse.de
 
 - version 1.7.15-1

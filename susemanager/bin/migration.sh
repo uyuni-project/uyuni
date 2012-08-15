@@ -541,11 +541,6 @@ do_setup() {
     setup_spacewalk
 }
 
-if [ -f $MANAGER_COMPLETE ]; then
-    echo "SUSE Manager is already set up. Exit."
-    exit 1
-fi
-
 for p in $@; do
     if [ "$LOGFILE" = "1" ]; then
         LOGFILE=$p
@@ -600,6 +595,11 @@ fi
 wait_step
 
 if [ "$DO_SETUP" = "1" ]; then
+    if [ -f $MANAGER_COMPLETE ]; then
+	echo "SUSE Manager is already set up. Exit."
+	exit 1
+    fi
+
     do_setup
 
     # rename the default org
@@ -607,6 +607,8 @@ if [ "$DO_SETUP" = "1" ]; then
     echo "COMMIT;" >> /tmp/changeorg.sql
     /usr/bin/spacewalk-sql --select-mode-direct /tmp/changeorg.sql
     rm /tmp/changeorg.sql
+
+    echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
 fi
 wait_step
 
@@ -630,7 +632,5 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     # Finaly call mgr-ncc-sync
     /usr/sbin/mgr-ncc-sync
 fi
-
-echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
 
 # vim: set expandtab:
