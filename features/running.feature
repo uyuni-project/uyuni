@@ -29,4 +29,4 @@ Feature: The host is running
     When I go to the home page
     And I follow "Copyright Notice"
     And I follow "SUSE MANAGER LICENSE AGREEMENT"
-    Then I should see a "SUSE(R) End User License Agreement" text
+    Then I should see a "SUSE Manager License Agreement" text
