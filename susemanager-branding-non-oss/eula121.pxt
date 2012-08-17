@@ -6,8 +6,8 @@
   <grail-canvas-template base="/templates/c.pxt" mode="main_canvas">
   <h1><img src="/img/rhn-icon-info.gif" alt="information" />SUSE Manager License Agreement</h1>
 <p>
-SUSE(R) Manager Server
-SUSE Manager Server with Database
+SUSE(R) Manager
+</p><p>
 SUSE Software License Agreement
 </p><p>
 PLEASE READ THIS AGREEMENT CAREFULLY. BY PURCHASING, INSTALLING 

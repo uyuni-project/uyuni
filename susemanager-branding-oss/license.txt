@@ -1,5 +1,4 @@
-SUSE(R) Manager Server
-SUSE Manager Server with Database
+SUSE(R) Manager
 SUSE Software License Agreement
 
 PLEASE READ THIS AGREEMENT CAREFULLY. BY PURCHASING, INSTALLING 
