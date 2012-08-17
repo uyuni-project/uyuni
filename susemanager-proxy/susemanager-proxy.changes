@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Aug 17 14:25:35 CEST 2012 - mc@suse.de
+
+- version 1.7.5-1
+- Say only SUSE Manager in license to catch Server as well as Proxy
+  (bnc#776353)
+
+-------------------------------------------------------------------
 Thu Aug 02 13:19:22 CEST 2012 - mc@suse.de
 
 - version 1.7.4-1
