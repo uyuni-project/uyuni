@@ -25,6 +25,7 @@ PreReq:         pwdutils %fillup_prereq %insserv_prereq
 BuildRequires:  sysconfig
 %else
 Requires:       openssh-server
+Requires(post): /usr/sbin/semanage, /sbin/restorecon
 %endif
 BuildRequires:  pam-devel
 Obsoletes:      rhnmd.i386 < 5.3.0-5
@@ -32,7 +33,6 @@ Obsoletes:      rhnmd.x86_64 < 5.3.0-5
 Provides:       rhnmd.i386 = %{version}
 Provides:       rhnmd.x86_64 = %{version}
 
-Requires(post): /usr/sbin/semanage, /sbin/restorecon
 
 %description
 rhnmd enables secure ssh-based communication between the monitoring
@@ -114,11 +114,11 @@ if [ ! -f %{identity} ]
 then
     /sbin/runuser -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f %{identity}" - %{np_name}
 fi
-%endif
-/sbin/chkconfig --add rhnmd
 /usr/sbin/semanage fcontext -a -t sshd_key_t '/var/lib/nocpulse/\.ssh/nocpulse-identity' || :
 /usr/sbin/semanage fcontext -a -t ssh_home_t '/var/lib/nocpulse/\.ssh/authorized_keys' || :
 /sbin/restorecon -rvv /var/lib/nocpulse || :
+%endif
+/sbin/chkconfig --add rhnmd
 
 %preun
 if [ $1 = 0 ]; then
