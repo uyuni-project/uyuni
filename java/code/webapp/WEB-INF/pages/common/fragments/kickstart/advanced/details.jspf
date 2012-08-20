@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
+<%@ include file="/WEB-INF/pages/common/fragments/kickstartDetailsPage.jspf" %>
 	<c:choose>
 	<c:when test="${empty requestScope.invalid}">
   <html:form method="post"
@@ -77,22 +78,30 @@
 		  					arg0 = "${rhn:localize('kickstart.advanced.jsp.uploadtab')}"
 		  					arg1 = "${rhn:localize(requestScope.uploadKey)}"
 		  					/></rhn:tooltip>
+<%-- Moved the File uploader over to this spot to make the page less confusing. (Eugene T.)--%>
+	    <hr />
+	      <p><html:file property="fileUpload" size="30"/></p>
+	      <p><html:submit property="dispatch">
+        		<bean:message key="${requestScope.uploadKey}"/>
+    		</html:submit></p>
+	    <hr />
+<%-- End of MOD --%>
             <rhn:tooltip><bean:message key="kickstart.advanced.filedetails.jsp.tip.copypaste"/></rhn:tooltip>
 		  </td>
 		</tr>
        </table>
   		<div align="right">
     		<hr />
-    		<html:submit property="dispatch">
+    		<html:submit styleId="autoinstallationDetailsUpdateButton" property="dispatch">
         		<bean:message key="${param.action_key}"/>
     		</html:submit>
   		</div>
-
+<%-- Old uploader location >>
   		<table class="details">
     		<tr>
       			<th><bean:message key="kickstart.advanced.jsp.uploadtab"/></th>
       			<td>
-      			  <html:file property="fileUpload" size="30"/><br />
+      			  <br />
       			</td>
 		</tr>
   		</table>
@@ -102,6 +111,7 @@
         		<bean:message key="${requestScope.uploadKey}"/>
     		</html:submit>
   		</div>
+--%>
 		<rhn:submitted/>
 		<c:if test="${not empty param.ksid}">
 			<input type="hidden" name="ksid" value="${param.ksid}"/>
