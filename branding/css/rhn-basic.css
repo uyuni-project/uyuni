@@ -490,6 +490,13 @@ TABLE.details TD.csv-download
 	background: #FFFFFF url(/img/minibutton-shade.png) repeat-x 50% 100%;
 	text-decoration: none !important;
 }
+.button:disabled, INPUT[type=button]:disabled, INPUT[type=submit]:disabled, .csv-download:disabled
+{
+	border: 1px solid #AAA !important;
+	color: #999 !important;
+	background: #EEE url() repeat-x 50% 100%;
+	cursor: default;
+}
 INPUT[name=url]
 {
 	min-width: 60%;
