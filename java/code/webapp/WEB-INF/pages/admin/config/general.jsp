@@ -89,7 +89,7 @@
             <html:checkbox property="web|ssl_available" styleId="ssl_available" />
         </td>
     </tr>
-    <tr>
+    <tr style="display: none;">
         <th>
             <label for="disconnected"><bean:message key="general.jsp.disconnected"/></label>
         </th>
