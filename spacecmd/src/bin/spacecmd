@@ -116,9 +116,12 @@ if __name__ == '__main__':
     if len(args):
         try:
             # rebuild the command and quote all arguments to be safe
+            # except for help command
             command = args[0]
 
-            if len(args) > 1:
+            if command == 'help':
+                command = ' '.join(args)
+            elif len(args) > 1:
                 command += ' %s' % ' '.join("'%s'" % s for s in args[1:])
 
             # run the command
