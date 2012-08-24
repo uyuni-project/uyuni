@@ -28,7 +28,9 @@ IMG#rhnLogo
 }
 #utility A
 {
-	color: #C6DEAE;
+/* 	color: #C6DEAE; */
+	color: #E9F8D5;
+	text-shadow: rgba(0, 0, 0, 0.105469) 1px 1px 1px;
 }
 #utilityLinks
 {
@@ -62,13 +64,15 @@ IMG#rhnLogo
 {
 	margin: 0;
 	display: block;
-	color: #C6DEAE;
+	color: #3B591A;
+	text-shadow: 0 1px 0px rgba(255, 255, 255, 0.4);
+/* 	color: #C6DEAE; */
 }
 #utilityAccount SPAN.label
 {
-	font-size: 0.8em;
+/* 	font-size: 0.8em; */
 	font-weight: normal;
-	color: #000000;
+/* 	color: #000000; */
 }
 #utilityAccount P A, #utilityAccount P A:link
 {

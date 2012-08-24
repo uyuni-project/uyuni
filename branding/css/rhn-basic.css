@@ -32,10 +32,17 @@ Including the site-wide font set*/
 }
 #top-wrap
 {
-	background: #83B354;
+/* 	background: #83B354; */
 	/* url(/img/bg-header.png) no-repeat 50% 41px;*/
 	width: 100%;
 	min-width: 80em;
+	background-color: #71AB32;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(1px,#7FBD3A),color-stop(2px, #C1D99D),color-stop(2px, #7FBD3A),color-stop(98%, #649A2A),color-stop(100%, #546742));
+	background-image: -webkit-linear-gradient(top, #7FBD3A 1px,#C1D99D 2px,#7FBD3A 2px,#649A2A 98%,#546742);
+	background-image: -moz-linear-gradient(top, #7FBD3A 1px,#C1D99D 2px,#7FBD3A 2px,#649A2A 98%,#546742);
+	background-image: -ms-linear-gradient(top, #7FBD3A 1px,#C1D99D 2px,#7FBD3A 2px,#649A2A 98%,#546742);
+	background-image: -o-linear-gradient(top, #7FBD3A 1px,#C1D99D 2px,#7FBD3A 2px,#649A2A 98%,#546742);
+	background-image: linear-gradient(top, #7FBD3A 1px,#C1D99D 2px,#7FBD3A 2px,#649A2A 98%,#546742);
 }
 #bottom-wrap
 {

@@ -56,8 +56,8 @@ PRE CODE EM, PRE CODE SPAN, PRE CODE CODE
 }
 .note TABLE, .tip TABLE, .important TABLE, .caution TABLE, .warning TABLE
 {
-	background-color: #FFFFFF;
-	color: #444;
+/* 	background-color: #FFFFFF; */
+/* 	color: #444; */
 }
 .note .guibutton, .note .keycap, .note .guilabel, .tip .guibutton, .tip .keycap, .tip .guilabel, .important .guibutton, .important .keycap, .important .guilabel, .caution .guibutton, .caution .keycap, .caution .guilabel, .warning .guibutton, .warning .keycap, .warning .guilabel
 {
@@ -179,7 +179,7 @@ Lists*/
 .figure IMG
 {
 	display: block;
-	margin: 0;
+	margin: 0 auto;
 }
 .figure .title
 {
@@ -715,6 +715,28 @@ UL LI P:last-child
 	padding-bottom: 0em;
 }
 /*Navigation*/
+DIV.breadcrumbs a
+{
+    margin-left: 10px;
+}
+DIV.breadcrumbs .breadcrumbs-sep
+{
+  display: none;
+}
+DIV.breadcrumbs strong
+{
+  margin-left: 10px;
+}
+DIV.breadcrumbs strong a:first-child
+{
+  border-radius: 3px 0px 0px 3px;
+  margin-right: -3px;
+}
+DIV.breadcrumbs strong a:last-child {
+  border-radius: 0px 3px 3px 0px;
+  border-left-color: #DDD!important;
+}
+
 DIV.navheader TABLE, DIV.navfooter TABLE
 {
 	width: 100%;
@@ -742,7 +764,7 @@ DIV.navheader TABLE TD A, DIV.navfooter TABLE A
 	-webkit-border-radius: 3px;
 	-khtml-border-radius: 3px;
 	border-radius: 3px 3px 3px 3px;
-	padding: 2px 35px !important;
+	padding: 2px 10px !important;
 	white-space: nowrap;
 	background: #FFFFFF url(/img/minibutton-shade.png) repeat-x 50% 100%;
 	text-decoration: none !important;
