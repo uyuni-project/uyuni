@@ -50,8 +50,7 @@ start()
 			echo 'LANG="C"' > /var/lib/nocpulse/.bashrc
 		fi
 	fi
-	startproc -p $SSHD_PIDFILE $SSHD -f /etc/nocpulse/rhnmd_config -o "PidFile=$SSHD_PIDFILE"
-	rc_status
+	startproc -f -p $SSHD_PIDFILE $SSHD -f /etc/nocpulse/rhnmd_config -o "PidFile=$SSHD_PIDFILE"
 	rc_status -v
 }
 
