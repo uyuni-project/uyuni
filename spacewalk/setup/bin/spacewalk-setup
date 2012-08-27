@@ -76,6 +76,8 @@ if (-e Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION) {
 
 setup_ncc(\%opts, \%answers);
 
+setup_default_proxy(\%answers);
+
 choose_database_schema(\%answers);
 
 # If Oracle was selected, call the Oracle specific setup script. If it turns
@@ -305,6 +307,50 @@ sub setup_admin_email {
                        valid_multiple_email($text) && length($text) <= 128 },
         -answer => \$answers{'admin-email'});
   }
+}
+
+sub setup_default_proxy {
+    my $answers = shift;
+    my %proxyOptions = ();
+
+    if(! -e Spacewalk::Setup::DEFAULT_PROXY_CONF_LOCATION)
+    {
+        return;
+    }
+    Spacewalk::Setup::read_config(Spacewalk::Setup::DEFAULT_PROXY_CONF_LOCATION,
+        \%proxyOptions);
+    $proxyOptions{'PROXY_ENABLED'} =~ s/^[\s"]*//;
+    $proxyOptions{'PROXY_ENABLED'} =~ s/[\s"]*$//;
+    if (lc($proxyOptions{PROXY_ENABLED}) ne "yes")
+    {
+        return;
+    }
+    if ($proxyOptions{'HTTP_PROXY'} =~ /https?:\/\/([^\/]+)\/?/)
+    {
+        $answers{'rhn-http-proxy'} = $1
+            if not defined $answers{'rhn-http-proxy'};
+    }
+    if (! -e Spacewalk::Setup::DEFAULT_PROXYAUTH_CONF_LOCATION)
+    {
+        return;
+    }
+    open(RC, "< ".Spacewalk::Setup::DEFAULT_PROXYAUTH_CONF_LOCATION) and do
+    {
+        while(<RC>)
+        {
+            if($_ =~ /^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$/&& defined $1 && $1 ne "")
+            {
+                my $creds = $1;
+                $creds =~ s/\\"/"/g;
+                my ($user, $pass) = split(/:/, $creds, 2);
+                $answers{'rhn-http-proxy-username'} = $user
+                    if not defined $answers{'rhn-http-proxy-username'};
+                $answers{'rhn-http-proxy-password'} = $pass
+                    if not defined $answers{'rhn-http-proxy-password'};
+                last;
+            }
+        }
+    };
 }
 
 sub setup_ncc {
