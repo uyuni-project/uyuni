@@ -115,7 +115,11 @@ then
     /sbin/runuser -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f %{identity}" - %{np_name}
 fi
 /usr/sbin/semanage fcontext -a -t sshd_key_t '/var/lib/nocpulse/\.ssh/nocpulse-identity' || :
+%if 0%{?rhel} && "%rhel" < "6"
+/usr/sbin/semanage fcontext -a -t sshd_key_t '/var/lib/nocpulse/\.ssh/authorized_keys' || :
+%else
 /usr/sbin/semanage fcontext -a -t ssh_home_t '/var/lib/nocpulse/\.ssh/authorized_keys' || :
+%endif
 /sbin/restorecon -rvv /var/lib/nocpulse || :
 %endif
 /sbin/chkconfig --add rhnmd
