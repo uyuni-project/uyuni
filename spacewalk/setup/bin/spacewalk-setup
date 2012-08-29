@@ -325,7 +325,7 @@ sub setup_default_proxy {
     {
         return;
     }
-    if ($proxyOptions{'HTTP_PROXY'} =~ /https?:\/\/([^\/]+)\/?/)
+    if ($proxyOptions{'HTTP_PROXY'} =~ /https?:\/\/([^\/"]+)\/?/)
     {
         $answers{'rhn-http-proxy'} = $1
             if not defined $answers{'rhn-http-proxy'};
