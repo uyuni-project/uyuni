@@ -21,6 +21,7 @@ import os
 import re
 import gzip
 import xml.etree.ElementTree as etree
+import urlparse
 
 import urlgrabber
 from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
@@ -121,10 +122,14 @@ class ContentSource:
         self.proxy_user = CFG.http_proxy_username
         self.proxy_pass = CFG.http_proxy_password
 
-        if (self.proxy_user is not None and
-            self.proxy_pass is not None and
-            self.proxy_addr is not None):
-            self.proxy_url = "http://%s:%s@%s" % (
+        u = urlparse.urlsplit(self.url)
+        if u.hostname in ["localhost", "127.0.0.1", "::1"]:
+            # no proxy for localhost
+            self.proxy_url = None
+        elif (self.proxy_user is not None and
+              self.proxy_pass is not None and
+              self.proxy_addr is not None):
+              self.proxy_url = "http://%s:%s@%s" % (
                 self.proxy_user, self.proxy_pass, self.proxy_addr)
         elif self.proxy_addr is not None:
             self.proxy_url = "http://" + self.proxy_addr
