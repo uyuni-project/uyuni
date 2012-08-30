@@ -88,6 +88,10 @@ ln -s rhncfg-manager $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-manager
 ln -s rhncfg-client $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-client
 ln -s rhn-actions-control $RPM_BUILD_ROOT/%{_bindir}/mgr-actions-control
 %endif
+
+%py_compile %{buildroot}/%{rhnroot}
+%py_compile -O %{buildroot}/%{rhnroot}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 

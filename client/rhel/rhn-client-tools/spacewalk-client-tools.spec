@@ -6,6 +6,8 @@
 #
 %define without_rhn_register 1
 
+%global rhnroot /usr/share/rhn
+
 Name: spacewalk-client-tools
 Summary: Support programs and libraries for Spacewalk
 License: GPLv2
@@ -237,6 +239,9 @@ done
 cd -
 
 %find_lang rhn-client-tools
+
+%py_compile %{buildroot}/%{rhnroot}
+%py_compile -O %{buildroot}/%{rhnroot}
 
 %post
 rm -f %{_localstatedir}/spool/up2date/loginAuth.pkl
