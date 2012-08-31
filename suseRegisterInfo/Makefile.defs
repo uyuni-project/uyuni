@@ -50,8 +50,7 @@ all :: $(INSTALL_FILES)
 install :: all $(DIRS) $(INSTALL_FILES) $(SPACEWALK_INSTALL_FILES)
 	@$(foreach f,$(INSTALL_FILES), \
 		$(INSTALL_DATA) $(f) $(PREFIX)$(INSTALL_DEST)/$(f) ; )
-	@$(foreach f,$(SPACEWALK_INSTALL_FILES), \
-		$(INSTALL_DATA) $(f) $(PREFIX)$(SPACEWALK_DEST)/$(f) ; )
+	python -c "import sys, os, compileall; br='$(PREFIX)'; compileall.compile_dir(sys.argv[1], ddir=br and (sys.argv[1][len(os.path.abspath(br)):]+'/') or None)" $(PREFIX)$(INSTALL_DEST)
 
 $(DIRS):
 	$(INSTALL_DIR) $@
