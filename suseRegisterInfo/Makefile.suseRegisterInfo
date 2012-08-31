@@ -1,0 +1,42 @@
+# Makefile for Update Agent
+#
+# $Id$
+
+PREFIX		?=
+MANPATH		?= /usr/share/man
+
+# Dirs we need to walk into
+SUBDIRS		= suseRegister
+
+# Handy defines 
+VERSION         := $(shell echo `grep ^Version: suseRegisterInfo.spec | awk '{ print $$2 }'`)
+
+# Platfor could be defined via command line
+ifndef PLATFORM
+  PLATFORM=rpm
+endif
+
+# For subdirs, required exports 
+export PREFIX 
+export MANPATH
+export VERSION
+export PLATFORM
+
+all::
+
+install:: all
+
+clean::
+	@rm -fv *~ .*~
+	@rm -fv suseRegisterInfo*.tar.gz suseRegisterInfo*.tar.bz2
+	@find . -name .\#\* -exec rm -fv {} \;
+	@rm -fv *.rpm
+
+# useful macro
+descend-subdirs = @$(foreach d,$(SUBDIRS), $(MAKE) -C $(d) $@ || exit 1; )
+
+# Now do the same in the subdirs
+all clean install :: $(SUBDIRS)
+	$(descend-subdirs)
+
+
