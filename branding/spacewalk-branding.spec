@@ -19,8 +19,9 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildArch:  noarch
 
 BuildRequires: java-devel >= 1.5.0
+BuildRequires: httpd
 Requires:   httpd
-BuildRequires:   httpd
+Requires: tomcat6
 
 %description
 Spacewalk specific branding, CSS, and images.
@@ -113,11 +114,11 @@ rm -rf %{buildroot}
 %dir %{wwwdocroot}/nav
 %dir /usr/share/rhn
 %dir /usr/share/rhn/lib
-%dir /var/lib/tomcat6
-%dir /var/lib/tomcat6/webapps
-%dir /var/lib/tomcat6/webapps/rhn
-%dir /var/lib/tomcat6/webapps/rhn/WEB-INF
-%dir /var/lib/tomcat6/webapps/rhn/WEB-INF/lib
+%attr(0755,tomcat,tomcat) %dir /var/lib/tomcat6
+%attr(0755,tomcat,tomcat) %dir /var/lib/tomcat6/webapps
+%attr(0755,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn
+%attr(0755,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn/WEB-INF
+%attr(0755,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn/WEB-INF/lib
 
 %doc LICENSE
 
