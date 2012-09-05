@@ -20,8 +20,8 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires: java-devel >= 1.5.0
 BuildRequires: httpd
-Requires:   httpd
-Requires: tomcat6
+Requires:      httpd
+Requires(pre): tomcat6
 
 %description
 Spacewalk specific branding, CSS, and images.
