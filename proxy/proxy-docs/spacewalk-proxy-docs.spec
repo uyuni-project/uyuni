@@ -11,6 +11,7 @@ BuildArch: noarch
 BuildRequires: susemanager-client-config_en-pdf
 BuildRequires: susemanager-proxy-quick_en-pdf
 BuildRequires: susemanager-reference_en-pdf
+BuildRequires: xerces-j2
 Obsoletes: rhns-proxy-docs < 5.3.0
 Provides: rhns-proxy-docs = 5.3.0
 

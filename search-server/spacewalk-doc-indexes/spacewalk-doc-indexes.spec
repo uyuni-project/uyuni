@@ -13,6 +13,7 @@ BuildRequires: python
 BuildRequires: nutch
 BuildRequires: susemanager-jsp_en >= 1.2
 BuildRequires: release-notes-susemanager >= 1.2
+BuildRequires: xerces-j2
 Requires: nutch
 Requires: susemanager-jsp_en >= 1.2
 Requires: release-notes-susemanager >= 1.2
