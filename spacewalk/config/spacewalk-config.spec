@@ -114,7 +114,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_var}/lib/cobbler/
 %dir %{_var}/lib/cobbler/kickstarts/
 %dir %{_var}/lib/cobbler/snippets/
-%dir %{rhnconfigdefaults}
+%attr(0755,root,%{apache_group}) %dir %{rhnconfigdefaults}
 %config(noreplace) %{_var}/lib/cobbler/kickstarts/spacewalk-sample.ks
 %config(noreplace) %{_var}/lib/cobbler/snippets/spacewalk_file_preservation
 %attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn

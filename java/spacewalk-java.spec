@@ -683,7 +683,7 @@ fi
 
 %files config
 %defattr(644, root, root, 755)
-%dir %{_prefix}/share/rhn/config-defaults
+%attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf

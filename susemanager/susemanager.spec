@@ -124,7 +124,7 @@ chown root.root /etc/sysconfig
 %dir %{pythonsmroot}
 %dir %{pythonsmroot}/susemanager
 %dir %{_prefix}/share/rhn/
-%dir %{_prefix}/share/rhn/config-defaults
+%attr(0755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
 %attr(0755,root,root) %{_sbindir}/mgr-register
 %attr(0755,root,root) %{_sbindir}/mgr-ncc-sync

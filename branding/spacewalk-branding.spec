@@ -2,9 +2,11 @@
 %define version_major 1.2
 %define wwwdocroot /srv/www/htdocs
 %define apacheconfdir %{_sysconfdir}/apache2/conf.d
+%define apache_group www
 %else
 %define wwwdocroot %{_var}/www/html
 %define apacheconfdir %{_sysconfdir}/httpd/conf.d
+%define apache_group apache
 %endif
 Name:       spacewalk-branding
 Version:    1.7.1.3
@@ -110,7 +112,7 @@ rm -rf %{buildroot}
 %{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/java-branding.jar
 %endif
 %{_prefix}/share/rhn/config-defaults/rhn_docs.conf
-%dir %{_prefix}/share/rhn/config-defaults
+%attr(0755,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
 %dir %{wwwdocroot}/nav
 %dir /usr/share/rhn
 %dir /usr/share/rhn/lib
