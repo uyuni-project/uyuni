@@ -319,7 +319,7 @@ class Register:
          WHERE rhn_server_id = :hostid
       """)
       h.execute(hostid=vt['host_system_id'])
-      host = h.fetchone_dict() or []
+      host = h.fetchone_dict() or {}
       if host['guid']:
         hostguid = host['guid']
     return (virttype, hostguid)
