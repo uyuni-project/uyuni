@@ -553,7 +553,7 @@ for p in $@; do
         . $MIGRATION_ENV 2> /dev/null
         . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
-        SATELLITE_IP=`dig +short $SATELLITE_FQDN`
+        SATELLITE_IP=`getent hosts $SATELLITE_FQDN | cut -f 1 -d " "`
         if [ "$LOGFILE" = "0" ]; then
             LOGFILE=/tmp/migration.log
         fi
@@ -565,7 +565,7 @@ for p in $@; do
         . $MIGRATION_ENV 2> /dev/null
         . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
-        SATELLITE_IP=`dig +short $SATELLITE_FQDN`
+        SATELLITE_IP=`getent hosts $SATELLITE_FQDN | cut -f 1 -d " "`
         create_ssh_key
         check_remote_type
         backup_files
