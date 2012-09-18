@@ -189,6 +189,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -317,6 +318,9 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * @return Returns the configFilesWithDifferences.
      */
     public Long getConfigFilesWithDifferences() {
+        if (configFilesWithDifferences == null) {
+            return 0L;
+        }
         return configFilesWithDifferences;
     }
     /**
@@ -533,8 +537,8 @@ public class SystemOverview extends BaseDto implements Serializable  {
 
         for (int i = 2; i < ent.size(); i++) {
             msg = msg +
-                  ls.getMessage("list delimiter") +
-                  ls.getMessage((String) ent.get(i));
+                    ls.getMessage("list delimiter") +
+                    ls.getMessage((String) ent.get(i));
         }
         return msg;
     }
@@ -615,6 +619,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
      * They are false otherwise
      * @return whether the current system is UI selectable
      */
+    @Override
     public boolean isSelectable() {
         return selectable;
     }
@@ -622,6 +627,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", id).append("serverName",
                 serverName).toString();
