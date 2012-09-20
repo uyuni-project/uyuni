@@ -559,7 +559,7 @@ if [ $ENABLE_SCOUT -ne 0 ]; then
 fi
 for service in squid apache2 jabberd $MonitoringScout; do
   /sbin/chkconfig --add $service 
-  /sbin/chkconfig --level 345 $service on 
+  /sbin/chkconfig --level 35 $service on 
 done
 
 # default is 1
