@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Sep 20 15:16:01 CEST 2012 - mc@suse.de
+
+- The column names are always uppercase, due to the·
+  FetchHashKeyName setting.
+
+-------------------------------------------------------------------
 Tue Sep 14 17:37:08 CEST 2010 - mantel@suse.de
 
 - Initial release of perl-NOCpulse-OracleDB

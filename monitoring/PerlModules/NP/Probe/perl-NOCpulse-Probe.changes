@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Sep 20 15:15:29 CEST 2012 - mc@suse.de
+
+- The column names are always uppercase, due to the 
+  FetchHashKeyName setting.
+
+-------------------------------------------------------------------
 Mon Jan 30 15:44:15 CET 2012 - mantel@suse.de
 
 - some more renames Novell --> SUSE

@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Sep 20 15:14:01 CEST 2012 - mc@suse.de
+
+- Add additional member name mappings in ProbeRecord
+
+-------------------------------------------------------------------
 Tue Sep 14 17:22:30 CEST 2010 - mantel@suse.de
 
 - Initial release of NOCpulsePlugins
