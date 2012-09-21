@@ -356,6 +356,8 @@ fi
 
 if [ -x /usr/sbin/rhn-proxy ]; then
 	/usr/sbin/rhn-proxy stop
+        # the jabberd db might be an old version. Cleanup
+        rm -f /var/lib/jabberd/db/*
 fi
 
 $YUM_OR_UPDATE spacewalk-proxy-management
@@ -558,8 +560,11 @@ if [ $ENABLE_SCOUT -ne 0 ]; then
   MonitoringScout="MonitoringScout"
 fi
 for service in squid apache2 jabberd $MonitoringScout; do
-  /sbin/chkconfig --add $service 
-  /sbin/chkconfig --level 35 $service on 
+  #/sbin/chkconfig --add $service 
+  #/sbin/chkconfig --level 35 $service on 
+
+  # use insserv do switch to current default runlevel
+  /sbin/insserv -d $service
 done
 
 # default is 1
