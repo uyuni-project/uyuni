@@ -1466,13 +1466,17 @@ public class SystemManager extends BaseManager {
         HibernateFactory.getSession().refresh(server);
         ServerFactory.deproxify(server);
 
-        Set channels = server.getChannels();
-        for (Iterator itr = channels.iterator(); itr.hasNext();) {
-            Channel c = (Channel)itr.next();
-            ChannelFamily cf = c.getChannelFamily();
-            if (cf.getLabel().equals("SMP")) {
-                SystemManager.unsubscribeServerFromChannel(server, c);
-            }
+        // Unsubscribe only if we are configured to automatically re-subscribe again,
+        // see the activateProxy() method
+        if (Config.get().getBoolean(ConfigDefaults.WEB_SUBSCRIBE_PROXY_CHANNEL)) {
+          Set channels = server.getChannels();
+          for (Iterator itr = channels.iterator(); itr.hasNext();) {
+              Channel c = (Channel)itr.next();
+              ChannelFamily cf = c.getChannelFamily();
+              if (cf.getLabel().equals("SMP")) {
+                  SystemManager.unsubscribeServerFromChannel(server, c);
+              }
+          }
         }
 
         return server;
