@@ -59,10 +59,12 @@ def maybeUpdateVersion():
       if not os.access(dir, os.W_OK):
           return 0
 
+      statinfo = None
       if os.access(path, os.F_OK):
           # already have systemid file there; let's back it up
           savePath = path + ".save"
           try:
+              statinfo = os.stat(path)
               os.rename(path, savePath)
           except:
               return 0
@@ -71,7 +73,13 @@ def maybeUpdateVersion():
       f.write(newSystemId)
       f.close()
       try:
-          os.chmod(path, 0600)
+          if statinfo:
+              # update; keep permissions and ownership
+              os.chmod(path, statinfo.st_mode)
+              os.chown(path, statinfo.st_uid, statinfo.st_gid)
+          else:
+              # new file
+              os.chmod(path, 0600)
       except:
           pass
 
