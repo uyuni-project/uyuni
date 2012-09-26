@@ -310,6 +310,7 @@ public class ProxyHandler extends BaseHandler {
          */
         for (Channel proxyChan : proxyFamily.getChannels()) {
             if (proxyChan.getProduct() != null &&
+                proxyChan.getParentChannel() != null &&
                 proxyChan.getParentChannel().equals(server.getBaseChannel())) {
                 returnList.add(proxyChan.getProduct().getVersion());
             }
