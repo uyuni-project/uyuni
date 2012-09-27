@@ -18,11 +18,43 @@ from spacewalk.server import rhnSQL
 class SuseData:
   def __init__(self):
     log_debug(4, "SuseData initialized")
+    # format:
+    # suse_products { 'guid' = ...
+    #                 'secret' = ...
+    #                 'ostarget' = ...
+    #                 'products' = [{ 'name' = ..., 'version' = ..., 'release' = ..., 'arch' = ..., 'baseproduct' = ...},
+    #                               ...]
+    #               }
     self.suse_products = {}
-    # suse_products["guid"], suse_products["secret"], suse_products["ostarget"], suse_products["products"]
 
   def get_suse_products(self):
+      if len(self.suse_products) == 0:
+          h= rhnSQL.prepare("""
+            SELECT s.guid,
+                   s.secret,
+                   ost.target ostarget
+              FROM suseServer s
+         LEFT JOIN suseOSTarget ost ON s.ostarget_id = ost.id
+             WHERE s.rhn_server_id = :sysid
+          """)
+          h.execute(sysid = self.server["id"])
+          self.suse_products = h.fetchone_dict() or {}
+          if len(self.suse_products) > 0:
+              h = rhnSQL.prepare("""
+                SELECT sip.name,
+                       sip.version,
+                       rpa.label arch,
+                       sip.release,
+                       sip.is_baseproduct baseproduct
+                  FROM suseServerInstalledProduct ssip
+                  JOIN suseInstalledProduct sip ON ssip.suse_installed_product_id = sip.id
+                  JOIN rhnPackageArch rpa ON sip.arch_type_id = rpa.id
+                 WHERE ssip.rhn_server_id = :sysid
+              """)
+              h.execute(sysid = self.server["id"])
+              self.suse_products['products'] = h.fetchall_dict() or []
       return self.suse_products
+
 
   def add_suse_products(self, suse_products):
       log_debug(1, suse_products)
@@ -33,7 +65,7 @@ class SuseData:
 
   def save_suse_products_byid(self, sysid):
       log_debug(1, sysid, self.suse_products )
-      if self.suse_products == {}: # nothing loaded
+      if len(self.suse_products) == 0: # nothing loaded
 	return 0
       self.create_update_suse_products(self.server["id"],
 				       self.suse_products["guid"],
