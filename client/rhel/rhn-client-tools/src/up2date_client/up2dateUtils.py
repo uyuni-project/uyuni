@@ -34,17 +34,35 @@ else:
             osVersionRelease = (h['name'], h['version'], h['release'])
             return osVersionRelease
         else:
-            for h in ts.dbMatch('Providename', "distribution-release"):
-                osVersionRelease = (h['name'], h['version'], h['release'])
+            # new SUSE always has a baseproduct link which point to the
+            # product file of the first installed product (the OS)
+            # all rpms containing a product must provide "product()"
+            # search now for the package providing the base product
+            baseproduct = '/etc/products.d/baseproduct'
+            bp = os.path.abspath(os.path.join(os.path.dirname(baseproduct), os.readlink(baseproduct)))
+            for h in ts.dbMatch('Providename', "product()"):
+                if bp in h['filenames']:
+                    # zypper requires a exclusive lock on the rpmdb. So we need
+                    # to close it here.
+                    ts.ts.closeDB()
+                    return (h['name'], h['version'], h['release'])
+            else:
+                # for older SUSE versions we need to search for distribution-release
+                # package which also has /etc/SuSE-release file
+                osVersionRelease = None
+                for h in ts.dbMatch('Providename', "distribution-release"):
+                    osVersionRelease = (h['name'], h['version'], h['release'])
+                    if '/etc/SuSE-release' in h['filenames']:
+                        break
                 # zypper requires a exclusive lock on the rpmdb. So we need
                 # to close it here.
                 ts.ts.closeDB()
+                if osVersionRelease is None:
+                    raise up2dateErrors.RpmError(
+                        "Could not determine what version of Red Hat Linux you "\
+                        "are running.\nIf you get this error, try running \n\n"\
+                        "\t\trpm --rebuilddb\n\n")
                 return osVersionRelease
-            else:
-                raise up2dateErrors.RpmError(
-                    "Could not determine what version of Red Hat Linux you "\
-                    "are running.\nIf you get this error, try running \n\n"\
-                    "\t\trpm --rebuilddb\n\n")
 
 def getVersion():
     '''
