@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:34:07 CEST 2012 - mc@suse.de
+
+- version 1.7.1.4-1
+- Fixing the License rpm header to match the COPYING information.
+  (bnc#774341)
+
+-------------------------------------------------------------------
 Thu Aug 02 16:25:07 CEST 2012 - mc@suse.de
 
 - version 1.7.1.3-1
