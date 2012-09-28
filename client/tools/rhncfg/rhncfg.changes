@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 28 15:57:46 CEST 2012 - mc@suse.de
+
+- version 5.10.27.7-1
+- precompile python code to prevent verification issues (bnc#776356)
+- If there's symlink in file deployment path it will be created
+
+-------------------------------------------------------------------
 Mon Jul 16 15:16:08 CEST 2012 - ug@suse.de
 
 - version 5.10.27.6-1
