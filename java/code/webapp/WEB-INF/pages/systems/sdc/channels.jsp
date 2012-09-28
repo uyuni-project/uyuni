@@ -47,10 +47,6 @@
                     </c:if>
                     <a href="/rhn/channels/ChannelDetail.do?cid=${channel.id}">${channel.name}</a>
                     <c:if test="${system.virtualGuest}">
-                      <c:if test="${not channel.freeForGuests}">
-                        <span class="asterisk">*&nbsp;</span>
-                        <c:set var="display_asterisk" value="true" scope="page" />
-                      </c:if>
                       <c:choose>
                         <c:when test="${channel.freeForGuests && system.virtualInstance.hostSystem != null}">
                           (<bean:message key="sdc.channels.edit.unlimited"/>)
