@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:35:57 CEST 2012 - mc@suse.de
+
+- version 5.10.41.5-1
+- Set owner/group of config-defaults dir consistently (bnc#776377)
+- recompile python files (bnc#776356)
+
+-------------------------------------------------------------------
 Mon May 14 10:56:20 CEST 2012 - mc@suse.de
 
 - version 5.10.41.4-1
