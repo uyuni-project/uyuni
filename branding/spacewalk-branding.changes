@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:51:31 CEST 2012 - mc@suse.de
+
+- version 1.7.1.4-1
+- Set owner/group of config-defaults dir consistently (bnc#776377)
+- Install /var/lib/tomcat6 as 'tomcat' + require tomcat6 (bnc#776377)
+- Cleaned up the doc pages navigation buttons
+- Fixed white background on Notes and Alerts in docs.
+- Slight changes to the header, so it looks a little more like current Studio.
+
+-------------------------------------------------------------------
 Mon Jul 16 15:25:31 CEST 2012 - ug@suse.de
 
 - version 1.7.1.3-1
