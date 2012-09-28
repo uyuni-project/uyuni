@@ -41,7 +41,7 @@ def _getOSVersionAndRelease():
             if bp in h['filenames']:
                 # zypper requires a exclusive lock on the rpmdb. So we need
                 # to close it here.
-                ts.ts.closeDB()
+                ts.closeDB()
                 return (h['name'], h['version'], h['release'])
         else:
             # for older SUSE versions we need to search for distribution-release
@@ -53,7 +53,7 @@ def _getOSVersionAndRelease():
                     break
             # zypper requires a exclusive lock on the rpmdb. So we need
             # to close it here.
-            ts.ts.closeDB()
+            ts.closeDB()
             if osVersionRelease is None:
                 raise up2dateErrors.RpmError(
                     "Could not determine what version of Red Hat Linux you "\
