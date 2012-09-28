@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:10:08 CEST 2012 - mc@suse.de
+
+- version 1.7.15.8-1
+- make sure the regular expressions actually match.
+- The Enhancement Advisory is actually Product Enhancement Advisory.
+- strip non-number chars from date format
+
+-------------------------------------------------------------------
 Tue Aug 07 16:41:16 CEST 2012 - mc@suse.de
 
 - version 1.7.15.7-1
