@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Sep 28 15:56:44 CEST 2012 - mc@suse.de
+
+- version 1.7.17-1
+- use gethostbyname() for migration to honor overwrites in /etc/hosts
+  (bnc#753806)
+- Set owner/group of config-defaults dir consistently (bnc#776377)
+- restart spacewalk services after final DB changes (bnc#776571)
+
+-------------------------------------------------------------------
 Wed Aug 15 14:58:18 CEST 2012 - mc@suse.de
 
 - version 1.7.16-1
