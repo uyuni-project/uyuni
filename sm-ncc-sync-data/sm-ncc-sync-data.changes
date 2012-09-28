@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:09:02 CEST 2012 - mc@suse.de
+
+- version 1.7.5-1
+- add LTSS channels for SLES10 SP3 and SLES11 SP1
+- add channels for product SLES for SAP SP2
+
+-------------------------------------------------------------------
 Thu Aug 02 16:21:25 CEST 2012 - mc@suse.de
 
 - version 1.7.4-1
