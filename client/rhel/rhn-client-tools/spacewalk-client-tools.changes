@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 28 09:31:02 CEST 2012 - mc@suse.de
+
+- fix getOSVersionAndRelease for multiple products
+
+-------------------------------------------------------------------
 Thu Jun 28 15:21:06 CEST 2012 - mc@suse.de
 
 - All IP addresses which start with 127. are localhost addresses.
