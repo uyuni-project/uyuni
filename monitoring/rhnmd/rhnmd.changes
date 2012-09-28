@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:16:24 CEST 2012 - mc@suse.de
+
+- version 5.3.10.4-1
+- Independent SElinux policy for rhel5
+- startproc requires option -f (bnc#776527)
+
+-------------------------------------------------------------------
 Fri Aug 17 12:12:45 CEST 2012 - mc@suse.de
 
 - version 5.3.10.3-1
