@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:45:37 CEST 2012 - mc@suse.de
+
+- version 1.7.3.8-1
+- Set owner/group of config-defaults dir consistently (bnc#776377)
+
+-------------------------------------------------------------------
 Thu Aug 02 16:29:05 CEST 2012 - mc@suse.de
 
 - version 1.7.3.7-1
