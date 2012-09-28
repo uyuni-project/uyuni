@@ -1,4 +1,40 @@
 -------------------------------------------------------------------
+Fri Sep 28 15:49:09 CEST 2012 - mc@suse.de
+
+- version 1.7.54.19-1
+- Do not show asterisk on software channels page
+- Fix NPE during proxy activation in case proxyChan is a base channel
+- Unsubscribe channels only if we are configured to automatically
+  re-subscribe
+- Validate proxy format on general config page (bnc#777462)
+- make system_overview fast using elaborators
+- remove SystemHealthIconDecorator and appropriate query
+- remember probe state when paginate
+- fixing NumberFormatException
+- rewrite query for system.listLatestUpgradablePackages API
+- validate session key for system.getSystemCurrencyMultipliers API
+- allow complex kickstart variables containing severel '='
+- display a reasonable error message on the permission error page
+- display error messages only once on admin/config/GeneralConfig.do
+  page
+- Proxy should be specified as host:port (bnc#777462)
+- Set owner/group of config-defaults dir consistently (bnc#776377)
+- let errata.listPackages API return also packages associated with
+  unpublished errata
+- display an information message about no systems being selected for
+  SSM
+- fix ISE on rhn/channel/ssm/ChildSubscriptions.do page
+- make IE use IE7 compatability mode for pages with editarea
+- fix icons on SSM provisioning page and system list page
+- validate virt guest parameters also for API input
+- removed MAC Address from kickstart profile listing
+- Don't let virtual kickstarts screw up the host's cobbler id
+- Hide the checkbox 'Disconnected SUSE Manager' (bnc#776596)
+- Fix missing CVEs in patches listing with Oracle 11 (bnc#776321)
+- The Update button should be disabled if the text area is empty
+  (bnc#753584)
+
+-------------------------------------------------------------------
 Tue Aug 14 11:32:26 CEST 2012 - mc@suse.de
 
 - version 1.7.54.18-1
