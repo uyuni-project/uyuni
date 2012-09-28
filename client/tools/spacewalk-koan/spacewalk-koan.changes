@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:44:33 CEST 2012 - mc@suse.de
+
+- version 1.7.1.3-1
+- Show pretty error if customer specifies a MAC address already in use
+
+-------------------------------------------------------------------
 Fri Apr 27 17:00:12 CEST 2012 - mc@suse.de
 
 - version 1.7.1.2-1
