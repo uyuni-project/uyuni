@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:18:24 CEST 2012 - mc@suse.de
+
+- version 1.7.38.17-1
+- load suse_products in the server object if not available
+- reposync: do not use a proxy to access localhost
+- Adding IPv6 ip-address detection to proxy auth fix
+- separate proxy auth error hostname into separate header
+- multi-tiered proxies don't update auth tokens correctly
+
+-------------------------------------------------------------------
 Tue Aug 07 16:40:35 CEST 2012 - mc@suse.de
 
 - version 1.7.38.16-1
