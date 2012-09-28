@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:36:47 CEST 2012 - mc@suse.de
+
+- version 1.7.14.10-1
+- fix getOSVersionAndRelease for multiple products
+- keep permissions and owner of systemid file
+- precompile python code to prevent verification issues (bnc#776356)
+
+-------------------------------------------------------------------
 Thu Aug 02 16:26:33 CEST 2012 - mc@suse.de
 
 - version 1.7.14.9-1
