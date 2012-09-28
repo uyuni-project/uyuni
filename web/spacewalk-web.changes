@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 28 15:47:12 CEST 2012 - mc@suse.de
+
+- version 1.7.28.12-1
+- The Update button should be disabled if the text area is empty.
+  (bnc#753584)
+
+-------------------------------------------------------------------
 Tue Aug 14 16:18:10 CEST 2012 - mc@suse.de
 
 - version 1.7.28.11-1
