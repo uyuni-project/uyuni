@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:17:12 CEST 2012 - mc@suse.de
+
+- version 1.7.6.7-1
+- cleanup jabberd db and use insserv to switch to current 
+  default runlevel
+- enable proxy services only in runlevel 3 and 5
+
+-------------------------------------------------------------------
 Thu Aug 02 16:22:54 CEST 2012 - mc@suse.de
 
 - version 1.7.6.6-1
