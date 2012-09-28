@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:37:33 CEST 2012 - mc@suse.de
+
+- version 1.7.9.10-1
+- Read system proxy values during setup and use them as default.
+
+-------------------------------------------------------------------
 Fri Aug 03 18:28:37 CEST 2012 - mc@suse.de
 
 - version 1.7.9.9-1
