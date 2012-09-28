@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:50:38 CEST 2012 - mc@suse.de
+
+- version 1.7.0.4-1
+- update documentation
+- Add BuildRequires to fix unresolved builds (after fixing bnc#776374)
+
+-------------------------------------------------------------------
 Fri Aug 10 16:18:32 CEST 2012 - mc@suse.de
 
 - version 1.7.0.3-1
