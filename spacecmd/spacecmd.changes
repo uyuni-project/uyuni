@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Sep 28 16:15:30 CEST 2012 - mc@suse.de
+
+- version 1.7.7.8-1
+- prevent outputting escape sequences to non-terminals
+- Fixed small typo in spacecmd/src/lib/kickstart.py
+- do not quote argument of the help command (bnc#776615)
+
+-------------------------------------------------------------------
 Mon Jul 16 15:27:39 CEST 2012 - ug@suse.de
 
 - version 1.7.7.7-1
