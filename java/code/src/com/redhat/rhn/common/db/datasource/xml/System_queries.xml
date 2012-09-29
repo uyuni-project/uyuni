@@ -776,16 +776,15 @@ ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
   <elaborator name="is_virtual_host" />
 </mode>
 
-<query name="having_errata_with_keyword_applied_since_last_reboot_list" params="org_id, user_id, keyword">
+
+<mode name="having_errata_with_keyword_applied_since_last_reboot" class="com.redhat.rhn.frontend.dto.SystemOverview">
+  <query params="org_id, user_id, keyword">
 SELECT id, name, selectable
   FROM allServerKeywordSinceReboot
  WHERE user_id = :user_id
    AND org_id  = :org_id
    AND keyword = :keyword
-</query>
-
-<mode name="having_errata_with_keyword_applied_since_last_reboot" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query name="having_errata_with_keyword_applied_since_last_reboot_list"/>
+  </query>
   <elaborator name="system_overview" />
   <elaborator name="system_config_files_with_diffs" />
   <elaborator name="system_monitoring" />
@@ -1970,39 +1969,44 @@ SELECT sip.name, sip.version, at.label as arch, sip.release
   FROM suseInstalledProduct sip
   JOIN suseServerInstalledProduct ssip ON sip.id = ssip.suse_installed_product_id
   JOIN rhnPackageArch at ON sip.arch_type_id = at.id
- WHERE ssip.rhn_server_id = :serverid  
+ WHERE ssip.rhn_server_id = :serverid
   </query>
 </mode>
 
 <mode name="foreign_packages_get_noncompliant_systems" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="">
-SELECT distinct s.id, s.name, 1 selectable
-FROM rhnServer s WHERE EXISTS 
-           (SELECT *
-            FROM rhnServerPackage sp
-            WHERE NOT EXISTS 
-                  (SELECT * FROM rhnPackage p, rhnPackageName pn
-                   WHERE p.name_id=pn.id AND p.evr_id=sp.evr_id AND sp.name_id=pn.id)
-            AND sp.server_id=s.id)
+  <query params="org_id, user_id">
+SELECT distinct s.id, s.name,
+       (SELECT 1 FROM rhnServerFeaturesView SFV
+         WHERE SFV.server_id = S.id
+           AND SFV.label = 'ftr_system_grouping') AS selectable
+FROM rhnServer s
+WHERE s.org_id = :org_id
+AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = s.id)
+AND EXISTS (SELECT 1
+              FROM rhnServerPackage sp
+             WHERE NOT EXISTS (SELECT 1
+                                 FROM rhnPackage p, rhnPackageName pn
+                                WHERE p.name_id=pn.id AND p.evr_id=sp.evr_id AND sp.name_id=pn.id)
+              AND sp.server_id=s.id)
   </query>
   <elaborator name="system_overview" />
-  <elaborator name="entitlements" />
+  <elaborator name="foreign_packages_count" />
   <elaborator name="is_virtual_guest" />
   <elaborator name="is_virtual_host" />
 </mode>
 
-<mode name="foreign_packages_get_noncompliant_packages_per_system_count">
-  <query params="serverid">
-SELECT count(pkgnm.id) foreignpkgcount
+<query name="foreign_packages_count" params="">
+SELECT spkg.server_id as id,
+       count(pkgnm.id) as foreign_packages_count
 FROM rhnserverpackage spkg
 LEFT JOIN rhnpackagename pkgnm ON (spkg.name_id = pkgnm.id) AND NOT EXISTS
                  (SELECT *
                   FROM rhnPackage p, rhnPackageName pkn
-                  WHERE p.name_id=pkn.id AND p.evr_id=spkg.evr_id AND spkg.name_id=pkn.id) 
-                  AND spkg.server_id = :serverid
+                  WHERE p.name_id=pkn.id AND p.evr_id=spkg.evr_id AND spkg.name_id=pkn.id)
+                  AND spkg.server_id IN (%s)
 WHERE pkgnm.name IS NOT NULL
-  </query>
-</mode>
+GROUP BY spkg.server_id
+</query>
 
 
 <mode name="foreign_packages_get_noncompliant_packages_per_system">
@@ -2016,7 +2020,7 @@ WHERE pkgnm.name IS NOT NULL
 LEFT JOIN rhnpackagename pkgnm ON (spkg.name_id = pkgnm.id) AND NOT EXISTS
                  (SELECT *
                   FROM rhnPackage p, rhnPackageName pkn
-                  WHERE p.name_id=pkn.id AND p.evr_id=spkg.evr_id AND spkg.name_id=pkn.id) 
+                  WHERE p.name_id=pkn.id AND p.evr_id=spkg.evr_id AND spkg.name_id=pkn.id)
                   AND spkg.server_id = :serverid
 LEFT JOIN rhnpackagearch pkgarc ON (spkg.package_arch_id = pkgarc.id)
 LEFT JOIN rhnpackageevr pkgevr ON (spkg.evr_id = pkgevr.id)

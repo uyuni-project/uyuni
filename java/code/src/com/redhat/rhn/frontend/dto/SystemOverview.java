@@ -71,7 +71,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
     private String lastCheckinString;
     private boolean isVirtualHost;
     private boolean isVirtualGuest;
-	private Long foreignPackagesCount;
+    private Long foreignPackagesCount;
     private static final  String NONE_VALUE = "(none)";
 
 

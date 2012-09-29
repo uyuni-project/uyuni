@@ -241,25 +241,13 @@ public class SystemManager extends BaseManager {
      *            
      * @return list of SystemOverviews.
      */
-    @SuppressWarnings("unchecked")
-	public static DataResult<SystemOverview> getForeignPackagesSystems(User user, PageControl pc) {
-        SelectMode hostMode = ModeFactory.getMode("System_queries",
-                                                  "foreign_packages_get_noncompliant_packages_per_system_count");
-    	DataResult<SystemOverview> result = makeDataResult(new HashMap<String, Object>(), 
-                                                           new HashMap<String, Object>(), pc, 
-                                                           ModeFactory.getMode("System_queries",
-                                                        		               "foreign_packages_get_noncompliant_systems"));
-    	for	(int i = 0; i < result.size(); i++) {
-    		SystemOverview overview = result.get(i);
-            Map params = new HashMap();
-            params.put("serverid", overview.getId());
-            DataResult hostResult = hostMode.execute(params);
-            if (!hostResult.isEmpty()) {
-            	overview.setForeignPackagesCount((Long) ((Map) hostResult.get(0)).get("foreignpkgcount"));
-            }
-    	}
-
-    	return result;
+    public static DataResult<SystemOverview> getForeignPackagesSystems(User user, PageControl pc) {
+        Map params = new HashMap();
+        params.put("org_id", user.getOrg().getId());
+        params.put("user_id", user.getId());
+        return makeDataResult(params, new HashMap<String, Object>(), pc,
+                              ModeFactory.getMode("System_queries",
+                                  "foreign_packages_get_noncompliant_systems"));
     }
 
 
