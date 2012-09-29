@@ -778,7 +778,7 @@ ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
 
 <query name="having_errata_with_keyword_applied_since_last_reboot_list" params="org_id, user_id, keyword">
 SELECT id, name, selectable
-  FROM errata_with_keyword_applied_since_last_reboot
+  FROM allServerKeywordSinceReboot
  WHERE user_id = :user_id
    AND org_id  = :org_id
    AND keyword = :keyword
@@ -797,7 +797,7 @@ SELECT id, name, selectable
 <mode name="has_errata_with_keyword_applied_since_last_reboot">
   <query params="org_id, user_id, keyword, sid">
 	SELECT 1
-	  FROM errata_with_keyword_applied_since_last_reboot
+	  FROM allServerKeywordSinceReboot
          WHERE id      = :sid
            AND user_id = :user_id
            AND org_id  = :org_id
