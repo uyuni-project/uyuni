@@ -6,8 +6,8 @@ import com.redhat.rhn.frontend.action.rhnpackage.BaseSystemPackagesAction;
 import com.redhat.rhn.manager.system.SystemManager;
 
 public class NonCompliantPackageListAction extends BaseSystemPackagesAction {
-	@Override
-	protected DataResult getDataResult(Server server) {
-		return SystemManager.listProfileForeignPackages(server.getId());
-	}
+    @Override
+    protected DataResult getDataResult(Server server) {
+        return SystemManager.listProfileForeignPackages(server.getId());
+    }
 }

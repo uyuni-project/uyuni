@@ -34,17 +34,15 @@ import com.redhat.rhn.manager.system.SystemManager;
  */
 public class NonCompliantSystemsAction extends BaseSystemsAction {
 
-	
-	
-	@Override
-	public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-			HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("nonCompliantMode", Boolean.TRUE);
-		return super.execute(mapping, formIn, request, response);
-	}
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm formIn,
+                HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("nonCompliantMode", Boolean.TRUE);
+        return super.execute(mapping, formIn, request, response);
+    }
 
-	@Override
-	protected DataResult<SystemOverview> getDataResult(User user, PageControl pc, ActionForm formIn) {
-		return SystemManager.getForeignPackagesSystems(user, pc);
-	}
+    @Override
+    protected DataResult<SystemOverview> getDataResult(User user, PageControl pc, ActionForm formIn) {
+        return SystemManager.getForeignPackagesSystems(user, pc);
+    }
 }

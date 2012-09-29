@@ -228,17 +228,17 @@ public class SystemManager extends BaseManager {
         params.put("keyword", "reboot_suggested");
         return makeDataResult(params, new HashMap<String, Object>(), pc, m);
     }
-    
-    
+
+
     /**
      * Returns a list of systems that are not compliant against foreign packages check.
-     * 
+     *
      * @param user
      *            Currently logged in user.
-     *            
+     *
      * @param pc
      *            Page control
-     *            
+     *
      * @return list of SystemOverviews.
      */
     public static DataResult<SystemOverview> getForeignPackagesSystems(User user, PageControl pc) {
@@ -253,12 +253,12 @@ public class SystemManager extends BaseManager {
 
     /**
      * Returns the list of non-compliant (foreign) packages per a system.
-     * @param serverid
-     * @return
+     * @param serverid The id for a system
+     * @return list of SystemOverviews
      */
     public static DataResult listProfileForeignPackages(Long serverid) {
-        SelectMode m = ModeFactory.getMode("System_queries", 
-                                           "foreign_packages_get_noncompliant_packages_per_system");
+        SelectMode m = ModeFactory.getMode("System_queries",
+            "foreign_packages_get_noncompliant_packages_per_system");
         Map params = new HashMap();
         params.put("serverid", serverid);
         Map elabParams = new HashMap();
@@ -267,7 +267,7 @@ public class SystemManager extends BaseManager {
         return dataResult;
     }
 
-    
+
     /**
      * Gets the latest upgradable packages for a system
      * @param sid The id for the system we want packages for

@@ -733,17 +733,19 @@ public class SystemOverview extends BaseDto implements Serializable  {
         return enhancementErrata + securityErrata + bugErrata;
     }
 
-    
+
     /**
      * Sets a number of foreign packages in the system.
      * @param packagesCount
      */
     public void setForeignPackagesCount(Long packagesCount) {
-    	this.foreignPackagesCount = packagesCount;
-	}
+        this.foreignPackagesCount = packagesCount;
+    }
 
-
+    /**
+     * @return Returns the number of foreign packages in the system.
+     */
     public Long getForeignPackagesCount() {
-    	return this.foreignPackagesCount;
+        return this.foreignPackagesCount;
     }
 }
