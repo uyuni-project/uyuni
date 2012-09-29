@@ -1,4 +1,6 @@
-create or replace view errata_with_keyword_applied_since_last_reboot as
+-- oracle equivalent source sha1 39afdd1b896fabd1a7be60619144b2c40dd397ed
+
+create or replace view allServerKeywordSinceReboot as
 SELECT DISTINCT S.id, S.NAME,
        (SELECT 1
           FROM rhnServerFeaturesView SFV
@@ -22,5 +24,5 @@ SELECT DISTINCT S.id, S.NAME,
    AND P.name_id = SP.name_id
    AND EP.errata_id = E.id 
    AND EP.package_id = P.id
-   AND (to_date('1970-01-01', 'YYYY-MM-DD') + numtodsinterval(S.last_boot, 'second')) < SP.installtime
+   AND (to_date('1970-01-01', 'YYYY-MM-DD') + numtodsinterval(S.last_boot, 'second')) < SP.installtime at time zone 'UTC'
    AND E.id = EK.errata_id;
