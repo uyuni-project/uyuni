@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Oct 01 09:43:24 CEST 2012 - mc@suse.de
+
+- version 1.7.54.20-1
+- use elaborator for foreign_packages_get_noncompliant_systems
+- fix reboot needed on postgresql by using
+  allServerKeywordSinceReboot view
+
+-------------------------------------------------------------------
 Fri Sep 28 15:49:09 CEST 2012 - mc@suse.de
 
 - version 1.7.54.19-1
