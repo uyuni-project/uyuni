@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Oct 01 09:39:56 CEST 2012 - mc@suse.de
+
+- version 1.7.56.15-1
+- create view allServerKeywordSinceReboot
+- extending rhnPackageCapability.version.
+- oracles sql parser doesn't like comments after semicolon
+- fix unique constraint violation (bnc#780913)
+- schema upgrade for rhnChannelNewestPackageView
+- make list of newest packages unique
+
+-------------------------------------------------------------------
 Wed Aug 15 14:57:17 CEST 2012 - mc@suse.de
 
 - version 1.7.56.14-1
