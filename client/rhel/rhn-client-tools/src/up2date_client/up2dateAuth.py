@@ -47,7 +47,11 @@ def maybeUpdateVersion():
     if idVer != systemVer:
       s = rhnserver.RhnServer()
 
-      newSystemId = s.registration.upgrade_version(getSystemId(), systemVer)
+      if s.capabilities.hasCapability('xmlrpc.packages.suse_products', 1):
+          # do not change channels
+          newSystemId = s.registration.upgrade_version(getSystemId(), systemVer, False)
+      else:
+          newSystemId = s.registration.upgrade_version(getSystemId(), systemVer)
 
       path = cfg["systemIdPath"]
       dir = path[:string.rfind(path, "/")]
