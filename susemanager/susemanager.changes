@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Thu  4 16:03:20 CEST 2012 - iartarisi@suse.cz
 
- - hide -p, -f, -s options from mgr-ncc-sync and add a new --update
+ - hide -p, -f, -s options from mgr-ncc-sync and add a new --refresh
    option to update metadata without triggering any reposync
    (bnc#760924)
 

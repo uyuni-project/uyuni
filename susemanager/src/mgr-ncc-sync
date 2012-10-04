@@ -38,8 +38,8 @@ def main():
     parser.add_option("-s", "--update_subscriptions", action="store_true",
                       help=optparse.SUPPRESS_HELP)
 
-    parser.add_option("-u", "--update", action="store_true",
-                      help="update product, channel and subscription "
+    parser.add_option("-r", "--refresh", action="store_true",
+                      help="refresh product, channel and subscription "
                       "information without triggering any reposyncs")
     parser.add_option("-m", "--migrate_res", action="store_true",
                       help="migrate to RES subscriptions")
@@ -79,7 +79,7 @@ def main():
         syncer.update_subscriptions()
     elif options.migrate_res:
         syncer.migrate_res()
-    elif options.update:
+    elif options.refresh:
         syncer.update_channels()
         syncer.update_channel_family_table_by_config()
         suse_products = syncer.get_suse_products_from_ncc()
