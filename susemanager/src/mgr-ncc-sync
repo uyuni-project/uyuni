@@ -16,23 +16,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import sys
-from optparse import OptionParser
+import optparse
+
 from spacewalk.susemanager import mgr_ncc_sync_lib
 
+
 def main():
-    parser = OptionParser(version="%prog 0.1",
-                          description="Sync SUSE Manager repositories from NCC")
+    parser = optparse.OptionParser(
+        version="%prog 0.1",
+        description="Sync SUSE Manager repositories from NCC")
 
     parser.add_option("-l", "--list-channels", action="store_true", dest="list",
                       help="list all the channels which are available for you")
     parser.add_option("-c", "--channel", action="store",
                       help="add a new channel and trigger a reposync")
+    # hide the -p, -f, -s options, they're deprecated bnc#760924
     parser.add_option("-p", "--products", action="store_true",
-                      help="fetch all known products from NCC")
+                      help=optparse.SUPPRESS_HELP)
     parser.add_option("-f", "--update_cf", action="store_true",
-                      help="update channel family by XML config")
+                      help=optparse.SUPPRESS_HELP)
     parser.add_option("-s", "--update_subscriptions", action="store_true",
-                      help="update subscriptions by NCC data")
+                      help=optparse.SUPPRESS_HELP)
+
+    parser.add_option("-u", "--update", action="store_true",
+                      help="update product, channel and subscription "
+                      "information without triggering any reposyncs")
     parser.add_option("-m", "--migrate_res", action="store_true",
                       help="migrate to RES subscriptions")
     parser.add_option('-q', '--quiet', action='store_true', dest='quiet',
@@ -71,6 +79,12 @@ def main():
         syncer.update_subscriptions()
     elif options.migrate_res:
         syncer.migrate_res()
+    elif options.update:
+        syncer.update_channels()
+        syncer.update_channel_family_table_by_config()
+        suse_products = syncer.get_suse_products_from_ncc()
+        syncer.update_suse_products_table(suse_products)
+        syncer.update_subscriptions()
     else:
         syncer.update_channels()
         syncer.update_channel_family_table_by_config()
