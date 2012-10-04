@@ -777,7 +777,14 @@ class NCCSync(object):
         query = rhnSQL.prepare("SELECT ID FROM SUSEPRODUCTS "
                                "WHERE PRODUCT_ID = :product_id")
         query.execute(product_id=product_id)
-        return query.fetchone()[0]
+        try:
+            return query.fetchone()[0]
+        except TypeError:
+            self.error_msg("Could not find the product associated with "
+                           "this channel in the database. Please make sure "
+                           "that your product list is up to date. "
+                           "Run 'mgr-ncc-sync --refresh'.")
+            sys.exit(1)
 
     def map_channel_to_products(self, channel, channel_id, product_id):
         """Map one channel to its products, registering it in the database
