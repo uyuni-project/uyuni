@@ -47,8 +47,9 @@ def main():
                       help="Print no output, still logs output")
     parser.add_option('-d', '--debug', dest='debug', default=-1,
                       help="debugging")
+    # --test is some kind of unit test. Do not use it in production systems
     parser.add_option("-t", "--test", action="store_true",
-                      help="Testmode")
+                      help=optparse.SUPPRESS_HELP)
     parser.add_option('-D', '--dump', dest="dumppath", action="store",
                       help='Dump NCC xml data into the given directory')
     parser.add_option("--from-dir", action="store", dest='fromdir',
@@ -85,6 +86,7 @@ def main():
         suse_products = syncer.get_suse_products_from_ncc()
         syncer.update_suse_products_table(suse_products)
         syncer.update_subscriptions()
+        syncer.sync_suseproductchannel()
     else:
         syncer.update_channels()
         syncer.update_channel_family_table_by_config()
