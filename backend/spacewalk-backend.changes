@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct 04 15:52:25 CEST 2012 - mc@suse.de
+
+- version 1.7.38.18-1
+- support upgrade_version without channel switching
+
+-------------------------------------------------------------------
 Fri Sep 28 16:18:24 CEST 2012 - mc@suse.de
 
 - version 1.7.38.17-1
