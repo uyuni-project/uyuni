@@ -822,9 +822,9 @@ class Registration(rhnHandler):
     # XXX: update this function to deal with the channels and stuff
     # TODO: Is this useful? we think not. investigate and possibly replace
     # with a NOOP.
-    def upgrade_version(self, system_id, newver):
+    def upgrade_version(self, system_id, newver, change_channel = True):
         """ Upgrade a certificate's version to a different release. """
-        log_debug(5, system_id, newver)
+        log_debug(5, system_id, newver, change_channel)
         # we need to load the user because we will generate a new certificate
         self.load_user = 1
         server = self.auth_system(system_id)
@@ -832,9 +832,19 @@ class Registration(rhnHandler):
         if not newver:
             raise rhnFault(21, _("Invalid system release version requested"))
         #log the entry
-        log_debug(1, server.getid(), newver)
-        ret = server.change_base_channel(newver)
-        server.save()
+        log_debug(1, server.getid(), newver, change_channel)
+        if change_channel:
+            ret = server.change_base_channel(newver)
+            server.save()
+        else:
+            server.server["release"] = newver
+            msg = """The SUSE Manager Update Agent has detected a
+            change in the base version of the operating system running
+            on your system"""
+            server.add_history("Updated system release to %s" % (newver), msg)
+            server.save_history_byid(server.server["id"])
+            server.save()
+
         return server.system_id()
 
     def add_packages(self, system_id, packages):
