@@ -5,6 +5,9 @@ Thu  4 16:03:20 CEST 2012 - iartarisi@suse.cz
    option to update metadata without triggering any reposync
    (bnc#760924)
 
+ - replace TypeError with a more descriptive message when trying to add
+   a channel whose product is not in the database (bnc#760924)
+
 -------------------------------------------------------------------
 Fri Sep 28 15:56:44 CEST 2012 - mc@suse.de
 
