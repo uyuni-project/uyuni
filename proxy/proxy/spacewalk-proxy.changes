@@ -3,8 +3,10 @@ Fri Sep 28 16:13:32 CEST 2012 - mc@suse.de
 
 - version 1.7.12.6-1
 - separate proxy auth error hostname into separate header
+  (bnc#783667)
 - Don't expect string to already be imported
 - multi-tiered proxies don't update auth tokens correctly
+  (bnc#783667)
 
 -------------------------------------------------------------------
 Thu Aug 02 16:22:20 CEST 2012 - mc@suse.de
