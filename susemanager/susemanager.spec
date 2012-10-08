@@ -1,5 +1,5 @@
 Name:           susemanager
-Version:        1.7.18
+Version:        1.7.19
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 Group:          Applications/System
