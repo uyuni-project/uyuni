@@ -6,7 +6,7 @@ Thu Oct 04 18:06:45 CEST 2012 - mc@suse.de
 - call the product_channel update function on refresh
 
 -------------------------------------------------------------------
-Thu  4 16:03:20 CEST 2012 - iartarisi@suse.cz
+Thu Oct 04 16:03:20 CEST 2012 - iartarisi@suse.cz
 
  - hide -p, -f, -s options from mgr-ncc-sync and add a new --refresh
    option to update metadata without triggering any reposync
