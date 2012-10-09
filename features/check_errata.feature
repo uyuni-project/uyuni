@@ -20,7 +20,7 @@ Feature: Check errata
     Given I am on the "slessp1-kernel-3280-channel-x86_64" errata Details page
      Then I should see a "slessp1-kernel-3280-channel-x86_64 - Security Advisory" text
       And I should see a "Security update for the Linux kernel" text
-      And I should see a "SLES11-SP1-Updates x86_64 Channel" link
+      And I should see a "SLES11-SP2-Updates x86_64 Channel" link
       And I should see a "CVE-2010-2954" link
       And I should see a "bug number 643922" link
       And I should see a "reboot_suggested" text
@@ -28,7 +28,7 @@ Feature: Check errata
   Scenario: check slessp1-kernel-3280-channel-x86_64 errata packages
     Given I am on the "slessp1-kernel-3280-channel-x86_64" errata Details page
      When I follow "Packages"
-     Then I should see a "SLES11-SP1-Updates x86_64 Channel" text
+     Then I should see a "SLES11-SP2-Updates x86_64 Channel" text
       And I should see a "sha1:c21778f54a584edf499f933ecc576afc2ecee59a" text
       And I should see a "btrfs-kmp-default-0_2.6.32.23_0.3-0.3.20-x86_64" link
       And I should see a "sha1:7b46bb1b8d33f087dbde87185d0f68350ed10561" text
@@ -51,7 +51,7 @@ Feature: Check errata
     Given I am on the "slessp1-kernel-3284-channel-ia32" errata Details page
      Then I should see a "slessp1-kernel-3284-channel-ia32 - Security Advisory" text
       And I should see a "Security update for the Linux kernel" text
-      And I should see a "SLES11-SP1-Updates i586 Channel" link
+      And I should see a "SLES11-SP2-Updates i586 Channel" link
       And I should see a "CVE-2010-2954" link
       And I should see a "bug number 643922" link
       And I should see a "reboot_suggested" text
@@ -60,7 +60,7 @@ Feature: Check errata
   Scenario: check slessp1-kernel-3284-channel-ia32 errata packages
     Given I am on the "slessp1-kernel-3284-channel-ia32" errata Details page
      When I follow "Packages"
-     Then I should see a "SLES11-SP1-Updates i586 Channel" text
+     Then I should see a "SLES11-SP2-Updates i586 Channel" text
       And I should see a "sha1:8edd91afef9289446126190c4b4b1e28c7a73d31" text
       And I should see a "btrfs-kmp-default-0_2.6.32.23_0.3-0.3.20-i586" link
       And I should see a "sha1:b6dc68b6733818353a6870de7dee8e96a34ffc8f" text
@@ -94,14 +94,14 @@ Feature: Check errata
     Given I am on the "slessp1-suseRegister-2953-channel-x86_64" errata Details page
      Then I should see a "slessp1-suseRegister-2953-channel-x86_64 - Bug Fix Advisory" text
       And I should see a "Recommended update for suseRegister" text
-      And I should see a "SLES11-SP1-Updates x86_64 Channel" link
+      And I should see a "SLES11-SP2-Updates x86_64 Channel" link
       And I should see a "bug number 546142" link
       And I should see a "restart_suggested" text
 
   Scenario: check slessp1-suseRegister-2953-channel-x86_64 errata packages
     Given I am on the "slessp1-suseRegister-2953-channel-x86_64" errata Details page
      When I follow "Packages"
-     Then I should see a "SLES11-SP1-Updates x86_64 Channel" text
+     Then I should see a "SLES11-SP2-Updates x86_64 Channel" text
       And I should see a "sha1:053d8944718abcdb6ba1f5f641ecbecf8f961b62" text
       And I should see a "suseRegister-1.4-1.9.1-noarch" link
 
@@ -109,14 +109,14 @@ Feature: Check errata
     Given I am on the "slessp1-suseRegister-2953-channel-ia32" errata Details page
      Then I should see a "slessp1-suseRegister-2953-channel-ia32 - Bug Fix Advisory" text
       And I should see a "Recommended update for suseRegister" text
-      And I should see a "SLES11-SP1-Updates i586 Channel" link
+      And I should see a "SLES11-SP2-Updates i586 Channel" link
       And I should see a "bug number 546142" link
       And I should see a "restart_suggested" text
 
   Scenario: check slessp1-suseRegister-2953-channel-ia32 errata packages
     Given I am on the "slessp1-suseRegister-2953-channel-ia32" errata Details page
      When I follow "Packages"
-     Then I should see a "SLES11-SP1-Updates i586 Channel" text
+     Then I should see a "SLES11-SP2-Updates i586 Channel" text
       And I should see a "sha1:76318bbd6b8ff7db3781c0ddb5f0c1b792abed7b" text
       And I should see a "suseRegister-1.4-1.9.1-noarch" link
 

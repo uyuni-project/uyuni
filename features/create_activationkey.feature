@@ -51,7 +51,7 @@ Feature: Create an activation key
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
       And I follow "SUSE Test Key i586"
-    When I select "SLES11-SP1-Updates i586 Channel" from "selectedChannel"
+    When I select "SLES11-SP2-Updates i586 Channel" from "selectedChannel"
      And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key i586 has been modified." text
 
@@ -65,7 +65,7 @@ Feature: Create an activation key
      And I check "provisioning_entitled"
      And I check "virtualization_host"
      And I enter "20" as "usageLimit"
-     And I select "SLES11-SP1-Updates x86_64 Channel" from "selectedChannel"
+     And I select "SLES11-SP2-Updates x86_64 Channel" from "selectedChannel"
      And I click on "Create Activation Key"
    Then I should see a "Activation key SUSE Test Key x86_64 has been created" text
     And I should see a "Details" link
@@ -84,7 +84,7 @@ Feature: Create an activation key
      And I check "monitoring_entitled"
      And I check "provisioning_entitled"
      And I enter "20" as "usageLimit"
-     And I select "SLES11-SP1-Updates x86_64 Channel" from "selectedChannel"
+     And I select "SLES11-SP2-Updates x86_64 Channel" from "selectedChannel"
      And I click on "Create Activation Key"
      And I follow "Packages"
      And I enter "man" as "packages"
@@ -106,7 +106,7 @@ Feature: Create an activation key
      And I check "monitoring_entitled"
      And I check "provisioning_entitled"
      And I enter "20" as "usageLimit"
-     And I select "SLES11-SP1-Updates i586 Channel" from "selectedChannel"
+     And I select "SLES11-SP2-Updates i586 Channel" from "selectedChannel"
      And I click on "Create Activation Key"
      And I follow "Packages"
      And I enter "man" as "packages"

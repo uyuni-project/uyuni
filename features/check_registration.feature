@@ -24,7 +24,7 @@ Feature: Check client registration
      And I should see a "delete system" link
      And I should see a "Initial Registration Parameters:" text
      And I should see a "OS: sles-release" text
-     And I should see a "Release: 11.1" text
+     And I should see a "Release: 11.2" text
      #And I should see a "[Virtualization]" text
 
   Scenario: check tab links "Details"
@@ -242,10 +242,10 @@ Feature: Check client registration
     When I follow "Errata" in class "contentnav-row2"
     Then I should see a "Relevant Errata" text
      And I should see a "Show" button
-     And I should see a "Security update for the Linux kernel" text
-     And I should see a "slessp1-kernel" link
+     And I should see a "Security update for Linux kernel" text
+     And I should see a "slessp2-kernel-6648" link
      And I should see a "Recommended update for aaa_base" text
-     And I should see a "slessp1-aaa_base-sysvinit" link
+     And I should see a "slessp2-nfs-client-6222" link
 
   Scenario: check tab links "Software" => "Software Channels"
     Given I am on the Systems overview page of this client

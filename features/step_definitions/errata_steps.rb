@@ -17,12 +17,12 @@ end
 Then /^I should see three links to the errata in the list$/ do
   arch=`uname -m`
   arch.chomp!
-  linknames = [ "slessp1-suseRegister-2953",
-		"slessp1-aaa_base-sysvinit-2610"]
+  linknames = [ "slessp2-nfs-client-6222",
+		"slessp2-aaa_base-6544"]
   if arch != "x86_64"
-      linknames << "slessp1-kernel-3284"
+      linknames << "slessp2-kernel-6641"
   else
-      linknames << "slessp1-kernel-3280"
+      linknames << "slessp2-kernel-6648"
   end
   linknames.each() do |link|
     fail if not has_xpath?("//form/table/tbody/tr/td/a[contains(.,'#{link}')]")
