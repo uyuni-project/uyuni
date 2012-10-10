@@ -28,3 +28,14 @@ Then /^I should see three links to the errata in the list$/ do
     fail if not has_xpath?("//form/table/tbody/tr/td/a[contains(.,'#{link}')]")
   end
 end
+
+Then /^I should see a kernel update in the list$/ do
+  arch=`uname -m`
+  arch.chomp!
+  if arch != "x86_64"
+      link = "slessp2-kernel-6641"
+  else
+      link = "slessp2-kernel-6648"
+  end
+  fail if not has_xpath?("//form/table/tbody/tr/td/a[contains(.,'#{link}')]")
+end

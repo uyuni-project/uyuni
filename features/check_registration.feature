@@ -243,7 +243,7 @@ Feature: Check client registration
     Then I should see a "Relevant Errata" text
      And I should see a "Show" button
      And I should see a "Security update for Linux kernel" text
-     And I should see a "slessp2-kernel-6648" link
+     And I should see a kernel update in the list
      And I should see a "Recommended update for aaa_base" text
      And I should see a "slessp2-nfs-client-6222" link
 
