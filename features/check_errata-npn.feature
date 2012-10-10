@@ -9,13 +9,13 @@ Feature: Check errata
   Scenario: check all errata exists
     Given I am on the errata page
      When I follow "Relevant" in the left menu
-     Then I should see a "slessp2-kernel-6648" link
+     Then I should see a kernel update in the list
       And I should see a "slessp2-aaa_base-6544" link
       And I should see a "slessp2-nfs-client-6222" link
 
   Scenario: check slessp2-kernel-6648 errata
     Given I am on the errata page
-     When I follow "Relevant" in the left menu
+     When I follow "All" in the left menu
      When I follow "slessp2-kernel-6648"
      Then I should see a "slessp2-kernel-6648 - Security Advisory" text
       And I should see a "Security update for Linux kernel" text
@@ -26,7 +26,7 @@ Feature: Check errata
 
   Scenario: check slessp2-kernel-6648 errata packages
     Given I am on the errata page
-     When I follow "Relevant" in the left menu
+     When I follow "All" in the left menu
      When I follow "slessp2-kernel-6648"
      When I follow "Packages"
      Then I should see a "SLES11-SP2-Updates x86_64 Channel" text
