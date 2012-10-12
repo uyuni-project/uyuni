@@ -48,7 +48,7 @@ class Checksum:
     def __init__(self, secret, *args):
         self.sum = hashlib.new('md5', secret)
         if len(args) > 0:
-            apply(self.feed, args)
+            self.feed(*args)
     def feed(self, arg):
         #sys.stderr.write("arg = %s, type = %s\n" % (arg, type(arg)))
         if type(arg) == type(()) or type(arg) == type([]):
