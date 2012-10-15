@@ -174,8 +174,10 @@ touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
 ln -sf ../../etc/init.d/osad %{buildroot}%{_sbindir}/rcosad
 ln -sf ../../etc/init.d/osa-dispatcher %{buildroot}%{_sbindir}/rcosa-dispatcher
 
+%if 0%{?suse_version}
 %py_compile %{buildroot}/%{rhnroot}
 %py_compile -O %{buildroot}/%{rhnroot}
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -240,8 +240,10 @@ cd -
 
 %find_lang rhn-client-tools
 
+%if 0%{?suse_version}
 %py_compile %{buildroot}/%{rhnroot}
 %py_compile -O %{buildroot}/%{rhnroot}
+%endif
 
 %post
 rm -f %{_localstatedir}/spool/up2date/loginAuth.pkl
