@@ -58,6 +58,7 @@ start() {
     RETVAL=$?
     echo
     [ $RETVAL -eq 0 ] && touch /var/lock/subsys/rhnsd
+    /usr/sbin/rhn-update-status
 }
 
 stop() {

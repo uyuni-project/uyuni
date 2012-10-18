@@ -67,6 +67,7 @@ start() {
     echo -n $"Starting SUSE Manager Network Daemon: "
     startproc -p $RHNSD_PIDFILE $RHNSD
     rc_status -v
+    /usr/sbin/rhn-update-status
 }
 
 stop() {
