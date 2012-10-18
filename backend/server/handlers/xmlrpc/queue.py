@@ -44,6 +44,7 @@ class Queue(rhnHandler):
         self.functions.append('get_future_actions')
         self.functions.append('length')
         self.functions.append('submit')
+        self.functions.append('update_status')
 
         # XXX I am not proud of this. There should be a generic way to map
         # the client's error codes into success status codes
@@ -471,6 +472,17 @@ class Queue(rhnHandler):
 
         # commit, because nobody else will
         rhnSQL.commit()
+        return 0
+
+    def update_status(self, system_id, status = {}):
+        # Authenticate the system certificate
+        self.auth_system(system_id)
+        log_debug(1, self.server_id, status)
+        if status:
+            self.__update_status(status)
+        # commit all changes
+        rhnSQL.commit()
+
         return 0
 
     def status_for_action_type_code(self, action_type, rcode):
