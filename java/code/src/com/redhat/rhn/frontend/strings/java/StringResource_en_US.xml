@@ -1823,7 +1823,7 @@ available for this kickstart profile to function properly.
          </context-group>
        </trans-unit>
        <trans-unit id="kickstart.error.labelexists">
-         <source>Autoinstallation label already exists. Please choose a unique autoinstallation label.</source>
+         <source>Autoinstallation label already exists: '{0}'. Please choose a unique kickstart label.</source>
          <context-group name="ctx">
          <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
          </context-group>
