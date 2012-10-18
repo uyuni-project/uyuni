@@ -331,6 +331,7 @@ make -f Makefile.rhn-client-tools test
 %{_mandir}/man8/rhn_check.8*
 
 %{_sbindir}/rhn_check
+%{_sbindir}/rhn-update-status
 
 %{_datadir}/rhn/up2date_client/getMethod.*
 
