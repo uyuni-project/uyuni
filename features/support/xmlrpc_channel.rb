@@ -6,6 +6,34 @@ require 'xmlrpctest'
 class XMLRPCChannelTest < XMLRPCBaseTest
 
   #
+  # Create a repo
+  #
+  def createRepo(label, url)
+    ret = nil
+    begin
+       ret = @connection.call("channel.software.createRepo", @sid, label, 'yum', url)
+    rescue Exception => ex
+      puts "Something went wrong: " + ex
+    ensure
+      return ret
+    end
+  end
+
+  #
+  # associateRepo
+  #
+  def  associateRepo(channelLabel, repoLabel)
+    ret = nil
+    begin
+      ret = @connection.call("channel.software.associateRepo", @sid, channelLabel, repoLabel)
+    rescue Exception => ex
+      puts "Something went wrong: " + ex
+    ensure
+      return ret
+    end
+  end
+
+  #
   # Create a custom software channel
   #
   def create(label, name, summary, arch, parent)
@@ -26,6 +54,20 @@ class XMLRPCChannelTest < XMLRPCBaseTest
     ret = nil
     begin
       ret = @connection.call("channel.software.delete", @sid, label)
+    rescue Exception => ex
+      puts "Something went wrong: " + ex
+    ensure
+      return ret
+    end
+  end
+
+  #
+  # Delete a repo
+  #
+  def deleteRepo(label)
+    ret = nil
+    begin
+      ret = @connection.call("channel.software.removeRepo", @sid, label)
     rescue Exception => ex
       puts "Something went wrong: " + ex
     ensure
@@ -64,6 +106,20 @@ class XMLRPCChannelTest < XMLRPCBaseTest
       if channel['parent_channel_label'] == parent
         ret = true
       end
+    rescue Exception => ex
+      puts "Something went wrong: " + ex
+    ensure
+      return ret
+    end
+  end
+
+  #
+  # get channel details
+  #
+  def getChannelDetails(label)
+    ret = nil
+    begin
+      ret = @connection.call("channel.software.getDetails", @sid, label)
     rescue Exception => ex
       puts "Something went wrong: " + ex
     ensure
