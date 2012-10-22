@@ -235,9 +235,12 @@ rpm -qa | sort > $DIR/rpm-manifest-clean
 echo "    * querying schema version, database charactersets and database"
 /usr/bin/rhn-schema-version > $DIR/database-schema-version
 /usr/bin/rhn-charsets > $DIR/database-character-sets
-if [ -f /usr/bin/db-control ] ; then
+if [ -f /usr/bin/smdba ] ; then
+    /usr/bin/smdba space-overview > $DIR/db-control-report
+elif [ -f /usr/bin/db-control ] ; then
     /bin/su - oracle -c "/usr/bin/db-control report" > $DIR/db-control-report
 fi
+
 
 echo "    * get diskspace available"
 df -h > $DIR/diskinfo
