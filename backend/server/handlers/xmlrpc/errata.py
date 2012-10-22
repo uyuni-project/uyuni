@@ -258,18 +258,14 @@ class Errata(rhnHandler):
 
         sql = """SELECT DISTINCT e.id, e.advisory_name, c.update_tag
                  FROM rhnErrata e,
-                      rhnPackage p,
-                      rhnChannelPackage cp,
                       rhnServerChannel sc,
-                      rhnErrataPackage ep,
+                      rhnChannelErrata ce,
                       rhnChannel c
                  WHERE e.id in (%s) AND
-                       ep.errata_id = e.id AND
-                       ep.package_id = p.id AND
                        sc.server_id = :server_id AND
-                       sc.channel_id = cp.channel_id AND
-                       cp.package_id = p.id AND
-                       sc.channel_id = c.id"""
+                       e.id = ce.errata_id AND
+                       sc.channel_id = c.id AND
+                       ce.channel_id = c.id"""
         h = rhnSQL.prepare(sql % sql_list)
         h.execute(**bound_vars)
         errata_list = h.fetchall()
