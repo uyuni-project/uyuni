@@ -220,7 +220,7 @@ def deploy(params, extraParams="",cache_only=None):
                 log.log_debug("downloading image file failed. HTTP Code is: %s" % httpResponseCode)
                 return (1, "downloading image file failed: %s/%s (%s)" % (IMAGE_BASE_PATH, studioArchiveFileName,httpResponseCode), {})
         except Exception, e:
-            return ( 1, "getting the image failed with: %s" % e )
+            return ( 1, "getting the image failed with: %s" % e, {} )
     if cache_only:
         return (0, "image fetched and cached for later deployment", {})
     try:
