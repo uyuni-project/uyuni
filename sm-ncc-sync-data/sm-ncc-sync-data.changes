@@ -3,6 +3,7 @@ Wed Oct 24 11:21:43 CEST 2012 - mc@suse.de
 
 - add LTSS channels for SLES10 SP3, SLES11 SP1 and
   SLES for SAP SP1
+- add SDK channels as option for SLES for SAP
 
 -------------------------------------------------------------------
 Thu Aug 23 12:26:42 CEST 2012 - mc@suse.de
