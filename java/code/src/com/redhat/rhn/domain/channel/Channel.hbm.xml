@@ -319,6 +319,23 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
     </sql-query>
 
+    <sql-query name="Channel.packageByFileNameAndRange">
+      <![CDATA[SELECT {p.*}
+          FROM rhnPackage {p}
+             left join rhnSolarisPatchSet P_2_ on p.id = P_2_.package_id
+             left join rhnSolarisPatch P_1_ on p.id = P_1_.package_id,
+             rhnChannelPackage CP,
+             rhnChannel C
+             WHERE (C.id = :channel_id OR C.parent_channel = :channel_id)
+               AND (CP.channel_id = C.id  OR CP.channel_id = C.parent_channel)
+               AND CP.package_id = P.id
+               AND P.path LIKE :pathlike
+               AND P.header_start = :headerStart
+               AND P.header_end   = :headerEnd
+        ]]>
+    <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
+    </sql-query>
+
     <sql-query name="Channel.getPackageCount">
         <return-scalar type="int" column="package_count"/>
         <![CDATA[select count(*) as package_count from rhnChannelPackage cp where cp.channel_id = :cid]]>
