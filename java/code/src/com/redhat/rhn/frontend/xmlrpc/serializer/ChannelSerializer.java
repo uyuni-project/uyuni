@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -53,7 +54,8 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *      #prop("string", "gpg_key_url")
  *      #prop("string", "gpg_key_id")
  *      #prop("string", "gpg_key_fp")
- *      #prop("dateTime.iso8601", "yumrepo_last_sync")
+ *      #prop_desc("dateTime.iso8601", "yumrepo_last_sync", "If never synced set to 1970-01-01.
+ *                         In future this value will be optional")
  *      #prop("string", "end_of_life")
  *      #prop("string", "parent_channel_label")
  *      #prop("string", "clone_original")
@@ -122,7 +124,7 @@ public class ChannelSerializer implements XmlRpcCustomSerializer {
                 helper.add("yumrepo_last_sync", c.getLastSynced());
             }
             else {
-                helper.add("yumrepo_last_sync", "");
+                helper.add("yumrepo_last_sync", new Date(0));
             }
         }
         helper.add("contentSources", csList);
