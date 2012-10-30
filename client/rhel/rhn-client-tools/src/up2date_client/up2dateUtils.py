@@ -29,6 +29,7 @@ if getPlatform() == 'deb':
 else:
     import transaction
     def _getOSVersionAndRelease():
+        osVersionRelease = None
         ts = transaction.initReadOnlyTransaction()
         for h in ts.dbMatch('Providename', "redhat-release"):
             osVersionRelease = (h['name'], h['version'], h['release'])
@@ -40,29 +41,30 @@ else:
             # search now for the package providing the base product
             baseproduct = '/etc/products.d/baseproduct'
             bp = os.path.abspath(os.path.join(os.path.dirname(baseproduct), os.readlink(baseproduct)))
-            for h in ts.dbMatch('Providename', "product()"):
+            provlist = ts.dbMatch('Providename', "product()")
+            for h in provlist:
                 if bp in h['filenames']:
-                    # zypper requires a exclusive lock on the rpmdb. So we need
-                    # to close it here.
-                    ts.ts.closeDB()
-                    return (h['name'], h['version'], h['release'])
+                    osVersionRelease = (h['name'], h['version'], h['release'])
+                    break
             else:
                 # for older SUSE versions we need to search for distribution-release
                 # package which also has /etc/SuSE-release file
-                osVersionRelease = None
-                for h in ts.dbMatch('Providename', "distribution-release"):
+                provlist = None
+                provlist = ts.dbMatch('Providename', "distribution-release")
+                for h in provlist:
                     osVersionRelease = (h['name'], h['version'], h['release'])
                     if '/etc/SuSE-release' in h['filenames']:
                         break
-                # zypper requires a exclusive lock on the rpmdb. So we need
-                # to close it here.
-                ts.ts.closeDB()
-                if osVersionRelease is None:
-                    raise up2dateErrors.RpmError(
-                        "Could not determine what version of Red Hat Linux you "\
-                        "are running.\nIf you get this error, try running \n\n"\
-                        "\t\trpm --rebuilddb\n\n")
-                return osVersionRelease
+            # zypper requires a exclusive lock on the rpmdb. So we need
+            # to close it here.
+            provlist = None
+            ts.ts.closeDB()
+            if osVersionRelease is None:
+                raise up2dateErrors.RpmError(
+                    "Could not determine what version of Red Hat Linux you "\
+                    "are running.\nIf you get this error, try running \n\n"\
+                    "\t\trpm --rebuilddb\n\n")
+            return osVersionRelease
 
 def getVersion():
     '''
