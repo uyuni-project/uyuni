@@ -116,11 +116,11 @@ rm -rf %{buildroot}
 %dir %{wwwdocroot}/nav
 %dir /usr/share/rhn
 %dir /usr/share/rhn/lib
-%attr(0755,tomcat,tomcat) %dir /var/lib/tomcat6
-%attr(0755,tomcat,tomcat) %dir /var/lib/tomcat6/webapps
-%attr(0755,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn
-%attr(0755,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn/WEB-INF
-%attr(0755,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn/WEB-INF/lib
+%attr(0755,root,root) %dir /var/lib/tomcat6
+%attr(0775,tomcat,tomcat) %dir /var/lib/tomcat6/webapps
+%attr(0775,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn
+%attr(0775,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn/WEB-INF
+%attr(0775,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn/WEB-INF/lib
 
 %doc LICENSE
 
