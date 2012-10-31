@@ -91,15 +91,16 @@ def main():
         syncer.update_suse_products_table(suse_products)
         syncer.update_subscriptions()
         syncer.sync_suseproductchannel()
+        syncer.update_upgrade_pathes_by_config()
     else:
         syncer.update_channels()
         syncer.update_channel_family_table_by_config()
         suse_products = syncer.get_suse_products_from_ncc()
         syncer.update_suse_products_table(suse_products)
         syncer.update_subscriptions()
-        syncer.sync_installed_channels()
         syncer.sync_suseproductchannel()
         syncer.update_upgrade_pathes_by_config()
+        syncer.sync_installed_channels()
 
 if __name__ == "__main__":
     try:
