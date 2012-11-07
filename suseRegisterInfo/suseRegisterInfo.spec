@@ -34,6 +34,10 @@ make -C suseRegister install PREFIX=$RPM_BUILD_ROOT
 mkdir -p %{buildroot}/usr/lib/suseRegister/bin/
 install -m 0755 suseRegister/suse_register_info.pl %{buildroot}/usr/lib/suseRegister/bin/suse_register_info
 
+%if 0%{?suse_version}
+%py_compile %{buildroot}/
+%py_compile -O %{buildroot}/
+%endif
 
 %clean
 rm -rf %{buildroot}
