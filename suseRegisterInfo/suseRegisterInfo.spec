@@ -12,7 +12,7 @@ BuildRequires:  python-devel
 
 Requires:       perl
 Requires:       python
-%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 %if 0%{?suse_version}
 Requires: suseRegister >= 1.4
