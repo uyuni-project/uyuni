@@ -89,6 +89,14 @@
             }
         }
     }
+    if( size(filterchars(f_out["stdout"]:"", "_")) > 0 ) {
+        if ( !Popup::AnyQuestionRichText(_("illegal FQHN"), _("the FQHN must not contain the '_' (undersorce) character. The product will not function correctly."), 40, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
+        {
+            if (Popup::ConfirmAbort(`incomplete)) {
+                return `abort;
+            }
+        }
+    }
     map h_out = (map) SCR::Execute (.target.bash_output, "hostname", $[]);
     map d_out = (map) SCR::Execute (.target.bash_output, "hostname -d", $[]);
     y2milestone("%1 == %2", sformat("%1.%2", h_out["stdout"]:"h", d_out["stdout"]:"d"), f_out["stdout"]:"x");
