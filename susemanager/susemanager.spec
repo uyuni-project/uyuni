@@ -63,7 +63,7 @@ mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults
 install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 install -m 0644 etc/logrotate.d/susemanager %{buildroot}/%{_sysconfdir}/logrotate.d
-install -m 755 etc/init.d/susemanager %{buildroot}/%{_sysconfdir}/init.d
+install -m 755 etc/init.d/susemanager-tools %{buildroot}/%{_sysconfdir}/init.d
 make -C src install PREFIX=$RPM_BUILD_ROOT
 
 # YaST configuration
