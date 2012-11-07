@@ -59,8 +59,10 @@ install -m 0755 bin/*.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/
 mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
 mkdir -p %{buildroot}/%{_sysconfdir}/init.d
+mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults
 install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
+install -m 0644 etc/logrotate.d/susemanager %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 755 etc/init.d/susemanager %{buildroot}/%{_sysconfdir}/init.d
 make -C src install PREFIX=$RPM_BUILD_ROOT
 
@@ -125,6 +127,7 @@ chown root.root /etc/sysconfig
 %dir %{pythonsmroot}/susemanager
 %dir %{_prefix}/share/rhn/
 %attr(0755,root,www) %dir %{_prefix}/share/rhn/config-defaults
+%config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
 %attr(0755,root,root) %{_sbindir}/mgr-register
 %attr(0755,root,root) %{_sbindir}/mgr-ncc-sync

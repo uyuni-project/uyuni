@@ -1,0 +1,15 @@
+# logrotation file for susemanager
+
+/var/log/rhn/mgr-ncc-sync.log /var/log/rhn/mgr-register.log {
+    compress
+    dateext
+    maxage 365
+    rotate 5
+    missingok
+    notifempty
+    size +4096k
+    copytruncate
+    su wwwrun www
+}
+
+
