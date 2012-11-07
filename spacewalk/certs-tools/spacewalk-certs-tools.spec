@@ -65,6 +65,9 @@ ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
 # fetch sm-client-tools and put it in the bootstrap dir
 install -m 0644 /.build.binaries/sm-client-tools.rpm $RPM_BUILD_ROOT/srv/www/htdocs/pub/bootstrap/
 
+%py_compile %{buildroot}/%{rhnroot}
+%py_compile -O %{buildroot}/%{rhnroot}
+
 %else
 make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir}
