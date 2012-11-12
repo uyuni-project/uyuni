@@ -268,6 +268,8 @@ PRE CODE, CODE
 {
 	white-space: normal;
 }
+pre.warning { padding: 1em; background-color: #d7d7d7; }
+
 /*Notifications*/
 DIV.note, DIV.tip, DIV.important, DIV.caution, DIV.warning
 {
