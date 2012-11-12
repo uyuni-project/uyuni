@@ -21,42 +21,42 @@ insert
   into rhnKickstartSessionState
        (id, name, label, description)
 values (sequence_nextval('rhn_ks_session_state_id_seq'), 'Created', 'created',
-        'Kickstart session created, but has not yet been used.'
+        'Autoinstallation session created, but has not yet been used.'
        );
 
 insert
   into rhnKickstartSessionState
        (id, name, label, description)
 values (sequence_nextval('rhn_ks_session_state_id_seq'), 'Deployed', 'deployed',
-        'Files required for kickstart action have been installed.'
+        'Files required for autoinstall action have been installed.'
        );
 
 insert
   into rhnKickstartSessionState
        (id, name, label, description)
 values (sequence_nextval('rhn_ks_session_state_id_seq'), 'Injected', 'injected',
-        'The system configuration has been modified to begin kickstart upon next boot.'
+        'The system configuration has been modified to begin autoinstallation upon next boot.'
        );
 
 insert
   into rhnKickstartSessionState
        (id, name, label, description)
 values (sequence_nextval('rhn_ks_session_state_id_seq'), 'Restarted', 'restarted',
-        'The system has been restarted in order to begin the kickstart process.'
+        'The system has been restarted in order to begin the autoinstallation process.'
        );
 
 insert
   into rhnKickstartSessionState
        (id, name, label, description)
 values (sequence_nextval('rhn_ks_session_state_id_seq'), 'Configuration accessed', 'configuration_accessed',
-        'The system has downloaded the kickstart configuraton file from Spacewalk.'
+        'The system has downloaded the autoinstallation configuraton file from Spacewalk.'
        );
 
 insert
   into rhnKickstartSessionState
        (id, name, label, description)
 values (sequence_nextval('rhn_ks_session_state_id_seq'), 'Started', 'started',
-        'The initial files required for anaconda have been downloaded.'
+        'The initial files required for autoinstallation have been downloaded.'
        );
 
 insert
@@ -70,7 +70,7 @@ insert
   into rhnKickstartSessionState
        (id, name, label, description)
 values (sequence_nextval('rhn_ks_session_state_id_seq'), 'Registration Complete', 'registered',
-        'The system has successfully registered with Spacewalk after kickstarting.'
+        'The system has successfully registered with Spacewalk after autoinstalling.'
        );
 
 insert
@@ -98,14 +98,14 @@ insert
   into rhnKickstartSessionState
        (id, name, label, description)
 values (sequence_nextval('rhn_ks_session_state_id_seq'), 'Complete', 'complete',
-        'Kickstart complete.'
+        'Autoinstallation complete.'
        );
 
 insert
   into rhnKickstartSessionState
        (id, name, label, description)
 values (sequence_nextval('rhn_ks_session_state_id_seq'), 'Failed', 'failed',
-        'Kickstart failed.'
+        'Autoinstallation failed.'
        );
 
 commit;
