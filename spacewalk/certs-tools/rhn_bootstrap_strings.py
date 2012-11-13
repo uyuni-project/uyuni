@@ -262,6 +262,10 @@ if [ "$INSTALLER" == zypper ]; then
 
   function getZ_MISSING() {
     local NEEDED="spacewalk-check spacewalk-client-setup spacewalk-client-tools zypp-plugin-spacewalk"
+    if [ "$Z_CLIENT_CODE_BASE" == "sle" -a "$Z_CLIENT_CODE_VERSION" == "10" ]; then
+      # (bnc#789373) Code 10 product migration requires 'xsltproc' being installed
+      which 'xsltproc' || NEEDED="$NEEDED libxslt"
+    fi
     Z_MISSING=""
     for P in $NEEDED; do
       rpm -q "$P" || Z_MISSING="$Z_MISSING $P"
