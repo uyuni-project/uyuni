@@ -259,13 +259,13 @@ def findProduct(product):
 
     log_debug(2, "Search for product: %s" % product)
 
-    if 'version' in product and product['version'] != None and product['version'] != "":
+    if product.get('version'):
         q_version = "or sp.version = :version"
         product_lower['version'] = product['version'].lower()
-    if 'release' in product and product['release'] != None and product['release'] != "":
+    if product.get('release'):
         q_release = "or sp.release = :release"
         product_lower['release'] = product['release'].lower()
-    if 'arch' in product and product['arch'] != None and product['arch'] != "":
+    if product.get('arch'):
         q_arch = "or pat.label = :arch"
         product_lower['arch'] = product['arch'].lower()
 
@@ -300,6 +300,7 @@ def findProduct(product):
 
     return product_id
 
+
 def channelForProduct(product, ostarget, parent_id=None, org_id=None,
                       user_id=None):
     """Find Channels for a given product and ostarget.
@@ -325,7 +326,6 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
     if parent_id:
         parent_statement = " = :parent_id "
         vals['parent_id'] = parent_id
-
 
     h = rhnSQL.prepare("""
         SELECT ca.label arch,
