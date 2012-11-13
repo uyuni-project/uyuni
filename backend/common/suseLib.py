@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2010 Novell
+# Copyright (c) 2010, 2011, 2012 Novell
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -10,10 +10,15 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 import re
 import urlparse
 
 import pycurl
+
 # prevent build dependency cycles
 # pylint: disable=W0611
 from suseRegister.info import getProductProfile, parseProductProfileFile
@@ -21,10 +26,6 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
 from spacewalk.server import rhnSQL
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
 
 YAST_PROXY = "/root/.curlrc"
 
