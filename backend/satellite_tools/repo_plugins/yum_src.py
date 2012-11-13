@@ -43,6 +43,7 @@ except ImportError:
     iterparse = cElementTree.iterparse
 from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException, ContentPackage
 from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common.suseLib import get_proxy_url
 from spacewalk.common import rhnLog
 
 # namespace prefix to parse patches.xml file
@@ -116,25 +117,12 @@ class ContentSource:
         self.configparser = ConfigParser()
         self._clean_cache(CACHE_DIR + name)
 
-        # read the proxy configuration in /etc/rhn/rhn.conf
-        initCFG('server.satellite')
-        self.proxy_addr = CFG.http_proxy
-        self.proxy_user = CFG.http_proxy_username
-        self.proxy_pass = CFG.http_proxy_password
-
         u = urlparse.urlsplit(self.url)
         if u.hostname in ["localhost", "127.0.0.1", "::1"]:
             # no proxy for localhost
             self.proxy_url = None
-        elif (self.proxy_user is not None and
-              self.proxy_pass is not None and
-              self.proxy_addr is not None):
-              self.proxy_url = "http://%s:%s@%s" % (
-                self.proxy_user, self.proxy_pass, self.proxy_addr)
-        elif self.proxy_addr is not None:
-            self.proxy_url = "http://" + self.proxy_addr
         else:
-            self.proxy_url = None
+            self.proxy_url = get_proxy_url()
 
         repo = yum.yumRepo.YumRepository(name)
         repo.populate(self.configparser, name, self.yumbase.conf)
@@ -159,6 +147,8 @@ class ContentSource:
 
         if hasattr(repo, 'base_persistdir'):
             repo.base_persistdir = CACHE_DIR
+
+        initCFG('server.satellite')
         pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, '1', 'stage')
         if not os.path.isdir(pkgdir):
             fileutils.makedirs(pkgdir, user='wwwrun', group='www')

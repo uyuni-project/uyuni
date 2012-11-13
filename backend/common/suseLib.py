@@ -10,10 +10,12 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
+import ConfigParser
 try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
+import os
 import re
 import urlparse
 
@@ -28,6 +30,8 @@ from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
 from spacewalk.server import rhnSQL
 
 YAST_PROXY = "/root/.curlrc"
+SYS_PROXY = "/etc/sysconfig/proxy"
+
 
 class TransferException(Exception):
     """Transfer Error"""
@@ -131,6 +135,9 @@ def send(url, sendData=None):
     curl = pycurl.Curl()
 
     curl.setopt(pycurl.URL, url)
+    proxy_addr = get_proxy_url(with_creds=False)
+    if proxy_addr:
+        curl.setopt(pycurl.PROXY, proxy_addr)
     log_debug(2, "Connect to %s" % url)
     if sendData is not None:
         curl.setopt(pycurl.POSTFIELDS, sendData)
@@ -152,6 +159,10 @@ def send(url, sendData=None):
             if e[0] == 56: # Proxy requires authentication
                 log_debug(2, e[1])
                 proxy_credentials = get_proxy_credentials()
+                if not proxy_credentials:
+                    raise TransferException("Proxy requires authentication, "
+                                            "but reading credentials from "
+                                            "%s failed." % YAST_PROXY)
                 curl.setopt(pycurl.PROXYUSERPWD, proxy_credentials)
             elif e[0] == 60:
                 log_error("Peer certificate could not be authenticated "
@@ -164,7 +175,8 @@ def send(url, sendData=None):
                 raise
 
         status = curl.getinfo(pycurl.HTTP_CODE)
-        if status == 200 or (URL(url).scheme == "file" and status == 0): # OK or file
+        if status == 200 or (URL(url).scheme == "file" and status == 0):
+            # OK or file
             break
         elif status in (301, 302): # redirects
             url = curl.getinfo(pycurl.REDIRECT_URL)
@@ -180,6 +192,7 @@ def send(url, sendData=None):
     # StringIO.write leaves the cursor at the end of the file
     response.seek(0)
     return response
+
 
 def accessible(url):
     """Try if url is accessible
@@ -209,6 +222,10 @@ def accessible(url):
             if e[0] == 56: # Proxy requires authentication
                 log_debug(2, e[1])
                 proxy_credentials = get_proxy_credentials()
+                if not proxy_credentials:
+                    raise TransferException("Proxy requires authentication, "
+                                            "but reading credentials from "
+                                            "%s failed." % YAST_PROXY)
                 curl.setopt(pycurl.PROXYUSERPWD, proxy_credentials)
             else:
                 break
@@ -224,30 +241,45 @@ def accessible(url):
             break
     return False
 
+
 def get_proxy_credentials():
     """Return proxy credentials as a string in the form username:password"""
     try:
-        f = open(YAST_PROXY)
+        with open(YAST_PROXY) as f:
+            contents = f.read()
     except IOError:
-        log_error("Proxy requires authentication. "
-                  "Could not open the file %s in order to get the "
+        log_error("Could not open the file %s in order to get the "
                   "credentials." % YAST_PROXY)
-        raise
-    contents = f.read()
-    f.close()
+        return None
 
-    try:
-        creds = re.search('^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
-                          contents, re.M).group(1)
-    except AttributeError:
-        log_error("Proxy requires authentication. "
-                  "Failed reading credentials from %s"
-                  % YAST_PROXY)
-        raise TransferException("Proxy requires authentication. "
-                                "Failed reading credentials from "
-                                "%s" % YAST_PROXY)
-    creds = re.sub('\\\\"', '"', creds)
+    creds = _parse_proxy_credentials(contents)
+    if not creds:
+        log_error("Failed reading credentials from " + YAST_PROXY)
+
     return creds
+
+
+def get_proxy_url(with_creds=True):
+    """Return a proxy URL
+
+    :with_creds: boolean which specifies if the URL will contain the
+    proxy username:password (e.g. 'https://username:password@my.proxy.com:1234'
+    vs 'https://my.proxy.com:1234'). Note: if the credentials could not
+    be read the URL without them is returned instead without raising an
+    error.
+
+    Returns None if no proxy URL/credentials could be read.
+
+    Order of lookup (https_proxy is always preferred over http_proxy):
+    1. environment variables
+    2. sysconfig/proxy
+    3. .curlrc
+
+    """
+    return (_get_proxy_url_from_environment() or
+            _get_proxy_url_from_sysconfig() or
+            _get_proxy_url_from_yast(with_creds))
+
 
 def findProduct(product):
     q_version = ""
@@ -369,6 +401,16 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
     return ret
 
 
+def config_file_to_ini(filename):
+    """Return a stream object"""
+    with open(filename) as sys_proxy_f:
+        sys_proxy = StringIO()
+        sys_proxy.write('[main]\n')
+        sys_proxy.write(sys_proxy_f.read())
+        sys_proxy.seek(0)
+
+    return sys_proxy
+
 def get_mirror_credentials():
     """Return a list of mirror credential tuples (user, pass)
 
@@ -378,6 +420,7 @@ def get_mirror_credentials():
      server.susemanager.mirrcred_user_1
      server.susemanager.mirrcred_pass_1
      etc.
+
 
     The credentials are read sequentially, when the first value is found
     to be missing, the process is aborted and the list of credentials
@@ -409,3 +452,67 @@ def get_mirror_credentials():
             break
         n += 1
     return creds
+
+
+def _parse_proxy_credentials(text):
+    """Parse proxy credentials from the string :text:"""
+    try:
+        user_pass = re.search('^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
+                              text, re.M).group(1)
+    except AttributeError:
+        return None
+
+    return re.sub('\\\\"', '"', user_pass)
+
+
+def _get_proxy_url_from_environment():
+    for scheme in ['https', 'http']:
+        try:
+            return os.environ[scheme + '_proxy']
+        except KeyError:
+            log_debug("No %s_proxy variable found in environment." % scheme)
+
+
+def _get_proxy_url_from_sysconfig():
+    sys_proxy = config_file_to_ini(SYS_PROXY)
+
+    proxy_conf = ConfigParser.ConfigParser()
+    proxy_conf.readfp(sys_proxy)
+
+    proxy_url = None
+    for scheme in ["HTTPS", "HTTP"]:
+        try:
+            proxy_url = proxy_conf.get("main", scheme + "_PROXY")
+        except ConfigParser.NoOptionError:
+            log_debug("No %s_PROXY option found in %s." % (scheme, SYS_PROXY))
+        if proxy_url:
+            return proxy_url.strip('"')
+
+
+def _parse_proxy_url_from_curl(text):
+    try:
+        return re.search('^[\s-]+proxy\s*=?\s*"(.+)"\s*$',
+                         text, re.M).group(1)
+    except AttributeError:
+        return None
+
+
+def _get_proxy_url_from_yast(with_creds=False):
+    try:
+        with open(YAST_PROXY) as f:
+            contents = f.read()
+    except IOError:
+        log_debug("Couldn't open " + YAST_PROXY)
+        return None
+
+    proxy_url = _parse_proxy_url_from_curl(contents)
+    if not proxy_url:
+        log_debug("Could not read proxy URL from " + YAST_PROXY)
+        return None
+
+    if with_creds:
+        user_pass = _parse_proxy_credentials(contents)
+        if user_pass:
+            proxy_url = URL(proxy_url, *user_pass.split(":"))
+            return proxy_url.getURL()
+    return proxy_url
