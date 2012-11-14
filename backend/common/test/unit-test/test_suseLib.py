@@ -29,13 +29,21 @@ class SuseLibTest(unittest.TestCase):
     def setUpClass(self):
         # clear the environ, otherwise get_proxy_url might find the
         # $https_proxy/$http_proxy envvars
-        self.environ_patch = mock.patch.dict(
+        self.environ = mock.patch.dict(
             "spacewalk.common.suseLib.os.environ", clear=True)
-        self.environ_patch.start()
+        self.environ.start()
+
+        self.initCFG = mock.patch("spacewalk.common.suseLib.initCFG")
+        self.initCFG.start()
+
+        self.CFG = mock.patch("spacewalk.common.suseLib.CFG", http_proxy=None)
+        self.CFG.start()
 
     @classmethod
     def tearDownClass(self):
-        self.environ_patch.stop()
+        self.environ.stop()
+        self.initCFG.stop()
+        self.CFG.stop()
 
     def test_get_proxy_url_env_https(self):
         with mock.patch.dict("spacewalk.common.suseLib.os.environ",
@@ -119,6 +127,25 @@ class SuseLibTest(unittest.TestCase):
                 self.assertIn('Could not read proxy URL from ',
                               log_debug.call_args_list[4][0][0])
 
+    def test_get_proxy_url_rhn_conf_no_creds(self):
+        with mock.patch('spacewalk.common.suseLib.CFG', http_proxy=HTTP_PROXY,
+                        http_proxy_username=None, http_proxy_password=None):
+            with mock.patch('__builtin__.open', return_value=BytesIO()):
+                self.assertEqual(HTTP_PROXY, suseLib.get_proxy_url())
+
+    def test_get_proxy_url_rhn_conf_creds(self):
+        with mock.patch('spacewalk.common.suseLib.CFG', http_proxy=HTTPS_PROXY,
+                        http_proxy_username='user',
+                        http_proxy_password='password'):
+            with mock.patch('__builtin__.open', return_value=BytesIO()):
+                self.assertEqual(HTTPS_PROXY_CREDS, suseLib.get_proxy_url())
+
+    def test_get_proxy_url_rhn_only_username(self):
+        with mock.patch('spacewalk.common.suseLib.CFG', http_proxy=HTTPS_PROXY,
+                        http_proxy_username='user', http_proxy_password=None):
+            with mock.patch('__builtin__.open', return_value=BytesIO()):
+                self.assertEqual(HTTPS_PROXY, suseLib.get_proxy_url())
+        
     def test_get_proxy_credentials(self):
         with mock.patch('__builtin__.open',
                         return_value=BytesIO('--proxy-user "%s"'

@@ -271,12 +271,14 @@ def get_proxy_url(with_creds=True):
     Returns None if no proxy URL/credentials could be read.
 
     Order of lookup (https_proxy is always preferred over http_proxy):
+    0. rhn.conf
     1. environment variables
     2. sysconfig/proxy
     3. .curlrc
 
     """
-    return (_get_proxy_url_from_environment() or
+    return (_get_proxy_url_from_rhn_conf() or
+            _get_proxy_url_from_environment() or
             _get_proxy_url_from_sysconfig() or
             _get_proxy_url_from_yast(with_creds))
 
@@ -411,6 +413,7 @@ def config_file_to_ini(filename):
 
     return sys_proxy
 
+
 def get_mirror_credentials():
     """Return a list of mirror credential tuples (user, pass)
 
@@ -420,7 +423,6 @@ def get_mirror_credentials():
      server.susemanager.mirrcred_user_1
      server.susemanager.mirrcred_pass_1
      etc.
-
 
     The credentials are read sequentially, when the first value is found
     to be missing, the process is aborted and the list of credentials
@@ -516,3 +518,14 @@ def _get_proxy_url_from_yast(with_creds=False):
             proxy_url = URL(proxy_url, *user_pass.split(":"))
             return proxy_url.getURL()
     return proxy_url
+
+
+def _get_proxy_url_from_rhn_conf():
+    initCFG("server.satellite")
+    if CFG.http_proxy:
+        if CFG.http_proxy_username and CFG.http_proxy_password:
+            proxy_url = URL(CFG.http_proxy,
+                            CFG.http_proxy_username,
+                            CFG.http_proxy_password)
+            return proxy_url.getURL()
+        return CFG.http_proxy
