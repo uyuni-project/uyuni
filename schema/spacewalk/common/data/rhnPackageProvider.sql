@@ -25,6 +25,8 @@ insert into rhnPackageProvider (id, name) values
 insert into rhnPackageProvider (id, name) values
 (sequence_nextval('rhn_package_provider_id_seq'), 'SUSE LINUX Products GmbH' );
 insert into rhnPackageProvider (id, name) values
+(sequence_nextval('rhn_package_provider_id_seq'), 'openSUSE' );
+insert into rhnPackageProvider (id, name) values
 (sequence_nextval('rhn_package_provider_id_seq'), 'Oracle Inc.' );
 insert into rhnPackageProvider (id, name) values
 (sequence_nextval('rhn_package_provider_id_seq'), 'Spacewalk' );
