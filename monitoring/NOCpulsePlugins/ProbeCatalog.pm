@@ -12,7 +12,12 @@ sub new {
     bless $self, $class;
 
     my $config = NOCpulse::Config->new();
-    $self->{probe_records} = Storable::retrieve($config->get('netsaint', 'probeRecordDatabase'));
+    my $probeRecordFile = $config->get('netsaint', 'probeRecordDatabase');
+    if (! -e $probeRecordFile ) {
+        die "No probes defined.\n";
+    }
+
+    $self->{probe_records} = Storable::retrieve($probeRecordFile);
 
     return $self;
 }
