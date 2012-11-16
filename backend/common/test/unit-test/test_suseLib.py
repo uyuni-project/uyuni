@@ -60,18 +60,31 @@ class SuseLibTest(unittest.TestCase):
 
     def test_get_proxy_url_sysconfig_https(self):
         with mock_open(suseLib.SYS_PROXY,
-                       'https_proxy = "%s"' % HTTPS_PROXY):
+                       'PROXY_ENABLEd="yes"\nHTTPS_PROXY = "%s"' % HTTPS_PROXY):
             with mock_open(suseLib.YAST_PROXY):
                 self.assertEqual(HTTPS_PROXY, suseLib.get_proxy_url())
 
     def test_get_proxy_url_sysconfig_http(self):
         with mock_open(suseLib.YAST_PROXY):
-            with mock_open(suseLib.SYS_PROXY, 'http_proxy = "%s"' % HTTP_PROXY):
+            with mock_open(suseLib.SYS_PROXY,
+                           'PROXY_ENABLED="yes"\nHTTP_PROXY="%s"'
+                           % HTTP_PROXY):
                     self.assertEqual(HTTP_PROXY, suseLib.get_proxy_url())
+
+    def test_get_proxy_url_sysconfig_proxy_disabled(self):
+        with mock.patch('spacewalk.common.suseLib.log_debug') as log_debug:
+            with mock_open(suseLib.YAST_PROXY):
+                with mock_open(suseLib.SYS_PROXY,
+                               'PROXY_ENABLED="no"\nHTTP_PROXY="%s"'
+                               % HTTP_PROXY):
+                    self.assertIsNone(suseLib.get_proxy_url())
+                    self.assertEqual("Proxy is disabled in sysconfig.",
+                                     log_debug.call_args[0][0])
 
     def test_get_proxy_url_not_in_yast_but_in_sysconfig(self):
         with mock_open(suseLib.YAST_PROXY):
-            with mock_open(suseLib.SYS_PROXY, 'http_proxy = "%s"' % HTTP_PROXY):
+            with mock_open(suseLib.SYS_PROXY,
+                           'PROXY_ENABLED="yes"\nHTTP_PROXY="%s"' % HTTP_PROXY):
                 self.assertEqual(HTTP_PROXY, suseLib.get_proxy_url())
 
     def test_get_proxy_url_credentials(self):
@@ -100,10 +113,10 @@ class SuseLibTest(unittest.TestCase):
                         log_debug.call_args_list[1][0][0])
                     self.assertIn('Could not read proxy URL from ',
                                   log_debug.call_args_list[2][0][0])
-                    self.assertIn('No HTTPS_PROXY option found in ',
-                                  log_debug.call_args_list[3][0][0])
-                    self.assertIn('No HTTP_PROXY option found in ',
-                                  log_debug.call_args_list[4][0][0])
+                    self.assertEqual(
+                        'Proxy is disabled in sysconfig.',
+                        log_debug.call_args_list[3][0][0])
+                    self.assertEqual(4, log_debug.call_count)
 
     def test_get_proxy_url_rhn_conf_no_creds(self):
         with mock.patch('spacewalk.common.suseLib.CFG', http_proxy=HTTP_PROXY,

@@ -481,14 +481,31 @@ def _get_proxy_url_from_sysconfig():
     proxy_conf = ConfigParser.ConfigParser()
     proxy_conf.readfp(sys_proxy)
 
-    proxy_url = None
-    for scheme in ["HTTPS", "HTTP"]:
-        try:
-            proxy_url = proxy_conf.get("main", scheme + "_PROXY")
-        except ConfigParser.NoOptionError:
-            log_debug("No %s_PROXY option found in %s." % (scheme, SYS_PROXY))
-        if proxy_url:
-            return proxy_url.strip('"')
+
+    if _sysconfig_proxy_is_enabled(proxy_conf):
+        proxy_url = None
+        for scheme in ["HTTPS", "HTTP"]:
+            try:
+                proxy_url = proxy_conf.get("main", scheme + "_PROXY")
+            except ConfigParser.NoOptionError:
+                log_debug("No %s_PROXY option found in %s."
+                          % (scheme, SYS_PROXY))
+            if proxy_url:
+                return proxy_url.strip('"')
+    else:
+        log_debug("Proxy is disabled in sysconfig.")
+
+
+def _sysconfig_proxy_is_enabled(proxy_conf):
+    try:
+        proxy_enabled = proxy_conf.get('main', 'proxy_enabled')
+    except ConfigParser.NoOptionError:
+        return False
+
+    if proxy_enabled == '"yes"':
+        return True
+    else:
+        return False
 
 
 def _parse_proxy_url_from_curl(text):
