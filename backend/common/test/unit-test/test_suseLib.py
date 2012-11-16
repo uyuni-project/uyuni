@@ -11,7 +11,7 @@
 #
 
 from io import BytesIO
-from contextlib import nested
+from contextlib import contextmanager
 import unittest2 as unittest
 
 import mock
@@ -59,97 +59,70 @@ class SuseLibTest(unittest.TestCase):
             self.assertEqual(HTTP_PROXY, suseLib.get_proxy_url())
 
     def test_get_proxy_url_sysconfig_https(self):
-        with mock.patch('spacewalk.common.suseLib.config_file_to_ini',
-                        return_value=BytesIO('[main]\n'
-                                             'https_proxy = "%s"'
-                                             % HTTPS_PROXY)):
-            self.assertEqual(HTTPS_PROXY, suseLib.get_proxy_url())
+        with mock_open(suseLib.SYS_PROXY,
+                       'https_proxy = "%s"' % HTTPS_PROXY):
+            with mock_open(suseLib.YAST_PROXY):
+                self.assertEqual(HTTPS_PROXY, suseLib.get_proxy_url())
 
     def test_get_proxy_url_sysconfig_http(self):
-        with mock.patch('spacewalk.common.suseLib.config_file_to_ini',
-                        return_value=BytesIO('[main]\n'
-                                             'http_proxy = "%s"'
-                                             % HTTP_PROXY)):
-            self.assertEqual(HTTP_PROXY, suseLib.get_proxy_url())
-
-    def test_get_proxy_url_not_in_sysconfig_but_in_yast(self):
-        with mock.patch('__builtin__.open',
-                        return_value=(BytesIO('--proxy "%s"' % HTTP_PROXY))):
-            with mock.patch('spacewalk.common.suseLib.log_debug') as log_debug:
-                with mock.patch('spacewalk.common.suseLib.config_file_to_ini',
-                                return_value=BytesIO('[main]')):
+        with mock_open(suseLib.YAST_PROXY):
+            with mock_open(suseLib.SYS_PROXY, 'http_proxy = "%s"' % HTTP_PROXY):
                     self.assertEqual(HTTP_PROXY, suseLib.get_proxy_url())
-                    self.assertIn("No HTTP_PROXY option found",
-                                  log_debug.call_args[0][0])
 
-    def test_get_proxy_url_parsing_failed(self):
-        with mock.patch('__builtin__.open', return_value=BytesIO()):
-            with mock.patch("spacewalk.common.suseLib.log_debug") as log_debug:
-                with mock.patch('spacewalk.common.suseLib.config_file_to_ini',
-                                return_value=BytesIO('[main]')):
-                    self.assertIsNone(suseLib.get_proxy_url())
-                    self.assertIn("Could not read proxy URL",
-                                  log_debug.call_args[0][0])
+    def test_get_proxy_url_not_in_yast_but_in_sysconfig(self):
+        with mock_open(suseLib.YAST_PROXY):
+            with mock_open(suseLib.SYS_PROXY, 'http_proxy = "%s"' % HTTP_PROXY):
+                self.assertEqual(HTTP_PROXY, suseLib.get_proxy_url())
 
     def test_get_proxy_url_credentials(self):
-        with mock.patch('__builtin__.open',
-                        return_value=(BytesIO('--proxy "%s"'
-                                              '\n --proxy-user "%s"'
-                                              % (HTTPS_PROXY, PROXY_USER)))):
-            with mock.patch('spacewalk.common.suseLib.config_file_to_ini',
-                            return_value=BytesIO('[main]')):
-                self.assertEqual(HTTPS_PROXY_CREDS, suseLib.get_proxy_url())
+        with mock_open(suseLib.YAST_PROXY,
+                       '--proxy "%s"\n --proxy-user "%s"'
+                       % (HTTPS_PROXY, PROXY_USER)):
+            self.assertEqual(HTTPS_PROXY_CREDS, suseLib.get_proxy_url())
 
     def test_get_proxy_url_without_credentials(self):
-        with mock.patch('spacewalk.common.suseLib.config_file_to_ini',
-                        return_value=BytesIO("[main]")):
-            with mock.patch('__builtin__.open',
-                            return_value=BytesIO(' --proxy "%s"\n'
-                                                 ' --proxy-user "%s"'
-                                                 % (HTTPS_PROXY, PROXY_USER))):
-                self.assertEqual(HTTPS_PROXY,
-                                 suseLib.get_proxy_url(with_creds=False))
+        with mock_open(suseLib.YAST_PROXY,
+                       ' --proxy "%s"\n --proxy-user "%s"'
+                       % (HTTPS_PROXY, PROXY_USER)):
+            self.assertEqual(HTTPS_PROXY,
+                             suseLib.get_proxy_url(with_creds=False))
 
     def test_get_proxy_url_none(self):
-        with mock.patch('__builtin__.open', lambda *args: BytesIO()):
-            with mock.patch('spacewalk.common.suseLib.log_debug') as log_debug:
-                self.assertIsNone(suseLib.get_proxy_url())
-                self.assertEqual(
-                    'No https_proxy variable found in environment.',
-                    log_debug.call_args_list[0][0][0])
-                self.assertEqual(
-                    'No http_proxy variable found in environment.',
-                    log_debug.call_args_list[1][0][0])
-                self.assertIn('No HTTPS_PROXY option found in ',
-                              log_debug.call_args_list[2][0][0])
-                self.assertIn('No HTTP_PROXY option found in ',
-                              log_debug.call_args_list[3][0][0])
-                self.assertIn('Could not read proxy URL from ',
-                              log_debug.call_args_list[4][0][0])
+        with mock.patch('spacewalk.common.suseLib.log_debug') as log_debug:
+            with mock_open(suseLib.YAST_PROXY):
+                with mock_open(suseLib.SYS_PROXY):
+                    self.assertIsNone(suseLib.get_proxy_url())
+                    self.assertEqual(
+                        'No https_proxy variable found in environment.',
+                        log_debug.call_args_list[0][0][0])
+                    self.assertEqual(
+                        'No http_proxy variable found in environment.',
+                        log_debug.call_args_list[1][0][0])
+                    self.assertIn('Could not read proxy URL from ',
+                                  log_debug.call_args_list[2][0][0])
+                    self.assertIn('No HTTPS_PROXY option found in ',
+                                  log_debug.call_args_list[3][0][0])
+                    self.assertIn('No HTTP_PROXY option found in ',
+                                  log_debug.call_args_list[4][0][0])
 
     def test_get_proxy_url_rhn_conf_no_creds(self):
         with mock.patch('spacewalk.common.suseLib.CFG', http_proxy=HTTP_PROXY,
                         http_proxy_username=None, http_proxy_password=None):
-            with mock.patch('__builtin__.open', return_value=BytesIO()):
-                self.assertEqual(HTTP_PROXY, suseLib.get_proxy_url())
+            self.assertEqual(HTTP_PROXY, suseLib.get_proxy_url())
 
     def test_get_proxy_url_rhn_conf_creds(self):
         with mock.patch('spacewalk.common.suseLib.CFG', http_proxy=HTTPS_PROXY,
                         http_proxy_username='user',
                         http_proxy_password='password'):
-            with mock.patch('__builtin__.open', return_value=BytesIO()):
-                self.assertEqual(HTTPS_PROXY_CREDS, suseLib.get_proxy_url())
+            self.assertEqual(HTTPS_PROXY_CREDS, suseLib.get_proxy_url())
 
     def test_get_proxy_url_rhn_only_username(self):
         with mock.patch('spacewalk.common.suseLib.CFG', http_proxy=HTTPS_PROXY,
                         http_proxy_username='user', http_proxy_password=None):
-            with mock.patch('__builtin__.open', return_value=BytesIO()):
-                self.assertEqual(HTTPS_PROXY, suseLib.get_proxy_url())
-        
+            self.assertEqual(HTTPS_PROXY, suseLib.get_proxy_url())
+
     def test_get_proxy_credentials(self):
-        with mock.patch('__builtin__.open',
-                        return_value=BytesIO('--proxy-user "%s"'
-                                             % PROXY_USER)):
+        with mock_open(suseLib.YAST_PROXY, '--proxy-user "%s"' % PROXY_USER):
             self.assertEqual(PROXY_USER, suseLib.get_proxy_credentials())
 
     def test_get_proxy_credentials_file_open_failed(self):
@@ -159,7 +132,60 @@ class SuseLibTest(unittest.TestCase):
                 log_debug.assert_called()
 
     def test_get_proxy_credentials_parsing_failed(self):
-        with mock.patch('__builtin__.open', return_value=BytesIO()):
+        with mock_open(suseLib.YAST_PROXY):
             with mock.patch("spacewalk.common.suseLib.log_debug") as log_debug:
                 self.assertIsNone(suseLib.get_proxy_credentials())
                 log_debug.assert_called()
+
+
+@contextmanager
+def mock_open(filename, contents=None, complain=True):
+    """Mock __builtin__.open() on a specific filename
+
+    Let execution pass through to __builtin__.open() on other
+    files. Return a BytesIO with :contents: if the file was matched. If
+    the :contents: parameter is not given or if it None, a BytesIO
+    instance simulating an empty file is returned.
+
+    If :complain: is True (default). Will raise an error if a
+    __builtin__.open was called with a file that was not mocked.
+
+    """
+    open_files = []  # simulate non-local scope with mutable lists
+    def mock_file(*args):
+        if args[0] == filename:
+            r = BytesIO(contents)
+            r.name = filename
+        else:
+            mocked_file.stop()
+            r = open(*args)
+            mocked_file.start()
+
+        open_files.append(r)
+        return r
+
+    mocked_file = mock.patch('__builtin__.open', mock_file)
+    mocked_file.start()
+    try:
+        yield
+    except NotMocked as e:
+        if e.filename != filename:
+            raise
+    mocked_file.stop()
+
+    found = False
+    for f in open_files:
+        f.close()
+        if f.name == filename:
+            found = f
+        elif complain:
+            raise NotMocked(f.name)
+
+    if not found:
+        raise AssertionError("The file %s was not opened." % filename)
+
+class NotMocked(Exception):
+    def __init__(self, filename):
+        super(NotMocked, self).__init__(
+            "The file %s was opened, but not mocked." % filename)
+        self.filename = filename

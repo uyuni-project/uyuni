@@ -271,16 +271,16 @@ def get_proxy_url(with_creds=True):
     Returns None if no proxy URL/credentials could be read.
 
     Order of lookup (https_proxy is always preferred over http_proxy):
-    0. rhn.conf
-    1. environment variables
-    2. sysconfig/proxy
-    3. .curlrc
+    0. rhn.conf (server.satellite.http_proxy)
+    1. environment variables (https_proxy/http_proxy)
+    2. .curlrc (--proxy, --proxy-user)
+    3. sysconfig/proxy (https_proxy/http_proxy)
 
     """
     return (_get_proxy_url_from_rhn_conf() or
             _get_proxy_url_from_environment() or
-            _get_proxy_url_from_sysconfig() or
-            _get_proxy_url_from_yast(with_creds))
+            _get_proxy_url_from_yast(with_creds) or
+            _get_proxy_url_from_sysconfig())
 
 
 def findProduct(product):
