@@ -117,7 +117,7 @@ BuildRequires: antlr >= 2.7.6
 BuildRequires: tanukiwrapper
 Requires: classpathx-mail
 BuildRequires: classpathx-mail
-BuildRequires: /usr/bin/xmllint
+BuildRequires: libxml2-tools
 BuildRequires: /usr/bin/perl
 %if 0%{?run_checkstyle}
 BuildRequires: checkstyle
