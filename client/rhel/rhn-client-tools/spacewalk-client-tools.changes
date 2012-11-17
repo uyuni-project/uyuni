@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Nov 17 14:33:36 CET 2012 - mc@suse.de
+
+- fix leaking file descriptor (bnc#787156)
+
+-------------------------------------------------------------------
 Fri Sep 28 09:31:02 CEST 2012 - mc@suse.de
 
 - fix getOSVersionAndRelease for multiple products
