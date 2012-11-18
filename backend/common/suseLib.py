@@ -287,7 +287,7 @@ def get_proxy_url(with_creds=True):
     3. sysconfig/proxy (https_proxy/http_proxy)
 
     """
-    return (_get_proxy_url_from_rhn_conf() or
+    return (_get_proxy_url_from_rhn_conf(with_creds) or
             _get_proxy_url_from_environment() or
             _get_proxy_url_from_yast(with_creds) or
             _get_proxy_url_from_sysconfig())
@@ -547,12 +547,12 @@ def _get_proxy_url_from_yast(with_creds=False):
     return proxy_url
 
 
-def _get_proxy_url_from_rhn_conf():
+def _get_proxy_url_from_rhn_conf(with_creds=False):
     initCFG("server.satellite")
     if CFG.http_proxy:
         # CFG.http_proxy format is <hostname>[:<port>] in 1.7
         url = 'http://%s' % CFG.http_proxy
-        if CFG.http_proxy_username and CFG.http_proxy_password:
+        if with_creds and CFG.http_proxy_username and CFG.http_proxy_password:
             proxy_url = URL(url,
                             CFG.http_proxy_username,
                             CFG.http_proxy_password)
