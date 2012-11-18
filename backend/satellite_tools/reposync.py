@@ -474,7 +474,7 @@ class RepoSync(object):
             }
             if self.channel['org_id']:
                 org_statement = "and p.org_id = :channel_org"
-                params['org_id'] = self.channel['org_id']
+                params['channel_org'] = self.channel['org_id']
             else:
                 org_statement = "and p.org_id is NULL"
 
