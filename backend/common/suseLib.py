@@ -482,7 +482,7 @@ def _get_proxy_url_from_environment():
         try:
             return os.environ[scheme + '_proxy']
         except KeyError:
-            log_debug("No %s_proxy variable found in environment." % scheme)
+            log_debug(1, "No %s_proxy variable found in environment." % scheme)
 
 
 def _get_proxy_url_from_sysconfig():
@@ -498,12 +498,12 @@ def _get_proxy_url_from_sysconfig():
             try:
                 proxy_url = proxy_conf.get("main", scheme + "_PROXY")
             except ConfigParser.NoOptionError:
-                log_debug("No %s_PROXY option found in %s."
+                log_debug(1, "No %s_PROXY option found in %s."
                           % (scheme, SYS_PROXY))
             if proxy_url:
                 return proxy_url.strip('"')
     else:
-        log_debug("Proxy is disabled in sysconfig.")
+        log_debug(1, "Proxy is disabled in sysconfig.")
 
 
 def _sysconfig_proxy_is_enabled(proxy_conf):
@@ -531,12 +531,12 @@ def _get_proxy_url_from_yast(with_creds=False):
         with open(YAST_PROXY) as f:
             contents = f.read()
     except IOError:
-        log_debug("Couldn't open " + YAST_PROXY)
+        log_debug(1, "Couldn't open " + YAST_PROXY)
         return None
 
     proxy_url = _parse_proxy_url_from_curl(contents)
     if not proxy_url:
-        log_debug("Could not read proxy URL from " + YAST_PROXY)
+        log_debug(1, "Could not read proxy URL from " + YAST_PROXY)
         return None
 
     if with_creds:
