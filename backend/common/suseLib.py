@@ -205,6 +205,9 @@ def accessible(url):
     curl = pycurl.Curl()
 
     curl.setopt(pycurl.URL, url)
+    proxy_addr = get_proxy_url(with_creds=False)
+    if proxy_addr:
+        curl.setopt(pycurl.PROXY, proxy_addr)
     log_debug(2, "Connect to %s" % url)
 
     # We implement our own redirection-following, because pycurl
