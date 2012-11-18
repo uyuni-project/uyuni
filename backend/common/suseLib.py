@@ -246,18 +246,25 @@ def accessible(url):
 
 
 def get_proxy_credentials():
-    """Return proxy credentials as a string in the form username:password"""
-    try:
-        with open(YAST_PROXY) as f:
-            contents = f.read()
-    except IOError:
-        log_error("Could not open the file %s in order to get the "
-                  "credentials." % YAST_PROXY)
-        return None
+    """Return proxy credentials as a string in the form username:password
 
-    creds = _parse_proxy_credentials(contents)
+    Order of lookup:
+    1. rhn.conf
+    2. .curlrc
+    """
+    creds = _get_proxy_auth_from_rhn_conf()
     if not creds:
-        log_error("Failed reading credentials from " + YAST_PROXY)
+        try:
+            with open(YAST_PROXY) as f:
+                contents = f.read()
+        except IOError:
+            log_error("Could not open the file %s in order to get the "
+                      "credentials." % YAST_PROXY)
+            return None
+
+        creds = _parse_proxy_credentials(contents)
+        if not creds:
+            log_error("Failed reading credentials from " + YAST_PROXY)
 
     return creds
 
@@ -551,3 +558,9 @@ def _get_proxy_url_from_rhn_conf():
                             CFG.http_proxy_password)
             return proxy_url.getURL()
         return url
+
+def _get_proxy_auth_from_rhn_conf():
+    initCFG("server.satellite")
+    if CFG.http_proxy_username and CFG.http_proxy_password:
+        return "%s:%s" % (CFG.http_proxy_username, CFG.http_proxy_password)
+
