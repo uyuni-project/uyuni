@@ -43,6 +43,7 @@ class YumSrcTest(unittest.TestCase):
         yum_src.os.path.isdir = Mock()
 
         yum_src.get_proxy_url = Mock(return_value=None)
+        yum_src.get_proxy_credentials = Mock(return_value=None)
 
         cs = yum_src.ContentSource("http://example.com", "test_repo")
         cs.sack = Mock()
