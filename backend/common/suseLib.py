@@ -540,9 +540,11 @@ def _get_proxy_url_from_yast(with_creds=False):
 def _get_proxy_url_from_rhn_conf():
     initCFG("server.satellite")
     if CFG.http_proxy:
+        # CFG.http_proxy format is <hostname>[:<port>] in 1.7
+        url = 'http://%s' % CFG.http_proxy
         if CFG.http_proxy_username and CFG.http_proxy_password:
-            proxy_url = URL(CFG.http_proxy,
+            proxy_url = URL(url,
                             CFG.http_proxy_username,
                             CFG.http_proxy_password)
             return proxy_url.getURL()
-        return CFG.http_proxy
+        return url
