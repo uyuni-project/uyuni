@@ -21,7 +21,7 @@
 	`RichText (`id (`rt), sformat (_("<p>SUSE Manager Setup is now complete.</p><br>
 <p>Use <b>mgr-ncc-sync</b> to add repositories.</p>
 <p>Visit <b>https://%1</b> to create the SUSE Manager administrator account.</p>
-<p>For more information, refer to the SUSE Manager Quick Start or see <b>http://www.novell.com/documentation/suse_manager/</b>.</p>"), Hostname::CurrentFQ ())),
+<p>For more information, refer to the SUSE Manager Quick Start or see <b>http://www.suse.com/documentation/suse_manager/</b>.</p>"), Hostname::CurrentFQ ())),
 	`VSpacing (2)
     ), `HSpacing (1));
 
