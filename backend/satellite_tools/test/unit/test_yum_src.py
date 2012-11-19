@@ -19,6 +19,7 @@ import unittest
 from StringIO import StringIO
 from collections import namedtuple
 
+import mock
 from mock import Mock
 
 from spacewalk.satellite_tools.reposync import ContentPackage
@@ -35,6 +36,8 @@ class YumSrcTest(unittest.TestCase):
         yum_src.ContentSource.initgpgdir = Mock()
 
         # don't read configs
+        mock.patch('spacewalk.common.suseLib.initCFG').start()
+        mock.patch('spacewalk.common.suseLib.CFG').start()
         yum_src.initCFG = Mock()
         yum_src.CFG = Mock()
         yum_src.CFG.MOUNT_POINT = ''
@@ -42,8 +45,7 @@ class YumSrcTest(unittest.TestCase):
         yum_src.fileutils.makedirs = Mock()
         yum_src.os.path.isdir = Mock()
 
-        yum_src.get_proxy_url = Mock(return_value=None)
-        yum_src.get_proxy_credentials = Mock(return_value=None)
+        yum_src.get_proxy = Mock(return_value=(None, None, None))
 
         cs = yum_src.ContentSource("http://example.com", "test_repo")
         cs.sack = Mock()

@@ -10,12 +10,10 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
-import ConfigParser
 try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
-import os
 import re
 import urlparse
 
@@ -135,9 +133,9 @@ def send(url, sendData=None):
     curl = pycurl.Curl()
 
     curl.setopt(pycurl.URL, url)
-    proxy_addr = get_proxy_url(with_creds=False)
-    if proxy_addr:
-        curl.setopt(pycurl.PROXY, proxy_addr)
+    proxy_url, proxy_user, proxy_pass = get_proxy()
+    if proxy_url:
+        curl.setopt(pycurl.PROXY, proxy_url)
     log_debug(2, "Connect to %s" % url)
     if sendData is not None:
         curl.setopt(pycurl.POSTFIELDS, sendData)
@@ -158,12 +156,12 @@ def send(url, sendData=None):
         except pycurl.error, e:
             if e[0] == 56: # Proxy requires authentication
                 log_debug(2, e[1])
-                proxy_credentials = get_proxy_credentials()
-                if not proxy_credentials:
+                if not (proxy_user and proxy_pass):
                     raise TransferException("Proxy requires authentication, "
                                             "but reading credentials from "
                                             "%s failed." % YAST_PROXY)
-                curl.setopt(pycurl.PROXYUSERPWD, proxy_credentials)
+                curl.setopt(pycurl.PROXYUSERPWD,
+                            "%s:%s" % proxy_user, proxy_pass)
             elif e[0] == 60:
                 log_error("Peer certificate could not be authenticated "
                           "with known CA certificates.")
@@ -205,9 +203,9 @@ def accessible(url):
     curl = pycurl.Curl()
 
     curl.setopt(pycurl.URL, url)
-    proxy_addr = get_proxy_url(with_creds=False)
-    if proxy_addr:
-        curl.setopt(pycurl.PROXY, proxy_addr)
+    proxy_url, proxy_user, proxy_pass = get_proxy()
+    if proxy_url:
+        curl.setopt(pycurl.PROXY, proxy_url)
     log_debug(2, "Connect to %s" % url)
 
     # We implement our own redirection-following, because pycurl
@@ -224,12 +222,12 @@ def accessible(url):
         except pycurl.error, e:
             if e[0] == 56: # Proxy requires authentication
                 log_debug(2, e[1])
-                proxy_credentials = get_proxy_credentials()
-                if not proxy_credentials:
+                if not (proxy_user and proxy_pass):
                     raise TransferException("Proxy requires authentication, "
                                             "but reading credentials from "
                                             "%s failed." % YAST_PROXY)
-                curl.setopt(pycurl.PROXYUSERPWD, proxy_credentials)
+                curl.setopt(pycurl.PROXYUSERPWD,
+                            "%s:%s" % proxy_user, proxy_pass)
             else:
                 break
 
@@ -245,52 +243,19 @@ def accessible(url):
     return False
 
 
-def get_proxy_credentials():
-    """Return proxy credentials as a string in the form username:password
-
-    Order of lookup:
-    1. rhn.conf
-    2. .curlrc
-    """
-    creds = _get_proxy_auth_from_rhn_conf()
-    if not creds:
-        try:
-            with open(YAST_PROXY) as f:
-                contents = f.read()
-        except IOError:
-            log_error("Could not open the file %s in order to get the "
-                      "credentials." % YAST_PROXY)
-            return None
-
-        creds = _parse_proxy_credentials(contents)
-        if not creds:
-            log_error("Failed reading credentials from " + YAST_PROXY)
-
-    return creds
-
-
-def get_proxy_url(with_creds=True):
-    """Return a proxy URL
-
-    :with_creds: boolean which specifies if the URL will contain the
-    proxy username:password (e.g. 'https://username:password@my.proxy.com:1234'
-    vs 'https://my.proxy.com:1234'). Note: if the credentials could not
-    be read the URL without them is returned instead without raising an
-    error.
+def get_proxy():
+    """Return proxy information as a (url, username, password) tuple
 
     Returns None if no proxy URL/credentials could be read.
 
     Order of lookup (https_proxy is always preferred over http_proxy):
-    0. rhn.conf (server.satellite.http_proxy)
-    1. environment variables (https_proxy/http_proxy)
+    1. rhn.conf (server.satellite.http_proxy)
     2. .curlrc (--proxy, --proxy-user)
-    3. sysconfig/proxy (https_proxy/http_proxy)
 
     """
-    return (_get_proxy_url_from_rhn_conf(with_creds) or
-            _get_proxy_url_from_environment() or
-            _get_proxy_url_from_yast(with_creds) or
-            _get_proxy_url_from_sysconfig())
+    return (_get_proxy_from_rhn_conf() or
+            _get_proxy_from_yast() or
+            (None, None, None))
 
 
 def findProduct(product):
@@ -413,17 +378,6 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
     return ret
 
 
-def config_file_to_ini(filename):
-    """Return a stream object"""
-    with open(filename) as sys_proxy_f:
-        sys_proxy = StringIO()
-        sys_proxy.write('[main]\n')
-        sys_proxy.write(sys_proxy_f.read())
-        sys_proxy.seek(0)
-
-    return sys_proxy
-
-
 def get_mirror_credentials():
     """Return a list of mirror credential tuples (user, pass)
 
@@ -466,59 +420,22 @@ def get_mirror_credentials():
     return creds
 
 
-def _parse_proxy_credentials(text):
-    """Parse proxy credentials from the string :text:"""
+def _parse_curl_proxy_credentials(text):
+    """Parse proxy credentials from the string :text:
+
+    Return a (username, password) tuple or (None, None).
+
+    """
     try:
         user_pass = re.search('^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
                               text, re.M).group(1)
     except AttributeError:
-        return None
+        return (None, None)
 
-    return re.sub('\\\\"', '"', user_pass)
-
-
-def _get_proxy_url_from_environment():
-    for scheme in ['https', 'http']:
-        try:
-            return os.environ[scheme + '_proxy']
-        except KeyError:
-            log_debug(1, "No %s_proxy variable found in environment." % scheme)
+    return re.sub('\\\\"', '"', user_pass).split(":")
 
 
-def _get_proxy_url_from_sysconfig():
-    sys_proxy = config_file_to_ini(SYS_PROXY)
-
-    proxy_conf = ConfigParser.ConfigParser()
-    proxy_conf.readfp(sys_proxy)
-
-
-    if _sysconfig_proxy_is_enabled(proxy_conf):
-        proxy_url = None
-        for scheme in ["HTTPS", "HTTP"]:
-            try:
-                proxy_url = proxy_conf.get("main", scheme + "_PROXY")
-            except ConfigParser.NoOptionError:
-                log_debug(1, "No %s_PROXY option found in %s."
-                          % (scheme, SYS_PROXY))
-            if proxy_url:
-                return proxy_url.strip('"')
-    else:
-        log_debug(1, "Proxy is disabled in sysconfig.")
-
-
-def _sysconfig_proxy_is_enabled(proxy_conf):
-    try:
-        proxy_enabled = proxy_conf.get('main', 'proxy_enabled')
-    except ConfigParser.NoOptionError:
-        return False
-
-    if proxy_enabled == '"yes"':
-        return True
-    else:
-        return False
-
-
-def _parse_proxy_url_from_curl(text):
+def _parse_curl_proxy_url(text):
     try:
         return re.search('^[\s-]+proxy\s*=?\s*"(.+)"\s*$',
                          text, re.M).group(1)
@@ -526,7 +443,13 @@ def _parse_proxy_url_from_curl(text):
         return None
 
 
-def _get_proxy_url_from_yast(with_creds=False):
+def _get_proxy_from_yast():
+    """Return a tuple of (url, user, pass) proxy information from YaST
+
+    Returns None instead of a tuple if there was no proxy url. user,
+    pass can be None.
+
+    """
     try:
         with open(YAST_PROXY) as f:
             contents = f.read()
@@ -534,33 +457,26 @@ def _get_proxy_url_from_yast(with_creds=False):
         log_debug(1, "Couldn't open " + YAST_PROXY)
         return None
 
-    proxy_url = _parse_proxy_url_from_curl(contents)
+    proxy_url = _parse_curl_proxy_url(contents)
     if not proxy_url:
         log_debug(1, "Could not read proxy URL from " + YAST_PROXY)
         return None
 
-    if with_creds:
-        user_pass = _parse_proxy_credentials(contents)
-        if user_pass:
-            proxy_url = URL(proxy_url, *user_pass.split(":"))
-            return proxy_url.getURL()
-    return proxy_url
+    username, password = _parse_curl_proxy_credentials(contents)
+
+    return (proxy_url, username, password)
 
 
-def _get_proxy_url_from_rhn_conf(with_creds=False):
+def _get_proxy_from_rhn_conf():
+    """Return a tuple of (url, user, pass) proxy information from rhn config
+
+    Returns None instead of a tuple if there was no proxy url. user,
+    pass can be None.
+
+    """
     initCFG("server.satellite")
     if CFG.http_proxy:
         # CFG.http_proxy format is <hostname>[:<port>] in 1.7
         url = 'http://%s' % CFG.http_proxy
-        if with_creds and CFG.http_proxy_username and CFG.http_proxy_password:
-            proxy_url = URL(url,
-                            CFG.http_proxy_username,
-                            CFG.http_proxy_password)
-            return proxy_url.getURL()
-        return url
-
-def _get_proxy_auth_from_rhn_conf():
-    initCFG("server.satellite")
-    if CFG.http_proxy_username and CFG.http_proxy_password:
-        return "%s:%s" % (CFG.http_proxy_username, CFG.http_proxy_password)
-
+        return (url, CFG.http_proxy_username, CFG.http_proxy_password)
+    log_debug(1, "Could not read proxy URL from rhn config.")

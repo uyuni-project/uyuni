@@ -43,7 +43,7 @@ except ImportError:
     iterparse = cElementTree.iterparse
 from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException, ContentPackage
 from spacewalk.common.rhnConfig import CFG, initCFG
-from spacewalk.common.suseLib import get_proxy_url, get_proxy_credentials
+from spacewalk.common.suseLib import get_proxy
 from spacewalk.common import rhnLog
 
 # namespace prefix to parse patches.xml file
@@ -122,11 +122,7 @@ class ContentSource:
             # no proxy for localhost
             self.proxy_url = None
         else:
-            self.proxy_url = get_proxy_url(with_creds=False)
-            pcreds = get_proxy_credentials()
-            if pcreds:
-                self.proxy_user = pcreds.split(':', 1)[0]
-                self.proxy_pass = pcreds.split(':', 1)[1]
+            self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy()
 
         repo = yum.yumRepo.YumRepository(name)
         repo.populate(self.configparser, name, self.yumbase.conf)
