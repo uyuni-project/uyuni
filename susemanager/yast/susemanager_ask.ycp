@@ -24,7 +24,7 @@
 
 	`Left (`RadioButton (`id (`start), `opt (`notify),
 	    // radio button label
-	    _("Setup SUSE Manager from scratch"), !migration)),
+	    _("Set up SUSE Manager from scratch"), !migration)),
 	`VSpacing (),
 	`Left (`RadioButton (`id (`migration), `opt (`notify),
 	    // radio button label
