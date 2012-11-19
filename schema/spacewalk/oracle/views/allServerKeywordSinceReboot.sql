@@ -23,5 +23,5 @@ SELECT DISTINCT S.id, S.NAME,
    AND P.name_id = SP.name_id
    AND EP.errata_id = E.id 
    AND EP.package_id = P.id
-   AND (to_date('1970-01-01', 'YYYY-MM-DD') + numtodsinterval(S.last_boot, 'second')) < SP.installtime
+   AND (to_timestamp_tz('19700101 00:00:00 +0:00','yyyymmdd hh24:mi:ss tzh:tzm') + numtodsinterval(S.last_boot, 'second')) < SP.installtime
    AND E.id = EK.errata_id;
