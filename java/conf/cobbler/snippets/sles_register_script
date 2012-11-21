@@ -1,0 +1,50 @@
+# begin SUSE Manager registration
+<script>
+    <filename>spacewalk-sles_register.sh</filename>
+    <source>
+        <![CDATA[
+#if $redhat_management_key != ""
+mkdir -p /usr/share/rhn/
+   #set $mycert_file = "RHN-ORG-TRUSTED-SSL-CERT"
+   #set $mycert = "/usr/share/rhn/" + $mycert_file
+wget http://$redhat_management_server/pub/RHN-ORG-TRUSTED-SSL-CERT -O $mycert
+ln -s $mycert /etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem
+c_rehash
+perl -npe 's/RHNS-CA-CERT/$mycert_file/g' -i /etc/sysconfig/rhn/*
+   #set $endpoint = "https://%s/XMLRPC" % $redhat_management_server
+key=""
+if [ -f /tmp/key ]; then
+    key=`cat /tmp/key`
+fi
+
+echo "export redhat_management_key=$redhat_management_key" > /var/adm/autoinstall/cache/SUSE_Manager_keys
+
+#if $varExists('registration_key')
+redhat_management_key="$redhat_management_key,$registration_key"
+echo "export registration_key=$registration_key" >> /var/adm/autoinstall/cache/SUSE_Manager_keys
+#else
+# the variable 'registration_key' was not set
+redhat_management_key="$redhat_management_key"
+#end if
+
+#if not $varExists('dont_register')
+# if you don't want to register, set the 'dont_register' variable
+echo "export sm_registred=1" >> /var/adm/autoinstall/cache/SUSE_Manager_keys
+if [ \$key ]; then
+    rhnreg_ks --serverUrl=$endpoint --sslCACert=$mycert --activationkey=\$key,\$redhat_management_key --force
+else
+     rhnreg_ks --serverUrl=$endpoint --sslCACert=$mycert --activationkey=\$redhat_management_key --force
+fi
+#else
+# registration turned off
+echo "export sm_registred=0" >> /var/adm/autoinstall/cache/SUSE_Manager_keys
+#end if
+
+#else
+# not configured to register to any Red Hat management server (ok)
+#end if
+        ]]>
+    </source>
+</script>
+# end SUSE Manager registration
+
