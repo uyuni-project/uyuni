@@ -3,7 +3,6 @@
 mkdir -p /usr/share/rhn/
    #set $mycert_file = "RHN-ORG-TRUSTED-SSL-CERT"
    #set $mycert = "/usr/share/rhn/" + $mycert_file
-sleep 15
 wget http://$redhat_management_server/pub/RHN-ORG-TRUSTED-SSL-CERT -O $mycert
 ln -s $mycert /etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem
 c_rehash
