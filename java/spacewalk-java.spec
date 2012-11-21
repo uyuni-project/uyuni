@@ -453,6 +453,7 @@ install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{cob
 install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{cobdirsnippets}/post_delete_system
 install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{cobdirsnippets}/redhat_register
 install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{cobdirsnippets}/sles_register
+install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{cobdirsnippets}/sles_register_script
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{cobdirsnippets}/sles_no_signature_checks
 
 ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT/%{_bindir}/taskomaticd
@@ -655,6 +656,7 @@ fi
 %config %{cobdirsnippets}/post_delete_system
 %config %{cobdirsnippets}/redhat_register
 %config %{cobdirsnippets}/sles_register
+%config %{cobdirsnippets}/sles_register_script
 %config %{cobdirsnippets}/sles_no_signature_checks
 %if  0%{?rhel} && 0%{?rhel} < 6
 %config(noreplace) %{_sysconfdir}/tomcat5/Catalina/localhost/rhn.xml
