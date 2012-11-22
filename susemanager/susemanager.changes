@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Nov 22 15:55:20 CET 2012 - jrenner@suse.de
+
+- version 1.7.20-1
+- use suse.com URL in yast module (bnc#790309)
+- fix spelling issue (bnc#790269)
+- check for underscore in hostname (bnc#750421)
+- rotate susemanager logfiles (bnc#788025)
+- call update_upgrade_pathes_by_config() with --refresh (bnc#787597)
+- Add support for multiple mirror credentials
+- SP migration mgr-ncc-sync changes
+
+-------------------------------------------------------------------
 Mon Oct 08 17:10:09 CEST 2012 - mc@suse.de
 
 - version 1.7.19-1
