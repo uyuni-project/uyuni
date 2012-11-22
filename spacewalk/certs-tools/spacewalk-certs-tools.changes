@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Nov 22 15:52:51 CET 2012 - jrenner@suse.de
+
+- version 1.7.3.6-1
+- create rpms compatible with RHEL5
+- Code 10 product migration requires 'xsltproc' being installed (bnc#789373)
+- recompile python files (bnc#776356)
+
+-------------------------------------------------------------------
 Mon Jul 16 15:17:05 CEST 2012 - ug@suse.de
 
 - version 1.7.3.5-1
