@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Nov 22 15:38:08 CET 2012 - jrenner@suse.de
+
+- version 1.7.14.13-1
+- check CA cert files only when needed
+- rhn-channel: new option to list base channel of a system
+- fix leaking file descriptor (bnc#787156)
+- new script rhn-update-status to update the uptime and kernelversion 
+  on the server
+
+-------------------------------------------------------------------
 Mon Oct 15 12:21:56 CEST 2012 - mc@suse.de
 
 - version 1.7.14.12-1
