@@ -9,8 +9,8 @@
       <trans-unit id="distupgrade.upgrade">
         <source>Service Pack Migration</source>
       </trans-unit>
-      <trans-unit id="SP-Migration">
-        <source>SP-Migration</source>
+      <trans-unit id="SP Migration">
+        <source>SP Migration</source>
       </trans-unit>
       <!-- Setup -->
       <trans-unit id="spmigration.jsp.setup.title">

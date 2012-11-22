@@ -83,7 +83,7 @@
       <rhn-tab-url>/rhn/systems/details/SystemChannels.do</rhn-tab-url>
     </rhn-tab>
 
-    <rhn-tab name="SP-Migration" acl="system_feature(ftr_package_updates)">
+    <rhn-tab name="SP Migration" acl="system_feature(ftr_package_updates)">
       <rhn-tab-url>/rhn/systems/details/SPMigration.do</rhn-tab-url>
     </rhn-tab>
 </rhn-tab>
