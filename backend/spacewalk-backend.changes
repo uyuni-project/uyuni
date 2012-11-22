@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Thu Nov 22 15:28:52 CET 2012 - jrenner@suse.de
+
+- version 1.7.38.20-1
+- fix is_sha256_capable() function (bnc#790717)
+- use SUSE specific proxy settings in reposync (bnc#779992)
+- read proxy from rhn.conf before other places
+- fix wrong variable binding (bnc#790143)
+- rollback any unfinished transaction
+- for the installed_size, ignore situation when it was not populated
+  in the database.
+- don't fail when from attribute is missing
+- make sure proxy is enabled in sysconfig before reading it
+- Add support for multiple mirror credentials
+- SP migration backend
+- use smdba space-overview for report if exists
+- do not return not existing patchnames (bnc#786105)
+- add xmlrpc function update_status and server capability
+
+-------------------------------------------------------------------
 Fri Oct 05 10:56:43 CEST 2012 - mc@suse.de
 
 - version 1.7.38.19-1
