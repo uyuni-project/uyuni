@@ -1,4 +1,30 @@
 -------------------------------------------------------------------
+Thu Nov 22 15:43:51 CET 2012 - jrenner@suse.de
+
+- version 1.7.54.21-1
+- Fix query for API call system.listLatestInstallablePackages (bnc#781655)
+- new sles_register_script snippet with autoyast script elements (bnc#780269)
+- Fix errors with unrequired field 'Prefix' (bnc#783646)
+- prevent NPE, when accessing probe suite systems with no system associated
+- do not allow creating kickstart profiles that differ from existing ones 
+  just by case
+- enhancing kickstart file sync with cobbler
+- prevent Page Request Error when at pagination
+- Check hostnames for special characters and whitespace (bnc#787178)
+- Basic normalization for SUSE Studio base URL (bnc#786159)
+- Workaround for Studio API returning incomplete URLs (bnc#786159)
+- enhance errata.setDetails - add issue_date and update_date (bnc#789238)
+- Fix quartz trigger initialization repeat count (bnc#788026)
+- SP migration web UI
+- Remove markup from kickstart.jsp.error.template_generation (bnc#787879)
+- fix system.listLatestUpgradablePackages API to list upgradable packages 
+  from server channels only
+- Kickstarting RHEL systems with RES (expanded support) repos fails
+  (bnc#786367)
+- return type date for yumrepo_last_sync even if the channel was never synced
+  (bnc#781643, bnc#781652)
+
+-------------------------------------------------------------------
 Mon Oct 01 09:43:24 CEST 2012 - mc@suse.de
 
 - version 1.7.54.20-1
