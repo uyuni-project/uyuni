@@ -37,7 +37,7 @@ report = {}
 def is_sha256_capable():
     import rpm
     ts = rpm.TransactionSet()
-    mi = ts.dbMatch('name', 'spacewalk-schema')
+    mi = ts.dbMatch('Providename', 'spacewalk-schema')
     cmp = -1
     try:
       h = mi.next()
