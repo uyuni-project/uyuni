@@ -497,6 +497,7 @@ def _delete_rpm_group(packageIds):
         'rhnPackageSuggests',
         'rhnPackageSupplements',
         'rhnServerNeededCache',
+        'susePackageProductFile',
     ]
     deleteStatement = "delete from %s where package_id = :package_id"
     for table in references:
