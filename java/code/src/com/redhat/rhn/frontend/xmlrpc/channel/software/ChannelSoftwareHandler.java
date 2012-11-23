@@ -1993,6 +1993,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         helper.setParent(parent);
         helper.setUser(loggedInUser);
         helper.setSummary(summary);
+        helper.setProductName(originalChan.getProductName());
 
         Channel clone = helper.clone(originalState.booleanValue(), originalChan);
         ChannelManager.cloneNewestPackages(originalChan.getId(), clone, "api");
