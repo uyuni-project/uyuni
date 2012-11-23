@@ -121,7 +121,11 @@ public class DistUpgradeManager extends BaseManager {
                     "suse_base_channels_for_suse_product");
         @SuppressWarnings("unchecked")
         List<EssentialChannelDto> channels = makeDataResult(params, null, null, m);
-        return channels.get(0);
+        EssentialChannelDto ret = null;
+        if (channels.size() > 0) {
+            ret = channels.get(0);
+        }
+        return ret;
     }
 
     /**
@@ -132,8 +136,12 @@ public class DistUpgradeManager extends BaseManager {
      * @return base channel
      */
     public static Channel getProductBaseChannel(long productID, User user) {
+        Channel ret = null;
         EssentialChannelDto channelDto = getProductBaseChannelDto(productID);
-        return ChannelFactory.lookupByIdAndUser(channelDto.getId(), user);
+        if (channelDto != null) {
+            ret = ChannelFactory.lookupByIdAndUser(channelDto.getId(), user);
+        }
+        return ret;
     }
 
     /**
@@ -158,19 +166,18 @@ public class DistUpgradeManager extends BaseManager {
             // Create a new product set
             SUSEProductSet targetSet = new SUSEProductSet();
             long targetBaseProductID = (Long) targetBaseProduct.get("product_id");
-            targetSet.setBaseProduct(SUSEProductFactory.getProductById(targetBaseProductID));
+            SUSEProduct targetProduct = SUSEProductFactory.getProductById(targetBaseProductID);
+            targetSet.setBaseProduct(targetProduct);
 
             // Look for the target product's base channel
-            EssentialChannelDto baseChannelDto = getProductBaseChannelDto(targetBaseProductID);
-            Channel baseChannel = ChannelFactory.lookupByIdAndUser(baseChannelDto.getId(), user);
+            Channel baseChannel = getProductBaseChannel(targetBaseProductID, user);
             if (baseChannel == null) {
-                // Base channel is not synced
-                targetSet.addMissingChannel(baseChannelDto.getLabel());
+                continue;
             }
 
             // Look for mandatory child channels
             DataResult<Map<String, Object>> productChannels = findProductChannels(
-                    targetBaseProductID, baseChannelDto.getLabel());
+                    targetBaseProductID, baseChannel.getLabel());
             Long parentChannelID = getParentChannelId(productChannels);
             if (parentChannelID == null) {
                 // Found a channel that's not synced
@@ -195,7 +202,7 @@ public class DistUpgradeManager extends BaseManager {
 
                     // Look for mandatory channels
                     DataResult<Map<String, Object>> drChannelsChild = findProductChannels(
-                            targetAddonProductID, baseChannelDto.getLabel());
+                            targetAddonProductID, baseChannel.getLabel());
                     if (!isParentChannel(parentChannelID, drChannelsChild)) {
                         // Some channels are missing
                         targetSet.addMissingChannels(getMissingChannels(drChannelsChild));
@@ -290,10 +297,12 @@ public class DistUpgradeManager extends BaseManager {
      */
     public static List<ClonedChannel> getAllClones(Channel channel) {
         List<ClonedChannel> ret = new ArrayList<ClonedChannel>();
-        Set<ClonedChannel> clones = channel.getClonedChannels();
-        ret.addAll(clones);
-        for (ClonedChannel clone : clones) {
-            ret.addAll(getAllClones(clone));
+        if (channel != null) {
+            Set<ClonedChannel> clones = channel.getClonedChannels();
+            ret.addAll(clones);
+            for (ClonedChannel clone : clones) {
+                ret.addAll(getAllClones(clone));
+            }
         }
         return ret;
     }
