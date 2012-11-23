@@ -48,7 +48,7 @@
         <source>A Service Pack Migration is already &lt;a href="/network/systems/details/history/event.pxt?sid={0}&amp;hid={1}"&gt;scheduled&lt;/a&gt; for this system.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.up-to-date">
-        <source>This system is currently at the &lt;strong&gt;latest&lt;/strong&gt; Service Pack level.</source>
+        <source>There is currently no Service Pack migration available for this system. Either it is already on the &lt;strong&gt;latest&lt;/strong&gt; Service Pack level or the base channel of the target product was not yet mirrored. Use &lt;strong&gt;mgr-ncc-sync --list&lt;/strong&gt; to identify missing channels.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.missing-channels">
         <source>The following channels are &lt;strong&gt;mandatory&lt;/strong&gt; for this migration, please synchronize using &lt;strong&gt;mgr-ncc-sync -c&lt;/strong&gt;:</source>
