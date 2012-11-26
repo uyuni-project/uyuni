@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Nov 26 15:53:42 CET 2012 - mc@suse.de
+
+- limit editarea syntax selection to a few languages (FATE#313370)
+
+-------------------------------------------------------------------
 Thu Aug  2 16:22:37 CEST 2012 - ug@suse.de
 
 -  kernel options in the web UI are not added to the xen distri
