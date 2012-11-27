@@ -2,7 +2,7 @@
 Thu Nov 22 15:43:01 CET 2012 - jrenner@suse.de
 
 - version 1.7.6-1
-- SP migration mgr-ncc-sync changes
+- SP migration mgr-ncc-sync changes (FATE#312431, FATE#312312)
 - add SDK channels as option to SLES for SAP SP2
 
 -------------------------------------------------------------------
