@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov 27 17:24:41 CET 2012 - mc@suse.de
+
+- version 1.7.1.6-1
+- Fix ArrayIndexOutOfBoundsException in case of a missing base channel
+
+-------------------------------------------------------------------
 Thu Nov 22 16:01:51 CET 2012 - jrenner@suse.de
 
 - version 1.7.1.5-1
