@@ -15,7 +15,7 @@ Thu Nov 22 15:43:51 CET 2012 - jrenner@suse.de
 - Workaround for Studio API returning incomplete URLs (bnc#786159)
 - enhance errata.setDetails - add issue_date and update_date (bnc#789238)
 - Fix quartz trigger initialization repeat count (bnc#788026)
-- SP migration web UI
+- SP migration web UI (FATE#312431, FATE#312312)
 - Remove markup from kickstart.jsp.error.template_generation (bnc#787879)
 - fix system.listLatestUpgradablePackages API to list upgradable packages 
   from server channels only
