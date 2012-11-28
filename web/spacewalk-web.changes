@@ -4,6 +4,7 @@ Thu Nov 22 15:59:33 CET 2012 - jrenner@suse.de
 - version 1.7.28.13-1
 - SP migration web UI
 - Shortcut RHN::Date->now->long_date, avoiding DateTime
+  (bnc#789905)
 - fix cloning a child channel with a parent in different org
 
 -------------------------------------------------------------------
