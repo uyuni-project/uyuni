@@ -244,7 +244,6 @@ if [ -f %{_sysconfdir}/init.d/osa-dispatcher ]; then
 fi
 %endif
 
-%if %{include_selinux_package}
 %preun -n osa-dispatcher
 %if 0%{?suse_version} >= 1210
 %service_del_preun osa-dispatcher.service
