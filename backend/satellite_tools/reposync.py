@@ -81,7 +81,7 @@ class RepoSync(object):
         self.no_errata = no_errata
 
         initCFG('server.susemanager')
-        db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
+        db_string = CFG.DEFAULT_DB
         rhnSQL.initDB(db_string)
 
         # setup logging
