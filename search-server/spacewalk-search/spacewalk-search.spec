@@ -18,7 +18,7 @@ BuildArch: noarch
 ExclusiveArch: x86_64
 
 #Requires: apache-ibatis-sqlmap
-Requires: doc-indexes
+Requires(pre): doc-indexes
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-httpclient
