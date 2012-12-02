@@ -31,6 +31,7 @@ make -f Makefile.spacewalk-abrt install PREFIX=$RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%defattr(-,root,root)
 %config  /etc/sysconfig/rhn/clientCaps.d/abrt
 %{_datadir}/rhn/actions/abrt.*
 
