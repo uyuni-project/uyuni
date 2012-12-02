@@ -68,13 +68,14 @@ class ChannelTimeoutException(ChannelException):
 class RepoSync(object):
     def __init__(self, channel_label, repo_type, url=None, fail=False,
                  quiet=False, noninteractive=False, filters=[],
-                 deep_verify=False):
+                 deep_verify=False, no_errata = False):
         self.regen = False
         self.fail = fail
         self.quiet = quiet
         self.interactive = not noninteractive
         self.filters = filters
         self.deep_verify = deep_verify
+        self.no_errata = no_errata
 
         initCFG('server.susemanager')
         db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
@@ -239,6 +240,8 @@ class RepoSync(object):
         h.execute(channel=self.channel['label'])
 
     def import_updates(self, plug, url):
+        if not self.no_errata:
+            return
         (notices_type, notices) = plug.get_updates()
         saveurl = suseLib.URL(url)
         if saveurl.password:
