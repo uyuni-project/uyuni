@@ -42,6 +42,7 @@ install -m 644 TranslateKey.pm $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse/SatConf
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %files
+%defattr(-,root,root)
 %{perl_vendorlib}/NOCpulse/*
 
 %clean

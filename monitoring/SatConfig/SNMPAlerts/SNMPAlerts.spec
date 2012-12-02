@@ -43,6 +43,7 @@ install -m 555 fetch_snmp_alerts.cgi $RPM_BUILD_ROOT%cgi_mod_perl
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %files
+%defattr(-,root,root)
 %cgi_mod_perl/*
 %dir %cgi_mod_perl
 

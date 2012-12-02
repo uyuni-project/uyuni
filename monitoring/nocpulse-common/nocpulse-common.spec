@@ -151,6 +151,7 @@ fi
 %endif
 
 %files
+%defattr(-,root,root)
 %dir %{_sysconfdir}/nocpulse
 %config(missingok,noreplace) %{_sysconfdir}/NOCpulse.ini
 %{_sysconfdir}/%{package_name}/NOCpulse

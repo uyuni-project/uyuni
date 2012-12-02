@@ -48,6 +48,7 @@ fi
 %endif
 
 %files
+%defattr(-,root,root)
 %attr(755,nocpulse,nocpulse) %dir %config_dir
 %{_bindir}/scheduleEvents
 %{_bindir}/validateCurrentStateFiles.pl
