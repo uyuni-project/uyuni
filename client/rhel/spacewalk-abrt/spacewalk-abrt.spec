@@ -32,6 +32,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
+%dir /etc/sysconfig/rhn/
+%dir /etc/sysconfig/rhn/clientCaps.d
+%dir %{_datadir}/rhn
+%dir %{_datadir}/rhn/actions
 %config  /etc/sysconfig/rhn/clientCaps.d/abrt
 %{_datadir}/rhn/actions/abrt.*
 
