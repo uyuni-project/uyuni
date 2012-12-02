@@ -62,6 +62,9 @@ Requires(preun): chkconfig
 Requires(preun): initscripts
 %endif
 %endif
+%if 0%{?suse_version} && 0%{?suse_version} < 1210
+Requires(preun): %fillup_prereq %insserv_prereq
+%endif
 
 %description
 OSAD agent receives commands over jabber protocol from Spacewalk Server and
@@ -201,6 +204,35 @@ ln -sf ../../etc/init.d/osa-dispatcher %{buildroot}%{_sbindir}/rcosa-dispatcher
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%if 0%{?suse_version} && 0%{?suse_version} < 1210
+
+%preun
+%stop_on_removal osad
+
+%post
+ARG=$1
+%{fillup_and_insserv -f -y osad}
+if [ $ARG -eq 1 ] ; then
+  # executed only in case of install
+  /etc/init.d/osad start ||:
+fi
+
+%postun
+%restart_on_update osad
+%{insserv_cleanup}
+
+%preun -n osa-dispatcher
+%stop_on_removal osa-dispatcher
+
+%post -n osa-dispatcher
+%{fillup_and_insserv osa-dispatcher}
+
+%postun -n osa-dispatcher
+%restart_on_update osa-dispatcher
+%{insserv_cleanup}
+
+%else
+
 %post
 ARG=$1
 %if 0%{?suse_version} >= 1210
@@ -285,6 +317,7 @@ fi
 
 rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 /sbin/restorecon -vvi /var/log/rhn/osa-dispatcher.log
+%endif
 %endif
 
 %files
