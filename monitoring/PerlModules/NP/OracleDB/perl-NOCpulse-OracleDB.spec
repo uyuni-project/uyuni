@@ -49,6 +49,7 @@ make test
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%defattr(-,root,root)
 %{perl_vendorlib}/NOCpulse/*
 
 %changelog
