@@ -91,6 +91,7 @@ rm -rf %{buildroot}
 
 
 %files
+%defattr(-,root,root)
 %dir /%{wwwdocroot}/css
 /%{wwwdocroot}/css/*
 %dir /%{wwwdocroot}/img
