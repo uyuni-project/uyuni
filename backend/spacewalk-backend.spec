@@ -102,7 +102,7 @@ Requires: %{name}-sql-virtual = %{version}
 This package contains the basic code that provides SQL connectivity for
 the Spacewalk backend modules.
 
-%if 0%{?fedora} < 17
+%if 0%{?fedora} < 17 || 0%{?suse_version}
 %package sql-oracle
 Summary: Oracle backend for Spacewalk
 Group: Applications/Internet
@@ -416,6 +416,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{fillup_only -nd reposync rhn}
 
 %files
+%defattr(-,root,root)
 %doc LICENSE
 %dir %{pythonrhnroot}
 %dir %{pythonrhnroot}/common
@@ -447,6 +448,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{rhnroot}/wsgi/wsgiRequest.py*
 
 %files sql
+%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -461,17 +463,20 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/rhnSQL/__init__.py*
 %{pythonrhnroot}/server/rhnSQL/sql_*.py*
 
-%if 0%{?fedora} < 17
+%if 0%{?fedora} < 17 || 0%{?suse_version}
 %files sql-oracle
+%defattr(-,root,root)
 %doc LICENSE
 %{pythonrhnroot}/server/rhnSQL/driver_cx_Oracle.py*
 %endif
 
 %files sql-postgresql
+%defattr(-,root,root)
 %doc LICENSE
 %{pythonrhnroot}/server/rhnSQL/driver_postgresql.py*
 
 %files server -f %{name}-server.lang
+%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -551,6 +556,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-server
 
 %files xmlrpc
+%defattr(-,root,root)
 %doc LICENSE
 %dir %{rhnroot}/server/handlers/xmlrpc
 %{rhnroot}/server/handlers/xmlrpc/*
@@ -569,6 +575,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %endif
 
 %files applet
+%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -581,6 +588,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-applet
 
 %files app
+%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -593,6 +601,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-app
 
 %files iss
+%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -603,6 +612,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-sat.conf
 
 %files iss-export
+%defattr(-,root,root)
 %doc LICENSE
 %dir %{pythonrhnroot}/satellite_exporter
 %{pythonrhnroot}/satellite_exporter/__init__.py*
@@ -619,6 +629,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 
 %files libs
+%defattr(-,root,root)
 %doc LICENSE
 %{pythonrhnroot}/__init__.py*
 %dir %{pythonrhnroot}/common
@@ -632,12 +643,14 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/rhn_rpm.py*
 
 %files config-files-common
+%defattr(-,root,root)
 %doc LICENSE
 %{pythonrhnroot}/server/configFilesHandler.py*
 %dir %{pythonrhnroot}/server/config_common
 %{pythonrhnroot}/server/config_common/*
 
 %files config-files
+%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -649,6 +662,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files
 
 %files config-files-tool
+%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -660,6 +674,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files-tool
 
 %files package-push-server
+%defattr(-,root,root)
 %doc LICENSE
 %dir %{rhnroot}/upload_server
 %{rhnroot}/upload_server/__init__.py*
@@ -672,6 +687,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-package-push.conf
 
 %files tools
+%defattr(-,root,root)
 %doc LICENSE
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
@@ -741,6 +757,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/rhn-entitlement-report.8*
 
 %files xml-export-libs
+%defattr(-,root,root)
 %doc LICENSE
 %dir %{pythonrhnroot}/satellite_tools
 %{pythonrhnroot}/satellite_tools/__init__.py*
