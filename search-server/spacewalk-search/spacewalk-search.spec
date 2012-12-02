@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 1.7.3.8
+Version: 1.9.1
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -93,8 +93,10 @@ ant -Djar.version=%{version} install
 %endif
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search
-install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/indexes
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib
+install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search
+install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search/indexes
+ln -s -f %{_prefix}/share/rhn/search/indexes/docs $RPM_BUILD_ROOT%{_var}/lib/rhn/search/indexes/docs
 install -d -m 755 $RPM_BUILD_ROOT%{_initrddir}
 install -d -m 755 $RPM_BUILD_ROOT%{_bindir}
 install -d -m 755 $RPM_BUILD_ROOT%{_var}/log/rhn/search
@@ -125,6 +127,32 @@ rm -rf $RPM_BUILD_ROOT
 /sbin/chkconfig --add rhn-search
 %endif
 
+was_running=0
+if /sbin/service rhn-search status > /dev/null 2>&1 ; then
+    was_running=1
+fi
+
+# Migrate original /usr/share/rhn/search/indexes/*
+# to /var/lib/rhn/search/indexes
+cd %{_prefix}/share/rhn/search/indexes && /bin/ls | /bin/grep -v docs | while read i ; do
+    if [ ! -e %{_var}/lib/rhn/search/indexes/$i ] ; then
+        if [ $was_running -eq 1 ] ; then
+            /sbin/service rhn-search stop > /dev/null 2>&1
+            was_running=2
+        fi
+        /bin/mv $i %{_var}/lib/rhn/search/indexes/$i
+        # If the mv failed for whatever reason, symlink
+        if [ -e $i ] ; then
+            /bin/rm -rf %{_var}/lib/rhn/search/indexes/$i
+            /bin/ln -s -f %{_prefix}/share/rhn/search/indexes/$i %{_var}/lib/rhn/search/indexes/$i
+        fi
+    fi
+done
+
+if [ $was_running -eq 1 ] ; then
+    /sbin/service rhn-search status > /dev/null 2>&1 || /sbin/service rhn-search start > /dev/null 2>&1
+fi
+
 %preun
 %if 0%{?suse_version}
 %stop_on_removal rhn-search
@@ -139,7 +167,6 @@ fi
 %defattr(644,root,root,755)
 %attr(755, root, root) %{_var}/log/rhn/search
 %{_prefix}/share/rhn/search/lib/*
-%attr(755, root, root) %{_prefix}/share/rhn/search/indexes
 %attr(755, root, root) %{_initrddir}/rhn-search
 %attr(755, root, root) %{_bindir}/rhnsearchd
 %{_sbindir}/rcrhn-search
@@ -147,14 +174,40 @@ fi
 %{_prefix}/share/rhn/config-defaults/rhn_search.conf
 %{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 %{_sysconfdir}/logrotate.d/rhn-search
+%dir %attr(755, root, root) %{_var}/lib/rhn
+%dir %attr(755, root, root) %{_var}/lib/rhn/search
+%dir %attr(755, root, root) %{_var}/lib/rhn/search/indexes
+%attr(755, root, root) %{_var}/lib/rhn/search/indexes/docs
 %dir /usr/share/rhn
 %dir /usr/share/rhn/search
 %dir /usr/share/rhn/search/lib
 %attr(770,root,www) %dir /var/log/rhn
 %doc licenses/*
 
-
 %changelog
+* Fri Nov 23 2012 Jan Pazdziora 1.9.1-1
+- Store search indexes in /var.
+
+* Tue Oct 30 2012 Jan Pazdziora 1.8.6-1
+- Update the copyright year.
+
+* Fri Jun 29 2012 Jan Pazdziora 1.8.5-1
+- 836374 - add support for external PostgreSQL database in search server.
+
+* Thu Jun 28 2012 Tomas Lestach <tlestach@redhat.com> 1.8.4-1
+- search needs quartz < 2.0 as well
+
+* Thu May 31 2012 Jan Pazdziora 1.8.3-1
+- Start indexing XCCDF idents.
+
+* Fri Apr 27 2012 Jan Pazdziora 1.8.2-1
+- 816299 - Updating default config files with additional options for heapdump
+  directory (sherr@redhat.com)
+
+* Sat Mar 17 2012 Miroslav Suchý 1.8.1-1
+- 521248 - correctly spell MHz (msuchy@redhat.com)
+- Bumping package versions for 1.8. (jpazdziora@redhat.com)
+
 * Fri Mar 02 2012 Jan Pazdziora 1.7.3-1
 - Update the copyright year info.
 

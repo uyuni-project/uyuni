@@ -964,6 +964,20 @@ delete from rhnChannel where label like 'ChannelLabel%';
 
   <target name="resolve-ivy" description="retrieve dependencies with ivy"
           depends="boot-deps,init-ivy" unless="installbuild">
+
+    <!-- properties set here to show we are overriding default ivy values -->
+
+    <!-- local directory -->
+    <property name="ivy.default.ivy.user.dir" value="${user.home}/.ivy/rhn"/>
+    <property name="ivy.local.default.artifact.pattern"
+              value="[artifact]-[revision].[ext]" />
+    <!-- public directory -->
+    <property name="ivy.ivyrep.default.ivy.root" value="${ivyserver}/ivy/" />
+    <property name="ivy.ivyrep.default.artifact.root"
+              value="${ivyserver}/ivy/" />
+    <property name="ivy.ivyrep.default.artifact.pattern"
+              value="[artifact]-[revision].[ext]" />
+
     <ivy-retrieve/>
   </target>
 

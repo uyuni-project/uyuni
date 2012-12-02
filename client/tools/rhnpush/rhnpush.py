@@ -39,7 +39,6 @@ from rhn.connections import idn_ascii_to_pune
 
 from optparse import Option, OptionParser
 from rhn import rpclib
-from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhn_pkg import InvalidPackageError, package_from_filename
 import uploadLib
 import rhnpush_v2
@@ -52,6 +51,7 @@ RPMTAG_NOSOURCE = 1051
 
 def main():
     # Initialize a command-line processing object with a table of options
+    # pylint: disable=C0301
     optionsTable = [
         Option('-v','--verbose',    action='count',      help='Increase verbosity', default=0),
         Option('-d','--dir',        action='store',      help='Process packages from this directory'),
@@ -81,11 +81,13 @@ def main():
         Option(     '--tolerant',   action='store_true', 
             help='If rhnpush errors while uploading a package, continue uploading the rest of the packages.')
     ]
+    # pylint: enable=C0301
 
     #Having to maintain a store_true list is ugly. I'm trying to get rid of this.
     true_list = ['usage', 'test', 'source', 'header', 'nullorg', 'newest', \
                  'nosig', 'force', 'list', 'stdin', 'new_cache','extended_test', \
                  'no_session_caching', 'tolerant']
+    # pylint: disable=E1101,E1103
     optionParser = OptionParser(option_list=optionsTable, usage="%prog [OPTION] [<package>]")
     manager = rhnpush_confmanager.ConfManager(optionParser, true_list)
     options = manager.get_config()
@@ -148,6 +150,11 @@ def main():
         return 1
     
 class UploadClass(uploadLib.UploadClass):
+    # pylint: disable=E1101,W0201
+    def __init__(self, options, files=None):
+        uploadLib.UploadClass.__init__(self, options, files)
+        self.url_v2 = None
+
     def setURL(self):
         server = idn_ascii_to_pune(self.options.server)
         if server is None:
@@ -192,6 +199,7 @@ class UploadClass(uploadLib.UploadClass):
     def setChannels(self):
         self.channels = self.options.channel or []
 
+    # pylint: disable=W0702
     def _test_force(self):
         test_force_str =  "Setting force flag:  %s"
         test_force = "Passed"
@@ -298,8 +306,8 @@ class UploadClass(uploadLib.UploadClass):
         #ping the server for status
         self.warn(2, "url is", self.url_v2)
         ping = rhnpush_v2.PingPackageUpload(self.url_v2, self.options.proxy)
-        self.ping_status, errmsg, headerinfo = ping.ping()
-        self.warn(2, "Result codes:", self.ping_status, errmsg)
+        ping_status, errmsg, headerinfo = ping.ping()
+        self.warn(2, "Result codes:", ping_status, errmsg)
 
         
         # move patch clusters to the end because all the patches in the cluster
@@ -356,13 +364,17 @@ class UploadClass(uploadLib.UploadClass):
                 if self.options.force:
                     self.warn(1, "Package checksum %s mismatch  -- Forcing Upload" % pkg)
                 else:
-                    msg = """Error: Package %s already exists on the server with a different checksum. Skipping upload to prevent overwriting existing package. (You may use rhnpush with the --force option to force this upload if the force_upload option is enabled on your server.)\n"""% pkg
+                    msg = "Error: Package %s already exists on the server with" \
+                          " a different checksum. Skipping upload to prevent" \
+                          " overwriting existing package. (You may use rhnpush with" \
+                          " the --force option to force this upload if the" \
+                          " force_upload option is enabled on your server.)\n" % pkg
                     if not self.options.tolerant:
                         self.die(-1, msg)
                     self.warn(0, msg)
                     continue
                 
-            for t in range(0, tries):
+            for _t in range(0, tries):
                 try:
                     ret = self.package(pkg, checksum_type, checksum)
                     if ret is None:
@@ -381,7 +393,7 @@ class UploadClass(uploadLib.UploadClass):
                     if not self.options.tolerant:
                         self.die(1, ue)
                     self.warn(2, ue)
-                except AuthenticationRequired, a:
+                except AuthenticationRequired:
                     #session expired so we re-authenticate for the process to complete
                     #this uses the username and password from memory if available
                     #else it prompts for one.
@@ -449,7 +461,7 @@ class UploadClass(uploadLib.UploadClass):
                 a_pkg = package_from_filename(pkg)
                 a_pkg.read_header()
                 a_pkg.payload_checksum()
-            except InvalidPackageError, e:
+            except InvalidPackageError:
                 if not self.options.tolerant:
                     self.die(-1, "ERROR: %s: This file doesn't appear to be a package" % pkg)
                 self.warn(2, "ERROR: %s: This file doesn't appear to be a package" % pkg)
@@ -499,24 +511,28 @@ class UploadClass(uploadLib.UploadClass):
             # could have expired.Make sure its re-authenticated.
             self.authenticate()
             if uploadLib.exists_getPackageChecksumBySession(self.server):
-                checksum_data = uploadLib.getPackageChecksumBySession(self.server, self.session.getSessionString(), info)
+                checksum_data = uploadLib.getPackageChecksumBySession(self.server,
+                                                self.session.getSessionString(), info)
             else:
                 # old server only md5 capable
-                checksum_data = uploadLib.getPackageMD5sumBySession(self.server, self.session.getSessionString(), info)
+                checksum_data = uploadLib.getPackageMD5sumBySession(self.server,
+                                                self.session.getSessionString(), info)
         else:
             # computing checksum and other info is expensive process and session
             # could have expired.Make sure its re-authenticated.
             self.authenticate()
             if uploadLib.exists_getPackageChecksumBySession(self.server):
-                checksum_data = uploadLib.getSourcePackageChecksumBySession(self.server, self.session.getSessionString(), info)
+                checksum_data = uploadLib.getSourcePackageChecksumBySession(self.server,
+                                                self.session.getSessionString(), info)
             else:
                 # old server only md5 capable
-                checksum_data = uploadLib.getSourcePackageMD5sumBySession(self.server, self.session.getSessionString(), info)
+                checksum_data = uploadLib.getSourcePackageMD5sumBySession(self.server,
+                                                self.session.getSessionString(), info)
 
         return (checksum_data, pkg_hash, digest_hash)
 
 
-    def package(self, package, FileChecksumType, FileChecksum):
+    def package(self, package, fileChecksumType, fileChecksum):
         self.warn(1, "Uploading package %s" % package)
         if not os.access(package, os.R_OK):
             self.die(-1, "Could not read file %s" % package)
@@ -538,7 +554,7 @@ class UploadClass(uploadLib.UploadClass):
             raise uploadLib.UploadError("ERROR: %s: unsigned rpm (use --nosig to force)"% package)
 
         try:
-            ret = self._push_package_v2(package, FileChecksumType, FileChecksum)
+            ret = self._push_package_v2(package, fileChecksumType, fileChecksum)
         except uploadLib.UploadError, e:
             ret, diff_level, pdict = e.args[:3]
             severities = {
@@ -566,7 +582,7 @@ class UploadClass(uploadLib.UploadClass):
 
         return ret
 
-    def _push_package_v2(self, package, FileChecksumType, FileChecksum):
+    def _push_package_v2(self, package, fileChecksumType, fileChecksum):
         self.warn(1, "Using POST request")
         pu = rhnpush_v2.PackageUpload(self.url_v2, self.options.proxy)
 
@@ -574,7 +590,7 @@ class UploadClass(uploadLib.UploadClass):
         pu.set_force(self.options.force)
         pu.set_null_org(self.options.nullorg)
 
-        status, msgstr = pu.upload(package, FileChecksumType, FileChecksum)
+        status, msgstr = pu.upload(package, fileChecksumType, fileChecksum)
 
         ret = {}
         for tag in ('name', 'version', 'release', 'epoch', 'arch'):
@@ -583,8 +599,8 @@ class UploadClass(uploadLib.UploadClass):
                 val = ''
             ret[tag] = val
 
-        ret['checksum_type'] = FileChecksumType
-        ret['checksum'] = FileChecksum
+        ret['checksum_type'] = fileChecksumType
+        ret['checksum'] = fileChecksum
         if status == 400:
             # Bad request - something bad happened
             try:

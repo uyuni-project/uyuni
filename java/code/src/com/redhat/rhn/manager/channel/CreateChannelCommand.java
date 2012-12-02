@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2011 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
@@ -27,6 +26,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidGPGUrlException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -375,11 +375,11 @@ public class CreateChannelCommand {
         // the perl code used to ignore case with a /i at the end of
         // the regex, so we toLowerCase() the channel name to make it
         // work the same.
-        if (!user.hasRole(RoleFactory.RHN_SUPERUSER) &&
-            Pattern.compile(REDHAT_REGEX).matcher(cname.toLowerCase()).find()) {
+        Matcher redhatRegex = Pattern.compile(REDHAT_REGEX).matcher(cname.toLowerCase());
+        if (redhatRegex.find()) {
             throw new InvalidChannelNameException(cname,
-                InvalidChannelNameException.Reason.RHN_CHANNEL_BAD_PERMISSIONS,
-                "edit.channel.invalidchannelname.redhat", "");
+                InvalidChannelNameException.Reason.REDHAT_REGEX_FAILS,
+                "edit.channel.invalidchannelname.redhat", redhatRegex.group());
         }
     }
 
@@ -413,11 +413,12 @@ public class CreateChannelCommand {
         // the perl code used to ignore case with a /i at the end of
         // the regex, so we toLowerCase() the channel name to make it
         // work the same.
-        if (!user.hasRole(RoleFactory.RHN_SUPERUSER) &&
-            Pattern.compile(REDHAT_REGEX).matcher(clabel.toLowerCase()).find()) {
+        Matcher redhatRegex = Pattern.compile(REDHAT_REGEX).matcher(clabel.toLowerCase());
+        if (redhatRegex.find()) {
+            String s = redhatRegex.group();
             throw new InvalidChannelLabelException(clabel,
-                InvalidChannelLabelException.Reason.RHN_CHANNEL_BAD_PERMISSIONS,
-                "edit.channel.invalidchannellabel.redhat", "");
+                InvalidChannelLabelException.Reason.REDHAT_REGEX_FAILS,
+                "edit.channel.invalidchannellabel.redhat", redhatRegex.group());
         }
     }
 

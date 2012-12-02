@@ -45,6 +45,7 @@ def releaseLOCK():
         LOCK = None
 
 def main():
+
     # quick check to see if you are a super-user.
     if os.getuid() != 0:
         systemExit(8, 'ERROR: must be root to execute.')
@@ -81,22 +82,26 @@ def main():
                       callback=reposync.set_filter_opt,
                       type='str', nargs=1, dest='filters', default=[],
                       help="List of excluded packages")
+    parser.add_option('', '--no-errata', action='store_true', dest='no_errata',
+                      default=False, help="Do not sync errata")
     parser.add_option('-Y', '--deep-verify', action='store_true',
                       dest='deep_verify', default=False,
                       help='Do not use cached package checksums')
+
     (options, args) = parser.parse_args()
 
     if not options.channel_label:
         systemExit(1, "--channel must be specified")
 
     sync = reposync.RepoSync(channel_label=options.channel_label,
-                             repo_type=options.repo_type,
-                             url=options.url,
-                             fail=options.fail,
-                             quiet=options.quiet,
-                             noninteractive=options.noninteractive,
-                             filters=options.filters,
-                             deep_verify=options.deep_verify)
+                      repo_type=options.repo_type,
+                      url=options.url,
+                      fail=options.fail,
+                      quiet=options.quiet,
+                      noninteractive=options.noninteractive,
+                      filters=options.filters,
+                      deep_verify=options.deep_verify,
+                      no_errata=options.no_errata)
     sync.sync()
     releaseLOCK()
     return 0

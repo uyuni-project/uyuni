@@ -11,19 +11,14 @@ RHN/DB/ChannelEditor.pm
 RHN/DB/Channel.pm
 RHN/DB/Errata.pm
 RHN/DB/JoinClass.pm
-RHN/DB/Notes.pm
 RHN/DB/Org.pm
 RHN/DB/Package.pm
 RHN/DB.pm
 RHN/DB/Scheduler.pm
 RHN/DB/ServerActions.pm
-RHN/DB/Server/CdDevice.pm
 RHN/DB/ServerGroup.pm
-RHN/DB/Server/HwDevice.pm
-RHN/DB/Server/NetInfo.pm
 RHN/DB/ServerPackage.pm
 RHN/DB/Server.pm
-RHN/DB/Server/StorageDevice.pm
 RHN/DB/Set.pm
 RHN/DB/TableClass.pm
 RHN/DB/UserGroup.pm
@@ -38,7 +33,6 @@ RHN.pm
 RHN/Scheduler.pm
 RHN/ServerActions.pm
 RHN/ServerGroup.pm
-RHN/ServerNotes.pm
 RHN/ServerPackage.pm
 RHN/Server.pm
 RHN/Session.pm

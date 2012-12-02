@@ -201,8 +201,6 @@ def get_info_for_package(pkg, channel_id):
         epochStatement = "(epoch is null or epoch = :epoch)"
     else:
         epochStatement = "epoch = :epoch"
-    # the COALESCE statement is there because we use reposync also
-    # for org_id = NULL. Then the simple = statement is not working
     statement = """
     select p.path, cp.channel_id,
            cv.checksum_type, cv.checksum, p.org_id

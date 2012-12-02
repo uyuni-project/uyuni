@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -24,6 +24,7 @@ import queue
 import errata
 import proxy
 import get_handler
+import abrt
 
 rpcClasses = {
     "registration"      : registration.Registration,
@@ -32,6 +33,7 @@ rpcClasses = {
     "errata"            : errata.Errata,
     "proxy"             : proxy.Proxy,
     "servers"           : up2date.Servers,
+    "abrt"              : abrt.Abrt,
     }
 
 getHandler = get_handler.GetHandler

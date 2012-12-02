@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -60,7 +60,7 @@ public class PreferencesLocaleHandlerTest extends BaseHandlerTestCase {
     public void testListLocales() {
         Object[] o = handler.listLocales();
         assertNotNull(o);
-        String[] locales = Config.get().getStringArray("web.supported_locales");
+        String[] locales = Config.get().getStringArray("java.supported_locales");
         assertNotNull(locales);
         assertEquals(locales.length, o.length);
     }

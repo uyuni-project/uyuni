@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -22,7 +22,7 @@ use Storable qw/freeze thaw/;
 use XML::LibXML;
 
 our @ISA = qw/RHN::SimpleStruct/;
-our @simple_struct_fields = qw/start finish sid tablespaces archive_logs control_file type cold_files/;
+our @simple_struct_fields = qw/start finish sid tablespaces archive_logs control_file type cold_files cold_dirs base_dir/;
 
 # UGLY HACK for now; use Storable instead of a real data structure.
 # ugh.
@@ -61,11 +61,18 @@ sub fromXml() {
   $log->start(getTextValue($doc,'start'));
   $log->type(getTextValue($doc,'type'));
   $log->finish(getTextValue($doc,'finish'));
+  # this may fail on 5.4- dumps, it is safe to ignore it
+  eval { $log->base_dir(getTextValue($doc,'basedir')); };
   
   
   foreach my $fileentry ($doc->getElementsByTagName('fileentry')){
     my $fe = new Dobby::BackupLog::FileEntry();
     $log->add_cold_file($fe->fromXml($fileentry)); 
+  }
+
+  foreach my $direntry ($doc->getElementsByTagName('direntry')){
+    my $de = new Dobby::BackupLog::DirEntry();
+    $log->add_cold_file($de->fromXml($direntry));
   }
 
   foreach my $tablespaceentry ($doc->getElementsByTagName('tablespaceentry')){
@@ -92,6 +99,8 @@ sub toXml {
   addTextValue($type, $doc, $self->type);
   my $finish = $doc->createElement('finish');
   addTextValue($finish, $doc, $self->finish);
+  my $base_dir = $doc->createElement('basedir');
+  addTextValue($base_dir, $doc, $self->base_dir);
   
   my $archive_logs = $doc->createElement('archivelogs');
   if (defined($self->archive_logs)) {
@@ -107,6 +116,12 @@ sub toXml {
       $cold_files-> appendChild($file_entry->toXml($doc));
     }  
   }
+  my $cold_dirs = $doc->createElement('colddirs');
+  if (defined($self->cold_dirs)) {
+    for my $dir_entry (@{$self->cold_dirs}) {
+      $cold_dirs-> appendChild($dir_entry->toXml($doc));
+    }
+  }
   
   my $tablespaces =  $doc->createElement('tablespaces');
   if (defined($self->tablespaces)) {
@@ -116,12 +131,14 @@ sub toXml {
   }
   
   $root->appendChild($cold_files);
+  $root->appendChild($cold_dirs);
   $root->appendChild($tablespaces);
   $root->appendChild($sid);
   $root->appendChild($start); 
   $root->appendChild($control_file); 
   $root->appendChild($type); 
-  $root->appendChild($finish); 
+  $root->appendChild($finish);
+  $root->appendChild($base_dir);
 
   my $retval = $root->toString . "\n";
   return $retval;
@@ -134,7 +151,7 @@ sub addTextValue {
     my $node = shift;
     my $doc = shift;
     my $value = shift;
-    if (!$value) {
+    if (not defined $value) {
       $value = "";
     }
     my $textNode = $doc->createTextNode($value);
@@ -167,9 +184,17 @@ sub add_tablespace_entry {
 sub add_cold_file {
   my $self = shift;
 
-  my $cold_files = $self->cold_files;
-  push @$cold_files, @_;
-  $self->cold_files($cold_files);
+  foreach my $file (@_) {
+    if ($file->isa("Dobby::BackupLog::FileEntry")) {
+      my $cold_files = $self->cold_files;
+      push @$cold_files, @_;
+      $self->cold_files($cold_files);
+    } elsif ($file->isa("Dobby::BackupLog::DirEntry")) {
+      my $cold_dirs = $self->cold_dirs;
+      push @$cold_dirs, @_;
+      $self->cold_dirs($cold_dirs);
+    }
+  }
 }
 
 package Dobby::BackupLog::TablespaceEntry;
@@ -298,4 +323,35 @@ sub fromXml {
   return $self;
 }
 
+package Dobby::BackupLog::DirEntry;
+use RHN::SimpleStruct;
+
+our @ISA = qw/RHN::SimpleStruct/;
+our @simple_struct_fields = qw/from/;
+
+#convert the object to XML
+sub toXml {
+  my $self = shift;
+  my $doc = shift;
+
+  my $entry = $doc->createElement('direntry');
+
+  my $from = $doc->createElement('from');
+  Dobby::BackupLog::addTextValue($from, $doc, $self->from);
+
+  $entry->appendChild($from);
+
+  return $entry;
+}
+
+#fill out the object with the values
+#from the XML Dom.
+sub fromXml {
+  my $self = shift;
+  my $element = shift;
+
+  $self->from(Dobby::BackupLog::getTextValue($element, 'from'));
+
+  return $self;
+}
 1;

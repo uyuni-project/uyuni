@@ -144,11 +144,10 @@ def readCachedLogin():
         idVer = rpclib.xmlrpclib.loads(getSystemId())[0][0]['system_id']
         cidVer = "ID-%s" % data['loginInfo']['X-RHN-Server-Id']
         if idVer != cidVer:
-	    log.log_me("1 %s" % idVer)
-	    log.log_me("2 %s" % cidVer)
+            log.log_debug("system id version changed: %s vs %s" % (idVer, cidVer))
 	    return False
     except:
-	pass
+        pass
     createdTime = data['time']
     li = data['loginInfo']
     currentTime = time.time()

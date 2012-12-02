@@ -4,6 +4,7 @@
 #
 # Translators:
 # Bernd Groh <bgroh@redhat.com>, 2003.
+# Gerd Koenig <koenig.ulm@googlemail.com>, 2012.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # sknirT omiT <moc.tahder@sknirtt>, 2010.
 # Timo Trinks <ttrinks@redhat.com>, 2006.
@@ -13,14 +14,14 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:18+0100\n"
-"PO-Revision-Date: 2012-02-14 13:08+0000\n"
-"Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
+"PO-Revision-Date: 2012-05-19 11:59+0000\n"
+"Last-Translator: Gerd Koenig <koenig.ulm@googlemail.com>\n"
 "Language-Team: German <trans-de@lists.fedoraproject.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../server/rhnPackage.py:45 ../server/rhnPackage.py:80
 #: ../server/rhnPackage.py:99 ../server/rhnPackage.py:181
@@ -367,7 +368,7 @@ msgstr "Red Hat Network Privatsphäre"
 
 #: ../server/handlers/xmlrpc/registration.py:1036
 msgid "Expected a dictionary as a product argument"
-msgstr ""
+msgstr "Es wurde ein Wörterbuch als Produktargument erwartet"
 
 #: ../server/handlers/xmlrpc/registration.py:1068
 #: ../server/handlers/xmlrpc/registration.py:1126
@@ -423,7 +424,7 @@ msgstr "Ungültiger Wert %s (%s)"
 #: ../server/handlers/xmlrpc/up2date.py:479
 #, python-format
 msgid "Invalid value for %s in package tuple: %s (%s)"
-msgstr ""
+msgstr "Ungültiger Wert für %s in Pakettupel: %s (%s)"
 
 #: ../server/handlers/xmlrpc/up2date.py:491
 #, python-format
@@ -548,7 +549,7 @@ msgstr "Systemdaten konnten in der Datenbank nicht gefunden werden."
 
 #: ../common/rhnException.py:64
 msgid "Invalid arguments passed to function."
-msgstr ""
+msgstr "Der Funktion wurden ungültige Werte übergeben."
 
 #: ../common/rhnException.py:65
 msgid "Unable to retrieve requested entry."
@@ -889,7 +890,7 @@ msgstr "Benutzername ungültig"
 #. 110-129: disabled org errors
 #: ../common/rhnException.py:210
 msgid "Service for your account has been disabled."
-msgstr ""
+msgstr "Der Dienst unter ihrem Zugang wurde eingestellt."
 
 #: ../common/rhnException.py:211
 msgid "Email address not validated; service disabled"
@@ -1168,7 +1169,7 @@ msgstr "Kein Inhalt für Konfigurationsdatei"
 
 #: ../common/rhnException.py:316
 msgid "Template delimiters not specified"
-msgstr ""
+msgstr "Die Template Trennzeichen sind nicht spezifiziert"
 
 #: ../common/rhnException.py:317
 msgid "Configuration channel does not exist"
@@ -1180,7 +1181,7 @@ msgstr "Konfigrations-Channel bereits vorhanden"
 
 #: ../common/rhnException.py:319
 msgid "File missing from configuration channel"
-msgstr ""
+msgstr "Die Datei aus dem Konfigurationskanal fehlt"
 
 #: ../common/rhnException.py:320
 msgid "Different revision of this file is uploaded"

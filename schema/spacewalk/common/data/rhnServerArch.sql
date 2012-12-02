@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008--2010 Red Hat, Inc.
+-- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -66,6 +66,16 @@ insert into rhnServerArch (id, label, name, arch_type_id) values
 
 insert into rhnServerArch (id, label, name, arch_type_id) values
 (sequence_nextval('rhn_server_arch_id_seq'), 'ppc-redhat-linux', 'ppc', lookup_arch_type('rpm'));
+
+insert into rhnServerArch (id, label, name, arch_type_id) values
+(sequence_nextval('rhn_server_arch_id_seq'), 'armv7l-redhat-linux', 'armv7l', lookup_arch_type('rpm'));
+
+insert into rhnServerArch (id, label, name, arch_type_id) values
+(sequence_nextval('rhn_server_arch_id_seq'), 'armv5tejl-redhat-linux', 'armv5tejl', lookup_arch_type('rpm'));
+
+insert into rhnServerArch (id, label, name, arch_type_id) values
+(sequence_nextval('rhn_server_arch_id_seq'), 'armv6l-redhat-linux', 'armv6l', lookup_arch_type('rpm'));
+
 insert into rhnServerArch (id, label, name, arch_type_id) values
 (sequence_nextval('rhn_server_arch_id_seq'), 'powerpc-debian-linux', 'powerpc Debian', lookup_arch_type('deb'));
 

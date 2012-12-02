@@ -28,10 +28,10 @@ from spacewalk.common.rhn_pkg import InvalidPackageError, package_from_filename
 class ConnectionError(Exception):
     pass
 
-
+# pylint: disable=R0902
 class BaseConnection:
     def __init__(self, uri, proxy=None):
-        self._scheme, (self._host, self._port), self._path = self.parse_url(uri)[:3]
+        self._scheme, (self._host, self._port), self._path = parse_url(uri)[:3]
 
         if proxy:
             arr = rpclib.get_proxy_info(proxy)
@@ -81,24 +81,6 @@ class BaseConnection:
         return getattr(self._connection, name)
 
 
-    def parse_url(self, url, scheme="http", path='/'):
-        _scheme, netloc, _path, params, query, fragment = urlparse.urlparse(url)
-        if not netloc:
-            # No scheme - trying to patch it up ourselves?
-            url = scheme + "://" + url
-            _scheme, netloc, _path, params, query, fragment = urlparse.urlparse(url)
-
-        if not netloc:
-            # XXX
-            raise Exception()
-
-        (host, port) = urllib.splitport(netloc)
-
-        if not _path:
-            _path = path
-
-        return (_scheme, (host, port), _path, params, query, fragment)
-
 class PackageUpload:
     header_prefix = "X-RHN-Upload"
     user_agent = "rhn-package-upload"
@@ -110,6 +92,12 @@ class PackageUpload:
         self.package_version = None
         self.package_release = None
         self.package_arch = None
+        self.checksum = None
+        self.checksum_type = None
+        self.nvra = None
+        self._resp_headers = None
+        self.packaging = None
+        self._response = None
 
     def set_header(self, name, value):
         if not self.headers.has_key(name):
@@ -169,7 +157,7 @@ class PackageUpload:
 
         return self._response
 
-    def upload(self, filename, FileChecksumType, FileChecksum):
+    def upload(self, filename, fileChecksumType, fileChecksum):
         """
         Uploads a file.
         Returns (http_error_code, error_message)
@@ -210,8 +198,8 @@ class PackageUpload:
         self.nvra = nvra
 
         # use the precomputed passed checksum
-        self.checksum_type = FileChecksumType
-        self.checksum = FileChecksum
+        self.checksum_type = fileChecksumType
+        self.checksum = fileChecksum
                 
         # Set headers
         self.set_header("Content-Type", "application/x-rpm")
@@ -267,13 +255,26 @@ class PackageUpload:
 
     def get_error_message(self, headers):
         prefix = self.header_prefix + '-Error'
-        errcodestr = prefix + "-Code"
-        if headers.has_key(errcodestr):
-            fault_code = headers[errcodestr]
-        else:
-            fault_code = None
         text = map(lambda x: x[1], headers.getaddrlist(prefix + '-String'))
         # text is a list now, convert it to a string
         text = '\n'.join(text)
         text = base64.decodestring(text)
         return text
+
+def parse_url(url, scheme="http", path='/'):
+    _scheme, netloc, _path, params, query, fragment = urlparse.urlparse(url)
+    if not netloc:
+        # No scheme - trying to patch it up ourselves?
+        url = scheme + "://" + url
+        _scheme, netloc, _path, params, query, fragment = urlparse.urlparse(url)
+
+    if not netloc:
+        # XXX
+        raise Exception()
+
+    (host, port) = urllib.splitport(netloc)
+
+    if not _path:
+        _path = path
+
+    return (_scheme, (host, port), _path, params, query, fragment)

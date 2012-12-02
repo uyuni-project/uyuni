@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
@@ -76,9 +77,9 @@ public class ServerFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return (CustomDataValue) session.getNamedQuery(
                 "CustomDataValue.findByServerAndKey").setEntity("server",
-                server).setEntity("key", key)
-        // Retrieve from cache if there
-                .setCacheable(true).uniqueResult();
+                        server).setEntity("key", key)
+                        // Retrieve from cache if there
+                        .setCacheable(true).uniqueResult();
     }
 
     /**
@@ -151,6 +152,7 @@ public class ServerFactory extends HibernateFactory {
      * Get the Logger for the derived class so log messages show up on the
      * correct class
      */
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -216,7 +218,7 @@ public class ServerFactory extends HibernateFactory {
      * @throws InvalidCertificateException thrown if certificate is invalid.
      */
     public static Server lookupByCert(ClientCertificate clientcert)
-        throws InvalidCertificateException {
+            throws InvalidCertificateException {
 
         String idstr = clientcert.getValueByName(ClientCertificate.SYSTEM_ID);
         String[] parts = StringUtils.split(idstr, '-');
@@ -259,7 +261,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<Server> lookupByIdsAndUser(List<Long> serverIds, User user) {
         Session session = HibernateFactory.getSession();
         Query query = session.getNamedQuery("Server.findByIdsAndOrgId")
-                             .setParameter("orgId", user.getOrg().getId());
+                .setParameter("orgId", user.getOrg().getId());
         if (serverIds.size() < 1000) {
             query.setParameterList("serverIds", serverIds);
             return query.list();
@@ -455,8 +457,8 @@ public class ServerFactory extends HibernateFactory {
 
         List result = session.getNamedQuery(
                 "Server.findVirtHostsExceedingGuestLimitByOrg").setParameter(
-                "group_type_id", groupType.getId()).setParameter("org_id",
-                org.getId()).list();
+                        "group_type_id", groupType.getId()).setParameter("org_id",
+                                org.getId()).list();
         return convertToCountView(result);
     }
 
@@ -519,11 +521,11 @@ public class ServerFactory extends HibernateFactory {
      * @param server the server who's history you want
      * @return A list of ServerHistoryEvents
      */
-    public static List getServerHistory(Server server) {
+    public static List<HistoryEvent> getServerHistory(Server server) {
 
         SelectMode m = ModeFactory.getMode("Action_queries",
                 "system_events_history");
-        Map params = new HashMap();
+        Map<String, Long> params = new HashMap<String, Long>();
         params.put("sid", server.getId());
 
         return m.execute(params);
@@ -606,7 +608,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Server> listConfigEnabledSystems() {
         return singleton.listObjectsByNamedQuery(
-                        "Server.listConfigEnabledSystems", Collections.EMPTY_MAP);
+                "Server.listConfigEnabledSystems", Collections.EMPTY_MAP);
     }
 
     /**
@@ -617,7 +619,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Server> listConfigDiffEnabledSystems() {
         return singleton.listObjectsByNamedQuery(
-                        "Server.listConfigDiffEnabledSystems", Collections.EMPTY_MAP);
+                "Server.listConfigDiffEnabledSystems", Collections.EMPTY_MAP);
     }
 
     /**
@@ -713,24 +715,24 @@ public class ServerFactory extends HibernateFactory {
 
         if ((startDate != null) && (endDate != null)) {
             HibernateFactory.getSession()
-                .getNamedQuery("ServerSnapshot.deleteBetweenDates")
-                .setParameter("org", org)
-                .setParameter("start_date", startDate)
-                .setParameter("end_date", endDate)
-                .executeUpdate();
+            .getNamedQuery("ServerSnapshot.deleteBetweenDates")
+            .setParameter("org", org)
+            .setParameter("start_date", startDate)
+            .setParameter("end_date", endDate)
+            .executeUpdate();
         }
         else if (startDate != null) {
             HibernateFactory.getSession()
-                .getNamedQuery("ServerSnapshot.deleteAfterDate")
-                .setParameter("org", org)
-                .setParameter("start_date", startDate)
-                .executeUpdate();
+            .getNamedQuery("ServerSnapshot.deleteAfterDate")
+            .setParameter("org", org)
+            .setParameter("start_date", startDate)
+            .executeUpdate();
         }
         else {
             HibernateFactory.getSession()
-                .getNamedQuery("ServerSnapshot.delete")
-                .setParameter("org", org)
-                .executeUpdate();
+            .getNamedQuery("ServerSnapshot.delete")
+            .setParameter("org", org)
+            .executeUpdate();
         }
     }
 
@@ -756,27 +758,27 @@ public class ServerFactory extends HibernateFactory {
 
         if ((startDate != null) && (endDate != null)) {
             HibernateFactory.getSession()
-                .getNamedQuery("ServerSnapshot.deleteForServerBetweenDates")
-                .setParameter("org", org)
-                .setParameter("server", server)
-                .setParameter("start_date", startDate)
-                .setParameter("end_date", endDate)
-                .executeUpdate();
+            .getNamedQuery("ServerSnapshot.deleteForServerBetweenDates")
+            .setParameter("org", org)
+            .setParameter("server", server)
+            .setParameter("start_date", startDate)
+            .setParameter("end_date", endDate)
+            .executeUpdate();
         }
         else if (startDate != null) {
             HibernateFactory.getSession()
-                .getNamedQuery("ServerSnapshot.deleteForServerAfterDate")
-                .setParameter("org", org)
-                .setParameter("server", server)
-                .setParameter("start_date", startDate)
-                .executeUpdate();
+            .getNamedQuery("ServerSnapshot.deleteForServerAfterDate")
+            .setParameter("org", org)
+            .setParameter("server", server)
+            .setParameter("start_date", startDate)
+            .executeUpdate();
         }
         else {
             HibernateFactory.getSession()
-                .getNamedQuery("ServerSnapshot.deleteForServer")
-                .setParameter("org", org)
-                .setParameter("server", server)
-                .executeUpdate();
+            .getNamedQuery("ServerSnapshot.deleteForServer")
+            .setParameter("org", org)
+            .setParameter("server", server)
+            .executeUpdate();
         }
     }
 
@@ -822,7 +824,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void addTagToSnapshot(Long snpId, Long orgId, String tagName) {
         CallableMode m = ModeFactory.getCallableMode("System_queries",
-        "add_tag_to_snapshot");
+                "add_tag_to_snapshot");
         Map inParams = new HashMap();
         inParams.put("snapshot_id", snpId);
         inParams.put("org_id", orgId);
@@ -837,7 +839,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void removeTagFromSnapshot(Long serverId, SnapshotTag tag) {
         CallableMode m = ModeFactory.getCallableMode("System_queries",
-        "remove_tag_from_snapshot");
+                "remove_tag_from_snapshot");
         Map inParams = new HashMap();
         inParams.put("server_id", serverId);
         inParams.put("tag_id", tag.getId());

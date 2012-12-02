@@ -1,5 +1,5 @@
 Name:           spacewalk-setup-jabberd
-Version:        1.7.0.5
+Version:        1.9.0
 Release:        1%{?dist}
 Summary:        Tools to setup jabberd for Spacewalk
 Group:          Applications/System
@@ -18,7 +18,7 @@ Requires:       jabberd-db
 %endif
 
 %description
-Script, which setup Jabberd for Spacewalk. Used during installation of
+Script, which sets up Jabberd for Spacewalk. Used during installation of
 Spacewalk server or Spacewalk proxy.
 
 %prep
@@ -70,6 +70,27 @@ rm -rf %{buildroot}
 %{_sysconfdir}/pki/spacewalk
 
 %changelog
+* Tue Oct 30 2012 Jan Pazdziora 1.8.7-1
+- Update the copyright year.
+
+* Thu Sep 20 2012 Jan Pazdziora 1.8.6-1
+- 857284 - don't setup ipv6 if /proc/net/if_inet6 is empty
+
+* Mon Aug 27 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.5-1
+- 807479 - correct description
+
+* Wed Aug 22 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.4-1
+- 800297 - s2s: enable resolve-ipv6
+
+* Mon Jun 11 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.3-1
+- there's no spacewalk-branding in spacewalk-proxy
+
+* Mon May 21 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.1-1
+- %%defattr is not needed since rpm 4.4
+- 807479 - simplify pki declaration
+- 807479 - require spacewalk-branding
+- Bumping package versions for 1.8.
+
 * Wed Dec 21 2011 Milan Zazrivec <mzazrivec@redhat.com> 1.6.5-1
 - update copyright info
 

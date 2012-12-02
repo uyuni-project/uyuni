@@ -8,7 +8,7 @@ use English;
 
 use Exporter 'import';
 use vars '@EXPORT_OK';
-@EXPORT_OK = qw(loc system_debug system_or_exit);
+@EXPORT_OK = qw(loc system_debug system_or_exit postgresql_clear_db);
 
 use Getopt::Long qw(GetOptions);
 use Symbol qw(gensym);
@@ -54,6 +54,9 @@ use constant DEFAULT_PROXY_CONF_LOCATION =>
 use constant DEFAULT_PROXYAUTH_CONF_LOCATION =>
   '/root/.curlrc';
 
+use constant DEFAULT_UP2DATE_LOCATION =>
+  '/etc/sysconfig/rhn/up2date';
+
 use constant DEFAULT_RHN_ETC_DIR =>
   '/etc/sysconfig/rhn';
 
@@ -84,9 +87,12 @@ use constant RHN_LOG_DIR =>
 use constant DB_UPGRADE_LOG_FILE =>
   '/var/log/rhn/upgrade_db.log';
 
-use constant DB_UPGRADE_LOG_SIZE => 20000000;
+use constant DB_UPGRADE_LOG_SIZE => 22000000;
 
 use constant DB_INSTALL_LOG_SIZE => 11416;
+
+use constant DB_MIGRATION_LOG_FILE =>
+  '/var/log/rhn/rhn_db_migration.log';
 
 our $DEFAULT_DOC_ROOT = "/var/www/html";
 if ( -e '/etc/SuSE-release' )
@@ -124,12 +130,15 @@ sub parse_options {
             "enable-tftp:s",
                     "external-db",
                     "db-only",
+            "rhn-http-proxy:s",
+            "rhn-http-proxy-username:s",
+            "rhn-http-proxy-password:s",
                     "ncc",
 		   );
 
   my $usage = loc("usage: %s %s\n",
 		  $0,
-		  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [ --skip-gpg-key-import ] [ --skip-ssl-cert-generation ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [ --re-register ] [ --disconnected ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [--ncc]" );
+		  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [ --skip-gpg-key-import ] [ --skip-ssl-cert-generation ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [ --re-register ] [ --disconnected ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [--external-db] [--ncc]" );
 
   # Terminate if any errors were encountered parsing the command line args:
   my %opts;
@@ -211,12 +220,23 @@ sub load_answer_file {
   return;
 }
 
-# Check if we're installing with an embedded database. Check for existence of
-# an "EmbeddedDB" directory beneath the dir we're running from (i.e.
-# installing from ISO)
+# Check if we're installing with an embedded database.
 sub is_embedded_db {
   my $opts = shift;
-  return (-d 'EmbeddedDB' and not defined($opts->{'external-db'}) ? 1 : 0 );
+  return not defined($opts->{'external-db'});
+}
+
+# Return 1 in case setup should also migrate from embedded oracle -> embedded postgresql
+sub is_db_migration {
+  return 0 if not -d 'PostgreSQL';
+  foreach my $rpm ('oracle-server-i386', 'oracle-server-x86_64', 'oracle-server-s390x') {
+    system("rpm -q $rpm >& /dev/null");
+    if ($? >> 8 == 0) {
+      return 1;
+    }
+  }
+
+  return 0;
 }
 
 sub system_debug {
@@ -902,6 +922,11 @@ sub postgresql_setup_db {
     print Spacewalk::Setup::loc("** Database: Setting up database connection for PostgreSQL backend.\n");
     my $connected;
 
+    if (is_embedded_db($opts)) {
+      postgresql_start();
+    }
+    postgresql_setup_embedded_db($opts, $answers);
+
     while (not $connected) {
         postgresql_get_database_answers($opts, $answers);
 
@@ -924,6 +949,86 @@ sub postgresql_setup_db {
     write_rhn_conf($answers, 'db-backend', 'db-host', 'db-port', 'db-name', 'db-user', 'db-password');
     postgresql_populate_db($opts, $answers);
 
+    if (is_db_migration() and $opts->{"upgrade"}) {
+        print loc("* Database: Starting embedded database migration.\n");
+        migrate_embedded_db($opts, $answers);
+    }
+
+    return 1;
+}
+
+sub postgresql_start {
+    system('service postgresql status >&/dev/null');
+    system('service postgresql start >&/dev/null') if ($? >> 8);
+    return ($? >> 8);
+}
+
+sub postgresql_setup_embedded_db {
+    my $opts = shift;
+    my $answers = shift;
+
+    if (not is_embedded_db($opts)) {
+        return 0;
+    }
+
+    if ($opts->{"skip-db-install"} or $opts->{"upgrade"} and not is_db_migration()) {
+        print loc("** Database: Embedded database installation SKIPPED.\n");
+        return 0;
+    }
+
+    if (not -x '/usr/bin/spacewalk-setup-embedded-postgresql') {
+        print loc(<<EOQ);
+The spacewalk-setup-embedded-postgresql does not seem to be available.
+You might want to use --external-db command line option.
+EOQ
+        exit 24;
+    }
+
+    if (-d "/var/lib/pgsql/data/base" and
+        ! system(qq{/usr/bin/spacewalk-setup-embedded-postgresql check --db $answers->{'db-name'}})) {
+        my $shared_dir = SHARED_DIR;
+        print loc(<<EOQ);
+The embedded database appears to be already installed. Either rerun
+this script with the --skip-db-install option, or use the
+'/usr/bin/spacewalk-setup-embedded-postgresql remove --db $answers->{'db-name'} --user $answers->{'db-user'}'
+script to remove the embedded database and try again.
+EOQ
+
+        exit 13;
+    }
+
+    if (not $opts->{"skip-db-diskspace-check"}) {
+        system_or_exit(['python', SHARED_DIR .
+            '/embedded_diskspace_check.py', '/var/lib/pgsql/data', '12288'], 14,
+            'There is not enough space available for the embedded database.');
+    }
+    else {
+        print loc("** Database: Embedded database diskspace check SKIPPED!\n");
+    }
+
+    printf loc(<<EOQ, DB_INSTALL_LOG_FILE);
+** Database: Installing the database:
+** Database: This is a long process that is logged in:
+** Database:   %s
+EOQ
+
+    if (have_selinux()) {
+      local *X; open X, '>', DB_INSTALL_LOG_FILE and close X;
+      system('/sbin/restorecon', DB_INSTALL_LOG_FILE);
+    }
+    print_progress(-init_message => "*** Progress: #",
+        -log_file_name => DB_INSTALL_LOG_FILE,
+		-log_file_size => DB_INSTALL_LOG_SIZE,
+		-err_message => "Could not install database.\n",
+		-err_code => 15,
+		-system_opts => [ "/usr/bin/spacewalk-setup-embedded-postgresql",
+                                  "create",
+                                  "--db", $answers->{'db-name'},
+                                  "--user", $answers->{'db-user'},
+                                  "--password", $answers->{'db-password'}]);
+
+    print loc("** Database: Installation complete.\n");
+
     return 1;
 }
 
@@ -933,14 +1038,15 @@ sub postgresql_populate_db {
 
     print Spacewalk::Setup::loc("** Database: Populating database.\n");
 
-    if ($opts->{"skip-db-population"} || $opts->{"upgrade"}) {
+    if ($opts->{"skip-db-population"} or ($opts->{"upgrade"} and not is_db_migration())) {
         print Spacewalk::Setup::loc("** Database: Skipping database population.\n");
         return 1;
     }
 
     if ($opts->{"clear-db"}) {
         print Spacewalk::Setup::loc("** Database: --clear-db option used.  Clearing database.\n");
-        postgresql_clear_db($answers);
+        my $dbh = get_dbh($answers);
+        postgresql_clear_db($dbh);
     }
 
     if (postgresql_test_db_schema($answers)) {
@@ -954,7 +1060,8 @@ sub postgresql_populate_db {
 
         if ($answers->{"clear-db"} =~ /Y/i) {
             print Spacewalk::Setup::loc("** Database: Clearing database.\n");
-            postgresql_clear_db($answers);
+            my $dbh = get_dbh($answers);
+            postgresql_clear_db($dbh);
             print Spacewalk::Setup::loc("** Database: Re-populating database.\n");
         }
         else {
@@ -1023,7 +1130,7 @@ my $POSTGRESQL_CLEAR_SCHEMA = <<EOS;
 	create schema public authorization postgres ;
 EOS
 sub postgresql_clear_db {
-	my $answers = shift;
+	my $dbh = shift;
 
 	print loc("** Database: Shutting down spacewalk services that may be using DB.\n");
 
@@ -1032,7 +1139,6 @@ sub postgresql_clear_db {
 
 	print loc("** Database: Services stopped.  Clearing DB.\n");
 
-	my $dbh = get_dbh($answers);
 	local $dbh->{RaiseError} = 0;
 	local $dbh->{PrintError} = 1;
 	local $dbh->{PrintWarn} = 0;
@@ -1044,7 +1150,69 @@ sub postgresql_clear_db {
 	return 1;
 }
 
+sub embedded_oracle_start {
+  if (-x "/etc/init.d/oracle") {
+      system("service oracle start >&/dev/null");
+  } else {
+      system("runuser", "oracle", "-l", "-c", "lsnrctl start >&/dev/null");
+      system("runuser", "oracle", "-l", "-c", "echo startup|ORACLE_SID=rhnsat sqlplus '/ as sysdba' >&/dev/null");
+  }
+}
 
+sub embedded_oracle_stop {
+  if (-x "/etc/init.d/oracle") {
+      system("service oracle stop >& /dev/null");
+  } else {
+      system("runuser", "oracle", "-l", "-c", "lsnrctl stop >&/dev/null");
+      system("runuser", "oracle", "-l", "-c",
+        "echo shutdown immediate|ORACLE_SID=rhnsat sqlplus '/ as sysdba' >&/dev/null");
+  }
+}
+
+sub migrate_embedded_db {
+  my $opts = shift;
+  my $answers = shift;
+
+  # FIXME: Test sufficient disk space for migration
+  print loc("** Database: Starting embedded Oracle database.\n");
+  embedded_oracle_start();
+
+  my $emb_oracle_creds = {
+    'db-backend' => 'oracle',
+    'db-host' => 'localhost',
+    'db-port' => 1521,
+  };
+
+  $emb_oracle_creds->{'db-name'} = $answers->{'embedded-oracle-name'} || 'rhnsat';
+  $emb_oracle_creds->{'db-user'} = $answers->{'embedded-oracle-user'} || 'rhnsat';
+  $emb_oracle_creds->{'db-password'} = $answers->{'embedded-oracle-password'} || 'rhnsat';
+
+  print loc("** Database: Trying to connect to embedded Oracle database: ");
+  if (_oracle_check_connect_info($emb_oracle_creds) != 2) {
+    print loc("failed.\n*** Please make sure you are using correct Oracle database login credentials.\n");
+    exit 1;
+  } else {
+    print loc("succeded.\n");
+  }
+
+  print loc("** Database: Migrating data.\n");
+  print loc("*** Database: Migration process logged at: " . DB_MIGRATION_LOG_FILE . "\n");
+  log_rotate(DB_MIGRATION_LOG_FILE);
+  system_or_exit(["/bin/bash", "-c",
+	"(set -o pipefail; /usr/bin/spacewalk-dump-schema" .
+	" --db=" . $emb_oracle_creds->{'db-name'} .
+	" --user=" . $emb_oracle_creds->{'db-user'} .
+	" --password=" . $emb_oracle_creds->{'db-password'} . " | spacewalk-sql" .
+	" --verbose" .
+	" --select-mode-direct" .
+	" - ) > " . DB_MIGRATION_LOG_FILE . ' 2>&1'],
+	1,
+	"*** Data migration failed.");
+
+  print loc("** Database: Data migration successfully completed.\n");
+  print loc("** Database: Stoping embedded Oracle database.\n");
+  embedded_oracle_stop();
+}
 
 
 
@@ -1069,17 +1237,6 @@ sub oracle_setup_db {
     oracle_populate_db($opts, $answers);
 }
 
-sub oracle_upgrade_start_db {
-    my $opts = shift;
-    if (is_embedded_db($opts)) {
-        if ($opts->{'upgrade'}) {
-            system_or_exit(['/sbin/service', 'oracle', 'start'], 19,
-                'Could not start the oracle database service.');
-        }
-    }
-
-    return;
-}
 
 sub oracle_check_for_users_and_groups {
     my $opts = shift;
@@ -1101,7 +1258,7 @@ sub oracle_setup_embedded_db {
     } else {
         $answers->{'db-user'} = 'rhnsat' if not defined $answers->{'db-user'};
         $answers->{'db-password'} = 'rhnsat' if not defined $answers->{'db-password'};
-        $answers->{'db-name'} = 'rhnsat' if not defined $answers->{'db-name'};
+        $answers->{'db-name'} = 'rhnsat.world';
         $answers->{'db-host'} = 'localhost';
         $answers->{'db-port'} = 1521;
     }
@@ -1120,7 +1277,6 @@ EOQ
                    -err_code => 15,
                    -system_opts => ['/sbin/runuser', 'oracle', '-c',
                                     SHARED_DIR . '/oracle/upgrade-db.sh' .
-                                    " --db $answers->{'db-name'}" .
                                     " --user $answers->{'db-user'}"]);
 
         system_or_exit(['service', 'oracle', 'restart'], 41,
@@ -1171,7 +1327,7 @@ EOQ
 		-log_file_size => DB_INSTALL_LOG_SIZE,
 		-err_message => "Could not install database.\n",
 		-err_code => 15,
-		-system_opts => [ SHARED_DIR . "/oracle/install-db.sh", "--db", $answers->{'db-name'},
+		-system_opts => [ SHARED_DIR . "/oracle/install-db.sh",
                         "--user", $answers->{'db-user'}, "--password", $answers->{'db-password'}]);
 
     print loc("** Database: Installation complete.\n");
@@ -1853,6 +2009,10 @@ Only runs the necessary steps to setup cobbler
 =item B<--enable-tftp=<yes|no>>
 
 Set to 'yes' to automatically enable tftp and xinetd services needed for Cobbler PXE provisioning functionality. Set to 'no' if you do not want the installer to enable these services.
+
+=item B<--external-db>
+
+Assume the RHN Satellite installation uses an external database (RHN Satellite only).
 
 =back
 

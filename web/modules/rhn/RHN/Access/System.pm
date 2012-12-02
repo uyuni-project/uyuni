@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -34,13 +34,7 @@ sub register_acl_handlers {
   $acl->register_handler(client_capable => \&client_capable);
   $acl->register_handler(system_kickstart_in_progress => \&kickstart_in_progress);
   $acl->register_handler(system_kickstart_session_exists => \&kickstart_session_exists);
-  $acl->register_handler(system_packaging_type => \&system_packaging_type);
-  $acl->register_handler(system_profile_capable => \&system_profile_capable);
   $acl->register_handler(org_has_proxies => \&org_has_proxies);
-  $acl->register_handler(package_available => \&package_available_to_system);
-  $acl->register_handler(action_pending_named => \&action_pending_named);
-  $acl->register_handler(last_action_attempt_failed => \&last_action_attempt_failed);
-  $acl->register_handler(system_entitlement_possible => \&system_entitlement_possible);
 }
 
 sub child_channel_candidate {
@@ -99,32 +93,6 @@ sub kickstart_session_exists {
   return 0;
 }
 
-# Does the packaging type of the system match the input?  (rpm, sysv-solaris, tar)
-sub system_packaging_type {
-  my $pxt = shift;
-  my $type = shift;
-
-  my $sid = $pxt->param('sid');
-  return 0 unless $sid;
-
-  return 1 if (RHN::Server->packaging_type($sid) eq $type);
-
-  return 0;
-}
-
-# Different from client_capable - this is for UI bits to turn on or off based upon the system type
-sub system_profile_capable {
-  my $pxt = shift;
-  my $cap = shift;
-
-  my $sid = $pxt->param('sid');
-  return 0 unless $sid;
-
-  return 1 if (RHN::Server->system_profile_capable($sid, $cap));
-
-  return 0;
-}
-
 # Return true if the org has at least one registered proxy
 sub org_has_proxies {
   my $pxt = shift;
@@ -136,95 +104,6 @@ sub org_has_proxies {
     return 1;
   }
 
-  return 0;
-}
-
-sub package_available_to_system {
-  my $pxt = shift;
-  my $package_name = shift;
-
-  my $sid = $pxt->param('sid');
-
-  return 0 unless $sid;
-  return 0 unless $package_name;
-
-  my $base_channel_id = RHN::Server->base_channel_id($sid);
-
-  return 0 unless $base_channel_id;
-
-  my @packages = RHN::Package->latest_packages_in_channel_tree(-uid => $pxt->user->id,
-							       -packages => [ $package_name ],
-							       -base_cid => $base_channel_id,
-							      );
-
-  return 0 unless (@packages);
-
-  return 1;
-}
-
-sub action_pending_named {
-  my $pxt = shift;
-  my $action_name = shift;
-
-  my $sid = $pxt->param('sid');
-
-  throw "(missing_param) Missing parameter 'sid'" unless $sid;
-  throw "(missing_acl_param) Missing acl parameter" unless $action_name;
-
-  my $ds = new RHN::DataSource::Action (-mode => 'actions_for_system_named');
-  my $data = $ds->execute_full(-sid => $sid, -action_name => $action_name);
-
-  return 0 unless (grep { $_->{STATUS} eq 'Queued' or $_->{STATUS} eq 'Picked Up' } @{$data});
-
-  return 1;
-}
-
-sub last_action_attempt_failed {
-  my $pxt = shift;
-  my $action_name = shift;
-
-  my $sid = $pxt->param('sid');
-
-  throw "(missing_param) Missing parameter 'sid'" unless $sid;
-  throw "(missing_acl_param) Missing acl parameter" unless $action_name;
-
-  my $ds = new RHN::DataSource::Action (-mode => 'actions_for_system_named');
-  my $data = $ds->execute_full(-sid => $sid, -action_name => $action_name);
-
-  return 0 unless (@{$data});
-  return 0 unless ($data->[0]->{STATUS} eq 'Failed');
-
-  return 1;
-}
-
-sub system_entitlement_possible {
-  my $pxt = shift;
-  my $target_entitlement = shift;
-
-  throw "(invalid_entitlement) Invalid entitlement: $target_entitlement"
-    unless RHN::Entitlements->is_valid_entitlement($target_entitlement);
-
-  my ($sid) = $pxt->param('sid');
-  throw "No sid parameter when testing for system entitlement level '$target_entitlement'"
-    unless $sid;
-
-  my $server = RHN::Server->lookup(-id => $sid);
-
-  if ($server->has_entitlement($target_entitlement) or
-      $server->can_entitle_server($target_entitlement)) {
-    return 1;
-  }
-
-  return 0;
-}
-
-# Return true if the org has at least one registered proxy
-sub org_has_proxies {
-  my $pxt = shift;
-  my $ds = new RHN::DataSource::System (-mode => 'org_proxy_servers');
-  my $data = $ds->execute_query(-org_id => $pxt->user->org_id);
-
-  return 1 if length($data) > 0;
   return 0;
 }
 

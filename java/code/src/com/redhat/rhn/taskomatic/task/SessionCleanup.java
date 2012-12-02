@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2011 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -44,8 +44,8 @@ public class SessionCleanup extends RhnJavaJob {
 
         //retrieves info from user preferences
         long window = c.getInt("web.session_database_lifetime");
-        int batchSize = c.getInt("web.session_delete_batch_size");
-        int commitInterval = c.getInt("web.session_delete_commit_interval");
+        int batchSize = c.getInt("java.session_delete_batch_size");
+        int commitInterval = c.getInt("java.session_delete_commit_interval");
 
         // 100000 is an arbitrary value
         if (batchSize > 100000 || batchSize <= 0) {
@@ -90,10 +90,10 @@ public class SessionCleanup extends RhnJavaJob {
         //retrieves and logs number of sessions deleted
         Long sessionsDeleted = (Long) row.get("sessions_deleted");
         if (sessionsDeleted > 0) {
-            log.info(row.get("sessions_deleted") + " stale session(s) deleted\n");
+            log.info(row.get("sessions_deleted") + " stale session(s) deleted");
         }
         else {
-            log.debug("No stale sessions deleted\n");
+            log.debug("No stale sessions deleted");
         }
     }
 

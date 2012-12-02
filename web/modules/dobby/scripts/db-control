@@ -13,11 +13,20 @@ use Dobby::Log;
 my $exec_name = basename $0;
 my $cli = new Dobby::CLI $exec_name;
 
+my $backend = PXT::Config->get('db_backend');
 my $cfg = new PXT::Config("dobby");
-my ($username, undef, $uid, $gid) = getpwnam($cfg->get("oracle_user"));
+my $intended_username = $cfg->get("${backend}_user");
+my ($username, undef, $uid, $gid) = getpwnam($intended_username);
 
 if (not defined $uid or not defined $gid or $uid != $> or $gid != $)) {
-  $cli->fatal("Error: please run this command as the $username user ('su - oracle').");
+  if ($backend eq 'postgresql') {
+    # postgresql backend can be run as root or postgres user
+    if ( $> != 0 or $) != 0) {
+      $cli->fatal("Error: please run this command as the root ('su -').");
+    }
+  } else { # oracle backend can be run only as oracle user
+    $cli->fatal("Error: please run this command as the $intended_username user ('su - $intended_username').");
+  }
 }
 
 Dobby::CLI::MiscCommands->register_dobby_commands($cli);
@@ -51,10 +60,13 @@ B<db-control>
 [B<examine DIRNAME>]
 [B<extend TABLESPACE>]
 [B<gather-stats PCT>]
+[B<get-optimizer>]
 [B<help>]
 [B<report>]
 [B<report-stats>]
 [B<restore DIRNAME>]
+[B<reset-password>]
+[B<set-optimizer>]
 [B<shrink-segments>]
 [B<start>]
 [B<status>]
@@ -78,23 +90,39 @@ Examines the contents of a backup directory.  Quicker than B<verify>, this comma
 
 =item B<extend TABLESPACE>
 
-Increases the tablespace size for TABLESPACE by adding an additional datafile.
+Increases the tablespace size for TABLESPACE by adding an additional datafile. (Oracle only)
 
 =item B<gather-stats PCT>
 
-Gather statistics on database objects. PCT is the percentage of rows to estimate (the default is 15 per cent).
+Gather statistics on database objects. On Oracle PCT is the percentage of rows to estimate (the default is 15 per cent). On PostgreSQL PCT does not have sense.
+
+=item B<get-optimizer>
+
+Show database optimizer mode (Oracle only).
 
 =item B<help>
 
 Gives a list of db-control options.
 
+=item B<pg-online-backup FILE>
+
+Perform online backup of database. This works only with PostgreSQL backend and FILE must be in directory writeable by postgres user. While this backup method is slower compared to "backup" (aprox. 4 times). You do not need to shut down neither Spacewalk services nor DB service.
+
+=item B<pg-restore FILE>
+
+Restores the database from backup file FILE, which was made by command "pg-online-backup". This command will shut down all Spacewalk services and leave only database running. Then all objects from DB are removed and backup is restored. You have to start up Spacewalk services manualy.
+
 =item B<report>
 
 Reports on current usage of database space.  
 
-=item B<report-stats>
+=item B<report-stats DAYS>
 
-Reports tables with stale or empty statistics.
+Reports tables with stale or empty statistics. On Oracle DAYS are ignored. On PostgreSQL shows tables, which has not been ANALYZED (gather-stats do that) for DAYS days. Default is one day.
+
+=item B<reset-password>
+
+Resets database password according to value in /etc/rhn/rhn.conf.
 
 =item B<restore DIRNAME>
 
@@ -102,9 +130,13 @@ Restores the database from backup kept in DIRNAME.  Database must be stopped for
 
 Before restoring, the files in DIRNAME are verified.  Once all files are verified successfully, the restore runs.  Once the restore is completed, the database may be started and run normally.
 
+=item B<set-optimizer>
+
+Set database optimizer mode to ALL_ROWS (Oracle only).
+
 =item B<shrink-segments>
 
-Determines and shrinks database segments with signifcant amount of free space.
+Determines and shrinks database segments with signifcant amount of free space. (Oracle only)
 
 =item B<start>
 
@@ -120,7 +152,7 @@ Stops the SUSE Manager database instance.  This is required to perform B<backup>
 
 =item B<tablesizes>
 
-Show space report for each table.
+Show space report for each table. On PostgreSQL the meaning of columns is as follows: "Planner Size" - size which planner usefor determining execution plan. It may differ from real size. "Real Size" - real size of data file on disk. "Real Size+Toasts+Idx" - reali size of data file on disk, including TOAST (The Oversized-Attribute Storage Technique) and indexes.
 
 =item B<verify DIRNAME>
 

@@ -16,7 +16,7 @@ License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 
-Version:        5.4.34.10
+Version:        5.4.42
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
@@ -53,13 +53,11 @@ Group: System Environment/Base
 Requires: libvirt-python
 Requires: rhn-virtualization-common = %{version}-%{release}
 %if 0%{?suse_version}
-Requires:       cron
-# python-curl for SUSE Studio download
-Requires:       python-curl
+Requires: cron
+Requires: python-curl
 PreReq:         %fillup_prereq %insserv_prereq
 %else
 Requires: /usr/sbin/crond
-Requires: python-hashlib
 Requires: python-pycurl
 %endif
 %if 0%{?rhel} && 0%{?rhel} < 6
@@ -88,7 +86,9 @@ make -f Makefile.rhn-virtualization
 %install
 rm -rf $RPM_BUILD_ROOT
 make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir} install
-
+%if 0%{?fedora} || (0%{?rhel} && 0%{?rhel} > 5)
+find $RPM_BUILD_ROOT -name "localvdsm*" -exec rm -f '{}' ';'
+%endif
 # add rclink
 mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
 ln -sf ../../etc/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-virtualization-host
@@ -178,13 +178,42 @@ fi
 %{rhn_dir}/virtualization/support.py*
 %{rhn_dir}/actions/virt.py*
 %{rhn_dir}/actions/image.py*
+%if 0%{?suse_version} || (0%{?rhel} && 0%{?rhel} < 6)
 %{rhn_dir}/virtualization/localvdsm.py*
+%endif
 %{rhn_conf_dir}/studio-*-template.xml
 %config(noreplace) %{rhn_conf_dir}/image.cfg
 %doc LICENSE
 
 
 %changelog
+* Sun Nov 11 2012 Michael Calmer <mc@suse.de> 5.4.42-1
+- no use of /var/lock/subsys/ anymore
+
+* Fri Aug 10 2012 Milan Zazrivec <mzazrivec@redhat.com> 5.4.41-1
+- don't include localvdsm.py on fedora
+
+* Fri Aug 10 2012 Milan Zazrivec <mzazrivec@redhat.com> 5.4.40-1
+- fix file inclusion on a fedora build
+
+* Fri Aug 10 2012 Jan Pazdziora 5.4.39-1
+- 820862 - fix traceback on a fat rhev-3 host
+
+* Fri Jul 13 2012 Stephen Herr <sherr@redhat.com> 5.4.38-1
+- Automatic commit of package [rhn-virtualization] release [5.4.37-1].
+- 839776 - rhn-profile-sync exits with status 1 if libvirtd is not running
+
+* Thu Jul 12 2012 Stephen Herr <sherr@redhat.com> 5.4.37-1
+- 839776 - rhn-profile-sync exits with status 1 if libvirtd is not running
+
+* Mon Jun 04 2012 Miroslav Suchý <msuchy@redhat.com> 5.4.36-1
+- Add support for studio image deployments (client) (jrenner@suse.de)
+- %%defattr is not needed since rpm 4.4 (msuchy@redhat.com)
+
+* Tue Mar 27 2012 Stephen Herr <sherr@redhat.com> 5.4.35-1
+- 807028 - rhn-virtualization-host should not delete chkconfig settings on
+  upgrade (sherr@redhat.com)
+
 * Fri Mar 02 2012 Jan Pazdziora 5.4.34-1
 - Update the copyright year info.
 

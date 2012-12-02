@@ -19,7 +19,11 @@
        <packagereq type="default">rhn-client-tools</packagereq>
        <packagereq type="default">yum-rhn-plugin</packagereq>
 
+       <packagereq type="default">cobbler2</packagereq>
+       <packagereq type="default">cobbler20</packagereq>
+       <packagereq type="default">cobbler-epel</packagereq>
        <packagereq type="default">cx_Oracle</packagereq>
+       <packagereq type="default">dwr</packagereq>
        <packagereq type="default">eventReceivers</packagereq>
        <packagereq type="default">jpam</packagereq>
        <packagereq type="default">MessageQueue</packagereq>
@@ -89,7 +93,6 @@
        <packagereq type="default">spacewalk-backend-tools</packagereq>
        <packagereq type="default">spacewalk-backend-xml-export-libs</packagereq>
        <packagereq type="default">spacewalk-backend-xmlrpc</packagereq>
-       <packagereq type="default">spacewalk-backend-xp</packagereq>
        <packagereq type="default">spacewalk-base</packagereq>
        <packagereq type="default">spacewalk-base-minimal</packagereq>
        <packagereq type="default">spacewalk-branding</packagereq>
@@ -129,6 +132,7 @@
        <packagereq type="default">spacewalk-search</packagereq>
        <packagereq type="default">spacewalk-selinux</packagereq>
        <packagereq type="default">spacewalk-setup</packagereq>
+       <packagereq type="default">spacewalk-setup-embedded-postgresql</packagereq>
        <packagereq type="default">spacewalk-setup-jabberd</packagereq>
        <packagereq type="default">spacewalk-slf4j</packagereq>
        <packagereq type="default">spacewalk-sniglets</packagereq>
@@ -154,6 +158,7 @@
     <uservisible>false</uservisible>
     <packagelist>
        <packagereq type="optional">jpam-javadoc</packagereq>
+       <packagereq type="optional">simple-xml-javadoc</packagereq>
        <packagereq type="optional">tanukiwrapper-javadoc</packagereq>
     </packagelist>
   </group>
@@ -163,7 +168,6 @@
     <description>Spacewalk Server Non-installatble Packages</description>
     <uservisible>false</uservisible>
     <packagelist>
-       <packagereq type="optional">perl-DBD-Oracle-explain</packagereq>
        <packagereq type="optional">spacewalk-java-tests</packagereq>
     </packagelist>
   </group>

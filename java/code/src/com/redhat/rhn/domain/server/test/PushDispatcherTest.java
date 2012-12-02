@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,9 +14,12 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.PushDispatcher;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.hibernate.HibernateException;
 
 import java.util.Date;
 
@@ -67,14 +70,19 @@ public class PushDispatcherTest extends RhnBaseTestCase {
     }
 
     private PushDispatcher createPushDispatcher() {
-        PushDispatcher dispatcher = new PushDispatcher();
-        dispatcher.setJabberId(JABBER_ID);
-        dispatcher.setLastCheckin(LAST_CHECKIN);
-        dispatcher.setHostname(HOSTNAME);
-        dispatcher.setPort(PORT);
+        try {
+            PushDispatcher dispatcher = new PushDispatcher();
+            dispatcher.setJabberId(JABBER_ID);
+            dispatcher.setLastCheckin(LAST_CHECKIN);
+            dispatcher.setHostname(HOSTNAME);
+            dispatcher.setPort(PORT);
 
-        TestUtils.saveAndFlush(dispatcher);
-        return dispatcher;
-
+            TestUtils.saveAndFlush(dispatcher);
+            return dispatcher;
+        }
+        catch (HibernateException e) {
+            HibernateFactory.rollbackTransaction();
+        }
+        return null;
     }
 }

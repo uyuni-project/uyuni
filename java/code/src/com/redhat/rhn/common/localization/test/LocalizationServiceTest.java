@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -153,9 +153,9 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     public void testGetInvalidMessage() {
         assertFalse("Didn't fetch an invalid message (we want to, in this test)",
                       isMessageValid(ls.getMessage("no message with this key")));
-        // web.l10n_missingmessage_exceptions
-        boolean orig = Config.get().getBoolean("web.l10n_missingmessage_exceptions");
-        Config.get().setBoolean("web.l10n_missingmessage_exceptions", "true");
+        // java.l10n_missingmessage_exceptions
+        boolean orig = Config.get().getBoolean("java.l10n_missingmessage_exceptions");
+        Config.get().setBoolean("java.l10n_missingmessage_exceptions", "true");
 
         boolean caught = false;
         try {
@@ -165,7 +165,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
             caught = true;
         }
         assertTrue(caught);
-        Config.get().setBoolean("web.l10n_missingmessage_exceptions",
+        Config.get().setBoolean("java.l10n_missingmessage_exceptions",
                 Boolean.toString(orig));
 
     }
@@ -261,7 +261,7 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     public void testDebugMessage() {
         TestUtils.enableLocalizationDebugMode();
         String received = ls.getMessage("testMessage");
-        String marker = Config.get().getString("web.l10n_debug_marker", "$$$");
+        String marker = Config.get().getString("java.l10n_debug_marker", "$$$");
         assertTrue(received.startsWith(marker));
         assertTrue(received.endsWith(marker));
         // Reset it back

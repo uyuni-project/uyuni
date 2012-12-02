@@ -167,6 +167,7 @@ def _set_server_capabilities():
         'xmlrpc.errata.patch_names'             : {'version' : 1, 'value' : 1},
         'staging_content'                       : {'version' : 1, 'value' : 1},
         'ipv6'                                  : {'version' : 1, 'value' : 1},
+        'abrt.handle'                           : {'version' : 1, 'value' : 1},
         'queue.update_status'                   : {'version' : 1, 'value' : 1},
     }
     l = []

@@ -4,7 +4,7 @@
 %endif
 
 Name:        spacecmd
-Version:     1.7.7.8
+Version:     1.9.0
 Release:     1%{?dist}
 Summary:     Command-line interface to Spacewalk and Satellite servers
 
@@ -63,6 +63,96 @@ touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 %doc %{_mandir}/man1/spacecmd.1.gz
 
 %changelog
+* Sat Sep 29 2012 Aron Parsons <aronparsons@gmail.com> 1.8.15-1
+- spacecmd: add functions to manage repo filters
+
+* Wed Aug 29 2012 Aron Parsons <aronparsons@gmail.com> 1.8.14-1
+- spacecmd: prevent outputting escape sequences to non-terminals
+
+* Sun Aug 12 2012 Aron Parsons <aronparsons@gmail.com> 1.8.13-1
+- spacecmd: add system_schedule{hardware,package}refresh functions Signed-off-
+  by: Aron Parsons <aronparsons@gmail.com>
+
+* Fri Aug 10 2012 Jan Pazdziora 1.8.12-1
+- Fixed small typo in spacecmd/src/lib/kickstart.py
+
+* Mon Jul 09 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.11-1
+- spacecmd : Fix kickstart_export with old API versions
+
+* Fri Jun 22 2012 Jan Pazdziora 1.8.10-1
+- spacecmd : enhancement add configchannel_sync
+- spacecmd : enhancement add softwarechannel_sync
+
+* Thu May 31 2012 Stephen Herr <sherr@redhat.com> 1.8.9-1
+- 809905 - fixing chroot option for addscript, is now possible to not chroot in
+  non-interactive mode
+
+* Thu May 24 2012 Steven Hardy <shardy@redhat.com> 1.8.8-1
+- spacecmd bugfix : kickstart_getcontents fix character encoding error
+- spacecmd bugfix: activationkey_import don't add empty package/group lists
+- spacecmd bugfix : fix activationkey_import when no base-channel specified
+- spacecmd bugfix : Fix reference to non-existent variable
+- spacecmd bugfix : improve configchannel_export operation on old API versions
+- spacecmd bugfix : *diff functions allow python 2.4 compatibility
+
+* Tue May 15 2012 Aron Parsons <aronparsons@gmail.com> 1.8.7-1
+- changed get_string_diff_dicts to better fitting replacement method
+- bugfix and comment clarification
+- bugfix: remove reference to stage function
+- add do_SPACEWALKCOMPONENT_diff functions
+- print return values
+
+* Tue May 15 2012 Steven Hardy <shardy@redhat.com> 1.8.6-1
+- spacecmd bugfix : system_comparewithchannel filter system packagelist
+- spacecmd bugfix : argument validation needed for configchannel_addfile
+- spacecmd bugfix : configchannel_addfile don't display b64 file contents
+
+* Fri Apr 27 2012 Steven Hardy <shardy@redhat.com> 1.8.5-1
+- spacecmd : enhancement add system_addconfigfile (shardy@redhat.com)
+- spacecmd : move file_needs_b64_enc into utils (shardy@redhat.com)
+- spacecmd : Fix usage for configchannel_addfile (shardy@redhat.com)
+- spacecmd : enhancement Add system_listconfigfiles (shardy@redhat.com)
+
+* Sat Apr 14 2012 Aron Parsons <aronparsons@gmail.com> 1.8.4-1
+- spacecmd: pretty-print JSON output
+- spacecmd: cosmetics
+
+* Thu Apr 05 2012 Stephen Herr <sherr@redhat.com> 1.8.3-1
+- 809905 - add option to allow templating for spacecmd kickstarting
+  (sherr@redhat.com)
+
+* Thu Mar 29 2012 Steven Hardy <shardy@redhat.com> 1.8.2-1
+- spacecmd : softwarechannel_clone avoid ISE on duplicate name
+  (shardy@redhat.com)
+- spacecmd bugfix : softwarechannel_adderrata mergeErrata should be
+  cloneErrataAsOriginal (shardy@redhat.com)
+- spacecmd enhancement : Add globbing support to distribution_details
+  (shardy@redhat.com)
+- spacecmd enhancement : Add globbing support to distribution_delete
+  (shardy@redhat.com)
+- spacecmd : Cleanup some typos in comments (shardy@redhat.com)
+- spacecmd enhancement : custominfo_details add support for globbing key names
+  (shardy@redhat.com)
+- spacecmd enhancement : custominfo_deletekey add support for globbing key
+  names (shardy@redhat.com)
+- spacecmd enhancement : Add cryptokey_details globbing support
+  (shardy@redhat.com)
+- spacecmd enhancement : cryptokey_delete add support for globbing
+  (shardy@redhat.com)
+- spacecmd : Workaround missing date key in recent spacewalk listErrata
+  (shardy@redhat.com)
+- spacecmd : Add validation to softwarechannel_adderrata channel args
+  (shardy@redhat.com)
+- spacecmd enhancement : softwarechannel_adderrata add --skip mode
+  (shardy@redhat.com)
+- spacecmd enhancement : Add --quick mode to softwarechannel_adderrata
+  (shardy@redhat.com)
+- spacecmd enhancement : Allow config-channel export of b64 encoded files
+  (shardy@redhat.com)
+
+* Mon Mar 12 2012 Jan Pazdziora 1.8.1-1
+- Update the spacecmd copyright years for Red Hat contributions.
+
 * Mon Feb 27 2012 Steven Hardy <shardy@redhat.com> 1.7.7-1
 - spacecmd : activationkey_details print child channels and packages sorted
   (joerg.steffens@dass-it.de)

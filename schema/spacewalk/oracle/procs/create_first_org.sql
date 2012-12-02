@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008--2010 Red Hat, Inc.
+-- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -47,23 +47,6 @@ begin
 	) values (
 		group_val, 'Organization Administrators',
 		'Organization Administrators for Org ' || name_in || ' (1)',
-		NULL, ug_type, 1
-	);
-
-	select rhn_user_group_id_seq.nextval into group_val from dual;
-
-	select	id
-	into	ug_type
-	from	rhnUserGroupType
-	where	label = 'org_applicant';
-
-	insert into rhnUserGroup (
-		id, name,
-		description,
-		max_members, group_type, org_id
-	) VALues (
-		group_val, 'Organization Applicants',
-		'Organization Applicants for Org ' || name_in || ' (1)',
 		NULL, ug_type, 1
 	);
 

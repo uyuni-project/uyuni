@@ -19,6 +19,11 @@
        <packagereq type="default">rhn-client-tools</packagereq>
        <packagereq type="default">yum-rhn-plugin</packagereq>
 
+       <packagereq type="default">cobbler2</packagereq>
+       <packagereq type="default">cobbler20</packagereq>
+       <packagereq type="default">cobbler-epel</packagereq>
+       <packagereq type="default">cx_Oracle</packagereq>
+       <packagereq type="default">dwr</packagereq>
        <packagereq type="default">eventReceivers</packagereq>
        <packagereq type="default">jpam</packagereq>
        <packagereq type="default">MessageQueue</packagereq>
@@ -28,8 +33,15 @@
        <packagereq type="default">NOCpulsePlugins-Oracle</packagereq>
        <packagereq type="default">NPalert</packagereq>
        <packagereq type="default">nutch</packagereq>
+       <packagereq type="default">oracle-instantclient-selinux</packagereq>
+       <packagereq type="default">oracle-instantclient-sqlplus-selinux</packagereq>
+       <packagereq type="default">oracle-lib-compat</packagereq>
+       <packagereq type="default">oracle-nofcontext-selinux</packagereq>
+       <packagereq type="default">oracle-selinux</packagereq>
+       <packagereq type="default">oracle-xe-selinux</packagereq>
        <packagereq type="default">osa-dispatcher</packagereq>
        <packagereq type="default">osa-dispatcher-selinux</packagereq>
+       <packagereq type="default">perl-DBD-Oracle</packagereq>
        <packagereq type="default">perl-NOCpulse-CLAC</packagereq>
        <packagereq type="default">perl-NOCpulse-Debug</packagereq>
        <packagereq type="default">perl-NOCpulse-Gritch</packagereq>
@@ -37,6 +49,7 @@
        <packagereq type="default">perl-NOCpulse-OracleDB</packagereq>
        <packagereq type="default">perl-NOCpulse-PersistentConnection</packagereq>
        <packagereq type="default">perl-NOCpulse-Probe</packagereq>
+       <packagereq type="default">perl-NOCpulse-Probe-Oracle</packagereq>
        <packagereq type="default">perl-NOCpulse-ProcessPool</packagereq>
        <packagereq type="default">perl-NOCpulse-Scheduler</packagereq>
        <packagereq type="default">perl-NOCpulse-SetID</packagereq>
@@ -45,6 +58,7 @@
        <packagereq type="default">ProgAGoGo</packagereq>
        <packagereq type="default">python-gzipstream</packagereq>
        <packagereq type="default">quartz</packagereq>
+       <packagereq type="default">quartz-oracle</packagereq>
        <packagereq type="default">redstone-xmlrpc</packagereq>
        <packagereq type="default">rhnpush</packagereq>
        <packagereq type="default">SatConfig-bootstrap</packagereq>
@@ -72,11 +86,11 @@
        <packagereq type="default">spacewalk-backend-package-push-server</packagereq>
        <packagereq type="default">spacewalk-backend-server</packagereq>
        <packagereq type="default">spacewalk-backend-sql</packagereq>
+       <packagereq type="default">spacewalk-backend-sql-oracle</packagereq>
        <packagereq type="default">spacewalk-backend-sql-postgresql</packagereq>
        <packagereq type="default">spacewalk-backend-tools</packagereq>
        <packagereq type="default">spacewalk-backend-xml-export-libs</packagereq>
        <packagereq type="default">spacewalk-backend-xmlrpc</packagereq>
-       <packagereq type="default">spacewalk-backend-xp</packagereq>
        <packagereq type="default">spacewalk-base</packagereq>
        <packagereq type="default">spacewalk-base-minimal</packagereq>
        <packagereq type="default">spacewalk-branding</packagereq>
@@ -91,11 +105,13 @@
        <packagereq type="default">spacewalk-java</packagereq>
        <packagereq type="default">spacewalk-java-config</packagereq>
        <packagereq type="default">spacewalk-java-lib</packagereq>
+       <packagereq type="default">spacewalk-java-oracle</packagereq>
        <packagereq type="default">spacewalk-java-postgresql</packagereq>
        <packagereq type="default">spacewalk-jpp-workaround</packagereq>
        <packagereq type="default">spacewalk-monitoring</packagereq>
        <packagereq type="default">spacewalk-monitoring-selinux</packagereq>
        <packagereq type="default">spacewalk-oro-compat</packagereq>
+       <packagereq type="default">spacewalk-oracle</packagereq>
        <packagereq type="default">spacewalk-postgresql</packagereq>
        <packagereq type="default">spacewalk-proxy-broker</packagereq>
        <packagereq type="default">spacewalk-proxy-common</packagereq>
@@ -115,6 +131,7 @@
        <packagereq type="default">spacewalk-search</packagereq>
        <packagereq type="default">spacewalk-selinux</packagereq>
        <packagereq type="default">spacewalk-setup</packagereq>
+       <packagereq type="default">spacewalk-setup-embedded-postgresql</packagereq>
        <packagereq type="default">spacewalk-setup-jabberd</packagereq>
        <packagereq type="default">spacewalk-slf4j</packagereq>
        <packagereq type="default">spacewalk-sniglets</packagereq>
@@ -139,6 +156,7 @@
     <uservisible>false</uservisible>
     <packagelist>
        <packagereq type="optional">jpam-javadoc</packagereq>
+       <packagereq type="optional">simple-xml-javadoc</packagereq>
     </packagelist>
   </group>
   <group>

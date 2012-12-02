@@ -1,7 +1,6 @@
--- oracle equivalent source sha1 9a93bedcf318008a701b88e86380a8d3cf353819
--- retrieved from ./1279712605/e7eb734c1a1ae108af13b6aa9040c8f20aee64c5/schema/spacewalk/oracle/procs/create_new_org.sql
+-- oracle equivalent source sha1 549745cb6bde08c57fdafb36e12efa0ca167e3be
 --
--- Copyright (c) 2008--2010 Red Hat, Inc.
+-- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -52,23 +51,6 @@ begin
         ) values (
                 group_val, 'Organization Administrators',
                 'Organization Administrators for Org ' || name_in,
-                NULL, ug_type, new_org_id
-        );
-
-        select nextval('rhn_user_group_id_seq') into group_val;
-
-        select  id
-        into    ug_type
-        from    rhnUserGroupType
-        where   label = 'org_applicant';
-
-        insert into rhnUserGroup (
-                id, name,
-                description,
-                max_members, group_type, org_id
-        ) VALues (
-                group_val, 'Organization Applicants',
-                'Organization Applicants for Org ' || name_in,
                 NULL, ug_type, new_org_id
         );
 

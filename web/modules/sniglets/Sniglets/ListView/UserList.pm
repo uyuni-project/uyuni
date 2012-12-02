@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -38,9 +38,6 @@ sub trap {
 sub list_of { return "users" }
 
 sub _register_modes {
-  Sniglets::ListView::List->add_mode(-mode => "feedback_user_list",
-				     -datasource => RHN::DataSource::User->new);
-
   Sniglets::ListView::List->add_mode(-mode => "group_admins",
 				     -datasource => RHN::DataSource::User->new,
 				     -provider => \&group_admin_provider,

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -65,7 +65,7 @@ class ArchiveParser(object):
         self._temp_dir = tempfile.mktemp()
         os.mkdir(self._temp_dir, 0700)
 
-        self._explode(archive)
+        self._explode()
 
     # destructor ---------------------------------------------------------
 
@@ -88,7 +88,7 @@ class ArchiveParser(object):
 
         raise NotImplementedError("ArchiveParser: abstract base class method '_explode_cmd'")
 
-    def _explode(self, archive):
+    def _explode(self):
         """[internal] Explode a archive for neutral parsing"""
 
         cmd = self._explode_cmd()
@@ -97,7 +97,7 @@ class ArchiveParser(object):
         assert self._archive_dir is not None    # assigned in _explode_cmd
 
         if cmd:
-            status = _my_popen(cmd)
+            _my_popen(cmd)
 
             if os.path.isdir(self._archive_dir):
                 return
@@ -183,6 +183,7 @@ class ArchiveParser(object):
         """ Returns the contens of the file, file is relative path in archive.
             Top most level (_get_archive_dir) is automaticaly added.
          """
+        # pylint: disable=W0703
         f = os.path.join(os.path.abspath(self._archive_dir), filename)
         contents = None
 
@@ -208,7 +209,7 @@ class ArchiveParser(object):
 
         zip_file = os.path.join(self._parent_dir, "%s.zip" % zip_dir)
         fd = zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED)
-        for base, dirs, files in os.walk(zip_dir):
+        for base, _dirs, files in os.walk(zip_dir):
             fd.write(base)
             for f in files:
                 fd.write(os.path.join(base, f))
@@ -226,7 +227,7 @@ class ArchiveParser(object):
         cpio_file = os.path.join(self._temp_dir, "%s.pkg" % prefix)
 
         cmd = "pkgtrans -s %s %s %s" % (self._archive_dir, cpio_file, prefix)
-        stat = _my_popen(cmd)
+        _my_popen(cmd)
 
         if os.path.isfile(cpio_file):
             return cpio_file
@@ -243,7 +244,7 @@ class ZipParser(ArchiveParser):
     def _get_archive_dir(self):
         return self.zip_file.namelist()[0]
 
-    def _explode(self, archive):
+    def _explode(self):
         """Explode zip archive"""
         self._archive_dir = os.path.join(self._temp_dir,
                                          self._get_archive_dir()).rstrip('/')
@@ -255,6 +256,9 @@ class ZipParser(ArchiveParser):
                                                 (self._archive_dir, str(e)))
         return
 
+    def _explode_cmd(self):
+        pass
+
 # parser for tar archives ------------------------------------------------
 
 class TarParser(ArchiveParser):
@@ -265,7 +269,7 @@ class TarParser(ArchiveParser):
     def _get_archive_dir(self):
         return self.tar_file.getnames()[0]
 
-    def _explode(self, archive):
+    def _explode(self):
         """Explode tar archive"""
         self._archive_dir = os.path.join(self._temp_dir, self._get_archive_dir())
 
@@ -275,6 +279,9 @@ class TarParser(ArchiveParser):
             raise InvalidArchiveError("Archive did not expand to %s: %s" %
                                                 (self._archive_dir, str(e)))
         return
+
+    def _explode_cmd(self):
+        pass
 
 # parser for cpio archives -----------------------------------------------
 
@@ -323,7 +330,7 @@ def _my_popen(cmd):
 
     txt = ""
     while 1:
-        rd, wr, ex = select.select([ popen.stdout, popen.stderr ], [], [ popen.stdout, popen.stderr ], 5)
+        rd, _wr, ex = select.select([ popen.stdout, popen.stderr ], [], [ popen.stdout, popen.stderr ], 5)
         if ex:
             txt += popen.stdout.read()
             txt += popen.stderr.read()
@@ -336,7 +343,7 @@ def _my_popen(cmd):
     if status != 0:
         raise Exception("%s exited with status %s and error\n%s" % (cmd, status, txt))
 
-    return status
+    return
 
 # NOTE these next two functions rely on file magic to determine the compression
 # and archive types. some file magic information can be found here:
@@ -373,10 +380,7 @@ def _decompress(archive):
 
         print "Decompressing archive"
 
-        stat = _my_popen("%s %s" % (cmd, archive))
-
-        if stat != 0:
-            raise DecompressionError("Error decompressing '%s'" % archive)
+        _my_popen("%s %s" % (cmd, archive))
 
         # remove the now invalid suffix from the archive name
         for sfx in sfx_list:
@@ -393,31 +397,31 @@ def get_archive_parser(archive, tempdir="/tmp/"):
 
     # decompress the archive
     archive = _decompress(archive)
-    Class = None
+    parserClass = None
     fd = open(archive, 'r')
 
     magic = fd.read(4)
     if magic == "PK\x03\x04":
-        Class = ZipParser
+        parserClass = ZipParser
 
     fd.seek(0)
     magic = fd.read(20)
     if magic == "# PaCkAgE DaTaStReAm":
-        Class = CpioParser
+        parserClass = CpioParser
 
     fd.seek(257)
     magic = fd.read(5)
     if magic == "ustar":
-        Class = TarParser
+        parserClass = TarParser
 
     # pre-posix tar doesn't have any standard file magic
     if archive.endswith(".tar"):
-        Class = TarParser
+        parserClass = TarParser
 
     fd.close()
 
-    if Class is None:
+    if parserClass is None:
         raise UnknownArchiveError("Wasn't able to identify: '%s'" % archive)
 
-    return Class(archive, tempdir)
+    return parserClass(archive, tempdir)
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2011 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
-import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -793,7 +792,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertTrue(sizeAfter > sizeBefore);
 
         // Test
-        Note deleteMe = (Note) server.getNotes().iterator().next();
+        Note deleteMe = server.getNotes().iterator().next();
         result = handler.deleteNote(adminKey, server.getId().intValue(),
                 deleteMe.getId().intValue());
 
@@ -823,7 +822,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testListAllEvents() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
-        List<ServerAction>results = handler.listSystemEvents(adminKey,
+        List<Map<String, Object>>results = handler.listSystemEvents(adminKey,
                 new Integer(server.getId().intValue()));
         assertEquals(0, results.size());
 

@@ -6,7 +6,7 @@
 
 <div class="top-content"> <!--Added for the purpose of SuSE Manager. Header wrap [et]-->
   <div id="utility">
-<c:set var="custom_header" scope="page" value="${rhn:getConfig('web.custom_header')}" />
+<c:set var="custom_header" scope="page" value="${rhn:getConfig('java.custom_header')}" />
 <c:if test="${! empty custom_header}">
     <center><p><c:out value="${custom_header}" escapeXml="false"/></p></center>
 </c:if>
@@ -20,8 +20,24 @@
 	</div-->
 	<div id="utilityAccount">
         <p>
-	  <a href="/help"><bean:message key="header.jsp.documentation"/></a><span class="navPipe">|</span> <!-- Moved over from utilityLinks as most of those are now gone, and there is no need to keep it as a separate bar. -->
-         <span class="label"><bean:message key="header.jsp.loggedin"/></span> <a href="/rhn/account/UserDetails.do"><c:out escapeXml="true" value="${requestScope.session.user.login}" /></a><span class="navPipe">|</span><span class="label"><bean:message key="header.jsp.org"/></span> <c:out escapeXml="true" value="${requestScope.session.user.org.name}" /><span class="navPipe">|</span><a href="/rhn/account/UserPreferences.do"><bean:message key="header.jsp.preferences"/></a><span class="navPipe">|</span><html:link forward="logout"><span><bean:message key="header.jsp.signout"/></span></html:link>
+         <span id="acc-logged-user">
+         <span class="label"><bean:message key="header.jsp.loggedin"/></span> <a href="/rhn/account/UserDetails.do"><c:out escapeXml="true" value="${requestScope.session.user.login}" /></a>
+         </span>
+         <span class="navPipe" id="acc-logged-user-pipe">|</span>
+
+         <span id="acc-logged-user-org">
+         <span class="label"><bean:message key="header.jsp.org"/></span> <a><c:out escapeXml="true" value="${requestScope.session.user.org.name}" /></a>
+         </span>
+         <span class="navPipe" id="acc-logged-user-org-pipe">|</span>
+
+         <span id="acc-prefs">
+         <a href="/rhn/account/UserPreferences.do"><bean:message key="header.jsp.preferences"/></a>
+         </span>
+         <span class="navPipe" id="acc-prefs-pipe">|</span>
+
+         <span id="acc-logout">
+         <html:link forward="logout"><span><bean:message key="header.jsp.signout"/></span></html:link>
+         </span>
         </p>
 	</div>
 </rhn:require>
@@ -43,7 +59,7 @@
       <option value="packages"><bean:message key="header.jsp.packages"/></option>
       <option value="errata"><bean:message key="header.jsp.errata"/></option>
       <option value="docs"><bean:message key="header.jsp.documentation"/></option>
-      </select><input type="text" name="search_string" maxlength="40" size="20" accesskey="4" autofocus/>
+      </select><input type="text" name="search_string" maxlength="40" size="20" accesskey="4" autofocus="autofocus"/>
       <input type="hidden" name="submitted" value="true"/>
       <input type="submit" class="button" name="image-1" value="Search" align="top" /></form>
     </div><!-- id="searchbarinner" -->
@@ -99,3 +115,4 @@
   </div>
 </div> <!-- end div bar -->
 <!-- end header.jsp -->
+

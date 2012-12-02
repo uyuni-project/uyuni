@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -156,6 +156,7 @@ class OracleBackend(Backend):
                 'summary'       : DBstring(4000),
                 'package_size'  : DBint(), 
                 'payload_size'  : DBint(),
+                'installed_size': DBint(),
                 'build_host'    : DBstring(256), 
                 'build_time'    : DBdateTime(),
                 'source_rpm_id' : DBint(),
@@ -327,6 +328,9 @@ class OracleBackend(Backend):
                 'checksum_type_id' : DBint(),
             },
             pk          = ['label'],
+            severityHash = {
+                'channel_product_id'          : 0,
+            },
         ),
         Table('rhnChannelFamily',
             fields      = {
@@ -344,8 +348,9 @@ class OracleBackend(Backend):
                 'release'       : DBstring(64),
                 'channel_arch_id': DBint(),
                 'channel_id'    : DBint(),
+                'org_id'    : DBint(),
             },
-            pk          = ['os', 'release', 'channel_arch_id', 'channel_id'],
+            pk          = ['release', 'channel_arch_id', 'org_id'],
             attribute   = 'dists',
             defaultSeverity = 4,
         ),

@@ -1,7 +1,7 @@
 #!/bin/sh
 # Upgrades RHN embedded database at mountpoint /rhnsat
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -99,6 +99,7 @@ instance_name
 user_dump_dest
 EOPATTERNS
 	echo "compatible=10.2.0.4.0" >>$UPGRADE_PFILE
+        $ORACLE_ADMIN_DIR/oracle-compute-sga.sh >>$UPGRADE_PFILE
 fi
 
 # upgrade the database
@@ -115,6 +116,6 @@ m4 -I$ORACLE_ADMIN_DIR \
    --define RHNORA_DB_USER=$DB_USER \
    $UPGRADE_TMPL \
    | $ORACLE_HOME/bin/sqlplus /nolog \
-   | cat > /rhnsat/admin/rhnsat/logs/upgrade_$ORACLE_SID.log
+   | cat -
 
 set +x

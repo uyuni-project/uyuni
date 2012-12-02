@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,6 +17,7 @@ use strict;
 package Dobby::CLI::MiscCommands;
 
 use Carp;
+use English;
 
 use Dobby::DB;
 use Dobby::Reporting;
@@ -48,10 +49,10 @@ sub register_dobby_commands {
                       -description => "Reset the user password and unlock account",
                       -handler => \&command_resetpassword);
   $cli->register_mode(-command => "get-optimizer",
-                      -description => "Show database optimizer mode",
+                      -description => "Show database optimizer mode (Oracle only)",
                       -handler => \&command_get_optimizer);
   $cli->register_mode(-command => "set-optimizer",
-                      -description => "Set database optimizer mode",
+                      -description => "Set database optimizer mode (Oracle only)",
                       -handler => \&command_set_optimizer);
 }
 
@@ -60,16 +61,21 @@ sub command_startstop {
   my $command = shift;
 
   my $d = new Dobby::DB;
+  my $backend = PXT::Config->get('db_backend');
 
   if ($command eq 'start') {
     if ($d->instance_state ne 'OFFLINE') {
       print "Database already running.\n";
     }
     else {
-      print "Starting database... ";
-      $d->database_startup;
-      $d->listener_startup;
-      print "done.\n";
+      if ($backend eq 'postgresql') {
+        system("/sbin/service", "postgresql", "start");
+      } else {
+        print "Starting database... ";
+        $d->database_startup;
+        $d->listener_startup;
+        print "done.\n";
+      }
     }
   }
   elsif ($command eq 'stop') {
@@ -77,10 +83,21 @@ sub command_startstop {
       print "Database already shut down.\n";
     }
     else {
-      print "Shutting down database... ";
-      $d->listener_shutdown;
-      $d->database_shutdown("immediate");
-      print "done.\n";
+      if ($backend eq 'postgresql') {
+        system("/sbin/service", "postgresql", "stop");
+      } else {
+        print "Shutting down database";
+        $d->listener_shutdown;
+        $d->database_shutdown("immediate");
+        my $i = 5;
+        $| = 1;
+        while (($i-- > 0) and ($d->instance_state ne 'OFFLINE')) {
+          sleep 1;
+          print ".";
+        }
+        my $s = ($d->instance_state eq 'OFFLINE') ? " done.\n" : " fail.\n";
+        print $s;
+      }
     }
   }
   else {
@@ -137,20 +154,29 @@ sub command_report {
   }
 
   my $indent = "  ";
+  my $backend = PXT::Config->get('db_backend');
 
-  my $fmt = "%-24s %7s %7s %7s %5s%%\n";
-  printf $fmt, "Tablespace", "Size", "Used", "Avail", "Use";
+  if ($backend eq 'postgresql') {
+    my $fmt = "%-24s %7s\n";
+    my $schema = PXT::Config->get('db_name');
+    printf $fmt, "Tablespace", "Size";
+    my $ret = (Dobby::Reporting->tablespace_overview_postgresql($d, $schema))[0];
+    printf $fmt, $schema, $ret->{'TOTAL_SIZE'};
+  } else {
+    my $fmt = "%-24s %7s %7s %7s %5s%%\n";
+    printf $fmt, "Tablespace", "Size", "Used", "Avail", "Use";
 
-  my $class = __PACKAGE__;
-  for my $ts (sort { $a->{NAME} cmp $b->{NAME} } Dobby::Reporting->tablespace_overview($d)) {
-    $ts->{FREE_BYTES} = $ts->{TOTAL_BYTES} - ($ts->{USED_BYTES} or 0) unless $ts->{FREE_BYTES};
-    $ts->{USED_BYTES} = $ts->{TOTAL_BYTES} - ($ts->{FREE_BYTES} or 0) unless $ts->{USED_BYTES};
-    printf $fmt,
-      $ts->{NAME},
-      $class->size_scale($ts->{TOTAL_BYTES}),
-      $class->size_scale($ts->{USED_BYTES}),
-      $class->size_scale($ts->{FREE_BYTES}),
-      sprintf("%.0f", 100 * ($ts->{USED_BYTES} / $ts->{TOTAL_BYTES}));
+    my $class = __PACKAGE__;
+    for my $ts (sort { $a->{NAME} cmp $b->{NAME} } Dobby::Reporting->tablespace_overview_oracle($d)) {
+      $ts->{FREE_BYTES} = $ts->{TOTAL_BYTES} - ($ts->{USED_BYTES} or 0) unless $ts->{FREE_BYTES};
+      $ts->{USED_BYTES} = $ts->{TOTAL_BYTES} - ($ts->{FREE_BYTES} or 0) unless $ts->{USED_BYTES};
+      printf $fmt,
+        $ts->{NAME},
+        $class->size_scale($ts->{TOTAL_BYTES}),
+        $class->size_scale($ts->{USED_BYTES}),
+        $class->size_scale($ts->{FREE_BYTES}),
+        sprintf("%.0f", 100 * ($ts->{USED_BYTES} / $ts->{TOTAL_BYTES}));
+    }
   }
   return 0;
 }
@@ -165,33 +191,43 @@ sub command_tablesizes {
   }
 
   my $indent = "  ";
-
-  my $fmt = "%-32s %7s\n";
-  printf $fmt, "Tables", "Size";
-
+  my $backend = PXT::Config->get('db_backend');
   my $class = __PACKAGE__;
-  my $total = 0;
-  for my $ts (sort { $a->{NAME} cmp $b->{NAME} } Dobby::Reporting->table_size_overview($d)) {
-    printf $fmt,
-      $ts->{NAME}, $class->size_scale($ts->{TOTAL_BYTES});
-    $total += $ts->{TOTAL_BYTES};
-  }
 
-  printf $fmt, "-" x 32, "-" x 7;
-  printf $fmt, "Total", $class->size_scale($total);
+  if ($backend eq 'postgresql') {
+    my $fmt = "%-32s %12s %12s %21s\n";
+    printf $fmt, "Tables", "Planner Size", "Real Size", "Real Size+Toasts+Idx";
+
+    for my $ts (sort { $a->{NAME} cmp $b->{NAME} } Dobby::Reporting->table_size_overview_postgresql($d)) {
+      printf $fmt, $ts->{'NAME'}, $ts->{'PLANER'}, $ts->{'SIZE'}, $ts->{'TOTAL_SIZE'};
+    }
+  } else {
+    my $fmt = "%-32s %7s\n";
+    printf $fmt, "Tables", "Size";
+
+    my $total = 0;
+    for my $ts (sort { $a->{NAME} cmp $b->{NAME} } Dobby::Reporting->table_size_overview_oracle($d)) {
+      printf $fmt,
+        $ts->{NAME}, $class->size_scale($ts->{TOTAL_BYTES});
+      $total += $ts->{TOTAL_BYTES};
+    }
+
+    printf $fmt, "-" x 32, "-" x 7;
+    printf $fmt, "Total", $class->size_scale($total);
+  }
   return 0;
 }
 
 sub command_reportstats {
-  my $cli = shift;
-
+  my ($cli, $command, $days) = @_;
   my $d = new Dobby::DB;
   if (not $d->database_started) {
     print "Error: The database must be running to get a statistics report.\n";
     return 1;
   }
-
-  my $stats = $d->report_database_stats();
+  my $backend = PXT::Config->get('db_backend');
+  $days = 1 unless (defined $days);
+  my $stats = ($backend eq 'postgresql') ? $d->report_database_stats_postgresql($days) : $d->report_database_stats_oracle;
   for my $i (sort keys %$stats) {
     print "Tables with $i statistics: $stats->{$i}\n";
   }
@@ -202,6 +238,10 @@ sub command_resetpassword {
   my $cli = shift;
 
   my $d = new Dobby::DB;
+
+  my @rec = getpwnam("postgres");
+  $EUID = $rec[2];
+
   if (not $d->database_started) {
     print "Error: The database must be running to reset the user password.\n";
     return 1;
@@ -219,6 +259,9 @@ sub command_resetpassword {
 
 sub command_get_optimizer {
   my $cli = shift;
+
+  my $backend = PXT::Config->get('db_backend');
+  $cli->fatal("Error: This command works only with Oracle.") unless ($backend eq 'oracle');
 
   my $d = new Dobby::DB;
 
@@ -240,6 +283,9 @@ sub command_get_optimizer {
 
 sub command_set_optimizer {
   my $cli = shift;
+
+  my $backend = PXT::Config->get('db_backend');
+  $cli->fatal("Error: This command works only with Oracle.") unless ($backend eq 'oracle');
 
   my $d = new Dobby::DB;
 

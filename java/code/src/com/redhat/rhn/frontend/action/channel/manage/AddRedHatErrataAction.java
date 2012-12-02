@@ -146,9 +146,11 @@ public class AddRedHatErrataAction extends RhnListAction {
                 if (!selectedChannel.isBaseChannel()) {
                     tmp = findVersionFromChannel(selectedChannel.getParentChannel());
                 }
-            }
-            if (tmp != null) {
-                selectedVersionStr = tmp;
+                if (tmp != null) {
+                    selectedVersionStr = tmp;
+                    break;
+                }
+                original = ChannelFactory.lookupOriginalChannel(original);
             }
             */
         }
@@ -303,6 +305,7 @@ public class AddRedHatErrataAction extends RhnListAction {
         }
         return toReturn;
     }
+
 
     protected RhnSetDecl getSetDecl(Channel chan) {
         return RhnSetDecl.setForChannelErrata(chan);

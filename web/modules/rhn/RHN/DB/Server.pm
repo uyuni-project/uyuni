@@ -21,10 +21,6 @@ use RHN::DB;
 use RHN::Org;
 use RHN::DB::Channel;
 use RHN::DB::Server;
-use RHN::DB::Server::CdDevice;
-use RHN::DB::Server::HwDevice;
-use RHN::DB::Server::StorageDevice;
-use RHN::DB::Server::NetInfo;
 use RHN::DB::TableClass;
 
 use RHN::DataSource::Errata;
@@ -140,73 +136,6 @@ my $j = $s_table->create_join(
 # Server object methods
 ############################
 
-sub applet_activated {
-  my $self = shift;
-
-  # never, ever select the uuid.  if you think you need it for something, you're wrong.
-  my $dbh = RHN::DB->connect();
-  my $sth = $dbh->prepare(<<EOQ);
-SELECT 1
-  FROM rhnServerUuid
- WHERE server_id = :server_id
-EOQ
-
-  $sth->execute_h(server_id => $self->id);
-  my ($activated) = $sth->fetchrow;
-  $sth->finish;
-
-  return $activated;
-}
-
-sub get_cpu_arch_name {
-  my $self = shift;
-
-  my $dbh = RHN::DB->connect();
-  my $sth = $dbh->prepare(<<EOQ);
-SELECT CA.name
-  FROM rhnCpuArch CA,
-       rhnCpu C
- WHERE C.server_id = :server_id
-   AND C.cpu_arch_id = CA.id
-EOQ
-
-  $sth->execute_h(server_id => $self->id);
-
-  my ($cpu_arch_name) = $sth->fetchrow;
-  $sth->finish;
-  return $cpu_arch_name;
-}
-
-sub get_latest_action_named {
-  my $self = shift;
-  my $action_name = shift;
-
-  my $dbh = RHN::DB->connect();
-  my $sth = $dbh->prepare(<<EOQ);
-SELECT A.id
-  FROM rhnAction A,
-       rhnServerAction SA
- WHERE SA.server_id = :server_id
-   AND SA.action_id = A.id
-   AND A.name = :action_name
-ORDER BY SA.created DESC
-EOQ
-
-  $sth->execute_h(server_id => $self->id,
-		  action_name => $action_name,
-		 );
-
-  my ($action_id) = $sth->fetchrow;
-  $sth->finish;
-
-  return unless $action_id;
-
-  my $action = RHN::Action->lookup(-id => $action_id);
-  die "no action object for action_id $action_id" unless $action;
-
-  return $action;
-}
-
 sub bulk_set_custom_value {
   my $class = shift;
   my %params = validate(@_, {set_label => 1, user_id => 1, key_label => 1, value => 0});
@@ -232,57 +161,6 @@ EOQ
 
   $sth->execute_h(%params);
   $dbh->commit;
-}
-
-sub get_custom_value {
-  my $class = shift;
-  my %params = validate(@_, {server_id => 1, key_id => 1});
-
-  my $dbh = RHN::DB->connect();
-  my $sth = $dbh->prepare(<<EOQ);
-SELECT CDK.label AS KEY,
-       SCDV.value AS VALUE,
-       TO_CHAR(SCDV.modified, 'YYYY-MM-DD HH24:MI:SS') AS LAST_MODIFIED,
-       TO_CHAR(SCDV.created, 'YYYY-MM-DD HH24:MI:SS') AS CREATED,
-       wc_creator.login AS CREATED_BY,
-       wc_modifier.login AS LAST_MODIFIED_BY
-  FROM web_contact wc_creator,
-       web_contact wc_modifier,
-       rhnCustomDataKey CDK,
-       rhnServerCustomDataValue SCDV
- WHERE CDK.id = :key_id
-   AND SCDV.server_id = :server_id
-   AND CDK.id = SCDV.key_id
-   AND SCDV.created_by = wc_creator.id (+)
-   AND SCDV.last_modified_by = wc_modifier.id (+)
-EOQ
-
-  $sth->execute_h(server_id => $params{server_id}, key_id => $params{key_id});
-
-  my $ret = $sth->fetchrow_hashref;
-  $sth->finish;
-
-  return $ret;
-}
-
-sub version_of_package_installed {
-  my $self = shift;
-  my $name = shift;
-
-  my $dbh = RHN::DB->connect;
-  my $sth = $dbh->prepare(<<EOS);
-SELECT PE.epoch, PE.version, PE.release
-  FROM rhnPackageEVR PE,
-       rhnServerPackage SP
- WHERE SP.evr_id = PE.id
-   AND SP.name_id = lookup_package_name(?)
-   and SP.server_id = ?
-EOS
-  $sth->execute($name, $self->id);
-  my ($result) = $sth->fetchrow_hashref;
-  $sth->finish;
-
-  return $result;
 }
 
 sub up2date_version_at_least {
@@ -381,11 +259,10 @@ sub is_virtual_host {
   }
 }
 
-sub has_virtualization_entitlement {
+sub has_management_entitlement {
   my $self = shift;
 
-  if ($self -> has_entitlement("virtualization_host") ||
-         $self -> has_entitlement("virtualization_host_platform")) {
+  if ($self -> has_entitlement("enterprise_entitled")) {
     return 1;
   }
   else {
@@ -502,56 +379,6 @@ EOQ
   return $columns[0];
 }
 
-sub base_channel_label {
-  my $self = shift;
-
-  my $dbh = RHN::DB->connect();
-  my $query;
-  my $sth;
-
-  $query = <<EOQ;
-SELECT  C.label
-  FROM  rhnChannel C, rhnServerChannel SC
- WHERE  SC.server_id = ?
-   AND  SC.channel_id = C.id
-   AND  C.parent_channel IS NULL
-EOQ
-
-  $sth = $dbh->prepare($query);
-  $sth->execute($self->id);
-
-  my @columns;
-  @columns = $sth->fetchrow;
-  $sth->finish;
-
-  return $columns[0] || '';
-}
-
-sub base_channel_name {
-  my $self = shift;
-
-  my $dbh = RHN::DB->connect();
-  my $query;
-  my $sth;
-
-  $query = <<EOQ;
-SELECT  C.name
-  FROM  rhnChannel C, rhnServerChannel SC
- WHERE  SC.server_id = ?
-   AND  SC.channel_id = C.id
-   AND  C.parent_channel IS NULL
-EOQ
-
-  $sth = $dbh->prepare($query);
-  $sth->execute($self->id);
-
-  my @columns;
-  @columns = $sth->fetchrow;
-  $sth->finish;
-
-  return $columns[0];
-}
-
 # given a channel family label and server_id, return the child channels
 # the server could be subscribed to, if any
 sub child_channel_candidates {
@@ -640,32 +467,6 @@ EOS
   $sth->finish;
 
   return $ret;
-}
-
-# bug 247457
-# need to remove virtualization_host by hand to allow removal
-# of corrupt servers from satellite. This is lame, but without
-# a schema change, it is the only viable solution.
-sub remove_virtualization_host_entitlement {
-  my $class = shift;
-  my $server_id = shift;
-
-  my $query = <<EOQ;
-  SELECT sg.id FROM rhnServerGroup sg, rhnServerGroupType sgt
-   WHERE sg.group_type = sgt.id 
-     AND sgt.label = 'virtualization_host'
-EOQ
-
-  my $dbh = RHN::DB->connect();
-  my $sth = $dbh->prepare($query);
-  $sth->execute_h();
-  my ($id) = $sth->fetchrow;
-  $sth->finish;
-  # if we can't find it, just bail
-  return unless $id;
-
-  $class->remove_servers_from_groups([$server_id], [$id], $dbh);
-  $dbh->commit;
 }
 
 sub system_pending_actions_count {
@@ -1128,44 +929,6 @@ sub subscribe_to_channel {
   }
 }
 
-# returns an array of all the cd devices connected to a server
-# TODO:  should we be caching this result?
-sub get_cd_devices {
-  my $self = shift;
-
-  my @cd_devices = RHN::DB::Server::CdDevice->lookup_cd_devices_by_server($self->id);
-
-  return @cd_devices;
-}
-
-# returns an array of all the hardware devices attached to a server.
-# TODO:  should we be caching this result?
-sub get_hw_devices {
-  my $self = shift;
-
-  my @hw_devices = RHN::DB::Server::HwDevice->lookup_hw_devices_by_server($self->id);
-
-  return @hw_devices;
-}
-
-# returns an array of all the storage devices attached to a server.
-# TODO:  should we be caching this result?
-sub get_storage_devices {
-  my $self = shift;
-
-  my @storage_devices = RHN::DB::Server::StorageDevice->lookup_storage_devices_by_server($self->id);
-
-  return @storage_devices;
-}
-
-# returns an array of all the net info objects related to a server
-sub get_net_infos {
-  my $self = shift;
-
-  my @net_infos = RHN::DB::Server::NetInfo->lookup_net_info_by_server($self->id);
-  return @net_infos;
-}
-
 
 #
 # build some accessors
@@ -1285,79 +1048,6 @@ sub commit {
   delete $self->{":modified:"};
 }
 
-
-sub package_groups {
-  my $self = shift;
-
-  my $dbh = RHN::DB->connect;
-
-  my $query = <<EOQ;
-  SELECT    SP_NAME.name, SP_EVR.evr.as_vre_simple(), SP.name_id || '|' || SP.evr_id ID_COMBO
-    FROM    rhnPackageEvr SP_EVR, rhnPackageName SP_NAME, rhnServerPackage SP
-   WHERE    SP.server_id = ?
-     AND    SP.name_id = SP_NAME.id
-     AND    SP.evr_id = SP_EVR.id
-ORDER BY    UPPER(name), SP_EVR.evr DESC
-EOQ
-  my $sth = $dbh->prepare($query);
-  $sth->execute($self->id);
-  my %server_pkg;
-  while (my ($name, $evr, $id_combo) = $sth->fetchrow) {
-#    $server_pkg{$name} = [$id_combo, $nvre, $name_id, $evr_id];
-    $server_pkg{$name} = [$name, $evr, $id_combo];
-  }
-
-  if (not keys %server_pkg) {
-    return;
-  }
-
-  $query = <<EOQ;
-SELECT PN.name, PG.name
-  FROM rhnPackageEVR PE, rhnPackage P, rhnChannelPackage CP, rhnPackageGroup PG, rhnPackageName PN, rhnServerChannel SC
- WHERE SC.server_id = ?
-   AND SC.channel_id = CP.channel_id
-   AND P.id = CP.package_id
-   AND PE.id = P.evr_id
-   AND PG.id = P.package_group
-   AND P.name_id = PN.id
-ORDER BY UPPER(P.name), PE.evr DESC
-EOQ
-  $sth = $dbh->prepare($query);
-  $sth->execute($self->id);
-
-  my %pkg_seen;
-  my %groups;
-  my %filter_server_pkg = %server_pkg;
-  while (my @row = $sth->fetchrow) {
-    delete $filter_server_pkg{$row[0]};
-    next if $pkg_seen{$row[0]}++;
-    $row[1] =~ s/\s*$//;
-    $row[1] =~ s/Enviornment/Environment/; # fix a typo in an old glibc pkg
-    my ($upper, $lower) = split m(/), $row[1], 2;
-    $lower ||= '';
-
-    push @{$groups{$upper}->{$lower}}, $server_pkg{$row[0]}
-      if exists $server_pkg{$row[0]};
-  }
-
-  $groups{Ungrouped}->{''} = [ sort { lc $a cmp lc $b } values %filter_server_pkg ];
-
-  return \%groups;
-}
-
-sub has_hardware_profile {
-  my $self = shift;
-
-  my $dbh = RHN::DB->connect;
-  my $query = "SELECT 1 FROM rhnCpu WHERE server_id = ?";
-  my $sth = $dbh->prepare($query);
-  $sth->execute($self->id);
-
-  my ($profiled) = $sth->fetchrow;
-  $sth->finish;
-
-  return $profiled || 0;
-}
 
 sub entitlements {
   my $self_or_class = shift;
@@ -1833,59 +1523,6 @@ EOS
   $dbh->commit;
 }
 
-sub compatible_with_server { #returns the id and name of all servers which this server can be profiled against.
-  my $class = shift;
-  my $server_id = shift;
-  my $user_id = shift;
-  my $org_id = shift;
-
-  my %params = (sid => $server_id, user_id => $user_id);
-
-  my $org_string;
-  if (defined $org_id) {
-    $org_string = '= :org_id';
-    $params{org_id} = $org_id;
-  }
-  else {
-    $org_string = 'IS NULL';
-  }
-
-  my $dbh = RHN::DB->connect;
-
-  my $query = <<EOQ;
-SELECT S.id, S.name
-  FROM rhnServer S,
-       rhnServer SBase
- WHERE S.org_id = SBase.org_id
-   AND SBase.id = :sid
-   AND EXISTS (SELECT 1 FROM rhnUserServerPerms WHERE user_id = :user_id AND server_id = S.id)
-   AND (EXISTS (SELECT 1
-                 FROM rhnServerChannel SC, rhnServerChannel SCBase
-                WHERE SCBase.server_id = SBase.id
-                  AND SC.channel_id = SCBase.channel_id
-                  AND SC.server_id = S.id)
-       OR EXISTS (SELECT 1
-                    FROM rhnChannel C, rhnServerChannel SC
-                   WHERE SC.server_id = S.id
-                     AND SC.channel_id = C.id
-                     AND C.org_id $org_string
-                     AND C.parent_channel IS NULL) )
-   AND S.id != :sid
-   AND EXISTS (SELECT 1 FROM rhnServerFeatureView SFV WHERE SFV.server_id = S.id AND SFV.label = 'ftr_profile_compare')
-ORDER BY UPPER(S.name)
-EOQ
-
-  my $sth = $dbh->prepare($query);
-  $sth->execute_h(%params);
-
-  my @ret;
-  while (my @data = $sth->fetchrow) {
-    push @ret, [ @data ];
-  }
-
-  return @ret;
-}
-
 # eids of applicable errata for which the server does not have a
 # pending update action
 #
@@ -2302,22 +1939,6 @@ EOQ
   $sth->finish;
 
   return $row;
-}
-
-# Make a guess at this system's hostname
-sub guess_hostname {
-  my $self = shift;
-
-  my $hostname = $self->name;
-
-  my @net_infos = $self->get_net_infos;
-  foreach my $net_info (@net_infos) {
-    next if (not $net_info->hostname || $net_info->hostname =~ /^localhost/);
-
-    $hostname = $net_info->hostname;
-  }
-
-  return $hostname;
 }
 
 sub cleanup_monitoring_for_system {

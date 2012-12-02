@@ -171,14 +171,6 @@ EOQ
     }
   }
 
-  # the cert admin role implies rhn_support
-  my $implied_cert_admin_role = 'rhn_support';
-  if(exists $roles{cert_admin}) {
-    if (grep { $implied_cert_admin_role eq $_ } $ret->org->available_roles) {
-      $roles{$implied_cert_admin_role} = 1;
-    }
-  }
-  
   $ret->roles(keys %roles);
 
   return $ret;
@@ -304,29 +296,6 @@ foreach my $field ($j->method_names) {
   }
 }
 
-# and now build some for RHN::DB::UserSite.  READ ONLY accessors
-foreach my $field ($s->method_names) {
-  my $sub = q {
-    sub RHN::DB::UserSite::[[field]] {
-      my $self = shift;
-      if (@_ and "[[field]]" ne "id") {
-        my $value = shift;
-	# die "RHN::DB::UserSite->[[field]] fails criteria" unless $value =~ $method_criteria{[[field]]};
-        $self->{":modified:"}->{[[field]]} = 1;
-        $self->{__[[field]]__} = $value;
-      }
-      return $self->{__[[field]]__};
-    }
-  };
-
-  $sub =~ s/\[\[field\]\]/$field/g;
-  eval $sub;
-
-  if ($@) {
-    die $@;
-  }
-}
-
 sub users_by_email {
   my $class = shift;
   my $email = shift;
@@ -334,7 +303,7 @@ sub users_by_email {
   my $dbh = RHN::DB->connect;
   # WARNING:  This uses an oracle hint.  
   # See BZ 147452 for more info
-  my $sth = $dbh->prepare('SELECT /*+ index(wupi_upper_email_idx) */ web_user_id FROM web_user_personal_info WHERE upper(email) = ?');
+  my $sth = $dbh->prepare('SELECT web_user_id FROM web_user_personal_info WHERE upper(email) = ?');
   $sth->execute(uc($email));
 
   return $sth->fullfetch;
@@ -483,79 +452,6 @@ sub oai_contact_sync {
   }
   else {
     # nop
-  }
-}
-
-# instance OR class method
-sub sites {
-  my $class = shift;
-  my $uid = shift;
-  my $type = shift;
-
-  if (ref $class) {
-    $type = $uid;
-    $uid = $class->id;
-  }
-
-  my $dbh = RHN::DB->connect;
-
-  my $type_clause = '';
-  $type_clause = "AND TYPE = ?" if $type;
-
-  my $query = $s->select_query("S.WEB_USER_ID = ? $type_clause ORDER BY MODIFIED DESC");
-  my $sth = $dbh->prepare($query);
-  $sth->execute($uid, $type_clause ? $type : ());
-
-  my @ret;
-  while (my @row = $sth->fetchrow) {
-    push @ret, bless { map { ("__${_}__" => shift @row) } $s->method_names }, "RHN::DB::UserSite";
-  }
-
-  return @ret;
-}
-
-
-# this crap is foobared.  unfoobar it later.
-sub RHN::DB::UserSite::commit {
-  my $self = shift;
-  my $dbh = RHN::DB->connect;
-  my $sth;
-  my $mode = 'update';
-
-  my @modified = keys %{$self->{":modified:"}};
-  my %modified = map { $_ => 1 } @modified;
-
-  return unless @modified;
-
-  my $query;
-  if ($mode eq 'update') {
-    $query = $s->update_query($s->methods_to_columns(@modified));
-    $query .= "S.ID = ?";
-  }
-  else {
-    $query = $s->insert_query($s->methods_to_columns(@modified));
-  }
-
-  PXT::Debug->log(7, "user site commit query:  $query");
-
-  $sth = $dbh->prepare($query);
-  my @vals = (map { $self->$_() } grep { $modified{$_} } $s->method_names), ($modified{site_id} ? () : $self->site_id);
-  $sth->execute(@vals, $mode eq 'insert' ? () : $self->site_id);
-
-  $dbh->commit;
-  $self->oai_site_sync();
-}
-
-sub RHN::DB::UserSite::oai_site_sync {
-  my $self = shift;
-
-  if (PXT::Config->get('enable_oai_sync')) {
-    my $dbh = RHN::DB->connect;
-
-    $dbh->call_procedure("XXRH_OAI_WRAPPER.sync_address", $self->site_id);
-    $dbh->commit;
-  }
-  else {
   }
 }
 
@@ -800,8 +696,6 @@ sub verify_cfam_access {
 sub verify_channel_subscribe {
   my $self = shift;
   my @channel_ids = @_;
-
-  return 1 if $self->is('rhn_superuser');
 
   for my $cid (@channel_ids) {
     return 0 unless $self->verify_channel_role($cid, 'subscribe');
@@ -1063,8 +957,6 @@ sub verify_user_admin {
   my $self = shift;
   my @user_ids = @_;
 
-  return 1 if $self->is('rhn_superuser');
-
   my $dbh = RHN::DB->connect;
   my $sth = $dbh->prepare("SELECT org_id FROM web_contact WHERE id = ?");
 
@@ -1104,8 +996,6 @@ sub verify_system_group_user_admin {
   my $self = shift;
   my @user_ids = @_;
 
-  return 1 if $self->is('rhn_superuser');
-
   my $dbh = RHN::DB->connect;
   my $sth = $dbh->prepare("SELECT org_id FROM web_contact WHERE id = ?");
 
@@ -1130,8 +1020,6 @@ sub verify_system_group_user_admin {
 sub verify_channel_admin {
   my $self = shift;
   my @channel_ids = @_;
-
-  return 1 if $self->is('rhn_superuser');
 
   for my $cid (@channel_ids) {
     next unless $cid;
@@ -1161,8 +1049,6 @@ EOQ
 sub verify_errata_admin {
   my $self = shift;
   my @errata_ids = @_;
-
-  return 1 if $self->is('rhn_superuser');
 
   my $dbh = RHN::DB->connect;
   my $sth = $dbh->prepare(<<EOQ);
@@ -1437,27 +1323,6 @@ sub set_pref {
   $sth->execute($val, $self->id);
   $dbh->commit;
 }
-
-sub server_group_count {
-  my $self = shift;
-
-  my $dbh = RHN::DB->connect;
-  my $query =<<EOQ;
-SELECT COUNT(server_group_id)
-  FROM rhnUserServerGroupPerms
- WHERE user_id = ?
-EOQ
-
-  my $sth = $dbh->prepare($query);
-  $sth->execute($self->id);
-
-  my ($count) = $sth->fetchrow;
-
-  $sth->finish;
-
-  return $count;
-}
-
 
 sub errata_count {
   my $self = shift;

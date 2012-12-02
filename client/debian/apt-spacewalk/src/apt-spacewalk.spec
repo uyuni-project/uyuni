@@ -3,7 +3,7 @@
 
 Name: apt-spacewalk
 Summary: Spacewalk plugin for Advanced Packaging tool.
-Version: 1.0.4.1
+Version: 1.0.6
 Release: 1%{?dist}
 License: GPLv2
 Source0: https://example.com/%{name}-%{version}.tar.gz
@@ -17,9 +17,16 @@ apt-spacewalk is plugin used on Debian clients
 to acquire content from Spacewalk server
 
 %files
-%defattr(-,root,root,-)
 
 %changelog
+* Sun Jun 17 2012 Miroslav Suchý <msuchy@redhat.com> 1.0.6-1
+- add copyright information to header of .py files
+- ListRefresh is in APT:Update namespace
+
+* Sun Jun 17 2012 Miroslav Suchý 1.0.5-1
+- add LICENSE file for apt-spacewalk tar.gz
+- %%defattr is not needed since rpm 4.4
+
 * Thu Apr 28 2011 Simon Lukasik <slukasik@redhat.com> 1.0.4-1
 - The method can be killed by the keyboard interrupt (slukasik@redhat.com)
 

@@ -19,17 +19,13 @@
 %endif
 
 Name:            oracle-selinux
-Version:         0.1.23.32.1
+Version:         0.1.23.33
 Release:         1%{?obtag}%{?dist}%{?repo}
 Summary:         SELinux policy module supporting Oracle
 Group:           System Environment/Base
 License:         GPLv2+
 URL:             http://www.stl.gtri.gatech.edu/rmyers/oracle-selinux/
-Source1:         %{modulename}.if
-Source2:         %{modulename}.te
-Source3:         %{modulename}.fc
-Source4:         oracle-nofcontext-selinux-enable
-Source5:         %{modulename}-port.te
+Source0:         https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:       %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:   checkpolicy, selinux-policy-devel, hardlink
 BuildArch:       noarch
@@ -62,21 +58,17 @@ SELinux policy module defining types and interfaces for
 Oracle RDBMS, without specifying any file contexts.
 
 %prep
-rm -rf SELinux
-mkdir -p SELinux
-cp -p %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} SELinux
-
-# Make file contexts relative to oracle_base
-perl -pi -e 's#%{default_oracle_base}#%{oracle_base}#g' SELinux/%{modulename}.fc
-
-# Create oracle-nofcontext source files
-cp SELinux/%{modulename}.if SELinux/%{modulename}-nofcontext.if
-cp SELinux/%{modulename}.te SELinux/%{modulename}-nofcontext.te
-sed -i 's!^policy_module(oracle,!policy_module(oracle-nofcontext,!' SELinux/%{modulename}-nofcontext.te
+%setup -q
 
 %build
+perl -pi -e 's#%{default_oracle_base}#%{oracle_base}#g' %{modulename}.fc
+
+# Create oracle-nofcontext source files
+cp %{modulename}.if %{modulename}-nofcontext.if
+cp %{modulename}.te %{modulename}-nofcontext.te
+sed -i 's!^policy_module(oracle,!policy_module(oracle-nofcontext,!' %{modulename}-nofcontext.te
+
 # Build SELinux policy modules
-cd SELinux
 for selinuxvariant in %{selinux_variants}
 do
     make NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile
@@ -85,13 +77,11 @@ do
     mv %{modulename}-port.pp %{modulename}-port.pp.${selinuxvariant}
     make NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile clean
 done
-cd -
 
 %install
 rm -rf %{buildroot}
 
 # Install SELinux policy modules
-cd SELinux
 for selinuxvariant in %{selinux_variants}
   do
     install -d %{buildroot}%{_datadir}/selinux/${selinuxvariant}
@@ -102,13 +92,12 @@ for selinuxvariant in %{selinux_variants}
     install -p -m 644 %{modulename}-port.pp.${selinuxvariant} \
            %{buildroot}%{_datadir}/selinux/${selinuxvariant}/%{modulename}-port.pp
   done
-cd -
 
 # Install SELinux interfaces
 install -d %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}
-install -p -m 644 SELinux/%{modulename}.if \
+install -p -m 644 %{modulename}.if \
   %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
-install -p -m 644 SELinux/%{modulename}-nofcontext.if \
+install -p -m 644 %{modulename}-nofcontext.if \
   %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}-nofcontext.if
 
 # Hardlink identical policy module packages together
@@ -116,7 +105,7 @@ install -p -m 644 SELinux/%{modulename}-nofcontext.if \
 
 # Install oracle-nofcontext-selinux-enable which will be called in %posttrans
 install -d %{buildroot}%{_sbindir}
-install -p -m 755 SELinux/oracle-nofcontext-selinux-enable %{buildroot}%{_sbindir}/oracle-nofcontext-selinux-enable
+install -p -m 755 oracle-nofcontext-selinux-enable %{buildroot}%{_sbindir}/oracle-nofcontext-selinux-enable
 
 %clean
 rm -rf %{buildroot}
@@ -207,21 +196,23 @@ if [ $1 -eq 0 ]; then
 fi
 
 %files
-%defattr(-,root,root,0755)
-%doc SELinux/%{modulename}.fc SELinux/%{modulename}.if SELinux/%{modulename}.te
+%doc %{modulename}.fc %{modulename}.if %{modulename}.te
 %{_datadir}/selinux/*/%{modulename}.pp
 %{_datadir}/selinux/*/%{modulename}-port.pp
 %{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
 
 %files -n oracle-nofcontext-selinux
-%defattr(-,root,root,0755)
-%doc SELinux/%{modulename}-nofcontext.fc SELinux/%{modulename}-nofcontext.if SELinux/%{modulename}-nofcontext.te
+%doc %{modulename}-nofcontext.fc %{modulename}-nofcontext.if %{modulename}-nofcontext.te
 %{_datadir}/selinux/*/%{modulename}-nofcontext.pp
 %{_datadir}/selinux/*/%{modulename}-port.pp
 %{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}-nofcontext.if
 %attr(0755,root,root) %{_sbindir}/oracle-nofcontext-selinux-enable
 
 %changelog
+* Mon Jul 16 2012 Jan Pazdziora 0.1.23.33-1
+- Start using the .tar.gz in the .src.rpm for oracle-selinux.
+- %%defattr is not needed since rpm 4.4
+
 * Wed Nov 23 2011 Jan Pazdziora 0.1.23.32-1
 - Require the roles.
 

@@ -188,6 +188,17 @@ public class ChannelFactory extends HibernateFactory {
     }
 
 
+    /**
+     * Lookup a content source's filters by id
+     * @param id source id
+     * @return the ContentSourceFilters
+     */
+    public static List<ContentSourceFilter> lookupContentSourceFiltersById(Long id) {
+        Map params = new HashMap();
+        params.put("source_id", id);
+        return singleton.listObjectsByNamedQuery(
+                "ContentSourceFilter.findBySourceId", params);
+    }
 
     /**
      * Retrieve a list of channel ids associated with the labels provided
@@ -226,6 +237,14 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Insert or Update a content source filter.
+     * @param f content source filter to be stored in database.
+     */
+    public static void save(ContentSourceFilter f) {
+        singleton.saveObject(f);
+    }
+
+    /**
      * Remove a Channel from the DB
      * @param c Action to be removed from database.
      */
@@ -258,6 +277,14 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static void remove(ContentSource src) {
         singleton.removeObject(src);
+    }
+
+    /**
+     * Remove a ContentSourceFilter from the DB
+     * @param filter to be removed from database
+     */
+    public static void remove(ContentSourceFilter filter) {
+        singleton.removeObject(filter);
     }
 
     /**
@@ -750,14 +777,12 @@ public class ChannelFactory extends HibernateFactory {
      * Find the original packages that were part of a channel.  This list
      *      includes only those packages that have not had errata released for them.
      * @param channel the channel to clone from
-     * @param org the org doing the cloning.
      * @return List of packages
      */
-    public static List findOriginalPackages(Channel channel, Org org) {
+    public static List findOriginalPackages(Channel channel) {
 
             Map params = new HashMap();
             params.put("from_cid", channel.getId());
-            params.put("org_id", org.getId());
             List idList = singleton.listObjectsByNamedQuery(
                     "Channel.lookupOriginalPackages", params);
             return idList;
@@ -797,6 +822,30 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Lists all dist channel maps for an user organization
+     * @param org organization
+     * @return list of dist channel maps
+     */
+    public static List<DistChannelMap> listAllDistChannelMapsByOrg(Org org) {
+        Map params = new HashMap();
+        params.put("org_id", org.getId());
+        return singleton.listObjectsByNamedQuery("DistChannelMap.listAllByOrg", params);
+    }
+
+    /**
+     * Lookup the dist channel map by id
+     *
+     * @param id dist channel map id
+     * @return DistChannelMap, null if none is found
+     */
+    public static DistChannelMap lookupDistChannelMapById(Long id) {
+        Map params = new HashMap();
+        params.put("id", id);
+        return (DistChannelMap)singleton.lookupObjectByNamedQuery(
+                "DistChannelMap.lookupById", params);
+    }
+
+    /**
      * Lookup the dist channel map for the given product name, release, and channel arch.
      * Returns null if none is found.
      *
@@ -817,23 +866,24 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup the dist channel map for the given os, release, and channel arch.
+     * Lookup the dist channel map for the given organization according to
+     * release and channel arch.
      * Returns null if none is found.
      *
-     * @param os OS
-     * @param release Version.
+     * @param org organization
+     * @param release release
      * @param channelArch Channel arch.
      * @return DistChannelMap, null if none is found
      */
-    public static DistChannelMap lookupDistChannelMapByOsReleaseArch(String os,
-                                            String release, ChannelArch channelArch) {
+    public static DistChannelMap lookupDistChannelMapByOrgReleaseArch(Org org,
+            String release, ChannelArch channelArch) {
 
         Map params = new HashMap();
-        params.put("os", os);
+        params.put("org_id", org.getId());
         params.put("release", release);
-        params.put("channelArch", channelArch);
+        params.put("channel_arch_id", channelArch.getId());
         return (DistChannelMap)singleton.lookupObjectByNamedQuery(
-                "DistChannelMap.findByOsReleaseArch", params);
+                "DistChannelMap.findByOrgReleaseArch", params);
     }
 
     /**
@@ -919,6 +969,18 @@ public class ChannelFactory extends HibernateFactory {
         params.put("org", org);
         return singleton.listObjectsByNamedQuery(
                 "Channel.listCustomChannels", params);
+    }
+
+    /**
+     * List all accessible base channels for an org
+     * @param user logged in user.
+     * @return list of custom channels
+     */
+    public static List<Channel> listSubscribableBaseChannels(User user) {
+        Map params = new HashMap();
+        params.put("user_id", user.getId());
+        return singleton.listObjectsByNamedQuery(
+                "Channel.findSubscribableBaseChannels", params);
     }
 
     /**
@@ -1014,5 +1076,21 @@ public class ChannelFactory extends HibernateFactory {
         criteria.setProjection(Projections.rowCount());
         criteria.add(Restrictions.eq("channel", ch));
         return (Integer)criteria.uniqueResult() > 0;
+    }
+
+    /**
+     * Clear a content source's filters
+     * @param id source id
+     */
+    public static void clearContentSourceFilters(Long id) {
+        List<ContentSourceFilter> filters = lookupContentSourceFiltersById(id);
+
+        for (ContentSourceFilter filter : filters) {
+            remove(filter);
+        }
+
+        // flush so that if we're creating new filters we don't get constraint
+        // violations for rhn_csf_sid_so_uq
+        HibernateFactory.getSession().flush();
     }
 }

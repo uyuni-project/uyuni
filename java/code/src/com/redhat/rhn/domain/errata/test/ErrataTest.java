@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -169,7 +169,8 @@ public class ErrataTest extends RhnBaseTestCase {
         errata.addKeyword("hotel");
         errata.addKeyword("foxtrot");
 
-        assertEquals(errata.getKeywords().size(), 3);
+        // errata already has one keyword
+        assertEquals(4, errata.getKeywords().size());
         ErrataFactory.save(errata);
         Long id = errata.getId();
 
@@ -178,7 +179,7 @@ public class ErrataTest extends RhnBaseTestCase {
         Errata errata2 = ErrataManager.lookupErrata(id, user);
 
         assertEquals(id, errata2.getId());
-        assertEquals(3, errata2.getKeywords().size());
+        assertEquals(4, errata2.getKeywords().size());
     }
 
     /**

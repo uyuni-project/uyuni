@@ -24,7 +24,7 @@ import string
 # sql query for solving a dep as a package
 __packages_with_arch_and_id_sql = """
 select distinct
-    p.id,
+    p.id id,
     pn.name,
     (pe.evr).version as version,
     (pe.evr).release as release,

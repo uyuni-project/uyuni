@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2011 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -61,7 +61,7 @@ public class ApiHandler extends BaseHandler {
      * @xmlrpc.returntype string
      */
     public String getVersion() {
-        return Config.get().getString("web.apiversion");
+        return Config.get().getString("java.apiversion");
     }
 
     private Collection getNamespaces() {

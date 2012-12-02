@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -49,6 +49,7 @@ def make_common_attr_equal(object1, object2):
 
 if __name__ == "__main__":
 #This is just for testing purposes.
+# pylint: disable=R0903
     class class1:
         def __init__(self):
             self.a = "aaaa"

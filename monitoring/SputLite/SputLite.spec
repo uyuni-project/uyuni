@@ -11,7 +11,7 @@
 %define vardir         /var/lib/nocpulse
 Name:         SputLite
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.7.2.1
+Version:      1.9.0
 Release:      1%{?dist}
 Summary:      Command queue processor (Sputnik Lite)
 URL:          https://fedorahosted.org/spacewalk
@@ -98,7 +98,7 @@ fi
 
 %files server
 %defattr(-,root,root,-)
-%attr(755, root, root) %dir %templatedir
+%attr(755, nocpulse, nocpulse) %dir %templatedir
 %cgi_bin/*
 %dir %{cgi_mod_perl}
 %cgi_mod_perl/*

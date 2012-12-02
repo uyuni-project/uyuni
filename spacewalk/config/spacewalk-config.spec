@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 1.7.2.3
+Version: 1.9.1
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -158,6 +158,7 @@ if [ -f /etc/init.d/satellite-httpd ] ; then
     /sbin/chkconfig --del satellite-httpd
     %{__perl} -i -ne 'print unless /satellite-httpd\.pid/' /etc/logrotate.d/httpd
 fi
+
 # Set the group to allow Apache to access the conf files ...
 chgrp %{apache_group} /etc/rhn /etc/rhn/rhn.conf /etc/rhn/cluster.ini 2> /dev/null || :
 # ... once we restrict access to some files that were too open in
@@ -178,6 +179,32 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Fri Nov 09 2012 Jan Pazdziora 1.9.1-1
+- Address Permission Error on proxy details page.
+
+* Wed Oct 31 2012 Jan Pazdziora 1.8.6-1
+- Advertise the www.spacewalkproject.org.
+
+* Mon Oct 29 2012 Jan Pazdziora 1.8.5-1
+- We just assume Apache 2.2 these days, no need to check.
+- All the Java requests end up at /rhn, no need to have separate .do and .jsp
+  rewrites.
+- 663248 - enable connection polling to tomcat.
+- 663250 - set the Expires header for static content.
+
+* Fri Oct 12 2012 Jan Pazdziora 1.8.4-1
+- The /network/systems/details/kickstart/* is not used for a long time.
+
+* Mon Aug 06 2012 Jan Pazdziora 1.8.3-1
+- 844474 - add a comment about the server.satellite.http_proxy format.
+
+* Wed Jun 27 2012 Jan Pazdziora 1.8.2-1
+- The delete_confirm.pxt was replaced by DeleteConfirm.do.
+- %%defattr is not needed since rpm 4.4
+
+* Wed Mar 21 2012 Jan Pazdziora 1.8.1-1
+- Reverting removal of traceback_mail.
+
 * Tue Jan 31 2012 Jan Pazdziora 1.7.2-1
 - Removing the web.debug_disable_database option -- it is not supported beyond
   RHN::DB anyway.

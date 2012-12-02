@@ -30,7 +30,6 @@ mkdir -p $RPM_BUILD_ROOT%{_bindir}
 install -m 755 gogo.pl $RPM_BUILD_ROOT/%{_bindir}
 
 %files
-%defattr(-,root,root,-)
 %{_bindir}/gogo.pl
 
 %clean

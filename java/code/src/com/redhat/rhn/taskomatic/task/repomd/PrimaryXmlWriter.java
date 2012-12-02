@@ -241,7 +241,13 @@ public class PrimaryXmlWriter extends RepomdWriter {
         attr.clear();
         attr.addAttribute("package", pkgDto.getPackageSize().toString());
         attr.addAttribute("archive", pkgDto.getPayloadSize().toString());
-        attr.addAttribute("installed", "");
+        if (pkgDto.getInstalledSize() != null) {
+            attr.addAttribute("installed", pkgDto.getInstalledSize().toString());
+        }
+        else {
+            /* set something for "installed" so anaconda doesn't die */
+            attr.addAttribute("installed", pkgDto.getPayloadSize().toString());
+        }
         localHandler.startElement("size", attr);
         localHandler.endElement("size");
 

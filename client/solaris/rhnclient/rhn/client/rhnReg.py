@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 # RHN Registration Client
-# Copyright (c) 2000--2010 Red Hat, Inc.
+# Copyright (c) 2000--2012 Red Hat, Inc.
 #
 # Authors:
 #     Adrian Likins <alikins@redhat.com>
@@ -328,7 +328,7 @@ def registerSystem(username = None, password = None,
     return ret
 
 
-def registerProduct(systemId, productInfo, oemInfo={}):
+def registerProduct(systemId, productInfo):
     s = rpcServer.getServer()
 
     try:

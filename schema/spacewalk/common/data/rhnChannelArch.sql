@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008--2010 Red Hat, Inc.
+-- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -69,6 +69,12 @@ insert into rhnChannelArch (id, label, name, arch_type_id) values
 
 insert into rhnChannelArch (id, label, name, arch_type_id) values
 (sequence_nextval('rhn_channel_arch_id_seq'), 'channel-powerpc-deb', 'PowerPC Debian', lookup_arch_type('deb'));
+
+insert into rhnChannelArch (id, label, name, arch_type_id) values
+(sequence_nextval('rhn_channel_arch_id_seq'), 'channel-arm', 'ARM soft. FP', lookup_arch_type('rpm'));
+
+insert into rhnChannelArch (id, label, name, arch_type_id) values
+(sequence_nextval('rhn_channel_arch_id_seq'), 'channel-armhfp', 'ARM hard. FP', lookup_arch_type('rpm'));
 
 insert into rhnChannelArch (id, label, name, arch_type_id) values
 (sequence_nextval('rhn_channel_arch_id_seq'), 'channel-arm-deb', 'arm Debian', lookup_arch_type('deb'));

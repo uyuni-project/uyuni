@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -130,7 +130,6 @@ public class PackageTest extends RhnBaseTestCase {
         p.setHeaderSignature("Rhn-Java Unit Test");
         p.setCopyright("Red Hat - RHN - 2005");
         p.setCookie("Chocolate Chip");
-        p.setLastModified(new Date());
         p.setCreated(new Date());
         p.setModified(new Date());
 

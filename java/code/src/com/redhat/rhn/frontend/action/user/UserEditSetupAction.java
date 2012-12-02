@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2011 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -139,10 +139,6 @@ public class UserEditSetupAction extends RhnAction {
         StringBuffer disabledRoles = new StringBuffer();
 
         for (Role currRole : orgRoles) {
-            if (currRole.equals(RoleFactory.ORG_APPLICANT) ||
-                    currRole.equals(RoleFactory.CERT_ADMIN)) {
-                continue;
-            }
             log.debug("currRole = " + currRole.getLabel());
 
             boolean selected = false; // does user have this role?
@@ -171,11 +167,6 @@ public class UserEditSetupAction extends RhnAction {
 
                 disabled = true;
                 log.debug("2");
-            }
-            else if (currRole.equals(RoleFactory.RHN_SUPPORT) &&
-                    targetUser.hasRole(RoleFactory.CERT_ADMIN)) {
-                disabled = true;
-                log.debug("3");
             }
 
             //sat admin can not be modified outside sat tools

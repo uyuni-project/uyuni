@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -31,7 +31,7 @@ public class JarFinderTest extends RhnBaseTestCase {
         Finder f = FinderFactory.getFinder("redstone.xmlrpc");
         assertNotNull(f);
 
-        List result = f.find(".class");
+        List<String> result = f.find(".class");
         assertEquals(28, result.size());
     }
 
@@ -39,7 +39,7 @@ public class JarFinderTest extends RhnBaseTestCase {
         Finder f = FinderFactory.getFinder("redstone.xmlrpc");
         assertNotNull(f);
 
-        List result = f.find("");
+        List<String> result = f.find("");
         assertEquals(29, result.size());
     }
 
@@ -49,7 +49,7 @@ public class JarFinderTest extends RhnBaseTestCase {
 
         String[] sarr = {"End"};
 
-        List result = f.findExcluding(sarr, "class");
+        List<String> result = f.findExcluding(sarr, "class");
         assertEquals(28, result.size());
     }
 }

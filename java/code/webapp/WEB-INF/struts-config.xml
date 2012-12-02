@@ -254,6 +254,11 @@
             <form-property name="end_minute" type="java.lang.Integer"/>
             <form-property name="end_am_pm" type="java.lang.Integer"/>
         </form-bean>
+        <form-bean name="xccdfDiff"
+                   type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+            <form-property name="first" type="java.lang.Long"/>
+            <form-property name="second" type="java.lang.Long"/>
+        </form-bean>
         <form-bean name="errataSearchForm"
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
             <form-property name="search_string" type="java.lang.String"/>
@@ -822,6 +827,10 @@
             <form-property name="bondInterface" type="java.lang.String" />
             <form-property name="bondSlaveInterfaces" type="java.lang.String[]" />
             <form-property name="hiddenBondSlaveInterfaces" type="java.lang.String" />
+            <form-property name="bondStatic" type="java.lang.String" />
+            <form-property name="bondAddress" type="java.lang.String" />
+            <form-property name="bondNetmask" type="java.lang.String" />
+            <form-property name="bondGateway" type="java.lang.String" />
             <form-property name="bondOptions" type="java.lang.String" />
             <form-property name="networkType" type="java.lang.String" />
             <form-property name="networkInterface" type="java.lang.String" />
@@ -1222,6 +1231,15 @@
       <form-property name="date_minute" type="java.lang.Integer" />
       <form-property name="date_am_pm" type="java.lang.Integer" />
     </form-bean>
+
+    <form-bean name="distChannelMapForm"
+               type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+      <form-property name="os" type="java.lang.String" />
+      <form-property name="release" type="java.lang.String" />
+      <form-property name="architecture" type="java.lang.String" />
+      <form-property name="channel_label" type="java.lang.String" />
+    </form-bean>
+
   </form-beans>
 
   <global-exceptions>
@@ -1871,9 +1889,12 @@
     <action path="/schedule/ArchivedActions"
         scope="request"
         input="/WEB-INF/pages/schedule/archivedactions.jsp"
-        type="com.redhat.rhn.frontend.action.schedule.ArchivedActionsSetupAction">
+        type="com.redhat.rhn.frontend.action.schedule.ArchivedActionsSetupAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                path="/WEB-INF/pages/schedule/archivedactions.jsp" />
+		<forward name="success" path="/schedule/ArchivedActions.do" redirect="true"/>
     </action>
 
 
@@ -1994,6 +2015,23 @@
         type="com.redhat.rhn.frontend.action.audit.scap.XccdfSearchAction">
         <forward name="default" path="/WEB-INF/pages/audit/scap/xccdfsearch.jsp"/>
         <forward name="success" path="/audit/scap/Search.do" redirect="true" />
+    </action>
+
+    <action path="/audit/scap/Diff"
+        name="xccdfDiff"
+        scope="request"
+        input="/WEB-INF/pages/audit/scap/xccdfdiff.jsp"
+        type="com.redhat.rhn.frontend.action.audit.scap.XccdfDiffAction">
+        <forward name="default" path="/WEB-INF/pages/audit/scap/xccdfdiff.jsp"/>
+    </action>
+
+    <action path="/audit/scap/DiffSubmit"
+        name="xccdfDiff"
+        scope="request"
+        input="/WEB-INF/pages/audit/scap/xccdfdiffsubmit.jsp"
+        type="com.redhat.rhn.frontend.action.audit.scap.XccdfDiffSubmitAction">
+        <forward name="default" path="/WEB-INF/pages/audit/scap/xccdfdiffsubmit.jsp"/>
+        <forward name="error" path="/audit/scap/Diff.do"/>
     </action>
 
     <!-- ===== ERRATA ===== -->
@@ -3027,6 +3065,18 @@
                  redirect="true" />
     </action>
 
+    <action path="/systems/details/packages/ExtraPackagesList"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.rhnpackage.ExtraPackagesListAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/details/packages/extra-packages-list.jsp"/>
+        <forward name="confirm"
+                 path="/systems/details/packages/RemoveExtraConfirm.do"
+                 redirect="true" />
+    </action>
+
     <action path="/systems/details/packages/RemoveConfirm"
         scope="request"
         name="datePickerForm"
@@ -3043,6 +3093,24 @@
                  path="/systems/details/packages/ScheduleRemoteCommand.do"
                  redirect="true" />
     </action>
+
+    <action path="/systems/details/packages/RemoveExtraConfirm"
+        scope="request"
+        name="datePickerForm"
+        input="/WEB-INF/pages/systems/details/packages/packageconfirm.jsp"
+        type="com.redhat.rhn.frontend.action.rhnpackage.RemoveExtraConfirmSetupAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/details/packages/packageconfirm.jsp"/>
+        <forward name="confirm"
+                 path="/systems/details/packages/Packages.do"
+                 redirect="true" />
+        <forward name="remotecmd"
+                 path="/systems/details/packages/ScheduleRemoteCommand.do"
+                 redirect="true" />
+    </action>
+
 
    <action path="/systems/details/packages/UpgradableList"
         scope="request"
@@ -3236,6 +3304,20 @@
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/systems/probes/index.jsp"/>
+       <forward name="continue"
+                path="/systems/details/probes/ProbesDeleteConfirm.do" redirect="true"/>
+    </action>
+
+    <action path="/systems/details/probes/ProbesDeleteConfirm"
+        scope="request"
+        input="/WEB-INF/pages/systems/probes/probedelete.jsp"
+        type="com.redhat.rhn.frontend.action.systems.monitoring.ProbesDeleteConfirmSetupAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/probes/probedelete.jsp"/>
+       <forward name="continue"
+                path="/systems/details/probes/ProbesList.do" redirect="true"/>
     </action>
 
     <action path="/systems/details/ErrataList"
@@ -7311,6 +7393,7 @@
            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
       <set-property property="postRequiredIfSubmitted" value="true" />
       <forward name="default" path="/WEB-INF/pages/channel/manage/delete.jsp"/>
+      <forward name="delete" path="/software/manage/packages/PackageList.do" redirect="true" />
       <forward name="success" path="/channels/manage/Manage.do" redirect="true" />
    </action>
 
@@ -7513,16 +7596,47 @@
 
 <!-- end repo -->
 
-   <action path="/common/DownloadFile"
+    <action path="/channels/manage/DistChannelMap"
+        scope="request"
+        input="/WEB-INF/pages/channel/manage/distchannelmap.jsp"
+        type="com.redhat.rhn.frontend.action.channel.manage.DistChannelMapSetupAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/channel/manage/distchannelmap.jsp"/>
+    </action>
+
+    <action path="/channels/manage/DistChannelMapEdit"
+        scope="request"
+        name="distChannelMapForm"
+        type="com.redhat.rhn.frontend.action.channel.manage.DistChannelMapEditAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/channel/manage/distchannelmapedit.jsp"/>
+        <forward name="success"
+                 path="/channels/manage/DistChannelMap.do" redirect = "true"/>
+    </action>
+
+    <action path="/channels/manage/DistChannelMapDelete"
+        scope="request"
+        name="distChannelMapForm"
+        type="com.redhat.rhn.frontend.action.channel.manage.DistChannelMapDeleteAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/channel/manage/distchannelmapdelete.jsp"/>
+        <forward name="success"
+                 path="/channels/manage/DistChannelMap.do" redirect = "true"/>
+    </action>
+
+    <action path="/common/DownloadFile"
         scope="request"
         type="com.redhat.rhn.frontend.action.common.DownloadFile"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
 		<forward name="error"
              path="/WEB-INF/pages/common/errors/baddownloadaction.jsp"/>
-      </action>
-
-
-
+    </action>
 
     <action path="/admin/config/Orgs"
             forward="/WEB-INF/pages/admin/config/multiorg.jsp" />
@@ -7812,6 +7926,15 @@
       <forward name="success"
                redirect="true"
                path="/account/Credentials.do" />
+    </action>
+
+    <action path="/systems/ExtraPackagesSystems"
+        scope="request"
+        input="/WEB-INF/pages/systems/extra-packages-systems-list.jsp"
+        type="com.redhat.rhn.frontend.action.systems.ExtraPackagesSystemsAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/extra-packages-systems-list.jsp"/>
     </action>
 
     <action path="/systems/NonCompliantSystems"

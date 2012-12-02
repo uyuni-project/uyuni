@@ -90,7 +90,13 @@ class Error(YumBaseError):
             else:
                 self.__dict__[name] = value
 
-RepoError = Error
+class DebAndSuseRepoError(Error):
+   pass
+
+if getPlatform() == 'deb' or dist()[0] == 'SuSE':
+    RepoError = DebAndSuseRepoError
+else:
+    from yum.Errors import RepoError
 
 class RpmError(Error):
     """rpm itself raised an error condition"""

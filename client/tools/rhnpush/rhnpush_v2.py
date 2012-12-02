@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -43,7 +43,8 @@ class PackageUpload(connection.PackageUpload):
             self.headers["%s-%s" % (self.header_prefix, "Null-Org")] = "1"
 
     # Encodes an array of variables into Base64 (column-separated)
-    def encode_values(self, arr):
+    @staticmethod
+    def encode_values(arr):
         val = ':'.join(map(lambda x: x.strip(), map(base64.encodestring, arr)))
         # Get rid of the newlines
         val = val.replace('\n', '')

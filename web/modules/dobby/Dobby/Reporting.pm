@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -18,7 +18,7 @@ use strict;
 package Dobby::Reporting;
 use Dobby::DB;
 
-sub tablespace_overview {
+sub tablespace_overview_oracle {
   my $class = shift;
   my $dobby = shift;
 
@@ -56,7 +56,47 @@ EOQ
   return $sth->fullfetch_hashref;
 }
 
-sub table_size_overview {
+sub tablespace_overview_postgresql {
+  my $class = shift;
+  my $dobby = shift;
+  my $schema = shift;
+
+  my $dbh = $dobby->sysdba_connect;
+
+  my $query = <<EOQ;
+SELECT pg_size_pretty(pg_database_size(?)) as TOTAL_SIZE;
+EOQ
+
+  my $sth = $dbh->prepare($query);
+  $sth->execute($schema);
+  return $sth->fullfetch_hashref;
+}
+
+sub table_size_overview_postgresql {
+  my $class = shift;
+  my $dobby = shift;
+
+  my $dbh = $dobby->sysdba_connect;
+
+  my $query = <<EOQ;
+select T.table_name as NAME, pg_size_pretty(pg_class.relpages::bigint*current_setting('block_size')::bigint) AS PLANER,
+     pg_size_pretty(pg_relation_size(T.table_name)) AS SIZE,
+     pg_size_pretty(pg_total_relation_size(T.table_name)) AS TOTAL_SIZE
+from information_schema.tables as T,
+     pg_class, pg_authid
+where T.table_schema = 'public' AND
+     pg_class.relname = T.table_name AND
+     pg_authid.oid=pg_class.relowner AND
+     pg_authid.rolname=current_user
+order by T.table_name
+EOQ
+
+  my $sth = $dbh->prepare($query);
+  $sth->execute;
+  return $sth->fullfetch_hashref;
+}
+
+sub table_size_overview_oracle {
   my $class = shift;
   my $dobby = shift;
 
@@ -93,7 +133,7 @@ SELECT tbs.segment_space_management, rec.*
 EOQ
   my $sth = $dbh->prepare($query);
   $sth->execute;
-  return $sth->fullfetch_hashref;
+  return @{$sth->fetchall_arrayref({ })};
 }
 
 1;

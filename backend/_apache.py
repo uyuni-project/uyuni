@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (c) 2008 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -20,16 +20,16 @@
 
 SERVER_RETURN = 0
 
-def log_error(*args):
+def log_error(*_args):
     pass
 
-def make_table(*args):
+def make_table(*_args):
     pass
 
-def parse_qs(*args):
+def parse_qs(*_args):
     pass
     
-def parse_qsl(*args):
+def parse_qsl(*_args):
     pass
 
 status = None

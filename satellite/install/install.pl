@@ -46,6 +46,7 @@ my %opts = Spacewalk::Setup::parse_options();
 
 my %up2dateOptions = ();
 my %rhnOptions = ();
+my @additionalOptions = ();
 # read existing confgiuration
 Spacewalk::Setup::read_config(DEFAULT_UP2DATE_CONF_LOCATION, \%up2dateOptions);
 
@@ -65,14 +66,14 @@ do_precondition_checks(\%opts, \%answers);
 
 print loc("* Pre-install checks complete.  Beginning installation.\n");
 
-remove_php_packages();
-
 print loc("* RHN Registration.\n");
-rhn_register(\%opts, \%answers, \%up2dateOptions, \%rhnOptions);
+rhn_register(\%opts, \%answers, \%up2dateOptions, \%rhnOptions, \@additionalOptions);
 
 Spacewalk::Setup::upgrade_stop_services(\%opts);
 remove_obsoleted_packages(\%opts);
-
+remove_jabberd_configs(\%opts);
+remove_rhn_cache_and_kickstarts(\%opts);
+remove_nocpulse_ini(\%opts);
 
 my $run_updater;
 if (defined $opts{'run-updater'}) {
@@ -101,11 +102,12 @@ print loc("* Applying updates.\n");
 install_updates_packages();
 
 print loc("* Installing RHN packages.\n");
+import_gpg_key();
 install_rhn_packages(\%opts);
 
 
 my %satellite_rpms = map { m!^.+/(.+)-.+-.+$! and ( $1 => 1 ); }
-    glob("Satellite/*.rpm EmbeddedDB/*.rpm");
+    glob("Satellite/*.rpm Oracle/*.rpm EmbeddedDB/*.rpm PostgreSQL/*.rpm");
 my %current_rpm_qa =
     map { ( $_ => 1 ) }
     grep { not exists $rpm_qa{$_} and not exists $satellite_rpms{$_} }
@@ -123,7 +125,7 @@ if (@not_installed_rpms) {
 
 # Call spacewalk-setup:
 print loc("* Now running spacewalk-setup.\n");
-system(SPACEWALK_SETUP_SCRIPT, @ARGV_ORIG, '--skip-logfile-init');
+system(SPACEWALK_SETUP_SCRIPT, @ARGV_ORIG, '--skip-logfile-init', @additionalOptions);
 
 exit;
 
@@ -148,6 +150,11 @@ sub get_version_info {
 sub do_precondition_checks {
   my $opts = shift;
   my $answers = shift;
+
+  if (umask() & ~022) {
+    print "The installer needs umask not to exceed 0022.\n";
+    exit 56;
+  }
 
   if (not $opts->{"skip-system-version-test"}
       and not correct_system_version(%version_info)) {
@@ -269,25 +276,8 @@ sub python_path {
   return $path;
 }
 
-sub remove_php_packages {
-  my @packages = `rpm -qa | grep -E '(php|piranha|squirrelmail|specspo)'`;
-
-  if (@packages) {
-    for (@packages) {
-      chomp;
-    }
-    my $ret = system_debug('rpm', '-e', @packages);
-
-    if ($ret) {
-      die "Could not remove php packages: " . join(', ', @packages) . "\n";
-    }
-  }
-
-  return 1;
-}
-
 sub system_is_registered {
-  my $ret = system_debug('/usr/sbin/rhn_check');
+  my $ret = system_debug('/usr/sbin/rhn_check', '--');
 
   return ($ret ? 0 : 1);
 }
@@ -296,7 +286,9 @@ sub rhn_register {
   my $opts = shift;
   my $answers = shift;
   my $up2dateopts = shift;
-  my $proxyAccept = '';
+  my $rhnOptions = shift;
+  my $proxyOptionsRef = shift;
+  my $proxyAccept;
 
   if ($opts->{disconnected}) {
     print loc("** Registration: Disconnected mode.  Not registering with RHN.\n");
@@ -323,6 +315,8 @@ sub rhn_register {
       -password => 1);
 
   if ($up2dateopts->{'httpProxy'}) {
+    $up2dateopts->{'proxyUser'} ||= '';
+    $up2dateopts->{'proxyPassword'} ||= '';
     ask(-question => "The following proxy information was found in use by up2date:
 Proxy Hostname: $up2dateopts->{'httpProxy'}
 Proxy Username: $up2dateopts->{'proxyUser'}
@@ -331,6 +325,8 @@ Proxy Password: Not displayed - see /etc/sysconfig/rhn/up2date:proxyPassword
 Import values to be used by Satellite [y/n]",
         -test => qr/\S+/,
         -answer => \$proxyAccept);
+  } else {
+    $proxyAccept = 'n';
   }
   if ($proxyAccept eq 'y') {
     $answers->{'rhn-http-proxy'} = $up2dateopts->{'httpProxy'};
@@ -368,6 +364,8 @@ Import values to be used by Satellite [y/n]",
       }
     }
   }
+
+  push @$proxyOptionsRef, map { "--$_=" . $answers{$_} } grep { defined $answers{$_} } grep /^rhn-http-proxy/, keys %answers;
 
   my $sys_hostname = $answers->{hostname};
 
@@ -495,7 +493,22 @@ sub remove_obsoleted_packages {
     print "* Purging conflicting packages.\n";
     my @pkgs = ('rhn-apache', 'rhn-modpython', 'rhn-modssl', 'rhn-modperl',
                 'perl-libapreq', 'bouncycastle-jdk1.4',
-                'quartz-oracle', 'jaf', 'jta');
+                'quartz-oracle', 'jaf', 'jta',
+                'python-sgmlop', 'geronimo-specs-compat', 'spacewalk-backend-upload-server');
+
+    # Remove xml-commons on RHEL-5 only
+    if (`rpm -q --qf='%{VERSION}' redhat-release 2>/dev/null` =~ /^5.+$/) {
+        push @pkgs, 'xml-commons';
+        push @pkgs, 'rhn-java-sat';
+        push @pkgs, 'spacewalk-slf4j-1.6.1-4.el5sat';
+    }
+
+    if (Spacewalk::Setup::is_db_migration()) {
+        push @pkgs, 'spacewalk-oracle', 'perl-NOCpulse-Probe-Oracle', 'NOCpulsePlugins-Oracle';
+        push @pkgs, 'oracle-instantclient-sqlplus';
+        push @pkgs, 'oracle-instantclient-sqlplus-selinux';
+    }
+
     for my $pkg (@pkgs) {
       if (system_debug('rpm', '-q', $pkg) == 0) {
         system_debug('rpm', '-ev', '--nodeps', $pkg);
@@ -503,6 +516,58 @@ sub remove_obsoleted_packages {
     }
   }
   return 1;
+}
+
+# We need to remove jabberd configs before the package installation so that
+# they can be replaced by configs from latest jabberd build. These will later
+# be properly configured by spacewalk-setup-jabberd.
+sub remove_jabberd_configs {
+  my $opts = shift;
+
+  return unless ($opts->{'upgrade'});
+  # Don't remove the config files if we're on latest version already
+  return if (`rpm -qp --qf='%{VERSION}-%{RELEASE}' Satellite/jabberd-2*.rpm` eq
+             `rpm -q --qf='%{VERSION}-%{RELEASE}' jabberd`);
+
+  foreach my $cf ('c2s', 's2s', 'sm', 'router', 'router-users') {
+    my $cf_path = "/etc/jabberd/$cf.xml";
+    if (-f $cf_path) {
+      system("mv -f $cf_path $cf_path.old");
+    }
+  }
+}
+
+sub remove_rhn_cache_and_kickstarts {
+  my $opts = shift;
+
+  return unless ($opts->{'upgrade'});
+
+  my $schema_version;
+
+  foreach my $schema ('satellite-schema', 'rhn-satellite-schema') {
+    system("rpm -q --qf='%{VERSION}' $schema >/dev/nul 2>&1");
+    if ($? >> 8 == 0) {
+      $schema_version = `rpm -q --qf='%{VERSION}' $schema 2>/dev/null`;
+    }
+  }
+
+  if ($schema_version and $schema_version =~ /^5\.[01234]\./) {
+     system('rm -rf /var/cache/rhn/* > /dev/null 2>&1');
+
+     if (-d '/var/lib/rhn/kickstarts/wizard') {
+         system('rm -f /var/lib/rhn/kickstarts/wizard/* > /dev/null 2>&1');
+     }
+  }
+}
+
+sub remove_nocpulse_ini {
+  my $opts = shift;
+
+  return unless ($opts->{'upgrade'});
+
+  if (-f "/etc/NOCpulse.ini") {
+    system("rm -f /etc/NOCpulse.ini > /dev/null 2>&1");
+  }
 }
 
 sub ask {
@@ -592,17 +657,29 @@ sub answered {
 # that Satellite rpms need.
 
 sub get_required_rpms {
-  my $NEEDRPMS_FILE = 'updates/rhelrpms';
-  open FH, $NEEDRPMS_FILE
-    or die loc("Error reading list of needed rpms from %s: %s", $NEEDRPMS_FILE, $!);
+  my $opts = shift;
   my %needed_rpms;
-  while (<FH>) {
-    next if /^\s*#/;
-    chomp;
-    $needed_rpms{$_} = 1 if /./;
+  my $NEEDRPMS_FILE = 'updates/rhelrpms';
+  my @NEEDRPMS_FILES = ($NEEDRPMS_FILE);
+  if (Spacewalk::Setup::is_embedded_db($opts)) {
+      if (-d 'PostgreSQL') {
+	  push @NEEDRPMS_FILES, "$NEEDRPMS_FILE.postgresql";
+      } elsif (-d 'EmbeddedDB') {
+          push @NEEDRPMS_FILES, "$NEEDRPMS_FILE.oracle";
+      }
+  } else {	# this is external database, meaning Oracle
+      push @NEEDRPMS_FILES, "$NEEDRPMS_FILE.external-oracle";
   }
-  close FH;
-
+  for my $f (@NEEDRPMS_FILES) {
+    open FH, $f
+      or die loc("Error reading list of needed rpms from %s: %s", $f, $!);
+    while (<FH>) {
+      next if /^\s*#/;
+      chomp;
+      $needed_rpms{$_} = 1 if /./;
+    }
+    close FH;
+  }
   return \%needed_rpms;
 }
 
@@ -612,7 +689,7 @@ sub check_required_rpms {
   my $run_updater = shift;
   my $rpm_qa = shift;
 
-  my $needed_rpms = get_required_rpms();
+  my $needed_rpms = get_required_rpms($opts);
   for (keys %$needed_rpms) {
     if (exists $rpm_qa->{$_}) {
       delete $needed_rpms->{$_};
@@ -706,12 +783,26 @@ sub install_updates_packages {
   return 1;
 }
 
+sub import_gpg_key {
+   my $gpg_key_file = '/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release';
+   if (-f $gpg_key_file) {
+     my $file_content = `gpg $gpg_key_file 2> /dev/null`;
+     my ($fingerprint) = ($file_content =~  m!/(\S+)!);
+     if (defined $fingerprint and system "rpm -q gpg-pubkey-\L$fingerprint > /dev/null") {
+       system "rpm --import $gpg_key_file";
+     }
+   }
+}
+
 sub install_rhn_packages {
   my $opts = shift;
   my @rpms = glob("Satellite/*.rpm");
 
   if (Spacewalk::Setup::is_embedded_db($opts)) {
-      push(@rpms, glob("EmbeddedDB/*.rpm"));
+      push(@rpms, glob("EmbeddedDB/*.rpm"), glob("PostgreSQL/*.rpm"));
+  }
+  if (not(-d 'PostgreSQL' and Spacewalk::Setup::is_embedded_db($opts))) {
+      push(@rpms, glob("Oracle/*.rpm"));
   }
   system_or_exit(['yum', 'localinstall', '-y', @rpms],
 		 26,

@@ -1,7 +1,7 @@
 # some high level utility stuff for rpm handling
 
 # Client code for Update Agent
-# Copyright (c) 1999-2002 Red Hat, Inc.  Distributed under GPLv2.
+# Copyright (c) 1999--2012 Red Hat, Inc.  Distributed under GPLv2.
 #
 # Author: Preston Brown <pbrown@redhat.com>
 #         Adrian Likins <alikins@redhat.com>
@@ -24,7 +24,7 @@ _ = t.ugettext
 
 def installedHeaderByKeyword(**kwargs):
     """ just cause this is such a potentially useful looking method... """
-    _ts = rpm.TransactionSet()
+    _ts = transaction.initReadOnlyTransaction()
     mi = _ts.dbMatch()
     for keyword in kwargs.keys():
         mi.pattern(keyword, rpm.RPMMIRE_GLOB, kwargs[keyword])
@@ -32,7 +32,9 @@ def installedHeaderByKeyword(**kwargs):
     headerList = []
     for h in mi:
         headerList.append(h)
-    _ts.closeDB()
+    mi = None
+    _ts.ts.closeDB()
+    
     return headerList
 
 def verifyPackages(packages):
@@ -110,12 +112,13 @@ def getInstalledPackageList(msgCallback = None, progressCallback = None,
 
     if msgCallback != None:
         msgCallback(_("Getting list of packages installed on the system"))
-
-    _ts = rpm.TransactionSet()
+ 
+    _ts = transaction.initReadOnlyTransaction()   
     count = 0
     total = 0
 
-    for h in _ts.dbMatch():
+    dbmatch = _ts.dbMatch()
+    for h in dbmatch:
         if h == None:
             break
         count = count + 1
@@ -123,7 +126,8 @@ def getInstalledPackageList(msgCallback = None, progressCallback = None,
     total = count
 
     count = 0
-    for h in _ts.dbMatch():
+    dbmatch = _ts.dbMatch()
+    for h in dbmatch:
         if h == None:
             break
         package = {
@@ -154,7 +158,8 @@ def getInstalledPackageList(msgCallback = None, progressCallback = None,
         if progressCallback != None:
             progressCallback(count, total)
         count = count + 1
-    _ts.closeDB()
+    dbmatch = None
+    _ts.ts.closeDB()
     pkg_list.sort(key=lambda x:(x['name'], x['epoch'], x['version'], x['release']))
     return pkg_list
 

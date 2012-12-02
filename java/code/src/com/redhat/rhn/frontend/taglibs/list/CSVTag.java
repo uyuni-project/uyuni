@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -245,10 +245,8 @@ public class CSVTag extends BodyTagSupport {
             session.setAttribute(paramQuery, ((DataResult)pageData).getMode().getQuery());
             return CSVDownloadAction.QUERY_DATA + "=" + paramQuery;
         }
-        else {
-            String paramPageList = "pageList_" + getUniqueName();
-            session.setAttribute(paramPageList, pageData);
-            return CSVDownloadAction.PAGE_LIST_DATA + "=" + paramPageList;
-        }
+        String paramPageList = "pageList_" + getUniqueName();
+        session.setAttribute(paramPageList, pageData);
+        return CSVDownloadAction.PAGE_LIST_DATA + "=" + paramPageList;
     }
 }

@@ -1,7 +1,7 @@
 
 #   rhn-client-tools
 #
-# Copyright (c) 2006--2011 Red Hat, Inc.
+# Copyright (c) 2006--2012 Red Hat, Inc.
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -161,8 +161,8 @@ class RhnServer(object):
     level exceptions
     """
 
-    def __init__(self):
-        self._server = rpcServer.getServer()
+    def __init__(self, serverOverride=None):
+        self._server = rpcServer.getServer(serverOverride=serverOverride)
         self._capabilities = None
 
     def __get_capabilities(self):

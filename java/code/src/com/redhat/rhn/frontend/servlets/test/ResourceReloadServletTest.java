@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -60,12 +60,12 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
 
     public void testDoGet() throws Exception {
         ResourceReloadServlet servlet = new ResourceReloadServlet();
-        boolean orig = Config.get().getBoolean("web.development_environment");
-        Config.get().setBoolean("web.development_environment", "true");
+        boolean orig = Config.get().getBoolean("java.development_environment");
+        Config.get().setBoolean("java.development_environment", "true");
         servlet.doGet(request, response);
         MockServletOutputStream ms = (MockServletOutputStream) output;
         assertEquals("Reloaded resource files: [true]", ms.getContents());
-        Config.get().setBoolean("web.development_environment",
+        Config.get().setBoolean("java.development_environment",
                 new Boolean(orig).toString());
     }
 

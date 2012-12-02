@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.audit;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -97,13 +96,12 @@ public class ScapManager extends BaseManager {
      * @param server The system for which to search
      * @return The list of scan results in brief
      */
-    public static List allScans(Server server) {
+    public static DataResult allScans(Server server) {
         SelectMode m = ModeFactory.getMode("scap_queries",
                 "show_system_scans");
         HashMap params = new HashMap();
         params.put("sid", server.getId());
-        DataResult dr = m.execute(params);
-        return transposeView(dr);
+        return makeDataResult(params, new HashMap(), null, m);
     }
 
     /**
@@ -111,7 +109,7 @@ public class ScapManager extends BaseManager {
      * @param testResultId of XccdfTestResult of the test for which to search
      * @return the list of rule-results
      */
-    public static DataResult ruleResultsPerScan(Long testResultId) {
+    public static List<XccdfRuleResultDto> ruleResultsPerScan(Long testResultId) {
         SelectMode m = ModeFactory.getMode("scap_queries",
                 "show_ruleresults");
         HashMap params = new HashMap();
@@ -131,6 +129,22 @@ public class ScapManager extends BaseManager {
         params.put("rr_id", ruleResultId);
         List<XccdfRuleResultDto> result = m.execute(params);
         return result.isEmpty() ? null : result.get(0);
+    }
+
+    /**
+     * Get a TestResult with metadata similar to the given.
+     * Which has been evaluated on the same machine just before the given.
+     * So it makes a sence to compare these two.
+     * @param testResultId referential TestResult
+     * @return result or null (if not any)
+     */
+    public static Long previousComparableTestResult(Long testResultId) {
+        SelectMode m = ModeFactory.getMode("scap_queries",
+                "previous_comparable_tr");
+        HashMap<String, Long> params = new HashMap<String, Long>();
+        params.put("xid", testResultId);
+        DataResult<Map> toReturn = m.execute(params);
+        return (Long) toReturn.get(0).get("xid");
     }
 
     /**
@@ -240,44 +254,16 @@ public class ScapManager extends BaseManager {
      * Checks if the user has permission to see the XCCDF scan.
      * @param user User being checked.
      * @param testResultId ID of the XCCDF scan being checked.
+     * @return true - when available
      * @retutn true if the user can access the TestResult, false otherwise.
      */
-    private static boolean isAvailableToUser(User user, Long testResultId) {
+    public static boolean isAvailableToUser(User user, Long testResultId) {
         SelectMode m = ModeFactory.getMode("scap_queries",
                 "is_available_to_user");
         HashMap<String, Long> params = new HashMap<String, Long>();
         params.put("user_id", user.getId());
         params.put("xid", testResultId);
         return m.execute(params).size() >= 1;
-    }
-
-    private static List<Map<String, Object>> transposeView(DataResult testResultsRaw) {
-        List<Map<String, Object>> resultView = new ArrayList<Map<String, Object>>();
-        Map<String, Object> currResult = null;
-        for (Map row : (DataResult<Map>) testResultsRaw) {
-            if (currResult != null &&
-                    ((Long) currResult.get("id")).equals(row.get("id"))) {
-                String label = (String) row.get("label");
-                Long figure = (Long) row.get("figure");
-                currResult.put(label, figure);
-                currResult.put("sum", ((Long) currResult.get("sum")) + figure);
-            }
-            else {
-                if (currResult != null) {
-                    resultView.add(currResult);
-                }
-                currResult = new HashMap<String, Object>();
-                currResult.put("id", row.get("id"));
-                currResult.put("testResult", row.get("test_result"));
-                currResult.put((String) row.get("label"), row.get("figure"));
-                currResult.put("sum", row.get("figure"));
-                currResult.put("completionTime", row.get("completion_time"));
-            }
-        }
-        if (currResult != null) {
-            resultView.add(currResult);
-        }
-        return resultView;
     }
 
     private static HashSet<Long> idsInDataResultToSet(DataResult dataIn) {

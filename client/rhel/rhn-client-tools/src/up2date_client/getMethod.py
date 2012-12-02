@@ -1,7 +1,7 @@
 # Retrieve action method name given queued action information.
 #
 # Client code for Update Agent
-# Copyright (c) 1999-2002 Red Hat, Inc.  Distributed under GPLv2.
+# Copyright (c) 1999--2012 Red Hat, Inc.  Distributed under GPLv2.
 #
 # An allowable xmlrpc method is retrieved given a base location, a
 # hierarchical route to the class/module, and method name.
@@ -97,7 +97,7 @@ def getMethod(methodName, abspath, baseClass):
         # A file or method
         # We look for the special __rhnexport__ array
         if not hasattr(className, '__rhnexport__'):
-            raise GetMethodException("Class %s is not SUSE Manager compliant" % \
+            raise GetMethodException("Class %s is not RHN-compliant" % \
                 string.join(methodNameComps[:index], '.'))
         export = getattr(className, '__rhnexport__')
         if comp not in export:

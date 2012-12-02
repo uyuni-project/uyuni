@@ -27,51 +27,6 @@ ORDER BY UPPER(COALESCE(X.server_name, '(none)')), X.id
   <elaborator name="entitlements"/>
 </mode>
 
-<mode name="provisioning_systems_in_set">
-  <query params="user_id">
-SELECT DISTINCT S.id,
-       S.name AS SERVER_NAME
-  FROM rhnServer S,
-       rhnSet ST,
-       rhnUserServerPerms USP
- WHERE USP.user_id = :user_id
-   AND ST.user_id = :user_id
-   AND ST.label = 'system_list'
-   AND USP.server_id = ST.element
-   AND EXISTS (SELECT 1 FROM rhnServerEntitlementView SEV WHERE SEV.server_id = ST.element AND SEV.label = 'provisioning_entitled')
-   AND USP.server_id = S.id
-ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
-  </query>
-  <elaborator name="system_overview" />
-  <elaborator name="entitlements"/>
-</mode>
-
-<mode name="provisioning_systems_in_ks_set">
-  <query params="user_id, kstid">
-SELECT DISTINCT S.id,
-       S.name AS SERVER_NAME
-  FROM rhnServer S,
-       rhnSet ST,
-       rhnUserServerPerms USP,
-       rhnKickstartableTree KST,
-       rhnChannel C
- WHERE USP.user_id = :user_id
-   AND ST.user_id = :user_id
-   AND ST.label = 'system_list'
-   AND USP.server_id = ST.element
-   AND EXISTS (SELECT 1 FROM rhnServerEntitlementView SEV WHERE SEV.server_id = ST.element AND SEV.label = 'provisioning_entitled')
-   AND USP.server_id = S.id
-   AND KST.id = :kstid
-   AND C.id = KST.channel_id
-   AND EXISTS (SELECT 1 FROM rhnServerChannelArchCompat 
-               WHERE server_arch_id = S.server_arch_id
-               AND C.channel_arch_id = channel_arch_id) 
-ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
-  </query>
-  <elaborator name="system_overview" />
-  <elaborator name="entitlements"/>
-</mode>
-
 <mode name="provisioning_systems_in_set_with_tag">
   <query params="user_id, tag_id">
 SELECT * FROM (
@@ -137,24 +92,6 @@ SELECT DISTINCT S.id,
    AND USP.server_id = S.id
 ) S
 ORDER BY UPPER(coalesce(S.SERVER_NAME, '(none)')), S.ID
-  </query>
-  <elaborator name="system_overview" />
-</mode>
-
-
-<mode name="users_systems_with_value_for_key">
-  <query params="user_id, cikid">
-SELECT S.id,
-       S.name AS SERVER_NAME,
-       SCDV.value
-  FROM rhnServer S,
-       rhnServerCustomDataValue SCDV,
-       rhnUserServerPerms USP
- WHERE USP.user_id = :user_id
-   AND USP.server_id = SCDV.server_id
-   AND SCDV.key_id = :cikid
-   AND USP.server_id = S.id
-ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
   <elaborator name="system_overview" />
 </mode>
@@ -490,40 +427,6 @@ where a.user_id = :some_user_id
 
 <mode name="system_entitlement_list">
   <query name="available_to_user" />
-  <elaborator name="system_overview" />
-  <elaborator name="entitlements"/>
-</mode>
-
-<mode name="affected_by_errata">
-  <query params="eid, user_id">
-  select * from (
-  SELECT  DISTINCT S.id, S.name
-    FROM  rhnServerNeededErrataCache SNEC,
-          rhnEntitledServers S,
-          rhnUserServerPerms USP
-   WHERE  SNEC.errata_id = :eid
-     AND  USP.user_id = :user_id
-     AND  S.id = USP.server_id
-     AND  S.id = SNEC.server_id
-  ) X
-ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
-  </query>
-  <elaborator params="eid" multiple="t">
-SELECT SA.server_id as id, 
-       (SELECT name 
-          FROM rhnActionStatus where id = SA.status) as status,
-       SA.action_id,
-       (SELECT SA2.modified 
-          FROM rhnServerAction SA2 
-         WHERE SA2.server_id = SA.server_id
-           AND SA2.action_id = SA.action_id) AS modified
-  FROM rhnServerAction SA
- WHERE SA.server_id IN (%s)
-   AND SA.action_id IN (
-           SELECT action_id
-             FROM rhnActionErrataUpdate
-            WHERE errata_id = :eid)
-  </elaborator>
   <elaborator name="system_overview" />
   <elaborator name="entitlements"/>
 </mode>
@@ -1195,39 +1098,6 @@ SELECT SCC.server_id AS ID, SCC.position, S.name
 ORDER BY UPPER(COALESCE(S.NAME, '(none)')), SCC.server_id
   </query>
   <elaborator name="system_overview" />
-  <elaborator name="entitlements"/>
-</mode>
-
-<mode name="config_managed_systems">
-  <query name="available_to_user" />
-  <elaborator>
-SELECT S.id, 
-       COALESCE((SELECT SCC.config_channel_id
-              FROM rhnConfigChannelType CCT, rhnConfigChannel CC, rhnServerConfigChannel SCC
-             WHERE SCC.server_id = S.id
-               AND SCC.config_channel_id = CC.id
-               AND CC.confchan_type_id = CCT.id
-               AND CCT.label = 'local_override'), 0) CCID,
-       (SELECT COUNT(CF.id)
-          FROM rhnConfigFile CF, rhnConfigChannelType CCT, rhnConfigChannel CC, rhnServerConfigChannel SCC
-         WHERE SCC.server_id = S.id
-           AND SCC.config_channel_id = CC.id
-           AND CC.confchan_type_id = CCT.id
-           AND CF.config_channel_id = CC.id
-           AND CCT.label = 'local_override') LOCAL_FILE_COUNT,
-       COALESCE((SELECT COUNT(SCC.config_channel_id)
-              FROM rhnConfigChannelType CCT, rhnConfigChannel CC, rhnServerConfigChannel SCC
-             WHERE SCC.server_id = S.id
-               AND SCC.config_channel_id = CC.id
-               AND CC.confchan_type_id = CCT.id
-               AND CCT.label = 'normal'), 0) CONF_CHANNEL_COUNT,
-       COALESCE((SELECT 1
-              FROM rhnServerFeaturesView SFV
-             WHERE SFV.server_id = S.id
-               AND SFV.label = 'ftr_config'), 0) AS SELECTABLE
-  FROM rhnServer S
- WHERE S.id IN (%s)
-  </elaborator>
   <elaborator name="entitlements"/>
 </mode>
 

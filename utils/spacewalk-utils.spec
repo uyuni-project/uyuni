@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.7.15.9
+Version:	1.9.4
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -97,6 +97,127 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Wed Nov 21 2012 Michael Mraka <michael.mraka@redhat.com> 1.9.4-1
+- updated according to modified distchannel API
+
+* Sun Nov 11 2012 Michael Calmer <mc@suse.de> 1.9.3-1
+- add openSUSE 12.2 to common channels
+
+* Tue Nov 06 2012 Tomas Lestach <tlestach@redhat.com> 1.9.2-1
+- spacewalk-setup-cobbler does not use --enable-tftp option
+
+* Wed Oct 31 2012 Jan Pazdziora 1.9.1-1
+- fixed spacing in man page
+
+* Wed Oct 31 2012 Jan Pazdziora 1.8.33-1
+- Advertise the yum.spacewalkproject.org.
+
+* Tue Oct 30 2012 Jan Pazdziora 1.8.32-1
+- Adding Spacewalk 1.8 to spacewalk-common-channels.
+- Update the copyright year.
+
+* Mon Oct 22 2012 Jan Pazdziora 1.8.31-1
+- Add support for schema transformations.
+
+* Mon Oct 22 2012 Jan Pazdziora 1.8.30-1
+- 822907 - spacewalk-hostname-rename knows to start postgresql
+
+* Wed Sep 26 2012 Jan Pazdziora 1.8.29-1
+- 860467 - note about packages not having erratas.
+
+* Fri Sep 07 2012 Jan Pazdziora 1.8.28-1
+- Format the timestamps as well.
+
+* Fri Aug 31 2012 Jan Pazdziora 1.8.27-1
+- 853025 - make sure the regular expressions actually match.
+
+* Wed Aug 22 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.26-1
+- 812886 - the Enhancement Advisory is actually Product Enhancement Advisory.
+
+* Fri Aug 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.25-1
+- added channel definitions for Fedora17
+
+* Thu Aug 09 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.24-1
+- 817484 - fixed typo
+
+* Mon Aug 06 2012 Tomas Lestach <tlestach@redhat.com> 1.8.23-1
+- 843466 - prevent spacewalk-hostname-rename to fail with an IPv6 address
+
+* Mon Aug 06 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.22-1
+- 817484 - strip non-number chars from date format
+
+* Fri Jul 06 2012 Stephen Herr <sherr@redhat.com> 1.8.21-1
+- 838131 - spacewalk-clone-by-date can clone only security errata
+
+* Thu Jun 14 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.20-1
+- system.list_user_systems() now returns localtime
+
+* Thu Jun 07 2012 Stephen Herr <sherr@redhat.com> 1.8.19-1
+- 829485 - fixed type
+
+* Thu Jun 07 2012 Stephen Herr <sherr@redhat.com> 1.8.18-1
+- 829204 - updated man page for spacewalk-clone-by-date
+
+* Wed Jun 06 2012 Stephen Herr <sherr@redhat.com> 1.8.17-1
+- 829485 - Created new asyncronous api methods for cloning errata
+
+* Wed May 23 2012 Stephen Herr <sherr@redhat.com> 1.8.16-1
+- 824583 - spacewalk-clone-by-date failes with TypeError when on Postgres
+  database.
+
+* Mon May 21 2012 Jan Pazdziora 1.8.15-1
+- Fix refsection build error.
+- %%defattr is not needed since rpm 4.4
+
+* Fri May 18 2012 Tomas Lestach <tlestach@redhat.com> 1.8.14-1
+- use spacewalk-setup-cobbler instead of outdated cobbler-setup
+- Revert "set localhost instead of hostname to tnsnames.ora and listener.ora"
+
+* Wed May 16 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.13-1
+- added version for scientific linux default channel mapping
+
+* Thu May 10 2012 Jan Pazdziora 1.8.12-1
+- The plan_table is not part of our schema, do not dump it.
+
+* Fri May 04 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.11-1
+- added dist_map_release for automatic OS->base channel mapping
+- set dist release map via setDefaultMap
+- removed fedora12/13/14 which are long time EOL
+
+* Tue Apr 24 2012 Stephen Herr <sherr@redhat.com> 1.8.10-1
+- 812810 - Better regex for getting system_id in apply_errata
+
+* Mon Apr 23 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.9-1
+- 812886 - determine the advisory type by parsing "advisory_type"
+
+* Mon Apr 23 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.8-1
+- 813281 - fix indetation
+
+* Mon Apr 23 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.7-1
+- 813281 - implement -n for apply_errata
+
+* Mon Apr 16 2012 Tomas Lestach <tlestach@redhat.com> 1.8.6-1
+- 812812 - make generated SSL certificate publicly available
+  (tlestach@redhat.com)
+
+* Fri Apr 13 2012 Jan Pazdziora 1.8.5-1
+- 810313 - new option to list snapshot details (mzazrivec@redhat.com)
+
+* Thu Apr 05 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.4-1
+- made new pylint on Fedora 16 happy
+
+* Tue Apr 03 2012 Jan Pazdziora 1.8.3-1
+- 809444 - support for psql syntax (mzazrivec@redhat.com)
+
+* Sun Mar 18 2012 Aron Parsons <aronparsons@gmail.com> 1.8.2-1
+- added spacewalk-manage-channel-lifecycle script (aronparsons@gmail.com)
+- spacewalk-clone-by-date manpage bugfixes/cleanups (shardy@redhat.com)
+
+* Mon Mar 05 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.1-1
+- reused function from spacewalk.common.cli
+- login(), logout() moved to spacewalk.common.cli
+- use getUsernamePassword() from spacewalk.common.cli
+
 * Fri Mar 02 2012 Jan Pazdziora 1.7.15-1
 - We no longer build Spacewalk nightly on Fedora 14.
 - Spacewalk 1.7 instead of 1.4 and 1.5.

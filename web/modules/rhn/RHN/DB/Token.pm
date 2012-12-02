@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -193,48 +193,6 @@ EOQ
   }
 
   return @groups;
-}
-
-sub set_channels {
-  my $self = shift;
-  my %params = validate(@_, { channels => 1, transaction => 0 });
-
-  my @channels = grep { defined $_ and $_ > 0 } @{$params{channels}};
-
-  my $dbh = $params{transaction} || RHN::DB->connect;
-  my $query;
-  my $sth;
-
-  $query = <<EOQ;
-DELETE FROM rhnRegTokenChannels RTC
-      WHERE RTC.token_id = :tid
-EOQ
-
-  $sth = $dbh->prepare($query);
-  $sth->execute_h(tid => $self->id);
-
-  # make sure we don't add rhn-satellite or rhn-proxy channels to any keys...
-  $query = <<EOQ;
-INSERT INTO rhnRegTokenChannels
-            (token_id, channel_id)
-SELECT DISTINCT :tid, :cid
-  FROM rhnChannelFamily CF,
-       rhnChannelFamilyMembers CFM
- WHERE CFM.channel_id = :cid
-   AND CFM.channel_family_id = CF.id
-   AND CF.label NOT IN ('rhn-proxy', 'rhn-satellite', 'SMS', 'SMP')
-EOQ
-
-  $sth = $dbh->prepare($query);
-
-  foreach my $cid (@channels) {
-    $sth->execute_h(tid => $self->id, cid => $cid);
-  }
-
-  $sth->finish;
-  $dbh->commit unless $params{transaction};
-
-  return;
 }
 
 sub lookup {
@@ -524,33 +482,6 @@ sub generate_random_key {
   my $class = shift;
 
   return md5_hex(PXT::Utils->random_bits(1024));
-}
-
-sub org_default {
-  my $self = shift;
-  my $new_value = shift;
-
-  my $dbh = RHN::DB->connect;
-  if (defined $new_value) {
-    if ($new_value) { # Clear all others and set this one
-      $dbh->do_h("DELETE FROM rhnRegTokenOrgDefault WHERE org_id = :org_id", org_id => $self->org_id);
-      $dbh->do_h("INSERT INTO rhnRegTokenOrgDefault (org_id,  reg_token_id) VALUES (:org_id, :rtid)",
-		 org_id => $self->org_id, rtid => $self->id);
-    }
-    else { # Just clear this one
-      $dbh->do_h("DELETE FROM rhnRegTokenOrgDefault WHERE org_id = :org_id and reg_token_id = :rtid",
-		 org_id => $self->org_id, rtid => $self->id);
-    }
-
-    $dbh->commit;
-  }
-
-  my $sth = $dbh->prepare("SELECT 1 FROM rhnRegTokenOrgDefault WHERE reg_token_id = :rtid");
-  $sth->execute_h(rtid => $self->id);
-  my ($hit) = $sth->fetchrow;
-  $sth->finish;
-
-  return $hit ? 1 : 0;
 }
 
 1;

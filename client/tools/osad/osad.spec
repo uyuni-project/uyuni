@@ -10,25 +10,19 @@
 %global include_selinux_package 1
 %endif
 
-%if 0%{?suse_version}
-%define apache_group www
-%else
-%define apache_group apache
-%endif
-
 Name: osad
 Summary: Open Source Architecture Daemon
 Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.41.7
+Version: 5.11.13
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 BuildRequires: python-devel
 Requires: python
-Requires: rhnlib >= 2.5.38
+Requires: rhnlib >= 1.8-3
 Requires: jabberpy
 Requires: rhn-client-tools >= 1.3.7
 %if 0%{?suse_version} && 0%{?suse_version} < 1110 || 0%{?rhel} && 0%{?rhel} <= 5
@@ -42,20 +36,31 @@ Requires: PyXML
 %endif
 Conflicts: osa-dispatcher < %{version}-%{release}
 Conflicts: osa-dispatcher > %{version}-%{release}
-%if !0%{?suse_version}
-Requires(post): chkconfig
-Requires(preun): chkconfig
-Requires: jabberpy
-# This is for /sbin/service
-Requires(preun): initscripts
-%else
+%if 0%{?suse_version} >= 1210
+BuildRequires: systemd
+%{?systemd_requires}
+%endif
+%if 0%{?suse_version}
 # provides chkconfig on SUSE
 Requires(post): aaa_base
 Requires(preun): aaa_base
 # to make chkconfig test work during build
 BuildRequires: sysconfig syslog
-Requires: python-jabberpy
-Requires(preun): %fillup_prereq %insserv_prereq
+%else
+%if 0%{?fedora}
+Requires(post): chkconfig
+Requires(preun): chkconfig
+Requires(post): systemd-sysv
+Requires(preun): systemd-sysv
+Requires(post): systemd-units
+Requires(preun): systemd-units
+BuildRequires: systemd-units
+%else
+Requires(post): chkconfig
+Requires(preun): chkconfig
+# This is for /sbin/service
+Requires(preun): initscripts
+%endif
 %endif
 
 %description
@@ -73,16 +78,18 @@ Requires: jabberpy
 Requires: lsof
 Conflicts: %{name} < %{version}-%{release}
 Conflicts: %{name} > %{version}-%{release}
-%if !0%{?suse_version}
+%if 0%{?suse_version} >= 1210
+%{?systemd_requires}
+%endif
+%if 0%{?suse_version}
+# provides chkconfig on SUSE
+Requires(post): aaa_base
+Requires(preun): aaa_base
+%else
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
-%else
-# provides chkconfig on SUSE
-Requires(post): aaa_base
-Requires(preun): aaa_base
-Requires(preun): %fillup_prereq %insserv_prereq
 %endif
 
 %description -n osa-dispatcher
@@ -130,6 +137,9 @@ make -f Makefile.osad all
 
 %if 0%{?include_selinux_package}
 %{__perl} -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' osa-dispatcher-selinux/%{modulename}.te
+%if 0%{?fedora} >= 17
+cat osa-dispatcher-selinux/%{modulename}.te.fedora17 >> osa-dispatcher-selinux/%{modulename}.te
+%endif
 for selinuxvariant in %{selinux_variants}
 do
     make -C osa-dispatcher-selinux NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile
@@ -145,6 +155,14 @@ make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_
 mkdir -p %{buildroot}%{_var}/log/rhn
 touch %{buildroot}%{_var}/log/osad
 touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
+
+%if 0%{?fedora} || 0%{?suse_version} >= 1210
+rm $RPM_BUILD_ROOT/%{_initrddir}/osad
+rm $RPM_BUILD_ROOT/%{_initrddir}/osa-dispatcher
+mkdir -p $RPM_BUILD_ROOT/%{_unitdir}
+install -m 0644 osad.service $RPM_BUILD_ROOT/%{_unitdir}/
+install -m 0644 osa-dispatcher.service $RPM_BUILD_ROOT/%{_unitdir}/
+%endif
 
 %if 0%{?include_selinux_package}
 for selinuxvariant in %{selinux_variants}
@@ -183,57 +201,59 @@ ln -sf ../../etc/init.d/osa-dispatcher %{buildroot}%{_sbindir}/rcosa-dispatcher
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%if 0%{?suse_version}
-
-%preun
-%stop_on_removal osad
-
 %post
 ARG=$1
-%{fillup_and_insserv -f -y osad}
+%if 0%{?suse_version} >= 1210
+%service_add_post osad.service
+%else
+if [ -f %{_sysconfdir}/init.d/osad ]; then
+    /sbin/chkconfig --add osad
+fi
+%endif
 if [ $ARG -eq 1 ] ; then
   # executed only in case of install
   /etc/init.d/osad start ||:
 fi
 
-%postun
-%restart_on_update osad
-%{insserv_cleanup}
-
-%preun -n osa-dispatcher
-%stop_on_removal osa-dispatcher
-
-%post -n osa-dispatcher
-%{fillup_and_insserv osa-dispatcher}
-
-%postun -n osa-dispatcher
-%restart_on_update osa-dispatcher
-%{insserv_cleanup}
-
-%else
-
-%post
-if [ -f %{_sysconfdir}/init.d/osad ]; then
-    /sbin/chkconfig --add osad
-fi
-
 %preun
+%if 0%{?suse_version} >= 1210
+%service_del_preun osad.service
+%else
 if [ $1 = 0 ]; then
     /sbin/service osad stop > /dev/null 2>&1
     /sbin/chkconfig --del osad
 fi
+%endif
+
+%if 0%{?suse_version} >= 1210
+
+%pre -n osa-dispatcher
+%service_add_pre osa-dispatcher.service
+
+%postun -n osa-dispatcher
+%service_del_postun osa-dispatcher.service
+
+%endif
 
 %post -n osa-dispatcher
+%if 0%{?suse_version} >= 1210
+%service_add_post osa-dispatcher.service
+%else
 if [ -f %{_sysconfdir}/init.d/osa-dispatcher ]; then
     /sbin/chkconfig --add osa-dispatcher
 fi
+%endif
 
 %if %{include_selinux_package}
 %preun -n osa-dispatcher
+%if 0%{?suse_version} >= 1210
+%service_del_preun osa-dispatcher.service
+%else
 if [ $1 = 0 ]; then
     /sbin/service osa-dispatcher stop > /dev/null 2>&1
     /sbin/chkconfig --del osa-dispatcher
 fi
+%endif
 
 %if 0%{?include_selinux_package}
 %post -n osa-dispatcher-selinux
@@ -268,9 +288,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 /sbin/restorecon -vvi /var/log/rhn/osa-dispatcher.log
 %endif
 
-%endif
-%endif
-
 %files
 %defattr(-,root,root)
 %dir %{rhnroot}/osad
@@ -285,7 +302,11 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %config(noreplace) %{_sysconfdir}/sysconfig/rhn/osad.conf
 %config(noreplace) %attr(600,root,root) %{_sysconfdir}/sysconfig/rhn/osad-auth.conf
 %config(noreplace) %{client_caps_dir}/*
+%if 0%{?fedora} || 0%{?suse_version} >= 1210
+%{_unitdir}/osad.service
+%else
 %attr(755,root,root) %{_initrddir}/osad
+%endif
 %doc LICENSE
 %{_sbindir}/rcosad
 %config(noreplace) %{_sysconfdir}/logrotate.d/osad
@@ -312,7 +333,11 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %dir %{_sysconfdir}/rhn/tns_admin
 %dir %{_sysconfdir}/rhn/tns_admin/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/rhn/tns_admin/osa-dispatcher/sqlnet.ora
+%if 0%{?fedora} || 0%{?suse_version} >= 1210
+%{_unitdir}/osa-dispatcher.service
+%else
 %attr(755,root,root) %{_initrddir}/osa-dispatcher
+%endif
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn/oracle
 %attr(770,root,root) %dir %{_var}/log/rhn/oracle/osa-dispatcher
 %doc LICENSE
@@ -327,7 +352,6 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 
 %if 0%{?include_selinux_package}
 %files -n osa-dispatcher-selinux
-%defattr(-,root,root,0755)
 %doc osa-dispatcher-selinux/%{modulename}.fc
 %doc osa-dispatcher-selinux/%{modulename}.if
 %doc osa-dispatcher-selinux/%{modulename}.te
@@ -338,6 +362,62 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Thu Nov 22 2012 Jan Pazdziora 5.11.13-1
+- always commit the update
+
+* Tue Nov 13 2012 Jan Pazdziora 5.11.12-1
+- Fixing the definition of the pid file.
+
+* Sun Nov 11 2012 Michael Calmer <mc@suse.de> 5.11.11-1
+- osad: use systemd for openSUSE >= 12.1
+- no use of /var/lock/subsys/ anymore
+
+* Tue Oct 30 2012 Jan Pazdziora 5.11.10-1
+- Update the copyright year.
+
+* Mon Oct 22 2012 Jan Pazdziora 5.11.9-1
+- Revert "Revert "Revert "get_server_capability() is defined twice in osad and
+  rhncfg, merge and move to rhnlib and make it member of rpclib.Server"""
+
+* Thu Oct 18 2012 Michael Mraka <michael.mraka@redhat.com> 5.11.8-1
+- osad requires config.getServerlURL()
+
+* Sat Oct 13 2012 Jan Pazdziora 5.11.7-1
+- Start of osa-dispatcher on RHEL 5.
+
+* Tue Sep 18 2012 Jan Pazdziora 5.11.6-1
+- Remove osa-dispatcher.pid in StartPre as confined daemon is unable to.
+
+* Wed Aug 29 2012 Jan Pazdziora 5.11.5-1
+- We cannot use PIDFile as variable in ExecStart.
+- Allow osa-dispatcher to read /etc/passwd, it seems to be needed by the
+  generic python modules.
+
+* Tue Jul 31 2012 Michael Mraka <michael.mraka@redhat.com> 5.11.4-1
+- 844603 - removed PyXML dependency
+
+* Mon Jul 30 2012 Michael Mraka <michael.mraka@redhat.com> 5.11.3-1
+- there's no elsif macro
+
+* Wed Jul 25 2012 Michael Mraka <michael.mraka@redhat.com> 5.11.2-1
+- make sure _unitdir is defined
+
+* Wed Jul 25 2012 Michael Mraka <michael.mraka@redhat.com> 5.11.1-1
+- implement osa-dispatcher.service for systemd
+- implement osad.service for systemd
+
+* Tue Apr 10 2012 Milan Zazrivec <mzazrivec@redhat.com> 5.10.44-1
+- 716064 - prevent 'notifying clients' starvation
+
+* Mon Apr 09 2012 Stephen Herr <sherr@redhat.com> 5.10.43-1
+- 810908 - Make osa-dispatcher use the hostname in the rhn.conf if present
+  (sherr@redhat.com)
+
+* Tue Apr 03 2012 Jan Pazdziora 5.10.42-1
+- use %%global, not %%define (msuchy@redhat.com)
+- osad.src:477: W: macro-in-%%changelog %%descriptions (msuchy@redhat.com)
+- osad.src:154: W: macro-in-comment %%post (msuchy@redhat.com)
+
 * Fri Mar 02 2012 Jan Pazdziora 5.10.41-1
 - Update the copyright year info.
 

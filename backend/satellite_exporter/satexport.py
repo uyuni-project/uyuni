@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -51,6 +51,7 @@ class BaseApacheServer:
         # short-circuit everything if sending a system-wide message.
         if CFG.SEND_MESSAGE_TO_ALL:
             # Drop the database connection
+            # pylint: disable=W0702
             try:
                 rhnSQL.closeDB()
             except:
@@ -86,18 +87,20 @@ class BaseApacheServer:
         return retval
 
     def _cleanup(self):
+        # pylint: disable=W0201
         self.server = None
         self.server_classes = None
         self.server_instance = {}
 
     # Virtual functions
-    def _headerParserHandler(self, req):
+    # pylint: disable=R0201
+    def _headerParserHandler(self, _req):
         return apache.OK
 
-    def _handler(self, req):
+    def _handler(self, _req):
         return apache.OK
 
-    def _cleanupHandler(self, req):
+    def _cleanupHandler(self, _req):
         return apache.OK
 
     def _wrapper(self, req, function):
@@ -196,7 +199,8 @@ class ApacheServer(BaseApacheServer):
                 (module_name, function_name))
         return f
 
-    def _validate_version(self, req):
+    @staticmethod
+    def _validate_version(req):
         server_version = constants.PROTOCOL_VERSION
         vstr = 'X-RHN-Satellite-XML-Dump-Version'
         if not req.headers_in.has_key(vstr):

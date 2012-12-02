@@ -113,8 +113,13 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
     public static final String BOND_INTERFACE = "bondInterface";
     public static final String BOND_SLAVE_INTERFACES = "bondSlaveInterfaces";
     public static final String HIDDEN_BOND_SLAVE_INTERFACES = "hiddenBondSlaveInterfaces";
+    public static final String BOND_STATIC = "bondStatic";
+    public static final String BOND_IP_ADDRESS = "bondAddress";
+    public static final String BOND_NETMASK = "bondNetmask";
+    public static final String BOND_GATEWAY = "bondGateway";
     public static final String BOND_OPTIONS = "bondOptions";
     public static final String CREATE_BOND_VALUE = "bonding";
+    public static final String STATIC_BOND_VALUE = "true";
     public static final String DONT_CREATE_BOND_VALUE = "none";
     /**
      * {@inheritDoc}
@@ -228,12 +233,25 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             form.set(BOND_TYPE, DONT_CREATE_BOND_VALUE);
         }
 
-        if (StringUtils.isBlank(form.getString(BOND_INTERFACE))) {
-            for (NetworkInterface nic : nics) {
-                if (nic.isBond()) {
-                    form.set(BOND_INTERFACE, nic.getName());
-                    break;
-                }
+        NetworkInterface oldBond = null;
+        for (NetworkInterface nic : nics) {
+            if (nic.isBond()) {
+                oldBond = nic;
+                break;
+            }
+        }
+
+        if (oldBond != null) {
+            if (StringUtils.isBlank(form.getString(BOND_INTERFACE))) {
+                form.set(BOND_INTERFACE, oldBond.getName());
+            }
+
+            if (StringUtils.isBlank(form.getString(BOND_IP_ADDRESS))) {
+                form.set(BOND_IP_ADDRESS, oldBond.getIpaddr());
+            }
+
+            if (StringUtils.isBlank(form.getString(BOND_NETMASK))) {
+                form.set(BOND_NETMASK, oldBond.getNetmask());
             }
         }
 
@@ -270,21 +288,28 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         return strings;
     }
 
-    private void setupNetworkInfo(DynaActionForm form, RequestContext context,
-            KickstartScheduleCommand cmd) {
-        Server server = cmd.getServer();
+    private List<NetworkInterface> getPublicNetworkInterfaces(
+            Server server) {
         List<NetworkInterface> nics = new LinkedList<NetworkInterface>(
                 server.getNetworkInterfaces());
-
-        if (nics.isEmpty()) {
-            return;
-        }
 
         for (Iterator<NetworkInterface> itr = nics.iterator(); itr.hasNext();) {
             NetworkInterface nic = itr.next();
             if (nic.isDisabled() || "127.0.0.1".equals(nic.getIpaddr())) {
                 itr.remove();
             }
+        }
+
+        return nics;
+    }
+
+    private void setupNetworkInfo(DynaActionForm form, RequestContext context,
+            KickstartScheduleCommand cmd) {
+        Server server = cmd.getServer();
+        List<NetworkInterface> nics = getPublicNetworkInterfaces(server);
+
+        if (nics.isEmpty()) {
+            return;
         }
 
         context.getRequest().setAttribute(NETWORK_INTERFACES, nics);
@@ -549,6 +574,15 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                 tmp.add(slave);
             }
             cmd.setBondSlaveInterfaces(tmp);
+            if (STATIC_BOND_VALUE.equals(form.getString(BOND_STATIC))) {
+                cmd.setBondDhcp(false);
+                cmd.setBondAddress(form.getString(BOND_IP_ADDRESS));
+                cmd.setBondNetmask(form.getString(BOND_NETMASK));
+                cmd.setBondGateway(form.getString(BOND_GATEWAY));
+            }
+            else {
+                cmd.setBondDhcp(true);
+            }
         }
 
         if (form.getString(USE_IPV6_GATEWAY).equals("1")) {
@@ -721,19 +755,62 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         }
 
         String[] slaves = (String[]) form.get(BOND_SLAVE_INTERFACES);
+        ActionErrors errors = new ActionErrors();
 
         // if we are trying to create a bond but have not specified a name or at
         // least one slave interface
         if (form.getString(BOND_TYPE).equals(CREATE_BOND_VALUE) &&
                 (StringUtils.isBlank(form.getString(BOND_INTERFACE)) ||
                         slaves.length < 1 || StringUtils.isBlank(slaves[0]))) {
-            ActionErrors errors = new ActionErrors();
             errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                     "kickstart.bond.not.defined.jsp"));
+        }
+
+        final String ipv4addressPattern = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+
+        /*
+         * The IPv6 address regex was created by Stephen Ryan at Dartware
+         * and taken from this forum: http://forums.intermapper.com/viewtopic.php?t=452
+         * It is licenced under a Creative Commons Attribution-ShareAlike 3.0 Unported
+         * License. We can freely use it in (even in commercial products) as long as
+         * we attribute its creation to him, so don't remove this message.
+         */
+        final String ipv6addressPattern = "^(((?=(?>.*?::)(?!.*::)))(::)?([0-9A-" +
+                "F]{1,4}::?){0,5}|([0-9A-F]{1,4}:){6})(\\2([0-9A-F]{1,4}(::?|$))" +
+                "{0,2}|((25[0-5]|(2[0-4]|1\\d|[1-9])?\\d)(\\.|$)){4}|[0-9A-F]{1," +
+                "4}:[0-9A-F]{1,4})(?<![^:]:|\\.)\\z";
+
+        if (form.getString(BOND_STATIC).equals(STATIC_BOND_VALUE)) {
+            String address = form.getString(BOND_IP_ADDRESS);
+            String netmask = form.getString(BOND_NETMASK);
+            String gateway = form.getString(BOND_GATEWAY);
+
+            if (!address.matches(ipv4addressPattern) &&
+                    !address.matches(ipv6addressPattern)) {
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                        "kickstart.bond.bad.ip.address.jsp"));
+            }
+
+            if (!netmask.matches(ipv4addressPattern) &&
+                    !netmask.matches(ipv6addressPattern)) {
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                        "kickstart.bond.bad.netmask.jsp"));
+            }
+
+            if (!gateway.matches(ipv4addressPattern) &&
+                    !gateway.matches(ipv6addressPattern)) {
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                        "kickstart.bond.bad.ip.address.jsp"));
+            }
+        }
+
+        if (errors.size() > 0) {
             addErrors(ctx.getRequest(), errors);
             return false;
         }
-
         return true;
     }
 

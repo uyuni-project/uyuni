@@ -12,22 +12,19 @@
   </query>
 </mode>
 
-<mode name="show_system_scans">
+<mode name="show_system_scans" class="com.redhat.rhn.frontend.dto.XccdfTestResultDto">
+  <elaborator name="testresult_counts"/>
   <query params="sid">
-  SELECT tr.id, tr.identifier as test_result, rrt.label, count(*) as figure,
-      TO_CHAR(sa.completion_time, 'YYYY-MM-DD HH24:MI:SS') AS completion_time
+  SELECT tr.id as xid,
+      tr.identifier as test_result,
+      sa.completion_time as completed
       FROM rhnXccdfTestresult tr,
-          rhnXccdfRuleresult rr,
-          rhnXccdfRuleresultType rrt,
           rhnActionScap ras,
           rhnServerAction sa
       WHERE tr.server_id = :sid
-          AND tr.id = rr.testresult_id
-          AND rr.result_id = rrt.id
           AND tr.action_scap_id = ras.id
           AND sa.server_id = tr.server_id
           AND sa.action_id = ras.action_id
-      GROUP BY tr.id, tr.identifier, rrt.label, sa.completion_time
       ORDER BY tr.id DESC
   </query>
 </mode>
@@ -110,6 +107,23 @@
           rhnXccdfRuleresultType rrt
       WHERE rr.id = :rr_id
           AND rr.result_id = rrt.id
+  </query>
+</mode>
+
+<mode name="previous_comparable_tr">
+  <query params="xid">
+  SELECT max(eq.id) as xid
+      FROM rhnXccdfTestResult ref,
+          rhnXccdfBenchmark refb,
+          rhnXccdfTestResult eq,
+          rhnXccdfBenchmark eqb
+      WHERE ref.id = :xid
+          AND eq.id &lt; ref.id
+          AND ref.profile_id = eq.profile_id
+          AND ref.server_id = eq.server_id
+          AND ref.benchmark_id = refb.id
+          AND eq.benchmark_id = eqb.id
+          AND refb.identifier = eqb.identifier
   </query>
 </mode>
 
@@ -568,7 +582,7 @@
       WHERE rim.rresult_id = :rr_id
           AND rim.ident_id = xi.id
           AND xi.identsystem_id = xis.id
-      ORDER BY xis.system
+      ORDER BY xis.system, xi.identifier
   </query>
 </mode>
 

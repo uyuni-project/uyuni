@@ -14,19 +14,21 @@
 %define jardir          %{_localstatedir}/lib/tomcat6/webapps/rhn/WEB-INF/lib
 %endif
 
-%if 0%{?rhel} && 0%{?rhel} < 6
-# checkstyle is broken on Fedora 14 - we skip for now
+%if 0%{?rhel} && 0%{?rhel} >= 6
+# checkstyle is broken on Fedoras - we skip for now
+# RHEL5 checkstyle4 is incompatible with checkstyle5
 %define run_checkstyle  1
 %endif
 %if 0%{?suse_version}
 %define run_checkstyle  1
 %endif
 
+
 Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.7.54.21
+Version: 1.9.25
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -50,9 +52,11 @@ Requires: jfreechart >= 1.0.9
 
 Requires: bcel
 Requires: c3p0
-Requires: hibernate3 >= 3.2.4
-Requires: java >= 1.6.0
-Requires: jakarta-commons-lang >= 2.1
+Requires: dwr
+Requires: hibernate3 = 0:3.2.4
+Requires: java >= 1:1.6.0
+Requires: java-devel >= 1:1.6.0
+Requires: jakarta-commons-lang >= 0:2.1
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-discovery
 Requires: jakarta-commons-cli
@@ -130,7 +134,8 @@ BuildRequires: c3p0
 BuildRequires: concurrent
 BuildRequires: cglib
 BuildRequires: dom4j
-BuildRequires: hibernate3
+BuildRequires: dwr
+BuildRequires: hibernate3 = 0:3.2.4
 BuildRequires: jaf
 BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-codec
@@ -255,8 +260,8 @@ This package contains PostgreSQL database backend files for the Spacewalk Java.
 Summary: Test Classes for testing spacewalk-java
 Group:  Applications/Internet
 
-BuildRequires:  jmock
-Requires: jmock
+BuildRequires:  jmock < 2.0
+Requires: jmock < 2.0
 Requires: ant-junit
 
 %description tests
@@ -428,6 +433,7 @@ install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
+install -m 644 conf/rhn_java.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_initrddir}
 
@@ -458,6 +464,7 @@ install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{c
 
 ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT/%{_bindir}/taskomaticd
 ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT%{jardir}/ojdbc14.jar
+ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
 install -d -m 755 $RPM_BUILD_ROOT/%{realcobsnippetsdir}
 ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT/%{realcobsnippetsdir}/spacewalk
 
@@ -561,7 +568,7 @@ fi
 %{appdir}/rhn/WEB-INF/pages
 %{appdir}/rhn/WEB-INF/*.xml
 # list of all jar symlinks without any version numbers
-# and wildcards (except non-symlinks dwr and velocity)
+# and wildcards (except non-symlink velocity)
 %{jardir}/antlr.jar
 %{jardir}/bcel.jar
 %{jardir}/c3p0.jar
@@ -580,7 +587,7 @@ fi
 %{jardir}/commons-validator.jar
 %{jardir}/concurrent.jar
 %{jardir}/dom4j.jar
-%{jardir}/dwr-*.jar
+%{jardir}/dwr.jar
 %{jardir}/hibernate3*
 %{jardir}/jaf.jar
 %{jardir}/javamail.jar
@@ -640,9 +647,7 @@ fi
 %if 0%{?rhel} && 0%{?rhel} < 6 || 0%{suse_version}
 %{jardir}/struts.jar
 %else
-%{jardir}/struts.jar
-%{jardir}/struts-taglib.jar
-%{jardir}/struts-extras.jar
+%{jardir}/struts*.jar
 %{jardir}/commons-chain.jar
 %endif
 
@@ -690,6 +695,7 @@ fi
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
+%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %config %{_sysconfdir}/logrotate.d/rhn_web_api
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/audit
@@ -713,13 +719,1318 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
-* Tue Mar 06 2012 Tomas Lestach <tlestach@redhat.com> 1.7.54-1
+* Fri Nov 30 2012 Tomas Lestach <tlestach@redhat.com> 1.9.25-1
+- do not include engine.js twice
+- remove embedded dwr from spacewalk-java and start using dwr package
+
+* Fri Nov 30 2012 Jan Pazdziora 1.9.24-1
+- Do not use Java keywords.
+- 851942 - copy GPG information from the original channel within
+  channel.software.clone API, when the user omits it
+- OrgSoftwareSubscribtions CSV export
+- removing @Override annotation from methods that aren't overriden
+
+* Thu Nov 29 2012 Tomas Lestach <tlestach@redhat.com> 1.9.23-1
+- fix checkstyle issue
+- Some more type-safety / checkstyle fixes
+- Fixing a bunch of type-safety and checkstyle warnings
+
+* Wed Nov 28 2012 Tomas Lestach <tlestach@redhat.com> 1.9.22-1
+- typo fix
+- 519472 - suggest deleting custom packages after a channel is deleted
+- 880346 - deleting an org should remove cobbler profiles too
+- Revert "880346 - delete cobbler profiles when deleting an org"
+- add a null check
+- 470463 - fixing xmllint issue
+- put a newline before pre_install_network_config snippet
+- 880346 - delete cobbler profiles when deleting an org
+- 675193 - removing the confising tip
+
+* Mon Nov 26 2012 Jan Pazdziora 1.9.21-1
+- 864037 - fixing typo.
+
+* Mon Nov 26 2012 Tomas Lestach <tlestach@redhat.com> 1.9.20-1
+- 879332 - checkstyle issue
+
+* Mon Nov 26 2012 Jan Pazdziora 1.9.19-1
+- 864037 - we need to POST to /cobbler_api.
+
+* Mon Nov 26 2012 Tomas Lestach <tlestach@redhat.com> 1.9.18-1
+- 879332 - introduce 'md5_crypt_rootpw' option for
+  kickstart.profile.setAdvancedOptions API
+
+* Fri Nov 23 2012 Tomas Lestach <tlestach@redhat.com> 1.9.17-1
+- 879443 - preserve product name when cloning channels using API
+- Implement new API call system.listAllInstallablePackages
+- Fix query for API call system.listLatestInstallablePackages
+- 798571 - Moscow time is GMT+4.
+
+* Thu Nov 22 2012 Jan Pazdziora 1.9.16-1
+- Fixing checkstyle.
+
+* Thu Nov 22 2012 Jan Pazdziora 1.9.15-1
+- 864037 - no hardcoding URLs.
+- 879006 - Use default cobbler user id if not overriden
+- Fix errors with unrequired field 'Prefix'
+
+* Wed Nov 21 2012 Jan Pazdziora 1.9.14-1
+- decrease distChannelMap release minimal length
+- No need to put empty lines to rhn_taskomatic_daemon.log.
+
+* Fri Nov 16 2012 Jan Pazdziora 1.9.13-1
+- add extra date parse check for errata.setDetails API
+
+* Thu Nov 15 2012 Tomas Lestach <tlestach@redhat.com> 1.9.12-1
+- extend API call errata.setDetails to support issue_date and update_date
+- migrating ivy repo to my account so that we can maintain it
+
+* Thu Nov 15 2012 Tomas Lestach <tlestach@redhat.com> 1.9.11-1
+- let spacewalk-java require concrete version of jmock
+
+* Wed Nov 14 2012 Tomas Lestach <tlestach@redhat.com> 1.9.10-1
+- checkstyle fixes
+- Check hostnames for special characters and whitespace
+- Catch MalformedURLException in case of missing protocol etc.
+- Basic normalization for SUSE Studio base URL
+- Workaround for Studio API returning incomplete URLs
+- 863025 - checkstyle fix
+- redirect to Manage.do page after successful channel remove
+- 863025 - original packages are those that are not associated with any erratum
+- 835597 - bash is used as interpreter in kickstart scripts even if set by path
+- 835597 - enable logging only for bash interpreter in kickstart scripts
+- Fix quartz trigger initialization repeat count
+
+* Mon Nov 12 2012 Tomas Lestach <tlestach@redhat.com> 1.9.9-1
+- Fix typos
+- 874278 - use iterators when going through the collection
+- make notes to errata APIs, CVEs may be associated only with published errata
+- it does not make much sense to use on delete cascade on many-to-many
+  relations
+
+* Mon Nov 12 2012 Tomas Lestach <tlestach@redhat.com> 1.9.8-1
+- 866326 - customize KickstartFileDownloadAdvanced.do page in case of kickstart
+  file DownloadException
+
+* Fri Nov 09 2012 Michael Mraka <michael.mraka@redhat.com> 1.9.7-1
+- reverted macro name translation
+
+* Fri Nov 09 2012 Michael Mraka <michael.mraka@redhat.com> 1.9.6-1
+- backported translation changes from zanata
+
+* Mon Nov 05 2012 Tomas Lestach <tlestach@redhat.com> 1.9.5-1
+- replace remaining DTD paths to www.hibernate.org/dtd with 3.2 default
+  hibernate.sourceforge.net
+- Fixing typo.
+
+* Fri Nov 02 2012 Tomas Lestach <tlestach@redhat.com> 1.9.4-1
+- Revert "change hibernate3 namespace"
+
+* Fri Nov 02 2012 Michael Mraka <michael.mraka@redhat.com> 1.9.3-1
+- fixing extra packages query
+
+* Thu Nov 01 2012 Jan Pazdziora 1.9.2-1
+- having html tag inside xml is not correct
+- decrease distChannelMap release minimal length
+- 839960 - fix system.listLatestUpgradablePackages API to list upgradable
+  packages from server channels only
+
+* Wed Oct 31 2012 Jan Pazdziora 1.9.1-1
+- Use braces for accessing composite types in PG
+
+* Wed Oct 31 2012 Jan Pazdziora 1.8.178-1
+- Advertise the www.spacewalkproject.org.
+
+* Tue Oct 30 2012 Jan Pazdziora 1.8.177-1
+- Using xmllint and grep or perl is faster.
+
+* Tue Oct 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.176-1
+- fixing checkstyle
+
+* Tue Oct 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.175-1
+- rewrite distchannel APIs
+- fix distchannel.listDefaultMaps API
+- create dist channel map logic
+- add id and org to DistChannelMap
+
+* Tue Oct 30 2012 Jan Pazdziora 1.8.174-1
+- Update the copyright year.
+
+* Tue Oct 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.173-1
+- Add SAST timezone Signed-off-by: Paresh Mutha <pmutha@redhat.com>
+- Make yumrepo_last_sync optional. Do not return it, if the repo was never
+  synced.
+
+* Mon Oct 29 2012 Jan Pazdziora 1.8.172-1
+- Change of message which is shown if no errata is available for package
+- remove unnecessary casts
+- removing @Override annotation from a method that isn't overriden
+
+* Mon Oct 29 2012 Jan Pazdziora 1.8.171-1
+- 869428 - last_checkin date should be displayed as UTC for splice integration
+  API
+- WebUI - link to erratas that affect package on its overview page
+
+* Thu Oct 25 2012 Jan Pazdziora 1.8.170-1
+- checkstyle fix
+
+* Wed Oct 24 2012 Stephen Herr <sherr@redhat.com> 1.8.169-1
+- fixing problems in 9d2ad9da4305d41d1d43666b2685eed2136c2f16
+- WebUI - css for @media print
+
+* Tue Oct 23 2012 Stephen Herr <sherr@redhat.com> 1.8.168-1
+- 869428 - Added new API method for Splice integration
+- Fixing a bunch of Generics type errors
+- Expose extra packages / systems with extra packages
+- 853444 - do not list custom base channel twice in the base channel combo for
+  an activation key
+- WebUI improvement, adding "Search Google for errata" on package details page.
+
+* Mon Oct 22 2012 Jan Pazdziora 1.8.167-1
+- WebUI improvement, showing activation key used for system activation at
+  system overview page.
+
+* Mon Oct 22 2012 Tomas Lestach <tlestach@redhat.com> 1.8.166-1
+- checkstyle fixes
+- Make applyErrata() work with Longs and Integers
+- Show errata details for all errata in the given list
+- Schedule updates for software update stack first
+
+* Fri Oct 19 2012 Tomas Lestach <tlestach@redhat.com> 1.8.165-1
+- checkstyle fix
+
+* Fri Oct 19 2012 Jan Pazdziora 1.8.164-1
+- prevent NPE, when accessing probe suite systems with no system associated
+- 822834 - do not allow creating kickstart profiles that differ from existing
+  ones just by case
+- added missing import
+- add column style class to render table border
+- don't call cmd.getKickstartData() over and over
+
+* Mon Oct 15 2012 Tomas Lestach <tlestach@redhat.com> 1.8.163-1
+- intorduce first draft of read-only dist channel map page
+- first row of ListTag light - similar to the ListDisplayTag
+- have the list-row-even and list-row-odd class types setting constant for
+  ListTag rows
+
+* Fri Oct 12 2012 Jan Pazdziora 1.8.162-1
+- fix ConfigRevisionSerializer
+
+* Thu Oct 11 2012 Tomas Lestach <tlestach@redhat.com> 1.8.161-1
+- make possible to delete more probes at once on the system monitoring page
+- dropping old comment
+
+* Thu Oct 11 2012 Tomas Lestach <tlestach@redhat.com> 1.8.160-1
+- reverting of web.chat_enabled -> java.chat_enabled translation
+- The /network/systems/details/kickstart/* is not used for a long time.
+
+* Thu Oct 11 2012 Jan Pazdziora 1.8.159-1
+- Checkstyle fix.
+
+* Wed Oct 10 2012 Jan Pazdziora 1.8.158-1
+- Using empty paragraph for layout purposes is rarely needed.
+- 817473 - remove html markup from the kickstart.jsp.error.template_generation
+  error message
+- 832433 - remove html tags from the activation-key.java.exists error message
+- polishing configmanager.filedetails.content.no-macro-name error message
+
+* Tue Oct 09 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.157-1
+- fixed html entities in translations
+
+* Tue Oct 09 2012 Jan Pazdziora 1.8.156-1
+- 863479 - enhancing kickstart file sync with cobbler
+
+* Fri Oct 05 2012 Tomas Lestach <tlestach@redhat.com> 1.8.155-1
+- fix PushDispatcherTest
+- fix ErrataTest
+- fix ActivationKeyManagerTest
+- fix RequestContextTest
+- fix ErrataFactoryTest.testCreateClone
+- do not set last_modified for rhnPackage tests
+
+* Fri Oct 05 2012 Jan Pazdziora 1.8.154-1
+- Fixed typo on ErrataMailer.java
+
+* Tue Oct 02 2012 Tomas Lestach <tlestach@redhat.com> 1.8.153-1
+- 860002 - prevent Page Request Error when at pagination
+- 860831 - fix system column value on the rhn/schedule/FailedSystems.do page
+- changes required to make 'ant create-webapp-dir' work properly
+
+* Sat Sep 29 2012 Aron Parsons <aronparsons@gmail.com> 1.8.152-1
+- add API calls to manage repo filters
+- add methods to add/remove ContentSourceFilter objects
+
+* Tue Sep 25 2012 Tomas Lestach <tlestach@redhat.com> 1.8.151-1
+- getting timestamp from PackageCapabilityIterator in a correct way
+
+* Thu Sep 20 2012 Jan Pazdziora 1.8.150-1
+- Checkstyle fix.
+- 790120 - removing the config elaborator from a few queries where it's not
+  needed
+- affected_by_errata mode does not need system_monitoring elaborator
+- system_entitlement_list mode does not need system_monitoring elaborator
+- visible_to_user_from_sysid_list mode does not need system_monitoring
+  elaborator
+- target_systems_for_channel mode does not need system_monitoring elaborator
+- systems_with_needed_package mode does not need system_monitoring elaborator
+- target_systems_for_group mode does not need system_monitoring elaborator
+- systems_in_group mode does not need system_monitoring elaborator
+- systems_subscribed_to_channel mode does not need system_monitoring elaborator
+- systems_with_package_nvr mode does not need system_monitoring elaborator
+- ssm_remote_commandable mode does not need system_monitoring elaborator
+
+* Wed Sep 19 2012 Jan Pazdziora 1.8.149-1
+- Convert TIMESTAMP without time zone as well.
+- Validate proxy format on general config page
+- 790120 - make system_overview fast
+
+* Tue Sep 18 2012 Tomas Lestach <tlestach@redhat.com> 1.8.148-1
+- ssm_kickstartable mode does not need system_monitoring elaborator
+- find_by_name mode does not need system_monitoring elaborator
+- virtual_hosts_for_user mode does not need system_monitoring elaborator
+- virtual_system_overview does not need system health information
+- use system_monitoring elaborator in most_critical_systems query
+- remove SystemHealthIconDecorator and appropriate query
+- extract system_monitoring elaborator from system_overview
+- removing @Override annotations for methods that aren't overriden
+- removing @Override annotations for methods that aren't overriden
+- removing unnecessarily nested else statement
+
+* Mon Sep 17 2012 Jan Pazdziora 1.8.147-1
+- 790120 - Adding the RULE hint back into the system_overview elaborator
+- Checkstyle fix.
+
+* Fri Sep 14 2012 Jan Pazdziora 1.8.146-1
+- Convert TIMESTAMP WITH LOCAL TIME ZONE as well.
+- 737895 - remember probe state when paginate
+- 856449 - validate session key for system.getSystemCurrencyMultipliers API
+- 856458 - fix system.getSystemCurrencyScores API doc
+- 856553 - display error messages only once on admin/config/GeneralConfig.do
+  page
+
+* Wed Sep 12 2012 Tomas Lestach <tlestach@redhat.com> 1.8.145-1
+- 855884 - fixing NumberFormatException
+
+* Tue Sep 11 2012 Tomas Lestach <tlestach@redhat.com> 1.8.144-1
+- 713684 - localize strings after import
+- 855845 - escaping system name
+
+* Fri Sep 07 2012 Tomas Lestach <tlestach@redhat.com> 1.8.143-1
+- checkstyle fix
+
+* Fri Sep 07 2012 Tomas Lestach <tlestach@redhat.com> 1.8.142-1
+- changing web.login_banner -> java.login_banner
+- changing web.custom_footer -> java.custom_footer
+- changing web.custom_header -> java.custom_header
+- changing web.chat_enabled -> java.chat_enabled
+- changing web.taskomatic_cobbler_user -> java.taskomatic_cobbler_user
+- changing web.excluded_countries -> java.excluded_countries
+- changing web.supported_locales -> java.supported_locales
+- changing web.l10n_missingmessage_exceptions ->
+  java.l10n_missingmessage_exceptions
+- changing web.l10n_debug -> java.l10n_debug
+- changing web.l10n_debug_marker -> java.l10n_debug_marker
+- changing web.errata_cache_compute_threshold ->
+  java.errata_cache_compute_threshold
+- changing web.sandbox_lifetime -> java.sandbox_lifetime
+- changing web.apiversion -> java.apiversion
+- changing web.development_environment -> java.development_environment
+- changing web.customer_service_email -> java.customer_service_email
+- changing web.session_delete_commit_interval ->
+  java.session_delete_commit_interval
+- changing web.session_delete_batch_size -> java.session_delete_batch_size
+- changing web.min_user_len -> java.min_user_len
+- deploy rhn_java.conf
+- move java related configuration the rhn_java.conf
+
+* Thu Sep 06 2012 Tomas Lestach <tlestach@redhat.com> 1.8.141-1
+- removing unused IsoServlet
+- removing java/buildconf/builder directory
+- CryptoKeysHandlerTest are undertaken with OrgAdmin privileges.
+- 815964 - not critical, but adding to this version of rhn_web.conf too
+- 815964 - moving monitoring probe batch option from rhn.conf to rhn_web.conf
+
+* Tue Sep 04 2012 Tomas Lestach <tlestach@redhat.com> 1.8.140-1
+- 853444 - list only subscribable base channels for actiovation key
+  associations
+- 839960 - rewrite query for system.listLatestUpgradablePackages API
+
+* Fri Aug 31 2012 Jan Pazdziora 1.8.139-1
+- Add countries BQ, CW, SX.
+
+* Thu Aug 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.138-1
+- 851150 - make the select working on PG as well
+
+* Thu Aug 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.137-1
+- 851480 - Do not elaborate objects twice in row.
+- 851480 - Revert "bz: 453477: duplicated entries in CSV download for some
+  fields"
+- allow complex kickstart variables containing severel '='
+- 851519 - display a reasonable error message on the permission error page
+- Fixing test KickstartScheduleCommandTest.testProfileArches
+- fix ContentSourceFilter.findBySourceId to return list of ContentSourceFilter
+  objects
+
+* Tue Aug 28 2012 Aron Parsons <aronparsons@gmail.com> 1.8.136-1
+- add listRepoFilters API call
+- add lookupContentSourceFiltersById method to ChannelFactory
+- add serializer for ContentSourceFilter
+- add ContentSourceFilter class
+- 733420 - Checking user permissions for CryptoKeysHandler
+
+* Tue Aug 28 2012 Aron Parsons <aronparsons@gmail.com>
+- add listRepoFilters API call
+- add lookupContentSourceFiltersById method to ChannelFactory
+- add serializer for ContentSourceFilter
+- add ContentSourceFilter class
+- 733420 - Checking user permissions for CryptoKeysHandler
+
+* Fri Aug 24 2012 Stephen Herr <sherr@redhat.com> 1.8.134-1
+- 818700 - allow user to set the gateway for static bonds
+
+* Thu Aug 23 2012 Tomas Lestach <tlestach@redhat.com> 1.8.133-1
+- 851040 - checkstyle issue
+
+* Thu Aug 23 2012 Tomas Lestach <tlestach@redhat.com> 1.8.132-1
+- 851040 - detect empty quartz crop expression
+- 851150 - we need only unique channel list
+- 850836 - display an information message about no systems being selected for
+  SSM
+- 850836 - fix ISE on rhn/channel/ssm/ChildSubscriptions.do page
+
+* Tue Aug 21 2012 Tomas Kasparek <tkasparek@redhat.com> 1.8.131-1
+- 846215 - Kickstarts profile visible where they should be
+
+* Mon Aug 20 2012 Tomas Lestach <tlestach@redhat.com> 1.8.130-1
+- 198887 - checkstyle fixes
+- 198887 - introducing a possibility to delete archived actions
+- 848368 - make IE use IE7 compatability mode for pages with editarea
+- Fix missing CVEs in patches listing with Oracle 11
+- 848036 - fix icons on SSM provisioning page
+
+* Wed Aug 15 2012 Tomas Lestach <tlestach@redhat.com> 1.8.129-1
+- 848036 - fix icons on SSM system list page
+- 785088 - validate virt guest parameters also for API input
+- 785088 - introduce regexp for virtual guest name
+- 787873 - fix misleading "Filter by" label
+- removing @Override annotations for methods that aren't overriden
+- remove unnecessary else clauses
+
+* Tue Aug 14 2012 Tomas Lestach <tlestach@redhat.com> 1.8.128-1
+- 836656 - removed MAC Address from kickstart profile listing
+- 847256 - xml escape group names
+- 847308 - rhn-proxy and rhn-satellite channels shall not be associated with an
+  activation key
+- 846915 - systemGroup csv was including fields that have not been valid since
+  bug 573153
+
+* Fri Aug 10 2012 Jan Pazdziora 1.8.127-1
+- 846221 - Don't let virtual kickstarts screw up the host's cobbler id
+- Revert "removing unused string with trans-id
+  'packagelist.jsp.summary.packages'"
+
+* Wed Aug 08 2012 Stephen Herr <sherr@redhat.com> 1.8.126-1
+- 818700 - adding capability for static bond
+
+* Tue Aug 07 2012 Jan Pazdziora 1.8.125-1
+- Remove hints that should no longer be needed.
+- enable sorting of errata list according to synopsis on the
+  rhn/channels/manage/errata/ListRemove.do page
+- fix errata sort on the rhn/channels/manage/errata/ListRemove.do page
+
+* Mon Aug 06 2012 Tomas Lestach <tlestach@redhat.com> 1.8.124-1
+- detect oracle TIMESTAMPTZ objects and convert them correctly to timestamp
+
+* Thu Aug 02 2012 Tomas Lestach <tlestach@redhat.com> 1.8.123-1
+- 842992 - display a relevant error message when creating channel names/labels
+  starting with rhn|redhat
+
+* Thu Aug 02 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.122-1
+- Return back some translations
+
+* Wed Aug 01 2012 Tomas Lestach <tlestach@redhat.com> 1.8.121-1
+- Construct GMT millisecond value for timestamp if DB does not store timezone
+- 844048 - let errata.listPackages API return also packages associated with
+  unpublished errata
+
+* Tue Jul 31 2012 Tomas Kasparek <tkasparek@redhat.com> 1.8.120-1
+- 838618 - Allowing some API calls to be called from another organizations
+
+* Mon Jul 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.119-1
+- remove usage of cert_admin user role
+- remove usage of rhn_support user role
+- remove usage of unused org_applicant user role
+- remove rhn_superuser occurences in java translation strings
+- remove usage of rhn_superuser user role
+- 802267 - update ConfigurationValidationTest
+
+* Thu Jul 26 2012 Tomas Lestach <tlestach@redhat.com> 1.8.118-1
+- 816454 - do not commit already committed transaction
+
+* Thu Jul 26 2012 Tomas Lestach <tlestach@redhat.com> 1.8.117-1
+- log a message when repo sync task is triggered
+
+* Wed Jul 25 2012 Tomas Lestach <tlestach@redhat.com> 1.8.116-1
+- 843050 - fix recommended cobbler command
+- 753056 - dissociate deleted crypto key from its kickstart profiles
+
+* Tue Jul 24 2012 Jan Pazdziora 1.8.115-1
+- Revert "removing unused string with trans-id 'gpgssl_keys.added'"
+- Revert "removing unused string with trans-id 'gpgssl_keys.removed'"
+
+* Mon Jul 23 2012 Tomas Lestach <tlestach@redhat.com> 1.8.114-1
+- 757711 - do not start repo sync of a channel with no associated repositories
+- trim all the form strings within the regular scrub
+- 802267 - allow user and group name starting also with [0-9]_
+- 813841 - do not cache snapshot tags within the lookup method
+- Correct the localized text which describes the icon.
+
+* Fri Jul 20 2012 Tomas Lestach <tlestach@redhat.com> 1.8.113-1
+- Make the tip to be more standard English.
+- Remove XCCDF Legend from places where it is not necessary.
+- 840567 - prevent NPE
+- 841635 - sort groups by default
+
+* Thu Jul 19 2012 Tomas Lestach <tlestach@redhat.com> 1.8.112-1
+- checkstyle fix
+
+* Thu Jul 19 2012 Tomas Lestach <tlestach@redhat.com> 1.8.111-1
+- 814365 - check not only one channel original when checking channel version
+- reverting fix for 814365,839611 due to performance regression
+- reverting fix for 814365,839611 due to performance regression
+- cut the string only in case the string is longer than needed
+- add ruby API sample script
+
+* Wed Jul 18 2012 Jan Pazdziora 1.8.110-1
+- Add translation strings for crash information
+- Show crash count on system detail page
+- Update server class to use crash information
+- Add Crashes class and database mapping
+- 840567 - limit action name to fit into the appropriate DB column
+- 822918 - close session when its connection signalled a connection error
+
+* Fri Jul 13 2012 Stephen Herr <sherr@redhat.com> 1.8.109-1
+- 833474 - quick file list query now also returns files saved to system's
+  'local' config 'channel'
+
+* Fri Jul 13 2012 Tomas Lestach <tlestach@redhat.com> 1.8.108-1
+- struts jars may be available in different directories
+- Show XCCDF-diff icon on the XCCDF-Details page.
+- Show icon when referencing to XCCDF-diff
+- Show XCCDF-diff results on List-Scans page.
+- Rewrite ListScap page query with Dto & elaborator.
+- XCCDF Diff shall compare also scan's metadata.
+- Make sure that the user has permission to see the scan (when diffing).
+- Diff should show: either all, changed, or invariant items
+- OpenSCAP Integration -- XCCDF Scan Diff
+- checkstyle fix
+
+* Thu Jul 12 2012 Tomas Lestach <tlestach@redhat.com> 1.8.107-1
+- 829790 - fix PxtSessionDelegateImplTest test
+- 829790 - fix PxtCookieManagerTest test
+- 748331 - fix appropriate tests
+- removing @Override annotations for methods that aren't overriden
+- Copying kopts to the xen distro.
+
+* Tue Jul 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.106-1
+- COALESCE instead of NVL keyword for pgsql compatibility
+
+* Thu Jul 05 2012 Stephen Herr <sherr@redhat.com> 1.8.105-1
+- 837913 - work around for if hibernate loads a clonedchannel as its own
+  original
+
+* Fri Jun 29 2012 Stephen Herr <sherr@redhat.com> 1.8.104-1
+- 836656 - Allow user to set MAC Address when provisioning a virtual guest
+
+* Thu Jun 28 2012 Tomas Lestach <tlestach@redhat.com> 1.8.103-1
+- 795565 - add API doc for channel.software.listErrata update_date attribute
+- 795565 - remove "date" from the channel.software.listErrata API doc
+- adding conflicts for quartz >= 2.0
+- 706318 - Japaneese translation fix
+
+* Wed Jun 27 2012 Tomas Lestach <tlestach@redhat.com> 1.8.102-1
+- requre quartz version lower than 2.0
+- change hibernate3 namespace
+- require concrete hibernate version
+
+* Wed Jun 27 2012 Jan Pazdziora 1.8.101-1
+- Fixing checkstyle.
+
+* Wed Jun 27 2012 Jan Pazdziora 1.8.100-1
+- Fixing checkstyle.
+
+* Wed Jun 27 2012 Jan Pazdziora 1.8.99-1
+- checkstyle fix
+
+* Tue Jun 26 2012 Stephen Herr <sherr@redhat.com> 1.8.98-1
+- 829485 - resolveing potential deadlock during asynchronous errata clone
+
+* Tue Jun 26 2012 Jan Pazdziora 1.8.97-1
+- Each dataset must have a different name.
+- Add CSV downloader for scap search page.
+- Add CSV downloader to all-scans page
+- Add CSV downloader for scan's details page
+- Add CSV downloader for system's scans page
+
+* Tue Jun 26 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.96-1
+- Correcting two ISE on postgresql: NVRE not found
+
+* Mon Jun 25 2012 Jan Pazdziora 1.8.95-1
+- Fixing checkstyle.
+
+* Fri Jun 22 2012 Stephen Herr <sherr@redhat.com> 1.8.94-1
+- 829485 - fixed asynchronous errata cloning internal server errors
+- 829790 - handle spoiled browsers separatelly
+
+* Fri Jun 22 2012 Jan Pazdziora 1.8.93-1
+- Fixing checkstyle.
+
+* Fri Jun 22 2012 Jan Pazdziora 1.8.92-1
+- 712313 - Add installed size to repodata
+
+* Thu Jun 21 2012 Tomas Lestach <tlestach@redhat.com> 1.8.91-1
+- enable filtering by synopsis for all the errata tabs
+- remove simple-xml and susestudio-java-client from ivy.xml
+
+* Wed Jun 20 2012 Stephen Herr <sherr@redhat.com> 1.8.90-1
+- 823798 - update API documentation
+- 748331 - remove unused import
+- 748331 - do not create multiple default ks sessions
+- removing @Override annotations, methods aren't overriden
+- removing @Override annotation, method isn't overriden
+- remove unnecessary else clause
+- remove unnecessary else clause
+- remove unnecessary casts
+- 833474 - removed the ';' character due the error ORA-00911
+
+* Tue Jun 19 2012 Stephen Herr <sherr@redhat.com> 1.8.89-1
+- 833474 - system.config.listFiles could take > 8 minutes if there were lots of
+  revisions on lots of config files
+- 797906 - don't sync virt bridge nic w/ cobbler
+
+* Tue Jun 19 2012 Tomas Lestach <tlestach@redhat.com> 1.8.88-1
+- try to work with fc17 hibernate3
+
+* Tue Jun 19 2012 Tomas Lestach <tlestach@redhat.com> 1.8.87-1
+- correctly report kernel not being found at distro creation
+- 822918 - impossible to get error code from PG exceptions
+- Add missing dollar sign.
+- Setup {inSSM} variable on audit pages.
+- Add forgotten hidden form variable.
+- Improve SCAP search: Return list of xccdf:TestResults-s
+- Move the listset definition out off the fragment.
+- Fix flawed SQL queries.
+
+* Tue Jun 12 2012 Simon Lukasik <slukasik@redhat.com> 1.8.86-1
+- Improve SCAP search: searching by scan's result
+- Improve SCAP search: searching by scan date
+- Bind named query dynamically.
+- Add a link for easy scan reschedule.
+- Forward main-form variables when going through system list
+- Fix incorrect variable reference.
+
+* Tue Jun 12 2012 Tomas Lestach <tlestach@redhat.com> 1.8.85-1
+- 797124 - virt host may have several virtual instances
+- 797124 - fix virt host icon issue on WebUI
+
+* Fri Jun 08 2012 Jan Pazdziora 1.8.84-1
+- 829894 - fix channel links on CloneErrata page
+- Revert "removing unused string with trans-id 'schedulediff.ssm.failure'"
+- Revert "removing unused string with trans-id 'schedulediff.ssm.success'"
+- Revert "removing unused string with trans-id 'schedulediff.ssm.successes'"
+- Refactor "default" to RhnHelper.DEFAULT_FORWARD
+
+* Wed Jun 06 2012 Stephen Herr <sherr@redhat.com> 1.8.83-1
+- 829485 - Created new asyncronous api methods for cloning errata
+
+* Tue Jun 05 2012 Tomas Lestach <tlestach@redhat.com> 1.8.82-1
+- use apache-commons-io on Fedoras instead of jakarta-commons-io
+- Refactor "pageList" to RequestContext.PAGE_LIST
+- Refactor struts "default" forward also in /tests.
+- Refactor "default" to RhnHelper.DEFAULT_FORWARD
+- Remove unneeded variable
+- Do not set nonexisting localization.
+- Localized defaults should be localized.
+- Handle nonexistent testresult.
+- Show also scan's scheduler on details page.
+- Show also scan's arguments on details page.
+- 811470 - proper use of xml entities in apidoc
+- 811470 - fix apidoc for system.listLatestAvailablePackage()
+- 811470 - fix apidoc for kickstart.profile.system.checkRemoteCommands()
+- 811470 - fix apidoc of kickstart.profile.system.checkConfigManagement()
+- 811470 - fix apidoc for kickstart.profile.getKickstartTree()
+- 811470 - fix apidoc for kickstart.profile.comparePackages()
+- 811470 - fix apidoc for distchannel.listDefaultMaps()
+
+* Mon Jun 04 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.81-1
+- Add support for studio image deployments (web UI) (jrenner@suse.de)
+- 811470 - fix apidoc for channel.access.setOrgSharing() (mzazrivec@redhat.com)
+- 811470 - fix apidoc for channel.listPopularChannels() (mzazrivec@redhat.com)
+- 811470 - fix apidoc for activationkey.listActivatedSystems()
+  (mzazrivec@redhat.com)
+- 811470 - apidoc: use array_desc to remove empty list bullets
+  (mzazrivec@redhat.com)
+- 811470 - new macro: array_desc (mzazrivec@redhat.com)
+- The ip colum is numeric, do not cast parameter to string.
+  (jpazdziora@redhat.com)
+
+* Wed May 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.80-1
+- switch checkstyle to be run on RHEL6
+- checkstyle: VirtualInstanceFactory - Redundant 'static' modifier.
+- checkstyle: TestStatics - Utility classes should not have a public or default
+  constructor.
+- checkstyle: TaskConstants - Utility classes should not have a public or
+  default constructor.
+- checkstyle: the name [todo] is not a valid Javadoc tag name
+- checkstyle: SetLabels - Utility classes should not have a public or default
+  constructor.
+- checkstyle 5: cannot initialize module TreeWalker - Unable to instantiate
+  GenericIllegalRegexp
+- checkstyle 5: cannot initialize module TreeWalker - Unable to instantiate
+  TabCharacter
+- checkstyle 5: TreeWalker is not allowed as a parent of RegexpHeader
+
+* Wed May 30 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.79-1
+- checkstyle fix
+- omit accessible parameter
+- simplify construct
+- remove unnecessarily nested else clause
+- remove unused imports
+
+* Tue May 29 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.78-1
+- modified java stack to use new user_role_check_debug()
+
+* Tue May 29 2012 Simon Lukasik <slukasik@redhat.com> 1.8.77-1
+- Fail gracefully on empty list of systems
+- Add option to search scap within SSM.
+- OpenSCAP integration -- A simple search page.
+- Promote some of the rule's columns to fragment.
+
+* Tue May 29 2012 Tomas Lestach <tlestach@redhat.com> 1.8.76-1
+- 814659 - add an extra entitlement check before the key creation
+- Enhancements pt_BR localization at webUI
+
+* Fri May 25 2012 Tomas Lestach <tlestach@redhat.com> 1.8.75-1
+- store also config revision changed_by_id
+- fix ConfigurationFactoryTest.testRemoveConfigChannel
+
+* Thu May 24 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.74-1
+- 825024 - API *must* check for compatible channels in system.setBaseChannel()
+
+* Thu May 24 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.73-1
+- 820987 - fix error during backporting
+- 820987 - do not guess creator name
+
+* Thu May 24 2012 Tomas Lestach <tlestach@redhat.com> 1.8.72-1
+- fix ConfigurationManagerTest.testCopyFile
+- fix ConfigTestUtils.createConfigRevision
+
+* Mon May 21 2012 Jan Pazdziora 1.8.71-1
+- %%defattr is not needed since rpm 4.4
+- Fix incorrect text fields.
+- Tables on SCAP pages should have corners rounded.
+- File RuleDetails page into correct item in navigation bar
+
+* Fri May 18 2012 Tomas Lestach <tlestach@redhat.com> 1.8.70-1
+- 736661 - rewrite revision creation by config file update
+- Don't show empty table, if there is not ident assigned.
+- Extend input cell for 20 characters.
+- 822237 - there're no help pages in Spacewalk
+
+* Wed May 16 2012 Tomas Lestach <tlestach@redhat.com> 1.8.69-1
+- 736661 - prevent system.config.createOrUpdatePath causing deadlock
+
+* Mon May 14 2012 Tomas Lestach <tlestach@redhat.com> 1.8.68-1
+- remove empty test quota stuff
+- remove remained usage of OrgQuota class
+
+* Sat May 12 2012 Tomas Lestach <tlestach@redhat.com> 1.8.67-1
+- remove Override annotations for non overriden methods
+- remove unnecessary casts
+- remove unnecessarily nested else statement
+- remove rests of OrgQuota usage
+
+* Fri May 11 2012 Tomas Lestach <tlestach@redhat.com> 1.8.66-1
+- remove OrgQuota hibernate mapping
+- remove OrgQuota java class
+- 820920 - fix delete distribution link
+- 818997 - rewrite channel.listSoftwareChannels API
+- 818700 - checkstyle issues
+- rhnUser synonym was removed
+- 643905 - rewrite KickstartFactory.lookupAccessibleTreesByOrg
+
+* Thu May 10 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.65-1
+- 695276 - if koan is requesting anything from /cobbller_api replace hostname
+  of server with hostname of first proxy in chain
+- 818700 - support for cobbler v2.2
+
+* Wed May 09 2012 Tomas Lestach <tlestach@redhat.com> 1.8.64-1
+- 817433 - fix NetworkDtoSerializer API doc
+- prevent storing empty string for errata refersTo
+- prevent storing empty string for errata errataFrom
+- prevent storing empty string for errata notes
+- Split OpenSCAP and AuditReviewing up
+- 818700 - Cannot submit the form with broken bonding info
+
+* Fri May 04 2012 Stephen Herr <sherr@redhat.com> 1.8.63-1
+- checkstyle fix
+- 735043 - redirect to errata/manage/PublishedErrata.do page after deleting a
+  published erratum
+- 817528 - remember pre-filled form attributes in case of form validation error
+- allow omitting string resource checks
+- add extra cheetah error detection
+- make the code more readable
+- 817528 - marking Script Name as required filed on the KickstartScriptEdit
+  page
+
+* Fri May 04 2012 Tomas Lestach <tlestach@redhat.com> 1.8.62-1
+- 818700 - make newly introduced rhn tag functions available
+
+* Thu May 03 2012 Stephen Herr <sherr@redhat.com> 1.8.61-1
+- 818700 - When kickstarting a system there is an option that allows you to
+  create or re-create a network bond.
+- fix listSharedChannels to only show this org's channels
+- fix my_channel_tree query
+- fix channel.listRedHatChannels shows custom channels
+- Remove unused import
+- Remove a code which duplicates ensureAvailableToUser() method.
+- Eliminate a typo.
+- API: list results for XCCDF scan.
+
+* Tue May 01 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.60-1
+- 817098 - fixed the Brazilian time zone
+- Enhancement and fixes on Brazilian (pt_BR) localization at webUI
+- Do not divide by zero. It prints a question mark.
+
+* Mon Apr 30 2012 Jan Pazdziora 1.8.59-1
+- 811470 - fixing checkstyle.
+
+* Mon Apr 30 2012 Jan Pazdziora 1.8.58-1
+- Requires are better defined elsewhere than in template. (slukasik@redhat.com)
+- API: Show OpenSCAP XCCDF Details. (slukasik@redhat.com)
+- 811470 - proper use of xml entities in documentation (mzazrivec@redhat.com)
+
+* Fri Apr 27 2012 Jan Pazdziora 1.8.57-1
+- API: List Xccdf Scans for given machine. (slukasik@redhat.com)
+
+* Fri Apr 27 2012 Tomas Lestach <tlestach@redhat.com> 1.8.56-1
+- use arch label in distchannel.setDefaultMap API as stated in the API doc
+
+* Thu Apr 26 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.55-1
+- 806815 - add missing acl to SSM
+- 806815 - add missing links about Solaris Patches to SSM
+- 816445 - fixed error in redhat_register snippet
+- 816299 - Updating default config files with additional options for heapdump
+  directory
+- Ensure that given system has OpenSCAP capability.
+- Ensure that given systems is available to user.
+- Repack and throw MissingEntitlementException when occurs.
+- Sort imports alphabetically.
+- API: SCAP scan schedule for multiple systems
+- changed kernel-params field to 1024 chars in size (bnc#698166)
+- removing unused lookup
+- Capitalize title to be consistent
+- Put the reboot notification at the end. Make it not mutually exclusive with
+  other notifications.
+- API: SCAP scan schedule should accept the date of earliest occurence
+- Promote read only DatePicker to fragment.
+- Refactor parentUrl to ListTagHelper.PARENT_URL
+- Hide the 'Schedule' tab for systems without management ent.
+- 815804 - force repo regeneration, when removing package using
+  packages.removePackage API
+- 815804 - make the cleanupFileEntries simplier
+
+* Tue Apr 24 2012 Simon Lukasik <slukasik@redhat.com> 1.8.54-1
+- Promote Audit to separate tab within SSM. (slukasik@redhat.com)
+- Show targeted systems when scheduling SCAP scan through SSM.
+  (slukasik@redhat.com)
+- Extract method scapCapableSystemsInSsm() (slukasik@redhat.com)
+- Handle errors during SSM schedule of SCAP scan. (slukasik@redhat.com)
+- OpenSCAP integration -- schedule new scan in SSM (slukasik@redhat.com)
+- Extract method for scheduling xccdfEval for multiple systems.
+  (slukasik@redhat.com)
+- The fragment could be used as readonly for confirmation (slukasik@redhat.com)
+- Refactor xccdf schedule form to jsp fragment. (slukasik@redhat.com)
+- Remove redundant definitions of use_date (slukasik@redhat.com)
+- 814836 - do not list ks session related activation keys (tlestach@redhat.com)
+- 815372 - prevent sending XML invalid chars in system.getScriptResults API
+  (tlestach@redhat.com)
+- 815252 - fix errata.listPackages APIdoc (tlestach@redhat.com)
+
+* Fri Apr 20 2012 Tomas Lestach <tlestach@redhat.com> 1.8.53-1
+- remove unused paths from unprotected uris
+- 728205 - do not check CSRF token for login pages
+- fix errata clone name generation
+
+* Fri Apr 20 2012 Jan Pazdziora 1.8.52-1
+- Fixing checkstyle.
+
+* Thu Apr 19 2012 Stephen Herr <sherr@redhat.com> 1.8.51-1
+- 814365 - When displaying errata available for adding to channel, make sure a
+  clone is not already in the channel.
+
+* Thu Apr 19 2012 Jan Pazdziora 1.8.50-1
+- Removed double-dash from WebUI copyright notice.
+- fix has_errata_with_keyword_applied_since_last_reboot query (mc@suse.de)
+- fix PackageEvr handling III (tlestach@redhat.com)
+- increase taskomatic memory (tlestach@redhat.com)
+- 803353 - fixing another two broken documentation links (tlestach@redhat.com)
+- Show systems that need reboot because of an errata. (dmacvicar@suse.de)
+- modify SecurityErrataOverview.callaback (tlestach@redhat.com)
+
+* Tue Apr 17 2012 Jan Pazdziora 1.8.49-1
+- Revert "removing unused string with trans-id Certificate Administrators,
+  Monitoring Administrators, and Configuration Administrators"
+
+* Tue Apr 17 2012 Jan Pazdziora 1.8.48-1
+- Checkstyle fix.
+
+* Tue Apr 17 2012 Jan Pazdziora 1.8.47-1
+- Make the Invalid prefix error localizable.
+
+* Tue Apr 17 2012 Jan Pazdziora 1.8.46-1
+- fix ErrataHandlerTest (tlestach@redhat.com)
+- 812053 - fix the ErrataHandler.clone method (tlestach@redhat.com)
+- create a test erratum with keyword (tlestach@redhat.com)
+- refactor PackageEvr handling II (tlestach@redhat.com)
+
+* Fri Apr 13 2012 Tomas Lestach <tlestach@redhat.com> 1.8.45-1
+- 809579 - make system snapshot when changing server entitlements using API
+  (tlestach@redhat.com)
+- 812053 - change the condition (tlestach@redhat.com)
+- print extra stack trace (tlestach@redhat.com)
+- 804665 - do not scrub search_string (tlestach@redhat.com)
+
+* Fri Apr 13 2012 Jan Pazdziora 1.8.44-1
+- Fixing checkstyle.
+
+* Fri Apr 13 2012 Jan Pazdziora 1.8.43-1
+- fix KickstartWizardCommandTest (tlestach@redhat.com)
+- 812053 - making errata.clone api not requires cloned channels
+  (jsherril@redhat.com)
+- 811470 - fix documentation for getRepoSyncCronExpression API
+  (mzazrivec@redhat.com)
+- 811470 - make the documentation for createOrUpdateSymlink more clear
+  (mzazrivec@redhat.com)
+- 811470 - fix documentation for ChannelSerializer (mzazrivec@redhat.com)
+- replace \r\n with \n for CustomDataValues (tlestach@redhat.com)
+
+* Wed Apr 11 2012 Stephen Herr <sherr@redhat.com> 1.8.42-1
+- 698940 - Activation Key does not have to have a base channel to add Child
+  Channels (sherr@redhat.com)
+
+* Wed Apr 11 2012 Tomas Lestach <tlestach@redhat.com> 1.8.41-1
+- adding javadoc to public RhnPostMockStrutsTestCase method
+  (tlestach@redhat.com)
+
+* Wed Apr 11 2012 Tomas Lestach <tlestach@redhat.com> 1.8.40-1
+- fix BaseKickstartEditTestCase tests (tlestach@redhat.com)
+- fix VirtualGuestsActionTest (tlestach@redhat.com)
+- fix MethodActionTest (tlestach@redhat.com)
+- fix PendingActionsSetupActionTest (tlestach@redhat.com)
+- fix BootstrapConfigActionTest (tlestach@redhat.com)
+- fix KickstartEditPackagesTest (tlestach@redhat.com)
+- fix OrgSystemSubscriptionsActionTest (tlestach@redhat.com)
+- fix SystemEntitlementsSubmitActionTest (tlestach@redhat.com)
+- fix ChannelFilesImportTest (tlestach@redhat.com)
+- fix RegisteredSetupActionTest (tlestach@redhat.com)
+- fix OrgCreateActionTest (tlestach@redhat.com)
+- fix ErrataActionTest (tlestach@redhat.com)
+- fix FailedActionsSetupActionTest (tlestach@redhat.com)
+- fix OrgSoftwareSubscriptionsActionTest (tlestach@redhat.com)
+- fix TreeActionTest - need to set ks tree installtype (tlestach@redhat.com)
+- fix TreeActionTest.testCreateRefresh (tlestach@redhat.com)
+- fix TreeActionTest (tlestach@redhat.com)
+- fix systems/test/ErrataConfirmActionTest (tlestach@redhat.com)
+- fix errata/test/ErrataConfirmActionTest (tlestach@redhat.com)
+- fix KickstartAdvancedOptionsActionTest (tlestach@redhat.com)
+- fix CryptoKeyDeleteActionTest (tlestach@redhat.com)
+- fix CompletedActionsSetupActionTest (tlestach@redhat.com)
+- fix BaseSetOperateOnDiffActionTest (tlestach@redhat.com)
+- fix GeneralConfigActionTest (tlestach@redhat.com)
+- fix RestartActionTest (tlestach@redhat.com)
+- fix KickstartIpRangeActionTest (tlestach@redhat.com)
+- fix CryptoKeyCreateActionTest (tlestach@redhat.com)
+- fix CertificateConfigActionTest (tlestach@redhat.com)
+- fix SystemDetailsEditActionTest (tlestach@redhat.com)
+- fix PreservationListEditActionTest (tlestach@redhat.com)
+- fix KickstartPartitionActionTest (tlestach@redhat.com)
+- fix CreateUserActionTest (tlestach@redhat.com)
+- fix CloneConfirmActionTest (tlestach@redhat.com)
+- create RhnPostMockStrutsTestCase for testing POST methods
+  (tlestach@redhat.com)
+- statements cannot end with ";" for Oracle (tlestach@redhat.com)
+- 787225 - the Log Size actually checks Log Size Growth.
+  (jpazdziora@redhat.com)
+
+* Tue Apr 10 2012 Tomas Lestach <tlestach@redhat.com> 1.8.39-1
+- fix ServerConfigHandlerTest revision comparism (tlestach@redhat.com)
+- fix ServerConfigHandlerTest.createRevision (tlestach@redhat.com)
+- tests - set user's org to the channel created by him (tlestach@redhat.com)
+- fix ProfileManagerTest (tlestach@redhat.com)
+- fix org.trusts.getDetails API (tlestach@redhat.com)
+- check whether it's a trusted org before accessing its attributes
+  (tlestach@redhat.com)
+- fix ActivationKeyTest.testDuplicateKeyCreation (tlestach@redhat.com)
+- fix TraceBackEventTest (tlestach@redhat.com)
+- fix SessionCancelActionTest (tlestach@redhat.com)
+- run oracle specific tests only with oracle DB (tlestach@redhat.com)
+- fix AdvDataSourceTest suite part (tlestach@redhat.com)
+- fix CobblerCommandTest (tlestach@redhat.com)
+- refactor how PackageEvr gets stored (tlestach@redhat.com)
+- removing unnecessary casts (tlestach@redhat.com)
+- removing unnecessary else statement (tlestach@redhat.com)
+- fix ProvisionVirtualizationWizardActionTest.testStepOne (tlestach@redhat.com)
+
+* Tue Apr 10 2012 Jan Pazdziora 1.8.38-1
+- OpenSCAP integration -- view latest results of whole infrastructure
+  (slukasik@redhat.com)
+- The tool is called OpenSCAP actually. (slukasik@redhat.com)
+- Add missing </a> tag in case when the serverName is unknown.
+  (slukasik@redhat.com)
+- The system.config.listFiles should return channel label, not name.
+- 810871 - Reduce languages available in editarea to only common / useful ones.
+  (sherr@redhat.com)
+
+* Fri Apr 06 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.37-1
+- improved performance of repomd generation
+
+* Thu Apr 05 2012 Stephen Herr <sherr@redhat.com> 1.8.36-1
+- 804810 - also making inherited virtualization entitlements work correctly in
+  SSM (sherr@redhat.com)
+
+* Thu Apr 05 2012 Jan Pazdziora 1.8.35-1
+- 809897 - using the evr_t_as_vre_simple.
+- adding jdom dependency (tlestach@redhat.com)
+- Fixing the order of action's child elements.
+- 701893 - do not show the Schedule Deploy Action and Schedule System
+  Comparison links in the left pane -- the right pane has them with correct
+  ACLs.
+- Add ACL to VerifyPackages to match the ACL on the .jsp referencing it.
+- fix typo (tlestach@redhat.com)
+
+* Wed Apr 04 2012 Stephen Herr <sherr@redhat.com> 1.8.34-1
+- 809868 - Make automatically-scheduled tasks visible on Failed and Archived
+  tabs (sherr@redhat.com)
+- 805952 - make the "allocation to equal" value optional.
+  (jpazdziora@redhat.com)
+- Fix naming of cloned errata to replace only the first 2 chars
+  (tlestach@redhat.com)
+
+* Tue Apr 03 2012 Jan Pazdziora 1.8.33-1
+- 804949 - make invocation of rhn_channel.convert_to_fve database-agnostic.
+
+* Tue Apr 03 2012 Jan Pazdziora 1.8.32-1
+- 804949 - make invocation of rhn_channel.convert_to_fve database-agnostic.
+- Revert "removing unused string with trans-id 'configfilefilter.path'"
+  (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'configchannelfilter.name'"
+  (msuchy@redhat.com)
+- Revert "removing unused string with trans-id
+  'config_subscribed_systems.unsubscribeSystems.success'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id
+  'config_target_systems.subscribeSystems.success'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'preferences.critical-
+  probes.description'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'preferences.critical-
+  probes.name'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'preferences.critical-
+  systems.description'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'preferences.critical-
+  systems.name'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'preferences.inactive-
+  systems.name'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'preferences.inactive-
+  systems.description'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'sdc.config.differing.files_1'"
+  (msuchy@redhat.com)
+- Revert "removing unused string with trans-id
+  'sdc.config.diff.files_1_dirs_0_symlinks_0'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'userlist.jsp.disabled'"
+  (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'userlist.jsp.enabled'"
+  (msuchy@redhat.com)
+- Fix checkstyle error (invalid use of the {@inheritDoc} tag) (jrenner@suse.de)
+- Add lib directory to checkstyle classpath (jrenner@suse.de)
+- New web page -- details of the xccdf:rule-result (slukasik@redhat.com)
+
+* Thu Mar 29 2012 Stephen Herr <sherr@redhat.com> 1.8.31-1
+- 808210 - Fixing ISE on selecting None yum checksum type for channel
+  (sherr@redhat.com)
+- 808162 - Auto-import the RHEL RPM GPG key for systems we have kickstarted
+  (sherr@redhat.com)
+
+* Thu Mar 29 2012 Simon Lukasik <slukasik@redhat.com> 1.8.30-1
+- Rework web interface to correspond with 0-n rule/ident mapping
+  (slukasik@redhat.com)
+
+* Wed Mar 28 2012 Tomas Lestach <tlestach@redhat.com> 1.8.29-1
+- fix ConfigChannelHandlerTest revision comparism (tlestach@redhat.com)
+- fix ConfigChannelHandlerTest.testDeployAllSystems (tlestach@redhat.com)
+- 805275 - add missing query parameter (tlestach@redhat.com)
+- fix ConfigChannelHandlerTest validation issue (tlestach@redhat.com)
+- fix MDOM storage (tlestach@redhat.com)
+- fix ProfileHandlerTest (tlestach@redhat.com)
+- fix KickstartDataTest.testISRhelRevMethods (tlestach@redhat.com)
+- fix KickstartScheduleCommandTest (tlestach@redhat.com)
+- Revert "fix KickstartDataTest.testCommands" (tlestach@redhat.com)
+- fix TranslationsTest (tlestach@redhat.com)
+- fix FilterActionTest.testCreateSubmitFailValidation (tlestach@redhat.com)
+- fix FilterActionTest.testEditExecute (tlestach@redhat.com)
+- rename Filter.isRecurring to Filter.isRecurringBool (tlestach@redhat.com)
+- fix ProbeGraphActionTest and MonitoringManagerTest (tlestach@redhat.com)
+- fix ProbeGraphActionTest.setUp (tlestach@redhat.com)
+- fix SystemManagerTest.testListInstalledPackage (tlestach@redhat.com)
+- fix SystemManagerTest.testSsmSystemPackagesToRemove (tlestach@redhat.com)
+- 676434 - Text for Brazil timezone is incorrect (sherr@redhat.com)
+
+* Wed Mar 28 2012 Tomas Lestach <tlestach@redhat.com> 1.8.28-1
+- let spacewalk-java-tests require ant-junit (tlestach@redhat.com)
+- fix AccessTest (tlestach@redhat.com)
+
+* Tue Mar 27 2012 Stephen Herr <sherr@redhat.com> 1.8.27-1
+- 807463 - If our channel is a clone of a clone we need to find the channel
+  that contains the erratum we are cloning (sherr@redhat.com)
+
+* Tue Mar 27 2012 Tomas Lestach <tlestach@redhat.com> 1.8.26-1
+- fix KickstartDataTest.testCommands (tlestach@redhat.com)
+- fixin cobbler version issue (tlestach@redhat.com)
+- temporary disable errata check in ChannelSoftwareHandlerTest
+  (tlestach@redhat.com)
+- fix parameter type (tlestach@redhat.com)
+- fix UserManagerTest (tlestach@redhat.com)
+- fix ActivationKeyAlreadyExistsException (tlestach@redhat.com)
+- Revert "removing unused string with trans-id 'config.channels_0'"
+  (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'config.channels_1'"
+  (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'config.channels_2'"
+  (msuchy@redhat.com)
+- 806439 - Make Virtualization tab of system profile independent of
+  Virtualization (Platform) entitlements (sherr@redhat.com)
+- The org_id colum is numeric, do not cast parameter to string.
+  (jpazdziora@redhat.com)
+
+* Fri Mar 23 2012 Tomas Lestach <tlestach@redhat.com> 1.8.25-1
+- fix VirtualGuestsActionTest (tlestach@redhat.com)
+- 752416 - reload config revision from DB before returning it
+  (tlestach@redhat.com)
+- 806060 - Config file diffs result in Out Of Memory for large files
+  (sherr@redhat.com)
+
+* Thu Mar 22 2012 Tomas Lestach <tlestach@redhat.com> 1.8.24-1
+- fix ServerFactoryVirtualizationTest (tlestach@redhat.com)
+- fix ServerFactoryTest (tlestach@redhat.com)
+- fix VirtualInstanceFactoryTest (tlestach@redhat.com)
+- fix RamTest (tlestach@redhat.com)
+- fix ServerTest (tlestach@redhat.com)
+- fix AffectedSystemsActionTest (tlestach@redhat.com)
+- fix KickstartManagerTest (tlestach@redhat.com)
+- Revert "fix FileFinderTest.testFindFilesSubDir" (tlestach@redhat.com)
+
+* Wed Mar 21 2012 Tomas Lestach <tlestach@redhat.com> 1.8.23-1
+- fix LocalizationServiceTest (tlestach@redhat.com)
+- fix AuthFilterTest (tlestach@redhat.com)
+- fix PxtAuthenticationServiceTest (tlestach@redhat.com)
+- fix RequestContextTest (tlestach@redhat.com)
+- fix PxtSessionDelegateImplTest (tlestach@redhat.com)
+- rename AuthenticationServiceTest (tlestach@redhat.com)
+- rename BaseDeleteErrataActionTest (tlestach@redhat.com)
+- skip executing Abstract test classes (tlestach@redhat.com)
+- clean up classpath (tlestach@redhat.com)
+- add slf4j.jar to classpath (tlestach@redhat.com)
+- add struts.jar explicitelly to classpath (tlestach@redhat.com)
+- we need to extract also the rhn.jar into the temp directory
+  (tlestach@redhat.com)
+- 805275 - fix for configchannel.deployAllSystems (shughes@redhat.com)
+- checkstyle fixes (sherr@redhat.com)
+- Ensure the comparison uses correct type (slukasik@redhat.com)
+- Set column name explicitly, because it varies by db backend.
+  (slukasik@redhat.com)
+- Revert "removing unused string with trans-id
+  'systemsearch_cpu_mhz_gt_column'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id
+  'systemsearch_cpu_mhz_lt_column'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id
+  'systemsearch_name_and_description_column'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id
+  'systemsearch_num_of_cpus_gt_column'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id
+  'systemsearch_num_of_cpus_lt_column'" (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'systemsearch_ram_gt_column'"
+  (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'systemsearch_ram_lt_column'"
+  (msuchy@redhat.com)
+- 804810 - Taught SSM to look at flex as well as regular entitlements when
+  trying to add child channels (sherr@redhat.com)
+- 804702 - fixed apidoc deployAllSystems() including the date parameter
+  (mmello@redhat.com)
+
+* Mon Mar 19 2012 Jan Pazdziora 1.8.22-1
+- Add a missing colon. (slukasik@redhat.com)
+- Show legend on details page; suggesting what to search for
+  (slukasik@redhat.com)
+- Enable filtering by rule-result. (slukasik@redhat.com)
+- Allow user to sort columns. (slukasik@redhat.com)
+- Enable user to adjust number of items per page. (slukasik@redhat.com)
+- We no longer have /install/index.pxt, so satellite_install cannot be used.
+
+* Mon Mar 19 2012 Tomas Lestach <tlestach@redhat.com> 1.8.21-1
+- fix junit classpath ordering (tlestach@redhat.com)
+- 533164 - check duplicate message keys in StringResource_*.xml files
+  (msuchy@redhat.com)
+- Forward the page url to the list (slukasik@redhat.com)
+- Polish api documentation for system.scap APIs. (slukasik@redhat.com)
+- OpenSCAP integration -- Details page for XCCDF results (slukasik@redhat.com)
+
+* Sat Mar 17 2012 Miroslav Suchý 1.8.20-1
+- 521248 - correctly spell MHz (msuchy@redhat.com)
+
+* Fri Mar 16 2012 Tomas Lestach <tlestach@redhat.com> 1.8.19-1
+- 802400 - fix ISE on rhn/admin/multiorg/OrgSoftwareSubscriptions.do page
+  (tlestach@redhat.com)
+
+* Fri Mar 16 2012 Tomas Lestach <tlestach@redhat.com> 1.8.18-1
+- 803353 - do not link documentation if not available (tlestach@redhat.com)
+- 803353 - do not link documentation if not available (tlestach@redhat.com)
+- 800364 - hide documetation link (tlestach@redhat.com)
+- 803644 - fix ISE (tlestach@redhat.com)
+- fix checkstyle issue (tlestach@redhat.com)
+- get rid of gsbase (tlestach@redhat.com)
+- 726114 - update createOrUpradePath api documentation (tlestach@redhat.com)
+
+* Fri Mar 16 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.17-1
+- require checkstyle only if we run it
+
+* Thu Mar 15 2012 Tomas Lestach <tlestach@redhat.com> 1.8.16-1
+- rewrite unittest.xml (tlestach@redhat.com)
+
+* Thu Mar 15 2012 Stephen Herr <sherr@redhat.com> 1.8.15-1
+- 790120 - Removing rule to help system overview listing happen faster,
+  improving performance of api queries (sherr@redhat.com)
+- Fix oracle syntax of analytical function (slukasik@redhat.com)
+- Fixing typo (lookup.activatonkey.reason2 -> lookup.activationkey.reason2).
+  (jpazdziora@redhat.com)
+- Revert "removing unused string with trans-id 'lookup.activatonkey.reason2'"
+  (msuchy@redhat.com)
+
+* Wed Mar 14 2012 Tomas Lestach <tlestach@redhat.com> 1.8.14-1
+- fix LoginActionTest (tlestach@redhat.com)
+
+* Wed Mar 14 2012 Tomas Lestach <tlestach@redhat.com> 1.8.13-1
+- remove xml formatter (tlestach@redhat.com)
+- make it possible to run single testcases (tlestach@redhat.com)
+- add webapps/rhn directory to classpath (tlestach@redhat.com)
+- fix LoginActionTest (tlestach@redhat.com)
+- add required jars to classpath (tlestach@redhat.com)
+- removing unused test (tlestach@redhat.com)
+- Revert "fix MockObjectTestCase issue" (tlestach@redhat.com)
+
+* Tue Mar 13 2012 Stephen Herr <sherr@redhat.com> 1.8.12-1
+- 755470 - Fixing sorting by date without replying on the inapplicable
+  listdisplay-new.jspf (sherr@redhat.com)
+- Revert "755470 - Fixed incorrect sorting of archived action timestamp"
+  (sherr@redhat.com)
+
+* Tue Mar 13 2012 Jan Pazdziora 1.8.11-1
+- 801463 - fix binary file uploads (tlestach@redhat.com)
+- Add the completetion time to the list of scap scans. (slukasik@redhat.com)
+- Sort imports alphabetically. (slukasik@redhat.com)
+- Remove purposeless commentary (slukasik@redhat.com)
+- Remove unneccessary casts to String. (slukasik@redhat.com)
+- Refactor: rename ScapAction class (slukasik@redhat.com)
+
+* Tue Mar 13 2012 Simon Lukasik <slukasik@redhat.com> 1.8.10-1
+- Checkstyle fix (slukasik@redhat.com)
+- Checkstyle fix (slukasik@redhat.com)
+- fix various checkstyle issues (tlestach@redhat.com)
+
+* Tue Mar 13 2012 Simon Lukasik <slukasik@redhat.com> 1.8.9-1
+- OpenSCAP integration -- Page for XCCDF scan schedule (slukasik@redhat.com)
+- OpenSCAP integration  -- Show results for system on web.
+  (slukasik@redhat.com)
+- Add translations for the new SCAP action (slukasik@redhat.com)
+- Revert "removing unused string with trans-id 'toolbar.clone.channel'"
+  (msuchy@redhat.com)
+- Fix usage of velocity macros for API documentation (jrenner@suse.de)
+- Add support for generating DocBook XML from the API documentation
+  (jrenner@suse.de)
+
+* Fri Mar 09 2012 Stephen Herr <sherr@redhat.com> 1.8.8-1
+- 782551 - Making a default selection of no Proxy when kickstarting a server
+  (sherr@redhat.com)
+- 773113 - Added new XMLRPC API method to allow people to change the kickstart
+  preserve ks.cfg option (sherr@redhat.com)
+- 755470 - Fixed incorrect sorting of archived action timestamp
+  (sherr@redhat.com)
+- 753064 - throw appropriate error if deleting nonexistant kickstart key
+  (sherr@redhat.com)
+- Revert "removing unused string with trans-id 'file_size.b'"
+  (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'file_size.kb'"
+  (msuchy@redhat.com)
+- Revert "removing unused string with trans-id 'file_size.mb'"
+  (msuchy@redhat.com)
+- Just minor template fix (mkollar@redhat.com)
+- 795565 - better keep the original 'date' in ErrataOverviewSerializer
+  (tlestach@redhat.com)
+- 795565 - let ErrataOverviewSerializer return also issue_date
+  (tlestach@redhat.com)
+
+* Fri Mar 09 2012 Miroslav Suchý 1.8.7-1
+- remove RHN_DB_USERNAME from monitoring scout configuration
+- remove RHN_DB_PASSWD from monitoring scout configuration
+- remove RHN_DB_NAME from monitoring scout configuration
+- remove tableowner from monitoring scout configuration
+
+* Thu Mar 08 2012 Tomas Lestach <tlestach@redhat.com> 1.8.6-1
+- fix SystemAclHandlerTest (tlestach@redhat.com)
+- fix MessageQueueTest.testDatabaseTransactionHandling (tlestach@redhat.com)
+- load test hmb.xml files when loading TestImpl (tlestach@redhat.com)
+- fix MockObjectTestCase issue (tlestach@redhat.com)
+- fix JarFinderTest (tlestach@redhat.com)
+- fix FileFinderTest.testFindFilesSubDir (tlestach@redhat.com)
+- remove test/validation/userCreateForm.xsd exclude from rhn.jar
+  (tlestach@redhat.com)
+- do not include test directories into rhn.jar (tlestach@redhat.com)
+- consider only *Test.classes as junit tests (tlestach@redhat.com)
+- add debug arguments to the junit (tlestach@redhat.com)
+- point unit tests to search for configuration on a new fs location
+  (tlestach@redhat.com)
+- place conf directory into /user/share/rhn/unit-tests (tlestach@redhat.com)
+- 801433 - save kickstart data after modifying ks profile child channels
+  (tlestach@redhat.com)
+
+* Thu Mar 08 2012 Miroslav Suchý 1.8.5-1
+- Revert "removing unused string with trans-id
+  'systementitlements.jsp.entitlement_counts_message_*'" (msuchy@redhat.com)
+- API : KickstartHandler::renameProfile remove unused code referring to
+  Kickstart Trees (shardy@redhat.com)
+- API Documentation : kickstart.renameProfile renames profiles not kickstart
+  trees (shardy@redhat.com)
+- API Documentation : api.get_version fix typo (shardy@redhat.com)
+
+* Wed Mar 07 2012 Jan Pazdziora 1.8.4-1
+- partialy revert 423cfc6255b7e6d52da35f7e543ec38cd99e04c9 to return back
+  string which are dynamicaly created (msuchy@redhat.com)
+
+* Tue Mar 06 2012 Tomas Lestach <tlestach@redhat.com> 1.8.3-1
 - 799992 - remove the error message completely (tlestach@redhat.com)
 - prevent ISE on the rhn/channels/manage/errata/AddCustomErrata.do page
   (tlestach@redhat.com)
+- remove unused file (tlestach@redhat.com)
+- include also conf/default dir into rhn-test.jar (tlestach@redhat.com)
+- do not fall, if there's no .in the filename (tlestach@redhat.com)
+- make use of default kernel and initrd path (tlestach@redhat.com)
+- fix KickstartableTreeTest (tlestach@redhat.com)
+- remove unused buildCertificate method (tlestach@redhat.com)
 
-* Sat Mar 03 2012 Jan Pazdziora 1.7.53-1
-- Removing the Downloads tab, it points to nonexisting
+* Mon Mar 05 2012 Miroslav Suchý 1.8.2-1
+- removing unused strings in StringResources (msuchy@redhat.com)
+- unify errata/Overview.do and errata/RelevantErrata.do
+  (dmacvicar@suse.de)
+
+* Sat Mar 03 2012 Jan Pazdziora 1.8.1-1
+- Removing the Downloads tab, in points to nonexisting
   /rhn/software/channel/downloads/Download.do page.
 
 * Fri Mar 02 2012 Jan Pazdziora 1.7.52-1

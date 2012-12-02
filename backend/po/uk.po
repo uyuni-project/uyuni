@@ -3,32 +3,34 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+#   <jonny_nut@hotmail.com>, 2012.
 # Maxim Dziumanenko <dziumanenko@gmail.com>, 2003.
+# Yuri Chornoivan <yurchor@ukr.net>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:18+0100\n"
-"PO-Revision-Date: 2011-03-04 16:08+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2012-03-11 19:41+0000\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../server/rhnPackage.py:45 ../server/rhnPackage.py:80
 #: ../server/rhnPackage.py:99 ../server/rhnPackage.py:181
 #: ../server/rhnPackage.py:205 ../server/rhnPackage.py:287
 #, python-format
 msgid "Invalid RPM package %s requested"
-msgstr ""
+msgstr "Надіслано запит щодо некоректного пакунка RPM %s"
 
 #: ../server/rhnPackage.py:104 ../server/rhnPackage.py:293
 msgid "Package not found"
-msgstr ""
+msgstr "Пакунок не знайдено"
 
 #: ../server/apacheAuth.py:58
 #, python-format
@@ -38,16 +40,16 @@ msgstr ""
 #: ../server/apacheAuth.py:74
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
+msgstr "Надісланий ​​підпис проксі %s не збігається з нашим %s."
 
 #: ../server/apacheAuth.py:105
 msgid "declined proxy authentication"
-msgstr ""
+msgstr "у розпізнаванні на проксі-сервері відмовлено"
 
 #: ../server/apacheRequest.py:50
 #, python-format
 msgid "Invalid request received (%s)."
-msgstr ""
+msgstr "Отримано неприпустимий запит (%s)."
 
 #: ../server/apacheRequest.py:107
 #, python-format
@@ -55,6 +57,8 @@ msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
 "%s"
 msgstr ""
+"ДАЛІ ВКАЗАНО ВАЖЛИВЕ ПОВІДОМЛЕННЯ:\n"
+"%s"
 
 #: ../server/apacheRequest.py:132
 #, python-format
@@ -62,11 +66,13 @@ msgid ""
 "While running '%s': caught\n"
 "%s : %s\n"
 msgstr ""
+"Під час роботи «%s» отримано\n"
+"%s : %s\n"
 
 #: ../server/apacheRequest.py:558
 #, python-format
 msgid "Invalid URI %s"
-msgstr ""
+msgstr "Некоректна адреса %s"
 
 #: ../server/rhnServer/server_token.py:80
 #, python-format
@@ -75,22 +81,24 @@ msgstr ""
 
 #: ../server/rhnServer/server_token.py:82
 msgid "Conflicting base channels"
-msgstr ""
+msgstr "Конфлікт основних каналів"
 
 #: ../server/rhnServer/server_token.py:206
 #, python-format
 msgid "Failed to add server to group %s"
-msgstr ""
+msgstr "Не вдалося додати сервер до групи %s"
 
 #: ../server/rhnServer/server_token.py:513
 #, python-format
 msgid "Maximum usage count of %s reached"
-msgstr ""
+msgstr "Перевищено максимальну кількість використано %s"
 
 #: ../server/rhnServer/server_token.py:645
-#, python-format
+#, fuzzy, python-format
 msgid "Registration failed: RHN Software service entitlements exhausted: %s"
 msgstr ""
+"Не вдалося зареєструвати: у програмному забезпеченні RHN вичерпано записи "
+"для реєстрації"
 
 #: ../server/rhnServer/server_token.py:761
 msgid ""
@@ -101,17 +109,17 @@ msgstr ""
 #: ../server/rhnServer/server_token.py:839
 #, python-format
 msgid "Could not find token '%s'"
-msgstr ""
+msgstr "Не вдалося знайти ключ «%s»"
 
 #. Cannot use activation keys from different orgs
 #: ../server/rhnServer/server_token.py:871
 msgid "Tokens from mismatching orgs"
-msgstr ""
+msgstr "Ключі з невідповідних установ"
 
 #. Two tokens with different kickstart sessions
 #: ../server/rhnServer/server_token.py:881
 msgid "Kickstart session mismatch"
-msgstr ""
+msgstr "Невідповідність сеансів kickstart"
 
 #: ../server/rhnServer/server_token.py:901
 msgid "Stacking of re-registration tokens is not supported"
@@ -120,11 +128,11 @@ msgstr ""
 #: ../server/rhnServer/server_class.py:95
 #, python-format
 msgid "Architecture `%s' is not supported"
-msgstr ""
+msgstr "Підтримки архітектури «%s» не передбачено"
 
 #: ../server/rhnUser.py:383 ../server/rhnUser.py:386
 msgid "Invalid username/password combination"
-msgstr ""
+msgstr "Неприпустима комбінація ім'я/пароль"
 
 #. nope, not reserved either
 #: ../server/rhnUser.py:539
@@ -135,63 +143,65 @@ msgstr ""
 #. New accounts have to specify an e-mail address
 #: ../server/rhnUser.py:545
 msgid "E-mail address not specified"
-msgstr ""
+msgstr "Не вказано адресу електронної пошти"
 
 #. wrong organization
 #. Invalid org password
 #: ../server/rhnUser.py:600 ../server/rhnUser.py:604
 msgid "Invalid Organization Credentials"
-msgstr ""
+msgstr "Некоректні реєстраційні дані установи"
 
 #: ../server/rhnUser.py:610
 #, python-format
 msgid "User `%s' not a member of organization %s"
-msgstr ""
+msgstr "Користувач «%s» не є працівником установи %s"
 
 #: ../server/rhnUser.py:638
 #, python-format
 msgid "username should be at least %d characters"
-msgstr ""
+msgstr "ім’я користувача має складатися принаймні з %d символів"
 
 #: ../server/rhnUser.py:641
 #, python-format
 msgid "username should be less than %d characters"
-msgstr ""
+msgstr "довжина імені користувача не повинна перевищувати %d символів"
 
 #: ../server/rhnUser.py:652
 #, python-format
 msgid "username = `%s', invalid character `%s'"
-msgstr ""
+msgstr "ім'я користувача = «%s», неприпустимий символ «%s»"
 
 #: ../server/rhnUser.py:670
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr ""
+"Будь ласка, вкажіть адресу електронної пошти, що не перевищує %s символів у "
+"довжину"
 
 #: ../server/rhnUser.py:743
 #, python-format
 msgid "password must be at least %d characters"
-msgstr ""
+msgstr "пароль має складатися принаймні з %d символів"
 
 #: ../server/rhnUser.py:746
 #, python-format
 msgid "Password must be shorter than %d characters"
-msgstr ""
+msgstr "Пароль має не перевищувати %d символів у довжину"
 
 #: ../server/rhnUser.py:764
 #, python-format
 msgid "password contains character `%s'"
-msgstr ""
+msgstr "пароль містить символ «%s»"
 
 #: ../server/rhnUser.py:771
 #, python-format
 msgid "username should be at least %d characters long"
-msgstr ""
+msgstr "ім’я користувача має складатися принаймні з %d символів"
 
 #: ../server/rhnUser.py:782
 #, python-format
 msgid "Cannot register usernames ending with %s"
-msgstr ""
+msgstr "Не можна реєструвати ім’я користувача, що завершується на %s"
 
 #: ../server/rhnChannel.py:1707
 #, python-format
@@ -211,7 +221,7 @@ msgstr ""
 #: ../server/rhnChannel.py:1727
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr ""
+msgstr "Недостатні права передплати на випуск (%s, %s"
 
 #. Various messages that can be reused
 #.
@@ -220,7 +230,7 @@ msgstr ""
 #: ../server/rhnChannel.py:1974 ../server/rhnChannel.py:1985
 #: ../server/rhnChannel.py:2000 ../server/rhnChannel.py:2008
 msgid "System Registered but Inactive"
-msgstr ""
+msgstr "Систему зареєстровано, але не активовано"
 
 #: ../server/rhnChannel.py:1975
 #, python-format
@@ -286,7 +296,7 @@ msgstr ""
 
 #: ../server/handlers/applet/applet.py:68
 msgid "Your system was not found in the RHN database"
-msgstr ""
+msgstr "Вашої системи не знайдено у базі даних RHN"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this satellite."
@@ -300,27 +310,27 @@ msgstr ""
 #: ../server/handlers/xmlrpc/proxy.py:60
 #, python-format
 msgid "RHN Proxy service not enabled for server profile: \"%s\""
-msgstr ""
+msgstr "Проксі-сервіс RHN не включений для профілю сервера: «%s»"
 
 #: ../server/handlers/xmlrpc/proxy.py:80
 msgid "Invalid session key"
-msgstr ""
+msgstr "Неприпустимий ключ сеансу"
 
 #: ../server/handlers/xmlrpc/proxy.py:88
 msgid "This server ID no longer exists"
-msgstr ""
+msgstr "Цього ідентифікатора сервера більше не існує"
 
 #: ../server/handlers/xmlrpc/registration.py:183
 msgid "Required data missing"
-msgstr ""
+msgstr "Не вистачає потрібних даних"
 
 #: ../server/handlers/xmlrpc/registration.py:187
 msgid "Required members missing"
-msgstr ""
+msgstr "Не вистачає потрібних елементів"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Attempt to register a system to an invalid username"
-msgstr ""
+msgstr "Спроба зареєструвати систему на некоректне ім’я користувача"
 
 #: ../server/handlers/xmlrpc/registration.py:204
 #, python-format
@@ -332,25 +342,25 @@ msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:819
 msgid "Invalid system release version requested"
-msgstr ""
+msgstr "Надіслано запит щодо некоректної версії випуску системи"
 
 #: ../server/handlers/xmlrpc/registration.py:1005
 msgid "Red Hat Network Welcome Message"
-msgstr ""
+msgstr "Вітальне повідомлення Red Hat Network"
 
 #: ../server/handlers/xmlrpc/registration.py:1015
 msgid "Red Hat Network Privacy Statement"
-msgstr ""
+msgstr "Угода щодо конфіденційності Red Hat Network"
 
 #: ../server/handlers/xmlrpc/registration.py:1036
 msgid "Expected a dictionary as a product argument"
-msgstr ""
+msgstr "Мало бути вказано словник як аргумент продукту"
 
 #: ../server/handlers/xmlrpc/registration.py:1068
 #: ../server/handlers/xmlrpc/registration.py:1126
 #, python-format
 msgid "Not a valid Country: %s"
-msgstr ""
+msgstr "Некоректна країна: %s"
 
 #: ../server/handlers/xmlrpc/registration.py:1349
 #, python-format
@@ -360,52 +370,52 @@ msgstr ""
 #: ../server/handlers/xmlrpc/registration.py:1366
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
-msgstr ""
+msgstr "Некоректне значення «%s» для %s (%s)"
 
 #: ../server/handlers/xmlrpc/errata.py:59
 #, python-format
 msgid "Expected a package name, not: %s"
-msgstr ""
+msgstr "Мало бути вказано назву пакунка, а не: %s"
 
 #: ../server/handlers/xmlrpc/errata.py:109
 #, python-format
 msgid "Expected a package, not: %s"
-msgstr ""
+msgstr "Мало бути вказано пакунок, а не: %s"
 
 #: ../server/handlers/xmlrpc/queue.py:399
 #, python-format
 msgid "Invalid action value type %s (%s)"
-msgstr ""
+msgstr "Неприпустиме значення дії типу %s (%s)"
 
 #: ../server/handlers/xmlrpc/queue.py:424
 #, python-format
 msgid "Action %s does not belong to server %s"
-msgstr ""
+msgstr "Дія %s не належить до сервера %s"
 
 #: ../server/handlers/xmlrpc/up2date.py:232
 #, python-format
 msgid "Invalid value %s (type %s)"
-msgstr ""
+msgstr "Некоректне значення %s (тип %s)"
 
 #: ../server/handlers/xmlrpc/up2date.py:260
 #, python-format
 msgid "Unable to retrieve package header %s"
-msgstr ""
+msgstr "Не вдається отримати заголовок пакунка %s"
 
 #: ../server/handlers/xmlrpc/up2date.py:407
 #, python-format
 msgid "Invalid value %s (%s)"
-msgstr ""
+msgstr "Некоректне значення %s (%s)"
 
 #: ../server/handlers/xmlrpc/up2date.py:479
 #, python-format
 msgid "Invalid value for %s in package tuple: %s (%s)"
-msgstr ""
+msgstr "Некоректне значення для %s у кортежі пакунка: %s (%s)"
 
 #: ../server/handlers/xmlrpc/up2date.py:491
 #, python-format
 msgid "Invalid package parameter %s (%s)"
-msgstr ""
+msgstr "Некоректний параметр пакунка %s (%s)"
 
 #: ../server/importlib/userAuth.py:108 ../server/importlib/userAuth.py:112
 msgid "You are not authorized to manage packages in the null org"
@@ -443,31 +453,31 @@ msgstr ""
 #. 0-999: RHN client/client-like interaction errors:
 #: ../common/rhnException.py:44
 msgid "This does not appear to be a valid username."
-msgstr ""
+msgstr "Здається, це не є коректним іменем користувача."
 
 #: ../common/rhnException.py:45
 msgid "Invalid username and password combination."
-msgstr ""
+msgstr "Некоректне поєднання імені користувача і пароля."
 
 #: ../common/rhnException.py:46
 msgid "This login is already taken, or the password is incorrect."
-msgstr ""
+msgstr "Це ім’я користувача вже використано або вказано неправильний пароль."
 
 #: ../common/rhnException.py:47
 msgid "Permission denied."
-msgstr ""
+msgstr "Доступ заборонено."
 
 #: ../common/rhnException.py:48
 msgid "Can not create new entry."
-msgstr ""
+msgstr "Не вдалося створити запис."
 
 #: ../common/rhnException.py:49
 msgid "Object not found."
-msgstr ""
+msgstr "Об’єкт не знайдено."
 
 #: ../common/rhnException.py:50
 msgid "Account limits exceeded."
-msgstr ""
+msgstr "Перевищено обмеження облікового запису."
 
 #: ../common/rhnException.py:51
 msgid "Invalid System Digital ID."
@@ -507,7 +517,7 @@ msgstr ""
 
 #: ../common/rhnException.py:60
 msgid "File not found."
-msgstr ""
+msgstr "Файл не знайдено."
 
 #: ../common/rhnException.py:61
 msgid "Invalid Architecture and OS release combination."
@@ -602,7 +612,7 @@ msgstr ""
 
 #: ../common/rhnException.py:93
 msgid "Invalid action"
-msgstr ""
+msgstr "Некоректна дія"
 
 #: ../common/rhnException.py:94
 msgid "You are not allowed to perform administrative tasks on this system."
@@ -831,7 +841,7 @@ msgstr ""
 
 #: ../common/rhnException.py:207
 msgid "Invalid username"
-msgstr ""
+msgstr "Некоректне ім’я користувача"
 
 #. 110-129: disabled org errors
 #: ../common/rhnException.py:210
@@ -880,7 +890,7 @@ msgstr ""
 
 #: ../common/rhnException.py:228
 msgid "Not an RPM package"
-msgstr ""
+msgstr "Не є пакунком RPM"
 
 #: ../common/rhnException.py:229
 msgid "Unsigned RPM package"
@@ -897,11 +907,11 @@ msgstr ""
 #. 600-699: RHEL5+ EN errors
 #: ../common/rhnException.py:234
 msgid "Invalid Entitlement Number"
-msgstr ""
+msgstr "Некоректний реєстраційний номер"
 
 #: ../common/rhnException.py:235
 msgid "No entitlement information tied to hardware"
-msgstr ""
+msgstr "З обладнанням не пов’язано реєстраційних даних"
 
 #: ../common/rhnException.py:236
 msgid "Installation number is not entitling"
@@ -910,25 +920,26 @@ msgstr ""
 #. 700-799: Additional user input verification errors.
 #: ../common/rhnException.py:239
 msgid "Maximum username length violation"
-msgstr ""
+msgstr "Перевищено максимальну довжину імені користувача"
 
 #: ../common/rhnException.py:240
 msgid "Maximum password length violation"
-msgstr ""
+msgstr "Перевищення максимальної довжини пароля"
 
 #: ../common/rhnException.py:242
+#, fuzzy
 msgid "System Name cannot be less than 3 characters"
-msgstr ""
+msgstr "довжина імені користувача не повинна перевищувати %d символів"
 
 #. 1000-1999: RHN Proxy specific errors:
 #. issued by an RHN Proxy to the client
 #: ../common/rhnException.py:246
 msgid "RHN Proxy error."
-msgstr ""
+msgstr "Помилка проксі-сервера RHN."
 
 #: ../common/rhnException.py:247
 msgid "RHN Proxy unable to login."
-msgstr ""
+msgstr "Не вдалося увійти до системи проксі-сервера RHN."
 
 #. issued by an RHN Server/Satellite to the proxy
 #: ../common/rhnException.py:249
@@ -995,11 +1006,11 @@ msgstr ""
 #. Kickstart errors
 #: ../common/rhnException.py:283
 msgid "Access denied to kickstart tree"
-msgstr ""
+msgstr "Доступ до ієрархії kickstart заборонено"
 
 #: ../common/rhnException.py:284
 msgid "Could not find kickstart file"
-msgstr ""
+msgstr "Не вдалося знайти файл kickstart"
 
 #: ../common/rhnException.py:285
 msgid ""
@@ -1012,27 +1023,27 @@ msgstr ""
 #. 3000-3999: XML dumper errors:
 #: ../common/rhnException.py:291
 msgid "Invalid datatype passed"
-msgstr ""
+msgstr "Передано некоректний тип даних"
 
 #: ../common/rhnException.py:292
 msgid "Unable to retrieve channel"
-msgstr ""
+msgstr "Не вдалося отримати канал"
 
 #: ../common/rhnException.py:293
 msgid "Invalid package name"
-msgstr ""
+msgstr "Некоректна назва пакунка"
 
 #: ../common/rhnException.py:294
 msgid "Unable to retrieve package"
-msgstr ""
+msgstr "Не вдалося отримати пакунок"
 
 #: ../common/rhnException.py:295
 msgid "Invalid erratum name"
-msgstr ""
+msgstr "Некоректна назва списку помилок"
 
 #: ../common/rhnException.py:296
 msgid "Unable to retrieve erratum"
-msgstr ""
+msgstr "Не вдалося отримати список помилок"
 
 #: ../common/rhnException.py:297
 msgid "Invalid satellite certificate"
@@ -1040,108 +1051,108 @@ msgstr ""
 
 #: ../common/rhnException.py:298
 msgid "File is missing"
-msgstr ""
+msgstr "Не вистачає файла"
 
 #: ../common/rhnException.py:299
 msgid "Function retrieval error"
-msgstr ""
+msgstr "Помилка під час спроби отримання даних функції"
 
 #: ../common/rhnException.py:300
 msgid "Function execution error"
-msgstr ""
+msgstr "Помилка під час спроби виконання функції"
 
 #: ../common/rhnException.py:301
 msgid "Missing version string"
-msgstr ""
+msgstr "Не вистачає рядка версії"
 
 #: ../common/rhnException.py:302
 msgid "Invalid version string"
-msgstr ""
+msgstr "Некоректний рядок версії"
 
 #: ../common/rhnException.py:303
 msgid "Mismatching versions"
-msgstr ""
+msgstr "Невідповідність версій"
 
 #: ../common/rhnException.py:304
 msgid "Invalid channel version"
-msgstr ""
+msgstr "Некоректна версія каналу"
 
 #: ../common/rhnException.py:305
 msgid "Missing snapshot for channels"
-msgstr ""
+msgstr "Не вистачає знімка для каналів"
 
 #: ../common/rhnException.py:306
 msgid "No comps file for channel"
-msgstr ""
+msgstr "На каналі немає файла comps"
 
 #: ../common/rhnException.py:307
 msgid "Unable to retrieve comps file"
-msgstr ""
+msgstr "Не вдалося отримати файл comps"
 
 #. 4000 - 4999: config management errors
 #: ../common/rhnException.py:310
 msgid "Configuration action missing"
-msgstr ""
+msgstr "Не вказано дії з налаштовування"
 
 #: ../common/rhnException.py:311
 msgid "File too large"
-msgstr ""
+msgstr "Файл є надто великим"
 
 #: ../common/rhnException.py:312
 msgid "File contains binary data"
-msgstr ""
+msgstr "У файлі містяться бінарні дані"
 
 #: ../common/rhnException.py:313
 msgid "Configuration channel is not empty"
-msgstr ""
+msgstr "Канал налаштовування не є порожнім"
 
 #: ../common/rhnException.py:314
 msgid "Permission error"
-msgstr ""
+msgstr "Помилка доступу"
 
 #: ../common/rhnException.py:315
 msgid "Content missing for configuration file"
-msgstr ""
+msgstr "У файлі налаштувань не міститься даних"
 
 #: ../common/rhnException.py:316
 msgid "Template delimiters not specified"
-msgstr ""
+msgstr "Не вказано роздільники шаблона"
 
 #: ../common/rhnException.py:317
 msgid "Configuration channel does not exist"
-msgstr ""
+msgstr "Каналу налаштовування не існує"
 
 #: ../common/rhnException.py:318
 msgid "Configuration channel already exists"
-msgstr ""
+msgstr "Канал налаштовування вже існує"
 
 #: ../common/rhnException.py:319
 msgid "File missing from configuration channel"
-msgstr ""
+msgstr "На каналі налаштовування не вистачає файла"
 
 #: ../common/rhnException.py:320
 msgid "Different revision of this file is uploaded"
-msgstr ""
+msgstr "Вивантажено іншу модифікацію цього файла"
 
 #: ../common/rhnException.py:321
 msgid "File already uploaded to configuration channel"
-msgstr ""
+msgstr "Файл вже вивантажено до каналу налаштовування"
 
 #: ../common/rhnException.py:322
 msgid "File size exceeds remaining quota space"
-msgstr ""
+msgstr "Розмір файла перевищує залишок квоти у сховищі даних"
 
 #: ../common/rhnException.py:323
 msgid "Full path of file must be specified"
-msgstr ""
+msgstr "Шлях до файла має бути вказано повністю"
 
 #: ../common/rhnException.py:324
 msgid "Invalid revision number"
-msgstr ""
+msgstr "Некоректний номер модифікації"
 
 #: ../common/rhnException.py:325
 msgid "Cannot compare files of different file type"
-msgstr ""
+msgstr "Не можна порівнювати файли різних типів"
 
 #. 5000 - 5099: entitlement mapper errors
 #: ../common/rhnException.py:328
@@ -1150,19 +1161,19 @@ msgstr ""
 
 #: ../common/rhnException.py:329
 msgid "Invalid item code"
-msgstr ""
+msgstr "Некоректний код запису"
 
 #: ../common/rhnException.py:330
 msgid "Invalid user role"
-msgstr ""
+msgstr "Некоректна роль користувача"
 
 #: ../common/rhnException.py:331
 msgid "Invalid server group"
-msgstr ""
+msgstr "Некоректна група серверів"
 
 #: ../common/rhnException.py:332
 msgid "Invalid channel family"
-msgstr ""
+msgstr "Некоректне сімейство каналів"
 
 #: ../common/rhnException.py:376
 msgid ""
@@ -1180,18 +1191,20 @@ msgid ""
 "Error Message:\n"
 "    %s\n"
 msgstr ""
+"Повідомлення про помилку:\n"
+"    %s\n"
 
 #: ../common/rhnException.py:432
 #, python-format
 msgid "Error Class Code: %s\n"
-msgstr ""
+msgstr "Код помилкового класу: %s\n"
 
 #: ../common/rhnException.py:435
 #, python-format
 msgid "Error Class Info: %s\n"
-msgstr ""
+msgstr "Дані помилкового класу: %s\n"
 
 #: ../common/rhnException.py:437
 #, python-format
 msgid "Explanation: %s"
-msgstr ""
+msgstr "Пояснення: %s"

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -16,6 +16,7 @@
 use strict;
 package Dobby::DB;
 use RHN::DB;
+use RHN::DBI ();
 use PXT::Config;
 use Dobby::Log;
 
@@ -68,19 +69,25 @@ sub database_started {
   my $self = shift;
 
   my $dbh = eval { $self->sysdba_connect };
+  if (not $dbh and PXT::Config->get('db_backend') eq 'postgresql') {
+    my $dsn = "dbi:Pg:dbname=".PXT::Config->get("db_name");
+    $dbh = eval { RHN::DB->direct_connect($dsn) };
+  }
   return $dbh ? 1 : 0;
 }
 
 sub data_dir {
   my $self = shift;
-
-  return sprintf($self->config->get("data_dir_format"), $self->sid);
+  my $backend = PXT::Config->get('db_backend');
+  return ($backend eq 'postgresql') ? $self->config->get("pg_data_dir_format") :
+    sprintf($self->config->get("data_dir_format"), $self->sid);
 }
 
 sub archive_log_dir {
   my $self = shift;
-
-  return sprintf($self->config->get("archive_dir_format"), $self->sid);
+  my $backend = PXT::Config->get('db_backend');
+  return ($backend eq 'postgresql') ? undef :
+    sprintf($self->config->get("archive_dir_format"), $self->sid);
 }
 
 sub oracle_homedir_relative {
@@ -152,7 +159,39 @@ sub tablespace_extend {
   $dbh->do("ALTER TABLESPACE $ts ADD $ft '$fn' SIZE $sz REUSE");
 }
 
-sub report_database_stats {
+sub report_database_stats_postgresql {
+  my ($self, $days) = @_;
+
+  my $stats = {
+        stale => 0,
+        empty => 0,
+  };
+  my $dbh = $self->connect;
+
+  # sanitize input
+  $days += 0;
+  my $sth = $dbh->prepare(<<RSTATS);
+select count(*)
+from pg_stat_user_tables
+where (last_analyze < now() - interval '$days' day or last_analyze is null) and
+  (last_autoanalyze < now() - interval '$days' day or last_autoanalyze is null);
+RSTATS
+  $sth->execute;
+  ($stats->{'stale'}) = $sth->fetchrow_array;
+
+  $sth = $dbh->prepare(<<RSTATS);
+select count(*)
+from pg_stat_user_tables
+where last_analyze is null and
+  last_autoanalyze is null
+RSTATS
+  $sth->execute;
+  ($stats->{'empty'}) = $sth->fetchrow_array;
+
+  return $stats;
+}
+
+sub report_database_stats_oracle {
   my $self = shift;
 
   my $stats = {
@@ -178,12 +217,19 @@ RSTATS
   return $stats;
 }
 
-sub gather_database_stats {
+sub gather_database_stats_oracle {
   my $self = shift;
   my $pct  = shift;
 
   my $dbh = $self->connect;
   $dbh->do("begin dbms_stats.gather_schema_stats(NULL, ESTIMATE_PERCENT=> $pct, DEGREE=>DBMS_STATS.DEFAULT_DEGREE, CASCADE=>TRUE); end;");
+}
+
+sub gather_database_stats_postgresql {
+  my $self = shift;
+
+  my $dbh = $self->connect;
+  $dbh->do("ANALYZE");
 }
 
 sub segadv_runtask {
@@ -345,25 +391,27 @@ sub connect {
   my $self = shift;
 
   return $self->{dbh} if $self->{dbh};
+  $self->{dbh} = RHN::DBI->connect;
+  return $self->{dbh};
+}
 
-  my %params = (RaiseError => 1,
-		PrintError => 0,
-		AutoCommit => 0);
-
-  $ENV{ORACLE_SID} = $self->config->get("sid");
-  $ENV{ORACLE_HOME} = $self->config->get("oracle_home");
-  my $dbi_str = "dbi:Oracle:";
-
-  my $dbh = RHN::DB->direct_connect($dbi_str,
-				    PXT::Config->get("db_user"),
-				    PXT::Config->get("db_password"),
-				    \%params);
-
-  $self->{dbh} = $dbh;
-  return $dbh;
+sub pg_instance_state {
+  my $self = shift;
+  if (defined $RHN::DB::dbh and $RHN::DB::dbh->ping()) {
+    return "OPEN";
+  }
+  my ($dsn, $login, $password, $attr) = RHN::DBI::_get_dbi_connect_parameters();
+  my $dbh = eval { RHN::DB->direct_connect($dsn, $login, $password, $attr) };
+  return $dbh ? "OPEN" : "OFFLINE";
 }
 
 sub instance_state {
+  my $self = shift;
+  my $backend = PXT::Config->get('db_backend');
+  return ($backend eq 'postgresql') ? $self->pg_instance_state : $self->ora_instance_state;
+}
+
+sub ora_instance_state {
   my $self = shift;
   # ORA-01033 -- startup/shutdown in progress (mounted but not open)
   # ORA-01089 -- immediate startup/shutdown in progress (shutdown in progress)
@@ -389,8 +437,21 @@ sub instance_state {
 
 sub sysdba_connect {
   my $self = shift;
-
   return $self->{sysdbh} if $self->{sysdbh};
+  my $backend = PXT::Config->get('db_backend');
+  return ($backend eq 'postgresql') ? $self->sysdba_connect_postgresql : $self->sysdba_connect_oracle;
+}
+
+sub sysdba_connect_postgresql {
+  my $self = shift;
+  my ($dsn, $login, $password, $attr) = RHN::DBI::_get_dbi_connect_parameters();
+  my $dbh = eval { RHN::DB->direct_connect($dsn, $login, $password, $attr) };
+  $self->{sysdbh} = $dbh;
+  return $dbh;
+}
+
+sub sysdba_connect_oracle {
+  my $self = shift;
 
   $ENV{ORACLE_SID} = $self->config->get("sid");
   $ENV{ORACLE_HOME} = $self->config->get("oracle_home");
@@ -432,8 +493,13 @@ sub password_reset {
   my $self = shift;
   my $user = PXT::Config->get("db_user");
   my $password = PXT::Config->get("db_password");
-  my $dbh = $self->sysdba_connect;
-  if ($dbh->do(qq{ALTER USER $user IDENTIFIED BY "$password" ACCOUNT UNLOCK})) {
+  my $backend = PXT::Config->get('db_backend');
+  my $dsn = "dbi:Pg:dbname=".PXT::Config->get("db_name");
+  my $dbh = ($backend eq 'postgresql') ? RHN::DB->direct_connect($dsn) : $self->sysdba_connect;
+  my $query = ($backend eq 'postgresql') ?
+          qq{ALTER USER $user WITH ENCRYPTED PASSWORD '$password'}:
+          qq{ALTER USER $user IDENTIFIED BY "$password" ACCOUNT UNLOCK};
+  if ($dbh->do($query)) {
     return $user;
   }
   return 0;

@@ -1,6 +1,6 @@
 Summary: Spacewalk packages yum repository configuration
 Name: spacewalk-repo
-Version: 1.7.1
+Version: 1.9
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -58,7 +58,7 @@ REPO
 cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk-source.repo <<REPO
 [spacewalk-source]
 name=Spacewalk SRPMS
-baseurl=http://spacewalk.redhat.com/source/%{version}/%{reposubdir}/
+baseurl=http://yum.spacewalkproject.org/%{version}/%{reposubdir}/source/
 gpgkey=http://yum.spacewalkproject.org/RPM-GPG-KEY-spacewalk-2012
 enabled=0
 gpgcheck=1
@@ -99,6 +99,23 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/yum.repos.d/spacewalk-client-nightly.repo
 
 %changelog
+* Wed Oct 31 2012 Jan Pazdziora 1.9-1
+- Bumping up version.
+
+* Wed Oct 31 2012 Jan Pazdziora 1.8-4
+- We put the source directory under the respective version subdirectory.
+- %%defattr is not needed since rpm 4.4
+
+* Mon Apr 23 2012 Jan Pazdziora 1.8-3
+- Use the yum.spacewalkproject.org address for yum repos.
+
+* Mon Mar 12 2012 Jan Pazdziora 1.8-2
+- Marking all .repo files as noreplace, so that they survive local
+  modifications like enabling nightly repo.
+
+* Fri Mar 02 2012 Jan Pazdziora 1.8-1
+- Bumping package versions for 1.8.
+
 * Fri Mar 02 2012 Jan Pazdziora 1.7-5
 - Start signing with new gpg key.
 - Add separate -nightly.repo definitions for nightly Spacewalk repos.

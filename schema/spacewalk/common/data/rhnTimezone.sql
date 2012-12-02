@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008--2010 Red Hat, Inc.
+-- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -262,5 +262,10 @@ values
   (sequence_nextval('rhn_timezone_id_seq'),
    'GB-Eire', 'Ireland');
 
+insert into rhnTimezone
+  (id, olson_name, display_name)
+values
+  (sequence_nextval('rhn_timezone_id_seq'),
+   'Africa/Johannesburg', 'South Africa (Johannesburg)');
 
 commit;

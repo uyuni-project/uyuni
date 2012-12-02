@@ -50,7 +50,6 @@ install -m 644 SCDB.pm $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse
 %attr(755,%{apache_user},%{apache_group}) %dir %{_localstatedir}/lib/nocpulse/scdb/bdb
 %{perl_vendorlib}/NOCpulse/*
 
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 

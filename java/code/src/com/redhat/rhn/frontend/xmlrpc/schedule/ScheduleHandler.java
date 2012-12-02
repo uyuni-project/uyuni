@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -320,6 +320,23 @@ public class ScheduleHandler extends BaseHandler {
         return 1;
     }
 
+    /**
+     * Delete all archived actions in the given list.
+     * @param sessionKey The sessionkey for the session containing the logged in user.
+     * @param actionIds The list of ids for actions to delete.
+     * @return Returns a integer 1 on success
+     * @throws FaultException In case of an error
+     *
+     * @xmlrpc.doc Delete all archived actions in the given list.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #array_single("int", "action id")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int deleteActions(String sessionKey, List<Integer> actionIds) {
+        User user = getLoggedInUser(sessionKey);
+        ActionManager.deleteActionsById(user, actionIds);
+        return 1;
+    }
 }
 
 

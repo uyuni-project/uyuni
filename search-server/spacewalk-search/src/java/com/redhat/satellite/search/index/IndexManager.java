@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008--2011 Red Hat, Inc.
+ * Copyright (c) 2008--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -189,7 +189,7 @@ public class IndexManager {
             // this exception is thrown, when there're no packages or errata on the system
             // and the user performs a search
             // if this is the case, just return 0 results, otherwise rethrow the exception
-            if (!e.getMessage().contains("no segments* file found in org.apache.lucene.store.FSDirectory@/usr/share/rhn/search/indexes")) {
+            if (!e.getMessage().contains("no segments* file found in org.apache.lucene.store.FSDirectory@/var/lib/rhn/search/indexes")) {
                 throw new IndexingException(e);
             }
             log.error(e.getMessage());

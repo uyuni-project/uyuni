@@ -4,7 +4,7 @@
 #
 #
 #
-# Copyright (c) 2008 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -57,7 +57,7 @@ export ORAENV_ASK ORACLE_SID
 . oraenv
 
 mkdir -p /rhnsat/data /rhnsat/admin
-chown -R oracle:dba /rhnsat
+chown -RL oracle:dba /rhnsat
 if selinuxenabled && semodule -l | grep '^oracle-rhnsat\b' ; then
 	restorecon -rv /rhnsat
 	RUNRESTORECON=--run-restorecon

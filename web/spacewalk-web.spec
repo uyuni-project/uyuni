@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.7.28.13
+Version: 1.9.4
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -161,7 +161,7 @@ mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
 
 install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
-install -m 755 modules/dobby/scripts/check-oracle-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-oracle-space-usage.sh
+install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/susemanager-database %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 
 %post -n spacewalk-pxt
@@ -221,7 +221,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/Server.pm
 %{perl_vendorlib}/RHN/ServerActions.pm
 %{perl_vendorlib}/RHN/ServerGroup.pm
-%{perl_vendorlib}/RHN/ServerNotes.pm
 %{perl_vendorlib}/RHN/Session.pm
 %{perl_vendorlib}/RHN/Set.pm
 %{perl_vendorlib}/RHN/SimpleStruct.pm
@@ -265,7 +264,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/db-control.1.gz
 %{perl_vendorlib}/Dobby.pm
 %attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_dobby.conf
-%attr(0755,root,root) %{_sysconfdir}/cron.daily/check-oracle-space-usage.sh
+%attr(0755,root,root) %{_sysconfdir}/cron.daily/check-database-space-usage.sh
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/susemanager-database
 %{perl_vendorlib}/Dobby/
 %dir %{_prefix}/share/rhn
@@ -310,8 +309,237 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
-* Fri Mar 02 2012 Jan Pazdziora 1.7.28-1
-- Going for release 1.7, removing the nightly part.
+* Wed Nov 28 2012 Tomas Lestach <tlestach@redhat.com> 1.9.4-1
+- 470463 - fixing xmllint issue
+
+* Wed Nov 21 2012 Jan Pazdziora 1.9.3-1
+- Revert "removed dead query"
+- Revert "The ssm_rollback_by_tag_action_cb method no longer referenced,
+  removing."
+
+* Fri Nov 09 2012 Jan Pazdziora 1.9.2-1
+- 490524 - Return the datetime in the local time zone.
+- 490524 - Epoch is always in UTC, no time_zone setting for epoch case.
+- Function date_to_epoch made obsolete, not used anymore.
+- The from_zone parameter is not used anywhere.
+- Use RHN::Date where it is used (only).
+- 490524 - Avoid initializing the object with local only to call time_zone
+  right away.
+- 490524 - Shortcut RHN::Date->now->long_date, avoiding DateTime.
+
+* Wed Oct 31 2012 Jan Pazdziora 1.9.1-1
+- Bumping version string to 1.9.
+- Bumping package versions for 1.9.
+
+* Tue Oct 30 2012 Jan Pazdziora 1.8.48-1
+- Update the copyright year.
+- Make RHN::DB::SystemSnapshot usable with strict.
+
+* Mon Oct 22 2012 Jan Pazdziora 1.8.47-1
+- 852039 - get rid of useless error messages when verifying backup with db-
+  control
+- 552628 - added reset-password to man page
+- 552628 - alter command can't use bind variables
+- 852038 - Using fetchall_arrayref instead of fullfetch_arrayref.
+- 850714 - do not push strings into an array, when array is expected
+
+* Mon Oct 22 2012 Jan Pazdziora 1.8.46-1
+- removing spurious debugging line from check-database-space-usage.sh
+- do not restore dirs if there is none to restore
+- ignore missing backup_dir on old dumps
+- 825804 - check-oracle-space-usage.sh renamed to check-database-space-usage.sh
+- 815236 - use df with POSIX compatibility
+
+* Mon Oct 22 2012 Miroslav Suchý
+- 805822 - warn about parsing backup log
+- 805822 - mark some commands as Oracle only and sync --help with man page
+- 815236 - adopt check-oracle-space-usage.sh for PotgreSQL
+
+* Mon Oct 22 2012 Miroslav Suchý
+- 805822 - reword --help page
+
+* Mon Oct 22 2012 Miroslav Suchý
+- drop plpgsql language before restore
+- implement on-line backup and restore on PG
+- 805822 - edit man page to include PostgreSQL specific commands
+- 663315 - wait until database is really offline
+- log into control file empty directories
+- correctly set ownership of restored files
+- set ownership of restored files under PG
+- restore selinux context after restore
+- implement "db-control restore" on PG
+- db-control under PG can be run as root or postgres user
+- implement "db-control examine/verify" on PG
+- put into control file base directory
+- if size is undef write 0
+- implement "db-control backup" on PG
+- implement "db-control reset-password" on PG
+- implement "db-control report-stats" on PG
+- unify connect() with RHN::DBI
+- implement "db-control gather-stats" under PG
+- mark "db-control extend" and "db-control shrink-segments" as Oracle only
+- implement "db-control tablesizes" under PG
+- implement "db-control report" under PG
+- mark set-optimizer and get-optimizer as Oracle only
+- implement "db-control start" and "db-control stop" under PG
+- implement "db-control status" under PG
+
+* Tue Oct 16 2012 Jan Pazdziora 1.8.42-1
+- Adding use which seems to be needed.
+
+* Fri Oct 12 2012 Jan Pazdziora 1.8.41-1
+- 844433 - fix cloning a child channel with a parent in different org
+- Bind bytea with PG_BYTEA.
+
+* Thu Oct 11 2012 Jan Pazdziora 1.8.40-1
+- Dead code removal.
+
+* Thu Oct 11 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.39-1
+- 847194 - Document & set default web.smtp_server
+- Module Sniglets::ListView::TracerList not used, removing.
+- The database_queries.xml do not seem to be used, removing.
+
+* Thu Oct 11 2012 Tomas Lestach <tlestach@redhat.com> 1.8.38-1
+- reverting of web.chat_enabled -> java.chat_enabled translation
+- Removing use which is not used.
+- Methods server_group_count no longer referenced, removing.
+- Methods lookup_key were deprecated long enough, removing.
+- Methods compatible_with_server no longer referenced, removing.
+- The org_default method no longer referenced, removing.
+- Methods package_groups no longer referenced, removing.
+- The has_virtualization_entitlement method no longer referenced, removing.
+- ACL handler system_entitled no longer used, removing.
+- ACL handler system_has_virtualization_entitlement no longer used, removing.
+- The latest_packages_in_channel_tree method no longer referenced, removing.
+- The /network/systems/details/kickstart/* is not used for a long time.
+
+* Wed Oct 10 2012 Jan Pazdziora 1.8.37-1
+- Dead code removal.
+- RHN Proxies older than version 5 as no longer supported.
+
+* Thu Sep 20 2012 Jan Pazdziora 1.8.36-1
+- Avoid link without eid parameter filled.
+
+* Fri Sep 07 2012 Tomas Lestach <tlestach@redhat.com> 1.8.35-1
+- restore changelog
+- changing web.chat_enabled -> java.chat_enabled
+- move java related configuration the rhn_java.conf
+
+* Wed Sep 05 2012 Stephen Herr <sherr@redhat.com> 1.8.34-1
+- 815964 - moving monitoring probe batch option from rhn.conf to rhn_web.conf
+
+* Fri Aug 31 2012 Jan Pazdziora 1.8.33-1
+- 852048 - fix typo in db-control man page
+
+* Tue Aug 07 2012 Jan Pazdziora 1.8.32-1
+- Remove hints that should no longer be needed.
+
+* Wed Aug 01 2012 Jan Pazdziora 1.8.31-1
+- fix outer join syntax
+
+* Mon Jul 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.30-1
+- remove usage of org_applicant user role
+- remove usage of rhn_support user role
+- remove usage of rhn_superuser user role
+
+* Fri Jul 20 2012 Tomas Kasparek <tkasparek@redhat.com> 1.8.29-1
+- 841453  - forcing parameter to be numeric
+- Forcing parameter to be string
+
+* Fri Jul 13 2012 Jan Pazdziora 1.8.28-1
+- OpenSCAP Integration -- XCCDF Scan Diff
+
+* Thu Jul 12 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.27-1
+- Fix ISE on pgsql: Error message: RHN::Exception: DBD::Pg::st execute failed
+
+* Tue Jul 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.26-1
+- cross-database references are not implemented: pe.evr.as_vre_simple
+
+* Thu Jun 28 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.25-1
+- removed unused query
+
+* Wed Jun 27 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.24-1
+- ORDER BY expressions must appear in select list
+- removed dead query
+- fixed ssm provisioning
+
+* Wed Jun 27 2012 Jan Pazdziora 1.8.23-1
+- The remove_virtualization_host_entitlement no longer used, removing.
+- The rhn:delete_server_cb and delete_server_cb no longer used, removing.
+- The delete_confirm.pxt was replaced by DeleteConfirm.do.
+
+* Wed Jun 27 2012 Jan Pazdziora 1.8.22-1
+- Perl Notes pages seem like dead code.
+
+* Wed Jun 27 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.21-1
+- 835608 - error messages in PostgreSQL have different pattern
+
+* Tue Jun 26 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.20-1
+- Correcting ISE on postgresql: NVL keyword
+
+* Fri Jun 22 2012 Jan Pazdziora 1.8.19-1
+- For the localhost:5432 case, use the Unix socket local connection.
+
+* Fri Jun 08 2012 Jan Pazdziora 1.8.18-1
+- 803370 - call to rhn_server.tag_delete db agnostic
+
+* Mon Jun 04 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.17-1
+- Add support for studio image deployments (web UI) (jrenner@suse.de)
+
+* Thu May 31 2012 Jan Pazdziora 1.8.16-1
+- OpenSCAP integration -- A simple search page.
+
+* Fri May 25 2012 Stephen Herr <sherr@redhat.com> 1.8.15-1
+- 824879, 825279 - Sometimes the return_link on the SSM Clear button does not
+  work
+
+* Thu May 10 2012 Jan Pazdziora 1.8.14-1
+- Split OpenSCAP and AuditReviewing up (slukasik@redhat.com)
+
+* Thu Apr 26 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.13-1
+- add AS syntax for PostgreSQL
+
+* Mon Apr 23 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.12-1
+- Fix errata clone name generation in perl code
+
+* Thu Apr 19 2012 Jan Pazdziora 1.8.11-1
+- Removed double-dash from copyright notice on error pages.
+
+* Tue Apr 17 2012 Jan Pazdziora 1.8.10-1
+- Broken link patch submitted on behalf of Michael Calmer (sherr@redhat.com)
+
+* Thu Apr 12 2012 Stephen Herr <sherr@redhat.com> 1.8.9-1
+- 812031 - Update perl channel-select-dropdowns to use the same hierarchical
+  sort as java pages (sherr@redhat.com)
+
+* Thu Apr 05 2012 Jan Pazdziora 1.8.8-1
+- Fix naming of cloned errata to replace only the first 2 chars
+  (tlestach@redhat.com)
+
+* Tue Apr 03 2012 Jan Pazdziora 1.8.7-1
+- 806439 - Changing perl sitenav too (sherr@redhat.com)
+
+* Wed Mar 21 2012 Jan Pazdziora 1.8.6-1
+- Fixing regular_systems_in_channel_family for PostgreSQL.
+
+* Tue Mar 20 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.5-1
+- fixed rhn_server.delete_from_servergroup() call
+- Show details of SCAP event.
+
+* Mon Mar 19 2012 Jan Pazdziora 1.8.4-1
+- We no longer have /install/index.pxt, so satellite_install cannot be used.
+
+* Tue Mar 13 2012 Simon Lukasik <slukasik@redhat.com> 1.8.3-1
+- OpenSCAP integration  -- Show results for system on web.
+  (slukasik@redhat.com)
+
+* Tue Mar 13 2012 Jan Pazdziora 1.8.2-1
+- Need to point to ReleventErrata.do from .pxt pages as well.
+- PXT::Request->clear_session is not used anywhere, thus removing
+  (mzazrivec@redhat.com)
+
+* Fri Mar 02 2012 Jan Pazdziora 1.8.1-1
+- Bumping version string to 1.8.
 
 * Fri Mar 02 2012 Jan Pazdziora 1.7.27-1
 - Update the copyright year info.

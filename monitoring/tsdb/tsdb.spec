@@ -7,13 +7,12 @@
 %endif
 
 %define init_script %{_initddir}/tsdb_local_queue
-
 %define lqdir       %{_var}/log/nocpulse/TSDBLocalQueue
 %define bdbdir      %{_var}/lib/nocpulse/tsdb/bdb
 %define npbin       %{_bindir}
 Name:         tsdb
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.27.27.2
+Version:      1.27.29
 Release:      1%{?dist}
 Summary:      Time Series Database
 URL:          https://fedorahosted.org/spacewalk
@@ -46,7 +45,6 @@ Time Series Database
 rm -rf $RPM_BUILD_ROOT
 
 # Directories
-
 install -d $RPM_BUILD_ROOT/%{perl_vendorlib}/NOCpulse/TSDB/LocalQueue
 mkdir -p $RPM_BUILD_ROOT%bdbdir
 mkdir -p $RPM_BUILD_ROOT%lqdir
@@ -125,6 +123,14 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Aug 01 2012 Jan Pazdziora 1.27.29-1
+- 844992 - force the array context so that Class::MethodMaker behaves the same
+  in both versions 1 and 2.
+- %%defattr is not needed since rpm 4.4
+
+* Tue Mar 13 2012 Michael Mraka <michael.mraka@redhat.com> 1.27.28-1
+- fixed error: %%changelog entries must start with *
+
 * Wed Feb 15 2012 Milan Zazrivec <mzazrivec@redhat.com> 1.27.27-1
 - time_series revamped: tsdb to use new table names
 

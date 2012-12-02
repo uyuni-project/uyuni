@@ -9,13 +9,13 @@
 %endif
 
 Name:           spacewalk-setup
-Version:        1.7.9.10
+Version:        1.9.1
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
 Group:          Applications/System
 License:        GPLv2
-URL:            http://spacewalk.redhat.com
+URL:            http://www.spacewalkproject.org/
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -58,6 +58,7 @@ setup tasks, re-installation, and upgrades.
 
 %prep
 %setup -q
+
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS=vendor
@@ -179,6 +180,117 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Fri Nov 30 2012 Jan Pazdziora 1.9.1-1
+- Allow tomcat config file without number.
+- Prefer three-parameter open.
+- Stop repeated dir/file concatenation.
+
+* Wed Oct 31 2012 Jan Pazdziora 1.8.24-1
+- Advertise the www.spacewalkproject.org.
+
+* Tue Oct 30 2012 Jan Pazdziora 1.8.23-1
+- Update the copyright year.
+
+* Thu Oct 25 2012 Jan Pazdziora 1.8.22-1
+- Exit if spacewalk-setup-embedded-postgresql is not installed.
+- Only start database for embedded scenario.
+
+* Mon Oct 22 2012 Jan Pazdziora 1.8.21-1
+- 562287 - pass proxy configuration to spacewalk-setup to store it into
+  rhn.conf file
+- upgrade: start pg server only when migrating
+- don't restart services when upgrading
+- set upgrade_db.log size to 22M
+- don't duplicate database upgrade log
+- don't support custom db-name in an answer file
+- don't pass db-name to upgrade-db.sh
+- When not using tnsnames.ora, the full service name has to be used.
+- Revert oracle_setup_embedded_db part of "added embedded postgresql
+  installation part"
+- Installation is with embedded database if not told otherwise.
+- No migration if the ISO has embedded Oracle software.
+
+* Mon Oct 22 2012 Jan Pazdziora 1.8.20-1
+- don't remove Oracle stuff during oracle->postgresql migration
+- run db migration in upgrade mode only
+- set pipefail to correctly detect failed schema migration
+- remove oracle-rhnsat-selinux during oracle -> postgresql migration
+- Logic for embedded database migration
+
+* Mon Oct 22 2012 Michael Mraka
+- check free space under /var/lib/pgsql/data
+- modified embedded_diskspace_check to support non default directories
+- don't print error messages if postgresql is not set up yet
+- setup embedded db also during upgrade
+
+* Mon Oct 22 2012 Michael Mraka
+- merge spacewalk-setup-embedded-postgresql and remove-db.sh
+- added script to remove database
+- added embedded postgresql installation part
+- embedded database is now postgresql
+- implement on-line backup and restore on PG
+
+* Wed Aug 22 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.17-1
+- fix memory settings on 24+ cpu machines
+- 847276 - pull http proxy settings from up2date conf.
+
+* Fri Aug 10 2012 Jan Pazdziora 1.8.16-1
+- 847011 - document --external-db option
+
+* Wed Aug 01 2012 Jan Pazdziora 1.8.15-1
+- 751678 - Make sure we chown the directory structure if /rhnsat is a symlink.
+
+* Fri Jul 13 2012 Tomas Lestach <tlestach@redhat.com> 1.8.14-1
+- increase allowed parameter count
+
+* Wed Jun 27 2012 Jan Pazdziora 1.8.13-1
+- Exit if starting tomcat did not pass.
+
+* Sat Jun 16 2012 Miroslav Suchý 1.8.12-1
+- 827022 - add LICENSE file and change mention Artistic licence to GPLv2
+
+* Wed Jun 06 2012 Jan Pazdziora 1.8.11-1
+- Suppress db notices when clearing the schema
+
+* Thu May 31 2012 Jan Pazdziora 1.8.10-1
+- get rid of jabberd xsl templates in spacewalk-setup
+
+* Mon May 21 2012 Jan Pazdziora 1.8.9-1
+- %%defattr is not needed since rpm 4.4
+- remove usage of rhn_quota package
+
+* Fri May 04 2012 Jan Pazdziora 1.8.8-1
+- spacewalk-setup-cobbler: extend verbose output (mzazrivec@redhat.com)
+
+* Tue Apr 24 2012 Milan Zazrivec <mzazrivec@redhat.com> 1.8.7-1
+- spacewalk-setup-cobbler: script to configure cobbler for Spacewalk
+- Rename cobbler-setup to cobbler20-setup
+
+* Tue Apr 17 2012 Jan Pazdziora 1.8.6-1
+- Create deploy.sql on PostgreSQL as well (mzazrivec@redhat.com)
+
+* Tue Apr 10 2012 Jan Pazdziora 1.8.5-1
+- To support the whole Unicode with idn_to_ascii, we need to specify utf8.
+- The spacewalk-setup script does not seem to need Net::LibIDN directly.
+
+* Thu Apr 05 2012 Jan Pazdziora 1.8.4-1
+- fixed clearing db for postgresql installation (michael.mraka@redhat.com)
+
+* Mon Mar 19 2012 Jan Pazdziora 1.8.3-1
+- rhn-config-satellite.pl does not like to be invoked with no --option
+  specified.
+
+* Mon Mar 19 2012 Jan Pazdziora 1.8.2-1
+- We no longer have /install/index.pxt, so satellite_install cannot be used.
+
+* Fri Mar 09 2012 Miroslav Suchý 1.8.1-1
+- monitoringDOTdbname is not used anymore
+- remove RHN_DB_USERNAME from monitoring scout configuration
+- remove RHN_DB_PASSWD from monitoring scout configuration
+- remove RHN_DB_NAME from monitoring scout configuration
+- remove tableowner from monitoring scout configuration
+- Bumping package versions for 1.8. (jpazdziora@redhat.com)
+
 * Fri Mar 02 2012 Jan Pazdziora 1.7.9-1
 - Update the copyright year info.
 

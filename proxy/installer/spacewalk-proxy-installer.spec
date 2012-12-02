@@ -2,7 +2,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 1.7.6.7
+Version: 1.9.0
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -114,6 +114,19 @@ spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Thu Jul 26 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.4-1
+- make sure username/password is correct
+
+* Fri May 11 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.3-1
+- make pylint happy
+
+* Thu May 10 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.2-1
+- 695276 - if koan is requesting anything from /cobbller_api replace hostname
+  of server with hostname of first proxy in chain
+
+* Wed Mar 14 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.1-1
+- do not run pylint check on RHEL5 and old Fedoras
+
 * Fri Mar 02 2012 Jan Pazdziora 1.7.6-1
 - Update the copyright year info.
 

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -159,17 +159,6 @@ sub add_widget {
   if ($widget->isa('RHN::Form::Widget::File')) {
     $self->enctype('multipart/form-data');
   }
-
-  return;
-}
-
-sub remove_widget {
-  my $self = shift;
-  my $label = shift;
-
-  delete $self->{widgets_by_label}->{$label};
-
-  $self->{widgets} = [ grep { $_->label ne $label } @{$self->{widgets}} ];
 
   return;
 }

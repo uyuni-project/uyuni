@@ -90,30 +90,32 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Date channelsChanged;
     private Date created;
     private String cobblerId;
-    private Set devices;
+    private Set<Device> devices;
     private ServerInfo serverInfo;
     private CPU cpu;
     private ServerLock lock;
     private ServerUuid serverUuid;
-    private Set notes;
-    private Set networks;
+    private Set<Note> notes;
+    private Set<Network> networks;
     private Ram ram;
     private Dmi dmi;
-    private Set networkInterfaces;
+    private Set<NetworkInterface> networkInterfaces;
     private Set<CustomDataValue> customDataValues;
-    private Set channels;
-    private List configChannels = Collections.EMPTY_LIST;
-    private Set localChannels = new HashSet();
+    private Set<Channel> channels;
+    private List<ConfigChannel> configChannels = new ArrayList<ConfigChannel>();
+    private Set<ConfigChannel> localChannels = new HashSet<ConfigChannel>();
     private Location serverLocation;
-    private Set<VirtualInstance> guests = new HashSet();
+    private Set<VirtualInstance> guests = new HashSet<VirtualInstance>();
     private VirtualInstance virtualInstance;
     private PushClient pushClient;
-    private ConfigChannelListProcessor configListProc = new ConfigChannelListProcessor();
-    private Set history;
-    private Set packages;
+    private final ConfigChannelListProcessor configListProc =
+        new ConfigChannelListProcessor();
+    private Set<ServerHistoryEvent> history;
+    private Set<InstalledPackage> packages;
     private ProxyInfo proxyInfo;
     private Set<? extends ServerGroup> groups;
     private Set<Capability> capabilities;
+    private Crashes crashes;
 
     public static final String VALID_CNAMES = "valid_cnames_";
 
@@ -179,8 +181,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public ConfigChannel getLocalOverrideNoCreate() {
         ensureConfigManageable();
         ConfigChannel channel = null;
-        for (Iterator itr = localChannels.iterator(); itr.hasNext();) {
-            ConfigChannel ch = (ConfigChannel) itr.next();
+        for (Iterator<ConfigChannel> itr = localChannels.iterator(); itr
+                .hasNext();) {
+            ConfigChannel ch = itr.next();
             if (ch.getConfigChannelType().equals(ConfigChannelType.local())) {
                 channel = ch;
                 break;
@@ -198,7 +201,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     private void setLocalType(ConfigChannel channel,
-                                    ConfigChannelType cct) {
+            ConfigChannelType cct) {
 
         ConfigChannel ch =  findLocal(cct);
         if (ch != null) {
@@ -207,11 +210,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
         localChannels.add(channel);
     }
 
-    protected void setLocalChannels(Set chls) {
+    protected void setLocalChannels(Set<ConfigChannel> chls) {
         localChannels = chls;
     }
 
-    protected Set getLocalChannels() {
+    protected Set<ConfigChannel> getLocalChannels() {
         return localChannels;
     }
 
@@ -224,12 +227,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private ConfigChannel findLocal(ConfigChannelType cct) {
 
         assert localChannels.size() <= 2 : "More than two local override  channels" +
-                                "Associated with this server." +
-                                "There should be NO more than Two" +
-                                    " Override Channels associated";
+                "Associated with this server." +
+                "There should be NO more than Two" +
+                " Override Channels associated";
         ensureConfigManageable();
-        for (Iterator itr = localChannels.iterator(); itr.hasNext();) {
-            ConfigChannel ch = (ConfigChannel) itr.next();
+        for (Iterator<ConfigChannel> itr = localChannels.iterator(); itr
+                .hasNext();) {
+            ConfigChannel ch = itr.next();
             ConfigChannelType  item = ch.getConfigChannelType();
             if (cct.equals(item)) {
                 return ch;
@@ -264,8 +268,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public ConfigChannel getSandboxOverrideNoCreate() {
         ensureConfigManageable();
         ConfigChannel channel = null;
-        for (Iterator itr = localChannels.iterator(); itr.hasNext();) {
-            ConfigChannel ch = (ConfigChannel) itr.next();
+        for (Iterator<ConfigChannel> itr = localChannels.iterator(); itr
+                .hasNext();) {
+            ConfigChannel ch = itr.next();
             if (ch.getConfigChannelType().equals(ConfigChannelType.sandbox())) {
                 channel = ch;
                 break;
@@ -286,9 +291,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * ONLY TO BE USED FOR/BY HIBERNATE
      * @param configChannelsIn The configChannels to set.
      */
-    protected void setConfigChannelsHibernate(List configChannelsIn) {
+    protected void setConfigChannelsHibernate(
+            List<ConfigChannel> configChannelsIn) {
         configChannels = configChannelsIn;
-        for (Iterator itr = configChannels.iterator(); itr.hasNext();) {
+        for (Iterator<ConfigChannel> itr = configChannels.iterator(); itr
+                .hasNext();) {
             if (itr.next() == null) {
                 itr.remove();
             }
@@ -300,7 +307,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      *
      * @return List of config channels
      */
-    protected List getConfigChannelsHibernate() {
+    protected List<ConfigChannel> getConfigChannelsHibernate() {
         return configChannels;
     }
 
@@ -357,11 +364,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * Protected constructor
      */
     protected Server() {
-        devices = new HashSet();
-        notes = new HashSet();
-        networks = new HashSet();
-        networkInterfaces = new HashSet();
-        customDataValues = new HashSet();
+        devices = new HashSet<Device>();
+        notes = new HashSet<Note>();
+        networks = new HashSet<Network>();
+        networkInterfaces = new HashSet<NetworkInterface>();
+        customDataValues = new HashSet<CustomDataValue>();
 
         ignoreEntitlementsForMigration = Boolean.FALSE;
     }
@@ -718,7 +725,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * Sets the set of devices.
      * @param devicesIn The devices to set.
      */
-    protected void setDevices(Set devicesIn) {
+    protected void setDevices(Set<Device> devicesIn) {
         devices = devicesIn;
     }
 
@@ -748,14 +755,14 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * @return Returns the notes.
      */
-    public Set getNotes() {
+    public Set<Note> getNotes() {
         return notes;
     }
 
     /**
      * @param n The notes to set.
      */
-    public void setNotes(Set n) {
+    public void setNotes(Set<Note> n) {
         this.notes = n;
     }
 
@@ -792,10 +799,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * Sets teh set of networks
+     * Sets the set of networks
      * @param n The networks to set
      */
-    public void setNetworks(Set n) {
+    public void setNetworks(Set<Network> n) {
         this.networks = n;
     }
 
@@ -852,7 +859,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public NetworkInterface findPrimaryNetworkInterface() {
         if (!networkInterfaces.isEmpty()) {
-            Iterator i = networkInterfaces.iterator();
+            Iterator<NetworkInterface> i = networkInterfaces.iterator();
             // First pass look for names
             NetworkInterface ni = null;
 
@@ -875,10 +882,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
             // Second pass look for localhost
             i = networkInterfaces.iterator();
             while (i.hasNext()) {
-                NetworkInterface n = (NetworkInterface) i.next();
+                NetworkInterface n = i.next();
                 String addr = n.getIpaddr();
                 if (addr != null &&
-                    !addr.equals("127.0.0.1")) {
+                        !addr.equals("127.0.0.1")) {
                     log.debug("Found NetworkInterface !localhost");
                     return n;
                 }
@@ -892,7 +899,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
             // If we didnt match any of the above criteria
             // just give up and return the 1st one.
             log.debug("just returning 1st network interface");
-            return (NetworkInterface) networkInterfaces.iterator().next();
+            return networkInterfaces.iterator().next();
         }
         return null;
     }
@@ -901,8 +908,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
         if (networkInterfaces.isEmpty()) {
             return null;
         }
-        for (Iterator i = networkInterfaces.iterator(); i.hasNext();) {
-            NetworkInterface ni = (NetworkInterface) i.next();
+        for (Iterator<NetworkInterface> i = networkInterfaces.iterator(); i
+                .hasNext();) {
+            NetworkInterface ni = i.next();
             if (ni.isDisabled()) {
                 continue;
             }
@@ -925,9 +933,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
     // Sometimes java really annoys me
     private Network findPrimaryNetwork() {
         if (!networks.isEmpty()) {
-            Iterator i = networks.iterator();
+            Iterator<Network> i = networks.iterator();
             while (i.hasNext()) {
-                Network n = (Network) i.next();
+                Network n = i.next();
                 String addr = n.getIpaddr();
                 if (addr != null &&
                         !addr.equals("127.0.0.1")) {
@@ -936,16 +944,16 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 }
             }
             log.debug("giving up, returning 1st Network");
-            return (Network) networks.iterator().next();
+            return networks.iterator().next();
         }
         return null;
     }
 
     private Network findPrimaryIpv6Network() {
         if (!networks.isEmpty()) {
-            Iterator i = networks.iterator();
+            Iterator<Network> i = networks.iterator();
             while (i.hasNext()) {
-                Network n = (Network) i.next();
+                Network n = i.next();
                 String addr = n.getIp6addr();
                 if (addr != null &&
                         !addr.equals("::1")) {
@@ -954,7 +962,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 }
             }
             log.debug("giving up, returning 1st Network");
-            return (Network) networks.iterator().next();
+            return networks.iterator().next();
         }
         return null;
     }
@@ -977,7 +985,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public String getHostname() {
         if (!networks.isEmpty()) {
-            Network net = (Network) networks.iterator().next();
+            Network net = networks.iterator().next();
             return net.getHostname();
         }
         return null;
@@ -988,9 +996,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Returns the hostname aliases for this server
      */
     public List<String> getCnames() {
-        List<String> result = new ArrayList();
-        List proxyCnames = Config.get().getList(VALID_CNAMES +
-                    serverInfo.getId().toString());
+        List<String> result = new ArrayList<String>();
+        List<String> proxyCnames = Config.get().getList(
+                VALID_CNAMES +
+                serverInfo.getId().toString());
         if (!proxyCnames.isEmpty()) {
             result.addAll(proxyCnames);
         }
@@ -1007,13 +1016,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return (hostname == null) ? null : IDN.toUnicode(hostname);
     }
 
-   /**
+    /**
      * Get the hostname aliases (cname records) for this server
      * If hostname is IDN, it is decoded from Pune encoding
      * @return Returns the primary hostname for this server
      */
     public List<String> getDecodedCnames() {
-        List<String> result = new ArrayList();
+        List<String> result = new ArrayList<String>();
         for (String hostname : getCnames()) {
             result.add(IDN.toUnicode(hostname));
         }
@@ -1151,7 +1160,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * @param customDataValuesIn The customDataValues to set.
      */
-    public void setCustomDataValues(Set customDataValuesIn) {
+    public void setCustomDataValues(Set<CustomDataValue> customDataValuesIn) {
         this.customDataValues = customDataValuesIn;
     }
 
@@ -1175,13 +1184,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
         // Check for null key values.
         if (key == null || key.getLabel() == null) {
             throw new
-                UndefinedCustomDataKeyException("CustomDataKey can not be null.");
+            UndefinedCustomDataKeyException("CustomDataKey can not be null.");
         }
 
         // Make sure this org has this particular CustomDataKey defined
         if (!org.hasCustomDataKey(key.getLabel())) {
             throw new
-                UndefinedCustomDataKeyException("CustomDataKey: " + key.getLabel() +
+            UndefinedCustomDataKeyException("CustomDataKey: " + key.getLabel() +
                     " is not defined for this org.");
         }
 
@@ -1236,7 +1245,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return channels;
     }
 
-    protected void setChannels(Set chans) {
+    protected void setChannels(Set<Channel> chans) {
         channels = chans;
     }
 
@@ -1259,8 +1268,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
          * relatively small, loop through the channels set and look for one without a
          * parentChannel instead of going back to the db.
          */
-        for (Iterator itr = channels.iterator(); itr.hasNext();) {
-            Channel channel = (Channel) itr.next();
+        for (Iterator<Channel> itr = channels.iterator(); itr.hasNext();) {
+            Channel channel = itr.next();
             if (channel.getParentChannel() == null) {
                 // This is the base channel
                 return channel;
@@ -1301,8 +1310,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return true if the server has the given Entitlement.
      */
     public boolean hasEntitlement(Entitlement entitlement) {
-        List grps = getEntitledGroups();
-        for (Iterator itr = grps.iterator(); itr.hasNext();) {
+        List<?> grps = getEntitledGroups();
+        for (Iterator<?> itr = grps.iterator(); itr.hasNext();) {
             ServerGroup g = (ServerGroup) itr.next();
 
             // The server's group type can be null if the user has created some
@@ -1327,11 +1336,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public Set<Entitlement> getEntitlements() {
         Set<Entitlement> entitlements = new HashSet<Entitlement>();
 
-        Iterator i = getEntitledGroups().iterator();
+        Iterator<EntitlementServerGroup> i = getEntitledGroups().iterator();
         while (i.hasNext()) {
-            ServerGroup grp = (ServerGroup)i.next();
-               entitlements.add(EntitlementManager.getByName(
-                        grp.getGroupType().getLabel()));
+            ServerGroup grp = i.next();
+            entitlements.add(EntitlementManager.getByName(
+                    grp.getGroupType().getLabel()));
         }
         return entitlements;
     }
@@ -1342,10 +1351,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public Entitlement getBaseEntitlement() {
         Entitlement baseEntitlement = null;
-        Iterator i = getEntitledGroups().iterator();
+        Iterator<EntitlementServerGroup> i = getEntitledGroups().iterator();
 
         while (i.hasNext() && baseEntitlement == null) {
-            ServerGroupType sgt = ((ServerGroup) i.next()).getGroupType();
+            ServerGroupType sgt = (i.next()).getGroupType();
 
             if (sgt.isBase()) {
                 baseEntitlement = EntitlementManager.getByName(sgt.getLabel());
@@ -1361,7 +1370,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setBaseEntitlement(Entitlement baseIn) {
         ServerGroupType verify = ServerFactory.
-            lookupServerGroupTypeByLabel(baseIn.getLabel());
+                lookupServerGroupTypeByLabel(baseIn.getLabel());
         if (!verify.isBase()) {
             throw new IllegalArgumentException("baseIn is not a base entitlement");
         }
@@ -1384,9 +1393,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Set of entitlements that are add-on entitlements for the server
      */
     public Set<Entitlement> getAddOnEntitlements() {
-        Set s = new HashSet();
+        Set<Entitlement> s = new HashSet<Entitlement>();
 
-        Iterator i = getEntitledGroups().iterator();
+        Iterator<?> i = getEntitledGroups().iterator();
 
         while (i.hasNext()) {
             ServerGroupType sgt = ((ServerGroup) i.next()).getGroupType();
@@ -1407,8 +1416,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * labels.
      */
     public String getAddOnEntitlementsAsText() {
-        Set addOnEntitlements = getAddOnEntitlements();
-        Iterator iterator = addOnEntitlements.iterator();
+        Set<?> addOnEntitlements = getAddOnEntitlements();
+        Iterator<?> iterator = addOnEntitlements.iterator();
         StringBuffer buffer = new StringBuffer();
         Entitlement entitlement = null;
 
@@ -1455,7 +1464,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public boolean hasVirtualizationEntitlement() {
         return hasEntitlement(EntitlementManager.VIRTUALIZATION) ||
-            hasEntitlement(EntitlementManager.VIRTUALIZATION_PLATFORM);
+                hasEntitlement(EntitlementManager.VIRTUALIZATION_PLATFORM);
     }
 
     /**
@@ -1579,18 +1588,18 @@ public class Server extends BaseDomainHelper implements Identifiable {
         Server castOther = (Server) other;
 
         return new EqualsBuilder().append(os, castOther.getOs())
-                                  .append(release, castOther.getRelease())
-                                  .append(name, castOther.getName())
-                                  .append(description, castOther.getDescription())
-                                  .append(info, castOther.getInfo())
-                                  .append(secret, castOther.getSecret())
-                                  .append(autoDeliver, castOther.getAutoDeliver())
-                                  .append(autoUpdate, castOther.getAutoUpdate())
-                                  .append(runningKernel, castOther.getRunningKernel())
-                                  .append(lastBoot, castOther.getLastBoot())
-                                  .append(channelsChanged, castOther.getChannelsChanged())
-                                  .append(getProxyInfo(), castOther.getProxyInfo())
-                                  .isEquals();
+                .append(release, castOther.getRelease())
+                .append(name, castOther.getName())
+                .append(description, castOther.getDescription())
+                .append(info, castOther.getInfo())
+                .append(secret, castOther.getSecret())
+                .append(autoDeliver, castOther.getAutoDeliver())
+                .append(autoUpdate, castOther.getAutoUpdate())
+                .append(runningKernel, castOther.getRunningKernel())
+                .append(lastBoot, castOther.getLastBoot())
+                .append(channelsChanged, castOther.getChannelsChanged())
+                .append(getProxyInfo(), castOther.getProxyInfo())
+                .isEquals();
     }
 
     /**
@@ -1599,12 +1608,12 @@ public class Server extends BaseDomainHelper implements Identifiable {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id).append(digitalServerId).append(os)
-                                    .append(release).append(name).append(description)
-                                    .append(info).append(secret).append(autoDeliver)
-                                    .append(autoUpdate).append(runningKernel)
-                                    .append(lastBoot).append(channelsChanged).
-                                    append(getProxyInfo())
-                                    .toHashCode();
+                .append(release).append(name).append(description)
+                .append(info).append(secret).append(autoDeliver)
+                .append(autoUpdate).append(runningKernel)
+                .append(lastBoot).append(channelsChanged).
+                append(getProxyInfo())
+                .toHashCode();
     }
 
     /**
@@ -1614,7 +1623,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append(
                 "id", id).append("org", org).append("name", name).append(
-                "description", description).toString();
+                        "description", description).toString();
     }
 
     /**
@@ -1694,11 +1703,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 }
             }
             if (retval.size() == 0) {
-                return Collections.EMPTY_SET;
+                return new HashSet<Channel>();
             }
             return retval;
         }
-        return Collections.EMPTY_SET;
+        return new HashSet<Channel>();
     }
 
     /**
@@ -1721,7 +1730,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return boolean true false if subbed or not.
      */
     public boolean isSubscribed(Channel channelIn) {
-        Set childChannels = this.channels;
+        Set<Channel> childChannels = this.channels;
         if (childChannels != null) {
             return childChannels.contains(channelIn);
         }
@@ -1748,9 +1757,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
      *
      * @return Set of valid addon Entitlement instances for this server
      */
-    public Set getValidAddonEntitlementsForServer() {
-        Set retval = new HashSet();
-        Iterator i = this.getOrg().getValidAddOnEntitlementsForOrg().iterator();
+    public Set<Entitlement> getValidAddonEntitlementsForServer() {
+        Set<Entitlement> retval = new HashSet<Entitlement>();
+        Iterator<?> i = this.getOrg().getValidAddOnEntitlementsForOrg()
+                .iterator();
         while (i.hasNext()) {
             Entitlement ent = (Entitlement) i.next();
             if (this.isEntitlementAllowed(ent)) {
@@ -1781,14 +1791,14 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * Set the history events for this server
      * @param historyIn the List of history events
      */
-    public void setHistory(Set historyIn) {
+    public void setHistory(Set<ServerHistoryEvent> historyIn) {
         this.history = historyIn;
     }
 
     /**
      * @return Returns the packages.
      */
-    public Set getPackages() {
+    public Set<InstalledPackage> getPackages() {
         return packages;
     }
 
@@ -1796,7 +1806,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * @param packagesIn The packages to set.
      */
-    public void setPackages(Set packagesIn) {
+    public void setPackages(Set<InstalledPackage> packagesIn) {
         this.packages = packagesIn;
     }
 
@@ -1868,6 +1878,20 @@ public class Server extends BaseDomainHelper implements Identifiable {
             con = CobblerXMLRPCHelper.getConnection(user);
         }
         return SystemRecord.lookupById(con, getCobblerId());
+    }
+
+    /**
+     * @return Return application crashes.
+     */
+    public Crashes getCrashes() {
+        return crashes;
+    }
+
+    /**
+     * @param crashIn Set application crashes.
+     */
+    public void setCrashes(Crashes crashIn) {
+        crashes = crashIn;
     }
 
     /**

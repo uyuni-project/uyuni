@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 1.7.2.6
+Version: 1.9.2
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,40 @@ fi
 
 
 %changelog
+* Fri Nov 30 2012 Jan Pazdziora 1.9.2-1
+- Revert "876328 - updating rhel client tools translations"
+
+* Fri Nov 16 2012 Jan Pazdziora 1.9.1-1
+- 876328 - updating rhel client tools translations
+
+* Tue Oct 30 2012 Jan Pazdziora 1.8.8-1
+- Update the copyright year.
+- Update .po and .pot files for yum-rhn-plugin.
+- New translations from Transifex for yum-rhn-plugin.
+- Download translations from Transifex for yum-rhn-plugin.
+
+* Tue Oct 09 2012 Jan Pazdziora 1.8.7-1
+- 863997 - set correct exit code for check-update in case of error
+
+* Fri Sep 21 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.6-1
+- force metadata update if they differ from version on server
+
+* Tue Jul 24 2012 Jan Pazdziora 1.8.5-1
+- 842396 - Fixed legacy typo
+
+* Mon Jul 23 2012 Stephen Herr <sherr@redhat.com> 1.8.4-1
+- 842396 - Updated yum info messages to play nice with Subscription Management
+
+* Tue Jul 10 2012 Stephen Herr <sherr@redhat.com> 1.8.3-1
+- 839052 - yum-rhn-plugin honors yum timeout value
+
+* Thu Jun 21 2012 Jan Pazdziora 1.8.2-1
+- fix files headers. our code is under gplv2 license
+- %%defattr is not needed since rpm 4.4
+
+* Wed May 02 2012 Milan Zazrivec <mzazrivec@redhat.com> 1.8.1-1
+- 817567 - fix reports for auto-errata application already installed
+
 * Tue Feb 28 2012 Jan Pazdziora 1.7.2-1
 - Update .po and .pot files for yum-rhn-plugin.
 - Download translations from Transifex for yum-rhn-plugin.

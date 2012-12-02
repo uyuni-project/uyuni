@@ -104,16 +104,16 @@ class Registration(rhnHandler):
         self.functions.append("new_system")
         self.functions.append("new_system_user_pass")
 ##        self.functions.append("new_system_activation_key")
-        self.functions.append("new_user")
+        self.functions.append("new_user")               # obsoleted
         self.functions.append("privacy_statement")
         self.functions.append("refresh_hw_profile")
         self.functions.append("register_osad")
         self.functions.append("register_osad_jid")
         self.functions.append("register_product")
-        self.functions.append("reserve_user")
+        self.functions.append("reserve_user")           # obsoleted
         self.functions.append("send_serial")
         self.functions.append("upgrade_version")
-        self.functions.append("update_contact_info")
+        self.functions.append("update_contact_info")    # obsoleted
         self.functions.append("update_packages")
         self.functions.append("update_transactions")
         self.functions.append("virt_notify")
@@ -280,8 +280,7 @@ class Registration(rhnHandler):
             rhnFlags.set("registration_token", tokens_obj)
             # Is the token associated with a server?
             if tokens_obj.is_rereg_token:
-		log_debug(1, "YYY tokens_obj.is_rereg_token" )
-		# Also flag it's a re-registration token
+                # Also flag it's a re-registration token
                 rhnFlags.set("re_registration_token", tokens_obj)
                 # Load the server object
                 newserv = rhnServer.search(tokens_obj.get_server_id())
@@ -310,9 +309,9 @@ class Registration(rhnHandler):
         if data.has_key('release_name'):
             newserv.server["os"] = data['release_name']
 
-	## add suse_products profile if available
+        ## add suse_products profile if available
         if data.has_key( "suse_products" ):
-	    newserv.add_suse_products( data["suse_products"] )
+            newserv.add_suse_products( data["suse_products"] )
         ## add the package list
         if data.has_key('packages'):
             for package in data['packages']:
@@ -609,7 +608,7 @@ class Registration(rhnHandler):
             try:
                 base = rhnChannel.get_channel_for_release_arch(
                                                         version,
-                                                        arch)
+                                                        arch, newserv['org_id'])
                 failed_channels.append(base['label'])
             # We want to swallow exceptions here as we are just generating data
             # for the review screen in rhn_register.
@@ -1064,70 +1063,10 @@ class Registration(rhnHandler):
         # Keep doing the authentication and then just bail out
         self.auth_system(system_id)
         return 0
-
-        # we're updating the user records, so we need to load the user object
-        self.load_user = 1
-        server = self.auth_system(system_id)
-        log_debug(1, self.server_id)
-        user = server.user
-        # XXX: test that this user is an admin for the server
-        # raise rhnFault(4, "This username does not have administrator rights")
-        import states
-        import country
-        for k in product.keys():
-            # argh, the blimey scurge of null fax numbers!
-            if product[k] == None or product[k] == '':
-                continue
-            # now assign everything into the right place
-            if k in ["reg_num"]: # we'll deal with it later
-                continue
-            if k == 'state':
-                if states.states_to_abbr.has_key(product[k]):
-                    product[k] = states.states_to_abbr[product[k]]
-            if k == 'country':
-                invalid_codes = country.t9_countries.values() + \
-                                country.t9_countries.keys()
-                if product[k] in invalid_codes:
-                    log_error("Invalid country", product[k])
-                    raise rhnFault(30, _("Not a valid Country: %s")
-                                         % product[k])
-                if country.country_to_iso.has_key(product[k]):
-                    product[k] = country.country_to_iso[product[k]]
-                elif product[k] in country.country_to_iso.values():
-                    pass
-                else: # bad user! bad!
-                    if not product[k] in invalid_codes:
-                        product[k] = 'US'
-            # contact permissions
-            if k in ["contact_phone", "contact_mail",
-                     "contact_email", "contact_fax"]:
-                user.set_contact_perm(k, product[k])
-            # other personal info
-            if k in ["first_name", "last_name", "company", "phone",
-                     "fax", "title", "position"]:
-                user.set_info(k, product[k])
-            # address information
-            if k in ["city", "zip", "address1", "address2", "country", "state"]:
-                user.set_info(k, product[k])
-
-        user.save()
-        return 0
-
-    def __save_user(self, user):
-        """ Moved the saving of the user out to a common method
-            so that we can save to the db in a satellite.
-
-            It is called from the update_contact_info.
-        """
-        self.__save_user_db(user)
-
-    def __save_user_db(self, user):
-        """ Saves the user to the database. """
-        user.save()
-
+        
     def update_contact_info(self, username, password, info={}):
+        """ this API call is no longer used """
         log_debug(5, username, info)
-        contact_info = info.copy()
         username, password = str(username), str(password)
         user = rhnUser.search(username)
         if user is None:
@@ -1138,42 +1077,6 @@ class Registration(rhnHandler):
             log_error("User password check failed", username)
             raise rhnFault(2)
 
-        import states
-        import country
-        val = contact_info.get('state')
-        if val and states.states_to_abbr.has_key(val):
-            contact_info['state'] = states.states_to_abbr[val]
-        val = contact_info.get('country')
-        if val:
-            if (country.t9_countries.has_key(val) or
-                val in country.t9_countries.values()):
-                 raise rhnFault(30, _("Not a valid Country: %s") %
-                     val)
-            if country.country_to_iso.has_key(val):
-                contact_info['country'] = country.country_to_iso[val]
-            elif val not in country.country_to_iso.values():
-                # Invalid country, assume US
-                contact_info['country'] = 'US'
-
-        contact_perm_keys = ["contact_phone", "contact_mail",
-            "contact_email", "contact_fax", ]
-        for k in contact_perm_keys:
-            val = contact_info.get(k)
-            if val is not None:
-                log_debug(6, "Contact", k, val)
-                user.set_contact_perm(k, val)
-
-        info_keys = ["first_name", "last_name", "company", "phone",
-            "fax", "title", "position",
-            "city", "zip", "address1", "address2", "country", "state", ]
-        for k in info_keys:
-            val = contact_info.get(k)
-            if val is not None:
-                log_debug(6, "Info", k, val)
-                user.set_info(k, val)
-
-        # save the user either to the database or the UserService
-        self.__save_user(user)
         return 0
 
     def update_transactions(self, system_id, timestamp, transactions_hash):

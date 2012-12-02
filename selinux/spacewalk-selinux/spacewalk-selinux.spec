@@ -7,7 +7,7 @@
 %define modulename spacewalk
 
 Name:           spacewalk-selinux
-Version:        1.7.2.1
+Version:        1.9.0
 Release:        1%{?dist}
 Summary:        SELinux policy module supporting Spacewalk Server
 
@@ -106,13 +106,19 @@ fi
     %{_bindir}/rhn-sudo-ssl-tool /usr/sbin/tanukiwrapper
 
 %files
-%defattr(-,root,root,0755)
 %doc %{modulename}.fc %{modulename}.if %{modulename}.te
 %{_datadir}/selinux/*/%{modulename}.pp
 %{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
 %attr(0755,root,root) %{_sbindir}/%{name}-enable
 
 %changelog
+* Fri Jun 29 2012 Jan Pazdziora 1.8.2-1
+- Make java_t bits optional, as Fedora 17 does not have this type.
+- %%defattr is not needed since rpm 4.4
+
+* Tue Apr 17 2012 Jan Pazdziora 1.8.1-1
+- No need to require httpd_cobbler_content_t that we don't use.
+
 * Thu Mar 01 2012 Jan Pazdziora 1.7.2-1
 - Allow PostgreSQL to use dblink.
 

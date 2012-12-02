@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -50,6 +50,10 @@ public class RhnSetDecl {
 
     // set of actions by action_id
     public static final RhnSetDecl ACTIONS_FAILED = make("failed_action_list",
+            SetCleanup.UNOWNED_ACTIONS);
+
+    // set of actions by action_id
+    public static final RhnSetDecl ACTIONS_ARCHIVED = make("archived_action_list",
             SetCleanup.UNOWNED_ACTIONS);
 
     // set of actions by action_id
@@ -147,6 +151,10 @@ public class RhnSetDecl {
     // set of probe suites to delete
     public static final RhnSetDecl PROBE_SUITES_TO_DELETE = make(
             ProbeSuiteHelper.DELETE_SUITES_LIST_NAME, SetCleanup.UNOWNED_SUITES);
+
+    // set of probes to delete
+    public static final RhnSetDecl PROBES_TO_DELETE = make(
+            "probe_delete_list", SetCleanup.NOOP);
 
     // set of probe suites to delete
     public static final RhnSetDecl SUITE_PROBES_TO_DELETE = make(

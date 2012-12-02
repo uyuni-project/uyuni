@@ -78,6 +78,9 @@ class Backend:
         sth = self.dbmodule.prepare("alter session set nls_date_format ='%s'"
                                  % format)
         sth.execute()
+        sth = self.dbmodule.prepare("alter session set nls_timestamp_format ='%s'"
+                                 % format)
+        sth.execute()
 
     def processCapabilities(self, capabilityHash):
         # First figure out which capabilities are already inserted
@@ -772,11 +775,12 @@ class Backend:
                              timeout=timeouts)
 
     
-    def processChannels(self, channels):
+    def processChannels(self, channels, base_channels):
         childTables = [
-            'rhnChannelFamilyMembers', 'rhnDistChannelMap',
-            'rhnReleaseChannelMap',
+            'rhnChannelFamilyMembers', 'rhnReleaseChannelMap',
         ]
+        if base_channels:
+            childTables.append('rhnDistChannelMap')
         self.__processObjectCollection(channels, 'rhnChannel', childTables,
             'channel_id', uploadForce=4, ignoreUploaded=1, forceVerify=1)
 
@@ -1723,50 +1727,6 @@ class Backend:
             result[tname] = hash
         return result
 
-    def listChannel(self, channel):
-        fields = ['name', 'epoch', 'version', 'release', 'arch', 'org_id']
-        query = """
-            select
-                 pn.name, 
-                 (pe.evr).epoch epoch,
-                 (pe.evr).version as version,
-                 (pe.evr).release as release,
-                 pa.label as arch,
-                 p.org_id,
-                 cc.checksum_type,
-                 cc.checksum
-            from rhnChannel c, 
-                 rhnChannelPackage cp,
-                 rhnPackage p,
-                 rhnPackageName pn,
-                 rhnPackageEVR pe,
-                 rhnPackageArch pa,
-                 rhnChecksumView cc
-            where c.label = :label
-                 and p.package_arch_id = pa.id
-                 and cp.channel_id = c.id
-                 and cp.package_id = p.id
-                 and p.name_id = pn.id
-                 and p.evr_id = pe.id
-                 and p.checksum_id = cc.id
-        """
-        h = self.dbmodule.prepare(query)
-        h.execute(label=channel)
-        result = {}
-        while 1:
-            row = h.fetchone_dict()
-            if not row:
-                break
-            nevrao = []
-            for f in fields:
-                nevrao.append(row[f])
-            # Fix the epoch and org, just in case
-            for i in [1, 5]:
-                if nevrao[i] == '':
-                    nevrao[i] = None
-            result[tuple(nevrao)] = row
-        return result
-
     def __populateTable(self, table_name, data, delete_extra=1):
         table = self.tables[table_name]
         fields = table.getFields()
@@ -1957,7 +1917,7 @@ def _buildExternalValue(dict, entry, tableObj):
 def computeDiff(hash1, hash2, diffHash, diffobj, prefix=None):
     # Compare if the key-values of hash1 are a subset of hash2's
     difference = 0
-    ignore_keys = ['last_modified', 'channel_product_id']
+    ignore_keys = ['last_modified']
 
     for k, v in hash1.items():
         if k in ignore_keys:

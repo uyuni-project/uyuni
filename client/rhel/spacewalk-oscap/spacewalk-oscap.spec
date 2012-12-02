@@ -1,5 +1,5 @@
 Name:		spacewalk-oscap
-Version:	0.0.4.6
+Version:	0.0.11
 Release:	1%{?dist}
 Summary:	OpenSCAP plug-in for rhn-check
 
@@ -11,7 +11,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 BuildRequires:	python-devel
 BuildRequires:	rhnlib
-Requires:	openscap-utils >= 0.8.0
+Requires:	openscap-utils >= 0.9.2
 Requires:	libxslt
 Requires:       rhnlib
 Requires:       rhn-check
@@ -36,7 +36,6 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %files
-%defattr(-,root,root,-)
 %dir %{_datadir}/openscap
 %dir %{_datadir}/openscap/xsl
 %dir %{_datadir}/rhn
@@ -49,6 +48,32 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Nov 01 2012 Jan Pazdziora 0.0.11-1
+- 872248: Enable new `oscap' features in spacewalk-openscap.
+
+* Tue Jul 10 2012 Michael Mraka <michael.mraka@redhat.com> 0.0.10-1
+- Fix spacewalk-oscap typos
+
+* Thu May 31 2012 Simon Lukasik <slukasik@redhat.com> 0.0.9-1
+- Forbid oscap args other than --profile and --skip-valid
+- %%defattr is not needed since rpm 4.4
+
+* Mon Apr 30 2012 Simon Lukasik <slukasik@redhat.com> 0.0.8-1
+- Do not pass empty string as parameter to oscap tool. (slukasik@redhat.com)
+
+* Fri Apr 27 2012 Jan Pazdziora 0.0.7-1
+- Spacewalk-oscap requires oscap tool of particular version.
+  (slukasik@redhat.com)
+
+* Thu Mar 29 2012 Simon Lukasik <slukasik@redhat.com> 0.0.6-1
+- When errors occur submit them back to the server. (slukasik@redhat.com)
+
+* Thu Mar 29 2012 Simon Lukasik <slukasik@redhat.com> 0.0.5-1
+- Store also @idref of xccdf:rule-result element (slukasik@redhat.com)
+- We want to store all idents per rule-result (slukasik@redhat.com)
+- Only one Profile element is useful (slukasik@redhat.com)
+- Make sure only one TestResult element is used (slukasik@redhat.com)
+
 * Wed Feb 29 2012 Simon Lukasik <slukasik@redhat.com> 0.0.4-1
 - Send capabilities to server. (slukasik@redhat.com)
 

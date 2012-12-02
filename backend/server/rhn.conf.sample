@@ -84,7 +84,6 @@ web.rhnproc_port =   #FIXME
 #web.monitoring_probes_batch_size = 50
 
 
-
 ### COMPONENT DEFINITIONS ###
 #
 # *global*          - if the option is defined without a component prepended,

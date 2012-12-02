@@ -16,6 +16,9 @@ package com.redhat.rhn.frontend.dto;
 
 import java.util.Date;
 
+import com.redhat.rhn.manager.audit.ScapManager;
+import com.redhat.rhn.manager.audit.scap.RuleResultDiffer;
+
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
  * @version $Rev$
@@ -24,10 +27,14 @@ public class XccdfTestResultDto extends XccdfTestResultCounts {
 
     private Long xid;
     private Long sid;
+    private String testResult;
     private String serverName;
     private String profile;
     private Date completed;
     private String path;
+
+    private Long comparableId = null;
+    private String diffIcon = null;
 
     /**
      * Returns id of xccdf:TestResult
@@ -67,6 +74,22 @@ public class XccdfTestResultDto extends XccdfTestResultCounts {
      */
     public void setSid(Long sidIn) {
         this.sid = sidIn;
+    }
+
+    /**
+     * Returns xccdf idref of the TestResult
+     * @return the identifier
+     */
+    public String getTestResult() {
+        return testResult;
+    }
+
+    /**
+     * Sets the xccdf idref of the TestResult
+     * @param testResultIn to set
+     */
+    public void setTestResult(String testResultIn) {
+        this.testResult = testResultIn;
     }
 
     /**
@@ -133,5 +156,28 @@ public class XccdfTestResultDto extends XccdfTestResultCounts {
      */
     public void setPath(String pathIn) {
         this.path = pathIn;
+    }
+
+    /**
+     * Return the TestResult with metadata similar to the this one
+     * @return id of testresult
+     */
+    public Long getComparableId() {
+        if (comparableId == null) {
+            comparableId = ScapManager.previousComparableTestResult(xid);
+        }
+        return comparableId;
+    }
+
+    /**
+     * Return name of the list icon, which best refers to the state of diff.
+     * The diff between current TestResult and previous comparable TestResult.
+     * @return the result
+     */
+    public String getDiffIcon() {
+        if (diffIcon == null) {
+            diffIcon = new RuleResultDiffer(getComparableId(), xid).overallComparison();
+        }
+        return diffIcon;
     }
 }

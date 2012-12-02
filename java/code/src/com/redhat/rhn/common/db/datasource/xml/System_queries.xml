@@ -481,25 +481,25 @@ ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
 
 <mode name="system_currency" class="com.redhat.rhn.frontend.dto.SystemCurrency">
     <query params="uid">
-SELECT s1.id,
-       s1.name,
-       sum(case when errata.advisory_type = 'Security Advisory' and errata.severity = 'errata.sev.label.critical' then 1 else 0 end) critical,
-       sum(case when errata.advisory_type = 'Security Advisory' and errata.severity = 'errata.sev.label.important' then 1 else 0 end) important,
-       sum(case when errata.advisory_type = 'Security Advisory' and errata.severity = 'errata.sev.label.moderate' then 1 else 0 end) moderate,
-       sum(case when errata.advisory_type = 'Security Advisory' and (errata.severity = 'errata.sev.label.low' or errata.severity is null) then 1 else 0 end) low,
-       sum(case when errata.advisory_type = 'Bug Fix Advisory' then 1 else 0 end) bug,
-       sum(case when errata.advisory_type = 'Product Enhancement Advisory' then 1 else 0 end) enhancement
- FROM rhnServer S1
- JOIN rhnUserServerPerms USP1
-   ON S1.id = USP1.server_id
- LEFT join (select distinct E.id, SNC.server_id, E.synopsis, E.advisory_type, es.label as severity
-              from rhnErrata E
-              join rhnServerNeededCache SNC on E.id = SNC.errata_id
-              left join rhnerrataseverity es on E.SEVERITY_ID = es.id) ERRATA
-   ON S1.id = errata.server_id
-WHERE USP1.user_id = :uid
-GROUP by s1.id, s1.name
-ORDER by s1.name
+        SELECT s1.id,
+               s1.name,
+               sum(case when substr(errata.synopsis, 1, 1) = 'C' then 1 else 0 end) critical,
+               sum(case when substr(errata.synopsis, 1, 1) = 'I' then 1 else 0 end) important,
+               sum(case when substr(errata.synopsis, 1, 1) = 'M' then 1 else 0 end) moderate,
+               sum(case when substr(errata.synopsis, 1, 1) = 'L' then 1 else 0 end) low,
+               sum(case when errata.advisory_type = 'Bug Fix Advisory' then 1 else 0 end) bug,
+               sum(case when errata.advisory_type = 'Product Enhancement Advisory' then 1 else 0 end) enhancement
+         FROM rhnServer S1
+         JOIN rhnUserServerPerms USP1
+           ON S1.id = USP1.server_id
+         LEFT join (select distinct E.id, SNC.server_id, E.synopsis, E.advisory_type
+                      from rhnErrata E
+                      join rhnServerNeededCache SNC
+                        on E.id = SNC.errata_id) ERRATA
+           ON S1.id = errata.server_id
+        WHERE USP1.user_id = :uid
+        GROUP by s1.id, s1.name
+        ORDER by s1.name
     </query>
 </mode>
 
@@ -776,15 +776,31 @@ ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
   <elaborator name="is_virtual_host" />
 </mode>
 
+<query name="having_errata_with_keyword_applied_since_last_reboot_list" params="org_id, user_id, keyword">
+SELECT DISTINCT S.id, S.NAME,
+       (SELECT 1
+          FROM rhnServerFeaturesView SFV
+         WHERE SFV.server_id = S.id
+           AND SFV.label = 'ftr_system_grouping') AS selectable
+  FROM rhnServer S,
+       rhnErrata E,
+       rhnServerInfo SI,
+       rhnServerPackage SP,
+       rhnPackage P,
+       rhnErrataPackage EP
+ WHERE S.org_id = :org_id
+   AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id=:user_id AND USP.server_id = S.id)
+   AND SI.server_id = S.id
+   AND SP.server_id = S.id
+   AND P.evr_id = SP.evr_id
+   AND P.name_id = SP.name_id
+   AND EP.errata_id = E.id AND EP.package_id = P.id
+   AND (to_date('1970-01-01', 'YYYY-MM-DD') + numtodsinterval(S.last_boot, 'second')) &lt; SP.installtime
+   AND E.id IN (SELECT EK.errata_id FROM rhnErrataKeyword EK WHERE EK.keyword = :keyword)
+</query>
 
 <mode name="having_errata_with_keyword_applied_since_last_reboot" class="com.redhat.rhn.frontend.dto.SystemOverview">
-  <query params="org_id, user_id, keyword">
-SELECT id, name, selectable
-  FROM allServerKeywordSinceReboot
- WHERE user_id = :user_id
-   AND org_id  = :org_id
-   AND keyword = :keyword
-  </query>
+  <query name="having_errata_with_keyword_applied_since_last_reboot_list"/>
   <elaborator name="system_overview" />
   <elaborator name="system_config_files_with_diffs" />
   <elaborator name="system_monitoring" />
@@ -796,11 +812,22 @@ SELECT id, name, selectable
 <mode name="has_errata_with_keyword_applied_since_last_reboot">
   <query params="org_id, user_id, keyword, sid">
 	SELECT 1
-	  FROM allServerKeywordSinceReboot
-         WHERE id      = :sid
-           AND user_id = :user_id
-           AND org_id  = :org_id
-           AND keyword = :keyword
+	FROM rhnServer S,
+	  rhnErrata E,
+	  rhnServerInfo SI,
+	  rhnServerPackage SP,
+	  rhnPackage P,
+	  rhnErrataPackage EP
+	WHERE S.org_id = :org_id
+	  AND S.id = :sid
+	  AND EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id=:user_id AND USP.server_id = S.id)
+	  AND SI.server_id = S.id
+	  AND SP.server_id = S.id
+	  AND P.evr_id = SP.evr_id
+	  AND P.name_id = SP.name_id
+	  AND EP.errata_id = E.id AND EP.package_id = P.id
+	  AND (to_date('1970-01-01', 'YYYY-MM-DD') + numtodsinterval(S.last_boot, 'second')) &lt; SP.installtime
+	  AND E.id IN (SELECT EK.errata_id FROM rhnErrataKeyword EK WHERE EK.keyword = :keyword)
     </query>
 </mode>
 
@@ -1950,6 +1977,36 @@ ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   <elaborator name="system_monitoring" />
 </mode>
 
+<mode name="extra_packages_systems_count"
+      class="com.redhat.rhn.frontend.dto.SystemOverview">
+  <query params="userid, orgid">
+select s.id as id,
+       s.name as name,
+       1 as selectable,
+       count(sp.name_id) as extra_pkg_count
+  from rhnServer s
+       join rhnUserServerPerms usp on (usp.server_id = s.id and
+                                       usp.user_id = :userid)
+       join rhnServerPackage sp on (s.id = sp.server_id)
+       left outer join rhnPackage p on (sp.name_id = p.name_id and
+                                        sp.evr_id = p.evr_id and
+                                        sp.package_arch_id = p.package_arch_id)
+        left outer join (select sc.server_id, cp.package_id
+                           from rhnServerChannel sc
+                                join rhnChannelPackage cp on (sc.channel_id = cp.channel_id)
+                        ) scp on (scp.package_id = p.id and
+                                  scp.server_id = sp.server_id)
+ where (p.id is null or scp.package_id is null) and
+       s.org_id = :orgid
+ group by s.name, s.id
+ order by name, id
+  </query>
+  <elaborator name="system_overview" />
+  <elaborator name="entitlements" />
+  <elaborator name="is_virtual_guest" />
+  <elaborator name="is_virtual_host" />
+</mode>
+
 <mode name="system_installed_base_product">
   <query params="sid">
   SELECT sip.name, sip.version, at.label arch, sip.release, sip.is_baseproduct
@@ -2050,5 +2107,6 @@ WHERE pkgnm.name IS NOT NULL
 ORDER BY pkgnm.name asc
   </query>
 </mode>
+
 </datasource_modes>
 

@@ -4,13 +4,13 @@ Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
 URL:           http://fedorahosted.org/spacewalk
-Version:       5.5.42.7
+Version:       5.5.56
 Release:       1%{?dist}
 Source0:       https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:     noarch
 Requires:      rpm-python
-Requires:      rhnlib >= 2.5.38
+Requires:      rhnlib
 Requires:      spacewalk-backend-libs >= 1.7.17
 Requires:      rhn-client-tools
 %if 0%{?suse_version}
@@ -19,6 +19,12 @@ BuildRequires:      rhn-client-tools
 %endif
 BuildRequires: docbook-utils, gettext
 BuildRequires: python-devel
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version}
+# pylint check
+BuildRequires:  spacewalk-pylint >= 0.6
+BuildRequires:  rhn-client-tools
+BuildRequires:  spacewalk-backend-libs > 1.8.33
+%endif
 
 Summary: Package uploader for the Spacewalk Server
 
@@ -30,9 +36,6 @@ channel.
 
 %prep
 %setup -q
-%if 0%{?rhel} && 0%{?rhel} <= 4
-patch -p0 < patches/rhel4-static.dif
-%endif
 
 %build
 make -f Makefile.rhnpush all
@@ -54,6 +57,12 @@ ln -s rhnpush $RPM_BUILD_ROOT/%{_bindir}/mgrpush
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%check
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version}
+# check coding style
+export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/share/rhn
+spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
+%endif
 
 %files
 %defattr(-,root,root)
@@ -75,6 +84,57 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING
 
 %changelog
+* Sun Nov 11 2012 Michael Calmer <mc@suse.de> 5.5.56-1
+- package solaris converter for SUSE too
+
+* Tue Oct 30 2012 Jan Pazdziora 5.5.55-1
+- Update the copyright year.
+
+* Mon Oct 22 2012 Jan Pazdziora 5.5.54-1
+- Revert "Revert "Revert "get_server_capability() is defined twice in osad and
+  rhncfg, merge and move to rhnlib and make it member of rpclib.Server"""
+
+* Fri Aug 24 2012 Michael Mraka <michael.mraka@redhat.com> 5.5.53-1
+- latest spacewalk-pylint is required
+
+* Fri Aug 24 2012 Michael Mraka <michael.mraka@redhat.com> 5.5.52-1
+- turned on pylint checks
+- fixed pylint errors/warnings
+* Tue Aug 21 2012 Michael Mraka <michael.mraka@redhat.com> 5.5.51-1
+- removed dead code
+- fixed pylint errors
+
+* Wed Jul 25 2012 Michael Mraka <michael.mraka@redhat.com> 5.5.50-1
+- fixed pylint warnings and errors
+
+* Fri Jul 13 2012 Michael Mraka <michael.mraka@redhat.com> 5.5.49-1
+- fixed man page
+- removed dead --no-cache option
+- fixed --no-session-caching option
+
+* Fri Jul 13 2012 Michael Mraka <michael.mraka@redhat.com> 5.5.48-1
+- 838044 - solaris2mpm on RHEL5 is not supported
+- remove trailing '/' from from archive dir
+
+* Tue Jun 26 2012 Michael Mraka <michael.mraka@redhat.com> 5.5.47-1
+- reuse UploadError from uploadLib
+- removed functions not used in rhnpush/rhn-package-manager
+- simplified authentication code
+
+* Fri Jun 22 2012 Michael Mraka <michael.mraka@redhat.com> 5.5.46-1
+- removed commented out code and obsoleted comments
+
+* Sat Jun 16 2012 Miroslav Suchý <msuchy@redhat.com> 5.5.45-1
+- 827022 - add COPYING file
+
+* Mon May 21 2012 Jan Pazdziora 5.5.44-1
+- 823491 - Use the correct a_pkg variable.
+- %%defattr is not needed since rpm 4.4
+
+* Mon Mar 05 2012 Michael Mraka <michael.mraka@redhat.com> 5.5.43-1
+- removed unused get_header_struct_size()
+- removed unused function get_header_byte_range()
+
 * Fri Mar 02 2012 Jan Pazdziora 5.5.42-1
 - Update the copyright year info.
 

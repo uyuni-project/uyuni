@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -59,11 +59,11 @@ class ISSChannelPackageShortDiskSource:
     def _getFile(self):
         return os.path.join(self.mp, self.pathkey % (self.channelid,))
 
-""" This class maps dumps to files. In other words, you give it
-the type of dump you're doing and it gives you the file to
-write it to. 
-"""
 class FileMapper:
+    """ This class maps dumps to files. In other words, you give it
+    the type of dump you're doing and it gives you the file to
+    write it to.
+    """
     def __init__(self, mount_point):
         self.mp = mount_point
         self.filemap = {
@@ -148,11 +148,11 @@ class FileMapper:
         self.filemap['kickstart_files'].set_relative_path(relative_path)
         return self.setup_file(self.filemap['kickstart_files']._getFile())
 
-""" This class subclasses the XML_Dumper class. It overrides
- the _get_xml_writer method and adds a set_stream method,
- which will let it write to a file instead of over the wire.
-"""
 class Dumper(dumper.XML_Dumper): 
+    """ This class subclasses the XML_Dumper class. It overrides
+     the _get_xml_writer method and adds a set_stream method,
+     which will let it write to a file instead of over the wire.
+    """
     def __init__(self, outputdir, channel_labels, hardlinks, start_date, \
                   end_date, use_rhn_date, whole_errata):
         dumper.XML_Dumper.__init__(self)
@@ -162,14 +162,14 @@ class Dumper(dumper.XML_Dumper):
         self.pb_length = 20             #progress bar length
         self.pb_complete = " - Done!"   #string that's printed when progress bar is done.
         self.pb_char = "#"              #the string used as each unit in the progress bar.
-	self.hardlinks = hardlinks
+        self.hardlinks = hardlinks
 
-	self.start_date = start_date
-	self.end_date   = end_date
+        self.start_date = start_date
+        self.end_date   = end_date
         self.use_rhn_date = use_rhn_date
         self.whole_errata = whole_errata
 
-	if self.start_date:
+        if self.start_date:
             dates = { 'start_date' : self.start_date,
                       'end_date'   : self.end_date, }
         else:
@@ -183,10 +183,10 @@ class Dumper(dumper.XML_Dumper):
         try:
             query = """
                  select ch.id channel_id, label, 
-		      TO_CHAR(last_modified, 'YYYYMMDDHH24MISS') last_modified
-		   from rhnChannel ch
-		  where ch.label = :label
-		"""
+                      TO_CHAR(last_modified, 'YYYYMMDDHH24MISS') last_modified
+                   from rhnChannel ch
+                  where ch.label = :label
+                """
             self.channel_query = rhnSQL.Statement(query)
             ch_data = rhnSQL.prepare(self.channel_query)
 
@@ -238,7 +238,9 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting channel info." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught while getting channel info." %
+                                e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
 
         ###BINARY RPM INFO###
         try:
@@ -253,9 +255,9 @@ class Dumper(dumper.XML_Dumper):
             else:
                 query = """
                          select rcp.package_id id, rp.path path
-		           from rhnChannelPackage rcp, rhnPackage rp
-		          where rcp.package_id = rp.id
-		            and rcp.channel_id = :channel_id
+                           from rhnChannelPackage rcp, rhnPackage rp
+                          where rcp.package_id = rp.id
+                            and rcp.channel_id = :channel_id
                     """
 
             if self.start_date:
@@ -301,7 +303,9 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting binary rpm info." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught while getting binary rpm info." %
+                                e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
                     
         ###PACKAGE INFO###
         #This will grab channel package information for a given channel.
@@ -309,13 +313,13 @@ class Dumper(dumper.XML_Dumper):
             if self.whole_errata and self.start_date:
                 query = """
                  select rp.id package_id,  
-		            TO_CHAR(rp.last_modified, 'YYYYMMDDHH24MISS') last_modified
+                            TO_CHAR(rp.last_modified, 'YYYYMMDDHH24MISS') last_modified
                  from rhnChannelPackage rcp, rhnPackage rp
                     left join rhnErrataPackage rep on rp.id = rep.package_id
                         left join rhnErrata re on rep.errata_id = re.id
-		         where rcp.channel_id = :channel_id
-		            and rcp.package_id = rp.id
-		    """
+                         where rcp.channel_id = :channel_id
+                            and rcp.package_id = rp.id
+                    """
             else:
                 query = """
                  select rp.id package_id,
@@ -375,16 +379,18 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting package info." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught while getting package info." %
+                                e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
 
         ###SOURCE PACKAGE INFO###
         try:
-	    query = """
+            query = """
                   select ps.id package_id, 
-		         TO_CHAR(ps.last_modified,'YYYYMMDDHH24MISS') last_modified,
+                         TO_CHAR(ps.last_modified,'YYYYMMDDHH24MISS') last_modified,
                          ps.source_rpm_id source_rpm_id
                     from rhnPackageSource ps
-		"""
+                """
             if self.start_date:
                 if self.whole_errata:
                     query += """
@@ -411,15 +417,15 @@ class Dumper(dumper.XML_Dumper):
                          )
                         """
                 elif self.use_rhn_date:
-                   query += """
-	           where ps.last_modified >= TO_TIMESTAMP(:start_date, 'YYYYMMDDHH24MISS')
-	             and ps.last_modified <= TO_TIMESTAMP(:end_date, 'YYYYMMDDHH24MISS')
-                   """
+                    query += """
+                    where ps.last_modified >= TO_TIMESTAMP(:start_date, 'YYYYMMDDHH24MISS')
+                     and ps.last_modified <= TO_TIMESTAMP(:end_date, 'YYYYMMDDHH24MISS')
+                    """
                 else:
-                   query += """
-	           where ps.modified >= TO_TIMESTAMP(:start_date, 'YYYYMMDDHH24MISS')
-	             and ps.modified <= TO_TIMESTAMP(:end_date, 'YYYYMMDDHH24MISS')
-                   """
+                    query += """
+                    where ps.modified >= TO_TIMESTAMP(:start_date, 'YYYYMMDDHH24MISS')
+                     and ps.modified <= TO_TIMESTAMP(:end_date, 'YYYYMMDDHH24MISS')
+                    """
             self.source_package_query = rhnSQL.Statement(query)
             source_package_data = rhnSQL.prepare(self.source_package_query)
             source_package_data.execute(**dates)
@@ -435,18 +441,20 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting source package info." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught while getting source package info." %
+                                e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
 
         ###ERRATA INFO###
         try:
             query = """
                    select e.id errata_id,
-		          TO_CHAR(e.last_modified,'YYYYMMDDHH24MISS') last_modified,
-		          e.advisory_name "advisory-name"
-	             from rhnChannelErrata ce, rhnErrata e
-		    where ce.channel_id = :channel_id
-		      and ce.errata_id = e.id
-		"""
+                          TO_CHAR(e.last_modified,'YYYYMMDDHH24MISS') last_modified,
+                          e.advisory_name "advisory-name"
+                     from rhnChannelErrata ce, rhnErrata e
+                    where ce.channel_id = :channel_id
+                      and ce.errata_id = e.id
+                """
             if self.start_date:
                 if self.use_rhn_date:
                     query += """
@@ -474,29 +482,31 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting errata info." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught while getting errata info." %
+                                e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
         
         ###KICKSTART DATA/TREES INFO###
         try:
             query = """
-	        select  kt.id kstree_id, kt.label kickstart_label, 
-		        TO_CHAR(kt.last_modified, 'YYYYMMDDHH24MISS') last_modified
-		  from  rhnKickstartableTree kt
-		 where   kt.channel_id = :channel_id
-		 """
+                select  kt.id kstree_id, kt.label kickstart_label,
+                        TO_CHAR(kt.last_modified, 'YYYYMMDDHH24MISS') last_modified
+                  from  rhnKickstartableTree kt
+                 where   kt.channel_id = :channel_id
+                 """
             if self.start_date:
                 if self.use_rhn_date:
-                   query += """
-		   and kt.last_modified >= TO_TIMESTAMP(:start_date, 'YYYYMMDDHH24MISS')
-		   and kt.last_modified <= TO_TIMESTAMP(:end_date, 'YYYYMMDDHH24MISS')
-		   and kt.org_id is Null
-                   """
+                    query += """
+                    and kt.last_modified >= TO_TIMESTAMP(:start_date, 'YYYYMMDDHH24MISS')
+                    and kt.last_modified <= TO_TIMESTAMP(:end_date, 'YYYYMMDDHH24MISS')
+                    and kt.org_id is Null
+                    """
                 else:
-                   query += """
-		   and kt.modified >= TO_TIMESTAMP(:start_date, 'YYYYMMDDHH24MISS')
-		   and kt.modified <= TO_TIMESTAMP(:end_date, 'YYYYMMDDHH24MISS')
-		   and kt.org_id is Null
-                   """
+                    query += """
+                    and kt.modified >= TO_TIMESTAMP(:start_date, 'YYYYMMDDHH24MISS')
+                    and kt.modified <= TO_TIMESTAMP(:end_date, 'YYYYMMDDHH24MISS')
+                    and kt.org_id is Null
+                    """
             self.kickstart_trees_query = rhnSQL.Statement(query)
             kickstart_data = rhnSQL.prepare(self.kickstart_trees_query)
             self.kickstart_trees = []
@@ -511,24 +521,26 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting kickstart data info." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught while getting kickstart data info." %
+                                e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
 
         ###KICKSTART FILES INFO###
         try:
             query = """
-		    select rktf.relative_filename "relative-path", 
-		           c.checksum_type "checksum-type", c.checksum,
+                    select rktf.relative_filename "relative-path",
+                           c.checksum_type "checksum-type", c.checksum,
                            rktf.file_size "file-size",
-		           TO_CHAR(rktf.last_modified, 'YYYYMMDDHH24MISS') "last-modified", 
-			   rkt.base_path "base-path",
-		           rkt.label label, 
-			   TO_CHAR(rkt.modified, 'YYYYMMDDHH24MISS') "modified"
-		      from rhnKSTreeFile rktf, rhnKickstartableTree rkt,
+                           TO_CHAR(rktf.last_modified, 'YYYYMMDDHH24MISS') "last-modified",
+                           rkt.base_path "base-path",
+                           rkt.label label,
+                           TO_CHAR(rkt.modified, 'YYYYMMDDHH24MISS') "modified"
+                      from rhnKSTreeFile rktf, rhnKickstartableTree rkt,
                            rhnChecksumView c
-		     where rktf.kstree_id = :kstree_id
-		       and rkt.id = rktf.kstree_id
+                     where rktf.kstree_id = :kstree_id
+                       and rkt.id = rktf.kstree_id
                        and rktf.checksum_id = c.id
-	        """
+                """
             if self.start_date:
                 if self.use_rhn_date:
                     query += """
@@ -553,7 +565,9 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught while getting kickstart files info." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught while getting kickstart files info." %
+                                e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
                 
     #The close method overrides the parent classes close method. This implementation
     #closes the self.outstream, which is an addition defined in this subclass.
@@ -600,7 +614,8 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError(exceptmsg % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError(exceptmsg % e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
 
     def dump_arches(self):
         self._dump_simple(self.fm.getArchesFile(), dumper.XML_Dumper.dump_arches,
@@ -642,7 +657,9 @@ class Dumper(dumper.XML_Dumper):
             pb.printAll(1) 
             for channel in self.channel_ids:
                 self.set_filename(self.fm.getChannelsFile(channel['label']))
-                dumper.XML_Dumper.dump_channels(self, [channel], self.start_date, self.end_date, self.use_rhn_date, self.whole_errata)
+                dumper.XML_Dumper.dump_channels(self, [channel],
+                                                self.start_date, self.end_date,
+                                                self.use_rhn_date, self.whole_errata)
     
                 log2email(4, "Channel: %s" % channel['label'])
                 log2email(5, "Channel exported to %s" % self.fm.getChannelsFile(channel['label']))
@@ -669,7 +686,9 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_channels." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught in dump_channels." % e.__class__.__name__,
+                           tbout.getvalue()), \
+                  None, sys.exc_info()[2]
 
     def dump_channel_packages_short(self):
         try:
@@ -682,7 +701,9 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_channel_packages_short." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught in dump_channel_packages_short." %
+                                e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
             
     def dump_packages(self):
         try:
@@ -711,7 +732,9 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_packages." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught in dump_packages." % e.__class__.__name__,
+                           tbout.getvalue()), \
+                  None, sys.exc_info()[2]
     
     def dump_packages_short(self):
         try:
@@ -738,7 +761,9 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_packages_short." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught in dump_packages_short." %
+                                e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
 
     def dump_source_packages(self):
         try:
@@ -750,7 +775,9 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_source_packages." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught in dump_source_packages." %
+                                e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
 
     def dump_errata(self):
         try:
@@ -778,7 +805,9 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_errata." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught in dump_errata." % e.__class__.__name__,
+                           tbout.getvalue()), \
+                  None, sys.exc_info()[2]
 
     def dump_kickstart_data(self):
         try:
@@ -804,7 +833,9 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_kickstart_data." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught in dump_kickstart_data." %
+                                e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
 
     def dump_kickstart_files(self):
         try:
@@ -818,14 +849,18 @@ class Dumper(dumper.XML_Dumper):
             pb.printAll(1)
             for kickstart_file in self.kickstart_files:
                 #get the path to the kickstart files under the satellite's mount point
-                path_to_files = os.path.join(CFG.MOUNT_POINT, kickstart_file['base-path'], kickstart_file['relative-path'])
+                path_to_files = os.path.join(CFG.MOUNT_POINT,
+                                             kickstart_file['base-path'],
+                                             kickstart_file['relative-path'])
     
                 #Make sure the path actually exists
                 if not os.path.exists(path_to_files):
                     raise ISSError("Missing kickstart file under mount-point: %s" % (path_to_files,), "")
     
                 #generate the path to the kickstart files under the export directory.
-                path_to_export_file = self.fm.getKickstartFileFile(kickstart_file['label'], kickstart_file['relative-path'])
+                path_to_export_file = self.fm.getKickstartFileFile(
+                                                        kickstart_file['label'],
+                                                        kickstart_file['relative-path'])
                 #os.path.join(self.mp, kickstart_file['base-path'], kickstart_file['relative-path'])
                 if os.path.exists(path_to_export_file):
                     # already exists, skip ks file
@@ -839,19 +874,23 @@ class Dumper(dumper.XML_Dumper):
                 try:
                     if self.hardlinks:
                         #Make hardlinks
-			try:
+                        try:
                             os.link(path_to_files, path_to_export_file)
-			except OSError:
-			    pass
+                        except OSError:
+                            pass
                     else:
                         #Copy file from satellite to export dir.
                         shutil.copyfile(path_to_files, path_to_export_file)
                 except IOError, e:
                     tbout = cStringIO.StringIO()
                     Traceback(mail=0, ostream=tbout, with_locals=1)
-                    raise ISSError("Error: Error copying file: %s: %s" % (path_to_files, e.__class__.__name__), tbout.getvalue()), None, sys.exc_info()[2]
+                    raise ISSError("Error: Error copying file: %s: %s" % (path_to_files,
+                                        e.__class__.__name__), tbout.getvalue()), \
+                          None, sys.exc_info()[2]
     
-                log2email(5, "Kickstart File: %s" % os.path.join(kickstart_file['base-path'], kickstart_file['relative-path'])) 
+                log2email(5, "Kickstart File: %s" %
+                                         os.path.join(kickstart_file['base-path'],
+                             kickstart_file['relative-path']))
         
                 pb.addTo(1)
                 pb.printIncrement()
@@ -863,7 +902,9 @@ class Dumper(dumper.XML_Dumper):
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_kickstart_files." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught in dump_kickstart_files." %
+                                e.__class__.__name__, tbout.getvalue()), \
+                  None, sys.exc_info()[2]
     
     #RPM and SRPM dumping code
     def dump_rpms(self):
@@ -884,7 +925,8 @@ class Dumper(dumper.XML_Dumper):
                 dirs_to_rpm = os.path.split(path_to_rpm)[0]
 
                 if (not rpm['path']):
-                    raise ISSError("Error: Missing RPM under the satellite mount point. (Package id: %s)" % rpm['id'], "")
+                    raise ISSError("Error: Missing RPM under the satellite mount point. (Package id: %s)" %
+                                        rpm['id'], "")
                 #get the path to the rpm from under the satellite's mountpoint
                 satellite_path = os.path.join(CFG.MOUNT_POINT, rpm['path'])
 
@@ -908,12 +950,17 @@ class Dumper(dumper.XML_Dumper):
                 except IOError, e:
                     tbout = cStringIO.StringIO()
                     Traceback(mail=0, ostream=tbout, with_locals=1)
-                    raise ISSError("Error: Error copying file %s: %s" % (os.path.join(CFG.MOUNT_POINT, rpm['path']), e.__class__.__name__), tbout.getvalue()), None, sys.exc_info()[2]
+                    raise ISSError("Error: Error copying file %s: %s" %
+                                        (os.path.join(CFG.MOUNT_POINT, rpm['path']),
+                                         e.__class__.__name__), tbout.getvalue()), \
+                          None, sys.exc_info()[2]
                 except OSError, e:
                     tbout = cStringIO.StringIO()
                     Traceback(mail=0, ostream=tbout, with_locals=1)
-                    raise ISSError("Error: Could not make hard link %s: %s (different filesystems?)" % (os.path.join(CFG.MOUNT_POINT, rpm['path']),
-e.__class__.__name__), tbout.getvalue()), None, sys.exc_info()[2]
+                    raise ISSError("Error: Could not make hard link %s: %s (different filesystems?)" %
+                                        (os.path.join(CFG.MOUNT_POINT, rpm['path']),
+                                         e.__class__.__name__), tbout.getvalue()), \
+                          None, sys.exc_info()[2]
                 log2email(5, "RPM: %s" % rpm['path'])
     
                 pb.addTo(1)
@@ -926,7 +973,9 @@ e.__class__.__name__), tbout.getvalue()), None, sys.exc_info()[2]
         except Exception, e:
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise ISSError("%s caught in dump_rpms." % e.__class__.__name__, tbout.getvalue()), None, sys.exc_info()[2]
+            raise ISSError("%s caught in dump_rpms." % e.__class__.__name__,
+                                tbout.getvalue()), \
+                  None, sys.exc_info()[2]
 
 def get_report():
     body = dumpEMAIL_LOG()
@@ -1060,21 +1109,27 @@ class ExporterMain:
         #verify mountpoint
         if os.access(self.outputdir, os.F_OK|os.R_OK|os.W_OK):
             if os.path.isdir(self.outputdir):
-                self.dumper = Dumper(self.outputdir, self.options.channel, self.options.hard_links, start_date=self.start_date, end_date=self.end_date, use_rhn_date=self.options.use_rhn_date, whole_errata=self.options.whole_errata)
+                self.dumper = Dumper(self.outputdir,
+                                     self.options.channel,
+                                     self.options.hard_links,
+                                     start_date=self.start_date,
+                                     end_date=self.end_date,
+                                     use_rhn_date=self.options.use_rhn_date,
+                                     whole_errata=self.options.whole_errata)
                 self.actionmap = {
-                                    'arches'                :   {'dump' : self.dumper.dump_arches},
-                                    'arches-extra'          :   {'dump' : self.dumper.dump_server_group_type_server_arches},
-                                    'blacklists'            :   {'dump' : self.dumper.dump_blacklist_obsoletes},
-                                    'channel-families'      :   {'dump' : self.dumper.dump_channel_families},
-                                    'channels'              :   {'dump' : self.dumper.dump_channels},
-                                    'packages'              :   {'dump' : self.dumper.dump_packages},
-                                    'short'                 :   {'dump' : self.dumper.dump_packages_short},
-                                    #'channel-pkg-short'     :   {'dump' : self.dumper.dump_channel_packages_short},
-                                    #'source-packages'       :   {'dump' : self.dumper.dump_source_packages},
-                                    'errata'                :   {'dump' : self.dumper.dump_errata},
-                                    'kickstarts'            :   {'dump' : [self.dumper.dump_kickstart_data, 
+                                    'arches'           :   {'dump' : self.dumper.dump_arches},
+                                    'arches-extra'     :   {'dump' : self.dumper.dump_server_group_type_server_arches},
+                                    'blacklists'       :   {'dump' : self.dumper.dump_blacklist_obsoletes},
+                                    'channel-families' :   {'dump' : self.dumper.dump_channel_families},
+                                    'channels'         :   {'dump' : self.dumper.dump_channels},
+                                    'packages'         :   {'dump' : self.dumper.dump_packages},
+                                    'short'            :   {'dump' : self.dumper.dump_packages_short},
+                                    #'channel-pkg-short' :   {'dump' : self.dumper.dump_channel_packages_short},
+                                    #'source-packages'   :   {'dump' : self.dumper.dump_source_packages},
+                                    'errata'           :   {'dump' : self.dumper.dump_errata},
+                                    'kickstarts'       :   {'dump' : [self.dumper.dump_kickstart_data,
                                                                            self.dumper.dump_kickstart_files]},
-                                    'rpms'                  :   {'dump' : self.dumper.dump_rpms},
+                                    'rpms'             :   {'dump' : self.dumper.dump_rpms},
                                  }
             else:
                 print "The output directory is not a directory"
@@ -1177,7 +1232,7 @@ class ExporterMain:
                         else:
                             self.actionmap[action]['dump']()
 
-			# Now Compress the dump data
+                        # Now Compress the dump data
                         if action != 'rpms':
                             if action == 'arches-extra':
                                 action = 'arches'
@@ -1199,24 +1254,24 @@ class ExporterMain:
                                             compress_file(filepath)    
             if self.options.make_isos:
                 #iso_output = os.path.join(self.isos_dir, self.dump_dir)
-	        iso_output = self.isos_dir
-	        if not os.path.exists(iso_output):
-	            os.makedirs(iso_output)
-		            
-	        iss_isos.create_isos(self.outputdir, iso_output, \
+                iso_output = self.isos_dir
+                if not os.path.exists(iso_output):
+                    os.makedirs(iso_output)
+
+                iss_isos.create_isos(self.outputdir, iso_output, \
                           "rhn-export", self.start_date, self.end_date, 
-			  iso_type=self.options.make_isos)
+                          iso_type=self.options.make_isos)
 
                 # Generate md5sum digest file for isos
-	        if os.path.exists(iso_output):
-	            f = open(os.path.join(iso_output, 'MD5SUM'), 'w')
-		    for file in os.listdir(iso_output):
-		        if self.options.make_isos != "dvds":
-			    if file != "MD5SUM":
-		                md5_val = getFileChecksum('md5', (os.path.join(iso_output, file)))
-			        md5str = "%s  %s\n" % (md5_val, file)
-	                        f.write(md5str)
-	            f.close()
+                if os.path.exists(iso_output):
+                    f = open(os.path.join(iso_output, 'MD5SUM'), 'w')
+                    for file in os.listdir(iso_output):
+                        if self.options.make_isos != "dvds":
+                            if file != "MD5SUM":
+                                md5_val = getFileChecksum('md5', (os.path.join(iso_output, file)))
+                                md5str = "%s  %s\n" % (md5_val, file)
+                                f.write(md5str)
+                    f.close()
 
             if self.options.email:
                 sendMail()

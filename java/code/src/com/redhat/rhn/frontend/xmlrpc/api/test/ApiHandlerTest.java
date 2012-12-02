@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -33,7 +33,7 @@ public class ApiHandlerTest extends RhnBaseTestCase {
 
     public void testGetVersion() {
         ApiHandler handler = new ApiHandler();
-        String version = Config.get().getString("web.apiversion");
+        String version = Config.get().getString("java.apiversion");
         assertEquals(version, handler.getVersion());
     }
 }

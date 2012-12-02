@@ -1,5 +1,5 @@
 Name:		spacewalk-pylint
-Version:	0.2.4
+Version:	0.9
 Release:	1%{?dist}
 Summary:	Pylint configuration for spacewalk python packages
 
@@ -57,6 +57,31 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Sun Nov 11 2012 Michael Calmer <mc@suse.de> 0.9-1
+- BuildRequire docbook-style-xsl only on redhat
+
+* Wed Oct 24 2012 Michael Mraka <michael.mraka@redhat.com> 0.8-1
+- Revert "put W1201 on list of ignored pylint warnings"
+
+* Fri Aug 24 2012 Miroslav Suchý <msuchy@redhat.com> 0.7-1
+- put W1201 on list of ignored pylint warnings
+
+* Fri Aug 24 2012 Michael Mraka <michael.mraka@redhat.com> 0.6-1
+- let's silence pylint on our large modules and objects
+
+* Mon Jun 04 2012 Miroslav Suchý <msuchy@redhat.com> 0.5-1
+- %%defattr is not needed since rpm 4.4 (msuchy@redhat.com)
+
+* Wed May 16 2012 Miroslav Suchý <msuchy@redhat.com> 0.4-1
+- 800899 - consistently use macros
+- 800899 - include license file
+- Spacewalk is released under GPLv2, lets stick to it
+
+* Wed Mar 07 2012 Miroslav Suchý 0.3-1
+- add man page
+- Description lines must not exceed 80 characters
+- Summary must begin with capital letter
+
 * Wed Feb 15 2012 Michael Mraka <michael.mraka@redhat.com> 0.2-1
 - made it noarch package
 

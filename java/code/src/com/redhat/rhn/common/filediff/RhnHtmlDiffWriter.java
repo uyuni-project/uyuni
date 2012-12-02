@@ -29,9 +29,9 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
 
     private static final int CHARS_PER_LINE = 40;
 
-    private StringBuffer oldfile;
-    private StringBuffer newfile;
-    private NumberFormat formatter;
+    private final StringBuffer oldfile;
+    private final StringBuffer newfile;
+    private final NumberFormat formatter;
 
     private boolean onlyChanged;
 
@@ -119,11 +119,11 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
     }
 
     private int printLines(StringBuffer buffy, FileLines block) {
-        Iterator i = block.getLines().iterator();
+        Iterator<String> i = block.getLines().iterator();
         int numWritten = 0;
         int linenum = block.getFromLine();
         while (i.hasNext()) {
-            String line = (String)i.next();
+            String line = i.next();
             buffy.append(formatter.format(linenum));
             buffy.append("&nbsp;");
             while (line.length() > CHARS_PER_LINE) {

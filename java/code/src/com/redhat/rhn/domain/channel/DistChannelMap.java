@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import com.redhat.rhn.domain.org.Org;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -28,10 +30,35 @@ public class DistChannelMap implements Serializable {
 
     private static final long serialVersionUID = 4083273166300423729L;
 
+    private Long id;
     private String os;
     private String release;
     private ChannelArch channelArch;
+    private Org org;
     private Channel channel;
+
+    /**
+     * default Constructor
+     */
+    public DistChannelMap() {
+    }
+
+    /**
+     * Constructor
+     * @param orgIn organization
+     * @param osIn operaing system
+     * @param releaseIn release
+     * @param chaIn channel architecture
+     * @param channelIn channel
+     */
+    public DistChannelMap(Org orgIn, String osIn, String releaseIn,
+            ChannelArch chaIn, Channel channelIn) {
+        this.org = orgIn;
+        this.os = osIn;
+        this.release = releaseIn;
+        this.channelArch = chaIn;
+        this.channel = channelIn;
+    }
 
     /**
      * Getter for os
@@ -94,6 +121,34 @@ public class DistChannelMap implements Serializable {
     }
 
     /**
+     * @return Returns the org.
+     */
+    public Org getOrg() {
+        return org;
+    }
+
+    /**
+     * @param orgIn The org to set.
+     */
+    public void setOrg(Org orgIn) {
+        this.org = orgIn;
+    }
+
+    /**
+     * @return Returns the id.
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param idIn The id to set.
+     */
+    public void setId(Long idIn) {
+        this.id = idIn;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public boolean equals(final Object other) {
@@ -122,6 +177,4 @@ public class DistChannelMap implements Serializable {
                 release).append("channelArch", channelArch).append("channel",
                 channel).toString();
     }
-
-
 }

@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008 Red Hat, Inc.
+-- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -23,7 +23,7 @@ for each row
 declare
         ug              rhnUserGroup%ROWTYPE;
 begin
-        :new.modified := sysdate;
+        :new.modified := current_timestamp;
 
         if inserting then
                 select
@@ -79,33 +79,6 @@ begin
         update rhnUserGroup
         set current_members = current_members - 1
         where id = :old.user_group_id;
-end;
-/
-show errors
-
-create or replace trigger
-rhn_ugm_applicant_fix
-after delete on rhnUserGroupMembers
-for each row
-declare
-    	group_type_val    NUMBER;
-    	group_label_val   rhnUserGroupType.label%TYPE;	
-begin
-    	SELECT group_type INTO group_type_val
-	  FROM rhnUserGroup
-	 WHERE id = :old.user_group_id;
-	 
-	IF group_type_val IS NOT NULL
-	THEN
-	    SELECT label INTO group_label_val
-	      FROM rhnUserGroupType
-	     WHERE id = group_type_val;
-	     
-	    IF group_label_val = 'org_applicant'
-	    THEN
-	    	UPDATE web_contact SET password = old_password WHERE id = :old.user_id;
-	    END IF;
-	END IF;
 end;
 /
 show errors

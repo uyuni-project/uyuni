@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf8"?>
 
 <pxt-passthrough>
-<pxt-use class="Sniglets::Utils" />
 <pxt-use class="Sniglets::Users" />
   <div id="footer">
     <a href="/help/copyright.pxt">Copyright Notice</a>
     <div style="color: black">
       <pxt-config var="product_name" /> release <a href="/rhn/help/dispatcher/release_notes"><pxt-config var="version" /></a>
     </div>
-    <p><rhn-bugzilla-link /></p>
   </div>
 </pxt-passthrough>

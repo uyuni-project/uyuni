@@ -335,13 +335,11 @@ EOF
 rm -rf $RPM_BUILD_DIR/$DIRNAME
 
 # Build the rpm from that tarball
-# Use binary_payload w9.gzdio as e.g. lzma is not supported on older systems
 RPMOPTS="--define \"_topdir $RPM_BUILD_DIR\"\
  --define '_builddir    %{_topdir}'\
  --define '_sourcedir   %{_topdir}'\
  --define '_specdir     %{_topdir}'\
  --define '_rpmdir      %{_topdir}'\
- --define '_binary_payload w9.gzdio'\
  --define '_srcrpmdir   %{_topdir}'\
  --define '_source_filedigest_algorithm md5'\
  --define '_binary_filedigest_algorithm md5'\

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -26,6 +26,7 @@ import ConfigParser
 #Uses a ConfigParser to create a dictionary of the configuration options.
 #That dictionary is then used to add instance variables to the object dynamically.
 class rhnpushConfigParser:
+    # pylint: disable=W0201
     _instance = None
 
     def __init__(self, filename=None, ensure_consistency=False):
@@ -82,14 +83,14 @@ class rhnpushConfigParser:
         try:
             self.settings.read([self.filename])
         except IOError, e:
-            print "Config File Error: line %s, file %s: $s" % (e.lineno, e.filename, e)
+            print "Config File Error: line %s, file %s: %s" % (e.lineno, e.filename, e)
             sys.exit(1)
 
     def write(self, fileobj):
         try:
             self.settings.write(fileobj)
         except IOError, e:
-            print "Config File Error: line %s, file %s: $s" % (e.lineno, e.filename, e)
+            print "Config File Error: line %s, file %s: %s" % (e.lineno, e.filename, e)
             sys.exit(1)
 
 
@@ -116,7 +117,7 @@ class rhnpushConfigParser:
 
     #Returns an option read in from the configuration files.
     def __getitem__(self, item):
-        return self.settings.get_option(item)
+        return self.get_option(item)
 
     #Takes all of the configuration options read in by the ConfigParser and makes them attributes of the object.
     def _add_config_as_attr(self, ensure_consistency=False):

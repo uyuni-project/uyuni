@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,7 +19,8 @@ package Dobby::CLI::BackupCommands;
 use Carp;
 use Dobby::Files;
 use Dobby::BackupLog;
-use File::Basename qw/basename/;
+use English;
+use File::Basename qw/basename dirname/;
 use File::Spec;
 use Filesys::Df;
 use POSIX;
@@ -27,7 +28,7 @@ use POSIX;
 use Dobby::DB;
 use Dobby::Reporting;
 use Dobby::CLI::MiscCommands;
-
+use Spacewalk::Setup qw/postgresql_clear_db /;
 
 sub register_dobby_commands {
   my $class = shift;
@@ -45,18 +46,46 @@ sub register_dobby_commands {
   $cli->register_mode(-command => "examine",
 		      -description => "Display information about an SUSE Manager Database Instance backup",
 		      -handler => \&command_restore);
+  $cli->register_mode(-command => "pg-online-backup",
+          -description => "Perform online backup the PostgreSQL of RHN Satellite database",
+          -handler => \&command_pg_online_backup);
+  $cli->register_mode(-command => "pg-restore",
+          -description => "Restore the PostgreSQL database of RHN Satellite made by pg-online-backup",
+          -handler => \&command_pg_restore);
+
+}
+
+# returns $file cuted of prefix made from $cut_off_dir
+sub cut_off_dir {
+  my ($file, $cut_off_dir) = @_;
+  $file =~ s/^$cut_off_dir//;
+  return $file;
+}
+
+sub cut_dir {
+  my ($file, $cut_off_dir) = @_;
+  return dirname(cut_off_dir($file, $cut_off_dir));
 }
 
 sub directory_contents {
-  my $cli = shift;
-  my $dir = shift;
+  my ($cli, $dir, $cut_off_dir) = @_;
+  $cut_off_dir = $dir if not defined $cut_off_dir;
 
   my @files;
   opendir DIR, $dir or $cli->fatal("opendir $dir: $!");
-  push @files, grep { -f $_ } map { File::Spec->catfile($dir, $_) } readdir DIR;
+  my @dir_content = readdir DIR;
   closedir DIR;
+  my @without_up_dir = grep {$_ ne '.' and $_ ne '..'} @dir_content;
+  foreach my $directory (grep { -d $_ } map { File::Spec->catfile($dir, $_) } @without_up_dir) {
+    push @files, directory_contents($cli, $directory, $cut_off_dir);
+  }
+  push @files, map {[$_, cut_dir($_, $cut_off_dir)]} grep { -f $_ } map { File::Spec->catfile($dir, $_) } @dir_content;
 
-  return @files;
+  if (@files) {
+    return @files;
+  } else { #directory is empty, return directory itself
+    return ([$dir, $cut_off_dir]) if ($dir ne $cut_off_dir);
+  }
 }
 
 sub command_backup {
@@ -71,26 +100,32 @@ sub command_backup {
   $cli->fatal("Database is running; please stop before running a cold backup.") if $d->instance_state ne 'OFFLINE';
 
   my $source_dir = $d->data_dir;
+  my $backend = PXT::Config->get('db_backend');
 
   my $log = new Dobby::BackupLog;
   $log->type('cold');
   $log->sid($d->sid);
   $log->start(time);
+  $log->base_dir($backup_dir);
 
   $|++;
   print "Initiating cold backup of database ", $d->sid, "...\n";
 
   my @files;
 
-  push @files, $d->lk_file;
-  push @files, $d->sp_file;
-
-  for my $dir ($d->data_dir, $d->archive_log_dir) {
-    push @files, directory_contents($cli, $dir);
+  if ($backend eq 'oracle') {
+    push @files, [$d->lk_file, '/'];
+    push @files, [$d->sp_file, '/'];
   }
 
-  for my $file (@files) {
-    my $file_entry = Dobby::Files->backup_file($file, $backup_dir);
+  for my $dir ($d->data_dir, $d->archive_log_dir) {
+    push @files, directory_contents($cli, $dir, $dir) if ($dir);
+  }
+
+  for my $ret (@files) {
+    next unless $ret;
+    my ($file, $rel_dir) = @{$ret};
+    my $file_entry = Dobby::Files->backup_file($rel_dir, $file, $backup_dir);
     $log->add_cold_file($file_entry);
   }
 
@@ -107,11 +142,14 @@ sub command_restore {
   my $command = shift;
   my $restore_dir = shift;
 
+  my $backend = PXT::Config->get('db_backend');
+  my $cfg = new PXT::Config("dobby");
   $cli->usage("BACKUP_DIR") unless $restore_dir and -d $restore_dir;
   my $restore_log = File::Spec->catfile($restore_dir, "backup-log.dat");
   $cli->fatal("Error: restoration failed, unable to locate $restore_log") unless -r $restore_log;
 
   my $d = new Dobby::DB;
+  print "Parsing backup log.\n";
   my $log = Dobby::BackupLog->parse($restore_log);
 
   if ($log->type ne 'cold') {
@@ -139,7 +177,7 @@ sub command_restore {
   my @existing_files;
   if ($command eq 'restore') {
     push @existing_files, directory_contents($cli, $d->data_dir);
-    push @existing_files, directory_contents($cli, $d->archive_log_dir);
+    push @existing_files, directory_contents($cli, $d->archive_log_dir) if $d->archive_log_dir;
   }
 
   my $df = df($d->data_dir, "1024");
@@ -158,12 +196,18 @@ sub command_restore {
     return 1;
   }
 
+  my $intended_username = $cfg->get("${backend}_user");
+  my ($username, undef, $uid, $gid) = getpwnam($intended_username);
   for my $file_entry (@{$log->cold_files}) {
     # to and from reverse since their names come from the backup
     # script itself.
 
     my ($src, $dst) = ($file_entry->to, $file_entry->from);
-    $src = File::Spec->catfile($restore_dir, basename($src));
+    if ($log->base_dir) {
+      $src = File::Spec->catfile($restore_dir, cut_off_dir($src, $log->base_dir));
+    } else { # old backups (prior spacewalk 1.8) do not have basedir and assume all in one dir
+      $src = File::Spec->catfile($restore_dir, basename($src));
+    }
     my ($digest, $missing);
 
     printf "  %s", $src;
@@ -183,13 +227,13 @@ sub command_restore {
 
       printf " -> %s...", $tmpdst;
       if (not $missing) {
-	$digest = eval { Dobby::Files->gunzip_copy($src, $tmpdst) };
+	$digest = eval { Dobby::Files->gunzip_copy($src, $tmpdst, $uid, $gid) };
 	if (not defined $digest and $@) {
 	  $err_msg = $@;
 	}
       }
 
-      $seen_files{+basename($dst)} = 1;
+      $seen_files{+$dst} = 1;
       push @rename_queue, [ $tmpdst, $dst ];
     }
     elsif ($command eq 'examine') {
@@ -231,6 +275,8 @@ sub command_restore {
       print "Extraction and verification complete, renaming files... ";
       for my $entry (@rename_queue) {
 	rename $entry->[0] => $entry->[1] or warn "Rename $entry->[0] => $entry->[1] error: $!";
+        system("/sbin/restorecon", $entry->[1]);
+
       }
       print "done.\n";
 
@@ -238,12 +284,23 @@ sub command_restore {
       # in the backup set.  if we've seen it before, then we overwrote
       # it, so the contents are correct.
       print "Removing unnecessary files... ";
-      for my $file (@existing_files) {
-	next if exists $seen_files{+basename($file)};
+      for my $ret (@existing_files) {
+        next unless $ret;
+        my ($file, $rel_dir) = @{$ret};
+	next if exists $seen_files{+$file};
 
 	unlink $file or warn "Error unlinking $file: $!";
       }
+      print "done.\n";
 
+      print "Restoring empty directories... ";
+      if ($log->cold_dirs) {
+        for my $dir_entry (@{$log->cold_dirs}) {
+          if (my @dirs = File::Path::mkpath($dir_entry->from, 0, 0700)) {
+            chown $uid, $gid, @dirs;
+          }
+        }
+      }
       print "done.\n";
 
       print "Restoration complete, you may now start the database.\n";
@@ -257,6 +314,57 @@ sub command_restore {
     }
   }
   return 0;
+}
+
+sub command_pg_online_backup {
+  my ($cli, $command, $file) = @_;
+  $cli->usage("FILE") unless $file;
+
+  my $backup_dir = dirname $file;
+
+  my $backend = PXT::Config->get('db_backend');
+  $cli->fatal("Error: This backup method works only with PostgreSQL.") unless ($backend eq 'postgresql');
+  my $cfg = new PXT::Config("dobby");
+  my @rec = getpwnam($cfg->get("postgresql_user"));
+  $EUID = $rec[2];
+  $cli->fatal("Error: $backup_dir is not a writable directory for user $rec[0].") unless -d $backup_dir and -w $backup_dir;
+  $cli->fatal("Error: Backup file $file already exists in $file.") if -f $file;
+
+  print "Backing up to file $file.\n";
+  my $ret = system("/usr/bin/pg_dump", "--blobs", "--clean", "-Fc", "-v", "-Z7", "--file=$file", PXT::Config->get('db_name'));
+  print "Backup complete.\n";
+  return $ret;
+}
+
+sub command_pg_restore {
+  my ($cli, $command, $file) = @_;
+  $cli->usage("FILE") unless $file;
+
+  $cli->fatal("Error: restoration failed, unable to locate $file") unless -r $file;
+
+  my $backend = PXT::Config->get('db_backend');
+  $cli->fatal("Error: This backup method works only with PostgreSQL.") unless ($backend eq 'postgresql');
+  my $cfg = new PXT::Config("dobby");
+  my @rec = getpwnam($cfg->get("postgresql_user"));
+  $EUID = $rec[2];
+  $cli->fatal("Error: file $file is not readable by user $rec[0]") unless -r $file;
+
+  my $user = PXT::Config->get("db_user");
+  my $password = PXT::Config->get("db_password");
+  my $dsn = "dbi:Pg:dbname=".PXT::Config->get("db_name");
+  my $dbh = RHN::DB->direct_connect($dsn);
+
+  no warnings 'redefine';
+  sub Spacewalk::Setup::system_debug {
+     system @_;
+  }
+  postgresql_clear_db($dbh);
+  system('/usr/bin/droplang', 'plpgsql', PXT::Config->get('db_name'));
+
+  print "** Restoring from file $file.\n";
+  my $ret = system("/usr/bin/pg_restore", "-Fc", "--jobs=2", "--dbname=".PXT::Config->get('db_name'), $file );
+  print "Restoration complete.\n";
+  return $ret;
 }
 
 1;

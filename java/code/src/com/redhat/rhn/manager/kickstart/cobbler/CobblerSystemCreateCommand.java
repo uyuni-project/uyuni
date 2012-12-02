@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 import org.cobbler.Network;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
+import org.cobbler.XmlRpcException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,15 +60,18 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     private String kickstartHost;
     private String kernelOptions;
     private String postKernelOptions;
-    private String comment;
-    protected String networkInterface;
-    protected boolean isDhcp;
+    private String networkInterface;
+    private boolean isDhcp;
     private boolean useIpv6Gateway;
     private String ksDistro;
     private boolean setupBridge;
     private String bridgeName;
     private List<String> bridgeSlaves;
     private String bridgeOptions;
+    private String bridgeAddress;
+    private String bridgeNetmask;
+    private String bridgeGateway;
+    private boolean isBridgeDhcp;
     /**
      * @param dhcp true if the network type is dhcp
      * @param networkInterfaceIn The name of the network interface
@@ -83,18 +87,26 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     }
 
     /**
-     * @param doBridge boolean, wheither or not to set up a bridge post-install
+     * @param doBridge boolean, whether or not to set up a bridge post-install
      * @param name string, name of the bridge
      * @param slaves string array, nics to use as slaves
      * @param options string, bridge options
+     * @param isBridgeDhcpIn boolean, if the bridge will use dhcp to obtain an ip address
+     * @param address string, ip address for the bridge (if isDhcp is false)
+     * @param netmask string, netmask for the bridge (if isDhcp is false)
+     * @param gateway string, gateway for the bridge (if isDhcp is false)
      */
     public void setBridgeInfo(boolean doBridge, String name,
-            List<String> slaves,
-            String options) {
+            List<String> slaves, String options, boolean isBridgeDhcpIn,
+            String address, String netmask, String gateway) {
         setupBridge = doBridge;
         bridgeName = name;
         bridgeSlaves = slaves;
         bridgeOptions = options;
+        isBridgeDhcp = isBridgeDhcpIn;
+        bridgeAddress = address;
+        bridgeNetmask = netmask;
+        bridgeGateway = gateway;
     }
 
     /**
@@ -264,7 +276,17 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                     getCobblerSystemRecordName(),
                     profile);
         }
-        processNetworkInterfaces(rec, server);
+        try {
+            processNetworkInterfaces(rec, server);
+        }
+        catch (XmlRpcException e) {
+            if (e.getCause() != null && e.getCause().getMessage() != null &&
+                    e.getCause().getMessage().contains("IP address duplicated")) {
+                return new ValidatorError(
+                        "frontend.actions.systems.virt.duplicateipaddressvalue");
+            }
+            throw e;
+        }
         rec.setProfile(profile);
 
         if (isDhcp) {
@@ -317,11 +339,17 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         }
         rec.setKernelOptions(kernelOptions);
         rec.setKernelPostOptions(postKernelOptions);
-        // The comment is optional
-        if (comment != null) {
-            rec.setComment(comment);
+        try {
+            rec.save();
         }
-        rec.save();
+        catch (XmlRpcException e) {
+            if (e.getCause() != null && e.getCause().getMessage() != null &&
+                    e.getCause().getMessage().contains("IP address duplicated")) {
+                return new ValidatorError(
+                        "frontend.actions.systems.virt.duplicateipaddressvalue");
+            }
+            throw e;
+        }
 
         /*
          * This is a band-aid for the problem revealed in bug 846221. However
@@ -375,6 +403,10 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                     if (ipv6Addresses.size() > 0) {
                         net.setIpv6Secondaries(ipv6Addresses);
                     }
+                    if (setupBridge && bridgeSlaves.contains(n.getName())) {
+                        net.makeBondingSlave();
+                        net.setBondingMaster(bridgeName);
+                    }
 
                     nics.add(net);
                 }
@@ -391,6 +423,12 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                 Network net = new Network(getCobblerConnection(), bridgeName);
                 net.makeBondingMaster();
                 net.setBondingOptions(bridgeOptions);
+                net.setStaticNetwork(!isBridgeDhcp);
+                if (!isBridgeDhcp) {
+                    net.setNetmask(bridgeNetmask);
+                    net.setIpAddress(bridgeAddress);
+                    rec.setGateway(bridgeGateway);
+                }
                 nics.add(net);
             }
         }
@@ -444,21 +482,5 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
 
     protected Action getScheduledAction() {
         return scheduledAction;
-    }
-
-    /**
-     * Setter for the comment.
-     * @param commentIn the comment
-     */
-    public void setComment(String commentIn) {
-        this.comment = commentIn;
-    }
-
-    /**
-     * Getter for the comment.
-     * @return the comment
-     */
-    public String getComment() {
-        return this.comment;
     }
 }

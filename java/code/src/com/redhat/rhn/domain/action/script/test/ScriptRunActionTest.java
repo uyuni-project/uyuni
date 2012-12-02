@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -136,7 +136,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
         ScriptRunAction scriptaction = (ScriptRunAction) a;
         assertEquals(1, scriptaction.getScriptActionDetails().getResults().size());
 
-        ScriptResult lookupResult = (ScriptResult)scriptaction.getScriptActionDetails().
+        ScriptResult lookupResult = scriptaction.getScriptActionDetails().
             getResults().iterator().next();
         assertEquals(startDate.getTime() / 1000,
                 lookupResult.getStartDate().getTime() / 1000);

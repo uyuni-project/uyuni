@@ -1,6 +1,3 @@
-%define name cx_Oracle
-%define version 5.0.4
-%define release 1
 
 # different arches have differnet oracle versions
 %define oracleicname instantclient
@@ -19,15 +16,14 @@
 %endif
 
 Summary: Python interface to Oracle
-Name: %{name}
-Version: %{version}
-Release: %{release}%{?dist}
+Name: cx_Oracle
+Version: 5.1.2
+Release: 2%{?dist}
 Source0: %{name}-%{version}.tar.gz
 License: Python Software Foundation License
 Group: Development/Libraries
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Prefix: %{_prefix}
-Vendor: Anthony Tuininga <anthony.tuininga@gmail.com>
 Url: http://cx-oracle.sourceforge.net
 AutoReq: 0
 Provides: python(:DBAPI:oracle) = 2.0
@@ -61,10 +57,20 @@ export ORACLE_HOME=%{oracle_home}
 rm -rf $RPM_BUILD_ROOT
 
 %files -f INSTALLED_FILES
-%defattr(-,root,root)
 %doc LICENSE.txt README.txt BUILD.txt HISTORY.txt html samples test
 
 %changelog
+* Mon Oct 22 2012 Michael Mraka
+- Use the ReleaseTagger.
+- rebuild with correct vendor
+
+* Mon Oct 08 2012 Jan Pazdziora 5.1.2-1
+- Rebase to cx_Oracle 5.1.2.
+
+* Mon Oct 08 2012 Jan Pazdziora 5.0.4-2
+- Require latest greatest oracle-instantclient11.2-*.
+- %%defattr is not needed since rpm 4.4
+
 * Fri Jan 07 2011 Jan Pazdziora <jpazdziora@redhat.com> 5.0.4-1
 - cx_Oracle 5.0.4 with Oracle InstantClient 11g
 

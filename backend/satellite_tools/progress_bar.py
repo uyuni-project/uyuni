@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -21,7 +21,7 @@ class ProgressBar:
 
     def __init__(self, prompt='working: ', endTag=' - done',
                  finalSize=100.0, finalBarLength=10,
-                 bar='#', stream=sys.stdout, redrawYN=1):
+                 barChar='#', stream=sys.stdout, redrawYN=1):
 
         # disabling redrawing of the hash marks. Too many people are
         # complaining.
@@ -34,7 +34,7 @@ class ProgressBar:
         self.endTag = endTag
         self.finalSize = float(finalSize)
         self.finalBarLength = int(finalBarLength)
-        self.bar = bar
+        self.barChar = barChar
         self.stream = stream
         self.redrawYN = redrawYN
         if self.stream not in [sys.stdout, sys.stderr]:
@@ -53,7 +53,7 @@ class ProgressBar:
         """
         if contextYN:
             self.stream.write('%s%s\n' % (' '*len(self.prompt), '_'*self.finalBarLength))
-        toPrint = self.prompt + self.bar*self.barLength
+        toPrint = self.prompt + self.barChar*self.barLength
         if self.redrawYN:
             #self.stream.write('\b'*len(toPrint))
             # backup
@@ -72,7 +72,7 @@ class ProgressBar:
         if self.redrawYN:
             self.printAll(contextYN=0)
         else:
-            self.stream.write(self.bar * (self.barLength - self.barLengthPrinted))
+            self.stream.write(self.barChar * (self.barLength - self.barLengthPrinted))
         self.stream.flush()
         self.barLengthPrinted = self.barLength
 

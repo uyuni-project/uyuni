@@ -52,12 +52,16 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.HardwareDeviceDto;
 import com.redhat.rhn.frontend.dto.NetworkDto;
 import com.redhat.rhn.frontend.dto.OrgProxyServer;
+import com.redhat.rhn.frontend.dto.ServerPath;
+import com.redhat.rhn.frontend.dto.SystemCurrency;
 import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartSessionDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProxyVersionException;
@@ -104,11 +108,11 @@ public class SystemManager extends BaseManager {
     public static final String CAP_CONFIGFILES_UPLOAD = "configfiles.upload";
     public static final String CAP_CONFIGFILES_DIFF = "configfiles.diff";
     public static final String CAP_CONFIGFILES_MTIME_UPLOAD =
-        "configfiles.mtime_upload";
+            "configfiles.mtime_upload";
     public static final String CAP_CONFIGFILES_DEPLOY = "configfiles.deploy";
     public static final String CAP_PACKAGES_VERIFY = "packages.verify";
     public static final String CAP_CONFIGFILES_BASE64_ENC =
-        "configfiles.base64_enc";
+            "configfiles.base64_enc";
 
     public static final String NO_SLOT_KEY = "system.entitle.noslots";
 
@@ -148,7 +152,7 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult subscribableChannels(Long sid, Long uid, Long cid) {
         SelectMode m = ModeFactory.getMode("Channel_queries",
-                                           "subscribable_channels", Map.class);
+                "subscribable_channels", Map.class);
         Map params = new HashMap();
         params.put("server_id", sid);
         params.put("user_id", uid);
@@ -183,7 +187,7 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult systemChannelSubscriptions(Long sid) {
         SelectMode m = ModeFactory.getMode("System_queries",
-            "system_channel_subscriptions");
+                "system_channel_subscriptions");
         Map params = new HashMap();
         params.put("sid", sid);
         return m.execute(params);
@@ -198,7 +202,7 @@ public class SystemManager extends BaseManager {
      */
     public static boolean requiresReboot(User user, Long sid) {
         SelectMode m = ModeFactory.getMode("System_queries",
-        "has_errata_with_keyword_applied_since_last_reboot");
+                "has_errata_with_keyword_applied_since_last_reboot");
         Map params = new HashMap();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
@@ -226,9 +230,9 @@ public class SystemManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
         params.put("keyword", "reboot_suggested");
-        return makeDataResult(params, new HashMap<String, Object>(), pc, m);
+        Map<String, Object> elabParams = new HashMap<String, Object>();
+        return makeDataResult(params, elabParams, pc, m);
     }
-
 
     /**
      * Returns a list of systems that are not compliant against foreign packages check.
@@ -267,6 +271,39 @@ public class SystemManager extends BaseManager {
         return dataResult;
     }
 
+    /**
+     * Returns a list of systems with extra packages installed.
+     *
+     * @param user User to check the systems for
+     * @param pc Page control
+     *
+     * @return list of SystemOverviews.
+     */
+    public static DataResult getExtraPackagesSystems(User user, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries",
+            "extra_packages_systems_count");
+        Map params = new HashMap();
+        params.put("userid", user.getId());
+        params.put("orgid", user.getOrg().getId());
+
+        return makeDataResult(params, new HashMap<String, Object>(), pc, m);
+    }
+
+    /**
+     * Returns the list of extra packages for a system.
+     * @param serverId Server ID in question
+     * @return List of extra packages
+     */
+    public static DataResult listExtraPackages(Long serverId) {
+        SelectMode m = ModeFactory.getMode("Package_queries",
+                                           "extra_packages_for_system");
+        Map params = new HashMap();
+        params.put("serverid", serverId);
+        Map elabParams = new HashMap();
+
+        DataResult dataResult = makeDataResult(params, elabParams, null, m);
+        return dataResult;
+    }
 
     /**
      * Gets the latest upgradable packages for a system
@@ -275,8 +312,8 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult latestUpgradablePackages(Long sid) {
         SelectMode m = ModeFactory.getMode("Package_queries",
-                                           "system_upgradable_package_list_no_errata_info",
-                                           Map.class);
+                "system_upgradable_package_list_no_errata_info",
+                Map.class);
         Map params = new HashMap();
         params.put("sid", sid);
         return m.execute(params);
@@ -303,8 +340,8 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult latestInstallablePackages(Long sid) {
         SelectMode m = ModeFactory.getMode("Package_queries",
-                                           "system_latest_available_packages",
-                                           Map.class);
+                "system_latest_available_packages",
+                Map.class);
         Map params = new HashMap();
         params.put("sid", sid);
         return m.execute(params);
@@ -317,7 +354,7 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult installedPackages(Long sid) {
         SelectMode m = ModeFactory.getMode("System_queries", "system_installed_packages",
-                                           Map.class);
+                Map.class);
         Map params = new HashMap();
         params.put("sid", sid);
         DataResult<Map> pkgs =  m.execute(params);
@@ -392,7 +429,7 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult availableSystemGroups(Server server, User user) {
         SelectMode m = ModeFactory.getMode("SystemGroup_queries", "visible_to_system",
-                                           Map.class);
+                Map.class);
         Map params = new HashMap();
         params.put("sid", server.getId());
         params.put("org_id", user.getOrg().getId());
@@ -400,7 +437,7 @@ public class SystemManager extends BaseManager {
         return m.execute(params);
     }
 
-     /**
+    /**
      * Returns list of all notes for a system.
      * @param s The server in question
      * @return list of SystemNotes.
@@ -432,7 +469,8 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult systemCurrencyList(User user, PageControl pc) {
+    public static DataResult<SystemCurrency> systemCurrencyList(User user,
+            PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "system_currency");
         Map params = new HashMap();
         params.put("uid", user.getId());
@@ -446,12 +484,13 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult systemListShort(User user, PageControl pc) {
+    public static DataResult<SystemOverview> systemListShort(User user,
+            PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "xmlrpc_visible_to_user",
                 SystemOverview.class);
-        Map params = new HashMap();
+        Map<String, Long> params = new HashMap<String, Long>();
         params.put("user_id", user.getId());
-        Map elabParams = new HashMap();
+        Map<String, Long> elabParams = new HashMap<String, Long>();
 
         return makeDataResult(params, elabParams, pc, m);
     }
@@ -463,7 +502,8 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult systemListShortInactive(User user, PageControl pc) {
+    public static DataResult<SystemOverview> systemListShortInactive(User user,
+            PageControl pc) {
         return systemListShortInactive(user, new Integer(Config.get().getInt(ConfigDefaults
                 .SYSTEM_CHECKIN_THRESHOLD)), pc);
     }
@@ -476,15 +516,15 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult systemListShortInactive(
+    public static DataResult<SystemOverview> systemListShortInactive(
             User user, int inactiveThreshold, PageControl pc) {
         SelectMode m = ModeFactory.getMode(
                 "System_queries", "xmlrpc_visible_to_user_inactive",
                 SystemOverview.class);
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("checkin_threshold", inactiveThreshold);
-        Map elabParams = new HashMap();
+        Map<String, Object> elabParams = new HashMap<String, Object>();
 
         return makeDataResult(params, elabParams, pc, m);
     }
@@ -496,14 +536,15 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult systemListShortActive(User user, PageControl pc) {
+    public static DataResult<SystemOverview> systemListShortActive(User user,
+            PageControl pc) {
         SelectMode m = ModeFactory.getMode(
                 "System_queries", "xmlrpc_visible_to_user_active", SystemOverview.class);
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("checkin_threshold", new Integer(Config.get().getInt(ConfigDefaults
                 .SYSTEM_CHECKIN_THRESHOLD)));
-        Map elabParams = new HashMap();
+        Map<String, Object> elabParams = new HashMap<String, Object>();
 
         return makeDataResult(params, elabParams, pc, m);
     }
@@ -517,7 +558,7 @@ public class SystemManager extends BaseManager {
      * @return list of SystemOverviews.
      */
     public static DataResult <SystemOverview> systemsNotInGroup(User user,
-                                                    ServerGroup sg, PageControl pc) {
+            ServerGroup sg, PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "target_systems_for_group");
         Map params = new HashMap();
         params.put("user_id", user.getId());
@@ -562,12 +603,13 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult outOfDateList(User user, PageControl pc) {
+    public static DataResult<SystemOverview> outOfDateList(User user,
+            PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "out_of_date");
-        Map params = new HashMap();
+        Map<String, Long> params = new HashMap<String, Long>();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
-        Map elabParams = new HashMap();
+        Map<String, Long> elabParams = new HashMap<String, Long>();
         return makeDataResult(params, elabParams, pc, m);
     }
 
@@ -645,18 +687,18 @@ public class SystemManager extends BaseManager {
      * @return list of SystemOverviews
      */
     public static DataResult registeredList(User user,
-                                            PageControl pc,
-                                            int threshold) {
+            PageControl pc,
+            int threshold) {
         SelectMode m;
         Map params = new HashMap();
 
         if (threshold == 0) {
             m = ModeFactory.getMode("System_queries",
-            "all_systems_by_registration");
+                    "all_systems_by_registration");
         }
         else {
             m = ModeFactory.getMode("System_queries",
-            "recently_registered");
+                    "recently_registered");
             params.put("threshold", new Integer(threshold));
         }
 
@@ -676,7 +718,7 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult inactiveListSortbyCheckinTime(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries",
-                                            "inactive_order_by_checkin_time");
+                "inactive_order_by_checkin_time");
         Map params = new HashMap();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
@@ -706,7 +748,8 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult virtualSystemsList(User user, PageControl pc) {
+    public static DataResult<VirtualSystemOverview> virtualSystemsList(
+            User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "virtual_servers");
         Map params = new HashMap();
         params.put("user_id", user.getId());
@@ -721,7 +764,8 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult virtualGuestsForHostList(User user, Long sid, PageControl pc) {
+    public static DataResult<VirtualSystemOverview> virtualGuestsForHostList(
+            User user, Long sid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "virtual_guests_for_host");
         Map params = new HashMap();
         params.put("user_id", user.getId());
@@ -738,9 +782,10 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult virtualSystemsInSet(User user,
-                                                 String setLabel,
-                                                 PageControl pc) {
+    public static DataResult<VirtualSystemOverview> virtualSystemsInSet(
+            User user,
+            String setLabel,
+            PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "virtual_systems_in_set");
         Map params = new HashMap();
         params.put("user_id", user.getId());
@@ -772,7 +817,7 @@ public class SystemManager extends BaseManager {
      * @return list of SystemOverviews.
      */
     public static DataResult<SystemOverview> systemsInGroup(Long sgid,
-                                                            PageControl pc) {
+            PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "systems_in_group");
         Map params = new HashMap();
         params.put("sgid", sgid);
@@ -816,7 +861,7 @@ public class SystemManager extends BaseManager {
     public static DataResult<Errata> unscheduledErrata(User user, Long sid,
             PageControl pc) {
         SelectMode m = ModeFactory.getMode("Errata_queries",
-                                           "unscheduled_relevant_to_system");
+                "unscheduled_relevant_to_system");
         Map params = new HashMap();
         params.put("user_id", user.getId());
         params.put("sid", sid);
@@ -833,7 +878,7 @@ public class SystemManager extends BaseManager {
      */
     public static boolean hasUnscheduledErrata(User user, Long sid) {
         SelectMode m = ModeFactory.getMode("Errata_queries",
-                                           "unscheduled_relevant_to_system");
+                "unscheduled_relevant_to_system");
         Map params = new HashMap();
         params.put("user_id", user.getId());
         params.put("sid", sid);
@@ -868,7 +913,7 @@ public class SystemManager extends BaseManager {
         while (i.hasNext()) {
             KickstartSessionDto next = (KickstartSessionDto)i.next();
             if (!(next.getState().equals("complete") ||
-                   next.getState().equals("failed"))) {
+                    next.getState().equals("failed"))) {
                 return true;
             }
         }
@@ -903,7 +948,7 @@ public class SystemManager extends BaseManager {
      * @return a list of ErrataOverviews
      */
     public static DataResult<ErrataOverview> relevantErrata(User user,
-                                               Long sid, List<String> types) {
+            Long sid, List<String> types) {
         SelectMode m = ModeFactory.getMode("Errata_queries", "relevant_to_system_by_types");
 
         Map params = new HashMap();
@@ -924,20 +969,20 @@ public class SystemManager extends BaseManager {
      * @param user The user
      * @param sid System Id
      * @param type of errata to include
-     * @param severityLabel to filter by
+     * @param synopsis to filter by
      * @return a list of ErrataOverviews
      */
     public static DataResult<ErrataOverview> relevantCurrencyErrata(User user,
-                                               Long sid, String type,
-                                               String severityLabel) {
+            Long sid, String type,
+            String synopsis) {
         SelectMode m = ModeFactory.getMode("Errata_queries",
-                 "security_relevant_to_system_by_severity");
+                "security_relevant_to_system_by_synopsis");
 
         Map params = new HashMap();
         params.put("user_id", user.getId());
         params.put("sid", sid);
         params.put("type", type);
-        params.put("severity_label", severityLabel);
+        params.put("synopsis", synopsis);
 
         Map elabParams = new HashMap();
         elabParams.put("sid", sid);
@@ -980,7 +1025,7 @@ public class SystemManager extends BaseManager {
      */
     public static int countCriticalErrataForSystem(User user, Long sid) {
         SelectMode m = ModeFactory.getMode("Errata_queries",
-            "count_critical_errata_for_system");
+                "count_critical_errata_for_system");
 
         Map params = new HashMap();
         params.put("user_id", user.getId());
@@ -999,7 +1044,7 @@ public class SystemManager extends BaseManager {
      */
     public static int countNoncriticalErrataForSystem(User user, Long sid) {
         SelectMode m = ModeFactory.getMode("Errata_queries",
-            "count_noncritical_errata_for_system");
+                "count_noncritical_errata_for_system");
 
         Map params = new HashMap();
         params.put("user_id", user.getId());
@@ -1017,7 +1062,7 @@ public class SystemManager extends BaseManager {
      * @return a list of ErrataOverviews
      */
     public static DataResult errataInSet(User user, String label,
-                                                 PageControl pc) {
+            PageControl pc) {
         SelectMode m = ModeFactory.getMode("Errata_queries", "in_set");
 
         Map params = new HashMap();
@@ -1053,7 +1098,7 @@ public class SystemManager extends BaseManager {
      * @return a List of hydrated server objects.
      */
     public static List<Server> hydrateServerFromIds(Collection<Long> serverIds,
-                                                                User userIn) {
+            User userIn) {
         List <Server> servers = new ArrayList(serverIds.size());
         for (Long id : serverIds) {
             servers.add(lookupByIdAndUser(id, userIn));
@@ -1079,7 +1124,7 @@ public class SystemManager extends BaseManager {
      * @throws InvalidCertificateException thrown if certificate is invalid.
      */
     public static Server lookupByCert(ClientCertificate cert)
-        throws InvalidCertificateException {
+            throws InvalidCertificateException {
 
         return ServerFactory.lookupByCert(cert);
     }
@@ -1090,10 +1135,10 @@ public class SystemManager extends BaseManager {
      * @param serverIn the server to query for
      * @return list of ActivationKeyDto containing the token id and name
      */
-    public static DataResult getActivationKeys(Server serverIn) {
+    public static DataResult<ActivationKeyDto> getActivationKeys(Server serverIn) {
 
         SelectMode m = ModeFactory.getMode("General_queries",
-        "activation_keys_for_server");
+                "activation_keys_for_server");
         Map params = new HashMap();
         params.put("server_id", serverIn.getId());
         return makeDataResult(params, Collections.EMPTY_MAP, null, m);
@@ -1227,7 +1272,7 @@ public class SystemManager extends BaseManager {
      *           returned server.
      */
     public static Server subscribeServerToChannel(User user,
-                                            Server server, Channel channel) {
+            Server server, Channel channel) {
         return subscribeServerToChannel(user, server, channel, false);
     }
 
@@ -1244,9 +1289,9 @@ public class SystemManager extends BaseManager {
      *           returned server.
      */
     public static Server subscribeServerToChannel(User user,
-                                                    Server server,
-                                                    Channel channel,
-                                                    boolean flush) {
+            Server server,
+            Channel channel,
+            boolean flush) {
 
         // do not allow non-satellite or non-proxy servers to
         // be subscribed to satellite or proxy channels respectively.
@@ -1330,7 +1375,7 @@ public class SystemManager extends BaseManager {
      * @param channel The channel to unsubscribe from
      */
     public static void unsubscribeServerFromChannel(User user, Server server,
-                                                    Channel channel) {
+            Channel channel) {
         unsubscribeServerFromChannel(user, server, channel, false);
     }
 
@@ -1363,7 +1408,7 @@ public class SystemManager extends BaseManager {
      *              if you set this to true..
      */
     public static void unsubscribeServerFromChannel(User user, Server server,
-                                                    Channel channel, boolean flush) {
+            Channel channel, boolean flush) {
         if (!isAvailableToUser(user, server.getId())) {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
@@ -1392,7 +1437,7 @@ public class SystemManager extends BaseManager {
      *           returned server.
      */
     public static Server unsubscribeServerFromChannel(Server server,
-                                                    Channel channel) {
+            Channel channel) {
         return unsubscribeServerFromChannel(server, channel, false);
     }
 
@@ -1412,8 +1457,8 @@ public class SystemManager extends BaseManager {
      *           returned server.
      */
     public static Server unsubscribeServerFromChannel(Server server,
-                                                    Channel channel,
-                                                        boolean flush) {
+            Channel channel,
+            boolean flush) {
         if (channel == null) {
             //nothing to do ;)
             return server;
@@ -1426,16 +1471,16 @@ public class SystemManager extends BaseManager {
         in.put("channel_id", channel.getId());
         m.execute(in, new HashMap());
 
-            /*
-             * This is f-ing hokey, but we need to be sure to refresh the
-             * server object since we modified it outside of hibernate :-/
-             * This will update the server.channels set.
-             */
-            if (flush) {
-                return (Server)HibernateFactory.reload(server);
-            }
-            HibernateFactory.getSession().refresh(server);
-            return server;
+        /*
+         * This is f-ing hokey, but we need to be sure to refresh the
+         * server object since we modified it outside of hibernate :-/
+         * This will update the server.channels set.
+         */
+        if (flush) {
+            return (Server)HibernateFactory.reload(server);
+        }
+        HibernateFactory.getSession().refresh(server);
+        return server;
 
     }
 
@@ -1497,7 +1542,7 @@ public class SystemManager extends BaseManager {
      * client certificate.
      */
     public static ClientCertificate createClientCertificate(Server server)
-        throws InstantiationException {
+            throws InstantiationException {
 
         ClientCertificate cert = new ClientCertificate();
         // add members to this cert
@@ -1539,7 +1584,7 @@ public class SystemManager extends BaseManager {
      * @throws InvalidProxyVersionException thrown if version is invalid.
      */
     public static void activateProxy(Server server, String version)
-       throws ProxySystemIsSatelliteException, InvalidProxyVersionException {
+            throws ProxySystemIsSatelliteException, InvalidProxyVersionException {
 
         if (server.isSatellite()) {
             throw new ProxySystemIsSatelliteException();
@@ -1578,7 +1623,7 @@ public class SystemManager extends BaseManager {
      * @return ValidatorResult of errors and warnings.
      */
     public static ValidatorResult entitleServer(Org orgIn, Long sid,
-                                                Entitlement ent) {
+            Entitlement ent) {
         Server server = ServerFactory.lookupByIdAndOrg(sid, orgIn);
         ValidatorResult result = new ValidatorResult();
 
@@ -1600,13 +1645,13 @@ public class SystemManager extends BaseManager {
             // are the 2 instances where we want to swap the old virt
             // with the new...
             if ((EntitlementManager.VIRTUALIZATION.equals(ent) &&
-                   hasEntitlement(sid, EntitlementManager.VIRTUALIZATION_PLATFORM))) {
+                    hasEntitlement(sid, EntitlementManager.VIRTUALIZATION_PLATFORM))) {
                 log.debug("removing VIRT_PLATFORM");
                 removeServerEntitlement(sid, EntitlementManager.VIRTUALIZATION_PLATFORM,
                         false);
             }
             else if ((EntitlementManager.VIRTUALIZATION_PLATFORM.equals(ent) &&
-                        hasEntitlement(sid, EntitlementManager.VIRTUALIZATION))) {
+                    hasEntitlement(sid, EntitlementManager.VIRTUALIZATION))) {
                 log.debug("removing VIRT");
                 removeServerEntitlement(sid, EntitlementManager.VIRTUALIZATION,
                         false);
@@ -1643,13 +1688,13 @@ public class SystemManager extends BaseManager {
         }
         if (checkCounts) {
             Long availableEntitlements =
-                EntitlementManager.getAvailableEntitlements(ent, orgIn);
+                    EntitlementManager.getAvailableEntitlements(ent, orgIn);
             log.debug("avail: " + availableEntitlements);
             if (availableEntitlements != null &&
                     availableEntitlements.longValue() < 1) {
                 log.debug("Not enough slots.  returning error");
                 result.addError(new ValidatorError(NO_SLOT_KEY,
-                            ent.getHumanReadableLabel()));
+                        ent.getHumanReadableLabel()));
                 return result;
             }
         }
@@ -1690,8 +1735,8 @@ public class SystemManager extends BaseManager {
             }
 
             if ((base != null) &&
-                 base.isRhelChannel() &&
-                 base.isReleaseXChannel(6)) {
+                    base.isRhelChannel() &&
+                    base.isReleaseXChannel(6)) {
                 // do some actions for RHEL6
             }
             else {
@@ -1749,7 +1794,7 @@ public class SystemManager extends BaseManager {
             // warn but allow the operation to proceed.
             else if (toolsChannel == null) {
                 result.addWarning(new ValidatorWarning("system.entitle.novirtpackage",
-                            ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
+                        ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
             }
             else {
                 List packageResults = ChannelManager.listLatestPackagesEqual(
@@ -1764,7 +1809,7 @@ public class SystemManager extends BaseManager {
                 }
                 else {
                     result.addError(new ValidatorError("system.entitle.novirtpackage",
-                                        ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
+                            ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
                 }
             }
         }
@@ -1772,8 +1817,8 @@ public class SystemManager extends BaseManager {
             log.warn("Found multiple child channels with package: " +
                     ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME);
             result.addWarning(new ValidatorWarning(
-                        "system.entitle.multiplechannelswithpackagepleaseinstall",
-                        ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
+                    "system.entitle.multiplechannelswithpackagepleaseinstall",
+                    ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
         }
     }
 
@@ -1810,8 +1855,8 @@ public class SystemManager extends BaseManager {
                 log.warn("Found multiple child channels with package: " +
                         ChannelManager.VIRT_CHANNEL_PACKAGE_NAME);
                 result.addWarning(new ValidatorWarning(
-                            "system.entitle.multiplechannelswithpackage",
-                            ChannelManager.VIRT_CHANNEL_PACKAGE_NAME));
+                        "system.entitle.multiplechannelswithpackage",
+                        ChannelManager.VIRT_CHANNEL_PACKAGE_NAME));
             }
         }
     }
@@ -1835,7 +1880,7 @@ public class SystemManager extends BaseManager {
      * @param ent Level of Entitlement.
      */
     public static void removeServerEntitlement(Long sid,
-                                        Entitlement ent) {
+            Entitlement ent) {
         removeServerEntitlement(sid, ent, true);
     }
 
@@ -1847,8 +1892,8 @@ public class SystemManager extends BaseManager {
      *               irrelevant if virtual entitlements are not found..
      */
     public static void removeServerEntitlement(Long sid,
-                                        Entitlement ent,
-                                        boolean repoll) {
+            Entitlement ent,
+            boolean repoll) {
 
         if (!hasEntitlement(sid, ent)) {
             if (log.isDebugEnabled()) {
@@ -1903,10 +1948,10 @@ public class SystemManager extends BaseManager {
         out.put("retval", new Integer(Types.NUMERIC));
 
         CallableMode m = ModeFactory.getCallableMode("System_queries",
-                                                     "can_entitle_server");
+                "can_entitle_server");
         Map result = m.execute(in, out);
         boolean retval = BooleanUtils.
-            toBoolean(((Long) result.get("retval")).intValue());
+                toBoolean(((Long) result.get("retval")).intValue());
         log.debug("canEntitleServer.returning: " + retval);
         return retval;
     }
@@ -1925,7 +1970,7 @@ public class SystemManager extends BaseManager {
         params.put("cid", channel.getId());
         params.put("org_id", user.getOrg().getId());
         SelectMode m = ModeFactory.getMode("System_queries",
-                           "systems_subscribed_to_channel", SystemOverview.class);
+                "systems_subscribed_to_channel", SystemOverview.class);
         return m.execute(params);
     }
 
@@ -1943,7 +1988,7 @@ public class SystemManager extends BaseManager {
         params.put("cid", channelId);
 
         SelectMode m = ModeFactory.getMode("System_queries",
-            "count_systems_subscribed_to_channel");
+                "count_systems_subscribed_to_channel");
         DataResult dr = makeDataResult(params, params, null, m);
 
         Map result = (Map) dr.get(0);
@@ -1965,7 +2010,7 @@ public class SystemManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
 
         SelectMode m = ModeFactory.getMode("System_queries",
-                           "systems_subscribed_to_channel", Map.class);
+                "systems_subscribed_to_channel", Map.class);
         return m.execute(params);
     }
 
@@ -2043,8 +2088,8 @@ public class SystemManager extends BaseManager {
             throw e;
         }
         ServerLock sl = new ServerLock(locker,
-                                       server,
-                                       reason);
+                server,
+                reason);
 
         server.setLock(sl);
     }
@@ -2089,7 +2134,7 @@ public class SystemManager extends BaseManager {
         // Note that for FVEs, NULL == NOT FOUND
         if (isServerFveEligible(serverIn)) {
             Long availableFVEs = ChannelManager.getAvailableFveEntitlements(orgIn,
-                channelIn);
+                    channelIn);
             if (availableFVEs != null && (availableFVEs.longValue() > 0)) {
                 return true;
             }
@@ -2188,8 +2233,8 @@ public class SystemManager extends BaseManager {
         // need to change down the road.
         if (0 > proposedVcpuSetting || proposedVcpuSetting > 32) {
             result.addError(new ValidatorError(
-                "systems.details.virt.vcpu.limit.msg",
-                new Object [] {"32", guest.getName()}));
+                    "systems.details.virt.vcpu.limit.msg",
+                    new Object [] {"32", guest.getName()}));
         }
 
         if (result.getErrors().isEmpty()) {
@@ -2199,8 +2244,8 @@ public class SystemManager extends BaseManager {
             if (hostCpu != null && hostCpu.getNrCPU() != null) {
                 if (proposedVcpuSetting > hostCpu.getNrCPU().intValue()) {
                     result.addWarning(new ValidatorWarning(
-                        "systems.details.virt.vcpu.exceeds.host.cpus",
-                        new Object [] {host.getCpu().getNrCPU(), guest.getName()}));
+                            "systems.details.virt.vcpu.exceeds.host.cpus",
+                            new Object [] {host.getCpu().getNrCPU(), guest.getName()}));
                 }
             }
 
@@ -2208,15 +2253,16 @@ public class SystemManager extends BaseManager {
             // If the new value exceeds the setting the guest was started with, a
             // reboot will be required for the setting to take effect.
             VirtualInstanceState running = VirtualInstanceFactory.getInstance().
-                getRunningState();
+                    getRunningState();
             if (guest.getState() != null &&
                     guest.getState().getId().equals(running.getId())) {
                 Integer currentGuestCpus = guest.getNumberOfCPUs();
                 if (currentGuestCpus != null && proposedVcpuSetting >
-                        currentGuestCpus.intValue()) {
+                currentGuestCpus.intValue()) {
                     result.addWarning(new ValidatorWarning(
-                        "systems.details.virt.vcpu.increase.warning",
-                        new Object [] {new Integer(proposedVcpuSetting), guest.getName()}));
+                            "systems.details.virt.vcpu.increase.warning",
+                            new Object [] {new Integer(proposedVcpuSetting),
+                                guest.getName()}));
                 }
             }
         }
@@ -2244,13 +2290,13 @@ public class SystemManager extends BaseManager {
         // Grab the host from the first guest in the list:
         Long firstGuestId = (Long)guestIds.get(0);
         Server host = (viFactory.lookupById(firstGuestId)).
-                                                                getHostSystem();
+                getHostSystem();
 
         int proposedMemoryKb = proposedMemory * 1024;
         long netMemoryDifferenceKb = 0;
         long guestMemoryUsageKb = 0; // accumulate mem allocation of all running guests
         VirtualInstanceState running = VirtualInstanceFactory.getInstance().
-            getRunningState();
+                getRunningState();
 
         log.debug("Adding guest memory:");
         List warnings = new LinkedList();
@@ -2269,14 +2315,14 @@ public class SystemManager extends BaseManager {
 
                     if (guestIds.contains(guest.getId())) {
                         long guestMemoryDelta = proposedMemoryKb -
-                                            guest.getTotalMemory().longValue();
+                                guest.getTotalMemory().longValue();
                         netMemoryDifferenceKb += guestMemoryDelta;
 
                         // Warn the user that a change to max memory will require a reboot
                         // for the settings to take effect:
                         warnings.add(new ValidatorWarning(
-                            "systems.details.virt.memory.warning",
-                            new Object [] {guest.getName()}));
+                                "systems.details.virt.memory.warning",
+                                new Object [] {guest.getName()}));
                     }
                 }
                 else {
@@ -2331,7 +2377,7 @@ public class SystemManager extends BaseManager {
     public static List<SystemOverview> listSystemsWithPackage(User user,
             String name, String version, String release) {
         SelectMode m = ModeFactory.getMode("System_queries",
-        "systems_with_package_nvr");
+                "systems_with_package_nvr");
         Map params = new HashMap();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
@@ -2351,7 +2397,7 @@ public class SystemManager extends BaseManager {
      */
     public static List<SystemOverview> listSystemsWithPackage(User user, Long id) {
         SelectMode m = ModeFactory.getMode("System_queries",
-        "systems_with_package");
+                "systems_with_package");
         Map params = new HashMap();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
@@ -2369,7 +2415,7 @@ public class SystemManager extends BaseManager {
      */
     public static List<SystemOverview> listSystemsWithNeededPackage(User user, Long id) {
         SelectMode m = ModeFactory.getMode("System_queries",
-        "systems_with_needed_package");
+                "systems_with_needed_package");
         Map params = new HashMap();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
@@ -2386,7 +2432,7 @@ public class SystemManager extends BaseManager {
      */
     public static List<SystemOverview> listVirtualHosts(User user) {
         SelectMode m = ModeFactory.getMode("System_queries",
-        "virtual_hosts_for_user");
+                "virtual_hosts_for_user");
         Map params = new HashMap();
         params.put("user_id", user.getId());
         DataResult toReturn = m.execute(params);
@@ -2404,7 +2450,7 @@ public class SystemManager extends BaseManager {
      */
     public static int countSubscribedToChannelWithoutOrg(Long orgId, Long cid) {
         SelectMode m = ModeFactory.getMode("System_queries",
-        "count_systems_subscribed_to_channel_not_in_org");
+                "count_systems_subscribed_to_channel_not_in_org");
         Map params = new HashMap();
         params.put("org_id", orgId);
         params.put("cid", cid);
@@ -2424,8 +2470,8 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult subscribedInOrgTrust(long orgA, long orgB) {
         SelectMode m =
-            ModeFactory.getMode("System_queries",
-                    "systems_subscribed_by_orgtrust");
+                ModeFactory.getMode("System_queries",
+                        "systems_subscribed_by_orgtrust");
         Map params = new HashMap();
         params.put("orgA", orgA);
         params.put("orgB", orgB);
@@ -2440,8 +2486,8 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult sidsInOrgTrust(long orgA, long orgB) {
         SelectMode m =
-            ModeFactory.getMode("System_queries",
-                    "sids_subscribed_by_orgtrust");
+                ModeFactory.getMode("System_queries",
+                        "sids_subscribed_by_orgtrust");
         Map params = new HashMap();
         params.put("orgA", orgA);
         params.put("orgB", orgB);
@@ -2456,7 +2502,7 @@ public class SystemManager extends BaseManager {
      */
     public static Long subscribedToChannelSize(User user, Long cid) {
         SelectMode m = ModeFactory.getMode("System_queries",
-        "systems_subscribed_to_channel_size");
+                "systems_subscribed_to_channel_size");
         Map params = new HashMap();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
@@ -2473,7 +2519,7 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult<CustomDataKeyOverview> listDataKeys(User user) {
         SelectMode m = ModeFactory.getMode("System_queries",
-        "custom_vals", CustomDataKeyOverview.class);
+                "custom_vals", CustomDataKeyOverview.class);
         Map params = new HashMap();
         params.put("uid", user.getId());
         params.put("org_id", user.getOrg().getId());
@@ -2511,16 +2557,16 @@ public class SystemManager extends BaseManager {
      * @return description of server information as well as a list of relevant packages
      */
     public static DataResult ssmSystemPackagesToRemove(User user,
-                                                       String packageSetLabel,
-                                                       boolean shortened) {
+            String packageSetLabel,
+            boolean shortened) {
         SelectMode m;
         if (shortened) {
             m = ModeFactory.getMode("System_queries",
-                "system_set_remove_or_verify_packages_conf_short");
+                    "system_set_remove_or_verify_packages_conf_short");
         }
         else {
             m = ModeFactory.getMode("System_queries",
-            "system_set_remove_or_verify_packages_conf");
+                    "system_set_remove_or_verify_packages_conf");
         }
 
         Map<String, Object> params = new HashMap<String, Object>(3);
@@ -2543,10 +2589,10 @@ public class SystemManager extends BaseManager {
      * @return description of server information as well as a list of all relevant packages
      */
     public static DataResult ssmSystemPackagesToUpgrade(User user,
-                                                        String packageSetLabel) {
+            String packageSetLabel) {
 
         SelectMode m =
-            ModeFactory.getMode("System_queries", "ssm_package_upgrades_conf");
+                ModeFactory.getMode("System_queries", "ssm_package_upgrades_conf");
 
         Map<String, Object> params = new HashMap<String, Object>(3);
         params.put("user_id", user.getId());
@@ -2605,7 +2651,7 @@ public class SystemManager extends BaseManager {
      * @return true if available, false otherwise
      */
     public static boolean hasPackageAvailable(Server server, Long nameId,
-                                            Long archId, Long evrId) {
+            Long archId, Long evrId) {
         Map params = new HashMap();
         params.put("server_id", server.getId());
         params.put("eid", evrId);
@@ -2619,7 +2665,7 @@ public class SystemManager extends BaseManager {
             params.put("aid", archId);
         }
         SelectMode m =
-            ModeFactory.getMode("System_queries", mode);
+                ModeFactory.getMode("System_queries", mode);
         DataResult toReturn = m.execute(params);
         return toReturn.size() > 0;
     }
@@ -2630,7 +2676,7 @@ public class SystemManager extends BaseManager {
      * @param sid The id of the server in question
      * @return Returns a list of ServerPath objects.
      */
-    public static DataResult getConnectionPath(Long sid) {
+    public static DataResult<ServerPath> getConnectionPath(Long sid) {
         SelectMode m = ModeFactory.getMode("System_queries", "proxy_path_for_server");
         Map params = new HashMap();
         params.put("sid", sid);
@@ -2644,7 +2690,7 @@ public class SystemManager extends BaseManager {
      * @return list of maps with name_id, evr_id and arch_id
      */
     public static List<Map<String, Long>> listInstalledPackage(
-                                    String packageName, Server server) {
+            String packageName, Server server) {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "list_installed_packages_for_name");
         Map params = new HashMap();
@@ -2713,19 +2759,19 @@ public class SystemManager extends BaseManager {
      */
     public static List<SystemOverview> listSystemsByName(User user,
             String name) {
-            SelectMode mode = ModeFactory.getMode("System_queries", "find_by_name");
-            Map params = new HashMap();
-            params.put("user_id", user.getId());
-            params.put("name", name);
-            Map elabParams = new HashMap();
-            DataResult result =  makeDataResult(params, elabParams, null, mode);
-            result.elaborate();
-            return result;
+        SelectMode mode = ModeFactory.getMode("System_queries", "find_by_name");
+        Map params = new HashMap();
+        params.put("user_id", user.getId());
+        params.put("name", name);
+        Map elabParams = new HashMap();
+        DataResult result =  makeDataResult(params, elabParams, null, mode);
+        result.elaborate();
+        return result;
     }
 
 
     private static DataResult<SystemOverview> listDuplicates(User user,
-                                            String query, String key) {
+            String query, String key) {
         SelectMode mode = ModeFactory.getMode("System_queries", query);
         Map params = new HashMap();
         params.put("uid", user.getId());
@@ -2735,7 +2781,7 @@ public class SystemManager extends BaseManager {
     }
 
     private static List listDuplicates(User user, String query,
-                                List ignored, Long inactiveHours) {
+            List ignored, Long inactiveHours) {
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, (0 - inactiveHours.intValue()));
@@ -2781,7 +2827,7 @@ public class SystemManager extends BaseManager {
      * @return List of DuplicateSystemGrouping objects
      */
     public static List listDuplicatesByIP(User user, long inactiveHours) {
-        List ignoreIps = new ArrayList();
+        List<String> ignoreIps = new ArrayList<String>();
         ignoreIps.add("127.0.0.1");
         ignoreIps.add("127.0.0.01");
         ignoreIps.add("127.0.0.2");
@@ -2872,7 +2918,7 @@ public class SystemManager extends BaseManager {
      * @return List of DuplicateSystemGrouping objects
      */
     public static List<SystemOverview> listDuplicatesByHostname(User user,
-                                                            String hostName) {
+            String hostName) {
         return listDuplicates(user, "duplicate_system_ids_hostname_key",
                 hostName);
     }

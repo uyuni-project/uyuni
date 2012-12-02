@@ -170,6 +170,14 @@
         <th><bean:message key="sdc.details.overview.sysid"/></th>
         <td><c:out value="${system.id}" /></td>
       </tr>
+     <tr>
+        <th><bean:message key="sdc.details.overview.activationkey"/></th>
+        <td>
+          <c:forEach items="${activationKey}" var="key">
+            <c:out value="${key.token}" /></br>
+          </c:forEach>
+        </td>
+      </tr>
       <tr>
         <th><bean:message key="sdc.details.overview.installedproducts"/></th>
         <td>
@@ -367,6 +375,26 @@
           </c:choose>
         </td>
       </tr>
+    </table>
+  </div>
+  <div style="width: 45%; float: left;">
+    <h2><bean:message key="sdc.details.overview.crashes.application"/></h2>
+    <table class="details">
+      <c:choose>
+        <c:when test="${system.crashes.created == null}">
+          <bean:message key="sdc.details.overview.crashes.nodata"/>
+        </c:when>
+        <c:otherwise>
+          <tr>
+            <th><bean:message key="sdc.details.overview.crashes.lastreport"/></th>
+            <td><fmt:formatDate value="${system.crashes.created}" type="both" dateStyle="short" timeStyle="long"/></td>
+          </tr>
+          <tr>
+            <th><bean:message key="sdc.details.overview.crashes.crashcount"/></th>
+            <td><c:out value="${system.crashes.crashCount}"/></td>
+          </tr>
+        </c:otherwise>
+      </c:choose>
     </table>
   </div>
   <div style="clear: left; width: 45%; float: left; line-height: 200%">

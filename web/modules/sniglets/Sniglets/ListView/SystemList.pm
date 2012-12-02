@@ -66,18 +66,6 @@ sub _register_modes {
 			   -datasource => RHN::DataSource::System->new,
 			   -action_callback => \&ssm_rollback_by_tag_action_cb);
 
-  Sniglets::ListView::List->add_mode(-mode => "provisioning_systems_in_set",
-			   -datasource => RHN::DataSource::System->new,
-			   -provider => \&provisioning_systems_in_set_cb);
-
-  Sniglets::ListView::List->add_mode(-mode => "provisioning_systems_in_ks_set",
-			   -datasource => RHN::DataSource::System->new,
-			   -provider => \&provisioning_systems_in_set_cb);
-
-  Sniglets::ListView::List->add_mode(-mode => "users_systems_with_value_for_key",
-			   -datasource => RHN::DataSource::System->new,
-			   -provider => \&custominfo_values_provider);
-
   Sniglets::ListView::List->add_mode(-mode => "visible_to_user",
 			   -datasource => RHN::DataSource::System->new);
 
@@ -125,10 +113,6 @@ sub _register_modes {
 
   Sniglets::ListView::List->add_mode(-mode => "target_systems_for_channel_in_set",
 			   -datasource => RHN::DataSource::System->new);
-
-  Sniglets::ListView::List->add_mode(-mode => "affected_by_errata",
-			   -datasource => RHN::DataSource::System->new,
-			   -provider => \&affected_by_errata_provider);
 
   Sniglets::ListView::List->add_mode(-mode => "in_group_and_affected_by_errata",
 			   -datasource => RHN::DataSource::System->new);
@@ -220,10 +204,6 @@ sub _register_modes {
   Sniglets::ListView::List->add_mode(-mode => "target_systems_for_namespace",
 			   -datasource => RHN::DataSource::System->new,
                            -action_callback => \&add_systems_to_namespace_cb);
-
-  Sniglets::ListView::List->add_mode(-mode => "config_managed_systems",
-				     -datasource => RHN::DataSource::System->new,
-				     -action_callback => \&Sniglets::ConfigManagement::config_managed_systems_cb);
 
   Sniglets::ListView::List->add_mode(-mode => "config_systems_list",
 				     -datasource => RHN::DataSource::System->new,
@@ -460,41 +440,6 @@ sub ssm_rollback_by_tag_action_cb {
 
   return 1;
 }
-
-sub provisioning_systems_in_set_cb {
-  my $self = shift;
-  my $pxt = shift;
-
-  my %ret = $self->default_provider($pxt);
-  my $prov_sets = scalar @{$ret{data}}; #num provisioning systems
-  my $systems = RHN::Set->lookup(-label => 'system_list', -uid => $pxt->user->id);
-  my $total_sets = scalar $systems->contents; #num systems in ssm
-  my $non_prov = $total_sets - $prov_sets; #num non provisioning systems
-  if ($total_sets > $prov_sets) {
-  my $msg = <<EOM; 
-This operation could not be performed on some of the selected systems because they have insufficient entitlements or incompatible architectures. You may continue this operation with the listed compatible systems.
-EOM
-  $pxt->push_message(local_alert => $msg); #warn user 
-  }
-  return (%ret);
-}
-
-sub custominfo_values_provider {
-  my $self = shift;
-  my $pxt = shift;
-
-  my %ret = $self->default_provider($pxt);
-
-  foreach my $key (@{$ret{data}}) {
-
-    if (defined $key->{VALUE}) {
-      $key->{VALUE} = '<pre>' . $key->{VALUE} . '</pre>';
-    }
-  }
-
-  return (%ret);
-}
-
 
 sub selected_systems_installed_package_provider {
   my $self = shift;
@@ -1366,28 +1311,6 @@ sub install_package {
 
   $system_set->empty;
   $system_set->commit;
-}
-
-sub affected_by_errata_provider {
-  my $self = shift;
-  my $pxt = shift;
-
-  my %ret = $self->default_provider($pxt);
-
-  foreach my $row (@{$ret{data}}) {
-    my $stat = $row->{__data__}->[0];
-    if ($stat->{STATUS}) {
-      if ($stat->{STATUS} eq 'Queued') {
-        $stat->{STATUS} = 'Pending';
-      }
-      $row->{STATUS} = PXT::HTML->link('/rhn/schedule/ActionDetails.do?aid=' . $stat->{ACTION_ID}, $stat->{STATUS});
-    }
-    else {
-      $row->{STATUS} = 'None';
-    }
-  }
-
-  return %ret;
 }
 
 sub systems_with_patch_provider {

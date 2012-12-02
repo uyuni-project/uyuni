@@ -294,17 +294,6 @@ EOQ
   return 0;
 }
 
-sub tri_state_channel_list {
-  my $class = shift;
-  my $org_id = shift;
-  my $user_id = shift;
-
-  my $ds = new RHN::DataSource::Channel(-mode => 'tri_state_channel_list');
-  my $channels = $ds->execute_query(-user_id => $user_id);
-
-  return @$channels;
-}
-
 sub subscribable_channels {
   my $class = shift;
   my %params = validate(@_, {server_id => 1, user_id => 1, base_channel_id => 1});
@@ -455,39 +444,6 @@ EOQ
 }
 
 
-sub package_groups {
-  my $class = shift;
-  my $channel_id = shift;
-
-    my $dbh = RHN::DB->connect;
-
-  my $query = <<EOQ;
-SELECT PN.name, PN.name || '-' || EVR.version || '-' ||  EVR.release || DECODE(EVR.epoch, NULL, '', ':' || EVR.epoch) NVRE, PG.name, PO.name_id || '|' || PO.evr_id, PA.name
-  FROM rhnPackageArch PA, rhnChannelPackage CP, rhnPackageGroup PG, rhnPackageName PN, rhnPackageEVR EVR, rhnPackage PO
- WHERE CP.channel_id = ?
-   AND PO.id = CP.package_id
-   AND PG.id = PO.package_group
-   AND PO.name_id = PN.id
-   AND PO.evr_id = EVR.id
-   AND PO.package_arch_id = PA.id
-EOQ
-  my $sth = $dbh->prepare($query);
-  $sth->execute($channel_id);
-
-  my %groups;
-  while (my @row = $sth->fetchrow) {
-    $row[2] =~ s/\s*$//;
-    $row[2] =~ s/Enviornment/Environment/; # fix a typo in an old glibc pkg
-    my ($upper, $lower) = split m(/), $row[2], 2;
-    $lower ||= '';
-
-    push @{$groups{$upper}->{$lower}}, [ $row[0], $row[1], $row[3], $row[4] ];
-  }
-
-  return \%groups;
-
-}
-
 sub lookup {
   my $class = shift;
   my %params = validate(@_, {id => 1});
@@ -554,26 +510,6 @@ sub channel_id_by_label {
   return $id;
 }
 
-
-sub channel_entitlement_overview {
-  my $self = shift;
-  my $org_id = shift;
-
-  my $dbh = RHN::DB->connect;
-  my $sth = $dbh->prepare(<<EOQ);
-SELECT CFO.id, CFO.name, CFO.current_members, CFO.max_members, CFO.has_subscription, CFO.url
-  FROM rhnChannelFamilyOverview CFO
- WHERE CFO.org_id = ?
-EOQ
-  $sth->execute($org_id);
-
-  my @ret;
-  while (my @row = $sth->fetchrow) {
-    push @ret, [ @row ];
-  }
-
-  return @ret;
-}
 
 #adopt channel into channel_famil(y|ies)
 sub adopt_into_family {

@@ -161,6 +161,10 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     private String bondInterface;
     private List<String> bondSlaveInterfaces;
     private String bondOptions;
+    private boolean isBondDhcp;
+    private String bondAddress;
+    private String bondNetmask;
+    private String bondGateway;
 
     /**
      * Constructor for a kickstart where the host and the target are the same system.
@@ -559,6 +563,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         if (!cobblerOnly) {
             kickstartSession = this.setupKickstartSession(packageAction);
             KickstartData data = getKsdata();
+            // always create a tracking regkey (bnc#659093)
             //if (!data.isRawData()) {
                 storeActivationKeyInfo();
             //}
@@ -608,8 +613,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         cmd.setScheduledAction(kickstartAction);
         cmd.setNetworkInfo(isDhcp, networkInterface, this.useIpv6Gateway(),
                 ksdata.getInstallType().getLabel());
-        cmd.setBridgeInfo(createBond, bondInterface,
-                bondSlaveInterfaces, bondOptions);
+        cmd.setBridgeInfo(createBond, bondInterface, bondSlaveInterfaces,
+                bondOptions, isBondDhcp, bondAddress, bondNetmask, bondGateway);
         ValidatorError cobblerError = cmd.store();
         if (cobblerError != null) {
             return cobblerError;
@@ -695,7 +700,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                     .equals(regType);
             createKickstartActivationKey(this.user, this.ksdata,
                     reactivation ? getTargetServer() : null,
-                    this.kickstartSession, 1L, note);
+                            this.kickstartSession, 1L, note);
         }
         this.createdProfile = processProfileType(this.profileType);
         log.debug("** profile created: " + createdProfile);
@@ -823,13 +828,11 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         // Check that we have a valid ks package
-//        if( !ksdata.getTree().getInstallType().isSUSE() ) {
-            log.debug("** Checking validkspackage");
-            error = validateKickstartPackage();
-            if (error != null) {
-                return error;
-            }
-//        }
+        log.debug("** Checking validkspackage");
+        error = validateKickstartPackage();
+        if (error != null) {
+            return error;
+        }
 
         if (ksdata.isRhel()) {
             // Check that we have a valid up2date version
@@ -1400,6 +1403,62 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      */
     public void setBondOptions(String bondOptionsIn) {
         bondOptions = bondOptionsIn;
+    }
+
+    /**
+     * @return Returns true if we are using dhcp for the bond
+     */
+    public boolean isBondDhcp() {
+        return isBondDhcp;
+    }
+
+    /**
+     * @param isBondDhcpIn True if we want to use dhcp for the bond
+     */
+    public void setBondDhcp(boolean isBondDhcpIn) {
+        this.isBondDhcp = isBondDhcpIn;
+    }
+
+    /**
+     * @return the bondAddress
+     */
+    public String getBondAddress() {
+        return bondAddress;
+    }
+
+    /**
+     * @param bondAddressIn The bondAddress to set
+     */
+    public void setBondAddress(String bondAddressIn) {
+        this.bondAddress = bondAddressIn;
+    }
+
+    /**
+     * @return The bondNetmask
+     */
+    public String getBondNetmask() {
+        return bondNetmask;
+    }
+
+    /**
+     * @param bondNetmaskIn The bondNetmask to set
+     */
+    public void setBondNetmask(String bondNetmaskIn) {
+        this.bondNetmask = bondNetmaskIn;
+    }
+
+    /**
+     * @return The bondGateway
+     */
+    public String getBondGateway() {
+        return bondGateway;
+    }
+
+    /**
+     * @param bondGatewayIn The bondGateway to set
+     */
+    public void setBondGateway(String bondGatewayIn) {
+        this.bondGateway = bondGatewayIn;
     }
 
     /**

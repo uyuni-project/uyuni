@@ -3,7 +3,7 @@
 # Debug utility: packages log files, and relevant debug information
 #                needed for full diagnosis of Spacewalk Server issues.
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -238,7 +238,7 @@ echo "    * querying schema version, database charactersets and database"
 if [ -f /usr/bin/smdba ] ; then
     /usr/bin/smdba space-overview > $DIR/db-control-report
 elif [ -f /usr/bin/db-control ] ; then
-    /bin/su - oracle -c "/usr/bin/db-control report" > $DIR/db-control-report
+    /usr/bin/db-control report > $DIR/db-control-report
 fi
 
 

@@ -136,31 +136,6 @@ EOQ
   return $server_status;
 }
 
-# Like get_server_status, but returns a hash for the server's row in
-# rhnActionStatus, or an arrayref of all servers for that action if no
-# server id is specified.
-sub get_full_server_status {
-  my $self = shift;
-  my $server_id = shift;
-
-  my $ds = new RHN::DataSource::Action (-mode => 'server_status');
-  my $data = $ds->execute_full(-aid => $self->id);
-
-  if ($server_id) {
-    # There should never be more than one matching row.
-    my ($row) = grep { $_->{ID} == $server_id } @{$data};
-
-    throw "(no_status_for_server) No status found for system '$server_id', action '" . $self->id . "'"
-      unless $row;
-
-    return $row;
-  }
-
-  return $data;
-
-}
-
-
 sub cancel_pending_for_system {
   my $class = shift;
   my %params = validate(@_, {server_id => 1, transaction => 0});
@@ -358,52 +333,6 @@ foreach my $field ($tc->method_names) {
   eval $sub;
 
   croak $@ if($@);
-}
-
-sub prerequisite_action {
-  my $self = shift;
-
-  return unless $self->prerequisite;
-
-  my $aid = $self->prerequisite;
-  my $class = ref $self;
-  my $new_action = $class->lookup(-id => $aid);
-
-  return $new_action;
-}
-
-sub get_top_of_action_chain {
-  my $self = shift;
-
-  my $current_action = $self;
-
-  while ($current_action->prerequisite()) {
-    $current_action = $current_action->prerequisite_action;
-  }
-
-  return $current_action;
-}
-
-sub next_action_in_chain {
-  my $self = shift;
-
-  my $dbh = RHN::DB->connect;
-  my $sth = $dbh->prepare(<<EOQ);
-SELECT A.id
-  FROM rhnAction A
- WHERE A.prerequisite = :current_aid
-EOQ
-
-  $sth->execute_h(current_aid => $self->id);
-  my ($next_aid) = $sth->fetchrow();
-  $sth->finish;
-
-  return unless $next_aid;
-
-  my $class = ref $self;
-  my $new_action = $class->lookup(-id => $next_aid);
-
-  return $new_action;
 }
 
 sub action_is_for_server {

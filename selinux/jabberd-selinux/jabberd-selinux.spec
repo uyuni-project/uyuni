@@ -6,7 +6,7 @@
 %global modulename jabber
 
 Name:           jabberd-selinux
-Version:        1.7.0.1
+Version:        1.9.0
 Release:        1%{?dist}
 Summary:        SELinux policy module supporting jabberd
 
@@ -98,7 +98,6 @@ fi
 rpm -ql jabberd | xargs -n 1 /sbin/restorecon -ri {} || :
 
 %files
-%defattr(-,root,root,0755)
 %doc %{modulename}.fc %{modulename}.if %{modulename}.te
 %{_datadir}/selinux/*/%{modulename}.pp
 %{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if

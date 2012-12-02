@@ -7,7 +7,7 @@
 %define modulename spacewalk-monitoring
 
 Name:           spacewalk-monitoring-selinux
-Version:        1.7.2.1
+Version:        1.9.0
 Release:        1%{?dist}
 Summary:        SELinux policy module supporting Spacewalk monitoring
 
@@ -135,13 +135,25 @@ fi
 /sbin/restorecon -rvi /var/log/SysVStep.* /var/run/SysVStep.*
 
 %files
-%defattr(-,root,root,0755)
 %doc %{modulename}.fc %{modulename}.if %{modulename}.te
 %{_datadir}/selinux/*/%{modulename}.pp
 %{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
 %attr(0755,root,root) %{_sbindir}/%{name}-enable
 
 %changelog
+* Thu Aug 02 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.4-1
+- 650735 - fix context of /usr/share/nocpulse/cgi-bin
+
+* Fri Jul 27 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.3-1
+- 650735 - set proper context for cgi scripts
+
+* Thu Jul 19 2012 Jan Pazdziora 1.8.2-1
+- Allow monitoring to use local PostgreSQL.
+
+* Fri Jun 29 2012 Jan Pazdziora 1.8.1-1
+- Make java_t bits optional, as Fedora 17 does not have this type.
+- %%defattr is not needed since rpm 4.4
+
 * Tue Feb 07 2012 Miroslav Suchý 1.7.2-1
 - set selinux context for /etc/NOCpulse.ini
 

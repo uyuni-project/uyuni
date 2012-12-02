@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -43,6 +43,9 @@ sub command_extend {
   my $command = shift;
   my $ts = shift;
   $ts = uc($ts);
+
+  my $backend = PXT::Config->get('db_backend');
+  $cli->fatal("Error: This command works only with Oracle.") unless ($backend eq 'oracle');
 
   $cli->usage("TABLESPACE") unless $ts;
 
@@ -118,6 +121,7 @@ sub gather_stats {
 
   $pct = 15 if not defined($pct);
   $cli->usage("PERCENT") unless 0 < $pct and $pct <=100;
+  my $backend = PXT::Config->get('db_backend');
 
   if (not $d->database_started) {
     print "Error: The database must be running to gather statistics.\n";
@@ -126,7 +130,11 @@ sub gather_stats {
     
   print "Gathering statistics...\n";
   print "WARNING: this may be a very slow process.\n";
-  $d->gather_database_stats($pct);
+  if($backend eq 'postgresql') {
+    $d->gather_database_stats_postgresql($pct);
+  } else {
+    $d->gather_database_stats_oracle($pct);
+  }
   print "done.\n";
 
   return 0;
@@ -134,6 +142,9 @@ sub gather_stats {
 
 sub shrink_segments {
   my $cli = shift;
+
+  my $backend = PXT::Config->get('db_backend');
+  $cli->fatal("Error: This command works only with Oracle.") unless ($backend eq 'oracle');
 
   my $d = new Dobby::DB;
 

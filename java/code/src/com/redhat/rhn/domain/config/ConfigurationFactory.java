@@ -244,7 +244,6 @@ public class ConfigurationFactory extends HibernateFactory {
 
         Map result = m.execute(inParams, outParams);
 
-        revision.setId((Long)result.get("configRevisionId"));
         return (Long) result.get("configRevisionId");
     }
 

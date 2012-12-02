@@ -1,7 +1,7 @@
 %define release_name Smile
 
 Name:           spacewalk
-Version:        1.7.3.2
+Version:        1.9.0
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 URL:            https://fedorahosted.org/spacewalk
@@ -57,7 +57,6 @@ Requires:       spacewalk-backend-server
 Requires:       spacewalk-backend-sql
 Requires:       spacewalk-backend-xml-export-libs
 Requires:       spacewalk-backend-xmlrpc
-Requires:       spacewalk-backend-xp
 Requires:       rhnpush
 
 
@@ -81,10 +80,12 @@ Requires:       spacewalk-monitoring
 # don't use selinux
 Requires:       osa-dispatcher
 Requires:       susemanager-jsp_en
+Requires:       cobbler >= 2.0
 %else
 Requires:       osa-dispatcher-selinux
 Requires:       spacewalk-monitoring-selinux
 Requires:       spacewalk-selinux
+Requires:       cobbler2
 %endif
 
 %if 0%{?rhel} == 5
@@ -197,6 +198,27 @@ rm -rf %{buildroot}
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
 
 %changelog
+* Thu Oct 25 2012 Jan Pazdziora 1.8.6-1
+- Revert "Require spacewalk-setup-embedded-postgresql for spacewalk-setup to
+  work."
+
+* Thu Oct 25 2012 Jan Pazdziora 1.8.5-1
+- Require spacewalk-setup-embedded-postgresql for spacewalk-setup to work.
+
+* Fri Oct 19 2012 Jan Pazdziora 1.8.4-1
+- We need one extra package in the dependency chain to prefer cobbler20 upon
+  fresh installation.
+
+* Tue Oct 16 2012 Jan Pazdziora 1.8.3-1
+- Require the cobbler20 for full installation.
+
+* Tue Oct 09 2012 Jan Pazdziora 1.8.2-1
+- The spacewalk-backend-xp subpackage is not longer built.
+- %%defattr is not needed since rpm 4.4
+
+* Mon Apr 16 2012 Jan Pazdziora 1.8.1-1
+- Require postgresql >= 8.4 (mzazrivec@redhat.com)
+
 * Fri Mar 02 2012 Jan Pazdziora 1.7.3-1
 - On RHEL 5, we need to explicitly name postgresql84-contrib.
 

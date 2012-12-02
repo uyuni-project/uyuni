@@ -31,26 +31,8 @@ insert into rhnUserGroupType (id, label, name) values (
 
 insert into rhnUserGroupType (id, label, name) values (
 	sequence_nextval('rhn_usergroup_type_seq'),
-	'org_applicant',
-	'Organization Applicant'
-);
-
-insert into rhnUserGroupType (id, label, name) values (
-	sequence_nextval('rhn_usergroup_type_seq'),
 	'channel_admin',
 	'Channel Administrator'
-);
-
-insert into rhnUserGroupType (id, label, name) values (
-	sequence_nextval('rhn_usergroup_type_seq'),
-	'rhn_support',
-	'Spacewalk Support Administrator'
-);
-
-insert into rhnUserGroupType (id, label, name) values (
-	sequence_nextval('rhn_usergroup_type_seq'),
-	'rhn_superuser',
-	'Spacewalk Superuser'
 );
 
 insert into rhnUserGroupType (id, label, name) values (
@@ -75,12 +57,6 @@ insert into rhnUserGroupType (id, label, name) values (
 	sequence_nextval('rhn_usergroup_type_seq'),
 	'activation_key_admin',
 	'Activation Key Administrator'
-);
-
-insert into rhnUserGroupType (id, label, name) values (
-	sequence_nextval('rhn_usergroup_type_seq'),
-	'cert_admin',
-	'Certificate Administrator'
 );
 
 commit;

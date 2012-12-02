@@ -1,0 +1,177 @@
+#!/bin/bash
+
+set -e
+
+OPTS=$(getopt --longoptions=db:,user:,password: -n ${0##*/} -- d:u:p "$@")
+
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+eval set -- "$OPTS"
+
+while true ; do
+    case "$1" in
+        -d|--db)
+            PGNAME=$2
+            shift
+            ;;
+        -u|--user)
+            PGUSER=$2
+            shift
+            ;;
+        -p|--password)
+            PGPASSWORD=$2
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "Internal error [$1]!" >&2
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+help() {
+    echo "usage: $(basename $0) create --db <database_name> --user <username> --password <password>" >&2
+    echo "       $(basename $0) remove [ --db <database_name> | --user <username> ]" >&2
+    echo "       $(basename $0) check  [ --db <database_name> | --user <username> ]" >&2
+}
+
+PG_DATA=/var/lib/pgsql/data
+PG_HBA="$PG_DATA/pg_hba.conf"
+POSTGRESQL="$PG_DATA/postgresql.conf"
+PG_PIDFILE="/var/run/postmaster.5432.pid"
+PG_SOCKET="/tmp/.s.PGSQL.5432"
+
+create() {
+    if [ -z "$PGUSER" -o -z "$PGPASSWORD" -o -z "$PGNAME" ] ; then
+        help
+        exit 1
+    fi
+    chkconfig postgresql on
+
+    if [ ! -d "$PG_DATA/base" ] ; then
+        service postgresql initdb
+
+	# see bug 821446, we enable timestamps in logs by default
+	sed -i 's/^\(max_connections.*\|shared_buffers.*\)$/### next line has been commented out by spacewalk-setup-embedded-postgresql: ###\n##\1/ ' $POSTGRESQL
+        cat >> $POSTGRESQL <<EOF
+
+### spacewalk-setup-embedded-postgresql modified values
+checkpoint_completion_target = 0.7
+checkpoint_segments = 8
+effective_cache_size = 1152MB
+log_line_prefix = '%m '
+maintenance_work_mem = 96MB
+max_connections = 600
+shared_buffers = 384MB
+wal_buffers = 4MB
+work_mem = 2560kB
+EOF
+
+        sed -i 's/^\([^#].*\)$/### next line has been commented out by spacewalk-setup-embedded-postgresql: ###\n##\1/ ' $PG_HBA
+        cat >> $PG_HBA <<EOF
+
+local $PGNAME $PGUSER md5
+host  $PGNAME $PGUSER 127.0.0.1/8 md5
+host  $PGNAME $PGUSER ::1/128 md5
+local $PGNAME postgres  ident
+local postgres postgres  ident
+
+EOF
+    fi
+
+    service postgresql start
+
+    if /usr/sbin/lsof /proc > /dev/null ; then
+        while [ -f "$PG_PIDFILE" ] ; do
+            # wait for postmaster to be ready
+            /usr/sbin/lsof -t -p $(cat "$PG_PIDFILE" 2>/dev/null) -a "$PG_SOCKET" \
+                && break
+            sleep 1
+        done
+    fi
+
+    if ! exists_db ; then
+            runuser - postgres -c "createdb '$PGNAME'; createlang plpgsql '$PGNAME'"
+    fi
+    if ! exists_user ; then
+            runuser - postgres -c "yes '$PGPASSWORD' | createuser -P -sDR '$PGUSER'"
+    fi
+
+    service postgresql reload
+}
+
+remove() {
+    if [ -z "$PGUSER" -a -z "$PGNAME" ] ; then
+        help
+        exit 1
+    fi
+    if exists_db ; then
+            runuser - postgres -c "dropdb '$PGNAME'"
+    fi
+    if exists_user ; then
+            runuser - postgres -c "dropuser '$PGUSER'"
+    fi
+}
+
+check() {
+    if [ -z "$PGUSER" -a -z "$PGNAME" ] ; then
+        help
+        exit 1
+    fi
+
+    service postgresql status >& /dev/null || service postgresql start
+
+    RET=0
+    if [ -n "$PGUSER" ] ; then
+        if exists_user ; then
+            echo "User \"$PGUSER\" already exists"
+        else
+            echo "User \"$PGUSER\" does not exist"
+            RET=1
+        fi
+    fi
+    if [ -n "$PGNAME" ] ; then
+        if exists_db ; then
+            echo "Database \"$PGNAME\" already exists"
+        else
+            echo "Database \"$PGNAME\" does not exist"
+            RET=1
+        fi
+    fi
+    exit $RET
+}
+
+exists_db() {
+    EXISTS=$(runuser - postgres -c 'psql -t -c "select datname from pg_database where datname='"'$PGNAME'"';"')
+    if [ "x$EXISTS" == "x $PGNAME" ] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+exists_user() {
+    EXISTS=$(runuser - postgres -c 'psql -t -c "select usename from pg_user where usename='"'$PGUSER'"';"')
+    if [ "x$EXISTS" == "x $PGUSER" ] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+case $1 in
+        create) create
+            ;;
+        remove) remove
+            ;;
+        check)  check
+            ;;
+        *)      help
+            ;;
+esac
+

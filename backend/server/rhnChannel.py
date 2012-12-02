@@ -256,6 +256,7 @@ class Channel(BaseChannelObject):
         select os, release
           from rhnDistChannelMap
          where channel_id = :channel_id
+         and org_id is null
     """)
     def _get_db_dists(self, channel_id):
         if channel_id is None:
@@ -458,8 +459,8 @@ class Channel(BaseChannelObject):
 
     _query_add_dists = rhnSQL.Statement("""
         insert into rhnDistChannelMap
-               (channel_id, channel_arch_id, release, os)
-        values (:channel_id, :channel_arch_id, :release, :os)
+               (channel_id, channel_arch_id, release, os, org_id)
+        values (:channel_id, :channel_arch_id, :release, :os, null)
         """)
     def _add_dists(self, releases, oses):
         self._modify_dists(self._query_add_dists, releases, oses)
@@ -483,6 +484,7 @@ class Channel(BaseChannelObject):
                os = :os
          where channel_id = :channel_id
            and release = :release
+           and org_id is null
     """)
     def _update_dists(self, releases, oses):
         self._modify_dists(self._query_update_dists, releases, oses)
@@ -491,6 +493,7 @@ class Channel(BaseChannelObject):
         delete from rhnDistChannelMap
          where channel_id = :channel_id
            and release = :release
+           and org_id is null
     """)
     def _remove_dists(self, releases):
         self._modify_dists(self._query_remove_dists, releases, None)
@@ -812,40 +815,70 @@ def base_eus_channel_for_ver_rel_arch(version, release, server_arch,
     return channels
 
 
-def get_channel_for_release_arch(release, server_arch):
+def get_channel_for_release_arch(release, server_arch, org_id = None):
     log_debug(3, release, server_arch)
 
     server_arch = rhnLib.normalize_server_arch(str(server_arch))
     log_debug(3, 'normalized arch as %s' % server_arch)
 
-    query = """
-        select distinct
-               ca.label arch,
-               c.id,
-               c.parent_channel,
-               c.org_id,
-               c.label,
-               c.name,
-               c.summary,
-               c.description,
-               to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
-          from rhnDistChannelMap dcm,
-               rhnChannel c,
-               rhnChannelArch ca,
-               rhnServerChannelArchCompat scac,
-               rhnServerArch sa
-         where scac.server_arch_id = sa.id
-           and sa.label = :server_arch
-           and scac.channel_arch_id = dcm.channel_arch_id
-           and dcm.release = :release
-           and dcm.channel_id = c.id
-           and dcm.channel_arch_id = c.channel_arch_id
-           and c.parent_channel is null
-           and c.org_id is null
-           and c.channel_arch_id = ca.id
-    """
+    if org_id is None:
+        query = """
+            select distinct
+                   ca.label arch,
+                   c.id,
+                   c.parent_channel,
+                   c.org_id,
+                   c.label,
+                   c.name,
+                   c.summary,
+                   c.description,
+                   to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+              from rhnDistChannelMap dcm,
+                   rhnChannel c,
+                   rhnChannelArch ca,
+                   rhnServerChannelArchCompat scac,
+                   rhnServerArch sa
+             where scac.server_arch_id = sa.id
+               and sa.label = :server_arch
+               and scac.channel_arch_id = dcm.channel_arch_id
+               and dcm.release = :release
+               and dcm.channel_id = c.id
+               and dcm.channel_arch_id = c.channel_arch_id
+               and dcm.org_id is null
+               and c.parent_channel is null
+               and c.org_id is null
+               and c.channel_arch_id = ca.id
+        """
+    else:
+        query = """
+            select distinct
+                   ca.label arch,
+                   c.id,
+                   c.parent_channel,
+                   c.org_id,
+                   c.label,
+                   c.name,
+                   c.summary,
+                   c.description,
+                   to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+              from rhnOrgDistChannelMap odcm,
+                   rhnChannel c,
+                   rhnChannelArch ca,
+                   rhnServerChannelArchCompat scac,
+                   rhnServerArch sa
+             where scac.server_arch_id = sa.id
+               and sa.label = :server_arch
+               and scac.channel_arch_id = odcm.channel_arch_id
+               and odcm.release = :release
+               and odcm.channel_id = c.id
+               and odcm.channel_arch_id = c.channel_arch_id
+               and odcm.org_id = :org_id
+               and c.parent_channel is null
+               and c.org_id is null
+               and c.channel_arch_id = ca.id
+        """
     h = rhnSQL.prepare(query)
-    h.execute(release=str(release), server_arch=server_arch)
+    h.execute(release=str(release), server_arch=server_arch, org_id=org_id)
     row = h.fetchone_dict()
     if not row:
         # No channles for this guy
@@ -926,14 +959,15 @@ def channels_for_release_arch(release, server_arch, org_id=-1, user_id=None):
         rhn_channel.available_chan_subscriptions(c.id, :org_id) available_subscriptions
     from
         rhnChannelPermissions cp,
-        rhnDistChannelMap dcm,
+        rhnOrgDistChannelMap odcm,
         rhnChannel c,
         rhnChannelArch ca
     where
-        c.id = dcm.channel_id
-    and dcm.os in (
+        c.id = odcm.channel_id
+    and odcm.os in (
         'Powertools'
     )
+    and odcm.for_org_id = :org_id
     and c.channel_arch_id = ca.id
     and cp.channel_id = c.id
     and cp.org_id = :org_id
@@ -1471,101 +1505,6 @@ def subscribe_channel(server_id, channel, username, password):
 
     raise rhnFault(71)
 
-def _map_install_num_chan_2_label(system_id, version,
-                          server_arch, install_num_chan):
-    q = rhnSQL.prepare(
-        """
-        select
-            distinct
-            c.id,
-            c.label,
-            c.parent_channel
-        from
-            rhnServerChannelArchCompat scac,
-            rhnChannelArch ca,
-            rhnServerArch sa,
-            rhnChannel c,
-            rhnServerChannel sc,
-            rhnReleaseChannelMap rcm,
-            rhnDistChannelMap dcm
-        where
-            rcm.product = :product
-            and rcm.version = :version
-            and rcm.channel_arch_id = ca.id
-            and ca.id = scac.channel_arch_id
-            and sa.id = scac.server_arch_id
-            and sa.label = :server_arch
-            and (rcm.channel_id = c.id or dcm.channel_id = c.id)
-            and sc.server_id = :server_id
-            and sc.channel_id = c.parent_channel
-            and dcm.release = :version
-            and dcm.channel_arch_id = ca.id
-            and dcm.os = :product
-        """)
-    q.execute(product = install_num_chan, version = version,
-              server_arch = server_arch,
-              server_id = system_id)
-
-    data = q.fetchone_dict()
-
-    if not data:
-        raise ChannelNotFoundError(
-                 "Could not lookup channel for %s, " % install_num_chan + \
-                 "version: %s, " % version + \
-                 "architecture: %s, " % server_arch)
-    else:
-        log_debug(4, 'looked up channel %s' % data['label'])
-        return data
-
-def subscribe_child_channels(system_id, version, server_arch,
-                             install_num_chan_list):
-    """
-    Attemt to subscribe a system to the channels in install_num_chan_list
-
-    Return successful channel labels, failed channel labels and unknown
-    options we couldn't look up labels for.
-
-    There is no need to wrap this in a try, except block.
-    subscribe_child_channels swallows known exceptions which is what we want.
-    Unkown exceptions will propogate up.
-    """
-
-    channels = []
-    successes = []
-    failures = []
-    unknowns = []
-
-    for install_num_chan in install_num_chan_list:
-
-        # Look up the channel id.
-        try:
-            install_num_chan_data = _map_install_num_chan_2_label(
-                                                     system_id,
-                                                     version,
-                                                     server_arch,
-                                                     install_num_chan)
-        except ChannelNotFoundError, c:
-            unknowns.append(install_num_chan)
-            continue
-        channels.append(install_num_chan_data)
-
-    # Try to subscribe the system.
-    # Hmm, for whatever reason, subscribe_channels doesn't commit, call
-    # _subscribe_sql directly.
-    # subscribe_channels(system_id, channels)
-    if len(channels) > 0:
-        for channel in channels:
-            try:
-                _subscribe_sql(system_id, channel['id'], 1)
-                successes.append(channel['label'])
-            except SubscriptionCountExceeded:
-                log_error("Subscription count exceeded for channel id %s" %
-                           channel['id'])
-                failures.append(channel['label'])
-
-
-    return successes, failures, unknowns
-
 
 # This class is only a convenient encapsulation of a server's attributes:
 # server_id, org_id, release, arch, user_id. Sometimes we only pass the
@@ -1639,7 +1578,6 @@ def guess_channels_for_server(server, user_id=None, none_ok=0,
     log_debug(3, server)
     if not isinstance(server, LiteServer):
         raise rhnException("Server object is not a LiteServer")
-
     if None in (server.org_id, server.release, server.arch):
         # need to obtain the release and/or arch and/or org_id
         h = rhnSQL.prepare("""

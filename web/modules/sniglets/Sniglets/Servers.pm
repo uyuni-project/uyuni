@@ -46,7 +46,6 @@ use RHN::Kickstart::Session;
 use Sniglets::Forms;
 use Sniglets::HTML;
 use Sniglets::ServerActions;
-use Sniglets::ActivationKeys;
 
 sub register_tags {
   my $class = shift;
@@ -73,7 +72,6 @@ sub register_callbacks {
   my $class = shift;
   my $pxt = shift;
 
-  $pxt->register_callback('rhn:delete_server_cb' => \&delete_server_cb);
   $pxt->register_callback('rhn:reboot_server_cb' => \&reboot_server_cb);
 
   $pxt->register_callback('rhn:server_prefs_form_cb' => \&server_prefs_form_cb);
@@ -336,44 +334,6 @@ sub system_monitoring_info {
   return $ret;
 }
 
-sub delete_server_cb {
-  my $pxt = shift;
-
-  my $sid = $pxt->param('sid');
-
-  unless ($pxt->dirty_param('brb_confirm')) {
-    my $redir = $pxt->dirty_param('delete_confirm_page');
-    throw "param 'delete_confirm_page' needed but not provided." unless $redir;
-    $pxt->redirect($redir);
-  }
-
-  my $server = RHN::Server->lookup(-id => $sid);
-
-  my $system_set = RHN::Set->lookup(-label => 'system_list', -uid => $pxt->user->id);
-
-  if ($system_set) {
-    $system_set->remove($sid);
-    $system_set->commit;
-  }
-
-  # bug 247457
-  # remove virtualization_host if server has both virtualization_host and
-  # virtualization_host_platform
-  if ($server->has_entitlement('virtualization_host') and 
-      $server->has_entitlement('virtualization_host_platform')) {
-      warn "server has both virtualization_host and virtualization_host_platform entitlements, removing virtualization_host prior to deletion";
-      $server->remove_virtualization_host_entitlement($sid);
-  }
-
-  $server->delete_server;
-
-  my $redir = $pxt->dirty_param('delete_success_page');
-  throw "param 'delete_success_page' needed but not provided." unless $redir;
-  
-  my $message = "?message=message.serverdeleted";
-  $pxt->redirect($redir . $message);
-}
-
 sub server_history_event_details {
   my $pxt = shift;
   my %params = @_;
@@ -604,7 +564,9 @@ sub system_activation_key_cb {
   }
 
   if ($pxt->dirty_param('generate_new_key')) {
-    my $token = Sniglets::ActivationKeys->create_token($pxt);
+    my $token = RHN::Token->create_token;
+    $token->user_id($pxt->user->id);
+    $token->org_id($pxt->user->org_id);
     $token->activation_key_token(RHN::Token->generate_random_key);
     my $server = RHN::Server->lookup(-id => $sid);
 

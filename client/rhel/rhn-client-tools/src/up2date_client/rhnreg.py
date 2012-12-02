@@ -83,7 +83,7 @@ def getOemInfo():
             (key, value) = i.split(':')
         except ValueError:
             raise up2dateErrors.OemInfoFileError(i), None, sys.exc_info()[2]
-        
+
         info[key] = value.strip()
 
     return info
@@ -141,7 +141,7 @@ def writeSystemId(systemId):
         removeSystemRegisterRemindFile()
 
     updateRhsmStatus()
-    
+
     return res
 
 def writeHWCode(hw_activation_code):
@@ -242,11 +242,6 @@ def getCaps():
 def reserveUser(username, password):
     s = rhnserver.RhnServer()
     return s.registration.reserve_user(username, password)
-
-
-def registerUser(username, password):
-    s = rhnserver.RhnServer()
-    s.registration.new_user(username, password)
 
 
 class RegistrationResult:
@@ -378,8 +373,8 @@ def updateRhsmStatus():
         # about a timely reply or what the result might be, we just want
         # the method to run. So we can safely ignore this.
         pass
-    
-      
+
+
 def getAvailableChannels(username, password):
     s = rhnserver.RhnServer()
     server_arch = up2dateUtils.getArch()
@@ -466,15 +461,6 @@ def registerSystem2(username = None, password = None,
                                 rawDict=info)
     return result
 
-
-def registerProduct(systemId, productInfo, oemInfo={}):
-    s = rhnserver.RhnServer()
-    s.registration.register_product(systemId, productInfo)
-
-def updateContactInfo(username, password, productInfo):
-    s = rhnserver.RhnServer()
-    s.registration.update_contact_info(username, password, productInfo)
-
 def server_supports_eus():
     return cfg["supportsEUS"]
 
@@ -528,29 +514,9 @@ def makeNiceServerUrl(server):
 def getServerType(serverUrl=None):
     """Returns 'hosted' if the url points to a known hosted server. Otherwise
     returns 'satellite'.
-
-    If serverUrl is not specified, it is read from the config entry 'serverURL'.
-
     """
-    if serverUrl is None:
-        serverUrl = config.getServerlURL()[0]
+    return 'satellite'
 
-    serverUrl = makeNiceServerUrl(serverUrl)
-    protocol, host, path, parameters, query, fragmentIdentifier = \
-            urlparse.urlparse(serverUrl)
-
-    hosted_whitelist = cfg['hostedWhitelist']
-
-    if host in ['xmlrpc.rhn.redhat.com', 'rhn.redhat.com'] or \
-       hosted_whitelist is not None and host in hosted_whitelist:
-        return 'hosted'
-    else:
-        return 'satellite'
-
-
-def updatePackages(systemId):
-    s = rhnserver.RhnServer()
-    s.registration.add_packages(systemId, pkgUtils.getInstalledPackageList())
 
 class ActivationResult:
     ACTIVATED_NOW = 0

@@ -42,6 +42,7 @@
       <rhn-tab name="Virtual Systems" url="/rhn/systems/VirtualSystemsList.do"/>
       <rhn-tab name="Out of Date" url="/rhn/systems/OutOfDate.do"/>
       <rhn-tab name="Requiring Reboot" url="/rhn/systems/RequiringReboot.do"/>
+      <rhn-tab name="Extra Packages" url="/rhn/systems/ExtraPackagesSystems.do"/>
       <rhn-tab name="Non-compliant Systems" url="/rhn/systems/NonCompliantSystems.do"/>
       <rhn-tab name="Unentitled" url="/rhn/systems/Unentitled.do"/>
       <rhn-tab name="Ungrouped" url="/rhn/systems/Ungrouped.do" acl="org_entitlement(sw_mgr_enterprise); user_role(org_admin)"/>
@@ -173,11 +174,18 @@
         <rhn-tab-url>/rhn/channels/manage/repos/RepoCreate.do</rhn-tab-url>
       </rhn-tab>
     </rhn-tab>
+    <rhn-tab name="Distribution Channel Mapping" acl="user_role(org_admin)" url="/rhn/channels/manage/DistChannelMap.do">
+      <rhn-tab-url>/rhn/channels/manage/DistChannelMapEdit.do</rhn-tab-url>
+      <rhn-tab-url>/rhn/channels/manage/DistChannelMapDelete.do</rhn-tab-url>
+    </rhn-tab>
   </rhn-tab>
   <rhn-tab name="Audit" url="/rhn/audit/ListXccdf.do">
      <rhn-tab-directory>/rhn/audit</rhn-tab-directory>
      <rhn-tab name="OpenSCAP" url="/rhn/audit/ListXccdf.do">
          <rhn-tab name="All Scans" url="/rhn/audit/ListXccdf.do"/>
+         <rhn-tab name="XCCDF Diff" url="/rhn/audit/scap/Diff.do">
+             <rhn-tab-url>/rhn/audit/scap/DiffSubmit.do</rhn-tab-url>
+         </rhn-tab>
          <rhn-tab name="Advanced Search" url="/rhn/audit/scap/Search.do"/>
      </rhn-tab>
      <rhn-tab name="audit.nav.logreview" url="/rhn/audit/Overview.do" acl="not is_satellite()">

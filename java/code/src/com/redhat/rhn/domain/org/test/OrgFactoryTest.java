@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -154,11 +154,6 @@ public class OrgFactoryTest extends RhnBaseTestCase {
 
         lookup = OrgFactory.lookupById(origId);
         assertNull(lookup.getToken());
-    }
-
-    public void testHasRole() throws Exception {
-        Org org1 = UserTestUtils.findNewOrg("testOrg");
-        assertTrue(org1.hasRole(RoleFactory.ORG_APPLICANT));
     }
 
     public void testImpliedEntitlement() throws Exception {

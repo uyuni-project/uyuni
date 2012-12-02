@@ -9,7 +9,7 @@ Name: spacewalk-koan
 Group: System Environment/Kernel
 License: GPLv2
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 1.7.1.4
+Version: 1.9.0
 Release: 1%{?dist}
 BuildArch : noarch
 URL:            https://fedorahosted.org/spacewalk
@@ -31,12 +31,7 @@ Conflicts: rhn-kickstart
 Conflicts: rhn-kickstart-common
 Conflicts: rhn-kickstart-virtualization
 
-#this currently doesn't work for RHEL 2.1
-%if 0%{?rhel} && 0%{?rhel} < 5
-Requires: up2date
-%else
 Requires: %{rhn_check}
-%endif
 
 %description
 Support package for spacewalk koan interaction.
@@ -63,6 +58,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/rhn/actions/
 
 %changelog
+* Tue Oct 30 2012 Jan Pazdziora 1.8.3-1
+- Update the copyright year.
+
+* Thu Aug 02 2012 Stephen Herr <sherr@redhat.com> 1.8.2-1
+- 845326 - Show pretty error if customer specifies a MAC address already in use
+- %%defattr is not needed since rpm 4.4
+
+* Mon Mar 19 2012 Jan Pazdziora 1.8.1-1
+- 803320 - support for xz packed ramdisk (mzazrivec@redhat.com)
+
 * Thu Feb 23 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.1-1
 - we are now just GPL
 

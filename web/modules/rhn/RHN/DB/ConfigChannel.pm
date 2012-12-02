@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -136,37 +136,6 @@ sub _blank_config_channel {
 
   my $self = bless { }, $class;
   return $self;
-}
-
-sub set_type {
-  my $self = shift;
-  my $type = shift || '';
-
-  my $dbh = RHN::DB->connect;
-
-  my $query = <<EOQ;
-SELECT CCT.id, CCT.label, CCT.name
-  FROM rhnConfigChannelType CCT
- WHERE CCT.label = :label
-EOQ
-
-  my $sth = $dbh->prepare($query);
-  $sth->execute_h(label => $type);
-
-  my $row = $sth->fetchrow_hashref;
-  $sth->finish;
-
-  unless ($row) {
-    throw "(invalid_configchannel_type) Could not find config channel type '$type'";
-  }
-
-  foreach my $attr (qw/id name label/) {
-    my $meth = 'type_' . $attr;
-    $self->{"__${meth}__"} = $row->{uc($attr)};
-  }
-  $self->confchan_type_id($row->{ID});
-
-  return;
 }
 
 sub commit {
@@ -352,55 +321,6 @@ sub vivify_file_existence {
   # TODO: if find_file_existence returned a 'dead' file, revive it
 
   return $ret;
-}
-
-sub lookup_latest_in_channel {
-  my $class = shift;
-  my %params = validate(@_, { channel_id => 1,
-			      file_id => 0,
-			      file_path => 0,
-			    });
-
-  unless ($params{file_id} or $params{file_path}) {
-    throw "(missing_param) Need file_id or file_path";
-  }
-
-  if ($params{file_id} and $params{file_path}) {
-    throw "(too_many_params) Please give a file_id or a file_path, not both";
-  }
-
-  my $dbh = RHN::DB->connect;
-  my $query;
-  my %query_params;
-
-  if ($params{file_id}) {
-    $query = <<EOQ;
-SELECT CF.latest_config_revision_id
-  FROM rhnConfigFile CF
-   AND CF.id = :file_id
-   AND CF.config_channel_id = :channel_id
-EOQ
-  }
-  elsif ($params{file_path}) {
-    $query = <<EOQ;
-SELECT CF.latest_config_revision_id
-  FROM rhnConfigFile CF,
-       rhnConfigFileName CFN
- WHERE CFN.path = :file_path
-   AND CF.config_file_name_id = CFN.id
-   AND CF.config_channel_id = :channel_id
-EOQ
-  }
-
-  my $sth = $dbh->prepare($query);
-  $sth->execute_h(%params);
-
-  my ($cr_id) = $sth->fetchrow;
-  $sth->finish;
-
-  return unless $cr_id;
-
-  return RHN::ConfigRevision->lookup(-id => $cr_id);
 }
 
 1;

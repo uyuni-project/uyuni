@@ -26,22 +26,20 @@ IS
                 org_id_in in number
         ) return rhnChannel%ROWTYPE is
                 select distinct c.*
-                from    rhnDistChannelMap                       dcm,
+                from    rhnOrgDistChannelMap                       odcm,
                                 rhnServerChannelArchCompat      scac,
-                                rhnChannel                                      c,
-                                rhnChannelPermissions           cp
-                where   cp.org_id = org_id_in
-                        and cp.channel_id = c.id
-                        and c.parent_channel is null
-                        and c.id = dcm.channel_id
-                        and c.channel_arch_id = dcm.channel_arch_id
-                        and dcm.release = release_in
+                                rhnChannel                                      c
+                where   c.parent_channel is null
+                        and c.id = odcm.channel_id
+                        and c.channel_arch_id = odcm.channel_arch_id
+                        and odcm.release = release_in
+                        and odcm.for_org_id = org_id_in
                         and scac.server_arch_id = server_arch_id_in
                         and scac.channel_arch_id = c.channel_arch_id;
 
     procedure obtain_read_lock(channel_family_id_in in number, org_id_in in number)
     is
-        read_lock date;
+        read_lock timestamp with local time zone;
 
     begin
         select created into read_lock
@@ -159,7 +157,7 @@ IS
                 from    rhnChannel c
                 where   c.id = channel_id_in
             );
-            UPDATE rhnServer SET channels_changed = sysdate WHERE id = server_id_in;
+            UPDATE rhnServer SET channels_changed = current_timestamp WHERE id = server_id_in;
             INSERT INTO rhnServerChannel (server_id, channel_id, is_fve) VALUES (server_id_in, channel_id_in, is_fve);
 			IF recalcfamily_in > 0
 			THEN
@@ -518,7 +516,7 @@ IS
           where   c.id = channel_id_in
       );
 
-        UPDATE rhnServer SET channels_changed = sysdate WHERE id = server_id_in;
+        UPDATE rhnServer SET channels_changed = current_timestamp WHERE id = server_id_in;
    end if;
 
    DELETE FROM rhnServerChannel WHERE server_id = server_id_in AND channel_id = channel_id_in;
@@ -971,7 +969,7 @@ IS
     IS
          channel_name varchar2(256);
          priority number;
-         end_of_life_val date;
+         end_of_life_val timestamp with local time zone;
          org_id_val number;
     BEGIN
 
@@ -1125,17 +1123,17 @@ IS
         insert into rhnChannelNewestPackageAudit (channel_id, caller)
              values (channel_id_in, caller_in);
         update rhnChannel
-           set last_modified = greatest(sysdate, last_modified + 1/86400)
+           set last_modified = greatest(current_timestamp, last_modified + interval '1' second)
          where id = channel_id_in;
     end;
 
 
    procedure update_channel ( channel_id_in in number, invalidate_ss in number := 0,
-                              date_to_use in date := sysdate )
+                              date_to_use in timestamp with local time zone := current_timestamp )
    is
 
-   channel_last_modified date;
-   last_modified_value date;
+   channel_last_modified timestamp with local time zone;
+   last_modified_value timestamp with local time zone;
 
    cursor snapshots is
    select  snapshot_id id
@@ -1168,7 +1166,7 @@ IS
 
    end update_channel;
 
-   procedure update_channels_by_package ( package_id_in in number, date_to_use in date := sysdate )
+   procedure update_channels_by_package ( package_id_in in number, date_to_use in timestamp with local time zone := current_timestamp )
    is
 
    cursor channels is
@@ -1186,7 +1184,7 @@ IS
    end update_channels_by_package;
 
 
-   procedure update_channels_by_errata ( errata_id_in number, date_to_use in date := sysdate )
+   procedure update_channels_by_errata ( errata_id_in number, date_to_use in timestamp with local time zone := current_timestamp )
    is
 
    cursor channels is

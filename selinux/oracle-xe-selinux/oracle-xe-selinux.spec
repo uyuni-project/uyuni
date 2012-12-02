@@ -5,7 +5,7 @@
 %define modulename oracle-xe
 
 Name:            oracle-xe-selinux
-Version:         10.2.0.23.1
+Version:         10.2.0.33
 Release:         1%{?dist}
 Summary:         SELinux policy module supporting Oracle XE
 Group:           System Environment/Base
@@ -16,10 +16,7 @@ License:         GPLv2+
 # cd spacewalk
 # make srpm TAG=%{name}-%{version}-%{release}
 URL:             http://fedorahosted.org/spacewalk
-Source1:         %{modulename}.if
-Source2:         %{modulename}.te
-Source3:         %{modulename}.fc
-Source4:         %{name}-enable
+Source0:         https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:       %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:   checkpolicy, selinux-policy-devel, hardlink
 BuildArch:       noarch
@@ -29,7 +26,7 @@ Requires:         selinux-policy >= %{selinux_policyver}
 %endif
 Requires(post):   /usr/sbin/semodule, /sbin/restorecon, /sbin/ldconfig, /usr/sbin/selinuxenabled
 Requires(postun): /usr/sbin/semodule, /sbin/restorecon
-Requires:         oracle-xe-univ
+Requires:         /etc/init.d/oracle-xe
 Requires:         oracle-nofcontext-selinux
 Requires:         oracle-lib-compat
 
@@ -37,27 +34,25 @@ Requires:         oracle-lib-compat
 SELinux policy module supporting Oracle XE server.
 
 %prep
-rm -rf %{name}-%{version}
-mkdir -p %{name}-%{version}
-cp -p %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} %{name}-%{version}
+%setup -q
 
 %build
 # Build SELinux policy modules
-cd %{name}-%{version}
 perl -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' %{modulename}.te
+%if 0%{?fedora} >= 17
+cat %{modulename}.te.fedora17 >> %{modulename}.te
+%endif
 for selinuxvariant in %{selinux_variants}
 do
     make NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile
     mv %{modulename}.pp %{modulename}.pp.${selinuxvariant}
     make NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile clean
 done
-cd -
 
 %install
 rm -rf %{buildroot}
 
 # Install SELinux policy modules
-cd %{name}-%{version}
 for selinuxvariant in %{selinux_variants}
   do
     install -d %{buildroot}%{_datadir}/selinux/${selinuxvariant}
@@ -65,14 +60,12 @@ for selinuxvariant in %{selinux_variants}
            %{buildroot}%{_datadir}/selinux/${selinuxvariant}/%{modulename}.pp
   done
 
-%define extra_restorecon /usr/lib/oracle/xe/app/oracle/product/10.2.0/server/log /usr/lib/oracle/xe/oradata /usr/lib/oracle/xe/app /var/tmp/.oracle
-%define extra_subdirs /usr/lib/oracle/xe/app/oracle/flash_recovery_area /usr/lib/oracle/xe/app/oracle/admin /usr/lib/oracle/xe/oradata
-sed -i -e 's!%%extra_restorecon!%extra_restorecon!g' -e 's!%%extra_subdirs!%extra_subdirs!g' %{name}-enable
-cd -
+%define extra_restorecon /usr/lib/oracle/xe/oradata /usr/lib/oracle/xe/app /var/tmp/.oracle /u01/app/oracle
+sed -i -e 's!%%extra_restorecon!%extra_restorecon!g' %{name}-enable
 
 # Install SELinux interfaces
 install -d %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}
-install -p -m 644 %{name}-%{version}/%{modulename}.if \
+install -p -m 644 %{modulename}.if \
   %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
 
 # Hardlink identical policy module packages together
@@ -80,7 +73,7 @@ install -p -m 644 %{name}-%{version}/%{modulename}.if \
 
 # Install oracle-xe-selinux-enable which will be called in %posttrans
 install -d %{buildroot}%{_sbindir}
-install -p -m 755 %{name}-%{version}/%{name}-enable %{buildroot}%{_sbindir}/%{name}-enable
+install -p -m 755 %{name}-enable %{buildroot}%{_sbindir}/%{name}-enable
 
 %clean
 rm -rf %{buildroot}
@@ -111,9 +104,9 @@ fi
 %posttrans
 #this may be safely remove when BZ 505066 is fixed
 if /usr/sbin/selinuxenabled ; then
-  # Relabel oracle-xe-univ's files
-  rpm -ql oracle-xe-univ | while read i ; do [ -e $i ] && echo $i ; done | xargs -n 100 /sbin/restorecon -Rivv
-  # Fix up additional directories, not owned by oracle-xe-univ
+  # Relabel oracle-xe-univ/oracle-xe's files
+  rpm -qlf /etc/init.d/oracle-xe | while read i ; do [ -e $i ] && echo $i ; done | xargs -n 100 /sbin/restorecon -Rivv
+  # Fix up additional directories, not owned by oracle-xe-univ/oracle-xe
   /sbin/restorecon -Rivv %extra_restorecon
 fi
 
@@ -130,21 +123,56 @@ if [ $1 -eq 0 ]; then
   /usr/sbin/semanage port -d -t oracle_port_t -p tcp 9000 || :
   /usr/sbin/semanage port -d -t oracle_port_t -p tcp 9055 || :
 
-  # Clean up oracle-xe-univ's files
-  rpm -ql oracle-xe-univ | while read i ; do [ -e $i ] && echo $i ; done | xargs -n 100 /sbin/restorecon -Rivv
+  # Clean up oracle-xe-univ/oracle-xe's files
+  rpm -qlf /etc/init.d/oracle-xe | while read i ; do [ -e $i ] && echo $i ; done | xargs -n 100 /sbin/restorecon -Rivv
 
-  # Clean up additional directories, not owned by oracle-xe-univ
+  # Clean up additional directories, not owned by oracle-xe-univ/oracle-xe
   /sbin/restorecon -Rivv %extra_restorecon
 fi
 
 %files
-%defattr(-,root,root,0755)
-%doc %{name}-%{version}/%{modulename}.fc %{name}-%{version}/%{modulename}.if %{name}-%{version}/%{modulename}.te
+%doc %{modulename}.fc %{modulename}.if %{modulename}.te
 %{_datadir}/selinux/*/%{modulename}.pp
 %{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
 %attr(0755,root,root) %{_sbindir}/%{name}-enable
 
 %changelog
+* Mon Oct 29 2012 Jan Pazdziora 10.2.0.33-1
+- Setsebool without -P is rarely needed.
+
+* Tue Oct 16 2012 Jan Pazdziora 10.2.0.32-1
+- Lsnrctl wants to search as well.
+
+* Sat Oct 13 2012 Jan Pazdziora 10.2.0.31-1
+- corenet_udp_bind_compat_ipv4_node no available on newer OSes.
+
+* Sat Oct 13 2012 Jan Pazdziora 10.2.0.30-1
+- Configure of Oracle XE 11 on RHEL 5.
+
+* Tue Oct 09 2012 Jan Pazdziora 10.2.0.29-1
+- The auth_read_passwd is not available everywhere.
+- We need lib_t.
+
+* Tue Oct 09 2012 Jan Pazdziora 10.2.0.28-1
+- Addressing AVC denials on Fedora 17.
+
+* Thu Oct 04 2012 Jan Pazdziora 10.2.0.27-1
+- Allowing Oracle XE 11 to read sysfs.
+
+* Thu Oct 04 2012 Jan Pazdziora 10.2.0.26-1
+- Allowing Oracle XE 11 to read sysfs.
+
+* Mon Oct 01 2012 Jan Pazdziora 10.2.0.25-1
+- Adding file contexts and stuff for oracle-xe-11.2.0-1.0.x86_64.
+- %%defattr is not needed since rpm 4.4
+
+* Tue Apr 10 2012 Jan Pazdziora 10.2.0.24-1
+- The rman is more like the database server process.
+- The backup.sh and restore.sh need to run as sqlplus, so that their log files
+  can be used by sqlplus.
+- The backup.sh from Oracle XE 10g seems to want to access urandom.
+- Allow Oracle database to ptrace self.
+
 * Wed Nov 30 2011 Michael Mraka <michael.mraka@redhat.com> 10.2.0.23-1
 - system user uids are < 1000 on Fedora 16
 

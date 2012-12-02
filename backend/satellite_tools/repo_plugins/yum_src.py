@@ -28,6 +28,7 @@ from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
 from rpmUtils.transaction import initReadOnlyTransaction
 import yum
 from spacewalk.common import fileutils
+from yum.Errors import RepoMDError
 from yum.config import ConfigParser
 from yum.update_md import UpdateMetadata, UpdateNoticeException, UpdateNotice
 from yum.yumRepo import YumRepository
@@ -107,13 +108,9 @@ class ContentSource:
         self.quiet = quiet
         self.interactive = interactive
         self.yumbase = yum.YumBase()
-        global YUMSRC_CONF
+        self.yumbase.preconf.fn = YUMSRC_CONF
         if not os.path.exists(YUMSRC_CONF):
-            YUMSRC_CONF = '/dev/null'
-        try:
-            self.yumbase.preconf.fn=YUMSRC_CONF
-        except AttributeError: # older yum versions don't have the preconf attr
-            self.yumbase.doConfigSetup(fn=YUMSRC_CONF)
+            self.yumbase.preconf.fn = '/dev/null'
         self.configparser = ConfigParser()
         self._clean_cache(CACHE_DIR + name)
 
@@ -144,7 +141,7 @@ class ContentSource:
             repo.repo_gpgcheck = False
         else:
             repo.repo_gpgcheck = True
-
+        # base_persistdir have to be set before pkgdir
         if hasattr(repo, 'base_persistdir'):
             repo.base_persistdir = CACHE_DIR
 
@@ -498,3 +495,10 @@ class ContentSource:
         rhnLog.log_clean(0, message)
         if not self.quiet:
             sys.stderr.write(str(message) + "\n")
+
+    def get_groups(self):
+        try:
+            groups = self.repo.getGroups()
+        except RepoMDError:
+            groups = None
+        return groups

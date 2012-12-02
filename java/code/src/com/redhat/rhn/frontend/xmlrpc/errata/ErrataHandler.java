@@ -49,7 +49,6 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.frontend.dto.CVE;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.DuplicateErrataException;
@@ -218,7 +217,7 @@ public class ErrataHandler extends BaseHandler {
         // just want to make sure the caller is logged in.
         User loggedInUser = getLoggedInUser(sessionKey);
 
-        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
+        Errata errata = lookupErrataReadOnly(advisoryName, loggedInUser.getOrg());
 
         Map errataMap = new HashMap();
 
@@ -304,12 +303,21 @@ public class ErrataHandler extends BaseHandler {
      *                  with the errata.")
      *          #prop_desc("array", "CVEs", "'cves' is the key into the struct")
      *              #array_single("string", "cves - List of CVEs to associate
-     *                  with the errata.")
+     *                  with the errata. (valid only for published errata)")
      *     #struct_end()
      *
      *  @xmlrpc.returntype #return_int_success()
      */
     public Integer setDetails(String sessionKey, String advisoryName, Map details) {
+
+        User loggedInUser = getLoggedInUser(sessionKey);
+        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
+
+        if (errata.getOrg() == null) {
+            // Errata in the null org should not be modified; therefore, this is
+            // considered an invalid errata for this request
+            throw new InvalidErrataException(errata.getAdvisoryName());
+        }
 
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<String>();
@@ -328,7 +336,9 @@ public class ErrataHandler extends BaseHandler {
         validKeys.add("solution");
         validKeys.add("bugs");
         validKeys.add("keywords");
-        validKeys.add("cves");
+        if (errata.isPublished()) {
+            validKeys.add("cves");
+        }
         validateMap(validKeys, details);
 
         validKeys.clear();
@@ -343,13 +353,22 @@ public class ErrataHandler extends BaseHandler {
             }
         }
 
-        User loggedInUser = getLoggedInUser(sessionKey);
-        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
+        if (details.containsKey("issue_date")) {
+            try {
+                errata.setIssueDate((Date)details.get("issue_date"));
+            }
+            catch (ClassCastException e) {
+                throw new InvalidParameterException("Wrong 'issue_date' format.");
+            }
+        }
 
-        if (errata.getOrg() == null) {
-            // Errata in the null org should not be modified; therefore, this is
-            // considered an invalid errata for this request
-            throw new InvalidErrataException(errata.getAdvisoryName());
+        if (details.containsKey("update_date")) {
+            try {
+                errata.setUpdateDate((Date)details.get("update_date"));
+            }
+            catch (ClassCastException e) {
+                throw new InvalidParameterException("Wrong 'update_date' format.");
+            }
         }
 
         if (details.containsKey("issue_date")) {
@@ -655,7 +674,8 @@ public class ErrataHandler extends BaseHandler {
         throws FaultException {
      *
      * @xmlrpc.doc Returns a list of <a href="http://www.cve.mitre.org/">CVE</a>s
-     * applicable to the erratum with the given advisory name.
+     * applicable to the erratum with the given advisory name. CVEs may be associated
+     * only with published errata.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string",  "advisoryName")
      * @xmlrpc.returntype
@@ -723,7 +743,7 @@ public class ErrataHandler extends BaseHandler {
             throws FaultException {
         // Get the logged in user
         User loggedInUser = getLoggedInUser(sessionKey);
-        Errata errata = lookupErrata(advisoryName, loggedInUser.getOrg());
+        Errata errata = lookupErrataReadOnly(advisoryName, loggedInUser.getOrg());
 
         List<Map> toRet = new ArrayList<Map>();
         for (Iterator iter = errata.getPackages().iterator(); iter.hasNext();) {
@@ -869,11 +889,49 @@ public class ErrataHandler extends BaseHandler {
          * need to make sure here that everything is checked correclty
          */
         if (errata.getOrg() != null && !errata.getOrg().equals(org)) {
-            throw new FaultException(-209, "no_such_patch",
-                    "The patch " + advisoryName + " cannot be found.");
+            throw new FaultException(-209, "no_rights_to_access",
+                    "You don't have rights to access " + advisoryName + " patch.");
         }
 
         return errata;
+    }
+
+    /**
+     * Private helper method to lookup an errata and throw a Fault exception if it isn't
+     * found
+     * @param advisoryName The advisory name for the erratum you're looking for
+     * @return Returns the errata or a Fault Exception
+     * @throws FaultException Occurs when the erratum is not found
+     */
+    private Errata lookupErrataReadOnly(String advisoryName, Org org)
+            throws FaultException {
+        Errata errata = ErrataManager.lookupByAdvisory(advisoryName);
+
+        /*
+         * ErrataManager.lookupByAdvisory() could return null, so we need to check
+         * and throw a no_such_errata exception if the errata was not found.
+         */
+        if (errata == null) {
+            throw new FaultException(-208, "no_such_errata",
+                    "The errata " + advisoryName + " cannot be found.");
+        }
+        /**
+         * errata with org_id of null are public, but ones with an org id of !null are not
+         * need to make sure here that everything is checked correclty
+         */
+
+        if (errata.getOrg() == null || errata.getOrg().equals(org)) {
+            return errata;
+        }
+        Set<Channel> errataChannels = errata.getChannels();
+        List orgChannels = org.getAccessibleChannels();
+        for (Channel channel : errataChannels) {
+           if (orgChannels.contains(channel)) {
+               return errata;
+           }
+        }
+        throw new FaultException(-209, "no_rights_to_access",
+                "You don't have rights to access " + advisoryName + " errata.");
     }
 
     /**
@@ -887,10 +945,11 @@ public class ErrataHandler extends BaseHandler {
      * @return Returns an array of Errata objects, which get serialized into XMLRPC
      *
      * @xmlrpc.doc Clone a list of errata into the specified channel.
+     *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "channel_label")
      * @xmlrpc.param
-     *      #array_single("string", " advisory - The advisory name of the errata to clone.")
+     *     #array_single("string", " advisory - The advisory name of the errata to clone.")
      * @xmlrpc.returntype
      *          #array()
      *              $ErrataSerializer
@@ -898,12 +957,38 @@ public class ErrataHandler extends BaseHandler {
      */
     public Object[] clone(String sessionKey, String channelLabel,
             List advisoryNames) throws InvalidChannelRoleException {
-        return clone(sessionKey, channelLabel, advisoryNames, false);
+        return clone(sessionKey, channelLabel, advisoryNames, false, false);
+    }
+
+    /**
+     * Asynchronously clones a list of errata into a specified channel
+     *
+     * @param sessionKey The sessionKey containing the logged in user
+     * @param channelLabel the channel's label that we are cloning into
+     * @param advisoryNames an array of String objects containing the advisory name
+     *          of every errata you want to clone
+     * @throws InvalidChannelRoleException if the user perms are incorrect
+     * @return 1 on success, exception thrown otherwise.
+     *
+     * @xmlrpc.doc Asynchronously clone a list of errata into the specified channel.
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "channel_label")
+     * @xmlrpc.param
+     *     #array_single("string", " advisory - The advisory name of the errata to clone.")
+     * @xmlrpc.returntype
+     *          #return_int_success()
+     */
+    public int cloneAsync(String sessionKey, String channelLabel,
+            List advisoryNames) throws InvalidChannelRoleException {
+        clone(sessionKey, channelLabel, advisoryNames, false, false);
+        return 1;
     }
 
 
     private Object[] clone(String sessionKey, String channelLabel,
-            List<String> advisoryNames, boolean inheritPackages) {
+            List<String> advisoryNames, boolean inheritPackages,
+            boolean asynchronous) {
         User loggedInUser = getLoggedInUser(sessionKey);
 
         Logger log = Logger.getLogger(ErrataFactory.class);
@@ -919,7 +1004,7 @@ public class ErrataHandler extends BaseHandler {
         if (inheritPackages) {
             if (!channel.isCloned()) {
                 throw new InvalidChannelException("Cloned channel expected: " +
-                    channel.getLabel());
+                        channel.getLabel());
             }
 
             Channel original = ChannelFactory.lookupOriginalChannel(channel);
@@ -941,39 +1026,30 @@ public class ErrataHandler extends BaseHandler {
         }
 
         List<Errata> errataToClone = new ArrayList<Errata>();
-        List<Errata> errataToPublish = new ArrayList<Errata>();
+        List<Long> errataIds = new ArrayList<Long>();
         //We loop through once, making sure all the errata exist
         for (String advisory : advisoryNames) {
             Errata toClone = lookupErrata(advisory, loggedInUser.getOrg());
             errataToClone.add(toClone);
+            errataIds.add(toClone.getId());
         }
 
-        //For each errata look up existing clones, or manually clone it
-        for (Errata toClone : errataToClone) {
-            if (toClone.isCloned()) {
-                errataToPublish.add(toClone);
-            }
-            else {
-                List<Errata> clones = ErrataManager.lookupPublishedByOriginal(
-                        loggedInUser, toClone);
-                if (clones.isEmpty()) {
-                    errataToPublish.add(PublishErrataHelper.cloneErrataFast(toClone,
-                            loggedInUser.getOrg()));
-                }
-                else {
-                    errataToPublish.add(clones.get(0));
-                }
-            }
+        if (asynchronous) {
+            ErrataManager.cloneErrataApiAsync(channel, errataIds, loggedInUser,
+                    inheritPackages);
+            return new ArrayList<Errata>().toArray();
         }
-
-        //Now publish them all to the channel in a single shot
-        List<Errata> published = ErrataFactory.publishToChannel(errataToPublish, channel,
-                loggedInUser, inheritPackages);
-        for (Errata e : published) {
-            ErrataFactory.save(e);
+        else if (ErrataManager.channelHasPendingAsyncCloneJobs(channel)) {
+            throw new InvalidChannelException(
+                    "Channel " +
+                            channel.getLabel() +
+                            " has pending asynchronous errata clone jobs. You must wait" +
+                    "until asychronous errata clone jobs are done.");
         }
-
-        return published.toArray();
+        else {
+            return ErrataManager.cloneErrataApi(channel, errataToClone,
+                    loggedInUser, inheritPackages);
+        }
     }
 
 
@@ -989,11 +1065,12 @@ public class ErrataHandler extends BaseHandler {
      * @return Returns an array of Errata objects, which get serialized into XMLRPC
      *
      * @xmlrpc.doc Clones a list of errata into a specified cloned channel
-     * according the original erratas
+     * according the original erratas.
+     *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "channel_label")
      * @xmlrpc.param
-     *      #array_single("string", " advisory - The advisory name of the errata to clone.")
+     *     #array_single("string", " advisory - The advisory name of the errata to clone.")
      * @xmlrpc.returntype
      *          #array()
      *              $ErrataSerializer
@@ -1001,10 +1078,35 @@ public class ErrataHandler extends BaseHandler {
      */
     public Object[] cloneAsOriginal(String sessionKey, String channelLabel,
             List<String> advisoryNames) throws InvalidChannelRoleException {
-        return clone(sessionKey, channelLabel, advisoryNames, true);
+        return clone(sessionKey, channelLabel, advisoryNames, true, false);
     }
 
-
+    /**
+     * Asynchronously clones a list of errata into a specified cloned channel
+     * according the original erratas
+     *
+     * @param sessionKey The sessionKey containing the logged in user
+     * @param channelLabel the cloned channel's label that we are cloning into
+     * @param advisoryNames an array of String objects containing the advisory name
+     *          of every errata you want to clone
+     * @throws InvalidChannelRoleException if the user perms are incorrect
+     * @return 1 on success, exception thrown otherwise.
+     *
+     * @xmlrpc.doc Asynchronously clones a list of errata into a specified cloned channel
+     * according the original erratas
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "channel_label")
+     * @xmlrpc.param
+     *     #array_single("string", " advisory - The advisory name of the errata to clone.")
+     * @xmlrpc.returntype
+     *          #return_int_success()
+     */
+    public int cloneAsOriginalAsync(String sessionKey, String channelLabel,
+            List<String> advisoryNames) throws InvalidChannelRoleException {
+        clone(sessionKey, channelLabel, advisoryNames, true, true);
+        return 1;
+    }
 
 
     private Object getRequiredAttribute(Map map, String attribute) {

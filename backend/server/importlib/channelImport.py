@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -141,7 +141,7 @@ class ChannelImport(Import):
             parentChannels[parent] = None
         # Process the easy case of null parent channels
         try:
-            self.backend.processChannels(nullParentBatch)
+            self.backend.processChannels(nullParentBatch, True)
         except:
             self.backend.rollback()
             raise
@@ -188,7 +188,7 @@ class ChannelImport(Import):
         
         # And process these channels too
         try:
-            self.backend.processChannels(nonNullParentBatch)
+            self.backend.processChannels(nonNullParentBatch, False)
         except:
             self.backend.rollback()
             raise
@@ -314,6 +314,7 @@ class DistChannelMapImport(Import):
                     "Invalid dist_channel_map channel %s" % dcm['channel'])
             dcm['arch'] = arch
             dcm['channel_id'] = channel['id']
+            dcm['org_id'] = None
             
     def submit(self):
         try:

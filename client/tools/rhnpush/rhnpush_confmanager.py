@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -35,19 +35,6 @@ class  ConfManager:
         self.cmdconfig = optionparser
         self.store_true_list = store_true_list
 
-    #1/3/06 wregglej 172376  rhnpush shouldn't gag, choke, and die when trying to write the 
-    #local config file on a read-only filesystem. Plus, I redid the writing of the config files
-    #to avoid duping code.
-    #2/20/06 wregglej, but apparently it didn't occur to me to remove a completely redundant try-catch.
-    def _write_config_file(self, cfg_filename, config_obj):
-        #Just skip writing the config file if access is denied. rhnpush is probably being run
-        #on a read-only filesystem, which is supported. 
-        cfg_dir = os.path.split(cfg_filename)[0]
-        if os.access(cfg_dir, os.W_OK):
-            new_config_file = open(cfg_filename, "w+")
-            config_obj.write(new_config_file)
-            new_config_file.close()
-
     #Change the files options of the self.userconfig
     #Change the exclude options of the self.userconfig
     def _files_to_list(self):
@@ -65,12 +52,6 @@ class  ConfManager:
 
 
     #Changes every option in config that is also in store_true_list that is set to '0' to None
-    def _zero_to_none(self, config, store_true_list):
-        for opt in config.keys():
-            for cmd in store_true_list:
-                if str(opt) == cmd and config.__dict__[opt] == '0':
-                    config.__dict__[opt] = None
-
     def get_config(self):
         for f in self.cfgFileList:
             if os.access(f, os.F_OK):
@@ -83,6 +64,7 @@ class  ConfManager:
         self._files_to_list()
         
         #Change the channel string into a list of strings.
+        # pylint: disable=E1103
         if not self.defaultconfig.channel:
             #if no channel then make it null array instead of
             #an empty string array from of size 1 [''] .
@@ -95,7 +77,7 @@ class  ConfManager:
         argoptions, files = self.cmdconfig.parse_args()
         
         #Makes self.defaultconfig compatible with argoptions by changing all '0' value attributes to None.
-        self._zero_to_none(self.defaultconfig, self.store_true_list)
+        _zero_to_none(self.defaultconfig, self.store_true_list)
     
         #If verbose isn't set at the command-line, it automatically gets set to zero. If it's at zero, change it to
         #None so the settings in the config files take precedence.
@@ -123,4 +105,9 @@ class  ConfManager:
             self.defaultconfig.files = files
 
         return self.defaultconfig   
-            
+
+def _zero_to_none(config, store_true_list):
+    for opt in config.keys():
+        for cmd in store_true_list:
+            if str(opt) == cmd and config.__dict__[opt] == '0':
+                config.__dict__[opt] = None

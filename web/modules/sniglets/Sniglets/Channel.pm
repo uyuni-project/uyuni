@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -38,10 +38,6 @@ sub register_tags {
 
   $pxt->register_tag('rhn-channel-gpg-key' => \&channel_gpg_key);
 
-  $pxt->register_tag('rhn-tri-state-channel-list', => \&tri_state_channel_list);
-  $pxt->register_tag('rhn-resubscribe-warning-ssm' => \&resubscribe_warning_ssm, 3);
-
-
   $pxt->register_tag('viewed_channel_name' => \&viewed_channel_name, -10);
 }
 
@@ -55,16 +51,6 @@ sub register_callbacks {
 my $SUBSCRIBE = 1;
 my $UNSUBSCRIBE = 2;
 
-sub resubscribe_warning_ssm {
-  my $pxt = shift;
-  my %params = @_;
-
-  if ($pxt->pnotes('resubscribe_warning')) {
-    return $params{__block__};
-  }
-
-  return '';
-}
 
 
 
@@ -97,52 +83,6 @@ sub channel_gpg_key {
   return PXT::Utils->perform_substitutions($block, \%subst);
 }
 
-
-sub tri_state_channel_list {
-  my $pxt = shift;
-  my %params = @_;
-
-  my $block = $params{__block__};
-  my $html = '';
-
-  my $counter = 1;
-
-  my @channels = RHN::Channel->tri_state_channel_list($pxt->user->org_id, $pxt->user->id);
-
-  $pxt->pnotes(channel_total => scalar @channels);
-
-
-  my $resubscribe_warning;
-  foreach my $channel (@channels) {
-
-    $counter++;
-    my %subst;
-
-    $subst{channel_id} = $channel->{ID};
-    $subst{channel_name} = $channel->{NAME};
-    $subst{class} = ($counter % 2) ? "list-row-even" : "list-row-odd";
-
-    PXT::Utils->escapeHTML_multi(\%subst);
-
-    # do this bit after the HTML escape for obvious reason...
-    if (defined $channel->{MAY_SUBSCRIBE}) {
-      $subst{subscribe_column} = PXT::HTML->radio_button(-name => $channel->{ID},
-							 -value => 'subscribe');
-    }
-    else {
-      # no permission to resubscribe channels, show the warning stuff...
-      $subst{subscribe_column} = PXT::HTML->img(-src => '/img/rhn-listicon-alert.gif',
-						-title => 'Insufficient Subscription Permissions');
-      $resubscribe_warning = 1;
-    }
-
-    $html .= PXT::Utils->perform_substitutions($block, \%subst);
-  }
-
-  $pxt->pnotes('resubscribe_warning' => 1) if $resubscribe_warning;
-
-  return $html;
-}
 
 sub channel_details {
   my $pxt = shift;

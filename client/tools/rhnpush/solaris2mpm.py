@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -22,21 +22,7 @@ import socket
 import sys
 import time
 
-try:
-    import hashlib
-except ImportError:
-    import md5
-    class hashlib:
-        @staticmethod
-        def new(checksum):
-            # Add sha1 if needed.
-            if checksum == 'md5':
-                return md5.new()
-            # if not md5 or sha1, its invalid
-            if checksum not in ['md5', 'sha1']:
-                raise ValueError, "Incompatible checksum type"
-
-from spacewalk.common import rhn_mpm
+from spacewalk.common import rhn_mpm, checksum
 
 from archive import get_archive_parser
 
@@ -206,9 +192,9 @@ def _run(archives=sys.argv[1:]):
                 set_mpm = create_patch_set_mpm(archive_parser, archive)
                 write_mpm(set_mpm)
                 # create the individual patch mpms
-                patches, x = archive_parser.list()
+                patches, _dummy = archive_parser.list()
                 if patches == ['patches']:
-                    patches, x = archive_parser.list('patches/')
+                    patches, _dummy = archive_parser.list('patches/')
                 for dirname in patches:
                     patch_mpm = create_patch_mpm(archive_parser, prefix=dirname)
                     write_mpm(patch_mpm)
@@ -222,7 +208,7 @@ def _run(archives=sys.argv[1:]):
 
             # package
             elif _is_package_archive(archive_parser):
-                pkgs, x = archive_parser.list()
+                pkgs, _dummy = archive_parser.list()
                 for dirname in pkgs:
                     pkg_mpm = create_pkg_mpm(archive_parser, prefix=dirname)
                     write_mpm(pkg_mpm)
@@ -233,6 +219,7 @@ def _run(archives=sys.argv[1:]):
             else:
                 raise MPMInputError("'%s' does not appear to contain Solaris content")
 
+        # pylint: disable=W0703
         except Exception, e:
             print "Error creating mpm for %s: %s" % (archive, repr(e))
 
@@ -245,6 +232,7 @@ def _run(archives=sys.argv[1:]):
 # archive tests ----------------------------------------------------------
 
 # This is not a good way to do this, but it will suffice for now.
+# pylint: disable=W0212
 def _close_mpm(mpm):
     if hasattr(mpm, "payload_stream") and mpm.payload_stream:
         mpm.payload_stream.close()
@@ -334,6 +322,7 @@ def create_patch_set_mpm(archive_parser, archive):
 def create_patch_mpm(archive_parser, prefix="", archive=""):
     """Create an mpm package from a parser holding a patch archive"""
 
+    # pylint: disable=R0915
     # have to have one or the other
     assert prefix or archive
 
@@ -373,7 +362,7 @@ def create_patch_mpm(archive_parser, prefix="", archive=""):
     # recent format has files in patches subdir
     if os.path.isdir(os.path.join(archive_parser._archive_dir, patch_path_with_subdir)):
         patch_path = patch_path_with_subdir
-    pkgs, x = archive_parser.list(patch_path)
+    pkgs, _dummy = archive_parser.list(patch_path)
 
     for pkg in pkgs:
         pkginfo_file = os.path.join(prefix, pkg, 'pkginfo')
@@ -482,7 +471,7 @@ def parse_pkginfo(pkginfo_str):
                   "PSTAMP=":    "pstamp",
                   "VENDOR=":    "vendor" }
 
-    parse_dict, x = parser(lines, trans_dict.keys(), "=")
+    parse_dict, _dummy = parser(lines, trans_dict.keys(), "=")
 
     dct = _translate_dict(trans_dict, parse_dict)
 
@@ -526,7 +515,7 @@ def compose_pstamp_and_release(header):
         try:
             pstamp = _extract_pstamp_as_release(header['pstamp'])
             pstamp_part = delimiter + pstamp
-        except PStampParseException, pspe:
+        except PStampParseException:
             # Could not convert the pstamp into a release number.  Just use
             # the raw string.
             pstamp = header['pstamp']
@@ -657,22 +646,13 @@ def provide_self(header):
     header['provides'].insert(0, dct)
 
     if header.has_key('release'):
-        header['provides'].insert(1, { 'name' : dct['name'], 'flags' : 8, 'version' : "%s-%s" % (header['version'], header['release'])})
+        header['provides'].insert(1, { 'name' : dct['name'], 'flags' : 8,
+                  'version' : "%s-%s" % (header['version'], header['release'])})
 
 def md5sum_for_stream(data_stream):
     """Calcualte the md5sum for a datastream and return it in a utf8 friendly
     format"""
-
-    md5obj = hashlib.new('md5')
-    while True:
-        buf = data_stream.read(1024000)
-        if buf:
-            md5obj.update(buf)
-        else:
-            break
-    data_stream.seek(0)
-
-    return md5obj.hexdigest()
+    return checksum.getFileChecksum('md5', file_obj=data_stream)
 
 # patch set mpm creation -------------------------------------------------
 
@@ -684,7 +664,7 @@ def parse_cluster_readme(readme_string):
                    "DATE:":                 "date",
                    "CLUSTER DESCRIPTION":   "description" }
 
-    parse_dict, x = parser(lines, trans_dict.keys(), ":")
+    parse_dict, _dummy = parser(lines, trans_dict.keys(), ":")
 
     dct = _translate_dict(trans_dict, parse_dict)
     # munge some fields
@@ -706,7 +686,7 @@ def parse_patch_readme(readme_string):
                    "SunOS Release:":            "sunos_rel",
                    "Relevant Architectures:":   "target_arch" }
 
-    parse_dict, x = parser(lines, trans_dict.keys(), ":")
+    parse_dict, _dummy = parser(lines, trans_dict.keys(), ":")
 
     dct = _translate_dict(trans_dict, parse_dict)
     # Munge munge munge
@@ -729,7 +709,7 @@ def parse_patchinfo(patchinfo_string):
                    "PATCH_INCOMPAT=":   "conflicts",
                    "PATCH_OBSOLETES=":  "obsoletes" }
 
-    parse_dict, x = parser(lines, trans_dict.keys(), "=")
+    parse_dict, _dummy = parser(lines, trans_dict.keys(), "=")
 
     dct = _translate_dict(trans_dict, parse_dict)
 
@@ -771,7 +751,7 @@ def parse_patch_pkginfo(pkginfo_string):
                    "SUNW_REQUIRES=":    "requires",
                    "SUNW_INCOMPAT=":    "conflicts" }
 
-    parse_dict, x = parser(lines, trans_dict.keys(), "=")
+    parse_dict, _dummy = parser(lines, trans_dict.keys(), "=")
 
     dct = _translate_dict(trans_dict, parse_dict)
 
@@ -875,7 +855,7 @@ def _unique_list_of_dicts(list_):
         if list_[i] == list_[i+1]:
             del list_[i]
             continue
-        i+=1
+        i += 1
 
     return list_
 
@@ -885,7 +865,8 @@ def _unique_list_of_dicts(list_):
 def write_mpm(mpm):
     """Write out the mpm file"""
 
-    if mpm is None: return
+    if mpm is None:
+        return
 
     dest = _compute_filename(mpm.header)
     print "Writing %s" % dest
@@ -1038,9 +1019,9 @@ def _to_db_timestamp(s):
         for i in range(len(_months)):
             if m == _months[i]:
                 break
-        else:
-            raise Exception("unknown month %s" % arr[0]), None, sys.exc_info()[2]
-        m = i + 1
+            else:
+                raise Exception("unknown month %s" % arr[0]), None, sys.exc_info()[2]
+            m = i + 1
 
     d = int(d)
     y = int(y)
@@ -1062,7 +1043,6 @@ def parser(lines, sections, delim):
     """
 
     resp = {}
-    sect_dict = {}
 
     section = None
     content = []

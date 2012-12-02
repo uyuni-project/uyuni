@@ -85,26 +85,10 @@ public class RoleFactory extends HibernateFactory {
      */
     public static final Role SAT_ADMIN = lookupByLabel("satellite_admin");
 
-
-    /**
-     * The constant representing org_applicant.  Used for comparison.
-     */
-    public static final Role ORG_APPLICANT = lookupByLabel("org_applicant");
-
     /**
      * The constant representing channel_admin
      */
     public static final Role CHANNEL_ADMIN = lookupByLabel("channel_admin");
-
-    /**
-     * The constant representing rhn_superuser
-     */
-    public static final Role RHN_SUPERUSER = lookupByLabel("rhn_superuser");
-
-    /**
-     * The constant representing rhn_support
-     */
-    public static final Role RHN_SUPPORT = lookupByLabel("rhn_support");
 
     /**
      * The constant representing config_admin
@@ -125,10 +109,5 @@ public class RoleFactory extends HibernateFactory {
      * The constant representing monitoring_admin
      */
     public static final Role MONITORING_ADMIN = lookupByLabel("monitoring_admin");
-
-    /**
-     * The constant representing cert_admin
-     */
-    public static final Role CERT_ADMIN = lookupByLabel("cert_admin");
 
 }

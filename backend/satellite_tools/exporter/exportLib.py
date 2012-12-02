@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -48,7 +48,7 @@ class BaseDumper:
     # Generic timing function
     def timer(self, debug_level, message, function, *args, **kwargs):
         start = time.time()
-        result = apply(function, args, kwargs)
+        result = function(*args, **kwargs)
         log_debug(debug_level, message, "timing: %.3f" % (time.time() - start))
         return result
 
@@ -239,6 +239,7 @@ class _ChannelDumper(BaseRowDumper):
           from rhnDistChannelMap dcm, rhnChannelArch ca
          where dcm.channel_id = :channel_id
            and dcm.channel_arch_id = ca.id
+           and dcm.org_id is null
     """)
 
     def set_iterator(self):
@@ -288,7 +289,10 @@ class _ChannelDumper(BaseRowDumper):
         # Errata information (with timestamps)
         query_args = {'channel_id': channel_id}
         if self.start_date:
-            query = self._query__get_errata_ids_by_limits
+            if self.use_rhn_date:
+                query = self._query__get_errata_ids_by_rhnlimits
+            else:
+                query = self._query__get_errata_ids_by_limits
             query_args.update({'lower_limit': self.start_date,
                                'upper_limit': self.end_date})
         else:
@@ -500,7 +504,7 @@ class ChannelsDumper(BaseSubelementDumper):
     subelement_dumper_class = _ChannelDumper
 
     def __init__(self, writer, channels=[]):
-        BaseDumper.__init__(self, writer)
+        BaseSubelementDumper.__init__(self, writer)
         self._channels = channels
 
     def set_iterator(self):
@@ -611,7 +615,7 @@ class ChannelFamiliesDumper(BaseQueryDumper):
 
     def __init__(self, writer, data_iterator=None, ignore_subelements=0, 
             null_max_members=1, virt_filter=0):
-        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+        BaseQueryDumper.__init__(self, writer, data_iterator=data_iterator)
         self._ignore_subelements = ignore_subelements
         self._null_max_members = null_max_members
         self.virt_filter = virt_filter
@@ -706,9 +710,9 @@ class _PackageDumper(BaseRowDumper):
     def set_attributes(self):
         attrs = ["name", "version", "release", "package_arch",
             "package_group", "rpm_version", "package_size", "payload_size", 
-            "build_host", "source_rpm", "payload_format",
+            "installed_size", "build_host", "source_rpm", "payload_format",
             "compat"]
-        dict = {
+        attr_dict = {
             'id'            : "rhn-package-%s" % self._row['id'],
             'org_id'        : self._row['org_id'] or "",
             'epoch'         : self._row['epoch'] or "",
@@ -717,11 +721,11 @@ class _PackageDumper(BaseRowDumper):
             'last-modified' : _dbtime2timestamp(self._row['last_modified']),
         }
         for attr in attrs:
-            dict[attr.replace('_', '-')] = self._row[attr]
+            attr_dict[attr.replace('_', '-')] = self._row[attr]
         if self._row['checksum_type'] == 'md5':
             # compatibility with older satellite
-            dict['md5sum'] = self._row['checksum']
-        return dict
+            attr_dict['md5sum'] = self._row['checksum']
+        return attr_dict
 
     def set_iterator(self):
         arr = []
@@ -1350,13 +1354,11 @@ class _KickstartableTreeDumper(BaseRowDumper):
     tag_name = 'rhn-kickstartable-tree'
 
     def set_attributes(self):
-        dict = self._row.copy()
-        del dict['id']
-        # XXX Should we export this one?
-        #del dict['base-path']
-        last_modified = dict['last-modified']
-        dict['last-modified'] = _dbtime2timestamp(last_modified)
-        return dict
+        row_dict = self._row.copy()
+        del row_dict['id']
+        last_modified = row_dict['last-modified']
+        row_dict['last-modified'] = _dbtime2timestamp(last_modified)
+        return row_dict
 
     def set_iterator(self):
         kstree_id = self._row['id']

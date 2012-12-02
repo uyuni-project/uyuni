@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.StringUtil;
@@ -1305,7 +1304,7 @@ public class KickstartData {
         if (getCobblerId() != null) {
             Profile prof = Profile.lookupById(
                    CobblerXMLRPCHelper.getConnection(
-                   Config.get().getString(ConfigDefaults.COBBLER_AUTOMATED_USER)),
+                   ConfigDefaults.get().getCobblerAutomatedUser()),
                        getCobblerId());
             if (prof != null && !StringUtils.isBlank(prof.getKickstart())) {
                 return prof.getKickstart();

@@ -1,4 +1,10 @@
+%if 0%{?fedora}
+Requires: apache-commons-io
+%define jpackage_run_jars antlr apache-commons-beanutils apache-commons-collections apache-commons-logging regexp
+%else
 %define jpackage_run_jars antlr jakarta-commons-beanutils jakarta-commons-collections jakarta-commons-logging regexp
+%endif
+
 %define jpackage_build_jars checkstyle junit
 %define jpackage_jars %jpackage_run_jars %jpackage_build_jars
 
@@ -12,8 +18,9 @@ Patch0: bug219916_expired_password_hang.patch
 Patch1: %{name}-%{version}-s390x.patch
 Patch2: jpam-0.4-ppc.patch
 Patch3: jpam-0.4-no_checkstyle.patch
+Patch4: jpam-0.4-no-password-prompt.patch
 Version: 0.4
-Release: 20%{?dist}
+Release: 21%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 Requires: %jpackage_run_jars
@@ -43,6 +50,7 @@ Javadoc for %{name}.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 rm -Rfv tools/*.jar
 build-jar-repository -p tools/ %jpackage_jars
@@ -84,7 +92,6 @@ if [ "$1" = "0" ]; then
 fi
 
 %files
-%defattr(-,root,root,-)
 %{_javadir}/*
 /usr/lib/libjpam.so
 
@@ -92,10 +99,13 @@ fi
 %{_docdir}/*
 
 %files javadoc
-%defattr(0644,root,root,0755)
 %{_javadocdir}/%{name}-%{version}
 
 %changelog
+* Wed Oct 17 2012 Jan Pazdziora 0.4-21
+- 860119 - Remove expected password prompts from PAM_conv, they fail for
+  non-English locales.
+
 * Fri Dec 17 2010 Tomas Lestach <tlestach@redhat.com> 0.4-20
 - disable checkstyle, since there's a problem with jpackage checkstyle
 

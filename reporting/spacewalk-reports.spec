@@ -2,7 +2,7 @@ Name: spacewalk-reports
 Summary: Script based reporting
 Group: Applications/Internet
 License: GPLv2
-Version: 1.7.1.4
+Version: 1.9.0
 Release: 1%{?dist}
 URL: https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -46,6 +46,21 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING
 
 %changelog
+* Sat Jun 16 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.4-1
+- 827022 - add COPYING file
+
+* Mon May 21 2012 Jan Pazdziora 1.8.3-1
+- %%defattr is not needed since rpm 4.4
+- require spacewalk-branding
+- simplify spec and own directory /usr/share/spacewalk/reports
+
+* Tue Apr 03 2012 Jan Pazdziora 1.8.2-1
+- Rework reporting to correspond with 0-n rule/ident mapping
+  (slukasik@redhat.com)
+
+* Wed Mar 14 2012 Jan Pazdziora 1.8.1-1
+- 803228 - concatenation with null gives null on PostgreSQL, fixing.
+
 * Mon Feb 27 2012 Simon Lukasik <slukasik@redhat.com> 1.7.1-1
 - OpenSCAP integration -- Spacewalk reports. (slukasik@redhat.com)
 - Bumping package versions for 1.7. (mzazrivec@redhat.com)

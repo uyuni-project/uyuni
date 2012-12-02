@@ -27,7 +27,6 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnPackageUpload, rhnSQL, basePackageUpload
-from spacewalk.common.checksum import getFileChecksum
 
 class PackagePush(basePackageUpload.BasePackageUpload):
     def __init__(self, req):
@@ -42,6 +41,9 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         self.username = None
         self.password = None
         self.force = None
+        self.rel_package_path = None
+        self.org_id = None
+        self.package_path = None
         
     def headerParserHandler(self, req):
         ret = basePackageUpload.BasePackageUpload.headerParserHandler(self, req)
@@ -97,9 +99,6 @@ class PackagePush(basePackageUpload.BasePackageUpload):
             self.org_id, self.force = rhnPackageUpload.authenticate(self.username,
                 self.password, force=force, null_org=self.null_org)
 
-        nevra = [self.package_name, "", self.package_version, 
-            self.package_release, self.package_arch]
-
         return apache.OK
 
 
@@ -138,12 +137,13 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         
         return apache.OK
 
-    def _send_package_diff(self, req, diff_level, diff):
-        dict = {
+    @staticmethod
+    def _send_package_diff(req, diff_level, diff):
+        args = {
             'level' : diff_level,
             'diff'  : diff,
         }
-        reply = rpclib.xmlrpclib.dumps((dict, ))
+        reply = rpclib.xmlrpclib.dumps((args, ))
         ret_stat = apache.HTTP_BAD_REQUEST
         req.status = ret_stat
         req.err_headers_out['Content-Length'] = str(len(reply))
@@ -151,7 +151,8 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         req.write(reply)
         return apache.OK
 
-    def get_auth_token(self, value):
+    @staticmethod
+    def get_auth_token(value):
         s = ''.join(map(lambda x: x.strip(), value.split('')))
         arr = map(base64.decodestring, s.split(':'))
         return arr

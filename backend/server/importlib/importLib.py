@@ -162,6 +162,7 @@ class DistChannelMap(Information):
         'release'           : StringType,
         'channel_arch'      : StringType,
         'channel'           : StringType,
+        'org_id'            : IntType,
     }
 
 class ReleaseChannelMap(Information):
@@ -330,6 +331,7 @@ class Package(IncompletePackage):
         'package_group'     : StringType,
         'rpm_version'       : StringType,
         'payload_size'      : IntType,
+        'installed_size'    : IntType,
         'payload_format'    : StringType,
         'build_host'        : StringType,
         'build_time'        : DateType,

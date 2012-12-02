@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -218,99 +218,6 @@ class User:
             log_error("SET_INFO: Unknown info `%s' = `%s'" % (name, value))
         return 0
 
-    def __save(self):
-        """ Save this record in the database. """
-        is_admin = 0
-        if self.customer.real:
-            # get the org_id and the applicant group id for this org
-            org_id = self.customer["id"]
-            h = rhnSQL.prepare("""
-            select ug.id
-            from rhnUserGroup ug, rhnUserGroupType ugt
-            where ugt.label = 'org_applicant'
-            and ug.group_type = ugt.id
-            and ug.org_id = :org_id
-            """)
-            h.execute(org_id=org_id)
-            data = h.fetchone_dict()
-            # XXX: prone to errors, but we'll need to see them first
-            grp_id = data["id"]
-        else: # an org does not exist... create one
-            create_new_org = rhnSQL.Procedure("create_new_org")
-            ret = create_new_org(
-                self.customer["name"],
-                self.customer["password"],
-                None, None, "B", 
-                rhnSQL.types.NUMBER(),
-                rhnSQL.types.NUMBER(),
-                rhnSQL.types.NUMBER(),
-            )
-            org_id, adm_grp_id, app_grp_id = ret[-3:]
-            # We want to make sure we set the group limits right
-            tbl = rhnSQL.Row("rhnUserGroup", "id")
-            # Set the default admin limits to Null
-            tbl.load(adm_grp_id)
-            # bz:210230: this value should default to Null
-            tbl.save()
-            # Set the default applicats limit to 0
-            tbl.load(app_grp_id)
-            tbl["max_members"] = 0
-            tbl.save()
-            # reload the customer table
-            self.customer.load(org_id)
-            # and finally, we put this one in the admin group
-            grp_id = adm_grp_id
-            is_admin = 1
-            
-        # save the contact
-        if self.contact.real:
-            if not self.contact["org_id"]:
-                raise rhnException("Undefined org_id for existing user entry",
-                                   self.contact.data)
-            userid = self.contact["id"]
-            self.contact.save()
-        else:
-            userid = self.getid()
-            self.contact["org_id"] = org_id
-            # if not admin, obfuscate the password
-            # (and leave the old_password set)
-            if not is_admin: # we only do this for new users.
-                log_debug(5, "Obfuscating user password")
-                user_pwd = self.contact["password"]
-                crypt_pwd = crypt.crypt(user_pwd, str(userid)[-2:])
-                self.contact["password"] = crypt_pwd
-            self.contact.create(userid)
-            # rhnUserInfo
-            h = rhnSQL.prepare("insert into rhnUserInfo (user_id) "
-                               "values (:user_id)")
-            h.execute(user_id=userid)
-            # now add this user to the admin/applicant group for his org
-            create_ugm = rhnSQL.Procedure("rhn_user.add_to_usergroup")
-            # grp_id is the admin or the applicant, depending on whether we
-            # just created the org or not
-            create_ugm(userid, grp_id)
-            # and now reload this data
-            self.contact.load(userid)
-            
-        # do the same for the other structures indexed by web_user_id
-        # personal info
-        if self.info.real:      self.info.save()
-        else:                   self.info.create(userid) 
-        # contact permissions
-        if self.perms.real:     self.perms.save()
-        else:                   self.perms.create(userid)
-            
-        # And now save the site information
-        if self.site.real:
-            siteid = self.site["id"]
-            self.site.save()
-        else:
-            siteid = rhnSQL.Sequence("web_user_site_info_id_seq")()
-            self.site["web_user_id"] = userid            
-            self.site.create(siteid)
-
-        return 0
-
     def get_roles(self):
         user_id = self.getid()
 
@@ -325,22 +232,6 @@ class User:
         """)
         h.execute(user_id=user_id)
         return map(lambda x: x['role'], h.fetchall_dict() or [])
-
-    def save(self):
-        """ This is a wrapper for the above class that allows us to rollback
-            any changes in case we don't succeed completely.
-        """
-        log_debug(3, self.username)
-        rhnSQL.commit()
-        try:
-            self.__save()
-        except:            
-            rhnSQL.rollback()
-            # shoot the exception up the chain
-            raise
-        else:
-            rhnSQL.commit()
-        return 0
     
     def reload(self, user_id):
         """ Reload the current data from the SQL database using the given id """
@@ -563,66 +454,9 @@ def __new_user_db(username, password, email, org_id, org_password):
             # Bad password
             raise rhnFault(2)
         
-    # From this point on, the password may be encrypted
-    if encrypted_password:
-        password = encrypt_password(password)
-
-    is_real = 0
-    # the password matches, do we need to create a new entry?
-    if not data.has_key("id"):
-        user = User(username, password)
-    else: # we have to reload this entry into a User structure
-        user = User(username, password)
-        if not user.reload(data["id"]) == 0:
-            # something horked during reloading entry from database
-            # we can not really say that the entry does not exist...
-            raise rhnFault(10)
-        is_real = 1
-        
-    # now we have user reloaded, check for updated email
-    if email:
-
-        # don't update the user's email address in the satellite context...
-        # we *must* in the live context, but user creation through rhn_register
-        # is disallowed in the satellite context anyway...
-        if not pre_existing_user:
-            user.set_info("email", email)
-            
-    # XXX This should go away eventually
-    if org_id and org_password: # check out this org
-        h = rhnSQL.prepare("""
-        select id, password from web_customer
-        where id = :org_id
-        """)
-        h.execute(org_id=str(org_id))
-        data = h.fetchone_dict()
-        if not data: # wrong organization
-            raise rhnFault(2, _("Invalid Organization Credentials"))
-        # The org password is not encrypted, easy comparison
-        if org_password.lower() != data["password"].lower():
-            # Invalid org password
-            raise rhnFault(2, _("Invalid Organization Credentials"))
-        if is_real: # this is a real entry, don't clobber the org_id
-            old_org_id = user.contact["org_id"]
-            new_org_id  = data["id"]
-            if old_org_id != new_org_id:
-                raise rhnFault(42, 
-                    _("User `%s' not a member of organization %s") % 
-                        (username, org_id))
-        else: # new user, set its org
-            user.set_org_id(data["id"])
-        
-    # force the save if this is a new entry
-    ret = user.save()
-    if not ret == 0:
-        raise rhnFault(5)
-    # check if we need to remove the reservation
-    if not data.has_key("id"):
-        # remove reservation
-        h = rhnSQL.prepare("""
-        delete from rhnUserReserved where login_uc = upper(:username)
-        """)
-        h.execute(username=username)
+    # creation of user was never supported in spacewalk but this call was mis-used
+    # to check username/password in the past
+    # so let's skip other checks and return now
     return 0
 
 

@@ -76,7 +76,7 @@ public class LocalizationService {
     private Map keyToBundleMap;
 
     // List of supported locales
-    private Map supportedLocales = new HashMap();
+    private final Map supportedLocales = new HashMap();
 
     /**
      * hidden constructor
@@ -125,14 +125,14 @@ public class LocalizationService {
         }
         catch (ClassNotFoundException ce) {
             String message = "Class not found when trying to initalize " +
-                                "the LocalizationService: " + ce.toString();
+                    "the LocalizationService: " + ce.toString();
             log.error(message, ce);
             throw new LocalizationException(message, ce);
         }
     }
 
     private void loadSupportedLocales() {
-        String rawLocales = Config.get().getString("web.supported_locales");
+        String rawLocales = Config.get().getString("java.supported_locales");
         if (rawLocales == null) {
             return;
         }
@@ -170,12 +170,12 @@ public class LocalizationService {
      * @return boolean if we reloaded the files or not.
      */
     public boolean reloadResourceFiles() {
-        if (Config.get().getBoolean("web.development_environment")) {
+        if (Config.get().getBoolean("java.development_environment")) {
             initService();
             return true;
         }
         log.error("Tried to reload XML StringResource files but " +
-                "we aren't in web.development_environment mode");
+                "we aren't in java.development_environment mode");
         return false;
     }
 
@@ -314,10 +314,10 @@ public class LocalizationService {
     private String getDebugVersionOfString(String mess) {
         // If we have put the Service into debug mode we
         // will wrap all the messages in a marker.
-        boolean debugMode = Config.get().getBoolean("web.l10n_debug");
+        boolean debugMode = Config.get().getBoolean("java.l10n_debug");
         if (debugMode) {
             StringBuffer debug = new StringBuffer();
-            String marker = Config.get().getString("web.l10n_debug_marker",
+            String marker = Config.get().getString("java.l10n_debug_marker",
                     "$$$");
             debug.append(marker);
             debug.append(mess);
@@ -363,7 +363,7 @@ public class LocalizationService {
                 "] not found.***" + caller;
         log.error(message);
         boolean exceptionMode = Config.get().getBoolean(
-                "web.l10n_missingmessage_exceptions");
+                "java.l10n_missingmessage_exceptions");
         if (exceptionMode) {
             throw new IllegalArgumentException(message);
         }
@@ -570,17 +570,19 @@ public class LocalizationService {
      *
      * @return SortedMap sorted map of available countries.
      */
-    public SortedMap availableCountries() {
-        List validCountries = new LinkedList(Arrays.asList(Locale
+    public SortedMap<String, String> availableCountries() {
+        List<String> validCountries = new LinkedList<String>(
+                Arrays.asList(Locale
                 .getISOCountries()));
         String[] excluded = Config.get().getStringArray(
                 ConfigDefaults.WEB_EXCLUDED_COUNTRIES);
         if (excluded != null) {
-            validCountries.removeAll(new LinkedList(Arrays.asList(excluded)));
+            validCountries.removeAll(new LinkedList<String>(Arrays
+                    .asList(excluded)));
         }
-        SortedMap ret = new TreeMap();
-        for (Iterator iter = validCountries.iterator(); iter.hasNext();) {
-            String isoCountry = (String) iter.next();
+        SortedMap<String, String> ret = new TreeMap<String, String>();
+        for (Iterator<String> iter = validCountries.iterator(); iter.hasNext();) {
+            String isoCountry = iter.next();
             ret.put(this.getMessage(isoCountry), isoCountry);
         }
 

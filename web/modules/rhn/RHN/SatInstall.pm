@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -24,7 +24,6 @@ use English;
 use POSIX qw/dup2 setsid O_WRONLY O_CREAT/;
 use ModPerl::Util qw/exit/;
 use DateTime;
-use IPC::Open3;
 
 use RHN::DB;
 use Params::Validate;
@@ -88,31 +87,5 @@ my %server_cert_opts = (
    'set-email' => 1,
    'set-hostname' => 1,
 );
-
-sub generate_server_cert {
-  my $class = shift;
-  my %params = validate(@_, {
-   %server_cert_opts,
-			    });
-
-  $params{'cert-expiration'} *= 365;
-
-  my @opts = "--gen-server";
-
-  foreach my $name (keys %params) {
-    next unless ($params{$name}
-		 and exists $server_cert_opts{$name});
-
-    push @opts, qq(--$name=$params{$name});
-  }
-
-  my @command = ('/usr/bin/rhn-sudo-ssl-tool',  @opts, '-q');
-
-  my $pid = open3(undef, ">&STDERR", ">&STDERR", @command);
-  waitpid( $pid, 0 );
-  my $ret = $?;
-
-  return $ret;
-}
 
 1;

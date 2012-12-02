@@ -1,5 +1,5 @@
 Name:         NOCpulsePlugins
-Version:      2.209.3.3
+Version:      2.209.6
 Release:      1%{?dist}
 Summary:      NOCpulse authored Plug-ins
 URL:          https://fedorahosted.org/spacewalk
@@ -93,6 +93,17 @@ done
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Aug 01 2012 Jan Pazdziora 2.209.6-1
+- 844992 - force the array context so that Class::MethodMaker behaves the same
+  in both versions 1 and 2.
+- %%defattr is not needed since rpm 4.4
+
+* Tue Apr 03 2012 Jan Pazdziora 2.209.5-1
+- 518985 - fix ORA-00918: column ambiguously defined (mzazrivec@redhat.com)
+
+* Tue Mar 13 2012 Michael Mraka <michael.mraka@redhat.com> 2.209.4-1
+- fixed error: %%changelog entries must start with *
+
 * Thu Aug 11 2011 Jan Pazdziora 2.209.3-1
 - Add additional member name mappings in ProbeRecord to ensure that the probe
   will run when rhn-runprobe is called. (davidn@elrond.bioss.sari.ac.uk)

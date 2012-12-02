@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -116,6 +116,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(NetworkDtoSerializer.class);
         SERIALIZER_CLASSES.add(DistChannelMapSerializer.class);
         SERIALIZER_CLASSES.add(ContentSourceSerializer.class);
+        SERIALIZER_CLASSES.add(ContentSourceFilterSerializer.class);
         SERIALIZER_CLASSES.add(XccdfTestResultDtoSerializer.class);
         SERIALIZER_CLASSES.add(XccdfTestResultSerializer.class);
         SERIALIZER_CLASSES.add(XccdfRuleResultDtoSerializer.class);

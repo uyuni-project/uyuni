@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.7.38.20
+Version: 1.9.10
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -58,7 +58,7 @@ Requires(pre): httpd
 Requires: python, rpm-python
 # /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
 Requires: /etc/rhn
-Requires: rhnlib >= 2.5.38
+Requires: rhnlib >= 2.5.35
 # for Debian support
 Requires: python-debian
 Requires: %{name}-libs >= 1.1.16-1
@@ -71,7 +71,7 @@ BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
 BuildRequires: spacewalk-pylint
-BuildRequires: rhnlib >= 2.5.38
+BuildRequires: rhnlib >= 2.5.35
 BuildRequires: rpm-python
 BuildRequires: python-crypto
 BuildRequires: python-debian
@@ -182,23 +182,16 @@ Obsoletes: rhns-server-app < 5.3.0
 Obsoletes: rhns-app < 5.3.0
 Provides: rhns-server-app = 1:%{version}-%{release}
 Provides: rhns-app = 1:%{version}-%{release}
-
-%description app
-These are the files required for running the /APP handler.
-Calls to /APP are used by internal maintenance tools (rhnpush).
-
-%package xp
-Summary: Handler for /XP
-Group: Applications/Internet
-Requires: %{name}-server = %{version}-%{release}
+Obsoletes: spacewalk-backend-xp < 1.8.38
+Provides: spacewalk-backend-xp = %{version}-%{release}
 Obsoletes: rhns-server-xp < 5.3.0
 Obsoletes: rhns-xp < 5.3.0
 Provides: rhns-server-xp = 1:%{version}-%{release}
 Provides: rhns-xp = 1:%{version}-%{release}
 
-%description xp
-These are the files required for running the /XP handler.
-Calls to /XP are used by tools publicly available (like rhn_package_manager).
+%description app
+These are the files required for running the /APP handler.
+Calls to /APP are used by internal maintenance tools (rhnpush).
 
 %package iss
 Summary: Handler for /SAT
@@ -243,7 +236,7 @@ Requires: python-hashlib
 %endif
 %else
 BuildRequires: python2-devel
-Conflicts: %{name} < 0.8.28
+Conflicts: %{name} < 1.7.0
 Requires: python-hashlib
 BuildRequires: python-hashlib
 %endif
@@ -302,18 +295,14 @@ Requires: spacewalk-admin >= 0.1.1-0
 Requires: python-gzipstream
 %if 0%{?suse_version}
 Requires: python-base
-%else
-Requires: python-hashlib
-%endif
-Requires: PyXML
-%if 0%{?suse_version}
 Requires: apache2-prefork
 %else
+Requires: python-hashlib
 Requires: mod_ssl
 %endif
 Requires: %{name}-xml-export-libs
 Requires: cobbler >= 2.0.0
-Requires: rhnlib  >= 2.5.38
+Requires: rhnlib  >= 2.5.35
 Obsoletes: rhns-satellite-tools < 5.3.0
 Obsoletes: spacewalk-backend-satellite-tools <= 0.2.7
 Provides: spacewalk-backend-satellite-tools = %{version}-%{release}
@@ -343,14 +332,14 @@ make -f Makefile.backend all
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/%{rhnroot}
-install -d $RPM_BUILD_ROOT/%{pythonrhnroot}
+install -d $RPM_BUILD_ROOT%{rhnroot}
+install -d $RPM_BUILD_ROOT%{pythonrhnroot}
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir}
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
 
-rm -fv $RPM_BUILD_ROOT/%{apacheconfd}/zz-spacewalk-server-python.conf
+rm -v $RPM_BUILD_ROOT%{apacheconfd}/zz-spacewalk-server-python.conf
 rm -f $RPM_BUILD_ROOT/%{_mandir}/man8/satellite-sync.8*
 
 # remove all unsupported translations
@@ -361,10 +350,6 @@ for d in usr/share/locale/*; do
   fi
 done
 cd -
-
-%if 0%{?fedora} > 16
-rm -rf $RPM_BUILD_ROOT%{pythonrhnroot}/server/rhnSQL/driver_cx_Oracle.py*
-%endif
 
 %find_lang %{name}-server
 
@@ -381,8 +366,10 @@ make -f Makefile.backend unittest
 make -f Makefile.backend test || :
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
 # check coding style
-export PYTHONPATH=$RPM_BUILD_ROOT/%{python_sitelib}:/usr/lib/rhn
+export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn
 spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
+                 $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
+                 $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
 %endif
 
@@ -429,14 +416,12 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{fillup_only -nd reposync rhn}
 
 %files
-%defattr(-,root,root)
 %doc LICENSE
 %dir %{pythonrhnroot}
 %dir %{pythonrhnroot}/common
 %{pythonrhnroot}/common/suseLib.py*
 %{pythonrhnroot}/common/apache.py*
 %{pythonrhnroot}/common/byterange.py*
-%{pythonrhnroot}/common/rhn_posix.py*
 %{pythonrhnroot}/common/rhnApache.py*
 %{pythonrhnroot}/common/rhnCache.py*
 %{pythonrhnroot}/common/rhnConfig.py*
@@ -462,7 +447,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{rhnroot}/wsgi/wsgiRequest.py*
 
 %files sql
-%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -479,18 +463,15 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 %if 0%{?fedora} < 17
 %files sql-oracle
-%defattr(-,root,root,-)
 %doc LICENSE
 %{pythonrhnroot}/server/rhnSQL/driver_cx_Oracle.py*
 %endif
 
 %files sql-postgresql
-%defattr(-,root,root,-)
 %doc LICENSE
 %{pythonrhnroot}/server/rhnSQL/driver_postgresql.py*
 
 %files server -f %{name}-server.lang
-%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -505,7 +486,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/rhnAuthPAM.py*
 %{pythonrhnroot}/server/rhnCapability.py*
 %{pythonrhnroot}/server/rhnChannel.py*
-%{pythonrhnroot}/server/rhnKickstart.py*
 %{pythonrhnroot}/server/rhnDependency.py*
 %{pythonrhnroot}/server/rhnPackage.py*
 %{pythonrhnroot}/server/rhnPackageUpload.py*
@@ -566,13 +546,11 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{rhnroot}/wsgi/sat.py*
 %{rhnroot}/wsgi/sat_dump.py*
 %{rhnroot}/wsgi/xmlrpc.py*
-%{rhnroot}/wsgi/xp.py*
 
 # logs and other stuff
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-server
 
 %files xmlrpc
-%defattr(-,root,root) 
 %doc LICENSE
 %dir %{rhnroot}/server/handlers/xmlrpc
 %{rhnroot}/server/handlers/xmlrpc/*
@@ -591,7 +569,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %endif
 
 %files applet
-%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -604,7 +581,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-applet
 
 %files app
-%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -616,21 +592,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-app.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-app
 
-%files xp
-%defattr(-,root,root)
-%doc LICENSE
-%if 0%{?suse_version}
-%dir %{rhnroot}/server
-%endif
-%dir %{rhnroot}/server/handlers/xp
-%{rhnroot}/server/handlers/xp/*
-# config files
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_xp.conf
-%attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-xp.conf
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xp
-
 %files iss
-%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -641,7 +603,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-sat.conf
 
 %files iss-export
-%defattr(-,root,root)
 %doc LICENSE
 %dir %{pythonrhnroot}/satellite_exporter
 %{pythonrhnroot}/satellite_exporter/__init__.py*
@@ -658,7 +619,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 
 %files libs
-%defattr(-,root,root)
 %doc LICENSE
 %{pythonrhnroot}/__init__.py*
 %dir %{pythonrhnroot}/common
@@ -672,14 +632,12 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/rhn_rpm.py*
 
 %files config-files-common
-%defattr(-,root,root)
 %doc LICENSE
 %{pythonrhnroot}/server/configFilesHandler.py*
 %dir %{pythonrhnroot}/server/config_common
 %{pythonrhnroot}/server/config_common/*
 
 %files config-files
-%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -691,7 +649,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files
 
 %files config-files-tool
-%defattr(-,root,root)
 %doc LICENSE
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -703,7 +660,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files-tool
 
 %files package-push-server
-%defattr(-,root,root)
 %doc LICENSE
 %dir %{rhnroot}/upload_server
 %{rhnroot}/upload_server/__init__.py*
@@ -716,7 +672,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-package-push.conf
 
 %files tools
-%defattr(-,root,root)
 %doc LICENSE
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
@@ -786,7 +741,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/rhn-entitlement-report.8*
 
 %files xml-export-libs
-%defattr(-,root,root)
 %doc LICENSE
 %dir %{pythonrhnroot}/satellite_tools
 %{pythonrhnroot}/satellite_tools/__init__.py*
@@ -804,6 +758,355 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri Nov 30 2012 Jan Pazdziora 1.9.10-1
+- 877451 - read the repo config from yumbase
+- 877451 - correct the proxy configuration logic
+
+* Thu Nov 22 2012 Jan Pazdziora 1.9.9-1
+- 877451 - correct parsing of main and channel's settings
+- 877451 - add missing and
+- 877451 - honor yum's "proxy = _none_" settings
+
+* Fri Nov 16 2012 Jan Pazdziora 1.9.8-1
+- 877451 - yum-like per-repo configuration for spacewalk-repo-sync
+- remove misleading comment
+
+* Wed Nov 14 2012 Michael Mraka <michael.mraka@redhat.com> 1.9.7-1
+- 868370 - fixed dependency solver for RHEL4 clients
+
+* Wed Nov 07 2012 Jan Pazdziora 1.9.6-1
+- Fixing pylint error.
+
+* Wed Nov 07 2012 Jan Pazdziora 1.9.5-1
+- Using fcntl.lockf should avoid any need for packing.
+
+* Wed Nov 07 2012 Tomas Lestach <tlestach@redhat.com> 1.9.4-1
+- renaming forgotten 'dict' to 'row_dict'
+
+* Tue Nov 06 2012 Jan Pazdziora 1.9.3-1
+- The fcntl documentation recommends different pack format.
+- Only SEEK_SET used, no need to have zero defined in an extra module.
+
+* Wed Oct 31 2012 Jan Pazdziora 1.9.2-1
+- add org_id to DistChannelMap backend class
+
+* Wed Oct 31 2012 Michael Mraka <michael.mraka@redhat.com> 1.9.1-1
+- 860860 - release and title are optional in older updateinfo version
+
+* Tue Oct 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.84-1
+- removing unused backend code
+- backend changes
+
+* Tue Oct 30 2012 Jan Pazdziora 1.8.83-1
+- Update the copyright year.
+- Update .po and .pot files for rhnsd.
+- Download translations from Transifex for spacewalk-backend.
+
+* Wed Oct 24 2012 Jan Pazdziora 1.8.82-1
+- group file might be missing
+
+* Mon Oct 22 2012 Jan Pazdziora 1.8.81-1
+- 828804 - no su-ing to oracle with embedded PostgreSQL.
+- rhnlib >= 2.5.38 is not necessary
+- 797893 - rollback any unfinished transaction
+
+* Fri Oct 19 2012 Jan Pazdziora 1.8.80-1
+- omit inserting child channels into the rhnDistChannelMap
+
+* Mon Oct 15 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.79-1
+- fixed Used builtin function 'apply'
+- replaced "!#/**bin/env python" with "!#/usr/bin/python"
+
+* Fri Oct 12 2012 Jan Pazdziora 1.8.78-1
+- Use the binary binding.
+- Fixing example. This was meant as a short option.
+
+* Thu Oct 11 2012 Jan Pazdziora 1.8.77-1
+- 712313 - for the installed_size, ignore situation when it was not populated
+  in the database.
+- Use the severityHash/diffHash mechanism for ignoring channel_product_id
+  differences.
+
+* Thu Oct 11 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.76-1
+- let's spacewalk-repo-sync download comps.xml
+
+* Tue Oct 09 2012 Jan Pazdziora 1.8.75-1
+- Put Oracle stuff back for Fedora 17.
+
+* Tue Oct 09 2012 Jan Pazdziora 1.8.74-1
+- Put Oracle stuff back for Fedora 17.
+
+* Tue Oct 09 2012 Jan Pazdziora 1.8.73-1
+- Put Oracle stuff back for Fedora 17.
+
+* Thu Oct 04 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.71-1
+- 860860 - don't fail when from attribute is missing
+
+* Wed Oct 03 2012 Jan Pazdziora 1.8.70-1
+- Revert "diffing packages speedup on postgresql"
+
+* Mon Sep 17 2012 Jan Pazdziora 1.8.69-1
+- exporter: honor sync-date / rhn-date when exporting erratas
+
+* Fri Sep 14 2012 Jan Pazdziora 1.8.68-1
+- The server/rhnKickstart does not seem to be imported by any code, removing.
+
+* Fri Sep 14 2012 Jan Pazdziora 1.8.67-1
+- Now that the Oracle columns are of type TIMESTAMP WITH LOCAL TIME ZONE,
+  nls_timestamp_format is needed as well.
+
+* Mon Sep 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.66-1
+- spacewalk-backend-libs can break spacewalk-backend < 1.7
+
+* Fri Sep 07 2012 Jan Pazdziora 1.8.65-1
+- Adding file path restoration functionality to spacewalk-data-fsck
+- 815964 - moving monitoring probe batch option from rhn.conf to rhn_web.conf
+
+* Fri Aug 31 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.64-1
+- fixed pylint errors
+
+* Mon Aug 27 2012 Stephen Herr <sherr@redhat.com> 1.8.63-1
+- 848475 - Adding IPv6 ip-address detection to proxy auth fix
+
+* Sun Aug 26 2012 Aron Parsons <aronparsons@gmail.com> 1.8.62-1
+- add --no-errata option to spacewalk-repo-sync
+
+* Tue Aug 21 2012 Stephen Herr <sherr@redhat.com> 1.8.61-1
+- 848475 - separate proxy auth error hostname into separate header
+- 849219 - don't explain the error about not subscribing proxy channels
+
+* Wed Aug 15 2012 Stephen Herr <sherr@redhat.com> 1.8.60-1
+- 848475 - multi-tiered proxies don't update auth tokens correctly
+
+* Thu Aug 02 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.59-1
+- calls have been removed from client side, mark them as obsoleted
+- unfortunatelly old clients can still call new_user
+
+* Tue Jul 31 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.58-1
+- 844603 - removed PyXML dependency
+
+* Tue Jul 31 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.57-1
+- upload_server is now pylint-able
+- fixed pylint errors / warnings
+
+* Tue Jul 31 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.56-1
+- 838502 - block subscription to satellite and proxy channels
+
+* Tue Jul 31 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.55-1
+- pylint on Fedoras need disable before whole try-except block
+
+* Mon Jul 30 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.54-1
+- satellite_exporter is now pylint-able
+
+* Mon Jul 30 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.53-1
+- update_contact_info is not called from client for a long time
+- removed unaccessible code
+
+* Mon Jul 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.52-1
+- remove usage of org_applicant user role
+- remove usage of rhn_superuser user role
+
+* Fri Jul 27 2012 Tomas Kasparek <tkasparek@redhat.com> 1.8.51-1
+- Truncating date string and therefore preventing ORA-01830
+- Fixing placeholder syntax.
+
+* Thu Jul 19 2012 Jan Pazdziora 1.8.50-1
+- Add abrt into list of packaged modules.
+
+* Wed Jul 18 2012 Jan Pazdziora 1.8.49-1
+- Add abrt data handling functionality
+
+* Thu Jul 12 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.48-1
+- prostgresql don't know about decode
+- fixed ERROR: subquery in FROM must have an alias
+
+* Tue Jul 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.47-1
+- Fix indentation error
+
+* Wed Jul 04 2012 Jan Pazdziora 1.8.46-1
+- Make sure even upgrades from 1.8.33 remove spacewalk-backend-xp.
+
+* Thu Jun 28 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.45-1
+- 765816 - file mode have to be string
+
+* Thu Jun 28 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.44-1
+- fixed AttributeError: 'buffer' object has no attribute 'write'
+
+* Thu Jun 28 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.43-1
+- Correct SQL query for installing and removing solaris patches
+- Correct query for PGSQL
+
+* Tue Jun 26 2012 Stephen Herr <sherr@redhat.com> 1.8.42-1
+- 835676 - man page fix and root-level user warning for rhn-satellite-exporter
+
+* Tue Jun 26 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.41-1
+- 833686 - don't open file if path is None
+
+* Tue Jun 26 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.40-1
+- removed dead code backend.listChannel()
+
+* Fri Jun 22 2012 Jan Pazdziora 1.8.39-1
+- 712313 - Add installed size to repodata
+
+* Fri Jun 22 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.38-1
+- fixed usage of path macros
+- removed -xp subpackage
+- removed dead code for /XP handler
+- removed unused /XP handler
+
+* Fri Jun 22 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.37-1
+- 811646 - handle locally exception in entitle_server()
+- don't pass the same parameter twice
+- 811646 - made error message more detailed
+
+* Mon Jun 18 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.36-1
+- removed API for v1 clients
+
+* Fri Jun 15 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.35-1
+- fixed Instance of 'deb_Header' has no 'keys' member
+- removed unreachable code
+
+* Tue Jun 12 2012 Tomas Lestach <tlestach@redhat.com> 1.8.34-1
+- 804106 - do not entitle virt guests twice during registration
+
+* Tue Jun 05 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.33-1
+- removed support for Red Hat Linux 6.2 and 7.[0123]
+
+* Tue Jun 05 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.32-1
+- fix wrong transaction name in unsubscribe_channels (mc@suse.de)
+
+* Tue Jun 05 2012 Jan Pazdziora 1.8.31-1
+- No longer building spacewalk-backend-sql-oracle on Fedora 17+.
+
+* Mon Jun 04 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.30-1
+- Add support for studio image deployments (backend) (jrenner@suse.de)
+
+* Fri Jun 01 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.29-1
+- print reasonable error message when something wrong with repo
+
+* Tue May 22 2012 Jan Pazdziora 1.8.28-1
+- decode unicode string on IDN machines
+- %%defattr is not needed since rpm 4.4
+
+* Fri May 18 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.27-1
+- 822620 - lookup packages only from correct org
+
+* Fri May 11 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.26-1
+- use ANSI sql syntax
+
+* Fri May 04 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.25-1
+- update.xml contains epoch='0' even for packages which epoch is NULL
+
+* Fri May 04 2012 Jan Pazdziora 1.8.24-1
+- No need to be autonomous when inserting to rhnArchType, only satellite-sync
+  does it.
+
+* Mon Apr 30 2012 Simon Lukasik <slukasik@redhat.com> 1.8.23-1
+- Assign a dummy profile when none is selected. (slukasik@redhat.com)
+- xccdf_eval should not send null value (slukasik@redhat.com)
+- Removing unhelpful assignment. (slukasik@redhat.com)
+
+* Fri Apr 27 2012 Jan Pazdziora 1.8.22-1
+- 815964 - update monitoring probes in small batches to reduce the chance of a
+  deadlock (sherr@redhat.com)
+
+* Tue Apr 24 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.21-1
+- 807962 - raise SQLSchemaError alike oracle driver does
+
+* Fri Apr 20 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.20-1
+- 805582 - fix sql query with --use-sync-date and --start-date of rhn-
+  satellite-exporter
+
+* Tue Apr 17 2012 Jan Pazdziora 1.8.19-1
+- The mod_wsgi insists on having something after the numeric value on the
+  Status line.
+- Workaround httplib in 2.4 which did not have the responses dictionary.
+- 812789 - write nicer error message in case you are missing rpm files
+  (msuchy@redhat.com)
+
+* Mon Apr 16 2012 Jan Pazdziora 1.8.18-1
+- Sadly, even if cobbler 2.2 is in EPELs, it is not in Fedora -- we need to
+  require just 2.0.
+
+* Mon Apr 16 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.17-1
+- add man page for --use-rhn-date and --use-sync-date
+- 805582 - include even package which does not belong to errata
+- 805582 - introduce new option --whole-errata to exporter
+
+* Fri Apr 13 2012 Jan Pazdziora 1.8.16-1
+- 812329 - adding PostgreSQL configuration and log files to the debug.
+- 812329 - updating rhn-charsets man page -- update list of value names, no
+  command line options.
+- 812329 - make rhn-charsets working on PostgreSQL as well; the output format
+  changed even for Oracle.
+- 812329 - add sudoers.d to the debug, there can be important information
+  there.
+- 812329 - The /etc/tnsnames.ora file might not exists.
+
+* Fri Apr 13 2012 Jan Pazdziora 1.8.15-1
+- With cobbler 2.2 landing in EPEL 5, we need to move to mod_wsgi with
+  Spacewalk backend even on RHEL 5.
+
+* Wed Apr 11 2012 Stephen Herr <sherr@redhat.com> 1.8.14-1
+- 786705 - Update config default to preserve base channel on reactivation
+  (sherr@redhat.com)
+
+* Tue Apr 10 2012 Jan Pazdziora 1.8.13-1
+- rhn-schema-stats: update manual page (mzazrivec@redhat.com)
+- rhn-schema-stats: support for PostgreSQL (mzazrivec@redhat.com)
+- rhn-db-stats: update manual page (mzazrivec@redhat.com)
+- rhn-db-stats: support for PostgreSQL (mzazrivec@redhat.com)
+
+* Thu Apr 05 2012 Jan Pazdziora 1.8.12-1
+- 809936 - we need to insert NULLs to avoid vn_rhnserverhistory_details.
+
+* Tue Apr 03 2012 Jan Pazdziora 1.8.11-1
+- Fixing typo in spacewalk-remove-channel man page.
+
+* Fri Mar 30 2012 Stephen Herr <sherr@redhat.com> 1.8.10-1
+- 808516 - When importing channeldumps from Sat 5.3 or older we should assume
+  sha1 checksum type (sherr@redhat.com)
+- 805012 - check channel permissions when unsubscribing a channel
+  (mzazrivec@redhat.com)
+
+* Fri Mar 30 2012 Jan Pazdziora 1.8.9-1
+- CVE-2012-1145, 800688 - check the result of parseServ operation.
+- Truncate data which are longer than db allows (slukasik@redhat.com)
+
+* Thu Mar 29 2012 Simon Lukasik <slukasik@redhat.com> 1.8.8-1
+- Store also @idref of xccdf:rule-result element (slukasik@redhat.com)
+- We want to store all idents per rule-result (slukasik@redhat.com)
+- PostgreSQL 9.x does not like alias without AS, the alias not needed in the
+  end. (jonathan.hoser@helmholtz-muenchen.de)
+
+* Wed Mar 21 2012 Jan Pazdziora 1.8.7-1
+- Avoid printing "None" when uninitialized value is found.
+- The parameter/option is traceback_mail.
+
+* Mon Mar 19 2012 Jan Pazdziora 1.8.6-1
+- Avoid unlink after move.
+- 521764 - use runuser instead of su (msuchy@redhat.com)
+
+* Fri Mar 16 2012 Jan Pazdziora 1.8.5-1
+- 804036 - need to use timestamp datatype to preserve the precision.
+
+* Fri Mar 16 2012 Jan Pazdziora 1.8.4-1
+- 802688 - Forcing empty strings to be Nones.
+
+* Wed Mar 14 2012 Jan Pazdziora 1.8.3-1
+- 803230 - cast to string to force lookup_evr prototype.
+- 798401 - use --debug-level parameter (msuchy@redhat.com)
+
+* Fri Mar 09 2012 Miroslav Suchý 1.8.2-1
+- spacewalk-repo-sync documentation fix : add include/exclude options to
+  manpage (shardy@redhat.com)
+- add default value for taskomatic.channel_repodata_workers
+
+* Mon Mar 05 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.1-1
+- login(), logout() moved to spacewalk.common.cli
+- added cli module to rpm
+- created module for usefull cli functions
+
 * Fri Mar 02 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.38-1
 - channel id have to be number
 

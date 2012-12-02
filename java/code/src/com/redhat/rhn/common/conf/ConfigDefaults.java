@@ -76,7 +76,7 @@ public class ConfigDefaults {
 
     public static final String CONFIG_REVISION_MAX_SIZE = "web.maximum_config_file_size";
 
-    public static final String WEB_EXCLUDED_COUNTRIES = "web.excluded_countries";
+    public static final String WEB_EXCLUDED_COUNTRIES = "java.excluded_countries";
 
     public static final String DISCONNECTED = "disconnected";
 
@@ -89,7 +89,7 @@ public class ConfigDefaults {
     public static final String ENTERPRISE_LINUX_NAME = "web.enterprise_linux_name";
     public static final String VENDOR_SERVICE_NAME = "web.vendor_service_name";
 
-    public static final String COBBLER_AUTOMATED_USER = "web.taskomatic_cobbler_user";
+    public static final String COBBLER_AUTOMATED_USER = "java.taskomatic_cobbler_user";
 
     public static final String DOC_REFERENCE_GUIDE = "docs.reference_guide";
     public static final String DOC_INSTALL_GUIDE = "docs.install_guide";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -41,5 +41,13 @@ public class InvalidActionTypeException extends FaultException {
     public InvalidActionTypeException(Throwable cause) {
         super(2701, "invalidActionType", LocalizationService.getInstance().
                 getMessage("api.action.invalidactiontype"), cause);
+    }
+
+    /**
+     * Constructor
+     * @param msg (unlocalized) exception message to be displayed
+     */
+    public InvalidActionTypeException(String msg) {
+        super(2701, "invalidActionType", msg);
     }
 }

@@ -15,12 +15,10 @@
 
 # system imports
 import os
-import re
 import sys
 import fnmatch
 import getpass
 import rhnpush_cache
-import struct
 import xmlrpclib
 from spacewalk.common import rhn_mpm
 from spacewalk.common.rhn_pkg import package_from_filename, get_package_header
@@ -34,6 +32,7 @@ except ImportError:
     # old-style xmlrpclib library
     rpclib = xmlrpclib
     Binary = rpclib.Binary
+    # pylint: disable=F0401
     import cgiwrap
     Output = cgiwrap.Output
 
@@ -69,12 +68,18 @@ class UploadClass:
         self.new_sat = None
         self.url = None
         self.channels = None
+        self.count = None
+        self.server = None
+        self.session = None
+        self.orgId = None
+        self.relativeDir = None
 
     def warn(self, verbose, *args):
         if self.options.verbose >= verbose:
             ReportError(*args)
 
-    def die(self, errcode, *args):
+    @staticmethod
+    def die(errcode, *args):
         ReportError(*args)
         #pkilambi:bug#176358:this should exit with error code
         sys.exit(errcode)
@@ -300,7 +305,7 @@ class UploadClass:
 
         to_push = []
         for pkg in pkglist:
-            pkg_name, pkg_channel = pkg[:2]
+            pkg_name, _pkg_channel = pkg[:2]
             if not localPackagesHash.has_key(pkg_name):
                 # We don't have it
                 continue
@@ -410,10 +415,11 @@ class UploadClass:
         return call(self.server.packages.check_session, session)
 
     def readSession(self):
+        # pylint: disable=W0703
         try:
             self.session = rhnpush_cache.RHNPushSession()
             self.session.readSession()
-        except Exception, e:
+        except Exception:
             self.session = None
 
     def writeSession(self, session):
@@ -437,7 +443,8 @@ class UploadClass:
         sessstr = call(self.server.packages.login, self.username, self.password)
         self.writeSession(sessstr)
 
-    def _processFile(self, filename, relativeDir=None, source=None, nosig=None):
+    @staticmethod
+    def _processFile(filename, relativeDir=None, source=None, nosig=None):
         """ Processes a file
             Returns a hash containing:
               header
@@ -602,20 +609,12 @@ def parseXMLRPCfault(fault):
         faultCode = -faultCode
     return ServerFault(faultCode, "", fault.faultString)
 
-def listChannel(server, username, password, channels):
-    return call(server.packages.listChannel, channels, username, password)
-
+# pylint: disable=C0103
 def listChannelBySession(server, session_string, channels): 
     return call(server.packages.listChannelBySession, channels, session_string)
 
-def listChannelSource(server, username, password, channels):
-    return call(server.packages.listChannelSource, channels, username, password)
-
 def listChannelSourceBySession(server, session_string, channels):
     return call(server.packages.listChannelSourceBySession, channels, session_string)
-
-def listMissingSourcePackages(server, username, password, channels):
-    return call(server.packages.listMissingSourcePackages, channels, username, password)
 
 def listMissingSourcePackagesBySession(server, session_string, channels):
     return call(server.packages.listMissingSourcePackagesBySession, channels, session_string)
@@ -625,9 +624,6 @@ def getPackageChecksumBySession(server, session_string, info):
 
 def getSourcePackageChecksumBySession(server, session_string, info):
     return call(server.packages.getSourcePackageChecksumBySession, session_string, info)
-
-def getPackageChecksum(server, username, password, info):
-    return call(server.packages.getPackageChecksum, username, password, info)
 
 def getSourcePackageChecksum(server, username, password, info):
     return call(server.packages.getSourcePackageChecksum, username, password, info)
@@ -639,11 +635,6 @@ def getPackageMD5sumBySession(server, session_string, info):
 def getSourcePackageMD5sumBySession(server, session_string, info):
     return call(server.packages.getSourcePackageMD5sumBySession, session_string, info)
 
-def getPackageMD5sum(server, username, password, info):
-    return call(server.packages.getPackageMD5sum, username, password, info)
-
-def getSourcePackageMD5sum(server, username, password, info):
-    return call(server.packages.getSourcePackageMD5sum, username, password, info)
 
 
 def getServer(uri, proxy=None, username=None, password=None, ca_chain=None):

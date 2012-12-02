@@ -1,5 +1,5 @@
 Name:         nocpulse-common
-Version:      2.2.4.2
+Version:      2.2.5
 Release:      1%{?dist}
 Summary:      NOCpulse common
 License:      GPLv2
@@ -20,7 +20,12 @@ Requires:       perl-IO-Socket-SSL
 Requires:       perl-DBI
 %else
 Requires(pre):  httpd, /usr/sbin/useradd
-Requires(post): /sbin/runuser, openssh
+Requires(post): openssh
+%if 0%{?fedora} > 17
+Requires(post): /usr/sbin/runuser
+%else
+Requires(post): /sbin/runuser
+%endif
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
 # merging this two packages together
@@ -146,7 +151,6 @@ fi
 %endif
 
 %files
-%defattr(-, root,root,-)
 %dir %{_sysconfdir}/nocpulse
 %config(missingok,noreplace) %{_sysconfdir}/NOCpulse.ini
 %{_sysconfdir}/%{package_name}/NOCpulse
@@ -165,6 +169,10 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Fri Nov 02 2012 Miroslav Suchý <msuchy@redhat.com> 2.2.5-1
+- Fedora 19 does not provide /sbin/runuser
+- %%defattr is not needed since rpm 4.4
+
 * Wed Feb 01 2012 Jan Pazdziora 2.2.4-1
 - Now we use RHN::DBI, the database handle is brand new, let's disconnect as
   well.

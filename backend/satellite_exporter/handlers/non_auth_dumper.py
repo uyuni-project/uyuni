@@ -1,4 +1,4 @@
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -44,12 +44,14 @@ class MissingPackageError(Exception):
     pass
 
 class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
+    # pylint: disable=E1101,W0102,W0613,R0902,R0904
     def __init__(self, req):
         rhnHandler.__init__(self)
         dumper.XML_Dumper.__init__(self)
         self.headers_out = UserDictCase()
         self._raw_stream = req
         self._raw_stream.content_type = 'application/octet-stream'
+        self.compress_level = 0
         # State machine
         self._headers_sent = 0
         self._is_closed = 0
@@ -150,7 +152,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
             except IOError, e:
                 # Remote end has closed connection already
                 log_error("Error closing the stream", str(e))
-                pass
+
             self._compressed_stream = None
         self._is_closed = 1
         log_debug(3, "Closed")

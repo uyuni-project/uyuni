@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -31,6 +31,9 @@ from spacewalk.server.rhnHandler import rhnHandler
 from spacewalk.server import rhnChannel, rhnPackage, rhnDependency,\
     rhnCapability
 from spacewalk.server.rhnServer import server_route
+
+import re
+NONSUBSCRIBABLE_CHANNELS = re.compile("(rhn-proxy|rhn-satellite)")
 
 class Up2date(rhnHandler):
     """ xml-rpc Server Functions that we will provide for the outside world.
@@ -159,7 +162,10 @@ class Up2date(rhnHandler):
         # log the entry
         log_debug(1, self.server_id, channelNames)
         for channelName in channelNames:
-            rhnChannel.subscribe_channel(self.server_id, channelName,
+            if NONSUBSCRIBABLE_CHANNELS.search(channelName):
+                raise rhnFault(73, explain=False)
+            else:
+                rhnChannel.subscribe_channel(self.server_id, channelName,
                                          username, passwd)
         return 0
 

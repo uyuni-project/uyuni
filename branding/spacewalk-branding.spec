@@ -9,7 +9,7 @@
 %define apache_group apache
 %endif
 Name:       spacewalk-branding
-Version:    1.7.1.5
+Version:    1.9.3
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -91,7 +91,6 @@ rm -rf %{buildroot}
 
 
 %files
-%defattr(-,root,root,-)
 %dir /%{wwwdocroot}/css
 /%{wwwdocroot}/css/*
 %dir /%{wwwdocroot}/img
@@ -125,6 +124,43 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Wed Nov 28 2012 Tomas Lestach <tlestach@redhat.com> 1.9.3-1
+- 470463 - fixing xmllint issue
+
+* Mon Nov 12 2012 Tomas Lestach <tlestach@redhat.com> 1.9.2-1
+- Fix typos
+
+* Mon Nov 12 2012 Tomas Lestach <tlestach@redhat.com> 1.9.1-1
+- 866326 - customize KickstartFileDownloadAdvanced.do page in case of kickstart
+  file DownloadException
+- reformated using xmllint -format
+- Bumping package versions for 1.9.
+
+* Wed Oct 24 2012 Jan Pazdziora 1.8.7-1
+- WebUI - css for @media print
+
+* Tue Oct 23 2012 Tomas Lestach <tlestach@redhat.com> 1.8.6-1
+- make the white image background transparent
+- Expose extra packages / systems with extra packages
+
+* Fri Oct 19 2012 Jan Pazdziora 1.8.5-1
+- Edit colors in highlightning of :hovered rows in list views
+- Highlightning of :hover row in list views
+
+* Wed Oct 10 2012 Jan Pazdziora 1.8.4-1
+- The Sniglets::Utils is no longer needed in footer.pxt.
+- The rhn-bugzilla-link generates emply paragraph.
+
+* Mon Jun 04 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.3-1
+- Add support for studio image deployments (web UI) (jrenner@suse.de)
+- %%defattr is not needed since rpm 4.4 (msuchy@redhat.com)
+
+* Fri Apr 27 2012 Jan Pazdziora 1.8.2-1
+- Missing icon for the systems that need reboot list (dmacvicar@suse.de)
+
+* Thu Apr 19 2012 Jan Pazdziora 1.8.1-1
+- Update the copyright year info on .pxt pages.
+
 * Mon Feb 27 2012 Jan Pazdziora 1.7.1-1
 - automatically focus search form (msuchy@redhat.com)
 

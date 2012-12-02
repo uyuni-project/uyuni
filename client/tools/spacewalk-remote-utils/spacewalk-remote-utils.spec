@@ -4,7 +4,7 @@
 %endif
 
 Name:        spacewalk-remote-utils
-Version:     1.7.1.4
+Version:     1.9.0
 Release:     1%{?dist}
 Summary:     Utilities to interact with a Spacewalk server remotely.
 
@@ -15,7 +15,11 @@ Source:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.
 BuildRoot:   %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:   noarch
 
-Requires:    rhnlib >= 2.5.38
+%if  0%{?rhel} && 0%{?rhel} < 6
+Requires: rhnlib >= 2.5.22-6
+%else
+Requires: rhnlib >= 2.5.22-10
+%endif
 BuildRequires: python-devel
 BuildRequires: docbook-utils
 %if 0%{?suse_version}
@@ -62,6 +66,30 @@ docbook2man ./spacewalk-create-channel/doc/spacewalk-create-channel.sgml -o ./sp
 %doc %{_mandir}/man1/spacewalk-create-channel.1.gz
 
 %changelog
+* Mon Oct 22 2012 Jan Pazdziora 1.8.5-1
+- no need to require rhnlib >= 2.5.31
+- rhnlib >= 2.5.38 is not necessary
+
+* Tue Aug 28 2012 Jan Pazdziora 1.8.4-1
+- Fixing the License rpm header to match the COPYING information.
+
+* Fri Aug 10 2012 Tomas Lestach <tlestach@redhat.com> 1.8.3-1
+- adding optional and supplementary RHEL6.3 channel definitions
+- Revert "add missing optional and supplementary channel definitions"
+
+* Thu Aug 09 2012 Tomas Lestach <tlestach@redhat.com> 1.8.2-1
+- add missing optional and supplementary channel definitions
+- fix dir to match RHEL6 supplementary channel
+- fix dir to match RHEL6 optional channel
+
+* Mon Jul 23 2012 Tomas Lestach <tlestach@redhat.com> 1.8.1-1
+- 841027 - adding RHEL6.3 channel definitions
+- add RHEL6.1 and RHEL6.2 Workstation channel definitions
+- fix repodir to match RHEL-6 release directories
+- add RHEL5.6 Client Supplementary channel definitions
+- %%defattr is not needed since rpm 4.4
+- Bumping package versions for 1.8.
+
 * Wed Feb 22 2012 Miroslav Suchý 1.7.1-1
 - 796077 - Include the RHEL 5.8 definitions in spacewalk-repo-sync
 - Bumping package versions for 1.7. (mzazrivec@redhat.com)

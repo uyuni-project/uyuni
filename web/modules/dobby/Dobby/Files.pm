@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,8 +17,9 @@ use strict;
 package Dobby::Files;
 use Digest::MD5;
 use Compress::Zlib;
-use File::Basename qw/basename/;
-
+use File::Basename qw/basename dirname/;
+use File::Spec;
+use File::Path;
 
 # given source and dst, gzip a file into dst, returning the checksum
 # of the original file
@@ -49,13 +50,20 @@ sub gzip_copy {
 # integrity of the archive)
 
 sub gunzip_copy {
-  my $class = shift;
-  my $src = shift;
-  my $dst = shift;
+  my ($class, $src, $dst, $uid, $gid) = @_;
+  if (defined($uid) or defined($gid)) {
+    # if not defined set it to -1 i.e. no change
+    $uid = -1 if not defined $uid;
+    $gid = -1 if not defined $gid;
+  }
 
   my $write;
   local * OUT;
   if ($dst) {
+    my $dst_directory = dirname($dst);
+    if (my @dirs = File::Path::mkpath($dst_directory, 0, 0700)) {
+      chown $uid, $gid, @dirs;
+    }
     open OUT, '>', $dst or die "open $dst: $!\n";
     $write = 1
   }
@@ -83,34 +91,47 @@ sub gunzip_copy {
 
   $gz->gzclose;
   close OUT if $write;
+  if (defined($dst)) {
+    # if not defined set it to -1 i.e. no change
+    $uid = -1 if not defined $uid;
+    $gid = -1 if not defined $gid;
+    chown $uid, $gid, $dst;
+    chmod 0640, $dst;
+  }
 
   return $ctx->hexdigest;
 }
 
 sub backup_file {
-  my $class = shift;
-  my $file = shift;
-  my $backup_dir = shift;
+  my ($class, $rel_dir, $file, $backup_dir) = @_;
 
-  my $dest = sprintf("%s/%s.gz", $backup_dir, basename($file));
-  $dest =~ s(//+)(/)g;
-  my $then = time;
+  if (-d $file) { #empty directory
+    my $dir_entry = new Dobby::BackupLog::DirEntry;
+    $dir_entry->from($file);
+    print "  Empty directory $file\n";
+    return $dir_entry;
+  } else {
+    my $file_entry = new Dobby::BackupLog::FileEntry;
+    my $real_dest_dir = File::Spec->catdir($backup_dir, $rel_dir);
+    File::Path::mkpath($real_dest_dir) or (-d $real_dest_dir) or die ("Error: could not create directory $real_dest_dir\n");
+    my $dest = sprintf("%s/%s.gz", $real_dest_dir, basename($file));
+    $dest =~ s(//+)(/)g;
+    my $then = time;
 
-  my $file_entry = new Dobby::BackupLog::FileEntry;
-  $file_entry->start(time);
+    $file_entry->start(time);
 
-  print "  $file -> $dest ... ";
-  my $hexdigest = Dobby::Files->gzip_copy($file, $dest);
-  print "done.\n";
+    print "  $file -> $dest ... ";
+    my $hexdigest = Dobby::Files->gzip_copy($file, $dest);
+    print "done.\n";
 
-  $file_entry->original_size(-s $file);
-  $file_entry->compressed_size(-s $dest);
-  $file_entry->from($file);
-  $file_entry->to($dest);
-  $file_entry->finish(time);
-  $file_entry->digest($hexdigest);
-
-  return $file_entry;
+    $file_entry->original_size(-s $file);
+    $file_entry->compressed_size(-s $dest);
+    $file_entry->from($file);
+    $file_entry->to($dest);
+    $file_entry->finish(time);
+    $file_entry->digest($hexdigest);
+    return $file_entry;
+  }
 }
 
 1;

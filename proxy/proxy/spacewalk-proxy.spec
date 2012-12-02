@@ -4,7 +4,7 @@ Group:   Applications/Internet
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 1.7.12.8
+Version: 1.9.1
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
@@ -20,7 +20,7 @@ Requires: httpd
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} > 1100
 # pylint check
 BuildRequires: spacewalk-pylint
-BuildRequires: rhnpush >= 5.5.40
+BuildRequires: rhnpush >= 5.5.52
 BuildRequires: spacewalk-backend-libs >= 1.7.24
 BuildRequires: spacewalk-backend >= 1.7.24
 %endif
@@ -399,6 +399,61 @@ fi
 
 
 %changelog
+* Fri Nov 02 2012 Stephen Herr <sherr@redhat.com> 1.9.1-1
+- 872721 - keep the proxy from trying to auth as 127.0.0.1
+- Bumping package versions for 1.9.
+
+* Tue Oct 23 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.14-1
+- _processFile() prototype has changed
+
+* Tue Oct 23 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.13-1
+- _processFile() from uploadLib is static
+
+* Mon Oct 22 2012 Jan Pazdziora 1.8.12-1
+- bump up proxy version to 5.5.0
+
+* Tue Aug 21 2012 Stephen Herr <sherr@redhat.com> 1.8.11-1
+- 848475 - separate proxy auth error hostname into separate header
+
+* Thu Aug 16 2012 Stephen Herr <sherr@redhat.com> 1.8.10-1
+- 848475 - Don't expect string to already be imported
+
+* Wed Aug 15 2012 Stephen Herr <sherr@redhat.com> 1.8.9-1
+- 848475 - multi-tiered proxies don't update auth tokens correctly
+
+* Fri Jul 13 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.8-1
+- fixed man page
+- removed dead --no-cache option
+
+* Fri Jun 22 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.7-1
+- 829724 - fixed man page for rhn-package-manager
+- removed unused /XP handler
+
+* Thu Jun 14 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.6-1
+- no more special uploadLib.py
+- merged uploadLib.UploadClass into rhn_package_manager.UploadClass
+
+* Thu Jun 14 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.5-1
+- 829724 - use session based calls from rhnpush.uploadLib
+- 829724 - modified checkSync() to use session based authentication
+- 829724 - session based authentication needs --new-cache and --no-cache
+- 829724 - use session based authentication
+- 829724 - /XP handler defines small subset of /APP handler functions
+
+* Mon Jun 11 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.4-1
+- provide /usr/share/spacewalk in proxy
+- %%defattr is not needed since rpm 4.4
+
+* Wed Apr 18 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.3-1
+- add pylint warning
+
+* Wed Apr 18 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.2-1
+- move pylint directive up
+- ignore false pylint warning
+
+* Tue Apr 17 2012 Jan Pazdziora 1.8.1-1
+- 811990 - refresh proxy auth cache for hostname changes (shughes@redhat.com)
+
 * Fri Mar 02 2012 Jan Pazdziora 1.7.12-1
 - Update the copyright year info.
 

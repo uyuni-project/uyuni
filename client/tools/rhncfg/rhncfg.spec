@@ -14,14 +14,14 @@ Group:   Applications/System
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.27.8
+Version: 5.10.39
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 BuildRequires: docbook-utils
 BuildRequires: python
 Requires: python
-Requires: rhnlib >= 2.5.32
+Requires: rhnlib
 Requires: %{rhn_client_tools}
 %if 0%{?suse_version}
 # provide rhn directories and no selinux on suse
@@ -32,10 +32,6 @@ Requires: python-selinux
 %endif
 %else
 Requires: libselinux-python
-%endif
-# If this is rhel 4 or less we need up2date.
-%if 0%{?rhel} && "%rhel" < "5"
-Requires: up2date
 %endif
 
 %description
@@ -140,6 +136,48 @@ fi
 
 # $Id$
 %changelog
+* Fri Nov 30 2012 Jan Pazdziora 5.10.39-1
+- 879299 - statinfo needs to be defined even if file does not exist
+
+* Tue Nov 20 2012 Stephen Herr <sherr@redhat.com> 5.10.38-1
+- 878216 - fixing typo in manpage
+
+* Tue Nov 20 2012 Stephen Herr <sherr@redhat.com> 5.10.37-1
+- 878216 - make rhncfg diff output configurable
+
+* Tue Oct 30 2012 Jan Pazdziora 5.10.36-1
+- Update the copyright year.
+- fix for bz#869626 use st_mode, st_uid of dst Signed-off-by: Paresh Mutha
+  <pmutha@redhat.com>
+
+* Mon Oct 22 2012 Jan Pazdziora 5.10.35-1
+- Revert "Revert "Revert "get_server_capability() is defined twice in osad and
+  rhncfg, merge and move to rhnlib and make it member of rpclib.Server"""
+
+* Tue Aug 07 2012 Tomas Kasparek <tkasparek@redhat.com> 5.10.34-1
+- 840250 - If there's symlink in file deployment path it will be created
+
+* Mon Jul 09 2012 Michael Mraka <michael.mraka@redhat.com> 5.10.33-1
+- check symlink not target file existence
+
+* Thu Jun 28 2012 Michael Mraka <michael.mraka@redhat.com> 5.10.32-1
+- 765816 - value of selinux context is important
+
+* Mon Jun 04 2012 Stephen Herr <sherr@redhat.com> 5.10.31-1
+- 824707 - make /var/log/rhncfg-actions have 600 permissions
+
+* Fri Jun 01 2012 Stephen Herr <sherr@redhat.com> 5.10.30-1
+- 824707 - rhncfg-actions should not log the diff of files that are not
+  readable by all
+- %%defattr is not needed since rpm 4.4
+
+* Mon May 14 2012 Michael Mraka <michael.mraka@redhat.com> 5.10.29-1
+- 820517 - fixed command synopsis
+- 805449 - honor rhncfg-specific settings
+
+* Thu Mar 08 2012 Miroslav Suchý 5.10.28-1
+- accept server name without protocol
+
 * Fri Mar 02 2012 Jan Pazdziora 5.10.27-1
 - Update the copyright year info.
 

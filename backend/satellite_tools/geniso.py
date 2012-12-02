@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -210,7 +210,7 @@ def sizeStrToInt(s):
 
 # The visitfunc argument for os.path.walk
 def __visitfunc(arg, dirname, names):
-     for f in names:
+    for f in names:
         filename = os.path.normpath("%s/%s" % (dirname, f))
         if os.path.isdir(filename):
             # walk will process it later
