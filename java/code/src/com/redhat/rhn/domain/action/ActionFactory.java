@@ -1027,12 +1027,6 @@ public class ActionFactory extends HibernateFactory {
             lookupActionTypeByLabel("image.deploy");
 
     /**
-     * The constant representing Image deploy action.  [ID:500]
-     */
-    public static final ActionType TYPE_DEPLOY_IMAGE =
-            lookupActionTypeByLabel("image.deploy");
-
-    /**
      * The constant representing distribution upgrade action.  [ID:501]
      */
     public static final ActionType TYPE_DIST_UPGRADE =

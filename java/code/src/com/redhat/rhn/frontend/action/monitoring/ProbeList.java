@@ -50,8 +50,6 @@ public class ProbeList extends BaseListAction {
         String stateparam = rctx.getParam(PROBE_STATE, false);
         if (StringUtils.isEmpty(stateparam)) {
             stateparam = "all";
-        } else {
-            rctx.getRequest().setAttribute(PROBE_STATE, stateparam);
         }
         else {
             rctx.getRequest().setAttribute(PROBE_STATE, stateparam);

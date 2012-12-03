@@ -60,8 +60,8 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     private String kickstartHost;
     private String kernelOptions;
     private String postKernelOptions;
-    private String networkInterface;
-    private boolean isDhcp;
+    protected String networkInterface;
+    protected boolean isDhcp;
     private boolean useIpv6Gateway;
     private String ksDistro;
     private boolean setupBridge;
