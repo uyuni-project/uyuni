@@ -60,6 +60,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
     private String kickstartHost;
     private String kernelOptions;
     private String postKernelOptions;
+    private String comment;
     protected String networkInterface;
     protected boolean isDhcp;
     private boolean useIpv6Gateway;
@@ -339,6 +340,10 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         }
         rec.setKernelOptions(kernelOptions);
         rec.setKernelPostOptions(postKernelOptions);
+        // The comment is optional
+        if (comment != null) {
+            rec.setComment(comment);
+        }
         try {
             rec.save();
         }
@@ -482,5 +487,21 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
 
     protected Action getScheduledAction() {
         return scheduledAction;
+    }
+
+    /**
+     * Setter for the comment.
+     * @param comment the comment
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    /**
+     * Getter for the comment.
+     * @return the comment
+     */
+    public String getComment() {
+        return this.comment;
     }
 }
