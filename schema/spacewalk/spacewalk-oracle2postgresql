@@ -6,7 +6,7 @@ s/\bDATE\b/TIMESTAMPTZ/i;
 s/\bNUMBER\b/NUMERIC/i;
 s/\bBLOB\b/BYTEA/i;
 s/\btimestamp with local time zone\b/TIMESTAMPTZ/i;
-s/\bCHAR)/)/i;
+s/\b\([0-9]\+\) CHAR/\1/i;
 
 # functions
 s/\bSYSDATE\b/CURRENT_TIMESTAMP/i;
