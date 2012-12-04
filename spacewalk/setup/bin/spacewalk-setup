@@ -681,7 +681,7 @@ sub setup_tomcat {
     my $contextxml_content = qx{/usr/bin/xsltproc $template $tomcatdir/context.xml};
     die "There was an error running xsltproc\n" if $?;
     if ($contextxml_content ne $contextxml_content_orig) {
-      Spacewalk::Setup::backup_file($tomcatdir, context.xml);
+      Spacewalk::Setup::backup_file($tomcatdir, "context.xml");
 
       open FILE, ">$tomcatdir/context.xml"
         or die "Error opening [$tomcatdir/context.xml]: $!\n";
