@@ -302,9 +302,9 @@ ncc-email = $NCC_EMAIL
 " > /root/spacewalk-answers
 
     if [ "$DO_MIGRATION" = "1" ]; then
-        /usr/bin/spacewalk-setup --ncc --skip-db-population --answer-file=/root/spacewalk-answers
+        /usr/bin/spacewalk-setup --ncc --skip-db-population --answer-file=/root/spacewalk-answers --external-db
     else
-        /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers
+        /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers --external-db
     fi
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
         MY_DOMAIN=`hostname -d`
