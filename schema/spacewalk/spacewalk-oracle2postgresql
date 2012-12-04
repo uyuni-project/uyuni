@@ -6,6 +6,7 @@ s/\bDATE\b/TIMESTAMPTZ/i;
 s/\bNUMBER\b/NUMERIC/i;
 s/\bBLOB\b/BYTEA/i;
 s/\btimestamp with local time zone\b/TIMESTAMPTZ/i;
+s/\bCHAR)/)/i;
 
 # functions
 s/\bSYSDATE\b/CURRENT_TIMESTAMP/i;
@@ -22,3 +23,4 @@ s/\(CREATE[[:blank:]]\+SEQUENCE.*\)[[:blank:]]\+ORDER/\1/i;
 
 # strip white spaces
 s/^[[:blank:]]$//i;
+
