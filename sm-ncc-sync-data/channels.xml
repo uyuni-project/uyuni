@@ -8,6 +8,11 @@
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">1503</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-core-x86_64-sled" name="SLE11-SP2-Debuginfo-Core for x86_64 SLED" optional="Y" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
+		<products>
+			<product_id name="SUSE_SLED">3004</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64" description="SUSE Manager Tools" family="SLES-PPC" is_signed="Y" label="sles11-sp2-suse-manager-tools-ppc64" name="SLES11-SP2-SUSE-Manager-Tools ppc64" optional="N" parent="sles11-sp1-pool-ppc64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-ppc64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLES">3010</product_id>
@@ -1230,6 +1235,11 @@
 			<product_id name="sle-hae">1884</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Cloud version 1.0" family="SUSE_CLOUD" is_signed="Y" label="suse-cloud-1.0-pool-x86_64" name="SUSE-Cloud-1.0-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE-Cloud" product_version="1.0" source_url="https://nu.novell.com/repo/$RCE/SUSE-Cloud-1.0-Pool/sle-11-x86_64/" summary="SUSE Cloud version 1.0" update_tag="sleclo10sp2">
+		<products>
+			<product_id name="SUSE-Cloud">3680</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc" description="SUSE-Manager-Tools" family="SLES-PPC" is_signed="Y" label="sle10-sp3-suse-manager-tools-ppc" name="SLE10-SP3 SUSE-Manager-Tools ppc" optional="N" parent="sles10-sp3-pool-ppc" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SUSE-Manager-Tools/sles-10-ppc" summary="SUSE-Manager-Tools" update_tag="smcl3">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">1505</product_id>
@@ -1941,9 +1951,9 @@
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-core-x86_64-sled" name="SLE11-SP2-Debuginfo-Core for x86_64 SLED" optional="Y" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
+	<channel arch="x86_64" description="SUSE Cloud version 1.0" family="SUSE_CLOUD" is_signed="Y" label="suse-cloud-1.0-updates-x86_64" name="SUSE-Cloud-1.0-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE-Cloud" product_version="1.0" source_url="https://nu.novell.com/repo/$RCE/SUSE-Cloud-1.0-Updates/sle-11-x86_64/" summary="SUSE Cloud version 1.0" update_tag="sleclo10sp2">
 		<products>
-			<product_id name="SUSE_SLED">3004</product_id>
+			<product_id name="SUSE-Cloud">3680</product_id>
 		</products>
 	</channel>
 	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-IA" is_signed="Y" label="sles11-sp2-core-ia64" name="SLES11-SP2-Core for ia64" optional="N" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">

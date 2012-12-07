@@ -4,6 +4,7 @@
 	<family default_nodecount="0" label="RES" name="SUSE Linux Enterprise RedHat Expanded Support"/>
 	<family default_nodecount="0" label="SMS" name="SUSE Manager Server"/>
 	<family default_nodecount="0" label="SMP" name="SUSE Manager Proxy"/>
+	<family default_nodecount="0" label="SUSE_CLOUD" name="SUSE Cloud"/>
 	<family default_nodecount="0" label="DSMP" name="Data Synchronizer Mobility Pack"/>
 	<family default_nodecount="0" label="MONO" name="SUSE Linux Enterprise Mono Extension"/>
 	<family default_nodecount="0" label="7261" name="SUSE Linux Enterprise Server"/>
