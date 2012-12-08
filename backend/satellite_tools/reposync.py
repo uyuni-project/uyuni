@@ -159,7 +159,7 @@ class RepoSync(object):
                 repo = self.repo_plugin(data['source_url'], self.channel_label,
                                         insecure, self.quiet, self.interactive)
                 self.import_packages(repo, data['id'], data['source_url'])
-                self.import_groups(data['source_url'])
+                self.import_groups(repo, data['source_url'])
                 self.import_products(repo)
                 self.import_updates(repo, data['source_url'])
                 self.import_susedata(repo)
@@ -243,8 +243,8 @@ class RepoSync(object):
                              where label = :channel""")
         h.execute(channel=self.channel['label'])
 
-    def import_groups(self, url):
-        groupsfile = self.repo_plugin.get_groups()
+    def import_groups(self, repo, url):
+        groupsfile = repo.get_groups()
         if groupsfile:
             basename = os.path.basename(groupsfile)
             self.print_msg("Repo %s has comps file %s." % (url, basename))
