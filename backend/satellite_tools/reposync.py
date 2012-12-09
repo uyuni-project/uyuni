@@ -71,7 +71,7 @@ class ChannelTimeoutException(ChannelException):
 class RepoSync(object):
     def __init__(self, channel_label, repo_type, url=None, fail=False,
                  quiet=False, noninteractive=False, filters=[],
-                 deep_verify=False, no_errata = False):
+                 deep_verify=False, no_errata=False):
         self.regen = False
         self.fail = fail
         self.quiet = quiet
@@ -286,7 +286,7 @@ class RepoSync(object):
             hi.execute(cid=self.channel['id'], relpath=relativepath)
 
     def import_updates(self, plug, url):
-        if not self.no_errata:
+        if self.no_errata:
             return
         (notices_type, notices) = plug.get_updates()
         saveurl = suseLib.URL(url)
