@@ -31,9 +31,6 @@ if [ -x /etc/init.d/tomcat6 -o -x /lib/systemd/system/tomcat6.service ]; then
    TOMCAT="tomcat6"
 fi
 
-if [ -x /etc/init.d/httpd ]; then
-   HTTPD="httpd"
-fi
 
 if [ -x /etc/init.d/apache2 ]; then
    HTTPD="apache2"

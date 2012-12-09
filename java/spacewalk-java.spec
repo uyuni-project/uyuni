@@ -10,8 +10,13 @@
 %define appdir          %{_localstatedir}/lib/tomcat5/webapps
 %define jardir          %{_localstatedir}/lib/tomcat5/webapps/rhn/WEB-INF/lib
 %else
+%if 0%{?fedora}
+%define appdir          %{_localstatedir}/lib/tomcat/webapps
+%define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
+%else
 %define appdir          %{_localstatedir}/lib/tomcat6/webapps
 %define jardir          %{_localstatedir}/lib/tomcat6/webapps/rhn/WEB-INF/lib
+%endif
 %endif
 
 %if 0%{?rhel} && 0%{?rhel} >= 6
@@ -28,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.25
+Version: 1.9.28
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -78,6 +83,13 @@ Requires: tomcat5
 Requires: jasper5
 Requires: tomcat5-servlet-2.4-api
 Requires: struts >= 1.2.9
+%else
+%if 0%{?fedora}
+Requires: tomcat >= 7
+Requires: tomcat-lib >= 7
+Requires: tomcat-servlet-3.0-api >= 7
+Requires: struts >= 0:1.3.0
+Requires: struts-taglib >= 0:1.3.0
 %else
 Requires: tomcat6
 Requires: tomcat6-lib
@@ -168,6 +180,13 @@ BuildRequires: struts >= 0:1.2.9
 BuildRequires: jsp
 BuildRequires: jasper5
 %else
+%if 0%{?fedora}
+BuildRequires: struts >= 0:1.3.0
+BuildRequires: struts-taglib >= 0:1.3.0
+BuildRequires: tomcat >= 7
+BuildRequires: tomcat-lib >= 7
+BuildRequires: jpackage-utils
+%else
 # SUSE = Struts 1.2 and Tomcat 6
 %if 0%{?suse_version}
 BuildRequires: struts >= 1.2.9
@@ -177,6 +196,7 @@ BuildRequires: struts-taglib >= 1.3.0
 %endif
 BuildRequires: tomcat6
 BuildRequires: tomcat6-lib
+%endif
 %endif
 BuildRequires: sitemesh
 BuildRequires: postgresql-jdbc
@@ -233,7 +253,11 @@ BuildRequires: ojdbc14
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
 %else
+%if 0%{?fedora}
+Requires: tomcat >= 7
+%else
 Requires: tomcat6
+%endif
 %endif
 Provides: spacewalk-java-jdbc = %{version}-%{release}
 
@@ -247,7 +271,11 @@ Requires: postgresql-jdbc
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
 %else
+%if 0%{?fedora}
+Requires: tomcat >= 7
+%else
 Requires: tomcat6
+%endif
 %endif
 Provides: spacewalk-java-jdbc = %{version}-%{release}
 
@@ -402,9 +430,15 @@ ant -Dprefix=$RPM_BUILD_ROOT install-tomcat5
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat5/Catalina/localhost/
 install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat5/Catalina/localhost/rhn.xml
 %else
+%if 0%{?fedora}
+ant -Dprefix=$RPM_BUILD_ROOT install-tomcat7
+install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
+install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+%else
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat6
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/
 install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
+%endif
 %endif
 
 # check spelling errors in all resources for English if aspell installed
@@ -496,7 +530,7 @@ ln -s -f %{_javadir}/mchange-commons.jar $RPM_BUILD_ROOT%{jardir}/mchange-common
 rm -rf $RPM_BUILD_ROOT%{jardir}/jspapi.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/jasper5-compiler.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/jasper5-runtime.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/tomcat6*.jar
+rm -rf $RPM_BUILD_ROOT%{jardir}/tomcat*.jar
 %if 0%{?omit_tests} > 0
 rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/lib/rhn-test.jar
 rm -rf $RPM_BUILD_ROOT/classes/com/redhat/rhn/common/conf/test/conf
@@ -666,7 +700,11 @@ fi
 %if  0%{?rhel} && 0%{?rhel} < 6
 %config(noreplace) %{_sysconfdir}/tomcat5/Catalina/localhost/rhn.xml
 %else
+%if 0%{?fedora}
+%config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+%else
 %config(noreplace) %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
+%endif
 %endif
 %attr(755,root,root) %dir %{cobblerdir}
 %attr(755,root,root) %dir %{realcobsnippetsdir}
@@ -719,6 +757,26 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Dec 07 2012 Jan Pazdziora 1.9.28-1
+- 883546 - reworking how repodata xml gets built to avoid "snapshot too old"
+  errors
+- Revert "883546 - repodata inconsistency due to concurrent modification"
+
+* Wed Dec 05 2012 Tomas Lestach <tlestach@redhat.com> 1.9.27-1
+- update catalina.out path for tomcat7
+- KickstartFileSyncTaskTest should no longer fail
+- 883546 - repodata inconsistency due to concurrent modification
+- use dwr30.dtd insted of dwr20.dtd
+
+* Tue Dec 04 2012 Jan Pazdziora 1.9.26-1
+- Do not package tomcat 7 stuff from buildroot.
+- On Fedoras, start to use tomcat >= 7.
+- KickstartDataTest should no longer fail
+- 881830 - create /var/lib/rhn/kickstarts/wizard/*.cfg files if missing by the
+  KickstartFileSyncTask
+- PackageHelperTest should no more fail at testPackageToMap
+- ActionFormatterTest should no more fail at testErrataFormatter
+
 * Fri Nov 30 2012 Tomas Lestach <tlestach@redhat.com> 1.9.25-1
 - do not include engine.js twice
 - remove embedded dwr from spacewalk-java and start using dwr package
@@ -3912,35 +3970,35 @@ fi
 
 * Fri Nov 12 2010 Lukas Zapletal 1.2.107-1
 - Revert "Removing commons-discovery jar from spacewalk-java.spec"
-- Add missing file from previous commit
-- Implement getRepoDetails API calls
-- Correct the xmlrpc.doc
-- 647806 - Implement API calls for external repos
-- 652626 - correct typo in named query
+- Add missing file from previous commit 
+- Implement getRepoDetails API calls 
+- Correct the xmlrpc.doc 
+- 647806 - Implement API calls for external repos 
+- 652626 - correct typo in named query 
 
 * Fri Nov 12 2010 Lukas Zapletal 1.2.106-1
-- Removing jasper5-compiler jar from spacewalk-java.spec
-- Removing commons-discovery jar from spacewalk-java.spec
+- Removing jasper5-compiler jar from spacewalk-java.spec 
+- Removing commons-discovery jar from spacewalk-java.spec 
 
 * Fri Nov 12 2010 Lukas Zapletal 1.2.105-1
 - Adding missing jakarta-commons-discovery require for RHEL6+/FC13+
 
 * Thu Nov 11 2010 Lukas Zapletal 1.2.104-1
-- Removing extra slash after RPM_BUILD_ROOT
+- Removing extra slash after RPM_BUILD_ROOT 
 - We do not distribute jspapi.jar now - according to Servlet Spec 2.3
 - Add missing ssm.migrate.systems.notrust to StringResource
-- Implement channel.software.listUserRepos API call
+- Implement channel.software.listUserRepos API call 
 
 * Thu Nov 11 2010 Lukas Zapletal 1.2.103-1
-- Replacing one more NVL with COALESCE function
-- Replacing NVL with COALESCE function
+- Replacing one more NVL with COALESCE function 
+- Replacing NVL with COALESCE function 
 
 * Thu Nov 11 2010 Lukas Zapletal 1.2.102-1
 - Correcting one more ANSI JOIN syntax in channel queries (PG)
-- Correcting ANSI JOIN syntax in channel queries
-- Correcting spaces in channel queries xml file
-- Making two server group portable
-- Correcting NULL values in channel manager repo gen
+- Correcting ANSI JOIN syntax in channel queries 
+- Correcting spaces in channel queries xml file 
+- Making two server group portable 
+- Correcting NULL values in channel manager repo gen 
 
 * Thu Nov 11 2010 Lukas Zapletal 1.2.101-1
 - Correcting spacewalk-java.spec - removing doubled files
@@ -3990,12 +4048,12 @@ fi
 - removing insert of NULL value(PG) (tlestach@redhat.com)
 
 * Fri Nov 05 2010 Lukas Zapletal 1.2.93-1
-- Two config queries are ported to PostgreSQL
+- Two config queries are ported to PostgreSQL 
 - rewriting INSERT ALL in insert_channel_packages_in_set (PG)
 
 * Thu Nov 04 2010 Lukas Zapletal 1.2.92-1
-- Replacing 4 occurances of NVL with ANSI COALESCE
-- 645842 - return macro delims for config files
+- Replacing 4 occurances of NVL with ANSI COALESCE 
+- 645842 - return macro delims for config files 
 
 * Thu Nov 04 2010 Miroslav Suchý <msuchy@redhat.com> 1.2.91-1
 - fixing build errors (msuchy@redhat.com)
@@ -4015,17 +4073,17 @@ fi
   database (jsherril@redhat.com)
 
 * Wed Nov 03 2010 Lukas Zapletal 1.2.87-1
-- Using general nextval function in ssm operation queries
-- fixing some fedora 14 provisioning issues
+- Using general nextval function in ssm operation queries 
+- fixing some fedora 14 provisioning issues 
 
 * Tue Nov 02 2010 Lukas Zapletal 1.2.86-1
-- Removing unnecessary JSPF fragment file
+- Removing unnecessary JSPF fragment file 
 
 * Tue Nov 02 2010 Lukas Zapletal 1.2.85-1
-- Fixing unambiguous column 'name' for PostgreSQL
-- 645829 - make it possile to update macro delimiters
-- 645829 - do not trim curly brackets in macro delimiters
-- removing unnecessary condition
+- Fixing unambiguous column 'name' for PostgreSQL 
+- 645829 - make it possile to update macro delimiters 
+- 645829 - do not trim curly brackets in macro delimiters 
+- removing unnecessary condition 
 
 * Tue Nov 02 2010 Lukas Zapletal 1.2.84-1
 - Changing the way how taskomatic connects to PostgreSQL db
@@ -4039,21 +4097,21 @@ fi
   (tlestach@redhat.com)
 
 * Tue Nov 02 2010 Lukas Zapletal 1.2.82-1
-- Renaming two ignored unit tests properly
-- Removing unused methods from java db manager
-- Removing unused class from java db manager
-- Removing unused class - Worker
-- Removing dead code in two tests
-- Fixing table name aliases
+- Renaming two ignored unit tests properly 
+- Removing unused methods from java db manager 
+- Removing unused class from java db manager 
+- Removing unused class - Worker 
+- Removing dead code in two tests 
+- Fixing table name aliases 
 - Two classes were not serializabled while putting them into HttpSession
-- Fixing date diff in alerts
-- making kickstart channel list sorted alphabetically
+- Fixing date diff in alerts 
+- making kickstart channel list sorted alphabetically 
 - sorting activation key base channel drop down by alphabetical order
 - 648470 - changing manage package page to sort channels by name
 - 644880 - check for arch compatibility when adding packages into a channel
-- 647099 - introducing satellite.isMonitoringEnabled API
+- 647099 - introducing satellite.isMonitoringEnabled API 
 - replace web.is_monitoring_backend with
-  ConfigDefaults.WEB_IS_MONITORING_BACKEND
+  ConfigDefaults.WEB_IS_MONITORING_BACKEND 
 - fixing ISE on package deletion due to RHNSAT.RHN_PFDQUEUE_PATH_UQ violation
 
 * Mon Nov 01 2010 Tomas Lestach <tlestach@redhat.com> 1.2.81-1
@@ -4085,31 +4143,31 @@ fi
 
 * Fri Oct 29 2010 Lukas Zapletal 1.2.76-1
 - Making DISTINCT-ORDER BY package/system queries portable
-- Removing unnecessary subselect
-- Simplifying ORDER BY clauses in package queries
+- Removing unnecessary subselect 
+- Simplifying ORDER BY clauses in package queries 
 - Revert "Reverting "Removed unnecessary ORDER BY" commits and fixing"
-
+  
 
 * Wed Oct 27 2010 Shannon Hughes <shughes@redhat.com> 1.2.75-1
 - fix for checkstyle (shughes@redhat.com)
 
 * Wed Oct 27 2010 Lukas Zapletal 1.2.74-1
-- Fixing missing brace in Taskomatic query
-- Addressing issue in system overview
-- PostgreSQL needs FROM keyword in DELETE
-- Adding missing interval keyword to Taskomatic
-- Protocol config value is now used in Taskomatic
-- Getting taskomatic working on PostgreSQL
+- Fixing missing brace in Taskomatic query 
+- Addressing issue in system overview 
+- PostgreSQL needs FROM keyword in DELETE 
+- Adding missing interval keyword to Taskomatic 
+- Protocol config value is now used in Taskomatic 
+- Getting taskomatic working on PostgreSQL 
 - removing unneeded insmod on kickstart %pre script, since they are already
-  loaded
+  loaded 
 - fixing query to run correctly, c.id was not valid because the join did not
-  come directly after rhnChannel c
-- adding missing import
+  come directly after rhnChannel c 
+- adding missing import 
 - 646892 - fixing issue where kickstart expiration would occur after current
-  date and not scheduled date of kickstart
-- removing need of setNvreUpper method in PackageOverview
-- fixing broken if statement in snippet
-- fixing broken query used by SSM System delete
+  date and not scheduled date of kickstart 
+- removing need of setNvreUpper method in PackageOverview 
+- fixing broken if statement in snippet 
+- fixing broken query used by SSM System delete 
 
 * Mon Oct 25 2010 Lukas Zapletal 1.2.73-1
 - Fixing Taskomatic blob handling (now binary)
@@ -4131,25 +4189,25 @@ fi
 - Fix checkstyle errors (colin.coe@gmail.com)
 
 * Thu Oct 21 2010 Lukas Zapletal 1.2.69-1
-- Fixed all LEFT OUTER JOINs in Channels
+- Fixed all LEFT OUTER JOINs in Channels 
 - Fixed LEFT OUTER JOIN for PostgreSQL in Software Channels
-- Removed unnecessary ORDER BY in DISTINCT query.
-- Simplified SQL query with evr_t_as_vre_simple function.
+- Removed unnecessary ORDER BY in DISTINCT query. 
+- Simplified SQL query with evr_t_as_vre_simple function. 
 - Fixed composite type accessing for PostgreSQL for all packages
-- Simplified SQL query with evr_t_as_vre_simple function.
-- Fixed composite type accessing for PostgreSQL
-- Sorting fix in packages for PostgreSQL
-- Fix of evr_t_as_vre_simple PostgreSQL function
-- ANSI JOIN syntax fix for PostgreSQL in system update
-- PostgreSQL fix in package search
-- Integer-Long fix in channel subscribers for PostgreSQL
-- Update System Currency to use rhn.cfg file
+- Simplified SQL query with evr_t_as_vre_simple function. 
+- Fixed composite type accessing for PostgreSQL 
+- Sorting fix in packages for PostgreSQL 
+- Fix of evr_t_as_vre_simple PostgreSQL function 
+- ANSI JOIN syntax fix for PostgreSQL in system update 
+- PostgreSQL fix in package search 
+- Integer-Long fix in channel subscribers for PostgreSQL 
+- Update System Currency to use rhn.cfg file 
 
 * Wed Oct 20 2010 Lukas Zapletal 1.2.68-1
-- Rewrite of LEFT OUTER JOIN into ANSI syntax
+- Rewrite of LEFT OUTER JOIN into ANSI syntax 
 - Function evr_t_as_vre_simple in all package queries now general
-- Using date time function instead of arithmetics
-- Sysdate replaced with current_timestamp
+- Using date time function instead of arithmetics 
+- Sysdate replaced with current_timestamp 
 - Removed unnecessary ORDER BY in SELECT COUNT
 - Use the global function evr_t_as_vre_simple in package_ids_in_set instead of
   method .as_vre_simple; this works on PostgreSQL as well.
@@ -4159,16 +4217,16 @@ fi
 - Fix ISE in AK child channel page (colin.coe@gmail.com)
 
 * Wed Oct 20 2010 Lukas Zapletal 1.2.66-1
-- Removed unnecessary ORDER BY
-- Using date time function instead of arithmetics
-- Added setHasSubscription for Integer
-- Using date time function instead of arithmetics
+- Removed unnecessary ORDER BY 
+- Using date time function instead of arithmetics 
+- Added setHasSubscription for Integer 
+- Using date time function instead of arithmetics 
 - Fix in PostgreSQL (ORDER BY) in Out Of Date system list.
-- Fixed comma in ANSI JOIN syntax from previous commit
-- Left join now in ANSI syntax for virtual system list.
+- Fixed comma in ANSI JOIN syntax from previous commit 
+- Left join now in ANSI syntax for virtual system list. 
 - Fix in PostgreSQL plus NVL fix
 - All DECODE functions replaced with CASE-WHEN in System_queries
-- Fixing system overview list for PostgreSQL
+- Fixing system overview list for PostgreSQL 
 
 * Tue Oct 19 2010 Tomas Lestach <tlestach@redhat.com> 1.2.65-1
 - removing unused imports (tlestach@redhat.com)
@@ -4209,10 +4267,10 @@ fi
 - System list now working on Postgresql (lzap+git@redhat.com)
 
 * Fri Oct 15 2010 Lukas Zapletal 1.2.60-1
-- Checkstyle fixes
-- Checkstyle testing report now part of java spec
-- Removed unused query
-- Made the list tag dataset manipulator handle maps
+- Checkstyle fixes 
+- Checkstyle testing report now part of java spec 
+- Removed unused query 
+- Made the list tag dataset manipulator handle maps 
 
 * Wed Oct 13 2010 Tomas Lestach <tlestach@redhat.com> 1.2.59-1
 - 642519 - associate only unique keywords with an erratum (tlestach@redhat.com)
@@ -6187,7 +6245,7 @@ fixing issue that kept spacewalk from working with the newest cobbler (jsherril@
 - remove @Override for java 1.5 builds (jesusr@redhat.com)
 
 * Thu May 07 2009 Justin Sherrill <jsherril@redhat.com> 0.6.15-1
-- Split log4.properties files into two so taskomatic and tomcat are using different ones
+- Split log4.properties files into two so taskomatic and tomcat are using different ones 
 
 * Thu May 07 2009 Tomas Lestach <tlestach@redhat.com> 0.6.14-1
 - 499038 - channel list doesn't contain non globablly subscribable channels
@@ -6489,9 +6547,9 @@ fixing issue that kept spacewalk from working with the newest cobbler (jsherril@
 
 * Mon Mar 30 2009 Mike McCune <mmccune@gmail.com> 0.5.44-1
 - 472595 - ported query forgot to check child channels
-- 144325 - converting system probe list to the new list tag, featuring all the bells and
+- 144325 - converting system probe list to the new list tag, featuring all the bells and 
   whistles the new list tag has to offer
-- 492478 - modifying the system applicable errata page so that you can filter on the
+- 492478 - modifying the system applicable errata page so that you can filter on the 
   type of errata you want to see, also linking a couple of critical errata li
 - 467063 - Port of clone errata functionality to new list tag
 - 492418 - adding missing channel title when creating new software channels
@@ -6510,7 +6568,7 @@ fixing issue that kept spacewalk from working with the newest cobbler (jsherril@
 - Updated documentation
 
 * Thu Mar 26 2009 Mike McCune <mmccune@gmail.com> 0.5.40-1
-- 492137 - fixing ISE for virt
+- 492137 - fixing ISE for virt 
 
 * Thu Mar 26 2009 jesus m. rodriguez <jesusr@redhat.com> 0.5.39-1
 - 484852 - user taken to meaningful error pages instead of ISEs.
@@ -6523,7 +6581,7 @@ fixing issue that kept spacewalk from working with the newest cobbler (jsherril@
 - 491978 - fixing status reporting in webui for kickstarts.
 - Added resource bundle entries for admin/config/Cobbler.do
 - 467063 - Ported published and unpublished errata to new list tag to get new navigation features
-- 446269 - fixed issue where you could not remove a package from a system
+- 446269 - fixed issue where you could not remove a package from a system 
 
 * Fri Mar 20 2009 jesus m. rodriguez <jesusr@redhat.com> 0.5.36-1
 - bring over jta from satellite build.
@@ -6581,7 +6639,7 @@ fixing issue that kept spacewalk from working with the newest cobbler (jsherril@
 - 488548 - api - org.migrateSystems - fix reactivationkeys, custom info and config
 - 488348 - use channel org_id to prevent returning RH channels in addition to custom
 - Fixed variable name typo.
-
+ 
 * Fri Mar 06 2009 jesus m. rodriguez <jesusr@redhat.com> 0.5.28-1
 - added ExcludeArch: ia64
 
@@ -6635,7 +6693,7 @@ fixing issue that kept spacewalk from working with the newest cobbler (jsherril@
 
 * Tue Feb 24 2009 Pradeep Kilambi <pkilambi@redhat.com> 0.5.22-1
 - fixing the repodata task queries to avoid tempspace issues
-
+ 
 * Thu Feb 19 2009 jesus m. rodriguez <jesusr@redhat.com> 0.5.21-1
 - 486502 - Changed order when list a group of systemIds so top result is highest.
 - Fixing problem which broke unique documents in the lucene index.
@@ -6643,12 +6701,12 @@ fixing issue that kept spacewalk from working with the newest cobbler (jsherril@
 - SystemSearch change redirect behavior if only 1 result is found.
 
 * Thu Feb 19 2009 jesus m. rodriguez <jesusr@redhat.com> 0.5.20-1
-- 484768 - Basically fixed a query and DTO and a Translator to correctly
+- 484768 - Basically fixed a query and DTO and a Translator to correctly 
 - 486174 - Was using the incorrect key in the filterattr attribute on the
 - kickstart session status where ks is syncing to a profile has an correc
 - 456315 - refixing this bug, changing kickstart commands to be a Collect
 - Changed the hard coded 500 value to BATCH size :)
-- 444517 - Added snapshot hook to configuration channel subscription via
+- 444517 - Added snapshot hook to configuration channel subscription via 
 - 485047 - adding back the Task_queries find_channel_in_task_queue query
 - 437547, 485313 - Added exception message for when index files are missi
 - Adding 'Errata' search to Tasks under YourRhn.do
@@ -6749,7 +6807,7 @@ fixing issue that kept spacewalk from working with the newest cobbler (jsherril@
 - fixed branding stuff
 
 * Tue Jan 20 2009 Mike McCune <mmccune@gmail.com> 0.4.17-1
-- 480636 - simplifying the commands vs options into one real collection
+- 480636 - simplifying the commands vs options into one real collection 
   managed by hibernate vs 2 that both contained the same things
 
 * Thu Jan 15 2009 jesus m. rodriguez <jesusr@redhat.com> 0.4.16-1

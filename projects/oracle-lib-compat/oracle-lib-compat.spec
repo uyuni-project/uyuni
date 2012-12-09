@@ -1,5 +1,5 @@
 Name:           oracle-lib-compat
-Version:        11.2.0.7
+Version:        11.2.0.8
 Release:        1%{?dist}
 Summary:        Compatibility package so that perl-DBD-Oracle will install
 Group:          Applications/Multimedia
@@ -106,7 +106,11 @@ ln -sf ../../%{_lib}/oracle/%{icdir}/client/lib/ojdbc6.jar $RPM_BUILD_ROOT/%{_ja
 %if 0%{?rhel} && 0%{?rhel} < 6
 %define tomcatname tomcat5
 %else
+%if 0%{?fedora}
+%define tomcatname tomcat
+%else
 %define tomcatname tomcat6
+%endif
 %endif
 install -d $RPM_BUILD_ROOT%{_datadir}/%{tomcatname}/bin
 install tomcat-setenv.sh $RPM_BUILD_ROOT%{_datadir}/%{tomcatname}/bin/setenv.sh
@@ -142,6 +146,9 @@ ldconfig
 
 
 %changelog
+* Tue Dec 04 2012 Jan Pazdziora 11.2.0.8-1
+- On Fedoras, start to use tomcat >= 7.
+
 * Mon Oct 08 2012 Jan Pazdziora 11.2.0.7-1
 - Require latest greatest oracle-instantclient11.2-*.
 - %%defattr is not needed since rpm 4.4

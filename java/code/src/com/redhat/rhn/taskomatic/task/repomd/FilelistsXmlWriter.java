@@ -19,6 +19,7 @@ package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.frontend.dto.PackageCapabilityDto;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.task.TaskManager;
@@ -30,6 +31,7 @@ import org.xml.sax.SAXException;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.Collection;
 
 /**
  *
@@ -37,8 +39,6 @@ import java.io.Writer;
  *
  */
 public class FilelistsXmlWriter extends RepomdWriter {
-
-    private PackageCapabilityIterator filelistIterator;
 
     /**
      *
@@ -86,8 +86,6 @@ public class FilelistsXmlWriter extends RepomdWriter {
      * @param channel channel info
      */
     public void begin(Channel channel) {
-        filelistIterator = new PackageCapabilityIterator(channel,
-                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_FILES);
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("xmlns", "http://linux.duke.edu/metadata/filelists");
         attr.addAttribute("packages", Integer.toString(channel.getPackageCount()));
@@ -142,10 +140,14 @@ public class FilelistsXmlWriter extends RepomdWriter {
      */
     private void addPackageFiles(PackageDto pkgDto,
             SimpleContentHandler localHandler) throws SAXException {
-        long pkgId = pkgDto.getId().longValue();
-        while (filelistIterator.hasNextForPackage(pkgId)) {
-            localHandler.addElementWithCharacters("file", sanitize(pkgId,
-                    filelistIterator.getString("name")));
+        Long pkgId = pkgDto.getId();
+        Collection<PackageCapabilityDto> files = TaskManager
+                .getPackageCapabilityDtos(
+                        pkgId,
+                        TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_FILES);
+        for (PackageCapabilityDto file : files) {
+            localHandler.addElementWithCharacters("file",
+                    sanitize(pkgId, file.getName()));
         }
     }
 

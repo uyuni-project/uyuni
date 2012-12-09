@@ -107,6 +107,7 @@
        <packagereq type="default">spacewalk-java-lib</packagereq>
        <packagereq type="default">spacewalk-java-oracle</packagereq>
        <packagereq type="default">spacewalk-java-postgresql</packagereq>
+       <packagereq type="optional">spacewalk-java-tests</packagereq>
        <packagereq type="default">spacewalk-jpp-workaround</packagereq>
        <packagereq type="default">spacewalk-monitoring</packagereq>
        <packagereq type="default">spacewalk-monitoring-selinux</packagereq>
@@ -165,7 +166,8 @@
     <description>Spacewalk Server Non-installable Packages</description>
     <uservisible>false</uservisible>
     <packagelist>
-       <packagereq type="optional">spacewalk-java-tests</packagereq>
+       <packagereq type="optional">cobbler-web</packagereq>
+       <packagereq type="optional">koan</packagereq>
     </packagelist>
   </group>
 </comps>

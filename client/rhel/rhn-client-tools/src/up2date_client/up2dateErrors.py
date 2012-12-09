@@ -178,6 +178,23 @@ class ValidationError(NoLogError, RhnServerException):
 class InvalidRegistrationNumberError(ValidationError):
     pass
 
+class RegistrationDeniedError(RhnServerException):
+    def __init__(self):
+        RhnServerException.__init__(self, self.changeExplanation())
+
+    def __repr__(self):
+        return self.value
+
+    def changeExplanation(self):
+        return _("""
+Red Hat Network Classic is not supported.
+To register with Red Hat Subscription Management please run:
+
+    subscription-manager register --auto-attach
+
+Get more information at access.redhat.com/knowledge
+    """)
+
 class InvalidProductRegistrationError(NoLogError):
     """indicates an error during server input validation"""
     premsg = _("The installation number is invalid")

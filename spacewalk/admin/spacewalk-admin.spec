@@ -7,7 +7,7 @@
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.9.0
+Version: 1.9.2
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: GPLv2
@@ -82,6 +82,12 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/rhn/service-list
 
 %changelog
+* Fri Dec 07 2012 Jan Pazdziora 1.9.2-1
+- Fixing typo.
+
+* Tue Dec 04 2012 Jan Pazdziora 1.9.1-1
+- On Fedoras, start to use tomcat >= 7.
+
 * Tue Oct 30 2012 Jan Pazdziora 1.8.6-1
 - Update the copyright year.
 - %%defattr is not needed since rpm 4.4
