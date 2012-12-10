@@ -37,7 +37,11 @@ CREATE TABLE rhnRegToken
     deploy_configs  CHAR(1)
                         DEFAULT ('Y') NOT NULL
                         CONSTRAINT rhn_reg_token_deployconfs_ck
-                            CHECK (deploy_configs in ('Y','N'))
+                            CHECK (deploy_configs in ('Y','N')),
+    contact_method_id NUMBER
+                        DEFAULT (0) NOT NULL
+                        CONSTRAINT rhn_reg_token_cmid_fk
+                            REFERENCES suseClientContactMethodType (id)
 )
 ENABLE ROW MOVEMENT
 ;

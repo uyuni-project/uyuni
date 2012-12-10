@@ -45,6 +45,10 @@ CREATE TABLE rhnServer
                             DEFAULT ('N') NOT NULL
                             CONSTRAINT rhn_server_update_ck
                                 CHECK (auto_update in ('Y', 'N')),
+    contact_method_id   NUMBER
+                            DEFAULT (0) NOT NULL
+                            CONSTRAINT rhn_server_cmid_fk
+                                REFERENCES suseClientContactMethodType (id),
     running_kernel      VARCHAR2(64),
     last_boot           NUMBER
                             DEFAULT (0) NOT NULL,
