@@ -774,4 +774,16 @@ where rhnChannelErrata.errata_id = rhnErrataPackage.errata_id
   </query>
 </write-mode>
 
+<mode name="ssh_server_push_find_candidates">
+  <query>
+SELECT s.id
+  FROM rhnServer s
+ WHERE ssh_server_push = 'Y'
+   AND EXISTS (SELECT sa.server_id
+                 FROM rhnServerAction sa
+                WHERE sa.status = 0
+                  AND sa.server_id = s.id)
+  </query>
+</mode>
+
 </datasource_modes>
