@@ -135,7 +135,7 @@ rhnPackageSyncBlacklist        :: rhnPackageName web_customer
 rhnProxyInfo                   :: rhnServer
 rhnPushClient                  :: rhnServer rhnPushClientState
 rhnRam                         :: rhnServer
-rhnRegToken                    :: rhnServerGroupType
+rhnRegToken                    :: rhnServerGroupType suseServerContactMethod
 rhnRegTokenChannels            :: rhnRegToken rhnChannel
 rhnRegTokenConfigChannels      :: rhnRegToken rhnConfigChannel
 rhnRegTokenEntitlement         :: rhnRegToken rhnServerGroupType
@@ -144,7 +144,7 @@ rhnRegTokenPackages            :: rhnRegToken rhnPackageName
 
 rhnSatelliteInfo               :: rhnServer
 rhnServer                      :: rhnServerArch web_contact web_customer \
-                                  rhnProvisionState
+                                  rhnProvisionState suseServerContactMethod
 rhnServerAction                :: rhnServer rhnAction rhnActionStatus
 rhnServerActionPackageResult   :: rhnActionPackage
 rhnServerActionScriptResult    :: rhnActionScript rhnServer
