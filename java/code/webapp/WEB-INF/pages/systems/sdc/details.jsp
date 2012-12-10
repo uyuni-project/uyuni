@@ -83,6 +83,19 @@
         </td>
       </tr>
       <tr>
+        <th><label for="sshserverpush">SSH Server Push:</label></th>
+        <td>
+          <c:choose>
+            <c:when test="${system.baseEntitlement == null}">
+              <bean:message key="sdc.details.edit.autoupdate.unentitled"/>
+            </c:when>
+            <c:otherwise>
+              <html:checkbox property="ssh_server_push" styleId="sshserverpush"/> <label for="sshserverpush">Enable SSH server push for this system</label>
+            </c:otherwise>
+          </c:choose>
+        </td>
+      </tr>
+      <tr>
         <th><label for="description"><bean:message key="sdc.details.edit.description"/></label></th>
         <td><html:textarea property="description" cols="40" rows="6" styleId="description"/></td>
       </tr>

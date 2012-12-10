@@ -71,6 +71,7 @@ public class SystemDetailsEditAction extends RhnAction {
     public static final String BASE_ENTITLEMENT_PERMANENT = "base_entitlement_permanent";
     public static final String ADDON_ENTITLEMENTS = "addon_entitlements";
     public static final String AUTO_UPDATE = "auto_update";
+    public static final String SSH_SERVER_PUSH = "ssh_server_push";
     public static final String DESCRIPTION = "description";
     public static final String ADDRESS_ONE = "address1";
     public static final String ADDRESS_TWO = "address2";
@@ -184,6 +185,15 @@ public class SystemDetailsEditAction extends RhnAction {
             }
             else if (daForm.get(AUTO_UPDATE) == null) {
                 s.setAutoUpdate("N");
+            }
+
+            if (Boolean.TRUE.equals(daForm.get(SSH_SERVER_PUSH)) &&
+                    s.getSSHServerPush().equals("N")) {
+                // only set it if it has changed
+                s.setSSHServerPush("Y");
+            }
+            else if (daForm.get(SSH_SERVER_PUSH) == null) {
+                s.setSSHServerPush("N");
             }
 
             boolean flag = Boolean.TRUE.equals(
@@ -362,6 +372,9 @@ public class SystemDetailsEditAction extends RhnAction {
 
         daForm.set(AUTO_UPDATE,
                    s.getAutoUpdate().equals("Y") ? Boolean.TRUE : Boolean.FALSE);
+
+        daForm.set(SSH_SERVER_PUSH,
+                s.getSSHServerPush().equals("Y") ? Boolean.TRUE : Boolean.FALSE);
 
         daForm.set(DESCRIPTION, s.getDescription());
 

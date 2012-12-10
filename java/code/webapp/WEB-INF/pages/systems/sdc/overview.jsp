@@ -342,6 +342,19 @@
       </tr>
       </rhn:require>
       <tr>
+        <th>SSH Server Push:</th>
+        <td>
+          <c:choose>
+            <c:when test="${system.SSHServerPush == 'Y'}">
+              <bean:message key="yes"/>
+            </c:when>
+            <c:otherwise>
+              <bean:message key="no"/>
+            </c:otherwise>
+          </c:choose>
+        </td>
+      </tr>
+      <tr>
         <th><bean:message key="sdc.details.overview.sysname"/></th>
         <td><c:out value="${system.name}"/></td>
       </tr>
