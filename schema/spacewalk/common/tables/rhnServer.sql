@@ -45,6 +45,10 @@ CREATE TABLE rhnServer
                             DEFAULT ('N') NOT NULL
                             CONSTRAINT rhn_server_update_ck
                                 CHECK (auto_update in ('Y', 'N')),
+    ssh_server_push     CHAR(1)
+                            DEFAULT ('N') NOT NULL
+                            CONSTRAINT rhn_ssh_server_push_ck
+                                CHECK (ssh_server_push in ('Y', 'N')),
     running_kernel      VARCHAR2(64),
     last_boot           NUMBER
                             DEFAULT (0) NOT NULL,
