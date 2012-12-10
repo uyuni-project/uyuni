@@ -42,6 +42,7 @@
         <dependency org="suse" name="jfreechart" rev="1.0.13" />
         <dependency org="suse" name="jmock" rev="1.2.0" />
         <dependency org="suse" name="jmock-cglib" rev="1.2.0" />
+        <dependency org="suse" name="jsch" rev="0.1.49" />
         <dependency org="suse" name="jspapi" rev="5.0.18" />
         <dependency org="suse" name="jta" rev="1.1" />
         <dependency org="suse" name="junit" rev="3.8.2" />

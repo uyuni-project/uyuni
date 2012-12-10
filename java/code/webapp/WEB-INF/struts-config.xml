@@ -21,6 +21,7 @@
            <form-property name="selectedEntitlements" type="java.lang.String[]"/>
            <form-property name="universal" type="java.lang.Boolean"/>
            <form-property name="autoDeploy" type="java.lang.Boolean"/>
+           <form-property name="contactMethodId" type="java.lang.Long"/>
            <form-property name="submitted" type="java.lang.Boolean"/>
        </form-bean>
        <form-bean name="activationKeyPackagesForm"
@@ -1059,6 +1060,7 @@
       <form-property name="receive_notifications" type="java.lang.Boolean"/>
       <form-property name="include_in_daily_summary" type="java.lang.Boolean"/>
       <form-property name="auto_update" type="java.lang.Boolean"/>
+      <form-property name="contact_method_id" type="java.lang.Long"/>
       <form-property name="description" type="java.lang.String"/>
       <form-property name="address1" type="java.lang.String"/>
       <form-property name="address2" type="java.lang.String"/>

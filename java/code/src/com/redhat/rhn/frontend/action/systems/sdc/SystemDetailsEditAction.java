@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Location;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserServerPreferenceId;
 import com.redhat.rhn.frontend.dto.EntitlementDto;
@@ -71,6 +72,8 @@ public class SystemDetailsEditAction extends RhnAction {
     public static final String BASE_ENTITLEMENT_PERMANENT = "base_entitlement_permanent";
     public static final String ADDON_ENTITLEMENTS = "addon_entitlements";
     public static final String AUTO_UPDATE = "auto_update";
+    public static final String CONTACT_METHODS = "contact_methods";
+    public static final String CONTACT_METHOD = "contact_method_id";
     public static final String DESCRIPTION = "description";
     public static final String ADDRESS_ONE = "address1";
     public static final String ADDRESS_TWO = "address2";
@@ -184,6 +187,12 @@ public class SystemDetailsEditAction extends RhnAction {
             }
             else if (daForm.get(AUTO_UPDATE) == null) {
                 s.setAutoUpdate("N");
+            }
+
+            // Set the contact method
+            long contactId = (Long) daForm.get(CONTACT_METHOD);
+            if (contactId != s.getContactMethod().getId()) {
+                s.setContactMethod(ServerFactory.findContactMethodById(contactId));
             }
 
             boolean flag = Boolean.TRUE.equals(
@@ -322,6 +331,7 @@ public class SystemDetailsEditAction extends RhnAction {
         request.setAttribute("system", s);
         request.setAttribute(BASE_ENTITLEMENT_OPTIONS,
                 createBaseEntitlementDropDownList(user, s));
+        request.setAttribute(CONTACT_METHODS, ServerFactory.listContactMethods());
         request.setAttribute("countries", getCountries());
         request.setAttribute(ADDON_ENTITLEMENTS,
                 createAddOnEntitlementList(user.getOrg(),
@@ -362,6 +372,8 @@ public class SystemDetailsEditAction extends RhnAction {
 
         daForm.set(AUTO_UPDATE,
                    s.getAutoUpdate().equals("Y") ? Boolean.TRUE : Boolean.FALSE);
+
+        daForm.set(CONTACT_METHOD, s.getContactMethod().getId());
 
         daForm.set(DESCRIPTION, s.getDescription());
 

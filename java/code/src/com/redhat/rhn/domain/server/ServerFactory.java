@@ -858,4 +858,24 @@ public class ServerFactory extends HibernateFactory {
                 .uniqueResult();
         return retval;
     }
+
+    /**
+     * List all available contact methods.
+     * @return available contact methods
+     */
+    public static List<ContactMethod> listContactMethods() {
+        return singleton.listObjectsByNamedQuery("ContactMethod.findAll", null, true);
+    }
+
+    /**
+     * Find contact method type by given ID.
+     * @param id id of the contact method
+     * @return contact method
+     */
+    public static ContactMethod findContactMethodById(Long id) {
+        Map params = new HashMap();
+        params.put("id", id);
+        return (ContactMethod) singleton.lookupObjectByNamedQuery(
+                "ContactMethod.findById", params, true);
+    }
 }

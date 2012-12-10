@@ -329,6 +329,10 @@
       <rhn:require acl="system_feature(ftr_errata_updates)"
                    mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
       <tr>
+        <th><bean:message key="server.contact-method.label" />:</th>
+        <td>${system.contactMethod.name}</td>
+      </tr>
+      <tr>
         <th><bean:message key="sdc.details.overview.errataupdate"/></th>
         <td><c:choose>
               <c:when test="${system.autoUpdate == 'Y'}">

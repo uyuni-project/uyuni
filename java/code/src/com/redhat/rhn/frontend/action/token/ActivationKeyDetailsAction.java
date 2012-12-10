@@ -19,7 +19,9 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
@@ -77,6 +79,8 @@ public class ActivationKeyDetailsAction extends RhnAction {
     private static final String UNPREFIXED = "unprefixed";
     private static final String BLANK_DESCRIPTION = "blankDescription";
 
+    private static final String CONTACT_METHODS = "contactMethods";
+    private static final String CONTACT_METHOD = "contactMethodId";
 
     /** {@inheritDoc} */
     @Override
@@ -125,6 +129,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
         }
         setupPossibleChannels(context);
         setupEntitlements(context);
+        setupContactMethods(context);
         if (EDIT_MODE.equals(mapping.getParameter())) {
             ActivationKey key = context.lookupAndBindActivationKey();
 
@@ -145,6 +150,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
         RhnValidationHelper.setFailedValidation(context.getRequest());
         setupPossibleChannels(context);
         setupEntitlements(context);
+        setupContactMethods(context);
 
         if (EDIT_MODE.equals(mapping.getParameter())) {
             Map params = new HashMap();
@@ -209,6 +215,13 @@ public class ActivationKeyDetailsAction extends RhnAction {
 
 
         key.setUsageLimit(usageLimit);
+
+        // Set the contact method
+        long contactId = (Long) form.get(CONTACT_METHOD);
+        if (contactId != key.getContactMethod().getId()) {
+            key.setContactMethod(ServerFactory.findContactMethodById(contactId));
+        }
+
         ActivationKeyFactory.save(key);
         ActionMessages msg = new ActionMessages();
         addToMessage(msg, "activation-key.java.modified", key.getNote());
@@ -260,6 +273,9 @@ public class ActivationKeyDetailsAction extends RhnAction {
                         getServerGroupTypeProvisioningEntitled())) {
             form.set(AUTO_DEPLOY, key.getDeployConfigs());
         }
+
+        // Set the contact method
+        form.set(CONTACT_METHOD, key.getContactMethod().getId());
     }
 
     private void setupKey(DynaActionForm form, ActivationKey key,
@@ -327,6 +343,12 @@ public class ActivationKeyDetailsAction extends RhnAction {
                                 lookupChannel(daForm, user),
                                 Boolean.TRUE.equals(daForm.get(ORG_DEFAULT)));
 
+        // Set the contact method
+        long contactId = (Long) daForm.get(CONTACT_METHOD);
+        if (contactId != key.getContactMethod().getId()) {
+            key.setContactMethod(ServerFactory.findContactMethodById(contactId));
+        }
+
         if (selected != null) {
             manager.addEntitlements(key, selected);
         }
@@ -350,5 +372,13 @@ public class ActivationKeyDetailsAction extends RhnAction {
     private void addToMessage(ActionMessages msgs, String key, Object... args) {
         ActionMessage temp =  new ActionMessage(key, args);
         msgs.add(ActionMessages.GLOBAL_MESSAGE, temp);
+    }
+
+    /**
+     * Put the list of contact methods to the request.
+     */
+    protected void setupContactMethods(RequestContext context) {
+        List<ContactMethod> contactMethods = ServerFactory.listContactMethods();
+        context.getRequest().setAttribute(CONTACT_METHODS, contactMethods);
     }
 }
