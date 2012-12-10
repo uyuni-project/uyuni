@@ -83,6 +83,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private User creator;
     private String autoDeliver;
     private String autoUpdate;
+    private String sshServerPush;
     private String runningKernel;
     private Long lastBoot;
     private ServerArch serverArch;
@@ -598,6 +599,24 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setAutoUpdate(String autoUpdateIn) {
         this.autoUpdate = autoUpdateIn;
+    }
+
+    /**
+     * Getter for sshServerPush
+     *
+     * @return String to get
+     */
+    public String getSSHServerPush() {
+        return this.sshServerPush;
+    }
+
+    /**
+     * Setter for sshServerPush
+     *
+     * @param sshServerPushIn to set
+     */
+    public void setSSHServerPush(String sshServerPushIn) {
+        this.sshServerPush = sshServerPushIn;
     }
 
     /**
