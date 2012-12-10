@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping
+PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.redhat.rhn.domain.server.ContactMethod"
+        table="suseServerContactMethod" mutable="false">
+        <cache usage="read-only"/>
+        <id name="id" type="long" column="id">
+            <meta attribute="scope-set">protected</meta>
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string" column="name" />
+        <property name="label" type="string" column="label" />
+    </class>
+    <query name="ContactMethod.findById">
+        <![CDATA[from com.redhat.rhn.domain.server.ContactMethod as cm where cm.id = :id]]>
+    </query>
+    <query name="ContactMethod.findAll">
+        <![CDATA[from com.redhat.rhn.domain.server.ContactMethod as cm order by cm.id]]>
+    </query>
+</hibernate-mapping>

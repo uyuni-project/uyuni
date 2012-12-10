@@ -83,6 +83,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private User creator;
     private String autoDeliver;
     private String autoUpdate;
+    private ContactMethod contactMethod;
     private String runningKernel;
     private Long lastBoot;
     private ServerArch serverArch;
@@ -607,6 +608,24 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setAutoUpdate(String autoUpdateIn) {
         this.autoUpdate = autoUpdateIn;
+    }
+
+    /**
+     * Get the contact method.
+     *
+     * @return contact method
+     */
+    public ContactMethod getContactMethod() {
+        return this.contactMethod;
+    }
+
+    /**
+     * Set the contact method.
+     *
+     * @param contact method to set
+     */
+    public void setContactMethod(ContactMethod contactMethodIn) {
+        this.contactMethod = contactMethodIn;
     }
 
     /**

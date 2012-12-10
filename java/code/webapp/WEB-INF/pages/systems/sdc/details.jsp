@@ -70,6 +70,21 @@
           </td>
       </tr>
       <tr>
+        <th><label for="contact-method"><bean:message key="server.contact-method.label" />:</label></th>
+        <td>
+          <c:choose>
+            <c:when test="${system.baseEntitlement == null}">
+              <bean:message key="sdc.details.edit.autoupdate.unentitled"/>
+            </c:when>
+            <c:otherwise>
+              <html:select property="contact_method_id" styleId="contact-method">
+                <html:options collection="contact_methods" property="id" labelProperty="name" />
+              </html:select>
+            </c:otherwise>
+          </c:choose>
+        </td>
+      </tr>
+      <tr>
         <th><label for="autoerrataupdate"><bean:message key="sdc.details.edit.autoerrataupdate"/></label></th>
         <td>
           <c:choose>

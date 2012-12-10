@@ -740,4 +740,35 @@ where rhnChannelErrata.errata_id = rhnErrataPackage.errata_id
   </query>
 </write-mode>
 
+<mode name="ssh_server_push_find_candidates" class="com.redhat.rhn.taskomatic.task.serverpush.SSHServerPushSystem">
+  <query>
+SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, max(a.earliest_action) as earliest_action
+  FROM rhnServer s
+  JOIN rhnServerAction sa ON sa.server_id = s.id
+  JOIN rhnAction a ON sa.action_id = a.id
+  JOIN suseServerContactMethod scm ON s.contact_method_id = scm.id
+ WHERE sa.status = 0
+   AND (scm.label = 'ssh-push' OR scm.label = 'ssh-push-tunnel')
+   AND a.earliest_action &lt;= current_timestamp
+   AND sa.server_id = s.id
+ GROUP BY s.id, scm.label
+ ORDER BY earliest_action ASC
+  </query>
+</mode>
+
+<mode name="ssh_server_push_find_checkin_candidates" class="com.redhat.rhn.taskomatic.task.serverpush.SSHServerPushSystem">
+  <query params="checkin_threshold">
+SELECT s.id,
+       s.name,
+       TO_CHAR(si.checkin, 'YYYY-MM-DD HH24:MI:SS') as last_checkin,
+       scm.label as contact_method_label
+  FROM rhnServer s
+  JOIN rhnServerInfo si ON si.server_id = s.id
+  JOIN suseServerContactMethod scm ON s.contact_method_id = scm.id
+ WHERE (scm.label = 'ssh-push' OR scm.label = 'ssh-push-tunnel')
+   AND si.checkin &lt; current_timestamp - numtodsinterval(:checkin_threshold, 'second')
+ORDER BY si.checkin
+  </query>
+</mode>
+
 </datasource_modes>

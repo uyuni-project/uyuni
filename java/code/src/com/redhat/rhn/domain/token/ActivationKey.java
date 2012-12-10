@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -407,6 +408,22 @@ public class ActivationKey extends BaseDomainHelper {
      */
     public boolean isUniversalDefault() {
         return getToken().isOrgDefault();
+    }
+
+    /**
+     * Get the contact method for servers registered with this token.
+     * @return the contact method
+     */
+    public ContactMethod getContactMethod() {
+        return getToken().getContactMethod();
+    }
+
+    /**
+     * Set the contact method for servers registered with this token.
+     * @param contactMethodIn the contact method to set
+     */
+    public void setContactMethod(ContactMethod contactMethodIn) {
+        this.getToken().setContactMethod(contactMethodIn);
     }
 
     /**

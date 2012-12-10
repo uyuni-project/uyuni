@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.Scrubber;
@@ -156,6 +157,9 @@ public class ActivationKeyFactory extends HibernateFactory {
             newKey.addEntitlement(
                     ServerConstants.getServerGroupTypeEnterpriseEntitled());
         }
+
+        // Set the default server contact method
+        newKey.setContactMethod(ServerFactory.findContactMethodById(0L));
 
         save(newKey);
 

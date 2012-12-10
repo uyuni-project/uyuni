@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -50,6 +51,7 @@ public class Token implements Identifiable {
     private Org org;
     private User creator;
     private Server server;
+    private ContactMethod contactMethod;
     private Set <Server> activatedSystems = new HashSet<Server>();
     private List <ConfigChannel> configChannels = new LinkedList <ConfigChannel>();
     private Set<ServerGroupType> entitlements = new HashSet<ServerGroupType>();
@@ -563,5 +565,21 @@ public class Token implements Identifiable {
         else if (!orgDefault && isOrgDefault())  {
             getOrg().setToken(null);
         }
+    }
+
+    /**
+     * Get the contact method for servers registered with this token.
+     * @return the contact method
+     */
+    public ContactMethod getContactMethod() {
+        return contactMethod;
+    }
+
+    /**
+     * Set the contact method for servers registered with this token.
+     * @param contactMethodIn the contact method to set
+     */
+    public void setContactMethod(ContactMethod contactMethodIn) {
+        this.contactMethod = contactMethodIn;
     }
 }

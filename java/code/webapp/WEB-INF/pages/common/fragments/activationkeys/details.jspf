@@ -114,6 +114,16 @@
 	</c:if>
     <tr>
         <th>
+            <label for="contact-method"><bean:message key="server.contact-method.label" />:</label>
+        </th>
+        <td>
+            <html:select property="contactMethodId" styleId="contact-method">
+                <html:options collection="contactMethods" property="id" labelProperty="name" />
+            </html:select>
+        </td>
+    </tr>
+    <tr>
+        <th>
             <label for="universal"><bean:message key="activation-key.jsp.universal-default"/>:</label>
         </th>
         <td>

@@ -108,6 +108,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             class="com.redhat.rhn.domain.server.ServerArch"
             column="server_arch_id" lazy="proxy"/>
 
+        <many-to-one name="contactMethod"
+            class="com.redhat.rhn.domain.server.ContactMethod"
+            column="contact_method_id" lazy="proxy"/>
+
         <many-to-one name="provisionState"
             class="com.redhat.rhn.domain.common.ProvisionState"
             column="provision_state_id" cascade="save-update" lazy="proxy"/>
