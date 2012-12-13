@@ -38,9 +38,16 @@ import com.redhat.rhn.domain.server.Server;
  */
 public class SSHServerPush extends RhnJavaJob {
 
+    // Paths
+    private static String KNOWN_HOSTS = "/root/.ssh/known_hosts";
+    private static String PRIVATE_KEY = "/root/.ssh/id_rsa";
+
+    // Ports
+    private static int R_PORT = 1234;
+    private static int L_PORT = 443;
+
+    // Setup these in init()
     private String localhost;
-    private int rport;
-    private int lport;
     private JSch ssh;
 
     /**
@@ -62,7 +69,7 @@ public class SSHServerPush extends RhnJavaJob {
     }
 
     /**
-     * Init job instance, do this only once per job execution.
+     * Init this instance, do this only once per job execution.
      */
     private void init() {
         // Get local address
@@ -72,16 +79,12 @@ public class SSHServerPush extends RhnJavaJob {
             log.error(e.getMessage(), e);
         }
 
-        // Setup port forwarding
-        rport = 1234;
-        lport = 443;
-
         // Configure ssh client
         JSch.setConfig("StrictHostKeyChecking", "yes");
         ssh = new JSch();
         try {
-            ssh.setKnownHosts("/root/.ssh/known_hosts");
-            ssh.addIdentity("/root/.ssh/id_rsa");
+            ssh.setKnownHosts(KNOWN_HOSTS);
+            ssh.addIdentity(PRIVATE_KEY);
         } catch (JSchException e) {
             log.error(e.getMessage(), e);
         }
@@ -97,7 +100,7 @@ public class SSHServerPush extends RhnJavaJob {
             // Setup session
             session = ssh.getSession("root", host);
             session.connect();
-            session.setPortForwardingR(rport, localhost, lport);
+            session.setPortForwardingR(R_PORT, localhost, L_PORT);
 
             // Open channel
             channel = (ChannelExec) session.openChannel("exec");
