@@ -14,8 +14,8 @@
   </rhn-toolbar>
 </rhn-require>
 <!-- virtual host -->
-<rhn-require acl="system_is_virtual_host()">
-  <rhn-toolbar base="h1" img="/img/virt-host.png" 
+<rhn-require acl="system_is_virtual_host(); not system_is_virtual()">
+  <rhn-toolbar base="h1" img="/img/virt-host.png"
       alt="system" help-url="s1-sm-systems.jsp#s3-sm-system-details"
           deletion-url="/rhn/systems/details/DeleteConfirm.do?sid={formvar:sid}"
               deletion-type="system">
