@@ -16,7 +16,9 @@ package com.redhat.rhn.taskomatic.task;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.net.InetAddress;
+import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
@@ -132,7 +134,13 @@ public class SSHServerPush extends RhnJavaJob {
             log.debug("stdout:\n" + sb.toString());
         }
         catch (JSchException e) {
-            log.error(e.getMessage(), e);
+            Throwable cause = e.getCause();
+            if (cause instanceof NoRouteToHostException ||
+                    cause instanceof ConnectException) {
+                log.warn(cause.getMessage());
+            } else {
+                log.error(e.getMessage(), e);
+            }
         }
         catch (IOException ioe) {
             log.error(ioe.getMessage(), ioe);
