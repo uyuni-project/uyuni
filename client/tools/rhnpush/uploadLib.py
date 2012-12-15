@@ -73,6 +73,7 @@ class UploadClass:
         self.session = None
         self.orgId = None
         self.relativeDir = None
+        self.use_session = True
 
     def warn(self, verbose, *args):
         if self.options.verbose >= verbose:
@@ -174,10 +175,24 @@ class UploadClass:
         self.files = self.files + readStdin()
 
     def _listChannelSource(self):
-        return listChannelSourceBySession(self.server, self.session.getSessionString(), self.channels)
+        if self.use_session:
+            return listChannelSourceBySession(self.server,
+                                              self.session.getSessionString(),
+                                              self.channels)
+        else:
+            return listChannelSource(self.server,
+                                     self.username, self.password,
+                                     self.channels)
 
     def _listChannel(self):
-        return listChannelBySession(self.server, self.session.getSessionString(), self.channels)
+        if self.use_session:
+            return listChannelBySession(self.server,
+                                        self.session.getSessionString(),
+                                        self.channels)
+        else:
+            return listChannel(self.server,
+                               self.username, self.password,
+                               self.channels)
 
     def list(self):
         # set the URL
@@ -259,7 +274,7 @@ class UploadClass:
             same_names_hash[nvrea] = filename
 
         # Now get the list from the server
-        pkglist = listChannelBySession(self.server, self.session.getSessionString(), self.channels)
+        pkglist = self._listChannel()
 
         for p in pkglist:
             name = p[0]
@@ -295,13 +310,21 @@ class UploadClass:
         l.sort()
         self.files = l
 
+    def _listMissingSourcePackages(self):
+        if self.use_session:
+           return listMissingSourcePackagesBySession(self.server,
+                                self.session.getSessionString(), self.channels)
+        else:
+           return listMissingSourcePackages(self.server,
+                                self.username, self.password, self.channels)
+
     def get_missing_source_packages(self):
         localPackagesHash = {}
         for filename in self.files:
             localPackagesHash[os.path.basename(filename)] = filename
         
         # Now get the list from the server
-        pkglist = listMissingSourcePackagesBySession(self.server, self.session.getSessionString(), self.channels)
+        pkglist = self._listMissingSourcePackages()
 
         to_push = []
         for pkg in pkglist:
@@ -324,10 +347,20 @@ class UploadClass:
         return self.files[:]
 
     def _uploadSourcePackageInfo(self, info):
-        return call(self.server.packages.uploadSourcePackageInfoBySession, self.session.getSessionString(), info)
+        if self.use_session:
+            return call(self.server.packages.uploadSourcePackageInfoBySession,
+                        self.session.getSessionString(), info)
+        else:
+            return call(self.server.packages.uploadSourcePackageInfo,
+                        self.username, self.password, info)
 
     def _uploadPackageInfo(self, info):
-        return call(self.server.packages.uploadPackageInfoBySession, self.session.getSessionString(), info)
+        if self.use_session:
+            return call(self.server.packages.uploadPackageInfoBySession,
+                        self.session.getSessionString(), info)
+        else:
+            return call(self.server.packages.uploadPackageInfo,
+                        self.username, self.password, info)
 
     def uploadHeaders(self):
         # Set the forcing factor
@@ -583,7 +616,7 @@ def listdir(directory):
     return packagesList
 
 
-def call(function, *params):
+def call(function, *params, **kwargs):
     # Wrapper function
     try:
         ret = function(*params)
@@ -595,6 +628,8 @@ def call(function, *params):
             print x.faultExplanation
         sys.exit(-1)
     except xmlrpclib.ProtocolError, e:
+        if kwargs.get('raise_protocol_error'):
+            raise
         print e.errmsg
         sys.exit(-1)
 

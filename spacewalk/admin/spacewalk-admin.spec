@@ -7,7 +7,7 @@
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.9.2
+Version: 1.9.3
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: GPLv2
@@ -82,6 +82,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/rhn/service-list
 
 %changelog
+* Mon Dec 10 2012 Jan Pazdziora 1.9.3-1
+- The systemd service files are not executable, using -e.
+
 * Fri Dec 07 2012 Jan Pazdziora 1.9.2-1
 - Fixing typo.
 

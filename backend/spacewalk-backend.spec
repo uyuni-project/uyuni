@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.11
+Version: 1.9.14
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -775,6 +775,15 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri Dec 14 2012 Michael Mraka <michael.mraka@redhat.com> 1.9.14-1
+- Do not use value attribute of an exception
+
+* Mon Dec 10 2012 Jan Pazdziora 1.9.13-1
+- 885170 - fixing syntax.
+
+* Mon Dec 10 2012 Jan Pazdziora 1.9.12-1
+- 885170 - provide translations of a new error recieved from Hosted
+
 * Tue Dec 04 2012 Jan Pazdziora 1.9.11-1
 - On Fedoras, start to use tomcat >= 7.
 

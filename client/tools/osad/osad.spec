@@ -16,7 +16,7 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.11.13
+Version: 5.11.14
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -241,6 +241,11 @@ ARG=$1
 if [ -f %{_sysconfdir}/init.d/osad ]; then
     /sbin/chkconfig --add osad
 fi
+
+# Fix the /var/log/osad permission BZ 836984
+if [ -f %{_var}/log/osad ]; then
+    /bin/chmod 600 %{_var}/log/osad
+fi
 %endif
 if [ $ARG -eq 1 ] ; then
   # executed only in case of install
@@ -394,6 +399,9 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Mon Dec 10 2012 Jan Pazdziora 5.11.14-1
+- 836984 - fixes the permissions on /var/log/osad log file
+
 * Thu Nov 22 2012 Jan Pazdziora 5.11.13-1
 - always commit the update
 

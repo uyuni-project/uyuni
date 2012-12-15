@@ -6,7 +6,7 @@ Summary:	Heirloom Packaging Tools
 Group:		Development/Tools
 License:	CDDL
 Version:	1.%{heriloom_pkgtools_version}
-Release:	7%{?dist}
+Release:	9%{?dist}
 
 URL:		http://heirloom.sourceforge.net/pkgtools.html
 Source0:	%{name}-%{heriloom_pkgtools_version}.tar.bz2
@@ -16,12 +16,16 @@ Patch3:		binpath.patch
 Patch4:		sbinpath.patch
 Patch5:		cpio-D.patch
 Patch6:		compute_checksum-64bit.patch
+Patch7:		use-flex.patch
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:	gcc
 BuildRequires:	openssl-devel
 BuildRequires:	flex
+%if 0%{?fedora}
+BuildRequires:	compat-flex = 2.5.4a
+%endif
 
 %description
 Heirloom Packaging Tools are Linux ports of the SVR4
@@ -36,6 +40,9 @@ OpenSolaris.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%if 0%{?fedora}
+%patch7 -p1
+%endif
 
 %build
 make -f makefile SHELL=/bin/bash CC=gcc BINDIR=%{_bindir} SBINDIR=%{_sbindir}
@@ -97,9 +104,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_var}/sadm/install/admin/default
 
 %changelog
-* Fri Apr 20 2012 Michael Calmer <mc@suse.de> 1.070227-7
-- Revert "Extend original release number by OBS release."
-- Extend original release number by OBS release.
+* Tue Dec 11 2012 Jan Pazdziora 1.070227-9
+- Walk both 32bit and 64bit paths.
+
+* Tue Dec 11 2012 Jan Pazdziora 1.070227-8
+- On Fedoras, use compat-flex and -lfl.
+
+* Tue Dec 11 2012 Jan Pazdziora 1.070227-7
+- set correct tagger for heirloom-pkgtools
+- set correct builder for heirloom-pkgtools
 
 * Fri Feb 27 2009 Jan Pazdziora 1.070227-6
 - fixed pkgmk producing wrong checksums in pkgmap on 64bit

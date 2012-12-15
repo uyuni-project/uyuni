@@ -35,8 +35,9 @@ This script performs various management operations on the RHN proxy:
 import os
 import sys
 import shutil
+import xmlrpclib
 from operator import truth
-from rhnpush.uploadLib import UploadError, listChannelBySession
+from rhnpush.uploadLib import UploadError
 from optparse import Option, OptionParser
 
 # RHN imports
@@ -127,7 +128,7 @@ def main():
 
 class UploadClass(uploadLib.UploadClass):
     # pylint: disable=R0904
-    def setURL(self):
+    def setURL(self, path = '/APP'):
         # overloaded for uploadlib.py
         if not CFG.RHN_PARENT:
             self.die(-1, "rhn_parent not set in the configuration file")
@@ -138,7 +139,25 @@ class UploadClass(uploadLib.UploadClass):
             scheme = 'https://'
         self.url = CFG.RHN_PARENT or ''
         self.url = parseUrl(self.url)[1].split(':')[0]
-        self.url = scheme + self.url + '/APP'
+        self.url = scheme + self.url + path
+
+   def setServer(self):
+       try:
+          uploadLib.UploadClass.setServer(self)
+          uploadLib.call(self.server.packages.no_op, raise_protocol_error=True)
+       except xmlrpclib.ProtocolError, e:
+           if e.errcode == 404:
+               self.use_session = False
+               self.setURL('/XP')
+               uploadLib.UploadClass.setServer(self)
+           else:
+               raise
+
+    def authenticate(self):
+        if self.use_session:
+            uploadLib.UploadClass.authenticate(self)
+        else:
+            self.setUsernamePassword()
 
     def setProxyUsernamePassword(self):
         # overloaded for uploadlib.py
@@ -169,9 +188,7 @@ class UploadClass(uploadLib.UploadClass):
         self.authenticate()
 
         # List the channel's contents
-        channel_list = listChannelBySession(self.server,
-                                     self.session.getSessionString(),
-                                     self.channels)
+        channel_list = self._listChannel()
 
         # Convert it to a hash of hashes
         remotePackages = {}

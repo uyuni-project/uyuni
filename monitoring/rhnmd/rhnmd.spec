@@ -12,7 +12,7 @@ Summary:        Spacewalk Monitoring Daemon
 Name:           rhnmd
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:        5.3.12
+Version:        5.3.14
 Release:        1%{?dist}
 License:        GPLv2
 BuildArch:      noarch
@@ -25,6 +25,21 @@ PreReq:         pwdutils %fillup_prereq %insserv_prereq
 BuildRequires:  sysconfig
 %else
 Requires:       openssh-server
+%if 0%{?fedora}
+Requires(post): chkconfig
+Requires(preun): chkconfig
+Requires(post): systemd-sysv
+Requires(preun): systemd-sysv
+Requires(post): systemd-units
+Requires(preun): systemd-units
+BuildRequires: systemd-units
+%else
+Requires(post): chkconfig
+Requires(preun): chkconfig
+# This is for /sbin/service
+Requires(preun): initscripts
+Requires(postun): initscripts
+%endif
 Requires(post): /usr/sbin/semanage, /sbin/restorecon
 %endif
 %if 0%{?suse_version} >= 1210
@@ -53,7 +68,6 @@ rm -rf $RPM_BUILD_ROOT
 
 mkdir -p $RPM_BUILD_ROOT%{_usr}/sbin
 mkdir -p $RPM_BUILD_ROOT%{_usr}/lib
-mkdir -p $RPM_BUILD_ROOT%{_initddir}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{np_name}
 mkdir -p $RPM_BUILD_ROOT%{_var}/lib/%{np_name}/.ssh
 mkdir -p $RPM_BUILD_ROOT%{_var}/lib/%{np_name}/sbin
@@ -70,8 +84,13 @@ mkdir -p $RPM_BUILD_ROOT%{_initddir}
 install -pm 0755 rhnmd.init.SUSE $RPM_BUILD_ROOT%{_initddir}/rhnmd
 %endif
 %else
+%if 0%{?fedora}
+mkdir -p $RPM_BUILD_ROOT/%{_unitdir}
+install -m 0644 rhnmd.service $RPM_BUILD_ROOT/%{_unitdir}/
+%else
 mkdir -p $RPM_BUILD_ROOT%{_initddir}
 install -pm 0755 rhnmd-init $RPM_BUILD_ROOT%{_initddir}/rhnmd
+%endif
 %endif
 install -pm 0755 rhnmd_create_key.sh $RPM_BUILD_ROOT%{_var}/lib/%{np_name}/sbin/
 install -pm 0644 rhnmd_config $RPM_BUILD_ROOT%{_sysconfdir}/%{np_name}/rhnmd_config
@@ -135,7 +154,9 @@ fi
 %if 0%{?suse_version} >= 1210
 %service_add_post rhnmd.service
 %else
-/sbin/chkconfig --add rhnmd
+if [ -f /etc/init.d/rhnmd ]; then
+    /sbin/chkconfig --add rhnmd
+fi
 /usr/sbin/semanage fcontext -a -t sshd_key_t '/var/lib/nocpulse/\.ssh/nocpulse-identity' || :
 %if 0%{?rhel} && "%rhel" < "6"
 /usr/sbin/semanage fcontext -a -t sshd_key_t '/var/lib/nocpulse/\.ssh/authorized_keys' || :
@@ -150,8 +171,14 @@ fi
 %service_del_preun rhnmd.service
 %else
 if [ $1 = 0 ]; then
+    %if 0%{?fedora}
+    /bin/systemctl stop rhnmd.service >/dev/null 2>&1
+    %else
     /sbin/service rhnmd stop > /dev/null 2>&1
-    /sbin/chkconfig --del rhnmd
+    %endif
+    if [ -f /etc/init.d/rhnmd ]; then
+        /sbin/chkconfig --del rhnmd
+    fi
 fi
 %endif
 
@@ -177,7 +204,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_usr}/sbin/rhnmd
 %{_sbindir}/rcrhnmd
 %config(noreplace) %{_sysconfdir}/%{np_name}/rhnmd_config
-%if 0%{?suse_version} >= 1210
+%if 0%{?fedora} || 0%{?suse_version} >= 1210
 %{_unitdir}/rhnmd.service
 %else
 %{_initddir}/rhnmd
@@ -185,6 +212,13 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Mon Dec 10 2012 Michael Mraka <michael.mraka@redhat.com> 5.3.14-1
+- added missing pid file
+- fixed service description
+
+* Mon Dec 10 2012 Michael Mraka <michael.mraka@redhat.com> 5.3.13-1
+- use rhnmd.service on Fedora
+
 * Sun Nov 11 2012 Michael Calmer <mc@suse.de> 5.3.12-1
 - create rhnmd.service for systemd
 - no use of /var/lock/subsys/ anymore

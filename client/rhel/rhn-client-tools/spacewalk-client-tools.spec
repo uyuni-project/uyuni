@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.7.14.13
+Version: 1.9.7
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -430,6 +430,10 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Mon Dec 10 2012 Jan Pazdziora 1.9.7-1
+- 885170 - provide translations of a new error recieved from Hosted
+- 882174 - read the hostname from /etc/hostname if needed
+
 * Fri Mar 02 2012 Jan Pazdziora 1.7.14-1
 - Update the copyright year info.
 

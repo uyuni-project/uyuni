@@ -46,28 +46,28 @@ def find_host_name():
     return execute("hostname")[0]
 
 def find_netmask(device):
-    nm = execute("LANG=C ifconfig %s | perl -lne '/Mask:([\d.]+)/ and print $1'" % device)
+    nm = execute("LANG=C ipcalc -4ms $(ip -4 -o addr show dev %s | awk '{print $4}')|awk -F= '{print $2}'" % device)
     if nm:
         return nm[0]
     else:
         return ""
 
 def find_netmask6(device):
-    nm6 = execute("LANG=C ifconfig %s | perl -lne '/inet6 addr: [[:xdigit:]:]+\/([\d]+).+Scope:Global/ and print $1'" % device)
+    nm6 = execute("LANG=C ip -6 -o addr show dev %s | perl -lne 'print $1 if m!/(.+) scope global!'" % device)
     if nm6:
         return nm6[0]
     else:
         return ""
 
 def find_ip(device):
-    ip = execute("LANG=C ifconfig %s | perl -lne '/inet addr:([\d.]+)/ and print $1'" % device)
+    ip = execute("LANG=C ip -4 -o addr show dev %s | perl -lne 'print $1 if m!.+\s(.+)/.+ scope global!'" % device)
     if ip:
         return ip[0]
     else:
         return ""
 
 def find_ip6(device):
-    ip6 = execute("LANG=C ifconfig %s | perl -lne '/inet6 addr: ([[:xdigit:]:]+).+Scope:Global/ and print $1'" % device)
+    ip6 = execute("LANG=C ip -6 -o addr show dev %s | perl -lne 'print $1 if m!.+\s(.+)/.+ scope global!'" % device)
     if ip6:
         return ip6[0]
     else:
@@ -81,8 +81,8 @@ def find_name_servers():
             ret.append(s)
     return ret
 
-def find_gateway():
-    response = execute("route -n | awk '/^0\.0\.0\.0/ {print $2}'")
+def find_gateway(device):
+    response = execute("ip -f inet route list dev %s|awk '/^default/ {print $3}'" % device)
     if response:
         return response[0]
     else:
@@ -103,7 +103,7 @@ def getSystemId():
 
 def update_static_device_records(kickstart_host, static_device):
     client = xmlrpclib.Server("https://" + kickstart_host + "/rpc/api")
-    data = {"gateway" : find_gateway(),\
+    data = {"gateway" : find_gateway(static_device),\
             "nameservers": find_name_servers(),\
             "hostname" : find_host_name(),\
             "device" :  static_device,\
