@@ -312,10 +312,10 @@ class UploadClass:
 
     def _listMissingSourcePackages(self):
         if self.use_session:
-           return listMissingSourcePackagesBySession(self.server,
+            return listMissingSourcePackagesBySession(self.server,
                                 self.session.getSessionString(), self.channels)
         else:
-           return listMissingSourcePackages(self.server,
+            return listMissingSourcePackages(self.server,
                                 self.username, self.password, self.channels)
 
     def get_missing_source_packages(self):
@@ -644,12 +644,21 @@ def parseXMLRPCfault(fault):
         faultCode = -faultCode
     return ServerFault(faultCode, "", fault.faultString)
 
+def listChannel(server, username, password, channels):
+    return call(server.packages.listChannel, channels, username, password)
+
 # pylint: disable=C0103
 def listChannelBySession(server, session_string, channels): 
     return call(server.packages.listChannelBySession, channels, session_string)
 
+def listChannelSource(server, username, password, channels):
+    return call(server.packages.listChannelSource, channels, username, password)
+
 def listChannelSourceBySession(server, session_string, channels):
     return call(server.packages.listChannelSourceBySession, channels, session_string)
+
+def listMissingSourcePackages(server, username, password, channels):
+    return call(server.packages.listMissingSourcePackages, channels, username, password)
 
 def listMissingSourcePackagesBySession(server, session_string, channels):
     return call(server.packages.listMissingSourcePackagesBySession, channels, session_string)
