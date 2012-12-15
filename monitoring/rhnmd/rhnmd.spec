@@ -185,7 +185,7 @@ fi
 %restart_on_update rhnmd
 %{insserv_cleanup}
 %endif
-
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
