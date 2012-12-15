@@ -108,6 +108,7 @@ if [ $1 -eq 1 ] ; then
   useradd -r -g %{np_name} -d %{_var}/lib/%{np_name} -c "NOCpulse user" %{np_name}
   /usr/bin/passwd -l %{np_name} >/dev/null
 %else
+  # SUSE sshd do not allow to login into locked accounts
   getent passwd %{np_name} >/dev/null || \
   useradd -r -g %{np_name} -d %{_var}/lib/%{np_name} -c "NOCpulse user" %{np_name} -s /bin/bash
 %if 0%{?suse_version} && 0%{?suse_version} < 1110
@@ -129,20 +130,6 @@ fi
 %service_add_pre rhnmd.service
 %endif
 
-%if 0%{?suse_version}
-
-%post
-%{fillup_and_insserv rhnmd}
-
-%preun
-%stop_on_removal rhnmd
-
-%postun
-%restart_on_update rhnmd
-%{insserv_cleanup}
-
-%else
-
 %post
 # keygen is done in init script. Doing this in %post is bad for using this rpm in appliances.
 %if !0%{?suse_version}
@@ -153,6 +140,9 @@ fi
 %endif
 %if 0%{?suse_version} >= 1210
 %service_add_post rhnmd.service
+%else
+%if 0%{?suse_version} && 0%{?suse_version} < 1210
+%{fillup_and_insserv rhnmd}
 %else
 if [ -f /etc/init.d/rhnmd ]; then
     /sbin/chkconfig --add rhnmd
@@ -165,10 +155,14 @@ fi
 %endif
 /sbin/restorecon -rvv /var/lib/nocpulse || :
 %endif
+%endif
 
 %preun
 %if 0%{?suse_version} >= 1210
 %service_del_preun rhnmd.service
+%else
+%if 0%{?suse_version} && 0%{?suse_version} < 1210
+%stop_on_removal rhnmd
 %else
 if [ $1 = 0 ]; then
     %if 0%{?fedora}
@@ -181,13 +175,17 @@ if [ $1 = 0 ]; then
     fi
 fi
 %endif
+%endif
 
-%if 0%{?suse_version} >= 1210
 %postun
+%if 0%{?suse_version} >= 1210
 %service_del_preun rhnmd.service
+%else
+%if 0%{?suse_version} && 0%{?suse_version} < 1210
+%restart_on_update rhnmd
+%{insserv_cleanup}
 %endif
 
-%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
