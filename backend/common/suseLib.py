@@ -161,7 +161,7 @@ def send(url, sendData=None):
                                             "but reading credentials from "
                                             "%s failed." % YAST_PROXY)
                 curl.setopt(pycurl.PROXYUSERPWD,
-                            "%s:%s" % proxy_user, proxy_pass)
+                            "%s:%s" % (proxy_user, proxy_pass))
             elif e[0] == 60:
                 log_error("Peer certificate could not be authenticated "
                           "with known CA certificates.")
@@ -227,7 +227,7 @@ def accessible(url):
                                             "but reading credentials from "
                                             "%s failed." % YAST_PROXY)
                 curl.setopt(pycurl.PROXYUSERPWD,
-                            "%s:%s" % proxy_user, proxy_pass)
+                            "%s:%s" % (proxy_user, proxy_pass))
             else:
                 break
 
