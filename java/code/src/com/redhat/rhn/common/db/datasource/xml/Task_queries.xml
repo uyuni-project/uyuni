@@ -776,13 +776,16 @@ where rhnChannelErrata.errata_id = rhnErrataPackage.errata_id
 
 <mode name="ssh_server_push_find_candidates">
   <query>
-SELECT s.id
+SELECT DISTINCT sa.server_id, max(a.earliest_action)
   FROM rhnServer s
- WHERE ssh_server_push = 'Y'
-   AND EXISTS (SELECT sa.server_id
-                 FROM rhnServerAction sa
-                WHERE sa.status = 0
-                  AND sa.server_id = s.id)
+  JOIN rhnServerAction sa ON sa.server_id = s.id
+  JOIN rhnAction a ON sa.action_id = a.id
+ WHERE sa.status = 0
+   AND s.ssh_server_push = 'Y'
+   AND a.earliest_action &lt;= current_timestamp
+   AND sa.server_id = s.id
+ GROUP BY sa.server_id
+ ORDER BY max(a.earliest_action) DESC
   </query>
 </mode>
 
