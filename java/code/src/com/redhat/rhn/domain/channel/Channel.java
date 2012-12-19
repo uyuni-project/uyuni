@@ -662,13 +662,11 @@ public class Channel extends BaseDomainHelper implements Comparable {
         if (log.isDebugEnabled()) {
             log.debug("isSubscribable.archComp: " +
                     SystemManager.verifyArchCompatibility(server, this));
-            log.debug("isProxy: " + this.isProxy());
             log.debug("isSatellite: " + this.isSatellite());
         }
 
         return (SystemManager.verifyArchCompatibility(server, this) &&
-                !this.isProxy() && !this
-                .isSatellite());
+                !this.isSatellite());
     }
 
     /**

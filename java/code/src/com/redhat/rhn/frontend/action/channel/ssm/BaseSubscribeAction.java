@@ -507,7 +507,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
             for (Long srvId : chgs.get(toId)) {
                 Server s = SystemManager.lookupByIdAndUser(srvId, u);
-                if (s.isProxy() || s.isSatellite()) {
+                if (s.isSatellite()) {
                     skip(toId, srvId, skipped);
                     continue;
                 }
