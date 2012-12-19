@@ -55,6 +55,7 @@ public class SSHServerPushWorker implements QueueWorker {
      * @param logger
      */
     public SSHServerPushWorker(Logger logger, Long sid) {
+        this.sid = sid;
         log = logger;
         log.info("SSHServerPush -> " + sid);
 
