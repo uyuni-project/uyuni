@@ -298,7 +298,10 @@ class Registration(rhnHandler):
                 # Get rid of the old package profile - it's bogus in this case
                 newserv.dispose_packages()
                 # The new server may have a different base channel
-                newserv.change_base_channel(release)
+                suse_products = None
+                if data.has_key('suse_products'):
+                    suse_products = data['suse_products']
+                newserv.change_base_channel(release, suse_products=suse_products)
 
         if newserv is None:
             # Not a re-registration token, we need a fresh server object

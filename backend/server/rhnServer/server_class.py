@@ -151,7 +151,7 @@ class Server(ServerWrapper):
 
 
     # change the base channel of a server
-    def change_base_channel(self, new_rel):
+    def change_base_channel(self, new_rel, suse_products=None):
         log_debug(3, self.server["id"], new_rel)
         old_rel = self.server["release"]       
         current_channels = rhnChannel.channels_for_server(self.server["id"])
@@ -191,6 +191,8 @@ class Server(ServerWrapper):
         s = rhnChannel.LiteServer().init_from_server(self)
         s.release = new_rel
         s.arch = self.archname
+        if suse_products:
+            s.suse_products = suse_products
         # Let get_server_channels deal with the errors and raise rhnFault
         target_channels = rhnChannel.guess_channels_for_server(s)
         target_base = filter(lambda x: not x['parent_channel'],
