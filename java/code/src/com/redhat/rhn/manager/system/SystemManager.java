@@ -1293,15 +1293,9 @@ public class SystemManager extends BaseManager {
             Channel channel,
             boolean flush) {
 
-        // do not allow non-satellite or non-proxy servers to
-        // be subscribed to satellite or proxy channels respectively.
+        // do not allow non-satellite servers to be subscribed to satellite channels.
         if (channel.isSatellite()) {
             if (!server.isSatellite()) {
-                return server;
-            }
-        }
-        else if (channel.isProxy()) {
-            if (!server.isProxy()) {
                 return server;
             }
         }

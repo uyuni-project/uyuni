@@ -166,7 +166,6 @@ public class ChannelAclHandler extends BaseHandler {
         if (chan != null) {
             return  !chan.isBaseChannel() &&
                     !chan.isSatellite() &&
-                    !chan.isProxy() &&
                     ChannelManager.verifyChannelSubscribe(usr, chan.getId());
         }
         return false;

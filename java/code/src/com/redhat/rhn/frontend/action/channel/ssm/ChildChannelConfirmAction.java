@@ -137,8 +137,8 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
     protected List<Channel> filterChannels(Collection<Channel> chans, User user) {
         List<Channel> newChannels = new ArrayList<Channel>();
         for (Channel c : chans) {
-            // Check for proxy and satellite channels
-            if (c.isProxy() || c.isSatellite()) {
+            // Check for satellite channels
+            if (c.isSatellite()) {
                 continue;
             }
             // Verify the user roles, caching the role for the channel
