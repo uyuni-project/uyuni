@@ -785,7 +785,7 @@ SELECT DISTINCT sa.server_id, max(a.earliest_action)
    AND a.earliest_action &lt;= current_timestamp
    AND sa.server_id = s.id
  GROUP BY sa.server_id
- ORDER BY max(a.earliest_action) DESC
+ ORDER BY max(a.earliest_action) ASC
   </query>
 </mode>
 
