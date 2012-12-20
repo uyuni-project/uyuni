@@ -31,6 +31,8 @@ import com.redhat.rhn.manager.kickstart.tree.BaseTreeEditOperation;
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.util.LabelValueBean;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -110,7 +112,14 @@ public abstract class BaseTreeAction extends BaseEditAction {
         if (type.isSUSE()) {
             String kopts = form.getString(KERNEL_OPTS);
             if (!kopts.contains("install=")) {
-                kopts = kopts + " install=http://" + request.getLocalName() +
+                String localhost = request.getLocalName();
+                try {
+                    // Find the FQDN of localhost
+                    localhost = InetAddress.getLocalHost().getCanonicalHostName();
+                }
+                catch (UnknownHostException e) {
+                }
+                kopts = kopts + " install=http://" + localhost +
                     "/ks/dist/" + form.getString(LABEL);
             }
             bte.setKernelOptions(kopts);
