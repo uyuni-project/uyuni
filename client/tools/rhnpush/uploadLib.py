@@ -648,6 +648,9 @@ def listChannel(server, username, password, channels):
     return call(server.packages.listChannel, channels, username, password)
 
 # pylint: disable=C0103
+def listChannel(server, username, password, channels):
+    return call(server.packages.listChannel, channels, username, password)
+
 def listChannelBySession(server, session_string, channels): 
     return call(server.packages.listChannelBySession, channels, session_string)
 

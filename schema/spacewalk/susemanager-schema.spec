@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.7.56.16
+Version:        1.9.9
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -17,6 +17,7 @@ Requires:       /sbin/restorecon
 
 Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
+
 
 %define rhnroot /etc/sysconfig/rhn/
 %define oracle %{rhnroot}/oracle
@@ -71,6 +72,401 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Dec 21 2012 Jan Pazdziora 1.9.9-1
+- 889247 - support for Australia EST/EDT timezones
+
+* Fri Nov 30 2012 Jan Pazdziora 1.9.8-1
+- New timezones for RHEL 7
+- New installation type: RHEL 7
+
+* Tue Nov 06 2012 Tomas Lestach <tlestach@redhat.com> 1.9.7-1
+- 1.9 upgrade scripts go to the spacewalk-schema-1.8-to-spacewalk-schema-1.9
+  dir
+
+* Tue Nov 06 2012 Tomas Lestach <tlestach@redhat.com> 1.9.6-1
+- use correct sequence name in PG rhnDistChannelMap trigger
+
+* Thu Nov 01 2012 Jan Pazdziora 1.9.5-1
+- Fixing the equivalence SHA1.
+
+* Thu Nov 01 2012 Jan Pazdziora 1.9.4-1
+- Cannot drop index used for enforcement of unique/primary key.
+
+* Wed Oct 31 2012 Jan Pazdziora 1.9.3-1
+- The index might not actually exist.
+- Schema upgrade script directory, so that upgrade to nightly passes.
+
+* Wed Oct 31 2012 Jan Pazdziora 1.9.2-1
+- Fixing syntax.
+
+* Wed Oct 31 2012 Tomas Lestach <tlestach@redhat.com> 1.9.1-1
+- define rhnOrgDistChannelMap view dependency
+- create rhnDistChannelMap triggers in the schema
+- Bumping package versions for 1.9.
+
+* Wed Oct 31 2012 Jan Pazdziora 1.8.85-1
+- Fixing syntax.
+
+* Tue Oct 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.84-1
+- channel permission shall be guaranteed by the rhnOrgDistChannelMap
+- update rhn_channel package to use rhnOrgDistChannelMap
+- introduce rhnOrgDistChannelMap
+- create rhnDistChannelMap triggers to auto fill in id
+- add id and org_id to rhnDistChannelMap
+
+* Tue Oct 30 2012 Jan Pazdziora 1.8.83-1
+- Adding the RPM-GPG-KEY-spacewalk-2012 key id.
+- Update the copyright year.
+
+* Tue Oct 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.82-1
+- Add SAST timezone Signed-off-by: Paresh Mutha <pmutha@redhat.com>
+
+* Thu Oct 25 2012 Milan Zazrivec <mzazrivec@redhat.com> 1.8.81-1
+- 869985 - fix unique constraint violation occuring during schema upgrade
+
+* Mon Oct 15 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.80-1
+- added Novell gpg keys
+- added gpg keys for SUSE
+
+* Mon Oct 15 2012 Jan Pazdziora 1.8.79-1
+- Revert "Quote newlines to match the Oracle behaviour.", we use
+  standard_conforming_strings now.
+
+* Fri Oct 05 2012 Tomas Lestach <tlestach@redhat.com> 1.8.78-1
+- updating oracle source sha1
+
+* Fri Oct 05 2012 Tomas Lestach <tlestach@redhat.com> 1.8.77-1
+- set last_modified to current_timestamp if NULL
+
+* Wed Sep 26 2012 Jan Pazdziora 1.8.76-1
+- The rhnpackagesource also references rhnpackagegroup.
+
+* Tue Sep 11 2012 Jan Pazdziora 1.8.75-1
+- The default can also be found in the metadata without parentheses.
+
+* Mon Sep 10 2012 Jan Pazdziora 1.8.74-1
+- Change sysdate to current_timestamp in procedural code.
+- Change date type usage to timestamp in procedural code.
+- Update the rhn_host_monitoring.last_update_date type to TIMESTAMP WITH LOCAL
+  TIME ZONE, run common/views through spacewalk-oracle2postgresql as well to
+  get it converted to TIMESTAMP WITH TIME ZONE.
+- Update DATE to TIMESTAMP WITH LOCAL TIME ZONE and SYSDATE to
+  CURRENT_TIMESTAMP in tables.
+
+* Fri Sep 07 2012 Jan Pazdziora 1.8.73-1
+- Remove the postgres/tables/rhnPackage.sql, we now have the same columns.
+- Make the rhnPackage.build_time timestamp (without time zone) on both
+  databases.
+- We need to recreate the index.
+- 849018 - schema upgrade scripts for extending rhnPackageCapability.version.
+- 849018 - extending rhnPackageCapability.version.
+- 854686 - Fixing the rhn_command.command_class default.
+- Make the into variable match the data type of the table column.
+
+* Mon Sep 03 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.72-1
+- oracle's sql parser doesn't like comments after semicolon
+
+* Wed Aug 22 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.71-1
+- Insert pxt session errors on postgres
+
+* Fri Aug 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.70-1
+- 843374 - fixed subquery in FROM must have an alias
+- 843374 - upgrade script for rhnChannelNewestPackageView
+- 843374 - make list of newest packages unique
+
+* Tue Jul 31 2012 Tomas Lestach <tlestach@redhat.com> 1.8.69-1
+- fix PG upgrade script
+
+* Tue Jul 31 2012 Tomas Lestach <tlestach@redhat.com> 1.8.68-1
+- rename upgrade scripts to satisfy schema differ
+- add sha1 checksum to the pg upgrade script
+
+* Tue Jul 31 2012 Tomas Lestach <tlestach@redhat.com> 1.8.67-1
+- fix upgrade script
+
+* Mon Jul 30 2012 Tomas Lestach <tlestach@redhat.com> 1.8.66-1
+- remove org_applicant from rhnUserGroupType table
+- remove org_applicant related triggers
+- remove org_applicant from rhn_entitlements
+- remove unused is_user_applicant function
+- remove unused org_applicant user role from creating new orgs
+- remove cert_admin from rhnUserGroupType table
+- remove rhn_support from rhnUserGroupType table
+- remove rhn_superuser from rhnUserGroupType table
+
+* Tue Jul 24 2012 Jan Pazdziora 1.8.65-1
+- Add missing primary key, when we already have it in the schema upgrade
+  scripts.
+
+* Mon Jul 23 2012 Tomas Kasparek <tkasparek@redhat.com> 1.8.64-1
+- Preventing whole SQL string from being NULL
+- If by accident pg_dblink_exec is given NULL string (e.g concatenation of
+  string and NULL in pgsql) it raises an error.
+
+* Thu Jul 19 2012 Jan Pazdziora 1.8.63-1
+- Adding table dependency for rhnAbrtInfo.
+
+* Wed Jul 18 2012 Jan Pazdziora 1.8.62-1
+- Fix the equivalence SHA1.
+
+* Wed Jul 18 2012 Jan Pazdziora 1.8.61-1
+- Add schema and migration files for rhnAbrtInfo table
+
+* Fri Jul 13 2012 Jan Pazdziora 1.8.60-1
+- Add the PostgreSQL specific mad_address upgrade script.
+
+* Tue Jul 10 2012 Stephen Herr <sherr@redhat.com> 1.8.59-1
+- 836656 - Also add new column to initial table creation
+
+* Wed Jul 04 2012 Jan Pazdziora 1.8.58-1
+- We mustn't serialize object into string in lookup_evr, we need to only create
+  it once within the link.
+- 836656 - Allow user to set MAC Address when provisioning a virtual guest
+
+* Fri Jun 29 2012 Jan Pazdziora 1.8.57-1
+- Make the resulting data order more deterministic.
+
+* Wed Jun 27 2012 Jan Pazdziora 1.8.56-1
+- Besides rhnServerGroupNotes, the table source was also creating sequence --
+  dropping.
+
+* Wed Jun 27 2012 Jan Pazdziora 1.8.55-1
+- Table rhnServerGroupNotes not used, removing.
+
+* Fri Jun 22 2012 Jan Pazdziora 1.8.54-1
+- 712313 - Add installed size to repodata
+
+* Thu Jun 21 2012 Jan Pazdziora 1.8.53-1
+- Make the .postgresql schema upgrade script actually use the PostgreSQL
+  syntax.
+
+* Wed Jun 20 2012 Simon Lukasik <slukasik@redhat.com> 1.8.52-1
+- Add index on ident_id for better performance
+- Add index on testresult_id for better performance.
+- separate schema upgrade script for PostgreSQL
+
+* Mon Jun 11 2012 Jan Pazdziora 1.8.51-1
+- The upgrade scripts are not processed with oracle2postgresql, making separate
+  PostgreSQL scripts.
+
+* Fri Jun 08 2012 Jan Pazdziora 1.8.50-1
+- Properly name the primary index constraint/index for rhnActionImageDeploy.
+
+* Thu Jun 07 2012 Jan Pazdziora 1.8.49-1
+- We cannot use markup in formatted text (synopsis).
+- 803370 - lookup_tag: schema upgrade
+- 803370 - lookup_tag: don't call lookup_tag_name twice
+- Disable rhn_channel_mod_trig while updating rhnChannel, so that modified does
+  not get modified.
+
+* Tue Jun 05 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.48-1
+- removed support for Red Hat Linux 6.2 and 7.[0123]
+
+* Mon Jun 04 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.47-1
+- Add support for studio image deployments (DB files) (jrenner@suse.de)
+
+* Sat Jun 02 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.46-1
+- 719609 - add support for RaspberryPi (armv6l) (msuchy@redhat.com)
+
+* Thu May 31 2012 Jan Pazdziora 1.8.45-1
+- Disable rhn_pkgsrc_mod_trig while updating rhnPackageSource, so that modified
+  does not get modified.
+- Disable rhn_ks_mod_trig while updating rhnKsData, so that modified does not
+  get modified.
+- Disable rhn_erratafiletmp_mod_trig while updating rhnErrataFileTmp, so that
+  modified does not get modified.
+- Disable rhn_errata_file_mod_trig while updating rhnErrataFile, so that
+  modified does not get modified.
+- Disable rhn_channel_mod_trig while updating rhnChannel, so that modified does
+  not get modified.
+- Disable rhn_confcontent_mod_trig while updating rhnConfigContent, so that
+  modified does not get modified.
+- Fixing misleading comment.
+- Disable rhn_privcf_mod_trig while updating rhnPrivateChannelFamily, so that
+  modified does not get modified.
+- Disable rhn_server_channel_mod_trig while updating rhnServerChannel, so that
+  modified does not get modified.
+- Disable rhn_servernetwork_mod_trig while updating rhnServerNetwork, so that
+  modified does not get modified.
+
+* Wed May 30 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.44-1
+- fixed build time sanity check errors
+
+* Tue May 29 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.43-1
+- changes from 001 and 048 files have been merged into 051-* upgrade file
+- upgrade scripts for user_role_check_debug() changes
+- get rid of out parameters in user_role_check_debug
+- Disable web_customer_mod_trig while updating web_customer, so that modified
+  does not get modified.
+
+* Mon May 28 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.42-1
+- 719609 - fix upgrades for arm
+
+* Fri May 25 2012 Milan Zazrivec <mzazrivec@redhat.com> 1.8.41-1
+- forgotten rhnPackageSource update
+
+* Thu May 24 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.40-1
+- 719609 - fix upgrades for arm
+
+* Thu May 24 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.39-1
+- 719609 - correct channel arch for armv7
+
+* Wed May 23 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.38-1
+- 719609 - correct server arch for armv7
+
+* Wed May 23 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.37-1
+- 719609 - fix errors from previous ARM commits
+
+* Tue May 22 2012 Jan Pazdziora 1.8.36-1
+- No need to enforce unique (name_id, evr_id) on rhnVersionInfo.
+
+* Tue May 22 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.35-1
+- 719609 - set priorities between server and package arch
+- 719609 - allow upgrade from arm to noarch and vice versa
+- 719609 - add support for server arch armv5tejl
+- 719609 - for arm create channel-armhfp and channel-arm
+
+* Mon May 21 2012 Tomas Lestach <tlestach@redhat.com> 1.8.34-1
+- 822918 - fix various issues in PG variant of rhn_channel.convert_to_fve
+- Disable rhn_srv_net_iface_mod_trig while updating rhnServerNetInterface, so
+  that modified does not get modified.
+- %%defattr is not needed since rpm 4.4
+- fix sha1 sum
+- Improve rhnPackageChangeLog upgrade logic.
+- Improve upgrade time_series data move
+- Fix rhnPackageChangeLog upgrade logic.
+
+* Mon May 14 2012 Tomas Lestach <tlestach@redhat.com> 1.8.33-1
+- remove unused cursor
+
+* Fri May 11 2012 Tomas Lestach <tlestach@redhat.com> 1.8.32-1
+- adding create_first_org upgrade scripts
+- adding rhn_org upgrade scripts
+- adding rhn_config upgrade scripts
+- remove rhnOrgQuota and its usage
+- remove rhn_schema package
+- remove usage of rhn_quota package
+- kickstartable tree shall be deleted together with the channel
+
+* Thu May 10 2012 Tomas Lestach <tlestach@redhat.com> 1.8.31-1
+- fix rhn_time_zone_names upgrade scripts
+
+* Wed May 09 2012 Tomas Lestach <tlestach@redhat.com> 1.8.30-1
+- dropping unused rhn_time_zone_names
+
+* Wed May 02 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.29-1
+- 719609 - add support for armv7hnl package arch
+
+* Mon Apr 30 2012 Jan Pazdziora 1.8.28-1
+- Update existing rhn_notification_formats with the new newlines matching
+  Oracle.
+
+* Mon Apr 30 2012 Jan Pazdziora 1.8.27-1
+- Using PostgreSQL version of rhn_org.delete_org in upgrade scripts.
+
+* Mon Apr 30 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.26-1
+- 719609 - make arm channels compatible with noarch packages
+
+* Mon Apr 30 2012 Jan Pazdziora 1.8.25-1
+- Fix the order for the arm schema upgrade scripts.
+
+* Fri Apr 27 2012 Jan Pazdziora 1.8.24-1
+- We cannot specify tablespace for PostgreSQL.
+
+* Fri Apr 27 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.23-1
+- 719609 - add support for armv5 channels
+- 719609 - Add support for armv7l cpu and armv7 channels
+
+* Fri Apr 27 2012 Tomas Lestach <tlestach@redhat.com> 1.8.22-1
+- 807283 - fixing postgresql schema and adding appropriate schema upgrade
+  scripts
+- 807283 - remove rhnContentSource row when delete row in oracle pkg
+- add unique constraint on rhnChannelArch.name
+
+* Fri Apr 27 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.21-1
+- 630953 - make sure that rows are unique before creating unique index
+
+* Thu Apr 26 2012 Jan Pazdziora 1.8.20-1
+- We need to use to_timestamp, so that we do not miss the hour-to-second part
+  on PostgreSQL.
+- Quote newlines to match the Oracle behaviour.
+
+* Mon Apr 23 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.19-1
+- 811646 - assign number of free slots
+
+* Mon Apr 23 2012 Jan Pazdziora 1.8.18-1
+- Fixing the schema hardening trigger on rhnPackageEvr.
+
+* Fri Apr 20 2012 Jan Pazdziora 1.8.17-1
+- Schema hardening: catch code which would update or delete rhnPackageEvr.
+- Make the records in rhnPackageUpgradeArchCompat -- no need to have
+  duplicates.
+
+* Mon Apr 16 2012 Jan Pazdziora 1.8.16-1
+- 812453 - bring the schema version as recorded in the database in sync with
+  the installed rpms, even if the difference is just the dist tag.
+
+* Fri Apr 13 2012 Jan Pazdziora 1.8.15-1
+- 787225 - the Log Size actually checks Log Size Growth.
+- fix PG lookup_transaction_package stored procedure (tlestach@redhat.com)
+
+* Tue Apr 03 2012 Jan Pazdziora 1.8.14-1
+- fix procedure dependencies (mzazrivec@redhat.com)
+
+* Fri Mar 30 2012 Jan Pazdziora 1.8.13-1
+- Add dependency for rhnXccdfRuleIdentMap to force order.
+
+* Thu Mar 29 2012 Simon Lukasik <slukasik@redhat.com> 1.8.12-1
+- Fix SHA1 of oracle sources. (slukasik@redhat.com)
+
+* Thu Mar 29 2012 Simon Lukasik <slukasik@redhat.com> 1.8.11-1
+- Schema upgrade for the new rule/ident mapping. (slukasik@redhat.com)
+- We want to store all idents per rule-result (slukasik@redhat.com)
+- Extend xccdf:ident length (slukasik@redhat.com)
+- A fast way to force the preferred_time_zone to be string. (msuchy@redhat.com)
+
+* Mon Mar 26 2012 Miroslav Suchý 1.8.10-1
+- add requires /sbin/restorecon
+
+* Wed Mar 21 2012 Jan Pazdziora 1.8.9-1
+- Glob returns its input when file does not exist, filter it out.
+
+* Mon Mar 19 2012 Jan Pazdziora 1.8.8-1
+- lookup_tag: schema upgrade (mzazrivec@redhat.com)
+- fix quote_literal() syntax (mzazrivec@redhat.com)
+
+* Wed Mar 14 2012 Jan Pazdziora 1.8.7-1
+- Fixing typo (rhn_eaddress_mod_trig_fun vs. rhn_eastate_mod_trig_fun).
+
+* Wed Mar 14 2012 Jan Pazdziora 1.8.6-1
+- Need to drop the leftover trigger functions in schema upgrades as well.
+
+* Wed Mar 14 2012 Jan Pazdziora 1.8.5-1
+- Fixing the rhn_user PostgreSQL schema upgrades.
+- Adding schem upgrade script for rhnChecksumView.
+
+* Tue Mar 13 2012 Jan Pazdziora 1.8.4-1
+- let's make rhnChecksumView perform better in PG (michael.mraka@redhat.com)
+- rhn_contact_monitoring: fix schema upgrade (mzazrivec@redhat.com)
+
+* Fri Mar 09 2012 Miroslav Suchý 1.8.3-1
+- remove more password macros
+- remove RHN_DB_USERNAME from monitoring scout configuration
+- remove RHN_DB_PASSWD from monitoring scout configuration
+- remove RHN_DB_NAME from monitoring scout configuration
+- remove tableowner from monitoring scout configuration
+
+* Thu Mar 08 2012 Milan Zazrivec <mzazrivec@redhat.com> 1.8.2-1
+- create_pxt_session: correct insert syntax (mzazrivec@redhat.com)
+- Allow for rhnPackageKey records to preexist already. (jpazdziora@redhat.com)
+
+* Thu Mar 08 2012 Milan Zazrivec <mzazrivec@redhat.com> 1.8.1-1
+- pxt_session_cleanup: no need for autonomous_transaction
+- removed rhnEmailAddress* objects
+- find_mailable_address is no longer needed
+- don't call rhn_user.find_mailable_address for a valid email address
+- rhn_channel.update_needed_cache does not need autonomous_transaction
+
 * Fri Mar 02 2012 Jan Pazdziora 1.7.55-1
 - Keys for Fedora 16 -- 18.
 - Update the copyright year info.

@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.29
+Version: 1.9.32
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -57,7 +57,7 @@ Requires: jfreechart >= 1.0.9
 
 Requires: bcel
 Requires: c3p0
-Requires: dwr
+Requires: dwr >= 3
 Requires: hibernate3 = 0:3.2.4
 Requires: java >= 1.6.0
 Requires: java-devel >= 1.6.0
@@ -146,7 +146,7 @@ BuildRequires: c3p0
 BuildRequires: concurrent
 BuildRequires: cglib
 BuildRequires: dom4j
-BuildRequires: dwr
+BuildRequires: dwr >= 3
 BuildRequires: hibernate3 = 0:3.2.4
 BuildRequires: jaf
 BuildRequires: jakarta-commons-cli
@@ -757,6 +757,16 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Dec 21 2012 Jan Pazdziora 1.9.32-1
+- 889247 - support for Australia EST/EDT timezones
+- update dwr dependencies since we expect dwr3
+
+* Tue Dec 18 2012 Tomas Lestach <tlestach@redhat.com> 1.9.31-1
+- remove strange unused code
+
+* Mon Dec 17 2012 Jan Pazdziora 1.9.30-1
+- Do not use <select>'s with the same names on one form.
+
 * Fri Dec 14 2012 Michael Mraka <michael.mraka@redhat.com> 1.9.29-1
 - determining tomcat version when building webapp instead hardcode tomcat5
 
