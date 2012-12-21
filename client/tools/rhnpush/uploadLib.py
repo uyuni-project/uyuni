@@ -644,9 +644,6 @@ def parseXMLRPCfault(fault):
         faultCode = -faultCode
     return ServerFault(faultCode, "", fault.faultString)
 
-def listChannel(server, username, password, channels):
-    return call(server.packages.listChannel, channels, username, password)
-
 # pylint: disable=C0103
 def listChannel(server, username, password, channels):
     return call(server.packages.listChannel, channels, username, password)
