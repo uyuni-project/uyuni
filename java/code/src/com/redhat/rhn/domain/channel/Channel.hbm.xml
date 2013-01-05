@@ -320,6 +320,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                AND (CP.channel_id = C.id  OR CP.channel_id = C.parent_channel)
                AND CP.package_id = P.id
                AND P.path LIKE :pathlike
+          ORDER BY p.build_time
         ]]>
     <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
     </sql-query>
