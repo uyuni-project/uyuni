@@ -12,7 +12,7 @@ Summary:        Spacewalk Monitoring Daemon
 Name:           rhnmd
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:        5.3.14
+Version:        5.3.15
 Release:        1%{?dist}
 License:        GPLv2
 BuildArch:      noarch
@@ -52,6 +52,7 @@ Obsoletes:      rhnmd.x86_64 < 5.3.0-5
 Provides:       rhnmd.i386 = %{version}
 Provides:       rhnmd.x86_64 = %{version}
 
+Requires(preun): /usr/sbin/semanage
 
 %description
 rhnmd enables secure ssh-based communication between the monitoring
@@ -154,6 +155,9 @@ fi
 /usr/sbin/semanage fcontext -a -t ssh_home_t '/var/lib/nocpulse/\.ssh/authorized_keys' || :
 %endif
 /sbin/restorecon -rvv /var/lib/nocpulse || :
+%if 0%{?fedora}
+/usr/sbin/semanage port -l | grep -q '^ssh_port_t\b.*\btcp\b.*\b4545\b' || /usr/sbin/semanage port -a -t ssh_port_t -p tcp 4545 || :
+%endif
 %endif
 %endif
 
@@ -167,6 +171,7 @@ fi
 if [ $1 = 0 ]; then
     %if 0%{?fedora}
     /bin/systemctl stop rhnmd.service >/dev/null 2>&1
+    /usr/sbin/semanage port -d -t ssh_port_t -p tcp 4545 || :
     %else
     /sbin/service rhnmd stop > /dev/null 2>&1
     %endif
@@ -210,6 +215,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Jan 04 2013 Jan Pazdziora 5.3.15-1
+- We may need to define the port 4545 as ours to use.
+- The daemon does success for us.
+
 * Mon Dec 10 2012 Michael Mraka <michael.mraka@redhat.com> 5.3.14-1
 - added missing pid file
 - fixed service description
