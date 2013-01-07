@@ -115,7 +115,7 @@ public abstract class BaseTreeAction extends BaseEditAction {
                 String localhost = request.getLocalName();
                 try {
                     // Find the FQDN of localhost
-                    localhost = InetAddress.getLocalHost().getCanonicalHostName();
+                    localhost = InetAddress.getByName(localhost).getCanonicalHostName();
                 }
                 catch (UnknownHostException e) {
                 }
