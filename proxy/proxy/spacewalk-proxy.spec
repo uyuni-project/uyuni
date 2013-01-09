@@ -259,6 +259,20 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
+
+# In case of an update, remove superfluous stuff
+# from cobbler-proxy.conf (bnc#796581)
+
+PROXY_CONF=/etc/apache2/conf.d/cobbler-proxy.conf
+TMPFILE=`mktemp`
+
+if grep "^ProxyPass /ks " $PROXY_CONF > /dev/null 2>&1 ; then
+    grep -v "^ProxyPass /ks " $PROXY_CONF | \
+    grep -v "^ProxyPassReverse /ks " | \
+    grep -v "^ProxyPass /download " | \
+    grep -v "^ProxyPassReverse /download " > $TMPFILE
+    mv $TMPFILE $PROXY_CONF
+fi
 %endif
 
 %post redirect
