@@ -1,0 +1,7 @@
+# example of answer file for configure-tftpsync.sh
+
+TFTPBOOT=/srv/tftpboot
+SUMA_IP=10.10.0.250
+SUMA_PROXY_FQDN=sumaproxy.example.com
+SUMA_PROXY_IP=192.168.1.249
+
