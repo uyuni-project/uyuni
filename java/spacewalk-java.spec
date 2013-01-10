@@ -144,6 +144,7 @@ BuildRequires: jcommon
 BuildRequires: jdom
 BuildRequires: jfreechart >= 1.0.9
 BuildRequires: jta
+BuildRequires: jsch
 BuildRequires: redstone-xmlrpc
 BuildRequires: oscache
 BuildRequires: quartz
@@ -302,6 +303,7 @@ Requires: jakarta-commons-logging
 %endif
 Requires: jakarta-taglibs-standard
 Requires: jcommon
+Requires: jsch
 Requires: log4j
 Requires: oscache
 Requires: pam-modules
