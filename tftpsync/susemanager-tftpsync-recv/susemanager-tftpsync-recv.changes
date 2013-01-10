@@ -1,0 +1,15 @@
+-------------------------------------------------------------------
+Thu Jan 10 16:30:52 CET 2013 - mc@suse.de
+
+- version 1.7.1-1
+- add copyright header
+- add COPYING file
+- add example answers.txt file
+- move wsgi scripts to /srv/www/tftpsync/
+- rewrite setup script
+
+-------------------------------------------------------------------
+Thu Jan 10 11:12:24 CET 2013 - mc@suse.de
+
+- initial release
+
