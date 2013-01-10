@@ -16,8 +16,8 @@
 #
 
 Name:           susemanager-tftpsync-recv
-Version:        1.0
-Release:        0.1
+Version:        1.7.0
+Release:        1%{?dist}
 Summary:        Reciever for SUSE Manager tftp sync
 Url:            http://www.suse.com
 License:        GPLv2
@@ -71,6 +71,7 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
 %config(noreplace) %{_sysconfdir}/apache2/conf.d/susemanager-tftpsync-recv.conf
 
 %defattr(-,root,root,-)
+%doc answers.txt COPYING
 %dir /srv/www/tftpsync
 /srv/www/tftpsync/add
 /srv/www/tftpsync/delete
