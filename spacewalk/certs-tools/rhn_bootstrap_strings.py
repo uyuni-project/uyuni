@@ -295,7 +295,7 @@ if [ "$INSTALLER" == zypper ]; then
     echo "  no packages missing."
   else
     echo "* going to install missing packages..."
-    Z_CLIENT_REPOS_ROOT="${Z_CLIENT_REPOS_ROOT:-http://${HOSTNAME}/pub/repositories}"
+    Z_CLIENT_REPOS_ROOT="${Z_CLIENT_REPOS_ROOT:-https://${HOSTNAME}/pub/repositories}"
     Z_CLIENT_REPO_URL="${Z_CLIENT_REPOS_ROOT}/${Z_CLIENT_CODE_BASE}/${Z_CLIENT_CODE_VERSION}/${Z_CLIENT_CODE_PATCHLEVEL}/bootstrap"
     test "${Z_CLIENT_CODE_BASE}/${Z_CLIENT_CODE_VERSION}/${Z_CLIENT_CODE_PATCHLEVEL}" = "sle/11/1" && {
       # use backward compatible URL for SLE11-SP1 repo
