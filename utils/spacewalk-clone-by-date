@@ -134,15 +134,44 @@ def parse_args():
     parser.add_option("-l", "--channels", dest="channels", nargs=2, action="append", help="Original channel and clone channel labels space separated (e.g. --channels=rhel-i386-server-5 myclone).  Can be specified multiple times.")
     parser.add_option("-b", "--blacklist", dest="blacklist",  help="Comma separated list of package names (or regular expressions) to exclude from cloned errata (Only added packages will be considered).")
     parser.add_option("-r", "--removelist", dest="removelist",  help="Comma separated list of package names (or regular expressions) to remove from destination channel (All packages are available for removal).")
-    parser.add_option("-d", "--to_date", dest="to_date", help="Clone errata to the specified date (YYYY-MM-DD)")
+    parser.add_option("-d", "--to_date", dest="to_date", help="Clone errata to the specified date (YYYY-MM-DD). If omitted will assume no errata.")
     parser.add_option("-y", "--assumeyes", dest='assumeyes', action='store_true', help="Assume yes for any prompts (unattended).")
     parser.add_option("-m", "--sample-config", dest='sample', action='store_true', help="Print a sample full configuration file and exit.")
     parser.add_option("-k", "--skip_depsolve", dest='skip_depsolve', action='store_true', help="Skip all dependency solving (Not recommended).")
     parser.add_option("-v", "--validate", dest='validate', action='store_true', help="Run repoclosure on the set of specified repositories.")
     parser.add_option("-g", "--background", dest='background', action='store_true', help="Clone the errata in the background. Prompt will return quicker; before cloning is finished.")
     parser.add_option("-o", "--security_only", dest='security_only', action='store_true', help="Only clone security errata (and their dependencies).")
+    # Note: the parents option has no logical analog for the config
+    # file. This option is provided primarily as a convenience option to
+    # provide a more intuitive way to clone a child channels for an
+    # already-existing parent. However, the config file can easily
+    # contain many different channel trees, and any implementation that
+    # involves multiple channel trees would be extremely un-intuitive.
+    # Config file users must re-list the parent channels, the tool
+    # correctly determins if a channel already exists and does not try
+    # to re-create it.
+    parser.add_option("-a", "--parents", dest="parents", nargs=2,
+            help="Already existing channels that will be used as the "
+            + "original parent and destination parent of child "
+            + "channels cloned this session.")
 
     (options, args) = parser.parse_args()
+
+    if options.parents != None:
+        if (len(options.parents) != 2
+                or options.parents[0].startswith('-')
+                or options.parents[1].startswith('-')):
+            raise UserError("The -a / --parents option requires two arguments")
+
+    # have to check this option before we merge with the config file to
+    # ensure that optparse is parsing the args correctly. We have to
+    # check it again after the config file merge to make sure we have
+    # channels.
+    if options.channels != None:
+        for channel_group in options.channels:
+            if (len(channel_group) != 2 or channel_group[0].startswith('-')
+                    or channel_group[1].startswith('-')):
+                raise UserError("The -l / --channels option requires two arguments")
 
     if options.sample:
         print SAMPLE_CONFIG
@@ -150,6 +179,9 @@ def parse_args():
 
     if options.config and options.channels:
         raise UserError("Cannot specify both --channels and --config.")
+
+    if options.config and options.parents:
+        raise UserError("Cannot specify both --parents and --config.")
 
     if options.blacklist:
         options.blacklist = {"ALL":options.blacklist.split(",")}
@@ -159,17 +191,11 @@ def parse_args():
 
     options = merge_config(options)
 
-    if not options.username:
-        raise UserError("Username not specified")
-
     if options.channels == None or len(options.channels) == 0:
         raise UserError("No channels specified. See --help for details.")
-    else:
-        for channel_group in options.channels:
-            for existing in channel_group.keys():
-                if existing.startswith('-') or channel_group[existing].startswith('-'):
-                    raise UserError("The -l / --channels option requires two arguments")
 
+    if not options.username:
+        raise UserError("Username not specified")
 
     if not options.validate:
         if options.to_date:

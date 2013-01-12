@@ -1431,7 +1431,7 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Delete systems given a list of system ids.
+     * Delete systems given a list of system ids asynchronously.
      * This call queues the systems for deletion
      * @param sessionKey The sessionKey containing the logged in user
      * @param systemIds A list of systems ids to delete
@@ -1440,7 +1440,7 @@ public class SystemHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * sid cannot be found.
      *
-     * @xmlrpc.doc Delete systems given a list of system ids.
+     * @xmlrpc.doc Delete systems given a list of system ids asynchronously.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #array_single("int", "serverId")
      * @xmlrpc.returntype #return_int_success()
@@ -1489,7 +1489,7 @@ public class SystemHandler extends BaseHandler {
 
 
     /**
-     * Delete a system given its cilent certificate.
+     * Delete a system given its client certificate.
      *
      * @param clientCert  client certificate of the system.
      * @return 1 on success
@@ -1497,7 +1497,7 @@ public class SystemHandler extends BaseHandler {
      *   - The server corresponding to the sid cannot be found
      * @throws MethodInvalidParamException thrown if certificate is invalid.
      * @since 10.10
-     * @xmlrpc.doc Delete a system given its cilent certificate.
+     * @xmlrpc.doc Delete a system given its client certificate.
      * @xmlrpc.param #param_desc("string", "systemid", "systemid file")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -1533,7 +1533,27 @@ public class SystemHandler extends BaseHandler {
         return 1;
     }
 
+    /**
+     * Delete a system given its server id synchronously
+     * @param sessionKey The sessionKey containing the logged in user
+     * @param serverId The id of the server in question
+     * @return 1 on success
+     * @throws FaultException A FaultException is thrown if:
+     *   - The server corresponding to the sid cannot be found
+     * @xmlrpc.doc Delete a system given its server id synchronously
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int deleteSystem(String sessionKey, Integer serverId)
+            throws FaultException {
 
+        User loggedInUser =  getLoggedInUser(sessionKey);
+        Server server = lookupServer(loggedInUser, serverId);
+
+        SystemManager.deleteServer(loggedInUser, server.getId());
+        return 1;
+    }
 
     /**
      * Get the addresses and hostname for a given server
