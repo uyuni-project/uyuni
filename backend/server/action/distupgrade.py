@@ -38,8 +38,8 @@ _query_products = rhnSQL.Statement("""
            p1.version,
            p2.name new_name,
            p2.version new_version,
-           COALESCE(p2.release, '') new_release,
-           COALESCE(pa.label, '') new_arch
+           COALESCE(p2.release, ' ') new_release,
+           COALESCE(pa.label, ' ') new_arch
       FROM rhnActionDupProduct adp
       JOIN suseProducts p1 ON adp.from_pdid = p1.id
       JOIN suseProducts p2 ON adp.to_pdid = p2.id
