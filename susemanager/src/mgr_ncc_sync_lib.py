@@ -214,7 +214,7 @@ class NCCSync(object):
         """
         # trivial case: no credentials are used
         if self.fromdir:
-            return [self._get_ncc(url, send)]
+            return [(0, self._get_ncc(url, send))]
 
         # other case: iterate through the list of credentials and return
         # a list of tuples (authuser, xml document)
@@ -1155,10 +1155,10 @@ class NCCSync(object):
             return True
 
         if self.fromdir: # local repository
-            channel_path = channel.get('source_url').split('file://')[1]
+            channel_path = source_url.split('file://')[1]
             return os.path.exists(channel_path)
         else: # remote repository
-            channel_path = get_repo_path(channel.get('source_url'))
+            channel_path = get_repo_path(source_url)
             try:
                 return self.get_mirrorable_repos()[channel_path]
             except KeyError:
@@ -1168,8 +1168,7 @@ class NCCSync(object):
                     # no need to do the accessible check
                     return False
                 return (not channel_path
-                        or suseLib.accessible(channel.get('source_url')
-                                              + '/repodata/repomd.xml'))
+                        or suseLib.accessible(source_url + '/repodata/repomd.xml'))
 
     def get_ncc_channel(self, channel_label):
         """Try getting the NCC channel for this user
@@ -1583,6 +1582,18 @@ class NCCSync(object):
         # anything since we won't put anything in the database anyway
         if not channel_url:
             return
+
+        if self.fromdir is not None:
+            if channel_url.startswith('file://'):
+                return
+            path = urlparse(channel_url).path
+            channel.set('source_url', self.fromdir+path)
+            if self.is_mirrorable(channel):
+                return
+            else:
+                # seems to be no local url.
+                # Set it back and try to find a mirror credential
+                channel.set('source_url', channel_url)
 
         url = suseLib.URL(channel_url)
 
