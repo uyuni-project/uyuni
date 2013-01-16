@@ -1586,6 +1586,7 @@ class NCCSync(object):
         if self.fromdir is not None:
             if channel_url.startswith('file://'):
                 return
+            # pylint: disable=E1101
             path = urlparse(channel_url).path
             channel.set('source_url', self.fromdir+path)
             if self.is_mirrorable(channel):
