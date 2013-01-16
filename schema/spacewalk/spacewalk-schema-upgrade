@@ -5,6 +5,7 @@ use warnings FATAL => 'all';
 
 use Spacewalk::Setup ();
 use IPC::Open3 ();
+use File::Basename;
 
 my $SCHEMA_UPGRADE_DIR = '/etc/sysconfig/rhn/schema-upgrade';
 my $SCHEMA_UPGRADE_LOGDIR = '/var/log/spacewalk/schema-upgrade';
@@ -12,51 +13,79 @@ my $SCHEMA_UPGRADE_LOGDIR = '/var/log/spacewalk/schema-upgrade';
 my $config_file = Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION;
 
 if (not -e $config_file) {
-	die "The config file [$config_file] does not seem to exist. Was Spacewalk configured yet?\n";
+    die "The config file [$config_file] does not seem to exist. Was Spacewalk configured yet?\n";
 }
 
 my %options;
 Spacewalk::Setup::read_config($config_file, \%options);
 if (not defined $options{db_backend}) {
-	die "Config file [$config_file] does not seem to have database backend info (db_backend) set.\n";
+    die "Config file [$config_file] does not seem to have database backend info (db_backend) set.\n";
 }
 
 my $test = run_query("select '1' || '2' || '3' as testing from dual;");
 if (not defined $test) {
-	die "Connect to database was not successful.\n";
+    die "Connect to database was not successful.\n";
 }
 if ($test ne '123') {
-	die "Test select from database did not give expected results.\n";
+    die "Test select from database did not give expected results.\n";
 }
 
-my $schema_version = run_query(<<EOF);
-	select rhnPackageName.name || '-' || (PE.evr).version || '-' || (PE.evr).release
-	from rhnVersionInfo, rhnPackageName, rhnPackageEVR PE
-	where rhnVersionInfo.label = 'schema'
-		and rhnVersionInfo.name_id = rhnPackageName.id
-		and rhnVersionInfo.evr_id = PE.id;
+my $default_tablespace;
+if ($options{db_backend} eq 'oracle') {
+    $default_tablespace = run_query(<<EOF);
+    select default_tablespace
+    from user_users
+    where username = sys_context('userenv', 'session_user');
 EOF
-if (not defined $schema_version) {
-	die "No existing schema version info found in rhnVersionInfo.\n";
+    if (not defined $default_tablespace) {
+        die "Failed to retrieve default_tablespace from database.\n";
+    }
 }
-if (not $schema_version =~ /^rhn-satellite-schema-|^spacewalk-schema-|^satellite-schema-|^susemanager-schema-/) {
-	die "Unknown schema name [$schema_version] found.\n";
-}
-
-my $start_schema = $schema_version;
-(my $start_schema_norm = $start_schema) =~ s!^(.+-\d+(\.\d+)*)(\..*)*$!$1!;
 
 my $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' /etc/sysconfig/rhn/oracle/schema-override 2> /dev/null`;
 if ($?) { # the directory does not exists or is not owned by any rpm
-	$my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' /etc/sysconfig/rhn/oracle/main.sql`;
+    $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' /etc/sysconfig/rhn/oracle/main.sql`;
 }
 my ($my_schema_name, $my_schema_version, $my_schema_release) = ($my_schema_version_out =~ /^(\S+)\s(\S+)\s(\S+)$/);
 if (not defined $my_schema_release) {
-	die "Failed to retrieve our schema package name and version.\n";
+    die "Failed to retrieve our schema package name and version.\n";
 }
 
 my $target_schema = join '-', $my_schema_name, $my_schema_version, $my_schema_release;
 (my $target_schema_norm = $target_schema) =~ s!^(.+-\d+(\.\d+)*)(\..*)*$!$1!;
+
+my $schema_version = run_query(<<EOF);
+    select rhnPackageName.name || '-' || (PE.evr).version || '-' || (PE.evr).release
+      from rhnVersionInfo, rhnPackageName, rhnPackageEVR PE
+     where rhnVersionInfo.label = 'schema'
+       and rhnVersionInfo.name_id = rhnPackageName.id
+       and rhnVersionInfo.evr_id = PE.id;
+EOF
+if (not defined $schema_version) {
+    my $migrationdir = run_query(<<EOF);
+        select label
+          from rhnVersionInfo
+         where label like 'schema-from%'
+      order by label DESC;
+EOF
+    if (! defined $migrationdir or ! -d "$SCHEMA_UPGRADE_LOGDIR/$migrationdir") {
+        die "No existing schema version info found in rhnVersionInfo.\n";
+    }
+    my @logfiles = sort {$b cmp $a} map { glob } "/var/log/spacewalk/schema-upgrade/$migrationdir-to-*.log";
+    my $lname = ((scalar(@logfiles) >= 1)?basename($logfiles[0]):"$migrationdir.log");
+    print "Found unfinished schema migration\n";
+    print "Try to continue schema migration\n";
+    run_schema_upgrade("$SCHEMA_UPGRADE_LOGDIR/$migrationdir", $lname, $target_schema, $default_tablespace);
+
+    exit;
+}
+
+if (not $schema_version =~ /^rhn-satellite-schema-|^spacewalk-schema-|^satellite-schema-|^susemanager-schema-/) {
+    die "Unknown schema name [$schema_version] found.\n";
+}
+
+my $start_schema = $schema_version;
+(my $start_schema_norm = $start_schema) =~ s!^(.+-\d+(\.\d+)*)(\..*)*$!$1!;
 
 print "Schema upgrade: [$start_schema] -> [$target_schema]\n";
 
@@ -65,286 +94,375 @@ my $retried = 0;
 RETRY:
 
 if (!$foundtarget) {
-	print "Searching for upgrade path to: [$target_schema_norm]\n";
+    print "Searching for upgrade path to: [$target_schema_norm]\n";
 }
 
 my %upgrade_path;
 my @queue = ( $target_schema_norm );
 while (@queue) {
-	my $t = shift @queue;
-	my @lookup = glob "$SCHEMA_UPGRADE_DIR/*-to-$t";
-	for (@lookup) {
-		$foundtarget = 1;
-		s!^\Q$SCHEMA_UPGRADE_DIR/\E!!;
-		s!-to-\Q$t\E$!!;
-		## print "  [$_] -> [$t]\n";
-		if ($_ eq $start_schema_norm) {
-			## print "    -> start found.\n";
-		}
-		$upgrade_path{$_}{$t} = $upgrade_path{$t};
-		push @queue, $_;
-	}
+    my $t = shift @queue;
+    my @lookup = glob "$SCHEMA_UPGRADE_DIR/*-to-$t";
+    for (@lookup) {
+        $foundtarget = 1;
+        s!^\Q$SCHEMA_UPGRADE_DIR/\E!!;
+        s!-to-\Q$t\E$!!;
+        ## print "  [$_] -> [$t]\n";
+        if ($_ eq $start_schema_norm) {
+            ## print "    -> start found.\n";
+        }
+        $upgrade_path{$_}{$t} = $upgrade_path{$t};
+        push @queue, $_;
+    }
 }
 
 if (!$foundtarget) {
-	if (not $retried) {
-		if ($target_schema_norm =~ s!^(.+-.+)-\d+(\.\d+)*$!$1!) {
-			$retried++;
-			goto RETRY;
-		}
-	}
-	if ($retried) {
-		my $trunc_version = 0;
-		if ($target_schema_norm =~ s!^(.+-.+\..+)\.[^.-]+$!$1!) {
-			$trunc_version = 1;
-		}
-		if ($trunc_version) {
-			goto RETRY;
-		}
-	}
-	die "Was not able to find upgrade path in directory [$SCHEMA_UPGRADE_DIR].\n";
+    if (not $retried) {
+        if ($target_schema_norm =~ s!^(.+-.+)-\d+(\.\d+)*$!$1!) {
+            $retried++;
+            goto RETRY;
+        }
+    }
+    if ($retried) {
+        my $trunc_version = 0;
+        if ($target_schema_norm =~ s!^(.+-.+\..+)\.[^.-]+$!$1!) {
+            $trunc_version = 1;
+        }
+        if ($trunc_version) {
+            goto RETRY;
+        }
+    }
+    die "Was not able to find upgrade path in directory [$SCHEMA_UPGRADE_DIR].\n";
 }
 
 $retried = 0;
 RETRYSOURCE:
 
 if ($start_schema eq $target_schema) {
-	warn "Your database schema already matches the schema package version [$target_schema].\n";
-	exit;
+    warn "Your database schema already matches the schema package version [$target_schema].\n";
+    exit;
 }
 if ($start_schema_norm eq $target_schema_norm) {
-       print "The schema version is the same, except for the dist tag.\n";
-       $upgrade_path{$target_schema_norm} = undef;
+    print "The schema version is the same, except for the dist tag.\n";
+    $upgrade_path{$target_schema_norm} = undef;
 }
 
 print "Searching for start path:  [$start_schema_norm]\n";
 
 if (not exists $upgrade_path{$start_schema_norm}) {
-	if (not $retried) {
-		if ($start_schema_norm =~ s!^(.+-.+)-\d+(\.\d+)*$!$1!) {
-			$retried++;
-			goto RETRYSOURCE;
-		}
-	}
-	if ($retried) {
-		my $trunc_version = 0;
-		if (! $foundtarget && $target_schema_norm =~ s!^(.+-.+\..+)\.[^.-]+$!$1!) {
-			$trunc_version = 1;
-		}
-		if ($trunc_version) {
-			goto RETRYSOURCE;
-		}
-	}
-	die "Was not able to find upgrade path in directory [$SCHEMA_UPGRADE_DIR].\n";
+    if (not $retried) {
+        if ($start_schema_norm =~ s!^(.+-.+)-\d+(\.\d+)*$!$1!) {
+            $retried++;
+            goto RETRYSOURCE;
+        }
+    }
+    if ($retried) {
+        my $trunc_version = 0;
+        if (! $foundtarget && $target_schema_norm =~ s!^(.+-.+\..+)\.[^.-]+$!$1!) {
+            $trunc_version = 1;
+        }
+        if ($trunc_version) {
+            goto RETRYSOURCE;
+        }
+    }
+    die "Was not able to find upgrade path in directory [$SCHEMA_UPGRADE_DIR].\n";
 }
 
 
 my @path = get_shortest_path($upgrade_path{$start_schema_norm}, $target_schema_norm);
 print "The path: ", (join " -> ", map "[$_]", $start_schema_norm, @path), "\n";
 
-my $default_tablespace;
-if ($options{db_backend} eq 'oracle') {
-	$default_tablespace = run_query(<<EOF);
-		select default_tablespace
-		from user_users
-		where username = sys_context('userenv', 'session_user');
-EOF
-	if (not defined $default_tablespace) {
-		die "Failed to retrieve default_tablespace from database.\n";
-	}
-}
-
 mkdir "/var/log/spacewalk", 0755;
 mkdir $SCHEMA_UPGRADE_LOGDIR, 0755;
 if (not -e $SCHEMA_UPGRADE_LOGDIR) {
-	die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR]: $!\n";
+    die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR]: $!\n";
 }
 system("/sbin/restorecon $SCHEMA_UPGRADE_LOGDIR 2>&1 > /dev/null");
 
 my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime(time);
 my $stamp = sprintf "%04d%02d%02d-%02d%02d%02d", $year + 1900, $mon + 1, $mday,
-	$hour, $min, $sec;
+$hour, $min, $sec;
 
 my $start = $start_schema_norm;
+my $migrationdir = "schema-from-$stamp";
 my $in = <<EOF;
 update rhnVersionInfo
-       set label = 'schema-from-' || to_char(created, 'YYYYMMDD-HH24MISS'),
-           modified = current_timestamp
-       where label = 'schema';
+  set label = '$migrationdir',
+      modified = current_timestamp
+where label = 'schema';
 commit;
 EOF
+mkdir "$SCHEMA_UPGRADE_LOGDIR/$migrationdir", 0755;
+if (not -e "$SCHEMA_UPGRADE_LOGDIR/$migrationdir") {
+    die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR/$migrationdir]: $!\n";
+}
+open(INIT, "> $SCHEMA_UPGRADE_LOGDIR/$migrationdir/00_0000-upgrade-start.sql") or
+     rmdir_and_die("Cannot create upgrade-start file: $!", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
+print INIT $in."\n";
+close INIT;
 
+my $prenum = 0;
 while (@path) {
-	my $t = shift @path;
-	my $dir = "$start-to-$t";
-	if (not -e "$SCHEMA_UPGRADE_DIR/$dir") {
-		die "Directory [$SCHEMA_UPGRADE_DIR/$dir] was seen but is lost now.\n";
-	}
+    my $t = shift @path;
+    my $dir = "$start-to-$t";
+    if (not -e "$SCHEMA_UPGRADE_DIR/$dir") {
+        rmdir_and_die("Directory [$SCHEMA_UPGRADE_DIR/$dir] was seen but is lost now.\n",
+                      "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
+    }
+    if( $prenum > 98 )
+    {
+        # prevent overrun
+        rmdir_and_die("Overrun: too many migrations", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
+    }
 
-	my @files = match_overrides("$SCHEMA_UPGRADE_DIR/$dir/*.{sql,ref}", "$SCHEMA_UPGRADE_DIR/$dir/*.{sql,ref}.$options{db_backend}");
-	for (my $i = 0; $i < @files; $i++) {
-		if ($files[$i] =~ /\.ref(\.$options{db_backend})?$/) {
-			my @subfiles;
-			local *REF;
-			open REF, $files[$i] or die "Error reading [$files[$i]]: $!\n";
-			while (<REF>) {
-				chomp;
-				next if /^\s*(#|$)/;
-				my @newsubfiles = match_overrides("$SCHEMA_UPGRADE_DIR/$_", "$SCHEMA_UPGRADE_DIR/$_.$options{db_backend}");
-				if (not @newsubfiles) {
-					die "Could not find any files matching [$_] from [$files[$i]]\n";
-				}
-				push @subfiles, @newsubfiles;
-			}
-			close REF;
-			splice @files, $i, 1, @subfiles;
-			$i--;
-		}
-	}
+    my @files = match_overrides("$SCHEMA_UPGRADE_DIR/$dir/*.{sql,ref}", "$SCHEMA_UPGRADE_DIR/$dir/*.{sql,ref}.$options{db_backend}");
+    for (my $i = 0; $i < @files; $i++) {
+        if ($files[$i] =~ /\.ref(\.$options{db_backend})?$/) {
+            my @subfiles;
+            local *REF;
+            open REF, $files[$i] or rmdir_and_die("Error reading [$files[$i]]: $!\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
+            while (<REF>) {
+                chomp;
+                next if /^\s*(#|$)/;
+                my @newsubfiles = match_overrides("$SCHEMA_UPGRADE_DIR/$_", "$SCHEMA_UPGRADE_DIR/$_.$options{db_backend}");
+                if (not @newsubfiles) {
+                    rmdir_and_die("Could not find any files matching [$_] from [$files[$i]]\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
+                }
+                push @subfiles, @newsubfiles;
+            }
+            close REF;
+            splice @files, $i, 1, @subfiles;
+            $i--;
+        }
+    }
 
-	for my $fullname (@files) {
-		(my $name = $fullname) =~ s!^.*/!!;
-		local *FILE;
-		open FILE, $fullname or die "Error reading [$fullname]: $!\n";
-		my $f_in;
-		{
-		local $/ = undef;
-		$f_in = <FILE>;
-		}
-		close FILE;
-		$f_in =~ s!^--.*\n!!gm;
-		$f_in =~ s!\[\[.*?\]\]|__.*?__!$default_tablespace!g if defined $default_tablespace;
-		$in .= <<EOF;
-select '$dir/$name' from dual;
-EOF
-		$in .= $f_in;
-		$in .= "commit;\n";
-	}
-	# print $in;
-	$start = $t;
+    for my $fullname (@files) {
+        (my $name = $fullname) =~ s!^.*/!!;
+        my $linkname = sprintf("%02d_%s", $prenum, $name);
+        if( ! symlink("$fullname", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir/$linkname") )
+        {
+            rmdir_and_die("Cannot create symlink: $!", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
+        }
+    }
+    # print $in;
+    $start = $t;
+    $prenum++;
 }
 
 my $backend_dir = ( $options{db_backend} eq 'postgresql' ? 'postgres' : $options{db_backend} );
 my $endfile = "/etc/sysconfig/rhn/$backend_dir/upgrade-end.sql";
+$in = "";
 local * END;
-open END, '<', $endfile or die "Error reading [$endfile]: $!\n";
+open END, '<', $endfile or rmdir_and_die("Error reading [$endfile]: $!\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
 {
-local $/ = undef;
-$in .= join '', <END>;
+    local $/ = undef;
+    $in .= join '', <END>;
 }
 close END;
 
 $in .= <<EOF;
 insert into rhnVersionInfo
-       ( label, name_id, evr_id, created, modified )
-       values ('schema', lookup_package_name('$my_schema_name'),
-               lookup_evr(null, '$my_schema_version' , '$my_schema_release' ),
-               current_timestamp, current_timestamp );
+( label, name_id, evr_id, created, modified )
+values ('schema', lookup_package_name('$my_schema_name'),
+                           lookup_evr(null, '$my_schema_version' , '$my_schema_release' ),
+                           current_timestamp, current_timestamp );
 commit;
 EOF
 
 local *SQL;
-open SQL, "> $SCHEMA_UPGRADE_LOGDIR/$stamp-script.sql" or die "Error writing [$SCHEMA_UPGRADE_LOGDIR/$stamp-script.sql]: $!.\n";
+open SQL, "> $SCHEMA_UPGRADE_LOGDIR/$migrationdir/99_9999-upgrade-end.sql" or rmdir_and_die(
+          "Error writing [$SCHEMA_UPGRADE_LOGDIR/$migrationdir/99_9999-upgrade-end.sql]: $!.\n",
+          "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
 print SQL $in;
 close SQL;
 
-if (not @ARGV or $ARGV[0] ne '-y') {
-	print "Planning to run spacewalk-sql with [$SCHEMA_UPGRADE_LOGDIR/$stamp-script.sql]\n";
-	local $| = 1;
-	READ_ENTER:
-	print "Hit Enter to continue or Ctrl+C to interrupt: ";
-	my $in = <STDIN>;
-	chomp $in;
-	if ($in ne '') {
-		goto READ_ENTER;
-	}
-}
-
-my $logfile = $SCHEMA_UPGRADE_LOGDIR . "/$stamp-to-$target_schema_norm.log";
-
-local * LOG;
-open LOG, '>>', $logfile or die "Error writing logfile [$logfile]: $!\n";
-
-system("/sbin/restorecon $logfile 2>&1 > /dev/null");
-
-print "Executing spacewalk-sql, the log is in [$logfile].\n";
-
-my $pid = IPC::Open3::open3(my $wfh, '>&LOG', '>&LOG',
-	'spacewalk-sql', '--select-mode-direct', "$SCHEMA_UPGRADE_LOGDIR/$stamp-script.sql") or die "Error running spacewalk-sql: $!\n";
-close $wfh;
-
-waitpid $pid, 0;
-if ($?) {
-	die "Upgrade failed, please see log [$logfile].\n";
-}
-
-my $new_schema_version = run_query(<<EOF);
-	select rhnPackageName.name || '-' || (PE.evr).version || '-' || (PE.evr).release
-	from rhnVersionInfo, rhnPackageName, rhnPackageEVR PE
-	where rhnVersionInfo.label = 'schema'
-		and rhnVersionInfo.name_id = rhnPackageName.id
-		and rhnVersionInfo.evr_id = PE.id;
-EOF
-if (not defined $new_schema_version) {
-	die "Upgrade seems to have run OK yet new schema version is not in rhnVersionInfo.\n";
-}
-if ($new_schema_version ne $target_schema) {
-	die <<EOF;
-Upgrade seems to have run OK yet new schema version is
-    [$new_schema_version], not [$target_schema].
-EOF
-}
-
-print "The database schema was upgraded to version [$target_schema].\n";
+my $lname = "$migrationdir-to-$start.log";
+run_schema_upgrade("$SCHEMA_UPGRADE_LOGDIR/$migrationdir", $lname,
+                   $target_schema, $default_tablespace);
 
 exit;
 
+sub run_schema_upgrade
+{
+    my $dir = shift;
+    my $logfilename = shift;
+    my $target_schema = shift;
+    my $default_tablespace = shift;
+
+    die "Migration directory [$dir] does not exist." if(! -d "$dir");
+
+    print "Planning to run schema upgrade with dir '$dir'\n";
+    if (not @ARGV or $ARGV[0] ne '-y') {
+        local $| = 1;
+        READ_ENTER:
+        print "Hit Enter to continue or Ctrl+C to interrupt: ";
+        my $in = <STDIN>;
+        chomp $in;
+        if ($in ne '') {
+            goto READ_ENTER;
+        }
+    }
+
+    my $logfile = $SCHEMA_UPGRADE_LOGDIR . "/$logfilename";
+
+    my $log;
+    open $log, '>>', $logfile or die "Error writing logfile [$logfile]: $!\n";
+
+    system("/sbin/restorecon $logfile 2>&1 > /dev/null");
+
+    my ($s, $m, $h, $md, $mo, $y, $wd, $yd, $isds) = localtime(time);
+    my $now = sprintf "%04d-%02d-%02d %02d:%02d:%02d", $y + 1900, $mo + 1, $md,
+                      $h, $m, $s;
+
+    print $log "================== started: $now ==================\n";
+    print "Executing spacewalk-sql, the log is in [$logfile].\n";
+
+    my @migrationfiles = sort map { glob } "$dir/*";
+    my $filecount = scalar(@migrationfiles);
+    my $counter = 0;
+    $| = 1;
+    foreach my $migfile (@migrationfiles) {
+        $counter++;
+        my $link = readlink($migfile);
+        $link = $migfile if(! $link);
+        my $fn = basename($link);
+        my $td = basename(dirname($link));
+
+        print STDOUT "($counter/$filecount) apply upgrade [$td/$fn]        ", "\r";
+        my $ret = run_query_direkt("$td/$fn", $migfile, $log, $default_tablespace);
+        if ($ret != 0)
+        {
+            print "\n";
+            die "Upgrade failed, please see log [$logfile].\nYou can fix the failed migration in [$dir]\nand run spacewalk-schema-upgrade again\n";
+        }
+        unlink ($migfile);
+    }
+    print "\n";
+
+    my $new_schema_version = run_query(<<EOF);
+       select rhnPackageName.name || '-' || (PE.evr).version || '-' || (PE.evr).release
+         from rhnVersionInfo, rhnPackageName, rhnPackageEVR PE
+        where rhnVersionInfo.label = 'schema'
+          and rhnVersionInfo.name_id = rhnPackageName.id
+          and rhnVersionInfo.evr_id = PE.id;
+EOF
+    if (not defined $new_schema_version) {
+        die "Upgrade seems to have run OK yet new schema version is not in rhnVersionInfo.\n";
+    }
+    if ($new_schema_version ne $target_schema) {
+        die <<EOF;
+        Upgrade seems to have run OK yet new schema version is
+        [$new_schema_version], not [$target_schema].
+        Please run schema upgrade again.
+EOF
+    }
+    rmdir "$dir";
+    print "The database schema was upgraded to version [$target_schema].\n";
+}
+
 sub run_query {
-	my ($command) = @_;
-	my $pid = IPC::Open3::open3(my $wfh, my $rfh, '>&STDERR',
-		'spacewalk-sql', '--select-mode', '-') or return;
-	print $wfh $command;
-	print $wfh "\n";
-	close $wfh;
+    my ($command) = @_;
+    $ENV{'LANG'} = 'C';
+    my $pid = IPC::Open3::open3(my $wfh, my $rfh, '>&STDERR',
+                                'spacewalk-sql', '--select-mode', '-') or return;
+    print $wfh $command;
+    print $wfh "\n";
+    close $wfh;
 
-	my $out;
-	my $seen_dashes = 0;
-	while (<$rfh>) {
-		if (not defined $out and $seen_dashes) {
-			$out = $_;
-			last;
-		}
-		if (/---/) {
-			$seen_dashes = 1;
-		}
-	}
-	close $rfh;
-	waitpid $pid, 0;
-	if ($?) {
-		return;
-	}
+    my $out;
+    my $seen_dashes = 0;
+    while (<$rfh>) {
+        if (not defined $out and $seen_dashes) {
+            $out = $_;
+            last;
+        }
+        if (/---/) {
+            $seen_dashes = 1;
+        }
+    }
+    close $rfh;
+    waitpid $pid, 0;
+    if ($?) {
+        return;
+    }
 
-	$out =~ s/^\s+|\s+$//g if defined $out;
-	return $out;
+    $out =~ s/^\s+|\s+$//g if defined $out;
+    # psql print '----' even if no rows were selected
+    $out = undef if defined $out && $out =~ /^\(0 rows\)$/;
+    return $out;
+}
+
+sub run_query_direkt {
+    my ($msg, $file, $log, $default_tablespace) = @_;
+
+    my $sql = <<EOF;
+    select '$msg' from dual;
+EOF
+    open(F, "< $file") or die "Cannot open file '$file': $!";
+    my $f_in;
+    {
+        local $/ = undef;
+        $f_in = <F>;
+    }
+    close F;
+    $f_in =~ s!^--.*\n!!gm;
+    $f_in =~ s!\[\[.*?\]\]|__.*?__!$default_tablespace!g if defined $default_tablespace;
+    $sql .= $f_in;
+    $sql .= <<EOF;
+    commit;
+EOF
+    print $log "SQL> ";
+    print $log "$sql\n";
+
+    my $rfh;
+    my $pid = IPC::Open3::open3(my $wfh, $rfh, $rfh,
+              'spacewalk-sql', '--select-mode-direct', '-') or die "Cannot execute spacewalk-sql: $!";
+    print $wfh $sql;
+    print $wfh "\n";
+    close $wfh;
+
+    while (<$rfh>) {
+        #print "$out";
+        print $log $_;
+    }
+    close $rfh;
+    waitpid $pid, 0;
+    return ($? >> 8);
 }
 
 sub get_shortest_path {
-	my ($hash, $target) = @_;
-	my @out;
-	for my $k (keys %$hash) {
-		if ($k eq $target) {
-			return $k;
-		}
-		my @k_out = ($k, get_shortest_path($hash->{$k}, $target));
-		if (not @out || (@k_out and @k_out < @out)) {
-			@out = @k_out;
-		}
-	}
-	@out;
+    my ($hash, $target) = @_;
+    my @out;
+    for my $k (keys %$hash) {
+        if ($k eq $target) {
+            return $k;
+        }
+        my @k_out = ($k, get_shortest_path($hash->{$k}, $target));
+        if (not @out || (@k_out and @k_out < @out)) {
+            @out = @k_out;
+        }
+    }
+    @out;
 }
 
 sub match_overrides {
-	return sort map {-e "$_.override" ? "$_.override" : $_} grep { -e $_ } map { glob } @_;
+    return sort map {-e "$_.override" ? "$_.override" : $_} grep { -e $_ } map { glob } @_;
+}
+
+sub rmdir_and_die {
+    my $msg = shift || "Error";
+    my $dir = shift || undef;
+
+    if ($dir && -d $dir ) {
+        opendir(DIR, $dir) and do {
+            while( my $file = readdir(DIR) ) {
+                next if ($file eq "." or $file eq "..");
+                unlink($file);
+            }
+            closedir DIR;
+        };
+        unlink($dir);
+    }
+    die "$msg";
 }
 
 1;
@@ -436,4 +554,3 @@ Directory containing output from sql upgrade scripts.
 Jan Pazdziora
 
 =cut
-
