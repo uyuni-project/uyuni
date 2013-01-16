@@ -30,18 +30,20 @@ SGMLS	= $(wildcard *.sgml)
 MANS	= $(patsubst %.sgml,%.$(MANSECT),$(SGMLS))
 
 BINDIR	= /usr/bin
+SBINDIR	= /usr/sbin
 MANDIR  ?=  /usr/share/man
 
 PUB_BOOTSTRAP_DIR = /var/www/html/pub/bootstrap
-EXTRA_DIRS = $(MANDIR)/man$(MANSECT) $(BINDIR) $(PUB_BOOTSTRAP_DIR)
+EXTRA_DIRS = $(MANDIR)/man$(MANSECT) $(BINDIR) $(PUB_BOOTSTRAP_DIR) $(SBINDIR)
 
 # now include some Macros
 include Makefile.defs
 
 BINFILES = rhn-sudo-ssl-tool rhn-ssl-tool rhn-bootstrap
 
-install :: $(addsuffix .inst,$(BINFILES)) $(MANS) $(PREFIX)/$(MANDIR)
+install :: $(addsuffix .inst,$(BINFILES)) $(MANS) $(PREFIX)/$(MANDIR) spacewalk-push-register
 	$(INSTALL_DATA) $(MANS) $(PREFIX)$(MANDIR)/man$(MANSECT)
+	$(INSTALL_BIN) spacewalk-push-register $(PREFIX)$(SBINDIR)/
 
 install :: instClientScript
 

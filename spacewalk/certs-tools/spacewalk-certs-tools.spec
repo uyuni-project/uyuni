@@ -61,6 +61,7 @@ make PUB_BOOTSTRAP_DIR=/srv/www/htdocs/pub/bootstrap -f Makefile.certs install P
 ln -s rhn-bootstrap $RPM_BUILD_ROOT/%{_bindir}/mgr-bootstrap
 ln -s rhn-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-ssl-tool
 ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
+ln -s spacewalk-push-register $RPM_BUILD_ROOT/%{_sbindir}/mgr-push-register
 
 # fetch sm-client-tools and put it in the bootstrap dir
 install -m 0644 /.build.binaries/sm-client-tools.rpm $RPM_BUILD_ROOT/srv/www/htdocs/pub/bootstrap/
@@ -86,6 +87,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/rhn-sudo-ssl-tool
 %attr(755,root,root) %{_bindir}/rhn-ssl-tool
 %attr(755,root,root) %{_bindir}/rhn-bootstrap
+%attr(755,root,root) %{_sbindir}/spacewalk-push-register
 %doc %{_mandir}/man1/rhn-*.1*
 %doc LICENSE
 %doc ssl-howto-simple.txt ssl-howto.txt
@@ -98,6 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/mgr-bootstrap
 %{_bindir}/mgr-ssl-tool
 %{_bindir}/mgr-sudo-ssl-tool
+%{_sbindir}/mgr-push-register
 %else
 %{_var}/www/html/pub/bootstrap/client_config_update.py*
 %endif

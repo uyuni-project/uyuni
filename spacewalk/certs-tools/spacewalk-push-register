@@ -1,0 +1,159 @@
+#!/bin/bash
+
+# Check if we are root
+if [ 0$UID -gt 0 ]; then
+  echo "ERROR: You need to be root in order to run this!"
+  exit 1
+fi
+
+# Check number of arguments
+if [ "$#" -lt 2 -o "$#" -gt 2 ]; then
+  me=`basename $0`
+  echo "USAGE: ${me} <client> <bootstrap-script>"
+  exit 1
+else
+  CLIENT=${1}
+fi
+
+# Check bootstrap script existence
+if [ ! -f "${2}" ]; then
+  echo "ERROR: Bootstrap script not found: ${2}"
+  exit 1
+else
+  BOOTSTRAP_ORIG=${2}
+fi
+
+# Get the server's fully qualified hostname
+HOSTNAME=`hostname -f`
+if [ ${?} -ne '0' ]; then
+  echo "ERROR: SUSE Manager hostname not found (failed to execute 'hostname -f')"
+  exit 1
+fi
+
+# Tunnel port config keys
+PORT_HTTP_KEY=server_push_port_http
+PORT_HTTPS_KEY=server_push_port_https
+
+# Read tunnel ports from configuration
+PATH_RHN_CONF=/etc/rhn/rhn.conf
+PATH_RHN_DEFAULTS=/usr/share/rhn/config-defaults/rhn_web.conf
+
+# Check config files existence
+if [ ! -f "${PATH_RHN_CONF}" ]; then
+  echo "ERROR: SUSE Manager configuration not found: ${PATH_RHN_CONF}"
+  exit 1
+fi
+if [ ! -f "${PATH_RHN_DEFAULTS}" ]; then
+  echo "ERROR: SUSE Manager default configuration not found: ${PATH_RHN_DEFAULTS}"
+  exit 1
+fi
+
+# Try /etc/rhn/rhn.conf first, then go to defaults
+PORT_HTTP=$( grep -E -m1 "^${PORT_HTTP_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${PORT_HTTP_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+if [ -z "${PORT_HTTP}" ]; then
+  PORT_HTTP=$( grep -E -m1 "^${PORT_HTTP_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${PORT_HTTP_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+fi
+
+# Same for HTTPS
+PORT_HTTPS=$( grep -E -m1 "^${PORT_HTTPS_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${PORT_HTTPS_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+if [ -z "${PORT_HTTPS}" ]; then
+  PORT_HTTPS=$( grep -E -m1 "^${PORT_HTTPS_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${PORT_HTTPS_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+fi
+
+# Exit if we still don't have the ports
+if [ -z "${PORT_HTTP}" -o -z "${PORT_HTTPS}" ]; then
+  echo "ERROR: Server push configuration not found, please update."
+  exit 1
+fi
+
+# Generating the enablement script
+ENABLE=`mktemp`
+echo "* generating enablement script (${ENABLE})"
+echo "if [[ \`grep ^127.0.0.1 /etc/hosts\` != *${HOSTNAME}* ]]; then" >> ${ENABLE}
+echo "sed -i 's/\(127\.0\.0\.1.*\)/& ${HOSTNAME}/' /etc/hosts" >> ${ENABLE}
+echo "fi" >> ${ENABLE}
+# Restart name service caching
+echo "if [ -x '/etc/init.d/nscd' ]; then" >> ${ENABLE}
+echo "/etc/init.d/nscd restart" >> ${ENABLE}
+echo "fi" >> ${ENABLE}
+# Disable osad completely
+echo "if [ -x '/etc/init.d/osad' ]; then" >> ${ENABLE}
+echo "/etc/init.d/osad stop" >> ${ENABLE}
+echo "chkconfig -d osad" >> ${ENABLE}
+echo "fi" >> ${ENABLE}
+# Disable rhnsd completely
+echo "if [ -x '/etc/init.d/rhnsd' ]; then" >> ${ENABLE}
+echo "/etc/init.d/rhnsd stop" >> ${ENABLE}
+echo "chkconfig -d rhnsd" >> ${ENABLE}
+echo "fi" >> ${ENABLE}
+
+# Create a tunnel version of client-config-overrides.txt
+PATH_OVERRIDES=/srv/www/htdocs/pub/bootstrap/client-config-overrides-tunnel.txt
+echo "* creating tunnel version of client-config-overrides.txt"
+cp /srv/www/htdocs/pub/bootstrap/client-config-overrides.txt ${PATH_OVERRIDES}
+sed -i "s/\(enableProxy=\).*/\10/" ${PATH_OVERRIDES}
+sed -i "s/\(enableProxyAuth=\).*/\10/" ${PATH_OVERRIDES}
+sed -i "s/\(httpProxy=\).*/\1/" ${PATH_OVERRIDES}
+sed -i "s/\(noSSLServerURL=\).*/\1http:\/\/${HOSTNAME}:${PORT_HTTP}/" ${PATH_OVERRIDES}
+sed -i "s/\(proxyPassword=\).*/\1/" ${PATH_OVERRIDES}
+sed -i "s/\(proxyUser=\).*/\1/" ${PATH_OVERRIDES}
+sed -i "s/\(serverURL=\).*/\1https:\/\/${HOSTNAME}:${PORT_HTTPS}\/XMLRPC/" ${PATH_OVERRIDES}
+
+# Prepare the bootstrap script
+BOOTSTRAP=`mktemp`
+echo "* preparing bootstrap script (${BOOTSTRAP})"
+cp ${BOOTSTRAP_ORIG} ${BOOTSTRAP}
+sed -i "s/\(CLIENT_OVERRIDES=\).*/\1client-config-overrides-tunnel.txt/" ${BOOTSTRAP}
+sed -i "s/\(HOSTNAME=\).*/\1${HOSTNAME}:${PORT_HTTPS}/" ${BOOTSTRAP}
+sed -i "s/\(HTTP_PUB_DIRECTORY=\).*/\1http:\/\/${HOSTNAME}:${PORT_HTTP}\/pub/" ${BOOTSTRAP}
+
+# SUSE Manager SSH key comment and filename
+SSH_KEY_COMMENT=susemanager
+SSH_KEY_FILE=~/.ssh/id_susemanager
+
+# Run key generation if key doesn't exist
+if [ ! -f "${SSH_KEY_FILE}" ]; then
+  echo "* SUSE Manager key file not found, generating it (${SSH_KEY_FILE})"
+  ssh-keygen -q -N '' -C ${SSH_KEY_COMMENT} -f ${SSH_KEY_FILE}
+fi
+
+# Function to delete temp files in case a previous command failed
+function exit_in_case_of_error() {
+  if [ ${?} -ne '0' ]; then
+    echo "ERROR: Connection to client (${CLIENT}) failed, exiting..."
+    rm -f ${ENABLE} ${BOOTSTRAP}
+    exit 1
+  fi
+}
+
+# Copy public key to the client
+echo "* pushing SSH key to the client, please login as root:"
+ssh-copy-id -i ${SSH_KEY_FILE}.pub root@${CLIENT} &> /dev/null
+exit_in_case_of_error
+
+# Remove duplicate entries from authorized keys
+echo "* removing duplicate host keys"
+ssh -i ${SSH_KEY_FILE} root@${CLIENT} "sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ~/.ssh/authorized_keys"
+exit_in_case_of_error
+
+# Copy scripts to the client
+echo "* pushing scripts to the client"
+scp -i ${SSH_KEY_FILE} ${ENABLE} root@${CLIENT}:enable.sh
+exit_in_case_of_error
+scp -i ${SSH_KEY_FILE} ${BOOTSTRAP} root@${CLIENT}:bootstrap.sh
+exit_in_case_of_error
+
+# Enable the client for server push
+echo "* enabling client for SSH Server Push"
+ssh -i ${SSH_KEY_FILE} root@${CLIENT} "bash enable.sh"
+exit_in_case_of_error
+
+# Register via SSH tunnels for ports 80 and 443
+echo "* registering client with SUSE Manager: ${CLIENT}"
+ssh -i ${SSH_KEY_FILE} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 root@${CLIENT} 'bash bootstrap.sh'
+exit_in_case_of_error
+
+# Cleanup in case of success
+echo "* cleaning up temporary files"
+ssh -i ${SSH_KEY_FILE} root@${CLIENT} "rm -f enable.sh bootstrap.sh client-config-overrides-tunnel.txt client_config_update.py"
+rm -fv ${ENABLE} ${BOOTSTRAP}
