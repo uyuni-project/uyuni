@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.40
+Version: 1.9.47
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -757,6 +757,31 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Jan 18 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.47-1
+- New API: system.getCrashCount()
+
+* Fri Jan 18 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.46-1
+- checkstyle fix
+
+* Fri Jan 18 2013 Jan Pazdziora 1.9.45-1
+- abrt: display crash count in system overview
+
+* Thu Jan 17 2013 Jan Pazdziora 1.9.44-1
+- Checkstyle fix.
+
+* Thu Jan 17 2013 Jan Pazdziora 1.9.43-1
+- Checkstyle fixes.
+
+* Thu Jan 17 2013 Jan Pazdziora 1.9.42-1
+- For RHN-ORG-TRUSTED-SSL-CERT, inform that it will be copied over to new orgs.
+- Copy RHN-ORG-TRUSTED-SSL-CERT if it exists, not a random SSL key.
+- display abrt summary only if spacewalk-abrt is installed
+- abrt: correct webui message
+- The isUserManaged does not seem to be used anywhere, removing.
+
+* Mon Jan 14 2013 Tomas Lestach <tlestach@redhat.com> 1.9.41-1
+- 863123 - the query works much better when it uses existing columns
+
 * Fri Jan 11 2013 Tomas Lestach <tlestach@redhat.com> 1.9.40-1
 - introduce new synchronous system.deleteSystem API
 - fix typos

@@ -74,6 +74,7 @@ public class SystemOverview extends BaseDto implements Serializable  {
     private Long extraPkgCount;
     private Long foreignPackagesCount;
     private static final  String NONE_VALUE = "(none)";
+    private Long crashCount;
 
 
     /**
@@ -750,6 +751,21 @@ public class SystemOverview extends BaseDto implements Serializable  {
     }
 
     /**
+     * Sets a number of crashes on the system.
+     * @param crashCountIn crash count to set
+     */
+    public void setCrashCount(Long crashCountIn) {
+        this.crashCount = crashCountIn;
+    }
+
+    /**
+     * @return Retunrs the crashCount
+     */
+    public Long getCrashCount() {
+        return this.crashCount;
+    }
+
+    /**
      * Sets a number of foreign packages in the system.
      * @param packagesCount
      */
@@ -763,4 +779,5 @@ public class SystemOverview extends BaseDto implements Serializable  {
     public Long getForeignPackagesCount() {
         return this.foreignPackagesCount;
     }
+
 }

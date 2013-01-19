@@ -4573,6 +4573,12 @@ value for this entitlement, excluding the default organization's consumption.</s
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="systemlist.jsp.crashes">
+        <source>Crashes</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="systemlist.jsp.nosystems">
         <source>No Systems</source>
         <context-group name="ctx">
@@ -9145,6 +9151,12 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="keys.jsp.description">
         <source>Description</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="keys.jsp.default-ssl-key-copy">
+        <source>This key/cert will be copied over to newly created organizations.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
@@ -16253,7 +16265,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.crashes.nodata">
-        <source>To get application crash data install spacewalk-abrt on this system.</source>
+        <source>No crash data has been reported for this system yet.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>

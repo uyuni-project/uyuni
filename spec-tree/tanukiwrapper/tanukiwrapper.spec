@@ -30,11 +30,15 @@
 
 %define gcj_support %{?_with_gcj_support:1}%{!?_with_gcj_support:%{?_without_gcj_support:0}%{!?_without_gcj_support:%{?_gcj_support:%{_gcj_support}}%{!?_gcj_support:0}}}
 
+%if 0%{?rhel} >= 6
+%define gcj_support 1
+%endif
+
 %define section	free
 
 Name:		tanukiwrapper
 Version:	3.2.3
-Release:	5%{?dist}
+Release:	8%{?dist}
 Summary:	Java Service Wrapper
 Epoch:		0
 License:	BSD
@@ -63,9 +67,11 @@ Requires:	jpackage-utils >= 0:1.6
 Obsoletes:	%{name}-demo < 0:3.1.2-2jpp
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+%if %{gcj_support}
 BuildRequires:		java-gcj-compat-devel
 Requires(post):		java-gcj-compat
 Requires(postun):	java-gcj-compat
+%endif
 
 %description
 The Java Service Wrapper is an application which has 
@@ -184,6 +190,7 @@ fi
 %endif
 
 %files
+%defattr(-,root,root,-)
 %doc doc/license.txt *.sample
 %{_sbindir}/%{name}
 %{_libdir}/libwrapper.so
@@ -194,13 +201,24 @@ fi
 %endif
 
 %files javadoc
+%defattr(0644,root,root,0755)
 %{_javadocdir}/%{name}-%{version}
 %ghost %doc %{_javadocdir}/%{name}
 
 %files manual
+%defattr(0644,root,root,0755)
 %doc doc/*
 
 %changelog
+* Fri Jan 18 2013 Michael Mraka <michael.mraka@redhat.com> 3.2.3-8
+- fixed typo in spec
+
+* Fri Jan 18 2013 Michael Mraka <michael.mraka@redhat.com> 3.2.3-7
+- use gcj_support on RHEL
+
+* Fri Jan 18 2013 Michael Mraka <michael.mraka@redhat.com> 3.2.3-6
+- rebuild package via standard process from git
+
 * Sun Oct 25 2009 Dennis Gilmore <dennis@ausil.us> - 0:3.2.3-5
 - add patch with sparc support
 

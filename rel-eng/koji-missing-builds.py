@@ -35,8 +35,8 @@ if len(args) > 1:
 distmap = {'rhel6':'.el6',
            'rhel5':'.el5',
            'rhel4':'.el4',
-           'fedora16':'.fc16',
-           'fedora17':'.fc17'}
+           'fedora17':'.fc17',
+           'fedora18':'.fc18'}
 
 distsuffix = ''
 tag = args[0]
@@ -75,6 +75,7 @@ for rpm in rpmlist[1]:
 
 pkgfileList = os.listdir( '%s/packages/' % str(os.path.abspath(__file__)).strip('koji-missing-builds.py'))
 pkgfileList.remove('.README')
+pkgfileList.remove('.readme')
 for item in pkgstoignore:
     try:
         pkgfileList.remove(item)

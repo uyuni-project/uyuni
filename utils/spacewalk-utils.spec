@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.9.9
+Version:	1.9.11
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -97,6 +97,16 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Fri Jan 18 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.11-1
+- silence pylint warning
+
+* Tue Jan 15 2013 Tomas Lestach <tlestach@redhat.com> 1.9.10-1
+- 889317 - Removing now redundant validation check from spacewalk-clone-by-date
+- 889317 - Add more thorough arg validation to spacewalk-clone-by-date
+- 866930 - fixing exception if no date given and adding documentation
+- 889317 - username check needs to happen after channel args length check
+- Checkstyle fixes to make s390 buildhosts happy
+
 * Mon Jan 07 2013 Stephen Herr <sherr@redhat.com> 1.9.9-1
 - 892789 - add --parents option to spacewalk-clone-by-date
 
