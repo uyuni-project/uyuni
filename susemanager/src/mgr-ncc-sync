@@ -17,6 +17,7 @@
 
 import sys
 import optparse
+import xml.etree.ElementTree as etree
 
 from spacewalk.susemanager import mgr_ncc_sync_lib
 
@@ -28,6 +29,12 @@ def main():
 
     parser.add_option("-l", "--list-channels", action="store_true", dest="list",
                       help="list all the channels which are available for you")
+    parser.add_option("--list-products", action="store_true", dest="productlist",
+                      help="list all the products which are available for you")
+    parser.add_option("--list-products-xml", action="store_true", dest="productlistxml",
+                      help="list all the products which are available for you [XML Format]")
+    parser.add_option("--add-product", action="store_true", dest="addproduct",
+                      help="Add all mandatory channels of a product [interactive]")
     parser.add_option("-c", "--channel", action="store",
                       help="add a new channel and trigger a reposync")
     # hide the -p, -f, -s options, they're deprecated bnc#760924
@@ -64,6 +71,19 @@ def main():
                                       fromdir=options.fromdir)
     if options.list:
         syncer.list_channels()
+    elif options.productlist:
+        ret = syncer.list_products()
+        product_list(ret)
+    elif options.addproduct:
+        plist = syncer.list_products()
+        cache = product_list(plist)
+        add_product(syncer, plist, cache)
+    elif options.productlistxml:
+        ret = syncer.list_products()
+        root = etree.Element('product_list')
+        for xp in ret.values():
+            xp.to_xml(root)
+        print etree.tostring(root)
     elif options.dumppath:
         syncer.dump_to(options.dumppath)
     elif options.channel:
@@ -101,6 +121,48 @@ def main():
         syncer.sync_suseproductchannel()
         syncer.update_upgrade_pathes_by_config()
         syncer.sync_installed_channels()
+
+def add_product(syncer, plist, numcache):
+    print ""
+    num = raw_input("Enter the number of the product you want to add: ")
+    if not numcache.has_key(num):
+        return
+    syncer.update_channels()
+    for channel_label in plist[numcache[num]].mandatory_channels:
+        status = plist[numcache[num]].mandatory_channels[channel_label]
+        if status == ".":
+            syncer.add_channel(channel_label)
+            # schedule reposync even if the channel is already in the database
+            syncer.sync_channel(channel_label)
+
+
+def product_list(plist):
+    counter = 0
+    numcache = {}
+    for pk in sorted(plist.iterkeys()):
+        p = plist[pk]
+        if not p.is_base():
+            continue
+        stat = p.status()
+        if stat == ".":
+            counter = counter + 1
+            print "(%3d) [%s] %s [%s]" % (counter, stat, p.name, p.arch)
+            numcache[str(counter)] = p.ident
+            continue
+        else:
+            print "(---) [%s] %s [%s]" % (stat, p.name, p.arch)
+        for ck in sorted(plist.iterkeys()):
+            c = plist[ck]
+            if c.parent_product != p.ident:
+                continue
+            cstat = c.status()
+            if cstat == ".":
+                counter = counter + 1
+                print "(%3d)    [%s] %s [%s]" % (counter, cstat, c.name, c.arch)
+                numcache[str(counter)] = c.ident
+            else:
+                print "(---)    [%s] %s [%s]" % (cstat, c.name, c.arch)
+    return numcache
 
 if __name__ == "__main__":
     try:

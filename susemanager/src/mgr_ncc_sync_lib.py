@@ -19,6 +19,7 @@ import sys
 import time
 import os
 import io
+import re
 import xml.etree.ElementTree as etree
 from datetime import date
 from urlparse import urlparse, urljoin
@@ -28,6 +29,8 @@ from spacewalk.server import rhnSQL, taskomatic
 from spacewalk.common import rhnLog, suseLib
 from spacewalk.common.rhnConfig import initCFG, CFG
 from spacewalk.common.rhnLog import log_debug, log_error
+
+from spacewalk.susemanager.simpleproduct import SimpleProduct, create_product_ident
 
 CHANNELS = '/usr/share/susemanager/channels.xml'
 CHANNEL_FAMILIES = '/usr/share/susemanager/channel_families.xml'
@@ -157,7 +160,7 @@ class NCCSync(object):
 
         for user_id in range(len(suseLib.get_mirror_credentials())):
             os.makedirs('%s/%s' % (path, user_id))
-            
+
         self.print_msg("Downloading Subscription information...")
         for user, subs in self._multi_get_ncc(self.ncc_url_subs, self.subs_req):
             sub_path = '%s/%s/listsubscriptions.xml' % (path, user)
@@ -169,7 +172,7 @@ class NCCSync(object):
             prod_path = '%s/%s/productdata.xml' % (path, user)
             with io.FileIO(prod_path, 'w') as f:
                 f.write(prds.read())
-        
+
         for user, idx in self._multi_get_ncc(self.ncc_repoindex):
             idx_path = '%s/%s/repoindex.xml' % (path, user)
             with io.FileIO(idx_path, 'w') as f:
@@ -1061,7 +1064,123 @@ class NCCSync(object):
                     channel.set('source_url', self.fromdir+path)
         return filtered
 
-    def list_channels(self):
+    def list_products(self):
+        ret = dict()
+        ncc_channels = sorted(self.get_available_channels(),
+                              key=lambda channel: channel.get('label'))
+        db_channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
+        h = rhnSQL.prepare("""
+            select p.product_id, pa.label as arch, p.friendly_name
+              from suseproducts p
+         left join rhnpackagearch pa ON p.arch_type_id = pa.id
+        """)
+        h.execute()
+        products = {}
+        for pr in h.fetchall_dict():
+            # special fixes
+            if int(pr['product_id']) == 2320:
+                pr['friendly_name'] = pr['friendly_name'] + " VMWare"
+            products[int(pr['product_id'])] = pr
+
+        channel_statuses = {}
+        for channel in ncc_channels:
+            label = channel.get('label')
+            if label in db_channels:
+                # channel is already in the database
+                channel_statuses[label] = 'P'
+            else:
+                channel_statuses[label] = '.'
+                #if self.is_mirrorable(channel):
+                #    # channel is mirrorable, but is not in the database
+                #    channel_statuses[label] = '.'
+                #else:
+                #    # channel is not mirrorable
+                #    channel_statuses[label] = 'X'
+
+        for channel in ncc_channels:
+            channel_arch = channel.get('arch')
+            label = channel.get('label')
+            if channel.get('parent') != 'BASE':
+                continue
+            for product in channel.find('products'):
+                product_id = int(product.text)
+                if not products.has_key(product_id):
+                    continue
+                if (products[product_id]['arch'] is not None and
+                    products[product_id]['arch'] != channel_arch):
+                    continue
+
+                productident = create_product_ident(product_id,
+                                                    products[product_id]['friendly_name'],
+                                                    channel_arch, label)
+                if not ret.has_key(productident):
+                    ret[productident] = SimpleProduct(productident, product_id,
+                                                      products[product_id]['friendly_name'],
+                                                      channel_arch, base_channel=label)
+                p = ret[productident]
+                if channel.get('optional') == 'Y':
+                    p.add_optional_channel(label, channel_statuses[label])
+                else:
+                    p.add_mandatory_channel(label, channel_statuses[label])
+
+                for child in ncc_channels:
+                    c_label = child.get('label')
+                    if child.get('parent') != label:
+                        continue
+
+                    for cproduct in child.find('products'):
+                        cproduct_id = int(cproduct.text)
+                        if not products.has_key(cproduct_id):
+                            print "not found"
+                            continue
+                        if (products[cproduct_id]['arch'] is not None and
+                            products[cproduct_id]['arch'] != channel_arch):
+                            continue
+
+                        productidentchild = create_product_ident(cproduct_id,
+                                                                 products[cproduct_id]['friendly_name'],
+                                                                 channel_arch, child.get('parent'))
+
+                        if not ret.has_key(productidentchild):
+                            ret[productidentchild] = SimpleProduct(productidentchild, cproduct_id,
+                                                                   products[cproduct_id]['friendly_name'],
+                                                                   channel_arch, base_channel=child.get('parent'))
+                            pc = ret[productidentchild]
+                        else:
+                            pc = ret[productidentchild]
+                            if child.get('parent') != pc.base_channel:
+                                print "UGRS"
+                                continue
+
+                        if child.get('optional') == 'Y':
+                            pc.add_optional_channel(c_label, channel_statuses[c_label])
+                        else:
+                            pc.add_mandatory_channel(c_label, channel_statuses[c_label])
+
+        regex = re.compile('^.+\sSP(\d).*')
+        for pk in sorted(ret.iterkeys()):
+            p = ret[pk]
+            if not p.is_base():
+                continue
+            parent_sp = None
+            if regex.match(p.name):
+                parent_sp = regex.match(p.name).groups()
+                #print "match found: %s" % parent_sp
+            for ck in sorted(ret.iterkeys()):
+                c = ret[ck]
+                if c.base_channel != p.base_channel:
+                    continue
+                if c.ident == p.ident:
+                    continue
+                if parent_sp and regex.match(c.name) and parent_sp != regex.match(c.name).groups():
+                    # ugly hack: used to strip out products with of wrong Service Packs
+                    #print "skip: %s" % c.name
+                    continue
+                ret[ck].set_parent_product(p.ident)
+
+        return ret
+
+    def list_channels(self, prnt=True):
         """List available channels on NCC and their status
 
         Statuses mean:
@@ -1070,11 +1189,13 @@ class NCCSync(object):
             - X - channel is in channels.xml, but is not mirrorable
 
         """
-        self.print_msg("Listing all channels you are subscribed to...\n\n"
-                       "Statuses mean:\n"
-                       "- P - channel is in sync with the database (provided)\n"
-                       "- . - channel is not installed, but is available\n"
-                       "- X - channel is not available\n")
+        ret = list()
+        if prnt:
+            self.print_msg("Listing all channels you are subscribed to...\n\n"
+                           "Statuses mean:\n"
+                           "- P - channel is in sync with the database (provided)\n"
+                           "- . - channel is not installed, but is available\n"
+                           "- X - channel is not available\n")
 
         db_channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
         ncc_channels = sorted(self.get_available_channels(),
@@ -1098,13 +1219,18 @@ class NCCSync(object):
             label = channel.get('label')
             if channel.get('parent') != 'BASE':
                 continue
-            print "[%s] %s" % (channel_statuses[label], label)
+            ret.append({'label': label, 'status': channel_statuses[label], 'parent': ''})
+            if prnt:
+                print "[%s] %s" % (channel_statuses[label], label)
 
             for child in ncc_channels:
                 c_label = child.get('label')
                 if child.get('parent') != label:
                     continue
-                print "    [%s] %s" % (channel_statuses[c_label], c_label)
+                ret.append({'label': c_label, 'status': channel_statuses[c_label], 'parent': label})
+                if prnt:
+                    print "    [%s] %s" % (channel_statuses[c_label], c_label)
+        return ret
 
     def get_mirrorable_repos(self):
         """Get a list of repository url parts directly from NCC
@@ -1642,7 +1768,7 @@ class NCCSync(object):
                                        FROM rhnChannelFamily rcfin
                                       WHERE rcfin.label IN
                                             ('rhel-server', 'rhel-server-6',
-                                             'rhel-cluster', 
+                                             'rhel-cluster',
                                              'rhel-server-cluster',
                                              'rhel-server-cluster-storage',
                                              'rhel-server-vt'))
