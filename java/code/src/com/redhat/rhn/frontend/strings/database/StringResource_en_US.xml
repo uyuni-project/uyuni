@@ -340,7 +340,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="MDOM">
-        <source>Mail domain (e.g. 'redhat.com' for myemail@redhat.com)</source>
+        <source>Mail domain (e.g. 'suse.com' for myemail@suse.com)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
