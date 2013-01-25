@@ -128,8 +128,16 @@ def add_product(syncer, plist, numcache):
     if not numcache.has_key(num):
         return
     syncer.update_channels()
-    for channel_label in plist[numcache[num]].mandatory_channels:
-        status = plist[numcache[num]].mandatory_channels[channel_label]
+    product = plist[numcache[num]]
+    if product.is_base():
+        # we need to sync the base channel first
+        bc = product.base_channel
+        if product.mandatory_channels[bc] == ".":
+            syncer.add_channel(bc)
+            syncer.sync_channel(bc)
+            product.mandatory_channels[bc] = "P"
+    for channel_label in product.mandatory_channels:
+        status = product.mandatory_channels[channel_label]
         if status == ".":
             syncer.add_channel(channel_label)
             # schedule reposync even if the channel is already in the database

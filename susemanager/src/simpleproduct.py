@@ -38,7 +38,7 @@ class SimpleProduct:
         self.optional_channels[label] = status
 
     def is_base(self):
-        if self.base_channel in self.mandatory_channels:
+        if self.base_channel in self.mandatory_channels and self.parent_product is None:
             return True
         return False
 
