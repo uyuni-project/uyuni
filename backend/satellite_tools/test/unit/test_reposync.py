@@ -136,6 +136,7 @@ class RepoSyncTest(unittest.TestCase):
 
         rs.urls = [{"source_url": "bogus-url", "id": 42, "metadata_signed": "N"}]
 
+        _mock_rhnsql(self.reposync, {})
         rs = self._mock_sync(rs)
         rs.sync()
 
@@ -162,6 +163,7 @@ class RepoSyncTest(unittest.TestCase):
 
         rs.urls = [{"source_url": "bogus-url", "id": 42, "metadata_signed": "N"}]
 
+        _mock_rhnsql(self.reposync, {})
         rs = self._mock_sync(rs)
         rs.regen = True
         rs.sync()
