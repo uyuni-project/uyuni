@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.9.12
+Version:        1.9.20
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -72,6 +72,32 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Jan 25 2013 Jan Pazdziora 1.9.20-1
+- Adding the .sql suffix so that the file gets processed during upgrade.
+
+* Fri Jan 25 2013 Jan Pazdziora 1.9.19-1
+- Fixing typo.
+
+* Fri Jan 25 2013 Jan Pazdziora 1.9.18-1
+- Reimplement _set_comps_for_channel as stored procedure.
+
+* Wed Jan 23 2013 Jan Pazdziora 1.9.17-1
+- Avoid exceeding maximal identifier length.
+
+* Tue Jan 22 2013 Jan Pazdziora 1.9.16-1
+- We need to drop rhn_download_id_seq as well.
+- We need to recreate the view from scratch.
+
+* Tue Jan 22 2013 Jan Pazdziora 1.9.15-1
+- Adding dependency for rhnContentSourceSsl.
+
+* Tue Jan 22 2013 Jan Pazdziora 1.9.14-1
+- When adding a column to view, we better name it as well.
+
+* Tue Jan 22 2013 Jan Pazdziora 1.9.13-1
+- Adding rhnContentSourceSsl, to hold certificates and keys to make
+  authenticated SSL connections.
+
 * Fri Jan 18 2013 Jan Pazdziora 1.9.12-1
 - Removing no longer used rhnChannelDownloads, rhnDownloads, and
   rhnDownloadType.

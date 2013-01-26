@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.17
+Version: 1.9.21
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -775,6 +775,24 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri Jan 25 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.21-1
+- pylint on RHEL6 does not know about W1401
+
+* Fri Jan 25 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.20-1
+- silence warning about "\0" string
+- disable false positive warnings
+
+* Fri Jan 25 2013 Jan Pazdziora 1.9.19-1
+- The rhn_asdf_* anonymous logic should not be needed anymore.
+- Reimplement anonymous block with update or insert.
+- Reimplement anonymous block with rhnSQL.Procedure.
+- The _query_purge_extra_channel_families_1 seems unused, removing.
+- Reimplement anonymous block.
+- Reimplement _set_comps_for_channel as stored procedure.
+
+* Tue Jan 22 2013 Jan Pazdziora 1.9.18-1
+- Use SSL options from rhncontentsourcessl during spacewalk-repo-sync.
+
 * Fri Jan 18 2013 Jan Pazdziora 1.9.17-1
 - Removing no longer used rhnChannelDownloads, rhnDownloads, and
   rhnDownloadType.

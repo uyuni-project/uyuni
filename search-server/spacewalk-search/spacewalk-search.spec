@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 1.9.1
+Version: 1.9.2
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -185,6 +185,9 @@ fi
 %doc licenses/*
 
 %changelog
+* Wed Jan 23 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.2-1
+- use path compatible with slf4j >= 1.6
+
 * Fri Nov 23 2012 Jan Pazdziora 1.9.1-1
 - Store search indexes in /var.
 

@@ -155,14 +155,29 @@ class RepoSync(object):
             insecure = False
             if data['metadata_signed'] == 'N':
                 insecure = True
+            plugin = None
             try:
-                repo = self.repo_plugin(data['source_url'], self.channel_label,
+                plugin = self.repo_plugin(data['source_url'], self.channel_label,
                                         insecure, self.quiet, self.interactive)
-                self.import_packages(repo, data['id'], data['source_url'])
-                self.import_groups(repo, data['source_url'])
-                self.import_products(repo)
-                self.import_updates(repo, data['source_url'])
-                self.import_susedata(repo)
+                if data['id'] is not None:
+                    keys = rhnSQL.fetchone_dict("""
+                        select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
+                        from rhncontentsourcessl
+                                join rhncryptokey k1
+                                on rhncontentsourcessl.ssl_ca_cert_id = k1.id
+                                left outer join rhncryptokey k2
+                                on rhncontentsourcessl.ssl_client_cert_id = k2.id
+                                left outer join rhncryptokey k3
+                                on rhncontentsourcessl.ssl_client_key_id = k3.id
+                        where rhncontentsourcessl.content_source_id = :repo_id
+                        """, repo_id=int(data['id']))
+                    if keys and keys.has_key('ca_cert'):
+                        plugin.set_ssl_options(keys['ca_cert'], keys['client_cert'], keys['client_key'])
+                self.import_packages(plugin, data['id'], data['source_url'])
+                self.import_groups(plugin, data['source_url'])
+                self.import_products(plugin)
+                self.import_updates(plugin, data['source_url'])
+                self.import_susedata(plugin)
             except ChannelTimeoutException, e:
                 self.print_msg(e)
                 self.sendErrorMail(str(e))
@@ -193,6 +208,8 @@ class RepoSync(object):
                 self.sendErrorMail(fetchTraceback())
                 sys.exit(1)
 
+            if plugin is not None:
+                plugin.clear_ssl_cache()
         if self.regen:
             taskomatic.add_to_repodata_queue_for_channel_package_subscription(
                 [self.channel_label], [], "server.app.yumreposync")

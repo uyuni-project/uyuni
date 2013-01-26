@@ -71,6 +71,9 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         POST_UNPROTECTED_URIS = UnmodifiableSet.decorate(set);
 
         set = new TreeSet();
+        // login
+        set.add("/rhn/Login");
+        set.add("/rhn/ReLogin");
         // base and add on entitlements
         set.add("/rhn/systems/details/Edit.do");
         set.add("/rhn/systems/SystemEntitlementsSubmit.do");
@@ -78,6 +81,8 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         set.add("/rhn/admin/multiorg/OrgSystemSubscriptions.do");
         // org software channel entitlements
         set.add("/rhn/admin/multiorg/OrgSoftwareSubscriptions.do");
+        // satellite software channel entitlements
+        set.add("/rhn/channels/software/EntitlementsSubmit.do");
         // delete system(s)
         set.add("/rhn/systems/details/DeleteConfirm.do");
         set.add("/rhn/systems/ssm/DeleteConfirm.do");

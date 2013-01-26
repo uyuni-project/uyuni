@@ -22,6 +22,8 @@ import re
 import gzip
 import xml.etree.ElementTree as etree
 import urlparse
+from shutil import rmtree
+from os import mkdir
 
 import urlgrabber
 from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
@@ -502,3 +504,31 @@ class ContentSource:
         except RepoMDError:
             groups = None
         return groups
+
+    def set_ssl_options(self, ca_cert, client_cert, client_key):
+        repo = self.repo
+        dir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
+        mkdir(dir, 0750)
+        repo.sslcacert = os.path.join(dir, 'ca.pem')
+        f = open(repo.sslcacert, "w")
+        f.write(str(ca_cert))
+        f.close
+        if client_cert is not None:
+            repo.sslclientcert = os.path.join(dir, 'cert.pem')
+            f = open(repo.sslclientcert, "w")
+            f.write(str(client_cert))
+            f.close
+        if client_key is not None:
+            repo.sslclientkey = os.path.join(dir, 'key.pem')
+            f = open(repo.sslclientkey, "w")
+            f.write(str(client_key))
+            f.close
+
+    def clear_ssl_cache(self):
+        return
+        repo = self.repo
+        dir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
+        try:
+            rmtree(dir)
+        except:
+            pass

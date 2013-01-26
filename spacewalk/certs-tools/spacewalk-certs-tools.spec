@@ -11,7 +11,7 @@ Name: spacewalk-certs-tools
 Summary: Spacewalk SSL Key/Cert Tool
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.1
+Version: 1.9.2
 Release: 1%{?dist}
 URL:      https://fedorahosted.org/spacewalk
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -27,6 +27,7 @@ Requires: openssl rpm-build
 %if 0%{?suse_version} || 0%{?rhel} >= 5
 Requires: %{rhn_client_tools}
 %endif
+Requires: tar
 Requires: spacewalk-backend-libs >= 0.8.28
 BuildRequires: docbook-utils
 %if 0%{?suse_version}
@@ -104,6 +105,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jan 22 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.2-1
+- tar isn't installed by default on Fedora 18
+
 * Wed Oct 31 2012 Michael Mraka <michael.mraka@redhat.com> 1.9.1-1
 - 862349 - create rpms compatible with RHEL5
 

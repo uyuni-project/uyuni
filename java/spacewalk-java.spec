@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.47
+Version: 1.9.53
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -583,7 +583,7 @@ fi
 %dir %attr(755, tomcat, tomcat) /etc/tomcat6/Catalina/localhost
 %endif
 %defattr(644,tomcat,tomcat,775)
-%dir %{appdir}
+%attr(775, root, tomcat) %dir %{appdir}
 %dir %{appdir}/rhn/
 %{appdir}/rhn/apidoc/
 %{appdir}/rhn/css/
@@ -757,6 +757,31 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Jan 24 2013 Tomas Lestach <tlestach@redhat.com> 1.9.53-1
+- do not allow changing type of an existing crypto key on CryptoKeyEdit.do page
+- simplify CryptoKey isSSL() and isGPG() methods
+- introducing SslCryptoKey and GpgCryptoKey
+
+* Wed Jan 23 2013 Tomas Lestach <tlestach@redhat.com> 1.9.52-1
+- add extra space to error message
+- 902673 - tell the user about restricted period, when notifying about
+  certificate expiration
+- 902671 - unify restricted period length information at WebUI banner and
+  notification e-mail
+- 889263 - change wording for the restricted period related messages
+- 889263 - check for restricted POSTS even if CSRF check is bypassed
+- 889263 - enable paging on Software Channel Entitlements page
+
+* Wed Jan 23 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.51-1
+- use path compatible with slf4j >= 1.6
+
+* Tue Jan 22 2013 Tomas Lestach <tlestach@redhat.com> 1.9.50-1
+- removing unused PageControl parameter
+- 896015 - dissociate duplicate system set from SSM
+
+* Mon Jan 21 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.48-1
+- specify permission on /var/lib/tomcat*/webapps
+
 * Fri Jan 18 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.47-1
 - New API: system.getCrashCount()
 

@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008--2012 Red Hat, Inc.
+-- Copyright (c) 2008--2013 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -141,6 +141,8 @@ IS
     PRAGMA RESTRICT_REFERENCES(org_channel_setting, WNDS, RNPS, WNPS);
 
     PROCEDURE update_needed_cache(channel_id_in in number);
+
+    procedure set_comps(channel_id_in in number, path_in in varchar2, timestamp_in in varchar2);
 
     FUNCTION server_has_family_subscription(server_id_in IN NUMBER, channel_family_id_in IN NUMBER) RETURN NUMBER;
 

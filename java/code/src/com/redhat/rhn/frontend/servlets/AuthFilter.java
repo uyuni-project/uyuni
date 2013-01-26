@@ -82,21 +82,23 @@ public class AuthFilter implements Filter {
             HttpServletRequest hreq = new
                 RhnHttpServletRequest((HttpServletRequest)request);
 
-            // validate security token to prevent CSRF type of attacks
-            if (hreq.getMethod().equals("POST") &&
-                    !authenticationService.skipCsfr((HttpServletRequest) request)) {
-                try {
-                    CSRFTokenValidator.validate(hreq);
 
+            if (hreq.getMethod().equals("POST")) {
+                // validate security token to prevent CSRF type of attacks
+                if (!authenticationService.skipCsfr((HttpServletRequest) request)) {
+                    try {
+                        CSRFTokenValidator.validate(hreq);
+                    }
+                    catch (CSRFTokenException e) {
+                        // send HTTP 403 if security token validation failed
+                        HttpServletResponse hres = (HttpServletResponse) response;
+                        hres.sendError(HttpServletResponse.SC_FORBIDDEN,
+                                e.getMessage());
+                        return;
+                    }
                 }
-                catch (CSRFTokenException e) {
-                    // send HTTP 403 if security token validation failed
-                    HttpServletResponse hres = (HttpServletResponse) response;
-                    hres.sendError(HttpServletResponse.SC_FORBIDDEN,
-                            e.getMessage());
-                    return;
-                }
-                if (CertificateManager.getInstance().isSatelliteCertInRestrictedPeriod() &&
+                CertificateManager cm = CertificateManager.getInstance();
+                if (cm.isSatelliteCertInRestrictedPeriod() &&
                         !authenticationService.postOnRestrictedWhitelist(hreq)) {
                     // interrupt the POST and redirect to the referer page
                     URL url = getHttpRequestReferer(hreq);
@@ -109,7 +111,8 @@ public class AuthFilter implements Filter {
                     }
                     log.warn("Blocking " + hreq.getRequestURI() +
                             " POST in restricted period. Redirecting to " + pathUrl);
-                    addErrorMessage(hreq, "restricted.forbidden");
+                    addErrorMessage(hreq, "restricted.forbidden",
+                           cm.getDayProgressInRestrictedPeriod());
                     ((HttpServletResponse) response).sendRedirect(url.getFile());
                     return;
                 }
@@ -120,17 +123,11 @@ public class AuthFilter implements Filter {
             authenticationService.redirectToLogin((HttpServletRequest)request,
                     (HttpServletResponse)response);
         }
-
-//        if (log.isDebugEnabled()) {
-//            log.debug("EXIT AuthFilter.doFilter: " + request.getRemoteAddr() +
-//                    " [" + new Date() + "] (" +
-//                    ((HttpServletRequest)(request)).getRequestURI() + ")");
-//        }
     }
 
-    private void addErrorMessage(HttpServletRequest hreq, String msgKey) {
+    private void addErrorMessage(HttpServletRequest hreq, String msgKey, String[] args) {
         ActionMessages ams = new ActionMessages();
-        ams.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(msgKey));
+        ams.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(msgKey, args));
         hreq.getSession().setAttribute(Globals.ERROR_KEY, ams);
     }
 
