@@ -1,3 +1,2 @@
-update rhnTimezone
-   set olson_name = 'Australia/Perth'
- where olson_name = 'Asia/Hong_Kong' and display_name = 'Australia (Western)';
+-- This file is intentionally left empty.
+-- already applied in Manager-1.7
