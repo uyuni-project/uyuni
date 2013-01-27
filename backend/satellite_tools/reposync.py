@@ -433,7 +433,7 @@ class RepoSync(object):
             patch_name = self._patch_naming(notice)
             existing_errata = get_errata(patch_name)
             if existing_errata and not _is_old_suse_style(notice):
-                if existing_errata['advisory_rel'] < notice['version']:
+                if int(existing_errata['advisory_rel']) < int(notice['version']):
                     # A disaster happens
                     #
                     # re-releasing an errata with a higher release number
@@ -443,7 +443,7 @@ class RepoSync(object):
                     # available.
                     # This mean a hard overwrite
                     _delete_invalid_errata(existing_errata['id'])
-                elif existing_errata['advisory_rel'] > notice['version']:
+                elif int(existing_errata['advisory_rel']) > int(notice['version']):
                     # the existing errata has a higher release than the now
                     # parsed one. We need to skip the current errata
                     continue
