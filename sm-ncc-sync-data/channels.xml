@@ -444,10 +444,7 @@
 	</channel>
 	<channel arch="i586" description="SUSE Manager Tools" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp1-suse-manager-tools-i586-vmware" name="SLES11-SP1-SUSE-Manager-Tools i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp1">
 		<products>
-			<product_id name="SUSE_SLES">1825</product_id>
-			<product_id name="SUSE_SLES">1827</product_id>
-			<product_id name="SUSE_SLES">1826</product_id>
-			<product_id name="SUSE_SLES">1828</product_id>
+			<product_id name="SUSE_SLES">2320</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 10 SP3" family="7261" is_signed="Y" label="sles10-sp3-updates-x86_64" name="SLES10-SP3-Updates for x86_64" optional="N" parent="sles10-sp3-pool-x86_64" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLES10-SP3-Updates/sles-10-x86_64/" summary="SUSE Linux Enterprise Server 10 SP3" update_tag="slesp3">
@@ -530,7 +527,6 @@
 	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-updates-x86_64-sap-sp2" name="SLE11-SDK-SP1-Updates for x86_64 SAP-SP2" optional="N" parent="sle11-sp2-sap-updates-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit" update_tag="sdksp1">
 		<products>
-			<product_id name="sle-sdk">1860</product_id>
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
 	</channel>
@@ -563,7 +559,6 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-updates-x86_64-sap-aio" name="SLE11-SDK-SP1-Updates for x86_64 SAP-AiO" optional="N" parent="sle11-sp1-sap-aio-pool-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit" update_tag="sdksp1">
 		<products>
 			<product_id name="sle-sdk">1860</product_id>
-			<product_id name="sle-sdk">3040</product_id>
 		</products>
 	</channel>
 	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-IA" is_signed="Y" label="sle11-sp2-debuginfo-core-ia64" name="SLE11-SP2-Debuginfo-Core for ia64" optional="Y" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
@@ -902,12 +897,9 @@
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Manager Tools" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-suse-manager-tools-i586-vmware" name="SLES11-SP2-SUSE-Manager-Tools i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+	<channel arch="i586" description="SUSE Manager Tools" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-suse-manager-tools-i586-vmware" name="SLES11-SP2-SUSE-Manager-Tools i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="SLES-for-VMware" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
-			<product_id name="SUSE_SLES">3005</product_id>
-			<product_id name="SUSE_SLES">3007</product_id>
-			<product_id name="SUSE_SLES">3006</product_id>
-			<product_id name="SUSE_SLES">3008</product_id>
+			<product_id name="SLES-for-VMware">3060</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Manager Proxy 1.2" family="SMP" is_signed="Y" label="suse-manager-proxy-1.2-pool-x86_64" name="SUSE-Manager-Proxy-1.2-Pool for x86_64" optional="N" parent="BASE" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SUSE-Manager-Proxy-1.2-Pool/sle-11-x86_64/" summary="SUSE Manager Proxy 1.2" update_tag="slemap12sp1">
@@ -952,7 +944,6 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-pool-x86_64-sap-aio" name="SLE11-SDK-SP1-Pool for x86_64 SAP-AiO" optional="N" parent="sle11-sp1-sap-aio-pool-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit" update_tag="sdksp1">
 		<products>
 			<product_id name="sle-sdk">1860</product_id>
-			<product_id name="sle-sdk">3040</product_id>
 		</products>
 	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP1" family="7261" is_signed="Y" label="sles11-extras-i586" name="SLES11-Extras for i586" optional="Y" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-Extras/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="">
@@ -1427,9 +1418,9 @@
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">1509</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Tools" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-vmware" name="SLES11-SP2-SUSE-Manager-Tools x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+	<channel arch="x86_64" description="SUSE Manager Tools" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-vmware" name="SLES11-SP2-SUSE-Manager-Tools x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="SLES-for-VMware" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
-			<product_id name="SUSE_SLES">3009</product_id>
+			<product_id name="SLES-for-VMware">3060</product_id>
 		</products>
 	</channel>
 	<channel arch="ppc" description="SUSE Linux Enterprise Server 10 SP4" family="SLES-PPC" is_signed="Y" label="sles10-sp4-pool-ppc" name="SLES10-SP4-Pool for ppc" optional="N" parent="BASE" product_name="SUSE-Linux-Enterprise-Server-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLES10-SP4-Pool/sles-10-ppc/" summary="SUSE Linux Enterprise Server 10 SP4" update_tag="slesp4">
@@ -1663,7 +1654,6 @@
 	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-pool-x86_64-sap-sp2" name="SLE11-SDK-SP1-Pool for x86_64 SAP-SP2" optional="N" parent="sle11-sp2-sap-updates-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit" update_tag="sdksp1">
 		<products>
-			<product_id name="sle-sdk">1860</product_id>
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
 	</channel>
@@ -1928,7 +1918,7 @@
 	</channel>
 	<channel arch="x86_64" description="SUSE Manager Tools" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp1-suse-manager-tools-x86_64-vmware" name="SLES11-SP1-SUSE-Manager-Tools x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp1">
 		<products>
-			<product_id name="SUSE_SLES">1829</product_id>
+			<product_id name="SUSE_SLES">2320</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Desktop 11 SP1" family="7260" is_signed="Y" label="sle11-sp1-debuginfo-pool-x86_64-sled" name="SLE11-SP1-Debuginfo-Pool for x86_64 SLED" optional="Y" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Desktop 11 SP1" update_tag="dbgsp1">
