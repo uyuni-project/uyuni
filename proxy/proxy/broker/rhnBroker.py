@@ -454,6 +454,10 @@ class BrokerHandler(SharedHandler):
         except rhnRepository.NotLocalError:
             # The package is not local
             return None
+        except rhnFault, f:
+            if f.code == 17:
+                return None
+            raise
         return ret
 
     def __checkAuthSessionTokenCache(self, token, channel):
