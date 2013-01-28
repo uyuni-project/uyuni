@@ -76,6 +76,14 @@
       <trans-unit id="spmigration.message.scheduled.dry-run">
         <source>This system is &lt;a href="/network/systems/details/history/event.pxt?sid={0}&amp;hid={1}"&gt;scheduled&lt;/a&gt; for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
       </trans-unit>
+
+      <!-- SUSE only taskomatic jobs -->
+      <trans-unit id="task.status.mgr-register">
+        <source>Run mgr-register</source>
+      </trans-unit>
+      <trans-unit id="task.status.repo-sync">
+        <source>Repository Sync</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
