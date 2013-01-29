@@ -22,6 +22,11 @@
 	<upgrade from_pdid="1508" from_product="SUSE-Linux-Enterprise-Server-SP3-10-None.s390" to_pdid="2530" to_product="SUSE-Linux-Enterprise-Server-SP4-10-None.s390"/>
 	<upgrade from_pdid="1509" from_product="SUSE-Linux-Enterprise-Server-SP3-10-None.s390x" to_pdid="2531" to_product="SUSE-Linux-Enterprise-Server-SP4-10-None.s390x"/>
 	<upgrade from_pdid="1541" from_product="SUSE-Linux-Enterprise-SDK-SP3-10-None.None" to_pdid="2534" to_product="SUSE-Linux-Enterprise-SDK-SP4-10-None.None"/>
+	<upgrade from_pdid="1820" from_product="SUSE_SLED-11.1-None.i686" to_pdid="3000" to_product="SUSE_SLED-11.2-None.i686"/>
+	<upgrade from_pdid="1821" from_product="SUSE_SLED-11.1-None.i586" to_pdid="3001" to_product="SUSE_SLED-11.2-None.i586"/>
+	<upgrade from_pdid="1822" from_product="SUSE_SLED-11.1-None.i486" to_pdid="3002" to_product="SUSE_SLED-11.2-None.i486"/>
+	<upgrade from_pdid="1823" from_product="SUSE_SLED-11.1-None.i386" to_pdid="3003" to_product="SUSE_SLED-11.2-None.i386"/>
+	<upgrade from_pdid="1824" from_product="SUSE_SLED-11.1-None.x86_64" to_pdid="3004" to_product="SUSE_SLED-11.2-None.x86_64"/>
 	<upgrade from_pdid="1825" from_product="SUSE_SLES-11.1-None.i686" to_pdid="3005" to_product="SUSE_SLES-11.2-None.i686"/>
 	<upgrade from_pdid="1826" from_product="SUSE_SLES-11.1-None.i586" to_pdid="3006" to_product="SUSE_SLES-11.2-None.i586"/>
 	<upgrade from_pdid="1827" from_product="SUSE_SLES-11.1-None.i486" to_pdid="3007" to_product="SUSE_SLES-11.2-None.i486"/>
