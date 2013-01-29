@@ -96,8 +96,8 @@ class Repository(rhnRepository.Repository):
 
         if not mapping.has_key(pkgFilename):
             log_error("Package not in mapping: %s" % pkgFilename)
-            raise rhnFault(17, _("Invalid RPM package requested: %s")
-                                 % pkgFilename)
+            raise NotLocalError(_("Invalid RPM package requested: %s")
+                                  % pkgFilename)
         filePath = "%s/%s" % (CFG.PKG_DIR, mapping[pkgFilename])
         log_debug(4, "File path", filePath)
         if not os.access(filePath, os.R_OK):
