@@ -406,7 +406,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs._updates_process_packages(packages, 'patchy', []),
                          [])
         self.assertEqual(rs.print_msg.call_args, (
-                ("The package n1:v1-r1.arch1 "
+                ("The package n1-v1-r1.arch1 "
                  "which is referenced by patch patchy was not found "
                  "in the database. This patch has been skipped.", ),{}))
 
