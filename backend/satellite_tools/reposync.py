@@ -75,6 +75,7 @@ class RepoSync(object):
         self.interactive = not noninteractive
         self.filters = filters
         self.deep_verify = deep_verify
+        self.error_messages = []
 
         initCFG('server.susemanager')
         db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
@@ -197,6 +198,9 @@ class RepoSync(object):
         total_time = datetime.now() - start_time
         self.print_msg("Sync completed.")
         self.print_msg("Total time: %s" % str(total_time).split('.')[0])
+        if len(self.error_messages) > 0:
+            self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
+            sys.exit(1)
 
     def set_repo_credentials(self, url_dict):
         """Set the credentials in the url_dict['source_url'] from the config file
@@ -208,7 +212,7 @@ class RepoSync(object):
         Examples:
         ?credentials=mirrcred - read 'mirrcred_user' and 'mirrcred_pass'
         ?credeentials=mirrcred_5 - read 'mirrcred_user_5' and 'mirrcred_pass_5'
-        
+
         """
         url = suseLib.URL(url_dict['source_url'])
         creds = url.get_query_param('credentials')
@@ -728,14 +732,15 @@ class RepoSync(object):
             if 'epoch' not in param_dict:
                 param_dict['epoch'] = ''
             else:
-                param_dict['epoch'] = '-%s' % param_dict['epoch']
-            self.print_msg(
-                        "The package "
-                        "%(name)s%(epoch)s:%(version)s-%(release)s.%(arch)s "
-                        "which is referenced by patch %(patch)s was not found "
-                        "in the database. This patch has been skipped." % dict(
-                            patch=advisory_name,
-                            **param_dict))
+                param_dict['epoch'] = '%s:' % param_dict['epoch']
+            errmsg = ("The package "
+                     "%(name)s-%(epoch)s%(version)s-%(release)s.%(arch)s "
+                     "which is referenced by patch %(patch)s was not found "
+                     "in the database. This patch has been skipped." % dict(
+                         patch=advisory_name,
+                         **param_dict))
+            self.print_msg(errmsg)
+            self.error_messages.append(errmsg)
             return None
 
         package = IncompletePackage()
@@ -850,6 +855,8 @@ class RepoSync(object):
                 pack.clear_header()
                 if self.fail:
                     raise
+                else:
+                    self.error_messages.append(str(e))
                 continue
             pack.clear_header()
 
