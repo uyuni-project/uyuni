@@ -360,6 +360,12 @@ class RepoSync(object):
 
             existing_errata = get_errata(e['advisory'])
 
+            if (existing_errata and
+                not self.errata_needs_update(existing_errata, version,
+                                             _to_db_date(notice.get('timestamp')))):
+                continue
+            self.print_msg("Add Patch %s" % e['advisory'])
+
             # product name
             query = rhnSQL.prepare("""
                 SELECT p.friendly_name
@@ -462,6 +468,15 @@ class RepoSync(object):
                     # parsed one. We need to skip the current errata
                     continue
                 # else: release match, so we update the errata
+
+            if notice['updated']:
+                updated_date = _to_db_date(notice['updated'])
+            else:
+                updated_date = _to_db_date(notice['issued'])
+            if (existing_errata and
+                not self.errata_needs_update(existing_errata, notice['version'], updated_date)):
+                continue
+            self.print_msg("Add Patch %s" % patch_name)
             e = Erratum()
             e['errata_from']   = notice['from']
             e['advisory'] = e['advisory_name'] = patch_name
@@ -473,10 +488,7 @@ class RepoSync(object):
             e['topic']         = ' '
             e['solution']      = ' '
             e['issue_date']    = _to_db_date(notice['issued'])
-            if notice['updated']:
-                e['update_date'] = _to_db_date(notice['updated'])
-            else:
-                e['update_date'] = e['issue_date']
+            e['update_date']   = updated_date
             e['org_id']        = self.channel['org_id']
             e['notes']         = ''
             e['refers_to']     = ''
@@ -513,6 +525,29 @@ class RepoSync(object):
         importer = ErrataImport(batch, backend)
         importer.run()
         self.regen = True
+
+    def errata_needs_update(self, existing_errata, new_errata_version, new_errata_changedate):
+        """check, if the errata in the DB needs an update
+
+           new_errata_version: integer version number
+           new_errata_changedate: date of the last change in DB format "%Y-%m-%d %H:%M:%S"
+        """
+        if int(existing_errata['advisory_rel']) < int(new_errata_version):
+            log_debug(2, "Patch need update: higher version")
+            return True
+        newdate = datetime.strptime(new_errata_changedate,
+                                    "%Y-%m-%d %H:%M:%S")
+        olddate = datetime.strptime(existing_errata['update_date'],
+                                    "%Y-%m-%d %H:%M:%S")
+        if newdate > olddate:
+            log_debug(2, "Patch need update: newer update date - %s > %s" % (newdate, olddate))
+            return True
+        for c in existing_errata['channels']:
+            if self.channel_label == c['label']:
+                log_debug(2, "No update needed")
+                return False
+        log_debug(2, "Patch need update: channel not yet part of the patch")
+        return True
 
     def import_products(self, repo):
         products = repo.get_products()
@@ -1050,7 +1085,8 @@ def get_errata(update_id):
     """
     h = rhnSQL.prepare("""
         select e.id, e.advisory,
-               e.advisory_name, e.advisory_rel
+               e.advisory_name, e.advisory_rel,
+               TO_CHAR(e.update_date, 'YYYY-MM-DD HH24:MI:SS') as update_date
           from rhnerrata e
          where e.advisory = :name
     """)
