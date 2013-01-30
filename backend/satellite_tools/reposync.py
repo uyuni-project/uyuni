@@ -92,7 +92,14 @@ class RepoSync(object):
             date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
             date.tm_min, date.tm_sec)
         log_filename = channel_label + '-' +  datestr + '.log'
-        rhnLog.initLOG(default_log_location + log_filename)
+        try:
+            if CFG.DEBUG > 1:
+                dlevel = CFG.DEBUG
+            else:
+                dlevel = 0
+        except:
+            dlevel = 0
+        rhnLog.initLOG(default_log_location + log_filename, dlevel)
         #os.fchown isn't in 2.4 :/
         os.system("chgrp www " + default_log_location + log_filename)
 
