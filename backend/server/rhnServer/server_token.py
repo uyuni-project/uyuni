@@ -201,7 +201,7 @@ def token_server_groups(server_id, tokens_obj):
         except rhnSQL.SQLError, e:
             log_error("Failed to add server to group", server_id,
                       server_group_id, sg["name"])
-            raise rhnFault(80, _("Failed to add server to group %s") % 
+            raise rhnFault(80, _("Failed to add server to group %s") %
                 sg["name"]), None, sys.exc_info()[2]
         else:
             ret.append("Subscribed to server group '%s'" % sg["name"])
@@ -521,7 +521,7 @@ class ActivationTokens:
     forget_rereg_token = 0
 
     def __init__(self, tokens, user_id=None, org_id=None,
-            kickstart_session_id=None, entitlements=[], deploy_configs=None):
+            kickstart_session_id=None, entitlements=[], deploy_configs=None, contact_method_id=0):
         self.tokens = tokens
         self.user_id = user_id
         self.org_id = org_id
@@ -532,6 +532,7 @@ class ActivationTokens:
         self.deploy_configs = deploy_configs
         # entitlements is list of tuples [(name, label)]
         self.entitlements = entitlements
+        self.contact_method_id = contact_method_id
 
     def __nonzero__(self):
         return (len(self.tokens) > 0)
@@ -566,6 +567,9 @@ class ActivationTokens:
 
     def get_deploy_configs(self):
         return self.deploy_configs
+
+    def get_contact_method_id(self):
+        return self.contact_method_id
 
     def get_names(self):
         """ Returns a string of the entitlement names that the token grants.
@@ -639,7 +643,7 @@ class ActivationTokens:
                 if e.errno == 20220:
                     #ORA-20220: (servergroup_max_members) - Server group membership
                     #cannot exceed maximum membership
-                    raise rhnFault(91, 
+                    raise rhnFault(91,
                         _("Registration failed: SUSE Manager Software service entitlements exhausted: %s") % entitlement[0]), None, sys.exc_info()[2]
                 #No idea what error may be here...
                 raise rhnFault(90, e.errmsg), None, sys.exc_info()[2]
@@ -796,13 +800,19 @@ _query_token = rhnSQL.Statement("""
            rt.usage_limit,
            rt.server_id,
            ak.ks_session_id kickstart_session_id,
-           rt.deploy_configs
+           rt.deploy_configs,
+           rt.contact_method_id
     from rhnActivationKey ak, rhnRegToken rt, rhnRegTokenEntitlement rte, rhnServerGroupType sgt
     where ak.token = :token
       and ak.reg_token_id = rt.id
       and rt.disabled = 0
       and rt.id = rte.reg_token_id
       and rte.server_group_type_id = sgt.id
+""")
+
+_query_contact_method_ranking = rhnSQL.Statement("""
+    select id, rank
+      from suseServerContactMethod
 """)
 
 def fetch_token(token_string):
@@ -826,6 +836,14 @@ def fetch_token(token_string):
 
     # List of re-registration entitlements labels (if found):
     rereg_ents = []
+
+    # 0 = default, 1 = ssh, 2 = ssh-tunnel
+    server_contact_method = 0;
+    cm_ranking = {}
+
+    ranks = rhnSQL.fetchall_dict(_query_contact_method_ranking)
+    for r in ranks:
+        cm_ranking[r['id']] = r['rank']
 
     for token in tokens:
         h.execute(token=token)
@@ -891,6 +909,10 @@ def fetch_token(token_string):
 
         # Deploy configs?
         deploy_configs = deploy_configs or (row['deploy_configs'] == 'Y')
+
+        # which contact method?
+        if cm_ranking[row['contact_method_id']] > cm_ranking[server_contact_method]:
+            server_contact_method = row['contact_method_id']
         result.append(row)
 
     # One should not stack re-activation tokens
@@ -916,6 +938,7 @@ def fetch_token(token_string):
         'kickstart_session_id'  : ks_session_id,
         'entitlements'          : entitlements_base.keys() + entitlements_extra.keys(),
         'deploy_configs'        : deploy_configs,
+        'contact_method_id'     : server_contact_method,
     }
     log_debug(4, "Values", kwargs)
 

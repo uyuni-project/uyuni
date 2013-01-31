@@ -153,7 +153,7 @@ class Server(ServerWrapper):
     # change the base channel of a server
     def change_base_channel(self, new_rel, suse_products=None):
         log_debug(3, self.server["id"], new_rel)
-        old_rel = self.server["release"]       
+        old_rel = self.server["release"]
         current_channels = rhnChannel.channels_for_server(self.server["id"])
         # Extract the base channel off of
         old_base = filter(lambda x: not x['parent_channel'],
@@ -329,6 +329,7 @@ class Server(ServerWrapper):
             self.user.reload(user_id)
         self.server["creator_id"] = user_id
         self.server["org_id"] = org_id
+        self.server["contact_method_id"] = tokens_obj.get_contact_method_id()
         return 0
 
     # perform the actions required by the token (subscribing to
@@ -674,7 +675,7 @@ class Server(ServerWrapper):
         log_debug(3, self.server["id"])
 
         return server_lib.check_entitlement(self.server['id'])
- 
+
     def validateSatCert(self):
         # make sure the cert is still valid
 
