@@ -169,8 +169,8 @@ def diff(src, dst, srcname=None, dstname=None, display_diff=False):
     # for security reasons.
     if (len(ret_list) > 0 # if differences exist
             and not display_diff # and we have not explicitly decided to display
-            and src_stat.st_uid == 0 # and file is owned by root
-            and not src_stat.st_mode & stat.S_IROTH): #and not readable by all
+            and dst_stat.st_uid == 0 # and file is owned by root
+            and not dst_stat.st_mode & stat.S_IROTH): #and not readable by all
         ret_list = [
                 "Differences exist in a file that is not readable by all. ",
                 "Re-deployment of configuration file is recommended.\n"]
