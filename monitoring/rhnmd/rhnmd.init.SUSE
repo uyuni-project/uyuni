@@ -27,7 +27,8 @@ prog="rhnmd"
 # Some functions to make the below more readable
 SU="/bin/su -s /bin/bash - nocpulse -c"
 SSHD="/usr/sbin/rhnmd"
-SSHD_PIDFILE="/var/run/rhnmd.pid"
+SSH_PIDDIR="/var/run/rhnmd"
+SSHD_PIDFILE="$SSH_PIDDIR/rhnmd.pid"
 
 do_restart_sanity_check()
 {
@@ -50,14 +51,23 @@ start()
 			echo 'LANG="C"' > /var/lib/nocpulse/.bashrc
 		fi
 	fi
-	startproc -f -p $SSHD_PIDFILE $SSHD -f /etc/nocpulse/rhnmd_config -o "PidFile=$SSHD_PIDFILE"
+	if [ ! -d "$SSH_PIDDIR" ]; then
+		mkdir "$SSH_PIDDIR"
+	fi
+	chown nocpulse.nocpulse "$SSH_PIDDIR"
+	startproc -f -u nocpulse -p $SSHD_PIDFILE $SSHD -f /etc/nocpulse/rhnmd_config -o "PidFile=$SSHD_PIDFILE"
 	rc_status -v
 }
 
 stop()
 {
 	echo -n $"Stopping $prog:"
-	killproc -p $SSHD_PIDFILE -TERM $SSHD
+	if [ ! -f $SSHD_PIDFILE -a -f "/var/run/rhnmd.pid" ]; then
+		# try to stop with the old pidfile
+		killproc -p "/var/run/rhnmd.pid" -TERM $SSHD
+	else
+		killproc -p $SSHD_PIDFILE -TERM $SSHD
+	fi
 	rc_status -v
 }
 

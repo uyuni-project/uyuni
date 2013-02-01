@@ -19,7 +19,7 @@ Protocol 2
 ListenAddress 0.0.0.0
 HostKey /var/lib/nocpulse/.ssh/nocpulse-identity
 AuthorizedKeysFile /var/lib/nocpulse/.ssh/authorized_keys
-PidFile /var/run/rhnmd.pid
+PidFile /var/run/rhnmd/rhnmd.pid
 ServerKeyBits 768
 LoginGraceTime 600
 KeyRegenerationInterval 3600
