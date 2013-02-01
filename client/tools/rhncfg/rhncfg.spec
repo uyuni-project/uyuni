@@ -23,6 +23,7 @@ BuildRequires: python
 Requires: python
 Requires: rhnlib >= 2.5.32
 Requires: %{rhn_client_tools}
+Requires: spacewalk-backend-libs >= 1.3.32-1
 %if 0%{?suse_version}
 # provide rhn directories and no selinux on suse
 BuildRequires: spacewalk-client-tools
@@ -45,7 +46,6 @@ The base libraries and functions needed by all rhncfg-* packages.
 Summary: Spacewalk Configuration Client
 Group:   Applications/System
 Requires: %{name} = %{version}-%{release}
-Requires: spacewalk-backend-libs >= 1.3.32-1
 
 %description client
 A command line interface to the client features of the Spacewalk Configuration
