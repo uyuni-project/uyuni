@@ -4,7 +4,8 @@ After=syslog.target network.target auditd.service
 
 [Service]
 User=nocpulse
-PIDFile=/var/run/rhnmd.pid
+PermissionsStartOnly=true
+PIDFile=/var/run/rhnmd/rhnmd.pid
 ExecStartPre=/var/lib/nocpulse/sbin/rhnmd_create_key.sh
 ExecStart=/usr/sbin/rhnmd -D -f /etc/nocpulse/rhnmd_config
 ExecReload=/bin/kill -HUP $MAINPID
