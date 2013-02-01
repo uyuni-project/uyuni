@@ -28,6 +28,7 @@ prog="rhnmd"
 # Some functions to make the below more readable
 SU="/sbin/runuser -s /bin/bash - nocpulse -c"
 SSHD="/usr/sbin/rhnmd"
+SSH_PIDDIR="/var/run/rhnmd"
 
 do_restart_sanity_check()
 {
@@ -42,6 +43,10 @@ do_restart_sanity_check()
 start()
 {
 	echo -n $"Starting $prog:"
+	if [ ! -d "$SSH_PIDDIR" ]; then
+		mkdir "$SSH_PIDDIR"
+	fi
+	chown nocpulse.nocpulse "$SSH_PIDDIR"
 	daemon --user nocpulse $SSHD -f /etc/nocpulse/rhnmd_config
 	RETVAL=$?
 	[ "$RETVAL" = 0 ] && touch /var/lock/subsys/rhnmd
