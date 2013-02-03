@@ -1,0 +1,163 @@
+#! /usr/bin/python
+
+import sys
+import os
+import shutil
+from spacewalk.server import rhnSQL
+from spacewalk.common.rhnConfig import CFG, initCFG
+from optparse import OptionParser
+
+sys.path.append("/usr/share/susemanager")
+
+
+initCFG('server.susemanager')
+db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
+rhnSQL.initDB(db_string)
+
+basepath = CFG.MOUNT_POINT or '/var/spacewalk'
+
+_sql_synced_proucts = rhnSQL.Statement("""
+SELECT distinct sp.product_id as id
+FROM suseProducts sp
+JOIN suseProductChannel spc ON sp.id = spc.product_id
+WHERE spc.channel_id IS NOT NULL
+""")
+
+_sql = rhnSQL.Statement("""
+SELECT distinct
+        pkg.id AS id,
+        PN.name || '-' || evr_t_as_vre_simple(full_list.evr) || '.' || full_list.arch_label AS nvrea,
+        full_list.arch_label AS arch,
+        pkg.path
+  FROM  (
+         SELECT  p.name_id name_id,
+                 max(pe.evr) evr,
+                 pa.id as arch_id,
+                 pa.label as arch_label
+           FROM  rhnPackageArch PA, rhnPackageEVR PE, rhnPackage P,
+                 rhnChannelNewestPackage CNP, suseProductChannel PC,
+                 suseProducts sp
+          WHERE  sp.product_id = :pdid
+            AND  sp.id = pc.product_id
+            AND  pc.channel_id = cnp.channel_id
+            AND  cnp.package_id = p.id
+            AND  p.evr_id = pe.id
+            AND  p.package_arch_id = pa.id
+       GROUP BY  p.name_id, pa.label, pa.id
+       ) full_list,
+       rhnPackage pkg
+       join rhnPackageName pn on pkg.name_id = pn.id
+       join rhnPackageEVR pevr on pkg.evr_id = pevr.id
+       join rhnChannelPackage CP on CP.package_id = pkg.id
+       join suseProductChannel PC on PC.channel_id = CP.channel_id
+       join suseProducts SP on SP.id = PC.product_id
+ WHERE full_list.name_id = pkg.name_id
+   AND full_list.evr = pevr.evr
+   AND full_list.arch_id = pkg.package_arch_id
+   AND SP.product_id = :pdid
+   AND pn.name = :pkgname
+order by pkg.id
+""");
+
+def check_bootstrap_packages():
+    """ Check, if bootstrap repo packages are installed """
+    if (os.system("rpm -q spacewalk-client-repository-sle-10-4 >/dev/null") == 0 or
+        os.system("rpm -q spacewalk-client-repository-sle-10-3 >/dev/null") == 0 or
+        os.system("rpm -q spacewalk-client-repository-sle-11-1 >/dev/null") == 0 or
+        os.system("rpm -q spacewalk-client-repository >/dev/null") == 0):
+            print "Using this script requires to de-install the bootstrap repository packages."
+            print "Take care the the following packages are not on your system:"
+            print "* spacewalk-client-repository-sle-10-4"
+            print "* spacewalk-client-repository-sle-10-3"
+            print "* spacewalk-client-repository-sle-11-1"
+            print "* spacewalk-client-repository"
+            print "Aborted."
+            sys.exit(1)
+
+def list_labels():
+    synced_products = map(lambda x: x['id'], rhnSQL.fetchall_dict(_sql_synced_proucts) or [])
+
+    for label in sorted(mgr_bootstrap_data.DATA.iterkeys()):
+        if mgr_bootstrap_data.DATA[label]['PDID'] in synced_products:
+            print "%s" % label
+
+def create_repo(label):
+    pdid = int(mgr_bootstrap_data.DATA[label]['PDID'])
+    destdir = mgr_bootstrap_data.DATA[label]['DEST']
+
+    if not os.path.exists(destdir):
+        if dryrun:
+            print "Create directory '%s'" % destdir
+        else:
+            os.makedirs(destdir)
+
+    h = rhnSQL.prepare(_sql)
+    for pkgname in mgr_bootstrap_data.DATA[label]['PKGLIST']:
+        h.execute(pdid=pdid, pkgname=pkgname)
+        p = h.fetchone_dict() or None
+        if p is None:
+            print "ERROR: package '%s' not found" % pkgname
+            sys.exit(1)
+        rpmdir = os.path.join(destdir, p['arch'])
+        if not os.path.exists(rpmdir):
+            os.makedirs(rpmdir)
+        print "copy '%s'" % p['nvrea']
+        if not dryrun:
+            shutil.copy2(os.path.join(basepath, p['path']), rpmdir)
+
+    if dryrun:
+        print "createrepo -s sha %s" % destdir
+    else:
+        os.system("createrepo -s sha %s" % destdir)
+
+
+parser = OptionParser()
+parser.add_option('-n', '--dryrun', action='store_true', dest='dryrun',
+                  help='Dry run. Show only changes - do not execute them')
+parser.add_option('-i', '--interactive', action='store_true', dest='interactive',
+                  help='Interactive mode (default)')
+parser.add_option('-l', '--list', action='store_true', dest='list',
+                  help='list available distributions')
+parser.add_option('-c', '--create', action='store', dest='create',
+                  help='create bootstrap repo for given distribution label')
+parser.add_option('', '--datamodule', action="store", dest='datamodule',
+                  help='Use an own datamodule (Default: mgr_bootstrap_data)')
+
+(options, args) = parser.parse_args()
+
+modulename = "mgr_bootstrap_data"
+if options.datamodule and options.datamodule != '':
+    modulename = options.datamodule
+
+try:
+    mgr_bootstrap_data = __import__(modulename)
+except ImportError, e:
+    sys.stderr.write("Unable to load module '%s'\n" % modulename)
+    sys.stderr.write(str(e) + "\n")
+    sys.exit(1)
+
+dryrun = options.dryrun
+
+check_bootstrap_packages()
+
+if not options.list and not options.create:
+    options.interactive = True
+
+if options.interactive:
+    list_labels()
+
+    elabel = raw_input("Enter product label: ")
+    if elabel not in mgr_bootstrap_data.DATA:
+        print "'%s' not found" % elabel
+        sys.exit(1)
+
+    create_repo(elabel)
+elif options.list:
+    list_labels()
+elif options.create:
+    if options.create not in mgr_bootstrap_data.DATA:
+        print "'%s' not found" % options.create
+        sys.exit(1)
+    create_repo(options.create)
+
+
