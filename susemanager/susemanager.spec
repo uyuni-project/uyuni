@@ -131,17 +131,20 @@ chown root.root /etc/sysconfig
 %dir %{pythonsmroot}
 %dir %{pythonsmroot}/susemanager
 %dir %{_prefix}/share/rhn/
+%dir %{_datadir}/susemanager
 %attr(0755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
 %attr(0755,root,root) %{_sbindir}/mgr-register
 %attr(0755,root,root) %{_sbindir}/mgr-ncc-sync
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
+%attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %{pythonsmroot}/susemanager/__init__.py*
 %{pythonsmroot}/susemanager/mgr_register.py*
 %{pythonsmroot}/susemanager/mgr_ncc_sync_lib.py*
 %{pythonsmroot}/susemanager/mgr_clean_old_patchnames.py*
 %{pythonsmroot}/susemanager/simpleproduct.py*
+%{_datadir}/susemanager/mgr_bootstrap_data.py*
 
 %changelog
 
