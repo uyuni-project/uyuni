@@ -201,7 +201,7 @@ class Channel(BaseChannelObject):
     _sequence_name = 'rhn_channel_id_seq'
     _generic_fields = ['label', 'name', 'summary', 'description', 'basedir',
         'org_id', 'gpg_key_url', 'gpg_key_id', 'gpg_key_fp', 'end_of_life',
-        'channel_families', 'channel_arch',]
+        'channel_families', 'channel_arch', 'update_tag',]
 
     def __init__(self):
         BaseChannelObject.__init__(self)
@@ -1229,7 +1229,7 @@ def list_all_packages_complete_sql(channel_id):
             pkgi[item['capability_type']].append(dep)
     # process the results
     ret = map(lambda a: (a["name"], a["version"], a["release"], a["epoch"],
-                         a["arch"], a["package_size"], a['provides'], 
+                         a["arch"], a["package_size"], a['provides'],
                          a['requires'], a['conflicts'], a['obsoletes'], a['recommends'], a['suggests'], a['supplements']),
               __stringify(ret))
     return ret
@@ -1694,16 +1694,16 @@ def guess_channels_for_server(server, user_id=None, none_ok=0,
             error_strings['www_activation'] = _("\nIf you have a "
                 "registration number, please register with it first at "
                 "http://www.redhat.com/apps/activate/ and then try again.\n\n")
-            
+
         raise rhnFault(19, msg % error_strings), None, sys.exc_info()[2]
     except BaseChannelDeniedError:
         if none_ok:
             return []
 
-        raise rhnFault(71, 
-                _("Insufficient subscription permissions for release (%s, %s") 
+        raise rhnFault(71,
+                _("Insufficient subscription permissions for release (%s, %s")
                     % (server.release, server.arch)), None, sys.exc_info()[2]
-            
+
 # Subscribes the server to channels
 # can raise SubscriptionCountExceeded, BaseChannelDeniedError, NoBaseChannelError
 # Only used for new server registrations

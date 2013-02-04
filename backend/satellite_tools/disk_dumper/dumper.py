@@ -7,10 +7,10 @@
 # FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-# 
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation. 
+# in this software or its documentation.
 #
 
 import time
@@ -61,7 +61,7 @@ class XML_Dumper:
         return rhnSQL.prepare(query)
 
     def get_channel_families_statement_new(self, cids):
-        
+
         args = {
 	   'ch_ids'	: cids
         }
@@ -73,7 +73,7 @@ class XML_Dumper:
         """
         return rhnSQL.prepare(query % args)
 
-        
+
     def get_channels_statement(self):
         query = """
             select c.id channel_id, c.label,
@@ -90,9 +90,9 @@ class XML_Dumper:
 
     def get_packages_statement(self):
         query = """
-            select p.id package_id, 
+            select p.id package_id,
                    TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') last_modified
-              from rhnChannelPackage cp, rhnPackage p, 
+              from rhnChannelPackage cp, rhnPackage p,
                    rhnChannelFamilyMembers cfm,
                    (%s
                    ) scf
@@ -123,7 +123,7 @@ class XML_Dumper:
 
     def get_errata_statement(self):
         query = """
-            select e.id errata_id, 
+            select e.id errata_id,
                    TO_CHAR(e.last_modified, 'YYYYMMDDHH24MISS') last_modified
               from rhnChannelErrata ce, rhnErrata e,
                    rhnChannelFamilyMembers cfm,
@@ -151,7 +151,7 @@ class XML_Dumper:
         log_debug(2)
         self._write_dump(exportLib.BlacklistObsoletesDumper)
         return 0
-        
+
     def dump_arches(self, rpm_arch_type_only=0):
         log_debug(2)
         writer = self._get_xml_writer()
@@ -248,7 +248,7 @@ class XML_Dumper:
 
         # Copy the results to the output stream
         # They shold be already compressed if they were requested to be
-        # compressed 
+        # compressed
         buffer_size = 16384
         # Send the HTTP headers - but don't init the compressed stream since
         # we send the data ourselves
@@ -272,7 +272,7 @@ class XML_Dumper:
         return 0
 
     _query_get_channel_packages = rhnSQL.Statement("""
-        select cp.package_id, 
+        select cp.package_id,
                TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') last_modified
           from rhnChannelPackage cp,
                rhnPackage p
@@ -295,7 +295,7 @@ class XML_Dumper:
         package_ids = h.fetchall_dict() or []
         # Sort packages
         package_ids.sort(lambda a, b: cmp(a['package_id'], b['package_id']))
-        
+
         dumper = SatelliteDumper(writer,
             ShortPackagesDumper(writer, package_ids))
         dumper.dump()
@@ -306,10 +306,10 @@ class XML_Dumper:
         temp_stream.seek(0, 0)
         # Set the value in the cache. We don't recompress the result since
         # it's already compressed
-        rhnCache.set(key, temp_stream.read(), modified=last_modified, 
+        rhnCache.set(key, temp_stream.read(), modified=last_modified,
             compressed=0, raw=1)
         return self._normalize_compressed_stream(temp_stream)
-        
+
     def _normalize_compressed_stream(self, stream):
         """ Given a compressed stream, will either return the stream, or will
             decompress it and return it, depending on the compression level
@@ -336,7 +336,7 @@ class XML_Dumper:
         log_debug(2)
         return self._packages(packages, prefix='rhn-source-package-',
             dump_class=SourcePackagesDumper, sources=1)
-        
+
     def _get_item_id(self, prefix, name, errnum, errmsg):
         prefix_len = len(prefix)
         if name[:prefix_len] != prefix:
@@ -379,7 +379,7 @@ class XML_Dumper:
     def dump_errata(self, errata, verify_errata=False):
         log_debug(2)
 
-        errata_hash = {} 
+        errata_hash = {}
         if verify_errata:
             h = self.get_errata_statement()
             for erratum in errata:
@@ -408,16 +408,16 @@ class XML_Dumper:
         if validate_kickstarts:
             kickstart_labels = self._validate_kickstarts(
                             kickstart_labels=kickstart_labels)
-        
+
         self._write_dump(KickstartableTreesDumper, params=kickstart_labels)
         return 0
-    
+
     def _validate_channels(self, channel_labels=None):
         log_debug(4)
         # Sanity check
-        if channel_labels: 
+        if channel_labels:
             if not isinstance(channel_labels, ListType):
-                raise rhnFault(3000, 
+                raise rhnFault(3000,
                     "Expected list of channels, got %s" % type(channel_labels))
 
         h = self.get_channels_statement()
@@ -430,7 +430,7 @@ class XML_Dumper:
                 break
             all_channels_hash[row['label']] = row
 
-        # Intersect the list of channels they've sent to us 
+        # Intersect the list of channels they've sent to us
 	iss_slave_sha256_capable = (float(rhnFlags.get('X-RHN-Satellite-XML-Dump-Version')) >= constants.SHA256_SUPPORTED_VERSION)
 
         if not channel_labels:
@@ -462,10 +462,10 @@ class XML_Dumper:
     def _validate_kickstarts(self, kickstart_labels):
         log_debug(4)
         # Saity check
-        if kickstart_labels: 
+        if kickstart_labels:
             if not isinstance(kickstart_labels, ListType):
-                raise rhnFault(3000, 
-                    "Expected list of kickstart labels, got %s" % 
+                raise rhnFault(3000,
+                    "Expected list of kickstart labels, got %s" %
                     type(kickstart_labels))
 
         all_ks_hash = {}
@@ -542,7 +542,7 @@ class QueryIterator:
                 return row
 
             self._result_set_exhausted = 1
-                
+
 class CachedQueryIterator:
     """ This class will attempt to retrieve information, either from the database or
         from a local cache.
@@ -577,7 +577,7 @@ class CachedQueryIterator:
                 # Entry is cached
                 log_debug(2, "Cache HIT for %s" % params)
                 return val
-                
+
             log_debug(4, "Cache MISS for %s" % params)
             start = time.time()
             self._execute(params)
@@ -589,7 +589,7 @@ class CachedQueryIterator:
 
         # Dummy return
         return None
-        
+
     def _execute(self, params):
         log_debug(4, params)
         self._statement.execute(**params)
@@ -643,7 +643,7 @@ class CachedDumper(exportLib.BaseDumper):
         # CachedQueryIterator returns (params, row) as data
         params, row = data
         s = StringIO()
-        # Back up the old writer and replace it with a StringIO-based one 
+        # Back up the old writer and replace it with a StringIO-based one
         ow = self.get_writer()
         # Use into a tee stream (which writes to both streams at the same
         # time)
@@ -653,7 +653,7 @@ class CachedDumper(exportLib.BaseDumper):
         start = time.time()
         # call dump_subelement() from original (non-cached) class
         self.non_cached_class.dump_subelement(self, row)
-        log_debug(5, 
+        log_debug(5,
             "Timer for _dump_subelement: %.2f" % (time.time() - start))
 
         # Restore the old writer
@@ -663,11 +663,11 @@ class CachedDumper(exportLib.BaseDumper):
 
 class ChannelsDumper(exportLib.ChannelsDumper):
     _query_list_channels = rhnSQL.Statement("""
-        select c.id, c.org_id, 
-	       c.label, ca.label channel_arch, c.basedir, c.name, 
-               c.summary, c.description, c.gpg_key_url,
+        select c.id, c.org_id,
+	       c.label, ca.label channel_arch, c.basedir, c.name,
+               c.summary, c.description, c.gpg_key_url, c.update_tag,
                ct.label checksum_type,
-               TO_CHAR(c.last_modified, 'YYYYMMDDHH24MISS') last_modified, 
+               TO_CHAR(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
                pc.label parent_channel
           from rhnChannel c left outer join rhnChannel pc on c.parent_channel = pc.id
                left outer join rhnChecksumType ct on c.checksum_type_id = ct.id, rhnChannelArch ca
@@ -700,7 +700,7 @@ class ChannelsDumper(exportLib.ChannelsDumper):
 class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):
     iterator_query = rhnSQL.Statement("""
         select c.id, c.label, ca.label channel_arch, c.basedir, c.name,
-               c.summary, c.description, c.gpg_key_url, c.org_id,
+               c.summary, c.description, c.gpg_key_url, c.update_tag, c.org_id,
                TO_CHAR(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
                c.channel_product_id,
                pc.label parent_channel,
@@ -722,10 +722,10 @@ class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):
 
 class ShortPackagesDumper(CachedDumper, exportLib.ShortPackagesDumper):
     iterator_query = rhnSQL.Statement("""
-            select 
+            select
                 p.id,
                 p.org_id,
-                pn.name,    
+                pn.name,
                 (pe.evr).version as version,
                 (pe.evr).release as release,
                 (pe.evr).epoch as epoch,
@@ -734,9 +734,9 @@ class ShortPackagesDumper(CachedDumper, exportLib.ShortPackagesDumper):
                 c.checksum,
                 p.package_size,
                 TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') as last_modified
-            from rhnPackage p, rhnPackageName pn, rhnPackageEVR pe, 
+            from rhnPackage p, rhnPackageName pn, rhnPackageEVR pe,
                 rhnPackageArch pa, rhnChecksumView c
-            where p.id = :package_id 
+            where p.id = :package_id
             and p.name_id = pn.id
             and p.evr_id = pe.id
             and p.package_arch_id = pa.id
@@ -748,38 +748,38 @@ class ShortPackagesDumper(CachedDumper, exportLib.ShortPackagesDumper):
 
 class PackagesDumper(CachedDumper, exportLib.PackagesDumper):
     iterator_query = rhnSQL.Statement("""
-            select 
-                p.id, 
+            select
+                p.id,
                 p.org_id,
-                pn.name,    
+                pn.name,
                 (pe.evr).version as version,
                 (pe.evr).release as release,
                 (pe.evr).epoch as epoch,
                 pa.label as package_arch,
                 pg.name as package_group,
-                p.rpm_version, 
+                p.rpm_version,
                 p.description,
                 p.summary,
                 p.package_size,
                 p.payload_size,
-                p.build_host, 
+                p.build_host,
                 TO_CHAR(p.build_time, 'YYYYMMDDHH24MISS') as build_time,
                 sr.name as source_rpm,
                 c.checksum_type,
                 c.checksum,
                 p.vendor,
-                p.payload_format, 
-                p.compat, 
+                p.payload_format,
+                p.compat,
                 p.header_sig,
                 p.header_start,
                 p.header_end,
                 p.copyright,
                 p.cookie,
                 TO_CHAR(p.last_modified, 'YYYYMMDDHH24MISS') as last_modified
-            from rhnPackage p, rhnPackageName pn, rhnPackageEVR pe, 
+            from rhnPackage p, rhnPackageName pn, rhnPackageEVR pe,
                 rhnPackageArch pa, rhnPackageGroup pg, rhnSourceRPM sr,
                 rhnChecksumView c
-            where p.id = :package_id 
+            where p.id = :package_id
             and p.name_id = pn.id
             and p.evr_id = pe.id
             and p.package_arch_id = pa.id
@@ -793,13 +793,13 @@ class PackagesDumper(CachedDumper, exportLib.PackagesDumper):
 
 class SourcePackagesDumper(CachedDumper, exportLib.SourcePackagesDumper):
     iterator_query = rhnSQL.Statement("""
-            select 
-                ps.id, 
-                sr.name source_rpm, 
-                pg.name package_group, 
-                ps.rpm_version, 
+            select
+                ps.id,
+                sr.name source_rpm,
+                pg.name package_group,
+                ps.rpm_version,
                 ps.payload_size,
-                ps.build_host, 
+                ps.build_host,
                 TO_CHAR(ps.build_time, 'YYYYMMDDHH24MISS') build_time,
                 sig.checksum sigchecksum,
                 sig.checksum_type sigchecksum_type,
@@ -862,7 +862,7 @@ class KickstartableTreesDumper(CachedDumper, exportLib.KickstartableTreesDumper)
                kit.name "install-type-name",
                kit.label "install-type-label",
                TO_CHAR(kt.last_modified, 'YYYYMMDDHH24MISS') "last-modified"
-          from rhnKickstartableTree kt, 
+          from rhnKickstartableTree kt,
                rhnKSTreeType ktt,
                rhnKSInstallType kit,
                rhnChannel c
