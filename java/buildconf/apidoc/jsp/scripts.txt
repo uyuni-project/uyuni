@@ -68,13 +68,13 @@ from datetime import datetime<br />
 import time<br />
 import xmlrpclib<br />
 <br />
-SATELLITE_URL = "http://satellite.example.com/rpc/api"<br />
-SATELLITE_LOGIN = "username"<br />
-SATELLITE_PASSWORD = "password"<br />
+MANAGER_URL = "http://manager.example.com/rpc/api"<br />
+MANAGER_LOGIN = "username"<br />
+MANAGER_PASSWORD = "password"<br />
 <br />
-client = xmlrpclib.Server(SATELLITE_URL, verbose=0)<br />
+client = xmlrpclib.Server(MANAGER_URL, verbose=0)<br />
 <br />
-key = client.auth.login(SATELLITE_LOGIN, SATELLITE_PASSWORD)<br />
+key = client.auth.login(MANAGER_LOGIN, MANAGER_PASSWORD)<br />
 package_list = client.packages.findByNvrea(key, 'rhnlib', '2.5.22', '9.el6', '', 'noarch')<br />
 today = datetime.today()<br />
 earliest_occurrence = xmlrpclib.DateTime(today)<br />
@@ -95,13 +95,13 @@ Below is an example of the channel.listAllChannels API call. List of channal lab
 #!/usr/bin/env ruby<br />
 require "xmlrpc/client"<br />
 <br />
-@SATELLITE_URL = "http://satellite.example.com/rpc/api"<br />
-@SATELLITE_LOGIN = "username"<br />
-@SATELLITE_PASSWORD = "password"<br />
+@MANAGER_URL = "http://manager.example.com/rpc/api"<br />
+@MANAGER_LOGIN = "username"<br />
+@MANAGER_PASSWORD = "password"<br />
 <br />
-@client = XMLRPC::Client.new2(@SATELLITE_URL)<br />
+@client = XMLRPC::Client.new2(@MANAGER_URL)<br />
 <br />
-@key = @client.call('auth.login', @SATELLITE_LOGIN, @SATELLITE_PASSWORD)<br />
+@key = @client.call('auth.login', @MANAGER_LOGIN, @MANAGER_PASSWORD)<br />
 channels = @client.call('channel.listAllChannels', @key)<br />
 for channel in channels do<br />
 &nbsp;&nbsp;&nbsp;p channel["label"]<br />
