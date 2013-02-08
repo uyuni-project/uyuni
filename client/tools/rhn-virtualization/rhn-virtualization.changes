@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Feb 08 10:55:54 CET 2013 - mc@suse.de
+
+- version 5.4.34.11-1
+- rhn-virtualization-host needs to consistantly use the new function
+  definition
+- support studio KVM image type (bnc#797057)
+
+-------------------------------------------------------------------
 Thu Nov 22 15:54:13 CET 2012 - jrenner@suse.de
 
 - version 5.4.34.10-1
