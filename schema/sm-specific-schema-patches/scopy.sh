@@ -43,7 +43,9 @@ for d in ${dirs[*]}; do
             target=`sha1sum $dest| awk '{print $1}'`
             #echo "SRC: $src TARGET: $target"
             if [ "$src" != "$target" ]; then
-		echo "NEED CHECK: $i $dest"
+                if ! grep "already applied in Manager" "$dest" > /dev/null; then
+		    echo "NEED CHECK: $i $dest"
+                fi
 	    fi
 	    continue
 	fi
