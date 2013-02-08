@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Feb 08 14:20:19 CET 2013 - mc@suse.de
+
+- version 1.7.8-1
+- add possibility to migrate from SLED11 SP1 to SP2 (bnc#795360)
+- Add support for SUSE Cloud 1.0 (bnc#792676)
+
+-------------------------------------------------------------------
 Tue Nov 27 17:23:16 CET 2012 - mc@suse.de
 
 - version 1.7.7-1
