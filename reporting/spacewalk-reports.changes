@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Feb 08 11:20:25 CET 2013 - mc@suse.de
+
+- version 1.7.1.5-1
+- Add OSAD status report (brc#237581)
+- Add report of package upgrades available for systems (brc#768074)
+- Add system custom info report (brc#745342)
+- Add spacewalk-report inactive-systems RFE (brc#703629)
+- Add spacewalk-report system-packages-installed (brc#662773)
+- Add additional column in spacewalk-report inventory (brc#745342)
+
+-------------------------------------------------------------------
 Thu Jun 21 11:21:20 CEST 2012 - jrenner@suse.de
 
 - version 1.7.1.4-1
