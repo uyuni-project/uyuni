@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Feb 08 11:18:34 CET 2013 - mc@suse.de
+
+- version 1.7.3.7-1
+- Actually use https in the bootstrap script as described in
+  the comment
+
+-------------------------------------------------------------------
 Thu Nov 22 15:52:51 CET 2012 - jrenner@suse.de
 
 - version 1.7.3.6-1
