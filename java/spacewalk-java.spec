@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.53
+Version: 1.9.60
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -444,7 +444,12 @@ install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/local
 # check spelling errors in all resources for English if aspell installed
 [ -x "$(which aspell)" ] && scripts/spelling/check_java.sh .. en_US
 
+%if 0%{?fedora}
+install -d -m 755 $RPM_BUILD_ROOT%{_sbindir}
+install -d -m 755 $RPM_BUILD_ROOT%{_unitdir}
+%else
 install -d -m 755 $RPM_BUILD_ROOT%{_initrddir}
+%endif
 install -d -m 755 $RPM_BUILD_ROOT%{_bindir}
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/rhn
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn
@@ -469,8 +474,12 @@ install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 install -m 644 conf/rhn_java.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
+%if 0%{?fedora}
+install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_sbindir}
+install -m 755 scripts/taskomatic.service $RPM_BUILD_ROOT%{_unitdir}
+%else
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_initrddir}
-
+%endif
 # add rc link
 mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
 ln -sf ../../etc/init.d/taskomatic $RPM_BUILD_ROOT/%{_sbindir}/rctaskomatic
@@ -561,13 +570,17 @@ rm -rf $RPM_BUILD_ROOT
 
 %else
 %post -n spacewalk-taskomatic
-# This adds the proper /etc/rc*.d links for the script
-/sbin/chkconfig --add taskomatic
+if [ -f /etc/init.d/taskomatic ]; then
+   # This adds the proper /etc/rc*.d links for the script
+   /sbin/chkconfig --add taskomatic
+fi
 
 %preun -n spacewalk-taskomatic
 if [ $1 = 0 ] ; then
-   /sbin/service taskomatic stop >/dev/null 2>&1
-   /sbin/chkconfig --del taskomatic
+   if [ -f /etc/init.d/taskomatic ]; then
+      /sbin/service taskomatic stop >/dev/null 2>&1
+      /sbin/chkconfig --del taskomatic
+   fi
 fi
 %endif
 
@@ -722,7 +735,12 @@ fi
 
 %files -n spacewalk-taskomatic
 %defattr(-,root,root)
+%if 0%{?fedora}
+%attr(755, root, root) %{_sbindir}/taskomatic
+%attr(755, root, root) %{_unitdir}/taskomatic.service
+%else
 %attr(755, root, root) %{_initrddir}/taskomatic
+%endif
 %attr(755, root, root) %{_bindir}/taskomaticd
 %attr(755, root, root) %{_datadir}/rhn/lib/spacewalk-asm.jar
 %{_sbindir}/rctaskomatic
@@ -757,6 +775,41 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Feb 06 2013 Jan Pazdziora 1.9.60-1
+- Make images of type 'kvm' show up on the UI
+
+* Wed Feb 06 2013 Tomas Lestach <tlestach@redhat.com> 1.9.59-1
+- 908346 - unify available package list for all systems
+- 908346 - unify package list for all systems
+- 908346 - unify upgradable package list for all systems
+
+* Tue Feb 05 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.58-1
+- updated rhn-search path in messages
+- added systemd service for taskomatic
+
+* Mon Feb 04 2013 Jan Pazdziora 1.9.57-1
+- Redirect to landing.pxt to flush out the blue messages, then go to Index.do.
+- Replace /network/systems/ssm/misc/index.pxt redirect with
+  /rhn/systems/ssm/misc/Index.do.
+- The gpg_info.pxt is only referenced from channel_gpg_key, only used by rhn-
+  channel-gpg-key in this page, removing.
+
+* Mon Feb 04 2013 Tomas Lestach <tlestach@redhat.com> 1.9.56-1
+- 903718 - give the user url to request or generate a new certificate
+- 903557 - fix queries for extra packages
+- 906345 - reuse the ssm.server.delete.operationname message
+
+* Thu Jan 31 2013 Tomas Lestach <tlestach@redhat.com> 1.9.55-1
+- 906345 - undo delete 'Server Delete' string
+- 906345 - localize operation descriptions
+- 896015 - we need to set elaboration params anyway
+- correct the case
+
+* Mon Jan 28 2013 Tomas Lestach <tlestach@redhat.com> 1.9.54-1
+- 905055 - prevent executing both LoginAction and LoginSetupAction when re-
+  logging after successful logout
+- 889263 - whitelist more actions for the restricted period
+
 * Thu Jan 24 2013 Tomas Lestach <tlestach@redhat.com> 1.9.53-1
 - do not allow changing type of an existing crypto key on CryptoKeyEdit.do page
 - simplify CryptoKey isSSL() and isGPG() methods

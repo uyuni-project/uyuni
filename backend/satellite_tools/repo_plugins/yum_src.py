@@ -14,7 +14,6 @@
 # in this software or its documentation.
 #
 
-import shutil
 import subprocess
 import sys
 import os
@@ -23,7 +22,7 @@ import gzip
 import xml.etree.ElementTree as etree
 import urlparse
 from shutil import rmtree
-from os import mkdir
+from os import mkdir, makedirs
 
 import urlgrabber
 from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
@@ -34,6 +33,7 @@ from yum.Errors import RepoMDError
 from yum.config import ConfigParser
 from yum.update_md import UpdateMetadata, UpdateNoticeException, UpdateNotice
 from yum.yumRepo import YumRepository
+from urlgrabber.grabber import URLGrabError
 
 try:
     from yum.misc import cElementTree_iterparse as iterparse
@@ -268,7 +268,7 @@ class ContentSource:
         return pkg.verifyLocalPkg()
 
     def _clean_cache(self, directory):
-        shutil.rmtree(directory, True)
+        rmtree(directory, True)
 
     def get_products(self):
         products = []
@@ -525,10 +525,27 @@ class ContentSource:
             f.close
 
     def clear_ssl_cache(self):
-        return
         repo = self.repo
         dir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
         try:
-            rmtree(dir)
+            self._clean_cache(dir)
         except:
             pass
+
+    def get_file(self, path, local_base=None):
+        try:
+            if local_base is not None:
+                target_file = os.path.join(local_base, path)
+                target_dir = os.path.dirname(target_file)
+                if not os.path.exists(target_dir):
+                    os.makedirs(target_dir, 0755)
+                temp_file = target_file + '..download'
+                if os.path.exists(temp_file):
+                    os.unlink(temp_file)
+                downloaded = self.repo.grab.urlgrab(path, temp_file)
+                os.rename(downloaded, target_file)
+                return target_file
+            else:
+                return self.repo.grab.urlread(path)
+        except URLGrabError:
+            return

@@ -14,7 +14,7 @@ Group:   Applications/System
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.39
+Version: 5.10.42
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -22,7 +22,18 @@ BuildRequires: docbook-utils
 BuildRequires: python
 Requires: python
 Requires: rhnlib
+%if 0%{?el5}
+Requires: rhn-client-tools >= 0.4.20-86
+%else
+%if 0%{?el6}
+Requires: rhn-client-tools >= 1.0.0-51
+%else 
+# who knows what version we need? Let's just hope it's up to date enough.
 Requires: %{rhn_client_tools}
+%endif
+%endif
+
+Requires: spacewalk-backend-libs >= 1.3.32-1
 %if 0%{?suse_version}
 # provide rhn directories and no selinux on suse
 BuildRequires: spacewalk-client-tools
@@ -41,7 +52,6 @@ The base libraries and functions needed by all rhncfg-* packages.
 Summary: Spacewalk Configuration Client
 Group:   Applications/System
 Requires: %{name} = %{version}-%{release}
-Requires: spacewalk-backend-libs >= 1.3.32-1
 
 %description client
 A command line interface to the client features of the Spacewalk Configuration
@@ -136,6 +146,17 @@ fi
 
 # $Id$
 %changelog
+* Wed Feb 06 2013 Stephen Herr <sherr@redhat.com> 5.10.42-1
+- 908011 - make rhncfg depend on correct version of rhn-client-tools for RHEL
+- 908011 - make rhncfg depend on newer rhn-client-tools
+
+* Mon Feb 04 2013 Jan Pazdziora 5.10.41-1
+- 856608 - moved rhncfg dependency on spacewalk-backend-libs to base package
+  All sub-packages now require it
+
+* Mon Jan 28 2013 Stephen Herr <sherr@redhat.com> 5.10.40-1
+- 903534 - Web UI config diff always shows 'binary files differ'
+
 * Fri Nov 30 2012 Jan Pazdziora 5.10.39-1
 - 879299 - statinfo needs to be defined even if file does not exist
 

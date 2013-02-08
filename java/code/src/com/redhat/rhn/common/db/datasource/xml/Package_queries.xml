@@ -496,33 +496,39 @@ SELECT PN.id || '|' || SPE.id AS ID_COMBO,
 
 <mode name="extra_packages_for_system" class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="serverid">
-select p.id,
-       pn.id || '|' || pe.id || '|' || pa.id as id_combo,
-       pn.name || '-' || pe.version || '-' || pe.release as nvre,
-       pn.name || '-' || evr_t_as_vre_simple(pe.evr) || '.' || pa.label as nvrea,
-       pn.name as name,
-       pe.version as version,
-       pe.release as release,
-       pe.epoch as epoch,
-       pn.id as name_id,
-       pe.id as evr_id,
-       pa.label as arch,
-       sp.installTime
-  from rhnServerPackage sp
-       left outer join rhnPackage p on (sp.name_id = p.name_id and
-                                        sp.evr_id = p.evr_id and
-                                        sp.package_arch_id = p.package_arch_id)
-        left outer join (select sc.server_id, cp.package_id
-                           from rhnServerChannel sc
-                                join rhnChannelPackage cp on (sc.channel_id = cp.channel_id)
-                        ) scp on (scp.package_id = p.id and
-                                  scp.server_id = sp.server_id)
-       left outer join rhnPackageName pn on (pn.id = sp.name_id)
-       left outer join rhnPackageArch pa on (pa.id = sp.package_arch_id)
-       left outer join rhnPackageEvr pe on (pe.id = sp.evr_id)
- where sp.server_id = :serverid and
-       (p.id is null or scp.package_id is null)
- order by nvre
+  select scp.package_id,
+         pn.id || '|' || pe.id || '|' || pa.id as id_combo,
+         pn.name || '-' || pe.version || '-' || pe.release as nvre,
+         pn.name || '-' || evr_t_as_vre_simple(pe.evr) || '.' || pa.label as nvrea,
+         pn.name as name,
+         pe.version as version,
+         pe.release as release,
+         pe.epoch as epoch,
+         pn.id as name_id,
+         pe.id as evr_id,
+         pa.label as arch,
+         sp.installTime
+    from rhnServerPackage sp
+         left outer join (select sc.server_id,
+                                 cp.package_id,
+                                 p.name_id,
+                                 p.evr_id,
+                                 p.package_arch_id
+                            from rhnPackage p,
+                                 rhnServerChannel sc
+                            join rhnChannelPackage cp
+                              on (sc.channel_id = cp.channel_id)
+                           where cp.package_id = p.id
+                         ) scp on (scp.server_id = sp.server_id and
+                                   sp.name_id = scp.name_id and
+                                   sp.evr_id = scp.evr_id and
+                                   sp.package_arch_id = scp.package_arch_id)
+         left outer join rhnPackageName pn on (pn.id = sp.name_id)
+         left outer join rhnPackageArch pa on (pa.id = sp.package_arch_id)
+         left outer join rhnPackageEvr pe on (pe.id = sp.evr_id)
+   where sp.server_id = :serverid and
+         (scp.package_id is null)
+   order by nvre
   </query>
 </mode>
 
@@ -1022,28 +1028,6 @@ ORDER BY UPPER(PN.name), UPPER(evr_t_as_vre_simple(PE.evr))
   </query>
 </mode>
 
-<mode name="system_solaris_package_list" class="com.redhat.rhn.frontend.dto.PackageListItem">
-  <query params="sid">
-SELECT  PN.id || '|' || PE.id AS ID_COMBO,
-        PN.name || '-' || evr_t_as_vre_simple(PE.evr) AS NVRE,
-        PN.name AS name,
-        PE.version,
-        PE.release,
-        PE.epoch,
-        PN.id AS NAME_ID,
-        PE.id AS EVR_ID,
-        PA.LABEL as arch
-  FROM  rhnServerPackage SP
-  			INNER JOIN rhnPackageName PN ON SP.name_id = PN.id
-  			INNER JOIN rhnPackageEVR PE ON SP.evr_id = PE.id
-  			INNER JOIN rhnPackageArch PA ON PA.id = SP.package_arch_id
-  			INNER JOIN rhnArchType AT ON AT.id = PA.arch_type_id
-  WHERE  SP.server_id = :sid
-	   AND  AT.label = 'sysv-solaris'
-ORDER BY UPPER(PN.name), UPPER(evr_t_as_vre_simple(PE.evr))
-  </query>
-</mode>
-
 <mode name="system_available_patch_list" class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="sid">
 SELECT  pn.name AS NAME,
@@ -1113,32 +1097,6 @@ SELECT DISTINCT PN.name AS NAME,
   </elaborator>
 </mode>
 
-<mode name="system_available_solaris_package_list" class="com.redhat.rhn.frontend.dto.PackageListItem">
-  <query params="sid">
-SELECT  pn.name AS NAME,
-        pn.name || '-' || evr_t_as_vre_simple(full_list.evr) AS NVRE,
-        pn.id || '|' || lookup_evr((full_list.evr).epoch, (full_list.evr).version, (full_list.evr).release) AS ID_COMBO,
-        pa.name as ARCH
-  FROM  (
-         SELECT  p.name_id name_id, max(pe.evr) evr
-           FROM  rhnPackageEVR PE, rhnPackage P,
-                 rhnChannelPackage CP, rhnServerChannel SC, rhnSolarisPackage SSP
-          WHERE  sc.server_id = :sid
-            AND  sc.channel_id = cp.channel_id
-            AND  cp.package_id = p.id
-            AND  ssp.package_id = p.id
-            AND  p.evr_id = pe.id
-       GROUP BY  p.name_id
-       ) full_list,
-       rhnPackageName pn
-     INNER JOIN rhnPackage PKG ON pkg.name_id = pn.id
-     INNER JOIN rhnPackageArch PA ON pa.id = pkg.package_arch_id
- WHERE  full_list.name_id = pn.id
-   AND  full_list.name_id NOT IN (SELECT SP.name_id FROM rhnServerPackage SP WHERE SP.server_id = :sid)
-ORDER BY  UPPER(pn.name)
-  </query>
-</mode>
-
 <mode name="system_available_solaris_patchset_list" class="com.redhat.rhn.frontend.dto.SolarisPatchSet">
   <query params="sid">
   SELECT P.id,
@@ -1191,65 +1149,6 @@ SELECT 1
                       AND CP.package_id = P.id)
        )
   </query>
-</mode>
-
-<mode name="system_upgradable_solaris_package_list" class="com.redhat.rhn.frontend.dto.UpgradablePackageListItem">
-  <query params="sid">
-SELECT  P.id AS id,
-        PN.name AS name,
-        pn.id || '|' || lookup_evr((full_list.evr).epoch, (full_list.evr).version, (full_list.evr).release) AS id_combo
-  FROM  rhnPackage P,
-        rhnSolarisPackage SP,
-        rhnPackageName PN,
-        (
-         SELECT  SOP.package_name_id AS name_id, MAX(PE.evr) evr
-           FROM  rhnPackageEVR PE, rhnServerOutdatedPackages SOP
-          WHERE  SOP.server_id = :sid
-            AND  SOP.package_evr_id = PE.id
-       GROUP BY  SOP.package_name_id
-         ) full_list
- WHERE  full_list.name_id = PN.id
-   AND  PN.id = P.name_id
-   AND  P.evr_id = lookup_evr((full_list.evr).epoch, (full_list.evr).version, (full_list.evr).release)
-   AND  P.id = SP.package_id
-ORDER BY  UPPER(PN.name)
-  </query>
-  <elaborator params="sid" multiple="t">
-SELECT  P.id AS id,
-        PN.id as name_id,
-        pn.name ||'-'|| evr_t_as_vre_simple(full_list.evr) AS nvre,
-        lookup_evr((full_list.evr).epoch, (full_list.evr).version, (full_list.evr).release) AS evr_id,
-        PN.name || '-' || evr_t_as_vre_simple(SPE.evr) AS installed,
-        full_list.server_id AS SERVER_ID,
-        full_list.errata_id AS ERRATA_ID,
-        full_list.errata_advisory AS ERRATA_ADVISORY,
-        (full_list.evr).epoch AS EPOCH,
-        (full_list.evr).version AS VERSION,
-        (full_list.evr).release AS RELEASE,
-        E.advisory_type AS ERRATA_ADVISORY_TYPE
-  FROM  rhnPackage P,
-        rhnPackageName PN,
-        rhnPackageEVR PE,
-        rhnPackageEVR SPE,
-        rhnServerPackage SP,
-        (
-         SELECT  SOP.package_name_id name_id, MAX(peD.evr) evr,
-                 SOP.server_id server_id, SOP.errata_id errata_id,
-                 SOP.errata_advisory errata_advisory
-           FROM  rhnPackageEVR PED, rhnServerOutdatedPackages SOP
-          WHERE  SOP.server_id = :sid
-            AND  SOP.package_evr_id = PED.id
-       GROUP BY  SOP.package_name_id, SOP.server_id, SOP.errata_id, SOP.errata_advisory
-         ) full_list LEFT OUTER JOIN rhnErrata E on full_list.errata_id = E.id
- WHERE  P.id IN (%s)
-   AND  P.name_id = PN.id
-   AND  PN.id = full_list.name_id
-   AND  PE.id = lookup_evr((full_list.evr).epoch, (full_list.evr).version, (full_list.evr).release)
-   AND  SP.name_id = PN.id
-   AND  SP.server_id = :sid
-   AND  SPE.id = SP.evr_id
-   AND  SPE.evr &lt; PE.evr
-  </elaborator>
 </mode>
 
 <mode name="all_packages_in_channel_after" class="com.redhat.rhn.frontend.dto.PackageDto">

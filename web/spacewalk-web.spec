@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.8
+Version: 1.9.14
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -90,6 +90,7 @@ Requires: httpd
 Requires: perl-Filesys-Df
 Obsoletes: rhn-dobby < 5.3.0
 Provides: rhn-dobby = 5.3.0
+Requires: /sbin/runuser
 
 %description -n spacewalk-dobby
 Dobby is collection of Perl modules and scripts to administer an Oracle
@@ -148,6 +149,7 @@ make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 rm -rf $RPM_BUILD_ROOT
 make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 make -C html install PREFIX=$RPM_BUILD_ROOT
+make -C include install PREFIX=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
 find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
@@ -305,10 +307,37 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{www_path}/www/htdocs
 %endif
 %{www_path}/www/htdocs/*
+%{_datadir}/spacewalk/web
 %doc LICENSE
 
 # $Id$
 %changelog
+* Wed Feb 06 2013 Stephen Herr <sherr@redhat.com> 1.9.14-1
+- Make it possible to run db-control without doing su - oracle first.
+
+* Tue Feb 05 2013 Jan Pazdziora 1.9.13-1
+- Removing hw_prof_update_conf.pxt, pkg_prof_update_conf.pxt, and
+  rhn:server_set_actions_cb as they have been replaced by .do pages.
+- Removed /network/systems/ssm/misc/index.pxt, it is no longer referenced (was
+  bundled with the tagging commit).
+
+* Mon Feb 04 2013 Jan Pazdziora 1.9.12-1
+- Automatic commit of package [rhncfg] release [5.10.41-1].
+- Removed /network/systems/ssm/misc/index.pxt, it is no longer referenced.
+- Redirect to landing.pxt to flush out the blue messages, then go to Index.do.
+- The gpg_info.pxt is only referenced from channel_gpg_key, only used by rhn-
+  channel-gpg-key in this page, removing.
+
+* Fri Feb 01 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.11-1
+- no-access is no more used
+
+* Thu Jan 31 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.10-1
+- moved template files out of document root
+- look for pxt includes outside of document root
+
+* Mon Jan 28 2013 Jan Pazdziora 1.9.9-1
+- With removal of TracerList, all_traces is not longer used, removing.
+
 * Thu Jan 24 2013 Tomas Lestach <tlestach@redhat.com> 1.9.8-1
 - 886831 - replace sysdate with current_timestamp for package synchronisation
   removal

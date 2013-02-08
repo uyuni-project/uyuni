@@ -16,7 +16,7 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.11.14
+Version: 5.11.16
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -399,6 +399,12 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Wed Feb 06 2013 Michael Mraka <michael.mraka@redhat.com> 5.11.16-1
+- start jabberd before osa-dispatcher
+
+* Mon Jan 28 2013 Jan Pazdziora 5.11.15-1
+- Reimplement anonymous block with update or insert.
+
 * Mon Dec 10 2012 Jan Pazdziora 5.11.14-1
 - 836984 - fixes the permissions on /var/log/osad log file
 

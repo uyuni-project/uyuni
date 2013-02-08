@@ -84,6 +84,8 @@ def main():
                       help="List of excluded packages")
     parser.add_option('', '--no-errata', action='store_true', dest='no_errata',
                       default=False, help="Do not sync errata")
+    parser.add_option('', '--sync-kickstart', action='store_true', dest='sync_kickstart',
+                      default=False, help="Sync kickstartable tree")
     parser.add_option('-Y', '--deep-verify', action='store_true',
                       dest='deep_verify', default=False,
                       help='Do not use cached package checksums')
@@ -101,7 +103,8 @@ def main():
                       noninteractive=options.noninteractive,
                       filters=options.filters,
                       deep_verify=options.deep_verify,
-                      no_errata=options.no_errata)
+                      no_errata=options.no_errata,
+                      sync_kickstart=options.sync_kickstart)
     sync.sync()
     releaseLOCK()
     return 0

@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.21
+Version: 1.9.25
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -775,6 +775,24 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Tue Feb 05 2013 Jan Pazdziora 1.9.25-1
+- The urls now have three elements, make the list consistent.
+
+* Mon Feb 04 2013 Jan Pazdziora 1.9.24-1
+- Stop referencing URL which no longer exists.
+- The abuse_check was a hosted feature.
+- Removing rhnFault codes that are not raised anywhere in our code base.
+
+* Fri Feb 01 2013 Jan Pazdziora 1.9.23-1
+- Parse the directory listings and retrieve kickstartable trees when called
+  with the --sync-kickstart option.
+- Make clear_ssl_cache actually do the cleaning.
+- Use the existing _clean_cache helper method.
+
+* Mon Jan 28 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.22-1
+- fixed container implementation
+- fixing order of disabled messages
+
 * Fri Jan 25 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.21-1
 - pylint on RHEL6 does not know about W1401
 

@@ -16,7 +16,7 @@ License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 
-Version:        5.4.42
+Version:        5.4.44
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
@@ -187,6 +187,13 @@ fi
 
 
 %changelog
+* Thu Feb 07 2013 Stephen Herr <sherr@redhat.com> 5.4.44-1
+- 908899 - rhn-virtualization-host needs to consistantly use the new function
+  definition
+
+* Wed Feb 06 2013 Jan Pazdziora 5.4.43-1
+- support studio KVM image type
+
 * Sun Nov 11 2012 Michael Calmer <mc@suse.de> 5.4.42-1
 - no use of /var/lock/subsys/ anymore
 

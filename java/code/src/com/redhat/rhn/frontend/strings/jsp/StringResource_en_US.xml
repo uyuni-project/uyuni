@@ -16262,7 +16262,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.crashes.application">
-        <source>Application crashes</source>
+        <source>Application Crashes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -16274,13 +16274,13 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.crashes.lastreport">
-        <source>Last report</source>
+        <source>Last Report</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.crashes.crashcount">
-        <source>Crash count</source>
+        <source>Crash Count</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>

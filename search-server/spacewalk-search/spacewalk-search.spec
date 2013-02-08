@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 1.9.2
+Version: 1.9.4
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -71,10 +71,12 @@ BuildRequires: simple-core
 Requires(post): aaa_base
 Requires(preun): aaa_base
 %else
+%if 0%{?fedora} <=16
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
+%endif
 %endif
 
 %description
@@ -97,7 +99,12 @@ install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib
 install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search/indexes
 ln -s -f %{_prefix}/share/rhn/search/indexes/docs $RPM_BUILD_ROOT%{_var}/lib/rhn/search/indexes/docs
+%if 0%{?fedora}
+install -d -m 755 $RPM_BUILD_ROOT%{_sbindir}
+install -d -m 755 $RPM_BUILD_ROOT%{_unitdir}
+%else
 install -d -m 755 $RPM_BUILD_ROOT%{_initrddir}
+%endif
 install -d -m 755 $RPM_BUILD_ROOT%{_bindir}
 install -d -m 755 $RPM_BUILD_ROOT%{_var}/log/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/nutch
@@ -106,7 +113,12 @@ install -p -m 644 dist/%{name}-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rh
 # using install -m does not preserve the symlinks
 cp -d lib/* $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/lib
 install -p -m 644 src/config/etc/logrotate.d/rhn-search $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn-search
+%if 0%{?fedora}
+install -p -m 755 src/config/rhn-search $RPM_BUILD_ROOT%{_sbindir}
+install -p -m 755 src/config/rhn-search.service $RPM_BUILD_ROOT%{_unitdir}
+%else
 install -p -m 755 src/config/rhn-search $RPM_BUILD_ROOT%{_initrddir}
+%endif
 ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/rhnsearchd
 install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search.conf
 install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
@@ -123,13 +135,15 @@ rm -rf $RPM_BUILD_ROOT
 %if 0%{?suse_version}
 %{fillup_and_insserv rhn-search}
 %else
-# This adds the proper /etc/rc*.d links for the script
-/sbin/chkconfig --add rhn-search
+if [ -f /etc/init.d/rhn-search ]; then
+   # This adds the proper /etc/rc*.d links for the script
+   /sbin/chkconfig --add rhn-search
 %endif
 
-was_running=0
-if /sbin/service rhn-search status > /dev/null 2>&1 ; then
-    was_running=1
+   was_running=0
+   if /sbin/service rhn-search status > /dev/null 2>&1 ; then
+       was_running=1
+   fi
 fi
 
 # Migrate original /usr/share/rhn/search/indexes/*
@@ -137,8 +151,10 @@ fi
 cd %{_prefix}/share/rhn/search/indexes && /bin/ls | /bin/grep -v docs | while read i ; do
     if [ ! -e %{_var}/lib/rhn/search/indexes/$i ] ; then
         if [ $was_running -eq 1 ] ; then
-            /sbin/service rhn-search stop > /dev/null 2>&1
-            was_running=2
+            if [ -f /etc/init.d/rhn-search ]; then
+               /sbin/service rhn-search stop > /dev/null 2>&1
+               was_running=2
+            fi
         fi
         /bin/mv $i %{_var}/lib/rhn/search/indexes/$i
         # If the mv failed for whatever reason, symlink
@@ -149,8 +165,10 @@ cd %{_prefix}/share/rhn/search/indexes && /bin/ls | /bin/grep -v docs | while re
     fi
 done
 
-if [ $was_running -eq 1 ] ; then
-    /sbin/service rhn-search status > /dev/null 2>&1 || /sbin/service rhn-search start > /dev/null 2>&1
+if [ -f /etc/init.d/rhn-search ]; then
+   if [ $was_running -eq 1 ] ; then
+       /sbin/service rhn-search status > /dev/null 2>&1 || /sbin/service rhn-search start > /dev/null 2>&1
+   fi
 fi
 
 %preun
@@ -158,8 +176,10 @@ fi
 %stop_on_removal rhn-search
 %else
 if [ $1 = 0 ] ; then
-    /sbin/service rhn-search stop >/dev/null 2>&1
-    /sbin/chkconfig --del rhn-search
+    if [ -f /etc/init.d/rhn-search ]; then
+       /sbin/service rhn-search stop >/dev/null 2>&1
+       /sbin/chkconfig --del rhn-search
+    fi
 fi
 %endif
 
@@ -167,7 +187,12 @@ fi
 %defattr(644,root,root,755)
 %attr(755, root, root) %{_var}/log/rhn/search
 %{_prefix}/share/rhn/search/lib/*
+%if 0%{?fedora}
+%attr(755, root, root) %{_sbindir}/rhn-search
+%attr(755, root, root) %{_unitdir}/rhn-search.service
+%else
 %attr(755, root, root) %{_initrddir}/rhn-search
+%endif
 %attr(755, root, root) %{_bindir}/rhnsearchd
 %{_sbindir}/rcrhn-search
 %attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
@@ -185,6 +210,13 @@ fi
 %doc licenses/*
 
 %changelog
+* Tue Feb 05 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.4-1
+- added systemd service for rhn-search
+
+* Mon Feb 04 2013 Tomas Lestach <tlestach@redhat.com> 1.9.3-1
+- remove unnecessary cast
+- 905872 - fix errata search by CVE
+
 * Wed Jan 23 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.2-1
 - use path compatible with slf4j >= 1.6
 

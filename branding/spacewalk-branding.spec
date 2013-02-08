@@ -9,7 +9,7 @@
 %define apache_group apache
 %endif
 Name:       spacewalk-branding
-Version:    1.9.4
+Version:    1.9.5
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -43,11 +43,10 @@ jar -cf java-branding.jar -C java/code/src com
 
 %install
 rm -rf %{buildroot}
-install -d -m 755 %{buildroot}%{apacheconfdir}
-install -p -m 644 zz-spacewalk-branding.conf %{buildroot}%{apacheconfdir}
 install -d -m 755 %{buildroot}/%{wwwdocroot}
-install -d -m 755 %{buildroot}/%{wwwdocroot}/nav
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk
+install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web
+install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web/nav
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
 %if  0%{?rhel} && 0%{?rhel} < 6
 install -d -m 755 %{buildroot}%{_var}/lib/tomcat5/webapps/rhn/WEB-INF/lib/
@@ -65,8 +64,8 @@ cp -pR fonts %{buildroot}/%{wwwdocroot}/
 # Appplication expects two favicon's for some reason, copy it so there's just
 # one in source:
 cp -p img/favicon.ico %{buildroot}/%{wwwdocroot}/
-cp -pR templates %{buildroot}/%{wwwdocroot}/
-cp -pR styles %{buildroot}/%{wwwdocroot}/nav/
+cp -pR templates %{buildroot}%{_datadir}/spacewalk/web/
+cp -pR styles %{buildroot}%{_datadir}/spacewalk/web/nav/
 cp -pR setup  %{buildroot}%{_datadir}/spacewalk/
 cp -pR java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
 %if  0%{?rhel} && 0%{?rhel} < 6
@@ -105,13 +104,6 @@ rm -rf %{buildroot}
 %dir /%{wwwdocroot}/img
 /%{wwwdocroot}/img/*
 /%{wwwdocroot}/favicon.ico
-%dir /%{wwwdocroot}/fonts
-/%{wwwdocroot}/fonts/*
-%dir /%{wwwdocroot}/templates
-/%{wwwdocroot}/templates/*
-%dir /%{wwwdocroot}/nav/styles
-/%{wwwdocroot}/nav/styles/*
-%config(noreplace) %{apacheconfdir}/zz-spacewalk-branding.conf
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
 %if  0%{?rhel} && 0%{?rhel} < 6
@@ -137,6 +129,10 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Thu Jan 31 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.5-1
+- removed no longer necessary directory definitions
+- pack branding template files outside of document root
+
 * Tue Dec 04 2012 Jan Pazdziora 1.9.4-1
 - On Fedoras, start to use tomcat >= 7.
 

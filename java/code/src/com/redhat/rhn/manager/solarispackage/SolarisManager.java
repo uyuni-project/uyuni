@@ -20,7 +20,6 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.BaseManager;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,36 +40,6 @@ public class SolarisManager extends BaseManager {
         Map params = new HashMap();
         params.put("sid", sid);
         return makeDataResult(params, params, pc, m);
-    }
-
-    /**
-     * Returns list of available solaris package(s) for given server
-     * @param sid Server Id
-     * @param pc PageControl can also be null.
-     * @return list of solaris packages for given server
-     */
-    public static DataResult systemAvailablePackageList(Long sid, PageControl pc) {
-        return solarisPackageHelper(sid, pc, "system_available_solaris_package_list");
-    }
-
-    /**
-     * Returns list of upgradable solaris package(s) for given server
-     * @param sid Server Id
-     * @param pc PageControl can also be null.
-     * @return list of solaris packages for given server
-     */
-    public static DataResult systemUpgradablePackageList(Long sid, PageControl pc) {
-        return solarisPackageHelper(sid, pc, "system_upgradable_solaris_package_list");
-    }
-
-    /**
-     * Returns list of installed solaris package(s) for given server
-     * @param sid Server Id
-     * @param pc PageControl can also be null.
-     * @return list of solaris packages for given server
-     */
-    public static DataResult systemPackageList(Long sid, PageControl pc) {
-        return solarisPackageHelper(sid, pc, "system_solaris_package_list");
     }
 
     /**

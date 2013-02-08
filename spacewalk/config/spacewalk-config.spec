@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 1.9.2
+Version: 1.9.4
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -179,6 +179,13 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Fri Feb 01 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.4-1
+- made apache 2.4 happy with our acl auth definitions
+
+* Thu Jan 31 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.3-1
+- RewriteLock is no longer valid in apache 2.4
+- removed no longer necessary directory definitions
+
 * Tue Jan 22 2013 Jan Pazdziora 1.9.2-1
 - We no longer ship /var/www/html/applications.
 

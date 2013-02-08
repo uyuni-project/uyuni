@@ -7,8 +7,9 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 7%{?dist}
+Release: 10%{?dist}
 Source0: cobbler-%{version}.tar.gz
+Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
 Group: Applications/System
 Requires: python >= 2.3
@@ -56,10 +57,15 @@ Requires: rsync
 Requires: yum-utils
 %endif
 
+%if 0%{?fedora}
+Requires(post):  /bin/systemctl
+Requires(preun): /bin/systemctl
+%else
 Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
-
 Requires(preun): /sbin/service
+%endif
+
 %if 0%{?fedora} >= 11 || 0%{?rhel} >= 6
 %{!?pyver: %define pyver %(%{__python} -c "import sys ; print sys.version[:3]" || echo 0)}
 Requires: python(abi) >= %{pyver}
@@ -98,12 +104,19 @@ PREFIX="--prefix=/usr"
 %endif
 %{__python} setup.py install --optimize=1 --root=$RPM_BUILD_ROOT $PREFIX
 mkdir $RPM_BUILD_ROOT/var/www/cobbler/rendered/
+%if 0%{?fedora}
+rm $RPM_BUILD_ROOT/etc/init.d/cobblerd
+mkdir -p $RPM_BUILD_ROOT%{_unitdir}
+install -m 0644 %{SOURCE1} $RPM_BUILD_ROOT%{_unitdir}/
+%endif
 
 %post
 if [ "$1" = "1" ];
 then
     # This happens upon initial install. Upgrades will follow the next else
-    /sbin/chkconfig --add cobblerd
+    if [ -f /etc/init.d/cobblerd ]; then
+        /sbin/chkconfig --add cobblerd
+    fi
 elif [ "$1" -ge "2" ];
 then
     # backup config
@@ -138,19 +151,30 @@ then
     # reserialize and restart
     # FIXIT: ?????
     #/usr/bin/cobbler reserialize
+%if 0%{?fedora}
+    /bin/systemctl condrestart cobblerd.service
+%else
     /sbin/service cobblerd condrestart
+%endif
 fi
 
 %preun
 if [ $1 = 0 ]; then
-    /sbin/service cobblerd stop >/dev/null 2>&1 || :
-    chkconfig --del cobblerd || :
+    if [ -f /etc/init.d/cobblerd ]; then
+        /sbin/service cobblerd stop >/dev/null 2>&1 || :
+        chkconfig --del cobblerd || :
+    fi
 fi
 
 %postun
 if [ "$1" -ge "1" ]; then
+%if 0%{?fedora}
+    /bin/systemctl condrestart cobblerd.service >/dev/null 2>&1 || :
+    /bin/systemctl condrestart httpd.service >/dev/null 2>&1 || :
+%else
     /sbin/service cobblerd condrestart >/dev/null 2>&1 || :
     /sbin/service httpd condrestart >/dev/null 2>&1 || :
+%endif
 fi
 
 
@@ -228,7 +252,11 @@ test "x$RPM_BUILD_ROOT" != "x" && rm -rf $RPM_BUILD_ROOT
 %exclude %{python_sitelib}/cobbler/sub_process.py*
 %endif
 %{_mandir}/man1/cobbler.1.gz
+%if 0%{?fedora}
+%{_unitdir}/cobblerd.service
+%else
 /etc/init.d/cobblerd
+%endif
 
 %if 0%{?suse_version} >= 1000
 %config(noreplace) /etc/apache2/conf.d/cobbler.conf
@@ -418,6 +446,14 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Wed Feb 06 2013 Stephen Herr <sherr@redhat.com> 2.0.11-10
+- Actually forcing cobblerd to not fork seems to work much better
+- cobblerd must be marked as forking for systemd to treat it correctly
+
+* Fri Feb 01 2013 Michael Mraka <michael.mraka@redhat.com> 2.0.11-9
+- let's use native systemd service on fedora
+- create systemd service for cobblerd
+
 * Wed Jan 23 2013 Jan Pazdziora 2.0.11-7
 - Move to mod_wsgi both on Fedoras and on RHEL 5.
 
