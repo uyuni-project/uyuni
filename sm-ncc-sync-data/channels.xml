@@ -582,7 +582,7 @@
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP1 Software Development Kit SLED" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-pool-i586-sled" name="SLE11-SDK-SP1-Pool for i586 SLED" optional="N" parent="sled11-sp1-pool-i586" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit SLED" update_tag="sdksp1">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-pool-i586-sled" name="SLE11-SDK-SP1-Pool for i586 SLED" optional="N" parent="sled11-sp1-pool-i586" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit" update_tag="sdksp1">
 		<products>
 			<product_id name="sle-sdk">1860</product_id>
 			<product_id name="sle-sdk">3040</product_id>
@@ -628,7 +628,7 @@
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit SLED" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-pool-x86_64-sled" name="SLE11-SDK-SP1-Pool for x86_64 SLED" optional="N" parent="sled11-sp1-pool-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit SLED" update_tag="sdksp1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-pool-x86_64-sled" name="SLE11-SDK-SP1-Pool for x86_64 SLED" optional="N" parent="sled11-sp1-pool-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit" update_tag="sdksp1">
 		<products>
 			<product_id name="sle-sdk">1860</product_id>
 			<product_id name="sle-sdk">3040</product_id>
@@ -646,7 +646,7 @@
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP1 Software Development Kit SLED" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-updates-i586-sled" name="SLE11-SDK-SP1-Updates for i586 SLED" optional="N" parent="sled11-sp1-pool-i586" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit SLED" update_tag="sdksp1">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-updates-i586-sled" name="SLE11-SDK-SP1-Updates for i586 SLED" optional="N" parent="sled11-sp1-pool-i586" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit" update_tag="sdksp1">
 		<products>
 			<product_id name="sle-sdk">1860</product_id>
 			<product_id name="sle-sdk">3040</product_id>
@@ -692,7 +692,7 @@
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit SLED" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-updates-x86_64-sled" name="SLE11-SDK-SP1-Updates for x86_64 SLED" optional="N" parent="sled11-sp1-pool-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit SLED" update_tag="sdksp1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-updates-x86_64-sled" name="SLE11-SDK-SP1-Updates for x86_64 SLED" optional="N" parent="sled11-sp1-pool-x86_64" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit" update_tag="sdksp1">
 		<products>
 			<product_id name="sle-sdk">1860</product_id>
 			<product_id name="sle-sdk">3040</product_id>
@@ -709,7 +709,7 @@
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Software Development Kit SLED" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp2-core-i586-sled" name="SLE11-SDK-SP2-Core for i586 SLED" optional="N" parent="sled11-sp1-pool-i586" product_name="sle-sdk" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Software Development Kit SLED" update_tag="sdksp2">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp2-core-i586-sled" name="SLE11-SDK-SP2-Core for i586 SLED" optional="N" parent="sled11-sp1-pool-i586" product_name="sle-sdk" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Software Development Kit" update_tag="sdksp2">
 		<products>
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
@@ -744,7 +744,7 @@
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP2 Software Development Kit SLED" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp2-core-x86_64-sled" name="SLE11-SDK-SP2-Core for x86_64 SLED" optional="N" parent="sled11-sp1-pool-x86_64" product_name="sle-sdk" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP2 Software Development Kit SLED" update_tag="sdksp2">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP2 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp2-core-x86_64-sled" name="SLE11-SDK-SP2-Core for x86_64 SLED" optional="N" parent="sled11-sp1-pool-x86_64" product_name="sle-sdk" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP2 Software Development Kit" update_tag="sdksp2">
 		<products>
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
@@ -759,7 +759,7 @@
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Software Development Kit SLED" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp2-updates-i586-sled" name="SLE11-SDK-SP2-Updates for i586 SLED" optional="N" parent="sled11-sp1-pool-i586" product_name="sle-sdk" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Software Development Kit SLED" update_tag="sdksp2">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp2-updates-i586-sled" name="SLE11-SDK-SP2-Updates for i586 SLED" optional="N" parent="sled11-sp1-pool-i586" product_name="sle-sdk" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Software Development Kit" update_tag="sdksp2">
 		<products>
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
@@ -794,7 +794,7 @@
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP2 Software Development Kit SLED" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp2-updates-x86_64-sled" name="SLE11-SDK-SP2-Updates for x86_64 SLED" optional="N" parent="sled11-sp1-pool-x86_64" product_name="sle-sdk" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP2 Software Development Kit SLED" update_tag="sdksp2">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP2 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp2-updates-x86_64-sled" name="SLE11-SDK-SP2-Updates for x86_64 SLED" optional="N" parent="sled11-sp1-pool-x86_64" product_name="sle-sdk" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP2 Software Development Kit" update_tag="sdksp2">
 		<products>
 			<product_id name="sle-sdk">3040</product_id>
 		</products>
@@ -883,12 +883,12 @@
 			<product_id name="SUSE_SLES">3009</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Proxy 1.2" family="SMP" is_signed="Y" label="sle11-sp1-debuginfo-pool-x86_64-proxy" name="SLE11-SP1-Debuginfo-Pool for x86_64 Proxy" optional="Y" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Manager Proxy 1.2" update_tag="dbgsp1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SMP" is_signed="Y" label="sle11-sp1-debuginfo-pool-x86_64-proxy" name="SLE11-SP1-Debuginfo-Pool for x86_64 Proxy" optional="Y" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">2680</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Proxy 1.7" family="SMP" is_signed="Y" label="sle11-sp1-debuginfo-pool-x86_64-proxy-1.7" name="SLE11-SP1-Debuginfo-Pool for x86_64 Proxy 1.7" optional="Y" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Manager Proxy 1.7" update_tag="dbgsp1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SMP" is_signed="Y" label="sle11-sp1-debuginfo-pool-x86_64-proxy-1.7" name="SLE11-SP1-Debuginfo-Pool for x86_64 Proxy 1.7" optional="Y" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">3640</product_id>
 		</products>
@@ -968,12 +968,12 @@
 			<product_id name="SUSE_SLES">3009</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Proxy 1.2" family="SMP" is_signed="Y" label="sle11-sp1-debuginfo-updates-x86_64-proxy" name="SLE11-SP1-Debuginfo-Updates for x86_64 Proxy" optional="Y" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Manager Proxy 1.2" update_tag="dbgsp1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SMP" is_signed="Y" label="sle11-sp1-debuginfo-updates-x86_64-proxy" name="SLE11-SP1-Debuginfo-Updates for x86_64 Proxy" optional="Y" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">2680</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Proxy 1.7" family="SMP" is_signed="Y" label="sle11-sp1-debuginfo-updates-x86_64-proxy-1.7" name="SLE11-SP1-Debuginfo-Updates for x86_64 Proxy 1.7" optional="Y" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Manager Proxy 1.7" update_tag="dbgsp1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SMP" is_signed="Y" label="sle11-sp1-debuginfo-updates-x86_64-proxy-1.7" name="SLE11-SP1-Debuginfo-Updates for x86_64 Proxy 1.7" optional="Y" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">3640</product_id>
 		</products>
@@ -1052,7 +1052,7 @@
 			<product_id name="SUSE_SLES">3009</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Proxy 1.7" family="SMP" is_signed="Y" label="sle11-sp2-debuginfo-core-x86_64-proxy-1.7" name="SLE11-SP2-Debuginfo-Core for x86_64 Proxy 1.7" optional="Y" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-x86_64/" summary="SUSE Manager Proxy 1.7" update_tag="dbgsp2">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="SMP" is_signed="Y" label="sle11-sp2-debuginfo-core-x86_64-proxy-1.7" name="SLE11-SP2-Debuginfo-Core for x86_64 Proxy 1.7" optional="Y" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">3640</product_id>
 		</products>
@@ -1115,7 +1115,7 @@
 			<product_id name="SUSE_SLES">3009</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Proxy 1.7" family="SMP" is_signed="Y" label="sle11-sp2-debuginfo-updates-x86_64-proxy-1.7" name="SLE11-SP2-Debuginfo-Updates for x86_64 Proxy 1.7" optional="Y" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Manager Proxy 1.7" update_tag="dbgsp2">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="SMP" is_signed="Y" label="sle11-sp2-debuginfo-updates-x86_64-proxy-1.7" name="SLE11-SP2-Debuginfo-Updates for x86_64 Proxy 1.7" optional="Y" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">3640</product_id>
 		</products>
@@ -1612,12 +1612,12 @@
 			<product_id name="SUSE_SLES">3009</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SMP" is_signed="Y" label="sles11-extras-x86_64-proxy" name="SLES11-Extras for x86_64 Proxy" optional="Y" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-Extras/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SMP" is_signed="Y" label="sles11-extras-x86_64-proxy" name="SLES11-Extras for x86_64 Proxy" optional="Y" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-Extras/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">2680</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SMP" is_signed="Y" label="sles11-extras-x86_64-proxy-1.7" name="SLES11-Extras for x86_64 Proxy 1.7" optional="Y" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-Extras/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SMP" is_signed="Y" label="sles11-extras-x86_64-proxy-1.7" name="SLES11-Extras for x86_64 Proxy 1.7" optional="Y" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLES11-Extras/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">3640</product_id>
 		</products>
@@ -1696,12 +1696,12 @@
 			<product_id name="SUSE_SLES">3009</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Proxy 1.2" family="SMP" is_signed="Y" label="sles11-sp1-pool-x86_64-proxy" name="SLES11-SP1-Pool for x86_64 Proxy" optional="N" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Pool/sle-11-x86_64/" summary="SUSE Manager Proxy 1.2" update_tag="slessp1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SMP" is_signed="Y" label="sles11-sp1-pool-x86_64-proxy" name="SLES11-SP1-Pool for x86_64 Proxy" optional="N" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">2680</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Proxy 1.7" family="SMP" is_signed="Y" label="sles11-sp1-pool-x86_64-proxy-1.7" name="SLES11-SP1-Pool for x86_64 Proxy 1.7" optional="N" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Pool/sle-11-x86_64/" summary="SUSE Manager Proxy 1.7" update_tag="slessp1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SMP" is_signed="Y" label="sles11-sp1-pool-x86_64-proxy-1.7" name="SLES11-SP1-Pool for x86_64 Proxy 1.7" optional="N" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">3640</product_id>
 		</products>
@@ -1751,7 +1751,7 @@
 			<product_id name="SUSE_SLES">1829</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Tools" family="SMP" is_signed="Y" label="sles11-sp1-suse-manager-tools-x86_64-proxy" name="SLES11-SP1-SUSE-Manager-Tools x86_64 Proxy" optional="N" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp1">
+	<channel arch="x86_64" description="SUSE Manager Tools" family="SMP" is_signed="Y" label="sles11-sp1-suse-manager-tools-x86_64-proxy" name="SLES11-SP1-SUSE-Manager-Tools x86_64 Proxy" optional="N" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp1">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">2680</product_id>
 		</products>
@@ -1806,12 +1806,12 @@
 			<product_id name="SUSE_SLES">3009</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Proxy 1.2" family="SMP" is_signed="Y" label="sles11-sp1-updates-x86_64-proxy" name="SLES11-SP1-Updates for x86_64 Proxy" optional="N" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Updates/sle-11-x86_64/" summary="SUSE Manager Proxy 1.2" update_tag="slessp1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SMP" is_signed="Y" label="sles11-sp1-updates-x86_64-proxy" name="SLES11-SP1-Updates for x86_64 Proxy" optional="N" parent="suse-manager-proxy-1.2-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">2680</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Proxy 1.7" family="SMP" is_signed="Y" label="sles11-sp1-updates-x86_64-proxy-1.7" name="SLES11-SP1-Updates for x86_64 Proxy 1.7" optional="N" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Updates/sle-11-x86_64/" summary="SUSE Manager Proxy 1.7" update_tag="slessp1">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SMP" is_signed="Y" label="sles11-sp1-updates-x86_64-proxy-1.7" name="SLES11-SP1-Updates for x86_64 Proxy 1.7" optional="N" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">3640</product_id>
 		</products>
@@ -1880,7 +1880,7 @@
 			<product_id name="SUSE_SLES">3009</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Proxy 1.7" family="SMP" is_signed="Y" label="sles11-sp2-core-x86_64-proxy-1.7" name="SLES11-SP2-Core for x86_64 Proxy 1.7" optional="N" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-x86_64/" summary="SUSE Manager Proxy 1.7" update_tag="slessp2">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="SMP" is_signed="Y" label="sles11-sp2-core-x86_64-proxy-1.7" name="SLES11-SP2-Core for x86_64 Proxy 1.7" optional="N" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">3640</product_id>
 		</products>
@@ -1965,7 +1965,7 @@
 			<product_id name="SUSE_SLES">3009</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Tools" family="AiO" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-sap-aio" name="SLES11-SP2-SUSE-Manager-Tools x86_64 SAP-AiO" optional="N" parent="sle11-sp1-sap-aio-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+	<channel arch="x86_64" description="SUSE Manager Tools" family="AiO" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-sap-aio" name="SLES11-SP2-SUSE-Manager-Tools x86_64 SAP-AiO" optional="N" parent="sle11-sp1-sap-aio-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLES_SAP">2560</product_id>
 		</products>
@@ -2010,7 +2010,7 @@
 			<product_id name="SUSE_SLES">3009</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Proxy 1.7" family="SMP" is_signed="Y" label="sles11-sp2-updates-x86_64-proxy-1.7" name="SLES11-SP2-Updates for x86_64 Proxy 1.7" optional="N" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Updates/sle-11-x86_64/" summary="SUSE Manager Proxy 1.7" update_tag="slessp2">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="SMP" is_signed="Y" label="sles11-sp2-updates-x86_64-proxy-1.7" name="SLES11-SP2-Updates for x86_64 Proxy 1.7" optional="N" parent="suse-manager-proxy-1.7-pool-x86_64" product_name="SUSE-Manager-Proxy" product_version="1.7" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">3640</product_id>
 		</products>
