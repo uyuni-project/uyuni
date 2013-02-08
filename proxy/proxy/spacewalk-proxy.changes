@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Feb 08 11:04:34 CET 2013 - mc@suse.de
+
+- version 1.7.12.9-1
+- raise NotLocalError if package is not in cache file (bnc#799684)
+- Remove superfluous stuff from cobbler-proxy.conf (bnc#796581)
+
+-------------------------------------------------------------------
 Thu Nov 22 15:27:54 CET 2012 - jrenner@suse.de
 
 - version 1.7.12.8-1
