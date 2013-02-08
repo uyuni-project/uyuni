@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Feb 08 11:09:35 CET 2013 - mc@suse.de
+
+- version 1.7.38.23-1
+- send patch notifications only for new patches (FATE#314765)
+- log with debug level, if wanted
+- collect download errors and send error mail (bnc#801189)
+- compare patch version as integers
+- do not send null values for new products via XMLRPC (bnc#798131)
+- change_base_channel should honor suse_products info if available
+
+-------------------------------------------------------------------
 Tue Dec 18 12:55:55 CET 2012 - mc@suse.de
 
 - version 1.7.38.22-1
