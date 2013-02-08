@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Feb 08 11:06:39 CET 2013 - mc@suse.de
+
+- version 5.10.27.9-1
+- Fix Web UI config diff, which always shows 'binary files differ'
+- make rhncfg diff output configurable
+
+-------------------------------------------------------------------
 Mon Oct 15 12:21:31 CEST 2012 - mc@suse.de
 
 - version 5.10.27.8-1
