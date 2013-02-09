@@ -138,13 +138,13 @@ rm -rf $RPM_BUILD_ROOT
 if [ -f /etc/init.d/rhn-search ]; then
    # This adds the proper /etc/rc*.d links for the script
    /sbin/chkconfig --add rhn-search
-%endif
 
    was_running=0
    if /sbin/service rhn-search status > /dev/null 2>&1 ; then
        was_running=1
    fi
 fi
+%endif
 
 # Migrate original /usr/share/rhn/search/indexes/*
 # to /var/lib/rhn/search/indexes
