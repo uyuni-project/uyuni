@@ -78,6 +78,7 @@ class RepoSyncTest(unittest.TestCase):
         rs = self._init_reposync('Label', RTYPE, url='http://example.com')
 
         self.assertEqual(rs.urls, [{'source_url': 'http://example.com',
+                                    'label': None,
                                     'id': None,
                                     'metadata_signed': 'N'}])
 
