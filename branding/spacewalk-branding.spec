@@ -119,7 +119,6 @@ rm -rf %{buildroot}
 %endif
 %{_prefix}/share/rhn/config-defaults/rhn_docs.conf
 %attr(0755,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
-%dir %{wwwdocroot}/nav
 %dir /usr/share/rhn
 %dir /usr/share/rhn/lib
 %attr(0755,root,root) %dir /var/lib/tomcat6
