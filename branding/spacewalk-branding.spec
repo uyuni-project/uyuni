@@ -103,6 +103,8 @@ rm -rf %{buildroot}
 /%{wwwdocroot}/css/*
 %dir /%{wwwdocroot}/img
 /%{wwwdocroot}/img/*
+%dir /%{wwwdocroot}/fonts
+/%{wwwdocroot}/fonts/*
 /%{wwwdocroot}/favicon.ico
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
