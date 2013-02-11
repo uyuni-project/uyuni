@@ -271,6 +271,8 @@ class Register:
     for prod in products:
       if not self.is_registerable(prod):
         continue
+      if prod['release'] is None:
+        prod['release'] = ''
       x = etree.SubElement(register_elem, 'product',
                            attrib={'version' : prod['version'],
                                    'release' : prod['release'],
