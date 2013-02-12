@@ -572,6 +572,7 @@ class PackageItem(IncompletePackageItem):
         'rhn-package-suggests'      : 'suggests',
         'rhn-package-supplements'   : 'supplements',
         'rhn-package-changelog'     : 'changelog',
+        'suse-product-file'         : 'product_files',
     }
     tagMap.update(IncompletePackageItem.tagMap)
     def populate(self, attributes, elements):
@@ -619,6 +620,21 @@ class ChangelogItem(BaseItem):
         'rhn-package-changelog-entry-time'  : 'time',
     }
 addItem(ChangelogItem)
+
+class ProductFileItem(BaseItem):
+    item_name = 'suse-product-file-entry'
+    item_class = importLib.ProductFile
+    tagMap = {
+        'suse-product-file-entry-name'        : 'name',
+        'suse-product-file-entry-epoch'       : 'epoch',
+        'suse-product-file-entry-version'     : 'version',
+        'suse-product-file-entry-release'     : 'release',
+        'suse-product-file-entry-arch'        : 'arch',
+        'suse-product-file-entry-vendor'      : 'vendor',
+        'suse-product-file-entry-summary'     : 'summary',
+        'suse-product-file-entry-description' : 'description',
+    }
+addItem(ProductFileItem)
 
 class DependencyItem(BaseItem):
     """virtual class - common settings for dependency items"""

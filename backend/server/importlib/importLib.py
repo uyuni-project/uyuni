@@ -276,6 +276,17 @@ class Checksum(Item):
     def __init__(self):
         Item.__init__(self, self.attributeTypes)
 
+class ProductFile(Information):
+    attributeTypes = {
+        'name'              : StringType,
+        'epoch'             : StringType,
+        'version'           : StringType,
+        'release'           : StringType,
+        'arch'              : StringType,
+        'vendor'            : StringType,
+        'summary'           : StringType,
+        'description'       : StringType
+    }
 
 class IncompletePackage(BaseInformation):
     attributeTypes = {
@@ -359,6 +370,7 @@ class Package(IncompletePackage):
         'changelog'         : [ChangeLog],
         'channels'          : [StringType],
         'checksum_list'     : [Checksum],
+        'product_files'     : [ProductFile],
     }
     def __init__(self):
         # Inherit from IncompletePackage

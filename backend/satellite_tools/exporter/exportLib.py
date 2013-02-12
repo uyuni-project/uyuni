@@ -801,6 +801,21 @@ class _PackageDumper(BaseRowDumper):
         """)
         h.execute(package_id=self._row['id'])
         arr.append(_PackageFilesDumper(self._writer, data_iterator=h))
+
+        # SUSE Product Files
+        h = rhnSQL.prepare("""
+            SELECT spf.name, rpe.epoch, rpe.version, rpe.release,
+                   rpa.label as arch, spf.vendor, spf.summary,
+                   spf.description
+              FROM susePackageProductFile sppf
+              JOIN suseProductFile spf ON spf.id = sppf.prodfile_id
+              JOIN rhnPackageEvr rpe ON rpe.id = spf.evr_id
+              JOIN rhnPackageArch rpa ON rpa.id = spf.package_arch_id
+             WHERE sppf.package_id = :package_id
+        """)
+        h.execute(package_id=self._row['id'])
+        arr.append(_SuseProductFilesDumper(self._writer, data_iterator=h))
+
         return ArrayIterator(arr)
 
 class PackagesDumper(BaseSubelementDumper, BaseQueryDumper):
@@ -887,6 +902,30 @@ class _ChangelogEntryDumper(BaseRowDumper):
 class _ChangelogDumper(BaseSubelementDumper):
     tag_name = 'rhn-package-changelog'
     subelement_dumper_class = _ChangelogEntryDumper
+
+##
+class _SuseProductEntryDumper(BaseRowDumper):
+    tag_name = 'suse-product-file-entry'
+
+    def set_iterator(self):
+        arr = []
+        mappings = [
+            ('suse-product-file-entry-name', 'name'),
+            ('suse-product-file-entry-epoch', 'epoch'),
+            ('suse-product-file-entry-version', 'version'),
+            ('suse-product-file-entry-release', 'release'),
+            ('suse-product-file-entry-arch', 'arch'),
+            ('suse-product-file-entry-vendor', 'vendor'),
+            ('suse-product-file-entry-summary', 'summary'),
+            ('suse-product-file-entry-description', 'description'),
+        ]
+        for k, v in mappings:
+            arr.append(SimpleDumper(self._writer, k, self._row[v]))
+        return ArrayIterator(arr)
+
+class _SuseProductFilesDumper(BaseSubelementDumper):
+    tag_name = 'suse-product-file'
+    subelement_dumper_class = _SuseProductEntryDumper
 
 ##
 class _DependencyDumper(BaseDumper):
