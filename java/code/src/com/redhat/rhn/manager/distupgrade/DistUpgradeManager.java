@@ -189,14 +189,22 @@ public class DistUpgradeManager extends BaseManager {
                 DataResult<Map<String, Object>> targetAddonProducts = findTargetProducts(
                         addonProduct.getId());
 
-                // Take the first target if there is more than one
-                if (targetAddonProducts.size() > 1) {
-                    logger.warn("More than one migration target found for addon " +
-                            "product: " + addonProduct.getFriendlyName());
+                // Take the first target in case there is more than one
+                Long targetAddonProductID = null;
+                if (targetAddonProducts.size() > 0) {
+                    if (targetAddonProducts.size() > 1) {
+                        logger.warn("More than one migration target found for addon " +
+                                "product: " + addonProduct.getFriendlyName());
+                    }
+                    targetAddonProductID = (Long) targetAddonProducts.get(0).
+                            get("product_id");
                 }
-                Map<String, Object> targetAddonProduct = targetAddonProducts.get(0);
-                if (targetAddonProduct != null) {
-                    long targetAddonProductID = (Long) targetAddonProduct.get("product_id");
+                else {
+                    // No target found, try to keep the source addon (bnc#802144)
+                    targetAddonProductID = addonProduct.getId();
+                }
+
+                if (targetAddonProductID != null) {
                     targetSet.addAddonProduct(SUSEProductFactory.getProductById(
                             targetAddonProductID));
 
@@ -209,9 +217,7 @@ public class DistUpgradeManager extends BaseManager {
                     }
                 }
             }
-            // Add to return list iff number of addon products is same.
-            // FIXME: What to do with addon products that don't have update candidates in case the
-            // old version is compatible with new base product, e.g. SMT11.
+            // Return this product set only if all addons can be migrated
             if (installedProducts.getAddonProducts().size() ==
                     targetSet.getAddonProducts().size()) {
                 ret.add(targetSet);
@@ -394,13 +400,19 @@ public class DistUpgradeManager extends BaseManager {
     @SuppressWarnings("unchecked")
     public static SUSEProduct findMatch(SUSEProduct source, List<SUSEProduct> targets) {
         SUSEProduct matchingProduct = null;
-        DataResult<Map<String, Object>> results = findTargetProducts(source.getId());
-        for (SUSEProduct target : targets) {
-            for (Map<String, Object> result : results) {
-                if (result.get("product_id").equals(target.getId())) {
-                    // Found the matching product
-                    matchingProduct = target;
-                    break;
+        // Match found if the targets contain the source product itself
+        if (targets.contains(source)) {
+            matchingProduct = source;
+        }
+        else {
+            DataResult<Map<String, Object>> results = findTargetProducts(source.getId());
+            for (SUSEProduct target : targets) {
+                for (Map<String, Object> result : results) {
+                    if (result.get("product_id").equals(target.getId())) {
+                        // Found the matching product
+                        matchingProduct = target;
+                        break;
+                    }
                 }
             }
         }
