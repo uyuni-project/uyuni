@@ -81,7 +81,7 @@ def main():
         product_list(ret, full=options.full, filter=options.filter)
     elif options.addproduct:
         plist = syncer.list_products()
-        cache = product_list(plist)
+        cache = product_list(plist, full=options.full, filter=options.filter)
         add_product(syncer, plist, cache)
     elif options.productlistxml:
         ret = syncer.list_products()
