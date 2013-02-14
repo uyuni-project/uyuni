@@ -74,7 +74,8 @@ def main():
                                       debug=options.debug,
                                       fromdir=options.fromdir)
     if options.list:
-        syncer.list_channels(full=options.full, filter=options.filter)
+        clist = syncer.list_channels()
+        display_channel_list(clist, full=options.full, filter=options.filter)
     elif options.productlist:
         ret = syncer.list_products()
         product_list(ret, full=options.full, filter=options.filter)
@@ -147,8 +148,36 @@ def add_product(syncer, plist, numcache):
             # schedule reposync even if the channel is already in the database
             syncer.sync_channel(channel_label)
 
+def display_channel_list(clist, full=False, filter=''):
+    print("Listing channels ...\n\n"
+          "Status:\n"
+          "- P - channel is installed (provided)\n"
+          "- . - channel is not installed, but is available\n"
+          "- X - channel is not available\n")
+
+    current_parent = ''
+    for channel in clist:
+        # we have the right order
+        if channel['parent'] == '':
+            current_parent = channel
+            current_parent['displayed'] = False
+            if do_display(channel['label'], filter):
+                print "[%s] %s" % (channel['status'], channel['label'])
+                current_parent['displayed'] = True
+        elif channel['parent'] == current_parent['label']:
+            if full or current_parent['status'] == 'P':
+                if current_parent['displayed'] and do_display(channel['label'], filter):
+                    print "    [%s] %s" % (channel['status'], channel['label'])
+        else:
+            # we do not have the right order. Print an error
+            print "ERROR: invalid order of channel list %s == %s" % (channel['parent'], current_parent['label'])
+
 
 def product_list(plist, full=False, filter=''):
+    print("Listing products ...\n\n"
+          "Status:\n"
+          "- P - all required channels are installed (provided)\n"
+          "- . - not all required channels are installed\n")
     counter = 0
     numcache = {}
     for pk in sorted(plist.iterkeys()):

@@ -1149,7 +1149,6 @@ class NCCSync(object):
                         else:
                             pc = ret[productidentchild]
                             if child.get('parent') != pc.base_channel:
-                                print "UGRS"
                                 continue
 
                         if child.get('optional') == 'Y':
@@ -1165,7 +1164,6 @@ class NCCSync(object):
             parent_sp = None
             if regex.match(p.name):
                 parent_sp = regex.match(p.name).groups()
-                #print "match found: %s" % parent_sp
             for ck in sorted(ret.iterkeys()):
                 c = ret[ck]
                 if c.base_channel != p.base_channel:
@@ -1174,28 +1172,21 @@ class NCCSync(object):
                     continue
                 if parent_sp and regex.match(c.name) and parent_sp != regex.match(c.name).groups():
                     # ugly hack: used to strip out products with of wrong Service Packs
-                    #print "skip: %s" % c.name
                     continue
                 ret[ck].set_parent_product(p.ident)
 
         return ret
 
-    def list_channels(self, prnt=True, full=False, filter=''):
+    def list_channels(self):
         """List available channels on NCC and their status
 
-        Statuses mean:
+        Status mean:
             - P - channel is in sync with the database (provided)
             - . - channel is not in the database, but is mirrorable
             - X - channel is in channels.xml, but is not mirrorable
 
         """
         ret = list()
-        if prnt:
-            self.print_msg("Listing all channels you are subscribed to...\n\n"
-                           "Statuses mean:\n"
-                           "- P - channel is in sync with the database (provided)\n"
-                           "- . - channel is not installed, but is available\n"
-                           "- X - channel is not available\n")
 
         db_channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
         ncc_channels = sorted(self.get_available_channels(),
@@ -1219,24 +1210,13 @@ class NCCSync(object):
             label = channel.get('label')
             if channel.get('parent') != 'BASE':
                 continue
-            do_display = self._do_display(label, filter)
-            if do_display:
-                ret.append({'label': label, 'status': channel_statuses[label], 'parent': ''})
-                if prnt:
-                    print "[%s] %s" % (channel_statuses[label], label)
-
-            if not ((full or channel_statuses[label] == 'P') and do_display):
-                continue
+            ret.append({'label': label, 'status': channel_statuses[label], 'parent': ''})
 
             for child in ncc_channels:
                 c_label = child.get('label')
                 if child.get('parent') != label:
                     continue
-                do_display_child = self._do_display(c_label, filter)
-                if do_display_child:
-                    ret.append({'label': c_label, 'status': channel_statuses[c_label], 'parent': label})
-                    if prnt:
-                        print "    [%s] %s" % (channel_statuses[c_label], c_label)
+                ret.append({'label': c_label, 'status': channel_statuses[c_label], 'parent': label})
         return ret
 
     def get_mirrorable_repos(self):
@@ -1781,15 +1761,6 @@ class NCCSync(object):
                                              'rhel-server-vt'))
                            """)
         q.execute(cf_id=cf_id)
-
-    def _do_display(self, label='', filter=''):
-        if not label:
-            return False
-        if not filter:
-            return True
-        if filter.lower() in label.lower():
-            return True
-        return False
 
 def sql_list(alist):
     """Transforms a python list into an SQL string of a list
