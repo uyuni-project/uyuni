@@ -1180,7 +1180,7 @@ class NCCSync(object):
 
         return ret
 
-    def list_channels(self, prnt=True):
+    def list_channels(self, prnt=True, full=False, filter=''):
         """List available channels on NCC and their status
 
         Statuses mean:
@@ -1219,17 +1219,24 @@ class NCCSync(object):
             label = channel.get('label')
             if channel.get('parent') != 'BASE':
                 continue
-            ret.append({'label': label, 'status': channel_statuses[label], 'parent': ''})
-            if prnt:
-                print "[%s] %s" % (channel_statuses[label], label)
+            do_display = self._do_display(label, filter)
+            if do_display:
+                ret.append({'label': label, 'status': channel_statuses[label], 'parent': ''})
+                if prnt:
+                    print "[%s] %s" % (channel_statuses[label], label)
+
+            if not ((full or channel_statuses[label] == 'P') and do_display):
+                continue
 
             for child in ncc_channels:
                 c_label = child.get('label')
                 if child.get('parent') != label:
                     continue
-                ret.append({'label': c_label, 'status': channel_statuses[c_label], 'parent': label})
-                if prnt:
-                    print "    [%s] %s" % (channel_statuses[c_label], c_label)
+                do_display_child = self._do_display(c_label, filter)
+                if do_display_child:
+                    ret.append({'label': c_label, 'status': channel_statuses[c_label], 'parent': label})
+                    if prnt:
+                        print "    [%s] %s" % (channel_statuses[c_label], c_label)
         return ret
 
     def get_mirrorable_repos(self):
@@ -1775,6 +1782,14 @@ class NCCSync(object):
                            """)
         q.execute(cf_id=cf_id)
 
+    def _do_display(self, label='', filter=''):
+        if not label:
+            return False
+        if not filter:
+            return True
+        if filter.lower() in label.lower():
+            return True
+        return False
 
 def sql_list(alist):
     """Transforms a python list into an SQL string of a list
