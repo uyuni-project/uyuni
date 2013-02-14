@@ -37,6 +37,10 @@ def main():
                       help="Add all mandatory channels of a product [interactive]")
     parser.add_option("-c", "--channel", action="store",
                       help="add a new channel and trigger a reposync")
+    parser.add_option("--full", action="store_true", dest="full",
+                      help="Show also childs, if the parent is not synced yet")
+    parser.add_option("--filter", action="store", dest="filter",
+                      help="Show only labels, which contains the filter word (case-insensitiv)")
     # hide the -p, -f, -s options, they're deprecated bnc#760924
     parser.add_option("-p", "--products", action="store_true",
                       help=optparse.SUPPRESS_HELP)
@@ -70,10 +74,10 @@ def main():
                                       debug=options.debug,
                                       fromdir=options.fromdir)
     if options.list:
-        syncer.list_channels()
+        syncer.list_channels(full=options.full, filter=options.filter)
     elif options.productlist:
         ret = syncer.list_products()
-        product_list(ret)
+        product_list(ret, full=options.full, filter=options.filter)
     elif options.addproduct:
         plist = syncer.list_products()
         cache = product_list(plist)
@@ -144,7 +148,7 @@ def add_product(syncer, plist, numcache):
             syncer.sync_channel(channel_label)
 
 
-def product_list(plist):
+def product_list(plist, full=False, filter=''):
     counter = 0
     numcache = {}
     for pk in sorted(plist.iterkeys()):
@@ -152,25 +156,42 @@ def product_list(plist):
         if not p.is_base():
             continue
         stat = p.status()
+
+        if not do_display(p.display_name(), filter):
+            continue
+
         if stat == ".":
             counter = counter + 1
-            print "(%3d) [%s] %s [%s]" % (counter, stat, p.name, p.arch)
+            print "(%3d) [%s] %s" % (counter, stat, p.display_name())
             numcache[str(counter)] = p.ident
-            continue
+            if not full:
+                continue
         else:
-            print "(---) [%s] %s [%s]" % (stat, p.name, p.arch)
+            print "(---) [%s] %s" % (stat, p.display_name())
         for ck in sorted(plist.iterkeys()):
             c = plist[ck]
             if c.parent_product != p.ident:
                 continue
+            if not do_display(c.display_name(), filter):
+                continue
             cstat = c.status()
             if cstat == ".":
                 counter = counter + 1
-                print "(%3d)    [%s] %s [%s]" % (counter, cstat, c.name, c.arch)
+                print "(%3d)    [%s] %s" % (counter, cstat, c.display_name())
                 numcache[str(counter)] = c.ident
             else:
-                print "(---)    [%s] %s [%s]" % (cstat, c.name, c.arch)
+                print "(---)    [%s] %s" % (cstat, c.display_name())
     return numcache
+
+def do_display(label='', filter=''):
+    if not label:
+        return False
+    if not filter:
+        return True
+    if filter.lower() in label.lower():
+        return True
+    return False
+
 
 if __name__ == "__main__":
     try:
