@@ -51,6 +51,9 @@ class SimpleProduct:
                 return "."
         return "P"
 
+    def display_name(self):
+        return "%s [%s]" % (self.name, self.arch)
+
     def to_xml(self, root):
         product_elem = etree.SubElement(root, 'product', attrib={
             'ident': self.ident,
