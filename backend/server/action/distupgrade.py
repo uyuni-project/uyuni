@@ -54,6 +54,10 @@ _query_products = rhnSQL.Statement("""
 def upgrade(serverId, actionId, dry_run=0):
     log_debug(3)
 
+    if dry_run:
+        # can happen if future actions are requested
+        raise ShadowAction("dry run requested - skipping")
+
     h = rhnSQL.prepare(_query_dup_data)
     h.execute(action_id=actionId)
     row = h.fetchone_dict()
