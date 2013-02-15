@@ -64,6 +64,7 @@ Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
 %endif
+%endif
 
 Obsoletes: LongLegs < 1.11.0
 Obsoletes: Time-System < 1.7.0
