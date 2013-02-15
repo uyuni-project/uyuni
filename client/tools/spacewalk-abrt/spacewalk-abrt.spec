@@ -36,6 +36,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/sysconfig/rhn/clientCaps.d
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/spacewalk_abrt
+%dir /etc/libreport
+%dir /etc/libreport/events.d
 %config  /etc/sysconfig/rhn/clientCaps.d/abrt
 %config  /etc/libreport/events.d/spacewalk.conf
 %{_bindir}/spacewalk-abrt
