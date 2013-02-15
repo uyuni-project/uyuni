@@ -12,7 +12,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.14
+Version: 1.9.17
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -164,7 +164,6 @@ mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
 install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
-install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/susemanager-database %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 
 %post -n spacewalk-pxt
 %if 0%{?suse_version}
@@ -313,6 +312,22 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Tue Feb 12 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.17-1
+- removed unused pxt page
+
+* Mon Feb 11 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.16-1
+- install Apache24Config.pm in on Fedora with apache 2.4
+
+* Fri Feb 08 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.15-1
+- $reqs was always equal $passes
+- acl is the only one supported type now
+- removed unused valid-user type
+- make pxt ACL work in apache 2.4
+- simplify @requires list
+- merged .htaccess to main httpd configuration
+- Silence the Statement unlikely to be reached at /usr/bin/db-control line 29
+  warning.
+
 * Wed Feb 06 2013 Stephen Herr <sherr@redhat.com> 1.9.14-1
 - Make it possible to run db-control without doing su - oracle first.
 

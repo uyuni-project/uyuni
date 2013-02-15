@@ -4,13 +4,13 @@
 #
 # Translators:
 # Maxim Dziumanenko <dziumanenko@gmail.com>, 2003.
-# Yuri Chornoivan <yurchor@ukr.net>, 2012.
+# Yuri Chornoivan <yurchor@ukr.net>, 2012-2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-02-28 14:38+0000\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2013-01-02 10:31+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -55,13 +55,12 @@ msgid "Using list of RHN repos from cache"
 msgstr "Використовуємо список сховищ RHN з кешу"
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "Цю систему не зареєстровано у RHN."
+msgstr "Цю систему не зареєстровано у програмах RHN Classic або RHN Satellite."
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
-msgstr ""
+msgstr "Для реєстрації ви можете скористатися rhn_register."
 
 #: ../rhnplugin.py:134
 msgid "RHN channel support will be disabled."
@@ -72,16 +71,16 @@ msgid "This system is not subscribed to any channels."
 msgstr "Цю систему не підписано на жоден канал."
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
 msgstr ""
-"Можливо, цю систему не зареєстровано на RHN. Не вдалося визначити SystemId.\n"
+"Ймовірно, цю систему не зареєстровано у RHN Classic або RHN Satellite. Не "
+"вдалося визначити ідентифікатор системи."
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."
-msgstr ""
+msgstr "Ця система оновлюється за програмою RHN Classic або RHN Satellite."
 
 #: ../rhnplugin.py:281
 msgid "Package profile information could not be sent."

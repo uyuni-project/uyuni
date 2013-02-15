@@ -4,7 +4,7 @@
 #
 # Translators:
 # Martin Minar <skulliq@gmail.com>, 2011.
-# Milan Kerslager <kerslage@linux.cz>, 2002, 2007.
+# Milan Kerslager <kerslage@linux.cz>, 2002,2007.
 # Miloslav Trmac <mitr@volny.cz>, 2002.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 msgid ""

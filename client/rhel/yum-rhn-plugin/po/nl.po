@@ -4,17 +4,18 @@
 #
 # Translators:
 # Bart Couvreur <bercie23@yahoo.com>, 2005.
+# Geert Warrink <geert.warrink@onsnet.nu>, 2012.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
-# Peter van Egdom <p.van.egdom@gmail.com>, 2003, 2004, 2005, 2006, 2007.
+# Peter van Egdom <p.van.egdom@gmail.com>, 2003-2007.
 # Petit Gregory <thunderbirds@pandora.be>, 2003.
 # Richard E. van der Luit <nippur@fedoraproject.org>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-04-11 17:40+0000\n"
-"Last-Translator: Richard E. van der Luit <nippur@fedoraproject.org>\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-11-20 10:43+0000\n"
+"Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/fedora/language/"
 "nl/)\n"
 "Language: nl\n"
@@ -57,13 +58,12 @@ msgid "Using list of RHN repos from cache"
 msgstr "Lijst van RHN repos van cache wordt gebruikt"
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "Dit systeem is niet geregistreerd bij RHN."
+msgstr "Dit systeem is niet bij RHN Classic of RHN Satellite geregistreerd."
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
-msgstr ""
+msgstr "Je kunt rhn_register gebruiken om te registreren."
 
 #: ../rhnplugin.py:134
 msgid "RHN channel support will be disabled."
@@ -74,17 +74,16 @@ msgid "This system is not subscribed to any channels."
 msgstr "Dit systeem is op geen enkel kanaal ingeschreven."
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
 msgstr ""
-"Dit systeem zou wel eens niet geregistreerd kunnen zijn bij RHN. SystemID "
-"kon niet worden vastgesteld.\n"
+"Dit systeem is waarschijnlijk niet bij RHN Classic of RHN Satellite "
+"geregistreerd. SystemId kon niet verkregen worden."
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."
-msgstr ""
+msgstr "Dit systeem ontvangt vernieuwingen van RHN Classic of RHN Satellite."
 
 #: ../rhnplugin.py:281
 msgid "Package profile information could not be sent."

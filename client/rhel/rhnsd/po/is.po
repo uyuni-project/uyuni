@@ -4,13 +4,13 @@
 #
 # Translators:
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
-# Richard Allen <ra@ra.is>, 2002, 2006.
+# Richard Allen <ra@ra.is>, 2002,2006.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:22+0100\n"
-"PO-Revision-Date: 2012-02-14 13:07+0000\n"
+"PO-Revision-Date: 2012-11-20 08:41+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Icelandic (http://www.transifex.com/projects/p/fedora/"
 "language/is/)\n"

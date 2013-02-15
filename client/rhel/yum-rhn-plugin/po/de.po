@@ -9,14 +9,14 @@
 # Roman Spirgi <bigant@fedoraproject.org>, 2012.
 # sknirT omiT <moc.tahder@sknirtt>, 2010.
 # Timo Trinks <ttrinks@redhat.com>, 2006.
-# Verena <vfuehrer@redhat.com>, 2004, 2005.
+# Verena <vfuehrer@redhat.com>, 2004-2005.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-03-06 10:27+0000\n"
-"Last-Translator: Roman Spirgi <bigant@fedoraproject.org>\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-10-30 10:38+0000\n"
+"Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: German <trans-de@lists.fedoraproject.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -59,9 +59,8 @@ msgid "Using list of RHN repos from cache"
 msgstr "RHN-Datenquellen aus Zwischenspeicher lesen"
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "Dieses System ist nicht bei RHN registriert."
+msgstr ""
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
@@ -76,13 +75,10 @@ msgid "This system is not subscribed to any channels."
 msgstr "Dieses System hat keine Channels abonniert."
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
 msgstr ""
-"Dieses System ist womöglich nicht bei RHN registriert. SystemId konnte nicht "
-"ermittelt werden.\n"
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."

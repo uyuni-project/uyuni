@@ -3,19 +3,19 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Eunju Kim <eukim@redhat.com>, 2006, 2007.
+# Eunju Kim <eukim@redhat.com>, 2006-2007.
 # Eun-Ju Kim <eukim@redhat.com>, 2011.
 # Michelle Ji Yeen Kim <mkim@redhat.com>, 2005.
-# Michelle J Kim <mkim@redhat.com>, 2003, 2004.
+# Michelle J Kim <mkim@redhat.com>, 2003-2004.
 # Michelle Kim <mkim@redhat.com>, 2002.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-02-14 13:00+0000\n"
-"Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-10-30 10:38+0000\n"
+"Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/fedora/language/"
 "ko/)\n"
 "Language: ko\n"
@@ -58,9 +58,8 @@ msgid "Using list of RHN repos from cache"
 msgstr ""
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "이 시스템은 RHN에 등록되지 않았습니다."
+msgstr ""
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
@@ -75,12 +74,10 @@ msgid "This system is not subscribed to any channels."
 msgstr "이 시스템은 아무 채널에도 등록되지 않았습니다."
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
 msgstr ""
-"이 시스템을 RHN에 등록할 수 없습니다. 시스템 ID를 가져올 수 없습니다.\n"
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."

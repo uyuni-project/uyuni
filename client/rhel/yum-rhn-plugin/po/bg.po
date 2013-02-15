@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-10-06 21:34+0000\n"
-"Last-Translator: Valentin Laskov <laskov@festa.bg>\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-10-30 10:38+0000\n"
+"Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: Bulgarian <trans-bg@lists.fedoraproject.org>\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
@@ -52,9 +52,8 @@ msgid "Using list of RHN repos from cache"
 msgstr "Използване на списък RHN хранилища от кеша"
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "Тази система не е регистрирана в RHN."
+msgstr ""
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
@@ -69,13 +68,10 @@ msgid "This system is not subscribed to any channels."
 msgstr "Тази система не е абонирана за никой от каналите."
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
 msgstr ""
-"Тази система може да не е регистрирана в RHN. Не може да бъде придобит "
-"SystemId.\n"
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."

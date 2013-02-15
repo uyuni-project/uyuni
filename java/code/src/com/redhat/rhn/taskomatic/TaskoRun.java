@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -178,7 +177,11 @@ public class TaskoRun {
             try {
                 file = new RandomAccessFile(fileName, "r");
                 if (nBytes >= 0) {
-                    file.seek(file.length() - nBytes);
+                    long seekAmount = file.length() - nBytes;
+                    if (seekAmount < 0) {
+                        seekAmount = 0;
+                    }
+                    file.seek(seekAmount);
                 }
                 String tail = "";
                 String line;
@@ -188,10 +191,8 @@ public class TaskoRun {
                 file.close();
                 return tail;
             }
-            catch (FileNotFoundException e) {
-                // return "";
-            }
             catch (IOException e) {
+                log.error("Can't tail " + fileName + ": " + e.toString());
                 // return "";
             }
         }

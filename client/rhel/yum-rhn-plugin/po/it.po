@@ -7,8 +7,8 @@
 # Bettina De Monti <bdemonti@redhat.it>, 2001.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER, 2006.
 # Francesco Tombolini <tombo@adamantio.net>, 2010.
-# Francesco Valente <fvalen@redhat.com>, 2003, 2004.
-# Lorenzo Stobbione <lorenzo.stobbione@clsengineering.it>, 2004, 2005, 2006, 2007.
+# Francesco Valente <fvalen@redhat.com>, 2003-2004.
+# Lorenzo Stobbione <lorenzo.stobbione@clsengineering.it>, 2004-2007.
 # Mario Santagiuliana marionline <marionline@fedoraproject.org>, 2012.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Silvio Pierro <perplesso82@gmail.com>, 2012.
@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-06-01 18:06+0000\n"
-"Last-Translator: Francesco Tombolini <tombo@adamantio.net>\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-10-30 10:38+0000\n"
+"Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: Italian <trans-it@lists.fedoraproject.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -63,9 +63,8 @@ msgid "Using list of RHN repos from cache"
 msgstr ""
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "Questo sistema non risulta registrato con RHN."
+msgstr ""
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
@@ -80,13 +79,10 @@ msgid "This system is not subscribed to any channels."
 msgstr "Questo sistema non è registrato su alcun canale."
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
 msgstr ""
-"Questo sistema potrebbe non essere registrato con RHN. Impossibile acquisire "
-"SystemId.\n"
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."

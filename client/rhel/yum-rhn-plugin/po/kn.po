@@ -6,14 +6,14 @@
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # shankar prasad <svenkate@redhat.com>, 2006.
 # shankar Prasad <svenkate@redhat.com>, 2006.
-# Shankar Prasad <svenkate@redhat.com>, 2007, 2011.
+# Shankar Prasad <svenkate@redhat.com>, 2007,2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-02-14 13:00+0000\n"
-"Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-10-30 10:38+0000\n"
+"Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: Kannada (http://www.transifex.com/projects/p/fedora/language/"
 "kn/)\n"
 "Language: kn\n"
@@ -56,9 +56,8 @@ msgid "Using list of RHN repos from cache"
 msgstr ""
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "ಈ ವ್ಯವಸ್ಥೆ RHN ಜೊತೆಗೆ ನೊಂದಾಯಿತವಾಗಿಲ್ಲ."
+msgstr ""
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
@@ -73,11 +72,10 @@ msgid "This system is not subscribed to any channels."
 msgstr "ಈ ವ್ಯವಸ್ಥೆಯು ಯಾವುದೇ ಮಾರ್ಗಗಳಿಗೆ ಚಂದಾದಾರನಾಗಿಲ್ಲ."
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
-msgstr "ಈ ವ್ಯವಸ್ಥೆಯನ್ನು RHN ನೊಂದಿಗೆ ನೋಂದಾಯಿಸಲಾಗಿಲ್ಲ. SystemId ಅನ್ನು ಪಡೆಯಲಾಗಿಲ್ಲ.\n"
+msgstr ""
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."

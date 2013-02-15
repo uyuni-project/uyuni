@@ -3,17 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Christian Rose <menthos@menthos.com>, 2002, 2003, 2004, 2005.
-# Magnus Larsson <fedoratrans@gmail.com>, 2006, 2007.
+# Christian Rose <menthos@menthos.com>, 2002-2005.
+# Magnus Larsson <fedoratrans@gmail.com>, 2006-2007.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Ulrika  <aurorauddeborg@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-06-17 12:17+0000\n"
-"Last-Translator: Ulrika <aurorauddeborg@gmail.com>\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-10-30 10:38+0000\n"
+"Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/fedora/language/"
 "sv/)\n"
 "Language: sv\n"
@@ -56,9 +56,8 @@ msgid "Using list of RHN repos from cache"
 msgstr "Använder RHN-förrådslista från cache"
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "Detta system är inte registrerat med RHN."
+msgstr ""
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
@@ -73,13 +72,10 @@ msgid "This system is not subscribed to any channels."
 msgstr "Detta system prenumererar inte på några kanaler."
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
 msgstr ""
-"Detta systemet kanske inte är registrerat på RHN. SystemId kunde inte "
-"hittas.\n"
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."

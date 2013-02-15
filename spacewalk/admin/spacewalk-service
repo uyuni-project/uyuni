@@ -65,15 +65,7 @@ forward_services() {
             if [ "$service" == "$TOMCAT" \
                 -a "$ACTION" == "start" \
                 -a "$WAIT_FOR_TOMCAT" == "1" ] ; then
-                if /usr/bin/lsof /proc > /dev/null ; then
-                    echo "Waiting for tomcat to be ready ..."
-                    while [ -f "/var/run/$TOMCAT.pid" ] ; do
-                        /usr/bin/lsof -t -i TCP:8009 -p $(cat /var/run/$TOMCAT.pid) > /dev/null && break
-                        sleep 1
-                    done
-                else
-                    echo "No lsof found, not waiting for tomcat."
-                fi
+                /usr/sbin/spacewalk-startup-helper wait-for-tomcat
             fi
 	fi
         if [ $E_STAT -ne 0 ]; then
@@ -155,24 +147,6 @@ status() {
     return $?
 }
 
-ensure_httpd_down() {
-    COUNT=0
-    LIMIT=10
-
-    while [ "$(pidof httpd | wc -w)" -gt 0 ] && [ "$COUNT" -lt "$LIMIT" ]
-    do
-	sleep 1
-	((COUNT++))
-    done
-
-    if [ "$COUNT" -eq "$LIMIT" ]; then
-	killall -9 httpd
-	sleep 4
-    fi
-
-    return 0
-}
-
 OPTS=$(getopt --longoptions=exclude:,level:,no-wait-for-tomcat -n ${0##*/} -- e:l:T "$@")
 
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
@@ -230,7 +204,7 @@ case "$1" in
         stop
         sleep 4
 
-        ensure_httpd_down
+        /usr/sbin/spacewalk-startup-helper ensure-httpd-down
 
         start
         ;;

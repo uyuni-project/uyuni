@@ -7,7 +7,7 @@
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.9.3
+Version: 1.9.5
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: GPLv2
@@ -32,6 +32,11 @@ Various utility scripts and data files for Spacewalk installations.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+%if 0%{?fedora}
+mv -f spacewalk-service.systemd spacewalk-service
+make -f Makefile.admin install_systemd PREFIX=$RPM_BUILD_ROOT
+%endif
 make -f Makefile.admin install PREFIX=$RPM_BUILD_ROOT
 
 (cd $RPM_BUILD_ROOT/%{_bindir} && ln -s validate-sat-cert.pl validate-sat-cert)
@@ -58,6 +63,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 %dir %{rhnroot}
 %attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
+%{_sbindir}/spacewalk-startup-helper
 %{_sbindir}/spacewalk-service
 %{_sbindir}/rhn-satellite
 %{_bindir}/validate-sat-cert.pl
@@ -80,8 +86,25 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/rhn-deploy-ca-cert.pl.8*
 %{_mandir}/man8/rhn-install-ssl-cert.pl.8*
 %config(noreplace) %{_sysconfdir}/rhn/service-list
+%if 0%{?fedora}
+%{_unitdir}/spacewalk.target
+%{_unitdir}/spacewalk-wait-for-tomcat.service
+%{_unitdir}/spacewalk-wait-for-jabberd.service
+%endif
 
 %changelog
+* Thu Feb 14 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.5-1
+- wait-for-tomcat has been moved to helper
+- let's osa-dispatcher wait for jabberd startup
+- include systemd target and services
+
+* Tue Feb 12 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.4-1
+- added systemd version of spacewalk-service
+- systemd target for spacewalk
+- moved waiting for jabberd to helper
+- moved ensure_httpd_down() into script
+- moved wait-for-tomcat into general startup helper
+
 * Mon Dec 10 2012 Jan Pazdziora 1.9.3-1
 - The systemd service files are not executable, using -e.
 

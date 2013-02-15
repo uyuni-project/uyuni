@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# David Barzilay <barzilay@redhat.com>, 2004, 2005.
+# David Barzilay <barzilay@redhat.com>, 2004-2005.
 # Igor Pires Soares <igor@projetofedora.org>, 2007.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Pedro Fernandes Macedo <webmaster@margo.bijoux.nom.br>, 2004.
@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:22+0100\n"
-"PO-Revision-Date: 2012-02-14 13:07+0000\n"
+"PO-Revision-Date: 2012-11-20 08:41+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Portuguese (Brazil) <trans-pt_br@lists.fedoraproject.org>\n"
 "Language: pt_BR\n"

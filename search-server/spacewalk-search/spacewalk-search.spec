@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 1.9.4
+Version: 1.9.5
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -210,6 +210,9 @@ fi
 %doc licenses/*
 
 %changelog
+* Thu Feb 14 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.5-1
+- fixed systemd services description
+
 * Tue Feb 05 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.4-1
 - added systemd service for rhn-search
 

@@ -4,8 +4,9 @@
 #
 # Translators:
 # Bart Couvreur <bercie23@yahoo.com>, 2005.
+# Geert Warrink <geert.warrink@onsnet.nu>, 2012.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
-# Peter van Egdom <p.van.egdom@gmail.com>, 2003, 2004, 2005, 2006, 2007.
+# Peter van Egdom <p.van.egdom@gmail.com>, 2003-2007.
 # Petit Gregory <thunderbirds@pandora.be>, 2003.
 # Richard E. van der Luit <nippur@fedoraproject.org>, 2012.
 msgid ""
@@ -13,8 +14,8 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:22+0100\n"
-"PO-Revision-Date: 2012-04-11 17:41+0000\n"
-"Last-Translator: Richard E. van der Luit <nippur@fedoraproject.org>\n"
+"PO-Revision-Date: 2012-11-20 08:41+0000\n"
+"Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/fedora/language/"
 "nl/)\n"
 "Language: nl\n"

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2010 Red Hat, Inc.
+# Copyright (c) 2008--2013 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -100,6 +100,7 @@ sub handler {
 
 sub authz_handler {
   my $r = shift;
+  my $acl_require = shift;      # apache 2.4
 
   return OK if $r->main;
 
@@ -110,51 +111,33 @@ sub authz_handler {
   my $session = $r->pnotes('pxt_session');
   my $pxt = $r->pnotes('pxt_request');
 
-  my @requires = @{$r->requires};
-
-  my ($reqs, $passes);
+  my @requires = ($acl_require ? ($acl_require)
+                               : map {$_->{requirement} =~ s/^acl\s+//;
+                                      $_->{requirement};} @{$r->requires});
 
   foreach my $entry (@requires) {
-    my ($type, $string) = split /\s+/, $entry->{requirement}, 2;
-    $reqs++;
 
-    if ($type eq 'valid-user') {
-      $passes++;
+    # support addition mixin'able acls directly from the .htaccess file...
+    my @mixins;
+    while ($entry =~ m/mixin\s+(.*?)\s+/g) {
+      push @mixins, $1;
     }
-    elsif ($type eq 'acl') {
 
-      # support addition mixin'able acls directly from the .htaccess file...
-      my @mixins;
-      while ($entry->{requirement} =~ m/mixin\s+(.*?)\s+/g) {
-	push @mixins, $1;
-      }
+    # clean up the string for the acl parser...
+    $entry =~ s{mixin\s+.*?\s+}{}g;
 
-      # clean up the string for the acl parser...
-      $string =~ s{mixin\s+.*?\s+}{}g;
+    my $acl_parser = new PXT::ACL(mixins => \@mixins);
 
-      my $acl_parser = new PXT::ACL(mixins => \@mixins);
-
-      if (not $acl_parser->eval_acl($pxt, $string)) {
-	warn "acl fail: $string";
-	return FORBIDDEN;
-      }
-      $passes++;
-    }
-    else {
-      die "Unknown 'require' type '$type' in .htaccess";
+    if (not $acl_parser->eval_acl($pxt, $entry)) {
+      warn "acl fail: $entry";
+      return FORBIDDEN;
     }
   }
 
 #  $r->log_reason('User ' . $user->login . ' not allowed by "require"');
 
-  if ($reqs == $passes) {
-    $session->uid($user_id);
-    return OK;
-  }
-  else {
-    warn "User did not pass all auth requisites ($passes/$reqs matched)";
-    return FORBIDDEN;
-  }
+  $session->uid($user_id);
+  return OK;
 }
 
 1;

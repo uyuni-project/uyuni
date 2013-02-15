@@ -4,10 +4,10 @@
 #
 # Translators:
 # Alain PORTAL <aportal@univ-montp2.fr>, 2006.
-# Audrey Simons <asimons@redhat.com>, 2004, 2005.
+# Audrey Simons <asimons@redhat.com>, 2004-2005.
 # Bettina De Monti <bdemonti@redhat.it>, 2001.
 # Damien Durand <splinux@fedoraproject.org>, 2006.
-# Decroux Fabien <fdecroux@redhat.com>, 2006, 2007.
+# Decroux Fabien <fdecroux@redhat.com>, 2006-2007.
 # Jérôme Fenal <jfenal@gmail.com>, 2012.
 #   <jfenal@gmail.com>, 2011.
 # jfenal <jfenal@gmail.com>, 2011.

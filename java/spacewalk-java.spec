@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.60
+Version: 1.9.65
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -729,7 +729,7 @@ fi
 %dir %{appdir}/rhn/WEB-INF
 %dir %{jardir}
 %else
-%attr(755, tomcat, root) %{_var}/spacewalk/systemlogs
+%dir %attr(755, tomcat, root) %{_var}/spacewalk/systemlogs
 %ghost %attr(644, tomcat, root) %{_var}/spacewalk/systemlogs/audit-review.log
 %endif
 
@@ -775,6 +775,31 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Feb 15 2013 Tomas Lestach <tlestach@redhat.com> 1.9.65-1
+- fixing checkstyle issues
+- Only package build times should be converted to GMT
+
+* Fri Feb 15 2013 Tomas Lestach <tlestach@redhat.com> 1.9.64-1
+- return whole log in case more bytes are requested than the current file size
+- removing unused imports
+- RhnJavaJob: Do not ignore the exit code for external programs.
+- Do not silence catched exceptions. Debugging can be hard.
+- FileNotFoundException inherits IOException so no need for a separate catch
+  block if the catch code is the same (none).
+
+* Thu Feb 14 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.63-1
+- fixed systemd services description
+
+* Thu Feb 14 2013 Tomas Lestach <tlestach@redhat.com> 1.9.62-1
+- 906399 - list also channel packages not associated with already cloned errata
+- 906399 - fix WebUI's errata sync
+- prevent rpmbuild warning: File listed twice: /var/spacewalk/systemlogs/audit-
+  review.log
+
+* Tue Feb 12 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.61-1
+- link channels on /rhn/channels/ChannelDetail.do page
+- cleanup old accidentaly commited eclipse project files
+
 * Wed Feb 06 2013 Jan Pazdziora 1.9.60-1
 - Make images of type 'kvm' show up on the UI
 

@@ -3,9 +3,9 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Ben Wu <hpwu@redhat.com>, 2002, 2003.
+# Ben Wu <hpwu@redhat.com>, 2002-2003.
 # Chester Cheng <ccheng@brisbane.redhat.com>, 2006.
-# Chester Cheng <ccheng@redhat.com>, 2004, 2005, 2006, 2007.
+# Chester Cheng <ccheng@redhat.com>, 2004-2007.
 # Leah Liu <weliu@redhat.com>, 2005.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Waika Liu <wliu@redhat.com>, 2005.
@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:22+0100\n"
-"PO-Revision-Date: 2012-04-23 07:50+0000\n"
+"PO-Revision-Date: 2012-11-20 08:41+0000\n"
 "Last-Translator: Walter Cheuk <wwycheuk@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <trans-zh_TW@lists.fedoraproject.org>\n"
 "Language: zh_TW\n"

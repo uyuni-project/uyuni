@@ -1,0 +1,39 @@
+# Makefile.spacewalk-abrt
+
+PREFIX		?=
+MANPATH		?= /usr/share/man
+SUBDIRS		= etc-conf man po src
+VERSION         := $(shell echo `grep ^Version: spacewalk-abrt.spec | awk '{ print $$2 }'`)
+
+ifndef PLATFORM
+  PLATFORM=rpm
+endif
+
+export PREFIX
+export MANPATH
+export VERSION
+export PLATFORM
+
+all::
+
+install:: all
+
+clean::
+	@rm -fv *~ .*~
+	@rm -fv spacewalk-abrt*.tar.gz spacewalk-abrt*.tar.bz2
+	@find . -name .\#\* -exec rm -fv {} \;
+	@rm -fv *.rpm
+	@rm -fv po/.intltool-merge-cache
+
+descend-subdirs = @$(foreach d,$(SUBDIRS), $(MAKE) -C $(d) $@ || exit 1; )
+
+all clean install :: $(SUBDIRS)
+	$(descend-subdirs)
+
+tardist: clean
+	rm -Rfv /tmp/spacewalk-abrt-$(VERSION)
+	cp -fapRdv . /tmp/spacewalk-abrt-$(VERSION)
+	tar zcfv spacewalk-abrt-$(VERSION).tar.gz --exclude \.svn -C /tmp spacewalk-abrt-$(VERSION)
+
+rpm: tardist
+	rpmbuild -ta spacewalk-abrt-$(VERSION).tar.gz

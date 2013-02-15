@@ -4,15 +4,15 @@
 #
 # Translators:
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
-# Piotr Drąg <piotrdrag@gmail.com>, 2006, 2011, 2012.
+# Piotr Drąg <piotrdrag@gmail.com>, 2006,2011-2012.
 # Tom Berner <tom@lodz.pl>, 2005.
 # Tom Berner <tom@man.lodz.pl>, 2004.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-02-14 13:00+0000\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-10-30 14:23+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "Language: pl\n"
@@ -56,13 +56,13 @@ msgid "Using list of RHN repos from cache"
 msgstr "Używanie listy repozytoriów RHN z pamięci podręcznej"
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "Ten system nie jest zarejestrowany w usłudze RHN."
+msgstr ""
+"Ten system nie jest zarejestrowany w usłudze RHN Classic lub RHN Satellite."
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
-msgstr ""
+msgstr "Można użyć polecenia rhn_register do rejestracji."
 
 #: ../rhnplugin.py:134
 msgid "RHN channel support will be disabled."
@@ -73,17 +73,17 @@ msgid "This system is not subscribed to any channels."
 msgstr "Ten system nie jest subskrybowany do żadnego kanału."
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
 msgstr ""
-"Ten system może nie być zarejestrowany w usłudze RHN. Nie można uzyskać "
-"identyfikatora systemu.\n"
+"Ten system może nie być zarejestrowany w usłudze RHN Classic lub RHN "
+"Satellite. Nie można uzyskać identyfikatora systemu."
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."
 msgstr ""
+"Ten system utrzymuje aktualizacje z usługi RHN Classic lub RHN Satellite."
 
 #: ../rhnplugin.py:281
 msgid "Package profile information could not be sent."

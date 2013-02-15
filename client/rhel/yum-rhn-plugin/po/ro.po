@@ -4,7 +4,7 @@
 #
 # Translators:
 # Alexandru Szasz <alexxed@gmail.com>, 2006.
-# Cristian Gafton <gafton@redhat.com>, 2000, 2001.
+# Cristian Gafton <gafton@redhat.com>, 2000-2001.
 # Mihai Ibanescu <misa@redhat.com>, 2005.
 # Mircea Daniel <daniel@reywind.tranceaddict>, 2006.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-02-14 13:00+0000\n"
-"Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-10-30 10:38+0000\n"
+"Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/projects/p/fedora/language/"
 "ro/)\n"
 "Language: ro\n"
@@ -56,9 +56,8 @@ msgid "Using list of RHN repos from cache"
 msgstr ""
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "Acest sistem nu este înregistrat cu RHN."
+msgstr ""
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."

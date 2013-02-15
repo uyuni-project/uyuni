@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Milan Kerslager <kerslage@linux.cz>, 2002, 2007.
+# Milan Kerslager <kerslage@linux.cz>, 2002,2007.
 # Miloslav Trmac <mitr@volny.cz>, 2002.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 msgid ""
@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:22+0100\n"
-"PO-Revision-Date: 2012-02-14 13:07+0000\n"
+"PO-Revision-Date: 2012-11-20 08:41+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/fedora/language/"
 "cs/)\n"

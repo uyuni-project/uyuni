@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.9.11
+Version:	1.9.13
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -97,6 +97,13 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Wed Feb 13 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.13-1
+- fixed pylint warnings
+
+* Wed Feb 13 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.12-1
+- removed Fedora 15 channels
+- added Fedora 18 channel definitions
+
 * Fri Jan 18 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.11-1
 - silence pylint warning
 

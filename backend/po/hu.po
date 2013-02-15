@@ -5,13 +5,14 @@
 # Translators:
 # Arpad Biro <biro_arpad@yahoo.com>, 2004, 2005.
 # Tamas Szanto <tszanto@mol.hu>, 2004.
+# Zoltan Hoppár <hopparz@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:18+0100\n"
-"PO-Revision-Date: 2011-03-04 16:08+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2012-12-04 08:47+0000\n"
+"Last-Translator: Zoltan Hoppár <hopparz@gmail.com>\n"
 "Language-Team: Hungarian <trans-hu@lists.fedoraproject.org>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
@@ -304,19 +305,19 @@ msgstr ""
 
 #: ../server/handlers/xmlrpc/proxy.py:80
 msgid "Invalid session key"
-msgstr ""
+msgstr "Érvénytelen folyamat azonosító"
 
 #: ../server/handlers/xmlrpc/proxy.py:88
 msgid "This server ID no longer exists"
-msgstr ""
+msgstr "Ez a kiszolgáló ID nem létezik többé"
 
 #: ../server/handlers/xmlrpc/registration.py:183
 msgid "Required data missing"
-msgstr ""
+msgstr "Szükséges adat hiányzik"
 
 #: ../server/handlers/xmlrpc/registration.py:187
 msgid "Required members missing"
-msgstr ""
+msgstr "Szükséges tagok hiányoznak"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Attempt to register a system to an invalid username"
@@ -340,17 +341,17 @@ msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1015
 msgid "Red Hat Network Privacy Statement"
-msgstr ""
+msgstr "Red Hat Network Privacy Statement"
 
 #: ../server/handlers/xmlrpc/registration.py:1036
 msgid "Expected a dictionary as a product argument"
-msgstr ""
+msgstr "Szótárra számított mint termékparaméterre"
 
 #: ../server/handlers/xmlrpc/registration.py:1068
 #: ../server/handlers/xmlrpc/registration.py:1126
 #, python-format
 msgid "Not a valid Country: %s"
-msgstr ""
+msgstr "Nem érvényes ország: %s"
 
 #: ../server/handlers/xmlrpc/registration.py:1349
 #, python-format
@@ -360,17 +361,17 @@ msgstr ""
 #: ../server/handlers/xmlrpc/registration.py:1366
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
-msgstr ""
+msgstr "Érvénytelen érték '%s' for %s (%s)"
 
 #: ../server/handlers/xmlrpc/errata.py:59
 #, python-format
 msgid "Expected a package name, not: %s"
-msgstr ""
+msgstr "Csomagnévre számított a rendszer, nem erre: %s "
 
 #: ../server/handlers/xmlrpc/errata.py:109
 #, python-format
 msgid "Expected a package, not: %s"
-msgstr ""
+msgstr "Csomagra számított a rendszer, nem erre: %s"
 
 #: ../server/handlers/xmlrpc/queue.py:399
 #, python-format
@@ -385,17 +386,17 @@ msgstr ""
 #: ../server/handlers/xmlrpc/up2date.py:232
 #, python-format
 msgid "Invalid value %s (type %s)"
-msgstr ""
+msgstr "Érvénytelen érték %s (típus %s)"
 
 #: ../server/handlers/xmlrpc/up2date.py:260
 #, python-format
 msgid "Unable to retrieve package header %s"
-msgstr ""
+msgstr "Csomag fejlécének letöltése sikertelen %s"
 
 #: ../server/handlers/xmlrpc/up2date.py:407
 #, python-format
 msgid "Invalid value %s (%s)"
-msgstr ""
+msgstr "Érvénytelen érték %s (%s)"
 
 #: ../server/handlers/xmlrpc/up2date.py:479
 #, python-format
@@ -405,7 +406,7 @@ msgstr ""
 #: ../server/handlers/xmlrpc/up2date.py:491
 #, python-format
 msgid "Invalid package parameter %s (%s)"
-msgstr ""
+msgstr "Érvénytelen csomagparaméter %s (%s)"
 
 #: ../server/importlib/userAuth.py:108 ../server/importlib/userAuth.py:112
 msgid "You are not authorized to manage packages in the null org"

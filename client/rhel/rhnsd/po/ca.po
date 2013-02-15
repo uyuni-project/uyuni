@@ -4,13 +4,13 @@
 #
 # Translators:
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
-# Xavier Conde Rueda <xaviconde@eresmas.com>, 2004, 2005.
+# Xavier Conde Rueda <xaviconde@eresmas.com>, 2004-2005.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:22+0100\n"
-"PO-Revision-Date: 2012-02-14 13:07+0000\n"
+"PO-Revision-Date: 2012-11-20 08:41+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Catalan <fedora@llistes.softcatala.org>\n"
 "Language: ca\n"

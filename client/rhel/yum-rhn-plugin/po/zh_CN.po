@@ -4,12 +4,12 @@
 #
 # Translators:
 # Christopher Meng <cickumqt@gmail.com>, 2012.
-# Leah Liu <lliu@redhat.com>, 2010, 2011.
-# Leah Liu <weliu@redhat.com>, 2005, 2006.
+# Leah Liu <lliu@redhat.com>, 2010-2011.
+# Leah Liu <weliu@redhat.com>, 2005-2006.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Sarah Smith <sarahs@redhat.com>, 2002.
-# Sarah Wang <sarahs@redhat.com>, 2003, 2004.
-# Tony Fu <tfu@redhat.com>, 2004, 2006.
+# Sarah Wang <sarahs@redhat.com>, 2003-2004.
+# Tony Fu <tfu@redhat.com>, 2004,2006.
 # xiaofeng  <wasphin@gmail.com>, 2012.
 # Xi Huang <xhuang@redhat.com>, 2006.
 # Xi HUANG <xhuang@redhat.com>, 2007.
@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-03-28 10:52+0000\n"
-"Last-Translator: Christopher Meng <cickumqt@gmail.com>\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-10-30 10:38+0000\n"
+"Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: Chinese (China) <trans-zh_cn@lists.fedoraproject.org>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -61,9 +61,8 @@ msgid "Using list of RHN repos from cache"
 msgstr "从缓存中使用RHN 的仓库列表"
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "这个系统没有注册到 RHN。"
+msgstr ""
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
@@ -78,11 +77,10 @@ msgid "This system is not subscribed to any channels."
 msgstr "没有在任何频道中订阅这个系统。"
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
-msgstr "这个系统还没有在 RHN 中注册。无法获得 SystemId。\n"
+msgstr ""
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."

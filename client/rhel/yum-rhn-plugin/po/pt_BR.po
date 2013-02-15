@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# David Barzilay <barzilay@redhat.com>, 2004, 2005.
+# David Barzilay <barzilay@redhat.com>, 2004-2005.
 # Glaucia Cintra <gcintra@redhat.com>, 2011.
 # Igor Pires Soares <igor@projetofedora.org>, 2007.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-02-29 17:12+0000\n"
-"Last-Translator: Og Maciel <ogmaciel@gnome.org>\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-10-30 10:38+0000\n"
+"Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: Portuguese (Brazil) <trans-pt_br@lists.fedoraproject.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -59,9 +59,8 @@ msgid "Using list of RHN repos from cache"
 msgstr "Usando lista de repositórios RHN do cache"
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "O sistema não está registrado com o RHN."
+msgstr ""
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
@@ -76,13 +75,10 @@ msgid "This system is not subscribed to any channels."
 msgstr "Este sistema não está subscrito a nenhum canal."
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
 msgstr ""
-"Este sistema pode não ser registrado com o RHN. O Systemid pode não ser "
-"obtido.\n"
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."

@@ -4,19 +4,19 @@
 #
 # Translators:
 # Alexander Ivanov <hrafn@hrafn.me>, 2011.
-# Andrew Martynov <andrewm@inventa.ru>, 2004, 2005.
+# Andrew Martynov <andrewm@inventa.ru>, 2004-2005.
 # Leonid Kanter <leon@geon.donetsk.ua>, 2003.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Vladimir Lazarenko <vlad@lazarenko.net>, 2004.
 # Yulia Poyarkova <ypoyarko@redhat.com>, 2006.
-# Yulia <ypoyarko@redhat.com>, 2006, 2007, 2010.
+# Yulia <ypoyarko@redhat.com>, 2006-2007,2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-02-14 13:00+0000\n"
-"Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-10-30 10:38+0000\n"
+"Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: Russian <trans-ru@lists.fedoraproject.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -59,9 +59,8 @@ msgid "Using list of RHN repos from cache"
 msgstr ""
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "Эта система не зарегистрирована в RHN."
+msgstr ""
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
@@ -76,13 +75,10 @@ msgid "This system is not subscribed to any channels."
 msgstr "Эта система не подписана на каналы"
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
 msgstr ""
-"Возможно, эта система не зарегистрирована в RHN. Не удалось получить "
-"SystemID.\n"
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."

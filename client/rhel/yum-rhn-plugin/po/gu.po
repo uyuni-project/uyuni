@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Ankit Patel <ankit@redhat.com>, 2004, 2005, 2006, 2007.
+# Ankit Patel <ankit@redhat.com>, 2004-2007.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Sweta Kothari <swkothar@redhat.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-30 11:31+0100\n"
-"PO-Revision-Date: 2012-02-14 13:00+0000\n"
-"Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
+"POT-Creation-Date: 2013-02-11 15:30-0500\n"
+"PO-Revision-Date: 2012-10-30 10:38+0000\n"
+"Last-Translator: adelton <jpx-tx@adelton.com>\n"
 "Language-Team: Gujarati <trans-gu@lists.fedoraproject.org>\n"
 "Language: gu\n"
 "MIME-Version: 1.0\n"
@@ -54,9 +54,8 @@ msgid "Using list of RHN repos from cache"
 msgstr ""
 
 #: ../rhnplugin.py:127
-#, fuzzy
 msgid "This system is not registered with RHN Classic or RHN Satellite."
-msgstr "આ સિસ્ટમ RHN સાથે રજીસ્ટર થયેલ નથી."
+msgstr ""
 
 #: ../rhnplugin.py:128 ../rhnplugin.py:144
 msgid "You can use rhn_register to register."
@@ -71,11 +70,10 @@ msgid "This system is not subscribed to any channels."
 msgstr "આ સિસ્ટમની કોઈ ચેનલોમાં ઉમેદવારી નોંધાયેલ નથી."
 
 #: ../rhnplugin.py:143
-#, fuzzy
 msgid ""
 "This system may not be registered to RHN Classic or RHN Satellite. SystemId "
 "could not be acquired."
-msgstr "આ સિસ્ટમ RHN માં રજીસ્ટર થઇ શકશે નહિં. SystemId ને મેળવી શક્યા નહિં.\n"
+msgstr ""
 
 #: ../rhnplugin.py:156
 msgid "This system is receiving updates from RHN Classic or RHN Satellite."

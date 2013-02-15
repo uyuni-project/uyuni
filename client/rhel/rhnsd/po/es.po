@@ -6,7 +6,7 @@
 # David Barzilay <barzilay@redhat.com>, 2004.
 # Gladys Guerrero <gguerrer@redhat.com>, 2010.
 # Luis Mayoral <mayoral@linuxadicto.org>, 2003.
-# Manuel Ospina <mospina@redhat.com>, 2005, 2006, 2007.
+# Manuel Ospina <mospina@redhat.com>, 2005-2007.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Nuria Soriano <nsoriano@redhat.es>, 2001.
 # Yelitza Louze <ylouze@redhat.com>, 2004.
@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:22+0100\n"
-"PO-Revision-Date: 2012-02-14 13:07+0000\n"
+"PO-Revision-Date: 2012-11-20 08:41+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Spanish <trans-es@lists.fedoraproject.org>\n"
 "Language: es\n"

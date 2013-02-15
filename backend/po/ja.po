@@ -6,7 +6,7 @@
 # Hirofumi Saito <hi_saito@yk.rim.or.jp>, 2004.
 # kiyoto james hashida <khashida@brisbane.redhat.com>, 2007.
 # Kiyoto James Hashida <khashida@redhat.com>, 2006.
-# Noriko Mizumoto <noriko@redhat.com>, 2004, 2005, 2006, 2007.
+# Noriko Mizumoto <noriko@redhat.com>, 2004-2007.
 # noriko <noriko@fedoraproject.org>, 2011.
 # Tadashi Jokagi <fedora@elf.no-ip.org>, 2005.
 # Yukihiro Nakai <ynakai@redhat.com>, 2001.

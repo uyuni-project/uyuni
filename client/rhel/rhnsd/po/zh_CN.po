@@ -4,11 +4,11 @@
 #
 # Translators:
 # Leah Liu <lliu@redhat.com>, 2010.
-# Leah Liu <weliu@redhat.com>, 2005, 2006.
+# Leah Liu <weliu@redhat.com>, 2005-2006.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Sarah Smith <sarahs@redhat.com>, 2002.
-# Sarah Wang <sarahs@redhat.com>, 2003, 2004.
-# Tony Fu <tfu@redhat.com>, 2004, 2006.
+# Sarah Wang <sarahs@redhat.com>, 2003-2004.
+# Tony Fu <tfu@redhat.com>, 2004,2006.
 # Xi Huang <xhuang@redhat.com>, 2006.
 # Xi HUANG <xhuang@redhat.com>, 2007.
 msgid ""
@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:22+0100\n"
-"PO-Revision-Date: 2012-02-14 13:07+0000\n"
+"PO-Revision-Date: 2012-11-20 08:41+0000\n"
 "Last-Translator: Miroslav Suchý <msuchy@redhat.com>\n"
 "Language-Team: Chinese (China) <trans-zh_cn@lists.fedoraproject.org>\n"
 "Language: zh_CN\n"

@@ -4,10 +4,10 @@
 #
 # Translators:
 # Alain PORTAL <aportal@univ-montp2.fr>, 2006.
-# Audrey Simons <asimons@redhat.com>, 2004, 2005.
+# Audrey Simons <asimons@redhat.com>, 2004-2005.
 # Bettina De Monti <bdemonti@redhat.it>, 2001.
 # Damien Durand <splinux@fedoraproject.org>, 2006.
-# Decroux Fabien <fdecroux@redhat.com>, 2006, 2007.
+# Decroux Fabien <fdecroux@redhat.com>, 2006-2007.
 # Jérôme Fenal <jfenal@gmail.com>, 2012.
 # Miroslav Suchý <msuchy@redhat.com>, 2011.
 # Myriam Malga <mmalga@redhat.com>, 2007.
@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-21 12:22+0100\n"
-"PO-Revision-Date: 2012-04-18 21:03+0000\n"
+"PO-Revision-Date: 2012-11-20 08:41+0000\n"
 "Last-Translator: Jérôme Fenal <jfenal@gmail.com>\n"
 "Language-Team: French <trans-fr@lists.fedoraproject.org>\n"
 "Language: fr\n"

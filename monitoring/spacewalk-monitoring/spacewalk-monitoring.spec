@@ -1,7 +1,7 @@
 Summary:      Spacewalk monitoring
 Name:         spacewalk-monitoring
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.9.0
+Version:      1.9.3
 Release:      1%{?dist}
 URL:          https://fedorahosted.org/spacewalk
 License:      GPLv2
@@ -56,6 +56,9 @@ Requires(post): aaa_base
 Requires(preun): aaa_base
 %else
 Requires: spacewalk-monitoring-selinux
+%if 0%{?fedora}
+Requires(preun): systemd
+%else
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
@@ -84,13 +87,19 @@ Backend and Scout functionality. And will install SysV init scripts.
 %install
 rm -Rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
-mkdir -p $RPM_BUILD_ROOT/%{_initrddir}
 
+%if 0%{?fedora}
+mkdir -p $RPM_BUILD_ROOT/%{_unitdir}
+install Monitoring.service $RPM_BUILD_ROOT%{_unitdir}
+install MonitoringScout.service $RPM_BUILD_ROOT%{_unitdir}
+%else
+mkdir -p $RPM_BUILD_ROOT/%{_initrddir}
+install Monitoring $RPM_BUILD_ROOT%{_initrddir}
+install MonitoringScout $RPM_BUILD_ROOT%{_initrddir}
+%endif
 ln -s /etc/rc.d/np.d/sysvStep $RPM_BUILD_ROOT/%{_sbindir}/Monitoring
 ln -s /etc/rc.d/np.d/sysvStep $RPM_BUILD_ROOT/%{_sbindir}/MonitoringScout
 
-install Monitoring $RPM_BUILD_ROOT%{_initrddir}
-install MonitoringScout $RPM_BUILD_ROOT%{_initrddir}
 
 # add rc links
 ln -sf ../../etc/init.d/Monitoring $RPM_BUILD_ROOT/%{_sbindir}/rcMonitoring
@@ -102,8 +111,12 @@ ln -sf ../../etc/init.d/MonitoringScout $RPM_BUILD_ROOT/%{_sbindir}/rcMonitoring
 %{fillup_and_insserv Monitoring}
 %{fillup_and_insserv MonitoringScout}
 %else
-/sbin/chkconfig --add Monitoring
-/sbin/chkconfig --add MonitoringScout
+if [ -x /etc/init.d/Monitoring ] ; then
+    /sbin/chkconfig --add Monitoring
+fi
+if [ -x /etc/init.d/MonitoringScout ] ; then
+    /sbin/chkconfig --add MonitoringScout
+fi
 %endif
 
 %preun
@@ -112,10 +125,20 @@ ln -sf ../../etc/init.d/MonitoringScout $RPM_BUILD_ROOT/%{_sbindir}/rcMonitoring
 %stop_on_removal MonitoringScout
 %else
 if [ $1 = 0 ] ; then
-    /sbin/service MonitoringScout stop >/dev/null 2>&1
-    /sbin/chkconfig --del MonitoringScout
-    /sbin/service Monitoring stop >/dev/null 2>&1
-    /sbin/chkconfig --del Monitoring
+    if [ -x /etc/init.d/MonitoringScout ] ; then
+        /sbin/service MonitoringScout stop >/dev/null 2>&1
+        /sbin/chkconfig --del MonitoringScout
+    fi
+    if [ -x /etc/init.d/Monitoring ] ; then
+        /sbin/service Monitoring stop >/dev/null 2>&1
+        /sbin/chkconfig --del Monitoring
+    fi
+    if [ -f %{_unitdir}/MonitoringScout ] ; then
+        /usr/bin/systemctl stop MonitoringScout
+    fi
+    if [ -f %{_unitdir}/Monitoring ] ; then
+        /usr/bin/systemctl stop Monitoring
+    fi
 fi
 %endif
 
@@ -129,11 +152,22 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root,root,-)
+%if 0%{?fedora}
+%{_unitdir}/*
+%else
 %{_initrddir}/*
+%endif
 %{_sbindir}/*
 %doc LICENSE
 
 %changelog
+* Wed Feb 13 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.3-1
+- fixing rpm build failure
+
+* Tue Feb 12 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.1-1
+- created systemd services for monitoring
+- %%defattr is not needed since rpm 4.4
+
 * Wed Mar 30 2011 Jan Pazdziora 1.4.1-1
 - RHEL 4 is no longer a target version for Spacewalk, fixing .spec to Require
   spacewalk-monitoring-selinux.
