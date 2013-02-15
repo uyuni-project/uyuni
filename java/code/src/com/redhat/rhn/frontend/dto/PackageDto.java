@@ -275,7 +275,8 @@ public class PackageDto extends BaseDto {
         dateFormatGMT.setTimeZone(TimeZone.getTimeZone("GMT"));
         try {
             this.buildTime = dateFormatGMT.parse(buildTimeIn.toString());
-        } catch (ParseException e) {
+        }
+        catch (ParseException e) {
             throw new RhnRuntimeException(e);
         }
     }
