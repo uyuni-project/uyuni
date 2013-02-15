@@ -281,19 +281,7 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/PXT.pm
 %{perl_vendorlib}/PXT/
 %exclude %{perl_vendorlib}/PXT/Config.pm
-
 %{_mandir}/man3/PXT::ApacheHandler.3pm.gz
-%{perl_vendorlib}/PXT.pm
-%{perl_vendorlib}/PXT/ACL.pm
-%{perl_vendorlib}/PXT/ApacheAuth.pm
-%{perl_vendorlib}/PXT/ApacheHandler.pm
-%{perl_vendorlib}/PXT/Debug.pm
-%{perl_vendorlib}/PXT/HTML.pm
-%{perl_vendorlib}/PXT/Handlers.pm
-%{perl_vendorlib}/PXT/Parser.pm
-%{perl_vendorlib}/PXT/Request.pm
-%{perl_vendorlib}/PXT/Trace.pm
-%{perl_vendorlib}/PXT/Utils.pm
 
 %files -n spacewalk-sniglets
 %defattr(644,root,root,755)
