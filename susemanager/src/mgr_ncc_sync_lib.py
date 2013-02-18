@@ -1210,13 +1210,13 @@ class NCCSync(object):
             label = channel.get('label')
             if channel.get('parent') != 'BASE':
                 continue
-            ret.append({'label': label, 'status': channel_statuses[label], 'parent': ''})
+            ret.append({'label': label, 'status': channel_statuses[label], 'parent': '', 'optional': (channel.get('optional') == 'Y')})
 
             for child in ncc_channels:
                 c_label = child.get('label')
                 if child.get('parent') != label:
                     continue
-                ret.append({'label': c_label, 'status': channel_statuses[c_label], 'parent': label})
+                ret.append({'label': c_label, 'status': channel_statuses[c_label], 'parent': label, 'optional': (child.get('optional') == 'Y')})
         return ret
 
     def get_mirrorable_repos(self):
