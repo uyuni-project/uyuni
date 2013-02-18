@@ -54,6 +54,9 @@ Requires:       spacewalk-backend-libs
 Requires:       spacewalk-backend-tools
 Requires:       yum-utils
 
+Requires:       python-yaml
+Requires:       python-ldap
+
 %description
 Generic utilities that may be run against a Spacewalk server.
 
@@ -84,6 +87,7 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %files
 %defattr(-,root,root)
 %config %{_sysconfdir}/rhn/spacewalk-common-channels.ini
+%config(noreplace) %{_sysconfdir}/rhn/sw-ldap-user-sync.conf
 %attr(755,root,root) %{_bindir}/*
 %dir %{rhnroot}/utils
 %{rhnroot}/utils/__init__.py*
