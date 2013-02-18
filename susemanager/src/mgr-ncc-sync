@@ -207,7 +207,7 @@ def product_list(plist, allchilds=False, filter=''):
             if not do_display(c.display_name(), filter):
                 continue
             cstat = c.status()
-            if cstat == ".":
+            if cstat == "." and stat == 'P':
                 counter = counter + 1
                 print "(%3d)    [%s] %s" % (counter, cstat, c.display_name())
                 numcache[str(counter)] = c.ident
