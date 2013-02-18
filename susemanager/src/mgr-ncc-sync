@@ -37,8 +37,10 @@ def main():
                       help="Add all mandatory channels of a product [interactive]")
     parser.add_option("-c", "--channel", action="store",
                       help="add a new channel and trigger a reposync")
-    parser.add_option("--full", action="store_true", dest="full",
+    parser.add_option("--all-childs", action="store_true", dest="allchilds",
                       help="Show also childs, if the parent is not synced yet")
+    parser.add_option("--no-optional", action="store_true", dest="noopt",
+                      help="Do not list optional channels")
     parser.add_option("--filter", action="store", dest="filter",
                       help="Show only labels, which contains the filter word (case-insensitiv)")
     # hide the -p, -f, -s options, they're deprecated bnc#760924
@@ -75,13 +77,13 @@ def main():
                                       fromdir=options.fromdir)
     if options.list:
         clist = syncer.list_channels()
-        display_channel_list(clist, full=options.full, filter=options.filter)
+        display_channel_list(clist, allchilds=options.allchilds, filter=options.filter, noopt=options.noopt)
     elif options.productlist:
         ret = syncer.list_products()
-        product_list(ret, full=options.full, filter=options.filter)
+        product_list(ret, allchilds=options.allchilds, filter=options.filter)
     elif options.addproduct:
         plist = syncer.list_products()
-        cache = product_list(plist, full=options.full, filter=options.filter)
+        cache = product_list(plist, allchilds=options.allchilds, filter=options.filter)
         add_product(syncer, plist, cache)
     elif options.productlistxml:
         ret = syncer.list_products()
@@ -148,7 +150,7 @@ def add_product(syncer, plist, numcache):
             # schedule reposync even if the channel is already in the database
             syncer.sync_channel(channel_label)
 
-def display_channel_list(clist, full=False, filter=''):
+def display_channel_list(clist, allchilds=False, filter='', noopt=False):
     print("Listing channels ...\n\n"
           "Status:\n"
           "- P - channel is installed (provided)\n"
@@ -165,15 +167,16 @@ def display_channel_list(clist, full=False, filter=''):
                 print "[%s] %s" % (channel['status'], channel['label'])
                 current_parent['displayed'] = True
         elif channel['parent'] == current_parent['label']:
-            if full or current_parent['status'] == 'P':
-                if current_parent['displayed'] and do_display(channel['label'], filter):
+            if allchilds or current_parent['status'] == 'P':
+                if (current_parent['displayed'] and do_display(channel['label'], filter) and
+                     not ( noopt and channel['optional'])):
                     print "    [%s] %s" % (channel['status'], channel['label'])
         else:
             # we do not have the right order. Print an error
             print "ERROR: invalid order of channel list %s == %s" % (channel['parent'], current_parent['label'])
 
 
-def product_list(plist, full=False, filter=''):
+def product_list(plist, allchilds=False, filter=''):
     print("Listing products ...\n\n"
           "Status:\n"
           "- P - all required channels are installed (provided)\n"
@@ -193,7 +196,7 @@ def product_list(plist, full=False, filter=''):
             counter = counter + 1
             print "(%3d) [%s] %s" % (counter, stat, p.display_name())
             numcache[str(counter)] = p.ident
-            if not full:
+            if not allchilds:
                 continue
         else:
             print "(---) [%s] %s" % (stat, p.display_name())
