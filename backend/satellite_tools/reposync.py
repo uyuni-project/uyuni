@@ -40,6 +40,8 @@ from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
 
 hostname = socket.gethostname()
+if '.' not in hostname:
+    hostname = socket.getfqdn()
 
 default_log_location = '/var/log/rhn/reposync/'
 default_hash = 'sha256'
