@@ -43,6 +43,8 @@ from spacewalk.server import taskomatic
 
 from urlgrabber.grabber import URLGrabError
 hostname = socket.gethostname()
+if '.' not in hostname:
+    hostname = socket.getfqdn()
 
 default_log_location = '/var/log/rhn/reposync/'
 relative_comps_dir   = 'rhn/comps'
