@@ -63,10 +63,7 @@ class ChannelException(Exception):
         return "%s" %(self.value,)
 
     def __unicode__(self):
-        try:
-            return '%s' % unicode(self.value, "utf-8")
-        except TypeError:
-            return "%s" % self.value
+        return '%s' % to_unicode(self.value)
 
 class ChannelTimeoutException(ChannelException):
     """Channel timeout error e.g. a remote repository is not responding"""
