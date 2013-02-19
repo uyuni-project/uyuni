@@ -78,11 +78,16 @@ install -m 0644 yast/susemanager_setup.desktop %{buildroot}%{_datadir}/applicati
 rm -rf %{buildroot}
 
 %check
-# the pythonpath must have /spacewalk too because susemanager can't import
-export PYTHONPATH=%{buildroot}%{python_sitelib}:%{buildroot}%{python_sitelib}/spacewalk:%{_datadir}/rhn
+# we need to build a fake python dir. python did not work with
+# two site-package/spacewalk dirs having different content
+mkdir -p /var/tmp/fakepython/spacewalk
+cp -a %{python_sitelib}/spacewalk/* /var/tmp/fakepython/spacewalk/
+cp -a %{buildroot}%{python_sitelib}/spacewalk/* /var/tmp/fakepython/spacewalk/
+export PYTHONPATH=/var/tmp/fakepython/:%{_datadir}/rhn
 make -f Makefile.susemanager unittest
 make -f Makefile.susemanager pylint
 unset PYTHONPATH
+rm -rf /var/tmp/fakepython
 pushd %{buildroot}
 find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
