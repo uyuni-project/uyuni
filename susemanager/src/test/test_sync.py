@@ -20,7 +20,7 @@ from StringIO import StringIO
 
 from mock import Mock, patch
 
-from susemanager import mgr_ncc_sync_lib as ncc_sync
+from spacewalk.susemanager import mgr_ncc_sync_lib as ncc_sync
 
 class SyncTest(unittest.TestCase):
     def setUp(self):
