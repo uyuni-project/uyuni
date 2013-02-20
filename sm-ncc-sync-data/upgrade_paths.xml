@@ -11,6 +11,7 @@
 	<upgrade from_pdid="828" from_product="SUSE-Linux-Enterprise-Server-SP2-10-None.s390" to_pdid="1508" to_product="SUSE-Linux-Enterprise-Server-SP3-10-None.s390"/>
 	<upgrade from_pdid="829" from_product="SUSE-Linux-Enterprise-Server-SP2-10-None.s390x" to_pdid="1509" to_product="SUSE-Linux-Enterprise-Server-SP3-10-None.s390x"/>
 	<upgrade from_pdid="880" from_product="SUSE-Linux-Enterprise-SDK-SP2-10-None.None" to_pdid="1541" to_product="SUSE-Linux-Enterprise-SDK-SP3-10-None.None"/>
+	<upgrade from_pdid="1460" from_product="sle-smt-11-None.None" to_pdid="3260" to_product="sle-smt-11.2-None.None"/>
 	<upgrade from_pdid="1500" from_product="SUSE-Linux-Enterprise-Server-SP3-10-None.i686" to_pdid="2522" to_product="SUSE-Linux-Enterprise-Server-SP4-10-None.i686"/>
 	<upgrade from_pdid="1501" from_product="SUSE-Linux-Enterprise-Server-SP3-10-None.i586" to_pdid="2523" to_product="SUSE-Linux-Enterprise-Server-SP4-10-None.i586"/>
 	<upgrade from_pdid="1502" from_product="SUSE-Linux-Enterprise-Server-SP3-10-None.i486" to_pdid="2524" to_product="SUSE-Linux-Enterprise-Server-SP4-10-None.i486"/>
