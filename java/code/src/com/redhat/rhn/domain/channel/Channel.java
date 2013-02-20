@@ -857,28 +857,19 @@ public class Channel extends BaseDomainHelper implements Comparable {
                         "set to false because we have'nt met the minimum release");
             }
         }
-
-        // Check if this is a SUSE channel that needs repodata
-        repodataRequired |= isSuseRepoMD(this.id);
+        else {
+            // undefined release which could be SUSE vendor channels. Better
+            // to create the metadata
+            repodataRequired = true;
+            log.debug("isChannelRepodataRequired for channel(" + this.id + ") " +
+                      "set to true because release is undefined");
+        }
 
         log.debug("isChannelRepodataRequired for channel(" + this.id + ") = " +
                 repodataRequired);
         return repodataRequired;
     }
 
-    /**
-     * Check if there is a corresponding suseProduct for a given channel.
-     *
-     * @param cid
-     * @return true, if there is a suseProduct for the given channel, else false.
-     */
-    private boolean isSuseRepoMD(Long cid) {
-        SelectMode m = ModeFactory.getMode("Channel_queries", "is_suse_repomd");
-        Map<String, Long> params = new HashMap<String, Long>();
-        params.put("cid", cid);
-        DataResult list = m.execute(params);
-        return !list.isEmpty();
-    }
 
     /**
      * true if the channel contains any kickstartstartable distros
