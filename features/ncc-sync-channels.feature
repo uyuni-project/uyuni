@@ -7,7 +7,7 @@ Feature: sm-ncc-sync channel listing and enablement
   I want to be able to list available channels and enable them
 
   Scenario: list available channels
-     When I execute ncc-sync "--list-channels"
+     When I execute ncc-sync "--list-channels --all-childs"
      Then I want to get "[.] sles11-sp1-pool-x86_64"
       And I want to get "    [.] sle11-sdk-sp1-updates-x86_64"
 
