@@ -84,6 +84,12 @@
       <trans-unit id="task.status.repo-sync">
         <source>Repository Sync</source>
       </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-register-bunch">
+        <source>Registers SUSE Manager clients</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.repo-sync-bunch">
+        <source>Synchronizes SUSE Manager repositories</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
