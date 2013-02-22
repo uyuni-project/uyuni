@@ -974,12 +974,32 @@ class NCCSync(object):
                          "SuseProductChannel%s." %
                          (channel_label, arch_text))
 
+    def _is_vendor_channel_without_url(self, channel_id):
+        """True if it is a vendor channel (org_id null) without urls"""
+        query = rhnSQL.prepare("SELECT c.label "
+                               "FROM rhnChannel c "
+                               "WHERE c.org_id IS NULL "
+                               "AND NOT EXISTS "
+                               "(SELECT s.id FROM rhnContentSource s, "
+                               "rhnCHannelContentSource cs "
+                               "WHERE s.id=cs.source_id "
+                               "AND cs.channel_id=c.id) "
+                               "AND c.id=:channel_id")
+        query.execute(channel_id=channel_id)
+        if query.fetchone():
+            return True
+        return False
+
     def sync_channel(self, channel_label):
         """Schedule a repo sync for the specified database channel.
 
         """
         channel_id = self.get_channel_id(channel_label)
         if channel_id:
+            if self._is_vendor_channel_without_url(channel_id):
+                self.print_msg("Channel %s is a vendor channel without urls associated "
+                                "to it. No need to sync." % channel_label)
+                return
             try:
                 scheduled = taskomatic.schedule_single_sat_repo_sync(channel_id)
             except socket.error, e:
@@ -999,13 +1019,19 @@ class NCCSync(object):
     def sync_installed_channels(self):
         """Schedule a reposync of all SUSE Manager channels in the database.
 
-        Only official channels (those with org_id == NULL) will be synced.
+        Only official channels (those with org_id == NULL) and
+        having urls will be synced.
+        Vendor channels without urls will be excluded, as they are supposed
+        to be synced with a custom tool or act as parent channels.
 
         """
         self.print_msg("Scheduling repo sync for all installed channels...")
 
-        query = rhnSQL.prepare("SELECT label FROM rhnChannel "
-                               "WHERE org_id IS NULL")
+        query = rhnSQL.prepare("SELECT c.label "
+                               "FROM rhnChannel c "
+                               "JOIN rhnCHannelContentSource cs ON c.id = cs.channel_id "
+                               "JOIN rhnContentSource s ON cs.source_id = s.id "
+                               "WHERE c.org_id IS NULL")
         query.execute()
         try:
             channel_labels = [tup[0] for tup in query.fetchall()]
