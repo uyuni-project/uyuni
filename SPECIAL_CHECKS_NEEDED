@@ -1,0 +1,7 @@
+The following changes from master needs an extra review.
+It could happen, that they do not work in SUSE Manager
+
+* systemd support
+* new tomcat setup/configuration 
+
+
