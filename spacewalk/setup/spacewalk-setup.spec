@@ -9,7 +9,7 @@
 %endif
 
 Name:           spacewalk-setup
-Version:        1.9.2
+Version:        1.9.6
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -73,22 +73,9 @@ find %{buildroot} -type d -depth -exec rmdir {} 2>/dev/null ';'
 chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0755 share/embedded_diskspace_check.py %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/sudoers.base %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/sudoers.clear %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/sudoers.1 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/sudoers.2 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/sudoers.3 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/ssl.conf.1 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/ssl.conf.2 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/ssl.conf.3 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/ssl.conf.4 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/ssl.conf.5 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/ssl.conf.6 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/ssl.conf.7 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/ssl.conf.8 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/tomcatX.conf.1 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/tomcatX.conf.2 %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/tomcatX.conf.3 %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/sudoers.* %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/tomcat.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/context.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/web.xml.patch %{buildroot}/%{_datadir}/spacewalk/setup/
@@ -180,6 +167,20 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Wed Feb 20 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.6-1
+- perevent parseOptions from failure
+
+* Tue Feb 19 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.5-1
+- export oracle path only if we have oracle
+
+* Mon Feb 18 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.4-1
+- update tftp dependency for systemd
+
+* Fri Feb 15 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.3-1
+- make installation script shorter
+- setup /etc/sysconfig/tomcat*
+- move setting from tomcat.conf to /etc/sysconfig/tomcat
+
 * Mon Feb 11 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.2-1
 - cleanup old CVS files
 

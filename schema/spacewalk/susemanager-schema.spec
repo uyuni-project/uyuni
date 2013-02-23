@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.9.22
+Version:        1.9.32
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -13,6 +13,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  perl(Digest::SHA)
 BuildRequires:  python
+BuildRequires:  /usr/bin/pod2man
 Requires:       /sbin/restorecon
 
 Provides:       spacewalk-schema = %{version}
@@ -72,6 +73,43 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Feb 21 2013 Tomas Kasparek <tkasparek@redhat.com> 1.9.32-1
+- *._index.sql files can be used for definition of indexes
+
+* Wed Feb 20 2013 Tomas Kasparek <tkasparek@redhat.com> 1.9.31-1
+- Fixing typo
+
+* Wed Feb 20 2013 Tomas Kasparek <tkasparek@redhat.com> 1.9.30-1
+- Fixing sha1 of oracle equivavalents so packages can be built
+
+* Wed Feb 20 2013 Tomas Kasparek <tkasparek@redhat.com> 1.9.29-1
+- Renaming conflicting files, fixing glitch in schema upgrade
+- Schema changes for setting primary network interface
+
+* Wed Feb 20 2013 Jan Pazdziora 1.9.28-1
+- The sequence rhn_abrt_info_id_seq is also no longer used.
+
+* Tue Feb 19 2013 Jan Pazdziora 1.9.27-1
+- The table rhnAbrtInfo is no longer in the schema, dropping from dependencies.
+
+* Tue Feb 19 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.26-1
+- abrt: rhnAbrtInfo table is no longer needed
+- abrt: total & unique crash count info in webui
+
+* Tue Feb 19 2013 Jan Pazdziora 1.9.25-1
+- Schema upgrade needs to be PostgreSQL specific.
+
+* Mon Feb 18 2013 Miroslav Suchý <msuchy@redhat.com> 1.9.24-1
+- Buildrequire pod2man
+
+* Fri Feb 15 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.23-1
+- abrt: fix semantics of insert_crash_file function
+- deleting "\" from schema upgrade script
+- abrt: last_report date in rhnServerCrashCount view
+- abrt: ability to limit crashfile upload size per organization
+- abrt: view for unique and total crashes per system
+- abrt: support for client -> server crash upload
+
 * Fri Feb 01 2013 Jan Pazdziora 1.9.22-1
 - Adding utility function epoch_seconds_to_timestamp_tz.
 

@@ -11,7 +11,7 @@ Name: spacewalk-certs-tools
 Summary: Spacewalk SSL Key/Cert Tool
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.3
+Version: 1.9.4
 Release: 1%{?dist}
 URL:      https://fedorahosted.org/spacewalk
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -105,6 +105,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Feb 15 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.4-1
+- Updating copyright for 2012
+
 * Mon Feb 11 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.3-1
 - cleanup old CVS files
 

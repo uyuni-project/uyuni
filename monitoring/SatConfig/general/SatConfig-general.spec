@@ -2,7 +2,7 @@
 %define hb_res_dir     %{_sysconfdir}/ha.d/resource.d
 %define installed_dir  %sysv_dir/installed
 Name:         SatConfig-general
-Version:      1.216.28.1
+Version:      1.216.29
 Release:      1%{?dist}
 Summary:      Satellite Configuration System - general setup, used by many packages
 URL:          https://fedorahosted.org/spacewalk
@@ -20,6 +20,7 @@ Requires:      spacewalk-base-minimal
 Requires:      perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
 Requires:       nocpulse-common
+BuildRequires: /usr/bin/pod2man
 
 %description
 SatConfig-general sets up directories and other items shared by many packages 
@@ -74,6 +75,10 @@ install -D -p -m 755 NOCpulse-ini $RPM_BUILD_ROOT%{_sbindir}/NOCpulse-ini
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mon Feb 18 2013 Miroslav Suchý <msuchy@redhat.com> 1.216.29-1
+- Buildrequire pod2man
+- %%defattr is not needed since rpm 4.4
+
 * Fri Mar 02 2012 Jan Pazdziora 1.216.28-1
 - Update the copyright year info.
 

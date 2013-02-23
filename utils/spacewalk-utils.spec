@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.9.13
+Version:	1.9.15
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -15,10 +15,12 @@ BuildArch:      noarch
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  docbook-utils
 BuildRequires:  python
+BuildRequires: /usr/bin/pod2man
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} > 1100
 # pylint check
 BuildRequires:  spacewalk-pylint
 BuildRequires:  yum
+BuildRequires:  spacewalk-config
 BuildRequires:  spacewalk-backend >= 1.7.24
 BuildRequires:  spacewalk-backend-libs >= 1.7.24
 BuildRequires:  spacewalk-backend-tools >= 1.7.24
@@ -101,6 +103,12 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Thu Feb 21 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.15-1
+- fixed koji build
+
+* Mon Feb 18 2013 Miroslav Suchý <msuchy@redhat.com> 1.9.14-1
+- Buildrequire pod2man
+
 * Wed Feb 13 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.13-1
 - fixed pylint warnings
 

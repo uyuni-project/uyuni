@@ -1119,6 +1119,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
+     * #array()
      *      #struct("package")
      *          #prop("string", "name")
      *          #prop("string", "arch")
@@ -1130,6 +1131,7 @@ public class SystemHandler extends BaseHandler {
      *          #prop("string", "to_epoch")
      *          #prop("string", "to_package_id")
      *      #struct_end()
+     * #array_end()
      */
     public Object[] listLatestUpgradablePackages(String sessionKey, Integer sid)
             throws FaultException {
@@ -1183,6 +1185,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
+     * #array()
      *      #struct("package")
      *          #prop("string", "name")
      *          #prop("string", "version")
@@ -1191,6 +1194,7 @@ public class SystemHandler extends BaseHandler {
      *          #prop("int", "id")
      *          #prop("string", "arch_label")
      *      #struct_end()
+     * #array_end()
      */
     public Object[] listLatestInstallablePackages(String sessionKey, Integer sid)
             throws FaultException {
@@ -5376,30 +5380,5 @@ public class SystemHandler extends BaseHandler {
         }
 
         return returnList;
-    }
-
-    /**
-     * Get number of crashes for given system
-     * @param sessionKey Session key
-     * @param serverId Server ID
-     * @return Number of crashes for given system
-     *
-     * @xmlrpc.doc Get number of crashes for given system
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.returntype
-     *     #struct()
-     *            #prop_desc("int", "count", "Crash count")
-     *            #prop_desc("date", "created", "Date the crash count applies to")
-     *     #struct_end()
-     */
-    public Map<String, Object> getCrashCount(String sessionKey, Integer serverId) {
-        User loggedInUser = getLoggedInUser(sessionKey);
-        Server server = lookupServer(loggedInUser, serverId);
-        HashMap<String, Object> crashCount = new HashMap<String, Object>();
-        crashCount.put("count", server.getCrashes().getCrashCount());
-        crashCount.put("created", server.getCrashes().getCreated());
-
-        return crashCount;
     }
 }

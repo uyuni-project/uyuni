@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.65
+Version: 1.9.71
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -775,6 +775,31 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Feb 22 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.71-1
+- abrt: listSystemCrashes api call
+- fixed API doc for system.listLatestUpgradablePackages and
+  system.listLatestInstallablePackages API calls
+- Fix nasty typo throughout translation files
+- abrt: xml-rpc api for crash count information
+
+* Wed Feb 20 2013 Tomas Kasparek <tkasparek@redhat.com> 1.9.70-1
+- Revert "aa"
+- aa
+
+* Wed Feb 20 2013 Tomas Kasparek <tkasparek@redhat.com> 1.9.69-1
+- Java code for setting primary network interface
+
+* Tue Feb 19 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.68-1
+- abrt: total & unique crash count info in webui
+- fix ChannelSoftwareHandlerTest test
+- add throws clause to setBuildTime
+
+* Tue Feb 19 2013 Tomas Lestach <tlestach@redhat.com> 1.9.67-1
+- 911741 - completed kickstarts still show up on 'currently kickstarting' list
+
+* Fri Feb 15 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.66-1
+- check for zypp-plugin-spacewalk if testing autoinstall capability
+
 * Fri Feb 15 2013 Tomas Lestach <tlestach@redhat.com> 1.9.65-1
 - fixing checkstyle issues
 - Only package build times should be converted to GMT

@@ -191,6 +191,7 @@ class Abrt(rhnHandler):
         # Create or update the crash file record in DB
         self._create_or_update_crash_file(self.server_id, crash_id, crash_file['filename'], \
                                           crash_file['path'], crash_file['filesize'])
+        rhnSQL.commit()
 
         # Create the file on filer
         filecontent = base64.decodestring(crash_file['filecontent'])
@@ -237,6 +238,10 @@ class Abrt(rhnHandler):
             server_id = self.server_id,
             crash = crash)
         rhnSQL.commit()
+
+        if r == 0:
+            log_debug(1, self.server_id, "No record for crash: %s" % crash)
+            raise rhnFault(5005, "Invalid crash name: %s" % crash)
 
         absolute_dir = os.path.join(CFG.MOUNT_POINT, server_crash_dir)
         absolute_file = os.path.join(absolute_dir, 'count')

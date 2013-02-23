@@ -10,7 +10,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhnsd-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalksd
-Version: 4.9.15.3
+Version: 5.0.9
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -99,15 +99,54 @@ rm -fr $RPM_BUILD_ROOT
 
 %files -f rhnsd.lang
 %defattr(-,root,root)
-%{_sbindir}/rcrhnsd
 %dir %{_sysconfdir}/sysconfig/rhn
 %config(noreplace) %{_sysconfdir}/sysconfig/rhn/rhnsd
 %{_sbindir}/rhnsd
+%if 0%{?fedora} || 0%{?suse_version} >= 1210
+%{_unitdir}/rhnsd.service
+%else
+%{_sbindir}/rcrhnsd
 %{_initrddir}/rhnsd
+%endif
 %{_mandir}/man8/rhnsd.8*
 %doc LICENSE
 
 %changelog
+* Fri Feb 15 2013 Milan Zazrivec <mzazrivec@redhat.com> 5.0.9-1
+- Update .po and .pot files for rhnsd.
+- New translations from Transifex for rhnsd.
+- Download translations from Transifex for rhnsd.
+
+* Fri Nov 30 2012 Jan Pazdziora 5.0.8-1
+- Revert "876328 - updating rhel client tools translations"
+
+* Mon Nov 19 2012 Jan Pazdziora 5.0.7-1
+- Only run chkconfig if we are in the SysV world.
+- rhnsd needs to be marked as forking.
+- When talking to systemctl, we need to say .service.
+
+* Fri Nov 16 2012 Jan Pazdziora 5.0.6-1
+- 876328 - updating rhel client tools translations
+
+* Sun Nov 11 2012 Michael Calmer <mc@suse.de> 5.0.5-1
+- use systemd on openSUSE >= 12.1
+- do not start rhnsd in runlevel 2 which has no network
+- no use of /var/lock/subsys/ anymore
+
+* Tue Oct 30 2012 Jan Pazdziora 5.0.4-1
+- Update .po and .pot files for rhnsd.
+- New translations from Transifex for rhnsd.
+- Download translations from Transifex for rhnsd.
+
+* Mon Jul 30 2012 Michael Mraka <michael.mraka@redhat.com> 5.0.3-1
+- there's no elsif macro
+
+* Wed Jul 25 2012 Michael Mraka <michael.mraka@redhat.com> 5.0.2-1
+- make sure _unitdir is defined
+
+* Wed Jul 25 2012 Michael Mraka <michael.mraka@redhat.com> 5.0.1-1
+- implement rhnsd.service for systemd
+
 * Tue Feb 28 2012 Jan Pazdziora 4.9.15-1
 - Update .po and .pot files for rhnsd.
 - Download translations from Transifex for rhnsd.

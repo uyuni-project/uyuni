@@ -15,7 +15,7 @@ Name:         NPalert
 Summary:      NOCpulse notification system
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.127.9
+Version:      1.127.10
 Release:      1%{?dist}
 BuildArch:    noarch
 %if 0%{?suse_version}
@@ -35,6 +35,7 @@ Requires:     smtpdaemon
 %endif
 Requires:     SatConfig-general
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires: /usr/bin/pod2man
 %if 0%{?suse_version}
 BuildRequires: nocpulse-common
 %endif
@@ -169,6 +170,9 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mon Feb 18 2013 Miroslav Suchý <msuchy@redhat.com> 1.127.10-1
+- Buildrequire pod2man
+
 * Mon Jan 21 2013 Michael Mraka <michael.mraka@redhat.com> 1.127.8-1
 - specify permission on /usr/share/nocpulse/templates
 

@@ -7,7 +7,7 @@
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.9.5
+Version: 1.9.8
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: GPLv2
@@ -16,6 +16,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: spacewalk-base
 Requires: perl-URI, perl(MIME::Base64)
 Requires: lsof
+BuildRequires: /usr/bin/pod2man
 Obsoletes: satellite-utils < 5.3.0
 Provides: satellite-utils = 5.3.0
 Obsoletes: rhn-satellite-admin < 5.3.0
@@ -93,6 +94,17 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Feb 22 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.8-1
+- wait both for application and administration port to be ready
+
+* Tue Feb 19 2013 Jan Pazdziora 1.9.7-1
+- The ensure-httpd-down will sleep in the loop, no need to have it in the main
+  script.
+- Fixing the wait-for-tomcat-disable logic.
+
+* Mon Feb 18 2013 Miroslav Suchý <msuchy@redhat.com> 1.9.6-1
+- Buildrequire pod2man
+
 * Thu Feb 14 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.5-1
 - wait-for-tomcat has been moved to helper
 - let's osa-dispatcher wait for jabberd startup

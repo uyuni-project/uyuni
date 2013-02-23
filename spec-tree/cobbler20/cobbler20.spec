@@ -7,10 +7,11 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 12%{?dist}
+Release: 14%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
+Patch1: lvm_storage.patch
 Group: Applications/System
 Requires: python >= 2.3
 
@@ -93,6 +94,7 @@ a XMLRPC API for integration with other applications.
 %prep
 %setup -q -n cobbler-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__python} setup.py build 
@@ -446,6 +448,12 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Thu Feb 21 2013 Tomas Lestach <tlestach@redhat.com> 2.0.11-14
+- 768451 - lvm storage koan fix
+
+* Mon Feb 18 2013 Michael Mraka <michael.mraka@redhat.com> 2.0.11-13
+- update tftp dependency for systemd
+
 * Thu Feb 14 2013 Michael Mraka <michael.mraka@redhat.com> 2.0.11-12
 - fixed systemd services description
 

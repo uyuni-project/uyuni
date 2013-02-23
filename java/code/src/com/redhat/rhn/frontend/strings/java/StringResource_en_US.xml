@@ -1423,6 +1423,12 @@
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="message.interfaceSet">
+        <source>Primary network interface set to &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">NOT USED</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="prefix">
         <source>Prefix</source>
         <context-group name="ctx">
@@ -6890,6 +6896,9 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.systemgroup.serverNotInGroup">
         <source>The specified server is not a member of the specified group</source>
+      </trans-unit>
+      <trans-unit id="api.system.crash.nocrashesfound">
+        <source>No crashes recorded for the specified system.</source>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisorytype">
         <source>Invalid patch type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>

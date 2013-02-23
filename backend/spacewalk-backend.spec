@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.27
+Version: 1.9.33
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -775,6 +775,25 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Thu Feb 21 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.33-1
+- don't link packages which failed to download
+
+* Wed Feb 20 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.32-1
+- correct size for old rpms > 2 GiB
+
+* Wed Feb 20 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.31-1
+- attribute doesn't work on RHEL5, use key
+
+* Tue Feb 19 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.30-1
+- abrt: don't update count for non-existent crash reports
+
+* Tue Feb 19 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.29-1
+- support V4 RSA/SHA1 signature
+
+* Fri Feb 15 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.28-1
+- abrt: commit after every call to insert_crash_file
+- abrt: allow uploading zero length files
+
 * Wed Feb 13 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.27-1
 - link all packages to channel at once
 - download packages first then link to channel

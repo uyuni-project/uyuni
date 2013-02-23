@@ -1,5 +1,5 @@
 Name:         perl-NOCpulse-Utils
-Version:      1.14.11.1
+Version:      1.14.12
 Release:      1%{?dist}
 Summary:      NOCpulse utility packages
 URL:          https://fedorahosted.org/spacewalk
@@ -13,6 +13,7 @@ BuildRequires: nocpulse-common
 %else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
+BuildRequires: /usr/bin/pod2man
 
 %description
 NOCpulse provides application, network, systems and transaction monitoring,
@@ -49,6 +50,10 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man3/
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mon Feb 18 2013 Miroslav Suchý <msuchy@redhat.com> 1.14.12-1
+- Buildrequire pod2man
+- %%defattr is not needed since rpm 4.4
+
 * Wed Jan  7 2009 Milan Zazrivec 1.14.11-1
 - include documentation fixes
 
