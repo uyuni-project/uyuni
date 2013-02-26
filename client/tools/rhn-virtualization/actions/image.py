@@ -198,6 +198,8 @@ def deploy(params, extraParams="",cache_only=None):
     imageVersion = m.group(3)
     imageType    = m.group(4)
     studioImageDiskFileName = imageName+"."+imageArch+"-"+imageVersion
+    if imageType == 'vmx':
+        imageType = 'vmdk'
 
     try:
         connection = _connect_to_hypervisor()
