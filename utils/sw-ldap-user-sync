@@ -49,7 +49,8 @@ except Exception, e:
 
 users = {}
 for user in result:
-    if user.get('login').startswith('xg'):
+    detail = spacewalk.user.getDetails(spacewalk_token, user.get('login'))
+    if user.get('use_pam'):
         users[user.get('login')] = 1
 
 try:
