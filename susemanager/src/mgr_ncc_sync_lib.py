@@ -67,7 +67,11 @@ class NCCSync(object):
         self.reset_ent_value = 10
 
         if fromdir is not None:
-            fromdir = urljoin('file://', os.path.abspath(fromdir))
+            fdir = os.path.abspath(fromdir)
+            if not os.path.isdir(fdir):
+                sys.stderr.write("'%s' is not a directory\n" % fdir)
+                sys.exit(1)
+            fromdir = urljoin('file://', fdir)
         self.fromdir = fromdir
 
         self.ncc_rhn_ent_mapping = {
@@ -108,9 +112,19 @@ class NCCSync(object):
         # self.ncc_url_prods = CFG.reg_url + "/?command=regdata&lang=en-US&version=1.0"
         # self.ncc_url_subs  = CFG.reg_url + "/?command=listsubscriptions&lang=en-US&version=1.0"
         if self.fromdir:
+            fdir = self.fromdir[7:] # strip the file://
             self.ncc_url_prods = self.fromdir + "/productdata.xml"
+            if not os.path.isfile(fdir + "/productdata.xml"):
+                sys.stderr.write("productdata.xml not found in fromdir\n")
+                sys.exit(1)
             self.ncc_url_subs  = self.fromdir + "/listsubscriptions.xml"
+            if not os.path.isfile(fdir + "/listsubscriptions.xml"):
+                sys.stderr.write("listsubscriptions.xml not found in fromdir\n")
+                sys.exit(1)
             self.ncc_repoindex = self.fromdir + "/repo/repoindex.xml"
+            if not os.path.isfile(fdir + "/repo/repoindex.xml"):
+                sys.stderr.write("repo/repoindex.xml not found in fromdir\n")
+                sys.exit(1)
             self.subs_req = None
             self.prod_req = None
         else:
@@ -1267,7 +1281,7 @@ class NCCSync(object):
         if not source_url: # fake channel
             return True
 
-        if self.fromdir: # local repository
+        if self.fromdir and source_url.startswith('file://'): # local repository
             channel_path = source_url.split('file://')[1]
             return os.path.exists(channel_path)
         else: # remote repository
@@ -1537,6 +1551,11 @@ class NCCSync(object):
             udt = c.get('update_tag')
             if udt == '':
                 udt = None
+            if self.fromdir:
+                if c.get('source_url'):
+                    # pylint: disable=E1101
+                    path = urlparse(c.get('source_url')).path
+                    c.set('source_url', self.fromdir+path)
             try:
                 creds = self._channel_add_mirrcred(c)
             except ChannelNotMirrorable:
