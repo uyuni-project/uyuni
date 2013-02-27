@@ -71,6 +71,19 @@ Then /^I want to get "([^"]*)"$/ do |arg1|
     end
 end
 
+Then /^I wont get "([^"]*)"$/ do |arg1|
+    found = false
+    $sshout.each_line() do |line|
+        if line.include?(arg1)
+            found = true
+            break
+        end
+    end
+    if found
+        raise "'#{arg1}' found in output '#{$sshout}'"
+    end
+end
+
 Then /^I restart the spacewalk service$/ do
     $sshout = ""
     $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST spacewalk-service restart 2>&1`
