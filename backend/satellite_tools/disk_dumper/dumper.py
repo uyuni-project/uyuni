@@ -496,6 +496,12 @@ class XML_Dumper:
 
         return result
 
+    def dump_support_information(self):
+        log_debug(2)
+        self._write_dump(exportLib.SupportInfoDumper)
+        return 0
+
+
 class SatelliteDumper(exportLib.SatelliteDumper):
     def set_attributes(self):
         """ Overriding with our own version """

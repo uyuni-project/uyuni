@@ -606,6 +606,37 @@ class DistsDumper(BaseSubelementDumper):
     tag_name = 'rhn-dists'
     subelement_dumper_class = _DistDumper
 
+
+class _SupportInfoDumper(BaseRowDumper):
+    tag_name = 'suse-keyword'
+
+    def set_attributes(self):
+        return {
+            'channel' : self._row['channel_label'],
+            'pkgid'   : "rhn-package-%s" % self._row['package_id'],
+            'keyword' : self._row['keyword'],
+        }
+
+class SupportInfoDumper(BaseQueryDumper):
+    tag_name = 'suse-data'
+    iterator_query = """
+        select c.label channel_label,
+               p.id    package_id,
+               k.label keyword
+          from rhnChannel c
+          join suseMdData d on c.id = d.channel_id
+          join rhnPackage p on d.package_id = p.id
+          join suseMdKeyword k on d.keyword_id = k.id
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _SupportInfoDumper(self._writer, data)
+        cf.dump()
+
+
 class ChannelFamiliesDumper(BaseQueryDumper):
     tag_name = 'rhn-channel-families'
     iterator_query = 'select cf.* from rhnChannelFamily'

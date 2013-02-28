@@ -9,10 +9,10 @@
 # FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-# 
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation. 
+# in this software or its documentation.
 #
 #
 
@@ -27,6 +27,7 @@ from spacewalk.server.importlib.channelImport import ChannelImport, ChannelFamil
 from spacewalk.server.importlib.packageImport import PackageImport, SourcePackageImport
 from spacewalk.server.importlib import archImport
 from spacewalk.server.importlib import productNamesImport
+from spacewalk.server.importlib import supportInformationImport
 
 class Backend:
     __backend = None
@@ -37,7 +38,7 @@ class Backend:
 
         Backend.__backend = SQLBackend()
         return Backend.__backend
-        
+
 # get_backend() returns a shared instance of an Oracle backend
 def get_backend():
     return Backend().get_backend()
@@ -104,4 +105,11 @@ class PackageContainer(diskImportLibContainer, xmlSource.PackageContainer):
 
 class SourcePackageContainer(diskImportLibContainer, xmlSource.SourcePackageContainer):
     importer_class = SourcePackageImport
+
+class SupportInformationContainer(diskImportLibContainer, xmlSource.SupportInformationContainer):
+    importer_class = supportInformationImport.SupportInformationImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)
 

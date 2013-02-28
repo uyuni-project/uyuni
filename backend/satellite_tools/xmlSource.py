@@ -460,6 +460,7 @@ class ChannelItem(BaseItem):
         'rhn-channel-checksum-type' : 'checksum_type',
         'rhn-channel-comps-last-modified' : 'comps_last_modified',
         'rhn-channel-update-tag'    : 'update_tag',
+        'suse-data'                 : 'package_keywords',
     }
     def populateFromElements(self, obj, elements):
         # bz 808516, to retain compatibility with Satellite <= 5.3 we
@@ -692,6 +693,12 @@ class DistItem(BaseItem):
         'channel-arch'              : 'channel_arch',
     }
 addItem(DistItem)
+
+class SupportInfoItem(BaseItem):
+    item_name = 'suse-keyword'
+    item_class = importLib.SupportInformation
+addItem(SupportInfoItem)
+
 
 class ChannelErratumItem(BaseItem):
     item_name = 'erratum'
@@ -1108,3 +1115,5 @@ class ProductNamesContainer(ContainerHandler):
 class KickstartableTreesContainer(ContainerHandler):
     container_name = 'rhn-kickstartable-trees'
 
+class SupportInformationContainer(ContainerHandler):
+    container_name = 'suse-data'

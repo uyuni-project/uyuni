@@ -51,6 +51,7 @@ sequences = {
     'rhnPackageChangeLogRec'    : 'rhn_pkg_cl_id_seq',
     'rhnPackageChangeLogData'   : 'rhn_pkg_cld_id_seq',
     'suseProductFile'           : 'suse_prod_file_id_seq',
+    'suseMdKeyword'             : 'suse_mdkeyword_id_seq',
 }
 
 class Backend:
@@ -1128,6 +1129,105 @@ class Backend:
             return product['id']
 
         return
+
+    def processSupportInformation(self, batch):
+        """Check if SupportInformation is already in DB.
+           If not, add it
+        """
+        insert_support_info = self.dbmodule.prepare("""
+            INSERT INTO suseMdData (channel_id, package_id, keyword_id)
+            VALUES (:channel_id, :package_id, :keyword_id)
+        """)
+        delete_support_info = self.dbmodule.prepare("""
+            DELETE FROM suseMdData
+            WHERE channel_id = :channel_id
+              AND package_id = :package_id
+              AND keyword_id = :keyword_id
+        """)
+        _query_keywords = self.dbmodule.prepare("""
+            SELECT channel_id, package_id, keyword_id
+              FROM suseMdData
+        """)
+        _query_keywords.execute()
+        existing_data = map(lambda x: "%s-%s-%s" % (x['channel_id'], x['package_id'], x['keyword_id']),
+                            _query_keywords.fetchall_dict() or [])
+        toinsert = [[], [], []]
+        todelete = [[], [], []]
+        for item in batch:
+            ident = "%s-%s-%s" % (item['channel_id'], item['package_id'], item['keyword_id'])
+            if ident in existing_data:
+                existing_data.remove(ident)
+                continue
+            toinsert[0].append(int(item['channel_id']))
+            toinsert[1].append(int(item['package_id']))
+            toinsert[2].append(int(item['keyword_id']))
+        for ident in existing_data:
+            cid, pid, kid = ident.split('-')
+            todelete[0].append(int(cid))
+            todelete[1].append(int(pid))
+            todelete[2].append(int(kid))
+        if todelete[0]:
+            delete_support_info.executemany(channel_id=todelete[0], package_id=todelete[1], keyword_id=todelete[2])
+        if toinsert[0]:
+            insert_support_info.executemany(channel_id=toinsert[0], package_id=toinsert[1], keyword_id=toinsert[2])
+
+    def lookupPackageIdFromPackage(self, package):
+        if not isinstance(package, IncompletePackage):
+            raise TypeError("Expected an IncompletePackage instance, found %s" % \
+                            str(type(package)))
+        statement = self.dbmodule.prepare("""
+            SELECT p.id
+              FROM rhnPackage p
+              JOIN rhnPackageName pn ON p.name_id = pn.id
+              JOIN rhnPackageEVR pe ON p.evr_id = pe.id
+              JOIN rhnPackageArch pa ON p.package_arch_id = pa.id
+              JOIN rhnChecksumView cv ON p.checksum_id = cv.id
+             WHERE pn.name = :name
+               AND ( pe.epoch  = :epoch or
+                     ( pe.epoch is null and :epoch is null )
+                   )
+               AND pe.version = :version
+               AND pe.release = :release
+               AND pa.label = :arch
+               AND cv.checksum = :checksum
+               AND cv.checksum_type = :checksum_type
+        """)
+
+        for type, chksum  in package['checksums'].iteritems():
+            if not package['epoch']:
+                package['epoch'] = None
+            statement.execute(name=package['name'],
+                              epoch=package['epoch'],
+                              version=package['version'],
+                              release=package['release'],
+                              arch=package['arch'],
+                              checksum=chksum,
+                              checksum_type=type)
+            pkgid = statement.fetchone_dict() or None
+            if pkgid:
+                package.id = pkgid['id']
+                return
+
+
+    def lookupKeyword(self, keyword):
+        statement = self.dbmodule.prepare("""
+            SELECT id
+              FROM suseMdKeyword
+             WHERE label = :label
+        """)
+        statement.execute(label=keyword)
+        kid = statement.fetchone_dict()
+
+        if kid:
+            return kid['id']
+        kid = self.sequences['suseMdKeyword'].next()
+        statement = self.dbmodule.prepare("""
+            INSERT INTO suseMdKeyword (id, label)
+            VALUES (:kid, :label)
+        """)
+        statement.execute(kid=kid,label=keyword)
+        return kid
+
 
     # bug #528227
     def lookupChannelOrg(self, label):

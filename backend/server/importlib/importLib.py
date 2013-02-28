@@ -164,6 +164,13 @@ class DistChannelMap(Information):
         'channel'           : StringType,
     }
 
+class SupportInformation(Information):
+    attributeTypes = {
+        'pkgid'             : StringType,
+        'keyword'           : StringType,
+        'channel'           : StringType,
+    }
+
 class ReleaseChannelMap(Information):
     attributeTypes = {
         'product'           : StringType,
@@ -172,7 +179,6 @@ class ReleaseChannelMap(Information):
         'channel_arch_id'   : IntType,
         'channel_id'        : IntType
     }
-
 
 class ChannelErratum(Information):
     attributeTypes = {
