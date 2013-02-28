@@ -118,6 +118,7 @@ public abstract class BaseTreeAction extends BaseEditAction {
                     localhost = InetAddress.getByName(localhost).getCanonicalHostName();
                 }
                 catch (UnknownHostException e) {
+                    // Fall back to the local name in this case
                 }
                 kopts = kopts + " install=http://" + localhost +
                     "/ks/dist/" + form.getString(LABEL);

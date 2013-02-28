@@ -54,8 +54,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *      #prop("string", "gpg_key_url")
  *      #prop("string", "gpg_key_id")
  *      #prop("string", "gpg_key_fp")
- *      #prop_desc("dateTime.iso8601", "yumrepo_last_sync", "If never synced set to 1970-01-01.
- *                         In future this value will be optional")
+ *      #prop_desc("dateTime.iso8601", "yumrepo_last_sync")
  *      #prop("string", "end_of_life")
  *      #prop("string", "parent_channel_label")
  *      #prop("string", "clone_original")

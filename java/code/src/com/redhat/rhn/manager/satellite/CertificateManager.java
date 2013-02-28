@@ -58,8 +58,9 @@ public class CertificateManager extends BaseManager {
     public boolean isSatelliteCertExpired() {
         Date now = Calendar.getInstance().getTime();
         boolean ret = false;
-        if (!CERT_ALWAYS_VALID)
+        if (!CERT_ALWAYS_VALID) {
             ret = now.after(getGracePeriodEndDate());
+        }
         return ret;
     }
 
@@ -72,9 +73,10 @@ public class CertificateManager extends BaseManager {
     public boolean isSatelliteCertInGracePeriod() {
         Date now = Calendar.getInstance().getTime();
         boolean ret = false;
-        if (!CERT_ALWAYS_VALID)
+        if (!CERT_ALWAYS_VALID) {
             ret = now.after(getGracePeriodBeginDate()) &&
-                  now.before(getGracePeriodEndDate());
+                    now.before(getGracePeriodEndDate());
+        }
         return ret;
     }
 
