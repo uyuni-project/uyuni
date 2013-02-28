@@ -41,8 +41,8 @@ public class SUSEProductFactory extends HibernateFactory {
 
     /**
      * Return a {@link SUSEProductSet} containing all products installed on a server.
-     * @param server
-     * @return
+     * @param server server
+     * @return products installed on the given server
      */
     public static SUSEProductSet getInstalledProducts(Server server) {
         SUSEProductSet products = new SUSEProductSet();
@@ -77,10 +77,10 @@ public class SUSEProductFactory extends HibernateFactory {
 
     /**
      * Find a {@link SUSEProduct} given by name, version, release and arch.
-     * @param name
-     * @param version
-     * @param release
-     * @param arch
+     * @param name name
+     * @param version version
+     * @param release release
+     * @param arch arch
      * @return product
      */
     public static SUSEProduct findSUSEProduct(String name, String version, String release,

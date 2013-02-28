@@ -1856,9 +1856,11 @@ public class ActionManager extends BaseManager {
     /**
      * Schedule a distribution upgrade.
      *
-     * @param scheduler
-     * @param details
-     * @return
+     * @param scheduler user who scheduled this action
+     * @param server server
+     * @param details action details
+     * @param earliestAction date of earliest action
+     * @return the scheduled action
      */
     public static DistUpgradeAction scheduleDistUpgrade(User scheduler, Server server,
             DistUpgradeActionDetails details, Date earliestAction) {

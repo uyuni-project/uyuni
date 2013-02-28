@@ -66,8 +66,8 @@ public class DistUpgradeManager extends BaseManager {
     /**
      * Find possible migration target products for a given product ID.
      *
-     * @param productId
-     * @return DataResult containing target project ids
+     * @param productId product ID
+     * @return DataResult containing target product IDs
      */
     public static DataResult findTargetProducts(long productId) {
         SelectMode m = ModeFactory.getMode("distupgrade_queries",
@@ -80,7 +80,8 @@ public class DistUpgradeManager extends BaseManager {
     /**
      * Find all channels required by a given product with base channel.
      *
-     * @param productId
+     * @param productId product ID
+     * @param baseChannelLabel base channel label
      * @return DataResult containing product channel IDs
      */
     public static DataResult findProductChannels(long productId, String baseChannelLabel) {
@@ -95,7 +96,7 @@ public class DistUpgradeManager extends BaseManager {
     /**
      * Return all channels *required* for migrating to a certain {@link SUSEProductSet}.
      *
-     * @param productSet
+     * @param productSet product set
      * @return list of channel DTOs
      */
     @SuppressWarnings("unchecked")
@@ -108,10 +109,10 @@ public class DistUpgradeManager extends BaseManager {
     }
 
     /**
-     * For a given product, return the respective base channel as {@link EssentialChannelDto}.
+     * For a given product, return the respective base channel as
+     * {@link EssentialChannelDto}.
      *
-     * @param productID
-     * @param user
+     * @param productID product ID
      * @return base channel
      */
     public static EssentialChannelDto getProductBaseChannelDto(long productID) {
@@ -131,8 +132,8 @@ public class DistUpgradeManager extends BaseManager {
     /**
      * For a given product, return the respective base channel as {@link Channel}.
      *
-     * @param productID
-     * @param user
+     * @param productID product ID
+     * @param user user
      * @return base channel
      */
     public static Channel getProductBaseChannel(long productID, User user) {
@@ -149,10 +150,12 @@ public class DistUpgradeManager extends BaseManager {
      * as {@link SUSEProductSet} objects.
      *
      * @param installedProducts set of products currently installed on the system
+     * @param user user
      * @return list of product sets
      */
     @SuppressWarnings("unchecked")
-    public static List<SUSEProductSet> getTargetProductSets(SUSEProductSet installedProducts, User user) {
+    public static List<SUSEProductSet> getTargetProductSets(
+            SUSEProductSet installedProducts, User user) {
         ArrayList<SUSEProductSet> ret = new ArrayList<SUSEProductSet>();
         if (installedProducts == null) {
             return null;
@@ -166,7 +169,8 @@ public class DistUpgradeManager extends BaseManager {
             // Create a new product set
             SUSEProductSet targetSet = new SUSEProductSet();
             long targetBaseProductID = (Long) targetBaseProduct.get("product_id");
-            SUSEProduct targetProduct = SUSEProductFactory.getProductById(targetBaseProductID);
+            SUSEProduct targetProduct = SUSEProductFactory.getProductById(
+                    targetBaseProductID);
             targetSet.setBaseProduct(targetProduct);
 
             // Look for the target product's base channel
@@ -250,7 +254,7 @@ public class DistUpgradeManager extends BaseManager {
      * Return null if any of the given channels is not actually available (cid == null).
      * Otherwise find the common parent channel and return its ID.
      *
-     * @param productChannels
+     * @param productChannels product channels
      * @return ID of the parent channel or null
      */
     public static Long getParentChannelId(DataResult<Map<String, Object>> productChannels) {
@@ -272,9 +276,9 @@ public class DistUpgradeManager extends BaseManager {
 
     /**
      * For a list of channels, check if they all have the same given parent.
-     * @param parentChannelID
-     * @param channels
-     * @return
+     * @param parentChannelID parent channel ID
+     * @param channels channels
+     * @return true if all channels have the same given parent, else false
      */
     public static boolean isParentChannel(Long parentChannelID,
             DataResult<Map<String, Object>> channels) {
@@ -298,7 +302,7 @@ public class DistUpgradeManager extends BaseManager {
     /**
      * Return *all* clones of a given channel.
      *
-     * @param channel
+     * @param channel channel
      * @return list of cloned channels
      */
     public static List<ClonedChannel> getAllClones(Channel channel) {
@@ -319,19 +323,23 @@ public class DistUpgradeManager extends BaseManager {
      * the {@link ClonedChannel}s itself and values are the list of child channel IDs
      * required for migrating to the given {@link SUSEProductSet}.
      *
-     * @param targetProducts
-     * @param user
-     * @return
+     * @param targetProducts target product set
+     * @param user user
+     * @return alternative target product sets
      */
-    public static HashMap<ClonedChannel, List<Long>> getAlternatives(SUSEProductSet targetProducts, User user) {
+    public static HashMap<ClonedChannel, List<Long>> getAlternatives(
+            SUSEProductSet targetProducts, User user) {
         // This list will be returned
-        HashMap<ClonedChannel, List<Long>> alternatives = new HashMap<ClonedChannel, List<Long>>();
+        HashMap<ClonedChannel, List<Long>> alternatives =
+                new HashMap<ClonedChannel, List<Long>>();
         // Get base channel
-        Channel suseBaseChannel = getProductBaseChannel(targetProducts.getBaseProduct().getId(), user);
+        Channel suseBaseChannel = getProductBaseChannel(
+                targetProducts.getBaseProduct().getId(), user);
         // Get all clones
         List<ClonedChannel> allClones = getAllClones(suseBaseChannel);
         // Get required channels for this product set
-        List<EssentialChannelDto> requiredChildChannels = getRequiredChannels(targetProducts);
+        List<EssentialChannelDto> requiredChildChannels =
+                getRequiredChannels(targetProducts);
 
         // For all possible alternatives (clones of base channel)
         for (ClonedChannel clone : allClones) {
@@ -378,9 +386,9 @@ public class DistUpgradeManager extends BaseManager {
     }
 
     /**
-     * For a given {@link Channel}, determine the original {@link Channel}, that is not a clone.
+     * For a given {@link Channel}, determine the original {@link Channel}.
      *
-     * @param channel
+     * @param channel channel
      * @return original channel
      */
     public static Channel getOriginalChannel(Channel channel) {
@@ -393,9 +401,9 @@ public class DistUpgradeManager extends BaseManager {
     /**
      * Look for the migration target of a given source within a list of products.
      *
-     * @param source
-     * @param targets
-     * @return matching target
+     * @param source source product
+     * @param targets target products
+     * @return matching target product
      */
     @SuppressWarnings("unchecked")
     public static SUSEProduct findMatch(SUSEProduct source, List<SUSEProduct> targets) {

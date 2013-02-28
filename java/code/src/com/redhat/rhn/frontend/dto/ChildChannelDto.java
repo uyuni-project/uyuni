@@ -228,9 +228,9 @@ public class ChildChannelDto {
     }
 
     /**
-     * @param mandatory the mandatory to set
+     * @param mandatoryIn the mandatory to set
      */
-    public void setMandatory(boolean mandatory) {
-        this.mandatory = mandatory;
+    public void setMandatory(boolean mandatoryIn) {
+        this.mandatory = mandatoryIn;
     }
 }

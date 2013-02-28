@@ -18,10 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -29,9 +27,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.errata.Errata;
@@ -917,9 +912,9 @@ public class Channel extends BaseDomainHelper implements Comparable {
     }
 
     /**
-     * @param clonedChannels the clonedChannels to set
+     * @param clonedChannelsIn the clonedChannels to set
      */
-    public void setClonedChannels(Set<ClonedChannel> clonedChannels) {
-        this.clonedChannels = clonedChannels;
+    public void setClonedChannels(Set<ClonedChannel> clonedChannelsIn) {
+        this.clonedChannels = clonedChannelsIn;
     }
 }
