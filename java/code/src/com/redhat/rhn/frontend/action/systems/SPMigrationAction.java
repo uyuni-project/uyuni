@@ -81,7 +81,8 @@ public class SPMigrationAction extends RhnAction {
     // Message keys
     private static final String DISPATCH_DRYRUN = "spmigration.jsp.confirm.submit.dry-run";
     private static final String MSG_SCHEDULED_MIGRATION = "spmigration.message.scheduled";
-    private static final String MSG_SCHEDULED_DRYRUN = "spmigration.message.scheduled.dry-run";
+    private static final String MSG_SCHEDULED_DRYRUN =
+            "spmigration.message.scheduled.dry-run";
 
     /**
      * {@inheritDoc}
@@ -152,11 +153,13 @@ public class SPMigrationAction extends RhnAction {
             if (migrationTargets == null) {
                 // Installed products are 'unknown'
                 return forward;
-            } else if (migrationTargets.size() == 0) {
+            }
+            else if (migrationTargets.size() == 0) {
                 // Latest SP is apparently installed
                 request.setAttribute(LATEST_SP, true);
                 return forward;
-            } else if (migrationTargets.size() >= 1) {
+            }
+            else if (migrationTargets.size() >= 1) {
                 // At least one target available
                 targetProducts = migrationTargets.get(0);
                 request.setAttribute(TARGET_PRODUCTS, targetProducts);
@@ -289,7 +292,8 @@ public class SPMigrationAction extends RhnAction {
         List<ChildChannelDto> childChannels = new ArrayList<ChildChannelDto>();
         for (int i = 0; i < channels.size(); i++) {
             Channel child = (Channel) channels.get(i);
-            ChildChannelDto childChannel = new ChildChannelDto(child.getId(), child.getName(),
+            ChildChannelDto childChannel = new ChildChannelDto(child.getId(),
+                    child.getName(),
                     s.isSubscribed(child),
                     ChannelManager.isChannelFreeForSubscription(s, child),
                     child.isSubscribable(user.getOrg(), s));
@@ -405,7 +409,7 @@ public class SPMigrationAction extends RhnAction {
             }
         }
         // Subscribe to all of the remaining channels
-        for (Long cid: channelIDs) {
+        for (Long cid : channelIDs) {
             DistUpgradeChannelTask task = new DistUpgradeChannelTask();
             task.setChannel(ChannelFactory.lookupById(cid));
             task.setTask(DistUpgradeChannelTask.SUBSCRIBE);

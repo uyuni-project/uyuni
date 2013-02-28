@@ -12,7 +12,6 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.domain.product;
 
 import java.util.ArrayList;
@@ -42,12 +41,12 @@ public class SUSEProductSet {
     /**
      * Construct a {@link SUSEProductSet} using given IDs. Loads the respective
      * {@link SUSEProduct}s from the database.
-     * @param baseProduct
-     * @param addonProducts
+     * @param baseProductIn base product ID
+     * @param addonProductsIn list of addon product IDs
      */
-    public SUSEProductSet(Long baseProduct, List<Long> addonProducts) {
-        setBaseProduct(SUSEProductFactory.getProductById(baseProduct));
-        for (Long l : addonProducts) {
+    public SUSEProductSet(Long baseProductIn, List<Long> addonProductsIn) {
+        setBaseProduct(SUSEProductFactory.getProductById(baseProductIn));
+        for (Long l : addonProductsIn) {
             addAddonProduct(SUSEProductFactory.getProductById(l));
         }
     }
@@ -62,26 +61,26 @@ public class SUSEProductSet {
 
     /**
      * Set the base product.
-     * @param baseProduct the baseProduct to set
+     * @param baseProductIn the baseProduct to set
      */
-    public void setBaseProduct(SUSEProduct baseProduct) {
-        this.baseProduct = baseProduct;
+    public void setBaseProduct(SUSEProduct baseProductIn) {
+        this.baseProduct = baseProductIn;
     }
 
     /**
-     * Return the list of add-on products.
-     * @return the addonProducts
+     * Return the list of addon products.
+     * @return list of addon products
      */
     public List<SUSEProduct> getAddonProducts() {
         return addonProducts;
     }
 
     /**
-     * Set the list of add-on products.
-     * @param addonProducts the addonProducts to set
+     * Set the list of addon products.
+     * @param addonProductsIn the addon products to set
      */
-    public void setAddonProducts(List<SUSEProduct> addonProducts) {
-        this.addonProducts = addonProducts;
+    public void setAddonProducts(List<SUSEProduct> addonProductsIn) {
+        this.addonProducts = addonProductsIn;
     }
 
     /**
@@ -119,6 +118,7 @@ public class SUSEProductSet {
 
     /**
      * Return the list of missing channels.
+     * @return list of missing channels
      */
     public List<String> getMissingChannels() {
         return missingChannels;
@@ -126,7 +126,7 @@ public class SUSEProductSet {
 
     /**
      * Add a channel that is missing.
-     * @param channelLabel
+     * @param channelLabel label of missing channel
      */
     public void addMissingChannel(String channelLabel) {
         if (missingChannels == null) {
@@ -138,7 +138,7 @@ public class SUSEProductSet {
 
     /**
      * Add a list of missing channels.
-     * @param channelLabels
+     * @param channelLabels list of missing channel labels
      */
     public void addMissingChannels(List<String> channelLabels) {
         if (missingChannels == null) {
@@ -148,6 +148,9 @@ public class SUSEProductSet {
         Collections.sort(missingChannels);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

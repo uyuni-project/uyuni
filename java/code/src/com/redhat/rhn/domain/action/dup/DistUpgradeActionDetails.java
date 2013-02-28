@@ -30,7 +30,8 @@ public class DistUpgradeActionDetails extends ActionChild {
     private char fullUpdate;
 
     // Set of tasks to perform on single channels
-    private Set<DistUpgradeChannelTask> channelTasks = new HashSet<DistUpgradeChannelTask>();
+    private Set<DistUpgradeChannelTask> channelTasks =
+            new HashSet<DistUpgradeChannelTask>();
 
     // Set of product upgrades that will be performed
     // Note: product upgrades are relevant for SLE 10 only!
@@ -60,10 +61,10 @@ public class DistUpgradeActionDetails extends ActionChild {
     }
 
     /**
-     * @param dryRun the dryRun to set
+     * @param dryRunIn the dryRun to set
      */
-    public void setDryRun(char dryRun) {
-        this.dryRun = dryRun;
+    public void setDryRun(char dryRunIn) {
+        this.dryRun = dryRunIn;
     }
 
     /**
@@ -74,10 +75,10 @@ public class DistUpgradeActionDetails extends ActionChild {
     }
 
     /**
-     * @param fullUpdate the fullUpdate to set
+     * @param fullUpdateIn the fullUpdate to set
      */
-    public void setFullUpdate(char fullUpdate) {
-        this.fullUpdate = fullUpdate;
+    public void setFullUpdate(char fullUpdateIn) {
+        this.fullUpdate = fullUpdateIn;
     }
 
     /**
@@ -88,16 +89,16 @@ public class DistUpgradeActionDetails extends ActionChild {
     }
 
     /**
-     * @param channelTasks the channel tasks to set
+     * @param channelTasksIn the channel tasks to set
      */
-    public void setChannelTasks(Set<DistUpgradeChannelTask> channelTasks) {
-        this.channelTasks = channelTasks;
+    public void setChannelTasks(Set<DistUpgradeChannelTask> channelTasksIn) {
+        this.channelTasks = channelTasksIn;
     }
 
     /**
      * Add a single {@link DistUpgradeChannelTask}.
      *
-     * @param task the task to add
+     * @param channelTask the task to add
      */
     public void addChannelTask(DistUpgradeChannelTask channelTask) {
         channelTask.setDetails(this);
@@ -112,16 +113,16 @@ public class DistUpgradeActionDetails extends ActionChild {
     }
 
     /**
-     * @param productUpgrades the productUpgrades to set
+     * @param productUpgradesIn the productUpgrades to set
      */
-    public void setProductUpgrades(Set<SUSEProductUpgrade> productUpgrades) {
-        this.productUpgrades = productUpgrades;
+    public void setProductUpgrades(Set<SUSEProductUpgrade> productUpgradesIn) {
+        this.productUpgrades = productUpgradesIn;
     }
 
     /**
      * Add a single {@link SUSEProductUpgrade}.
      *
-     * @param productUpgrade the productUpgrade to add
+     * @param upgrade the product upgrade to add
      */
     public void addProductUpgrade(SUSEProductUpgrade upgrade) {
         upgrade.setDetails(this);

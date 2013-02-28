@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2012 Novell
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.redhat.rhn.domain.action.dup;
 
 import java.io.Serializable;
@@ -5,6 +19,9 @@ import java.io.Serializable;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 
+/**
+ * Class representation of a task to perform during a distribution upgrade.
+ */
 public class DistUpgradeChannelTask extends BaseDomainHelper implements Serializable {
 
     private static final long serialVersionUID = -5332431075711058873L;
@@ -23,10 +40,10 @@ public class DistUpgradeChannelTask extends BaseDomainHelper implements Serializ
         return details;
     }
     /**
-     * @param details the details to set
+     * @param detailsIn the details to set
      */
-    public void setDetails(DistUpgradeActionDetails details) {
-        this.details = details;
+    public void setDetails(DistUpgradeActionDetails detailsIn) {
+        this.details = detailsIn;
     }
     /**
      * @return the channel
@@ -35,10 +52,10 @@ public class DistUpgradeChannelTask extends BaseDomainHelper implements Serializ
         return channel;
     }
     /**
-     * @param channel the channel to set
+     * @param channelIn the channel to set
      */
-    public void setChannel(Channel channel) {
-        this.channel = channel;
+    public void setChannel(Channel channelIn) {
+        this.channel = channelIn;
     }
     /**
      * One of SUBSCRIBE/UNSUBSCRIBE.
@@ -48,14 +65,14 @@ public class DistUpgradeChannelTask extends BaseDomainHelper implements Serializ
         return task;
     }
     /**
-     * @param task the task to set
+     * @param taskIn the task to set
      */
-    public void setTask(char task) {
-        this.task = task;
+    public void setTask(char taskIn) {
+        this.task = taskIn;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public int hashCode() {
@@ -67,8 +84,8 @@ public class DistUpgradeChannelTask extends BaseDomainHelper implements Serializ
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public boolean equals(Object obj) {
