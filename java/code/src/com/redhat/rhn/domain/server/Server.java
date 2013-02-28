@@ -613,7 +613,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * Set the contact method.
      *
-     * @param contact method to set
+     * @param contactMethodIn method to set
      */
     public void setContactMethod(ContactMethod contactMethodIn) {
         this.contactMethod = contactMethodIn;
