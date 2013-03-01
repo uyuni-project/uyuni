@@ -41,9 +41,9 @@ public class SSHServerPushSimulationTest extends TestCase {
 
     // Calculations are done in seconds
     private int thresholdMax = thresholdDays * 86400;
-    private int thresholdMin = Math.round(thresholdMax/2);
-    private double mean = thresholdMax;
-    private double stddev = thresholdMax/6;
+    private int thresholdMin = Math.round(thresholdMax / 2);
+    private double thresholdMean = thresholdMax;
+    private double thresholdStddev = thresholdMax / 6;
 
     // Number of systems for the simulation
     private int numberOfSystems = 100000;
@@ -56,7 +56,7 @@ public class SSHServerPushSimulationTest extends TestCase {
     private int randomsInvalid = 0;
 
     // Maximal percentage of systems checking in during one hour
-    int maxPercentage = 22;
+    private int maxPercentage = 22;
 
     /**
      * Run a simulation and assert certain constraints.
@@ -75,7 +75,7 @@ public class SSHServerPushSimulationTest extends TestCase {
                 int randomThreshold;
                 for (int minutes = 0; minutes < 60; minutes += checkInterval) {
                     randomThreshold = getRandomThreshold(
-                            mean, stddev, thresholdMin, thresholdMax);
+                            thresholdMean, thresholdStddev, thresholdMin, thresholdMax);
                     if (getSeconds(hour, minutes) > randomThreshold) {
                         // System checked in
                         addResult(results, hour, minutes);
@@ -154,7 +154,7 @@ public class SSHServerPushSimulationTest extends TestCase {
      * Assert elements of the results key set.
      */
     private void assertKeySet(HashMap<Integer, List<Integer>> results) {
-        Integer hours[] = {12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
+        Integer[] hours = {12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
         Set<Integer> keys = results.keySet();
         assertTrue(keys.containsAll(Arrays.asList(hours)));
     }
@@ -164,18 +164,18 @@ public class SSHServerPushSimulationTest extends TestCase {
      */
     private void assertMaxPercentage(HashMap<Integer, List<Integer>> results, int max) {
         // Get max percentage of all categories numbers of systems checked in
-        long maxPercentage = 0;
+        long maxPercent = 0;
         for (int h = 12; h <= 24; h++) {
             List<Integer> l = results.get(h);
             if (l != null) {
                 long percent = Math.round(getPercentage(l.size(), numberOfSystems));
-                if (percent > maxPercentage) {
-                    maxPercentage = percent;
+                if (percent > maxPercent) {
+                    maxPercent = percent;
                 }
             }
         }
-        System.out.println("Max percentage = " + maxPercentage);
-        assertTrue(maxPercentage <= max);
+        System.out.println("Max percentage = " + maxPercent);
+        assertTrue(maxPercent <= max);
     }
 
     /**
@@ -192,14 +192,14 @@ public class SSHServerPushSimulationTest extends TestCase {
      */
     private void printRandomizerProperties() {
         System.out.println("\n--> Randomizer properties:");
-        System.out.println("mean = " + mean + " seconds ("
-                + SSHServerPushUtils.toHours(Math.round(mean)) + " hours)");
-        System.out.println("stddev = " + stddev + " seconds ("
-                + SSHServerPushUtils.toHours(Math.round(stddev)) + " hours)");
-        System.out.println("min = " + thresholdMin + " seconds ("
-                + SSHServerPushUtils.toHours(thresholdMin) + " hours)");
-        System.out.println("max = " + thresholdMax + " seconds ("
-                + SSHServerPushUtils.toHours(thresholdMax) + " hours)");
+        System.out.println("mean = " + thresholdMean + " seconds (" +
+                SSHServerPushUtils.toHours(Math.round(thresholdMean)) + " hours)");
+        System.out.println("stddev = " + thresholdStddev + " seconds (" +
+                SSHServerPushUtils.toHours(Math.round(thresholdStddev)) + " hours)");
+        System.out.println("min = " + thresholdMin + " seconds (" +
+                SSHServerPushUtils.toHours(thresholdMin) + " hours)");
+        System.out.println("max = " + thresholdMax + " seconds (" +
+                SSHServerPushUtils.toHours(thresholdMax) + " hours)");
     }
 
     /**
@@ -208,8 +208,8 @@ public class SSHServerPushSimulationTest extends TestCase {
     private void printRandomizerStatistics() {
         System.out.println("\n--> Randomizer statistics:");
         long thrownAway = Math.round(getPercentage(randomsInvalid, randomsTotal));
-        System.out.println("randoms thrown away: " + thrownAway + "% (" + randomsInvalid
-                + " of " + randomsTotal + " in total)");
+        System.out.println("randoms thrown away: " + thrownAway + "% (" + randomsInvalid +
+                " of " + randomsTotal + " in total)");
     }
 
     /**
@@ -224,9 +224,9 @@ public class SSHServerPushSimulationTest extends TestCase {
                 System.out.println("Hour " + h + ": 0");
             }
             else {
-                System.out.println("Hour " + h + ": "
-                        + Math.round(getPercentage(l.size(), numberOfSystems))
-                        + "% (" + l.size() + ")");
+                System.out.println("Hour " + h + ": " +
+                        Math.round(getPercentage(l.size(), numberOfSystems)) +
+                        "% (" + l.size() + ")");
             }
         }
     }
@@ -242,6 +242,6 @@ public class SSHServerPushSimulationTest extends TestCase {
      * Calculate percentage value.
      */
     private double getPercentage(long number, long total) {
-        return ((double) number/ (double) total) * 100;
+        return ((double) number / (double) total) * 100;
     }
 }
