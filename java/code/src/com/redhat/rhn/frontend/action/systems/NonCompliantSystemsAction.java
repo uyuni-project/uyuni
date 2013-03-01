@@ -27,13 +27,15 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.system.SystemManager;
 
-
 /**
  * InactiveSetupAction
  * @version $Rev$
  */
 public class NonCompliantSystemsAction extends BaseSystemsAction {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
                 HttpServletRequest request, HttpServletResponse response) {
@@ -42,7 +44,8 @@ public class NonCompliantSystemsAction extends BaseSystemsAction {
     }
 
     @Override
-    protected DataResult<SystemOverview> getDataResult(User user, PageControl pc, ActionForm formIn) {
+    protected DataResult<SystemOverview> getDataResult(User user, PageControl pc,
+            ActionForm formIn) {
         return SystemManager.getForeignPackagesSystems(user, pc);
     }
 }

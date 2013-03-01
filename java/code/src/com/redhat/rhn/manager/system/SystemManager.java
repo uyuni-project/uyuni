@@ -245,7 +245,8 @@ public class SystemManager extends BaseManager {
      *
      * @return list of SystemOverviews.
      */
-    public static DataResult<SystemOverview> getForeignPackagesSystems(User user, PageControl pc) {
+    public static DataResult<SystemOverview> getForeignPackagesSystems(User user,
+            PageControl pc) {
         Map params = new HashMap();
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
