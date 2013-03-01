@@ -48,7 +48,7 @@ CREATE TABLE rhnServer
     contact_method_id   NUMBER
                             DEFAULT (0) NOT NULL
                             CONSTRAINT rhn_server_cmid_fk
-                                REFERENCES suseClientContactMethodType (id),
+                                REFERENCES suseServerContactMethod (id),
     running_kernel      VARCHAR2(64),
     last_boot           NUMBER
                             DEFAULT (0) NOT NULL,

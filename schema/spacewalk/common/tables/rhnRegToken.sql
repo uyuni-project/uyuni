@@ -41,7 +41,7 @@ CREATE TABLE rhnRegToken
     contact_method_id NUMBER
                         DEFAULT (0) NOT NULL
                         CONSTRAINT rhn_reg_token_cmid_fk
-                            REFERENCES suseClientContactMethodType (id)
+                            REFERENCES suseServerContactMethod (id)
 )
 ENABLE ROW MOVEMENT
 ;
