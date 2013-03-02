@@ -667,6 +667,8 @@
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
             <form-property name="channel" type="java.lang.Long"/>
             <form-property name="tree" type="java.lang.Long" />
+            <form-property name="useNewestTree" type="java.lang.Boolean" />
+            <form-property name="useNewestRHTree" type="java.lang.Boolean" />
             <form-property name="url" type="java.lang.String" />
             <form-property name="submitted"  type="java.lang.Boolean"/>
             <form-property name="fieldChanged" type="java.lang.String" />
@@ -769,20 +771,22 @@
             <form-property name="kstrees" type="java.util.List" />
             <form-property name="kstreeId" type="java.lang.Long" />
             <form-property name="virtualizationTypes" type="java.util.List" />
-	    	<form-property name="virtualizationTypeLabel" type="java.lang.String" />
-			<form-property name="fileUpload"      type="org.apache.struts.upload.FormFile" />
-			<form-property name="contents" type="java.lang.String" />
+            <form-property name="virtualizationTypeLabel" type="java.lang.String" />
+	    <form-property name="updateAll" type="java.lang.Boolean" />
+	    <form-property name="updateRedHat" type="java.lang.Boolean" />
+            <form-property name="fileUpload"      type="org.apache.struts.upload.FormFile" />
+            <form-property name="contents" type="java.lang.String" />
             <form-property name="org_default" type="java.lang.Boolean" />
             <form-property name="comments" type="java.lang.String" />
             <form-property name="active" type="java.lang.Boolean" />
             <form-property name="kernel_options" type="java.lang.String"/>
             <form-property name="post_kernel_options" type="java.lang.String"/>
-			<form-property name="virt_disk_path" type="java.lang.String"/>
- 			<form-property name="virt_mem_mb"  type="java.lang.Integer"/>
- 			<form-property name="virt_cpus"  type="java.lang.Integer"/>
- 			<form-property name="virt_disk_size"  type="java.lang.Integer"/>
-			<form-property name="virt_bridge" type="java.lang.String"/>
-			<form-property name="no_scrub" type="java.lang.String" initial="contents"/>
+            <form-property name="virt_disk_path" type="java.lang.String"/>
+            <form-property name="virt_mem_mb"  type="java.lang.Integer"/>
+            <form-property name="virt_cpus"  type="java.lang.Integer"/>
+            <form-property name="virt_disk_size"  type="java.lang.Integer"/>
+            <form-property name="virt_bridge" type="java.lang.String"/>
+            <form-property name="no_scrub" type="java.lang.String" initial="contents"/>
         </form-bean>
 
         <form-bean name="kickstartCreateWizardForm"
@@ -791,6 +795,9 @@
             <form-property name="prevStep" type="java.lang.String" />
             <form-property name="nextStep" type="java.lang.String" />
             <form-property name="kickstartLabel" type="java.lang.String" />
+            <form-property name="useNewestRHTree" type="java.lang.Boolean" />
+            <form-property name="useNewestTree" type="java.lang.Boolean" />
+            <form-property name="kstreeUpdateType" type="java.lang.String" />
             <form-property name="channels" type="java.util.Collection" />
             <form-property name="currentChannelId" type="java.lang.Long" />
             <form-property name="previousChannelId" type="java.lang.Long" />
@@ -3612,6 +3619,40 @@
         <forward name="update"
                  path="/systems/details/SystemChannels.do"
                  redirect="true"/>
+    </action>
+
+    <action path="/systems/details/SoftwareCrashes"
+        scope="request"
+        input="/WEB-INF/pages/systems/crashes.jsp"
+        type="com.redhat.rhn.frontend.action.systems.SoftwareCrashesAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/crashes.jsp"/>
+        <forward name="delete"
+                 path="/systems/details/SoftwareCrashes.do" redirect="true"/>
+    </action>
+
+    <action path="/systems/details/SoftwareCrashDetail"
+        scope="request"
+        input="/WEB-INF/pages/systems/crashdetail.jsp"
+        type="com.redhat.rhn.frontend.action.systems.SoftwareCrashesDetailsAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/crashdetail.jsp"/>
+    </action>
+
+    <action path="/systems/details/SoftwareCrashDelete"
+        scope="request"
+        input="/WEB-INF/pages/systems/crashdelete.jsp"
+        type="com.redhat.rhn.frontend.action.systems.SoftwareCrashesDeleteAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                path="/WEB-INF/pages/systems/crashdelete.jsp"/>
+        <forward name="delete"
+                path="/systems/details/SoftwareCrashes.do" redirect="true"/>
     </action>
 
      <action path="/systems/details/groups/ListRemove"

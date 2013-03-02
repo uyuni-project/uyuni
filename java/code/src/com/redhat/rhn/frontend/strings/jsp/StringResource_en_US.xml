@@ -3259,6 +3259,18 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="orgconfig.jsp.header">
+        <source>Organization Configuration</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="orgconfig.jsp.description">
+        <source>Below you configure your organization to use staging content and set up the upload size limit for a crash file. The upload limit is a non negative number. Zero means no limit.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="org.name.jsp">
         <source>Organization Name</source>
         <context-group name="ctx">
@@ -3285,6 +3297,18 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="org-config.staging-content.jsp">
         <source>Enable Staging Contents</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="org-config.crashfile-sizelimit.jsp">
+        <source>Crash File Upload Size Limit</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="org-config.sizelimit-hint.jsp">
+        <source>Enter the limit size in bytes. Zero means no limit.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -10378,6 +10402,18 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="kickstart.jsp.create.wizard.kstree.always_new_RH">
+        <source>Always use the newest Red Hat Tree for this base channel.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="kickstart.jsp.create.wizard.kstree.always_new">
+        <source>Always use the newest Tree for this base channel. "Newest" is determined by the date it was last modified.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="wizard.jsp.next.step">
         <source>Next</source>
         <context-group name="ctx">
@@ -15758,6 +15794,27 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <trans-unit id="exportcolumn.score">
           <source>Score</source>
         </trans-unit>
+        <trans-unit id="exportcolumn.crash">
+          <source>Scratch</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.component">
+          <source>Component</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.modified">
+          <source>Modified</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.count">
+          <source>Crash Count</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.filename">
+          <source>File Name</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.filesize">
+          <source>File Size</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.path">
+          <source>Path</source>
+        </trans-unit>
      </group>
      <trans-unit id="virtualization.provision.first.jsp.no.profiles">
         <source>No profiles currently available for autoinstalling guests. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new autoinstallation profile with a Virtualization Type other than none.&lt;/a&gt;</source>
@@ -16274,21 +16331,159 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.crashes.lastreport">
-        <source>Last Report</source>
+        <source>Last Report:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.crashes.uniquecrashcount">
-        <source>Unique Crash Count</source>
+        <source>Unique Crash Count:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.crashes.totalcrashcount">
-        <source>Total Crash Count</source>
+        <source>Total Crash Count:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.crashcount">
+        <source>Crash Count</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.nevra">
+        <source>Package</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.crash">
+        <source>Crash</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.crashes">
+        <source>Software System Crashes</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.component">
+        <source>Component</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.delete.button">
+        <source>Delete Crash(es)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.summary">
+        <source>Software crashes reported for this system.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.nocrashes">
+        <source>There are no software crashes reported for this system.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.nocrashfiles">
+        <source>There are no crash files associated with this software crash.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.details">
+        <source>Software Crash Details</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.details.summary">
+        <source>Below are the Software Crash details.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.delete">
+        <source>Delete Software Crash</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.delete.summary">
+        <source>Software Crash will be deleted.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.path">
+        <source>Path</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.analyzer">
+        <source>Analyzer</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.cmdline">
+        <source>Command Line</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.executable">
+        <source>Executable</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.kernel">
+        <source>Kernel</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.reason">
+        <source>Reason</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.username">
+        <source>Username</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.storagepath">
+        <source>Storage Path</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.filename">
+        <source>Filename</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.filesize">
+        <source>File Size</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.header">

@@ -86,8 +86,7 @@ class RepoSync(object):
         self.error_messages = []
 
         initCFG('server.susemanager')
-        db_string = CFG.DEFAULT_DB
-        rhnSQL.initDB(db_string)
+        rhnSQL.initDB()
 
         # setup logging
         log_filename = 'reposync.log'
@@ -1131,7 +1130,7 @@ class RepoSync(object):
             if v is None:
                 continue
 
-            for s in (m.group(1) for m in re.finditer(r'<a href="(.+?)"', v)):
+            for s in (m.group(1) for m in re.finditer(r'(?i)<a href="(.+?)"', v)):
                 if re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s) or re.match(r'[a-zA-Z]+:', s) or re.search(r'\.rpm$', s):
                     continue
                 if re.search(r'/$', s):

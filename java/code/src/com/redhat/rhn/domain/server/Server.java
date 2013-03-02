@@ -2009,4 +2009,12 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public void setCrashes(Set<Crash> c) {
         this.crashes = c;
     }
+
+    /**
+     * @param interfaceName Name of the interface to be checked
+     * @return Returns true if yes, otherwise no
+     */
+    public Boolean existsActiveInterfaceWithName(String interfaceName) {
+        return findActiveIfaceWithName(interfaceName, false) != null;
+    }
 }

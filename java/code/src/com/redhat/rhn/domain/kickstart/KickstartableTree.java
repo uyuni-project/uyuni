@@ -284,7 +284,7 @@ public class KickstartableTree extends BaseDomainHelper {
                 archName = "i386";
             }
             return StringUtil.addPath(getAbsolutePath(), "/boot/" +
-                archName + "/loader/linux");
+                    archName + "/loader/linux");
         }
         else {
             return StringUtil.addPath(getAbsolutePath(), "/images/pxeboot/vmlinuz");
@@ -326,7 +326,7 @@ public class KickstartableTree extends BaseDomainHelper {
                 archName = "i386";
             }
             return new String[] {StringUtil.addPath(getAbsolutePath(), "/boot/" +
-                archName + "/loader/initrd")};
+                    archName + "/loader/initrd")};
         }
         else {
             return new String[] {
@@ -462,7 +462,7 @@ public class KickstartableTree extends BaseDomainHelper {
      */
     public boolean isValid() {
         return !StringUtils.isBlank(getCobblerId()) &&
-                    isPathsValid();
+                isPathsValid();
     }
 
     /**

@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
+import com.redhat.rhn.frontend.dto.SoftwareCrashDto;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
@@ -858,6 +859,20 @@ public class ServerFactory extends HibernateFactory {
                 // usually end up making this query's output out of date
                 .uniqueResult();
         return retval;
+    }
+
+    /**
+     * Lists software crashes for a server
+     * @param server of interest
+     * @return crash list
+     */
+    public static List<SoftwareCrashDto> listServerSoftwareCrashes(Server server) {
+        SelectMode m = ModeFactory.getMode("System_queries",
+                "list_server_software_crashes");
+        Map params = new HashMap();
+        // params.put("org_id", user.getOrg().getId());
+        params.put("server_id", server.getId());
+        return m.execute(params);
     }
 
     /**

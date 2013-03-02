@@ -15,6 +15,7 @@
 
 import base64
 import os
+import stat
 
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnConfig import CFG
@@ -36,13 +37,15 @@ insert into rhnServerCrash (
        server_id,
        crash,
        path,
-       count)
+       count,
+       storage_path)
 values (
        sequence_nextval('rhn_server_crash_id_seq'),
        :server_id,
        :crash,
        :path,
-       :crash_count)
+       :crash_count,
+       :storage_path)
 """)
 
 _query_update_pkg_data = rhnSQL.Statement("""
@@ -70,6 +73,22 @@ _query_get_crashfile_sizelimit = """
 select crash_file_sizelimit
   from web_customer
  where id = :org_id
+"""
+
+_query_set_crashfile_upload_flag = """
+update rhnServerCrashFile
+   set is_uploaded = 'Y'
+ where id = (
+       select scf.id as id
+         from rhnServerCrashFile scf,
+              rhnServerCrash sc
+        where scf.crash_id = sc.id and
+              scf.crash_id = :crash_id and
+              sc.server_id = :server_id and
+              scf.filename = :filename and
+              scf.path = :path and
+              scf.filesize = :filesize
+       )
 """
 
 class Abrt(rhnHandler):
@@ -126,6 +145,18 @@ class Abrt(rhnHandler):
         h.execute(org_id = self.server.server['org_id'])
         return h.fetchall_dict()[0]['crash_file_sizelimit']
 
+    def _set_crashfile_upload_flag(self, server_id, crash_id, filename, path, filesize):
+        h = rhnSQL.prepare(_query_set_crashfile_upload_flag)
+        r = h.execute(
+            server_id = server_id,
+            crash_id = crash_id,
+            filename = filename,
+            path = path,
+            filesize = filesize)
+        rhnSQL.commit()
+
+        return r
+
     def create_crash(self, system_id, crash_data, pkg_data):
         self.auth_system(system_id)
         log_debug(1, self.server_id, crash_data, pkg_data)
@@ -134,6 +165,12 @@ class Abrt(rhnHandler):
            not (crash_data['crash'] and crash_data['path']):
             log_debug(1, self.server_id, "The crash information is invalid or incomplete: %s" % str(crash_data))
             raise rhnFault(5000)
+
+        server_org_id = self.server.server['org_id']
+        server_crash_dir = get_crash_path(str(server_org_id), str(self.server_id), crash_data['crash'])
+        if not server_crash_dir:
+            log_debug(1, self.server_id, "Error composing crash directory path")
+            raise rhnFault(5002)
 
         crash_id = self._get_crash_id(self.server_id, crash_data['crash'])
         log_debug(1, "crash_id: %s" % crash_id)
@@ -147,7 +184,8 @@ class Abrt(rhnHandler):
                 server_id = self.server_id,
                 crash = crash_data['crash'],
                 path = crash_data['path'],
-                crash_count = crash_data['count'])
+                crash_count = crash_data['count'],
+                storage_path = server_crash_dir)
             rhnSQL.commit()
             self._update_package_data(self._get_crash_id(self.server_id, crash_data['crash']), pkg_data)
             return 1
@@ -207,13 +245,22 @@ class Abrt(rhnHandler):
         if not os.path.exists(absolute_dir):
             log_debug(1, self.server_id, "Creating crash directory: %s" % absolute_dir)
             os.makedirs(absolute_dir)
+            mode = stat.S_IRWXU | stat.S_IRWXG | stat.S_IROTH | stat.S_IXOTH
+            os.chmod(absolute_dir, mode)
+            os.chmod(os.path.dirname(os.path.normpath(absolute_dir)), mode)
 
         log_debug(1, self.server_id, "Creating crash file: %s" % absolute_file)
         f = open(absolute_file, 'w+')
         f.write(filecontent)
         f.close()
 
+        self._set_crashfile_upload_flag(self.server_id, crash_id, crash_file['filename'], \
+                                        crash_file['path'], crash_file['filesize'])
+
         if crash_file['filename'] in self.watched_items:
+            # 'username' contains an extra '\n' at the end
+            if crash_file['filename'] == 'username':
+                filecontent = filecontent.strip()
             st = rhnSQL.Statement(_query_update_watched_items % crash_file['filename'])
             h = rhnSQL.prepare(st)
             h.execute(filecontent = filecontent, crash_id = crash_id)

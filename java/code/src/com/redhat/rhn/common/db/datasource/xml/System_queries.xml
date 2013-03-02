@@ -483,10 +483,10 @@ ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
     <query params="uid">
         SELECT s1.id,
                s1.name,
-               sum(case when substr(errata.synopsis, 1, 1) = 'C' then 1 else 0 end) critical,
-               sum(case when substr(errata.synopsis, 1, 1) = 'I' then 1 else 0 end) important,
-               sum(case when substr(errata.synopsis, 1, 1) = 'M' then 1 else 0 end) moderate,
-               sum(case when substr(errata.synopsis, 1, 1) = 'L' then 1 else 0 end) low,
+               sum(case when (substr(errata.synopsis, 1, 1) = 'C' and errata.advisory_type = 'Security Advisory') then 1 else 0 end) critical,
+               sum(case when (substr(errata.synopsis, 1, 1) = 'I' and errata.advisory_type = 'Security Advisory') then 1 else 0 end) important,
+               sum(case when (substr(errata.synopsis, 1, 1) = 'M' and errata.advisory_type = 'Security Advisory') then 1 else 0 end) moderate,
+               sum(case when (substr(errata.synopsis, 1, 1) = 'L' and errata.advisory_type = 'Security Advisory') then 1 else 0 end) low,
                sum(case when errata.advisory_type = 'Bug Fix Advisory' then 1 else 0 end) bug,
                sum(case when errata.advisory_type = 'Product Enhancement Advisory' then 1 else 0 end) enhancement
          FROM rhnServer S1
@@ -1422,6 +1422,18 @@ SELECT PN.name,
        rhnPackageArch PA on SP.package_arch_id = PA.id
  WHERE SP.server_id = :sid
 ORDER BY PN.name, PE.evr
+  </query>
+</mode>
+
+<mode name="list_server_software_crashes" class="com.redhat.rhn.frontend.dto.SoftwareCrashDto">
+  <query params="server_id">
+SELECT id,
+       crash,
+       count,
+       component,
+       modified
+  FROM rhnServerCrash
+ WHERE server_id = :server_id
   </query>
 </mode>
 

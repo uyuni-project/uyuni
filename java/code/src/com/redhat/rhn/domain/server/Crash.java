@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.server;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.BaseDomainHelper;
 
 import java.util.Date;
@@ -39,9 +41,10 @@ public class Crash extends BaseDomainHelper {
     private String kernel;
     private String reason;
     private String username;
-    private long packageNameId;
-    private long packageEvrId;
-    private long packageArchId;
+    private Long packageNameId;
+    private Long packageEvrId;
+    private Long packageArchId;
+    private String storagePath;
     private Date created;
     private Date modified;
     private Set<CrashFile> crashFiles;
@@ -265,7 +268,7 @@ public class Crash extends BaseDomainHelper {
      * Get the crash package name id.
      * @return Returns the crash package name id.
      */
-    public long getPackageNameId() {
+    public Long getPackageNameId() {
         return packageNameId;
     }
 
@@ -273,7 +276,7 @@ public class Crash extends BaseDomainHelper {
      * Set the crash package name id.
      * @param packageNameIdIn The crash package name id to set.
      */
-    public void setPackageNameId(long packageNameIdIn) {
+    public void setPackageNameId(Long packageNameIdIn) {
         packageNameId = packageNameIdIn;
     }
 
@@ -281,7 +284,7 @@ public class Crash extends BaseDomainHelper {
      * Get the crash package EVR id.
      * @return Returns the crash package EVR id.
      */
-    public long getPackageEvrId() {
+    public Long getPackageEvrId() {
         return packageEvrId;
     }
 
@@ -289,7 +292,7 @@ public class Crash extends BaseDomainHelper {
      * Set the crash package EVR id.
      * @param packageEvrIdIn The crash package EVR id to set.
      */
-    public void setPackageEvrId(long packageEvrIdIn) {
+    public void setPackageEvrId(Long packageEvrIdIn) {
         packageEvrId = packageEvrIdIn;
     }
 
@@ -297,7 +300,7 @@ public class Crash extends BaseDomainHelper {
      * Get the crash package arch id.
      * @return Returns the crash package arch id.
      */
-    public long getPackageArchId() {
+    public Long getPackageArchId() {
         return packageArchId;
     }
 
@@ -305,8 +308,32 @@ public class Crash extends BaseDomainHelper {
      * Set the crash package arch id.
      * @param packageArchIdIn The package arch id to set.
      */
-    public void setPackageArchId(long packageArchIdIn) {
+    public void setPackageArchId(Long packageArchIdIn) {
         packageArchId = packageArchIdIn;
+    }
+
+    /**
+     * Get the crash storage path.
+     * @return Returns the crash storage path.
+     */
+    public String getStoragePath() {
+        return storagePath;
+    }
+
+    /**
+     * Set the crash storage path.
+     * @param storagePathIn The storage path to set.
+     */
+    public void setStoragePath(String storagePathIn) {
+        storagePath = storagePathIn;
+    }
+
+    /**
+     * Get the crash absolute storage path.
+     * @return Returns the crash storage path.
+     */
+    public String getAbsStoragePath() {
+        return Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" + storagePath;
     }
 
     /**

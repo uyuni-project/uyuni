@@ -2,7 +2,7 @@ Name: spacewalk-reports
 Summary: Script based reporting
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.4
+Version: 1.9.6
 Release: 1%{?dist}
 URL: https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -46,6 +46,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING
 
 %changelog
+* Thu Feb 28 2013 Jan Pazdziora 1.9.6-1
+- Removing the dsn parameter from initDB, removing support for --db option.
+
+* Tue Feb 26 2013 Tomas Kasparek <tkasparek@redhat.com> 1.9.5-1
+- 914902 - system currency report
+
 * Fri Feb 15 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.4-1
 - Updating copyright info for 2013
 
@@ -153,19 +159,3 @@ rm -rf $RPM_BUILD_ROOT
 * Fri Jul 16 2010 Milan Zazrivec <mzazrivec@redhat.com> 1.1.1-1
 - bumping spec files to future 1.1 packages
 
-* Thu Apr 15 2010 Jan Pazdziora 0.9.1-1
-- 580924 - Fix number of CPUs in the inventory report.
-
-* Thu Feb 04 2010 Michael Mraka <michael.mraka@redhat.com> 0.8.2-1
-- updated copyrights
-
-* Fri Jan 15 2010 Michael Mraka <michael.mraka@redhat.com> 0.8.1-1
-- rebuild for spacewalk 0.8
-
-* Mon Jan 04 2010 Jan Pazdziora 0.7.1-1
-- 549370 - set lineending to be just LF, not CRLF
-- 548751 - handle IOError: [Errno 32] Broken pipe when piping to head
-- Add defattr to spacewalk-reports.spec
-
-* Mon Dec 14 2009 Jan Pazdziora 0.7.0-1
-- moved reports from spacewalk-backend-0.8.10-1 separate package

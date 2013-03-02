@@ -1390,4 +1390,35 @@ public class PackageManager extends BaseManager {
             throw new IncompatibleArchException(channel.getChannelArch(), archNonCompat);
         }
     }
+
+    /**
+     * build package nevra out of the name, evr, arch identifiers
+     * @param nameId name id
+     * @param evrId evr id
+     * @param archId arch id
+     * @return nevra
+     */
+    public static String buildPackageNevra(Long nameId, Long evrId, Long archId) {
+        String nevra = "";
+        if (nameId != null) {
+            PackageName pn = PackageFactory.lookupPackageName(nameId);
+            nevra += pn.getName();
+            if (evrId != null) {
+                PackageEvr pevr = PackageEvrFactory.lookupPackageEvrById(evrId);
+                if (pevr != null) {
+                    nevra += "-" + pevr.getVersion() + "-" + pevr.getRelease();
+                    if (!StringUtils.isEmpty(pevr.getEpoch())) {
+                        nevra += ":" + pevr.getEpoch();
+                    }
+                }
+            }
+            if (archId != null) {
+                PackageArch pa = PackageFactory.lookupPackageArchById(archId);
+                if (pa != null) {
+                    nevra += "." + pa.getLabel();
+                }
+            }
+        }
+        return nevra;
+    }
 }
