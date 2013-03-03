@@ -75,23 +75,3 @@ all install clean:: $(SUBDIRS)
 	$(descend-subdirs)
 
 
-# extra toy targets
-# Python checker support
-PYTHONPATH      = $(TOP)
-PYCHECKER       = pychecker
-PYCHECKEROPTS   = --maxreturns 10 --maxbranches 15
-DBCHECKER       = db-checker.py
-DBCHECKEROPTS   =
-DB              = user/pass@instance
-
-pychecker :: $(PYFILES)
-	@PYTHONPATH=$(PYTHONPATH) $(PYCHECKER) $(PYCHECKEROPTS) $(PYFILES) || :
-	$(descend-subdirs)
-
-db-checker :: $(PYFILES)
-	@PYTHONPATH=$(PYTHONPATH) $(TOP)/$(DBCHECKER) $(DBCHECKEROPTS) $(PYFILES) || :
-	$(descend-subdirs)
-
-graphviz :: 
-	@PYTHONPATH=$(PYTHONPATH) $(PYCHECKER) -Z $(PYCHECKEROPTS) $(PYFILES) || exit 0
-
