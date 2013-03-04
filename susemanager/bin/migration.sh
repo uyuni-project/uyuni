@@ -645,7 +645,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     fi
     setup_dobby
     # Finaly call mgr-ncc-sync
-    /usr/sbin/mgr-ncc-sync
+    /usr/sbin/mgr-ncc-sync --refresh
 fi
 
 # vim: set expandtab:
