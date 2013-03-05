@@ -38,6 +38,8 @@ UPGRADE_PATHS = '/usr/share/susemanager/upgrade_paths.xml'
 
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
+MASTER_CACHE_LOCATION = '/var/cache/rhn/ncc-data/'
+
 INFINITE = 200000 # a very big number that we use for unlimited subscriptions
 
 # location of proxy credentials in yast-generated config
@@ -65,6 +67,8 @@ class NCCSync(object):
         self.quiet = quiet
         self.debug = debug
         self.reset_ent_value = 10
+        self.is_iss_master = False
+        self.is_iss_slave = False
 
         if fromdir is not None:
             fdir = os.path.abspath(fromdir)
@@ -106,6 +110,14 @@ class NCCSync(object):
                             "server.susemanager.mirrcred_pass are set correctly "
                             "in the configuration file.")
 
+        if CFG.disable_iss == 0 and CFG.allowed_iss_slaves:
+            self.is_iss_master = True
+            if not os.path.exists(MASTER_CACHE_LOCATION):
+                os.mkdir(MASTER_CACHE_LOCATION)
+
+        if CFG.iss_parent:
+            self.is_iss_slave = True
+
         self.namespace = "http://www.novell.com/xml/center/regsvc-1_0"
 
         # FIXME:
@@ -127,6 +139,25 @@ class NCCSync(object):
                 sys.exit(1)
             self.subs_req = None
             self.prod_req = None
+        elif self.is_iss_slave:
+            self.ncc_url_prods = 'https://%s/center/regsvc/?command=regdata&lang=en-US&version=1.0' % CFG.iss_parent
+            self.ncc_url_subs  = "https://%s/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0" % CFG.iss_parent
+            self.ncc_repoindex = None
+            # XML documents which are used in POST requests to the NCC
+            self.subs_req = ('<?xml version="1.0" encoding="UTF-8"?>'
+                             '<listsubscriptions xmlns="%(namespace)s" '
+                             'client_version="1.2.3" lang="en">'
+                             '<authuser>%(authuser)s</authuser>'
+                             '<authpass>%(authpass)s</authpass>'
+                             '<smtguid>%(smtguid)s</smtguid>'
+                             '</listsubscriptions>\n')
+            self.prod_req = ('<?xml version="1.0" encoding="UTF-8"?>'
+                             '<productdata xmlns="%(namespace)s" '
+                             'client_version="1.2.3" lang="en">'
+                             '<authuser>%(authuser)s</authuser>'
+                             '<authpass>%(authpass)s</authpass>'
+                             '<smtguid>%(smtguid)s</smtguid>'
+                             '</productdata>\n')
         else:
             self.ncc_url_prods = "https://secure-www.novell.com/center/regsvc/?command=regdata&lang=en-US&version=1.0"
             self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
@@ -153,6 +184,7 @@ class NCCSync(object):
         except rhnSQL.SQLConnectError, e:
             self.error_msg("Could not connect to the database. %s" % e)
             sys.exit(1)
+
 
     def dump_to(self, path):
         """Dump NCC XML data about subscriptions, products and repos
@@ -229,6 +261,9 @@ class NCCSync(object):
         :document: file descriptor of an XML document from NCC
 
         """
+        if not url:
+            return []
+
         # trivial case: no credentials are used
         if self.fromdir:
             return [(0, self._get_ncc(url, send))]
@@ -292,12 +327,17 @@ class NCCSync(object):
         """
         self.print_msg("Downloading Subscription information...")
         xmls = self._multi_get_ncc_xml(self.ncc_url_subs, self.subs_req)
+        cache_sub = None #self._parse_ncc_xml('<?xml version="1.0" encoding="UTF-8"?><productdata xmlns="http://www.novell.com/xml/center/regsvc-1_0"/>')
         subscriptions = []
         # iterate through all the xml documents we got from NCC and then
         # through the individual subscriptions in those documents,
         # adding all the matching subscriptions to a flat list
         for (user_id, xml) in xmls:
+            if user_id == '0':
+                cache_sub = xml
             for row in xml.findall('{%s}subscription' % self.namespace):
+                if self.is_iss_master and int(user_id) > 0:
+                    cache_sub.append(row)
                 subscription = {}
                 for col in row.getchildren():
                     dummy = col.tag.split( '}' )
@@ -307,6 +347,9 @@ class NCCSync(object):
 
         self.print_msg("Found %d subscriptions using %d mirror credentials."
                        % (len(subscriptions), len(xmls)))
+
+        with io.FileIO(MASTER_CACHE_LOCATION+'subscriptions.xml', 'w') as f:
+            f.write(etree.tostring(cache_sub, encoding="UTF-8"))
 
         return subscriptions
 
@@ -394,6 +437,10 @@ class NCCSync(object):
         suse_products = []
         product_ids = set()
         for (user_id, productdata) in xmls:
+            if user_id == '0':
+                # always the same for all users. So we need to write it only once.
+                with io.FileIO(MASTER_CACHE_LOCATION+'productdata.xml', 'w') as f:
+                    f.write(etree.tostring(productdata, encoding="UTF-8"))
             for row in productdata:
                 if row.tag == ("{%s}row" % self.namespace):
                     suseProduct = {}
