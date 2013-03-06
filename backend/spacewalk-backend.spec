@@ -302,6 +302,7 @@ Requires: %{name}
 Requires: spacewalk-certs-tools
 Requires: spacewalk-admin >= 0.1.1-0
 Requires: python-gzipstream
+Requires: susemanager-tools
 %if 0%{?suse_version}
 Requires: python-base
 %else
@@ -523,6 +524,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/rhnUser.py*
 %{pythonrhnroot}/server/rhnVirtualization.py*
 %{pythonrhnroot}/server/taskomatic.py*
+%{pythonrhnroot}/server/mgrSync.py*
 %dir %{pythonrhnroot}/server/rhnServer
 %{pythonrhnroot}/server/rhnServer/*
 %dir %{pythonrhnroot}/server/importlib
@@ -572,6 +574,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{rhnroot}/wsgi/sat_dump.py*
 %{rhnroot}/wsgi/xmlrpc.py*
 %{rhnroot}/wsgi/xp.py*
+%{rhnroot}/wsgi/mgr.py*
 
 # logs and other stuff
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-server
