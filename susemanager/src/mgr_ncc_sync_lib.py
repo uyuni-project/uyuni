@@ -1072,6 +1072,12 @@ class NCCSync(object):
         to be synced with a custom tool or act as parent channels.
 
         """
+        if self.is_iss_slave:
+            # sync must happen with satellite-sync
+            # return here without doing something
+            self.print_msg("For syncing channels, please use the \"satellite-sync\" command.")
+            return
+
         self.print_msg("Scheduling repo sync for all installed channels...")
 
         query = rhnSQL.prepare("SELECT c.label "
@@ -1636,6 +1642,10 @@ class NCCSync(object):
 
     def update_channels(self):
         """Update channel information in the database"""
+        if self.is_iss_slave:
+            # we sync from another SUSE Manager. Nothing todo here
+            return
+
         channels_xml = {}
         for c in etree.parse(CHANNELS).getroot():
             udt = c.get('update_tag')
