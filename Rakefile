@@ -55,6 +55,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/systemspage2.feature
                      features/xmlrpc_system.feature
                      features/delete_system_profile.feature
+                     features/ssh_push.feature
                      features/delete_config_channel.feature
                      features/users-deleteuser1.feature
                      features/xmlrpc_api.feature

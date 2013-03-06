@@ -107,3 +107,10 @@ When /^I copy "([^"]*)"$/ do |arg1|
     end
 end
 
+When /^I copy to server "([^"]*)"$/ do |arg1|
+    user = "root@"
+    $sshout = `echo | scp -o StrictHostKeyChecking=no #{arg1} #{user}hoag: 2>&1`
+    if ! $?.success?
+        raise "Execute command failed: #{$!}: #{$sshout}"
+    end
+end
