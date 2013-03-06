@@ -112,12 +112,3 @@ class DatabaseTester
 
 end
 
-
-# Local execution only
-if __FILE__ == $0
-  orasysdate = (DatabaseTester.new("hoag.suse.de").get_oracle_conn("spacewalk", 
-                                                                  "spacewalk", "xe").test_select_sysdate != nil)
-  pigsysdate = (DatabaseTester.new("sat.suse.de").get_postgres_conn("spaceuser", 
-                                                                    "spacepassword", "spaceschema").test_select_sysdate != nil)
-  puts "Result: " + ((orasysdate or pigsysdate) ? "SUCCESS" : "FALSE")
-end

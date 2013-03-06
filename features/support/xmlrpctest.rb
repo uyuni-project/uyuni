@@ -40,14 +40,3 @@ class XMLRPCBaseTest
   end
 end
 
-
-# Local execution only
-if __FILE__ == $0
-  test = XMLRPCApiTest.new("hoag.suse.de")
-  if test.getVersion("10.15")
-    puts "yeeaaa!!!"
-  else
-    puts ":-("
-  end
-end
-
