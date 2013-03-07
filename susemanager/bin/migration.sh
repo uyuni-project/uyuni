@@ -525,6 +525,7 @@ do_setup() {
         echo -n "NCC_USER="           ; read NCC_USER
         echo -n "NCC_PASS="           ; read NCC_PASS
         echo -n "NCC_EMAIL="          ; read NCC_EMAIL
+        echo -n "ISS_PARENT="         ; read ISS_PARENT
     fi;
     if [ -z "$SYS_DB_PASS" ]; then
         SYS_DB_PASS=`dd if=/dev/urandom bs=16 count=4 2> /dev/null | md5sum | cut -b 1-8`
@@ -553,6 +554,18 @@ do_setup() {
     cp /usr/share/syslinux/pxelinux.0 /srv/tftpboot/
 
     setup_spacewalk
+
+    if [ -n "$ISS_PARENT" ]; then
+        if ! egrep "^iss_parent[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
+            echo "iss_parent = $ISS_PARENT" >> /etc/rhn/rhn.conf
+        else
+            sed -i "s!^iss_parent[[:space:]]*=.*!iss_parent = $ISS_PARENT!" /etc/rhn/rhn.conf
+        fi
+        sed -i "s!^disable_iss[[:space:]]*=.*!disable_iss=0!" /etc/rhn/rhn.conf
+        curl -s -S -o /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT "http://$ISS_PARENT/pub/RHN-ORG-TRUSTED-SSL-CERT"
+        ln -s /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT /etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem
+        c_rehash /etc/ssl/certs/ >/dev/null
+    fi
 }
 
 for p in $@; do
