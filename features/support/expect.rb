@@ -10,35 +10,33 @@ class ExpectFileGenerator
   # Constructor.
   #
   def initialize(host, bootstrap)
-    @host = host
-    if !@host
-      raise Exception, "Hostname is missing!"
+    raise(ArgumentError, "Hostname is missing!") if host.nil? || host.empty?
+    Tempfile.open('push-registration.expect') do |f|
+      @file = f
+      f.write("spawn spacewalk-push-register " + host + " " + bootstrap + "\n")
+      f.write("expect \"Are you sure you want to continue connecting (yes/no)?\"\n")
+      f.write("send \"yes\\r\"\n")
+      f.write("expect \"Password:\"\n")
+      f.write("send \"linux\\r\"\n")
+      f.write("expect eof")
     end
-    @file = Tempfile.new('push-registration.expect')
-    @file.write("spawn spacewalk-push-register " + host + " " + bootstrap + "\n")
-    @file.write("expect \"Are you sure you want to continue connecting (yes/no)?\"\n")
-    @file.write("send \"yes\\r\"\n")
-    @file.write("expect \"Password:\"\n")
-    @file.write("send \"linux\\r\"\n")
-    @file.write("expect eof")
-    @file.close
   end
 
   # Return the file path.
   #
-  def getPath()
-    return @file.path;
+  def path
+    @file.path
   end
 
   # Return the file name.
   #
-  def getFilename()
-    return File.basename(getPath());
+  def filename
+    File.basename(path)
   end
 
   # Delete the file.
   #
-  def delete()
+  def delete
     @file.unlink
   end
 end
