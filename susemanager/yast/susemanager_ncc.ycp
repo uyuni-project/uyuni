@@ -13,10 +13,14 @@
     map args = GetInstArgs::argmap ();
     any ret = `auto;
 
+    map display_info    = UI::GetDisplayInfo ();
+    boolean text_mode   = display_info["TextMode"]:false;
+
     map<string,string> settings	= $[
 	"NCC_USER"	: "",
 	"NCC_PASS"	: "",
-	"NCC_EMAIL"	: ""
+	"NCC_EMAIL"	: "",
+        "ISS_PARENT"    : ""
     ];
 
     any log_view_ID = nil;
@@ -42,7 +46,10 @@
 
 	string user = settings["NCC_USER"]:"";
 	string pass = settings["NCC_PASS"]:"";
-	string url  = "https://nu.novell.com/";
+        string serv = settings["ISS_PARENT"]:"";
+        if (serv == "")
+            serv = "nu.novell.com";
+        string url  = sformat("https://%1/", serv);
 
 	// File for writing the credentials
 	string test_file = Directory::tmpdir + "/curl_input_file";
@@ -108,12 +115,16 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
 	if (! (boolean) SCR::UnregisterAgent (.curlTempFile)) {
 	    y2error ("Cannot unregister agent");
 	}
+	string insecure = "";
+        if (serv != "nu.novell.com")
+            insecure = "--insecure";
 
 	// TRANSLATORS: LogView line
-	LogThis (_("Downloading list of available repositories..."));
+	LogThis (sformat(_("Downloading list of available repositories from %1..."), url));
 	map cmd = (map) SCR::Execute (
 	    .target.bash_output,
-	    sformat ("/usr/bin/curl --silent --config '%1' > '%2'", String::Quote (test_file), String::Quote (out_file))
+	    sformat ("/usr/bin/curl %1 --silent --config '%2' > '%3'", String::Quote (insecure),
+                     String::Quote (test_file), String::Quote (out_file))
 	);
 	if (cmd["exit"]:-1 != 0) {
 	    // TRANSLATORS: LogView line
@@ -130,7 +141,7 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
 	LogThis (_("Checking list of downloaded repositories..."));
 	cmd = (map) SCR::Execute (
 	    .target.bash_output,
-	    sformat ("/usr/bin/grep '<[\t ]*repo[\t ]' '%1'", String::Quote (out_file))
+	    sformat ("/usr/bin/grep '<[\t ]*repoindex' '%1'", String::Quote (out_file))
 	);
 
 	if (cmd["exit"]:-1 != 0) {
@@ -187,7 +198,9 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
 	// text entry label
 	"NCC_PASS"	: _("NCC Mirror Credentials Password"),
 	// text entry label
-	"NCC_EMAIL"	: _("NCC E-mail Address")
+	"NCC_EMAIL"	: _("NCC E-mail Address"),
+	// text entry label
+	"ISS_PARENT"    : _("Parent Server Name")
     ];
 
     string env_file	= Directory::tmpdir + "/env_ncc";
@@ -208,18 +221,31 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
     });
 
     term contents = `HBox (`HSpacing (1), `VBox (
-	// text entry label
-	`InputField (`id ("NCC_USER"), `opt (`hstretch), _("NCC Mirror Credentials &Username"),
-	    settings["NCC_USER"]:""),
-	// text entry label
-	`Password (`id ("NCC_PASS"), `opt (`hstretch), _("NCC Mirror Credentials &Password"),
-	    settings["NCC_PASS"]:""),
-	// text entry label
-	`InputField (`id ("NCC_EMAIL"), `opt (`hstretch), _("NCC &E-mail Address"),
-	    settings["NCC_EMAIL"]:""),
-	`VSpacing (),
-	`PushButton (`id ("test_NU_credentials"), `opt(`key_F6), _("&Test...")),
-	`VSpacing (0.5)
+        `RadioButtonGroup (`id(`rb), `Frame ("", `HBox (`HSpacing (0.2), `VBox (
+            `VSpacing (0.4),
+            `Left (`RadioButton(`id(`ncc), `opt (`notify),
+                // radio button label
+                _("Connect to NCC"), settings["ISS_PARENT"]:"" == "")),
+            text_mode ? `Empty () : `VSpacing (),
+            `Left ( `RadioButton(`id(`iss), `opt (`notify),
+                // radio button label
+                _("Connect to SUSE Manager for inter-server sync"), settings["ISS_PARENT"]:"" != "")),
+            `HBox (`HSpacing (4),
+                   // text entry label
+                   `InputField (`id ("ISS_PARENT"), `opt (`hstretch), _("Parent &Server Name"), settings["ISS_PARENT"]:""))
+            )))),
+        // text entry label
+        `InputField (`id ("NCC_USER"), `opt (`hstretch), _("NCC Mirror Credentials &Username"),
+            settings["NCC_USER"]:""),
+        // text entry label
+        `Password (`id ("NCC_PASS"), `opt (`hstretch), _("NCC Mirror Credentials &Password"),
+            settings["NCC_PASS"]:""),
+        // text entry label
+        `InputField (`id ("NCC_EMAIL"), `opt (`hstretch), _("NCC &E-mail Address"),
+            settings["NCC_EMAIL"]:""),
+        `VSpacing (),
+        `PushButton (`id ("test_NU_credentials"), `opt(`key_F6), _("&Test...")),
+        `VSpacing (0.5)
     ), `HSpacing (1));
 
     // help text
@@ -227,66 +253,82 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
 
     // dialog caption
     Wizard::SetContents (_("NCC Settings"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
-    UI::SetFocus (`id ("NCC_USER"));
+    UI::SetFocus (`ncc);
+    UI::ChangeWidget (`id ("ISS_PARENT"), `Enabled, false);
 
     while (true)
     {
-	ret	= UI::UserInput ();
-	if (ret == `back)
-	{
-	    break;
-	}
-	if (ret == `abort && Popup::ConfirmAbort(`incomplete))
-	{
-	    break;
-	}
-	if (ret == "test_NU_credentials" || ret == `next)
-	{
-	    boolean missing	= false;
-	    foreach (string key, string value, settings, {
-		string val	= (string) UI::QueryWidget (`id (key), `Value);
-		if (val == "")
-		{
-		    string label	= labels[key]:key;
-		    // error label
-		    Popup::Error (sformat (_("The value of '%1' is empty."), label));
-		    UI::SetFocus (`id (key));
-		    missing	= true;
-		    break;
-		}
-		else
-		{
-		    settings[key]	= val;
-		}
-	    });
-	    if (missing)
-	    {
-		ret	= `not_next;
-		continue;
-	    }
-	}
-	if (ret == "test_NU_credentials")
-	{
-	    TestCredentials();
-	}
-	if (ret == `next)
-	{
-	    string email	= (string) UI::QueryWidget (`id ("NCC_EMAIL"), `Value);
-	    if (!issubstring (email, "@"))
-	    {
-		// error popup
-		Popup::Error (_("The E-mail Address is not valid."));
-		UI::SetFocus (`id ("NCC_EMAIL"));
-		continue;
-	    }
-	    foreach (string key, string value, settings, {
-		string val	= (string) UI::QueryWidget (`id (key), `Value);
-		setenv (key, val, true);
-		SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", key, val, env_file));
-	    });
+        ret     = UI::UserInput ();
+        if (ret == `ncc || ret == `iss)
+        {
+            settings["ISS_PARENT"] = "";
+            UI::ChangeWidget (`id ("ISS_PARENT"), `Enabled, ret == `iss);
+        }
+        if (ret == `back)
+        {
+            break;
+        }
+        if (ret == `abort && Popup::ConfirmAbort(`incomplete))
+        {
+            break;
+        }
+        if (ret == "test_NU_credentials" || ret == `next)
+        {
+            boolean missing     = false;
+            foreach (string key, string value, settings, {
+                string val      = (string) UI::QueryWidget (`id (key), `Value);
+                if ( key == "ISS_PARENT")
+                {
+                    boolean nccconnect = UI::QueryWidget (`id (`rb), `CurrentButton) == `ncc;
+                    if (nccconnect)
+                    {
+                        settings[key]       = "";
+                        UI::ChangeWidget (`id ("ISS_PARENT"), `Value, "");
+                        continue;
+                    }
+                }
+                if (val == "")
+                {
+                    string label        = labels[key]:key;
+                    // error label
+                    Popup::Error (sformat (_("The value of '%1' is empty."), label));
+                    UI::SetFocus (`id (key));
+                    missing     = true;
+                    break;
+                }
+                else
+                {
+                    settings[key]       = val;
+                }
+            });
+            if (missing)
+            {
+                ret     = `not_next;
+                continue;
+            }
+        }
+        if (ret == "test_NU_credentials")
+        {
+            TestCredentials();
+        }
+        if (ret == `next)
+        {
+            string email        = (string) UI::QueryWidget (`id ("NCC_EMAIL"), `Value);
+            if (!issubstring (email, "@"))
+            {
+                // error popup
+                Popup::Error (_("The E-mail Address is not valid."));
+                UI::SetFocus (`id ("NCC_EMAIL"));
+                continue;
+            }
+            foreach (string key, string value, settings, {
+                string val      = (string) UI::QueryWidget (`id (key), `Value);
+                setenv (key, val, true);
+                SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", key, val, env_file));
+            });
 
-	    break;
-	}
+            break;
+        }
     }
 
     return ret;
