@@ -389,7 +389,7 @@ def sendMail(forceEmail=0):
         if body:
             print _("+++ sending log as an email +++")
             headers = {
-                'Subject' : _('RHN Management Satellite sync. report from %s') % idn_pune_to_unicode(os.uname()[1]),
+                'Subject' : _('SUSE Manager Inter Server sync. report from %s') % idn_pune_to_unicode(os.uname()[1]),
             }
             sndr = CFG.get('traceback_mail', 'root@localhost')
             rhnMail.send(headers, body, sender=sndr)
@@ -457,7 +457,7 @@ class Syncer:
 
         # Sync from filesystem:
         if self.mountpoint:
-            log(1, [_('Red Hat Network Satellite - file-system synchronization'),
+            log(1, [_('SUSE Manager Server - file-system synchronization'),
                     '   mp:  %s' % self.mountpoint])
             self.xmlDataServer = xmlDiskSource.MetadataDiskSource(self.mountpoint)
         # Sync across the wire:
@@ -477,7 +477,7 @@ class Syncer:
                 sys.exit(1)
 
             url = self.xmlDataServer.schemeAndUrl(sync_parent)
-            log(1, [_('Red Hat Network Satellite - live synchronization'),
+            log(1, [_('SUSE Manager Server - live synchronization'),
                     _('   url: %s') % url,
                     _('   debug/output level: %s') % CFG.DEBUG])
             self.xmlDataServer.setServerHandler(isIss=is_iss)
@@ -489,7 +489,7 @@ class Syncer:
                     and os.access(self._systemidPath, os.R_OK)):
                     self.systemid = open(self._systemidPath, 'rb').read()
                 else:
-                    raise RhnSyncException, _('ERROR: this server must be registered with RHN.'), sys.exc_info()[2]
+                    raise RhnSyncException, _('ERROR: this server must be registered with SUSE Manager.'), sys.exc_info()[2]
             # authorization check of the satellite
             auth = xmlWireSource.AuthWireSource(self.systemid, self.sslYN,
                                                 self.xml_dump_version)
@@ -573,7 +573,7 @@ class Syncer:
                 cert = row['cert']
                 store_cert = False
         else:
-            log2(1, 3, ["", _("RHN Entitlement Certificate sync")])
+            log2(1, 3, ["", _("Entitlement Certificate sync")])
             certSource = xmlWireSource.CertWireSource(self.systemid, self.sslYN,
                                                       self.xml_dump_version)
             cert = string.strip(certSource.download())
@@ -590,7 +590,7 @@ class Syncer:
             sat_cert.load(cert)
         except satellite_cert.ParseException:
             # XXX figure out what to do
-            raise RhnSyncException(_("Error parsing the satellite cert")), None, sys.exc_info()[2]
+            raise RhnSyncException(_("Error parsing the entitlement cert")), None, sys.exc_info()[2]
 
         # Compare certificate generation - should match the stream's
         generation = rhnFlags.get('stream-generation')
@@ -598,7 +598,7 @@ class Syncer:
             raise RhnSyncException(_("""\
 Unable to import certificate:
 channel dump generation %s incompatible with cert generation %s.
-Please contact your RHN representative""") % (generation, sat_cert.generation))
+Please contact your administrator""") % (generation, sat_cert.generation))
 
 
         satCerts.set_slots_from_cert(sat_cert, testonly=True)
@@ -629,7 +629,7 @@ Please contact your RHN representative""") % (generation, sat_cert.generation))
             fileutils.rotateFile(_DEFAULT_RHN_ENTITLEMENT_CERT_BACKUP, depth=5)
             open(_DEFAULT_RHN_ENTITLEMENT_CERT_BACKUP, 'wb').write(cert)
 
-        log2(1, 3, _("RHN Entitlement Certificate sync complete"))
+        log2(1, 3, _("Entitlement Certificate sync complete"))
 
     def processChannelFamilies(self):
         self._process_simple("getChannelFamilyXmlStream", "channel-families")
@@ -1501,7 +1501,7 @@ Please contact your RHN representative""") % (generation, sat_cert.generation))
                 # No unique key information, so assume we need all errata
                 erratum_ids = channel_obj['errata']
                 errata = map(lambda x: (x, None, None), erratum_ids)
-                log(2, _("Grabbing all errata for channel %s") % chn)
+                log(2, _("Grabbing all patches for channel %s") % chn)
             else:
                 errata = []
                 # Check the advisory name and last modification
@@ -1551,9 +1551,9 @@ Please contact your RHN representative""") % (generation, sat_cert.generation))
                     ch_erratum_ids.append((eid, timestamp, advisory_name))
 
     def download_errata(self):
-        log(1, ["", _("Downloading errata data")])
+        log(1, ["", _("Downloading patch data")])
         if self.forceAllErrata:
-            log(2, _("Forcing download of all errata data for requested channels."))
+            log(2, _("Forcing download of all patch data for requested channels."))
         self._diff_errata()
         not_cached_errata = self._compute_not_cached_errata()
         stream_loader = StreamProducer(
@@ -1568,7 +1568,7 @@ Please contact your RHN representative""") % (generation, sat_cert.generation))
         # XXX This step should go away once the channel info contains the
         # errata timestamps and advisory names
         self._diff_db_errata()
-        log(1, _("Downloading errata data complete"))
+        log(1, _("Downloading patch data complete"))
 
     # __private methods__
     def _processWithProgressBar(self, batch, size,
@@ -1690,11 +1690,11 @@ Please contact your RHN representative""") % (generation, sat_cert.generation))
         return batch
 
     def import_errata(self):
-        log(1, ["", _("Importing channel errata")])
+        log(1, ["", _("Importing channel patches")])
         errata_collection = sync_handlers.ErrataCollection()
         sorted_channels = sorted(self._missing_channel_errata.items(), key=lambda x: x[0]) # sort by channel_label
         for chn, errata in sorted_channels:
-            log(2, _("Importing %s errata for channel %s.") % (len(errata), chn))
+            log(2, _("Importing %s patches for channel %s.") % (len(errata), chn))
             batch = []
             for eid, timestamp, advisory_name in errata:
                 erratum = errata_collection.get_erratum(eid, timestamp)
@@ -2144,7 +2144,7 @@ def processCommandline():
         Option(     '--email',               action='store_true',
             help=_('e-mail a report of what was synced/imported')),
         Option(     '--force-all-errata',  action='store_true',
-            help=_('forcibly process all (not a diff of) errata metadata')),
+            help=_('forcibly process all (not a diff of) patch metadata')),
         Option(     '--force-all-packages',  action='store_true',
             help=_('forcibly process all (not a diff of) package metadata')),
         Option(     '--http-proxy',          action='store',
@@ -2154,15 +2154,15 @@ def processCommandline():
         Option(     '--http-proxy-password', action='store',
             help=_('alternative http proxy password')),
         Option(     '--iss-parent',             action='store',
-            help=_('parent satellite to import content from')),
+            help=_('parent SUSE Manager server to import content from')),
         Option('-l','--list-channels',       action='store_true',
             help=_('list all available channels and exit')),
         Option(     '--list-error-codes',         action='store_true',
-            help=_("help on all error codes satellite-sync returns")),
+            help=_("help on all error codes mgr-inter-sync returns")),
         Option('-m','--mount-point',         action='store',
             help=_('source mount point for import - disk update only')),
         Option(     '--no-errata',           action='store_true',
-            help=_('do not process errata data')),
+            help=_('do not process patch data')),
         Option(     '--no-kickstarts',       action='store_true',
             help=_('do not process kickstart data (provisioning only)')),
         Option(     '--no-packages',         action='store_true',
@@ -2176,7 +2176,7 @@ def processCommandline():
         Option('-p','--print-configuration', action='store_true',
             help=_('print the configuration and exit')),
         Option(     '--rhn-cert',            action='store',
-            help=_('satellite certificate to import ') +
+            help=_('entitlement certificate to import ') +
                  _('(use with --mount-point only)')),
         Option('-s','--server',              action='store',
             help=_('alternative server with which to connect (hostname)')),
@@ -2316,7 +2316,7 @@ def processCommandline():
 
     if not channels:
         if actionDict['channels'] and not actionDict['list-channels']:
-            msg = _("ERROR: No channels currently imported; try satellite-sync --list-channels; then satellite-sync -c chn0 -c chn1...")
+            msg = _("ERROR: No channels currently imported; try mgr-inter-sync --list-channels; then mgr-inter-sync -c chn0 -c chn1...")
             log2disk(-1, msg)
             log2stderr(-1, msg, cleanYN=1)
             sys.exit(0)
@@ -2396,11 +2396,11 @@ def processCommandline():
         msg = [_("Error Codes: Returned codes means:"),
               _(" -1  - Could not lock file or KeyboardInterrupt or SystemExit"),
               _("  0  - User interrupted or intentional exit"),
-              _("  1  - attempting to run more than one instance of satellite-sync."),
+              _("  1  - attempting to run more than one instance of mgr-inter-sync."),
               _("  2  - Unable to find synchronization tools."),
               _("  3  - a general socket exception occurred"),
               _("  4  - an SSL error occurred. Recheck your SSL settings."),
-              _("  5  - RHN error"),
+              _("  5  - ISS error"),
               _("  6  - unhandled exception occurred"),
               _("  7  - unknown sync error"),
               _("  8  - ERROR: must be root to execute"),
@@ -2412,7 +2412,7 @@ def processCommandline():
               _("  14 - SQL error during linking channel packages"),
               _("  15 - SQL error during xml processing"),
               _("  16 - server.mount_point not set in the configuration file"),
-              _("  17 - SQL error during retrieving the channels already imported in the satellite's database"),
+              _("  17 - SQL error during retrieving the channels already imported in the SUSE Manager database"),
               _("  18 - Wrong db connection string in rhn.conf"),
               _("  19 - Bad arguments"),
               _("  20 - Could not connect to db."),
