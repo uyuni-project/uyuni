@@ -78,26 +78,26 @@ def main():
                                       fromdir=options.fromdir)
     if options.list:
         if syncer.is_iss_slave:
-            print "SUSE Manager is configured as slave server. Please use \"satellite-sync\" command."
+            print "SUSE Manager is configured as slave server. Please use \"mgr-inter-sync\" command."
             return
         clist = syncer.list_channels()
         display_channel_list(clist, allchilds=options.allchilds, filter=options.filter, noopt=options.noopt)
     elif options.productlist:
         if syncer.is_iss_slave:
-            print "SUSE Manager is configured as slave server. Please use \"satellite-sync\" command."
+            print "SUSE Manager is configured as slave server. Please use \"mgr-inter-sync\" command."
             return
         ret = syncer.list_products()
         product_list(ret, allchilds=options.allchilds, filter=options.filter)
     elif options.addproduct:
         if syncer.is_iss_slave:
-            print "SUSE Manager is configured as slave server. Please use \"satellite-sync\" command."
+            print "SUSE Manager is configured as slave server. Please use \"mgr-inter-sync\" command."
             return
         plist = syncer.list_products()
         cache = product_list(plist, allchilds=options.allchilds, filter=options.filter)
         add_product(syncer, plist, cache)
     elif options.productlistxml:
         if syncer.is_iss_slave:
-            print "SUSE Manager is configured as slave server. Please use \"satellite-sync\" command."
+            print "SUSE Manager is configured as slave server. Please use \"mgr-inter-sync\" command."
             return
         ret = syncer.list_products()
         root = etree.Element('product_list')
@@ -108,7 +108,7 @@ def main():
         syncer.dump_to(options.dumppath)
     elif options.channel:
         if syncer.is_iss_slave:
-            print "SUSE Manager is configured as slave server. Please use \"satellite-sync\" command."
+            print "SUSE Manager is configured as slave server. Please use \"mgr-inter-sync\" command."
             return
         syncer.update_channels()
         syncer.add_channel(options.channel)

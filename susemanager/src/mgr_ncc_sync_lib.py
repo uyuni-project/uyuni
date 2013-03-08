@@ -1073,9 +1073,9 @@ class NCCSync(object):
 
         """
         if self.is_iss_slave:
-            # sync must happen with satellite-sync
+            # sync must happen with mgr-inter-sync
             # return here without doing something
-            self.print_msg("For syncing channels, please use the \"satellite-sync\" command.")
+            self.print_msg("For syncing channels, please use the \"mgr-inter-sync\" command.")
             return
 
         self.print_msg("Scheduling repo sync for all installed channels...")
