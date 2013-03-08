@@ -78,6 +78,6 @@ INSERT INTO rhnTaskoTask (id, name, class)
          VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'cleanup-packagechangelog-data', 'com.redhat.rhn.taskomatic.task.ChangeLogCleanUp');
 
 INSERT INTO rhnTaskoTask (id, name, class)
-         VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'ssh-server-push', 'com.redhat.rhn.taskomatic.task.SSHServerPush');
+         VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'ssh-push', 'com.redhat.rhn.taskomatic.task.SSHServerPush');
 
 commit;

@@ -16,14 +16,14 @@ package com.redhat.rhn.taskomatic.task;
 
 import org.apache.log4j.Logger;
 
-import com.redhat.rhn.taskomatic.task.serverpush.SSHServerPushDriver;
+import com.redhat.rhn.taskomatic.task.sshpush.SSHPushDriver;
 
 /**
  * Call rhn_check on relevant systems via SSH using remote port forwarding.
  */
-public class SSHServerPush extends RhnQueueJob {
+public class SSHPush extends RhnQueueJob {
 
-    public static final String QUEUE_NAME = "ssh_server_push";
+    public static final String QUEUE_NAME = "ssh_push";
     private static Logger log = null;
 
     /**
@@ -32,7 +32,7 @@ public class SSHServerPush extends RhnQueueJob {
     @Override
     protected Logger getLogger() {
         if (log == null) {
-            log = Logger.getLogger(SSHServerPush.class);
+            log = Logger.getLogger(SSHPush.class);
         }
         return log;
     }
@@ -42,7 +42,7 @@ public class SSHServerPush extends RhnQueueJob {
      */
     @Override
     protected Class<?> getDriverClass() {
-        return SSHServerPushDriver.class;
+        return SSHPushDriver.class;
     }
 
     /**

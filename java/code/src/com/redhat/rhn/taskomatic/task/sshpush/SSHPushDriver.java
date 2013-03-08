@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.taskomatic.task.serverpush;
+package com.redhat.rhn.taskomatic.task.sshpush;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -35,13 +35,13 @@ import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 /**
  * Call rhn_check on relevant systems via SSH using remote port forwarding.
  */
-public class SSHServerPushDriver implements QueueDriver {
+public class SSHPushDriver implements QueueDriver {
 
     private static final String WORKER_THREADS_KEY = "taskomatic.ssh_server_push_workers";
     private static final String PORT_HTTPS_KEY = "server_push_port_https";
-    private static final String JOB_LABEL = "ssh-server-push-default";
+    private static final String JOB_LABEL = "ssh-push-default";
 
-    // Logger passed in from the Job class (SSHServerPush)
+    // Logger passed in from the Job class (SSHPush)
     private Logger log;
 
     // Port number to use for remote port forwarding
@@ -54,7 +54,7 @@ public class SSHServerPushDriver implements QueueDriver {
     private double stddev;
 
     // Properties used to determine when to look for checkin candidates
-    private int checkInterval = SSHServerPushUtils.CHECK_INTERVAL;
+    private int checkInterval = SSHPushUtils.CHECK_INTERVAL;
     private int moduloRemainder;
 
     /**
@@ -65,7 +65,7 @@ public class SSHServerPushDriver implements QueueDriver {
         // Read the remote port for SSH tunneling from config
         remotePort = Config.get().getInt(PORT_HTTPS_KEY);
         if (log.isDebugEnabled()) {
-            log.debug("SSHServerPushDriver will use port " + remotePort);
+            log.debug("SSHPushDriver will use port " + remotePort);
         }
 
         // Init random checkin threshold generation
@@ -77,7 +77,7 @@ public class SSHServerPushDriver implements QueueDriver {
         stddev = thresholdMax / 6;
 
         // Randomly select a modulo remainder
-        moduloRemainder = SSHServerPushUtils.nextRandom(0, checkInterval - 1);
+        moduloRemainder = SSHPushUtils.nextRandom(0, checkInterval - 1);
         if (log.isDebugEnabled()) {
             log.debug("We will look for checkin candidates every " + checkInterval +
                     " minutes (remainder = " + moduloRemainder + ")");
@@ -88,9 +88,9 @@ public class SSHServerPushDriver implements QueueDriver {
      * {@inheritDoc}
      */
     @Override
-    public List<SSHServerPushSystem> getCandidates() {
+    public List<SSHPushSystem> getCandidates() {
         // Find systems with actions scheduled
-        List<SSHServerPushSystem> candidates = getCandidateSystems();
+        List<SSHPushSystem> candidates = getCandidateSystems();
 
         // Look for checkin candidates every <moduloDivisor> minutes
         Calendar cal = Calendar.getInstance();
@@ -101,13 +101,13 @@ public class SSHServerPushDriver implements QueueDriver {
 
         if (!isDefaultSchedule() || currentMinutes % checkInterval == moduloRemainder) {
             long currentTimestamp = cal.getTime().getTime() / 1000;
-            for (SSHServerPushSystem s : getCheckinCandidates()) {
+            for (SSHPushSystem s : getCheckinCandidates()) {
                 // Last checkin timestamp in seconds
                 long lastCheckin = s.getLastCheckin().getTime() / 1000;
 
                 // Determine random threshold in [t/2,t] using t as the mean and stddev
                 // as defined above.
-                long randomThreshold = SSHServerPushUtils.getRandomThreshold(
+                long randomThreshold = SSHPushUtils.getRandomThreshold(
                         mean, stddev, thresholdMin, thresholdMax);
                 long compareValue = currentTimestamp - randomThreshold;
 
@@ -115,7 +115,7 @@ public class SSHServerPushDriver implements QueueDriver {
                     log.debug("Candidate --> " + s.getName());
                     log.debug("Last checkin: " + s.getLastCheckin().toString());
                     log.debug("Random threshold (hours): " +
-                            SSHServerPushUtils.toHours(randomThreshold));
+                            SSHPushUtils.toHours(randomThreshold));
                 }
 
                 // Do not add candidates twice
@@ -139,8 +139,8 @@ public class SSHServerPushDriver implements QueueDriver {
      */
     @Override
     public QueueWorker makeWorker(Object item) {
-        SSHServerPushSystem system = (SSHServerPushSystem) item;
-        return new SSHServerPushWorker(getLogger(), remotePort, system);
+        SSHPushSystem system = (SSHPushSystem) item;
+        return new SSHPushWorker(getLogger(), remotePort, system);
     }
 
     /**
@@ -181,9 +181,9 @@ public class SSHServerPushDriver implements QueueDriver {
      * @return list of candidates with actions scheduled
      */
     @SuppressWarnings("unchecked")
-    private DataResult<SSHServerPushSystem> getCandidateSystems() {
+    private DataResult<SSHPushSystem> getCandidateSystems() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
-                TaskConstants.TASK_QUERY_SSH_SERVER_PUSH_FIND_CANDIDATES);
+                TaskConstants.TASK_QUERY_SSH_PUSH_FIND_CANDIDATES);
         return select.execute();
     }
 
@@ -193,9 +193,9 @@ public class SSHServerPushDriver implements QueueDriver {
      * @return list of checkin candidates
      */
     @SuppressWarnings("unchecked")
-    private DataResult<SSHServerPushSystem> getCheckinCandidates() {
+    private DataResult<SSHPushSystem> getCheckinCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
-                TaskConstants.TASK_QUERY_SSH_SERVER_PUSH_FIND_CHECKIN_CANDIDATES);
+                TaskConstants.TASK_QUERY_SSH_PUSH_FIND_CHECKIN_CANDIDATES);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("checkin_threshold", thresholdMin);
         return select.execute(params);

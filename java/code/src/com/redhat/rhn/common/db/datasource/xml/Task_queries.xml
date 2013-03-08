@@ -740,7 +740,7 @@ where rhnChannelErrata.errata_id = rhnErrataPackage.errata_id
   </query>
 </write-mode>
 
-<mode name="ssh_server_push_find_candidates" class="com.redhat.rhn.taskomatic.task.serverpush.SSHServerPushSystem">
+<mode name="ssh_push_find_candidates" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem">
   <query>
 SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, max(a.earliest_action) as earliest_action
   FROM rhnServer s
@@ -756,7 +756,7 @@ SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, max(a.earliest_
   </query>
 </mode>
 
-<mode name="ssh_server_push_find_checkin_candidates" class="com.redhat.rhn.taskomatic.task.serverpush.SSHServerPushSystem">
+<mode name="ssh_push_find_checkin_candidates" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem">
   <query params="checkin_threshold">
 SELECT s.id,
        s.name,
