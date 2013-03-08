@@ -11,23 +11,23 @@
 
 -- Insert task and map to the Java class
 INSERT INTO rhnTaskoTask (id, name, class)
-    VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'ssh-server-push',
-        'com.redhat.rhn.taskomatic.task.SSHServerPush');
+    VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'ssh-push',
+        'com.redhat.rhn.taskomatic.task.SSHPush');
 
 -- Insert bunch
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
-    VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'ssh-server-push-bunch',
+    VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'ssh-push-bunch',
         'Push scheduled actions to clients via ssh', null);
 
 -- Insert template
 INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
     VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
-        (SELECT id FROM rhnTaskoBunch WHERE name='ssh-server-push-bunch'),
-        (SELECT id FROM rhnTaskoTask WHERE name='ssh-server-push'),
+        (SELECT id FROM rhnTaskoBunch WHERE name='ssh-push-bunch'),
+        (SELECT id FROM rhnTaskoTask WHERE name='ssh-push'),
         0, null);
 
 -- Insert schedule for task (run once every minute)
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
-    VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'ssh-server-push-default',
-        (SELECT id FROM rhnTaskoBunch WHERE name='ssh-server-push-bunch'),
+    VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'ssh-push-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='ssh-push-bunch'),
         current_timestamp, '0 * * * * ?');

@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.taskomatic.task.serverpush;
+package com.redhat.rhn.taskomatic.task.sshpush;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +39,7 @@ import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 /**
  * Worker implementation for SSH Server Push.
  */
-public class SSHServerPushWorker implements QueueWorker {
+public class SSHPushWorker implements QueueWorker {
 
     // Static configuration
     private static final String SSH_PUSH_TUNNEL = "ssh-push-tunnel";
@@ -57,7 +57,7 @@ public class SSHServerPushWorker implements QueueWorker {
     private String client;
 
     private Logger log;
-    private SSHServerPushSystem system;
+    private SSHPushSystem system;
     private int remotePort;
     private String localhost;
     private TaskQueue parentQueue;
@@ -69,7 +69,7 @@ public class SSHServerPushWorker implements QueueWorker {
      * @param port High port to use for remote port forwarding
      * @param s the system to work with
      */
-    public SSHServerPushWorker(Logger logger, int port, SSHServerPushSystem s) {
+    public SSHPushWorker(Logger logger, int port, SSHPushSystem s) {
         remotePort = port;
         system = s;
 

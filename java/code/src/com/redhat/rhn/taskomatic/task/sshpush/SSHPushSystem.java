@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.taskomatic.task.serverpush;
+package com.redhat.rhn.taskomatic.task.sshpush;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +23,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 /**
  * Simple DTO class used to encapsulate rows queried from the database.
  */
-public class SSHServerPushSystem {
+public class SSHPushSystem {
 
     private String contactMethodLabel;
     private Date earliestAction;

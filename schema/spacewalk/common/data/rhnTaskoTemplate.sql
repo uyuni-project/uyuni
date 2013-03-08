@@ -163,8 +163,8 @@ INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
 
 INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
              VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
-                        (SELECT id FROM rhnTaskoBunch WHERE name='ssh-server-push-bunch'),
-                        (SELECT id FROM rhnTaskoTask WHERE name='ssh-server-push'),
+                        (SELECT id FROM rhnTaskoBunch WHERE name='ssh-push-bunch'),
+                        (SELECT id FROM rhnTaskoTask WHERE name='ssh-push'),
                         0,
                         null);
 

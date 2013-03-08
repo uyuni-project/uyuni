@@ -22,7 +22,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import com.redhat.rhn.taskomatic.task.serverpush.SSHServerPushUtils;
+import com.redhat.rhn.taskomatic.task.sshpush.SSHPushUtils;
 
 /**
  * This test implements a simulation considering n idle systems (specified below as
@@ -34,7 +34,7 @@ import com.redhat.rhn.taskomatic.task.serverpush.SSHServerPushUtils;
  *    check in timestamps should rather cover all categories (hours).
  * 3. At maximum 22% of all systems will check in during one hour (see maxPercentage).
  */
-public class SSHServerPushSimulationTest extends TestCase {
+public class SSHPushSimulationTest extends TestCase {
 
     // This is a value from rhn.conf
     private int thresholdDays = 1;
@@ -49,7 +49,7 @@ public class SSHServerPushSimulationTest extends TestCase {
     private int numberOfSystems = 100000;
 
     // How often we check for systems to checkin (minutes)
-    private int checkInterval = SSHServerPushUtils.CHECK_INTERVAL;
+    private int checkInterval = SSHPushUtils.CHECK_INTERVAL;
 
     // Counters
     private int randomsTotal = 0;
@@ -105,7 +105,7 @@ public class SSHServerPushSimulationTest extends TestCase {
     }
 
     /**
-     * Reimplement {@link SSHServerPushUtils#getRandomThreshold()} here for counting
+     * Reimplement {@link SSHPushUtils#getRandomThreshold()} here for counting
      * the total number of randoms generated.
      */
     private int getRandomThreshold(double mean, double stddev, long min, long max) {
@@ -114,7 +114,7 @@ public class SSHServerPushSimulationTest extends TestCase {
             if (val != 0) {
                 randomsInvalid++;
             }
-            val = SSHServerPushUtils.getRandomGaussian(mean, stddev);
+            val = SSHPushUtils.getRandomGaussian(mean, stddev);
             randomsTotal++;
         }
         return val;
@@ -193,13 +193,13 @@ public class SSHServerPushSimulationTest extends TestCase {
     private void printRandomizerProperties() {
         System.out.println("\n--> Randomizer properties:");
         System.out.println("mean = " + thresholdMean + " seconds (" +
-                SSHServerPushUtils.toHours(Math.round(thresholdMean)) + " hours)");
+                SSHPushUtils.toHours(Math.round(thresholdMean)) + " hours)");
         System.out.println("stddev = " + thresholdStddev + " seconds (" +
-                SSHServerPushUtils.toHours(Math.round(thresholdStddev)) + " hours)");
+                SSHPushUtils.toHours(Math.round(thresholdStddev)) + " hours)");
         System.out.println("min = " + thresholdMin + " seconds (" +
-                SSHServerPushUtils.toHours(thresholdMin) + " hours)");
+                SSHPushUtils.toHours(thresholdMin) + " hours)");
         System.out.println("max = " + thresholdMax + " seconds (" +
-                SSHServerPushUtils.toHours(thresholdMax) + " hours)");
+                SSHPushUtils.toHours(thresholdMax) + " hours)");
     }
 
     /**
