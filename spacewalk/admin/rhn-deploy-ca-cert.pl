@@ -91,7 +91,7 @@ if ( -e '/etc/SuSE-release' )
 {
   if ( ! -e "/etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem" )
   {
-    $ret = system('ln', '-s', "$target_dir/RHN-ORG-TRUSTED-SSL-CERT", "/etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem");
+    $ret = system('ln', '-s', "$target_dir/RHN-ORG-TRUSTED-SSL-CERT", "/etc/ssl/certs/OWN-SUSE-MANAGER-TRUSTED-SSL-CERT.pem");
     if ($ret) 
     {
       print "WARNING: Could not link $target_dir/RHN-ORG-TRUSTED-SSL-CERT to /etc/ssl/certs/";
