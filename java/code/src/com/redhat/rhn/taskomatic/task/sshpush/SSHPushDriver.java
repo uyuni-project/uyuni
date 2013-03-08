@@ -37,8 +37,8 @@ import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
  */
 public class SSHPushDriver implements QueueDriver {
 
-    private static final String WORKER_THREADS_KEY = "taskomatic.ssh_server_push_workers";
-    private static final String PORT_HTTPS_KEY = "server_push_port_https";
+    private static final String WORKER_THREADS_KEY = "taskomatic.ssh_push_workers";
+    private static final String PORT_HTTPS_KEY = "ssh_push_port_https";
     private static final String JOB_LABEL = "ssh-push-default";
 
     // Logger passed in from the Job class (SSHPush)

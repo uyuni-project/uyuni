@@ -31,8 +31,8 @@ if [ ${?} -ne '0' ]; then
 fi
 
 # Tunnel port config keys
-PORT_HTTP_KEY=server_push_port_http
-PORT_HTTPS_KEY=server_push_port_https
+PORT_HTTP_KEY=ssh_push_port_http
+PORT_HTTPS_KEY=ssh_push_port_https
 
 # Read tunnel ports from configuration
 PATH_RHN_CONF=/etc/rhn/rhn.conf
