@@ -14,11 +14,13 @@ class ExpectFileGenerator
     Tempfile.open('push-registration.expect') do |f|
       @file = f
       f.write("spawn spacewalk-push-register " + host + " " + bootstrap + "\n")
-      f.write("expect \"Are you sure you want to continue connecting (yes/no)?\"\n")
-      f.write("send \"yes\\r\"\n")
-      f.write("expect \"Password:\"\n")
-      f.write("send \"linux\\r\"\n")
-      f.write("expect eof")
+      f.write("while {1} {\n")
+      f.write("  expect {\n")
+      f.write("    eof                                                      {break}\n")
+      f.write("    "Are you sure you want to continue connecting (yes/no)?" {send \"yes\r\"}\n")
+      f.write("    "Password:"                                              {send \"linux\r\"}\n")
+      f.write("  }\n")
+      f.write("}\n")
     end
   end
 
