@@ -69,6 +69,7 @@ class SyncTest(unittest.TestCase):
         self.sync.get_channel_id = Mock(return_value=1)
         ncc_sync.taskomatic.schedule_single_sat_repo_sync = Mock(
             side_effect=socket.error("FAIL"))
+        self.sync._is_vendor_channel_without_url = Mock(return_value=False)
 
         err = StringIO()
         with patch("sys.stderr", err):
