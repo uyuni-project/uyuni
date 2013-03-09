@@ -16,9 +16,9 @@ class ExpectFileGenerator
       f.write("spawn spacewalk-push-register " + host + " " + bootstrap + "\n")
       f.write("while {1} {\n")
       f.write("  expect {\n")
-      f.write("    eof                                                      {break}\n")
-      f.write("    "Are you sure you want to continue connecting (yes/no)?" {send \"yes\r\"}\n")
-      f.write("    "Password:"                                              {send \"linux\r\"}\n")
+      f.write("    eof                                                        {break}\n")
+      f.write("    \"Are you sure you want to continue connecting (yes/no)?\" {send \"yes\r\"}\n")
+      f.write("    \"Password:\"                                              {send \"linux\r\"}\n")
       f.write("  }\n")
       f.write("}\n")
     end
