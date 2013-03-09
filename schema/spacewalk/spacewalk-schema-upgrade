@@ -214,7 +214,7 @@ while (@path) {
         rmdir_and_die("Overrun: too many migrations", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
     }
 
-    my @files = match_overrides("$SCHEMA_UPGRADE_DIR/$dir/*.{sql,ref}", "$SCHEMA_UPGRADE_DIR/$dir/*.{sql,ref}.$options{db_backend}");
+    my @files = match_overrides("$SCHEMA_UPGRADE_DIR/$dir/*.ref", "$SCHEMA_UPGRADE_DIR/$dir/*.{sql,ref}.$options{db_backend}");
     for (my $i = 0; $i < @files; $i++) {
         if ($files[$i] =~ /\.ref(\.$options{db_backend})?$/) {
             my @subfiles;

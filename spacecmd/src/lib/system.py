@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-# Copyright 2010 Aron Parsons <aron@redhat.com>
-# Copyright (c) 2012 Red Hat, Inc.
+# Copyright 2013 Aron Parsons <aronparsons@gmail.com>
+# Copyright (c) 2013 Red Hat, Inc.
 #
 
 # NOTE: the 'self' variable is an instance of SpacewalkShell
@@ -167,6 +167,12 @@ def do_system_reboot(self, args):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    print 
+    
+    print 'Systems'
+    print '-------'
+    print '\n'.join(sorted(systems))
 
     if not self.user_confirm('Reboot these systems [y/N]:'): return
 
@@ -377,6 +383,10 @@ def do_system_runscript(self, args):
     print 'Script Contents'
     print '---------------'
     print script_contents
+    
+    print 'Systems'
+    print '-------'
+    print '\n'.join(sorted(systems))
 
     # have the user confirm
     if not self.user_confirm(): return
@@ -404,7 +414,7 @@ def do_system_runscript(self, args):
         # scheduled individually
         for system in systems:
             system_id = self.get_system_id(system)
-            if not system_id: return
+            if not system_id: continue
 
             try:
                 action_id = \
@@ -459,7 +469,7 @@ def do_system_listhardware(self, args):
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         cpu = self.client.system.getCpu(self.session, system_id)
         memory = self.client.system.getMemory(self.session, system_id)
@@ -808,7 +818,7 @@ def do_system_upgradepackage(self, args):
     jobs = {}
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         packages = \
             self.client.system.listLatestUpgradablePackages(self.session,
@@ -891,7 +901,7 @@ def do_system_listupgrades(self, args):
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         packages = \
             self.client.system.listLatestUpgradablePackages(self.session,
@@ -942,7 +952,7 @@ def do_system_listinstalledpackages(self, args):
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         packages = self.client.system.listPackages(self.session,
                                                    system_id)
@@ -984,7 +994,7 @@ def do_system_listconfigchannels(self, args):
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         if add_separator: print self.SEPARATOR
         add_separator = True
@@ -1070,7 +1080,7 @@ def do_system_listconfigfiles(self, args):
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         if add_separator: print self.SEPARATOR
         add_separator = True
@@ -1241,13 +1251,6 @@ def do_system_addconfigfile(self, args, update_path=''):
             self.client.system.config.createOrUpdateSymlink(self.session,
                 system_id, options.path, file_info, localopt)
         else:
-#            # compatibility for Satellite 5.3
-#            if not self.check_api_version('10.11'):
-#                del file_info['selinux_ctx']
-#
-#                if file_info.has_key('revision'):
-#                    del file_info['revision']
-#
             self.client.system.config.createOrUpdatePath(self.session,
                 system_id, options.path, options.directory, file_info,
                 localopt)
@@ -1474,7 +1477,7 @@ def do_system_delete(self, args):
     # get the system ID for each system
     for system in systems:
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         system_ids.append(system_id)
 
@@ -1502,7 +1505,7 @@ def do_system_delete(self, args):
     logging.info('Deleted %i system(s)', len(system_ids))
 
     # regenerate the system name cache
-    self.generate_system_cache(True)
+    self.generate_system_cache(True, delay = 1)
 
     # remove these systems from the SSM
     for s in systems:
@@ -1989,7 +1992,7 @@ def do_system_listbasechannel(self, args):
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         if add_separator: print self.SEPARATOR
         add_separator = True
@@ -2031,7 +2034,7 @@ def do_system_listchildchannels(self, args):
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         if add_separator: print self.SEPARATOR
         add_separator = True
@@ -2111,7 +2114,7 @@ def do_system_details(self, args, short=False):
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         last_checkin = \
             self.client.system.getName(self.session,
@@ -2241,7 +2244,7 @@ def do_system_listerrata(self, args):
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         if add_separator: print self.SEPARATOR
         add_separator = True
@@ -2321,7 +2324,7 @@ def do_system_listevents(self, args):
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         if add_separator: print self.SEPARATOR
         add_separator = True
@@ -2365,7 +2368,7 @@ def do_system_listentitlements(self, args):
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         if add_separator: print self.SEPARATOR
         add_separator = True
@@ -2547,9 +2550,7 @@ def do_system_createpackageprofile(self, args):
         return
 
     system_id = self.get_system_id(args[0])
-    if not system_id:
-        logging.error('Invalid system')
-        return
+    if not system_id: return
 
     if is_interactive(options):
         options.name = prompt_user('Profile Label:', noblank = True)
@@ -2840,7 +2841,7 @@ def do_system_comparewithchannel(self, args):
     channel_latest={}
     for system in sorted(systems):
         system_id = self.get_system_id(system)
-        if not system_id: return
+        if not system_id: continue
 
         instpkgs = self.client.system.listPackages(self.session,\
                                                         system_id)

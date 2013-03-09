@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-# Copyright 2010 Aron Parsons <aron@redhat.com>
-# Copyright (c) 2011--2012 Red Hat, Inc.
+# Copyright 2013 Aron Parsons <aronparsons@gmail.com>
+# Copyright (c) 2011--2013 Red Hat, Inc.
 #
 
 # NOTE: the 'self' variable is an instance of SpacewalkShell
@@ -1436,5 +1436,58 @@ def do_activationkey_diff(self, args):
 
     return diff( source_data, target_data, source_channel, target_channel )
 
+####################
+
+def help_activationkey_disable(self):
+    print 'activationkey_disable: Disable an activation key'
+    print
+    print 'usage: activationkey_disable KEY [KEY ...]'
+
+def complete_activationkey_disable(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) >= 2:
+        return tab_completer(self.do_activationkey_list('', True), text)
+
+def do_activationkey_disable(self, args):
+    (args, options) = parse_arguments(args)
+
+    if not len(args) >= 1:
+        self.help_activationkey_disable()
+        return
+
+    keys = filter_results(self.do_activationkey_list('', True), args)
+
+    details = { 'disabled' : True }
+
+    for akey in keys:
+        self.client.activationkey.setDetails(self.session, akey, details)
+
+####################
+
+def help_activationkey_enable(self):
+    print 'activationkey_enable: Enable an activation key'
+    print
+    print 'usage: activationkey_enable KEY [KEY ...]'
+
+def complete_activationkey_enable(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) >= 2:
+        return tab_completer(self.do_activationkey_list('', True), text)
+
+def do_activationkey_enable(self, args):
+    (args, options) = parse_arguments(args)
+
+    if not len(args) >= 1:
+        self.help_activationkey_enable()
+        return
+
+    keys = filter_results(self.do_activationkey_list('', True), args)
+
+    details = { 'disabled' : False }
+
+    for akey in keys:
+        self.client.activationkey.setDetails(self.session, akey, details)
 
 # vim:ts=4:expandtab:

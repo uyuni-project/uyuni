@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.9.38
+Version:        1.10.6
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -53,7 +53,7 @@ install -m 0755 -d $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 spacewalk-schema-upgrade $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 spacewalk-sql $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
-cp -r upgrade/* $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
+( cd upgrade && tar cf - --exclude='*.sql' . | ( cd $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade && tar xf - ) )
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-schema-upgrade.1 $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-sql.1 $RPM_BUILD_ROOT%{_mandir}/man1
@@ -73,6 +73,31 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Sat Mar 09 2013 Tomas Lestach <tlestach@redhat.com> 1.10.6-1
+- fix 002-web_customer.sql upgrade script
+- move upgrade scripts as 002 was pushed already
+
+* Sat Mar 09 2013 Tomas Lestach <tlestach@redhat.com> 1.10.5-1
+- rhnServerCrashNote table upgrade scripts
+- introduce rhnServerCrashNote table
+
+* Fri Mar 08 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.4-1
+- abrt: org-wide settings for crash reporting and crash file uploading
+- correct the capitalization
+- Move org configuration to a separate table
+
+* Wed Mar 06 2013 Tomas Lestach <tlestach@redhat.com> 1.10.3-1
+- add rhn_content_cource_ssl_ins_trig triggers
+
+* Tue Mar 05 2013 Jan Pazdziora 1.10.2-1
+- Schema upgrade script directory, so that upgrade to nightly passes.
+
+* Tue Mar 05 2013 Jan Pazdziora 1.10.1-1
+- Simplify the schema upgrade sources now that we process them with spacewalk-
+  oracle2postgresql.
+- Require the db_backend suffix.
+- Call spacewalk-oracle2postgresql on upgrades as well.
+
 * Fri Mar 01 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.38-1
 - abrt: display download link only for files that are available
 

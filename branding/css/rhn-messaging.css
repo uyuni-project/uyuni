@@ -11,6 +11,7 @@
 	-khtml-border-radius: 10px;
 	border-radius: 10px 10px 10px 10px;
 	font-weight: normal;
+        border-radius: 10px;
 }
 .site-alert UL
 {
@@ -39,6 +40,7 @@
 	background-color: #FFD6D6;
 	color: #282828;
 	border: 1px solid #FD8B8B;
+        border-radius: 10px;
 }
 .site-alert A:link
 {

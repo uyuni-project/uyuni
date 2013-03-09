@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-# Copyright 2010 Aron Parsons <aron@redhat.com>
-# Copyright (c) 2011--2012 Red Hat, Inc.
+# Copyright 2013 Aron Parsons <aronparsons@gmail.com>
+# Copyright (c) 2011--2013 Red Hat, Inc.
 #
 
 # NOTE: the 'self' variable is an instance of SpacewalkShell
@@ -25,6 +25,7 @@ import logging, readline, shlex
 from getpass import getpass
 from ConfigParser import NoOptionError
 from spacecmd.utils import *
+from time import sleep
 
 # list of system selection options for the help output
 HELP_SYSTEM_OPTS = '''<SYSTEMS> can be any of the following:
@@ -591,13 +592,17 @@ def clear_system_cache(self):
     self.save_system_cache()
 
 
-def generate_system_cache(self, force=False):
+def generate_system_cache(self, force = False, delay = 0):
     if not force and datetime.now() < self.system_cache_expire:
         return
 
     if not self.options.quiet:
         # tell the user what's going on
         self.replace_line_buffer('** Generating system cache **')
+
+    # we might need to wait for some systems to delete
+    if delay:
+        sleep(delay)
 
     systems = self.client.system.listSystems(self.session)
 
@@ -695,14 +700,16 @@ def get_system_id(self, name):
         logging.warning("Can't find system ID for %s" % name)
         return 0
     else:
-        logging.warning('Duplicate system profile names found')
-        logging.warning("You can delete duplicates with 'system_delete'")
+        logging.warning('Duplicate system profile names found!')
+        logging.warning("Please reference systems by ID or resolve the")
+        logging.warning("underlying issue with 'system_delete' or 'system_rename'")
 
         id_list = '%s = ' % name
 
         for id in systems:
             id_list = id_list + '%i, ' % id
 
+        logging.warning('')
         logging.warning(id_list[:-2])
 
         return 0
@@ -784,7 +791,7 @@ def expand_systems(self, args):
 
     matches = filter_results(self.get_system_names(), systems)
 
-    return matches + system_ids
+    return list(set(matches + system_ids))
 
 
 def list_base_channels(self):

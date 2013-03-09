@@ -1,6 +1,6 @@
--- oracle equivalent source sha1 d8788d9699268d9d9abe3ed63664842b656c076c
+
 --
--- Copyright (c) 2012 Red Hat, Inc.
+-- Copyright (c) 2013 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,18 +14,11 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE rhnAbrtInfo
-(
-    id             NUMERIC NOT NULL
-                        CONSTRAINT rhn_abrt_info_pk PRIMARY KEY,
-    server_id      NUMERIC NOT NULL
-                       CONSTRAINT rhn_abrt_info_srvr_fk
-                           REFERENCES rhnServer (id)
-                           ON DELETE CASCADE,
-    num_crashes    NUMERIC NOT NULL,
-    created        TIMESTAMPTZ NOT NULL
-)
-
-;
-
-CREATE SEQUENCE rhn_abrt_info_id_seq;
+create or replace trigger rhn_server_crash_note_mod_trig
+before insert or update on rhnServerCrashNote
+for each row
+begin
+    :new.modified := current_timestamp;
+end;
+/
+show errors

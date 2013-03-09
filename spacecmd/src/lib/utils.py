@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-# Copyright 2010 Aron Parsons <aron@redhat.com>
-# Copyright (c) 2011--2012 Red Hat, Inc.
+# Copyright 2013 Aron Parsons <aronparsons@gmail.com>
+# Copyright (c) 2011--2013 Red Hat, Inc.
 #
 
 # NOTE: the 'self' variable is an instance of SpacewalkShell
@@ -25,10 +25,10 @@ import logging, os, pickle, re, readline, shlex, sys, time, xmlrpclib
 from collections import deque
 from datetime import datetime, timedelta
 from difflib  import unified_diff
-from optparse import OptionParser
 from tempfile import mkstemp
 from textwrap import wrap
 import rpm
+from spacecmd.optionparser import SpacecmdOptionParser
 
 try:
     import json
@@ -45,10 +45,10 @@ def parse_arguments(args, options = []):
         # allow simple globbing
         parts = [re.sub('\*', '.*', a) for a in parts]
 
-        parser = OptionParser(option_list = options)
-        (options, leftovers) = parser.parse_args(args = parts)
+        parser = SpacecmdOptionParser(option_list = options)
+        (opts, leftovers) = parser.parse_args(args = parts)
 
-        return leftovers, options
+        return leftovers, opts
     except IndexError:
         return []
 

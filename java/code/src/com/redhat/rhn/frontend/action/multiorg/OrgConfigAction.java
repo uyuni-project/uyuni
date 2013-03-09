@@ -47,8 +47,18 @@ public class OrgConfigAction extends RhnAction {
         RequestContext ctx = new RequestContext(request);
         Org org = ctx.lookupAndBindOrg();
         if (ctx.isSubmitted()) {
-            org.setStagingContentEnabled(request.
+            org.getOrgConfig().setStagingContentEnabled(request.
                     getParameter("staging_content_enabled") != null);
+
+            if (request.getParameter("crash_reporting_enabled") == null) {
+                org.getOrgConfig().setCrashReportingEnabled(false);
+                org.getOrgConfig().setCrashfileUploadEnabled(false);
+            }
+            else {
+                org.getOrgConfig().setCrashReportingEnabled(true);
+                org.getOrgConfig().setCrashfileUploadEnabled(request.
+                    getParameter("crashfile_upload_enabled") != null);
+            }
 
             Long newLimit = null;
             try {
@@ -68,7 +78,7 @@ public class OrgConfigAction extends RhnAction {
                            RequestContext.ORG_ID, org.getId().toString());
             }
             if (StringUtils.isNotEmpty(request.getParameter("crashfile_sizelimit"))) {
-                org.setCrashFileSizelimit(newLimit);
+                org.getOrgConfig().setCrashFileSizelimit(newLimit);
             }
 
             ActionMessages msg = new ActionMessages();

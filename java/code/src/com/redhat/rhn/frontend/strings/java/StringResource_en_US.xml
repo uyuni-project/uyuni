@@ -7535,6 +7535,12 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="message.crashesdeleted">
         <source>{0} software crashes were successfully deleted.</source>
       </trans-unit>
+      <trans-unit id="message.crashnotecreated">
+        <source>Crash Note was successfully created.</source>
+      </trans-unit>
+      <trans-unit id="message.crashnoteupdated">
+        <source>Crash Note was successfully updated.</source>
+      </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.invalidvirt">
         <source>Para-Virtualization is unsupported with the selected autoinstallable tree or distribution.</source>
       </trans-unit>
@@ -7570,6 +7576,9 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinuse">
         <source>There's already a defined repository with given url, please reuse it.</source>
+      </trans-unit>
+      <trans-unit id="edit.channel.repo.clientcertmissing">
+        <source>Please set SSL Client Certificate, if you've set SSL Client Key.</source>
       </trans-unit>
       <trans-unit id="ssm.provision.scheduled">
         <source>Successfully scheduled {0} system(s) for provisioning.</source>

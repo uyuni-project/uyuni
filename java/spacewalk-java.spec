@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.80
+Version: 1.10.7
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -777,6 +777,86 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Sat Mar 09 2013 Tomas Lestach <tlestach@redhat.com> 1.10.7-1
+- set note rather to null than to an empty string
+- display nice crash file modified date on the
+  /rhn/systems/details/SoftwareCrashDetail.do page
+- fix captions on the /rhn/systems/details/SoftwareCrashDetail.do page
+- enable CrashNote sorting according to the modified date
+
+* Sat Mar 09 2013 Tomas Lestach <tlestach@redhat.com> 1.10.6-1
+- crash note related strings
+- list CrashNotes on the /rhn/systems/details/SoftwareCrashDetail.do page
+- allow CrashNote create/edit
+- create CrashNote class and hibernate mapping
+
+* Fri Mar 08 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.5-1
+- abrt: API for org-wide crash reporting settings
+- abrt: org-wide settings for crash reporting and crash file uploading
+- Move org configuration to a separate table
+
+* Wed Mar 06 2013 Tomas Lestach <tlestach@redhat.com> 1.10.4-1
+- fix column styleclass in guestunlimited.jsp
+- fix column styleclass in physicalhosts.jsp
+- fix column styleclass in guestlimited.jsp
+- fix column styleclass in syncsystem.jsp
+- fix column styleclass in syncprofile.jsp
+- fix column styleclass in missingpkgs.jsp
+- fix column styleclass in comparesystems.jsp
+- fix column styleclass in compareprofiles.jsp
+- fix column styleclass in crashdetail.jsp
+- fix column styleclass in packagelist.jsp
+- fix column styleclass in list.jsp
+- fix column styleclass in organizations.jsp
+- fix column styleclass in orglist.jsp
+- fix column styleclass in packageprofiles.jsp
+- fix column styleclass in affectedsystems.jsp
+- fix column styleclass in subscribeconfirm.jsp
+- fix column styleclass in deployconfirm.jsp
+- fix column styleclass in copy2systems.jsp
+- fix column styleclass in confirmnewbasechannels.jsp
+- fix column styleclass in confirmprotected.jsp
+- fix column styleclass in confirmprivate.jsp
+- fix column styleclass in channelrepos.jsp
+- fix column styleclass in adderrataredhat.jsp
+- fix column styleclass in addcustomerrata.jsp
+- fix column styleclass in xccdfdiffsubmit.jsp
+- fix column styleclass in schedules.jsp
+- fix column styleclass in softwareentitlementdetails.jsp
+- fix column styleclass in orgtrustconfirm.jsp
+- fix column styleclass in organizations.jsp
+- fix column styleclass in entitlementorgs.jsp
+- fix column styleclass in affectedsystems.jsp
+- fix column styleclass in bunchDetail.jsp
+- fix column styleclass in subscribe.jsp
+- fix column styleclass in ruledetails.jsp
+- fix column styleclass in scap-list.jspf
+- fix column styleclass in rule-common-columns.jspf
+- fix column styleclass in xccdf-easy-list.jspf
+
+* Wed Mar 06 2013 Tomas Lestach <tlestach@redhat.com> 1.10.3-1
+- checkstyle issues
+
+* Wed Mar 06 2013 Tomas Lestach <tlestach@redhat.com> 1.10.2-1
+- enhance /rhn/channels/manage/repos/RepoEdit.do page
+- introduce SslContentSource class
+
+* Tue Mar 05 2013 Jan Pazdziora 1.10.1-1
+- Polish a webui message
+- To match backend processing of the config files, do not strip comments from
+  values.
+
+* Mon Mar 04 2013 Stephen Herr <sherr@redhat.com> 1.9.83-1
+- dwr is required for building now
+- fixing typo in build-props.xml
+
+* Fri Mar 01 2013 Stephen Herr <sherr@redhat.com> 1.9.82-1
+- Updating API versions for release
+
+* Fri Mar 01 2013 Tomas Lestach <tlestach@redhat.com> 1.9.81-1
+- start using crash logo
+- remove thin-column sign
+
 * Fri Mar 01 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.80-1
 - abrt: display download link only for files that are available
 

@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.9.45
+Version: 1.10.4
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -776,6 +776,20 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri Mar 08 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.4-1
+- abrt: enable crash reporting settings in backend
+
+* Fri Mar 08 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.3-1
+- Move org configuration to a separate table
+- make startswith work with python versions < 2.5
+
+* Wed Mar 06 2013 Jan Pazdziora 1.10.2-1
+- Stop having comments on the same line as the key = value pair.
+
+* Tue Mar 05 2013 Jan Pazdziora 1.10.1-1
+- To allow hash-signs in passwords, only ignore comments if they are the first
+  non-whitespace characters on the line.
+
 * Fri Mar 01 2013 Jan Pazdziora 1.9.45-1
 - If the database host is localhost, use Unix sockets in backend.
 

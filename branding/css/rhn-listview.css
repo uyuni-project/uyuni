@@ -661,6 +661,14 @@ TH.ascSort A
 	background-repeat: no-repeat;
 	background-position: 100% 60% !important;
 }
+
+th.ascSort:first-child, th.descSort:first-child {
+   border-radius: 10px 0 0 0; 
+}
+
+th.ascSort:last-child, th.descSort:last-child {
+   border-radius: 0 10px 0 0; 
+}
 TH.descSort A
 {
 	padding-right: 20px;

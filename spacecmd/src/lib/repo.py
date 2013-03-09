@@ -15,11 +15,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-# Copyright 2011 Aron Parsons <aron@redhat.com>
+# Copyright 2011 Aron Parsons <aronparsons@gmail.com>
 #
 
 # NOTE: the 'self' variable is an instance of SpacewalkShell
 
+from optparse import Option
 from spacecmd.utils import *
 
 import shlex
@@ -211,3 +212,118 @@ def do_repo_clearfilters(self, args):
 
     if self.user_confirm('Remove these filters [y/N]:'):
         self.client.channel.software.clearRepoFilters(self.session, args[0])
+
+####################
+
+def help_repo_delete(self):
+    print 'repo_delete: Delete a user repo'
+    print 'usage: repo_delete <repo ...>'
+
+def complete_repo_delete(self, text, line, beg, end):
+    return tab_completer(self.do_repo_list('', True), text)
+
+def do_repo_delete(self, args):
+    (args, options) = parse_arguments(args)
+
+    if not len(args):
+        self.help_repo_delete()
+        return
+
+    # allow globbing of repo names
+    repos = filter_results(self.do_repo_list('', True), args)
+
+    print 'Repos'
+    print '-----'
+    print '\n'.join(sorted(repos))
+
+    if self.user_confirm('Delete these repos [y/N]:'):
+        for repo in repos:
+            try:
+                self.client.channel.software.removeRepo(self.session, repo)
+            except:
+                logging.error('Failed to remove repo %s' % repo)
+
+####################
+
+def help_repo_create(self):
+    print 'repo_create: Create a user repository'
+    print '''usage: repo_create [options]
+
+options:
+  -n NAME
+  -u URL'''
+
+def do_repo_create(self, args):
+    options = [ Option('-n', '--name', action='store'),
+                Option('-u', '--url', action='store') ]
+
+    (args, options) = parse_arguments(args, options)
+
+    if is_interactive(options):
+        options.name = prompt_user('Name:', noblank = True)
+        options.url = prompt_user('URL:', noblank = True)
+    else:
+        if not options.name:
+            logging.error('A name is required')
+            return
+
+        if not options.url:
+            logging.error('A URL is required')
+            return
+
+    self.client.channel.software.createRepo(self.session,
+                                            options.name,
+                                            'yum',
+                                            options.url)
+
+####################
+
+def help_repo_rename(self):
+    print 'repo_rename: Rename a user repository'
+    print 'usage: repo_rename OLDNAME NEWNAME'
+
+def complete_repo_rename(self, text, line, beg, end):
+    if len(line.split(' ')) <= 2:
+        return tab_completer(self.do_repo_list('', True),
+                                  text)
+
+def do_repo_rename(self, args):
+    (args, options) = parse_arguments(args)
+
+    if len(args) != 2:
+        self.help_repo_rename()
+        return
+
+    try:
+        details = self.client.channel.software.getRepoDetails(self.session, args[0])
+        oldname = details.get('id')
+    except:
+        logging.error('Could not find repo %s' % args[0])
+        return False
+
+    newname = args[1]
+
+    self.client.channel.software.updateRepoLabel(self.session, oldname, newname)
+
+####################
+
+def help_repo_updateurl(self):
+    print 'repo_updateurl: Change the URL of a user repository'
+    print 'usage: repo_updateurl <repo> <url>'
+
+def complete_repo_updateurl(self, text, line, beg, end):
+    if len(line.split(' ')) == 2:
+        return tab_completer(self.do_repo_list('', True),
+                                  text)
+
+def do_repo_updateurl(self, args):
+    (args, options) = parse_arguments(args)
+
+    if len(args) != 2:
+        self.help_repo_updateurl()
+        return
+
+    name = args[0]
+    url = args[1]
+
+    self.client.channel.software.updateRepoUrl(self.session, name, url)

@@ -17,11 +17,16 @@
  */
 package com.redhat.rhn.manager.channel.repo;
 
+import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.channel.SslContentSource;
+import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoLabelException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
+
 
 /**
  * CreateRepoCommand - Command to create a repo
@@ -33,6 +38,9 @@ public class BaseRepoCommand {
 
     private String label;
     private String url;
+    private Long sslCaCertId = null;
+    private Long sslClientCertId = null;
+    private Long sslClientKeyId = null;
     private Org org;
     private boolean metadata_signed;
     /**
@@ -89,6 +97,54 @@ public class BaseRepoCommand {
         this.url = urlIn;
     }
 
+
+    /**
+     * @return Returns the sslCaCertId.
+     */
+    public Long getSslCaCertId() {
+        return sslCaCertId;
+    }
+
+
+    /**
+     * @param sslCaCertIdIn The sslCaCertId to set.
+     */
+    public void setSslCaCertId(Long sslCaCertIdIn) {
+        sslCaCertId = sslCaCertIdIn;
+    }
+
+
+    /**
+     * @return Returns the sslClientCertId.
+     */
+    public Long getSslClientCertId() {
+        return sslClientCertId;
+    }
+
+
+    /**
+     * @param sslClientCertIdIn The sslClientCertId to set.
+     */
+    public void setSslClientCertId(Long sslClientCertIdIn) {
+        sslClientCertId = sslClientCertIdIn;
+    }
+
+
+    /**
+     * @return Returns the sslClientKeyId.
+     */
+    public Long getSslClientKeyId() {
+        return sslClientKeyId;
+    }
+
+
+    /**
+     * @param sslClientKeyIdIn The sslClientKeyId to set.
+     */
+    public void setSslClientKeyId(Long sslClientKeyIdIn) {
+        sslClientKeyId = sslClientKeyIdIn;
+    }
+
     /**
      *
      * @return true if metadata should be signed
@@ -111,8 +167,52 @@ public class BaseRepoCommand {
      * in the org
      * @throws InvalidRepoLabelException in case repo witch given label already exists
      * in the org
+     * @throws InvalidCertificateException in case client key is set,
+     * but client certificate is missing
      */
-    public void store() throws InvalidRepoUrlException, InvalidRepoLabelException {
+    public void store() throws InvalidRepoUrlException, InvalidRepoLabelException,
+            InvalidCertificateException {
+
+        SslCryptoKey caCert = lookupSslCryptoKey(sslCaCertId, org);
+        SslCryptoKey clientCert = lookupSslCryptoKey(sslClientCertId, org);
+        SslCryptoKey clientKey = lookupSslCryptoKey(sslClientKeyId, org);
+
+        if (repo == null) {
+            // create cmd
+            if (caCert != null) {
+                this.repo = ChannelFactory.createSslRepo(caCert, clientCert, clientKey);
+            }
+            else {
+                this.repo = ChannelFactory.createRepo();
+            }
+        }
+        else {
+            if (repo.isSsl() && caCert == null) {
+                ContentSource cs = new ContentSource(repo);
+                ChannelFactory.remove(repo);
+                ChannelFactory.commitTransaction();
+                ChannelFactory.closeSession();
+                repo = cs;
+            }
+            if (!repo.isSsl() && caCert != null) {
+                SslContentSource sslRepo = new SslContentSource(repo);
+                ChannelFactory.remove(repo);
+                ChannelFactory.commitTransaction();
+                ChannelFactory.closeSession();
+                repo = sslRepo;
+            }
+            if (repo.isSsl()) {
+                SslContentSource sslRepo = (SslContentSource) repo;
+                sslRepo.setCaCert(caCert);
+                sslRepo.setClientCert(clientCert);
+                // in case client cert isn't set, it makes no sense to set the client key
+                if (sslRepo.getClientCert() == null && clientKey != null) {
+                    throw new InvalidCertificateException("");
+                }
+                sslRepo.setClientKey(clientKey);
+            }
+        }
+
         repo.setOrg(org);
         repo.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
 
@@ -133,6 +233,8 @@ public class BaseRepoCommand {
         repo.setMetadataSigned(this.metadata_signed);
 
         ChannelFactory.save(repo);
+        ChannelFactory.commitTransaction();
+        ChannelFactory.closeSession();
     }
 
     /**
@@ -141,5 +243,12 @@ public class BaseRepoCommand {
      */
     public ContentSource getRepo() {
         return this.repo;
+    }
+
+    private SslCryptoKey lookupSslCryptoKey(Long keyId, Org orgIn) {
+        if (keyId == null) {
+            return null;
+        }
+        return KickstartFactory.lookupSslCryptoKeyById(keyId, orgIn);
     }
 }

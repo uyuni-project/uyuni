@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-# Copyright 2010 Aron Parsons <aron@redhat.com>
-# Copyright (c) 2011--2012 Red Hat, Inc.
+# Copyright 2013 Aron Parsons <aronparsons@gmail.com>
+# Copyright (c) 2011--2013 Red Hat, Inc.
 #
 
 # NOTE: the 'self' variable is an instance of SpacewalkShell
@@ -1572,5 +1572,30 @@ def do_softwarechannel_sync(self, args):
         self.client.channel.software.removePackages(self.session,
                                                 target_channel,
                                                 list(target_only) )
+
+####################
+
+def help_softwarechannel_syncrepos(self):
+    print 'softwarechannel_syncrepos: '
+    print 'Sync users repos for a software channel'
+    print
+    print 'usage: softwarechannel_syncrepos <CHANNEL ...>'
+
+def complete_softwarechannel_syncrepos(self, text, line, beg, end):
+    return tab_completer(self.do_softwarechannel_list('', True), text)
+
+def do_softwarechannel_syncrepos(self, args):
+    (args, options) = parse_arguments(args)
+
+    if not len(args):
+        self.help_softwarechannel_syncrepos()
+        return
+
+    # allow globbing of software channel names
+    channels = filter_results(self.do_softwarechannel_list('', True), args)
+
+    for channel in channels:
+        logging.debug('Syncing repos for %s' % channel)
+        self.client.channel.software.syncRepo(self.session, channel)
 
 # vim:ts=4:expandtab:

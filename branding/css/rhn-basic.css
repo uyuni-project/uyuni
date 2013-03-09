@@ -632,4 +632,5 @@ TABLE.ssm-overview P
 {
 	padding: 0px;
 	margin: -1px;
+	div.filter-input { display: none; }
 }

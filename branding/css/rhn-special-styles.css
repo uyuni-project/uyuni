@@ -511,6 +511,8 @@ DIV.rounded-box H2
 DIV.rounded-box H2 A
 {
 	color: #888A85;
+    padding-top: 2px;
+    border-radius: 10px 10px 0 0;
 }
 /** SDC fancy system info box showing system status (towards top of SDC > details page **/
 .systeminfo

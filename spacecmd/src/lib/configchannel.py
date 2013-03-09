@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-# Copyright 2010 Aron Parsons <aron@redhat.com>
-# Copyright (c) 2011--2012 Red Hat, Inc.
+# Copyright 2013 Aron Parsons <aronparsons@gmail.com>
+# Copyright (c) 2011--2013 Red Hat, Inc.
 #
 
 # NOTE: the 'self' variable is an instance of SpacewalkShell
@@ -533,6 +533,7 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
 
         if options.binary:
             file_info['contents_enc64'] = True
+            file_info['binary'] = True
 
         print 'Path:            %s' % options.path
         print 'Directory:       %s' % options.directory

@@ -3266,7 +3266,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description">
-        <source>Below you configure your organization to use staging content and set up the upload size limit for a crash file. The upload limit is a non negative number. Zero means no limit.</source>
+        <source>Below you configure your organization to use staging content and set up software crash reporting. Crash file upload limit is a non negative number, zero means no limit.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -3297,6 +3297,18 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="org-config.staging-content.jsp">
         <source>Enable Staging Contents</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="org-config.crash-reporting.jsp">
+        <source>Enable Software Crash Reporting</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="org-config.crashfile-upload.jsp">
+        <source>Enable Upload Of Crash Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -8027,6 +8039,15 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.channel.repos">
         <source>Channel Repositories</source>
+      </trans-unit>
+      <trans-unit id="repos.jsp.ssl.ca">
+        <source>SSL CA Certificate</source>
+      </trans-unit>
+      <trans-unit id="repos.jsp.ssl.clientcert">
+        <source>SSL Client Certificate</source>
+      </trans-unit>
+      <trans-unit id="repos.jsp.ssl.clientkey">
+        <source>SSL Client Key</source>
       </trans-unit>
       <trans-unit id="os">
         <source>Operating System</source>
@@ -16367,7 +16388,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="crashes.jsp.crashes">
-        <source>Software System Crashes</source>
+        <source>Software Crashes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SoftwareCrashes.do</context>
         </context-group>
@@ -16484,6 +16505,36 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <source>File Size</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="toolbar.create.crashnote">
+        <source>create new crash note</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="details.crashnotes.header">
+        <source>Crash Notes</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="details.crashnotes.nonotes">
+        <source>No Crash Notes were entered for this Software Crash.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashfiles.jsp.header">
+        <source>Crash Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashnotes.jsp.header">
+        <source>Crash Note Details</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/EditCrashNote.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.header">

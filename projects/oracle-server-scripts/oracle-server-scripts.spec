@@ -8,7 +8,7 @@
 
 Summary: Oracle 10g Database Server Enterprise Edition scripts
 Name: oracle-server-scripts
-Version: 10.2.0.58
+Version: 10.2.0.59
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: Proprietary
@@ -18,8 +18,13 @@ Buildroot: /var/tmp/%{name}-root
 Requires: oracle-server >= %{oracle_base_version}
 Requires: m4
 Requires: oracle-config
+%if 0%{?fedora} > 17
+Requires(post): %{_sbindir}/runuser
+Requires: %{_sbindir}/restorecon
+%else
 Requires(post): /sbin/runuser
 Requires: /sbin/restorecon
+%endif
 
 %description
 Management scripts for Oracle
@@ -88,6 +93,10 @@ exit 0
 %{oracle_scripts}
 
 %changelog
+* Fri Mar 08 2013 Milan Zazrivec <mzazrivec@redhat.com> 10.2.0.59-1
+- Fedora 19 does not provide /sbin/runuser
+- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
+
 * Thu Sep 06 2012 Michael Mraka <michael.mraka@redhat.com> 10.2.0.58-1
 - 852757 - create 2GB TEMP by default
 - create 8GB data_tbs by default

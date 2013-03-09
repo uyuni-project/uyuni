@@ -27,6 +27,31 @@
 
 <hr/>
 
+<rhn:toolbar base="h2"
+       creationUrl="/rhn/systems/details/EditCrashNote.do?sid=${system.id}&crid=${crid}"
+       creationType="crashnote"
+  >
+  <bean:message key="details.crashnotes.header"/>
+</rhn:toolbar>
+
+<rhn:list pageList="${crashNotesList}" noDataText="details.crashnotes.nonotes">
+    <rhn:listdisplay>
+    <rhn:column header="sdc.details.notes.subject"
+    sortProperty="subject" url="/rhn/systems/details/EditCrashNote.do?sid=${system.id}&crid=${crid}&cnid=${current.id}"> ${current.subject}
+    </rhn:column>
+    <rhn:column header="sdc.details.notes.details" sortProperty="note">
+        ${current.note}
+    </rhn:column>
+
+    <rhn:column header="sdc.details.notes.updated" sortProperty="modified">
+        ${current.modifiedString}
+    </rhn:column>
+    </rhn:listdisplay>
+</rhn:list>
+
+<hr/>
+<h2><bean:message key="crashfiles.jsp.header"/></h2>
+
 <rl:listset name="crashFileList">
     <rhn:csrf />
     <rl:list
@@ -38,6 +63,7 @@
         <rl:decorator name="PageSizeDecorator"/>
 
         <rl:column headerkey="crashes.jsp.filename" bound="false"
+            styleclass="first-column"
             sortattr="filename"
             sortable="true"
             filterattr="filename">
@@ -64,9 +90,9 @@
 
         <rl:column headerkey="lastModified" bound="false"
             styleclass="last-column"
-            sortattr="modifiedObject"
+            sortattr="modified"
             sortable="true">
-            ${current.modified}
+            ${current.modifiedString}
         </rl:column>
     </rl:list>
     <rl:csv

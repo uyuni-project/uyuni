@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-# Copyright 2010 Aron Parsons <aron@redhat.com>
+# Copyright 2013 Aron Parsons <aronparsons@gmail.com>
 #
 
 # NOTE: the 'self' variable is an instance of SpacewalkShell
@@ -124,7 +124,7 @@ class SpacewalkShell(Cmd):
             return ''
 
         # print the help message for a command if the user passed --help
-        if '--help' in parts:
+        if '--help' in parts or '-h' in parts:
             return 'help %s' % command
 
         # should we look for an item in the history?

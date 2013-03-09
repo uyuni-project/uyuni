@@ -7,7 +7,7 @@
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.9.10
+Version: 1.10.1
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: GPLv2
@@ -94,6 +94,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Mar 07 2013 Miroslav Suchý <msuchy@redhat.com> 1.10.1-1
+- add =back after =over
+- Bumping package versions for 1.9
+- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
+
 * Wed Feb 27 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.10-1
 - let systemd report service as active
 
