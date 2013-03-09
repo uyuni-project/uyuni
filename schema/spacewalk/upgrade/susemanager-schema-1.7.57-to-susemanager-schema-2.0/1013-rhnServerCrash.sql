@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 fe95c7a174fbc86d6979350136a7fd11641e24aa
 --
 -- Copyright (c) 2013 Red Hat, Inc.
 --
@@ -16,42 +15,43 @@
 
 create table rhnServerCrash
 (
-    id              NUMERIC not null
+    id              number not null
                     constraint rhn_server_crash_id_pk primary key,
-    server_id       NUMERIC not null
+    server_id       number not null
                     constraint rhn_server_crash_sid_fk
                         references rhnServer(id)
                         on delete cascade,
-    crash           VARCHAR(512) not null,
-    path            VARCHAR(1024) not null,
-    count           NUMERIC not null,
-    analyzer        VARCHAR(128),
-    architecture    VARCHAR(16),
-    cmdline         VARCHAR(2048),
-    component       VARCHAR(256),
-    executable      VARCHAR(512),
-    kernel          VARCHAR(128),
-    reason          VARCHAR(512),
-    username        VARCHAR(256),
-    package_name_id NUMERIC
+    crash           varchar2(512) not null,
+    path            varchar2(1024) not null,
+    count           number not null,
+    analyzer        varchar2(128),
+    architecture    varchar2(16),
+    cmdline         varchar2(2048),
+    component       varchar2(256),
+    executable      varchar2(512),
+    kernel          varchar2(128),
+    reason          varchar2(512),
+    username        varchar2(256),
+    package_name_id number
                     constraint rhn_server_crash_pname_id_fk
                         references rhnPackageName(id),
-    package_evr_id  NUMERIC
+    package_evr_id  number
                     constraint rhn_server_crash_evr_id_fk
                         references rhnPackageEVR(id),
-    package_arch_id NUMERIC
+    package_arch_id number
                     constraint rhn_server_crash_arch_id_fk
                         references rhnPackageArch(id),
-    created         TIMESTAMPTZ
+    storage_path    varchar2(1024),
+    created         timestamp with local time zone
                         default (current_timestamp) not null,
-    modified        TIMESTAMPTZ
+    modified        timestamp with local time zone
                         default (current_timestamp) not null
 )
-
+enable row movement
 ;
 
-create sequence rhn_server_crash_id_seq start with 1;
+create sequence rhn_server_crash_id_seq start with 1 order;
 
 create unique index rhn_scr_sid_crash
     on rhnServerCrash (server_id, crash)
-    ;
+    tablespace [[8m_tbs]];
