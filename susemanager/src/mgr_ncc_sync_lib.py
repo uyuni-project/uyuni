@@ -1116,7 +1116,7 @@ class NCCSync(object):
         """)
         h.execute()
         products = {}
-        for pr in h.fetchall_dict():
+        for pr in h.fetchall_dict() or []:
             # special fixes
             if int(pr['product_id']) == 2320:
                 pr['friendly_name'] = pr['friendly_name'] + " VMWare"
@@ -1171,7 +1171,6 @@ class NCCSync(object):
                     for cproduct in child.find('products'):
                         cproduct_id = int(cproduct.text)
                         if not products.has_key(cproduct_id):
-                            print "not found"
                             continue
                         if (products[cproduct_id]['arch'] is not None and
                             products[cproduct_id]['arch'] != channel_arch):
