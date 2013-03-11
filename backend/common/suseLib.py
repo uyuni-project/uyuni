@@ -100,13 +100,15 @@ class URL(object):
         """
         self.__dict__["paramsdict"] = urlparse.parse_qs(self.query)
 
-    def getURL(self):
+    def getURL(self, stripPw=False):
         """Return the full url as a string"""
         netloc = ""
         if self.username:
             netloc = self.username
-        if self.password:
+        if self.password and not stripPw:
             netloc = '%s:%s' % (netloc, self.password)
+        elif self.password and stripPw:
+            netloc = '%s:%s' % (netloc, '<secret>')
         if self.host and netloc :
             netloc = '%s@%s' % (netloc, self.host)
         elif self.host:
@@ -183,7 +185,7 @@ def send(url, sendData=None):
     else:
         log_error("Connecting to %s has failed after %s "
                   "tries with HTTP error code %s." %
-                  (url, connect_retries, status))
+                  (URL(url).getURL(stripPw=True), connect_retries, status))
         raise TransferException("Connection failed after %s tries with "
                                 "HTTP error %s." % (connect_retries, status))
 
