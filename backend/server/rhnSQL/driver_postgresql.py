@@ -183,6 +183,9 @@ class Database(sql_base.Database):
         adjusted_port = -1
         if port:
             adjusted_port = port
+        if host is None or host == '' or host == 'localhost':
+            host = None
+            adjusted_port = None
         return (backend == POSTGRESQL) and (self.host == host) and \
                (self.port == adjusted_port) and (self.username == username) \
                and (self.password == password) and (self.database == database)
