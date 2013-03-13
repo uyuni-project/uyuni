@@ -21,10 +21,11 @@ def create_product_ident(product_id, name, arch, base_channel):
     return ident
 
 class SimpleProduct:
-    def __init__(self, ident, product_id, name, arch, base_channel=None):
+    def __init__(self, ident, product_id, name, arch, base_channel=None, version=None):
         self.ident = ident
         self.product_id = product_id
         self.name = name
+        self.version = version
         self.arch = arch
         self.base_channel = base_channel
         self.mandatory_channels = dict()

@@ -1110,7 +1110,7 @@ class NCCSync(object):
                               key=lambda channel: channel.get('label'))
         db_channels = rhnSQL.Table("RHNCHANNEL", "LABEL").keys()
         h = rhnSQL.prepare("""
-            select p.product_id, pa.label as arch, p.friendly_name
+            select p.product_id, pa.label as arch, p.friendly_name, p.version
               from suseproducts p
          left join rhnpackagearch pa ON p.arch_type_id = pa.id
         """)
@@ -1156,7 +1156,8 @@ class NCCSync(object):
                 if not ret.has_key(productident):
                     ret[productident] = SimpleProduct(productident, product_id,
                                                       products[product_id]['friendly_name'],
-                                                      channel_arch, base_channel=label)
+                                                      channel_arch, base_channel=label,
+                                                      version=products[product_id]['version'])
                 p = ret[productident]
                 if channel.get('optional') == 'Y':
                     p.add_optional_channel(label, channel_statuses[label])
@@ -1183,7 +1184,8 @@ class NCCSync(object):
                         if not ret.has_key(productidentchild):
                             ret[productidentchild] = SimpleProduct(productidentchild, cproduct_id,
                                                                    products[cproduct_id]['friendly_name'],
-                                                                   channel_arch, base_channel=child.get('parent'))
+                                                                   channel_arch, base_channel=child.get('parent'),
+                                                                   version=products[cproduct_id]['version'])
                             pc = ret[productidentchild]
                         else:
                             pc = ret[productidentchild]
@@ -1195,23 +1197,39 @@ class NCCSync(object):
                         else:
                             pc.add_mandatory_channel(c_label, channel_statuses[c_label])
 
-        regex = re.compile('^.+\sSP(\d).*')
+        regex = re.compile('^.+\s(SP|11\.)(\d).*')
         for pk in sorted(ret.iterkeys()):
             p = ret[pk]
             if not p.is_base():
                 continue
             parent_sp = None
-            if regex.match(p.name):
-                parent_sp = regex.match(p.name).groups()
+            if (p.version == '11.1' or p.version == '11.2') and regex.match(p.name):
+                d, parent_sp = regex.match(p.name).groups()
             for ck in sorted(ret.iterkeys()):
                 c = ret[ck]
                 if c.base_channel != p.base_channel:
                     continue
                 if c.ident == p.ident:
                     continue
-                if parent_sp and regex.match(c.name) and parent_sp != regex.match(c.name).groups():
-                    # ugly hack: used to strip out products with of wrong Service Packs
-                    continue
+                if parent_sp:
+                    # all this is only needed because of SLE 11 SP1 and SP2 uses the same base channel
+                    if c.name == "Open Enterprise Server 11" and p.name != "SUSE Linux Enterprise Server 11 SP1":
+                        continue
+                    if c.name == "Open Enterprise Server 11.1" and p.name != "SUSE Linux Enterprise Server 11 SP2":
+                        continue
+                    elif c.name == "Open Enterprise Server 11.1" and p.name == "SUSE Linux Enterprise Server 11 SP2":
+                        ret[ck].set_parent_product(p.ident)
+                        continue
+                    if c.name == "SUSE Linux Enterprise 11 Subscription Managment Tool" and p.name != "SUSE Linux Enterprise Server 11 SP1":
+                        continue
+                    if c.name == "SUSE Linux Enterprise Mono Extension 2.4" and p.name != "SUSE Linux Enterprise Server 11 SP1":
+                        continue
+                    child_sp = None
+                    if regex.match(c.name):
+                        d, child_sp = regex.match(c.name).groups()
+                    if child_sp and parent_sp != child_sp:
+                        # ugly hack: used to strip out products with of wrong Service Packs
+                        continue
                 ret[ck].set_parent_product(p.ident)
 
         return ret
