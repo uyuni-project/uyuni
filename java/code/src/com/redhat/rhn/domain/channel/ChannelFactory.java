@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -25,6 +26,7 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.channel.ChannelManager;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -631,8 +633,17 @@ public class ChannelFactory extends HibernateFactory {
     public static List<Channel> getKickstartableChannels(Org org) {
         Map params = new HashMap();
         params.put("org_id", org.getId());
-        return singleton.listObjectsByNamedQuery(
+        List<Channel> channels = singleton.listObjectsByNamedQuery(
                 "Channel.kickstartableChannels", params, false);
+        // Only return channels containing the anaconda package
+        for (Channel c : channels) {
+            List packages = ChannelManager.listLatestPackagesEqual(c.getId(),
+                    ConfigDefaults.DEFAULT_ANACONDA_PACKAGE_NAME);
+            if (packages.size() <= 0) {
+                channels.remove(c);
+            }
+        }
+        return channels;
     }
 
     /**

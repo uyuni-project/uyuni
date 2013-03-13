@@ -114,6 +114,7 @@ public class ConfigDefaults {
 
     public static final String DEFAULT_KICKSTART_PACKAGE_NAME = "spacewalk-koan";
     public static final String KICKSTART_PACKAGE_NAME = "kickstart_package";
+    public static final String DEFAULT_ANACONDA_PACKAGE_NAME = "anaconda";
 
     public static final String MOUNT_POINT = "mount_point";
     public static final String KICKSTART_MOUNT_POINT = "kickstart_mount_point";
