@@ -4787,14 +4787,14 @@ value for this entitlement, excluding the default organization's consumption.</s
          <source>Reboot Systems</source>
        </trans-unit>
        <trans-unit id="ssm.misc.index.reboot.summary">
-         <source>With Red Hat Enterprise Linux 3 or newer releases, Spacewalk allows you to remotely reboot your systems.</source>
+         <source>@@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source>
        </trans-unit>
 
        <trans-unit id="ssm.misc.index.lock.header">
          <source>Lock Systems</source>
        </trans-unit>
        <trans-unit id="ssm.misc.index.lock.summary">
-         <source>Systems may be locked or unlocked.  Locking prevents changes from the Spacewalk website.</source>
+         <source>Systems may be locked or unlocked.  Locking prevents changes from the @@PRODUCT_NAME@@ website.</source>
        </trans-unit>
        <trans-unit id="ssm.misc.index.lock.lock">
          <source>Lock System Profiles</source>
