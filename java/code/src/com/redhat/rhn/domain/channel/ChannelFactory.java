@@ -689,6 +689,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of Channel objects
      */
     public static List<Channel> getKickstartableChannels(Org org) {
+        List<Channel> ret = new ArrayList<Channel>();
         Map params = new HashMap();
         params.put("org_id", org.getId());
         List<Channel> channels = singleton.listObjectsByNamedQuery(
@@ -697,11 +698,11 @@ public class ChannelFactory extends HibernateFactory {
         for (Channel c : channels) {
             List packages = ChannelManager.listLatestPackagesEqual(c.getId(),
                     ConfigDefaults.DEFAULT_ANACONDA_PACKAGE_NAME);
-            if (packages.size() <= 0) {
-                channels.remove(c);
+            if (packages.size() > 0) {
+                ret.add(c);
             }
         }
-        return channels;
+        return ret;
     }
 
     /**
