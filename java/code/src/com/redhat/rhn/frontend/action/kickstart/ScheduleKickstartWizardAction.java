@@ -101,6 +101,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
     public static final String PROXY_HOST = "proxyHost";
     public static final String PROXY_HOST_CNAME = "proxyHostCname";
     public static final String IS_VIRTUAL_GUEST = "isVirtualGuest";
+    public static final String INVALID_CONTACT_METHOD = "invalidContactMethod";
     public static final String HOST_SID = "hostSid";
     public static final String VIRT_HOST_IS_REGISTERED = "virtHostIsRegistered";
     public static final String TARGET_PROFILE_TYPE = "targetProfileType";
@@ -348,6 +349,18 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         }
 
         addRequestAttributes(ctx, cmd, form);
+
+        // Return directly if the contact method is invalid
+        if (system.getContactMethod().getLabel().equals("ssh-push-tunnel")) {
+            ctx.getRequest().setAttribute(INVALID_CONTACT_METHOD,
+                    Boolean.TRUE);
+            return mapping.findForward("first");
+        }
+        else {
+            ctx.getRequest().setAttribute(INVALID_CONTACT_METHOD,
+                    Boolean.FALSE);
+        }
+
         checkForKickstart(form, cmd, ctx);
         setupProxyInfo(ctx);
         if (StringUtils.isBlank(form.getString(PROXY_HOST))) {
