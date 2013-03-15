@@ -32,16 +32,23 @@ function setStep(stepName) {
   <bean:message key="kickstart.schedule.heading1.jsp" />
 </h2>
 
-<c:if test="${requestScope.isVirtualGuest == 'true'}">
-    <div class="page-summary">
-        <bean:message key="kickstart.schedule.cannot.provision.guest"/><p/>
-        <c:if test="${requestScope.virtHostIsRegistered == 'true'}">
-            <bean:message key="kickstart.schedule.visit.host.virt.tab" arg0="${requestScope.hostSid}"/>
-        </c:if>
-    </div>
+<c:if test="${requestScope.isVirtualGuest == 'true' or requestScope.invalidContactMethod}">
+    <c:if test="${requestScope.invalidContactMethod}">
+        <div class="page-summary">
+            <bean:message key="kickstart.schedule.invalid.contact.method"/>
+        </div>
+    </c:if>
+    <c:if test="${requestScope.isVirtualGuest == 'true'}">
+        <div class="page-summary">
+            <bean:message key="kickstart.schedule.cannot.provision.guest"/><p/>
+            <c:if test="${requestScope.virtHostIsRegistered}">
+                <bean:message key="kickstart.schedule.visit.host.virt.tab" arg0="${requestScope.hostSid}"/>
+            </c:if>
+        </div>
+    </c:if>
 </c:if>
 
-<c:if test="${requestScope.isVirtualGuest == 'false'}">
+<c:if test="${requestScope.isVirtualGuest == 'false' and not requestScope.invalidContactMethod}">
 
     <div class="page-summary">
     <p>
