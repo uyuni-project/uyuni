@@ -47,7 +47,21 @@ Feature: Adding channels
      And I enter "SLES11-SP2-Updates x86_64 channel for testing" as "Channel Summary"
      And I enter "No more desdcription for base channel." as "Channel Description"
      And I click on "Create Channel"
-    Then I should see a "Channel SLES11-SP2-Updates x86_64 Channel created." text
+     Then I should see a "Channel SLES11-SP2-Updates x86_64 Channel created." text
+
+  Scenario: Adding Fedora x86_64 base channel
+     And I follow "Channels"
+     And I follow "Manage Software Channels" in the left menu
+     And I follow "create new channel"
+    When I enter "Fedora x86_64 Channel" as "Channel Name"
+     And I enter "fedora-x86_64-channel" as "Channel Label"
+     And I select "None" from "Parent Channel"
+     And I select "x86_64" from "Architecture:"
+     And I enter "Fedora x86_64 channel for testing" as "Channel Summary"
+     And I enter "No more description for base channel." as "Channel Description"
+     And I click on "Create Channel"
+    Then I should see a "Channel Fedora x86_64 Channel created." text
+
 
 #2nd entry
 # "The channel name 'Test Base Channel' is already in use, please enter a different name"
