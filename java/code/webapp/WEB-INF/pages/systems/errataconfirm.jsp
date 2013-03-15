@@ -29,7 +29,7 @@
     <rl:decorator name="PageSizeDecorator"/>
     <rl:decorator name="ElaborationDecorator"/>
 
-    <rl:column headerkey="erratalist.jsp.type" styleclass="first-column text-align: center;">
+    <rl:column headerkey="erratalist.jsp.type" styleclass="text-align: center;">
       <c:if test="${current.securityAdvisory}">
         <img src="/img/wrh-security.gif"
              title="<bean:message key="erratalist.jsp.securityadvisory"/>" />
@@ -53,7 +53,7 @@
       ${current.advisorySynopsis}
     </rl:column>
 
-    <rl:column headerkey="erratalist.jsp.updated" styleclass="last-column">
+    <rl:column headerkey="erratalist.jsp.updated">
       ${current.updateDate}
     </rl:column>
   	</rl:list>

@@ -2,7 +2,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.10.6
+Version:        1.10.12
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -73,6 +73,26 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Mar 15 2013 Jan Pazdziora 1.10.12-1
+- Add --interactive mode option to spacewalk-sql.
+
+* Wed Mar 13 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.11-1
+- move trigger creation after respective table
+
+* Wed Mar 13 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.10-1
+- remove extraneous alters
+
+* Tue Mar 12 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.9-1
+- schema upgrade: add missing triggers
+
+* Mon Mar 11 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.8-1
+- rename upgrade scripts
+- abrt: add triggers for org creation and timestamps
+- fix lengths and names of identifiers
+
+* Mon Mar 11 2013 Jan Pazdziora 1.10.7-1
+- Fixing typo in rhnOrgConfiguration.
+
 * Sat Mar 09 2013 Tomas Lestach <tlestach@redhat.com> 1.10.6-1
 - fix 002-web_customer.sql upgrade script
 - move upgrade scripts as 002 was pushed already

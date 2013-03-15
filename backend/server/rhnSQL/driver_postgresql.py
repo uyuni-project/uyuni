@@ -142,7 +142,7 @@ class Database(sql_base.Database):
             self.port = port
 
         # pgsql module prefers -1 for an unspecified port:
-        if not port:
+        if not self.port:
             self.port = -1
 
         self.username = username
@@ -153,7 +153,7 @@ class Database(sql_base.Database):
         if not (self.username and self.database):
             raise AttributeError, "PostgreSQL requires at least a user and database name."
 
-        sql_base.Database.__init__(self, host, port, username, password, database)
+        sql_base.Database.__init__(self)
 
     def connect(self, reconnect=1):
         try:
@@ -179,11 +179,13 @@ class Database(sql_base.Database):
 
     def is_connected_to(self, backend, host, port, username, password,
                         database):
-        adjusted_port = -1
-        if port:
-            adjusted_port = port
+        if host is None or host == '' or host == 'localhost':
+            host = None
+            port = None
+        if not port:
+            port = -1
         return (backend == POSTGRESQL) and (self.host == host) and \
-               (self.port == adjusted_port) and (self.username == username) \
+               (self.port == port) and (self.username == username) \
                and (self.password == password) and (self.database == database)
 
     def check_connection(self):

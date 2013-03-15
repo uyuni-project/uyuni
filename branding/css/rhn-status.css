@@ -3,6 +3,7 @@
 .system-status {
         text-align: center;
 }
+
 .system-status img {
         vertical-align: middle;
         padding-top: 0px;
@@ -17,6 +18,7 @@
         font-weight: bold;
         color: #c00;
 }
+
 .system-status-updates {
         font-weight: bold;
         color: #d80;
@@ -33,18 +35,22 @@
 .system-status-updates-scheduled {
         font-weight: bold;
 }
+
 .system-status-up-to-date {
         font-weight: bold;
         color: #68d;
 }
+
 .system-status-unentitled {
         font-weight: bold;
         color: #333;
 }
+
 .system-status-awol {
         font-weight: bold;
         color: #f63;
 }
+
 .system-status-locked {
         font-weight: bold;
         color: #f63;

@@ -9,7 +9,7 @@
 %define apache_group apache
 %endif
 Name:       spacewalk-branding
-Version:    1.10.2
+Version:    1.10.7
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -130,6 +130,30 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Thu Mar 14 2013 Jan Pazdziora 1.10.7-1
+- rhn-iecompat.css is never used - delete it
+
+* Thu Mar 14 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.6-1
+- removing unused styles from rhn-basic.css
+- removing unused styles from blue-docs.css
+
+* Wed Mar 13 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.5-1
+- removing unused styles and refactoring blue-nav-top.css and adjacent files
+- removing unused styles from rhn-header.css
+- removing unused styles from rhn-listview.css
+- removing unused styles from rhn-messaging.css
+- removing unused styles from rhn-nav-sidenav.css
+- rmoving some unused styles from rhn-status.css
+
+* Tue Mar 12 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.4-1
+- clean up of rhn-special-styles.css and adjacent files
+- removing css hacks for vintage versions of IE
+
+* Mon Mar 11 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.3-1
+- removing duplicate css
+- removing -moz- in front of border-radius
+- css changes - table borders
+
 * Fri Mar 08 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.2-1
 - removing filter input from page when printing
 

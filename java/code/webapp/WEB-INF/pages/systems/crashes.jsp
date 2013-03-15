@@ -38,8 +38,7 @@
         <rl:decorator name="SelectableDecorator"/>
 
         <rl:selectablecolumn value="${current.selectionKey}"
-            selected="${current.selected}"
-            styleclass="first-column"/>
+            selected="${current.selected}"/>
 
         <rl:column headerkey="crashes.jsp.crash" bound="false"
             sortattr="crash"
@@ -63,9 +62,10 @@
         </rl:column>
 
         <rl:column headerkey="lastModified" bound="false"
-			styleclass="last-column thin-column"
+			styleclass="thin-column"
             sortattr="modifiedObject"
-            sortable="true">
+            sortable="true"
+			defaultsort="desc">
             ${current.modified}
         </rl:column>
     </rl:list>

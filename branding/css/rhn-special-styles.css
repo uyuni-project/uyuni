@@ -161,6 +161,7 @@ UL#faq-list
 {
 	padding-top: 2em;
 }
+
 /** used on the login page **/
 H1#rhn_welcome
 {
@@ -315,6 +316,7 @@ TD.comparison
 {
 	color: #000000;
 }
+
 /** ssm **/
 .ssm-overview TH
 {
@@ -332,6 +334,7 @@ TD.comparison
 {
 	border: none;
 }
+
 /** terms and conditions **/
 DIV.termsandconditions
 {
@@ -555,6 +558,15 @@ DIV.rounded-box H2 A
 	top: 9px;
 	left: 8px;
 }
+.systeminfo-right {
+    font-size: x-small;
+    width: 60%;
+    margin-top: 8px;
+    vertical-align: middle;
+    float: right;
+    background-image: url(/img/rhn-bar-background.gif);
+}
+
 /** Fancy bar for complex/multiple submit buttons for a page's form. used on the system entitlements page, will be used on virt guest list **/
 TABLE.entitle-bar
 {
@@ -577,6 +589,7 @@ TABLE.entitle-bar TD
 	background-image: none;
 	background-position: 20% 0%;
 }
+
 /** table styles for language selections on locale preferences page **/
 TABLE.langselect TD
 {
@@ -584,6 +597,7 @@ TABLE.langselect TD
 	vertical-align: top;
 	width: 33%;
 }
+
 /** banner adds in lower left corner **/
 DIV.buy-now
 {

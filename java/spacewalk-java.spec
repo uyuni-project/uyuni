@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.7
+Version: 1.10.15
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -140,7 +140,6 @@ BuildRequires: checkstyle
 %endif
 
 # Sadly I need these to symlink the jars properly.
-BuildRequires: asm
 BuildRequires: bcel
 BuildRequires: c3p0
 BuildRequires: concurrent
@@ -777,6 +776,42 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Mar 15 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.15-1
+- detect objectweb-asm properly
+
+* Fri Mar 15 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.14-1
+- fix configuration for jboss hibernate
+- Update copyright year shown on the WebUI.
+
+* Thu Mar 14 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.13-1
+- let's hibernate pull correct asm dependency itself
+- rhn-iecompat.css is never used - delete it
+- Fix the java doc
+- correct the message context
+
+* Wed Mar 13 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.12-1
+- removing unused styles and refactoring blue-nav-top.css and adjacent files
+- abrt: merge 3 original calls into one
+
+* Tue Mar 12 2013 Stephen Herr <sherr@redhat.com> 1.10.11-1
+- 920813 - update to latest tree, not alphabetically last tree
+- apidoc fixes
+
+* Tue Mar 12 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.10-1
+- clean up of rhn-special-styles.css and adjacent files
+
+* Tue Mar 12 2013 Jan Pazdziora 1.10.9-1
+- 920489 - no longer allow change of the type of the key bu the action expects
+  it, hidden helps.
+- sorting crashes and crash files by default
+- 920292 - In GpgCryptoKey, isGPG better be true.
+
+* Mon Mar 11 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.8-1
+- removing another bunch of styleclass="(first|last)-column" from *.jsp(f)
+- typo fix
+- fix lengths and names of identifiers
+- removing styleclass="(first|last)-column" from *.jsp(f)
+
 * Sat Mar 09 2013 Tomas Lestach <tlestach@redhat.com> 1.10.7-1
 - set note rather to null than to an empty string
 - display nice crash file modified date on the

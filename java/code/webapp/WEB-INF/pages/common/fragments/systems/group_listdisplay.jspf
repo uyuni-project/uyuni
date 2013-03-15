@@ -19,8 +19,7 @@
 
   	    <rl:selectablecolumn value="${current.id}"
 	 						selected="${current.selected}"
-	 						disabled="${not current.selectable}"
-	 						styleclass="first-column"/>
+	 						disabled="${not current.selectable}"/>
 
   	   	<!--Updates Column -->
 		<rl:column sortable="false"
@@ -89,7 +88,7 @@
 		<rl:column sortable="false"
 				   bound="false"
 		           headerkey="grouplist.jsp.use"
-		           styleclass="last-column center"
+		           styleclass="center"
 		           headerclass="center">
 
   			

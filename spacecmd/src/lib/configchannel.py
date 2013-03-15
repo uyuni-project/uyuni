@@ -412,7 +412,6 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
 
         if not options.owner: options.owner = 'root'
         if not options.group: options.group = 'root'
-        if not options.mode: options.mode = '0644'
 
         # if this is a new file, ask if it's a symlink
         if not options.symlink:
@@ -437,6 +436,12 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
                 options.directory = True
             else:
                 options.directory = False
+
+            if not options.mode:
+                if options.directory:
+                    options.mode = '0755'
+                else:
+                    options.mode = '0644'
 
             owner_input = prompt_user('Owner [%s]:' % options.owner)
             group_input = prompt_user('Group [%s]:' % options.group)
@@ -668,6 +673,10 @@ def do_configchannel_addfile(self, args, update_path=''):
                 if file_info.has_key('revision'):
                     del file_info['revision']
 
+            if options.directory:
+                if 'contents' in file_info:
+                    del file_info['contents']
+
             self.client.configchannel.createOrUpdatePath(self.session,
                                                          options.channel,
                                                          options.path,
@@ -861,16 +870,19 @@ def export_configchannel_getdetails(self, channel):
             # i.e binary or non-xml encodable ascii files can be exported as
             # base64 encoded
             if not f.has_key('contents'):
-                if not self.check_api_version('11.1'):
-                    logging.warning("File %s could not be exported " % f['path'] +\
-                                        "with this API version(needs base64 encoding)")
+                if f['type'] == 'directory':
+                    f['contents'] = ''
                 else:
-                    logging.info("File %s could not be exported as" % f['path'] +\
-                                     " text...getting base64 encoded version")
-                    b64f = self.client.configchannel.getEncodedFileRevision(\
-                        self.session, channel, f['path'], f['revision'])
-                    f['contents'] = b64f['contents']
-                    f['contents_enc64'] = b64f['contents_enc64']
+                    if not self.check_api_version('11.1'):
+                        logging.warning("File %s could not be exported " % f['path'] +\
+                                            "with this API version(needs base64 encoding)")
+                    else:
+                        logging.info("File %s could not be exported as" % f['path'] +\
+                                         " text...getting base64 encoded version")
+                        b64f = self.client.configchannel.getEncodedFileRevision(\
+                            self.session, channel, f['path'], f['revision'])
+                        f['contents'] = b64f['contents']
+                        f['contents_enc64'] = b64f['contents_enc64']
 
         for k in [ 'channel', 'revision', 'creation', 'modified', \
                        'permissions_mode', 'binary', 'md5' ]:

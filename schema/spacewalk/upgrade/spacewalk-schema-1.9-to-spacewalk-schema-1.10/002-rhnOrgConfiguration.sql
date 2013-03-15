@@ -34,7 +34,11 @@ create table rhnOrgConfiguration
     crash_file_sizelimit       number
                                    default(2048) not null
                                    constraint rhn_org_conf_sizelimit_chk
-                                   check (crash_file_sizelimit >= 0)
+                                   check (crash_file_sizelimit >= 0),
+    created                    timestamp with local time zone
+                                   default (current_timestamp) not null,
+    modified                   timestamp with local time zone
+                                   default (current_timestamp) not null
 )
 enable row movement
 ;
@@ -42,21 +46,3 @@ enable row movement
 create unique index rhn_org_conf_org_id
     on rhnOrgConfiguration (org_id)
     tablespace [[8m_tbs]];
-
-insert into rhnOrgConfiguration (
-    org_id,
-    staging_content_enabled,
-    crash_reporting_enabled,
-    crashfile_upload_enabled,
-    crash_file_sizelimit )
-(
-    select id,
-           staging_content_enabled,
-           'Y',
-           'Y',
-           crash_file_sizelimit
-      from web_customer
-);
-
-alter table web_customer drop staging_content_enabled;
-alter table web_customer drop crash_file_sizelimit;

@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.4
+Version: 1.10.8
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -117,7 +117,7 @@ modules.
 %package sql-postgresql
 Summary: Postgresql backend for Spacewalk
 Group: Applications/Internet
-Requires: python-psycopg2
+Requires: python-psycopg2 >= 2.0.14-2
 Provides: %{name}-sql-virtual = %{version}
 
 %description sql-postgresql
@@ -776,6 +776,22 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Thu Mar 14 2013 Jan Pazdziora 1.10.8-1
+- The parameters are not processed in the parent class, stop passing them in.
+
+* Wed Mar 13 2013 Jan Pazdziora 1.10.7-1
+- Properly check the self.port which can be None by now.
+
+* Tue Mar 12 2013 Jan Pazdziora 1.10.6-1
+- abrt: support parsing package nevra from older abrt versions
+- The is_connected_to needs to match the adjustments we do in connect.
+- Do not parse the command line options, there are none.
+
+* Mon Mar 11 2013 Jan Pazdziora 1.10.5-1
+- 757302, 843723, 873379 - require python-psycopg2 with patch for the reference
+  leaks.
+- add missing comma
+
 * Fri Mar 08 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.4-1
 - abrt: enable crash reporting settings in backend
 

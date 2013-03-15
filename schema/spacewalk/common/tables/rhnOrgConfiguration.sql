@@ -26,7 +26,7 @@ create table rhnOrgConfiguration
     crash_reporting_enabled    char(1)
                                    default ('Y') not null
                                    constraint rhn_org_conf_crash_report_chk
-                                   check (crash_reporting_enabledin ('Y', 'N')),
+                                   check (crash_reporting_enabled in ('Y', 'N')),
     crashfile_upload_enabled   char(1)
                                    default ('Y') not null
                                    constraint rhn_org_conf_crash_upload_chk
@@ -34,7 +34,11 @@ create table rhnOrgConfiguration
     crash_file_sizelimit       number
                                    default(2048) not null
                                    constraint rhn_org_conf_sizelimit_chk
-                                   check (crash_file_sizelimit >= 0)
+                                   check (crash_file_sizelimit >= 0),
+    created                    timestamp with local time zone
+                                   default (current_timestamp) not null,
+    modified                   timestamp with local time zone
+                                   default (current_timestamp) not null
 )
 enable row movement
 ;

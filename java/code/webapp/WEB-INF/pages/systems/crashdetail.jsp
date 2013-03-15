@@ -63,9 +63,9 @@
         <rl:decorator name="PageSizeDecorator"/>
 
         <rl:column headerkey="crashes.jsp.filename" bound="false"
-            styleclass="first-column"
             sortattr="filename"
             sortable="true"
+			defaultsort="asc"
             filterattr="filename">
             <c:if test="${current.isUploaded}">
                 <a href="${current.downloadPath}">
@@ -89,7 +89,6 @@
         </rl:column>
 
         <rl:column headerkey="lastModified" bound="false"
-            styleclass="last-column"
             sortattr="modified"
             sortable="true">
             ${current.modifiedString}
