@@ -633,10 +633,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<Channel> getKickstartableChannels(Org org) {
         List<Channel> ret = new ArrayList<Channel>();
-        Map params = new HashMap();
-        params.put("org_id", org.getId());
-        List<Channel> channels = singleton.listObjectsByNamedQuery(
-                "Channel.kickstartableChannels", params, false);
+        List<Channel> channels = getAutoinstallableChannels(org);
         // Only return channels containing the anaconda package
         for (Channel c : channels) {
             List packages = ChannelManager.listLatestPackagesEqual(c.getId(),
@@ -646,6 +643,19 @@ public class ChannelFactory extends HibernateFactory {
             }
         }
         return ret;
+    }
+
+    /**
+     * Get the List of Channel's that are autoinstallable to the
+     * Org passed in.
+     * @param org who you want to get kickstartable channels
+     * @return List of Channel objects
+     */
+    public static List<Channel> getAutoinstallableChannels(Org org) {
+        Map params = new HashMap();
+        params.put("org_id", org.getId());
+        return singleton.listObjectsByNamedQuery(
+                "Channel.kickstartableChannels", params, false);
     }
 
     /**

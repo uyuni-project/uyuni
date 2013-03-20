@@ -235,7 +235,7 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
      */
     public List getKickstartableChannels() {
         return ChannelFactory.
-            getKickstartableChannels(user.getOrg());
+            getAutoinstallableChannels(user.getOrg());
     }
 
     /**
