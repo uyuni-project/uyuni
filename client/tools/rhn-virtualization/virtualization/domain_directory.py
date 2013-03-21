@@ -183,10 +183,9 @@ class DomainDirectory:
         if config.hasConfigItem(DomainConfig.DOMAIN_ID):
             config.removeConfigItem(DomainConfig.DOMAIN_ID)
 
-        # we have to worry about wrong kernel and initrd pathes in OS
-        #if self.conn.getType() == 'QEMU':
-        #    # Dont worry about bootloader if its kvm
-        #    return
+        if self.conn.getType() == 'QEMU':
+            # Dont worry about bootloader if its kvm
+            return
 
         boot_images_exist = 0
 
@@ -202,13 +201,6 @@ class DomainDirectory:
         # If we've determined that the referenced boot images do not exist,
         # remove the OS section and insert a bootloader piece.
         if not boot_images_exist:
-            if self.conn.getType() == 'QEMU':
-                config.removeConfigItem(DomainConfig.KERNEL_PATH)
-                config.removeConfigItem(DomainConfig.RAMDISK_PATH)
-                if config.hasConfigItem(DomainConfig.COMMAND_LINE):
-                    config.removeConfigItem(DomainConfig.COMMAND_LINE)
-                return
-
             if config.hasConfigItem(DomainConfig.OS):
                 config.removeConfigItem(DomainConfig.OS)
 
