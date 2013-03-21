@@ -3080,19 +3080,19 @@
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
         <trans-unit id="kickstart.state.created">
-          <source>Autoinstall session created but has not yet been used.</source>
+          <source>Autoinstallation session created but has not yet been used.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.deployed">
           <source>Files required for autoinstallation action have been installed.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.injected">
-          <source>The system configuration has been modified to begin autoinstallation upon next boot.</source>
+          <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.restarted">
           <source>The system has been restarted in order to begin the autoinstallation process.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.configuration_accessed">
-          <source>The system has downloaded the autoinstall configuration file from @@PRODUCT_NAME@@.</source>
+          <source>The system has downloaded the autoinstallation configuration file from @@PRODUCT_NAME@@.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.started">
           <source>The initial files required for autoinstallation have been downloaded.</source>
@@ -3101,7 +3101,7 @@
           <source>The system is downloading the RPMs required to install.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.registered">
-          <source>The system has successfully registered with @@PRODUCT_NAME@@ after autoinstallation.</source>
+          <source>The system has successfully registered with @@PRODUCT_NAME@@ after autoinstalling.</source>
         </trans-unit>
         <trans-unit id="kickstart.state.package_synch">
           <source>Package synchronization in progress.</source>
