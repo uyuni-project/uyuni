@@ -98,6 +98,12 @@
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="nocrashes.message">
+        <source>No software crashes.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SoftwareCrashesOverview</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="none.message">
         <source>(none)</source>
         <context-group name="ctx">
@@ -8168,6 +8174,26 @@ Please note that some manual configuration of these scripts may still be require
 	    </trans-unit>
       </group>
       <!-- Kickstart -->
+      <trans-unit id="kickstarts.jsp.diskwarning">
+        <source>&lt;strong&gt;Warning:&lt;/strong&gt; The Kickstart Profile selected is set to destroy all
+        partitions on all disks, including logical disks on attached SANs.
+        If you do not want to loose data on one or
+        more disks you should remove the disk from the server before
+        kickstarting or edit the "clearpart" option for this Kickstart Profile.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="kickstarts.jsp.diskwarningssm">
+        <source>&lt;strong&gt;Warning:&lt;/strong&gt; The Kickstart Profile(s) used may destroy all
+        partitions on all disks of the kickstarted machines, including logical disks on attached SANs.
+        If you do not want to loose data on one or more disks you should remove the disks from the
+        servers before kickstarting or ensure that the Kickstart Profile(s) used will not destroy the
+        partitions by editing the "clearpart" option.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/kickstart/</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="partitions">
         <source>partitions</source>
         <context-group name="ctx">
@@ -15836,6 +15862,15 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <trans-unit id="exportcolumn.path">
           <source>Path</source>
         </trans-unit>
+        <trans-unit id="exportcolumn.uuid">
+          <source>UUID</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.totalCrashCount">
+          <source>Total Crash Count</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.lastCrashReport">
+          <source>Last Crash Occurence</source>
+        </trans-unit>
      </group>
      <trans-unit id="virtualization.provision.first.jsp.no.profiles">
         <source>No profiles currently available for autoinstalling guests. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new autoinstallation profile with a Virtualization Type other than none.&lt;/a&gt;</source>
@@ -16369,6 +16404,24 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="crashes.jsp.totalcrashcount">
+        <source>Total Crash Count</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SoftwareCrashesOverview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.affectedsystemscount">
+        <source>Affected Systems Count</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SoftwareCrashesOverview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.lastoccurence">
+        <source>Last Crash Occurence</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/SoftwareCrashesOverview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="crashes.jsp.crashcount">
         <source>Crash Count</source>
         <context-group name="ctx">
@@ -16442,7 +16495,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="crashes.jsp.delete.summary">
-        <source>Software Crash will be deleted.</source>
+        <source>The Software Crash will be deleted.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDelete.do</context>
         </context-group>
@@ -16451,6 +16504,13 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <source>Path</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashes.jsp.uuid">
+        <source>Crash UUID</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
+          <context context-type="sourcefile">/rhn/systems/SoftwareCrashesOverview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crashes.jsp.analyzer">
@@ -16513,28 +16573,28 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="details.crashnotes.header">
-        <source>Crash Notes</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="details.crashnotes.nonotes">
         <source>No Crash Notes were entered for this Software Crash.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="crashfiles.jsp.header">
-        <source>Crash Files</source>
+      <trans-unit id="details.crashnotes.createnote">
+        <source>Create a new note.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="crashnotes.jsp.header">
-        <source>Crash Note Details</source>
+      <trans-unit id="details.crashnotes.delete.confirm">
+        <source>Are you certain you wish to delete this software crash note?</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/EditCrashNote.do</context>
+          <context context-type="sourcefile">/rhn/systems/details/DeleteCrashNote.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crashfiles.jsp.header">
+        <source>Crash Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.migrate.header">

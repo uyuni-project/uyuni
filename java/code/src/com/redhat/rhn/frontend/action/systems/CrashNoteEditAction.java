@@ -45,6 +45,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CrashNoteEditAction extends RhnAction {
 
+    public static final String SID = "sid";
     public static final String CRASH = "crash";
     public static final String CRASH_ID = "crid";
     public static final String CRASH_NOTE_ID = "cnid";
@@ -126,6 +127,7 @@ public class CrashNoteEditAction extends RhnAction {
 
         request.setAttribute(CRASH_ID, crash.getId());
         request.setAttribute(CRASH, crash);
+        request.setAttribute(SID, crash.getServer().getId());
 
         if (crNoteIn != null) {
             daForm.set("subject", crNoteIn.getSubject());

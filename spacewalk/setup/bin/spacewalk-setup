@@ -249,7 +249,7 @@ sub setup_cobbler {
     # Cobbler 2.0 can use the old helper script
     system(COBBLER_20_COMMAND);
   } else {
-    system(COBBLER_COMMAND . " --verbose --macros hostname:$answers->{'hostname'}");
+    system(COBBLER_COMMAND, '--verbose', '--macros', "hostname:$answers->{'hostname'}");
 
     my $skip_rhnconf = 0;
     open(FILE, "<" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);
@@ -286,15 +286,13 @@ sub setup_cobbler {
 
   if (($answers{'enable-tftp'} and $answers{'enable-tftp'} =~ /^[Yy]/) || $opts{"non-interactive"}) {
       if (-e '/usr/lib/systemd/system/tftp.socket') {
-        system("systemctl enable tftp.socket");
+        system("systemctl --quiet enable tftp.socket");
       } else {
         #system("chkconfig tftp on");
         #system("chkconfig xinetd on");
         system("chkconfig atftpd on");
       }
   }
-
-  system("cobbler sync");
 }
 
 sub setup_admin_email {

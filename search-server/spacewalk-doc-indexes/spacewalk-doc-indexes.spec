@@ -1,7 +1,7 @@
 %define crawl_output crawl_output
 
 Name: spacewalk-doc-indexes
-Version: 1.10.0
+Version: 1.10.1
 Release: 1%{?dist}
 Summary: Lucene indexes of help documentation for spacewalk
 
@@ -50,6 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/rhn/search/indexes
 
 %changelog
+* Mon Mar 18 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.1-1
+- %%defattr is not needed since rpm 4.4
+
 * Mon Apr 19 2010 Michael Mraka <michael.mraka@redhat.com> 1.1.1-1
 - bumping spec files to 1.1 packages
 

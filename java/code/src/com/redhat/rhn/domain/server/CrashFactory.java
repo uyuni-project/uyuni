@@ -16,6 +16,12 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.frontend.dto.IdenticalCrashesDto;
+
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -88,6 +94,17 @@ public class CrashFactory extends HibernateFactory {
     }
 
     /**
+     * @param crashNoteId Crash note id
+     * @return Crash note for given id
+     */
+    public static CrashNote lookupCrashNoteById(Long crashNoteId) {
+        Map params = new HashMap();
+        params.put("id", crashNoteId);
+        return (CrashNote) singleton.lookupObjectByNamedQuery(
+                "CrashNote.findById", params);
+    }
+
+    /**
      * Lists crash notes of a specified crash
      * @param crashIn crash
      * @return crash notes for given crash
@@ -105,5 +122,29 @@ public class CrashFactory extends HibernateFactory {
      */
     public static void save(CrashNote crashNoteIn) {
         singleton.saveObject(crashNoteIn);
+    }
+
+    /**
+     * Deletes a CrashNote object
+     * @param crashNoteIn crash note to delete
+     */
+    public static void delete(CrashNote crashNoteIn) {
+        singleton.removeObject(crashNoteIn);
+    }
+
+    /**
+     * List Software crashes for a given user and org grouped by crash uuid
+     * @param userIn The org to return the list for
+     * @param orgIn The org to return the list for
+     * @return software crash list for a user and org group by crash uuid
+     */
+    public static List<IdenticalCrashesDto> listIdenticalCrashesForOrg(User userIn,
+                                                                       Org orgIn) {
+        SelectMode m = ModeFactory.getMode("Crash_queries",
+                                           "list_identical_crashes_for_org");
+        Map params = new HashMap();
+        params.put("user_id", userIn.getId());
+        params.put("org_id", orgIn.getId());
+        return m.execute(params);
     }
 }

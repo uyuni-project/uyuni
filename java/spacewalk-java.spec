@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.15
+Version: 1.10.24
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -776,6 +776,43 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Mar 21 2013 Stephen Herr <sherr@redhat.com> 1.10.24-1
+- 924487 - Display warning if user might clobber their LUN with kickstart
+
+* Thu Mar 21 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.23-1
+- abrt: software crash overview, grouped by uuid
+
+* Thu Mar 21 2013 Jan Pazdziora 1.10.22-1
+- if token does not exist in DB better use it instead of new one
+
+* Wed Mar 20 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.21-1
+- returning empty string instead of null when null is given
+- removing @Override annotation from method that isn't overriden
+
+* Wed Mar 20 2013 Jan Dobes <jdobes@redhat.com> 1.10.20-1
+- abrt: store crash uuid
+- abrt api createCrashNote - subject is required
+- visual fix for crash details
+- checkstyle fix
+- removing class="(fisrt|last)-column" from *.jsp(f)
+
+* Tue Mar 19 2013 Grant Gainey <ggainey@redhat.com> 1.10.19-1
+- 922928: Make duplicate-hostname search case-insensitive
+
+* Mon Mar 18 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.18-1
+- abrt - crash note api
+- add is_uploaded flag to listSystemCrashFiles() return
+- adding link for description of java regular expression
+- removing broken link from apidoc
+- use the server timezone as the default for the first user
+- do not compile test cases within compile-all task
+
+* Mon Mar 18 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.17-1
+- link jmock only when it's installed
+
+* Fri Mar 15 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.16-1
+- abrt webui: separate tabs for details, files and notes
+
 * Fri Mar 15 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.15-1
 - detect objectweb-asm properly
 

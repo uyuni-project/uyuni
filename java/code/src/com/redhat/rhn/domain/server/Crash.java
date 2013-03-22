@@ -33,6 +33,7 @@ public class Crash extends BaseDomainHelper {
     private String crash;
     private String path;
     private long count;
+    private String uuid;
     private String analyzer;
     private String architecture;
     private String cmdline;
@@ -48,6 +49,7 @@ public class Crash extends BaseDomainHelper {
     private Date created;
     private Date modified;
     private Set<CrashFile> crashFiles;
+    private Set<CrashNote> crashNotes;
 
     /**
      * Represents application crash information.
@@ -134,6 +136,22 @@ public class Crash extends BaseDomainHelper {
      */
     public void setCount(long countIn) {
         count = countIn;
+    }
+
+    /**
+     * Get the crash uuid.
+     * @return Returns the crash uuid.
+     */
+    public String getUuid() {
+        return uuid;
+    }
+
+    /**
+     * Set the crash uuid.
+     * @param uuidIn The crash uuid to set.
+     */
+    public void setUuid(String uuidIn) {
+        uuid = uuidIn;
     }
 
     /**
@@ -380,6 +398,20 @@ public class Crash extends BaseDomainHelper {
      */
     public void setCrashFiles(Set<CrashFile> cf) {
         this.crashFiles = cf;
+    }
+
+    /**
+     * @return crashNotes for crash
+     */
+    public Set<CrashNote> getCrashNotes() {
+        return crashNotes;
+    }
+
+    /**
+     * @param crashNotesIn crash notes to set
+     */
+    public void setCrashNotes(Set<CrashNote> crashNotesIn) {
+        crashNotes = crashNotesIn;
     }
 
 }

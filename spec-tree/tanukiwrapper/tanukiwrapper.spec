@@ -30,15 +30,16 @@
 
 %define gcj_support %{?_with_gcj_support:1}%{!?_with_gcj_support:%{?_without_gcj_support:0}%{!?_without_gcj_support:%{?_gcj_support:%{_gcj_support}}%{!?_gcj_support:0}}}
 
-%if 0%{?rhel} >= 6
+%if 0%{?rhel} >= 5
 %define gcj_support 1
 %endif
 
+%define build_subpackages 0
 %define section	free
 
 Name:		tanukiwrapper
 Version:	3.2.3
-Release:	8%{?dist}
+Release:	11%{?dist}
 Summary:	Java Service Wrapper
 Epoch:		0
 License:	BSD
@@ -85,6 +86,7 @@ common to many Java applications:
 - Ease Application installations
 - Logging
 
+%if %{build_subpackages}
 %package javadoc
 Summary:        Javadoc for %{name}
 Group:          Development/Documentation
@@ -101,6 +103,7 @@ Group:          Development/Documentation
 
 %description manual
 %{summary}.
+%endif
 
 %prep
 %setup -q -n wrapper_%{version}_src
@@ -115,16 +118,7 @@ Group:          Development/Documentation
 %endif
 %patch7
 find . -name "*.jar" -exec %__rm -f {} \;
-%__perl -p -i -e 's/\r//' doc/AUTHORS
 %__perl -p -i -e 's|-O3|%optflags|' src/c/Makefile*
-%__perl -p -e \
-  's|=\.\./lib/wrapper\.jar$|=%{_javadir}/%{name}.jar| ;
-   s|=\.\./lib$|=%{_libdir}|' \
-  src/conf/wrapper.conf.in > wrapper.conf.sample
-%__perl -p -e \
-  's|"\./wrapper"|"%{_sbindir}/%{name}"| ;
-   s|"\.\./conf/wrapper\.conf"|"/path/to/wrapper.conf"|' \
-  src/bin/sh.script.in > script.sh.sample
 
 %build
 export CLASSPATH=$(build-classpath ant junit xerces-j2 xml-commons-apis)
@@ -133,8 +127,13 @@ bits=64
 %else
 bits=32
 %endif
+%if %{build_subpackages}
 %ant -Dbuild.sysclasspath=first -Djdk.api=%{_javadocdir}/java -Dbits=$bits \
   main jdoc
+%else
+%ant -Dbuild.sysclasspath=first -Djdk.api=%{_javadocdir}/java -Dbits=$bits \
+  main
+%endif
 
 %install
 %__rm -rf %{buildroot}
@@ -152,10 +151,12 @@ bits=32
 %__install -d -m 755 %{buildroot}%{_sbindir}
 %__install -p -m 755 bin/wrapper %{buildroot}%{_sbindir}/%{name}
 
+%if %{build_subpackages}
 # javadoc
 %__install -d -m 755 %{buildroot}%{_javadocdir}/%{name}-%{version}
 %__cp -a jdoc/* %{buildroot}%{_javadocdir}/%{name}-%{version}
 %__ln_s %{name}-%{version} %{buildroot}%{_javadocdir}/%{name} # ghost symlink
+%endif
 
 %if %{gcj_support}
 %{_bindir}/aot-compile-rpm
@@ -164,6 +165,7 @@ bits=32
 %clean
 %__rm -rf %{buildroot}
 
+%if %{build_subpackages}
 %post javadoc
 %__rm -f %{_javadocdir}/%{name}
 %{__ln_s}f %{name}-%{version} %{_javadocdir}/%{name}
@@ -172,6 +174,7 @@ bits=32
 if [ "$1" = "0" ]; then
   %__rm -f %{_javadocdir}/%{name}
 fi
+%endif
 
 %if %{gcj_support}
 %post
@@ -191,7 +194,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc doc/license.txt *.sample
+%doc doc/license.txt
 %{_sbindir}/%{name}
 %{_libdir}/libwrapper.so
 %{_javadir}/%{name}*.jar
@@ -200,6 +203,7 @@ fi
 %attr(-,root,root) %{_libdir}/gcj/%{name}/tanukiwrapper-%{version}.jar.*
 %endif
 
+%if %{build_subpackages}
 %files javadoc
 %defattr(0644,root,root,0755)
 %{_javadocdir}/%{name}-%{version}
@@ -208,8 +212,20 @@ fi
 %files manual
 %defattr(0644,root,root,0755)
 %doc doc/*
+%endif
 
 %changelog
+* Wed Mar 20 2013 Tomas Lestach <tlestach@redhat.com> 3.2.3-11
+- Revert "set fuzz=1 for tanukiwrapper patch application"
+
+* Tue Mar 19 2013 Tomas Lestach <tlestach@redhat.com> 3.2.3-10
+- set fuzz=1 for tanukiwrapper patch application
+
+* Tue Mar 19 2013 Tomas Lestach <tlestach@redhat.com> 3.2.3-9
+- remove unused sample files from tanukiwrapper
+- disable building tanukiwrapper subpackages
+- explicitelly enable gcj_support on RHEL
+
 * Fri Jan 18 2013 Michael Mraka <michael.mraka@redhat.com> 3.2.3-8
 - fixed typo in spec
 

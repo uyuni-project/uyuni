@@ -44,6 +44,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * UserFactory  - the singleton class used to fetch and store
@@ -501,6 +502,20 @@ public  class UserFactory extends HibernateFactory {
      * @return US Eastern Time Zone
      */
     public static RhnTimeZone getDefaultTimeZone() {
+        RhnTimeZone sysDefault = getTimeZone(TimeZone.getDefault().getID());
+        if (sysDefault != null) {
+            return sysDefault;
+        }
+        Session session = HibernateFactory.getSession();
+        List<RhnTimeZone> allTimeZones =
+                session.getNamedQuery("RhnTimeZone.loadAll").list();
+        for (RhnTimeZone tz : allTimeZones) {
+            if (TimeZone.getDefault().getRawOffset() == TimeZone.getTimeZone(
+                    tz.getOlsonName()).getRawOffset()) {
+                return tz;
+            }
+        }
+        // This should not happen unless the timezone table is incomplete
         return getTimeZone("America/New_York");
     }
 

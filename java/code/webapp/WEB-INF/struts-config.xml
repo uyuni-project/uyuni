@@ -867,6 +867,7 @@
 		    <form-property name="storageType" type="java.lang.String" />
 		    <form-property name="localStorageGigabytes" type="java.lang.String" />
 		    <form-property name="guestName" type="java.lang.String" />
+		    <form-property name="destroyDisks" type="java.lang.String" />
 
 
         </form-bean>
@@ -2882,6 +2883,16 @@
                  path="/WEB-INF/pages/systems/systemcurrency.jsp"/>
     </action>
 
+    <action path="/systems/SoftwareCrashesOverview"
+        scope="request"
+        input="/WEB-INF/pages/systems/softwarecrashesoverview.jsp"
+        type="com.redhat.rhn.frontend.action.systems.SoftwareCrashesOverviewAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/softwarecrashesoverview.jsp"/>
+    </action>
+
     <action path="/systems/ProxyList"
         scope="request"
         input="/WEB-INF/pages/systems/proxylist.jsp"
@@ -3642,9 +3653,28 @@
         input="/WEB-INF/pages/systems/crashdetail.jsp"
         type="com.redhat.rhn.frontend.action.systems.SoftwareCrashesDetailsAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/systems/crashdetail.jsp"/>
+    </action>
+
+    <action path="/systems/details/SoftwareCrashFiles"
+        scope="request"
+        input="/WEB-INF/pages/systems/crashfiles.jsp"
+        type="com.redhat.rhn.frontend.action.systems.SoftwareCrashesFilesAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/crashfiles.jsp"/>
+    </action>
+
+    <action path="/systems/details/SoftwareCrashNotes"
+        scope="request"
+        input="/WEB-INF/pages/systems/crashnotes.jsp"
+        type="com.redhat.rhn.frontend.action.systems.SoftwareCrashesNotesAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/crashnotes.jsp"/>
     </action>
 
     <action path="/systems/details/SoftwareCrashDelete"
@@ -3671,8 +3701,24 @@
         <forward name="default"
                  path="/WEB-INF/pages/systems/crashnote.jsp"/>
         <forward name="success"
-                 path="/systems/details/SoftwareCrashDetail.do" redirect="true"/>
+                 path="/systems/details/SoftwareCrashNotes.do" redirect="true"/>
     </action>
+
+    <action path="/systems/details/DeleteCrashNote"
+        name="editNoteForm"
+        scope="request"
+        input="/WEB-INF/pages/systems/crashnotedelete.jsp"
+        parameter="dispatch"
+        validate="false"
+        type="com.redhat.rhn.frontend.action.systems.CrashNoteDeleteAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/crashnotedelete.jsp"/>
+        <forward name="success"
+                 path="/systems/details/SoftwareCrashNotes.do" redirect="true"/>
+    </action>
+
 
      <action path="/systems/details/groups/ListRemove"
              scope="request"
@@ -6385,6 +6431,8 @@
                  redirect="true" path="/systems/details/kickstart/SessionStatus.do"/>
         <forward name="cobbler-success"
                  redirect="true" path="/systems/details/kickstart/ScheduleWizard.do"/>
+        <forward name="fifth"
+                path="/WEB-INF/pages/kickstart/wizard/schedule/fifth.jsp" />
     </action>
 
     <action path="/systems/details/virtualization/ProvisionVirtualizationWizard"

@@ -3,13 +3,23 @@
 %define wwwdocroot /srv/www/htdocs
 %define apacheconfdir %{_sysconfdir}/apache2/conf.d
 %define apache_group www
+%global tomcat tomcat6
 %else
+%if  0%{?rhel} && 0%{?rhel} < 6
+%global tomcat tomcat5
+%else
+%if 0%{?fedora}
+%global tomcat tomcat
+%else
+%global tomcat tomcat6
+%endif
+%endif
 %define wwwdocroot %{_var}/www/html
 %define apacheconfdir %{_sysconfdir}/httpd/conf.d
 %define apache_group apache
 %endif
 Name:       spacewalk-branding
-Version:    1.10.7
+Version:    1.10.10
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -48,15 +58,7 @@ install -d -m 755 %{buildroot}%{_datadir}/spacewalk
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web/nav
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
-%if  0%{?rhel} && 0%{?rhel} < 6
-install -d -m 755 %{buildroot}%{_var}/lib/tomcat5/webapps/rhn/WEB-INF/lib/
-%else
-%if 0%{?fedora}
-install -d -m 755 %{buildroot}%{_var}/lib/tomcat/webapps/rhn/WEB-INF/lib/
-%else
-install -d -m 755 %{buildroot}%{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/
-%endif
-%endif
+install -d -m 755 %{buildroot}%{_var}/lib/%{tomcat}/webapps/rhn/WEB-INF/lib/
 install -d -m 755 %{buildroot}/%{_prefix}/share/rhn/config-defaults
 cp -pR css %{buildroot}/%{wwwdocroot}/
 cp -pR img %{buildroot}/%{wwwdocroot}/
@@ -68,15 +70,7 @@ cp -pR templates %{buildroot}%{_datadir}/spacewalk/web/
 cp -pR styles %{buildroot}%{_datadir}/spacewalk/web/nav/
 cp -pR setup  %{buildroot}%{_datadir}/spacewalk/
 cp -pR java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
-%if  0%{?rhel} && 0%{?rhel} < 6
-ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/tomcat5/webapps/rhn/WEB-INF/lib/java-branding.jar
-%else
-%if 0%{?fedora}
-ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/tomcat/webapps/rhn/WEB-INF/lib/java-branding.jar
-%else
-ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/java-branding.jar
-%endif
-%endif
+ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/%{tomcat}/webapps/rhn/WEB-INF/lib/java-branding.jar
 
 %if  0%{?suse_version}
 cat > %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf <<-ENDOFCONFIG
@@ -108,15 +102,7 @@ rm -rf %{buildroot}
 /%{wwwdocroot}/favicon.ico
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
-%if  0%{?rhel} && 0%{?rhel} < 6
-%{_var}/lib/tomcat5/webapps/rhn/WEB-INF/lib/java-branding.jar
-%else
-%if 0%{?fedora}
-%{_var}/lib/tomcat/webapps/rhn/WEB-INF/lib/java-branding.jar
-%else
-%{_var}/lib/tomcat6/webapps/rhn/WEB-INF/lib/java-branding.jar
-%endif
-%endif
+%{_var}/lib/%{tomcat}/webapps/rhn/WEB-INF/lib/java-branding.jar
 %{_prefix}/share/rhn/config-defaults/rhn_docs.conf
 %attr(0755,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
 %dir /usr/share/rhn
@@ -130,6 +116,15 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.10-1
+- simplify tomcat version decisison
+
+* Wed Mar 20 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.9-1
+- changing structure of css files
+
+* Sun Mar 17 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.8-1
+- removing unreferenced images from spacewalk-branding
+
 * Thu Mar 14 2013 Jan Pazdziora 1.10.7-1
 - rhn-iecompat.css is never used - delete it
 
