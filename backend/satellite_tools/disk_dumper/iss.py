@@ -519,11 +519,11 @@ class Dumper(dumper.XML_Dumper):
 		    select rktf.relative_filename "relative-path", 
 		           c.checksum_type "checksum-type", c.checksum,
                            rktf.file_size "file-size",
-		           TO_CHAR(rktf.last_modified, 'YYYYMMDDHH24MISS') "last-modified", 
-			   rkt.base_path "base-path",
-		           rkt.label label, 
-			   TO_CHAR(rkt.modified, 'YYYYMMDDHH24MISS') "modified"
-		      from rhnKSTreeFile rktf, rhnKickstartableTree rkt,
+                           TO_CHAR(rktf.last_modified, 'YYYYMMDDHH24MISS') "last-modified",
+                           rkt.base_path "base-path",
+                           rkt.label "label",
+                           TO_CHAR(rkt.modified, 'YYYYMMDDHH24MISS') "modified"
+                      from rhnKSTreeFile rktf, rhnKickstartableTree rkt,
                            rhnChecksumView c
 		     where rktf.kstree_id = :kstree_id
 		       and rkt.id = rktf.kstree_id
