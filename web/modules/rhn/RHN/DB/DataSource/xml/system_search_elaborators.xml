@@ -64,7 +64,7 @@ SELECT  S.id AS ID,
 <mode name="search_simple">
   <query params="set_label, user_id">
   SELECT  S.id ID, S.name SERVER_NAME, S.description MATCHING_FIELD,
-          COALESCE((SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = S.id AND SFV.label = 'ftr_system_grouping'), 0) AS SELECTABLE
+          coalesce((SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = S.id AND SFV.label = 'ftr_system_grouping'), 0) AS SELECTABLE
     FROM  rhnServer S, rhnSet RS
    WHERE  S.id = RS.element
      AND  RS.label = :set_label
@@ -321,7 +321,7 @@ ORDER BY  UPPER(PN.name || '-' || PE.evr.as_vre_simple())
 
 <query name="default_search_query" params="set_label, user_id">
   SELECT  S.id ID, S.name SERVER_NAME,
-          COALESCE((SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = S.id AND SFV.label = 'ftr_system_grouping'), 0) AS SELECTABLE
+          coalesce((SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = S.id AND SFV.label = 'ftr_system_grouping'), 0) AS SELECTABLE
     FROM  rhnServer S, rhnSet RS
    WHERE  S.id = RS.element
      AND  RS.label = :set_label
