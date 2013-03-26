@@ -82,6 +82,10 @@ $ctx->{norefresh} = 1;
 
 $ctx->{zypper}        = "/usr/bin/zypper";
 $ctx->{lsb_release}   = "/usr/bin/lsb_release";
+if( -e "/usr/lib/suseRegister/bin/parse_release")
+{
+    $ctx->{lsb_release}   = "/usr/lib/suseRegister/bin/parse_release";
+}
 $ctx->{uname}         = "/bin/uname";
 $ctx->{hwinfo}        = "/usr/sbin/hwinfo";
 $ctx->{curl}          = "/usr/bin/curl";
