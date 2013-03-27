@@ -7,9 +7,10 @@
 %define apache_group apache
 %define misc_path %{_var}
 %endif
+%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        1.10.2
+Version:        1.10.4
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -40,7 +41,7 @@ Requires:       perl-Net-LibIDN
 Requires:       patch
 BuildRequires:       perl-libwww-perl
 %else
-Requires:       /sbin/restorecon
+Requires:       %{sbinpath}/restorecon
 %endif
 Requires:       spacewalk-admin
 Requires:       spacewalk-certs-tools
@@ -167,6 +168,12 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Tue Mar 26 2013 Jan Dobes 1.10.4-1
+- Updating docs, we don't ship Spacewalk for RHEL 4.
+
+* Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.3-1
+- 919468 - fixed path in file based Requires
+
 * Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.2-1
 - supress systemd messages during setup
 - Use multiparameter system to better predictability.

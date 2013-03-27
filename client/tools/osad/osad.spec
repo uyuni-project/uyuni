@@ -1,6 +1,7 @@
 %global rhnroot /usr/share/rhn
 %global rhnconf /etc/sysconfig/rhn
 %global client_caps_dir /etc/sysconfig/rhn/clientCaps.d
+%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 %if 0%{?suse_version}
 %global apache_group www
@@ -16,7 +17,7 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.11.18
+Version: 5.11.20
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -24,7 +25,15 @@ BuildRequires: python-devel
 Requires: python
 Requires: rhnlib >= 1.8-3
 Requires: jabberpy
+%if 0%{?el5}
+Requires: rhn-client-tools >= 0.4.20-48
+%else
+%if 0%{?el6}
+Requires: rhn-client-tools >= 1.0.0-44
+%else
 Requires: rhn-client-tools >= 1.3.7
+%endif
+%endif
 %if 0%{?suse_version} && 0%{?suse_version} < 1110 || 0%{?rhel} && 0%{?rhel} <= 5
 Requires: python-hashlib
 %endif
@@ -121,8 +130,8 @@ Requires: selinux-policy >= %{selinux_policyver}
 %if 0%{?rhel} == 5
 Requires:        selinux-policy >= 2.4.6-114
 %endif
-Requires(post): /usr/sbin/semodule, /sbin/restorecon, /usr/sbin/selinuxenabled, /usr/sbin/semanage
-Requires(postun): /usr/sbin/semodule, /sbin/restorecon, /usr/sbin/semanage, spacewalk-selinux
+Requires(post): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/selinuxenabled, /usr/sbin/semanage
+Requires(postun): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/semanage, spacewalk-selinux
 Requires: osa-dispatcher
 
 %description -n osa-dispatcher-selinux
@@ -399,6 +408,13 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Tue Mar 26 2013 Stephen Herr <sherr@redhat.com> 5.11.20-1
+- 860937 - update osad requires versions for rhel 5 and 6
+
+* Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 5.11.19-1
+- 919468 - fixed path in file based Requires
+- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
+
 * Thu Feb 28 2013 Jan Pazdziora 5.11.18-1
 - Removing the dsn parameter from initDB, removing support for --db option.
 

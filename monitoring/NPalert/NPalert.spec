@@ -15,7 +15,7 @@ Name:         NPalert
 Summary:      NOCpulse notification system
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      1.127.10
+Version:      1.127.11
 Release:      1%{?dist}
 BuildArch:    noarch
 %if 0%{?suse_version}
@@ -170,6 +170,10 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Tue Mar 26 2013 Jan Pazdziora 1.127.11-1
+- Use to_timestamp instead of to_date which should bring the second precision
+  to PostgreSQL.
+
 * Mon Feb 18 2013 Miroslav Suchý <msuchy@redhat.com> 1.127.10-1
 - Buildrequire pod2man
 

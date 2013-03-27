@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.10.1
+Version:	1.10.2
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -103,6 +103,9 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Wed Mar 27 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.2-1
+- add openSUSE 12.3 to spacewalk-common-channels config
+
 * Thu Mar 14 2013 Jan Pazdziora 1.10.1-1
 - 920514 - correcting spacewalk-common-channels.ini
 

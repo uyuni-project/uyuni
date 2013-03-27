@@ -1,12 +1,13 @@
 %global selinux_variants mls strict targeted
 %global selinux_policyver %(sed -e 's,.*selinux-policy-\\([^/]*\\)/.*,\\1,' /usr/share/selinux/devel/policyhelp 2> /dev/null)
 %global POLICYCOREUTILSVER 1.33.12-1
+%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 %global moduletype apps
 %global modulename jabber
 
 Name:           jabberd-selinux
-Version:        1.10.0
+Version:        1.10.1
 Release:        1%{?dist}
 Summary:        SELinux policy module supporting jabberd
 
@@ -26,8 +27,8 @@ Requires:       selinux-policy >= %{selinux_policyver}
 %if 0%{?rhel} == 5
 Requires:        selinux-policy >= 2.4.6-114
 %endif
-Requires(post):   /usr/sbin/semodule, /sbin/restorecon, /usr/sbin/setsebool, /usr/sbin/selinuxenabled
-Requires(postun): /usr/sbin/semodule, /sbin/restorecon
+Requires(post):   /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/setsebool, /usr/sbin/selinuxenabled
+Requires(postun): /usr/sbin/semodule, %{sbinpath}/restorecon
 Requires:       jabberd >= 2.2.8
 
 %description
@@ -80,7 +81,7 @@ fi
 %posttrans
 #this may be safely remove when BZ 505066 is fixed
 if /usr/sbin/selinuxenabled ; then
-  rpm -ql jabberd | xargs -n 1 /sbin/restorecon -ri {} || :
+  rpm -ql jabberd | xargs -n 1 %{sbinpath}/restorecon -ri {} || :
 fi
 
 %postun
@@ -95,7 +96,7 @@ if [ $1 -eq 0 ]; then
   /usr/sbin/semanage port -d -t jabber_interserver_port_t -p tcp 5347 || :
 fi
 
-rpm -ql jabberd | xargs -n 1 /sbin/restorecon -ri {} || :
+rpm -ql jabberd | xargs -n 1 %{sbinpath}/restorecon -ri {} || :
 
 %files
 %doc %{modulename}.fc %{modulename}.if %{modulename}.te
@@ -104,6 +105,10 @@ rpm -ql jabberd | xargs -n 1 /sbin/restorecon -ri {} || :
 %attr(0755,root,root) %{_sbindir}/%{name}-enable
 
 %changelog
+* Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.1-1
+- 919468 - fixed path in file based Requires
+- %%defattr is not needed since rpm 4.4
+
 * Fri Sep 24 2010 Jan Pazdziora 1.5.1-1
 - 627984 - Allow jabberd to read certificates.
 - 627984 - Allow jabberd to use Kerberos.

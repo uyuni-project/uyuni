@@ -15871,6 +15871,15 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <trans-unit id="exportcolumn.lastCrashReport">
           <source>Last Crash Occurence</source>
         </trans-unit>
+        <trans-unit id="exportcolumn.crashCount">
+          <source>Crash Count</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.crashComponent">
+          <source>Crash Component</source>
+        </trans-unit>
+        <trans-unit id="exportcolumn.lastReport">
+          <source>Last Crash Occurence</source>
+        </trans-unit>
      </group>
      <trans-unit id="virtualization.provision.first.jsp.no.profiles">
         <source>No profiles currently available for autoinstalling guests. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new autoinstallation profile with a Virtualization Type other than none.&lt;/a&gt;</source>
@@ -16407,7 +16416,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       <trans-unit id="crashes.jsp.totalcrashcount">
         <source>Total Crash Count</source>
         <context-group name="ctx">
-          <context context-type="sourcefile">/systems/SoftwareCrashesOverview.do</context>
+          <context context-type="sourcefile">/systems/softwarecrashesoverview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crashes.jsp.affectedsystemscount">

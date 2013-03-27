@@ -1,11 +1,11 @@
-
+%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 %define selinux_variants mls strict targeted 
 %define selinux_policyver %(sed -e 's,.*selinux-policy-\\([^/]*\\)/.*,\\1,' /usr/share/selinux/devel/policyhelp 2> /dev/null)
 %define moduletype apps
 %define modulename oracle-rhnsat
 
 Name:            oracle-rhnsat-selinux
-Version:         10.2.0.23
+Version:         10.2.0.24
 Release:         1%{?dist}
 Summary:         SELinux policy module supporting Oracle
 Group:           System Environment/Base
@@ -21,8 +21,8 @@ Requires:         selinux-policy >= %{selinux_policyver}
 %if 0%{?rhel} == 5
 Requires:        selinux-policy >= 2.4.6-80
 %endif
-Requires(post):   /usr/sbin/semodule, /sbin/restorecon, /usr/sbin/selinuxenabled
-Requires(postun): /usr/sbin/semodule, /sbin/restorecon
+Requires(post):   /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/selinuxenabled
+Requires(postun): /usr/sbin/semodule, %{sbinpath}/restorecon
 Requires:         oracle-server >= 10.2.0.3
 Requires:         oracle-nofcontext-selinux
 
@@ -77,9 +77,9 @@ fi
 #this may be safely removed when BZ 505066 is fixed
 if /usr/sbin/selinuxenabled ; then
   # Fix up oracle-server-arch files
-  rpm -q --whatprovides oracle-server | xargs rpm -ql | xargs -n 100 /sbin/restorecon -Riv
+  rpm -q --whatprovides oracle-server | xargs rpm -ql | xargs -n 100 %{sbinpath}/restorecon -Riv
   # Fix up database files
-  /sbin/restorecon -rvi /rhnsat /var/tmp/.oracle || :
+  %{sbinpath}/restorecon -rvi /rhnsat /var/tmp/.oracle || :
 fi
 
 %postun
@@ -93,10 +93,10 @@ if [ $1 -eq 0 ]; then
     done
 
   # Clean up oracle-server-arch files
-  rpm -q --whatprovides oracle-server | xargs rpm -ql | xargs -n 100 /sbin/restorecon -Riv
+  rpm -q --whatprovides oracle-server | xargs rpm -ql | xargs -n 100 %{sbinpath}/restorecon -Riv
 
   # Clean up any remaining file contexts (shouldn't be any really)
-  /sbin/restorecon -rvi /rhnsat /var/tmp/.oracle || :
+  %{sbinpath}/restorecon -rvi /rhnsat /var/tmp/.oracle || :
 fi
 
 %files
@@ -106,6 +106,10 @@ fi
 %attr(0755,root,root) %{_sbindir}/%{name}-enable
 
 %changelog
+* Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 10.2.0.24-1
+- 919468 - fixed path in file based Requires
+- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
+
 * Wed Sep 12 2012 Jan Pazdziora 10.2.0.23-1
 - 768097 - ignore Postfix smtpd parsing /proc/mounts.
 

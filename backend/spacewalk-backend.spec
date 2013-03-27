@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.10
+Version: 1.10.14
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -776,6 +776,20 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Wed Mar 27 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.14-1
+- do not read rpm into memory before transferring to client (bnc#801151)
+
+* Tue Mar 26 2013 Jan Pazdziora 1.10.13-1
+- Replacing DECODE with more standard CASE.
+
+* Tue Mar 26 2013 Jan Pazdziora 1.10.12-1
+- Use to_timestamp instead of to_date which should bring the second precision
+  to PostgreSQL.
+
+* Mon Mar 25 2013 Stephen Herr <sherr@redhat.com> 1.10.11-1
+- Client tools able to pass up socket info
+- add python and java xmlrpc handlers for cpu socket info
+
 * Thu Mar 21 2013 Jan Pazdziora 1.10.10-1
 - abrt: store crash uuid
 

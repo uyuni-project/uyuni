@@ -7,12 +7,13 @@
 %define apache_user apache
 %define apache_group apache
 %endif
+%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.8
+Version: 1.10.15
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -51,6 +52,7 @@ Group: Applications/Internet
 Summary: Programs needed to be installed on the RHN Web base classes
 Requires: spacewalk-pxt
 Provides: spacewalk(spacewalk-base) = %{version}-%{release}
+Requires: /usr/bin/sudo 
 %if 0%{?suse_version}
 Requires: perl-RPM2
 Requires: perl-Authen-PAM
@@ -90,11 +92,7 @@ Requires: httpd
 Requires: perl-Filesys-Df
 Obsoletes: rhn-dobby < 5.3.0
 Provides: rhn-dobby = 5.3.0
-%if 0%{?fedora} > 17
-Requires: %{_sbindir}/runuser
-%else
-Requires: /sbin/runuser
-%endif
+Requires: %{sbinpath}/runuser
 
 %description -n spacewalk-dobby
 Dobby is collection of Perl modules and scripts to administer an Oracle
@@ -235,7 +233,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/TSDB.pm
 %{perl_vendorlib}/RHN/Tag.pm
 %{perl_vendorlib}/RHN/TemplateString.pm
-%{perl_vendorlib}/RHN/TinyURL.pm
 %{perl_vendorlib}/RHN/Token.pm
 %{perl_vendorlib}/RHN/User.pm
 %{perl_vendorlib}/RHN/Utils.pm
@@ -305,6 +302,28 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Tue Mar 26 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.15-1
+- changing .spec to reflect changes
+
+* Tue Mar 26 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.14-1
+- removing ty from perl code as packages for kickstart are downloaded via java
+
+* Tue Mar 26 2013 Jan Pazdziora 1.10.13-1
+- Mode system_available_packages not used in web/, removing.
+
+* Tue Mar 26 2013 Jan Pazdziora 1.10.12-1
+- Use to_timestamp instead of to_date which should bring the second precision
+  to PostgreSQL.
+
+* Mon Mar 25 2013 Jan Dobes 1.10.11-1
+- Adding sudo Requires for spacewalk-base package
+
+* Mon Mar 25 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.10-1
+- 918045 - fixed shring-segments for tables in recyclebin
+
+* Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.9-1
+- 919468 - fixed path in file based Requires
+
 * Thu Mar 21 2013 Jan Pazdziora 1.10.8-1
 - 922250 - use $r->useragent_ip on Apache 2.4, $r->connection->remote_ip
   otherwise.

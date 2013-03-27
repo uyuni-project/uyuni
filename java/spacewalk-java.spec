@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.24
+Version: 1.10.31
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -240,6 +240,7 @@ Obsoletes: rhn-java-lib < 5.3.0
 Obsoletes: rhn-java-lib-sat < 5.3.0
 Provides: rhn-java-lib = %{version}-%{release}
 Provides: rhn-java-lib-sat = %{version}-%{release}
+Requires: /usr/bin/sudo
 
 %description lib
 This package contains the jar files for the Spacewalk Java web application
@@ -776,6 +777,34 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Mar 26 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.31-1
+- downloading packages for kickstart via java
+- correct capitalization
+- abrt: display component in crash overview
+
+* Tue Mar 26 2013 Jan Pazdziora 1.10.30-1
+- Fixing checktyle.
+
+* Tue Mar 26 2013 Jan Pazdziora 1.10.29-1
+- Use to_timestamp instead of to_date which should bring the second precision
+  to PostgreSQL.
+
+* Mon Mar 25 2013 Stephen Herr <sherr@redhat.com> 1.10.28-1
+- Client tools able to pass up socket info
+- add python and java xmlrpc handlers for cpu socket info
+
+* Mon Mar 25 2013 Jan Dobes <jdobes@redhat.com> 1.10.27-1
+- Adding sudo Requires for spacewalk-java-lib
+
+* Mon Mar 25 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.26-1
+- abrt: new api: getCrashesByUuid
+- abrt: new api: getCrashOverview
+
+* Fri Mar 22 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.25-1
+- abrt: webui for list of systems / details where a specific crash occurred
+- abrt: properly export csv columns for crash overview
+- abrt: add filter to software crashes overview page
+
 * Thu Mar 21 2013 Stephen Herr <sherr@redhat.com> 1.10.24-1
 - 924487 - Display warning if user might clobber their LUN with kickstart
 

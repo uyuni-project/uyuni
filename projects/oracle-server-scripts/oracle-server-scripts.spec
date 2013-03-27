@@ -4,11 +4,11 @@
 %define oracle_admin %{oracle_base}/admin/%{oracle_base_version}
 %define oracle_config %{oracle_base}/config/%{oracle_base_version}
 %define oracle_scripts %{oracle_base}/scripts/%{oracle_base_version}
-
+%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Summary: Oracle 10g Database Server Enterprise Edition scripts
 Name: oracle-server-scripts
-Version: 10.2.0.59
+Version: 10.2.0.60
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: Proprietary
@@ -18,13 +18,8 @@ Buildroot: /var/tmp/%{name}-root
 Requires: oracle-server >= %{oracle_base_version}
 Requires: m4
 Requires: oracle-config
-%if 0%{?fedora} > 17
-Requires(post): %{_sbindir}/runuser
-Requires: %{_sbindir}/restorecon
-%else
-Requires(post): /sbin/runuser
-Requires: /sbin/restorecon
-%endif
+Requires(post): %{sbinpath}/runuser
+Requires: %{sbinpath}/restorecon
 
 %description
 Management scripts for Oracle
@@ -73,7 +68,7 @@ fi
 # setup environment for oracle user
 [ -f %{oracle_base}/.bash_profile ] \
     && chown oracle.dba %{oracle_base}/.bash_profile
-/sbin/runuser - oracle -c 'cat - >>.bash_profile' <<EOP
+%{sbinpath}/runuser - oracle -c 'cat - >>.bash_profile' <<EOP
 
 # entries added by the %{name} install script
 # setup environment for embedded db
@@ -93,6 +88,9 @@ exit 0
 %{oracle_scripts}
 
 %changelog
+* Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 10.2.0.60-1
+- 919468 - fixed path in file based Requires
+
 * Fri Mar 08 2013 Milan Zazrivec <mzazrivec@redhat.com> 10.2.0.59-1
 - Fedora 19 does not provide /sbin/runuser
 - Purging %%changelog entries preceding Spacewalk 1.0, in active packages.

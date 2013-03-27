@@ -550,9 +550,14 @@ UL.channel-list LI.highlighted
 {
 	list-style-image: url(/img/rhn-bullet-parentchannel.gif);
 }
-.list-system-channels LI+LI
-{
-	padding-top: 0;
+
+/* the following classes highlight the first row of an alphabar jump */
+
+tr.alphaResult td.sortedCol {
+      padding-left: 20px;
+      background-image: url('/img/list-forward.gif');
+      background-repeat: no-repeat;
+      background-position: left center;
 }
 .list-system-channels LI+LI LI
 {
@@ -664,6 +669,11 @@ TH.ascSort A
 
 th.ascSort:first-child, th.descSort:first-child {
    border-radius: 10px 0 0 0; 
+}
+
+.compare-list td:first-child {
+  background-color: #e4e4e4;
+  border-right: 1px solid #b4b19a;
 }
 
 th.ascSort:last-child, th.descSort:last-child {

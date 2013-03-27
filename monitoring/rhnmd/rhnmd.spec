@@ -1,5 +1,6 @@
 %global np_name nocpulse
 %global identity %{_var}/lib/%{np_name}/.ssh/nocpulse-identity
+%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 %if 0%{!?_initddir:1}
 %if 0%{?suse_version}
 %global _initddir %{_sysconfdir}/init.d
@@ -12,7 +13,7 @@ Summary:        Spacewalk Monitoring Daemon
 Name:           rhnmd
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:        5.3.15
+Version:        5.3.16
 Release:        1%{?dist}
 License:        GPLv2
 BuildArch:      noarch
@@ -52,6 +53,7 @@ Obsoletes:      rhnmd.x86_64 < 5.3.0-5
 Provides:       rhnmd.i386 = %{version}
 Provides:       rhnmd.x86_64 = %{version}
 
+Requires(post): /usr/sbin/semanage, %{sbinpath}/restorecon
 Requires(preun): /usr/sbin/semanage
 
 %description
@@ -136,7 +138,7 @@ fi
 %if !0%{?suse_version}
 if [ ! -f %{identity} ]
 then
-    /sbin/runuser -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f %{identity}" - %{np_name}
+    %{sbinpath}/runuser -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f %{identity}" - %{np_name}
 fi
 %endif
 %if 0%{?suse_version} >= 1210
@@ -215,6 +217,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 5.3.16-1
+- 919468 - fixed path in file based Requires
+- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
+
 * Fri Jan 04 2013 Jan Pazdziora 5.3.15-1
 - We may need to define the port 4545 as ours to use.
 - The daemon does success for us.

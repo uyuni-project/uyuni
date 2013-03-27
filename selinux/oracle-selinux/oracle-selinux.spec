@@ -9,6 +9,7 @@
 %define modulename oracle
 %define moduletype apps
 %define default_oracle_base /opt/oracle
+%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 #
 # tag to be used in release to differentiate rpms with the same policy but
@@ -19,7 +20,7 @@
 %endif
 
 Name:            oracle-selinux
-Version:         0.1.23.34
+Version:         0.1.23.35
 Release:         1%{?obtag}%{?dist}%{?repo}
 Summary:         SELinux policy module supporting Oracle
 Group:           System Environment/Base
@@ -33,8 +34,8 @@ BuildArch:       noarch
 %if "%{selinux_policyver}" != ""
 Requires:         selinux-policy >= %{selinux_policyver}
 %endif
-Requires(post):   /usr/sbin/semanage, /usr/sbin/semodule, /sbin/restorecon
-Requires(postun): /usr/sbin/semanage, /usr/sbin/semodule, /sbin/restorecon
+Requires(post):   /usr/sbin/semanage, /usr/sbin/semodule, %{sbinpath}/restorecon
+Requires(postun): /usr/sbin/semanage, /usr/sbin/semodule, %{sbinpath}/restorecon
 Obsoletes:        oracle-10gR2-selinux
 
 %description
@@ -49,8 +50,8 @@ Requires:         selinux-policy >= %{selinux_policyver}
 %if 0%{?rhel} == 5
 Requires:        selinux-policy-base >= 2.4.6-267
 %endif
-Requires(post):   /usr/sbin/semanage, /usr/sbin/semodule, /sbin/restorecon, /usr/sbin/selinuxenabled
-Requires(postun): /usr/sbin/semanage, /usr/sbin/semodule, /sbin/restorecon
+Requires(post):   /usr/sbin/semanage, /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/selinuxenabled
+Requires(postun): /usr/sbin/semanage, /usr/sbin/semodule, %{sbinpath}/restorecon
 Conflicts:       oracle-selinux
 
 %description -n oracle-nofcontext-selinux
@@ -128,19 +129,19 @@ SEPORT_STATUS=`semanage port -l | grep -c ^oracle`
 test ${SEPORT_STATUS} -lt 1 && semanage port -a -t oracle_port_t -p tcp 1521 || :
 
 # Fix up non-standard file contexts
-/sbin/restorecon -R -v %{oracle_base} || :
-/sbin/restorecon -R -v /u0? || :
-/sbin/restorecon -R -v /etc || :
-/sbin/restorecon -R -v /var/tmp || :
+%{sbinpath}/restorecon -R -v %{oracle_base} || :
+%{sbinpath}/restorecon -R -v /u0? || :
+%{sbinpath}/restorecon -R -v /etc || :
+%{sbinpath}/restorecon -R -v /var/tmp || :
 
 %posttrans
 #this may be safely removed when BZ 505066 is fixed
 if /usr/sbin/selinuxenabled ; then
   # Fix up non-standard file contexts
-  /sbin/restorecon -R -v %{oracle_base} || :
-  /sbin/restorecon -R -v /u0? || :
-  /sbin/restorecon -R -v /etc || :
-  /sbin/restorecon -R -v /var/tmp || :
+  %{sbinpath}/restorecon -R -v %{oracle_base} || :
+  %{sbinpath}/restorecon -R -v /u0? || :
+  %{sbinpath}/restorecon -R -v /etc || :
+  %{sbinpath}/restorecon -R -v /var/tmp || :
 fi
 
 %post -n oracle-nofcontext-selinux
@@ -172,10 +173,10 @@ if [ $1 -eq 0 ]; then
     done
   # Clean up any remaining file contexts (shouldn't be any really)
   [ -d %{oracle_base} ] && \
-    /sbin/restorecon -R -v %{oracle_base} &> /dev/null || :
-  /sbin/restorecon -R -v /u0? || :
-  /sbin/restorecon -R -v /etc || :
-  /sbin/restorecon -R -v /var/tmp || :
+    %{sbinpath}/restorecon -R -v %{oracle_base} &> /dev/null || :
+  %{sbinpath}/restorecon -R -v /u0? || :
+  %{sbinpath}/restorecon -R -v /etc || :
+  %{sbinpath}/restorecon -R -v /var/tmp || :
 fi
 
 %postun -n oracle-nofcontext-selinux
@@ -209,6 +210,10 @@ fi
 %attr(0755,root,root) %{_sbindir}/oracle-nofcontext-selinux-enable
 
 %changelog
+* Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 0.1.23.35-1
+- 919468 - fixed path in file based Requires
+- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
+
 * Thu Jan 17 2013 Jan Pazdziora 0.1.23.34-1
 - The rx_file_perms seems no longer available.
 

@@ -19,7 +19,7 @@
 %define apache_group apache
 %endif
 Name:       spacewalk-branding
-Version:    1.10.10
+Version:    1.10.14
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -116,6 +116,18 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Wed Mar 27 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.14-1
+- fix css in duplicate system comparsion
+
+* Wed Mar 27 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.13-1
+- adding back accidentaly deleted css style
+
+* Wed Mar 27 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.12-1
+- pixel perfecting first and last-child of th when sorting by them
+
+* Tue Mar 26 2013 Jan Pazdziora 1.10.11-1
+- indentation of ssm buttons from top of bar whoch contains them
+
 * Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.10-1
 - simplify tomcat version decisison
 

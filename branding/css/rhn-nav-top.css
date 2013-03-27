@@ -115,6 +115,8 @@ div#mainNavWrap ul li#mainFirst-active a {
 #bar .button {
   border: 1px outset #bbb;
   padding: 1px 3px;
+  position: relative;
+  top: 4px;
 }
 
 
@@ -173,8 +175,13 @@ div#mainNavWrap ul li#mainFirst-active a {
 
 #systembarinner div {
         font-variant: small-caps;
-        padding-top: 4px;
 }
+
+#header_selcount {
+  position: relative;
+  top: 4px;
+}
+
 
 #systembar a, #systembar a:link, #systembar a:hover, #systembar a:active {
 	margin-left: 6px;

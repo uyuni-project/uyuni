@@ -1,8 +1,10 @@
+%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
+
 Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.10.14
+Version:        1.10.17
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -14,7 +16,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  perl(Digest::SHA)
 BuildRequires:  python
 BuildRequires:  /usr/bin/pod2man
-Requires:       /sbin/restorecon
+Requires:       %{sbinpath}/restorecon
 
 Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
@@ -73,6 +75,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Wed Mar 27 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.17-1
+- 918333 - don't strip long path
+
+* Tue Mar 26 2013 Jan Pazdziora 1.10.16-1
+- Use to_timestamp instead of to_date which should bring the second precision
+  to PostgreSQL.
+- Fixing schema upgrade of rhnCpu.nrsocket.
+- add nrsocket to rhncpu
+
+* Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.15-1
+- 919468 - fixed path in file based Requires
+
 * Fri Mar 22 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.14-1
 - use alter table syntax common to both postgresql and oracle
 

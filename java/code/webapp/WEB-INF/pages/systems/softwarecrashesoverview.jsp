@@ -33,7 +33,15 @@
                            sortattr="uuid"
                            sortable="true"
                            filterattr="uuid">
-                    ${current.uuid}
+                    <a href="/rhn/systems/SoftwareCrashUuidDetails.do?uuid=${current.uuid}">
+                        ${current.uuid}
+                    </a>
+                </rl:column>
+                <rl:column headerkey="crashes.jsp.component"
+                           bound="false"
+                           sortattr="component"
+                           sortable="true">
+                    ${current.component}
                 </rl:column>
                 <rl:column headerkey="crashes.jsp.totalcrashcount"
                            bound="false"

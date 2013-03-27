@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 1.10.2
+Version: 1.10.3
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -210,6 +210,10 @@ fi
 %doc licenses/*
 
 %changelog
+* Tue Mar 26 2013 Jan Pazdziora 1.10.3-1
+- Use to_timestamp instead of to_date which should bring the second precision
+  to PostgreSQL.
+
 * Thu Mar 21 2013 Jan Pazdziora 1.10.2-1
 - proper quoting for the zero length test
 

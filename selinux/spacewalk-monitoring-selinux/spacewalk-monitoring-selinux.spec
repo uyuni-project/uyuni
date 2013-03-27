@@ -2,12 +2,13 @@
 %define selinux_variants mls strict targeted
 %define selinux_policyver %(sed -e 's,.*selinux-policy-\\([^/]*\\)/.*,\\1,' /usr/share/selinux/devel/policyhelp 2> /dev/null)
 %define POLICYCOREUTILSVER 1.33.12-1
+%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 %define moduletype apps
 %define modulename spacewalk-monitoring
 
 Name:           spacewalk-monitoring-selinux
-Version:        1.10.0
+Version:        1.10.2
 Release:        1%{?dist}
 Summary:        SELinux policy module supporting Spacewalk monitoring
 
@@ -31,8 +32,8 @@ Requires:       selinux-policy >= %{selinux_policyver}
 %if 0%{?rhel} == 5
 Requires:        selinux-policy >= 2.4.6-80
 %endif
-Requires(post):   /usr/sbin/semodule, /sbin/restorecon, /usr/sbin/selinuxenabled
-Requires(postun): /usr/sbin/semodule, /sbin/restorecon
+Requires(post):   /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/selinuxenabled
+Requires(postun): /usr/sbin/semodule, %{sbinpath}/restorecon
 Requires:       nocpulse-common
 Requires:       nocpulse-db-perl
 Requires:       eventReceivers
@@ -76,6 +77,9 @@ SELinux policy module supporting Spacewalk monitoring.
 %build
 # Build SELinux policy modules
 perl -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' %{modulename}.te
+%if 0%{?fedora} >= 17
+cat %{modulename}.te.fedora17 >> %{modulename}.te
+%endif
 for selinuxvariant in %{selinux_variants}
 do
     make NAME=${selinuxvariant} -f /usr/share/selinux/devel/Makefile
@@ -117,8 +121,8 @@ fi
 %posttrans
 #this may be safely remove when BZ 505066 is fixed
 if /usr/sbin/selinuxenabled ; then
-  /sbin/restorecon -rv /etc/rc.d/np.d /etc/notification /var/lib/nocpulse /var/lib/notification /var/log/nocpulse
-  /sbin/restorecon -rvi /var/log/SysVStep.* /var/run/SysVStep.*
+  %{sbinpath}/restorecon -rv /etc/rc.d/np.d /etc/notification /var/lib/nocpulse /var/lib/notification /var/log/nocpulse
+  %{sbinpath}/restorecon -rvi /var/log/SysVStep.* /var/run/SysVStep.*
 fi
 
 %postun
@@ -131,8 +135,8 @@ if [ $1 -eq 0 ]; then
     done
 fi
 
-/sbin/restorecon -rvi /etc/rc.d/np.d /etc/notification /var/lib/nocpulse /var/lib/notification /var/log/nocpulse
-/sbin/restorecon -rvi /var/log/SysVStep.* /var/run/SysVStep.*
+%{sbinpath}/restorecon -rvi /etc/rc.d/np.d /etc/notification /var/lib/nocpulse /var/lib/notification /var/log/nocpulse
+%{sbinpath}/restorecon -rvi /var/log/SysVStep.* /var/run/SysVStep.*
 
 %files
 %doc %{modulename}.fc %{modulename}.if %{modulename}.te
@@ -141,6 +145,13 @@ fi
 %attr(0755,root,root) %{_sbindir}/%{name}-enable
 
 %changelog
+* Mon Mar 25 2013 Jan Pazdziora 1.10.2-1
+- Startup of monitoring on Fedoras needs few more allows.
+
+* Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.1-1
+- 919468 - fixed path in file based Requires
+- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
+
 * Fri Jan 04 2013 Jan Pazdziora 1.9.1-1
 - Allow rhnmd to traverse /var/lib/nocpulse on Spacewalk server.
 
