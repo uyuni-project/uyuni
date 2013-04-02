@@ -26,6 +26,26 @@
 			<product_id name="SUSE_SLED">3004</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="Open Enterprise Server 11" family="OES2" is_signed="Y" label="oes11-pool-x86_64" name="OES11-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11" source_url="https://nu.novell.com/repo/$RCE/OES11-Pool/sle-11-x86_64/" summary="Open Enterprise Server 11" update_tag="oes11">
+		<products>
+			<product_id name="Open_Enterprise_Server">2980</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Open Enterprise Server 11.1" family="OES2" is_signed="Y" label="oes11-sp1-pool-x86_64" name="OES11-SP1-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/OES11-SP1-Pool/sle-11-x86_64/" summary="Open Enterprise Server 11.1" update_tag="oes11sp1">
+		<products>
+			<product_id name="Open_Enterprise_Server">3480</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Open Enterprise Server 11.1" family="OES2" is_signed="Y" label="oes11-sp1-updates-x86_64" name="OES11-SP1-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/OES11-SP1-Updates/sle-11-x86_64/" summary="Open Enterprise Server 11.1" update_tag="oes11sp1">
+		<products>
+			<product_id name="Open_Enterprise_Server">3480</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Open Enterprise Server 11" family="OES2" is_signed="Y" label="oes11-updates-x86_64" name="OES11-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11" source_url="https://nu.novell.com/repo/$RCE/OES11-Updates/sle-11-x86_64/" summary="Open Enterprise Server 11" update_tag="oes11">
+		<products>
+			<product_id name="Open_Enterprise_Server">2980</product_id>
+		</products>
+	</channel>
 	<channel arch="i386" description="RES 4" family="RES" is_signed="N" label="res4-as-i386" name="RES4 AS for i386" optional="N" parent="rhel-i386-as-4" product_name="RES" product_version="4" source_url="https://nu.novell.com/repo/$RCE/RES4/i386/" summary="RES 4" update_tag="">
 		<products>
 			<product_id name="RES">1321</product_id>
@@ -1416,6 +1436,16 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise Real-Time 11.1" family="13319" is_signed="Y" label="slert11-sp1-updates-x86_64" name="SLERT11-SP1-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLERT11-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Real-Time 11.1" update_tag="slertesp1">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-RT">2240</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Real-Time 11.2" family="13319" is_signed="Y" label="slert11-sp2-pool-x86_64" name="SLERT11-SP2-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLERT11-SP2-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Real-Time 11.2" update_tag="slertesp2">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-RT">3580</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Real-Time 11.2" family="13319" is_signed="Y" label="slert11-sp2-updates-x86_64" name="SLERT11-SP2-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLERT11-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Real-Time 11.2" update_tag="slertesp2">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-RT">3580</product_id>
 		</products>
 	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 10 SP3" family="7261" is_signed="Y" label="sles10-sp3-gplv3-extras-i586" name="SLES10-SP3-GPLv3-Extras for i586" optional="Y" parent="sles10-sp3-pool-i586" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLES10-GPLv3-Extras/sles-10-i586/" summary="SUSE Linux Enterprise Server 10 SP3" update_tag="slemp3">

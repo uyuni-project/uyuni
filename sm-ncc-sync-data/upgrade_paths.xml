@@ -46,6 +46,8 @@
 	<upgrade from_pdid="1886" from_product="sle-hae-11.1-None.ppc64" to_pdid="3086" to_product="sle-hae-11.2-None.ppc64"/>
 	<upgrade from_pdid="1887" from_product="sle-hae-11.1-None.ia64" to_pdid="3087" to_product="sle-hae-11.2-None.ia64"/>
 	<upgrade from_pdid="1889" from_product="sle-hae-11.1-None.s390x" to_pdid="3089" to_product="sle-hae-11.2-None.s390x"/>
+	<upgrade from_pdid="2240" from_product="SUSE-Linux-Enterprise-RT-11.1-None.None" to_pdid="3580" to_product="SUSE-Linux-Enterprise-RT-11.2-None.None"/>
 	<upgrade from_pdid="2320" from_product="SUSE_SLES-11.1-VMWARE.None" to_pdid="3060" to_product="SLES-for-VMware-11.2-None.None"/>
 	<upgrade from_pdid="2680" from_product="SUSE-Manager-Proxy-1.2-None.None" to_pdid="3640" to_product="SUSE-Manager-Proxy-1.7-None.x86_64"/>
+	<upgrade from_pdid="2980" from_product="Open_Enterprise_Server-11-None.None" to_pdid="3480" to_product="Open_Enterprise_Server-11.1-None.None"/>
 </upgradepathes>
