@@ -388,9 +388,11 @@ class ContentSource:
         @param callback: Callback function to use for asking for verification
                           of a key. Takes a dictionary of key info.
         """
-        keyurls = []
-        if self.interactive:
-            keyurls = repo.gpgkey
+
+        if not self.interactive:
+            raise ChannelException, 'The GPG key for the "%s" repository is not part of the keyring.\n' \
+                                    'Please run spacewalk-repo-sync in interactive mode to import it.' % repo
+        keyurls = repo.gpgkey
         key_installed = False
         for keyurl in keyurls:
             keys = self._retrievePublicKey(keyurl, repo)
