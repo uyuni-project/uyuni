@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Thu Apr 04 15:29:13 CEST 2013 - mc@suse.de
+
+- version 1.7.7.9-1
+- fix directory export in configchannel_export
+- use 755 as default permissions for directories in
+  configfile_getinfo
+- fix directory creation in configchannel_addfile
+- print the list of systems in system_runscript
+- print the list of systems in system_reboot
+- return a unique set from expand_systems
+- print a clearer error message when duplicate system names are found
+- standardize the behavior for when a system ID is not returned
+- add a delay before regenerating the system cache after a delete
+- handle binary files correctly in configfile_getinfo
+- print the name in the confirmation message of snippet_create
+- don't reuse variable names in parse_arguments
+- print the function's help message when -h in the argument list
+- print file path in package_details
+- fixing broken export of configchannels with symlinks
+
+-------------------------------------------------------------------
 Fri Sep 28 16:15:30 CEST 2012 - mc@suse.de
 
 - version 1.7.7.8-1
