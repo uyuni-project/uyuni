@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr 04 15:14:14 CEST 2013 - mc@suse.de
+
+- version 1.7.28.16-1
+- Fixing Oracle-specific outer join syntax, use of PE.evr.*, and missing joins.
+- Display package list on page history/event.pxt.
+- SSH Server Push (java) (FATE#312909)
+
+-------------------------------------------------------------------
 Fri Feb 08 10:57:09 CET 2013 - mc@suse.de
 
 - version 1.7.28.15-1
