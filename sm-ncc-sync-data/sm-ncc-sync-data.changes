@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr 04 15:25:05 CEST 2013 - mc@suse.de
+
+- version 1.7.9-1
+- add channels and upgrade paths for OES11, OES11 SP1
+  and RealTime SP2
+- add channels and upgrade paths for SLE11-SMT-SP2 (bnc#804456)
+
+-------------------------------------------------------------------
 Fri Feb 08 14:20:19 CET 2013 - mc@suse.de
 
 - version 1.7.8-1
