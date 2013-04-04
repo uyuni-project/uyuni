@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Apr 04 15:11:06 CEST 2013 - mc@suse.de
+
+- version 5.4.34.12-1
+- isInstallerConfig should check for autoyast in commandline
+- catch libvirtError to return meaningfull error messages
+- remove wrong kernel and initrd pathes from config
+- Fix deployment of vmdk studio images (bnc#806202)
+
+-------------------------------------------------------------------
 Fri Feb 08 10:55:54 CET 2013 - mc@suse.de
 
 - version 5.4.34.11-1
