@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Thu Apr 04 15:20:26 CEST 2013 - mc@suse.de
+
+- version 1.7.22-1
+- fix product listing with products not having same SP as the base product
+- fix list-products in case of empty DB
+- Add new tool 'mgr-create-bootstrap-repo'
+- Make mgr-ncc-sync only sync vendor channels that have urls.
+- test content of diretory given with --from-dir (bnc#798807)
+- hide option --update_up, customers should always use --refresh
+- add --no-optional option for channels
+- add options --all-childs and --filter
+- implement listing by products
+- mgr-register should not crash if product release is empty (bnc#803124)
+
+-------------------------------------------------------------------
 Fri Feb 08 11:03:20 CET 2013 - mc@suse.de
 
 - version 1.7.21-1
