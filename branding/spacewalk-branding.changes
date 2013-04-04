@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr 04 15:38:20 CEST 2013 - mc@suse.de
+
+- version 1.7.1.8-1
+- Provisioning is not supported with contact method 'ssh-push-tunnel'
+- SSH Server Push (branding) (FATE#312909)
+- Add missing descriptions for SUSE only taskomatic jobs (bnc#800758)
+
+-------------------------------------------------------------------
 Fri Feb 08 11:14:59 CET 2013 - mc@suse.de
 
 - version 1.7.1.7-1
