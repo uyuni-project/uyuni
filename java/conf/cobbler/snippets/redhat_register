@@ -4,8 +4,12 @@ mkdir -p /usr/share/rhn/
    #if $redhat_management_type == "site"
       #set $mycert_file = "RHN-ORG-TRUSTED-SSL-CERT"
       #set $mycert = "/usr/share/rhn/" + $mycert_file
-wget http://$redhat_management_server/pub/RHN-ORG-TRUSTED-SSL-CERT -O $mycert   
-perl -npe 's/RHNS-CA-CERT/$mycert_file/g' -i /etc/sysconfig/rhn/*  
+wget http://$redhat_management_server/pub/RHN-ORG-TRUSTED-SSL-CERT -O $mycert
+for f in /etc/sysconfig/rhn/*; do
+    if [ -f "$f" ]; then
+        perl -npe 's/RHNS-CA-CERT/$mycert_file/g' -i "$f"
+    fi
+done
 if [ -f /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release ]; then
     rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
 fi
