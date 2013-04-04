@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Thu Apr 04 15:32:18 CEST 2013 - mc@suse.de
+
+- version 1.7.38.24-1
+- Write better error message if the GPG key is not imported
+  (bnc#812599)
+- correct size for old rpms > 2 GiB
+- do not read rpm into memory before transferring to client
+  (bnc#801151)
+- do not log passwords in URL
+- If the database host is localhost, use Unix sockets in backend.
+- SSH Server Push (backend) (FATE#312909)
+- support V4 RSA/SHA1 signature
+- Use FQDN in reposync error emails
+- fix unicode encoding (bnc#803866)
+- do not change the channels on future actions request
+
+-------------------------------------------------------------------
 Fri Feb 08 11:09:35 CET 2013 - mc@suse.de
 
 - version 1.7.38.23-1
