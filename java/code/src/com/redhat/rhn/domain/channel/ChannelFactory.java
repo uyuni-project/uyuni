@@ -648,7 +648,7 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Get the List of Channel's that are autoinstallable to the
      * Org passed in.
-     * @param org who you want to get kickstartable channels
+     * @param org who you want to get autoinstallable channels
      * @return List of Channel objects
      */
     public static List<Channel> getAutoinstallableChannels(Org org) {
