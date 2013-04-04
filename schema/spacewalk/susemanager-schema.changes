@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr 04 15:16:41 CEST 2013 - mc@suse.de
+
+- version 1.7.56.18-1
+- Quote the password we pass to sqlplus so that special characters can be used.
+- Support recovery of failed schema upgrades (FATE#314644)
+- SSH Server Push (schema) (FATE#312909)
+
+-------------------------------------------------------------------
 Fri Feb 08 11:23:44 CET 2013 - mc@suse.de
 
 - version 1.7.56.17-1
