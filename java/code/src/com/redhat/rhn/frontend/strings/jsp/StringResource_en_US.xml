@@ -19161,6 +19161,12 @@ on the email outage list as soon as possible.</source>
 
 
 
+      <trans-unit id="sys_entitlements.virtualization_host">
+        <source> Virtualization (Add-On)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
+        </context-group>
+      </trans-unit>
 
       <trans-unit id="sys_entitlements.virtualization_host_platform">
         <source> Virtualization Platform (Add-On)</source>
