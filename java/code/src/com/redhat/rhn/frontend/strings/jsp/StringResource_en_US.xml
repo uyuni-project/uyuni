@@ -19170,6 +19170,12 @@ on the email outage list as soon as possible.</source>
         </context-group>
       </trans-unit>
 
+      <trans-unit id="sys_entitlements.enterprise_entitled">
+        <source> Management (Base)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
+        </context-group>
+      </trans-unit>
 
       <trans-unit id="sys_entitlements.provisioning_entitled">
         <source> Provisioning (Add-On)</source>
