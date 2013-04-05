@@ -21,6 +21,15 @@ function setStep(stepName) {
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
    <br/>
+
+<c:choose>
+<c:when test="${requestScope.invalidContactMethod}">
+  <div class="page-summary">
+    <bean:message key="kickstart.schedule.invalid.contact.method"/>
+  </div>
+</c:when>
+<c:otherwise>
+
     <div class="page-summary">
       <p>
         <bean:message key="virtualization.provision.first.jsp.summary1" arg0="${system.id}" arg1="${system.name}" />
@@ -68,5 +77,7 @@ function setStep(stepName) {
 </rl:listset>
 </div>
 
+</c:otherwise>
+</c:choose>
 </body>
 </html>
