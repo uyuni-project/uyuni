@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Fri Apr 05 14:27:23 CEST 2013 - mc@suse.de
+
+- version 1.7.54.24-1
+- Disable Virtualization -> Provisioning when contact method is invalid
+- Fix "Can't do inplace edit" error message during registration (bnc#812046)
+- Make duplicate-hostname search case-insensitive
+- use the server timezone as the default for the first user
+- Provisioning is not supported with contact method 'ssh-push-tunnel'
+- Do not create kickstart files for SUSE Distributions (bnc#808278)
+- fixed API doc for system.listLatestUpgradablePackages and
+  system.listLatestInstallablePackages API calls
+- SSH Server Push (java) (FATE#312909)
+- generate metadata always if not explicitly rejected (bnc#804445)
+- completed kickstarts still show up on 'currently kickstarting' list
+- return whole log in case more bytes are requested than the current file size
+- RhnJavaJob: Do not ignore the exit code for external programs.
+- Do not silence catched exceptions. Debugging can be hard.
+- list also channel packages not associated with already cloned errata
+- fix WebUI's errata sync
+- Only package build times should be converted to GMT (bnc#794651)
+- Fix ISE when doing SP migration of SLE 11 SP1 SMT (bnc#802144)
+
+-------------------------------------------------------------------
 Fri Feb 08 10:58:19 CET 2013 - mc@suse.de
 
 - version 1.7.54.23-1
