@@ -809,13 +809,6 @@ public class Channel extends BaseDomainHelper implements Comparable {
         if (archesToSkipRepodata.contains(this.channelArch.getLabel())) {
             return true;
         }
-        else {
-            // undefined release which could be SUSE vendor channels. Better
-            // to create the metadata
-            repodataRequired = true;
-            log.debug("isChannelRepodataRequired for channel(" + this.id + ") " +
-                      "set to true because release is undefined");
-        }
 
         return checksumType != null;
     }
