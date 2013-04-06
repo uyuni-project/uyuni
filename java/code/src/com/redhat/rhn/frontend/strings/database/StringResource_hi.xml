@@ -331,19 +331,6 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-<<<<<<< HEAD
-    <target>(GMT-1100) मिडवे</target></trans-unit>
-
-    <trans-unit id="America/Sao_Paulo">
-<source>(GMT-0300) Brazil</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/UserDetails</context>
-        </context-group>
-    <target>(GMT-0300) ब्राजील</target></trans-unit>
-
-    <trans-unit id="America/Indianapolis">
-<source>(GMT-0500) United States (Indiana)</source>
-=======
         <target>(GMT-1100) मिडवे</target>
       </trans-unit>
       <trans-unit id="America/Sao_Paulo">
@@ -355,7 +342,6 @@
       </trans-unit>
       <trans-unit id="America/Indianapolis">
         <source>(GMT-0500) United States (Indiana)</source>
->>>>>>> master
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -373,53 +359,6 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-<<<<<<< HEAD
-    <target>(GMT+0330) इरान</target></trans-unit>
-	<!-- Monitoring "Config Macro" records - used to configure the monitoring sat -->
-    <trans-unit id="MAIL_MX">
-<source>Local mail exchanger</source>
-      <context-group name="ctx">
-        <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
-      </context-group>
-    <target>स्थानीय मेल विनियामक</target></trans-unit>
-
-    <trans-unit id="MDOM">
-<source>Mail domain (e.g. 'redhat.com' for myemail@redhat.com)</source>
-      <context-group name="ctx">
-        <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
-      </context-group>
-    <target>मेल डोमेन (उदा. myemail@redhat.com के लिये 'redhat.com')</target></trans-unit>
-
-    <trans-unit id="RHN_ADMIN_EMAIL">
-<source>@@PRODUCT_NAME@@ administrator email</source>
-      <context-group name="ctx">
-        <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
-      </context-group>
-    <target>@@PRODUCT_NAME@@ प्रशासक ईमेल</target></trans-unit>
-
-	<trans-unit id="RHN_SAT_HOSTNAME">
-<source>@@PRODUCT_NAME@@ hostname (FQDN)</source>
-      <context-group name="ctx">
-        <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
-      </context-group>
-    <target>@@PRODUCT_NAME@@ मेजबाननाम (FQDN)</target></trans-unit>
-
-    <trans-unit id="RHN_SAT_WEB_PORT">
-<source>@@PRODUCT_NAME@@ webserver port (80 for http, 443 for https)</source>
-      <context-group name="ctx">
-        <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
-      </context-group>
-    <target>@@PRODUCT_NAME@@ वेबसर्वर पोर्ट (80 http के लिए, 443 https के लिए)</target></trans-unit>
-
-    <trans-unit id="XPROTO">
-<source>External protocol ('http' or 'https')</source>
-      <context-group name="ctx">
-        <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
-      </context-group>
-    <target>बाहरी प्रोटोकॉल ('http' या 'https')</target></trans-unit>
-
-    <!-- Monitoring Probe Command Parameter descriptions -->
-=======
         <target>(GMT+0330) इरान</target>
       </trans-unit>
       <!-- Monitoring "Config Macro" records - used to configure the monitoring sat -->
@@ -466,7 +405,6 @@
         <target>बाहरी प्रोटोकॉल ('http' या 'https')</target>
       </trans-unit>
       <!-- Monitoring Probe Command Parameter descriptions -->
->>>>>>> master
       <trans-unit id="Application Protocol">
         <source>Application Protocol</source>
         <context-group name="ctx">
@@ -1008,20 +946,11 @@
       </trans-unit>
       <trans-unit id="Critical Swap Pct Free">
         <source>Critical Swap Pct Free</source>
-<<<<<<< HEAD
-          <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
-        </context-group>
-      <target>गंभीर स्वैप Pct मुक्त</target></trans-unit>
-
-
-=======
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
         <target>गंभीर स्वैप Pct मुक्त</target>
       </trans-unit>
->>>>>>> master
       <trans-unit id="Critical TIME_WAIT Connections">
         <source>Critical TIME_WAIT Connections</source>
         <context-group name="ctx">
@@ -1115,24 +1044,11 @@
       </trans-unit>
       <trans-unit id="Critical Write rate">
         <source>Critical Write rate</source>
-<<<<<<< HEAD
-          <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
-        </context-group>
-      <target>गंभीर लेखन दर</target></trans-unit>
-
-
-
-
-
-
-=======
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
         <target>गंभीर लेखन दर</target>
       </trans-unit>
->>>>>>> master
       <trans-unit id="Database">
         <source>Database</source>
         <context-group name="ctx">
@@ -1338,20 +1254,11 @@
       </trans-unit>
       <trans-unit id="Oracle Password">
         <source>Oracle Password</source>
-<<<<<<< HEAD
-          <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
-        </context-group>
-      <target>Oracle शब्दकूट</target></trans-unit>
-
-
-=======
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
         <target>Oracle शब्दकूट</target>
       </trans-unit>
->>>>>>> master
       <trans-unit id="Oracle Port">
         <source>Oracle Port</source>
         <context-group name="ctx">
@@ -1669,24 +1576,11 @@
       </trans-unit>
       <trans-unit id="Warn Users">
         <source>Warn Users</source>
-<<<<<<< HEAD
-          <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
-        </context-group>
-      <target>चेतावनी उपयोक्ता</target></trans-unit>
-
-
-
-
-
-
-=======
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
         <target>चेतावनी उपयोक्ता</target>
       </trans-unit>
->>>>>>> master
       <trans-unit id="Warning Accesses">
         <source>Warning Accesses</source>
         <context-group name="ctx">
@@ -2116,20 +2010,11 @@
       </trans-unit>
       <trans-unit id="Warning Swap Pct Free">
         <source>Warning Swap Pct Free</source>
-<<<<<<< HEAD
-          <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
-        </context-group>
-      <target>चेतावनी स्वेप Pct मुक्त</target></trans-unit>
-
-
-=======
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/probes/ProbeEdit.do</context>
         </context-group>
         <target>चेतावनी स्वेप Pct मुक्त</target>
       </trans-unit>
->>>>>>> master
       <trans-unit id="Warning TIME_WAIT Connections">
         <source>Warning TIME_WAIT Connections</source>
         <context-group name="ctx">
@@ -3428,12 +3313,8 @@
         </trans-unit>
         <trans-unit id="BEA Weblogic">
           <source>BEA Weblogic</source>
-<<<<<<< HEAD
-        <target>BEA Weblogic</target></trans-unit>
-=======
           <target>BEA Weblogic</target>
         </trans-unit>
->>>>>>> master
         <trans-unit id="General">
           <source>General</source>
           <target>सामान्य</target>
@@ -3595,19 +3476,12 @@
         </trans-unit>
         <trans-unit id="Log Pattern Match">
           <source>Log Pattern Match</source>
-<<<<<<< HEAD
-        <target>लॉग प्रारूप मेल</target></trans-unit>
-        <trans-unit id="Log Size Growth">
-          <source>Log Size Growth</source>
-        <target>लॉग आकार</target></trans-unit>
-=======
           <target>लॉग प्रारूप मेल</target>
         </trans-unit>
         <trans-unit id="Log Size Growth">
           <source>Log Size Growth</source>
           <target>लॉग आकार</target>
         </trans-unit>
->>>>>>> master
         <trans-unit id="LongLegs">
           <source>LongLegs</source>
           <target>LongLegs</target>
