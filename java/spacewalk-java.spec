@@ -102,6 +102,7 @@ Requires: struts >= 1.3.0
 Requires: struts-taglib >= 1.3.0
 %endif
 %endif
+%endif
 Requires: xalan-j2 >= 2.6.0
 Requires: xerces-j2
 Requires: simple-core
