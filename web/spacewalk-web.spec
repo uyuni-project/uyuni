@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.15
+Version: 1.10.17
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -302,6 +302,12 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Fri Apr 05 2013 Tomas Lestach <tlestach@redhat.com> 1.10.17-1
+- add RHN::Form::Widget::Select to ChannelEditor
+
+* Thu Mar 28 2013 Jan Pazdziora 1.10.16-1
+- We use RHN::Form::ParsedForm so we should use it.
+
 * Tue Mar 26 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.15-1
 - changing .spec to reflect changes
 

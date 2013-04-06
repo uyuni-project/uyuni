@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.10.17
+Version:        1.10.23
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -75,6 +75,25 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Apr 05 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.23-1
+- Insert new timezones only if they don't exist
+- Don't extend length of rhnPackageCapability.version if already extended
+
+* Thu Apr 04 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.22-1
+- add port to dblink_connect connect string
+
+* Wed Apr 03 2013 Stephen Herr <sherr@redhat.com> 1.10.21-1
+- renaming file to correct suffix
+
+* Wed Apr 03 2013 Stephen Herr <sherr@redhat.com> 1.10.20-1
+- Display number of sockets in system details and spacewalk-reports
+
+* Thu Mar 28 2013 Jan Pazdziora 1.10.19-1
+- Fixing type in schema upgrade.
+
+* Wed Mar 27 2013 Jan Pazdziora 1.10.18-1
+- Specify default for nrsocket during upgrade as well.
+
 * Wed Mar 27 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.17-1
 - 918333 - don't strip long path
 

@@ -17,7 +17,7 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.11.20
+Version: 5.11.22
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -25,8 +25,8 @@ BuildRequires: python-devel
 Requires: python
 Requires: rhnlib >= 1.8-3
 Requires: jabberpy
-%if 0%{?el5}
-Requires: rhn-client-tools >= 0.4.20-48
+%if 0%{?rhel} && 0%{?rhel} < 6
+Requires: rhn-client-tools >= 0.4.20-66
 %else
 %if 0%{?el6}
 Requires: rhn-client-tools >= 1.0.0-44
@@ -408,6 +408,12 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Wed Mar 27 2013 Stephen Herr <sherr@redhat.com> 5.11.22-1
+- 860937 - somehow I managed to get wrong the version required in rhel 5
+
+* Wed Mar 27 2013 Stephen Herr <sherr@redhat.com> 5.11.21-1
+- 860937 - correct requires on RHEL 5
+
 * Tue Mar 26 2013 Stephen Herr <sherr@redhat.com> 5.11.20-1
 - 860937 - update osad requires versions for rhel 5 and 6
 

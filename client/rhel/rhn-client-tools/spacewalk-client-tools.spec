@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.10.2
+Version: 1.10.3
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -26,7 +26,7 @@ Obsoletes: rhn-client-tools < %{version}-%{release}
 %if %{without_rhn_register}
 Obsoletes: rhn-setup-gnome
 %endif
-Requires: rhnlib >= 2.5.41
+Requires: rhnlib >= 2.5.57
 Requires: rpm >= 4.2.3-24_nonptl
 Requires: rpm-python 
 Requires: python-ethtool >= 0.4
@@ -430,6 +430,10 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Wed Apr 03 2013 Stephen Herr <sherr@redhat.com> 1.10.3-1
+- 947639 - Make timeout of yum-rhn-plugin calls through rhn-client-tools
+  configurable
+
 * Mon Mar 25 2013 Stephen Herr <sherr@redhat.com> 1.10.2-1
 - Client tools able to pass up socket info
 

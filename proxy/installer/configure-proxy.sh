@@ -16,8 +16,8 @@ options:
             for an example and documentation.
   --ca-chain=CA_CHAIN
             The CA cert used to verify the ssl connection to parent.
-  --enable-scout=1
-            1 to enable monitoring scout, 0 otherwise.
+  --enable-scout
+            Enable monitoring scout.
   --force-own-ca
             Do not use parent CA and force to create your own.
   -h, --help            
@@ -28,9 +28,8 @@ options:
             HTTP proxy in host:port format, e.g. squid.redhat.com:3128
   --http-username=HTTP_USERNAME
             The username for an authenticated proxy.
-  --install-monitoring=Y
-            Y if monitoring should be installed. Any other value means that
-            monitoring will not be installed.
+  --install-monitoring
+            Install and enable monitoring.
   --non-interactive
             For use only with --answer-file. If the --answer-file doesn't
             provide a required response, default answer is used.
@@ -39,13 +38,13 @@ options:
             RHN_PARENT.
   --monitoring-parent-ip=MONITORING_PARENT_IP
             IP address of MONITORING_PARENT
-  --populate-config-channel=Y
-            Y if config chanel should be created and configuration files in that channel
-            updated. Configuration channel will be named rhn_proxy_config_\${SYSTEM_ID}. 
+  --populate-config-channel
+            Create config chanel and save configuration files to that channel.
+            Configuration channel name is rhn_proxy_config_\${SYSTEM_ID}.
   --rhn-parent=RHN_PARENT
-			Your parent Spacewalk server.
+            Your parent Spacewalk server.
   --ssl-build-dir=SSL_BUILD_DIR
-			The directory where we build SSL certificate. Default is /root/ssl-build
+            The directory where we build SSL certificate. Default is /root/ssl-build
   --ssl-city=SSL_CITY
             City to be used in SSL certificate.
   --ssl-common=SSL_COMMON
@@ -55,23 +54,23 @@ options:
   --ssl-email=SSL_EMAIL
             Email to be used in SSL certificate.
   --ssl-org=SSL_ORG
-			Organization name to be used in SSL certificate.
+            Organization name to be used in SSL certificate.
   --ssl-orgunit=SSL_ORGUNIT
-			Organization unit name to be used in SSL certificate.
+            Organization unit name to be used in SSL certificate.
   --ssl-password=SSL_PASSWORD
             Password to be used for SSL CA certificate.
   --ssl-state=SSL_STATE
-			State to be used in SSL certificate.
+            State to be used in SSL certificate.
   --ssl-cname=CNAME_ALIAS
-			Cname alias of the machine. Can be specified multiple times.
-  --start-services=1
-			1 or Y to start all services after configuration. This is default.
-			0 or N to not start services after configuration.
+            Cname alias of the machine. Can be specified multiple times.
+  --start-services[=N]
+            1 or Y to start all services after configuration. This is default.
+            0 or N to not start services after configuration.
   --traceback-email=TRACEBACK_EMAIL
             Email to which tracebacks should be sent.
-  --use-ssl=USE_SSL
-            1  if  Spacewalk  Proxy Server should communicate with parent over SSL.
-            0 otherwise. Even if disabled, client can still use SSL to connect
+  --use-ssl
+            Let Spacewalk Proxy Server communicate with parent over SSL.
+            Even if it is disabled client can still use SSL to connect
             to Spacewalk Proxy Server.
   --version=VERSION
             Version of Spacewalk Proxy Server you want to activate.
@@ -82,16 +81,28 @@ HELP
 parse_answer_file () {
     local FILE="$1"
     local ALIAS
+    if [ ! -r "$FILE" ] ; then
+       echo "Answer file '$FILE' is not readable."
+       exit 1
+    fi
     . "$FILE"
     for ALIAS in ${SSL_CNAME[@]}; do
         SSL_CNAME_PARSED[CNAME_INDEX++]=--set-cname=$ALIAS
     done
 }
 
+set_value() {
+    local OPTION="$1"
+    local VAR="$2"
+    local ARG="$3"
+    [[ "$ARG" =~ ^- ]] && echo "$0: option $OPTION requires argument!" && print_help
+    eval "$VAR=$ARG"
+}
+
 INTERACTIVE=1
 CNAME_INDEX=0
 
-OPTS=$(getopt --longoptions=help,answer-file:,non-interactive,version:,rhn-parent:,traceback-email:,use-ssl:,ca-chain:,force-own-ca,http-proxy:,http-username:,http-password:,ssl-build-dir:,ssl-org:,ssl-orgunit:,ssl-common:,ssl-city:,ssl-state:,ssl-country:,ssl-email:,ssl-password:,ssl-cname:,install-monitoring:,enable-scout:,monitoring-parent:,monitoring-parent-ip:,populate-config-channel:,start-services: -n ${0##*/} -- h "$@")
+OPTS=$(getopt --longoptions=help,answer-file:,non-interactive,version:,rhn-parent:,traceback-email:,use-ssl::,ca-chain:,force-own-ca,http-proxy:,http-username:,http-password:,ssl-build-dir:,ssl-org:,ssl-orgunit:,ssl-common:,ssl-city:,ssl-state:,ssl-country:,ssl-email:,ssl-password:,ssl-cname:,install-monitoring::,enable-scout::,monitoring-parent:,monitoring-parent-ip:,populate-config-channel::,start-services:: -n ${0##*/} -- h "$@")
 
 if [ $? != 0 ] ; then
         print_help
@@ -102,34 +113,41 @@ eval set -- "$OPTS"
 while : ; do
     case "$1" in
         --help|-h)  print_help;;
-        --answer-file) parse_answer_file "$2"; shift;;
+        --answer-file) set_value "$1" ANSWER_FILE "$2";
+                       parse_answer_file "$ANSWER_FILE"; shift;;
         --non-interactive) INTERACTIVE=0;;
-        --version) VERSION=$2; shift;;
-        --rhn-parent) RHN_PARENT="$2"; shift;;
-        --traceback-email) TRACEBACK_EMAIL="$2"; shift;;
-        --use-ssl) USE_SSL="$2"; shift;;
-        --ca-chain) CA_CHAIN="$2"; shift;;
+        --version) set_value "$1" VERSION "$2"; shift;;
+        --rhn-parent) set_value "$1" RHN_PARENT "$2"; shift;;
+        --traceback-email) set_value "$1" TRACEBACK_EMAIL "$2"; shift;;
+        --use-ssl) USE_SSL="${2:-1}"; shift;;
+        --ca-chain) set_value "$1" CA_CHAIN "$2"; shift;;
         --force-own-ca) FORCE_OWN_CA=1;;
-        --http-proxy) HTTP_PROXY="$2"; shift;;
-        --http-username) HTTP_USERNAME="$2"; shift;;
-        --http-password) HTTP_PASSWORD="$2"; shift;;
-        --ssl-build-dir) SSL_BUILD_DIR="$2"; shift;;
-        --ssl-org) SSL_ORG="$2"; shift;;
-        --ssl-orgunit) SSL_ORGUNIT="$2"; shift;;
-        --ssl-common) SSL_COMMON="$2"; shift;;
-        --ssl-city) SSL_CITY="$2"; shift;;
-        --ssl-state) SSL_STATE="$2"; shift;;
-        --ssl-country) SSL_COUNTRY="$2"; shift;;
-        --ssl-email) SSL_EMAIL="$2"; shift;;
-        --ssl-password) SSL_PASSWORD="$2"; shift;;
-        --ssl-cname) SSL_CNAME_PARSED[CNAME_INDEX++]=--set-cname="$2"; shift;;
-        --install-monitoring) INSTALL_MONITORING="$2"; shift;;
-        --enable-scout) ENABLE_SCOUT="$2"; shift;;
-        --monitoring-parent) MONITORING_PARENT_IP="$2"; shift;;
-        --monitoring-parent-ip) MONITORING_PARENT_IP="$2"; shift;;
-        --populate-config-channel) POPULATE_CONFIG_CHANNEL="$2"; shift;;
-        --start-services) START_SERVICES="$2"; shift;;
-        --) shift; break;;
+        --http-proxy) set_value "$1" HTTP_PROXY "$2"; shift;;
+        --http-username) set_value "$1" HTTP_USERNAME "$2"; shift;;
+        --http-password) set_value "$1" HTTP_PASSWORD "$2"; shift;;
+        --ssl-build-dir) set_value "$1" SSL_BUILD_DIR "$2"; shift;;
+        --ssl-org) set_value "$1" SSL_ORG "$2"; shift;;
+        --ssl-orgunit) set_value "$1" SSL_ORGUNIT "$2"; shift;;
+        --ssl-common) set_value "$1" SSL_COMMON "$2"; shift;;
+        --ssl-city) set_value "$1" SSL_CITY "$2"; shift;;
+        --ssl-state) set_value "$1" SSL_STATE "$2"; shift;;
+        --ssl-country) set_value "$1" SSL_COUNTRY "$2"; shift;;
+        --ssl-email) set_value "$1" SSL_EMAIL "$2"; shift;;
+        --ssl-password) set_value "$1" SSL_PASSWORD "$2"; shift;;
+        --ssl-cname) set_value "$1" "SSL_CNAME_PARSED[CNAME_INDEX++]=--set-cname" "$2"; shift;;
+        --install-monitoring) set_value "$1" INSTALL_MONITORING="${2:-Y}"; shift;;
+        --enable-scout) ENABLE_SCOUT="${2:-1}"; shift;;
+        --monitoring-parent) set_value "$1" MONITORING_PARENT_IP "$2"; shift;;
+        --monitoring-parent-ip) set_value "$1" MONITORING_PARENT_IP "$2"; shift;;
+        --populate-config-channel) POPULATE_CONFIG_CHANNEL="${2:-Y}"; shift;;
+        --start-services) START_SERVICES="${2:-Y}"; shift;;
+        --) shift;
+            if [ $# -gt 0 ] ; then
+                echo "Error: Extra arguments found: $@"
+                print_help
+                exit 1
+            fi
+            break;;
         *) echo Error: Invalid option $1; exit 1;;
     esac
     shift

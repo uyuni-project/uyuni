@@ -1,6 +1,6 @@
 -- oracle equivalent source none
 --
--- Copyright (c) 2012 Red Hat, Inc.
+-- Copyright (c) 2012 - 2013 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -23,7 +23,7 @@ begin
     end if;
     conn := dblink_get_connections();
     if conn is NULL or NOT(conn @> '{at_conn}') then
-        perform dblink_connect('at_conn', 'dbname=' || current_database());
+        perform dblink_connect('at_conn', 'dbname=' || current_database() || ' port=' || coalesce(inet_server_port(), '5432'));
     end if;
     begin
         perform dblink_exec('at_conn', in_sql, true);

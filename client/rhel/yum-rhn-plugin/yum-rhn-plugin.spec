@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 1.10.0
+Version: 1.10.1
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -21,7 +21,7 @@ BuildRequires: intltool
 BuildRequires: gettext
 
 Requires: yum >= 3.2.19-15
-Requires: %{rhn_client_tools} >= 1.6.6-1
+Requires: %{rhn_client_tools} >= 1.10.3
 %if 0%{?suse_version}
 Requires: python-m2crypto >= 0.16-6
 %else
@@ -96,6 +96,12 @@ fi
 
 
 %changelog
+* Wed Apr 03 2013 Stephen Herr <sherr@redhat.com> 1.10.1-1
+- 947639 - Make timeout of yum-rhn-plugin calls through rhn-client-tools
+  configurable
+- Bumping package versions for 1.9
+- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
+
 * Fri Feb 15 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.9.4-1
 - Update .po and .pot files for yum-rhn-plugin.
 - New translations from Transifex for yum-rhn-plugin.

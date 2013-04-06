@@ -3168,6 +3168,18 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
             </context>
         </context-group>
       </trans-unit>
+      <trans-unit id="errata.overview.jsp.summary">
+        <source>The following errata apply to at least one system to which you have administrative access.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/Overview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="errata.all.jsp.summary">
+        <source>The following errata list represents all errata accessible by your organization.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/Overview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="affectedsystems.jsp.summary">
         <source>Below is a list of systems affected by this patch.</source>
         <context-group name="ctx">
@@ -5709,6 +5721,12 @@ value for this entitlement, excluding the default organization's consumption.</s
           <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="message.capability.missing">
+        <source>One or more of the selected systems lack the {0} client-capability.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/audit/ScheduleXccdf.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="removeconfirm.jsp.runremotecommand">
         <source>Add Remote Command To Package Removal</source>
         <context-group name="ctx">
@@ -5887,6 +5905,12 @@ value for this entitlement, excluding the default organization's consumption.</s
       </trans-unit>
       <trans-unit id="scheduleremote.jsp.summary">
         <source>You can schedule a remote script to execute on this system below.  The script will run as the user you specify.&lt;/p&gt; &lt;p&gt;You must enable Remote Command execution on the target system, by adding a file to the local rhn configuration directory: &lt;code&gt;allowed-actions/script/run/&lt;/code&gt;.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/ScheduleRemoteCommand.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scheduleremote.jsp.ssm.summary">
+        <source>You can schedule a remote script to execute on the selected systems below.  The script will run as the user you specify.&lt;/p&gt; &lt;p&gt;You must enable Remote Command execution on the target system, by adding a file to the local rhn configuration directory: &lt;code&gt;allowed-actions/script/run/&lt;/code&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/ScheduleRemoteCommand.do</context>
         </context-group>
@@ -16833,6 +16857,18 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="sdc.details.hardware.sockets">
+        <source>Sockets:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.hardware.cores">
+        <source>Cores:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="sdc.details.hardware.cache">
         <source>Cache:</source>
         <context-group name="ctx">
@@ -17666,6 +17702,54 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="sys_entitlements.not_allocated">
+        <source>Not Allocated*</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sys_entitlements.notinuse">
+        <source>Not In Use</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sys_entitlements.enterprise_entitled">
+        <source> Management (Base)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sys_entitlements.provisioning_entitled">
+        <source> Provisioning (Add-On)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sys_entitlements.monitoring_entitled">
+        <source> Monitoring (Add-On)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sys_entitlements.virtualization_host">
+        <source> Virtualization (Add-On)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sys_entitlements.virtualization_host_platform">
+        <source> Virtualization Platform (Add-On)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sys_entitlements.add_on">
+        <source>(Add-On)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="sys_entitlements.noentitlements">
         <source>No Entitlements Found</source>
         <context-group name="ctx">
@@ -17692,6 +17776,36 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant">
         <source>Access Granted by this Entitlement:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
+        <source>A single Management (Base) entitlement is required for all systems registered to satellite</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system_entitlement_details.access_grant_desc.provisioning_entitled">
+        <source>A single Provisioning (Add-On) entitlement allows various advanced functionality such as kickstart and configuration file provisioning. </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system_entitlement_details.access_grant_desc.monitoring_entitled">
+        <source>A single Monitoring (Add-On) entitlement enables the tracking of monitoring data for a system. </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host">
+        <source>A single Virtualization (Add-On) entitlement applied to a host system, enables management for up to 4 guests. </source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host_platform">
+        <source>A single Virtualization Platform (Add-On) entitlement applied to a host system, enabled management for unlimited guests. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>

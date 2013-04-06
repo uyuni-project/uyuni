@@ -16,16 +16,12 @@
 package com.redhat.rhn.frontend.action.satellite;
 
 import com.redhat.rhn.common.util.FileUtils;
-import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,15 +38,11 @@ public class CatalinaAction extends RhnAction {
                                 ActionForm formIn,
                                 HttpServletRequest request,
                                 HttpServletResponse response) {
-       RequestContext ctx = new RequestContext(request);
 
-       String catalina = System.getenv("CATALINA_HOME");
-
-       Matcher m = Pattern.compile("/tomcat[0-9]*$").matcher(catalina);
-       m.find();
+       String catalinaBase = System.getProperty("catalina.base");
 
        request.setAttribute("contents",
-               FileUtils.readStringFromFile("/var/log" + m.group(0) + "/catalina.out"));
+               FileUtils.readStringFromFile(catalinaBase + "/logs/catalina.out"));
 
        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
    }

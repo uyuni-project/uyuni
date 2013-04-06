@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.31
+Version: 1.10.45
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -56,7 +56,7 @@ Requires: jfreechart >= 1.0.9
 %endif
 
 Requires: bcel
-Requires: c3p0
+Requires: c3p0 >= 0.9.1
 Requires: dwr >= 3
 Requires: hibernate3 = 0:3.2.4
 Requires: java >= 1.6.0
@@ -141,7 +141,7 @@ BuildRequires: checkstyle
 
 # Sadly I need these to symlink the jars properly.
 BuildRequires: bcel
-BuildRequires: c3p0
+BuildRequires: c3p0 >= 0.9.1
 BuildRequires: concurrent
 BuildRequires: cglib
 BuildRequires: dom4j
@@ -322,7 +322,7 @@ Requires: jfreechart >= 1.0.9
 %endif
 
 Requires: bcel
-Requires: c3p0
+Requires: c3p0 >= 0.9.1
 Requires: hibernate3 >= 3.2.4
 Requires: java >= 1.6.0
 Requires: jakarta-commons-lang >= 2.1
@@ -777,6 +777,71 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Apr 05 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.45-1
+- reverted removal of localized entitlement strings
+
+* Fri Apr 05 2013 Tomas Lestach <tlestach@redhat.com> 1.10.44-1
+- 896566 - a channel may have multiple dcms: lookupDistChannelMap ->
+  listDistChannelMaps
+- 896566 - simplify Channel.isChannelRepodataRequired method
+- link channel labels on /rhn/channels/manage/DistChannelMap.do page
+- 948185 - fixing checkstyle
+- 948185 - fix system.listSystemEvents on PG
+- removing unnecessary cast
+- removing unnecessarily nested else statement
+- enhance /rhn/errata/AllErrata.do
+- enhance /rhn/errata/RelevantErrata.do
+
+* Thu Apr 04 2013 Grant Gainey 1.10.43-1
+- 948605: checkstyle whitespace fixes.  Sigh.
+
+* Thu Apr 04 2013 Grant Gainey 1.10.42-1
+- 947205: Allow remote-cmd as part of SSM Package install/update/remove   *
+  Refactored Ssm*PackageEvent/Action   * Corrected error-messaging when systems
+  missing required capability/entitlement
+- reuse existing static method
+- 921312 - remove extra space before asterisk
+- 839069 - display 'Updates' column on group system list pages
+
+* Thu Apr 04 2013 Jan Dobes 1.10.41-1
+- checkstyle fix
+- 928198 - fixing URL detection to not contain dot or comma at the end.
+
+* Wed Apr 03 2013 Stephen Herr <sherr@redhat.com> 1.10.40-1
+- Display number of sockets in system details and spacewalk-reports
+
+* Wed Apr 03 2013 Tomas Lestach <tlestach@redhat.com> 1.10.39-1
+- 904072 - fix 'Configs' column on system groups related pages
+
+* Wed Apr 03 2013 Jan Dobes 1.10.38-1
+- indentation fix
+- 918084 - added escaping for http request
+
+* Wed Apr 03 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.37-1
+- fixed checkstyle
+
+* Wed Apr 03 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.36-1
+- 820612 - implemented executor with paralled stdout and stderr reading
+- looking for dtd files locally insted of redirecting for them
+
+* Thu Mar 28 2013 Jan Pazdziora 1.10.35-1
+- Fixing checkstyle.
+
+* Thu Mar 28 2013 Jan Pazdziora 1.10.34-1
+- Variable ctx not used, removing.
+- The CATALINA_BASE seems to have logs/ symlink to proper place and we do not
+  have to depend on CATALINA_HOME being exported.
+- adding dwr to ivy list
+- 681453 - throw exception instead of ISE if bad paramter is given
+- updating c3p0 version in ivy
+- Making the ARM soft./hard. FP channel archs localizable.
+
+* Wed Mar 27 2013 Tomas Lestach <tlestach@redhat.com> 1.10.33-1
+- we need at least c3p0 v.0.9.1 to support ConnectionCustomizer
+
+* Wed Mar 27 2013 Tomas Lestach <tlestach@redhat.com> 1.10.32-1
+- introduce RhnConnectionCustomizer
+
 * Tue Mar 26 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.31-1
 - downloading packages for kickstart via java
 - correct capitalization

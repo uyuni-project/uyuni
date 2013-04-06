@@ -1440,14 +1440,9 @@ public class ChannelManager extends BaseManager {
      * @return List containing Maps of "CP.package_id, CP.name_id, CP.evr_id"
      */
     public static Long getLatestPackageEqual(Long channelId, String packageName) {
-        SelectMode m = ModeFactory.getMode("Channel_queries",
-            "latest_package_equal");
-        Map params = new HashMap();
-        params.put("cid", channelId);
-        params.put("name", packageName);
-        List results = m.execute(params);
-        if (results != null && results.size() > 0) {
-            Map row = (Map) results.get(0);
+        List latestPkgs = listLatestPackagesEqual(channelId, packageName);
+        if (latestPkgs != null && latestPkgs.size() > 0) {
+            Map row = (Map) latestPkgs.get(0);
             return (Long) row.get("package_id");
         }
         return null;
@@ -2105,30 +2100,31 @@ public class ChannelManager extends BaseManager {
 
         List<EssentialChannelDto> eusBaseChans = new LinkedList<EssentialChannelDto>();
 
-        DistChannelMap dcm = ChannelFactory.lookupDistChannelMap(inChan);
+        List<DistChannelMap> dcms = ChannelFactory.listDistChannelMaps(inChan);
         ReleaseChannelMap rcm = lookupDefaultReleaseChannelMapForChannel(inChan);
-        if (dcm != null) {
-            log.debug("Found dist channel map");
-            String version = dcm.getRelease(); // bad naming in rhnDistChannelMap
+        if (!dcms.isEmpty()) {
+            for (DistChannelMap dcm : dcms) {
+                log.debug("Found dist channel map");
+                String version = dcm.getRelease(); // bad naming in rhnDistChannelMap
 
-            // If the inChan is the default base channel, that channel will not have
-            // compatibility entries in rhnReleaseChannelMap, and we are to assume
-            // that ALL entries in that table for the product/version/channel arch
-            // are valid replacement base channels:
-            if (isDefaultBaseChannel(inChan, version)) {
-                log.debug("inChan is default base channel");
-                EssentialChannelDto latestEus = lookupLatestEusChannelForRhelVersion(u,
-                        version, inChan.getChannelArch().getId());
-                if (latestEus != null) {
-                    log.debug("Including latest EUS channel: " +
-                            latestEus.getLabel());
-                    eusBaseChans.add(latestEus);
-                }
-                else {
-                    log.warn("Unable to lookup the latest EUS channel!");
+                // If the inChan is the default base channel, that channel will not have
+                // compatibility entries in rhnReleaseChannelMap, and we are to assume
+                // that ALL entries in that table for the product/version/channel arch
+                // are valid replacement base channels:
+                if (isDefaultBaseChannel(inChan, version)) {
+                    log.debug("inChan is default base channel");
+                    EssentialChannelDto latestEus = lookupLatestEusChannelForRhelVersion(u,
+                            version, inChan.getChannelArch().getId());
+                    if (latestEus != null) {
+                        log.debug("Including latest EUS channel: " +
+                                latestEus.getLabel());
+                        eusBaseChans.add(latestEus);
+                    }
+                    else {
+                        log.warn("Unable to lookup the latest EUS channel!");
+                    }
                 }
             }
-
         }
         else if (rcm != null) {
             log.debug("Found release channel map");
