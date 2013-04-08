@@ -283,9 +283,9 @@ class ContentSource:
                 p['version'] = version.get('ver')
                 p['release'] = version.get('rel')
                 p['epoch'] = version.get('epoch')
-                p['vendor'] = product.find('vendor').text
-                p['summary'] = product.find('summary').text
-                p['description'] = product.find('description').text
+                p['vendor'] = _fix_encoding(product.find('vendor').text)
+                p['summary'] = _fix_encoding(product.find('summary').text)
+                p['description'] = _fix_encoding(product.find('description').text)
                 if p['epoch'] == '0':
                     p['epoch'] = None
                 products.append(p)
@@ -500,3 +500,12 @@ class ContentSource:
         rhnLog.log_clean(0, message)
         if not self.quiet:
             sys.stderr.write(str(message) + "\n")
+
+def _fix_encoding(text):
+    if text is None:
+        return None
+    if isinstance(text, unicode):
+        return unicode.encode(text, 'utf-8')
+    else:
+        return str(text)
+
