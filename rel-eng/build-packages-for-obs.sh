@@ -81,8 +81,9 @@ SUCCEED_CNT=0
 FAILED_CNT=0
 FAILED_PKG=
 
-VERBOSE=
+VERBOSE=$VERBOSE
 while read PKG_NAME PKG_VER PKG_DIR; do
+ for tries in 1 2 3; do
   echo "=== Building package [$PKG_NAME-$PKG_VER] from $PKG_DIR"
   rm -rf "$SRPMBUILD_DIR"
   mkdir -p "$SRPMBUILD_DIR"
@@ -90,10 +91,11 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   cd "$GIT_DIR/$PKG_DIR"
   $TITO build ${VERBOSE:+--debug} --test --srpm >"$T_LOG" 2>&1 || {
     cat "$T_LOG"
+    test $tries -eq 3 || continue
     FAILED_CNT=$(($FAILED_CNT+1))
     FAILED_PKG="$FAILED_PKG$(echo -ne "\n    $PKG_NAME-$PKG_VER")"
     echo "*** FAILED Building package [$PKG_NAME-$PKG_VER]"
-    continue
+    continue 2
   }
   ${VERBOSE:+cat "$T_LOG"}
 
@@ -103,10 +105,11 @@ while read PKG_NAME PKG_VER PKG_DIR; do
     ( set -e; cd "$T_DIR"; unrpm "$SRPM"; ) >/dev/null 2>&1
     test -z "$CHANGES" || mv "$CHANGES" "$T_DIR"
   else
-    echo "*** FAILED Building package [$PKG_NAME-$PKG_VER] - src.rpm or changes file does not exist"
+    test $tries -eq 3 || continue
     FAILED_CNT=$(($FAILED_CNT+1))
     FAILED_PKG="$FAILED_PKG$(echo -ne "\n    $PKG_NAME-$PKG_VER")"
-    continue
+    echo "*** FAILED Building package [$PKG_NAME-$PKG_VER] - src.rpm or changes file does not exist"
+    continue 2
   fi
 
   mv "$T_DIR" "$SRPM_DIR/$PKG_NAME"
@@ -117,6 +120,8 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   #
   sed -i 's/^BuildRoot.*$/BuildRoot:    %{_tmppath}\/%{name}-%{version}-build/i' $SRPM_DIR/$PKG_NAME/*.spec
   SUCCEED_CNT=$(($SUCCEED_CNT+1))
+  break
+ done
 done < <(git_package_defs)
 
 echo "======================================================================"
