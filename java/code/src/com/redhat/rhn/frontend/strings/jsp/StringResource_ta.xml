@@ -21080,17 +21080,9 @@ given channel.</source>
         <target>கோரப்பட்ட கிக்ஸ்டாரட் கோப்பு காணப்படவில்லை.
         நீங்கள் ஒரு நிறுவன முன்னிருப்பு கிக்ஸ்டார்ட்டை கோரினால், ஒரு கிக்ஸ்டார்ட் "நிறுவன முன்னிருப்பாக" ஒரு கிக்ஸ்டார்ட தேர்ந்தெடுக்கப்பட்டிருக்கும்.</target>
       </trans-unit>
-      <trans-unit id="task.status.current.db.time">
-        <source>Current DB Time</source>
-        <target>நடப்பு விசை</target>
-      </trans-unit>
       <trans-unit id="task.status.last.execution">
         <source>Last Execution Times</source>
         <target>உரை இயங்கும் நேரம்</target>
-      </trans-unit>
-      <trans-unit id="task.status.last.completed">
-        <source>Last Completed Action</source>
-        <target>முடிக்கப்பட்ட செயல்கள்</target>
       </trans-unit>
       <trans-unit id="task.status.session-cleanup">
         <source>Session Cleanup</source>
@@ -21111,10 +21103,6 @@ given channel.</source>
       <trans-unit id="task.status.daily-summary">
         <source>Daily Summary Mail</source>
         <target>தினசரி சுருக்கம்</target>
-      </trans-unit>
-      <trans-unit id="task.status.clean-current-alerts">
-        <source>Clean Current Alerts</source>
-        <target>நடப்பு பதிப்பு</target>
       </trans-unit>
       <trans-unit id="task.status.sync-probe-state">
         <source>Sync Probe State</source>

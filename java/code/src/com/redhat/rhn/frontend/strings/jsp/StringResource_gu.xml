@@ -21081,17 +21081,9 @@ given channel.</source>
         <target>સુચિત કિકસ્ટાર્ટ ફાઇલને શોધી શક્યા નહિં.
          જો તમે સંસ્થાકીય મૂળભૂત કિકસ્ટાર્ટને સૂચન કરી રહ્યા હોય તો, ખાતરી કરો કે જે કિકસ્ટાર્ટ એ "મૂળભૂત સંસ્થા" તરીકે પસંદ કરી દેવામાં આવી છે.</target>
       </trans-unit>
-      <trans-unit id="task.status.current.db.time">
-        <source>Current DB Time</source>
-        <target>વર્તમાન કી</target>
-      </trans-unit>
       <trans-unit id="task.status.last.execution">
         <source>Last Execution Times</source>
         <target>સ્ક્રિપ્ટ એક્ઝેક્યુશન સમય</target>
-      </trans-unit>
-      <trans-unit id="task.status.last.completed">
-        <source>Last Completed Action</source>
-        <target>સમાપ્ત થયેલ ક્રિયાઓ</target>
       </trans-unit>
       <trans-unit id="task.status.session-cleanup">
         <source>Session Cleanup</source>
@@ -21112,10 +21104,6 @@ given channel.</source>
       <trans-unit id="task.status.daily-summary">
         <source>Daily Summary Mail</source>
         <target>દૈનિક સાર</target>
-      </trans-unit>
-      <trans-unit id="task.status.clean-current-alerts">
-        <source>Clean Current Alerts</source>
-        <target>વર્તમાન આવૃત્તિ</target>
       </trans-unit>
       <trans-unit id="task.status.sync-probe-state">
         <source>Sync Probe State</source>

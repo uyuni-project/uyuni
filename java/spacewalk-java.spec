@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.45
+Version: 1.10.50
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -58,7 +58,14 @@ Requires: jfreechart >= 1.0.9
 Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: dwr >= 3
+%if 0%{?fedora} && 0%{?fedora} > 17
+Requires: hibernate3 >= 3.6.10
+Requires: hibernate3-c3p0 >= 3.6.10
+Requires: hibernate3-ehcache >= 3.6.10
+Requires: javassist
+%else
 Requires: hibernate3 = 0:3.2.4
+%endif
 Requires: java >= 1.6.0
 Requires: java-devel >= 1.6.0
 Requires: jakarta-commons-lang >= 0:2.1
@@ -139,6 +146,9 @@ BuildRequires: /usr/bin/perl
 %if 0%{?run_checkstyle}
 BuildRequires: checkstyle
 %endif
+%if ! 0%{?omit_tests} > 0
+BuildRequires: translate-toolkit
+%endif
 
 # Sadly I need these to symlink the jars properly.
 BuildRequires: bcel
@@ -147,7 +157,13 @@ BuildRequires: concurrent
 BuildRequires: cglib
 BuildRequires: dom4j
 BuildRequires: dwr >= 3
+%if 0%{?fedora} && 0%{?fedora} > 17
+BuildRequires: hibernate3 >= 0:3.6.10
+BuildRequires: ehcache-core
+BuildRequires: javassist
+%else
 BuildRequires: hibernate3 = 0:3.2.4
+%endif
 BuildRequires: jaf
 BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-codec
@@ -324,7 +340,14 @@ Requires: jfreechart >= 1.0.9
 
 Requires: bcel
 Requires: c3p0 >= 0.9.1
+%if 0%{?fedora} && 0%{?fedora} > 17
+Requires: hibernate3 >= 3.6.10
+Requires: hibernate3-c3p0 >= 3.6.10
+Requires: hibernate3-ehcache >= 3.6.10
+Requires: javassist
+%else
 Requires: hibernate3 >= 3.2.4
+%endif
 Requires: java >= 1.6.0
 Requires: jakarta-commons-lang >= 2.1
 Requires: jakarta-commons-cli
@@ -386,9 +409,21 @@ if test -d /usr/share/tomcat6; then
 fi
 
 %if ! 0%{?omit_tests} > 0
-#check duplicate message keys in StringResource_*.xml files
 find . -name 'StringResource_*.xml' |      while read i ;
     do echo $i
+    # check for common localizations issues
+    ln -s $(basename $i) $i.xliff
+    CONTENT=$(pofilter --progress=none --nofuzzy --gnome \
+                       --excludefilter=untranslated \
+                       --excludefilter=purepunc \
+                       $i.xliff 2>&1)
+    if [ -n "$CONTENT" ]; then
+        echo ERROR - pofilter errors: "$CONTENT"
+        exit 1
+    fi
+    rm -f $i.xliff
+
+    #check duplicate message keys in StringResource_*.xml files
     CONTENT=$(/usr/bin/xmllint --format "$i" | /usr/bin/perl -lne 'if (/<trans-unit( id=".+?")?/) { print $1 if $X{$1}++ }' )
     if [ -n "$CONTENT" ]; then
         echo ERROR - duplicate message keys: $CONTENT
@@ -472,6 +507,23 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 %endif
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
+%if 0%{?fedora} && 0%{?fedora} > 17
+echo "hibernate.cache.region.factory_class=net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory" >> conf/default/rhn_hibernate.conf
+echo "wrapper.java.classpath.49=/usr/share/java/hibernate3/hibernate-core-3.jar
+wrapper.java.classpath.61=/usr/share/java/hibernate3/hibernate-ehcache-3.jar
+wrapper.java.classpath.62=/usr/share/java/hibernate3/hibernate-c3p0-3.jar
+wrapper.java.classpath.63=/usr/share/java/hibernate/hibernate-commons-annotations.jar
+wrapper.java.classpath.64=/usr/share/java/slf4j/api.jar
+wrapper.java.classpath.65=/usr/share/java/jboss-logging.jar
+wrapper.java.classpath.66=/usr/share/java/javassist.jar
+wrapper.java.classpath.67=/usr/share/java/ehcache-core.jar
+wrapper.java.classpath.68=/usr/share/java/hibernate-jpa-2.0-api.jar" >> conf/default/rhn_taskomatic_daemon.conf
+%else
+%if !0%{?suse_version}
+echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
+echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
+%endif
+%endif
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
@@ -531,6 +583,12 @@ ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{jardir}/asm_asm.
 ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
 %else
 ln -s -f %{_javadir}/asm/asm.jar  $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
+%endif
+
+# hack for new hibernate, symlinking with usage of ant works weird
+%if 0%{?fedora} && 0%{?fedora} > 17
+ln -s -f %{_javadir}/hibernate3/hibernate-c3p0-3.jar  $RPM_BUILD_ROOT%{jardir}/hibernate3_hibernate-c3p0-3.jar
+ln -s -f %{_javadir}/hibernate3/hibernate-ehcache-3.jar  $RPM_BUILD_ROOT%{jardir}/hibernate3_hibernate-ehcache-3.jar
 %endif
 
 # 732350 - On Fedora 15, mchange's log stuff is no longer in c3p0.
@@ -639,6 +697,15 @@ fi
 %{jardir}/dom4j.jar
 %{jardir}/dwr.jar
 %{jardir}/hibernate3*
+%if 0%{?fedora} && 0%{?fedora} > 17
+%{jardir}/ehcache-core.jar
+%{jardir}/hibernate_hibernate-commons-annotations.jar
+%{jardir}/hibernate-jpa-2.0-api.jar
+%{jardir}/javassist.jar
+%{jardir}/jboss-logging.jar
+%{jardir}/slf4j_api.jar
+%{jardir}/slf4j_log4j12.jar
+%endif
 %{jardir}/jaf.jar
 %{jardir}/javamail.jar
 %{jardir}/jcommon.jar
@@ -778,6 +845,23 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Apr 10 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.50-1
+- on fedora 18 we are using hibernate3 from fedora repo
+
+* Wed Apr 10 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.49-1
+- check xliff files for most common localization errors
+- moving system currency config defaults from separate file to rhn_java.conf
+- Removing unnecessary else.
+
+* Mon Apr 08 2013 Jan Dobes 1.10.48-1
+- Fixed truncating of strings to work with UTF-8 characters properly.
+
+* Mon Apr 08 2013 Tomas Lestach <tlestach@redhat.com> 1.10.47-1
+- set emptykey for errata lists
+
+* Mon Apr 08 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.46-1
+- cleaned obsoleted trans-units
+
 * Fri Apr 05 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.45-1
 - reverted removal of localized entitlement strings
 

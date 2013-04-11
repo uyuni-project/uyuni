@@ -83,6 +83,7 @@ div#mainNavWrap ul li#mainLast-active {
         background-image: url('/img/nav/navPrimeTabRight.png');
         background-position: top right;
         background-repeat: no-repeat;
+        padding-top 5px;
 }
 
 li#mainFirst-active a,

@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.16
+Version: 1.10.17
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -658,7 +658,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{rhnroot}/server/handlers/config
 %{rhnroot}/server/handlers/config/*
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management.conf
-%attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_sc.conf
 %attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-config-management.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files
 
@@ -776,6 +775,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Tue Apr 09 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.17-1
+- moving system currency config defaults from separate file to rhn_java.conf
+
 * Fri Apr 05 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.16-1
 - 929238 - fixed local path for file:// repos
 - 918333 - reflect schema change
