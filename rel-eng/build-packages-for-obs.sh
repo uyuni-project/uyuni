@@ -98,9 +98,16 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   ${VERBOSE:+cat "$T_LOG"}
 
   eval $(awk '/^Wrote:.*src.rpm/{srpm=$2}/^Wrote:.*.changes/{changes=$2}END{ printf "SRPM=\"%s\"\n",srpm; printf "CHANGES=\"%s\"\n",changes; }' "$T_LOG")
-  mkdir "$T_DIR"
-  ( set -e; cd "$T_DIR"; unrpm "$SRPM"; ) >/dev/null 2>&1
-  test -z "$CHANGES" || mv "$CHANGES" "$T_DIR"
+  if [ -e "$SRPM" -a -e "$CHANGES" ]; then
+    mkdir "$T_DIR"
+    ( set -e; cd "$T_DIR"; unrpm "$SRPM"; ) >/dev/null 2>&1
+    test -z "$CHANGES" || mv "$CHANGES" "$T_DIR"
+  else
+    echo "*** FAILED Building package [$PKG_NAME-$PKG_VER] - src.rpm or changes file does not exist"
+    FAILED_CNT=$(($FAILED_CNT+1))
+    FAILED_PKG="$FAILED_PKG$(echo -ne "\n    $PKG_NAME-$PKG_VER")"
+    continue
+  fi
 
   mv "$T_DIR" "$SRPM_DIR/$PKG_NAME"
   #
