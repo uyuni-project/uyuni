@@ -18,7 +18,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           susemanager-tftpsync
-Version:        1.7.0
+Version:        1.10.1
 Release:        1%{?dist}
 Summary:        Sync cobbler created tftp enviroment to SUSE Manager Proxies
 Url:            http://www.suse.com
