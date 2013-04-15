@@ -187,9 +187,9 @@ else
         output=`LANG=en_US /usr/bin/curl -k 2>&1`
         error=`echo $output | grep "is unknown"`
         if [ -z "$error" ] ; then
-            FETCH="/usr/bin/curl -ksSO"
+            FETCH="/usr/bin/curl -ksSOf"
         else
-            FETCH="/usr/bin/curl -sSO"
+            FETCH="/usr/bin/curl -sSOf"
         fi
     fi
 fi
@@ -304,6 +304,14 @@ if [ "$INSTALLER" == zypper ]; then
     Z_CLIENT_REPO_NAME="susemanager-client-setup"
     Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/$Z_CLIENT_REPO_NAME.repo"
 
+    # test, if repo exists
+    $FETCH $Z_CLIENT_REPO_URL/repodata/repomd.xml
+    if [ ! -f "repomd.xml" ] ; then
+        echo "Bootstrap repo '$Z_CLIENT_REPO_URL' does not exist."
+        Z_CLIENT_REPO_URL=""
+    fi
+    rm -f repomd.xml
+
     # code10 requires removal of the ZMD stack first
     if [ "$Z_CLIENT_CODE_BASE" == "sle" ]; then
       if [ "$Z_CLIENT_CODE_VERSION" = "10" ]; then
@@ -330,13 +338,15 @@ if [ "$INSTALLER" == zypper ]; then
     #
     # Note: We try to install the missing packages even if adding the repo fails.
     # Might be some other system repo provides them instead.
-    echo "  adding client software repository at $Z_CLIENT_REPO_URL"
     if rpm -q zypper --qf '%{VERSION}' | grep -q '^0\(\..*\)\?$'; then
 
       # code10 zypper has no --gpg-auto-import-keys and no reliable return codes.
-      zypper --non-interactive --no-gpg-checks sd $Z_CLIENT_REPO_NAME
-      zypper --non-interactive --no-gpg-checks sa $Z_CLIENT_REPO_URL $Z_CLIENT_REPO_NAME
-      zypper --non-interactive --no-gpg-checks refresh "$Z_CLIENT_REPO_NAME"
+      if [ -n "$Z_CLIENT_REPO_URL" ]; then
+        echo "  adding client software repository at $Z_CLIENT_REPO_URL"
+        zypper --non-interactive --no-gpg-checks sd $Z_CLIENT_REPO_NAME
+        zypper --non-interactive --no-gpg-checks sa $Z_CLIENT_REPO_URL $Z_CLIENT_REPO_NAME
+        zypper --non-interactive --no-gpg-checks refresh "$Z_CLIENT_REPO_NAME"
+      fi
       zypper --non-interactive --no-gpg-checks in $Z_MISSING
       for P in $Z_MISSING; do
 	rpm -q "$P" || {
@@ -344,8 +354,9 @@ if [ "$INSTALLER" == zypper ]; then
 	  exit 1
 	}
       done
-      # Now as code11 zypper is installed, create the .repo file
-      cat <<EOF >"$Z_CLIENT_REPO_FILE"
+      if [ -n "$Z_CLIENT_REPO_URL" ]; then
+        # Now as code11 zypper is installed, create the .repo file
+        cat <<EOF >"$Z_CLIENT_REPO_FILE"
 [$Z_CLIENT_REPO_NAME]
 name=$Z_CLIENT_REPO_NAME
 baseurl=$Z_CLIENT_REPO_URL
@@ -354,11 +365,11 @@ autorefresh=1
 keeppackages=0
 gpgcheck=0
 EOF
+      fi
     else
 
-      # On code11 sp1 simply add the repo
-      # on SP2, skip this step
-      if [ "${Z_CLIENT_CODE_VERSION}" = "11" -a ${Z_CLIENT_CODE_PATCHLEVEL} -le 1 ]; then
+      if [ -n "$Z_CLIENT_REPO_URL" ]; then
+        echo "  adding client software repository at $Z_CLIENT_REPO_URL"
         cat <<EOF >"$Z_CLIENT_REPO_FILE"
 [$Z_CLIENT_REPO_NAME]
 name=$Z_CLIENT_REPO_NAME
