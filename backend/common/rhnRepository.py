@@ -45,6 +45,8 @@ class Repository(RPC_Base):
             'getPackageHeader',
             'getPackageSource',
             'i18n',
+            'content',
+            'installation_xml'
         ]
 
     def set_compress_headers(self, val):
@@ -115,6 +117,24 @@ class Repository(RPC_Base):
 
             We do not support it so just return 404. But do not fail with
             traceback.
+        """
+        raise rhnNotFound()
+
+    @staticmethod
+    def content():
+        """SUSE Content File
+
+        We do not support it so just return 404. But do not fail with
+        traceback.
+        """
+        raise rhnNotFound()
+
+    @staticmethod
+    def installation_xml():
+        """SUSE File
+
+        We do not support it so just return 404. But do not fail with
+        traceback.
         """
         raise rhnNotFound()
 
