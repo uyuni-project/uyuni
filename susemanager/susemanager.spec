@@ -15,7 +15,7 @@ BuildRequires:  pylint
 BuildRequires:  python-unittest2
 BuildRequires:  python-mock
 BuildRequires:  python-curl
-BuildRequires:  spacewalk-backend
+BuildRequires:  spacewalk-backend >= 1.7.38.20
 BuildRequires:  spacewalk-backend-server
 BuildRequires:  spacewalk-backend-sql-oracle
 BuildRequires:  suseRegisterInfo
@@ -41,7 +41,8 @@ Summary:    SUSE Manager Tools
 Group:      Productivity/Other
 Requires:       suseRegisterInfo
 Requires:       sm-ncc-sync-data
-Requires:       spacewalk-backend spacewalk-backend-sql
+Requires:       spacewalk-backend >= 1.7.38.20
+Requires:       spacewalk-backend-sql
 Requires:       python
 
 %description tools
