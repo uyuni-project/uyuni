@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.17
+Version: 1.10.20
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -775,6 +775,16 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Wed Apr 17 2013 Jan Pazdziora 1.10.20-1
+- moving taskomatic.channel_repodata_workers config default from backend to
+  java
+
+* Mon Apr 15 2013 Stephen Herr <sherr@redhat.com> 1.10.19-1
+- Additional change for spacewalk-backend daemon mode
+
+* Fri Apr 12 2013 Stephen Herr <sherr@redhat.com> 1.10.18-1
+- Run python backend in daemon mode to ease integration with splice
+
 * Tue Apr 09 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.17-1
 - moving system currency config defaults from separate file to rhn_java.conf
 

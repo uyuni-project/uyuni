@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 1.10.1
+Version: 1.10.2
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -179,6 +179,11 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Wed Apr 17 2013 Jan Pazdziora 1.10.2-1
+- moving taskomatic.channel_repodata_workers config default from backend to
+  java
+- Added taskomatic.channel_repodata_workers to rhn.conf man page
+
 * Wed Mar 27 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.1-1
 - downloading packages for kickstart via java
 - Purging %%changelog entries preceding Spacewalk 1.0, in active packages.

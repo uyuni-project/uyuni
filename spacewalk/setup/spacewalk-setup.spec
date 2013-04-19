@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        1.10.4
+Version:        1.10.6
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -168,6 +168,12 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Tue Apr 16 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.6-1
+- restore should not shutdown services automatically
+
+* Fri Apr 12 2013 Jan Pazdziora 1.10.5-1
+- Avoid duplicating the Connector element upon subsequent runs.
+
 * Tue Mar 26 2013 Jan Dobes 1.10.4-1
 - Updating docs, we don't ship Spacewalk for RHEL 4.
 

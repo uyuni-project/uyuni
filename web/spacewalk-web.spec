@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.19
+Version: 1.10.22
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -302,6 +302,23 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Thu Apr 18 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.22-1
+- moved rest of pxi files to include dir
+- removing dead code
+
+* Tue Apr 16 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.21-1
+- database should run when performing online restore
+- let restore work for both online and offline backup
+- renamed option to online-backup
+- implemented shrinking segments for postgresql
+- warn user about running services
+- restore should not shutdown services automatically
+- removing WEB_ALLOW_PXT_PERSONALITIES
+
+* Fri Apr 12 2013 Jan Pazdziora 1.10.20-1
+- 951056 - fix correct menu highlight for
+  /network/systems/details/history/snapshots/add_system_tag.pxt
+
 * Wed Apr 10 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.19-1
 - unlink doesn't work on directories
 

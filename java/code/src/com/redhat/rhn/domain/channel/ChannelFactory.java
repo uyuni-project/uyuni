@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.log4j.Logger;
@@ -904,6 +905,36 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Lists compatible dist channel mappings for a server available within an organization
+     * Returns empty list if none is found.
+     * @param server server
+     * @return list of dist channel mappings, empty list if none is found
+     */
+    public static List<DistChannelMap> listCompatibleDcmByServerInNullOrg(Server server) {
+        Map params = new HashMap();
+        params.put("release", server.getRelease());
+        params.put("server_arch_id", server.getServerArch().getId());
+        return singleton.listObjectsByNamedQuery(
+                "DistChannelMap.findCompatibleByServerInNullOrg", params);
+    }
+
+    /**
+     * Lists *common* compatible channels for all SSM systems subscribed to a common base
+     * Returns empty list if none is found.
+     * @param user user
+     * @param channel channel
+     * @return list of compatible channels, empty list if none is found
+     */
+    public static List<Channel> listCompatibleDcmForChannelSSMInNullOrg(User user,
+            Channel channel) {
+        Map params = new HashMap();
+        params.put("user_id", user.getId());
+        params.put("channel_id", channel.getId());
+        return singleton.listObjectsByNamedQuery(
+                "Channel.findCompatibleForChannelSSMInNullOrg", params);
+    }
+
+    /**
      * Lookup dist channel mappings for the given channel.
      * Returns empty list if none is found.
      *
@@ -1092,7 +1123,7 @@ public class ChannelFactory extends HibernateFactory {
         Criteria criteria = getSession().createCriteria(KickstartableTree.class);
         criteria.setProjection(Projections.rowCount());
         criteria.add(Restrictions.eq("channel", ch));
-        return (Integer)criteria.uniqueResult() > 0;
+        return ((Number)criteria.uniqueResult()).intValue() > 0;
     }
 
     /**

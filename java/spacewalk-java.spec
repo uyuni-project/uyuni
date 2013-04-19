@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.50
+Version: 1.10.62
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -58,7 +58,7 @@ Requires: jfreechart >= 1.0.9
 Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: dwr >= 3
-%if 0%{?fedora} && 0%{?fedora} > 17
+%if 0%{?fedora}
 Requires: hibernate3 >= 3.6.10
 Requires: hibernate3-c3p0 >= 3.6.10
 Requires: hibernate3-ehcache >= 3.6.10
@@ -157,8 +157,10 @@ BuildRequires: concurrent
 BuildRequires: cglib
 BuildRequires: dom4j
 BuildRequires: dwr >= 3
-%if 0%{?fedora} && 0%{?fedora} > 17
+%if 0%{?fedora}
 BuildRequires: hibernate3 >= 0:3.6.10
+BuildRequires: hibernate3-c3p0 >= 3.6.10
+BuildRequires: hibernate3-ehcache >= 3.6.10
 BuildRequires: ehcache-core
 BuildRequires: javassist
 %else
@@ -340,7 +342,7 @@ Requires: jfreechart >= 1.0.9
 
 Requires: bcel
 Requires: c3p0 >= 0.9.1
-%if 0%{?fedora} && 0%{?fedora} > 17
+%if 0%{?fedora}
 Requires: hibernate3 >= 3.6.10
 Requires: hibernate3-c3p0 >= 3.6.10
 Requires: hibernate3-ehcache >= 3.6.10
@@ -463,6 +465,13 @@ xargs checkstyle -c buildconf/checkstyle.xml ||:
 
 %install
 rm -rf $RPM_BUILD_ROOT
+%if 0%{?fedora} && 0%{?fedora} < 18
+mkdir -p $RPM_BUILD_ROOT%{_javadir}/hibernate3
+ln -s -f %{_javadir}/hibernate3/hibernate-core.jar $RPM_BUILD_ROOT%{_javadir}/hibernate3/hibernate-core-3.jar
+ln -s -f %{_javadir}/hibernate3/hibernate-c3p0.jar $RPM_BUILD_ROOT%{_javadir}/hibernate3/hibernate-c3p0-3.jar
+ln -s -f %{_javadir}/hibernate3/hibernate-ehcache.jar $RPM_BUILD_ROOT%{_javadir}/hibernate3/hibernate-ehcache-3.jar
+%endif
+
 %if  0%{?rhel} && 0%{?rhel} < 6
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat5
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat5/Catalina/localhost/
@@ -507,7 +516,7 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 %endif
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
-%if 0%{?fedora} && 0%{?fedora} > 17
+%if 0%{?fedora}
 echo "hibernate.cache.region.factory_class=net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory" >> conf/default/rhn_hibernate.conf
 echo "wrapper.java.classpath.49=/usr/share/java/hibernate3/hibernate-core-3.jar
 wrapper.java.classpath.61=/usr/share/java/hibernate3/hibernate-ehcache-3.jar
@@ -583,12 +592,6 @@ ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{jardir}/asm_asm.
 ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
 %else
 ln -s -f %{_javadir}/asm/asm.jar  $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
-%endif
-
-# hack for new hibernate, symlinking with usage of ant works weird
-%if 0%{?fedora} && 0%{?fedora} > 17
-ln -s -f %{_javadir}/hibernate3/hibernate-c3p0-3.jar  $RPM_BUILD_ROOT%{jardir}/hibernate3_hibernate-c3p0-3.jar
-ln -s -f %{_javadir}/hibernate3/hibernate-ehcache-3.jar  $RPM_BUILD_ROOT%{jardir}/hibernate3_hibernate-ehcache-3.jar
 %endif
 
 # 732350 - On Fedora 15, mchange's log stuff is no longer in c3p0.
@@ -697,7 +700,7 @@ fi
 %{jardir}/dom4j.jar
 %{jardir}/dwr.jar
 %{jardir}/hibernate3*
-%if 0%{?fedora} && 0%{?fedora} > 17
+%if 0%{?fedora}
 %{jardir}/ehcache-core.jar
 %{jardir}/hibernate_hibernate-commons-annotations.jar
 %{jardir}/hibernate-jpa-2.0-api.jar
@@ -705,6 +708,11 @@ fi
 %{jardir}/jboss-logging.jar
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12.jar
+%endif
+%if 0%{?fedora} && 0%{?fedora} < 18
+%{_javadir}/hibernate3/hibernate-core-3.jar
+%{_javadir}/hibernate3/hibernate-c3p0-3.jar
+%{_javadir}/hibernate3/hibernate-ehcache-3.jar
 %endif
 %{jardir}/jaf.jar
 %{jardir}/javamail.jar
@@ -845,6 +853,69 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Apr 18 2013 Jan Pazdziora 1.10.62-1
+- In getLoggedInUser.getLoggedInUser and PxtSessionDelegate.getWebUserId, do
+  not create (potentially anonymous) sessions unnecessarily.
+- Drop pxtDelegate from the EnvironmentFilter where it does not seem to be
+  used.
+- Simplify the logic of deciding whether to authenticate.
+- Avoid inserting record to PXTSessions to be immediately updated.
+
+* Thu Apr 18 2013 Grant Gainey 1.10.61-1
+- 953526 - Make cobbler/enable-menu match KS-Profile isActive()
+- removing unnecessary cast
+- make the select box for changing base channel as long as needed
+- Revert "do not compile test cases within compile-all task"
+
+* Thu Apr 18 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.60-1
+- fixing possible errors/exceptions in list of virtual systems
+- removing dead code
+- containsDistributions should no longer cause exception of fedora
+
+* Wed Apr 17 2013 Grant Gainey 1.10.59-1
+- 953276 - Add warning to ActivationKey delete-confirm page.
+  Also remove some dead code around CobblerSyncSystem (we have never
+  actually done this...)
+
+* Wed Apr 17 2013 Jan Dobes 1.10.58-1
+- fixing channel/virtual systems list filtering and fake node handling
+
+* Wed Apr 17 2013 Jan Pazdziora 1.10.57-1
+- symlinking hibernate jars in the right way
+- Redundant Math.abs()
+- Salt generation corner case
+- creating configDefault for java.taskomatic_channel_repodata_workers
+- moving taskomatic.channel_repodata_workers config default from backend to
+  java
+- Switching to TransientScriptSessionManager to avoid POST
+  /rhn/dwr/call/plaincall/__System.pageLoaded.dwr.
+
+* Tue Apr 16 2013 Stephen Herr <sherr@redhat.com> 1.10.56-1
+- 952839 - checkstyle fixes
+
+* Tue Apr 16 2013 Stephen Herr <sherr@redhat.com> 1.10.55-1
+- 952839 - adding erroronfail option for kickstart scripts
+
+* Tue Apr 16 2013 Tomas Lestach <tlestach@redhat.com> 1.10.54-1
+- fix base channel list offering when chaning base channel via SSM
+- fix base channel list offering when chaning base channel
+- Revert "removing unused string with trans-id
+  'systems.details.virt.actions.scheduled'"
+- removing WEB_ALLOW_PXT_PERSONALITIES
+- removing unused methods
+- using PxtCookieManager.createPxtCookie instead of
+  RequestContext.createWebSessionCookie
+
+* Tue Apr 16 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.53-1
+- using hibernate from fedora repo on f17
+
+* Tue Apr 16 2013 Matej Kollar <mkollar@redhat.com> 1.10.52-1
+- Dead store removal (most of them)
+- Speeding up c3p0 Connection testing.
+
+* Fri Apr 12 2013 Jan Pazdziora 1.10.51-1
+- 950833 - remove confusing 'delete user' and 'deactivate user' links
+
 * Wed Apr 10 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.50-1
 - on fedora 18 we are using hibernate3 from fedora repo
 

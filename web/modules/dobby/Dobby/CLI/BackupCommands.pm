@@ -46,13 +46,9 @@ sub register_dobby_commands {
   $cli->register_mode(-command => "examine",
 		      -description => "Display information about an SUSE Manager Database Instance backup",
 		      -handler => \&command_restore);
-  $cli->register_mode(-command => "pg-online-backup",
-          -description => "Perform online backup the PostgreSQL of RHN Satellite database",
+  $cli->register_mode(-command => "online-backup",
+          -description => "Perform online backup of RHN Satellite database (PostgreSQL only)",
           -handler => \&command_pg_online_backup);
-  $cli->register_mode(-command => "pg-restore",
-          -description => "Restore the PostgreSQL database of RHN Satellite made by pg-online-backup",
-          -handler => \&command_pg_restore);
-
 }
 
 # returns $file cuted of prefix made from $cut_off_dir
@@ -144,9 +140,15 @@ sub command_restore {
 
   my $backend = PXT::Config->get('db_backend');
   my $cfg = new PXT::Config("dobby");
-  $cli->usage("BACKUP_DIR") unless $restore_dir and -d $restore_dir;
+  $cli->usage("BACKUP") unless $restore_dir and -e $restore_dir;
   my $restore_log = File::Spec->catfile($restore_dir, "backup-log.dat");
-  $cli->fatal("Error: restoration failed, unable to locate $restore_log") unless -r $restore_log;
+
+  if ($backend eq 'postgresql' and -f $restore_dir) {
+      # online backup dump
+      return command_pg_restore($cli, $command, $restore_dir);
+  } elsif (not (-r $restore_log)) {
+      $cli->fatal("Error: restoration failed, unable to locate $restore_log");
+  }
 
   my $d = new Dobby::DB;
   print "Parsing backup log.\n";
@@ -353,16 +355,28 @@ sub command_pg_restore {
   $EUID = $rec[2];
   $cli->fatal("Error: file $file is not readable by user $rec[0]") unless -r $file;
 
+  my $service_status = system('service postgresql status >/dev/null 2>&1');
+  $cli->fatal("PostgreSQL database is not running.\n"
+             ."Run 'service postgresql start' to start it.") unless $service_status == 0;
+
   my $user = PXT::Config->get("db_user");
   my $password = PXT::Config->get("db_password");
-  my $dsn = "dbi:Pg:dbname=".PXT::Config->get("db_name");
+  my $schema = PXT::Config->get("db_name");
+  my $dsn = "dbi:Pg:dbname=$schema";
   my $dbh = RHN::DB->direct_connect($dsn);
 
   no warnings 'redefine';
   sub Spacewalk::Setup::system_debug {
      system @_;
   }
-  postgresql_clear_db($dbh);
+
+  my $is_active = (Dobby::Reporting->active_sessions_postgresql($dbh, $schema) > 1);
+  if ($is_active) {
+      $cli->fatal("There are running spacewalk services which are using database.\n"
+                . "Run 'spacewalk-service --exclude=postgresql stop' to stop them.");
+      exit 1;
+  }
+  postgresql_clear_db($dbh, 0);
   system('/usr/bin/droplang', 'plpgsql', PXT::Config->get('db_name'));
 
   print "** Restoring from file $file.\n";

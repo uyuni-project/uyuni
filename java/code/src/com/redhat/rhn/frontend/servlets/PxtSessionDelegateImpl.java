@@ -50,8 +50,26 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     /**
      * {@inheritDoc}
      */
+    public WebSession getPxtSessionIfExists(HttpServletRequest request) {
+        Object sessionAttribute = request.getAttribute("session");
+        if (!(sessionAttribute instanceof WebSession)) {
+            Long pxtSessionId = getPxtSessionId(request);
+
+            if (pxtSessionId != null) {
+                sessionAttribute = findPxtSessionById(pxtSessionId);
+            }
+
+            request.setAttribute("session", sessionAttribute);
+        }
+        return (WebSession)sessionAttribute;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Long getWebUserId(HttpServletRequest request) {
-        return getPxtSession(request).getWebUserId();
+        WebSession session = getPxtSessionIfExists(request);
+        return ((session == null) ? null : session.getWebUserId());
     }
 
     /**
@@ -60,10 +78,8 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
     public void updateWebUserId(HttpServletRequest request, HttpServletResponse response,
             Long id) {
         // generate new session to prevent session fixation (BZ 672159)
-        Object sessionAttribute = createPxtSession();
+        Object sessionAttribute = createPxtSession(id);
         request.setAttribute("session", sessionAttribute);
-
-        getPxtSession(request).setWebUserId(id);
         refreshPxtSession(request, response);
     }
 
@@ -110,7 +126,7 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
             // Consequently, a new pxt session will need to be created.
 
             if (sessionAttribute == null) {
-                sessionAttribute = createPxtSession();
+                sessionAttribute = createPxtSession(null);
             }
 
             request.setAttribute("session", sessionAttribute);
@@ -160,11 +176,12 @@ public class PxtSessionDelegateImpl implements PxtSessionDelegate {
      * </code>. This makes it easier to write tests that can avoid calls to
      * <code>SessionManager</code>, which would result in database calls.
      *
+     * @param uid The user id to create the session for.
      * @return A new pxt session.
      * @see SessionManager#makeSession(Long, long)
      */
-    protected WebSession createPxtSession() {
-        return SessionManager.makeSession(null, SessionManager.lifetimeValue());
+    protected WebSession createPxtSession(Long uid) {
+        return SessionManager.makeSession(uid, SessionManager.lifetimeValue());
     }
 
     /**

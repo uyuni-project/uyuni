@@ -7,12 +7,13 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 16%{?dist}
+Release: 18%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
 Patch1: lvm_storage.patch
 Patch2: koan_no_selinux_set.patch
+Patch3: buildiso.patch
 Group: Applications/System
 Requires: python >= 2.3
 
@@ -97,6 +98,7 @@ a XMLRPC API for integration with other applications.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__python} setup.py build 
@@ -450,6 +452,12 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Thu Apr 11 2013 Stephen Herr <sherr@redhat.com> 2.0.11-18
+- fixing cobbler patch file
+
+* Thu Apr 11 2013 Stephen Herr <sherr@redhat.com> 2.0.11-17
+- 506485 - enable cobbler buildiso functionality
+
 * Wed Apr 10 2013 Tomas Lestach <tlestach@redhat.com> 2.0.11-16
 - 768451 - fix previous patch
 

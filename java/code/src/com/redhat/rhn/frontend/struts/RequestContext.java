@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.struts;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.errata.Errata;
@@ -33,12 +31,12 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.TokenFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.monitoring.MonitoringManager;
-import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
@@ -50,7 +48,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -114,8 +111,6 @@ public class RequestContext {
     public static final String FILTER_KEY = "Go";
     public static final String NO_SCRIPT = "noscript";
     public static final String MODE = "mode";
-    /** the name of the Red Hat session cookie */
-    public static final String WEB_SESSION_COOKIE_NAME = "pxt-session-cookie";
     public static final String POST = "POST";
 
 
@@ -170,13 +165,10 @@ public class RequestContext {
             return null;
         }
 
-        WebSession pxtSession = getWebSession();
-
-        if (pxtSession == null) {
-            return null;
-        }
-
-        return pxtSession.getUser();
+        PxtSessionDelegateFactory factory = PxtSessionDelegateFactory.getInstance();
+        PxtSessionDelegate pxtDelegate = factory.newPxtSessionDelegate();
+        Long uid = pxtDelegate.getWebUserId(request);
+        return ((uid == null) ? null : UserFactory.lookupById(uid));
     }
 
     /**
@@ -531,80 +523,6 @@ public class RequestContext {
         PxtSessionDelegate pxtDelegate = factory.newPxtSessionDelegate();
 
         return pxtDelegate.getPxtSession(request);
-    }
-
-    /**
-     * Returns the pxt session cookie name, handles allow_pxt_personalities. This
-     * should be removed once completely Java and stick to the HttpSession.
-     *
-     * @return The WebSession (pxt session) name taking into consideration the
-     * allow_pxt_personalities.
-     */
-    // TODO Write unit tests for getWebSessionCookieName()
-    public String getWebSessionCookieName() {
-        Config c = Config.get();
-        int personality = c.getInt(ConfigDefaults.WEB_ALLOW_PXT_PERSONALITIES);
-        if (personality > 0) {
-            String[] name = StringUtils.split(request.getServerName(), '.');
-
-            return name[0] + "-" + WEB_SESSION_COOKIE_NAME;
-        }
-
-        return WEB_SESSION_COOKIE_NAME;
-    }
-
-    /**
-     * Creates the WebSession (pxt session) cookie with the given id.
-     *
-     * @param sessionId WebSession (pxt session) id.
-     * @param timeout lifespan of cookie in seconds.
-     * @return The WebSession (pxt session) cookie.
-     */
-    // TODO Write unit tests for createWebSessionCookie(Long, int)
-    public Cookie createWebSessionCookie(Long sessionId, int timeout) {
-        Cookie cookie = new Cookie(getWebSessionCookieName(), "");
-        String sId = sessionId.toString();
-        cookie.setValue(sId + "x" + SessionManager.generateSessionKey(sId));
-        // Do NOT set the domain for the cookie. The default is to set
-        // the _Host_ for the cookie from the request.getHost() method.
-        // If we override this with setDomain, then cookie.setDomain will
-        // add a "." to the start of the specified value (if it doesn't
-        // exist), which means the cookie is good for the whole domain,
-        // which isn't what the perl code does, so the LOGout doesn't work
-        // properly.
-        cookie.setDomain(request.getServerName());
-        cookie.setPath("/");
-        cookie.setMaxAge(timeout);
-        cookie.setSecure(ConfigDefaults.get().isSSLAvailable());
-
-        return cookie;
-    }
-
-    /**
-     * Returns the value for the given named cookie, the value is cached in the
-     * Request as an attribute.
-     *
-     * @param name of cookie
-     * @return Value of cookie, or null if cookie is not found.
-     */
-    // TODO Write unit tests for getCookieValue(String)
-    public String getCookieValue(String name) {
-        String value = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            return null;
-        }
-
-        for (int i = 0; i < cookies.length; i++) {
-            Cookie c = cookies[i];
-            if (c.getName().equals(name)) {
-                value = c.getValue();
-                break;
-            }
-        }
-
-        LOG.debug("Returning [" + value + "] for cookie named [" + name + "]");
-        return value;
     }
 
     /**
