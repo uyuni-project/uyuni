@@ -935,6 +935,49 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Lists *common* compatible channels for all SSM systems subscribed to a common base
+     * Returns empty list if none is found.
+     * @param user user
+     * @return list of compatible channels, empty list if none is found
+     */
+    public static List<Channel> listCompatibleBasesForSSMNoBaseInNullOrg(User user) {
+        Map params = new HashMap();
+        params.put("user_id", user.getId());
+        return singleton.listObjectsByNamedQuery(
+                "Channel.findCompatibleSSMNoBaseInNullOrg", params);
+    }
+
+    /**
+     * Lists *common* custom compatible channels
+     * for all SSM systems subscribed to a common base
+     * @param user user
+     * @param channel channel
+     * @return List of channels.
+     */
+    public static List<Channel> listCustomBaseChannelsForSSM(User user, Channel channel) {
+        Map params = new HashMap();
+        params.put("user_id", user.getId());
+        params.put("org_id", user.getOrg().getId());
+        params.put("channel_id", channel.getId());
+        return singleton.listObjectsByNamedQuery(
+                "Channel.findCompatCustomBaseChsSSM", params);
+    }
+
+    /**
+     * Lists *common* custom compatible channels
+     * for all SSM systems without base channel
+     * @param user user
+     * @return List of channels.
+     */
+    public static List<Channel> listCustomBaseChannelsForSSMNoBase(User user) {
+        Map params = new HashMap();
+        params.put("user_id", user.getId());
+        params.put("org_id", user.getOrg().getId());
+        return singleton.listObjectsByNamedQuery(
+                "Channel.findCompatCustomBaseChsSSMNoBase", params);
+    }
+
+    /**
      * Lookup dist channel mappings for the given channel.
      * Returns empty list if none is found.
      *

@@ -1988,10 +1988,6 @@ public class ChannelManager extends BaseManager {
         if (releaseEvr != null) {
             String rhelVersion = releaseEvr.getVersion();
 
-            // If the system has the default base channel, that channel will not have
-            // compatability entries in rhnReleaseChannelMap. Assume that this is a base
-            // RHEL channel and that only the most recent (i.e. default) EUS channel
-            // in rhnReleaseChannelMap is a suitable replacement.
             List<EssentialChannelDto> baseEusChans = new LinkedList<EssentialChannelDto>();
             if (isDefaultBaseChannel(s.getBaseChannel(), rhelVersion)) {
                 EssentialChannelDto baseEus = lookupLatestEusChannelForRhelVersion(usr,
@@ -2001,8 +1997,16 @@ public class ChannelManager extends BaseManager {
                 }
             }
             else {
-                baseEusChans = listBaseEusChannelsByVersionReleaseAndServerArch(usr,
-                    rhelVersion, releaseEvr.getRelease(), s.getServerArch().getLabel());
+                Channel currBase = s.getBaseChannel();
+                if (currBase != null) {
+                    ReleaseChannelMap rcm =
+                            lookupDefaultReleaseChannelMapForChannel(currBase);
+                    if (rcm != null) {
+                        baseEusChans = listBaseEusChannelsByVersionReleaseAndServerArch(
+                                usr, rhelVersion, releaseEvr.getRelease(),
+                                s.getServerArch().getLabel());
+                    }
+                }
             }
             channelDtos.addAll(baseEusChans);
         }
@@ -2013,7 +2017,7 @@ public class ChannelManager extends BaseManager {
         }
 
         // Get all the possible base-channels owned by this Org
-        channelDtos.addAll(listBaseChannelsForOrg(usr.getOrg()));
+        channelDtos.addAll(listCustomBaseChannelsForServer(s));
 
         for (DistChannelMap dcm : ChannelFactory.listCompatibleDcmByServerInNullOrg(s)) {
                 channelDtos.add(new EssentialChannelDto(dcm.getChannel()));
@@ -2033,37 +2037,19 @@ public class ChannelManager extends BaseManager {
     public static List<EssentialChannelDto> listCompatibleBaseChannelsForChannel(User u,
             Channel inChan) {
 
-        log.debug("ChannelManager.listCompatibleBaseChannelsForChannel");
-        log.debug("channel = " + inChan.getLabel());
         List<EssentialChannelDto> retval = new ArrayList();
 
         // Get all the custom-channels owned by this org and add them
-        DataResult dr = listBaseChannelsForOrg(u.getOrg());
-        List<EssentialChannelDto> channels = new DataList(dr);
-
-        // Find all of the obvious matches
-        for (EssentialChannelDto ecd : channels) {
-            Channel c = ChannelFactory.lookupByIdAndUser(ecd.getId().longValue(), u);
-            if (log.isDebugEnabled()) {
-                log.debug(c == null ? "<null>" : c.getName());
-            }
-
-            if (c != null &&
-                (c.getOrg() != null ||
-                inChan.getChannelArch().equals(c.getChannelArch())) &&
-                !retval.contains(ecd)) {
-                retval.add(ecd);
-            }
+        for (Channel c : ChannelFactory.listCustomBaseChannelsForSSM(u, inChan)) {
+            retval.add(new EssentialChannelDto(c));
         }
-
-        List<EssentialChannelDto> eusBaseChans = new LinkedList<EssentialChannelDto>();
 
         for (Channel c :
                     ChannelFactory.listCompatibleDcmForChannelSSMInNullOrg(u, inChan)) {
-            if (!c.isCustom()) {
                 retval.add(new EssentialChannelDto(c));
-            }
         }
+
+        List<EssentialChannelDto> eusBaseChans = new LinkedList<EssentialChannelDto>();
 
         ReleaseChannelMap rcm = lookupDefaultReleaseChannelMapForChannel(inChan);
         if (rcm != null) {
@@ -2253,15 +2239,16 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
-     * List base channels for the given org.
-     * @param o Org to list channels for.
+     * List base channels offered for the given server
+     * @param server server
      * @return List of channels.
      */
-    public static DataResult listBaseChannelsForOrg(Org o) {
+    public static DataResult listCustomBaseChannelsForServer(Server server) {
         SelectMode m =
-            ModeFactory.getMode("Channel_queries", "base_channels_for_org");
+            ModeFactory.getMode("Channel_queries", "custom_base_channels_for_server");
         Map params = new HashMap();
-        params.put("org_id", o.getId());
+        params.put("org_id", server.getOrg().getId());
+        params.put("server_arch_id", server.getServerArch().getId());
         DataResult dr  = makeDataResult(params, new HashMap(), null, m);
         return dr;
     }

@@ -555,19 +555,22 @@ ORDER BY UPPER(C2.name), depth, UPPER(C.name)
 GROUP BY SC.channel_id
 </query>
 
-<mode name="base_channels_for_org"
+<mode name="custom_base_channels_for_server"
      class="com.redhat.rhn.frontend.dto.EssentialChannelDto">
-  <query params="org_id">
-SELECT  C.id, C.name, C.label, 1 AS IS_CUSTOM
-  FROM  rhnChannel C
- WHERE  C.parent_channel IS NULL
-    AND  C.org_id = :org_id OR
-        (C.id, C.org_id)
+  <query params="org_id, server_arch_id">
+SELECT C.id, C.name, C.label, 1 AS IS_CUSTOM
+  FROM rhnChannel C
+  JOIN rhnServerChannelArchCompat scac ON scac.channel_arch_id = c.channel_arch_id
+ WHERE scac.server_arch_id = :server_arch_id
+   AND C.parent_channel IS NULL
+   AND (C.org_id = :org_id OR
+       (C.id, C.org_id)
         IN
-        (SELECT S.id, S.org_id
-            FROM rhnSharedChannelView S
-          WHERE S.ORG_TRUST_ID = :org_id
-            AND S.parent_channel IS NULL) order by UPPER(C.name)
+        (SELECT scv.id, scv.org_id
+            FROM rhnSharedChannelView scv
+          WHERE scv.org_trust_id = :org_id
+            AND scv.parent_channel IS NULL))
+ ORDER BY UPPER(C.name)
   </query>
 </mode>
 
