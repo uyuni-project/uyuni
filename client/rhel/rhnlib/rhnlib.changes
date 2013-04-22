@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Apr 22 15:44:27 CEST 2013 - mc@suse.de
+
+- version 2.5.51.4-1
+- Make timeout of yum-rhn-plugin calls through rhn-client-tools
+  configurable (bnc#815460)
+- make Proxy timeouts configurable (bnc#815460)
+
+-------------------------------------------------------------------
 Thu Jun 21 11:34:34 CEST 2012 - jrenner@suse.de
 
 - version 2.5.51.3-1
