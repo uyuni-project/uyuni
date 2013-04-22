@@ -118,6 +118,8 @@ class _DoCallWrapper(object):
                 exception = up2dateErrors.AbuseError(fault.faultString)
             elif abs(fault.faultCode) == 60:
                 exception = up2dateErrors.AuthenticationTicketError(fault.faultString)
+            elif abs(fault.faultCode) == 74:
+                exception = up2dateErrors.RegistrationDeniedError()
             elif abs(fault.faultCode) == 105:
                 exception = up2dateErrors.RhnUuidUniquenessError(fault.faultString)
             elif fault.faultCode == 99:
@@ -156,13 +158,14 @@ class _DoCallWrapper(object):
 
 class RhnServer(object):
 
-    """ 
-    An rpc server object that calls doCall for you, and catches lower 
+    """
+    An rpc server object that calls doCall for you, and catches lower
     level exceptions
     """
 
-    def __init__(self):
-        self._server = rpcServer.getServer()
+    def __init__(self, serverOverride=None, timeout=None):
+        self._server = rpcServer.getServer(serverOverride=serverOverride,
+                timeout=timeout)
         self._capabilities = None
 
     def __get_capabilities(self):
