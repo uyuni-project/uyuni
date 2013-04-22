@@ -21,7 +21,7 @@ Requires: python-openssl
 %else
 Requires: pyOpenSSL
 %endif
-Conflicts: rhncfg < 5.9.37
+Conflicts: rhncfg < 5.10.27.10
 Conflicts: spacewalk-proxy-installer < 1.3.2
 Conflicts: rhn-client-tools < 1.3.3
 Conflicts: rhn-custom-info < 5.4.7
