@@ -21,7 +21,7 @@ BuildRequires: intltool
 BuildRequires: gettext
 
 Requires: yum >= 3.2.19-15
-Requires: %{rhn_client_tools} >= 1.6.6-1
+Requires: %{rhn_client_tools} >= 1.7.14.16
 %if 0%{?suse_version}
 Requires: python-m2crypto >= 0.16-6
 %else
