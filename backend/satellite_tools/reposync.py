@@ -1284,9 +1284,13 @@ def _update_bugs(notice):
 
 def _update_cve(notice):
     """Return a list of unique ids from notice references of type 'cve'"""
-    if notice['references'] is None:
-        return []
-    cves = [cve['id'][:13] for cve in notice['references'] if cve['type'] == 'cve']
+    cves = []
+    if notice['description'] is not None:
+        # sometimes CVE numbers appear in the description, but not in
+        # the reference list
+        cves = find_cves(notice['description'])
+    if notice['references'] is not None:
+        cves.extend([cve['id'][:13] for cve in notice['references'] if cve['type'] == 'cve'])
     # remove duplicates
     cves = list(set(cves))
 
