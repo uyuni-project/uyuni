@@ -85,12 +85,12 @@ public class CloneErrataAction
 
             }
         }
-        // Trigger channel repodata re-generation
+        // Trigger repository metadata re-generation
         if (list.size() > 0) {
             handleTransactions(true);
-            Channel current = msg.getChan();
-            current.setLastModified(new Date());
-            ChannelFactory.save(current);
+            currChan = msg.getChan();
+            currChan.setLastModified(new Date());
+            ChannelFactory.save(currChan);
             ChannelManager.queueChannelChange(currChan.getLabel(),
                     "java::cloneErrata", "Errata cloned");
         }
