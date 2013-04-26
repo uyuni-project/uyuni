@@ -48,6 +48,9 @@ class Register:
     rhnSQL.initDB(db_string)
     log_filename = 'mgr-register.log'
     rhnLog.initLOG(default_log_location + log_filename, CFG.DEBUG)
+    self.authuser = CFG.mirrcred_user
+    self.authpass = CFG.mirrcred_pass
+    self.authemail = CFG.mirrcred_email
 
   def main(self):
     # reset error for all server which modified date is
@@ -120,7 +123,7 @@ class Register:
     """)
     h.execute()
     res = h.fetchall_dict()
-    
+
     if not res:
       # nothing to de-register. Exit
       return
@@ -216,9 +219,9 @@ class Register:
     x = etree.SubElement(register_elem, 'guid')
     x.text = guid
     x = etree.SubElement(register_elem, 'authuser')
-    x.text = str(CFG.mirrcred_user)
+    x.text = str(self.authuser)
     x = etree.SubElement(register_elem, 'authpass')
-    x.text = str(CFG.mirrcred_pass)
+    x.text = str(self.authpass)
     x = etree.SubElement(register_elem, 'smtguid')
     x.text = str(self.get_guid())
 
@@ -262,9 +265,9 @@ class Register:
       etree.SubElement(register_elem, 'host')
 
     x = etree.SubElement(register_elem, 'authuser')
-    x.text = str(CFG.mirrcred_user)
+    x.text = str(self.authuser)
     x = etree.SubElement(register_elem, 'authpass')
-    x.text = str(CFG.mirrcred_pass)
+    x.text = str(self.authpass)
     x = etree.SubElement(register_elem, 'smtguid')
     x.text = str(self.get_guid())
 
@@ -281,7 +284,7 @@ class Register:
       x.text = prod['name']
 
     x = etree.SubElement(register_elem, 'param', attrib={'id': 'email'})
-    x.text = CFG.mirrcred_email
+    x.text = self.authemail
     x = etree.SubElement(register_elem, 'param', attrib={'id': 'ostarget'})
     x.text = server['ostarget']
     x = etree.SubElement(register_elem, 'param', attrib={'id': 'ostarget-bak'})
