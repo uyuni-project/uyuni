@@ -228,7 +228,7 @@ public class ServerFactoryTest extends RhnBaseTestCase {
         assertEquals(server2.getId(), note.getServer().getId());
 
         Set networks = server2.getNetworks();
-        assertTrue(networks.size() == 2);
+        assertTrue(networks.size() == 3);
         Network net = (Network) networks.toArray()[0];
         assertEquals(server2.getId(), net.getServer().getId());
 
@@ -934,6 +934,7 @@ public class ServerFactoryTest extends RhnBaseTestCase {
         Server serverIn = ServerFactoryTest.createTestServer(admin);
 
         server  = ServerFactory.unsubscribeFromAllChannels(admin, serverIn);
+        ServerFactory.commitTransaction();
         assertEquals(0, server.getChannels().size());
     }
 

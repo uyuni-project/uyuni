@@ -10,7 +10,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhnsd-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalksd
-Version: 5.0.9
+Version: 5.0.10
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -62,6 +62,11 @@ cd -
 # add rclink
 ln -sf ../../etc/init.d/rhnsd $RPM_BUILD_ROOT/%{_sbindir}/rcrhnsd
 
+%{!?systemd_post: %global systemd_post() if [ $1 -eq 1 ] ; then /usr/bin/systemctl enable %%{?*} >/dev/null 2>&1 || : ; fi; }
+%{!?systemd_preun: %global systemd_preun() if [ $1 -eq 0 ] ; then /usr/bin/systemctl --no-reload disable %%{?*} > /dev/null 2>&1 || : ; /usr/bin/systemctl stop %%{?*} > /dev/null 2>&1 || : ; fi; }
+%{!?systemd_postun_with_restart: %global systemd_postun_with_restart() /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : ; if [ $1 -ge 1 ] ; then /usr/bin/systemctl try-restart %%{?*} >/dev/null 2>&1 || : ; fi; }
+
+
 %find_lang rhnsd
 
 
@@ -69,7 +74,19 @@ ln -sf ../../etc/init.d/rhnsd $RPM_BUILD_ROOT/%{_sbindir}/rcrhnsd
 %if 0%{?suse_version}
 %{fillup_and_insserv rhnsd}
 %else
-/sbin/chkconfig --add rhnsd
+if [ -f /etc/init.d/rhnsd ]; then
+    /sbin/chkconfig --add rhnsd
+fi
+if [ -f %{_unitdir}/rhnsd.service ]; then
+    %systemd_post rhnsd.service
+    if [ "$1" = "2" ]; then
+        # upgrade from old init.d
+        if [ -L /etc/rc2.d/S97rhnsd ]; then
+            /usr/bin/systemctl enable rhnsd.service >/dev/null 2>&1
+        fi
+        rm -f /etc/rc?.d/[SK]??rhnsd
+    fi
+fi
 %endif
 
 %preun
@@ -78,8 +95,14 @@ ln -sf ../../etc/init.d/rhnsd $RPM_BUILD_ROOT/%{_sbindir}/rcrhnsd
 exit 0
 %else
 if [ $1 = 0 ] ; then
-    /etc/rc.d/init.d/rhnsd stop >/dev/null 2>&1
-    /sbin/chkconfig --del rhnsd
+    %if 0%{?fedora}
+        %systemd_preun rhnsd.service
+    %else
+    service rhnsd stop >/dev/null 2>&1
+    %endif
+    if [ -f /etc/init.d/rhnsd ]; then
+        /sbin/chkconfig --del rhnsd
+    fi
 fi
 %endif
 
@@ -89,7 +112,11 @@ fi
 %{insserv_cleanup}
 %else
 if [ "$1" -ge "1" ]; then
-    /etc/rc.d/init.d/rhnsd condrestart >/dev/null 2>&1 || :
+    %if 0%{?fedora}
+    %systemd_postun_with_restart rhnsd.service
+    %else
+    service rhnsd condrestart >/dev/null 2>&1 || :
+    %endif
 fi
 %endif
 
@@ -112,6 +139,10 @@ rm -fr $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Thu Apr 25 2013 Michael Mraka <michael.mraka@redhat.com> 5.0.10-1
+- let rhnsd.service be enabled after installation
+- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
+
 * Fri Feb 15 2013 Milan Zazrivec <mzazrivec@redhat.com> 5.0.9-1
 - Update .po and .pot files for rhnsd.
 - New translations from Transifex for rhnsd.

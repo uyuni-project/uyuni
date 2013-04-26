@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.63
+Version: 1.10.67
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -853,6 +853,41 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Apr 25 2013 Tomas Lestach <tlestach@redhat.com> 1.10.67-1
+- fix bad bad debug remainder
+- do not pass server list, if Long list is expected in
+  ActionManagerTest.testScheduleSriptRun
+- fix ListTagTest
+- fix ScheduleRemovePackagesActionTest
+- prevent NPE in SsmRemovePackagesAction
+- we need a system in SSM for ChannelManagerTest.testListCompatibleBaseChannels
+- let's make RestartData serializable
+
+* Wed Apr 24 2013 Jan Dobes 1.10.66-1
+- 952198 - added showing systems counts on cancel scheduled actions page
+- removing dead code
+- 952198 - changing action_list_elab to action_overview_elab to display counts
+  of systems properly
+- replace closing session with transaction rollback
+
+* Wed Apr 24 2013 Tomas Lestach <tlestach@redhat.com> 1.10.65-1
+- 956101 - removing extra semicolon
+- drop useless order by
+- commit channges, otherwise async UpdateErrataCacheActions won't find
+  referenced objects in th DB
+- every test server has one default network interface now
+- switch MAC and IP args to match what's expected
+- 928416 - display information message when filtering using older list tags
+- update proxy.listAvailableProxyChannels API as we cannot transfer null via
+  xmlrpc
+- 955364 - remove caching for activation keys
+
+* Mon Apr 22 2013 Tomas Lestach <tlestach@redhat.com> 1.10.64-1
+- manually deregister drivers to prevent tomcat informing about possible memory
+  leaks
+- fix typo: RESRTICTED -> RESTRICTED
+- let's make CachedStatement serializable
+
 * Fri Apr 19 2013 Tomas Lestach <tlestach@redhat.com> 1.10.63-1
 - remove unused method+query
 - offer a null org channels for SSM servers with no base

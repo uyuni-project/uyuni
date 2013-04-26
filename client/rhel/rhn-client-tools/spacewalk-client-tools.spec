@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.10.3
+Version: 1.10.4
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -71,7 +71,7 @@ Conflicts: yum-rhn-plugin < 1.6.4-1
 Conflicts: rhncfg < 5.9.23-1
 Conflicts: spacewalk-koan < 0.2.7-1
 Conflicts: rhn-kickstart < 5.4.3-1
-Conflicts: rhn-virtualization < 5.4.34-8
+Conflicts: rhn-virtualization < 5.4.36-2
 
 BuildRequires: python-devel
 BuildRequires: gettext
@@ -184,6 +184,10 @@ make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} PREFIX=$
 mkdir -p $RPM_BUILD_ROOT/var/lib/up2date
 mkdir -pm700 $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date
 touch $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date/loginAuth.pkl
+%if 0%{?fedora} >= 18
+mkdir -p $RPM_BUILD_ROOT/%{_presetdir}
+install 50-spacewalk-client.preset $RPM_BUILD_ROOT/%{_presetdir}
+%endif
 
 %if 0%{?suse_version}
 # zypp-plugin-spacewalk has its own action/errata.py
@@ -325,6 +329,10 @@ make -f Makefile.rhn-client-tools test
 #public keys and certificates
 %{_datadir}/rhn/RHNS-CA-CERT
 
+%if 0%{?fedora} >= 18
+%{_presetdir}/50-spacewalk-client.preset
+%endif
+
 %files -n spacewalk-check
 %defattr(-,root,root,-)
 %dir %{_datadir}/rhn/actions
@@ -430,6 +438,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Thu Apr 25 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.4-1
+- setup default presets for client services
+
 * Wed Apr 03 2013 Stephen Herr <sherr@redhat.com> 1.10.3-1
 - 947639 - Make timeout of yum-rhn-plugin calls through rhn-client-tools
   configurable

@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.20
+Version: 1.10.21
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -58,7 +58,7 @@ Requires(pre): httpd
 Requires: python, rpm-python
 # /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
 Requires: /etc/rhn
-Requires: rhnlib >= 2.5.35
+Requires: rhnlib >= 2.5.57
 # for Debian support
 Requires: python-debian
 Requires: %{name}-libs >= 1.1.16-1
@@ -71,7 +71,7 @@ BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
 BuildRequires: spacewalk-pylint
-BuildRequires: rhnlib >= 2.5.35
+BuildRequires: rhnlib >= 2.5.57
 BuildRequires: rpm-python
 BuildRequires: python-crypto
 BuildRequires: python-debian
@@ -302,7 +302,7 @@ Requires: mod_ssl
 %endif
 Requires: %{name}-xml-export-libs
 Requires: cobbler >= 2.0.0
-Requires: rhnlib  >= 2.5.35
+Requires: rhnlib  >= 2.5.57
 Obsoletes: rhns-satellite-tools < 5.3.0
 Obsoletes: spacewalk-backend-satellite-tools <= 0.2.7
 Provides: spacewalk-backend-satellite-tools = %{version}-%{release}
@@ -775,6 +775,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri Apr 26 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.21-1
+- make rpclib connection timeout configurable
+
 * Wed Apr 17 2013 Jan Pazdziora 1.10.20-1
 - moving taskomatic.channel_repodata_workers config default from backend to
   java
