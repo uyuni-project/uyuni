@@ -294,8 +294,11 @@ fi
 %if 0%{?fedora}
 %systemd_postun_with_restart osad.service
 %endif
-
 %if 0%{?suse_version} >= 1210
+%service_del_postun osad.service
+
+%pre
+%service_add_pre osad.service
 
 %pre -n osa-dispatcher
 %service_add_pre osa-dispatcher.service
