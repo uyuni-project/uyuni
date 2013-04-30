@@ -48,10 +48,40 @@ $dbh->do(q!alter session set nls_date_format = 'YYYY-MM-DD HH24:MI:SS'!);
 
 print <<'EOS';
 \set ON_ERROR_STOP on
+update pg_index
+  set indisvalid = false,
+      indisready = false
+where indexrelid in (
+      select pi.indexrelid
+        from pg_index pi,
+             pg_class pc,
+             pg_namespace pn
+       where pi.indexrelid = pc.oid and
+             pc.relnamespace = pn.oid and
+             pc.relkind = 'i'::"char" and
+             pn.nspname = current_schema()
+      );
 EOS
 process_sequences($dbh);
 process_tables($dbh);
 $dbh->disconnect();
+
+print <<'EOS';
+update pg_index
+  set indisvalid = true,
+      indisready = true
+where indexrelid in (
+      select pi.indexrelid
+        from pg_index pi,
+             pg_class pc,
+             pg_namespace pn
+       where pi.indexrelid = pc.oid and
+             pc.relnamespace = pn.oid and
+             pc.relkind = 'i'::"char" and
+             pn.nspname = current_schema()
+      );
+select pg_dblink_exec('reindex database ' || current_database() || ';');
+EOS
 
 exit 0;
 
