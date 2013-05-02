@@ -9,7 +9,7 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-UPDATE rhntTaskoTask
+UPDATE rhnTaskoTask
 SET name = 'ssh-push', class = 'com.redhat.rhn.taskomatic.task.SSHPush'
 WHERE name = 'ssh-server-push';
 
