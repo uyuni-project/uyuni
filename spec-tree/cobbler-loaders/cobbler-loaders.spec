@@ -4,8 +4,8 @@ Summary: Bootloaders to make cobbler buildiso work
 Name: cobbler-loaders
 License: GPLv2+
 AutoReq: no
-Version: 1.0.1
-Release: 3%{?dist}
+Version: 1.0.2
+Release: 1%{?dist}
 Url: http://fedorahosted.org/cobbler
 Source0: cobbler-loaders-%{version}.tar.gz
 Group: Applications/System
@@ -33,6 +33,8 @@ is necessary for 'cobbler buildiso' to work.
 echo "pre-install"
 mkdir -p $RPM_BUILD_ROOT%{loaders_root}
 install -m644 * $RPM_BUILD_ROOT%{loaders_root}/
+ln -s /usr/share/syslinux/menu.c32 $RPM_BUILD_ROOT%{loaders_root}/menu.c32
+ln -s /usr/share/syslinux/pxelinux.0 $RPM_BUILD_ROOT%{loaders_root}/pxelinux.0
 echo "post-install"
 
 %post
@@ -47,6 +49,10 @@ rm -rf $RPM_BUILD_ROOT
 %{loaders_root}/*
 
 %changelog
+* Tue Apr 30 2013 Stephen Herr <sherr@redhat.com> 1.0.2-1
+- 506485 - Pull cobbler-loader files from Red Hat signed rpms
+- replace legacy name of Tagger with new one
+
 * Fri Apr 12 2013 Stephen Herr <sherr@redhat.com> 1.0.1-2
 - 506485 - settings to make builds happen correctly
 

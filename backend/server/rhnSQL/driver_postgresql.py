@@ -29,6 +29,7 @@ if not hasattr(psycopg2, 'extensions'):
 import sql_base
 from rhn.UserDictCase import UserDictCase
 from spacewalk.server import rhnSQL
+from spacewalk.server.rhnSQL import sql_types
 
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnException
@@ -270,11 +271,12 @@ class Cursor(sql_base.Cursor):
 
         try:
             retval = function(*p, **kw)
-        except psycopg2.ProgrammingError, e:
-            # TODO: Constructor for this exception expects a first arg of db,
-            # and yet the Oracle driver passes it an errno? Suspect it's not
-            # even used.
-            raise rhnSQL.SQLStatementPrepareError(0, str(e), self.sql), None, sys.exc_info()[2]
+        except psycopg2.InternalError, e:
+            error_code = 99999
+            m = re.match('ERROR: +-([0-9]+)', e.pgerror)
+            if m:
+               error_code = int(m.group(1))
+            raise sql_base.SQLSchemaError(error_code, e.pgerror, e)
         return retval
 
     def _execute_(self, args, kwargs):

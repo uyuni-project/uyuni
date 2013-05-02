@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.10.25
+Version:        1.10.28
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -75,6 +75,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu May 02 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.28-1
+- fixed wrong sha1
+
+* Thu May 02 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.27-1
+- columns can be altered with values inside
+
+* Mon Apr 29 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.26-1
+- fixed dependency
+
 * Tue Apr 16 2013 Stephen Herr <sherr@redhat.com> 1.10.25-1
 - 952839 - adding erroronfail option for kickstart scripts
 - add oracle equivalent source (even empty)

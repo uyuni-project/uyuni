@@ -17,7 +17,7 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.11.24
+Version: 5.11.25
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -167,6 +167,10 @@ make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_
 mkdir -p %{buildroot}%{_var}/log/rhn
 touch %{buildroot}%{_var}/log/osad
 touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
+
+%if 0%{?fedora}
+sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/osa-dispatcher
+%endif
 
 %if 0%{?fedora} || 0%{?suse_version} >= 1210
 rm $RPM_BUILD_ROOT/%{_initrddir}/osad
@@ -435,6 +439,9 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Fri Apr 26 2013 Michael Mraka <michael.mraka@redhat.com> 5.11.25-1
+- new logrotate complains about permissions
+
 * Thu Apr 25 2013 Michael Mraka <michael.mraka@redhat.com> 5.11.24-1
 - enable osad.service after installation
 

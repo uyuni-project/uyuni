@@ -18,5 +18,6 @@
     compress
     notifempty
     missingok
+    su root www
     size 10M
 }
