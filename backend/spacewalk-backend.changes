@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu May 02 17:13:44 CEST 2013 - mc@suse.de
+
+- version 1.7.38.25-1
+- make satellite-sync work with new rhnlib (bnc#815460)
+- search for CVE numbers also in the description
+- require rhnlib with timeout option
+- make rpclib connection timeout configurable (bnc#815460)
+- return 404 Not Found on requests of content or installation.xml (bnc#815441)
+- fix encoding in products summary and description
+
+-------------------------------------------------------------------
 Thu Apr 04 15:32:18 CEST 2013 - mc@suse.de
 
 - version 1.7.38.24-1
