@@ -15,10 +15,14 @@ function new_path () {
 
 }
 
+templatedir=`dirname $0`
+templatedir="$templatedir/template"
+
 basepath=`pwd`
 basepath=`dirname $basepath`
 basepath="$basepath/upgrade/"
 echo "P: $basepath"
+echo "T: $templatedir"
 
 dirs=(spacewalk-schema-1.7-to-spacewalk-schema-1.8 spacewalk-schema-1.8-to-spacewalk-schema-1.9 spacewalk-schema-1.9-to-spacewalk-schema-1.10)
 
@@ -44,7 +48,15 @@ for d in ${dirs[*]}; do
             #echo "SRC: $src TARGET: $target"
             if [ "$src" != "$target" ]; then
                 if ! grep "already applied in Manager" "$dest" > /dev/null; then
-		    echo "NEED CHECK: $i $dest"
+                    templatename=`basename $dest`
+                    if [ -e "$templatedir/$templatename.dif" ]; then
+                        DIFF1=`diff -ub $i $dest`
+                        DIFF2=`cat "$templatedir/$templatename.dif"`
+                        if [ "$DIFF1" = "$DIFF2" ]; then
+                            continue
+                        fi
+                    fi
+		    echo "NEED CHECK: diff -ub $i $dest"
                 fi
 	    fi
 	    continue
