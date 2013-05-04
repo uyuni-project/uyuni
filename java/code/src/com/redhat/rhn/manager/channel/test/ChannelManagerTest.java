@@ -107,7 +107,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         // get an org
         Org org = OrgFactory.lookupById(UserTestUtils.createOrg("channelTestOrg"));
         //put a channel in the org
-        Channel channel = ChannelFactoryTest.createTestChannel();
+        Channel channel = ChannelFactoryTest.createTestChannel(org);
         org.addOwnedChannel(channel);
         //save the org
         OrgFactory.save(org);
@@ -117,7 +117,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testChannelsForUser() throws Exception {
-        ChannelFactoryTest.createTestChannel();
+        ChannelFactoryTest.createTestChannel(user);
         List channels = ChannelManager.channelsForUser(user);
 
         //make sure we got a list out
@@ -233,7 +233,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
 
     public void testRetiredChannelTree() throws Exception {
-        //User user = UserTestUtils.findNewUser("testUser", "testOrg");
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         channel.setEndOfLife(new Date(System.currentTimeMillis() - 1000000));
         user.getOrg().addOwnedChannel(channel);
@@ -247,7 +246,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testAccessibleChannels() throws Exception {
-        //User user = UserTestUtils.findNewUser("testUser", "testOrg");
         Channel parent = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);
         child.setParentChannel(parent);
@@ -731,6 +729,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Channel custom = ChannelTestUtils.createBaseChannel(user);
         custom.setOrg(user.getOrg());
 
+        committed = true;
         // Ask for channels compatible with the new server's base
         List<EssentialChannelDto> compatibles =
             ChannelManager.listCompatibleBaseChannelsForChannel(user, c);
@@ -853,10 +852,12 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         Channel c = ChannelFactoryTest.createBaseChannel(user);
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        User user = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
 
-        Package bothP = PackageTest.createTestPackage();
-        Package channelP = PackageTest.createTestPackage();
-        Package errataP = PackageTest.createTestPackage();
+        Package bothP = PackageTest.createTestPackage(user.getOrg());
+        Package channelP = PackageTest.createTestPackage(user.getOrg());
+        Package errataP = PackageTest.createTestPackage(user.getOrg());
 
 
         c.addPackage(bothP);
@@ -884,7 +885,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         user.addRole(RoleFactory.CHANNEL_ADMIN);
 
-        Channel ochan = ChannelFactoryTest.createTestChannel();
+        Channel ochan = ChannelFactoryTest.createTestChannel(user);
         Channel cchan = ChannelFactoryTest.createTestClonedChannel(ochan, user);
 
         Errata oe = ErrataFactoryTest.createTestErrata(null);
@@ -896,7 +897,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
          Errata ce = ErrataManager.createClone(user, oe);
          ce = ErrataManager.publish(ce, list, user);
 
-         Package testPackage = PackageTest.createTestPackage();
+         User user = UserTestUtils.findNewUser("testUser",
+                 "testOrg" + this.getClass().getSimpleName());
+         Package testPackage = PackageTest.createTestPackage(user.getOrg());
          oe.addPackage(testPackage);
          ochan.addPackage(testPackage);
 
@@ -910,7 +913,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         user.addRole(RoleFactory.CHANNEL_ADMIN);
 
-        Channel ochan = ChannelFactoryTest.createTestChannel();
+        Channel ochan = ChannelFactoryTest.createTestChannel(user);
         Channel cchan = ChannelFactoryTest.createTestClonedChannel(ochan, user);
 
         Errata oe = ErrataFactoryTest.createTestErrata(null);
@@ -922,7 +925,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
          Errata ce = ErrataManager.createClone(user, oe);
          ce = ErrataManager.publish(ce, list, user);
 
-         Package testPackage = PackageTest.createTestPackage();
+         User user = UserTestUtils.findNewUser("testUser",
+                 "testOrg" + this.getClass().getSimpleName());
+         Package testPackage = PackageTest.createTestPackage(user.getOrg());
          oe.addPackage(testPackage);
          ochan.addPackage(testPackage);
 
