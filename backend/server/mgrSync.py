@@ -9,6 +9,7 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 import sys
+import urlparse
 from wsgi import wsgiRequest
 import xml.etree.ElementTree as etree
 from xml.parsers.expat import ExpatError
@@ -17,7 +18,7 @@ from rhn.connections import idn_ascii_to_pune
 
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnLog import log_debug, log_error, initLOG
-from spacewalk.common import apache
+from spacewalk.common import apache, suseLib
 
 LISTSUBSCRIPTION_CACHE = '/var/cache/rhn/ncc-data/subscriptions.xml'
 PRODUCTDATA_CACHE = '/var/cache/rhn/ncc-data/productdata.xml'
@@ -63,6 +64,15 @@ def handle(environ, start_response):
             passwd = child.text
         elif child.tag.endswith('smtguid'):
             ident = child.text
+        elif child.tag.endswith('register') or child.tag.endswith('de-register'):
+            for subreg in child:
+                if subreg.tag.endswith('authuser'):
+                    user = subreg.text
+                elif subreg.tag.endswith('authpass'):
+                    passwd = subreg.text
+                elif subreg.tag.endswith('smtguid'):
+                    ident = subreg.text
+
     if not (user and passwd and ident):
         log_error("Invalid authentication")
         log_debug(1, "User: %s Ident: %s" % (user, ident))
@@ -80,6 +90,27 @@ def handle(environ, start_response):
         elif root.tag.endswith('listsubscriptions'):
             with open(LISTSUBSCRIPTION_CACHE, 'r') as f:
                 req.write(f.read())
+        elif root.tag.endswith('bulkop'):
+            # authentication is ok, lets forward the request to the parent
+            if CFG.ISS_PARENT:
+                url = suseLib.URL('https://%s' % (CFG.ISS_PARENT))
+            else:
+                url = suseLib.URL(CFG.reg_url)
+            u = urlparse.urlsplit(req.uri)
+            # pylint can't see inside the SplitResult class
+            # pylint: disable=E1103
+            url.path = u.path
+            url.query = u.query
+            new_url = url.getURL()
+            try:
+                log_debug(4, "Request:", req_body)
+                f = suseLib.send(new_url, req_body)
+            except:
+                req.send_http_header(status=apache.HTTP_INTERNAL_SERVER_ERROR)
+                return req.output
+            resp = f.read()
+            log_debug(4, "Response:", resp)
+            req.write(resp)
         else:
             log_error("Unsupported request '%s' from %s" % (root.tag, ident))
             req.send_http_header(status=apache.HTTP_BAD_REQUEST)
