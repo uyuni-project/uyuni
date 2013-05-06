@@ -110,10 +110,15 @@ class Register:
         continue
 
       counter += 1
-    
+
+      # set the operation to error here. If it succeed we
+      # change it in _parse_status again
+      # This is to prevent loosing registrations because of
+      # an unavailable server.
       h = rhnSQL.prepare("""
         UPDATE suseServer
-           SET ncc_sync_required = 'N'
+           SET ncc_reg_error = 'Y',
+               ncc_sync_required = 'Y'
          WHERE guid = :guid
       """)
       h.execute(guid=server['guid'])
@@ -154,15 +159,17 @@ class Register:
         counter = 1
 
       self.build_deregister_xml(server['guid'], root)
+      # we delete it here. If the operation failes, you need
+      # to remove the client manually from NCC
+      # We do not want to show recurring failed messages every 15 minutes
       h = rhnSQL.prepare("""
         DELETE FROM suseDelServer
         WHERE guid = :guid
       """)
       h.execute(guid=server['guid'])
 
-      rhnSQL.commit()
-      self.send(root)
-      rhnSQL.commit()
+    rhnSQL.commit()
+    self.send(root)
 
   def send(self, root):
     xml = etree.tostring(root)
@@ -207,18 +214,17 @@ class Register:
 
     if result == "error":
       log_error("Operation %s[%s] failed: %s" % (operation, guid, msg))
-      if operation != "register":
-        return
-      h = rhnSQL.prepare("""
-        UPDATE suseServer
-           SET ncc_reg_error = 'Y',
-               ncc_sync_required = 'Y'
-         WHERE guid = :guid
-      """)
-      h.execute(guid=guid)
     else:
       # success
       log_debug(1, "Operation '%s' successful: %s" % (operation, guid))
+      if operation == 'register':
+          h = rhnSQL.prepare("""
+            UPDATE suseServer
+               SET ncc_reg_error = 'N',
+                   ncc_sync_required = 'N'
+             WHERE guid = :guid
+          """)
+          h.execute(guid=guid)
 
   def build_deregister_xml(self, guid, root):
     register_elem = etree.SubElement(root, 'de-register')
