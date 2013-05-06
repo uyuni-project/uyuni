@@ -120,9 +120,6 @@ class NCCSync(object):
 
         self.namespace = "http://www.novell.com/xml/center/regsvc-1_0"
 
-        # FIXME:
-        # self.ncc_url_prods = CFG.reg_url + "/?command=regdata&lang=en-US&version=1.0"
-        # self.ncc_url_subs  = CFG.reg_url + "/?command=listsubscriptions&lang=en-US&version=1.0"
         if self.fromdir:
             fdir = self.fromdir[7:] # strip the file://
             self.ncc_url_prods = self.fromdir + "/productdata.xml"
@@ -159,8 +156,8 @@ class NCCSync(object):
                              '<smtguid>%(smtguid)s</smtguid>'
                              '</productdata>\n')
         else:
-            self.ncc_url_prods = "https://secure-www.novell.com/center/regsvc/?command=regdata&lang=en-US&version=1.0"
-            self.ncc_url_subs  = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0"
+            self.ncc_url_prods = "%s/?command=regdata&lang=en-US&version=1.0" % CFG.reg_url
+            self.ncc_url_subs  = "%s/?command=listsubscriptions&lang=en-US&version=1.0" % CFG.reg_url
             self.ncc_repoindex = "https://%(authuser)s:%(authpass)s@nu.novell.com/repo/repoindex.xml"
             # XML documents which are used in POST requests to the NCC
             self.subs_req = ('<?xml version="1.0" encoding="UTF-8"?>'
