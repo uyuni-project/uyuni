@@ -398,12 +398,14 @@ def get_mirror_credentials():
     mirrcred_user_2, mirrcred_pass_2 etc. might still exist.
 
     """
+    comp = CFG.getComponent()
     initCFG("server.susemanager")
 
     creds = []
 
     # the default values should at least always be there
     if not CFG["mirrcred_user"] or not CFG["mirrcred_pass"]:
+        initCFG(comp)
         raise ConfigParserError("Could not read default mirror credentials: "
                                 "server.susemanager.mirrcred_user, "
                                 "server.susemanager.mirrcred_pass.")
@@ -419,6 +421,7 @@ def get_mirror_credentials():
         except (KeyError, AttributeError):
             break
         n += 1
+    initCFG(comp)
     return creds
 
 
@@ -476,9 +479,13 @@ def _get_proxy_from_rhn_conf():
     pass can be None.
 
     """
+    comp = CFG.getComponent()
     initCFG("server.satellite")
+    result = None
     if CFG.http_proxy:
         # CFG.http_proxy format is <hostname>[:<port>] in 1.7
         url = 'http://%s' % CFG.http_proxy
-        return (url, CFG.http_proxy_username, CFG.http_proxy_password)
-    log_debug(1, "Could not read proxy URL from rhn config.")
+        result = (url, CFG.http_proxy_username, CFG.http_proxy_password)
+    initCFG(comp)
+    log_debug(2, "Could not read proxy URL from rhn config.")
+    return result
