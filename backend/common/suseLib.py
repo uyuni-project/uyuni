@@ -132,8 +132,12 @@ def send(url, sendData=None):
     """
     connect_retries = 10
     try_counter = connect_retries
+    timeout = 120
+    if CFG.is_initialized() and CFG.has_key('TIMEOUT'):
+        timeout = CFG.TIMEOUT
     curl = pycurl.Curl()
 
+    curl.setopt(pycurl.CONNECTTIMEOUT, timeout)
     curl.setopt(pycurl.URL, url)
     proxy_url, proxy_user, proxy_pass = get_proxy()
     if proxy_url:
@@ -202,8 +206,12 @@ def accessible(url):
     Returns True if url is accessible, otherwise False.
 
     """
+    timeout = 120
+    if CFG.is_initialized() and CFG.has_key('TIMEOUT'):
+        timeout = CFG.TIMEOUT
     curl = pycurl.Curl()
 
+    curl.setopt(pycurl.CONNECTTIMEOUT, timeout)
     curl.setopt(pycurl.URL, url)
     proxy_url, proxy_user, proxy_pass = get_proxy()
     if proxy_url:
