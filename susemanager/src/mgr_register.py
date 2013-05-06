@@ -51,6 +51,12 @@ class Register:
     self.authuser = CFG.mirrcred_user
     self.authpass = CFG.mirrcred_pass
     self.authemail = CFG.mirrcred_email
+    self.is_iss_slave = False
+    self.regurl = CFG.reg_url
+    if CFG.iss_parent:
+        self.is_iss_slave = True
+        self.regurl = "https://%s/center/regsvc" % CFG.iss_parent
+
 
   def main(self):
     # reset error for all server which modified date is
@@ -162,7 +168,7 @@ class Register:
     xml = etree.tostring(root)
     log_debug(2, "SEND: %s" % xml)
 
-    regurl = suseLib.URL(CFG.reg_url)
+    regurl = suseLib.URL(self.regurl)
     regurl.query = "command=bulkop&lang=en&version=1.0"
     new_url = regurl.getURL()
 
