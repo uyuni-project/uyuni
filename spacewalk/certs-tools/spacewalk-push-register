@@ -79,12 +79,12 @@ echo "fi" >> ${ENABLE}
 # Disable osad completely
 echo "if [ -x '/etc/init.d/osad' ]; then" >> ${ENABLE}
 echo "/etc/init.d/osad stop" >> ${ENABLE}
-echo "chkconfig -d osad" >> ${ENABLE}
+echo "chkconfig --del osad" >> ${ENABLE}
 echo "fi" >> ${ENABLE}
 # Disable rhnsd completely
 echo "if [ -x '/etc/init.d/rhnsd' ]; then" >> ${ENABLE}
 echo "/etc/init.d/rhnsd stop" >> ${ENABLE}
-echo "chkconfig -d rhnsd" >> ${ENABLE}
+echo "chkconfig --del rhnsd" >> ${ENABLE}
 echo "fi" >> ${ENABLE}
 
 # Create a tunnel version of client-config-overrides.txt
