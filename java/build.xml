@@ -62,8 +62,8 @@
     </target>
 
   <!-- Generates Eclipse classpath   -->
-  <target name="gen-eclipse" depends="link-jars"
-          description = "Generates eclipse .classpath file">
+  <target name="gen-eclipse" depends="resolve"
+         description = "Generates eclipse .classpath file">
       <exec executable="${basedir}/scripts/gen-eclipse.py"
         output="${basedir}/.classpath" >
         <arg value="${eclipse.lib.dirs}:${rhn-home}/buildconf/tempjars:${env.JAVA_HOME}/lib/tools.jar" />
