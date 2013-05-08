@@ -117,12 +117,7 @@ class ContentSource:
         self._clean_cache(CACHE_DIR + name)
 
         initCFG('server.satellite')
-        u = urlparse.urlsplit(self.url)
-        if u.hostname in ["localhost", "127.0.0.1", "::1"]:
-            # no proxy for localhost
-            self.proxy_url = None
-        else:
-            self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy()
+        self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
 
         repo = yum.yumRepo.YumRepository(name)
         repo.populate(self.configparser, name, self.yumbase.conf)
@@ -147,6 +142,7 @@ class ContentSource:
         # base_persistdir have to be set before pkgdir
         if hasattr(repo, 'base_persistdir'):
             repo.base_persistdir = CACHE_DIR
+
         if (self.url.find("file://") < 0):
             pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, '1', 'stage')
             if not os.path.isdir(pkgdir):
