@@ -139,7 +139,7 @@ def send(url, sendData=None):
 
     curl.setopt(pycurl.CONNECTTIMEOUT, timeout)
     curl.setopt(pycurl.URL, url)
-    proxy_url, proxy_user, proxy_pass = get_proxy()
+    proxy_url, proxy_user, proxy_pass = get_proxy(url)
     if proxy_url:
         curl.setopt(pycurl.PROXY, proxy_url)
     log_debug(2, "Connect to %s" % url)
@@ -213,7 +213,7 @@ def accessible(url):
 
     curl.setopt(pycurl.CONNECTTIMEOUT, timeout)
     curl.setopt(pycurl.URL, url)
-    proxy_url, proxy_user, proxy_pass = get_proxy()
+    proxy_url, proxy_user, proxy_pass = get_proxy(url)
     if proxy_url:
         curl.setopt(pycurl.PROXY, proxy_url)
     log_debug(2, "Connect to %s" % url)
@@ -253,19 +253,28 @@ def accessible(url):
     return False
 
 
-def get_proxy():
+def get_proxy(url=None):
     """Return proxy information as a (url, username, password) tuple
 
     Returns None if no proxy URL/credentials could be read.
+
+    If the url parameter is provided, a check against no_proxy will be made.
+    (server.satellite.no_proxy)
+    In case this connection should not use a proxy, the values returned
+    are None for url, username and password.
 
     Order of lookup (https_proxy is always preferred over http_proxy):
     1. rhn.conf (server.satellite.http_proxy)
     2. .curlrc (--proxy, --proxy-user)
 
     """
-    return (_get_proxy_from_rhn_conf() or
-            _get_proxy_from_yast() or
-            (None, None, None))
+    proxyurl, username, password = (_get_proxy_from_rhn_conf() or
+                                    _get_proxy_from_yast() or
+                                    (None, None, None))
+    if not url or (url and _useProxyFor(url)):
+        return (proxyurl, username, password)
+    return (None, None, None)
+
 
 
 def findProduct(product):
@@ -497,3 +506,50 @@ def _get_proxy_from_rhn_conf():
     initCFG(comp)
     log_debug(2, "Could not read proxy URL from rhn config.")
     return result
+
+def _useProxyFor(url):
+    """Return True if a proxy should be used for given url, otherwise False.
+
+    This function uses server.satellite.no_proxy variable to check for
+    hosts or domains which should not be connected via a proxy.
+
+    server.satellite.no_proxy is a comma seperated list.
+    Either an exact match, or the previous character
+    is a '.', so host is within the same domain.
+    A leading '.' in the pattern is ignored.
+    See also 'man curl'
+
+    """
+    u = urlparse.urlsplit(url)
+    hostname = u.hostname.lower()
+    if hostname in ["localhost", "127.0.0.1", "::1"]:
+        return False
+    comp = CFG.getComponent()
+    initCFG("server.satellite")
+    if not CFG.has_key('no_proxy'):
+        initCFG(comp)
+        return True
+    noproxy = CFG.no_proxy
+    initCFG(comp)
+    if not noproxy:
+        return True
+    if not isinstance(noproxy, list):
+        if noproxy == '*':
+            # just an asterisk disables all.
+            return False
+        noproxy = [noproxy]
+
+    # No proxy: Either an exact match, or the previous character
+    # is a '.', so host is within the same domain.
+    # A leading '.' in the pattern is ignored. Some implementations
+    # need '.foo.ba' to prevent 'foo.ba' from matching 'xfoo.ba'.
+    for domain in noproxy:
+        domain = domain.lower()
+        if domain[0] == '.':
+            domain = domain[1:]
+        if hostname.endswith(domain) and \
+               (len(hostname) == len(domain) or \
+                hostname[len(hostname)-len(domain)-1] == '.'):
+            return False
+    return True
+

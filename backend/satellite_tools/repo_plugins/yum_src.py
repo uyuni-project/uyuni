@@ -117,12 +117,7 @@ class ContentSource:
         self.configparser = ConfigParser()
         self._clean_cache(CACHE_DIR + name)
 
-        u = urlparse.urlsplit(self.url)
-        if u.hostname in ["localhost", "127.0.0.1", "::1"]:
-            # no proxy for localhost
-            self.proxy_url = None
-        else:
-            self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy()
+        self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
 
         repo = yum.yumRepo.YumRepository(name)
         repo.populate(self.configparser, name, self.yumbase.conf)
