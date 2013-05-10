@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ SUSE Manager build file for development use
+ 
+ Builds and deploys the webapp to a SSH host running Tomcat
+ 
+ Requirements:
+  - sudo zypper in java-1_7_0-openjdk-devel ssh rsync
+  - sudo zypper rm *gcj-compat*
+  - an account on the SSH host to deploy to. An authorized key on
+  the host is strongly recommended, to set it up on DevEnv use:
+  
+  scp ~/.ssh/id_rsa.pub root@DEVENV_ADDRESS:/root/.ssh/authorized_keys
+ 
+ Configuration:
+  - echo "deploy.host=DEVENV_ADDRESS" > ~/.ant.properties
+  - you can override any other property in that file
+   
+-->
+<project name="SUSE Manager" default="deploy" basedir=".">
+  <!-- User-defined properties, maximum priority -->
+  <property file="${user.home}/.ant.properties"/>
+
+  <!-- Project-level properties -->
+  <import file="buildconf/build-props.xml" />
+
+  <!-- Default values for other properties -->
+  <property name="deploy.host" value="deployhost" />
+  <property name="deploy.dir" value="/var/lib/tomcat6/webapps/rhn" />
+  <property name="deploy.user" value="root" />
+
+  <!-- Paths -->
+  <path id="libjars">
+    <fileset dir="${lib.dir}" includes="**/*.jar" />
+  </path>
+
+  <!-- User-visible targets -->
+  <target name="clean" description="Cleans up all generated files">
+    <delete dir="${build.dir}" quiet="true" />
+  </target>
+
+  <!--
+    - Will issue a warning in JDK7, safe to ignore.
+    - See:
+    - https://blogs.oracle.com/darcy/entry/bootclasspath_older_source
+  -->
+  <target name="compile"  depends="clean" description="Compiles the main codebase">
+    <mkdir dir="${build.dir}/classes" />
+    <javac destdir="${build.dir}/classes"
+           optimize="off"
+           debug="on"
+           source="1.5"
+           target="1.5"
+           deprecation="${deprecation}"
+           nowarn="${nowarn}"
+           encoding="utf-8"
+           fork="yes"
+           memoryMaximumSize="256m"
+           includeAntRuntime="false"
+           classpathref="libjars">
+      <src>
+        <path location="code/src" />
+        <path location="code/scripts/src" />
+      </src>
+    </javac>
+
+    <copy toDir="${build.dir}/classes">
+      <fileset dir="${src.dir}/src">
+        <exclude name="**/*.java" />
+        <exclude name="**/package.html" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="jar" depends="compile" description="Packs the main application jar">
+    <jar destfile="${build.dir}/rhn.jar">
+      <fileset dir="${build.dir}/classes">
+        <!-- internal is not for publication; tlds go in META-INF;  html files go as javadoc -->
+        <exclude name="**/internal/**" />
+        <exclude name="**/*.tld" />
+        <exclude name="**/*.html" />
+        <exclude name="**/test/" />
+        <exclude name="**/*/testing/**" />
+        <exclude name="**/log4j.properties" />
+        <exclude name="**/*.conf" />
+        <exclude name="**/*.conf.rpmsave" />
+        <exclude name="**/StringResource*.xml" />
+      </fileset>
+      <fileset dir="${build.dir}/classes">
+        <include name="**/StringResource_en_US.xml" />
+      </fileset>
+      <!-- Can't be flattened like in <copy>, alas -->
+      <metainf dir="${build.dir}/classes/com/redhat/rhn/frontend/taglibs">
+        <include name="*.tld" />
+      </metainf>
+    </jar>
+  </target>
+
+  <target name="webapp" depends="jar" description="Creates the Web application directory">
+    <copy todir="${build.dir}/webapp">
+      <fileset dir="${src.dir}/webapp">
+        <exclude name="help/**" />
+      </fileset>
+    </copy>
+
+    <copy todir="${build.dir}/webapp/WEB-INF/lib">
+      <fileset file="${build.dir}/rhn.jar" />
+      <fileset dir="${lib.dir}">
+        <include name="**/*.jar" />
+        
+        <!-- Don't copy unneded jars -->
+        <exclude name="**/jasper*" />
+        <exclude name="**/jspapi*" />
+        <exclude name="**/ojdbc*" />
+        <exclude name="**/oracle-jdbc*" />
+        <exclude name="**/servlet*" />
+        <exclude name="**/tomcat6*" />
+      </fileset>
+      <fileset dir="${rhn-home}/buildconf/tempjars">
+        <include name="**/*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="deploy" depends="webapp" description="Deploys a new copy of SUSE Manager">
+    <echo message="Copying files to remote host..."/>
+    <exec executable="rsync" description="Copies files to deploy host">
+      <arg line="-a --delete ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/"/>
+    </exec>
+
+    <echo message="Linking branding jar..."/>
+    <exec executable="ssh">
+      <arg line='${deploy.user}@${deploy.host} -C "ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"'/>
+    </exec>
+ 
+    <echo message="Linking jar for Taskomatic..."/>
+    <exec executable="ssh">
+      <arg line='${deploy.user}@${deploy.host} -C "mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib; ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"'/>
+    </exec>
+    
+    <echo message="Restarting Tomcat..."/>
+    <exec executable="ssh">
+      <arg line='${deploy.user}@${deploy.host} -C "rctomcat6 stop &amp;&amp; rctomcat6 start"'/>
+    </exec>
+  </target>
+</project>
