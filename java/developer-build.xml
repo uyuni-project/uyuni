@@ -131,19 +131,22 @@
       <arg line="-a --delete ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/"/>
     </exec>
 
-    <echo message="Linking branding jar..."/>
-    <exec executable="ssh">
-      <arg line='${deploy.user}@${deploy.host} -C "ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"'/>
-    </exec>
- 
-    <echo message="Linking jar for Taskomatic..."/>
-    <exec executable="ssh">
-      <arg line='${deploy.user}@${deploy.host} -C "mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib; ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"'/>
-    </exec>
-    
-    <echo message="Restarting Tomcat..."/>
-    <exec executable="ssh">
-      <arg line='${deploy.user}@${deploy.host} -C "rctomcat6 stop &amp;&amp; rctomcat6 start"'/>
+    <exec
+      executable="ssh"
+      inputstring='
+        echo "Linking the branding jar...";
+        ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar;
+  
+        echo "Linking the main jar for Taskomatic...";
+        mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib;
+        ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib;
+      
+        echo "Restarting Tomcat...";
+        rctomcat6 stop;
+        rctomcat6 start;
+      '
+    >
+      <arg line="${deploy.user}@${deploy.host}"/>
     </exec>
   </target>
 </project>
