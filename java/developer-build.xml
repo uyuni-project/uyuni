@@ -14,7 +14,9 @@
  
  Configuration:
   - echo "deploy.host=DEVENV_ADDRESS" > ~/.ant.properties
-  - you can override any other property in that file
+  - you can override any other property in that file, , eg.
+    compilation.use.eclipse=true: re-use Eclipse compiled files instead of
+    calling javac (N.B.: set up compilation with IBM J9 1.6!)
 -->
 <project name="SUSE Manager" default="deploy" basedir=".">
   <!-- User-defined properties, maximum priority -->
@@ -35,7 +37,9 @@
 
   <!-- User-visible targets -->
   <target name="clean" description="Cleans up all generated files">
-    <delete dir="${build.dir}" quiet="true" />
+    <delete dir="${build.dir}" quiet="true">
+      <exclude name="classes/**/*" if="compilation.use.eclipse" />
+    </delete>
   </target>
 
   <!--
@@ -43,7 +47,7 @@
     - See:
     - https://blogs.oracle.com/darcy/entry/bootclasspath_older_source
   -->
-  <target name="compile"  depends="clean" description="Compiles the main codebase">
+  <target name="compile"  depends="clean" unless="compilation.use.eclipse" description="Compiles the main codebase">
     <mkdir dir="${build.dir}/classes" />
     <javac destdir="${build.dir}/classes"
            optimize="off"
