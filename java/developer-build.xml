@@ -10,12 +10,11 @@
   - an account on the SSH host to deploy to. An authorized key on
   the host is strongly recommended, to set it up on DevEnv use:
   
-  scp ~/.ssh/id_rsa.pub root@DEVENV_ADDRESS:/root/.ssh/authorized_keys
+  ssh-copy-id root@DEVENV_ADDRESS
  
  Configuration:
   - echo "deploy.host=DEVENV_ADDRESS" > ~/.ant.properties
   - you can override any other property in that file
-   
 -->
 <project name="SUSE Manager" default="deploy" basedir=".">
   <!-- User-defined properties, maximum priority -->
@@ -63,7 +62,7 @@
         <path location="code/scripts/src" />
       </src>
     </javac>
-
+      
     <copy toDir="${build.dir}/classes">
       <fileset dir="${src.dir}/src">
         <exclude name="**/*.java" />
