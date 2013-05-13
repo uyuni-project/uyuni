@@ -80,4 +80,7 @@ INSERT INTO rhnTaskoTask (id, name, class)
 INSERT INTO rhnTaskoTask (id, name, class)
          VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'ssh-push', 'com.redhat.rhn.taskomatic.task.SSHPush');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+         VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'cve-server-channels', 'com.redhat.rhn.taskomatic.task.CVEServerChannels');
+
 commit;
