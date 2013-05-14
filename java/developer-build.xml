@@ -16,7 +16,7 @@
   - echo "deploy.host=DEVENV_ADDRESS" > ~/.ant.properties
   - you can override any other property in that file, , eg.
     compilation.use.eclipse=true: re-use Eclipse compiled files instead of
-    calling javac (N.B.: set up compilation with IBM J9 1.6!)
+    calling javac (N.B.: set up compilation with a 1.6 VM and 1.6 compliance!)
 -->
 <project name="SUSE Manager" default="deploy" basedir=".">
   <!-- User-defined properties, maximum priority -->
