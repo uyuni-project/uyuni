@@ -22,6 +22,7 @@ java/velocity.log*
 java/*.jar
 java/*.txt
 java/*.out
+java/test-results
 thrift/gen-*
 search-server/spacewalk-search/.classpath
 search-server/spacewalk-search/.project
