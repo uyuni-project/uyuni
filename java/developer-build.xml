@@ -145,7 +145,7 @@
       <arg line="-a --delete ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
     </exec>
 
-    <exec executable="ssh"
+    <exec command="ssh ${deploy.user}@${deploy.host}"
           inputstring='
         echo "Linking the branding jar...";
         ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar;
@@ -158,9 +158,7 @@
         rctomcat6 stop;
         rctomcat6 start;
       '
-    >
-      <arg line="${deploy.user}@${deploy.host}" />
-    </exec>
+    />
   </target>
 
   <target name="run-tests" depends="init-tests,jar" description="Runs unit tests locally">
