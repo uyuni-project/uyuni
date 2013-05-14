@@ -155,8 +155,7 @@
         ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib;
       
         echo "Restarting Tomcat...";
-        rctomcat6 stop;
-        rctomcat6 start;
+        rctomcat6 restart;
       '
     />
   </target>
