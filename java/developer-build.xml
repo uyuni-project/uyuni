@@ -53,11 +53,6 @@
     <delete dir="${test.results.dir}" />
   </target>
 
-  <!--
-    - Will issue a warning in JDK7, safe to ignore.
-    - See:
-    - https://blogs.oracle.com/darcy/entry/bootclasspath_older_source
-  -->
   <target name="compile"
           depends="clean"
           unless="precompiled"
