@@ -339,7 +339,9 @@ class ContentSource:
                                            filename,
                                            checkfunc=(self.patches_checksum_func,
                                                       (checksum_type, checksum),
-                                                      {}))
+                                                      {}),
+                                           copy_local = 1
+                                           )
                 except URLGrabError, e:
                     self.error_msg("Failed to download %s. [Errno %i] %s" %
                                    (relative, e.errno, e.strerror))
