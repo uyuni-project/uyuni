@@ -13,7 +13,7 @@
   ssh-copy-id root@DEVENV_ADDRESS
  
  Configuration:
-  - echo "deploy.host=DEVENV_ADDRESS" > ~/.ant.properties
+  - cp buildconf/developer-build.properties.example buildconf/developer-build.properties
   - you can override any other property in that file, eg.
       precompiled=true: assume that build/classes already contains
       the compiled sources (eg. precompiled by your IDE) and don't
@@ -23,7 +23,7 @@
 -->
 <project name="SUSE Manager" default="deploy" basedir=".">
   <!-- User-defined properties, maximum priority -->
-  <property file="${user.home}/.ant.properties" />
+  <property file="buildconf/developer-build.properties" />
 
   <!-- Project-level properties -->
   <import file="buildconf/build-props.xml" />
