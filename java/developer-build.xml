@@ -14,9 +14,12 @@
  
  Configuration:
   - echo "deploy.host=DEVENV_ADDRESS" > ~/.ant.properties
-  - you can override any other property in that file, , eg.
-    compilation.use.eclipse=true: re-use Eclipse compiled files instead of
-    calling javac (N.B.: set up compilation with a 1.6 VM and 1.6 compliance!)
+  - you can override any other property in that file, eg.
+      precompiled=true: assume that build/classes already contains
+      the compiled sources (eg. precompiled by your IDE) and don't
+      call javac.
+      Note for Eclipse users: set up compilation with a 1.6VM
+      and 1.6 compiler compliance!
 -->
 <project name="SUSE Manager" default="deploy" basedir=".">
   <!-- User-defined properties, maximum priority -->
@@ -45,7 +48,7 @@
 
   <target name="clean" description="Cleans up all generated files">
     <delete dir="${build.dir}" quiet="true">
-      <exclude name="classes/**/*" if="compilation.use.eclipse" />
+      <exclude name="classes/**/*" if="precompiled" />
     </delete>
     <delete dir="${test.results.dir}" />
   </target>
@@ -57,7 +60,7 @@
   -->
   <target name="compile"
           depends="clean"
-          unless="compilation.use.eclipse"
+          unless="precompiled"
           description="Compiles the main codebase"
   >
     <mkdir dir="${build.dir}/classes" />
