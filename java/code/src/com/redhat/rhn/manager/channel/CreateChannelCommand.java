@@ -44,8 +44,6 @@ public class CreateChannelCommand {
     protected static final String CHANNEL_LABEL_REGEX =
         "^[a-z\\d][a-z\\d\\-\\.\\_]*$";
 
-    // we ignore case with the red hat regex
-    protected static final String REDHAT_REGEX = "^(rhn|red\\s*hat)";
     protected static final String GPG_KEY_REGEX = "^[0-9A-F]{8}$";
     protected static final String GPG_URL_REGEX = "^(https?|file)://.*?$";
     protected static final String GPG_FP_REGEX = "^(\\s*[0-9A-F]{4}\\s*){10}$";
@@ -371,16 +369,6 @@ public class CreateChannelCommand {
                 "edit.channel.invalidchannelname.maxlength",
                 maxLength.toString());
         }
-
-        // the perl code used to ignore case with a /i at the end of
-        // the regex, so we toLowerCase() the channel name to make it
-        // work the same.
-        if (!user.hasRole(RoleFactory.RHN_SUPERUSER) &&
-            Pattern.compile(REDHAT_REGEX).matcher(cname.toLowerCase()).find()) {
-            throw new InvalidChannelNameException(cname,
-                InvalidChannelNameException.Reason.RHN_CHANNEL_BAD_PERMISSIONS,
-                "edit.channel.invalidchannelname.redhat", "");
-        }
     }
 
     protected void verifyChannelLabel(String clabel) throws InvalidChannelLabelException {
@@ -408,16 +396,6 @@ public class CreateChannelCommand {
                 InvalidChannelLabelException.Reason.TOO_SHORT,
                 "edit.channel.invalidchannellabel.minlength",
                 minLength.toString());
-        }
-
-        // the perl code used to ignore case with a /i at the end of
-        // the regex, so we toLowerCase() the channel name to make it
-        // work the same.
-        if (!user.hasRole(RoleFactory.RHN_SUPERUSER) &&
-            Pattern.compile(REDHAT_REGEX).matcher(clabel.toLowerCase()).find()) {
-            throw new InvalidChannelLabelException(clabel,
-                InvalidChannelLabelException.Reason.RHN_CHANNEL_BAD_PERMISSIONS,
-                "edit.channel.invalidchannellabel.redhat", "");
         }
     }
 
