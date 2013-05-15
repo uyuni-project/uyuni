@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ Internal SUSE Manager build file with common definitions
+-->
+<project name="SUSE Manager common">
+  <!-- User-defined properties -->
+  <property file="buildconf/manager-developer-build.properties" />
+
+  <!-- Upstream-defined properties -->
+  <import file="buildconf/build-props.xml" />
+
+  <!-- Default values for other properties -->
+  <property name="deploy.host" value="deployhost" />
+  <property name="deploy.dir" value="/var/lib/tomcat6/webapps/rhn" />
+  <property name="deploy.user" value="root" />  
+  <property name="tests.include" value="**/test/*Test.class"/>
+  <property name="tests.exclude" value="none"/>
+  <property name="tests.results.dir" value="test-results"/>
+
+  <!-- Paths -->
+  <path id="libjars">
+    <fileset dir="${lib.dir}" includes="**/*.jar" />
+  </path>
+</project>

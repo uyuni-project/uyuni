@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ Internal SUSE Manager build file for running unit tests
+-->
+<project name="SUSE Manager tests" default="run-tests">
+  <!-- Import common definitions -->
+  <import file="manager-common.xml" />
+
+  <!-- Test-specific definitions -->
+  <path id="testjars">
+    <fileset dir="/usr/share/java/tomcat6/" includes="**/*.jar" />
+  </path>
+
+  <!--
+    N.B.: Those properties get overridden if this Ant task is called
+    from manager-build.xml (to run test locally).
+  -->
+  <property name="test.jar" value="${deploy.dir}/WEB-INF/lib/rhn.jar" />
+  <property name="test.configuration.path" value="/etc/rhn" />
+
+  <!-- Tasks -->
+  <target name="run-tests">
+    <mkdir dir="${tests.results.dir}" />
+
+    <echo message="Running tests (including ${tests.include}, excluding ${tests.exclude}...)" />
+    <junit fork="yes" forkmode="once" maxmemory="256m">
+      <sysproperty key="rhn-home" value="." />
+      <sysproperty key="java.awt.headless" value="true" />
+      <sysproperty key="log4j.threshold" value="warn" />
+      <sysproperty key="rhn.config.dir" value="${test.configuration.path}" />
+
+      <jvmarg value="-ea" />
+      <classpath refid="libjars" />
+      <classpath refid="testjars" />
+      <classpath path="${test.jar}" />
+      <formatter type="xml" usefile="true" />
+      <formatter type="brief" usefile="false" />
+      <batchtest todir="${tests.results.dir}">
+        <zipfileset src="${test.jar}" includes="${tests.include}" excludes="${tests.exclude}" />
+      </batchtest>
+    </junit>
+  </target>
+</project>

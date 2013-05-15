@@ -11,7 +11,7 @@ java/lib
 java/*.log
 java/*.log.*
 java/buildconf/builder/config/local
-java/buildconf/developer-build.properties
+java/buildconf/manager-developer-build.properties
 java/.classpath
 java/.externalToolBuilders
 java/.project
