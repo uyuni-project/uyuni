@@ -137,7 +137,7 @@ while : ; do
         --ssl-cname) set_value "$1" "SSL_CNAME_PARSED[CNAME_INDEX++]=--set-cname" "$2"; shift;;
         --install-monitoring) set_value "$1" INSTALL_MONITORING="${2:-Y}"; shift;;
         --enable-scout) ENABLE_SCOUT="${2:-1}"; shift;;
-        --monitoring-parent) set_value "$1" MONITORING_PARENT_IP "$2"; shift;;
+        --monitoring-parent) set_value "$1" MONITORING_PARENT "$2"; shift;;
         --monitoring-parent-ip) set_value "$1" MONITORING_PARENT_IP "$2"; shift;;
         --populate-config-channel) POPULATE_CONFIG_CHANNEL="${2:-Y}"; shift;;
         --start-services) START_SERVICES="${2:-Y}"; shift;;
@@ -425,7 +425,7 @@ else
         #and with cluster.ini
         echo "Configuring monitoring."
         default_or_input "Monitoring parent" MONITORING_PARENT "$RHN_PARENT"
-        RESOLVED_IP=$(/usr/bin/getent hosts $RHN_PARENT | cut -f1 -d' ')
+        RESOLVED_IP=$(/usr/bin/getent hosts $MONITORING_PARENT | cut -f1 -d' ')
         default_or_input "Monitoring parent IP" MONITORING_PARENT_IP "$RESOLVED_IP"
         default_or_input "Enable monitoring scout" ENABLE_SCOUT "Y/n"
         ENABLE_SCOUT=$(yes_no $ENABLE_SCOUT)

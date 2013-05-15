@@ -2,7 +2,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 1.10.2
+Version: 1.10.3
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -114,6 +114,10 @@ spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Tue May 14 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.3-1
+- 901732 - set default ip to monitoring_parent primary ip
+- 901732 - fixed typo in MONITORING_PARENT name
+
 * Wed Apr 03 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.2-1
 - 896125 - fixed missing arguments issue
 
