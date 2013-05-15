@@ -22,6 +22,8 @@ import re
 import gzip
 import xml.etree.ElementTree as etree
 import urlparse
+import gpgme
+import time
 
 import urlgrabber
 from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
@@ -127,6 +129,7 @@ class ContentSource:
         self.setup_repo(repo)
         self.num_packages = 0
         self.num_excluded = 0
+        self.gpgkey_autotrust = None
 
     def setup_repo(self, repo):
         """Fetch repository metadata"""
@@ -387,9 +390,6 @@ class ContentSource:
                           of a key. Takes a dictionary of key info.
         """
 
-        if not self.interactive:
-            raise ChannelException, 'The GPG key for the "%s" repository is not part of the keyring.\n' \
-                                    'Please run spacewalk-repo-sync in interactive mode to import it.' % repo
         keyurls = repo.gpgkey
         key_installed = False
         for keyurl in keyurls:
@@ -397,7 +397,10 @@ class ContentSource:
             for info in keys:
                 # Check if key is already installed
                 if info['keyid'] in yum.misc.return_keyids_from_pubring(repo.gpgdir):
-                    continue
+                    if not self._is_expired(info['keyid'], repo.gpgdir):
+                        continue
+                    else:
+                        self.gpgkey_autotrust = info['hexkeyid']
 
                 # Try installing/updating GPG key
                 rc = False
@@ -407,7 +410,7 @@ class ContentSource:
                                    'fingerprint':info['fingerprint'],
                                    'timestamp':info['timestamp']})
 
-
+                self.gpgkey_autotrust = None
                 if not rc:
                     raise ChannelException, "GPG key(0x%s '%s') for repo %s rejected" % (info['hexkeyid'],info['userid'],repo)
 
@@ -415,7 +418,10 @@ class ContentSource:
                 result = yum.misc.import_key_to_pubring(info['raw_key'], info['hexkeyid'], gpgdir=repo.gpgdir)
                 if not result:
                     raise ChannelException, 'Key import failed'
-
+                elif self._is_expired(info['keyid'], repo.gpgdir):
+                    # this may happen if we reimport an expired key
+                    raise ChannelException, 'The GPG keys listed for the "%s" repository are ' \
+                                            'already installed but they are expired.\n' % (repo)
                 key_installed = True
 
         if not key_installed:
@@ -424,6 +430,16 @@ class ContentSource:
                                     'Check that the correct key URLs are configured for ' \
                                     'this repository.' % (repo)
 
+    def _is_expired(self, keyid, gpgdir):
+        os.environ['GNUPGHOME'] = gpgdir
+        ctx = gpgme.Context()
+        for k in ctx.keylist():
+            for subkey in k.subkeys:
+                if subkey.keyid == keyid:
+                    if subkey.expires > 0 and subkey.expires < int(time.time()):
+                        return True
+                    break
+        return False
 
     def _retrievePublicKey(self, keyurl, repo=None):
         """
@@ -471,6 +487,10 @@ class ContentSource:
         return keys
 
     def askImportKey(self, d ):
+        if self.gpgkey_autotrust and self.gpgkey_autotrust == d['hexkeyid']:
+            self.gpgkey_autotrust = None
+            return True
+
         if self.interactive:
           print 'Do you want to import the GPG key 0x%s "%s" from %s? [y/n]:' % (d['hexkeyid'],
               yum.i18n.to_unicode(d['userid']), d['keyurl'],)
@@ -479,6 +499,9 @@ class ContentSource:
 
           if yn in ['y', 'Y', 'j', 'J']:
             return True
+        else:
+            raise ChannelException, 'The GPG key for this repository is not part of the keyring.\n' \
+                                    'Please run spacewalk-repo-sync in interactive mode to import it.'
 
         return False
 
