@@ -4,22 +4,9 @@
  
  Builds and deploys the webapp to a SSH host running Tomcat, runs tests
  
- Requirements:
-  - sudo zypper in java-1_7_0-openjdk-devel ssh rsync
-  - sudo zypper rm *gcj-compat*
-  - an account on the SSH host to deploy to. An authorized key on
-  the host is strongly recommended, to set it up on DevEnv use:
-  
-  ssh-copy-id root@<deploy.host>
+ Requirements & configuration:
  
- Configuration:
-  - cp buildconf/manager-developer-build.properties.example buildconf/manager-developer-build.properties
-  - you can override any other property in that file, eg.
-      precompiled=true: assume that build/classes already contains
-      the compiled sources (eg. precompiled by your IDE) and don't
-      call javac.
-      Note for Eclipse users: set up compilation with a 1.6VM
-      and 1.6 compiler compliance!
+ https://github.com/SUSE/spacewalk/wiki/Java-Development-Environment
 -->
 <project name="SUSE Manager" default="deploy" basedir=".">
   <!-- Import common definitions -->
