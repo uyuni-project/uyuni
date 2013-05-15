@@ -135,8 +135,10 @@
         <include name="**/*.jar" />
       </fileset>
     </copy>
+    
+    <copy todir="${build.dir}/webapp/WEB-INF/classes" file="${build.dir}/classes/log4j.properties"/>
   </target>
-
+  
   <target name="deploy" depends="webapp" description="Deploys a new copy of SUSE Manager">
     <echo message="Copying files to remote host..." />
     <exec executable="rsync" description="Copies files to deploy host">
