@@ -10,7 +10,7 @@
 -->
 <project name="SUSE Manager" default="deploy" basedir=".">
   <!-- Import common definitions -->
-  <import file="manager-common.xml" />
+  <import file="buildconf/manager-common.xml" />
   
   <!-- Define tasks -->
   <target name="init-tests">
@@ -131,19 +131,20 @@
     <echo message="Copying files to remote host..." />
     <exec executable="scp" description="Copies files to deploy host">
       <arg value="-r" />
-      <arg line="manager-common.xml manager-test.xml buildconf ${deploy.user}@${deploy.host}:${deploy.dir}/WEB-INF" />
+      <arg line="buildconf ${deploy.user}@${deploy.host}:${deploy.dir}/WEB-INF" />
     </exec>
     
     <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
         cd ${deploy.dir}/WEB-INF;
-        ant -f manager-test.xml;
+        ant -f buildconf/manager-test.xml -Dlib.dir=${deploy.dir}/WEB-INF/lib -Dtest.jar=${deploy.dir}/WEB-INF/lib/rhn.jar -Dtest.configuration.pathe=/etc/rhn;
       '
     />    
   </target>
 
-  <target name="run-local-tests" depends="init-tests,jar" description="Runs unit tests locally">
+  <target name="run-local-tests" depends="init-tests,jar" description="Runs unit tests locally">    
     <property name="test.jar" value="${build.dir}/rhn.jar" />
-    <property name="test.configuration.path" value="conf/default" />
-    <ant antfile="manager-test.xml"/>
+    <property name="test.configuration.path" value="${basedir}/conf/default" />
+
+    <ant antfile="buildconf/manager-test.xml"/>
   </target>  
 </project>
