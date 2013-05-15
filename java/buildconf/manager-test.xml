@@ -9,16 +9,10 @@
   <import file="manager-common.xml" />
 
   <!-- Test-specific definitions -->
-  <path id="testjars">
-    <fileset dir="/usr/share/java/tomcat6/" includes="**/*.jar" />
+  <path id="managertestjars">
+    <fileset dir="${lib.dir}" includes="**/*.jar" />
+    <fileset file="${test.jar}" />
   </path>
-
-  <!--
-    N.B.: Those properties get overridden if this Ant task is called
-    from manager-build.xml (to run test locally).
-  -->
-  <property name="test.jar" value="${deploy.dir}/WEB-INF/lib/rhn.jar" />
-  <property name="test.configuration.path" value="/etc/rhn" />
 
   <!-- Tasks -->
   <target name="run-tests">
@@ -32,9 +26,7 @@
       <sysproperty key="rhn.config.dir" value="${test.configuration.path}" />
 
       <jvmarg value="-ea" />
-      <classpath refid="libjars" />
-      <classpath refid="testjars" />
-      <classpath path="${test.jar}" />
+      <classpath refid="managertestjars" />
       <formatter type="xml" usefile="true" />
       <formatter type="brief" usefile="false" />
       <batchtest todir="${tests.results.dir}">

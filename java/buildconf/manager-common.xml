@@ -9,7 +9,7 @@
   <property file="buildconf/manager-developer-build.properties" />
 
   <!-- Upstream-defined properties -->
-  <import file="buildconf/build-props.xml" />
+  <import file="build-props.xml" />
 
   <!-- Default values for other properties -->
   <property name="deploy.host" value="deployhost" />
