@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
- Internal SUSE Manager build file for running unit tests
+ SUSE Manager build file for running unit tests
+
+ Note: you should not use this file directly as it is for internal use only. 
 -->
 <project name="SUSE Manager tests" default="run-tests">
   <!-- Import common definitions -->
