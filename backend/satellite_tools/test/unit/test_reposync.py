@@ -432,6 +432,7 @@ class RepoSyncTest(unittest.TestCase):
                     'update_id': 'update_id1',
                     'version': 'version1',
                     'type': 'security',
+                    'severity': 'Low',
                     'release': 'release1',
                     'description': 'description1',
                     'title': 'title1',
