@@ -24,6 +24,7 @@ Requires:       openssh
 PreReq:         pwdutils %fillup_prereq %insserv_prereq
 # make chkconfig work during build
 BuildRequires:  sysconfig
+Source1:        rhnmd.fw
 %else
 Requires:       openssh-server
 %if 0%{?fedora}
@@ -93,6 +94,8 @@ install -m 0644 rhnmd.service $RPM_BUILD_ROOT/%{_unitdir}/
 %else
 mkdir -p $RPM_BUILD_ROOT%{_initddir}
 install -pm 0755 rhnmd-init $RPM_BUILD_ROOT%{_initddir}/rhnmd
+mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
+install -m 644 %{S:1} $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/rhnmd
 %endif
 %endif
 install -pm 0755 rhnmd_create_key.sh $RPM_BUILD_ROOT%{_var}/lib/%{np_name}/sbin/
@@ -215,6 +218,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_initddir}/rhnmd
 %endif
 %doc LICENSE
+%if 0%{?suse_version}
+%config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/rhnmd
+%endif
 
 %changelog
 * Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 5.3.16-1

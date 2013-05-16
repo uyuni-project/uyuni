@@ -1,0 +1,17 @@
+## Name: rhnmd Server
+## Description: Opens ports for rhnmd.
+
+# space separated list of allowed TCP ports
+TCP="4545"
+
+# space separated list of allowed UDP ports
+UDP=""
+
+# space separated list of allowed RPC services
+RPC=""
+
+# space separated list of allowed IP protocols
+IP=""
+
+# space separated list of allowed UDP broadcast ports
+BROADCAST=""
