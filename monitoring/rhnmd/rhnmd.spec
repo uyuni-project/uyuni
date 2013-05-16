@@ -78,7 +78,7 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/pam.d
 mkdir -p $RPM_BUILD_ROOT%{_libdir}
 ln -sf sshd $RPM_BUILD_ROOT%{_usr}/sbin/rhnmd
 
-%if 0%{?suse_version}
+%if 0%{?suse_version} >= 1100
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
 install -m 644 rhnmd.fw $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/rhnmd
 %if 0%{?suse_version} >= 1210
@@ -217,7 +217,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_initddir}/rhnmd
 %endif
 %doc LICENSE
-%if 0%{?suse_version}
+%if 0%{?suse_version} >= 1100
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/rhnmd
 %endif
 
