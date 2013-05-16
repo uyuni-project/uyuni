@@ -136,7 +136,7 @@
     
     <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
         cd ${deploy.dir}/WEB-INF;
-        ant -f buildconf/manager-test.xml -Dlib.dir=${deploy.dir}/WEB-INF/lib -Dtest.jar=${deploy.dir}/WEB-INF/lib/rhn.jar -Dtest.configuration.pathe=/etc/rhn;
+        ant -f buildconf/manager-test.xml -Dlib.dir=${deploy.dir}/WEB-INF/lib -Dtest.jar=${deploy.dir}/WEB-INF/lib/rhn.jar -Dtest.configuration.path=/etc/rhn -Dtests.include=${tests.include} -Dtests.exclude=${tests.exclude};
       '
     />    
   </target>
