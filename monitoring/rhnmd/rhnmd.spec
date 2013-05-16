@@ -24,7 +24,6 @@ Requires:       openssh
 PreReq:         pwdutils %fillup_prereq %insserv_prereq
 # make chkconfig work during build
 BuildRequires:  sysconfig
-Source1:        rhnmd.fw
 %else
 Requires:       openssh-server
 %if 0%{?fedora}
@@ -81,7 +80,7 @@ ln -sf sshd $RPM_BUILD_ROOT%{_usr}/sbin/rhnmd
 
 %if 0%{?suse_version}
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
-install -m 644 %{S:1} $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/rhnmd
+install -m 644 rhnmd.fw $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/rhnmd
 %if 0%{?suse_version} >= 1210
 mkdir -p $RPM_BUILD_ROOT/%{_unitdir}
 install -m 0644 rhnmd.service $RPM_BUILD_ROOT/%{_unitdir}/
