@@ -1,5 +1,5 @@
 -------------------------------------------------------------------
-Thu May 02 17:13:44 CEST 2013 - mc@suse.de
+Thu May 17 17:13:44 CEST 2013 - mc@suse.de
 
 - version 1.7.38.25-1
 - make satellite-sync work with new rhnlib (bnc#815460)
@@ -8,6 +8,12 @@ Thu May 02 17:13:44 CEST 2013 - mc@suse.de
 - make rpclib connection timeout configurable (bnc#815460)
 - return 404 Not Found on requests of content or installation.xml (bnc#815441)
 - fix encoding in products summary and description
+
+-------------------------------------------------------------------
+Fri May 17 15:04:28 CEST 2013 - mc@suse.de
+
+- fix authentication checking in inter server sync
+  CVE-2013-2056 (bnc#819365)
 
 -------------------------------------------------------------------
 Thu Apr 04 15:32:18 CEST 2013 - mc@suse.de
