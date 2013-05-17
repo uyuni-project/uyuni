@@ -202,6 +202,7 @@ class ApacheServer(BaseApacheServer):
                 (module_name, function_name))
         return f
 
+    # pylint: disable=R0201
     def auth_system(self, req):
         if CFG.DISABLE_ISS:
             raise rhnFault(2005, _('ISS is disabled on this satellite.'))
