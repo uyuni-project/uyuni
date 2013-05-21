@@ -28,6 +28,7 @@ Requires: openssl rpm-build
 Requires: %{rhn_client_tools}
 %endif
 Requires: spacewalk-backend-libs >= 0.8.28
+Requires: sudo
 BuildRequires: docbook-utils
 %if 0%{?suse_version}
 BuildRequires: filesystem
