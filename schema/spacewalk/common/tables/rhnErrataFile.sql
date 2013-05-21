@@ -27,7 +27,7 @@ CREATE TABLE rhnErrataFile
     checksum_id NUMBER NOT NULL
                    CONSTRAINT rhn_erratafile_chsum_fk
                        REFERENCES rhnChecksum (id),
-    filename   VARCHAR2(1024) NOT NULL,
+    filename   VARCHAR2(4000) NOT NULL,
     created    DATE
                    DEFAULT (sysdate) NOT NULL,
     modified   DATE
