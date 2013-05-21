@@ -1,1 +1,2 @@
-ALTER TABLE rhnErrataFile MODIFY filename VARCHAR2(4000);
+-- This file is intentionally left empty.
+-- already applied in Manager-1.7
