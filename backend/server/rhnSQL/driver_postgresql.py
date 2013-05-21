@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2011 Red Hat, Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -285,11 +285,12 @@ class Cursor(sql_base.Cursor):
 
         try:
             retval = function(*p, **kw)
-        except psycopg2.ProgrammingError, e:
-            # TODO: Constructor for this exception expects a first arg of db,
-            # and yet the Oracle driver passes it an errno? Suspect it's not
-            # even used.
-            raise rhnSQL.SQLStatementPrepareError(0, str(e), self.sql), None, sys.exc_info()[2]
+        except psycopg2.InternalError, e:
+            error_code = 99999
+            m = re.match('ERROR: +-([0-9]+)', e.pgerror)
+            if m:
+               error_code = int(m.group(1))
+            raise sql_base.SQLSchemaError(error_code, e.pgerror, e)
         return retval
 
     def _execute_(self, args, kwargs):
