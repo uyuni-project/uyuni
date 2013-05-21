@@ -125,7 +125,14 @@ while [ $# -ge 1 ]; do
         --monitoring-parent-ip=*) MONITORING_PARENT_IP=$(echo $1 | cut -d= -f2-);;
         --populate-config-channel=*) POPULATE_CONFIG_CHANNEL=$(echo $1 | cut -d= -f2-);;
         --start-services=*) START_SERVICES=$(echo $1 | cut -d= -f2-);;
-        *) echo Error: Invalid option $1
+        --) shift;
+            if [ $# -gt 0 ] ; then
+                echo "Error: Extra arguments found: $@"
+                print_help
+                exit 1
+            fi
+            break;;
+        *) echo Error: Invalid option $1; exit 1;;
     esac
     shift
 done
