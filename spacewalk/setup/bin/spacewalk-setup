@@ -633,6 +633,7 @@ sub setup_tomcat {
       $content = <FILE>;
     }
     close FILE;
+    defined($content) or $content = '';
     $tomcatconf_content =~ s!$regexp!$content!gm or $tomcatconf_content .= $content;
   }
 
