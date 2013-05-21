@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008 Red Hat, Inc.
+-- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -27,7 +27,7 @@ CREATE TABLE rhnErrataFileTmp
     checksum_id NUMBER NOT NULL
                    CONSTRAINT rhn_erratafiletmp_chsum_fk
                        REFERENCES rhnChecksum (id),
-    filename   VARCHAR2(128) NOT NULL,
+    filename   VARCHAR2(4000) NOT NULL,
     created    DATE
                    DEFAULT (sysdate) NOT NULL,
     modified   DATE
