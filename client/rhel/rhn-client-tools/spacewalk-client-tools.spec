@@ -233,6 +233,10 @@ desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications --vendor=rh
 %endif
 %endif
 
+# create mgr_check symlink
+ln -sf rhn_check $RPM_BUILD_ROOT/%{_sbindir}/mgr_check
+ln -sf rhn-update-status $RPM_BUILD_ROOT/%{_sbindir}/mgr-update-status
+
 # remove all unsupported translations
 cd $RPM_BUILD_ROOT
 for d in usr/share/locale/*; do
@@ -339,7 +343,9 @@ make -f Makefile.rhn-client-tools test
 %{_mandir}/man8/rhn_check.8*
 
 %{_sbindir}/rhn_check
+%{_sbindir}/mgr_check
 %{_sbindir}/rhn-update-status
+%{_sbindir}/mgr-update-status
 
 %{_datadir}/rhn/up2date_client/getMethod.*
 
