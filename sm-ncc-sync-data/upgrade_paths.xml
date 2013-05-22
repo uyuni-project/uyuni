@@ -50,4 +50,27 @@
 	<upgrade from_pdid="2320" from_product="SUSE_SLES-11.1-VMWARE.None" to_pdid="3060" to_product="SLES-for-VMware-11.2-None.None"/>
 	<upgrade from_pdid="2680" from_product="SUSE-Manager-Proxy-1.2-None.None" to_pdid="3640" to_product="SUSE-Manager-Proxy-1.7-None.x86_64"/>
 	<upgrade from_pdid="2980" from_product="Open_Enterprise_Server-11-None.None" to_pdid="3480" to_product="Open_Enterprise_Server-11.1-None.None"/>
+	<upgrade from_pdid="3000" from_product="SUSE_SLED-11.2-None.i686" to_pdid="3881" to_product="SUSE_SLED-11.3-None.i686"/>
+	<upgrade from_pdid="3001" from_product="SUSE_SLED-11.2-None.i586" to_pdid="3882" to_product="SUSE_SLED-11.3-None.i586"/>
+	<upgrade from_pdid="3002" from_product="SUSE_SLED-11.2-None.i486" to_pdid="3883" to_product="SUSE_SLED-11.3-None.i486"/>
+	<upgrade from_pdid="3003" from_product="SUSE_SLED-11.2-None.i386" to_pdid="3884" to_product="SUSE_SLED-11.3-None.i386"/>
+	<upgrade from_pdid="3004" from_product="SUSE_SLED-11.2-None.x86_64" to_pdid="3885" to_product="SUSE_SLED-11.3-None.x86_64"/>
+	<upgrade from_pdid="3005" from_product="SUSE_SLES-11.2-None.i686" to_pdid="3886" to_product="SUSE_SLES-11.3-None.i686"/>
+	<upgrade from_pdid="3006" from_product="SUSE_SLES-11.2-None.i586" to_pdid="3887" to_product="SUSE_SLES-11.3-None.i586"/>
+	<upgrade from_pdid="3007" from_product="SUSE_SLES-11.2-None.i486" to_pdid="3888" to_product="SUSE_SLES-11.3-None.i486"/>
+	<upgrade from_pdid="3008" from_product="SUSE_SLES-11.2-None.i386" to_pdid="3889" to_product="SUSE_SLES-11.3-None.i386"/>
+	<upgrade from_pdid="3009" from_product="SUSE_SLES-11.2-None.x86_64" to_pdid="3890" to_product="SUSE_SLES-11.3-None.x86_64"/>
+	<upgrade from_pdid="3010" from_product="SUSE_SLES-11.2-None.ppc" to_pdid="3891" to_product="SUSE_SLES-11.3-None.ppc"/>
+	<upgrade from_pdid="3011" from_product="SUSE_SLES-11.2-None.ppc64" to_pdid="3892" to_product="SUSE_SLES-11.3-None.ppc64"/>
+	<upgrade from_pdid="3012" from_product="SUSE_SLES-11.2-None.ia64" to_pdid="3893" to_product="SUSE_SLES-11.3-None.ia64"/>
+	<upgrade from_pdid="3013" from_product="SUSE_SLES-11.2-None.s390" to_pdid="3894" to_product="SUSE_SLES-11.3-None.s390"/>
+	<upgrade from_pdid="3014" from_product="SUSE_SLES-11.2-None.s390x" to_pdid="3895" to_product="SUSE_SLES-11.3-None.s390x"/>
+	<upgrade from_pdid="3040" from_product="sle-sdk-11.2-None.None" to_pdid="3860" to_product="sle-sdk-11.3-None.None"/>
+	<upgrade from_pdid="3060" from_product="SLES-for-VMware-11.2-None.None" to_pdid="4004" to_product="SLES-for-VMware-11.3-None.None"/>
+	<upgrade from_pdid="3080" from_product="sle-hae-11.2-None.i686" to_pdid="3940" to_product="sle-hae-11.3-None.i686"/>
+	<upgrade from_pdid="3081" from_product="sle-hae-11.2-None.i586" to_pdid="3941" to_product="sle-hae-11.3-None.i586"/>
+	<upgrade from_pdid="3084" from_product="sle-hae-11.2-None.x86_64" to_pdid="3942" to_product="sle-hae-11.3-None.x86_64"/>
+	<upgrade from_pdid="3086" from_product="sle-hae-11.2-None.ppc64" to_pdid="3943" to_product="sle-hae-11.3-None.ppc64"/>
+	<upgrade from_pdid="3087" from_product="sle-hae-11.2-None.ia64" to_pdid="3944" to_product="sle-hae-11.3-None.ia64"/>
+	<upgrade from_pdid="3089" from_product="sle-hae-11.2-None.s390x" to_pdid="3945" to_product="sle-hae-11.3-None.s390x"/>
 </upgradepathes>
