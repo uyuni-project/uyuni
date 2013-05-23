@@ -8716,7 +8716,7 @@ Please note that some manual configuration of these scripts may still be require
   		  <source>Setup your @@PRODUCT_NAME@@ Cobbler settings below.</source>
 		</trans-unit>
 		<trans-unit id="cobbler.jsp.summary2">
-		  <source>Cobbler sync is used to repair or rebuild the contents /tftpboot or /var/www/cobbler when manual modification of cobbler has occurred.</source>
+		  <source>Cobbler sync is used to repair or rebuild the contents /srv/tftpboot or /srv/www/cobbler when manual modification of cobbler has occurred.</source>
 		</trans-unit>
 		<trans-unit id="cobbler.jsp.summary3">
   		  <source>For more information refer to the 'cobbler' man page.</source>
