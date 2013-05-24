@@ -20,6 +20,13 @@ from StringIO import StringIO
 
 from mock import Mock, patch
 
+# ugly monkey patching of the CFG before it gets imported so we can
+# avoid unit tests reading files
+patch('spacewalk.common.rhnConfig.initCFG', Mock()).start()
+CFG_mock = Mock()
+CFG_mock.PRODUCT_NAME = 'foo'
+patch('spacewalk.common.rhnConfig.CFG', CFG_mock).start()
+
 from spacewalk.susemanager import mgr_ncc_sync_lib as ncc_sync
 
 class SyncTest(unittest.TestCase):
