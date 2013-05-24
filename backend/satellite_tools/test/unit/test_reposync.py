@@ -19,8 +19,14 @@ import unittest
 from StringIO import StringIO
 from datetime import datetime
 
-from mock import Mock
+from mock import Mock, patch
 
+# ugly monkey patching of the CFG before it gets imported so we can
+# avoid unit tests reading files
+patch('spacewalk.common.rhnConfig.initCFG', Mock()).start()
+CFG_mock = Mock()
+CFG_mock.PRODUCT_NAME = 'foo'
+patch('spacewalk.common.rhnConfig.CFG', CFG_mock).start()
 import spacewalk.satellite_tools.reposync
 from spacewalk.common import rhn_rpm
 
