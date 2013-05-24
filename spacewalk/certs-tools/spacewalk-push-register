@@ -121,7 +121,7 @@ fi
 function exit_in_case_of_error() {
   if [ ${?} -ne '0' ]; then
     echo "ERROR: Connection to client (${CLIENT}) failed, exiting..."
-    rm -f ${ENABLE} ${BOOTSTRAP}
+    rm -fv ${ENABLE} ${BOOTSTRAP}
     exit 1
   fi
 }
