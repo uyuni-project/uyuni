@@ -19,7 +19,7 @@ import sys
 import time
 from stat import ST_SIZE
 from optparse import Option, OptionParser
-
+from spacewalk.common.rhnConfig import CFG, initCFG
 import tempfile
 
 MOUNT_POINT = '/tmp'
@@ -126,9 +126,10 @@ def main(arglist):
         pathfiles_fd, pathfiles = tempfile.mkstemp(dir = '/tmp', prefix = 'geniso-')
 
         # Command-line options; the keys are supposed to start with a dash
+        initCFG('web')
         opts = {
-            'preparer'      : "SUSE Manager",
-            'publisher'     : "SUSE Manager",
+            'preparer'      : CFG.PRODUCT_NAME,
+            'publisher'     : CFG.PRODUCT_NAME,
             'volid'         : "SM_%s/%s" % (i+1, cdcount),
             'path-list'     : pathfiles,
         }

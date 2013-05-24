@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.10.5
+Version: 1.10.6
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -135,7 +135,7 @@ Requires: newt-python
 %endif
 
 %description -n spacewalk-client-setup
-spacewalk-setup contains programs and utilities to configure a system to use
+spacewalk-client-setup contains programs and utilities to configure a system to use
 SUSE Manager or Spacewalk.
 
 %if ! 0%{?without_rhn_register}
@@ -444,6 +444,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Tue May 21 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.6-1
+- branding clean-up of rhel client stuff
+
 * Fri May 03 2013 Stephen Herr <sherr@redhat.com> 1.10.5-1
 - 873531 - correctly handle a deactivated account error message
 

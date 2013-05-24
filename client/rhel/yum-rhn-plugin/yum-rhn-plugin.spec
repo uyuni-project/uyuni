@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 1.10.1
+Version: 1.10.2
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,9 @@ fi
 
 
 %changelog
+* Tue May 21 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.2-1
+- branding clean-up of rhel client stuff
+
 * Wed Apr 03 2013 Stephen Herr <sherr@redhat.com> 1.10.1-1
 - 947639 - Make timeout of yum-rhn-plugin calls through rhn-client-tools
   configurable

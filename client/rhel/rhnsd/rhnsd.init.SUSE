@@ -64,14 +64,14 @@ fi
 rc_reset
 
 start() {
-    echo -n $"Starting SUSE Manager Network Daemon: "
+    echo -n $"Starting Spacewalk Daemon: "
     startproc -p $RHNSD_PIDFILE $RHNSD
     rc_status -v
     [ -x /usr/sbin/rhn-update-status ] && /usr/sbin/rhn-update-status
 }
 
 stop() {
-    echo -n $"Stopping SUSE Manager Network Daemon: "
+    echo -n $"Stopping Spacewalk Daemon: "
     killproc -p $RHNSD_PIDFILE $RHNSD
     rc_status -v
 }
@@ -103,7 +103,7 @@ case "$1" in
         rc_status
 	;;
     reload)
-        echo -n $"Reloading SUSE Manager Network Daemon: "
+        echo -n $"Reloading Spacewalk Daemon: "
         killproc -p $RHNSD_PIDFILE -HUP $RHNSD
         rc_status -v
         echo

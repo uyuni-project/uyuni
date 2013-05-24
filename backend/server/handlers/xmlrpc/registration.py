@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright (c) 2008--2012 Red Hat, Inc.
 #
@@ -110,6 +109,7 @@ class Registration(rhnHandler):
         self.functions.append("register_osad")
         self.functions.append("register_osad_jid")
         self.functions.append("register_product")
+        self.functions.append("remaining_subscriptions")# obsoleted
         self.functions.append("reserve_user")           # obsoleted
         self.functions.append("send_serial")
         self.functions.append("upgrade_version")
@@ -235,6 +235,8 @@ class Registration(rhnHandler):
         else:
             log_item = "username = '%s'" % user.username
 
+        log_debug(1, log_item, release_version, architecture)
+        
         # Fetch the applet's UUID
         if data.has_key("uuid"):
             applet_uuid = data['uuid']
@@ -1027,7 +1029,7 @@ class Registration(rhnHandler):
         log_debug(1, "lang: %s" % lang)
         if lang:
             cat.setlangs(lang)
-        msg = _("Red Hat Network Welcome Message")
+        msg = _("Red Hat Satellite Welcome Message")
         # compress this one
         rhnFlags.set("compress_response", 1)
         return msg
@@ -1037,7 +1039,7 @@ class Registration(rhnHandler):
         log_debug(1, "lang: %s" % lang)
         if lang:
             cat.setlangs(lang)
-        msg = _("Red Hat Network Privacy Statement")
+        msg = _("Red Hat Satellite Privacy Statement")
         # compress this one
         rhnFlags.set("compress_response", 1)
         return msg
@@ -1241,6 +1243,13 @@ class Registration(rhnHandler):
         return {'default_channel' : default_channel,
                 'receiving_updates' : receiving_updates,
                 'channels' : eus_channels}
+
+    def remaining_subscriptions(self, username, password, arch, release):
+        """ This is an obsoleted API call used in old RHEL5 clients to determine
+            if they should show the "activate a subscription" page.
+        """
+        return 1
+
 
     def suse_update_products(self, system_id, guid, secret, target, products):
         log_debug(5, system_id, guid, target, products)
