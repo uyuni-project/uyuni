@@ -17,6 +17,7 @@ import os
 import stat
 from base64 import decodestring
 
+from spacewalk.common.rhnTranslate import _
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnLog import log_error, log_debug
