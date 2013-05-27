@@ -1,0 +1,41 @@
+#!/bin/bash
+#############################################################
+# Name:        Supportconfig Plugin for SUSE Manager
+# Description: Gathers important troubleshooting information
+#              about SUSE Manager
+# License:     GPLv2
+# Author:      Stefan Bogner <sbogner@suse.com>
+# Modified:    2012 Oct 1
+#############################################################
+
+SVER=1.0.1
+RCFILE="/usr/lib/supportconfig/resources/scplugin.rc"
+
+[ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
+
+section_header "Supportconfig Plugin for SUSE Manager, v${SVER}"
+RPMLIST="susemanager-tools susemanager susemanager-schema suse-manager-server-release suse-manager-server-release-cd release-notes-susemanager"
+DAEMONLIST="susemanager tomcat6 osa-dispatcher oracle"
+
+if ! rpm -q susemanager &>/dev/null; then
+  echo "ERROR: SUSE Manager package(s) not installed"
+  echo
+  exit 111
+fi
+
+for THISRPM in $RPMLIST
+do
+   validate_rpm $THISRPM
+done
+
+for i in $DAEMONLIST
+do
+    if [ -s /etc/init.d/$i ]; then
+        plugin_command "chkconfig -l $i"
+        plugin_command "/etc/init.d/$i status"
+
+    fi
+done
+
+plugin_command "/sbin/supportconfig-sumalog $LOG"
+

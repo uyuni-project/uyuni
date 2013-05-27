@@ -1,0 +1,15 @@
+#!/bin/bash
+
+DIR=/tmp/spacewalk-sc-$(date +%s)
+SCRIPT=/tmp/sd.sh-$(date +%s)
+LINE=$(grep -n "creating tarball" /usr/bin/spacewalk-debug |awk -F':' '{print $1}')
+head -n $LINE /usr/bin/spacewalk-debug > $SCRIPT
+echo "echo \$DIR" >> $SCRIPT
+mkdir $DIR
+chmod +x $SCRIPT
+RESULT=$($SCRIPT --dir $DIR |tail -1)
+cp -r $RESULT $1
+rm -r $DIR
+rm $SCRIPT
+echo "Done, SUSE Manager logs can now be found in the supportconfig directory."
+
