@@ -1,0 +1,139 @@
+#!/bin/bash
+#############################################################
+# Name:        Supportconfig Plugin for SUSE Manager Proxy
+# Description: Gathers important troubleshooting information
+#              about SUSE Manager Proxy
+# License:     GPLv2
+# Author:      Michael Calmer <mc@suse.de>
+# Modified:    2013 April 05
+#############################################################
+
+SVER=1.0.0
+RCFILE="/usr/lib/supportconfig/resources/scplugin.rc"
+LOG_LINES=500  # 0 means include the entire file
+
+[ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
+
+validate_rpm_if_installed() {
+        THISRPM=$1
+        echo "#==[ Validating RPM ]=================================#"
+        if rpm -q $THISRPM >/dev/null 2>&1; then
+                echo "# rpm -V $THISRPM"
+
+                if rpm -V $THISRPM; then
+                        echo "Status: Passed"
+                else
+                        echo "Status: WARNING"
+                fi
+        else
+                echo "package $THISRPM is not installed"
+                echo "Status: Skipped"
+        fi
+        echo
+}
+
+#############################################################
+section_header "Supportconfig Plugin for SUSE Manager Proxy, v${SVER}"
+RPMLIST="
+MessageQueue
+NOCpulsePlugins
+NPalert
+ProgAGoGo
+SNMPAlerts
+SatConfig-bootstrap
+SatConfig-bootstrap-server
+SatConfig-cluster
+SatConfig-general
+SatConfig-generator
+SatConfig-installer
+SatConfig-spread
+SputLite-client
+SputLite-server
+eventReceivers
+nocpulse-common
+nocpulse-db-perl
+osad
+perl-Crypt-GeneratePassword
+perl-NOCpulse-CLAC
+perl-NOCpulse-Debug
+perl-NOCpulse-Gritch
+perl-NOCpulse-Object
+perl-NOCpulse-OracleDB
+perl-NOCpulse-PersistentConnection
+perl-NOCpulse-Probe
+perl-NOCpulse-ProcessPool
+perl-NOCpulse-Scheduler
+perl-NOCpulse-SetID
+perl-NOCpulse-Utils
+release-notes-susemanager-proxy
+rhn-custom-info
+rhncfg
+rhncfg-actions
+rhncfg-client
+rhncfg-management
+rhnmd
+rhnpush
+scdb
+spacewalk-backend
+spacewalk-backend-libs
+spacewalk-base-minimal
+spacewalk-certs-tools
+spacewalk-check
+spacewalk-client-setup
+spacewalk-proxy-broker
+spacewalk-proxy-common
+spacewalk-proxy-docs
+spacewalk-proxy-html
+spacewalk-proxy-installer
+spacewalk-proxy-management
+spacewalk-proxy-monitoring
+spacewalk-proxy-package-manager
+spacewalk-proxy-redirect
+spacewalk-remote-utils
+spacewalk-setup-jabberd
+spacewalk-ssl-cert-check
+spacewalksd
+ssl_bridge
+status_log_acceptor
+suse-manager-proxy-release
+suse-manager-proxy-release-cd
+susemanager-proxy
+tsdb
+udns
+zypp-plugin-spacewalk
+rhnlib
+suseRegisterInfo
+spacewalk-client-tools
+"
+
+for THISRPM in $RPMLIST; do
+        validate_rpm_if_installed $THISRPM
+done
+
+find_and_plog_files () {
+        [ -d "$1" ] || return 0
+        FILES=$(find "$@" ! -name \*.gz ! -name \*.bz2)
+        if [ -n "$FILES" ]; then
+                plog_files $LOG_LINES $FILES
+        fi
+}
+
+section_header "SUSE Manager Proxy Config Files"
+
+pconf_files \
+    /etc/rhn/rhn.conf \
+    /etc/rhn/cluster.ini \
+    /etc/squid/squid.conf \
+    /etc/jabberd/c2s.xml \
+    /etc/jabberd/router-filter.xml \
+    /etc/jabberd/router.xml \
+    /etc/jabberd/s2s.xml \
+    /etc/jabberd/sm.xml
+
+section_header "SUSE Manager Proxy Log Files"
+
+find_and_plog_files /var/log/rhn -type f
+find_and_plog_files /var/log/nocpulse -type f
+find_and_plog_files /var/log/squid -type f
+find_and_plog_files /var/log/apache2 -type f
+
