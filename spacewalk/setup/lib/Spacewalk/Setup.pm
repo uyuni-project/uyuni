@@ -1733,7 +1733,9 @@ EOQ
 my $have_selinux;
 sub have_selinux {
 	return $have_selinux if defined $have_selinux;
-	if (system(q!/usr/sbin/selinuxenabled && /usr/sbin/semodule -l 2> /dev/null | grep '^spacewalk\b' 2>&1 > /dev/null!)) {
+	if( not -x "/usr/sbin/selinuxenabled") {
+		$have_selinux = 0;
+	} elsif (system(q!/usr/sbin/selinuxenabled && /usr/sbin/semodule -l 2> /dev/null | grep '^spacewalk\b' 2>&1 > /dev/null!)) {
 		$have_selinux = 0;
 	} else {
 		$have_selinux = 1;
