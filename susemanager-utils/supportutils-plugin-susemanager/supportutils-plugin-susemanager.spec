@@ -1,5 +1,5 @@
 #
-# spec file for package supportutils-plugin-susemanager (Version 1.0-1)
+# spec file for package supportutils-plugin-susemanager (Version 1.0.0-1)
 #
 # Copyright (C) 2013 SUSE
 # This file and all modifications and additions to the pristine
@@ -13,8 +13,8 @@ Name:         supportutils-plugin-susemanager
 License:      GPLv2
 Group:        Documentation/SuSE
 Autoreqprov:  on
-Version:      1.0
-Release:      1
+Version:      1.0.0
+Release:      1%{?dist}
 Source:       %{name}-%{version}.tar.gz
 Summary:      Supportconfig Plugin for SUSE Manager
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
