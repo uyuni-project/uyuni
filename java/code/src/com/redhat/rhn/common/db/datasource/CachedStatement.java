@@ -528,6 +528,12 @@ public class CachedStatement implements Serializable {
                     "HibernateException executing CachedStatement", he);
 
         }
+        catch (RuntimeException e) {
+            if (e.getCause() instanceof SQLException) {
+                throw SqlExceptionTranslator.sqlException((SQLException) e.getCause());
+            }
+            throw e;
+        }
         finally {
             HibernateHelper.cleanupDB(cs);
         }
