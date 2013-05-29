@@ -110,6 +110,7 @@ class Registration(rhnHandler):
         self.functions.append("register_osad")
         self.functions.append("register_osad_jid")
         self.functions.append("register_product")
+        self.functions.append("remaining_subscriptions")# obsoleted
         self.functions.append("reserve_user")
         self.functions.append("send_serial")
         self.functions.append("upgrade_version")
@@ -1339,6 +1340,13 @@ class Registration(rhnHandler):
         return {'default_channel' : default_channel,
                 'receiving_updates' : receiving_updates,
                 'channels' : eus_channels}
+
+    def remaining_subscriptions(self, username, password, arch, release):
+        """ This is an obsoleted API call used in old RHEL5 clients to determine
+            if they should show the "activate a subscription" page.
+        """
+        return 1
+
 
     def suse_update_products(self, system_id, guid, secret, target, products):
         log_debug(5, system_id, guid, target, products)
