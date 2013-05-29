@@ -6067,6 +6067,7 @@ Seguite l'url sotto riportato per visualizzare l'elenco completo di sistemi inat
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSessionCancel.do</context>
         </context-group>
+<<<<<<< HEAD
       <target>Kickstart cancellato dall'utente: {0}</target></trans-unit>
 
       <trans-unit id="kickstart.schedule.requires.older.gpgkey">
@@ -6076,6 +6077,10 @@ Seguite l'url sotto riportato per visualizzare l'elenco completo di sistemi inat
         </context-group>
       <target>Il sistema {0} è stato programmato per un kickstart ad una versione più vecchia di Red Hat Enterprise Linux, per questo sarà necessaria la chiave GPG per la release più vecchia.  &lt;br/&gt;Si prega di installare questa chiave, esempio: &lt;strong&gt; rpm --import  /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-former &lt;/strong&gt; </target></trans-unit>
 
+=======
+        <target>Kickstart cancellato dall'utente: {0}</target>
+      </trans-unit>
+>>>>>>> bd92f3b... 514288 - removing obsolete kickstart warning
       <trans-unit id="kickstart.schedule.success">
         <source>System Kickstart scheduled for {0}</source>
         <context-group name="ctx">
