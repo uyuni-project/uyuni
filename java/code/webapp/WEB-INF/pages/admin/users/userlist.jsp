@@ -43,16 +43,9 @@
  		
  		<%@ include file="/WEB-INF/pages/common/fragments/user/userlist_columns.jspf" %>
 
-		<rl:column sortable="false"
-	           headerkey="userlist.jsp.status"
-	           styleclass="last-column">
-	   		<c:if test="${current.status == 'enabled'}">
-        		<bean:message key="userlist.jsp.${current.status}"/>
-      		</c:if>
-      		<c:if test="${current.status == 'disabled'}">
-          		<bean:message key="userlist.jsp.${current.status}"/>
-      		</c:if>
-	    </rl:column>
+        <rl:column sortable="false" headerkey="userlist.jsp.status">
+            <bean:message key="userlist.jsp.${current.status}"/>
+        </rl:column>
 
  	</rl:list>
  	<rl:csv dataset="pageList"
