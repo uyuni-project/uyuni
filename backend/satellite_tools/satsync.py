@@ -38,7 +38,7 @@ _ = t.ugettext
 # __rhn imports__
 from spacewalk.common import rhnMail, rhnLib, rhnFlags
 from spacewalk.common.rhnLog import initLOG
-from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
 from spacewalk.common.rhnTB import exitWithTraceback
 sys.path.append("/usr/share/rhn")
 from up2date_client import config

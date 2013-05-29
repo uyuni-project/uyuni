@@ -16,7 +16,7 @@
 import sys
 import xmlrpclib
 
-
+from spacewalk.common.rhnConfig import PRODUCT_NAME
 from cStringIO import StringIO
 
 
@@ -116,14 +116,8 @@ on this system."),
      45: _("""
      Invalid architecture.
 
-     The architecture of the package is not supported by SUSE Manager
-     """),
-     46: _("""
-     Incompatible architectures.
-
-     The architecture of the package you are trying to upload is not
-     compatible with the channel architecture.
-     """),
+     The architecture of the package is not supported by
+     """ + PRODUCT_NAME),
      47: _("""Invalid RPM header"""),
      48: _("""
      Invalid channel.

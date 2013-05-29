@@ -19,7 +19,7 @@ import sys
 import time
 from stat import ST_SIZE
 from optparse import Option, OptionParser
-
+from spacewalk.common.rhnConfig import PRODUCT_NAME
 import tempfile
 
 MOUNT_POINT = '/tmp'
@@ -127,9 +127,9 @@ def main(arglist):
 
         # Command-line options; the keys are supposed to start with a dash
         opts = {
-            'preparer'      : "SUSE Manager",
-            'publisher'     : "SUSE Manager",
-            'volid'         : "SM_%s/%s" % (i+1, cdcount),
+            'preparer'      : PRODUCT_NAME,
+            'publisher'     : PRODUCT_NAME,
+            'volid'         : "RHNSAT_%s/%s" % (i+1, cdcount),
             'path-list'     : pathfiles,
         }
         opts = map(lambda x: '-%s "%s"' % x, opts.items())
