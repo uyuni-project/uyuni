@@ -281,7 +281,7 @@ class PackageImport(ChannelPackageSubscription):
 
         # fix encoding issues in package summary and description
         package['description'] = self._fix_encoding(package['description'])
-        package['summary'] = self._fix_encoding(package['summary'])
+        package['summary'] = self._fix_encoding(package['summary']).rstrip()
 
     def fix(self):
         # If capabilities are available, process them
