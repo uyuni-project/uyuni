@@ -34,7 +34,9 @@
 	           headerkey="ssmchildsubconfirm.jsp.systemName"
 	           styleclass="first-column"
                attr="name">
-		<c:out value="<a href=\"/rhn/systems/details/Overview.do?sid=${current.id}\">${current.name}</a>" escapeXml="false" />
+        <a href="/rhn/systems/details/Overview.do?sid=${current.id}">
+            <c:out value="${current.name}" escapeXml="true" />
+        </a>
 	</rl:column>
 	
 	<!-- Channels we're allowed to subscribe to -->
