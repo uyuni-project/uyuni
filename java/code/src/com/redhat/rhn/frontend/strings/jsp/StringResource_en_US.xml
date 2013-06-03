@@ -11476,7 +11476,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
        </context-group>
      </trans-unit>
      <trans-unit id="kickstart.jsp.create.wizard.first.heading1">
-       <source>A kickstart file is a simple text file containing a list of items, each identified by a keyword, that answers the questions an installer needs in order to successfully install @@ENTERPRISE_LINUX_NAME@@. A kickstart profile includes a kickstart file, as well as other saved options such as the version of @@ENTERPRISE_LINUX_NAME@@ to be installed and the location of the installation files.</source>
+       <!-- revert de-branding because of bnc#822385 - kickstart really works only for Red Hat-->
+       <source>A kickstart file is a simple text file containing a list of items, each identified by a keyword, that answers the questions an installer needs in order to successfully install Red Hat Enterprise Linux. A kickstart profile includes a kickstart file, as well as other saved options such as the version of Red Hat Enterprise Linux to be installed and the location of the installation files.</source>
        <context-group name="ctx">
          <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
        </context-group>
