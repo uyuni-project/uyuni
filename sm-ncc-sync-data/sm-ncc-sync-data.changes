@@ -3,7 +3,7 @@ Tue Jun 04 11:10:34 CEST 2013 - mc@suse.de
 
 - version 1.7.10-1
 - enable 11-SP3 products for SLES, SLED, SDK, SLES4VMware
-  and SLE-HAE (FATE#313494)
+  and SLE-HAE (FATE#313494, bnc#806839)
 
 -------------------------------------------------------------------
 Thu Apr 04 15:25:05 CEST 2013 - mc@suse.de
