@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.36
+Version: 1.10.42
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -512,6 +512,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/importlib/backend.py*
 %{pythonrhnroot}/server/importlib/backendLib.py*
 %{pythonrhnroot}/server/importlib/backendOracle.py*
+%{pythonrhnroot}/server/importlib/backend_checker.py*
 %{pythonrhnroot}/server/importlib/channelImport.py*
 %{pythonrhnroot}/server/importlib/debPackage.py*
 %{pythonrhnroot}/server/importlib/errataCache.py*
@@ -775,6 +776,30 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Thu May 30 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.42-1
+- severity may be unknown
+
+* Wed May 29 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.41-1
+- 967850 - don't change global configuration component for reading product name
+
+* Tue May 28 2013 Stephen Herr <sherr@redhat.com> 1.10.40-1
+- 948335 - adding new server client capability for cpu_sockets
+
+* Tue May 28 2013 Simon Lukasik <slukasik@redhat.com> 1.10.39-1
+- Add scap into list of packaged modules.
+- Do not use python key-word as a variable name
+- Store SCAP-file-limit to the database
+
+* Mon May 27 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.38-1
+- pack backend_checker into rpm
+
+* Mon May 27 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.37-1
+- update copyright column length
+- script to backendOracle.py definitions vs. database
+- 962683 - don't truncate channel name to 64 chars
+- Backend handlers for receiving full SCAP results
+- Challenge clients to upload result files from the audit
+
 * Wed May 22 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.36-1
 - 950198 - make API compatible with old RHEL5 clients
 - man pages branding cleanup + misc branding fixes

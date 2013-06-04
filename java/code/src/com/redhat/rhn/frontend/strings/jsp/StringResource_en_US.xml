@@ -3343,6 +3343,18 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="org-config.scapfile-upload.jsp">
+        <source>Enable Upload Of Detailed SCAP Files</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="org-config.scapfile-sizelimit.jsp">
+        <source>SCAP File Upload Size Limit</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="org.id.jsp">
         <source>Organization ID</source>
         <context-group name="ctx">
@@ -4063,7 +4075,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.packagepush.description">
-        <source>The channel &lt;strong&gt;{0}&lt;/strong&gt; has different versions of these packages, or does not have the packages at all. Select the packages you want push into this channel below, and click 'Continue'.</source>
+        <source>The channel &lt;strong&gt;{0}&lt;/strong&gt; has different versions of these packages, or does not have the packages at all. Select the packages you want to push into this channel below, and click 'Continue'.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
         </context-group>
@@ -15034,12 +15046,6 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.session_status.jsp.warning">
-        <source>Warning:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.progress">
         <source>Autoinstallation Progress</source>
         <context-group name="ctx">
@@ -19572,8 +19578,8 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="confirmprotected.jsp.confirmmsg.deux">
         <source>You may choose to grant the organizations below access to this
-        channel, or you may deny them access. You can modify access to this
-        channel at any time using the 'Organizations' tab above.
+        channel, or you may deny them access. Once the channel is protected, you can
+        modify access to this channel at any time using the 'Organizations' tab.
         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>

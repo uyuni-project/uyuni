@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.81
+Version: 1.10.89
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -853,6 +853,48 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Mon Jun 03 2013 Jan Dobes 1.10.89-1
+- checkstyle fix
+- junit fixes
+- fix more checkstyle issues in the java-create-page.pl
+- minor changes to java-create-page.pl
+
+* Thu May 30 2013 Tomas Lestach <tlestach@redhat.com> 1.10.88-1
+- 855845 - escaping system name for
+  /rhn/channel/ssm/ChildSubscriptionsConfirm.do
+- 855845 - escaping system name for /rhn/channel/ssm/BaseChannelSubscribe.do
+
+* Thu May 30 2013 Tomas Lestach <tlestach@redhat.com> 1.10.87-1
+- 515003 - changing confirmprotected.jsp.confirmmsg.deux message
+- making DataSourceParserTest work with PostgreSQL
+- 516265 - sort parent channel pop-up menu by channel name
+- 514288 - removing obsolete kickstart warning
+- 512433 - grammatical typo
+
+* Tue May 28 2013 Simon Lukasik <slukasik@redhat.com> 1.10.86-1
+- SCAP file size limit shall be configurable through web interface
+- Refactor: Rename variable: newLimit -> newCrashLimit
+
+* Tue May 28 2013 Jan Dobes 1.10.85-1
+- checkstyle fix
+
+* Tue May 28 2013 Tomas Lestach <tlestach@redhat.com> 1.10.84-1
+- 855845 - escaping system name for
+  /rhn/systems/details/virtualization/VirtualGuestsList.do
+- 855845 - escaping system name for
+  /rhn/systems/entitlements/GuestLimitedHosts.do
+- userlist.jsp isn't used for /users/SystemsAdmined.do page
+- 855845 - escaping system name for /rhn/users/SystemsAdmined.do
+- simplify the column message
+- 855845 - escaping system name for /rhn/systems/details/audit/ScheduleXccdf.do
+- junit tests postgresql fixes
+
+* Tue May 28 2013 Tomas Lestach <tlestach@redhat.com> 1.10.83-1
+- 967526 - on RHEL5 the (P)SQLException is wrapped into a RuntimeException
+
+* Tue May 28 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.82-1
+- 960885 - add list elaborator into session for CSV export
+
 * Fri May 24 2013 Tomas Lestach <tlestach@redhat.com> 1.10.81-1
 - 855845 - escaping system name for /rhn/systems/entitlements/FlexGuests.do
 - 855845 - escaping system name for /rhn/systems/entitlements/PhysicalHosts.do
