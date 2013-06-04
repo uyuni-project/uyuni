@@ -13,7 +13,6 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-import gzip
 import hashlib
 import os
 import re
@@ -29,7 +28,7 @@ from yum import Errors
 from yum.i18n import to_unicode
 
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
-from spacewalk.common import rhnMail, rhnLog, suseLib, rhn_pkg
+from spacewalk.common import fileutils, rhnMail, rhnLog, suseLib, rhn_pkg
 from spacewalk.common.rhnTB import fetchTraceback
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.checksum import getFileChecksum
@@ -293,20 +292,15 @@ class RepoSync(object):
                 os.makedirs(absdir)
             relativepath = os.path.join(relativedir, basename)
             abspath =  os.path.join(absdir, basename)
-            if basename.endswith('.gz'):
-                # gunzip
-                abspath = abspath.rstrip('.gz')
-                relativepath = relativepath.rstrip('.gz')
-                src = gzip.open(groupsfile)
-                dst = open(abspath, "w")
-                shutil.copyfileobj(src,dst)
-                dst.close()
-                src.close()
-
-            else:
-                # copy (not move) the file to get correct selinux context
-                shutil.copy2(groupsfile, abspath)
-
+            for suffix in ['.gz', '.bz']:
+                if basename.endswith(suffix):
+                    abspath = abspath.rstrip(suffix)
+                    relativepath = relativepath.rstrip(suffix)
+            src = fileutils.decompress_open(groupsfile)
+            dst = open(abspath, "w")
+            shutil.copyfileobj(src,dst)
+            dst.close()
+            src.close()
             # update or insert
             hu = rhnSQL.prepare("""update rhnChannelComps
                                       set relative_filename = :relpath,
