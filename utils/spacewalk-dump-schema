@@ -1,4 +1,21 @@
-#!/usr/bin/perl -CSAD
+#!/usr/bin/perl
+
+##########################################################################
+#
+# This script originally should be called with the following shebang:
+#
+#  #!/usr/bin/perl -CSAD
+#
+# Unfortunately the perl version of SLES11 is buggy and does not like
+# a script being called this way. So the parameters need to be given
+# manually like this:
+#
+# perl -CSAD /usr/bin/spacewalk-dump-schema --db=susemanager --user=susemanager --password=susemanager > /tmp/db.dump
+#
+# It is very important to use those options! If you fail to do so,
+# the encoding will be incorrect and the dump cannot be imported correctly
+#
+##########################################################################
 
 use strict;
 use warnings FATAL => 'all';
