@@ -520,9 +520,12 @@ def initCFG(component=None, root=None, filename=None):
     CFG.init(component, root, filename)
     CFG.parse()
 
-WEB_CFG = RHNOptions('web')
-WEB_CFG.parse()
-PRODUCT_NAME = WEB_CFG.PRODUCT_NAME
+try:
+    WEB_CFG = RHNOptions('web')
+    WEB_CFG.parse()
+    PRODUCT_NAME = WEB_CFG.PRODUCT_NAME
+except ConfigParserError:
+    PRODUCT_NAME = "SUSE Manager"
 
 def runTest():
     print "Test script:"
