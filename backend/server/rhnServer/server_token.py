@@ -674,9 +674,9 @@ class ReRegistrationActivationToken(ReRegistrationToken):
 
     def __init__(self, tokens, user_id=None, org_id=None,
             kickstart_session_id=None, entitlements=[],
-            remove_entitlements=[], deploy_configs=None):
+            remove_entitlements=[], deploy_configs=None, contact_method_id=0):
         ReRegistrationToken.__init__(self, tokens, user_id, org_id,
-                kickstart_session_id, entitlements, deploy_configs)
+                kickstart_session_id, entitlements, deploy_configs, contact_method_id)
         self.remove_entitlements = remove_entitlements # list of labels
 
     def entitle(self, server_id, history, virt_type = None):
