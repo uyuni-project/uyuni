@@ -1427,6 +1427,11 @@
 			<product_id name="SUSE_SLES">3890</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="STUDIOONSITE" is_signed="Y" label="sle11-sp1-debuginfo-pool-x86_64-studio13" name="SLE11-SP1-Debuginfo-Pool for x86_64 Studio13" optional="Y" parent="sle11-sp2-studioonsite-1.3-pool-x86_64" product_name="sle-studioonsite" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
+		<products>
+			<product_id name="sle-studioonsite">3762</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sp1-debuginfo-pool-x86_64-vmware" name="SLE11-SP1-Debuginfo-Pool for x86_64 VMWare" optional="Y" parent="sles11-sp1-vmware-pool-x86_64" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
 		<products>
 			<product_id name="SUSE_SLES">2320</product_id>
@@ -1565,6 +1570,11 @@
 			<product_id name="SUSE_SLES">3890</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="STUDIOONSITE" is_signed="Y" label="sle11-sp1-debuginfo-updates-x86_64-studio13" name="SLE11-SP1-Debuginfo-Updates for x86_64 Studio13" optional="Y" parent="sle11-sp2-studioonsite-1.3-pool-x86_64" product_name="sle-studioonsite" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
+		<products>
+			<product_id name="sle-studioonsite">3762</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sp1-debuginfo-updates-x86_64-vmware" name="SLE11-SP1-Debuginfo-Updates for x86_64 VMWare" optional="Y" parent="sles11-sp1-vmware-pool-x86_64" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
 		<products>
 			<product_id name="SUSE_SLES">2320</product_id>
@@ -1692,6 +1702,11 @@
 			<product_id name="SUSE_SLES">3890</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="STUDIOONSITE" is_signed="Y" label="sle11-sp2-debuginfo-core-x86_64-studio13" name="SLE11-SP2-Debuginfo-Core for x86_64 Studio13" optional="Y" parent="sle11-sp2-studioonsite-1.3-pool-x86_64" product_name="sle-studioonsite" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
+		<products>
+			<product_id name="sle-studioonsite">3762</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sp2-debuginfo-core-x86_64-vmware" name="SLE11-SP2-Debuginfo-Core for x86_64 VMWare" optional="Y" parent="sles11-sp1-vmware-pool-x86_64" product_name="SLES-for-VMware" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SLES-for-VMware">3060</product_id>
@@ -1808,6 +1823,11 @@
 			<product_id name="SUSE_SLES">3890</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="STUDIOONSITE" is_signed="Y" label="sle11-sp2-debuginfo-updates-x86_64-studio13" name="SLE11-SP2-Debuginfo-Updates for x86_64 Studio13" optional="Y" parent="sle11-sp2-studioonsite-1.3-pool-x86_64" product_name="sle-studioonsite" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
+		<products>
+			<product_id name="sle-studioonsite">3762</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sp2-debuginfo-updates-x86_64-vmware" name="SLE11-SP2-Debuginfo-Updates for x86_64 VMWare" optional="Y" parent="sles11-sp1-vmware-pool-x86_64" product_name="SLES-for-VMware" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SLES-for-VMware">3060</product_id>
@@ -1821,6 +1841,76 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2 for SAP Applications" family="AiO" is_signed="Y" label="sle11-sp2-sap-updates-x86_64" name="SLE11-SP2-SAP-Updates for x86_64" optional="N" parent="BASE" product_name="SUSE_SLES_SAP" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-SAP-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2 for SAP Applications" update_tag="slesapp2">
 		<products>
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Lifecycle Management Server 1.3" family="SLMS" is_signed="Y" label="sle11-sp2-slms-1.3-pool-x86_64" name="SLE11-SP2-SLMS-1.3-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-slms" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-SLMS-1.3-Pool/sle-11-x86_64/" summary="SUSE Lifecycle Management Server 1.3" update_tag="sleslms13">
+		<products>
+			<product_id name="sle-slms">3822</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Lifecycle Management Server 1.3" family="SLMS" is_signed="Y" label="sle11-sp2-slms-1.3-updates-x86_64" name="SLE11-SP2-SLMS-1.3-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-slms" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-SLMS-1.3-Updates/sle-11-x86_64/" summary="SUSE Lifecycle Management Server 1.3" update_tag="sleslms13">
+		<products>
+			<product_id name="sle-slms">3822</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Studio OnSite 1.3" family="STUDIOONSITE" is_signed="Y" label="sle11-sp2-studioonsite-1.3-pool-x86_64" name="SLE11-SP2-StudioOnsite-1.3-Pool for x86_64" optional="N" parent="BASE" product_name="sle-studioonsite" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-StudioOnsite-1.3-Pool/sle-11-x86_64/" summary="SUSE Studio OnSite 1.3" update_tag="slestso13">
+		<products>
+			<product_id name="sle-studioonsite">3762</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Studio OnSite 1.3" family="STUDIOONSITE" is_signed="Y" label="sle11-sp2-studioonsite-1.3-updates-x86_64" name="SLE11-SP2-StudioOnsite-1.3-Updates for x86_64" optional="N" parent="sle11-sp2-studioonsite-1.3-pool-x86_64" product_name="sle-studioonsite" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-StudioOnsite-1.3-Updates/sle-11-x86_64/" summary="SUSE Studio OnSite 1.3" update_tag="slestso13">
+		<products>
+			<product_id name="sle-studioonsite">3762</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-pool-i586" name="SLE11-SP2-WebYaST-1.3-Pool for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-i586/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
+	<channel arch="ia64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-pool-ia64" name="SLE11-SP2-WebYaST-1.3-Pool for ia64" optional="N" parent="sles11-sp1-pool-ia64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-ia64/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-pool-ppc64" name="SLE11-SP2-WebYaST-1.3-Pool for ppc64" optional="N" parent="sles11-sp1-pool-ppc64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-ppc64/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-pool-s390x" name="SLE11-SP2-WebYaST-1.3-Pool for s390x" optional="N" parent="sles11-sp1-pool-s390x" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-s390x/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-pool-x86_64" name="SLE11-SP2-WebYaST-1.3-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-x86_64/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-i586" name="SLE11-SP2-WebYaST-1.3-Updates for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-i586/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
+	<channel arch="ia64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-ia64" name="SLE11-SP2-WebYaST-1.3-Updates for ia64" optional="N" parent="sles11-sp1-pool-ia64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-ia64/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-ppc64" name="SLE11-SP2-WebYaST-1.3-Updates for ppc64" optional="N" parent="sles11-sp1-pool-ppc64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-ppc64/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-s390x" name="SLE11-SP2-WebYaST-1.3-Updates for s390x" optional="N" parent="sles11-sp1-pool-s390x" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-s390x/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-x86_64" name="SLE11-SP2-WebYaST-1.3-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-x86_64/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
 		</products>
 	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP3" family="7261" is_signed="Y" label="sle11-sp3-debuginfo-pool-i586" name="SLE11-SP3-Debuginfo-Pool for i586" optional="Y" parent="sles11-sp3-pool-i586" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP3-Debuginfo-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="dbgsp3">
@@ -2663,6 +2753,11 @@
 			<product_id name="SUSE_SLES">3890</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="STUDIOONSITE" is_signed="Y" label="sles11-sp1-pool-x86_64-studio13" name="SLES11-SP1-Pool for x86_64 Studio13" optional="N" parent="sle11-sp2-studioonsite-1.3-pool-x86_64" product_name="sle-studioonsite" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
+		<products>
+			<product_id name="sle-studioonsite">3762</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp1-suse-manager-tools-i586" name="SLES11-SP1-SUSE-Manager-Tools i586" optional="N" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp1">
 		<products>
 			<product_id name="SUSE_SLES">1825</product_id>
@@ -2803,6 +2898,11 @@
 			<product_id name="SUSE_SLES">3890</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="STUDIOONSITE" is_signed="Y" label="sles11-sp1-updates-x86_64-studio13" name="SLES11-SP1-Updates for x86_64 Studio13" optional="N" parent="sle11-sp2-studioonsite-1.3-pool-x86_64" product_name="sle-studioonsite" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
+		<products>
+			<product_id name="sle-studioonsite">3762</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP1" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp1-vmware-pool-i586" name="SLES11-SP1-VMware-Pool for i586" optional="N" parent="BASE" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-VMware-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
 		<products>
 			<product_id name="SUSE_SLES">2320</product_id>
@@ -2915,6 +3015,11 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-core-x86_64-sles-sp3" name="SLES11-SP2-Core for x86_64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
 		<products>
 			<product_id name="SUSE_SLES">3890</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="STUDIOONSITE" is_signed="Y" label="sles11-sp2-core-x86_64-studio13" name="SLES11-SP2-Core for x86_64 Studio13" optional="N" parent="sle11-sp2-studioonsite-1.3-pool-x86_64" product_name="sle-studioonsite" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
+		<products>
+			<product_id name="sle-studioonsite">3762</product_id>
 		</products>
 	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-extension-store-i586" name="SLES11-SP2-Extension-Store for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
@@ -3090,6 +3195,11 @@
 			<product_id name="SUSE_SLES">3890</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools" family="STUDIOONSITE" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-studio13" name="SLES11-SP2-SUSE-Manager-Tools x86_64 Studio13" optional="N" parent="sle11-sp2-studioonsite-1.3-pool-x86_64" product_name="sle-studioonsite" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+		<products>
+			<product_id name="sle-studioonsite">3762</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Manager Tools" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-vmware" name="SLES11-SP2-SUSE-Manager-Tools x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="SLES-for-VMware" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SLES-for-VMware">3060</product_id>
@@ -3168,6 +3278,11 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-updates-x86_64-sles-sp3" name="SLES11-SP2-Updates for x86_64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
 		<products>
 			<product_id name="SUSE_SLES">3890</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="STUDIOONSITE" is_signed="Y" label="sles11-sp2-updates-x86_64-studio13" name="SLES11-SP2-Updates for x86_64 Studio13" optional="N" parent="sle11-sp2-studioonsite-1.3-pool-x86_64" product_name="sle-studioonsite" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
+		<products>
+			<product_id name="sle-studioonsite">3762</product_id>
 		</products>
 	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2 VMWare" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-vmware-core-i586" name="SLES11-SP2-VMware-Core for i586" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="SLES-for-VMware" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-VMware-Core/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2 VMWare" update_tag="slessp2">
