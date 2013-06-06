@@ -36,7 +36,7 @@
 	<family default_nodecount="0" label="RES-HA" name="SUSE Linux Enterprise RedHat Expanded Support HA"/>
 	<family default_nodecount="0" label="WebYast-SLMS" name="WebYaST for SUSE Appliance Toolkit"/>
 	<family default_nodecount="0" label="SLE-HAE-IA" name="SUSE Linux Enterprise High Availability Extension (Itanium)"/>
-	<family default_nodecount="0" label="WEBYAST" name="WebYaST for SUSE Linux Enterprise"/>
+	<family default_nodecount="-1" label="WEBYAST" name="WebYaST for SUSE Linux Enterprise"/>
 	<family default_nodecount="0" label="jeos" name="Just enough OS"/>
 	<family default_nodecount="0" label="SLM" name="Novell Sentinel Log Manager"/>
 	<family default_nodecount="0" label="ZOS" name="ZENworks Orchestrator"/>
