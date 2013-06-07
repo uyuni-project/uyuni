@@ -96,7 +96,7 @@ ask() {
 PG_DATA=/var/lib/pgsql/data
 PG_HBA="$PG_DATA/pg_hba.conf"
 POSTGRESQL="$PG_DATA/postgresql.conf"
-PG_PIDFILE="/var/run/postmaster.$PORT.pid"
+PG_PIDFILE="$PG_DATA/postmaster.pid"
 PG_SOCKET="/tmp/.s.PGSQL.$PORT"
 SPACEWALK_TARGET="/usr/lib/systemd/system/spacewalk.target"
 SERVICE_LIST="/etc/rhn/service-list"
@@ -170,23 +170,23 @@ EOF
 
     postgresql_service start
 
-    if /usr/sbin/lsof /proc > /dev/null ; then
+    if /usr/bin/lsof /proc > /dev/null ; then
         while [ -f "$PG_PIDFILE" ] ; do
             # wait for postmaster to be ready
-            /usr/sbin/lsof -t -p $(cat "$PG_PIDFILE" 2>/dev/null) -a "$PG_SOCKET" > /dev/null  \
+            /usr/bin/lsof -t -p $(cat "$PG_PIDFILE" 2>/dev/null) -a "$PG_SOCKET" > /dev/null  \
                 && break
             sleep 1
         done
     fi
 
     if ! exists_db ; then
-            runuser - postgres -c "createdb '$PGNAME'"
+            su - postgres -c "createdb '$PGNAME'"
     fi
     if ! exists_plpgsql ; then
-            runuser - postgres -c "createlang plpgsql '$PGNAME'"
+            su - postgres -c "createlang plpgsql '$PGNAME'"
     fi
     if ! exists_user ; then
-            runuser - postgres -c "yes '$PGPASSWORD' | createuser -P -sDR '$PGUSER'"
+            su - postgres -c "yes '$PGPASSWORD' | createuser -P -sDR '$PGUSER'"
     fi
 
     postgresql_service reload
@@ -210,10 +210,10 @@ remove() {
         exit 1
     fi
     if exists_db ; then
-            runuser - postgres -c "dropdb '$PGNAME'"
+            su - postgres -c "dropdb '$PGNAME'"
     fi
     if exists_user ; then
-            runuser - postgres -c "dropuser '$PGUSER'"
+            su - postgres -c "dropuser '$PGUSER'"
     fi
 }
 
@@ -246,7 +246,7 @@ check() {
 }
 
 exists_db() {
-    EXISTS=$(runuser - postgres -c 'psql -t -c "select datname from pg_database where datname='"'$PGNAME'"';"')
+    EXISTS=$(su - postgres -c 'psql -t -c "select datname from pg_database where datname='"'$PGNAME'"';"')
     if [ "x$EXISTS" == "x $PGNAME" ] ; then
         return 0
     else
@@ -255,7 +255,7 @@ exists_db() {
 }
 
 exists_plpgsql() {
-    EXISTS=$(runuser - postgres -c 'psql -At -c "select lanname from pg_catalog.pg_language where lanname='"'plpgsql'"';"'" $PGNAME")
+    EXISTS=$(su - postgres -c 'psql -At -c "select lanname from pg_catalog.pg_language where lanname='"'plpgsql'"';"'" $PGNAME")
     if [ "x$EXISTS" == "xplpgsql" ] ; then
         return 0
     else
@@ -264,7 +264,7 @@ exists_plpgsql() {
 }
 
 exists_user() {
-    EXISTS=$(runuser - postgres -c 'psql -t -c "select usename from pg_user where usename='"'$PGUSER'"';"')
+    EXISTS=$(su - postgres -c 'psql -t -c "select usename from pg_user where usename='"'$PGUSER'"';"')
     if [ "x$EXISTS" == "x $PGUSER" ] ; then
         return 0
     else
