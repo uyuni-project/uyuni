@@ -1725,8 +1725,7 @@ public class SystemManager extends BaseManager {
             Channel base = server.getBaseChannel();
 
             if (base != null && base.isCloned()) {
-                ClonedChannel clonedBase = (ClonedChannel) base;
-                base = clonedBase.getOriginal();
+                base = base.getOriginal();
             }
 
             if ((base != null) &&

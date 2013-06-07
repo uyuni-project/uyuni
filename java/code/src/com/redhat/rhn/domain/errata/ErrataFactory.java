@@ -263,7 +263,7 @@ public class ErrataFactory extends HibernateFactory {
                     throw new InvalidChannelException("Cloned channel expected: " +
                             chan.getLabel());
                 }
-                Channel original = ((ClonedChannel) chan).getOriginal();
+                Channel original = chan.getOriginal();
                 // see BZ 805714, if we are a clone of a clone the 1st clone
                 // may not have the errata we want
                 while (original.isCloned() &&
