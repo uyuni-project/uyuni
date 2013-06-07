@@ -207,7 +207,9 @@ public class SSHPushDriver implements QueueDriver {
      * @return true if the schedule is once per minute, false otherwise
      */
     private boolean isDefaultSchedule() {
-        TaskoSchedule sched = TaskoFactory.lookupScheduleByLabel(JOB_LABEL);
-        return sched.getCronExpr().equals("0 * * * * ?");
+        List<TaskoSchedule> schedules =
+                TaskoFactory.listActiveSchedulesByOrgAndLabel(null, JOB_LABEL);
+        return (schedules.size() == 1) &&
+                (schedules.get(0).getCronExpr().equals("0 * * * * ?"));
     }
 }
