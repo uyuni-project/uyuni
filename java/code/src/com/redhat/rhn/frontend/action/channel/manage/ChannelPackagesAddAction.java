@@ -116,7 +116,7 @@ public class ChannelPackagesAddAction extends RhnAction {
         //If a channel isn't selected, select one smartly
         if (selectedChan == null) {
             if (chan.isCloned()) {
-                selectedChan = ((ClonedChannel) chan).getOriginal().getId().toString();
+                selectedChan = chan.getOriginal().getId().toString();
             }
             else {
                 selectedChan = ORPHAN_PACKAGES;

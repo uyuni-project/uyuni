@@ -917,4 +917,11 @@ public class Channel extends BaseDomainHelper implements Comparable {
     public void setClonedChannels(Set<ClonedChannel> clonedChannelsIn) {
         this.clonedChannels = clonedChannelsIn;
     }
+
+    /**
+     * @return the original Channel the channel was cloned from
+     */
+    public Channel getOriginal() {
+        throw new UnsupportedOperationException();
+    }
 }
