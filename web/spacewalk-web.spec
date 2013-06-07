@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.24
+Version: 1.10.25
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -74,7 +74,6 @@ database.  This includes RHN::* and RHN::DB::*.
 Summary: Core of Perl modules for %{name} package
 Group: Applications/Internet 
 Provides: spacewalk(spacewalk-base-minimal) = %{version}-%{release}
-Requires: httpd
 Obsoletes: rhn-base-minimal < 5.3.0
 Provides: rhn-base-minimal = 5.3.0
 Requires: perl-Params-Validate
@@ -84,11 +83,19 @@ Independent Perl modules in the RHN:: name-space.
 This are very basic modules need to handle configuration files, database,
 sessions and exceptions.
 
+%package -n spacewalk-base-minimal-config
+Summary: Configuration for %{name} package
+Group: Applications/Internet
+Requires: httpd
+Requires: spacewalk-base-minimal = %{version}-%{release}
+
+%description -n spacewalk-base-minimal-config
+Configuration file for spacewalk-base-minimal package.
+
+
 %package -n spacewalk-dobby
 Summary: Perl modules and scripts to administer an Oracle database
 Group: Applications/Internet
-Requires: spacewalk-base
-Requires: httpd
 Requires: perl-Filesys-Df
 Obsoletes: rhn-dobby < 5.3.0
 Provides: rhn-dobby = 5.3.0
@@ -227,7 +234,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/ServerGroup.pm
 %{perl_vendorlib}/RHN/Session.pm
 %{perl_vendorlib}/RHN/Set.pm
-%{perl_vendorlib}/RHN/SimpleStruct.pm
 %{perl_vendorlib}/RHN/StoredMessage.pm
 %{perl_vendorlib}/RHN/SystemSnapshot.pm
 %{perl_vendorlib}/RHN/TSDB.pm
@@ -252,6 +258,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{perl_vendorlib}/RHN
 %dir %{perl_vendorlib}/PXT
 %{perl_vendorlib}/RHN/SessionSwap.pm
+%{perl_vendorlib}/RHN/SimpleStruct.pm
 %{perl_vendorlib}/RHN/Exception.pm
 %{perl_vendorlib}/RHN/DB.pm
 %{perl_vendorlib}/RHN/DBI.pm
@@ -261,12 +268,16 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr(750,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 %doc LICENSE
 
+%files -n spacewalk-base-minimal-config
+%defattr(644,root,root,755)
+%attr(644,root,apache) %{_prefix}/share/rhn/config-defaults/rhn_web.conf
+
 %files -n spacewalk-dobby
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/db-control
 %{_mandir}/man1/db-control.1.gz
 %{perl_vendorlib}/Dobby.pm
-%attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_dobby.conf
+%attr(644,root,root) %{_prefix}/share/rhn/config-defaults/rhn_dobby.conf
 %attr(0755,root,root) %{_sysconfdir}/cron.daily/check-database-space-usage.sh
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/susemanager-database
 %{perl_vendorlib}/Dobby/
@@ -302,6 +313,11 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Wed Jun 05 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.25-1
+- spacewalk-dobby: remove dependency on apache, spacewalk-base, spacewalk-setup
+- Move RHN::SimpleStruct from spacewalk-base to spacewalk-base-minimal
+- Split rhn_web.conf into a separate package
+
 * Wed May 22 2013 Tomas Lestach <tlestach@redhat.com> 1.10.24-1
 - removing outdated/unused web.ep_* configuration options
 

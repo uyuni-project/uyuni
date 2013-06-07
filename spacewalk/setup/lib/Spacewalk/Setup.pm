@@ -136,7 +136,8 @@ sub parse_options {
             "rhn-http-proxy:s",
             "rhn-http-proxy-username:s",
             "rhn-http-proxy-password:s",
-                    "ncc",
+            "managed-db",
+            "ncc",
 		   );
 
   my $usage = loc("usage: %s %s\n",
@@ -979,21 +980,21 @@ sub postgresql_setup_embedded_db {
         return 0;
     }
 
-    if (not -x '/usr/bin/spacewalk-setup-embedded-postgresql') {
+    if (not -x '/usr/bin/spacewalk-setup-postgresql') {
         print loc(<<EOQ);
-The spacewalk-setup-embedded-postgresql does not seem to be available.
+The spacewalk-setup-postgresql does not seem to be available.
 You might want to use --external-db command line option.
 EOQ
         exit 24;
     }
 
     if (-d "/var/lib/pgsql/data/base" and
-        ! system(qq{/usr/bin/spacewalk-setup-embedded-postgresql check --db $answers->{'db-name'}})) {
+        ! system(qq{/usr/bin/spacewalk-setup-postgresql check --db $answers->{'db-name'}})) {
         my $shared_dir = SHARED_DIR;
         print loc(<<EOQ);
 The embedded database appears to be already installed. Either rerun
 this script with the --skip-db-install option, or use the
-'/usr/bin/spacewalk-setup-embedded-postgresql remove --db $answers->{'db-name'} --user $answers->{'db-user'}'
+'/usr/bin/spacewalk-setup-postgresql remove --db $answers->{'db-name'} --user $answers->{'db-user'}'
 script to remove the embedded database and try again.
 EOQ
 
@@ -1024,7 +1025,7 @@ EOQ
 		-log_file_size => DB_INSTALL_LOG_SIZE,
 		-err_message => "Could not install database.\n",
 		-err_code => 15,
-		-system_opts => [ "/usr/bin/spacewalk-setup-embedded-postgresql",
+		-system_opts => [ "/usr/bin/spacewalk-setup-postgresql",
                                   "create",
                                   "--db", $answers->{'db-name'},
                                   "--user", $answers->{'db-user'},
