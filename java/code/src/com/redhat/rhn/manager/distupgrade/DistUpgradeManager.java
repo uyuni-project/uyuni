@@ -393,7 +393,7 @@ public class DistUpgradeManager extends BaseManager {
      */
     public static Channel getOriginalChannel(Channel channel) {
         while (channel.isCloned()) {
-            channel = ((ClonedChannel) channel).getOriginal();
+            channel = channel.getOriginal();
         }
         return channel;
     }
