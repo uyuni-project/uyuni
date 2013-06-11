@@ -995,7 +995,7 @@ delete from rhnChannel where label like 'ChannelLabel%';
     <property name="ivy.ivyrep.default.artifact.pattern"
               value="[artifact]-[revision].[ext]" />
 
-    <ivy-retrieve/>
+    <ivy-retrieve sync="true" />
   </target>
 
 </project>
