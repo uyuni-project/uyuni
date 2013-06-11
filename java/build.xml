@@ -964,7 +964,7 @@ delete from rhnChannel where label like 'ChannelLabel%';
 
   <target name="resolve-ivy" description="retrieve dependencies with ivy"
           depends="boot-deps,init-ivy" unless="installbuild">
-    <ivy-retrieve/>
+    <ivy-retrieve sync="true" />
   </target>
 
 </project>
