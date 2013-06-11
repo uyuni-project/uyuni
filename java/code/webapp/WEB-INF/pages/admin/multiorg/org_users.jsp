@@ -79,7 +79,7 @@
 	           sortable="false"
 	           headerkey="realname.displayname"
 	           attr="userLastName">
-		<c:out value="${current.userDisplayName}" />
+		<c:out value="${current.userDisplayName}" escapeXml="false" />
 	</rl:column>
 	<rl:column bound="false"
 	           sortable="false"
