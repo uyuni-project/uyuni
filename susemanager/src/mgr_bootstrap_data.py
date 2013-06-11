@@ -58,6 +58,26 @@ DATA = {
                           'PDID' : 3009, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
                         },
+    'SLE-11-SP3-i586' : {
+                          'PDID' : 3887, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
+                        },
+    'SLE-11-SP3-ia64' : {
+                          'PDID' : 3893, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
+                        },
+    'SLE-11-SP3-ppc64' : {
+                          'PDID' : 3892, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
+                        },
+    'SLE-11-SP3-s390x' : {
+                          'PDID' : 3895, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
+                        },
+    'SLE-11-SP3-x86_64' : {
+                          'PDID' : 3890, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
+                        },
     'SLE-10-SP3-i586' : {
                           'PDID' : 1501, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/3/bootstrap/'
