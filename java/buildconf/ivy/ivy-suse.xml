@@ -26,7 +26,7 @@
         <dependency org="suse" name="commons-validator" rev="1.1.4" />
         <dependency org="suse" name="concurrent" rev="1.3.4" />
         <dependency org="suse" name="dom4j" rev="1.6.1" />
-        <dependency org="suse" name="dwr" rev="2.0.2" />
+        <dependency org="suse" name="dwr" rev="3.0rc2" />
         <dependency org="suse" name="ehcache" rev="1.2.3" />
         <dependency org="suse" name="el-api" rev="6.0.18" />
         <!-- dependency org="suse" name="emma" rev="20040713" /-->
