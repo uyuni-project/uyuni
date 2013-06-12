@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jun 12 10:55:21 CEST 2013 - mc@suse.de
+
+- version 1.7.28.17-1
+- add RHN::Form::Widget::Select to ChannelEditor
+- We use RHN::Form::ParsedForm so we should use it.
+- Adding sudo Requires for spacewalk-base package
+
+-------------------------------------------------------------------
 Thu Apr 04 15:14:14 CEST 2013 - mc@suse.de
 
 - version 1.7.28.16-1
