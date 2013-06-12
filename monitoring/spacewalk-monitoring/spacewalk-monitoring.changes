@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 12 13:36:47 CEST 2013 - mc@suse.de
+
+- version 1.7.0.2-1
+- start Monitoring Scout after httpd if available
+
+-------------------------------------------------------------------
 Wed Mar 21 17:13:34 CET 2012 - mc@suse.de
 
 - version 1.7.0.1-1
