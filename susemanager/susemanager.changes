@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jun 12 11:08:05 CEST 2013 - mc@suse.de
+
+- version 1.7.23-1
+- create bootstrap repos for SLE11-SP3 (bnc#806839)
+- fix reading mirror credentials from config
+- add versioned Requires of spacewalk-backend
+
+-------------------------------------------------------------------
 Thu Apr 04 15:20:26 CEST 2013 - mc@suse.de
 
 - version 1.7.22-1

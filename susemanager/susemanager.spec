@@ -1,5 +1,5 @@
 Name:           susemanager
-Version:        1.7.22
+Version:        1.7.23
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 Group:          Applications/System
