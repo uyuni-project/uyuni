@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Jun 12 13:34:22 CEST 2013 - mc@suse.de
+
+- version 1.7.1.6-1
+- fix of system group reports
+- display more meaningful description
+- Report for host-guest mappings
+- Reports to support enhanced reporting
+
+-------------------------------------------------------------------
 Fri Feb 08 11:20:25 CET 2013 - mc@suse.de
 
 - version 1.7.1.5-1
