@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Jun 12 13:24:25 CEST 2013 - mc@suse.de
+
+- version 1.7.12.10-1
+- make Proxy timeouts configurable (bnc#815460)
+- Do not read response data into memory (bnc#801151)
+- do not read data into memory which should be
+  send to the server (bnc#801151)
+
+-------------------------------------------------------------------
 Fri Feb 08 11:04:34 CET 2013 - mc@suse.de
 
 - version 1.7.12.9-1
