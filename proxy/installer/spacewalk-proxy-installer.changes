@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 12 13:25:32 CEST 2013 - mc@suse.de
+
+- version 1.7.6.9-1
+- report extra commandline arguments
+- fail if answer file is not readable
+
+-------------------------------------------------------------------
 Fri Feb 08 11:05:40 CET 2013 - mc@suse.de
 
 - version 1.7.6.8-1
