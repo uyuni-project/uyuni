@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Wed Jun 12 11:20:01 CEST 2013 - mc@suse.de
+
+- version 1.7.3.9-1
+- Remove temp files verbosely even in case of error (bnc#818566)
+- Adding sudo Requires for spacewalk-certs-tools package
+- The chkconfig command on RHEL does not know the -d switch
+- simply test if bootstrap repo exists and use it if yes
+- update sm-client-tools package
+  * Minor refactorings in the code for resource management.
+  * Remove bootstrap repo after failure. (bnc#801666)
+  * /usr/share/rhn/ directory might not exist. (bnc#801662)
+  * added possibility to override SUSE Manager host for tunneling.
+  * added possibility to override rhn.conf with command line.
+
+-------------------------------------------------------------------
 Thu Apr 04 15:31:27 CEST 2013 - mc@suse.de
 
 - version 1.7.3.8-1
