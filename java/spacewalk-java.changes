@@ -1,4 +1,31 @@
 -------------------------------------------------------------------
+Wed Jun 12 16:45:02 CEST 2013 - mc@suse.de
+
+- version 1.7.54.25-1
+- Fix SP migration ClassCastException (bnc#820985)
+- Fix lookup for the SSH push default schedule (bnc#823366)
+- escaping system name in web pages
+- Fix UI text about kickstart (bnc#822385)
+- sort parent channel pop-up menu by channel name
+- add list elaborator into session for CSV export
+- fix invalid SQL statement for finding ssh-push candidates (bnc#821868)
+- Subscribe only to selected config channels via SSM (bnc#821786)
+- Fix cobbler information file system paths (bnc#820980)
+- too big value in system custom info should not cause ISE
+- do not offer a symlink, if the user does not have acl for the target
+- added showing systems counts on cancel scheduled actions page
+- add some missing UI strings
+- fix system.listSystemEvents on PG
+- display 'Updates' column on group system list pages
+- fix 'Configs' column on system groups related pages
+- Upstream-specific check on channel name removed (bnc#701082)
+- Refactor bugfix (bnc#814292)
+- Set milliseconds to 0 before comparing dates (bnc#814292)
+- Trigger repo metadata generation after cloning patches (bnc#814292)
+- Add missing string *.actions.scheduled (bnc#813756)
+- fix paths for kernel and initrd on DVD on s390x (bnc#814263)
+
+-------------------------------------------------------------------
 Fri Apr 05 14:27:23 CEST 2013 - mc@suse.de
 
 - version 1.7.54.24-1
