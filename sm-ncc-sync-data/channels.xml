@@ -1868,6 +1868,11 @@
 			<product_id name="sle-11-WebYaST">3840</product_id>
 		</products>
 	</channel>
+	<channel arch="i586" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-pool-i586-vmware-sp3" name="SLE11-SP2-WebYaST-1.3-Pool for i586 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-i586" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-i586/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
 	<channel arch="ia64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-pool-ia64" name="SLE11-SP2-WebYaST-1.3-Pool for ia64" optional="N" parent="sles11-sp1-pool-ia64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-ia64/" summary="WebYaST 1.3" update_tag="slewyst13">
 		<products>
 			<product_id name="sle-11-WebYaST">3840</product_id>
@@ -1888,7 +1893,17 @@
 			<product_id name="sle-11-WebYaST">3840</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-pool-x86_64-vmware-sp3" name="SLE11-SP2-WebYaST-1.3-Pool for x86_64 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-x86_64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-x86_64/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-i586" name="SLE11-SP2-WebYaST-1.3-Updates for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-i586/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-i586-vmware-sp3" name="SLE11-SP2-WebYaST-1.3-Updates for i586 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-i586" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-i586/" summary="WebYaST 1.3" update_tag="slewyst13">
 		<products>
 			<product_id name="sle-11-WebYaST">3840</product_id>
 		</products>
@@ -1909,6 +1924,11 @@
 		</products>
 	</channel>
 	<channel arch="x86_64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-x86_64" name="SLE11-SP2-WebYaST-1.3-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-x86_64/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-x86_64-vmware-sp3" name="SLE11-SP2-WebYaST-1.3-Updates for x86_64 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-x86_64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-x86_64/" summary="WebYaST 1.3" update_tag="slewyst13">
 		<products>
 			<product_id name="sle-11-WebYaST">3840</product_id>
 		</products>
