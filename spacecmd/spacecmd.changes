@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 12 13:37:52 CEST 2013 - mc@suse.de
+
+- version 1.7.7.10-1
+- spacecmd errors out when trying to add script to kickstart
+- Make spacecmd able to specify config channel label
+
+-------------------------------------------------------------------
 Thu Apr 04 15:29:13 CEST 2013 - mc@suse.de
 
 - version 1.7.7.9-1
