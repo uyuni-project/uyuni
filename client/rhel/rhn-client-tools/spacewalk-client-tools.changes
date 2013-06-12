@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Jun 12 13:31:06 CEST 2013 - mc@suse.de
+
+- version 1.7.14.16-1
+- create mgr* program symlinks (bnc#818325)
+- correctly handle a deactivated account error message
+- require rhnlib with timeout option
+- Make timeout of yum-rhn-plugin calls through rhn-client-tools
+  configurable (bnc#815460)
+
+-------------------------------------------------------------------
 Thu Apr 04 15:36:19 CEST 2013 - mc@suse.de
 
 - version 1.7.14.15-1
