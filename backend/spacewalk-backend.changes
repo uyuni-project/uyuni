@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Wed Jun 12 13:26:43 CEST 2013 - mc@suse.de
+
+- version 1.7.38.26-1
+- fix reactivation of systems (bnc#823241)
+- remove incorrect path from db
+- Adding file path restoration functionality to spacewalk-data-fsck
+- update copyright column length
+- don't truncate channel name to 64 chars
+- make API compatible with old RHEL5 clients
+- No line break at the end of the package summary (bnc#821968)
+- don't truncate filepath when exporting
+- fix registration issues on PG
+- update expired gpg keys in the keyring
+- set copy_local urlgrabber option to copy also file URLs (bnc#819781)
+- implement no_proxy usage (FATE#315039)
+- use timeout config option also in suseLib send function (bnc#815460)
+
+-------------------------------------------------------------------
 Thu May 17 17:13:44 CEST 2013 - mc@suse.de
 
 - version 1.7.38.25-1
