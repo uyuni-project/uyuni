@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed Jun 12 11:00:29 CEST 2013 - mc@suse.de
+
+- version 1.7.56.19-1
+- Don't create index if it already exists
+- Don't drop rhn_ram_sid_idx if it does not exist.
+- No line break at the end of the package summary (bnc#821968)
+- fixed filename length in rhnErrataFileTmp
+- switch deferred segment creation off during installation
+- extend length of rhnPackageCapability.version
+
+-------------------------------------------------------------------
 Thu May  2 18:08:24 CEST 2013 - mc@suse.de
 
 - version 1.7.56.18-2
