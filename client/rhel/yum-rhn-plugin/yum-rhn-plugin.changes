@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jun 12 13:33:31 CEST 2013 - mc@suse.de
+
+- version 1.7.2.7-1
+- require rhnlib with timeout option
+- Make timeout of yum-rhn-plugin calls through rhn-client-tools
+  configurable (bnc#815460)
+
+-------------------------------------------------------------------
 Thu Nov 22 15:26:48 CET 2012 - jrenner@suse.de
 
 - version 1.7.2.6-1
