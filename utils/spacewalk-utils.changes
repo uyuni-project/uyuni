@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed Jun 12 13:38:38 CEST 2013 - mc@suse.de
+
+- version 1.7.15.11-1
+- work around buggy perl version in SLES11
+  (manually specify encoding options for spacewalk-dump-schema)
+- check to see if the key exists before initializing parent channel key
+- fixed promote phase naming errors
+- correctly quote the database name
+- disable, enable & rebuild indexes for migrations
+
+-------------------------------------------------------------------
 Thu Apr 04 15:28:11 CEST 2013 - mc@suse.de
 
 - version 1.7.15.10-1
