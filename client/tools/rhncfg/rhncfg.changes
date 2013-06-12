@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 12 13:41:14 CEST 2013 - mc@suse.de
+
+- version 5.10.27.11-1
+- make diffs initiated from another spacewalk server obey
+  display_diff config option
+
+-------------------------------------------------------------------
 Mon Apr 22 15:54:45 CEST 2013 - mc@suse.de
 
 - version 5.10.27.10-1
