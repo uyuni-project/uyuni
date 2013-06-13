@@ -20,7 +20,7 @@ A tool that exports satellite content into a directory in an XML format. That co
 <RefSynopsisDiv>
 <Synopsis>
     <cmdsynopsis>
-        <command>rhn-satellite-exporter</command> 
+        <command>rhn-satellite-exporter</command>
         <arg>options <replaceable>...</replaceable></arg>
     </cmdsynopsis>
     <cmdsynopsis>

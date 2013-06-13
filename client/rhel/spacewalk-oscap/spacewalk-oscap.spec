@@ -1,5 +1,5 @@
 Name:		spacewalk-oscap
-Version:	0.0.15
+Version:	0.0.16
 Release:	1%{?dist}
 Summary:	OpenSCAP plug-in for rhn-check
 
@@ -22,7 +22,7 @@ Requires:       rhnlib
 Requires:       rhn-check
 %description
 spacewalk-oscap is a plug-in for rhn-check. With this plugin, user is able
-to run OpenSCAP scan from Spacewalk or RHN Satellite server.
+to run OpenSCAP scan from Spacewalk or Red Hat Satellite server.
 
 %prep
 %setup -q
@@ -54,6 +54,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jun 12 2013 Tomas Kasparek <tkasparek@redhat.com> 0.0.16-1
+- rebranding RHN Satellite to Red Hat Satellite in client stuff
+
 * Tue May 28 2013 Simon Lukasik <slukasik@redhat.com> 0.0.15-1
 - Precede internal error messages by xccdf_eval: prefix.
 - Submit the OpenSCAP HTML report as well.

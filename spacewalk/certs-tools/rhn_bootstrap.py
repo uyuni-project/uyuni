@@ -53,13 +53,13 @@ if os.path.exists('/usr/share/rhn/proxy') \
     if os.path.exists('/etc/products.d/suse-manager-proxy.prod'):
       PRODUCT_NAME = 'SUSE Manager Proxy'
     else:
-      PRODUCT_NAME = 'RHN Proxy Server'
+      PRODUCT_NAME = 'Red Hat Proxy Server'
 elif os.path.exists('/usr/share/rhn/server') \
   or os.path.exists('/var/www/rhns/server'):
     if os.path.exists('/etc/products.d/suse-manager-server.prod'):
       PRODUCT_NAME = 'SUSE Manager Server'
     else:
-      PRODUCT_NAME = 'RHN Satellite Server'
+      PRODUCT_NAME = 'Red Hat Satellite Server'
 
 DEFAULT_CA_CERT_PATH = '/usr/share/rhn/'+CA_CRT_NAME
 

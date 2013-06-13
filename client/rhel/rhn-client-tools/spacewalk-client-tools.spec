@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.10.7
+Version: 1.10.8
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -444,6 +444,10 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Wed Jun 12 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.8-1
+- rebranding RHN Proxy to Red Hat Proxy in client stuff
+- rebranding RHN Satellite to Red Hat Satellite in client stuff
+
 * Tue May 28 2013 Stephen Herr <sherr@redhat.com> 1.10.7-1
 - 948337 - Make client tools only pass up cpu_socket if server has capability
 - man pages branding cleanup + misc branding fixes
@@ -486,6 +490,128 @@ make -f Makefile.rhn-client-tools test
 * Mon Dec 10 2012 Jan Pazdziora 1.9.7-1
 - 885170 - provide translations of a new error recieved from Hosted
 - 882174 - read the hostname from /etc/hostname if needed
+
+* Fri Nov 30 2012 Jan Pazdziora 1.9.6-1
+- 876740 - fix typo
+- 876740 - server url auto-corrects common mistakes, messages say "Satellite"
+
+* Wed Nov 21 2012 Jan Pazdziora 1.9.5-1
+- 876328 - Merging the new translation work form RHEL 6.4
+- Revert "876328 - updating rhel client tools translations"
+
+* Fri Nov 16 2012 Stephen Herr <sherr@redhat.com> 1.9.4-1
+- 876740 - add server url edit screen to rhn_register tui
+
+* Fri Nov 16 2012 Jan Pazdziora 1.9.3-1
+- 876740 - updating error message for rhn_register TUI if SSL cert missing
+- 876328 - updating rhel client tools translations
+- 823551 - Download icon in "Are you sure" screen of rhn_register is incorrect
+
+* Sun Nov 11 2012 Michael Calmer <mc@suse.de> 1.9.2-1
+- check if system id has changed
+- check if /etc/sysconfig/network is a file
+- no hal for openSUSE >= 11.4
+
+* Wed Oct 31 2012 Jan Pazdziora 1.9.1-1
+- 871867 - progress bar in rhn-client-tools can now translate its title
+
+* Tue Oct 30 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.26-1
+- check CA cert files only when needed
+
+* Tue Oct 30 2012 Jan Pazdziora 1.8.25-1
+- Update the copyright year.
+- Update .po and .pot files for rhn-client-tools.
+- New translations from Transifex for rhn-client-tools.
+- Download translations from Transifex for rhn-client-tools.
+
+* Wed Oct 24 2012 Stephen Herr <sherr@redhat.com> 1.8.24-1
+- 869814 - removing firstboot and RHN Hosted integration from rhn-client-tools
+
+* Thu Sep 27 2012 Stephen Herr <sherr@redhat.com> 1.8.23-1
+- 855992 - fix typo in urlunsplit method call
+
+* Wed Sep 26 2012 Jan Pazdziora 1.8.22-1
+- 859281 - translatable strings
+- 859281 - rhn-channel: new option to list base channel of a system
+
+* Mon Sep 17 2012 Jan Pazdziora 1.8.21-1
+- 823551 - fixing problem with firstboot
+- 823551 - gui and text changes for firstboot and rhn_register
+- 810389 - rhn_register / firstboot gui minor updates
+- 810315 - New "updates availabe" screenshot for firstboot
+- 851657 - polish registration strings
+- 855992 - make rhn-channel smart enough to use proxy if configured
+- 855883 - rhn_check: use gettext correctly when needed
+
+* Mon Sep 10 2012 Jan Pazdziora 1.8.20-1
+- 786422 - fixing typo in rhn_register tui
+
+* Thu Aug 30 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.19-1
+- workaround missing python-ethtool
+
+* Thu Aug 02 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.18-1
+- registerUser is dead since b27c6ad4b90a6c4c3f970fc0f8faefae7c134c9c
+
+* Mon Jul 30 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.17-1
+- removed dead code
+
+* Tue Jul 24 2012 Stephen Herr <sherr@redhat.com> 1.8.16-1
+- 842836 - Make multi-line lists in conf files parse correctly
+
+* Wed Jul 18 2012 Jan Pazdziora 1.8.15-1
+- Update rhn_check to send abrt data to the server
+
+* Fri Jul 13 2012 Jan Pazdziora 1.8.14-1
+- 771749 - if the exception is <type 'instance'>, just plain if will fail.
+
+* Thu Jul 12 2012 Stephen Herr <sherr@redhat.com> 1.8.13-1
+- 839776 - rhn-profile-sync exits with status 1 if libvirtd is not running
+
+* Tue Jul 10 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.12-1
+- Add missing space to log message
+- Fix missing exception scope
+
+* Mon Jul 09 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.11-1
+- Fix typo in 'Fatal error in Python code occured'
+
+* Wed Jul 04 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.10-1
+- read memory information even on kernels 3.x
+
+* Sat Jun 16 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.9-1
+- allow to set value on Debian
+
+* Sat Jun 16 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.8-1
+- workaround problem on suse and debian where you inherit from two same classes
+
+* Sat Jun 16 2012 Miroslav Suchý 1.8.7-1
+- allow linking against openssl (msuchy@redhat.com)
+
+* Fri Jun 15 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.6-1
+- on Debian use Debian logo
+
+* Fri Jun 15 2012 Miroslav Suchý 1.8.5-1
+- fix files header, filese are not released under GPLv2+ but only GPLv2
+- fix files headers. our code is under gplv2 license
+- %%defattr is not needed since rpm 4.4
+
+* Wed May 02 2012 Milan Zazrivec <mzazrivec@redhat.com> 1.8.4-1
+- 816199 - fix package dependency on newt
+
+* Wed Apr 25 2012 Milan Zazrivec <mzazrivec@redhat.com> 1.8.3-1
+- 816199 - include package dependency on newt
+
+* Tue Apr 03 2012 Jan Pazdziora 1.8.2-1
+- 804559 - not all msgs are CommunicationError objects (mzazrivec@redhat.com)
+- 804559 - correct string catenation (mzazrivec@redhat.com)
+
+* Fri Mar 09 2012 Miroslav Suchý 1.8.1-1
+- fix typo in man page
+- 772070 - classic hosted alignment is no longer needed (mzazrivec@redhat.com)
+- 772070 - firstboot gui re-design (mzazrivec@redhat.com)
+- 772070 - correct button text (mzazrivec@redhat.com)
+- 772070 - new title for "cannot contact server" dialog (mzazrivec@redhat.com)
+- 799926 - correct path to rhsm's certlib (mzazrivec@redhat.com)
+- Bumping package versions for 1.8. (jpazdziora@redhat.com)
 
 * Fri Mar 02 2012 Jan Pazdziora 1.7.14-1
 - Update the copyright year info.

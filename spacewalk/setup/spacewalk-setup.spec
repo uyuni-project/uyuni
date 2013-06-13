@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        1.10.10
+Version:        1.10.13
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -167,6 +167,15 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Wed Jun 12 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.13-1
+- The Satellite ISO no longer contains PostgreSQL directory
+
+* Wed Jun 12 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.12-1
+- rebrading RHN Satellite to Red Hat Satellite
+
+* Fri Jun 07 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.11-1
+- is_embedded_db: support for manage-db switch
+
 * Wed Jun 05 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.10-1
 - spacewalk-setup: correctly recognize --managed-db switch
 - modify spacewalk-setup to use spacewalk-setup-postgresql

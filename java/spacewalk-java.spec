@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.89
+Version: 1.10.95
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -851,6 +851,28 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Jun 13 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.95-1
+- 970072 - do not sort prepared data
+
+* Wed Jun 12 2013 Jan Dobes 1.10.94-1
+- 869247 - fixing elaborator
+
+* Wed Jun 12 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.93-1
+- rebranding RHN Proxy to Red Hat Proxy
+- rebrading RHN Satellite to Red Hat Satellite
+
+* Tue Jun 11 2013 Jan Dobes 1.10.92-1
+- 970125 - adding unique value check
+- 971828 - fixing wrong escaping of utf-8 strings
+
+* Tue Jun 11 2013 Jan Dobes 1.10.91-1
+- 913032 - we now remember sent errata email notifications to prevent multiple
+  messages
+
+* Mon Jun 10 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.90-1
+- software crashes menu should be visible only for management entitled orgs
+- 871276 - page for physical systems
+
 * Mon Jun 03 2013 Jan Dobes 1.10.89-1
 - checkstyle fix
 - junit fixes

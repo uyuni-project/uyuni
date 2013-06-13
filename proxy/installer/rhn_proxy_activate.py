@@ -12,8 +12,8 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-""" Activate an RHN Proxy 3.x ...not the executable
-    (original script can activate an RHN Proxy version 1.1 to 3.x)
+""" Activate an Red Hat Proxy 3.x ...not the executable
+    (original script can activate an Red Hat Proxy version 1.1 to 3.x)
     USAGE: ./rhn-proxy-activate
 
     Author: Todd Warner <taw@redhat.com>

@@ -14,7 +14,7 @@ Group:   Applications/System
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.47
+Version: 5.10.48
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -27,7 +27,7 @@ Requires: rhn-client-tools >= 0.4.20-86
 %else
 %if 0%{?el6}
 Requires: rhn-client-tools >= 1.0.0-51
-%else 
+%else
 # who knows what version we need? Let's just hope it's up to date enough.
 Requires: %{rhn_client_tools}
 %endif
@@ -146,6 +146,9 @@ fi
 
 # $Id$
 %changelog
+* Wed Jun 12 2013 Tomas Kasparek <tkasparek@redhat.com> 5.10.48-1
+- rebranding RHN Satellite to Red Hat Satellite in client stuff
+
 * Tue May 21 2013 Tomas Kasparek <tkasparek@redhat.com> 5.10.47-1
 - branding clean-up of client tools
 

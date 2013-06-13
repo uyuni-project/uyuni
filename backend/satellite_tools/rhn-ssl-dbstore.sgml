@@ -21,7 +21,7 @@ database so that it can be used for things such as provisioning.
 <RefSynopsisDiv>
 <Synopsis>
     <cmdsynopsis>
-        <command>&THECOMMAND;</command> 
+        <command>&THECOMMAND;</command>
         <arg>--ca-cert=<replaceable>CA_CERTIFICATE</replaceable></arg>
         <arg>--label=<replaceable>INTERNAL_LABEL</replaceable></arg>
         <arg>-v | --verbose</arg>

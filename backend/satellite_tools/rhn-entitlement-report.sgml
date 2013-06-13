@@ -11,7 +11,7 @@
 <RefNameDiv>
 <RefName><command>rhn-entitlement-report</command></RefName>
 <RefPurpose>
-Helper utility that report entitlement usage. 
+Helper utility that report entitlement usage.
 </RefPurpose>
 </RefNameDiv>
 

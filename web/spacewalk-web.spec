@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.25
+Version: 1.10.29
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -86,6 +86,7 @@ sessions and exceptions.
 %package -n spacewalk-base-minimal-config
 Summary: Configuration for %{name} package
 Group: Applications/Internet
+Provides: spacewalk(spacewalk-base-minimal-config) = %{version}-%{release}
 Requires: httpd
 Requires: spacewalk-base-minimal = %{version}-%{release}
 
@@ -120,7 +121,7 @@ A component framework for Spacewalk.
 %package -n spacewalk-pxt
 Summary: The PXT library for web page templating
 Group: Applications/Internet
-Requires: spacewalk(spacewalk-base-minimal)
+Requires: spacewalk(spacewalk-base-minimal-config)
 %if 0%{?suse_version}
 Requires:  perl-Apache2-Request
 Requires:  perl-auditlog-keeper-client
@@ -263,13 +264,12 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/DB.pm
 %{perl_vendorlib}/RHN/DBI.pm
 %{perl_vendorlib}/PXT/Config.pm
-%attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_web.conf
-%dir %{_prefix}/share/rhn
-%dir %attr(750,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 %doc LICENSE
 
 %files -n spacewalk-base-minimal-config
 %defattr(644,root,root,755)
+%dir %{_prefix}/share/rhn
+%dir %attr(750,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 %attr(644,root,apache) %{_prefix}/share/rhn/config-defaults/rhn_web.conf
 
 %files -n spacewalk-dobby
@@ -313,6 +313,19 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Thu Jun 13 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.29-1
+- 970579 - new features should be visible also from perl pages
+
+* Wed Jun 12 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.28-1
+- rhn_web.conf is no longer part of spacewalk-base-minimal
+
+* Wed Jun 12 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.27-1
+- rebranding RHN Proxy to Red Hat Proxy
+- rebrading RHN Satellite to Red Hat Satellite
+
+* Mon Jun 10 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.26-1
+- 970146 - fix db-control examine and verify for online backups
+
 * Wed Jun 05 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.25-1
 - spacewalk-dobby: remove dependency on apache, spacewalk-base, spacewalk-setup
 - Move RHN::SimpleStruct from spacewalk-base to spacewalk-base-minimal

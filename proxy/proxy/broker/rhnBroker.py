@@ -31,10 +31,10 @@ from spacewalk.common import rhnFlags, apache
 from spacewalk.common.rhnTranslate import _
 
 # local module imports
-import proxy.rhnProxyAuth
-from proxy.rhnConstants import URI_PREFIX_KS_CHECKSUM
 from proxy.rhnShared import SharedHandler
-from proxy.broker import rhnRepository
+from proxy.rhnConstants import URI_PREFIX_KS_CHECKSUM
+import rhnRepository
+import proxy.rhnProxyAuth
 
 
 # the version should not be never decreased, never mind that spacewalk has different versioning
@@ -44,7 +44,7 @@ _PROXY_VERSION = '5.5.0' # HISTORY: '0.9.7', '3.2.0', '3.5.0', '3.6.0', '4.1.0',
 
 
 class BrokerHandler(SharedHandler):
-    """ RHN Proxy broker specific handler code called by rhnApache. 
+    """ Red Hat Proxy broker specific handler code called by rhnApache. 
 
         Workflow is:
         Client -> Apache:Broker -> Squid -> Apache:Redirect -> Satellite
@@ -246,7 +246,7 @@ class BrokerHandler(SharedHandler):
                 log_error(msg)
                 log_debug(0, msg)
                 raise rhnFault(1000,
-                  _("RHN Proxy error (issues with proxy login). "
+                  _("SUSE Manager Proxy error (issues with proxy login). "
                     "Please contact your system administrator."))
 
             # Forced refresh of the proxy token
@@ -255,7 +255,7 @@ class BrokerHandler(SharedHandler):
             # The token could not be aquired
             log_debug(0, "Unable to acquire proxy authentication token")
             raise rhnFault(1000,
-              _("RHN Proxy error (unable to acquire proxy auth token). "
+              _("SUSE Manager Proxy error (unable to acquire proxy auth token). "
                 "Please contact your system administrator."))
 
         # Support for yum byte-range
@@ -443,7 +443,7 @@ class BrokerHandler(SharedHandler):
         f = rep.get_function(funct)
         if not f:
             raise rhnFault(1000,
-                _("RHN Proxy configuration error: invalid function %s") % funct)
+                _("SUSE Manager Proxy configuration error: invalid function %s") % funct)
 
         log_debug(3, "Calling %s(%s)" % (funct, params))
         if params is None:

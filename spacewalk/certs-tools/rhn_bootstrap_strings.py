@@ -693,7 +693,7 @@ if [ "$INSTALLER" == zypper ] ; then
     if [ -x /usr/sbin/rhn-profile-sync ] ; then
         /usr/sbin/rhn-profile-sync
     else
-        echo "Error updating system info in %s."
+        echo "Error updating system info in RHN Satellite."
         echo "    Please ensure that rhn-profile-sync in installed and rerun it."
     fi
     if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
@@ -705,7 +705,7 @@ elif [ "$INSTALLER" == yum ] ; then
     if [ -x /usr/sbin/rhn-profile-sync ] ; then
         /usr/sbin/rhn-profile-sync
     else
-        echo "Error updating system info in %s."
+        echo "Error updating system info in RHN Satellite."
         echo "    Please ensure that rhn-profile-sync in installed and rerun it."
     fi
     if [ $FULLY_UPDATE_THIS_BOX -eq 1 ] ; then
