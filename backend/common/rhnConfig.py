@@ -521,9 +521,9 @@ def initCFG(component=None, root=None, filename=None):
     CFG.parse()
 
 try:
-    WEB_CFG = RHNOptions('web')
-    WEB_CFG.parse()
-    PRODUCT_NAME = WEB_CFG.PRODUCT_NAME
+    ALL_CFG = RHNOptions('')
+    ALL_CFG.parse()
+    PRODUCT_NAME = ALL_CFG.PRODUCT_NAME
 except ConfigParserError:
     PRODUCT_NAME = "SUSE Manager"
 

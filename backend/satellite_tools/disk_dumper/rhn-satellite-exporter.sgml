@@ -1,5 +1,4 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "SUSE Manager Server " >
 <!ENTITY RHNSATEXPORTER "SUSE Manager Exporter " >
 
 ]>
@@ -100,7 +99,7 @@ A tool that exports satellite content into a directory in an XML format. That co
     The amount of time it takes rhn-satellite-exporter to export data is dependent on the number and size of the channels being exported. Using the --no-packages, --no-kickstarts, --no-errata, and --no-rpms options will reduce the amount of time it takes for rhn-satellite-exporter to run, but they will also prevent potentially useful information from being exported. For that reason, they should only be used when you are certain that you will not need the content that they exclude. Additionally, you will need to use the matching options for satellite-sync when importing the data. For example, if you use --no-kickstarts with rhn-satellite-exporter you will have to use satellite-sync's --no-kickstarts option when importing the data.
 </para>
 <para>
-    If you are exporting one of the base channels provided by RHN , you will also need to export the tools channel associated with that base channel in order to kickstart machines to the distribution in the base channel. For instance, if you export rhel-i386-as-4 you should also export the rhn-tools-rhel-4-as-i386 channel in order to kickstart machines to RHEL 4 AS. This is because the tools channels contain the auto-kickstart packages that install packages for kickstarting a machine through the Satellite.
+    If you are exporting one of the base channels provided by RHN, you will also need to export the tools channel associated with that base channel in order to kickstart machines to the distribution in the base channel. For instance, if you export rhel-i386-as-4 you should also export the rhn-tools-rhel-4-as-i386 channel in order to kickstart machines to RHEL 4 AS. This is because the tools channels contain the auto-kickstart packages that install packages for kickstarting a machine through the Satellite.
 </para>
 <para>
     When importing an exported channel into a satellite on which you have not run satellite-sync, you will need to use satellite-sync's --rhn-cert option to import the entitlements cert.

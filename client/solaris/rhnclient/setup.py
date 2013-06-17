@@ -1,14 +1,13 @@
 #!/usr/bin/python
 #
 #
-# $Id: setup.py.in,v 1.3 2003/11/16 06:12:48 taw Exp $
 
 from distutils.core import setup
 from spacewalk.common.rhnConfig import CFG, initCFG
 initCFG('web')
 
 setup(name = "rhnclient",
-      version = "5.5.2",
+      version = "5.5.4",
       description = CFG.PRODUCT_NAME + " Client Utilities and Libraries",
       long_description = CFG.PRODUCT_NAME + """\
  Client Utilities

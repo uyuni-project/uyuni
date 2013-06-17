@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 # Python client for checking periodically for posted actions
-# on the Red Hat Network servers.
+# on the Spacewalk servers.
 #
 # Copyright (c) 2000--2012 Red Hat, Inc. Distributed under GPL.
 # Authors: Cristian Gafton <gafton@redhat.com>,
@@ -21,7 +21,6 @@
 # version.  If you delete this exception statement from all source
 # files in the program, then also delete it here.
 #
-# $Id: rhn_check.py,v 1.11 2004/12/07 17:09:10 misa Exp $
 
 import os
 import sys

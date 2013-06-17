@@ -1,4 +1,4 @@
-# apacheServer.py      - Apache XML-RPC server for mod_python (Red Hat Network).
+# apacheServer.py      - Apache XML-RPC server for mod_python (Spacewalk).
 #
 # Copyright (c) 2008--2012 Red Hat, Inc.
 #
@@ -14,7 +14,6 @@
 # in this software or its documentation.
 #
 #-------------------------------------------------------------------------------
-# $Id: apacheServer.py,v 1.81 2005/07/05 17:39:03 wregglej Exp $
 
 # common module imports
 from spacewalk.common.rhnConfig import CFG, initCFG

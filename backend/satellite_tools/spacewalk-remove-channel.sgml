@@ -1,8 +1,5 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "SUSE Manager Server" >
-<!ENTITY RHNCHANRM "SUSE MAnager Channel Removal tool" >
-
-]>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN"
+>
 <refentry>
 
 <RefMeta>

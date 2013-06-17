@@ -1,7 +1,5 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "SUSE Manager Server" >
-<!ENTITY RHNSAT "SUSE Manager User Tool" >
-]>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN"
+>
 <refentry>
 
 <RefMeta>

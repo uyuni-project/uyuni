@@ -39,7 +39,7 @@ templateValues = {
 #   2000-2999: Red Hat Satellite specific interation errors
 
 FaultArray = {
-     # 0-999: RHN client/client-like interaction errors:
+     # 0-999: Red Hat client/client-like interaction errors:
      1: _("This does not appear to be a valid username."),
      2: _("Invalid username and password combination."),
      3: _("This login is already taken, or the password is incorrect."),
@@ -65,16 +65,16 @@ FaultArray = {
 
      Please re-register this system by running mgr_register as root.
      Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do
-     or login at https://%(hostname)s, and from the "Overview" tab, select
-     "Subscription Management" to enable SUSE Manager service for this system.
+     or login at https://%(hostname)s, and from the "Overview" tab,
+     select "Subscription Management" to enable the service for this system.
      """),
      29: _("Record not available in the database."),
      30: _("Invalid value for entry."),
      31: _("""
      This system does not have a valid entitlement for SUSE Manager.
      Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do
-     or login at https://%(hostname)s, and from the "Overview" tab, select
-     "Subscription Management" to enable SUSE Manager service for this system.
+     or login at https://%(hostname)s, and from the "Overview" tab,
+     select "Subscription Management" to enable the service for this system.
      """),
      32: _("Channel error"),
      33: _("Client session token is invalid."),
@@ -92,8 +92,8 @@ on this system."),
 
      The current settings for your account do not allow you to add another
      user account. Please check with the organization administrator for your
-     account whether the maximum number of users allowed to subscribe to
-     SUSE Manager needs to be changed.
+     account if the maximum number of users allowed to subscribe to server needs
+     to be changed.
      """),
      44: _("""
      System group membership limits exceeded.
@@ -101,7 +101,7 @@ on this system."),
      The current settings for your account do not allow you to add another
      system profile. Please check with the organization administrator for your
      account for modifying the maximum number of system profiles that can be
-     subscribed to your SUSE Manager account.
+     subscribed to your account.
      """),
      45: _("""
      Invalid architecture.
@@ -265,7 +265,7 @@ class rhnException(Exception):
         String representation of this object.
         """
         s = StringIO()
-        s.write("\nInternal SUSE Manager code error. Information available:\n")
+        s.write("\nInternal code error. Information available:\n")
         for a in self.args:
             s.write("  %s\n" % (a, ))
 

@@ -19,7 +19,7 @@
 %define apache_group apache
 %endif
 Name:       spacewalk-branding
-Version:    1.10.18
+Version:    1.10.19
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -116,6 +116,9 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Mon Jun 17 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.19-1
+- rebranding few more strings
+
 * Wed Jun 05 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.18-1
 - moving #rhn_welcome to spacewalk specific styles
 
