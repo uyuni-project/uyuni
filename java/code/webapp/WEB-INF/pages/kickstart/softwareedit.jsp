@@ -48,7 +48,7 @@ function reloadForm(ctl) {
           </tr>
           <tr>
               <th>
-                  <rhn:required-field key="softwareedit.jsp.child_channels"/>:</th>
+                  <bean:message key="softwareedit.jsp.child_channels"/>:</th>
               <td>
                   <c:choose>
                     <c:when test="${empty nochildchannels}">
