@@ -190,8 +190,8 @@ public class SystemDetailsEditAction extends RhnAction {
             }
 
             // Set the contact method
-            long contactId = (Long) daForm.get(CONTACT_METHOD);
-            if (contactId != s.getContactMethod().getId()) {
+            Long contactId = (Long) daForm.get(CONTACT_METHOD);
+            if (contactId != null && (contactId != s.getContactMethod().getId())) {
                 s.setContactMethod(ServerFactory.findContactMethodById(contactId));
             }
 
