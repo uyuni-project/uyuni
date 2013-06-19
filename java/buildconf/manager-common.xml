@@ -18,6 +18,7 @@
   <property name="tests.include" value="**/test/*Test.class"/>
   <property name="tests.exclude" value="none"/>
   <property name="tests.results.dir" value="test-results"/>
+  <property name="branding.src.dir" value="${basedir}/../branding/java/code/src"/>
 
   <!-- Paths -->
   <path id="libjars">
