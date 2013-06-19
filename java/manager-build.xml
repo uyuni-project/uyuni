@@ -142,8 +142,8 @@
         mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib;
         ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib;
       
-        echo "Restarting Tomcat...";
-        rctomcat6 restart;
+        echo "Launching Tomcat restart...";
+        nohup rctomcat6 restart > /dev/null 2>&amp;1 &amp;
       '
     />
   </target>
