@@ -113,7 +113,10 @@
       <trans-unit id="server.contact-method.ssh-push-tunnel">
         <source>Push via SSH tunnel</source>
       </trans-unit>
-
+      <trans-unit id="sdc.details.edit.contact-method.unentitled">
+        <source>Contact method not available for this system.</source>
+      </trans-unit>
+      
       <!-- SSH Push Messages -->
       <trans-unit id="kickstart.schedule.invalid.contact.method">
         <source>Provisioning is currently not supported for systems managed with push via SSH tunnel.</source>

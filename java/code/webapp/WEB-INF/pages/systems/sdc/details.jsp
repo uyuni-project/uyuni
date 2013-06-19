@@ -74,7 +74,7 @@
         <td>
           <c:choose>
             <c:when test="${system.baseEntitlement == null}">
-              <bean:message key="sdc.details.edit.autoupdate.unentitled"/>
+              <bean:message key="sdc.details.edit.contact-method.unentitled"/>
             </c:when>
             <c:otherwise>
               <html:select property="contact_method_id" styleId="contact-method">
