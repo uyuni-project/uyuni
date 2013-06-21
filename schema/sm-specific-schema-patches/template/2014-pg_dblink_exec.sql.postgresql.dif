@@ -1,5 +1,5 @@
---- /cvs/GALAXY/Manager/schema/spacewalk/upgrade//spacewalk-schema-1.9-to-spacewalk-schema-1.10/014-pg_dblink_exec.sql.postgresql	2013-05-03 16:10:18.758303209 +0200
-+++ /cvs/GALAXY/Manager/schema/spacewalk/upgrade//susemanager-schema-1.7.57-to-susemanager-schema-2.0//2014-pg_dblink_exec.sql.postgresql	2013-04-19 15:59:31.816848895 +0200
+--- /cvs/GALAXY/Manager/schema/spacewalk/upgrade//spacewalk-schema-1.9-to-spacewalk-schema-1.10/014-pg_dblink_exec.sql.postgresql	2013-05-03 16:10:18.000000000 +0200
++++ /cvs/GALAXY/Manager/schema/spacewalk/upgrade//susemanager-schema-1.7.57-to-susemanager-schema-2.0//2014-pg_dblink_exec.sql.postgresql	2013-04-19 15:59:31.000000000 +0200
 @@ -15,18 +15,21 @@
  
  create or replace function pg_dblink_exec(in_sql in varchar) returns void as
