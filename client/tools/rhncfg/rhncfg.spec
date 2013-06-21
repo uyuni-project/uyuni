@@ -14,7 +14,7 @@ Group:   Applications/System
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.50
+Version: 5.10.53
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -146,6 +146,15 @@ fi
 
 # $Id$
 %changelog
+* Thu Jun 20 2013 Matej Kollar <mkollar@redhat.com> 5.10.53-1
+- Fix and simplyfy deci_to_octal conversion
+
+* Wed Jun 19 2013 Jan Dobes 5.10.52-1
+- 957506 - unicode support for Remote Command scripts
+
+* Tue Jun 18 2013 Dimitar Yordanov <dyordano@redhat.com> 5.10.51-1
+- 918036 - RFE - rhncfg-manager supports --username and --password from CLI
+
 * Mon Jun 17 2013 Michael Mraka <michael.mraka@redhat.com> 5.10.50-1
 - branding fixes in man pages
 - more branding cleanup

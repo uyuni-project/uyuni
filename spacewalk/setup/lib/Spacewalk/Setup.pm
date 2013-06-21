@@ -97,6 +97,8 @@ use constant DB_MIGRATION_LOG_FILE =>
 use constant ORACLE_RHNCONF_BACKUP =>
   '/tmp/oracle-rhn.conf';
 
+use constant EMBEDDED_DB_ANSWERS =>
+  '/usr/share/spacewalk/setup/defaults.d/embedded-postgresql.conf';
 our $DEFAULT_DOC_ROOT = "/var/www/html";
 if ( -e '/etc/SuSE-release' )
 {
@@ -192,8 +194,9 @@ sub read_config {
 sub load_answer_file {
   my $options = shift;
   my $answers = shift;
+  my (@skip) = @{(shift)};
 
-  my @files = glob(DEFAULT_ANSWER_FILE_GLOB);
+  my @files = map {$_ if (not grep($_, @skip))} glob(DEFAULT_ANSWER_FILE_GLOB);
   push @files, $options->{'answer-file'} if $options->{'answer-file'};
 
   for my $file (@files) {
