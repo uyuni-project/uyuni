@@ -1,8 +1,9 @@
-rpctest = XMLRPCCVEAuditTest.new(ENV["TESTHOST"])
+rpctest = nil 
 result_list = []
 result = nil
 
 Given /^I am logged in via XML\-RPC\/cve audit as user "([^"]*)" and password "([^"]*)"$/ do |luser, password|
+  rpctest = XMLRPCCVEAuditTest.new(ENV["TESTHOST"])
   rpctest.login(luser, password)
 end
 
