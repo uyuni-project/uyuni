@@ -115,9 +115,6 @@
         <!-- Don't copy unneded jars -->
         <exclude name="**/jasper*" />
         <exclude name="**/jspapi*" />
-        <exclude name="**/ojdbc*" />
-        <exclude name="**/oracle-jdbc*" />
-        <exclude name="**/servlet*" />
         <exclude name="**/tomcat6*" />
       </fileset>
       <fileset dir="${rhn-home}/buildconf/tempjars">
