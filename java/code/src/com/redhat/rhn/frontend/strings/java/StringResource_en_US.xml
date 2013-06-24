@@ -1089,7 +1089,7 @@
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Satellite Administrators">
+      <trans-unit id="SUSE Manager Administrators">
         <source>@@PRODUCT_NAME@@ Administrators</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
