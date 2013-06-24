@@ -65,11 +65,11 @@
         <exclude name="**/internal/**" />
         <exclude name="**/*.tld" />
         <exclude name="**/*.html" />
-        <exclude name="**/test/" unless="build.tests" />
-        <exclude name="**/*/testing/**" unless="build.tests" />
         <exclude name="**/*.conf" />
         <exclude name="**/*.conf.rpmsave" />
-        <exclude name="**/StringResource*.xml" />
+        <exclude name="**/test/" unless="build.tests" />
+        <exclude name="**/*/testing/**" unless="build.tests" />
+        <exclude name="**/StringResource*.xml" unless="build.tests" />
       </fileset>
       <fileset dir="${build.dir}/classes">
         <include name="**/StringResource_en_US.xml" />
@@ -115,7 +115,7 @@
         <!-- Don't copy unneded jars -->
         <exclude name="**/jasper*" />
         <exclude name="**/jspapi*" />
-        <exclude name="**/tomcat6*" />
+        <exclude name="**/tomcat6*" unless="build.tests" />
       </fileset>
       <fileset dir="${rhn-home}/buildconf/tempjars">
         <include name="**/*.jar" />
@@ -144,25 +144,49 @@
       '
     />
   </target>
-  
-  <target name="run-tests" depends="init-tests,deploy" description="Runs unit tests locally">
+
+  <target name="deploy-tests" depends="init-tests,webapp" description="Deploy SUSE Manager tests">
+    <echo message="Copying webapp files to remote host for running tests..." />
+    <exec executable="rsync">
+      <arg line="-a --delete ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
+    </exec>
+
+    <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
+        echo "Stopping Tomcat...";
+        nohup rctomcat6 stop > /dev/null 2>&amp;1 &amp;
+
+        echo "Linking the branding jar...";
+        mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib;
+        ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar;
+
+        echo "Linking the main jar for Taskomatic...";
+        mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib;
+        ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib;
+      '
+    />
+  </target>
+
+  <target name="run-tests" depends="deploy-tests" description="Run unit tests remotely">
     <echo message="Copying files to remote host..." />
-    <exec executable="scp" description="Copies files to deploy host">
+    <exec executable="scp" description="Copy ./buildconf directory to deploy host">
       <arg value="-r" />
       <arg line="buildconf ${deploy.user}@${deploy.host}:${deploy.dir}/WEB-INF" />
     </exec>
-    
+    <exec executable="scp" description="Copy test files to deploy host">
+      <arg value="-r" />
+      <arg line="code/src/com/redhat/rhn/common/conf/test/conf ${deploy.user}@${deploy.host}:/usr/share/rhn/unit-tests/" />
+    </exec>
+
     <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
         cd ${deploy.dir}/WEB-INF;
-        ant -f buildconf/manager-test.xml -Dlib.dir=${deploy.dir}/WEB-INF/lib -Dtest.jar=${deploy.dir}/WEB-INF/lib/rhn.jar -Dtest.configuration.path=/etc/rhn -Dtests.include=${tests.include} -Dtests.exclude=${tests.exclude};
+        ant -f buildconf/manager-test.xml -Dlib.dir=${deploy.dir}/WEB-INF/lib -Dtest.jar=${deploy.dir}/WEB-INF/lib/rhn.jar -Dtest.configuration.path=/etc/rhn -Dtests.includes=${tests.includes} -Dtests.excludes=${tests.excludes};
       '
-    />    
+    />
   </target>
 
-  <target name="run-local-tests" depends="init-tests,jar" description="Runs unit tests locally">    
+  <target name="run-tests-locally" depends="init-tests,jar" description="Run unit tests locally">
     <property name="test.jar" value="${build.dir}/rhn.jar" />
     <property name="test.configuration.path" value="${basedir}/conf/default" />
-
-    <ant antfile="buildconf/manager-test.xml"/>
-  </target>  
+    <ant antfile="buildconf/manager-test.xml" />
+  </target>
 </project>
