@@ -9,8 +9,7 @@ Feature: Check errata
   Scenario: check all errata exists
     Given I am on the errata page
      When I follow "Relevant" in the left menu
-     Then I should see a kernel update in the list
-      And I should see a "slessp2-aaa_base-6544" link
+      Then I should see a "slessp2-aaa_base-6544" link
       And I should see a "slessp2-nfs-client-6222" link
 
   Scenario: check slessp2-kernel-6648 errata

@@ -32,12 +32,12 @@ Feature: Test the XML-RPC CVE Audit feature.
       And I follow this client link
       And I follow "Software"
       And I follow "Patches" in class "content-nav"
-      And I click on "Select All"
+      And I check "slessp2-kernel-6648" in the list
       And I click on "Apply Patches"
       And I click on "Confirm"
       And I wait for "5" seconds
       And I run rhn_check on this client
-    Then I should see a "patch updates have been scheduled" text
+    Then I should see a "patch update has been scheduled" text
 
     Given I am logged in via XML-RPC/cve audit as user "admin" and password "admin"
     
