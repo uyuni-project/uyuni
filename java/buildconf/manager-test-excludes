@@ -1,0 +1,9 @@
+com/redhat/rhn/common/**/test/DataListTest.class
+com/redhat/rhn/common/**/test/DataSourceParserTest.class
+com/redhat/rhn/common/**/test/BadParameterExceptionHandlerTest.class
+com/redhat/rhn/common/**/test/PermissionExceptionHandlerTest.class
+com/redhat/rhn/common/**/test/TestFactoryWrapperTest.class
+com/redhat/rhn/common/**/test/SessionSwapTest.class
+com/redhat/rhn/common/**/test/ExceptionsWrapperTest.class
+com/redhat/rhn/common/**/test/FileUtilsTest.class
+com/redhat/rhn/common/**/test/MD5SumTest.class

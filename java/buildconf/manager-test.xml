@@ -30,7 +30,7 @@
       <formatter type="xml" usefile="true" />
       <formatter type="brief" usefile="false" />
       <batchtest todir="${tests.results.dir}">
-        <zipfileset src="${test.jar}" includes="${tests.include}" excludes="${tests.exclude}" />
+        <zipfileset src="${test.jar}" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
       </batchtest>
     </junit>
   </target>
