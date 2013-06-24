@@ -187,6 +187,6 @@
   <target name="run-tests-locally" depends="init-tests,jar" description="Run unit tests locally">
     <property name="test.jar" value="${build.dir}/rhn.jar" />
     <property name="test.configuration.path" value="${basedir}/conf/default" />
-    <ant antfile="buildconf/manager-test.xml" />
+    <ant antfile="manager-test.xml" dir="buildconf"/>
   </target>
 </project>
