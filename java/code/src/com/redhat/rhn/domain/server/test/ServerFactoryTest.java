@@ -687,6 +687,7 @@ public class ServerFactoryTest extends RhnBaseTestCase {
         s.setCreated(new Date());
         s.setModified(new Date());
         s.setRam(1024);
+        s.setContactMethod(ServerFactory.findContactMethodById(0L));
 
         if (type == TYPE_SERVER_SATELLITE) {
             SatelliteServer ss = (SatelliteServer) s;
