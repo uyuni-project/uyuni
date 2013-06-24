@@ -66,6 +66,9 @@ def processCommandline():
 		Option('--where-<column-id>', action='store', metavar='VALUE',
 			dest='_where_trap',
 			help='limit the output to records where column-id has value VALUE'),
+		Option('--like<column-id>', action='store', metavar='VALUE',
+      dest='_like_trap',
+      help='limit the output to records where column-id has value like VALUE (string only)'),
 	]
 
 	optionParser = OptionParser( \
@@ -73,10 +76,17 @@ def processCommandline():
 		option_list=optionsTable)
 
 	where = {}
+	where_like = []
+	like = False
 	i = 1
 	while i < len(sys.argv):
-		if sys.argv[i].startswith('--where-'):
-			o = sys.argv[i][len('--where-'):]
+		if sys.argv[i].startswith('--where-') or sys.argv[i].startswith('--like-'):
+			if sys.argv[i].startswith('--where-'):
+				o = sys.argv[i][len('--where-'):]
+				like = False
+			elif sys.argv[i].startswith('--like-'):
+				o = sys.argv[i][len('--like-'):]
+				like = True
 			try:
 				(k, v) = o.split('=', 1)
 				del sys.argv[i]
@@ -100,6 +110,8 @@ def processCommandline():
 				where[k].append(v)
 			else:
 				where[k] = [ v ]
+			if like:
+				where_like.append(k)
 
 		i += 1
 
@@ -107,10 +119,10 @@ def processCommandline():
 
 	sys.argv[1:] = args
 
-	return options, where
+	return options, where, where_like
 
 if __name__ == '__main__':
-	(options, where) = processCommandline()
+	(options, where, where_like) = processCommandline()
 
 	try:
 		if len(sys.argv) > 2:
@@ -168,10 +180,14 @@ if __name__ == '__main__':
 					the_dict_where["p%d" % pi] = x
 					pi += 1
 
-				if k == 'group':
-					the_sql_where.append('"%s" in ( %s )' % (k.upper(), val))
+				if k in where_like:
+					clause = 'like'
 				else:
-					the_sql_where.append('%s in ( %s )' % (k, val))
+					clause = 'in'
+				if k == 'group':
+					the_sql_where.append('"%s" %s ( %s )' % (k.upper(), clause, preval))
+				else:
+					the_sql_where.append('%s %s ( %s )' % (k, clause, val))
 
 			initCFG('server')
 			rhnSQL.initDB(options.db)
