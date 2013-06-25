@@ -23,9 +23,28 @@
     </delete>
     <delete dir="${test.results.dir}" />
   </target>
+	
+  <target name="refresh-branding-jar" depends="clean" description="Compiles and builds the SUSE branding jar">
+    <mkdir dir="${build.dir}/java-branding" />
+
+    <javac destdir="${build.dir}/java-branding"
+           source="1.6"
+           target="1.6"
+           includeantruntime="no"
+           nowarn="true"
+           srcdir="${branding.src.dir}" />
+
+    <copy toDir="${build.dir}/java-branding">
+      <fileset dir="${branding.src.dir}" excludes="**/*.java" />
+    </copy>
+
+    <jar destfile="${lib.dir}/java-branding.jar" includes="">
+      <fileset dir="${build.dir}/java-branding" />
+    </jar>
+  </target>
 
   <target name="compile"
-          depends="clean"
+          depends="clean,refresh-branding-jar"
           unless="precompiled"
           description="Compiles the main codebase"
   >
@@ -81,26 +100,7 @@
     </jar>
   </target>
 
-  <target name="branding-jar" depends="clean" description="Compiled and build the SUSE branding jar">
-    <mkdir dir="${build.dir}/java-branding" />
-
-    <javac destdir="${build.dir}/java-branding"
-           source="1.6"
-           target="1.6"
-           includeantruntime="no"
-           nowarn="true"
-           srcdir="${branding.src.dir}" />
-
-    <copy toDir="${build.dir}/java-branding">
-      <fileset dir="${branding.src.dir}" excludes="**/*.java" />
-    </copy>
-
-    <jar destfile="${build.dir}/java-branding.jar" includes="">
-      <fileset dir="${build.dir}/java-branding" />
-    </jar>
-  </target>
-
-  <target name="webapp" depends="jar,branding-jar" description="Creates the Web application directory">
+  <target name="webapp" depends="jar" description="Creates the Web application directory">
     <copy todir="${build.dir}/webapp">
       <fileset dir="${src.dir}/webapp">
         <exclude name="help/**" />
@@ -120,7 +120,6 @@
       <fileset dir="${rhn-home}/buildconf/tempjars">
         <include name="**/*.jar" />
       </fileset>
-      <fileset file="${build.dir}/java-branding.jar" />
     </copy>
   </target>
 
