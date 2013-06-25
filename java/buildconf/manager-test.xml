@@ -18,7 +18,13 @@
   <target name="run-tests">
     <mkdir dir="${tests.results.dir}" />
 
-    <echo message="Running tests (including ${tests.include}, excluding ${tests.exclude}...)" />
+    <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
+    <loadfile property="tests.excludes.text" srcFile="${tests.excludes}"/>
+    <echo message="Running tests including:" />
+    <echo message="${tests.includes.text}" />
+    <echo message="and excluding:" />
+    <echo message="${tests.excludes.text}" />
+    
     <junit fork="yes" forkmode="once" maxmemory="256m">
       <sysproperty key="rhn-home" value="." />
       <sysproperty key="java.awt.headless" value="true" />
