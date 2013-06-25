@@ -184,8 +184,13 @@
   </target>
 
   <target name="run-tests-locally" depends="init-tests,jar" description="Run unit tests locally">
+    <mkdir dir="/usr/share/rhn/unit-tests/conf"/>
+    <copy toDir="/usr/share/rhn/unit-tests/conf">
+      <fileset dir="code/src/com/redhat/rhn/common/conf/test/conf" />
+    </copy>
+
     <property name="test.jar" value="${build.dir}/rhn.jar" />
-    <property name="test.configuration.path" value="${basedir}/conf/default" />
+    <property name="test.configuration.path" value="${basedir}/conf/local-tests" />
     <ant antfile="manager-test.xml" dir="buildconf"/>
   </target>
 </project>
