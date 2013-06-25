@@ -39,7 +39,7 @@ URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
-ExclusiveArch: x86_64
+ExclusiveArch: x86_64 s390x
 
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
@@ -190,7 +190,9 @@ BuildRequires: stringtree-json
 BuildRequires: susestudio-java-client
 # SUSE additional build requirements
 %if 0%{?suse_version}
+%ifarch x86_64
 BuildRequires: oracle-instantclient11.2-basic
+%endif
 BuildRequires: log4j
 %endif
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
