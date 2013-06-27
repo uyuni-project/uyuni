@@ -45,21 +45,15 @@ from rhn_bootstrap_strings import \
 from sslToolConfig import CA_CRT_NAME, CA_CRT_RPM_NAME
 from spacewalk.common.fileutils import rotateFile, cleanupAbsPath
 from spacewalk.common.checksum  import getFileChecksum
+from spacewalk.common.rhnConfig import PRODUCT_NAME
 
 ## GLOBALS
-PRODUCT_NAME = 'RHN Server'
 if os.path.exists('/usr/share/rhn/proxy') \
   or os.path.exists('/var/www/rhns/proxy'):
-    if os.path.exists('/etc/products.d/suse-manager-proxy.prod'):
-      PRODUCT_NAME = 'SUSE Manager Proxy'
-    else:
-      PRODUCT_NAME = 'Red Hat Proxy Server'
+    MY_PRODUCT_NAME = PRODUCT_NAME + ' Proxy'
 elif os.path.exists('/usr/share/rhn/server') \
   or os.path.exists('/var/www/rhns/server'):
-    if os.path.exists('/etc/products.d/suse-manager-server.prod'):
-      PRODUCT_NAME = 'SUSE Manager Server'
-    else:
-      PRODUCT_NAME = 'Red Hat Satellite Server'
+    MY_PRODUCT_NAME = PRODUCT_NAME + ' Server'
 
 DEFAULT_CA_CERT_PATH = '/usr/share/rhn/'+CA_CRT_NAME
 
@@ -575,7 +569,7 @@ def generateBootstrapScript(options):
     # this means that we can negate those booleans with 1 - their current
     # value (instead of doing not value which can yield True/False, which
     # would print as such)
-    newScript = getHeader(PRODUCT_NAME, options.activation_keys,
+    newScript = getHeader(MY_PRODUCT_NAME, options.activation_keys,
                   options.gpg_key, options.overrides, options.hostname,
                   orgCACert, isRpmYN, 1 - options.no_ssl, 1 - options.no_gpg,
                   options.allow_config_actions, options.allow_remote_commands,
@@ -587,17 +581,16 @@ def generateBootstrapScript(options):
     newScript = newScript + getConfigFilesSh() + getUp2dateScriptsSh()
     newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh()
 
-    # SLES: install packages required for registration on systems that do not have them installed
-    newScript = newScript + getRegistrationStackSh() + getUp2dateScriptsSh()
-
-    newScript = newScript + getRegistrationSh(PRODUCT_NAME)
+    
+    newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh() + \
+                getRegistrationSh(MY_PRODUCT_NAME)
 
     #5/16/05 wregglej 159437 - moving stuff that messes with the allowed-action dir to after registration
     newScript = newScript + getAllowConfigManagement()
     newScript = newScript + getAllowRemoteCommands()
 
     #5/16/05 wregglej 159437 - moved the stuff that up2dates the entire box to after allowed-actions permissions are set.
-    newScript = newScript + getUp2dateTheBoxSh(PRODUCT_NAME)
+    newScript = newScript + getUp2dateTheBoxSh(MY_PRODUCT_NAME)
 
     _bootstrapDir = cleanupAbsPath(os.path.join(options.pub_tree, 'bootstrap'))
     _script = cleanupAbsPath(os.path.join(_bootstrapDir, options.script))

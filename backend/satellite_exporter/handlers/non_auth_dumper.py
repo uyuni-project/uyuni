@@ -73,6 +73,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
             'get_rpm',
             'kickstartable_trees',
             'get_ks_file',
+            'orgs',
         ]
 
         self.system_id = None
@@ -84,14 +85,17 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
                and c.label in (%s)
                and cfm.channel_family_id = cf.id
                and cf.label != 'rh-public'
+               and cf.org_id in (%s)
             union
             select id channel_family_id, NULL quantity
               from rhnChannelFamily
              where label = 'rh-public'
+               and org_id in (%s)
         """
         self._channel_family_query_public = """
             select id channel_family_id, 0 quantity
               from rhnChannelFamily
+             where org_id in (%s)
         """
         self._channel_family_query = None
 
@@ -153,14 +157,15 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         self._is_closed = 1
         log_debug(3, "Closed")
 
+
     def set_channel_family_query(self, channel_labels=[]):
         if not channel_labels:
             # All null-pwned channel families
-            self._channel_family_query = self._channel_family_query_public
+            self._channel_family_query = self._channel_family_query_public % self.exportable_orgs
             return self
 
         self._channel_family_query = self._channel_family_query_template % (
-            ', '.join(["'%s'" % x for x in channel_labels]), )
+            ', '.join(["'%s'" % x for x in channel_labels]), self.exportable_orgs, self.exportable_orgs)
         return self
 
     def _get_channel_data(self, channels):
@@ -322,6 +327,9 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     def errata(self, errata=[]):
         self.set_channel_family_query()
         return self.dump_errata(errata=errata)
+
+    def orgs(self):
+        return self.dump_orgs()
 
     def kickstartable_trees(self, kickstart_labels=[]):
         self.set_channel_family_query()

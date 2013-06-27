@@ -2019,7 +2019,10 @@ public class ChannelManager extends BaseManager {
         channelDtos.addAll(listCustomBaseChannelsForServer(s));
 
         for (DistChannelMap dcm : ChannelFactory.listCompatibleDcmByServerInNullOrg(s)) {
+            if (SystemManager.canServerSubscribeToChannel(
+                    usr.getOrg(), s, dcm.getChannel())) {
                 channelDtos.add(new EssentialChannelDto(dcm.getChannel()));
+            }
         }
 
         return channelDtos;

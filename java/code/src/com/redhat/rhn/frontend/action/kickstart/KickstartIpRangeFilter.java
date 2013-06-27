@@ -51,8 +51,22 @@ public class KickstartIpRangeFilter extends BaseListFilter {
      */
     public boolean filter(Object object, String field,
             String criteria) {
+
         KickstartIpRangeDto range = (KickstartIpRangeDto) object;
-        return filterOnRange(criteria, range.getMin(), range.getMax());
+
+        IpAddress min = new IpAddress(range.getMin());
+        IpAddress max = new IpAddress(range.getMax());
+
+        boolean contained;
+        try {
+            contained = filterOnRange(criteria, min.toString(), max.toString());
+        }
+        catch (InvalidIpAddressException e) {
+            contained = false;
+        }
+
+        return contained;
+
     }
 
     /**
@@ -63,20 +77,16 @@ public class KickstartIpRangeFilter extends BaseListFilter {
      * @param max the max ipaddress
      * @return true if it is contained, false otherwise
      */
-    public boolean filterOnRange(String search, Long min, Long max) {
-        // Try to create an IP address from the incoming string
-        IpAddress searchIp = null;
-        try {
-            searchIp = new IpAddress(search);
-        }
-        catch (InvalidIpAddressException iiae) {
-            if (log.isDebugEnabled()) {
-                log.debug(iiae.getMessage());
-            }
-            return false;
-        }
+    public boolean filterOnRange(String search, String min, String max) {
+        IpAddress minIp = new IpAddress(min);
+        IpAddress maxIp = new IpAddress(max);
+        IpAddress searchIp = new IpAddress(search);
 
-        IpAddressRange ipRange = new IpAddressRange(min, max);
+        IpAddressRange ipRange = new IpAddressRange(minIp.getLongNumber(),
+                maxIp.getLongNumber());
+
         return ipRange.isIpAddressContained(searchIp);
     }
+
+
 }

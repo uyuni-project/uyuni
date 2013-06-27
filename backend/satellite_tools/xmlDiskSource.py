@@ -102,6 +102,16 @@ class ChannelFamilyDiskSource(DiskSource):
         return "%s/channel_families.xml" % dirname
 
 
+class OrgsDiskSource(DiskSource):
+    subdir = 'orgs'
+
+    def _getFile(self, create=0):
+        dirname = self._getDir(create)
+        if create and not os.path.isdir(dirname):
+            createPath(dirname)
+        return "%s/orgs.xml" % dirname
+
+
 class ChannelDiskSource(DiskSource):
     subdir = 'channels'
 
@@ -254,6 +264,9 @@ class MetadataDiskSource:
 
     def getChannelFamilyXmlStream(self):
         return ChannelFamilyDiskSource(self.mountpoint).load()
+
+    def getOrgsXmlStream(self):
+        return OrgsDiskSource(self.mountpoint).load()
 
     def getProductNamesXmlStream(self):
         return ProductnamesDiskSource(self.mountpoint).load()

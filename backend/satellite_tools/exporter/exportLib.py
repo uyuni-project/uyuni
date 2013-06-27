@@ -198,6 +198,60 @@ class SatelliteDumper(BaseDumper):
     def set_iterator(self):
         return ArrayIterator(self._dumpers)
 
+class _OrgTrustDumper(BaseDumper):
+    tag_name = 'rhn-org-trusts'
+
+    def dump_subelement(self, data):
+        c = EmptyDumper(self._writer, 'rhn-org-trust', attributes={
+                'org-id' : data['org_trust_id'],
+        })
+        c.dump()
+
+class _OrgDumper(BaseDumper):
+    tag_name = 'rhn-org'
+
+    def __init__(self, writer, org):
+        self.org = org
+        BaseDumper.__init__(self, writer)
+
+    _query_org_trusts = """
+        select rto.org_trust_id
+          from rhnTrustedOrgs rto
+         where rto.org_id = :org_id
+    """
+
+    def set_iterator(self):
+        # trusts
+        h = rhnSQL.prepare(self._query_org_trusts)
+        h.execute(org_id=self.org['id'])
+        return ArrayIterator([_OrgTrustDumper(self._writer, data_iterator=h)])
+
+    def set_attributes(self):
+        attributes = {
+            'id'            : self.org['id'],
+            'name'          : self.org['name'],
+        }
+        return attributes
+
+class OrgsDumper(BaseDumper):
+    tag_name = 'rhn-orgs'
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator)
+
+    def dump_subelement(self, data):
+        org = _OrgDumper(self._writer, data)
+        org.dump()
+
+class ChannelTrustedOrgsDumper(BaseDumper):
+    tag_name = 'rhn-channel-trusted-orgs'
+
+    def dump_subelement(self, data):
+        d = EmptyDumper(self._writer, 'rhn-channel-trusted-org',
+                attributes={'org-id' : data['org_trust_id'],
+        })
+        d.dump()
+
 class _ChannelDumper(BaseRowDumper):
     tag_name = 'rhn-channel'
 
@@ -226,6 +280,7 @@ class _ChannelDumper(BaseRowDumper):
             'packages'      : ' '.join(packages),
             'channel-errata' : ' '.join(errata),
             'kickstartable-trees'   : ' '.join(ks_trees),
+            'sharing'       : self._row['channel_access'],
         }
 
     _query_channel_families = rhnSQL.Statement("""
@@ -240,6 +295,12 @@ class _ChannelDumper(BaseRowDumper):
          where dcm.channel_id = :channel_id
            and dcm.channel_arch_id = ca.id
            and dcm.org_id is null
+    """)
+
+    _query_get_channel_trusts = rhnSQL.Statement("""
+        select org_trust_id
+          from rhnChannelTrust
+         where channel_id = :channel_id
     """)
 
     def set_iterator(self):
@@ -273,6 +334,10 @@ class _ChannelDumper(BaseRowDumper):
             arr.append(SimpleDumper(self._writer, 'rhn-channel-comps-last-modified',
                 _dbtime2timestamp(comp_last_modified[0]))
             )
+
+        h = rhnSQL.prepare(self._query_get_channel_trusts)
+        h.execute(channel_id=channel_id)
+        arr.append(ChannelTrustedOrgsDumper(self._writer, data_iterator=h))
 
         h = rhnSQL.prepare(self._query_channel_families)
         h.execute(channel_id=channel_id)

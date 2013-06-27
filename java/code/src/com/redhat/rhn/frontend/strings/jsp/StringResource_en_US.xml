@@ -362,6 +362,30 @@
         <trans-unit id="lookup.jsp.reason3">
           <source>You've found an error in our site.</source>
         </trans-unit>
+        <trans-unit id="lookup.issslave.title">
+          <source>We're sorry, but the requested slave could not be found</source>
+        </trans-unit>
+        <trans-unit id="lookup.issslave.reason1">
+          <source>No slave with the name {0} is identified on this master.</source>
+        </trans-unit>
+        <trans-unit id="lookup.issmaster.title">
+          <source>We're sorry, but the requested master could not be found</source>
+        </trans-unit>
+        <trans-unit id="lookup.issmaster.reason1">
+          <source>No master with the label {0} is identified to this slave.</source>
+        </trans-unit>
+        <trans-unit id="lookup.issmaster.local.title">
+          <source>We're sorry, but the requested organization could not be found</source>
+        </trans-unit>
+        <trans-unit id="lookup.issmaster.local.reason1">
+          <source>No local organization with the ID  {0} exists on this slave.</source>
+        </trans-unit>
+        <trans-unit id="lookup.issmasterorg.title">
+          <source>We're sorry, but the requested organization could not be found</source>
+        </trans-unit>
+        <trans-unit id="lookup.issmasterorg.reason1">
+          <source>No master organization with the ID {0} is identified to this slave.</source>
+        </trans-unit>
       </group>
       <trans-unit id="emptyspace.jsp">
         <source> </source>
@@ -8307,7 +8331,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="kickstart.variable.jsp.summary">
         <source>Autoinstallation variables can be used to substitute values into autoinstallation profiles.  To define a variable simply add 'name=value' to the box below.
-        			You would then use $name within the profile to substitute in the value.</source>
+                    You would then use $name within the profile to substitute in the value.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
@@ -12316,7 +12340,7 @@ Note that if a given system overrides a given file, or has it in that system's l
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">
 Tip: If you would like to deploy this file to a system not in this list, request a Configuration Administrator to subscribe the system to the _ConfigChan3_ configuration channel, then return to this screen.
-		  </context>
+          </context>
         </context-group>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.configadmin">
@@ -12325,7 +12349,7 @@ Tip: If you would like to deploy this file to a system not in this list, request
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">
 Tip: If you would like to deploy this file to a system not in this list, you'll need to first subscribe that system to the _Configgy_ configuration channel using the _'Target Systems' tab_ for that channel, then return to this screen.  Also, note that the target system must have provisioning entitlements.
-		  </context>
+          </context>
         </context-group>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.not_deployable">
@@ -12340,7 +12364,7 @@ Tip: If you would like to deploy this file to a system not in this list, you'll 
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">
 You may grant provisioning entitlements _here_.
-		  </context>
+          </context>
         </context-group>
       </trans-unit>
       <!-- date-picker strings -->
@@ -12371,7 +12395,7 @@ You may grant provisioning entitlements _here_.
       </trans-unit>
       <trans-unit id="deploylocal.jspf.local">
         <source>
-	You can deploy the latest revision (&lt;a href="{1}"&gt;Revision {0}&lt;/a&gt;) of this file to &lt;a href="{3}"&gt;{2}&lt;/a&gt; - this file is part of that system's locally-managed config channel.
+    You can deploy the latest revision (&lt;a href="{1}"&gt;Revision {0}&lt;/a&gt;) of this file to &lt;a href="{3}"&gt;{2}&lt;/a&gt; - this file is part of that system's locally-managed config channel.
 </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
@@ -12454,9 +12478,9 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">
-		You can deploy the latest revision of this file (_Revision 7_) of this file to any of the systems subscribed to this file's
-		centrally-managed configuration channel, _@@PRODUCT_NAME@@Config_; below is a list of systems you may deploy this file to.
-		  </context>
+        You can deploy the latest revision of this file (_Revision 7_) of this file to any of the systems subscribed to this file's
+        centrally-managed configuration channel, _@@PRODUCT_NAME@@Config_; below is a list of systems you may deploy this file to.
+          </context>
         </context-group>
       </trans-unit>
       <trans-unit id="globalDeploy.jsp.noSystems">
@@ -12613,8 +12637,8 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileDetails.do</context>
           <context context-type="paramnotes">
-		    Revision 7 of /etc/sysconfig/rhn/up2date from channel _@@PRODUCT_NAME@@Config_
-		  </context>
+            Revision 7 of /etc/sysconfig/rhn/up2date from channel _@@PRODUCT_NAME@@Config_
+          </context>
         </context-group>
       </trans-unit>
       <!-- Tips -->
@@ -12641,8 +12665,8 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileDetails.do</context>
           <context context-type="paramnotes">
-				&lt;strong&gt;Tip:&lt;/strong&gt; Please note that the maximum allowed size for configuration files is &lt;strong&gt;128K&lt;/strong&gt;.
-			</context>
+                &lt;strong&gt;Tip:&lt;/strong&gt; Please note that the maximum allowed size for configuration files is &lt;strong&gt;128K&lt;/strong&gt;.
+            </context>
         </context-group>
       </trans-unit>
       <trans-unit id="filedetails.jsp.tip.edit">
@@ -12700,8 +12724,8 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">
-			  Error "Invalid I/O Operation" attempting to download file /etc/sysconfig/rhn/up2date
-		  </context>
+              Error "Invalid I/O Operation" attempting to download file /etc/sysconfig/rhn/up2date
+          </context>
         </context-group>
       </trans-unit>
       <trans-unit id="filedetails.jsp.update">
@@ -12926,7 +12950,7 @@ You can, however, download this file, edit it locally on your computer, and uplo
           <context context-type="paramnotes">
 You can't edit this file here because it is too large (files must be less than &lt;strong&gt;32K&lt;/strong&gt; to be editable in this form).
 You can, however, download this file, edit it locally on your computer, and upload your changes here.
-		  </context>
+          </context>
         </context-group>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.toolarge-display">
@@ -12939,7 +12963,7 @@ You can, however, download this file.
           <context context-type="paramnotes">
 This file is too large to display here. (files must be less than &lt;strong&gt;32K&lt;/strong&gt; to be displayed).
 You can, however, download this file.
-		  </context>
+          </context>
         </context-group>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.download-header">
@@ -12956,7 +12980,7 @@ You can, however, download this file.
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">
 _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
-		  </context>
+          </context>
         </context-group>
       </trans-unit>
       <!-- header.jspf -->
@@ -13042,8 +13066,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageRevisions.do</context>
           <context context-type="paramnotes">
-			  File /etc/sig successfully deleted
-		  </context>
+              File /etc/sig successfully deleted
+          </context>
         </context-group>
       </trans-unit>
       <!-- quota.jsp -->
@@ -16227,7 +16251,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - Ping status, will be either online or offline
-	     	                                   This string will be followed by a date in a localized format</context>
+                                                This string will be followed by a date in a localized format</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.osa.status.ping">
@@ -17181,7 +17205,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
 
 
 
-  	</group>
+      </group>
       <!-- download-ISOs pages -->
       <group>
         <!-- common -->
@@ -18167,7 +18191,7 @@ Below is a list of channels in your organization.
 As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default Red Hat base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels.
 &lt;p/&gt;
 &lt;strong&gt;This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution.&lt;/strong&gt;
-      	</source>
+          </source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
@@ -18586,7 +18610,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="help.jsp.chatinfo">
         <source>This page allows you to join an IRC chat room for discussions with other users
-				of @@PRODUCT_NAME@@.</source>
+                of @@PRODUCT_NAME@@.</source>
       </trans-unit>
       <trans-unit id="help.jsp.chatlink">
         <source>Access &lt;a href="http://webchat.freenode.net?channels=#spacewalk" target="_blank"&gt;#spacewalk&lt;/a&gt; channel on IRC.</source>
@@ -18666,15 +18690,15 @@ given channel.</source>
       </trans-unit>
        <trans-unit id="channel.jsp.package.remove">
          <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the patches which are applicable to it.
-		</source>
+        </source>
       </trans-unit>
       <trans-unit id="channel.jsp.details.title">
          <source>Details
-		</source>
+        </source>
        </trans-unit>
        <trans-unit id="channel.jsp.package.removesuccess">
          <source>{0} package(s) removed from channel {1}
-		</source>
+        </source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.removebutton">
         <source>Confirm Removal</source>
@@ -18720,7 +18744,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addsuccess">
         <source>{0} package(s) added to channel {1}
-		</source>
+        </source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addbutton">
         <source>Add Package(s)</source>
@@ -18734,14 +18758,14 @@ given channel.</source>
       <trans-unit id="channel.jsp.package.addmessage">
         <source>Below is the list of packages you can add to this channel. The "Channel" select box allows you to restrict the set of available packages. To add a package to this channel, select it here, and click 'Add Packages' below.
 
-			Only packages of a compatible arch will be shown</source>
+            Only packages of a compatible arch will be shown</source>
        </trans-unit>
        <trans-unit id="channel.jsp.package.add.confirm.title">
            <source>Confirm Package Addition</source>
        </trans-unit>
        <trans-unit id="channel.jsp.package.add.confirm.msg">
          <source>Below is the list of packages which you have selected to add to this channel. Adding a package to this channel does not automatically affect the systems which are subscribed to it, or the patches which are applicable to it.
-		</source>
+        </source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addtitle">
         <source>Add Packages</source>
@@ -18848,7 +18872,7 @@ given channel.</source>
       <trans-unit id="channel.jsp.manage.package.remove.message">
         <source>Are you certain you want to delete these packages?
 
-			This process can take several seconds. Be patient and do not click the button below more than once.</source>
+            This process can take several seconds. Be patient and do not click the button below more than once.</source>
       </trans-unit>
       <trans-unit id="baddownload.jsp.title">
         <source>File Download Failed</source>
@@ -19969,6 +19993,221 @@ given channel.</source>
       <trans-unit id="credentials.jsp.url">
         <source>URL</source>
       </trans-unit>
+      <trans-unit id="iss.slave.name">
+        <source>Slave Fully-Qualified Domain Name</source>
+      </trans-unit>
+      <trans-unit id="iss.master.name">
+        <source>Master Name</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.isEnabled">
+        <source>Allow Slave to Sync?</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.enabled">
+        <source>Slave is enabled</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.disabled">
+        <source>Slave is disabled</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.toAll">
+        <source>Sync All Orgs to Slave?</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.all">
+        <source>Sync All</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.notAll">
+        <source>Do Not Sync All</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.num-orgs-allowed">
+        <source>Number of Orgs Exported</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.all-allowed">
+        <source>All Organizations Exported</source>
+      </trans-unit>
+      <trans-unit id="iss.localorg.name">
+        <source>Local Organization</source>
+      </trans-unit>
+      <trans-unit id="toolbar.create.slave">
+        <source>Add new slave</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.remove">
+        <source>Remove selected slaves</source>
+      </trans-unit>
+      <trans-unit id="iss.master.remove">
+        <source>Remove selected masters</source>
+      </trans-unit>
+      <trans-unit id="toolbar.delete.slave">
+        <source>Delete slave</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.edit">
+        <source>Update</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.create">
+        <source>Create</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.associate">
+        <source>Allow Orgs</source>
+      </trans-unit>
+      <trans-unit id="iss.confirm.remove.slaves">
+        <source>Remove Slaves</source>
+      </trans-unit>
+      <trans-unit id="iss.confirm.remove.masters">
+        <source>Remove Masters</source>
+      </trans-unit>
+      <trans-unit id="iss.num.master.orgs">
+        <source>Known Orgs</source>
+      </trans-unit>
+      <trans-unit id="iss.num.unmapped.orgs">
+        <source>Unmapped Orgs</source>
+      </trans-unit>
+      <trans-unit id="iss.master.org.name">
+        <source>Master Org Name</source>
+      </trans-unit>
+      <trans-unit id="iss.slave.orgs">
+        <source>Matching Local Org</source>
+      </trans-unit>
+      <trans-unit id="iss.update.org.mapping">
+        <source>Update Mapping</source>
+      </trans-unit>
+      <trans-unit id="toolbar.delete.master">
+        <source>Delete master</source>
+      </trans-unit>
+      <trans-unit id="message.iss_slaves_removed">
+        <source>Selected slaves have been removed</source>
+      </trans-unit>
+      <trans-unit id="message.iss_slave_updated">
+        <source>Slave {0} updated</source>
+      </trans-unit>
+      <trans-unit id="message.iss_slave_created">
+        <source>Slave {0} created</source>
+      </trans-unit>
+      <trans-unit id="message.iss_slave_removed">
+        <source>Slave {0} removed</source>
+      </trans-unit>
+      <trans-unit id="message.iss_masters_removed">
+        <source>Selected masters have been removed</source>
+      </trans-unit>
+      <trans-unit id="message.iss_master_updated">
+        <source>Master {0} updated</source>
+      </trans-unit>
+      <trans-unit id="message.iss_master_removed">
+        <source>Master {0} removed</source>
+      </trans-unit>
+      <trans-unit id="message.iss_slave_allowed_orgs_updated">
+        <source>List of organizations exported to {0} updated</source>
+      </trans-unit>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/iss/Master.do</context>
+        </context-group>
+        <trans-unit id="iss.master.jsp.toolbar">
+          <source>ISS Configuration - Master Setup</source>
+        </trans-unit>
+        <trans-unit id="iss.master.jsp.explanation">
+          <source>Below are the slaves that are allowed to synchronize content from this @@PRODUCT_NAME@@ instance.</source>
+        </trans-unit>
+        <trans-unit id="iss.master.jsp.header2">
+          <source>Known Slave Instances</source>
+        </trans-unit>
+        <trans-unit id="iss.master.jsp.noslaves">
+          <source>No ISS Slaves are currently defined</source>
+        </trans-unit>
+      </group>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/iss/EditSlave.do</context>
+        </context-group>
+        <trans-unit id="iss.editslave.jsp.toolbar">
+          <source>ISS Configuration - Update Slave</source>
+        </trans-unit>
+        <trans-unit id="iss.editslave.jsp.explanation">
+          <source>Update the details of the slave selected below.</source>
+        </trans-unit>
+        <trans-unit id="iss.editslave.jsp.header2">
+          <source>Edit Slave Details</source>
+        </trans-unit>
+        <trans-unit id="iss.editslave.jsp.allowed.orgs.header">
+          <source>Allow Export of the Selected Organizations</source>
+        </trans-unit>
+        <trans-unit id="iss.editslave.jsp.nolocalorgs">
+          <source>No local organizations available</source>
+        </trans-unit>
+      </group>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/iss/RemoveSlaveConfirm.do</context>
+        </context-group>
+        <trans-unit id="iss.confirmslaveremove.jsp.toolbar">
+          <source>ISS Configuration - Confirm Slave Removal</source>
+        </trans-unit>
+        <trans-unit id="iss.confirmslaveremove.jsp.areyousure">
+          <source>
+          Removing the slave(s) below will remove whatever setup you have done for them, as well as preventing them from being able to synchronize from this @@PRODUCT_NAME@@ instance.
+          This operation cannot be undone - make sure you really want to do this!
+          </source>
+        </trans-unit>
+        <trans-unit id="iss.confirmslaveremove.jsp.header2">
+          <source>Slaves To Be Removed</source>
+        </trans-unit>
+      </group>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/iss/Slave.do</context>
+        </context-group>
+        <trans-unit id="iss.slave.jsp.toolbar">
+          <source>ISS Configuration - Slave Setup</source>
+        </trans-unit>
+        <trans-unit id="iss.slave.jsp.explanation">
+          <source>Below are all the master @@PRODUCT_NAME@@ instances that this @@PRODUCT_NAME@@ instance has ever synchronized content from.</source>
+        </trans-unit>
+        <trans-unit id="iss.slave.jsp.header2">
+          <source>Known Master Instances</source>
+        </trans-unit>
+         <trans-unit id="iss.slave.jsp.nomasters">
+          <source>No Masters known to this Slave</source>
+        </trans-unit>
+      </group>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/iss/RemoveMasterConfirm.do</context>
+        </context-group>
+        <trans-unit id="iss.confirmmasterremove.jsp.toolbar">
+          <source>ISS Configuration - Confirm Master Removal</source>
+        </trans-unit>
+        <trans-unit id="iss.confirmmasterremove.jsp.areyousure">
+          <source>
+          Removing the masters below will remove any master-to-slave organization mappings you have created.
+          This operation cannot be undone - make sure you really want to do this!
+          </source>
+        </trans-unit>
+        <trans-unit id="iss.confirmmasterremove.jsp.header2">
+          <source>Masters To Be Removed</source>
+        </trans-unit>
+        <trans-unit id="iss.confirmslaveremove.jsp.nomasters">
+          <source>No Masters known to this Slave</source>
+        </trans-unit>
+      </group>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/iss/MapOrgs.do</context>
+        </context-group>
+        <trans-unit id="iss.maporgs.jsp.toolbar">
+          <source>ISS Configuration - Map Master to Slave Orgs</source>
+        </trans-unit>
+        <trans-unit id="iss.maporgs.jsp.explanation">
+          <source>
+          In order to synchronize channel access-permissions from Master to Slave,
+          each known Master organization must be mapped to a local organization in this @@PRODUCT_NAME@@ instance.
+          On this page the administrator can accomplish this mapping.  Note that if a Master organization is not mapped,
+          channels that were restricted to that oragnization on the Master will be public in this @@PRODUCT_NAME@@ instance.
+          </source>
+        </trans-unit>
+        <trans-unit id="iss.maporgs.jsp.header2">
+          <source>Configure Master-to-Slave Org Mappings for {0}</source>
+        </trans-unit>
+        <trans-unit id="iss.maporgs.jsp.nomasterorgs">
+          <source>This master did not export any of its organizations to this slave</source>
+        </trans-unit>
+      </group>
     </body>
   </file>
 </xliff>

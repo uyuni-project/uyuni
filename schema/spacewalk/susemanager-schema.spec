@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.10.46
+Version:        1.10.52
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -75,6 +75,33 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Jun 27 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.52-1
+- fix sql syntax
+
+* Wed Jun 26 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.51-1
+- schema upgrades for rhnConfigRevision triggers
+
+* Tue Jun 25 2013 Grant Gainey 1.10.50-1
+- ISS: mv sql-updates in prep for last(?) merge from master
+- ISS: Mapping tables shouldn't have ID columns
+- ISS: Resolve upgrade-script name conflicts
+- ISS: Fixing whitespace
+- ISS: Naming is important - clean ours up so it makes more sense
+- ISS: A master-org might not be mapped
+- ISS: Make master-to-slave-org mapping be many-to-one instead of many-to-many
+- ISS: Schema chgs for ISS Slave-side setup
+- ISS: DRAFT #2: adelton's DB changes, affects on Java, slave-to-org-mapping
+
+* Mon Jun 24 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.49-1
+- fixed syntax error in rhn_confrevision_del_trig_fun
+
+* Fri Jun 21 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.48-1
+- 906157 - upgrade scripts for rhn_config.delete_file() and
+  rhn_confrevision_ccid_idx index
+- 906157 - index columns by which we select
+- 906157 - removed duplicate update
+- 906157 - replace number of small updates/deletes in loop
+
 * Tue Jun 18 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.46-1
 - 820123 - prevents empty values (db_host, db_port) in rhn.conf
 

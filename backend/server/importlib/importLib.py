@@ -189,6 +189,11 @@ class IncompleteSourcePackage(Information):
         'last_modified'     : DateType,
     }
 
+class ChannelTrust(Information):
+    attributeTypes = {
+        'org_trust_id'      : IntType,
+    }
+
 class Channel(Information):
     attributeTypes = {
         'label'             : StringType,
@@ -205,6 +210,7 @@ class Channel(Information):
         'channel_product_id': IntType,
         'receiving_updates' : StringType,
         'checksum_type'     : StringType,       # xml dumps >= 3.5
+        'channel_access'    : StringType,
         # XXX Not really useful stuff
         'basedir'           : StringType,
         'product_name'      : StringType,
@@ -220,11 +226,23 @@ class Channel(Information):
         'errata'            : [StringType],
         'errata_timestamps' : [ChannelErratum],
         'kickstartable_trees'   : [StringType],
+        'trust_list'         : [ChannelTrust],
         'export-type'        : StringType,
         'export-end-date'    : StringType,
         'export-start-date'  : StringType,
     }
 
+class OrgTrust(Information):
+    attributeTypes = {
+        'org_id'            : IntType,
+    }
+
+class Org(Information):
+    attributeTypes = {
+        'id'                : IntType,
+        'name'              : StringType,
+        'org_trust_ids'     : [OrgTrust],
+    }
 
 class File(Item):
     attributeTypes = {

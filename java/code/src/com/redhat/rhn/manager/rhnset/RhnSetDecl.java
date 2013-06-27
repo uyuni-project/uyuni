@@ -385,6 +385,15 @@ public class RhnSetDecl {
     public static final RhnSetDecl SSM_CHANNEL_UNSUBSCRIBE = make(
             "ssm_channel_unsubscribe", SetCleanup.NOOP);
 
+    public static final RhnSetDecl ISS_SLAVES = make(
+            "iss_slaves", SetCleanup.NOOP);
+
+    public static final RhnSetDecl ISS_MASTERS = make(
+                    "iss_masters", SetCleanup.NOOP);
+
+    public static final RhnSetDecl ISS_LOCAL_ORGS = make(
+                    "iss_local_orgs", SetCleanup.NOOP);
+
     private SetCleanup cleanup;
     private String label;
 
