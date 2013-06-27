@@ -1,5 +1,5 @@
---- /cvs/GALAXY/Manager/schema/spacewalk/upgrade//spacewalk-schema-1.8-to-spacewalk-schema-1.9/011-rhn_channel.pkb.sql.postgresql	2013-02-08 14:26:10.000000000 +0100
-+++ /cvs/GALAXY/Manager/schema/spacewalk/upgrade//susemanager-schema-1.7.57-to-susemanager-schema-2.0//1011-rhn_channel.pkb.sql.postgresql	2013-02-08 16:25:12.000000000 +0100
+--- /home/mc/CVS/Manager/schema/spacewalk/upgrade//spacewalk-schema-1.8-to-spacewalk-schema-1.9/011-rhn_channel.pkb.sql.postgresql	2013-02-09 11:28:11.111955090 +0100
++++ /home/mc/CVS/Manager/schema/spacewalk/upgrade//susemanager-schema-1.7.57-to-susemanager-schema-2.0//1011-rhn_channel.pkb.sql.postgresql	2013-02-09 11:28:11.111955090 +0100
 @@ -1,4 +1,4 @@
 --- oracle equivalent source sha1 e6fa92f40cfb0ac1645f53ecad5f2a8f99a616f7
 +-- oracle equivalent source sha1 96133b5542a0f539278ae969c012e1200d09a3e1
