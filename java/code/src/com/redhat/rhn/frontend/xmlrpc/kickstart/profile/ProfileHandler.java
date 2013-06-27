@@ -973,7 +973,8 @@ public class ProfileHandler extends BaseHandler {
        KickstartData ksdata = lookupKsData(ksLabel, user.getOrg());
        KickstartIpRangeFilter filter = new KickstartIpRangeFilter();
        for (KickstartIpRange range : ksdata.getIps()) {
-           if (filter.filterOnRange(ipAddress, range.getMin(), range.getMax())) {
+           if (filter.filterOnRange(ipAddress, range.getMinString(), range
+                   .getMaxString())) {
                ksdata.getIps().remove(range);
                return 1;
            }

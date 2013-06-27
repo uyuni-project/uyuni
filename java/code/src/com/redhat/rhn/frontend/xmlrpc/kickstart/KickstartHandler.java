@@ -500,7 +500,8 @@ public class KickstartHandler extends BaseHandler {
                 .getOrg());
         KickstartIpRangeFilter filter = new KickstartIpRangeFilter();
         for (KickstartIpRange range : ranges) {
-            if (filter.filterOnRange(ipAddress, range.getMin(), range.getMax())) {
+            if (filter.filterOnRange(ipAddress, range.getMinString(), range
+                    .getMaxString())) {
                 return range.getKsdata().getLabel();
             }
         }
