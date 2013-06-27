@@ -492,7 +492,7 @@ class ContainerHandler:
         self.handler.set_container(diskImportLib.ProductNamesContainer())
     def setOrgContainer(self, master_label, create_orgs):
         self.handler.set_container(diskImportLib.OrgContainer())
-        # pylint: disable=E495
+        # pylint: disable=E1103
         self.handler.get_container('rhn-orgs').set_master_and_create_org_args(
                 master_label, create_orgs)
 
