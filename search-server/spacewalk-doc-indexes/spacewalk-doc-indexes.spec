@@ -18,7 +18,7 @@ Requires: nutch
 Requires: susemanager-jsp_en >= 1.2
 Requires: release-notes-susemanager >= 1.2
 BuildArch: noarch
-ExclusiveArch: x86_64
+ExclusiveArch: x86_64 s390x
 Provides: doc-indexes = %{version}
 
 %description
