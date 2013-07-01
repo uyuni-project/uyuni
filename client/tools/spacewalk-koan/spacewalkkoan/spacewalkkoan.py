@@ -156,7 +156,7 @@ def initiate(kickstart_host, base, extra_append, static_device=None, system_reco
         k.virt_path           = None
         k.virt_type           = None
         k.virt_bridge         = None
-        k.no_gfx              = 1
+        k.no_gfx              = 0
         k.add_reinstall_entry = None
         k.kopts_override      = None
         k.use_kexec           = None
@@ -235,7 +235,7 @@ def initiate_guest(kickstart_host, cobbler_system_name, virt_type, name, mem_kb,
         k.virt_path           = disk_path
         k.virt_type           = virt_type
         k.virt_bridge         = virt_bridge
-        k.no_gfx              = 1
+        k.no_gfx              = 0
         k.add_reinstall_entry = None
         k.kopts_override      = None
         k.virt_auto_boot      = None
