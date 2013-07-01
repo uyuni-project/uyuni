@@ -38,7 +38,7 @@ def main():
     parser.add_option("-c", "--channel", action="store",
                       help="add a new channel and trigger a reposync")
     parser.add_option("--all-childs", action="store_true", dest="allchilds",
-                      help="Show also childs, if the parent is not synced yet")
+                      help="Show also children, if the parent is not synced yet")
     parser.add_option("--no-optional", action="store_true", dest="noopt",
                       help="Do not list optional channels")
     parser.add_option("--filter", action="store", dest="filter",
