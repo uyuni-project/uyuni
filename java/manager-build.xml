@@ -144,6 +144,13 @@
     />
   </target>
 
+  <target name="deploy-images" description="Deploys images from the branding directory to the server">
+    <echo message="Copying files to remote host..." />
+    <exec executable="rsync">
+      <arg line="-a ${branding.img.dir}/ ${deploy.user}@${deploy.host}:/srv/www/htdocs/img" />
+    </exec>
+  </target>
+
   <target name="deploy-tests" depends="init-tests,webapp" description="Deploy SUSE Manager tests">
     <echo message="Copying webapp files to remote host for running tests..." />
     <exec executable="rsync">
