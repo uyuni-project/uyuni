@@ -18,7 +18,9 @@
   <property name="tests.includes" value="manager-test-includes" />
   <property name="tests.excludes" value="manager-test-excludes" />
   <property name="tests.results.dir" value="test-results"/>
-  <property name="branding.src.dir" value="${basedir}/../branding/java/code/src"/>
+  <property name="branding.dir" value="${basedir}/../branding"/>
+  <property name="branding.src.dir" value="${branding.dir}/java/code/src"/>
+  <property name="branding.img.dir" value="${branding.dir}/img"/>
 
   <!-- Paths -->
   <path id="libjars">
