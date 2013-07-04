@@ -102,7 +102,7 @@ public class SuseProductWriter extends RepomdWriter {
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("ver", (String) product.get("version"));
         attr.addAttribute("rel", (String) product.get("release"));
-        attr.addAttribute("epoch", (String) product.get("epoch"));
+        attr.addAttribute("epoch", getPackageEpoch((String) product.get("epoch")));
         handler.startElement("version", attr);
         handler.endElement("version");
         handler.addElementWithCharacters("arch", (String) product.get("arch"));
