@@ -1,5 +1,5 @@
---- /home/mc/CVS/Manager/schema/spacewalk/upgrade//spacewalk-schema-1.8-to-spacewalk-schema-1.9/011-rhn_channel.pkb.sql.oracle	2013-02-09 11:28:11.111955090 +0100
-+++ /home/mc/CVS/Manager/schema/spacewalk/upgrade//susemanager-schema-1.7.57-to-susemanager-schema-2.0//1011-rhn_channel.pkb.sql.oracle	2013-02-09 11:28:11.111955090 +0100
+--- /cvs/GALAXY/Manager/schema/spacewalk/upgrade//spacewalk-schema-1.8-to-spacewalk-schema-1.9/011-rhn_channel.pkb.sql.oracle	2013-02-08 14:26:10.000000000 +0100
++++ /cvs/GALAXY/Manager/schema/spacewalk/upgrade//susemanager-schema-1.7.57-to-susemanager-schema-2.0//1011-rhn_channel.pkb.sql.oracle	2013-02-08 16:24:30.000000000 +0100
 @@ -58,6 +58,7 @@
          server_org_id_val       NUMBER;
          available_subscriptions NUMBER;

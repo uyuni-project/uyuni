@@ -1,5 +1,5 @@
---- /home/mc/CVS/Manager/schema/spacewalk/upgrade//spacewalk-schema-1.8-to-spacewalk-schema-1.9/010-rhn_channel.pks.sql.oracle	2013-01-26 11:30:10.180867991 +0100
-+++ /home/mc/CVS/Manager/schema/spacewalk/upgrade//susemanager-schema-1.7.57-to-susemanager-schema-2.0//1010-rhn_channel.pks.sql.oracle	2013-01-26 11:58:06.118961655 +0100
+--- /cvs/GALAXY/Manager/schema/spacewalk/upgrade//spacewalk-schema-1.8-to-spacewalk-schema-1.9/010-rhn_channel.pks.sql.oracle	2013-01-28 16:48:01.000000000 +0100
++++ /cvs/GALAXY/Manager/schema/spacewalk/upgrade//susemanager-schema-1.7.57-to-susemanager-schema-2.0//1010-rhn_channel.pks.sql.oracle	2013-01-28 16:48:01.000000000 +0100
 @@ -144,6 +144,8 @@
  
      procedure set_comps(channel_id_in in number, path_in in varchar2, timestamp_in in varchar2);

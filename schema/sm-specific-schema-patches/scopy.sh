@@ -56,7 +56,7 @@ for d in ${dirs[*]}; do
                             continue
                         fi
                     fi
-		    echo "NEED CHECK: diff -ub $dest $i"
+		    echo "NEED CHECK: diff -ub $i $dest"
                 fi
 	    fi
 	    continue
