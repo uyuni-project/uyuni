@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.iss.IssMasterOrg;
 import com.redhat.rhn.frontend.xmlrpc.serializer.IssMasterOrgSerializer;
 import com.redhat.rhn.frontend.xmlrpc.serializer.IssMasterSerializer;
+import com.redhat.rhn.testing.TestUtils;
 
 public class IssMasterSerializerTest extends MockObjectTestCase {
     private String[] masterOrgNames = {"masterOrg1", "masterOrg2", "masterOrg3"};
@@ -47,6 +48,10 @@ public class IssMasterSerializerTest extends MockObjectTestCase {
         assertTrue(result.contains(">" + master.getId() + "<"));
         assertTrue(result.contains("name>label</name"));
         assertTrue(result.contains(">" + master.getLabel() + "<"));
+        assertTrue(result.contains("name>isCurrentMaster</name"));
+        assertTrue(result.contains(">" + (master.isDefaultMaster() ? "1" : "0") + "<"));
+        assertTrue(result.contains("name>caCert</name"));
+        assertTrue(result.contains(">" + (master.getCaCert()) + "<"));
     }
 
     public void testMasterOrgSerialize() throws XmlRpcException, IOException {
@@ -69,7 +74,9 @@ public class IssMasterSerializerTest extends MockObjectTestCase {
         long baseId = 1001L;
 
         IssMaster master = new IssMaster();
-        master.setLabel("testMaster");
+        master.setLabel("testMaster" + TestUtils.randomString());
+        master.makeDefaultMaster();
+        master.setCaCert("/tmp/FOO-CA-CERT");
         Set<IssMasterOrg> orgs = new HashSet<IssMasterOrg>();
         for (String orgName : masterOrgNames) {
             IssMasterOrg anOrg = new IssMasterOrg();

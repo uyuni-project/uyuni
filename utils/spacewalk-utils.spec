@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.10.12
+Version:	1.10.14
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -103,6 +103,17 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Tue Jul 02 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.14-1
+- oracle -> postgresql: properly quote commas in evr_t constructor
+- oracle -> pg migrations: filter plan_table_9i out
+
+* Mon Jul 01 2013 Grant Gainey <ggainey@redhat.com> 1.10.13-1
+- 977878 - spacewalk-sync-setup: Fix create-template to do the right then when re-run, and make
+  --dry-run work
+- 977878 - spacewalk-sync-setup: Move sync_setup to somewhere package-able, rename and add license
+  stmt
+- oracle -> pg migrations: filter plan_table_9i out
+
 * Mon Jun 17 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.12-1
 - removed old CVS/SVN version ids
 - branding fixes in man pages
