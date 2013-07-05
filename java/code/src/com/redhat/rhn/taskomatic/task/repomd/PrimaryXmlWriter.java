@@ -305,7 +305,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
                 attr.addAttribute("rel", evrMap.get("release"));
             }
 
-            if (hasPreFlag(pkgCapIter.getNumber("sense").longValue())) {
+            if (hasPreFlag(capability.getSense())) {
                 attr.addAttribute("pre", "1");
             }
 
