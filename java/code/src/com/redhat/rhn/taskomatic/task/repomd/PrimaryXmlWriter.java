@@ -330,7 +330,9 @@ public class PrimaryXmlWriter extends RepomdWriter {
             String[] parts = evr.split(":");
             String vr;
             if (parts.length != 1) {
-                map.put("epoch", parts[0]);
+                if (parts[0] != null && !(parts[0].isEmpty())) {
+                    map.put("epoch", parts[0]);
+                }
                 vr = parts[1];
             }
             else {
