@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.107
+Version: 1.10.118
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -412,7 +412,13 @@ if test -d /usr/share/tomcat6; then
     fi
 fi
 
-%if ! 0%{?omit_tests} > 0
+%if 0%{?fedora} && 0%{?fedora} >= 19
+# checkstyle is broken on Fedoras - we skip for now
+# RHEL5 checkstyle4 is incompatible with checkstyle5
+%define skip_xliff  1
+%endif
+
+%if ! 0%{?omit_tests} > 0 && ! 0%{?skip_xliff}
 find . -name 'StringResource_*.xml' |      while read i ;
     do echo $i
     # check for common localizations issues
@@ -705,7 +711,11 @@ fi
 %{jardir}/hibernate_hibernate-commons-annotations.jar
 %{jardir}/hibernate-jpa-2.0-api.jar
 %{jardir}/javassist.jar
+%if 0%{?fedora} && 0%{?fedora} > 18
+%{jardir}/jboss-logging_jboss-logging.jar
+%else
 %{jardir}/jboss-logging.jar
+%endif
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12.jar
 %endif
@@ -853,6 +863,42 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Jul 04 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.118-1
+- skip xliff checks for fedora 19
+
+* Thu Jul 04 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.117-1
+- build spacewalk-java on fedora19
+
+* Thu Jul 04 2013 Tomas Lestach <tlestach@redhat.com> 1.10.116-1
+- Avoid relying on types returned by Hibernate
+
+* Thu Jul 04 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.115-1
+- make dirs if they don't exist yet
+
+* Thu Jul 04 2013 Tomas Lestach <tlestach@redhat.com> 1.10.114-1
+- rewrite /network/software/channels/managers.pxt page to java
+
+* Thu Jul 04 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.113-1
+- making spacewalk-java build-able on fedora19
+- 977878 - Support for is_current and ca_cert, DTO/Serializer/Handler
+
+* Tue Jul 02 2013 Grant Gainey 1.10.112-1
+- 977878 - Keep some unit-tests from overlapping
+
+* Tue Jul 02 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.111-1
+- checkstyle fix
+
+* Tue Jul 02 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.110-1
+- updating strings to use @@PRODUCT_NAME@@ macro
+- 834214 - do not validate input when it's not needed
+
+* Fri Jun 28 2013 Tomas Lestach <tlestach@redhat.com> 1.10.109-1
+- mark unfinished taskomatic runs as INTERRUPTED
+- messages get displayed within layout_c.jsp
+
+* Thu Jun 27 2013 Grant Gainey 1.10.108-1
+- 977878 - Clean up maps on local-org-removal
+
 * Thu Jun 27 2013 Jan Dobes 1.10.107-1
 - 514223 - catching invalid ip to prevent ISE
 - removing @Override annotation from methods that aren't overriden

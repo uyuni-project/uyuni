@@ -7,7 +7,7 @@
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.10.6
+Version: 1.10.7
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: GPLv2
@@ -17,6 +17,9 @@ Requires: spacewalk-base
 Requires: perl-URI, perl(MIME::Base64)
 Requires: lsof
 BuildRequires: /usr/bin/pod2man
+%if 0%{?fedora} > 18
+BuildRequires: systemd
+%endif
 Obsoletes: satellite-utils < 5.3.0
 Provides: satellite-utils = 5.3.0
 Obsoletes: rhn-satellite-admin < 5.3.0
@@ -94,6 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Jul 03 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.7-1
+- make spacewalk-admin build-able on F19
+
 * Wed Jun 12 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.6-1
 - rebrading RHN Satellite to Red Hat Satellite
 

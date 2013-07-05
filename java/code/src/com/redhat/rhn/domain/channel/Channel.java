@@ -813,7 +813,6 @@ public class Channel extends BaseDomainHelper implements Comparable {
         return checksumType != null;
     }
 
-
     /**
      * true if the channel contains any kickstartstartable distros
      * @return true if the channel contains any distros.

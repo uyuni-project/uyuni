@@ -7,7 +7,7 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 18%{?dist}
+Release: 20%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
@@ -32,8 +32,12 @@ Requires: tftp-server
 Requires: mod_wsgi
 
 Requires: createrepo
-%if 0%{?fedora} >= 11
+%if 0%{?fedora}
+%if 0%{?fedora} >= 19
+Requires: fence-agents-all
+%else
 Requires: fence-agents
+%endif
 %endif
 %if 0%{?fedora} >= 11 || 0%{?rhel} >= 6
 Requires: genisoimage
@@ -61,8 +65,12 @@ Requires: yum-utils
 %endif
 
 %if 0%{?fedora}
+%if 0%{?fedora} > 18
+BuildRequires: systemd
+%else
 Requires(post):  /bin/systemctl
 Requires(preun): /bin/systemctl
+%endif
 %else
 Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
@@ -452,6 +460,13 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Fri Jul 05 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.11-20
+- polishing cobbler20 dependencies for fedora19
+
+* Wed Jul 03 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.11-19
+- make cobbler20 build-able on F19
+- replace legacy name of Tagger with new one
+
 * Thu Apr 11 2013 Stephen Herr <sherr@redhat.com> 2.0.11-18
 - fixing cobbler patch file
 

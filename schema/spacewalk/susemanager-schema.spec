@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.10.52
+Version:        1.10.62
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -75,6 +75,36 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Wed Jul 03 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.62-1
+- fixing oracle equivalent source sha1
+
+* Wed Jul 03 2013 Stephen Herr <sherr@redhat.com> 1.10.61-1
+- 977878 - ca cert path field was not long enough
+
+* Wed Jul 03 2013 Stephen Herr <sherr@redhat.com> 1.10.60-1
+- 977878 - rhnISSMaster index needs to be different for oracle
+
+* Wed Jul 03 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.59-1
+- Drop where from unique index creation
+
+* Tue Jul 02 2013 Stephen Herr <sherr@redhat.com> 1.10.58-1
+- 977878 - move iss parent / ca_cert configs into database
+
+* Tue Jul 02 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.57-1
+- Spacewalk user: add read_only flag
+
+* Mon Jul 01 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.56-1
+- PostgreSQL schema upgrade fixes
+
+* Mon Jul 01 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.55-1
+- fixed forgotten end loop
+
+* Fri Jun 28 2013 Tomas Lestach <tlestach@redhat.com> 1.10.54-1
+- mark unfinished taskomatic runs as INTERRUPTED
+
+* Fri Jun 28 2013 Dimitar Yordanov <dyordano@redhat.com> 1.10.53-1
+- fix sql syntax.
+
 * Thu Jun 27 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.52-1
 - fix sql syntax
 

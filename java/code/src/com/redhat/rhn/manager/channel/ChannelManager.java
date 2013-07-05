@@ -34,7 +34,6 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ChannelVersion;
-import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.channel.ProductName;
@@ -2839,5 +2838,15 @@ public class ChannelManager extends BaseManager {
 
         SelectMode m = ModeFactory.getMode("Package_queries", mode, Map.class);
         return m.execute(params);
+    }
+
+    /**
+     * returns channel manager ids within the given org for a given channel
+     * @param org given organization
+     * @param channel channel
+     * @return list of channel manager ids
+     */
+    public static List<Long> listChannelManagerIdsForChannel(Org org, Channel channel) {
+        return ChannelFactory.listManagerIdsForChannel(org, channel.getId());
     }
 }

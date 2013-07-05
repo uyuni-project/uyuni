@@ -409,15 +409,20 @@ def processCommandline():
     cfg = config.initUp2dateConfig()
     up2date_cfg = dict(cfg.items())
 
-    rhn_parent = urlparse.urlparse(up2date_cfg['serverURL'][0])[1]
-    httpProxy = urlparse.urlparse(up2date_cfg['httpProxy'][0])[1]
+    if type(up2date_cfg['serverURL']) is type([]):
+        rhn_parent = urlparse.urlparse(up2date_cfg['serverURL'][0])[1]
+    else:
+        rhn_parent = urlparse.urlparse(up2date_cfg['serverURL'])[1]
+
+    httpProxy = urlparse.urlparse(up2date_cfg['httpProxy'])[1]
     httpProxyUsername = up2date_cfg['proxyUser']
     httpProxyPassword = up2date_cfg['proxyPassword']
+
     if not httpProxy:
         httpProxyUsername, httpProxyPassword = '', ''
     if not httpProxyUsername:
         httpProxyPassword = ''
-    ca_cert = up2date_cfg['sslCACert']
+    ca_cert = ''
     defaultVersion = '5.2'
 
     # parse options
