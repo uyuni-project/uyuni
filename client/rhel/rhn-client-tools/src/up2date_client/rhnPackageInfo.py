@@ -11,7 +11,7 @@ import up2dateLog
 import rhnserver
 import pkgUtils
 
-from suseRegister.info import getProductProfile, parseProductProfileFile
+from suseRegister.info import getProductProfile
 
 
 def logDeltaPackages(pkgs):
