@@ -35,8 +35,8 @@ Feature: Test weak dependencies
   Scenario: Check local metdata for weak deps
     Given I am root
      When I refresh the metadata
-     Then I should have "rpm:recommends.*rpcbind.*rpm:recommends" in the metadata
-      And I should have "rpm:supplements.*packageand.kernel-default:kernel-source.*rpm:supplements" in the metadata
+     Then I should have 'rpm:recommends.*rpcbind.*rpm:recommends' in the metadata
+      And I should have 'rpm:supplements.*packageand.kernel-default:kernel-source.*rpm:supplements' in the metadata
 
 
 
