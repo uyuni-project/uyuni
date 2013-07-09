@@ -41,6 +41,7 @@ features_task = Cucumber::Rake::Task.new do |t|
                      features/mgr-bootstrap.feature
                      features/channels.feature
                      features/weak_deps.feature
+                     features/metadata_check.feature
                      features/bug-821968.feature
                      features/check_support_data.feature
                      features/check_registration.feature
