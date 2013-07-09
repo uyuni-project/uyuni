@@ -12,4 +12,4 @@ Feature: Test bug 821968
     Scenario: Check local metdata not contain \n at the end of the summary
     Given I am root
      When I refresh the metadata
-     Then I should have "'summary.*</summary'" in the metadata
+     Then I should have 'summary.*</summary' in the metadata
