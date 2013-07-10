@@ -29,6 +29,7 @@ Scenario: searching for a known CVE number
     And I should see a "Affected, patch available in an assigned channel" text in the "Patch status" column
     And I should see a "Install a new patch in this system" link
     And I should see a "Only candidate is: slessp2-kernel-6648" text in the "Next Action" column
+    And I should see a "Download CSV" link
   Then I follow "Install a new patch in this system"
     And I should see a "Relevant Patches" text
 
