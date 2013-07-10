@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'yaml'
 require 'cucumber/rake/task'
 require "rake/rdoctask"
 require "rake/testtask"
@@ -9,63 +10,18 @@ require "spacewalk_testsuite_base/version"
 
 ENV['LD_LIBRARY_PATH'] = "/usr/lib64/oracle/10.2.0.4/client/lib/"
 
-features_task = Cucumber::Rake::Task.new do |t|
-  cucumber_opts = %w{--format pretty}
-  #cucumber_opts = cucumber_opts + %w{-o /tmp/cucumber.log}
-  feature_files  = %w{
-                     features/database.feature
-                     features/init_user_create.feature
-                     features/running.feature
-                     features/login.feature
-                     features/mainpage.feature
-                     features/channels_add.feature
-                     features/push_package.feature
-                     features/create_repository.feature
-                     features/systemspage.feature
-                     features/create_activationkey.feature
-                     features/users.feature
-                     features/users-createnewuser.feature
-                     features/users-userdetails.feature
-                     features/credentials.feature
-                     features/create_config_channel.feature
-                     features/register_client.feature
-                     features/monitoring.feature
-                     features/system_configuration.feature
-                     features/custom_system_info.feature
-                     features/create_group.feature
-                     features/add_sys_of_group_to_SSM.feature
-                     features/configuration.feature
-                     features/add_system_to_conf.feature
-                     features/walk_hrefs.feature
-                     features/delete_system_from_conf.feature
-                     features/mgr-bootstrap.feature
-                     features/channels.feature
-                     features/weak_deps.feature
-                     features/metadata_check.feature
-                     features/bug-821968.feature
-                     features/check_support_data.feature
-                     features/check_registration.feature
-                     features/check_errata-npn.feature
-                     features/erratapage.feature
-                     features/install_package.feature
-                     features/install_errata-npn.feature
-                     features/clone_channel-npn.feature
-                     features/monitoring2.feature
-                     features/test_config_channel.feature
-                     features/openscap_audit.feature
-                     features/ncc-sync-channels.feature
-                     features/systemspage2.feature
-                     features/xmlrpc_system.feature
-                     features/delete_system_profile.feature
-                     features/ssh_push.feature
-                     features/delete_config_channel.feature
-                     features/users-deleteuser1.feature
-                     features/xmlrpc_api.feature
-                     features/xmlrpc_activationkey.feature
-                     features/xmlrpc_channel.feature
-                     features/spacewalk-debug.feature
-                    }
-  t.cucumber_opts = cucumber_opts + feature_files
+Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
+  namespace :cucumber do
+    Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
+      cucumber_opts = %w{--format pretty}
+      features = YAML::load(File.read(entry))
+      t.cucumber_opts = cucumber_opts + features
+    end
+  end
+end
+
+task :cucumber do |t|
+  Rake::Task['cucumber:testsuite'].invoke
 end
 
 namespace :cucumber do

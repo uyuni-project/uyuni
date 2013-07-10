@@ -1,0 +1,18 @@
+--- # List of features for reference host
+- features/init_user_create.feature
+- features/running.feature
+- features/login.feature
+- features/channels_add.feature
+- features/create_repository.feature
+- features/create_activationkey.feature
+- features/create_config_channel.feature
+- features/mgr-bootstrap.feature
+- features/system_configuration.feature
+- features/configuration.feature
+- features/add_system_to_conf.feature
+- features/ncc-sync-channels.feature
+- features/channels.feature
+- features/check_registration.feature
+- features/install_package.feature
+- features/install_errata-npn.feature
+- features/clone_channel-npn.feature
