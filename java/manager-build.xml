@@ -201,7 +201,7 @@
     <ant antfile="manager-test.xml" dir="buildconf"/>
   </target>
 
-  <target name="checkstyle" depends="compile">
+  <target name="checkstyle" depends="compile" description="Runs the checkstyle tool on sources">
     <taskdef resource="checkstyletask.properties" classpathref="libjars" />
     <checkstyle config="buildconf/checkstyle.xml">
       <classpath>
