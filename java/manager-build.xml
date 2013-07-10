@@ -200,4 +200,24 @@
     <property name="test.configuration.path" value="${basedir}/conf/local-tests" />
     <ant antfile="manager-test.xml" dir="buildconf"/>
   </target>
+
+  <target name="init-checkstyle">
+    <taskdef resource="checkstyletask.properties" classpathref="libjars" />
+  </target>
+
+  <target name="checkstyle" depends="init-checkstyle">
+    <checkstyle config="buildconf/checkstyle.xml" classpathref="libjars">
+      <fileset dir="code">
+        <include name="**/src/**/*.java" />
+        <exclude name="**/test/*.java" />
+        <exclude name="**/playpen/*.java" />
+      </fileset>
+      <property key="checkstyle.cache.file" file="build/${checkstyle.cache.src}" />
+      <property key="checkstyle.header.file" file="buildconf/LICENSE.txt" />
+      <property key="javadoc.method.scope" value="public" />
+      <property key="javadoc.var.scope" value="package" />
+      <property key="javadoc.type.scope" value="package" />
+      <property key="javadoc.lazy" value="false" />
+    </checkstyle>
+  </target>
 </project>
