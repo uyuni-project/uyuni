@@ -201,9 +201,13 @@
     <ant antfile="manager-test.xml" dir="buildconf"/>
   </target>
 
-  <target name="checkstyle">
+  <target name="checkstyle" depends="compile">
     <taskdef resource="checkstyletask.properties" classpathref="libjars" />
-    <checkstyle config="buildconf/checkstyle.xml" classpathref="libjars">
+    <checkstyle config="buildconf/checkstyle.xml">
+      <classpath>
+        <path location="${build.dir}/classes" />
+        <path refid="libjars" />
+      </classpath>
       <fileset dir="code">
         <include name="**/src/**/*.java" />
         <exclude name="**/test/*.java" />
