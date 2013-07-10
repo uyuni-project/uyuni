@@ -34,7 +34,6 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ChannelVersion;
-import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.channel.ProductName;
