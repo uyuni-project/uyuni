@@ -24,6 +24,10 @@ rake
 
 Or look at rake -T
 
+==Custom feature run sets
+
+Add a file into run_sets/$name.yml and then execute rake cucumber:$name
+
 ==Conventions when adding more tests
 
 * Add required gems to gemspec
