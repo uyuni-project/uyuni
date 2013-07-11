@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 SUSE Linux Products GmbH.
+# Copyright (c) 2013 SUSE
 # Licensed under the terms of the MIT license.
 
 Feature: CVE Audit
