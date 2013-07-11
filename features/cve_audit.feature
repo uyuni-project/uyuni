@@ -30,6 +30,9 @@ Scenario: searching for a known CVE number
     And I should see a "Install a new patch in this system" link
     And I should see a "Only candidate is: slessp2-kernel-6648" text in the "Next Action" column
     And I should see a "Download CSV" link
+    And I should see an alphabar link to this system
+    And I should see a "Patch status" link
+    And I should see a "System" link
   Then I follow "Install a new patch in this system"
     And I should see a "Relevant Patches" text
 
