@@ -8,7 +8,7 @@
  
  https://github.com/SUSE/spacewalk/wiki/Java-Development-Environment
 -->
-<project name="SUSE Manager" default="deploy" basedir=".">
+<project name="SUSE Manager" default="deploy-restart" basedir=".">
   <!-- Import common definitions -->
   <import file="buildconf/manager-common.xml" />
   
@@ -123,7 +123,7 @@
     </copy>
   </target>
 
-  <target name="deploy" depends="webapp" description="Deploys a new copy of SUSE Manager">
+  <target name="deploy" depends="webapp" description="Deploy a new copy of SUSE Manager">
     <echo message="Copying files to remote host..." />
     <exec executable="rsync">
       <arg line="-a --delete ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
@@ -137,12 +137,27 @@
         echo "Linking the main jar for Taskomatic...";
         mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib;
         ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib;
-      
+      '
+    />
+  </target>
+
+  <target name="restart-tomcat" description="Restart the tomcat process">
+    <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
         echo "Launching Tomcat restart...";
         nohup rctomcat6 restart > /dev/null 2>&amp;1 &amp;
       '
     />
   </target>
+
+  <target name="restart-taskomatic" description="Restart the taskomatic process">
+    <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
+        echo "Launching Taskomatic restart...";
+        nohup rctaskomatic restart > /dev/null 2>&amp;1 &amp;
+      '
+    />
+  </target>
+
+  <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
   <target name="deploy-images" description="Deploys images from the branding directory to the server">
     <echo message="Copying files to remote host..." />
