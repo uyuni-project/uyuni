@@ -303,8 +303,10 @@ ncc-email = $NCC_EMAIL
 
     if [ "$DO_MIGRATION" = "1" ]; then
         /usr/bin/spacewalk-setup --ncc --skip-db-population --answer-file=/root/spacewalk-answers
+        SWRET=$?
     else
         /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers
+        SWRET=$?
     fi
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
         MY_DOMAIN=`hostname -d`
@@ -313,7 +315,12 @@ ncc-email = $NCC_EMAIL
     if ! grep "^web.default_mail_from" /etc/rhn/rhn.conf > /dev/null; then
         echo "web.default_mail_from = $MANAGER_MAIL_FROM" >> /etc/rhn/rhn.conf
     fi
+
     rm /root/spacewalk-answers
+    if [ "$SWRET" != "0" ]; then 
+        echo "ERROR: spacewalk-setup failed" >&2
+        exit 1
+    fi
 }
 
 dump_remote_db() {
@@ -519,7 +526,7 @@ do_setup() {
         MANAGER_DB_NAME="susemanager"
     fi
     if [ "$DB_BACKEND" != "oracle" -a "$DB_BACKEND" != "postgresql" ]; then
-        echo "Unknown dabase backend '$DB_BACKEND'. Allowed values: oracle, postgresql"
+        echo "Unknown dabase backend '$DB_BACKEND'. Allowed values: oracle, postgresql" >&2
         exit 1
     fi
 
@@ -596,7 +603,7 @@ wait_step
 
 if [ "$DO_SETUP" = "1" ]; then
     if [ -f $MANAGER_COMPLETE ]; then
-	echo "SUSE Manager is already set up. Exit."
+	echo "SUSE Manager is already set up. Exit." >&2
 	exit 1
     fi
 
@@ -614,7 +621,7 @@ wait_step
 
 if [ "$DO_MIGRATION" = "1" ]; then
     if [ -z "$DB_BACKEND" -o "$DB_BACKEND" != "oracle" ]; then
-        echo "Migration only supported with oracle DB Backend"
+        echo "Migration only supported with oracle DB Backend" >&2
         exit 1
     fi
     do_migration
