@@ -21,6 +21,7 @@
     }
 
     string invalid_pw_chars	= "\"$'!+%`=#@/";
+    string valid_chars = ",.:;#'+*~?][(){}/§&%$\"!@0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_- ";
 
     map<string,string> settings	= $[
 	"CERT_O"	: "",
@@ -96,6 +97,11 @@
     // dialog caption
     Wizard::SetContents (_("Certificate Setup"), contents, help_text, args["enable_back"]:true, args["enable_next"]:true);
 
+    UI::ChangeWidget (`id ("CERT_O"), `ValidChars, valid_chars);
+    UI::ChangeWidget (`id ("CERT_OU"), `ValidChars, valid_chars);
+    UI::ChangeWidget (`id ("CERT_CITY"), `ValidChars, valid_chars);
+    UI::ChangeWidget (`id ("CERT_STATE"), `ValidChars, valid_chars);
+    UI::ChangeWidget (`id ("CERT_COUNTRY"), `ValidChars, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
     UI::ChangeWidget (`id ("CERT_COUNTRY"), `InputMaxLength, 2);
     UI::SetFocus (`id ("CERT_O"));
 
