@@ -133,6 +133,7 @@ refer to the SUSE Manager Quick Start.")),
 
     string cmd	= sformat ("/usr/lib/susemanager/bin/migration.sh -s");
     pid	= (integer) SCR::Execute (.process.start_shell, cmd);
+    integer status = 0;
 
     while (true)
     {
@@ -148,11 +149,17 @@ refer to the SUSE Manager Quick Start.")),
 	    if (err_buf != nil && err_buf != "")
 		UI::ChangeWidget (`id(`stderr), `LastLine, err_buf + "\n");
 
-	    integer status	= (integer) SCR::Read (.process.status, pid);
+	    status	= (integer) SCR::Read (.process.status, pid);
 	    y2internal ("exit status of the script: %1", status);
+            // text label
+            string message = _("Setup is completed.");
+            if (status != 0) {
+                // text label
+                message = _("Setup failed.");
+            }
 	    UI::ReplaceWidget (`id (`rp_label),
 		// text label
-		`Label (`id (`label), `opt (`boldFont), _("Setup is completed."))
+		`Label (`id (`label), `opt (`boldFont), message)
 	    );
 	    break;
 	}
@@ -188,7 +195,10 @@ refer to the SUSE Manager Quick Start.")),
     while (true)
     {
 	ret	= UI::UserInput ();
-	if (ret == `abort && !Popup::ConfirmAbort (`incomplete))
+	if (status != 0) {
+            return nil;
+        }
+        if (ret == `abort && !Popup::ConfirmAbort (`incomplete))
 	{
 	    continue;
 	}
