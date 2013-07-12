@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -21,7 +23,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * ActionType
  * @version $Rev$
  */
-public class ActionType {
+public class ActionType implements Serializable {
 
     private Integer id;
     private String label;

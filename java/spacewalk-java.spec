@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.118
+Version: 1.10.127
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -413,8 +413,6 @@ if test -d /usr/share/tomcat6; then
 fi
 
 %if 0%{?fedora} && 0%{?fedora} >= 19
-# checkstyle is broken on Fedoras - we skip for now
-# RHEL5 checkstyle4 is incompatible with checkstyle5
 %define skip_xliff  1
 %endif
 
@@ -478,6 +476,14 @@ mkdir -p $RPM_BUILD_ROOT%{_javadir}/hibernate3
 ln -s -f %{_javadir}/hibernate3/hibernate-core.jar $RPM_BUILD_ROOT%{_javadir}/hibernate3/hibernate-core-3.jar
 ln -s -f %{_javadir}/hibernate3/hibernate-c3p0.jar $RPM_BUILD_ROOT%{_javadir}/hibernate3/hibernate-c3p0-3.jar
 ln -s -f %{_javadir}/hibernate3/hibernate-ehcache.jar $RPM_BUILD_ROOT%{_javadir}/hibernate3/hibernate-ehcache-3.jar
+%endif
+
+# on Fedora 19 some jars are named differently
+%if 0%{?fedora} && 0%{?fedora} > 18
+mkdir -p $RPM_BUILD_ROOT%{_javadir}
+ln -s -f %{_javadir}/apache-commons-validator.jar $RPM_BUILD_ROOT%{_javadir}/commons-validator.jar
+ln -s -f %{_javadir}/mchange-commons-java.jar $RPM_BUILD_ROOT%{_javadir}/mchange-commons.jar
+ln -s -f %{_javadir}/jboss-logging/jboss-logging.jar $RPM_BUILD_ROOT%{_javadir}/jboss-logging.jar
 %endif
 
 %if  0%{?rhel} && 0%{?rhel} < 6
@@ -711,11 +717,6 @@ fi
 %{jardir}/hibernate_hibernate-commons-annotations.jar
 %{jardir}/hibernate-jpa-2.0-api.jar
 %{jardir}/javassist.jar
-%if 0%{?fedora} && 0%{?fedora} > 18
-%{jardir}/jboss-logging_jboss-logging.jar
-%else
-%{jardir}/jboss-logging.jar
-%endif
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12.jar
 %endif
@@ -723,6 +724,15 @@ fi
 %{_javadir}/hibernate3/hibernate-core-3.jar
 %{_javadir}/hibernate3/hibernate-c3p0-3.jar
 %{_javadir}/hibernate3/hibernate-ehcache-3.jar
+%endif
+%if 0%{?fedora} && 0%{?fedora} > 18
+%{_javadir}/commons-validator.jar
+%{_javadir}/mchange-commons.jar
+%{_javadir}/jboss-logging.jar
+%{jardir}/jboss-loggingjboss-logging.jar
+%endif
+%if 0%{?fedora} && 0%{?fedora} < 19
+%{jardir}/jboss-logging.jar
 %endif
 %{jardir}/jaf.jar
 %{jardir}/javamail.jar
@@ -863,6 +873,43 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Jul 11 2013 Grant Gainey <ggainey@redhat.com> 1.10.127-1
+- 977878 - Fix struts-junit, add note to master-ca-cert field
+- Generate pre flag into the metadata
+- satysfying checkstyle
+
+* Thu Jul 11 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.126-1
+- adding missing bracelet
+
+* Thu Jul 11 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.125-1
+- reducing taskomatic_channel_repodata_workers to 1
+
+* Tue Jul 09 2013 Tomas Lestach <tlestach@redhat.com> 1.10.124-1
+- simplify managers and managers_edit jsps
+
+* Mon Jul 08 2013 Grant Gainey <ggainey@redhat.com> 1.10.123-1
+- 977878 - Need to be able to create masters in order to set cert and default
+         - Fixed some broken JSPs (esp in the presence of errors)
+         - Added error checking
+         - Added/fixed I18N keys
+- 977878 - Rename MapOrgs to EditMaster, and related changes
+- 977878 - UI for master cfg-options
+
+* Mon Jul 08 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.122-1
+- don't require jboss-logging.jar on rhel(s)
+
+* Mon Jul 08 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.121-1
+- import forgotten java.io.Serializable
+
+* Mon Jul 08 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.120-1
+- stop spamming taskomatic log with ehcache using defaults message
+- stop spamming catalina.out with ehcache using defaults message
+- making ActionType seriazible to prevent ehcache exceptions
+- crating symlinks for taskomatic to work on fedora 19
+
+* Mon Jul 08 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.119-1
+- creating symlinks for tomcat on Fedora 19
+
 * Thu Jul 04 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.118-1
 - skip xliff checks for fedora 19
 

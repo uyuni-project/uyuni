@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        1.10.15
+Version:        1.10.20
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -167,6 +167,23 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Fri Jul 12 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.20-1
+- skip db schema population only for non-migration upgrade scenarios
+- 959078 - polished database connection error output
+
+* Thu Jul 11 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.19-1
+- 983561 - clean tomcat cache during upgrades
+
+* Thu Jul 11 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.18-1
+- support for new db migration paths
+
+* Tue Jul 09 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.17-1
+- Revert "980355 - delete pg_log before installation starts"
+
+* Tue Jul 09 2013 Jan Dobes 1.10.16-1
+- 980355 - delete pg_log before installation starts
+- use for cycle instead of map
+
 * Fri Jun 21 2013 Milan Zazrivec <mzazrivec@redhat.com> 1.10.15-1
 - Don't use embedded db default settings for a managed db setup
 
