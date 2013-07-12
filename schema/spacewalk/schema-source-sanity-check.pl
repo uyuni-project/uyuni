@@ -80,7 +80,7 @@ sub check_file_content {
 	if ($type eq 'tables') {
 		if (not $content =~ /^(--.*\n
 					|\s*\n
-					|(create|alter|comment\s+on)\s+table\s+$name\b[^;]+;
+					|(create|alter|comment\s+on)\s+table\s+$name\b(?:[^;]|';')+;
 					|create\s+(unique\s+)?index\s+\w+\s+on\s+$name[^;]+;
 					|create\s+sequence[^;]+;
 					|comment\s+on\s+column\s+$name\.[^;]+;
