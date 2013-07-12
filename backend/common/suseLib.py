@@ -521,6 +521,8 @@ def _useProxyFor(url):
 
     """
     u = urlparse.urlsplit(url)
+    if u.scheme == 'file':
+        return False
     hostname = u.hostname.lower()
     if hostname in ["localhost", "127.0.0.1", "::1"]:
         return False
