@@ -106,7 +106,10 @@ class YumUpdateMetadata(UpdateMetadata):
 
 class ContentSource:
     def __init__(self, url, name, insecure=False, quiet=False, interactive=True):
-        self.url = url if urlparse.urlsplit(url).scheme else ("file://%s" % url)
+        if urlparse.urlsplit(url).scheme:
+          self.url = url
+        else:
+          self.url = "file://%s" % url
         self.name = name
         self.insecure = insecure
         self.quiet = quiet
