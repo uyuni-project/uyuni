@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 1.10.11
+Version: 1.10.13
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -444,6 +444,12 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Wed Jul 10 2013 Dimitar Yordanov <dyordano@redhat.com> 1.10.13-1
+- 983066 - fix rhnreg_ks man page example section
+
+* Tue Jul 09 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.12-1
+- 963552 - print prompt on tty instead of stdout
+
 * Thu Jun 27 2013 Dimitar Yordanov <dyordano@redhat.com> 1.10.11-1
 - 873784 - Multiple serverURL values could  not end with semicolon
 

@@ -118,8 +118,12 @@ public abstract class RhnQueueJob implements RhnJob {
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
         }
+        int defaultItems = 3;
+        if (queueName.equals("channel_repodata")) {
+            defaultItems = 1;
+        }
         int maxWorkItems = Config.get().getInt("taskomatic." + queueName +
-                "_max_work_items", 3);
+                "_max_work_items", defaultItems);
         if (queue.getQueueSize() < maxWorkItems) {
             queue.run(this);
         }
