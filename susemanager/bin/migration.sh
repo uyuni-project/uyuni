@@ -305,7 +305,7 @@ ncc-email = $NCC_EMAIL
         /usr/bin/spacewalk-setup --ncc --skip-db-population --answer-file=/root/spacewalk-answers --external-db
         SWRET=$?
     else
-        /usr/bin/spacewalk-setup --ncc --answer-file=/root/spacewalk-answers --external-db
+        /usr/bin/spacewalk-setup --clear-db --ncc --answer-file=/root/spacewalk-answers --external-db
         SWRET=$?
     fi
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
