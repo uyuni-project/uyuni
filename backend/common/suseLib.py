@@ -507,6 +507,8 @@ def _get_proxy_from_rhn_conf():
     log_debug(2, "Could not read proxy URL from rhn config.")
     return result
 
+# pylint complains because this method has too many return statements.
+# pylint: disable=R0911
 def _useProxyFor(url):
     """Return True if a proxy should be used for given url, otherwise False.
 
@@ -521,6 +523,8 @@ def _useProxyFor(url):
 
     """
     u = urlparse.urlsplit(url)
+    # pylint can't see inside the SplitResult class
+    # pylint: disable=E1103
     if u.scheme == 'file':
         return False
     hostname = u.hostname.lower()
