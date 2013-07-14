@@ -148,7 +148,7 @@ EOF
             su - postgres -c "createlang plpgsql '$PGNAME'"
     fi
     if ! exists_pltclu ; then
-            runuser - postgres -c "createlang pltclu '$PGNAME'"
+            su - postgres -c "createlang pltclu '$PGNAME'"
     fi
     if ! exists_user ; then
             su - postgres -c "yes '$PGPASSWORD' | createuser -P -sDR '$PGUSER'" 2>/dev/null
