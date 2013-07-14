@@ -1,7 +1,7 @@
 %define release_name Smile
 
 Name:           spacewalk
-Version:        1.10.0
+Version:        1.10.2
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 URL:            https://fedorahosted.org/spacewalk
@@ -149,8 +149,10 @@ Requires: perl(DBD::Pg)
 Requires: spacewalk-backend-sql-postgresql
 %if 0%{?rhel} == 5
 Requires: postgresql84-contrib
+Requires: postgresql84-pltcl
 %else
 Requires: postgresql-contrib >= 8.4
+Requires: postgresql-pltcl
 %endif
 Requires: postgresql >= 8.4
 Requires: pgtune
@@ -198,6 +200,13 @@ rm -rf %{buildroot}
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
 
 %changelog
+* Sun Jul 14 2013 Tomas Lestach <tlestach@redhat.com> 1.10.2-1
+- fix postgresql84-pltc dependency to postgresql84-pltcl
+
+* Fri Jul 12 2013 Tomas Lestach <tlestach@redhat.com> 1.10.1-1
+- let spacewalk-postgresql require postgresql-pltcl
+- Bumping package versions for 1.9
+
 * Mon Mar 04 2013 Jan Pazdziora 1.9.1-1
 - Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
 

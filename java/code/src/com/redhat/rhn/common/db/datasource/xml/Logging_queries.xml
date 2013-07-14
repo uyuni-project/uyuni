@@ -1,0 +1,23 @@
+<datasource_modes>
+
+<callable-mode name="clear_log_id">
+  <query>
+    {call logging.clear_log_id()}
+  </query>
+</callable-mode>
+
+<callable-mode name="set_log_auth">
+  <query params="user_id">
+    {call logging.set_log_auth(:user_id)}
+  </query>
+</callable-mode>
+
+<mode name="get_log_user_id">
+  <query params="login">
+    SELECT id
+    FROM web_contact_all
+    WHERE login = :login
+  </query>
+</mode>
+
+</datasource_modes>

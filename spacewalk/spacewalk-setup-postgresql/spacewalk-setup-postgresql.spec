@@ -1,5 +1,5 @@
 Name:           spacewalk-setup-postgresql
-Version:        1.10.6
+Version:        1.10.8
 Release:        1%{?dist}
 Summary:        Tools to setup embedded PostgreSQL database for Spacewalk
 Group:          Applications/System
@@ -11,8 +11,10 @@ BuildArch:      noarch
 Requires:       postgresql-server > 8.4
 %if 0%{?rhel} == 5
 Requires:	postgresql84-contrib
+Requires:	postgresql84-pltcl
 %else
 Requires:	postgresql-contrib >= 8.4
+Requires:	postgresql-pltcl
 %endif
 Obsoletes:	spacewalk-setup-embedded-postgresql
 
@@ -51,6 +53,13 @@ rm -rf %{buildroot}
 %{_datadir}/spacewalk/setup/defaults.d/*
 
 %changelog
+* Sun Jul 14 2013 Tomas Lestach <tlestach@redhat.com> 1.10.8-1
+- fix postgresql84-pltc dependency to postgresql84-pltcl
+
+* Fri Jul 12 2013 Tomas Lestach <tlestach@redhat.com> 1.10.7-1
+- create pltclu for PostgreSQL
+- let spacewalk-setup-postgresql require postgresql-pltcl
+
 * Tue Jul 09 2013 Tomas Lestach <tlestach@redhat.com> 1.10.6-1
 - spacewalk-setup-postgresql: state the requirement for address/netmask format
   explicitly
