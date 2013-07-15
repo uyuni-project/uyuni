@@ -28,7 +28,7 @@
 - features/channels.feature
 - features/weak_deps.feature
 - features/metadata_check.feature
-- features/bug-821968.feature
+- features/regressions.feature
 - features/check_support_data.feature
 - features/check_registration.feature
 - features/check_errata-npn.feature
