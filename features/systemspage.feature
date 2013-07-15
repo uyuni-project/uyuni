@@ -415,6 +415,8 @@ Feature: Explore the main landing page
       And file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile_upload:1"
       And file "/srv/tftpboot/images/fedora_kickstart_distro:1:Novell/initrd.img" exists on server
       And file "/srv/tftpboot/images/fedora_kickstart_distro:1:Novell/vmlinuz" exists on server
-
+      #bug regression for #668908
+      And file "/srv/tftpboot/menu.cfg" exists on server
+      And file "/srv/tftpboot/pxelinux.0" exists on server
 
 
