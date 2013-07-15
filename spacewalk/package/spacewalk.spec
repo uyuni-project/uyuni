@@ -151,10 +151,10 @@ Requires: spacewalk-backend-sql-postgresql
 Requires: postgresql84-contrib
 Requires: postgresql84-pltcl
 %else
-Requires: postgresql-contrib >= 8.4
-Requires: postgresql-pltcl
+Requires: postgresql-contrib >= 9.1
+Requires: postgresql-pltcl >= 9.1
 %endif
-Requires: postgresql >= 8.4
+Requires: postgresql >= 9.1
 Requires: pgtune
 
 %description postgresql
