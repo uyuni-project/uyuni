@@ -49,14 +49,9 @@
   <property name="git.home" location="${basedir}/../"/>
 
   <!-- =================== jar dependencies ======================= -->
-  <!--
+
   <condition property="asm" value="asm/asm" else="objectweb-asm/asm">
     <available file="/usr/share/java/asm/asm.jar" />
-  </condition>
--->
-
-  <condition property="asm" value="objectweb-asm/asm" else="asm/asm">
-    <available file="/usr/share/java/objectweb-asm/asm.jar" />
   </condition>
 
   <condition property="jfreechart" value="jfreechart/jfreechart" else="jfreechart">
