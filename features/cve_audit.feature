@@ -8,8 +8,10 @@ Feature: CVE Audit
 
 Background:
   Given I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-  When I follow "Task Schedules"
+
+Scenario: schedule channel data refresh
+  When I follow "Admin"
+    And I follow "Task Schedules"
     And I follow "cve-server-channels-default"
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"
