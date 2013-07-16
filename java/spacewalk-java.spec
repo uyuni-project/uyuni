@@ -603,6 +603,11 @@ touch $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs/audit-review.log
 ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{jardir}/asm_asm.jar
 ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
 %else
+%if 0%{?suse_version}
+if [ -e %{_javadir}/objectweb-asm/asm-all.jar ]; then
+    ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{jardir}/asm_asm.jar
+fi
+%endif
 ln -s -f %{_javadir}/asm/asm.jar  $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
 %endif
 
