@@ -7,7 +7,6 @@ License:        GPLv2
 URL:            http://www.novell.com
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:  nagios-rpm-macros
 BuildArch:      noarch
 
 %description
@@ -19,13 +18,13 @@ Nagios plugins specific for SUSE Manager.
 %build
 
 %install
-install -D -m 0755 check_suma_patches %{buildroot}/%{nagios_plugindir}/check_suma_patches
+install -D -m 0755 check_suma_patches %{buildroot}/usr/lib/nagios/plugins/check_suma_patches
 
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%dir %{nagios_libdir}
+%dir /usr/lib/nagios
 
 %changelog
