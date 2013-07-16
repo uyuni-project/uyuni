@@ -18,7 +18,7 @@ Scenario: schedule channel data refresh
   Then I should see a "bunch was scheduled" text
     And I wait for "5" seconds
 
-Scenario: Feature should be accessible
+Scenario: feature should be accessible
   When I follow "Audit"
     Then I should see a "CVE Audit" link in the left menu
      And I should see a "CVE Audit" text
