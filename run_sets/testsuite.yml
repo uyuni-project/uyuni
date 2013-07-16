@@ -13,6 +13,7 @@
 - features/users-createnewuser.feature
 - features/users-userdetails.feature
 - features/credentials.feature
+- features/csv-separator.feature
 - features/create_config_channel.feature
 - features/register_client.feature
 - features/monitoring.feature

@@ -73,6 +73,13 @@ Then /^Option "([^"]*)" is selected as "([^"]*)"$/ do |arg1, arg2|
 end
 
 #
+# Test if a radio button is checked
+#
+Then /^radio button "([^"]*)" is checked$/ do |arg1|
+  fail if not has_checked_field?(arg1)
+end
+
+#
 # Test if a checkbox is checked
 #
 Then /^I should see "([^"]*)" as checked$/ do |arg1|
