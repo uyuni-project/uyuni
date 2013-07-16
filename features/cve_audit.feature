@@ -43,15 +43,14 @@ Scenario: searching for an unknown CVE number
   When I follow "Audit"
     And I enter "CVE-2012-2806" as "cveIdentifier"
     And I click on "Audit systems"
-  Then I should see a "Patch status unknown" text in the "Patch status" column
-    And I should see a "Unknown" text in the "Next Action" column
+  Then I should see a "The CVE number you specified was not found" text
 
 Scenario: selecting a system for the System Set Manager
   When I follow "Audit"
-    And I enter "CVE-2012-2806" as "cveIdentifier"
+    And I enter "CVE-2012-3400" as "cveIdentifier"
     And I click on "Audit systems"
-    And I should see a "No systems selected" text
-  When I check "Unknown" in the list
+    And I should see a "Affected, patch available in an assigned channel" text
+  When I check "Affected, patch available in an assigned channel" in the list
     Then I should see a "1 system selected" text
   When I follow "Manage"
      And I follow "Systems" in class "content-nav"
