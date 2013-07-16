@@ -4,6 +4,7 @@
 %if 0%{!?_initddir:1}
 %if 0%{?suse_version}
 %global _initddir %{_sysconfdir}/init.d
+%global sbinpath /sbin
 %else
 %global _initddir %{_sysconfdir}/rc.d/init.d
 %endif
@@ -41,7 +42,6 @@ Requires(preun): chkconfig
 Requires(preun): initscripts
 Requires(postun): initscripts
 %endif
-Requires(post): /usr/sbin/semanage, /sbin/restorecon
 %endif
 %if 0%{?suse_version} >= 1210
 BuildRequires: systemd
