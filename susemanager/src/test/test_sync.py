@@ -26,6 +26,8 @@ class SyncTest(unittest.TestCase):
     def setUp(self):
         ncc_sync.initCFG = ncc_sync.CFG = Mock()
         ncc_sync.rhnSQL.initDB = Mock()
+        ncc_sync.rhnSQL.clear_log_id = Mock()
+        ncc_sync.rhnSQL.set_log_auth_login = Mock()
         ncc_sync.rhnLog.initLOG = Mock()
         ncc_sync.suseLib.get_mirror_credentials = Mock(return_value=[("user", "pass")])
         ncc_sync.suseLib.getProductProfile = Mock(return_value=
