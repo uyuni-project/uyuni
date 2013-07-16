@@ -150,6 +150,8 @@ class NCCSync(object):
 
         try:
             rhnSQL.initDB()
+            rhnSQL.clear_log_id()
+            rhnSQL.set_log_auth_login('SETUP')
         except rhnSQL.SQLConnectError, e:
             self.error_msg("Could not connect to the database. %s" % e)
             sys.exit(1)
