@@ -26,5 +26,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %dir /usr/lib/nagios
+%dir /usr/lib/nagios/plugins
+/usr/lib/nagios/plugins/check_suma_patches
 
 %changelog
