@@ -14,26 +14,3 @@ Feature: Regression tests
     Given I am root
      When I refresh the metadata
      Then I should have 'summary.*</summary' in the metadata
-    
-    #bug 701082
-    Scenario: Adding a base channel starting with rhn
-      And I follow "Channels"
-      And I follow "Manage Software Channels" in the left menu
-      And I follow "create new channel"
-     When I enter "rhn channel name" as "Channel Name"
-      And I enter "rhn_channel_name" as "Channel Label"
-      And I select "None" from "Parent Channel"
-      And I select "x86_64" from "Architecture"
-      And I enter "rhn channel name" as "Channel Summary"
-      And I enter "rhn channel name" as "Channel Description"
-      And I click on "Create channel"
-     Then I should see "rhn channel name created." text
-
-    #bug 728894
-    Scenario: Deleting a software channel
-      And I follow "Channels"
-      And I follow "Manage software Channels" in the left menu
-      And I follow "rhn channel name"
-      And I click on "delete software channel"
-      And I click on "Delete Channel"
-     Then I should see "Channel rhn channel name has been deleted" text
