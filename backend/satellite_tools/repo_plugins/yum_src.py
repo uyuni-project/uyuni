@@ -278,7 +278,8 @@ class ContentSource:
         products = []
         if 'products' in self.repo.repoXML.repoData:
             prod_path = self.repo.retrieveMD('products')
-            for product in etree.parse(prod_path).getroot():
+            infile = prod_path.endswith('.gz') and gzip.open(prod_path) or open(prod_path, 'rt')
+            for product in etree.parse(infile).getroot():
                 p = {}
                 p['name'] = product.find('name').text
                 p['arch'] = product.find('arch').text
