@@ -543,7 +543,7 @@ wrapper.java.classpath.67=/usr/share/java/ehcache-core.jar
 wrapper.java.classpath.68=/usr/share/java/hibernate-jpa-2.0-api.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
 echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
-echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.48=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %endif
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
@@ -603,12 +603,14 @@ touch $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs/audit-review.log
 ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{jardir}/asm_asm.jar
 ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
 %else
+ln -s -f %{_javadir}/asm/asm.jar  $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
 %if 0%{?suse_version}
 if [ -e %{_javadir}/objectweb-asm/asm-all.jar ]; then
     ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{jardir}/asm_asm.jar
+    rm -f $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
+    ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
 fi
 %endif
-ln -s -f %{_javadir}/asm/asm.jar  $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
 %endif
 
 # 732350 - On Fedora 15, mchange's log stuff is no longer in c3p0.
