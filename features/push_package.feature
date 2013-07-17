@@ -7,6 +7,10 @@ Feature: Push a package with unset vendor
   As an authorized user
   I want to push a package with unset vendor
 
+  Scenario: download the SSL certificate
+   Given I am root
+    Then I download the SSL certificate
+
   Scenario: push a package with unset vendor
    Given I am root
     When I push package "/root/subscription-tools-1.0-0.noarch.rpm" into "test_base_channel" channel
