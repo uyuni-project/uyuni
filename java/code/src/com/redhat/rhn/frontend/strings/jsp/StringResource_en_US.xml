@@ -9809,7 +9809,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>All Snippets</source>
         </trans-unit>
         <trans-unit id="snippets.jsp.toolbar">
-          <source>Kickstart Snippets</source>
+          <source>Autoinstallation Snippets</source>
         </trans-unit>
         <trans-unit id="snippets.jsp.summary">
           <source>Use kickstart snippets to store common blocks of code that can be shared across multiple kickstart profiles in @@PRODUCT_NAME@@. When you create a kickstart snippet, all kickstart profiles including that snippet will be updated accordingly.</source>
