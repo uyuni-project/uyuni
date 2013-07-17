@@ -9812,7 +9812,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Autoinstallation Snippets</source>
         </trans-unit>
         <trans-unit id="snippets.jsp.summary">
-          <source>Use kickstart snippets to store common blocks of code that can be shared across multiple kickstart profiles in @@PRODUCT_NAME@@. When you create a kickstart snippet, all kickstart profiles including that snippet will be updated accordingly.</source>
+          <source>Use autoinstallation snippets to store common blocks of code that can be shared across multiple autoinstallation profiles in @@PRODUCT_NAME@@. When you create an autoinstallation snippet, all autoinstallation profiles including that snippet will be updated accordingly.</source>
         </trans-unit>
         <trans-unit id="snippets.jsp.note.default">
           <source>Default kickstart snippets are not editable.</source>
@@ -9827,10 +9827,10 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Snippet Macro</source>
         </trans-unit>
         <trans-unit id="cobbler.snippet.jsp.nosnippets">
-          <source>No kickstart snippets found.</source>
+          <source>No autoinstallation snippets found.</source>
         </trans-unit>
         <trans-unit id="cobbler.snippet.copy-paste-snippet-tip">
-          <source>Copy and paste the snippet macro into your kickstart profiles to make the full snippet appear in that kickstart profile.</source>
+          <source>Copy and paste the snippet macro into your profiles to make the full snippet appear in that profile.</source>
         </trans-unit>
       </group>
       <!--Cobbler Create/Edit/View/Delete pages -->
