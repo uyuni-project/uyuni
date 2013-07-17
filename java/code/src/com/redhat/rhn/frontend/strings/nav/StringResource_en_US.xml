@@ -786,7 +786,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Kickstart File">
-        <source>Kickstart File</source>
+        <source>Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
