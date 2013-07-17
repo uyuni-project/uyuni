@@ -64,7 +64,7 @@ Feature: Adding channels
 
    Scenario: Adding a duplicate channel fails
      And I follow "Channels"
-     And I follow "Manager Software Channels" in the left menu
+     And I follow "Manage Software Channels" in the left menu
      And I follow "create new channel"
     When I enter "Test Base Channel" as "Channel Name"
      And I enter "test_base_channel" as "Channel Label"
@@ -77,7 +77,7 @@ Feature: Adding channels
 
     Scenario: I am not allowed to use invalid characters in the channel label
      And I follow "Channels"
-     And I follow "Manager Software Channels" in the left menu
+     And I follow "Manage Software Channels" in the left menu
      And I follow "create new channel"
     When I enter "test123" as "Channel Name"
      And I enter "tesT123" as "Channel Label"
@@ -88,9 +88,9 @@ Feature: Adding channels
     Scenario: I am not allowed to invalid characters in the channel name
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
-     And I follow  "create new channel"
+     And I follow "create new channel"
     When I enter "!test123" as "Channel Name"
      And I enter "test123" as "Channel Label"
-     And I enter "test123" as Channel Summary"
+     And I enter "test123" as "Channel Summary"
      And I click on "Create Channel"
-    Then I should see "Invalid channel name, please see the format described below" text
+    Then I should see a "Invalid channel name, please see the format described below" text
