@@ -39,6 +39,13 @@ def run(api,args,logger):
     logger.info("change_tftp running")
     settings = api.settings()
 
+    # test if proxies are configured:
+    try:
+        p = settings.proxies
+    except:
+        # not configured - so we return
+        return 0
+
     tftpbootdir = "/srv/tftpboot"
     syncstart = os.stat(tftpbootdir).st_mtime
 
