@@ -18,6 +18,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
@@ -179,7 +180,10 @@ public class ServerSerializer implements XmlRpcCustomSerializer {
         helper.add("lock_status", locked);
 
         if (server.isVirtualGuest()) {
-            helper.add("virtualization", server.getVirtualInstance().getType().getName());
+            VirtualInstanceType type = server.getVirtualInstance().getType();
+            if (type != null) {
+                helper.add("virtualization", type.getName());
+            }
         }
 
         helper.writeTo(output);
