@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.129
+Version: 2.1.1
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -880,6 +880,56 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Jul 18 2013 Grant Gainey 2.1.1-1
+- JUnit fixes
+- Bumping package versions for 2.1.
+
+* Thu Jul 18 2013 Tomas Lestach <tlestach@redhat.com> 2.0.2-1
+- 855845 - escaping system name on /rhn/systems/customdata/UpdateCustomKey.do
+- 865595 - specify custom info searchability more precisely
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.1-1
+- Bumping package versions for 2.0.
+
+* Wed Jul 17 2013 Tomas Lestach <tlestach@redhat.com> 1.10.138-1
+- bump API version
+- 910739 - let systemgroup.scheduleApplyErrataToActive API return action id
+- 910739 - let system.scheduleSyncPackagesWithSystem API return action id
+- 910739 - let system.scheduleReboot API return action id
+- 857635 - API call setChildChannels should produce snapshot
+- 857635 - take snapshot after change og base channel and not before
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.137-1
+- updating copyright years
+
+* Tue Jul 16 2013 Grant Gainey <ggainey@redhat.com> 1.10.136-1
+- 985070 - Fix NPE when OSCAP results don't have associated files
+- 857635 - changing of base channel via API should produce snapshot
+
+* Tue Jul 16 2013 Tomas Lestach <tlestach@redhat.com> 1.10.135-1
+- enable deleting servers via API
+
+* Tue Jul 16 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.134-1
+- fixing unit test to reflect dead code removal
+
+* Tue Jul 16 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.133-1
+- removing some dead code
+
+* Tue Jul 16 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.132-1
+- better to check if iterator hasNext() before we request next()
+
+* Mon Jul 15 2013 Stephen Herr <sherr@redhat.com> 1.10.131-1
+- 979402 - Fixing traceback in logs on warning page
+- 910739 - let system.scheduleHardwareRefresh API return action id
+- 910739 - checkstyle fixes
+- using @@PRODUCT_NAME@@ macro in one more place
+- 910739 let system.scheduleApplyErrata API return list of action ids
+- 910739 let system.schedulePackageInstall API return action id
+
+* Mon Jul 15 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.130-1
+- 980482 - store part of SystemSearchResult into session that is not available
+  via elaboration
+
 * Fri Jul 12 2013 Tomas Lestach <tlestach@redhat.com> 1.10.129-1
 - java changes for 1st user creation
 - Adding the logging autentication to the XMLRPC API.

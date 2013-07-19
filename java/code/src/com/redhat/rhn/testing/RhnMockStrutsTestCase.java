@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -29,6 +29,7 @@ import servletunit.struts.MockStrutsTestCase;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.session.WebSession;
@@ -54,6 +55,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
      */
     public void setUp() throws Exception {
         super.setUp();
+        LoggingFactory.clearLogId();
 
         RequestContext requestContext = new RequestContext(request);
         Context ctx = Context.getCurrentContext();

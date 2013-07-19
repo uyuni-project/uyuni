@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        1.10.65
+Version:        2.1.0
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -75,6 +75,32 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Jul 18 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.2-1
+- fixing oracle specific sha1
+- add upgrade path from 1.10 to 2.0
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.1-1
+- Bumping package versions for 2.0.
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.71-1
+- adding Fedora 19 gpgp key into rhnPackageKey
+- updating copyright years
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.70-1
+- alter table rhnServer before enabling logging to prevent possible issues
+
+* Tue Jul 16 2013 Tomas Lestach <tlestach@redhat.com> 1.10.69-1
+- restore search path, that dblink.sql destroys
+
+* Tue Jul 16 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.68-1
+- removing some dead code
+
+* Mon Jul 15 2013 Tomas Lestach <tlestach@redhat.com> 1.10.67-1
+- create first package specification, then package body
+
+* Mon Jul 15 2013 Tomas Lestach <tlestach@redhat.com> 1.10.66-1
+- trigger "web_contact_ins_trig" for relation "web_contact" already exists
+
 * Fri Jul 12 2013 Tomas Lestach <tlestach@redhat.com> 1.10.65-1
 - fix schema sha1s
 

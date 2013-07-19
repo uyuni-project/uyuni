@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 3ae78565517b293bbce84fdd8630c2ff5cc15d11
+-- oracle equivalent source sha1 93bf333fd11c59fc18c593d8adcab35f31df5a91
 --
 -- Copyright (c) 2010--2012 Red Hat, Inc.
 --
@@ -14,7 +14,11 @@
 -- in this software or its documentation.
 --
 
+create temporary table store_searchpath as select setting from pg_settings where name = 'search_path';
+
 -- The spaces in front of \i are needed to stop blend from expanding
 -- in build time.
    \i /usr/share/postgresql/extension/dblink--1.0.sql
 
+update pg_settings set setting = (select setting from store_searchpath) where name = 'search_path';
+drop table store_searchpath;

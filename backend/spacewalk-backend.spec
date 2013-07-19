@@ -23,7 +23,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.55
+Version: 2.1.0
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -777,6 +777,27 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Thu Jul 18 2013 Jan Dobes 2.0.3-1
+- 645435 - log per channel instead of session
+
+* Thu Jul 18 2013 Michael Mraka <michael.mraka@redhat.com> 2.0.2-1
+- check only tables in own schema
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.1-1
+- Bumping package versions for 2.0.
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.59-1
+- updating copyright years
+
+* Tue Jul 16 2013 Tomas Lestach <tlestach@redhat.com> 1.10.58-1
+- allow spacewalk-remove-channel to unsubscribe systems with enabled logging
+
+* Tue Jul 16 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.57-1
+- removing some dead code
+
+* Sun Jul 14 2013 Tomas Lestach <tlestach@redhat.com> 1.10.56-1
+- enable satellite-sync with enabled audit
+
 * Fri Jul 12 2013 Tomas Lestach <tlestach@redhat.com> 1.10.55-1
 - handle registration time in backend
 - implement logging functions for python stack

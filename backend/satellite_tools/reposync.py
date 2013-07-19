@@ -88,12 +88,7 @@ class RepoSync(object):
         rhnSQL.initDB()
 
         # setup logging
-        log_filename = 'reposync.log'
-        date = time.localtime()
-        datestr = '%d.%02d.%02d-%02d:%02d:%02d' % (
-            date.tm_year, date.tm_mon, date.tm_mday, date.tm_hour,
-            date.tm_min, date.tm_sec)
-        log_filename = channel_label + '-' +  datestr + '.log'
+        log_filename = channel_label + '.log'
         try:
             if CFG.DEBUG > 1:
                 dlevel = CFG.DEBUG

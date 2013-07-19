@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 1.10.5
+Version: 2.1.0
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -213,6 +213,12 @@ fi
 %doc licenses/*
 
 %changelog
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.1-1
+- Bumping package versions for 2.0.
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.6-1
+- updating copyright years
+
 * Thu Jul 04 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.5-1
 - making spacewalk-search build-able on F19
 

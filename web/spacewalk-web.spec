@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 1.10.37
+Version: 2.1.2
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -313,6 +313,33 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Fri Jul 19 2013 Tomas Lestach <tlestach@redhat.com> 2.1.2-1
+- 726815 - parent channel cannot be a shared channel from different org when
+  cloning
+
+* Thu Jul 18 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.1-1
+- bumping Spacewalk version to 2.1 nightly
+- Bumping package versions for 2.1.
+
+* Thu Jul 18 2013 Jan Dobes 2.0.2-1
+- 980206 - checksum whole file, not only archive content
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.1-1
+- Bumping package versions for 2.0.
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.41-1
+- updating copyright years
+
+* Tue Jul 16 2013 Grant Gainey <ggainey@redhat.com> 1.10.40-1
+- 985070 - Found and fixed Perl error on failed event
+
+* Tue Jul 16 2013 Jan Dobes 1.10.39-1
+- 980406 - log relative paths in backup dir
+- 950382 - show actual user
+
+* Tue Jul 16 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.38-1
+- removing some dead code
+
 * Fri Jul 12 2013 Tomas Lestach <tlestach@redhat.com> 1.10.37-1
 - Adding the logging to the web (Perl) stack.
 - drop and backup logging schema

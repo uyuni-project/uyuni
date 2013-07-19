@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	1.10.16
+Version:	2.1.0
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -103,6 +103,24 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Thu Jul 18 2013 Jiri Mikulka <jmikulka@redhat.com> 2.0.2-1
+- dropping support for Fedora 17 in Spacewalk nightly
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.1-1
+- Bumping package versions for 2.0.
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.19-1
+- removing spacewalk18-client-fedora16 from spacewalk-common-channels
+- removing spacewalk18-server-fedora16 from spacewalk-common-channels
+
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.18-1
+- adding Fedora 19 to spacewalk-common-channel
+- removing spacewalk-client-nightly-fedora16 from spacewalk-common-channels
+- removing spacewalk-nightly on fedora16 from spacewalk-common-channels
+
+* Tue Jul 16 2013 Grant Gainey <ggainey@redhat.com> 1.10.17-1
+- 985136 - Clarify spacewalk-clone-by-date man page
+
 * Tue Jul 09 2013 Grant Gainey <ggainey@redhat.com> 1.10.16-1
 - 977878 - Set default-template-filenames for sync-setup
 

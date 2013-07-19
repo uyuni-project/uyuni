@@ -543,8 +543,9 @@ public class ActionFactory extends HibernateFactory {
     /**
      * Insert or Update a Action.
      * @param actionIn Action to be stored in database.
+     * @return action
      */
-    public static void save(Action actionIn) {
+    public static Action save(Action actionIn) {
         /**
          * If we are trying to commit a package action, make sure
          * the packageEvr stored proc is called first so that
@@ -574,6 +575,7 @@ public class ActionFactory extends HibernateFactory {
             }
         }
         singleton.saveObject(actionIn);
+        return actionIn;
     }
 
     /**
