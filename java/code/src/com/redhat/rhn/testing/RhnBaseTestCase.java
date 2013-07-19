@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -34,6 +34,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.Asserts;
+import com.redhat.rhn.domain.common.LoggingFactory;
 
 /**
  * RhnBaseTestCase is the base class for all RHN TestCases.
@@ -66,6 +67,7 @@ public abstract class RhnBaseTestCase extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        LoggingFactory.clearLogId();
     }
 
     /**

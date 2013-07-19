@@ -94,6 +94,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelListException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProfileLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
@@ -402,6 +403,9 @@ public class SystemHandler extends BaseHandler {
                 server, channelIds);
         cmd.store();
 
+        SystemManager.snapshotServer(server, LocalizationService
+                .getInstance().getMessage("snapshots.childchannel"));
+
         return 1;
     }
 
@@ -495,6 +499,8 @@ public class SystemHandler extends BaseHandler {
             throw new InvalidChannelException(LocalizationService.getInstance()
                     .getMessage(ve.getKey(), ve.getValues()));
         }
+        SystemManager.snapshotServer(server, LocalizationService
+                .getInstance().getMessage("snapshots.basechannel"));
         return 1;
     }
 
@@ -2905,15 +2911,16 @@ public class SystemHandler extends BaseHandler {
      * @param sessionKey The user's session key.
      * @param serverIds List of server IDs to apply the errata to (as Integers)
      * @param errataIds List of errata IDs to apply (as Integers)
-     * @return 1 if successful, exception thrown otherwise
+     * @return list of action ids, exception thrown otherwise
+     * @since 13.0
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to multiple systems.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #array_single("int", "serverId")
      * @xmlrpc.param #array_single("int", "errataId")
-     * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.returntype #array_single("int", "actionId")
      */
-    public int scheduleApplyErrata(String sessionKey, List<Integer> serverIds,
+    public List<Long> scheduleApplyErrata(String sessionKey, List<Integer> serverIds,
             List<Integer> errataIds) {
         return scheduleApplyErrata(sessionKey, serverIds, errataIds, null);
     }
@@ -2924,7 +2931,8 @@ public class SystemHandler extends BaseHandler {
      * @param serverIds List of server IDs to apply the errata to (as Integers)
      * @param errataIds List of errata IDs to apply (as Integers)
      * @param earliestOccurrence Earliest occurrence of the errata update
-     * @return 1 if successful, exception thrown otherwise
+     * @return list of action ids, exception thrown otherwise
+     * @since 13.0
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to multiple systems at a
      * given date/time.
@@ -2932,9 +2940,9 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #array_single("int", "serverId")
      * @xmlrpc.param #array_single("int", "errataId")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
-     * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.returntype #array_single("int", "actionId")
      */
-    public int scheduleApplyErrata(String sessionKey, List<Integer> serverIds,
+    public List<Long> scheduleApplyErrata(String sessionKey, List<Integer> serverIds,
             List<Integer> errataIds, Date earliestOccurrence) {
 
         // we need long values to pass to ErrataManager.applyErrataHelper
@@ -2943,9 +2951,8 @@ public class SystemHandler extends BaseHandler {
             longServerIds.add(new Long(it.next()));
         }
 
-        ErrataManager.applyErrataHelper(getLoggedInUser(sessionKey),
+        return ErrataManager.applyErrataHelper(getLoggedInUser(sessionKey),
                 longServerIds, errataIds, earliestOccurrence);
-        return 1;
     }
 
     /**
@@ -2975,16 +2982,16 @@ public class SystemHandler extends BaseHandler {
      * @param sessionKey The user's session key.
      * @param sid ID of the server
      * @param errataIds List of errata IDs to apply (as Integers)
-     * @return 1 if successful, exception thrown otherwise
-     * @since 10.6
+     * @return list of action ids, exception thrown otherwise
+     * @since 13.0
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to a system.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param  #array_single("int", "errataId")
-     * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.returntype #array_single("int", "actionId")
      */
-    public int scheduleApplyErrata(String sessionKey, Integer sid,
+    public List<Long> scheduleApplyErrata(String sessionKey, Integer sid,
             List<Integer> errataIds) {
         List<Integer> serverIds = new ArrayList<Integer>();
         serverIds.add(sid);
@@ -2998,7 +3005,8 @@ public class SystemHandler extends BaseHandler {
      * @param sid ID of the server
      * @param errataIds List of errata IDs to apply (as Integers)
      * @param earliestOccurrence Earliest occurrence of the errata update
-     * @return 1 if successful, exception thrown otherwise
+     * @return list of action ids, exception thrown otherwise
+     * @since 13.0
      *
      * @xmlrpc.doc Schedules an action to apply errata updates to a system at a
      * given date/time.
@@ -3006,10 +3014,10 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #array_single("int", "errataId")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
-     * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.returntype #array_single("int", "actionId")
      */
-    public int scheduleApplyErrata(String sessionKey, Integer sid, List<Integer> errataIds,
-            Date earliestOccurrence) {
+    public List<Long> scheduleApplyErrata(String sessionKey, Integer sid,
+            List<Integer> errataIds, Date earliestOccurrence) {
         List<Integer> serverIds = new ArrayList<Integer>();
         serverIds.add(sid);
 
@@ -3167,16 +3175,17 @@ public class SystemHandler extends BaseHandler {
      * @param sid ID of the server
      * @param packageIds List of package IDs to install (as Integers)
      * @param earliestOccurrence Earliest occurrence of the package install
-     * @return 1 if successful, exception thrown otherwise
+     * @return package action id
+     * @since 13.0
      *
      * @xmlrpc.doc Schedule package installation for a system.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #array_single("int", "packageId")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
-     * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
-    public int schedulePackageInstall(String sessionKey, Integer sid,
+    public Long schedulePackageInstall(String sessionKey, Integer sid,
             List<Integer> packageIds, Date earliestOccurrence) {
         User loggedInUser = getLoggedInUser(sessionKey);
         Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
@@ -3207,15 +3216,16 @@ public class SystemHandler extends BaseHandler {
             packageMaps.add(pkgMap);
         }
 
+        Action action = null;
         try {
-            ActionManager.schedulePackageInstall(loggedInUser, server, packageMaps,
-                    earliestOccurrence);
+            action = ActionManager.schedulePackageInstall(loggedInUser, server,
+                    packageMaps, earliestOccurrence);
         }
         catch (MissingEntitlementException e) {
             throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException();
         }
 
-        return 1;
+        return action.getId();
     }
 
     /**
@@ -3362,15 +3372,16 @@ public class SystemHandler extends BaseHandler {
      * @param sessionKey User's session key.
      * @param sid ID of the server.
      * @param earliestOccurrence Earliest occurrence of the hardware refresh.
-     * @return 1 if successful, exception thrown otherwise
+     * @return action id, exception thrown otherwise
+     * @since 13.0
      *
      * @xmlrpc.doc Schedule a hardware refresh for a system.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("dateTime.iso8601",  "earliestOccurrence")
-     * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
-    public int scheduleHardwareRefresh(String sessionKey, Integer sid,
+    public Long scheduleHardwareRefresh(String sessionKey, Integer sid,
             Date earliestOccurrence) {
         User loggedInUser = getLoggedInUser(sessionKey);
         Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
@@ -3378,9 +3389,9 @@ public class SystemHandler extends BaseHandler {
 
         Action a = ActionManager.scheduleHardwareRefreshAction(loggedInUser, server,
                 earliestOccurrence);
-        ActionFactory.save(a);
+        Action action = ActionFactory.save(a);
 
-        return 1;
+        return action.getId();
     }
 
     /**
@@ -3611,15 +3622,16 @@ public class SystemHandler extends BaseHandler {
      * @param sessionKey User's session key.
      * @param sid ID of the server.
      * @param earliestOccurrence Earliest occurrence of the reboot.
-     * @return 1 if successful, exception thrown otherwise
+     * @return action id, exception thrown otherwise
+     * @since 13.0
      *
      * @xmlrpc.doc Schedule a reboot for a system.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("dateTime.iso860", "earliestOccurrence")
-     * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
-    public int scheduleReboot(String sessionKey, Integer sid,
+    public Long scheduleReboot(String sessionKey, Integer sid,
             Date earliestOccurrence) {
         User loggedInUser = getLoggedInUser(sessionKey);
         Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
@@ -3627,8 +3639,8 @@ public class SystemHandler extends BaseHandler {
 
         Action a = ActionManager.scheduleRebootAction(loggedInUser, server,
                 earliestOccurrence);
-        ActionFactory.save(a);
-        return 1;
+        a = ActionFactory.save(a);
+        return a.getId();
     }
 
     /**
@@ -4153,7 +4165,8 @@ public class SystemHandler extends BaseHandler {
      * @param sourceServerId Source system to retrieve package state from.
      * @param packageIds List of package IDs to be synced.
      * @param earliest Earliest occurrence of action.
-     * @return 1 on success, exception thrown otherwise.
+     * @return action id, exception thrown otherwise
+     * @since 13.0
      *
      * @xmlrpc.doc Sync packages from a source system to a target.
      * @xmlrpc.param #param("string", "sessionKey")
@@ -4163,9 +4176,9 @@ public class SystemHandler extends BaseHandler {
      *                  package state from.")
      * @xmlrpc.param  #array_single("int", "packageId - Package IDs to be synced.")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "date", "Date to schedule action for")
-     * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
-    public int scheduleSyncPackagesWithSystem(String sessionKey, Integer targetServerId,
+    public Long scheduleSyncPackagesWithSystem(String sessionKey, Integer targetServerId,
             Integer sourceServerId,
             List<Integer> packageIds, Date earliest) {
 
@@ -4207,15 +4220,20 @@ public class SystemHandler extends BaseHandler {
             }
         }
 
+        Action action = null;
         try {
-            ProfileManager.syncToSystem(loggedInUser, new Long(targetServerId.longValue()),
-                    new Long(sourceServerId.longValue()), pkgIdCombos, null,
+           action = ProfileManager.syncToSystem(loggedInUser,
+                   new Long(targetServerId.longValue()),
+                   new Long(sourceServerId.longValue()), pkgIdCombos, null,
                     earliest);
         }
         catch (MissingEntitlementException e) {
             throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException();
         }
-        return 1;
+        if (action == null) {
+            throw new InvalidParameterException("No packages to sync");
+        }
+        return action.getId();
     }
 
     /**

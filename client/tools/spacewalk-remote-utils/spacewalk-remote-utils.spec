@@ -4,7 +4,7 @@
 %endif
 
 Name:        spacewalk-remote-utils
-Version:     1.10.2
+Version:     2.1.0
 Release:     1%{?dist}
 Summary:     Utilities to interact with a Spacewalk server remotely.
 
@@ -66,6 +66,9 @@ docbook2man ./spacewalk-create-channel/doc/spacewalk-create-channel.sgml -o ./sp
 %doc %{_mandir}/man1/spacewalk-create-channel.1.gz
 
 %changelog
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.1-1
+- Bumping package versions for 2.0.
+
 * Mon Jun 17 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.2-1
 - branding fixes in man pages
 

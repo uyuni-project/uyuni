@@ -81,7 +81,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private String info;
     private String secret;
     private User creator;
-    private String autoDeliver;
     private String autoUpdate;
     private ContactMethod contactMethod;
     private String runningKernel;
@@ -572,24 +571,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setCreator(User c) {
         this.creator = c;
-    }
-
-    /**
-     * Getter for autoDeliver
-     *
-     * @return String to get
-     */
-    public String getAutoDeliver() {
-        return this.autoDeliver;
-    }
-
-    /**
-     * Setter for autoDeliver
-     *
-     * @param autoDeliverIn to set
-     */
-    public void setAutoDeliver(String autoDeliverIn) {
-        this.autoDeliver = autoDeliverIn;
     }
 
     /**
@@ -1620,7 +1601,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 .append(description, castOther.getDescription())
                 .append(info, castOther.getInfo())
                 .append(secret, castOther.getSecret())
-                .append(autoDeliver, castOther.getAutoDeliver())
                 .append(autoUpdate, castOther.getAutoUpdate())
                 .append(runningKernel, castOther.getRunningKernel())
                 .append(lastBoot, castOther.getLastBoot())
@@ -1636,7 +1616,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public int hashCode() {
         return new HashCodeBuilder().append(id).append(digitalServerId).append(os)
                 .append(release).append(name).append(description)
-                .append(info).append(secret).append(autoDeliver)
+                .append(info).append(secret)
                 .append(autoUpdate).append(runningKernel)
                 .append(lastBoot).append(channelsChanged).
                 append(getProxyInfo())

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -33,7 +33,8 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
 
     private UpdateUserCommand command;
 
-    public void setUp() {
+    public void setUp() throws Exception {
+        super.setUp();
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
         User user = UserTestUtils.createUser("testUser", oid);
         command = new UpdateUserCommand(user);

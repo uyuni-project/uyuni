@@ -10,7 +10,7 @@ Group:   Applications/Internet
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk 
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 1.10.1
+Version: 2.1.0
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -46,6 +46,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.1-1
+- Bumping package versions for 2.0.
+
 * Mon Mar 18 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.1-1
 - %%defattr is not needed since rpm 4.4
 

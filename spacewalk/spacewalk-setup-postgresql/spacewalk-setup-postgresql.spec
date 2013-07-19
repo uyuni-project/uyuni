@@ -1,5 +1,5 @@
 Name:           spacewalk-setup-postgresql
-Version:        1.10.8
+Version:        2.1.0
 Release:        1%{?dist}
 Summary:        Tools to setup embedded PostgreSQL database for Spacewalk
 Group:          Applications/System
@@ -53,6 +53,9 @@ rm -rf %{buildroot}
 %{_datadir}/spacewalk/setup/defaults.d/*
 
 %changelog
+* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.1-1
+- Bumping package versions for 2.0.
+
 * Sun Jul 14 2013 Tomas Lestach <tlestach@redhat.com> 1.10.8-1
 - fix postgresql84-pltc dependency to postgresql84-pltcl
 
