@@ -10,22 +10,22 @@ Feature: Check errata
     Given I am on the errata page
      When I follow "Relevant" in the left menu
      Then I should see an update in the list
-      And I should see a "TestsuiteRepo" link
+      And I should see a "sles-release-6789" link
 
-  Scenario: check TestsuiteRepo errata
+  Scenario: check sles-release-6789 errata
     Given I am on the errata page
      When I follow "All" in the left menu
-     When I follow "TestsuiteRepo"
-     Then I should see a "TestsuiteRepo - Bug Fix Advisory" text
+     When I follow "sles-release-6789"
+     Then I should see a "sles-release-6789 - Bug Fix Advisory" text
       And I should see a "Test update for sles-release" text
       And I should see a "SLES11-SP2-Updates x86_64 Channel" link
       And I should see a "SLES11-SP2-Updates i586 Channel" link
       And I should see a "reboot_suggested" text
 
-  Scenario: check TestsuiteRepo errata packages
+  Scenario: check sles-release-6789 errata packages
     Given I am on the errata page
      When I follow "All" in the left menu
-     When I follow "TestsuiteRepo"
+     When I follow "sles-release-6789"
      When I follow "Packages"
      Then I should see a "SLES11-SP2-Updates x86_64 Channel" link
       And I should see a "SLES11-SP2-Updates i586 Channel" link

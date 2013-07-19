@@ -7,7 +7,7 @@ Feature: Install an erratum to the client
     Given I am on the Systems overview page of this client
      And I follow "Software" in class "content-nav"
      And I follow "Errata" in class "contentnav-row2"
-    When I check "TestsuiteRepo" in the list
+    When I check "sles-release-6789" in the list
      And I wait for "2" seconds
      And I click on "Apply Errata"
      And I wait for "2" seconds

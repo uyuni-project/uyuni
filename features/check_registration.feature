@@ -244,7 +244,7 @@ Feature: Check client registration
      And I should see a "Show" button
      And I should see a "Test update for sles-release" text
      And I should see an update in the list
-     And I should see a "TestsuiteRepo" link
+     And I should see a "sles-release-6789" link
 
   Scenario: check tab links "Software" => "Software Channels"
     Given I am on the Systems overview page of this client
