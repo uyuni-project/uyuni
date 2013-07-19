@@ -37,9 +37,9 @@ Feature: Clone a Channel
       And I follow "Clone 2 of SLES11-SP2-Updates x86_64 Channel"
      When I follow "Errata" in class "content-nav"
       And I follow "List/Remove Errata"
-     Then I should see a "CL-slessp2-kernel-6648" link
-      And I should see a "CL-slessp2-nfs-client-6222" link
-      And I should see a "CL-slessp2-aaa_base-6544" link
+     Then I should see a "CL-xz-3456" link
+      And I should see a "CL-hplip-2345" link
+      And I should see a "CL-sles-release-6789" link
 
   Scenario: Clone a Channel with selected errata
     Given I am on the manage software channels page
@@ -51,38 +51,39 @@ Feature: Clone a Channel
      And I should see a "Select errata" text
      And I click on "Create Channel"
      And I should see a "Software Channel: Clone 3 of SLES11-SP2-Updates x86_64 Channel" text
-     And I choose "Merge w/CL-slessp2-aaa_base-6544" for "slessp2-aaa_base-6544"
-     And I choose "Clone as CM-slessp2-nfs-client-6222" for "slessp2-nfs-client-6222"
-     And I choose "Do Nothing" for "slessp2-kernel-6648"
+     And I choose "Merge w/CL-xz-3456" for "xz-3456"
+     And I choose "Clone as CM-hplip-2345" for "hplip-2345"
+     And I choose "Do Nothing" for "sles-release-6789"
      And I click on "Clone Errata"
      And I click on "Update Errata"
      And I follow "List/Remove Errata"
-    Then I should see a "CM-slessp2-nfs-client-6222" link
-     And I should see a "CL-slessp2-aaa_base-6544" link
+    Then I should see a "CM-hplip-2345" link
+     And I should see a "CL-xz-3456" link
 
   Scenario: check new errata exists
     Given I am on the errata page
      When I follow "All" in the left menu
       And I select "500" from "1154021400_PAGE_SIZE_LABEL"
-     Then I should see a "CL-slessp2-kernel-6648" link
-      And I should see a "CM-slessp2-nfs-client-6222" link
-      And I should see a "CM-slessp2-nfs-client-6222" link
-      And I should see a "CL-slessp2-aaa_base-6544" link
+     Then I should see a "CL-xz-3456" link
+      And I should see a "CM-hplip-2345" link
+      And I should see a "CL-sles-release-6789" link
 
-  Scenario: check CL-slessp2-nfs-client-6222 errata
+  Scenario: check CL-hplip-2345 errata
     Given I am on the errata page
      When I follow "All" in the left menu
       And I select "500" from "1154021400_PAGE_SIZE_LABEL"
-      And I follow "CL-slessp2-nfs-client-6222"
-     Then I should see a "CL-slessp2-nfs-client-6222 - Bug Fix Advisory" text
-      And I should see a "maint-coord@suse.de" text
-      And I should see a "bug number 758492" link
+      And I follow "CL-hplip-2345"
+     Then I should see a "CL-hplip-2345 - Security Advisory" text
+      And I should see a "mcalmer" text
+      And I should see a "https://bugzilla.novell.com/show_bug.cgi?id=704608" link
 
-  Scenario: check CM-slessp2-nfs-client-6222 errata
+  Scenario: check CM-hplip-2345 errata
     Given I am on the errata page
      When I follow "All" in the left menu
       And I select "500" from "1154021400_PAGE_SIZE_LABEL"
-      And I follow "CM-slessp2-nfs-client-6222"
-     Then I should see a "CM-slessp2-nfs-client-6222 - Bug Fix Advisory" text
-      And I should see a "maint-coord@suse.de" text
-      And I should see a "bug number 758492" link
+      And I follow "CM-hplip-2345"
+     Then I should see a "CM-hplip-2345 - Security Advisory" text
+      And I should see a "mcalmer" text
+      And I should see a "https://bugzilla.novell.com/show_bug.cgi?id=704608" link
+
+
