@@ -31,7 +31,7 @@ test    ::
 
 unittest ::
 	unit2 discover -s satellite_tools/test/unit
-	unit2 discover -s common/
+	unit2 discover -s common/test/unit-test
 
 docker_testing ::
 	echo "Running satellite_tools/test/unit tests inside of docker manager_python_testing container"
