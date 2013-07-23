@@ -31,7 +31,7 @@ test    ::
 
 unittest ::
 	unit2 discover -s satellite_tools/test/unit
-	unit2 discover -s common/
+	unit2 discover -s common/test/unit-test
 
 pylint  ::
 # :E0611: *No name %r in module %r*
