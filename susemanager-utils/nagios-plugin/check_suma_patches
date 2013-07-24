@@ -13,18 +13,12 @@
 import sys
 from spacewalk.server import rhnSQL
 from spacewalk.common.rhnConfig import initCFG
+from check_suma_common import *
 
 #############################################################################
 
-def resultExit(code, msg=None):
-    rhnSQL.closeDB()
-    if msg:
-        print msg
-    sys.exit(code)
-
-#############################################################################
-
-def handle_system(systemid):
+if __name__ == '__main__':
+    systemid = get_system_ID_by_name(check_one_arg(sys.argv))
     sql = rhnSQL.prepare("""SELECT DISTINCT E.id
                             FROM rhnErrata E, rhnServerNeededErrataCache SNEC
                             WHERE EXISTS
@@ -51,27 +45,3 @@ def handle_system(systemid):
             resultExit(1, "WARNING: %d patch(es) pending" % len(patches))
         else:
             resultExit(0, "OK: System is up to date")
-
-#############################################################################
-
-argc = len(sys.argv)
-if argc != 2:
-    resultExit(3, "%s: Wrong argument count" % sys.argv[0])
-
-systemname = sys.argv[1]
-
-initCFG('server.susemanager')
-rhnSQL.initDB()
-
-sql = rhnSQL.prepare("""select id from rhnServer where name = :sname""")
-sql.execute(sname = systemname)
-system = sql.fetchall_dict()
-
-if system:
-    if len(system) > 1:
-        resultExit(3, "System name \"%s\" not unique" % systemname)
-    else:
-        handle_system(system[0]['id'])
-else:
-    resultExit(3, "Unknown System: \"%s\"" % systemname)
-

@@ -19,6 +19,8 @@ Nagios plugins specific for SUSE Manager.
 
 %install
 install -D -m 0755 check_suma_patches %{buildroot}/usr/lib/nagios/plugins/check_suma_patches
+install -D -m 0755 check_suma_lastevent %{buildroot}/usr/lib/nagios/plugins/check_suma_lastevent
+install -D -m 0755 check_suma_common.py %{buildroot}/usr/lib/nagios/plugins/check_suma_common.py
 
 %clean
 rm -rf %{buildroot}
@@ -28,5 +30,7 @@ rm -rf %{buildroot}
 %dir /usr/lib/nagios
 %dir /usr/lib/nagios/plugins
 /usr/lib/nagios/plugins/check_suma_patches
+/usr/lib/nagios/plugins/check_suma_lastevent
+/usr/lib/nagios/plugins/check_suma_common.py
 
 %changelog
