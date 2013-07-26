@@ -45,6 +45,8 @@ BuildRequires: python-gzipstream
 BuildRequires: python-psycopg2
 BuildRequires: python(:DBAPI:oracle)
 BuildRequires: PyPAM
+%else
+BuildRequires: python-hashlib
 %endif
 
 %if 0%{?suse_version}
