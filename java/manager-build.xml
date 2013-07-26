@@ -205,11 +205,31 @@
     />
   </target>
 
+  <target name="init-local-tests" unless="testdirs.exist">
+    <echo message="Creating directories (below /usr/share) needed for running tests" />
+    <exec executable="sudo">
+      <arg value="mkdir" />
+      <arg value="-p" />
+      <arg value="/usr/share/rhn/unit-tests" />
+      <arg value="/usr/share/rhn/config-defaults" />
+    </exec>
+    <echo message="Copying files needed for tests" />
+    <exec executable="sudo">
+      <arg value="cp" />
+      <arg value="-r" />
+      <arg value="code/src/com/redhat/rhn/common/conf/test/conf" />
+      <arg value="/usr/share/rhn/unit-tests" />
+    </exec>
+  </target>
+
   <target name="run-tests-locally" depends="init-tests,jar" description="Run unit tests locally">
-    <mkdir dir="/usr/share/rhn/unit-tests/conf"/>
-    <copy toDir="/usr/share/rhn/unit-tests/conf">
-      <fileset dir="code/src/com/redhat/rhn/common/conf/test/conf" />
-    </copy>
+    <condition property="testdirs.exist">
+      <and>
+        <available file="/usr/share/rhn/unit-tests/conf" type="dir" />
+        <available file="/usr/share/rhn/config-defaults" type="dir" />
+      </and>
+    </condition>
+    <antcall target="init-local-tests" />
 
     <property name="test.jar" value="${build.dir}/rhn.jar" />
     <property name="test.configuration.path" value="${basedir}/conf/local-tests" />
