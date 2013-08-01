@@ -6,7 +6,7 @@ set -e
 echo "Ensure you have kiwi >= v5.05.26 installed, you can find it inside of the virtualization:appliances project on OBS."
 
 echo "Creating the lxc container using kiwi"
-sudo /usr/sbin/kiwi --prepare sles11s_sp2_base --root sles11_sp2_rootfs --force-new-root
+sudo /usr/sbin/kiwi --prepare sles11_sp2_base --root sles11_sp2_rootfs --force-new-root
 
 echo "Compressing the lxc container root"
 sudo tar cpf sles11_sp2_base.tar -C sles11_sp2_rootfs .
