@@ -49,6 +49,8 @@ class YumSrcTest(unittest.TestCase):
 
         cs = yum_src.ContentSource("http://example.com", "test_repo")
         cs.sack = Mock()
+        cs.repo.includepkgs = []
+        cs.repo.exclude = []
 
         yum_src.yum = real_yum
         yum_src.ContentSource.setup_repo = real_setup_repo
