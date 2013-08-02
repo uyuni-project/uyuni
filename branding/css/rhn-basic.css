@@ -1,636 +1,459 @@
-/*this is for basic styles that apply site-wide
-Including the site-wide font set*/
-@font-face
-{
-	font-family: "Droid Sans";
-	font-style: normal;
-	font-weight: normal;
-	src: local('Droid Sans'),url('/fonts/DroidSans.ttf') format('truetype');
+/* this is for basic styles that apply site-wide */
+
+/* This is the container for the content that is centered */
+
+body {
+        margin: 0;
+        padding: 0;
+        color: #333;
+        text-align: center;
+        font-family: "Luxi Sans", "Bitstream Vera Sans", "Lucida Grande", "Trebuchet MS", helvetica, verdana, arial, sans-serif;
+        font-size: small;
 }
-@font-face
-{
-	font-family: "Droid Sans";
-	font-style: normal;
-	font-weight: bold;
-	src: local('Droid Sans Bold'),url('/fonts/DroidSans-Bold.ttf') format('truetype');
+
+.page-content {
+        padding: 6px 10px 6px 16px;
+        vertical-align: top;
+                width: 100%;
 }
-@font-face
-{
-	font-family: "Droid Sans Mono";
-	font-style: normal;
-	font-weight: normal;
-	src: local('Droid Sans Mono'),url('/fonts/DroidSansMono.ttf') format('truetype');
+
+td.page-content > table {
+  clear: left;
 }
-/*This is the container for the content that is centered*/
-.wrap
-{
-	width: 80em;
-	margin: 0 auto;
-	text-align: left;
-	background: #FFF;
-	padding: 0;
+
+/* the two classes below are for two-column layouts */
+.page-content div.left-column, .page-content div.details-column-left {
+  float: left;
+  width: 45%;
+  clear: both;
 }
-#top-wrap
-{
-/* 	background: #83B354; */
-	/* url(/img/bg-header.png) no-repeat 50% 41px;*/
-	width: 100%;
-	min-width: 80em;
-	background-color: #71AB32;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(1px,#7FBD3A),color-stop(2px, #C1D99D),color-stop(2px, #7FBD3A),color-stop(98%, #649A2A),color-stop(100%, #546742));
-	background-image: -webkit-linear-gradient(top, #7FBD3A 1px,#C1D99D 2px,#7FBD3A 2px,#649A2A 98%,#546742);
-	background-image: -moz-linear-gradient(top, #7FBD3A 1px,#C1D99D 2px,#7FBD3A 2px,#649A2A 98%,#546742);
-	background-image: -ms-linear-gradient(top, #7FBD3A 1px,#C1D99D 2px,#7FBD3A 2px,#649A2A 98%,#546742);
-	background-image: -o-linear-gradient(top, #7FBD3A 1px,#C1D99D 2px,#7FBD3A 2px,#649A2A 98%,#546742);
-	background-image: linear-gradient(top, #7FBD3A 1px,#C1D99D 2px,#7FBD3A 2px,#649A2A 98%,#546742);
+
+.page-content div.right-column, .page-content div.details-column-right {
+  float: right;
+  width: 45%;
+  clear: none;
 }
-#bottom-wrap
-{
-	min-width: 80em;
+
+.page-content .full-width, .page-content hr {
+  clear: both;
+  width: 100%;
 }
-.top-content
-{
-	width: 80em;
-	margin: 0px auto;
+
+.details-column-right {
+  margin-left: 10px;
 }
-BODY
-{
-	margin: 0;
-	padding: 0px;
-	color: #333;
-	text-align: center;
-	background: #FFF;
-	font-family: "Droid Sans", "Albany AMT", "Lucida Grande", tahoma, helvetica, verdana, arial, sans-serif;
-	font-size: 13px;
+
+.details-column-left {
+  margin-right: 10px;
 }
-.page-content
-{
-	padding: 0px 10px 6px 16px;
-	vertical-align: top;
-	border-left: 1px solid #DDD;
-	width: 70em;
+
+.details-full {
+  clear: both;
+  padding-top: 10px;
+  width: 90%;
+  margin-bottom: 14px;
 }
-TD.page-content>TABLE
-{
-	clear: left;
+
+.submit-bar {
+  clear: both;
 }
-/*the two classes below are for two-column layouts*/
-.page-content DIV.left-column, .page-content DIV.details-column-left
-{
-	float: left;
-	width: 45%;
-	clear: both;
+
+
+td, th {
+        font-size: small;
+        padding: 4px;
+        text-align: left;
+        vertical-align: top;
 }
-.page-content DIV.right-column, .page-content DIV.details-column-right
-{
-	float: right;
-	width: 45%;
-	clear: none;
+
+img {
+        border: 0;
+        }
+
+hr {
+        border: 0;
+        border-bottom: 1px dashed #ccc;
+        padding: 0.5em;
 }
-.page-content .full-width, .page-content HR
-{
-}
-.details-column-right
-{
-	margin-left: 10px;
-}
-.details-column-left
-{
-	margin-right: 10px;
-}
-.details-full
-{
-	clear: both;
-	padding-top: 10px;
-	width: 90%;
-	margin-bottom: 14px;
-}
-.submit-bar
-{
-	clear: both;
-}
-TD, TH
-{
-/*voice-family: "\"}\";
-trick WinIE4/5 into thinking rule is over*/
-	voice-family: inherit;
-/*recover from trick
-intended value for better browsers*/
-	padding: 4px;
-	text-align: left;
-	vertical-align: middle;
-	font-size: 10pt;
-	empty-cells: show;
-}
-IMG
-{
-	border: 0;
-}
-HR
-{
-	border: 0;
-	border-bottom: 1px dashed #CCC;
-	padding: 0.5em;
-}
-.center
-{
+
+.center {
 	text-align: center;
 }
-/*link styles*/
-A
-{
-	text-decoration: none;
-	color: #005ED8;
+
+/* link styles */
+
+a {
+        text-decoration: none;
+        }
+
+a:link, a:visited {
+        color: #06c;
+        }
+
+a:link:hover, a:visited:hover, a:active:hover {
+        text-decoration: underline !important;
+        }
+
+a[name] {
+        text-decoration: inherit;
 }
-A:link, A:visited
-{
-	color: #06C;
+a[name]:hover {
+        text-decoration: none !important;
 }
 
 a.help-title {
   vertical-align: top;
 }
-A[name]
-{
-	text-decoration: inherit;
+
+a.help-title img {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  vertical-align: top;
 }
-A[name]:hover
-{
-	text-decoration: inherit;
-	color: inherit;
+
+a[name]:hover {
+        color: inherit;
 }
-A.help-title
-{
-	vertical-align: top;
-}
-A.help-title IMG
-{
-	border: 0;
-	padding: 0;
-	margin: 0;
-	vertical-align: top;
-}
+
 /** headings **/
-H1, H2, H3, H4, H5, H6
-{
-	font-family: "Droid Sans", "Albany AMT", "Lucida Grande", tahoma, helvetica, verdana, arial, sans-serif;
+
+h1 {
+        margin-top: 0;
 }
-H1, DIV.toolbar-h1, DIV.toolbar-h2
-{
-	font-size: 1.8em;
-	color: #83B354;
-	font-weight: bold;
-	margin: 24px 0 0 0px;
-	padding: 0px 0px 12px;
+
+h1, div.toolbar-h1 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-size: 20px;
 }
-H2
-{
-	font-size: 1.6em;
-	color: #888A85;
-	font-weight: bold;
-	margin: 18px 0 0 0px;
-	padding: 0px 0px 12px;
+
+h1 img, div.toolbar-h1 img {
+  vertical-align: middle;
+  padding-top: 2px;
+  padding-bottom: 4px;
 }
-H1, DIV.toolbar-h1
-{
-	margin-top: 0;
+
+h1 a.help-title img, div.toolbar-h1 a.help-title img {
+  margin: 0;
+  padding: 0;
+  vertical-align: top;
 }
-H1 IMG, DIV.toolbar-h1 IMG
-{
-	vertical-align: middle;
-	padding-top: 2px;
-	padding-bottom: 4px;
+
+div.toolbar-h1, div.toolbar-h2 {
+  font-weight: bold;
+  padding: 4px 0;
 }
-H1 A.help-title IMG, DIV.toolbar-h1 A.help-title IMG
-{
-	margin: 0;
-	padding: 0;
-	vertical-align: top;
+
+h2, div.toolbar-h2  {
+  font-size: 1.0em;
+  color: #999;
+  border-bottom: 2px solid #ccc;
 }
-DIV.toolbar-h1, DIV.toolbar-h2
-{
-	padding: 4px 0;
+
+h2 img, div.toolbar-h2 img {
+  vertical-align: middle;
 }
-H2, DIV.toolbar-h2
-{
-	font-size: 12pt;
+h2 a {
 }
-H2 IMG, DIV.toolbar-h2 IMG
-{
-	vertical-align: middle;
+
+
+h3 {
+  font-size: 1.0em;
 }
-H2 A
-{
-}
-H3
-{
-	font-size: 1em;
-}
+
 /** toolbar. these are the 'add' and 'remove' icons/links in the upper right **/
-DIV.toolbar
-{
-	vertical-align: middle;
-	font-weight: normal;
-	font-size: 12px;
-	color: #999;
-	float: right;
-	margin-top: 9px;
-	white-space: nowrap;
+
+div.toolbar {
+        vertical-align: middle;
+        font-weight: normal;
+        font-size: 12px;
+        color: #999;
+        float: right;
+        margin-top: 9px;
+        white-space: nowrap;
 }
-.toolbar IMG
-{
-	border: none;
-	padding: 0 2px 1px;
-	vertical-align: middle;
+.toolbar img {
+        border: none;
+        padding: 0 2px 1px 2px;
+        vertical-align: middle;
 }
-.toolbar A
-{
-	padding: 0 2px;
+.toolbar a {
+        padding: 0 2px;
+        text-decoration: none;
 }
-DIV.tooldiv.up-arrow
-{
-	vertical-align: middle;
-	font-weight: normal;
-	font-size: 12px;
-	color: #999;
-	float: left;
-	margin: 0 2%;
-	white-space: nowrap;
+
+.up-arrow img {
+        border: none;
+        padding: 0 2px 4px 2px;
+        vertical-align: middle;
 }
-.up-arrow IMG
-{
-	border: none;
-	padding: 0 2px 4px;
-	vertical-align: middle;
+.up-arrow a {
+        padding: 0 2px;
+        text-decoration: none;
 }
-.up-arrow A
-{
-	padding: 0 2px;
-	text-decoration: none;
-}
+
 /** form stuffs **/
-.required-form-field
-{
-	font-weight: bold;
-	color: #C00;
+
+.required-form-field {
+        font-weight: bold;
+        color:  #c00;
 }
-.form-center
-{
-	text-align: center;
+
+.form-center {
+        text-align: center;
 }
-SELECT, INPUT, TEXTAREA
-{
-	font-family: sans-serif;
-	font-size: 100%;
+select, input, textarea {
+        font-family: sans-serif;
+        font-size: 100%;
 }
-.invisible-buttons INPUT
-{
-	font-size: 10px;
+
+div.formrow {
+        padding: 5px 0px;
+        font-size: x-small;
+        vertical-align: top;
+        height: 1%;
+        }
+
+div.formrow:after {
+    content: ".";
+    display: block;
+    height: 0;
+    overflow: hidden;
+    clear: right;
+    visibility: hidden;
+    }
+
+div.formrow span.label {
+        float: left;
+        width: 110px;
+        text-align: right;
+        font-weight: bold;
+        padding: .5em 0px;
 }
-.invisible-buttons INPUT:hover
-{
-	color: #F00;
-}
-DIV.formrow
-{
-	padding: 5px 0px;
-	font-size: x-small;
-	vertical-align: top;
-	/*[disabled]height:1%;*/
-}
-DIV.formrow:after
-{
-	content: ".";
-	display: block;
-	height: 0;
-	overflow: hidden;
-	clear: right;
-	visibility: hidden;
-}
-DIV.formrow SPAN.label
-{
-	float: left;
-	width: 110px;
-	text-align: right;
-	font-weight: bold;
-	padding: 0.5em 0px;
-}
-DIV.formrow SPAN.formfield
-{
-	padding-right: 10px;
-	float: right;
-	width: 110px;
-	text-align: right;
-}
-DIV.formrow SPAN.formfield INPUT
-{
+
+div.formrow span.formfield {
+        padding-right: 10px;
+        float: right;
+        width: 110px;
+        text-align: right;
+        }
+
+div.formrow span.formfield input {
 	width: 90px;
 }
+
 /** details - these are used for listing details about an object in the rhn webui, eg on a system details page they'll be used to list out the system name, ip address, etc. **/
-TABLE.details-2-columns
-{
-	padding: 4px;
-	border: none;
+
+table.details-2-columns {
+        padding: 4px;
+        border: none;
 }
-TABLE.details
-{
-	margin: 0 2%;
-	width: 95%;
+
+table.details {
+  margin: 0 2%;
 }
-.details TH
-{
-	padding: 8px;
-	padding-left: 16px;
-	border: none;
-	color: #444;
-	text-align: right;
-	vertical-align: top;
-	border: 1px solid #DDD;
-	border: none;
-	background-color: #EEE;
-	/*+border-radius:15px 0 0 15px;*/
-	-moz-border-radius: 15px 0 0 15px;
-	-webkit-border-radius: 15px 0 0 15px;
-	-khtml-border-radius: 15px 0 0 15px;
-	border-radius: 15px 0 0 15px;
-	width: 25%;
+.details th {
+        padding: 8px;
+    padding-left: 16px;
+        border: none;
+        color: #444;
+        text-align: right;
+        vertical-align: top;
+    border: 1px solid #ddd;
+    border:none;
+    background-color: #eee;
 }
-.details TH.required-form-field
-{
-	border-right: 4px solid #C77;
+
+.details th.required-form-field {
+  border-right: 4px solid #c77;
 }
-.details TD
-{
-	vertical-align: top;
-	padding: 4px;
-	padding-left: 2px;
-	padding: 8px;
-	border-bottom: 0;
+
+.details td {
+        vertical-align: top;
+        padding: 4px;
+        padding-left: 2px;
+        padding: 8px;
+        border-bottom: 0;
 }
-.details TH+TD
-{
-	border-bottom: 1px solid #DDD;
+
+.details th + td {
+        border-bottom: 1px solid #ddd;
 }
-.details TD DIV
-{
-	text-align: left;
-	margin-bottom: 10px;
-	white-space: nowrap;
+
+.details td div {
+        text-align: left;
+        margin-bottom: 10px;
+        white-space: nowrap;
 }
-/** details - these are used for listing details about an object in the rhn webui, eg on a system details page they'll be used to list out the system name, ip address, etc. **/
-TABLE.details-2-columns
-{
-	padding: 4px;
-	border: none;
+
+.details td table td {
+        margin: 0;
+        padding: 0;
+        border: 0;
 }
-TABLE.details
-{
-	margin: 0 2%;
+
+.details td table {
 }
-.details TH
-{
-	padding: 8px;
-	padding-left: 16px;
-	border: none;
-	color: #444;
-	text-align: right;
-	vertical-align: middle;
-	border: 1px solid #DDD;
-	border: none;
-	background-color: #EEE;
-	/*+border-radius:15px 0 0 15px;*/
-	-moz-border-radius: 15px 0 0 15px;
-	-webkit-border-radius: 15px 0 0 15px;
-	-khtml-border-radius: 15px 0 0 15px;
-	border-radius: 15px 0 0 15px;
+
+table.details td.small-form textarea {
+        font-size: 10px;
+        font-family: monospace;
 }
-.details TH.required-form-field
-{
-	border-right: 4px solid #C77;
+
+.details-header {
+        font-weight: bold;
+        color: #444;
+        font-family: helvetica;
 }
-.details TH+TD
-{
-	border-bottom: 1px solid #DDD;
-}
-.details TD DIV
-{
-	text-align: left;
-	margin-bottom: 10px;
-	white-space: nowrap;
-}
-.details TD TABLE TD
-{
-	margin: 0;
-	padding: 0px;
-	border: 0;
-	width: auto;
-}
-.details TH LABEL
-{
-	padding: 0px 5px;
-	display: block;
-}
-.details TD TABLE
-{
-}
-TABLE.details TD.small-form TEXTAREA
-{
-	font-size: 10px;
-	font-family: monospace;
-}
-.details-header
-{
-	font-weight: bold;
-	color: #444;
-	font-family: helvetica;
-}
+
 /*these pull some style from the .csv-download class in the
-lisview.css stylesheet **/
-TABLE.details DIV.csv-download
-{
-	width: 100%;
-	padding: 3px 6px;
-	margin-top: 8px;
-	text-align: center;
+  lisview.css stylesheet **/
+
+table.details div.csv-download {
+  width: 100%;
+  padding: 3px 6px;
+  margin-top: 8px;
+  text-align: center;
 }
-TABLE.details TD.csv-download
-{
-	padding: 0px;
-	margin: 0px;
-	-moz-border-radius: 0px;
-	background-color: #FFFFFF;
+
+table.details td.csv-download {
+  padding: 0px;
+  margin: 0px;
+  border-radius: 0px;
+  background-color: white;
 }
-/** button, intup styles **/
-.button, INPUT, .csv-download
-{
-	font-family: "Droid Sans", "Albany AMT", "Lucida Grande", tahoma, helvetica, verdana, arial, sans-serif;
-	font-size: 13px !important;
+
+/** button styles **/
+
+.button a {
+        margin-top: 3px;
+        padding: 2px 5px 2px 5px;
 }
-.button A
-{
+.button:hover {
+        background-color: #dddddd;
+        text-decoration: none !important;
 }
-.button:hover, INPUT[type=button]:hover, INPUT[type=submit]:hover, .csv-download:hover
-{
-	border: 1px solid #666 !important;
-	color: #666 !important;
-	cursor: pointer;
+.button:active {
+        padding: 3px 6px 1px 4px;
 }
-.button:active
-{
+
+.button, a:link.link-button, a:visited.link-button, a:hover.link-button {
+  font-size: small;
+  background-color: #eee;
+  border: 1px outset #bbb;
+
+  text-decoration: none;
+  color: #444;
+
 }
-.button, A:link.link-button, A:visited.link-button, A:hover.link-button
-{
-}
-.button, INPUT[type=button], INPUT[type=submit], .csv-download
-{
-	border: 1px solid #AAA !important;
-	color: #333 !important;
-	text-align: center;
-	/*+border-radius:3px;*/
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	-khtml-border-radius: 3px;
-	border-radius: 3px 3px 3px 3px;
-	padding: 2px 5px !important;
-	white-space: nowrap;
-	background: #FFFFFF url(/img/minibutton-shade.png) repeat-x 50% 100%;
-	text-decoration: none !important;
-}
-.button:disabled, INPUT[type=button]:disabled, INPUT[type=submit]:disabled, .csv-download:disabled
-{
-	border: 1px solid #AAA !important;
-	color: #999 !important;
-	background: #EEE url() repeat-x 50% 100%;
-	cursor: default;
-}
-INPUT[name=url]
-{
-	min-width: 60%;
-}
-INPUT[type=text], INPUT[type=password]
-{
-	border: 1px solid #AAA;
-	/*+border-radius:5px;*/
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-khtml-border-radius: 5px;
-	border-radius: 5px 5px 5px 5px;
-	margin: 1px;
-	padding: 3px;
-	background: #FFFFFF url(/img/input-bg.png) repeat-x 50% 0%;
-}
-A:link.link-button, A:visited.link-button, A:hover.link-button
-{
-}
-/** embedded help links **/
-.rhn-embedded-help-NAVHEADER TD
-{
-	padding: 0 2em;
-}
-.rhn-embedded-help-TOC
-{
-	padding: 0 4em;
-}
-DIV.rhn-embedded-help
-{
-	padding: 6px 20px;
-}
-.rhn-embedded-help-NAVHEADER TH
-{
-	margin-top: 0;
-	padding-bottom: 1em;
-	font-size: 20px;
-	border: 0;
-	background-color: #FFF;
-	color: #000000;
-	text-align: left;
+
+a:link.link-button, a:visited.link-button, a:hover.link-button {
+  padding-bottom: .25%;
+  padding-top: .25%;
+  padding-left: 2%;
+  padding-right: 2%;
 }
 
 /** misc **/
-A.link-img:link IMG, A.link-img:visited IMG
-{
-	border: none;
-	padding-right: 4px;
+
+a.link-img:link img, a.link-img:visited img {
+        border:         none;
+        padding-right:   4px;
 }
-.small-text
-{
-	font-size: 1em;
+
+.small-text {
+        font-size: x-small;
 }
-SPAN.hide
-{
-	visibility: hidden;
-	display: none;
+
+span.hide, span.hide * {
+        visibility: hidden;
 }
-SPAN.no-details
-{
-	font-style: italic;
-	color: #777;
+
+span.no-details {
+  font-style: italic;
+  color: #777;
 }
-.indent
-{
-	margin-left: 1em;
+
+.indent {
+        margin-left: 1em;
 }
-#broken-browser-warning
-{
-	text-align: center;
-	display: none;
+
+table.twocolumn td {
+        vertical-align: top;
+        width:          50%;
 }
-TABLE.twocolumn TD
-{
-	vertical-align: top;
-	width: 50%;
+
+.action-summary-errata, .action-summary-package, .action-summary-config {
+  padding-top: 10px;
 }
-CODE.line-of-code
-{
-	white-space: nowrap;
+
+.action-summary-errata ul, .action-summary-package ul, .action-summary-config ul {
+  margin: 0;
+  list-style: none;
 }
-UL.widespace LI
-{
-	margin-bottom: 12px;
+
+.file-display {
+  overflow: auto;
+  max-width: 600px;
+  max-height: 200px;
+  padding: 7px 5px;
 }
-.action-summary-errata, .action-summary-package, .action-summary-config
-{
-	padding-top: 10px;
+
+div.page-summary {
+  margin: 0 2%;
+  cursor: text;
 }
-.action-summary-errata UL, .action-summary-package UL, .action-summary-config UL
-{
-	margin: 0;
-	list-style: none;
+
+div.page-summary a {
+  text-decoration: underline;
+  cursor: pointer
 }
-.file-display
-{
-	overflow: auto;
-	max-width: 600px;
-	max-height: 200px;
-	padding: 7px 5px;
+
+#footer {
+
+        /*
+        border-top: 2px dotted #ccc;
+        padding: 2em 4em 2em 4em;
+        */
+        padding: 1em;
+        margin: 1em 4em 1em 4em;
+        text-align: center;
+        font-size: 10px;
+        color: #aaa;
+
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 64px;
 }
-DIV.page-summary
-{
-	margin: 0 2%;
-	cursor: text;
+
+@media print {
+  .button { display: none; }
+  .content-nav-rowone, .content-nav-rowtwo, .contentnav-row2 { display: none; }
+  .csv-download { display: none; }
+  .list-sizeselector { display: none; }
+  .list-infotext { display: none; }
+  .list-alphabar-enabled, .list-alphabar-disabled {
+  display: none;
 }
-DIV.page-summary A
-{
-	text-decoration: underline;
-	cursor: pointer;
-}
-DIV.indent
-{
-	margin-left: 4px;
-}
-#footer
-{
-	padding: 1em 0;
-	margin: 1em auto;
-	text-align: center;
-	font-size: 10px;
-	color: #888;
-	margin-top: 25px;
-	width: 100%;
-}
-TABLE.ssm-overview P
-{
-	padding: 0px;
-	margin: -1px;
-	div.filter-input { display: none; }
+  .list-navbuttons { display: none; }
+  .toolbar { display: none; }
+  .toolbar-h1 img { display: none; }
+  #id { display: none; }
+  #geo { display: none; }
+  #linx { display: none; }
+  #mainNav { display: none; }
+  #utilityLinks { display: none; }
+  #header_selcount { display: none; }
+  #searchbar { display: none; }
+  INPUT[type="submit"] { display: none; }
+  td.sidebar { display: none; }
+  div#searchbarinner { display: none; }
+  body { background: white; }
+  #bar { display: none; }
+  #acc-logged-user-org-pipe { display: none; }
+  #acc-prefs { display: none; }
+  #acc-prefs-pipe { display: none; }
+  #acc-logout { display: none; }
+  div.filter-input { display: none; }
 }
