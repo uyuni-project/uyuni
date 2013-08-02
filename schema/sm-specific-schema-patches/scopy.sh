@@ -24,7 +24,7 @@ basepath="$basepath/upgrade/"
 echo "P: $basepath"
 echo "T: $templatedir"
 
-dirs=(spacewalk-schema-1.7-to-spacewalk-schema-1.8 spacewalk-schema-1.8-to-spacewalk-schema-1.9 spacewalk-schema-1.9-to-spacewalk-schema-1.10)
+dirs=(spacewalk-schema-1.7-to-spacewalk-schema-1.8 spacewalk-schema-1.8-to-spacewalk-schema-1.9 spacewalk-schema-1.9-to-spacewalk-schema-1.10 spacewalk-schema-1.10-to-spacewalk-schema-2.0 spacewalk-schema-2.0-to-spacewalk-schema-2.1)
 
 for d in ${dirs[*]}; do
     for i in $basepath/$d/*; do
@@ -62,8 +62,8 @@ for d in ${dirs[*]}; do
 	    continue
 	fi
 
-    	echo ">cp $i $dest"
-    	#cp $i $dest
+    	#echo ">cp $i $dest"
+    	cp -v $i $dest
     done
     incr
 done
