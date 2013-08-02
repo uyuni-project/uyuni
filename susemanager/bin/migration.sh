@@ -302,11 +302,17 @@ ncc-pass = $NCC_PASS
 ncc-email = $NCC_EMAIL
 " > /root/spacewalk-answers
 
+    if [ "$DB_BACKEND" = "oracle" ]; then
+            PARAM_DB="--external-oracle"
+    elif [ "$DB_BACKEND" = "postgresql" ]; then
+            PARAM_DB="--external-postgresql"
+    fi
+
     if [ "$DO_MIGRATION" = "1" ]; then
-        /usr/bin/spacewalk-setup --ncc --skip-db-population --answer-file=/root/spacewalk-answers --external-db
+        /usr/bin/spacewalk-setup --ncc --skip-db-population --answer-file=/root/spacewalk-answers $PARAM_DB
         SWRET=$?
     else
-        /usr/bin/spacewalk-setup --clear-db --ncc --answer-file=/root/spacewalk-answers --external-db
+        /usr/bin/spacewalk-setup --clear-db --ncc --answer-file=/root/spacewalk-answers $PARAM_DB
         SWRET=$?
     fi
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
