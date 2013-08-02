@@ -1,73 +1,99 @@
 /** styles for content nav (for example, the sdc grey navigation bar is a content nav **/
-/*+clearfix {*/
-.content-nav UL:after
-{
-	content: ".";
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
+
+.content-nav {
+	margin: 0;
+        padding: 0;
+}
+
+.content-nav a:visited {
+    color: #06c;
+}
+
+.content-nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        font-size: 10px;
+        font-family: "Luxi Sans", verdana, arial, sans-serif;
+        }
+
+.content-nav:after,
+.content-nav ul:after {
+        content: ".";
+        display: block;
+        height: 1px;
+        margin-top: -1px;
+        overflow: hidden;
+        clear: both;
+        visibility: hidden;
+        }
+
+ul.content-nav-rowone,
+ul.content-nav-rowthree {
+        margin-left: 10px;
+        }
+
+ul.content-nav-rowone {
+        border-bottom: 3px solid #e6e6e6;
+        margin-bottom: -4px;
+}
+
+ul.content-nav-rowone li {
+    margin-bottom: -1px;
+    }
+
+ul.content-nav-rowone li, ul.content-nav-rowthree li {
+        float: left;
+}
+
+ul.content-nav-rowone li a, ul.content-nav-rowthree li a {
+        display: block;
+        padding: 4px 8px;
+}
+
+ul.content-nav-rowtwo {
+        padding-bottom: 6px;
+        margin-right: 8px;
+        }
+
+ul.content-nav-rowtwo li {
+        display: inline;
+        padding-left: 18px;
+}
+
+a.content-nav-selected-link {
+        color: #444;
+        font-weight: 900;
+        }
+
+ul.content-nav-rowone a.content-nav-selected-link {
+        color: #444;
+        font-weight: 900;
+        background-color: #e6e6e6;
+        border-radius: 5px 5px 0 0;
+        }
+
+ul.content-nav-rowthree a.content-nav-selected-link {
+        color: #444;
+        font-weight: 900;
+        background-color: #e6e6e6;
+        border-radius: 0 0 5px 5px;
+        }
+div.contentnav-row2 {
+        background: #e6e6e6;
+        padding-top: 2px;
+        clear: left;
+        border-radius: 5px;
+        margin-right: -5px;
+        }
+
+div.contentnav-row2 a.content-nav-selected-link {
+        color: #444;
+        font-weight: 900;
+}
+
+div.contentnav-row2 div.top {
+        margin-left: 8px;
+	height: 6px;
 	font-size: 0;
-}
-.content-nav UL
-{
-	display: inline-block;
-}
-.content-nav UL
-{
-/*\*/
-	display: block;
-/**/
-	-height: 1px;
-}
-/*+}*/
-.content-nav
-{
-	margin: 0;
-	border-bottom: 1px solid #DDD;
-}
-.content-nav A:visited
-{
-}
-/*[clearfix]*/.content-nav UL
-{
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	display: table-row;
-}
-.content-nav LI
-{
-	display: table-cell;
-	vertical-align: middle;
-}
-.content-nav LI A
-{
-	display: inline-block;
-	margin: 4px;
-	padding: 4px 8px;
-	text-align: center;
-	border: 1px solid #FFFFFF;
-}
-A.content-nav-selected-link
-{
-	color: #444 !important;
-	font-weight: normal;
-	background-color: #E4EDF6;
-	/*+border-radius:5px;*/
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-khtml-border-radius: 5px;
-	border-radius: 5px 5px 5px 5px;
-	border: 1px solid #89A7C6 !important;
-	text-decoration: none !important;
-}
-DIV.contentnav-row2 DIV.top
-{
-	height: 1px;
-	border-top: 1px solid #DDD;
-}
-DIV.contentnav-row2 DIV.bottom
-{
-	border-bottom: 1px solid #DDD;
-}
+        }

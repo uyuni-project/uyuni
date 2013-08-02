@@ -1,554 +1,273 @@
-/*-- General list stuff --*/
-TH
-{
-	padding: 4px 6px;
-	text-align: left;
-	font-size: small;
-	/*+text-shadow:0 1px 0px #FFFFFF;*/
-	-moz-text-shadow: 0 1px 0px #FFFFFF;
-	-webkit-text-shadow: 0 1px 0px #FFFFFF;
-	-o-text-shadow: 0 1px 0px #FFFFFF;
-	text-shadow: 0 1px 0px #FFFFFF;
+/* -- General list stuff -- */
+table.list, table.list-doubleheader {
+        border-radius: 10px 10px 0px 0px;
+        font-size: 10px;
+        width: 100%;
 }
-TABLE.list IMG
-{
-	vertical-align: top !important;
-	margin: 1px 0px 0px;
-	padding: 0px;
-	border: 0px solid #000000;
+
+table.list-doubleheader tr + tr th:last-child {
+    background: none;
 }
-TABLE.list TD
-{
-	vertical-align: middle !important;
-	font-size: 1.1em;
-	border-bottom: 1px dotted #CCC;
-}
-TABLE.list TR:hover TD
-{
-	background-color: #EDF3F9;
-}
-TABLE.list TD+TD
-{
-	border-left: 1px solid #EEE;
-}
-TABLE.list TR:last-child TD
-{
-	border-bottom: 0px none #000000;
-}
-TABLE.list, TABLE.list-doubleheader
-{
-	font-size: 10px;
-	background-color: #EEE;
-	width: 100%;
-	border: 1px solid #CCC;
-	margin: 5px 0px;
-}
-TABLE.list TH, TABLE.list-doubleheader TH
-{
-	color: #333;
-	border-bottom: 1px solid #CCC;
-	background-color: #EEE;
-	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, rgb(221,221,221)),color-stop(1, rgb(255,255,255)));
-	background: -moz-linear-gradient(center bottom,rgb(221,221,221) 0%,rgb(255,255,255) 100%);
-}
-TABLE.list-doubleheader TR:nth-child(2n+1) TH
-{
-	background: #EEE;
-	font-size: 1.5em;
-	color: #666666;
-}
-TABLE.list TH.row-2
-{
-	border-right: 0px solid #000000 !important;
-}
-TABLE.list TH:last-child
-{
-	border-right: 0px solid #000000 !important;
-}
-TABLE.list THEAD TH:first-child
-{
-	border-left: 0px solid #000000 !important;
-}
-TABLE.list-pagination
-{
-	font-size: smaller;
-}
-TABLE.list-doubleheader TR+TR
-{
-}
-TABLE.list-doubleheader TR+TR TH:first-child
-{
-	background-color: #D7D7D7;
-	border-left: 1px solid #C0C0C0;
-}
-TABLE.list-doubleheader TR+TR TH:last-child
-{
-	border-right: 1px solid #C0C0C0;
-}
-TD.errata-patches IMG
-{
-	padding-left: 6px;
-}
-TD.first-column
-{
-}
-TD.last-column
-{
-}
-TD.only-column
-{
-	border-right: 1px solid #C0C0C0;
-	border-left: 1px solid #C0C0C0;
-}
-TH.thin-column, TD.thin-column
-{
+
+th.thin-column, td.thin-column {
 	width: 1%;
-	text-align: center;
+        text-align: center;
 }
-.list-checkbox
+
+.list-checkbox {
+        text-align: center;
+}
+
+.list-checkbox-header {
+        text-align: center;
+}
+
+.list th a {
+        display: inline;
+        }
+
+.list a:hover {
+        text-decoration: underline;
+}
+
+.list tr.greyed-out, .list tr.greyed-out a:link, .list tr.greyed-out a:visited {
+    color: #999;
+}
+
+/* list row classes */
+.list-row-odd td {
+        background-color: #ffffff;
+}
+
+.list-row-even td, .list-row-odd td,
+.list-row-virtual-host-even td, .list-row-virtual-host-odd td,
+.list-row-virtual-even td, .list-row-virtual-odd td
 {
-	text-align: center;
-	border-left: 1px solid #C0C0C0;
+        padding: 4px 8px;
 }
-.list-checkbox-header
-{
-	text-align: center;
+
+/* For virtual system list*/
+.list-row-virtual-host-even td {
+        background-color: #E9E3D6;
 }
-.list TH A
-{
-	display: inline;
+.list-row-virtual-odd td {
+        background-color: #FFFFFF;
 }
-.list A:hover
-{
-	text-decoration: underline;
+.list-row-virtual-even td {
+        background-color: #F6F4EF;
 }
-.list TR.greyed-out, .list TR.greyed-out A:link, .list TR.greyed-out A:visited
-{
-	color: #999;
+
+.list-row-virtual-host-odd td,
+.list-row-virtual-host-even td {
+        border-top: 1px solid #B4B19A;
 }
-.option-disabled
-{
-	color: #999;
+
+/* Your RHN widget classes */
+
+div.half-table-left {
+    float: left;
+    width: 50%;
 }
-/*list row classes*/
-.list-row-even TD
-{
-	background-color: #F8F8F8;
+
+div.half-table-right {
+    float: right;
+    width: 50%;
 }
-.list-row-odd TD
-{
-	background-color: #FFF;
+
+table.half-table {
+        border-radius: 10px 10px 0px 0px;
+        padding: 0px;
+        margin: 0px;
+        width: 97%;
 }
-.list-row-even-disabled TD
-{
-	color: #808080;
-	background-color: #EAE8E4;
+
+div.full-width-wrapper {
+    clear: both;
+    padding-top: 30px;
 }
-.list-row-odd-disabled TD
-{
-	color: #808080;
-	background-color: #FFFFFF;
+
+span.full-width-note-left {
+    float: left;
 }
-.list-row-even-disabled A, .list-row-odd-disabled A
-{
-	color: #5397C6;
+
+span.full-width-note-right {
+    float: right;
 }
-.list-row-summary
-{
-	text-align: right;
-	font-weight: bold;
-	border: 1px solid #CCC;
-	background-color: #EEE;
+
+/* special column classes */
+th + th {
+        border-left: 0;
 }
-.list-row-even TD, .list-row-odd TD, .list-row-summary TD, .list-row-even-disabled TD, .list-row-odd-disabled TD, .list-row-virtual-host-even TD, .list-row-virtual-host-odd TD, .list-row-virtual-even TD, .list-row-virtual-odd TD
-{
-	padding: 4px 8px;
+a[name]:hover {
+        color: inherit;
 }
-.list-horiz-separator HR
-{
-	border: 0;
-	border-bottom: 1px solid #CCC;
-	padding: 0px;
+
+/* --- TABLE TREE VIEW --- */
+tr.table-tree-even td, tr.table-tree-odd td {
+   padding: 10px 15px;
 }
-/*default class def for row color toggling*/
-.list-row-even-selected
-{
-	background-color: #DDE5FF;
+tr.table-tree-even img,
+tr.table-tree-odd img {
+   margin-left: 4px;
 }
-.list-row-odd-selected
-{
-	background-color: #DDE5FF;
+
+tr.table-tree-even {
+   background-color: #fff;
 }
-.list-row-odd-selected TD, .list-row-even-selected TD
-{
-	border-bottom: 1px solid #CCC;
-	padding: 4px 8px;
+
+/* padding for parent+child channels  */
+tr.table-tree-even + tr.table-tree-even td,
+tr.table-tree-odd + tr.table-tree-odd td {
+   padding-top: 0;
 }
-/*For virtual system list*/
-.list-row-virtual-host-odd TD
-{
-	background-color: #EAE8E4;
+
+
+table.namespaces {
+        font-size: 10px;
+        border: 1px solid #999;
 }
-.list-row-virtual-host-even TD
-{
-	background-color: #E9E3D6;
+
+table.list-pagination {
+        font-size: 10px;
 }
-.list-row-virtual-odd TD
-{
-	background-color: #FFFFFF;
+
+.list-empty-message {
+  margin: 0 2%;
+  cursor: text;
 }
-.list-row-virtual-even TD
-{
-	background-color: #F6F4EF;
-}
-.list-row-virtual-host-odd TD, .list-row-virtual-host-even TD
-{
-	border-top: 1px solid #B4B19A;
-}
-/*Your Spacewalk widget classes*/
-DIV.half-table-left
-{
-	float: left;
-	width: 50%;
-}
-DIV.half-table-right
-{
-	float: right;
-	width: 50%;
-}
-TABLE.half-table
-{
-	padding: 0px;
-	margin: 0 0 10px 0;
-	border: 1px solid #CCC;
-	width: 97%;
-}
-.half-table TR:last-child TD
-{
-	border-bottom: 0px none #CCC;
-}
-.half-table TD
-{
-	border-bottom: 1px dotted #CCC;
-}
-TABLE.your-rhn TABLE.half-table TD
-{
-	padding: 2px 8px;
-}
-TABLE.your-rhn TABLE.full-table TD
-{
-	padding-left: 4px;
-	padding-right: 4px;
-	padding-top: 4px;
-}
-TABLE.half-table THEAD TH
-{
-	background: #EEE;
-	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, rgb(221,221,221)),color-stop(1, rgb(255,255,255)));
-	background: -moz-linear-gradient(center bottom,rgb(221,221,221) 0%,rgb(255,255,255) 100%);
-	border-bottom: 1px solid #CCC;
-	color: #333;
-}
-TABLE.half-table THEAD TH+TH
-{
-	border-left: 0px solid #000000;
-}
-DIV.full-width-wrapper
-{
-	clear: both;
-	padding-top: 10px;
-}
-SPAN.full-width-note-left
-{
-	float: left;
-	margin-top: 5px;
-}
-SPAN.full-width-note-right
-{
-	float: right;
-	margin-top: 5px;
-}
-/*special column classes*/
-TH+TH
-{
-	border-left: 1px dotted #CCC;
-}
-A[name]:hover
-{
-}
-/*pagination widget styles*/
-#pagination_widget
-{
-	display: inline;
-	padding-left: 5px;
-	padding-right: 5px;
-}
-#pagination_widget IMG
-{
-	border: none;
-	vertical-align: -25%;
-}
-#pagination_widget A.back_button
-{
-	margin-right: -5px;
-}
-#pagination_widget A.forward_button
-{
-	margin-left: -4px;
-}
-#pagination_widget A, SPAN.current_page
-{
-	border: 1px solid #777;
-	height: 19px;
-	width: 22px;
-	font-size: 10pt;
-	font-weight: bold;
-	color: #0066CC;
-	padding: 0 2px;
-	margin: 0 -5px 0 -3px;
-	text-decoration: inherit;
-}
-#pagination_widget SPAN.current_page
-{
-	background-color: #CCC;
-	color: #777;
-	font-weight: bold;
-}
-#pagination_widget A.first_page
-{
-	margin-left: -3px;
-}
-#pagination_widget A.last_page
-{
-	margin-right: -3px;
-}
-#pagination_widget A.back_button
-{
-	border: none;
-}
-#pagination_widget A.forward_button
-{
-	border: none;
-}
-.pagination-submit
-{
-	background-color: #FFF;
-	border: 1px solid #777;
-	color: #0066CC;
-	font-weight: bold;
-	display: inline;
-	margin: 0 -1px 0 0;
-}
-.pagination-submit:hover
-{
-	cursor: pointer;
-/*so they look like links ;)*/
-	background-color: #EEF3FF;
-}
-.pagination-arrow-prev INPUT
-{
-	margin: 0 -4px -4px 0;
-	border: none;
-}
-.pagination-arrow-next INPUT
-{
-	margin: 0 0 -4px -3px;
-	border: none;
-}
-/*--- TABLE TREE VIEW ---*/
-TR.table-tree-even TD, TR.table-tree-odd TD
-{
-	padding: 10px 15px;
-}
-TR.table-tree-even IMG, TR.table-tree-odd IMG
-{
-	margin-left: 4px;
-}
-TR.table-tree-odd
-{
-	background-color: #EAE8E4;
-}
-TR.table-tree-even
-{
-	background-color: #FFF;
-}
-/*padding for parent+child channels*/
-TR.table-tree-even+TR.table-tree-even TD, TR.table-tree-odd+TR.table-tree-odd TD
-{
-	padding-top: 0;
-}
-TABLE.namespaces
-{
-	font-size: 10px;
-	border: 1px solid #999;
-}
-TABLE.list-pagination
-{
-	font-size: 10px;
-}
-.list-empty-message
-{
-	margin: 0;
-	cursor: text;
-}
+
 /** filterbox styles **/
-.list-filterbox
-{
-	font-size: 10px;
+
+div.filter-input table {
+  width: 100%;
 }
-DIV.filter-input
-{
-	padding: 0;
-	vertical-align: baseline;
-	position: relative;
+
+div.filter-input td {
+  width: 40%;
 }
-DIV.filter-input DIV
-{
-	float: right;
-	position: absolute;
-	top: 5px;
-	right: 5px;
+
+div.filter-input input {
+  vertical-align: middle;
+  font-size: 10px;
 }
-DIV.filter-input .list-infotext:empty
-{
-	padding: 0px;
-	margin: 0px;
-	line-height: 0;
-	font-size: 0;
-}
-DIV.filter-input TABLE
-{
-	width: 100%;
-	line-height: 25px;
-}
-DIV.filter-input TD
-{
-	margin: 0px;
-	padding: 0px;
-	vertical-align: middle;
-}
-DIV.filter-input INPUT
-{
-	font-size: 10px;
-	margin-left: 8px;
-}
+
 /** alphabar styles **/
-.list-alphabar
-{
-	text-align: right;
-	font-size: 12px;
-	white-space: nowrap;
+
+.list-alphabar {
+        text-align: right;
+        font-size: 12px;
+        white-space: nowrap;
 }
-.list-alphabar A
-{
-	padding: 0px 2px;
+.list-alphabar a {
+        padding: 0px 2px;
 }
-.list-alphabar-enabled
-{
-	padding: 0px 2px;
+.list-alphabar-enabled {
+        padding: 0px 2px;
 }
-.list-alphabar-disabled
-{
-	padding: 0px 2px;
-	color: #AAA;
-	cursor: default;
+.list-alphabar-disabled {
+        padding: 0px 2px;
+        color:  #aaa;
+        cursor: default;
 }
-.list-box
-{
-	border: 1px solid #CCC;
+
+.list-navbuttons {
+        white-space: nowrap;
+        text-align: right !important;
 }
-.list-data-number
-{
-	text-align: right;
+
+.list-sizeselector {
+  text-align: left !important;
+  font-size: small;
 }
-.list-navbuttons
-{
-	white-space: nowrap;
+
+.list-infotext {
+        width: 100% !important;
 	text-align: right !important;
+        white-space: nowrap;
+        color: #777;
+        float: left;
 }
-.list-sizeselector
-{
-	text-align: left !important;
-	font-size: small;
-	margin: 0px;
-	padding: 0px;
-	vertical-align: middle;
+.list-channel a {
 }
-.list-infotext
-{
-	text-align: right !important;
-	white-space: nowrap;
-	float: left;
-	vertical-align: inherit;
-	margin-top: 5px;
-	padding: 0px;
-	float: right;
+.list-channel ul {
+        padding: 0;
+    margin: 0;
 }
-.list-infotext STRONG
-{
-	font-weight: normal;
+.list-channel li {
+        list-style: none;
 }
-.list-infotext IMG, .list-infotext INPUT
-{
-	margin: 3px !important;
-	padding: 0px;
-	border: 0px none #000000;
-	vertical-align: middle;
-	/*+placement:shift 0px -1px;*/
-	position: relative;
-	left: 0px;
-	top: -1px;
+.list-channel li + li {
+        padding-top: 0;
 }
-.list-channel A
-{
+.list-channel li + li li {
+        padding-top: 0;
 }
-.list-channel UL
-{
-	padding: 0;
-	margin: 0;
+.list-channel li li {
+        list-style-image: url("/img/branch.gif");
+        margin-left: 2.5em;
 }
-.list-channel LI
-{
-	list-style: none;
+
+ul.channel-list li {
+        list-style-image: url("/img/rhn-bullet.gif");
 }
-.list-channel LI+LI
-{
-	padding-top: 0;
+
+ul.channel-list li.child-channel {
+        list-style-image: url("/img/channel_child_node.gif");
+        margin-left: .4em;
 }
-.list-channel LI+LI LI
-{
-	padding-top: 0;
+
+ul.channel-list li.highlighted {
+        background-color: yellow;
 }
-.list-channel LI LI
-{
-	list-style-image: url(/img/branch.gif);
-	margin-left: 2.5em;
+
+table.namespace-control {
+  padding:  4px;
 }
-UL.channel-list LI
-{
-	list-style-image: url(/img/rhn-bullet.gif);
+
+.namespace-control tr {
+        vertical-align:  middle;
 }
-UL.channel-list LI.child-channel
-{
-	list-style-image: url(/img/channel_child_node.gif);
-	margin-left: 0.4em;
+
+.namespace-control td {
+        padding: 4px;
 }
-UL.channel-list LI.highlighted
-{
-	background-color: #FFFFBD;
+
+.namespace-control-buttons td {
+        padding:  4px;
+        vertical-align:  middle;
 }
-.list-system-channels A
-{
+
+th {
+        padding: 4px 6px;
+        color: #fff;
+        text-align: left;
+        font-size: small;
 }
-.list-system-channels UL
-{
-	padding: 0;
-	margin: 0;
-	margin-left: -18px;
+
+/* --- Cool list sorting stuffs --- */
+
+/* the following classes add an arrow graphic in the column header */
+
+th.ascSort a {
+   padding-right: 20px;
+   background-image: url('/img/rhn-listicon-arrow-ascend.gif') !important;
+   background-repeat: no-repeat;
+   background-position: 100% 60% !important;
 }
-.list-system-channels LI
-{
-	list-style-image: url(/img/rhn-bullet-parentchannel.gif);
+
+th.descSort a {
+   padding-right: 20px;
+   background-image: url('/img/rhn-listicon-arrow-descend.gif') !important;
+   background-repeat: no-repeat;
+   background-position: 100% 60% !important;
+}
+
+th.ascSort:first-child, th.descSort:first-child {
+  border-radius: 10px 0 0 0;
+}
+
+th.ascSort:last-child, th.descSort:last-child {
+  border-radius: 0 10px 0 0;
 }
 
 /* the following classes highlight the first row of an alphabar jump */
@@ -559,116 +278,33 @@ tr.alphaResult td.sortedCol {
       background-repeat: no-repeat;
       background-position: left center;
 }
-.list-system-channels LI+LI LI
-{
-	padding-top: 0;
-}
-.list-system-channels LI LI
-{
-	list-style-image: url(/img/rhn-bullet-childchannel.gif);
-}
-/** iso list styles **/
-.list-iso TH
-{
-	border-width: 0 0 1px;
-}
-.list-iso TH+TH
-{
-	border-left: 1px solid #CCC;
-}
-.list-iso TD.seperated
-{
-	border-top: 1px solid #CCC;
-	font-weight: bold;
-}
-.list-iso
-{
-	font-size: 10px;
-	border: 1px solid #999;
-	padding: 1px;
-}
-.list-iso-item
-{
-	margin-left: 1em;
-}
-.list-iso-item
-{
-	color: #555;
-}
-.list-iso-item+.list-iso-item
-{
-	margin-top: 0.05em;
-}
-TABLE.namespace-control
-{
-	padding: 4px;
-}
-.namespace-control TR
-{
-	vertical-align: middle;
-}
-.namespace-control TD
-{
-	padding: 4px;
-}
-.namespace-control-buttons TD
-{
-	padding: 4px;
-	vertical-align: middle;
-}
-/*existing Spacewalk STYLES - modded - these need to be inserted carefully*/
-TABLE.iso_dl
-{
-	border-collapse: collapse;
-}
-TABLE.iso_dl TD
-{
-	padding: 4px;
-}
-TABLE.iso_dl TH
-{
-	color: #999;
-	background-color: #EEE;
-	border: 1px solid #999;
-	padding: 6px 3px;
-	text-align: right;
-}
-TABLE.iso_dl TH.first
-{
-	text-align: left;
-}
-/*--- Cool list sorting stuffs ---
-the following classes darken all rows in the currently-sorted column*/
-.list-row-even TD.sortedCol
-{
-	background-color: #EBF3FB;
-	border-left: 1px solid #82B2E1;
-	/*[disabled]border-right:1px solid #82B2E1;*/
-}
-.list-row-odd TD.sortedCol
-{
-	background-color: #FFFFFF;
-	border-left: 1px solid #82B2E1;
-	/*[disabled]border-right:1px solid #82B2E1;*/
-}
-TH.ascSort, TH.descSort
-{
-	background-color: #DAEAFA !important;
-	border-bottom: 1px solid #82B2E1 !important;
-	border-left: 1px solid #82B2E1 !important;
-	/*[disabled]border-right:1px solid #82B2E1;*/
-}
-/*the following classes add an arrow graphic in the column header*/
-TH.ascSort A
-{
-	padding-right: 20px;
-	background-image: url(/img/rhn-listicon-arrow-ascend.gif) !important;
-	background-repeat: no-repeat;
-	background-position: 100% 60% !important;
+
+.list-button-row,
+.list-button-row td {
+  background-color: #888 !important;
+  border-right: none !important;
 }
 
-th.ascSort:first-child, th.descSort:first-child {
-   border-radius: 10px 0 0 0; 
+.list-button-row td {
+  padding: 10px 5px;
+}
+
+.list-row-even .list-column-even {
+  background-color: #eee;
+}
+
+.list-row-odd .list-column-even {
+  background-color: #e4e4e4;
+}
+
+.inactive {
+  background-color: #fef5ad;
+  margin-bottom: 5px;
+}
+
+.compare-list .inactive {
+  background-color: #fef5ad;
+  margin-bottom: 5px;
 }
 
 .compare-list td:first-child {
@@ -676,90 +312,44 @@ th.ascSort:first-child, th.descSort:first-child {
   border-right: 1px solid #b4b19a;
 }
 
-th.ascSort:last-child, th.descSort:last-child {
-   border-radius: 0 10px 0 0; 
+.compare-list ul {
+  list-style: none outside !important;
+  padding: 0px;
 }
-TH.descSort A
-{
-	padding-right: 20px;
-	background-image: url(/img/rhn-listicon-arrow-descend.gif) !important;
-	background-repeat: no-repeat;
-	background-position: 100% 60% !important;
-}
-/*the following classes highlight the first row of an alphabar jump*/
-TR.alphaResult TD
-{
-	background-color: #D7D7D7;
-}
-TR.alphaResult TD.sortedCol
-{
-	background-color: #C0C0C0;
-	padding-left: 20px;
-	background-image: url(/img/list-forward.gif);
-	background-repeat: no-repeat;
-	background-position: left center;
-}
-.compare-list .first-column
-{
-	border-right: 1px solid #C0C0C0;
-	background-color: #E4E4E4;
-	text-align: right;
-}
-.list-button-row, .list-button-row TD
-{
-	background-color: #888 !important;
-	border-right: none !important;
-}
-.list-button-row TD
-{
-	padding: 10px 5px;
-}
-.list-row-even .list-column-even
-{
-	background-color: #EEE;
-}
-.list-row-odd .list-column-even
-{
-	background-color: #E4E4E4;
-}
-.inactive
-{
-	background-color: #FFFCD6;
-	margin-bottom: 5px;
-}
-.compare-list .inactive
-{
-	background-color: #FEF5AD;
-	margin-bottom: 5px;
-}
-.compare-list UL
-{
-	list-style: none outside !important;
-	padding: 0px;
-}
+
 /** CSV download widget **/
-.csv-download
-{
-	width: 20%;
+
+
+.csv-download {
+	width:			20%;
+	padding: 		3px 6px;
+        border-radius:	8px;
 	text-align: center;
-	margin-top: 10px;
 }
-.csv-download IMG
-{
-	margin-right: 4px;
-	vertical-align: bottom;
+
+.csv-download img {
+	margin-right: 		4px;
+	vertical-align: 	bottom;
 }
-.csv-download A
-{
-	color: #333;
-	text-decoration: none;
+
+.csv-download a {
+	font-weight:		bold;
 }
-.csv-download A:hover
-{
-	color: #666;
-	text-decoration: none;
+
+/** Highlightning of hovered rows **/
+
+.list-row-odd:hover td {
+        background-color: #d8d8d8;
 }
-.list-fat-column-50
-{
-	width: 50%;
+
+.list-row-even:hover td {
+        background-color: #d8d8d8;
+}
+
+.list-row-even:hover td.sortedCol  {
+  background-color: #d0d1ff;
+}
+
+.list-row-odd:hover td.sortedCol  {
+  background-color: #d0d1ff;
 }
