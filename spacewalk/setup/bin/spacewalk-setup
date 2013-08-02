@@ -62,6 +62,12 @@ if (not $opts{"skip-logfile-init"}) {
     Spacewalk::Setup::init_log_files($product_name, @ARGV);
 }
 
+if (Spacewalk::Setup::have_selinux()) {
+    print Spacewalk::Setup::loc("* Setting up Selinux..\n");
+    Spacewalk::Setup::system_or_exit(['/usr/sbin/spacewalk-selinux-enable', ''], 42,
+	       'Could not enable selinux policy.');
+}
+
 if ($opts{"run-cobbler"}) {
     print Spacewalk::Setup::loc("* Setting up Cobbler..\n");
     setup_cobbler(\%opts, \%answers);

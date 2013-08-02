@@ -48,8 +48,14 @@ public class SsmUpgradePackagesAction extends SsmPackagesAction {
 
         SsmUpgradePackagesEvent supe = (SsmUpgradePackagesEvent) event;
         Map<Long, List<Map<String, Long>>> packageListItems = supe.getSysPackageSet();
+        List<Map<String, Long>> pkgs = new ArrayList<Map<String, Long>>();
+        for (List<Map<String, Long>> pkgList : packageListItems.values()) {
+            for (Map<String, Long> pkg : pkgList) {
+                pkgs.add(pkg);
+            }
+        }
 
-        return ActionManager.schedulePackageUpgrades(user, packageListItems, earliest);
+        return ActionManager.schedulePackageInstall(user, sids, pkgs, earliest);
 
     }
 

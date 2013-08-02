@@ -43,7 +43,7 @@ public class SsmInstallPackagesAction extends SsmPackagesAction {
         Long channelId = sipe.getChannelId();
 
         List<EssentialServerDto> servers = SystemManager.systemsSubscribedToChannelInSet(
-                channelId, u, SetLabels.SYSTEM_LIST);
+                        channelId, u, SetLabels.SYSTEM_LIST);
 
         // Create one action for all servers to which the packages are installed
         List<Long> serverIds = new LinkedList<Long>();
@@ -53,26 +53,23 @@ public class SsmInstallPackagesAction extends SsmPackagesAction {
         return serverIds;
     }
 
-    protected List<Action> doSchedule(SsmPackageEvent event,
-                                      User user,
-                                      List<Long> sids,
-                                      Date earliest) {
+    protected List<Action> doSchedule(SsmPackageEvent event, User user, List<Long> sids,
+                    Date earliest) {
         SsmInstallPackagesEvent sipe = (SsmInstallPackagesEvent) event;
 
         Set<String> data = sipe.getPackages();
         // Convert the package list to domain objects
-        List<PackageListItem> packageListItems =
-                new ArrayList<PackageListItem>(data.size());
+        List<PackageListItem> pkgListItems = new ArrayList<PackageListItem>(data.size());
         for (String key : data) {
-            packageListItems.add(PackageListItem.parse(key));
+            pkgListItems.add(PackageListItem.parse(key));
         }
 
         // Convert to list of maps
         List<Map<String, Long>> packageListData = PackageListItem
-                .toKeyMaps(packageListItems);
+                        .toKeyMaps(pkgListItems);
 
         List<Action> pkgActions = ActionManager.schedulePackageInstall(user, sids,
-                packageListData, earliest);
+                        packageListData, earliest);
 
         return pkgActions;
     }

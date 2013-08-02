@@ -14,7 +14,7 @@ Summary:        Spacewalk Monitoring Daemon
 Name:           rhnmd
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:        5.3.17
+Version:        5.3.18
 Release:        1%{?dist}
 License:        GPLv2
 BuildArch:      noarch
@@ -161,7 +161,7 @@ fi
 /usr/sbin/semanage fcontext -a -t ssh_home_t '/var/lib/nocpulse/\.ssh/authorized_keys' || :
 %endif
 /sbin/restorecon -rvv /var/lib/nocpulse || :
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} > 6
 /usr/sbin/semanage port -l | grep -q '^ssh_port_t\b.*\btcp\b.*\b4545\b' || /usr/sbin/semanage port -a -t ssh_port_t -p tcp 4545 || :
 %endif
 %endif
@@ -224,6 +224,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Jul 29 2013 Michael Mraka <michael.mraka@redhat.com> 5.3.18-1
+- 893096 - bind rhnmd to port on new RHEL
+
 * Tue May 21 2013 Tomas Kasparek <tkasparek@redhat.com> 5.3.17-1
 - misc branding clean up
 

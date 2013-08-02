@@ -275,6 +275,9 @@
         <trans-unit id="lookup.xccdfscan.title">
           <source>We're sorry, but the XCCDF scan could not be found.</source>
         </trans-unit>
+        <trans-unit id="lookup.scapfile.title">
+          <source>We're sorry, but the requested SCAP results file could not be found.</source>
+        </trans-unit>
         <trans-unit id="missing_capabilities.jsp.header">
           <source>Missing Capabilities</source>
         </trans-unit>
@@ -3375,6 +3378,18 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="org-config.scapfile-sizelimit.jsp">
         <source>SCAP File Upload Size Limit</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="org-config.scap-retention">
+        <source>Allow Deletion of SCAP Results</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="org-config.scap-retention-period">
+        <source>Allow Deletion After (period in days)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -11066,6 +11081,26 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="system.audit.listscap.jsp.na">
           <source>N/A</source>
         </trans-unit>
+        <trans-unit id="system.audit.listscap.jsp.removebut">
+          <source>Remove Selected Scans</source>
+        </trans-unit>
+      </group>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Confirmation dialog for deletion of SCAP scans for given system</context>
+        </context-group>
+        <trans-unit id="system.audit.xccdfdeleteconfirm.jsp.overview">
+          <source>Confirm Deletion of OpenSCAP Scans</source>
+        </trans-unit>
+        <trans-unit id="system.audit.xccdfdeleteconfirm.jsp.deletable">
+          <source>Deletable</source>
+        </trans-unit>
+        <trans-unit id="system.audit.xccdfdeleteconfirm.jsp.tip">
+            <source>Only those SCAP Scans can be deleted which have passed their retention period. Retention period can be set in the Organization Configuration dialog.</source>
+        </trans-unit>
+        <trans-unit id="system.audit.xccdfdeleteconfirm.jsp.message">
+          <source>{0} SCAP Scan(s) deleted. {1} SCAP Scan(s) retained</source>
+        </trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -11124,6 +11159,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="system.audit.xccdfdetails.jsp.reschedule">
           <source>reschedule</source>
+        </trans-unit>
+        <trans-unit id="system.audit.xccdfdelete">
+          <source>delete scan</source>
         </trans-unit>
       </group>
       <group>

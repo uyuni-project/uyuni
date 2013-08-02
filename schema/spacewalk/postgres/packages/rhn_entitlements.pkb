@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 dae6f07736360c86d247fbb1e40d2ae90d16e830
+-- oracle equivalent source sha1 b34e5effdc23dd2bc7bb9c805c71a0396d947848
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -1556,10 +1556,7 @@ language plpgsql;
     ) returns void
 as $$
     declare
-       is_fve_in char;
-       tmp_quantity numeric;
-
-        serverchannels cursor for
+        serverchannels cursor(tmp_quantity numeric, is_fve_in char) for
             select  sc.server_id,
                     sc.channel_id
             from    rhnServerChannel sc,
@@ -1597,19 +1594,17 @@ as $$
             return;
         end if;
 
-        tmp_quantity := quantity_in;
-        is_fve_in := 'N';
-
-        for sc in serverchannels loop
-            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id, 1, 1, 0, 0);
-
-        tmp_quantity := flex_in;
-        is_fve_in := 'Y';
-        for sc in serverchannels loop
-            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id, 1, 1, 0, 0);
+        for sc in serverchannels(quantity_in, 'N') loop
+            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id,
+                                                   1, 1, 0, 0);
         end loop;
+
+        for sc in serverchannels(flex_in, 'Y') loop
+            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id,
+                                                   1, 1, 0, 0);
         end loop;
-                perform rhn_channel.update_family_counts(channel_family_id_in, customer_id_in);
+
+        perform rhn_channel.update_family_counts(channel_family_id_in, customer_id_in);
     end$$
 language plpgsql;
         

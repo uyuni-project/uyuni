@@ -1548,10 +1548,7 @@ is
         quantity_in in number,
         flex_in in number
     ) is
-       is_fve_in char;
-       tmp_quantity number;
-
-        cursor serverchannels is
+        cursor serverchannels(tmp_quantity number, is_fve_in char) is
             select    sc.server_id,
                     sc.channel_id
             from    rhnServerChannel sc,
@@ -1594,24 +1591,17 @@ is
             return;
         end if;
 
-        tmp_quantity := quantity_in;
-        is_fve_in := 'N';
-
-        for sc in serverchannels loop
+        for sc in serverchannels(quantity_in, 'N') loop
             rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id, 1, 1,
                                                        update_family_countsYN => 0);
+        end loop;
 
-        tmp_quantity := flex_in;
-        is_fve_in := 'Y';
-        for sc in serverchannels loop
+        for sc in serverchannels(flex_in, 'Y') loop
             rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id, 1, 1,
                                                         update_family_countsYN => 0);
         end loop;
 
-
-
-        end loop;
-                rhn_channel.update_family_counts(channel_family_id_in, customer_id_in);
+        rhn_channel.update_family_counts(channel_family_id_in, customer_id_in);
     end prune_family;
 
     procedure set_family_count (
