@@ -198,9 +198,9 @@ class ContentSource:
 
         if not filters:
             # if there's no include/exclude filter on command line or in database
-            for p in self.repo.includepkgs:
+            for filter_conf in self.repo.includepkgs:
                 filters.append(('+',[filter_conf]))
-            for p in self.repo.exclude:
+            for filter_conf in self.repo.exclude:
                 filters.append(('-',[filter_conf]))
 
         if filters:
