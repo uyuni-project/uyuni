@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	2.1.0
+Version:	2.1.2
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -103,6 +103,13 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Wed Jul 31 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.2-1
+- adding 2.0 repositories to spacewalk-common-channels
+
+* Tue Jul 30 2013 Dimitar Yordanov <dyordano@redhat.com> 2.1.1-1
+- New simple tool for managing custom repositories.
+- Bumping package versions for 2.1.
+
 * Thu Jul 18 2013 Jiri Mikulka <jmikulka@redhat.com> 2.0.2-1
 - dropping support for Fedora 17 in Spacewalk nightly
 

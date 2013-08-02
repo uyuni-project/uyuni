@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.1
+Version: 2.1.9
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -880,6 +880,49 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Jul 31 2013 Simon Lukasik <slukasik@redhat.com> 2.1.9-1
+- Refactor common columns to a fragment file.
+- Handle non-existent files properly.
+- Remove commented-out code, commited by accident.
+- Do not delete content of the directory which you cannot list
+- Make sure to not iterate through null.
+- Reconcile the set of scans with existing scans after deletion
+- Allow deletion of a single scan from its details page
+- Use the red tint if none has been deleted.
+- Allow XccdfTestResult objects to be deleted.
+- Deletion of multiple XCCDF Scans.
+- Allow for scans at the System's scans listing page to be selected
+- Prepare model for deletion of a SCAP Result
+- Indent organization configuration dialog to clarify semantics of checkboxes.
+- Allow for scap_retention_period to be set through webui.
+- Close table cell more properly.
+- Correct typo in documentation.
+
+* Mon Jul 29 2013 Stephen Herr <sherr@redhat.com> 2.1.8-1
+- 989630 - Allow user to hackisly add their own keys during the kickstart
+
+* Thu Jul 25 2013 Grant Gainey <ggainey@redhat.com> 2.1.7-1
+- 987977 - Fix there-can-be-solaris issue and make Upgrade behave like
+  everything else
+
+* Wed Jul 24 2013 Grant Gainey <ggainey@redhat.com> 2.1.6-1
+- Make checkstyle happy
+- 987977 - Fix chaining of pkg-scheduling in SSM
+
+* Tue Jul 23 2013 Dimitar Yordanov <dyordano@redhat.com> 2.1.5-1
+- new api call updateRepoLabel(key, label, new_label
+
+* Mon Jul 22 2013 Tomas Lestach <tlestach@redhat.com> 2.1.4-1
+- 986527 - removing extra semicolon
+
+* Mon Jul 22 2013 Jan Dobes 2.1.3-1
+- prevent ISE when UUID and host ID is null
+- ISS: Return LookupException to getDefaultMaster() if there isn't one
+
+* Fri Jul 19 2013 Stephen Herr <sherr@redhat.com> 2.1.2-1
+- 986335 - explicitly require libxml2 for kickstarts to avoid error
+- 986299 - use empty_message_key instead of empty_message
+
 * Thu Jul 18 2013 Grant Gainey 2.1.1-1
 - JUnit fixes
 - Bumping package versions for 2.1.

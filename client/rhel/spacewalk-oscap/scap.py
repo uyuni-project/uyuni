@@ -131,9 +131,9 @@ def _upload_results(xccdf_result, results_dir, args):
     return errors
 
 def _upload_file(server, systemid, args, path, filename, f):
-    if not _assert_xml(f):
+    if filename != 'xccdf-report.html' and not _assert_xml(f):
         log.log_debug('Excluding "%s" file from upload. Not an XML.', path)
-        return '\nxccdf_eval: File "%s" not uploaded. Not an XML file format.', filename
+        return '\nxccdf_eval: File "%s" not uploaded. Not an XML file format.' % filename
 
     stat = os.fstat(f.fileno())
     if stat.st_size < args['file_size']:
@@ -162,7 +162,8 @@ def _assert_xml(f):
         try:
             xml.sax.parse(f, xml.sax.ContentHandler())
             return True
-        except:
+        except Exception, e:
+            log.log_exception(*sys.exc_info())
             return False
     finally:
         f.seek(0)

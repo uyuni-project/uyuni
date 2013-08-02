@@ -43,13 +43,32 @@ public class ScapFileManager {
         if (!folder.exists() || !folder.isDirectory()) {
             return result;
         }
-
-        for (File file : folder.listFiles()) {
-            if (file.isFile()) {
-                result.add(new ScapResultFile(testResult, file.getName()));
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    result.add(new ScapResultFile(testResult, file.getName()));
+                }
             }
         }
         return result;
+    }
+
+    /**
+     * Remove any files assigned with the given testResult
+     * @param tr XccdfTestResult
+     */
+    public static void deleteFilesForTestResult(XccdfTestResult tr) {
+        File folder = new File(getStoragePath(tr));
+        if (folder.exists() && folder.isDirectory()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    file.delete();
+                }
+            }
+            folder.delete();
+        }
     }
 
     /**

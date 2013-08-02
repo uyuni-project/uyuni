@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.1.0
+Version:        2.1.5
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -75,6 +75,29 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Wed Jul 31 2013 Simon Lukasik <slukasik@redhat.com> 2.1.5-1
+- New OrgConfig attribute: period during which it is not possible to delete
+  scan
+
+* Fri Jul 26 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.4-1
+- fixed upgrade file names
+
+* Thu Jul 25 2013 Tomas Lestach <tlestach@redhat.com> 2.1.3-1
+- recreate logging triggers after we change the logging table column types
+
+* Wed Jul 24 2013 Tomas Lestach <tlestach@redhat.com> 2.1.2-1
+- fix oracle equivalent source sha1
+- fix_f624b843
+- extract logging.recreate_trigger from logging.enable_logging
+- replace integer with number/ric in logging package
+- change log_id type on logged tables
+- change log table integer -> number
+
+* Tue Jul 23 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.1-1
+- 876019 - schema upgrade scripts
+- made serverchannels cursor properly parametrized
+- 876019 - fixed misplaced end loop
+
 * Thu Jul 18 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.2-1
 - fixing oracle specific sha1
 - add upgrade path from 1.10 to 2.0
