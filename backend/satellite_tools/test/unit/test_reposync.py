@@ -53,7 +53,7 @@ class RepoSyncTest(unittest.TestCase):
         self.reposync.rhnSQL.initDB = Mock()
         self.reposync.rhnSQL.commit = Mock()
 
-        _mock_rhnsql(self.reposync, 'Label')
+        _mock_rhnsql(self.reposync, ['Label', { 'label' : 'foo' }])
 
     def tearDown(self):
         self.stdout.close()
