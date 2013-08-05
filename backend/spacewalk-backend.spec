@@ -40,6 +40,7 @@ BuildRequires: python-unittest2
 BuildRequires: yum
 
 # for pylint
+BuildRequires: pylint
 BuildRequires: spacewalk-client-tools
 BuildRequires: python-gzipstream
 BuildRequires: python-psycopg2
