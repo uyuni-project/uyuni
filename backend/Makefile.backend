@@ -31,7 +31,13 @@ test    ::
 
 unittest ::
 	unit2 discover -s satellite_tools/test/unit
-	unit2 discover -s common/
+	unit2 discover -s common/test/unit-test
+
+docker_testing ::
+	echo "Running satellite_tools/test/unit tests inside of docker manager_python_testing container"
+	docker run -v "$(CURDIR)/../:/manager" -v "$(CURDIR):/usr/lib64/python/site-packages/spacewalk" manager_python_testing /bin/sh -c "export PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/suseRegisterInfo; nosetests --with-xunit --xunit-file /manager/backend/reports/satellite_tools_tests.xml -s /manager/backend/satellite_tools/test/unit/"
+	echo "Running common/test/unit-test inside of docker manager_python_testing container"
+	docker run -v "$(CURDIR)/../:/manager" -v "$(CURDIR):/usr/lib64/python/site-packages/spacewalk" manager_python_testing /bin/sh -c "export PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/suseRegisterInfo; nosetests --with-xunit --xunit-file /manager/backend/reports/common_tests.xml -s /manager/backend/common/test/unit-test/"
 
 pylint  ::
 # :E0611: *No name %r in module %r*
