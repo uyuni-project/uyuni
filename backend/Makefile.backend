@@ -34,6 +34,7 @@ unittest ::
 	unit2 discover -s common/test/unit-test
 
 docker_testing ::
+	mkdir -p $(CURDIR)/reports
 	echo "Running satellite_tools/test/unit tests inside of docker manager_python_testing container"
 	docker run -v "$(CURDIR)/../:/manager" -v "$(CURDIR):/usr/lib64/python/site-packages/spacewalk" manager_python_testing /bin/sh -c "export PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/suseRegisterInfo; nosetests --with-xunit --xunit-file /manager/backend/reports/satellite_tools_tests.xml -s /manager/backend/satellite_tools/test/unit/"
 	echo "Running common/test/unit-test inside of docker manager_python_testing container"
