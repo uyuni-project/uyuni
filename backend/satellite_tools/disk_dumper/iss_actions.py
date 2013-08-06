@@ -33,6 +33,7 @@ class ActionDeps:
             'arches'                    : ['arches-extra'],
             'arches-extra'              : [''],
             'supportinfo'               : [''],
+            'suse-products-subscriptions' : [''],
         }
 
         #self.step_hierarchy lists the export steps in the order they need to be run.
@@ -48,7 +49,8 @@ class ActionDeps:
             'packages',
             'errata',
             'kickstarts',
-            'supportinfo'
+            'supportinfo',
+            'suse-products-subscriptions'
         ]
         self.options = options
         self.action_dict = { 'blacklists' : 0 }
