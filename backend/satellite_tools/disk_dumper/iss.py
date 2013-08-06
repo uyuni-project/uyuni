@@ -940,6 +940,31 @@ e.__class__.__name__), tbout.getvalue()), None, sys.exc_info()[2]
                           "Support Information exported to %s",
                           "%s caught in dump_support_information.")
 
+    def dump_suse_products_subscriptions(self):
+        self._dump_simple("%s/productdata.xml" % self.mp,
+                          self.getProductData,
+                          "Exporting SUSE Product Data...",
+                          "SUSE Product Data exported to %s",
+                          "%s caught in dump_suse_products_subscriptions.")
+        self._dump_simple("%s/listsubscriptions.xml" % self.mp,
+                          self.getSubscriptions,
+                          "Exporting Subscriptions...",
+                          "Subscriptions exported to %s",
+                          "%s caught in dump_suse_products_subscriptions.")
+
+    def getProductData(self, arg):
+        src = os.path.join("/var/cache/rhn/", "ncc-data", "productdata.xml")
+        shutil.copy2(src, arg.filename)
+
+    def getSubscriptions(self, arg):
+        src = os.path.join("/var/cache/rhn/", "ncc-data", "subscriptions.xml")
+        shutil.copy2(src, arg.filename)
+        # create a dummy repoindex.xml file
+        repodir = os.path.join(self.mp, "repo")
+        if not os.path.exists(repodir):
+            os.mkdir(repodir)
+        f = open("%s/repoindex.xml" % repodir, "w")
+        f.close()
 
 def get_report():
     body = dumpEMAIL_LOG()
@@ -1089,6 +1114,7 @@ class ExporterMain:
                                                                            self.dumper.dump_kickstart_files]},
                                     'rpms'                  :   {'dump' : self.dumper.dump_rpms},
                                     'supportinfo'           :   {'dump' : self.dumper.dump_support_information},
+                                    'suse-products-subscriptions' : {'dump' : self.dumper.dump_suse_products_subscriptions},
                                  }
             else:
                 print "The output directory is not a directory"
