@@ -9,4 +9,5 @@ MAINTAINER Johannes Renner "jrenner@suse.de"
 RUN zypper --non-interactive --gpg-auto-import-keys ref
 
 # Install needed packages
-RUN zypper in -y ant ant-junit java-1_6_0-ibm-devel sudo
+RUN zypper in -y ant ant-junit java-1_6_0-ibm-devel make postgresql-server python spacewalk-setup sudo
+
