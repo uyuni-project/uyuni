@@ -1,4 +1,5 @@
-db-backend=postgres
+db-backend=postgresql
 db-user=spacewalk
 db-password=spacewalk
 db-name=susemanager
+db-host=
