@@ -1,0 +1,4 @@
+db-backend=postgres
+db-user=spacewalk
+db-password=spacewalk
+db-name=susemanager
