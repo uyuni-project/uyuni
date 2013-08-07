@@ -71,6 +71,7 @@
     <package name="iputils"/>
     <package name="irqbalance"/>
     <package name="kbd"/>
+    <package name="less"/>
     <package name="login"/>
     <package name="pam-modules"/>
     <package name="pam"/>
@@ -84,6 +85,7 @@
     <package name="sysconfig"/>
     <package name="syslog-ng"/>
     <package name="sysvinit"/>
+    <package name="vim"/>
     <package name="zypper"/>
 
   </packages>
