@@ -5,8 +5,7 @@ if ! chkconfig -c postgresql ; then
 fi
 
 rcpostgresql start
-su - postgres -c "createdb susemanager ; echo \"CREATE ROLE spacewalk PASSWORD 'spacewalk' SUPERUSER NOCREATEDB NOCREA
-TEROLE INHERIT LOGIN;\" | psql"
+su - postgres -c "createdb susemanager ; echo \"CREATE ROLE spacewalk PASSWORD 'spacewalk' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
 # "createlang plpgsql $MANAGER_DB_NAME" not needed on SUSE. plpgsql is already enabled
 
 echo "local susemanager spacewalk md5
