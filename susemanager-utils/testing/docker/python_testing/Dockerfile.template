@@ -2,7 +2,9 @@
 #
 # VERSION               0.1
 
-FROM sles11_sp2_base
+
+FROM PARENT_CONTAINER
+
 # make sure the package repository is up to date
 RUN zypper --non-interactive --gpg-auto-import-keys ref
 
