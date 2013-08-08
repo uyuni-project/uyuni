@@ -1,8 +1,10 @@
 com/redhat/rhn/common/client/test/ClientCertificateDigesterTest.class
 com/redhat/rhn/common/conf/test/ConfigTest.class
+com/redhat/rhn/common/db/test/NamedPreparedStatementTest.class
 com/redhat/rhn/common/filediff/test/DiffTest.class
 com/redhat/rhn/common/finder/test/FileFinderTest.class
 com/redhat/rhn/common/finder/test/JarFinderTest.class
+com/redhat/rhn/common/hibernate/test/NestedTransactionFactoryTest.class
 com/redhat/rhn/common/localization/test/MessagesTest.class
 com/redhat/rhn/common/security/acl/test/AclFactoryTest.class
 com/redhat/rhn/common/security/acl/test/AclTest.class
@@ -26,4 +28,3 @@ com/redhat/rhn/common/util/test/TimeUtilsTest.class
 com/redhat/rhn/common/validator/test/HostPortValidatorTest.class
 com/redhat/rhn/common/validator/test/ValidatorServiceTest.class
 com/redhat/rhn/common/validator/test/ValidatorTest.class
-
