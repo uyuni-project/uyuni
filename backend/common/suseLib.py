@@ -473,12 +473,12 @@ def _get_proxy_from_yast():
 
     """
     try:
-      try:
-        f = open(YAST_PROXY)
-        contents = f.read()
-      except IOError:
-          log_debug(1, "Couldn't open " + YAST_PROXY)
-          return None
+        try:
+            f = open(YAST_PROXY)
+            contents = f.read()
+        except IOError:
+            log_debug(1, "Couldn't open " + YAST_PROXY)
+            return None
     finally:
       f.close()
 
