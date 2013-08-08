@@ -76,7 +76,7 @@ def print_locals(fd = sys.stderr, tb = None):
             # error we don't want.
             # pylint: disable=W0702
             try:
-                s = str(value)
+                s = str(value).encode('utf-8')
             except:
                 s = "<ERROR WHILE PRINTING VALUE>"
             if len(s) > 100 * 1024:
@@ -126,7 +126,7 @@ def Traceback(method = None, req = None, mail = 1, ostream = sys.stderr,
     exc = StringIO()
 
     unicode_hostname = idn_pune_to_unicode(hostname)
-    exc.write("Exception reported from %s\nTime: %s\n" % (unicode_hostname, t))
+    exc.write("Exception reported from %s\nTime: %s\n" % (unicode_hostname.encode('utf-8'), t))
     exc.write("Exception type %s\n" % (e_type,))
     if method:
         exc.write("Exception while handling function %s\n" % method)
