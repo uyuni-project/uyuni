@@ -1,11 +1,12 @@
 
 synopsis:
 
-	List of packages which can be upgraded
+	List of packages which can be updated
 
 description:
 
-	Prints list of packages which can be upgraded for all systems in spacewalk
+	Prints list of packages which can be updated for all systems in spacewalk.
+	Shows only the newest package version available for upgrade.
 
 columns:
 
