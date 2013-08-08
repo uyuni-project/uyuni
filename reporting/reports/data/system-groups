@@ -1,11 +1,11 @@
 
 synopsis:
 
-	System groups in spacewalk/satellite
+	System groups in spacewalk/SUSE Manager
 
 description:
 
-	List of all system groups across whole spacewalk/satellite
+	List of all system groups across whole spacewalk/SUSE Manager
 
 columns:
 
