@@ -20,6 +20,3 @@ install -m 0644 postgres/main.sql /etc/sysconfig/rhn/postgres
 install -m 0644 oracle/end.sql /etc/sysconfig/rhn/oracle/upgrade-end.sql
 install -m 0644 postgres/end.sql /etc/sysconfig/rhn/postgres/upgrade-end.sql
 
-# Restart database
-rcpostgresql restart
-
