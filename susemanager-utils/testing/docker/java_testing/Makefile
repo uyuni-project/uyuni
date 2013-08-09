@@ -1,5 +1,8 @@
 include ../common/common.mk
 
+.PHONY: all
+all: pgsql
+
 vanilla:
 	@echo Building vanilla container for java testing.
 	$(call create_dockerfile, sles11_sp2_base)
@@ -13,5 +16,3 @@ pgsql:
 	docker build -t manager_java_testing_pgsql .
 	$(call remove_dockerfile)
 
-all:
-	pgsql
