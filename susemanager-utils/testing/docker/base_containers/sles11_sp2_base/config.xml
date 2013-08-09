@@ -73,6 +73,7 @@
     <package name="kbd"/>
     <package name="less"/>
     <package name="login"/>
+    <package name="make"/>
     <package name="pam-modules"/>
     <package name="pam"/>
     <package name="procps"/>
@@ -85,6 +86,7 @@
     <package name="sysconfig"/>
     <package name="syslog-ng"/>
     <package name="sysvinit"/>
+    <package name="timezone"/>
     <package name="vim"/>
     <package name="zypper"/>
 
