@@ -90,6 +90,17 @@
     <package name="vim"/>
     <package name="zypper"/>
 
+    <!--packages requires to run spacewalk-setup inside of the container-->
+    <package name="perl-Params-Validate"/>
+    <package name="perl-Mail-RFC822-Address"/>
+    <package name="perl-XML-LibXML"/>
+    <package name="perl-XML-SAX"/>
+    <package name="perl-DateTime"/>
+    <package name="perl-Frontier-RPC"/>
+    <package name="perl-libwww-perl"/>
+    <package name="perl-Net-LibIDN"/>
+    <package name="perl-Satcon"/>
+
   </packages>
   <packages type="bootstrap">
     <package name="filesystem"/>
