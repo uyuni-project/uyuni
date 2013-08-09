@@ -681,7 +681,7 @@ class RepoSync(object):
             # delete all removed keywords
             for label in pkgkws:
                 if not pkgkws[label]:
-                    log_debug(4, "Delete obsolete keywordId: %s pkgId: %s channelId: %s" % (kwcache[keyword], pkgid, int(self.channel['id'])))
+                    log_debug(4, "Delete obsolete keywordId: %s pkgId: %s channelId: %s" % (kwcache[label], pkgid, int(self.channel['id'])))
                     kdel = rhnSQL.prepare("""DELETE FROM suseMdData WHERE package_id = :package_id
                                              AND channel_id = :channel_id AND keyword_id = :keyword_id""")
                     kdel.execute(package_id=pkgid, channel_id=int(self.channel['id']), keyword_id=kwcache[label])
