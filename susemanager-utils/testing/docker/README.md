@@ -1,11 +1,44 @@
 This directory contains all the files required to build the docker containers
 used by our testing infrastructure.
 
-We rely on different containers, all of them are built on top of a standard one
-called `sle11_sp2_base`. This container is built using kiwi and its configuration
-files are located inside of the `base_containers` directory.
+## Container hierarchy
 
-All the other containers are built using [docker's build feature](http://docs.docker.io/en/latest/use/builder/).
+This is the hierarchy of our containers:
+
+```
+                                       +------------------+
+                                       |  sles11_sp2_base |
+                                       +--------+--------+
+                                                |
+                                     +----------+-------------+
+                                     |                        |
+                           +---------+--------+    +----------+--------+
+                           | sles11_sp2_pgsql |    | sles11_sp2_oracle |
+                           +---------+--------+    +----------+--------+
+                                     |                        |
+                                     |                        |
+                +--------------------+---------+              +-----------------+-------------------------------+
+                |                              |                                |                               |
++---------------+--------------+ +-------------+--------------+ +---------------+---------------+ +-------------+---------------+
+| manager_python_testing_pgqsl | | manager_java_testing_pgsql | | manager_python_testing_oracle | | manager_java_testing_oracle |
++------------------------------+ +----------------------------+ +-------------------------------+ +-----------------------------+
+```
+
+We rely on different containers, all of them are built on top of a standard one
+called `sle11_sp2_base`. This container is built using kiwi while the other ones
+are built using [docker's build feature](http://docs.docker.io/en/latest/use/builder/).
+
+From the `sles11_sp2_base` we create two more containers:
+
+  * `sles11_sp2_pgsql`: this is the base container plus the Postgresql server.
+  * `sles11_sp2_oracle`: this is the base container plus the Oracle server.
+
+These containers are used as base to create the systems for running the python
+and java tests.
+
+The `manager_python_testing_X` and `manager_java_testing_X` templates are
+built starting from the same Dockerfile template. The differ in the parent
+container used at build time.
 
 ## Custom registry
 
