@@ -14867,8 +14867,8 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <target>Provisioning エンタイトルメントの追加</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.subscribetools">
-          <source>Subscribe to @@PRODUCT_NAME@@ Tools channel</source>
-          <target>@@PRODUCT_NAME@@ ツールチャンネルにサブスクライブ</target>
+          <source>Subscribe to RHN Tools channel</source>
+          <target>RHN ツールチャンネルにサブスクライブ</target>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.installcfg">
           <source>Schedule rhncfg package install</source>
@@ -14953,8 +14953,8 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <target>Provisioning エンタイトルメントを付与できませんでした。</target>
         </trans-unit>
         <trans-unit id="summary.jsp.rhntools">
-          <source>Could not subscribe to the @@PRODUCT_NAME@@ Tools channel.</source>
-          <target>@@PRODUCT_NAME@@ ツールチャンネルにサブスクライブできませんでした。</target>
+          <source>Could not subscribe to the RHN Tools channel.</source>
+          <target>RHN ツールチャンネルにサブスクライブできませんでした。</target>
         </trans-unit>
         <trans-unit id="summary.jsp.packages">
           <source>Could not schedule rhncfg* package installations.</source>
@@ -24304,7 +24304,7 @@ given channel.</source>
         <target>@@PRODUCT_NAME@@ インストールガイド</target>
       </trans-unit>
       <trans-unit id="help.jsp.proxy">
-        <source>Detailed information regarding Red Hat Proxy server.</source>
+        <source>Detailed information regarding @@PRODUCT_NAME@@ Proxy server.</source>
         <target>Red Hat プロキシサーバーに関しての詳細が記載されています。</target>
       </trans-unit>
       <trans-unit id="help.jsp.proxy.title">

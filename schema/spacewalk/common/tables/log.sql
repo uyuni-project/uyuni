@@ -16,9 +16,12 @@
 
 CREATE TABLE log
 (
-    id NUMBER NOT NULL PRIMARY KEY,
-    stamp TIMESTAMP WITH TIME ZONE,
-    user_id NUMBER REFERENCES web_contact_all(id)
+    id NUMBER NOT NULL
+        CONSTRAINT log_id_pk PRIMARY KEY,
+    stamp TIMESTAMP WITH LOCAL TIME ZONE,
+    user_id NUMBER
+        CONSTRAINT log_user_id_fk
+            REFERENCES web_contact_all(id)
 )
 ENABLE ROW MOVEMENT
 ;

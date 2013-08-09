@@ -43,7 +43,7 @@ _PROXY_VERSION = '5.5.0' # HISTORY: '0.9.7', '3.2.0', '3.5.0', '3.6.0', '4.1.0',
 
 
 class BrokerHandler(SharedHandler):
-    """ Red Hat Proxy broker specific handler code called by rhnApache. 
+    """ Spacewalk Proxy broker specific handler code called by rhnApache. 
 
         Workflow is:
         Client -> Apache:Broker -> Squid -> Apache:Redirect -> Satellite

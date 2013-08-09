@@ -12,14 +12,14 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-""" Activate an Red Hat Proxy 3.x ...not the executable
-    (original script can activate an Red Hat Proxy version 1.1 to 3.x)
+""" Activate a Spacewalk Proxy 3.x ...not the executable
+    (original script can activate a Spacewalk Proxy version 1.1 to 3.x)
     USAGE: ./rhn-proxy-activate
 
     Author: Todd Warner <taw@redhat.com>
 
-    NOTE: this file is compatible with RHN Proxies 4.0. It is not guaranteed to
-    work with older RHN Proxies.
+    NOTE: this file is compatible with Spacewalk Proxies 4.0. It is not guaranteed to
+    work with older Spacewalk Proxies.
 """
 
 ## core lang imports

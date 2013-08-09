@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.9
+Version: 2.1.15
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -880,6 +880,36 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Aug 08 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.15-1
+- adding java.io.Seriazible to monitoring.Command class
+
+* Wed Aug 07 2013 Tomas Lestach <tlestach@redhat.com> 2.1.14-1
+- 993249 - fix org.org.listSystemEntitlements API doc
+- fix typo
+- removing unnecessarily nested else clause
+- removing unnecessary cast
+
+* Tue Aug 06 2013 Tomas Lestach <tlestach@redhat.com> 2.1.13-1
+- Fix HTML not being escaped in package information
+- 982354 - Show Scan's ID (xid) on scan's details page.
+- Refactor: Use static-final instead of magic constant.
+- 982354 - enable easy comparison between various SCAP scans.
+
+* Mon Aug 05 2013 Grant Gainey <ggainey@redhat.com> 2.1.12-1
+- 993419 - L10N fix, 'RHN Tools' isn't a product-name
+
+* Mon Aug 05 2013 Simon Lukasik <slukasik@redhat.com> 2.1.11-1
+- Trim line longer than 92 characters.
+
+* Mon Aug 05 2013 Simon Lukasik <slukasik@redhat.com> 2.1.10-1
+- Introduce API: org.setPolicyForScapResultDeletion()
+- Introduce API: org.setPolicyForScapFileUpload()
+- Introduce API: org.getPolicyForScapResultDeletion()
+- Introduce API: org.getPolicyForScapFileUpload()
+- Introduce API: system.scap.deleteXccdfScan()
+- Export the 'deletable' property of TestResult through API.
+- Branding clean-up of proxy stuff in java dir
+
 * Wed Jul 31 2013 Simon Lukasik <slukasik@redhat.com> 2.1.9-1
 - Refactor common columns to a fragment file.
 - Handle non-existent files properly.

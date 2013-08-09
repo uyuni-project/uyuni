@@ -26,17 +26,18 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgConfig;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.MultiOrgEntitlementsDto;
-import com.redhat.rhn.frontend.dto.MultiOrgSystemEntitlementsDto;
 import com.redhat.rhn.frontend.dto.OrgChannelFamily;
 import com.redhat.rhn.frontend.dto.OrgDto;
 import com.redhat.rhn.frontend.dto.OrgEntitlementDto;
 import com.redhat.rhn.frontend.dto.OrgSoftwareEntitlementDto;
+import com.redhat.rhn.frontend.dto.SystemEntitlementsDto;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidEntitlementException;
@@ -62,9 +63,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * OrgHandler
@@ -590,7 +593,7 @@ public class OrgHandler extends BaseHandler {
      *  across all organizations.
      * User needs to be a satellite administrator to get this information
      * @param sessionKey User's session key.
-     * @return Array of MultiOrgSystemEntitlementsDto.
+     * @return Array of SystemEntitlementsDtoSerializer.
      *
      * @xmlrpc.doc Lists system entitlement allocation information
      * across all organizations.
@@ -599,10 +602,10 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *   #array()
-     *     $MultiOrgEntitlementsDtoSerializer
+     *     $SystemEntitlementsDtoSerializer
      *   #array_end()
      */
-    public List<MultiOrgSystemEntitlementsDto> listSystemEntitlements(String sessionKey) {
+    public List<SystemEntitlementsDto> listSystemEntitlements(String sessionKey) {
         getSatAdmin(sessionKey);
         return OrgManager.allOrgsEntitlements();
     }
@@ -1037,6 +1040,161 @@ public class OrgHandler extends BaseHandler {
             return 0;
         }
 
+        return 1;
+    }
+
+    /**
+     * Get the status of SCAP detailed result file upload settings for the given
+     * organization.
+     *
+     * @param sessionKey User's session key.
+     * @param orgId ID of organization to query.
+     * @return Returns the status of SCAP detailed result file upload settings.
+     *
+     * @xmlrpc.doc Get the status of SCAP detailed result file upload settings
+     * for the given organization.
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "orgId")
+     * @xmlrpc.returntype
+     *     #struct("scap_upload_info")
+     *         #prop_desc("boolean", "enabled",
+     *             "Aggregation of detailed SCAP results is enabled.")
+     *         #prop_desc("int", "size_limit",
+     *             "Limit (in Bytes) for a single SCAP file upload.")
+     *     #struct_end()
+     */
+    public Map<String, Object> getPolicyForScapFileUpload(String sessionKey,
+            Integer orgId) {
+        getSatAdmin(sessionKey);
+        Org org = verifyOrgExists(orgId);
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("enabled", org.getOrgConfig().isScapfileUploadEnabled());
+        result.put("size_limit", org.getOrgConfig().getScapFileSizelimit());
+        return result;
+    }
+
+    /**
+     * Set the status of SCAP detailed result file upload settings for the given
+     * organization.
+     *
+     * @param sessionKey User's session key.
+     * @param orgId ID of organization to work with.
+     * @param newSettings New settings of the SCAP detailed result file upload.
+     * @return Returns 1 for successfull change.
+     *
+     * @xmlrpc.doc Set the status of SCAP detailed result file upload settings
+     * for the given organization.
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "orgId")
+     * @xmlrpc.param
+     *     #struct("scap_upload_info")
+     *         #prop_desc("boolean", "enabled",
+     *             "Aggregation of detailed SCAP results is enabled.")
+     *         #prop_desc("int", "size_limit",
+     *             "Limit (in Bytes) for a single SCAP file upload.")
+     *     #struct_end()
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int setPolicyForScapFileUpload(String sessionKey, Integer orgId,
+            Map<String, Object> newSettings) {
+        Set<String> validKeys = new HashSet<String>();
+        validKeys.add("enabled");
+        validKeys.add("size_limit");
+        validateMap(validKeys, newSettings);
+
+        getSatAdmin(sessionKey);
+        OrgConfig orgConfig = verifyOrgExists(orgId).getOrgConfig();
+        if (newSettings.containsKey("enabled")) {
+            Boolean enabled = (Boolean) newSettings.get("enabled");
+            orgConfig.setScapfileUploadEnabled(enabled);
+        }
+        if (newSettings.containsKey("size_limit")) {
+            Long sizeLimit = new Long(((Integer)
+                newSettings.get("size_limit")).longValue());
+            orgConfig.setScapFileSizelimit(sizeLimit);
+        }
+        return 1;
+    }
+
+    /**
+     * Get the status of SCAP result deletion settings for the given organization.
+     *
+     * @param sessionKey User's session key.
+     * @param orgId ID of organization to query.
+     * @return Returns the status of SCAP result deletion settings.
+     *
+     * @xmlrpc.doc Get the status of SCAP result deletion settings for the given
+     * organization.
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "orgId")
+     * @xmlrpc.returntype
+     *     #struct("scap_deletion_info")
+     *         #prop_desc("boolean", "enabled", "Deletion of SCAP results is enabled")
+     *         #prop_desc("int", "retention_period",
+     *             "Period (in days) after which a scan can be deleted (if enabled).")
+     *     #struct_end()
+     */
+    public Map<String, Object> getPolicyForScapResultDeletion(String sessionKey,
+            Integer orgId) {
+        getSatAdmin(sessionKey);
+        Org org = verifyOrgExists(orgId);
+        Long retentionPeriod = org.getOrgConfig().getScapRetentionPeriodDays();
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("enabled", retentionPeriod != null);
+        result.put("retention_period",
+                (retentionPeriod != null) ? retentionPeriod : new Long(0));
+        return result;
+    }
+
+    /**
+     * Set the status of SCAP result deletion settings for the given organization.
+     *
+     * @param sessionKey User's session key.
+     * @param orgId ID of organization to work with.
+     * @param newSettings New settings of the SCAP result deletion settings.
+     * @return Returns 1 for successfull change.
+     *
+     * @xmlrpc.doc Set the status of SCAP result deletion settins for the given
+     * organization.
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "orgId")
+     * @xmlrpc.param
+     *     #struct("scap_deletion_info")
+     *         #prop_desc("boolean", "enabled",
+     *             "Deletion of SCAP results is enabled")
+     *         #prop_desc("int", "retention_period",
+     *             "Period (in days) after which a scan can be deleted (if enabled).")
+     *     #struct_end()
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int setPolicyForScapResultDeletion(String sessionKey, Integer orgId,
+            Map<String, Object> newSettings) {
+        Set<String> validKeys = new HashSet<String>();
+        validKeys.add("enabled");
+        validKeys.add("retention_period");
+        validateMap(validKeys, newSettings);
+
+        getSatAdmin(sessionKey);
+        OrgConfig orgConfig = verifyOrgExists(orgId).getOrgConfig();
+        if (newSettings.containsKey("enabled")) {
+            if ((Boolean) newSettings.get("enabled")) {
+                orgConfig.setScapRetentionPeriodDays(new Long(90));
+            }
+            else {
+                orgConfig.setScapRetentionPeriodDays(null);
+            }
+        }
+        if (newSettings.containsKey("retention_period")) {
+            Long retentionPeriod = new Long(((Integer)
+                newSettings.get("retention_period")).longValue());
+            if (orgConfig.getScapRetentionPeriodDays() != null) {
+                orgConfig.setScapRetentionPeriodDays(retentionPeriod);
+            }
+        }
         return 1;
     }
 }

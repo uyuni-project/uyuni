@@ -475,14 +475,8 @@ then
     fi
 fi
 
-SQL_RET=$(
-echo "$DBSHELL_QUIET
-select 0 from dual;
-$DBSHELL_QUIT
-"  | spacewalk-sql --select-mode -
-)
-# SQL_RET="${SQL_RET#"${SQL_RET%%[![:space:]]*}"}"
-print_status "${SQL_RET}" "Your database isn't running."
+/usr/sbin/spacewalk-startup-helper wait-for-database
+print_status "${?}" "Your database isn't running."
 
 echo -n "Updating /etc/rhn/rhn.conf ... " | tee -a $LOG
 update_rhn_conf
