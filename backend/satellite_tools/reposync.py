@@ -577,6 +577,8 @@ class RepoSync(object):
             if not row or not row.has_key('id'):
                 # package not found in DB
                 continue
+            pkgid = int(row['id'])
+            log_debug(4, "import_susedata pkgid: %s channelId: %s" % (pkgid, int(self.channel['id'])))
 
             h = rhnSQL.prepare("""
                 SELECT smk.id, smk.label
@@ -585,14 +587,16 @@ class RepoSync(object):
                  WHERE smd.package_id = :package_id
                    AND smd.channel_id = :channel_id
             """)
-            h.execute(package_id=row['id'], channel_id=int(self.channel['id']))
+            h.execute(package_id=pkgid, channel_id=int(self.channel['id']))
             ret = h.fetchall_dict() or {}
             pkgkws = {}
             for row in ret:
+                log_debug(4, "DB keyword: %s kid: %s" % (row['label'], row['id']))
                 pkgkws[row['label']] = False
                 kwcache[row['label']] = row['id']
 
             for keyword in package['keywords']:
+                log_debug(4, "Metadata keyword: %s" % keyword)
                 if keyword not in kwcache:
                     kw = rhnSQL.prepare("""select LOOKUP_MD_KEYWORD(:label) id from dual""")
                     kw.execute(label=keyword)
@@ -602,16 +606,18 @@ class RepoSync(object):
                 if keyword in pkgkws:
                     pkgkws[keyword] = True
                 else:
+                    log_debug(4, "Insert new keywordId: %s pkgId: %s channelId: %s" % (kwcache[keyword], pkgid, int(self.channel['id'])))
                     kadd = rhnSQL.prepare("""INSERT INTO suseMdData (package_id, channel_id, keyword_id)
                                               VALUES(:package_id, :channel_id, :keyword_id)""")
-                    kadd.execute(package_id=row['id'], channel_id=int(self.channel['id']), keyword_id=kwcache[keyword])
+                    kadd.execute(package_id=pkgid, channel_id=int(self.channel['id']), keyword_id=kwcache[keyword])
 
             # delete all removed keywords
             for label in pkgkws:
                 if not pkgkws[label]:
+                    log_debug(4, "Delete obsolete keywordId: %s pkgId: %s channelId: %s" % (kwcache[keyword], pkgid, int(self.channel['id'])))
                     kdel = rhnSQL.prepare("""DELETE FROM suseMdData WHERE package_id = :package_id
                                              AND channel_id = :channel_id AND keyword_id = :keyword_id""")
-                    kdel.execute(package_id=row['id'], channel_id=int(self.channel['id']), keyword_id=kwcache[label])
+                    kdel.execute(package_id=pkgid, channel_id=int(self.channel['id']), keyword_id=kwcache[label])
 
     def _patch_naming(self, notice):
         """Return the name of the patch according to our rules
