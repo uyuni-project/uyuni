@@ -18,6 +18,7 @@ echo "local susemanager spacewalk md5
 host susemanager spacewalk 127.0.0.1/8 md5
 host susemanager spacewalk ::1/128 md5
 " > /var/lib/pgsql/data/pg_hba.conf
+cat /var/lib/pgsql/data/pg_hba.conf.bak >> /var/lib/pgsql/data/pg_hba.conf
 
 if [ -x "/usr/bin/pgtune" ]; then
   mv /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.orig
