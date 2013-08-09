@@ -1,5 +1,8 @@
 include ../common/common.mk
 
+.PHONY: all
+all: pgsql
+
 vanilla:
 	@echo Building vanilla container for python testing.
 	$(call create_dockerfile, sles11_sp2_base)
@@ -11,6 +14,3 @@ pgsql:
 	$(call create_dockerfile, sles11_sp2_pgsql)
 	docker build -t manager_python_testing_pgsql .
 	$(call remove_dockerfile)
-
-all:
-	pgsql
