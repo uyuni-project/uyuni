@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.1.5
+Version:        2.1.9
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -75,6 +75,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Aug 09 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.9-1
+- remove duplicate pairs before creating unique index
+
+* Tue Aug 06 2013 Tomas Lestach <tlestach@redhat.com> 2.1.8-1
+- fixing sha1 of upgrade/spacewalk-schema-2.0-to-spacewalk-
+  schema-2.1/013-log.sql
+
+* Tue Aug 06 2013 Tomas Lestach <tlestach@redhat.com> 2.1.7-1
+- name constraints on the log table
+
+* Mon Aug 05 2013 Tomas Lestach <tlestach@redhat.com> 2.1.6-1
+- changing stamp type on log table
+
 * Wed Jul 31 2013 Simon Lukasik <slukasik@redhat.com> 2.1.5-1
 - New OrgConfig attribute: period during which it is not possible to delete
   scan

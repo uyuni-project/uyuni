@@ -1,4 +1,4 @@
-# Red Hat Proxy Server authentication manager.
+# Spacewalk Proxy Server authentication manager.
 #
 # Copyright (c) 2008--2012 Red Hat, Inc.
 #

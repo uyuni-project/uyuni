@@ -15,7 +15,9 @@
 package com.redhat.rhn.frontend.action.systems.audit;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,11 +25,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.audit.scap.XccdfDiffSubmitAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListSetHelper;
@@ -45,6 +50,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 public class ListScapAction extends ScapSetupAction {
     private static final String LIST_NAME = "xccdfScans";
     private static final String DELET_BUT = "system.audit.listscap.jsp.removebut";
+    private static final String DIFF_BUT = "system.audit.listscap.jsp.diffbut";
 
     /**
      * {@inheritDoc}
@@ -82,11 +88,32 @@ public class ListScapAction extends ScapSetupAction {
             request.getRequestURI() + "?sid=" + sid);
         request.setAttribute(RequestContext.PAGE_LIST, result);
 
-        if (context.wasDispatched(DELET_BUT) && getSetDecl(sid).get(user).size() > 0) {
+        int selectionSize = set.size();
+        if (context.wasDispatched(DELET_BUT) && selectionSize > 0) {
             Map<String, Long> params = new HashMap<String, Long>();
             params.put("sid", sid);
             return getStrutsDelegate().forwardParams(mapping.findForward("submitDelete"),
                     params);
+        }
+        else if (context.wasDispatched(DIFF_BUT)) {
+            if (selectionSize == 2) {
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put(XccdfDiffSubmitAction.VIEW, XccdfDiffSubmitAction.CHANGED);
+                Set<Long> scanIds = set.getElementValues();
+                Iterator<Long> it = scanIds.iterator();
+                if (it.hasNext()) {
+                    params.put(XccdfDiffSubmitAction.FIRST, it.next());
+                }
+                if (it.hasNext()) {
+                    params.put(XccdfDiffSubmitAction.SECOND, it.next());
+                }
+                return getStrutsDelegate().forwardParams(mapping.findForward("submitDiff"),
+                        params);
+            }
+            ActionMessages msg = new ActionMessages();
+            msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                    "system.audit.listscap.jsp.diffmessage"));
+            getStrutsDelegate().saveMessages(request, msg);
         }
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

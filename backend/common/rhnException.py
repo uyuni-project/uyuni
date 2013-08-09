@@ -35,7 +35,7 @@ templateValues = {
 # for the eye of the beholder
 # DOMAINS:
 #   0-999:     Red Hat client/client-like interaction errors
-#   1000-1999: Red Hat Proxy specific interaction errors
+#   1000-1999: Proxy specific interaction errors
 #   2000-2999: Red Hat Satellite specific interation errors
 
 FaultArray = {
@@ -173,22 +173,22 @@ maximum membership exceeded"),
 
      800: _("System Name cannot be less than 3 characters"),
 
-     # 1000-1999: RHN Proxy specific errors:
-     # issued by an RHN Proxy to the client
+     # 1000-1999: Proxy specific errors:
+     # issued by a Proxy to the client
      1000: _("SUSE Manager Proxy error."),
      1001: _("SUSE Manager Proxy unable to login."),
-     # issued by an RHN Server/Satellite to the proxy
+     # issued by a Red Hat Server/Satellite to the proxy
      1002: _("""
-     SUSE Manager Proxy system ID does not match any SUSE Manager Proxy
-     Server in the database.
+     SUSE Manager Proxy system ID does not match a SUSE Manager Proxy Server
+     in the database.
      """),
      1003: _("SUSE Manager Proxy session token is invalid."),
      1004: _("SUSE Manager Proxy session token has expired."),
 
 
      # 2000-2999: RHN Satellite specific errors:
-     2001: _("""
-     SUSE Manager user creation is not allowed via mgr_register.
+     2001: _(PRODUCT_NAME + """
+      user creation is not allowed via mgr_register.
      Please contact your sysadmin to have your account created.
      """),
      2004: _("""

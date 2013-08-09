@@ -9,8 +9,8 @@ SUBDIR  = utils
 FILES	= __init__ systemSnapshot migrateSystemProfile depsolver cloneByDate
 SCRIPTS = spacewalk-custom-repository sw-system-snapshot migrate-system-profile spacewalk-api apply_errata \
 	  scr.cgi spacewalk-common-channels delete-old-systems-interactive spacewalk-hostname-rename \
-	  spacewalk-dump-schema spacewalk-clone-by-date spacewalk-manage-channel-lifecycle \
-	  sw-ldap-user-sync
+	  spacewalk-dump-schema spacewalk-clone-by-date spacewalk-sync-setup spacewalk-archive-audits \
+      spacewalk-manage-channel-lifecycle sw-ldap-user-sync
 CONFIGS = spacewalk-common-channels.ini sw-ldap-user-sync.conf
 
 DOCBOOK = $(wildcard /usr/bin/docbook2man)

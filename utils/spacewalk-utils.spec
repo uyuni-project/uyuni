@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	2.1.2
+Version:	2.1.7
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -103,6 +103,22 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Thu Aug 08 2013 Grant Gainey <ggainey@redhat.com> 2.1.7-1
+- Get new scripts added to spacewalk-utils RPM
+
+* Thu Aug 08 2013 Jan Dobes 2.1.6-1
+- 972626 - just call waiting function
+- Change detault username and password.
+
+* Tue Aug 06 2013 Jan Dobes 2.1.5-1
+- 972626 - simplier and more readable solution
+
+* Tue Aug 06 2013 Jan Dobes 2.1.4-1
+- 972626 - multiple tries if db will not start quick enough
+
+* Mon Aug 05 2013 Grant Gainey <ggainey@redhat.com> 2.1.3-1
+- 993254 - Script to enable us to purge audit-log tables
+
 * Wed Jul 31 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.2-1
 - adding 2.0 repositories to spacewalk-common-channels
 
