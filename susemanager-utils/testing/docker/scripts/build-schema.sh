@@ -2,6 +2,7 @@
 set -e
 
 # Prepare
+rm -rf /tmp/schema
 cp -r /manager/schema /tmp
 cd /tmp/schema/spacewalk
 find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
