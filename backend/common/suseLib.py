@@ -137,7 +137,7 @@ def _curl_debug(mtype, text):
         log_debug(5, "D> %s" % text)
     else:
         log_debug(6, "%s: %s" % (mtype, text))
-    return 0;
+    return 0
 
 
 def send(url, sendData=None):
