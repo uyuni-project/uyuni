@@ -120,6 +120,25 @@ class URL(object):
         return urlparse.urlunsplit((self.scheme, netloc, self.path,
                                     self.query, self.fragment))
 
+def _curl_debug(mtype, text):
+    if mtype == 0:
+        log_debug(4, "* %s" % text)
+    elif mtype == 1:
+        # HEADER_IN
+        log_debug(4, "< %s" % text)
+    elif mtype == 2:
+        # HEADER_OUT
+        log_debug(4, "> %s" % text)
+    elif mtype == 3:
+        # DATA_IN
+        log_debug(5, "D< %s" % text)
+    elif mtype == 4:
+        # DATA_OUT
+        log_debug(5, "D> %s" % text)
+    else:
+        log_debug(6, "%s: %s" % (mtype, text))
+    return 0;
+
 
 def send(url, sendData=None):
     """Connect to ncc and return the XML document as stringIO
@@ -139,6 +158,8 @@ def send(url, sendData=None):
 
     curl.setopt(pycurl.CONNECTTIMEOUT, timeout)
     curl.setopt(pycurl.URL, url)
+    curl.setopt(pycurl.DEBUGFUNCTION, _curl_debug)
+    curl.setopt(pycurl.VERBOSE, True)
     proxy_url, proxy_user, proxy_pass = get_proxy(url)
     if proxy_url:
         curl.setopt(pycurl.PROXY, proxy_url)
@@ -213,6 +234,8 @@ def accessible(url):
 
     curl.setopt(pycurl.CONNECTTIMEOUT, timeout)
     curl.setopt(pycurl.URL, url)
+    curl.setopt(pycurl.DEBUGFUNCTION, _curl_debug)
+    curl.setopt(pycurl.VERBOSE, True)
     proxy_url, proxy_user, proxy_pass = get_proxy(url)
     if proxy_url:
         curl.setopt(pycurl.PROXY, proxy_url)
