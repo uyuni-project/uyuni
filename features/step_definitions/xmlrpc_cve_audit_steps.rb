@@ -23,12 +23,12 @@ Then /^I should get status "([^\"]+)" for system "([0-9]+)"$/ do |status, system
   fail if result["patch_status"] != status
 end
 
-Then /^I should get channel "([0-9]+)"?$/ do |channel|
-  fail if result["channel_ids"].include?(channel.to_i) == false
+Then /^I should get channel "([^\"]+)"?$/ do |channel|
+  fail if result["channel_labels"].include?(channel) == false
 end
 
-Then /^I should get patch "([0-9]+)"?$/ do |patch|
-  fail if result["errata_ids"].include?(patch.to_i) == false
+Then /^I should get patch "([^\"]+)"?$/ do |patch|
+  fail if result["errata_advisories"].include?(patch) == false
 end
 
 Then /^I logout from XML\-RPC\/cve audit namespace\.$/ do
