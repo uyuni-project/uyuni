@@ -35,7 +35,7 @@ Scenario: searching for a known CVE number
     And I should see an alphabar link to this system
     And I should see a "Patch status" link
     And I should see a "System" link
-    And I should see a "schedule a single CVE channel data update run" link
+    And I should see a "schedule an extra CVE data update" link
   Then I follow "Install a new patch in this system"
     And I should see a "Relevant Patches" text
 
@@ -43,7 +43,7 @@ Scenario: searching for an unknown CVE number
   When I follow "Audit"
     And I enter "CVE-2012-2806" as "cveIdentifier"
     And I click on "Audit systems"
-  Then I should see a "The CVE number you specified was not found" text
+  Then I should see a "The specified CVE number was not found" text
 
 Scenario: selecting a system for the System Set Manager
   When I follow "Audit"
