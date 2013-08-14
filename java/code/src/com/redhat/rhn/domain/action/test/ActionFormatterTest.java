@@ -91,7 +91,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ActionFormatter af = a.getFormatter();
         assertNotNull(af);
-        assertTrue(af.getActionType().equals("Errata Update"));
+        assertTrue(af.getActionType().equals("Patch Update"));
         String start = "<strong><a href=\"/rhn/errata/details/Details.do?eid=";
         String end = "</a></strong><br/><br/><strong>Test synopsis</strong><br/>" +
             "<br/>" + ErrataFactory.ERRATA_TYPE_BUG +
