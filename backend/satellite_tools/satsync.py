@@ -1725,6 +1725,8 @@ Please contact your administrator""") % (generation, sat_cert.generation))
 
             packages.append(package)
 
+        # rewrite package org to where they got imported
+        _validate_package_org(packages)
         erratum['packages'] = packages
 
         if erratum['org_id'] is not None:
