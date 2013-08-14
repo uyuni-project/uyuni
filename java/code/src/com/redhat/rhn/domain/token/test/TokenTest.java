@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenFactory;
@@ -136,6 +137,7 @@ public class TokenTest extends RhnBaseTestCase {
         token.setCreator(user);
         token.setOrg(user.getOrg());
         token.setServer(ServerFactoryTest.createTestServer(user));
+        token.setContactMethod(ServerFactory.findContactMethodById(0L));
 
         token.addEntitlement(ServerConstants.getServerGroupTypeEnterpriseEntitled());
         token.addEntitlement(ServerConstants.getServerGroupTypeProvisioningEntitled());
