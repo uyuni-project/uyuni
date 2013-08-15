@@ -16,6 +16,8 @@
 package com.redhat.rhn.domain.product;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -30,6 +32,7 @@ import com.redhat.rhn.domain.server.Server;
 /**
  * SUSEProductFactory - the class used to fetch and store
  * {@link SUSEProduct} objects from the database.
+ * @version $Rev$
  */
 public class SUSEProductFactory extends HibernateFactory {
 
@@ -44,6 +47,7 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param server server
      * @return products installed on the given server
      */
+    @SuppressWarnings("unchecked")
     public static SUSEProductSet getInstalledProducts(Server server) {
         SUSEProductSet products = new SUSEProductSet();
 
@@ -76,6 +80,27 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Return a list containing all product ids installed on a server.
+     * @param server server
+     * @return product ids installed on the given server
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Long> getInstalledProductIds(Server server) {
+        SelectMode m = ModeFactory.getMode("System_queries",
+                "system_installed_product_ids");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("sid", server.getId());
+        DataResult<Map<String, Long>> dataResults = m.execute(params);
+
+        List<Long> result = new LinkedList<Long>();
+        for (Map<String, Long> dataResult : dataResults) {
+            result.add(dataResult.get("id"));
+        }
+
+        return result;
+    }
+
+    /**
      * Find a {@link SUSEProduct} given by name, version, release and arch.
      * @param name name
      * @param version version
@@ -83,6 +108,7 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param arch arch
      * @return product
      */
+    @SuppressWarnings("unchecked")
     public static SUSEProduct findSUSEProduct(String name, String version, String release,
             String arch) {
         SUSEProduct product = null;

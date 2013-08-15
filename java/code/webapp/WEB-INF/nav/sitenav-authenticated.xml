@@ -185,8 +185,9 @@
       <rhn-tab-url>/rhn/channels/manage/DistChannelMapDelete.do</rhn-tab-url>
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Audit" url="/rhn/audit/ListXccdf.do">
+  <rhn-tab name="Audit" url="/rhn/audit/CVEAudit.do">
      <rhn-tab-directory>/rhn/audit</rhn-tab-directory>
+     <rhn-tab name="cveaudit.nav.title" url="/rhn/audit/CVEAudit.do" />
      <rhn-tab name="OpenSCAP" url="/rhn/audit/ListXccdf.do">
          <rhn-tab name="All Scans" url="/rhn/audit/ListXccdf.do"/>
          <rhn-tab name="XCCDF Diff" url="/rhn/audit/scap/Diff.do">
