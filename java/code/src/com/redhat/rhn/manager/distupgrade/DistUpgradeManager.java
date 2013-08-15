@@ -34,11 +34,15 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ChildChannelDto;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.manager.BaseManager;
 
 /**
  * Business logic for performing distribution upgrades.
+ *
+ * @version $Rev$
  */
 public class DistUpgradeManager extends BaseManager {
 
@@ -64,12 +68,13 @@ public class DistUpgradeManager extends BaseManager {
     }
 
     /**
-     * Find possible migration target products for a given product ID.
+     * Find migration target products for any given SUSE product ID.
      *
-     * @param productId product ID
-     * @return DataResult containing target product IDs
+     * @param productId SUSE product ID
+     * @return list of possible migration target product IDs
      */
-    public static DataResult findTargetProducts(long productId) {
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProductDto> findTargetProducts(long productId) {
         SelectMode m = ModeFactory.getMode("distupgrade_queries",
                 "find_target_products");
         HashMap<String, Object> params = new HashMap<String, Object>();
@@ -78,13 +83,30 @@ public class DistUpgradeManager extends BaseManager {
     }
 
     /**
-     * Find all channels required by a given product with base channel.
+     * Find migration source products for any given SUSE product ID.
+     *
+     * @param productId SUSE product ID
+     * @return list of possible migration source product IDs
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProductDto> findSourceProducts(long productId) {
+        SelectMode m = ModeFactory.getMode("distupgrade_queries",
+                "find_source_products");
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("product_id", productId);
+        return m.execute(params);
+    }
+
+    /**
+     * Find all *mandatory* child channels for a given product ID with base channel.
      *
      * @param productId product ID
      * @param baseChannelLabel base channel label
      * @return DataResult containing product channel IDs
      */
-    public static DataResult findProductChannels(long productId, String baseChannelLabel) {
+    @SuppressWarnings("unchecked")
+    private static List<ChildChannelDto> findProductChannels(long productId,
+            String baseChannelLabel) {
         SelectMode m = ModeFactory.getMode("distupgrade_queries",
                 "channels_required_for_product");
         HashMap<String, Object> params = new HashMap<String, Object>();
@@ -115,12 +137,12 @@ public class DistUpgradeManager extends BaseManager {
      * @param productID product ID
      * @return base channel
      */
+    @SuppressWarnings("unchecked")
     public static EssentialChannelDto getProductBaseChannelDto(long productID) {
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("pid", productID);
         SelectMode m = ModeFactory.getMode("Channel_queries",
                     "suse_base_channels_for_suse_product");
-        @SuppressWarnings("unchecked")
         List<EssentialChannelDto> channels = makeDataResult(params, null, null, m);
         EssentialChannelDto ret = null;
         if (channels.size() > 0) {
@@ -153,7 +175,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param user user
      * @return list of product sets
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProductSet> getTargetProductSets(
             SUSEProductSet installedProducts, User user) {
         ArrayList<SUSEProductSet> ret = new ArrayList<SUSEProductSet>();
@@ -162,26 +183,25 @@ public class DistUpgradeManager extends BaseManager {
         }
 
         // Find migration targets for the base product
-        DataResult<Map<String, Object>> targetBaseProducts = findTargetProducts(
+        List<SUSEProductDto> targetBaseProducts = findTargetProducts(
                 installedProducts.getBaseProduct().getId());
 
-        for (Map<String, Object> targetBaseProduct : targetBaseProducts) {
+        for (SUSEProductDto targetBaseProduct : targetBaseProducts) {
             // Create a new product set
             SUSEProductSet targetSet = new SUSEProductSet();
-            long targetBaseProductID = (Long) targetBaseProduct.get("product_id");
             SUSEProduct targetProduct = SUSEProductFactory.getProductById(
-                    targetBaseProductID);
+                    targetBaseProduct.getId());
             targetSet.setBaseProduct(targetProduct);
 
             // Look for the target product's base channel
-            Channel baseChannel = getProductBaseChannel(targetBaseProductID, user);
+            Channel baseChannel = getProductBaseChannel(targetBaseProduct.getId(), user);
             if (baseChannel == null) {
                 continue;
             }
 
             // Look for mandatory child channels
-            DataResult<Map<String, Object>> productChannels = findProductChannels(
-                    targetBaseProductID, baseChannel.getLabel());
+            List<ChildChannelDto> productChannels = findProductChannels(
+                    targetBaseProduct.getId(), baseChannel.getLabel());
             Long parentChannelID = getParentChannelId(productChannels);
             if (parentChannelID == null) {
                 // Found a channel that's not synced
@@ -190,7 +210,7 @@ public class DistUpgradeManager extends BaseManager {
 
             // Look for addon product targets
             for (SUSEProduct addonProduct : installedProducts.getAddonProducts()) {
-                DataResult<Map<String, Object>> targetAddonProducts = findTargetProducts(
+                List<SUSEProductDto> targetAddonProducts = findTargetProducts(
                         addonProduct.getId());
 
                 // Take the first target in case there is more than one
@@ -200,8 +220,7 @@ public class DistUpgradeManager extends BaseManager {
                         logger.warn("More than one migration target found for addon " +
                                 "product: " + addonProduct.getFriendlyName());
                     }
-                    targetAddonProductID = (Long) targetAddonProducts.get(0).
-                            get("product_id");
+                    targetAddonProductID = targetAddonProducts.get(0).getId();
                 }
                 else {
                     // No target found, try to keep the source addon (bnc#802144)
@@ -213,7 +232,7 @@ public class DistUpgradeManager extends BaseManager {
                             targetAddonProductID));
 
                     // Look for mandatory channels
-                    DataResult<Map<String, Object>> drChannelsChild = findProductChannels(
+                    List<ChildChannelDto> drChannelsChild = findProductChannels(
                             targetAddonProductID, baseChannel.getLabel());
                     if (!isParentChannel(parentChannelID, drChannelsChild)) {
                         // Some channels are missing
@@ -235,16 +254,14 @@ public class DistUpgradeManager extends BaseManager {
     }
 
     /**
-     * Given a list of channels as a {@link DataResult}, return the labels of those
-     * where cid == null.
+     * Given a list of channels, return the labels of those where cid == null.
      */
-    private static List<String> getMissingChannels(
-            DataResult<Map<String, Object>> channels) {
+    private static List<String> getMissingChannels(List<ChildChannelDto> channels) {
         List<String> ret = new ArrayList<String>();
-        for (Map<String, Object> channel : channels) {
-            Long cid = (Long) channel.get("cid");
+        for (ChildChannelDto channel : channels) {
+            Long cid = channel.getId();
             if (cid == null) {
-                ret.add((String) channel.get("channel_label"));
+                ret.add(channel.getLabel());
             }
         }
         return ret;
@@ -257,16 +274,16 @@ public class DistUpgradeManager extends BaseManager {
      * @param productChannels product channels
      * @return ID of the parent channel or null
      */
-    public static Long getParentChannelId(DataResult<Map<String, Object>> productChannels) {
+    private static Long getParentChannelId(List<ChildChannelDto> productChannels) {
         Long baseChannelID = null;
-        for (Map<String, Object> channel : productChannels) {
-            Long cid = (Long) channel.get("cid");
+        for (ChildChannelDto channel : productChannels) {
+            Long cid = channel.getId();
             // Check if this channel is actually available
             if (cid == null) {
                 return null;
             }
             // Channel is synced
-            if (channel.get("parent_cid") == null) {
+            if (channel.getParentId() == null) {
                 // Parent channel is null -> this is the base channel
                 baseChannelID = cid;
             }
@@ -280,17 +297,17 @@ public class DistUpgradeManager extends BaseManager {
      * @param channels channels
      * @return true if all channels have the same given parent, else false
      */
-    public static boolean isParentChannel(Long parentChannelID,
-            DataResult<Map<String, Object>> channels) {
+    private static boolean isParentChannel(Long parentChannelID,
+            List<ChildChannelDto> channels) {
         boolean ret = true;
-        for (Map<String, Object> channelRow : channels) {
-            Long cid = (Long) channelRow.get("cid");
+        for (ChildChannelDto channel : channels) {
+            Long cid = channel.getId();
             if (cid == null) {
                 // Channel is not synced, abort
                 return false;
             }
             // Channel is synced
-            if ((Long) channelRow.get("parent_cid") != parentChannelID) {
+            if (channel.getParentId() != parentChannelID) {
                 // Found channel not matching given parent, return
                 ret = false;
                 break;
@@ -405,7 +422,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param targets target products
      * @return matching target product
      */
-    @SuppressWarnings("unchecked")
     public static SUSEProduct findMatch(SUSEProduct source, List<SUSEProduct> targets) {
         SUSEProduct matchingProduct = null;
         // Match found if the targets contain the source product itself
@@ -413,10 +429,10 @@ public class DistUpgradeManager extends BaseManager {
             matchingProduct = source;
         }
         else {
-            DataResult<Map<String, Object>> results = findTargetProducts(source.getId());
+            List<SUSEProductDto> results = findTargetProducts(source.getId());
             for (SUSEProduct target : targets) {
-                for (Map<String, Object> result : results) {
-                    if (result.get("product_id").equals(target.getId())) {
+                for (SUSEProductDto result : results) {
+                    if (result.getId().equals(target.getId())) {
                         // Found the matching product
                         matchingProduct = target;
                         break;

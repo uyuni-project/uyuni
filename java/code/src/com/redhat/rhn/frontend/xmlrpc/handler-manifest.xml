@@ -1,5 +1,6 @@
 <factory>
   <template name="api" classname="com.redhat.rhn.frontend.xmlrpc.api.ApiHandler" />
+  <template name="audit" classname="com.redhat.rhn.frontend.xmlrpc.audit.CVEAuditHandler" />
   <template name="auth" classname="com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler" />
   <template name="user" classname="com.redhat.rhn.frontend.xmlrpc.user.UserHandler" />
   <template name="errata" classname="com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler" />

@@ -282,6 +282,43 @@ public class CachedStatement implements Serializable {
         return res.intValue();
     }
 
+    /**
+     * Executes multiple updates with one only prepared statement.
+     *
+     * @param parameterList a list of parameter maps
+     * @return a list of affected rows counts
+     */
+    List<Integer> executeUpdates(List<Map> parameterList) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = prepareStatement(query, null);
+
+            List<Integer> result = new ArrayList<Integer>(parameterList.size());
+
+            for (Map parameters : parameterList) {
+                result.add((Integer) execute(query, qMap, parameters, null, null,
+                        preparedStatement));
+            }
+            return result;
+        }
+        catch (SQLException e) {
+            throw SqlExceptionTranslator.sqlException(e);
+        }
+        catch (HibernateException he) {
+            throw new
+                HibernateRuntimeException(
+                    "HibernateException executing CachedStatement", he);
+
+        }
+        catch (RhnRuntimeException e) {
+            log.error("Error while processing cached statement sql: " + query, e);
+            throw e;
+        }
+        finally {
+            HibernateHelper.cleanupDB(preparedStatement);
+        }
+    }
+
 
     DataResult execute(Map parameters, Mode mode) {
         return execute(parameters, defaultSort, sortOrder, mode);
@@ -436,37 +473,24 @@ public class CachedStatement implements Serializable {
        return execute(sql, parameterMap, parameters, mode, null);
     }
 
-    // This isn't great, but I want to return either an integer count of the
-    // number of rows updated, or the DataResult.  That can only be done by
-    // returning an Object and letting the caller do the casting for us.
+    /**
+     * Prepares and executes a SQL statements with parameters.
+     * @param sql SQL string to be prepared and executed
+     * @param parameterMap The Map returned setup by replaceBindParams
+     * @param parameters The Map returned setup by replaceBindParams
+     * @param mode Mode for selection queries
+     * @param dr Data result list or null
+     * @return either an integer count of the number of rows updated, or the
+     *         DataResult. Casting to int or DataResult is caller's
+     *         responsibility
+     */
     private Object execute(String sql, Map parameterMap,
                               Map parameters, Mode mode, List dr)  {
-        storeForRestart(sql, parameterMap, parameters, mode, dr);
         PreparedStatement ps = null;
         try {
-            Connection conn = stealConnection();
-            ps = conn.prepareStatement(sql);
+            ps = prepareStatement(sql, mode);
 
-            // allow limiting the results for better performance.
-            if (mode != null && mode instanceof SelectMode) {
-                ps.setMaxRows(((SelectMode)mode).getMaxRows());
-            }
-
-            if (log.isDebugEnabled()) {
-                log.debug("execute() - Executing: " + sql);
-                log.debug("execute() - With: " + parameters);
-            }
-
-            boolean returnType = NamedPreparedStatement.execute(ps,
-                                                   parameterMap,
-                                                   setupParamMap(parameters));
-            if (log.isDebugEnabled()) {
-                log.debug("execute() - Return type: " + returnType);
-            }
-            if (returnType) {
-                return processResultSet(ps.getResultSet(), (SelectMode)mode, dr);
-            }
-            return new Integer(ps.getUpdateCount());
+            return execute(sql, parameterMap, parameters, mode, dr, ps);
         }
         catch (SQLException e) {
             throw SqlExceptionTranslator.sqlException(e);
@@ -485,6 +509,56 @@ public class CachedStatement implements Serializable {
         finally {
             HibernateHelper.cleanupDB(ps);
         }
+    }
+
+    /**
+     * Executes a prepared SQL statement with parameters.
+     * @param sql SQL string to be prepared and executed
+     * @param parameterMap The Map returned setup by replaceBindParams
+     * @param parameters The Map returned setup by replaceBindParams
+     * @param mode Mode for selection queries
+     * @param dr Data result list or null
+     * @return either an integer count of the number of rows updated, or the
+     *         DataResult. Casting to int or DataResult is caller's
+     *         responsibility
+     * @throws SQLException
+     */
+    private Object execute(String sql, Map parameterMap, Map parameters, Mode mode,
+            List dr, PreparedStatement ps) throws SQLException {
+        if (log.isDebugEnabled()) {
+            log.debug("execute() - Executing: " + sql);
+            log.debug("execute() - With: " + parameters);
+        }
+
+        storeForRestart(sql, parameterMap, parameters, mode, dr);
+        boolean returnType =
+                NamedPreparedStatement.execute(ps, parameterMap, setupParamMap(parameters));
+        if (log.isDebugEnabled()) {
+            log.debug("execute() - Return type: " + returnType);
+        }
+        if (returnType) {
+            return processResultSet(ps.getResultSet(), (SelectMode) mode, dr);
+        }
+        return new Integer(ps.getUpdateCount());
+    }
+
+    /**
+     * Executes a prepared SQL statement with parameters.
+     * @param sql SQL string to be prepared and executed
+     * @param mode Mode for selection queries
+     * @return the prepared statement
+     * @throws SQLException
+     */
+    private PreparedStatement prepareStatement(String sql, Mode mode) throws SQLException,
+            HibernateException {
+        Connection conn = stealConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        // allow limiting the results for better performance.
+        if (mode != null && mode instanceof SelectMode) {
+            ps.setMaxRows(((SelectMode) mode).getMaxRows());
+        }
+        return ps;
     }
 
     private Map processOutputParams(CallableStatement cs, Map outParams)

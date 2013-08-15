@@ -442,4 +442,95 @@ SELECT name FROM web_customer WHERE id IN (%s) AND name = :name
 SELECT data FROM time_series WHERE data = :data
     </query>
 </mode>
+
+<write-mode name="insert_into_suseproductchannel">
+  <query params="product_id, channel_id, channel_label, parent_channel_label">
+    INSERT INTO suseproductchannel (
+      product_id,
+      channel_id,
+      channel_label,
+      parent_channel_label
+    )
+    VALUES  (
+      :product_id,
+      :channel_id,
+      :channel_label,
+      :parent_channel_label
+    )
+  </query>
+</write-mode>
+
+<write-mode name="delete_all_servers">
+  <query>
+    DELETE FROM rhnserver
+  </query>
+</write-mode>
+
+<write-mode name="insert_into_suseupgradepath">
+  <query params="from_pdid, to_pdid">
+    INSERT INTO suseupgradepath (
+	  from_pdid,
+	  to_pdid
+    )
+    VALUES (
+	  :from_pdid,
+	  :to_pdid
+    );
+  </query>
+</write-mode>
+
+<mode name="select_next_suseinstalledproduct_id">
+	<query>
+      SELECT sequence_nextval('suse_inst_pr_id_seq') AS id FROM dual    
+	</query>
+</mode>
+
+<write-mode name="insert_into_suseinstalledproduct">
+  <query params="id, name, version, arch_type_id, release, is_baseproduct">
+    INSERT INTO suseinstalledproduct(
+      id,
+      name,
+      version,
+      arch_type_id,
+      release,
+      is_baseproduct
+    )
+    VALUES (
+      :id,
+      :name,
+      :version,
+      :arch_type_id,
+      :release,
+      :is_baseproduct
+    );
+  </query>
+</write-mode>
+
+<write-mode name="insert_into_suseserverinstalledproduct">
+  <query params="rhn_server_id, suse_installed_product_id">
+    INSERT INTO suseserverinstalledproduct(
+      rhn_server_id,
+      suse_installed_product_id
+    )
+    VALUES (
+      :rhn_server_id,
+      :suse_installed_product_id
+    );
+  </query>
+</write-mode>
+
+<mode name="find_relevant_channels" class="com.redhat.rhn.manager.audit.ServerChannelIdPair">
+  <query params="sid">
+      SELECT server_id sid, channel_id cid, channel_rank FROM suseCVEServerChannel
+       WHERE server_id = :sid
+  </query>
+</mode>
+
+<mode name="find_all_relevant_channels" class="com.redhat.rhn.manager.audit.ServerChannelIdPair">
+  <query>
+      SELECT server_id sid, channel_id cid, channel_rank FROM suseCVEServerChannel
+      ORDER BY sid
+  </query>
+</mode>
+
 </datasource_modes>

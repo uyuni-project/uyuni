@@ -35,6 +35,16 @@ public class WriteMode extends BaseMode {
 
 
     /**
+     * Executes multiple updates with the given query parameters.
+     *
+     * @param parameterList a list of parameter maps
+     * @return a list of affected rows counts
+     */
+    public List<Integer> executeUpdates(List<Map> parameterList) {
+        return getQuery().executeUpdates(parameterList);
+    }
+
+    /**
      * execute an update with an inClause (%s).
      *  This handles more than 1000 items in teh in clause
      * @param parameters the query parameters
