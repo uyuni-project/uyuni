@@ -218,6 +218,19 @@
       </trans-unit>
       <trans-unit id="channelName">
         <source>Channel Name</source>
+
+      <!-- CSV separator -->
+      <trans-unit id="preferences.jsp.csvtitle">
+        <source>CSV Files</source>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.csvdesc">
+        <source>Configure a separator character to be used in downloadable CSV files:</source>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.csvcomma">
+        <source>Comma (",", default)</source>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.csvsemicolon">
+        <source>Semicolon (";", compatible with Microsoft&#174; Excel&#174;)</source>
       </trans-unit>
     </body>
   </file>
