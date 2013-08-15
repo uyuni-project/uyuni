@@ -90,6 +90,9 @@
       <trans-unit id="task.status.ssh-push">
         <source>SSH Server Push</source>
       </trans-unit>
+      <trans-unit id="task.status.cve-server-channels">
+        <source>CVE Server Channels</source>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch">
         <source>Registers SUSE Manager clients</source>
       </trans-unit>
@@ -98,6 +101,9 @@
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch">
         <source>Manages clients via SSH Server Push</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.cve-server-channels-bunch">
+        <source>Generates data required for performing CVE audit queries</source>
       </trans-unit>
 
       <!-- Server Contact Methods -->
@@ -120,6 +126,98 @@
       <!-- SSH Push Messages -->
       <trans-unit id="kickstart.schedule.invalid.contact.method">
         <source>Provisioning is currently not supported for systems managed with push via SSH tunnel.</source>
+      </trans-unit>
+
+      <!-- CVE Audit Messages -->
+      <trans-unit id="cveaudit.nav.title">
+        <source>CVE Audit</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.overview">
+        <source>CVE Audit</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.description">
+        <source>This page will display a list of systems with their patch status regarding a given CVE (Common Vulnerabilities and Exposures) number.</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.cvenumber">
+        <source>CVE Number:</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.unknowncveidentifier">
+        <source>The specified CVE number was not found. This can happen for very old or yet-unknown numbers, please also check it for possible typing errors.</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.cvenumber.auditsystem">
+        <source>Audit systems</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.examples">
+        <source>Examples:</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.example.list">
+        <source>CVE-2013-3343, CVE-2013-3117</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.filters">
+        <source>System patch status to search:</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.patchstatus.affectedpatchinapplicable">
+        <source>Affected, patch available in a channel which is not assigned</source>
+      </trans-unit>     
+      <trans-unit id="cveaudit.jsp.patchstatus.affectedpatchapplicable">
+        <source>Affected, patch available in an assigned channel</source>
+      </trans-unit>     
+      <trans-unit id="cveaudit.jsp.patchstatus.notaffected">
+        <source>Not affected</source>
+      </trans-unit>     
+      <trans-unit id="cveaudit.jsp.patchstatus.patched">
+        <source>Patched</source>
+      </trans-unit>    
+      <trans-unit id="cveaudit.jsp.noresults">
+        <source>No system found.</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.patchstatus">
+        <source>Patch status</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.system">
+        <source>System</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.nextaction">
+        <source>Next Action</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.candidate">
+        <source>Only candidate is:</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.candidates">
+        <source>Candidates are:</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.nextaction.affectedpatchinapplicable">
+        <source>Add a channel subscription to this system.</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.nextaction.affectedpatchapplicable">
+        <source>Install a new patch in this system. </source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.nextaction.notaffected">
+        <source>No action needed (system does not have affected software installed).</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.nextaction.patched">
+        <source>No action needed.</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.updatenotice.pre">
+        <source>Please note that underlying data needed for this audit is updated nightly. If you registered systems very recently or changed channel subscriptions in the last 24 hours it is recommended that you</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.updatenotice.link">
+        <source>schedule an extra CVE data update</source>
+      </trans-unit>
+      <trans-unit id="cveaudit.jsp.updatenotice.post">
+        <source>in order to ensure consistent results.</source>
+      </trans-unit>
+      <trans-unit id="patchStatus">
+        <source>Patch Status</source>
+      </trans-unit>
+      <trans-unit id="systemName">
+        <source>System Name</source>
+      </trans-unit>
+      <trans-unit id="patchAdvisory">
+        <source>Patch Advisory</source>
+      </trans-unit>
+      <trans-unit id="channelName">
+        <source>Channel Name</source>
       </trans-unit>
     </body>
   </file>
