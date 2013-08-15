@@ -12,26 +12,36 @@
   </query>
 </mode>
 
-<mode name="find_target_products">
+<mode name="find_target_products" class="com.redhat.rhn.frontend.dto.SUSEProductDto">
   <query params="product_id">
-   SELECT up.to_pdid product_id
+   SELECT up.to_pdid id
      FROM suseUpgradePath up
     WHERE up.from_pdid = :product_id
- ORDER BY product_id
+ ORDER BY id
   </query>
 </mode>
 
-<mode name="channels_required_for_product">
+<mode name="find_source_products" class="com.redhat.rhn.frontend.dto.SUSEProductDto">
+  <query params="product_id">
+   SELECT up.from_pdid id
+     FROM suseUpgradePath up
+    WHERE up.to_pdid = :product_id
+ ORDER BY id
+  </query>
+</mode>
+
+<mode name="channels_required_for_product"
+	class="com.redhat.rhn.frontend.dto.ChildChannelDto">
   <query params="product_id, base_channel_label">
-   SELECT spc.channel_label,
-          c.id cid,
-          c.parent_channel parent_cid
+   SELECT spc.channel_label label,
+          c.id id,
+          c.parent_channel parent_id
      FROM suseProductChannel spc
 LEFT JOIN rhnChannel c ON spc.channel_id = c.id
     WHERE spc.product_id = :product_id
       AND (spc.channel_label = :base_channel_label OR
            spc.parent_channel_label = :base_channel_label)
- ORDER BY cid
+ ORDER BY id
   </query>
 </mode>
 

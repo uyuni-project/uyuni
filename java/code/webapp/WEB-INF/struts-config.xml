@@ -1276,6 +1276,16 @@
         <form-property name="submitted" type="java.lang.Boolean"/>
     </form-bean>
 
+    <form-bean name="cveAuditForm"
+               type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+      <form-property name="cveIdentifier" type="java.lang.String" />
+      <form-property name="includeAffectedPatchInapplicable" type="java.lang.Boolean" />
+      <form-property name="includeAffectedPatchApplicable" type="java.lang.Boolean" />
+      <form-property name="includeUnknown" type="java.lang.Boolean" />
+      <form-property name="includeNotAffected" type="java.lang.Boolean" />
+      <form-property name="includePatched" type="java.lang.Boolean" />
+      <form-property name="submitted" type="java.lang.Boolean" />
+    </form-bean>
   </form-beans>
 
   <global-exceptions>
@@ -8325,6 +8335,15 @@
       <forward name="schedule"
                redirect="true"
                path="/systems/details/Overview.do" />
+    </action>
+
+    <action path="/audit/CVEAudit"
+        name="cveAuditForm"
+        scope="request"
+        input="/WEB-INF/pages/audit/cveaudit.jsp"
+        type="com.redhat.rhn.frontend.action.audit.cve.CVEAuditAction">
+        <forward name="default" path="/WEB-INF/pages/audit/cveaudit.jsp"/>
+        <forward name="queryStringParameters" path="/audit/CVEAudit.do" redirect="true"/>
     </action>
   </action-mappings>
 
