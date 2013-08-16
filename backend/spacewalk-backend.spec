@@ -342,7 +342,6 @@ export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
 
 rm -v $RPM_BUILD_ROOT%{apacheconfd}/zz-spacewalk-server-python.conf
-rm -f $RPM_BUILD_ROOT/%{_mandir}/man8/satellite-sync.8*
 
 # remove all unsupported translations
 cd $RPM_BUILD_ROOT
@@ -352,6 +351,9 @@ for d in usr/share/locale/*; do
   fi
 done
 cd -
+ln -s satellite-sync $RPM_BUILD_ROOT/usr/bin/mgr-inter-sync
+ln -s rhn-satellite-exporter $RPM_BUILD_ROOT/usr/bin/mgr-exporter
+
 
 %find_lang %{name}-server
 
@@ -702,8 +704,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/rhn-satellite-activate
 %attr(755,root,root) %{_bindir}/rhn-schema-version
 %attr(755,root,root) %{_bindir}/rhn-ssl-dbstore
-# unsupported in SUSE Manager 1.2 (bnc #669610)
-# %attr(755,root,root) %{_bindir}/satellite-sync
+%attr(755,root,root) %{_bindir}/satellite-sync
+%attr(755,root,root) %{_bindir}/mgr-inter-sync
+%attr(755,root,root) %{_bindir}/mgr-exporter
 %attr(755,root,root) %{_bindir}/spacewalk-debug
 %attr(755,root,root) %{_bindir}/rhn-satellite-exporter
 %attr(755,root,root) %{_bindir}/update-packages
@@ -751,7 +754,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/rhn-ssl-dbstore.8*
 %{_mandir}/man8/rhn-db-stats.8*
 %{_mandir}/man8/rhn-schema-stats.8*
-# %{_mandir}/man8/satellite-sync.8*
+%{_mandir}/man8/satellite-sync.8*
 %{_mandir}/man8/spacewalk-debug.8*
 %{_mandir}/man8/satpasswd.8*
 %{_mandir}/man8/satwho.8*
