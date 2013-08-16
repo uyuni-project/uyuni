@@ -206,6 +206,7 @@ class Runner:
             else:
                 log(-1, ['', messages.syncer_error % e.faultString], )
                 sys.exit(9)
+
         except Exception, e:
             log(-1, ['', messages.syncer_error % e], )
             sys.exit(10)
