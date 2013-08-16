@@ -215,6 +215,7 @@
       </trans-unit>
       <trans-unit id="channelName">
         <source>Channel Name</source>
+      </trans-unit>
 
       <!-- CSV separator -->
       <trans-unit id="preferences.jsp.csvtitle">
