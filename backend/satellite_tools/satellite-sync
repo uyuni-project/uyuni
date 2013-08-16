@@ -64,7 +64,7 @@ LOCK = None
 try:
     LOCK = rhnLockfile.Lockfile('/var/run/satellite-sync.pid')
 except rhnLockfile.LockfileLockedException:
-    systemExit(1, "SYNC ERROR: attempting to run more than one instance of satellite-sync. Exiting.")
+    systemExit(1, "SYNC ERROR: attempting to run more than one instance of mgr-inter-sync. Exiting.")
 
 try:
     # NOTE: importing satsync will initialize the logs and CFG
@@ -85,7 +85,7 @@ def repr_str(e):
     """
 
     s = ''
-    
+
     hasReprYN = hasattr(e, '__repr__')
     hasStrYN = hasattr(e, '__str__')
 

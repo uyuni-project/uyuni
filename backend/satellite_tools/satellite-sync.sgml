@@ -13,7 +13,7 @@
 <RefNameDiv>
 <RefName><command>satellite-sync</command></RefName>
 <RefPurpose>
-Incrementally synchronize an RHN Satellite's DB data and RPM repository with Red Hat's RHN DB and RPM repository.
+Incrementally synchronize a SUSE Manager Server DB data and RPM repository with another SUSE Manager Server DB and RPM repository.
 </RefPurpose>
 </RefNameDiv>
 
@@ -125,11 +125,11 @@ Incrementally synchronize an RHN Satellite's DB data and RPM repository with Red
 <RefSect1><Title>Description</Title>
 <para>
     The &RHNSYNC; (<emphasis>satellite-sync</emphasis>) synchronizes
-    a &RHNSAT; with Red Hat's RHN servers.
+    an &RHNSAT; with another SUSE Manager Server.
 </para>
 <para>
     This tool enables a &RHNSAT; to update its database metadata and
-    RPM packages with that of Red Hat. This action can be performed via
+    RPM packages with that of another SUSE Manager Server. This action can be performed via
     the internet (ie. directly) or via the local file-system (an update/channel
     CD dumped to the appropriate mount point).
 </para>
