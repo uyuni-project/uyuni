@@ -82,12 +82,12 @@ public class CVEAuditManager {
      *
      * @param pairs the pairs
      */
-    @SuppressWarnings("rawtypes")
     public static void insertRelevantChannels(Set<ServerChannelIdPair> pairs) {
         WriteMode m = ModeFactory.getWriteMode("cve_audit_queries",
                 "insert_relevant_channel");
 
-        List<Map> parameterList = new ArrayList<Map>(pairs.size());
+        List<Map<String, Object>> parameterList =
+                new ArrayList<Map<String, Object>>(pairs.size());
         for (ServerChannelIdPair pair : pairs) {
             Map<String, Object> parameters = new HashMap<String, Object>(3);
             parameters.put("sid", pair.getSid());

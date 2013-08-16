@@ -40,7 +40,7 @@ public class WriteMode extends BaseMode {
      * @param parameterList a list of parameter maps
      * @return a list of affected rows counts
      */
-    public List<Integer> executeUpdates(List<Map> parameterList) {
+    public List<Integer> executeUpdates(List<Map<String, Object>> parameterList) {
         return getQuery().executeUpdates(parameterList);
     }
 
