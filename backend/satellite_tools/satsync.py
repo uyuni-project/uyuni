@@ -104,6 +104,7 @@ class Runner:
         'download-kickstarts'       : [''],
         'arches'                    : [''], #5/26/05 wregglej 156079 Added arches to precedence list.
         'orgs'                      : [''],
+        'supportinfo'               : ['channels', 'packages'],
     }
 
     # The step hierarchy. We need access to it both for command line
@@ -124,6 +125,7 @@ class Runner:
         'source-packages',
         'errata',
         'kickstarts',
+        'supportinfo',
     ]
     def __init__(self):
         self.syncer = None
@@ -191,7 +193,7 @@ class Runner:
         except (KeyboardInterrupt, SystemExit):
             raise
         except xmlWireSource.rpclib.xmlrpclib.Fault, e:
-            if CFG.ISS_PARENT:  
+            if CFG.ISS_PARENT:
                 # we met old satellite who do not know ISS
                 log(-1, ['', messages.iss_not_available ], )
                 sys.exit(26)
@@ -359,6 +361,9 @@ class Runner:
             # won't sync the orgs
             log(1, [_("The upstream Satellite does not support syncing orgs data."), _("Skipping...")])
 
+    def _step_supportinfo(self):
+        self.syncer.import_supportinfo()
+
 def sendMail(forceEmail=0):
     """ Send email summary """
     if forceEmail or (OPTIONS is not None and OPTIONS.email):
@@ -431,6 +436,7 @@ class Syncer:
         self._channel_source_packages_full = {}
 
         self._channel_kickstarts = {}
+        self._supportinfo = {}
 
     def initialize(self):
         """Initialization that requires IO, etc."""
@@ -551,7 +557,7 @@ class Syncer:
                 # Try to retrieve the certificate from the database
                 row = satCerts.retrieve_db_cert()
                 if row is None:
-                    raise RhnSyncException(_("No certificate found. " 
+                    raise RhnSyncException(_("No certificate found. "
                     "Please use --rhn-cert"))
                 cert = row['cert']
                 store_cert = False
@@ -661,9 +667,9 @@ Please contact your RHN representative""") % (generation, sat_cert.generation))
         self._compute_channel_request()
 
         # print out the relevant channel tree
-        #3/6/06 wregglej 183213 Don't print out the end-of-service message if 
+        #3/6/06 wregglej 183213 Don't print out the end-of-service message if
         #satellite-sync is running with the --mount-point (-m) option. If it
-        #did, it would incorrectly list channels as end-of-service if they had been 
+        #did, it would incorrectly list channels as end-of-service if they had been
         #synced already but aren't in the channel dump.
         self._printChannelTree(doEOSYN=doEOSYN)
 
@@ -1735,7 +1741,7 @@ Please contact your RHN representative""") % (generation, sat_cert.generation))
         out_queue = Queue.Queue()
         lock = threading.Lock()
 
-        
+
         #count size of missing packages
         for package_id, path in missing_fs_packages:
             timestamp = short_package_collection.get_package_timestamp(package_id)
@@ -1846,6 +1852,12 @@ Please contact your RHN representative""") % (generation, sat_cert.generation))
             stream = rpmServer.getPackageStream(channel, nvrea)
 
         return (None, stream)
+
+    def import_supportinfo(self):
+        """Imports the support-related information"""
+        self._process_simple("getSupportInformationXmlStream", "supportinfo")
+
+
 
 class ThreadDownload(threading.Thread):
     def __init__(self, lock, queue, out_queue, short_package_collection, package_collection, syncer, failed_fs_packages, extinct_packages, sources, channel):
@@ -2319,11 +2331,11 @@ def processCommandline():
         actionDict['short'] = 0
         actionDict['download-packages'] = 0
         actionDict['rpms'] = 0
-        
+
 
     if actionDict['no-rpms']:
         actionDict['rpms'] = 0
-        
+
 
     #if actionDict['no-srpms']:
     actionDict['srpms'] = 0
@@ -2394,7 +2406,7 @@ def processCommandline():
               _("  27 - No such org"),
               _("  28 - error: --master is only valid with --mount-point"),]
         log(-1, msg, 1, 1, sys.stderr)
-        sys.exit(0) 
+        sys.exit(0)
 
     if OPTIONS.dump_version:
         OPTIONS.dump_version = str(OPTIONS.dump_version)

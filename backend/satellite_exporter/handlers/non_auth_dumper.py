@@ -6,10 +6,10 @@
 # FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-# 
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation. 
+# in this software or its documentation.
 #
 
 """
@@ -74,6 +74,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
             'kickstartable_trees',
             'get_ks_file',
             'orgs',
+            'support_information',
         ]
 
         self.system_id = None
@@ -283,11 +284,24 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         self.close()
         return 0
 
+    def dump_support_information(self):
+        log_debug(4)
+        writer = self._get_xml_writer()
+        d = dumper.SatelliteDumper(writer, exportLib.SupportInfoDumper(writer))
+        d.dump()
+        writer.flush()
+        self.close()
+        return 0
+
+
     def arches(self):
         return self.dump_arches(rpm_arch_type_only=1)
 
     def arches_extra(self):
         return self.dump_server_group_type_server_arches(rpm_arch_type_only=1)
+
+    def support_information(self):
+        self.dump_support_information()
 
     def blacklist_obsoletes(self):
         return self.dump_blacklist_obsoletes()
