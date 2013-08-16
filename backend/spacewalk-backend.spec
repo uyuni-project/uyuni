@@ -510,6 +510,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/rhnVirtualization.py*
 %{pythonrhnroot}/server/taskomatic.py*
 %{pythonrhnroot}/server/mgrSync.py*
+%{pythonrhnroot}/server/repoindexHandler.py*
 %dir %{pythonrhnroot}/server/rhnServer
 %{pythonrhnroot}/server/rhnServer/*
 %dir %{pythonrhnroot}/server/importlib
@@ -561,6 +562,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{rhnroot}/wsgi/sat_dump.py*
 %{rhnroot}/wsgi/xmlrpc.py*
 %{rhnroot}/wsgi/mgr.py*
+%{rhnroot}/wsgi/repoindex.py*
 
 # logs and other stuff
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-server
