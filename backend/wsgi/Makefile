@@ -5,6 +5,7 @@ TOP    = ..
 SUBDIR = wsgi
 
 FILES = __init__ app applet config config_tool package_push \
-	 sat sat_dump  xmlrpc wsgiHandler wsgiRequest mgr
+	 sat sat_dump  xmlrpc wsgiHandler wsgiRequest mgr \
+	 repoindex
 
 include $(TOP)/Makefile.defs
