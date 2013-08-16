@@ -34,7 +34,8 @@ public class CVEAuditSystem extends BaseDto {
     private PatchStatus patchStatus;
 
     // LinkedHashSet is used to preserve insertion order when iterating
-    private Set<ChannelIdNameLabelTriple> channels = new LinkedHashSet<ChannelIdNameLabelTriple>();
+    private Set<ChannelIdNameLabelTriple> channels =
+            new LinkedHashSet<ChannelIdNameLabelTriple>();
     private Set<ErrataIdAdvisoryPair> erratas = new LinkedHashSet<ErrataIdAdvisoryPair>();
 
     /**

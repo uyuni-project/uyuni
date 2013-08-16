@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidGPGUrlException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
