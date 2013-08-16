@@ -605,6 +605,27 @@ class OracleBackend(Backend):
             nullable    = ['category', 'pkginfo', 'pkgmap'],
             attribute   = 'solaris_package',
         ),
+        Table('suseProductFile',
+            fields      = {
+                'id'                : DBint(),
+                'name'              : DBstring(256),
+                'evr_id'            : DBint(),
+                'package_arch_id'   : DBint(),
+                'vendor'            : DBstring(256),
+                'summary'           : DBstring(4000),
+                'description'       : DBstring(4000),
+            },
+            pk          = ['id'],
+            nullable    = ['vendor', 'summary', 'description'],
+        ),
+        Table('susePackageProductFile',
+            fields      = {
+                'package_id'       : DBint(),
+                'prodfile_id'      : DBint(),
+            },
+            pk          = ['package_id', 'prodfile_id'],
+            attribute   = 'product_files',
+        ),
     )
 
     def __init__(self):
