@@ -491,10 +491,10 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
 
     /**
      * Setter for the comment.
-     * @param comment the comment
+     * @param commentIn the comment
      */
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComment(String commentIn) {
+        this.comment = commentIn;
     }
 
     /**
