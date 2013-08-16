@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.1.1
+Version: 2.1.3
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -71,7 +71,7 @@ Conflicts: yum-rhn-plugin < 1.6.4-1
 Conflicts: rhncfg < 5.9.23-1
 Conflicts: spacewalk-koan < 0.2.7-1
 Conflicts: rhn-kickstart < 5.4.3-1
-Conflicts: rhn-virtualization < 5.4.36-2
+Conflicts: rhn-virtualization-host < 5.4.36-2
 
 BuildRequires: python-devel
 BuildRequires: gettext
@@ -444,6 +444,13 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Thu Aug 15 2013 Stephen Herr <sherr@redhat.com> 2.1.3-1
+- 919432 - rhn-client-tools should correctly conflict with old virt-host
+  versions
+
+* Wed Aug 14 2013 Tomas Lestach <tlestach@redhat.com> 2.1.2-1
+- 983999 - put the 1st element of the python search path to the end
+
 * Tue Aug 06 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.1-1
 - Branding clean-up of proxy stuff in client dir
 - Bumping package versions for 2.1.
