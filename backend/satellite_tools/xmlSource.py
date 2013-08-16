@@ -462,6 +462,7 @@ class ChannelItem(BaseItem):
         'sharing'                   : 'channel_access',
         'rhn-channel-trusted-orgs'  : 'trust_list',
         'rhn-channel-update-tag'    : 'update_tag',
+        'suse-data'                 : 'package_keywords',
     }
     def populateFromElements(self, obj, elements):
         # bz 808516, to retain compatibility with Satellite <= 5.3 we
@@ -720,6 +721,12 @@ class DistItem(BaseItem):
         'channel-arch'              : 'channel_arch',
     }
 addItem(DistItem)
+
+class SupportInfoItem(BaseItem):
+    item_name = 'suse-keyword'
+    item_class = importLib.SupportInformation
+addItem(SupportInfoItem)
+
 
 class ChannelErratumItem(BaseItem):
     item_name = 'erratum'
@@ -1138,3 +1145,6 @@ class KickstartableTreesContainer(ContainerHandler):
 
 class OrgContainer(ContainerHandler):
     container_name = 'rhn-orgs'
+
+class SupportInformationContainer(ContainerHandler):
+    container_name = 'suse-data'

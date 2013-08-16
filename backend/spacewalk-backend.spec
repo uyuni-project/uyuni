@@ -528,6 +528,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/importlib/productNamesImport.py*
 %{pythonrhnroot}/server/importlib/userAuth.py*
 %{pythonrhnroot}/server/importlib/orgImport.py*
+%{pythonrhnroot}/server/importlib/supportInformationImport.py*
 %{rhnroot}/server/handlers/__init__.py*
 
 # Repomd stuff

@@ -9,6 +9,6 @@ SUBDIR	= server/importlib
 SPACEWALK_FILES	= __init__ archImport backendLib backendOracle backend backend_checker \
             channelImport debPackage errataCache errataImport headerSource importLib \
 	    kickstartImport mpmSource orgImport \
-            packageImport productNamesImport packageUpload userAuth
+            packageImport productNamesImport packageUpload userAuth supportInformationImport
 
 include $(TOP)/Makefile.defs
