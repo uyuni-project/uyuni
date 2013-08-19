@@ -174,6 +174,8 @@ class NCCSync(object):
                              '<authpass>%(authpass)s</authpass>'
                              '<smtguid>%(smtguid)s</smtguid>'
                              '</productdata>\n')
+        if not os.path.exists(MASTER_CACHE_LOCATION):
+            os.makedirs(MASTER_CACHE_LOCATION)
         self.connect_retries = 10
 
         try:
