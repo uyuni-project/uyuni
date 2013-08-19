@@ -465,6 +465,10 @@ class RepoSync(object):
            new_errata_version: integer version number
            new_errata_changedate: date of the last change in DB format "%Y-%m-%d %H:%M:%S"
         """
+        if self.deep_verify:
+            # with deep_verify always re-import all errata
+            return True
+
         if int(existing_errata['advisory_rel']) < int(new_errata_version):
             log_debug(2, "Patch need update: higher version")
             return True
