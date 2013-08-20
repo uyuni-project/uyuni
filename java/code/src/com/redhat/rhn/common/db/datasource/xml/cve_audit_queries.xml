@@ -47,7 +47,7 @@
 
 <mode name="count_cve_identifiers">
   <query params="cve_identifier">
-    SELECT COUNT(*)
+    SELECT COUNT(*) AS count
       FROM rhnCVE
         JOIN rhnErrataCVE ON rhnErrataCVE.cve_id = rhnCVE.id
         JOIN rhnErrataPackage ON rhnErrataPackage.errata_id = rhnErrataCVE.errata_id
