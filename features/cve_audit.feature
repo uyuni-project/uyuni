@@ -35,7 +35,7 @@ Scenario: searching for a known CVE number
     And I should see an alphabar link to this system
     And I should see a "Patch status" link
     And I should see a "System" link
-    And I should see a "schedule an extra CVE data update" link
+    And I should see a "extra CVE data update" link
   Then I follow "Install a new patch in this system"
     And I should see a "Relevant Patches" text
 
