@@ -214,13 +214,20 @@
         exportColumns="patchStatus,systemName,patchAdvisory,channelName" />
     </rl:listset>
   </c:if>
-  
-  <p>
-    <bean:message key="cveaudit.jsp.updatenotice.pre" />
-    <a href="/rhn/admin/BunchDetail.do?label=cve-server-channels-bunch">
-      <bean:message key="cveaudit.jsp.updatenotice.link" />
-    </a>
-    <bean:message key="cveaudit.jsp.updatenotice.post" />
-  </p>  
+
+  <rhn:require acl="user_role(satellite_admin)">
+    <p>
+      <bean:message key="cveaudit.jsp.updatenotice.pre" />
+      <a href="/rhn/admin/BunchDetail.do?label=cve-server-channels-bunch">
+        <bean:message key="cveaudit.jsp.updatenotice.link" />
+      </a>
+      <bean:message key="cveaudit.jsp.updatenotice.post" />
+    </p>
+  </rhn:require>
+  <rhn:require acl="not user_role(satellite_admin)">
+    <p>
+      <bean:message key="cveaudit.jsp.updatenotice.non-admin" />
+    </p>
+  </rhn:require>
 </body>
 </html>
