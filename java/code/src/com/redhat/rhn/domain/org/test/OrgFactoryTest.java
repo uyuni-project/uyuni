@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -110,11 +110,11 @@ public class OrgFactoryTest extends RhnBaseTestCase {
     private Org createTestOrg() throws Exception {
         Org org1 = OrgFactory.createOrg();
         org1.setName("org created by OrgFactory test: " + TestUtils.randomString());
+        org1 = OrgFactory.save(org1);
         // build the channels set
         Channel channel1 = ChannelFactoryTest.createTestChannel(org1);
         flushAndEvict(channel1);
         org1.addOwnedChannel(channel1);
-        org1 = OrgFactory.save(org1);
         assertTrue(org1.getId().longValue() > 0);
         return org1;
     }
@@ -154,11 +154,6 @@ public class OrgFactoryTest extends RhnBaseTestCase {
 
         lookup = OrgFactory.lookupById(origId);
         assertNull(lookup.getToken());
-    }
-
-    public void testHasRole() throws Exception {
-        Org org1 = UserTestUtils.findNewOrg("testOrg");
-        assertTrue(org1.hasRole(RoleFactory.ORG_APPLICANT));
     }
 
     public void testImpliedEntitlement() throws Exception {
