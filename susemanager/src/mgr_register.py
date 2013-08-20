@@ -75,9 +75,11 @@ class Register:
              s.guid, 
              s.secret, 
              sot.target as ostarget,
-             sot.os as ostargetbak
+             sot.os as ostargetbak,
+             r.name as profilename
         FROM suseServer s
         JOIN suseOSTarget sot on s.ostarget_id = sot.id
+        JOIN rhnServer r on s.rhn_server_id = r.id
        WHERE ncc_sync_required = 'Y'
          AND ncc_reg_error = 'N'
     """)
@@ -301,6 +303,10 @@ class Register:
     x.text = server['ostarget']
     x = etree.SubElement(register_elem, 'param', attrib={'id': 'ostarget-bak'})
     x.text = server['ostargetbak']
+    x = etree.SubElement(register_elem, 'param', attrib={'id': 'moniker'})
+    x.text = server['profilename']
+    x = etree.SubElement(register_elem, 'param', attrib={'id': 'hostname'})
+    x.text = server['profilename']
     return True
 
   def get_virtual_info(self, systemid):
