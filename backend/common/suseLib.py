@@ -166,6 +166,11 @@ def send(url, sendData=None):
     log_debug(2, "Connect to %s" % url)
     if sendData is not None:
         curl.setopt(pycurl.POSTFIELDS, sendData)
+        if (CFG.is_initialized() and
+            CFG.has_key('DISABLE_EXPECT') and
+            CFG.DISABLE_EXPECT):
+            # disable Expect header
+            curl.setopt(pycurl.HTTPHEADER, ['Expect:'])
 
     # We implement our own redirection-following, because pycurl
     # 7.19 doesn't POST after it gets redirected. Ideally we'd be
