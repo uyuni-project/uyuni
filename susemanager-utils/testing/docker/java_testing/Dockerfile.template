@@ -18,6 +18,3 @@ RUN ln -s /usr/share/java/ivy-2.3.0.jar /usr/share/java/ivy.jar
 ADD UC5.tar.bz2 /root/UC5.tar.bz2
 RUN cd /root; tar xvjf UC5.tar.bz2
 RUN rm /root/UC5.tar.bz2
-
-# mgr-ncc-sync needs rhn.conf in /etc
-ADD rhn.conf /etc/rhn.conf
