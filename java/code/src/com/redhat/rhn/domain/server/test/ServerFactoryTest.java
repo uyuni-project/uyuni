@@ -600,12 +600,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         netint.setServer(newS);
         newS.addNetworkInterface(netint);
 
-        Network net = new Network();
-        net.setHostname("server_" + newS.getId());
-        net.setIpaddr("192.168.1.1");
-        net.setServer(newS);
-        newS.addNetwork(net);
-
         ServerFactory.save(newS);
         TestUtils.saveAndReload(newS);
 
@@ -927,6 +921,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Server serverIn = ServerFactoryTest.createTestServer(user);
 
         server  = ServerFactory.unsubscribeFromAllChannels(user, serverIn);
+        ServerFactory.commitTransaction();
         committed = true;
 
         assertEquals(0, server.getChannels().size());
