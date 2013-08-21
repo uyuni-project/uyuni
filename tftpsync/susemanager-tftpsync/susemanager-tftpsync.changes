@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 21 15:50:06 CEST 2013 - mc@suse.de
+
+- version 1.7.2-1
+- check if there are proxies configured for syncing (bnc#829961)
+
+-------------------------------------------------------------------
 Mon Mar 11 11:01:04 CET 2013 - mc@suse.de
 
 - version 1.7.1-1
