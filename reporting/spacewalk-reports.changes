@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Aug 21 15:38:18 CEST 2013 - mc@suse.de
+
+- version 1.7.1.7-1
+- spacewalk-reports host-guests shouldn't fail on oracle databases
+- add support for sql like predicates into spacewalk-report
+- inventory report should now display correct number of errata
+- modify description to better explain what these reports do (bnc#833566)
+- fix branding (bnc#833566)
+
+-------------------------------------------------------------------
 Wed Jun 12 13:34:22 CEST 2013 - mc@suse.de
 
 - version 1.7.1.6-1
