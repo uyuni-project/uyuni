@@ -339,7 +339,11 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return pn;
     }
 
-    public void testFindChannelArchesSyncdChannels() {
+    public void testFindChannelArchesSyncdChannels() throws Exception {
+        // ensure at least one channel is present
+        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        ChannelFactoryTest.createTestChannel(user);
+
         List<String> labels = ChannelFactory.findChannelArchLabelsSyncdChannels();
         assertNotNull(labels);
         assertNotEmpty(labels);
