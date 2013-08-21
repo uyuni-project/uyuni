@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 21 15:45:23 CEST 2013 - mc@suse.de
+
+- version 1.7.2.8-1
+- package profile sync actions should not fail with empty transaction
+
+-------------------------------------------------------------------
 Wed Jun 12 13:33:31 CEST 2013 - mc@suse.de
 
 - version 1.7.2.7-1
