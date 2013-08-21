@@ -63,8 +63,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -84,6 +82,7 @@ import com.redhat.rhn.manager.audit.ChannelIdNameLabelTriple;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.ServerChannelIdPair;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -92,7 +91,7 @@ import com.redhat.rhn.testing.UserTestUtils;
  *
  * @version $Rev$
  */
-public class CVEAuditManagerTest extends TestCase {
+public class CVEAuditManagerTest extends RhnBaseTestCase {
 
     /**
      * Test insertion and deletion for table suseCVEServerChannel:
