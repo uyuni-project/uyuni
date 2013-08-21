@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Aug 21 15:50:51 CEST 2013 - mc@suse.de
+
+- version 1.7.1.9-1
+- Rephrase the notice text even for admin users
+- Do not show link to the admin page to non-admins
+- Make CSV separator configurable, branding (FATE#312907)
+- CVE Audit branding (FATE#312907)
+- User string cosmetic change in the Details page of an
+  unentitled system
+- Fix keys for SSH push task status and bunch description
+
+-------------------------------------------------------------------
 Thu Apr 04 15:38:20 CEST 2013 - mc@suse.de
 
 - version 1.7.1.8-1
