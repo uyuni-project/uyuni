@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Aug 21 15:46:06 CEST 2013 - mc@suse.de
+
+- version 5.10.27.12-1
+- rhncfg-* --server-name now overwrites rhncfg-*.conf
+- unicode support for Remote Command scripts
+
+-------------------------------------------------------------------
 Wed Jun 12 13:41:14 CEST 2013 - mc@suse.de
 
 - version 5.10.27.11-1
