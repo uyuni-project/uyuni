@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Wed Aug 21 15:33:13 CEST 2013 - mc@suse.de
+
+- version 1.7.24-1
+- add profilename as hostname and moniker to NCC registration
+  (bnc#834200)
+- forward registrations to ISS parent if we are a slave
+- use register URL from config file
+- rename satellite-sync to mgr-inter-sync
+- implement setup for Inter Server Sync (ISS) (FATE#312371)
+- call mgr-ncc-sync with option --refresh at the end of a setup
+- show error in the yast setup module
+- allow only ASCII characters in the SSL certificate (bnc#829034)
+- clear existing DB on setup (bnc#824146)
+- Interrupt SUSE Manager setup on error (bnc#829035)
+- fix help of mgr-ncc-sync (bnc#824597)
+
+-------------------------------------------------------------------
 Wed Jun 12 11:08:05 CEST 2013 - mc@suse.de
 
 - version 1.7.23-1
