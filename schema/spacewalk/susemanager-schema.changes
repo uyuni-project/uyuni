@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Aug 21 16:02:08 CEST 2013 - mc@suse.de
+
+- version 1.7.56.20-1
+- rpm version comparison function was broken for alphanumeric versions
+- Make CSV separator configurable, schema (FATE#312907)
+- CVE Audit schema (FATE#312907)
+- prevents empty values (db_host, db_port) in rhn.conf
+- regenerate repodata for all channels to get package installed size
+  (bnc#825673)
+- make mgr-register-bunch a common bunch (bnc#824361)
+
+-------------------------------------------------------------------
 Wed Jun 12 11:00:29 CEST 2013 - mc@suse.de
 
 - version 1.7.56.19-1
