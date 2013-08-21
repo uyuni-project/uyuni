@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Aug 21 15:40:22 CEST 2013 - mc@suse.de
+
+- version 1.7.14.17-1
+- print prompt on tty instead of stdout
+- unicode support for Remote Command scripts
+
+-------------------------------------------------------------------
 Wed Jun 12 13:31:06 CEST 2013 - mc@suse.de
 
 - version 1.7.14.16-1
