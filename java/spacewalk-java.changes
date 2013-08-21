@@ -1,4 +1,35 @@
 -------------------------------------------------------------------
+Wed Aug 21 16:03:35 CEST 2013 - mc@suse.de
+
+- version 1.7.54.26-1
+- Fix link to the documentation
+- fix CVE Audit query to run with oracle DB
+- Bugfix: allow Hibernate to distinguish packages with identical name, arch and
+  evr (bnc#833643)
+- Do not show link to the admin page to non-admins
+- CobblerSystemCreateCommand: do not fail if distro breed is null
+- Make CSV separator configurable, java (FATE#312907)
+- CVE Audit java (FATE#312907)
+- explicitly require libxml2 for kickstarts to avoid error
+- escaping system name on multiple pages
+- API call setChildChannels should produce snapshot
+- changing of base channel via API should produce snapshot
+- we need unentitle channels before we delete them
+- add newline after writing kickstart_start var
+- marking label not required
+- fixing wrong escaping of utf-8 strings
+- Fix HTML not being escaped in package information (bnc#833238)
+- Fix a NPE when a system virtual instance does not have a corresponding info
+  object (bnc#829966)
+- fix metadata if capability version starts with a colon
+- Generate pre flag into the metadata (bnc#826734)
+- fix reinstall of products by writing correct epoch in products.xml
+  (bnc#826734)
+- set archive value for installed package size (bnc#825673)
+- IBM Java core dumps should all go to /var/crash (bnc#824775)
+- Fix entitlement addition NPE (bnc#824581)
+
+-------------------------------------------------------------------
 Wed Jun 12 16:45:02 CEST 2013 - mc@suse.de
 
 - version 1.7.54.25-1
