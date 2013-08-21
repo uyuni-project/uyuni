@@ -1,4 +1,31 @@
 -------------------------------------------------------------------
+Wed Aug 21 15:54:56 CEST 2013 - mc@suse.de
+
+- version 1.7.38.27-1
+- add option to disable Expect header for post request (bnc#834200)
+- re-import all patches with param deep-verify (bnc#833643)
+- rewrite package org to match where they got imported (bnc#834780)
+- Fix field length of erratum-advisory-name to match real DB field length
+- forward register and de-register requests to parent
+- debranding satellite-sync
+- provide dummy repoindex handler for auth test in ISS case
+- use needed mgr_ncc_sync_lib calles in satellite-sync
+- copy SUSE product and subscription information into the disk dump
+- add handler for ncc sync data used by iss (bnc#832776)
+- package mgr-inter-sync and mgr-exporter commands (FATE#312371)
+- import/export Support Information
+- sync suseProductFiles with inter-server-sync
+- dump and read rhn-channel-update-tag
+- Add curl debugging to send and accessible (bnc#834200)
+- filter out bad package/architecture combinations
+- add debug code to import_susedata
+- handle unicode tracebacks
+- handle compressed products file
+- Fix pylint errors - bnc#829073
+- Fix code to work with python 2.4 - bnc#829073
+- Make reposync work with local repositories - bnc#829073
+
+-------------------------------------------------------------------
 Wed Jun 12 13:26:43 CEST 2013 - mc@suse.de
 
 - version 1.7.38.26-1
