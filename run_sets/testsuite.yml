@@ -24,6 +24,7 @@
 - features/configuration.feature
 - features/add_system_to_conf.feature
 - features/walk_hrefs.feature
+- features/check_errata-npn.feature
 - features/cve_audit.feature
 - features/xmlrpc_cve_audit.feature
 - features/delete_system_from_conf.feature
@@ -34,7 +35,6 @@
 - features/regressions.feature
 - features/check_support_data.feature
 - features/check_registration.feature
-- features/check_errata-npn.feature
 - features/erratapage.feature
 - features/install_package.feature
 - features/install_errata-npn.feature
