@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Aug 21 15:39:18 CEST 2013 - mc@suse.de
+
+- version 1.7.28.18-1
+- use default rhn.conf only when it exists
+- parent channel cannot be a shared channel from different org when
+  cloning
+- lookup for defaults also in /usr/share/rhn/config-defaults/rhn.conf
+
+-------------------------------------------------------------------
 Wed Jun 12 10:55:21 CEST 2013 - mc@suse.de
 
 - version 1.7.28.17-1
