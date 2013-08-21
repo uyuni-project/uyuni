@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 21 15:54:06 CEST 2013 - mc@suse.de
+
+- version 1.7.7.11-1
+- fixing spacecmd ssm 'list' has no attribute 'keys' error
+
+-------------------------------------------------------------------
 Wed Jun 12 13:37:52 CEST 2013 - mc@suse.de
 
 - version 1.7.7.10-1
