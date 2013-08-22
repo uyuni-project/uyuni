@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.1.9
+Version:        2.1.13
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -75,6 +75,26 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Wed Aug 21 2013 Stephen Herr <sherr@redhat.com> 2.1.13-1
+- 998424 - removing bad initial condition from max(evr_t)
+- Revert "998424 - rpm version comparison function was broken for alphanumeric
+  versions"
+- Revert "998424 - naming the file properly"
+- timestamps in oracle: don't shift the dates during schema upgrades
+
+* Tue Aug 20 2013 Stephen Herr <sherr@redhat.com> 2.1.12-1
+- 998424 - naming the file properly
+
+* Tue Aug 20 2013 Stephen Herr <sherr@redhat.com> 2.1.11-1
+- 998424 - rpm version comparison function was broken for alphanumeric versions
+
+* Tue Aug 20 2013 Tomas Lestach <tlestach@redhat.com> 2.1.10-1
+- fix sha1 of 014-add-column-csv-separator.sql.postgresql
+- Add a hack to allow the ';' literal in table definitions
+- Allow users to change the CSV separator (schema changes)
+- delete duplicates from rhnDistchannelMap
+- don't insert existing values twice
+
 * Fri Aug 09 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.9-1
 - remove duplicate pairs before creating unique index
 

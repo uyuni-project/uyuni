@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.19
+Version: 2.1.25
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -880,6 +880,48 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Aug 22 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.25-1
+- removing @Override annotation from method that isn't overriden
+- SSM/Misc/Reboot: Standard system list, optimized action
+- Allow Hibernate to distinguish packages with identical name,
+- 998961 - do not touch the DB after a hibernate exception but correctly close
+  the session
+
+* Wed Aug 21 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.24-1
+- updating links to new java page
+- removing @Override annotation from method that isn't overriden
+- fix checkstyle, C style for loop and ISE with no base channel
+- Perl to JSP port: SSM/Misc/Reboot
+- add arch to package listings on /rhn/errata/manage/AddPackages.do page
+- fix checkstyle
+- Avoid testing callMethod on multiple qualifying methods
+
+* Tue Aug 20 2013 Tomas Lestach <tlestach@redhat.com> 2.1.23-1
+- Allow users to change the CSV separator
+
+* Tue Aug 20 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.22-1
+- simplify activation key management
+- provide a link to real run remote command page in ssm
+
+* Tue Aug 20 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.21-1
+- link to java page instead of perl one
+- removing obsolete method and some trailing whitespaces
+- Perl to JSP port: SSM/Provisioning/RemoteCommand
+- Consintency {less,more}\ than semantics.
+- Fix ABRT API documentation
+- 998052 - evaluation of localizing strings in jsp works in an another way
+- 997868 - fix sync.master.addToMaster APIdoc inconsistency
+
+* Mon Aug 19 2013 Tomas Lestach <tlestach@redhat.com> 2.1.20-1
+- 711373 - navigate to missing debuginfo package
+- 997809 - make unavailable packages non-clickable
+- 713684 - fix localization of jsp parameters
+- 996924 - Throw an appropriate error if kickstart script name is too long
+- Revert "Make callMethod() and invokeStaticMethod() deterministic when
+  multiple methods qualify for calling"
+- do not limit channel packages by signature in WebUI
+- do not print name twice for unlocked systems
+
 * Thu Aug 15 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.19-1
 - fix legend and image title on new ssm lock/unlock page
 - Ported from Perl to JPS locking and unlocking page, combining to one.
