@@ -30,7 +30,8 @@ Scenario: searching for a known CVE number
   Then I should see this client as a link
     And I should see a "Affected, patch available in an assigned channel" text in the "Patch status" column
     And I should see a "Install a new patch in this system" link
-    And I should see a "Only candidate is: slessp2-kernel-6648" text in the "Next Action" column
+    # Patch advisory suffix is architecture dependent: slessp2-kernel-664[8|1]
+    And I should see a "Only candidate is: slessp2-kernel-664" text in the "Next Action" column
     And I should see a "Download CSV" link
     And I should see an alphabar link to this system
     And I should see a "Patch status" link

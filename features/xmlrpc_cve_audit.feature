@@ -21,8 +21,8 @@ Feature: Test the XML-RPC CVE Audit feature.
      
     When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-2012-3400"
     Then I should get status "AFFECTED_PATCH_APPLICABLE" for system "1000010000"
-      And I should get channel "sles11-sp2-updates-x86_64-channel"
-      And I should get patch "slessp2-kernel-6648"
+      And I should get the sles11-sp2-updates channel
+      And I should get the slessp2-kernel patch
 
     Then I logout from XML-RPC/cve audit namespace.
 
@@ -32,7 +32,8 @@ Feature: Test the XML-RPC CVE Audit feature.
       And I follow this client link
       And I follow "Software"
       And I follow "Patches" in class "content-nav"
-      And I check "slessp2-kernel-6648" in the list
+      # Patch advisory suffix is architecture dependent: slessp2-kernel-664[8|1]
+      And I check "slessp2-kernel-664" in the list
       And I click on "Apply Patches"
       And I click on "Confirm"
       And I wait for "5" seconds
@@ -44,7 +45,7 @@ Feature: Test the XML-RPC CVE Audit feature.
     When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-2012-3400"
     
     Then I should get status "PATCHED" for system "1000010000"
-      And I should get channel "sles11-sp2-updates-x86_64-channel"
-      And I should get patch "slessp2-kernel-6648"
+      And I should get the sles11-sp2-updates channel
+      And I should get the slessp2-kernel patch
 
     Then I logout from XML-RPC/cve audit namespace.

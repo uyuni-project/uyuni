@@ -23,11 +23,25 @@ Then /^I should get status "([^\"]+)" for system "([0-9]+)"$/ do |status, system
   fail if result["patch_status"] != status
 end
 
-Then /^I should get channel "([^\"]+)"?$/ do |channel|
+Then /^I should get the sles11-sp2-updates channel$/ do
+  arch = `uname -m`
+  arch.chomp!
+  if arch != "x86_64"
+    channel = "sles11-sp2-updates-i586-channel"
+  else
+    channel = "sles11-sp2-updates-x86_64-channel"
+  end
   fail if result["channel_labels"].include?(channel) == false
 end
 
-Then /^I should get patch "([^\"]+)"?$/ do |patch|
+Then /^I should get the slessp2-kernel patch$/ do
+  arch = `uname -m`
+  arch.chomp!
+  if arch != "x86_64"
+    patch = "slessp2-kernel-6648"
+  else
+    patch = "slessp2-kernel-6641"
+  end
   fail if result["errata_advisories"].include?(patch) == false
 end
 
