@@ -466,10 +466,8 @@ public class CVEAuditManager {
                 currentSystem.setSystemName((String) result.get("system_name"));
 
                 // First assignment
-                assigned = result.get("channel_assigned") == null ? false :
-                    ((Integer) result.get("channel_assigned")).equals(1);
-                installed = result.get("package_installed") == null ? false :
-                    ((Integer) result.get("package_installed")).equals(1);
+                assigned = getBooleanValue(result, "channel_assigned");
+                installed = getBooleanValue(result, "package_installed");
 
                 // Get errata and channel ID
                 currentErrata = (Long) result.get("errata_id");
@@ -498,13 +496,8 @@ public class CVEAuditManager {
                 Long errataID = (Long) result.get("errata_id");
                 if (errataID.equals(currentErrata)) {
                     // Combine flags with &
-                    errataChannelsAssigned &=
-                            result.get("channel_assigned") == null ? false :
-                                ((Integer) result.get("channel_assigned")).equals(1);
-
-                    errataInstalled &=
-                            result.get("package_installed") == null ? false :
-                                ((Integer) result.get("package_installed")).equals(1);
+                    errataChannelsAssigned &= getBooleanValue(result, "channel_assigned");
+                    errataInstalled &= getBooleanValue(result, "package_installed");
                 }
                 else {
                     // Finish work on old errata
@@ -513,11 +506,8 @@ public class CVEAuditManager {
 
                     // Switch to the new errata
                     currentErrata = errataID;
-                    errataChannelsAssigned = result.get("channel_assigned") == null ?
-                            false : ((Integer) result.get("channel_assigned")).equals(1);
-
-                    errataInstalled = result.get("package_installed") == null ? false :
-                            ((Integer) result.get("package_installed")).equals(1);
+                    errataChannelsAssigned = getBooleanValue(result, "channel_assigned");
+                    errataInstalled = getBooleanValue(result, "package_installed");
                 }
 
                 // Add errata and channel ID
@@ -543,6 +533,16 @@ public class CVEAuditManager {
 
         debugLog(ret);
         return ret;
+    }
+
+    /**
+     * Extracts a boolean value out of a 0-1 integer column in a result object.
+     * @param result a query Map result
+     * @param key the key corresponding to the boolean value to extract
+     * @return true if the integer value was 1, false otherwise
+     */
+    public static boolean getBooleanValue(Map<String, Object> result, String key) {
+        return result.get(key) == null ? false : ((Number) result.get(key)).intValue() == 1;
     }
 
     /**
