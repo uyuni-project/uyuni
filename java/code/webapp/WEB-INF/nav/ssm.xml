@@ -58,7 +58,7 @@
              </rhn-tab>
 
 	</rhn-tab>
-	
+
 	<rhn-tab name="Groups" acl="user_role(org_admin)">
 		<rhn-tab-url>/network/systems/ssm/groups/index.pxt</rhn-tab-url>
 		<rhn-tab-url>/network/systems/ssm/groups/alter_membership_conf.pxt</rhn-tab-url>
@@ -75,7 +75,7 @@
                 <rhn-tab-url>/rhn/channel/ssm/ChildSubscriptionsConfirm.do</rhn-tab-url>
             </rhn-tab>
 	</rhn-tab>
-	
+
 	<rhn-tab name="ssm.nav.config" url="/rhn/systems/ssm/config/Deploy.do"
 	         acl="org_entitlement(rhn_provisioning)">
 	  <rhn-tab-directory>/rhn/systems/ssm/config</rhn-tab-directory>
@@ -114,8 +114,8 @@
           <rhn-tab name="Rollback" url="/network/systems/ssm/provisioning/rollback.pxt">
             <rhn-tab-url>/network/systems/ssm/provisioning/rollback_by_tag_conf.pxt</rhn-tab-url>
           </rhn-tab>
-          <rhn-tab name="Remote Command" url="/network/systems/ssm/provisioning/remote_command.pxt">
-            <rhn-tab-url>/network/systems/ssm/provisioning/remote_command_conf.pxt</rhn-tab-url>
+          <rhn-tab name="Remote Command" url="/rhn/systems/ssm/provisioning/RemoteCommand.do">
+              <rhn-tab-url>/rhn/systems/ssm/provisioning/RemoteCommand.do</rhn-tab-url>
           </rhn-tab>
         </rhn-tab>
 
@@ -125,10 +125,11 @@
 	</rhn-tab>
 
 	<rhn-tab name="Misc" url="/rhn/systems/ssm/misc/Index.do">
-            <rhn-tab name="Hardware" url="/rhn/systems/ssm/misc/HardwareRefresh.do"/>
-            <rhn-tab name="Software" url="/rhn/systems/ssm/misc/SoftwareRefresh.do"/>
-            <rhn-tab name="Migrate" url="/rhn/systems/ssm/MigrateSystems.do"/>
+            <rhn-tab name="ssm.misc.index.tabs.hardware" url="/rhn/systems/ssm/misc/HardwareRefresh.do"/>
+            <rhn-tab name="ssm.misc.index.tabs.software" url="/rhn/systems/ssm/misc/SoftwareRefresh.do"/>
+            <rhn-tab name="ssm.misc.index.tabs.migrate" url="/rhn/systems/ssm/MigrateSystems.do"/>
             <rhn-tab name="ssm.misc.index.tabs.lockunlock" url="/rhn/systems/ssm/misc/LockUnlockSystem.do"/>
+            <rhn-tab name="ssm.misc.index.tabs.reboot" url="/rhn/systems/ssm/misc/RebootSystem.do" />
             <rhn-tab name="ssm.misc.index.tabs.delete" url="/rhn/systems/ssm/DeleteConfirm.do"/>
             <rhn-tab-url>/network/systems/ssm/misc/change_sys_pref_conf.pxt</rhn-tab-url>
             <rhn-tab-url>/network/systems/ssm/misc/prof_conv_conf.pxt</rhn-tab-url>

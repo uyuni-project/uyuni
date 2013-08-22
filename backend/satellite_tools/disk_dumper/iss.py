@@ -38,6 +38,7 @@ import gettext
 t = gettext.translation('spacewalk-backend-server', fallback=True)
 _ = t.ugettext
 
+
 class ISSError(Exception):
     def __init__(self, msg, tb):
         self.msg = msg
@@ -58,6 +59,7 @@ class ISSChannelPackageShortDiskSource:
 
     def _getFile(self):
         return os.path.join(self.mp, self.pathkey % (self.channelid,))
+
 
 class FileMapper:
     """ This class maps dumps to files. In other words, you give it
@@ -597,7 +599,6 @@ class Dumper(dumper.XML_Dumper):
         self.outstream = open(self.filename, "w")
         return xmlWriter.XMLWriter(stream=self.outstream)
 
-
     #The dump_* methods aren't really overrides because they don't preserve the method
     #signature, but they are meant as replacements for the methods defined in the base
     #class that have the same name. They will set up the file for the dump, collect info
@@ -681,7 +682,7 @@ class Dumper(dumper.XML_Dumper):
                 log2email(4, "Channel: %s" % channel['label'])
                 log2email(5, "Channel exported to %s" % self.fm.getChannelsFile(channel['label']))
 
-                if self.channel_comps.has_key(channel['channel_id']):
+                if channel['channel_id'] in self.channel_comps:
                     relative_filename = self.channel_comps[channel['channel_id']]
                     full_filename = os.path.join(CFG.MOUNT_POINT, self.channel_comps[channel['channel_id']])
                     target_filename = self.fm.getChannelCompsFile(channel['label'])
@@ -693,7 +694,6 @@ class Dumper(dumper.XML_Dumper):
                         os.link(full_filename, target_filename)
                     else:
                         shutil.copyfile(full_filename, target_filename)
-
 
                 pb.addTo(1)
                 pb.printIncrement()
@@ -744,7 +744,6 @@ class Dumper(dumper.XML_Dumper):
                 pb.printIncrement()
             pb.printComplete()
             log2stdout(3, "Number of packages exported: %s" % str(len(self.pkg_info)))
-
 
         except Exception, e:
             tbout = cStringIO.StringIO()
@@ -904,11 +903,11 @@ class Dumper(dumper.XML_Dumper):
                     raise ISSError("Error: Error copying file: %s: %s" % (path_to_files,
                                         e.__class__.__name__), tbout.getvalue()), \
                           None, sys.exc_info()[2]
-    
+
                 log2email(5, "Kickstart File: %s" %
                                          os.path.join(kickstart_file['base-path'],
                              kickstart_file['relative-path']))
-        
+
                 pb.addTo(1)
                 pb.printIncrement()
 
@@ -1031,11 +1030,13 @@ def get_report():
     body = dumpEMAIL_LOG()
     return body
 
+
 def print_report():
     print ""
     print "REPORT:"
     report_string = get_report()
     sys.stdout.write(str(report_string))
+
 
 #Stolen and modified from satsync.py
 def sendMail():
@@ -1052,9 +1053,11 @@ def sendMail():
     else:
         print "+++ email requested, but there is nothing to send +++"
 
+
 def handle_error(message, traceback):
     log2stderr(-1, "\n" + message)
     log2email(-1, traceback)
+
 
 #This class is a mess.
 class ExporterMain:
@@ -1062,7 +1065,7 @@ class ExporterMain:
         initCFG('server.iss')
 
         self.options = UI()
-        self.action_deps= ActionDeps(self.options)
+        self.action_deps = ActionDeps(self.options)
         self.action_order, self.actions = self.action_deps.get_actions()
         if self.options.debug_level:
             debug_level = int(self.options.debug_level)
@@ -1072,7 +1075,6 @@ class ExporterMain:
         CFG.set("TRACEBACK_MAIL", self.options.traceback_mail or CFG.TRACEBACK_MAIL)
         CFG.set("DEBUG", debug_level)
         CFG.set("ISSEMAIL", self.options.email)
-
 
         initEMAIL_LOG()
 
@@ -1129,9 +1131,9 @@ class ExporterMain:
             using_orgs = []
             for org in self.options.org:
                 #User might have specified org name or org id, try both
-                if org in orgs.values(): #ids
+                if org in orgs.values():  #ids
                     using_orgs.append(org)
-                elif org in orgs.keys(): #names
+                elif org in orgs.keys():  #names
                     using_orgs.append(orgs[org])
                 else:
                     sys.stdout.write("Org not found: %s\n" % org)
@@ -1154,9 +1156,9 @@ class ExporterMain:
             sys.stderr.write("--use-rhn-date and --use-sync-date are mutually exclusive.\n")
             sys.exit(1)
         elif self.options.use_sync_date:
-            self.options.use_rhn_date=False
+            self.options.use_rhn_date = False
         else:
-            self.options.use_rhn_date=True
+            self.options.use_rhn_date = True
 
         if self.options.end_date and not self.options.start_date:
             sys.stderr.write("--end-date must be used with --start-date.\n")
@@ -1187,7 +1189,7 @@ class ExporterMain:
             self.whole_errata = self.options.whole_errata
 
         #verify mountpoint
-        if os.access(self.outputdir, os.F_OK|os.R_OK|os.W_OK):
+        if os.access(self.outputdir, os.F_OK | os.R_OK | os.W_OK):
             if os.path.isdir(self.outputdir):
                 self.dumper = Dumper(self.outputdir,
                                      self.options.channel,
@@ -1259,7 +1261,7 @@ class ExporterMain:
 
                 #If the base channel isn't in channel_dict yet, create
                 #an empty list for it.
-                if not channel_dict.has_key(base_label):
+                if not base_label in channel_dict:
                     channel_dict[base_label] = []
 
                 #grab the child channel information for this base channel.
@@ -1298,7 +1300,7 @@ class ExporterMain:
                 print " "
         else:
             print "No Channels available for listing."
-            
+
     def list_orgs(self):
         """
         Return a list of all orgs.
@@ -1323,7 +1325,7 @@ class ExporterMain:
         try:
             for action in self.action_order:
                 if self.actions[action] == 1:
-                    if not self.actionmap.has_key(action):
+                    if not action in self.actionmap:
                         #If we get here there's a programming error. It means that self.action_order
                         #contains a action that isn't defined in self.actionmap.
                         sys.stderr.write("List of actions doesn't have %s.\n" % (action,))
@@ -1348,8 +1350,6 @@ class ExporterMain:
                             if os.path.exists(os_data_dir):
                                 for fpath, dirs, files in \
                                     os.walk(os_data_dir):
-                                    if not files:
-                                        continue
                                     for file in files:
                                         if file.endswith(".xml"):
                                             filepath = os.path.join(fpath, file)
@@ -1361,7 +1361,7 @@ class ExporterMain:
                     os.makedirs(iso_output)
 
                 iss_isos.create_isos(self.outputdir, iso_output, \
-                          "rhn-export", self.start_date, self.end_date, 
+                          "rhn-export", self.start_date, self.end_date,
                           iso_type=self.options.make_isos)
 
                 # Generate md5sum digest file for isos
@@ -1409,6 +1409,7 @@ class ExporterMain:
             if self.options.print_report:
                 print_report()
             sys.exit(-1)
+
 
 def compress_file(file):
     """

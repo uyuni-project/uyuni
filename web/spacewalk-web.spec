@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.5
+Version: 2.1.11
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -313,6 +313,27 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Thu Aug 22 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.11-1
+- removing old perl code associated with dead perl pages
+- removing old perl pages
+
+* Tue Aug 20 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.10-1
+- Revert "993978 - remove check-database-space-usage.sh from cron.daily"
+- 993978 - make check-database-space-usage.sh usable on managed-db
+
+* Tue Aug 20 2013 Jan Dobes 2.1.9-1
+- 998862 - connect to db as postgres instead of root
+
+* Tue Aug 20 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.8-1
+- removing code associated with dead perl pages
+- removing old perl pages
+
+* Tue Aug 20 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.7-1
+- Perl to JSP port: SSM/Provisioning/RemoteCommand
+
+* Mon Aug 19 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.6-1
+- 993978 - remove check-database-space-usage.sh from cron.daily
+
 * Thu Aug 15 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.5-1
 - removing code associated with old pxt pages
 - deleting old pxt lock/unlock pages
