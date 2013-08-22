@@ -31,6 +31,7 @@ Then /^I should get the sles11-sp2-updates channel$/ do
   else
     channel = "sles11-sp2-updates-x86_64-channel"
   end
+  $stderr.puts "result: #{result}"
   fail if result["channel_labels"].include?(channel) == false
 end
 
@@ -42,6 +43,7 @@ Then /^I should get the slessp2-kernel patch$/ do
   else
     patch = "slessp2-kernel-6641"
   end
+  $stderr.puts "result: #{result}"
   fail if result["errata_advisories"].include?(patch) == false
 end
 
