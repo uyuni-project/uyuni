@@ -475,7 +475,7 @@ SELECT data FROM time_series WHERE data = :data
     VALUES (
 	  :from_pdid,
 	  :to_pdid
-    );
+    )
   </query>
 </write-mode>
 
@@ -502,7 +502,7 @@ SELECT data FROM time_series WHERE data = :data
       :arch_type_id,
       :release,
       :is_baseproduct
-    );
+    )
   </query>
 </write-mode>
 
@@ -515,7 +515,7 @@ SELECT data FROM time_series WHERE data = :data
     VALUES (
       :rhn_server_id,
       :suse_installed_product_id
-    );
+    )
   </query>
 </write-mode>
 
