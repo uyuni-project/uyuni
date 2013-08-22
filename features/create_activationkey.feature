@@ -34,7 +34,7 @@ Feature: Create an activation key
     And I should see a "Details" link
     And I should see a "Child Channels" link
     And I should see a "Packages" link
-    And I should see a "Configuration" link
+    And I should see a "Configuration" link in element "content-nav"
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
 
@@ -71,7 +71,7 @@ Feature: Create an activation key
     And I should see a "Details" link
     And I should see a "Child Channels" link
     And I should see a "Packages" link
-    And I should see a "Configuration" link
+    And I should see a "Configuration" link in element "content-nav"
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
 
@@ -93,7 +93,7 @@ Feature: Create an activation key
     And I should see a "Details" link
     And I should see a "Child Channels" link
     And I should see a "Packages" link
-    And I should see a "Configuration" link
+    And I should see a "Configuration" link in element "content-nav"
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
 
@@ -115,7 +115,7 @@ Feature: Create an activation key
     And I should see a "Details" link
     And I should see a "Child Channels" link
     And I should see a "Packages" link
-    And I should see a "Configuration" link
+    And I should see a "Configuration" link in element "content-nav"
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
 

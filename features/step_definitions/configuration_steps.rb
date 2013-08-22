@@ -5,8 +5,8 @@
 # Initial step for channel testing
 #
 Given /^I am testing configuration$/ do
-  Given 'I am authorized as "admin" with password "admin"'
-  Given "I follow \"Configuration\""
+  step 'I am authorized as "admin" with password "admin"'
+  step "I follow \"Configuration\""
 end
 
 When /^I change the local file "([^"]*)" to "([^"]*)"$/ do |file, content|

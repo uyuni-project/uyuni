@@ -13,9 +13,9 @@ Feature: Watch/edit user details
         And I should see a "deactivate user" link
         And I should see a "Details" link
         And I should see a "System Groups" link
-        And I should see a "Systems" link
+        And I should see a "Systems" link in element "content-nav"
         And I should see a "Channel Permissions" link
-        And I should see a "Preferences" link
+        And I should see a "Preferences" link in element "content-nav"
         And I should see a "Addresses" link
         And I should see a "Notification Methods" link
         And I should see a "user1" text

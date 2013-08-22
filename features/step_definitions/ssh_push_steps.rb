@@ -9,7 +9,7 @@ When /^I register this client for SSH push via tunnel$/ do
   # Generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
   expectFile = ExpectFileGenerator.new("#{$myhostname}", bootstrap)
-  When "I copy to server \"" + expectFile.path + "\""
+  step "I copy to server \"" + expectFile.path + "\""
 
   # Perform the registration
   filename = expectFile.filename

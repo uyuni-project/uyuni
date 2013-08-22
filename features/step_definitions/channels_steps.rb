@@ -5,7 +5,7 @@
 # Initial step for channel testing
 #
 Given /^I am testing channels$/ do
-  Given 'I am authorized as "admin" with password "admin"'
+  step 'I am authorized as "admin" with password "admin"'
 end
 
 Then /^I should see package "([^"]*)"$/ do |package|
@@ -13,11 +13,11 @@ Then /^I should see package "([^"]*)"$/ do |package|
 end
 
 Given /^I am on the manage software channels page$/ do
-  Given 'I am authorized as "testing" with password "testing"'
+  step 'I am authorized as "testing" with password "testing"'
   within(:xpath, "//div[@id=\"mainNavWrap\"]") do
     find_link("Channels").click
   end
-  And "I follow \"Manage Software Channels\" in the left menu"
+  step "I follow \"Manage Software Channels\" in the left menu"
 end
 
 When /^I choose "([^"]*)" for "([^"]*)"$/ do |arg1, arg2|
@@ -36,15 +36,15 @@ When /^I push package "([^"]*)" into "([^"]*)" channel$/ do |arg1, arg2|
 end
 
 Then /^I should see package "([^"]*)" in channel "([^"]*)"$/ do |arg1, arg2|
-  Given 'I am authorized as "admin" with password "admin"'
-  When 'I follow "Channels"'
-  When "I follow \"#{arg2}\""
-  When 'I follow "Packages"'
-  Then "I should see package \"#{arg1}\""
+  step 'I am authorized as "admin" with password "admin"'
+  step 'I follow "Channels"'
+  step "I follow \"#{arg2}\""
+  step 'I follow "Packages"'
+  step "I should see package \"#{arg1}\""
 end
 
 Then /^I should see a "([^"]*)" text in the "([^"]*)" column$/ do |arg1, arg2|
-  within(:xpath, "//table/tbody/tr[.//th[contains(.,'#{arg2}')]]") do
+  within(:xpath, "//*[@class=\"details\"]/table/tbody/tr[.//th[contains(.,'#{arg2}')]]") do
     find("td", :text => "#{arg1}")
   end
 end

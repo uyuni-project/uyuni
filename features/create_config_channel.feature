@@ -15,7 +15,7 @@ Feature: Create a configuration channel
      And I click on "Create Config Channel"
     Then I should see a "Test Channel" text
      And I should see a "Add Files" link
-     And I should see a "Systems" link
+     And I should see a "Systems" link in element "content-nav"
      And I should see a "Edit Properties" link
      And I should see a "Configuration Actions" text
      And I should see a "Add/Create Files" text
@@ -32,5 +32,15 @@ Feature: Create a configuration channel
      And I enter "This is a test channel" as "cofDescription"
      And I click on "Create Config Channel"
     Then I should see a "Label 'testchannel' already exists. Please choose a different label for the new channel." text
+     And I should see a "Update Channel" button
+  
+  Scenario: Try to create a channel with an invalid label
+   Given I am testing configuration
+    When I follow "Create a New Configuration Channel"
+     And I enter "Test Channel2" as "cofName"
+     And I enter "!testchannel" as "cofLabel"
+     And I enter "This is a test channel 2" as "cofDescription"
+     And I click on "Create Config Channel"
+    Then I should see a "Configuration channel label contains invalid characters. In addition to alphanumeric characters, '-', '_', and '.' are allowed." text
      And I should see a "Update Channel" button
 

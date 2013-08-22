@@ -49,8 +49,12 @@ Then /^I should see a "([^"]*)" link in element "([^"]*)"$/ do |arg1, arg2|
   end
 end
 
+Then /^I should see a "([^"]*)" link in "([^"]*)" "([^"]*)"$/ do |arg1, arg2, arg3|
+  fail if not page.has_xpath?("//#{arg2}[@id='#{arg3}' or @class='#{arg3}']/a[text()='#{debrand_string(arg1)}']")
+end
+
 Then /^I should see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
-  Then "I should see a \"#{arg1}\" link in element \"#{element_for(arg2)}\""
+  step "I should see a \"#{arg1}\" link in element \"#{element_for(arg2)}\""
 end
 
 Then /^I should see a "([^"]*)" link in list "([^"]*)"$/ do |arg1, arg2|
@@ -97,7 +101,11 @@ end
 # Test if a checkbox is disabled
 #
 Then /^the "([^\"]*)" checkbox should be disabled$/ do |arg1|
-  fail if field_labeled(arg1)['disabled'].nil?
+  page.has_css?("##{arg1}[disabled]")
+end
+
+Then /^the "([^\"]*)" field should be disabled$/ do |arg1|
+  page.has_css?("##{arg1}[disabled]")
 end
 
 Then /^I should see "([^"]*)" in field "([^"]*)"$/ do |arg1, arg2|
@@ -125,4 +133,10 @@ end
 
 Then /^The table should have a column named "([^"]+)"$/ do |arg1|
   find(:xpath, "//form/table/thead[.//th[contains(.,'#{arg1}')]] | //form/div/table/thead[.//th[contains(.,'#{arg1}')]]")
+end
+
+Then /^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/ do |count, name, id|
+    within(:xpath, "//form[@id=\"#{id}\" or  @name=\"#{id}\"]") do
+        fail if not has_field?(name, :count => count.to_i)
+    end
 end

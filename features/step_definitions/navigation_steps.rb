@@ -42,7 +42,7 @@ end
 # Click on a button
 #
 When /^I click on "([^"]*)"$/ do |arg1|
-  click_button debrand_string(arg1)
+  click_button debrand_string(arg1), :match => :first
 end
 
 #
@@ -62,7 +62,7 @@ When /^I follow "([^"]*)" in element "([^"]*)"$/ do |arg1, arg2|
 end
 
 When /^I follow "([^"]*)" in the (.+)$/ do |arg1, arg2|
-  When "I follow \"#{debrand_string(arg1)}\" in element \"#{element_for(arg2)}\""
+  step "I follow \"#{debrand_string(arg1)}\" in element \"#{element_for(arg2)}\""
 end
 
 

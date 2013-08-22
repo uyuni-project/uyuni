@@ -24,7 +24,7 @@ Feature: Explore the main landing page
   Scenario: Completeness of the main navigation bar
     Given I am authorized
     When I go to the home page
-    Then I should see a "Overview" link
+    Then I should see a "Overview" link in the tab bar
     And I should see a "Systems" link
     And I should see a "Errata" link
     And I should see a "Channels" link

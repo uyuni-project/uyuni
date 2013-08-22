@@ -15,7 +15,7 @@ Feature: Create a configuration channel
      And I click on "Create Config Channel"
     Then I should see a "Test Channel" text
      And I should see a "Add Files" link
-     And I should see a "Systems" link
+     And I should see a "Systems" link in element "content-nav"
      And I should see a "Edit Properties" link
      And I should see a "Configuration Actions" text
      And I should see a "Add/Create Files" text
@@ -137,4 +137,15 @@ Feature: Create a configuration channel
      Then I should see a "1 file copied into 1 central configuration channel" text
       And I should see a table line with "/etc/mgr-test-file.cnf", "Revision 2"
 
-
+#  Scenario: Create a config file using the form
+#    Given I am testing configuration
+#      And I follow "Configuration Channels" in the left menu
+#      And I follow "New Test Channel"
+#      And I follow "Add Files" in class "content-nav"
+#      And I follow "Create File" in class "contentnav-row2"
+#     Then I should see "Create New Configuration File" text
+#     When I enter "/root/.vimrc" as "cffPath"
+#      And I enter "export ts=4" as "contents"
+#     Then I click on "Create Configuration File" 
+#      And I should see "Revision 1 of /root/vimrc from channel" text
+        

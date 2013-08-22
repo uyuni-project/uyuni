@@ -2,6 +2,6 @@
 # Licensed under the terms of the MIT license.
 
 Given /^I am on the Monitoring page$/ do
-  Given 'I am authorized as "admin" with password "admin"'
-  And 'I follow "Monitoring"'
+  step 'I am authorized as "admin" with password "admin"'
+  step 'I follow "Monitoring"'
 end

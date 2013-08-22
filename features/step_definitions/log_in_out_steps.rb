@@ -6,11 +6,11 @@ Given /^I am authorized as "([^"]*)" with password "([^"]*)"$/ do |arg1,arg2|
   fill_in "username", :with => arg1
   fill_in "password", :with => arg2
   click_button "Sign In"
-  Then "I should be logged in"
+  step "I should be logged in"
 end
 
 Given /^I am authorized$/ do
-  Given "I am authorized as \"testing\" with password \"testing\""
+  step "I am authorized as \"testing\" with password \"testing\""
 end
 
 

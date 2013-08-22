@@ -133,7 +133,7 @@ Feature: Check client registration
      And I should see a "Events" link in element "content-nav"
      And I should see a "List / Leave" link in element "contentnav-row2"
      And I should see a "Join" link in element "contentnav-row2"
-     And I should see a "Join" link
+     And I should see a "Join" link in element "page-summary"
      And I should see a "System Groups" text
      #And I should see a "Virtualization" link in element "content-nav"
 
@@ -274,7 +274,7 @@ Feature: Check client registration
      And I should see a "Import Files" link in element "content-nav"
      And I should see a "Create File" link in element "content-nav"
      And I should see a "cffUpload" element in "configFileForm" form
-     And I should see a "binary" element in "configFileForm" form
+     And I should see 2 "binary" fields in "configFileForm" form
      And I should see a "cffPath" element in "configFileForm" form
      And I should see a "cffUid" element in "configFileForm" form
      And I should see a "cffGid" element in "configFileForm" form
@@ -304,7 +304,7 @@ Feature: Check client registration
      And I should see a "dir_radio" element in "configFileForm" form
      And I should see a "symlink_radio" element in "configFileForm" form
      And I should see a "cffPath" element in "configFileForm" form
-     And I should see a "targetPath" element in "configFileForm" form
+     And the "targetPath" field should be disabled
      And I should see a "cffUid" element in "configFileForm" form
      And I should see a "cffGid" element in "configFileForm" form
      And I should see a "cffPermissions" element in "configFileForm" form

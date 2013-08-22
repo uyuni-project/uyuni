@@ -23,8 +23,8 @@ Feature: Push a package with unset vendor
      And I follow "Test Base Channel"
      And I follow "Packages"
      And I follow "subscription-tools-1.0-0.noarch"
-    Then I should see a "Not defined" text in the "Vendor:" column
-
+    Then I should see a "Vendor:" text
+     And I should see a "Not defined" text
 
   Scenario: Push anaconda package in fedora channel
     Given I am root
