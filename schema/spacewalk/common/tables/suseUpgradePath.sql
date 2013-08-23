@@ -22,8 +22,10 @@ suseUpgradePath
                   CONSTRAINT suse_upgpath_toid_fk
                   REFERENCES suseProducts (id)
                   ON DELETE CASCADE,
-    created     date default(sysdate) not null,
-    modified    date default(sysdate) not null
+    created   timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL
 );
 
 CREATE INDEX suseupgpath_fromid_idx

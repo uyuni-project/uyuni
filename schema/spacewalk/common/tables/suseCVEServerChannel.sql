@@ -24,10 +24,10 @@ CREATE TABLE suseCVEServerChannel
                          REFERENCES rhnChannel (id)
                          ON DELETE CASCADE,
     channel_rank NUMBER NOT NULL,
-    created      DATE
-                     DEFAULT (sysdate) NOT NULL,
-    modified     DATE
-                     DEFAULT (sysdate) NOT NULL
+    created   timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;

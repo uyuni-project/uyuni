@@ -27,10 +27,10 @@ CREATE TABLE rhnActionDup
                             DEFAULT ('Y') NOT NULL
                             CONSTRAINT rhn_actiondup_fu_ck
                                 CHECK (full_update in ('Y','N')),
-    created             DATE
-                            DEFAULT (sysdate) NOT NULL,
-    modified            DATE
-                            DEFAULT (sysdate) NOT NULL
+    created   timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;

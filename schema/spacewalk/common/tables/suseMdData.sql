@@ -24,8 +24,10 @@ suseMdData
     keyword_id        number
                       CONSTRAINT susemdkeyword_id_fk
                       REFERENCES suseMdKeyword (id),
-    created           date default(sysdate) not null,
-    modified          date default(sysdate) not null
+    created   timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;

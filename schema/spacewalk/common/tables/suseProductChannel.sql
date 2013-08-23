@@ -20,8 +20,10 @@ suseProductChannel
                              REFERENCES rhnChannel (id),
     channel_label VARCHAR2(128) NOT NULL,
     parent_channel_label VARCHAR2(128),
-    created     date default(sysdate) not null,
-    modified    date default(sysdate) not null
+    created   timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL
 );
 
 CREATE UNIQUE INDEX suse_prd_chan_label_uq
