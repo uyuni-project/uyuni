@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 d95c4df0674a641eeca523333aef1f5fa2bc58d3
+-- oracle equivalent source sha1 751721892b36de7119b033cc88751359ea32b1c1
 create or replace function rhn_actiondupprod_mod_trig_fun() returns trigger as
 $$
 begin

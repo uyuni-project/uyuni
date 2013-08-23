@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 2806a9eb784ef2cc821fca85636578165e617828
+-- oracle equivalent source sha1 b07f0aa7915c35d8381a0576a3ce280324b65700
 -- retrieved from ./1290790062/5e78063ef0ba88a3e95b0f77fbd8d842353665a0/schema/spacewalk/oracle/triggers/suseProducts.sql
 --
 -- Copyright (c) 2010 Novell

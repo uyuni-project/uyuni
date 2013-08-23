@@ -15,7 +15,7 @@ susemdkeyw_mod_trig
 before insert or update on suseMdKeyword
 for each row
 begin
-    :new.modified := sysdate;
+    :new.modified := current_timestamp;
 end;
 /
 show errors

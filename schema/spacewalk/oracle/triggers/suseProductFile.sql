@@ -16,7 +16,7 @@ suse_product_file_mod_trig
 before insert or update on suseProductFile
 for each row
 begin
-	:new.modified := sysdate;
+	:new.modified := current_timestamp;
 end suse_product_file_mod_trig;
 /
 show errors
