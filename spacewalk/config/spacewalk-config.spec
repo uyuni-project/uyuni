@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.1.0
+Version: 2.1.1
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -179,6 +179,10 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Thu Aug 22 2013 Tomas Lestach <tlestach@redhat.com> 2.1.1-1
+- update webapp-keyring.gpg with pgp public key valid until 2023-02-05
+- Bumping package versions for 2.1.
+
 * Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.1-1
 - Bumping package versions for 2.0.
 
