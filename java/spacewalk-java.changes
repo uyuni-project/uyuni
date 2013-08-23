@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Aug 23 11:25:20 CEST 2013 - mc@suse.de
+
+- version 1.7.54.27-1
+- CVE Audit testsuite bugfixes to run on Oracle
+- Fix link to the documentation
+- Bugfix: avoid ClassCastException from Long to Integer in Oracle
+
+-------------------------------------------------------------------
 Wed Aug 21 16:03:35 CEST 2013 - mc@suse.de
 
 - version 1.7.54.26-1
