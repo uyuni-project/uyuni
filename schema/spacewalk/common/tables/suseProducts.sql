@@ -25,8 +25,10 @@ suseProducts
     channel_family_id varchar2(256),
     product_list      CHAR(1) DEFAULT ('N') NOT NULL,
     product_id    NUMBER NOT NULL,
-    created     date default(sysdate) not null,
-    modified    date default(sysdate) not null
+    created   timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL
 );
 
 CREATE SEQUENCE suse_products_id_seq START WITH 100;

@@ -21,8 +21,10 @@ suseInstalledProduct
                   REFERENCES rhnPackageArch (id),
     release       varchar2(256),
     is_baseproduct CHAR(1) DEFAULT ('N') NOT NULL,
-    created     date default(sysdate) not null,
-    modified    date default(sysdate) not null
+    created   timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL
 );
 
 CREATE SEQUENCE suse_inst_pr_id_seq START WITH 100;

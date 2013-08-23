@@ -22,8 +22,10 @@ create table suseProductFile
   vendor          VARCHAR2(256),
   summary         VARCHAR2(4000),
   description     VARCHAR2(4000),
-  created         date default(sysdate) not null,
-  modified        date default(sysdate) not null
+  created   timestamp with local time zone
+                DEFAULT (current_timestamp) NOT NULL,
+  modified  timestamp with local time zone
+                DEFAULT (current_timestamp) NOT NULL
 );
 
 CREATE SEQUENCE suse_prod_file_id_seq START WITH 100;

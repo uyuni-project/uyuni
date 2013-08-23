@@ -21,8 +21,10 @@ suseOSTarget
     channel_arch_id  NUMBER
                   CONSTRAINT suse_ostarget_caid_fk
                   REFERENCES rhnChannelArch (id),
-    created     date default(sysdate) not null,
-    modified    date default(sysdate) not null
+    created   timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL
 );
 
 CREATE SEQUENCE suse_ostarget_id_seq START WITH 100;

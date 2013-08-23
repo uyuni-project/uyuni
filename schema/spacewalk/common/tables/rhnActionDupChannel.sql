@@ -24,10 +24,10 @@ CREATE TABLE rhnActionDupChannel
                             DEFAULT ('S') NOT NULL
                             CONSTRAINT rhn_actdupchan_task_ck
                                 CHECK (task in ('S','U')),
-    created             DATE
-                            DEFAULT (sysdate) NOT NULL,
-    modified            DATE
-                            DEFAULT (sysdate) NOT NULL
+    created   timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;

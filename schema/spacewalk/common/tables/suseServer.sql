@@ -26,7 +26,9 @@ suseServer
                       REFERENCES suseOSTarget (id),
     ncc_sync_required CHAR(1) DEFAULT ('N') NOT NULL,
     ncc_reg_error     CHAR(1) DEFAULT ('N') NOT NULL,
-    created     date default(sysdate) not null,
-    modified    date default(sysdate) not null
+    created   timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL
 );
 
