@@ -1289,15 +1289,27 @@
         <form-property name="lbl" type="java.lang.String" />
         <form-property name="timeout" type="java.lang.Long" />
         <form-property name="submitted" type="java.lang.Boolean" />
-        <form-property name="use_date"  type="java.lang.Boolean"/>
-        <form-property name="date_year"  type="java.lang.Integer"/>
-        <form-property name="date_month"  type="java.lang.Integer"/>
-        <form-property name="date_day"  type="java.lang.Integer"/>
-        <form-property name="date_hour"  type="java.lang.Integer"/>
-        <form-property name="date_minute"  type="java.lang.Integer"/>
-        <form-property name="date_am_pm"  type="java.lang.Integer"/>
+        <form-property name="use_date" type="java.lang.Boolean"/>
+        <form-property name="date_year" type="java.lang.Integer"/>
+        <form-property name="date_month" type="java.lang.Integer"/>
+        <form-property name="date_day" type="java.lang.Integer"/>
+        <form-property name="date_hour" type="java.lang.Integer"/>
+        <form-property name="date_minute" type="java.lang.Integer"/>
+        <form-property name="date_am_pm" type="java.lang.Integer"/>
     </form-bean>
 
+    <form-bean name="SSMPatchListForm" type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+        <form-property name="queue_id" type="java.lang.Long" />
+        <form-property name="queue_label" type="java.lang.String" />
+        <form-property name="submitted" type="java.lang.Boolean" />
+        <form-property name="use_date" type="java.lang.Boolean"/>
+        <form-property name="date_year" type="java.lang.Integer"/>
+        <form-property name="date_month" type="java.lang.Integer"/>
+        <form-property name="date_day" type="java.lang.Integer"/>
+        <form-property name="date_hour" type="java.lang.Integer"/>
+        <form-property name="date_minute" type="java.lang.Integer"/>
+        <form-property name="date_am_pm" type="java.lang.Integer"/>
+    </form-bean>
     <form-bean name="cveAuditForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
       <form-property name="cveIdentifier" type="java.lang.String" />
@@ -3584,7 +3596,20 @@
                  path="/systems/ssm/ListSystems.do" redirect="true"/>
      </action>
 
-        <action path="/systems/ssm/MigrateSystems"
+    <action path="/systems/ssm/ListPatches"
+        scope="request"
+        name="SSMPatchListForm"
+        input="/WEB-INF/pages/ssm/systems/ssm-errata.jsp"
+        type="com.redhat.rhn.frontend.action.ssm.ErrataListAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/ssm/systems/ssm-errata.jsp" />
+        <forward name="confirm"
+                 path="/WEB-INF/pages/ssm/ssmindex.jsp" />
+    </action>
+
+    <action path="/systems/ssm/MigrateSystems"
         scope="request"
         input="/WEB-INF/pages/ssm/systems/ssmdeleteconfirm.jsp"
         type="com.redhat.rhn.frontend.action.ssm.MigrateSystemsAction"
@@ -3810,6 +3835,16 @@
                  path="/systems/details/SoftwareCrashNotes.do" redirect="true"/>
     </action>
 
+    <action path="/systems/details/SystemRemoteCommand"
+            scope="request"
+            name="remoteCommandForm"
+            type="com.redhat.rhn.frontend.action.systems.SystemRemoteCommandAction"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="acls"
+                      value="system_feature(ftr_system_grouping)"/>
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/system-remote-command.jsp" />
+     </action>
 
      <action path="/systems/details/groups/ListRemove"
              scope="request"
@@ -5126,7 +5161,7 @@
         <forward name="default"
                  path="/WEB-INF/pages/ssm/systems/misc/lock-unlock-system.jsp" />
     </action>
-    
+
     <action path="/systems/ssm/misc/RebootSystem"
             scope="request"
             input="/WEB-INF/pages/ssm/systems/misc/reboot-system.jsp"
