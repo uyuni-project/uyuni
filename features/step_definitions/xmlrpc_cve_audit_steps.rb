@@ -39,9 +39,9 @@ Then /^I should get the slessp2-kernel patch$/ do
   arch = `uname -m`
   arch.chomp!
   if arch != "x86_64"
-    patch = "slessp2-kernel-6648"
-  else
     patch = "slessp2-kernel-6641"
+  else
+    patch = "slessp2-kernel-6648"
   end
   $stderr.puts "result: #{result}"
   fail if result["errata_advisories"].include?(patch) == false
