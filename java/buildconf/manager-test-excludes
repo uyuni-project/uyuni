@@ -7,3 +7,5 @@ com/redhat/rhn/common/**/test/SessionSwapTest.class
 com/redhat/rhn/common/**/test/ExceptionsWrapperTest.class
 com/redhat/rhn/common/**/test/FileUtilsTest.class
 com/redhat/rhn/common/**/test/MD5SumTest.class
+com/redhat/rhn/domain/kickstart/test/KickstartDataTest.class
+com/redhat/rhn/domain/kickstart/test/KickstartScriptTest.class
