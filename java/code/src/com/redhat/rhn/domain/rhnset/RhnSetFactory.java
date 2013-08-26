@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.rhnset;
 
+import com.redhat.rhn.common.db.ConstraintViolationException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -142,7 +143,17 @@ public class RhnSetFactory extends HibernateFactory {
         WriteMode insertEl1 = writeMode("add_to_set_el1");
         for (Iterator i = added.iterator(); i.hasNext();) {
             RhnSetElement current = (RhnSetElement) i.next();
-            executeMode(current, insertEl3, insertEl2, insertEl1);
+            try {
+                executeMode(current, insertEl3, insertEl2, insertEl1);
+            }
+            catch (ConstraintViolationException e) {
+                // a concurrent transaction has committed some new rows between
+                // the execution of delete_from_set_el WriteModes above and
+                // here. Those new rows also happen to be equal to the ones we
+                // tried to insert! This is tolerable and can happen because the
+                // default transaction isolation level is READ COMMITTED, thus
+                // this exception can be safely ignored
+            }
         }
         if (!added.isEmpty()) {
             simpl.getCleanup().cleanup(simpl);
