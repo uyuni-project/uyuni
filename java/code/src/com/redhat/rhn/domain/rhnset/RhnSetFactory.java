@@ -147,12 +147,15 @@ public class RhnSetFactory extends HibernateFactory {
                 executeMode(current, insertEl3, insertEl2, insertEl1);
             }
             catch (ConstraintViolationException e) {
-                // a concurrent transaction has committed some new rows between
-                // the execution of delete_from_set_el WriteModes above and
-                // here. Those new rows also happen to be equal to the ones we
-                // tried to insert! This is tolerable and can happen because the
-                // default transaction isolation level is READ COMMITTED, thus
-                // this exception can be safely ignored
+                if (e.getConstraint().endsWith("RHN_SET_USER_LABEL_ELEM_UNQ")) {
+                    // a concurrent transaction has already inserted this row
+                    // and COMMITted. This is tolerable and can happen because
+                    // the default transaction isolation level is READ
+                    // COMMITTED, thus this exception can be safely ignored
+                }
+                else {
+                    throw e;
+                }
             }
         }
         if (!added.isEmpty()) {
