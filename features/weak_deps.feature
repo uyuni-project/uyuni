@@ -13,41 +13,41 @@ Feature: Test weak dependencies
     When I follow "Channels"
      And I follow "SLES11-SP2-Updates x86_64 Channel"
      And I follow "Packages"
-     And I follow "xz-lang-5.0.3-0.12.1.x86_64"
+     And I follow "virgo-dummy-2.0-1.1.noarch"
      And I follow "Dependencies"
     Then I should see a "Recommends" text
      And I should see a "Suggests" text
      And I should see a "Supplements" text
-     And I should see a "packageand(bundle-lang-other:xz)" text
+     And I should see a "packageand(a-blackhole:dummy)" text
 
 
   Scenario: Check Package metadata displayed in WebUI (Recommends)
     When I follow "Channels"
      And I follow "SLES11-SP2-Updates x86_64 Channel"
      And I follow "Packages"
-     And I follow "xz-5.0.3-0.12.1.x86_64"
+     And I follow "milkyway-dummy-2.0-1.1.x86_64"
      And I follow "Dependencies"
     Then I should see a "Recommends" text
      And I should see a "Suggests" text
      And I should see a "Supplements" text
-     And I should see a "xz-lang" text
+     And I should see a "filesystem" text
 
 
   Scenario: Check Package metadata displayed in WebUI (Suggests)
     When I follow "Channels"
      And I follow "SLES11-SP2-Updates x86_64 Channel"
      And I follow "Packages"
-     And I follow "hplip-hpijs-3.11.10-0.6.7.1.x86_64"
+     And I follow "milkyway-dummy-2.0-1.1.x86_64"
      And I follow "Dependencies"
     Then I should see a "Recommends" text
      And I should see a "Suggests" text
      And I should see a "Supplements" text
-     And I should see a "hplip = 3.11.10" text
+     And I should see a "apache2" text
 
   Scenario: Check local metdata for weak deps
     Given I am root
      When I refresh the metadata
-     Then I should have 'rpm:recommends.*xz-lang.*rpm:recommends' in the metadata
-      And I should have 'rpm:supplements.*packageand.bundle-lang-other:xz.*rpm:supplements' in the metadata
-      And I should have 'rpm:suggests.*hplip.*rpm:suggests' in the metadata
+     Then I should have 'rpm:recommends.*filesystem.*rpm:recommends' in the metadata
+      And I should have 'rpm:supplements.*packageand.a-blackhole:dummy.*rpm:supplements' in the metadata
+      And I should have 'rpm:suggests.*apache2.*rpm:suggests' in the metadata
 
