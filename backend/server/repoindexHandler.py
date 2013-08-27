@@ -30,16 +30,7 @@ def handle(environ, start_response):
 
     req = wsgiRequest.WsgiRequest(environ, start_response)
 
-    if CFG.ALLOWED_ISS_SLAVES:
-        if not isinstance(CFG.ALLOWED_ISS_SLAVES, list):
-            allowed_iss_slaves = [CFG.ALLOWED_ISS_SLAVES]
-        else:
-            allowed_iss_slaves = CFG.ALLOWED_ISS_SLAVES
-        allowed_iss_slaves = [idn_ascii_to_pune(x) for x in allowed_iss_slaves]
-    else:
-        allowed_iss_slaves = []
-
-    if req.get_remote_host() not in allowed_iss_slaves:
+    if suseLib.isAllowedSlave(req.get_remote_host()):
         log_error('ISS Slave [%s] not alowed' % req.server.server_hostname)
         req.send_http_header(status=apache.HTTP_FORBIDDEN)
         return req.output

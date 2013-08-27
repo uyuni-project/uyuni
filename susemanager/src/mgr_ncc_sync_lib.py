@@ -110,7 +110,7 @@ class NCCSync(object):
                             "server.susemanager.mirrcred_pass are set correctly "
                             "in the configuration file.")
 
-        if CFG.disable_iss == 0 and CFG.allowed_iss_slaves:
+        if CFG.disable_iss == 0 and suseLib.hasISSSlaves():
             self.is_iss_master = True
             if not os.path.exists(MASTER_CACHE_LOCATION):
                 os.mkdir(MASTER_CACHE_LOCATION)
