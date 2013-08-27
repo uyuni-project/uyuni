@@ -22,16 +22,16 @@ Scenario: feature should be accessible
   When I follow "Audit"
     Then I should see a "CVE Audit" link in the left menu
      And I should see a "CVE Audit" text
-
+@test
 Scenario: searching for a known CVE number
   When I follow "Audit"
-    And I enter "CVE-2012-3400" as "cveIdentifier"
+    And I enter "CVE-2038-9999" as "cveIdentifier"
     And I click on "Audit systems"
   Then I should see this client as a link
-    And I should see a "Affected, patch available in an assigned channel" text in the "Patch status" column
+    And I should see a "Affected, patch available in an assigned channel" text
     And I should see a "Install a new patch in this system" link
     # Patch advisory suffix is architecture dependent: slessp2-kernel-664[8|1]
-    And I should see a "Only candidate is: slessp2-kernel-664" text in the "Next Action" column
+    And I should see a "Only candidate is: milkyway-dummy-2345" text
     And I should see a "Download CSV" link
     And I should see an alphabar link to this system
     And I should see a "Patch status" link
@@ -48,7 +48,7 @@ Scenario: searching for an unknown CVE number
 
 Scenario: selecting a system for the System Set Manager
   When I follow "Audit"
-    And I enter "CVE-2012-3400" as "cveIdentifier"
+    And I enter "CVE-2038-9999" as "cveIdentifier"
     And I click on "Audit systems"
     And I should see a "Affected, patch available in an assigned channel" text
   When I check "Affected, patch available in an assigned channel" in the list
