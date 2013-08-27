@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.common.ProvisionState;
+import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
@@ -95,6 +96,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         super.setUp();
         server = createTestServer(user);
         assertNotNull(server.getId());
+
+        // ensure we have sufficient entitlements
+        List<EntitlementServerGroup> ents = user.getOrg().getEntitledServerGroups();
+        for (EntitlementServerGroup entitlementServerGroup : ents) {
+            UserTestUtils.incrementSgMaxMembers(entitlementServerGroup, 20L);
+        }
     }
 
     public void testListConfigEnabledSystems() throws Exception {
@@ -567,6 +574,19 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         EntitlementServerGroup sg = ServerGroupTestUtils.createEntitled(owner.getOrg(),
                                                                         type);
+
+        // Ensure that new server has a proper virtualization tool package available
+        // before entitling with virtualization_host
+        if (type.getAssociatedEntitlement() instanceof VirtualizationEntitlement) {
+            Channel baseChannel = ChannelTestUtils.createBaseChannel(owner);
+
+            ChannelTestUtils.setupBaseChannelForVirtualization(owner, baseChannel);
+
+            newS.addChannel(baseChannel);
+            ServerFactory.save(newS);
+            newS = (Server) TestUtils.reload(newS);
+        }
+
         SystemManager.entitleServer(newS, sg.getGroupType().getAssociatedEntitlement());
         return (Server) TestUtils.saveAndReload(newS);
     }
