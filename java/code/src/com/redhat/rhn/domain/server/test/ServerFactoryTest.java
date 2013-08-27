@@ -99,7 +99,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         // ensure we have sufficient entitlements
         List<EntitlementServerGroup> ents = user.getOrg().getEntitledServerGroups();
         for (EntitlementServerGroup entitlementServerGroup : ents) {
-            UserTestUtils.incrementSgMaxMembers(entitlementServerGroup, 20L);
+            UserTestUtils.incrementSgMaxMembers(entitlementServerGroup, 30L);
         }
     }
 
