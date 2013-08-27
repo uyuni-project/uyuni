@@ -513,6 +513,7 @@ def _get_proxy_from_yast():
     pass can be None.
 
     """
+    f = None
     try:
         try:
             f = open(YAST_PROXY)
@@ -521,7 +522,8 @@ def _get_proxy_from_yast():
             log_debug(1, "Couldn't open " + YAST_PROXY)
             return None
     finally:
-        f.close()
+        if f:
+            f.close()
 
     proxy_url = _parse_curl_proxy_url(contents)
     if not proxy_url:
