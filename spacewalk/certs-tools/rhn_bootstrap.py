@@ -579,9 +579,7 @@ def generateBootstrapScript(options):
 
     # concat all those script-bits
     newScript = newScript + getConfigFilesSh() + getUp2dateScriptsSh()
-    newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh()
 
-    
     newScript = newScript + getGPGKeyImportSh() + getCorpCACertSh() + \
                 getRegistrationSh(MY_PRODUCT_NAME)
 
