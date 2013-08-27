@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Aug 27 17:42:46 CEST 2013 - mc@suse.de
+
+- version 1.7.38.28-1
+- Ensure the file object is closed only when no IOError took place
+  (bnc#837035)
+
+-------------------------------------------------------------------
 Wed Aug 21 15:54:56 CEST 2013 - mc@suse.de
 
 - version 1.7.38.27-1
