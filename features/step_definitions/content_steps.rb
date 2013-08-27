@@ -127,9 +127,7 @@ Then /^"([^"]*)" is installed$/ do |package|
 end
 
 When /^I check "([^"]*)" in the list$/ do |arg1|
-  within(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
-    find(:xpath, ".//input[@type='checkbox']").set(true)
-  end
+  first(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]").first(:xpath, ".//input[@type='checkbox']").set(true)
 end
 
 Then /^The table should have a column named "([^"]+)"$/ do |arg1|
