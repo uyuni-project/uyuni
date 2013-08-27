@@ -192,18 +192,18 @@ Feature: Check client registration
   Scenario: check tab links "Details" => "Remote Command"
     Given I am on the Systems overview page of this client
     When I follow "Remote Command" in class "contentnav-row2"
-    Then I should see a "Run Remote Command" text
-     And I should see a "username" element in "remote_command_form" form
-     And I should see a "group" element in "remote_command_form" form
-     And I should see a "timeout" element in "remote_command_form" form
-     And I should see a "script" element in "remote_command_form" form
-     And I should see a "month" element in "remote_command_form" form
-     And I should see a "day" element in "remote_command_form" form
-     And I should see a "year" element in "remote_command_form" form
-     And I should see a "hour" element in "remote_command_form" form
-     And I should see a "minute" element in "remote_command_form" form
-     And I should see a "am_pm" element in "remote_command_form" form
-     And I should see a "Schedule Remote Command" button
+    Then I should see a "Remote Command on" text
+     And I should see a "uid" element in "remoteCommandForm" form
+     And I should see a "gid" element in "remoteCommandForm" form
+     And I should see a "timeout" element in "remoteCommandForm" form
+     And I should see a "lbl" element in "remoteCommandForm" form
+     And I should see a "script_body" element in "remoteCommandForm" form
+     And I should see a "date_month" element in "remoteCommandForm" form
+     And I should see a "date_day" element in "remoteCommandForm" form
+     And I should see a "date_year" element in "remoteCommandForm" form
+     And I should see a "date_hour" element in "remoteCommandForm" form
+     And I should see a "date_minute" element in "remoteCommandForm" form
+     And I should see a "Schedule" button
 
   Scenario: check tab links "Details" => "Reactivation"
     Given I am on the Systems overview page of this client
@@ -242,9 +242,9 @@ Feature: Check client registration
     When I follow "Errata" in class "contentnav-row2"
     Then I should see a "Relevant Errata" text
      And I should see a "Show" button
-     And I should see a "Test update for sles-release" text
+     And I should see a "Test update for virgo-dummy" text
      And I should see an update in the list
-     And I should see a "sles-release-6789" link
+     And I should see a "andromeda-dummy-6789" link
 
   Scenario: check tab links "Software" => "Software Channels"
     Given I am on the Systems overview page of this client
