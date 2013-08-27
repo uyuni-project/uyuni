@@ -22,7 +22,7 @@ Scenario: feature should be accessible
   When I follow "Audit"
     Then I should see a "CVE Audit" link in the left menu
      And I should see a "CVE Audit" text
-@test
+
 Scenario: searching for a known CVE number
   When I follow "Audit"
     And I enter "CVE-2038-9999" as "cveIdentifier"
