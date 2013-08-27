@@ -35,14 +35,7 @@ Then /^I should get the sles11-sp2-updates channel$/ do
   fail if result["channel_labels"].include?(channel) == false
 end
 
-Then /^I should get the slessp2-kernel patch$/ do
-  arch = `uname -m`
-  arch.chomp!
-  if arch != "x86_64"
-    patch = "slessp2-kernel-6641"
-  else
-    patch = "slessp2-kernel-6648"
-  end
+Then /^I should get the "([^"]*)" patch$/ do |patch|
   $stderr.puts "result: #{result}"
   fail if result["errata_advisories"].include?(patch) == false
 end
