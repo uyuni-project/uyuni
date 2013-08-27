@@ -474,8 +474,8 @@ def get_mirror_credentials():
 def isAllowedSlave(hostname):
     if not rhnSQL.fetchone_dict("select 1 from rhnISSSlave where slave = :hostname and enabled = 'Y'",
         hostname = idn_pune_to_unicode(hostname)):
-            log_error('Server "%s" is not enabled for ISS.' % hostname)
-            return False
+        log_error('Server "%s" is not enabled for ISS.' % hostname)
+        return False
     return True
 
 def hasISSSlaves():
