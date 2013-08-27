@@ -3,16 +3,27 @@ include ../common/common.mk
 .PHONY: all
 all: pgsql
 
-vanilla:
-	@echo Building vanilla container for java testing.
+vanilla_1_7:
+	@echo Building vanilla container for testing java code of the 1.7 branch.
 	$(call create_dockerfile, sles11_sp2_base)
-	docker build -t manager_java_testing .
+	docker build -t manager_java_testing_1_7 .
 	$(call remove_dockerfile)
 
+vanilla_Head:
+	@echo Building vanilla container for testing java code of the Head branch.
+	$(call create_dockerfile, sles11_sp3_base)
+	docker build -t manager_java_testing_Head .
+	$(call remove_dockerfile)
 
-pgsql:
-	@echo Building java testing contaner with PostgreSQL database.
+pgsql_1_7:
+	@echo Building container for testing java code of the 1.7 branch with the PostgreSQL database installed and configured.
 	$(call create_dockerfile, sles11_sp2_pgsql)
-	docker build -t manager_java_testing_pgsql .
+	docker build -t manager_java_testing_pgsql_1_7 .
+	$(call remove_dockerfile)
+
+pgsql_Head:
+	@echo Building container for testing java code of the Head branch with the PostgreSQL database installed and configured.
+	$(call create_dockerfile, sles11_sp3_pgsql)
+	docker build -t manager_java_testing_pgsql_Head .
 	$(call remove_dockerfile)
 
