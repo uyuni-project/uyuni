@@ -26,6 +26,7 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
 from spacewalk.server import rhnSQL
+from rhn.connections import idn_pune_to_unicode
 
 YAST_PROXY = "/root/.curlrc"
 SYS_PROXY = "/etc/sysconfig/proxy"
@@ -473,7 +474,7 @@ def get_mirror_credentials():
 def isAllowedSlave(hostname):
     if not rhnSQL.fetchone_dict("select 1 from rhnISSSlave where slave = :hostname and enabled = 'Y'",
         hostname = idn_pune_to_unicode(hostname)):
-            log_error('Server "%s" is not enabled for ISS.' % self.remote_hostname)
+            log_error('Server "%s" is not enabled for ISS.' % hostname)
             return False
     return True
 
