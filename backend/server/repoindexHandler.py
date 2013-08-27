@@ -15,7 +15,7 @@ from rhn.connections import idn_ascii_to_pune
 
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnLog import log_debug, log_error, initLOG
-from spacewalk.common import apache
+from spacewalk.common import apache, suseLib
 
 def check_password(environ, user, password):
     initCFG('server.susemanager')
