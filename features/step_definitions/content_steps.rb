@@ -24,7 +24,8 @@ end
 # Test for a visible link in the whole page
 #
 Then /^I should see a "([^"]*)" link$/ do |arg1|
-  fail if not find_link(debrand_string(arg1)).visible?
+  #fail if not find_link(debrand_string(arg1)).visible?
+  fail if not first(:link, debrand_string(arg1)).visible?
 end
 
 #

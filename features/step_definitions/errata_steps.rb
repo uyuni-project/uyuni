@@ -30,6 +30,5 @@ Then /^I should see three links to the errata in the list$/ do
 end
 
 Then /^I should see an update in the list$/ do
-  link = "TestsuiteRepo"
-  fail if not has_xpath?("//form/table/tbody/tr/td/a[contains(.,'#{link}')]")
+  fail if not has_xpath?("//form/table/tbody/tr/td/a")
 end
