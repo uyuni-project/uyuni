@@ -110,6 +110,14 @@ class NCCSync(object):
                             "server.susemanager.mirrcred_pass are set correctly "
                             "in the configuration file.")
 
+        try:
+            rhnSQL.initDB()
+            rhnSQL.clear_log_id()
+            rhnSQL.set_log_auth_login('SETUP')
+        except rhnSQL.SQLConnectError, e:
+            self.error_msg("Could not connect to the database. %s" % e)
+            sys.exit(1)
+
         if CFG.disable_iss == 0 and suseLib.hasISSSlaves():
             self.is_iss_master = True
             if not os.path.exists(MASTER_CACHE_LOCATION):
@@ -177,14 +185,6 @@ class NCCSync(object):
         if not os.path.exists(MASTER_CACHE_LOCATION):
             os.makedirs(MASTER_CACHE_LOCATION)
         self.connect_retries = 10
-
-        try:
-            rhnSQL.initDB()
-            rhnSQL.clear_log_id()
-            rhnSQL.set_log_auth_login('SETUP')
-        except rhnSQL.SQLConnectError, e:
-            self.error_msg("Could not connect to the database. %s" % e)
-            sys.exit(1)
 
 
     def dump_to(self, path):
