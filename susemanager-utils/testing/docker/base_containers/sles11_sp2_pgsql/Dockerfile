@@ -9,7 +9,7 @@ MAINTAINER Flavio Castelli "fcastelli@suse.com"
 RUN zypper --non-interactive --gpg-auto-import-keys ref
 
 # Install needed packages
-RUN zypper in -y perl-DBD-Pg postgresql91-contrib postgresql91-server
+RUN zypper in -y perl-DBD-Pg postgresql91-contrib postgresql91-server smdba
 
 ADD setup-db-postgres.sh /root/setup-db-postgres.sh
 RUN sh /root/setup-db-postgres.sh
