@@ -37,12 +37,12 @@ public class DataListTest extends RhnBaseTestCase {
     public void setUp() {
         if (ConfigDefaults.get().isOracle()) {
             db_sufix = "_or";
-            db_user = "SPACEUSER";
         }
         else {
             db_sufix = "_pg";
-            db_user = "spaceuser";
         }
+        // SUSE specific database username below
+        db_user = "spacewalk";
 
         hsm = new HookedSelectMode(
                 ModeFactory.getMode("test_queries", "user_tables" + db_sufix));

@@ -60,12 +60,12 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         super(name);
         if (ConfigDefaults.get().isOracle()) {
             db_sufix = "_or";
-            db_user = "SPACEUSER";
         }
         else {
             db_sufix = "_pg";
-            db_user = "spaceuser";
         }
+        // SUSE specific database username below
+        db_user = "spacewalk";
     }
 
     private void lookup(String foobar, int id, int size) {
@@ -140,8 +140,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
             assertTrue(!obj.getClass().getName().equals("java.util.Map"));
 
             //Try over-riding and getting a Map back
-            SelectMode m2 = ModeFactory.getMode("test_queries",
-                    "withClass" + db_sufix, Map.class);
+            SelectMode m2 = ModeFactory.getMode("test_queries", "withClass" + db_sufix, Map.class);
             dr = m2.execute(params);
             assertNotNull(dr);
             assertTrue(dr.size() > 1);
@@ -150,8 +149,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
             assertEquals("java.util.HashMap", obj.getClass().getName());
 
             //Try over-riding with something incompatible
-            SelectMode m3 = ModeFactory.getMode("test_queries",
-                    "withClass" + db_sufix, Set.class);
+            SelectMode m3 = ModeFactory.getMode("test_queries", "withClass" + db_sufix, Set.class);
             try {
                 dr = m3.execute(params);
                 fail();
