@@ -8,7 +8,7 @@ MAINTAINER Johannes Renner "jrenner@suse.de"
 RUN zypper --non-interactive --gpg-auto-import-keys ref
 
 # Install needed packages
-RUN zypper in -y ant ant-junit java-1_6_0-ibm-devel python smdba spacewalk-backend-sql-postgresql spacewalk-setup sudo susemanager-tools tar
+RUN zypper in -y ant ant-junit java-1_6_0-ibm-devel python spacewalk-backend-sql-postgresql spacewalk-setup sudo susemanager-tools tar
 
 # Install apache-ivy manually (only as long as there is no recent package!)
 ADD ivy-2.3.0.jar /usr/share/java/ivy-2.3.0.jar
