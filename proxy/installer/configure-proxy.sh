@@ -82,7 +82,7 @@ HELP
 parse_answer_file () {
     local FILE="$1"
     local ALIAS
-    if [ ! -r "$FILE" ] ; then
+    if [ ! -r "$FILE" ]; then
        echo "Answer file '$FILE' is not readable."
        exit 1
     fi
@@ -98,7 +98,7 @@ CNAME_INDEX=0
 while [ $# -ge 1 ]; do
     case $1 in
         --help | -h)  print_help;;
-        --answer-file=*) parse_answer_file $1;;
+        --answer-file=*) parse_answer_file $(echo $1 | cut -d= -f2-);;
         --non-interactive) INTERACTIVE=0;;
         --version=*) VERSION=$(echo $1 | cut -d= -f2-);;
         --rhn-parent=*) RHN_PARENT=$(echo $1 | cut -d= -f2-);;
