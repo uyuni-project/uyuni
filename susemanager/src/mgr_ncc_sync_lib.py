@@ -267,7 +267,7 @@ class NCCSync(object):
 
         # trivial case: no credentials are used
         if self.fromdir:
-            return [(0, self._get_ncc(url, send))]
+            return [('0', self._get_ncc(url, send))]
 
         # other case: iterate through the list of credentials and return
         # a list of tuples (authuser, xml document)
