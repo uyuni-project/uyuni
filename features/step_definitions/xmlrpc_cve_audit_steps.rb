@@ -23,13 +23,13 @@ Then /^I should get status "([^\"]+)" for system "([0-9]+)"$/ do |status, system
   fail if result["patch_status"] != status
 end
 
-Then /^I should get the sles11-sp2-updates channel$/ do
+Then /^I should get the sles11-sp3-updates channel$/ do
   arch = `uname -m`
   arch.chomp!
   if arch != "x86_64"
-    channel = "sles11-sp2-updates-i586-channel"
+    channel = "sles11-sp3-updates-i586-channel"
   else
-    channel = "sles11-sp2-updates-x86_64-channel"
+    channel = "sles11-sp3-updates-x86_64-channel"
   end
   $stderr.puts "result: #{result}"
   fail if result["channel_labels"].include?(channel) == false

@@ -32,9 +32,9 @@ Feature: Explore the Channels page
     When I follow "Popular Channels" in element "sidenav"
     Then I should see a "Popular Channels" text
 
-  Scenario: Check Packages in SLES11-SP2-Updates x86_64 Channel
+  Scenario: Check Packages in SLES11-SP3-Updates x86_64 Channel
     When I follow "Channels"
-     And I follow "SLES11-SP2-Updates x86_64 Channel"
+     And I follow "SLES11-SP3-Updates x86_64 Channel"
      And I follow "Packages"
     Then I should see package "andromeda-dummy-2.0-1.1.noarch"
      And I should see package "hoag-dummy-1.1-2.1.i586"
@@ -45,11 +45,11 @@ Feature: Explore the Channels page
 
   Scenario: Check Package metadata displayed in WebUI
     When I follow "Channels"
-     And I follow "SLES11-SP2-Updates x86_64 Channel"
+     And I follow "SLES11-SP3-Updates x86_64 Channel"
      And I follow "Packages"
      And I follow "andromeda-dummy-2.0-1.1.noarch"
     Then I should see a "This is the andromeda dummy package used for testing SUSE Manager" text
-     And I should see a "SLES11-SP2-Updates x86_64 Channel" link
+     And I should see a "SLES11-SP3-Updates x86_64 Channel" link
      And I should see a "openSUSE Build Service" text
      And I should see a "SHA1sum:" text
      And I should see a "cbd60e37142de1204964269d00fd5cc645ccd056" text
@@ -57,7 +57,7 @@ Feature: Explore the Channels page
 
   Scenario: Check Package dependencies page
     When I follow "Channels"
-     And I follow "SLES11-SP2-Updates x86_64 Channel"
+     And I follow "SLES11-SP3-Updates x86_64 Channel"
      And I follow "Packages"
      And I follow "andromeda-dummy-2.0-1.1.noarch"
      And I follow "Dependencies"
@@ -67,7 +67,7 @@ Feature: Explore the Channels page
 
   Scenario: Check Package Changelog page
     When I follow "Channels"
-     And I follow "SLES11-SP2-Updates x86_64 Channel"
+     And I follow "SLES11-SP3-Updates x86_64 Channel"
      And I follow "Packages"
      And I follow "andromeda-dummy-2.0-1.1.noarch"
      And I follow "Change Log"
@@ -76,7 +76,7 @@ Feature: Explore the Channels page
 
   Scenario: Check Package Filelist page
     When I follow "Channels"
-     And I follow "SLES11-SP2-Updates x86_64 Channel"
+     And I follow "SLES11-SP3-Updates x86_64 Channel"
      And I follow "Packages"
      And I follow "andromeda-dummy-2.0-1.1.noarch"
      And I follow "File List"

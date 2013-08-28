@@ -11,7 +11,7 @@ Feature: Test weak dependencies
 
   Scenario: Check Package metadata displayed in WebUI (Supplements)
     When I follow "Channels"
-     And I follow "SLES11-SP2-Updates x86_64 Channel"
+     And I follow "SLES11-SP3-Updates x86_64 Channel"
      And I follow "Packages"
      And I follow "virgo-dummy-2.0-1.1.noarch"
      And I follow "Dependencies"
@@ -23,7 +23,7 @@ Feature: Test weak dependencies
 
   Scenario: Check Package metadata displayed in WebUI (Recommends)
     When I follow "Channels"
-     And I follow "SLES11-SP2-Updates x86_64 Channel"
+     And I follow "SLES11-SP3-Updates x86_64 Channel"
      And I follow "Packages"
      And I follow "milkyway-dummy-2.0-1.1.x86_64"
      And I follow "Dependencies"
@@ -35,7 +35,7 @@ Feature: Test weak dependencies
 
   Scenario: Check Package metadata displayed in WebUI (Suggests)
     When I follow "Channels"
-     And I follow "SLES11-SP2-Updates x86_64 Channel"
+     And I follow "SLES11-SP3-Updates x86_64 Channel"
      And I follow "Packages"
      And I follow "milkyway-dummy-2.0-1.1.x86_64"
      And I follow "Dependencies"

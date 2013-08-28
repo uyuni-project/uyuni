@@ -30,7 +30,6 @@ Scenario: searching for a known CVE number
   Then I should see this client as a link
     And I should see a "Affected, patch available in an assigned channel" text
     And I should see a "Install a new patch in this system" link
-    # Patch advisory suffix is architecture dependent: slessp2-kernel-664[8|1]
     And I should see a "Only candidate is: milkyway-dummy-2345" text
     And I should see a "Download CSV" link
     And I should see an alphabar link to this system

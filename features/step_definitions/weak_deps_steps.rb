@@ -15,7 +15,7 @@ Then /^I should have '([^']*)' in the metadata$/ do |text|
    if arch != "x86_64"
      arch = "i586"
    end
-   `zgrep '#{text}' #{client_raw_repodata_dir("sles11-sp2-updates-#{arch}-channel")}/primary.xml.gz`
+   `zgrep '#{text}' #{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/primary.xml.gz`
    fail if ! $?.success?
 end
 
@@ -25,7 +25,7 @@ Then /^I should not have '([^']*)' in the metadata$/ do |text|
    if arch != "x86_64"
      arch = "i586"
    end
-   `zgrep '#{text}' #{client_raw_repodata_dir("sles11-sp2-updates-#{arch}-channel")}/primary.xml.gz`
+   `zgrep '#{text}' #{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/primary.xml.gz`
    fail if $?.success?
 end
 
@@ -35,5 +35,5 @@ Then /^"([^"]*)" should exists in the metadata$/ do |file|
     if arch != "x86_64"
         arch = "i586"
     end
-    fail if not File.exists?("#{client_raw_repodata_dir("sles11-sp2-updates-#{arch}-channel")}/#{file}")
+    fail if not File.exists?("#{client_raw_repodata_dir("sles11-sp3-updates-#{arch}-channel")}/#{file}")
 end

@@ -21,7 +21,7 @@ Feature: Test the XML-RPC CVE Audit feature.
      
     When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-2038-9999"
     Then I should get status "AFFECTED_PATCH_APPLICABLE" for system "1000010000"
-      And I should get the sles11-sp2-updates channel
+      And I should get the sles11-sp3-updates channel
       And I should get the "milkyway-dummy-2345" patch
 
     Then I logout from XML-RPC/cve audit namespace.
@@ -44,7 +44,7 @@ Feature: Test the XML-RPC CVE Audit feature.
     When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-2038-9999"
     
     Then I should get status "PATCHED" for system "1000010000"
-      And I should get the sles11-sp2-updates channel
+      And I should get the sles11-sp3-updates channel
       And I should get the "milkyway-dummy-2345" patch
 
     Then I logout from XML-RPC/cve audit namespace.
