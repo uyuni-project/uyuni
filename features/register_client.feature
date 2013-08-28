@@ -13,8 +13,9 @@ Feature: Register a client
 
    @pxe_env
    Scenario: trigger the creation of a cobbler system record
-     Given I am authorized
-     When  I follow this client link
+    Given I am authorized
+     When I follow "Systems"
+      And I follow this client link
       And I follow "Provisioning"
       And I click on "Create Cobbler System Record"
       And I click on "Continue"
