@@ -26,7 +26,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -73,9 +72,9 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
         result2.setParentScriptActionDetails(sad);
         sad.addResult(result1);
         sad.addResult(result2);
-        byte[] expectedScript = "#!/bin/csh".getBytes("UTF-8");
+        String expectedScript = "#!/bin/csh";
         //sad.setScript(expectedScript.getBytes("UTF-8"));
-        sad.setScript(expectedScript);
+        sad.setScript(expectedScript.getBytes("UTF-8"));
         action.setScriptActionDetails(sad);
 
         ActionFactory.save(action);
@@ -93,8 +92,8 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
         assertNotNull(scriptaction.getScriptActionDetails().getResults());
         assertEquals(2, scriptaction.getScriptActionDetails().getResults().size());
 
-        assertEquals(Arrays.toString(expectedScript),
-                Arrays.toString(scriptaction.getScriptActionDetails().getScript()));
+        assertEquals(expectedScript,
+                     scriptaction.getScriptActionDetails().getScriptContents());
         assertTrue(scriptaction.getScriptActionDetails().getParentAction()
                 .equals(scriptaction));
 
