@@ -40,44 +40,80 @@ The `manager_python_testing_X` and `manager_java_testing_X` templates are
 built starting from the same Dockerfile template. The differ in the parent
 container used at build time.
 
+## Building
+
+The containers build process is implemented using [paver](http://paver.github.io/paver/),
+a python implementation of GNU Make. Paver can be installed from the
+[devel:languages:python](http://software.opensuse.org/package/python-Paver) repository.
+
+Paver tasks are defined inside of files called `pavement.py`. A list of the
+available tasks can be obtained by invoking `paver help` from the directory
+containing the `pavement.py` file. More details about each task can be obtained
+by invoking `paver help <task name>`.
+
+The toplevel directory (`susemanager-utils/testing/docker`) contains a paver
+file which allows to build the base containers, the db containers and the actual
+testing containers.
+
+### Base containers
+
+To build the base containers just invoke:
+
+`paver build_base_containers`
+
+This will build the containers required to test all the branches covered by our
+tests. Right now this will build a SLE11SP2 container (required to test the 1.7
+branch) and a SLE11SP3 container (required to test the Head branch). It's possible
+to build containers only for certain branches using the '-b' cli option.
+
+Once the containers are built the task will import them into the local docker
+registry. This step can be skipped using the `-B` flag. This can be useful when
+building the containers on a machine where docker is not installed.
+
+A list of the supported branches can be obtained by invoking the following command:
+
+`paver supported_branches`
+
+
+### The db containers
+
+The db containers can be built using the following command:
+
+`paver build_db_containers`
+
+This will build a container for each testing branch and for each db supported by
+Manager. Right now it will produce the following containers:
+  * sle11sp2 pgsql container.
+  * sle11sp3 pgsql container.
+
+A list of the supported dbs can be obtained by invoking the following command:
+
+`paver supported_dbs`
+
+### The testing containers
+
+The containers used to run the test suite are created using the following command:
+
+`paver build_testing_containers`
+
+This builds a container for each testing target (java and python tests right now), 
+testing branch and for each db supported by Manager. Right now this will produce
+the following containers:
+  * sle11sp2 pgsql python container.
+  * sle11sp2 pgsql java container.
+  * sle11sp3 pgsql python container.
+  * sle11sp3 pgsql java container.
+
+A list of the supported targets can be obtained by invoking the following command:
+
+`paver supported_targets`
+
 ## Custom registry
 
 All the containers used by CI are stored inside of our personal docker registry
 which runs on `ix64smc161.qa.suse.de`.
 
-### How to push containers to our registry
+### Push containers to our registry
 
-Right now the workflow is a bit complicated, hopefully docker registry will
-provide something easier one day...
-
-Just follow these steps:
-
-  1. Import the container on machine running docker:
-      `docker import - my_container < my_container_rootfs.tar`
-  2. Insert the registry hostname inside of the container's tag:
-      `docker tag my_container ix64smc161.qa.suse.de/my_container`
-  3. Ensure the container name changed:
-      `docker images`
-  4. Push the container to our registry:
-      `docker push ix64smc161.qa.suse.de/my_container`
-
-Make sure you have a `~/.dockercfg` file before running step #4. If you do not
-have it just create one containing bogus information (our registry does **not**
-use authentication):
-
-```
-auth = foo
-email = foo.bar.com
-```
-
-### Hot to pull containers from our registry
-
-Also in this case there are a few glitches caused by docker's "freshness".
-
-  1. Pull the image from the registry:
-    `docker pull ix64smc161.qa.suse.de/my_container`
-  2. Discover container's ID:
-    `docker images`
-  3. Tag the container:
-    `docker tag <ID> <name>`
-
+You can push the containers built on your machine to our private registry using
+the dedicated paver tasks.
