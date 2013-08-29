@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -41,8 +42,7 @@ public class DataListTest extends RhnBaseTestCase {
         else {
             db_sufix = "_pg";
         }
-        // SUSE specific database username below
-        db_user = "spacewalk";
+        db_user = Config.get().getString(ConfigDefaults.DB_USER);
 
         hsm = new HookedSelectMode(
                 ModeFactory.getMode("test_queries", "user_tables" + db_sufix));

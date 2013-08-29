@@ -15,6 +15,7 @@
 package com.redhat.rhn.common.db.datasource.test;
 
 import com.redhat.rhn.common.ObjectCreateWrapperException;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -64,8 +65,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         else {
             db_sufix = "_pg";
         }
-        // SUSE specific database username below
-        db_user = "spacewalk";
+        db_user = Config.get().getString(ConfigDefaults.DB_USER);
     }
 
     private void lookup(String foobar, int id, int size) {

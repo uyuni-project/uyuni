@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.db.datasource.test;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CachedStatement;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -50,8 +51,7 @@ public class DataSourceParserTest extends RhnBaseTestCase {
         else {
             db_sufix = "_pg";
         }
-        // SUSE specific database username below
-        db_user = "spacewalk";
+        db_user = Config.get().getString(ConfigDefaults.DB_USER);
     }
 
     public void testGetModes() throws Exception {
