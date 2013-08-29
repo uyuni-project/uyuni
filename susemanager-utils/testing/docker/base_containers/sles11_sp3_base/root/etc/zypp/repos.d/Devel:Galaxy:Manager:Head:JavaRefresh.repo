@@ -1,4 +1,4 @@
-[Devel:Galaxy:Manager:Head]
+[Devel:Galaxy:Manager:Head:JavaRefresh]
 name=Devel:Galaxy:Manager:Head:JavaRefresh
 enabled=1
 autorefresh=1
