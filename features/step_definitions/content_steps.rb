@@ -75,6 +75,10 @@ Then /^I select the "([^"]*)" repo$/ do |arg1|
     first('input[type=checkbox]').set(true)
   end
 end
+
+Then /^I should see (\d+) "([^"]*)" links$/ do |count, text|
+  page.all('a', :text => text, :count => count)
+end
 #
 # Test if an option is selected
 #
