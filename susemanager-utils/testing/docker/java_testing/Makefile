@@ -1,7 +1,7 @@
 include ../common/common.mk
 
 .PHONY: all
-all: pgsql
+all: pgsql_Head
 
 vanilla_1_7:
 	@echo Building vanilla container for testing java code of the 1.7 branch.
