@@ -37,7 +37,8 @@ Feature: Adding repository to a channel
      And I follow "Manage Software Channels" in the left menu
      And I follow "SLES11-SP3-Updates x86_64 Channel"
      And I follow "Repositories"
-    When I check "SLES11-SP3-Updates-x86_64" in the list
+   # When I check "SLES11-SP3-Updates-x86_64" in the list
+     When I select the "SLES11-SP3-Updates-x86_64" repo
      And I click on "Update Repositories"
     Then I should see a "SLES11-SP3-Updates x86_64 Channel repository information was successfully updated" text
 
@@ -69,7 +70,8 @@ Feature: Adding repository to a channel
      And I follow "Manage Software Channels" in the left menu
      And I follow "SLES11-SP3-Updates i586 Channel"
      And I follow "Repositories"
-    When I check "SLES11-SP3-Updates-i586" in the list
+ #   When I check "SLES11-SP3-Updates-i586" in the list
+     When I select the "SLES11-SP3-Updates-i586" repo
      And I click on "Update Repositories"
     Then I should see a "SLES11-SP3-Updates i586 Channel repository information was successfully updated" text
 

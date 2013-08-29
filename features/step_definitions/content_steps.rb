@@ -70,6 +70,11 @@ Then /^I should see a "([^"]*)" button in "([^"]*)" form$/ do |arg1, arg2|
   end
 end
 
+Then /^I select the "([^"]*)" repo$/ do |arg1|
+  within(:xpath, "//a[text()='#{arg1}']/../..") do
+    first('input[type=checkbox]').set(true)
+  end
+end
 #
 # Test if an option is selected
 #
