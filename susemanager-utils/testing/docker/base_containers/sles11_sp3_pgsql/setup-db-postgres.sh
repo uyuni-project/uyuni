@@ -24,5 +24,4 @@ if [ -x "/usr/bin/pgtune" ]; then
   /usr/bin/pgtune -T Mixed -i /var/lib/pgsql/data/postgresql.conf.orig -o /var/lib/pgsql/data/postgresql.conf
 fi
 
-smdba system-check autotuning
 rcpostgresql stop
