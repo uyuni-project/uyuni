@@ -64,7 +64,7 @@ $myhostname.chomp!
 ENV['LANG'] = "en_US.UTF-8"
 ENV['IGNORECERT'] = "1"
 
-Capybara.default_wait_time = 60
+Capybara.default_wait_time = 10
 
 # Register different browsers
 case browser
