@@ -9,6 +9,7 @@ fi
 
 rcpostgresql start
 su - postgres -c "createdb susemanager ; echo \"CREATE ROLE spacewalk PASSWORD 'spacewalk' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
+su - postgres -c "createlang pltclu 'susemanager'"
 # "createlang plpgsql $MANAGER_DB_NAME" not needed on SUSE. plpgsql is already enabled
 
 # Update psql configuration
