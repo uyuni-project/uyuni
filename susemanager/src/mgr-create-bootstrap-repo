@@ -11,8 +11,7 @@ sys.path.append("/usr/share/susemanager")
 
 
 initCFG('server.susemanager')
-db_string = CFG.DEFAULT_DB #"rhnsat/rhnsat@rhnsat"
-rhnSQL.initDB(db_string)
+rhnSQL.initDB()
 
 basepath = CFG.MOUNT_POINT or '/var/spacewalk'
 
