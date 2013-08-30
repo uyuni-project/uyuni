@@ -8,7 +8,11 @@ MAINTAINER Johannes Renner "jrenner@suse.de"
 RUN zypper --non-interactive --gpg-auto-import-keys ref
 
 # Install needed packages
-RUN zypper in -y ant ant-junit apache-ivy java-1_6_0-ibm-devel python spacewalk-backend-sql-postgresql spacewalk-setup sudo susemanager-tools tar
+RUN zypper in -y ant ant-junit java-1_6_0-ibm-devel python spacewalk-backend-sql-postgresql spacewalk-setup sudo susemanager-tools tar
+
+# Install apache-ivy manually (only needed for 1.7)
+ADD ivy-2.3.0.jar /usr/share/java/ivy-2.3.0.jar
+RUN ln -s /usr/share/java/ivy-2.3.0.jar /usr/share/java/ivy.jar
 
 # Extract data for mgr-ncc-sync
 ADD UC5.tar.bz2 /root/UC5.tar.bz2
