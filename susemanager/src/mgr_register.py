@@ -44,8 +44,7 @@ class Register:
 
   def __init__(self):
     initCFG('server.susemanager')
-    db_string = CFG.DEFAULT_DB
-    rhnSQL.initDB(db_string)
+    rhnSQL.initDB()
     log_filename = 'mgr-register.log'
     rhnLog.initLOG(default_log_location + log_filename, CFG.DEBUG)
     self.authuser = CFG.mirrcred_user
