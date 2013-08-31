@@ -23,7 +23,6 @@
 - features/add_sys_of_group_to_SSM.feature
 - features/configuration.feature
 - features/add_system_to_conf.feature
-- features/walk_hrefs.feature
 - features/check_errata-npn.feature
 - features/cve_audit.feature
 - features/xmlrpc_cve_audit.feature
@@ -45,6 +44,7 @@
 - features/ncc-sync-channels.feature
 - features/systemspage2.feature
 - features/xmlrpc_system.feature
+- features/walk_hrefs.feature
 - features/delete_system_profile.feature
 - features/ssh_push.feature
 - features/delete_config_channel.feature
