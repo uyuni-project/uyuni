@@ -2,10 +2,13 @@
 <rhn-navi-tree label="system_detail" invisible="1" title-depth="1" acl_mixins="RHN::Access::System">
   <rhn-formvar name="sid" />
   <rhn-tab name="Details" url="/rhn/systems/details/Overview.do">
-    <rhn-tab name="Overview" url="/rhn/systems/details/Overview.do" />
+    <rhn-tab name="Overview">
+	  <rhn-tab-url>/rhn/systems/details/Overview.do</rhn-tab-url>
+	  <rhn-tab-url>/network/systems/details/reboot_confirm.pxt</rhn-tab-url>
+    </rhn-tab>
     <rhn-tab name="Properties" url="/rhn/systems/details/Edit.do" />
     <rhn-tab name="Remote Command" acl="system_feature(ftr_remote_command)">
-      <rhn-tab-url>/network/systems/details/remote_commands.pxt</rhn-tab-url>
+      <rhn-tab-url>/rhn/systems/details/SystemRemoteCommand.do</rhn-tab-url>
     </rhn-tab>
     <rhn-tab name="Connection" url="/network/systems/details/connection.pxt" acl="org_has_proxies()"/>
     <rhn-tab name="Proxy" url="/network/systems/details/proxy-clients.pxt" acl="user_role(org_admin); system_feature(ftr_proxy_capable); org_channel_family(SMP); child_channel_candidate(SMP); org_entitlement(rhn_provisioning); not system_is_satellite(); not is_solaris();system_feature(ftr_kickstart) or system_feature(ftr_snapshotting); system_is_proxy()">
@@ -137,7 +140,7 @@
       <rhn-tab name="Session Status" url="/rhn/systems/details/kickstart/SessionStatus.do" acl="system_kickstart_session_exists()">
         <rhn-tab-url>/rhn/systems/details/kickstart/SessionCancel.do</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="Schedule" url="/rhn/kickstart/ScheduleWizard.do"/>
+      <rhn-tab name="Schedule" url="/rhn/systems/details/kickstart/ScheduleWizard.do"/>
       <rhn-tab name="kickstart.variable.nav" url="/rhn/systems/details/kickstart/Variables.do" acl="cobbler_system_record_exists()"/>
     </rhn-tab>
 

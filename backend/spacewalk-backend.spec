@@ -1,7 +1,6 @@
 %global rhnroot %{_prefix}/share/rhn
 %global rhnconfigdefaults %{rhnroot}/config-defaults
 %global rhnconf %{_sysconfdir}/rhn
-%global httpdconf %{rhnconf}/satellite-httpd/conf
 %if 0%{?suse_version}
 %global apacheconfd %{_sysconfdir}/apache2/conf.d
 %global apache_user wwwrun
@@ -23,7 +22,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.11
+Version: 2.1.14
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -342,8 +341,6 @@ make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}
 
-rm -v $RPM_BUILD_ROOT%{apacheconfd}/zz-spacewalk-server-python.conf
-
 # remove all unsupported translations
 cd $RPM_BUILD_ROOT
 for d in usr/share/locale/*; do
@@ -579,7 +576,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/auditlog.py*
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_xmlrpc.conf
-%attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-xmlrpc.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-xmlrpc
 %if 0%{?suse_version}
 %dir %{rhnroot}/server
@@ -596,7 +592,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{rhnroot}/server/handlers/applet/*
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_applet.conf
-%attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-applet.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-applet
 
 %files app
@@ -609,7 +604,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{rhnroot}/server/handlers/app/*
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_app.conf
-%attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-app.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-app
 
 %files iss
@@ -621,7 +615,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{rhnroot}/server/handlers/sat
 %{rhnroot}/server/handlers/sat/*
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-iss
-%attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-sat.conf
 
 %files iss-export
 %defattr(-,root,root)
@@ -636,7 +629,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{rhnroot}/satellite_exporter/handlers/__init__.py*
 %{rhnroot}/satellite_exporter/handlers/non_auth_dumper.py*
 # config files
-%attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-sat-dump-internal.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-iss-export
 
 
@@ -670,7 +662,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{rhnroot}/server/handlers/config
 %{rhnroot}/server/handlers/config/*
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management.conf
-%attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-config-management.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files
 
 %files config-files-tool
@@ -682,7 +673,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %dir %{rhnroot}/server/handlers/config_mgmt
 %{rhnroot}/server/handlers/config_mgmt/*
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_config-management-tool.conf
-%attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-config-management-tool.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-config-files-tool
 
 %files package-push-server
@@ -696,7 +686,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_upload.conf
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_upload_package-push.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-package-push-server
-%attr(644,root,%{apache_group}) %config %{httpdconf}/rhn/spacewalk-backend-package-push.conf
 
 %files tools
 %defattr(-,root,root)
@@ -788,6 +777,17 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri Aug 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.14-1
+- don't install / build mod_python stuff
+- removed unused mod_python stuff
+
+* Fri Aug 30 2013 Tomas Lestach <tlestach@redhat.com> 2.1.13-1
+- 1002193 - remove spacewalk-backend-libs dependency from rhncfg
+
+* Wed Aug 28 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.12-1
+- 1001979 - fixed man page
+- 1001978 - fixed typo
+
 * Wed Aug 21 2013 Stephen Herr <sherr@redhat.com> 2.1.11-1
 - 960550 - completed checkbox was not checked on kickstarts that had no
   activation keys

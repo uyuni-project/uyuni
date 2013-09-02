@@ -14,7 +14,7 @@ Group:   Applications/System
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.10.55
+Version: 5.10.56
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -33,7 +33,6 @@ Requires: %{rhn_client_tools}
 %endif
 %endif
 
-Requires: spacewalk-backend-libs >= 1.3.32-1
 %if 0%{?suse_version}
 # provide rhn directories and no selinux on suse
 BuildRequires: spacewalk-client-tools
@@ -146,6 +145,9 @@ fi
 
 # $Id$
 %changelog
+* Wed Aug 28 2013 Stephen Herr <sherr@redhat.com> 5.10.56-1
+- 1002193 - remove spacewalk-backend-libs dependency from rhncfg
+
 * Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 5.10.55-1
 - updating copyright years
 
