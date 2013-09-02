@@ -150,8 +150,10 @@ def extract_test_targets_from_options(options):
 
   return test_targets
 
-def build_container_using_docker(container_name, parent_container, use_template_file = False):
-  if not container_exists(parent_container):
+def build_container_using_docker(container_name, parent_container, use_template_file = False, use_remote_parent = False):
+  if use_remote_parent:
+    parent_container = "{0}/{1}".format(DOCKER_REGISTRY_HOST, parent_container)
+  elif not container_exists(parent_container):
     error('Parent container {0} does not exist'.format(parent_container))
     sys.exit(1)
 
