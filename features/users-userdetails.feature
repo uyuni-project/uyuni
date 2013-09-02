@@ -44,19 +44,14 @@ Feature: Watch/edit user details
         And I should see "role_org_admin" as checked
         And I should see a "Organization Administrator" text
         And the "role_system_group_admin" checkbox should be disabled
-        And I should see "role_system_group_admin" as checked
         And I should see a "System Group Administrator - [ Admin Access ]" text
         And the "role_channel_admin" checkbox should be disabled
-        And I should see "role_channel_admin" as checked
         And I should see a "Channel Administrator - [ Admin Access ]" text
         And the "role_activation_key_admin" checkbox should be disabled
-        And I should see "role_activation_key_admin" as checked
         And I should see a "Activation Key Administrator - [ Admin Access ]" text
         And the "role_config_admin" checkbox should be disabled
-        And I should see "role_config_admin" as checked
         And I should see a "Configuration Administrator - [ Admin Access ]" text
         And the "role_monitoring_admin" checkbox should be disabled
-        And I should see "role_monitoring_admin" as checked
         And I should see a "Monitoring Administrator - [ Admin Access ]" text
         And I should see a "Above roles are granted via the Organization Administrator role." text
 
@@ -83,6 +78,11 @@ Feature: Watch/edit user details
       When I uncheck "role_org_admin"
         And I click on "Submit"
       Then I should see "role_org_admin" as unchecked
+       And I should see "role_system_group_admin" as checked
+       And I should see "role_channel_admin" as checked
+       And I should see "role_activation_key_admin" as checked
+       And I should see "role_config_admin" as checked
+       And I should see "role_monitoring_admin" as checked
 
   Scenario: Deactivate User (Succeed)
     Given I am on the Details page
