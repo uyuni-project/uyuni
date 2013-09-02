@@ -17,11 +17,26 @@ CONTAINER_NAME = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
 PARENT_CONTAINER = CONTAINER_NAME.rsplit('_', 1)[0] + '_base'
 
 @task
+@cmdopts([
+  ('use-remote-parent', 'r', 'Fetch the parent container from the private registry.')
+  ])
 def build():
   """Builds the container using docker."""
 
+  use_remote_parent = False
+  try:
+    use_remote_parent = options.use_remote_parent
+  except AttributeError:
+    pass
+
+
   print 'Building', CONTAINER_NAME
-  build_utils.helpers.build_container_using_docker(CONTAINER_NAME, PARENT_CONTAINER)
+  build_utils.helpers.build_container_using_docker(
+    CONTAINER_NAME,
+    PARENT_CONTAINER,
+    use_template_file = False,
+    use_remote_parent = use_remote_parent,
+  )
   print '{0} container successfully built'.format(CONTAINER_NAME)
 
 @task

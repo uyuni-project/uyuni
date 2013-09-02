@@ -18,10 +18,18 @@ CONTAINER_NAME_PREFIX = 'manager_' + os.path.basename(os.path.dirname(os.path.ab
 @task
 @cmdopts([
   ('branches=', 'b', 'Build container required to test the specified branches. By default build containers for all the branches. The list is comma separated.'),
-  ('databases=', 'd', 'Build container required to test the specified databases. By default build vanilla container, without any db. The list is comma separated.')
+  ('databases=', 'd', 'Build container required to test the specified databases. By default build vanilla container, without any db. The list is comma separated.'),
+  ('use-remote-parent', 'r', 'Fetch the parent container from the private registry.')
   ])
 def build(options):
   """Builds the container using docker."""
+
+  use_remote_parent = False
+  try:
+    use_remote_parent = options.use_remote_parent
+  except AttributeError:
+    pass
+
 
   target_branches = build_utils.helpers.extract_branches_from_options(options)
   target_dbs      = build_utils.helpers.extract_dbs_from_options(options)
@@ -35,7 +43,8 @@ def build(options):
         build_utils.helpers.build_container_using_docker(
           container_name,
           parent_container,
-          True
+          use_template_file = True,
+          use_remote_parent = use_remote_parent
         )
         print '{0} container successfully built'.format(container_name)
     else:
@@ -45,7 +54,8 @@ def build(options):
       build_utils.helpers.build_container_using_docker(
         container_name,
         parent_container,
-        True
+        use_template_file = True,
+        use_remote_parent = use_remote_parent
       )
       print '{0} container successfully built'.format(container_name)
 
