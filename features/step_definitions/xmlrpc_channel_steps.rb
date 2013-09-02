@@ -52,3 +52,10 @@ Then /^channel "([^"]*)" should have attribute "([^"]*)" from type "([^"]*)"$/ d
   #print "CLASS: #{c}\n"
   fail if c != type
 end 
+
+Then /^channel "([^"]*)" should not have attribute "([^"]*)"$/ do |label, attr|
+  ret = rpctest.getChannelDetails(label)
+  fail if not ret
+  fail if ret.has_key?(attr)
+end 
+
