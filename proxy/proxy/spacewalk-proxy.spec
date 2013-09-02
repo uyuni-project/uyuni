@@ -4,7 +4,7 @@ Group:   Applications/Internet
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 2.1.2
+Version: 2.1.10
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
@@ -56,6 +56,7 @@ Requires: spacewalk-proxy-selinux
 %else
 Requires: http_proxy
 %endif
+Requires: spacewalk-base-minimal-config
 Requires: %{name}-broker = %{version}
 Requires: %{name}-redirect = %{version}
 Requires: %{name}-common >= %{version}
@@ -96,11 +97,7 @@ Requires: http_proxy
 Requires: mod_ssl
 Requires: squid
 %endif
-%if  0%{?rhel} && 0%{?rhel} < 6
-Requires: mod_python
-%else
 Requires: mod_wsgi
-%endif
 Requires(post): %{name}-common
 Conflicts: %{name}-redirect < %{version}-%{release}
 Conflicts: %{name}-redirect > %{version}-%{release}
@@ -144,11 +141,7 @@ Requires: apache2-prefork
 %else
 Requires: mod_ssl
 %endif
-%if  0%{?rhel} && 0%{?rhel} < 6
-Requires: mod_python
-%else
 Requires: mod_wsgi
-%endif
 Requires: %{name}-broker >= %{version}
 Requires: spacewalk-backend >= 1.7.24
 Requires: policycoreutils
@@ -199,13 +192,6 @@ install -d -m 750 $RPM_BUILD_ROOT/%{_datadir}/spacewalk
 mkdir -p $RPM_BUILD_ROOT/%{_var}/spool/rhn-proxy/list
 
 touch $RPM_BUILD_ROOT/%{httpdconf}/cobbler-proxy.conf
-
-%if  0%{?rhel} && 0%{?rhel} < 6
-rm -fv $RPM_BUILD_ROOT%{httpdconf}/spacewalk-proxy-wsgi.conf
-rm -rfv $RPM_BUILD_ROOT%{rhnroot}/wsgi/
-%else
-rm -fv $RPM_BUILD_ROOT%{httpdconf}/spacewalk-proxy-python.conf
-%endif
 
 ln -sf rhn-proxy $RPM_BUILD_ROOT%{_sbindir}/spacewalk-proxy
 
@@ -375,13 +361,9 @@ fi
 %attr(640,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy.conf
 # this file is created by either cli or webui installer
 %ghost %config %{httpdconf}/cobbler-proxy.conf
-%if  0%{?rhel} && 0%{?rhel} < 6
-%attr(640,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy-python.conf
-%else
 %attr(640,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy-wsgi.conf
 %{rhnroot}/wsgi/xmlrpc.py*
 %{rhnroot}/wsgi/xmlrpc_redirect.py*
-%endif
 # the cache
 %attr(750,%{apache_user},root) %dir %{_var}/cache/rhn
 %attr(750,%{apache_user},root) %dir %{_var}/cache/rhn/proxy-auth
@@ -413,6 +395,32 @@ fi
 
 
 %changelog
+* Fri Aug 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.10-1
+- fixed pylint error
+
+* Fri Aug 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.9-1
+- 1002007 - don't send empty data
+- 1002007 - python 2.4 HTTPConnection can't read directly from object
+
+* Fri Aug 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.8-1
+- 1002007 - use mod_wsgi even on RHEL5
+
+* Wed Aug 28 2013 Tomas Lestach <tlestach@redhat.com> 2.1.7-1
+- 1001997 - let spacewalk-proxy-management require spacewalk-base-minimal-
+  config
+
+* Fri Aug 23 2013 Stephen Herr <sherr@redhat.com> 2.1.6-1
+- 1000586 - fixing line lenth error
+
+* Fri Aug 23 2013 Stephen Herr <sherr@redhat.com> 2.1.5-1
+- 1000586 - pylint errors
+
+* Fri Aug 23 2013 Stephen Herr <sherr@redhat.com> 2.1.4-1
+- 1000586 - fix checkstyle errors
+
+* Fri Aug 23 2013 Stephen Herr <sherr@redhat.com> 2.1.3-1
+- 1000586 - /etc/hosts doesn't work with proxies
+
 * Tue Aug 06 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.2-1
 - typo fix
 

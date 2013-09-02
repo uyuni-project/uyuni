@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.27
+Version: 2.1.34
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -880,6 +880,52 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Mon Sep 02 2013 Tomas Lestach <tlestach@redhat.com> 2.1.34-1
+- 822289 - do not offer compatible child channel if not unique (when changing
+  base channel)
+
+* Mon Sep 02 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.33-1
+- common.db.datasource tests: get database username from configuration file
+- 906315 - Links in API documentation
+- 1002912 - fix Systems Subscribed column on the
+  /rhn/channels/software/Entitlements.do page
+- fix checkstyle issue
+- 1002590 - fix advice how to regenerate search index
+
+* Fri Aug 30 2013 Tomas Lestach <tlestach@redhat.com> 2.1.32-1
+- 1002316 - Cloning API generates ISE if no summary
+
+* Thu Aug 29 2013 Tomas Lestach <tlestach@redhat.com> 2.1.31-1
+- 855845 - escaping server name for ssm package verify
+- 855845 - escaping server name for ssm package upgrade
+- 855845 - escaping server name for ssm package removal
+- 855845 - escaping server name for ssm package list
+- 855845 - escaping server name for
+  /rhn/systems/details/packages/profiles/ShowProfiles.do
+- 1001826 - fix the API error msg
+- Using Map instead of HashMap where possible
+
+* Thu Aug 29 2013 Tomas Lestach <tlestach@redhat.com> 2.1.30-1
+- 1002183 - allow trusted orgs to list out subscribed systems to shared
+  channels
+- 1002308 - Cloning a channel via API fails
+- UserFactoryTest: avoid failure if there are no users
+
+* Wed Aug 28 2013 Tomas Lestach <tlestach@redhat.com> 2.1.29-1
+- add additional check for cases, when pam is disabled
+- Fix javascript "Uncaught TypeError"
+- 1001826 - fixing the java code as well
+- 1001551 - fix kickstart repositories selection
+- 998944 - fix package removal via ssm
+- removing @Override annotation from methods that aren't overriden
+- removing @Override annotation from method that isn't overriden
+- remove unnecessary cast
+
+* Fri Aug 23 2013 Tomas Lestach <tlestach@redhat.com> 2.1.28-1
+- 989275 - fix ISE when changing base channel with korean locale prefs
+- 993047 - adding missing space after dot in translation strings
+- 993047 - throw correct exception if activation key already exists
+
 * Fri Aug 23 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.27-1
 - Perl to JSP port: Single system Remote Command
 

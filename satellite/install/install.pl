@@ -39,7 +39,8 @@ print loc("* Starting the Spacewalk installer.\n");
 my $DEBUG;
 $DEBUG = 0;
 
-Spacewalk::Setup::init_log_files(get_product_name(), @ARGV);
+my $composeinfo = get_composeinfo();
+Spacewalk::Setup::init_log_files($composeinfo->{productName}, @ARGV);
 
 my %opts = Spacewalk::Setup::parse_options();
 
@@ -65,7 +66,7 @@ $answers{hostname} ||= Sys::Hostname::hostname;
 my %version_info = get_version_info();
 
 print loc("* Performing pre-install checks.\n");
-do_precondition_checks(\%opts, \%answers);
+do_precondition_checks(\%opts, \%answers, $composeinfo);
 
 print loc("* Pre-install checks complete.  Beginning installation.\n");
 
@@ -134,13 +135,14 @@ exec(SPACEWALK_SETUP_SCRIPT, @ARGV_ORIG, '--skip-logfile-init', @additionalOptio
 
 
 sub get_version_info {
-  my $vre = `rpm -q --queryformat '%{version} %{release} %{epoch}' --whatprovides redhat-release`;
-  my ($version, $release, $epoch) = split /\s/, $vre;
+  my $vre = `rpm -q --queryformat '%{version} %{release} %{epoch} %{arch}' --whatprovides redhat-release`;
+  my ($version, $release, $epoch, $arch) = split /\s/, $vre;
 
   my %version_info = (
 		      version => $version,
 		      release => $release,
 		      epoch => $epoch,
+		      arch => $arch,
 		     );
 
   return %version_info;
@@ -149,6 +151,7 @@ sub get_version_info {
 sub do_precondition_checks {
   my $opts = shift;
   my $answers = shift;
+  my $composeinfo = shift;
 
   if (umask() & ~022) {
     print "The installer needs umask not to exceed 0022.\n";
@@ -156,15 +159,11 @@ sub do_precondition_checks {
   }
 
   if (not $opts->{"skip-system-version-test"}
-      and not correct_system_version(%version_info)) {
+      and not correct_system_version($composeinfo, %version_info)) {
     print loc(<<EOQ);
-This version of Red Hat Satellite runs only on:
-   Red Hat Enterprise Linux 5 Server
-   Red Hat Enterprise Linux 6 Server
 
 Installation interrupted.
 EOQ
-
     exit 2;
   }
 
@@ -221,9 +220,24 @@ EOH
 }
 
 sub correct_system_version {
+  my $composeinfo = shift;
   my %version_info = @_;
 
-  return 1 if grep { $version_info{version} eq $_ } qw/5Server 6Server/;
+  my ($compose_version) = ($composeinfo->{treeName} =~ /(RHEL\d)/);
+
+  $version_info{version} =~ s/(\d)Server/Red Hat Enterprise Linux $1/;
+  $compose_version       =~ s/RHEL/Red Hat Enterprise Linux /;
+
+  if ($composeinfo->{treeArch} eq $version_info{arch}
+      and $version_info{version} eq $compose_version
+     ) {
+     return 1;
+  }
+  print loc(<<EOH);
+ERROR: The installation media does not match your operating system:
+       $compose_version ($composeinfo->{treeArch}) vs. $version_info{version} ($version_info{arch})
+EOH
+  return 0;
 }
 
 sub getenforce {
@@ -822,11 +836,12 @@ sub install_rhn_packages {
   return 1;
 }
 
-sub get_product_name {
+sub get_composeinfo {
   my $composeinfo_file = ".composeinfo";
   my $productName = "Red Hat Satellite", my $treeName;
   my $productVersion;
   my $productSection, my $treeSection;
+  my $treeArch;
 
   open(CINFO, $composeinfo_file) || return $productName;
 
@@ -858,10 +873,26 @@ sub get_product_name {
   }
   close(CINFO);
 
+  my $treeinfo_file = ".treeinfo";
+  open(TINFO, $treeinfo_file);
+
+  foreach my $line (<TINFO>) {
+    chomp $line;
+
+    if ($line =~ /^arch\s*=\s*(.+)$/) {
+        $treeArch = $1;
+    }
+  }
+  close(TINFO);
+
   if (defined $productVersion) { $productName .= " $productVersion"; }
   if (defined $treeName) { $productName .= "\n($treeName)"; }
   
-  return "$productName";
+  return { productName => $productName,
+           productVersion => $productVersion,
+           treeName => $treeName,
+           treeArch => $treeArch,
+         };
 }
 
 

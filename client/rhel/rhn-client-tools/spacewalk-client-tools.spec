@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.1.3
+Version: 2.1.5
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -200,9 +200,18 @@ rm $RPM_BUILD_ROOT%{_datadir}/rhn/up2date_client/hardware_hal.*
 rm $RPM_BUILD_ROOT%{_datadir}/rhn/up2date_client/hardware_gudev.*
 %endif
 
-%if 0%{?rhel} > 0 && 0%{?rhel} < 6
+%if 0%{?rhel} > 0
+%if 0%{?rhel} < 6
 rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/up2date_client/firstboot
 rm -f $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_register.*
+%endif
+%if 0%{?rhel} == 6
+rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_*_*.*
+%endif
+%if 0%{?rhel} > 6
+rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/up2date_client/firstboot
+rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/
+%endif
 %else
 rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_*_*.*
 %endif
@@ -414,6 +423,7 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/firstboot/modules/rhn_review_gui.*
 %{_datadir}/firstboot/modules/rhn_finish_gui.*
 %else
+%if 0%{?rhel} < 7
 %{_datadir}/firstboot/modules/rhn_register.*
 %{_datadir}/rhn/up2date_client/firstboot/rhn_login_gui.*
 %{_datadir}/rhn/up2date_client/firstboot/rhn_start_gui.*
@@ -423,6 +433,7 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/rhn/up2date_client/firstboot/rhn_create_profile_gui.*
 %{_datadir}/rhn/up2date_client/firstboot/rhn_review_gui.*
 %{_datadir}/rhn/up2date_client/firstboot/rhn_finish_gui.*
+%endif
 %endif
 
 %if 0%{?suse_version}
@@ -444,6 +455,12 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Thu Aug 29 2013 Tomas Lestach <tlestach@redhat.com> 2.1.5-1
+- fix source string typo
+
+* Wed Aug 28 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.4-1
+- No firstboot modules on RHEL 7 and later
+
 * Thu Aug 15 2013 Stephen Herr <sherr@redhat.com> 2.1.3-1
 - 919432 - rhn-client-tools should correctly conflict with old virt-host
   versions
