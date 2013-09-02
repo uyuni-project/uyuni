@@ -14,7 +14,7 @@ import build_utils.helpers
 from build_utils.constants import *
 
 CONTAINER_NAME = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
-PARENT_CONTAINER = CONTAINER_NAME.rsplit('_', 1)[0] + '_base'
+PARENT_CONTAINER = CONTAINER_NAME.rsplit('_', 1)[0]
 
 @task
 @cmdopts([
