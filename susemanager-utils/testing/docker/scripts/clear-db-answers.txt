@@ -1,3 +1,4 @@
+admin-email=galaxy-devel@suse.de
 db-backend=postgresql
 db-user=spacewalk
 db-password=spacewalk
