@@ -25,6 +25,7 @@ end
 #
 Then /^I should see a "([^"]*)" link$/ do |arg1|
   #fail if not find_link(debrand_string(arg1)).visible?
+  sleep 0.1
   fail if not first(:link, debrand_string(arg1)).visible?
 end
 
