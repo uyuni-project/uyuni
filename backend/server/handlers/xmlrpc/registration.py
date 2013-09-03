@@ -236,7 +236,7 @@ class Registration(rhnHandler):
             log_item = "username = '%s'" % user.username
 
         log_debug(1, log_item, release_version, architecture)
-        
+
         # Fetch the applet's UUID
         if data.has_key("uuid"):
             applet_uuid = data['uuid']
@@ -1070,7 +1070,7 @@ class Registration(rhnHandler):
         # Keep doing the authentication and then just bail out
         self.auth_system(system_id)
         return 0
-        
+
     def update_contact_info(self, username, password, info={}):
         """ this API call is no longer used """
         log_debug(5, username, info)
