@@ -24,6 +24,7 @@ Feature: Explore the main landing page
      And I should see a "Custom System Info" link in the left menu
      And I should see a "Kickstart" link in the left menu
      And I should see a "View System Groups" link
+     And I should see a "Software Crashes" link in the left menu
      And I should see a "Download CSV" link
      And I should see a "Sign Out" link
 
@@ -45,15 +46,28 @@ Feature: Explore the main landing page
     Given I am on the Systems page
     When I follow "Systems" in the left menu
     Then I should see a "All" link in the left menu
+     And I should see a "Physical Systems" link in the left menu
      And I should see a "Virtual Systems" link in the left menu
      And I should see a "Out of Date" link in the left menu
+     And I should see a "Requiring Reboot" link in the left menu
+     And I should see a "Extra Packages" link in the left menu
+     And I should see a "Non-compliant Systems" link in the left menu
      And I should see a "Unentitled" link in the left menu
      And I should see a "Ungrouped" link in the left menu
      And I should see a "Inactive" link in the left menu
      And I should see a "Recently Registered" link in the left menu
+     And I should see a "Proxy" link in the left menu
      And I should see a "Duplicate Systems" link in the left menu
      And I should see a "System Currency" link in the left menu
      And I should see a "Systems" text
+
+  Scenario: Check sidebar link destination for Systems => Physical Systems
+    Given I am on the Systems page
+      And I follow "Systems" in the left menu
+      And I follow "Physical Systems" in the left menu
+    Then I should see a "Physical Systems" text
+     And I should see a "No systems." text
+     And the current path is "/rhn/systems/PhysicalList.do"
 
   Scenario: Check sidebar link destination for Systems => Virtual Systems
     Given I am on the Systems page
@@ -70,6 +84,30 @@ Feature: Explore the main landing page
     Then I should see a "Out of Date Systems" text
      And I should see a "No systems." text
      And the current path is "/rhn/systems/OutOfDate.do"
+
+  Scenario: Check sidebar link destination for Systems => Requiring Reboot
+    Given I am on the Systems page
+      And I follow "Systems" in the left menu
+      And I follow "Requiring Reboot" in the left menu
+    Then I should see a "Systems Requiring Reboot" text
+     And I should see a "No systems." text
+     And the current path is "/rhn/systems/RequiringReboot.do"
+
+  Scenario: Check sidebar link destination for Systems => Extra Packages
+    Given I am on the Systems page
+      And I follow "Systems" in the left menu
+      And I follow "Extra Packages" in the left menu
+    Then I should see a "Systems with Extra Packages" text
+     And I should see a "No systems." text
+     And the current path is "/rhn/systems/ExtraPackagesSystems.do"
+
+  Scenario: Check sidebar link destination for Systems => Non-compliant Systems
+    Given I am on the Systems page
+      And I follow "Systems" in the left menu
+      And I follow "Non-compliant Systems" in the left menu
+    Then I should see a "Non Compliant Systems" text
+     And I should see a "No systems." text
+     And the current path is "/rhn/systems/NonCompliantSystems.do"
 
   Scenario: Check sidebar link destination for Systems => Unentitled
     Given I am on the Systems page
@@ -103,6 +141,14 @@ Feature: Explore the main landing page
      And I should see a "No systems." text
      And I should see a "View systems registered:" text
      And the current path is "/rhn/systems/Registered.do"
+
+  Scenario: Check sidebar link destination for Systems => Proxy
+    Given I am on the Systems page
+      And I follow "Systems" in the left menu
+      And I follow "Proxy" in the left menu
+    Then I should see a "Proxy Servers" text
+     And I should see a "No systems." text
+     And the current path is "/rhn/systems/ProxyList.do"
 
   Scenario: Check sidebar link destination for Systems => Duplicate Systems
     Given I am on the Systems page
