@@ -45,7 +45,7 @@ class ServerWrapper(Packages, Hardware, History, SolarisPatches, SuseData):
 
     def __repr__(self):
         return "<%s instance>" % (self.__class__,)
-    
+
     def set_value(self, name, value):
         """ update a value in self.server """
         if name is None or value is None:
@@ -56,7 +56,7 @@ class ServerWrapper(Packages, Hardware, History, SolarisPatches, SuseData):
     ###
     ### PACKAGES
     ###
-    
+
     def add_package(self, entry):
         """ Wrappers for the similar functions from Packages class that supplementaly
             require a valid sysid.
@@ -84,7 +84,7 @@ class ServerWrapper(Packages, Hardware, History, SolarisPatches, SuseData):
     ###
     ### HARDWARE
     ###
-    
+
     def delete_hardware(self):
         """ Wrappers for the similar functions from Hardware class """
         return Hardware.delete_hardware(self, self.server.get("id"))
@@ -94,7 +94,7 @@ class ServerWrapper(Packages, Hardware, History, SolarisPatches, SuseData):
         # this function is primarily called from outside
         # so we have to commit here
         rhnSQL.commit()
-        return ret   
+        return ret
     def reload_hardware(self):
         """ wrapper for the Hardware.reload_hardware_byid() which requires the sysid """
         ret = self.reload_hardware_byid(self.server["id"])
