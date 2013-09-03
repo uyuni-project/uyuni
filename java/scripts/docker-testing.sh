@@ -5,6 +5,10 @@ sysctl -w kernel.shmmax=18446744073709551615
 smdba system-check autotuning
 rcpostgresql start
 
+# Schema creation
+cd /manager/susemanager-utils/testing/docker/scripts/
+./reset_pgsql_database.sh
+
 # SUSE Manager initialization
 rhn-satellite-activate --rhn-cert /manager/branding/setup/spacewalk-public.cert --disconnected
 mgr-ncc-sync --from-dir=/root/UC5
