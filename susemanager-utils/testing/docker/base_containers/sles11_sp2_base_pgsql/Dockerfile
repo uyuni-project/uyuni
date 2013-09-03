@@ -5,6 +5,9 @@
 FROM sles11_sp2_base
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
 
+# Ensure /var/cache/zypp/{packages,raw,solv} are empty - this is a workaround for an aufs bug
+RUN zypper cc -a
+
 # Make sure the package repository is up to date
 RUN zypper --non-interactive --gpg-auto-import-keys ref
 
@@ -35,3 +38,6 @@ RUN rm -rf /manager
 
 # The symlinks are broken right now, but they will work fine when we mount our
 # git checkout on /manager
+
+# Remove contents of /var/cache/zypp/{packages,raw,solv} - this is a workaround for an aufs bug
+RUN zypper cc -a
