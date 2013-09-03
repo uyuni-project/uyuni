@@ -36,6 +36,13 @@ suseSetupProduct
 #--------------------------------------
 suseActivateDefaultServices
 
+
+#==========================================
+# Remove zypper cache - prevents aufs bug
+
+echo "Removing contents of /var/cache/zypp/{packages,raw,solv} - this is a workaround for an aufs bug"
+zypper cc -a
+
 #======================================
 # Umount kernel filesystems
 #--------------------------------------
