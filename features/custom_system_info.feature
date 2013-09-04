@@ -45,7 +45,7 @@ Feature: Test custom system info key value pairs
   Scenario: Edit the key description
     When I follow "Custom System Info" in the left menu
      And I follow "key-label"
-     And I should see this client as a link
+     And I should see this client as link
      And I enter "key-desc-edited" as "description"
      And I click on "Update Key"
     Then I should see a "key-label" link

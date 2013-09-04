@@ -27,7 +27,7 @@ Scenario: searching for a known CVE number
   When I follow "Audit"
     And I enter "CVE-2038-9999" as "cveIdentifier"
     And I click on "Audit systems"
-  Then I should see this client as a link
+  Then I should see this client as link
     And I should see a "Affected, patch available in an assigned channel" text
     And I should see a "Install a new patch in this system" link
     And I should see a "Only candidate is: milkyway-dummy-2345" text
@@ -54,5 +54,5 @@ Scenario: selecting a system for the System Set Manager
     Then I should see a "1 system selected" text
   When I follow "Manage"
      And I follow "Systems" in class "content-nav"
-  Then I should see this client as a link
+  Then I should see this client as link
   Then I follow "Clear"

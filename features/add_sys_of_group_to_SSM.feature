@@ -12,6 +12,6 @@ Feature: Add systems of a group to the System Set Manager (SSM)
     When I click on "Use in SSM" for "newgroup"
     Then I should see a "1 system selected" text
      And I should see a "Selected Systems List" text
-     And I should see this client as a link
+     And I should see this client as link
 
 
