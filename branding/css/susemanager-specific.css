@@ -505,7 +505,7 @@ cursor:default;
 
 #bar {
 background-color:#FFF;
-
+color:auto;
 
 z-index:1;
 position:relative;
