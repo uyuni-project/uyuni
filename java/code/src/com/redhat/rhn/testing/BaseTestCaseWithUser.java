@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.testing;
 
+import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
@@ -46,6 +47,7 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
         // If at some point we created a user and committed the transaction, we need
         // clean up our mess
         if (committed) {
+           LoggingFactory.clearLogId();
            OrgFactory.deleteOrg(user.getOrg().getId(), user);
            commitAndCloseSession();
         }
