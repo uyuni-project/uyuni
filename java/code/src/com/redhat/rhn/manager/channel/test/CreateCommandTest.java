@@ -59,10 +59,6 @@ public class CreateCommandTest extends RhnBaseTestCase {
         invalidChannelName("abc123\\");
         invalidChannelName(null);
         invalidChannelName("_123456");
-        // test rhn or red hat channels
-        invalidChannelName("rhn-channel-name");
-        invalidChannelName("redhat linux");
-        invalidChannelName("Red Hat Enterprise Spacewalk Sync");
         invalidChannelName("0longerthansix");
 
 
@@ -150,10 +146,6 @@ public class CreateCommandTest extends RhnBaseTestCase {
         invalidChannelLabel("......");
         invalidChannelLabel("------");
         invalidChannelLabel("______");
-        // test rhn or red hat channels
-        invalidChannelLabel("rhn-channel-name");
-        invalidChannelLabel("redhat linux");
-        invalidChannelLabel("Red Hat Enterprise Spacewalk Sync");
 
         // V A L I D
         validChannelLabel("dude-this-channel");
