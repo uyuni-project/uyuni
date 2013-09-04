@@ -24,9 +24,14 @@ end
 # Test for a visible link in the whole page
 #
 Then /^I should see a "([^"]*)" link$/ do |arg1|
-  #fail if not find_link(debrand_string(arg1)).visible?
-  sleep 0.1
-  fail if not first(:link, debrand_string(arg1)).visible?
+  link = first(:link, debrand_string(arg1))
+  if link.nil?
+    sleep 1
+    $stderr.puts "ERROR - try again"
+    fail if not first(:link, debrand_string(arg1)).visible?
+  else
+    fail if not link.visible?
+  end
 end
 
 #
@@ -137,7 +142,13 @@ Then /^"([^"]*)" is installed$/ do |package|
 end
 
 When /^I check "([^"]*)" in the list$/ do |arg1|
-  first(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]").first(:xpath, ".//input[@type='checkbox']").set(true)
+  row = first(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
+  if row.nil?
+      sleep 1
+      $stderr.puts "ERROR - try again"
+      row = first(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
+  end
+  row.first(:xpath, ".//input[@type='checkbox']").set(true)
 end
 
 Then /^The table should have a column named "([^"]+)"$/ do |arg1|

@@ -49,22 +49,31 @@ end
 # Click on a link
 #
 When /^I follow "([^"]*)"$/ do |arg1|
-  sleep 0.1
-  find_link(debrand_string(arg1)).click
+  link = find_link(debrand_string(arg1))
+  if link.nil?
+      sleep 1
+      $stderr.puts "ERROR - try again"
+      link = find_link(debrand_string(arg1))
+  end
+  link.click
 end
 
 #
 # Click on a link which appears inside of <div> with
 # the given "id"
 When /^I follow "([^"]*)" in element "([^"]*)"$/ do |arg1, arg2|
-  sleep 0.1
   within(:xpath, "//div[@id=\"#{arg2}\"]") do
-    find_link(arg1).click
+    link = find_link(arg1)
+    if link.nil?
+        sleep 1
+        $stderr.puts "ERROR - try again"
+        link = find_link(arg1)
+    end
+    link.click
   end
 end
 
 When /^I follow "([^"]*)" in the (.+)$/ do |arg1, arg2|
-  sleep 0.1
   step "I follow \"#{debrand_string(arg1)}\" in element \"#{element_for(arg2)}\""
 end
 
@@ -73,8 +82,13 @@ end
 # Click on a link which appears inside of <div> with
 # the given "class"
 When /^I follow "([^"]*)" in class "([^"]*)"$/ do |arg1, arg2|
-  sleep 0.1
   within(:xpath, "//div[@class=\"#{arg2}\"]") do
-    find_link(debrand_string(arg1)).click
+      link = find_link(debrand_string(arg1))
+      if link.nil?
+          sleep 1
+          $stderr.puts "ERROR - try again"
+          link = find_link(debrand_string(arg1))
+      end
+      link.click
   end
 end
