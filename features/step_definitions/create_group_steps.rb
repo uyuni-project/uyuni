@@ -10,9 +10,3 @@ When /^I check this client$/ do
   step 'I check "' + $myhostname + '" in the list'
 end
 
-Then /^I should see this client as a link$/ do
-  within(:xpath, "//td[@class='page-content']") do
-    fail if not find_link("#{$myhostname}").visible?
-  end
-end
-

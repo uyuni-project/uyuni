@@ -40,4 +40,4 @@ Feature: Create a group
     Given I am on the groups page
     When I follow "newgroup"
      And I follow "Systems" in class "content-nav"
-    Then I should see this client as a link
+    Then I should see this client as link
