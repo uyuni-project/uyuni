@@ -45,7 +45,7 @@
 - features/systemspage2.feature
 - features/xmlrpc_system.feature
 - features/nagios.feature
-- features/walk_hrefs.feature
+# - features/walk_hrefs.feature
 - features/delete_system_profile.feature
 - features/ssh_push.feature
 - features/delete_config_channel.feature
