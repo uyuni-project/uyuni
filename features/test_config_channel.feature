@@ -64,7 +64,7 @@ Feature: Create a configuration channel
      And I follow "New Test Channel"
      And I follow "Deploy all configuration files to all subscribed systems"
     Then I should see a "/etc/mgr-test-file.cnf" link
-     And I should see this client as a link
+     And I should see this client as link
     When I click on "Deploy Files to Selected Systems"
     Then I should see a "1 revision-deploy successfully scheduled." text
      And I should see a "0 revision-deploys overridden." text
