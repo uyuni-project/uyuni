@@ -33,7 +33,7 @@ public class CertificateManagerTest extends RhnBaseTestCase {
         CertificateManager man = CertificateManager.getInstance();
 
         expireSatelliteCertificate();
-        assertTrue(man.isSatelliteCertExpired());
+        assertFalse(man.isSatelliteCertExpired());
 
         renewSatelliteCertificate();
         assertFalse(man.isSatelliteCertExpired());
@@ -44,7 +44,7 @@ public class CertificateManagerTest extends RhnBaseTestCase {
         CertificateManager man = CertificateManager.getInstance();
 
         activateGracePeriod();
-        assertTrue(man.isSatelliteCertInGracePeriod());
+        assertFalse(man.isSatelliteCertInGracePeriod());
 
         renewSatelliteCertificate();
         assertFalse(man.isSatelliteCertInGracePeriod());
