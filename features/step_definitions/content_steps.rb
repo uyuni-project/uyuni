@@ -2,15 +2,18 @@
 # Licensed under the terms of the MIT license.
 
 Then /^I should see something$/ do
-  fail if not page.has_content?('Sign In')
-  fail if not page.has_content?('About')
+    step 'I should see a "Sign In" text'
+    step 'I should see a "About" text'
 end
 
 #
 # Test for a text in the whole page
 #
 Then /^I should see a "([^"]*)" text$/ do |arg1|
-  fail if not page.has_content?(debrand_string(arg1))
+  if not page.has_content?(debrand_string(arg1))
+      sleep 1
+      fail if page.has_content?(debrand_string(arg1))
+  end
 end
 
 #
