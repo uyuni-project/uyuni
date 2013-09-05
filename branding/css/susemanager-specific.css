@@ -1113,9 +1113,8 @@ div.login-box {
 background-color:#EEE;
 }
 
-#login_page .clearbox,#relogin_page .clearbox {
-margin-left:auto;
-margin-right:auto;
+#login_page .clearBox, #relogin_page .clearBox {
+margin:auto;
 }
 
 #relogin_page h1 {
