@@ -253,7 +253,8 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         ActivationKey key = createActivationKey();
         key.addEntitlement(sgt);
         assertTrue(key.getChannels().contains(tools));
-        assertTrue(key.getChannels().contains(virt));
+        // SUSE Manager does not automatically subscribe to the tools channel (bnc#768856)
+        // assertTrue(key.getChannels().contains(virt));
         assertTrue(!key.getPackages().isEmpty());
         TokenPackage pkg = key.getPackages().iterator().next();
         assertEquals(ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME,
