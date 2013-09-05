@@ -26,5 +26,4 @@ rhnCache.set(key, "12345", raw=1)
 assert None == rhnCache.get(key, compressed=1, raw=1)
 
 # Should return None, opening raw data as pickled
-REMOVE
 assert None == rhnCache.get(key, raw=0)
