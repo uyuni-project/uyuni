@@ -203,7 +203,16 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         ConfigMacro sathostname = MonitoringConfigFactory.
                            lookupConfigMacroByName("RHN_SAT_HOSTNAME");
         assertNull(verrors);
-        assertTrue(sathostname.getDefinition().equals("test.hostname.jabber"));
+
+        String configKey = ConfigDefaults.JABBER_SERVER;
+        String suffixConfigKey = configKey.substring(configKey.indexOf('.') + 1);
+        String alternateExpectedValue = Config.get().getString(suffixConfigKey);
+        if (alternateExpectedValue != null) {
+            assertTrue(sathostname.getDefinition().equals(alternateExpectedValue));
+        }
+        else {
+            assertTrue(sathostname.getDefinition().equals("test.hostname.jabber"));
+        }
     }
 
 
