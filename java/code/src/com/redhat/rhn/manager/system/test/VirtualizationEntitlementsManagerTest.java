@@ -162,7 +162,7 @@ public class VirtualizationEntitlementsManagerTest extends BaseTestCaseWithUser 
         }
         assertEquals(1, VirtualizationEntitlementsManager.getInstance().
                 convertToFlex(sids, group.getId(), user).size());
-        HibernateFactory.getSession().clear();
+        HibernateFactory.getSession().disconnect();
         l = VirtualizationEntitlementsManager.getInstance().listFlexGuests(user);
         assertTrue(!l.isEmpty());
         assertEquals(1, l.size());
