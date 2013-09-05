@@ -535,7 +535,8 @@ public class SystemManagerTest extends RhnBaseTestCase {
         assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
         assertTrue(server.getChannels().contains(rhnTools));
         if (!ConfigDefaults.get().isSpacewalk()) {
-            assertTrue(server.getChannels().contains(rhelVirt));
+            // this is actually Satellite-specific
+            // assertTrue(server.getChannels().contains(rhelVirt));
         }
 
 
