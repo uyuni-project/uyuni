@@ -40,6 +40,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationEntitlementsManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.Collection;
@@ -77,6 +78,7 @@ public class VirtualizationEntitlementsManagerTest extends BaseTestCaseWithUser 
         Server host = s.getVirtualInstance().getHostSystem();
         Long hostId = host.getId();
         assertNotNull(host);
+        ChannelTestUtils.setupBaseChannelForVirtualization(user, host.getBaseChannel());
         SystemManager.entitleServer(host, EntitlementManager.VIRTUALIZATION);
 
         l = VirtualizationEntitlementsManager.getInstance().
