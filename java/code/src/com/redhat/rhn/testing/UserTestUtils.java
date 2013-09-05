@@ -420,5 +420,16 @@ public class UserTestUtils extends Assert {
         }
         return retval;
     }
+
+    /**
+     * Ensures that an admin user for the Satellite org exists, creating it if
+     * necessary.
+     */
+    public static void ensureSatelliteOrgAdminExists() {
+        Org satelliteOrg = OrgFactory.getSatelliteOrg();
+        User satelliteOrgAdmin = UserTestUtils.createUser("TestUser", satelliteOrg.getId());
+        UserTestUtils.addUserRole(satelliteOrgAdmin, RoleFactory.ORG_ADMIN);
+        TestUtils.saveAndFlush(satelliteOrgAdmin);
+    }
 }
 
