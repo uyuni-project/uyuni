@@ -81,6 +81,22 @@ class Tests(unittest.TestCase):
         "Tests raising exceptions"
         self.assertRaises(KeyError, rhnCache.get, self.key, missing_is_null=0)
 
+    def test_opening_uncompressed_data_as_compressed(self):
+      "Should return None, opening uncompressed data as compressed"
+      rhnCache.set(self.key, self.content, raw=1)
+
+      self.assertEqual(None, rhnCache.get(self.key, compressed=1, raw=1))
+
+      self._cleanup(self.key)
+
+    def test_opening_raw_data_as_pickled(self):
+      "Should return None, opening uncompressed data as compressed"
+      rhnCache.set(self.key, "12345", raw=1)
+
+      self.assertEqual(None, rhnCache.get(self.key, raw=0))
+
+      self._cleanup(self.key)
+
     def _cleanup(self, key):
         if rhnCache.has_key(key):
             rhnCache.delete(key)
