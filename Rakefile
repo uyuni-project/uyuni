@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'yaml'
 require 'cucumber/rake/task'
-require "rake/rdoctask"
+require "rdoc/task"
 require "rake/testtask"
 require "rake/clean"
 
