@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.rhnset;
 
 import com.redhat.rhn.common.db.ConstraintViolationException;
+import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -147,14 +148,14 @@ public class RhnSetFactory extends HibernateFactory {
                 executeMode(current, insertEl3, insertEl2, insertEl1);
             }
             catch (ConstraintViolationException e) {
-                if (e.getConstraint().endsWith("RHN_SET_USER_LABEL_ELEM_UNQ")) {
-                    // a concurrent transaction has already inserted this row
-                    // and COMMITted. This is tolerable and can happen because
-                    // the default transaction isolation level is READ
-                    // COMMITTED, thus this exception can be safely ignored
-                }
-                else {
-                    throw e;
+                // a concurrent transaction has already inserted this row
+                // and COMMITted. This is tolerable and can happen because
+                // the default transaction isolation level is READ
+                // COMMITTED, thus this exception can be safely ignored
+            }
+            catch (WrappedSQLException e) {
+                if (e.getMessage().contains("violates unique constraint")) {
+                    // see ConstraintViolationException
                 }
             }
         }
