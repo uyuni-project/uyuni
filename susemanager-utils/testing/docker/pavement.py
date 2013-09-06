@@ -152,3 +152,41 @@ def publish_testing_containers(options):
 
     with pushd(container_project_dir):
       sh('paver publish -b {0} -d {1}'.format(target_branches, target_dbs))
+
+@task
+@cmdopts([
+  ('branches=', 'b', 'Build container required to test the specified branches. By default build containers for all the branches. The list is comma separated.'),
+  ('databases=', 'd', 'Build container required to test the specified databases. By default builds containers for all the dbs. The list is comma separated.'),
+  ('test-target=', 't', 'Build container required to test the specified targets. By default builds containers for all the test targets. The list is comma separated.')
+])
+def pull_all_containers(options):
+  """Publish the container used to run SUSE Manager's tests."""
+
+  target_branches = build_utils.helpers.extract_branches_from_options(options)
+  target_dbs      = build_utils.helpers.extract_dbs_from_options(options)
+  test_targets    = build_utils.helpers.extract_test_targets_from_options(options)
+
+  if not len(target_dbs):
+    target_dbs = KNOWN_DBS
+
+  print target_branches
+  print target_dbs
+  print test_targets
+
+
+  for branch in target_branches:
+    container_name = GIT_BRANCH_BASE_CONTAINER[branch]
+    sh('docker pull {0}/{1}'.format(DOCKER_REGISTRY_HOST, container_name), ignore_error = True)
+    for db in target_dbs:
+      container_to_pull = "{0}_{1}".format(container_name, db)
+      sh('docker pull {0}/{1}'.format(DOCKER_REGISTRY_HOST, container_to_pull), ignore_error = True)
+
+      for target in test_targets:
+        # the name of the container is something like manager_python_testing_pgsql_1_7
+        container_to_pull = "manager_{0}_testing_{1}_{2}".format(
+            target,
+            db,
+            build_utils.helpers.sanitize_name(branch)
+        )
+        sh('docker pull {0}/{1}'.format(DOCKER_REGISTRY_HOST, container_to_pull), ignore_error = True)
+
