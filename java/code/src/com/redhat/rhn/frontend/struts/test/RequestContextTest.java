@@ -16,10 +16,9 @@ package com.redhat.rhn.frontend.struts.test;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.jmock.MockObjectTestCase;
-
 import com.redhat.rhn.frontend.action.test.LoginActionTest;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 /**
@@ -27,15 +26,7 @@ import com.redhat.rhn.testing.RhnMockHttpServletRequest;
  *
  * @version $Rev$
  */
-public class RequestContextTest extends MockObjectTestCase {
-
-    /**
-     *
-     * @param name Name of the TestCase
-     */
-    public RequestContextTest(String name) {
-        super(name);
-    }
+public class RequestContextTest extends RhnJmockBaseTestCase {
 
     /**
      * @throws Exception if an error occurs
