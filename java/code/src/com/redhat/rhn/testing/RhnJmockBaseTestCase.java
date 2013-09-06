@@ -17,6 +17,8 @@ package com.redhat.rhn.testing;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 
+import com.redhat.rhn.domain.common.LoggingFactory;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -29,8 +31,16 @@ public abstract class RhnJmockBaseTestCase extends MockObjectTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        LoggingFactory.clearLogId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     protected void tearDown() throws Exception {
-        // TODO Auto-generated method stub
         super.tearDown();
         TestCaseHelper.tearDownHelper();
     }
