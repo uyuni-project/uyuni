@@ -83,7 +83,7 @@ class ConfigFilesHandler(rhnHandler):
 
     # Returns a reference to a callable method
     def get_function(self, function):
-        if not self.functions.has_key(function):
+        if function not in self.functions:
             return None
 
         # Turn compression on by default
@@ -163,7 +163,7 @@ class ConfigFilesHandler(rhnHandler):
         if not (path[0] == os.sep):
             raise ConfigFilePathIncomplete(file)
 
-        if not file.has_key('config_file_type_id'):
+        if 'config_file_type_id' not in file:
             log_debug(4, "Client does not support config directories, so set file_type_id to 1")
             file['config_file_type_id'] = '1'
         # Check if delimiters are present
@@ -173,13 +173,13 @@ class ConfigFilesHandler(rhnHandler):
             raise ConfigFileMissingDelimError(file)
 
         if not (file.get('user') and file.get('group') and
-                file.get('mode')) and not self._is_link(file) :
+                file.get('mode') is not None) and not self._is_link(file):
             raise ConfigFileMissingInfoError(file)
 
         # Oracle doesn't like certain binding variables
-        file['username'] = file.get('user','')
-        file['groupname'] = file.get('group','')
-        file['file_mode'] = str(file.get('mode',''))
+        file['username'] = file.get('user', '')
+        file['groupname'] = file.get('group', '')
+        file['file_mode'] = str(file.get('mode', ''))
         # if the selinux flag is not sent by the client it is set to the last file
         # revision (or to None (i.e. NULL) in case of first revision) - see the bug
         # 644985 - SELinux context cleared from RHEL4 rhncfg-client
@@ -283,10 +283,10 @@ class ConfigFilesHandler(rhnHandler):
         file_path = file.get('path')
         file_contents = file.get('file_contents') or ''
 
-        if file.has_key('enc64') and file_contents:
+        if 'enc64' in file and file_contents:
             file_contents = base64.decodestring(file_contents)
 
-        if not file.has_key('config_file_type_id'):
+        if 'config_file_type_id' not in file:
             log_debug(4, "Client does not support config directories, so set file_type_id to 1")
             file['config_file_type_id'] = '1'
 
@@ -307,7 +307,6 @@ class ConfigFilesHandler(rhnHandler):
                 if ord(c) > 127:
                     file['is_binary'] = 'Y'
                     break
-
 
         h = rhnSQL.prepare(self._query_content_lookup)
         h.execute(**file)
@@ -398,14 +397,14 @@ class ConfigFilesHandler(rhnHandler):
 
             fields = ['config_content_id', 'config_info_id', 'config_file_type_id']
 
-            if not file.has_key('config_file_type_id'):
+            if 'config_file_type_id' not in file:
                 log_debug(4, "Client does not support config directories, so set file_type_id to 1")
                 file['config_file_type_id'] = '1'
 
             for f in fields:
                 if file.get(f) != row.get(f):
                     break
-            else: # for
+            else:  # for
                 # All fields are equal
                 file['config_revision_id'] = row['id']
                 self._update_revision(file)
@@ -425,7 +424,6 @@ class ConfigFilesHandler(rhnHandler):
             self._add_author(file, self.user)
         self._update_config_file(file)
 
-
     _query_update_revision = rhnSQL.Statement("""
         update rhnConfigRevision
            set modified = current_timestamp
@@ -435,7 +433,6 @@ class ConfigFilesHandler(rhnHandler):
     def _update_revision(self, file):
         h = rhnSQL.prepare(self._query_update_revision)
         h.execute(**file)
-
 
     def _insert_revision(self, file):
         insert_call = rhnSQL.Function("rhn_config.insert_revision",
@@ -455,7 +452,6 @@ class ConfigFilesHandler(rhnHandler):
     def _add_author(self, file, author):
         h = rhnSQL.prepare(self._query_update_revision_add_author)
         h.execute(user_id = author.getid(), rev_id = file['config_revision_id'])
-
 
     _query_update_config_file = rhnSQL.Statement("""
         update rhnConfigFile
@@ -482,6 +478,7 @@ class ConfigFilesHandler(rhnHandler):
     def new_config_channel_id(self):
         return rhnSQL.Sequence('rhn_confchan_id_seq').next()
 
+
 def format_file_results(row, server=None):
     encoding = ''
     contents = None
@@ -494,13 +491,12 @@ def format_file_results(row, server=None):
                                                end_delim=row['delim_end'])
         contents = interpolator.interpolate(contents)
 
-
     if contents:
         client_caps = rhnCapability.get_client_capabilities()
-        if client_caps and client_caps.has_key('configfiles.base64_enc'):
+        if client_caps and 'configfiles.base64_enc' in client_caps:
             encoding = 'base64'
             contents = base64.encodestring(contents)
-    if row.has_key('modified') and row['modified']:
+    if row.get('modified', False):
         m_date = xmlrpclib.DateTime(str(row['modified']))
     else:
         m_date = ''

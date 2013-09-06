@@ -129,13 +129,12 @@ public class RepoDetailsAction extends RhnAction {
                 }
             }
         }
-        else {
-            if (isCreateMode(request)) {
-                // default for has signed metadata should be true
-                form.set(METADATA_SIGNED, new Boolean(true));
-            }
-            setup(request, form, isCreateMode(request));
+        if (isCreateMode(request)) {
+            // default for has signed metadata should be true
+            form.set(METADATA_SIGNED, new Boolean(true));
         }
+        setup(request, form, isCreateMode(request));
+
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 

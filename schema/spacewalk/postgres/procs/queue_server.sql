@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 cae0ff459fa71cdd5cc195c59c70c6ee4090a42d
+-- oracle equivalent source sha1 f990a2f63bcb9f67738faa0ce12211f0b453a0d8
 -- retrieved from ./1241128047/984a347f2afbd47756e90584364799dd670b62db/schema/spacewalk/oracle/procs/queue_server.sql
 --
 -- Copyright (c) 2008--2010 Red Hat, Inc.
@@ -33,12 +33,7 @@ DECLARE
 BEGIN
     IF immediate_in > 0
     THEN
-        DELETE FROM rhnServerNeededCache WHERE server_id = server_id_in;
-        INSERT INTO rhnServerNeededCache
-            (SELECT server_id, errata_id, package_id
-               FROM rhnServerNeededView
-              WHERE server_id = server_id_in);
-
+          PERFORM rhn_server.update_needed_cache(server_id_in);
     ELSE
           SELECT org_id INTO STRICT org_id_tmp
           FROM rhnServer WHERE id = server_id_in;
