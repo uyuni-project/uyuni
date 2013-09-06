@@ -139,8 +139,9 @@ public class SSHPushWorker implements QueueWorker {
      */
     @Override
     public void run() {
-        parentQueue.workerStarting();
         try {
+            parentQueue.workerStarting();
+
             // Get the client's address
             Server server = (Server) HibernateFactory.getSession().load(
                     Server.class, system.getId());
@@ -154,12 +155,15 @@ public class SSHPushWorker implements QueueWorker {
 
             // Connect to the client
             rhnCheck();
+            HibernateFactory.commitTransaction();
         }
         catch (Exception e) {
             log.error(e.getMessage());
+            HibernateFactory.rollbackTransaction();
         }
         finally {
             parentQueue.workerDone();
+            HibernateFactory.closeSession();
         }
     }
 
