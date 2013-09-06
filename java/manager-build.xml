@@ -100,6 +100,10 @@
       <fileset dir="${build.dir}/classes">
         <include name="**/StringResource_en_US.xml" />
       </fileset>
+      <fileset dir="${src.dir}/webapp">
+        <include name="**/web.xml" if="build.tests" />
+        <include name="**/struts-config.xml" if="build.tests" />
+      </fileset>
       <!-- Can't be flattened like in <copy>, alas -->
       <metainf dir="${build.dir}/classes/com/redhat/rhn/frontend/taglibs">
         <include name="*.tld" />
