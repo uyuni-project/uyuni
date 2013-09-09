@@ -771,4 +771,12 @@ ORDER BY si.checkin
   </query>
 </mode>
 
+<write-mode name="skip_running_and_ready_jobs_by_label">
+  <query params="job_label">
+UPDATE rhnTaskoRun SET status = 'SKIPPED'
+ WHERE (status = 'RUNNING' or status = 'READY')
+   AND schedule_id IN (SELECT id FROM rhnTaskoSchedule WHERE job_label = :job_label)
+  </query>
+</write-mode>
+
 </datasource_modes>
