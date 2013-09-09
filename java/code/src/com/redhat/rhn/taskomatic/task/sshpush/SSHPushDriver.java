@@ -29,6 +29,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
@@ -97,6 +98,12 @@ public class SSHPushDriver implements QueueDriver {
         if (log.isDebugEnabled()) {
             log.debug("We will look for checkin candidates every " + checkInterval +
                     " minutes (remainder = " + moduloRemainder + ")");
+        }
+
+        // Skip all running or ready jobs if any
+        int skipped = skipRunningJobs();
+        if (log.isDebugEnabled()) {
+            log.debug("Found " + skipped + " jobs to be RUNNING/READY, skipping...");
         }
     }
 
@@ -238,5 +245,18 @@ public class SSHPushDriver implements QueueDriver {
                 TaskoFactory.listActiveSchedulesByOrgAndLabel(null, JOB_LABEL);
         return (schedules.size() == 1) &&
                 (schedules.get(0).getCronExpr().equals("0 * * * * ?"));
+    }
+
+    /**
+     * Skip all currently RUNNING or READY jobs in case of taskomatic restart.
+     *
+     * @return number of running jobs skipped
+     */
+    private int skipRunningJobs() {
+        WriteMode delete = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_SKIP_RUNNING_AND_READY_JOBS_BY_LABEL);
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("job_label", JOB_LABEL);
+        return delete.executeUpdate(params);
     }
 }
