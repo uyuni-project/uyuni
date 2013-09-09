@@ -73,6 +73,9 @@ public class SSHPushWorker implements QueueWorker {
         remotePort = port;
         system = s;
 
+        // Remember that we are talking to this system
+        SSHPushDriver.getCurrentSystems().add(system);
+
         // Init logging
         log = logger;
         if (log.isDebugEnabled()) {
@@ -164,6 +167,9 @@ public class SSHPushWorker implements QueueWorker {
         finally {
             parentQueue.workerDone();
             HibernateFactory.closeSession();
+
+            // Finished talking to this system
+            SSHPushDriver.getCurrentSystems().remove(system);
         }
     }
 
