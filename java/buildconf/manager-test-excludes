@@ -1,13 +1,14 @@
 Tests that require Cobbler:
 com/redhat/rhn/domain/kickstart/test/KickstartDataTest.class
 com/redhat/rhn/domain/kickstart/test/KickstartScriptTest.class
+com/redhat/rhn/frontend/xmlrpc/system/test/SystemHandlerTest.class
 com/redhat/rhn/manager/action/test/ActionManagerTest.class
 com/redhat/rhn/manager/system/test/SystemManagerTest.class
 
 Tests that are not relevant in SUSE Manager:
 com/redhat/rhn/taskomatic/task/test/SatelliteCertificateCheckTest.class
 
-Tests that need to be checked:
+Tests that still need to be checked:
 com/redhat/rhn/frontend/action/monitoring/test/ProbeListTest.class
 com/redhat/rhn/frontend/action/monitoring/test/ProbeSuiteProbeCreateActionTest.class
 com/redhat/rhn/frontend/action/multiorg/test/OrgSoftwareSubscriptionsActionTest.class
