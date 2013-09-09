@@ -364,7 +364,7 @@ class Runner:
     def _step_suse_products_subscriptions(self):
         try:
             mountpoint = None
-            if os.path.isdir(self.syncer.mountpoint):
+            if self.syncer.mountpoint and os.path.isdir(self.syncer.mountpoint):
                 mountpoint = self.syncer.mountpoint
             mgrsync = mgr_ncc_sync_lib.NCCSync(quiet=True, debug=CFG.DEBUG, fromdir=mountpoint)
             log(1, ['', 'Update channel-families descriptions'])
@@ -380,6 +380,8 @@ class Runner:
             mgrsync.update_upgrade_pathes_by_config()
         except Exception, e:
             log(-1, ['    Failed:', "        %s" % str(e)])
+            sendMail()
+            return 1
 
 
 def sendMail(forceEmail=0):
