@@ -136,7 +136,8 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
             assertTrue(!obj.getClass().getName().equals("java.util.Map"));
 
             //Try over-riding and getting a Map back
-            SelectMode m2 = ModeFactory.getMode("test_queries", "withClass" + db_sufix, Map.class);
+            SelectMode m2 = ModeFactory.getMode("test_queries",
+                    "withClass" + db_sufix, Map.class);
             dr = m2.execute(params);
             assertNotNull(dr);
             assertTrue(dr.size() > 1);
@@ -145,7 +146,8 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
             assertEquals("java.util.HashMap", obj.getClass().getName());
 
             //Try over-riding with something incompatible
-            SelectMode m3 = ModeFactory.getMode("test_queries", "withClass" + db_sufix, Set.class);
+            SelectMode m3 = ModeFactory.getMode("test_queries",
+                    "withClass" + db_sufix, Set.class);
             try {
                 dr = m3.execute(params);
                 fail();
@@ -332,7 +334,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
 
 
     protected void setUp() throws Exception {
-        Session session = HibernateFactory.getSession();;
+        Session session = HibernateFactory.getSession();
         Connection c = session.connection();
         Statement stmt = c.createStatement();
         try {
