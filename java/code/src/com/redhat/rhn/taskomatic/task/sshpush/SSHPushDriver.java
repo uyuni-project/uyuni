@@ -15,9 +15,12 @@
 package com.redhat.rhn.taskomatic.task.sshpush;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -37,6 +40,11 @@ import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
  */
 public class SSHPushDriver implements QueueDriver {
 
+    // Synchronized set of systems we are currently talking to
+    private static Set<SSHPushSystem> currentSystems =
+            Collections.synchronizedSet(new HashSet<SSHPushSystem>());
+
+    // String constants
     private static final String WORKER_THREADS_KEY = "taskomatic.ssh_push_workers";
     private static final String PORT_HTTPS_KEY = "ssh_push_port_https";
     private static final String JOB_LABEL = "ssh-push-default";
@@ -56,6 +64,14 @@ public class SSHPushDriver implements QueueDriver {
     // Properties used to determine when to look for checkin candidates
     private int checkInterval = SSHPushUtils.CHECK_INTERVAL;
     private int moduloRemainder;
+
+    /**
+     * Get the set of systems we are currently talking to via SSH Push.
+     * @return set of systems
+     */
+    public static Set<SSHPushSystem> getCurrentSystems() {
+        return currentSystems;
+    }
 
     /**
      * {@inheritDoc}
@@ -131,6 +147,17 @@ public class SSHPushDriver implements QueueDriver {
         if (log.isDebugEnabled()) {
             log.debug("Found " + candidates.size() + " candidates");
         }
+
+        // Do not return candidates we are talking to already
+        synchronized (currentSystems) {
+            for (SSHPushSystem s : currentSystems) {
+                if (candidates.contains(s)) {
+                    log.debug("Skipping system: " + s.getName());
+                    candidates.remove(s);
+                }
+            }
+        }
+
         return candidates;
     }
 
