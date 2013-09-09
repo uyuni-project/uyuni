@@ -49,13 +49,6 @@ public class LoginSetupActionTest extends RhnMockStrutsTestCase {
         assertTrue(request.getAttribute(LoginSetupAction.HAS_EXPIRED).equals(Boolean.TRUE));
     }
 
-    public void testGracePeriodMessage() throws Exception {
-
-        CertificateManagerTest.activateGracePeriod();
-        actionPerform();
-        verifyActionMessage("satellite.graceperiod");
-    }
-
     public void testUrlBounce() {
         LoginSetupAction action = new LoginSetupAction();
 
