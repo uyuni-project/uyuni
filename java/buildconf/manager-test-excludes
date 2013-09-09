@@ -7,8 +7,10 @@ com/redhat/rhn/manager/system/test/SystemManagerTest.class
 
 Tests that are not relevant in SUSE Manager:
 com/redhat/rhn/taskomatic/task/test/SatelliteCertificateCheckTest.class
+com/redhat/rhn/frontend/xmlrpc/test/SatScrubberTest.class
 
 Tests that still need to be checked:
+com/redhat/rhn/frontend/action/keys/test/CryptoKeyCreateActionTest.class
 com/redhat/rhn/frontend/action/satellite/test/BootstrapConfigActionTest.class
 com/redhat/rhn/frontend/action/satellite/test/GeneralConfigActionTest.class
 com/redhat/rhn/frontend/action/systems/entitlements/test/SystemEntitlementsSetupActionTest.class
@@ -21,6 +23,7 @@ com/redhat/rhn/frontend/events/test/TraceBackEventTest.class
 com/redhat/rhn/frontend/events/test/UpdateErrataCacheEventTest.class
 com/redhat/rhn/frontend/nav/test/NavTest.class
 com/redhat/rhn/frontend/servlets/test/AuthFilterTest.class
+com/redhat/rhn/frontend/struts/test/RequestContextTest.class
 com/redhat/rhn/frontend/taglibs/test/ToolbarTagCloneTest.class
 com/redhat/rhn/frontend/xmlrpc/activationkey/test/ActivationKeyHandlerTest.class
 com/redhat/rhn/frontend/xmlrpc/org/test/OrgHandlerTest.class
