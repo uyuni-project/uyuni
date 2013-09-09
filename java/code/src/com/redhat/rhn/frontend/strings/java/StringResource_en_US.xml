@@ -3079,6 +3079,12 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="type">
+        <source>Type</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/keys/CryptoKeyCreate.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="patch.applynone">
         <source>No patches selected.</source>
         <context-group name="ctx">
@@ -5447,7 +5453,7 @@ user before attempting to deactivate their account.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="crypto.key.nokey">
-        <source>No file found.  Please select a file from your local machine to upload.</source>
+        <source>No file contents found. Please select a proper key file from your local machine to upload.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
