@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
@@ -178,6 +179,7 @@ public class SatScrubberTest extends TestCase {
             Long id = (Long) row.get("id");
             log.debug("Deleting org: " + id);
             try {
+                LoggingFactory.clearLogId();
                 OrgFactory.deleteOrg(new Long(id.longValue()), UserFactory
                         .findResponsibleUser(1L, RoleFactory.SAT_ADMIN));
             }
