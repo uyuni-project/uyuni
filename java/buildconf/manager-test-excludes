@@ -13,12 +13,16 @@ com/redhat/rhn/frontend/action/monitoring/test/ProbeSuiteProbeCreateActionTest.c
 com/redhat/rhn/frontend/action/multiorg/test/OrgSoftwareSubscriptionsActionTest.class
 com/redhat/rhn/frontend/action/satellite/test/BootstrapConfigActionTest.class
 com/redhat/rhn/frontend/action/satellite/test/GeneralConfigActionTest.class
+com/redhat/rhn/frontend/action/systems/entitlements/test/SystemEntitlementsSetupActionTest.class
 com/redhat/rhn/frontend/action/systems/monitoring/test/ProbesListSetupActionTest.class
 com/redhat/rhn/frontend/action/systems/virtualization/test/ProvisionVirtualizationWizardActionTest.class
+com/redhat/rhn/frontend/action/systems/virtualization/test/VirtualGuestsActionTest.class
 com/redhat/rhn/frontend/action/user/test/UserPrefActionTest.class
 com/redhat/rhn/frontend/events/test/NewUserEventTest.class
+com/redhat/rhn/frontend/events/test/TraceBackEventTest.class
 com/redhat/rhn/frontend/events/test/UpdateErrataCacheEventTest.class
 com/redhat/rhn/frontend/nav/test/NavTest.class
 com/redhat/rhn/frontend/servlets/test/AuthFilterTest.class
 com/redhat/rhn/frontend/taglibs/test/ToolbarTagCloneTest.class
 com/redhat/rhn/frontend/xmlrpc/activationkey/test/ActivationKeyHandlerTest.class
+com/redhat/rhn/frontend/xmlrpc/org/test/OrgHandlerTest.class
