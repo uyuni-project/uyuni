@@ -11,7 +11,6 @@ cd /manager/susemanager-utils/testing/docker/scripts/
 # SUSE Manager initialization
 smdba system-check autotuning
 rhn-satellite-activate --rhn-cert /manager/branding/setup/spacewalk-public.cert --disconnected
-mgr-ncc-sync --from-dir=/root/UC5
 
 # Resolve libs and run tests
 cd /manager/java
