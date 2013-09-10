@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -50,6 +51,7 @@ public class OrgSoftwareSubscriptionsActionTest extends RhnPostMockStrutsTestCas
     public void setUp() throws Exception {
         super.setUp();
 
+        UserTestUtils.ensureSatelliteOrgAdminExists();
         cfm = ChannelFamilyFactoryTest.createTestChannelFamily(UserFactory
                         .findRandomOrgAdmin(OrgFactory.getSatelliteOrg()));
         System.out.println("CFM TEST ID is " + cfm.getId().toString());
