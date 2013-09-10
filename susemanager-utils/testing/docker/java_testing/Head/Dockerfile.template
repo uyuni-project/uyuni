@@ -13,10 +13,5 @@ RUN zypper --non-interactive --gpg-auto-import-keys ref
 # Install needed packages
 RUN zypper in -y ant ant-junit apache-ivy java-1_6_0-ibm-devel python spacewalk-backend-sql-postgresql spacewalk-setup spacewalk-setup-postgresql sudo susemanager-tools tar
 
-# Extract data for mgr-ncc-sync
-ADD UC5.tar.bz2 /root/UC5.tar.bz2
-RUN cd /root; tar xvjf UC5.tar.bz2
-RUN rm /root/UC5.tar.bz2
-
 # Remove contents of /var/cache/zypp/{packages,raw,solv} - this is a workaround for an aufs bug
 RUN zypper cc -a
