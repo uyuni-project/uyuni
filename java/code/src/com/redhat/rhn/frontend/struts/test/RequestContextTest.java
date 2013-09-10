@@ -136,7 +136,7 @@ public class RequestContextTest extends MockObjectTestCase {
         // works long term. Thankfully in most cases we don't care about
         // the parameters order.
         assertEquals("http://localhost/rhn/somePage.do?" +
-                "otherparam=foo&barparam=beer&someparam=zzzzz", url);
+                "barparam=beer&otherparam=foo&someparam=zzzzz", url);
     }
 
 }
