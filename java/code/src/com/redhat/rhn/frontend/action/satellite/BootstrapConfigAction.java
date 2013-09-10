@@ -102,9 +102,6 @@ public class BootstrapConfigAction extends BaseConfigAction {
         }
         else {
             String docroot = Config.get().getString("documentroot");
-            if (docroot == null) {
-                docroot = "";
-            }
             form.set(HOSTNAME, IDN.toUnicode(
                 Config.get().getString(ConfigDefaults.JABBER_SERVER)));
             form.set(SSL_CERT, docroot + DEFAULT_CERT_PATH);
