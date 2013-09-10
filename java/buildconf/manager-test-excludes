@@ -9,8 +9,10 @@ Tests that are not relevant in SUSE Manager:
 com/redhat/rhn/taskomatic/task/test/SatelliteCertificateCheckTest.class
 com/redhat/rhn/frontend/xmlrpc/test/SatScrubberTest.class
 
-Tests that still need to be checked:
+Tests that look completely broken in upstream code:
 com/redhat/rhn/frontend/action/systems/monitoring/test/ProbesListSetupActionTest.class
+
+Tests that still need to be checked:
 com/redhat/rhn/frontend/action/systems/virtualization/test/ProvisionVirtualizationWizardActionTest.class
 com/redhat/rhn/frontend/action/systems/virtualization/test/VirtualGuestsActionTest.class
 com/redhat/rhn/frontend/action/user/test/UserPrefActionTest.class
@@ -23,3 +25,4 @@ com/redhat/rhn/frontend/struts/test/RequestContextTest.class
 com/redhat/rhn/frontend/taglibs/test/ToolbarTagCloneTest.class
 com/redhat/rhn/frontend/xmlrpc/activationkey/test/ActivationKeyHandlerTest.class
 com/redhat/rhn/frontend/xmlrpc/org/test/OrgHandlerTest.class
+
