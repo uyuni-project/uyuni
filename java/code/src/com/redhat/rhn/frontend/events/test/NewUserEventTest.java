@@ -52,9 +52,9 @@ public class NewUserEventTest extends RhnBaseTestCase {
         NewUserEvent evt = createTestEvent();
         String eventText = evt.toText();
         assertNotNull(eventText);
-        assertContains(eventText, "A Red Hat login has been created for you");
+        assertContains(eventText, "A SUSE Manager login has been created for you");
         assertContains(eventText,
-                "Red Hat login, in combination with an active Red Hat subscription,");
+                "SUSE Manager login, in combination with an active SUSE subscription,");
         assertContains(eventText, "e-mail: redhatJavaTest@redhat.com");
 
     }
@@ -69,13 +69,13 @@ public class NewUserEventTest extends RhnBaseTestCase {
         };
         action.execute(evt);
         mailer.verify();
-        assertContains(mailer.getSubject(), "Spacewalk User Created: testUser");
+        assertContains(mailer.getSubject(), "SUSE Manager User Created: testUser");
         assertContains(mailer.getBody(),
                 "someserver.rhndev.redhat.com/rhn/users/ActiveList.do");
 
-        assertTrue(mailer.getBody().contains("Your Spacewalk login:         testUser") ||
+        assertTrue(mailer.getBody().contains("Your SUSE Manager login:         testUser") ||
                    mailer.getBody().contains("Your RHN login:         testUser"));
-        assertTrue(mailer.getBody().contains("Your Spacewalk email address: " +
+        assertTrue(mailer.getBody().contains("Your SUSE Manager email address: " +
                     "redhatJavaTest@redhat.com") ||
                    mailer.getBody().contains("Your RHN email address: " +
                 "redhatJavaTest@redhat.com"));
