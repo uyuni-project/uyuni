@@ -38,8 +38,8 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
         // setup mock objects
         String output = "<div class=\"toolbar-h1\"><div class=\"" +
             "toolbar\"><span class=\"toolbar\"><a href=\"Clone-url\">" +
-            "<img src=\"/img/action-clone.gif\" alt=\"clone kickstart\"" +
-            " title=\"clone kickstart\" />clone kickstart</a></span>" +
+            "<img src=\"/img/action-clone.gif\" alt=\"clone autoinstallation\"" +
+            " title=\"clone autoinstallation\" />clone autoinstallation</a></span>" +
             "</div></div>";
 
 
@@ -61,8 +61,8 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
     public void testCreateAclMultipleMixinsMultipleAcls() throws Exception {
         String output = "<div class=\"toolbar-h1\"><div class=\"" +
             "toolbar\"><span class=\"toolbar\"><a href=\"Clone-url\">" +
-            "<img src=\"/img/action-clone.gif\" alt=\"clone kickstart\"" +
-            " title=\"clone kickstart\" />clone kickstart</a></span>" +
+            "<img src=\"/img/action-clone.gif\" alt=\"clone autoinstallation\"" +
+            " title=\"clone autoinstallation\" />clone autoinstallation</a></span>" +
             "</div></div>";
 
         setupCloneTag("h1", "Clone-url",
@@ -78,8 +78,8 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
     public void testCreateAclMultipleAclsSingleMixin() throws Exception {
         String output = "<div class=\"toolbar-h1\"><div class=\"" +
             "toolbar\"><span class=\"toolbar\"><a href=\"Clone-url\">" +
-            "<img src=\"/img/action-clone.gif\" alt=\"clone kickstart\"" +
-            " title=\"clone kickstart\" />clone kickstart</a></span>" +
+            "<img src=\"/img/action-clone.gif\" alt=\"clone autoinstallation\"" +
+            " title=\"clone autoinstallation\" />clone autoinstallation</a></span>" +
             "</div></div>";
 
         setupCloneTag("h1", "Clone-url",
@@ -115,8 +115,8 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
         // setup mock objects
         String output = "<div class=\"toolbar-h1\"><div class=\"" +
             "toolbar\"><span class=\"toolbar\"><a href=\"Clone-url\">" +
-            "<img src=\"/img/action-clone.gif\" alt=\"clone kickstart\"" +
-            " title=\"clone kickstart\" />clone kickstart</a></span>" +
+            "<img src=\"/img/action-clone.gif\" alt=\"clone autoinstallation\"" +
+            " title=\"clone autoinstallation\" />clone autoinstallation</a></span>" +
             "</div></div>";
 
         setupCloneTag("h1", "Clone-url", "true_test()", "kickstart");
