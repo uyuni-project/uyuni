@@ -13,7 +13,6 @@ Tests that look completely broken in upstream code:
 com/redhat/rhn/frontend/action/systems/monitoring/test/ProbesListSetupActionTest.class
 
 Tests that still need to be checked:
-com/redhat/rhn/frontend/events/test/NewUserEventTest.class
 com/redhat/rhn/frontend/events/test/TraceBackEventTest.class
 com/redhat/rhn/frontend/events/test/UpdateErrataCacheEventTest.class
 com/redhat/rhn/frontend/nav/test/NavTest.class
