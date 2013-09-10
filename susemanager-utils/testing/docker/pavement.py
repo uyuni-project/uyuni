@@ -169,11 +169,6 @@ def pull_all_containers(options):
   if not len(target_dbs):
     target_dbs = KNOWN_DBS
 
-  print target_branches
-  print target_dbs
-  print test_targets
-
-
   for branch in target_branches:
     container_name = GIT_BRANCH_BASE_CONTAINER[branch]
     sh('docker pull {0}/{1}'.format(DOCKER_REGISTRY_HOST, container_name), ignore_error = True)
