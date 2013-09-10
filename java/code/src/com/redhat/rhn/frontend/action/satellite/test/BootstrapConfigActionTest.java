@@ -53,8 +53,8 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
         DynaActionForm form = (DynaActionForm) getActionForm();
         assertEquals(expectedHostname,
                 form.getString(BootstrapConfigAction.HOSTNAME));
-        assertEquals(BootstrapConfigAction.DEFAULT_CERT_PATH,
-                form.getString(BootstrapConfigAction.SSL_CERT));
+        assertTrue(form.getString(BootstrapConfigAction.SSL_CERT).endsWith(
+                BootstrapConfigAction.DEFAULT_CERT_PATH));
         assertEquals(Boolean.TRUE,
                 form.get(BootstrapConfigAction.ENABLE_SSL));
         assertEquals(Boolean.TRUE,
