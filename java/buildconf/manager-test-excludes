@@ -10,7 +10,6 @@ com/redhat/rhn/taskomatic/task/test/SatelliteCertificateCheckTest.class
 com/redhat/rhn/frontend/xmlrpc/test/SatScrubberTest.class
 
 Tests that still need to be checked:
-com/redhat/rhn/frontend/action/satellite/test/GeneralConfigActionTest.class
 com/redhat/rhn/frontend/action/systems/entitlements/test/SystemEntitlementsSetupActionTest.class
 com/redhat/rhn/frontend/action/systems/monitoring/test/ProbesListSetupActionTest.class
 com/redhat/rhn/frontend/action/systems/virtualization/test/ProvisionVirtualizationWizardActionTest.class
