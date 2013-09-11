@@ -19,7 +19,6 @@ import java.util.Set;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
@@ -109,7 +108,6 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         // We committed stuff - need to remove it all again
-        LoggingFactory.clearLogId();
         OrgFactory.deleteOrg(user.getOrg().getId(), user);
         commitAndCloseSession();
     }
