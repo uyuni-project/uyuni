@@ -1,6 +1,4 @@
 Tests that require Cobbler:
-com/redhat/rhn/domain/kickstart/test/KickstartDataTest.class
-com/redhat/rhn/domain/kickstart/test/KickstartScriptTest.class
 com/redhat/rhn/frontend/xmlrpc/system/test/SystemHandlerTest.class
 com/redhat/rhn/manager/action/test/ActionManagerTest.class
 com/redhat/rhn/manager/system/test/SystemManagerTest.class
