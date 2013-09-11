@@ -1,7 +1,3 @@
-Tests that require Cobbler:
-com/redhat/rhn/frontend/xmlrpc/system/test/SystemHandlerTest.class
-com/redhat/rhn/manager/system/test/SystemManagerTest.class
-
 Tests that are not relevant in SUSE Manager:
 com/redhat/rhn/taskomatic/task/test/SatelliteCertificateCheckTest.class
 com/redhat/rhn/frontend/xmlrpc/test/SatScrubberTest.class
