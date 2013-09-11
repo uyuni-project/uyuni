@@ -15,14 +15,16 @@
 
 package com.redhat.rhn.frontend.xmlrpc.test;
 
+import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.XmlRpcServlet;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.TestCaseHelper;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.mockobjects.servlet.MockServletInputStream;
 
 import org.jmock.Mock;
+import org.jmock.cglib.MockObjectTestCase;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -31,7 +33,18 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class XmlRpcServletTest extends RhnJmockBaseTestCase {
+public class XmlRpcServletTest extends MockObjectTestCase {
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        try {
+            LoggingFactory.clearLogId();
+        }
+        catch (Exception se) {
+            TestCaseHelper.tearDownHelper();
+            LoggingFactory.clearLogId();
+        }
+    }
 
     public void doTest(String request, String expectedResponse)
         throws Exception {

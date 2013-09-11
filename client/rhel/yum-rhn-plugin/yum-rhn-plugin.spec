@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.1.2
+Version: 2.1.3
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,9 @@ fi
 
 
 %changelog
+* Mon Sep 09 2013 Stephen Herr <sherr@redhat.com> 2.1.3-1
+- 1006037 - keep yum-rhn-plugins higher default timeout
+
 * Tue Aug 13 2013 Stephen Herr <sherr@redhat.com> 2.1.2-1
 - 996761 - package profile sync actions should not fail with empty transaction
 

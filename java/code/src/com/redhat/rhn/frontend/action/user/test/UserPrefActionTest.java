@@ -71,7 +71,6 @@ public class UserPrefActionTest extends RhnBaseTestCase {
         form.set("mail", Boolean.FALSE);
         form.set("pagesize", PAGE_SIZE);
         form.set("csvSeparator", ',');
-
         ActionForward rc = action.execute(mapping, form, request, response);
 
         // verify the correct ActionForward was returned

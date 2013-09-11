@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.18
+Version: 2.1.20
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -313,6 +313,14 @@ rm -rf $RPM_BUILD_ROOT
 
 # $Id$
 %changelog
+* Tue Sep 10 2013 Tomas Lestach <tlestach@redhat.com> 2.1.20-1
+- 1006403 - fix encodig in web
+
+* Tue Sep 10 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.19-1
+- removing Perl remote command page
+- removing Perl code associated with reboot system page
+- removing Perl reboot system page
+
 * Tue Sep 03 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.18-1
 - new features should be visible also from Perl pages
 

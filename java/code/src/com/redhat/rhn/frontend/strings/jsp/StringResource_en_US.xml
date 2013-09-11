@@ -11293,6 +11293,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="xccdfdiff.secondscan">
           <source>Second Scan</source>
         </trans-unit>
+        <trans-unit id="xccdfdiff.schedulescan">
+          <source>Schedule Scan</source>
+        </trans-unit>
         <trans-unit id="xccdfdiff.view.changed">
           <source>Only Changed Items</source>
         </trans-unit>

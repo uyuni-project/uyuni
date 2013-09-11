@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.manager.system.test;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -42,10 +46,6 @@ import com.redhat.rhn.manager.system.VirtualizationEntitlementsManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 
 /**
@@ -167,6 +167,7 @@ public class VirtualizationEntitlementsManagerTest extends BaseTestCaseWithUser 
         assertTrue(!l.isEmpty());
         assertEquals(1, l.size());
         assertEquals(1, l.get(0).expand().size());
+
     }
 
 

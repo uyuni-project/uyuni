@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.38
+Version: 2.1.41
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -467,7 +467,21 @@ find . -name *.java | grep -E '/test/' | grep -vE '(/jsp/|/playpen/)' | \
 xargs checkstyle -c buildconf/checkstyle.xml ||:
 %endif
 
-#find . -type f -name '*.xml' | xargs perl -CSAD -lne 'for (grep { $_ ne "PRODUCT_NAME" } /\@\@(\w+)\@\@/) { print; $exit = 1;} END { exit $exit }'
+# catch macro name errors
+find . -type f -name '*.xml' | xargs perl -CSAD -lne '
+          for (grep { $_ ne "PRODUCT_NAME" } /\@\@(\w+)\@\@/g) {
+              print;
+              $exit = 1;
+          }
+          @r = /((..)?PRODUCT_NAME(..)?)/g ;
+          while (@r) {
+              $s = shift(@r); $f = shift(@r); $l = shift(@r);
+              if ($f ne "@@" or $l ne "@@") {
+                  print $s;
+                  $exit = 1;
+              }
+          }
+          END { exit $exit }'
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -880,6 +894,39 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Sep 10 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.41-1
+- 580995 - updating api doc
+
+* Tue Sep 10 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.40-1
+- updated UI strings pulled from zanata
+- 1006157 - translate submit button
+- 1005771 - fixed macro name
+- 1005771 - improved build time check for @@PRODUCT_NAME@@ macro
+
+* Tue Sep 10 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.39-1
+- Teach XmlRpcServletTest about setting up for logging
+- Remove unnecessary commit from ProfileManagerTest
+- VirtualizationEntitlementsManagerTest fixes
+- rhn.manager tests: do not assume an Orgadmin exists
+- Remove QuartzTest
+- UserManagerTest: don't rely on hardcodeddefault time zone
+- ConfigureSatelliteCommandTest: do not rely on HashMap key ordering
+- MonitoringManagerTest: missingsuper.setUp() call added
+- UpdateErrataCacheCommand: log an error when orgId is incorrect
+- AdvDataSourceTest: do not rely on testexecution order
+- ChannelTest: do not assume a proxy channel family exists
+- More JUnit cleanup
+- Missed a file for preceding patch
+- Fix more tests to not rely on data already being in the DB when executed
+- Always call super.setUp()
+- If countServersInQueue() is passed a null-org, don't blow up please
+- Remove empty tests, and disable test that takes ~8min alone but ~120ms
+  running directly
+- At Junit setUp(), if there's a xaction error, try rolling back previous
+  xaction and retrying
+- Fix bugs in a few junits
+- Avoid a possible issue on concurrent updates to an RhnSet
+
 * Fri Sep 06 2013 Tomas Lestach <tlestach@redhat.com> 2.1.38-1
 - 973848 - store a key only if a file to upload is specified
 - 973848 - file upload isn't required on /rhn/keys/CryptoKeyEdit.do page
