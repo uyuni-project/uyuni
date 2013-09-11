@@ -51,7 +51,8 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("setUp - end");
     }
 
-    protected void tearDown() {
+    protected void tearDown() throws Exception {
+        super.tearDown();
         logger.debug("tearDown - start");
         TestAction.deRegisterAction();
         TestDBAction.deRegisterAction();
