@@ -1,6 +1,6 @@
-Tests that are not relevant in SUSE Manager:
+tests that are not relevant in SUSE Manager:
 com/redhat/rhn/taskomatic/task/test/SatelliteCertificateCheckTest.class
 com/redhat/rhn/frontend/xmlrpc/test/SatScrubberTest.class
 
-Tests that look completely broken in upstream code:
+tests that look completely broken in upstream code:
 com/redhat/rhn/frontend/action/systems/monitoring/test/ProbesListSetupActionTest.class
