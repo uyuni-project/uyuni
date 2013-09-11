@@ -1858,7 +1858,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Long returnInt = handler.scheduleReboot(adminKey,
                 new Integer(testServer.getId().intValue()), new Date());
-        assertEquals(returnInt, new Integer(1));
+        assertNotNull(returnInt);
 
         dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         assertEquals(1, dr.size() - preScheduleSize);
