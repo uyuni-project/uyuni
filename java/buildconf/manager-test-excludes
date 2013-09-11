@@ -1,6 +1,5 @@
 Tests that require Cobbler:
 com/redhat/rhn/frontend/xmlrpc/system/test/SystemHandlerTest.class
-com/redhat/rhn/manager/action/test/ActionManagerTest.class
 com/redhat/rhn/manager/system/test/SystemManagerTest.class
 
 Tests that are not relevant in SUSE Manager:
