@@ -144,9 +144,6 @@ public class VirtualizationEntitlementsManagerTest extends BaseTestCaseWithUser 
     }
 
     public void testConvertToFlex() throws Exception {
-        // *some(body in here does a commit :(
-        committed = true;
-
         int guestsToCreate = setupEligibleFlexGuestTests(true, user.getOrg(),
                 user, 5, 5, 20);
 
