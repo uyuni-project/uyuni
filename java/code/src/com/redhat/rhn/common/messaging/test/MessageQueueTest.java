@@ -26,7 +26,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.monitoring.ServerProbe;
 import com.redhat.rhn.domain.monitoring.test.MonitoringFactoryTest;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -61,7 +60,6 @@ public class MessageQueueTest extends RhnBaseTestCase {
         // If at some point we created a user and committed the transaction, we need
         // clean up our mess
         if (committed) {
-           LoggingFactory.clearLogId();
            OrgFactory.deleteOrg(user.getOrg().getId(), user);
            commitAndCloseSession();
         }
