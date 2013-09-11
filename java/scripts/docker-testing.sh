@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Enable hostname resolving (eg. Java InetAddress.getLocalHost())
+echo 127.0.0.1 `hostname`>>/etc/hosts
+
 # Database schema creation
 cd /manager/susemanager-utils/testing/docker/scripts/
 ./reset_pgsql_database.sh
