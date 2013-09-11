@@ -47,7 +47,6 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
         // If at some point we created a user and committed the transaction, we need
         // clean up our mess
         if (committed) {
-           LoggingFactory.clearLogId();
            OrgFactory.deleteOrg(user.getOrg().getId(), user);
            commitAndCloseSession();
         }
