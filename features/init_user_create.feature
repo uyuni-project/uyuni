@@ -66,7 +66,7 @@ Feature: Create initial users
        And I check "role_activation_key_admin"
        And I check "role_config_admin"
        And I check "role_monitoring_admin"
-       And I click on "Submit"
+       And I click on "Update"
     Then I should see a "User information updated" text
      And I should see a "testing" text
 
