@@ -15,7 +15,6 @@
 package com.redhat.rhn.testing;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.common.LoggingFactory;
 
 import org.hibernate.TransactionException;
 
@@ -52,9 +51,6 @@ public class TestCaseHelper {
         // renable it.
         RhnBaseTestCase.enableLocalizationServiceLogging();
 
-        // In case someone still has something to do
-        // with logging enabled tables
-        LoggingFactory.clearLogId();
     }
 
 }
