@@ -38,7 +38,7 @@ Feature: Watch/edit user details
         And I check "role_activation_key_admin"
         And I check "role_config_admin"
         And I check "role_monitoring_admin"
-        And I click on "Submit"
+        And I click on "Update"
       Then the "role_satellite_admin" checkbox should be disabled
         And I should see a "SUSE Manager Administrator" text
         And I should see "role_org_admin" as checked
@@ -76,7 +76,7 @@ Feature: Watch/edit user details
   Scenario: Change Role (2)
     Given I am on the Details page
       When I uncheck "role_org_admin"
-        And I click on "Submit"
+        And I click on "Update"
       Then I should see "role_org_admin" as unchecked
        And I should see "role_system_group_admin" as checked
        And I should see "role_channel_admin" as checked
