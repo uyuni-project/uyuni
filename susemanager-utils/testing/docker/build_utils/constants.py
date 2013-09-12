@@ -3,7 +3,7 @@ GIT_BRANCH_BASE_CONTAINER = {
    'Head' : 'sles11_sp3_base'
 }
 
-KNOWN_DBS = ('pgsql',)
+KNOWN_DBS = ('oracle', 'pgsql')
 
 TEST_TARGETS = ('python', 'java')
 
