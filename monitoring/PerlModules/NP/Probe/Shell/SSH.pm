@@ -56,6 +56,7 @@ sub init {
                              '-i' => '/var/lib/nocpulse/.ssh/nocpulse-identity',
                              '-o' => 'StrictHostKeyChecking=no',
                              '-o' => 'BatchMode=yes',
+                             '-q',
                              $host,
                              '/bin/sh -s'
                             ];
