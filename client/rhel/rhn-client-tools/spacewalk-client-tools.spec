@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.1.5
+Version: 2.1.6
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -455,6 +455,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Wed Sep 11 2013 Stephen Herr <sherr@redhat.com> 2.1.6-1
+- 988839 - rhn-client-tools can get the variant information from the new place
+
 * Thu Aug 29 2013 Tomas Lestach <tlestach@redhat.com> 2.1.5-1
 - fix source string typo
 

@@ -32,7 +32,14 @@ else:
         osVersionRelease = None
         ts = transaction.initReadOnlyTransaction()
         for h in ts.dbMatch('Providename', "redhat-release"):
-            osVersionRelease = (h['name'], h['version'], h['release'])
+            SYSRELVER = 'system-release(releasever)'
+            version = h['version']
+            release = h['release']
+            if SYSRELVER in h['providename']:
+                provides = dict(zip(h['providename'], h['provideversion']))
+                release = '%s-%s' % (version, release)
+                version = provides[SYSRELVER]
+            osVersionRelease = (h['name'], version, release)
             return osVersionRelease
         else:
             # new SUSE always has a baseproduct link which point to the
