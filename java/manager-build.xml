@@ -132,6 +132,16 @@
         <include name="**/*.jar" />
       </fileset>
     </copy>
+
+    <replace file="${build.dir}/webapp/WEB-INF/web.xml">
+      <replacetoken><![CDATA[<!-- add precompiled jsp servlets -->]]></replacetoken>
+      <replacevalue><![CDATA[
+  <servlet-mapping>
+    <servlet-name>jsp</servlet-name>
+    <url-pattern>*.jsp</url-pattern>
+  </servlet-mapping>
+      ]]></replacevalue>
+    </replace>
   </target>
 
   <target name="deploy" depends="webapp" description="Deploy a new copy of SUSE Manager">
