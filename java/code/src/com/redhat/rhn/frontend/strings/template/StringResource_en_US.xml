@@ -14,13 +14,13 @@
       <trans-unit id="email.newaccountbycreator.body">
         <source>Hello,
 
-A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
-@@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
+A Red Hat login has been created for you by {0} {1}. Your
+Red Hat login, in combination with an active Red Hat subscription,
 provides you with access to manage systems on @@PRODUCT_NAME@@.
 
-  @@PRODUCT_NAME@@ login: {2}
-            Password: {3}
-              e-mail: {4}
+  Red Hat login: {2}
+       Password: {3}
+         e-mail: {4}
 
   {5}
 
@@ -34,7 +34,7 @@ Thank you for using @@PRODUCT_NAME@@.
               ...created for you by James Bond (admin).
               where James = account creator's first names, Bond = account creator's last name, and
               admin = account creator's login.
-              ...@@VENDOR_NAME@@ login: kjohnny Password: mypass e-mail: kganong@redhat.com
+              ...Red Hat login: kjohnny Password: mypass e-mail: kganong@redhat.com
               https://rhn.redhat.com/
               Important: Please ...
               Thank you for using @@PRODUCT_NAME@@.
@@ -45,13 +45,13 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="email.newaccount.body">
         <source>Hello,
 
-A @@PRODUCT_NAME@@ login has been created for you. Your
-@@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
+A Red Hat login has been created for you. Your
+Red Hat login, in combination with an active Red Hat subscription,
 provides you with access to manage systems on @@PRODUCT_NAME@@.
 
-  @@PRODUCT_NAME@@ login: {0}
-            Password: {1}
-              e-mail: {2}
+  Red Hat login: {0}
+       Password: {1}
+         e-mail: {2}
 
   {3}
 
@@ -65,7 +65,7 @@ Thank you for using @@PRODUCT_NAME@@.
               ...created for you by James Bond (admin).
               where James = account creator's first names, Bond = account creator's last name, and
               admin = account creator's login.
-              ...@@VENDOR_NAME@@ login: kjohnny Password: mypass e-mail: kganong@redhat.com
+              ...Red Hat login: kjohnny Password: mypass e-mail: kganong@redhat.com
               https://rhn.redhat.com/
               Important: Please ...
               Thank you for using @@PRODUCT_NAME@@.
@@ -76,12 +76,12 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="email.newaccount.pam.body">
         <source>Hello,
 
-A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
-@@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
+A Red Hat login has been created for you by {0} {1}.  Your
+Red Hat login, in combination with an active Red Hat subscription,
 provides you with access to manage systems on @@PRODUCT_NAME@@.
 
-  @@PRODUCT_NAME@@ login: {2}
-              e-mail: {4}
+  Red Hat login: {2}
+         e-mail: {4}
 
   {5}
 
@@ -93,7 +93,7 @@ Thank you for using @@PRODUCT_NAME@@.
               ...created for you by James Bond (admin).
               where James = account creator's first names, Bond = account creator's last name, and
               admin = account creator's login.
-              ...@@VENDOR_NAME@@ login: kjohnny e-mail: kganong@redhat.com
+              ...Red Hat login: kjohnny e-mail: kganong@redhat.com
               https://rhn.redhat.com/
 
               Thank you for using @@PRODUCT_NAME@@.
@@ -117,7 +117,7 @@ A new user has been added to your account.
 
 {0}
 
-To see all the active users and @@PRODUCT_NAME@@ logins associated with your account,
+To see all the active users and Red Hat logins associated with your account,
 please visit:
 
   {1}
@@ -146,7 +146,7 @@ Thank you for using @@PRODUCT_NAME@@.
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
-Complete information about this patch can be found at the following location:
+Complete information about this errata can be found at the following location:
      {0}
 
 {1} - {2}
@@ -176,23 +176,22 @@ Summary:
 ---------------------
 Affected Systems List
 ---------------------
-This Patch Advisory may apply to the systems listed below. If you know that
-this patch does not apply to a system listed, it might be possible that the
+This Errata Advisory may apply to the systems listed below. If you know that
+this errata does not apply to a system listed, it might be possible that the
 package profile for that server is out of date. In that case you should run
-'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above) 
-as root on the system in question to refresh your software profile.
+'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (RHEL 5 and above) as root on the system in question to refresh your software profile.
     </source>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem">
           <source>
 There is 1 affected system registered in 'Overview' (only systems for
-which you have explicitly enabled Patch Alerts are shown).
+which you have explicitly enabled Errata Alerts are shown).
     </source>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems">
           <source>
 There are {0} affected systems registered in 'Overview' (only systems for
-which you have explicitly enabled Patch Alerts are shown).
+which you have explicitly enabled Errata Alerts are shown).
     </source>
           <context-group name="ctx">
             <context context-type="paramnotes">
@@ -209,8 +208,8 @@ Release    Arch       Profile Name
 You may address the issues outlined in this advisory in two ways:
 
      - select your server name by clicking on its name from the list
-       available at the following location, and then schedule a
-       patch update for it:
+       available at the following location, and then schedule an
+       errata update for it:
            {1}
 
      - run the Update Agent on each affected server.
@@ -226,7 +225,7 @@ You may address the issues outlined in this advisory in two ways:
           <source>
 Changing Notification Preferences
 ---------------------------------
-To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
+To enable/disable your Errata Alert preferences globally please log in to @@PRODUCT_NAME@@
 and navigate from "Overview" / "Your Account" to the "Preferences" tab.
 
         URL: {0}
@@ -329,8 +328,7 @@ Thank you for using @@PRODUCT_NAME@@.
       </trans-unit>
       <trans-unit id="email.satellitecert.satbodyend">
         <source>
-Please contact your regional @@VENDOR_NAME@@ Customer Service Representative for information
-on how to renew your @@PRODUCT_NAME@@ Certificate.
+Please visit the following url for steps on how to request or generate a new @@PRODUCT_NAME@@ certificate: https://access.redhat.com/knowledge/tools/satcert
 
 
 Thank you for using @@PRODUCT_NAME@@.
@@ -357,7 +355,7 @@ has expired on your {0} server. The system management services will be inaccessi
 until your certificate is renewed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic: @@PRODUCT_NAME@@CertificateCheck</context>
-          <context context-type="paramnotes">{0} - Hostname of the @@PRODUCT_NAME@@ Whose Cert has Expired: highwind.devel.redhat.com</context>
+          <context context-type="paramnotes">{0} - Hostname of the @@PRODUCT_NAME@@ Whose Cert has Expired: highwind.devel.redhat.com </context>
         </context-group>
       </trans-unit>
     </body>
