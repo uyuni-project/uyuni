@@ -56,7 +56,7 @@ public class SatScrubberTest extends TestCase {
     // Arg - this is completely bogus.  Even if we wanted to do what this does, this is NOT
     // the way to do it.  Disable until I decide whether we do it better, or just delete
     // the test.
-    public void xxxtestNothing() throws Exception {
+    public void testNothing() throws Exception {
         cleanupKickstarts();
         cleanupChannels();
         cleanupServers();
@@ -125,6 +125,7 @@ public class SatScrubberTest extends TestCase {
         for (int i = 0; i < dr.size(); i++) {
             Long uid = (Long) ((Map) dr.get(i)).get("id");
             try {
+                LoggingFactory.clearLogId();
                 UserFactory.deleteUser(uid);
             }
             catch (Exception e) {
@@ -161,6 +162,7 @@ public class SatScrubberTest extends TestCase {
      * @param sid
      */
     private void deleteServer(Long sid) {
+        LoggingFactory.clearLogId();
         CallableMode m = ModeFactory.
                 getCallableMode("System_queries", "delete_server");
         Map in = new HashMap();
