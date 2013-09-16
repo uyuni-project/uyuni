@@ -105,12 +105,6 @@
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Non-compliant Systems">
-        <source>Non-compliant Systems</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Systems Navigation Menu</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Extra Packages">
         <source>Extra Packages</source>
         <context-group name="ctx">
@@ -250,7 +244,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="channel.nav.vendor">
-        <source>@@VENDOR_NAME@@ Channels</source>
+        <source>Red Hat Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
@@ -756,7 +750,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Kickstart Details">
-        <source>Autoinstallation Details</source>
+        <source>Kickstart Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
@@ -786,7 +780,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Kickstart File">
-        <source>Autoinstallation File</source>
+        <source>Kickstart File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
@@ -798,7 +792,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Bare Metal Kickstart">
-        <source>Bare Metal Autoinstallation</source>
+        <source>Bare Metal Kickstart</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
