@@ -9,6 +9,28 @@ When /^I execute ncc\-sync "([^"]*)"$/ do |arg1|
     end
 end
 
+Before do |scenario|
+   #take a snapshot 
+   step 'I take a snapshot "before"'
+end
+
+After do |scenario|
+   #take a snapshot if the scenario fails
+   if(scenario.failed?)
+      step 'I take a snapshot "failed"'
+   end
+end	
+
+When /^I take a snapshot "([^"]*)"$/ do |name|
+    $sshout = ""
+    time = Time.new()
+    str_time= time.strftime("%H-%M-%S")
+    $sshout = `echo | ssh -o StrictHostKeyChecking=no root@$VHOST  qemu-img create -f qcow -b $IMGDIR/$VMDISK.qcow2 $IMGDIR/#{str_time}-#{name}.qcow2` 
+    if ! $?.success?
+        raise "Creating snapsnot failed..."
+    end
+end
+
 When /^I execute mgr\-bootstrap "([^"]*)"$/ do |arg1|
     arch=`uname -m`
     arch.chomp!
