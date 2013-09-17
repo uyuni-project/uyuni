@@ -162,6 +162,30 @@
     />
   </target>
 
+  <target name="deploy-static-resources" description="Deploy css/js/img/font files">
+    <condition property="spacewalk.upstream">
+      <not>
+        <available file="${basedir}/../susemanager" type="dir"/>
+      </not>
+    </condition>
+    <condition property="static.files.dir" value="/var/www/html" else="/srv/www/htdocs">
+      <isset property="spacewalk.upstream"/>
+    </condition>
+    <echo message="Copying css/js files to remote host...${static.files.dir}"/>
+    <exec executable="rsync">
+      <arg line="-a --delete ${basedir}/../branding/css/ ${deploy.user}@${deploy.host}:${static.files.dir}/css/" />
+    </exec>
+    <exec executable="rsync">
+      <arg line="-a --delete ${basedir}/../branding/img/ ${deploy.user}@${deploy.host}:${static.files.dir}/img/" />
+    </exec>
+    <exec executable="rsync">
+      <arg line="-a --delete ${basedir}/../web/html/javascript/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
+    </exec>
+    <exec executable="rsync">
+      <arg line="-a --delete ${basedir}/../web/html/fonts/ ${deploy.user}@${deploy.host}:${static.files.dir}/fonts/" />
+    </exec>
+  </target>
+
   <target name="restart-tomcat" description="Restart the tomcat process">
     <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
         echo "Launching Tomcat restart...";
