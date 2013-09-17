@@ -1,34 +1,38 @@
 # Copyright (c) 2010-2011 Novell, Inc.
 # Licensed under the terms of the MIT license.
+def short_name(name)
+    puts "name: #{name}"
+    name.downcase.tr(' ', '_').slice(0..20)
+end
 
 When /^I execute ncc\-sync "([^"]*)"$/ do |arg1|
     $sshout = ""
     $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST mgr-ncc-sync #{arg1} 2>&1`
-    if ! $?.success?
-        raise "Execute command failed: #{$!}: #{$sshout}"
-    end
+    raise "Execute command failed: #{$!}: #{$sshout}"  unless $?.success? 
 end
 
 Before do |scenario|
-   #take a snapshot 
-   step 'I take a snapshot "before"'
+    #take a snapshot 
+    step "I take a snapshot \"#{short_name(scenario.name)}\""
 end
 
 After do |scenario|
-   #take a snapshot if the scenario fails
-   if(scenario.failed?)
-      step 'I take a snapshot "failed"'
-   end
-end	
+    #take a snapshot if the scenario fails
+    name = short_name(scenario.name)
+    if(scenario.failed?)
+        step "I take a snapshot \"#{name}_failed\""
+    else
+        #nothing happened, delete snapshot as we dont need it   
+        $sshout = ""
+        $sshout = `echo | ssh root@$VHOST rm -f $IMGDIR/#{name}.qcow2`
+        raise "Failed to remove snapshot" unless $?.success? 
+    end
+end
 
 When /^I take a snapshot "([^"]*)"$/ do |name|
     $sshout = ""
-    time = Time.new()
-    str_time= time.strftime("%H-%M-%S")
-    $sshout = `echo | ssh -o StrictHostKeyChecking=no root@$VHOST  qemu-img create -f qcow -b $IMGDIR/$VMDISK.qcow2 $IMGDIR/#{str_time}-#{name}.qcow2` 
-    if ! $?.success?
-        raise "Creating snapsnot failed..."
-    end
+    $sshout = `echo | ssh -o StrictHostKeyChecking=no root@$VHOST qemu-img create -f qcow -b $IMGDIR/$VMDISK.qcow2 $IMGDIR/#{name}.qcow2` 
+    raise "Creating snapsnot failed..." unless $?.success? 
 end
 
 When /^I execute mgr\-bootstrap "([^"]*)"$/ do |arg1|
@@ -37,7 +41,6 @@ When /^I execute mgr\-bootstrap "([^"]*)"$/ do |arg1|
     if arch != "x86_64"
         arch = "i586"
     end
-    $sshout = ""
     $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST mgr-bootstrap --activation-keys=1-SUSE-PKG-#{arch} #{arg1} 2>&1`
     if ! $?.success?
         raise "Execute command failed: #{$!}: #{$sshout}"
@@ -47,14 +50,14 @@ end
 When /^I fetch "([^"]*)" from server$/ do |arg1|
     output = `curl -SkO http://$TESTHOST/#{arg1}`
     if ! $?.success?
-	raise "Execute command failed: #{$!}: #{output}"
+    raise "Execute command failed: #{$!}: #{output}"
     end
 end
 
 When /^I execute "([^"]*)"$/ do |arg1|
     output = `sh ./#{arg1} 2>&1`
     if ! $?.success?
-	raise "Execute command (#{arg1}) failed(#{$?}): #{$!}: #{output}"
+    raise "Execute command (#{arg1}) failed(#{$?}): #{$!}: #{output}"
     end
 end
 
