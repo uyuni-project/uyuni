@@ -21,6 +21,9 @@
   <property name="branding.dir" value="${basedir}/../branding"/>
   <property name="branding.src.dir" value="${branding.dir}/java/code/src"/>
   <property name="branding.img.dir" value="${branding.dir}/img"/>
+  <property name="branding.css.dir" value="${branding.dir}/css"/>
+  <property name="branding.fonts.dir" value="${branding.dir}/fonts"/>
+  <property name="js.dir" value="${basedir}/../web/html/javascript"/>
 
   <!-- Paths -->
   <path id="libjars">

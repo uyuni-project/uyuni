@@ -173,16 +173,16 @@
     </condition>
     <echo message="Copying css/js files to remote host...${static.files.dir}"/>
     <exec executable="rsync">
-      <arg line="-a --delete ${basedir}/../branding/css/ ${deploy.user}@${deploy.host}:${static.files.dir}/css/" />
+      <arg line="-a --delete ${branding.css.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/css/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a --delete ${basedir}/../branding/img/ ${deploy.user}@${deploy.host}:${static.files.dir}/img/" />
+      <arg line="-a --delete ${branding.img.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/img/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a --delete ${basedir}/../web/html/javascript/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
+      <arg line="-a --delete ${branding.fonts.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/fonts/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a --delete ${basedir}/../web/html/fonts/ ${deploy.user}@${deploy.host}:${static.files.dir}/fonts/" />
+      <arg line="-a --delete ${js.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
     </exec>
   </target>
 
@@ -203,13 +203,6 @@
   </target>
 
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
-
-  <target name="deploy-images" description="Deploys images from the branding directory to the server">
-    <echo message="Copying files to remote host..." />
-    <exec executable="rsync">
-      <arg line="-a ${branding.img.dir}/ ${deploy.user}@${deploy.host}:/srv/www/htdocs/img" />
-    </exec>
-  </target>
 
   <target name="deploy-tests" depends="init-tests,webapp" description="Deploy SUSE Manager tests">
     <echo message="Copying webapp files to remote host for running tests..." />
