@@ -233,6 +233,12 @@ Thank you for using @@PRODUCT_NAME@@.
       </trans-unit>
 
       <!-- code/src/com/redhat/rhn/frontend/strings/jsp/StringResource_en_US.xml -->
+        <trans-unit id="sdc.details.overview.installedproducts">
+          <source>Installed Products:</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/systems/details/Overview.do</context>
+          </context-group>
+        </trans-unit>
         <trans-unit id="lookup.jsp.title.errata">
           <source>We're sorry, but the patch could not be found.</source>
         </trans-unit>
