@@ -1,38 +1,10 @@
 # Copyright (c) 2010-2011 Novell, Inc.
 # Licensed under the terms of the MIT license.
-def short_name(name)
-    puts "name: #{name}"
-    name.downcase.tr(' ', '_').slice(0..20)
-end
 
 When /^I execute ncc\-sync "([^"]*)"$/ do |arg1|
     $sshout = ""
     $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST mgr-ncc-sync #{arg1} 2>&1`
     raise "Execute command failed: #{$!}: #{$sshout}"  unless $?.success? 
-end
-
-Before do |scenario|
-    #take a snapshot 
-    step "I take a snapshot \"#{short_name(scenario.name)}\""
-end
-
-After do |scenario|
-    #take a snapshot if the scenario fails
-    name = short_name(scenario.name)
-    if(scenario.failed?)
-        step "I take a snapshot \"#{name}_failed\""
-    else
-        #nothing happened, delete snapshot as we dont need it   
-        $sshout = ""
-        $sshout = `echo | ssh root@$VHOST rm -f $IMGDIR/#{name}.qcow2`
-        raise "Failed to remove snapshot" unless $?.success? 
-    end
-end
-
-When /^I take a snapshot "([^"]*)"$/ do |name|
-    $sshout = ""
-    $sshout = `echo | ssh -o StrictHostKeyChecking=no root@$VHOST qemu-img create -f qcow -b $IMGDIR/$VMDISK.qcow2 $IMGDIR/#{name}.qcow2` 
-    raise "Creating snapsnot failed..." unless $?.success? 
 end
 
 When /^I execute mgr\-bootstrap "([^"]*)"$/ do |arg1|
