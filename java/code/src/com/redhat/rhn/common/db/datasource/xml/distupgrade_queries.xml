@@ -14,7 +14,7 @@
 
 <mode name="find_target_products" class="com.redhat.rhn.frontend.dto.SUSEProductDto">
   <query params="product_id">
-   SELECT up.to_pdid id
+   SELECT up.to_pdid AS id
      FROM suseUpgradePath up
     WHERE up.from_pdid = :product_id
  ORDER BY id
@@ -23,7 +23,7 @@
 
 <mode name="find_source_products" class="com.redhat.rhn.frontend.dto.SUSEProductDto">
   <query params="product_id">
-   SELECT up.from_pdid id
+   SELECT up.from_pdid AS id
      FROM suseUpgradePath up
     WHERE up.to_pdid = :product_id
  ORDER BY id
@@ -33,9 +33,9 @@
 <mode name="channels_required_for_product"
 	class="com.redhat.rhn.frontend.dto.ChildChannelDto">
   <query params="product_id, base_channel_label">
-   SELECT spc.channel_label label,
-          c.id id,
-          c.parent_channel parent_id
+   SELECT spc.channel_label AS label,
+          c.id AS id,
+          c.parent_channel AS parent_id
      FROM suseProductChannel spc
 LEFT JOIN rhnChannel c ON spc.channel_id = c.id
     WHERE spc.product_id = :product_id
