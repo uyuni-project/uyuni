@@ -32,8 +32,6 @@ BuildRequires:       oracle-instantclient11.2-sqlplus = %{icversion}
 %endif
 
 %if 0%{?suse_version}
-BuildRequires:  prelink
-Requires(post): prelink
 Requires(post): file
 Requires(post): findutils
 %else
