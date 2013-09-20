@@ -34,7 +34,7 @@ Requires: rhn-client-tools >= 1.3.7
 %if 0%{?suse_version} && 0%{?suse_version} < 1110 || 0%{?rhel} && 0%{?rhel} <= 5
 Requires: python-hashlib
 %endif
-%if 0%{?suse_version} >= 1140
+%if 0%{?suse_version} >= 1110
 Requires: python-xml
 %else
 # This should have been required by rhnlib
