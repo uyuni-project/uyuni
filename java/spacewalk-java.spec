@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.41
+Version: 2.1.45
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -894,6 +894,52 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Sep 19 2013 Simon Lukasik <slukasik@redhat.com> 2.1.45-1
+- 1009652 - Render empty SCAP results correctly
+- Fixing spelling mistakes
+- 1009396 -  escaping server name for software crashes with identical UUID
+
+* Wed Sep 18 2013 Tomas Lestach <tlestach@redhat.com> 2.1.44-1
+- updated UI strings pulled from zanata
+- 1007998 - fix activation key selection
+- 1009019 - mentioning entitlement labels in apidoc
+- 820225 - remove and recount entitlements before we remove guest associations
+- 910739 - fix systemgroup.scheduleApplyErrataToActive API doc
+
+* Tue Sep 17 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.43-1
+- Grammar error occurred
+- 1008687 - Fixing unlocalized strings in Manage Software Channels tab
+- 1006630 - Making "Update" button translated
+- 1008649 - Fixing unlocalized words
+- 1008631 - fixing untranslatable strings
+
+* Mon Sep 16 2013 Tomas Lestach <tlestach@redhat.com> 2.1.42-1
+- Workaround bug in MockHttpServletRequest - asking for a param that doesn't
+  exist shouldn't assert()
+- VirtualGuestsActionTest: do not rely ontranslation messages
+- ProvisionVirtualizationWizardActionTest:preconditions
+- SystemEntitlementsSetupActionTest: do not assume Org has virtualization
+  entitlement
+- Add support for uploaded files in mockedrequests, fix
+  CryptoKeyCreateActionTest
+- OrgSoftwareSubscriptionsActionTest: always create test channel families
+- MethodsSetupActionTest: do not assume that method command exists
+- KickstartScriptActionTest: missingparameters added
+- junit tests: some logging cleanups
+- Make taskomatic maxmemory configurable in rhn.conf
+- TestUtils: use the same temporaryfilename for the same file
+- junit tests: do not rely on Cobbler
+- VirtualGuestsActionTest: do not rely on query string parameter ordering
+- OrgHandlerTest: don't depend on a channel family with free entitlement slots
+- ActivationKeyHandlerTest: expect correct exceptions
+- AuthFilterTest: mocked request object updated
+- MasterHandlerTest: handlegetDefaultMaster exceptions
+- DownloadActionTest: do not assume file tobe downloaded exists
+- Frontend monitoring tests: ensure aMonitoring Scout exists
+- RequestContext.buildPageLink: forceparameter ordering
+- 580995 - typo fix + clarify meaning
+- Cleaning up more Junits
+
 * Tue Sep 10 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.41-1
 - 580995 - updating api doc
 
@@ -6598,7 +6644,7 @@ Feature: Support channel-permissions on ISS
 - Made the expansion decorator show the show all|hide all correctly
   (paji@redhat.com)
 - queuing channel repo generation for new channels (jsherril@redhat.com)
-- Fixed a pagination issue that occured on first page load (paji@redhat.com)
+- Fixed a pagination issue that occurred on first page load (paji@redhat.com)
 - ignoring virt bonded interfaces, changing dups page to not sure the same set,
   and fixing inactive counts on mac and hostname pages (jsherril@redhat.com)
 - 585901 - add an extra null condition (tlestach@redhat.com)
@@ -6619,7 +6665,7 @@ Feature: Support channel-permissions on ISS
 - More work on select all magic (paji@redhat.com)
 - 588901 - Fix listLatestUpgradablePackages API results
   (joshua.roys@gtri.gatech.edu)
-- Fixed an accidental compile error that occured due to a previous commit
+- Fixed an accidental compile error that occurred due to a previous commit
   (paji@redhat.com)
 - Added some magic to show the system names and url instead of ids in the dups
   page (paji@redhat.com)

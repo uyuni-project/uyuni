@@ -4628,8 +4628,14 @@ value for this entitlement, excluding the default organization's consumption.</s
         <trans-unit id="ssm.misc.index.syspref.update">
           <source>Automatic application of relevant errata</source>
         </trans-unit>
-        <trans-unit id="ssm.misc.index.syspref.no">
-          <source>No</source>
+        <trans-unit id="ssm.misc.index.syspref.changepreferences">
+          <source>Change Preferences</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.index.syspref.nochange">
+          <source>No Change</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.index.syspref.preference">
+          <source>Preference</source>
         </trans-unit>
 
         <trans-unit id="ssm.misc.reboot.header">
@@ -11096,7 +11102,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>OpenSCAP Scans</source>
         </trans-unit>
         <trans-unit id="system.audit.listscap.jsp.missing">
-          <source>This system does not yet have OpenSCAP scan capability. OpenSCAP scanning requires that particular software is installed and enabled on your system. You may ensure that OpenSCAP capability wil be enabled on this system by installing "{0}" package.</source>
+          <source>This system does not yet have OpenSCAP scan capability. OpenSCAP scanning requires that particular software is installed and enabled on your system. You may ensure that OpenSCAP capability will be enabled on this system by installing "{0}" package.</source>
         </trans-unit>
         <trans-unit id="system.audit.listscap.jsp.testresult">
           <source>Xccdf Test Result</source>
@@ -19097,6 +19103,15 @@ given channel.</source>
         <source>Are you certain you want to delete these packages?
 
             This process can take several seconds. Be patient and do not click the button below more than once.</source>
+      </trans-unit>
+      <trans-unit id="channel.jsp.manage.package.channel">
+        <source>Channel</source>
+      </trans-unit>
+      <trans-unit id="channel.jsp.manage.package.allpackages">
+        <source>All managed packages.</source>
+      </trans-unit>
+      <trans-unit id="channel.jsp.manage.package.packagesnochannels">
+        <source>Packages in no channels.</source>
       </trans-unit>
       <trans-unit id="baddownload.jsp.title">
         <source>File Download Failed</source>

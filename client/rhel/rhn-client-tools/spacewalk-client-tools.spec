@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.1.6
+Version: 2.1.7
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -455,6 +455,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Tue Sep 17 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.7-1
+- Grammar error occurred
+
 * Wed Sep 11 2013 Stephen Herr <sherr@redhat.com> 2.1.6-1
 - 988839 - rhn-client-tools can get the variant information from the new place
 
@@ -625,7 +628,7 @@ make -f Makefile.rhn-client-tools test
 - Fix missing exception scope
 
 * Mon Jul 09 2012 Michael Mraka <michael.mraka@redhat.com> 1.8.11-1
-- Fix typo in 'Fatal error in Python code occured'
+- Fix typo in 'Fatal error in Python code occurred'
 
 * Wed Jul 04 2012 Miroslav Suchý <msuchy@redhat.com> 1.8.10-1
 - read memory information even on kernels 3.x
