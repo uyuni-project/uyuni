@@ -35,7 +35,7 @@ sql:
     NPE.version as newest_version,
     NPE.release as newest_release
   from rhnServer S
-    join rhnServerNeededPackageCache SPC on S.id=SPC.server_id
+    join rhnServerNeededCache SPC on S.id=SPC.server_id
     join rhnPackage P on SPC.package_id=P.id
     join rhnPackageName PN on P.name_id=PN.id
     join rhnServerPackage SP on SP.server_id=S.id and SP.name_id=P.name_id
@@ -44,10 +44,11 @@ sql:
     join rhnPackageEvr NPE on NPE.id=P.evr_id
   where NPE.evr=(
     select max(PE.evr)
-    from rhnServerNeededPackageCache SPC1
+    from rhnServerNeededCache SPC1
       join rhnPackage P1 on SPC1.package_id=P1.id
       join rhnPackageEvr PE on P1.evr_id=PE.id
-    where P1.name_id=P.name_id)
+    where P1.name_id=P.name_id
+      and SPC1.server_id = s.id)
   ) X
   -- where placeholder
   order by org_id, system_id
