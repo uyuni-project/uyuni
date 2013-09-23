@@ -457,8 +457,7 @@ class RepoSyncTest(unittest.TestCase):
 
         rs.upload_updates(notices)
 
-        self.assertEqual(self.reposync.ErrataImport.call_args,
-                         (([], mocked_backend), {}))
+        self.assertEqual(self.reposync.ErrataImport.call_args, None)
 
     def test_associate_package(self):
         pack = self.reposync.ContentPackage()
