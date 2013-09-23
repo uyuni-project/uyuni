@@ -230,6 +230,28 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Verify that bnc#841240 is fixed:
+     * Do not throw exceptions if a product channel is not synced
+     * @throws Exception if anything goes wrong
+     */
+    public void testUnsyncedProductChannels() throws Exception {
+        // Create a SUSE product and channel products
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct product = createTestSUSEProduct(channelFamily);
+        ChannelProduct channelProduct1 = createTestChannelProduct();
+        // Create channels
+        Channel baseChannel = createTestVendorBaseChannel(channelFamily, channelProduct1);
+        Channel childChannel1 = createTestVendorChildChannel(baseChannel, channelProduct1);
+
+        // Assign channels to SUSE product. Not adding the base channel on
+        // purpose to simulate that it has not been synchronized
+        createTestSUSEProductChannel(childChannel1, product);
+
+        // should not throw any exception
+        CVEAuditManager.findSUSEProductChannels(product.getId());
+    }
+
+    /**
      * Test upgrade paths going backwards:
      * {@link CVEAuditManager#findAllSourceProducts(Long)}
      * @throws Exception if anything goes wrong
