@@ -277,8 +277,10 @@ class RepoSync(object):
                    'feature'     : 'Product Enhancement Advisory',
                    'enhancement' : 'Product Enhancement Advisory'
                    }
+        backend = SQLBackend()
         skipped_updates = 0
         batch = []
+
         for notice in notices:
             e = Erratum()
 
@@ -362,12 +364,17 @@ class RepoSync(object):
 
             e['locally_modified'] = None
             batch.append(e)
+            if self.deep_verify:
+                # import step by step
+                importer = ErrataImport(batch, backend)
+                importer.run()
+                batch = []
 
         if skipped_updates > 0:
             self.print_msg("%d patches skipped because of incomplete package list." % skipped_updates)
-        backend = SQLBackend()
-        importer = ErrataImport(batch, backend)
-        importer.run()
+        if len(batch) > 0:
+            importer = ErrataImport(batch, backend)
+            importer.run()
         self.regen = True
 
     def upload_updates(self, notices):
@@ -381,6 +388,8 @@ class RepoSync(object):
                   'feature'     : 'Product Enhancement Advisory',
                   'enhancement' : 'Product Enhancement Advisory'
                   }
+        backend = SQLBackend()
+
         for notice in notices:
             notice = _fix_notice(notice)
             patch_name = self._patch_naming(notice)
@@ -451,12 +460,17 @@ class RepoSync(object):
                 e['security_impact'] = "Low"
             e['locally_modified'] = None
             batch.append(e)
+            if self.deep_verify:
+                # import step by step
+                importer = ErrataImport(batch, backend)
+                importer.run()
+                batch = []
 
         if skipped_updates > 0:
             self.print_msg("%d patches skipped because of empty package list." % skipped_updates)
-        backend = SQLBackend()
-        importer = ErrataImport(batch, backend)
-        importer.run()
+        if len(batch) > 0:
+            importer = ErrataImport(batch, backend)
+            importer.run()
         self.regen = True
 
     def errata_needs_update(self, existing_errata, new_errata_version, new_errata_changedate):
