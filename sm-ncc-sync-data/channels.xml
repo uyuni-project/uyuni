@@ -585,6 +585,11 @@
 			<product_id name="sle-hae">3942</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension 11 SP3" family="AiO" is_signed="Y" label="sle11-hae-sp3-pool-x86_64-sap-sp3" name="SLE11-HAE-SP3-Pool for x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP3" update_tag="sleshasp3">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension 11 SP3" family="SLE-HAE-X86" is_signed="Y" label="sle11-hae-sp3-pool-x86_64-vmware-sp3" name="SLE11-HAE-SP3-Pool for x86_64 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-x86_64" product_name="sle-hae" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP3" update_tag="sleshasp3">
 		<products>
 			<product_id name="sle-hae">3942</product_id>
@@ -620,6 +625,11 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension 11 SP3" family="SLE-HAE-X86" is_signed="Y" label="sle11-hae-sp3-updates-x86_64" name="SLE11-HAE-SP3-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="sle-hae" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP3" update_tag="sleshasp3">
 		<products>
 			<product_id name="sle-hae">3942</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension 11 SP3" family="AiO" is_signed="Y" label="sle11-hae-sp3-updates-x86_64-sap-sp3" name="SLE11-HAE-SP3-Updates for x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP3" update_tag="sleshasp3">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension 11 SP3" family="SLE-HAE-X86" is_signed="Y" label="sle11-hae-sp3-updates-x86_64-vmware-sp3" name="SLE11-HAE-SP3-Updates for x86_64 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-x86_64" product_name="sle-hae" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-HAE-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise High Availability Extension 11 SP3" update_tag="sleshasp3">
@@ -695,6 +705,26 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise Point of Service 11 SP1" family="10040" is_signed="Y" label="sle11-pos-sp1-updates-x86_64" name="SLE11-POS-SP1-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-pos" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-POS-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Point of Service 11 SP1" update_tag="sleposp1">
 		<products>
 			<product_id name="sle-pos">2080</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="SUSE Linux Enterprise Point of Service 11 SP3" family="10040" is_signed="Y" label="sle11-pos-sp3-pool-i586" name="SLE11-POS-SP3-Pool for i586" optional="N" parent="sles11-sp3-pool-i586" product_name="sle-pos" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-POS-SP3-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Point of Service 11 SP3" update_tag="sleposp3">
+		<products>
+			<product_id name="sle-pos">4100</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Point of Service 11 SP3" family="10040" is_signed="Y" label="sle11-pos-sp3-pool-x86_64" name="SLE11-POS-SP3-Pool for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="sle-pos" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-POS-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Point of Service 11 SP3" update_tag="sleposp3">
+		<products>
+			<product_id name="sle-pos">4100</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="SUSE Linux Enterprise Point of Service 11 SP3" family="10040" is_signed="Y" label="sle11-pos-sp3-updates-i586" name="SLE11-POS-SP3-Updates for i586" optional="N" parent="sles11-sp3-pool-i586" product_name="sle-pos" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-POS-SP3-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Point of Service 11 SP3" update_tag="sleposp3">
+		<products>
+			<product_id name="sle-pos">4100</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Point of Service 11 SP3" family="10040" is_signed="Y" label="sle11-pos-sp3-updates-x86_64" name="SLE11-POS-SP3-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="sle-pos" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-POS-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Point of Service 11 SP3" update_tag="sleposp3">
+		<products>
+			<product_id name="sle-pos">4100</product_id>
 		</products>
 	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise 11 SP1 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-pool-i586" name="SLE11-SDK-SP1-Pool for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-sdk" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP1 Software Development Kit" update_tag="sdksp1">
@@ -1155,6 +1185,11 @@
 			<product_id name="sle-sdk">3860</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp3-pool-x86_64-sap-sp3" name="SLE11-SDK-SP3-Pool for x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="sle-sdk" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Software Development Kit" update_tag="sdksp3">
+		<products>
+			<product_id name="sle-sdk">3860</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp3-pool-x86_64-sled-sp3" name="SLE11-SDK-SP3-Pool for x86_64 SLED-SP3" optional="N" parent="sled11-sp3-pool-x86_64" product_name="sle-sdk" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Software Development Kit" update_tag="sdksp3">
 		<products>
 			<product_id name="sle-sdk">3860</product_id>
@@ -1215,6 +1250,11 @@
 			<product_id name="sle-sdk">3860</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp3-updates-x86_64-sap-sp3" name="SLE11-SDK-SP3-Updates for x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="sle-sdk" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Software Development Kit" update_tag="sdksp3">
+		<products>
+			<product_id name="sle-sdk">3860</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp3-updates-x86_64-sled-sp3" name="SLE11-SDK-SP3-Updates for x86_64 SLED-SP3" optional="N" parent="sled11-sp3-pool-x86_64" product_name="sle-sdk" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Software Development Kit" update_tag="sdksp3">
 		<products>
 			<product_id name="sle-sdk">3860</product_id>
@@ -1225,127 +1265,137 @@
 			<product_id name="sle-sdk">3860</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-pool-i586" name="SLE11-SMT-SP2-Pool for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-pool-i586" name="SLE11-SMT-SP2-Pool for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">3260</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-pool-i586-vmware" name="SLE11-SMT-SP2-Pool for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-pool-i586-vmware" name="SLE11-SMT-SP2-Pool for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">3260</product_id>
 		</products>
 	</channel>
-	<channel arch="s390x" description="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-pool-s390x" name="SLE11-SMT-SP2-Pool for s390x" optional="N" parent="sles11-sp1-pool-s390x" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-s390x/" summary="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="s390x" description="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-pool-s390x" name="SLE11-SMT-SP2-Pool for s390x" optional="N" parent="sles11-sp1-pool-s390x" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-s390x/" summary="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">3260</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-pool-x86_64" name="SLE11-SMT-SP2-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-pool-x86_64" name="SLE11-SMT-SP2-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">3260</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-pool-x86_64-vmware" name="SLE11-SMT-SP2-Pool for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-pool-x86_64-vmware" name="SLE11-SMT-SP2-Pool for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">3260</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-updates-i586" name="SLE11-SMT-SP2-Updates for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-updates-i586" name="SLE11-SMT-SP2-Updates for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">3260</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-updates-i586-vmware" name="SLE11-SMT-SP2-Updates for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-updates-i586-vmware" name="SLE11-SMT-SP2-Updates for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">3260</product_id>
 		</products>
 	</channel>
-	<channel arch="s390x" description="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-updates-s390x" name="SLE11-SMT-SP2-Updates for s390x" optional="N" parent="sles11-sp1-pool-s390x" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-s390x/" summary="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="s390x" description="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-updates-s390x" name="SLE11-SMT-SP2-Updates for s390x" optional="N" parent="sles11-sp1-pool-s390x" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-s390x/" summary="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">3260</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-updates-x86_64" name="SLE11-SMT-SP2-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-updates-x86_64" name="SLE11-SMT-SP2-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">3260</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-updates-x86_64-vmware" name="SLE11-SMT-SP2-Updates for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP2 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-updates-x86_64-vmware" name="SLE11-SMT-SP2-Updates for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">3260</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-pool-i586" name="SLE11-SMT-SP3-Pool for i586" optional="N" parent="sles11-sp3-pool-i586" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" update_tag="slesmtsp3">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-pool-i586" name="SLE11-SMT-SP3-Pool for i586" optional="N" parent="sles11-sp3-pool-i586" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" update_tag="slesmtsp3">
 		<products>
 			<product_id name="sle-smt">4040</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-pool-i586-vmware-sp3" name="SLE11-SMT-SP3-Pool for i586 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-i586" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" update_tag="slesmtsp3">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-pool-i586-vmware-sp3" name="SLE11-SMT-SP3-Pool for i586 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-i586" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" update_tag="slesmtsp3">
 		<products>
 			<product_id name="sle-smt">4040</product_id>
 		</products>
 	</channel>
-	<channel arch="s390x" description="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-pool-s390x" name="SLE11-SMT-SP3-Pool for s390x" optional="N" parent="sles11-sp3-pool-s390x" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-s390x/" summary="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" update_tag="slesmtsp3">
+	<channel arch="s390x" description="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-pool-s390x" name="SLE11-SMT-SP3-Pool for s390x" optional="N" parent="sles11-sp3-pool-s390x" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-s390x/" summary="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" update_tag="slesmtsp3">
 		<products>
 			<product_id name="sle-smt">4040</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-pool-x86_64" name="SLE11-SMT-SP3-Pool for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" update_tag="slesmtsp3">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-pool-x86_64" name="SLE11-SMT-SP3-Pool for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" update_tag="slesmtsp3">
 		<products>
 			<product_id name="sle-smt">4040</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-pool-x86_64-vmware-sp3" name="SLE11-SMT-SP3-Pool for x86_64 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-x86_64" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" update_tag="slesmtsp3">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-pool-x86_64-sap-sp3" name="SLE11-SMT-SP3-Pool for x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" update_tag="slesmtsp3">
 		<products>
 			<product_id name="sle-smt">4040</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-updates-i586" name="SLE11-SMT-SP3-Updates for i586" optional="N" parent="sles11-sp3-pool-i586" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" update_tag="slesmtsp3">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-pool-x86_64-vmware-sp3" name="SLE11-SMT-SP3-Pool for x86_64 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-x86_64" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" update_tag="slesmtsp3">
 		<products>
 			<product_id name="sle-smt">4040</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-updates-i586-vmware-sp3" name="SLE11-SMT-SP3-Updates for i586 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-i586" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" update_tag="slesmtsp3">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-updates-i586" name="SLE11-SMT-SP3-Updates for i586" optional="N" parent="sles11-sp3-pool-i586" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" update_tag="slesmtsp3">
 		<products>
 			<product_id name="sle-smt">4040</product_id>
 		</products>
 	</channel>
-	<channel arch="s390x" description="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-updates-s390x" name="SLE11-SMT-SP3-Updates for s390x" optional="N" parent="sles11-sp3-pool-s390x" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-s390x/" summary="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" update_tag="slesmtsp3">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-updates-i586-vmware-sp3" name="SLE11-SMT-SP3-Updates for i586 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-i586" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" update_tag="slesmtsp3">
 		<products>
 			<product_id name="sle-smt">4040</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-updates-x86_64" name="SLE11-SMT-SP3-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" update_tag="slesmtsp3">
+	<channel arch="s390x" description="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-updates-s390x" name="SLE11-SMT-SP3-Updates for s390x" optional="N" parent="sles11-sp3-pool-s390x" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-s390x/" summary="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" update_tag="slesmtsp3">
 		<products>
 			<product_id name="sle-smt">4040</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-updates-x86_64-vmware-sp3" name="SLE11-SMT-SP3-Updates for x86_64 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-x86_64" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Subscription Managment Tool" update_tag="slesmtsp3">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-updates-x86_64" name="SLE11-SMT-SP3-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" update_tag="slesmtsp3">
 		<products>
 			<product_id name="sle-smt">4040</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-i586" name="SLE11-SMT-Updates for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-updates-x86_64-sap-sp3" name="SLE11-SMT-SP3-Updates for x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" update_tag="slesmtsp3">
+		<products>
+			<product_id name="sle-smt">4040</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp3-updates-x86_64-vmware-sp3" name="SLE11-SMT-SP3-Updates for x86_64 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-x86_64" product_name="sle-smt" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 SP3 Subscription Management Tool" update_tag="slesmtsp3">
+		<products>
+			<product_id name="sle-smt">4040</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="SUSE Linux Enterprise 11 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-i586" name="SLE11-SMT-Updates for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">1460</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise 11 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-i586-vmware" name="SLE11-SMT-Updates for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="i586" description="SUSE Linux Enterprise 11 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-i586-vmware" name="SLE11-SMT-Updates for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-i586/" summary="SUSE Linux Enterprise 11 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">1460</product_id>
 		</products>
 	</channel>
-	<channel arch="s390x" description="SUSE Linux Enterprise 11 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-s390x" name="SLE11-SMT-Updates for s390x" optional="N" parent="sles11-sp1-pool-s390x" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-s390x/" summary="SUSE Linux Enterprise 11 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="s390x" description="SUSE Linux Enterprise 11 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-s390x" name="SLE11-SMT-Updates for s390x" optional="N" parent="sles11-sp1-pool-s390x" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-s390x/" summary="SUSE Linux Enterprise 11 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">1460</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-x86_64" name="SLE11-SMT-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-x86_64" name="SLE11-SMT-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">1460</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise 11 Subscription Managment Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-x86_64-vmware" name="SLE11-SMT-Updates for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 Subscription Managment Tool" update_tag="slesmtsp0">
+	<channel arch="x86_64" description="SUSE Linux Enterprise 11 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-updates-x86_64-vmware" name="SLE11-SMT-Updates for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="sle-smt" product_version="11" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise 11 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">1460</product_id>
 		</products>
@@ -1460,6 +1510,11 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="AiO" is_signed="Y" label="sle11-sp1-debuginfo-pool-x86_64-sap-sp2" name="SLE11-SP1-Debuginfo-Pool for x86_64 SAP-SP2" optional="Y" parent="sle11-sp2-sap-updates-x86_64" product_name="SUSE_SLES_SAP" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
 		<products>
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="AiO" is_signed="Y" label="sle11-sp1-debuginfo-pool-x86_64-sap-sp3" name="SLE11-SP1-Debuginfo-Pool for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Desktop 11 SP1" family="7260" is_signed="Y" label="sle11-sp1-debuginfo-pool-x86_64-sled" name="SLE11-SP1-Debuginfo-Pool for x86_64 SLED" optional="Y" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Desktop 11 SP1" update_tag="dbgsp1">
@@ -1605,6 +1660,11 @@
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="AiO" is_signed="Y" label="sle11-sp1-debuginfo-updates-x86_64-sap-sp3" name="SLE11-SP1-Debuginfo-Updates for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="dbgsp1">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Desktop 11 SP1" family="7260" is_signed="Y" label="sle11-sp1-debuginfo-updates-x86_64-sled" name="SLE11-SP1-Debuginfo-Updates for x86_64 SLED" optional="Y" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP1-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Desktop 11 SP1" update_tag="dbgsp1">
 		<products>
 			<product_id name="SUSE_SLED">3004</product_id>
@@ -1737,6 +1797,11 @@
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="AiO" is_signed="Y" label="sle11-sp2-debuginfo-core-x86_64-sap-sp3" name="SLE11-SP2-Debuginfo-Core for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-core-x86_64-sled" name="SLE11-SP2-Debuginfo-Core for x86_64 SLED" optional="Y" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLED">3004</product_id>
@@ -1858,6 +1923,11 @@
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="AiO" is_signed="Y" label="sle11-sp2-debuginfo-updates-x86_64-sap-sp3" name="SLE11-SP2-Debuginfo-Updates for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7260" is_signed="Y" label="sle11-sp2-debuginfo-updates-x86_64-sled" name="SLE11-SP2-Debuginfo-Updates for x86_64 SLED" optional="Y" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLED">3004</product_id>
@@ -1943,6 +2013,11 @@
 			<product_id name="sle-11-WebYaST">3840</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="WebYaST 1.3" family="AiO" is_signed="Y" label="sle11-sp2-webyast-1.3-pool-x86_64-sap-sp3" name="SLE11-SP2-WebYaST-1.3-Pool for x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-x86_64/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-pool-x86_64-vmware-sp3" name="SLE11-SP2-WebYaST-1.3-Pool for x86_64 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-x86_64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-x86_64/" summary="WebYaST 1.3" update_tag="slewyst13">
 		<products>
 			<product_id name="sle-11-WebYaST">3840</product_id>
@@ -1976,6 +2051,11 @@
 	<channel arch="x86_64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-x86_64" name="SLE11-SP2-WebYaST-1.3-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-x86_64/" summary="WebYaST 1.3" update_tag="slewyst13">
 		<products>
 			<product_id name="sle-11-WebYaST">3840</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="WebYaST 1.3" family="AiO" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-x86_64-sap-sp3" name="SLE11-SP2-WebYaST-1.3-Updates for x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-x86_64/" summary="WebYaST 1.3" update_tag="slewyst13">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="WebYaST 1.3" family="WEBYAST" is_signed="Y" label="sle11-sp2-webyast-1.3-updates-x86_64-vmware-sp3" name="SLE11-SP2-WebYaST-1.3-Updates for x86_64 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-x86_64" product_name="sle-11-WebYaST" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-x86_64/" summary="WebYaST 1.3" update_tag="slewyst13">
@@ -2024,6 +2104,11 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3" family="7261" is_signed="Y" label="sle11-sp3-debuginfo-pool-x86_64" name="SLE11-SP3-Debuginfo-Pool for x86_64" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP3-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="dbgsp3">
 		<products>
 			<product_id name="SUSE_SLES">3890</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3" family="AiO" is_signed="Y" label="sle11-sp3-debuginfo-pool-x86_64-sap-sp3" name="SLE11-SP3-Debuginfo-Pool for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP3-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="dbgsp3">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3" family="7260" is_signed="Y" label="sle11-sp3-debuginfo-pool-x86_64-sled-sp3" name="SLE11-SP3-Debuginfo-Pool for x86_64 SLED-SP3" optional="Y" parent="sled11-sp3-pool-x86_64" product_name="SUSE_SLED" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP3-Debuginfo-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="dbgsp3">
@@ -2079,6 +2164,11 @@
 			<product_id name="SUSE_SLES">3890</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3" family="AiO" is_signed="Y" label="sle11-sp3-debuginfo-updates-x86_64-sap-sp3" name="SLE11-SP3-Debuginfo-Updates for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP3-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="dbgsp3">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3" family="7260" is_signed="Y" label="sle11-sp3-debuginfo-updates-x86_64-sled-sp3" name="SLE11-SP3-Debuginfo-Updates for x86_64 SLED-SP3" optional="Y" parent="sled11-sp3-pool-x86_64" product_name="SUSE_SLED" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP3-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="dbgsp3">
 		<products>
 			<product_id name="SUSE_SLED">3885</product_id>
@@ -2087,6 +2177,16 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sp3-debuginfo-updates-x86_64-vmware-sp3" name="SLE11-SP3-Debuginfo-Updates for x86_64 VMWare-SP3" optional="Y" parent="sles11-sp3-vmware-pool-x86_64" product_name="SLES-for-VMware" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP3-Debuginfo-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="dbgsp3">
 		<products>
 			<product_id name="SLES-for-VMware">4004</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 for SAP Applications" family="AiO" is_signed="Y" label="sle11-sp3-sap-pool-x86_64" name="SLE11-SP3-SAP-Pool for x86_64" optional="N" parent="BASE" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP3-SAP-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 for SAP Applications" update_tag="slesappsp3">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 for SAP Applications" family="AiO" is_signed="Y" label="sle11-sp3-sap-updates-x86_64" name="SLE11-SP3-SAP-Updates for x86_64" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP3-SAP-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 for SAP Applications" update_tag="slesappsp3">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
 		</products>
 	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP1" family="7261" is_signed="Y" label="sle11-webyast-sp1-pool-i586" name="SLE11-WebYaST-SP1-Pool for i586" optional="Y" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLE11-WebYaST-SP1-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slewystsp1">
@@ -2431,6 +2531,16 @@
 			<product_id name="SUSE-Linux-Enterprise-RT">3580</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Real-Time 11.3" family="13319" is_signed="Y" label="slert11-sp3-pool-x86_64" name="SLERT11-SP3-Pool for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLERT11-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Real-Time 11.3" update_tag="slertesp3">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-RT">4061</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Real-Time 11.3" family="13319" is_signed="Y" label="slert11-sp3-updates-x86_64" name="SLERT11-SP3-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="SUSE-Linux-Enterprise-RT" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLERT11-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Real-Time 11.3" update_tag="slertesp3">
+		<products>
+			<product_id name="SUSE-Linux-Enterprise-RT">4061</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 10 SP3" family="7261" is_signed="Y" label="sles10-sp3-gplv3-extras-i586" name="SLES10-SP3-GPLv3-Extras for i586" optional="Y" parent="sles10-sp3-pool-i586" product_name="SUSE-Linux-Enterprise-Server-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLES10-GPLv3-Extras/sles-10-i586/" summary="SUSE Linux Enterprise Server 10 SP3" update_tag="slemp3">
 		<products>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP3">1500</product_id>
@@ -2579,7 +2689,6 @@
 	</channel>
 	<channel arch="s390x" description="SUSE Linux Enterprise Server 10 SP4" family="SLES-Z" is_signed="Y" label="sles10-sp4-ltss-updates-s390x" name="SLES10-SP4-LTSS-Updates for s390x" optional="Y" parent="sles10-sp4-pool-s390x" product_name="SUSE-Linux-Enterprise-Server-SP4" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLES10-SP4-LTSS-Updates/sles-10-s390x/" summary="SUSE Linux Enterprise Server 10 SP4" update_tag="slesp4">
 		<products>
-			<product_id name="SUSE-Linux-Enterprise-Server-SP4">2530</product_id>
 			<product_id name="SUSE-Linux-Enterprise-Server-SP4">2531</product_id>
 		</products>
 	</channel>
@@ -2739,6 +2848,11 @@
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="AiO" is_signed="Y" label="sles11-extras-x86_64-sap-sp3" name="SLES11-Extras for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-Extras/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="7261" is_signed="Y" label="sles11-extras-x86_64-sles-sp3" name="SLES11-Extras for x86_64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-Extras/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="">
 		<products>
 			<product_id name="SUSE_SLES">3890</product_id>
@@ -2861,6 +2975,11 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="AiO" is_signed="Y" label="sles11-sp1-pool-x86_64-sap-sp2" name="SLES11-SP1-Pool for x86_64 SAP-SP2" optional="N" parent="sle11-sp2-sap-updates-x86_64" product_name="SUSE_SLES_SAP" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
 		<products>
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="AiO" is_signed="Y" label="sles11-sp1-pool-x86_64-sap-sp3" name="SLES11-SP1-Pool for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="7261" is_signed="Y" label="sles11-sp1-pool-x86_64-sles-sp3" name="SLES11-SP1-Pool for x86_64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
@@ -3008,6 +3127,11 @@
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="AiO" is_signed="Y" label="sles11-sp1-updates-x86_64-sap-sp3" name="SLES11-SP1-Updates for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP1" family="7261" is_signed="Y" label="sles11-sp1-updates-x86_64-sles-sp3" name="SLES11-SP1-Updates for x86_64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP1" update_tag="slessp1">
 		<products>
 			<product_id name="SUSE_SLES">3890</product_id>
@@ -3127,6 +3251,11 @@
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="AiO" is_signed="Y" label="sles11-sp2-core-x86_64-sap-sp3" name="SLES11-SP2-Core for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-core-x86_64-sles-sp3" name="SLES11-SP2-Core for x86_64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Core/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
 		<products>
 			<product_id name="SUSE_SLES">3890</product_id>
@@ -3200,6 +3329,11 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-extension-store-x86_64" name="SLES11-SP2-Extension-Store for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
 		<products>
 			<product_id name="SUSE_SLES">3009</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="AiO" is_signed="Y" label="sles11-sp2-extension-store-x86_64-sap-sp3" name="SLES11-SP2-Extension-Store for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-extension-store-x86_64-sles-sp3" name="SLES11-SP2-Extension-Store for x86_64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
@@ -3300,6 +3434,11 @@
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools" family="AiO" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-sap-sp3" name="SLES11-SP2-SUSE-Manager-Tools x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Manager Tools" family="7260" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-sled-sp3" name="SLES11-SP2-SUSE-Manager-Tools x86_64 SLED-SP3" optional="N" parent="sled11-sp3-pool-x86_64" product_name="SUSE_SLED" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLED">3885</product_id>
@@ -3390,6 +3529,11 @@
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="AiO" is_signed="Y" label="sles11-sp2-updates-x86_64-sap-sp3" name="SLES11-SP2-Updates for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="7261" is_signed="Y" label="sles11-sp2-updates-x86_64-sles-sp3" name="SLES11-SP2-Updates for x86_64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
 		<products>
 			<product_id name="SUSE_SLES">3890</product_id>
@@ -3470,6 +3614,11 @@
 			<product_id name="SUSE_SLES">3890</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3" family="AiO" is_signed="Y" label="sles11-sp3-extension-store-x86_64-sap-sp3" name="SLES11-SP3-Extension-Store for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-Extension-Store/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="slessp3">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP3" family="7261" is_signed="Y" label="sles11-sp3-pool-i586" name="SLES11-SP3-Pool for i586" optional="N" parent="BASE" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="slessp3">
 		<products>
 			<product_id name="SUSE_SLES">3886</product_id>
@@ -3498,6 +3647,11 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3" family="7261" is_signed="Y" label="sles11-sp3-pool-x86_64" name="SLES11-SP3-Pool for x86_64" optional="N" parent="BASE" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="slessp3">
 		<products>
 			<product_id name="SUSE_SLES">3890</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3" family="AiO" is_signed="Y" label="sles11-sp3-pool-x86_64-sap-sp3" name="SLES11-SP3-Pool for x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="slessp3">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
 		</products>
 	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP3" family="7261" is_signed="Y" label="sles11-sp3-updates-i586" name="SLES11-SP3-Updates for i586" optional="N" parent="sles11-sp3-pool-i586" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="slessp3">
@@ -3530,6 +3684,11 @@
 			<product_id name="SUSE_SLES">3890</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3" family="AiO" is_signed="Y" label="sles11-sp3-updates-x86_64-sap-sp3" name="SLES11-SP3-Updates for x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="slessp3">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP3 VMWare" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp3-vmware-pool-i586" name="SLES11-SP3-VMware-Pool for i586" optional="N" parent="BASE" product_name="SLES-for-VMware" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-VMware-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP3 VMWare" update_tag="slessp3">
 		<products>
 			<product_id name="SLES-for-VMware">4004</product_id>
@@ -3558,6 +3717,16 @@
 	<channel arch="x86_64" description="SUSE Cloud version 1.0" family="SUSE_CLOUD" is_signed="Y" label="suse-cloud-1.0-updates-x86_64" name="SUSE-Cloud-1.0-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE-Cloud" product_version="1.0" source_url="https://nu.novell.com/repo/$RCE/SUSE-Cloud-1.0-Updates/sle-11-x86_64/" summary="SUSE Cloud version 1.0" update_tag="sleclo10sp2">
 		<products>
 			<product_id name="SUSE-Cloud">3680</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Cloud version 2.0" family="SUSE_CLOUD" is_signed="Y" label="suse-cloud-2.0-pool-x86_64" name="SUSE-Cloud-2.0-Pool for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="SUSE-Cloud" product_version="2.0" source_url="https://nu.novell.com/repo/$RCE/SUSE-Cloud-2.0-Pool/sle-11-x86_64/" summary="SUSE Cloud version 2.0" update_tag="sleclo20sp3">
+		<products>
+			<product_id name="SUSE-Cloud">4120</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Cloud version 2.0" family="SUSE_CLOUD" is_signed="Y" label="suse-cloud-2.0-updates-x86_64" name="SUSE-Cloud-2.0-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="SUSE-Cloud" product_version="2.0" source_url="https://nu.novell.com/repo/$RCE/SUSE-Cloud-2.0-Updates/sle-11-x86_64/" summary="SUSE Cloud version 2.0" update_tag="sleclo20sp3">
+		<products>
+			<product_id name="SUSE-Cloud">4120</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Manager Proxy 1.2" family="SMP" is_signed="Y" label="suse-manager-proxy-1.2-pool-x86_64" name="SUSE-Manager-Proxy-1.2-Pool for x86_64" optional="N" parent="BASE" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SUSE-Manager-Proxy-1.2-Pool/sle-11-x86_64/" summary="SUSE Manager Proxy 1.2" update_tag="slemap12sp1">
