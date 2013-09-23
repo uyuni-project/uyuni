@@ -73,4 +73,7 @@
 	<upgrade from_pdid="3086" from_product="sle-hae-11.2-None.ppc64" to_pdid="3943" to_product="sle-hae-11.3-None.ppc64"/>
 	<upgrade from_pdid="3087" from_product="sle-hae-11.2-None.ia64" to_pdid="3944" to_product="sle-hae-11.3-None.ia64"/>
 	<upgrade from_pdid="3089" from_product="sle-hae-11.2-None.s390x" to_pdid="3945" to_product="sle-hae-11.3-None.s390x"/>
+	<upgrade from_pdid="3260" from_product="sle-smt-11.2-None.None" to_pdid="4040" to_product="sle-smt-11.3-None.None"/>
+	<upgrade from_pdid="3520" from_product="SUSE_SLES_SAP-11.2-None.None" to_pdid="4160" to_product="SUSE_SLES_SAP-11.3-None.x86_64"/>
+	<upgrade from_pdid="3580" from_product="SUSE-Linux-Enterprise-RT-11.2-None.None" to_pdid="4061" to_product="SUSE-Linux-Enterprise-RT-11.3-None.None"/>
 </upgradepathes>
