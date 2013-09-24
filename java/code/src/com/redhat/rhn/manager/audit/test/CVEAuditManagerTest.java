@@ -211,7 +211,9 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertTrue(channelProductIDs.contains(channelProduct2.getId()));
 
         // Call findSUSEProductChannels() and verify the results
-        List<Channel> channels = CVEAuditManager.findSUSEProductChannels(product.getId());
+        List<Channel> channels =
+                CVEAuditManager.findSUSEProductChannels(product.getId(),
+                        baseChannel.getId());
         assertEquals(4, channels.size());
         assertTrue(channels.contains(baseChannel));
         assertTrue(channels.contains(childChannel1));
@@ -248,7 +250,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         createTestSUSEProductChannel(childChannel1, product);
 
         // should not throw any exception
-        CVEAuditManager.findSUSEProductChannels(product.getId());
+        CVEAuditManager.findSUSEProductChannels(product.getId(), baseChannel.getId());
     }
 
     /**
