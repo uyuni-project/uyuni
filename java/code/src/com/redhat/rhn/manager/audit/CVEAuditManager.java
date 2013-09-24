@@ -35,7 +35,6 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
@@ -161,24 +160,16 @@ public class CVEAuditManager {
 
         // Find relevant channels
         if (relevantChannelProductIDs.size() > 0) {
-            EssentialChannelDto channel =
-                    DistUpgradeManager.getProductBaseChannelDto(suseProductID);
+            Long baseCID = DistUpgradeManager
+                    .getProductBaseChannelDto(suseProductID).getId();
 
-            if (channel != null) {
-                Long baseCID = channel.getId();
-
-                List<Channel> productChannels = findProductChannels(
-                        relevantChannelProductIDs, baseCID);
-                if (productChannels != null) {
-                    result.addAll(productChannels);
-                }
-                if (log.isDebugEnabled()) {
-                    log.debug("Product channels for " + suseProductID + ": " + result);
-                }
+            List<Channel> productChannels = findProductChannels(
+                    relevantChannelProductIDs, baseCID);
+            if (productChannels != null) {
+                result.addAll(productChannels);
             }
-            else {
-                log.warn("Skipping channels for product id " + suseProductID +
-                        " since the base channel was not synced.");
+            if (log.isDebugEnabled()) {
+                log.debug("Product channels for " + suseProductID + ": " + result);
             }
         }
         else if (log.isDebugEnabled()) {
