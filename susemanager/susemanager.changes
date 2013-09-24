@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Sep 24 17:33:18 CEST 2013 - mc@suse.de
+
+- version 1.7.25-1
+- return user_id as string if mgr-ncc-sync with --from-dir is used
+  (bnc#842031)
+
+-------------------------------------------------------------------
 Wed Aug 21 15:33:13 CEST 2013 - mc@suse.de
 
 - version 1.7.24-1
