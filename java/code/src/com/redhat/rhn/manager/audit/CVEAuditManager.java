@@ -31,10 +31,13 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
@@ -142,9 +145,11 @@ public class CVEAuditManager {
      * Find *all* relevant channels for a given SUSE product with caching.
      *
      * @param suseProductID the SUSE product ID
+     * @param baseChannelId id of the base channel
      * @return list of mandatory and optional channels
      */
-    public static List<Channel> findSUSEProductChannels(long suseProductID) {
+    public static List<Channel> findSUSEProductChannels(long suseProductID,
+            long baseChannelId) {
         // Look it up in the cache
         List<Channel> result = suseProductChannelCache.get(suseProductID);
         if (result != null) {
@@ -160,11 +165,8 @@ public class CVEAuditManager {
 
         // Find relevant channels
         if (relevantChannelProductIDs.size() > 0) {
-            Long baseCID = DistUpgradeManager
-                    .getProductBaseChannelDto(suseProductID).getId();
-
             List<Channel> productChannels = findProductChannels(
-                    relevantChannelProductIDs, baseCID);
+                    relevantChannelProductIDs, baseChannelId);
             if (productChannels != null) {
                 result.addAll(productChannels);
             }
@@ -366,16 +368,54 @@ public class CVEAuditManager {
                         ++maxRank) ? maxRank : --maxRank;
             }
 
-            // Look at installed products and previous/future SP migrations
-            List<Long> suseProductIDs = SUSEProductFactory
-                    .getInstalledProductIds(server);
+            // Find all channels relevant for past and future migrations
+            addRelevantMigrationProductChannels(relevantChannels, server, maxRank);
+        }
 
-            // For *each* installed product
-            for (long suseProductID : suseProductIDs) {
-                // Start channel ranking with the current maxRank
-                int i = maxRank;
+        // Insert relevant channels into the database
+        insertRelevantChannels(relevantChannels);
+    }
 
-                // Find all possible migration *targets* recursively
+    /**
+     * Looks at installed products on the server and their previous and future
+     * SP migrations, adding channels to relevantChannels when they are found.
+     *
+     * @param relevantChannels set of channels to add relevant channels to
+     * @param server a server
+     * @param maxRank starting rank for new channels found
+     */
+    public static void addRelevantMigrationProductChannels(
+            Set<ServerChannelIdPair> relevantChannels, Server server, int maxRank) {
+
+        SUSEProductSet suseProductSet = server.getInstalledProducts();
+        if (suseProductSet == null) {
+            return;
+        }
+
+        SUSEProduct baseProduct = suseProductSet.getBaseProduct();
+        if (baseProduct == null) {
+            return;
+        }
+
+        Long baseProductID = baseProduct.getId();
+        List<SUSEProductDto> baseProductTargets = findAllTargetProducts(baseProductID);
+        List<SUSEProductDto> baseProductSources = findAllSourceProducts(baseProductID);
+        int currentRank = maxRank;
+        ChannelArch arch = server.getBaseChannel().getChannelArch();
+
+        // for each base product target...
+        for (SUSEProductDto baseProductTarget : baseProductTargets) {
+            Long baseProductTargetID = baseProductTarget.getId();
+            EssentialChannelDto channel =
+                    DistUpgradeManager.getProductBaseChannelDto(baseProductTargetID);
+
+            // a channel is guaranteed to exist in base products
+            Long baseProductChannelId = channel.getId();
+
+            // ...and for each installed product...
+            for (long suseProductID : suseProductSet.getProductIDs()) {
+
+                // ...if it has a target with that base product...
                 List<SUSEProductDto> targets = findAllTargetProducts(suseProductID);
                 if (log.isDebugEnabled() && targets.size() <= 0) {
                     log.debug("No target products found for " + suseProductID);
@@ -385,11 +425,27 @@ public class CVEAuditManager {
                         log.debug("Target found for " + suseProductID + ": " +
                                 target.getId());
                     }
-                    List<Channel> productChannels = findSUSEProductChannels(target.getId());
-                    addRelevantChannels(relevantChannels, server, productChannels, ++i);
-                }
 
-                // Find all possible migration *sources* recursively
+                    // ...add its channel to the relevant list
+                    List<Channel> productChannels =
+                            findSUSEProductChannels(target.getId(), baseProductChannelId);
+                    addRelevantChannels(relevantChannels, server, productChannels,
+                            ++currentRank);
+                }
+            }
+        }
+
+        // for each base product source...
+        for (SUSEProductDto baseProductSource : baseProductSources) {
+            Long baseProductSourceID = baseProductSource.getId();
+            EssentialChannelDto channel =
+                    DistUpgradeManager.getProductBaseChannelDto(baseProductSourceID);
+            Long baseProductChannelId = channel.getId();
+
+            // ...and for each installed product...
+            for (long suseProductID : suseProductSet.getProductIDs()) {
+
+                // ...if it has a source with that base product...
                 List<SUSEProductDto> sources = findAllSourceProducts(suseProductID);
                 if (log.isDebugEnabled() && sources.size() <= 0) {
                     log.debug("No source products found for " + suseProductID);
@@ -399,14 +455,15 @@ public class CVEAuditManager {
                         log.debug("Source found for " + suseProductID + ": " +
                                 source.getId());
                     }
-                    List<Channel> productChannels = findSUSEProductChannels(source.getId());
-                    addRelevantChannels(relevantChannels, server, productChannels, ++i);
+
+                    // ...add its channel to the relevant list
+                    List<Channel> productChannels =
+                            findSUSEProductChannels(source.getId(), baseProductChannelId);
+                    addRelevantChannels(relevantChannels, server, productChannels,
+                            ++currentRank);
                 }
             }
         }
-
-        // Insert relevant channels into the database
-        insertRelevantChannels(relevantChannels);
     }
 
     /**

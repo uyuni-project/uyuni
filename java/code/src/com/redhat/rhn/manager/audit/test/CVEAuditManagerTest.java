@@ -211,7 +211,9 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertTrue(channelProductIDs.contains(channelProduct2.getId()));
 
         // Call findSUSEProductChannels() and verify the results
-        List<Channel> channels = CVEAuditManager.findSUSEProductChannels(product.getId());
+        List<Channel> channels =
+                CVEAuditManager.findSUSEProductChannels(product.getId(),
+                        baseChannel.getId());
         assertEquals(4, channels.size());
         assertTrue(channels.contains(baseChannel));
         assertTrue(channels.contains(childChannel1));
@@ -227,6 +229,28 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertEquals(2, productIDs.size());
         assertTrue(productIDs.contains(channelProduct1.getId()));
         assertTrue(productIDs.contains(channelProduct2.getId()));
+    }
+
+    /**
+     * Verify that bnc#841240 is fixed:
+     * Do not throw exceptions if a product channel is not synced
+     * @throws Exception if anything goes wrong
+     */
+    public void testUnsyncedProductChannels() throws Exception {
+        // Create a SUSE product and channel products
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct product = createTestSUSEProduct(channelFamily);
+        ChannelProduct channelProduct1 = createTestChannelProduct();
+        // Create channels
+        Channel baseChannel = createTestVendorBaseChannel(channelFamily, channelProduct1);
+        Channel childChannel1 = createTestVendorChildChannel(baseChannel, channelProduct1);
+
+        // Assign channels to SUSE product. Not adding the base channel on
+        // purpose to simulate that it has not been synchronized
+        createTestSUSEProductChannel(childChannel1, product);
+
+        // should not throw any exception
+        CVEAuditManager.findSUSEProductChannels(product.getId(), baseChannel.getId());
     }
 
     /**
