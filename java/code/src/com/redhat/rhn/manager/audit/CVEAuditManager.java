@@ -31,10 +31,10 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
@@ -401,10 +401,10 @@ public class CVEAuditManager {
         List<SUSEProductDto> baseProductTargets = findAllTargetProducts(baseProductID);
         List<SUSEProductDto> baseProductSources = findAllSourceProducts(baseProductID);
         int currentRank = maxRank;
+        ChannelArch arch = server.getBaseChannel().getChannelArch();
 
         // for each base product target...
         for (SUSEProductDto baseProductTarget : baseProductTargets) {
-            ServerArch arch = server.getServerArch();
             Long baseProductTargetID = baseProductTarget.getId();
             EssentialChannelDto channel =
                     DistUpgradeManager.getProductBaseChannelDto(baseProductTargetID);
@@ -437,7 +437,6 @@ public class CVEAuditManager {
 
         // for each base product source...
         for (SUSEProductDto baseProductSource : baseProductSources) {
-            ServerArch arch = server.getServerArch();
             Long baseProductSourceID = baseProductSource.getId();
             EssentialChannelDto channel =
                     DistUpgradeManager.getProductBaseChannelDto(baseProductSourceID);
