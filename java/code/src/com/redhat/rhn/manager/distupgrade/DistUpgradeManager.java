@@ -27,6 +27,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -132,21 +133,29 @@ public class DistUpgradeManager extends BaseManager {
 
     /**
      * For a given product, return the respective base channel as
-     * {@link EssentialChannelDto}.
+     * {@link EssentialChannelDto}. The architecture is needed here to filter out base
+     * channels with invalid architectures in case of a product without arch attribute.
      *
      * @param productID product ID
+     * @param arch channel arch
      * @return base channel
      */
     @SuppressWarnings("unchecked")
-    public static EssentialChannelDto getProductBaseChannelDto(long productID) {
+    public static EssentialChannelDto getProductBaseChannelDto(long productID,
+            ChannelArch arch) {
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("pid", productID);
+        params.put("channel_arch_id", arch.getId());
         SelectMode m = ModeFactory.getMode("Channel_queries",
                     "suse_base_channels_for_suse_product");
         List<EssentialChannelDto> channels = makeDataResult(params, null, null, m);
         EssentialChannelDto ret = null;
         if (channels.size() > 0) {
             ret = channels.get(0);
+        }
+        if (channels.size() > 1) {
+            logger.warn("More than one base channel found for product: " + productID +
+                    " (arch: " + arch.getName() + ")");
         }
         return ret;
     }
@@ -155,12 +164,14 @@ public class DistUpgradeManager extends BaseManager {
      * For a given product, return the respective base channel as {@link Channel}.
      *
      * @param productID product ID
+     * @param arch channel arch
      * @param user user
      * @return base channel
      */
-    public static Channel getProductBaseChannel(long productID, User user) {
+    public static Channel getProductBaseChannel(long productID, ChannelArch arch,
+            User user) {
         Channel ret = null;
-        EssentialChannelDto channelDto = getProductBaseChannelDto(productID);
+        EssentialChannelDto channelDto = getProductBaseChannelDto(productID, arch);
         if (channelDto != null) {
             ret = ChannelFactory.lookupByIdAndUser(channelDto.getId(), user);
         }
@@ -172,11 +183,12 @@ public class DistUpgradeManager extends BaseManager {
      * as {@link SUSEProductSet} objects.
      *
      * @param installedProducts set of products currently installed on the system
+     * @param arch channel arch
      * @param user user
      * @return list of product sets
      */
     public static List<SUSEProductSet> getTargetProductSets(
-            SUSEProductSet installedProducts, User user) {
+            SUSEProductSet installedProducts, ChannelArch arch, User user) {
         ArrayList<SUSEProductSet> ret = new ArrayList<SUSEProductSet>();
         if (installedProducts == null) {
             return null;
@@ -194,7 +206,8 @@ public class DistUpgradeManager extends BaseManager {
             targetSet.setBaseProduct(targetProduct);
 
             // Look for the target product's base channel
-            Channel baseChannel = getProductBaseChannel(targetBaseProduct.getId(), user);
+            Channel baseChannel = getProductBaseChannel(
+                    targetBaseProduct.getId(), arch, user);
             if (baseChannel == null) {
                 continue;
             }
@@ -341,17 +354,18 @@ public class DistUpgradeManager extends BaseManager {
      * required for migrating to the given {@link SUSEProductSet}.
      *
      * @param targetProducts target product set
+     * @param arch channel arch
      * @param user user
      * @return alternative target product sets
      */
     public static HashMap<ClonedChannel, List<Long>> getAlternatives(
-            SUSEProductSet targetProducts, User user) {
+            SUSEProductSet targetProducts, ChannelArch arch, User user) {
         // This list will be returned
         HashMap<ClonedChannel, List<Long>> alternatives =
                 new HashMap<ClonedChannel, List<Long>>();
         // Get base channel
         Channel suseBaseChannel = getProductBaseChannel(
-                targetProducts.getBaseProduct().getId(), user);
+                targetProducts.getBaseProduct().getId(), arch, user);
         // Get all clones
         List<ClonedChannel> allClones = getAllClones(suseBaseChannel);
         // Get required channels for this product set
