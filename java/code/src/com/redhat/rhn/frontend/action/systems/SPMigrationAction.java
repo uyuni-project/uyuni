@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -146,8 +147,9 @@ public class SPMigrationAction extends RhnAction {
         if (forward.getName().equals(SETUP) && supported && migration == null) {
             // Find target products
             SUSEProductSet installedProducts = server.getInstalledProducts();
+            ChannelArch arch = server.getBaseChannel().getChannelArch();
             List<SUSEProductSet> migrationTargets = DistUpgradeManager.
-                    getTargetProductSets(installedProducts, ctx.getCurrentUser());
+                    getTargetProductSets(installedProducts, arch, ctx.getCurrentUser());
 
             SUSEProductSet targetProducts = null;
             if (migrationTargets == null) {
@@ -167,7 +169,7 @@ public class SPMigrationAction extends RhnAction {
 
             // Get the base channel
             Channel suseBaseChannel = DistUpgradeManager.getProductBaseChannel(
-                    targetProducts.getBaseProduct().getId(), ctx.getCurrentUser());
+                    targetProducts.getBaseProduct().getId(), arch, ctx.getCurrentUser());
 
             // Determine mandatory channels
             List<EssentialChannelDto> requiredChannels =
@@ -175,7 +177,7 @@ public class SPMigrationAction extends RhnAction {
 
             // Get available alternatives
             HashMap<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
-                    getAlternatives(targetProducts, ctx.getCurrentUser());
+                    getAlternatives(targetProducts, arch, ctx.getCurrentUser());
 
             // Create new map, put original channels first
             HashMap<Channel, List<ChildChannelDto>> channelMap =
