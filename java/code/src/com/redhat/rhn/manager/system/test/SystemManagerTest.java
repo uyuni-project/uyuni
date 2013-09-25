@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -50,6 +51,7 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -1194,5 +1196,31 @@ public class SystemManagerTest extends RhnBaseTestCase {
 
     }
 
+    public void testFindCompatibleChannelArch() {
+        // x86_64
+        ServerArch serverArch = ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux");
+        ChannelArch channelArch = SystemManager.findCompatibleChannelArch(serverArch);
+        assertEquals("channel-x86_64", channelArch.getLabel());
+        assertEquals("x86_64", channelArch.getName());
+        serverArch = ServerFactory.lookupServerArchByLabel("ia32e-redhat-linux");
+        channelArch = SystemManager.findCompatibleChannelArch(serverArch);
+        assertEquals("channel-x86_64", channelArch.getLabel());
+        assertEquals("x86_64", channelArch.getName());
 
+        // IA-32
+        serverArch = ServerFactory.lookupServerArchByLabel("i386-redhat-linux");
+        channelArch = SystemManager.findCompatibleChannelArch(serverArch);
+        assertEquals("channel-ia32", channelArch.getLabel());
+        assertEquals("IA-32", channelArch.getName());
+        serverArch = ServerFactory.lookupServerArchByLabel("i686-redhat-linux");
+        channelArch = SystemManager.findCompatibleChannelArch(serverArch);
+        assertEquals("channel-ia32", channelArch.getLabel());
+        assertEquals("IA-32", channelArch.getName());
+
+        // s390
+        serverArch = ServerFactory.lookupServerArchByLabel("s390-redhat-linux");
+        channelArch = SystemManager.findCompatibleChannelArch(serverArch);
+        assertEquals("channel-s390", channelArch.getLabel());
+        assertEquals("s390", channelArch.getName());
+    }
 }
