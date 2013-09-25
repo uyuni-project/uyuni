@@ -31,6 +31,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
@@ -400,10 +401,11 @@ public class CVEAuditManager {
         List<SUSEProductDto> baseProductTargets = findAllTargetProducts(baseProductID);
         List<SUSEProductDto> baseProductSources = findAllSourceProducts(baseProductID);
         int currentRank = maxRank;
+        ChannelArch arch = server.getBaseChannel().getChannelArch();
 
         // for each base product target...
         for (SUSEProductDto baseProductTarget : baseProductTargets) {
-            Long baseProductChannelId = getBaseProductChannelId(baseProductTarget);
+            Long baseProductChannelId = getBaseProductChannelId(baseProductTarget, arch);
 
             // ...if a base channel exists and is synced...
             if (baseProductChannelId != null) {
@@ -434,7 +436,7 @@ public class CVEAuditManager {
 
         // for each base product source...
         for (SUSEProductDto baseProductSource : baseProductSources) {
-            Long baseProductChannelId = getBaseProductChannelId(baseProductSource);
+            Long baseProductChannelId = getBaseProductChannelId(baseProductSource, arch);
 
             // ...if a base channel exists and is synced...
             if (baseProductChannelId != null) {
@@ -468,13 +470,15 @@ public class CVEAuditManager {
      * Returns a channel ID from a base product.
      *
      * @param baseProduct the base product
+     * @param arch product channel architecture (as a product might support more than one)
      * @return the channel ID
      */
-    public static Long getBaseProductChannelId(SUSEProductDto baseProduct) {
+    public static Long getBaseProductChannelId(SUSEProductDto baseProduct,
+            ChannelArch arch) {
         Long baseProductID = baseProduct.getId();
         if (baseProductID != null) {
             EssentialChannelDto channel =
-                    DistUpgradeManager.getProductBaseChannelDto(baseProductID);
+                    DistUpgradeManager.getProductBaseChannelDto(baseProductID, arch);
             if (channel != null) {
                 return channel.getId();
             }

@@ -1081,11 +1081,12 @@ GROUP BY C.id, C.name
 
 <mode name="suse_base_channels_for_suse_product"
      class="com.redhat.rhn.frontend.dto.EssentialChannelDto">
-  <query params="pid">
+  <query params="pid, channel_arch_id">
     SELECT C.id, C.name, C.label, 0 AS IS_CUSTOM
       FROM rhnChannel C
       JOIN suseProductChannel spc on C.id = spc.channel_id
      WHERE spc.product_id = :pid
+       AND C.channel_arch_id = :channel_arch_id
        AND C.parent_channel IS NULL
   </query>
 </mode>
