@@ -147,7 +147,7 @@ public class SPMigrationAction extends RhnAction {
         if (forward.getName().equals(SETUP) && supported && migration == null) {
             // Find target products
             SUSEProductSet installedProducts = server.getInstalledProducts();
-            ChannelArch arch = server.getBaseChannel().getChannelArch();
+            ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
             List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                     getTargetProductSets(installedProducts, arch, ctx.getCurrentUser());
 

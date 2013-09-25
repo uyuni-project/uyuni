@@ -15,7 +15,9 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.AbstractLabelNameHelper;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.common.ArchType;
+import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * ServerArch
@@ -39,4 +41,11 @@ public class ServerArch extends AbstractLabelNameHelper {
         this.archType = a;
     }
 
+    /**
+     * Return the compatible {@link ChannelArch}.
+     * @return channel arch
+     */
+    public ChannelArch getCompatibleChannelArch() {
+        return SystemManager.findCompatibleChannelArch(this);
+    }
 }

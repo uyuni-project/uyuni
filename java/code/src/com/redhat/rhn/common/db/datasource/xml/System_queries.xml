@@ -2166,5 +2166,13 @@ ORDER BY pkgnm.name asc
   </query>
 </mode>
 
+<mode name="find_compatible_channel_arch">
+  <query params="server_arch_id">
+SELECT channel_arch_id
+  FROM rhnServerChannelArchCompat
+ WHERE server_arch_id = :server_arch_id
+  </query>
+</mode>
+
 </datasource_modes>
 
