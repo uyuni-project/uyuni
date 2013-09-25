@@ -400,8 +400,8 @@ public class CVEAuditManager {
         Long baseProductID = baseProduct.getId();
         List<SUSEProductDto> baseProductTargets = findAllTargetProducts(baseProductID);
         List<SUSEProductDto> baseProductSources = findAllSourceProducts(baseProductID);
+        ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         int currentRank = maxRank;
-        ChannelArch arch = server.getBaseChannel().getChannelArch();
 
         // for each base product target...
         for (SUSEProductDto baseProductTarget : baseProductTargets) {
