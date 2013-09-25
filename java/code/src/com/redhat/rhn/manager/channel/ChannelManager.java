@@ -2923,7 +2923,7 @@ public class ChannelManager extends BaseManager {
 
         params = new HashMap();
         params.put("pid", suseProduct.get("id"));
-        params.put("channel_arch_id", s.getBaseChannel().getChannelArch().getId());
+        params.put("channel_arch_id", s.getServerArch().getCompatibleChannelArch().getId());
         SelectMode m3 = ModeFactory.getMode("Channel_queries",
                     "suse_base_channels_for_suse_product");
         DataResult ret  = makeDataResult(params, new HashMap(), null, m3);
