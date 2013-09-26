@@ -39,7 +39,6 @@ URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
-ExclusiveArch: x86_64 s390x
 
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
