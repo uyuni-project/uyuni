@@ -617,14 +617,11 @@ touch $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs/audit-review.log
 ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{jardir}/asm_asm.jar
 ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
 %else
-ln -s -f %{_javadir}/asm/asm.jar  $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
-%if 0%{?suse_version}
 if [ -e %{_javadir}/objectweb-asm/asm-all.jar ]; then
-    ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{jardir}/asm_asm.jar
-    rm -f $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
-    ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
+  ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
+else
+  ln -s -f %{_javadir}/asm/asm.jar  $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
 fi
-%endif
 %endif
 
 # 732350 - On Fedora 15, mchange's log stuff is no longer in c3p0.
@@ -788,7 +785,7 @@ fi
 
 # asm-1.5.3-7.jpp5.noarch (F14, F13, EL6)
 # asm-1.5.3-1jpp.ep1.1.el5.2.noarch (EL5)
-%{jardir}/asm_asm.jar
+%{jardir}/objectweb-asm_asm.jar
 #%{jardir}/asmasm.jar
 #%{jardir}/asmasm-analysis.jar
 #%{jardir}/asmasm-attrs.jar
