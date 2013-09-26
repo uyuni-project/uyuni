@@ -18,6 +18,5 @@ After do |scenario|
 end
 
 def short_name(name)
-    puts "name: #{name}"
-    name.downcase.tr(' ', '_').slice(0..25)
+    name.downcase.tr(' ', '_').tr('"', '').slice(0..25)
 end
