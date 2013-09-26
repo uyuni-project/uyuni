@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
  SUSE Manager build file for development use
- 
+
  Builds and deploys the webapp to a SSH host running Tomcat, runs tests
  
  Requirements & configuration:
@@ -9,10 +9,37 @@
  https://github.com/SUSE/spacewalk/wiki/Java-Development-Environment
 -->
 <project name="SUSE Manager" default="deploy-restart" basedir=".">
-  <!-- Import common definitions -->
-  <import file="buildconf/manager-common.xml" />
-  
-  <!-- Define tasks -->
+  <!-- User-defined properties -->
+  <property file="buildconf/manager-developer-build.properties" />
+
+  <!-- Upstream-defined properties -->
+  <import file="buildconf/build-props.xml" />
+
+  <!-- Other properties -->
+  <property name="deploy.host" value="deployhost" />
+  <property name="deploy.dir" value="/var/lib/tomcat6/webapps/rhn" />
+  <property name="deploy.user" value="root" />  
+  <property name="tests.includes" value="buildconf/manager-test-includes" />
+  <property name="tests.excludes" value="buildconf/manager-test-excludes" />
+  <property name="tests.results.dir" value="test-results"/>
+  <property name="test.configuration.path" value="conf/local-tests" />
+  <property name="branding.dir" value="${basedir}/../branding"/>
+  <property name="branding.src.dir" value="${branding.dir}/java/code/src"/>
+  <property name="branding.img.dir" value="${branding.dir}/img"/>
+  <property name="branding.css.dir" value="${branding.dir}/css"/>
+  <property name="branding.fonts.dir" value="${branding.dir}/fonts"/>
+  <property name="js.dir" value="${basedir}/../web/html/javascript"/>
+
+  <!-- Paths -->
+  <path id="libjars">
+    <fileset dir="${lib.dir}" includes="**/*.jar" />
+  </path>
+  <path id="managertestjars">
+    <fileset dir="${lib.dir}" includes="**/*.jar" />
+    <fileset file="${build.dir}/rhn.jar" />
+  </path>
+
+  <!-- Tasks -->
   <target name="init-tests">
     <property name="build.tests" value="true" />
 
@@ -23,7 +50,7 @@
       </and>
     </condition>
   </target>
-
+  
   <target name="clean" description="Cleans up all generated files">
     <delete dir="${build.dir}" quiet="true">
       <exclude name="classes/**/*" if="precompiled" />
@@ -204,45 +231,6 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
-  <target name="deploy-tests" depends="init-tests,webapp" description="Deploy SUSE Manager tests">
-    <echo message="Copying webapp files to remote host for running tests..." />
-    <exec executable="rsync">
-      <arg line="-a --delete ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
-    </exec>
-
-    <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
-        echo "Stopping Tomcat...";
-        nohup rctomcat6 stop > /dev/null 2>&amp;1 &amp;
-
-        echo "Linking the branding jar...";
-        mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib;
-        ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar;
-
-        echo "Linking the main jar for Taskomatic...";
-        mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib;
-        ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib;
-      '
-    />
-  </target>
-
-  <target name="run-tests" depends="deploy-tests" description="Run unit tests remotely">
-    <echo message="Copying files to remote host..." />
-    <exec executable="scp" description="Copy ./buildconf directory to deploy host">
-      <arg value="-r" />
-      <arg line="buildconf ${deploy.user}@${deploy.host}:${deploy.dir}/WEB-INF" />
-    </exec>
-    <exec executable="scp" description="Copy test files to deploy host">
-      <arg value="-r" />
-      <arg line="code/src/com/redhat/rhn/common/conf/test/conf ${deploy.user}@${deploy.host}:/usr/share/rhn/unit-tests/" />
-    </exec>
-
-    <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
-        cd ${deploy.dir}/WEB-INF;
-        ant -f buildconf/manager-test.xml -Dlib.dir=${deploy.dir}/WEB-INF/lib -Dtest.jar=${deploy.dir}/WEB-INF/lib/rhn.jar -Dtest.configuration.path=/etc/rhn -Dtests.includes=${tests.includes} -Dtests.excludes=${tests.excludes};
-      '
-    />
-  </target>
-
   <target name="init-local-tests" depends="init-tests" unless="testdirs.exist">
     <echo message="Creating directories (below /usr/share) needed for running tests" />
     <exec executable="sudo">
@@ -260,10 +248,31 @@
     </exec>
   </target>
 
-  <target name="run-tests-locally" depends="init-local-tests,jar" description="Run unit tests locally">
-    <property name="test.jar" value="${build.dir}/rhn.jar" />
-    <property name="test.configuration.path" value="${basedir}/conf/local-tests" />
-    <ant antfile="manager-test.xml" dir="buildconf"/>
+  <target name="run-tests" depends="init-local-tests,jar" description="Run unit tests locally">
+    
+    <mkdir dir="${tests.results.dir}" />
+
+    <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
+    <loadfile property="tests.excludes.text" srcFile="${tests.excludes}"/>
+    <echo message="Running tests including:" />
+    <echo message="${tests.includes.text}" />
+    <echo message="and excluding:" />
+    <echo message="${tests.excludes.text}" />
+    
+    <junit fork="yes" forkmode="once" maxmemory="256m" dir="${basedir}/buildconf">
+      <sysproperty key="rhn-home" value="." />
+      <sysproperty key="java.awt.headless" value="true" />
+      <sysproperty key="log4j.threshold" value="warn" />
+      <sysproperty key="rhn.config.dir" value="${test.configuration.path}" />
+
+      <jvmarg value="-ea" />
+      <classpath refid="managertestjars" />
+      <formatter type="xml" usefile="true" />
+      <formatter type="brief" usefile="false" />
+      <batchtest todir="${tests.results.dir}">
+        <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
+      </batchtest>
+    </junit>
   </target>
 
   <target name="checkstyle" depends="compile" description="Runs the checkstyle tool on sources">
