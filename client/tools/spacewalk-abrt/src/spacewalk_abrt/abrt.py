@@ -17,6 +17,7 @@
 import base64
 import os
 import sys
+import errno
 
 RHNROOT = '/usr/share/rhn'
 if RHNROOT not in sys.path:
@@ -31,16 +32,20 @@ from up2date_client import up2dateAuth
 from up2date_client import rhnserver
 from up2date_client import up2dateLog
 
-def _readline(filepath):
-    if os.path.exists(filepath):
-        filecontent = None
-        f = open(filepath, 'r')
-        filecontent = f.readlines()[0].strip()
-        f.close()
 
-        return filecontent
-    else:
-        return None
+def _readline(filepath):
+    firstline = None
+    try:
+        f = open(filepath, 'r')
+        firstline = f.readline().strip()
+        f.close()
+    except IOError, e:
+        if e.errno == errno.ENOENT:
+            pass
+        else:
+            raise
+    return firstline
+
 
 def _get_abrt_dir():
     abrt_dir = '/var/tmp/abrt'
@@ -51,11 +56,12 @@ def _get_abrt_dir():
     cf = config.ConfigFile('/etc/abrt/abrt.conf')
     return cf['DumpLocation'] or abrt_dir
 
+
 def report(problem_dir):
     problem_dir = os.path.normpath(os.path.abspath(problem_dir))
     basename = os.path.basename(problem_dir)
     log = up2dateLog.initLog()
-    if not (os.path.exists(problem_dir) and  os.path.isdir(problem_dir)):
+    if not (os.path.exists(problem_dir) and os.path.isdir(problem_dir)):
         log.log_me("The specified path [%s] is not a valid directory." % problem_dir)
         return -1
 
@@ -95,7 +101,7 @@ def report(problem_dir):
     # Create record about the crash
     r = server.abrt.create_crash(systemid, crash_data, pkg_data)
 
-    if (r < 0): # Error creating new crash report
+    if (r < 0):  # Error creating new crash report
         log.log_me("Error creating new crash report.")
         return -1
 
@@ -105,10 +111,7 @@ def report(problem_dir):
         if not os.path.isfile(path):
             continue
 
-        filecontent = None
-        with open(path, 'r') as f:
-            filecontent = f.read()
-        filesize = os.stat(path)[6]
+        filesize = os.stat(path).st_size
 
         crash_file_data = {'filename': os.path.basename(i),
                            'path': path,
@@ -116,7 +119,11 @@ def report(problem_dir):
                            'filecontent': base64.encodestring(""),
                            'content-encoding': 'base64'}
         if server.abrt.is_crashfile_upload_enabled(systemid) and filesize <= server.abrt.get_crashfile_uploadlimit(systemid):
-            crash_file_data['filecontent'] = base64.encodestring(filecontent)
+            f = open(path, 'r')
+            try:
+                crash_file_data['filecontent'] = base64.encodestring(f.read())
+            finally:
+                f.close()
 
         server.abrt.upload_crash_file(systemid, basename, crash_file_data)
 
@@ -127,7 +134,7 @@ def update_count(problem_dir):
     problem_dir = os.path.normpath(os.path.abspath(problem_dir))
     basename = os.path.basename(problem_dir)
     log = up2dateLog.initLog()
-    if not (os.path.exists(problem_dir) and  os.path.isdir(problem_dir)):
+    if not (os.path.exists(problem_dir) and os.path.isdir(problem_dir)):
         log.log_me("The specified path [%s] is not a valid directory." % problem_dir)
         return -1
 
