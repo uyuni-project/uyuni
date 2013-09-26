@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.45
+Version: 2.1.47
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -891,6 +891,12 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Mon Sep 23 2013 Tomas Lestach <tlestach@redhat.com> 2.1.47-1
+- fixing checkstyle
+
+* Mon Sep 23 2013 Tomas Lestach <tlestach@redhat.com> 2.1.46-1
+- 711373 - provide ftp link only for RHEL5 packages
+
 * Thu Sep 19 2013 Simon Lukasik <slukasik@redhat.com> 2.1.45-1
 - 1009652 - Render empty SCAP results correctly
 - Fixing spelling mistakes
