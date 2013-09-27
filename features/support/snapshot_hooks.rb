@@ -18,5 +18,5 @@ After do |scenario|
 end
 
 def short_name(name)
-    name.downcase.tr(' ', '_').tr('"', '').slice(0..25)
+    name.downcase.delete('^a-zA-z0-9 ').tr(' ','_').slice(0..35)
 end
