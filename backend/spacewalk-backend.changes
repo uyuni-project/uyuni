@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Sep 27 09:59:33 CEST 2013 - mc@suse.de
+
+- version 1.7.38.29-1
+- with deep-verify import patches step by step
+- check if mountpoint exists and send error mail (bnc#839111)
+- bool(0) == False, but is a valid file mode
+
+-------------------------------------------------------------------
 Tue Aug 27 17:42:46 CEST 2013 - mc@suse.de
 
 - version 1.7.38.28-1
