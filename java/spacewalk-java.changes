@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Fri Sep 27 10:04:28 CEST 2013 - mc@suse.de
+
+- version 1.7.54.28-1
+- Use server arch instead of relying on a base channel (bnc#841054)
+- Filter out product base channels with invalid arch (bnc#841054)
+- CVEAuditManager: do not fail with unsynced channels
+- Log exception stack traces in Taskomatic
+- CVEAuditManager: Fetch ChannelArch instead of ServerArch
+- Do not assume a migrated base channel exists (bnc#841240)
+- fix Systems Subscribed column on the Entitlements page
+- Add missing keyword 'AS' in dist upgrade queries (bnc#840899)
+- Make taskomatic max memory configurable via rhn.conf (bnc#810787)
+- Clean up SSH push jobs in case of taskomatic restart (bnc#838188)
+- Remember systems we are currently talking to via SSH push (bnc#838188)
+- Add necessary transaction handling to fix job status (bnc#838188)
+- Show the system name in the log message warning
+- RhnSet concurrency fix reformulated at upstream's request
+- Fix javascript "Uncaught TypeError" (bnc#836692)
+- Avoid a possible issue on concurrent updates to an RhnSet
+
+-------------------------------------------------------------------
 Fri Aug 23 11:25:20 CEST 2013 - mc@suse.de
 
 - version 1.7.54.27-1
