@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 27 10:02:32 CEST 2013 - mc@suse.de
+
+- version 1.7.14-1
+- Add support for SLES-for-SAP11-SP3, SUSE Cloud 2.0, SLE-POS-11-SP3 and
+  SLERT11-SP3 (bnc#841139,bnc#841138,bnc#841143,bnc#809722)
+
+-------------------------------------------------------------------
 Wed Aug 21 15:53:02 CEST 2013 - mc@suse.de
 
 - version 1.7.13-1
