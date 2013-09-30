@@ -12,7 +12,10 @@ RUN zypper cc -a
 RUN zypper --non-interactive --gpg-auto-import-keys ref
 
 # Install needed packages
-RUN zypper in -y oracle-server smdba
+RUN zypper in -y bc oracle-server perl-DBD-ODBC perl-DBD-Oracle smdba
+
+# This should not be needed. TODO: check it and remove the commented line
+#RUN echo 127.0.0.1 `hostname` >> /etc/hosts
 
 ADD setup-db-oracle.sh /root/setup-db-oracle.sh
 RUN sh /root/setup-db-oracle.sh
