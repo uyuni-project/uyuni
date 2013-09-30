@@ -16,7 +16,7 @@ License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 
-Version:        5.4.49
+Version:        5.4.50
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
@@ -187,6 +187,9 @@ fi
 
 
 %changelog
+* Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 5.4.50-1
+- removed trailing whitespaces
+
 * Tue Sep 17 2013 Michael Mraka <michael.mraka@redhat.com> 5.4.49-1
 - Grammar error occurred
 

@@ -34,7 +34,7 @@ def installedHeaderByKeyword(**kwargs):
         headerList.append(h)
     mi = None
     _ts.ts.closeDB()
-    
+
     return headerList
 
 def verifyPackages(packages):
@@ -112,8 +112,8 @@ def getInstalledPackageList(msgCallback = None, progressCallback = None,
 
     if msgCallback != None:
         msgCallback(_("Getting list of packages installed on the system"))
- 
-    _ts = transaction.initReadOnlyTransaction()   
+
+    _ts = transaction.initReadOnlyTransaction()
     count = 0
     total = 0
 

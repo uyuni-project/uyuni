@@ -137,7 +137,7 @@ class SharedHandler:
         else:
             log_debug(3, "HTTP proxy info: not using an HTTP proxy")
         peer = self.responseContext.getConnection().sock.getpeername()
-        log_debug(4, "Other connection info: %s:%s%s" % 
+        log_debug(4, "Other connection info: %s:%s%s" %
             (peer[0], peer[1], self.uri))
 
     def _create_connection(self):
@@ -372,10 +372,10 @@ class SharedHandler:
         # At this point everything is sent to the server
         # We now wait for the response
         try:
-            response = http_connection.getresponse() 
+            response = http_connection.getresponse()
         except TimeoutException:
             log_error("Connection timed out")
-            return apache.HTTP_GATEWAY_TIME_OUT, None, None     
+            return apache.HTTP_GATEWAY_TIME_OUT, None, None
         headers = response.msg
         status = response.status
         # Get the body of the request too - well, just a fd actually
@@ -432,7 +432,7 @@ class SharedHandler:
             # Set the field in the response
 
             rhnLib.setHeaderValue(toRequest.headers_out, k, v)
-    
+
     def _forwardHTTPBody(self, fromResponse, toRequest):
         """ This routine will transfer the body of an HTTP response to the output
             area of an HTTP request for response to the original requesting client.

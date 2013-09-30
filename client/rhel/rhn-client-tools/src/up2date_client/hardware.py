@@ -148,10 +148,10 @@ def read_installinfo():
             continue
         strippedstring = vals[0].strip()
         vals[0] = strippedstring
-        
+
         installdict[vals[0]] = ''.join(vals[1:]).strip()
     return installdict
-    
+
 def cpu_count():
     """ returns number of CPU in system
 
@@ -411,7 +411,7 @@ def read_cpuinfo():
         number_sockets = __get_number_sockets()
         if number_sockets:
             hwdict['socket_count'] = number_sockets
-        
+
     # This whole things hurts a lot.
     return hwdict
 
@@ -460,10 +460,10 @@ def read_memory_2_6():
         #print blobs
         value = blobs[1].strip()
         meminfo_dict[key] = value
-        
+
     memdict = {}
     memdict["class"] = "MEMORY"
-    
+
     total_str = meminfo_dict['MemTotal']
     blips = total_str.split(" ")
     total_k = long(blips[0])
@@ -533,11 +533,11 @@ def findHostByRoute():
                 continue
             hostname = info.strip()
 
-    # Override hostname with the one in /etc/sysconfig/network 
+    # Override hostname with the one in /etc/sysconfig/network
     # for bz# 457953
     elif os.path.isfile("/etc/sysconfig/network") and os.access("/etc/sysconfig/network", os.R_OK):
         networkinfo = open("/etc/sysconfig/network", "r").readlines()
-	
+
         for info in networkinfo:
             if not len(info):
                 continue
@@ -690,7 +690,7 @@ def read_dmi():
     if not (uname[0] == "i"  and  uname[-2:] == "86") and not (uname == "x86_64"):
         return dmidict
 
-    # System Information 
+    # System Information
     vendor = dmi_vendor()
     if vendor:
         dmidict["vendor"] = vendor

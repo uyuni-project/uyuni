@@ -28,7 +28,7 @@ class testRhnChannel(unittest.TestCase):
         self.channelListDetails = ['gpg_key_url', 'url', 'arch', 
              'description', 'org_id', 'label', 'version', 'local_channel', 
              'parent_channel', 'summary', 'type', 'id', 'name']
-    
+
     def testGetChannelDetails(self):
         "rhnChannel.GetChannelDetails"
         res = rhnChannel.getChannelDetails()
@@ -40,7 +40,7 @@ class testRhnChannel(unittest.TestCase):
     def testGetChannels(self):
         "Test rhnChannel.getChannels()"
         res = rhnChannel.getChannels()
-        
+
         write(res)
 
 def suite():
