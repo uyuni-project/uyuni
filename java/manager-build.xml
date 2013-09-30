@@ -42,13 +42,6 @@
   <!-- Tasks -->
   <target name="init-tests">
     <property name="build.tests" value="true" />
-
-    <condition property="testdirs.exist">
-      <and>
-        <available file="/usr/share/rhn/unit-tests/conf" type="dir" />
-        <available file="/usr/share/rhn/config-defaults" type="dir" />
-      </and>
-    </condition>
   </target>
   
   <target name="clean" description="Cleans up all generated files">
@@ -118,8 +111,8 @@
         <exclude name="**/internal/**" />
         <exclude name="**/*.tld" />
         <exclude name="**/*.html" />
-        <exclude name="**/*.conf" />
-        <exclude name="**/*.conf.rpmsave" />
+        <exclude name="**/*.conf" unless="build.tests" />
+        <exclude name="**/*.conf.rpmsave" unless="build.tests" />
         <exclude name="**/test/" unless="build.tests" />
         <exclude name="**/*/testing/**" unless="build.tests" />
         <exclude name="**/StringResource*.xml" unless="build.tests" />
@@ -231,24 +224,7 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
-  <target name="init-local-tests" depends="init-tests" unless="testdirs.exist">
-    <echo message="Creating directories (below /usr/share) needed for running tests" />
-    <exec executable="sudo">
-      <arg value="mkdir" />
-      <arg value="-p" />
-      <arg value="/usr/share/rhn/unit-tests" />
-      <arg value="/usr/share/rhn/config-defaults" />
-    </exec>
-    <echo message="Copying files needed for tests" />
-    <exec executable="sudo">
-      <arg value="cp" />
-      <arg value="-r" />
-      <arg value="code/src/com/redhat/rhn/common/conf/test/conf" />
-      <arg value="/usr/share/rhn/unit-tests" />
-    </exec>
-  </target>
-
-  <target name="run-tests" depends="init-local-tests,jar" description="Run unit tests locally">
+  <target name="run-tests" depends="init-tests,jar" description="Run unit tests locally">
     
     <mkdir dir="${tests.results.dir}" />
 
