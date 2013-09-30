@@ -1,13 +1,13 @@
 #!/usr/bin/python
 #
-# Registration client for the Spacewalk for useage with kickstart 
+# Registration client for the Spacewalk for useage with kickstart
 # Copyright (c) 1999--2012 Red Hat, Inc.  Distributed under GPLv2.
 #
 # Authors:
 #       Adrian Likins <alikins@redhat.com>
 #       James Bowes <jbowes@redhat.com>
 #
-#  see the output of "--help" for the valid options. 
+#  see the output of "--help" for the valid options.
 #
 #  The contact info is in the form or a "key: value" one per line.
 #  valid keys are:
@@ -78,7 +78,7 @@ class RegisterKsCli(rhncli.RhnCli):
         if self.options.sslCACert:
             rhnreg.cfg.set("sslCACert", self.options.sslCACert)
 
-        if not (self.options.activationkey or 
+        if not (self.options.activationkey or
                 (self.options.username and self.options.password)):
             print _("A username and password are required "\
                     "to register a system.")
@@ -89,7 +89,7 @@ class RegisterKsCli(rhncli.RhnCli):
             sys.exit(-1)
 
         rhnreg.getCaps()
-        
+
         if not self.options.nopackages:
             getArch = 0
             if rhnreg.cfg['supportsExtendedPackageProfile']:
@@ -98,9 +98,9 @@ class RegisterKsCli(rhncli.RhnCli):
         else:
             packageList = []
 
-        
+
         hardwareList = hardware.Hardware()
-        
+
         if self.options.profilename:
             profilename = self.options.profilename
         else:
@@ -115,7 +115,7 @@ class RegisterKsCli(rhncli.RhnCli):
         if not virt_uuid is None:
             other['virt_uuid'] = virt_uuid
             other['virt_type'] = virt_type
-            
+
         # If specified, send up the EUS channel label for subscription.
         if self.options.use_eus_channel:
             if self.options.activationkey:
@@ -124,7 +124,7 @@ class RegisterKsCli(rhncli.RhnCli):
             if not rhnreg.server_supports_eus():
                 print _("The server you are registering against does not support EUS.")
                 sys.exit(-1)
-            
+
             channels = rhnreg.getAvailableChannels(self.options.username,
                                                    self.options.password)
             other['channel'] = channels['default_channel']
@@ -143,7 +143,7 @@ class RegisterKsCli(rhncli.RhnCli):
                 up2dateErrors.AuthenticationOrAccountCreationError), e:
             print "%s" % e.errmsg
             sys.exit(1)
- 
+
         # collect hardware info, inluding hostname
         if not self.options.nohardware:
             rhnreg.sendHardware(systemId, hardwareList)
@@ -204,7 +204,7 @@ class RegisterKsCli(rhncli.RhnCli):
             profileName = ipaddr
         elif ip6addr:
             profileName = ip6addr
-                
+
         if not profileName:
             print _("A profilename was not specified, "\
                     "and hostname and IP address could not be determined "\
