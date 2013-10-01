@@ -12,6 +12,4 @@ echo $PERLLIB
 
 ./build-schema.sh
 
-/etc/init.d/oracle restart
-
 spacewalk-setup --skip-system-version-test --skip-selinux-test --skip-fqdn-test --skip-gpg-key-import --skip-ssl-cert-generation --skip-ssl-vhost-setup --skip-services-check --clear-db --answer-file=clear-db-answers-oracle.txt --external-oracle --non-interactive
