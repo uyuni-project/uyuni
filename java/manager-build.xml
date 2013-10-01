@@ -211,8 +211,7 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
-  <target name="run-tests" depends="jar" description="Run unit tests locally">
-    
+  <target name="test" depends="jar" description="Run unit tests">    
     <mkdir dir="${tests.results.dir}" />
 
     <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
