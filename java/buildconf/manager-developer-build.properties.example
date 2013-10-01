@@ -1,5 +1,5 @@
-# Host that Manager will be deployed to
-deploy.host=d52.suse.de
+# Host that Manager will be deployed to ("deploy" task)
+deploy.host = d52.suse.de
 
 # Uncomment to use .class files from the build/classes directory directly to avoid calling javac
-#precompiled=true
+#precompiled = true
