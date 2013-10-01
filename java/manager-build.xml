@@ -40,10 +40,6 @@
   </path>
 
   <!-- Tasks -->
-  <target name="init-tests">
-    <property name="build.tests" value="true" />
-  </target>
-  
   <target name="clean" description="Cleans up all generated files">
     <delete dir="${build.dir}" quiet="true">
       <exclude name="classes/**/*" if="precompiled" />
@@ -93,7 +89,6 @@
         <path location="code/src" />
         <path location="code/scripts/src" />
       </src>
-      <exclude name="**/test/*.java" unless="build.tests" />
     </javac>
 
     <copy toDir="${build.dir}/classes">
@@ -111,18 +106,13 @@
         <exclude name="**/internal/**" />
         <exclude name="**/*.tld" />
         <exclude name="**/*.html" />
-        <exclude name="**/*.conf" unless="build.tests" />
-        <exclude name="**/*.conf.rpmsave" unless="build.tests" />
-        <exclude name="**/test/" unless="build.tests" />
-        <exclude name="**/*/testing/**" unless="build.tests" />
-        <exclude name="**/StringResource*.xml" unless="build.tests" />
       </fileset>
       <fileset dir="${build.dir}/classes">
         <include name="**/StringResource_en_US.xml" />
       </fileset>
       <fileset dir="${src.dir}/webapp">
-        <include name="**/web.xml" if="build.tests" />
-        <include name="**/struts-config.xml" if="build.tests" />
+        <include name="**/web.xml" />
+        <include name="**/struts-config.xml" />
       </fileset>
       <!-- Can't be flattened like in <copy>, alas -->
       <metainf dir="${build.dir}/classes/com/redhat/rhn/frontend/taglibs">
@@ -142,11 +132,8 @@
       <fileset file="${build.dir}/rhn.jar" />
       <fileset dir="${lib.dir}">
         <include name="**/*.jar" />
-
-        <!-- Don't copy unneded jars -->
         <exclude name="**/jasper*" />
         <exclude name="**/jspapi*" />
-        <exclude name="**/tomcat6*" unless="build.tests" />
       </fileset>
       <fileset dir="${rhn-home}/buildconf/tempjars">
         <include name="**/*.jar" />
@@ -224,7 +211,7 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
-  <target name="run-tests" depends="init-tests,jar" description="Run unit tests locally">
+  <target name="run-tests" depends="jar" description="Run unit tests locally">
     
     <mkdir dir="${tests.results.dir}" />
 
