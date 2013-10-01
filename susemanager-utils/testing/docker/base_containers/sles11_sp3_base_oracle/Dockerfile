@@ -12,13 +12,7 @@ RUN zypper cc -a
 RUN zypper --non-interactive --gpg-auto-import-keys ref
 
 # Install needed packages
-RUN zypper in -y bc oracle-server perl-DBD-ODBC perl-DBD-Oracle smdba
-
-# This should not be needed. TODO: check it and remove the commented line
-#RUN echo 127.0.0.1 `hostname` >> /etc/hosts
-
-ADD setup-db-oracle.sh /root/setup-db-oracle.sh
-RUN sh /root/setup-db-oracle.sh
+RUN zypper in -y bc perl-DBD-ODBC perl-DBD-Oracle oracle-instantclient11_2-sqlplus
 
 # Create a tomcat user - this is required later by spacewalk-setup
 RUN useradd tomcat
@@ -41,6 +35,8 @@ RUN rm -rf /manager
 
 # The symlinks are broken right now, but they will work fine when we mount our
 # git checkout on /manager
+
+ADD tnsnames.ora /etc/tnsnames.ora
 
 # Remove contents of /var/cache/zypp/{packages,raw,solv} - this is a workaround for an aufs bug
 RUN zypper cc -a

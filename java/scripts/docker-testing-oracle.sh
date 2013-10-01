@@ -7,15 +7,9 @@ echo 127.0.0.1 `hostname`>>/etc/hosts
 cd /manager/susemanager-utils/testing/docker/scripts/
 ./reset_oracle_database.sh
 
-# SUSE Manager initialization
-sysctl -w kernel.shmmax=18446744073709551615
-smdba system-check
-rhn-satellite-activate --rhn-cert /manager/branding/setup/spacewalk-public.cert --disconnected
-
 # Resolve libs and run tests
 cd /manager/java
 ant resolve-ivy
 
 cp buildconf/test/rhn.conf.oracle-example buildconf/test/rhn.conf
 ant -f manager-build.xml test
-
