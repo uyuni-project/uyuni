@@ -1,0 +1,3 @@
+host 1c059.qa.suse.de
+  identityFile ~/.ssh/id_rsa_docker_host
+  user root

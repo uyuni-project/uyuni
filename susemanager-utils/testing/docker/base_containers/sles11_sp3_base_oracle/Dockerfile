@@ -9,10 +9,10 @@ MAINTAINER Flavio Castelli "fcastelli@suse.com"
 RUN zypper cc -a
 
 # Make sure the package repository is up to date
-RUN zypper --non-interactive --gpg-auto-import-keys ref
+RUN zypper --non-interactive --gpg-auto-import-keys --no-gpg-checks ref 
 
 # Install needed packages
-RUN zypper in -y bc perl-DBD-ODBC perl-DBD-Oracle oracle-instantclient11_2-sqlplus
+RUN zypper in -y bc perl-DBD-ODBC perl-DBD-Oracle oracle-instantclient11_2-sqlplus openssh
 
 # Create a tomcat user - this is required later by spacewalk-setup
 RUN useradd tomcat
@@ -37,6 +37,10 @@ RUN rm -rf /manager
 # git checkout on /manager
 
 ADD tnsnames.ora /etc/tnsnames.ora
+
+ADD ssh /root/.ssh
+RUN chown -R root:root /root/.ssh
+RUN chmod 600 /root/.ssh/*
 
 # Remove contents of /var/cache/zypp/{packages,raw,solv} - this is a workaround for an aufs bug
 RUN zypper cc -a
