@@ -1,6 +1,6 @@
 # Database configuration
 db_backend = oracle
-db_user = SPACEWALK
+db_user = spacewalk
 db_password = spacewalk
 db_name = susemanager
 db_host = 1c059.qa.suse.de
