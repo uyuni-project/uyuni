@@ -14,6 +14,18 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+
+import redstone.xmlrpc.XmlRpcCustomSerializer;
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcSerializer;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Network;
@@ -21,19 +33,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import redstone.xmlrpc.XmlRpcCustomSerializer;
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcSerializer;
 
 
 /**
@@ -76,8 +75,6 @@ import redstone.xmlrpc.XmlRpcSerializer;
  */
 public class ServerSerializer implements XmlRpcCustomSerializer {
 
-    private static Logger log = Logger.getLogger(ServerSerializer.class);
-
     /**
      * {@inheritDoc}
      */
@@ -91,110 +88,104 @@ public class ServerSerializer implements XmlRpcCustomSerializer {
     public void serialize(Object value, Writer output, XmlRpcSerializer builtInSerializer)
         throws XmlRpcException, IOException {
 
-        try {
-            Server server = (Server)value;
+        Server server = (Server)value;
 
-            SerializerHelper helper = new SerializerHelper(builtInSerializer);
-            helper.add("id", server.getId());
-            helper.add("profile_name", server.getName());
+        SerializerHelper helper = new SerializerHelper(builtInSerializer);
+        helper.add("id", server.getId());
+        helper.add("profile_name", server.getName());
 
-            Set networks = server.getNetworks();
-            if (networks != null && !networks.isEmpty()) {
-                // we only care about the first one
-                Network net = (Network) networks.iterator().next();
-                helper.add("hostname", net.getHostname());
+        Set networks = server.getNetworks();
+        if (networks != null && !networks.isEmpty()) {
+            // we only care about the first one
+            Network net = (Network) networks.iterator().next();
+            helper.add("hostname", net.getHostname());
+        }
+        else {
+            helper.add("hostname", LocalizationService.getInstance().getMessage(
+                    "sdc.details.overview.unknown"));
+        }
+
+        // Find this server's base entitlement:
+        String baseEntitlement = EntitlementManager.UNENTITLED;
+        List<String> addonEntitlements = new LinkedList<String>();
+        for (Entitlement ent : server.getEntitlements()) {
+            if (ent.isBase()) {
+                baseEntitlement = ent.getLabel();
             }
             else {
-                helper.add("hostname", LocalizationService.getInstance().getMessage(
-                        "sdc.details.overview.unknown"));
+                addonEntitlements.add(ent.getLabel());
             }
-
-            // Find this server's base entitlement:
-            String baseEntitlement = EntitlementManager.UNENTITLED;
-            List<String> addonEntitlements = new LinkedList<String>();
-            for (Entitlement ent : server.getEntitlements()) {
-                if (ent.isBase()) {
-                    baseEntitlement = ent.getLabel();
-                }
-                else {
-                    addonEntitlements.add(ent.getLabel());
-                }
-            }
-            helper.add("base_entitlement", baseEntitlement);
-            helper.add("addon_entitlements", addonEntitlements);
-
-            Boolean autoUpdate = Boolean.FALSE;
-            if (server.getAutoUpdate().equals("Y")) {
-                autoUpdate = Boolean.TRUE;
-            }
-            helper.add("auto_update", autoUpdate);
-
-            helper.add("description", StringUtils.defaultString(server.getDescription()));
-
-            String address1 = "";
-            String address2 = "";
-            String city = "";
-            String state = "";
-            String country = "";
-            String building = "";
-            String room = "";
-            String rack = "";
-            if (server.getLocation() != null) {
-                address1 = StringUtils.defaultString(server.getLocation().
-                        getAddress1());
-                address2 = StringUtils.defaultString(server.getLocation().
-                        getAddress2());
-                city = StringUtils.defaultString(server.getLocation().
-                        getCity());
-                state = StringUtils.defaultString(server.getLocation().
-                        getState());
-                country = StringUtils.defaultString(server.getLocation().
-                        getCountry());
-                building = StringUtils.defaultString(server.getLocation().
-                        getBuilding());
-                room = StringUtils.defaultString(server.getLocation().
-                        getRoom());
-                rack = StringUtils.defaultString(server.getLocation().
-                        getRack());
-            }
-            helper.add("address1", address1);
-            helper.add("address2", address2);
-            helper.add("city", city);
-            helper.add("state", state);
-            helper.add("country", country);
-            helper.add("building", building);
-            helper.add("room", room);
-            helper.add("rack", rack);
-
-            helper.add("release", server.getRelease());
-            helper.add("last_boot", server.getLastBootAsDate());
-
-            if (server.getPushClient() != null) {
-                helper.add("osa_status", server.getPushClient().getState().getName());
-            }
-            else {
-                helper.add("osa_status", LocalizationService.getInstance().getMessage(
-                        "sdc.details.overview.unknown"));
-            }
-
-            Boolean locked = Boolean.FALSE;
-            if (server.getLock() != null) {
-                locked = Boolean.TRUE;
-            }
-            helper.add("lock_status", locked);
-
-            if (server.isVirtualGuest()) {
-                VirtualInstanceType type = server.getVirtualInstance().getType();
-                if (type != null) {
-                    helper.add("virtualization", type.getName());
-                }
-            }
-
-            helper.writeTo(output);
         }
-        catch (Exception e) {
-            log.error("Unexpected exception in serializer", e);
-            throw new XmlRpcException("Unexpected exception in serializer", e);
+        helper.add("base_entitlement", baseEntitlement);
+        helper.add("addon_entitlements", addonEntitlements);
+
+        Boolean autoUpdate = Boolean.FALSE;
+        if (server.getAutoUpdate().equals("Y")) {
+            autoUpdate = Boolean.TRUE;
         }
+        helper.add("auto_update", autoUpdate);
+
+        helper.add("description", StringUtils.defaultString(server.getDescription()));
+
+        String address1 = "";
+        String address2 = "";
+        String city = "";
+        String state = "";
+        String country = "";
+        String building = "";
+        String room = "";
+        String rack = "";
+        if (server.getLocation() != null) {
+            address1 = StringUtils.defaultString(server.getLocation().
+                    getAddress1());
+            address2 = StringUtils.defaultString(server.getLocation().
+                    getAddress2());
+            city = StringUtils.defaultString(server.getLocation().
+                    getCity());
+            state = StringUtils.defaultString(server.getLocation().
+                    getState());
+            country = StringUtils.defaultString(server.getLocation().
+                    getCountry());
+            building = StringUtils.defaultString(server.getLocation().
+                    getBuilding());
+            room = StringUtils.defaultString(server.getLocation().
+                    getRoom());
+            rack = StringUtils.defaultString(server.getLocation().
+                    getRack());
+        }
+        helper.add("address1", address1);
+        helper.add("address2", address2);
+        helper.add("city", city);
+        helper.add("state", state);
+        helper.add("country", country);
+        helper.add("building", building);
+        helper.add("room", room);
+        helper.add("rack", rack);
+
+        helper.add("release", server.getRelease());
+        helper.add("last_boot", server.getLastBootAsDate());
+
+        if (server.getPushClient() != null) {
+            helper.add("osa_status", server.getPushClient().getState().getName());
+        }
+        else {
+            helper.add("osa_status", LocalizationService.getInstance().getMessage(
+                    "sdc.details.overview.unknown"));
+        }
+
+        Boolean locked = Boolean.FALSE;
+        if (server.getLock() != null) {
+            locked = Boolean.TRUE;
+        }
+        helper.add("lock_status", locked);
+
+        if (server.isVirtualGuest()) {
+            VirtualInstanceType type = server.getVirtualInstance().getType();
+            if (type != null) {
+                helper.add("virtualization", type.getName());
+            }
+        }
+
+        helper.writeTo(output);
     }
 }
