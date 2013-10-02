@@ -1,6 +1,6 @@
 GIT_BRANCH_BASE_CONTAINER = {
    '1.7' : 'sles11_sp2_base',
-   'Head' : 'sles11_sp3_base'
+   'head' : 'sles11_sp3_base'
 }
 
 KNOWN_DBS = ('oracle', 'pgsql')
