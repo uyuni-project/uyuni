@@ -7,13 +7,13 @@ This is the hierarchy of our containers:
 
 ```
                                        +------------------+
-                                       |  sles11_sp2_base |
+                                       |  sles11_spN_base |
                                        +--------+--------+
                                                 |
                                      +----------+-------------+
                                      |                        |
                            +---------+--------+    +----------+--------+
-                           | sles11_sp2_pgsql |    | sles11_sp2_oracle |
+                           | sles11_spN_pgsql |    | sles11_spN_oracle |
                            +---------+--------+    +----------+--------+
                                      |                        |
                                      |                        |
@@ -25,13 +25,15 @@ This is the hierarchy of our containers:
 ```
 
 We rely on different containers, all of them are built on top of a standard one
-called `sle11_sp2_base`. This container is built using kiwi while the other ones
+called `sle11_spN_base`, where N is the service pack number and may vary depending
+on which release is supported. This container is built using kiwi while the other ones
 are built using [docker's build feature](http://docs.docker.io/en/latest/use/builder/).
 
-From the `sles11_sp2_base` we create two more containers:
+From the `sles11_spN_base` we create two more containers:
 
-  * `sles11_sp2_pgsql`: this is the base container plus the Postgresql server.
-  * `sles11_sp2_oracle`: this is the base container plus the Oracle server.
+  * `sles11_spN_pgsql`: this is the base container plus the Postgresql server.
+  * `sles11_spN_oracle`: this is the base container plus tools to access an external
+  Oracle server.
 
 These containers are used as base to create the systems for running the python
 and java tests.
@@ -63,7 +65,7 @@ To build the base containers just invoke:
 
 This will build the containers required to test all the branches covered by our
 tests. Right now this will build a SLE11SP2 container (required to test the 1.7
-branch) and a SLE11SP3 container (required to test the Head branch). It's possible
+branch) and a SLE11SP3 container (required to test the head branch). It's possible
 to build containers only for certain branches using the '-b' cli option.
 
 Once the containers are built the task will import them into the local docker
@@ -117,3 +119,17 @@ which runs on `ix64smc161.qa.suse.de`.
 
 You can push the containers built on your machine to our private registry using
 the dedicated paver tasks.
+
+### Oracle tests
+
+At the moment it is not possible to have an Oracle instance running inside a container
+because of containers' limitations (access to /proc and AuFS are known to be problematic,
+at least).
+
+Thus, at the moment, Oracle containers access a virtual Oracle server (1c059.qa.suse.de),
+which is an Oracle for Testsuite instance available here:
+
+http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head:/Appliance/images/
+
+In case it had to be replaced, just make sure relevant containers have passwordless SSH
+access.
