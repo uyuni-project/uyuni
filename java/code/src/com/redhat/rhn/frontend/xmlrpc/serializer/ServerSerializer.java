@@ -22,7 +22,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
-import redstone.xmlrpc.XmlRpcCustomSerializer;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
@@ -73,7 +72,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
  *           for virtual guests only (optional)")
  *  #struct_end()
  */
-public class ServerSerializer implements XmlRpcCustomSerializer {
+public class ServerSerializer extends RhnXmlRpcCustomSerializer {
 
     /**
      * {@inheritDoc}
@@ -85,12 +84,12 @@ public class ServerSerializer implements XmlRpcCustomSerializer {
     /**
      * {@inheritDoc}
      */
-    public void serialize(Object value, Writer output, XmlRpcSerializer builtInSerializer)
+    protected void doSerialize(Object value, Writer output, XmlRpcSerializer serializer)
         throws XmlRpcException, IOException {
 
         Server server = (Server)value;
 
-        SerializerHelper helper = new SerializerHelper(builtInSerializer);
+        SerializerHelper helper = new SerializerHelper(serializer);
         helper.add("id", server.getId());
         helper.add("profile_name", server.getName());
 

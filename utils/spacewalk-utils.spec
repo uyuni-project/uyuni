@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	2.1.18
+Version:	2.1.20
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -103,6 +103,12 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Tue Oct 01 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.20-1
+- fixed pylint warning
+
+* Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.19-1
+- removed trailing whitespaces
+
 * Fri Sep 27 2013 Grant Gainey <ggainey@redhat.com> 2.1.18-1
 - 1012963 - Don't use :table as a param-name in Oracle prepared stmts
 - 1012934 - Oracle prepared-stmt cannot have semicolons
