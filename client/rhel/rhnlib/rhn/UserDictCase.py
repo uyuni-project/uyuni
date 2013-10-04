@@ -41,9 +41,7 @@ class UserDictCase(UserDict):
 
     def __getitem__(self, key):
         key = self.__lower_string(key)
-        if not self.data.has_key(key):
-            return None
-        return self.data[key]   
+        return self.data[key]
 
     get = __getitem__
 
