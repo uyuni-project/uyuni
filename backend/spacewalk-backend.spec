@@ -22,7 +22,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.24
+Version: 2.1.26
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -777,6 +777,17 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # $Id$
 %changelog
+* Fri Oct 04 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.26-1
+- Python pgsql db tests: fix broken test
+- Fixed errors inside of the python pgsql test suite.
+- Python pgsql driver: handled ProgrammingError exceptions
+- Python db tests: moved connection settings to dedicated file
+- Fixed script which runs python PostgreSQL tests
+
+* Wed Oct 02 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.25-1
+- 923338 - replace application code with database lookup to prevent conflicting
+  inserts
+
 * Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.24-1
 - make pylint 1.0 happy about map/filter on lambda
 
