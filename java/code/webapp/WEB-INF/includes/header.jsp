@@ -61,7 +61,7 @@
       <option value="docs"><bean:message key="header.jsp.documentation"/></option>
       </select><input type="text" name="search_string" maxlength="40" size="20" accesskey="4" autofocus="autofocus"/>
       <input type="hidden" name="submitted" value="true"/>
-      <input type="submit" class="button" name="image-1" value="Search" align="top" /></form>
+      <input type="submit" class="button" name="image-1" value="<bean:message key="button.search"/>" align="top" /></form>
     </div><!-- id="searchbarinner" -->
   </div><!-- id="searchbar" -->
       </rhn:require>
