@@ -19,7 +19,7 @@
 %define apache_group apache
 %endif
 Name:       spacewalk-branding
-Version:    2.1.3
+Version:    2.1.4
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -116,6 +116,10 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Tue Oct 08 2013 Stephen Herr <sherr@redhat.com> 2.1.4-1
+- 1006142 - non-roman character languages had bad wrapping for thin table
+  columns
+
 * Tue Sep 10 2013 Tomas Lestach <tlestach@redhat.com> 2.1.3-1
 - 1006406 - fix encodig in branding
 

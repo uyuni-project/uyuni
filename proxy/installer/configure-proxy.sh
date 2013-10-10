@@ -14,8 +14,6 @@ options:
             Indicates the location of an answer file to be use for answering
             questions asked during the installation process. See man page for
             for an example and documentation.
-  --ca-chain=CA_CHAIN
-            The CA cert used to verify the ssl connection to parent.
   --enable-scout
             Enable monitoring scout.
   --force-own-ca
@@ -30,19 +28,20 @@ options:
             The username for an authenticated proxy.
   --install-monitoring
             Install and enable monitoring.
+  --monitoring-parent=MONITORING_PARENT
+            Name of the parent for your scout. Usually your spacewalk server.
+  --monitoring-parent-ip=MONITORING_PARENT_IP
+            IP address of MONITORING_PARENT
   --non-interactive
             For use only with --answer-file. If the --answer-file doesn't
             provide a required response, default answer is used.
-  --monitoring-parent=MONITORING_PARENT
-            Name of the parent for your scout. Usually the same value as in
-            RHN_PARENT.
-  --monitoring-parent-ip=MONITORING_PARENT_IP
-            IP address of MONITORING_PARENT
   --populate-config-channel
             Create config chanel and save configuration files to that channel.
             Configuration channel name is rhn_proxy_config_\${SYSTEM_ID}.
-  --rhn-parent=RHN_PARENT
-            Your parent Spacewalk server.
+  --rhn-password=RHN_PASSWORD
+            Red Hat Network or Spacewalk password.
+  --rhn-user=RHN_USER
+            Red Hat Network or Spacewalk user account.
   --ssl-build-dir=SSL_BUILD_DIR
             The directory where we build SSL certificate. Default is /root/ssl-build
   --ssl-city=SSL_CITY
@@ -95,14 +94,16 @@ set_value() {
     local OPTION="$1"
     local VAR="$2"
     local ARG="$3"
-    [[ "$ARG" =~ ^- ]] && echo "$0: option $OPTION requires argument!" && print_help
+    [[ "$ARG" =~ ^- ]] \
+        && echo "$0: option $OPTION requires argument! Use answer file if your argument starts with '-'." \
+        && print_help
     eval "$(printf "%q=%q" "$VAR" "$ARG")"
 }
 
 INTERACTIVE=1
 CNAME_INDEX=0
 
-OPTS=$(getopt --longoptions=help,answer-file:,non-interactive,version:,rhn-parent:,traceback-email:,use-ssl::,ca-chain:,force-own-ca,http-proxy:,http-username:,http-password:,ssl-build-dir:,ssl-org:,ssl-orgunit:,ssl-common:,ssl-city:,ssl-state:,ssl-country:,ssl-email:,ssl-password:,ssl-cname:,install-monitoring::,enable-scout::,monitoring-parent:,monitoring-parent-ip:,populate-config-channel::,start-services:: -n ${0##*/} -- h "$@")
+OPTS=$(getopt --longoptions=help,answer-file:,non-interactive,version:,traceback-email:,use-ssl::,force-own-ca,http-proxy:,http-username:,http-password:,ssl-build-dir:,ssl-org:,ssl-orgunit:,ssl-common:,ssl-city:,ssl-state:,ssl-country:,ssl-email:,ssl-password:,ssl-cname:,install-monitoring::,enable-scout::,monitoring-parent:,monitoring-parent-ip:,populate-config-channel::,start-services:: -n ${0##*/} -- h "$@")
 
 if [ $? != 0 ] ; then
     print_help
@@ -118,10 +119,8 @@ while : ; do
                        parse_answer_file "$ANSWER_FILE"; shift;;
         --non-interactive) INTERACTIVE=0;;
         --version) set_value "$1" VERSION "$2"; shift;;
-        --rhn-parent) set_value "$1" RHN_PARENT "$2"; shift;;
         --traceback-email) set_value "$1" TRACEBACK_EMAIL "$2"; shift;;
         --use-ssl) USE_SSL="${2:-1}"; shift;;
-        --ca-chain) set_value "$1" CA_CHAIN "$2"; shift;;
         --force-own-ca) FORCE_OWN_CA=1;;
         --http-proxy) set_value "$1" HTTP_PROXY "$2"; shift;;
         --http-username) set_value "$1" HTTP_USERNAME "$2"; shift;;
@@ -135,13 +134,15 @@ while : ; do
         --ssl-country) set_value "$1" SSL_COUNTRY "$2"; shift;;
         --ssl-email) set_value "$1" SSL_EMAIL "$2"; shift;;
         --ssl-password) set_value "$1" SSL_PASSWORD "$2"; shift;;
-        --ssl-cname) set_value "$1" "SSL_CNAME_PARSED[CNAME_INDEX++]=--set-cname" "$2"; shift;;
-        --install-monitoring) set_value "$1" INSTALL_MONITORING="${2:-Y}"; shift;;
+        --ssl-cname) SSL_CNAME_PARSED[CNAME_INDEX++]="--set-cname=$2"; shift;;
+        --install-monitoring) set_value "$1" INSTALL_MONITORING "${2:-Y}"; shift;;
         --enable-scout) ENABLE_SCOUT="${2:-1}"; shift;;
         --monitoring-parent) set_value "$1" MONITORING_PARENT "$2"; shift;;
         --monitoring-parent-ip) set_value "$1" MONITORING_PARENT_IP "$2"; shift;;
         --populate-config-channel) POPULATE_CONFIG_CHANNEL="${2:-Y}"; shift;;
         --start-services) START_SERVICES="${2:-Y}"; shift;;
+        --rhn-user) set_value "$1" RHN_USER "$2"; shift;;
+        --rhn-password) set_value "$1" RHN_PASSWORD "$2"; shift;;
         --) shift;
             if [ $# -gt 0 ] ; then
                 echo "Error: Extra arguments found: $@"
@@ -153,6 +154,19 @@ while : ; do
     esac
     shift
 done
+
+# params dep check
+if [[ $INTERACTIVE == 0 \
+    && ( -z $POPULATE_CONFIG_CHANNEL || $( yes_no $POPULATE_CONFIG_CHANNEL ) == 1 ) \
+    && ( -z  $RHN_USER || -z $RHN_PASSWORD ) ]]; then
+        echo "Error: When --populate-config-channel is set to Yes both --rhn-user and --rhn-password have to be provided."
+        exit 1
+fi
+
+if [[ $INTERACTIVE == 0 && -z $ANSWER_FILE ]]; then
+    echo "Option --non-interactive is for use only with option --answer-file."
+    exit 1
+fi
 
 ACCUMULATED_ANSWERS=""
 
@@ -307,7 +321,8 @@ if [ "$RHN_PARENT" == "rhn.redhat.com" ]; then
 WARNING
 fi
 
-default_or_input "CA Chain" CA_CHAIN $(awk -F'[=;]' '/sslCACert=/ {a=$2} END { print a}' $SYSCONFIG_DIR/up2date)
+CA_CHAIN=$(awk -F'[=;]' '/sslCACert=/ {a=$2} END {print a}' $UP2DATE_FILE)
+echo "Using CA Chain (from $UP2DATE_FILE): $CA_CHAIN"
 
 if [ 0$FORCE_OWN_CA -eq 0 ] && \
     ! is_hosted "$RHN_PARENT" && \
@@ -318,7 +333,6 @@ Please do copy your CA key and public certificate from $RHN_PARENT to
 /root/ssl-build directory. You may want to execute this command:
  scp 'root@$RHN_PARENT:/root/ssl-build/{RHN-ORG-PRIVATE-SSL-KEY,RHN-ORG-TRUSTED-SSL-CERT,rhn-ca-openssl.cnf}' $SSL_BUILD_DIR
 CA_KEYS
-        generate_answers
         exit 1
 fi
 
@@ -327,7 +341,6 @@ check_ca_conf
 if ! /bin/su nobody -s /bin/sh --command="[ -r $CA_CHAIN ]" ; then
 
     echo Error: File $CA_CHAIN is not readable by nobody user.
-    generate_answers
     exit 1
 fi
 
@@ -588,9 +601,13 @@ default_or_input "Create and populate configuration channel $CHANNEL_LABEL?" POP
 POPULATE_CONFIG_CHANNEL=$(yes_no $POPULATE_CONFIG_CHANNEL)
 if [ "$POPULATE_CONFIG_CHANNEL" = "1" ]; then
     RHNCFG_STATUS=1
+    default_or_input "RHN username:" RHN_USER ''
     while [ $RHNCFG_STATUS != 0 ] ; do
-        CONFIG_CHANNELS=$(rhncfg-manager list-channels --server-name "$RHN_PARENT")
+        CONFIG_CHANNELS=$(rhncfg-manager list-channels ${RHN_USER:+--username="${RHN_USER}"} ${RHN_PASSWORD:+--password="${RHN_PASSWORD}"} --server-name="$RHN_PARENT")
         RHNCFG_STATUS=$?
+        # In case of incorrect username/password, we want to re-ask user
+        unset RHN_USER
+        unset RHN_PASSWORD
     done
     if ! grep -q -E "^ +$CHANNEL_LABEL$" <<<"$CONFIG_CHANNELS" ; then
         rhncfg-manager create-channel --server-name "$RHN_PARENT" "$CHANNEL_LABEL"

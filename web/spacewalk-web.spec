@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.22
+Version: 2.1.24
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -311,8 +311,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/spacewalk/web
 %doc LICENSE
 
-# $Id$
 %changelog
+* Wed Oct 09 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.24-1
+- cleaning up old svn Ids
+
+* Mon Oct 07 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.23-1
+- Revert "removing Perl reboot system page"
+- Revert "removing Perl code associated with reboot system page"
+
 * Tue Oct 01 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.22-1
 - 1013629 - clean up old help links
 
