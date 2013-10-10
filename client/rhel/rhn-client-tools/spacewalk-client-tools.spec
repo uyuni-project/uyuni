@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.1.9
+Version: 2.1.10
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -311,6 +311,7 @@ make -f Makefile.rhn-client-tools test
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/up2date_client
 %dir %{_localstatedir}/spool/up2date
+
 #files
 %{_datadir}/rhn/up2date_client/__init__.*
 %{_datadir}/rhn/up2date_client/config.*
@@ -455,6 +456,10 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Wed Oct 09 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.10-1
+- 1017249 - TUI rhn_register: string polish
+- 1017249 - GUI rhn_register: string polish
+
 * Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.9-1
 - removed trailing whitespaces
 
