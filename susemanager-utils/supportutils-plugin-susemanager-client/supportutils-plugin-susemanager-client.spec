@@ -33,7 +33,7 @@ plugin-susemanagerclient.txt.
 %prep
 %setup -q
 %build
-gzip -9f susemanagerproxy-client.8
+gzip -9f susemanagerclient-plugin.8
 
 %install
 pwd;ls -la
