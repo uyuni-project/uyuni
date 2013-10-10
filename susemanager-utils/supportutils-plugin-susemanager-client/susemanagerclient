@@ -10,26 +10,25 @@
 
 SVER=1.0.0
 RCFILE="/usr/lib/supportconfig/resources/scplugin.rc"
-LOG_LINES=500  # 0 means include the entire file
 
 [ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
 
 validate_rpm_if_installed() {
-        THISRPM=$1
-        echo "#==[ Validating RPM ]=================================#"
-        if rpm -q $THISRPM >/dev/null 2>&1; then
-                echo "# rpm -V $THISRPM"
+    THISRPM=$1
+    echo "#==[ Validating RPM ]=================================#"
+    if rpm -q $THISRPM >/dev/null 2>&1; then
+        echo "# rpm -V $THISRPM"
 
-                if rpm -V $THISRPM; then
-                        echo "Status: Passed"
-                else
-                        echo "Status: WARNING"
-                fi
+        if rpm -V $THISRPM; then
+            echo "Status: Passed"
         else
-                echo "package $THISRPM is not installed"
-                echo "Status: Skipped"
+            echo "Status: WARNING"
         fi
-        echo
+    else
+        echo "package $THISRPM is not installed"
+        echo "Status: Skipped"
+    fi
+    echo
 }
 
 #############################################################
@@ -66,16 +65,8 @@ openscap-content
 "
 
 for THISRPM in $RPMLIST; do
-        validate_rpm_if_installed $THISRPM
+    validate_rpm_if_installed $THISRPM
 done
-
-find_and_plog_files () {
-        [ -d "$1" ] || return 0
-        FILES=$(find "$@" ! -name \*.gz ! -name \*.bz2)
-        if [ -n "$FILES" ]; then
-                plog_files $LOG_LINES $FILES
-        fi
-}
 
 section_header "SUSE Manager Client Config Files"
 
@@ -83,6 +74,9 @@ pconf_files \
     /etc/sysconfig/rhn/up2date \
     /etc/sysconfig/rhn/osad.conf \
     /etc/sysconfig/rhn/rhncfg-client.conf \
+    /etc/sysconfig/rhn/rhncfg-manager.conf \
+    /etc/sysconfig/rhn/image.cfg \
+    /etc/sysconfig/rhn/rhnpushrc \
     /etc/sysconfig/rhn/rhnsd
 
 section_header "SUSE Manager Client Capabilities"
@@ -95,6 +89,6 @@ find /etc/sysconfig/rhn/allowed-actions/
 
 section_header "SUSE Manager Proxy Log Files"
 
-find_and_plog_files /var/log/up2date -type f
-find_and_plog_files /var/log/osad -type f
+plog_files 1000 /var/log/up2date
+plog_files 100 /var/log/osad
 
