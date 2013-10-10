@@ -23,7 +23,7 @@ Distribution: Novell NTS
 Vendor:       Novell Technical Services
 Requires:     supportconfig-plugin-resource
 Requires:     supportconfig-plugin-tag
-Supplements:  supportutils
+Supplements:  packageand(spacewalk-check:supportutils)
 
 %description
 Extends supportconfig functionality to include system information for
