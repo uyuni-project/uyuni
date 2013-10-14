@@ -82,6 +82,13 @@ when :firefox
     Capybara.javascript_driver = :selenium
 end
 
+After("@selenium") do |scenario|
+  if scenario.exception.is_a? Timeout::Error
+    # restart Selenium driver
+    Capybara.send(:session_pool).delete_if { |key, value| key =~ /selenium/i }
+  end
+end
+
 case browser
 when :htmlunit
   require 'culerity'
