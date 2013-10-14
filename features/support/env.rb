@@ -68,15 +68,18 @@ Capybara.default_wait_time = 20
 
 # Register different browsers
 case browser
-  when :chrome
+when :chrome
     Capybara.register_driver :selenium do |app|
       Capybara::Selenium::Driver.new(app, :browser => :chrome, :switches => ['--ignore-certificate-errors'])
     end
-  when :firefox
-    #require 'selenium-webdriver'
+when :firefox
+    require 'selenium-webdriver'
     Capybara.register_driver :selenium do |app|
-      Capybara::Selenium::Driver.new(app, :browser => :firefox)
+      client = Selenium::WebDriver::Remote::Http::Default.new
+      client.timeout = 120
+      Capybara::Selenium::Driver.new(app, :browser => :firefox, :http_client => client)
     end
+    Capybara.javascript_driver = :selenium
 end
 
 case browser
