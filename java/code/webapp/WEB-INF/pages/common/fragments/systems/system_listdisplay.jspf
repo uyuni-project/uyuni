@@ -41,7 +41,7 @@
 		</rl:column>
 
 
-		<c:if test = "${empty extraPackagesMode and empty nonCompliantMode}">
+		<c:if test = "${empty extraPackagesMode}">
 		<!--Updates Column -->
 		<rl:column sortable="false"
 				   bound="false"
@@ -52,12 +52,12 @@
 		</rl:column>
 		</c:if>
 
-		<c:if test = "${empty noMonitoring and empty extraPackagesMode and empty nonCompliantMode}">
+		<c:if test = "${empty noMonitoring and empty extraPackagesMode}">
 		<!-- Health Column -->
     <%@ include file="monitoring_status_systems.jspf" %>
 		</c:if>
 
-		<c:if test = "${empty noErrata and empty extraPackagesMode and empty nonCompliantMode}">
+		<c:if test = "${empty noErrata and empty extraPackagesMode}">
 		<!-- errata Column -->
 		<rl:column sortable="false"
 				   bound="false"
@@ -74,21 +74,22 @@
 		        </c:choose>
 		</rl:column>
 	    </c:if>
-	   <c:if test = "${empty noPackages and empty extraPackagesMode and empty nonCompliantMode}">
+	   <c:if test = "${empty noPackages and empty extraPackagesMode}">
 		<!-- Packages Column -->
 		<rl:column sortable="false"
 				   bound="false"
 		           headerkey="systemlist.jsp.packages"
 		           styleclass="center"
 		           headerclass="thin-column">
-		           	<c:choose>
-		   		    	<c:when test="${(current.outdatedPackages) == 0}">
-	        		    	<c:out value="0" />
-		        	    </c:when>
-		        	    <c:otherwise>
-						    <c:out value="<a href=\"/rhn/systems/details/packages/UpgradableList.do?sid=${current.id}\">${current.outdatedPackages}</a>" escapeXml="false" />
-	    	    	    </c:otherwise>
-	        		</c:choose>
+
+		        <c:choose>
+		    		<c:when test="${(current.outdatedPackages) == 0}">
+		        		<c:out value="0" />
+		        	</c:when>
+		        	<c:otherwise>
+						<c:out value="<a href=\"/rhn/systems/details/packages/UpgradableList.do?sid=${current.id}\">${current.outdatedPackages}</a>" escapeXml="false" />
+		        	</c:otherwise>
+		        </c:choose>
 		</rl:column>
 		</c:if>
                <!-- Extra packages column -->
@@ -98,18 +99,7 @@
                </rl:column>
                </c:if>
 
-		<c:if test = "${nonCompliantMode}">
-		<!-- Non-compliant packages Column -->
-		<rl:column sortable="false"
-				   bound="false"
-		           headerkey="systemlist.jsp.packages"
-		           styleclass="center"
-		           headerclass="thin-column">
-					<c:out value="<a href='/rhn/systems/NonCompliantPackageList.do?sid=${current.id}'>${current.foreignPackagesCount}</a>" escapeXml="false" />
-		</rl:column>
-		</c:if>
-
-		<c:if test = "${empty noConfigFiles and empty nonCompliantMode}">
+		<c:if test = "${empty noConfigFiles and empty extraPackagesMode}">
 			<rl:column sortable="false"
 				   bound="false"
 				   headerkey="systemlist.jsp.configfiles"
@@ -168,7 +158,7 @@
 		</rl:column>
 
 		<!-- Entitlement Column -->
-                <c:if test="${empty extraPackagesMode and empty nonCompliantMode}">
+                <c:if test="${empty extraPackagesMode}">
 		<rl:column sortable="false"
 				   bound="false"
 		           headerkey="systemlist.jsp.entitlement">

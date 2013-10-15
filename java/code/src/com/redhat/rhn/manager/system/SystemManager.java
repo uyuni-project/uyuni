@@ -237,44 +237,6 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Returns a list of systems that are not compliant against foreign packages check.
-     *
-     * @param user
-     *            Currently logged in user.
-     *
-     * @param pc
-     *            Page control
-     *
-     * @return list of SystemOverviews.
-     */
-    public static DataResult<SystemOverview> getForeignPackagesSystems(User user,
-            PageControl pc) {
-        Map params = new HashMap();
-        params.put("org_id", user.getOrg().getId());
-        params.put("user_id", user.getId());
-        return makeDataResult(params, new HashMap<String, Object>(), pc,
-                              ModeFactory.getMode("System_queries",
-                                  "foreign_packages_get_noncompliant_systems"));
-    }
-
-
-    /**
-     * Returns the list of non-compliant (foreign) packages per a system.
-     * @param serverid The id for a system
-     * @return list of SystemOverviews
-     */
-    public static DataResult listProfileForeignPackages(Long serverid) {
-        SelectMode m = ModeFactory.getMode("System_queries",
-            "foreign_packages_get_noncompliant_packages_per_system");
-        Map params = new HashMap();
-        params.put("serverid", serverid);
-        Map elabParams = new HashMap();
-
-        DataResult dataResult = makeDataResult(params, elabParams, null, m);
-        return dataResult;
-    }
-
-    /**
      * Returns a list of systems with extra packages installed.
      *
      * @param user User to check the systems for

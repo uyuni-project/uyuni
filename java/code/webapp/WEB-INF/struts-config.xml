@@ -8394,23 +8394,6 @@
                  path="/WEB-INF/pages/systems/extra-packages-systems-list.jsp"/>
     </action>
 
-    <action path="/systems/NonCompliantSystems"
-        scope="request"
-        input="/WEB-INF/pages/systems/noncompliantsystems.jsp"
-        type="com.redhat.rhn.frontend.action.systems.NonCompliantSystemsAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <forward name="default"
-                 path="/WEB-INF/pages/systems/non-compliant-systems-list.jsp"/>
-    </action>
-
-    <action path="/systems/NonCompliantPackageList"
-        scope="request"
-        type="com.redhat.rhn.frontend.action.systems.NonCompliantPackageListAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <forward name="default" path="/WEB-INF/pages/systems/non-compliant-system-packages-list.jsp"/>
-    </action>
-
     <!-- Service Pack Migration -->
     <action path="/systems/details/SPMigration"
             scope="request"
