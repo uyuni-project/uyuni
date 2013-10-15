@@ -100,22 +100,25 @@ def initDB(dsn=None, backend=None, host="localhost", port=None, username=None,
             del temp
 
     if backend == POSTGRESQL:
-        host = None
-        port = None
-        dsn = CFG.DEFAULT_DB
-        (username, temp) = dsn.split("/")
-        (password, dsn) = temp.split("@")
-        del temp
-        for i in dsn.split(';'):
-            (k, v) = i.split('=')
-            if k == 'dbname':
-                database = v
-            elif k == 'host':
-                host = v
-            elif k == 'port':
-                port = int(v)
-            else:
-                raise rhnException("Unknown piece in default_db string", i)
+        if not dsn and username and password and database:
+          pass
+        else:
+          host = None
+          port = None
+          dsn = CFG.DEFAULT_DB
+          (username, temp) = dsn.split("/")
+          (password, dsn) = temp.split("@")
+          del temp
+          for i in dsn.split(';'):
+              (k, v) = i.split('=')
+              if k == 'dbname':
+                  database = v
+              elif k == 'host':
+                  host = v
+              elif k == 'port':
+                  port = int(v)
+              else:
+                  raise rhnException("Unknown piece in default_db string", i)
 
     # Hide the password
     add_to_seclist(dsn)
