@@ -72,7 +72,6 @@ public class SystemOverview extends BaseDto implements Serializable  {
     private boolean isVirtualHost;
     private boolean isVirtualGuest;
     private Long extraPkgCount;
-    private Long foreignPackagesCount;
     private static final  String NONE_VALUE = "(none)";
     private Long totalCrashCount;
     private Long uniqueCrashCount;
@@ -779,21 +778,6 @@ public class SystemOverview extends BaseDto implements Serializable  {
      */
     public Long getUniqueCrashCount() {
         return this.uniqueCrashCount;
-    }
-
-    /**
-     * Sets a number of foreign packages in the system.
-     * @param packagesCount foreign packages to set
-     */
-    public void setForeignPackagesCount(Long packagesCount) {
-        this.foreignPackagesCount = packagesCount;
-    }
-
-    /**
-     * @return Returns the number of foreign packages in the system.
-     */
-    public Long getForeignPackagesCount() {
-        return this.foreignPackagesCount;
     }
 
 }
