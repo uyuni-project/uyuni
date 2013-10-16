@@ -73,20 +73,10 @@ when :chrome
       Capybara::Selenium::Driver.new(app, :browser => :chrome, :switches => ['--ignore-certificate-errors'])
     end
 when :firefox
-    require 'selenium-webdriver'
+    # require 'selenium-webdriver'
     Capybara.register_driver :selenium do |app|
-      client = Selenium::WebDriver::Remote::Http::Default.new
-      client.timeout = 120
-      Capybara::Selenium::Driver.new(app, :browser => :firefox, :http_client => client)
+      Capybara::Selenium::Driver.new(app, :browser => :firefox)
     end
-    Capybara.javascript_driver = :selenium
-end
-
-After("@selenium") do |scenario|
-  if scenario.exception.is_a? Timeout::Error
-    # restart Selenium driver
-    Capybara.send(:session_pool).delete_if { |key, value| key =~ /selenium/i }
-  end
 end
 
 case browser
