@@ -50,7 +50,6 @@ Feature: Explore the main landing page
      And I should see a "Virtual Systems" link in the left menu
      And I should see a "Out of Date" link in the left menu
      And I should see a "Requiring Reboot" link in the left menu
-     And I should see a "Extra Packages" link in the left menu
      And I should see a "Non-compliant Systems" link in the left menu
      And I should see a "Unentitled" link in the left menu
      And I should see a "Ungrouped" link in the left menu
@@ -93,21 +92,13 @@ Feature: Explore the main landing page
      And I should see a "No systems." text
      And the current path is "/rhn/systems/RequiringReboot.do"
 
-  Scenario: Check sidebar link destination for Systems => Extra Packages
-    Given I am on the Systems page
-      And I follow "Systems" in the left menu
-      And I follow "Extra Packages" in the left menu
-    Then I should see a "Systems with Extra Packages" text
-     And I should see a "No systems." text
-     And the current path is "/rhn/systems/ExtraPackagesSystems.do"
-
   Scenario: Check sidebar link destination for Systems => Non-compliant Systems
     Given I am on the Systems page
       And I follow "Systems" in the left menu
       And I follow "Non-compliant Systems" in the left menu
     Then I should see a "Non Compliant Systems" text
      And I should see a "No systems." text
-     And the current path is "/rhn/systems/NonCompliantSystems.do"
+     And the current path is "/rhn/systems/ExtraPackagesSystems.do"
 
   Scenario: Check sidebar link destination for Systems => Unentitled
     Given I am on the Systems page
