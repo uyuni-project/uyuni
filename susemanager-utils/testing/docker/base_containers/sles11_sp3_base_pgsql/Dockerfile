@@ -39,5 +39,12 @@ RUN rm -rf /manager
 # The symlinks are broken right now, but they will work fine when we mount our
 # git checkout on /manager
 
+# Change the number of maximum connections allowed by PostgreSQL.
+# This is by default 100, a value which is way too high compared to the actual
+# needs of the test suites. A high value causes more memory to be requested by
+# PostgreSQL on startup, leading to memory issues when two pgsql containers are
+# are executed at the same time.
+RUN sed -i 's/^max_connections =.*$/max_connections = 20/g' /var/lib/pgsql/data/postgresql.conf
+
 # Remove contents of /var/cache/zypp/{packages,raw,solv} - this is a workaround for an aufs bug
 RUN zypper cc -a
