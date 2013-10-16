@@ -518,6 +518,7 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">/rhn/systems/ExtraPackagesSystems.do</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
       </context-group>
+      </trans-unit>
       <trans-unit id="grouplist.jsp.updates">
         <source>Patch Updates Available</source>
       </trans-unit>
