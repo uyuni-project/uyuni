@@ -2,7 +2,7 @@
 #
 # VERSION               0.1
 
-FROM sles11_sp3_base
+FROM PARENT_CONTAINER
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
 
 # Ensure /var/cache/zypp/{packages,raw,solv} are empty - this is a workaround for an aufs bug
@@ -12,7 +12,7 @@ RUN zypper cc -a
 RUN zypper --non-interactive --gpg-auto-import-keys ref
 
 # Install needed packages
-RUN zypper in -y perl-DBD-Pg postgresql91-contrib postgresql91-pltcl postgresql91-server smdba
+RUN zypper in -y perl-DBD-Pg postgresql91-contrib postgresql91-server smdba
 
 ADD setup-db-postgres.sh /root/setup-db-postgres.sh
 RUN sh /root/setup-db-postgres.sh
