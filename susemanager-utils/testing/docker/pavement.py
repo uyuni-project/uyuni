@@ -62,10 +62,21 @@ def publish_base_containers():
 @task
 @cmdopts([
   ('branches=', 'b', 'Build container required to test the specified branches. By default build containers for all the branches. The list is comma separated.'),
-  ('databases=', 'd', 'Build container required to test the specified databases. By default builds containers for all the dbs. The list is comma separated.')
+  ('databases=', 'd', 'Build container required to test the specified databases. By default builds containers for all the dbs. The list is comma separated.'),
+  ('use-remote-parent', 'r', 'Fetch the parent container from the private registry.')
 ])
 def build_db_containers(options):
   """Build the container using docker."""
+
+  use_remote_parent = False
+  try:
+    use_remote_parent = options.use_remote_parent
+  except AttributeError:
+    pass
+
+  build_cmd = "paver build"
+  if use_remote_parent:
+    build_cmd += " -r"
 
   target_branches = build_utils.helpers.extract_branches_from_options(options)
   target_dbs      = build_utils.helpers.extract_dbs_from_options(options)
@@ -80,7 +91,7 @@ def build_db_containers(options):
       print 'Building {0} container required by branch {1} and by db {2}'.format(container_name, branch, db)
 
       with pushd(container_project_dir):
-        sh('paver build')
+        sh(build_cmd)
 
 @task
 @cmdopts([
@@ -109,10 +120,21 @@ def publish_db_containers(options):
 @cmdopts([
   ('branches=', 'b', 'Build container required to test the specified branches. By default build containers for all the branches. The list is comma separated.'),
   ('databases=', 'd', 'Build container required to test the specified databases. By default builds containers for all the dbs. The list is comma separated.'),
-  ('test-target=', 't', 'Build container required to test the specified targets. By default builds containers for all the test targets. The list is comma separated.')
+  ('test-target=', 't', 'Build container required to test the specified targets. By default builds containers for all the test targets. The list is comma separated.'),
+  ('use-remote-parent', 'r', 'Fetch the parent container from the private registry.')
 ])
 def build_testing_containers(options):
   """Build the container used to run SUSE Manager's tests."""
+
+  use_remote_parent = False
+  try:
+    use_remote_parent = options.use_remote_parent
+  except AttributeError:
+    pass
+
+  basic_build_cmd = "paver build"
+  if use_remote_parent:
+    basic_build_cmd += " -r "
 
   target_branches = ','.join(build_utils.helpers.extract_branches_from_options(options))
   target_dbs      = build_utils.helpers.extract_dbs_from_options(options)
@@ -127,7 +149,7 @@ def build_testing_containers(options):
     container_project_dir = os.path.join(ROOT_DIR, test_target + '_testing')
 
     with pushd(container_project_dir):
-      sh('paver build -b {0} -d {1}'.format(target_branches, target_dbs))
+      sh('{0} -b {1} -d {2}'.format(basic_build_cmd, target_branches, target_dbs))
 
 @task
 @cmdopts([
