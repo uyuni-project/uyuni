@@ -35,7 +35,7 @@ def build():
   build_utils.helpers.build_container_using_docker(
     CONTAINER_NAME,
     PARENT_CONTAINER,
-    use_template_file = False,
+    use_template_file = True,
     use_remote_parent = use_remote_parent,
   )
   print '{0} container successfully built'.format(CONTAINER_NAME)

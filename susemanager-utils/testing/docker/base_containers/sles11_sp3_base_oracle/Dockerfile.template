@@ -2,20 +2,18 @@
 #
 # VERSION               0.1
 
-FROM sles11_sp2_base
+i
+FROM PARENT_CONTAINER
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
 
 # Ensure /var/cache/zypp/{packages,raw,solv} are empty - this is a workaround for an aufs bug
 RUN zypper cc -a
 
 # Make sure the package repository is up to date
-RUN zypper --non-interactive --gpg-auto-import-keys ref
+RUN zypper --non-interactive --gpg-auto-import-keys --no-gpg-checks ref 
 
 # Install needed packages
-RUN zypper in -y perl-DBD-Pg postgresql91-contrib postgresql91-server smdba
-
-ADD setup-db-postgres.sh /root/setup-db-postgres.sh
-RUN sh /root/setup-db-postgres.sh
+RUN zypper in -y bc perl-DBD-ODBC perl-DBD-Oracle oracle-instantclient11_2-sqlplus openssh
 
 # Create a tomcat user - this is required later by spacewalk-setup
 RUN useradd tomcat
@@ -27,7 +25,7 @@ RUN useradd tomcat
 #   * /usr/bin/rhn-config-schema.pl
 #
 # These binaries are alredy inside of the git checkout, we just need some
-# symbolick links pointing to them. We do not have out git checkout mounted
+# symbolic links pointing to them. We do not have the git checkout mounted
 # inside of the container at build time, hence we are going to cheat a little...
 
 RUN mkdir -p /manager/spacewalk/admin/
@@ -39,12 +37,11 @@ RUN rm -rf /manager
 # The symlinks are broken right now, but they will work fine when we mount our
 # git checkout on /manager
 
-# Change the number of maximum connections allowed by PostgreSQL.
-# This is by default 100, a value which is way too high compared to the actual
-# needs of the test suites. A high value causes more memory to be requested by
-# PostgreSQL on startup, leading to memory issues when two pgsql containers are
-# are executed at the same time.
-RUN sed -i 's/^max_connections =.*$/max_connections = 20/g' /var/lib/pgsql/data/postgresql.conf
+ADD tnsnames.ora /etc/tnsnames.ora
+
+ADD ssh /root/.ssh
+RUN chown -R root:root /root/.ssh
+RUN chmod 600 /root/.ssh/*
 
 # Remove contents of /var/cache/zypp/{packages,raw,solv} - this is a workaround for an aufs bug
 RUN zypper cc -a
