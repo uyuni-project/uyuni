@@ -11,7 +11,7 @@
 <html:form action="/users/EditAddressSubmit">
 <rhn:csrf />
 <html:hidden property="type"/>
-<h2><bean:message key="message.Update"/> ${editAddressForm.map.typedisplay}</h2>
+<h2><bean:message key="message.Update"/><c:out value="${editAddressForm.map.typedisplay}" escapeXml="true" /></h2>
 
     <div class="page-summary">
     <p>

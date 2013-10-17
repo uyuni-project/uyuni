@@ -23,7 +23,7 @@
 </div>
 
 <h2>
-    ${editAddressForm.map.typedisplay}
+    <c:out value="${editAddressForm.map.typedisplay}" escapeXml="true" />
     <bean:message key="your_edit_address_record.displayname"/>
 </h2>
 
