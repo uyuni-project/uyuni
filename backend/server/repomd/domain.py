@@ -70,6 +70,7 @@ class Package:
         self.conflicts = []
         self.obsoletes = []
         self.supplements = []
+        self.enhances = []
         self.suggests = []
         self.recommends = []
 

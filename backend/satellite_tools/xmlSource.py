@@ -572,6 +572,7 @@ class PackageItem(IncompletePackageItem):
         'rhn-package-recommends'    : 'recommends',
         'rhn-package-suggests'      : 'suggests',
         'rhn-package-supplements'   : 'supplements',
+        'rhn-package-enhances'      : 'enhances',
         'rhn-package-changelog'     : 'changelog',
         'suse-product-file'         : 'product_files',
     }
@@ -671,6 +672,10 @@ addItem(SuggestsItem)
 class SupplementsItem(DependencyItem):
     item_name = 'rhn-package-supplements-entry'
 addItem(SupplementsItem)
+
+class EnhancesItem(DependencyItem):
+    item_name = 'rhn-package-enhances-entry'
+addItem(EnhancesItem)
 
 class FileItem(BaseChecksummedItem):
     item_name = 'rhn-package-file'

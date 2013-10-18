@@ -372,6 +372,7 @@ class Package(IncompletePackage):
         'obsoletes'         : [Dependency],
         'recommends'        : [Dependency],
         'supplements'       : [Dependency],
+        'enhances'          : [Dependency],
         'suggests'          : [Dependency],
         'changelog'         : [ChangeLog],
         'channels'          : [StringType],

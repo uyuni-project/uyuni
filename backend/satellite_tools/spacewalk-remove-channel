@@ -496,6 +496,7 @@ def _delete_rpm_group(packageIds):
         'rhnPackageRecommends',
         'rhnPackageSuggests',
         'rhnPackageSupplements',
+        'rhnPackageEnhances',
         'rhnServerNeededCache',
         'susePackageProductFile',
     ]

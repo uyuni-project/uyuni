@@ -665,6 +665,7 @@ class Backend:
             'rhnPackageRecommends': 'package_id',
             'rhnPackageSuggests':   'package_id',
             'rhnPackageSupplements':'package_id',
+            'rhnPackageEnhances'   :'package_id',
             'rhnPackageFile':       'package_id',
             'rhnPackageChangeLogRec':  'package_id',
             'susePackageProductFile':  'package_id',
