@@ -47,6 +47,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
     private PackageCapabilityIterator recommendsIterator;
     private PackageCapabilityIterator suggestsIterator;
     private PackageCapabilityIterator supplementsIterator;
+    private PackageCapabilityIterator enhancesIterator;
     /**
      *
      * @param writer The writer object for primary xml
@@ -107,6 +108,8 @@ public class PrimaryXmlWriter extends RepomdWriter {
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_SUGGESTS);
         supplementsIterator = new PackageCapabilityIterator(channel,
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_SUPPLEMENTS);
+        enhancesIterator = new PackageCapabilityIterator(channel,
+                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_ENHANCES);
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("xmlns", "http://linux.duke.edu/metadata/common");
         attr.addAttribute("xmlns:rpm", "http://linux.duke.edu/metadata/rpm");
@@ -275,6 +278,8 @@ public class PrimaryXmlWriter extends RepomdWriter {
                 "suggests", localHandler);
         addPackageDepData(supplementsIterator, pkgDto.getId().longValue(),
                 "supplements", localHandler);
+        addPackageDepData(enhancesIterator, pkgDto.getId().longValue(),
+                "enhances", localHandler);
    }
 
     /**
