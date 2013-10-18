@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.1.4
+Version: 2.1.5
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,9 @@ fi
 
 
 %changelog
+* Thu Oct 17 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.5-1
+- 1018929 - removed redundant exception
+
 * Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.4-1
 - removed trailing whitespaces
 

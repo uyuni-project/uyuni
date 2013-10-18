@@ -19,7 +19,7 @@
 %define apache_group apache
 %endif
 Name:       spacewalk-branding
-Version:    2.1.4
+Version:    2.1.5
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -116,6 +116,9 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Thu Oct 17 2013 Stephen Herr <sherr@redhat.com> 2.1.5-1
+- 1020497 - provide a way to order kickstart scripts
+
 * Tue Oct 08 2013 Stephen Herr <sherr@redhat.com> 2.1.4-1
 - 1006142 - non-roman character languages had bad wrapping for thin table
   columns

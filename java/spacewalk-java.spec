@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.54
+Version: 2.1.57
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -894,6 +894,16 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Oct 17 2013 Stephen Herr <sherr@redhat.com> 2.1.57-1
+- 1020497 - re-applying fix from 122418187 that got missed in the merge in
+  c821c7ee2
+
+* Thu Oct 17 2013 Stephen Herr <sherr@redhat.com> 2.1.56-1
+- 1020497 - provide a way to order kickstart scripts
+
+* Thu Oct 17 2013 Tomas Lestach <tlestach@redhat.com> 2.1.55-1
+- 676828 - distinguish bash interpreter in ks non-chroot post scripts
+
 * Mon Oct 14 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.54-1
 - cleaning up old svn Ids
 
