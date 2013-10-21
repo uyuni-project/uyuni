@@ -44,10 +44,21 @@ Feature: Test weak dependencies
      And I should see a "Supplements" text
      And I should see a "apache2" text
 
+  Scenario: Check Package metadata displayed in WebUI (Enhances) bnc 846436
+    When I follow "Channels"
+     And I follow "SLES11-SP3-Updates x86_64 Channel"
+     And I follow "Packages"
+     And I follow "orion-dummy-1.1-1.1.x86_64"
+     And I follow "Dependencies"
+    Then I should see a "Enhances" text
+     And I should see a "foobar" text
+
   Scenario: Check local metdata for weak deps
     Given I am root
      When I refresh the metadata
      Then I should have 'rpm:recommends.*filesystem.*rpm:recommends' in the metadata
       And I should have 'rpm:supplements.*packageand.a-blackhole:dummy.*rpm:supplements' in the metadata
       And I should have 'rpm:suggests.*apache2.*rpm:suggests' in the metadata
+      And I should have 'rpm:enhances.*foobar.*rpm:enhances' in the metadata
+
 
