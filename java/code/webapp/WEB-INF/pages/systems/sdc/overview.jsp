@@ -172,57 +172,59 @@
         <th><bean:message key="sdc.details.overview.sysid"/></th>
         <td><c:out value="${system.id}" /></td>
       </tr>
-     <tr>
-        <th><bean:message key="sdc.details.overview.activationkey"/></th>
-        <td>
-          <c:forEach items="${activationKey}" var="key">
-            <c:out value="${key.token}" /></br>
-          </c:forEach>
-        </td>
-      </tr>
-      <tr>
-        <th><bean:message key="sdc.details.overview.installedproducts"/></th>
-        <td>
-        <c:choose>
-          <c:when test="${installedProducts == null}">
-            <bean:message key="sdc.details.overview.unknown"/>
-          </c:when>
-          <c:otherwise>
-            <table>
-              <tbody>
-                <tr>
-                  <td style="padding: 4px 0 4px 0;">${installedProducts.baseProduct.friendlyName}</td>
-                </tr>
-                <c:forEach items="${installedProducts.addonProducts}" var="current" varStatus="loop">
+      <rhn:require acl="not system_has_bootstrap_entitlement();">
+        <tr>
+          <th><bean:message key="sdc.details.overview.activationkey"/></th>
+          <td>
+            <c:forEach items="${activationKey}" var="key">
+              <c:out value="${key.token}" /></br>
+            </c:forEach>
+          </td>
+        </tr>
+        <tr>
+          <th><bean:message key="sdc.details.overview.installedproducts"/></th>
+          <td>
+          <c:choose>
+            <c:when test="${installedProducts == null}">
+              <bean:message key="sdc.details.overview.unknown"/>
+            </c:when>
+            <c:otherwise>
+              <table>
+                <tbody>
                   <tr>
-                    <td style="padding: 4px 0 4px 0;">${current.friendlyName}</td>
+                    <td style="padding: 4px 0 4px 0;">${installedProducts.baseProduct.friendlyName}</td>
                   </tr>
-                </c:forEach>
-              </tbody>
-            </table>
-          </c:otherwise>
-        </c:choose>
-        </td>
-      </tr>
-      <tr>
-        <th><bean:message key="sdc.details.overview.lockstatus"/></th>
-        <td>
-        <c:choose>
-          <c:when test="${serverLock != null}">
-          <img style="float: left; margin-right: 10px" src="/img/rhn-icon-security.gif"/>
-          <bean:message key="sdc.details.overview.locked"
-                        arg0="${serverLock.locker.login}"
-                        arg1="${serverLock.reason}" /><br/>
-          <bean:message key="sdc.details.overview.unlock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=0"/>
-          </c:when>
-          <c:otherwise>
-              <img style="float: left; margin-right: 10px" src="/img/rhn-icon-unlocked.gif"/>
-              <bean:message key="sdc.details.overview.unlocked"/><br/>
-              <bean:message key="sdc.details.overview.lock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=1"/>
-          </c:otherwise>
-        </c:choose>
-        </td>
-      </tr>
+                  <c:forEach items="${installedProducts.addonProducts}" var="current" varStatus="loop">
+                    <tr>
+                      <td style="padding: 4px 0 4px 0;">${current.friendlyName}</td>
+                    </tr>
+                  </c:forEach>
+                </tbody>
+              </table>
+            </c:otherwise>
+          </c:choose>
+          </td>
+        </tr>
+        <tr>
+          <th><bean:message key="sdc.details.overview.lockstatus"/></th>
+          <td>
+          <c:choose>
+            <c:when test="${serverLock != null}">
+            <img style="float: left; margin-right: 10px" src="/img/rhn-icon-security.gif"/>
+            <bean:message key="sdc.details.overview.locked"
+                          arg0="${serverLock.locker.login}"
+                          arg1="${serverLock.reason}" /><br/>
+            <bean:message key="sdc.details.overview.unlock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=0"/>
+            </c:when>
+            <c:otherwise>
+                <img style="float: left; margin-right: 10px" src="/img/rhn-icon-unlocked.gif"/>
+                <bean:message key="sdc.details.overview.unlocked"/><br/>
+                <bean:message key="sdc.details.overview.lock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=1"/>
+            </c:otherwise>
+          </c:choose>
+          </td>
+        </tr>
+      </rhn:require>
     </table>
   </div>
   <div style="width: 45%; float: right;">
@@ -232,10 +234,12 @@
         <th><bean:message key="sdc.details.overview.checkedin"/></th>
         <td><fmt:formatDate value="${system.lastCheckin}" type="both" dateStyle="short" timeStyle="long"/></td>
       </tr>
-      <tr>
-        <th><bean:message key="sdc.details.overview.registered"/></th>
-        <td><fmt:formatDate value="${system.created}" type="both" dateStyle="short" timeStyle="long"/></td>
-      </tr>
+      <rhn:require acl="not system_has_bootstrap_entitlement();">
+        <tr>
+          <th><bean:message key="sdc.details.overview.registered"/></th>
+          <td><fmt:formatDate value="${system.created}" type="both" dateStyle="short" timeStyle="long"/></td>
+        </tr>
+      </rhn:require>
       <tr>
         <th><bean:message key="sdc.details.overview.lastbooted"/></th>
         <td><fmt:formatDate value="${system.lastBootAsDate}" type="both" dateStyle="short" timeStyle="long"/><br/>
@@ -300,42 +304,38 @@
   <div style="width: 45%; float: right;">
     <h2><bean:message key="sdc.details.overview.sysproperties" arg0="/rhn/systems/details/Edit.do?sid=${system.id}"/></h2>
     <table class="details">
-      <tr>
-        <th><bean:message key="sdc.details.overview.entitlement"/></th>
-        <td>
-
-        <c:choose>
-          <c:when test="${unentitled}">
-            <bean:message key="none.message"/>
-          </c:when>
-          <c:otherwise>
-
-            <c:forEach items="${system.entitlements}" var="entitlement">
-              [${entitlement.humanReadableLabel}]
-            </c:forEach>
-
-          </c:otherwise>
-        </c:choose>
-        </td>
-      </tr>
-      <tr>
-        <th><bean:message key="sdc.details.overview.notifications"/></th>
-        <td>
-
-        <c:choose>
-          <c:when test="${unentitled}">
-            <bean:message key="none.message"/>
-          </c:when>
-          <c:otherwise>
-
-            <c:forEach items="${prefs}" var="pref">
-              <bean:message key="${pref}"/><br/>
-            </c:forEach>
-
-          </c:otherwise>
-        </c:choose>
-        </td>
-      </tr>
+      <rhn:require acl="not system_has_bootstrap_entitlement();">
+        <tr>
+          <th><bean:message key="sdc.details.overview.entitlement"/></th>
+          <td>
+          <c:choose>
+            <c:when test="${unentitled}">
+              <bean:message key="none.message"/>
+            </c:when>
+            <c:otherwise>
+              <c:forEach items="${system.entitlements}" var="entitlement">
+                [${entitlement.humanReadableLabel}]
+              </c:forEach>
+            </c:otherwise>
+          </c:choose>
+          </td>
+        </tr>
+        <tr>
+          <th><bean:message key="sdc.details.overview.notifications"/></th>
+          <td>
+          <c:choose>
+            <c:when test="${unentitled}">
+              <bean:message key="none.message"/>
+            </c:when>
+            <c:otherwise>
+              <c:forEach items="${prefs}" var="pref">
+                <bean:message key="${pref}"/><br/>
+              </c:forEach>
+            </c:otherwise>
+          </c:choose>
+          </td>
+        </tr>
+      </rhn:require>
       <rhn:require acl="system_feature(ftr_errata_updates)"
                    mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
       <tr>
