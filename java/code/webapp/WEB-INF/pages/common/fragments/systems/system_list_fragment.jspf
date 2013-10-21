@@ -1,5 +1,8 @@
                       <c:out value="<a href=\"/rhn/systems/details/Overview.do?sid=${current.id}\">"  escapeXml="false" />
 						<c:choose>
+                    <c:when test="${current.bootstrap && empty nosystemicons}">
+                      <img src="/img/rhn-listicon-bootstrap.gif" alt="<bean:message key="systemlist.jsp.bootstrap"/>" />
+                    </c:when>
 						<c:when test="${current.virtualGuest && empty nosystemicons}">
 						          <img src="/img/rhn-listicon-virtguest.gif" alt="<bean:message key="systemlist.jsp.virtguest"/>" />
 						        </c:when>
