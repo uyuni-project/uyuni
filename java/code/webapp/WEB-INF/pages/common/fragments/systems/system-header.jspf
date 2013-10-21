@@ -9,7 +9,7 @@
 	<div class="toolbar">
 		<span class="toolbar">
 					
-			 <rhn:require acl="system_has_management_entitlement()">
+			 <rhn:require acl="system_has_management_entitlement() or system_has_bootstrap_entitlement()">
 			 	<c:if test="${!inSSM}">
 					<a href="/rhn/systems/details/AddToSSM.do?sid=${system.id}">
 						<img src="/img/action-add.gif" alt="<bean:message key="toolbar.ssm.add"/>" title="<bean:message key="toolbar.ssm.add"/>" />
