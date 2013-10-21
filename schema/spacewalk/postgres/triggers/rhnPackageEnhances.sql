@@ -25,4 +25,3 @@ rhn_pkg_enh_mod_trig
 before insert or update on rhnPackageEnhances
 for each row
 execute procedure rhn_pkg_enh_mod_trig_fun();
-
