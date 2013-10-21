@@ -1,3 +1,4 @@
+-- oracle equivalent source sha1 843c9679482a7ad254a9965bcc59bcbd0b8692a3
 --
 -- Copyright (c) 2013 Novell
 --
@@ -13,29 +14,24 @@
 
 CREATE TABLE rhnPackageEnhances
 (
-    package_id     NUMBER NOT NULL
+    package_id     NUMERIC NOT NULL
                        CONSTRAINT rhn_pkg_enh_package_fk
                            REFERENCES rhnPackage (id)
                            ON DELETE CASCADE,
-    capability_id  NUMBER NOT NULL
+    capability_id  NUMERIC NOT NULL
                        CONSTRAINT rhn_pkg_enh_capability_fk
                            REFERENCES rhnPackageCapability (id),
-    sense          NUMBER
+    sense          NUMERIC
                        DEFAULT (0) NOT NULL,
-    created        DATE
-                       DEFAULT (sysdate) NOT NULL,
-    modified       DATE
-                       DEFAULT (sysdate) NOT NULL
+    created        timestamptz default (current_timestamp) not null,
+    modified       timestamptz default (current_timestamp) not null
 )
 ENABLE ROW MOVEMENT
 ;
 
 CREATE UNIQUE INDEX rhn_pkg_enh_pid_cid_s_uq
-    ON rhnPackageEnhances (package_id, capability_id, sense)
-    TABLESPACE [[4m_tbs]];
+    ON rhnPackageEnhances (package_id, capability_id, sense);
 
 CREATE INDEX rhn_pkg_enh_cid_idx
-    ON rhnPackageEnhances (capability_id)
-    NOLOGGING
-    TABLESPACE [[4m_tbs]];
+    ON rhnPackageEnhances (capability_id);
 
