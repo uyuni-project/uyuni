@@ -35,9 +35,12 @@
 	</div>
 	
 	<c:choose>
-		<c:when test="${system.virtualGuest}">
-			<img src="/img/virt-guest.png" alt="system" />
-		</c:when>
+    <c:when test="${system.bootstrap}">
+      <img src="/img/rhn-icon-bootstrap.png" alt="system" />
+    </c:when>
+    <c:when test="${system.virtualGuest}">
+      <img src="/img/virt-guest.png" alt="system" />
+    </c:when>
 		<c:when test="${system.virtualHost}">
 			<img src="/img/virt-host.png" alt="system" />
 		</c:when>
