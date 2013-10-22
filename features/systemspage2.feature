@@ -78,7 +78,8 @@ Feature: Explore the main landing page
     Then The table should have a column named "System"
      And The table should have a column named "Packages"
      And The table should have a column named "Base Channel"
- 
+     And I should see this client as link
+
   Scenario: Completeness of the Unentitled System table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
@@ -162,4 +163,12 @@ Feature: Explore the main landing page
      And The table should have a column named "Bugfixes"
      And The table should have a column named "Enhancements"
      And The table should have a column named "Score"
+
+  Scenario: Check Non-compliant Systems page
+     Given I am on the Systems overview page of this client
+      When I follow "Software"
+       And I follow "Non-compliant Systems" in class "content-nav"
+      Then I should see a "Non Compliant Systems" text
+       And I should see a "The following packages are installed on this system and are not present in any of its channels." text
+       And I should see a "Remove Packages" button
 
