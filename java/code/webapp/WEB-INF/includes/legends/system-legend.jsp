@@ -22,5 +22,6 @@
   <li><img src="/img/rhn-listicon-virthost.gif" alt="<bean:message key="systemlist.jsp.virthost"/>" /><bean:message key="systemlist.jsp.virthost"/></li>
   <li><img src="/img/rhn-listicon-virtguest.gif" alt="<bean:message key="systemlist.jsp.virtguest"/>" /><bean:message key="systemlist.jsp.virtguest"/></li>
   <li><img src="/img/rhn-listicon-system.gif" alt="<bean:message key="systemlist.jsp.nonvirt"/>" /><bean:message key="systemlist.jsp.nonvirt"/></li>
+  <li><img src="/img/rhn-listicon-bootstrap.gif" alt="<bean:message key="systemlist.jsp.bootstrap"/>" /><bean:message key="systemlist.jsp.bootstrap"/></li>
  </ul>
 </div>
