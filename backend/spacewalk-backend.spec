@@ -22,7 +22,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.28
+Version: 2.1.32
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -645,6 +645,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/rhn_mpm.py*
 %{pythonrhnroot}/common/rhn_pkg.py*
 %{pythonrhnroot}/common/rhn_rpm.py*
+%{pythonrhnroot}/common/stringutils.py*
 
 %files config-files-common
 %defattr(-,root,root)
@@ -776,6 +777,27 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Tue Oct 22 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.32-1
+- fixed table alias
+- add support for enhances rpm weak dependencies (backend) (bnc#846436)
+
+* Mon Oct 21 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.31-1
+- fixed pylint warnings and errors
+
+* Mon Oct 21 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.30-1
+- python oracle tests: better integration with nosetest
+- python pgsql driver: behave like the oracle one
+- python oracle tests: moved connection settings to configuration file
+- python oracle tests: fixed import statements
+- removed dead test
+
+* Fri Oct 18 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.29-1
+- include stringutils into package
+- replace encode/decode with to_string/to_unicode
+- 891880 - reuse stringutils functions
+- 891880 - make sure we put strings to fd.write()
+- 1020910 - use sha1 to compare checksums
+
 * Tue Oct 15 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.28-1
 - python pgsql tests: made easier Jenkins integration
 
