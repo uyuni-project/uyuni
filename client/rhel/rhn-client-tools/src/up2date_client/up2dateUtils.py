@@ -47,12 +47,13 @@ else:
             # all rpms containing a product must provide "product()"
             # search now for the package providing the base product
             baseproduct = '/etc/products.d/baseproduct'
-            bp = os.path.abspath(os.path.join(os.path.dirname(baseproduct), os.readlink(baseproduct)))
-            provlist = ts.dbMatch('Providename', "product()")
-            for h in provlist:
-                if bp in h['filenames']:
-                    osVersionRelease = (h['name'], h['version'], h['release'])
-                    break
+            if os.path.exists(baseproduct):
+                bp = os.path.abspath(os.path.join(os.path.dirname(baseproduct), os.readlink(baseproduct)))
+                provlist = ts.dbMatch('Providename', "product()")
+                for h in provlist:
+                    if bp in h['filenames']:
+                        osVersionRelease = (h['name'], h['version'], h['release'])
+                        break
             else:
                 # for older SUSE versions we need to search for distribution-release
                 # package which also has /etc/SuSE-release file
