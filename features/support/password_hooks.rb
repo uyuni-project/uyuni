@@ -13,16 +13,16 @@ After('@revertgoodpass') do |scenario|
 end
 
 def changepass(scenario, password)
-  signout = find_link("Sign Out")
-  if signout
-    signout.click
-  end
-  fill_in "username", :with => "admin"
-  fill_in "password", :with => password
-  click_button "Sign In"
-
   # only change the password if the wrong one worked
-  if find_link("Sign Out")
+  if has_link?("Sign Out")
+    signout = find_link("Sign Out")
+    if signout
+      signout.click
+    end
+    fill_in "username", :with => "admin"
+    fill_in "password", :with => password
+    click_button "Sign In"
+
     find_link("Your Account").click
     fill_in "desiredpassword", :with => "admin"
     fill_in "desiredpasswordConfirm", :with => "admin"
