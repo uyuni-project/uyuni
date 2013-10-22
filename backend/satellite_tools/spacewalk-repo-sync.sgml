@@ -69,6 +69,11 @@ Syncs the content from yum repos into SUSE Manager channels.
         <arg>-Y</arg>
         <arg>--deep-verify</arg>
         </group>
+        <sbr>
+        <group>
+        <arg>-n</arg>
+        <arg>--non-interactive</arg>
+        </group>
     </cmdsynopsis>
 </synopsis>
 </refsynopsisdiv>
@@ -159,6 +164,12 @@ Syncs the content from yum repos into SUSE Manager channels.
         <term>-Y, --deep-verify</term>
         <listitem>
             <para>Do not use cached package checksums.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>-n, --non-interactive</term>
+        <listitem>
+            <para>Do not ask anything, use default answers.</para>
         </listitem>
     </varlistentry>
 </variablelist>
