@@ -877,6 +877,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       <trans-unit id="kickstart.schedule.no.profiles.jsp">
         <source>No profiles currently available for autoinstallation. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new kickstart profile.&lt;/a&gt;</source>
       </trans-unit>
+      <trans-unit id="kickstart.schedule.button0.jsp">
+        <source>Create PXE installation configuration</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="kickstart.schedule.button2.jsp">
         <source>Schedule Autoinstallation and Finish</source>
       </trans-unit>
