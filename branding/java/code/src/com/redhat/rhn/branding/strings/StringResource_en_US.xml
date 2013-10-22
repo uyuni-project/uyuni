@@ -856,8 +856,14 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       <trans-unit id="kickstart.schedule.heading1.jsp">
         <source>Schedule Autoinstallation</source>
       </trans-unit>
+      <trans-unit id="kickstart.configure.heading1.jsp">
+        <source>Configure Autoinstallation</source>
+      </trans-unit>
       <trans-unit id="kickstart.schedule.heading1.text.jsp">
         <source>You can schedule this system for an autoinstallation action. This will re-install this system using the selected autoinstallation options.</source>
+      </trans-unit>
+      <trans-unit id="kickstart.configure.heading1.text.jsp">
+        <source>You can configure the autoinstallation of this system. This will install this system using the selected autoinstallation options as soon as it boots up.</source>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading2.jsp">
         <source>Select Autoinstallation Profile</source>
