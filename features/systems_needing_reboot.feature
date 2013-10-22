@@ -17,7 +17,7 @@ Scenario: Display Reboot Required after installing an Errata
     Given I am on the Systems overview page of this client
      And I follow "Software" in class "content-nav"
      And I follow "Errata" in class "contentnav-row2"
-    When I check "slessp1-kernel-3280" in the list
+    When I check "andromeda-dummy-6789" in the list
      And I wait for "2" seconds
      And I click on "Apply Errata"
      And I wait for "2" seconds
@@ -27,7 +27,10 @@ Scenario: Display Reboot Required after installing an Errata
      And I wait for "5" seconds
      And I follow "Systems" in element "sidenav"
      And I follow this client link
-     Then I should see a "The system requires a reboot" text
+    Then I should see a "The system requires a reboot" text
+    When I follow "Systems" in the left menu
+     And I follow "Requiring Reboot" in the left menu
+    Then I should see this client as link
 
 
 

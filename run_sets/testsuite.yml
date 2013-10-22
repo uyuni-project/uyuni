@@ -43,6 +43,7 @@
 - features/openscap_audit.feature
 - features/ncc-sync-channels.feature
 - features/systemspage2.feature
+- features/systems_needing_reboot.feature
 - features/xmlrpc_system.feature
 - features/nagios.feature
 #- features/walk_hrefs.feature
