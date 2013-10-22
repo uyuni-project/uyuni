@@ -22,16 +22,16 @@ from optparse import OptionParser, Option
 
 SERVER_RETURN = 0
 
-def log_error(*args):
+def log_error(*_args):
     pass
 
-def make_table(*args):
+def make_table(*_args):
     pass
 
-def parse_qs(*args):
+def parse_qs(*_args):
     pass
 
-def parse_qsl(*args):
+def parse_qsl(*_args):
     pass
 
 status = None
@@ -39,7 +39,7 @@ table = None
 config_tree = None
 server_root = None
 mpm_query = None
-exists_config_define=None
+exists_config_define = None
 
 OK = 1
 
@@ -71,7 +71,7 @@ class Runner:
     def main(self):
         parser = OptionParser(option_list=options_table)
 
-        (self.options, args) = parser.parse_args()
+        (self.options, _args) = parser.parse_args()
 
         rhnSQL.initDB()
 
@@ -193,7 +193,7 @@ class Runner:
                 continue
 
             try:
-                (header_start, header_end) = rhn_rpm.get_header_byte_range(p_file);
+                (header_start, header_end) = rhn_rpm.get_header_byte_range(p_file)
             except Exception, e:
                 print "Error reading header size from file %s: %s" % (path, e)
 
