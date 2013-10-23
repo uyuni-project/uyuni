@@ -2118,5 +2118,16 @@ SELECT channel_arch_id
   </query>
 </mode>
 
+<mode name="count_entitled_systems_in_set">
+  <query params="user_id, set_label, entitlement_label">
+    SELECT COUNT(*) as count
+      FROM rhnServerEntitlementView
+        JOIN rhnSet on rhnServerEntitlementView.server_id = rhnSet.element  
+      WHERE rhnSet.user_id = :user_id AND
+        rhnSet.label = :set_label AND
+        rhnServerEntitlementView.label = :entitlement_label
+  </query>
+</mode>
+
 </datasource_modes>
 
