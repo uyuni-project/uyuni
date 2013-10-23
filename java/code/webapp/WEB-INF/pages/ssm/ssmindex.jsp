@@ -23,6 +23,7 @@
     <td><bean:message key="ssm.overview.systems.list"/></td>
   </tr>
 
+<rhn:require acl="no_bootstrap_systems_in_set()">
   <tr>
     <td><img src="/img/rhn-icon-errata.gif" alt="Errata" /></td>
     <th><b><bean:message key="ssm.overview.errata"/></b></th>
@@ -77,16 +78,19 @@
       </p>
     </td>
   </tr>
+</rhn:require>
 
-<rhn:require acl="org_entitlement(rhn_provisioning)">
+<rhn:require acl="org_entitlement(rhn_provisioning); no_bootstrap_systems_in_set()">
   <tr>
     <td><img src="/img/rhn-kickstart_profile.gif" alt="<bean:message key="ssm.overview.provisioning"/>" /></td>
     <th><b><bean:message key="ssm.overview.provisioning"/></b></th>
     <td>
       <p>
       <bean:message key="ssm.overview.provisioning.kickstart"/><br />
-      <bean:message key="ssm.overview.provisioning.rollback"/><br />
-      <bean:message key="ssm.overview.provisioning.remotecommands"/><br />
+      <rhn:require acl="no_bootstrap_systems_in_set()">
+        <bean:message key="ssm.overview.provisioning.rollback"/><br />
+        <bean:message key="ssm.overview.provisioning.remotecommands"/><br />
+      </rhn:require>
       </p>
     </td>
   </tr>
@@ -97,16 +101,23 @@
     <th><b><bean:message key="ssm.overview.misc"/>:</b></th>
     <td>
       <p>
-      <bean:message key="ssm.overview.misc.updateprofiles"/><br />
-      <rhn:require acl="org_entitlement(rhn_provisioning)">
+      <rhn:require acl="no_bootstrap_systems_in_set()">
+        <bean:message key="ssm.overview.misc.updateprofiles"/><br />
+      </rhn:require>
+      <rhn:require acl="org_entitlement(rhn_provisioning); no_bootstrap_systems_in_set()">
         <bean:message key="ssm.overview.misc.customvalues"/><br />
       </rhn:require>
-      <rhn:require acl="user_role(org_admin);org_entitlement(rhn_provisioning) or org_entitlement(rhn_monitor)">
+      <rhn:require acl="user_role(org_admin);org_entitlement(rhn_provisioning) or org_entitlement(rhn_monitor); no_bootstrap_systems_in_set()">
         <bean:message key="ssm.overview.misc.entitlements"/><br />
       </rhn:require>
-      <bean:message key="ssm.overview.misc.deletereboot"/><br />
+      <bean:message key="ssm.overview.misc.delete"/><br />
+      <rhn:require acl="no_bootstrap_systems_in_set()">
+        <bean:message key="ssm.overview.misc.reboot"/><br />
+      </rhn:require>
       <bean:message key="ssm.overview.misc.migrate"/><br />
-      <bean:message key="ssm.overview.misc.scap"/><br />
+      <rhn:require acl="no_bootstrap_systems_in_set()">
+        <bean:message key="ssm.overview.misc.scap"/><br />
+      </rhn:require>
       </p>
     </td>
   </tr>
