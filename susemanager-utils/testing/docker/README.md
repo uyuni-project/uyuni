@@ -133,3 +133,7 @@ http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head:/Appliance/images/
 
 In case it had to be replaced, just make sure relevant containers have passwordless SSH
 access.
+
+Note that the VM host, ix64hv1100.qa.suse.de, uses the qemu "-snapshot" mode, which means
+that all disk changes are restored upon VM reboot. This is used to restore the VM to a known
+state weekly via a cron job on user root.
