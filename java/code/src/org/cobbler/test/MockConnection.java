@@ -251,6 +251,9 @@ public class MockConnection extends CobblerConnection {
         profile.put("redhat_management_key", "");
         return key;
     }
+    else if ("sync".equals(name)) {
+        return true;
+    }
     else {
         log.debug("Unhandled xmlrpc call in MockConnection: " + name);
     }
