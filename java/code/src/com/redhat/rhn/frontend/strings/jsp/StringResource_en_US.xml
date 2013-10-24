@@ -1042,7 +1042,7 @@
         <source>Comma (",", default)</source>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvsemicolon">
-        <source>Semicolon (";", compatible with Microsoft&#174; Excel&#174;)</source>
+        <source>Semicolon (";", compatible with Microsoft® Excel®)</source>
       </trans-unit>
       <trans-unit id="preferences.jsp.submitvalue">
         <source>Save Preferences</source>
@@ -4551,7 +4551,7 @@ value for this entitlement, excluding the default organization's consumption.</s
           <source>System Profile Updates</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.profileupdates.summary">
-          <source>If you've changed hardware on your system or have manually installed RPMs, and those changes are not appearing on Spacewalk, you need to schedule a profile update.</source>
+          <source>If you've changed hardware on your system or have manually installed RPMs, and those changes are not appearing on @@PRODUCT_NAME@@, you need to schedule a profile update.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.profileupdates.hardware">
           <source>Update Hardware Profile</source>
@@ -4584,13 +4584,13 @@ value for this entitlement, excluding the default organization's consumption.</s
           <source>Reboot Systems</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.reboot.summary">
-          <source>With Red Hat Enterprise Linux 3 or newer releases, Spacewalk allows you to remotely reboot your systems.</source>
+          <source>With Red Hat Enterprise Linux 3 or newer releases, @@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.lock.header">
           <source>Lock Systems</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.lock.summary">
-          <source>Systems may be locked or unlocked.  Locking prevents changes from the Spacewalk website.</source>
+          <source>Systems may be locked or unlocked. Locking prevents changes from the @@PRODUCT_NAME@@ website.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.lock.lock">
           <source>Lock System Profiles</source>
@@ -4637,67 +4637,65 @@ value for this entitlement, excluding the default organization's consumption.</s
         <trans-unit id="ssm.misc.index.syspref.preference">
           <source>Preference</source>
         </trans-unit>
-
         <trans-unit id="ssm.misc.reboot.header">
-            <source>Reboot of the Systems</source>
+          <source>Reboot of the Systems</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.summary">
-            <source>Choose the systems you need to reboot and run action immediately or schedule it for later.</source>
+          <source>Choose the systems you need to reboot and run action immediately or schedule it for later.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.operationname">
-            <source>Schedule Systems Reboot</source>
+          <source>Schedule Systems Reboot</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.message.success.default">
-            <source>Systems reboot has been scheduled.</source>
+          <source>Systems reboot has been scheduled.</source>
         </trans-unit>
         <trans-unit id="ssm.misc.reboot.message.error.noselect">
-            <source>Please select at least one system for reboot.</source>
+          <source>Please select at least one system for reboot.</source>
         </trans-unit>
-
-       <trans-unit id="ssm.misc.lockunlock.tabtitle">
-         <source>Lock/Unlock</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.header">
-         <source>Lock or Unlock the Systems</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.summary">
-         <source>Select system to lock or unlock their profiles. No updates will occur to locked systems until they are unlocked.</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.dispatch.lock">
-         <source>Lock</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.dispatch.unlock">
-         <source>Unlock</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.message.locked.success">
-         <source>Out of {0} selected systems, {1} has been locked.</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.message.locked.skipped">
-         <source>No systems has been locked.</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.message.locked.all.success">
-         <source>All selected systems has been locked.</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.message.locked.all.skipped">
-         <source>None of selected systems has been locked.</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.message.unlocked.success">
-         <source>Out of {0} selected systems, {1} has been unlocked.</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.message.unlocked.skipped">
-         <source>No systems has been unlocked.</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.message.unlocked.all.success">
-         <source>All selected systems has been unlocked.</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.message.unlocked.all.skipped">
-         <source>None of selected systems has been unlocked.</source>
-       </trans-unit>
-       <trans-unit id="ssm.misc.lockunlock.message.locked.missingreason">
-         <source>In order to lock a system, please specify the reason.</source>
-       </trans-unit>
-     </group>
-<!-- == Systems == -->
+        <trans-unit id="ssm.misc.lockunlock.tabtitle">
+          <source>Lock/Unlock</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.header">
+          <source>Lock or Unlock the Systems</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.summary">
+          <source>Select system to lock or unlock their profiles. No updates will occur to locked systems until they are unlocked.</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.dispatch.lock">
+          <source>Lock</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.dispatch.unlock">
+          <source>Unlock</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.message.locked.success">
+          <source>Out of {0} selected systems, {1} has been locked.</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.message.locked.skipped">
+          <source>No systems has been locked.</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.message.locked.all.success">
+          <source>All selected systems has been locked.</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.message.locked.all.skipped">
+          <source>None of selected systems has been locked.</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.message.unlocked.success">
+          <source>Out of {0} selected systems, {1} has been unlocked.</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.message.unlocked.skipped">
+          <source>No systems has been unlocked.</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.message.unlocked.all.success">
+          <source>All selected systems has been unlocked.</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.message.unlocked.all.skipped">
+          <source>None of selected systems has been unlocked.</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.lockunlock.message.locked.missingreason">
+          <source>In order to lock a system, please specify the reason.</source>
+        </trans-unit>
+      </group>
+      <!-- == Systems == -->
       <trans-unit id="overview.jsp.header">
         <source>System Overview</source>
         <context-group name="ctx">
@@ -14761,110 +14759,117 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Note: only child channel subscription changes and package install/remove/upgrade/verify tasks are listed.</source>
         </trans-unit>
       </group>
-
       <!-- /rhn/systems/ssm/kickstart/KickstartableSystems.do -->
       <group>
-          <context-group name="ctx">
-              <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
-          </context-group>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_label.title">
-              <source>Label</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.schedule.succeed">
-              <source>Task &quot;{0}&quot; has been scheduled successfully at {1}.</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_label.title.default.body">
-              <source>Run {0} Script on {1} {2} ({3}).</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_label.title.default.client_single">
-              <source>client</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_label.title.default.client_plural">
-              <source>clients</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.uid.missing">
-              <source>Username on the target system cannot be missing.</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.gid.missing">
-              <source>Group name on the target system is not specified.</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_body.missing">
-              <source>No script has been specified.</source>
-          </trans-unit>
-
-          <!-- Single System Remote Command Form Labels -->
-          <trans-unit id="ssm.overview.provisioning.remotecommand.staticname">
-              <source>Remote Command on {0}.</source>
-          </trans-unit>
-          <trans-unit id="ssm.overview.provisioning.remotecommand.succeed">
-              <source>Remote Command has been &lt;a href="/network/systems/details/history/event.pxt?sid={0}&amp;hid={1}"&gt;scheduled successfully&lt;/a&gt; at &lt;strong&gt;{2}&lt;/strong&gt;.</source>
-          </trans-unit>
-          <trans-unit id="ssm.overview.provisioning.remotecommand.header">
-              <source>Remote Command on {0}</source>
-          </trans-unit>
-          <trans-unit id="">
-              <source></source>
-          </trans-unit>
-          <trans-unit id="">
-              <source></source>
-          </trans-unit>
-
-          <!-- SSM Remote Command Form Labels -->
-          <trans-unit id="ssm.operations.provisioning.remotecommand.header">
-              <source>Schedule Remote Command</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.summary">
-              <source>The following script will be scheduled to run on the systems listed below.</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.tip.header">
-              <source>Tip</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.tip.text">
-              <source>Type new label of the queue or select from the existing. Please note, that the schedule date above will be ignored in this case.</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.uid.label">
-              <source>Run as user (UID)</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.gid.label">
-              <source>Run as group (GID)</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.timeout.label">
-              <source>Timeout (seconds)</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.lbl.label">
-              <source>Command label</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_body.label">
-              <source>Script</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.date.label">
-              <source>Schedule no sooner than</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.chain_id.new">
-              <source>New...</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.form.submit">
-              <source>Schedule</source>
-          </trans-unit>
-          <trans-unit id="ssm.operations.provisioning.remotecommand.nosystems">
-              <source>No systems within this set are available to run remote commands.</source>
-          </trans-unit>
-          <trans-unit id="stringutil.scriptcheck.error.noshelldefined">
-              <source>Script does not contain shell definition.</source>
-          </trans-unit>
-          <trans-unit id="stringutil.scriptcheck.error.noscript">
-              <source>Script is does not seems like doing anything.</source>
-          </trans-unit>
-
-          <!-- Errata -->
-          <trans-unit id="ssm.patches.list.header">
-              <source>Relevant Errata List</source>
-          </trans-unit>
-          <trans-unit id="ssm.patches.list.summary">
-              <source>The errata below apply to one or more of your selected systems.</source>
-          </trans-unit>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
+        </context-group>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_label.title">
+          <source>Label</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.schedule.succeed">
+          <source>Task "{0}" has been scheduled successfully at {1}.</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_label.title.default.body">
+          <source>Run {0} Script on {1} {2} ({3}).</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_label.title.default.client_single">
+          <source>client</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_label.title.default.client_plural">
+          <source>clients</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.uid.missing">
+          <source>Username on the target system cannot be missing.</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.gid.missing">
+          <source>Group name on the target system is not specified.</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_body.missing">
+          <source>No script has been specified.</source>
+        </trans-unit>
+        <!-- Single System Remote Command Form Labels -->
+        <trans-unit id="ssm.overview.provisioning.remotecommand.staticname">
+          <source>Remote Command on {0}.</source>
+        </trans-unit>
+        <trans-unit id="ssm.overview.provisioning.remotecommand.succeed">
+          <source>Remote Command has been &lt;a href="/network/systems/details/history/event.pxt?sid={0}&amp;hid={1}"&gt;scheduled successfully&lt;/a&gt; at &lt;strong&gt;{2}&lt;/strong&gt;.</source>
+        </trans-unit>
+        <trans-unit id="ssm.overview.provisioning.remotecommand.header">
+          <source>Remote Command on {0}</source>
+        </trans-unit>
+        <trans-unit id="">
+          <source/>
+        </trans-unit>
+        <trans-unit id="">
+          <source/>
+        </trans-unit>
+        <!-- SSM Remote Command Form Labels -->
+        <trans-unit id="ssm.operations.provisioning.remotecommand.header">
+          <source>Schedule Remote Command</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.summary">
+          <source>The following script will be scheduled to run on the systems listed below.</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.tip.header">
+          <source>Tip</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.tip.text">
+          <source>Type new label of the queue or select from the existing. Please note, that the schedule date above will be ignored in this case.</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.uid.label">
+          <source>Run as user (UID)</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.gid.label">
+          <source>Run as group (GID)</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.timeout.label">
+          <source>Timeout (seconds)</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.lbl.label">
+          <source>Command label</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.script_body.label">
+          <source>Script</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.date.label">
+          <source>Schedule no sooner than</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.chain_id.new">
+          <source>New...</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.form.submit">
+          <source>Schedule</source>
+        </trans-unit>
+        <trans-unit id="ssm.operations.provisioning.remotecommand.nosystems">
+          <source>No systems within this set are available to run remote commands.</source>
+        </trans-unit>
+        <trans-unit id="stringutil.scriptcheck.error.noshelldefined">
+          <source>Script does not contain shell definition.</source>
+        </trans-unit>
+        <trans-unit id="stringutil.scriptcheck.error.noscript">
+          <source>Script is does not seems like doing anything.</source>
+        </trans-unit>
+        <!-- Errata -->
+        <trans-unit id="ssm.patches.list.header">
+          <source>Relevant Errata List</source>
+        </trans-unit>
+        <trans-unit id="ssm.patches.list.summary">
+          <source>The errata below apply to one or more of your selected systems.</source>
+        </trans-unit>
       </group>
-
+      <trans-unit id="ssm.operations.actionchaindetails.schedulesuccess">
+        <source>Action chain "{0}" has been successfully scheduled at "{1}".</source>
+      </trans-unit>
+      <trans-unit id="ssm.operations.actionchaindetails.purgesuccess">
+        <source>Action chain "{0}" has been purged.</source>
+      </trans-unit>
+      <trans-unit id="ssm.operations.actionchaindetails.scheduleerror.general">
+        <source>Unable to schedule chain action.</source>
+      </trans-unit>
+      <trans-unit id="ssm.operations.actionchaindetails.scheduleerror.general.param">
+        <source>Fatal error due to {0}.</source>
+      </trans-unit>
       <!-- ssm/packages.jsp -->
       <group>
         <context-group name="ctx">
@@ -20536,6 +20541,35 @@ given channel.</source>
         </trans-unit>
         <trans-unit id="iss.editmaster.jsp.nomasterorgs">
           <source>This master did not export any of its organizations to this slave</source>
+        </trans-unit>
+      </group>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/help/ForgotCredentials.do</context>
+        </context-group>
+        <trans-unit id="help.credentials.jsp.passwordreset">
+          <source>Password Reset</source>
+        </trans-unit>
+        <trans-unit id="help.credentials.jsp.logininfo">
+          <source>Login Information</source>
+        </trans-unit>
+        <trans-unit id="help.credentials.jsp.passwordtip">
+          <source>If you do not know your password, please enter your @@PRODUCT_NAME@@ login and email address below and your password will be reset and sent to you.</source>
+        </trans-unit>
+        <trans-unit id="help.credentials.jsp.loginstip">
+          <source>If you do not know your @@PRODUCT_NAME@@ login, please enter your email address below and your @@PRODUCT_NAME@@ login will be sent to you.</source>
+        </trans-unit>
+        <trans-unit id="help.credentials.jsp.passwordbutton">
+          <source>Send Password</source>
+        </trans-unit>
+        <trans-unit id="help.credentials.jsp.loginbutton">
+          <source>Send Login(s)</source>
+        </trans-unit>
+        <trans-unit id="help.credentials.jsp.emailinput">
+          <source>Email Address:</source>
+        </trans-unit>
+        <trans-unit id="help.credentials.jsp.logininput">
+          <source>@@PRODUCT_NAME@@ Login:</source>
         </trans-unit>
       </group>
     </body>
