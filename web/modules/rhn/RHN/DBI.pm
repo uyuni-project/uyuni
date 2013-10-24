@@ -54,7 +54,7 @@ sub _get_dbi_connect_parameters {
 				if (defined $port and $port ne '' and $port ne '5432') {
 					$DSN .= ";port=$port";
 				}
-				my sslmode = PXT::Config->get("db_sslmode");
+				my $sslmode = PXT::Config->get("db_sslmode");
 				if (defined $sslmode and $sslmode eq "verify-full") {
 					$DSN .= ";sslmode=verify-full";
 				} elsif (defined $sslmode)  {
