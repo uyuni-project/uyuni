@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.26
+Version: 2.1.28
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -222,7 +222,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/Org.pm
 %{perl_vendorlib}/RHN/Package.pm
 %{perl_vendorlib}/RHN/Package/
-%{perl_vendorlib}/RHN/Postal.pm
 %{perl_vendorlib}/RHN/Profile.pm
 %{perl_vendorlib}/RHN/SCDB.pm
 %{perl_vendorlib}/RHN/SatCluster.pm
@@ -239,7 +238,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/SystemSnapshot.pm
 %{perl_vendorlib}/RHN/TSDB.pm
 %{perl_vendorlib}/RHN/Tag.pm
-%{perl_vendorlib}/RHN/TemplateString.pm
 %{perl_vendorlib}/RHN/Token.pm
 %{perl_vendorlib}/RHN/User.pm
 %{perl_vendorlib}/RHN/Utils.pm
@@ -312,6 +310,13 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Thu Oct 24 2013 Jan Dobes 2.1.28-1
+- 1015747 - cleanup
+- 1015747 - new jsp page + nav stuff
+
+* Wed Oct 23 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.27-1
+- report package arch in Event History
+
 * Tue Oct 22 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.26-1
 - add support for enhances rpm weak dependency (web) (bnc#846436)
 - 1020497 - provide a way to order kickstart scripts

@@ -148,8 +148,11 @@ public class ConfigDefaults {
     public static final String DB_NAME = "db_name";
     public static final String DB_HOST = "db_host";
     public static final String DB_PORT = "db_port";
+    public static final String DB_SSLMODE = "db_sslmode";
     public static final String DB_PROTO = "hibernate.connection.driver_proto";
     public static final String DB_CLASS = "hibernate.connection.driver_class";
+
+    public static final String SSL_TRUSTSTORE = "java.ssl_truststore";
 
     public static final String LOOKUP_EXCEPT_SEND_EMAIL = "lookup_exception_email";
 
@@ -535,6 +538,72 @@ public class ConfigDefaults {
      */
     public boolean isPostgresql() {
         return DB_BACKEND_POSTGRESQL.equals(Config.get().getString(DB_BACKEND));
+    }
+
+    private void setSslTrustStore() throws ConfigException {
+        String trustStore = Config.get().getString(SSL_TRUSTSTORE);
+        if (trustStore == null || !new File(trustStore).isFile()) {
+            throw new ConfigException("Can not find java truststore at " +
+                trustStore + ". Path can be changed with " +
+                SSL_TRUSTSTORE + " option.");
+        }
+        System.setProperty("javax.net.ssl.trustStore", trustStore);
+    }
+
+    /**
+     * Constructs JDBC connection string based on configuration, checks for
+     * some basic sanity.
+     * @return JDBC connection string
+     * @throws ConfigException if unknown database backend is set,
+     */
+    public String getJdbcConnectionString() throws ConfigException {
+        String dbName = Config.get().getString(DB_NAME);
+        String dbHost = Config.get().getString(DB_HOST);
+        String dbPort = Config.get().getString(DB_PORT);
+        String dbProto = Config.get().getString(DB_PROTO);
+        String dbSslmode = Config.get().getString(DB_SSLMODE);
+
+        String connectionUrl;
+
+        if (isOracle()) {
+            connectionUrl = dbProto + ":@";
+            if (dbProto.contains("thin")) {
+                connectionUrl += dbHost + ":" + dbPort + ":";
+            }
+            connectionUrl += dbName;
+
+            if (dbSslmode != null) {
+                throw new ConfigException(
+                    "Option sslmode is not supported for Oracle database backend");
+            }
+        }
+        else if (isPostgresql()) {
+            connectionUrl = dbProto + ":";
+            if (dbHost != null && dbHost.length() > 0) {
+                connectionUrl += "//" + dbHost;
+                if (dbPort != null && dbPort.length() > 0) {
+                    connectionUrl += ":" + dbPort;
+                }
+                connectionUrl += "/";
+            }
+            connectionUrl += dbName;
+
+            if (dbSslmode != null && dbSslmode.equals("verify-full")) {
+                connectionUrl += "?ssl=true";
+                setSslTrustStore();
+            }
+            else if (dbSslmode != null) {
+                throw new ConfigException("Unsuported value for " +
+                    DB_SSLMODE +
+                    ". Only 'verify-full' is supported.");
+            }
+
+        }
+        else {
+            throw new ConfigException(
+                "Unknown db backend set, expecting oracle or postgresql");
+        }
+        return connectionUrl;
     }
 
     /**
