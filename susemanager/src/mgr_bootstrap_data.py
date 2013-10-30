@@ -15,7 +15,7 @@ PKGLIST11 = ["spacewalk-client-tools", "zypper", "libzypp", "satsolver-tools",
             "zypp-plugin-python", "zypp-plugin-spacewalk", "spacewalk-check",
             "spacewalk-client-setup", "newt", "libnewt0_52", "python-newt",
             "python-dmidecode", "python-ethtool", "python-openssl", "rhnlib",
-            "spacewalksd", "suseRegisterInfo", "libcurl4"] 
+            "spacewalksd", "suseRegisterInfo", "libcurl4", "slang"]
 
 DATA = {
     'SLE-11-SP1-i586' : {
