@@ -142,3 +142,6 @@ java.session_delete_commit_interval = 100
 
 # This system is not a RedHat-style development environment
 java.development_environment = 0
+
+# Power management settings
+java.power_management.types = ipmilan

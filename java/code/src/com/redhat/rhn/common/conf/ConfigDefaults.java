@@ -124,6 +124,7 @@ public class ConfigDefaults {
     public static final String COBBLER_SNIPPETS_DIR = "cobbler.snippets.dir";
     private static final String DEFAULT_COBBLER_SNIPPET_DIR = "/var/lib/cobbler/snippets";
     private static final String COBBLER_NAME_SEPARATOR = "cobbler.name.separator";
+    public static final String POWER_MANAGEMENT_TYPES = "java.power_management.types";
 
     public static final String COBBLER_BOOTSTRAP_KERNEL = "java.cobbler_bootstrap.kernel";
     public static final String COBBLER_BOOTSTRAP_INITRD = "java.cobbler_bootstrap.initrd";
@@ -569,6 +570,14 @@ public class ConfigDefaults {
      */
     public String getCobblerBootstrapExtraKernelOptions() {
         return Config.get().getString(COBBLER_BOOTSTRAP_EXTRA_KERNEL_OPTIONS);
+    }
+
+    /**
+     * Returns power management types supported by Cobbler
+     * @return the types
+     */
+    public String getCobblerPowerTypes() {
+        return Config.get().getString(POWER_MANAGEMENT_TYPES);
     }
 
     /**
