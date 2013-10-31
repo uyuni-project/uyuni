@@ -127,6 +127,11 @@ enable_snapshots = 1
 # Cobbler settings
 cobbler.host = localhost
 java.taskomatic_cobbler_user = taskomatic_user
+java.cobbler_bootstrap.kernel = /srv/pxe-default-image/vmlinuz0
+java.cobbler_bootstrap.initrd = /srv/pxe-default-image/initrd0.img
+java.cobbler_bootstrap.breed = suse
+java.cobbler_bootstrap.arch = x86_64
+java.cobbler_bootstrap.extra_kernel_options = ROOTFS_FSCK=0
 
 # Option generated from rhn-config-satellite.pl
 disconnected = 1
