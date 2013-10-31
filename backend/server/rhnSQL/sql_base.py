@@ -28,17 +28,19 @@ import sys
 import sql_types
 import types
 
+
 def ociDict(names=None, row=None):
     """ Create a dictionary from a row description and its values. """
     data = {}
     if not names:
-        raise AttributeError, "Class initialization requires a description hash"
+        raise AttributeError("Class initialization requires a description hash")
     if row is None:
         return data
     for x in range(len(names)):
         name, value = __oci_name_value(names[x], row[x])
         data[name] = value
     return data
+
 
 def __oci_name_value(names, value):
     """ Extract the name, value pair needed by ociDict function. """
@@ -50,16 +52,15 @@ def __oci_name_value(names, value):
 
 # this is for when an execute statement went bad...
 class SQLError(Exception):
-    def __init__(self, *args):
-        Exception.__init__(self, *args)
+    pass
+
 
 # other Schema Errors
 class SQLSchemaError(SQLError):
     def __init__(self, errno, errmsg, *args):
         self.errno = errno
-        (self.errmsg, errmsg)  = string.split(errmsg, '\n', 1)
+        (self.errmsg, errmsg) = string.split(errmsg, '\n', 1)
         SQLError.__init__(self, self.errno, self.errmsg, errmsg, *args)
-
 # SQL connect error
 class SQLConnectError(SQLError):
     def __init__(self, db, errno, errmsg, *args):
@@ -80,10 +81,8 @@ class SQLStatementPrepareError(SQLError):
         apply(SQLError.__init__, (self, errmsg, db) + args)
 
 
-
 class ModifiedRowError(SQLError):
     pass
-
 
 
 class Cursor:
@@ -104,14 +103,14 @@ class Cursor:
 
         self.description = None
 
-        if not self._cursor_cache.has_key(self._dbh_id):
+        if self._dbh_id not in self._cursor_cache:
             self._cursor_cache[self._dbh_id] = {}
 
         # Store a reference to the underlying Python DB API Cursor:
         self._real_cursor = self._prepare(force=force)
 
     def _prepare_sql(self):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def _prepare(self, force=None):
         if self.sql:
@@ -142,7 +141,7 @@ class Cursor:
         Abstraction for the update of a blob column which can vary wildly
         between different database implementations.
         """
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def execute(self, *p, **kw):
         """ Execute a single query. """
@@ -194,7 +193,7 @@ class Cursor:
 
         Must be subclasses by database specific drivers.
         """
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def _execute(self, *args, **kwargs):
         if kwargs:
@@ -204,18 +203,16 @@ class Cursor:
         return self._execute_(args, kwargs)
 
     def _executemany(self, *args, **kwargs):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def _execute_(self, args, kwargs):
         """ Database specific execution of the query. """
-        raise NotImplementedError
-
+        raise NotImplementedError()
 
     # DATA RETRIEVAL
     # Please note: these functions return None if no data is available,
     # not an empty tuple or a list of empty tuples, or an empty list
     # or any other combination you can imagine with the word "empty" in it.
-
     def fetchone(self):
         return self._real_cursor.fetchone()
 
@@ -255,7 +252,6 @@ class Cursor:
         return 0
 
 
-
 class Procedure:
     """
     Class for calling out to stored procedures.
@@ -275,7 +271,6 @@ class Procedure:
             self.cursor = None
 
 
-
 class Database:
     """
     Base class for handling database operations.
@@ -290,21 +285,21 @@ class Database:
 
     def connect(self, reconnect=1):
         """ Opens a connection to the database. """
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def check_connection(self):
         """ Check that this connection is still valid. """
         # Delegates to sub-classes as this is usually done with a DB specific
         # query:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def prepare(self, sql, force=0):
         """ Prepare an SQL statement. """
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def commit(self):
         """ Commit changes """
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def procedure(self, name):
         """Return a pointer to a callable instance for a given stored
@@ -330,14 +325,13 @@ class Database:
         return self._function(name, ret_type)
 
     def _function(self, name, ret_type):
-        raise NotImplementedError
-
+        raise NotImplementedError()
 
     def transaction(self, name):
         "set a transaction point to which we can rollback to"
         pass
 
-    def rollback(self, name = None):
+    def rollback(self, name=None):
         "rollback changes, optionally to a previously set transaction point"
         pass
 
@@ -358,20 +352,19 @@ class Database:
         return None
 
     def is_connected_to(self, backend, host, port, username, password,
-            database):
+                        database, sslmode):
         """
         Check if this database matches the given connection parameters.
         """
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def Date(self, year, month, day):
         "Returns a Date object"
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def DateFromTicks(self, ticks):
         "Returns a Date object"
-        raise NotImplementedError
-
+        raise NotImplementedError()
 
 
 # Class that we use just as a markup for queries/statements; if the statement

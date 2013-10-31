@@ -36,6 +36,7 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnException
 from const import POSTGRESQL
 
+
 def convert_named_query_params(query):
     """
     Convert a query with named parameters (i.e. :id, :name, etc) into one
@@ -91,7 +92,7 @@ class Function(sql_base.Procedure):
                 error_code = int(m.group(1))
             raise sql_base.SQLSchemaError(error_code, e.pgerror, e)
 
-        if self.ret_type == None:
+        if self.ret_type is None:
             return ret
         else:
             return self.cursor.fetchone()[0]
@@ -117,6 +118,7 @@ class Procedure(Function):
         #if not (type(result) == 'tuple' and result[0] == ''):
             #raise rhnSQL.SQLError("Unexpected result returned by procedure %s: %s" % (self.name, str(result)))
 
+
 def decimal2intfloat(dec, cursor):
     "Convert a Decimal to an int or a float with no loss of information."
     "The dec is passed in as str (not Decimal) so we cannot check its type."
@@ -130,11 +132,21 @@ def decimal2intfloat(dec, cursor):
     except ValueError:
         return float(dec)
 
+
 class Database(sql_base.Database):
     """ Class for PostgreSQL database operations. """
 
     def __init__(self, host=None, port=None, username=None,
-                 password=None, database=None):
+                 password=None, database=None, sslmode=None):
+
+        self.username = username
+        self.password = password
+        self.database = database
+        self.sslmode = sslmode
+
+        # Minimum requirements to connect to a PostgreSQL db:
+        if not (self.username and self.database):
+            raise AttributeError("PostgreSQL requires at least a user and database name.")
 
         if host is None or host == '' or host == 'localhost':
             self.host = None
@@ -147,57 +159,58 @@ class Database(sql_base.Database):
         if not self.port:
             self.port = -1
 
-        self.username = username
-        self.password = password
-        self.database = database
-
-        # Minimum requirements to connect to a PostgreSQL db:
-        if not (self.username and self.database):
-            raise AttributeError, "PostgreSQL requires at least a user and database name."
-
         sql_base.Database.__init__(self)
 
     def connect(self, reconnect=1):
         try:
-            if self.host is None:
-                self.dbh = psycopg2.connect(database=str(self.database), user=str(self.username),
-                                            password=str(self.password))
-            else:
-                self.dbh = psycopg2.connect(database=str(self.database), user=str(self.username),
-                                            password=str(self.password), host=self.host, port=self.port)
+            kwargs = {
+                'database': str(self.database),
+                'user': str(self.username),
+                'password': str(self.password)}
+            if self.host is not None:
+                kwargs['host'] = self.host
+                kwargs['port'] = self.port
+            if self.sslmode is not None and self.sslmode == 'verify-full':
+                kwargs['sslmode'] = str(self.sslmode)
+            elif self.sslmode is not None:
+                raise AttributeError("Only sslmode=verify-full is supported.")
+
+            self.dbh = psycopg2.connect(**kwargs)
+
             # convert all DECIMAL types to float (let Python to choose one)
             DEC2INTFLOAT = psycopg2.extensions.new_type(psycopg2._psycopg.DECIMAL.values,
-                                                            'DEC2INTFLOAT', decimal2intfloat)
+                                                        'DEC2INTFLOAT', decimal2intfloat)
             psycopg2.extensions.register_type(DEC2INTFLOAT)
         except Exception, e:
-            if reconnect:
+            if reconnect > 0:
                 # Try one more time:
-                return self.connect(reconnect=0)
+                return self.connect(reconnect=reconnect - 1)
 
             # Failed reconnect, time to error out:
             raise sql_base.SQLConnectError(
-                        self.database, e.pgcode, e.pgerror,
-                        "Attempting Re-Connect to the database failed"), None, sys.exc_info()[2]
+                self.database, e.pgcode, e.pgerror,
+                "Attempting Re-Connect to the database failed"), None, sys.exc_info()[2]
 
     def is_connected_to(self, backend, host, port, username, password,
-                        database):
+                        database, sslmode):
         if host is None or host == '' or host == 'localhost':
             host = None
             port = None
         if not port:
             port = -1
         return (backend == POSTGRESQL) and (self.host == host) and \
-               (self.port == port) and (self.username == username) \
-               and (self.password == password) and (self.database == database)
+               (self.port == port) and (self.username == username) and \
+               (self.password == password) and (self.database == database) and \
+               (self.sslmode == sslmode)
 
     def check_connection(self):
         try:
             c = self.prepare("select 1")
             c.execute()
-        except: # try to reconnect, that one MUST WORK always
+        except:  # try to reconnect, that one MUST WORK always
             log_error("DATABASE CONNECTION TO '%s' LOST" % self.database,
                       "Exception information: %s" % sys.exc_info()[1])
-            self.connect() # only allow one try
+            self.connect()  # only allow one try
 
     def prepare(self, sql, force=0, blob_map=None):
         return Cursor(dbh=self.dbh, sql=sql, force=force, blob_map=blob_map)
@@ -239,7 +252,6 @@ class Database(sql_base.Database):
         return str(lob)
 
 
-
 class Cursor(sql_base.Cursor):
     """ PostgreSQL specific wrapper over sql_base.Cursor. """
 
@@ -260,15 +272,15 @@ class Cursor(sql_base.Cursor):
         return cursor
 
     def _execute_wrapper(self, function, *p, **kw):
-        params =  ','.join(["%s: %s" % (key, value) for key, value \
-                            in kw.items()])
+        params = ','.join(["%s: %s" % (key, value) for key, value
+                          in kw.items()])
         log_debug(5, "Executing SQL: \"%s\" with bind params: {%s}"
                   % (self.sql, params))
         if self.sql is None:
             raise rhnException("Cannot execute empty cursor")
         if self.blob_map:
             for blob_var in self.blob_map.keys():
-                 kw[blob_var] = buffer(kw[blob_var])
+                kw[blob_var] = buffer(kw[blob_var])
 
         try:
             retval = function(*p, **kw)
@@ -276,7 +288,7 @@ class Cursor(sql_base.Cursor):
             error_code = 99999
             m = re.match('ERROR: +-([0-9]+)', e.pgerror)
             if m:
-               error_code = int(m.group(1))
+                error_code = int(m.group(1))
             raise sql_base.SQLSchemaError(error_code, e.pgerror, e)
         except psycopg2.ProgrammingError, e:
             raise sql_base.SQLStatementPrepareError(self.dbh, e.pgerror, self.sql)

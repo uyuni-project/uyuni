@@ -24,12 +24,13 @@ from spacewalk.common.rhnException import rhnException
 import sql_base
 import sql_lib
 
+
 # A class to handle row updates transparently
 class RowData(UserDictCase):
-    def __init__(self, dict, db, sql, rowid, cache = None):
+    def __init__(self, dict, db, sql, rowid, cache=None):
         UserDictCase.__init__(self, dict)
         if not isinstance(db, sql_base.Database):
-            raise TypeError, "Second argument needs to be a database handle"
+            raise TypeError("Second argument needs to be a database handle")
         self.__db = db
         self.__sql = sql
         self.__rowid = rowid
@@ -42,9 +43,12 @@ class RowData(UserDictCase):
         h.execute(new_val=value, row_id=self.__rowid)
         # keep self.data in sync
         self.data[key] = value
-        if self.__cache: # maintain cache consistency
-            try: self.__cache[self.__rowid][key] = value
-            except: pass
+        if self.__cache:  # maintain cache consistency
+            try:
+                self.__cache[self.__rowid][key] = value
+            except:
+                pass
+
 
 # A class to handle operations on a table.
 #
@@ -56,12 +60,12 @@ class RowData(UserDictCase):
 #
 # Some day we'll figure out how to reduce confusion...
 class Table:
-    def __init__(self, db, table, hashid, cache = 0):
-        if not table or not type(table) == type(""):
+    def __init__(self, db, table, hashid, cache=False):
+        if not table or not isinstance(table, str):
             raise rhnException("First argument needs to be a table name",
                                table)
         self.__table = table
-        if not hashid or not type(hashid) == type(""):
+        if not hashid or not isinstance(hashid, str):
             raise rhnException("Second argument needs to be the name of the unique index column",
                                hashid)
         self.__hashid = hashid
@@ -76,33 +80,33 @@ class Table:
         if not value:
             self.__cache = None
             return
-        if self.__cache is not None: # already enabled
+        if self.__cache is not None:  # already enabled
             return
         self.__cache = {}
 
     # insert row(s) into the table
     def insert(self, rows):
         # insert a single row into the table
-        def insert_row(row, self = self):
+        def insert_row(row, self=self):
             if self.__cache is not None:
                 self.__cache[row[self.__hashid]] = row
             return self.__setitem__(None, row)
-        if type(rows) == type({}) or isinstance(rows, UserDictCase):
+        if isinstance(rows, dict) or isinstance(rows, UserDictCase):
             return insert_row(rows)
-        if type(rows) == type([]):
+        if isinstance(rows, list):
             for x in rows:
                 insert_row(x)
-	    return None
+            return None
         raise rhnException("Invalid data %s passed" % type(rows), rows)
 
     # select from the whole table all the entries that match the
     # valuies of the hash provided (kind of a complex select)
     def select(self, row):
-        if not type(row) == type({}) and not isinstance(row, UserDictCase):
+        if not isinstance(row, dict) and not isinstance(row, UserDictCase):
             raise rhnException("Expecting hash argument. %s is invalid" % type(row),
                                row)
         if row == {}:
-	    raise rhnException("The hash argument is empty", row)
+            raise rhnException("The hash argument is empty", row)
         keys = row.keys()
         # Sort the list of keys, to always get the same list of arguments
         keys.sort()
@@ -113,10 +117,10 @@ class Table:
             else:
                 clause = "%s = :%s" % (col, col)
             args.append(clause)
-	sql = "select * from %s where " % self.__table
-	cursor = self.__db.prepare(sql + string.join(args, " and "))
-	cursor.execute(**row)
-	rows = cursor.fetchall_dict()
+        sql = "select * from %s where " % self.__table
+        cursor = self.__db.prepare(sql + string.join(args, " and "))
+        apply(cursor.execute, (), row)
+        rows = cursor.fetchall_dict()
         if rows is None:
             return None
         # fill up the cache
@@ -132,15 +136,15 @@ class Table:
 
     # make this table look like a dictionary
     def __getitem__(self, key):
-        if self.__cache and self.__cache.has_key(key):
-	    return self.__cache[key]
+        if self.__cache and key in self.__cache:
+            return self.__cache[key]
         h = self.__db.prepare("select * from %s where %s = :p1" % (
             self.__table, self.__hashid))
         h.execute(p1=key)
         ret = h.fetchone_dict()
         if ret is None:
-	    if self.__cache is not None:
-		self.__cache[key] = None
+            if self.__cache is not None:
+                self.__cache[key] = None
             return None
         xret = UserDictCase(ret)
         if self.__cache is not None:
@@ -152,8 +156,8 @@ class Table:
     # be modified.
     def get(self, key):
         ret = self.__getitem__(key)
-        if self.__cache and self.__cache.has_key(key):
-	    del self.__cache[key]
+        if self.__cache and key in self.__cache:
+            del self.__cache[key]
         sql = "update %s set %%s = :new_val where %s = :row_id" % (
             self.__table, self.__hashid)
         return RowData(ret, self.__db, sql, key, self.__cache)
@@ -162,32 +166,32 @@ class Table:
     # values for all columns except the one that functions as the
     # primary key identifier
     def __setitem__(self, key, value):
-        if not type(value) == type({}) and not isinstance(value, UserDictCase):
-            raise TypeError, "Expected value to be a hash"
-        if value.has_key(self.__hashid): # we don't need that
+        if not isinstance(value, dict) and not isinstance(value, UserDictCase):
+            raise TypeError("Expected value to be a hash")
+        if self.__hashid in value:  # we don't need that
             if key is None:
                 key = value[self.__hashid]
             del value[self.__hashid]
 
         if key is None:
-            raise KeyError, "Can not insert entry with NULL key"
+            raise KeyError("Can not insert entry with NULL key")
         items = value.items()
-        if items == []: # quick check for noop
+        if items == []:  # quick check for noop
             return
-	sql = None
+        sql = None
         if self.has_key(key):
             sql, pdict = sql_lib.build_sql_update(self.__table, self.__hashid, items)
         else:
             sql, pdict = sql_lib.build_sql_insert(self.__table, self.__hashid, items)
         # import the value of the hash key
-        pdict["p0"] =  key
+        pdict["p0"] = key
         h = self.__db.prepare(sql)
         h.execute(**pdict)
-	try:
-	    value[self.__hashid] = key
-	    self.__cache[key] = value
-	except:
-	    pass
+        try:
+            value[self.__hashid] = key
+            self.__cache[key] = value
+        except:
+            pass
 
     # length
     def __len__(self):
@@ -203,8 +207,10 @@ class Table:
         h = self.__db.prepare("delete from %s where %s = :p1" % (
             self.__table, self.__hashid))
         h.execute(p1=key)
-	try: del self.__cache[key]
-	except: pass
+        try:
+            del self.__cache[key]
+        except:
+            pass
         return 0
 
     # get all keys
@@ -239,17 +245,18 @@ class Table:
 
     # flush the cache. if cache is off, then noop
     def flush(self):
-        if self.__cache is not None: # avoid turning caching on when flushing
+        if self.__cache is not None:  # avoid turning caching on when flushing
             self.__cache = {}
 
     # passthrough commit
     def commit(self):
         return self.__db.commit()
+
     # passthrough rollback
     def rollback(self):
-	self.flush()
+        self.flush()
         return self.__db.rollback()
 
     def printcache(self):
-	print self.__cache
+        print self.__cache
         return
