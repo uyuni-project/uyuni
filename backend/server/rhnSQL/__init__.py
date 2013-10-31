@@ -91,7 +91,7 @@ def initDB(backend=None, host=None, port=None, username=None,
         database = CFG.DB_NAME
         username = CFG.DB_USER
         password = CFG.DB_PASSWORD
-        sslmode = CFG.DB_SSLMODE
+        sslmode = CFG.get("DB_SSLMODE")
 
     if backend not in SUPPORTED_BACKENDS:
         raise rhnException("Unsupported database backend", backend)
