@@ -40,7 +40,8 @@ from sql_base import SQLError, SQLSchemaError, SQLConnectError, \
 # instantiated by the initDB call. This object/instance should NEVER,
 # EVER be exposed to the calling applications.
 
-def __init__DB(backend, host, port, username, password, database):
+
+def __init__DB(backend, host, port, username, password, database, sslmode):
     """
     Establish and check the connection so we can wrap it and handle
     exceptions.
@@ -49,29 +50,30 @@ def __init__DB(backend, host, port, username, password, database):
     global __DB
     try:
         my_db = __DB
-    except NameError: # __DB has not been set up
+    except NameError:  # __DB has not been set up
         db_class = dbi.get_database_class(backend=backend)
-        __DB = db_class(host, port, username, password, database)
+        __DB = db_class(host, port, username, password, database, sslmode)
         __DB.connect()
         return
     else:
         del my_db
 
     if __DB.is_connected_to(backend, host, port, username, password,
-            database):
+                            database, sslmode):
         __DB.check_connection()
         return
 
     __DB.commit()
     __DB.close()
     # now we have to get a different connection
-    __DB = dbi.get_database_class(backend=backend)(host, port, username,
-            password, database)
+    __DB = dbi.get_database_class(backend=backend)(
+        host, port, username, password, database, sslmode)
     __DB.connect()
     return 0
 
+
 def initDB(backend=None, host=None, port=None, username=None,
-        password=None, database=None):
+           password=None, database=None, sslmode=None):
     """
     Initialize the database.
 
@@ -89,8 +91,9 @@ def initDB(backend=None, host=None, port=None, username=None,
         database = CFG.DB_NAME
         username = CFG.DB_USER
         password = CFG.DB_PASSWORD
+        sslmode = CFG.DB_SSLMODE
 
-    if not SUPPORTED_BACKENDS.has_key(backend):
+    if backend not in SUPPORTED_BACKENDS:
         raise rhnException("Unsupported database backend", backend)
 
     if port:
@@ -99,9 +102,9 @@ def initDB(backend=None, host=None, port=None, username=None,
     # Hide the password
     add_to_seclist(password)
     try:
-        __init__DB(backend, host, port, username, password, database)
+        __init__DB(backend, host, port, username, password, database, sslmode)
 #    except (rhnException, SQLError):
-#        raise # pass on, we know those ones
+#        raise  # pass on, we know those ones
 #    except (KeyboardInterrupt, SystemExit):
 #        raise
     except:
@@ -110,6 +113,7 @@ def initDB(backend=None, host=None, port=None, username=None,
         #raise rhnException("Could not initialize Oracle database connection",
         #                   str(e_type), str(e_value))
     return 0
+
 
 # close the database
 def closeDB():
@@ -125,85 +129,119 @@ def closeDB():
     del __DB
     return
 
+
 # common function for testing the connection state (ie, __DB defined
 def __test_DB():
     global __DB
     try:
         return __DB
     except NameError:
-        raise SystemError, "Not connected to any database!", sys.exc_info()[2]
+        raise SystemError("Not connected to any database!"), None, sys.exc_info()[2]
+
 
 # wrapper for a Procedure callable class
 def Procedure(name):
     db = __test_DB()
     return db.procedure(name)
 
+
 # wrapper for a Procedure callable class
 def Function(name, ret_type):
     db = __test_DB()
     return db.function(name, ret_type)
+
 
 # Wrapper for the Sequence class
 def Sequence(seq):
     db = __test_DB()
     return sql_sequence.Sequence(db, seq)
 
+
 # Wrapper for the Row class
-def Row(table, hash_name, hash_value = None):
+def Row(table, hash_name, hash_value=None):
     db = __test_DB()
     return sql_row.Row(db, table, hash_name, hash_value)
 
+
 # Wrapper for the Table class
-def Table(table, hash_name, local_cache = 0):
+def Table(table, hash_name, local_cache=0):
     db = __test_DB()
     return sql_table.Table(db, table, hash_name, local_cache)
 
+
+###########################
 # Functions points of entry
+###########################
+
+
 def cursor():
     db = __test_DB()
     return db.cursor()
+
+
 def prepare(sql, blob_map=None):
     db = __test_DB()
     if isinstance(sql, Statement):
         sql = sql.statement
     return db.prepare(sql, blob_map=blob_map)
+
+
 def execute(sql, *args, **kwargs):
     db = __test_DB()
     return db.execute(sql, *args, **kwargs)
+
+
 def fetchall_dict(sql, *args, **kwargs):
     h = prepare(sql)
     h.execute(sql, *args, **kwargs)
     return h.fetchall_dict()
+
+
 def fetchone_dict(sql, *args, **kwargs):
     h = prepare(sql)
     h.execute(sql, *args, **kwargs)
     return h.fetchone_dict()
+
+
 def commit():
     db = __test_DB()
     return db.commit()
-def rollback(name = None):
+
+
+def rollback(name=None):
     db = __test_DB()
     return db.rollback(name)
+
+
 def transaction(name):
     db = __test_DB()
     return db.transaction(name)
+
+
 def TimestampFromTicks(*args, **kwargs):
     db = __test_DB()
     return db.TimestampFromTicks(*args, **kwargs)
+
+
 def DateFromTicks(*args, **kwargs):
     db = __test_DB()
     return db.DateFromTicks(*args, **kwargs)
+
+
 def Date(*args, **kwargs):
     db = __test_DB()
     return db.Date(*args, **kwargs)
+
 
 def clear_log_id():
     clear_log_id = Procedure("logging.clear_log_id")
     clear_log_id()
 
+
 def set_log_auth(user_id):
     set_log_auth = Procedure("logging.set_log_auth")
     set_log_auth(user_id)
+
 
 def set_log_auth_login(login):
     h = prepare("select id from web_contact_all where login = :login")
@@ -214,6 +252,7 @@ def set_log_auth_login(login):
         set_log_auth(user_id)
     else:
         raise rhnException("No such log user", login)
+
 
 def read_lob(lob):
     if not lob:
@@ -237,9 +276,10 @@ class _Callable(object):
 
 
 class _Procedure(_Callable):
-   def __init__(self, name):
-       _Callable.__init__(self, name)
-       self._implementor = Procedure
+    def __init__(self, name):
+        _Callable.__init__(self, name)
+        self._implementor = Procedure
+
 
 class _Function(_Callable):
     def __init__(self, name):

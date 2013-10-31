@@ -23,6 +23,7 @@ from spacewalk.common.rhnException import rhnException
 import sql_base
 import sql_lib
 
+
 class Row(UserDictCase):
     """ This class allows one to work with the columns of a particular row in a more
         convenient manner (ie, using a disctionary interface). It allows for the row
@@ -32,7 +33,8 @@ class Row(UserDictCase):
         The easiest way to separate what these things are for is to remember that
         the Table class indexes by KEY, while the Row class indexes by column
     """
-    def __init__(self, db, table, hashname, hashval = None):
+
+    def __init__(self, db, table, hashname, hashval=None):
         UserDictCase.__init__(self)
         if not isinstance(db, sql_base.Database):
             raise rhnException("Argument db is not a database instance", db)
@@ -44,7 +46,7 @@ class Row(UserDictCase):
         self.data = {}
         # is this a real entry (ie, use insert or update)
         self.real = 0
-        if hashval is not None: # if we have to load an entry already...
+        if hashval is not None:  # if we have to load an entry already...
             self.load(hashval)
 
     def __repr__(self):
@@ -61,25 +63,27 @@ class Row(UserDictCase):
         # "load from new id"?). We provide interfaces for load, save
         # and create instead.
         if x == self.hashname:
-            raise AttributeError, "Can not reset the value of the hash key"
-        if not self.data.has_key(x) or self.data[x][0] != value:
+            raise AttributeError("Can not reset the value of the hash key")
+        if x not in self.data or self.data[x][0] != value:
             self.data[x] = (value, 1)
+
     def __getitem__(self, name):
         x = string.lower(name)
-        if self.data.has_key(x):
+        if x in self.data:
             return self.data[x][0]
-        raise KeyError, "Key %s not found in the Row dictionary" % name
+        raise KeyError("Key %s not found in the Row dictionary" % name)
+
     def get(self, name):
         x = string.lower(name)
-        if self.data.has_key(x):
+        if x in self.data:
             return self.data[x][0]
         return None
 
-    def reset(self, val = 0):
+    def reset(self, val=0):
         """ reset the changed status for these entries """
-        for k in self.data.keys():
+        for k, v in self.data.items():
             # tuples do not support item assignement
-            self.data[k] = (self.data[k][0], val)
+            self.data[k] = (v[0], val)
 
     def create(self, hashval):
         """ create it as a new entry """
@@ -91,7 +95,7 @@ class Row(UserDictCase):
         """ load an entry """
         return self.load_sql("%s = :hashval" % self.hashname, {'hashval': hashval})
 
-    def load_sql(self, sql, pdict = {}):
+    def load_sql(self, sql, pdict={}):
         """ load from a sql clause """
         h = self.db.prepare("select * from %s where %s" % (self.table, sql))
         h.execute(**pdict)
@@ -100,22 +104,22 @@ class Row(UserDictCase):
         if not ret:
             self.real = 0
             return 0
-        for k in ret.keys():
-            self.data[k] = (ret[k], 0)
+        for k, v in ret.items():
+            self.data[k] = (v, 0)
         self.real = 1
         return 1
 
     def save(self, with_updates=1):
         """ now save an entry """
-        if not self.data.has_key(self.hashname):
-            raise AttributeError, "Table does not have a hash `%s' key" % self.hashname
+        if self.hashname not in self.data:
+            raise AttributeError("Table does not have a hash `%s' key" % self.hashname)
         # get a list of fields to be set
         items = map(lambda a: (a[0], a[1][0]),
                     filter(lambda b: b[1][1] == 1, self.data.items()))
-        if not items: # if there is nothing for us to do, avoid doing it.
+        if not items:  # if there is nothing for us to do, avoid doing it.
             return
         # and now build the SQL statements
-        if self.real: # Update
+        if self.real:  # Update
             if not with_updates:
                 raise sql_base.ModifiedRowError()
             sql, pdict = sql_lib.build_sql_update(self.table, self.hashname, items)
@@ -127,4 +131,3 @@ class Row(UserDictCase):
         h.execute(**pdict)
         self.real = 1
         return
-
