@@ -44,6 +44,7 @@ Requires:       sm-ncc-sync-data
 Requires:       spacewalk-backend >= 1.7.38.20
 Requires:       spacewalk-backend-sql
 Requires:       python
+Requires:       createrepo
 
 %description tools
 This package contains SUSE Manager tools
