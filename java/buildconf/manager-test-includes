@@ -2,3 +2,4 @@ com/redhat/rhn/common/**/test/*Test.class
 com/redhat/rhn/domain/**/test/*Test.class
 com/redhat/rhn/manager/audit/test/CVEAudit*Test.class
 com/redhat/rhn/manager/distupgrade/test/DistUpgradeManagerTest.class
+com/redhat/rhn/frontend/action/user/test/CreateUserActionTest.class

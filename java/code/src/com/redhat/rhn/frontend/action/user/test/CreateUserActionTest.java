@@ -15,6 +15,10 @@
 package com.redhat.rhn.frontend.action.user.test;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.user.CreateUserAction;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
@@ -62,14 +66,32 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
     }
 
     public void testCreateFirstSatUser() {
-
-
+        // ensure no other user exists
+        for (Org org : OrgFactory.lookupAllOrgs()) {
+            for (User user : UserFactory.getInstance().findAllUsers(org)) {
+                UserFactory.deleteUser(user.getId());
+            }
+        }
         setRequestPathInfo("/newlogin/CreateFirstUserSubmit");
         RhnMockDynaActionForm form =
             fillOutForm("createSatelliteForm", CreateUserAction.TYPE_CREATE_SAT);
         setActionForm(form);
         actionPerform();
         this.verifyForward(CreateUserAction.SUCCESS_SAT);
+    }
+
+    /**
+     * Ensure this action does not work when one user exists (CVE-2013-4480,
+     * bnc#848639)
+     */
+    public void testCreateMultipleFirstSatUser() {
+        UserFactory.createUser();
+        setRequestPathInfo("/newlogin/CreateFirstUserSubmit");
+        RhnMockDynaActionForm form = fillOutForm("createSatelliteForm",
+            CreateUserAction.TYPE_CREATE_SAT);
+        setActionForm(form);
+        actionPerform();
+        this.verifyForwardPath("/errors/Permission.do");
     }
 
     /**
