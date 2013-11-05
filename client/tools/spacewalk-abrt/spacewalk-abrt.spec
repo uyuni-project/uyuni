@@ -32,7 +32,7 @@ make -f Makefile.spacewalk-abrt install PREFIX=$RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %post
-service abrtd restart
+service abrtd restart ||:
 
 %files
 %defattr(-,root,root)
