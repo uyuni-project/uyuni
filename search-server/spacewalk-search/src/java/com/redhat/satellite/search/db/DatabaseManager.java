@@ -21,13 +21,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Method;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ibatis.sqlmap.client.SqlMapClientBuilder;
 import com.ibatis.sqlmap.client.SqlMapSession;
 import com.redhat.satellite.search.config.Configuration;
 import com.redhat.satellite.search.config.ConfigException;
+
+import org.apache.log4j.Logger;
 
 /**
  * Manages DB activity - connections, running queries, etc
@@ -36,6 +40,9 @@ import com.redhat.satellite.search.config.ConfigException;
 public class DatabaseManager {
 
     private SqlMapClient client = null;
+    private boolean isOracle;
+    private static Logger log = Logger.getLogger(DatabaseManager.class);
+
 
     /**
      * Constructor
@@ -66,7 +73,8 @@ public class DatabaseManager {
         for (String option : options) {
             overrides.setProperty(option, config.getString(option));
         }
-        if (config.getString("db_backend").equals("oracle")) {
+        isOracle = config.getString("db_backend").equals("oracle");
+        if (isOracle) {
             overrides.setProperty("db_name", "@" + overrides.getProperty("db_name"));
         } else {
             String dbHost = config.getString("db_host");
@@ -78,8 +86,7 @@ public class DatabaseManager {
                 }
                 connectionUrl += "/" + overrides.getProperty("db_name");
 
-                String sslmode = config.getString("db_sslmode");
-                if (sslmode != null && sslmode.equals("verify-full")) {
+                if (config.getBoolean("db_ssl_enabled")) {
                     connectionUrl += "?ssl=true";
                     String trustStore = config.getString("java.ssl_truststore");
                     if (trustStore == null || ! new File(trustStore).isFile()) {
@@ -87,10 +94,7 @@ public class DatabaseManager {
                             trustStore + ". Path can be changed with java.ssl_truststore option.");
                     }
                     System.setProperty("javax.net.ssl.trustStore", trustStore);
-                }
-                else if (sslmode != null) {
-                    throw new ConfigException(
-                        "Unsuported value for db_sslmode. Only 'verify-full' is supported.");
+                    overrides.setProperty("db_name", connectionUrl);
                 }
             }
         }
@@ -105,8 +109,7 @@ public class DatabaseManager {
      * @return query object
      */
     public <T> Query<T> getQuery(String name) {
-        SqlMapSession session = client.openSession();
-        return new Query<T>(session, name);
+        return new Query<T>(openSession(), name);
     }
 
     /**
@@ -115,7 +118,7 @@ public class DatabaseManager {
      * @return query object
      */
     public WriteQuery getWriterQuery(String name) {
-        SqlMapSession session = client.openSession();
+        SqlMapSession session = openSession();
         return new WriteQuery(session, name);
     }
 
@@ -124,6 +127,32 @@ public class DatabaseManager {
      * @return connection object
      */
     public Connection getConnection() {
-        return new Connection(client.openSession());
+        return new Connection(openSession());
+    }
+
+    private SqlMapSession openSession() {
+        SqlMapSession session = client.openSession();
+        setSessionTimeZone();
+        return session;
+    }
+
+    public void setSessionTimeZone() {
+        if (isOracle) {
+            try {
+                java.sql.Connection proxyConn = client.getDataSource().getConnection();
+                // this is a trick, how to get OracleConnection from the Proxy object
+                java.sql.Connection oraConn = proxyConn.createStatement().getConnection();
+                Method setSessionTimeZoneMethod = Class.forName(
+                        "oracle.jdbc.driver.OracleConnection").getMethod(
+                        "setSessionTimeZone", String.class);
+                        if (setSessionTimeZoneMethod != null) {
+                            setSessionTimeZoneMethod.invoke(oraConn, TimeZone.getDefault().getID());
+                        }
+            }
+            catch (Exception e) {
+                log.warn("Unable to set session timezone.");
+                e.printStackTrace();
+            }
+        }
     }
 }

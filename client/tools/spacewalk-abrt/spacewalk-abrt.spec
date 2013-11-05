@@ -1,5 +1,5 @@
 Name:           spacewalk-abrt
-Version:        2.1.3
+Version:        2.1.4
 Release:        1%{?dist}
 Summary:        ABRT plug-in for rhn-check
 
@@ -12,6 +12,7 @@ BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  gettext
 Requires:       abrt
+Requires:       abrt-cli
 Requires:       rhnlib
 Requires:       rhn-check
 %description
@@ -30,6 +31,9 @@ make -f Makefile.spacewalk-abrt install PREFIX=$RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+service abrtd restart
+
 %files
 %defattr(-,root,root)
 %dir /etc/sysconfig/rhn/
@@ -45,6 +49,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/*
 
 %changelog
+* Thu Oct 31 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.4-1
+- explicitely require abrt-cli
+
 * Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.3-1
 - Reading only one line
 - 1002041 - File content is loaded only when needed
