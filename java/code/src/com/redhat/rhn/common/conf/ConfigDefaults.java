@@ -148,7 +148,7 @@ public class ConfigDefaults {
     public static final String DB_NAME = "db_name";
     public static final String DB_HOST = "db_host";
     public static final String DB_PORT = "db_port";
-    public static final String DB_SSLMODE = "db_sslmode";
+    public static final String DB_SSL_ENABLED = "db_ssl_enabled";
     public static final String DB_PROTO = "hibernate.connection.driver_proto";
     public static final String DB_CLASS = "hibernate.connection.driver_class";
 
@@ -561,7 +561,7 @@ public class ConfigDefaults {
         String dbHost = Config.get().getString(DB_HOST);
         String dbPort = Config.get().getString(DB_PORT);
         String dbProto = Config.get().getString(DB_PROTO);
-        String dbSslmode = Config.get().getString(DB_SSLMODE);
+        boolean dbSslEnabled = Config.get().getBoolean(DB_SSL_ENABLED);
 
         String connectionUrl;
 
@@ -572,9 +572,9 @@ public class ConfigDefaults {
             }
             connectionUrl += dbName;
 
-            if (dbSslmode != null) {
+            if (dbSslEnabled) {
                 throw new ConfigException(
-                    "Option sslmode is not supported for Oracle database backend");
+                    "SSL is not supported for Oracle database backend");
             }
         }
         else if (isPostgresql()) {
@@ -588,16 +588,10 @@ public class ConfigDefaults {
             }
             connectionUrl += dbName;
 
-            if (dbSslmode != null && dbSslmode.equals("verify-full")) {
+            if (dbSslEnabled) {
                 connectionUrl += "?ssl=true";
                 setSslTrustStore();
             }
-            else if (dbSslmode != null) {
-                throw new ConfigException("Unsuported value for " +
-                    DB_SSLMODE +
-                    ". Only 'verify-full' is supported.");
-            }
-
         }
         else {
             throw new ConfigException(

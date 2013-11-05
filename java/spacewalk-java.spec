@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.62
+Version: 2.1.65
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -894,6 +894,20 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Mon Nov 04 2013 Tomas Lestach <tlestach@redhat.com> 2.1.65-1
+- 1023482 - spped up /rhn/channels/manage/errata/AddRedHatErrata.do page
+- Fix navigation for the default snippets page
+- removing unnecessary casts
+
+* Mon Nov 04 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.64-1
+- 1022279 - modified query to work better with PostgreSQL 8.4 optimizer
+- 1022279 - added hints for PostgreSQL 8.4 optimizer
+
+* Thu Oct 31 2013 Matej Kollar <mkollar@redhat.com> 2.1.63-1
+- 1020952 - Single db root cert + option name change
+- Checkstyle fix, follow JSL for method modifiers
+- 1007521 - synchronize repo entries creation
+
 * Thu Oct 24 2013 Tomas Lestach <tlestach@redhat.com> 2.1.62-1
 - 1011856 - detect max lengths at repo creation
 - 1020952 - SSL for Postgresql: Java (WebUI, Tascomatic)
