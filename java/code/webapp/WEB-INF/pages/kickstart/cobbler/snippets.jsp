@@ -6,7 +6,7 @@
 
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-info.gif"
+<rhn:toolbar base="h1" img="/img/rhn-kickstart_profile.gif"
                helpUrl="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-snippet"
                creationUrl="CobblerSnippetCreate.do"
                creationType="snippets"
