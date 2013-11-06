@@ -1827,6 +1827,11 @@ tree will not be usable for autoinstalling.
       <trans-unit id="preferences.jsp.csvsemicolon">
         <source>Semicolon (";", compatible with Microsoft&#174; Excel&#174;)</source>
       </trans-unit>
+
+      <!-- Power Management -->
+      <trans-unit id="kickstart.powermanagement.ipmitool">
+        <source>IPMI</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
