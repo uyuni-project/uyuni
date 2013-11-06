@@ -7,6 +7,7 @@
 <html>
 <body>
 <rhn:toolbar base="h1" img="/img/rhn-icon-info.gif"
+               helpUrl="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-snippet"
                creationUrl="CobblerSnippetCreate.do"
                creationType="snippets"
                imgAlt="info.alt.img">
