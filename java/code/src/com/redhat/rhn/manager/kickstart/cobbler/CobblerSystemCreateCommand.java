@@ -333,10 +333,11 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
             ksmeta.put(KickstartFormatter.KS_DISTRO, this.ksDistro);
         }
         rec.setKsMeta(ksmeta);
-        if ("suse".equals(rec.getProfile().getDistro().getBreed())) {
+        Profile recProfile = rec.getProfile();
+        if (recProfile != null && "suse".equals(recProfile.getDistro().getBreed())) {
             if (kernelOptions != null && !kernelOptions.contains("install=")) {
                 kernelOptions = kernelOptions + " install=http://" + kickstartHost +
-                        mediaPath;
+                    mediaPath;
             }
         }
         rec.setKernelOptions(kernelOptions);
