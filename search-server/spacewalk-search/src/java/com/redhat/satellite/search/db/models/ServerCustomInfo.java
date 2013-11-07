@@ -25,7 +25,7 @@ public class ServerCustomInfo extends GenericRecord {
     private String label;
     private String value;
     private long createdBy;
-    private long lastModifiedBy;
+    private Long lastModifiedBy;
     private String created;
     private String modified;
 
@@ -133,13 +133,13 @@ public class ServerCustomInfo extends GenericRecord {
     /**
      * @return the lastModifiedBy
      */
-    public long getLastModifiedBy() {
+    public Long getLastModifiedBy() {
         return lastModifiedBy;
     }
     /**
      * @param lastModifiedByIn the lastModifiedBy to set
      */
-    public void setLastModifiedBy(long lastModifiedByIn) {
+    public void setLastModifiedBy(Long lastModifiedByIn) {
         this.lastModifiedBy = lastModifiedByIn;
     }
 
