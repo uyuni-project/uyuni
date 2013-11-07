@@ -111,3 +111,19 @@ When /^I copy to server "([^"]*)"$/ do |arg1|
         raise "Execute command failed: #{$!}: #{$sshout}"
     end
 end
+
+Then /^the pxe-default-profile should be enabled$/ do
+    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST grep "ONTIMEOUT pxe-default-profile" /srv/tftpboot/pxelinux.cfg/default 2>&1`
+    if ! $?.success?
+        raise "pxe-default-profile not enabled: #{$!}: #{$sshout}"
+    end
+end
+
+Then /^the pxe-default-profile should be disabled$/ do
+    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST grep "ONTIMEOUT local" /srv/tftpboot/pxelinux.cfg/default 2>&1`
+    if ! $?.success?
+        raise "pxe-default-profile not disabled: #{$!}: #{$sshout}"
+    end
+end
+
+
