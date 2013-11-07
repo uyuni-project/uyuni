@@ -254,6 +254,13 @@ public class MockConnection extends CobblerConnection {
     else if ("sync".equals(name)) {
         return true;
     }
+    else if ("power_system".equals(name)) {
+        boolean firstArgumentValid = systemMap.containsKey(args[0]);
+        boolean secondArgumentValid = args[1].equals("on") || args[1].equals("off") ||
+            args[1].equals("reboot");
+        boolean thirdArgumentValid = args[2].equals(token);
+        return firstArgumentValid && secondArgumentValid && thirdArgumentValid;
+    }
     else {
         log.debug("Unhandled xmlrpc call in MockConnection: " + name);
     }
