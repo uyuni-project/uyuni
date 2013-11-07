@@ -1219,15 +1219,14 @@ public class SystemManager extends BaseManager {
      * <code>false</code> otherwise.
 
      * @param sid Server ID to lookup.
-     * @param org Org id of user performing this query.
      * @return <code>true</code> if the server has bootstrap entitlement,
      *      <code>false</code> otherwise.
      */
-    public static boolean serverHasBootstrapEntitlement(Long sid, Org org) {
-        Server s = SystemManager.lookupByIdAndOrg(sid, org);
-        return s.hasBootstrapEntitlement();
+    public static boolean serverHasBootstrapEntitlement(Long sid) {
+        Server s = ServerFactory.lookupById(sid);
+        return s.hasEntitlement(EntitlementManager.BOOTSTRAP);
     }
-    
+
     /**
      * Returns true if server has capability.
      * @param sid Server id
