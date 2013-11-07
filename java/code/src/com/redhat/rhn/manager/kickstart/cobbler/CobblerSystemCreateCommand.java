@@ -289,6 +289,8 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
             }
             throw e;
         }
+        rec.enableNetboot(true);
+        rec.setImage((String)null);
         rec.setProfile(profile);
 
         if (isDhcp) {
