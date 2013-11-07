@@ -126,4 +126,13 @@ Then /^the pxe-default-profile should be disabled$/ do
     end
 end
 
+Then /^the cobbler report contains "([^"]*)"$/ do |arg1|
+    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST cobbler system report --name "#{$myhostname}:1" 2>&1`
+    if ! $?.success?
+        raise "Execute command failed: #{$!}: #{$sshout}"
+    end
+    if ! $sshout.include?(arg1)
+        raise "Not found: #{$sshout}"
+    end
+end
 
