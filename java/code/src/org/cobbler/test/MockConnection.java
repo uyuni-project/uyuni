@@ -52,6 +52,7 @@ public class MockConnection extends CobblerConnection {
     private static Map<String, Map> distroMap = new HashMap<String, Map>();
     private static Map<String, Map> imageMap = new HashMap<String, Map>();
 
+    private static String latestPowerCommand = null;
 
     /**
      * Mock constructors for Cobbler connection
@@ -259,6 +260,8 @@ public class MockConnection extends CobblerConnection {
             args[1].equals("reboot");
         boolean thirdArgumentValid = args[2].equals(token);
         if (firstArgumentValid && secondArgumentValid && thirdArgumentValid) {
+            latestPowerCommand = name + " " + args[1] + " " +
+                    systemMap.get(args[0]).get("uid");
             return 0;
         }
         return 1;
@@ -371,6 +374,15 @@ public class MockConnection extends CobblerConnection {
 
     public Double getVersion() {
         return new Double(2.2);
+    }
+
+    /**
+     * Returns a string with the latest power command received by this
+     * connection or null.
+     * @return the latest command
+     */
+    public static String getLatestPowerCommand() {
+        return latestPowerCommand;
     }
 
     public static void clear() {
