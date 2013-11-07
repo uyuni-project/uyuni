@@ -171,11 +171,10 @@ public class Access extends BaseHandler {
     public boolean aclSystemHasBootstrapEntitlement(Object ctx, String[] params) {
         Map map = (Map) ctx;
         Long sid = getAsLong(map.get("sid"));
-        User user = (User) map.get("user");
 
-        return SystemManager.serverHasBootstrapEntitlement(sid, user.getOrg());
+        return SystemManager.serverHasBootstrapEntitlement(sid);
     }
-    
+
     /**
      * Check if a system has a management entitlement
      * @param ctx Context map to pass in.
