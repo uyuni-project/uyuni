@@ -120,10 +120,7 @@ Then /^the pxe-default-profile should be enabled$/ do
 end
 
 Then /^the pxe-default-profile should be disabled$/ do
-    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST grep "ONTIMEOUT local" /srv/tftpboot/pxelinux.cfg/default 2>&1`
-    if ! $?.success?
-        raise "pxe-default-profile not disabled: #{$!}: #{$sshout}"
-    end
+    step "file \"/srv/tftpboot/pxelinux.cfg/default\" contains \"ONTIMEOUT local\""
 end
 
 Then /^the cobbler report contains "([^"]*)"$/ do |arg1|
