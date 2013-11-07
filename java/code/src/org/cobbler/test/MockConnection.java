@@ -256,13 +256,13 @@ public class MockConnection extends CobblerConnection {
     }
     else if ("power_system".equals(name)) {
         boolean firstArgumentValid = systemMap.containsKey(args[0]);
-        boolean secondArgumentValid = args[1].equals("on") || args[1].equals("off") ||
-            args[1].equals("reboot");
+            boolean secondArgumentValid = args[1].equals("on") || args[1].equals("off") ||
+                args[1].equals("reboot") || args[1].equals("status");
         boolean thirdArgumentValid = args[2].equals(token);
         if (firstArgumentValid && secondArgumentValid && thirdArgumentValid) {
             latestPowerCommand = name + " " + args[1] + " " +
                     systemMap.get(args[0]).get("uid");
-            return 0;
+            return args[1].equals("status") ? true : 0;
         }
         return 1;
     }
