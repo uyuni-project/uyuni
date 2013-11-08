@@ -121,7 +121,6 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
         expectedOptions.put("spacewalk_hostname", config.getHostname());
         expectedOptions.put("spacewalk_activationkey", activationKeyToken);
         expectedOptions.put("ROOTFS_FSCK", "0");
-        expectedOptions.put("spacewalk-finally", "shutdown");
         assertEquals(expectedOptions, newProfile.get("kopts"));
 
         criteria.put("name", SystemRecord.BOOTSTRAP_NAME);
