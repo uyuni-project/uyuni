@@ -27,7 +27,8 @@ __rhnexport__ = ['update',
                  'remove',
                  'refresh_list',
                  'runTransaction',
-                 'verify']
+                 'verify',
+                 'setLocks']
 
 _query_action_verify_packages = rhnSQL.Statement("""
   select distinct
@@ -113,6 +114,52 @@ def update(serverId, actionId, dry_run=0):
     tmppackages = h.fetchall_dict()
     return handle_action(serverId, actionId, tmppackages, dry_run)
 
+_query_action_setLocks = rhnSQL.Statement("""
+  SELECT DISTINCT
+    pn.name AS name,
+    pe.version AS version,
+    pe.releASe AS releASe,
+    pe.epoch AS epoch,
+    pa.label AS arch
+  FROM rhnActionPackage ap
+    JOIN rhnLockedPackages lp
+      ON ap.name_id = lp.name_id AND
+         ap.evr_id  = lp.evr_id AND
+         ap.package_arch_id = lp.arch_id
+    LEFT JOIN rhnPackageArch pa
+      ON ap.package_arch_id = pa.id,
+         rhnPackageName pn,
+         rhnPackageEVR pe
+    WHERE
+      ap.action_id = :actionid AND
+      ap.evr_id    = pe.id AND
+      ap.name_id   = pn.id AND
+      lp.server_id = :serverid AND
+      lp.pending IN (NULL, 'L')
+""")
+def setLocks(serverId, actionId, dry_run=0):
+    log_debug(3, serverId, actionId, dry_run)
+
+    client_caps = rhnCapability.get_client_capabilities()
+    log_debug(3,"Client Capabilities", client_caps)
+    multiarch = 0
+    if not client_caps or not client_caps.has_key('packages.setLocks'):
+        raise InvalidAction("Client is not capable of locking packages.")
+
+    h = rhnSQL.prepare(_query_action_setLocks)
+    h.execute(actionid=actionId,serverid=serverId)
+    tmppackages = h.fetchall_dict() or {}
+
+    packages = []
+
+    for package in tmppackages:
+        packages.append([package['name'],
+                         package['version'],
+                         package['release'],
+                         package['epoch'] or '',
+                         package['arch'] or ''])
+    log_debug(4, packages)
+    return packages
 
 def refresh_list(serverId, actionId, dry_run=0):
     """ Call the equivalent of up2date -p.
@@ -278,4 +325,3 @@ left join rhnPackageArch pa
         and ap.evr_id is null
         and sp.server_id = :serverid
         and (sp.package_arch_id = ap.package_arch_id or sp.package_arch_id is null)"""
-
