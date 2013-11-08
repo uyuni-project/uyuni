@@ -259,7 +259,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         verifyNoActionErrors();
-        assertEquals("power_system on " + server.getCobblerId(),
+        assertEquals("power_system status " + server.getCobblerId(),
             MockConnection.getLatestPowerCommand());
     }
 
@@ -284,7 +284,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         verifyNoActionErrors();
-        assertEquals("power_system off " + server.getCobblerId(),
+        assertEquals("power_system status " + server.getCobblerId(),
             MockConnection.getLatestPowerCommand());
     }
 
@@ -309,7 +309,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         verifyNoActionErrors();
-        assertEquals("power_system reboot " + server.getCobblerId(),
+        assertEquals("power_system status " + server.getCobblerId(),
             MockConnection.getLatestPowerCommand());
     }
 }
