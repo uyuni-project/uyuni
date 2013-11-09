@@ -102,6 +102,7 @@ Requires: tomcat6-lib
 Requires: tomcat6-servlet-2.5-api
 # SUSE = 1.2 and Tomcat 6
 %if 0%{?suse_version}
+Requires: pxe-default-image
 Requires: struts >= 1.2.9
 %else
 Requires: struts >= 1.3.0
