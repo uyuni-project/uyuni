@@ -18,7 +18,7 @@ Feature: Test Powermanagement
      When I enter "192.168.254.254" as "powerAddress"
       And I enter "admin" as "powerUsername"
       And I enter "qwertz" as "powerPassword"
-      And I click in "Save"
+      And I click on "Save"
      Then I should see a "Settings saved" text
       And the cobbler report contains "Power Management Address       : 192.168.254.254"
       And the cobbler report contains "Power Management Password      : qwertz"
