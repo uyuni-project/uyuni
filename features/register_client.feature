@@ -17,7 +17,7 @@ Feature: Register a client
      When I follow "Systems"
       And I follow this client link
       And I follow "Provisioning"
-      And I click on "Create Cobbler System Record"
+      And I click on "Create PXE installation configuration"
       And I click on "Continue"
      Then file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks="
 
