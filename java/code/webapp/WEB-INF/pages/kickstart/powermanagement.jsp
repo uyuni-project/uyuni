@@ -20,18 +20,6 @@
     <bean:message key="kickstart.powermanagement.jsp.heading" />
   </h2>
 
-  <c:choose>
-    <c:when test="${powerStatus eq true}">
-      <bean:message key="kickstart.powermanagement.jsp.currentPowerStatusOn" />
-    </c:when>
-    <c:when test="${powerStatus eq false}">
-      <bean:message key="kickstart.powermanagement.jsp.currentPowerStatusOff" />
-    </c:when>
-    <c:otherwise>
-      <bean:message key="kickstart.powermanagement.jsp.currentPowerStatusUnknown" />
-    </c:otherwise>
-  </c:choose>
-
   <c:if test="${fn:length(types) >= 1}">
     <html:form action="/systems/details/kickstart/PowerManagement.do?sid=${sid}">
 
@@ -116,6 +104,26 @@
                 <html:text property="powerId" name="powerId" value="${powerId}" />
               </td>
             </tr>
+            <tr>
+              <th>
+                <label for="powerStatus">
+                  <bean:message key="kickstart.powermanagement.jsp.power_status" />
+                </label>
+              </th>
+              <td>
+                <c:choose>
+                  <c:when test="${powerStatusOn eq true}">
+                    <bean:message key="kickstart.powermanagement.jsp.on" />
+                  </c:when>
+                  <c:when test="${powerStatusOn eq false}">
+                    <bean:message key="kickstart.powermanagement.jsp.off" />
+                  </c:when>
+                  <c:otherwise>
+                    <bean:message key="kickstart.powermanagement.jsp.unknown" />
+                  </c:otherwise>
+                </c:choose>
+              </td>
+            </tr>
           </table>
         </div>
       </div>
@@ -133,6 +141,9 @@
       </button>
       <button type="submit" name="powerAdditionalAction" value="reboot">
         <bean:message key="kickstart.powermanagement.jsp.savereboot" />
+      </button>
+      <button type="submit" name="powerAdditionalAction" value="getStatus">
+        <bean:message key="kickstart.powermanagement.jsp.save_get_status" />
       </button>
     </html:form>
   </c:if>

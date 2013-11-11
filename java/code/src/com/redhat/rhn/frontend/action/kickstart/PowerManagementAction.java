@@ -14,14 +14,12 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerRebootCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
-import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 import org.cobbler.XmlRpcException;
 
@@ -61,7 +59,7 @@ public class PowerManagementAction extends RhnAction {
     public static final String POWER_ID = "powerId";
 
     /** Attribute name. */
-    public static final String POWER_STATUS = "powerStatus";
+    public static final String POWER_STATUS_ON = "powerStatusOn";
 
     /** Attribute name. */
     public static final String POWER_ADDITIONAL_ACTION = "powerAdditionalAction";
@@ -74,6 +72,9 @@ public class PowerManagementAction extends RhnAction {
 
     /** Possible attribute value for POWER_ADDITIONAL_ACTION. */
     public static final String REBOOT = "reboot";
+
+    /** Possible attribute value for POWER_ADDITIONAL_ACTION. */
+    public static final String GET_STATUS = "getStatus";
 
     /**
      * Runs this action.
@@ -125,6 +126,18 @@ public class PowerManagementAction extends RhnAction {
                         addMessage(request, "kickstart.powermanagement.rebooted");
                     }
                 }
+                if (GET_STATUS.equals(form.getString(POWER_ADDITIONAL_ACTION))) {
+                    try {
+                        SystemRecord record = getSystemRecord(user, server);
+                        request.setAttribute(POWER_STATUS_ON, record.getPowerStatus());
+                    }
+                    catch (XmlRpcException e) {
+                        log.warn("Could not get power status from Cobbler for system " +
+                            server.getId());
+                        addMessage(request,
+                            "kickstart.powermanagement.jsp.cannotGetPowerStatus");
+                    }
+                }
             }
 
             if (error != null) {
@@ -167,9 +180,7 @@ public class PowerManagementAction extends RhnAction {
             getStrutsDelegate().saveMessages(request, errors);
         }
         else {
-            CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
-            SystemRecord record = SystemRecord
-                .lookupById(connection, server.getCobblerId());
+            SystemRecord record = getSystemRecord(user, server);
 
             if (record == null) {
                 request.setAttribute(POWER_TYPE, types.get(0));
@@ -180,22 +191,18 @@ public class PowerManagementAction extends RhnAction {
                 request.setAttribute(POWER_USERNAME, record.getPowerUsername());
                 request.setAttribute(POWER_PASSWORD, record.getPowerPassword());
                 request.setAttribute(POWER_ID, record.getPowerId());
-
-                Boolean powerStatus = null;
-
-                try {
-                    if (StringUtils.isNotBlank(record.getPowerUsername()) &&
-                        StringUtils.isNotBlank(record.getPowerAddress())) {
-                        powerStatus = record.getPowerStatus();
-                    }
-                }
-                catch (XmlRpcException e) {
-                    log.warn("Could not get power status from Cobbler for system " +
-                        server.getId());
-                }
-
-                request.setAttribute(POWER_STATUS, powerStatus);
             }
         }
+    }
+
+    /**
+     * Return the Cobbler system record corresponding to the system
+     * @param user current user
+     * @param server server to look up
+     * @return a Cobbler system record
+     */
+    private SystemRecord getSystemRecord(User user, Server server) {
+        return SystemRecord.lookupById(
+            CobblerXMLRPCHelper.getConnection(user), server.getCobblerId());
     }
 }
