@@ -18,6 +18,7 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import org.apache.log4j.Logger;
@@ -90,6 +91,6 @@ public class CobblerDisableBootstrapCommand extends CobblerCommand {
         }
         log.debug("Existing activation keys removed");
 
-        return null;
+        return new CobblerSyncCommand(user).store();
     }
 }

@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import org.apache.log4j.Logger;
 import org.cobbler.CobblerConnection;
@@ -141,6 +142,6 @@ public class CobblerEnableBootstrapCommand extends CobblerCommand {
         activationKey.addEntitlement(ServerConstants.getServerGroupTypeBootstrapEntitled());
         log.debug("Entitlement added");
 
-        return null;
+        return new CobblerSyncCommand(user).store();
     }
 }
