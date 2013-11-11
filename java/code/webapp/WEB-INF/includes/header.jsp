@@ -11,11 +11,8 @@
 
 <div class="spacewalk-header-container">
   <div id="logo" class="spacewalk-logo">
-    <a href="<bean:message key='layout.jsp.vendor.website'/>" title="<bean:message key='layout.jsp.vendor.title'/>">
-      <img src="/img/logo_vendor.png" alt="<bean:message key='layout.jsp.vendor.name'/>" id="rhLogo" />
-    </a>
-    <a href="/" title="<bean:message key="layout.jsp.productname"/> homepage">
-      <img src="/img/logo_product.png" alt="<bean:message key='layout.jsp.productname'/>" id="rhnLogo" accesskey="2"/>
+    <a href="<bean:message key='layout.jsp.vendor.website'/>" title="SUSE Manager">
+      <img src="/img/susemanager/logo-header.png" alt="SUSE Manager" id="rhLogo" />
     </a>
   </div>
   <div class="spacewalk-header-links">

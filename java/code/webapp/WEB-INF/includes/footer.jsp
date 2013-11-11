@@ -12,5 +12,5 @@
   </c:if>
 </div>
 <div>
-  <img src="/img/logo_vendor.png" />
+  <img src="/img/susemanager/logo-footer.png" />
 </div>
