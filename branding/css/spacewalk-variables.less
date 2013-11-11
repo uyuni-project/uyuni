@@ -1,6 +1,7 @@
 /* Main font size */
 @font-size-base: 13px;
 
+//COLOURS
 /* Bootstrap color variables overwrited */
 @gray-darker:            lighten(#000, 13.5%); // #222
 @gray-dark:              lighten(#000, 25%);   // #333
@@ -8,24 +9,60 @@
 @gray-light:             lighten(#000, 80%);   // #999
 @gray-lighter:           lighten(#000, 95%); // #eee
 
-@spacewalk-blue:	           #00aad4;
+/* Special colours for Spacewalk */
+// Colours for SUMa only
+@susemanager-green:      #7ac142;
 
-@state-success-text:    #7ac142;
-@state-info-text:       #4ea1ee;
-@state-warning-text:    #ffab47;
-@state-danger-text:     #a81a1a;
+/* Main tags colours */
+@spacewalk-background:   url('../../img/susemanager/bg.png') #f7f7f7;
+@spacewalk-header:       #383c3e;
+@spacewalk-footer:       url('../../img/susemanager/footer-bg.png') #63a625;
+@spacewalk-aside:        #232526;
+
+/* Main colour */
+@spacewalk-blue:	     @susemanager-green;
+
+// Colours for the menu in the first column on the left:
+@spacewalk-aside-border: darken(@spacewalk-aside, 10%);
+@spacewalk-aside-menu-hyperlink: #fff;
+@spacewalk-aside-menu-hyperlink-hover: @susemanager-green;
+
+@state-success-text:     #7ac142;
+@state-info-text:        #4ea1ee;
+@state-warning-text:     #ffab47;
+@state-danger-text:      #a81a1a;
+
+/* Colours for the three different menus alocated in the header at the top-right corner */
+@spacewalk-header-upper-menu-first:              #000;
+@spacewalk-header-upper-menu-first-border:       #111;
+@spacewalk-header-upper-menu-second:             #333;
+@spacewalk-header-upper-menu-second-border:      #222;
+@spacewalk-header-upper-menu-third:              url('../../img/susemanager/user-menu-bg.png');
+@spacewalk-header-upper-menu-third-border:       #555;
+@spacewalk-header-upper-menu-text-icons:         #d7d7d7;
+
+/* Footer colours */
+@spacewalk-footer-text:       #ffffff;
+@spacewalk-footer-links:      #ffffff;
+@spacewalk-footer-hover:      #27460b;
 
 /* aside menu colors */
-@spacewalk-list-menu:    @gray-lighter;
-@spacewalk-list-menu-active:    lighten(@spacewalk-list-menu, 4%);
+@spacewalk-list-menu:    @spacewalk-aside;
+@spacewalk-list-menu-active:    #434343;
 @spacewalk-list-menu-hover: lighten(@spacewalk-list-menu, 2%);
-@spacewalk-list-first-submenu:    darken(@spacewalk-list-menu, 8%);
+@spacewalk-list-first-submenu:    darken(@spacewalk-list-menu, 5%);
 @spacewalk-list-first-submenu-active:    lighten(@spacewalk-list-first-submenu, 6%);
-@spacewalk-list-first-submenu-hover:    lighten(@spacewalk-list-first-submenu, 2%);//#f3f3f3
+@spacewalk-list-first-submenu-hover:    lighten(@spacewalk-list-first-submenu, 2%);
+@spacewalk-list-first-submenu-last-line:    darken(@spacewalk-list-first-submenu, 8%);
 @spacewalk-list-second-submenu:    darken(@spacewalk-list-first-submenu, 5%);
 @spacewalk-list-second-submenu-active:    lighten(@spacewalk-list-second-submenu, 6%);
 @spacewalk-list-second-submenu-hover:    lighten(@spacewalk-list-second-submenu, 2%);
+@spacewalk-list-second-submenu-last-line:    darken(@spacewalk-list-second-submenu, 8%);
 
-/* Roboto variable: font variable to be applied in different text elements*/
+/* Icons legend */
+@spacewalk-icon-legend:   lighten(@spacewalk-aside, 10%);
+@spacewalk-icon-legend-text: #fff;
+
+/* Roboto variable: font variable to be applied in different text elements */
 @roboto-light: 'Roboto Light', sans-serif;
 @roboto-bold: 'Roboto Bold', sans-serif;

@@ -74,12 +74,9 @@
 	}
 	header {
 		.spacewalk-logo {
-			padding-top: .2em;
+			padding-top: .3em;
 			img#rhLogo {
-				width: 33px;
-			}
-			img#rhnLogo {
-				height: 34px
+				height: 28px;
 			}
 		}
 	}
@@ -141,8 +138,8 @@
 		border: 1px solid #444;
 		padding: 0 .4em;
 		margin: 5px 15px;
-		color: #555;
-		background: #000;
+		color: #777;
+		background: @spacewalk-header;
 		.border-rounded(4px; 4px; 4px; 4px);
 		&:before{
 			content: "\f0c9";
@@ -154,10 +151,16 @@
 		}
 	}
 }
+.login-form-100 {
+	.login-page {
+		width: 100%
+	}
+}
 //classes that will take effect on tablets and mobiles screens
 @media (max-width: 1061px) {
 	.button-main-menu-vissible;
 	.menu-toggle-hide;
+	.aside-horizontal;
 }
 @media (max-width: @screen-tablet) {
 	.sidenav-horizontal;
@@ -172,6 +175,7 @@
 @media (max-width: @screen-phone) {
 	.logoLetter;
 	.buttons-full-size;
+	.login-form-100;
 }
 
 
