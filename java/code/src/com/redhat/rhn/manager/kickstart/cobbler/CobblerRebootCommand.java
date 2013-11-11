@@ -71,6 +71,6 @@ public class CobblerRebootCommand extends CobblerCommand {
                 }
             }
         }
-        return new ValidatorError("kickstart.powermanagement.notconfigured");
+        return new ValidatorError("kickstart.powermanagement.not_configured");
     }
 }
