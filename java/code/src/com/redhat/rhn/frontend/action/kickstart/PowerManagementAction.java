@@ -135,7 +135,7 @@ public class PowerManagementAction extends RhnAction {
                         log.warn("Could not get power status from Cobbler for system " +
                             server.getId());
                         addMessage(request,
-                            "kickstart.powermanagement.jsp.cannotGetPowerStatus");
+                            "kickstart.powermanagement.jsp.power_status_failed");
                     }
                 }
             }
@@ -175,7 +175,7 @@ public class PowerManagementAction extends RhnAction {
 
         if (types.size() == 0) {
             ActionErrors errors = new ActionErrors();
-            getStrutsDelegate().addError(errors, "kickstart.powermanagement.notypes",
+            getStrutsDelegate().addError(errors, "kickstart.powermanagement.jsp.no_types",
                 ConfigDefaults.POWER_MANAGEMENT_TYPES);
             getStrutsDelegate().saveMessages(request, errors);
         }

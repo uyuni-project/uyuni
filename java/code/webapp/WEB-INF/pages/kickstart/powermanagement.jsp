@@ -58,7 +58,7 @@
             <tr>
               <th>
                 <label for="powerAddress">
-                  <bean:message key="kickstart.powermanagement.jsp.poweraddress" />
+                  <bean:message key="kickstart.powermanagement.jsp.power_address" />
                   <rhn:required-field />
                 </label>
               </th>
@@ -71,7 +71,7 @@
             <tr>
               <th>
                 <label for="powerUsername">
-                  <bean:message key="kickstart.powermanagement.jsp.powerusername" />
+                  <bean:message key="kickstart.powermanagement.jsp.power_username" />
                   <rhn:required-field />
                 </label>
               </th>
@@ -84,7 +84,7 @@
             <tr>
               <th>
                 <label for="powerPassword">
-                  <bean:message key="kickstart.powermanagement.jsp.powerpassword" />
+                  <bean:message key="kickstart.powermanagement.jsp.power_password" />
                   <rhn:required-field />
                 </label>
               </th>
@@ -97,7 +97,7 @@
             <tr>
               <th>
                 <label for="powerId">
-                  <bean:message key="kickstart.powermanagement.jsp.powerid" />
+                  <bean:message key="kickstart.powermanagement.jsp.power_id" />
                 </label>
               </th>
               <td>
@@ -134,13 +134,13 @@
         <bean:message key="kickstart.powermanagement.jsp.save" />
       </button>
       <button type="submit" name="powerAdditionalAction" value="powerOn">
-        <bean:message key="kickstart.powermanagement.jsp.savepoweron" />
+        <bean:message key="kickstart.powermanagement.jsp.save_power_on" />
       </button>
       <button type="submit" name="powerAdditionalAction" value="powerOff">
-        <bean:message key="kickstart.powermanagement.jsp.savepoweroff" />
+        <bean:message key="kickstart.powermanagement.jsp.save_power_off" />
       </button>
       <button type="submit" name="powerAdditionalAction" value="reboot">
-        <bean:message key="kickstart.powermanagement.jsp.savereboot" />
+        <bean:message key="kickstart.powermanagement.jsp.save_reboot" />
       </button>
       <button type="submit" name="powerAdditionalAction" value="getStatus">
         <bean:message key="kickstart.powermanagement.jsp.save_get_status" />
