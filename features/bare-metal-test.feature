@@ -52,7 +52,7 @@ Feature: Test Bare-metal discovery
          Then I should see a "Kickstart" link in element "contentnav-row2"
           And I should not see a "Snapshots" link in element "contentnav-row2"
           And I should not see a "Snapshot Tags" link in element "contentnav-row2"
-          And I should see a "Powermanagement" link in element "contentnav-row2"
+          And I should see a "Power Management" link in element "contentnav-row2"
           And I should see a "Schedule" link in element "content-nav"
 
     Scenario: Delete the system profile
