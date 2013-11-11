@@ -50,6 +50,7 @@ end
 When /^file "([^"]*)" contains "([^"]*)"$/ do |arg1, arg2|
     $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST grep "#{arg2}" "#{arg1}" 2>&1`
     if ! $?.success?
+        $stderr.write("-----\n#{$sshout}\n-----\n")
         raise "#{arg2} not found in File #{arg1}"
     end
 end
@@ -113,14 +114,11 @@ When /^I copy to server "([^"]*)"$/ do |arg1|
 end
 
 Then /^the pxe-default-profile should be enabled$/ do
-    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST grep "ONTIMEOUT pxe-default-profile" /srv/tftpboot/pxelinux.cfg/default 2>&1`
-    if ! $?.success?
-        raise "pxe-default-profile not enabled: #{$!}: #{$sshout}"
-    end
+    step "file \"/srv/tftpboot/pxelinux.cfg/default\" contains \"ONTIMEOUT\\ pxe-default-profile\""
 end
 
 Then /^the pxe-default-profile should be disabled$/ do
-    step "file \"/srv/tftpboot/pxelinux.cfg/default\" contains \"ONTIMEOUT local\""
+    step "file \"/srv/tftpboot/pxelinux.cfg/default\" contains \"ONTIMEOUT\\ local\""
 end
 
 Then /^the cobbler report contains "([^"]*)"$/ do |arg1|
