@@ -15339,31 +15339,31 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.cannotGetPowerStatus">
+      <trans-unit id="kickstart.powermanagement.jsp.power_status_failed">
         <source>An error prevented retrieving the system's power status. Please check parameters and Cobbler log.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.poweraddress">
+      <trans-unit id="kickstart.powermanagement.jsp.power_address">
         <source>Network address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.powerusername">
+      <trans-unit id="kickstart.powermanagement.jsp.power_username">
         <source>Username</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.powerpassword">
+      <trans-unit id="kickstart.powermanagement.jsp.power_password">
         <source>Password</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.powerid">
+      <trans-unit id="kickstart.powermanagement.jsp.power_id">
         <source>System identifier</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -15381,19 +15381,19 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.savepoweron">
+      <trans-unit id="kickstart.powermanagement.jsp.save_power_on">
         <source>Save and Power On</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.savepoweroff">
+      <trans-unit id="kickstart.powermanagement.jsp.save_power_off">
         <source>Save and Power Off</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.savereboot">
+      <trans-unit id="kickstart.powermanagement.jsp.save_reboot">
         <source>Save and Reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
@@ -15687,7 +15687,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.powermanagement.notypes">
+      <trans-unit id="kickstart.powermanagement.jsp.no_types">
         <source>No Power Management Types configured, please check the "{0}" setting in rhn.conf.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
