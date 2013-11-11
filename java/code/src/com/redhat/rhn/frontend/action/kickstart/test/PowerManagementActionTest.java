@@ -259,7 +259,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         verifyNoActionErrors();
-        assertEquals("power_system status " + server.getCobblerId(),
+        assertEquals("power_system on " + server.getCobblerId(),
             MockConnection.getLatestPowerCommand());
     }
 
@@ -284,7 +284,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         verifyNoActionErrors();
-        assertEquals("power_system status " + server.getCobblerId(),
+        assertEquals("power_system off " + server.getCobblerId(),
             MockConnection.getLatestPowerCommand());
     }
 
@@ -309,6 +309,32 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         verifyNoActionErrors();
+        assertEquals("power_system reboot " + server.getCobblerId(),
+            MockConnection.getLatestPowerCommand());
+    }
+
+    /**
+     * Tests retrieving the status of a system.
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testGetStatus() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user, true);
+
+        addRequestParameter(RequestContext.SID, server.getId().toString());
+        request.setMethod(HttpServletRequestSimulator.POST);
+        request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
+        request.addParameter(PowerManagementAction.POWER_ADDITIONAL_ACTION,
+            PowerManagementAction.GET_STATUS);
+        request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
+        request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
+        request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
+        request.addParameter(PowerManagementAction.POWER_PASSWORD, EXPECTED_PASSWORD);
+        request.addParameter(PowerManagementAction.POWER_ID, EXPECTED_ID);
+        actionPerform();
+
+        verifyNoActionErrors();
+        assertEquals(true, request.getAttribute(PowerManagementAction.POWER_STATUS_ON));
         assertEquals("power_system status " + server.getCobblerId(),
             MockConnection.getLatestPowerCommand());
     }
