@@ -43,7 +43,7 @@ public class CobblerRebootCommandTest extends BaseTestCaseWithUser {
 
         // test powering on without configuring first
         ValidatorError error = new CobblerRebootCommand(user, server).store();
-        assertEquals(error.getKey(), "kickstart.powermanagement.notconfigured");
+        assertEquals(error.getKey(), "kickstart.powermanagement.not_configured");
 
         // test creating a new cobbler system profile first
         assertNull(new CobblerPowerSettingsUpdateCommand(user, server, "ipmi",
