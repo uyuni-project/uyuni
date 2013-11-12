@@ -26,7 +26,7 @@ CREATE TABLE rhnActionPackage
     parameter        VARCHAR2(128)
                          DEFAULT ('upgrade') NOT NULL
                          CONSTRAINT rhn_act_p_param_ck
-                             CHECK (parameter IN ('upgrade', 'install', 'remove', 'downgrade')),
+                             CHECK (parameter IN ('upgrade', 'install', 'remove', 'downgrade', 'lock')),
     name_id          NUMBER NOT NULL
                          CONSTRAINT rhn_act_p_name_fk
                              REFERENCES rhnPackageName (id),
