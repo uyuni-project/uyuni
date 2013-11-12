@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 b21e4646801ce0928d0df15526a765434e1ff8a6
+-- oracle equivalent source sha1 3e207b5203c8b8c0b51cd8c1d88e1d2f6b34e0c7
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -795,8 +795,8 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
       delete from rhnServerNeededCache
         where server_id = server_id_in;
       insert into rhnServerNeededCache
-             (server_id, errata_id, package_id)
-        (select distinct sp.server_id, x.errata_id, p.id
+             (server_id, errata_id, package_id, channel_id)
+        (select distinct sp.server_id, x.errata_id, p.id, x.channel_id
            FROM (SELECT sp_sp.server_id, sp_sp.name_id,
 		        sp_sp.package_arch_id, max(sp_pe.evr) AS max_evr
                    FROM rhnServerPackage sp_sp
