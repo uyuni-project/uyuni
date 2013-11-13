@@ -74,6 +74,9 @@
         <rhn-tab-url>/rhn/systems/details/packages/VerifyPackages.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/VerifyConfirm.do</rhn-tab-url>
       </rhn-tab>
+      <rhn-tab name="pkg.lock.menu" acl="system_feature(ftr_package_updates)" on-click="Sniglets::Lists->navi_empty_set" node-id="system_installable_package_list">
+        <rhn-tab-url>/rhn/systems/details/packages/LockPackages.do</rhn-tab-url>          
+      </rhn-tab>
       <rhn-tab name="Profiles" acl="system_feature(ftr_profile_compare)" on-click="Sniglets::Lists->navi_empty_set" node-id="packages_for_system_sync">
         <rhn-tab-url>/rhn/systems/details/packages/profiles/ShowProfiles.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/profiles/Create.do</rhn-tab-url>
