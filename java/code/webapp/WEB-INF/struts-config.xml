@@ -3197,6 +3197,15 @@
                  path="/systems/details/packages/InstallConfirm.do"
                  redirect="true" />
     </action>
+    <action path="/systems/details/packages/LockPackages"
+        scope="request"
+        input="/WEB-INF/pages/systems/details/packages/lockpkgs.jsp"
+        type="com.redhat.rhn.frontend.action.rhnpackage.LockPackageAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/details/packages/lockpkgs.jsp"/>
+    </action>
 
     <action path="/systems/details/packages/InstallConfirm"
         scope="request"
