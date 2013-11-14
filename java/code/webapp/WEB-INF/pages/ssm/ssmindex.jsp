@@ -80,7 +80,7 @@
   </tr>
 </rhn:require>
 
-<rhn:require acl="org_entitlement(rhn_provisioning); no_bootstrap_systems_in_set()">
+<rhn:require acl="org_entitlement(rhn_provisioning);">
   <tr>
     <td><img src="/img/rhn-kickstart_profile.gif" alt="<bean:message key="ssm.overview.provisioning"/>" /></td>
     <th><b><bean:message key="ssm.overview.provisioning"/></b></th>
