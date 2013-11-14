@@ -31,16 +31,18 @@
       <div class="search-choices-group">
         <table class="details">
           <tr>
-            <th><label for="cveIdentifier"><bean:message
-                  key="cveaudit.jsp.cvenumber" /></label></th>
-            <td><html:text property="cveIdentifier"
-                name="cveIdentifier" styleId="searchfor"
-                value="${cveIdentifier}" maxlength="13" /> <html:submit>
-                <bean:message key="cveaudit.jsp.cvenumber.auditsystem" />
-              </html:submit> <br /> <span class="small-text"> <strong><bean:message
-                    key="cveaudit.jsp.examples" /></strong> <bean:message
-                  key="cveaudit.jsp.example.list" />
-            </span></td>
+            <th>
+              <label for="cveIdentifierId"><bean:message key="cveaudit.jsp.cvenumber" /></label>
+            </th>
+            <td>
+              <label for="cveIdentifierId">CVE-</label>
+              <html:select property="cveIdentifierYear" styleId="cveIdentifierYear" value="${cveIdentifierYear}">
+                <html:options collection="years" property="value" />
+              </html:select>
+              <label for="cveIdentifierId">-</label>
+              <html:text property="cveIdentifierId" styleId="cveIdentifierId" value="${cveIdentifierId}" maxlength="10" size="10" />
+              <html:submit><bean:message key="cveaudit.jsp.cvenumber.auditsystem" /></html:submit><br />
+            </td>
           </tr>
 
           <tr>
