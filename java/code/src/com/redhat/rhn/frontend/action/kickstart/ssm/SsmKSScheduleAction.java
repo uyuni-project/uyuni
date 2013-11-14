@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.ssm;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -85,15 +85,17 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
         }
 
         if (context.wasDispatched(CREATE_RECORDS_BUTTON)) {
-            int result = createProfiles(request, form, context, user).size();
+            ScheduleActionResult result = createProfiles(request, form, context, user);
 
-            saveSuccessMessage(context, "ssm.provision.records.created", result);
+            saveSuccessMessage(context, "ssm.provision.records.created",
+                result);
             return mapping.findForward("success");
         }
         if (context.wasDispatched("kickstart.schedule.button2.jsp")) {
-            int result = schedule(request, form, context).size();
+            ScheduleActionResult result = schedule(request, form, context);
 
-            saveSuccessMessage(context, "ssm.provision.scheduled", result);
+            saveSuccessMessage(context, "ssm.provision.scheduled",
+                result);
             return mapping.findForward("success");
         }
 
@@ -112,11 +114,25 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
      * Saves a success message in the Struts delegate.
      * @param context current request context
      * @param message message to save
-     * @param count number of saved servers
+     * @param result a result object
      */
-    private void saveSuccessMessage(RequestContext context, String message, int count) {
+    private void saveSuccessMessage(RequestContext context, String message,
+        ScheduleActionResult result) {
+        String errorString = "";
+        List<ValidatorError> errors = result.getErrors();
+        if (!errors.isEmpty()) {
+            LocalizationService ls = LocalizationService.getInstance();
+            errorString = " " +
+                ls.getPlainText("ssm.provision.errors", errors.size()) +
+                "<ul>";
+            for (ValidatorError error : errors) {
+                errorString += "<li>" + error.getLocalizedMessage() + "</li>";
+            }
+            errorString += "</ul>";
+        }
+
         ActionMessages msg = new ActionMessages();
-        String[] params = {count + ""};
+        String[] params = {result.getSuccessCount() + "", errorString};
         msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(message, params));
         getStrutsDelegate().saveMessages(context.getRequest(), msg);
     }
@@ -127,12 +143,12 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
      * @param form the form
      * @param context the context
      * @param user the currently logged user
-     * @return the list of successfully processed servers
+     * @return a result
      */
-    private List<Server> createProfiles(HttpServletRequest request, DynaActionForm form,
-        RequestContext context, User user) {
+    private ScheduleActionResult createProfiles(HttpServletRequest request,
+        DynaActionForm form, RequestContext context, User user) {
 
-        List<Server> result = new LinkedList<Server>();
+        int successCount = 0;
         List<ValidatorError> errors = new LinkedList<ValidatorError>();
 
         List<SystemOverview> systemOverviews = KickstartManager.getInstance()
@@ -159,7 +175,7 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
                         server, profile.getName(), data);
                     ValidatorError error = command.store();
                     if (error == null) {
-                        result.add(server);
+                        successCount += 1;
                     }
                     else {
                         errors.add(error);
@@ -177,12 +193,13 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
             }
         }
 
-        return result;
+        return new ScheduleActionResult(successCount, errors);
     }
 
     /**
      * Returns the Cobbler ID for a profile applicable to the specified server
-     * (either selected from list or by IP address)
+     * (either selected from list or by IP address).
+     *
      * @param request the current request
      * @param server the server
      * @return a Cobbler ID or null
@@ -201,8 +218,8 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
         }
     }
 
-    private List<Action> schedule(HttpServletRequest request, ActionForm form,
-                                            RequestContext context) {
+    private ScheduleActionResult schedule(HttpServletRequest request, ActionForm form,
+        RequestContext context) {
         SSMScheduleCommand com  = null;
         User user = context.getLoggedInUser();
 
@@ -265,7 +282,7 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
                             dynaForm.getString(
                                     ScheduleKickstartWizardAction.NETWORK_INTERFACE));
         List<ValidatorError> errors = com.store();
-        return com.getScheduledActions();
+        return new ScheduleActionResult(com.getScheduledActions().size(), errors);
     }
 
 
