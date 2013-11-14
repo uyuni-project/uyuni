@@ -638,6 +638,12 @@ Please note that some manual configuration of these scripts may still be require
         <trans-unit id="ssm.kickstart.schedule.proxy.jsp.summary">
           <source>You may choose to use a @@PRODUCT_NAME@@ Proxy to access the files necessary for autoinstallation. The selected systems will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its autoinstallation has completed..</source>
         </trans-unit>
+        <trans-unit id="ssm.kickstart.schedule.create.records.button.jsp">
+          <source>Create PXE installation configuration</source>
+        </trans-unit>
+        <trans-unit id="kickstart.schedule.invalid.contact.method.jsp">
+          <source>System &lt;strong&gt;{0}&lt;/strong&gt; has an incompatible contact method.</source>
+        </trans-unit>
         <trans-unit id="ssm.kickstart.distro.cobbler-only.tooltip">
 		  <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
         </trans-unit>
@@ -1501,7 +1507,7 @@ available for this kickstart profile to function properly.
         <source>The Autoinstallable Distribution you have chosen to delete is in use.  Please delete or change the Distribution for Autoinstallation Profiles using this Distribution.</source>
       </trans-unit>
       <trans-unit id="kickstart.schedule.already.scheduled.jsp">
-        <source>System {0} has a pending autoinstallation scheduled.</source>
+        <source>System &lt;strong&gt;{0}&lt;/strong&gt; has a pending autoinstallation scheduled.</source>
       </trans-unit>
       <trans-unit id="sdc.details.edit.propertieschangedupdate">
         <source>System properties changed for &lt;strong&gt;{0}&lt;/strong&gt;. &lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Patch Update preference.</source>

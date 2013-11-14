@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.ssm;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -32,6 +32,7 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 import com.redhat.rhn.manager.kickstart.KickstartManager;
+import com.redhat.rhn.manager.kickstart.SSMCreateRecordCommand;
 import com.redhat.rhn.manager.kickstart.SSMScheduleCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.profile.ProfileManager;
@@ -60,6 +61,10 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
     private static final String SCHEDULE_TYPE_IP = "isIP";
     public static final String USE_IPV6_GATEWAY = "useIpv6Gateway";
 
+    /** A possible submit "dispatch" value */
+    public static final String CREATE_RECORDS_BUTTON =
+        "ssm.kickstart.schedule.create.records.button.jsp";
+
     private boolean isIP(HttpServletRequest request) {
         return Boolean.TRUE.equals(request.getAttribute(SCHEDULE_TYPE_IP));
     }
@@ -76,15 +81,18 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
             request.setAttribute(SCHEDULE_TYPE_IP, Boolean.TRUE);
         }
 
-        if (context.wasDispatched("kickstart.schedule.button2.jsp")) {
-            List list = schedule(request, form, context);
+        if (context.wasDispatched(CREATE_RECORDS_BUTTON)) {
+            ScheduleActionResult result = createProfiles(request, form, context, user);
 
-            ActionMessages msg = new ActionMessages();
-            String[] params = {list.size() + ""};
-            msg.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("ssm.provision.scheduled",
-                            params));
-            getStrutsDelegate().saveMessages(context.getRequest(), msg);
+            saveSuccessMessage(context, "ssm.provision.records.created",
+                result);
+            return mapping.findForward("success");
+        }
+        if (context.wasDispatched("kickstart.schedule.button2.jsp")) {
+            ScheduleActionResult result = schedule(request, form, context);
+
+            saveSuccessMessage(context, "ssm.provision.scheduled",
+                result);
             return mapping.findForward("success");
         }
 
@@ -99,9 +107,56 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
+    /**
+     * Saves a success message in the Struts delegate.
+     * @param context current request context
+     * @param message message to save
+     * @param result a result object
+     */
+    private void saveSuccessMessage(RequestContext context, String message,
+        ScheduleActionResult result) {
+        String errorString = "";
+        List<ValidatorError> errors = result.getErrors();
+        if (!errors.isEmpty()) {
+            LocalizationService ls = LocalizationService.getInstance();
+            errorString = " " +
+                ls.getPlainText("ssm.provision.errors", errors.size()) +
+                "<ul>";
+            for (ValidatorError error : errors) {
+                errorString += "<li>" + error.getLocalizedMessage() + "</li>";
+            }
+            errorString += "</ul>";
+        }
 
-    private List<Action> schedule(HttpServletRequest request, ActionForm form,
-                                            RequestContext context) {
+        ActionMessages msg = new ActionMessages();
+        String[] params = {result.getSuccessCount() + "", errorString};
+        msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(message, params));
+        getStrutsDelegate().saveMessages(context.getRequest(), msg);
+    }
+
+    /**
+     * Creates Cobbler profiles for systems in the set.
+     * @param request the request
+     * @param form the form
+     * @param context the context
+     * @param user the currently logged user
+     * @return a result
+     */
+    private ScheduleActionResult createProfiles(HttpServletRequest request,
+        DynaActionForm form, RequestContext context, User user) {
+
+        String selectedProfileId = ListTagHelper
+            .getRadioSelection(ListHelper.LIST, request);
+        SSMCreateRecordCommand command = new SSMCreateRecordCommand(user,
+            isIP(request) ? null : selectedProfileId);
+        List<ValidatorError> errors = command.store();
+
+        return new ScheduleActionResult(command.getSucceededServers().size(), errors);
+    }
+
+
+    private ScheduleActionResult schedule(HttpServletRequest request, ActionForm form,
+        RequestContext context) {
         SSMScheduleCommand com  = null;
         User user = context.getLoggedInUser();
 
@@ -164,7 +219,7 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
                             dynaForm.getString(
                                     ScheduleKickstartWizardAction.NETWORK_INTERFACE));
         List<ValidatorError> errors = com.store();
-        return com.getScheduledActions();
+        return new ScheduleActionResult(com.getScheduledActions().size(), errors);
     }
 
 

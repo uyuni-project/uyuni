@@ -99,7 +99,7 @@
 	  </rhn-tab>
 	</rhn-tab>
 
-        <rhn-tab name="Provisioning" acl="org_entitlement(rhn_provisioning); no_bootstrap_systems_in_set()" url="/rhn/systems/ssm/kickstart/KickstartableSystems.do">
+        <rhn-tab name="Provisioning" acl="org_entitlement(rhn_provisioning);" url="/rhn/systems/ssm/kickstart/KickstartableSystems.do">
           <rhn-tab name="Kickstart" url="/rhn/systems/ssm/kickstart/KickstartableSystems.do" >
 		<rhn-tab-url>/rhn/systems/ssm/kickstart/ScheduleByProfile.do</rhn-tab-url>
 		<rhn-tab-url>/rhn/systems/ssm/kickstart/ScheduleByIp.do</rhn-tab-url>
