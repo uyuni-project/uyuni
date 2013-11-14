@@ -638,6 +638,9 @@ Please note that some manual configuration of these scripts may still be require
         <trans-unit id="ssm.kickstart.schedule.proxy.jsp.summary">
           <source>You may choose to use a @@PRODUCT_NAME@@ Proxy to access the files necessary for autoinstallation. The selected systems will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its autoinstallation has completed..</source>
         </trans-unit>
+        <trans-unit id="ssm.kickstart.schedule.create.records.button.jsp">
+          <source>Create PXE installation configuration</source>
+        </trans-unit>
         <trans-unit id="ssm.kickstart.distro.cobbler-only.tooltip">
 		  <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
         </trans-unit>
