@@ -480,6 +480,7 @@ class apachePOST(apacheRequest):
         try:
             fd = self.input.decode(self.req)
         except IOError: # client timed out
+            log_error("IOError: client timed out?")
             return apache.HTTP_BAD_REQUEST
 
         # Read the data from the request
@@ -490,6 +491,7 @@ class apachePOST(apacheRequest):
         # In this case, we talk to a client (maybe through a proxy)
         # make sure we have something to decode
         if _body is None or len(_body) == 0:
+            log_error("Empty body in post request")
             return apache.HTTP_BAD_REQUEST
 
         # Decode the request; avoid logging crappy responses
