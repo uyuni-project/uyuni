@@ -96,6 +96,10 @@ public class SSMCreateRecordCommand {
         }
 
         Server server = SystemManager.lookupByIdAndUser(sid, user);
+        if (server.getContactMethod().getLabel().equals("ssh-push-tunnel")) {
+            return new ValidatorError("kickstart.schedule.invalid.contact.method.jsp",
+                server.getName());
+        }
 
         String cobblerId = selectedProfileId;
         if (cobblerId == null) {
