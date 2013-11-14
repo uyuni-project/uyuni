@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action.kickstart.ssm;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -33,11 +32,10 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
 import com.redhat.rhn.manager.kickstart.KickstartManager;
+import com.redhat.rhn.manager.kickstart.SSMCreateRecordCommand;
 import com.redhat.rhn.manager.kickstart.SSMScheduleCommand;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.profile.ProfileManager;
-import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
@@ -49,7 +47,6 @@ import org.apache.struts.action.DynaActionForm;
 import org.cobbler.Profile;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -148,75 +145,15 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
     private ScheduleActionResult createProfiles(HttpServletRequest request,
         DynaActionForm form, RequestContext context, User user) {
 
-        int successCount = 0;
-        List<ValidatorError> errors = new LinkedList<ValidatorError>();
+        String selectedProfileId = ListTagHelper
+            .getRadioSelection(ListHelper.LIST, request);
+        SSMCreateRecordCommand command = new SSMCreateRecordCommand(user,
+            isIP(request) ? null : selectedProfileId);
+        List<ValidatorError> errors = command.store();
 
-        List<SystemOverview> systemOverviews = KickstartManager.getInstance()
-            .kickstartableSystemsInSsm(user);
-
-        for (SystemOverview systemOverview : systemOverviews) {
-            Long sid = systemOverview.getId();
-
-            if (!ActionFactory.doesServerHaveKickstartScheduled(sid)) {
-                Server server = SystemManager.lookupByIdAndUser(sid, user);
-                String cobblerId = getApplicableCobblerId(request, server);
-
-                org.cobbler.Profile profile = null;
-                KickstartData data = null;
-                if (cobblerId != null) {
-                    profile = org.cobbler.Profile.lookupById(
-                        CobblerXMLRPCHelper.getConnection(user), cobblerId);
-                    data = KickstartFactory.lookupKickstartDataByCobblerIdAndOrg(
-                        user.getOrg(), cobblerId);
-                }
-
-                if (profile != null) {
-                    CobblerSystemCreateCommand command = new CobblerSystemCreateCommand(
-                        server, profile.getName(), data);
-                    ValidatorError error = command.store();
-                    if (error == null) {
-                        successCount += 1;
-                    }
-                    else {
-                        errors.add(error);
-
-                    }
-                }
-                else {
-                    errors.add(new ValidatorError("kickstart.schedule.no.profile.jsp",
-                        systemOverview.getName()));
-                }
-            }
-            else {
-                errors.add(new ValidatorError("kickstart.schedule.already.scheduled.jsp",
-                    systemOverview.getName()));
-            }
-        }
-
-        return new ScheduleActionResult(successCount, errors);
+        return new ScheduleActionResult(command.getSucceededServers().size(), errors);
     }
 
-    /**
-     * Returns the Cobbler ID for a profile applicable to the specified server
-     * (either selected from list or by IP address).
-     *
-     * @param request the current request
-     * @param server the server
-     * @return a Cobbler ID or null
-     */
-    public String getApplicableCobblerId(HttpServletRequest request, Server server) {
-        if (isIP(request)) {
-            KickstartData data = KickstartManager.getInstance()
-                .findProfileForServersNetwork(server);
-            if (data != null) {
-                return data.getCobblerId();
-            }
-            return null;
-        }
-        else {
-            return ListTagHelper.getRadioSelection(ListHelper.LIST, request);
-        }
-    }
 
     private ScheduleActionResult schedule(HttpServletRequest request, ActionForm form,
         RequestContext context) {
