@@ -14,9 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.audit.cve;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,8 +53,12 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
  * @version $Rev$
  */
 public class CVEAuditAction extends RhnAction {
-    /** Search field parameter name */
-    private static final String CVE_IDENTIFIER_PARAMETER = "cveIdentifier";
+    /** CVE prefix */
+    private static final String CVE_PREFIX = "CVE-";
+
+    /** Search field parameter names */
+    private static final String CVE_IDENTIFIER_YEAR_PARAMETER = "cveIdentifierYear";
+    private static final String CVE_IDENTIFIER_ID_PARAMETER = "cveIdentifierId";
 
     /** Set to true if the CVE number turns out to be unknown */
     private static final String CVE_IDENTIFIER_UNKNOWN = "cveIdentifierUnknown";
@@ -71,11 +78,13 @@ public class CVEAuditAction extends RhnAction {
         public List<CVEAuditSystem> getResult(RequestContext context) {
             log.debug("ResultLister called with context " + context.toString());
             HttpServletRequest request = context.getRequest();
-            String cveIdentifier = request.getParameter(CVE_IDENTIFIER_PARAMETER);
+            String cveIdentifierYear = request.getParameter(CVE_IDENTIFIER_YEAR_PARAMETER);
+            String cveIdentifierId = request.getParameter(CVE_IDENTIFIER_ID_PARAMETER);
             request.setAttribute(CVE_IDENTIFIER_UNKNOWN, false);
 
-            if (StringUtils.isNotBlank(cveIdentifier)) {
+            if (StringUtils.isNotBlank(cveIdentifierId)) {
                 try {
+                    String cveIdentifier = CVE_PREFIX + cveIdentifierYear + "-" + cveIdentifierId;
                     return runAudit(request, cveIdentifier);
                 }
                 catch (UnknownCVEIdentifierException e) {
@@ -97,8 +106,14 @@ public class CVEAuditAction extends RhnAction {
         DynaActionForm form = (DynaActionForm) formIn;
 
         // copy parameters in attributes for alphabar, paginator, sorter use
-        String cveIdentifier = request.getParameter(CVE_IDENTIFIER_PARAMETER);
-        request.setAttribute(CVE_IDENTIFIER_PARAMETER, cveIdentifier);
+        String cveIdentifierYear = request.getParameter(CVE_IDENTIFIER_YEAR_PARAMETER);
+        request.setAttribute(CVE_IDENTIFIER_YEAR_PARAMETER, cveIdentifierYear);
+        String cveIdentifierId = request.getParameter(CVE_IDENTIFIER_ID_PARAMETER);
+        request.setAttribute(CVE_IDENTIFIER_ID_PARAMETER, cveIdentifierId);
+
+        // Populate the select for choosing a year
+        request.setAttribute("years", getYears());
+
         for (PatchStatus patchStatus : EnumSet.allOf(PatchStatus.class)) {
             String parameterName = getParameterNameFor(patchStatus);
             Boolean parameter = (Boolean) form.get(parameterName);
@@ -113,7 +128,7 @@ public class CVEAuditAction extends RhnAction {
 
         // first request: form not submitted, no parameters. Just pre-init some
         // form fields
-        if (!isSubmitted(form) && cveIdentifier == null) {
+        if (!isSubmitted(form) && cveIdentifierId == null) {
             setupForm(request, form);
         }
         // second request: form was submitted (with method POST). Redirect to
@@ -144,6 +159,21 @@ public class CVEAuditAction extends RhnAction {
         return getStrutsDelegate()
                 .forwardParams(mapping.findForward(RhnHelper.DEFAULT_FORWARD),
                         request.getParameterMap());
+    }
+
+    /**
+     * Return years from 1999 (first appearance of CVE) up to the current year.
+     * @return list of years from 1999 to the current
+     */
+    private List<HashMap<String, String>> getYears() {
+        List<HashMap<String, String>> ret = new ArrayList<HashMap<String, String>>();
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        for (Integer year = currentYear; year >= 1999; year--) {
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("value", year.toString());
+            ret.add(map);
+        }
+        return ret;
     }
 
     /**
