@@ -1324,7 +1324,8 @@
     </form-bean>
     <form-bean name="cveAuditForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-      <form-property name="cveIdentifier" type="java.lang.String" />
+      <form-property name="cveIdentifierYear" type="java.lang.String" />
+      <form-property name="cveIdentifierId" type="java.lang.String" />
       <form-property name="includeAffectedPatchInapplicable" type="java.lang.Boolean" />
       <form-property name="includeAffectedPatchApplicable" type="java.lang.Boolean" />
       <form-property name="includeUnknown" type="java.lang.Boolean" />
