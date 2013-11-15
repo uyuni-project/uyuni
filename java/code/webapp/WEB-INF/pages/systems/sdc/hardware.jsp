@@ -8,6 +8,7 @@
   <body>
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
+    <html:form method="post" action="/systems/details/SystemHardware.do?sid=${sid}">
     <rhn:require acl="not system_has_bootstrap_entitlement()">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -15,7 +16,6 @@
       </div>
       <div class="panel-body">
         <bean:message key="sdc.details.hardware.refresh"/>
-        <html:form method="post" action="/systems/details/SystemHardware.do?sid=${sid}">
           <rhn:csrf />
           <html:hidden property="submitted" value="true"/>
             <div class="text-right">
