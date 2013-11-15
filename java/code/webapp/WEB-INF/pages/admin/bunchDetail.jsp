@@ -5,25 +5,23 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 
-<rhn:toolbar base="h1" img="/img/rhn-icon-your_rhn.gif"
-	         helpUrl="">
+<rhn:toolbar base="h1" icon="fa-tachometer">
     <bean:message key="bunch.edit.jsp.toolbar" arg0="${label}"/>
 </rhn:toolbar>
 
 <rl:listset name="runList">
 
-    <div>
        <h2><bean:message key="bunch.edit.jsp.bunchdescription"/></h2>
        <div class="page-summary">
           <c:out value="${bunchdescription}"/>
        </div>
-       <div align="right">
+       <div class="text-right">
           <input type="submit" name="dispatch"
-            value="<bean:message key="bunch.edit.jsp.button-schedule"/>" />
+            value="<bean:message key='bunch.edit.jsp.button-schedule'/>" />
             <rhn:csrf/>
           <rhn:submitted/>
        </div>
@@ -32,7 +30,6 @@
        <div class="page-summary">
           <bean:message key="bunch.jsp.generaldescription"/>
        </div>
-    </div>
     <br/>
     <rl:list
         emptykey="schedule.jsp.noruns"
@@ -62,8 +59,7 @@
 
                 <rl:column bound="false"
                            headerkey="kickstart.jsp.status"
-                           sortattr="status"
- >
+                           sortattr="status">
                         <c:out value="${current.status}" />
                 </rl:column>
 

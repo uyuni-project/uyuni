@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
   <body>
     <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
@@ -33,14 +33,14 @@
     <html:form action="/systems/ssm/misc/HardwareRefresh.do">
       <rhn:csrf />
       <html:hidden property="submitted" value="true"/>
-        <div align="right">
+        <div class="text-right">
           <html:submit>
             <bean:message key="ssm.hw.systems.confirmbutton"/>
           </html:submit>
         </div>
     </html:form>
 <%--
-    <div align="right">
+    <div class="text-right">
       <hr />
       <input type="submit" name="dispatch" value="${rhn:localize('ssm.hw.systems.confirmbutton')}"/>
     </div>

@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 
@@ -10,15 +10,12 @@
 
 <h2><bean:message key="channelManagementPerms.title" /></h2>
 
-<div class="page-summary">
 <p><bean:message key="channelManagementPerms.summary" /></p>
 
 <p>
-(<span class="ok-explanation"><img src="/img/rhn-listicon-ok.gif" alt="Permission granted" title="Permission granted" /></span>
+(<span class="ok-explanation"><i class="icon-ok" title="Permission granted"></i></span>
 <bean:message key="channelManagementPerms.granted" />)
 </p>
-
-</div>
 
 <html:form action="/users/ChannelPermsSubmit">
 <rhn:csrf />

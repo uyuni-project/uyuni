@@ -4,18 +4,18 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 
 
 <c:if test="${requestScope.pageList != null}">
-	<div class="site-alert">
+	<div class="alert alert-danger">
 		     <bean:message key="distro-delete.jsp.cantdelete"/>
 	</div>
 </c:if>
 
-<rhn:toolbar base="h1" img="/img/rhn-kickstart_profile.gif" imgAlt="system.common.kickstartAlt">
+<rhn:toolbar base="h1" icon="fa-rocket" imgAlt="system.common.kickstartAlt">
   <bean:message key="distro-delete.jsp.header1" arg0="${kstree.label}"/>
 </rhn:toolbar>
 

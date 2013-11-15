@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
@@ -12,7 +12,7 @@
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
      <h2>
-      <img src="/img/rhn-icon-errata.gif" alt="erratum" /> <bean:message key="header.jsp.errata.sync"/>
+      <i class="fa spacewalk-icon-patches" title="erratum"></i> <bean:message key="header.jsp.errata.sync"/>
     </h2>
 
   <bean:message key="channel.jsp.errata.sync.message"/>
@@ -42,13 +42,13 @@
                            headerclass="thin-column"
                            sortattr="advisoryType">
                         <c:if test="${current.advisoryType == 'Product Enhancement Advisory'}">
-				 <img src="/img/wrh-product.gif" alt="Product Enhancement Advisory" title="Product Enhancement Advisory" />
+				 <i class="fa  spacewalk-icon-enhancement" title="Product Enhancement Advisory"></i>
                         </c:if>
                        <c:if test="${current.advisoryType == 'Security Advisory'}">
-				 <img src="/img/wrh-security.gif" alt="Security Advisory" title="Security Advisory" />
+				 <i class="fa fa-lock" title="Security Advisory"></i>
                         </c:if>
                        <c:if test="${current.advisoryType == 'Bug Fix Advisory'}">
-				  <img src="/img/wrh-bug.gif" alt="Bug Fix Advisory" title="Bug Fix Advisory" />
+				  <i class="fa fa-bug" title="Bug Fix Advisory"></i>
                         </c:if>
 
                 </rl:column>
@@ -89,7 +89,7 @@
 	<rhn:tooltip key="channel.jsp.errata.sync.note"/>
 
 			<p align="right">
-			<input type="submit" name="dispatch"  value="<bean:message key="header.jsp.errata.sync"/>">
+			<input type="submit" name="dispatch"  value="<bean:message key='header.jsp.errata.sync'/>">
 			</p>
      <rhn:submitted/>
 

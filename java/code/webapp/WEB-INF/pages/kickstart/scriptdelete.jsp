@@ -3,10 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-kickstart_profile.gif">
+<rhn:toolbar base="h1" icon="fa-rocket">
   <bean:message key="kickstartdelete.jsp.header1" arg0="${ksdata.label}"/>
 </rhn:toolbar>
 

@@ -4,13 +4,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-errata.gif" imgAlt="errata.common.errataAlt"
+<rhn:toolbar base="h1" icon="spacewalk-icon-patches" iconAlt="errata.common.errataAlt"
  helpUrl="/rhn/help/reference/en-US/s1-sm-errata.jsp#s2-sm-applicable-errata">
   <bean:message key="erratalist.jsp.relevanterrata"/>
 </rhn:toolbar>

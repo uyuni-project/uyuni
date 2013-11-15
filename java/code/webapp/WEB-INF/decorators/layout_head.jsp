@@ -25,11 +25,25 @@
       ${requestScope.innernavtitle}
     </title>
     <link rel="shortcut icon" href="/img/favicon.ico" />
-    <link rel="stylesheet" href="/css/rhn-base.css" type="text/css" />
-    <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
-    <script type="text/javascript" src="/rhn/dwr/util.js"></script>
-    <script type="text/javascript" src="/rhn/dwr/interface/DWRItemSelector.js"></script>
-    
-    <script src="/javascript/prototype-1.6.0.js" type="text/javascript"> </script>
-    <script src="/javascript/check_all.js" type="text/javascript"> </script>
 
+    <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="/fonts/font-spacewalk/css/spacewalk-font.css" />
+    <meta name="viewport" content="initial-scale=1">
+
+    <rhn:require acl="is(development_environment)">
+      <link rel="stylesheet/less" type="text/css" href="/css/spacewalk.less" />
+      <script>less = { env: 'development' };</script>
+      <script src="/javascript/less.js"></script>
+    </rhn:require>
+    <rhn:require acl="not is(development_environment)">
+      <link rel="stylesheet" href="/css/spacewalk.css" />
+    </rhn:require>
+
+    <script src="/javascript/jquery.js"></script>
+    <script src="/javascript/bootstrap.js"></script>
+    <script src="/javascript/spacewalk-essentials.js"></script>
+    <script src="/javascript/spacewalk-checkall.js"></script>
+
+    <script src="/rhn/dwr/engine.js"></script>
+    <script src="/rhn/dwr/util.js"></script>
+    <script src="/rhn/dwr/interface/DWRItemSelector.js"></script>

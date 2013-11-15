@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="Systems Affected" />
@@ -13,7 +13,7 @@
 
 <%@ include file="/WEB-INF/pages/common/fragments/errata/errata-header.jspf" %>
 <h2>
-  <img src="/img/rhn-icon-system.gif" alt="<bean:message key='system.common.systemAlt' />" />
+  <i class="fa fa-desktop" title="<bean:message key='system.common.systemAlt' />"></i>
   <bean:message key="affectedsystems.jsp.header"/>
 </h2>
 
@@ -81,7 +81,7 @@
 			</rl:column>
 		</rl:list>
 		
-		<div align="right">
+		<div class="text-right">
     		<hr />
     		<html:submit property="dispatch">
       			<bean:message key="affectedsystems.jsp.apply"/>

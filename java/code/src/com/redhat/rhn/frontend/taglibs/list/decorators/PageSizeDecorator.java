@@ -14,20 +14,20 @@
  */
 package com.redhat.rhn.frontend.taglibs.list.decorators;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.frontend.html.HtmlTag;
-import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.frontend.html.HtmlTag;
+import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 
 /**
  * PageSizeDecorator
@@ -106,14 +106,16 @@ public class PageSizeDecorator extends BaseListDecorator {
     /**
      * {@inheritDoc}
      */
-    public void beforeTopPagination() throws JspException {
+    @Override
+    public void onHeadExtraAddons() throws JspException {
         if (!getCurrentList().isEmpty()) {
             StringBuilder stringBuild = new StringBuilder();
 
-            stringBuild.append("<td class=\"list-sizeselector\">");
+            stringBuild.append("<div class=\"list-sizeselector\">");
             HtmlTag select = new HtmlTag("Select");
             select.setAttribute("name", makePageSizeLabel(listName));
             select.setAttribute("onChange", makeOnChangeScript());
+            select.setAttribute("class", "display-number");
 
             for (int size : PAGE_SIZE) {
                 HtmlTag option = new HtmlTag("option");
@@ -128,7 +130,7 @@ public class PageSizeDecorator extends BaseListDecorator {
             LocalizationService ls = LocalizationService.getInstance();
             stringBuild.append(ls.getMessage("message.items.per.page",
                                                     select.render()));
-            stringBuild.append("</td>");
+            stringBuild.append("</div>");
             HtmlTag input = new HtmlTag("input");
             input.setAttribute("type", "hidden");
             input.setAttribute("id", makeSelectionId(listName));

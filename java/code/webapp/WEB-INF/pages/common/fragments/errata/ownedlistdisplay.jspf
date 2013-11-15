@@ -12,19 +12,13 @@
 
         <rl:column headerkey="erratalist.jsp.type">
             <c:if test="${current.securityAdvisory}">
-                <img src="/img/wrh-security.gif"
-                     alt="<bean:message key='erratalist.jsp.securityadvisory'/>"
-                     title="<bean:message key='erratalist.jsp.securityadvisory'/>"/>
+                <i class="fa fa-lock" title="<bean:message key='erratalist.jsp.securityadvisory'/>"></i>
             </c:if>
             <c:if test="${current.bugFix}">
-                <img src="/img/wrh-bug.gif"
-                     alt="<bean:message key='erratalist.jsp.bugadvisory'/>"
-                     title="<bean:message key='erratalist.jsp.bugadvisory'/>"/>
+                <i class="fa fa-bug" title="<bean:message key='erratalist.jsp.bugadvisory'/>"></i>
             </c:if>
             <c:if test="${current.productEnhancement}">
-                <img src="/img/wrh-product.gif"
-                     alt="<bean:message key='erratalist.jsp.productenhancementadvisory'/>"
-                     title="<bean:message key='erratalist.jsp.productenhancementadvisory'/>"/>
+                <i class="fa  spacewalk-icon-enhancement" title="<bean:message key='erratalist.jsp.productenhancementadvisory'/>"></i>
             </c:if>
         </rl:column>
         <rl:column headerkey="erratalist.jsp.advisory">
@@ -40,12 +34,13 @@
 
     </rl:list>
 
-    <div align="right">
+    <div class="pull-right">
         <rhn:submitted/>
-        <hr/>
-        <input type="submit"
+        <button type="submit"
                name="dispatch"
-               value='<bean:message key="erratalist.jsp.deleteerrata"/>'/>
+               class="btn btn-default">
+           <i class="fa fa-trash-o"></i> <bean:message key="erratalist.jsp.deleteerrata"/>
+        </button>
     </div>
 
 </rl:listset>

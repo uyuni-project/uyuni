@@ -5,7 +5,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html"
 	prefix="html"%>
 
-<html:xhtml/>
+
 <html>
 <head></head>
 <body>
@@ -13,7 +13,7 @@
 
 <h2><bean:message key="deleterev.jsp.header2" /></h2>
 <bean:message key="deleterev.jsp.info" arg0="${channel.displayName}" arg1="/rhn/configuration/ChannelOverview.do?ccid=${ccid}"/>
-<p />
+
 <html:form action="/configuration/file/DeleteRevision.do?crid=${crid}&amp;cfid=${cfid}">
     <rhn:csrf />
 	<html:hidden property="submitted" value="true"/>
@@ -32,7 +32,7 @@
 	</tr>
 	</table>
 	<hr />
-	<div align="right">
+	<div class="text-right">
 	  <html:submit><bean:message key="deleterev.jsp.submit" /></html:submit>
 	</div>
 </html:form>

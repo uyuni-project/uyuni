@@ -8,7 +8,7 @@
 <body>
 <c:choose>
 <c:when test="${param.oid != 1}">
-<rhn:toolbar base="h1" img="/img/rhn-icon-org.gif"
+<rhn:toolbar base="h1" icon="fa-group"
     miscUrl="${url}"
     miscAcl="user_role(org_admin)"
     miscText="${text}"
@@ -22,7 +22,7 @@
 </rhn:toolbar>
 </c:when>
 <c:otherwise>
-<rhn:toolbar base="h1" img="/img/rhn-icon-org.gif"
+<rhn:toolbar base="h1" icon="fa-group"
     miscUrl="${url}"
     miscAcl="user_role(org_admin)"
     miscText="${text}"
@@ -37,10 +37,8 @@
 
 <h2><bean:message key="orgsoftwaresubs.jsp.header2"/></h2>
 
-<bean:message key="orgsoftwaresubs.jsp.description" arg0="${org.name}"/>
+<p class="margin-bottom-md"><bean:message key="orgsoftwaresubs.jsp.description" arg0="${org.name}"/></p>
 
-
-<div>
 <rl:listset name="entitlementSet">
     <rhn:csrf />
 	<rhn:submitted/>
@@ -81,9 +79,8 @@
 		                  <c:when test="${param.oid != 1}">
 		                    <input name="${current.key}" value="${requestScope.subscriptions[current.key]}" type="text" size = "13"
 		                    onkeydown="return blockEnter(event)">
-		                    <br>
-		                    <span class="small-text"><bean:message key="orgsystemsubs.jsp.possible_vals"
-		                      arg0="0" arg1="${current.maxAvailable}"/></span>
+		                    <p><small><bean:message key="orgsystemsubs.jsp.possible_vals"
+		                      arg0="0" arg1="${current.maxAvailable}"/></small></p>
 		                  </c:when>
 		                  <c:otherwise>
 		                    ${current.maxAvailable}
@@ -118,9 +115,9 @@
 		                  <c:when test="${param.oid != 1}">
 		                    <input name="${current.flexKey}" value="${requestScope.subscriptions[current.flexKey]}" type="text" size = "13"
 		                    onkeydown="return blockEnter(event)">
-		                    <br>
-		                    <span class="small-text"><bean:message key="orgsystemsubs.jsp.possible_vals"
-		                      arg0="0" arg1="${current.maxAvailableFlex}"/></span>
+		                    
+		                    <p><small><bean:message key="orgsystemsubs.jsp.possible_vals"
+		                      arg0="0" arg1="${current.maxAvailableFlex}"/></small></p>
 		                  </c:when>
 		                  <c:otherwise>
 		                    ${current.maxAvailableFlex}
@@ -133,15 +130,14 @@
 	<rl:csv dataset="pageList"
 			name="entitlement"
 			exportColumns="name,currentMembers,maxMembers,maxAvailable,currentFlex,maxFlex,maxAvailableFlex" />
-<p><rhn:tooltip>*-<bean:message key = "Used/Allotted.tip"/></rhn:tooltip></p>
+<p><small><rhn:tooltip>*-<bean:message key = "Used/Allotted.tip"/></rhn:tooltip></small></p>
 <c:if test="${param.oid != 1}">
- <div align="right">
+ <div class="text-right">
    <hr/>
-   <input type="submit" name="dispatch" value="${rhn:localize('orgdetails.jsp.submit')}"/>
+   <input type="submit" name="dispatch" class="btn btn-default" value="${rhn:localize('orgdetails.jsp.submit')}"/>
  </div>
 </c:if>
 </rl:listset>
-</div>
 
 </body>
 </html>

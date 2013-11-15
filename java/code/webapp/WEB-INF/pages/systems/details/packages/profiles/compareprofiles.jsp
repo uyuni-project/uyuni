@@ -4,12 +4,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
-<rhn:toolbar base="h2" img="/img/rhn-icon-packages.gif"
+<rhn:toolbar base="h2" icon="spacewalk-icon-packages"
     deletionUrl="/rhn/systems/details/packages/profiles/DeleteProfile.do?sid=${param.sid}&prid=${param.prid}"
     deletionType="profile">
   <bean:message key="compare.jsp.compareto" arg0="${requestScope.profilename}" />
@@ -56,7 +56,7 @@
         <c:if test="${not empty requestScope.pageList}">
             <rhn:require acl="system_feature(ftr_delta_action)"
                 mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
-                <div align="right">
+                <div class="text-right">
                     <rhn:submitted/>
                     <hr />
                     <input type="submit" name="dispatch"

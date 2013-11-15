@@ -4,22 +4,18 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
 </head>
 <body>
 
-
  <%@ include file="/WEB-INF/pages/common/fragments/channel/channel_header.jspf" %>
-<BR>
   <h2>
-      <img src="/img/rhn-icon-system.gif" alt="system" />
-          <bean:message key="channelsystems.jsp.header2"/>
-    </h2>
-
-
+      <i class="fa fa-desktop"></i>
+      <bean:message key="channelsystems.jsp.header2"/>
+  </h2>
 
 <rl:listset name="systemSet" legend="system-group">
 <rhn:csrf />

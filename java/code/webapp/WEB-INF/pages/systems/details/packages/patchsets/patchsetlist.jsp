@@ -3,14 +3,14 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
 	<h2>
-		<img src="/img/rhn-icon-package_del.gif" />
+		<i class="fa spacewalk-icon-package-delete"></i>
 		<bean:message key="patchsetlist.jsp.patchsets" />
 	</h2>
 	<div class="page-summary">

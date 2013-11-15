@@ -5,7 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:choose>
   <c:when test="${requestScope.criticalReflinkkeyarg0 != null}">
-	<div class="full-width-wrapper" style="clear: both;" id="critical-probes-pane">
+	<div id="critical-probes-pane">
 		<rl:listset name="criticalProbesSet">
             <rhn:csrf />
 			<rl:list dataset="monitoringCriticalList"
@@ -17,7 +17,7 @@
              		 reflinkkey="yourrhn.jsp.allcriticalprobes"
              		 reflinkkeyarg0="${requestScope.criticalReflinkkeyarg0}">
 				<rl:column headerkey="yourrhn.jsp.criticalprobes">
-		    		<img src="/img/rhn-mon-down.gif"/>
+		    		<i class="fa spacewalk-icon-monitoring-down"></i>
     				<c:out value="${current.description}"/>
 				</rl:column>
 				<rl:column headerkey="yourrhn.jsp.systems">

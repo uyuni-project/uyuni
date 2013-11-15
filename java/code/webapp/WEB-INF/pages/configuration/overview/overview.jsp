@@ -4,132 +4,137 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
 </head>
 <body>
 
-<rhn:toolbar base="h1" img="/img/rhn-config_management.gif" imgAlt="config.jsp.imgAlt"
+<rhn:toolbar base="h1" icon="fa-cog" imgAlt="config.jsp.imgAlt"
  helpUrl="/rhn/help/reference/en-US/s1-sm-configuration.jsp#configuration-overview" >
   <bean:message key="configoverview.jsp.toolbar"/>
 </rhn:toolbar>
 
-  <div class="page-summary">
     <p>
     <bean:message key="configoverview.jsp.summary"/>
     </p>
-  </div>
 
   <!-- TODO: fix these first two tables when the new list constructs come out. -->
 
   <!-- simple summary table -->
-  <div class="half-table half-table-left">
-    <%@ include file="/WEB-INF/pages/common/fragments/configuration/overview/summary.jspf" %>
+  <div class="row-0">
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <%@ include file="/WEB-INF/pages/common/fragments/configuration/overview/summary.jspf" %>
+      </div>
+    </div>
+
+    <!-- simple link table -->
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <%@ include file="/WEB-INF/pages/common/fragments/configuration/overview/links.jspf" %>
+      </div>
+    </div>
   </div>
 
-  <!-- simple link table -->
-  <div class="half-table half-table-right">
-    <%@ include file="/WEB-INF/pages/common/fragments/configuration/overview/links.jspf" %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4><bean:message key="configoverview.jsp.modconfig"/></h4>
+    </div>
+    <div class="panel-body">
+     
+      <rhn:list pageList="${requestScope.recentFiles}" noDataText="configoverview.jsp.noFiles">
+        <rhn:listdisplay>
+          <rhn:column header="configoverview.jsp.filename"
+                      url="/rhn/configuration/file/FileDetails.do?cfid=${current.id}">
+            <c:choose>
+              <c:when test="${current.type == 'file'}">
+                <i class="fa fa-file-text-o"></i>
+                ${fn:escapeXml(current.path)}
+              </c:when>
+              <c:when test="${current.type == 'directory'}">
+                <i class="fa fa-folder"></i>
+                ${fn:escapeXml(current.path)}
+              </c:when>
+              <c:otherwise>
+                <i class="fa fa-list-alt"></i>
+                ${fn:escapeXml(current.path)}
+              </c:otherwise>
+            </c:choose>
+          </rhn:column>
+
+          <rhn:column header="config.common.configChannel"
+                      url="/rhn/configuration/ChannelOverview.do?ccid=${current.configChannelId}">
+
+            <c:if test="${current.configChannelType == 'normal'}">
+          	  <i class="spacewalk-icon-software-channels"></i>
+              ${current.channelNameDisplay}
+            </c:if>
+
+            <c:if test="${current.configChannelType == 'local_override'}">
+              <i class="fa fa-desktop"></i>
+              ${current.channelNameDisplay}
+            </c:if>
+
+            <c:if test="${current.configChannelType == 'server_import'}">
+              <i class="fa fa-flask"></i>
+              ${current.channelNameDisplay}
+            </c:if>
+
+          </rhn:column>
+
+          <rhn:column header="configoverview.jsp.modified">
+            ${current.modifiedDisplay}
+          </rhn:column>
+
+        </rhn:listdisplay>
+      </rhn:list>
+    </div>
+  </div>  
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4><bean:message key="configoverview.jsp.schedconfig"/></h4>
+    </div>
+    <div class="panel-body">
+      <rhn:list pageList="${requestScope.recentActions}" noDataText="configoverview.jsp.noActions">
+        <rhn:listdisplay>
+          <rhn:column header="configoverview.jsp.system"
+                      url="/rhn/systems/details/configuration/Overview.do?sid=${current.serverId}">
+            <i class="fa fa-desktop"></i>
+            ${fn:escapeXml(current.serverName)}
+          </rhn:column>
+
+          <rhn:column header="configoverview.jsp.files">
+            <c:if test="${current.fileCount == 1}">
+              <bean:message key="config.common.onefile" />
+            </c:if>
+            <c:if test="${current.fileCount != 1}">
+              <bean:message key="config.common.numfiles" arg0="${current.fileCount}"/>
+            </c:if>
+          </rhn:column>
+
+          <rhn:column header="configoverview.jsp.scheduledBy"
+                      url="/rhn/users/UserDetails.do?uid=${current.scheduledById}"
+                      renderUrl="${requestScope.is_admin}">
+            <i class="fa fa-user" title="<bean:message key="user.common.userAlt" />"></i>
+            ${fn:escapeXml(current.scheduledByName)}
+          </rhn:column>
+
+          <rhn:column header="configoverview.jsp.scheduledFor">
+            ${current.earliestDisplay}
+          </rhn:column>
+
+          <rhn:column header="configoverview.jsp.status"
+                      url="/rhn/schedule/ActionDetails.do?aid=${current.id}">
+            ${current.status}
+          </rhn:column>
+
+        </rhn:listdisplay>
+      </rhn:list>
+    </div>
   </div>
-
-  <div style="clear: both; padding-top: 10px;" />
-
-  <h2><bean:message key="configoverview.jsp.modconfig"/></h2>
-
-  <rhn:list pageList="${requestScope.recentFiles}" noDataText="configoverview.jsp.noFiles">
-    <rhn:listdisplay>
-      <rhn:column header="configoverview.jsp.filename"
-                  url="/rhn/configuration/file/FileDetails.do?cfid=${current.id}">
-        <c:choose>
-          <c:when test="${current.type == 'file'}">
-            <img alt='<bean:message key="config.common.fileAlt" />'
-                 src="/img/rhn-listicon-cfg_file.gif" />
-            ${fn:escapeXml(current.path)}
-          </c:when>
-          <c:when test="${current.type == 'directory'}">
-            <img alt='<bean:message key="config.common.dirAlt" />'
-                 src="/img/rhn-listicon-cfg_folder.gif" />
-            ${fn:escapeXml(current.path)}
-          </c:when>
-          <c:otherwise>
-            <img alt='<bean:message key="config.common.symlinkAlt" />'
-                 src="/img/rhn-listicon-cfg_symlink.gif" />
-            ${fn:escapeXml(current.path)}
-          </c:otherwise>
-        </c:choose>
-      </rhn:column>
-
-      <rhn:column header="config.common.configChannel"
-                  url="/rhn/configuration/ChannelOverview.do?ccid=${current.configChannelId}">
-
-        <c:if test="${current.configChannelType == 'normal'}">
-    	  <img alt='<bean:message key="config.common.globalAlt" />'
-    	       src="/img/rhn-listicon-channel.gif" />
-          ${current.channelNameDisplay}
-        </c:if>
-
-        <c:if test="${current.configChannelType == 'local_override'}">
-          <img alt='<bean:message key="config.common.localAlt" />'
-               src="/img/rhn-listicon-system.gif" />
-          ${current.channelNameDisplay}
-        </c:if>
-
-        <c:if test="${current.configChannelType == 'server_import'}">
-          <img alt='<bean:message key="config.common.sandboxAlt" />'
-               src="/img/rhn-listicon-sandbox.gif" />
-          ${current.channelNameDisplay}
-        </c:if>
-
-      </rhn:column>
-
-      <rhn:column header="configoverview.jsp.modified">
-        ${current.modifiedDisplay}
-      </rhn:column>
-
-    </rhn:listdisplay>
-  </rhn:list>
-
-  <h2><bean:message key="configoverview.jsp.schedconfig"/></h2>
-
-  <rhn:list pageList="${requestScope.recentActions}" noDataText="configoverview.jsp.noActions">
-    <rhn:listdisplay>
-      <rhn:column header="configoverview.jsp.system"
-                  url="/rhn/systems/details/configuration/Overview.do?sid=${current.serverId}">
-        <img alt='<bean:message key="system.common.systemAlt" />'
-             src="/img/rhn-listicon-system.gif" />
-        ${fn:escapeXml(current.serverName)}
-      </rhn:column>
-
-      <rhn:column header="configoverview.jsp.files">
-        <c:if test="${current.fileCount == 1}">
-          <bean:message key="config.common.onefile" />
-        </c:if>
-        <c:if test="${current.fileCount != 1}">
-          <bean:message key="config.common.numfiles" arg0="${current.fileCount}"/>
-        </c:if>
-      </rhn:column>
-
-      <rhn:column header="configoverview.jsp.scheduledBy"
-                  url="/rhn/users/UserDetails.do?uid=${current.scheduledById}"
-                  renderUrl="${requestScope.is_admin}">
-        <img alt='<bean:message key="user.common.userAlt" />'
-             src="/img/rhn-listicon-user.gif" />
-        ${fn:escapeXml(current.scheduledByName)}
-      </rhn:column>
-
-      <rhn:column header="configoverview.jsp.scheduledFor">
-        ${current.earliestDisplay}
-      </rhn:column>
-
-      <rhn:column header="configoverview.jsp.status"
-                  url="/rhn/schedule/ActionDetails.do?aid=${current.id}">
-        ${current.status}
-      </rhn:column>
-
-    </rhn:listdisplay>
-  </rhn:list>
 
 </body>
 </html>

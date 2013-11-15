@@ -3,14 +3,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-config_system.gif">
+<rhn:toolbar base="h1" icon="fa-cogs">
   <bean:message key="summary.jsp.toolbar"/>
 </rhn:toolbar>
 
-<div class="page-summary">
   <p>
   <bean:message key="summary.jsp.summary" />
   <ol>
@@ -18,16 +17,13 @@
     <li><bean:message key="summary.jsp.steptwo" />
   </ol>
   </p>
-</div>
 
-<div>
-<form method="post" name="rhn_list"
+<form method="post" role="form" name="rhn_list"
 	action="/rhn/configuration/system/Summary.do">
   <rhn:csrf />
   <rhn:submitted />
   <%@ include file="/WEB-INF/pages/common/fragments/configuration/enablesummary.jspf" %>
 </form>
-</div>
 
 </body>
 </html>

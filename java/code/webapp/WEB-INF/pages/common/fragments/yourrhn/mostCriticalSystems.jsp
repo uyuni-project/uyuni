@@ -32,31 +32,29 @@
 		
    		<rl:column headerkey="yourrhn.jsp.criticalsystems.securityerrata"
     			headerclass="row-2 text-align: center;">
-   			<img src="/img/wrh-security.gif" alt="<bean:message key="errata-legend.jsp.security"/>" />${current.securityErrata}		
+   			<i class="fa fa-lock" title="<bean:message key='errata-legend.jsp.security'/>"></i>${current.securityErrata}		
     	</rl:column>
 
     	<rl:column headerkey="yourrhn.jsp.criticalsystems.bugfixerrata"
     			headerclass="row-2 text-align: center;">
-   			<img src="/img/wrh-bug.gif" alt="<bean:message key="errata-legend.jsp.bugfix"/>" />${current.bugErrata}		
+   			<i class="fa fa-bug" title="<bean:message key='errata-legend.jsp.bugfix'/>"></i>${current.bugErrata}		
     	</rl:column>
 
     	<rl:column headerkey="yourrhn.jsp.criticalsystems.enhancementerrata"
     			headerclass="row-2 text-align: center;">
-   			<img src="/img/rhn-icon-enhancement.gif" alt="<bean:message key="errata-legend.jsp.enhancement"/>" />${current.enhancementErrata}		
+   			<i class="fa  spacewalk-icon-enhancement" title="<bean:message key='errata-legend.jsp.enhancement'/>"></i>${current.enhancementErrata}		
     	</rl:column>
 
 	</rl:list>
-	
-	<span class="full-width-note-left">
-		${paginationMessage}
-	</span>
-	
-	<span class="full-width-note-right">
-  		<a href="/rhn/systems/OutOfDate.do">
-  			<bean:message key="yourrhn.jsp.allcriticalsystems" />
-  		</a>
-  	</span>
+	<div class="row">
+		<div class="col-md-6 text-left">
+			${paginationMessage}
+		</div>
+		<div class="col-md-6 text-right">
+			<a href="/rhn/systems/OutOfDate.do">
+	  			<bean:message key="yourrhn.jsp.allcriticalsystems" />
+	  		</a>
+		</div>
+		<hr/>
+	</div>
 </rl:listset>
-
-
-

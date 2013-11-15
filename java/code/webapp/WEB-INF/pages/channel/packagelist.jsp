@@ -5,19 +5,12 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
 
-<html:html xhtml="true">
+<html:html >
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/channel/channel_header.jspf" %>
-<BR>
 
-
-
-
-<div>
-  <h2><img src="/img/rhn-icon-packages.gif"> <bean:message key="systemlist.jsp.packages"/></h2>
+  <h2><i class="spacewalk-icon-packages"></i> <bean:message key="systemlist.jsp.packages"/></h2>
     <bean:message key="package.jsp.list"/>
-
-
 
     <rl:listset name="packageSet">
     <rhn:csrf />
@@ -66,10 +59,5 @@
 
     </rl:listset>
     	
-    		
-
-</div>
-
 </body>
 </html:html>
-

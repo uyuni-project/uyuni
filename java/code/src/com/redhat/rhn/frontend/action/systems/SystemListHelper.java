@@ -19,8 +19,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.SystemCurrency;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -58,14 +58,13 @@ public class SystemListHelper {
 
         String message;
         HtmlTag url = new HtmlTag("a");
-        HtmlTag img = new HtmlTag("img");
+        HtmlTag i = new HtmlTag("i");
         LocalizationService ls = LocalizationService.getInstance();
         if (next.getEntitlement() == null ||
             next.getEntitlement().isEmpty()) {
             message = ls.getMessage("systemlist.jsp.unentitled");
-            img.setAttribute("src", "/img/icon_unentitled.gif");
-            img.setAttribute("title", message);
-            img.setAttribute("alt", message);
+            i.setAttribute("class", "spacewalk-icon-unknown-system");
+            i.setAttribute("title", message);
             if (user.hasRole(RoleFactory.ORG_ADMIN)) {
                 url.setAttribute("href", "/rhn/systems/details/Edit.do?sid=" +
                     next.getId());
@@ -76,9 +75,8 @@ public class SystemListHelper {
             url.setAttribute("href",
                     "/rhn/help/reference/en-US/s1-sm-systems.jsp");
             message = ls.getMessage("systemlist.jsp.notcheckingin");
-            img.setAttribute("src", "/img/icon_checkin.gif");
-            img.setAttribute("alt", message);
-            img.setAttribute("title", message);
+            i.setAttribute("class", "spacewalk-icon-unknown-system");
+            i.setAttribute("title", message);
             if (makeLinks) {
                 makeLinks = ConfigDefaults.get().isDocAvailable();
             }
@@ -90,9 +88,8 @@ public class SystemListHelper {
                     "/rhn/systems/details/kickstart/SessionStatus.do?sid=" +
                     next.getId());
             message = ls.getMessage("systemlist.jsp.kickstart");
-            img.setAttribute("src", "/img/icon_kickstart_session.gif");
-            img.setAttribute("title", message);
-            img.setAttribute("alt", message);
+            i.setAttribute("class", "fa fa-rocket");
+            i.setAttribute("title", message);
         }
         else if (next.getEnhancementErrata() + next.getBugErrata() +
                      next.getSecurityErrata() > 0 &&
@@ -103,9 +100,8 @@ public class SystemListHelper {
                     "/network/systems/details/history/pending.pxt?sid=" +
                     next.getId());
             message = ls.getMessage("systemlist.jsp.updatesscheduled");
-            img.setAttribute("src", "/img/icon_pending.gif");
-            img.setAttribute("title", message);
-            img.setAttribute("alt", message);
+            i.setAttribute("class", "fa fa-clock-o");
+            i.setAttribute("title", message);
         }
         else if (SystemManager.countActions(new Long(next.getId().longValue())) > 0) {
             //status = "actions scheduled";
@@ -113,9 +109,8 @@ public class SystemListHelper {
                     "/network/systems/details/history/pending.pxt?sid=" +
                     next.getId());
             message = ls.getMessage("systemlist.jsp.actionsscheduled");
-            img.setAttribute("src", "/img/icon_pending.gif");
-            img.setAttribute("title", message);
-            img.setAttribute("alt", message);
+            i.setAttribute("class", "fa fa-clock-o");
+            i.setAttribute("title", message);
         }
         else if ((next.getEnhancementErrata() + next.getBugErrata() +
                   next.getSecurityErrata()) == 0 &&
@@ -125,9 +120,9 @@ public class SystemListHelper {
 
             //status = "up2date";
             message = ls.getMessage("systemlist.jsp.up2date");
-            img.setAttribute("src", "/img/icon_up2date.gif");
-            img.setAttribute("title", message);
-            img.setAttribute("alt", message);
+            i.setAttribute("class", "fa fa-check-circle");
+            i.setAttribute("title", message);
+            //i.setAttribute("alt", message);
         }
         else if (next.getSecurityErrata().intValue() > 0) {
             //status = "critical";
@@ -136,9 +131,8 @@ public class SystemListHelper {
                     next.getId() + "&type=" +
                     LocalizationService.getInstance().getMessage(ErrataSetupAction.SECUR));
             message = ls.getMessage("systemlist.jsp.critical");
-            img.setAttribute("src", "/img/icon_crit_update.gif");
-            img.setAttribute("title", message);
-            img.setAttribute("alt", message);
+            i.setAttribute("class", "fa fa-exclamation-circle");
+            i.setAttribute("title", message);
         }
         else if (next.getOutdatedPackages().intValue() > 0) {
             //status = "updates";
@@ -146,19 +140,19 @@ public class SystemListHelper {
                     "/rhn/systems/details/packages/UpgradableList.do?sid=" +
                     next.getId());
             message = ls.getMessage("systemlist.jsp.updates");
-            img.setAttribute("src", "/img/icon_reg_update.gif");
-            img.setAttribute("title", message);
-            img.setAttribute("alt", message);
+            i.setAttribute("class", "icon-warning-sign");
+            i.setAttribute("title", message);
         }
 
-        url.addBody(img);
+        url.addBody(i.renderOpenTag());
+        url.addBody(i.renderCloseTag());
         String statusDisplay;
 
         if (makeLinks) {
             statusDisplay = url.render();
         }
         else {
-            statusDisplay = img.render();
+            statusDisplay = i.render();
         }
 
         if (next.getLocked().intValue() == 1) {

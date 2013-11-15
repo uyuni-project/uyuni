@@ -5,7 +5,7 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/config-managment" prefix="cfg" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<html:xhtml />
+
 
 <html>
 <body>
@@ -30,15 +30,14 @@
 	      		
 			<rhn:column header="system.common.systemName">
               <a href="/rhn/systems/details/configuration/Overview.do?sid=${current.id}">
-                <img src="/img/rhn-listicon-system.gif"
-                     alt="<bean:message key='system.common.systemAlt' />" />
+                <i class="fa fa-desktop" title="<bean:message key='system.common.systemAlt' />"></i>
                 <c:out value="${current.name}" />
               </a>
 			</rhn:column>
 			</rhn:listdisplay>
 		</rhn:list>
 		<hr />
-		<div align="right">
+		<div class="text-right">
 			<html:submit property="dispatch"><bean:message key="deploysystems.jsp.deployconfirmbutton" /></html:submit>
 		</div>
 	</div>

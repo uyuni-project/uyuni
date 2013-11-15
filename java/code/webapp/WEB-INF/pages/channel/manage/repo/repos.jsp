@@ -6,7 +6,7 @@
 
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-info.gif"
+<rhn:toolbar base="h1" icon="fa-info-circle"
                creationUrl="RepoCreate.do"
                creationType="repos"
                imgAlt="info.alt.img">

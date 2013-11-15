@@ -84,13 +84,8 @@ public class AlphaBarHelper {
     public void writeAlphaBar(PageContext pageContext,
             Set<Character> activeChars, String listName) throws JspException {
 
-        ListTagUtil.write(pageContext, "<br />");
         ListTagUtil.write(pageContext,
-                         "<table width=\"100%\" cellspacing=\"0\"" +
-                                " cellpadding=\"1\">");
-        ListTagUtil.write(pageContext, "<tr valign=\"top\">");
-        ListTagUtil.write(pageContext, "<td class=\"list-alphabar\">" +
-                                        "<div align=\"center\"><strong>");
+                "<ul class=\"spacewalk-alphabar pagination pagination-sm\">");
 
         List<String> alphabet = LocalizationService.getInstance().getAlphabet();
         List<String> numbers = LocalizationService.getInstance().getDigits();
@@ -117,11 +112,7 @@ public class AlphaBarHelper {
             }
         }
 
-        ListTagUtil.write(pageContext, "</strong></div>");
-        ListTagUtil.write(pageContext, "<br />");
-        ListTagUtil.write(pageContext, "</td>");
-        ListTagUtil.write(pageContext, "  </tr>");
-        ListTagUtil.write(pageContext, "</table>");
+        ListTagUtil.write(pageContext, "</ul>");
     }
 
     private String renderEnabledAlpha(char alpha,
@@ -130,18 +121,18 @@ public class AlphaBarHelper {
         Map <String, String> params = new HashMap<String, String>();
         params.put(makeAlphaKey(listName), String.valueOf(alpha));
 
-        StringBuilder enabled = new StringBuilder("<a href=\"");
+        StringBuilder enabled = new StringBuilder("<li><a href=\"");
         List ignoreList = new ArrayList();
         ignoreList.add("submitted");
         enabled.append(ListTagUtil.makeParamsLink(request, listName, params,
                 ignoreList));
-        enabled.append("\"");
-        enabled.append(" class=\"list-alphabar-enabled\">" + alpha + "</a>");
+        enabled.append("\">");
+        enabled.append(alpha + "</a></li>");
         return enabled.toString();
     }
 
     private String renderDisabledAlph(char alpha) {
-        return "<span class=\"list-alphabar-disabled\">" + alpha + "</span>";
+        return "<li class=\"disabled\"><a href=\"#\">" + alpha + "</a></li>";
     }
 
 }

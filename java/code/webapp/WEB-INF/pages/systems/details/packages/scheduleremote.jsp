@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 
 <body>
@@ -57,7 +57,7 @@
     <html:hidden property="use_date" />
 <%@ include file="/WEB-INF/pages/common/fragments/date-picker-hidden.jspf" %>
 
-  <div align="right">
+  <div class="text-right">
     <hr />
       <c:if test="${param.mode == 'remove'}">
 	      <html:submit>

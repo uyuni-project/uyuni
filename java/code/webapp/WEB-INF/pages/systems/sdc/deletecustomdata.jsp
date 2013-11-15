@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:html xhtml="true">
+<html:html >
 <body>
 <br>
 
@@ -13,7 +13,7 @@
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
   <div class="toolbar-h2">
     <div class="toolbar"></div>
-      <img src="/img/rhn-icon-warning.gif" alt="" />
+      <i class="fa fa-warning text-warning" title=""></i>
       <bean:message key="system.jsp.customdata.deletetitle"/>
     </div>
 
@@ -48,7 +48,7 @@
 
         </table>
 
-        <div align="right">
+        <div class="text-right">
           <hr />
 
           <input type="submit" name="RemoveValue" value="${rhn:localize('system.jsp.customdata.removevalue')}"  />

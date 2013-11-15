@@ -5,42 +5,30 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
 
-<html:xhtml/>
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-schedule_computer.gif"
+<rhn:toolbar base="h1" icon="fa-clock-o"
   			   imgAlt="actions.jsp.imgAlt"
                helpUrl="/rhn/help/reference/en-US/s1-sm-actions.jsp#s2-sm-action-fail">
     <bean:message key="failedactions.jsp.failed_actions"/>
   </rhn:toolbar>
-
-  <div class="page-summary">
     <p>
     <bean:message key="failedactions.jsp.summary"/>
     </p>
-  </div>
-
-	<br/>
-
-
 	<rl:listset name="failedList">
         <rhn:csrf />
 		<rl:list emptykey="failedactions.jsp.nogroups" styleclass="list">
 
-
 			<%@ include file="/WEB-INF/pages/common/fragments/scheduledactions/listdisplay-new.jspf" %>
-
 
 		</rl:list>
 		<rhn:submitted/>
-		 <div align="right">
+		 <div class="text-right">
 		     <input type="submit"
                name="dispatch"
+               class="btn btn-default"
                value='<bean:message key="actions.jsp.archiveactions"/>'/>
          </div>
 	</rl:listset>
-
-
-	
 </body>
 </html>

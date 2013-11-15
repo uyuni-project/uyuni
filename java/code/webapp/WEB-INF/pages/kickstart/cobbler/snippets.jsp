@@ -6,11 +6,11 @@
 
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-kickstart_profile.gif"
+<rhn:toolbar base="h1" icon="fa-info-circle"
                helpUrl="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-snippet"
                creationUrl="CobblerSnippetCreate.do"
                creationType="snippets"
-               imgAlt="info.alt.img">
+               iconAlt="info.alt.img">
   <bean:message key="snippets.jsp.toolbar"/>
 </rhn:toolbar>
 <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/snippet_tabs.xml"

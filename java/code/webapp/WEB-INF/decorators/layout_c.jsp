@@ -1,61 +1,49 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html:xhtml/>
-<html:html xhtml="true">
+<!DOCTYPE HTML>
+<html:html>
   <head>
 	  <jsp:include page="layout_head.jsp" />
 	  <decorator:head />
   </head>
   <body onload="<decorator:getProperty property="body.onload" />">
-   <div id="wrap">
-    <div class="wrap" id="top-wrap">
-      <jsp:include page="/WEB-INF/includes/header.jsp" />
+    <div class="spacewalk-top-wrap">
+      <header>
+        <jsp:include page="/WEB-INF/includes/header.jsp" />
+      </header>
+      <div class="spacewalk-main-column-layout">
+        <aside id="spacewalk-aside">
+          <jsp:include page="/WEB-INF/includes/leftnav.jsp" />
+          <jsp:include page="/WEB-INF/includes/legends.jsp" />
+          <jsp:include page="/WEB-INF/includes/advertisements.jsp" />
+        </aside>
+        <section id="spacewalk-content">
+          <!-- Alerts and messages -->
+          <logic:messagesPresent>
+            <div class="alert alert-warning">
+              <ul>
+              <html:messages id="message">
+                <li><c:out value="${message}"/></li>
+              </html:messages>
+              </ul>
+            </div>
+          </logic:messagesPresent>
+          <html:messages id="message" message="true">
+            <rhn:messages><c:out escapeXml="false" value="${message}" /></rhn:messages>
+          </html:messages>
+          <decorator:body />
+        </section>
+      </div>
     </div>
-    <div class="wrap" id="bottom-wrap">
-      <div id="content">
-        <!-- MAIN table -->
-        <table width="100%" cellspacing="0">
-          <tr>
-            <td class="sidebar">
-              <!-- left nav -->
-
-                <jsp:include page="/WEB-INF/includes/leftnav.jsp" />
-
-                <jsp:include page="/WEB-INF/includes/legends.jsp" />
-
-                <jsp:include page="/WEB-INF/includes/advertisements.jsp" />
-
-            </td>
-            <td class="page-content">
-            <logic:messagesPresent>
-              <div class="site-alert">
-                <ul>
-                <html:messages id="message">
-                  <li><c:out value="${message}"/></li>
-                </html:messages>
-                </ul>
-              </div>
-            </logic:messagesPresent>
-			<html:messages id="message" message="true">
-				<rhn:messages><c:out escapeXml="false" value="${message}" /></rhn:messages>
-			</html:messages>
-              <decorator:body />
-            </td>
-          </tr>
-        </table>
-        <!-- END MAIN table -->
-        <jsp:include page="/WEB-INF/includes/footer.jsp" />
-      </div><!-- end content -->
-    </div><!-- end bottom-wrap -->
-   </div><!-- end wrap -->
+    <footer>
+      <jsp:include page="/WEB-INF/includes/footer.jsp" />
+    </footer>
   </body>
 </html:html>

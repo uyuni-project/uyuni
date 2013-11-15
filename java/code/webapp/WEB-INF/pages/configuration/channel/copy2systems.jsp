@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="copy2systems.jsp.header" />
@@ -33,14 +33,13 @@
 			sortable="true"
 			sortattr="name">
 			<a href="/rhn/systems/details/configuration/Overview.do?sid=${current.id}">
-			  <img src="/img/rhn-listicon-system.gif"
-			       alt="<bean:message key='system.common.systemAlt' />" />
+			  <i class="fa fa-desktop" title="<bean:message key='system.common.systemAlt' />"></i>
 			  ${current.name}
 			</a>
 		</rl:column>
 	</rl:list>
 	<hr />
-	<div align="right">
+	<div class="text-right">
 		<input type="submit"
 				name="dispatch"
 				value="${rhn:localize('copy2systems.jsp.doCopy')}"

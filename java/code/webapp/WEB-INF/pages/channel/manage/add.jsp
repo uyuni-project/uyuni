@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
@@ -12,7 +12,7 @@
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
      <h2>
-      <img src="/img/rhn-icon-errata.gif" alt="erratum" /> <bean:message key="header.jsp.errata.add"/>
+      <i class="fa spacewalk-icon-patches" title="erratum"></i> <bean:message key="header.jsp.errata.add"/>
     </h2>
 
  <table class="details">

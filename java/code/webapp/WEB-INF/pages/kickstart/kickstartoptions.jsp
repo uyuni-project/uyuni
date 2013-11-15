@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:html xhtml="true">
+<html:html >
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/kickstart/kickstart-toolbar.jspf" %>
 
@@ -74,7 +74,7 @@
          </tr>
 
           <tr>
-            <td align="right" colspan="3"><input type="submit" value="<bean:message key="kickstartoptions.jsp.updatekickstart"/>"/></td>
+            <td align="right" colspan="3"><input type="submit" value="<bean:message key='kickstartoptions.jsp.updatekickstart'/>"/></td>
           </tr>
 
       </table>

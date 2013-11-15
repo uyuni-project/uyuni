@@ -4,22 +4,22 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:xhtml/>
+
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-info.gif">
+<rhn:toolbar base="h1" icon="fa-info-circle">
   <bean:message key="probes.jsp.toolbar"/>
 </rhn:toolbar>
 
-<div class="content-nav">
-<ul class="content-nav-rowone">
-<li class="${criticalClass}"><a href="/rhn/monitoring/ProbeList.do?state=CRITICAL" class="${criticalLink}"><span class="toolbar"><img src="/img/rhn-mon-down.gif"></span><bean:message key="Critical"/> (${criticalCount})</a></li>
-<li class="${warningClass}"><a href="/rhn/monitoring/ProbeList.do?state=WARNING" class="${warningLink}"><span class="toolbar"><img src="/img/rhn-mon-warning.gif"></span><bean:message key="Warning"/> (${warningCount})</a></li>
-<li class="${unknownClass}"><a href="/rhn/monitoring/ProbeList.do?state=UNKNOWN" class="${unknownLink}"><span class="toolbar"><img src="/img/rhn-mon-unknown.gif"></span><bean:message key="Unknown"/> (${unknownCount})</a></li>
-<li class="${pendingClass}"><a href="/rhn/monitoring/ProbeList.do?state=PENDING" class="${pendingLink}"><span class="toolbar"><img src="/img/rhn-mon-pending.gif"></span><bean:message key="Pending"/> (${pendingCount})</a></li>
-<li class="${okClass}"><a href="/rhn/monitoring/ProbeList.do?state=OK" class="${okLink}"><span class="toolbar"><img src="/img/rhn-mon-ok.gif"></span><bean:message key="OK"/> (${okCount})</a></li>
-<li class="${allClass}"><a href="/rhn/monitoring/ProbeList.do" class="${allLink}"><bean:message key="All"/> (${allCount})</a></li>
-</ul>
+<div class="spacewalk-content-nav">
+  <ul class="nav nav-tabs">
+    <li class="${criticalClass}"><a href="/rhn/monitoring/ProbeList.do?state=CRITICAL"><i class="fa fa-exclamation-circle text-error"></i><bean:message key="Critical"/><span class="badge">${criticalCount}</span></a></li>
+    <li class="${warningClass}"><a href="/rhn/monitoring/ProbeList.do?state=WARNING"><i class="fa fa-exclamation-triangle text-warning"></i><bean:message key="Warning"/><span class="badge">${warningCount}</span></a></li>
+    <li class="${unknownClass}"><a href="/rhn/monitoring/ProbeList.do?state=UNKNOWN"><i class="fa fa-question-circle text-info"></i><bean:message key="Unknown"/><span class="badge">${unknownCount}</span></a></li>
+    <li class="${pendingClass}"><a href="/rhn/monitoring/ProbeList.do?state=PENDING"><i class="fa fa-clock-o text-info"></i><bean:message key="Pending"/><span class="badge">${pendingCount}</span></a></li>
+    <li class="${okClass}"><a href="/rhn/monitoring/ProbeList.do?state=OK"><i class="fa fa-check text-success"></i><bean:message key="OK"/><span class="badge">${okCount}</span></a></li>
+    <li class="${allClass}"><a href="/rhn/monitoring/ProbeList.do"><bean:message key="All"/><span class="badge">${allCount}</span></a></li>
+  </ul>
 </div>
 
 <h2><bean:message key="monitoring.probes.jsp.header2"/></h2>

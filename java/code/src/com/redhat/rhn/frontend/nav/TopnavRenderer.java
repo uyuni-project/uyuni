@@ -34,7 +34,6 @@ import java.util.Map;
 public class TopnavRenderer extends Renderable {
 
     private HtmlTag ulTag;
-    private boolean foundFirstNode = false;
 
     /**
      * Public constructor
@@ -49,7 +48,7 @@ public class TopnavRenderer extends Renderable {
             return;
         }
         ulTag = new HtmlTag("ul");
-        ulTag.setAttribute("id", "mainNav");
+        ulTag.setAttribute("class", "nav navbar-nav collapse main-menu-hor");
         sb.append(ulTag.renderOpenTag());
     }
 
@@ -65,23 +64,9 @@ public class TopnavRenderer extends Renderable {
                               int depth) {
         if (canRender(node, depth)) {
             HtmlTag liTag = new HtmlTag("li");
-            String classStr = "";
-            if (node.isFirst() || !foundFirstNode) {
-                liTag.setAttribute("id", "mainFirst-active");
-                classStr = "mainFirstLink";
-                foundFirstNode = true;
-
-            }
-            else if (node.isLast()) {
-                liTag.setAttribute("id", "mainLast-active");
-                classStr = "mainLastLink";
-            }
-            else {
-                liTag.setAttribute("id", "main-active");
-                // no class
-            }
+            liTag.setAttribute("class", "active");
             liTag.addBody(getLink(node.getPrimaryURL(),
-                                node.getName(), classStr, node.getTarget()));
+                                node.getName(), null, node.getTarget()));
             sb.append(liTag.render());
             sb.append("\n");
         }
@@ -96,18 +81,8 @@ public class TopnavRenderer extends Renderable {
 
         if (canRender(node, depth)) {
             HtmlTag liTag = new HtmlTag("li");
-            String classStr = "";
-            if (node.isFirst() || !foundFirstNode) {
-                liTag.setAttribute("id", "mainFirst");
-                classStr = "mainFirstLink";
-                foundFirstNode = true;
-            }
-            else if (node.isLast()) {
-                liTag.setAttribute("id", "mainLast");
-                classStr = "mainLastLink";
-            }
             liTag.addBody(getLink(node.getPrimaryURL(),
-                                node.getName(), classStr, node.getTarget()));
+                                node.getName(), null, node.getTarget()));
             sb.append(liTag.render());
             sb.append("\n");
         }

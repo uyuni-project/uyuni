@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 
 <body>
@@ -23,7 +23,7 @@
 			<%@ include file="/WEB-INF/pages/common/fragments/audit/schedule-xccdf.jspf" %>
 
 			<html:hidden property="sid" value="${param.sid}"/>
-			<div align="right">
+			<div class="text-right">
 				</hr>
 				<html:submit property="schedule_button">
 				<bean:message key="system.audit.schedulexccdf.jsp.button"/>

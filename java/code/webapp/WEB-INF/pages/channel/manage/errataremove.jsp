@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
@@ -97,7 +97,7 @@
 			</rl:list>
 
 			<p align="right">
-			<input type="submit" name="dispatch"  value="<bean:message key="channel.jsp.errata.remove"/>"
+			<input type="submit" name="dispatch"  value="<bean:message key='channel.jsp.errata.remove'/>"
 	            <c:choose>
 	                <c:when test="${empty errata_data}">disabled</c:when>
 	            </c:choose>

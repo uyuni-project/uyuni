@@ -15,7 +15,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
-<html:xhtml/>
+
 <html>
     <body>
         <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
@@ -49,7 +49,7 @@
                 <rl:column headerkey="systemlist.jsp.system" bound="false" sortattr="name" sortable="true">
                     <c:choose>
                         <c:when test="${current.locked > 0}">
-                            <img src="/img/icon_locked.gif"/>
+                            <i class="fa fa-lock"></i>
                             <a href="/rhn/systems/details/Overview.do?sid=${current.id}">${current.name}</a>
                         </c:when>
                         <c:otherwise>
@@ -71,7 +71,7 @@
                     </c:choose>
                 </rl:column>
             </rl:list>
-            <div align="right">
+            <div class="text-right">
                 <input type="submit" name="dispatch" value='<bean:message key="ssm.misc.lockunlock.dispatch.lock"/>'/>
                 <input type="submit" name="dispatch" value='<bean:message key="ssm.misc.lockunlock.dispatch.unlock"/>'/>
             </div>

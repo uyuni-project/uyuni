@@ -4,13 +4,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:html xhtml="true">
+<html:html >
 <body>
 
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
 <div class="toolbar-h2">
-  <img src="/img/rhn-icon-info.gif" alt="" />
+  <i class="fa fa-info-circle text-primary" title=""></i>
   <bean:message key="system.jsp.customkey.updatetitle"/>
 </div>
 

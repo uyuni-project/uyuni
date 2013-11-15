@@ -7,9 +7,9 @@
 <%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
 </head>
 
-<html:html xhtml="true">
+<html:html >
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-info.gif" imgAlt="info.alt.img">
+<rhn:toolbar base="h1" icon="fa-info-circle" imgAlt="info.alt.img">
   ${requestScope.snippet.displayName}
 </rhn:toolbar>
 

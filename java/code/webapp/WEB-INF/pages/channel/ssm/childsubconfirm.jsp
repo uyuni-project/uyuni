@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
@@ -58,7 +58,7 @@
 
 	</rl:list>
 	<hr />
-	<div align="right"><html:submit property="dispatch"><bean:message key="ssmchildsubconfirm.jsp.submit"/></html:submit></div>
+	<div class="text-right"><html:submit property="dispatch"><bean:message key="ssmchildsubconfirm.jsp.submit"/></html:submit></div>
   </rl:listset>
 </body>
 </html>

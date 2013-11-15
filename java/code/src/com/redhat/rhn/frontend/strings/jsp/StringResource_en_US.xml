@@ -1133,20 +1133,14 @@
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="header.jsp.noSystemsSelected">
-        <source>No systems selected</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">./includes/header.jsp</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="header.jsp.singleSystemSelected">
-        <source>1 system selected</source>
+        <source>system selected</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="header.jsp.systemsSelected">
-        <source>{0} systems selected</source>
+        <source>systems selected</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
           <context context-type="paramnotes">
@@ -4073,6 +4067,12 @@ value for this entitlement, excluding the default organization's consumption.</s
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="errata.create.jsp.newbug">
+        <source>New Bug</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="errata.create.jsp.id">
         <source>ID:</source>
         <context-group name="ctx">
@@ -4712,7 +4712,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
       <trans-unit id="overview.jsp.systems">
-        <source>Systems (&lt;a href="/rhn/systems/Overview.do?showgroups=true"&gt;View System Groups&lt;/a&gt;)</source>
+        <source>&lt;a href="/rhn/systems/Overview.do?showgroups=true"&gt; &lt;div class="btn btn-default spacewalk-btn-margin-vertical"&gt; &lt;i class="spacewalk-icon-system-groups"&gt; &lt;/i&gt; View System Groups &lt;/div&gt; &lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
@@ -17511,6 +17511,13 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/systems/details/ListCustomData.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="toolbar.create.customdata">
+        <source>create new value</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/CreateCustomData.do</context>
+        </context-group>
+      </trans-unit>
+
       <!-- SDC Details Edit Page strings -->
       <trans-unit id="sdc.details.edit.header">
         <source>Edit System Details</source>

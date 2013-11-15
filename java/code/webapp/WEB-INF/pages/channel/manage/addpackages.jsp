@@ -4,18 +4,20 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
     <!-- disables the enter key from submitting the form -->
     <script type="text/javascript" language="JavaScript">
-		function key(e) {
-		var pkey = e ? e.which : window.event.keyCode;
-		return pkey != 13;
-		}
-		document.onkeypress = key;
-		if (document.layers) document.captureEvents(Event.KEYPRESS);
+      $(document).ready(function() {
+        $(window).keydown(function(event){
+          if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+          }
+        });
+      });
     </script>
 </head>
 <body>
@@ -26,7 +28,7 @@
 <rhn:csrf />
 <input type="hidden" name="cid" value="${cid}">
 <bean:message key="channel.jsp.package.addmessage"/>
-<h2><img src="/img/rhn-icon-packages.gif"> <bean:message key="channel.jsp.package.addtitle"/></h2>
+<h2><i class="fa spacewalk-icon-packages"></i> <bean:message key="channel.jsp.package.addtitle"/></h2>
 
 <%@ include file="/WEB-INF/pages/common/fragments/channel/manage/channel_selector.jspf" %>
 
@@ -75,7 +77,7 @@
 
 
   			<p align="right">
-			<input type="submit" name="confirm"  value="<bean:message key="channel.jsp.package.addconfirmbutton"/>"
+			<input type="submit" name="confirm"  value="<bean:message key='channel.jsp.package.addconfirmbutton'/>"
             <c:choose>
                 <c:when test="${empty pageList}">disabled</c:when>
             </c:choose>

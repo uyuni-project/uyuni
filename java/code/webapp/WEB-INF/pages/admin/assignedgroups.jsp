@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 
@@ -50,7 +50,7 @@
 
 </rl:list>
   <c:if test="${not (userIsOrgAdmin)}">
-    <div align="right">
+    <div class="text-right">
       <hr />
       <html:submit property="submit">
         <bean:message key="assignedgroups.jsp.submitpermissions"/>
@@ -94,7 +94,7 @@
 
     <c:if test="${!empty availableGroups}">
     <html:hidden property="uid" />
-    <div align="right">
+    <div class="text-right">
       <hr />
       <html:submit property="submit">
         <bean:message key="assignedgroups.jsp.submitdefaults"/>

@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/kickstart/kickstart-toolbar.jspf" %>
@@ -24,8 +24,7 @@
     <c:choose>
       <c:when test="${invalid_channel}">
         <tr><td>
-          <img src="/img/rhn-listicon-alert.gif"
-               alt="<bean:message key='error.common.errorAlt' />" />
+          <i class="fa fa-warning text-warning" title="<bean:message key='error.common.errorAlt' />"></i>
           <bean:message key="kickstartdownload.jsp.invalidchannel"/>
         </td></tr>
       </c:when>

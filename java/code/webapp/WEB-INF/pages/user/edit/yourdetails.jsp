@@ -3,53 +3,48 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
     <head>
         <meta name="page-decorator" content="none" />
     </head>
-<%-- disableAutoComplete() hack added to prevent certain browsers from exposing sensitive data --%>
-<body onLoad="disableAutoComplete();">
-<rhn:toolbar base="h1" img="/img/rhn-icon-users.gif"
- helpUrl="/rhn/help/reference/en-US/s1-sm-your-rhn.jsp#s2-sm-your-rhn-account"
- imgAlt="users.jsp.imgAlt">
- <bean:message key="details.jsp.account_details" />
-</rhn:toolbar>
-<div class="page-summary">
-<p>
-<bean:message key="yourdetails.jsp.summary" />
-</p>
-
-</div>
-<h2><bean:message key="details.jsp.personal_info" /></h2>
-<html:form action="/account/UserDetailsSubmit">
-
- <rhn:csrf />
- <table class="details" align="center">
-
-   <%@ include file="/WEB-INF/pages/common/fragments/user/edit_user_table_rows.jspf"%>
-  <tr>
-    <th><bean:message key="created.displayname"/></th>
-    <td>${created}</td>
-  </tr>
-
-    <tr>
-      <th><bean:message key="last_sign_in.displayname"/></th>
-      <td>${lastLoggedIn}</td>
-    </tr>
-
- </table>
-
-
- <html:hidden property="uid" />
- <c:if test="${!empty mailableAddress}">
- <div align="right">
-   <hr />
-   <rhn:submit valueKey="message.Update"/>
- </div>
- </c:if>
-
-</html:form>
-
-</body>
+    <body>
+        <rhn:toolbar base="h1" icon="fa-user"
+                     helpUrl="/rhn/help/reference/en-US/s1-sm-your-rhn.jsp#s2-sm-your-rhn-account"
+                     imgAlt="users.jsp.imgAlt">
+            <bean:message key="details.jsp.account_details" />
+        </rhn:toolbar>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4><bean:message key="details.jsp.personal_info" /></h4>
+            </div>
+            <div class="panel-body">
+                <p><bean:message key="yourdetails.jsp.summary" /></p>
+                <hr />
+                <html:form action="/account/UserDetailsSubmit" styleClass="form-horizontal">
+                    <rhn:csrf />
+                    <%@ include file="/WEB-INF/pages/common/fragments/user/edit_user_table_rows.jspf"%>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label"><bean:message key="created.displayname"/></label>
+                        <div class="col-lg-6">${created}</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label"><bean:message key="last_sign_in.displayname"/></label>
+                        <div class="col-lg-6">${lastLoggedIn}</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-3 col-lg-6">
+                            <button type="submit"
+                                    class="btn btn-success"
+                                    value="<bean:message key='message.Update'/>"
+                                <c:if test="${empty mailableAddress}">disabled="disabled"</c:if> >
+                                <bean:message key="message.Update"/>
+                            </button>
+                        </div>
+                    </div>
+                    <html:hidden property="uid"/>
+                </html:form>
+            </div>
+        </div>
+    </body>
 </html>

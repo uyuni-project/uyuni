@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:html xhtml="true">
+<html:html >
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/kickstart/kickstart-toolbar.jspf" %>
 
@@ -39,7 +39,7 @@
 <hr />
 <input type="hidden" name="ksid" value="<c:out value="${param.ksid}"/>" />
 <input type="hidden" name="returnvisit" value="<c:out value="${param.returnvisit}"/>"/>
-<div align="right">
+<div class="text-right">
   <html:submit property="dispatch">
     <bean:message key="kickstart.cryptokeys.jsp.submit"/>
   </html:submit>

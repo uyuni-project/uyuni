@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:html xhtml="true">
+<html:html >
 
 <body>
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
@@ -15,26 +15,22 @@
                 <c:choose>
                     <c:when test="${not empty param.cnid}">
                         <a href="/rhn/systems/details/DeleteCrashNote.do?sid=${sid}&crid=${crid}&cnid=${cnid}">
-                            <img src="/img/action-del.gif"
-                                 alt="<bean:message key="toolbar.delete.note"/>"
-                                 title="<bean:message key="toolbar.delete.note"/>" />
+                            <i class="fa fa-trash-o"
+                                 title="<bean:message key='toolbar.delete.note'/>" ></i>
                             <bean:message key="toolbar.delete.note"/>
                         </a>
                         |
                     </c:when>
                 </c:choose>
                 <a href="/rhn/systems/details/SoftwareCrashDelete.do?crid=${crid}&sid=${sid}">
-                    <img src="/img/action-del.gif"
-                         alt="<bean:message key="toolbar.delete.crash"/>"
-                         title="<bean:message key="toolbar.delete.crash"/>" />
+                    <i class="fa fa-trash-o"
+                         title="<bean:message key='toolbar.delete.crash'/>" ></i>
                     <bean:message key="toolbar.delete.crash"/>
                 </a>
 
             </span>
         </div>
-        <img src="/img/rhn-icon-bug-ex.gif"
-             alt="<bean:message key="info.alt.img"/>"
-             title="<bean:message key="info.alt.img"/>"/>
+        <i class="fa spacewalk-icon-bug-ex" title="<bean:message key='info.alt.img'/>"></i>
         ${fn:escapeXml(crash.crash)}
     </div>
 
@@ -66,7 +62,7 @@
         </table>
 
         <hr/>
-        <div align="right">
+        <div class="text-right">
             <c:choose>
                 <c:when test='${not empty cnid}'>
                     <html:submit property="edit_button"><bean:message key="edit_note.jsp.update"/></html:submit>

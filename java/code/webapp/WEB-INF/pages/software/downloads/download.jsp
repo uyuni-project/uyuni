@@ -3,13 +3,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean"	prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html"	prefix="html"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<html:xhtml/>
+
 <html>
 <head>
   <script src="/javascript/iso_download.js" type="text/javascript"> </script>
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-channels.gif"  imgAlt="common.download.channelAlt">
+<rhn:toolbar base="h1" icon="spacewalk-icon-software-channels"  imgAlt="common.download.channelAlt">
 <c:choose>
   <c:when test="${empty channel}">
     <decorator:getProperty property="meta.name" />

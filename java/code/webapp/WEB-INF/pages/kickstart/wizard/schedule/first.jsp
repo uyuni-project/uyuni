@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
-<html:xhtml />
+
 <html>
 
 <head>
@@ -27,8 +27,7 @@ function setStep(stepName) {
 
 <br />
 <h2>
-  <img src="/img/icon_kickstart_session-medium.gif"
-       alt="<bean:message key='system.common.kickstartAlt' />" />
+  <i class="fa fa-rocket" title="<bean:message key='system.common.kickstartAlt' />"></i>
   <c:choose>
     <c:when test="${system.bootstrap}">
       <bean:message key="kickstart.configure.heading1.jsp" />
@@ -47,8 +46,8 @@ function setStep(stepName) {
     </c:if>
     <c:if test="${requestScope.isVirtualGuest == 'true'}">
         <div class="page-summary">
-            <bean:message key="kickstart.schedule.cannot.provision.guest"/><p/>
-            <c:if test="${requestScope.virtHostIsRegistered}">
+            <bean:message key="kickstart.schedule.cannot.provision.guest"/>
+            <c:if test="${requestScope.virtHostIsRegistered} == 'true'">
                 <bean:message key="kickstart.schedule.visit.host.virt.tab" arg0="${requestScope.hostSid}"/>
             </c:if>
         </div>

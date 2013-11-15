@@ -4,21 +4,21 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-errata.gif">
-    <!-- helpUrl="/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Errata_Management-Managed_Errata_Details.jsp" -->
+<rhn:toolbar base="h1" icon="spacewalk-icon-patches">
+	<!-- helpUrl="/rhn/help/getting-started/en-US/chap-Getting_Started_Guide-Errata_Management.jsp#sect-Getting_Started_Guide-Errata_Management-Creating_and_Editing_Errata" -->
     <bean:message key="errata.edit.toolbar"/> <c:out value="${advisory}" />
   </rhn:toolbar>
 
   <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/manage_errata.xml"
                   renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
 
-  <h2><img src="/img/rhn-icon-packages.gif">
+  <h2><i class="fa spacewalk-icon-packages"></i>
       <bean:message key="errata.edit.packages.confirm.confirmpackageaddition"/></h2>
 
   <p><bean:message key="errata.edit.packages.confirm.instructions"/></p>
@@ -44,7 +44,7 @@
 
       </rl:list>
 
-      <div align="right">
+      <div class="text-right">
           <rhn:submitted/>
           <hr/>
           <input type="submit"

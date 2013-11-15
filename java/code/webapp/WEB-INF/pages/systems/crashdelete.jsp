@@ -5,13 +5,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
-<html:html xhtml="true">
+<html:html >
 <body>
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
     <br/>
 
-    <rhn:toolbar base="h2" img="/img/rhn-icon-bug-ex.gif" imgAlt="info.alt.img">
+    <rhn:toolbar base="h2" icon="spacewalk-icon-bug-ex" iconAlt="info.alt.img">
         ${fn:escapeXml(crash.crash)}
     </rhn:toolbar>
 
@@ -29,7 +29,7 @@
 
         <%@ include file="/WEB-INF/pages/common/fragments/systems/crash_details.jspf" %>
 
-        <div align="right">
+        <div class="text-right">
             <hr/>
             <html:hidden property="crid" value="${crid}"/>
             <html:hidden property="sid" value="${sid}"/>

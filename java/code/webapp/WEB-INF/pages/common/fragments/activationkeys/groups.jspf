@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="groups" />
@@ -14,7 +14,7 @@
 
 
 <div class="page-summary">
-	<h2><img src="/img/rhn-icon-system_group.gif" alt="system group" />
+	<h2><i class="fa spacewalk-icon-system-groups" title="system group"></i>
 	<bean:message key="${param.title_key}"/>
 	</h2>
     <p>
@@ -55,7 +55,7 @@
 	</rl:list>
  			
 </div>
-<div align="right">
+<div class="text-right">
    <rhn:submitted/>
    <hr/>
 	

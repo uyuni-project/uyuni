@@ -3,13 +3,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="activationkeys.jsp.header" />
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-keyring.gif"
+<rhn:toolbar base="h1" icon="fa-key"
 			imgAlt="activation-keys.common.alt"
 			creationUrl="/rhn/activationkeys/Create.do"
  			creationType="activationkeys"
@@ -20,22 +20,16 @@
 </rhn:toolbar>
 
 
-<p>
-	<bean:message key="activation-keys.jsp.para1"/>
-</p>
-
-<p>
+<p><bean:message key="activation-keys.jsp.para1"/></p>
 <h2><bean:message key="activation-key.jsp.universal-default"/></h2>
-<p>
-	<bean:message key="activation-keys.jsp.universal-default-text"/>
-</p>
+<p><bean:message key="activation-keys.jsp.universal-default-text"/></p>
 <c:choose>
-   <c:when test="${not empty requestScope['default']}">
-<table class="details">
+  <c:when test="${not empty requestScope['default']}">
+  <table class="table">
     <tr>
-        <th>
+        <td>
             <bean:message key="kickstart.activationkeys.jsp.description"/>
-        </th>
+        </td>
         <td>
 			<c:choose>
                <c:when test="${requestScope['default'].note != null}">
@@ -51,20 +45,19 @@
 
         </td>
     </tr>
-
     <tr>
-        <th>
+        <td>
             <bean:message key="kickstart.activationkeys.jsp.key"/>
-        </th>
+        </td>
         <td>
         	<c:out value="${requestScope['default'].token}"/>
         </td>
     </tr>
 
     <tr>
-        <th>
+        <td>
             <bean:message key="kickstart.activationkeys.jsp.usagelimit"/>
-        </th>
+        </td>
         <td>
 			<c:choose>
                <c:when test="${requestScope['default'].usageLimit != null}">
@@ -78,9 +71,9 @@
         </td>
     </tr>
     <tr>
-        <th>
+        <td>
             <bean:message key="Status"/>
-        </th>
+        </td>
         <td>
 			<c:choose>
                <c:when test="${not requestScope['default'].disabled}">
@@ -160,10 +153,11 @@
 <hr/>
 <div class="small-text">*<strong><bean:message key="Tip"/>:</strong> <bean:message key="activation-keys.jsp.is-default-key-tip"/></div>
 <c:if test = "${not empty requestScope.pageList}">
-<div align="right">
+<div class="text-right">
    <rhn:submitted/>
     <input type="submit"
 		name ="dispatch"
+    class="btn btn-default"
     	value="${rhn:localize('kickstart.activationkeys.jsp.submit')}"/>
 </div>
 </c:if>

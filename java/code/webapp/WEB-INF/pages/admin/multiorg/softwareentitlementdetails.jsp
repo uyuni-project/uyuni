@@ -4,11 +4,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:html xhtml="true">
+<html:html >
 <head>
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-channels.gif"
+<rhn:toolbar base="h1" icon="spacewalk-icon-software-channels"
 	miscUrl="${url}"
 	miscAcl="user_role(org_admin)"
 	miscText="${text}"

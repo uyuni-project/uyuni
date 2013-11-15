@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
 <meta name="page-decorator" content="none" />
@@ -39,7 +39,7 @@
 </script>
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-system.gif" imgAlt="system.common.systemAlt"
+<rhn:toolbar base="h1" icon="fa-desktop" imgAlt="system.common.systemAlt"
  helpUrl="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-list-ood">
   <bean:message key="duplicates.jsp.header"/>
 </rhn:toolbar>
@@ -73,10 +73,9 @@
   <input type="hidden" name="key" value="${param.key}"/>
   <input type="hidden" name="key_type" value="${param.key_type}"/>
 
-  <div align="right">
-
+  <div class="text-right">
     <hr />
-    <input type="submit" name="refresh" value="<bean:message key='Refresh Comparison'/>" />
+    <button type="submit" class="btn btn-default" name="refresh"><i class="fa fa-refresh"></i> <bean:message key='Refresh Comparison'/></button>
   </div>
 <rhn:submitted/>
 <br/>
@@ -106,10 +105,10 @@
 		</c:forEach>
 	</tr>
 	<tr>
-		<th colspan="${requestScope.systems.size + 1}"><bean:message key="System Identity Properties"/>&nbsp;
+		<td colspan="${requestScope.systems.size + 1}"><bean:message key="System Identity Properties"/>&nbsp;
 			 <a  id='sysIdHide' href="javascript:pageToggleRows('sysId', ['lastCheckinRow', 'macAddressRow','ipAddressRow','ipv6AddressRow','systemGroupsRow'])"><bean:message key="Click Here To Hide"/> </a>
 			 <a  style="display:none" id='sysIdShow' href="javascript:pageToggleRows('sysId', ['lastCheckinRow', 'macAddressRow','ipAddressRow','ipv6AddressRow','systemGroupsRow'])"><bean:message key="Click Here To Show"/> </a>
-	    </th>
+	    </td>
 	</tr>
 	<tr class="list-row-odd" id="lastCheckinRow">
 		<c:set var ="key" value="systemlist.jsp.last_checked_in"/>
@@ -142,10 +141,10 @@
 		<%@ include file="/WEB-INF/pages/common/fragments/systems/duplicates/render-item-list-list.jspf" %>
 	</tr>
 	<tr>
-		<th colspan="${requestScope.systems.size + 1}"><bean:message key="Extended System Identity Properties"/> &nbsp;
+		<td colspan="${requestScope.systems.size + 1}"><bean:message key="Extended System Identity Properties"/> &nbsp;
 			 <a  id='extendedSysIdHide' href="javascript:pageToggleRows('extendedSysId', ['registrationDateRow', 'systemIdRow','activationKeysRow'])"><bean:message key="Click Here To Hide"/> </a>
 			 <a  style="display:none" id='extendedSysIdShow' href="javascript:pageToggleRows('sysId', ['registrationDateRow', 'systemIdRow','activationKeysRow'])"><bean:message key="Click Here To Show"/> </a>
-       </th>
+       </td>
 	</tr>
 	<tr class="list-row-odd" id = "registrationDateRow">
 		<c:set var ="key" value="Registration Date"/>
@@ -167,10 +166,10 @@
 		<%@ include file="/WEB-INF/pages/common/fragments/systems/duplicates/render-item-list-list.jspf" %>
 	</tr>
 	<tr>
-		<th colspan="${requestScope.systems.size + 1}"><bean:message key="System Content And Monitoring"/> &nbsp;
+		<td colspan="${requestScope.systems.size + 1}"><bean:message key="System Content And Monitoring"/> &nbsp;
 			 <a  id='sysContentIdHide' href="javascript:pageToggleRows('sysContentId', ['baseChannelRow', 'childChannelsRow','configChannelsRow','monitoringProbesRow'])"><bean:message key="Click Here To Hide"/> </a>
 			 <a  style="display:none" id='sysContentIdShow' href="javascript:pageToggleRows('sysContentId', ['baseChannelRow', 'childChannelsRow','configChannelsRow','monitoringProbesRow'])"><bean:message key="Click Here To Show"/> </a>
-	    </th>
+	    </td>
 	</tr>
 
 	<tr class="list-row-odd" id = "baseChannelRow">
@@ -198,10 +197,10 @@
 		<%@ include file="/WEB-INF/pages/common/fragments/systems/duplicates/render-item-list-list.jspf" %>
 	</tr>
 	<tr>
-		<th colspan="${requestScope.systems.size + 1}"><bean:message key="softwareEntitlementDetails.header.entitlementUsage"/> &nbsp;
+		<td colspan="${requestScope.systems.size + 1}"><bean:message key="softwareEntitlementDetails.header.entitlementUsage"/> &nbsp;
 			 <a  id='sysEntUsageIdHide' href="javascript:pageToggleRows('sysEntUsageId', ['systemEntitlementsRow', 'softwareEntitlementsRow'])"><bean:message key="Click Here To Hide"/> </a>
 			 <a  style="display:none" id='sysEntUsageIdShow' href="javascript:pageToggleRows('sysEntUsageId', ['systemEntitlementsRow', 'softwareEntitlementsRow'])"><bean:message key="Click Here To Show"/> </a>
-	    </th>
+	    </td>
 	</tr>
 	<tr class="list-row-odd" id = "systemEntitlementsRow">
 		<c:set var ="key" value="System Entitlements"/>
@@ -221,7 +220,6 @@
 <c:otherwise><p><bean:message key = "nosystems.message"/></p></c:otherwise>
 </c:choose>
 </rl:listset>
-
 
 </body>
 </html>

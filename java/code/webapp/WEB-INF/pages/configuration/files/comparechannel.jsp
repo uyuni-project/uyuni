@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 
@@ -26,17 +26,17 @@
     <rhn:column header="comparechannel.jsp.channel"
                 url="/rhn/configuration/ChannelOverview.do?ccid=${current.id}">
         <c:if test="${current.type == 'normal'}">
-    	  <img alt='<bean:message key="config.common.globalAlt" />' src="/img/rhn-listicon-channel.gif" />
+    	  <i class="fa spacewalk-icon-software-channels" title="<bean:message key="config.common.globalAlt" />"></i>
           ${current.name}
         </c:if>
 
         <c:if test="${current.type == 'local_override'}">
-          <img alt='<bean:message key="config.common.localAlt" />' src="/img/rhn-listicon-system.gif" />
+          <i class="fa fa-desktop" title="<bean:message key="config.common.localAlt" />"></i>
           ${current.name}
         </c:if>
 
         <c:if test="${current.type == 'server_import'}">
-          <img alt='<bean:message key="config.common.sandboxAlt" />' src="/img/rhn-listicon-sandbox.png" />
+          <i class="fa spacewalk-icon-sandbox" title="<bean:message key="config.common.sandboxAlt" />"></i>
           ${current.name}
         </c:if>
     </rhn:column>

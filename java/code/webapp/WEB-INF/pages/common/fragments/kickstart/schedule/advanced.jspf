@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml />
+
 <html>
 
   <head>
@@ -50,7 +50,7 @@ function enableBondStaticIpAddress() {
   <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
-<h2><img src="/img/icon_kickstart_session-medium.gif" /><bean:message key="kickstart.schedule.heading4.jsp" /></h2>
+<h2><i class="fa fa-rocket"></i><bean:message key="kickstart.schedule.heading4.jsp" /></h2>
 <c:set var="form" value="${kickstartScheduleWizardForm.map}"/>
 <html:form method="POST" action="${actionUrl}">
 <rhn:csrf />
@@ -82,8 +82,8 @@ function enableBondStaticIpAddress() {
 	<table width="100%">
 	  <tr>
 	    <td align="right">
-	      <input type="button" value="<bean:message key="kickstart.schedule.button3.jsp" />" onclick="setStep('first');moveNext();" />
-          <input type="button" value="<bean:message key="kickstart.schedule.button2.jsp" />" onclick="setStep('third');moveNext();" />
+	      <input type="button" value="<bean:message key='kickstart.schedule.button3.jsp'/>" onclick="setStep('first');moveNext();" />
+          <input type="button" value="<bean:message key='kickstart.schedule.button2.jsp'/>" onclick="setStep('third');moveNext();" />
 	    </td>
 	  </tr>
 	</table>

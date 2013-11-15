@@ -5,7 +5,7 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/config-managment" prefix="cfg" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<html:xhtml />
+
 
 <html>
 <body>
@@ -14,7 +14,7 @@
 
 <h2><bean:message key="deploy.jsp.h2" /></h2>
 <bean:message key="deploy.jsp.description"/>
-<p />
+
 <html:form action="/configuration/channel/ChooseFilesSubmit.do?ccid=${ccid}">
     <rhn:csrf />
 	<rhn:submitted/>
@@ -45,7 +45,7 @@
 	</rhn:list>
 <c:if test="${not empty requestScope.pageList}">
 <hr />
-	<div align="right">
+	<div class="text-right">
 		<html:submit property="dispatch"><bean:message key="deploy.jsp.deployallbutton" /></html:submit>
 		<html:submit property="dispatch"><bean:message key="deploy.jsp.deployselectedbutton" /></html:submit>
 	</div>

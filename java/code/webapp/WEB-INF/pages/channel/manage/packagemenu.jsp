@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
@@ -13,7 +13,7 @@
 <%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
 
     <h2>
-      <img src="/img/rhn-icon-packages.gif" alt="package" /> Packages
+      <i class="fa spacewalk-icon-packages" title="package"></i> Packages
     </h2>
 
     <ul>

@@ -4,10 +4,10 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-packages.gif" imgAlt="packagesearch.jsp.imgAlt"
+<rhn:toolbar base="h1" icon="spacewalk-icon-packages" imgAlt="packagesearch.jsp.imgAlt"
                helpUrl="/rhn/help/reference/en-US/s1-sm-channels-packages.jsp#s2-sm-software-search">
     <bean:message key="packagesbyname.jsp.toolbar"/>
   </rhn:toolbar>

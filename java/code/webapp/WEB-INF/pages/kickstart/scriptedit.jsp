@@ -8,10 +8,10 @@
 <%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
 </head>
 
-<html:xhtml/>
+
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-kickstart_profile.gif"
+<rhn:toolbar base="h1" icon="fa-rocket"
            deletionUrl="/rhn/kickstart/KickstartScriptDelete.do?kssid=${kssid}&ksid=${ksdata.id}"
            deletionType="kickstartscript" >
    <bean:message key="kickstartdetails.jsp.header1" arg0="${fn:escapeXml(ksdata.label)}"/>

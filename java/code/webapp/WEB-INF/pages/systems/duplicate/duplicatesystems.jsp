@@ -4,13 +4,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-system.gif" imgAlt="system.common.systemAlt"
+<rhn:toolbar base="h1" icon="fa-desktop" imgAlt="system.common.systemAlt"
  helpUrl="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-list-ood">
   <bean:message key="duplicates.jsp.header"/>
 </rhn:toolbar>
@@ -109,18 +109,15 @@
 
 </rl:list>
 
-  <div align="right">
-
-    <hr />
-    <html:submit property="dispatch">
-        <bean:message key="Delete Selected"/>
+  <div class="text-right">
+    <html:submit styleClass="btn btn-default" property="dispatch">
+       <bean:message key="Delete Selected"/>
     </html:submit>
 
   </div>
 <rhn:submitted/>
 
 </rl:listset>
-
 
 </body>
 </html>

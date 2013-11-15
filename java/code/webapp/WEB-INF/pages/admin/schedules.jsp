@@ -5,11 +5,11 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 
-<rhn:toolbar base="h1" img="/img/rhn-icon-your_rhn.gif"
+<rhn:toolbar base="h1" icon="fa-tachometer"
              imgAlt="channels.overview.toolbar.imgAlt"
              creationUrl="/rhn/admin/ScheduleDetail.do"
              creationType="schedule"

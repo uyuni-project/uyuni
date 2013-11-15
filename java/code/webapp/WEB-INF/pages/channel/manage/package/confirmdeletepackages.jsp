@@ -4,15 +4,15 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
 </head>
 <body>
 
-<rhn:toolbar base="h1" img="/img/rhn-icon-packages.gif" imgAlt="overview.jsp.alt">
-<!--helpUrl="/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Channel_and_Package_Management-Manage_Software_Packages.jsp"-->
+<rhn:toolbar base="h1" icon="spacewalk-icon-packages" iconAlt="overview.jsp.alt">
+<!-- helpUrl="/rhn/help/getting-started/en-US/sect-Getting_Started_Guide-Channel_Management-Creating_and_Managing_Custom_Channels-Removing_Software_Packages.jsp" -->
    <bean:message key="channel.jsp.manage.package.title"/>
 </rhn:toolbar>
 
@@ -78,9 +78,9 @@
 	<rl:csv dataset="pageList"
 		        name="packageList"
 		        exportColumns="id, nvrea, summary, provider" />
-	<div align="right">
+	<div class="text-right">
 	  <hr />
-		<input type="submit" name="confirm" value="<bean:message key="channel.jsp.manage.package.delete"/>" />
+		<input type="submit" name="confirm" value="<bean:message key='channel.jsp.manage.package.delete'/>" />
 	</div>
 		<rhn:submitted/>
 

@@ -7,7 +7,7 @@
 <body>
 <rhn:toolbar
    base="h1"
-   img="/img/rhn-icon-org.gif"
+   icon="fa-group"
    miscUrl="${url}"
    miscAcl="user_role(org_admin)"
    miscText="${text}"
@@ -52,7 +52,7 @@
       </rl:column>
    </rl:list>
    <hr/>
-   <div align="right">
+   <div class="text-right">
      <rhn:submitted/>
      <input type="submit" name ="confirm" value="${rhn:localize('org.trust.modify')}" />
    </div>

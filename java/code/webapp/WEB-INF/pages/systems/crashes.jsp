@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="System Details" />
@@ -14,8 +14,7 @@
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
 <h2>
-  <img src="/img/rhn-icon-bug-ex.gif"
-       alt="<bean:message key='crashes.jsp.crashes' />" />
+  <i class="fa spacewalk-icon-bug-ex" title="<bean:message key='crashes.jsp.crashes' />"></i>
   <bean:message key="crashes.jsp.crashes"/>
 </h2>
 
@@ -76,7 +75,7 @@
         exportColumns="crash,count,component,modified"
         header="${system.name}"/>
 
-    <div align="right">
+    <div class="text-right">
         <hr />
         <html:submit property="dispatch">
             <bean:message key="crashes.jsp.delete.button"/>

@@ -3,9 +3,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:html xhtml="true">
+<html:html >
 <body>
-  <rhn:toolbar base="h1" img="/img/rhn-icon-subscribe_replace.png" imgAlt="info.alt.img">
+  <rhn:toolbar base="h1" icon="fa-retweet" iconAlt="info.alt.img">
     <bean:message key="distchannelmap.jsp.delete"/>
   </rhn:toolbar>
   <h2><bean:message key="distchannelmap.jsp.delete"/></h2>
@@ -59,7 +59,7 @@
     </tr>
   </table>
 
-  <div align="right">
+  <div class="text-right">
   <hr />
     <html:submit disabled="${empty dcmap.org}"><bean:message key="distchannelmap.jsp.delete.submit"/></html:submit>
     <html:hidden property="dcm" value="${dcmap.id}" />

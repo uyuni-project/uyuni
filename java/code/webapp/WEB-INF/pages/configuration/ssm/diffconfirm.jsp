@@ -3,12 +3,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
 <h2>
-  <img src="/img/rhn-config_files.gif" alt='<bean:message key="ssmdiff.jsp.imgAlt" />' />
+  <i class="fa spacewalk-icon-manage-configuration-files" title="<bean:message key="ssmdiff.jsp.imgAlt" />"></i>
   <bean:message key="diffconfirm.jsp.header" />
 </h2>
 
@@ -30,7 +30,7 @@
   <%@ include file="/WEB-INF/pages/common/fragments/configuration/ssm/configconfirmlist.jspf"%>
 
   <c:if test="${not empty requestScope.pageList}">
-    <div align="right">
+    <div class="text-right">
       <hr />
       <html:submit property="dispatch">
         <bean:message key="diffconfirm.jsp.confirm" />

@@ -4,27 +4,21 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
-
-    <style type="text/css">
-        .fixedwidth { font-family: Courier, Monospace; }
-    </style>
 </head>
 <body>
 
-<rhn:toolbar base="h1" img="/img/rhn-icon-system.gif" imgAlt="audit.jsp.alt"
+<rhn:toolbar base="h1" icon="fa-desktop"
  helpUrl="/rhn/help/reference/en-US/s2-sm-system-overview.jsp">
   <bean:message key="auditsearch.jsp.header"/>
 </rhn:toolbar>
 
 <script type="text/javascript">
 <c:out escapeXml="false" value="//<![CDATA[" />
-    var typeSets = new Hash(
-        <c:out escapeXml="false" value="${auJsonTypes}" />
-    );
+    var typeSets = <c:out escapeXml="false" value="${auJsonTypes}" />;
 
     function check_defaults() {
         check_set("default");
@@ -42,69 +36,68 @@
     function check_set(setName) {
         uncheck_all();
 
-        typeSets.get(setName).each(function(typeName) {
-            var cbox = $("type_" + typeName);
-
-            if (cbox) {
-                cbox.checked = "checked";
-            }
+        $.each(typeSets[setName], function(index, typeName) {
+            $("#type_" + typeName).prop('checked', 'checked');
         });
     }
 
     function check_set_from_option(ev) {
         check_set(this.innerHTML);
-        ev.stop();
+        ev.stopPropagation();
     }
 
     // set all checkboxes to val
     function set_checkboxes(val) {
-        $$("input[type=checkbox]").each(function(cbox) {
-            cbox.checked = val;
-        });
+        $("input[type=checkbox]").prop('checked', val);
     }
 
-    function init() {
+    $(document).ready(function() {
         check_defaults();
 
-        Event.observe('check_all_button', 'click', check_all);
-        Event.observe('uncheck_all_button', 'click', uncheck_all);
+        $('#check_all_button').click(check_all);
+        $('#uncheck_all_button').click(uncheck_all);
 
         // create the 'set selector' dropdown
-        var setChooser = new Element('select');
-        setChooser.insert(new Element('option').update('Check [set]'));
+        var setChooser = $(document.createElement('select'));
+        setChooser.append(
+            $(document.createElement('option')).html('Check [set]')
+        );
 
-        typeSets.keys().each(function(key) {
-            setChooser.insert(
-                new Element('option')
-                    .observe('click', check_set_from_option)
-                    .update(key)
+        $.each(typeSets, function(key, typeName) {
+            setChooser.append(
+              $(document.createElement('option'))
+              .click(check_set_from_option)
+              .html(key)
             );
         });
 
-        $('checkboxControls').insert(setChooser);
-    }
+        $('#checkboxControls').append(setChooser);
+    });
 
-    document.observe("dom:loaded", init);
 <c:out escapeXml="false" value="//]]>" />
 </script>
-
-<html:form action="/audit/Search.do">
-<rhn:csrf />
-<rhn:submitted />
-
-<div class="search-choices">
-    <div class="search-choices-group">
-        <table class="details">
-            <tr>
-                <th colspan="3">Machine / Time range</th>
-            </tr>
-            <tr style="text-align: center;">
-                <td style="text-align: center; vertical-align: middle;">
+<div class="panel panel-default">
+    <div class="panel-body">
+        <html:form action="/audit/Search.do">
+        <rhn:csrf />
+        <rhn:submitted />
+        <div class="text-right form-group">
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-search"></i>
+                <bean:message key="button.search"/>
+            </button>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Machine / Time range</h4>        
+            </div>
+            <div class="panel-body">
+                <div class="col-md-4">
                     <html:select property="machine">
                         <html:options collection="machines" property="name" />
                     </html:select>
-                </td>
-                <td colspan="2">
+                </div>
+                <div class="col-md-8">
                     <c:choose>
                         <c:when test="${startDisp == '<<' || endDisp == '>>'}">
                             <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
@@ -127,59 +120,66 @@
 
                     <html:hidden property="startMilli" />
                     <html:hidden property="endMilli" />
-                </td>
-            </tr>
-            <tr>
-                <th colspan="3">Audit Types</th>
-            </tr>
-            <tr>
-                <td id="checkboxControls" colspan="3">
-                    <button type="button" id="check_all_button">Check all</button>
-                    <button type="button" id="uncheck_all_button">Uncheck all</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <ul style="list-style-type: none; padding-left: 0; margin-top: 0;">
-                        <c:forEach var="autype" items="${types}" begin="0" step="3">
-                            <li>
-                                <html:multibox property="autypes" value="${autype}" styleId="type_${autype}" />
-                                <label for="type_${autype}"><c:out value="${autype}" /></label>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </td>
-                <td>
-                    <ul style="list-style-type: none; padding-left: 0; margin-top: 0;">
-                        <c:forEach var="autype" items="${types}" begin="1" step="3">
-                            <li>
-                                <html:multibox property="autypes" value="${autype}" styleId="type_${autype}" />
-                                <label for="type_${autype}"><c:out value="${autype}" /></label>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </td>
-                <td>
-                    <ul style="list-style-type: none; padding-left: 0; margin-top: 0;">
-                        <c:forEach var="autype" items="${types}" begin="2" step="3">
-                            <li>
-                                <html:multibox property="autypes" value="${autype}" styleId="type_${autype}" />
-                                <label for="type_${autype}"><c:out value="${autype}" /></label>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td><td>&nbsp;</td>
-                <td style="text-align: right;"><html:submit><bean:message key="button.search" /></html:submit></td>
-            </tr>
-        </table>
-    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Audit Types</h4>
+            </div>
+            <div class="panel-body">
+<table class="table">
+                    <tr>
+                        <td id="checkboxControls" colspan="3">
+                            <button type="button" class="btn btn-default" id="check_all_button">Check all</button>
+                            <button type="button" class="btn btn-default" id="uncheck_all_button">Uncheck all</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul style="list-style-type: none; padding-left: 0; margin-top: 0;">
+                                <c:forEach var="autype" items="${types}" begin="0" step="3">
+                                    <li>
+                                        <html:multibox property="autypes" value="${autype}" styleId="type_${autype}" />
+                                        <label for="type_${autype}"><c:out value="${autype}" /></label>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul style="list-style-type: none; padding-left: 0; margin-top: 0;">
+                                <c:forEach var="autype" items="${types}" begin="1" step="3">
+                                    <li>
+                                        <html:multibox property="autypes" value="${autype}" styleId="type_${autype}" />
+                                        <label for="type_${autype}"><c:out value="${autype}" /></label>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul style="list-style-type: none; padding-left: 0; margin-top: 0;">
+                                <c:forEach var="autype" items="${types}" begin="2" step="3">
+                                    <li>
+                                        <html:multibox property="autypes" value="${autype}" styleId="type_${autype}" />
+                                        <label for="type_${autype}"><c:out value="${autype}" /></label>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="text-right">
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-search"></i>
+                <bean:message key="button.search"/>
+            </button>
+        </div>
+        </html:form>
+    </div> 
 </div>
-
-</html:form>
-
 </body>
 </html>
 

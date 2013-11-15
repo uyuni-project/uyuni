@@ -3,14 +3,14 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-errata.gif" imgAlt="errata.common.errataAlt">
-    <!-- helpUrl="/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Errata_Management-Managed_Errata_Details.jsp" -->
+<rhn:toolbar base="h1" icon="spacewalk-icon-patches" iconAlt="errata.common.errataAlt">
+	<!-- helpUrl="/rhn/help/getting-started/en-US/chap-Getting_Started_Guide-Errata_Management.jsp#sect-Getting_Started_Guide-Errata_Management-Creating_and_Editing_Errata" -->
     <bean:message key="errata.edit.toolbar"/> <c:out value="${advisory}" />
   </rhn:toolbar>
 
@@ -45,7 +45,7 @@
 <hr />
 <input type="hidden" name="eid" value="<c:out value="${param.eid}"/>" />
 <input type="hidden" name="returnvisit" value="<c:out value="${param.returnvisit}"/>"/>
-<div align="right">
+<div class="text-right">
   <html:submit property="dispatch">
     <bean:message key="errata.channels.updatechannels"/>
   </html:submit>

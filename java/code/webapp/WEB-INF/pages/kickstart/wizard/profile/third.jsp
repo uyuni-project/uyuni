@@ -2,7 +2,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<html:xhtml/>
+
 <html>
 
 <head>
@@ -61,9 +61,9 @@ function movePrevious() {
         </tr>
         <tr>
             <td colspan="2" align="right">
-                <input type="button" value="<bean:message key="wizard.jsp.previous.step" />" onclick="movePrevious();" />
+                <input type="button" value="<bean:message key='wizard.jsp.previous.step'/>" onclick="movePrevious();" />
                 &nbsp;&nbsp;
-                <input type="submit" value="<bean:message key="wizard.jsp.finish.step" />" onclick="moveNext();" />
+                <input type="submit" value="<bean:message key='wizard.jsp.finish.step'/>" onclick="moveNext();" />
             </td>
         </tr>
     </table>

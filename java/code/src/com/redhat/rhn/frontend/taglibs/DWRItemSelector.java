@@ -102,19 +102,18 @@ public class DWRItemSelector {
         LocalizationService ls = LocalizationService.getInstance();
         Boolean systemsRelated = RhnSetDecl.SYSTEMS.getLabel().equals(setLabel);
         if (systemsRelated) {
-            String headerMessage;
-            if (setSize == 0) {
-                headerMessage = ls.getMessage("header.jsp.noSystemsSelected");
-            }
-            else if (setSize == 1) {
-                headerMessage = ls.getMessage("header.jsp.singleSystemSelected");
+            StringBuffer headerMessage = new StringBuffer();
+            headerMessage.append("<span id='spacewalk-set-system_list-counter'")
+                         .append(" class='badge'>")
+                         .append(Integer.toString(setSize))
+                         .append("</span>");
+            if (setSize == 1) {
+                headerMessage.append(ls.getMessage("header.jsp.singleSystemSelected"));
             }
             else {
-                headerMessage = ls.getMessage("header.jsp.systemsSelected",
-                                                      Integer.toString(setSize));
+                headerMessage.append(ls.getMessage("header.jsp.systemsSelected"));
             }
             responseText.append("\"header\":\"").append(headerMessage).append("\"");
-
         }
 
         if (responseText.length() > 0) {
@@ -126,9 +125,9 @@ public class DWRItemSelector {
             paginationMessage = ls.getMessage("message.numselected",
                     Integer.toString(setSize));
         }
-        responseText.append("\"pagination\":\"").
-                        append(paginationMessage).
-                        append("\"");
+        responseText.append("\"pagination\":\"")
+                    .append(paginationMessage)
+                    .append("\"");
         return  "({" + responseText.toString() + "})";
     }
 }

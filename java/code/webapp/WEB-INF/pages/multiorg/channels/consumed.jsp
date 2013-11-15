@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html:xhtml/>
+
 <html>
 
 <head>
@@ -17,7 +17,7 @@ function showFiltered() {
 </head>
 
 <body onLoad="onLoadStuff(3); showFiltered();">
-<rhn:toolbar base="h1" img="/img/rhn-icon-org.gif">
+<rhn:toolbar base="h1" icon="fa-group">
   ${trustorg}
 </rhn:toolbar>
 

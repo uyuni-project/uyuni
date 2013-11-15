@@ -4,13 +4,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-system.gif" imgAlt="overview.jsp.alt"
+<rhn:toolbar base="h1" icon="fa-desktop" imgAlt="overview.jsp.alt"
  helpUrl="/rhn/help/reference/en-US/s1-sm-systems.jsp#s2-sm-system-overview">
   <bean:message key="overview.jsp.header"/>
 </rhn:toolbar>
@@ -20,7 +20,7 @@
     <rhn:csrf />
     <rhn:submitted />
 	<c:if test="${not groups}">
-	  <h2><bean:message key="overview.jsp.systems"/></h2>
+	  <bean:message key="overview.jsp.systems"/>
 	      <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
 	</c:if>
 

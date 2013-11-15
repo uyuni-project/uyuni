@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/config-managment" prefix="cfg" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="sdc.config.jsp.header" />
@@ -30,7 +30,7 @@
 	  <rhn:set value="${current.id}"/>
       <rhn:column header="sdc.configlist.jsp.name"
                   url="/rhn/configuration/ChannelOverview.do?ccid=${current.id}">
-        <img alt='<bean:message key="config.common.globalAlt" />' src="/img/rhn-listicon-channel.gif" />
+        <i class="fa spacewalk-icon-software-channels" title="<bean:message key="config.common.globalAlt" />"></i>
         ${current.name}
       </rhn:column>
 
@@ -54,7 +54,7 @@
         ${current.position}
       </rhn:column>
     </rhn:listdisplay>
-     <div align="right">
+     <div class="text-right">
          <hr />
          <html:submit property="dispatch">
          <bean:message key="sdc.configlist.jsp.unsubscribe"/>

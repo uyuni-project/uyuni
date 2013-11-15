@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean"	prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html"	prefix="html"%>
 
-<html:xhtml/>
+
 <html>
 <head></head>
 <body>
@@ -11,7 +11,7 @@
 
 <h2><bean:message key="deletefile.jsp.header2" /></h2>
 <bean:message key="deletefile.jsp.info" />
-<p />
+
 <html:form action="/configuration/file/DeleteFile.do?cfid=${cfid}">
     <rhn:csrf />
 	<html:hidden property="submitted" value="true"/>
@@ -32,7 +32,7 @@
 	</c:if>
 	</table>
 	<hr />
-	<div align="right">
+	<div class="text-right">
 	  <html:submit><bean:message key="deletefile.jsp.submit" /></html:submit>
 	</div>
 </html:form>

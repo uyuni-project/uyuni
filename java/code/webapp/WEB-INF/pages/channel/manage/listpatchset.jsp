@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
@@ -21,7 +21,7 @@
     </div>
 
     <h2>
-      <img src="/img/rhn-icon-patchset.gif" />
+      <i class="fa spacewalk-icon-patch-set"></i>
       <bean:message key="channel.manage.patchset.title"/>
 
     </h2>
@@ -58,7 +58,7 @@
 	
       </rl:list>
       <p align="right">
-			<input type="submit" name="dispatch"  value="<bean:message key="channel.manage.patchset.delete"/>" >
+			<input type="submit" name="dispatch"  value="<bean:message key='channel.manage.patchset.delete'/>" >
 	    </p>
 <rhn:submitted/>
 
