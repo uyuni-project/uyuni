@@ -510,7 +510,6 @@
         </table>
       </div>
     </div>
-  </rhn:require>
   <rhn:require acl="not system_has_bootstrap_entitlement();">
   <div class="panel panel-default">
     <div class="panel-heading">
