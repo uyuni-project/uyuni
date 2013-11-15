@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean"	prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html"	prefix="html"%>
 
-<html:xhtml/>
+
 <html>
 <body>
 <%@ include	file="/WEB-INF/pages/common/fragments/configuration/files/header.jspf"%>
@@ -16,7 +16,7 @@
 	arg2="${channel.displayName}"
 	arg3="/rhn/configuration/ChannelOverview.do?ccid=${ccid}" />
 </c:if>
-<p />
+
 <html:form
 	action="/configuration/file/GlobalRevisionDeployConfirmSubmit.do?cfid=${cfid}&amp;crid=${crid}">
     <rhn:csrf />
@@ -31,7 +31,7 @@
     		</rhn:column>
 		</rhn:listdisplay>
 	</rhn:list>
-	<p />
+	
 	<c:if test="${not empty requestScope.pageList}">
 	<div>
 	<bean:message key="deploy.jsp.widgetsummary" /></p>
@@ -45,9 +45,7 @@
 			<th><bean:message key="deploy.jsp.usedate" /></th>
 		</tr>
 		<tr>
-			<th><img src="/img/rhn-icon-schedule.gif"
-				alt='<bean:message key="deploy.jsp.selection"/>'
-				title='<bean:message key="deploy.jsp.selection"/>' /></th>
+			<th><i class="fa spacewalk-icon-schedule" title="<bean:message key="deploy.jsp.selection"/>"></i></th>
 			<td><jsp:include
 				page="/WEB-INF/pages/common/fragments/date-picker.jsp" flush="">
 				<jsp:param name="widget" value="date" />
@@ -56,7 +54,7 @@
 	</table>
 	</div>
 	<hr />
-	<div align="right">
+	<div class="text-right">
 		<html:submit property="dispatch">
 			<bean:message key="deployconfirm.jsp.deploybutton" />
 		</html:submit>

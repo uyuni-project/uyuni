@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/config-managment" prefix="cfg" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 
@@ -48,7 +48,7 @@
 
 <rhn:require acl="is_file();config_channel_editable(${channel.id})"
              mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
-<a name="upload" />
+<a name="upload"></a>
 <h2><bean:message key="manage.jsp.upload"/></h2>
 <p>
 <bean:message key="manage.jsp.uploadsummary" arg0="${max_size}"/>
@@ -64,7 +64,7 @@
     </tr>
   </table>
 
-  <div align="right">
+  <div class="text-right">
     <hr />
     <html:submit property="dispatch">
         <bean:message key="manage.jsp.uploadbutton"/>

@@ -6,7 +6,7 @@
 	prefix="html"%>
 <%@ taglib uri="http://rhn.redhat.com/tags/config-managment" prefix="cfg" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 <%@ include
@@ -15,7 +15,7 @@
 <h2><bean:message key="channelfiles.jsp.header2" /></h2>
 
 <bean:message key="channelfiles.jsp.description"/>
-<p />
+
 <div>
 <html:form action="/configuration/ChannelFilesSubmit.do?ccid=${ccid}">
     <rhn:csrf />
@@ -52,7 +52,7 @@
     </rhn:list>
 <c:if test="${not empty requestScope.pageList}">
 <hr />
-  <div align="right">
+  <div class="text-right">
     <rhn:require acl="config_channel_editable(channel.id)"
                  mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
       <html:submit property="dispatch"><bean:message key="channelfiles.jsp.removeselected" /></html:submit>

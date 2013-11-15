@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 
@@ -29,7 +29,7 @@
 
       <rhn:column header="configsystemfilter.name"
                   url="/rhn/systems/details/configuration/ViewModifyLocalPaths.do?sid=${current.id}">
-        <img alt='<bean:message key="config.common.localAlt" />' src="/img/rhn-listicon-system.gif" />
+        <i class="fa fa-desktop" title="<bean:message key="config.common.localAlt" />"></i>
         ${fn:escapeXml(current.name)}
       </rhn:column>
 

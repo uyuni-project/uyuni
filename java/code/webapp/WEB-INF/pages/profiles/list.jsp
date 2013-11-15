@@ -4,11 +4,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 <rhn:toolbar base="h1"
-    img="/img/rhn-icon-packages.gif"
+    icon="spacewalk-icon-packages"
 	imgAlt="profile.list.header.alt">
 	<bean:message key="profile.list.header" />
 </rhn:toolbar>

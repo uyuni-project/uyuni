@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
@@ -38,7 +38,7 @@
 
     </rl:list>
 
-    <div align="right">
+    <div class="text-right">
 
         <div align="left">
             <p><bean:message key="installconfirm.jsp.widgetsummary"/></p>
@@ -56,9 +56,7 @@
                 <th><bean:message key="confirm.jsp.than"/></th>
             </tr>
             <tr>
-                <th><img src="/img/rhn-icon-schedule.gif"
-                         alt="<bean:message key="confirm.jsp.selection"/>"
-                         title="<bean:message key="confirm.jsp.selection"/>"/>
+                <th><i class="fa spacewalk-icon-schedule" title="<bean:message key='confirm.jsp.selection'/>"></i>
                 </th>
                 <td>
                     <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">

@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:html xhtml="true">
+<html:html >
     <body>
 
 <script type="text/javascript">
@@ -29,7 +29,7 @@
         <c:if test="${foundUnmatchedChannels}">
             <h3><bean:message key="basesub.jsp.confirm.unmatchedHeader"/></h3>
 
-            <bean:message key="basesub.jsp.confirm.unmatchedDescription"/> *<p/>
+            <bean:message key="basesub.jsp.confirm.unmatchedDescription"/> *
 
             <rl:listset name="unmatchedChannelSet">
                 <rhn:csrf />
@@ -82,7 +82,7 @@
 
         <h3><bean:message key="basesub.jsp.confirm.matchedHeader"/></h3>
 
-        <bean:message key="basesub.jsp.confirm.matchedDescription"/><p/>
+        <bean:message key="basesub.jsp.confirm.matchedDescription"/>
 
         <rl:listset name="matchedChannelSet">
             <rl:list dataset="matched_child_channels"
@@ -131,10 +131,10 @@
             </rl:list>
         </rl:listset>
 
-        <p/>
+        
 
         <html:form method="post" action="/channel/ssm/BaseChannelSubscribe.do">
-            <div align="right">
+            <div class="text-right">
                 <rhn:csrf />
                 <html:hidden property="submitted" value="true"/>
 
@@ -151,7 +151,7 @@
             </div>
         </html:form>
 
-        <p/>
+        
         <span class="small-text"><bean:message key="basesub.jsp.confirm.fasTrackBetaNote"/></span>
 
     </body>

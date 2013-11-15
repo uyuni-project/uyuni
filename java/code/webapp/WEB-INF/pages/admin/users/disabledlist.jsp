@@ -4,13 +4,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-users.gif" imgAlt="users.jsp.imgAlt"
+<rhn:toolbar base="h1" icon="fa-user" imgAlt="users.jsp.imgAlt"
  helpUrl="/rhn/help/reference/en-US/s1-sm-users.jsp#s2-sm-users-deactivated"
  creationUrl="/rhn/users/CreateUser.do?account_type=into_org"
  creationType="user">
@@ -58,14 +58,16 @@
 	    	sortattr="changeDate"/>
 
  	</rl:list>
- 	<rl:csv dataset="pageList"
-		name="disabledUserList"
-		exportColumns="userLogin,userLastName,userFirstName,email,roleNames,lastLoggedIn,changedByFirstName,changedByLastName,changeDate"/>
-	
-	<div align="right">
-    	<hr />
-    	<input type="submit" name="dispatch" value="<bean:message key="disabledlist.jsp.reactivate"/>" />
-	</div>
+ 	<div class="row">
+ 		<div class="col-md-6 text-left">
+ 			<input type="submit" class="btn btn-success" name="dispatch" value="<bean:message key='disabledlist.jsp.reactivate'/>" />
+ 		</div>
+ 		<div class="col-md-6 text-right">
+ 			<rl:csv dataset="pageList"
+				name="disabledUserList"
+				exportColumns="userLogin,userLastName,userFirstName,email,roleNames,lastLoggedIn,changedByFirstName,changedByLastName,changeDate"/>
+ 		</div>
+ 	</div>
 
 </rl:listset>
 

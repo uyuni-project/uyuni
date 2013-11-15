@@ -15,7 +15,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
-<html:xhtml/>
+
 <html>
     <body>
         <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
@@ -25,7 +25,7 @@
         <rl:listset name="systemsListSet" legend="system">
             <c:set var="noCsv" value="1"/>
             <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
-            <div align="right">
+            <div class="text-right">
                 <div align="left">
                     <p><bean:message key="installconfirm.jsp.widgetsummary"/></p>
                     <table class="details" align="center">

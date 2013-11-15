@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
@@ -14,7 +14,7 @@
 <%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
 <BR>
     <h2>
-      <img src="/img/rhn-icon-packages.gif" />
+      <i class="fa spacewalk-icon-packages"></i>
       <bean:message key="channel.jsp.package.add.confirm.title"/>
     </h2>
 <bean:message key="channel.jsp.package.add.confirm.msg"/>
@@ -65,9 +65,9 @@
 	<rl:csv dataset="pageList"
 		        name="packageList"
 		        exportColumns="id, nvrea, summary, provider" />
-	<div align="right">
+	<div class="text-right">
 	  <hr />
-		<input type="submit" name="confirm" value="<bean:message key="channel.jsp.package.addbutton"/>" />
+		<input type="submit" name="confirm" value="<bean:message key='channel.jsp.package.addbutton'/>" />
 	</div>
 		<rhn:submitted/>
 

@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 
 <body>
@@ -11,7 +11,7 @@
 
 <rhn:require acl="is_solaris()">
 	<h2>
-		<img src="/img/rhn-icon-package_add.gif" />
+		<i class="fa spacewalk-icon-package-add"></i>
 		<bean:message key="packagelist.jsp.confirmpatchinstall" />
 	</h2>
 	<div class="page-summary">
@@ -33,7 +33,7 @@
       ${current.patchType}
     </rhn:column>
   </rhn:listdisplay>
-  <div align="right">
+  <div class="text-right">
       <hr />
       <html:submit property="dispatch">
       <bean:message key="packagelist.jsp.confirmpatchinstall"/>

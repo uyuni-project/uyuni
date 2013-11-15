@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="sdc.config.jsp.header" />
@@ -12,7 +12,7 @@
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
-<rhn:toolbar base="h2" img="/img/rhn-icon-system.gif" >
+<rhn:toolbar base="h2" icon="fa-desktop" >
   <bean:message key="sdcdeployconfirm.jsp.header"/>
 </rhn:toolbar>
 

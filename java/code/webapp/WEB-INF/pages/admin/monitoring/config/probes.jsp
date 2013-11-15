@@ -6,10 +6,10 @@
 	prefix="html"%>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-config_management.gif"
+<rhn:toolbar base="h1" icon="fa-cog"
 	creationUrl="ProbeSuiteProbeCreate.do?suite_id=${suite_id}"
 	creationType="probe"
 	helpUrl="/rhn/help/reference/en-US/s1-sm-monitor.jsp#s2-sm-monitor-psuites">
@@ -62,7 +62,7 @@
   </rl:list>
 
 
-  <div align="right">
+  <div class="text-right">
    <rhn:submitted/>
    <hr/>
 

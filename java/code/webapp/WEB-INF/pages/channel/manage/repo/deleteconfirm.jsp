@@ -3,10 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-info.gif" imgAlt="info.alt.img">
+<rhn:toolbar base="h1" icon="fa-info-circle" imgAlt="info.alt.img">
 	<c:out value="${requestScope.label}"/>
 </rhn:toolbar>
 

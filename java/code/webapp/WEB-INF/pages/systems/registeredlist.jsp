@@ -11,7 +11,7 @@
     <meta name="page-decorator" content="none" />
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-system.gif" imgAlt="system.common.systemAlt"
+<rhn:toolbar base="h1" icon="fa-desktop" imgAlt="system.common.systemAlt"
  helpUrl="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-sstem-list-rregistered">
   <bean:message key="registeredlist.jsp.header"/>
 </rhn:toolbar>
@@ -19,7 +19,7 @@
 <rl:listset name="registeredSystems" legend="system">
   <rhn:csrf />
   <bean:message key="registeredlist.jsp.view"/>
-  <select name="threshold">
+  <select name="threshold" class="view-systems-registered">
    		<c:forEach var="option" items="${options}">
    			<c:choose>
    				<c:when test="${recentlyRegisteredSystemsForm.map.threshold eq option.value}">
@@ -90,7 +90,7 @@
 		           sortattr="nameOfUserWhoRegisteredSystem" >
 	          <c:choose>
 	            <c:when test="${current.creatorName != null}">
-	              <img src="/img/rhn-listicon-user.gif" alt="<bean:message key="yourrhn.jsp.user.alt" />"  />
+	              <i class="fa fa-user" title="<bean:message key='yourrhn.jsp.user.alt'/>"></i>
 	              <c:out value="${current.creatorName}"/>
 	            </c:when>
 	            <c:otherwise>

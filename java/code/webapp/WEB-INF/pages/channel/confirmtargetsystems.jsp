@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
@@ -15,7 +15,7 @@
  <%@ include file="/WEB-INF/pages/common/fragments/channel/channel_header.jspf" %>
 <BR>
   <h2>
-      <img src="/img/rhn-icon-system.gif" alt="system" />
+      <i class="fa fa-desktop" title="system"></i>
           <bean:message key="channeltarget.confirm.jsp.header1"/>
     </h2>
 
@@ -49,7 +49,7 @@
 		<rhn:submitted/>
 		
 		  	<p align="right">
-				<input type="submit" name="dispatch"  value="<bean:message key="ssmchildsubs.jsp.subscribe"/>" </input>
+				<input type="submit" name="dispatch"  value="<bean:message key='ssmchildsubs.jsp.subscribe'/>" </input>
 			</p>
 
 

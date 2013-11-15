@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
@@ -28,7 +28,7 @@
     <html:hidden property="submitted" value="true"/>
   </table>
   <hr>
-  <div align="right"><html:submit><bean:message key="kickstart.session_cancel.jsp.cancel"/></html:submit></div>
+  <div class="text-right"><html:submit><bean:message key="kickstart.session_cancel.jsp.cancel"/></html:submit></div>
 </html:form>
 </body>
 </html>

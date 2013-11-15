@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
     <head>
         <meta name="page-decorator" content="none" />
@@ -24,7 +24,7 @@ function refreshNotifFields() {
 
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
-<rhn:toolbar base="h2" img="/img/rhn-icon-system.gif"
+<rhn:toolbar base="h2" icon="fa-desktop"
     deletionUrl="/rhn/systems/details/probes/ProbeDelete.do?probe_id=${probe.id}&amp;sid=${system.id}"
     deletionType="probe">
  <bean:message key="probeedit.jsp.editprobe" />

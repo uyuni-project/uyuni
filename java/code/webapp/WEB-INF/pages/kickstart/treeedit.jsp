@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:html xhtml="true">
+<html:html >
 
 <head>
 <meta http-equiv="Pragma" content="no-cache" />
@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-kickstart_profile.gif"
+<rhn:toolbar base="h1" icon="fa-rocket"
 			 deletionUrl="/rhn/kickstart/TreeDelete.do?kstid=${kstree.id}"
              deletionType="deleteTree"
              imgAlt="kickstarts.alt.img">

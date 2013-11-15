@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 
 <body>
@@ -17,7 +17,7 @@
 
 <html:form action="/profiles/Delete">
       <rhn:csrf />
-      <div align="right">
+      <div class="text-right">
         <hr />
         <html:hidden property="prid" value="${param.prid}" />
         <html:hidden property="submitted" value="true" />

@@ -4,13 +4,13 @@
                       <img src="/img/rhn-listicon-bootstrap.gif" alt="<bean:message key="systemlist.jsp.bootstrap"/>" />
                     </c:when>
 						<c:when test="${current.virtualGuest && empty nosystemicons}">
-						          <img src="/img/rhn-listicon-virtguest.gif" alt="<bean:message key="systemlist.jsp.virtguest"/>" />
+						          <i class="fa spacewalk-icon-virtual-guest" title="<bean:message key='systemlist.jsp.virtguest'/>"></i>
 						        </c:when>
 						        <c:when test="${current.virtualHost && empty nosystemicons}">
-						          <img src="/img/rhn-listicon-virthost.gif" alt="<bean:message key="systemlist.jsp.virthost"/>" />
+						          <i class="fa spacewalk-icon-virtual-host" title="<bean:message key='systemlist.jsp.virthost'/>"></i>
 						        </c:when>
 						        <c:otherwise>
-						        <img src="/img/rhn-listicon-system.gif" alt="<bean:message key="systemlist.jsp.nonvirt"/>" />
+						        <i class="fa fa-desktop" title="<bean:message key='systemlist.jsp.nonvirt'/>"></i>
 						        </c:otherwise>
 						</c:choose>
 						<c:choose>

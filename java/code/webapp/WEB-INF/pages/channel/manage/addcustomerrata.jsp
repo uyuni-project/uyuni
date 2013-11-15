@@ -4,20 +4,21 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
     <!-- disables the enter key from submitting the form -->
     <script type="text/javascript" language="JavaScript">
-		function key(e) {
-		var pkey = e ? e.which : window.event.keyCode;
-		return pkey != 13;
-		}
-		document.onkeypress = key;
-		if (document.layers) document.captureEvents(Event.KEYPRESS);
+      $(document).ready(function() {
+        $(window).keydown(function(event){
+          if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+          }
+        });
+      });
     </script>
-
 </head>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
@@ -66,7 +67,7 @@
 
 			  </td>
 			   		  <td>
-							  <input type="submit" name="dispatch"  value="<bean:message key="frontend.actions.channels.manager.add.viewErrata"/>">
+							  <input type="submit" name="dispatch"  value="<bean:message key='frontend.actions.channels.manager.add.viewErrata'/>">
 		  			  </td>
 		  	     </tr>
 		  </c:if>
@@ -93,16 +94,13 @@
 			           styleclass="center"
 		           	   headerclass="thin-column">
 							        <c:if test="${current.securityAdvisory}">
-							            <img src="/img/wrh-security.gif"
-							                 alt="<bean:message key="erratalist.jsp.securityadvisory"/>" />
+							            <i class="fa fa-lock" title="<bean:message key='erratalist.jsp.securityadvisory'/>"></i>
 							        </c:if>
 							        <c:if test="${current.bugFix}">
-							            <img src="/img/wrh-bug.gif"
-							                 alt="<bean:message key="erratalist.jsp.bugadvisory"/>" />
+							            <i class="fa fa-bug" title="<bean:message key='erratalist.jsp.bugadvisory'/>"></i>
 							        </c:if>
 							        <c:if test="${current.productEnhancement}">
-							            <img src="/img/wrh-product.gif"
-							                 alt="<bean:message key="erratalist.jsp.productenhancementadvisory"/>" />
+							            <i class="fa  spacewalk-icon-enhancement" title="<bean:message key='erratalist.jsp.productenhancementadvisory'/>"></i>
 							        </c:if>
 				</rl:column>	  		
 		  		
@@ -132,7 +130,7 @@
   </c:when>
 </c:choose>
   		<p align="right">
-		    <input type="submit" name="dispatch"  value="<bean:message key="frontend.actions.channels.manager.add.submit"/>"
+		    <input type="submit" name="dispatch"  value="<bean:message key='frontend.actions.channels.manager.add.submit'/>"
                 <c:choose>
                     <c:when test="${empty pageList}">disabled</c:when>
                 </c:choose>

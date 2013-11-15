@@ -160,7 +160,7 @@ sub recursive_type {
 sub pre_nav {
   my $self = shift;
 
-    return qq{\n<div class="content-nav">};
+    return qq{\n<div class="spacewalk-content-nav">};
 
 }
 sub post_nav {
@@ -179,19 +179,10 @@ sub pre_level {
 
   my $level_style = $self->level_style($level);
   if ($level_style) {
-    $ret = qq{\n<ul class="$level_style">}
+    $ret = qq{\n<ul class="nav nav-tabs $level_style">}
   }
   else {
-    $ret = qq{\n<ul>};
-  }
-
-  if ($level == 1) {
-
-    $ret = sprintf("%s%s",<<EOQ, $ret);
-<div class="contentnav-row2">
-<div class="top"></div>
-<div class="bottom">
-EOQ
+    $ret = qq{\n<ul class="nav nav-tabs">};
   }
 
   return $ret;
@@ -203,56 +194,30 @@ sub post_level {
 
   my $ret = "</ul>\n";
 
-  if ((defined $depth) and ($depth == 1)) {
-    $ret .= "\n</div>\n</div>\n";
-  }
-
   return $ret;
 }
 
-sub level_style {
-  my $class = shift;
-  my $level = shift;
-
-  if ($level == 0) {
-    return "content-nav-rowone";
-  }
-  elsif ($level == 1) {
-    return "content-nav-rowtwo";
-  }
-  elsif ($level == 2) {
-    return "content-nav-rowthree";
-  }
-}
-
 sub item_style_active {
-  return "content-nav-selected";
+  return "active";
 }
 
 sub item_style_type {
   return "class";
 }
 
-sub link_style_active {
-  return "content-nav-selected-link";
-}
-
-
-
-
 package Sniglets::Navi::Style::sidenav;
 use base qw/Sniglets::Navi::Style::ul/;
 
-sub pre_nav { return qq{\n<div id="sidenavp">} }
-sub post_nav { return qq{\n</div>\n} }
+sub pre_nav { return qq{\n<nav id="sidenav">} }
+sub post_nav { return qq{\n</nav>\n} }
 
-sub pre_level { return '<ul>' }
+sub pre_level { return qq{\n<ul class="nav nav-pills nav-stacked">\n} }
 sub post_level { return '</ul>' }
 
 sub level_style { return "sidenav" }
 
 sub item_style { return "" }
-sub item_style_active { return "sidenav-selected" }
+sub item_style_active { return "active" }
 sub item_style_type { return "class" }
 
 sub link_style {
@@ -263,7 +228,7 @@ sub link_style_active {
 }
 
 
-package Sniglets::Navi::Style::topnav;
+package Sniglets::Navi::Style::spacewalk_main_nav;
 use base qw/Sniglets::Navi::Style::ul/;
 
 sub item_style_type { return 'id' }
@@ -285,24 +250,8 @@ sub pre_item {
   my $item_style_type = $self->item_style_type($level);
   my $item_style;
 
-  if ($sibling_count == 1) {
-    if ($active) {
-      $item_style = "mainFirst-active";
-    }
-    else {
-      $item_style = "mainFirst";
-    }
-  }
-  elsif ($sibling_count == $num_siblings) {
-    if ($active) {
-      $item_style = "mainLast-active";
-    }
-    else {
-      $item_style = "mainLast";
-    }
-  }
-  elsif ($active) {
-    $item_style = "main-active";
+  if ($active) {
+    $item_style = "active";
   }
 
   if ($item_style) {
@@ -318,25 +267,11 @@ sub post_item {
 
 
 sub pre_level {
-  return "<ul>";
+  return qq{<ul class="nav navbar-nav">};
 }
 
 sub post_level {
   return "</ul>";
-}
-
-sub pre_nav {
-  my $self = shift;
-  my $pxt = shift;
-
-  return $pxt->include(-file => "/nav/styles/navbar_top_sat.txt");
-}
-
-sub post_nav {
-  my $self = shift;
-  my $pxt = shift;
-
-  return $pxt->include(-file => "/nav/styles/navbar_bottom.txt", -raw => 1);
 }
 
 #sub item_style_active {
@@ -353,21 +288,10 @@ sub render_link {
   my $active = shift;
   my $depth = shift;
 
-  # what number am i...
-  my $sibling_count = shift;
-  # ... out of ...
-  my $num_siblings = shift;
-
   my $css_style;
 #  if ($self->link_style($depth) or $self->link_style_active($depth)) {
 #    $css_style = $active ? $self->link_style_active($depth) : $self->link_style($depth);
 #  }
-  if ($sibling_count == 1) {
-    $css_style = "mainFirstLink";
-  }
-  elsif ($sibling_count == $num_siblings) {
-    $css_style = "mainLastLink";
-  }
 
   my $url = $node->urls->[0] || '';
   my $tree_formvars = $tree->formvars;

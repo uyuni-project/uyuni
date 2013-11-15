@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
@@ -69,7 +69,7 @@
         </td>
     </tr>
 </table>
-<div align="right">
+<div class="text-right">
 <hr />
 <input type="submit" name="dispatch" value="${rhn:localize('ssm.config.subscribe.jsp.continue')}"
 		<c:if test="${not empty disableProfiles}">disabled="true"</c:if>

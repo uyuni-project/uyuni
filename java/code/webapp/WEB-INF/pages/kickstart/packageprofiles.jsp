@@ -5,7 +5,7 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
 
-<html:html xhtml="true">
+<html:html >
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/kickstart/kickstart-toolbar.jspf" %>
 
@@ -36,7 +36,7 @@
 		</p>
 		<hr />
 		<input type="hidden" name="ksid" value="<c:out value="${param.ksid}"/>" />
-		<div align="right">
+		<div class="text-right">
 		  <html:submit property="dispatch">
 		    <bean:message key="kickstart.packageprofile.jsp.clear"/>
 		  </html:submit>

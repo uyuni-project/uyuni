@@ -3,17 +3,14 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 <%-- disableAutoComplete() hack added to prevent certain browsers from exposing sensitive data --%>
 <body onLoad="disableAutoComplete();">
     
 <h1><bean:message key="usercreate.createFirstLogin" /></h1>
 
-    <div class="page-summary">
-      <p><bean:message key="usercreate.satSummary" /></p>
-    </div>
-<br />
+<p><bean:message key="usercreate.satSummary" /></p>
 
 <jsp:include page="usercreate.jsp">
   <jsp:param name="action_path" value="/newlogin/CreateFirstUserSubmit"/>

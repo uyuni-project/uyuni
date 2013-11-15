@@ -3,7 +3,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 
@@ -11,7 +11,7 @@
 
 <h2><bean:message key="completedsystems.jsp.completedsystems"/></h2>
 
-<form method="POST" name="rhn_list" action="/rhn/schedule/CompletedSystemsSubmit.do">
+<form method="POST" role="form" name="rhn_list" action="/rhn/schedule/CompletedSystemsSubmit.do">
 <rhn:csrf />
 
 <rhn:list pageList="${requestScope.pageList}"

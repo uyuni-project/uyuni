@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 
 <body>
@@ -96,7 +96,7 @@
 
   </rhn:list>
 
-  <div align="right">
+  <div class="text-right">
 
     <hr />
     <html:select property="guestAction">
@@ -108,7 +108,7 @@
     </html:submit>
 
   </div>
-    <div align="right">
+    <div class="text-right">
         <bean:message key="virtualguestslist.jsp.set"/>
         <html:select property="guestSettingToModify">
             <html:optionsCollection name="guestSettingOptions"/>

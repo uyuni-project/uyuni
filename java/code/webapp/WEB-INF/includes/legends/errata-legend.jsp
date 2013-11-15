@@ -1,10 +1,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
 <div class="sideleg">
-  <h2><bean:message key="errata-legend.jsp.title"/></h2>
+  <h4><bean:message key="errata-legend.jsp.title"/></h4>
   <ul>
-  <li><img src="/img/wrh-security.gif" alt="" /><bean:message key="errata-legend.jsp.security"/></li>
-  <li><img src="/img/wrh-bug.gif" alt="" /><bean:message key="errata-legend.jsp.bugfix"/></li>
-  <li><img src="/img/wrh-product.gif" alt ="" /><bean:message key="errata-legend.jsp.enhancement"/></li>
+  <li><i class="fa fa-shield fa-1-5x"></i><bean:message key="errata-legend.jsp.security"/></li>
+  <li><i class="fa fa-bug fa-1-5x"></i><bean:message key="errata-legend.jsp.bugfix"/></li>
+  <li><i class="fa fa-1-5x spacewalk-icon-enhancement"></i><bean:message key="errata-legend.jsp.enhancement"/></li>
   </ul>
 </div>

@@ -5,7 +5,7 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
@@ -13,7 +13,7 @@
 
 <body>
 
-<rhn:toolbar base="h1" img="/img/rhn-icon-system.gif" imgAlt="audit.jsp.alt">
+<rhn:toolbar base="h1" icon="fa-desktop" imgAlt="audit.jsp.alt">
   <bean:message key="system.audit.listscap.jsp.overview"/>
 </rhn:toolbar>
 

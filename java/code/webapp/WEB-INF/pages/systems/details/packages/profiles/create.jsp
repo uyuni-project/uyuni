@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 
 <body>
@@ -28,7 +28,7 @@
         </tr>
       </table>
 
-      <div align="right">
+      <div class="text-right">
         <hr />
         <html:hidden property="sid" value="${param.sid}" />
         <html:hidden property="submitted" value="true" />

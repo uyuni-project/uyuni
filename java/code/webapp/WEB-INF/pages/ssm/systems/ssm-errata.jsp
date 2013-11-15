@@ -16,7 +16,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
-<html:xhtml/>
+
 <html>
     <body>
         <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
@@ -39,13 +39,13 @@
 
                 <rl:column headerkey="erratalist.jsp.type" styleclass="text-align: center;" bound="false">
                     <c:if test="${current.securityAdvisory}">
-                        <img src="/img/wrh-security.gif" title="<bean:message key="erratalist.jsp.securityadvisory"/>" />
+                        <i class="fa fa-lock"></i>
                     </c:if>
                     <c:if test="${current.bugFix}">
-                        <img src="/img/wrh-bug.gif" title="<bean:message key="erratalist.jsp.bugadvisory"/>" />
+                        <i class="fa fa-bug"></i>
                     </c:if>
                     <c:if test="${current.productEnhancement}">
-                        <img src="/img/wrh-product.gif" title="<bean:message key="erratalist.jsp.productenhancementadvisory"/>" />
+                        <i class="fa  spacewalk-icon-enhancement"></i>
                     </c:if>
                 </rl:column>
 
@@ -102,12 +102,12 @@
                         <td>
                             <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
                                 <jsp:param name="widget" value="date"/>
-                            </jsp:include><br/><p/>
+                            </jsp:include><br/>
                         </td>
                     </tr>
                 </table>
             </div>
-            <div align="right">
+            <div class="text-right">
                 <hr />
                 <html:submit property="dispatch">
                     <bean:message key="errata.jsp.apply"/>
@@ -142,9 +142,9 @@
 
                 <html:form action="/systems/ssm/ListPatches">
                     <rhn:csrf />
-                    <div align="right">
+                    <div class="text-right">
                         <hr/>
-                        <input type="submit" name="back" value="<bean:message key="ssm.errata.serverlist.return"/>" />
+                        <input type="submit" name="back" value="<bean:message key='ssm.errata.serverlist.return'/>" />
                     </div>
                 </html:form>
             </c:otherwise>

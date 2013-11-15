@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="systems" />
@@ -14,7 +14,7 @@
 
 
 <div class="page-summary">
-	<h2><img src="/img/rhn-icon-system.gif" alt="${rhn:localize('system.common.systemAlt')}" />
+	<h2><i class="icon-desktop"></i>
 	<bean:message key="Systems"/>
 	</h2>
     <p>

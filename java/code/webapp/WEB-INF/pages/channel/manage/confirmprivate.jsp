@@ -6,7 +6,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 
-<html:xhtml/>
+
 <html>
 <head>
   <meta name="page-decorator" content="none" />
@@ -51,7 +51,7 @@
       </rl:column>
    </rl:list>
    <hr/>
-   <div align="right">
+   <div class="text-right">
      <rhn:submitted/>
      <input type="button"
                 value="${rhn:localize('org.trust.cancel')}"

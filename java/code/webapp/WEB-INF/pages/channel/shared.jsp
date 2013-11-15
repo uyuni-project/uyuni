@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html:xhtml/>
+
 <html>
 
 <head>
@@ -19,7 +19,7 @@ function showFiltered() {
 <body onLoad="onLoadStuff(4); showFiltered();">
 <rhn:toolbar
    base="h1"
-   img="/img/rhn-icon-channels.gif"
+   icon="spacewalk-icon-software-channels"
    imgAlt="channels.overview.toolbar.imgAlt">
   <bean:message key="channel.nav.shared"/>
 </rhn:toolbar>

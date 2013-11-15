@@ -5,13 +5,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
-<h2><img src="/img/rhn-icon-packages.gif" />
+<h2><i class="fa spacewalk-icon-packages"></i>
     <bean:message key="compare.jsp.compareto" arg0="${fn:escapeXml(requestScope.systemname)}" />
 </h2>
 
@@ -56,7 +56,7 @@
         <c:if test="${not empty requestScope.pageList}">
             <rhn:require acl="system_feature(ftr_delta_action)"
                 mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
-                <div align="right">
+                <div class="text-right">
                     <rhn:submitted/>
                     <hr />
                     <html:submit property="dispatch">

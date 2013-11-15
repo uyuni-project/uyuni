@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 
 <body>
@@ -44,7 +44,7 @@
     </rl:list>
 
     <rhn:submitted/>
-    <div align="right">
+    <div class="text-right">
         <hr />
         <html:submit property="dispatch">
             <bean:message key="missingpkgs.jsp.selectnewpackageprofile" />

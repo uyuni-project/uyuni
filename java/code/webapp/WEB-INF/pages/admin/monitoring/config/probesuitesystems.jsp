@@ -3,10 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-system_group.gif"
+<rhn:toolbar base="h1" icon="spacewalk-icon-system-groups"
   	           creationUrl="ProbeSuiteSystemsEdit.do?suite_id=${probeSuite.id}"
                creationType="probesuitesystem"
 	           helpUrl="/rhn/help/reference/en-US/s1-sm-monitor.jsp#s2-sm-monitor-psuites">
@@ -32,24 +32,19 @@
         <rhn:set value="${current.id}" />
         <rhn:column header="probesuitesystems.jsp.state">
             <c:if test="${current.status == 'UNKNOWN'}">
-              <img src="/img/rhn-mon-unknown.gif" title="<bean:message key='monitoring.status.unknown'/>"
-                   alt="<bean:message key='monitoring.status.unknown'/>"/>
+              <i class="fa spacewalk-icon-monitoring-unknown" title="<bean:message key='monitoring.status.unknown'/>"></i>
             </c:if>
             <c:if test="${current.status == 'OK'}">
-              <img src="/img/rhn-mon-ok.gif" title="<bean:message key='monitoring.status.ok'/>"
-                   alt="<bean:message key='monitoring.status.ok'/>"/>
+              <i class="fa spacewalk-icon-monitoring-ok" title="<bean:message key='monitoring.status.ok'/>"></i>
             </c:if>
             <c:if test="${current.status == 'WARNING'}">
-              <img src="/img/rhn-mon-warning.gif" title="<bean:message key='monitoring.status.warn'/>"
-                   alt="<bean:message key='monitoring.status.warn'/>"/>
+              <i class="fa spacewalk-icon-monitoring-warning" title="<bean:message key='monitoring.status.warn'/>"></i>
             </c:if>
             <c:if test="${current.status == 'PENDING'}">
-              <img src="/img/rhn-mon-pending.gif" title="<bean:message key='monitoring.status.pending'/>"
-                   alt="<bean:message key='monitoring.status.pending'/>"/>
+              <i class="fa spacewalk-icon-monitoring-pending" title="<bean:message key='monitoring.status.pending'/>"></i>
             </c:if>
             <c:if test="${current.status == 'CRITICAL'}">
-              <img src="/img/rhn-mon-down.gif" title="<bean:message key='monitoring.status.critical'/>"
-                   alt="<bean:message key='monitoring.status.critical'/>"/>
+              <i class="fa spacewalk-icon-monitoring-down" title="<bean:message key='monitoring.status.critical'/>"></i>
             </c:if>
         </rhn:column>
         <rhn:column header="probesuitesystems.jsp.system">
@@ -59,7 +54,7 @@
     </rhn:list>
     <html:hidden property="suite_id" value="${probeSuite.id}"/>
     <c:if test="${not empty pageList}">
-    <div align="right">
+    <div class="text-right">
         <hr>
       <html:submit property="dispatch">
         <bean:message key="probesuitesystems.jsp.detachsystem"/>

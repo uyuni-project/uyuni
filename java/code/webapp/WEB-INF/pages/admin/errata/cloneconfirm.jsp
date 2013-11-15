@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:html xhtml="true">
+<html:html >
 <body>
 <h2><bean:message key="erratalist.jsp.cloneerrata" /></h2>
 
@@ -17,16 +17,13 @@
   <rhn:listdisplay button="deleteconfirm.jsp.confirm">
     <rhn:column header="erratalist.jsp.type">
         <c:if test="${current.securityAdvisory}">
-            <img src="/img/wrh-security.gif"
-                 title="<bean:message key="erratalist.jsp.securityadvisory"/>" />
+            <i class="fa fa-lock"></i>
         </c:if>
         <c:if test="${current.bugFix}">
-            <img src="/img/wrh-bug.gif"
-                 title="<bean:message key="erratalist.jsp.bugadvisory"/>" />
+            <i class="fa fa-bug"></i>
         </c:if>
         <c:if test="${current.productEnhancement}">
-            <img src="/img/wrh-product.gif"
-                 title="<bean:message key="erratalist.jsp.productenhancementadvisory"/>" />
+            <i class="fa  spacewalk-icon-enhancement"></i>
         </c:if>
     </rhn:column>
     <rhn:column header="erratalist.jsp.advisory">

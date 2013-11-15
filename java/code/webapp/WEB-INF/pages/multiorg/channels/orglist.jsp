@@ -3,13 +3,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="activationkeys.jsp.header" />
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-channels.gif"
+<rhn:toolbar base="h1" icon="spacewalk-icon-software-channels"
              deletionUrl="/rhn/channels/manage/Delete.do?cid=${param.cid}"
              deletionAcl="user_role(channel_admin); formvar_exists(cid)"
              deletionType="software.channel">
@@ -53,7 +53,7 @@
 	</rl:list>
 <hr/>
 <c:if test="${not empty requestScope.dataset}">
-<div align="right">
+<div class="text-right">
    <rhn:submitted/>
     <input type="submit"
 		name ="dispatch"

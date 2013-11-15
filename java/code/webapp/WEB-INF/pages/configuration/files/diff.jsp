@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <head><style type="text/css">
 .filename {
@@ -58,9 +58,8 @@
     </span>
     <span>
       <a href="/rhn/configuration/file/DownloadDiff.do?cfid=${file.id}&amp;crid=${revision.id}&amp;ocrid=${orevision.id}">
-        <img src="/img/action-download.gif"
-             alt='<bean:message key="diff.jsp.downloadAlt" />'
-             title='<bean:message key="diff.jsp.downloadAlt" />' />
+        <i class="fa fa-download"
+           aria-hidden='true'></i>
         <bean:message key="diff.jsp.download" />
       </a>
     </span>

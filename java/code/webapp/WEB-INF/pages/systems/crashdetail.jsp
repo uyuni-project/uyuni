@@ -6,13 +6,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
-<html:html xhtml="true">
+<html:html >
 <body>
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
     <br/>
 
-    <rhn:toolbar base="h2" img="/img/rhn-icon-bug-ex.gif" imgAlt="info.alt.img"
+    <rhn:toolbar base="h2" icon="spacewalk-icon-bug-ex" iconAlt="info.alt.img"
                  deletionUrl="SoftwareCrashDelete.do?crid=${crid}&sid=${sid}"
                  deletionType="crash">
         ${fn:escapeXml(crash.crash)}

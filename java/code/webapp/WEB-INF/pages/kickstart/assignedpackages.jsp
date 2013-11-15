@@ -2,7 +2,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<html:html xhtml="true">
+<html:html >
 <head>
 <meta http-equiv="Pragma" content="no-cache" />
 </head>
@@ -45,7 +45,7 @@
             </tr>
             <tr>
               <td align="right">
-                <input type="submit" value="<bean:message key="kickstart.edit.pkgs.submit.jsp.label" />" />
+                <input type="submit" value="<bean:message key='kickstart.edit.pkgs.submit.jsp.label'/>" />
               </td>
             </tr>
           </table>

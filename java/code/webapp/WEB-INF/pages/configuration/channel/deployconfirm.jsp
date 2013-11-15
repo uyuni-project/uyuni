@@ -6,7 +6,7 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/config-managment" prefix="cfg"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<html:xhtml />
+
 <html>
 <head>
 <meta name="page-decorator" content="none" />
@@ -19,7 +19,7 @@
 
 <h2><bean:message key="deployconfirm.jsp.h2" /></h2>
 <bean:message key="deployconfirm.jsp.note" />
-<p />
+
 <c:set var="channel_name_display"><cfg:channel id="${ccid}"
 									name="${channel.name}"
 									type="global"/></c:set>
@@ -52,8 +52,8 @@
 		</rl:column>
 	</rl:list>
 	</div>
-	<p />
-	<p />
+	
+	
 	<h2><bean:message key="deployconfirm.jsp.systems-header2" /></h2>
 	<!--  Systems-list -->
 	<div>
@@ -61,7 +61,7 @@
 		styleclass="list" emptykey="deployconfirm.jsp.noSystems" width="100%"
 		filter="com.redhat.rhn.frontend.action.configuration.ConfigSystemFilter" >
 		<rl:column headerkey="system.common.systemName" sortable="true" sortattr="name">
-			<img alt='<bean:message key="system.common.systemAlt"/>' src="/img/rhn-listicon-system.gif" />
+			<i class="fa fa-desktop" title="<bean:message key="system.common.systemAlt"/>"></i>
 			<a href="/rhn/systems/details/configuration/Overview.do?system_detail_navi_node=selected_configfiles&sid=${current.id}">
 			 ${fn:escapeXml(current.name)}
 			</a>
@@ -82,8 +82,7 @@
 	        <th><bean:message key="deployconfirm.jsp.usedate"/></th>
 	    </tr>
 	    <tr>
-	        <th><img src="/img/rhn-icon-schedule.gif" alt="<bean:message key="syncprofile.jsp.selection"/>"
-	                                                  title="<bean:message key="syncprofile.jsp.selection"/>"/>
+	        <th><i class="fa spacewalk-icon-schedule" title="<bean:message key='syncprofile.jsp.selection'/>"></i>
 	        </th>
 	        <td>
 	          <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
@@ -93,7 +92,7 @@
 	    </tr>
 	</table>
 	<!--  DoIt Button -->
-	<div align="right">
+	<div class="text-right">
 		<html:submit property="dispatch">
 			<bean:message key="deployconfirm.jsp.confirmbutton" />
 		</html:submit>

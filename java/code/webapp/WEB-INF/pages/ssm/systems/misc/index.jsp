@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
@@ -69,10 +69,10 @@
 
   </table>
 
-  <div align="right">
+  <div class="text-right">
     <hr />
 
-    <input type="submit" name="sscd_change_system_prefs" value="<bean:message key="ssm.misc.index.syspref.changepreferences"/>" />
+    <input type="submit" name="sscd_change_system_prefs" value="<bean:message key='ssm.misc.index.syspref.changepreferences'/>" />
     <input type="hidden" name="do_nothing_redir" value="landing.pxt" />
     <input type="hidden" name="pxt:trap" value="rhn:ssm_change_system_prefs_cb" />
   </div>

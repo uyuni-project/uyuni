@@ -4,10 +4,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-kickstart_profile.gif"
+<rhn:toolbar base="h1" icon="fa-rocket"
                creationUrl="/rhn/kickstart/CreateProfileWizard.do"
                creationType="kickstart"
                imgAlt="kickstarts.alt.img"

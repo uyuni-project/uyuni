@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.frontend.taglibs.list.decorators;
 
-import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
-import com.redhat.rhn.frontend.taglibs.list.ListTag;
-
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
+
+import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
+import com.redhat.rhn.frontend.taglibs.list.ListTag;
 
 /**
  * General-use base class for writing decorators
@@ -92,11 +92,65 @@ public abstract class BaseListDecorator implements ListDecorator {
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     public void beforeTopPagination() throws JspException {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void onTopExtraContent() throws JspException {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void onHeadExtraContent() throws JspException {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void onFooterExtraContent() throws JspException {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void onBottomExtraContent() throws JspException {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void onTopExtraAddons() throws JspException {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void onHeadExtraAddons() throws JspException {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void onFooterExtraAddons() throws JspException {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void onBottomExtraAddons() throws JspException {
+
+    }
 }

@@ -4,17 +4,17 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
 </head>
 <body>
 
-<rhn:toolbar base="h1" img="/img/rhn-icon-subscribe_replace.png"
+<rhn:toolbar base="h1" icon="fa-retweet"
                creationUrl="DistChannelMapEdit.do"
                creationType="distchannelmap"
-               imgAlt="info.alt.img">
+               iconAlt="info.alt.img">
   <bean:message key="Distribution Channel Mapping"/>
 </rhn:toolbar>
 
@@ -69,19 +69,19 @@
                    >
                    <c:choose>
                      <c:when test="${current.org != null}">
-                       <img src="/img/rhn-listicon-checked.gif">
+                       <i class="fa fa-check text-success"></i>
                      </c:when>
                      <c:otherwise>
-                       <img src="/img/rhn-listicon-unchecked.gif">
+                       <i class="fa fa-circle-o"></i>
                      </c:otherwise>
                    </c:choose>
                 </rl:column>
 	</rl:list>
 <!--
-	<div align="right">
+	<div class="text-right">
 	  <hr />
 		<input type="submit" name="dispatch"
-				value="<bean:message key="distchannelmap.jsp.update"/>" />
+				value="<bean:message key='distchannelmap.jsp.update'/>" />
 	</div>
 		<rhn:submitted/>
 -->

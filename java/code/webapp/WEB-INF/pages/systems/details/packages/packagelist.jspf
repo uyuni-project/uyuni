@@ -3,15 +3,14 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
-<html:xhtml/>
+
 <html>
 
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
 <h2>
-	<img src="/img/rhn-icon-package_add.gif"
-	     alt="<bean:message key='${alt}'/>" />
+	<i class="fa spacewalk-icon-package-add" title="<bean:message key='${alt}'/>"></i>
 	<bean:message key="${pack_header}" />
 </h2>
 <div class="page-summary">
@@ -69,7 +68,7 @@
 	</rl:list>
  			
 <c:if test="${not empty requestScope.all}">
-<div align="right">
+<div class="text-right">
    <rhn:submitted/>
    <hr/>
     <input type="submit"

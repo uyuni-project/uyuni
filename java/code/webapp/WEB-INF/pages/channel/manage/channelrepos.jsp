@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
@@ -14,7 +14,7 @@
 <%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
 <BR>
 
-<h2><img src="/img/rhn-icon-packages.gif"> <bean:message key="repos.jsp.channel.repos"/></h2>
+<h2><i class="fa spacewalk-icon-packages"></i> <bean:message key="repos.jsp.channel.repos"/></h2>
 
 <rl:listset name="packageSet">
 <rhn:csrf />
@@ -40,10 +40,10 @@
                 </rl:column>
 
 	</rl:list>
-	<div align="right">
+	<div class="text-right">
 	  <hr />
 		<input type="submit" name="dispatch"
-				value="<bean:message key="repos.jsp.update.channel"/>" />
+				value="<bean:message key='repos.jsp.update.channel'/>" />
 	</div>
 		<rhn:submitted/>
 

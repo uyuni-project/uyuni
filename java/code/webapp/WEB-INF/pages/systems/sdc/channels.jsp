@@ -4,11 +4,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:html xhtml="true">
+<html:html >
 <body>
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
   <h2>
-    <img src="/img/rhn-icon-channels.gif" alt="channel"/>
+    <i class="fa spacewalk-icon-software-channels" title="channel"></i>
     <bean:message key="sdc.channels.edit.header2"/>
   </h2>
   <html:form method="post" action="/systems/details/SystemChannels.do?sid=${system.id}">
@@ -89,7 +89,7 @@
         </c:if>
       </c:if>
       <hr/>
-      <div align="right">
+      <div class="text-right">
         <html:submit property="dispatch">
           <bean:message key="sdc.channels.edit.update_sub"/>
         </html:submit>
@@ -97,7 +97,7 @@
       <rhn:require acl="not system_is_proxy(); not system_is_satellite()" mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
 
         <h2>
-          <img src="/img/rhn-icon-channels.gif" />
+          <i class="fa spacewalk-icon-software-channels"></i>
           <bean:message key="sdc.channels.edit.base_software_channel"/>
         </h2>
 
@@ -105,7 +105,7 @@
         <div class="page-summary">
           <p>
             <bean:message key="sdc.channels.edit.summary2"/>
-          <p/>
+          
           <select name="new_base_channel_id" size="${fn:length(base_channels)+fn:length(custom_base_channels)+3}">
             <option value="-1"
             	<c:if test="${current_base_channel_id == -1}">
@@ -145,7 +145,7 @@
           </select>
 
           <hr/>
-          <div align="right">
+          <div class="text-right">
             <html:submit property="dispatch">
               <bean:message key="sdc.channels.edit.confirm_update_base"/>
             </html:submit>

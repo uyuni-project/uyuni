@@ -1,14 +1,13 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<html:xhtml/>
+
 <html>
 <body>
 
 <rhn:require acl="user_authenticated()">
 
 <h1>
-  <img src="/img/rhn-icon-warning.gif"
-       alt="${rhn:localize('error.common.errorAlt')}" />
+  <i class="fa fa-warning text-warning" title="${rhn:localize('error.common.errorAlt')}"></i>
   <bean:message key="missing_capabilities.jsp.header"/>
 </h1>
 <p><bean:message key="missing_capabilities.jsp.title"/></p>

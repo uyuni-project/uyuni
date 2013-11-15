@@ -5,19 +5,12 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
 
-<html:html xhtml="true">
+<html:html >
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/channel/channel_header.jspf" %>
-<BR>
 
-
-
-
-<div>
-  <h2><img src="/img/rhn-icon-errata.gif"> <bean:message key="header.jsp.errata"/></h2>
+  <h2><i class="spacewalk-icon-patches"></i> <bean:message key="header.jsp.errata"/></h2>
     <bean:message key="channel.jsp.errata.listtitle"/>
-
-
 
     <rl:listset name="errataSet">
     <rhn:csrf />
@@ -36,26 +29,20 @@
                            headerkey="erratalist.jsp.type">
 
 							<c:if test="${current.securityAdvisory}">
-					            <img src="/img/wrh-security.gif"
-					                 alt="<bean:message key='erratalist.jsp.securityadvisory' />"
-					                 title="<bean:message key='erratalist.jsp.securityadvisory' />" />
+					            <i class="fa fa-lock" title="<bean:message key='erratalist.jsp.securityadvisory' />"></i>
 					        </c:if>
 					        <c:if test="${current.bugFix}">
-					            <img src="/img/wrh-bug.gif"
-					                 alt="<bean:message key='erratalist.jsp.bugadvisory' />"
-					                 title="<bean:message key='erratalist.jsp.bugadvisory' />" />
+					            <i class="fa fa-bug" title="<bean:message key='erratalist.jsp.bugadvisory' />"></i>
 					        </c:if>
 					        <c:if test="${current.productEnhancement}">
-					            <img src="/img/wrh-product.gif"
-					                 alt="<bean:message key='erratalist.jsp.productenhancementadvisory' />"
-					                 title="<bean:message key='erratalist.jsp.productenhancementadvisory' />" />
+					            <i class="fa  spacewalk-icon-enhancement" title="<bean:message key='erratalist.jsp.productenhancementadvisory' />"></i>
 					        </c:if>
 
                 </rl:column>
 
                  <rl:column sortable="true"
-                                   bound="false"
-                                   sortattr="advisory"
+                            bound="false"
+                            sortattr="advisory"
                            headerkey="erratalist.jsp.advisory"
                           >
                         <a href="/rhn/errata/details/Details.do?eid=${current.id}">
@@ -65,7 +52,7 @@
 
 
                  <rl:column sortable="false"
-                                   bound="false"
+                            bound="false"
                            headerkey="erratalist.jsp.synopsis"
                           >
                           <c:out value="${current.advisorySynopsis}" />
@@ -73,11 +60,11 @@
 
 
                  <rl:column sortable="true"
-                                   bound="false"
-                           headerkey="erratalist.jsp.updated"
-                           sortattr="updateDateObj"
-                           defaultsort="desc"
-                          >
+                            bound="false"
+                            headerkey="erratalist.jsp.updated"
+                            sortattr="updateDateObj"
+                            defaultsort="desc"
+                            >
                         ${current.updateDate}
                 </rl:column>
 
@@ -89,10 +76,6 @@
 		        exportColumns="id, advisory, advisoryType, advisorySynopsis, updateDate" />
 
     </rl:listset>
-    	
-    		
-
-</div>
 
 </body>
 </html:html>

@@ -4,28 +4,27 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
     <!-- disables the enter key from submitting the form -->
     <script type="text/javascript" language="JavaScript">
-		function key(e) {
-		var pkey = e ? e.which : window.event.keyCode;
-		return pkey != 13;
-		}
-		document.onkeypress = key;
-		if (document.layers) document.captureEvents(Event.KEYPRESS);
-     </script>
+      $(document).ready(function() {
+        $(window).keydown(function(event){
+          if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+          }
+        });
+      });
+    </script>
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-packages.gif" imgAlt="overview.jsp.alt">
-<!-- helpUrl="/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Channel_and_Package_Management-Manage_Software_Packages.jsp" -->
+<rhn:toolbar base="h1" icon="spacewalk-icon-packages" iconAlt="overview.jsp.alt">
+<!-- helpUrl="/rhn/help/getting-started/en-US/sect-Getting_Started_Guide-Channel_Management-Creating_and_Managing_Custom_Channels-Removing_Software_Packages.jsp" -->
    <bean:message key="channel.jsp.manage.package.title"/>
 </rhn:toolbar>
-
-
-
 
 <rl:listset name="packageSet">
 <rhn:csrf />
@@ -81,18 +80,15 @@
                         ${current.provider}
                 </rl:column>
 
-
-
 			  </rl:list>
 
-
-			<p align="right">
-			<input type="submit" name="confirm"  value="<bean:message key="channel.jsp.manage.package.confirmbutton"/>"
+			<div class="text-right">
+			 <input type="submit" class="btn btn-default" name="confirm"  value="<bean:message key='channel.jsp.manage.package.confirmbutton'/>"
             <c:choose>
                 <c:when test="${empty pageList}">disabled</c:when>
             </c:choose>
             >
-			</p>
+			</div>
      <rhn:submitted/>
 </rl:listset>
 </body>

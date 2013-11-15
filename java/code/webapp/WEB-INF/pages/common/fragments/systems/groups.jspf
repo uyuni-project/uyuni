@@ -7,7 +7,7 @@
 
 
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="System Details" />
@@ -17,7 +17,7 @@
 
 
 <div class="page-summary">
-	<h2><img src="/img/rhn-icon-system_group.gif" alt="system group" />
+	<h2><i class="spacewalk-icon-system-groups"></i>
 	<bean:message key="${param.title_key}"/>
 	</h2>
     <p>
@@ -59,7 +59,7 @@
  			
 </div>
 <rhn:require acl="user_role(org_admin) or user_role(system_group_admin)">
-<div align="right">
+<div class="text-right">
    <rhn:submitted/>
    <hr/>
     <input type="submit"

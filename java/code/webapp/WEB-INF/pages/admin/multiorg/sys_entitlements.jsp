@@ -6,7 +6,7 @@
 
 <html>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-channels.gif"
+<rhn:toolbar base="h1" icon="spacewalk-icon-manage-entitlements-subscriptions"
  miscUrl="${url}"
  miscAcl="user_role(org_admin)"
  miscText="${text}"
@@ -17,7 +17,7 @@ imgAlt="users.jsp.imgAlt">
 </rhn:toolbar>
 
 <bean:message key="sys_entitlements.description"/>
-<p/>
+
 
 <c:choose>
 	<c:when test = "${orgCount > 1}">
@@ -75,7 +75,7 @@ imgAlt="users.jsp.imgAlt">
 
     </rl:list>
 </rl:listset>
-<p/>
+
 <rhn:tooltip typeKey="Tip">*-<bean:message key = "sys_entitlements.tip"/></rhn:tooltip>
 <rhn:tooltip typeKey="Tip">**-<bean:message key = "Used/Allotted.tip"/></rhn:tooltip>
 </body>

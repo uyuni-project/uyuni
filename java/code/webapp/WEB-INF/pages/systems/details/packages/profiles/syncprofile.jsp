@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 
 <body>
@@ -51,8 +51,7 @@
             <th><bean:message key="confirm.jsp.than"/></th>
         </tr>
         <tr>
-            <th><img src="/img/rhn-icon-schedule.gif" alt="<bean:message key="confirm.jsp.selection"/>"
-                title="<bean:message key="confirm.jsp.selection"/>"/>
+            <th><i class="fa spacewalk-icon-schedule" title="<bean:message key='confirm.jsp.selection'/>"></i>
             </th>
             <td>
                 <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
@@ -69,7 +68,7 @@
     <rhn:require acl="system_feature(ftr_delta_action)"
         mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
         <rhn:submitted/>
-        <div align="right">
+        <div class="text-right">
             <hr />
             <html:submit property="dispatch">
                 <bean:message key="schedulesync.jsp.schedulesync"/>

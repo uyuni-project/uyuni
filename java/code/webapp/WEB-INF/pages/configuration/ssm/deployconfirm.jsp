@@ -3,12 +3,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
 <h2>
-  <img src="/img/rhn-config_files.gif" alt='<bean:message key="ssmdiff.jsp.imgAlt" />' />
+  <i class="fa spacewalk-icon-manage-configuration-files" title="<bean:message key="ssmdiff.jsp.imgAlt" />"></i>
   <bean:message key="deployconfirm.jsp.header" />
 </h2>
 
@@ -41,8 +41,7 @@
           <th><bean:message key="deployconfirm.jsp.usedate"/></th>
         </tr>
         <tr>
-          <th><img src="/img/rhn-icon-schedule.gif" alt="<bean:message key="syncprofile.jsp.selection"/>"
-                                                  title="<bean:message key="syncprofile.jsp.selection"/>"/>
+          <th><i class="fa spacewalk-icon-schedule" title="<bean:message key='syncprofile.jsp.selection'/>"></i>
           </th>
           <td>
             <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
@@ -52,7 +51,7 @@
         </tr>
       </table>
 
-    <div align="right">
+    <div class="text-right">
       <hr />
       <html:submit property="dispatch">
         <bean:message key="deployconfirm.jsp.confirm" />

@@ -3,11 +3,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:html xhtml="true">
+<html:html >
 <head>
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-system.gif"
+<rhn:toolbar base="h1" icon="fa-desktop"
 	miscUrl="${url}"
 	miscAcl="user_role(org_admin)"
 	miscText="${text}"
@@ -23,7 +23,7 @@
 
 <bean:message key="system_entitlement_details.access_grant_desc.${name}"/>
 
-<p/>
+
 
 
 </body>

@@ -3,18 +3,17 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
-<html:xhtml/>
+
 <html>
 <body>
-<div class="toolbar-h1">
-  <div class="toolbar">
-    <span class="toolbar">
-      <a href="TreeCreate.do"><img src="/img/action-add.gif" alt="<bean:message key="kickstart.kickstartable_distro_create_new.jsp" />" title="<bean:message key="kickstart.kickstartable_distro_create_new.jsp" />" /><bean:message key="kickstart.kickstartable_distro_create_new.jsp" /></a>
-     </span>
-   </div><img alt="<bean:message key="kickstarts.alt.img"/>" src="/img/rhn-kickstart_profile.gif" />
-  <bean:message key="kickstart.kickstartable_distributions.jsp" />
-</div>
 
+<rhn:toolbar base="h1" miscIcon="fa-plus"
+    miscText="kickstart.kickstartable_distro_create_new.jsp"
+    miscUrl="TreeCreate.do"
+    icon="fa-rocket"
+    iconAlt="kickstarts.alt.img">
+<bean:message key="kickstart.kickstartable_distributions.jsp" />
+</rhn:toolbar>
 
 <div class="page-summary">
   <p>
@@ -41,10 +40,10 @@
             <rl:column headertext="${rhn:localize('kickstart.distro.is-valid.jsp')}?*" sortattr="valid">
             	<c:choose>
                     <c:when test="${current.valid}">
-                    	<img src="/img/rhn-listicon-checked.gif">
+                    	<i class="fa fa-check text-success"></i>
                     </c:when>
 					<c:otherwise>
-						<img src="/img/rhn-listicon-error.gif">
+						<i class="fa fa-times-circle text-danger"></i>
                 	</c:otherwise>
                 </c:choose>
             </rl:column>

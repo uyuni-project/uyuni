@@ -8,7 +8,7 @@
 <body>
 <c:choose>
 <c:when test="${param.oid != 1}">
-<rhn:toolbar base="h1" img="/img/rhn-icon-org.gif"
+<rhn:toolbar base="h1" icon="fa-group"
  miscUrl="${url}"
  miscAcl="user_role(org_admin)"
  miscText="${text}"
@@ -22,7 +22,7 @@
 </rhn:toolbar>
 </c:when>
 <c:otherwise>
-<rhn:toolbar base="h1" img="/img/rhn-icon-org.gif"
+<rhn:toolbar base="h1" icon="fa-group"
  miscUrl="${url}"
  miscAcl="user_role(org_admin)"
  miscText="${text}"
@@ -86,7 +86,7 @@
 	           attr="orgAdmin">
 	    <c:choose>
 	      <c:when test="${current.orgAdmin == 1}">
-	        <img src="/img/rhn-listicon-checked_immutable.gif">
+	        <i class="fa fa-check"></i>
 	      </c:when>
 	      <c:otherwise>
 	        <img src="/img/rhn-listicon-unchecked_immutable.gif">

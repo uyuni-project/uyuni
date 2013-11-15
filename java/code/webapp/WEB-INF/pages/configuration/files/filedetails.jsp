@@ -5,7 +5,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html"
 	prefix="html"%>
 
-<html:xhtml/>
+
 <html>
 <head>
 </head>
@@ -38,7 +38,7 @@
              mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
       <div class="submit-bar">
 	    <hr />
-		<div align="right">
+		<div class="text-right">
           <html:submit><bean:message key="filedetails.jsp.update" /></html:submit>
 		</div>
       </div>

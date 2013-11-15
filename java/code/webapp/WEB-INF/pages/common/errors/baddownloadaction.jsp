@@ -1,10 +1,10 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<html:xhtml/>
+
 <html>
 <body>
 
-<h1><img src="/img/rhn-icon-warning.gif"/><bean:message key="baddownload.jsp.title"/></h1>
+<h1><i class="fa fa-warning text-warning"></i><bean:message key="baddownload.jsp.title"/></h1>
 
 <p><bean:message key="baddownload.jsp.summary"/></p>
     <ol>

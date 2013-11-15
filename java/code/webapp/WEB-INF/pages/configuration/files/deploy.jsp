@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/config-managment" prefix="cfg" %>
 
-<html:xhtml/>
+
 <html>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/header.jspf"%>
@@ -25,7 +25,7 @@
 	<bean:message key="deploy.jsp.sandbox-note1"
 		arg1="/rhn/systems/details/Overview.do?sid=${sid}"
   		arg0="${system}"/>
-  	<p />
+  	
   	<c:set var="copyname" scope="request">
   		<bean:message key="copycentral.jsp.copy" />
   	</c:set>

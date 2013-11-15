@@ -7,7 +7,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
-<html:xhtml/>
+
 <html>
 
 <body>
@@ -15,7 +15,7 @@
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
 <h2>
-  <img src="/img/rhn-icon-package_extra.gif" />
+  <i class="fa spacewalk-icon-package-extra"></i>
   <bean:message key="packagelist.jsp.extrapackages" />
 </h2>
 
@@ -66,7 +66,7 @@
   </rl:list>
 
 <c:if test="${not empty requestScope.all}">
-  <div align="right">
+  <div class="text-right">
     <rhn:submitted/>
     <hr/>
       <rhn:require acl="system_feature(ftr_package_remove)">

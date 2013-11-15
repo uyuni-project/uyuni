@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:html xhtml="true">
+<html:html >
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
     <h2><bean:message key="delete_confirm.jsp.header"/></h2>
@@ -15,7 +15,7 @@
     <html:form method="post" action="/systems/details/DeleteConfirm.do?sid=${sid}">
       <rhn:csrf />
       <html:hidden property="submitted" value="true"/>
-      <div align="right">
+      <div class="text-right">
         <html:submit property="button">
           <bean:message key="delete_confirm.jsp.button"/>
         </html:submit>

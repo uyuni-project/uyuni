@@ -4,13 +4,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="Users" />
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-users.gif"
+<rhn:toolbar base="h1" icon="fa-user"
  helpUrl="/rhn/help/reference/en-US/s1-sm-users.jsp">
   <bean:message key="userconfirm.jsp.header" />
 </rhn:toolbar>
@@ -40,9 +40,9 @@
 		name="userConfirmList"
 		exportColumns="userLogin,userLastName,userFirstName,roleNames,lastLoggedIn"/>
 		
-	<div align="right">
+	<div class="text-right">
     	<hr />
-    	<input type="submit" name="dispatch" value="<bean:message key="userconfirm.jsp.confirm" />" />
+    	<input type="submit" name="dispatch" value="<bean:message key='userconfirm.jsp.confirm'/>" />
 	</div>
 	
 </rl:listset>

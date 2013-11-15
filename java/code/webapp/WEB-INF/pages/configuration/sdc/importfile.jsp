@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/config-managment" prefix="cfg" %>
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="sdc.config.jsp.header" />
@@ -13,7 +13,7 @@
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
 <rhn:toolbar base="h2"
-             img="/img/rhn-icon-system.gif"
+             icon="fa-desktop"
              imgAlt="system.common.systemAlt">
   <bean:message key="sdcimportfile.jsp.header"
                 arg0="${fn:escapeXml(system.name)}"/>
@@ -65,7 +65,7 @@
       	
       </rhn:listdisplay>
   </rhn:list>
-  <div align="right">
+  <div class="text-right">
       <hr />
       <html:submit property="dispatch">
           <bean:message key="sdcimportfile.jsp.button"/>

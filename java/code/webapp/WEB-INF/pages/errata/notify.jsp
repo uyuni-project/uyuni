@@ -3,13 +3,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-errata.gif"
+<rhn:toolbar base="h1" icon="spacewalk-icon-patches"
 	           deletionUrl="/rhn/errata/Delete.do?eid=${param.eid}"
                deletionType="errata">
     <!-- helpUrl="/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Errata_Management-Managed_Errata_Details.jsp" -->
@@ -25,7 +25,7 @@
 
   <hr />
 
-  <div align="right">
+  <div class="text-right">
     <form action="/rhn/errata/manage/NotifySubmit.do" method="POST">
       <rhn:csrf />
       <input type="hidden" name="eid" value="<c:out value="${param.eid}"/>"/>

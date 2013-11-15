@@ -5,9 +5,9 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
 
-<html:html xhtml="true">
+<html:html >
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-kickstart_profile.gif"
+<rhn:toolbar base="h1" icon="fa-rocket"
                creationUrl="/rhn/kickstart/CreateProfileWizard.do"
                creationType="kickstart"
                imgAlt="kickstarts.alt.img"
@@ -51,12 +51,10 @@
 		</rl:column>
       		<rl:column  bound="false" headerkey="kickstart.jsp.active"  sortattr="active">
 	      		<c:if test="${current.active}">
-	            <img src="/img/rhn-listicon-ok.gif" alt="<bean:message key="kickstart.jsp.active"/>"
-	            									title="<bean:message key="kickstart.jsp.active"/>"/>
+	            <i class="fa fa-check text-success" title="<bean:message key='kickstart.jsp.active'/>"></i>
 	          </c:if>
 	         <c:if test="${not current.active}">
-	            <img src="/img/rhn-listicon-error.gif" alt="<bean:message key="kickstart.jsp.inactive"/>"
-	            									   title="<bean:message key="kickstart.jsp.inactive"/>"/>
+	            <i class="fa fa-times-circle text-danger" title="<bean:message key='kickstart.jsp.inactive'/>"></i>
 	          </c:if>
       		</rl:column>
                 <rl:column headerkey="kickstart.distro.label.jsp" sortattr="treeLabel">
@@ -65,10 +63,10 @@
             <rl:column headerkey="kickstart.distro.sw_managed.jsp" sortattr="cobbler">
             	<c:choose>
                     <c:when test="${current.cobbler}">
-                    	<img src="/img/rhn-listicon-error.gif">
+                    	<i class="fa fa-times-circle text-danger"></i>
                     </c:when>
 					<c:otherwise>
-						<img src="/img/rhn-listicon-checked.gif">
+						<i class="fa fa-check text-success"></i>
                 	</c:otherwise>
                 </c:choose>
             </rl:column>

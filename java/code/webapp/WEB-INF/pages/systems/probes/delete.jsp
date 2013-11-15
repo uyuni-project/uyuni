@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
     <head>
         <meta name="page-decorator" content="none" />
@@ -26,7 +26,7 @@
 
     <p><strong><bean:message key="probdelete.jsp.p4"/></strong></p>
 
-    <div align="right">
+    <div class="text-right">
     <hr />
         <html:submit><bean:message key="probdelete.jsp.deleteprobe"/></html:submit></td>
 

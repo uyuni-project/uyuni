@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:html xhtml="true">
+<html:html >
 <body>
 <br>
 
@@ -12,12 +12,12 @@
 
   <div class="toolbar-h1">
     <div class="toolbar"></div>
-      <img src="/img/rhn-icon-keyring.gif" alt="" />
+      <i class="fa fa-key" title=""></i>
         <bean:message key="system.jsp.customkey.deletetitle"/>
 
         <a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s2-sm-system-cust-info"
 		target="_new" class="help-title">
-          <img src="/img/rhn-icon-help.gif" alt="Help Icon" />
+          <i class="fa fa-question-circle" title="Help Icon"></i>
         </a>
       </div>
 
@@ -44,7 +44,7 @@
           </tr>
         </table>
 
-        <div align="right">
+        <div class="text-right">
           <hr />
 
           <input type="submit" name="DeleteKey" value="Delete Key" />

@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
@@ -12,7 +12,7 @@
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
      <h2>
-      <img src="/img/rhn-icon-errata.gif" alt="erratum" /> <bean:message key="header.jsp.errata"/>
+      <i class="fa spacewalk-icon-patches" title="erratum"></i> <bean:message key="header.jsp.errata"/>
     </h2>
 
   <bean:message key="channel.jsp.errata.remove.confirmmessage"/>
@@ -66,7 +66,7 @@
 			</rl:list>
 
 			<p align="right">
-			<input type="submit" name="dispatch"  value="<bean:message key="channel.jsp.errata.confirmremove"/>">
+			<input type="submit" name="dispatch"  value="<bean:message key='channel.jsp.errata.confirmremove'/>">
 			</p>
      <rhn:submitted/>
      <input type="hidden" name="cid" value="${cid}">

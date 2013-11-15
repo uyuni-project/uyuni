@@ -5,17 +5,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<html:html xhtml="true">
+<html:html >
 <body>
 <c:if test="${! empty kickstart_scripts}">
-    <rhn:toolbar base="h1" img="/img/rhn-kickstart_profile.gif"
+    <rhn:toolbar base="h1" icon="fa-rocket"
                creationUrl="/rhn/kickstart/KickstartScriptCreate.do?ksid=${ksdata.id}"
                creationType="kickstartscript"
                miscUrl="/rhn/kickstart/KickstartScriptOrder.do?ksid=${ksdata.id}"
                miscText="toolbar.misc.kickstartscript"
                miscImg="action-order.gif"
                miscAlt="toolbar.misc.kickstartscriptalt"
-               imgAlt="kickstarts.alt.img">
+               iconAlt="kickstarts.alt.img">
       <bean:message key="kickstartdetails.jsp.header1" arg0="${fn:escapeXml(ksdata.label)}"/>
     </rhn:toolbar>
 </c:if>

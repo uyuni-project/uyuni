@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="name" value="Systems Affected" />
@@ -46,8 +46,7 @@
     <th><bean:message key="syncprofile.jsp.than"/></th>
   </tr>
   <tr>
-    <th><img src="/img/rhn-icon-schedule.gif" alt="<bean:message key="syncprofile.jsp.selection"/>"
-             title="<bean:message key="syncprofile.jsp.selection"/>"/>
+    <th><i class="fa spacewalk-icon-schedule" title="<bean:message key='syncprofile.jsp.selection'/>"></i>
     </th>
     <td>
       <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
@@ -57,7 +56,7 @@
   </tr>
 </table>
 
-<div align="right">
+<div class="text-right">
   <hr />
   <html:submit property="dispatch">
     <bean:message key="confirm.jsp.confirm"/>

@@ -5,7 +5,7 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<html:xhtml/>
+
 <html>
 
 <body>
@@ -26,7 +26,7 @@
 		<rl:column headerkey="system.audit.xccdfdeleteconfirm.jsp.deletable">
 			<c:choose>
 				<c:when test="${current.deletable}">
-					<img src="/img/rhn-listicon-checked_immutable.gif">
+					<i class="fa fa-check"></i>
 				</c:when>
 				<c:otherwise>
 					<img src="/img/rhn-listicon-unchecked_immutable.gif">
@@ -36,7 +36,7 @@
 	</rl:list>
 
 	<p align="right">
-		<input type="submit" name="dispatch"  value="<bean:message key="confirm.jsp.confirm"/>">
+		<input type="submit" name="dispatch"  value="<bean:message key='confirm.jsp.confirm'/>">
 	</p>
 </rl:listset>
 

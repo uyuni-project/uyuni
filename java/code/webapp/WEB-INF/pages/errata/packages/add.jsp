@@ -4,23 +4,26 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 <head>
     <meta name="page-decorator" content="none" />
     <!-- disables the enter key from submitting the form -->
     <script type="text/javascript" language="JavaScript">
-		function key(e) {
-		var pkey = e ? e.which : window.event.keyCode;
-		return pkey != 13;
-		}
-		document.onkeypress = key;
-		if (document.layers) document.captureEvents(Event.KEYPRESS);
+      $(document).ready(function() {
+        $(window).keydown(function(event){
+          if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+          }
+        });
+      });
     </script>
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-errata.gif" imgAlt="errata.common.errataAlt">
-    <!-- helpUrl="/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Errata_Management-Managed_Errata_Details.jsp" -->
+
+<rhn:toolbar base="h1" icon="spacewalk-icon-patches" iconAlt="errata.common.errataAlt">
+	<!-- helpUrl="/rhn/help/getting-started/en-US/chap-Getting_Started_Guide-Errata_Management.jsp#sect-Getting_Started_Guide-Errata_Management-Creating_and_Editing_Errata" -->
     <bean:message key="errata.edit.toolbar"/> <c:out value="${advisory}" />
   </rhn:toolbar>
 
@@ -91,7 +94,7 @@
             </rl:column>
         </rl:list>
 
-        <div align="right">
+        <div class="text-right">
             <rhn:submitted/>
             <hr/>
             <input type="submit"

@@ -3,15 +3,15 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
-<html:html xhtml="true">
+<html:html >
     <body>
         <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
         <h2>
-            <img src="/img/rhn-icon-channels.gif" alt="channel"/>
+            <i class="fa spacewalk-icon-software-channels" title="channel"></i>
             <bean:message key="sdc.channels.confirmNewBase.header.confirm"/>
         </h2>
 
-        <bean:message key="sdc.channels.confirmNewBase.currentlySubscribedTo"/><p/>
+        <bean:message key="sdc.channels.confirmNewBase.currentlySubscribedTo"/>
         <c:choose>
             <c:when test="${current_base_channel == null}">
                 <strong><bean:message key="sdc.channels.confirmNewBase.noBaseChannel"/></strong>
@@ -28,9 +28,9 @@
                 </ul>
             </c:otherwise>
         </c:choose>
-        <p/>
+        
 
-        <bean:message key="sdc.channels.confirmNewBase.toBeSubscribedTo"/><p/>
+        <bean:message key="sdc.channels.confirmNewBase.toBeSubscribedTo"/>
         <c:choose>
             <c:when test="${new_base_channel == null}">
                 <strong><bean:message key="sdc.channels.confirmNewBase.noBaseChannel"/></strong>
@@ -44,17 +44,17 @@
                 </ul>
             </c:otherwise>
         </c:choose>
-        <p/>
+        
 
         <bean:message key="sdc.channels.confirmNewBase.otherChannelsWarning"/>
-        <p/>&nbsp;<p/>
+        &nbsp;
 
         <span class="small-text">
             <bean:message key="sdc.channels.confirmNewBase.fasTrackBetaNote"/>
         </span>
 
         <html:form method="post" action="/systems/details/SystemChannels.do?sid=${system.id}">
-            <div align="right">
+            <div class="text-right">
                 <rhn:csrf />
                 <html:hidden property="submitted" value="true"/>
                 <html:hidden property="new_base_channel_id" value="${new_base_channel_id}"/>

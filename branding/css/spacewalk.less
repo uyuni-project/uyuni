@@ -1,0 +1,30 @@
+/* Original Bootstrap */
+@import url(bootstrap/less/bootstrap.less);
+
+/* Here begins the spacewalk css theme */
+
+/* Roboto font */
+@import url(spacewalk-typography.less);
+/* Spacewalk variables */
+@import url(spacewalk-variables.less);
+/* Spacewalk mixins */
+@import url(spacewalk-mixins.less);
+/*Import of Tables style*/
+@import url(spacewalk-tables.less);
+/* Import of the Theme */
+@import url(spacewalk-theme.less);
+
+
+/* fixing margin issue in Bootstrap 3 */
+
+@media (min-width: 768px) {
+  .row {
+  	margin-right: 0;
+  	margin-left: 0;
+  }
+}
+
+
+// LEAVE THIS LINE AT THE END ALWAYS TO WARRANTY THE RESPONSIVE RULES REWRITE THE EXISTING STYLES
+/* Responsive rules */
+@import url(spacewalk-responsive-rules.less);

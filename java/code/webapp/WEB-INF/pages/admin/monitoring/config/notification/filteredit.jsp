@@ -4,13 +4,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
     <head>
         <meta name="page-decorator" content="none" />
     </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-system_group.gif"
+<rhn:toolbar base="h1" icon="spacewalk-icon-system-groups"
 	           helpUrl="/rhn/help/reference/en-US/s1-sm-monitor.jsp#s2-sm-monitor-notif">
     <bean:message key="filteredit.jsp.header1" />
   </rhn:toolbar>

@@ -4,13 +4,13 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<html:xhtml/>
+
 <html>
 <head>
 <script type="text/javascript" src="/javascript/highlander.js"></script>
 </head>
 <body>
-<rhn:toolbar base="h1" img="/img/rhn-icon-search.gif" imgAlt="docsearch.jsp.imgAlt"
+<rhn:toolbar base="h1" icon="fa-search" imgAlt="docsearch.jsp.imgAlt"
                helpUrl="">
     <bean:message key="docsearch.jsp.toolbar"/>
   </rhn:toolbar>
@@ -23,33 +23,44 @@
   <rhn:csrf />
 
   <!-- Search Box -->
-    <div class="search-choices">
-
-       <div class="search-choices-group">
-         <table class="details">
-           <tr><th><bean:message key="docsearch.jsp.searchfor"/></th>
-             <td>
-               <html:text property="search_string" name="search_string" value="${search_string}" accesskey="4"/>
-               <html:submit>
-                 <bean:message key="button.search" />
-               </html:submit>
-             </td>
-           </tr>
-           <tr><th><bean:message key="docsearch.jsp.whatsearch"/></th>
-             <td>
-               <div style="text-align: left">
-                 <html:select property="view_mode" value="${view_mode}" >
-                   <html:options collection="searchOptions"
-                                 property="value"
-                                 labelProperty="display" />
-                 </html:select>
-               </div>
-             </td>
-           </tr>
-         </table>
-       </div>
-
+    <div class="search-choices panel panel-default">
+      <div class="search-choices-group panel-body">
+        <div class="form-group row">
+          <div class="col-md-2 text-right">
+            <label for="searchform"><bean:message key="docsearch.jsp.searchfor"/></label>
+          </div>
+          <div class="col-md-4">
+            <html:text property="search_string" 
+                         name="search_string" 
+                         styleId="searchform"
+                        value="${search_string}" 
+                   styleClass="form-control"
+                    accesskey="4"/>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-2 text-right">
+            <label><bean:message key="docsearch.jsp.whatsearch"/></label>
+          </div>
+          <div class="col-md-4">
+            <html:select property="view_mode" styleClass="form-control" value="${view_mode}" >
+              <html:options collection="searchOptions"
+                              property="value"
+                         labelProperty="display" />
+            </html:select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-10">
+          <button type="submit" class="btn btn-success btn-sm">
+             <i class="fa fa-search"></i>
+             <bean:message key="button.search"/>
+          </button>
+          </div>
+        </div>
+      </div>
     </div>
+    
     <input type="hidden" name="submitted" value="true" />
   </html:form>
 

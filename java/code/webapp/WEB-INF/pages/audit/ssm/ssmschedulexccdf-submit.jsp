@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean"     prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html"     prefix="html"%>
 
-<html:xhtml/>
+
 <html>
 <body>
 
@@ -16,7 +16,7 @@
 
   <%@ include file="/WEB-INF/pages/common/fragments/audit/schedule-xccdf.jspf" %>
 
-  <div align="right">
+  <div class="text-right">
     </hr>
     <html:submit property="schedule_button">
       <bean:message key="system.audit.confirmschedulexccdf.jsp.button"/>

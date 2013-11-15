@@ -162,7 +162,7 @@ sub proxy_entitlement_form {
 
   	$subs{proxy_message} = "This machine is currently a licensed SUSE Manager Proxy (v$version).";
   } else {
-    $subs{proxy_message} = "<div class=\"site-alert\">WebUI SUSE Manager Proxy installer is obsoleted since version 1.1 Please use command line installer from package spacewalk-proxy-installer.</div>";
+    $subs{proxy_message} = "<div class=\"alert alert-danger\">WebUI SUSE Manager Proxy installer is obsoleted since version 1.1 Please use command line installer from package spacewalk-proxy-installer.</div>";
   }
 
   $block = PXT::Utils->perform_substitutions($block, \%subs);
