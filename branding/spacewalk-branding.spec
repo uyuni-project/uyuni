@@ -4,6 +4,8 @@
 %define apacheconfdir %{_sysconfdir}/apache2/conf.d
 %define apache_group www
 %global tomcat tomcat6
+%define lesspkg lesscss-engine
+%define lesscmd lesscss-engine
 %else
 %if  0%{?rhel} && 0%{?rhel} < 6
 %global tomcat tomcat5
@@ -17,6 +19,8 @@
 %define wwwdocroot %{_var}/www/html
 %define apacheconfdir %{_sysconfdir}/httpd/conf.d
 %define apache_group apache
+%define lesspkg nodejs-less
+%define lesscmd lessc
 %endif
 Name:       spacewalk-branding
 Version:    2.1.8
@@ -31,7 +35,7 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildArch:  noarch
 
 BuildRequires: java-devel >= 1.5.0
-BuildRequires: nodejs-less
+BuildRequires: %{lesspkg}
 BuildRequires: httpd
 Requires:      httpd
 Requires(pre): tomcat6
@@ -53,7 +57,7 @@ rm -f java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 jar -cf java-branding.jar -C java/code/src com
 
 # Compile less into css
-lessc css/spacewalk.less > css/spacewalk.css
+%{lesscmd} css/spacewalk.less > css/spacewalk.css
 
 %install
 rm -rf %{buildroot}
