@@ -30,7 +30,6 @@ import java.io.IOException;
 
 /**
  * Changes power management settings for a server.
- *
  * @version $Rev$
  */
 public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
@@ -63,8 +62,8 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
     private String powerId;
 
     /**
-     * Standard constructor.
-     *
+     * Standard constructor. Empty parameters strings can be used to leave
+     * existing values untouched.
      * @param userIn the user running this command
      * @param serverIn the server to update
      * @param powerTypeIn the new power management scheme
@@ -86,8 +85,8 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
     }
 
     /**
-     * Updates a server's power settings. Creates a Cobbler system profile if
-     * it does not exist.
+     * Updates a server's power settings. Creates a Cobbler system profile if it
+     * does not exist.
      * @return any errors
      */
     @Override
@@ -119,11 +118,21 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
 
         try {
             log.debug("Setting Cobbler parameters for system " + sid);
-            systemRecord.setPowerType(powerType);
-            systemRecord.setPowerAddress(powerAddress);
-            systemRecord.setPowerUsername(powerUsername);
-            systemRecord.setPowerPassword(powerPassword);
-            systemRecord.setPowerId(powerId);
+            if (StringUtils.isNotBlank(powerType)) {
+                systemRecord.setPowerType(powerType);
+            }
+            if (StringUtils.isNotBlank(powerAddress)) {
+                systemRecord.setPowerAddress(powerAddress);
+            }
+            if (StringUtils.isNotBlank(powerUsername)) {
+                systemRecord.setPowerUsername(powerUsername);
+            }
+            if (StringUtils.isNotBlank(powerPassword)) {
+                systemRecord.setPowerPassword(powerPassword);
+            }
+            if (StringUtils.isNotBlank(powerId)) {
+                systemRecord.setPowerId(powerId);
+            }
             systemRecord.save();
             log.debug("Settings saved for system " + sid);
         }
@@ -134,7 +143,7 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
                 if (message != null && message.contains("power type must be one of")) {
                     log.error("Unsupported Cobbler power type " + powerType);
                     return new ValidatorError(
-                            "kickstart.powermanagement.unsupported_power_type");
+                        "kickstart.powermanagement.unsupported_power_type");
                 }
             }
             throw e;
@@ -146,9 +155,7 @@ public class CobblerPowerSettingsUpdateCommand extends CobblerCommand {
     /**
      * HACK: create a dummy image to be able to add non-netbooting system
      * profile to Cobbler in case one has not already been defined for
-     * Kickstart.
-     *
-     * That is, support Cobbler power management features even with
+     * Kickstart. That is, support Cobbler power management features even with
      * systems that do not need PXE booting.
      * @param connection the connection
      * @return the image
