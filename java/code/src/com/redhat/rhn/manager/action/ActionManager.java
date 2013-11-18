@@ -76,6 +76,7 @@ import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.domain.rhnpackage.Package;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
@@ -92,6 +93,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 /**
  * ActionManager - the singleton class used to provide Business Operations
@@ -210,6 +212,20 @@ public class ActionManager extends BaseManager {
     }
 
     /**
+     * Deletes the action set by id and type.
+     * @param id Action ID
+     * @param type Action Type
+     */
+    public static void deleteActionsByIdAndType(Long id, Integer type) {
+        WriteMode m = ModeFactory.getWriteMode("Action_queries",
+                "delete_actions_by_id_and_type");
+        Map params = new HashMap();
+        params.put("id", id);
+        params.put("action_type", type);
+        m.executeUpdate(params);
+    }
+
+    /**
      * Archives the action set with the given label.
      * @param user User associated with the set of actions.
      * @param label Action label to be updated.
@@ -259,24 +275,21 @@ public class ActionManager extends BaseManager {
         actionsToDelete.add(action);
         actionsToDelete.addAll(ActionFactory.lookupDependentActions(action));
 
-        // Delete the server actions associated with the actions queried:
-        StringBuffer actionsToDeleteBuffer = new StringBuffer(
-                "Actions to be cancelled (including children):");
-        Iterator iter = actionsToDelete.iterator();
-        while (iter.hasNext()) {
-            Action a = (Action)iter.next();
-            actionsToDeleteBuffer.append(" " + a.getId());
-        }
-
         Set servers = new HashSet();
         Iterator serverActionsIter = action.getServerActions().iterator();
         while (serverActionsIter.hasNext()) {
             ServerAction sa = (ServerAction)serverActionsIter.next();
             servers.add(sa.getServer());
         }
-        KickstartFactory.failKickstartSessions(actionsToDelete, servers);
 
+        KickstartFactory.failKickstartSessions(actionsToDelete, servers);
         ActionFactory.deleteServerActionsByParent(actionsToDelete);
+
+        Iterator iter = actionsToDelete.iterator();
+        while (iter.hasNext()) {
+            Action a = (Action)iter.next();
+            a.onCancelAction();
+        }
     }
 
     /**
@@ -1403,6 +1416,22 @@ public class ActionManager extends BaseManager {
     }
 
     /**
+     * Schedules one or more package lock actions for the given server.
+     * @param scheduler
+     * @param server
+     * @param packages
+     * @param earliest
+     * @return Currently scheduled PackageAction
+     */
+    public static Action schedulePackageLock(User scheduler,
+                                                    Server server,
+                                                    List<Package> packages,
+                                                    Date earliest) {
+        return ActionManager.schedulePackageAction(
+                scheduler, packages, ActionFactory.TYPE_PACKAGES_LOCK, earliest, server);
+    }
+
+    /**
      * Schedules a script action for the given servers
      *
      * @param scheduler User scheduling the action.
@@ -1750,7 +1779,24 @@ public class ActionManager extends BaseManager {
         for (Server s : servers) {
             serverIds.add(s.getId());
         }
-        return schedulePackageAction(scheduler, pkgs, type, earliestAction, serverIds);
+
+        if (pkgs != null && !pkgs.isEmpty() && pkgs.get(0) instanceof Package) {
+            List<Map<String, Long>> packagesList = new ArrayList<Map<String, Long>>();
+            for (Iterator it = pkgs.iterator(); it.hasNext();) {
+                Package pkg = (Package) it.next();
+                Map<String, Long> pkgMeta = new HashMap<String, Long>();
+                pkgMeta.put("name_id", pkg.getPackageName().getId());
+                pkgMeta.put("evr_id", pkg.getPackageEvr().getId());
+                pkgMeta.put("arch_id", pkg.getPackageArch().getId());
+                packagesList.add(pkgMeta);
+            }
+            return schedulePackageAction(scheduler, packagesList, type,
+                                         earliestAction, serverIds);            
+        }
+        else {
+            return schedulePackageAction(scheduler, pkgs, type,
+                                         earliestAction, serverIds);
+        }
     }
 
     /**
@@ -1788,6 +1834,9 @@ public class ActionManager extends BaseManager {
         }
         else if (type.equals(ActionFactory.TYPE_PACKAGES_DELTA)) {
             name = "Package Synchronization";
+        }
+        else if (type.equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
+            name = "Lock packages";
         }
 
         Action action = scheduleAction(scheduler, type, name, earliestAction, serverIds);

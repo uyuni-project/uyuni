@@ -749,6 +749,69 @@ order by upper(name)
 </mode>
 
 
+<mode name="system_locked_packages"  class="com.redhat.rhn.frontend.dto.PackageListItem">
+  <query params="sid">
+SELECT p.package_id,
+       p.id_combo,
+       p.nvre,
+       p.nvrea,
+       p.name,
+       p.version,
+       p.release,
+       p.epoch,
+       p.name_id,
+       p.evr_id,
+       p.arch
+  FROM rhnlockedpackages l
+  LEFT JOIN (
+SELECT pkg.id AS package_id,
+       pn.id || '|' || pe.id || '|' || pa.id AS id_combo,
+       pn.name || '-' || pe.version || '-' || pe.release AS nvre,
+       pn.name || '-' || evr_t_as_vre_simple(pe.evr) || '.' || pa.label AS nvrea,
+       pn.name AS name,
+       pe.version AS version,
+       pe.release AS release,
+       pe.epoch AS epoch,
+       pn.id AS name_id,
+       pe.id AS evr_id,
+       pa.label AS arch
+  FROM rhnpackage pkg
+  LEFT JOIN rhnpackagename pn ON pn.id = pkg.name_id
+  LEFT JOIN rhnpackagearch pa ON pa.id = pkg.package_arch_id
+  LEFT JOIN rhnpackageevr pe ON pe.id = pkg.evr_id
+) p ON l.pkg_id = p.package_id
+WHERE l.server_id = :sid
+  </query>
+</mode>
+
+<write-mode name="lock_package">
+  <query params="pkgid, sid, nid, eid, aid, pending">
+      INSERT INTO RHNLOCKEDPACKAGES (pkg_id, server_id, name_id, evr_id, arch_id, pending)
+           VALUES (:pkgid, :sid, :nid, :eid, :aid, :pending)
+  </query>
+</write-mode>
+
+<write-mode name="unlock_package">
+  <query params="pkgid">
+      DELETE FROM RHNLOCKEDPACKAGES
+       WHERE pkg_id = :pkgid
+  </query>
+</write-mode>
+
+<write-mode name="remove_orphan_lock_on_action_cancel">
+  <query params="sid, action_id">
+DELETE FROM rhnlockedpackages l
+      WHERE l.pkg_id IN (SELECT lck.pkg_id
+                           FROM rhnaction act
+                      LEFT JOIN rhnactionpackage ack ON ack.action_id = act.id
+                      LEFT JOIN rhnlockedpackages lck ON lck.name_id = ack.name_id
+                                                     AND lck.evr_id = ack.evr_id
+                                                     AND lck.arch_id = ack.package_arch_id
+                          WHERE lck.server_id = :sid AND act.id = :action_id)
+  </query>
+</write-mode>
+
+
 <mode name="lookup_id_combo_by_name">
 <query params="sid, name">
 SELECT  pn.id as name_id, lookup_evr((full_list.evr).epoch, (full_list.evr).version, (full_list.evr).release) AS evr_id

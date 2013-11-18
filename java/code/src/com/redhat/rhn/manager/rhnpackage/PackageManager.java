@@ -517,6 +517,75 @@ public class PackageManager extends BaseManager {
     }
 
     /**
+     * Get the list of locked packages, available to the particular system.
+     * 
+     * @param sid System ID.
+     * @param pc Page control object.
+     * @return  DataResult containing locked packages data.
+     */
+    public static DataResult systemLockedPackages(Long sid, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("Package_queries", "system_locked_packages");
+        Map params = new HashMap();
+        params.put("sid", sid);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
+     * Lock packages.
+     * If the package object has lock pending, then the package will be only half-locked.
+     *
+     * @param sid Server ID.
+     * @param packages List of packages to lock.
+     */
+    public static void lockPackages(Long sid, List<Package> packages) {
+        PackageManager.unlockPackages(sid, packages);
+        for (int i = 0; i < packages.size(); i++) {
+            Package pkg = packages.get(i);
+            Map params = new HashMap();
+            params.put("sid", sid);
+            params.put("pkgid", pkg.getId());
+            params.put("nid", pkg.getPackageName().getId());
+            params.put("eid", pkg.getPackageEvr().getId());
+            params.put("aid", pkg.getPackageArch().getId());
+            params.put("pending", pkg.isLockPending() ? "L" : null);
+            ModeFactory.getWriteMode("Package_queries", "lock_package").executeUpdate(params);
+        }
+    }
+
+    /**
+     * Unlock packages.
+     *
+     * @param sid Server ID.
+     * @param packages List of packages to unlock.
+     */
+    public static void unlockPackages(Long sid, List<Package> packages) {
+        for (int i = 0; i < packages.size(); i++) {
+            Package pkg = packages.get(i);
+            Map params = new HashMap();
+            params.put("sid", sid);
+            params.put("pkgid", pkg.getId());
+            ModeFactory.getWriteMode("Package_queries",
+                                     "unlock_package").executeUpdate(params);
+        }
+    }
+
+    /**
+     * Remove orphan locked packages, when action has been canceled.
+     * 
+     * @param sid System ID
+     * @param actionId Action ID
+     */
+    public static void syncLockedPackages(Long sid, Long actionId) {
+        // Sync orphan locks when action has been canceled.
+        Map params = new HashMap();
+        params.put("sid", sid);
+        params.put("action_id", actionId);
+        ModeFactory.getWriteMode("Package_queries",
+                                 "remove_orphan_lock_on_action_cancel").executeUpdate(params);        
+    }
+
+    /**
      * Get the list of  Package Names that match the passed in capability string.
      *
      * Example:  "rhn.kickstart.boot_image" for the list of auto kickstart rpms
@@ -1129,7 +1198,7 @@ public class PackageManager extends BaseManager {
         params.put("sid", systemId);
         params.put("nameId", nameId);
         params.put("evrId", evrId);
-
+        
         if (archId != null && archId != 0) {
             params.put("archId", archId);
             m = ModeFactory.getMode(
