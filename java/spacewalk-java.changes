@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Nov  6 11:07:37 CET 2013 - mc@suse.de
+
+- Forbid un-authenticated creation of SUSE Manager Administrative
+  accounts CVE-2013-4480 (bnc#848639)
+
+-------------------------------------------------------------------
+Mon Nov  4 10:09:39 CET 2013 - mc@suse.de
+
+- Deny creating of multiple first admin users.
+  CVE-2013-4480 (bnc#848639)
+
+-------------------------------------------------------------------
 Fri Sep 27 10:04:28 CEST 2013 - mc@suse.de
 
 - version 1.7.54.28-1
