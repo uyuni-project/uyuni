@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.kickstart.test;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.Asserts;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
@@ -123,6 +124,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
+        dispatchFrom("kickstart.powermanagement.jsp.save");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -167,6 +169,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
+        dispatchFrom("kickstart.powermanagement.jsp.save");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -205,6 +208,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
+        dispatchFrom("kickstart.powermanagement.jsp.save");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -248,8 +252,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
-        request.addParameter(PowerManagementAction.POWER_ADDITIONAL_ACTION,
-            PowerManagementAction.POWER_ON);
+        dispatchFrom("kickstart.powermanagement.jsp.save_power_on");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -273,8 +276,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
-        request.addParameter(PowerManagementAction.POWER_ADDITIONAL_ACTION,
-            PowerManagementAction.POWER_OFF);
+        dispatchFrom("kickstart.powermanagement.jsp.save_power_off");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -298,8 +300,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
-        request.addParameter(PowerManagementAction.POWER_ADDITIONAL_ACTION,
-            PowerManagementAction.REBOOT);
+        dispatchFrom("kickstart.powermanagement.jsp.save_reboot");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -323,8 +324,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
-        request.addParameter(PowerManagementAction.POWER_ADDITIONAL_ACTION,
-            PowerManagementAction.GET_STATUS);
+        dispatchFrom("kickstart.powermanagement.jsp.save_get_status");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -336,5 +336,13 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         assertEquals(true, request.getAttribute(PowerManagementAction.POWER_STATUS_ON));
         assertEquals("power_system status " + server.getCobblerId(),
             MockConnection.getLatestPowerCommand());
+    }
+
+    /**
+     * Sets the DISPATCH request parameter from an input tag key.
+     */
+    private void dispatchFrom(String key) {
+        request.addParameter(RequestContext.DISPATCH, LocalizationService.getInstance()
+            .getPlainText(key));
     }
 }
