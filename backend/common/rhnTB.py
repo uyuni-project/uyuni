@@ -7,10 +7,10 @@
 # FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-# 
+#
 # Red Hat trademarks are not licensed under GPLv2. No permission is
 # granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation. 
+# in this software or its documentation.
 #
 #
 
@@ -24,6 +24,7 @@ from rhn.connections import idn_pune_to_unicode
 from rhnConfig import CFG
 from rhnLog import log_error
 from rhnTranslate import _
+from stringutils import to_string
 import rhnMail
 import rhnFlags
 
@@ -44,9 +45,9 @@ def print_env(fd = sys.stderr):
     el = dct.keys()
     el.sort()
     for k in el:
-        fd.write("%s = %s\n" % (k, dct[k]))
+        fd.write("%s = %s\n" % (to_string(k), to_string(dct[k])))
 
- 
+
 def print_locals(fd = sys.stderr, tb = None):
     """ Dump a listing of all local variables and their value for better debugging
         chance.
@@ -70,13 +71,13 @@ def print_locals(fd = sys.stderr, tb = None):
                                                   frame.f_code.co_filename,
                                                   frame.f_lineno))
         for key, value in frame.f_locals.items():
-            fd.write("\t%20s = " % key)
+            fd.write("\t%20s = " % to_string(key))
             # We have to be careful not to cause a new error in our error
             # printer! Calling str() on an unknown object could cause an
             # error we don't want.
             # pylint: disable=W0702
             try:
-                s = str(value).encode('utf-8')
+                s = str(to_string(value))
             except:
                 s = "<ERROR WHILE PRINTING VALUE>"
             if len(s) > 100 * 1024:
@@ -98,7 +99,7 @@ def print_req(req, fd = sys.stderr):
     kl = req.headers_in.keys()
     kl.sort()
     for k in kl:
-        fd.write("\t%s: %s\n" % (k, req.headers_in[k]))
+        fd.write("\t%s: %s\n" % (to_string(k), to_string(req.headers_in[k])))
     return 0
 
 
@@ -120,23 +121,23 @@ def Traceback(method = None, req = None, mail = 1, ostream = sys.stderr,
             QUIET_MAIL = 0
         if QUIET_MAIL == 0: # make sure we don't mail
             mail = 0
-        
+
     e_type = sys.exc_info()[:2][0]
     t = time.ctime(time.time())
     exc = StringIO()
 
     unicode_hostname = idn_pune_to_unicode(hostname)
-    exc.write("Exception reported from %s\nTime: %s\n" % (unicode_hostname.encode('utf-8'), t))
-    exc.write("Exception type %s\n" % (e_type,))
+    exc.write("Exception reported from %s\nTime: %s\n" % (to_string(unicode_hostname), t))
+    exc.write("Exception type %s\n" % to_string(e_type))
     if method:
-        exc.write("Exception while handling function %s\n" % method)
+        exc.write("Exception while handling function %s\n" % to_string(method))
 
     # print information about the request being served
     if req:
         print_req(req, exc)
     if extra:
-        exc.write("Extra information about this error:\n%s\n" % extra)
-        
+        exc.write("Extra information about this error:\n%s\n" % to_string(extra))
+
     # Print the traceback
     exc.write("\nException Handler Information\n")
     traceback.print_exc(None, exc)
@@ -147,11 +148,8 @@ def Traceback(method = None, req = None, mail = 1, ostream = sys.stderr,
 
     # we always log it somewhere
     if ostream:
-        msg = exc.getvalue()
-        if isinstance(msg, unicode):
-            msg = msg.encode('utf-8')
-        ostream.write("%s\n" % msg)
-
+        ostream.write(to_string(exc.getvalue()))
+        ostream.write("\n")
 
     if mail:
         # print the stack frames for the mail we send out
@@ -164,9 +162,9 @@ def Traceback(method = None, req = None, mail = 1, ostream = sys.stderr,
         fr = to
         if isinstance(to, type([])):
             fr = to[0].strip()
-            to = ', '.join(map(lambda x: x.strip(), to))
+            to = ', '.join([x.strip() for x in to])
         headers = {
-            "Subject" : "SUSE Manager TRACEBACK from %s" % unicode_hostname,
+            "Subject" : "SUSE Manager TRACEBACK from %s" % (unicode_hostname),
             "From"    : "%s <%s>" % (hostname, fr),
             "To"      : to,
             "X-RHN-Traceback-Severity"  : severity,
@@ -174,16 +172,16 @@ def Traceback(method = None, req = None, mail = 1, ostream = sys.stderr,
 
             }
         QUIET_MAIL = QUIET_MAIL - 1     # count it no matter what
-        
-        outstring = exc.getvalue()
-        
+
+        outstring = to_string(exc.getvalue())
+
         #5/18/05 wregglej - 151158 Go through every string in the security list
         # and censor it out of the debug information.
         outstring = censor_string(outstring)
- 
+
         rhnMail.send(headers, outstring)
 
-    exc.close()   
+    exc.close()
     return
 
 
@@ -215,7 +213,7 @@ class SecurityList:
         else:
             self.sec = []
             rhnFlags.set(self._flag_string, self.sec)
-    
+
     def add(self, obj):
         self.sec.append(obj)
 
