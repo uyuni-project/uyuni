@@ -324,6 +324,7 @@ public class ActionFactory extends HibernateFactory {
                 typeIn.equals(TYPE_PACKAGES_RUNTRANSACTION) ||
                 typeIn.equals(TYPE_PACKAGES_UPDATE) ||
                 typeIn.equals(TYPE_PACKAGES_VERIFY) ||
+                typeIn.equals(TYPE_PACKAGES_LOCK) ||
                 typeIn.equals(TYPE_SOLARISPKGS_REMOVE) ||
                 typeIn.equals(TYPE_SOLARISPKGS_INSTALL)) {
             retval = new PackageAction();
@@ -545,7 +546,7 @@ public class ActionFactory extends HibernateFactory {
      * @param actionIn Action to be stored in database.
      * @return action
      */
-    public static Action save(Action actionIn) {
+    public static Action save(Action actionIn) throws RuntimeException {
         /**
          * If we are trying to commit a package action, make sure
          * the packageEvr stored proc is called first so that
@@ -557,7 +558,8 @@ public class ActionFactory extends HibernateFactory {
                 actionIn.getActionType().equals(TYPE_PACKAGES_REMOVE) ||
                 actionIn.getActionType().equals(TYPE_PACKAGES_RUNTRANSACTION) ||
                 actionIn.getActionType().equals(TYPE_PACKAGES_UPDATE) ||
-                actionIn.getActionType().equals(TYPE_PACKAGES_VERIFY)) {
+                actionIn.getActionType().equals(TYPE_PACKAGES_VERIFY) ||
+                actionIn.getActionType().equals(TYPE_PACKAGES_LOCK)) {
 
             PackageAction action = (PackageAction) actionIn;
             Set details = action.getDetails();
@@ -573,6 +575,8 @@ public class ActionFactory extends HibernateFactory {
                     detail.setEvr(newEvr);
                 }
             }
+        } else {
+            throw new RuntimeException("Unknown action type: " + actionIn.getActionType().toString());
         }
         singleton.saveObject(actionIn);
         return actionIn;
@@ -936,6 +940,12 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_PACKAGES_VERIFY =
             lookupActionTypeByLabel("packages.verify");
+
+    /**
+     * The constant representing "Lock packages"  [ID:502]
+     */
+    public static final ActionType TYPE_PACKAGES_LOCK =
+            lookupActionTypeByLabel("packages.setLocks");
 
     /**
      * The constant representing "Allows for rhn-applet use with an PRODUCTNAME"  [ID:34]

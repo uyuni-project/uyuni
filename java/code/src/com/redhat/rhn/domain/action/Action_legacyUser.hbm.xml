@@ -404,7 +404,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 name="com.redhat.rhn.domain.action.rhnpackage.PackageVerifyAction"
                 discriminator-value="33" lazy="true">
             </subclass>
-
+            <subclass
+                name="com.redhat.rhn.domain.action.rhnpackage.PackageLockAction"
+                discriminator-value="502" lazy="true">
+            </subclass>
         </subclass>
 
         <!-- DistUpgradeAction -->

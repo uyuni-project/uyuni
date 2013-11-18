@@ -56,6 +56,7 @@ public class Package extends BaseDomainHelper {
     private String copyright;
     private String cookie;
     private Date lastModified;
+    private Boolean lockPending = Boolean.FALSE;
     private Set<PublishedErrata> publishedErrata = new HashSet<PublishedErrata>();
     private Set<UnpublishedErrata> unpublishedErrata = new HashSet<UnpublishedErrata>();
     private Set<Channel> channels = new HashSet<Channel>();
@@ -76,6 +77,20 @@ public class Package extends BaseDomainHelper {
     private Set<PackageRequires> requires = new HashSet();
     private Set<PackageObsoletes> obsoletes = new HashSet();
     private Set<PackageConflicts> conflicts = new HashSet();
+
+    /**
+     * @param lockPending Set pending status. Default is False.
+     */
+    public void setLockPending(Boolean lockPending) {
+        this.lockPending = lockPending;
+    }
+
+    /**
+     * @return Returns the status of being locked.
+     */
+    public Boolean isLockPending() {
+        return lockPending;
+    }
 
     /**
      * @return Returns the provides.

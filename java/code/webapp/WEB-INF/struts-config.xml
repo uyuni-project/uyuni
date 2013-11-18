@@ -3199,6 +3199,7 @@
     </action>
     <action path="/systems/details/packages/LockPackages"
         scope="request"
+        name="datePickerForm"
         input="/WEB-INF/pages/systems/details/packages/lockpkgs.jsp"
         type="com.redhat.rhn.frontend.action.rhnpackage.LockPackageAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">

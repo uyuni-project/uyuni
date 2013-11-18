@@ -384,4 +384,27 @@ public class Action extends BaseDomainHelper implements Serializable {
         return result.toString();
     }
 
+    /**
+     * Hook when action is canceled.
+     */
+    public void onCancelAction() {
+        // Something to do, when action is canceled.
+        // Override this method for specific action.
+    }
+
+    /**
+     * Hook when action is deleted.
+     */
+    public void onDeleteAction() {
+        // Something to do, when action is deleted.
+        // Override this method for specific action.
+    }
+    
+    /**
+     * Hook when action is created.
+     */
+    public void onCreateAction() {
+        // Something to do, when action is created.
+        // Override this method for specific action.
+    }
 }

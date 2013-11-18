@@ -258,6 +258,12 @@ DELETE FROM rhnAction
   </query>
 </write-mode>
 
+<write-mode name="delete_actions_by_id_and_type">
+  <query params="id, action_type">
+DELETE FROM rhnAction WHERE id = :id AND action_type = :action_type
+  </query>
+</write-mode>
+
 <write-mode name="schedule_action">
   <query params="action_id, name_id, evr_id, arch_id">
 INSERT INTO rhnActionPackage (id, action_id, name_id, evr_id, package_arch_id)
