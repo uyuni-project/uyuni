@@ -90,6 +90,7 @@
         <bean:message key="ssm.overview.provisioning.remotecommands"/><br />
       </rhn:require>
       <bean:message key="ssm.overview.provisioning.powermanagement.configure"/><br />
+      <bean:message key="ssm.overview.provisioning.powermanagement.operations"/><br />
       </p>
     </td>
   </tr>
