@@ -5906,7 +5906,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
-      </trans-unit>      
+      </trans-unit>
       <trans-unit id="kickstart.schedule.no.profile.jsp">
         <source>Could not find a matching profile for system &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
@@ -6578,6 +6578,12 @@ Follow this url to see the full list of inactive systems:
         <source>The script must be smaller than {0} characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/kickstart/KickstartScriptEdit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cobbler.power_management.command_failed">
+        <source>Cobbler reported a power management error, please check Cobbler logs.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="oneday">
