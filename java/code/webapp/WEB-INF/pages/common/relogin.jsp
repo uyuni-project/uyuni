@@ -16,13 +16,13 @@
 
 <rhn:require acl="not user_authenticated()">
   <c:if test="${requestScope.hasExpired != 'true'}">
-    <div class="text-center">
-      <h1><bean:message key="relogin.jsp.pleasesignin"/></h1>
+    <div id="loginForm-container">
+      <h1 id="welcome-title"><bean:message key="relogin.jsp.pleasesignin"/></h1>
       <c:set var="login_banner" scope="page" value="${rhn:getConfig('java.login_banner')}" />
       <c:if test="${! empty login_banner}">
         <p><c:out value="${login_banner}" escapeXml="false" /></p>
       </c:if>
-      <html:form styleId="loginForm" styleClass="form-horizontal col-md-6 col-md-offset-3 text-left" action="/ReLoginSubmit">
+      <html:form styleId="loginForm" action="/ReLoginSubmit">
         <rhn:csrf />
         <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf" %>
         <html:hidden property="url_bounce" />
