@@ -16,27 +16,29 @@
 </c:if>
 
 <c:if test="${requestScope.hasExpired != 'true'}">
-  <div class="text-center">
+  <div id="loginForm-container">
     <c:set var="login_banner" scope="page" value="${rhn:getConfig('java.login_banner')}" />
     <c:choose>
       <c:when test="${! empty login_banner}">
         <p><c:out value="${login_banner}" escapeXml="false" /></p>
       </c:when>
       <c:otherwise>
-        <h1><bean:message key="login.jsp.welcomemessage" /></h1>
-        <p><bean:message key="login.jsp.satbody1" /></p>
+        <h1 id="welcome-title"><bean:message key="login.jsp.welcomemessage" /></h1>
+        <p id="welcome-text"><bean:message key="login.jsp.satbody1" /></p>
       </c:otherwise>
     </c:choose>
 
-    <html:form styleId="loginForm" styleClass="form-horizontal col-md-6 col-md-offset-3 text-left" action="/LoginSubmit">
+    <html:form styleId="loginForm" action="/LoginSubmit">
       <rhn:csrf />
       <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf" %>
     </html:form>
 
     <c:if test="${empty login_banner}">
-        <div class="col-md-6 col-md-offset-3 text-left">
-          <p><bean:message key="login.jsp.satbody2" /></p>
-          <p><bean:message key="login.jsp.satbody3"/></p>
+        <div class="login-reference-links">
+          <p>
+            <small><bean:message key="login.jsp.satbody2" /></small>
+            <small><bean:message key="login.jsp.satbody3"/></small>
+          </p>
         </div>
     </c:if>
   </div>
