@@ -41,33 +41,32 @@ import java.util.List;
 public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
     // poor-man fixture
-    /** The Constant EXPECTED_TYPE. */
-    private static final String EXPECTED_TYPE = "ipmilan";
+    /** Expected power management type. */
+    public static final String EXPECTED_TYPE = "ipmilan";
 
-    /** The Constant EXPECTED_ADDRESS. */
-    private static final String EXPECTED_ADDRESS = "192.123.23.21";
+    /** Expected power management address. */
+    public static final String EXPECTED_ADDRESS = "192.123.23.21";
 
-    /** The Constant EXPECTED_USERNAME. */
-    private static final String EXPECTED_USERNAME = "power management test username";
+    /** Expected power management username. */
+    public static final String EXPECTED_USERNAME = "power management test username";
 
-    /** The Constant EXPECTED_PASSWORD. */
-    private static final String EXPECTED_PASSWORD = "power management test password";
+    /** Expected power management password. */
+    public static final String EXPECTED_PASSWORD = "power management test password";
 
-    /** The Constant EXPECTED_ID. */
-    private static final String EXPECTED_ID = "123";
+    /** Expected power management ID. */
+    public static final String EXPECTED_ID = "123";
 
-    /** The Constant EXPECTED_ADDRESS_2. */
-    private static final String EXPECTED_ADDRESS_2 = "192.123.23.22";
+    /** Alternative expected power management address. */
+    public static final String EXPECTED_ADDRESS_2 = "192.123.23.22";
 
-    /** The Constant EXPECTED_USERNAME_2. */
-    private static final String EXPECTED_USERNAME_2 = "power management test username 2";
+    /** Alternative expected power management address. */
+    public static final String EXPECTED_USERNAME_2 = "power management test username 2";
 
-    /** The Constant EXPECTED_PASSWORD_2. */
-    private static final String EXPECTED_PASSWORD_2 = "power management test password 2";
+    /** Alternative expected power management password. */
+    public static final String EXPECTED_PASSWORD_2 = "power management test password 2";
 
-    /** The Constant EXPECTED_ID_2. */
-    private static final String EXPECTED_ID_2 = "122";
-
+    /** Alternative expected power management ID. */
+    public static final String EXPECTED_ID_2 = "122";
 
     /**
      * Sets up action path and mocked Cobbler connection.
