@@ -28,7 +28,7 @@ Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
 Group:      Applications/Internet
-License:    GPLv2
+License:    Apache-2.0 and GPL-2.0 and MIT and OFL-1.1
 URL:        https://fedorahosted.org/spacewalk/
 Source0:    https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
