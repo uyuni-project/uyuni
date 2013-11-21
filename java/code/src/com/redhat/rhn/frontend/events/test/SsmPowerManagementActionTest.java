@@ -5,7 +5,7 @@ import com.redhat.rhn.frontend.action.ssm.test.PowerManagementConfigurationActio
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmPowerManagementAction;
 import com.redhat.rhn.frontend.events.SsmPowerManagementEvent;
-import com.redhat.rhn.frontend.events.SsmPowerManagementEvent.Operation;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand.Operation;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerSettingsUpdateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;

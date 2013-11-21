@@ -32,26 +32,43 @@ import java.util.Date;
  * Powers on a system.
  * @version $Rev$
  */
-public class CobblerPowerOnCommand extends CobblerCommand {
+public class CobblerPowerCommand extends CobblerCommand {
 
     /** The log. */
-    private static Logger log = Logger.getLogger(CobblerPowerOnCommand.class);
+    private static Logger log = Logger.getLogger(CobblerPowerCommand.class);
 
-    /** The server to power on. */
+    /** The server to power on or off. */
     private Server server;
 
+    /** Power management operation kind. */
+    private Operation operation;
+
     /**
-     * Instantiates a new Cobbler "power on" command.
-     * @param userIn the user running this command
-     * @param serverIn the server to power on
+     * Possible power management operations.
      */
-    public CobblerPowerOnCommand(User userIn, Server serverIn) {
+    public enum Operation {
+        /** Turn on. */
+        PowerOn,
+        /** Turn off. */
+        PowerOff,
+        /** Reboot. */
+        Reboot
+    };
+
+    /**
+     * Instantiates a new Cobbler power management command.
+     * @param userIn the user running this command
+     * @param serverIn the server to power on or off
+     * @param operationIn the operation to run
+     */
+    public CobblerPowerCommand(User userIn, Server serverIn, Operation operationIn) {
         super(userIn);
         server = serverIn;
+        operation = operationIn;
     }
 
     /**
-     * Attempts to power on the server.
+     * Attempts to power on, off or reboot the server.
      * @return any errors
      */
     @Override
@@ -63,15 +80,32 @@ public class CobblerPowerOnCommand extends CobblerCommand {
             if (!StringUtils.isEmpty(cobblerId)) {
                 SystemRecord systemRecord = SystemRecord.lookupById(connection, cobblerId);
                 if (systemRecord != null && systemRecord.getPowerType() != null) {
-                    if (systemRecord.powerOn()) {
-                        log.debug("Powering on " + server.getId() + " succeded");
+                    boolean success = false;
+                    switch (operation) {
+                    case PowerOn:
+                        success = systemRecord.powerOn();
+                        break;
+                    case PowerOff:
+                        success = systemRecord.powerOff();
+                        break;
+                    case Reboot:
+                        success = systemRecord.reboot();
+                        break;
+                    }
+                    if (success) {
+                        log.debug("Power management operation " + operation.toString() +
+                            " on " + server.getId() + " succeded");
+                        LocalizationService localizationService = LocalizationService
+                            .getInstance();
                         ServerHistoryEvent event = new ServerHistoryEvent();
                         event.setCreated(new Date());
                         event.setServer(server);
-                        event.setSummary("power on");
+                        event.setSummary(localizationService
+                            .getPlainText("cobbler.powermanagement." +
+                                operation.toString().toLowerCase()));
                         String details = "System has been powered on via " +
-                            LocalizationService.getInstance().getPlainText(
-                                "kickstart.powermanagement." + systemRecord.getPowerType());
+                            localizationService.getPlainText("cobbler.powermanagement." +
+                                systemRecord.getPowerType());
                         event.setDetails(details);
                         server.getHistory().add(event);
 
@@ -79,12 +113,11 @@ public class CobblerPowerOnCommand extends CobblerCommand {
                     }
                     else {
                         log.error("Powering on " + server.getId() + " failed");
-                        return new ValidatorError(
-                            "cobbler.power_management.command_failed");
+                        return new ValidatorError("cobbler.powermanagement.command_failed");
                     }
                 }
             }
         }
-        return new ValidatorError("kickstart.powermanagement.not_configured");
+        return new ValidatorError("cobbler.powermanagement.not_configured");
     }
 }

@@ -21,10 +21,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.events.SsmPowerManagementEvent.Operation;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerOffCommand;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerOnCommand;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerRebootCommand;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand.Operation;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -40,10 +38,6 @@ import java.util.List;
  * @version $Rev$
  */
 public class SsmPowerManagementAction extends AbstractDatabaseAction {
-
-    /** Prefix of this operation name */
-    private static final String OPERATION_NAME =
-            "ssm.provisioning.powermanagement.operations.";
 
     /** Logger instance */
     private static Logger log = Logger.getLogger(SsmPowerManagementAction.class);
@@ -64,8 +58,8 @@ public class SsmPowerManagementAction extends AbstractDatabaseAction {
         }
 
         Operation operation = event.getOperation();
-        long operationId = SsmOperationManager.createOperation(user, OPERATION_NAME +
-            operation.toString().toLowerCase(), null);
+        long operationId = SsmOperationManager.createOperation(user,
+            "cobbler.powermanagement." + operation.toString().toLowerCase(), null);
         SsmOperationManager.associateServersWithOperation(operationId, userId, sids);
 
         try {
@@ -76,17 +70,7 @@ public class SsmPowerManagementAction extends AbstractDatabaseAction {
 
                 ValidatorError error = null;
                 try {
-                    switch (operation) {
-                    case PowerOn:
-                        error = new CobblerPowerOnCommand(user, server).store();
-                        break;
-                    case PowerOff:
-                        error = new CobblerPowerOffCommand(user, server).store();
-                        break;
-                    case Reboot:
-                        error = new CobblerRebootCommand(user, server).store();
-                        break;
-                    }
+                    error = new CobblerPowerCommand(user, server, operation).store();
                 }
                 catch (XmlRpcException e) {
                     log.error(StringUtils.stackTrace(e));

@@ -9,10 +9,9 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerOffCommand;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerOnCommand;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand.Operation;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerSettingsUpdateCommand;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerRebootCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -92,21 +91,23 @@ public class PowerManagementAction extends RhnAction {
                 addMessage(request, "kickstart.powermanagement.saved");
                 log.debug("Power management settings saved for system " + sid);
                 if (context.wasDispatched("kickstart.powermanagement.jsp.save_power_on")) {
-                    error = new CobblerPowerOnCommand(user, server).store();
+                    error = new CobblerPowerCommand(user, server, Operation.PowerOn)
+                        .store();
                     if (error == null) {
                         log.debug("Power on succeded for system " + sid);
                         addMessage(request, "kickstart.powermanagement.powered_on");
                     }
                 }
                 if (context.wasDispatched("kickstart.powermanagement.jsp.save_power_off")) {
-                    error = new CobblerPowerOffCommand(user, server).store();
+                    error = new CobblerPowerCommand(user, server, Operation.PowerOff)
+                        .store();
                     if (error == null) {
                         log.debug("Power off succeded for system " + sid);
                         addMessage(request, "kickstart.powermanagement.powered_off");
                     }
                 }
                 if (context.wasDispatched("kickstart.powermanagement.jsp.save_reboot")) {
-                    error = new CobblerRebootCommand(user, server).store();
+                    error = new CobblerPowerCommand(user, server, Operation.Reboot).store();
                     if (error == null) {
                         log.debug("Reboot succeded for system " + sid);
                         addMessage(request, "kickstart.powermanagement.rebooted");
@@ -201,7 +202,7 @@ public class PowerManagementAction extends RhnAction {
             for (String typeName : typeNames) {
                 types.put(
                     LocalizationService.getInstance().getPlainText(
-                        "kickstart.powermanagement." + typeName), typeName);
+                        "cobbler.powermanagement." + typeName), typeName);
             }
         }
         request.setAttribute(TYPES, types);

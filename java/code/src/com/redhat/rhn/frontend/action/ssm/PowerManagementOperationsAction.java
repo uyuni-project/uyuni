@@ -19,7 +19,6 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmPowerManagementEvent;
-import com.redhat.rhn.frontend.events.SsmPowerManagementEvent.Operation;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -27,6 +26,7 @@ import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand.Operation;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -68,15 +68,15 @@ public class PowerManagementOperationsAction extends RhnAction implements Listab
 
             Operation operation = null;
             if (context.wasDispatched(
-                "ssm.provisioning.powermanagement.operations.poweron")) {
+                "cobbler.powermanagement.poweron")) {
                 operation = Operation.PowerOn;
             }
             if (context.wasDispatched(
-                "ssm.provisioning.powermanagement.operations.poweroff")) {
+                "cobbler.powermanagement.poweroff")) {
                 operation = Operation.PowerOff;
             }
             if (context.wasDispatched(
-                "ssm.provisioning.powermanagement.operations.reboot")) {
+                "cobbler.powermanagement.reboot")) {
                 operation = Operation.Reboot;
             }
 
@@ -87,7 +87,7 @@ public class PowerManagementOperationsAction extends RhnAction implements Listab
                 String[] messageParams = {
                     "" + systemOverviews.size(),
                     LocalizationService.getInstance().getPlainText(
-                            "ssm.provisioning.powermanagement.operations." +
+                            "cobbler.powermanagement." +
                                 operation.toString().toLowerCase()).toLowerCase()
                 };
 

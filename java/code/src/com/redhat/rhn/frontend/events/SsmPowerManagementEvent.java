@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand.Operation;
 
 import java.util.List;
 
@@ -25,18 +26,6 @@ import java.util.List;
  * @version $Rev$
  */
 public class SsmPowerManagementEvent implements EventMessage {
-
-    /**
-     * Possible power management operations.
-     */
-    public enum Operation {
-        /** Turn on. */
-        PowerOn,
-        /** Turn off. */
-        PowerOff,
-        /** Reboot. */
-        Reboot
-    };
 
     /** The user id. */
     private Long userId;
