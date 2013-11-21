@@ -15,14 +15,18 @@
 
 package com.redhat.rhn.manager.kickstart.cobbler;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
+
+import java.util.Date;
 
 /**
  * Powers off a system.
@@ -61,6 +65,16 @@ public class CobblerPowerOffCommand extends CobblerCommand {
                 if (systemRecord != null && systemRecord.getPowerType() != null) {
                     if (systemRecord.powerOff()) {
                         log.debug("Powering off " + server.getId() + " succeded");
+                        ServerHistoryEvent event = new ServerHistoryEvent();
+                        event.setCreated(new Date());
+                        event.setServer(server);
+                        event.setSummary("power off");
+                        String details = "System has been powered off via " +
+                            LocalizationService.getInstance().getPlainText(
+                                "kickstart.powermanagement." + systemRecord.getPowerType());
+                        event.setDetails(details);
+                        server.getHistory().add(event);
+
                         return null;
                     }
                     else {

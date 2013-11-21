@@ -15,14 +15,18 @@
 
 package com.redhat.rhn.manager.kickstart.cobbler;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
+
+import java.util.Date;
 
 /**
  * Reboots a system.
@@ -61,6 +65,16 @@ public class CobblerRebootCommand extends CobblerCommand {
                 if (systemRecord != null && systemRecord.getPowerType() != null) {
                     if (systemRecord.reboot()) {
                         log.debug("Rebooting " + server.getId() + " succeded");
+                        ServerHistoryEvent event = new ServerHistoryEvent();
+                        event.setCreated(new Date());
+                        event.setServer(server);
+                        event.setSummary("reboot");
+                        String details = "System has been rebooted via " +
+                            LocalizationService.getInstance().getPlainText(
+                                "kickstart.powermanagement." + systemRecord.getPowerType());
+                        event.setDetails(details);
+                        server.getHistory().add(event);
+
                         return null;
                     }
                     else {
