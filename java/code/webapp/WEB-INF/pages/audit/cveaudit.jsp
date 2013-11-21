@@ -40,7 +40,7 @@
                 <html:options collection="years" property="value" />
               </html:select>
               <label for="cveIdentifierId">-</label>
-              <html:text property="cveIdentifierId" styleId="cveIdentifierId" value="${cveIdentifierId}" maxlength="10" size="10" />
+              <html:text property="cveIdentifierId" styleId="cveIdentifierId" value="${cveIdentifierId}" size="10" />
               <html:submit><bean:message key="cveaudit.jsp.cvenumber.auditsystem" /></html:submit><br />
             </td>
           </tr>
