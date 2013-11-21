@@ -1835,7 +1835,7 @@ tree will not be usable for autoinstalling.
       </trans-unit>
 
       <!-- Power Management -->
-      <trans-unit id="kickstart.powermanagement.ipmitool">
+      <trans-unit id="cobbler.powermanagement.ipmitool">
         <source>IPMI</source>
       </trans-unit>
     </body>
