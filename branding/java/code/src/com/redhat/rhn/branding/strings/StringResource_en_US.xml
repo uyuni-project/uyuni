@@ -1744,12 +1744,6 @@ tree will not be usable for autoinstalling.
       <trans-unit id="cveaudit.jsp.cvenumber.auditsystem">
         <source>Audit systems</source>
       </trans-unit>
-      <trans-unit id="cveaudit.jsp.examples">
-        <source>Examples:</source>
-      </trans-unit>
-      <trans-unit id="cveaudit.jsp.example.list">
-        <source>CVE-2013-3343, CVE-2013-3117</source>
-      </trans-unit>
       <trans-unit id="cveaudit.jsp.filters">
         <source>System patch status to search:</source>
       </trans-unit>
