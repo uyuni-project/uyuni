@@ -54,7 +54,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
  */
 public class CVEAuditAction extends RhnAction {
     /** CVE prefix */
-    private static final String CVE_PREFIX = "CVE-";
+    private static final String CVE_PREFIX = "CVE";
 
     /** Search field parameter names */
     private static final String CVE_IDENTIFIER_YEAR_PARAMETER = "cveIdentifierYear";
@@ -84,7 +84,7 @@ public class CVEAuditAction extends RhnAction {
 
             if (StringUtils.isNotBlank(cveIdentifierId)) {
                 try {
-                    String cveIdentifier = CVE_PREFIX + cveIdentifierYear + "-" + cveIdentifierId;
+                    String cveIdentifier = CVE_PREFIX + "-" + cveIdentifierYear + "-" + cveIdentifierId;
                     return runAudit(request, cveIdentifier);
                 }
                 catch (UnknownCVEIdentifierException e) {
