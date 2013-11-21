@@ -21,13 +21,13 @@
       <rhn:submitted />
 
       <input type="submit" name="dispatch"
-        value="<bean:message key="ssm.provisioning.powermanagement.operations.poweron" />"
+        value="<bean:message key="cobbler.powermanagement.poweron" />"
         class="btn btn-default" />
       <input type="submit" name="dispatch"
-        value="<bean:message key="ssm.provisioning.powermanagement.operations.poweroff" />"
+        value="<bean:message key="cobbler.powermanagement.poweroff" />"
         class="btn btn-default" />
       <input type="submit" name="dispatch"
-        value="<bean:message key="ssm.provisioning.powermanagement.operations.reboot" />"
+        value="<bean:message key="cobbler.powermanagement.reboot" />"
         class="btn btn-default" />
     </html:form>
   </body>
