@@ -3219,6 +3219,10 @@ public class SystemHandler extends BaseHandler {
             packageMaps.add(pkgMap);
         }
 
+        if (packageMaps.isEmpty()) {
+            throw new InvalidParameterException("No packages to install.");
+        }
+
         Action action = null;
         try {
             action = ActionManager.schedulePackageInstall(loggedInUser, server,
@@ -3278,6 +3282,10 @@ public class SystemHandler extends BaseHandler {
             pkgMap.put("evr_id", p.getPackageEvr().getId());
             pkgMap.put("arch_id", p.getPackageArch().getId());
             packageMaps.add(pkgMap);
+        }
+
+        if (packageMaps.isEmpty()) {
+            throw new InvalidParameterException("No packages to remove.");
         }
 
         PackageAction action = null;

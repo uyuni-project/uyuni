@@ -2,7 +2,7 @@
 
 Name:           nodejs-less
 Version:        1.4.1
-Release:        1.1%{?dist}
+Release:        1.3%{?dist}
 Summary:        Less.js The dynamic stylesheet language
 Group  :        Unspecified
 
@@ -19,8 +19,12 @@ Patch0001: 0001-Require-include-files-from-the-default-location.patch
 
 BuildArch:      noarch
 BuildRequires:  nodejs-devel
+BuildRequires:  python-simplejson
 Requires:       nodejs
 ExclusiveArch:  %{ix86} %{arm} x86_64 noarch
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+%global _rpmconfigdir /usr/lib/rpm
 
 Provides:  lessjs = %{version}-%{release}
 Obsoletes: lessjs < 1.3.3-2
@@ -67,6 +71,12 @@ ln -s %{nodejs_sitelib}/less/bin/lessc \
 
 
 %changelog
+* Wed Nov 20 2013 Michael Mraka <michael.mraka@redhat.com> 1.4.1-1.3
+- simplejson has to be available in build time
+
+* Wed Nov 20 2013 Michael Mraka <michael.mraka@redhat.com> 1.4.1-1.2
+- packaging changes for RHEL5
+
 * Fri Nov 15 2013 Michael Mraka <michael.mraka@redhat.com> 1.4.1-1.1
 - koji build needs Group specified
 

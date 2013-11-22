@@ -1,0 +1,57 @@
+--- nodejs.prov    2013-07-29 19:34:36.000000000 -0400
++++ nodejs.prov    2013-11-20 05:21:16.000000000 -0500
+@@ -25,7 +25,7 @@
+ # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ # IN THE SOFTWARE.
+ 
+-import json
++import simplejson as json
+ import subprocess
+ import sys
+
+--- nodejs-fixdep  2013-07-29 19:34:36.000000000 -0400
++++ nodejs-fixdep  2013-11-20 05:21:37.000000000 -0500
+@@ -22,7 +22,7 @@
+ # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ # IN THE SOFTWARE.
+ 
+-import json
++import simplejson as json
+ import os
+ import shutil
+ import sys
+--- nodejs-symlink-deps    2013-07-29 19:34:36.000000000 -0400
++++ nodejs-symlink-deps    2013-11-20 05:21:28.000000000 -0500
+@@ -23,7 +23,7 @@
+ # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ # IN THE SOFTWARE.
+ 
+-import json
++import simplejson as json
+ import os
+ import sys
+
+--- nodejs.req     2013-07-29 19:34:36.000000000 -0400
++++ nodejs.req     2013-11-20 05:24:50.000000000 -0500
+@@ -27,7 +27,7 @@
+ # IN THE SOFTWARE.
+ 
+ from __future__ import unicode_literals
+-import json
++import simplejson as json
+ import re
+ import subprocess
+ import sys
+@@ -129,9 +129,9 @@
+     #oh boy, here we go...
+     else:
+         #split the dotted portions into a list (handling trailing dots properly)
+-        parts = [part if part else 'x' for part in version.split('.')]
+-        parts = [int(part) if part != 'x' and not '-' in part
+-                                                    else part for part in parts]
++        parts = [part or 'x' for part in version.split('.')]
++        parts = [(part != 'x' and not '-' in part) and int(part)
++                                                    or part for part in parts]
+ 
+         # 1 or 1.x or 1.x.x or ~1
+         if len(parts) == 1 or parts[1] == 'x':

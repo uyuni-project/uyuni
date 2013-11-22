@@ -130,6 +130,12 @@ public class MigrationManager extends BaseManager {
             throw new PermissionException(RoleFactory.ORG_ADMIN);
         }
 
+        // Unsubscribe from all channels to change channel entitlements
+        UpdateChildChannelsCommand cmd = new UpdateChildChannelsCommand(user, server,
+                new ArrayList());
+        cmd.store();
+        SystemManager.unsubscribeServerFromChannel(server, server.getBaseChannel());
+
         // Remove from all system groups:
         ServerGroupManager manager = ServerGroupManager.getInstance();
         for (ManagedServerGroup group : server.getManagedGroups()) {
@@ -178,12 +184,6 @@ public class MigrationManager extends BaseManager {
                 MonitoringFactory.deleteProbe(probe);
             }
         }
-
-        // Unsubscribe from all channels to change channel entitlements
-        UpdateChildChannelsCommand cmd = new UpdateChildChannelsCommand(user, server,
-                new ArrayList());
-        cmd.store();
-        SystemManager.unsubscribeServerFromChannel(server, server.getBaseChannel());
 
         SystemManager.removeAllServerEntitlements(server.getId());
     }

@@ -1,13 +1,13 @@
 Name: nodejs
 Version: 0.10.22
-Release: 1%{?dist}
+Release: 1.3%{?dist}
 Summary: JavaScript runtime
 License: MIT and ASL 2.0 and ISC and BSD
 Group: Development/Languages
 URL: http://nodejs.org/
 
 # Exclusive archs must match v8
-ExclusiveArch: %{ix86} x86_64 %{arm}
+ExclusiveArch: i386 x86_64
 
 # nodejs bundles openssl, but we use the system version in Fedora
 # because openssl contains prohibited code, we remove openssl completely from
@@ -17,6 +17,7 @@ Source100: %{name}-tarball.sh
 
 # Disable running gyp on bundled deps we don't use
 Patch1: nodejs-disable-gyp-deps.patch
+Patch2: nodejs-python24.patch
 
 # V8 presently breaks ABI at least every x.y release while never bumping SONAME,
 # so we need to be more explicit until spot fixes that
@@ -24,11 +25,15 @@ Patch1: nodejs-disable-gyp-deps.patch
 %global v8_lt 1:3.15
 %global v8_abi 3.14
 
+BuildRoot:   %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+%global _rpmconfigdir /usr/lib/rpm
+
 BuildRequires: v8-devel >= %{v8_ge}
 BuildRequires: http-parser-devel >= 2.0
 BuildRequires: libuv-devel
 BuildRequires: c-ares19-devel
 BuildRequires: zlib-devel
+BuildRequires: python-simplejson
 # Node.js requires some features from openssl 1.0.1 for SPDY support
 # but we'll try our best
 BuildRequires: openssl-devel
@@ -73,7 +78,6 @@ Development headers for the Node.js JavaScript runtime.
 %package docs
 Summary: Node.js API documentation
 Group: Documentation
-BuildArch: noarch
 
 %description docs
 The API documentation for the Node.js JavaScript runtime.
@@ -82,6 +86,7 @@ The API documentation for the Node.js JavaScript runtime.
 %prep
 %setup -q -n node-v%{version}
 %patch1 -p1
+%patch2 -p0
 
 rm -rf deps
 
@@ -92,7 +97,7 @@ export CXXFLAGS='%{optflags} -g -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64'
 
 ./configure --prefix=%{_prefix} \
            --shared-v8 \
-           --shared-openssl \
+           --without-ssl \
            --shared-zlib \
            --shared-cares \
            --shared-cares-includes=%{_includedir}/c-ares19 \
@@ -164,6 +169,17 @@ cp -p common.gypi %{buildroot}%{_datadir}/node
 %{_defaultdocdir}/%{name}-docs-%{version}
 
 %changelog
+* Wed Nov 20 2013 Michael Mraka <michael.mraka@redhat.com> 0.10.22-1.3
+- simplejson has to be available in build time
+
+* Tue Nov 19 2013 Michael Mraka <michael.mraka@redhat.com> 0.10.22-1.2
+- RHEL5 can build subpackage as noarch
+
+* Tue Nov 19 2013 Michael Mraka <michael.mraka@redhat.com> 0.10.22-1.1
+- fixed ExclusiveArch macros for RHEL5
+- packaging changes for RHEL5
+- made nodejs python 2.4 compatible
+
 * Tue Nov 12 2013 T.C. Hollingsworth <tchollingsworth@gmail.com> - 0.10.22-1
 - new upstream release 0.10.22
   http://blog.nodejs.org/2013/11/12/node-v0-10-22-stable/
