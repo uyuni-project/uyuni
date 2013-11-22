@@ -56,6 +56,9 @@ public class CVEAuditAction extends RhnAction {
     /** CVE prefix */
     private static final String CVE_PREFIX = "CVE";
 
+    /** Attribute used to populate select with years */
+    private static final String CVE_YEARS_ATTRIBUTE = "years";
+
     /** Search field parameter names */
     private static final String CVE_IDENTIFIER_YEAR_PARAMETER = "cveIdentifierYear";
     private static final String CVE_IDENTIFIER_ID_PARAMETER = "cveIdentifierId";
@@ -112,7 +115,7 @@ public class CVEAuditAction extends RhnAction {
         request.setAttribute(CVE_IDENTIFIER_ID_PARAMETER, cveIdentifierId);
 
         // Populate the select for choosing a year
-        request.setAttribute("years", getYears());
+        request.setAttribute(CVE_YEARS_ATTRIBUTE, getYears());
 
         for (PatchStatus patchStatus : EnumSet.allOf(PatchStatus.class)) {
             String parameterName = getParameterNameFor(patchStatus);
