@@ -38,18 +38,19 @@ Then /^no link should be broken$/ do
     base = href.split("?")[0]
     $stderr.puts "Visiting '#{href}' '#{base}', #{hrefs.size} to go, found at '#{relation[href.to_s]}'"
     visit href.to_s
+    htmlbody = page.html()
     # We have one page in our manual with has "Internal Server Error" in its text
     # we need to mark this page as success.
     if base != '/rhn/help/reference/en-US/ch-rhn-workgroup.jsp' &&
-       (page.has_content?('Page Not Found') ||
-        page.has_content?('File Not Found') ||
-        page.has_content?('Internal Server Error') ||
-        page.has_content?('Permission Error')
+       (htmlbody.include?('Page Not Found') ||
+        htmlbody.include?('File Not Found') ||
+        htmlbody.include?('Internal Server Error') ||
+        htmlbody.include?('Permission Error')
        )
       visited[base] = href
       $stderr.puts "-- ** failed"
     else
-      if page.has_content?('/var/www/html')
+      if htmlbody.include?('/var/www/html')
           $stderr.puts "-- ** failed (/var/www)"
           failed_other_reason << href
       end
