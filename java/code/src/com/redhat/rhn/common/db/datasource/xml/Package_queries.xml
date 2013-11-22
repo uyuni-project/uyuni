@@ -721,7 +721,11 @@ SELECT  distinct pn.name AS NAME,
         pn.name || '-' || evr_t_as_vre_simple(full_list.evr) AS NVRE,
         pn.name || '-' || evr_t_as_vre_simple(full_list.evr) || '.' || full_list.arch_label AS NVREA,
         pn.id || '|' || lookup_evr((full_list.evr).epoch, (full_list.evr).version, (full_list.evr).release) || '|' || full_list.arch_id AS ID_COMBO,
-        full_list.arch_label as ARCH
+        full_list.arch_label as ARCH,
+        pending,
+        CASE WHEN lck.server_id IS NOT NULL THEN 'Y'
+             ELSE NULL
+        END AS locked
   FROM  (
          SELECT  p.name_id name_id, max(pe.evr) evr,
                  pa.label as arch_label, pa.id as arch_id
@@ -737,13 +741,17 @@ SELECT  distinct pn.name AS NAME,
        ) full_list,
        rhnPackageName pn
      INNER JOIN rhnPackage PKG ON pkg.name_id = pn.id
+     LEFT JOIN rhnlockedpackages lck ON lck.name_id = pkg.name_id
+                                    AND lck.evr_id = pkg.evr_id
+                                    AND lck.arch_id = pkg.package_arch_id
+                                    AND lck.server_id = :sid
  WHERE  full_list.name_id = pn.id
    AND  NOT EXISTS (SELECT 1
                       FROM rhnServerPackage SP
                      WHERE SP.server_id = :sid
                        AND SP.name_id = full_list.name_id
                        AND (SP.package_arch_id = full_list.arch_id or SP.package_arch_id is null))
-) x
+) pkgs
 order by upper(name)
   </query>
 </mode>
@@ -808,6 +816,26 @@ DELETE FROM rhnlockedpackages l
                                                      AND lck.evr_id = ack.evr_id
                                                      AND lck.arch_id = ack.package_arch_id
                           WHERE lck.server_id = :sid AND act.id = :action_id)
+  </query>
+</write-mode>
+
+<write-mode name="remove_orphan_lock_on_action_cancel_pending">
+  <query params="sid, action_id, pending">
+DELETE FROM rhnlockedpackages l
+      WHERE l.pkg_id IN (SELECT lck.pkg_id
+                           FROM rhnaction act
+                      LEFT JOIN rhnactionpackage ack ON ack.action_id = act.id
+                      LEFT JOIN rhnlockedpackages lck ON lck.name_id = ack.name_id
+                                                     AND lck.evr_id = ack.evr_id
+                                                     AND lck.arch_id = ack.package_arch_id
+                          WHERE lck.server_id = :sid AND act.id = :action_id)
+        AND l.pending = :pending
+  </query>
+</write-mode>
+
+<write-mode name="set_pending_lock_status">
+  <query params="pkg_id, pending">
+      UPDATE rhnlockedpackages SET pending = :pending WHERE pkg_id = :pkg_id
   </query>
 </write-mode>
 

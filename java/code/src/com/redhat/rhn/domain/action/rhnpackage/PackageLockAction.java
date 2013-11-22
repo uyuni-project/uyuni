@@ -18,16 +18,31 @@ package com.redhat.rhn.domain.action.rhnpackage;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author bo
  */
 public class PackageLockAction extends PackageAction {
+    public static final String PARAM_PENDING = "pending";
+
     @Override
-    public void onCancelAction() {
+    public void onCancelAction(Map params) {
+        if (params == null) {
+            params = new HashMap();
+        }
+
         for (ServerAction action : this.getServerActions()) {
-            PackageManager.syncLockedPackages(action.getServer().getId(), this.getId());
+            try {
+                PackageManager.syncLockedPackages(action.getServer().getId(),
+                    this.getId(), (String) params.get(PackageLockAction.PARAM_PENDING));
+            } catch (Exception e) {
+                Logger.getLogger(PackageLockAction.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
 
         ActionManager.deleteActionsByIdAndType(this.getId(), this.getActionType().getId());

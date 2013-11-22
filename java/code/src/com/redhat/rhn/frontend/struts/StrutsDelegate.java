@@ -130,6 +130,32 @@ public class StrutsDelegate {
                 params));
         errors.add(msg);
     }
+    
+
+    /**
+     * Add a message into an existing set of ActionMessages. Useful to add stuff to
+     * an already populated ActionMessages instance.
+     *
+     * @param msgKey Key of the message
+     * @param messages Messages set
+     */
+    public void addInfo(String msgKey, ActionMessages messages) {
+        this.addInfo(messages, msgKey, new Object[0]);
+    }
+
+    /**
+     * Add a message into an existing set of ActionMessages. Useful to add stuff to
+     * an already populated ActionMessages instance.
+     *
+     * @param messages Messages set
+     * @param msgKey Key of the message
+     * @param params Parameters to the message.
+     */
+    public void addInfo(ActionMessages messages, String msgKey, Object ... params) {
+        ActionMessages msg = new ActionMessages();
+        msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(msgKey, params));
+        messages.add(msg);        
+    }
 
     /**
      * Add a UI message to the Request.
