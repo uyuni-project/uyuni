@@ -1,16 +1,17 @@
 package com.redhat.rhn.frontend.action.kickstart;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerOffCommand;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerOnCommand;
+import com.redhat.rhn.frontend.struts.StrutsDelegate;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand.Operation;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerSettingsUpdateCommand;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerRebootCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -23,9 +24,10 @@ import org.apache.struts.action.DynaActionForm;
 import org.cobbler.SystemRecord;
 import org.cobbler.XmlRpcException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,21 +63,6 @@ public class PowerManagementAction extends RhnAction {
     /** Attribute name. */
     public static final String POWER_STATUS_ON = "powerStatusOn";
 
-    /** Attribute name. */
-    public static final String POWER_ADDITIONAL_ACTION = "powerAdditionalAction";
-
-    /** Possible attribute value for POWER_ADDITIONAL_ACTION. */
-    public static final String POWER_ON = "powerOn";
-
-    /** Possible attribute value for POWER_ADDITIONAL_ACTION. */
-    public static final String POWER_OFF = "powerOff";
-
-    /** Possible attribute value for POWER_ADDITIONAL_ACTION. */
-    public static final String REBOOT = "reboot";
-
-    /** Possible attribute value for POWER_ADDITIONAL_ACTION. */
-    public static final String GET_STATUS = "getStatus";
-
     /**
      * Runs this action.
      *
@@ -90,43 +77,44 @@ public class PowerManagementAction extends RhnAction {
         HttpServletRequest request, HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         DynaActionForm form = (DynaActionForm) formIn;
+        StrutsDelegate strutsDelegate = getStrutsDelegate();
         User user = context.getCurrentUser();
         Long sid = context.getRequiredParam(RequestContext.SID);
         Server server = SystemManager.lookupByIdAndUser(sid, user);
 
         if (context.isSubmitted()) {
-            CobblerPowerSettingsUpdateCommand command =
-                new CobblerPowerSettingsUpdateCommand(
-                user, server, form.getString(POWER_TYPE), form.getString(POWER_ADDRESS),
-                form.getString(POWER_USERNAME), form.getString(POWER_PASSWORD),
-                form.getString(POWER_ID));
+            CobblerPowerSettingsUpdateCommand command = getPowerSettingsUpdateCommand(form,
+                user, server);
 
             ValidatorError error = command.store();
             if (error == null) {
                 addMessage(request, "kickstart.powermanagement.saved");
                 log.debug("Power management settings saved for system " + sid);
-                if (POWER_ON.equals(form.getString(POWER_ADDITIONAL_ACTION))) {
-                    error = new CobblerPowerOnCommand(user, server).store();
+                if (context.wasDispatched("kickstart.powermanagement.jsp.save_power_on")) {
+                    error = new CobblerPowerCommand(user, server, Operation.PowerOn)
+                        .store();
                     if (error == null) {
                         log.debug("Power on succeded for system " + sid);
                         addMessage(request, "kickstart.powermanagement.powered_on");
                     }
                 }
-                if (POWER_OFF.equals(form.getString(POWER_ADDITIONAL_ACTION))) {
-                    error = new CobblerPowerOffCommand(user, server).store();
+                if (context.wasDispatched("kickstart.powermanagement.jsp.save_power_off")) {
+                    error = new CobblerPowerCommand(user, server, Operation.PowerOff)
+                        .store();
                     if (error == null) {
                         log.debug("Power off succeded for system " + sid);
                         addMessage(request, "kickstart.powermanagement.powered_off");
                     }
                 }
-                if (REBOOT.equals(form.getString(POWER_ADDITIONAL_ACTION))) {
-                    error = new CobblerRebootCommand(user, server).store();
+                if (context.wasDispatched("kickstart.powermanagement.jsp.save_reboot")) {
+                    error = new CobblerPowerCommand(user, server, Operation.Reboot).store();
                     if (error == null) {
                         log.debug("Reboot succeded for system " + sid);
                         addMessage(request, "kickstart.powermanagement.rebooted");
                     }
                 }
-                if (GET_STATUS.equals(form.getString(POWER_ADDITIONAL_ACTION))) {
+                if (context.wasDispatched(
+                    "kickstart.powermanagement.jsp.save_get_status")) {
                     try {
                         SystemRecord record = getSystemRecord(user, server);
                         request.setAttribute(POWER_STATUS_ON, record.getPowerStatus());
@@ -142,15 +130,30 @@ public class PowerManagementAction extends RhnAction {
 
             if (error != null) {
                 ActionErrors errors = new ActionErrors();
-                getStrutsDelegate().addError(errors, error.getKey(), error.getValues());
-                getStrutsDelegate().saveMessages(request, errors);
+                strutsDelegate.addError(errors, error.getKey(), error.getValues());
+                strutsDelegate.saveMessages(request, errors);
             }
         }
 
-        setAttributes(request, context, server, user);
+        setAttributes(request, context, server, user, strutsDelegate);
 
-        return getStrutsDelegate().forwardParams(
+        return strutsDelegate.forwardParams(
             mapping.findForward(RhnHelper.DEFAULT_FORWARD), request.getParameterMap());
+    }
+
+    /**
+     * Returns a CobblerPowerSettingsUpdateCommand from form data.
+     * @param form the form
+     * @param user currently logged in user
+     * @param server server to update
+     * @return the command
+     */
+    public static CobblerPowerSettingsUpdateCommand getPowerSettingsUpdateCommand(
+        DynaActionForm form, User user, Server server) {
+        return new CobblerPowerSettingsUpdateCommand(
+        user, server, form.getString(POWER_TYPE), form.getString(POWER_ADDRESS),
+        form.getString(POWER_USERNAME), form.getString(POWER_PASSWORD),
+        form.getString(POWER_ID));
     }
 
     /**
@@ -160,30 +163,19 @@ public class PowerManagementAction extends RhnAction {
      * @param context the context
      * @param server the server
      * @param user the user
+     * @param strutsDelegate the Struts delegate
      */
     private void setAttributes(HttpServletRequest request, RequestContext context,
-        Server server, User user) {
+        Server server, User user, StrutsDelegate strutsDelegate) {
         request.setAttribute(RequestContext.SID, server.getId());
         request.setAttribute(RequestContext.SYSTEM, server);
 
-        List<String> types = new ArrayList<String>();
-        String typeString = ConfigDefaults.get().getCobblerPowerTypes();
-        if (typeString != null) {
-            types.addAll(Arrays.asList(typeString.split(" *, *")));
-        }
-        request.setAttribute(TYPES, types);
-
-        if (types.size() == 0) {
-            ActionErrors errors = new ActionErrors();
-            getStrutsDelegate().addError(errors, "kickstart.powermanagement.jsp.no_types",
-                ConfigDefaults.POWER_MANAGEMENT_TYPES);
-            getStrutsDelegate().saveMessages(request, errors);
-        }
-        else {
+        SortedMap<String, String> types = setUpPowerTypes(request, strutsDelegate);
+        if (types.size() > 0) {
             SystemRecord record = getSystemRecord(user, server);
 
             if (record == null) {
-                request.setAttribute(POWER_TYPE, types.get(0));
+                request.setAttribute(POWER_TYPE, types.get(types.firstKey()));
             }
             else {
                 request.setAttribute(POWER_TYPE, record.getPowerType());
@@ -193,6 +185,35 @@ public class PowerManagementAction extends RhnAction {
                 request.setAttribute(POWER_ID, record.getPowerId());
             }
         }
+    }
+
+    /**
+     * Sets up and returns a list of supported Cobbler power types.
+     * @param request the current request
+     * @param strutsDelegate the Struts delegate
+     * @return the types
+     */
+    public static SortedMap<String, String> setUpPowerTypes(HttpServletRequest request,
+        StrutsDelegate strutsDelegate) {
+        SortedMap<String, String> types = new TreeMap<String, String>();
+        String typeString = ConfigDefaults.get().getCobblerPowerTypes();
+        if (typeString != null) {
+            List<String> typeNames = Arrays.asList(typeString.split(" *, *"));
+            for (String typeName : typeNames) {
+                types.put(
+                    LocalizationService.getInstance().getPlainText(
+                        "cobbler.powermanagement." + typeName), typeName);
+            }
+        }
+        request.setAttribute(TYPES, types);
+
+        if (types.size() == 0) {
+            ActionErrors errors = new ActionErrors();
+            strutsDelegate.addError(errors, "kickstart.powermanagement.jsp.no_types",
+                ConfigDefaults.POWER_MANAGEMENT_TYPES);
+            strutsDelegate.saveMessages(request, errors);
+        }
+        return types;
     }
 
     /**

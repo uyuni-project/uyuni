@@ -1348,7 +1348,6 @@
       <form-property name="powerUsername" type="java.lang.String" />
       <form-property name="powerPassword" type="java.lang.String" />
       <form-property name="powerId" type="java.lang.String" />
-      <form-property name="powerAdditionalAction" type="java.lang.String" />
     </form-bean>
   </form-beans>
 
@@ -8234,6 +8233,26 @@
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/ssm/provisioning-remote-command.jsp"/>
+    </action>
+
+    <action path="/systems/ssm/provisioning/PowerManagementConfiguration"
+            name="powerManagementForm"
+            type="com.redhat.rhn.frontend.action.ssm.PowerManagementConfigurationAction"
+            scope="request"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/ssm/powermanagement-configuration.jsp"/>
+    </action>
+
+    <action path="/systems/ssm/provisioning/PowerManagementOperations"
+            name="powerManagementForm"
+            type="com.redhat.rhn.frontend.action.ssm.PowerManagementOperationsAction"
+            scope="request"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/ssm/powermanagement-operations.jsp"/>
     </action>
 
     <!-- SSM Package tab home page -->
