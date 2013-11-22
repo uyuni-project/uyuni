@@ -21,22 +21,40 @@
   </h2>
 
   <c:if test="${fn:length(types) >= 1}">
-    <html:form action="/systems/details/kickstart/PowerManagement.do?sid=${sid}">
+    <html:form styleClass="form-horizontal" action="/systems/details/kickstart/PowerManagement.do?sid=${sid}">
 
       <c:set var="showRequired" value="true" />
       <c:set var="showPowerStatus" value="true" />
       <%@ include file="/WEB-INF/pages/common/fragments/kickstart/powermanagement-options.jspf" %>
 
-      <input type="submit" name="dispatch"
-        value="<bean:message key="kickstart.powermanagement.jsp.save" />" />
-      <input type="submit" name="dispatch"
-        value="<bean:message key="kickstart.powermanagement.jsp.save_power_on" />" />
-      <input type="submit" name="dispatch"
-        value="<bean:message key="kickstart.powermanagement.jsp.save_power_off" />" />
-      <input type="submit" name="dispatch"
-        value="<bean:message key="kickstart.powermanagement.jsp.save_reboot" />" />
-      <input type="submit" name="dispatch"
-        value="<bean:message key="kickstart.powermanagement.jsp.save_get_status" />" />
+      <div class="form-group">
+        <div class="col-lg-offset-3 col-lg-6">
+          <input type="submit" name="dispatch"
+            value="<bean:message key="kickstart.powermanagement.jsp.save" />"
+            class="btn btn-default"
+          />
+          <input type="submit" name="dispatch"
+            value="<bean:message key="kickstart.powermanagement.jsp.save_get_status" />"
+            class="btn btn-default"
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-offset-3 col-lg-6">
+          <input type="submit" name="dispatch"
+            value="<bean:message key="kickstart.powermanagement.jsp.save_power_on" />"
+            class="btn btn-default"
+          />
+          <input type="submit" name="dispatch"
+            value="<bean:message key="kickstart.powermanagement.jsp.save_power_off" />"
+            class="btn btn-default"
+          />
+          <input type="submit" name="dispatch"
+            value="<bean:message key="kickstart.powermanagement.jsp.save_reboot" />"
+            class="btn btn-default"
+          />
+        </div>
+      </div>
     </html:form>
   </c:if>
 </body>
