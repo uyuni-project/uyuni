@@ -23,128 +23,20 @@
   <c:if test="${fn:length(types) >= 1}">
     <html:form action="/systems/details/kickstart/PowerManagement.do?sid=${sid}">
 
-      <rhn:csrf />
-      <rhn:submitted />
-      <div class="search-choices">
-        <div class="search-choices-group">
-          <table class="details">
+      <c:set var="showRequired" value="true" />
+      <c:set var="showPowerStatus" value="true" />
+      <%@ include file="/WEB-INF/pages/common/fragments/kickstart/powermanagement-options.jspf" %>
 
-          <tr>
-            <th>
-              <label for="powerType">
-                <bean:message key="kickstart.powermanagement.jsp.powertype" />
-                <rhn:required-field />
-              </label>
-            </th>
-            <td>
-              <c:choose>
-                <c:when test="${fn:length(types) == 1}">
-                  <bean:message key="kickstart.powermanagement.${types[0]}" />
-                  <input type="hidden" name="powerType" value="${types[0]}">
-                </c:when>
-                <c:otherwise>
-                  <select name="powerType">
-                    <c:forEach items="${types}" var="type">
-                      <option value="${type}" <c:if test="${type eq powerType}">selected</c:if>>
-                        <bean:message key="kickstart.powermanagement.${type}" />
-                      </option>
-                    </c:forEach>
-                  </select>
-                </c:otherwise>
-              </c:choose>
-            </td>
-          </tr>
-
-            <tr>
-              <th>
-                <label for="powerAddress">
-                  <bean:message key="kickstart.powermanagement.jsp.power_address" />
-                  <rhn:required-field />
-                </label>
-              </th>
-              <td>
-                <html:text property="powerAddress" name="powerAddress"
-                  value="${powerAddress}"
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <label for="powerUsername">
-                  <bean:message key="kickstart.powermanagement.jsp.power_username" />
-                  <rhn:required-field />
-                </label>
-              </th>
-              <td>
-                <html:text property="powerUsername" name="powerUsername"
-                  value="${powerUsername}"
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <label for="powerPassword">
-                  <bean:message key="kickstart.powermanagement.jsp.power_password" />
-                  <rhn:required-field />
-                </label>
-              </th>
-              <td>
-                <html:password property="powerPassword" name="powerPassword"
-                  value="${powerPassword}"
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <label for="powerId">
-                  <bean:message key="kickstart.powermanagement.jsp.power_id" />
-                </label>
-              </th>
-              <td>
-                <html:text property="powerId" name="powerId" value="${powerId}" />
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <label for="powerStatus">
-                  <bean:message key="kickstart.powermanagement.jsp.power_status" />
-                </label>
-              </th>
-              <td>
-                <c:choose>
-                  <c:when test="${powerStatusOn eq true}">
-                    <bean:message key="kickstart.powermanagement.jsp.on" />
-                  </c:when>
-                  <c:when test="${powerStatusOn eq false}">
-                    <bean:message key="kickstart.powermanagement.jsp.off" />
-                  </c:when>
-                  <c:otherwise>
-                    <bean:message key="kickstart.powermanagement.jsp.unknown" />
-                  </c:otherwise>
-                </c:choose>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
-      <hr>
-
-      <button type="submit" name="powerAdditionalAction" value="none">
-        <bean:message key="kickstart.powermanagement.jsp.save" />
-      </button>
-      <button type="submit" name="powerAdditionalAction" value="powerOn">
-        <bean:message key="kickstart.powermanagement.jsp.save_power_on" />
-      </button>
-      <button type="submit" name="powerAdditionalAction" value="powerOff">
-        <bean:message key="kickstart.powermanagement.jsp.save_power_off" />
-      </button>
-      <button type="submit" name="powerAdditionalAction" value="reboot">
-        <bean:message key="kickstart.powermanagement.jsp.save_reboot" />
-      </button>
-      <button type="submit" name="powerAdditionalAction" value="getStatus">
-        <bean:message key="kickstart.powermanagement.jsp.save_get_status" />
-      </button>
+      <input type="submit" name="dispatch"
+        value="<bean:message key="kickstart.powermanagement.jsp.save" />" />
+      <input type="submit" name="dispatch"
+        value="<bean:message key="kickstart.powermanagement.jsp.save_power_on" />" />
+      <input type="submit" name="dispatch"
+        value="<bean:message key="kickstart.powermanagement.jsp.save_power_off" />" />
+      <input type="submit" name="dispatch"
+        value="<bean:message key="kickstart.powermanagement.jsp.save_reboot" />" />
+      <input type="submit" name="dispatch"
+        value="<bean:message key="kickstart.powermanagement.jsp.save_get_status" />" />
     </html:form>
   </c:if>
 </body>
