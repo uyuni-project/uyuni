@@ -10,9 +10,10 @@
 <html>
 <head>
 <meta name="page-decorator" content="none" />
+<script src="/javascript/focus.js" type="text/javascript"></script>
 </head>
 
-<body>
+<body onload="formFocus('cveAuditForm','cveIdentifierId');">
   <rhn:toolbar base="h1" img="/img/rhn-icon-search.gif"
     imgAlt="audit.jsp.alt"
     helpUrl="/rhn/help/reference/en-US/s1-sm-audit.jsp#s2-sm-audit-cve">
@@ -31,16 +32,18 @@
       <div class="search-choices-group">
         <table class="details">
           <tr>
-            <th><label for="cveIdentifier"><bean:message
-                  key="cveaudit.jsp.cvenumber" /></label></th>
-            <td><html:text property="cveIdentifier"
-                name="cveIdentifier" styleId="searchfor"
-                value="${cveIdentifier}" maxlength="13" /> <html:submit>
-                <bean:message key="cveaudit.jsp.cvenumber.auditsystem" />
-              </html:submit> <br /> <span class="small-text"> <strong><bean:message
-                    key="cveaudit.jsp.examples" /></strong> <bean:message
-                  key="cveaudit.jsp.example.list" />
-            </span></td>
+            <th>
+              <label for="cveIdentifierId"><bean:message key="cveaudit.jsp.cvenumber" /></label>
+            </th>
+            <td>
+              <label for="cveIdentifierId">CVE-</label>
+              <html:select property="cveIdentifierYear" styleId="cveIdentifierYear" value="${cveIdentifierYear}">
+                <html:options collection="years" property="value" />
+              </html:select>
+              <label for="cveIdentifierId">-</label>
+              <html:text property="cveIdentifierId" styleId="cveIdentifierId" value="${cveIdentifierId}" size="10" title="CVE-ID" />
+              <html:submit><bean:message key="cveaudit.jsp.cvenumber.auditsystem" /></html:submit><br />
+            </td>
           </tr>
 
           <tr>
