@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -60,6 +61,58 @@ public class PackageListItem extends IdComboDto {
     private Long idTwo;
     private Long idThree;
 
+    private String locked = null; // Assuming package is free to operate by default.
+    private String pending; // Either PackageManager.PKG_PENDING_LOCK for "to be locked"
+                                 // or PackageManager.PKG_PENDING_UNLOCK for "to be unlocked"
+
+    /**
+     * Set locked status.
+     *
+     * @param locked Not null for unlocked and null for locked. Usually "Y".
+     */
+    public void setLocked(String locked) {
+        this.locked = locked;
+    }
+
+    /**
+     * Get the status that the package is locked on the client machine or is in the process.
+     *
+     * @return Returns not null if package is locked and null otherwise.
+     */
+    public String getLocked() {
+        return this.locked;
+    }
+
+    /**
+     * Set locked status. Either value of PackageManager.PKG_PENDING_LOCK for "to be locked" 
+     * or value of PackageManager.PKG_PENDING_UNLOCK for "to be unlocked".
+     *
+     * @param lockedStatus "L" or "U" for pending status direction.
+     * @throws java.lang.Exception
+     */
+    public void setPending(String lockedStatus) throws Exception {
+        if (lockedStatus != null && lockedStatus.isEmpty()) {
+            lockedStatus = null;
+        }
+        
+        if (lockedStatus != null && 
+            (!lockedStatus.equals(PackageManager.PKG_PENDING_LOCK) &&
+             (!lockedStatus.equals(PackageManager.PKG_PENDING_UNLOCK)))) {
+            throw new Exception(String.format("Unknown lock status: %s", lockedStatus));
+        }
+
+        this.pending = lockedStatus;
+    }
+
+    /**
+     * Returns locked status of the package. Either value of PackageManager.PKG_PENDING_LOCK
+     * for "to be locked" or value of PackageManager.PKG_PENDING_UNLOCK for "to be unlocked".
+     *
+     * @return String one character value of locked status.
+     */
+    public String getPending() {
+        return this.pending;
+    }
 
     /**
      * @return Returns the arch.

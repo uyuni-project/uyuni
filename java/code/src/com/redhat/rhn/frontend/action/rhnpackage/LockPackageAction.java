@@ -19,6 +19,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
@@ -35,14 +36,21 @@ import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.struts.Globals;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
 /**
@@ -70,15 +78,27 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         User user = context.getLoggedInUser();
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         Set selectedPkgs = SessionSetHelper.lookupAndBind(request, this.getDecl(sid));
+        ActionMessages infoMessages = new ActionMessages();
+        ActionErrors errorMessages = new ActionErrors();
+        List<Package> container = new ArrayList<Package>() {
+            @Override
+            public boolean add(Package pkg) {
+                return pkg == null ? false : (!this.contains(pkg) ? super.add(pkg) : false);
+            }
+        };
 
-        // Clear the set on first visit
-        DataResult lockedPackagesResult = PackageManager.systemLockedPackages(sid, null);
         if (!context.isSubmitted()) {
             selectedPkgs.clear();
-            for (Iterator it = lockedPackagesResult.iterator(); it.hasNext();) {
-                PackageListItem pkg = (PackageListItem) it.next();
-                selectedPkgs.add(pkg.getIdCombo() + "~*~" + pkg.getNvrea()); // pre-select locked
+        }
+
+        DataResult lockedPackagesResult = PackageManager.systemLockedPackages(sid, null);
+        for (Iterator it = lockedPackagesResult.iterator(); it.hasNext();) {
+            PackageListItem pkg = (PackageListItem) it.next();
+            if (!context.isSubmitted()) {
+                // pre-select locked
+                selectedPkgs.add(pkg.getIdCombo() + "~*~" + pkg.getNvrea());
             }
+            container.add(PackageManager.lookupByIdAndUser(pkg.getPackageId(), user));
         }
 
         SessionSetHelper helper = new SessionSetHelper(request);
@@ -88,19 +108,19 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             Date scheduleDate = this.getStrutsDelegate().readDatePicker(
                     form, "date", DatePicker.YEAR_RANGE_POSITIVE);
             if (!selectedPkgs.isEmpty()) {
-                List<Package> container = new ArrayList<Package>() {
-                    @Override
-                    public boolean add(Package pkg) {
-                        return pkg == null ? false : super.add(pkg);
-                    }
-                };
-
                 if (request.getParameter("dispatch").equals(LocalizationService.getInstance().getMessage("pkg.lock.requestlock"))) {
-                    this.lockSelectedPackages(lockedPackagesResult, selectedPkgs, container,
+                    this.lockSelectedPackages(lockedPackagesResult, container,
                                               scheduleDate, server, request);
+                    this.getStrutsDelegate().addInfo("pkg.lock.message.locksuccess", infoMessages);
                 }
                 else if (request.getParameter("dispatch").equals(LocalizationService.getInstance().getMessage("pkg.lock.requestunlock"))) {
-                    this.unlockSelectedPackages(selectedPkgs);
+                    try {
+                        this.unlockSelectedPackages(request, server, scheduleDate);
+                        this.getStrutsDelegate().addInfo("pkg.lock.message.unlocksuccess", infoMessages);
+                    } catch (Exception ex) {
+                        Logger.getLogger(LockPackageAction.class.getName()).log(Level.SEVERE, null, ex);
+                        this.getStrutsDelegate().addError(errorMessages, "pkg.lock.message.genericerror", ex.getLocalizedMessage());
+                    }
                 }
                 else if (request.getParameter("dispatch").equals(LocalizationService.getInstance().getMessage("pkg.lock.showlockedonly"))) {
                     // set to the session some flag that would:
@@ -132,6 +152,9 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         request.setAttribute("date", this.getStrutsDelegate().prepopulateDatePicker(
                 request, form, "date", DatePicker.YEAR_RANGE_POSITIVE));
         request.setAttribute("dataset", dataSet);
+        request.setAttribute(Globals.MESSAGE_KEY, infoMessages);
+        request.setAttribute(Globals.ERROR_KEY, errorMessages);
+        
         SdcHelper.ssmCheck(request, server.getId(), user);
         ListTagHelper.bindSetDeclTo(LIST_NAME, getDecl(sid), request);
         TagHelper.bindElaboratorTo(LIST_NAME, dataSet.getElaborator(), request);
@@ -140,13 +163,61 @@ public class LockPackageAction extends BaseSystemPackagesAction {
     }
 
 
-    private void unlockSelectedPackages(Set selected) {
-        System.err.println("Unlock is not yet implemented");
+    /**
+     * Wipe actions.
+     * @param user 
+     */
+    private void wipeActions(User user, Boolean unlock) {
+        Map params = new HashMap();
+        params.put(PackageLockAction.PARAM_PENDING, PackageManager.PKG_PENDING_UNLOCK);
+        
+        for (Iterator it = ActionManager.allActions(user, null).iterator(); it.hasNext();) {
+            Action action = ActionManager.lookupAction(user,
+                                                       ((ScheduledAction) it.next()).getId());
+            // Hard-coded ID from DB: this is *the* design!
+            if (action != null && action.getActionType().getId() == 502) {
+                ActionManager.cancelAction(user, action, unlock ? params : null);
+            }
+        }        
+    }
+
+    private void unlockSelectedPackages(HttpServletRequest request,
+                                        Server server,
+                                        Date scheduleDate)
+            throws Exception {
+        RequestContext context = new RequestContext(request);
+        Long sid = context.getRequiredParam("sid");
+        User user = context.getLoggedInUser();
+        List<Package> container = new ArrayList<Package>();
+        
+        // Wipe all previously scheduled actions
+        this.wipeActions(user, Boolean.TRUE);
+
+        for (String label : ListTagHelper.getSelected(LIST_NAME, request)) {
+            Package pkg = this.findPackage(sid, label, user);
+            if (pkg != null) {
+                container.add(pkg);
+            }
+        }
+
+        PackageManager.lockPackages(sid, container);
+        PackageManager.setPendingStatusOnLockedPackages(container,
+                                                        PackageManager.PKG_PENDING_UNLOCK);
+        ActionManager.schedulePackageLock(user, server, container, scheduleDate);
     }
 
 
+    /**
+     * Lock the packages, adding to the existing list of locked packages,
+     * yet re-issuing the action.
+     *
+     * @param lockedPackages
+     * @param container
+     * @param scheduleDate
+     * @param server
+     * @param request 
+     */
     private void lockSelectedPackages(DataResult lockedPackages,
-                                      Set selected,
                                       List<Package> container,
                                       Date scheduleDate,
                                       Server server,
@@ -155,34 +226,20 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         Long sid = context.getRequiredParam("sid");
         User user = context.getLoggedInUser();
 
-        // Unlock all packages temporarily
-        for (Iterator it = lockedPackages.iterator(); it.hasNext();) {
-            container.add(PackageManager.lookupByIdAndUser(
-                    ((PackageListItem) it.next()).getId(), user));
-        }
-        
+        // Unlock all previous packages temporarily
         PackageManager.unlockPackages(sid, container);
-        container.clear();
-        
-        // Lock all selected packages
+
+        // Lock all selected packages, if ther are not already in the list
         for (String label : ListTagHelper.getSelected(LIST_NAME, request)) {
             container.add(this.findPackage(sid, label, user));
         }
         
-        if (!container.isEmpty()) {
-            // Wipe all previously scheduled actions
-            for (Iterator it = ActionManager.allActions(user, null).iterator();
-                 it.hasNext();) {
-                Action action = ActionManager.lookupAction(user,
-                                    ((ScheduledAction) it.next()).getId());
-                // Hard-coded ID from DB: this is *the* design!
-                if (action != null && action.getActionType().getId() == 502) {
-                    System.err.println("Canceled action: " + action.getName());
-                    ActionManager.cancelAction(user, action);
-                }
-            }
+        for (int i = 0; i < container.size(); i++) {
+            container.get(i).setLockPending(Boolean.TRUE);
+        }
 
-            // Lock packages
+        if (!container.isEmpty()) {
+            this.wipeActions(user, Boolean.FALSE);
             PackageManager.lockPackages(sid, container);
             ActionManager.schedulePackageLock(user, server, container, scheduleDate);
         } else {

@@ -548,7 +548,8 @@ public class PackageManager extends BaseManager {
             params.put("nid", pkg.getPackageName().getId());
             params.put("eid", pkg.getPackageEvr().getId());
             params.put("aid", pkg.getPackageArch().getId());
-            params.put("pending", pkg.isLockPending() ? "L" : null);
+            params.put("pending",
+                       pkg.isLockPending() ? PackageManager.PKG_PENDING_LOCK : null);
             ModeFactory.getWriteMode("Package_queries", "lock_package").executeUpdate(params);
         }
     }
@@ -575,15 +576,88 @@ public class PackageManager extends BaseManager {
      * 
      * @param sid System ID
      * @param actionId Action ID
+     * @param pending Pending value. If null or empty, then all packages gets sync'ed.
+     * @throws java.lang.Exception
      */
-    public static void syncLockedPackages(Long sid, Long actionId) {
+    public static void syncLockedPackages(Long sid, Long actionId, String pending)
+            throws Exception {
+        if (pending == null) {
+            pending = "";
+        }
+
+        pending = pending.trim();
+
+        if (!pending.isEmpty() &&
+            !pending.equals(PackageManager.PKG_PENDING_LOCK) &&
+            !pending.equals(PackageManager.PKG_PENDING_UNLOCK)) {
+            throw new Exception("Unknown pending status: " + pending);
+        }
+
         // Sync orphan locks when action has been canceled.
+        String query = "remove_orphan_lock_on_action_cancel";
         Map params = new HashMap();
         params.put("sid", sid);
         params.put("action_id", actionId);
+        params.put("pending", pending);
         ModeFactory.getWriteMode("Package_queries",
-                                 "remove_orphan_lock_on_action_cancel").executeUpdate(params);        
+                                 query + (pending.isEmpty() ? "" : "_pending"))
+                .executeUpdate(params);        
     }
+
+    /**
+     * Pending status "L" corresponds that the package is going to be locked.
+     * At this moment package has different status.
+     */
+    public static final String PKG_PENDING_LOCK = "L";
+    
+    /**
+     * Pending status "U" corresponds that the package is going to be unlocked.
+     * At this moment package has different status.
+     */
+    public static final String PKG_PENDING_UNLOCK = "U";
+    
+    /**
+     * Sets the pending status on locked package. If parameter "pendingStatus" is null,
+     * the package is considered locked.
+     * 
+     * @param pkgId
+     * @param pendingStatus 
+     */
+    public static void setPendingStatusOnLockedPackage(Long pkgId, String pendingStatus)
+            throws Exception {
+        if (pendingStatus != null && pendingStatus.isEmpty()) {
+            pendingStatus = null;
+        }
+
+        if (pendingStatus != null && 
+            (!pendingStatus.equals(PackageManager.PKG_PENDING_LOCK) &&
+             (!pendingStatus.equals(PackageManager.PKG_PENDING_UNLOCK)))) {
+            throw new Exception(String.format("Unknown status: \"%s\"", pendingStatus));
+        }
+
+        Map params = new HashMap();
+        params.put("pkg_id", pkgId);
+        params.put("pending", pendingStatus);
+        ModeFactory.getWriteMode("Package_queries",
+                                 "set_pending_lock_status").executeUpdate(params);        
+    }
+
+    /**
+     * Sets the pending status on locked packages. If parameter "pendingStatus" is null,
+     * the packages in the set are considered locked.
+     * @param pkgs List of packages.
+     * @param pendingStatus Status for all of them.
+     * @throws java.lang.Exception
+     */
+    public static void setPendingStatusOnLockedPackages(List<Package> pkgs,
+                                                        String pendingStatus)
+            throws Exception {
+        for (int i = 0; i < pkgs.size(); i++) {
+            PackageManager.setPendingStatusOnLockedPackage(pkgs.get(i).getId(),
+                                                           pendingStatus);
+        }
+    }
+
 
     /**
      * Get the list of  Package Names that match the passed in capability string.

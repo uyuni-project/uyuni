@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
+import java.util.Map;
 
 /**
  * Action - Class representation of the table rhnAction.
@@ -386,24 +387,27 @@ public class Action extends BaseDomainHelper implements Serializable {
 
     /**
      * Hook when action is canceled.
+     * @param params A map of params. Each implementation should have its own keys.
      */
-    public void onCancelAction() {
+    public void onCancelAction(Map params) {
         // Something to do, when action is canceled.
         // Override this method for specific action.
     }
 
     /**
      * Hook when action is deleted.
+     * @param params A map of params. Each implementation should have its own keys.
      */
-    public void onDeleteAction() {
+    public void onDeleteAction(Map params) {
         // Something to do, when action is deleted.
         // Override this method for specific action.
     }
     
     /**
      * Hook when action is created.
+     * @param params A map of params. Each implementation should have its own keys.
      */
-    public void onCreateAction() {
+    public void onCreateAction(Map params) {
         // Something to do, when action is created.
         // Override this method for specific action.
     }

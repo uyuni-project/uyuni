@@ -264,6 +264,22 @@ public class ActionManager extends BaseManager {
      * @param action Action to be cancelled.
      */
     public static void cancelAction(User user, Action action) {
+        ActionManager.cancelAction(user, action, null);
+    }
+
+
+    /**
+     * Cancels the server actions associated with a given action, and if
+     * required deals with associated pending kickstart actions.
+     *
+     * Actions themselves are not deleted, only the ServerActions associated
+     * with them.
+     *
+     * @param user User requesting the action be cancelled.
+     * @param action Action to be cancelled.
+     * @param cancelParams Canceling params to the specific cancelled action.
+     */
+    public static void cancelAction(User user, Action action, Map cancelParams) {
         log.debug("Cancelling action: " + action.getId() + " for user: " + user.getLogin());
 
         // Can only top level actions:
@@ -288,7 +304,7 @@ public class ActionManager extends BaseManager {
         Iterator iter = actionsToDelete.iterator();
         while (iter.hasNext()) {
             Action a = (Action)iter.next();
-            a.onCancelAction();
+            a.onCancelAction(cancelParams);
         }
     }
 
@@ -1817,6 +1833,7 @@ public class ActionManager extends BaseManager {
             Date earliestAction,
             Set<Long> serverIds) {
 
+        String pkgActionParameter = "upgrade"; // Default for install and upgrade (!?)
         String name = "";
         if (type.equals(ActionFactory.TYPE_PACKAGES_REMOVE) ||
                 type.equals(ActionFactory.TYPE_SOLARISPKGS_REMOVE)) {
@@ -1837,6 +1854,7 @@ public class ActionManager extends BaseManager {
         }
         else if (type.equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
             name = "Lock packages";
+            pkgActionParameter = "lock";
         }
 
         Action action = scheduleAction(scheduler, type, name, earliestAction, serverIds);
@@ -1863,17 +1881,15 @@ public class ActionManager extends BaseManager {
                 params.put("action_id", action.getId());
                 params.put("name_id", nameId);
                 params.put("evr_id", evrId);
+                params.put("pkg_parameter", pkgActionParameter);
 
-                WriteMode m = null;
-                if (archId == null) {
-                    m = ModeFactory.getWriteMode("Action_queries",
-                            "schedule_action_no_arch");
-                }
-                else {
+                if (archId != null) {
                     params.put("arch_id", archId);
-                    m = ModeFactory.getWriteMode("Action_queries", "schedule_action");
                 }
-                m.executeUpdate(params);
+
+                ModeFactory.getWriteMode("Action_queries",
+                                         "schedule_action"+ (archId == null ? "_no_arch" : ""))
+                        .executeUpdate(params);
             }
         }
 
