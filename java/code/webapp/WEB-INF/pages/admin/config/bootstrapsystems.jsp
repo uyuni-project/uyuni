@@ -16,40 +16,43 @@
     </div>
     <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/sat_config.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
 
-    <div>
-      <form action="/rhn/admin/config/BootstrapSystems.do" method="POST">
+    <form styleClass="form-horizontal" action="/rhn/admin/config/BootstrapSystems.do" method="POST">
         <rhn:csrf />
+        <rhn:submitted/>
 
         <h2><bean:message key="bootstrapsystems.jsp.header"/></h2>
-
         <c:if test="${enabledForOtherOrg}">
-          <bean:message key="bootstrapsystems.jsp.bootstrap_enabled_for_other_org" arg0="${enabledOrg}" arg1="${currentOrg}"/>
+            <p>
+                <bean:message key="bootstrapsystems.jsp.bootstrap_enabled_for_other_org" arg0="${enabledOrg}" arg1="${currentOrg}"/>
+            </p>
         </c:if>
-        <table class="details">
-          <tr>
-            <th>
-              <bean:message key="bootstrapsystems.jsp.enable_bootstrap_discovery"/>
-            </th>
-            <td>
-              <c:choose>
-                <c:when test="${disabled}">
-                  <input type="submit" name="enable" value="${rhn:localize('enable')}" />
-                </c:when>
-                <c:when test="${enabledForCurrentOrg}">
-                  <input type="submit" name="disable" value="${rhn:localize('disable')}" />
-                </c:when>
-                <c:when test="${enabledForOtherOrg}">
-                  <input type="submit" disabled="true" value="${rhn:localize('disable')}" />
-                </c:when>
-              </c:choose>
-            </td>
-          </tr>
-        </table>
 
-        <hr/>
-
-        <rhn:submitted/>
-      </form>
-    </div>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-6">
+                <label class="col-lg-3 control-label">
+                      <bean:message key="bootstrapsystems.jsp.enable_bootstrap_discovery"/>
+                </label>
+                <div class="col-lg-6">
+                    <c:choose>
+                        <c:when test="${disabled}">
+                            <input type="submit" name="enable" value="${rhn:localize('enable')}"
+                                class="btn btn-success"
+                            />
+                        </c:when>
+                        <c:when test="${enabledForCurrentOrg}">
+                            <input type="submit" name="disable" value="${rhn:localize('disable')}"
+                                class="btn btn-danger"
+                            />
+                        </c:when>
+                        <c:when test="${enabledForOtherOrg}">
+                            <input type="submit" disabled="true" value="${rhn:localize('disable')}"
+                                class="btn btn-default"
+                            />
+                        </c:when>
+                    </c:choose>
+                </div>
+            </div>
+        </div>
+    </form>
   </body>
 </html:html>
