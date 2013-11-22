@@ -109,13 +109,11 @@ public class CVEAuditAction extends RhnAction {
         DynaActionForm form = (DynaActionForm) formIn;
 
         // copy parameters in attributes for alphabar, paginator, sorter use
+        request.setAttribute(CVE_YEARS_ATTRIBUTE, getYears());
         String cveIdentifierYear = request.getParameter(CVE_IDENTIFIER_YEAR_PARAMETER);
         request.setAttribute(CVE_IDENTIFIER_YEAR_PARAMETER, cveIdentifierYear);
         String cveIdentifierId = request.getParameter(CVE_IDENTIFIER_ID_PARAMETER);
         request.setAttribute(CVE_IDENTIFIER_ID_PARAMETER, cveIdentifierId);
-
-        // Populate the select for choosing a year
-        request.setAttribute(CVE_YEARS_ATTRIBUTE, getYears());
 
         for (PatchStatus patchStatus : EnumSet.allOf(PatchStatus.class)) {
             String parameterName = getParameterNameFor(patchStatus);
