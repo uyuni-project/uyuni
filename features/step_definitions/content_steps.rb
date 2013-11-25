@@ -158,6 +158,10 @@ Then /^"([^"]*)" is installed$/ do |package|
    end
 end
 
+Then /^And I should see a Sign Out link$/ do
+    fail if not has_xpath?("//a[@href='/rhn/Logout.do']")
+end
+
 When /^I check "([^"]*)" in the list$/ do |arg1|
   row = first(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
   if row.nil?

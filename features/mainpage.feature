@@ -14,7 +14,7 @@ Feature: Explore the main landing page
     And I should see a "User" text
     And I should see a "Organization" text
     And I should see a "Preferences" link
-    And I should see a "Sign Out" link
+    And I should see a Sign Out link
 
   @monitoring
   Scenario: Completeness of the main navigation bar

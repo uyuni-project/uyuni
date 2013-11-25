@@ -23,7 +23,7 @@ Feature: Explore the Errata page
      And I should see a "Bugfix Errata" link
      And I should see a "Enhancement Errata" link
      And I should see a "Security Errata" link
-     And I should see a "Sign Out" link
+     And I should see a Sign Out link
 
   @errata @monitoring
   Scenario: Completeness of the main navigation bar

@@ -26,7 +26,7 @@ Feature: Explore the main landing page
      And I should see a "View System Groups" link
      And I should see a "Software Crashes" link in the left menu
      And I should see a "Download CSV" link
-     And I should see a "Sign Out" link
+     And I should see a Sign Out link
 
   @monitoring
   Scenario: Completeness of the main navigation bar
