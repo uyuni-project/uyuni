@@ -16,10 +16,10 @@ Feature: Test the XML-RPC CVE Audit feature.
   Scenario: before applying patches 
     Given I am logged in via XML-RPC/cve audit as user "admin" and password "admin"
 
-    When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-2038-9979"
+    When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-1999-9979"
     Then I should get status "NOT_AFFECTED" for system "1000010000"
      
-    When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-2038-9999"
+    When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-1999-9999"
     Then I should get status "AFFECTED_PATCH_APPLICABLE" for system "1000010000"
       And I should get the sles11-sp3-updates channel
       And I should get the "milkyway-dummy-2345" patch
@@ -41,7 +41,7 @@ Feature: Test the XML-RPC CVE Audit feature.
 
     Given I am logged in via XML-RPC/cve audit as user "admin" and password "admin"
     
-    When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-2038-9999"
+    When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-1999-9999"
     
     Then I should get status "PATCHED" for system "1000010000"
       And I should get the sles11-sp3-updates channel

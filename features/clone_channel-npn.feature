@@ -87,6 +87,6 @@ Feature: Clone a Channel
       And I follow "CM-virgo-dummy-3456"
      Then I should see a "CM-virgo-dummy-3456 - Bug Fix Advisory" text
       And I should see a "mcalmer" text
-      And I should see a "CVE-2038-9998" link
+      And I should see a "CVE-1999-9998" link
 
 

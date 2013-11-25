@@ -25,7 +25,8 @@ Scenario: feature should be accessible
 
 Scenario: searching for a known CVE number
   When I follow "Audit"
-    And I enter "CVE-2038-9999" as "cveIdentifier"
+    And I select "1999" from "cveIdentifierYear"
+    And I enter "9999" as "cveIdentifierId"
     And I click on "Audit systems"
   Then I should see this client as link
     And I should see a "Affected, patch available in an assigned channel" text
@@ -41,13 +42,15 @@ Scenario: searching for a known CVE number
 
 Scenario: searching for an unknown CVE number
   When I follow "Audit"
-    And I enter "CVE-2012-2806" as "cveIdentifier"
+    And I select "2012" from "cveIdentifierYear"
+    And I enter "2806" as "cveIdentifierId"
     And I click on "Audit systems"
   Then I should see a "The specified CVE number was not found" text
 
 Scenario: selecting a system for the System Set Manager
   When I follow "Audit"
-    And I enter "CVE-2038-9999" as "cveIdentifier"
+    And I select "1999" from "cveIdentifierYear"
+    And I enter "9999" as "cveIdentifierId"
     And I click on "Audit systems"
     And I should see a "Affected, patch available in an assigned channel" text
   When I check "Affected, patch available in an assigned channel" in the list
