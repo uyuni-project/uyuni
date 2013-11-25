@@ -89,13 +89,16 @@
     <input type="hidden" name="submitted" value="true" />
   </html:form>
 
-  <c:if test="${cveIdentifier != null && cveIdentifier != '' && cveIdentifierUnknown == false}">
+  <c:if test="${cveIdentifierId != null && cveIdentifierId != '' && cveIdentifierUnknown == false}">
     <hr />
     <rl:listset name="resultSet">
       <rhn:csrf />
 
       <%-- Copy parameters over --%>
-      <input type="hidden" name="cveIdentifier" value="${cveIdentifier}" />
+      <input type="hidden" name="cveIdentifierYear"
+        value="${cveIdentifierYear}" />
+      <input type="hidden" name="cveIdentifierId"
+        value="${cveIdentifierId}" />
       <input type="hidden" name="includeAffectedPatchInapplicable"
         value="${includeAffectedPatchInapplicable}" />
       <input type="hidden" name="includeAffectedPatchApplicable"
