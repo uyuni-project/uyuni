@@ -70,7 +70,15 @@ Then /^I should see a "([^"]*)" link in "([^"]*)" "([^"]*)"$/ do |arg1, arg2, ar
 end
 
 Then /^I should see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
-  step "I should see a \"#{arg1}\" link in element \"#{element_for(arg2)}\""
+  tag = case arg2
+  when /left menu/ then "aside"
+  when /tab bar|tabs/ then "header"
+  else raise "Unknown element with description '#{desc}'"
+  end
+
+  within(:xpath, "//#{tag}") do
+    fail if not has_no_link?(debrand_string(arg1))
+  end
 end
 
 Then /^I should see a "([^"]*)" link in list "([^"]*)"$/ do |arg1, arg2|

@@ -87,7 +87,21 @@ When /^I follow "([^"]*)" in element "([^"]*)"$/ do |arg1, arg2|
 end
 
 When /^I follow "([^"]*)" in the (.+)$/ do |arg1, arg2|
-  step "I follow \"#{debrand_string(arg1)}\" in element \"#{element_for(arg2)}\""
+  tag = case arg2
+  when /left menu/ then "aside"
+  when /tab bar|tabs/ then "header"
+  else raise "Unknown element with description '#{desc}'"
+  end
+
+  within(:xpath, "//#{tag}") do
+    link = find_link(debrand_string(arg1))
+    if link.nil?
+        sleep 1
+        $stderr.puts "ERROR - try again"
+        link = find_link(arg1)
+    end
+    link.click
+  end
 end
 
 

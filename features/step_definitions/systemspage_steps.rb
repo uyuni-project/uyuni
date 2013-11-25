@@ -3,7 +3,7 @@
 
 Given /^I am on the Systems page$/ do
   step "I am authorized"
-  within(:xpath, "//div[@id=\"mainNavWrap\"]") do
+  within(:xpath, "//header") do
     find_link("Systems").click
   end
 end
