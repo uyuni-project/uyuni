@@ -15,19 +15,19 @@ end
 
 
 When /^I sign out$/ do
-  find_link("Sign Out").click
+  page.find(:xpath, "//a[@href='/rhn/Logout.do']").click
 end
 
 Then /^I should not be authorized$/ do
-  fail if not page.has_no_content?("Overview Legend")
+  fail if not page.has_no_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
 Then /^I should be logged in$/ do
-  fail if not page.has_content?("Overview Legend")
+  fail if not page.has_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
 Then /^I am logged-in$/ do
-  step "I should be logged in"
+  fail if not find_xpath("//a[@href='/rhn/Logout.do']").visible?
   fail if not page.has_content?("You have created your first user for the SUSE Manager Service. Additional configuration should be finalized by clicking here")
 end
 
