@@ -9,7 +9,7 @@ Given /^I am testing channels$/ do
 end
 
 Then /^I should see package "([^"]*)"$/ do |package|
-  fail if not has_xpath?("//form/table/tbody/tr/td/a[contains(.,'#{package}')]")
+  fail if not has_xpath?("//form/div/div/div/table/tbody/tr/td/a[contains(.,'#{package}')]")
 end
 
 Given /^I am on the manage software channels page$/ do
