@@ -73,11 +73,12 @@ Then /^I should see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
   tag = case arg2
   when /left menu/ then "aside"
   when /tab bar|tabs/ then "header"
+  when /content area/ then "section"
   else raise "Unknown element with description '#{desc}'"
   end
 
   within(:xpath, "//#{tag}") do
-    fail if not has_link?(debrand_string(arg1))
+    step "I should see a \"#{arg1}\" link"
   end
 end
 
