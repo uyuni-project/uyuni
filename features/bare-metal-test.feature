@@ -32,11 +32,11 @@ Feature: Test Bare-metal discovery
           And I follow "Systems" in the left menu
          When I follow this client link
          Then I should see a "Details" link in the content area
-          And I should not see a "Software" link in element "content-nav"
-          And I should not see a "Configuration" link in element "content-nav"
+          And I should not see a "Software" link in the content area
+          And I should not see a "Configuration" link in the content area
           And I should see a "Provisioning" link in the content area
-          And I should not see a "Groups" link in element "content-nav"
-          And I should not see a "Events" link in element "content-nav"
+          And I should not see a "Groups" link in the content area
+          And I should not see a "Events" link in the content area
           And I should see a "Overview" link in element "contentnav-row2"
           And I should see a "Properties" link in element "contentnav-row2"
           And I should not see a "Remote Command" link in element "contentnav-row2"
