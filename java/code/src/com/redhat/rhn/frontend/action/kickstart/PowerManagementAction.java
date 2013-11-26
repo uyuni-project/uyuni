@@ -88,7 +88,6 @@ public class PowerManagementAction extends RhnAction {
 
             ValidatorError error = command.store();
             if (error == null) {
-                addMessage(request, "kickstart.powermanagement.saved");
                 log.debug("Power management settings saved for system " + sid);
                 if (context.wasDispatched("kickstart.powermanagement.jsp.save_power_on")) {
                     error = new CobblerPowerCommand(user, server, Operation.PowerOn)
@@ -118,6 +117,7 @@ public class PowerManagementAction extends RhnAction {
                     try {
                         SystemRecord record = getSystemRecord(user, server);
                         request.setAttribute(POWER_STATUS_ON, record.getPowerStatus());
+                        addMessage(request, "kickstart.powermanagement.saved");
                     }
                     catch (XmlRpcException e) {
                         log.warn("Could not get power status from Cobbler for system " +
