@@ -12,7 +12,7 @@ end
 Then /^I should see a "([^"]*)" text$/ do |arg1|
   if not page.has_content?(debrand_string(arg1))
       sleep 1
-      fail if page.has_content?(debrand_string(arg1))
+      fail if not page.has_content?(debrand_string(arg1))
   end
 end
 
