@@ -1179,7 +1179,7 @@ As a Channel Administrator, you may change the base channels your systems are su
             <source>Visit novell.com for more information on @@VENDOR_NAME@@ products and services</source>
       </trans-unit>
       <trans-unit id="layout.jsp.vendor.website">
-            <source>http://www.novell.com/</source>
+            <source>/</source>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.checksum">
         <source>Repository Checksum Type</source>
