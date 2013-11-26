@@ -76,13 +76,7 @@ end
 # the given "id"
 When /^I follow "([^"]*)" in element "([^"]*)"$/ do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\"]") do
-    link = find_link(arg1)
-    if link.nil?
-        sleep 1
-        $stderr.puts "ERROR - try again"
-        link = find_link(arg1)
-    end
-    link.click
+    step "I follow \"#{arg1}\""
   end
 end
 
@@ -90,17 +84,12 @@ When /^I follow "([^"]*)" in the (.+)$/ do |arg1, arg2|
   tag = case arg2
   when /left menu/ then "aside"
   when /tab bar|tabs/ then "header"
+  when /content area/ then "section"
   else raise "Unknown element with description '#{desc}'"
   end
 
   within(:xpath, "//#{tag}") do
-    link = find_link(debrand_string(arg1))
-    if link.nil?
-        sleep 1
-        $stderr.puts "ERROR - try again"
-        link = find_link(arg1)
-    end
-    link.click
+    step "I follow \"#{arg1}\""
   end
 end
 
@@ -110,12 +99,6 @@ end
 # the given "class"
 When /^I follow "([^"]*)" in class "([^"]*)"$/ do |arg1, arg2|
   within(:xpath, "//div[@class=\"#{arg2}\"]") do
-      link = find_link(debrand_string(arg1))
-      if link.nil?
-          sleep 1
-          $stderr.puts "ERROR - try again"
-          link = find_link(debrand_string(arg1))
-      end
-      link.click
+      step "I follow \"#{arg1}\""
   end
 end
