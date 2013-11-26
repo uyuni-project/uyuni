@@ -158,7 +158,7 @@ Then /^"([^"]*)" is installed$/ do |package|
    end
 end
 
-Then /^And I should see a Sign Out link$/ do
+Then /^I should see a Sign Out link$/ do
     fail if not has_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
