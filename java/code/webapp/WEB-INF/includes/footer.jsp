@@ -3,8 +3,8 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 
 <div>
-  <bean:message key="footer.jsp.copyright"/>
-  <div style="color: black"><bean:message key="footer.jsp.release" arg0="/rhn/help/dispatcher/release_notes" arg1="${rhn:getConfig('web.version')}" /></div>
+  <bean:message key="footer.jsp.copyright"/> | 
+  <bean:message key="footer.jsp.release" arg0="/rhn/help/dispatcher/release_notes" arg1="${rhn:getConfig('web.version')}" />
   <p><%@ include file="/WEB-INF/pages/common/fragments/bugzilla.jspf" %></p>
   <c:set var="custom_footer" scope="page" value="${rhn:getConfig('java.custom_footer')}" />
   <c:if test="${! empty custom_footer}">
