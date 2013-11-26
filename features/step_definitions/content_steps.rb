@@ -6,6 +6,12 @@ Then /^I should see something$/ do
     step 'I should see a "About" text'
 end
 
+Then /^I should see "([^"]*)" systems selected for SSM$/ do |arg|
+    within(:xpath, "//span[@id=\"spacewalk-set-system_list-counter\"]") do
+       fail if not has_content?(arg)
+    end
+end
+
 #
 # Test for a text in the whole page
 #
@@ -178,13 +184,14 @@ end
 
 When /^I check "([^"]*)" in the list$/ do |arg1|
   within(:xpath, "//section") do
-      row = first(:xpath, "//table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
+      # use div/div/div for cve audit which has two tables
+      row = first(:xpath, "//form/div/div/div/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
       if row.nil?
           sleep 1
           $stderr.puts "ERROR - try again"
-          row = first(:xpath, "//table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
+          row = first(:xpath, "//form/div/div/div/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
       end
-      row.first(:xpath, ".//input[@type='checkbox']").set(true)
+      row.first(:xpath, ".//input[@type=\"checkbox\"]").set(true)
   end
 end
 
