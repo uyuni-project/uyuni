@@ -77,7 +77,7 @@ Then /^I should see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
   end
 
   within(:xpath, "//#{tag}") do
-    fail if not has_no_link?(debrand_string(arg1))
+    fail if not has_link?(debrand_string(arg1))
   end
 end
 
