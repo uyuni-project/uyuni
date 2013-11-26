@@ -31,10 +31,10 @@ Feature: Test Bare-metal discovery
         Given I am on the Systems page
           And I follow "Systems" in the left menu
          When I follow this client link
-         Then I should see a "Details" link in element "content-nav"
+         Then I should see a "Details" link in the content area
           And I should not see a "Software" link in element "content-nav"
           And I should not see a "Configuration" link in element "content-nav"
-          And I should see a "Provisioning" link in element "content-nav"
+          And I should see a "Provisioning" link in the content area
           And I should not see a "Groups" link in element "content-nav"
           And I should not see a "Events" link in element "content-nav"
           And I should see a "Overview" link in element "contentnav-row2"
@@ -53,7 +53,7 @@ Feature: Test Bare-metal discovery
           And I should not see a "Snapshots" link in element "contentnav-row2"
           And I should not see a "Snapshot Tags" link in element "contentnav-row2"
           And I should see a "Power Management" link in element "contentnav-row2"
-          And I should see a "Schedule" link in element "content-nav"
+          And I should see a "Schedule" link in the content area
 
     Scenario: Delete the system profile
         Given I am on the Systems overview page of this client

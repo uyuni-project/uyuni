@@ -175,15 +175,15 @@ Feature: Explore the main landing page
       And I follow "System Set Manager" in the left menu
     Then I should see a "System Set Manager" text
      And I should see a "Status" link in the left menu
-     And I should see a "Overview" link in element "content-nav"
-     And I should see a "Systems" link in element "content-nav"
-     And I should see a "Errata" link in element "content-nav"
-     And I should see a "Packages" link in element "content-nav"
-     And I should see a "Groups" link in element "content-nav"
-     And I should see a "Channels" link in element "content-nav"
-     And I should see a "Configuration" link in element "content-nav"
-     And I should see a "Provisioning" link in element "content-nav"
-     And I should see a "Misc" link in element "content-nav"
+     And I should see a "Overview" link in the content area
+     And I should see a "Systems" link in the content area
+     And I should see a "Errata" link in the content area
+     And I should see a "Packages" link in the content area
+     And I should see a "Groups" link in the content area
+     And I should see a "Channels" link in the content area
+     And I should see a "Configuration" link in the content area
+     And I should see a "Provisioning" link in the content area
+     And I should see a "Misc" link in the content area
 
   Scenario: Check sidebar link destination for Systems => Advanced Search
     Given I am on the Systems page
@@ -273,9 +273,9 @@ Feature: Explore the main landing page
     Then I should see a "Autoinstallation Snippets" text
      And I should see a "No autoinstallation snippets found." text
      And I should see a "create new snippet" link
-     And I should see a "Default Snippets" link in element "content-nav"
-     And I should see a "Custom Snippets" link in element "content-nav"
-     And I should see a "All Snippets" link in element "content-nav"
+     And I should see a "Default Snippets" link in the content area
+     And I should see a "Custom Snippets" link in the content area
+     And I should see a "All Snippets" link in the content area
 
   Scenario: Check "create new kickstart profile" page Systems => Kickstart => Profiles => create new kickstart profile
     Given I am on the Systems page

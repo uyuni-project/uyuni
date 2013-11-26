@@ -31,12 +31,12 @@ Feature: Check client registration
     Given I am on the Systems page
       And I follow "Systems" in the left menu
     When I follow this client link
-    Then I should see a "Details" link in element "content-nav"
-     And I should see a "Software" link in element "content-nav"
-     And I should see a "Configuration" link in element "content-nav"
-     And I should see a "Provisioning" link in element "content-nav"
-     And I should see a "Groups" link in element "content-nav"
-     And I should see a "Events" link in element "content-nav"
+    Then I should see a "Details" link in the content area
+     And I should see a "Software" link in the content area
+     And I should see a "Configuration" link in the content area
+     And I should see a "Provisioning" link in the content area
+     And I should see a "Groups" link in the content area
+     And I should see a "Events" link in the content area
      And I should see a "Overview" link in element "contentnav-row2"
      And I should see a "Properties" link in element "contentnav-row2"
      And I should see a "Remote Command" link in element "contentnav-row2"
@@ -45,17 +45,17 @@ Feature: Check client registration
      And I should see a "Migrate" link in element "contentnav-row2"
      And I should see a "Notes" link in element "contentnav-row2"
      And I should see a "Custom Info" link in element "contentnav-row2"
-     #And I should see a "Virtualization" link in element "content-nav"
+     #And I should see a "Virtualization" link in the content area
 
   Scenario: check tab links "Software"
     Given I am on the Systems overview page of this client
     When I follow "Software" in the content area
-    Then I should see a "Details" link in element "content-nav"
-     And I should see a "Software" link in element "content-nav"
-     And I should see a "Configuration" link in element "content-nav"
-     And I should see a "Provisioning" link in element "content-nav"
-     And I should see a "Groups" link in element "content-nav"
-     And I should see a "Events" link in element "content-nav"
+    Then I should see a "Details" link in the content area
+     And I should see a "Software" link in the content area
+     And I should see a "Configuration" link in the content area
+     And I should see a "Provisioning" link in the content area
+     And I should see a "Groups" link in the content area
+     And I should see a "Events" link in the content area
      And I should see a "Errata" link in element "contentnav-row2"
      And I should see a "Packages" link in element "contentnav-row2"
      And I should see a "Software Channels" link in element "contentnav-row2"
@@ -70,17 +70,17 @@ Feature: Check client registration
      And I should see a "Install New Packages" link
      And I should see a "Compare Package Profiles / Manage Package Profiles" link
      And I should see a "Update Package List" button
-     #And I should see a "Virtualization" link in element "content-nav"
+     #And I should see a "Virtualization" link in the content area
 
   Scenario: check tab links "Configuration"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    Then I should see a "Details" link in element "content-nav"
-     And I should see a "Software" link in element "content-nav"
-     And I should see a "Configuration" link in element "content-nav"
-     And I should see a "Provisioning" link in element "content-nav"
-     And I should see a "Groups" link in element "content-nav"
-     And I should see a "Events" link in element "content-nav"
+    Then I should see a "Details" link in the content area
+     And I should see a "Software" link in the content area
+     And I should see a "Configuration" link in the content area
+     And I should see a "Provisioning" link in the content area
+     And I should see a "Groups" link in the content area
+     And I should see a "Events" link in the content area
      And I should see a "Overview" link in element "contentnav-row2"
      And I should see a "View/Modify Files" link in element "contentnav-row2"
      And I should see a "Add Files" link in element "contentnav-row2"
@@ -95,22 +95,22 @@ Feature: Check client registration
      And I should see a "Upload config files" link
      And I should see a "Import all managed files from system" link
      And I should see a "Import selected files from system" link
-     #And I should see a "Virtualization" link in element "content-nav"
+     #And I should see a "Virtualization" link in the content area
 
   Scenario: check tab links "Provisioning"
     Given I am on the Systems overview page of this client
     When I follow "Provisioning" in the content area
-    Then I should see a "Details" link in element "content-nav"
-     And I should see a "Software" link in element "content-nav"
-     And I should see a "Configuration" link in element "content-nav"
-     And I should see a "Provisioning" link in element "content-nav"
-     And I should see a "Groups" link in element "content-nav"
-     And I should see a "Events" link in element "content-nav"
+    Then I should see a "Details" link in the content area
+     And I should see a "Software" link in the content area
+     And I should see a "Configuration" link in the content area
+     And I should see a "Provisioning" link in the content area
+     And I should see a "Groups" link in the content area
+     And I should see a "Events" link in the content area
      And I should see a "Kickstart" link in element "contentnav-row2"
      And I should see a "Snapshots" link in element "contentnav-row2"
      And I should see a "Snapshot Tags" link in element "contentnav-row2"
-     And I should see a "Schedule" link in element "content-nav"
-     #And I should see a "Virtualization" link in element "content-nav"
+     And I should see a "Schedule" link in the content area
+     #And I should see a "Virtualization" link in the content area
 
 # if cobbler test was running there is a profile
 #     And I should see a "No profiles found that are compatible with this System. Either you haven't created any Kickstart Profiles or this system does not have a Base Channel." text
@@ -125,46 +125,46 @@ Feature: Check client registration
   Scenario: check tab links "Groups"
     Given I am on the Systems overview page of this client
     When I follow "Groups" in the content area
-    Then I should see a "Details" link in element "content-nav"
-     And I should see a "Software" link in element "content-nav"
-     And I should see a "Configuration" link in element "content-nav"
-     And I should see a "Provisioning" link in element "content-nav"
-     And I should see a "Groups" link in element "content-nav"
-     And I should see a "Events" link in element "content-nav"
+    Then I should see a "Details" link in the content area
+     And I should see a "Software" link in the content area
+     And I should see a "Configuration" link in the content area
+     And I should see a "Provisioning" link in the content area
+     And I should see a "Groups" link in the content area
+     And I should see a "Events" link in the content area
      And I should see a "List / Leave" link in element "contentnav-row2"
      And I should see a "Join" link in element "contentnav-row2"
      And I should see a "Join" link in element "page-summary"
      And I should see a "System Groups" text
-     #And I should see a "Virtualization" link in element "content-nav"
+     #And I should see a "Virtualization" link in the content area
 
   #Scenario: check tab links "Virtualization"
   #  Given I am on the Systems overview page of this client
   #  When I follow "Virtualization" in the content area
-  #  Then I should see a "Details" link in element "content-nav"
-  #   And I should see a "Software" link in element "content-nav"
-  #   And I should see a "Configuration" link in element "content-nav"
-  #   And I should see a "Provisioning" link in element "content-nav"
-  #   And I should see a "Groups" link in element "content-nav"
-  #   And I should see a "Events" link in element "content-nav"
+  #  Then I should see a "Details" link in the content area
+  #   And I should see a "Software" link in the content area
+  #   And I should see a "Configuration" link in the content area
+  #   And I should see a "Provisioning" link in the content area
+  #   And I should see a "Groups" link in the content area
+  #   And I should see a "Events" link in the content area
   #   And I should see a "Details" link in element "contentnav-row2"
   #   And I should see a "Provisioning" link in element "contentnav-row2"
   #   And I should see a "Apply Action" button
   #   And I should see a "Apply Changes" button
-  #   And I should see a "Virtualization" link in element "content-nav"
+  #   And I should see a "Virtualization" link in the content area
 
   Scenario: check tab links "Events"
     Given I am on the Systems overview page of this client
     When I follow "Events" in the content area
-    Then I should see a "Details" link in element "content-nav"
-     And I should see a "Software" link in element "content-nav"
-     And I should see a "Configuration" link in element "content-nav"
-     And I should see a "Provisioning" link in element "content-nav"
-     And I should see a "Groups" link in element "content-nav"
-     And I should see a "Events" link in element "content-nav"
+    Then I should see a "Details" link in the content area
+     And I should see a "Software" link in the content area
+     And I should see a "Configuration" link in the content area
+     And I should see a "Provisioning" link in the content area
+     And I should see a "Groups" link in the content area
+     And I should see a "Events" link in the content area
      And I should see a "Pending" link in element "contentnav-row2"
      And I should see a "History" link in element "contentnav-row2"
      And I should see a " Pending Events" text
-     #And I should see a "Virtualization" link in element "content-nav"
+     #And I should see a "Virtualization" link in the content area
 
   Scenario: check tab links "Details" => "Properties"
     Given I am on the Systems overview page of this client
@@ -260,9 +260,9 @@ Feature: Check client registration
     When I follow "Configuration" in the content area
     When I follow "View/Modify Files" in class "contentnav-row2"
     Then I should see a "Configuration Overview" text
-     And I should see a "Centrally-Managed Files" link in element "content-nav"
-     And I should see a "Locally-Managed Files" link in element "content-nav"
-     And I should see a "Local Sandbox" link in element "content-nav"
+     And I should see a "Centrally-Managed Files" link in the content area
+     And I should see a "Locally-Managed Files" link in the content area
+     And I should see a "Local Sandbox" link in the content area
      And I should see a "No files found" text
 
   Scenario: check tab links "Configuration" => "Add Files"
@@ -270,9 +270,9 @@ Feature: Check client registration
     When I follow "Configuration" in the content area
     When I follow "Add Files" in class "contentnav-row2"
     Then I should see a "Upload Local File" text
-     And I should see a "Upload File" link in element "content-nav"
-     And I should see a "Import Files" link in element "content-nav"
-     And I should see a "Create File" link in element "content-nav"
+     And I should see a "Upload File" link in the content area
+     And I should see a "Import Files" link in the content area
+     And I should see a "Create File" link in the content area
      And I should see a "cffUpload" element in "configFileForm" form
      And I should see 2 "binary" fields in "configFileForm" form
      And I should see a "cffPath" element in "configFileForm" form
@@ -331,9 +331,9 @@ Feature: Check client registration
     When I follow "Configuration" in the content area
     When I follow "Manage Configuration Channels" in class "contentnav-row2"
     Then I should see a "Configuration Channels" text
-     And I should see a "List/Unsubscribe from Channels" link in element "content-nav"
-     And I should see a "Subscribe to Channels" link in element "content-nav"
-     And I should see a "View/Modify Rankings" link in element "content-nav"
+     And I should see a "List/Unsubscribe from Channels" link in the content area
+     And I should see a "Subscribe to Channels" link in the content area
+     And I should see a "View/Modify Rankings" link in the content area
 
   Scenario: check tab links "Configuration" => "Manage Configuration Channels" => "Subscribe to Channels"
     Given I am on the Systems overview page of this client

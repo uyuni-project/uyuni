@@ -15,7 +15,7 @@ Feature: Create a configuration channel
      And I click on "Create Config Channel"
     Then I should see a "Test Channel" text
      And I should see a "Add Files" link
-     And I should see a "Systems" link in element "content-nav"
+     And I should see a "Systems" link in the content area
      And I should see a "Edit Properties" link
      And I should see a "Configuration Actions" text
      And I should see a "Add/Create Files" text
