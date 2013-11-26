@@ -75,7 +75,9 @@ when :chrome
 when :firefox
     # require 'selenium-webdriver'
     Capybara.register_driver :selenium do |app|
-      Capybara::Selenium::Driver.new(app, :browser => :firefox)
+      driver = Capybara::Selenium::Driver.new(app, :browser => :firefox)
+      driver.browser.manage.window.resize_to(1280, 1024)
+      driver
     end
 end
 
