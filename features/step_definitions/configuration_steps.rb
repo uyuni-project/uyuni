@@ -5,7 +5,7 @@
 # Initial step for channel testing
 #
 Given /^I am testing configuration$/ do
-  step 'I am authorized as "admin" with password "admin"'
+  step 'I am authorized'
   step "I follow \"Configuration\""
 end
 
