@@ -14,9 +14,7 @@
   <br />
 
   <h2>
-    <img src="/img/icon_kickstart_session-medium.gif"
-      alt="<bean:message key='system.common.kickstartAlt' />"
-    >
+    <i class="fa fa-power-off" title="<bean:message key='system.common.kickstartAlt' />"></i>
     <bean:message key="kickstart.powermanagement.jsp.heading" />
   </h2>
 
