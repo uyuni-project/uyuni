@@ -82,6 +82,19 @@ Then /^I should see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
   end
 end
 
+Then /^I should not see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
+  tag = case arg2
+  when /left menu/ then "aside"
+  when /tab bar|tabs/ then "header"
+  when /content area/ then "section"
+  else raise "Unknown element with description '#{desc}'"
+  end
+
+  within(:xpath, "//#{tag}") do
+    step "I should not see a \"#{arg1}\" link"
+  end
+end
+
 Then /^I should see a "([^"]*)" link in list "([^"]*)"$/ do |arg1, arg2|
   within(:xpath, "//ul[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
     fail if not find_link(arg1).visible?
