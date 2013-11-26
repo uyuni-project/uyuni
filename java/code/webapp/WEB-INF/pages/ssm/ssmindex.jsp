@@ -18,7 +18,7 @@
   <p><bean:message key="ssm.overview.summary2"/></p>
 </div>
   <tr>
-    <td><img src="/img/rhn-icon-system.gif" alt=<bean:message key="ssm.overview.systems" /></td>
+    <td><i class="fa fa-desktop" title="<bean:message key="ssm.overview.systems" />"></i></td>
     <th><b><bean:message key="ssm.overview.systems"/>:</b></th>
     <td><bean:message key="ssm.overview.systems.list"/></td>
   </tr>
