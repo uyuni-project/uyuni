@@ -177,13 +177,15 @@ Then /^I should see a Sign Out link$/ do
 end
 
 When /^I check "([^"]*)" in the list$/ do |arg1|
-  row = first(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
-  if row.nil?
-      sleep 1
-      $stderr.puts "ERROR - try again"
-      row = first(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
+  within(:xpath, "//section") do
+      row = first(:xpath, "//table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
+      if row.nil?
+          sleep 1
+          $stderr.puts "ERROR - try again"
+          row = first(:xpath, "//table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
+      end
+      row.first(:xpath, ".//input[@type='checkbox']").set(true)
   end
-  row.first(:xpath, ".//input[@type='checkbox']").set(true)
 end
 
 Then /^The table should have a column named "([^"]+)"$/ do |arg1|
