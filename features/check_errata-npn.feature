@@ -34,7 +34,7 @@ Feature: Check errata
 
   Scenario: check relevant errata for this client
     Given I am on the Systems overview page of this client
-     When I follow "Software" in class "content-nav"
+     When I follow "Software" in the content area
      When I follow "Errata" in class "contentnav-row2"
      Then I should see a "Relevant Errata" text
       And I should see a "Test update for virgo-dummy" text

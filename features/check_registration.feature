@@ -49,7 +49,7 @@ Feature: Check client registration
 
   Scenario: check tab links "Software"
     Given I am on the Systems overview page of this client
-    When I follow "Software" in class "content-nav"
+    When I follow "Software" in the content area
     Then I should see a "Details" link in element "content-nav"
      And I should see a "Software" link in element "content-nav"
      And I should see a "Configuration" link in element "content-nav"
@@ -74,7 +74,7 @@ Feature: Check client registration
 
   Scenario: check tab links "Configuration"
     Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
     Then I should see a "Details" link in element "content-nav"
      And I should see a "Software" link in element "content-nav"
      And I should see a "Configuration" link in element "content-nav"
@@ -99,7 +99,7 @@ Feature: Check client registration
 
   Scenario: check tab links "Provisioning"
     Given I am on the Systems overview page of this client
-    When I follow "Provisioning" in class "content-nav"
+    When I follow "Provisioning" in the content area
     Then I should see a "Details" link in element "content-nav"
      And I should see a "Software" link in element "content-nav"
      And I should see a "Configuration" link in element "content-nav"
@@ -118,13 +118,13 @@ Feature: Check client registration
   @monitoring
   Scenario: check tab links "Monitoring"
     Given I am on the Systems overview page of this client
-    When I follow "Monitoring" in class "content-nav"
+    When I follow "Monitoring" in the content area
     Then I should see a "create new probe" link
      And I should see a "Configured Monitoring Probes" text
 
   Scenario: check tab links "Groups"
     Given I am on the Systems overview page of this client
-    When I follow "Groups" in class "content-nav"
+    When I follow "Groups" in the content area
     Then I should see a "Details" link in element "content-nav"
      And I should see a "Software" link in element "content-nav"
      And I should see a "Configuration" link in element "content-nav"
@@ -139,7 +139,7 @@ Feature: Check client registration
 
   #Scenario: check tab links "Virtualization"
   #  Given I am on the Systems overview page of this client
-  #  When I follow "Virtualization" in class "content-nav"
+  #  When I follow "Virtualization" in the content area
   #  Then I should see a "Details" link in element "content-nav"
   #   And I should see a "Software" link in element "content-nav"
   #   And I should see a "Configuration" link in element "content-nav"
@@ -154,7 +154,7 @@ Feature: Check client registration
 
   Scenario: check tab links "Events"
     Given I am on the Systems overview page of this client
-    When I follow "Events" in class "content-nav"
+    When I follow "Events" in the content area
     Then I should see a "Details" link in element "content-nav"
      And I should see a "Software" link in element "content-nav"
      And I should see a "Configuration" link in element "content-nav"
@@ -238,7 +238,7 @@ Feature: Check client registration
 
   Scenario: check tab links "Software" => "Errata"
     Given I am on the Systems overview page of this client
-    When I follow "Software" in class "content-nav"
+    When I follow "Software" in the content area
     When I follow "Errata" in class "contentnav-row2"
     Then I should see a "Relevant Errata" text
      And I should see a "Show" button
@@ -248,7 +248,7 @@ Feature: Check client registration
 
   Scenario: check tab links "Software" => "Software Channels"
     Given I am on the Systems overview page of this client
-    When I follow "Software" in class "content-nav"
+    When I follow "Software" in the content area
     When I follow "Software Channels" in class "contentnav-row2"
     Then I should see a "Software Channel Subscriptions" text
      And I should see a "Base Software Channel" text
@@ -257,7 +257,7 @@ Feature: Check client registration
 
   Scenario: check tab links "Configuration" => "View/Modify Files"
     Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
     When I follow "View/Modify Files" in class "contentnav-row2"
     Then I should see a "Configuration Overview" text
      And I should see a "Centrally-Managed Files" link in element "content-nav"
@@ -267,7 +267,7 @@ Feature: Check client registration
 
   Scenario: check tab links "Configuration" => "Add Files"
     Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
     When I follow "Add Files" in class "contentnav-row2"
     Then I should see a "Upload Local File" text
      And I should see a "Upload File" link in element "content-nav"
@@ -286,18 +286,18 @@ Feature: Check client registration
 
   Scenario: check tab links "Configuration" => "Add Files" => "Import Files"
     Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
     When I follow "Add Files" in class "contentnav-row2"
-    When I follow "Import Files" in class "content-nav"
+    When I follow "Import Files" in the content area
     Then I should see a "Import Configuration Files from" text
      And I should see a "contents" element in "configFileForm" form
      And I should see a "Import Configuration Files" button
 
   Scenario: check tab links "Configuration" => "Add Files" => "Create File"
     Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
     When I follow "Add Files" in class "contentnav-row2"
-    When I follow "Create File" in class "content-nav"
+    When I follow "Create File" in the content area
     Then I should see a "Create Local File" text
      And I uncheck "edit_area_toggle_checkbox_contents"
      And I should see a "file_radio" element in "configFileForm" form
@@ -316,19 +316,19 @@ Feature: Check client registration
 
   Scenario: check tab links "Configuration" => "Deploy Files"
     Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
     When I follow "Deploy Files" in class "contentnav-row2"
     Then I should see a "Deploy Files" text
 
   Scenario: check tab links "Configuration" => "Compare Files"
     Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
     When I follow "Compare Files" in class "contentnav-row2"
     Then I should see a "Compare Files" text
 
   Scenario: check tab links "Configuration" => "Manage Configuration Channels"
     Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
     When I follow "Manage Configuration Channels" in class "contentnav-row2"
     Then I should see a "Configuration Channels" text
      And I should see a "List/Unsubscribe from Channels" link in element "content-nav"
@@ -337,16 +337,16 @@ Feature: Check client registration
 
   Scenario: check tab links "Configuration" => "Manage Configuration Channels" => "Subscribe to Channels"
     Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
      And I follow "Manage Configuration Channels" in class "contentnav-row2"
-     And I follow "Subscribe to Channels" in class "content-nav"
+     And I follow "Subscribe to Channels" in the content area
     Then I should see a "Configuration Channel Subscriptions" text
 
   Scenario: check tab links "Configuration" => "Manage Configuration Channels" => "View/Modify Rankings"
     Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
      And I follow "Manage Configuration Channels" in class "contentnav-row2"
-     And I follow "View/Modify Rankings" in class "content-nav"
+     And I follow "View/Modify Rankings" in the content area
     Then I should see a "View/Modify Configuration Channel Ranks" text
      And I should see a "selectedChannel" element in "channelRanksForm" form
      And I should see a "up" button in "channelRanksForm" form
@@ -355,7 +355,7 @@ Feature: Check client registration
 
   Scenario: check tab links "Provisioning" => "Snapshots"
     Given I am on the Systems overview page of this client
-    When I follow "Provisioning" in class "content-nav"
+    When I follow "Provisioning" in the content area
      And I follow "Snapshots" in class "contentnav-row2"
     Then I should see a "System Snapshots" text
      And I should see a "Package profile changed" link
@@ -363,7 +363,7 @@ Feature: Check client registration
   @unsure
   Scenario: check tab links "Provisioning" => "Snapshots"
     Given I am on the Systems overview page of this client
-    When I follow "Provisioning" in class "content-nav"
+    When I follow "Provisioning" in the content area
      And I follow "Snapshots" in class "contentnav-row2"
      And I follow "Package profile changed"
     Then I should see a "Rollback" link in list "content-nav-rowthree"
@@ -377,27 +377,27 @@ Feature: Check client registration
 
   Scenario: check tab links "Provisioning" => "Snapshot Tags"
     Given I am on the Systems overview page of this client
-    When I follow "Provisioning" in class "content-nav"
+    When I follow "Provisioning" in the content area
      And I follow "Snapshot Tags" in class "contentnav-row2"
     Then I should see a "Snapshot Tags" text
       And I should see a "create new system tag" link
 
   Scenario: check tab links "Groups" => "Join"
     Given I am on the Systems overview page of this client
-    When I follow "Groups" in class "content-nav"
+    When I follow "Groups" in the content area
      And I follow "Join" in class "contentnav-row2"
     Then I should see a "System Group Membership" text
 
   #@unsure
   #Scenario: check tab links "Virtualization" => "Provisioning"
   #  Given I am on the Systems overview page of this client
-  #  When I follow "Virtualization" in class "content-nav"
+  #  When I follow "Virtualization" in the content area
   #   And I follow "Provisioning" in class "contentnav-row2"
   #  Then I should see a "Select a Kickstart Profile" text
 
   Scenario: check tab links "Events" => "History"
     Given I am on the Systems overview page of this client
-    When I follow "Events" in class "content-nav"
+    When I follow "Events" in the content area
      And I follow "History" in class "contentnav-row2"
     Then I should see a "System History" text
 

@@ -17,7 +17,7 @@ Feature: Clone a Channel
   Scenario: Check, that this channel has no erratas
     Given I am on the manage software channels page
       And I follow "Clone of SLES11-SP3-Updates x86_64 Channel"
-     When I follow "Errata" in class "content-nav"
+     When I follow "Errata" in the content area
       And I follow "List/Remove Errata"
      Then I should see a "There are no errata associated with this channel." text
 
@@ -35,7 +35,7 @@ Feature: Clone a Channel
   Scenario: Check, that this channel has erratas
     Given I am on the manage software channels page
       And I follow "Clone 2 of SLES11-SP3-Updates x86_64 Channel"
-     When I follow "Errata" in class "content-nav"
+     When I follow "Errata" in the content area
       And I follow "List/Remove Errata"
      Then I should see a "CL-hoag-dummy-7890" link
       And I should see a "CL-virgo-dummy-3456" link

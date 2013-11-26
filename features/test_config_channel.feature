@@ -38,9 +38,9 @@ Feature: Create a configuration channel
 
   Scenario: Subscribe system to channel
    Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
      And I follow "Manage Configuration Channels" in class "contentnav-row2"
-     And I follow "Subscribe to Channels" in class "content-nav"
+     And I follow "Subscribe to Channels" in the content area
      And I check "New Test Channel" in the list
      And I click on "Continue"
      And I click on "Update Channel Rankings"
@@ -53,9 +53,9 @@ Feature: Create a configuration channel
 
   Scenario: Check Centrally Managed Files of this client
    Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
      And I follow "View/Modify Files" in class "contentnav-row2"
-     And I follow "Centrally-Managed Files" in class "content-nav"
+     And I follow "Centrally-Managed Files" in the content area
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "Revision 1"
 
   Scenario: Deploy Centrally Managed Files
@@ -79,7 +79,7 @@ Feature: Create a configuration channel
     Given I am root
      When I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY='no'"
     Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
      And I follow "Compare Files" in class "contentnav-row2"
      And I check "/etc/mgr-test-file.cnf" in the list
      And I click on "Compare Files"
@@ -87,7 +87,7 @@ Feature: Create a configuration channel
     Then I should see a "1 files scheduled for comparison." text
     When I run rhn_check on this client
      And I wait for "2" seconds
-     And I follow "Events" in class "content-nav"
+     And I follow "Events" in the content area
      And I follow "History" in class "contentnav-row2"
     Then I should see a "Show differences between profiled config files and deployed config files scheduled by testing" link
     When I follow "Show differences between profiled config files and deployed config files"
@@ -95,41 +95,41 @@ Feature: Create a configuration channel
 
   Scenario: Import the changed file
    Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
      And I follow "Add Files" in class "contentnav-row2"
-     And I follow "Import Files" in class "content-nav"
+     And I follow "Import Files" in the content area
      And I check "/etc/mgr-test-file.cnf" in the list
      And I click on "Import Configuration Files"
      And I click on "Confirm"
     Then I should see a "1 files scheduled for upload." text
     When I run rhn_check on this client
      And I wait for "2" seconds
-     And I follow "Configuration" in class "content-nav"
+     And I follow "Configuration" in the content area
      And I follow "View/Modify Files" in class "contentnav-row2"
-     And I follow "Local Sandbox" in class "content-nav"
+     And I follow "Local Sandbox" in the content area
     Then I should see a table line with "/etc/mgr-test-file.cnf", "Revision 1"
 
   Scenario: Import the changed file
    Given I am on the Systems overview page of this client
-    When I follow "Configuration" in class "content-nav"
+    When I follow "Configuration" in the content area
      And I follow "Add Files" in class "contentnav-row2"
-     And I follow "Import Files" in class "content-nav"
+     And I follow "Import Files" in the content area
      And I enter "/etc/sysconfig/boot" as "contents"
      And I click on "Import Configuration Files"
      And I click on "Confirm"
     Then I should see a "1 files scheduled for upload." text
     When I run rhn_check on this client
      And I wait for "2" seconds
-     And I follow "Configuration" in class "content-nav"
+     And I follow "Configuration" in the content area
      And I follow "View/Modify Files" in class "contentnav-row2"
-     And I follow "Local Sandbox" in class "content-nav"
+     And I follow "Local Sandbox" in the content area
     Then I should see a table line with "/etc/sysconfig/boot", "Revision 1"
 
   Scenario: Copy Sandbox file to Centrally-Managed
     Given I am on the Systems overview page of this client
-     When I follow "Configuration" in class "content-nav"
+     When I follow "Configuration" in the content area
       And I follow "View/Modify Files" in class "contentnav-row2"
-      And I follow "Local Sandbox" in class "content-nav"
+      And I follow "Local Sandbox" in the content area
       And I check "/etc/mgr-test-file.cnf" in the list
       And I click on "Copy Latest to Central Channel"
       And I check "New Test Channel" in the list
@@ -141,7 +141,7 @@ Feature: Create a configuration channel
 #    Given I am testing configuration
 #      And I follow "Configuration Channels" in the left menu
 #      And I follow "New Test Channel"
-#      And I follow "Add Files" in class "content-nav"
+#      And I follow "Add Files" in the content area
 #      And I follow "Create File" in class "contentnav-row2"
 #     Then I should see "Create New Configuration File" text
 #     When I enter "/root/.vimrc" as "cffPath"

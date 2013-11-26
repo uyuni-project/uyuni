@@ -39,5 +39,5 @@ Feature: Create a group
   Scenario: check this client is part of newgroup
     Given I am on the groups page
     When I follow "newgroup"
-     And I follow "Systems" in class "content-nav"
+     And I follow "Systems" in the content area
     Then I should see this client as link

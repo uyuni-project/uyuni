@@ -7,7 +7,7 @@ Feature: Test Bare-metal discovery
         Given I am authorized as "admin" with password "admin"
           And I follow "Admin"
           And I follow "SUSE Manager Configuration" in the left menu
-         When I follow "Bare-metal systems" in class "content-nav"
+         When I follow "Bare-metal systems" in the content area
          Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
           And I should see a "Enable adding to this organization" button
          When I click on "Enable adding to this organization"
@@ -48,7 +48,7 @@ Feature: Test Bare-metal discovery
 
     Scenario: check tab links "Provisioning"
         Given I am on the Systems overview page of this client
-         When I follow "Provisioning" in class "content-nav"
+         When I follow "Provisioning" in the content area
          Then I should see a "Kickstart" link in element "contentnav-row2"
           And I should not see a "Snapshots" link in element "contentnav-row2"
           And I should not see a "Snapshot Tags" link in element "contentnav-row2"
@@ -65,7 +65,7 @@ Feature: Test Bare-metal discovery
         Given I am authorized as "admin" with password "admin"
           And I follow "Admin"
           And I follow "SUSE Manager Configuration" in the left menu
-         When I follow "Bare-metal systems" in class "content-nav"
+         When I follow "Bare-metal systems" in the content area
          Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
           And I should see a "Disable adding to this organization" button
          When I click on "Disable adding to this organization"

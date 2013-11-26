@@ -31,7 +31,7 @@ Feature: Test the XML-RPC CVE Audit feature.
     When I follow "Systems"
       And I follow this client link
       And I follow "Software"
-      And I follow "Patches" in class "content-nav"
+      And I follow "Patches" in the content area
       And I check "milkyway-dummy-2345" in the list
       And I click on "Apply Patches"
       And I click on "Confirm"

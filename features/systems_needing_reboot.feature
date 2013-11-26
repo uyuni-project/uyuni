@@ -15,7 +15,7 @@ Scenario: No reboot notice if no need to reboot
 
 Scenario: Display Reboot Required after installing an Errata
     Given I am on the Systems overview page of this client
-     And I follow "Software" in class "content-nav"
+     And I follow "Software" in the content area
      And I follow "Errata" in class "contentnav-row2"
     When I check "andromeda-dummy-6789" in the list
      And I wait for "2" seconds

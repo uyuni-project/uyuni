@@ -137,7 +137,7 @@ Feature: Explore the Errata page
     Given I am on the Errata page
     And I follow "Channels"
     And I follow "Test Base Channel"
-    And I follow "Errata" in class "content-nav"
+    And I follow "Errata" in the content area
     Then I should see a "Test Erratum" text
 
   @errata
