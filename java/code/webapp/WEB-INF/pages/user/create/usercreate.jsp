@@ -4,6 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
 <html>
+<script src="/javascript/spacewalk-login.js"></script>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/user/user_attribute_sizes.jspf"%>
 
