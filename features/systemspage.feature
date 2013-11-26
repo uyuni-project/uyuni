@@ -150,9 +150,10 @@ Feature: Explore the main landing page
      And the current path is "/rhn/systems/DuplicateIPList.do"
      And I should see a "Duplicate IP Address" link
      And I should see a "Duplicate Hostname" link
+     And I should see a "Duplicate IPv6 Address" link
      And I should see a "Duplicate MAC Address" link
-     And I should see a "Show All" link
-     And I should see a "Hide All" link
+   #  And I should see a "Show All" link
+   #  And I should see a "Hide All" link
 
   Scenario: Check sidebar link destination for Systems => System Currency
     Given I am on the Systems page
@@ -399,7 +400,7 @@ Feature: Explore the main landing page
       And I follow "Profiles" in the left menu
       And I follow "fedora_kickstart_profile"
       And I enter "kernel_option=a_value" as "kernel_options"
-      And I click on "Update Kickstart"
+      And I click on "Update"
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value"
 
    @cobbler_ui
