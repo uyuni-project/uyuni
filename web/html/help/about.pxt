@@ -13,6 +13,6 @@
         advanced capabilities and the ability to get updates directly from <pxt-config var="vendor_name"/> with
         even greater levels of security and reduced network bandwidth.
       </p>
-      <p><a href="http://www.novell.com/products/suse-manager">Click here</a> to learn more about <pxt-config var="product_name"/></p>
+      <p><a href="http://www.suse.com/products/suse-manager">Click here</a> to learn more about <pxt-config var="product_name"/></p>
   </grail-canvas-template>
 </pxt-passthrough>
