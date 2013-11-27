@@ -27,7 +27,7 @@ Then /^I should be logged in$/ do
 end
 
 Then /^I am logged-in$/ do
-  fail if not find_xpath("//a[@href='/rhn/Logout.do']").visible?
+  fail if not page_has_xpath?("//a[@href='/rhn/Logout.do']").visible?
   fail if not page.has_content?("You have created your first user for the SUSE Manager Service. Additional configuration should be finalized by clicking here")
 end
 
