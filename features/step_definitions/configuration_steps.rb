@@ -15,14 +15,14 @@ When /^I change the local file "([^"]*)" to "([^"]*)"$/ do |file, content|
 end
 
 Then /^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/ do |arg1, arg2, arg3|
-  within(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
+  within(:xpath, "//form/div/div/div/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
       fail if not find_link("#{arg2}")
       fail if not find_link("#{arg3}")
   end
 end
 
 Then /^I should see a table line with "([^"]*)", "([^"]*)"$/ do |arg1, arg2|
-  within(:xpath, "//form/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
+  within(:xpath, "//form/div/div/div/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
       fail if not find_link("#{arg2}")
   end
 end

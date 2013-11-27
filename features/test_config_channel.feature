@@ -39,8 +39,8 @@ Feature: Create a configuration channel
   Scenario: Subscribe system to channel
    Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-     And I follow "Manage Configuration Channels" in class "contentnav-row2"
-     And I follow "Subscribe to Channels" in the content area
+     And I follow "Manage Configuration Channels" in the content area
+     And I follow first "Subscribe to Channels" in the content area
      And I check "New Test Channel" in the list
      And I click on "Continue"
      And I click on "Update Channel Rankings"
@@ -54,7 +54,7 @@ Feature: Create a configuration channel
   Scenario: Check Centrally Managed Files of this client
    Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-     And I follow "View/Modify Files" in class "contentnav-row2"
+     And I follow "View/Modify Files" in the content area
      And I follow "Centrally-Managed Files" in the content area
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "Revision 1"
 
@@ -80,7 +80,7 @@ Feature: Create a configuration channel
      When I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY='no'"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-     And I follow "Compare Files" in class "contentnav-row2"
+     And I follow "Compare Files" in the content area
      And I check "/etc/mgr-test-file.cnf" in the list
      And I click on "Compare Files"
      And I click on "Schedule Compare"
@@ -96,7 +96,7 @@ Feature: Create a configuration channel
   Scenario: Import the changed file
    Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-     And I follow "Add Files" in class "contentnav-row2"
+     And I follow "Add Files" in the content area
      And I follow "Import Files" in the content area
      And I check "/etc/mgr-test-file.cnf" in the list
      And I click on "Import Configuration Files"
@@ -105,14 +105,14 @@ Feature: Create a configuration channel
     When I run rhn_check on this client
      And I wait for "2" seconds
      And I follow "Configuration" in the content area
-     And I follow "View/Modify Files" in class "contentnav-row2"
+     And I follow "View/Modify Files" in the content area
      And I follow "Local Sandbox" in the content area
     Then I should see a table line with "/etc/mgr-test-file.cnf", "Revision 1"
 
   Scenario: Import the changed file
    Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-     And I follow "Add Files" in class "contentnav-row2"
+     And I follow "Add Files" in the content area
      And I follow "Import Files" in the content area
      And I enter "/etc/sysconfig/boot" as "contents"
      And I click on "Import Configuration Files"
@@ -121,14 +121,14 @@ Feature: Create a configuration channel
     When I run rhn_check on this client
      And I wait for "2" seconds
      And I follow "Configuration" in the content area
-     And I follow "View/Modify Files" in class "contentnav-row2"
+     And I follow "View/Modify Files" in the content area
      And I follow "Local Sandbox" in the content area
     Then I should see a table line with "/etc/sysconfig/boot", "Revision 1"
 
   Scenario: Copy Sandbox file to Centrally-Managed
     Given I am on the Systems overview page of this client
      When I follow "Configuration" in the content area
-      And I follow "View/Modify Files" in class "contentnav-row2"
+      And I follow "View/Modify Files" in the content area
       And I follow "Local Sandbox" in the content area
       And I check "/etc/mgr-test-file.cnf" in the list
       And I click on "Copy Latest to Central Channel"
