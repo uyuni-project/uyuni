@@ -6,7 +6,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager
   Scenario: Schedule an audit job
     Given I am on the Systems overview page of this client
      And I follow "Audit" in the content area
-     And I follow "Schedule" in class "contentnav-row2"
+     And I follow "Schedule" in the content area
     When I enter "--profile RHEL6-Default" as "params"
      And I enter "/usr/share/openscap/scap-rhel6-xccdf.xml" as "path"
      And I click on "Schedule"
@@ -26,7 +26,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager
   Scenario: Schedule an audit job using the suse profile
     Given I am on the Systems overview page of this client
      And I follow "Audit" in the content area
-     And I follow "Schedule" in class "contentnav-row2"
+     And I follow "Schedule" in the content area
     When I enter "--profile Default" as "params"
      And I enter "/usr/share/openscap/scap-yast2sec-xccdf.xml" as "path"
      And I click on "Schedule"
