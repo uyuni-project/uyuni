@@ -101,6 +101,15 @@ Then /^I should not see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
   end
 end
 
+Then /^I should see a "([^"]*)" link in row ([0-9]+) of the content menu$/ do |arg1, arg2|
+  within(:xpath, "//section") do
+    within(:xpath, "//div[@class=\"spacewalk-content-nav\"]/ul[#{arg2}]") do
+      step "I should see a \"#{arg1}\" link"
+    end
+  end
+end
+
+
 Then /^I should see a "([^"]*)" link in list "([^"]*)"$/ do |arg1, arg2|
   within(:xpath, "//ul[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
     fail if not find_link(arg1).visible?
