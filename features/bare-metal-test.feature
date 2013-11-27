@@ -21,7 +21,7 @@ Feature: Test Bare-metal discovery
 
     Scenario: check registration values
         Given I am on the Systems overview page of this client
-         Then I should see a "System Status" text
+         Then I should see a "System Info" text
           And I should see a "Edit These Properties" link
           And I should not see a "[Monitoring]" text
           And I should not see a "[Provisioning]" text
@@ -37,22 +37,22 @@ Feature: Test Bare-metal discovery
           And I should see a "Provisioning" link in the content area
           And I should not see a "Groups" link in the content area
           And I should not see a "Events" link in the content area
-          And I should see a "Overview" link in element "contentnav-row2"
-          And I should see a "Properties" link in element "contentnav-row2"
-          And I should not see a "Remote Command" link in element "contentnav-row2"
-          And I should not see a "Reactivation" link in element "contentnav-row2"
-          And I should see a "Hardware" link in element "contentnav-row2"
-          And I should see a "Migrate" link in element "contentnav-row2"
-          And I should see a "Notes" link in element "contentnav-row2"
-          And I should not see a "Custom Info" link in element "contentnav-row2"
+          And I should see a "Overview" link in the content area
+          And I should see a "Properties" link in the content area
+          And I should not see a "Remote Command" link in the content area
+          And I should not see a "Reactivation" link in the content area
+          And I should see a "Hardware" link in the content area
+          And I should see a "Migrate" link in the content area
+          And I should see a "Notes" link in the content area
+          And I should not see a "Custom Info" link in the content area
 
     Scenario: check tab links "Provisioning"
         Given I am on the Systems overview page of this client
          When I follow "Provisioning" in the content area
-         Then I should see a "Kickstart" link in element "contentnav-row2"
-          And I should not see a "Snapshots" link in element "contentnav-row2"
-          And I should not see a "Snapshot Tags" link in element "contentnav-row2"
-          And I should see a "Power Management" link in element "contentnav-row2"
+         Then I should see a "Kickstart" link in the content area
+          And I should not see a "Snapshots" link in the content area
+          And I should not see a "Snapshot Tags" link in the content area
+          And I should see a "Power Management" link in the content area
           And I should see a "Schedule" link in the content area
 
     Scenario: Delete the system profile

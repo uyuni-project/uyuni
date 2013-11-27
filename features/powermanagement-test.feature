@@ -6,7 +6,7 @@ Feature: Test Powermanagement
   Scenario: Is the powermanagement page accessible
     Given I am on the Systems overview page of this client
       And I follow "Provisioning" in the content area
-      And I follow "Power Management" in class "contentnav-row2"
+      And I follow "Power Management" in the content area
      Then I should see a "Power Management Settings" text
       And I should see a "IPMI" text
       And I should see a "Save" button
@@ -14,7 +14,7 @@ Feature: Test Powermanagement
   Scenario: Save powermanagement values
     Given I am on the Systems overview page of this client
       And I follow "Provisioning" in the content area
-      And I follow "Power Management" in class "contentnav-row2"
+      And I follow "Power Management" in the content area
      When I enter "192.168.254.254" as "powerAddress"
       And I enter "admin" as "powerUsername"
       And I enter "qwertz" as "powerPassword"
