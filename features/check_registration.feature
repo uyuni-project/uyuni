@@ -37,14 +37,14 @@ Feature: Check client registration
      And I should see a "Provisioning" link in the content area
      And I should see a "Groups" link in the content area
      And I should see a "Events" link in the content area
-     And I should see a "Overview" link in element "contentnav-row2"
-     And I should see a "Properties" link in element "contentnav-row2"
-     And I should see a "Remote Command" link in element "contentnav-row2"
-     And I should see a "Reactivation" link in element "contentnav-row2"
-     And I should see a "Hardware" link in element "contentnav-row2"
-     And I should see a "Migrate" link in element "contentnav-row2"
-     And I should see a "Notes" link in element "contentnav-row2"
-     And I should see a "Custom Info" link in element "contentnav-row2"
+     And I should see a "Overview" link in the content area
+     And I should see a "Properties" link in the content area
+     And I should see a "Remote Command" link in the content area
+     And I should see a "Reactivation" link in the content area
+     And I should see a "Hardware" link in the content area
+     And I should see a "Migrate" link in the content area
+     And I should see a "Notes" link in the content area
+     And I should see a "Custom Info" link in the content area
      #And I should see a "Virtualization" link in the content area
 
   Scenario: check tab links "Software"
@@ -56,9 +56,9 @@ Feature: Check client registration
      And I should see a "Provisioning" link in the content area
      And I should see a "Groups" link in the content area
      And I should see a "Events" link in the content area
-     And I should see a "Errata" link in element "contentnav-row2"
-     And I should see a "Packages" link in element "contentnav-row2"
-     And I should see a "Software Channels" link in element "contentnav-row2"
+     And I should see a "Errata" link in the content area
+     And I should see a "Packages" link in the content area
+     And I should see a "Software Channels" link in the content area
      And I should see a "List / Remove" link
      And I should see a "Upgrade" link
      And I should see a "Install" link
@@ -81,12 +81,12 @@ Feature: Check client registration
      And I should see a "Provisioning" link in the content area
      And I should see a "Groups" link in the content area
      And I should see a "Events" link in the content area
-     And I should see a "Overview" link in element "contentnav-row2"
-     And I should see a "View/Modify Files" link in element "contentnav-row2"
-     And I should see a "Add Files" link in element "contentnav-row2"
-     And I should see a "Deploy Files" link in element "contentnav-row2"
-     And I should see a "Compare Files" link in element "contentnav-row2"
-     And I should see a "Manage Configuration Channels" link in element "contentnav-row2"
+     And I should see a "Overview" link in the content area
+     And I should see a "View/Modify Files" link in the content area
+     And I should see a "Add Files" link in the content area
+     And I should see a "Deploy Files" link in the content area
+     And I should see a "Compare Files" link in the content area
+     And I should see a "Manage Configuration Channels" link in the content area
      And I should see a "Deploy all managed config files" link
      And I should see a "Deploy selected config files" link
      And I should see a "Compare all managed files to system" link
@@ -106,9 +106,9 @@ Feature: Check client registration
      And I should see a "Provisioning" link in the content area
      And I should see a "Groups" link in the content area
      And I should see a "Events" link in the content area
-     And I should see a "Kickstart" link in element "contentnav-row2"
-     And I should see a "Snapshots" link in element "contentnav-row2"
-     And I should see a "Snapshot Tags" link in element "contentnav-row2"
+     And I should see a "Kickstart" link in the content area
+     And I should see a "Snapshots" link in the content area
+     And I should see a "Snapshot Tags" link in the content area
      And I should see a "Schedule" link in the content area
      #And I should see a "Virtualization" link in the content area
 
@@ -131,8 +131,8 @@ Feature: Check client registration
      And I should see a "Provisioning" link in the content area
      And I should see a "Groups" link in the content area
      And I should see a "Events" link in the content area
-     And I should see a "List / Leave" link in element "contentnav-row2"
-     And I should see a "Join" link in element "contentnav-row2"
+     And I should see a "List / Leave" link in the content area
+     And I should see a "Join" link in the content area
      And I should see a "Join" link in element "page-summary"
      And I should see a "System Groups" text
      #And I should see a "Virtualization" link in the content area
@@ -146,8 +146,8 @@ Feature: Check client registration
   #   And I should see a "Provisioning" link in the content area
   #   And I should see a "Groups" link in the content area
   #   And I should see a "Events" link in the content area
-  #   And I should see a "Details" link in element "contentnav-row2"
-  #   And I should see a "Provisioning" link in element "contentnav-row2"
+  #   And I should see a "Details" link in the content area
+  #   And I should see a "Provisioning" link in the content area
   #   And I should see a "Apply Action" button
   #   And I should see a "Apply Changes" button
   #   And I should see a "Virtualization" link in the content area
@@ -161,14 +161,14 @@ Feature: Check client registration
      And I should see a "Provisioning" link in the content area
      And I should see a "Groups" link in the content area
      And I should see a "Events" link in the content area
-     And I should see a "Pending" link in element "contentnav-row2"
-     And I should see a "History" link in element "contentnav-row2"
+     And I should see a "Pending" link in the content area
+     And I should see a "History" link in the content area
      And I should see a " Pending Events" text
      #And I should see a "Virtualization" link in the content area
 
   Scenario: check tab links "Details" => "Properties"
     Given I am on the Systems overview page of this client
-    When I follow "Properties" in class "contentnav-row2"
+    When I follow "Properties" in the content area
     Then I should see a "Edit System Details" text
      And I should see a "system_name" element in "systemDetailsForm" form
      And I should see a "baseentitlement" element in "systemDetailsForm" form
@@ -191,7 +191,7 @@ Feature: Check client registration
 
   Scenario: check tab links "Details" => "Remote Command"
     Given I am on the Systems overview page of this client
-    When I follow "Remote Command" in class "contentnav-row2"
+    When I follow "Remote Command" in the content area
     Then I should see a "Remote Command on" text
      And I should see a "uid" element in "remoteCommandForm" form
      And I should see a "gid" element in "remoteCommandForm" form
@@ -207,31 +207,31 @@ Feature: Check client registration
 
   Scenario: check tab links "Details" => "Reactivation"
     Given I am on the Systems overview page of this client
-    When I follow "Reactivation" in class "contentnav-row2"
+    When I follow "Reactivation" in the content area
     Then I should see a "System Activation Key" text
      And I should see a "Generate New Key" button
 
   Scenario: check tab links "Details" => "Hardware"
     Given I am on the Systems overview page of this client
-    When I follow "Hardware" in class "contentnav-row2"
+    When I follow "Hardware" in the content area
     Then I should see a "Refresh Hardware List" text
      And I should see a "Schedule Hardware Refresh" button
 
   Scenario: check tab links "Details" => "Migrate"
     Given I am on the Systems overview page of this client
-    When I follow "Migrate" in class "contentnav-row2"
+    When I follow "Migrate" in the content area
     Then I should see a "Migrate System Between Organizations" text
      And I should see a "Migrate System" button
 
   Scenario: check tab links "Details" => "Notes"
     Given I am on the Systems overview page of this client
-    When I follow "Notes" in class "contentnav-row2"
+    When I follow "Notes" in the content area
     Then I should see a "System Notes" text
      And I should see a "create new note" link
 
   Scenario: check tab links "Details" => "Custom Info"
     Given I am on the Systems overview page of this client
-    When I follow "Custom Info" in class "contentnav-row2"
+    When I follow "Custom Info" in the content area
     Then I should see a "Custom System Information" text
      And I should see a "create new value" link
      And I should see a "Custom System Information" link
@@ -239,7 +239,7 @@ Feature: Check client registration
   Scenario: check tab links "Software" => "Errata"
     Given I am on the Systems overview page of this client
     When I follow "Software" in the content area
-    When I follow "Errata" in class "contentnav-row2"
+    When I follow "Errata" in the content area
     Then I should see a "Relevant Errata" text
      And I should see a "Show" button
      And I should see a "Test update for virgo-dummy" text
@@ -249,7 +249,7 @@ Feature: Check client registration
   Scenario: check tab links "Software" => "Software Channels"
     Given I am on the Systems overview page of this client
     When I follow "Software" in the content area
-    When I follow "Software Channels" in class "contentnav-row2"
+    When I follow "Software Channels" in the content area
     Then I should see a "Software Channel Subscriptions" text
      And I should see a "Base Software Channel" text
      And I should see a "Change Subscriptions" button
@@ -258,7 +258,7 @@ Feature: Check client registration
   Scenario: check tab links "Configuration" => "View/Modify Files"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "View/Modify Files" in class "contentnav-row2"
+    When I follow "View/Modify Files" in the content area
     Then I should see a "Configuration Overview" text
      And I should see a "Centrally-Managed Files" link in the content area
      And I should see a "Locally-Managed Files" link in the content area
@@ -268,7 +268,7 @@ Feature: Check client registration
   Scenario: check tab links "Configuration" => "Add Files"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "Add Files" in class "contentnav-row2"
+    When I follow "Add Files" in the content area
     Then I should see a "Upload Local File" text
      And I should see a "Upload File" link in the content area
      And I should see a "Import Files" link in the content area
@@ -287,7 +287,7 @@ Feature: Check client registration
   Scenario: check tab links "Configuration" => "Add Files" => "Import Files"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "Add Files" in class "contentnav-row2"
+    When I follow "Add Files" in the content area
     When I follow "Import Files" in the content area
     Then I should see a "Import Configuration Files from" text
      And I should see a "contents" element in "configFileForm" form
@@ -296,7 +296,7 @@ Feature: Check client registration
   Scenario: check tab links "Configuration" => "Add Files" => "Create File"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "Add Files" in class "contentnav-row2"
+    When I follow "Add Files" in the content area
     When I follow "Create File" in the content area
     Then I should see a "Create Local File" text
      And I uncheck "edit_area_toggle_checkbox_contents"
@@ -317,19 +317,19 @@ Feature: Check client registration
   Scenario: check tab links "Configuration" => "Deploy Files"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "Deploy Files" in class "contentnav-row2"
+    When I follow "Deploy Files" in the content area
     Then I should see a "Deploy Files" text
 
   Scenario: check tab links "Configuration" => "Compare Files"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "Compare Files" in class "contentnav-row2"
+    When I follow "Compare Files" in the content area
     Then I should see a "Compare Files" text
 
   Scenario: check tab links "Configuration" => "Manage Configuration Channels"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-    When I follow "Manage Configuration Channels" in class "contentnav-row2"
+    When I follow "Manage Configuration Channels" in the content area
     Then I should see a "Configuration Channels" text
      And I should see a "List/Unsubscribe from Channels" link in the content area
      And I should see a "Subscribe to Channels" link in the content area
@@ -338,14 +338,14 @@ Feature: Check client registration
   Scenario: check tab links "Configuration" => "Manage Configuration Channels" => "Subscribe to Channels"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-     And I follow "Manage Configuration Channels" in class "contentnav-row2"
-     And I follow "Subscribe to Channels" in the content area
+     And I follow "Manage Configuration Channels" in the content area
+     And I follow first "Subscribe to Channels" in the content area
     Then I should see a "Configuration Channel Subscriptions" text
 
   Scenario: check tab links "Configuration" => "Manage Configuration Channels" => "View/Modify Rankings"
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
-     And I follow "Manage Configuration Channels" in class "contentnav-row2"
+     And I follow "Manage Configuration Channels" in the content area
      And I follow "View/Modify Rankings" in the content area
     Then I should see a "View/Modify Configuration Channel Ranks" text
      And I should see a "selectedChannel" element in "channelRanksForm" form
@@ -356,7 +356,7 @@ Feature: Check client registration
   Scenario: check tab links "Provisioning" => "Snapshots"
     Given I am on the Systems overview page of this client
     When I follow "Provisioning" in the content area
-     And I follow "Snapshots" in class "contentnav-row2"
+     And I follow "Snapshots" in the content area
     Then I should see a "System Snapshots" text
      And I should see a "Package profile changed" link
 
@@ -364,28 +364,28 @@ Feature: Check client registration
   Scenario: check tab links "Provisioning" => "Snapshots"
     Given I am on the Systems overview page of this client
     When I follow "Provisioning" in the content area
-     And I follow "Snapshots" in class "contentnav-row2"
+     And I follow "Snapshots" in the content area
      And I follow "Package profile changed"
-    Then I should see a "Rollback" link in list "content-nav-rowthree"
-     And I should see a "Groups" link in list "content-nav-rowthree"
-     And I should see a "Channels" link in list "content-nav-rowthree"
-     And I should see a "Packages" link in list "content-nav-rowthree"
-     And I should see a "Config Channels" link in list "content-nav-rowthree"
-     And I should see a "Config Files" link in list "content-nav-rowthree"
-     And I should see a "Snapshot Tags" link in list "content-nav-rowthree"
+    Then I should see a "Rollback" link in row 3 of the content menu 
+     And I should see a "Groups" link in row 3 of the content menu
+     And I should see a "Channels" link in row 3 of the content menu
+     And I should see a "Packages" link in row 3 of the content menu
+     And I should see a "Config Channels" link in row 3 of the content menu
+     And I should see a "Config Files" link in row 3 of the content menu
+     And I should see a "Snapshot Tags" link in row 3 of the content menu
      And I should see a "Rollback to Snapshot" button
 
   Scenario: check tab links "Provisioning" => "Snapshot Tags"
     Given I am on the Systems overview page of this client
     When I follow "Provisioning" in the content area
-     And I follow "Snapshot Tags" in class "contentnav-row2"
+     And I follow "Snapshot Tags" in the content area
     Then I should see a "Snapshot Tags" text
       And I should see a "create new system tag" link
 
   Scenario: check tab links "Groups" => "Join"
     Given I am on the Systems overview page of this client
     When I follow "Groups" in the content area
-     And I follow "Join" in class "contentnav-row2"
+     And I follow "Join" in the content area
     Then I should see a "System Group Membership" text
 
   #@unsure
@@ -398,7 +398,7 @@ Feature: Check client registration
   Scenario: check tab links "Events" => "History"
     Given I am on the Systems overview page of this client
     When I follow "Events" in the content area
-     And I follow "History" in class "contentnav-row2"
+     And I follow "History" in the content area
     Then I should see a "System History" text
 
 
