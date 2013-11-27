@@ -38,11 +38,7 @@ Feature: Check client registration
      And I should see a "Groups" link in the content area
      And I should see a "Events" link in the content area
      And I should see a "Overview" link in the content area
-<<<<<<< HEAD
-     And I should see a "Properties" link in the  content area
-=======
      And I should see a "Properties" link in the content area
->>>>>>> c09619a97d32f8dff009d1c8cafee27a2e34fff4
      And I should see a "Remote Command" link in the content area
      And I should see a "Reactivation" link in the content area
      And I should see a "Hardware" link in the content area
@@ -137,11 +133,7 @@ Feature: Check client registration
      And I should see a "Events" link in the content area
      And I should see a "List / Leave" link in the content area
      And I should see a "Join" link in the content area
-<<<<<<< HEAD
-     And I should see a "Join" link in the content area
-=======
      And I should see a "Join" link in element "page-summary"
->>>>>>> c09619a97d32f8dff009d1c8cafee27a2e34fff4
      And I should see a "System Groups" text
      #And I should see a "Virtualization" link in the content area
 
