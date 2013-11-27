@@ -6,7 +6,7 @@ Feature: Install an erratum to the client
   Scenario: Install an erratum to the client
     Given I am on the Systems overview page of this client
      And I follow "Software" in the content area
-     And I follow "Errata" in class "contentnav-row2"
+     And I follow "Errata" in the content area
     When I check "virgo-dummy-3456" in the list
      And I wait for "2" seconds
      And I click on "Apply Errata"
