@@ -93,6 +93,19 @@ When /^I follow "([^"]*)" in the (.+)$/ do |arg1, arg2|
   end
 end
 
+When /^I follow first "([^"]*)" in the (.+)$/ do |arg1, arg2|
+  tag = case arg2
+  when /left menu/ then "aside"
+  when /tab bar|tabs/ then "header"
+  when /content area/ then "section"
+  else raise "Unknown element with description '#{desc}'"
+  end
+
+  within(:xpath, "//#{tag}") do
+    step "I follow first \"#{arg1}\""
+  end
+end
+
 
 #
 # Click on a link which appears inside of <div> with
