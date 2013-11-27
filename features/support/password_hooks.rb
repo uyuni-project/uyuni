@@ -15,7 +15,7 @@ end
 def changepass(scenario, password)
   # only change the password if the wrong one worked
   if has_xpath?("//a[@href='/rhn/Logout.do']")
-    signout = find_xpath("//a[@href='/rhn/Logout.do']")
+    signout = find(:xpath, "//a[@href='/rhn/Logout.do']")
     if signout
       signout.click
     end
