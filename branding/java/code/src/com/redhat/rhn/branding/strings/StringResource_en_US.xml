@@ -258,7 +258,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href=&quot;http://www.suse.com/products/suse-manager/&quot; target=&quot;_new&quot;&gt; http://www.suse.com/products/suse-manager/&lt;/a&gt;. </source>
       </trans-unit>
       <trans-unit id="login.jsp.satbody3">
-        <source>For details on interacting with the @@PRODUCT_NAME@@ community, please visit us at &lt;a href=&quot;http://www.suse.com/products/suse-manager/&quot; target=&quot;_new&quot;&gt; http://www.suse.com/products/suse-manager/&lt;/a&gt;. </source>
+        <source> </source>
       </trans-unit>
       <trans-unit id="preferences.jsp.leadin">
         <source>@@PRODUCT_NAME@@ offers email notifications for when patches relevant to your systems are released, as well as daily emails summarizing the events for your systems.</source>
