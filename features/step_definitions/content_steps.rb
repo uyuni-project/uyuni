@@ -205,7 +205,7 @@ When /^I check "([^"]*)" in the list$/ do |arg1|
 end
 
 Then /^The table should have a column named "([^"]+)"$/ do |arg1|
-  find(:xpath, "//form/table/thead[.//th[contains(.,'#{arg1}')]] | //form/div/table/thead[.//th[contains(.,'#{arg1}')]]")
+  find(:xpath, "//form/div/div/div/table/thead[.//th[contains(.,'#{arg1}')]] | //form/div/div/div/div/table/thead[.//th[contains(.,'#{arg1}')]]")
 end
 
 Then /^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/ do |count, name, id|
