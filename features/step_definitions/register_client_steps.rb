@@ -13,7 +13,7 @@ end
 
 Given /^I am on the Systems overview page of this client$/ do
   step "I am on the Systems page"
-  step "I follow \"Systems\" in element \"sidenav\""
+  step "I follow \"Systems\" in the left menu"
   step  "I follow this client link"
 end
 
