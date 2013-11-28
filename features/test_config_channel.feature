@@ -88,7 +88,7 @@ Feature: Create a configuration channel
     When I run rhn_check on this client
      And I wait for "2" seconds
      And I follow "Events" in the content area
-     And I follow "History" in class "contentnav-row2"
+     And I follow "History" in the content area
     Then I should see a "Show differences between profiled config files and deployed config files scheduled by testing" link
     When I follow "Show differences between profiled config files and deployed config files"
     Then I should see a "Differences exist" link
@@ -142,7 +142,7 @@ Feature: Create a configuration channel
 #      And I follow "Configuration Channels" in the left menu
 #      And I follow "New Test Channel"
 #      And I follow "Add Files" in the content area
-#      And I follow "Create File" in class "contentnav-row2"
+#      And I follow "Create File" in the content area
 #     Then I should see "Create New Configuration File" text
 #     When I enter "/root/.vimrc" as "cffPath"
 #      And I enter "export ts=4" as "contents"
