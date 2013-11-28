@@ -57,13 +57,14 @@ function columnHeight() {
     $(".spacewalk-main-column-layout section").css("padding-bottom", newHeight);
   };
   //function to hide or show the Collapsable menues.
-  if ($(document).width()>1051) {
+  
+  if ($(document).width()>465) {
     $(".collapse").addClass('in').css({
       "height": 'auto'
     });
   } else {
     $(".collapse").removeClass('in');
-  };
+  }; 
 };
 
 // Render page fragments loaded via DWR
