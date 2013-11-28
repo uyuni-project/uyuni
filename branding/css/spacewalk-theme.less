@@ -703,6 +703,7 @@ ul.nav.nav-tabs:last-child {
 	overflow: hidden;
 	margin-top: 2em;
 }
+
 /* login form */
 #loginForm-container {
 	.make-md-column(4);
@@ -730,7 +731,7 @@ ul.nav.nav-tabs:last-child {
 	.text-left;
 	border: 1px solid @gray-light;
 	.border-rounded(0; 0; 4px; 4px);
-	background: @gray-lighter;
+	background: #fff;
 	margin-top: 0;
 	margin-bottom:2em;
 	.login-form-holder {
@@ -783,8 +784,18 @@ ul.nav.nav-tabs:last-child {
 .login-reference-links {
 	.text-left;
 }
-
-
+.login-page .login-reference-links small a i.fa-globe {
+	font-size: 1.5em;
+	background: #fff;
+	border: 1px solid #ccc;
+	padding: .3em .4em;
+	border-radius: 4px
+}
+.login-page .legal-note {
+	text-align: left;
+	.alert;
+	.alert-info;
+}
 // Rewriting
 // Jumbotron
 // --------------------------------------------------
