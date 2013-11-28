@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Nov 28 16:23:12 CET 2013 - mc@suse.de
+
+- version 1.7.56.22-1
+- fix oracle syntax and provide seperate update script for postgres DB
+  (bnc#846436)
+- Regenerate the metadata for rpm enhances dependency (bnc#846436)
+- add support for enhances rpm weak dependency (schema) (bnc#846436)
+
+-------------------------------------------------------------------
 Fri Aug 23 11:23:47 CEST 2013 - mc@suse.de
 
 - version 1.7.56.21-1
