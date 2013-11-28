@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Nov 28 16:17:33 CET 2013 - mc@suse.de
+
+- version 1.7.26-1
+- susemanager-tools should require createrepo (bnc#848840)
+- add slang package to bootstrap repository (bnc#847723)
+
+-------------------------------------------------------------------
 Tue Sep 24 17:33:18 CEST 2013 - mc@suse.de
 
 - version 1.7.25-1
