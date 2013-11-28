@@ -1,4 +1,28 @@
 -------------------------------------------------------------------
+Thu Nov 28 16:18:08 CET 2013 - mc@suse.de
+
+- version 1.7.54.29-1
+- Fix jsp file to actually show the result list
+- Automatically set the focus using formFocus()
+- Add a tooltip for the CVE-ID
+- Use a string constant to populate select with years
+- Extract the separator from the prefix string constant
+- Remove the maxlength attribute to allow n digit identifiers
+- enhance Package.listOrphans query
+- optimized system_config_files_with_diffs eleborator for PostgreSQL
+- fix ISE, when renaming channel to channel name already in use
+- synchronize repo entries creation
+- Fix ISE when deleting a non persistent custom info value
+- Separate CVE audit inputs for year and ID (bnc#846356)
+- always set lastModifiedBy for custom infos
+- Reorder snippet tabs
+- Use the kickstart icon for the snippets page
+- Add help URL (bnc#848225)
+- Fix navigation for the default snippets page
+- Replace 'kickstart' with 'autoinstallation' (bnc#848225)
+- add support for enhances rpm weak dependency (java) (bnc#846436)
+
+-------------------------------------------------------------------
 Wed Nov  6 11:07:37 CET 2013 - mc@suse.de
 
 - Forbid un-authenticated creation of SUSE Manager Administrative
