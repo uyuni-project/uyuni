@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Nov 28 16:12:04 CET 2013 - mc@suse.de
+
+- version 1.7.3.11-1
+- Fix custom info value index removal in advanced search (bnc#834415)
+
+-------------------------------------------------------------------
 Thu Apr 04 15:39:59 CEST 2013 - mc@suse.de
 
 - version 1.7.3.10-1
