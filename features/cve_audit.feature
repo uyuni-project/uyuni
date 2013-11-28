@@ -54,7 +54,7 @@ Scenario: selecting a system for the System Set Manager
     And I click on "Audit systems"
     And I should see a "Affected, patch available in an assigned channel" text
   When I check "Affected, patch available in an assigned channel" in the list
-    Then I should see a "1 system selected" text
+    Then I should see a "system selected" text
   When I follow "Manage"
      And I follow "Systems" in the content area
   Then I should see this client as link
