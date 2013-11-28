@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Nov 28 16:16:49 CET 2013 - mc@suse.de
+
+- version 1.7.3.10-1
+- include fixed version of sm-client-tools (bnc#823813)
+
+-------------------------------------------------------------------
 Mon Oct 21 17:12:01 CEST 2013 - mc@suse.de
 
 - include fixed version of sm-client-tools (bnc#823813)
