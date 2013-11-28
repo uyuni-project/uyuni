@@ -385,7 +385,7 @@ Feature: Check client registration
   Scenario: check tab links "Groups" => "Join"
     Given I am on the Systems overview page of this client
     When I follow "Groups" in the content area
-     And I follow "Join" in the content area
+     And I follow first "Join" in the content area
     Then I should see a "System Group Membership" text
 
   #@unsure
