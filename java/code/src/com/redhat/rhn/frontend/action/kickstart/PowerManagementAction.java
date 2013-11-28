@@ -89,6 +89,9 @@ public class PowerManagementAction extends RhnAction {
             ValidatorError error = command.store();
             if (error == null) {
                 log.debug("Power management settings saved for system " + sid);
+                if (context.wasDispatched("kickstart.powermanagement.jsp.save")) {
+                    addMessage(request, "kickstart.powermanagement.saved");
+                }
                 if (context.wasDispatched("kickstart.powermanagement.jsp.save_power_on")) {
                     error = new CobblerPowerCommand(user, server, Operation.PowerOn)
                         .store();
