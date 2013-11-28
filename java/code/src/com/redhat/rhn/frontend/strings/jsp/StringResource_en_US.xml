@@ -8737,7 +8737,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.postlog">
-        <source>Log custom post scripts:</source>
+        <source>Log custom post scripts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -8749,7 +8749,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.prelog">
-        <source>Log custom pre scripts:</source>
+        <source>Log custom pre scripts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -8761,7 +8761,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kscfg">
-        <source>Preserve ks.cfg:</source>
+        <source>Preserve ks.cfg</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -9028,13 +9028,13 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.active">
-        <source>Active:</source>
+        <source>Active</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.org_default">
-        <source>Organization Default Profile:</source>
+        <source>Organization Default Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
