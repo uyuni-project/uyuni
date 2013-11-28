@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Thu Nov 28 16:24:43 CET 2013 - mc@suse.de
+
+- version 1.7.38.30-1
+- replace encode/decode with to_string/to_unicode
+- make sure we put strings to fd.write()
+- replace application code with database lookup to prevent conflicting
+  inserts
+- python server: better logging of exceptions
+- log errors on bad request (bnc#849856)
+- fixed table alias
+- updated spacewalk-repo-sync's man page (bnc#846351)
+- add support for enhances rpm weak dependencies (backend) (bnc#846436)
+- python pgsql driver: handled ProgrammingError exceptions
+- Fix typos in entitlement report (bnc#840751)
+
+-------------------------------------------------------------------
 Fri Sep 27 09:59:33 CEST 2013 - mc@suse.de
 
 - version 1.7.38.29-1
