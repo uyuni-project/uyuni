@@ -3,14 +3,10 @@
 <pxt-passthrough>
 <pxt-use class="Sniglets::Users" />
 <div>
-</div>
-<div>
   <a href="/help/copyright.pxt">Copyright Notice</a>
-  <div style="color: black">
-    <pxt-config var="product_name" /> release <a href="/rhn/help/dispatcher/release_notes"><pxt-config var="version" /></a>
-  </div>
+  <pxt-config var="product_name" /> release <a href="/rhn/help/dispatcher/release_notes"><pxt-config var="version" /></a>
 </div>
 <div>
-  <img src="/img/logo_vendor.png" />
+  <img src="/img/susemanager/logo-footer.png" />
 </div>
 </pxt-passthrough>

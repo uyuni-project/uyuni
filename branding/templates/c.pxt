@@ -15,14 +15,10 @@
       <header>
         <div class="spacewalk-header-container">
           <div id="logo" class="spacewalk-logo">
-            <a href="http://www.spacewalkproject.org/" title="Visit http://www.spacewalkproject.org/ for more information">
-              <img src="/img/logo_vendor.png" alt="Spacewalk project" id="rhLogo" />
-            </a>
-            <a href="/" title="Spacewalk homepage">
-              <img src="/img/logo_product.png" alt="Spacewalk" id="rhnLogo" accesskey="2"/>
+            <a href="https://www.suse.com/products/suse-manager/" title="Visit https://www.suse.com/products/suse-manager/ for more information">
+              <img src="/img/susemanager/logo-header.png" alt="Spacewalk project" id="rhLogo" />
             </a>
           </div>
-
           <div class="spacewalk-header-links">
             <ul class="nav nav-pills">
               <li><a href="/rhn/account/LocalePreferences.do">English (change)</a></li>
@@ -66,7 +62,7 @@
               <div class="form-group">
                 <input type="hidden" name="submitted" value="true" />
                 <button type="submit" class="btn btn-info input-sm">
-                  <i class="icon-search"></i>
+                  <i class="fa fa-search"></i>
                 </button>
               </div>
             </form>
