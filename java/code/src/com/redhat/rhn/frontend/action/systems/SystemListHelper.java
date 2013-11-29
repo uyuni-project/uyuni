@@ -120,7 +120,7 @@ public class SystemListHelper {
 
             //status = "up2date";
             message = ls.getMessage("systemlist.jsp.up2date");
-            i.setAttribute("class", "fa fa-check-circle");
+            i.setAttribute("class", "fa fa-check-circle fa-1-5x text-success");
             i.setAttribute("title", message);
             //i.setAttribute("alt", message);
         }
@@ -131,7 +131,7 @@ public class SystemListHelper {
                     next.getId() + "&type=" +
                     LocalizationService.getInstance().getMessage(ErrataSetupAction.SECUR));
             message = ls.getMessage("systemlist.jsp.critical");
-            i.setAttribute("class", "fa fa-exclamation-circle");
+            i.setAttribute("class", "fa fa-exclamation-circle fa-1-5x text-danger");
             i.setAttribute("title", message);
         }
         else if (next.getOutdatedPackages().intValue() > 0) {
@@ -140,7 +140,7 @@ public class SystemListHelper {
                     "/rhn/systems/details/packages/UpgradableList.do?sid=" +
                     next.getId());
             message = ls.getMessage("systemlist.jsp.updates");
-            i.setAttribute("class", "icon-warning-sign");
+            i.setAttribute("class", "fa fa-exclamation-triangle fa-1-5x text-warning");
             i.setAttribute("title", message);
         }
 
@@ -157,24 +157,23 @@ public class SystemListHelper {
 
         if (next.getLocked().intValue() == 1) {
             HtmlTag lockedUrl = new HtmlTag("a");
-            HtmlTag lockedImg = new HtmlTag("img");
+            HtmlTag lockedIcon = new HtmlTag("i");
 
             //status = "locked";
             lockedUrl.setAttribute("href",
                     "/rhn/help/reference/en-US/s1-sm-systems.jsp");
             message = ls.getMessage("systemlist.jsp.locked");
-            lockedImg.setAttribute("src", "/img/icon_locked.gif");
-            lockedImg.setAttribute("alt", message);
-            lockedImg.setAttribute("title", message);
+            lockedIcon.setAttribute("class", "fa spacewalk-icon-locked-system");
+            lockedIcon.setAttribute("title", message);
             if (makeLinks) {
                 makeLinks = ConfigDefaults.get().isDocAvailable();
             }
             if (makeLinks) {
-                lockedUrl.addBody(lockedImg);
+                lockedUrl.addBody(lockedIcon);
                 statusDisplay = statusDisplay + lockedUrl.render();
             }
             else {
-                statusDisplay = statusDisplay + lockedImg.render();
+                statusDisplay = statusDisplay + lockedIcon.render();
             }
         }
 
