@@ -97,6 +97,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
             lookup_sg_type('sw_mgr_entitled'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+        values (lookup_server_arch('armv6hl-redhat-linux'),
+            lookup_sg_type('sw_mgr_entitled'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 	values (lookup_server_arch('s390-debian-linux'),
             lookup_sg_type('sw_mgr_entitled'));
 
@@ -230,6 +234,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
         values (lookup_server_arch('armv6l-redhat-linux'),
+            lookup_sg_type('enterprise_entitled'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+        values (lookup_server_arch('armv6hl-redhat-linux'),
             lookup_sg_type('enterprise_entitled'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
@@ -382,6 +390,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
         values (lookup_server_arch('armv6l-redhat-linux'),
+            lookup_sg_type('provisioning_entitled'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+        values (lookup_server_arch('armv6hl-redhat-linux'),
             lookup_sg_type('provisioning_entitled'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
@@ -518,6 +530,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
         values (lookup_server_arch('armv6l-redhat-linux'),
+            lookup_sg_type('monitoring_entitled'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+        values (lookup_server_arch('armv6hl-redhat-linux'),
             lookup_sg_type('monitoring_entitled'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
@@ -642,6 +658,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
         values (lookup_server_arch('armv6l-redhat-linux'),
             lookup_sg_type('virtualization_host'));
 
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+        values (lookup_server_arch('armv6hl-redhat-linux'),
+            lookup_sg_type('virtualization_host'));
+
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
     values (lookup_server_arch('s390-debian-linux'),
             lookup_sg_type('virtualization_host'));
@@ -696,6 +716,10 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
         values (lookup_server_arch('armv6l-redhat-linux'),
+            lookup_sg_type('virtualization_host_platform'));
+
+insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
+        values (lookup_server_arch('armv6hl-redhat-linux'),
             lookup_sg_type('virtualization_host_platform'));
 
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type)
@@ -882,17 +906,3 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 
 commit;
 
---
---
--- Revision 1.3  2005/02/15 20:35:05  jslagle
--- bz #140447
--- Dropped column schedule_zone_id.
---
--- Revision 1.2  2004/05/11 18:29:40  pjones
--- bugzilla: none -- make EM64T and AMD64 registerable as such, and fix their
--- names while I'm at it.
---
--- Revision 1.1  2004/02/19 22:19:29  pjones
--- bugzilla: 115896 -- don't let servers subscribe to services for which
--- their server arch is not compatible
---

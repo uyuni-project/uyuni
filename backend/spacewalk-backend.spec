@@ -22,7 +22,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.35
+Version: 2.1.37
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -777,6 +777,13 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Fri Nov 29 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.37-1
+- convert empty uuid to None
+
+* Thu Nov 28 2013 Tomas Lestach <tlestach@redhat.com> 2.1.36-1
+- 1010205 - fix displaying of reposync log on WebUI
+- python server: better logging of exceptions
+
 * Fri Nov 15 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.35-1
 - 991044 - change python module permissions to rw-r--r--
 
