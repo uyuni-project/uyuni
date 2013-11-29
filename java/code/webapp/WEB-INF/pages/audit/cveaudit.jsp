@@ -23,67 +23,64 @@
     <bean:message key="cveaudit.jsp.description" />
   </p>
 
-  <html:form action="/audit/CVEAudit.do">
-
+  <html:form action="/audit/CVEAudit.do" styleClass="form-horizontal">
     <rhn:csrf />
     <rhn:submitted />
-
-    <div class="search-choices">
-      <div class="search-choices-group">
-        <table class="details">
-          <tr>
-            <th>
-              <label for="cveIdentifierId"><bean:message key="cveaudit.jsp.cvenumber" /></label>
-            </th>
-            <td>
-              <label for="cveIdentifierId">CVE-</label>
-              <html:select property="cveIdentifierYear" styleId="cveIdentifierYear" value="${cveIdentifierYear}">
-                <html:options collection="years" property="value" />
-              </html:select>
-              <label for="cveIdentifierId">-</label>
-              <html:text property="cveIdentifierId" styleId="cveIdentifierId" value="${cveIdentifierId}" size="10" title="CVE-ID" />
-              <html:submit><bean:message key="cveaudit.jsp.cvenumber.auditsystem" /></html:submit><br />
-            </td>
-          </tr>
-
-          <tr>
-            <th><bean:message key="cveaudit.jsp.filters" /></th>
-            <td>
-              <label>
-                <html:checkbox property="includeAffectedPatchInapplicable" />
-                <img
-                  src="/img/patch-status-affected-patch-inapplicable.png"
-                  title="<bean:message key="cveaudit.jsp.patchstatus.affectedpatchinapplicable"/>" />
-                <bean:message
-                  key="cveaudit.jsp.patchstatus.affectedpatchinapplicable" />
-              </label>
-              <br />
-              <label>
-                <html:checkbox property="includeAffectedPatchApplicable" />
-                <img
-                  src="/img/patch-status-affected-patch-applicable.png"
-                  title="<bean:message key="cveaudit.jsp.patchstatus.affectedpatchapplicable"/>" />
-                <bean:message
-                  key="cveaudit.jsp.patchstatus.affectedpatchapplicable" />
-              </label>
-              <br />
-              <label>
-                <html:checkbox property="includeNotAffected" />
-                <img src="/img/patch-status-not-affected.png"
-                  title="<bean:message key="cveaudit.jsp.patchstatus.notaffected"/>" />
-                <bean:message key="cveaudit.jsp.patchstatus.notaffected" />
-              </label>
-              <br />
-              <label>
-                <html:checkbox property="includePatched" />
-                <img src="/img/patch-status-patched.png"
-                  title="<bean:message key="cveaudit.jsp.patchstatus.patched"/>" />
-                <bean:message key="cveaudit.jsp.patchstatus.patched" />
-              </label>
-              <br />
-            </td>
-          </tr>
-        </table>
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="cveIdentifierId">
+        <bean:message key="cveaudit.jsp.cvenumber" />
+      </label>
+      <div class="col-md-4">
+        <div class="input-group">
+          <span class="input-group-addon">CVE-</span>
+          <html:select property="cveIdentifierYear" styleId="cveIdentifierYear" styleClass="form-control" value="${cveIdentifierYear}">
+            <html:options collection="years" property="value" />
+          </html:select>
+          <span class="input-group-addon">-</span>
+          <html:text property="cveIdentifierId" styleId="cveIdentifierId" styleClass="form-control" value="${cveIdentifierId}" title="CVE-ID" />
+          <span class="input-group-btn">
+            <html:submit styleClass="btn btn-default"><bean:message key="cveaudit.jsp.cvenumber.auditsystem" /></html:submit>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <bean:message key="cveaudit.jsp.filters" />
+      </label>
+      <div class="col-md-6">
+        <div class="checkbox">
+          <label>
+            <html:checkbox property="includeAffectedPatchInapplicable" />
+            <img src="/img/patch-status-affected-patch-inapplicable.png"
+                 title="<bean:message key="cveaudit.jsp.patchstatus.affectedpatchinapplicable"/>" />
+            <bean:message key="cveaudit.jsp.patchstatus.affectedpatchinapplicable" />
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <html:checkbox property="includeAffectedPatchApplicable" />
+            <img src="/img/patch-status-affected-patch-applicable.png"
+                 title="<bean:message key="cveaudit.jsp.patchstatus.affectedpatchapplicable"/>" />
+            <bean:message key="cveaudit.jsp.patchstatus.affectedpatchapplicable" />
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <html:checkbox property="includeNotAffected" />
+            <img src="/img/patch-status-not-affected.png"
+                 title="<bean:message key="cveaudit.jsp.patchstatus.notaffected"/>" />
+            <bean:message key="cveaudit.jsp.patchstatus.notaffected" />
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <html:checkbox property="includePatched" />
+            <img src="/img/patch-status-patched.png"
+                 title="<bean:message key="cveaudit.jsp.patchstatus.patched"/>" />
+            <bean:message key="cveaudit.jsp.patchstatus.patched" />
+          </label>
+        </div>
       </div>
     </div>
     <input type="hidden" name="submitted" value="true" />
