@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.1.10
+Version: 2.1.11
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -456,6 +456,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Wed Nov 27 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.11-1
+- 1035330 - run TUI registration when executed from setuptool
+
 * Wed Oct 09 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.10-1
 - 1017249 - TUI rhn_register: string polish
 - 1017249 - GUI rhn_register: string polish

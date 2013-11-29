@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.80
+Version: 2.1.84
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -895,6 +895,26 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Nov 29 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.84-1
+- Allow UTF-8 in config file
+- Reformat so less unnecessary whitespace gets to output
+
+* Fri Nov 29 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.83-1
+- 1035429 - make package search of a specific architecture faster
+- HTML 5 does allow "_new" as a valid target
+
+* Thu Nov 28 2013 Tomas Lestach <tlestach@redhat.com> 2.1.82-1
+- 1010205 - fix displaying of reposync log on WebUI
+- bootstrap tuning: make non-link text in header more visible
+- bootstrap tuning - add value parameter to make certain list actions work
+- bootstrap tuning - use same icon for 'no updates' as in legend and other
+  places
+
+* Wed Nov 27 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.81-1
+- bootstrap tuning - organization in head is not a link
+- bootstrap tuning - use bootstrap style for "locked" icon
+- bootstrap tuning - color icons in SystemList like mentioned in legend
+
 * Thu Nov 21 2013 Jan Dobes 2.1.80-1
 - 1009875 - changing order of operations
 - 1021923 - allow deletion link on

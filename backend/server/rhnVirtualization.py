@@ -747,8 +747,6 @@ class VirtualizationEventHandler:
                     # if UUID had leading 0, we must pad 0 again #429192
                     properties[PropertyType.UUID] = "%032x" % uuid_as_number
             else:
-                # empty string is not allowed in postgres
-                # so lets explicitly set to None
                 properties[PropertyType.UUID] = None
 
         # The server only cares about certain types of states.
