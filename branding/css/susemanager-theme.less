@@ -1,18 +1,20 @@
 /* Main HTML5 tags defined for the theme */
 body {
-	background: #f7f7f7;
+	background: @spacewalk-background;
+	width: 100%;
+	-webkit-font-smoothing: antialiased;
 }
 html, body {
 	height: 100%
 }
 header {
 	width: 100%;
-	background: url('../../img/spacewalk-header-background.png') repeat-x @gray;
+	background: @spacewalk-header;
 }
 footer {
 	padding: 1.2em 0;
-	background: @gray-dark;
-	color: #fff;
+	background: @spacewalk-footer;
+	color: @spacewalk-footer-text;
 	font-weight: normal;
 	font-size: 0.9em;
 	height: 80px;
@@ -29,6 +31,13 @@ footer {
 		.make-xs-column(2);
 		.text-right;
 		.hidden-xs;
+	}
+	a {
+		color: @spacewalk-footer-links;
+		text-decoration: underline;
+	}
+	a:hover {
+		color: @spacewalk-footer-hover;
 	}
 }
 
@@ -98,8 +107,8 @@ p {
 	margin-right: 0;
 	margin-left: 0;
  	aside {
-		background: #eeeeee;
-		border-right: 1px solid #d5d5d5;
+		background: @spacewalk-aside;
+		border-right: 1px solid @spacewalk-aside-border;
 		height: auto;
 		min-height: 100%;
 		/* 100% height */
@@ -119,11 +128,6 @@ p {
 		transition: width 2s, height 2s, transform 2s;
     	-webkit-transition: width 2s, height 2s, -webkit-transform 2s;
     }
-
-	input[type="submit"] {
-		.btn;
-		.btn-default;
-	}
 }
 
 /* fixing the footer to the bottom */
@@ -132,88 +136,126 @@ p {
 	margin-bottom: -80px;
 	padding-bottom: 80px;
 	height: auto !important;
-	min-height: 100%
+	min-height: 100%;
 }
-/* style for the login page */
-.login-page {
-	width: 70%;
-	text-align: center;
-	margin-right: auto;
-	margin-left: auto;
-	overflow: hidden;
-}
-
 
 header {
 	.spacewalk-header-container {
 	  margin: 0 1em;
 	}
-	/* undo the padding the grid columns give */
+	/* overwrite the padding the grid columns give */
 	&#spacewalk-header {
 		padding-right: 0;
-		padding-left: 0
+		padding-left: 0;
 	}
 	.spacewalk-logo {
-		padding-top: 1.4em;
+		padding: 1.4em 0;
 	}
 	.nav-pills {
 		display: inline-block;
-		border-radius: 0 0 4px 4px
+		border-radius: 0 0 4px 4px;
+		//suse only
+		height: 35px;
 	}
-	.nav-pills li > a, .spacewalk-header-non-link {
-		padding: .3em 1em;
-		font-size: .85em;
-		color: #fff;
+	.nav-pills li > a {
+		padding: .6em 1em .3em;
+		font-size: .9em;
+		height: 33px;
+		color: @spacewalk-header-upper-menu-text-icons;
 		font-weight: normal;
-		letter-spacing: normal;
+		letter-spacing: normal; 
+		.shadow-text;
+	}
+	.nav-pills li > a:hover {
+		color: lighten(@spacewalk-header-upper-menu-text-icons, 30%)
 	}
 	.nav-pills li > a:hover {
 		background: none;
 		text-decoration: underline;
 	}
 	ul.nav-pills:nth-child(1) {
-		background: #000;
+		background: @spacewalk-header-upper-menu-first;
+		display: none;
 	}
 
 	ul.nav-pills:nth-child(2) {
-		background: #333;
+		background: @spacewalk-header-upper-menu-second;
+		display: none;
 	}
 
 	ul.nav-pills:nth-child(3) {
-		background: #666;
+		background: @spacewalk-header-upper-menu-third;
 	}
 
 	ul.nav-pills:nth-child(2) li {
-		border-left: 1px #222 solid
+		border-left: 1px @spacewalk-header-upper-menu-second-border solid
 	}
 
+	ul.nav-pills:nth-child(3) li:first-child {
+		border-right: 1px @spacewalk-header-upper-menu-third-border solid;
+		border-left: 0px #282a2a solid;
+	}
+	ul.nav-pills:nth-child(3) li:last-child {
+		border-right: 0px @spacewalk-header-upper-menu-third-border solid;
+		border-left: 1px #282a2a solid;
+	}
 	ul.nav-pills:nth-child(3) li {
-		border-left: 1px #555 solid
+		border-right: 1px @spacewalk-header-upper-menu-third-border solid;
+		border-left: 1px #282a2a solid;
 	}
-
+	.nav-pills > li + li {
+		margin-left: 0
+	}
 	ul.nav-pills li:first-child {
 		border-left: 0
 	}
-
-	.navbar-nav > li > a {
-		padding: .5em 1.2em;
-
+	//horizontal main menu
+	.navbar-inverse {
+		background: @spacewalk-header;
+		border-color: @spacewalk-header;
+		.navbar-nav > li > a {
+			padding: .5em 1.2em;
+			color: #fff;
+			.shadow-text;
+		}
+		.navbar-nav > li {
+			border-bottom: 4px solid @spacewalk-header;
+		}
+		.navbar-nav > li:hover{
+			border-bottom: 4px solid @spacewalk-blue;
+		}
+		.navbar-nav > li.active{
+			border-bottom: 4px solid @spacewalk-blue;
+		}
+		.navbar-nav > li.active a {
+			background: transparent;
+		}
+		.navbar-nav > li.active a:hover {
+			background: transparent;
+		}
 	}
-
-	.navbar-nav > li:hover {
-		background: @spacewalk-blue;
-		.border-rounded(4px; 4px; 0; 0);
+	form.form-inline {
+		margin-top: 8px;
 	}
-
 	form input[type="search"] {
 		padding: 0px 10px;
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
-
+	form input.input-sm, form button.input-sm, form select.input-sm {
+		.box-shadow(-1px -1px 1px #838383);
+		height: 25px;
+		margin-left: 4px
+	}
 	.btn.btn-info.input-sm {
-		padding-top: 4px
+		padding: 0px 8px 0 12px;
+		background: #000;
+		color: #838383;
+		border: 0;
+	}
+	button:hover.btn.btn-info.input-sm {
+		background: #222;
 	}
 
 	/* reseting navbar styles for the main menu */
@@ -308,8 +350,9 @@ header {
 
 /* Icons Legend */
 aside .sideleg {
-	background: lighten(@gray-lighter, 10%);
+	background: @spacewalk-icon-legend;
 	width: 90%;
+	color: @spacewalk-icon-legend-text;
 	padding: .5em 1em;
 	border-radius: 4px;
 	margin: 2em auto;
@@ -329,11 +372,6 @@ aside .sideleg {
 .spacewalk-main-nav {
 	border: 0
 }
-.spacewalk-main-nav:after {
-	height: 4px;
-	background: @spacewalk-blue	;
-	width: 100%
-}
 
 /* style for Menu in the left column */
 .nav-stacked > li + li {
@@ -346,12 +384,14 @@ aside ul > ul li {
 	padding: 0
 }
 aside .nav > li > a {
-	padding: .4em 1em
+	padding: .7em 1em
 }
 #sidenav {
 	a {
-		color: #666;
-		.glow-text;
+		color: @spacewalk-aside-menu-hyperlink;
+	}
+	a:hover {
+		color: @spacewalk-aside-menu-hyperlink-hover;
 	}
 	a:before {
 		content: "\f105 ";
@@ -359,7 +399,7 @@ aside .nav > li > a {
 		margin-right: .5em
 	}
 	li {
-		border-bottom: 1px solid #d8d8d8;
+		border-bottom: 0;
 	}
 	li.active > a, #sidenav li.active > a:hover {
 		color: @spacewalk-blue;
@@ -369,10 +409,16 @@ aside .nav > li > a {
 		border-radius: 0
 	}
 	ul li:last-child {
-		border-bottom: 1px solid #ccc;
-		-moz-box-shadow: 0px 1px 1px #fefefe;
-		-webkit-box-shadow: 0px 1px 1px #fefefe;
-		box-shadow: 0px 1px 1px #fefefe;
+		border-bottom: 1px solid #171718;
+		-moz-box-shadow: 0px 1px 1px #4a4b4b;
+		-webkit-box-shadow: 0px 1px 1px #4a4b4b;
+		box-shadow: 0px 1px 1px #4a4b4b;
+	}
+	ul li:hover, ul li a:hover {
+		background: @spacewalk-list-menu-hover;
+	}
+	ul.nav-pills:first-child li:first-child {
+		border-top: 1px solid darken(@spacewalk-aside, 5%);
 	}
 
 	/* ul-submenues */
@@ -381,27 +427,27 @@ aside .nav > li > a {
 	    padding: 0 0 0 1em !important;
 	    margin: 0;
 	    background: @spacewalk-list-first-submenu;
-	    border-bottom: 1px solid #ccc;
+	    border-bottom: 0;
 	}
 	ul>ul li.active,
 	ul>ul li.active:hover,
 	ul>ul li.active a,
 	ul>ul li.active a:hover {
 		background: @spacewalk-list-first-submenu-active;
-		.glow-text-deleted;
 	}
 	ul>ul li:hover, ul>ul li a:hover {
 		background: @spacewalk-list-first-submenu-hover;
+		color: #ffab47;
 	}
 	ul>ul li:last-child {
-		border-bottom: 1px solid #c6c6c6;
+		border-bottom: 1px solid @spacewalk-list-first-submenu-last-line;
 	}
 	/* second submenu */
 	ul>ul>ul li {
 	    padding: 0 0 0 1.5em !important;
 	    margin: 0;
 	    background: @spacewalk-list-second-submenu;
-	    border-bottom: 1px solid #bbb;
+	    border-bottom: 0;
 	}
 	ul>ul>ul li.active,
 	ul>ul>ul li.active:hover,
@@ -414,7 +460,7 @@ aside .nav > li > a {
 		background: @spacewalk-list-second-submenu-hover;
 	}
 	ul>ul>ul li:last-child {
-		border-bottom: 1px solid #c4c4c4;
+		border-bottom: 1px solid @spacewalk-list-second-submenu-last-line;
 	}
 
 }
@@ -430,7 +476,7 @@ h1 .fa-stack {
 }
 .fa-stack .fa-circle {
 	font-size: .7em;
-	color: @spacewalk-blue;
+	.text-info;
 }
 
 // Panels: reseting default margins and paddings in H tags
@@ -464,10 +510,6 @@ h1 .fa-stack {
 /* spacewalk toolbar: contains the H1 of each page + the toolbar */
 .spacewalk-toolbar-h1 {
 	margin-bottom: 1.5em;
-	/* we want to hide quesiton mark pointing to satellite docs in spacewalk */
-	a .fa-stack {
-		.hidden;
-	}
 	.spacewalk-toolbar {
 		.pull-right;
 		padding: .5em 1em;
@@ -487,10 +529,10 @@ h1 .fa-stack {
 /* systems selected manager */
 .spacewalk-bar a.button:first-of-type {
 	color: #ffffff;
-	background-color: #5bc0de;
-	border-color: #46b8da;
+	background-color: @susemanager-green;
+	border-color: darken(@susemanager-green, 20%);
 	padding: .2em .6em;
-	border-radius: 4px;
+	border-radius: 2px;
 	margin: 0 .2em
 }
 .spacewalk-bar a.button:last-of-type {
@@ -498,7 +540,7 @@ h1 .fa-stack {
 	background-color: #e2e2e2;
 	border-color: #d4d4d4;
 	padding: .2em .6em;
-	border-radius: 4px
+	border-radius: 2px
 }
 
 /* Margins to elements */
@@ -640,12 +682,6 @@ h1, h2, h3, h4, h5, h6 {
 	.pull-right;
 }
 
-
-#loginForm+.col-md-6.col-md-offset-3.text-left {
-	font-size:.8em;
-	margin-bottom:2em;
-}
-
 /* btn with margin top and bottom */
 .btn.spacewalk-btn-margin-vertical {
 	margin: 1em 0
@@ -658,22 +694,108 @@ ul.nav.nav-tabs {
 ul.nav.nav-tabs:last-child {
 	margin-bottom: 1.5em
 }
-/* login form */
-#loginForm {
-	border: 1px solid @gray-light;
-	border-radius: @border-radius-base;
-	background: @gray-lighter;
+/* style for the login page */
+.login-page {
+	width: 70%;
+	text-align: center;
+	margin-right: auto;
+	margin-left: auto;
+	overflow: hidden;
 	margin-top: 2em;
+}
+
+/* login form */
+#loginForm-container {
+	.make-md-column(4);
+	.make-md-column-offset(4);
+}
+#welcome-title {
+	width: 100%;
+	margin: 0;
+	margin-top: 1em;
+	padding: .7em 0;
+	display: block;
+	font-size: 1.5em;
+	text-align: center;
+	color: #fff;
+	background: @susemanager-green;
+	.border-rounded(4px; 4px; 0; 0);
+}
+#welcome-text {
+	display: none;
+}
+#loginForm small {
+	margin-bottom: 2em;
+}
+#loginForm {
+	.text-left;
+	border: 1px solid @gray-light;
+	.border-rounded(0; 0; 4px; 4px);
+	background: #fff;
+	margin-top: 0;
 	margin-bottom:2em;
-	padding: 1.5em;
+	.login-form-holder {
+		padding: 0 1.5em 1.5em;
+	}
 	label {
 		text-align: left;
 		.Roboto-thin;
 		color: @gray;
-		font-size: 1.1em
+		font-size: 1.1em;
+		padding: .6em 0 0 0;
 	}
-}
+	hr {
+		border-top: 1px solid #ccc;
+	}
+	//Style for SUSE Manager login
+	.form-username-addon, .form-password-addon {
+		.input-group-addon;
+		.border-right-radius(0);
+		//.fa
+		font-family: FontAwesome;
+		font-style: normal;
+		font-weight: normal;
+		line-height: 1;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		//.fa-fw
+		width: 1.2857142857142858em;
+		text-align: center;
+	}
+	//.fa-user
+	.form-username-addon:before {
+		content: "\f007";
+	}
+	.form-password-addon:before {
+		content: "\f023";
+	}
+	.input-grouped {
+		.input-group;
+		width: 100%;
+		input {
+			.border-rounded(0; 4px; 4px; 0);
+		}
+	}
+	.login-btn {
+		.text-center;
+	}
 
+}
+.login-reference-links {
+	.text-left;
+}
+.login-page .login-reference-links small a i.fa-globe {
+	font-size: 1.5em;
+	background: #fff;
+	border: 1px solid #ccc;
+	padding: .3em .4em;
+	border-radius: 4px
+}
+.login-page .legal-note {
+	text-align: left;
+	.alert;
+	.alert-info;
+}
 // Rewriting
 // Jumbotron
 // --------------------------------------------------
@@ -707,4 +829,21 @@ ul.nav.nav-tabs:last-child {
       font-size: (@font-size-base * 3.5);
     }
   }
+}
+
+/* Create new Admin User form. 
+This class will align the text inside the tables of each panel in the form with name="createSatelliteForm"
+*/
+form[name="createSatelliteForm"] table {
+	text-align: left;
+}
+//giving top margin to the panels
+form[name="createSatelliteForm"] .panel {
+	margin-top: 30px;
+}
+
+/* Hack for when an Aside doesnt have any content to not brake the theme */
+#spacewalk-aside:after {
+	content: ".";
+	color: #232526;
 }
