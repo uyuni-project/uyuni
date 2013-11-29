@@ -74,12 +74,9 @@
 	}
 	header {
 		.spacewalk-logo {
-			padding-top: .2em;
+			padding-top: .3em;
 			img#rhLogo {
-				width: 33px;
-			}
-			img#rhnLogo {
-				height: 34px
+				height: 28px;
 			}
 		}
 	}
@@ -124,6 +121,11 @@
 		.clearfix;
 	}
 }
+.main-menu-list-horizontally {
+	.main-menu-hor li{
+		float: left
+	}
+}
 .main-menu-hor {
 	.pull-left;
 }
@@ -138,11 +140,11 @@
 .button-main-menu-vissible {
 	.main-menu-mobile {
 		display: inline-block;
-		border: 1px solid #444;
+		border: 1px solid #777;
 		padding: 0 .4em;
 		margin: 5px 15px;
-		color: #555;
-		background: #000;
+		color: #999;
+		background: @spacewalk-header;
 		.border-rounded(4px; 4px; 4px; 4px);
 		&:before{
 			content: "\f0c9";
@@ -150,28 +152,39 @@
 			font-size: 1.3em
 		}
 		&:hover{
-			color: #444;
+			color: #fff;
 		}
 	}
 }
+.login-form-100 {
+	.login-page {
+		width: 100%
+	}
+}
 //classes that will take effect on tablets and mobiles screens
-@media (max-width: 1061px) {
-	.button-main-menu-vissible;
-	.menu-toggle-hide;
+@media (max-width: 1023px) {
+
+}
+@media (max-width: @screen-desktop) {
+	.sidenav-horizontal;
+	.aside-horizontal;
+	.main-menu-list-horizontally;
 }
 @media (max-width: @screen-tablet) {
-	.sidenav-horizontal;
 	.aside-horizontal;
 	.header-responsive;
 	.columns-no-padding;
 	.legal-text-footer;
 	.menu-toggle-hide;
-	.button-main-menu-vissible;
+	//.button-main-menu-vissible;
+	.buttons-full-size;
 }
 //classes that will take effect only on mobiles screens
 @media (max-width: @screen-phone) {
 	.logoLetter;
-	.buttons-full-size;
+	.login-form-100;
+	.button-main-menu-vissible;
+	.menu-toggle-hide;
 }
 
 
