@@ -10,7 +10,6 @@
 <html>
 <head>
 <meta name="page-decorator" content="none" />
-<script src="/javascript/focus.js" type="text/javascript"></script>
 </head>
 
 <body onload="formFocus('cveAuditForm','cveIdentifierId');">
