@@ -630,7 +630,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
             out.println("<button class=\"btn btn-default\"" +
                         " type=\"submit\" name=\"dispatch\" value=\"" +
                         LocalizationService.getInstance().getMessage(getButton()) +
-                       "\">" +
+                        "\">" +
                         LocalizationService.getInstance().getMessage(getButton()) +
                         "</button>");
         }
@@ -640,7 +640,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
             out.println("<button class=\"btn btn-default\"" +
                         " type=\"submit\" name=\"dispatch\" value=\"" +
                         LocalizationService.getInstance().getMessage(getButton2()) +
-                       "\">" +
+                        "\">" +
                         LocalizationService.getInstance().getMessage(getButton2()) +
                         "</button>");
         }
