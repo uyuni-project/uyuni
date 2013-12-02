@@ -45,55 +45,31 @@
         <label class="col-lg-2 control-label">
             <bean:message key="kickstartips.jsp.label" />:
         </label>
-        <div class="col-lg-8">
-            <div class="row form-inline">
-                <fieldset>
-                    <div class="form-group">
-                        <html:text styleClass="form-control col-lg-1" property="octet1a" maxlength="3" size="3" />
-                    </div>
-                    <div class="form-group">
-                        <label>.</label>
-                    </div>
-                    <div class="form-group">
-                        <html:text styleClass="form-control col-lg-1" property="octet1b" maxlength="3" size="3" />
-                    </div>
-                    <div class="form-group">
-                        <label>.</label>
-                    </div>
-                    <div class="form-group">
-                        <html:text styleClass="form-control col-lg-1" property="octet1c" maxlength="3" size="3" />
-                    </div>
-                    <div class="form-group">
-                        <label>.</label>
-                    </div>
-                    <div class="form-group">
-                        <html:text styleClass="form-control col-lg-1" property="octet1d" maxlength="3" size="3" />
-                    </div>
-                    <div class="form-group">
-                        <label>&nbsp;&ndash;&nbsp;</label>
-                    </div>
-                    <div class="form-group">
-                        <html:text styleClass="form-control col-lg-1" property="octet2a" maxlength="3" size="3" />
-                    </div>
-                    <div class="form-group">
-                        <label>.</label>
-                    </div>
-                    <div class="form-group">
-                        <html:text styleClass="form-control col-lg-1" property="octet2b" maxlength="3" size="3" />
-                    </div>
-                    <div class="form-group">
-                        <label>.</label>
-                    </div>
-                    <div class="form-group">
-                        <html:text styleClass="form-control col-lg-1" property="octet2c" maxlength="3" size="3" />
-                    </div>
-                    <div class="form-group">
-                        <label>.</label>
-                    </div>
-                    <div class="form-group">
-                        <html:text styleClass="form-control col-lg-1" property="octet2d" maxlength="3" size="3" />
-                    </div>
-                </fieldset>
+        <div class="row">
+            <div class="col-lg-1">
+                <html:text styleClass="form-control col-lg-1" property="octet1a" maxlength="3" size="3" />.
+            </div>
+            <div class="col-lg-1">
+                <html:text styleClass="form-control col-lg-1" property="octet1b" maxlength="3" size="3" />.
+            </div>
+            <div class="col-lg-1">
+                <html:text styleClass="form-control col-lg-1" property="octet1c" maxlength="3" size="3" />.
+            </div>
+            <div class="col-lg-1">
+                <html:text styleClass="form-control col-lg-1" property="octet1d" maxlength="3" size="3" />
+                &nbsp;&ndash;&nbsp;
+            </div>
+            <div class="col-lg-1">
+                <html:text styleClass="form-control col-lg-1" property="octet2a" maxlength="3" size="3" />.
+            </div>
+            <div class="col-lg-1">
+                <html:text styleClass="form-control col-lg-1" property="octet2b" maxlength="3" size="3" />.
+            </div>
+            <div class="col-lg-1">
+                <html:text styleClass="form-control col-lg-1" property="octet2c" maxlength="3" size="3" />.
+            </div>
+            <div class="col-lg-1">
+                <html:text styleClass="form-control col-lg-1" property="octet2d" maxlength="3" size="3" />
             </div>
         </div>
     </div>
