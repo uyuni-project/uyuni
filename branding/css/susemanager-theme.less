@@ -372,6 +372,10 @@ aside .sideleg {
 .spacewalk-main-nav {
 	border: 0
 }
+.spacewalk-main-nav:after {
+	height: 0px;
+	background: transparent;
+}
 
 /* style for Menu in the left column */
 .nav-stacked > li + li {
@@ -389,9 +393,11 @@ aside .nav > li > a {
 #sidenav {
 	a {
 		color: @spacewalk-aside-menu-hyperlink;
+		.glow-text-deleted !important;
 	}
 	a:hover {
 		color: @spacewalk-aside-menu-hyperlink-hover;
+		.glow-text-deleted;
 	}
 	a:before {
 		content: "\f105 ";
