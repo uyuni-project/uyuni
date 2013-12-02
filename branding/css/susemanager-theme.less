@@ -157,7 +157,7 @@ header {
 		//suse only
 		height: 35px;
 	}
-	.nav-pills li > a {
+	.nav-pills li > a, .nav-pills li > .spacewalk-header-non-link {
 		padding: .6em 1em .3em;
 		font-size: .9em;
 		height: 33px;
@@ -165,6 +165,7 @@ header {
 		font-weight: normal;
 		letter-spacing: normal; 
 		.shadow-text;
+		display: block;
 	}
 	.nav-pills li > a:hover {
 		color: lighten(@spacewalk-header-upper-menu-text-icons, 30%)
