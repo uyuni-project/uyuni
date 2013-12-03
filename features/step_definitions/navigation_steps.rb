@@ -80,6 +80,24 @@ When /^I follow "([^"]*)" in element "([^"]*)"$/ do |arg1, arg2|
   end
 end
 
+When /^I click on Next Page$/ do
+   first(:xpath, "//button[contains(concat(' ', @class, ' '), ' fa-forward')]").click
+end
+
+When /^I click on Last Page$/ do
+   first(:xpath, "//*[contains(concat(' ', @class, ' '), ' fa-fast-forward')]").click
+end
+
+When /^I click on Prev Page$/ do
+   first(:xpath, "//*[contains(concat(' ', @class, ' '), ' fa-backward')]").click
+end
+
+When /^I click on First Page$/ do
+   first(:xpath, "//*[contains(concat(' ', @class, ' '), ' fa-fast-backward')]").click
+end
+
+
+
 When /^I follow "([^"]*)" in the (.+)$/ do |arg1, arg2|
   tag = case arg2
   when /left menu/ then "aside"
