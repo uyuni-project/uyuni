@@ -379,7 +379,7 @@ Feature: Explore the main landing page
       And I enter "0" as "octet2c"
       And I enter "200" as "octet2d"
       And I click on "Add IP Range"
-    Then I should see a "10.10.0.100 - 10.10.0.200" text
+    Then I should see a "Successfully added IP Range" text
 
    @cobbler_ui
    Scenario: adding a variable to the uploaded profile (requires fedora_kickstart_profile_upload)
