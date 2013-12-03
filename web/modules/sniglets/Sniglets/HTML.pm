@@ -112,7 +112,7 @@ sub toolbar {
 				      text => $params{'misc-text'}));
   } elsif (defined $params{'misc-icon'} and $acl->eval_acl($pxt, $params{'misc-acl'} || '')) {
       push @toolbar, misc_link($pxt, (url => $params{'misc-url'},
-              img => $params{'misc-icon'},
+              icon => $params{'misc-icon'},
               text => $params{'misc-text'}));
   }
 
@@ -127,21 +127,21 @@ sub toolbar {
 
   my $toolbar = join(" | ", @toolbar);
 
-  return qq{<div class="spacewalk-toolbar-$base"><div class="spacewalk-toolbar">$toolbar</div>$img $icon $params{__block__}$help</div>};
+  return qq{<div class="spacewalk-toolbar-$base"><div class="spacewalk-toolbar">$toolbar</div><$base>$img $icon $params{__block__}$help</$base></div>};
 }
 
 sub creation_link {
   my $pxt = shift;
   my %params = @_;
 
-  return qq{<a href="$params{url}"><i class="icon-plus"></i>create new $params{type}</a>};
+  return qq{<a href="$params{url}"><i class="fa fa-plus"></i>create new $params{type}</a>};
 }
 
 sub deletion_link {
   my $pxt = shift;
   my %params = @_;
 
-  return qq{<a href="$params{url}"><i class="icon-trash"></i>delete $params{type}</a>};
+  return qq{<a href="$params{url}"><i class="fa fa-trash-o"></i>delete $params{type}</a>};
 }
 
 sub misc_link {
@@ -166,7 +166,7 @@ sub rhn_help {
   return render_help_link(-user => $pxt->user,
 			  -guide => $guide,
 			  -href => $href,
-			  -block => qq(<img src="/img/rhn-icon-help.gif" alt="Help Icon" />),
+			  -block => qq(<span class="fa-stack"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-question fa-stack-1x fa-inverse"></i></span>),
 			  -satellite => $params{satellite});
 }
 

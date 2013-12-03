@@ -10,14 +10,14 @@
 
 <div>
 
-  <div class="toolbar-h1">
-    <div class="toolbar"></div>
+  <div class="spacewalk-toolbar-h1">
+    <div class="spacewalk-toolbar"></div>
       <i class="fa fa-key" title=""></i>
         <bean:message key="system.jsp.customkey.deletetitle"/>
 
         <a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s2-sm-system-cust-info"
 		target="_new" class="help-title">
-          <i class="fa fa-question-circle" title="Help Icon"></i>
+          <span class="fa-stack"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-question fa-stack-1x fa-inverse"></i></span>
         </a>
       </div>
 

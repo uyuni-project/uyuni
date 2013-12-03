@@ -5,21 +5,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
-<div class="toolbar-h1">
-	<div class="toolbar">
-		<span class="toolbar">
+<div class="spacewalk-toolbar-h1">
+	<div class="spacewalk-toolbar">
+		<span class="spacewalk-toolbar">
 			<a href="/network/systems/ssm/work_with_group.pxt?sgid=${systemgroup.id}&pxt_trap=rhn:work_with_group_cb">
 			<i class="fa spacewalk-icon-system-groups" title="<bean:message key='toolbar.work.with.group'/>"></i>
      			<bean:message key="toolbar.work.with.group"/>
      		</a>
      	    <a href="/network/systems/groups/delete_confirm.pxt?sgid=${systemgroup.id}">	
-				<i class="icon-trash" title="<bean:message key='toolbar.delete.systemgroup'/>" ></i>
+				<i class="fa fa-trash-o" title="<bean:message key='toolbar.delete.systemgroup'/>" ></i>
 				<bean:message key="toolbar.delete.systemgroup"/>
 			</a>			
 				
 		</span>
 	</div>
-	
+        <h1>
+
 	<i class="fa spacewalk-icon-system-groups" title="system groups"></i>
 
 	<c:if test="${empty systemgroup}">
@@ -29,8 +30,9 @@
 		${fn:escapeXml(systemgroup.name)}
 	</c:if>
 	<a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s2-sm-system-group-list" target="_blank" class="help-title">
-		<i class="fa fa-question-circle" title="<bean:message key='toolbar.jsp.helpicon.alt'/>"></i>
+                <span class="fa-stack"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-question fa-stack-1x fa-inverse"></i></span>
 	</a>
+        </h1>
 </div>
 
 
