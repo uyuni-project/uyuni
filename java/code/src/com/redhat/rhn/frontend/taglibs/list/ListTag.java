@@ -141,6 +141,7 @@ public class ListTag extends BodyTagSupport {
         ListDecorator dec = getDecorator(decName);
         if (dec != null) {
             getDecorators().add(dec);
+            dec.setCurrentList(this);
         }
     }
 
@@ -420,7 +421,6 @@ public class ListTag extends BodyTagSupport {
 
         // here decorators should insert other e.g hidden input fields
         for (ListDecorator dec : getDecorators()) {
-            dec.setCurrentList(this);
             dec.afterList();
         }
 
@@ -449,7 +449,6 @@ public class ListTag extends BodyTagSupport {
         pageContext.pushBody(topPaginationContent);
         if (!isEmpty()) {
             for (ListDecorator dec : getDecorators()) {
-                dec.setCurrentList(this);
                 dec.beforeTopPagination();
             }
         }
@@ -459,7 +458,6 @@ public class ListTag extends BodyTagSupport {
         pageContext.pushBody(topAddonsContent);
         if (!isEmpty()) {
             for (ListDecorator dec : getDecorators()) {
-                dec.setCurrentList(this);
                 dec.onTopExtraAddons();
             }
         }
@@ -503,7 +501,6 @@ public class ListTag extends BodyTagSupport {
         pageContext.pushBody(headAddons);
         if (!isEmpty()) {
             for (ListDecorator dec : getDecorators()) {
-                dec.setCurrentList(this);
                 dec.onHeadExtraAddons();
             }
         }
@@ -520,7 +517,6 @@ public class ListTag extends BodyTagSupport {
         pageContext.pushBody(headExtraContent);
         if (!isEmpty()) {
             for (ListDecorator dec : getDecorators()) {
-                dec.setCurrentList(this);
                 dec.onHeadExtraContent();
             }
         }
@@ -645,9 +641,7 @@ public class ListTag extends BodyTagSupport {
         pageContext.pushBody(footAddonsContent);
         if (!manip.isListEmpty()) {
             for (ListDecorator dec : getDecorators()) {
-                dec.setCurrentList(this);
                 dec.onFooterExtraAddons();
-                dec.setCurrentList(null);
             }
         }
         pageContext.popBody();
@@ -655,9 +649,7 @@ public class ListTag extends BodyTagSupport {
         pageContext.pushBody(footExtraContent);
         if (!manip.isListEmpty()) {
             for (ListDecorator dec : getDecorators()) {
-                dec.setCurrentList(this);
                 dec.onFooterExtraContent();
-                dec.setCurrentList(null);
             }
         }
         pageContext.popBody();
@@ -722,7 +714,6 @@ public class ListTag extends BodyTagSupport {
                 "<div class=\"spacewalk-list-bottom-addons-extra\">");
         if (!isEmpty()) {
             for (ListDecorator dec : getDecorators()) {
-                dec.setCurrentList(this);
                 dec.onBottomExtraAddons();
             }
         }
@@ -732,7 +723,6 @@ public class ListTag extends BodyTagSupport {
                 "<div class=\"spacewalk-list-bottom-addons-extra\">");
         if (!isEmpty()) {
             for (ListDecorator dec : getDecorators()) {
-                dec.setCurrentList(this);
                 dec.onBottomExtraContent();
             }
         }
@@ -742,6 +732,24 @@ public class ListTag extends BodyTagSupport {
             renderSortableHiddenFields();
         }
         return BodyTagSupport.SKIP_BODY;
+    }
+
+    private void doAfterBodyRenderListBegin() throws JspException {
+        ListTagUtil.write(pageContext, "<!-- START LIST " + getUniqueName() + " -->");
+
+        String listId = (getStyleId() != null) ? getStyleId() : getUniqueName();
+
+        for (ListDecorator dec : getDecorators()) {
+            dec.beforeList();
+        }
+
+        ListTagUtil.write(pageContext, "<div class=\"spacewalk-list");
+        if (styleClass != null) {
+            ListTagUtil.write(pageContext, " " + styleClass);
+        }
+        ListTagUtil.write(pageContext, "\" id=\"" + listId + "\">");
+        ListTagUtil.setCurrentCommand(pageContext, getUniqueName(),
+                ListCommand.TBL_HEADING);
     }
 
     /**
@@ -760,8 +768,7 @@ public class ListTag extends BodyTagSupport {
         setState();
 
         if (haveColsEnumerated && !haveTblHeadingRendered) {
-            ListTagUtil.setCurrentCommand(pageContext, getUniqueName(),
-                    ListCommand.TBL_HEADING);
+            doAfterBodyRenderListBegin();
         }
         else if (haveColsEnumerated && !haveTblAddonsRendered) {
             doAfterBodyRenderTopAddons();
@@ -839,23 +846,8 @@ public class ListTag extends BodyTagSupport {
         manip = new DataSetManipulator(pageSize, pageData,
                 (HttpServletRequest) pageContext.getRequest(),
                 getUniqueName(), isParentAnElement(), searchParent, searchChild);
-
-        ListTagUtil.write(pageContext, "<!-- START LIST " + getUniqueName() + " -->");
-
-        String listId = (getStyleId() != null) ? getStyleId() : getUniqueName();
         ListTagUtil.setCurrentCommand(pageContext, getUniqueName(),
-                ListCommand.ENUMERATE);
-
-        for (ListDecorator dec : getDecorators()) {
-            dec.setCurrentList(this);
-            dec.beforeList();
-        }
-
-        ListTagUtil.write(pageContext, "<div class=\"spacewalk-list");
-        if (styleClass != null) {
-            ListTagUtil.write(pageContext, " " + styleClass);
-        }
-        ListTagUtil.write(pageContext, "\" id=\"" + listId + "\">");
+                    ListCommand.ENUMERATE);
         return BodyTagSupport.EVAL_BODY_INCLUDE;
     }
 
@@ -942,6 +934,7 @@ public class ListTag extends BodyTagSupport {
         haveColHeadersRendered = false;
         haveTblAddonsRendered = false;
         haveTblFootersRendered = false;
+        haveTblHeadingRendered = false;
         getDecorators().clear();
         decorators = null;
         decoratorName = null;
@@ -1040,9 +1033,7 @@ public class ListTag extends BodyTagSupport {
 
         if (!manip.isListEmpty()) {
             for (ListDecorator dec : getDecorators()) {
-                dec.setCurrentList(this);
                 dec.afterBottomPagination();
-                dec.setCurrentList(null);
             }
         }
 
