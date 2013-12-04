@@ -26,7 +26,7 @@
       <%@ include file="/WEB-INF/pages/common/fragments/kickstart/powermanagement-options.jspf" %>
 
       <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-6">
+        <div class="col-md-offset-3 col-md-6">
           <input type="submit" name="dispatch"
             value="<bean:message key="kickstart.powermanagement.jsp.save" />"
             class="btn btn-default"
@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-6">
+        <div class="col-md-offset-3 col-md-6">
           <input type="submit" name="dispatch"
             value="<bean:message key="kickstart.powermanagement.jsp.save_power_on" />"
             class="btn btn-default"
