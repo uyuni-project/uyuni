@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
+import org.cobbler.XmlRpcException;
 
 import java.util.Date;
 
@@ -81,16 +82,23 @@ public class CobblerPowerCommand extends CobblerCommand {
                 SystemRecord systemRecord = SystemRecord.lookupById(connection, cobblerId);
                 if (systemRecord != null && systemRecord.getPowerType() != null) {
                     boolean success = false;
-                    switch (operation) {
-                    case PowerOn:
-                        success = systemRecord.powerOn();
-                        break;
-                    case PowerOff:
-                        success = systemRecord.powerOff();
-                        break;
-                    case Reboot:
-                        success = systemRecord.reboot();
-                        break;
+                    try {
+                        switch (operation) {
+                        case PowerOn:
+                            success = systemRecord.powerOn();
+                            break;
+                        case PowerOff:
+                            success = systemRecord.powerOff();
+                            break;
+                        case Reboot:
+                            success = systemRecord.reboot();
+                            break;
+                        }
+                    }
+                    catch (XmlRpcException e) {
+                        log.error(org.apache.velocity.util.StringUtils.stackTrace(e));
+                        log.error(org.apache.velocity.util.StringUtils.stackTrace(e
+                            .getCause()));
                     }
                     if (success) {
                         log.debug("Power management operation " + operation.toString() +
@@ -112,7 +120,8 @@ public class CobblerPowerCommand extends CobblerCommand {
                         return null;
                     }
                     else {
-                        log.error("Powering on " + server.getId() + " failed");
+                        log.error(operation.toString() + " on " + server.getId() +
+                                " failed");
                         return new ValidatorError("cobbler.powermanagement.command_failed");
                     }
                 }
