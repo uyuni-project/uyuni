@@ -1,13 +1,13 @@
 <rhn:csrf />
 <rhn:submitted />
 <div class="form-group">
-  <label class="col-lg-3 control-label" for="powerType">
+  <label class="col-md-3 control-label" for="powerType">
     <bean:message key="kickstart.powermanagement.jsp.powertype" />
     <c:if test="${showRequired}">
       <rhn:required-field />
     </c:if>
   </label>
-  <div class="col-lg-6">
+  <div class="col-md-6">
     <html:select property="powerType" value="${powerType}" styleClass="form-control">
       <html:options collection="types" labelProperty="key" property="value" />
     </html:select>
@@ -15,13 +15,13 @@
 </div>
 
 <div class="form-group">
-  <label class="col-lg-3 control-label" for="powerAddress">
+  <label class="col-md-3 control-label" for="powerAddress">
     <bean:message key="kickstart.powermanagement.jsp.power_address" />
     <c:if test="${showRequired}">
       <rhn:required-field />
     </c:if>
   </label>
-  <div class="col-lg-6">
+  <div class="col-md-6">
     <html:text property="powerAddress" name="powerAddress"
       value="${powerAddress}" styleClass="form-control"
     />
@@ -29,13 +29,13 @@
 </div>
 
 <div class="form-group">
-  <label class="col-lg-3 control-label" for="powerUsername">
+  <label class="col-md-3 control-label" for="powerUsername">
     <bean:message key="kickstart.powermanagement.jsp.power_username" />
     <c:if test="${showRequired}">
       <rhn:required-field />
     </c:if>
   </label>
-  <div class="col-lg-6">
+  <div class="col-md-6">
     <html:text property="powerUsername" name="powerUsername"
       value="${powerUsername}" styleClass="form-control"
     />
@@ -43,13 +43,13 @@
 </div>
 
 <div class="form-group">
-  <label class="col-lg-3 control-label" for="powerPassword">
+  <label class="col-md-3 control-label" for="powerPassword">
     <bean:message key="kickstart.powermanagement.jsp.power_password" />
     <c:if test="${showRequired}">
       <rhn:required-field />
     </c:if>
   </label>
-  <div class="col-lg-6">
+  <div class="col-md-6">
     <html:password property="powerPassword" name="powerPassword"
       value="${powerPassword}" styleClass="form-control"
     />
@@ -57,10 +57,10 @@
 </div>
 
 <div class="form-group">
-  <label class="col-lg-3 control-label" for="powerId">
+  <label class="col-md-3 control-label" for="powerId">
     <bean:message key="kickstart.powermanagement.jsp.power_id" />
   </label>
-  <div class="col-lg-6">
+  <div class="col-md-6">
     <html:text property="powerId" name="powerId"
       value="${powerId}" styleClass="form-control"
     />
@@ -69,10 +69,10 @@
 
 <c:if  test="${showPowerStatus}">
   <div class="form-group">
-    <label class="col-lg-3 control-label" for="powerStatus">
+    <label class="col-md-3 control-label" for="powerStatus">
       <bean:message key="kickstart.powermanagement.jsp.power_status" />
     </label>
-    <div class="col-lg-6">
+    <div class="col-md-6">
       <c:choose>
         <c:when test="${powerStatusOn eq true}">
         <bean:message key="kickstart.powermanagement.jsp.on" />
