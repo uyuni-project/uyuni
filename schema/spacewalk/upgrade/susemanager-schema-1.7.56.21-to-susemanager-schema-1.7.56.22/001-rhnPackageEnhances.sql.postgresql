@@ -26,7 +26,6 @@ CREATE TABLE rhnPackageEnhances
     created        timestamptz default (current_timestamp) not null,
     modified       timestamptz default (current_timestamp) not null
 )
-ENABLE ROW MOVEMENT
 ;
 
 CREATE UNIQUE INDEX rhn_pkg_enh_pid_cid_s_uq
