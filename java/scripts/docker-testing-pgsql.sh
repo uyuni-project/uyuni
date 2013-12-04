@@ -14,3 +14,6 @@ cd /manager/java
 ant resolve-ivy
 ant -f manager-build.xml test
 
+# Postgres shutdown (avoid stale memory by shmget())
+rcpostgresql stop
+
