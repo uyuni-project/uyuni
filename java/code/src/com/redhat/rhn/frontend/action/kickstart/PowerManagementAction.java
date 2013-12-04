@@ -154,9 +154,9 @@ public class PowerManagementAction extends RhnAction {
     public static CobblerPowerSettingsUpdateCommand getPowerSettingsUpdateCommand(
         DynaActionForm form, User user, Server server) {
         return new CobblerPowerSettingsUpdateCommand(
-        user, server, form.getString(POWER_TYPE), form.getString(POWER_ADDRESS),
-        form.getString(POWER_USERNAME), form.getString(POWER_PASSWORD),
-        form.getString(POWER_ID));
+            user, server, form.getString(POWER_TYPE), form.getString(POWER_ADDRESS),
+            form.getString(POWER_USERNAME), form.getString(POWER_PASSWORD),
+            form.getString(POWER_ID));
     }
 
     /**
