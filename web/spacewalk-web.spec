@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.36
+Version: 2.1.39
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -310,6 +310,15 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Wed Dec 04 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.39-1
+- bootstrap tuning
+
+* Wed Dec 04 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.38-1
+- bootstrap tuning
+
+* Tue Dec 03 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.37-1
+- bootstrap tuning
+
 * Tue Dec 03 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.36-1
 - bootstrap tuning: fixed doubled item separator
 

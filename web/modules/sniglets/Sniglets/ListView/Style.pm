@@ -45,7 +45,8 @@ sub header {
   my $self = shift;
 
   my $ret =<<EOQ;
-<table width="100%" cellspacing="0" cellpadding="0" class="list" align="center">
+<div class="panel panel-default">
+<table class="table table-striped">
 <!-- Begin Header Row -->
   <thead>
   <tr>
@@ -79,6 +80,7 @@ sub footer {
 
   my $ret =<<EOQ;
 </table>
+</div>
 EOQ
 
   return $ret;
