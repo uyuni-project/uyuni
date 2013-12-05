@@ -55,12 +55,32 @@ Feature: Test Bare-metal discovery
           And I should see a "Power Management" link in the content area
           And I should see a "Schedule" link in the content area
 
+    Scenario: check SSM with bare-metal system
+        Given I am on the Systems page
+         When I check this client
+          And I follow "System Set Manager" in the left menu
+         Then I should see a "At least one system in the set is bare metal: some actions will not be available. Check bare metal systems." text
+
+    Scenario: check SSM page for bare-metal system
+        Given I am on the Systems page
+         When I follow "System Set Manager" in the left menu
+         Then I should see a "List the systems" link in the content area
+          And I should see a "Kickstart" link in the content area
+          And I should see a "Configure power management" link in the content area
+          And I should see a "power management operations" link in the content area
+          And I should see a "Delete" link in the content area
+          And I should see a "Migrate" link in the content area
+          And I should not see a "Errata" link in the content area
+          And I should not see a "Packages" link in the content area
+          And I should not see a "Groups" link in the content area
+          And I should not see a "Channels" link in the content area
+          And I should not see a "Audit" link in the content area
+
     Scenario: Delete the system profile
         Given I am on the Systems overview page of this client
          When I follow "delete system"
           And I should see a "Confirm System Profile Deletion" text
           And I click on "Delete Profile"
-
     Scenario: Disable Bare-metal discovery
         Given I am authorized as "admin" with password "admin"
           And I follow "Admin"
