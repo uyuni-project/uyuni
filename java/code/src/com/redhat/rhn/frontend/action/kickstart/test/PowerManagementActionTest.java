@@ -119,7 +119,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         addSubmitted();
-        addDispatchCall("kickstart.powermanagement.jsp.save");
+        addDispatchCall("kickstart.powermanagement.jsp.save_only");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -164,7 +164,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         addSubmitted();
-        addDispatchCall("kickstart.powermanagement.jsp.save");
+        addDispatchCall("kickstart.powermanagement.jsp.save_only");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -202,7 +202,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         addSubmitted();
-        addDispatchCall("kickstart.powermanagement.jsp.save");
+        addDispatchCall("kickstart.powermanagement.jsp.save_only");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -245,7 +245,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         addSubmitted();
-        addDispatchCall("kickstart.powermanagement.jsp.save_power_on");
+        addDispatchCall("kickstart.powermanagement.jsp.power_on");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -268,7 +268,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         addSubmitted();
-        addDispatchCall("kickstart.powermanagement.jsp.save_power_off");
+        addDispatchCall("kickstart.powermanagement.jsp.power_off");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -291,7 +291,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         addSubmitted();
-        addDispatchCall("kickstart.powermanagement.jsp.save_reboot");
+        addDispatchCall("kickstart.powermanagement.jsp.reboot");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
@@ -314,7 +314,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, server.getId().toString());
         request.setMethod(HttpServletRequestSimulator.POST);
         addSubmitted();
-        addDispatchCall("kickstart.powermanagement.jsp.save_get_status");
+        addDispatchCall("kickstart.powermanagement.jsp.get_status");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
         request.addParameter(PowerManagementAction.POWER_ADDRESS, EXPECTED_ADDRESS);
         request.addParameter(PowerManagementAction.POWER_USERNAME, EXPECTED_USERNAME);
