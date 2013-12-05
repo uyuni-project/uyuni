@@ -238,11 +238,11 @@ public class SSHPushWorker implements QueueWorker {
             Throwable cause = e.getCause();
             if (cause instanceof NoRouteToHostException ||
                     cause instanceof ConnectException) {
-                log.warn(cause.getMessage() + " [" + system.getName() + "]");
+                log.warn(cause.getMessage() + " [" + client + "]");
             }
             // Check if a tunnel is currently open
             else if (e.getMessage().startsWith(PORT_FORWARDING_FAILED)) {
-                log.info("Skipping " + system.getName() + ", tunnel seems to be busy");
+                log.info("Skipping " + client + ", tunnel seems to be busy");
                 if (log.isDebugEnabled()) {
                     log.debug(e.getMessage());
                 }
