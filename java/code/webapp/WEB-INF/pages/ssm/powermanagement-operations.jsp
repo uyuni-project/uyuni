@@ -20,15 +20,7 @@
       <rhn:csrf />
       <rhn:submitted />
 
-      <input type="submit" name="dispatch"
-        value="<bean:message key="cobbler.powermanagement.poweron" />"
-        class="btn btn-default" />
-      <input type="submit" name="dispatch"
-        value="<bean:message key="cobbler.powermanagement.poweroff" />"
-        class="btn btn-default" />
-      <input type="submit" name="dispatch"
-        value="<bean:message key="cobbler.powermanagement.reboot" />"
-        class="btn btn-default" />
+      <%@ include file="/WEB-INF/pages/common/fragments/kickstart/powermanagement-operations.jspf" %>
     </html:form>
   </body>
 </html>

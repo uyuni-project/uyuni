@@ -68,15 +68,15 @@ public class PowerManagementOperationsAction extends RhnAction implements Listab
 
             Operation operation = null;
             if (context.wasDispatched(
-                "cobbler.powermanagement.poweron")) {
+                "kickstart.powermanagement.jsp.power_on")) {
                 operation = Operation.PowerOn;
             }
             if (context.wasDispatched(
-                "cobbler.powermanagement.poweroff")) {
+                "kickstart.powermanagement.jsp.power_off")) {
                 operation = Operation.PowerOff;
             }
             if (context.wasDispatched(
-                "cobbler.powermanagement.reboot")) {
+                "kickstart.powermanagement.jsp.reboot")) {
                 operation = Operation.Reboot;
             }
 
