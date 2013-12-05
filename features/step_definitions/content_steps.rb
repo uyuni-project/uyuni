@@ -194,18 +194,18 @@ end
 When /^I check "([^"]*)" in the list$/ do |arg1|
   within(:xpath, "//section") do
       # use div/div/div for cve audit which has two tables
-      row = first(:xpath, "//form/div/div/div/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
+      row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
       if row.nil?
           sleep 1
           $stderr.puts "ERROR - try again"
-          row = first(:xpath, "//form/div/div/div/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
+          row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
       end
       row.first(:xpath, ".//input[@type=\"checkbox\"]").set(true)
   end
 end
 
 Then /^The table should have a column named "([^"]+)"$/ do |arg1|
-  find(:xpath, "//form/div/div/div/table/thead[.//th[contains(.,'#{arg1}')]] | //form/div/div/div/div/table/thead[.//th[contains(.,'#{arg1}')]]")
+  find(:xpath, "//div[@class=\"table-responsive\"]/table/thead[.//th[contains(.,'#{arg1}')]]")
 end
 
 Then /^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/ do |count, name, id|
