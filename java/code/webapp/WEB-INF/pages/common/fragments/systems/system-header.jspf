@@ -23,7 +23,7 @@
 
 <c:choose>
     <c:when test="${system.bootstrap}">
-        <c:set var="systemIcon" value="fa-money"/>
+        <c:set var="systemIcon" value="fa-square-o"/>
     </c:when>
     <c:when test="${system.virtualGuest}">
         <c:set var="systemIcon" value="spacewalk-icon-virtual-guest"/>
