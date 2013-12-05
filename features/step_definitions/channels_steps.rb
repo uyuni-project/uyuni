@@ -21,7 +21,7 @@ Given /^I am on the manage software channels page$/ do
 end
 
 When /^I choose "([^"]*)" for "([^"]*)"$/ do |arg1, arg2|
-  within(:xpath, "//form/table/tbody/tr[.//a[contains(.,'#{arg2}')]]") do
+  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg2}')]]") do
     find(:xpath, './/select').select(arg1)
   end
 end
