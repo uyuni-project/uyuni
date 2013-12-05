@@ -26,31 +26,26 @@
       <%@ include file="/WEB-INF/pages/common/fragments/kickstart/powermanagement-options.jspf" %>
 
       <div class="form-group">
-        <div class="col-md-offset-3 col-md-6">
-          <input type="submit" name="dispatch"
-            value="<bean:message key="kickstart.powermanagement.jsp.save" />"
-            class="btn btn-default"
-          />
-          <input type="submit" name="dispatch"
-            value="<bean:message key="kickstart.powermanagement.jsp.save_get_status" />"
-            class="btn btn-default"
-          />
+        <label class="col-md-3 control-label">
+          <bean:message key="kickstart.powermanagement.jsp.save_and"/>
+        </label>
+        <div class="col-md-6">
+          <button type="submit" name="dispatch" class="btn btn-default"
+              value="<bean:message key="kickstart.powermanagement.jsp.get_status"/>"
+          >
+              <i class="fa fa-th-list"></i><bean:message key="kickstart.powermanagement.jsp.get_status"/>
+          </button>
+
+          <%@ include file="/WEB-INF/pages/common/fragments/kickstart/powermanagement-operations.jspf" %>
         </div>
       </div>
       <div class="form-group">
         <div class="col-md-offset-3 col-md-6">
-          <input type="submit" name="dispatch"
-            value="<bean:message key="kickstart.powermanagement.jsp.save_power_on" />"
-            class="btn btn-default"
-          />
-          <input type="submit" name="dispatch"
-            value="<bean:message key="kickstart.powermanagement.jsp.save_power_off" />"
-            class="btn btn-default"
-          />
-          <input type="submit" name="dispatch"
-            value="<bean:message key="kickstart.powermanagement.jsp.save_reboot" />"
-            class="btn btn-default"
-          />
+          <button type="submit" name="dispatch" class="btn btn-default"
+              value="<bean:message key="kickstart.powermanagement.jsp.save_only"/>"
+          >
+              <bean:message key="kickstart.powermanagement.jsp.save_only"/>
+          </button>
         </div>
       </div>
     </html:form>

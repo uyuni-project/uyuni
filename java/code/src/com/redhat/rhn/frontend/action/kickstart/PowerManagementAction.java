@@ -89,10 +89,10 @@ public class PowerManagementAction extends RhnAction {
             ValidatorError error = command.store();
             if (error == null) {
                 log.debug("Power management settings saved for system " + sid);
-                if (context.wasDispatched("kickstart.powermanagement.jsp.save")) {
+                if (context.wasDispatched("kickstart.powermanagement.jsp.save_only")) {
                     addMessage(request, "kickstart.powermanagement.saved");
                 }
-                if (context.wasDispatched("kickstart.powermanagement.jsp.save_power_on")) {
+                if (context.wasDispatched("kickstart.powermanagement.jsp.power_on")) {
                     error = new CobblerPowerCommand(user, server, Operation.PowerOn)
                         .store();
                     if (error == null) {
@@ -100,7 +100,7 @@ public class PowerManagementAction extends RhnAction {
                         addMessage(request, "kickstart.powermanagement.powered_on");
                     }
                 }
-                if (context.wasDispatched("kickstart.powermanagement.jsp.save_power_off")) {
+                if (context.wasDispatched("kickstart.powermanagement.jsp.power_off")) {
                     error = new CobblerPowerCommand(user, server, Operation.PowerOff)
                         .store();
                     if (error == null) {
@@ -108,7 +108,7 @@ public class PowerManagementAction extends RhnAction {
                         addMessage(request, "kickstart.powermanagement.powered_off");
                     }
                 }
-                if (context.wasDispatched("kickstart.powermanagement.jsp.save_reboot")) {
+                if (context.wasDispatched("kickstart.powermanagement.jsp.reboot")) {
                     error = new CobblerPowerCommand(user, server, Operation.Reboot).store();
                     if (error == null) {
                         log.debug("Reboot succeded for system " + sid);
@@ -116,7 +116,7 @@ public class PowerManagementAction extends RhnAction {
                     }
                 }
                 if (context.wasDispatched(
-                    "kickstart.powermanagement.jsp.save_get_status")) {
+                    "kickstart.powermanagement.jsp.get_status")) {
                     try {
                         SystemRecord record = getSystemRecord(user, server);
                         request.setAttribute(POWER_STATUS_ON, record.getPowerStatus());
