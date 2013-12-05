@@ -15,5 +15,5 @@ Given /^I am on the "([^"]*)" errata Details page$/ do |arg1|
 end
 
 Then /^I should see an update in the list$/ do
-  fail if not has_xpath?("//form/div/div/div/table/tbody/tr/td/a")
+  fail if not has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a")
 end
