@@ -490,7 +490,16 @@ Thank you for using @@PRODUCT_NAME@@.
         </trans-unit>
         <trans-unit id="ssm.misc.index.lock.summary">
           <source>Systems may be locked or unlocked.  Locking prevents changes from the @@PRODUCT_NAME@@ website.</source>
-        </trans-unit>
+      </trans-unit>
+      <trans-unit id="ssm.overview.errata">
+        <source>Patches</source>
+      </trans-unit>
+      <trans-unit id="ssm.overview.errata.schedule">
+        <source>&lt;a href="/rhn/systems/ssm/ListPatches.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source>
+      </trans-unit>
+      <trans-unit id="ssm.overview.provisioning.kickstart">
+        <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Autoinstall&lt;/a&gt; systems</source>
+      </trans-unit>
       <trans-unit id="systemlist.jsp.errata">
         <source>Patches</source>
       </trans-unit>
