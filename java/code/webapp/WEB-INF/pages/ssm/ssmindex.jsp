@@ -25,7 +25,7 @@
     </div>
     <rhn:require acl="no_bootstrap_systems_in_set()">
         <div class="panel-heading">
-            <i class="fa spacewalk-icon-patches fa-fw" title="Errata"></i>
+            <i class="fa spacewalk-icon-patches fa-fw" title="<bean:message key='ssm.overview.errata'/>"></i>
             <bean:message key="ssm.overview.errata"/>
         </div>
         <div class="panel-body">
