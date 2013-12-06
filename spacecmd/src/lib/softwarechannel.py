@@ -370,6 +370,13 @@ def do_softwarechannel_details(self, args):
             for tree in trees:
                 print tree.get('label')
 
+        if details.get('contentSources'):
+            print
+            print 'Repos'
+            print '-----'
+            for repo in details.get('contentSources'):
+                print repo.get('label')
+
 ####################
 
 def help_softwarechannel_listerrata(self):
@@ -1620,5 +1627,86 @@ def do_softwarechannel_setsyncschedule(self, args):
     schedule = ' '.join(args[1:])
 
     self.client.channel.software.syncRepo(self.session, channel, schedule)
+
+####################
+
+def help_softwarechannel_addrepo(self):
+    print 'softwarechannel_addrepo: Add a repo to a software channel'
+    print 'usage: softwarechannel_addrepo CHANNEL REPO'
+
+def complete_softwarechannel_addrepo(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) == 2:
+        return tab_completer(self.do_softwarechannel_list('', True),
+                                  text)
+    elif len(parts) == 3:
+        return tab_completer(self.do_repo_list('', True), text)
+
+def do_softwarechannel_addrepo(self, args):
+    (args, options) = parse_arguments(args)
+
+    if len(args) < 2:
+        self.help_softwarechannel_addrepo()
+        return
+
+    channel = args[0]
+    repo = args[1]
+
+    self.client.channel.software.associateRepo(self.session, channel, repo)
+
+####################
+
+def help_softwarechannel_removerepo(self):
+    print 'softwarechannel_removerepo: Remove a repo from a software channel'
+    print 'usage: softwarechannel_removerepo CHANNEL REPO'
+
+def complete_softwarechannel_removerepo(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) == 2:
+        return tab_completer(self.do_softwarechannel_list('', True),
+                                  text)
+    elif len(parts) == 3:
+        try:
+            details = self.client.channel.software.getDetails(self.session,
+                                                              parts[1])
+            repos = [r.get('label') for r in details.get('contentSources')]
+        except:
+            return
+
+        return tab_completer(repos, text)
+
+def do_softwarechannel_removerepo(self, args):
+    (args, options) = parse_arguments(args)
+
+    if len(args) < 2:
+        self.help_softwarechannel_removerepo()
+        return
+
+    channel = args[0]
+    repo = args[1]
+
+    self.client.channel.software.disassociateRepo(self.session, channel, repo)
+
+####################
+
+def help_softwarechannel_listrepos(self):
+    print 'softwarechannel_listrepos: List the repos for a software channel'
+    print 'usage: softwarechannel_listrepos CHANNEL'
+
+def complete_softwarechannel_listrepos(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    return tab_completer(self.do_softwarechannel_list('', True), text)
+
+def do_softwarechannel_listrepos(self, args):
+    (args, options) = parse_arguments(args)
+
+    details = self.client.channel.software.getDetails(self.session, args[0])
+    repos = [r.get('label') for r in details.get('contentSources')]
+
+    if len(repos):
+        print '\n'.join(sorted(repos))
 
 # vim:ts=4:expandtab:
