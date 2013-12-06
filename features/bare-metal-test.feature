@@ -65,7 +65,7 @@ Feature: Test Bare-metal discovery
         Given I am on the Systems page
          When I follow "System Set Manager" in the left menu
          Then I should see a "List the systems" link in the content area
-          And I should see a "Kickstart" link in the content area
+          And I should see a "Autoinstall" link in the content area
           And I should see a "Configure power management" link in the content area
           And I should see a "power management operations" link in the content area
           And I should see a "Delete" link in the content area
