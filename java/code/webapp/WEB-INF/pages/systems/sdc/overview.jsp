@@ -101,11 +101,11 @@
       </c:if>
   </div>
     </rhn:require>
-    
+
 
     <div class="systeminfo">
 
-        
+
 
 
 

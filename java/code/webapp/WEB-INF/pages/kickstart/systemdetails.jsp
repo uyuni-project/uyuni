@@ -30,7 +30,7 @@
                 static.value = "";
             }
         }
-    </script>	
+    </script>
 <%
 boolean dhcpIfDisabled = Boolean.valueOf(
 	(String) request.getAttribute("dhcpIfDisabled")).booleanValue();
