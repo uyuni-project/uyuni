@@ -266,6 +266,9 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="header.jsp.errata">
         <source>Patches</source>
       </trans-unit>
+      <trans-unit id="repos.jsp.create.metadataSigned">
+        <source>Has Signed Metadata?</source>
+      </trans-unit>
 
       <!-- footer.jsp -->
       <trans-unit id="footer.jsp.copyright">
