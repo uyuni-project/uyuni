@@ -116,3 +116,30 @@ function formFocus(form, name) {
   }
 }
 
+// Call the password strength meter in pwstrength.js
+function checkPasswordStrength() {
+    "use strict";
+    var options = {
+        bootstrap3: true,
+        usernameField: "#loginname",
+        errorMessages:
+        {
+            password_too_short : '<span style="color: #d52929">The Password is too short.</span>',
+            same_as_username : '<span style="color: #d52929">Your password should not contain your username.</span>',
+            email_as_password: '<span style="color: #d52929">Do not use your email as your password.</span>'
+        },
+        onKeyUp: function (evt) {
+            $('input[name="desiredpassword"]').popover('destroy');
+            $(evt.target).pwstrength("outputErrorList");
+            $('input[name="desiredpassword"]').popover({
+                'html': true,
+                'title': $('span.password-verdict').text(),
+                'content': $('ul.error-list').html(),
+                'trigger': 'manual',
+                'placement': 'top'
+            });
+            $('input[name="desiredpassword"]').popover('show');
+        }
+    };
+    $(':password').pwstrength(options);
+}
