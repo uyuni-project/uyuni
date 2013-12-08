@@ -38,7 +38,7 @@
                 <div class="col-lg-6">
                     <html:text property="login" size="15"
                                styleClass="form-control"
-                               maxlength="45" styleId="login" />
+                               maxlength="45" styleId="loginname" />
                     <span class="help-block">
                         <strong><bean:message key="tip" /></strong>
                         <bean:message key="org.login.tip" arg0="${rhn:getConfig('java.min_user_len')}" /><br/>
@@ -58,6 +58,10 @@
                                    styleClass="form-control"
                                    maxlength="32"
                                    styleId="desiredpass" />
+                    <script type="text/javascript" src="/javascript/bootstrap-tooltip.js"></script>
+                    <script type="text/javascript" src="/javascript/bootstrap-popover.js"></script>
+                    <script type="text/javascript" src="/javascript/pwstrength.js"></script>
+                    <script type="text/javascript">checkPasswordStrength()</script>
                 </div>
             </div>
 

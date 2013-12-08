@@ -44,7 +44,7 @@
               <tr>
                 <td><label for="login"><rhn:required-field key="desiredlogin"/>:</label></td>
                 <td>
-                  <html:text property="login" styleClass="form-control" maxlength="${loginLength}" styleId="login"/>
+                  <html:text property="login" styleClass="form-control" maxlength="${loginLength}" styleId="loginname"/>
                 </td>
               </tr>
               <tr>
@@ -57,6 +57,10 @@
               <tr>
                 <td><label for="confirmpass"><bean:message key="confirmpass" /><span name="password-asterisk"
                       class="required-form-field">*</span>:</label></td>
+                      <script type="text/javascript" src="/javascript/bootstrap-tooltip.js"></script>
+                      <script type="text/javascript" src="/javascript/bootstrap-popover.js"></script>
+                      <script type="text/javascript" src="/javascript/pwstrength.js"></script>
+                      <script type="text/javascript">checkPasswordStrength()</script>
                 <td>
                   <html:password styleClass="form-control" property="desiredpasswordConfirm" size="15" maxlength="${passwordLength}" styleId="confirmpass"/>
                 </td>
