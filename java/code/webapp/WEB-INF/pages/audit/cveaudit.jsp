@@ -11,9 +11,10 @@
 <head>
 <meta name="page-decorator" content="none" />
 <script src="/javascript/focus.js" type="text/javascript"></script>
+<script src="/javascript/cve-audit.js" type="text/javascript"></script>
 </head>
 
-<body onload="formFocus('cveAuditForm','cveIdentifierId');">
+<body onload="formFocus('cveAuditForm','cveIdentifierId'); addPasteHandler();">
   <rhn:toolbar base="h1" img="/img/rhn-icon-search.gif"
     imgAlt="audit.jsp.alt"
     helpUrl="/rhn/help/reference/en-US/s1-sm-audit.jsp#s2-sm-audit-cve">
