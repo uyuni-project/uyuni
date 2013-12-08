@@ -174,7 +174,7 @@
             }
 
             if ($verdict.length === 0) {
-                $verdict = $('<span class="password-verdict">' + initial + '</span>');
+                $verdict = $('<span class="password-verdict" style="display: none">' + initial + '</span>');
                 if (localOptions.viewports.verdict) {
                     $container.find(localOptions.viewports.verdict).append($verdict);
                 } else {
@@ -317,7 +317,7 @@
 
             outputErrorList: function () {
                 this.each(function (idx, el) {
-                    var output = '<ul class="error-list">',
+                    var output = '<ul class="error-list" style="display: none">',
                         $el = $(el),
                         localOptions = $el.data("pwstrength"),
                         $container = getContainer(localOptions.container, $el),
@@ -326,7 +326,7 @@
                     $container.find("ul.error-list").remove();
                     if (localOptions.errors.length > 0) {
                         $.each(localOptions.errors, function (i, item) {
-                            output += '<li>' + item + '</li>';
+                            output += '<p>' + item + '</p>';
                         });
                         output += '</ul>';
                         if (localOptions.viewports.errors) {
