@@ -1,4 +1,72 @@
 -------------------------------------------------------------------
+Mon Dec 09 16:33:15 CET 2013 - mc@suse.de
+
+- version 2.1.1-1
+- grant more permissions to DB user
+- use new ISS slave detection
+- switch to 2.1
+
+-------------------------------------------------------------------
+Thu Nov 28 16:17:33 CET 2013 - mc@suse.de
+
+- version 1.7.26-1
+- susemanager-tools should require createrepo (bnc#848840)
+- add slang package to bootstrap repository (bnc#847723)
+
+-------------------------------------------------------------------
+Tue Sep 24 17:33:18 CEST 2013 - mc@suse.de
+
+- version 1.7.25-1
+- return user_id as string if mgr-ncc-sync with --from-dir is used
+  (bnc#842031)
+
+-------------------------------------------------------------------
+Wed Aug 21 15:33:13 CEST 2013 - mc@suse.de
+
+- version 1.7.24-1
+- add profilename as hostname and moniker to NCC registration
+  (bnc#834200)
+- forward registrations to ISS parent if we are a slave
+- use register URL from config file
+- rename satellite-sync to mgr-inter-sync
+- implement setup for Inter Server Sync (ISS) (FATE#312371)
+- call mgr-ncc-sync with option --refresh at the end of a setup
+- show error in the yast setup module
+- allow only ASCII characters in the SSL certificate (bnc#829034)
+- clear existing DB on setup (bnc#824146)
+- Interrupt SUSE Manager setup on error (bnc#829035)
+- fix help of mgr-ncc-sync (bnc#824597)
+
+-------------------------------------------------------------------
+Wed Jun 12 11:08:05 CEST 2013 - mc@suse.de
+
+- version 1.7.23-1
+- create bootstrap repos for SLE11-SP3 (bnc#806839)
+- fix reading mirror credentials from config
+- add versioned Requires of spacewalk-backend
+
+-------------------------------------------------------------------
+Thu Apr 04 15:20:26 CEST 2013 - mc@suse.de
+
+- version 1.7.22-1
+- fix product listing with products not having same SP as the base product
+- fix list-products in case of empty DB
+- Add new tool 'mgr-create-bootstrap-repo'
+- Make mgr-ncc-sync only sync vendor channels that have urls.
+- test content of diretory given with --from-dir (bnc#798807)
+- hide option --update_up, customers should always use --refresh
+- add --no-optional option for channels
+- add options --all-childs and --filter
+- implement listing by products
+- mgr-register should not crash if product release is empty (bnc#803124)
+
+-------------------------------------------------------------------
+Fri Feb 08 11:03:20 CET 2013 - mc@suse.de
+
+- version 1.7.21-1
+- fix mgr-ncc-sync, if --from-dir is used (bnc#798807)
+
+-------------------------------------------------------------------
 Thu Nov 22 15:55:20 CET 2012 - jrenner@suse.de
 
 - version 1.7.20-1
