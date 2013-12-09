@@ -1,4 +1,45 @@
 -------------------------------------------------------------------
+Mon Dec 09 16:03:51 CET 2013 - mc@suse.de
+
+- version 2.1.11.1-1
+
+-------------------------------------------------------------------
+Thu Nov 28 16:24:09 CET 2013 - mc@suse.de
+
+- version 1.7.14.18-1
+- uptime report: respect xmlrpc's integer limits
+
+-------------------------------------------------------------------
+Wed Aug 21 15:40:22 CEST 2013 - mc@suse.de
+
+- version 1.7.14.17-1
+- print prompt on tty instead of stdout
+- unicode support for Remote Command scripts
+
+-------------------------------------------------------------------
+Wed Jun 12 13:31:06 CEST 2013 - mc@suse.de
+
+- version 1.7.14.16-1
+- create mgr* program symlinks (bnc#818325)
+- correctly handle a deactivated account error message
+- require rhnlib with timeout option
+- Make timeout of yum-rhn-plugin calls through rhn-client-tools
+  configurable (bnc#815460)
+
+-------------------------------------------------------------------
+Thu Apr 04 15:36:19 CEST 2013 - mc@suse.de
+
+- version 1.7.14.15-1
+- fixed cpu type for ppc64
+
+-------------------------------------------------------------------
+Fri Feb 08 11:13:47 CET 2013 - mc@suse.de
+
+- version 1.7.14.14-1
+- fix reading cpuinfo on s390x (bnc#799530)
+- try to get the FQDN as hostname
+
+-------------------------------------------------------------------
 Thu Nov 22 15:38:08 CET 2012 - jrenner@suse.de
 
 - version 1.7.14.13-1
