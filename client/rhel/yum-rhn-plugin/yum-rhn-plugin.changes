@@ -1,4 +1,31 @@
 -------------------------------------------------------------------
+Mon Dec 09 16:07:34 CET 2013 - mc@suse.de
+
+- version 2.1.5.1-1
+- switch to 2.1
+
+-------------------------------------------------------------------
+Fri Sep 27 10:01:10 CEST 2013 - mc@suse.de
+
+- version 1.7.2.9-1
+- keep yum-rhn-plugins higher default timeout
+- fix yum-rhn-plugin does not observe the defined httpProxy (bnc#838268)
+
+-------------------------------------------------------------------
+Wed Aug 21 15:45:23 CEST 2013 - mc@suse.de
+
+- version 1.7.2.8-1
+- package profile sync actions should not fail with empty transaction
+
+-------------------------------------------------------------------
+Wed Jun 12 13:33:31 CEST 2013 - mc@suse.de
+
+- version 1.7.2.7-1
+- require rhnlib with timeout option
+- Make timeout of yum-rhn-plugin calls through rhn-client-tools
+  configurable (bnc#815460)
+
+-------------------------------------------------------------------
 Thu Nov 22 15:26:48 CET 2012 - jrenner@suse.de
 
 - version 1.7.2.6-1
