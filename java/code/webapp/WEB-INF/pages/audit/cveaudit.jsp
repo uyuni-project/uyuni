@@ -5,7 +5,7 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
- 
+
 <html:xhtml />
 <html>
 <head>
@@ -13,7 +13,7 @@
 </head>
 
 <body onload="formFocus('cveAuditForm','cveIdentifierId');">
-  <rhn:toolbar base="h1" img="/img/rhn-icon-search.gif"
+  <rhn:toolbar base="h1" icon="fa-search"
     imgAlt="audit.jsp.alt"
     helpUrl="/rhn/help/reference/en-US/s1-sm-audit.jsp#s2-sm-audit-cve">
     <bean:message key="cveaudit.jsp.overview" />
@@ -21,69 +21,81 @@
   <p>
     <bean:message key="cveaudit.jsp.description" />
   </p>
-
-  <html:form action="/audit/CVEAudit.do" styleClass="form-horizontal">
-    <rhn:csrf />
-    <rhn:submitted />
-    <div class="form-group">
-      <label class="col-md-3 control-label" for="cveIdentifierId">
-        <bean:message key="cveaudit.jsp.cvenumber" />
-      </label>
-      <div class="col-md-4">
-        <div class="input-group">
-          <span class="input-group-addon">CVE-</span>
-          <html:select property="cveIdentifierYear" styleId="cveIdentifierYear" styleClass="form-control" value="${cveIdentifierYear}">
-            <html:options collection="years" property="value" />
-          </html:select>
-          <span class="input-group-addon">-</span>
-          <html:text property="cveIdentifierId" styleId="cveIdentifierId" styleClass="form-control" value="${cveIdentifierId}" title="CVE-ID" />
-          <span class="input-group-btn">
-            <button type="submit" class="btn btn-default"><bean:message key="cveaudit.jsp.cvenumber.auditsystem" /></button>
-          </span>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <html:form action="/audit/CVEAudit.do" styleClass="form-horizontal">
+        <rhn:csrf />
+        <rhn:submitted />
+        <div class="row">
+          <label class="col-sm-3 control-label" for="cveIdentifierId">
+            <a href="#" role="button" id="cve-popover" class="fa fa-info-circle" data-toggle="popover" data-placement="bottom" data-content="<ul><li>Find a list of available CVE's at <a href='http://cve.mitre.org/' targer='_blank'> cve.mitre.org </a></li><li>You can also paste the entire CVE like <strong>CVE-2013-6998</strong></li></ul>" data-trigger="click" data-delay="500"></a>
+            <bean:message key="cveaudit.jsp.cvenumber" />
+          </label>
+          <div class="col-sm-4">
+            <div class="input-group">
+              <span class="input-group-addon">CVE-</span>
+              <html:select property="cveIdentifierYear" styleId="cveIdentifierYear" styleClass="form-control" value="${cveIdentifierYear}">
+                <html:options collection="years" property="value" />
+              </html:select>
+              <span class="input-group-addon">-</span>
+              <html:text property="cveIdentifierId" styleId="cveIdentifierId" styleClass="form-control" value="${cveIdentifierId}" title="CVE-ID" />
+            </div>
+          </div>
         </div>
-      </div>
+        <div class="row margin-bottom-sm">
+          <div class="col-sm-offset-3 col-sm-4">
+            <small>Format: CVE-YYYY-NNNN...N</small>
+          </div>
+        </div>
+        <div class="row margin-bottom-sm">
+          <label class="col-sm-3 control-label">
+            <bean:message key="cveaudit.jsp.filters" />
+          </label>
+          <div class="col-sm-6">
+            <div class="checkbox">
+              <label>
+                <html:checkbox property="includeAffectedPatchInapplicable" />
+                <img src="/img/patch-status-affected-patch-inapplicable.png"
+                     title="<bean:message key="cveaudit.jsp.patchstatus.affectedpatchinapplicable"/>" />
+                <bean:message key="cveaudit.jsp.patchstatus.affectedpatchinapplicable" />
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <html:checkbox property="includeAffectedPatchApplicable" />
+                <img src="/img/patch-status-affected-patch-applicable.png"
+                     title="<bean:message key="cveaudit.jsp.patchstatus.affectedpatchapplicable"/>" />
+                <bean:message key="cveaudit.jsp.patchstatus.affectedpatchapplicable" />
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <html:checkbox property="includeNotAffected" />
+                <img src="/img/patch-status-not-affected.png"
+                     title="<bean:message key="cveaudit.jsp.patchstatus.notaffected"/>" />
+                <bean:message key="cveaudit.jsp.patchstatus.notaffected" />
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <html:checkbox property="includePatched" />
+                <img src="/img/patch-status-patched.png"
+                     title="<bean:message key="cveaudit.jsp.patchstatus.patched"/>" />
+                <bean:message key="cveaudit.jsp.patchstatus.patched" />
+              </label>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-sm-offset-3 col-sm-6">
+            <button type="submit" class="btn btn-success"><i class="fa fa-search"></i><bean:message key="cveaudit.jsp.cvenumber.auditsystem" /></button>
+          </div>
+        </div>
+        <input type="hidden" name="submitted" value="true" />
+      </html:form>
     </div>
-    <div class="form-group">
-      <label class="col-md-3 control-label">
-        <bean:message key="cveaudit.jsp.filters" />
-      </label>
-      <div class="col-md-6">
-        <div class="checkbox">
-          <label>
-            <html:checkbox property="includeAffectedPatchInapplicable" />
-            <img src="/img/patch-status-affected-patch-inapplicable.png"
-                 title="<bean:message key="cveaudit.jsp.patchstatus.affectedpatchinapplicable"/>" />
-            <bean:message key="cveaudit.jsp.patchstatus.affectedpatchinapplicable" />
-          </label>
-        </div>
-        <div class="checkbox">
-          <label>
-            <html:checkbox property="includeAffectedPatchApplicable" />
-            <img src="/img/patch-status-affected-patch-applicable.png"
-                 title="<bean:message key="cveaudit.jsp.patchstatus.affectedpatchapplicable"/>" />
-            <bean:message key="cveaudit.jsp.patchstatus.affectedpatchapplicable" />
-          </label>
-        </div>
-        <div class="checkbox">
-          <label>
-            <html:checkbox property="includeNotAffected" />
-            <img src="/img/patch-status-not-affected.png"
-                 title="<bean:message key="cveaudit.jsp.patchstatus.notaffected"/>" />
-            <bean:message key="cveaudit.jsp.patchstatus.notaffected" />
-          </label>
-        </div>
-        <div class="checkbox">
-          <label>
-            <html:checkbox property="includePatched" />
-            <img src="/img/patch-status-patched.png"
-                 title="<bean:message key="cveaudit.jsp.patchstatus.patched"/>" />
-            <bean:message key="cveaudit.jsp.patchstatus.patched" />
-          </label>
-        </div>
-      </div>
-    </div>
-    <input type="hidden" name="submitted" value="true" />
-  </html:form>
+  </div>
 
   <c:if test="${cveIdentifierId != null && cveIdentifierId != '' && cveIdentifierUnknown == false}">
     <hr />
@@ -218,12 +230,13 @@
   </c:if>
 
   <rhn:require acl="user_role(satellite_admin)">
-    <p>
+    <p><small>
       <bean:message key="cveaudit.jsp.updatenotice.pre" />
       <a href="/rhn/admin/BunchDetail.do?label=cve-server-channels-bunch">
         <bean:message key="cveaudit.jsp.updatenotice.link" />
       </a>
       <bean:message key="cveaudit.jsp.updatenotice.post" />
+      </small>
     </p>
   </rhn:require>
   <rhn:require acl="not user_role(satellite_admin)">
@@ -231,5 +244,16 @@
       <bean:message key="cveaudit.jsp.updatenotice.non-admin" />
     </p>
   </rhn:require>
+  <script type="text/javascript" src="/javascript/tooltips.js"></script>
+  <script type="text/javascript">
+    $("#cve-popover").popover({
+        html: "true",
+        delay: { show: 100, hide: 100 }
+      }).click(function (){
+        setTimeout(function () {
+          $("#cve-popover").popover('hide');
+      }, 5000);
+    });
+  </script>
 </body>
 </html>
