@@ -121,6 +121,7 @@ function checkPasswordStrength() {
     "use strict";
     var options = {
         bootstrap3: true,
+        showVerdicts: false,
         usernameField: "#loginname",
         errorMessages:
         {
