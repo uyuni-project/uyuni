@@ -23,7 +23,7 @@
 %define lesscmd lessc
 %endif
 Name:       spacewalk-branding
-Version:    2.1.13
+Version:    2.1.13.1
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
