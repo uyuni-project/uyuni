@@ -1,4 +1,37 @@
 -------------------------------------------------------------------
+Mon Dec 09 16:17:50 CET 2013 - mc@suse.de
+
+- version 5.10.65.1-1
+- switch to 2.1
+
+-------------------------------------------------------------------
+Wed Aug 21 15:46:06 CEST 2013 - mc@suse.de
+
+- version 5.10.27.12-1
+- rhncfg-* --server-name now overwrites rhncfg-*.conf
+- unicode support for Remote Command scripts
+
+-------------------------------------------------------------------
+Wed Jun 12 13:41:14 CEST 2013 - mc@suse.de
+
+- version 5.10.27.11-1
+- make diffs initiated from another spacewalk server obey
+  display_diff config option
+
+-------------------------------------------------------------------
+Mon Apr 22 15:54:45 CEST 2013 - mc@suse.de
+
+- version 5.10.27.10-1
+- simplify rhncfg API (bnc#815460)
+
+-------------------------------------------------------------------
+Fri Feb 08 11:06:39 CET 2013 - mc@suse.de
+
+- version 5.10.27.9-1
+- Fix Web UI config diff, which always shows 'binary files differ'
+- make rhncfg diff output configurable
+
+-------------------------------------------------------------------
 Mon Oct 15 12:21:31 CEST 2012 - mc@suse.de
 
 - version 5.10.27.8-1
