@@ -135,10 +135,17 @@ function checkPasswordStrength() {
                 'html': true,
                 'title': $('span.password-verdict').text(),
                 'content': $('ul.error-list').html(),
-                'trigger': 'manual',
-                'placement': 'top'
+                'trigger': 'focus',
+                'placement': 'auto top'
             });
             $('input[name="desiredpassword"]').popover('show');
+            //when there is no input the progressbar goes empty
+            //and the popover disappears
+            var value = $.trim($('input[name="desiredpassword"]').val());
+            if (value.length == 0) {
+                $('input[name="desiredpassword"]').popover('destroy');
+                $('.progress-bar').css('width','0%');
+            }
         }
     };
     $(':password').pwstrength(options);
