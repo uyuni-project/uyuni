@@ -150,7 +150,8 @@ public class IndexHandler {
                 retry = false;
                 List<Result> hits = indexManager.search(indexName, query, lang,
                         isFineGrained);
-                if (indexName.compareTo("package") == 0) {
+                if (indexName.equals("package") || indexName.equals("errata")
+                        || indexName.equals("server")) {
                     return screenHits(sessionId, indexName, hits);
                 }
                 return hits;
@@ -209,6 +210,9 @@ public class IndexHandler {
         }
         else if ("errata".equals(indexName)) {
             query = databaseManager.getQuery("verifyErrataVisibility");
+        }
+        else if ("server".equals(indexName)) {
+            query = databaseManager.getQuery("verifyServerVisibility");
         }
         else {
             if (log.isDebugEnabled()) {
