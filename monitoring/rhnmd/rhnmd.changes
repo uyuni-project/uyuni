@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Mon Dec 09 16:53:37 CET 2013 - mc@suse.de
+
+- version 5.3.18.1-1
+- cleanup requirements
+- switch to 2.1
+
+-------------------------------------------------------------------
+Fri Feb 08 11:08:36 CET 2013 - mc@suse.de
+
+- version 5.3.10.5-1
+- start rhnmd as user nocpulse and move pid file to 
+  writeable dir (bnc#800821)
+
+-------------------------------------------------------------------
 Fri Sep 28 16:16:24 CEST 2012 - mc@suse.de
 
 - version 5.3.10.4-1
