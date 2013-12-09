@@ -1,4 +1,79 @@
 -------------------------------------------------------------------
+Mon Dec 09 17:02:58 CET 2013 - mc@suse.de
+
+- version 2.1.30.1-1
+- support bare-metal registration (FATE#312329)
+- provide schema update to 2.1
+
+-------------------------------------------------------------------
+Wed Dec 04 09:49:35 CET 2013 - mc@suse.de
+
+- version 1.7.56.22-2
+- fix invalid syntax for postgresql migration
+
+-------------------------------------------------------------------
+Thu Nov 28 16:23:12 CET 2013 - mc@suse.de
+
+- version 1.7.56.22-1
+- fix oracle syntax and provide seperate update script for postgres DB
+  (bnc#846436)
+- Regenerate the metadata for rpm enhances dependency (bnc#846436)
+- add support for enhances rpm weak dependency (schema) (bnc#846436)
+
+-------------------------------------------------------------------
+Fri Aug 23 11:23:47 CEST 2013 - mc@suse.de
+
+- version 1.7.56.21-1
+- removing bad initial condition from max(evr_t)
+
+-------------------------------------------------------------------
+Wed Aug 21 16:02:08 CEST 2013 - mc@suse.de
+
+- version 1.7.56.20-1
+- rpm version comparison function was broken for alphanumeric versions
+- Make CSV separator configurable, schema (FATE#312907)
+- CVE Audit schema (FATE#312907)
+- prevents empty values (db_host, db_port) in rhn.conf
+- regenerate repodata for all channels to get package installed size
+  (bnc#825673)
+- make mgr-register-bunch a common bunch (bnc#824361)
+
+-------------------------------------------------------------------
+Wed Jun 12 11:00:29 CEST 2013 - mc@suse.de
+
+- version 1.7.56.19-1
+- Don't create index if it already exists
+- Don't drop rhn_ram_sid_idx if it does not exist.
+- No line break at the end of the package summary (bnc#821968)
+- fixed filename length in rhnErrataFileTmp
+- switch deferred segment creation off during installation
+- extend length of rhnPackageCapability.version
+
+-------------------------------------------------------------------
+Thu May  2 18:08:24 CEST 2013 - mc@suse.de
+
+- version 1.7.56.18-2
+- Fix table name typo in DB migration
+
+-------------------------------------------------------------------
+Thu Apr 04 15:16:41 CEST 2013 - mc@suse.de
+
+- version 1.7.56.18-1
+- Quote the password we pass to sqlplus so that special characters can be used.
+- Support recovery of failed schema upgrades (FATE#314644)
+- SSH Server Push (schema) (FATE#312909)
+
+-------------------------------------------------------------------
+Fri Feb 08 11:23:44 CET 2013 - mc@suse.de
+
+- version 1.7.56.17-1
+- rebrand help text for mail domain
+- correct olson name for Australia Western timezone
+- support for Australia EST/EDT timezones
+- take care that all migrations will be applied (bnc#797890)
+- fix schema upgrade for rhnPackageCapability (bnc#793415)
+
+-------------------------------------------------------------------
 Thu Nov 22 15:57:59 CET 2012 - jrenner@suse.de
 
 - version 1.7.56.16-1
