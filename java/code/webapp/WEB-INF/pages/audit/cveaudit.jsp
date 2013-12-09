@@ -38,7 +38,7 @@
           <span class="input-group-addon">-</span>
           <html:text property="cveIdentifierId" styleId="cveIdentifierId" styleClass="form-control" value="${cveIdentifierId}" title="CVE-ID" />
           <span class="input-group-btn">
-            <html:submit styleClass="btn btn-default"><bean:message key="cveaudit.jsp.cvenumber.auditsystem" /></html:submit>
+            <button type="submit" class="btn btn-default"><bean:message key="cveaudit.jsp.cvenumber.auditsystem" /></button>
           </span>
         </div>
       </div>
