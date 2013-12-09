@@ -133,7 +133,6 @@ function checkPasswordStrength() {
             $(evt.target).pwstrength("outputErrorList");
             $('input[name="desiredpassword"]').popover({
                 'html': true,
-                'title': $('span.password-verdict').text(),
                 'content': $('ul.error-list').html(),
                 'trigger': 'focus',
                 'placement': 'auto top'
