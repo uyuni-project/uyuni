@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.1.6
+Version: 2.1.7
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -17,6 +17,8 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 
 #Requires: apache-ibatis-sqlmap
+Requires: c3p0
+Requires: cglib
 Requires(pre): doc-indexes
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
@@ -35,6 +37,7 @@ Requires: jakarta-oro
 Requires: oro
 %endif
 #Requires: lucene
+Requires: objectweb-asm
 Requires: quartz < 2.0
 Conflicts: quartz >= 2.0
 Requires: redstone-xmlrpc
@@ -44,6 +47,7 @@ Requires: simple-core
 Obsoletes: rhn-search < 5.3.0
 BuildRequires: ant
 #BuildRequires: apache-ibatis-sqlmap
+BuildRequires: c3p0
 BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-codec
 BuildRequires: jakarta-commons-httpclient
@@ -212,6 +216,22 @@ fi
 %doc licenses/*
 
 %changelog
+* Fri Dec 06 2013 Tomas Lestach <tlestach@redhat.com> 2.1.7-1
+- 1023669 - have unique id for SnapshotTag
+- 1023669 - remove unused logger
+- 1023669 - start using verifyServerVisibility
+- 1023669 - start using errata visibility
+- 1023669 - fix list iterations as query parameters
+- 1023669 - add connection customizer
+- 1023669 - introduce C3P0DataSourceFactory
+- 1023669 - link cglib-node and objectweb-asm for DelteIndexes
+- 1023669 - require and link c3p0
+- 1023669 - require and link cglib-nodep and objectweb-asm
+- 1023669 - replace ibatis jar with mybatis
+- 1023669 - adapt code for mybatis
+- 1023669 - migrate to mybatis
+- 1023669 - remove original setSessionTimeZone
+
 * Fri Nov 15 2013 Tomas Lestach <tlestach@redhat.com> 2.1.6-1
 - Fix custom info value index removal in advanced search
 
