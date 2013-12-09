@@ -1,4 +1,60 @@
 -------------------------------------------------------------------
+Mon Dec 09 17:06:02 CET 2013 - mc@suse.de
+
+- version 2.1.39.1-1
+- new style added based on twitter bootstrap
+- support power management (FATE#315029)
+- switch to 2.1
+
+-------------------------------------------------------------------
+Thu Nov 28 16:16:08 CET 2013 - mc@suse.de
+
+- version 1.7.28.19-1
+- add support for enhances rpm weak dependency (web) (bnc#846436)
+
+-------------------------------------------------------------------
+Wed Aug 21 15:39:18 CEST 2013 - mc@suse.de
+
+- version 1.7.28.18-1
+- use default rhn.conf only when it exists
+- parent channel cannot be a shared channel from different org when
+  cloning
+- lookup for defaults also in /usr/share/rhn/config-defaults/rhn.conf
+
+-------------------------------------------------------------------
+Wed Jun 12 10:55:21 CEST 2013 - mc@suse.de
+
+- version 1.7.28.17-1
+- add RHN::Form::Widget::Select to ChannelEditor
+- We use RHN::Form::ParsedForm so we should use it.
+- Adding sudo Requires for spacewalk-base package
+
+-------------------------------------------------------------------
+Thu Apr 04 15:14:14 CEST 2013 - mc@suse.de
+
+- version 1.7.28.16-1
+- Fixing Oracle-specific outer join syntax, use of PE.evr.*, and missing joins.
+- Display package list on page history/event.pxt.
+- SSH Server Push (java) (FATE#312909)
+
+-------------------------------------------------------------------
+Fri Feb 08 10:57:09 CET 2013 - mc@suse.de
+
+- version 1.7.28.15-1
+- Removing the Downloads tab, it points to nonexisting
+  /rhn/software/channel/downloads/Download.do page.
+- Fixing enable_snapshot typo
+- set versions in html page footer to 1.7
+- fix duplicate headline for virtual guests (bnc#794293)
+- Fix navigation items for perl pages (bnc#794299)
+
+-------------------------------------------------------------------
+Wed Nov 28 10:20:20 CET 2012 - mc@suse.de
+
+- version 1.7.28.14-1
+- update changelog
+
+-------------------------------------------------------------------
 Thu Nov 22 15:59:33 CET 2012 - jrenner@suse.de
 
 - version 1.7.28.13-1
