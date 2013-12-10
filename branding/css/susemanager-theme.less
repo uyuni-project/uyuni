@@ -248,7 +248,22 @@ header {
 	form input.input-sm, form button.input-sm, form select.input-sm {
 		.box-shadow(-1px -1px 1px #838383);
 		height: 25px;
-		margin-left: 4px
+		margin-left: 4px;
+	}
+	form {
+		//style for the select to make it plain colour
+		select.form-control {
+			-webkit-appearance: button;
+		    -webkit-padding-end: 20px;
+			background: url('../../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
+			cursor: pointer;
+			display: inline-block;
+		    -moz-appearance: none;
+		    text-indent: 0.01px;
+		    text-overflow: '';
+		    line-height: normal;
+		    padding-top: 3px;
+		}
 	}
 	.btn.btn-info.input-sm {
 		padding: 0px 8px 0 12px;
@@ -358,6 +373,9 @@ aside .sideleg {
 	padding: .5em 1em;
 	border-radius: 4px;
 	margin: 2em auto;
+	box-shadow: 0px 1px 0px 0px #404040;
+    -moz-box-shadow: 0px 1px 0px 0px #404040;
+    -webkit-box-shadow: 0px 1px 0px 0px #404040;
 	.hidden-sm;
 	.hidden-xs;
 	li {
