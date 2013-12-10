@@ -11,9 +11,10 @@
 <head>
 <meta name="page-decorator" content="none" />
 <script src="/javascript/focus.js" type="text/javascript"></script>
+<script src="/javascript/cve-audit.js" type="text/javascript"></script>
 </head>
 
-<body onload="formFocus('cveAuditForm','cveIdentifierId');">
+<body onload="formFocus('cveAuditForm','cveIdentifierId'); addPasteHandler();">
   <rhn:toolbar base="h1" img="/img/rhn-icon-search.gif"
     imgAlt="audit.jsp.alt"
     helpUrl="/rhn/help/reference/en-US/s1-sm-audit.jsp#s2-sm-audit-cve">
@@ -41,7 +42,7 @@
                 <html:options collection="years" property="value" />
               </html:select>
               <label for="cveIdentifierId">-</label>
-              <html:text property="cveIdentifierId" styleId="cveIdentifierId" value="${cveIdentifierId}" size="10" title="CVE-ID" />
+              <html:text property="cveIdentifierId" styleId="cveIdentifierId" value="${cveIdentifierId}" size="10" title="You can paste entire CVE identifiers in here!" />
               <html:submit><bean:message key="cveaudit.jsp.cvenumber.auditsystem" /></html:submit><br />
             </td>
           </tr>
