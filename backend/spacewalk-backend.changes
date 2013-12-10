@@ -1,4 +1,146 @@
 -------------------------------------------------------------------
+Mon Dec 09 16:02:08 CET 2013 - mc@suse.de
+
+- version 2.1.38.1-1
+- better detection for SUSE KVM and Cloud systems
+- support bootstrap entitlement for bare-metal registration
+  (FATE#312329)
+- use new ISS slave detection
+
+-------------------------------------------------------------------
+Thu Nov 28 16:24:43 CET 2013 - mc@suse.de
+
+- version 1.7.38.30-1
+- replace encode/decode with to_string/to_unicode
+- make sure we put strings to fd.write()
+- replace application code with database lookup to prevent conflicting
+  inserts
+- python server: better logging of exceptions
+- log errors on bad request (bnc#849856)
+- fixed table alias
+- updated spacewalk-repo-sync's man page (bnc#846351)
+- add support for enhances rpm weak dependencies (backend) (bnc#846436)
+- python pgsql driver: handled ProgrammingError exceptions
+- Fix typos in entitlement report (bnc#840751)
+
+-------------------------------------------------------------------
+Fri Sep 27 09:59:33 CEST 2013 - mc@suse.de
+
+- version 1.7.38.29-1
+- with deep-verify import patches step by step
+- check if mountpoint exists and send error mail (bnc#839111)
+- bool(0) == False, but is a valid file mode
+
+-------------------------------------------------------------------
+Tue Aug 27 17:42:46 CEST 2013 - mc@suse.de
+
+- version 1.7.38.28-1
+- Ensure the file object is closed only when no IOError took place
+  (bnc#837035)
+
+-------------------------------------------------------------------
+Wed Aug 21 15:54:56 CEST 2013 - mc@suse.de
+
+- version 1.7.38.27-1
+- add option to disable Expect header for post request (bnc#834200)
+- re-import all patches with param deep-verify (bnc#833643)
+- rewrite package org to match where they got imported (bnc#834780)
+- Fix field length of erratum-advisory-name to match real DB field length
+- forward register and de-register requests to parent
+- debranding satellite-sync
+- provide dummy repoindex handler for auth test in ISS case
+- use needed mgr_ncc_sync_lib calles in satellite-sync
+- copy SUSE product and subscription information into the disk dump
+- add handler for ncc sync data used by iss (bnc#832776)
+- package mgr-inter-sync and mgr-exporter commands (FATE#312371)
+- import/export Support Information
+- sync suseProductFiles with inter-server-sync
+- dump and read rhn-channel-update-tag
+- Add curl debugging to send and accessible (bnc#834200)
+- filter out bad package/architecture combinations
+- add debug code to import_susedata
+- handle unicode tracebacks
+- handle compressed products file
+- Fix pylint errors - bnc#829073
+- Fix code to work with python 2.4 - bnc#829073
+- Make reposync work with local repositories - bnc#829073
+
+-------------------------------------------------------------------
+Wed Jun 12 13:26:43 CEST 2013 - mc@suse.de
+
+- version 1.7.38.26-1
+- fix reactivation of systems (bnc#823241)
+- remove incorrect path from db
+- Adding file path restoration functionality to spacewalk-data-fsck
+- update copyright column length
+- don't truncate channel name to 64 chars
+- make API compatible with old RHEL5 clients
+- No line break at the end of the package summary (bnc#821968)
+- don't truncate filepath when exporting
+- fix registration issues on PG
+- update expired gpg keys in the keyring
+- set copy_local urlgrabber option to copy also file URLs (bnc#819781)
+- implement no_proxy usage (FATE#315039)
+- use timeout config option also in suseLib send function (bnc#815460)
+
+-------------------------------------------------------------------
+Thu May 17 17:13:44 CEST 2013 - mc@suse.de
+
+- version 1.7.38.25-1
+- make satellite-sync work with new rhnlib (bnc#815460)
+- search for CVE numbers also in the description
+- require rhnlib with timeout option
+- make rpclib connection timeout configurable (bnc#815460)
+- return 404 Not Found on requests of content or installation.xml (bnc#815441)
+- fix encoding in products summary and description
+
+-------------------------------------------------------------------
+Fri May 17 15:04:28 CEST 2013 - mc@suse.de
+
+- fix authentication checking in inter server sync
+  CVE-2013-2056 (bnc#819365)
+
+-------------------------------------------------------------------
+Thu Apr 04 15:32:18 CEST 2013 - mc@suse.de
+
+- version 1.7.38.24-1
+- Write better error message if the GPG key is not imported
+  (bnc#812599)
+- correct size for old rpms > 2 GiB
+- do not read rpm into memory before transferring to client
+  (bnc#801151)
+- do not log passwords in URL
+- If the database host is localhost, use Unix sockets in backend.
+- SSH Server Push (backend) (FATE#312909)
+- support V4 RSA/SHA1 signature
+- Use FQDN in reposync error emails
+- fix unicode encoding (bnc#803866)
+- do not change the channels on future actions request
+
+-------------------------------------------------------------------
+Fri Feb 08 11:09:35 CET 2013 - mc@suse.de
+
+- version 1.7.38.23-1
+- send patch notifications only for new patches (FATE#314765)
+- log with debug level, if wanted
+- collect download errors and send error mail (bnc#801189)
+- compare patch version as integers
+- do not send null values for new products via XMLRPC (bnc#798131)
+- change_base_channel should honor suse_products info if available
+
+-------------------------------------------------------------------
+Tue Dec 18 12:55:55 CET 2012 - mc@suse.de
+
+- version 1.7.38.22-1
+- fix formatstring error with proxy user and password
+
+-------------------------------------------------------------------
+Tue Nov 27 17:24:02 CET 2012 - mc@suse.de
+
+- version 1.7.38.21-1
+- remove product reference while deleting channel (bnc#790987)
+
+-------------------------------------------------------------------
 Thu Nov 22 15:28:52 CET 2012 - jrenner@suse.de
 
 - version 1.7.38.20-1
