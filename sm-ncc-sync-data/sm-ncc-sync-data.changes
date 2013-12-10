@@ -1,4 +1,64 @@
 -------------------------------------------------------------------
+Mon Dec 09 16:43:52 CET 2013 - mc@suse.de
+
+- version 2.1.1-1
+- switch to 2.1
+
+-------------------------------------------------------------------
+Fri Sep 27 10:02:32 CEST 2013 - mc@suse.de
+
+- version 1.7.14-1
+- Add support for SLES-for-SAP11-SP3, SUSE Cloud 2.0, SLE-POS-11-SP3 and
+  SLERT11-SP3 (bnc#841139,bnc#841138,bnc#841143,bnc#809722)
+
+-------------------------------------------------------------------
+Wed Aug 21 15:53:02 CEST 2013 - mc@suse.de
+
+- version 1.7.13-1
+- add SMT11 SP3 and SLES10-SP4-LTSS channel definitions
+  (FATE#313494)(bnc#833762)
+
+-------------------------------------------------------------------
+Wed Jun 12 10:38:17 CEST 2013 - mc@suse.de
+
+- version 1.7.12-1
+- add webyast as addon to SLES4VMware 11-SP3
+
+-------------------------------------------------------------------
+Thu Jun 06 16:39:58 CEST 2013 - mc@suse.de
+
+- version 1.7.11-1
+- Add Channels for StudioOnsite, SLMS and WebYAST v1.3
+
+-------------------------------------------------------------------
+Tue Jun 04 11:10:34 CEST 2013 - mc@suse.de
+
+- version 1.7.10-1
+- enable 11-SP3 products for SLES, SLED, SDK, SLES4VMware
+  and SLE-HAE (FATE#313494, bnc#806839)
+
+-------------------------------------------------------------------
+Thu Apr 04 15:25:05 CEST 2013 - mc@suse.de
+
+- version 1.7.9-1
+- add channels and upgrade paths for OES11, OES11 SP1
+  and RealTime SP2
+- add channels and upgrade paths for SLE11-SMT-SP2 (bnc#804456)
+
+-------------------------------------------------------------------
+Fri Feb 08 14:20:19 CET 2013 - mc@suse.de
+
+- version 1.7.8-1
+- add possibility to migrate from SLED11 SP1 to SP2 (bnc#795360)
+- Add support for SUSE Cloud 1.0 (bnc#792676)
+
+-------------------------------------------------------------------
+Tue Nov 27 17:23:16 CET 2012 - mc@suse.de
+
+- version 1.7.7-1
+- update changelog
+
+-------------------------------------------------------------------
 Thu Nov 22 15:43:01 CET 2012 - jrenner@suse.de
 
 - version 1.7.6-1

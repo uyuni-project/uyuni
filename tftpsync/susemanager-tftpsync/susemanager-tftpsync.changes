@@ -1,8 +1,20 @@
 -------------------------------------------------------------------
-Fri Apr 12 12:31:38 CEST 2013 - mc@suse.de
+Mon Dec 09 16:22:29 CET 2013 - mc@suse.de
 
-- version 1.10.1-1
-- update version
+- version 2.1.1-1
+- switch to 2.1
+
+-------------------------------------------------------------------
+Wed Aug 21 15:50:06 CEST 2013 - mc@suse.de
+
+- version 1.7.2-1
+- check if there are proxies configured for syncing (bnc#829961)
+
+-------------------------------------------------------------------
+Mon Mar 11 11:01:04 CET 2013 - mc@suse.de
+
+- version 1.7.1-1
+- Add support for tftpsync (FATE#313499)
 
 -------------------------------------------------------------------
 Thu Jan 10 11:12:24 CET 2013 - mc@suse.de

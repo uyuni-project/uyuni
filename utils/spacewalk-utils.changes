@@ -1,4 +1,28 @@
 -------------------------------------------------------------------
+Mon Dec 09 16:20:01 CET 2013 - mc@suse.de
+
+- version 2.1.22.1-1
+- switch to 2.1
+
+-------------------------------------------------------------------
+Wed Jun 12 13:38:38 CEST 2013 - mc@suse.de
+
+- version 1.7.15.11-1
+- work around buggy perl version in SLES11
+  (manually specify encoding options for spacewalk-dump-schema)
+- check to see if the key exists before initializing parent channel key
+- fixed promote phase naming errors
+- correctly quote the database name
+- disable, enable & rebuild indexes for migrations
+
+-------------------------------------------------------------------
+Thu Apr 04 15:28:11 CEST 2013 - mc@suse.de
+
+- version 1.7.15.10-1
+- add openSUSE 12.3 to spacewalk-common-channels config
+- add script for automated user creation from LDAP (FATE#312615)
+
+-------------------------------------------------------------------
 Thu Nov 22 15:49:53 CET 2012 - jrenner@suse.de
 
 - version 1.7.15.9-1

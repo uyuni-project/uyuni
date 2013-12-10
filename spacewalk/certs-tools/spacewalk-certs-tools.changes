@@ -1,4 +1,51 @@
 -------------------------------------------------------------------
+Mon Dec 09 16:39:50 CET 2013 - mc@suse.de
+
+- version 2.1.4.1-1
+- re-include the zypper install section in the bootstrap script
+- fix duplicate GPG key and CA Cert section
+- switch to 2.1
+
+-------------------------------------------------------------------
+Thu Nov 28 16:16:49 CET 2013 - mc@suse.de
+
+- version 1.7.3.10-1
+- include fixed version of sm-client-tools (bnc#823813)
+
+-------------------------------------------------------------------
+Mon Oct 21 17:12:01 CEST 2013 - mc@suse.de
+
+- include fixed version of sm-client-tools (bnc#823813)
+
+-------------------------------------------------------------------
+Wed Jun 12 11:20:01 CEST 2013 - mc@suse.de
+
+- version 1.7.3.9-1
+- Remove temp files verbosely even in case of error (bnc#818566)
+- Adding sudo Requires for spacewalk-certs-tools package
+- The chkconfig command on RHEL does not know the -d switch
+- simply test if bootstrap repo exists and use it if yes
+- update sm-client-tools package
+  * Minor refactorings in the code for resource management.
+  * Remove bootstrap repo after failure. (bnc#801666)
+  * /usr/share/rhn/ directory might not exist. (bnc#801662)
+  * added possibility to override SUSE Manager host for tunneling.
+  * added possibility to override rhn.conf with command line.
+
+-------------------------------------------------------------------
+Thu Apr 04 15:31:27 CEST 2013 - mc@suse.de
+
+- version 1.7.3.8-1
+- SSH Server Push (client registration) (FATE#312909)
+
+-------------------------------------------------------------------
+Fri Feb 08 11:18:34 CET 2013 - mc@suse.de
+
+- version 1.7.3.7-1
+- Actually use https in the bootstrap script as described in
+  the comment
+
+-------------------------------------------------------------------
 Thu Nov 22 15:52:51 CET 2012 - jrenner@suse.de
 
 - version 1.7.3.6-1

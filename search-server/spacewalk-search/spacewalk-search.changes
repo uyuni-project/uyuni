@@ -1,4 +1,31 @@
 -------------------------------------------------------------------
+Mon Dec 09 16:44:52 CET 2013 - mc@suse.de
+
+- version 2.1.7.1-1
+- no JAVA API version check
+- make init script SUSE aware
+- do not exclude s390x
+- switch to 2.1
+
+-------------------------------------------------------------------
+Thu Nov 28 16:12:04 CET 2013 - mc@suse.de
+
+- version 1.7.3.11-1
+- Fix custom info value index removal in advanced search (bnc#834415)
+
+-------------------------------------------------------------------
+Thu Apr 04 15:39:59 CEST 2013 - mc@suse.de
+
+- version 1.7.3.10-1
+- proper quoting for the zero length test
+
+-------------------------------------------------------------------
+Fri Feb 08 11:15:59 CET 2013 - mc@suse.de
+
+- version 1.7.3.9-1
+- fix errata search by CVE (brc#905872)
+
+-------------------------------------------------------------------
 Fri Sep 28 16:45:37 CEST 2012 - mc@suse.de
 
 - version 1.7.3.8-1

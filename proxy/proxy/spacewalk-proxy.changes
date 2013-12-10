@@ -1,4 +1,44 @@
 -------------------------------------------------------------------
+Mon Dec 09 16:50:37 CET 2013 - mc@suse.de
+
+- version 2.1.12.1-1
+- switch to 2.1
+
+-------------------------------------------------------------------
+Thu Nov 28 16:21:54 CET 2013 - mc@suse.de
+
+- version 1.7.12.13-1
+- /etc/hosts doesn't work with proxies (bnc#850983)
+
+-------------------------------------------------------------------
+Fri Sep 27 09:58:15 CEST 2013 - mc@suse.de
+
+- version 1.7.12.12-1
+- Add redirect for bootstrap repositories (FATE#315138)
+
+-------------------------------------------------------------------
+Wed Aug 21 15:35:50 CEST 2013 - mc@suse.de
+
+- version 1.7.12.11-1
+- add comment for new timeout option (bnc#833685)
+
+-------------------------------------------------------------------
+Wed Jun 12 13:24:25 CEST 2013 - mc@suse.de
+
+- version 1.7.12.10-1
+- make Proxy timeouts configurable (bnc#815460)
+- Do not read response data into memory (bnc#801151)
+- do not read data into memory which should be
+  send to the server (bnc#801151)
+
+-------------------------------------------------------------------
+Fri Feb 08 11:04:34 CET 2013 - mc@suse.de
+
+- version 1.7.12.9-1
+- raise NotLocalError if package is not in cache file (bnc#799684)
+- Remove superfluous stuff from cobbler-proxy.conf (bnc#796581)
+
+-------------------------------------------------------------------
 Thu Nov 22 15:27:54 CET 2012 - jrenner@suse.de
 
 - version 1.7.12.8-1

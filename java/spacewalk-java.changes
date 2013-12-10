@@ -1,4 +1,193 @@
 -------------------------------------------------------------------
+Mon Dec 09 17:08:30 CET 2013 - mc@suse.de
+
+- version 2.1.90.1-1
+- new style added based on twitter bootstrap
+- support power management (FATE#315029)
+- support bare-metal registration (FATE#312329)
+- switch to 2.1
+
+-------------------------------------------------------------------
+Thu Nov 28 16:18:08 CET 2013 - mc@suse.de
+
+- version 1.7.54.29-1
+- Fix jsp file to actually show the result list
+- Automatically set the focus using formFocus()
+- Add a tooltip for the CVE-ID
+- Use a string constant to populate select with years
+- Extract the separator from the prefix string constant
+- Remove the maxlength attribute to allow n digit identifiers
+- enhance Package.listOrphans query
+- optimized system_config_files_with_diffs eleborator for PostgreSQL
+- fix ISE, when renaming channel to channel name already in use
+- synchronize repo entries creation
+- Fix ISE when deleting a non persistent custom info value
+- Separate CVE audit inputs for year and ID (bnc#846356)
+- always set lastModifiedBy for custom infos
+- Reorder snippet tabs
+- Use the kickstart icon for the snippets page
+- Add help URL (bnc#848225)
+- Fix navigation for the default snippets page
+- Replace 'kickstart' with 'autoinstallation' (bnc#848225)
+- add support for enhances rpm weak dependency (java) (bnc#846436)
+
+-------------------------------------------------------------------
+Wed Nov  6 11:07:37 CET 2013 - mc@suse.de
+
+- Forbid un-authenticated creation of SUSE Manager Administrative
+  accounts CVE-2013-4480 (bnc#848639)
+
+-------------------------------------------------------------------
+Mon Nov  4 10:09:39 CET 2013 - mc@suse.de
+
+- Deny creating of multiple first admin users.
+  CVE-2013-4480 (bnc#848639)
+
+-------------------------------------------------------------------
+Fri Sep 27 10:04:28 CEST 2013 - mc@suse.de
+
+- version 1.7.54.28-1
+- Use server arch instead of relying on a base channel (bnc#841054)
+- Filter out product base channels with invalid arch (bnc#841054)
+- CVEAuditManager: do not fail with unsynced channels
+- Log exception stack traces in Taskomatic
+- CVEAuditManager: Fetch ChannelArch instead of ServerArch
+- Do not assume a migrated base channel exists (bnc#841240)
+- fix Systems Subscribed column on the Entitlements page
+- Add missing keyword 'AS' in dist upgrade queries (bnc#840899)
+- Make taskomatic max memory configurable via rhn.conf (bnc#810787)
+- Clean up SSH push jobs in case of taskomatic restart (bnc#838188)
+- Remember systems we are currently talking to via SSH push (bnc#838188)
+- Add necessary transaction handling to fix job status (bnc#838188)
+- Show the system name in the log message warning
+- RhnSet concurrency fix reformulated at upstream's request
+- Fix javascript "Uncaught TypeError" (bnc#836692)
+- Avoid a possible issue on concurrent updates to an RhnSet
+
+-------------------------------------------------------------------
+Fri Aug 23 11:25:20 CEST 2013 - mc@suse.de
+
+- version 1.7.54.27-1
+- CVE Audit testsuite bugfixes to run on Oracle
+- Fix link to the documentation
+- Bugfix: avoid ClassCastException from Long to Integer in Oracle
+
+-------------------------------------------------------------------
+Wed Aug 21 16:03:35 CEST 2013 - mc@suse.de
+
+- version 1.7.54.26-1
+- Fix link to the documentation
+- fix CVE Audit query to run with oracle DB
+- Bugfix: allow Hibernate to distinguish packages with identical name, arch and
+  evr (bnc#833643)
+- Do not show link to the admin page to non-admins
+- CobblerSystemCreateCommand: do not fail if distro breed is null
+- Make CSV separator configurable, java (FATE#312907)
+- CVE Audit java (FATE#312907)
+- explicitly require libxml2 for kickstarts to avoid error
+- escaping system name on multiple pages
+- API call setChildChannels should produce snapshot
+- changing of base channel via API should produce snapshot
+- we need unentitle channels before we delete them
+- add newline after writing kickstart_start var
+- marking label not required
+- fixing wrong escaping of utf-8 strings
+- Fix HTML not being escaped in package information (bnc#833238)
+- Fix a NPE when a system virtual instance does not have a corresponding info
+  object (bnc#829966)
+- fix metadata if capability version starts with a colon
+- Generate pre flag into the metadata (bnc#826734)
+- fix reinstall of products by writing correct epoch in products.xml
+  (bnc#826734)
+- set archive value for installed package size (bnc#825673)
+- IBM Java core dumps should all go to /var/crash (bnc#824775)
+- Fix entitlement addition NPE (bnc#824581)
+
+-------------------------------------------------------------------
+Wed Jun 12 16:45:02 CEST 2013 - mc@suse.de
+
+- version 1.7.54.25-1
+- Fix SP migration ClassCastException (bnc#820985)
+- Fix lookup for the SSH push default schedule (bnc#823366)
+- escaping system name in web pages
+- Fix UI text about kickstart (bnc#822385)
+- sort parent channel pop-up menu by channel name
+- add list elaborator into session for CSV export
+- fix invalid SQL statement for finding ssh-push candidates (bnc#821868)
+- Subscribe only to selected config channels via SSM (bnc#821786)
+- Fix cobbler information file system paths (bnc#820980)
+- too big value in system custom info should not cause ISE
+- do not offer a symlink, if the user does not have acl for the target
+- added showing systems counts on cancel scheduled actions page
+- add some missing UI strings
+- fix system.listSystemEvents on PG
+- display 'Updates' column on group system list pages
+- fix 'Configs' column on system groups related pages
+- Upstream-specific check on channel name removed (bnc#701082)
+- Refactor bugfix (bnc#814292)
+- Set milliseconds to 0 before comparing dates (bnc#814292)
+- Trigger repo metadata generation after cloning patches (bnc#814292)
+- Add missing string *.actions.scheduled (bnc#813756)
+- fix paths for kernel and initrd on DVD on s390x (bnc#814263)
+
+-------------------------------------------------------------------
+Fri Apr 05 14:27:23 CEST 2013 - mc@suse.de
+
+- version 1.7.54.24-1
+- Disable Virtualization -> Provisioning when contact method is invalid
+- Fix "Can't do inplace edit" error message during registration (bnc#812046)
+- Make duplicate-hostname search case-insensitive
+- use the server timezone as the default for the first user
+- Provisioning is not supported with contact method 'ssh-push-tunnel'
+- Do not create kickstart files for SUSE Distributions (bnc#808278)
+- fixed API doc for system.listLatestUpgradablePackages and
+  system.listLatestInstallablePackages API calls
+- SSH Server Push (java) (FATE#312909)
+- generate metadata always if not explicitly rejected (bnc#804445)
+- completed kickstarts still show up on 'currently kickstarting' list
+- return whole log in case more bytes are requested than the current file size
+- RhnJavaJob: Do not ignore the exit code for external programs.
+- Do not silence catched exceptions. Debugging can be hard.
+- list also channel packages not associated with already cloned errata
+- fix WebUI's errata sync
+- Only package build times should be converted to GMT (bnc#794651)
+- Fix ISE when doing SP migration of SLE 11 SP1 SMT (bnc#802144)
+
+-------------------------------------------------------------------
+Fri Feb 08 10:58:19 CET 2013 - mc@suse.de
+
+- version 1.7.54.23-1
+- Fix branding of api example scripts (bnc#801758)
+- Add countries BQ, CW, SX.
+- rebrand help text for mail domain
+- fix the 'Replace Existing Subscriptions' SSM config channel option
+- prevent NPE when package description might be null
+- add virtualization guest info to the ServerSerializer
+- added email field to user list csv
+- correct olson name for Australia Western timezone
+- support for Australia EST/EDT timezones
+- Remove restrictions on proxy channel subscriptions (bnc#794848)
+- Make images of type 'kvm' show up on the UI (bnc#797057)
+- Resolve FQDN of hostname taken from the request (bnc#791905)
+- order rpms by build_time to fix kickstart via proxy
+- add missing strings for configuration management (bnc#796391)
+- Use proxy host for kickstarting virtual guest if available
+- Try to determine localhost's FQDN (bnc#791905)
+- check for zypp-plugin-spacewalk if testing autoinstall
+  capability(bnc#795308)
+- copy GPG information from the original channel within
+  channel.software.clone API, when the user omits it
+- deleting an org should remove cobbler profiles too
+- preserve product name when cloning channels using API
+
+-------------------------------------------------------------------
+Tue Nov 27 17:22:29 CET 2012 - mc@suse.de
+
+- version 1.7.54.22-1
+- Implement new API call system.listAllInstallablePackages
+- Fix ArrayIndexOutOfBoundsException in case of a missing base channel
+
+-------------------------------------------------------------------
 Thu Nov 22 15:43:51 CET 2012 - jrenner@suse.de
 
 - version 1.7.54.21-1

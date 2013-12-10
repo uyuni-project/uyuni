@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Dec 09 17:41:28 CET 2013 - mc@suse.de
+
+- version 1.0.2-1
+- fix collecting logs and add more configs to add
+- Supplements with packageand spacewalk-check and supportutils
+
+-------------------------------------------------------------------
 Thu Oct 10 11:28:59 CEST 2013 - mc@suse.de
 
 - version 1.0.1-1

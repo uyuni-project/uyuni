@@ -11,7 +11,7 @@ function incr () {
 
 function new_path () {
 
-    dest="$basepath/susemanager-schema-1.7.57-to-susemanager-schema-2.0//$nextnum$fname"
+    dest="$basepath/susemanager-schema-1.7.57-to-susemanager-schema-2.1//$nextnum$fname"
 
 }
 
