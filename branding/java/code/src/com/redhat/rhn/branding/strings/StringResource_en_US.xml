@@ -1823,20 +1823,6 @@ tree will not be usable for autoinstalling.
         <source>Channel Name</source>
       </trans-unit>
 
-      <!-- CSV separator -->
-      <trans-unit id="preferences.jsp.csvtitle">
-        <source>CSV Files</source>
-      </trans-unit>
-      <trans-unit id="preferences.jsp.csvdesc">
-        <source>Configure a separator character to be used in downloadable CSV files:</source>
-      </trans-unit>
-      <trans-unit id="preferences.jsp.csvcomma">
-        <source>Comma (",", default)</source>
-      </trans-unit>
-      <trans-unit id="preferences.jsp.csvsemicolon">
-        <source>Semicolon (";", compatible with Microsoft&#174; Excel&#174;)</source>
-      </trans-unit>
-
       <!-- Power Management -->
       <trans-unit id="cobbler.powermanagement.ipmitool">
         <source>IPMI</source>
