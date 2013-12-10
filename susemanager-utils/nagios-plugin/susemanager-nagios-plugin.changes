@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Dec 10 15:25:40 CET 2013 - mc@suse.de
+
+- version 1.0.2-1
+- add new probe check_suma_lastevent
+- fix filelist
+- nagios macros not yet known; use explicit paths
+
+-------------------------------------------------------------------
 Tue Jul 16 10:08:50 CEST 2013 - mantel@suse.de
 
 - version 1.0.1-1
