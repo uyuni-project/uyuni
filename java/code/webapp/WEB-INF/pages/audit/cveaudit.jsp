@@ -10,6 +10,7 @@
 <html>
 <head>
   <meta name="page-decorator" content="none" />
+  <script src="/javascript/tooltips.js"></script>
   <script src="/javascript/susemanager-cve-audit.js"></script>
 </head>
 
@@ -245,16 +246,5 @@
       <bean:message key="cveaudit.jsp.updatenotice.non-admin" />
     </p>
   </rhn:require>
-  <script type="text/javascript" src="/javascript/tooltips.js"></script>
-  <script type="text/javascript">
-    $("#cve-popover").popover({
-        html: "true",
-        delay: { show: 100, hide: 100 }
-      }).click(function (){
-        setTimeout(function () {
-          $("#cve-popover").popover('hide');
-      }, 5000);
-    });
-  </script>
 </body>
 </html>
