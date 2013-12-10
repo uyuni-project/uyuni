@@ -1744,6 +1744,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="cveaudit.jsp.description">
         <source>This page will display a list of systems with their patch status regarding a given CVE (Common Vulnerabilities and Exposures) number.</source>
       </trans-unit>
+      <trans-unit id="cveaudit.jsp.popover-content">
+        <source>&lt;ul&gt;&lt;li&gt;Find a list of available CVEs at &lt;a href='http://cve.mitre.org/' target='_blank'&gt; cve.mitre.org &lt;/a&gt;&lt;/li&gt;&lt;li&gt;You can also paste entire CVE identifiers like &lt;strong&gt;CVE-2013-6998&lt;/strong&gt;&lt;/li&gt;&lt;/ul&gt;</source>
+      </trans-unit>
       <trans-unit id="cveaudit.jsp.cvenumber">
         <source>CVE Number:</source>
       </trans-unit>
@@ -1821,20 +1824,6 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="channelName">
         <source>Channel Name</source>
-      </trans-unit>
-
-      <!-- CSV separator -->
-      <trans-unit id="preferences.jsp.csvtitle">
-        <source>CSV Files</source>
-      </trans-unit>
-      <trans-unit id="preferences.jsp.csvdesc">
-        <source>Configure a separator character to be used in downloadable CSV files:</source>
-      </trans-unit>
-      <trans-unit id="preferences.jsp.csvcomma">
-        <source>Comma (",", default)</source>
-      </trans-unit>
-      <trans-unit id="preferences.jsp.csvsemicolon">
-        <source>Semicolon (";", compatible with Microsoft&#174; Excel&#174;)</source>
       </trans-unit>
 
       <!-- Power Management -->

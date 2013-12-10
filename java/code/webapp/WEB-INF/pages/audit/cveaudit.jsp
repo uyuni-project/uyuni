@@ -9,7 +9,9 @@
 <html:xhtml />
 <html>
 <head>
-<meta name="page-decorator" content="none" />
+  <meta name="page-decorator" content="none" />
+  <script src="/javascript/tooltips.js"></script>
+  <script src="/javascript/susemanager-cve-audit.js"></script>
 </head>
 
 <body onload="formFocus('cveAuditForm','cveIdentifierId');">
@@ -28,7 +30,7 @@
         <rhn:submitted />
         <div class="row">
           <label class="col-sm-3 control-label" for="cveIdentifierId">
-            <a href="#" role="button" id="cve-popover" class="fa fa-info-circle" data-toggle="popover" data-placement="bottom" data-content="<ul><li>Find a list of available CVE's at <a href='http://cve.mitre.org/' targer='_blank'> cve.mitre.org </a></li><li>You can also paste the entire CVE like <strong>CVE-2013-6998</strong></li></ul>" data-trigger="click" data-delay="500"></a>
+            <a href="#" role="button" id="cve-popover" class="fa fa-info-circle" data-toggle="popover" data-placement="bottom" data-content="<bean:message key="cveaudit.jsp.popover-content" />" data-trigger="click" data-delay="500"></a>
             <bean:message key="cveaudit.jsp.cvenumber" />
           </label>
           <div class="col-sm-4">
@@ -244,16 +246,5 @@
       <bean:message key="cveaudit.jsp.updatenotice.non-admin" />
     </p>
   </rhn:require>
-  <script type="text/javascript" src="/javascript/tooltips.js"></script>
-  <script type="text/javascript">
-    $("#cve-popover").popover({
-        html: "true",
-        delay: { show: 100, hide: 100 }
-      }).click(function (){
-        setTimeout(function () {
-          $("#cve-popover").popover('hide');
-      }, 5000);
-    });
-  </script>
 </body>
 </html>
