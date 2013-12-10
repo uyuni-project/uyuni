@@ -9,7 +9,7 @@
 %endif
 
 Name:		python-hwdata
-Version:	1.10.1
+Version:	2.1.0.1
 Release:	1%{?dist}
 Summary:	Python bindings to hwdata package
 %if ((!0%{?suse_version}) || (0%{?suse_version} >= 1120))

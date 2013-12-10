@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Dec 10 15:21:57 CET 2013 - mc@suse.de
+
+- version 2.1.4.1-1
+- make post script success even if abrtd is not running
+- switch to 2.1
+
+-------------------------------------------------------------------
 Thu Apr 11 14:53:42 CEST 2013 - mc@suse.de
 
 - initial release
