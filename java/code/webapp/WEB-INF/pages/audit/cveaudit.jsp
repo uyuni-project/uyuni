@@ -10,6 +10,7 @@
 <html>
 <head>
 <meta name="page-decorator" content="none" />
+  <script src="/javascript/susemanager-cve-audit.js"></script>
 </head>
 
 <body onload="formFocus('cveAuditForm','cveIdentifierId');">
