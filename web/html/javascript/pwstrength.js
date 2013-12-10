@@ -131,7 +131,7 @@
         },
 
         progressWidget = function (localOptions) {
-            var html = '<div class="progress"><div class="';
+            var html = '<div class="progress progress-pwstrength"><div class="';
 
             if (localOptions.bootstrap3) {
                 html += 'progress-';
