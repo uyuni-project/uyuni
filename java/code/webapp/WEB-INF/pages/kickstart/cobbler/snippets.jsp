@@ -6,7 +6,7 @@
 
 <html>
 <body>
-<rhn:toolbar base="h1" icon="fa-info-circle"
+<rhn:toolbar base="h1" icon="header-info"
                helpUrl="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-snippet"
                creationUrl="CobblerSnippetCreate.do"
                creationType="snippets"

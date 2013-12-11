@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.93
+Version: 2.1.97
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -895,6 +895,22 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Dec 11 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.97-1
+- use new icon aliases in more places
+
+* Wed Dec 11 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.96-1
+- allow channel administrator to view Channel > Managers page
+
+* Wed Dec 11 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.95-1
+- 1040540 - have package search return all matching results
+- use rhn:toolbar in 'Show Tomcat Logs' page
+
+* Wed Dec 11 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.94-1
+- use new icon aliases in rhn:toolbar tag
+- adding new icon definitions
+- adding rhn taglib as it's needed by rhn:icon
+- use rhn:icon tag for creating icons in rhn:toolbar
+
 * Tue Dec 10 2013 Stephen Herr <sherr@redhat.com> 2.1.93-1
 - 1039193 - Increase default ram to 768 for RHEL 7
 
