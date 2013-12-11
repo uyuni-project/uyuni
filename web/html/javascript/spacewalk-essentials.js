@@ -120,6 +120,7 @@ function formFocus(form, name) {
 function checkPasswordStrength() {
     "use strict";
     var options = {
+        minChar: 5,
         bootstrap3: true,
         showVerdicts: false,
         usernameField: "#loginname",
