@@ -83,7 +83,7 @@
                     return lenScore;
                 },
                 wordSimilarToUsername: function (options, word, score) {
-                    var username = $(options.usernameField).val();
+                    var username = $(options.usernameField).val() || $(options.usernameField).text();
                     if (username && word.toLowerCase().match(username.toLowerCase())) {
                         options.errors.push(options.errorMessages.same_as_username);
                         return score;
