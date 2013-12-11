@@ -48,8 +48,6 @@
     <label class="col-lg-3 control-label"><bean:message key="password.displayname"/></label>
     <div class="col-lg-6">
         <html:password property="desiredpassword" styleClass="form-control" maxlength="${passwordLength}"/>
-        <script type="text/javascript" src="/javascript/bootstrap-tooltip.js"></script>
-        <script type="text/javascript" src="/javascript/bootstrap-popover.js"></script>
         <script type="text/javascript" src="/javascript/pwstrength.js"></script>
         <script type="text/javascript">checkPasswordStrength()</script>
     </div>

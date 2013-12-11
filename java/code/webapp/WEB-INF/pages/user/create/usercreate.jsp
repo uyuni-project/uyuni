@@ -57,8 +57,6 @@
               <tr>
                 <td><label for="confirmpass"><bean:message key="confirmpass" /><span name="password-asterisk"
                       class="required-form-field">*</span>:</label></td>
-                      <script type="text/javascript" src="/javascript/bootstrap-tooltip.js"></script>
-                      <script type="text/javascript" src="/javascript/bootstrap-popover.js"></script>
                       <script type="text/javascript" src="/javascript/pwstrength.js"></script>
                       <script type="text/javascript">checkPasswordStrength()</script>
                 <td>
