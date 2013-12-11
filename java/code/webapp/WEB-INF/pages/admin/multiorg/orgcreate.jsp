@@ -58,8 +58,6 @@
                                    styleClass="form-control"
                                    maxlength="32"
                                    styleId="desiredpass" />
-                    <script type="text/javascript" src="/javascript/bootstrap-tooltip.js"></script>
-                    <script type="text/javascript" src="/javascript/bootstrap-popover.js"></script>
                     <script type="text/javascript" src="/javascript/pwstrength.js"></script>
                     <script type="text/javascript">checkPasswordStrength()</script>
                 </div>
