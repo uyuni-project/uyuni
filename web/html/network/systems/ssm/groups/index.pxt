@@ -7,12 +7,12 @@
 
   <grail-canvas-template base="/templates/c.pxt" mode="main_canvas">
 
-    <h1><i class="fa spacewalk-icon-system-groups" title="system set"></i> System Set Manager <rhn-help href="s1-sm-systems.jsp#s2-sm-ssm" /></h1>
+    <h1><rhn-icon type="header-system-groups" title="system set"/> System Set Manager <rhn-help href="s1-sm-systems.jsp#s2-sm-ssm" /></h1>
 
     <rhn-navi-nav prefix="system_set_manager" depth="0" file="/nav/ssm.xml" style="contentnav" />
 
 
-    <rhn-toolbar base="h2" icon="spacewalk-icon-system-groups" creation-url="/network/systems/ssm/groups/create.pxt" creation-type="group">
+    <rhn-toolbar base="h2" icon="header-system-groups" creation-url="/network/systems/ssm/groups/create.pxt" creation-type="group">
       Alter Group Membership
     </rhn-toolbar>
 
@@ -32,7 +32,7 @@
     <var name="sgid" />
   </formvars>
   <column name="System Group" label="group_name" width="55%">
-    <url>/network/systems/groups/details.pxt?sgid={column:id}</url>
+    <url>/rhn/groups/GroupDetail.do?sgid={column:id}</url>
   </column>
   <column name="Add" label="add_to_group_radio" width="15%" align="center" />
   <column name="Remove" label="remove_from_group_radio" width="15%" align="center" />

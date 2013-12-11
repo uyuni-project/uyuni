@@ -5261,6 +5261,15 @@ value for this entitlement, excluding the default organization's consumption.</s
         <trans-unit id="systems.groups.jsp.add">
           <source>Join Selected Groups</source>
         </trans-unit>
+        <trans-unit id="systemgroup.admins.title">
+          <source>Group Administrators</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.admins.summary">
+          <source>Checked users may administer the systems in this group.  Org Admins may always administer all systems. System Group Admins are marked with (*) and may modify all aspects of system groups assigned to them.</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.admins.updated">
+          <source>Admin list for system group &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
+        </trans-unit>
         <trans-unit id="systemgroup.target-systems.summary">
           <source>The following are systems that may be added to this group.</source>
         </trans-unit>
@@ -5281,6 +5290,48 @@ value for this entitlement, excluding the default organization's consumption.</s
         </trans-unit>
         <trans-unit id="systemgroup.systems.remove">
           <source>Remove Systems</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.status">
+          <source>System Group Status</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.updates">
+          <source>Updates:</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.criticalupdates">
+          <source>critical updates available</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.someupdates">
+          <source>updates available</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.noupdates">
+          <source>No applicable errata</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.none">
+          <source>(none)</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.properties">
+          <source>System Group Properties</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.editproperties">
+          <source>Edit These Properties</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.admins">
+          <source>Admins:</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.manageadmins">
+          <source>Edit group administrators</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.systems">
+          <source>Systems:</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.name">
+          <source>Name:</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.description">
+          <source>Description:</source>
+        </trans-unit>
+        <trans-unit id="systemgroup.details.admincount">
+          <source>group administrator(s)</source>
         </trans-unit>
       </group>
       <group>

@@ -24,7 +24,7 @@
 					<i class="fa fa-exclamation-circle fa-1-5x text-warning" title="<bean:message key='grouplist.jsp.updates'/>"></i>
 	    	    		</c:when>
 	        			<c:otherwise>
-	          			<i class="fa fa-check-circle fa-1-5x text-success" title="<bean:message key='grouplist.jsp.noerrata'/>"></i>
+	          			<rhn:icon type="system-ok" title="<bean:message key='grouplist.jsp.noerrata'/>" />
 		        		</c:otherwise>
 	   				</c:choose>
 	   			</a>
@@ -33,12 +33,12 @@
         	<%@ include file="/WEB-INF/pages/common/fragments/systems/monitoring_status_groups.jspf" %>
 
 			<rl:column headerkey="yourrhn.jsp.systemgroups">
-                <a href="/network/systems/groups/details.pxt?sgid=${current.id}">
+                <a href="/rhn/groups/GroupDetail.do?sgid=${current.id}">
                 <c:out value="${current.name}"/></a>
             </rl:column>
 
         	<rl:column headerkey="grouplist.jsp.systems">
-                <a href="/network/systems/groups/details.pxt?sgid=${current.id}">
+                <a href="/rhn/groups/GroupDetail.do?sgid=${current.id}">
                 <c:out value="${current.serverCount}"/></a>
         	</rl:column>
 
