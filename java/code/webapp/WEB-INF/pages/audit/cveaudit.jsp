@@ -10,7 +10,6 @@
 <html>
 <head>
   <meta name="page-decorator" content="none" />
-  <script src="/javascript/tooltips.js"></script>
   <script src="/javascript/susemanager-cve-audit.js"></script>
 </head>
 
