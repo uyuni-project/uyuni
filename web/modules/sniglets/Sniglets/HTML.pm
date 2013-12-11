@@ -42,6 +42,7 @@ sub register_tags {
   $pxt->register_tag("rhn-refresh-redirect", \&rhn_refresh_redirect);
   $pxt->register_tag("rhn-autorefresh-widget", \&rhn_autorefresh_widget);
   $pxt->register_tag("rhn-return-link", \&return_link);
+  $pxt->register_tag("rhn-icon", \&rhn_icon);
 }
 
 
@@ -90,7 +91,7 @@ sub toolbar {
   }
 
   if (defined $params{icon}) {
-    $icon= sprintf(qq{<i class="$params{icon}"></i>});
+    $icon = PXT::HTML->icon(-type => $params{icon});
   }
 
   if (defined $params{'help-url'}) {
@@ -134,14 +135,16 @@ sub creation_link {
   my $pxt = shift;
   my %params = @_;
 
-  return qq{<a href="$params{url}"><i class="fa fa-plus"></i>create new $params{type}</a>};
+  my $icon = PXT::HTML->icon(-type => "item-add");
+  return qq{<a href="$params{url}">${icon}create new $params{type}</a>};
 }
 
 sub deletion_link {
   my $pxt = shift;
   my %params = @_;
 
-  return qq{<a href="$params{url}"><i class="fa fa-trash-o"></i>delete $params{type}</a>};
+  my $icon = PXT::HTML->icon(-type => "item-del");
+  return qq{<a href="$params{url}">${icon}delete $params{type}</a>};
 }
 
 sub misc_link {
@@ -149,7 +152,8 @@ sub misc_link {
   my %params = @_;
 
   if (defined $params{icon}) {
-    return qq{<a href="$params{url}"><i class="$params{icon}"></i>$params{text}</a>};
+    my $icon = PXT::HTML->icon(-type => $params{icon});
+    return qq{<a href="$params{url}">${icon}$params{text}</a>};
   }
   else {
     return qq{<a href="$params{url}"><img src="$params{img}" alt="$params{'alt'}" title="$params{'alt'}" />$params{text}</a>};
@@ -334,4 +338,11 @@ sub return_link {
   return PXT::Utils->perform_substitutions($params{__block__}, \%subst);
 }
 
+sub rhn_icon {
+  my $pxt = shift;
+  my %params = validate(@_, {'type' => 1, 'title' => 0});
+
+  %params = map {("-$_" => $params{$_})} keys %params;
+  return PXT::HTML->icon(%params);
+}
 1;

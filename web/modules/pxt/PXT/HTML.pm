@@ -508,22 +508,73 @@ sub img {
   return qq{<img $inner_str />};
 }
 
+my %rhn_icons = (
+    "action-failed"    => "fa fa-times-circle-o fa-1-5x text-danger",
+    "action-ok"        => "fa fa-check-circle-o fa-1-5x text-success",
+    "action-pending"   => "fa fa-clock-o fa-1-5x",
+    "action-running"   => "fa fa-exchange fa-1-5x text-info",
+    "errata-bugfix"     => "fa fa-bug fa-1-5x",
+    "errata-enhance"    => "fa fa-1-5x spacewalk-icon-enhancement",
+    "errata-security"   => "fa fa-shield fa-1-5x",
+    "event-type-errata" => "fa spacewalk-icon-patches",
+    "event-type-package" => "fa spacewalk-icon-packages",
+    "event-type-preferences" => "fa fa-cog",
+    "event-type-system" => "fa fa-desktop",
+    "header-channel"    => "fa spacewalk-icon-software-channels",
+    "header-errata"     => "fa spacewalk-icon-patches",
+    "header-errata-add" => "fa spacewalk-icon-patch-install",
+    "header-errata-del" => "fa spacewalk-icon-patch-remove",
+    "header-errata-set" => "fa spacewalk-icon-patch-set",
+    "header-errata-set-add" => "fa pacewalk-icon-patchset-install",
+    "header-event-history" => "fa fa-suitcase",
+    "header-info"       => "fa fa-info-circle text-primary",
+    "header-package"    => "fa spacewalk-icon-packages",
+    "header-preferences" => "fa fa-cogs",
+    "header-proxy"      => "fa spacewalk-icon-proxy",
+    "header-search"     => "fa fa-search",
+    "header-signout"    => "fa fa-sign-out",
+    "header-sitemap"    => "fa fa-sitemap",
+    "header-snapshot"   => "fa fa-camera",
+    "header-snapshot-rollback"   => "fa spacewalk-icon-snapshot-rollback",
+    "header-system"     => "fa fa-desktop",
+    "header-system-groups" => "fa spacewalk-icon-system-groups",
+    "header-system-physical" => "fa fa-desktop",
+    "header-system-virt-guest" => "fa spacewalk-icon-virtual-guest",
+    "header-system-virt-host" => "fa spacewalk-icon-virtual-host",
+    "header-user"       => "fa fa-user",
+    "item-add"          => "fa fa-plus",
+    "item-del"          => "fa fa-trash-o",
+    "monitoring-crit"   => "fa fa-1-5x spacewalk-icon-health text-danger",
+    "monitoring-ok"     => "fa fa-1-5x spacewalk-icon-health text-success",
+    "monitoring-pending" => "fa fa-1-5x spacewalk-icon-health-pending",
+    "monitoring-status" => "fa fa-1-5x spacewalk-icon-monitoring-status",
+    "monitoring-unknown" => "fa fa-1-5x spacewalk-icon-health-unknown",
+    "monitoring-warn"   => "fa fa-1-5x spacewalk-icon-health text-warning",
+    "nav-up"            => "fa fa-caret-up",
+    "system-crit"       => "fa fa-exclamation-circle fa-1-5x text-danger",
+    "system-kickstarting" => "fa fa-rocket fa-1-5x",
+    "system-locked"     => "fa fa-1-5x spacewalk-icon-locked-system",
+    "system-ok"         => "fa fa-check-circle fa-1-5x text-success",
+    "system-physical"   => "fa fa-desktop fa-1-5x",
+    "system-unentitled" => "fa fa-1-5x spacewalk-icon-Unentitled",
+    "system-unknown"    => "fa fa-1-5x spacewalk-icon-unknown-system",
+    "system-virt-guest" => "fa fa-1-5x spacewalk-icon-virtual-guest",
+    "system-virt-host"  => "fa fa-1-5x spacewalk-icon-virtual-host",
+    "system-warn"       => "fa fa-exclamation-triangle fa-1-5x text-warning",
+        );
+
 sub icon {
   my $class = shift;
   my %params = @_;
 
-  if (not exists $params{-class}) {
-    die "classless icon";
-  }
+  die "empty icon type" if not exists $params{-type};
+  die qq{unknown icon type: "$params{-type}".} if not exists $rhn_icons{$params{-type}};
 
-  my @inner;
-  for my $attr (qw/class title/) {
-    next unless exists $params{"-$attr"};
-    push @inner, sprintf(qq{$attr="$params{-$attr}"});
-  }
+  my $icon = qq{<i class="$rhn_icons{$params{-type}}"};
+  $icon .= qq{ title="$params{-title}"};
+  $icon .= qq{></i>};
 
-  my $inner_str = join(" ", @inner);
-  return qq{<i $inner_str></i>};
+  return $icon;
 }
 
 1;

@@ -6,7 +6,7 @@
 
 <rhn-channel-details>
   <!-- Removed args: help-url="channel-mgmt-Custom_Channel_and_Package_Management-Managed_Software_Channel_Details.jsp" help-guide="channel-mgmt" -->
-  <rhn-toolbar base="h1" img="/img/rhn-icon-channels.gif" deletion-type="software channel" deletion-url="/rhn/channels/manage/Delete.do?cid={channel_id}" deletion-acl="user_role(channel_admin); formvar_exists(cid)">
+  <rhn-toolbar base="h1" icon="header-channel"  deletion-type="software channel" deletion-url="/rhn/channels/manage/Delete.do?cid={channel_id}" deletion-acl="user_role(channel_admin); formvar_exists(cid)">
     Software Channel: {channel_name}
   </rhn-toolbar>
 </rhn-channel-details>

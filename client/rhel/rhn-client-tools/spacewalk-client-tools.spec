@@ -14,7 +14,7 @@ License: GPLv2
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.1.11.1
+Version: 2.1.12
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -411,6 +411,10 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/icons/hicolor/24x24/apps/up2date.png
 %{_datadir}/icons/hicolor/32x32/apps/up2date.png
 %{_datadir}/icons/hicolor/48x48/apps/up2date.png
+%if 0%{?rhel} > 6 || 0%{?fedora} > 17
+%{_datadir}/icons/hicolor/22x22/apps/up2date.png
+%{_datadir}/icons/hicolor/256x256/apps/up2date.png
+%endif
 %{_datadir}/applications/rhn_register.desktop
 
 %if 0%{?rhel} > 0 && 0%{?rhel} < 6
@@ -456,6 +460,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Mon Dec 09 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.12-1
+- 1037778 - new registration icons
+
 * Wed Nov 27 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.11-1
 - 1035330 - run TUI registration when executed from setuptool
 
