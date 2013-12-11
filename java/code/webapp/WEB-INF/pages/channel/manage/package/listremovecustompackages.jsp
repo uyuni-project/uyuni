@@ -21,7 +21,7 @@
     </script>
 </head>
 <body>
-<rhn:toolbar base="h1" icon="spacewalk-icon-packages" iconAlt="overview.jsp.alt">
+<rhn:toolbar base="h1" icon="header-package" iconAlt="overview.jsp.alt">
 <!-- helpUrl="/rhn/help/getting-started/en-US/sect-Getting_Started_Guide-Channel_Management-Creating_and_Managing_Custom_Channels-Removing_Software_Packages.jsp" -->
    <bean:message key="channel.jsp.manage.package.title"/>
 </rhn:toolbar>
@@ -83,16 +83,11 @@
 			  </rl:list>
 
 			<div class="text-right">
-			 <input type="submit" name="confirm" value="<bean:message key='channel.jsp.manage.package.confirmbutton'/>"
-           <c:choose>
-               <c:when test="${empty pageList}">
-                   class="btn" disabled
-               </c:when>
-               <c:otherwise>
-                   class="btn btn-default"
-               </c:otherwise>
-           </c:choose>
-        ></input>
+			 <input type="submit" class="btn btn-default" name="confirm"  value="<bean:message key='channel.jsp.manage.package.confirmbutton'/>"
+            <c:choose>
+                <c:when test="${empty pageList}">disabled</c:when>
+            </c:choose>
+            >
 			</div>
      <rhn:submitted/>
 </rl:listset>

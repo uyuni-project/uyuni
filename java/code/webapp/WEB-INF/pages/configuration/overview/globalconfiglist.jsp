@@ -3,12 +3,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
+
 <html>
     <head>
         <meta name="page-decorator" content="none" />
     </head>
     <body>
-        <rhn:toolbar base="h1" icon="spacewalk-icon-Software-Channel-Management"
+        <rhn:toolbar base="h1" icon="header-configuration"
                      helpUrl="/rhn/help/reference/en-US/s1-sm-configuration.jsp#configuration-files-central"
                      creationUrl="/rhn/configuration/ChannelCreate.do?editing=true"
                      creationType="configchannel"

@@ -9,7 +9,7 @@
     <meta name="page-decorator" content="none" />
 </head>
 <body>
-<rhn:toolbar base="h1" icon="spacewalk-icon-patches"
+<rhn:toolbar base="h1" icon="header-errata"
 	           deletionUrl="/rhn/errata/Delete.do?eid=${param.eid}"
                deletionType="errata">
     <!-- helpUrl="/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Errata_Management-Managed_Errata_Details.jsp" -->

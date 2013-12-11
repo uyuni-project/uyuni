@@ -9,7 +9,7 @@
         <script language="javascript" src="/javascript/refresh.js"></script>
     </head>
     <body>
-        <rhn:toolbar base="h1" icon="fa-rocket"
+        <rhn:toolbar base="h1" icon="header-kickstart"
                      deletionUrl="/rhn/kickstart/TreeDelete.do?kstid=${kstree.id}"
                      deletionType="deleteTree"
                      imgAlt="kickstarts.alt.img">
@@ -33,6 +33,7 @@
     <html:hidden property="submitted" value="true"/>
     <html:hidden property="kstid" value="${kstid}"/>
     </html:form>
+</div>
 </body>
 </html:html>
 

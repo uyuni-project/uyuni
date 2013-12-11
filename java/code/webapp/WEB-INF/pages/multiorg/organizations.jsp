@@ -9,7 +9,7 @@
 
 <c:set var="pageList" value="${requestScope.pageList}" />
 
-<rhn:toolbar base="h1" icon="fa-group"
+<rhn:toolbar base="h1" icon="header-organisation"
   helpUrl="/rhn/help/reference/en-US/s1-sm-your-rhn.jsp#yourrhn-orgtrusts">
   <bean:message key="organizations.jsp.toolbar"/>
 </rhn:toolbar>
