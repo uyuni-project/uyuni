@@ -125,7 +125,7 @@
         </c:if>
         <div class="form-group">
             <label class="col-lg-3 control-label" for="contact-method">
-                <bean:message key="server.contact-method.label" />:
+                <bean:message key="server.contact-method.label" />
             </label>
             <div class="col-lg-6">
                 <html:select property="contactMethodId" styleId="contact-method" styleClass="form-control">

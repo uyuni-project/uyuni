@@ -376,7 +376,7 @@
           <rhn:require acl="system_feature(ftr_errata_updates)"
                      mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
           <tr>
-            <td><bean:message key="server.contact-method.label" />:</td>
+            <td><bean:message key="server.contact-method.label" /></td>
             <td>${system.contactMethod.name}</td>
           </tr>
           <tr>
