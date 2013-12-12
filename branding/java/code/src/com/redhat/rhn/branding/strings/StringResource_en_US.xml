@@ -1714,7 +1714,7 @@ tree will not be usable for autoinstalling.
 
       <!-- Server Contact Methods -->
       <trans-unit id="server.contact-method.label">
-        <source>Contact Method</source>
+        <source>Contact Method:</source>
       </trans-unit>
       <trans-unit id="server.contact-method.default">
         <source>Pull</source>
