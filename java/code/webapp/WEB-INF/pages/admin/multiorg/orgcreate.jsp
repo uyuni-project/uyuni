@@ -53,11 +53,16 @@
                     <span name="password-asterisk" class="required-form-field">*</span>:
                 </label>
                 <div class="col-lg-6">
-                    <html:password property="desiredpassword"
-                                   size="15"
-                                   styleClass="form-control"
-                                   maxlength="32"
-                                   styleId="desiredpass" />
+                    <div class="input-group">
+                        <html:password property="desiredpassword"
+                                       size="15"
+                                       styleClass="form-control"
+                                       maxlength="32"
+                                       styleId="desiredpass" />
+                        <span class="input-group-addon">
+                            <i class="fa fa-times-circle text-danger fa-1-5x" id="desiredtick"></i>
+                        </span>
+                    </div> 
                     <script type="text/javascript" src="/javascript/pwstrength.js"></script>
                     <script type="text/javascript">checkPasswordStrength()</script>
                 </div>
@@ -69,9 +74,15 @@
                     <span name="password-asterisk" class="required-form-field">*</span>:
                 </label>
                 <div class="col-lg-6">
-                    <html:password property="desiredpasswordConfirm" size="15"
-                                   styleClass="form-control"
-                                   maxlength="32" styleId="confirmpass"/>
+                    <div class="input-group">
+                        <html:password property="desiredpasswordConfirm" size="15"
+                                       styleClass="form-control"
+                                       onkeyup="updateTickIcon('confirm')"
+                                       maxlength="32" styleId="confirmpass"/>
+                        <span class="input-group-addon">
+                            <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
 
