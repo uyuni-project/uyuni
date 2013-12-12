@@ -221,7 +221,7 @@
                 updateProgressBarHTML($bar, cssPrefix, "danger", "5%");
                 verdictText = localOptions.verdicts[0];
             } else if (score >= localOptions.scores[0] && score < localOptions.scores[1]) {
-                updateProgressBarHTML($bar, cssPrefix, "danger", "25%");
+                updateProgressBarHTML($bar, cssPrefix, "warning", "25%");
                 verdictText = localOptions.verdicts[1];
             } else if (score >= localOptions.scores[1] && score < localOptions.scores[2]) {
                 updateProgressBarHTML($bar, cssPrefix, "warning", "50%");
