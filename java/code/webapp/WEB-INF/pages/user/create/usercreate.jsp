@@ -51,16 +51,26 @@
                 <td><label for="desiredpass"><bean:message key="desiredpass" /><span name="password-asterisk"
                       class="required-form-field">*</span>:</td></label>
                 <td>
-                  <html:password property="desiredpassword" styleClass="form-control" size="15" maxlength="${passwordLength}"/>
+                  <div class="input-group">
+                      <html:password property="desiredpassword" styleClass="form-control" size="15" maxlength="${passwordLength}"/>
+                      <span class="input-group-addon">
+                          <i class="fa fa-times-circle text-danger fa-1-5x" id="desiredtick"></i>
+                      </span>
+                  </div>
                 </td>
+                <script type="text/javascript" src="/javascript/pwstrength.js"></script>
+                <script type="text/javascript">checkPasswordStrength()</script>
               </tr>
               <tr>
                 <td><label for="confirmpass"><bean:message key="confirmpass" /><span name="password-asterisk"
                       class="required-form-field">*</span>:</label></td>
-                      <script type="text/javascript" src="/javascript/pwstrength.js"></script>
-                      <script type="text/javascript">checkPasswordStrength()</script>
                 <td>
-                  <html:password styleClass="form-control" property="desiredpasswordConfirm" size="15" maxlength="${passwordLength}" styleId="confirmpass"/>
+                  <div class="input-group">
+                      <html:password styleClass="form-control" property="desiredpasswordConfirm" onkeyup="updateTickIcon('confirm')" size="15" maxlength="${passwordLength}" styleId="confirmpass"/>
+                      <span class="input-group-addon">
+                          <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>
+                      </span>
+                  </div>
                 </td>
               </tr>
               <c:if test="${displaypam == 'true' && account_type != 'create_sat'}">
