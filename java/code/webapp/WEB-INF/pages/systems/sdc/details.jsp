@@ -103,6 +103,24 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="col-lg-3 control-label" for="contact-method">
+                            <bean:message key="server.contact-method.label"/>
+                        </label>
+                        <div class="col-lg-2">
+                            <c:choose>
+                                <c:when test="${system.baseEntitlement == null}">
+                                    <bean:message key="sdc.details.edit.contact-method.unentitled"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <html:select property="contact_method_id" styleId="contact-method" styleClass="form-control">
+                                        <html:options collection="contact_methods" property="id" labelProperty="name" />
+                                    </html:select>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="col-lg-3 control-label" for="autoerrataupdate">
                             <bean:message key="sdc.details.edit.autoerrataupdate"/>
                         </label>
