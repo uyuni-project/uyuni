@@ -120,15 +120,16 @@ function formFocus(form, name) {
 function checkPasswordStrength() {
     "use strict";
     var options = {
+        scores: [10, 26, 40, 50],
         minChar: 5,
         bootstrap3: true,
         showVerdicts: false,
         usernameField: "#loginname",
         errorMessages:
         {
-            password_too_short : '<span style="color: #d52929">The Password is too short.</span>',
-            same_as_username : '<span style="color: #d52929">Your password should not contain your username.</span>',
-            email_as_password: '<span style="color: #d52929">Do not use your email as your password.</span>'
+            password_too_short: '<ul class="list-group"><li class="list-group-item"><h5 class="list-group-item-heading">The Password is too short.</h5></li><li class="list-group-item">must be at least 5 characters long</li></ul>',
+            same_as_username: '<ul class="list-group"><li class="list-group-item"><h5 class="list-group-item-heading">Your password should not contain your username.</h5></li></ul>',
+            email_as_password: '<ul class="list-group"><li class="list-group-item"><h5 class="list-group-item-heading">Do not use your email as your password.</h5></li></ul>'
         },
         onKeyUp: function (evt) {
             $('input[name="desiredpassword"]').popover('destroy');
@@ -147,7 +148,36 @@ function checkPasswordStrength() {
                 $('input[name="desiredpassword"]').popover('destroy');
                 $('.progress-bar').css('width','0%');
             }
+            //update the tick next to the desiredpassword input field
+            updateTickIcon("desired");
         }
     };
     $(':password').pwstrength(options);
+}
+
+function updateTickIcon(inputField) {
+    var value = $.trim($('input[name="desiredpassword"]').val());
+    console.log(value);
+    switch (inputField) {
+    case "desired":
+        if (value.length < 5) {
+            $("#desiredtick").removeClass("fa-check-circle text-success");
+            $("#desiredtick").addClass("fa-times-circle text-danger");
+        }
+        else if (value.length >= 5) {
+            $("#desiredtick").removeClass("fa-times-circle text-danger");
+            $("#desiredtick").addClass("fa-check-circle text-success");
+        }
+        break;
+    case "confirm":
+        if ($("#confirmpass").val() == value && value.length >= 5) {
+            $("#confirmtick").removeClass("fa-times-circle text-danger");
+            $("#confirmtick").addClass("fa-check-circle text-success");
+        }
+        else {
+            $("#confirmtick").removeClass("fa-check-circle text-success");
+            $("#confirmtick").addClass("fa-times-circle text-danger");
+        }
+        break;
+    }
 }
