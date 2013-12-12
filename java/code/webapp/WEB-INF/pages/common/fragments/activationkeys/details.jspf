@@ -124,13 +124,11 @@
             </div>
         </c:if>
         <div class="form-group">
-            <div class="col-lg-3">
-                <label for="contact-method">
-                    <bean:message key="server.contact-method.label" />:
-                </label>
-            </div>
+            <label class="col-lg-3 control-label" for="contact-method">
+                <bean:message key="server.contact-method.label" />:
+            </label>
             <div class="col-lg-6">
-                <html:select property="contactMethodId" styleId="contact-method">
+                <html:select property="contactMethodId" styleId="contact-method" styleClass="form-control">
                     <html:options collection="contactMethods" property="id" labelProperty="name" />
                 </html:select>
             </div>
