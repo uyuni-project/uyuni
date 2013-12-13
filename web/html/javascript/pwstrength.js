@@ -53,9 +53,9 @@
                 wordLetterNumberCharCombo: 2
             },
             rules: {
-                wordNotEmail: true,
+                wordNotEmail: false,
                 wordLength: true,
-                wordSimilarToUsername: true,
+                wordSimilarToUsername: false,
                 wordLowercase: true,
                 wordUppercase: true,
                 wordOneNumber: true,
