@@ -143,41 +143,38 @@ function checkPasswordStrength() {
             $('input[name="desiredpassword"]').popover('show');
             //when there is no input the progressbar goes empty
             //and the popover disappears
-            var value = $.trim($('input[name="desiredpassword"]').val());
-            if (value.length == 0) {
+            var desiredpassval = $.trim($('input[name="desiredpassword"]').val());
+            if (desiredpassval.length == 0) {
                 $('input[name="desiredpassword"]').popover('destroy');
                 $('.progress-bar').css('width','0%');
             }
             //update the tick next to the desiredpassword input field
-            updateTickIcon("desired");
+            updateTickIcon();
         }
     };
     $('input[name="desiredpassword"]').pwstrength(options);
 }
 
-function updateTickIcon(inputField) {
-    var value = $.trim($('input[name="desiredpassword"]').val());
-    console.log(value);
-    switch (inputField) {
-    case "desired":
-        if (value.length < 5) {
-            $("#desiredtick").removeClass("fa-check-circle text-success");
-            $("#desiredtick").addClass("fa-times-circle text-danger");
-        }
-        else if (value.length >= 5) {
-            $("#desiredtick").removeClass("fa-times-circle text-danger");
-            $("#desiredtick").addClass("fa-check-circle text-success");
-        }
-        break;
-    case "confirm":
-        if ($("#confirmpass").val() == value && value.length >= 5) {
-            $("#confirmtick").removeClass("fa-times-circle text-danger");
-            $("#confirmtick").addClass("fa-check-circle text-success");
-        }
-        else {
-            $("#confirmtick").removeClass("fa-check-circle text-success");
-            $("#confirmtick").addClass("fa-times-circle text-danger");
-        }
-        break;
+function updateTickIcon() {
+    var desiredpassval = $.trim($('input[name="desiredpassword"]').val());
+    function success(element) {
+        element.removeClass("fa-times-circle text-danger");
+        element.addClass("fa-check-circle text-success");
+    }
+    function danger(element) {
+        element.removeClass("fa-check-circle text-success");
+        element.addClass("fa-times-circle text-danger");
+    }
+    if (desiredpassval.length < 5 && $("#desiredtick").hasClass("text-success")) {
+        danger($("#desiredtick"));
+    }
+    else if (desiredpassval.length >= 5 && $("#desiredtick").hasClass("text-danger")) {
+        success($("#desiredtick"));
+    }
+    if ($("#confirmpass").val() == desiredpassval && desiredpassval.length >= 5) {
+        success($("#confirmtick"));
+    }
+    else if ($("#confirmtick").hasClass("text-success")) {
+        danger($("#confirmtick"));
     }
 }
