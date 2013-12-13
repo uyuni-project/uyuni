@@ -63,8 +63,6 @@
                             <i class="fa fa-times-circle text-danger fa-1-5x" id="desiredtick"></i>
                         </span>
                     </div> 
-                    <script type="text/javascript" src="/javascript/pwstrength.js"></script>
-                    <script type="text/javascript">checkPasswordStrength()</script>
                 </div>
             </div>
 
@@ -181,6 +179,9 @@
                 }
             }
         </script>
+
+        <%-- Render the password strength meter --%>
+        <script type="text/javascript" src="/javascript/pwstrength.js"></script>
+        <script type="text/javascript">checkPasswordStrength()</script>
     </body>
 </html>
-
