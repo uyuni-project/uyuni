@@ -64,7 +64,7 @@
                       class="required-form-field">*</span>:</label></td>
                 <td>
                   <div class="input-group">
-                      <html:password styleClass="form-control" property="desiredpasswordConfirm" onkeyup="updateTickIcon('confirm')" size="15" maxlength="${passwordLength}" styleId="confirmpass"/>
+                      <html:password styleClass="form-control" property="desiredpasswordConfirm" onkeyup="updateTickIcon()" size="15" maxlength="${passwordLength}" styleId="confirmpass"/>
                       <span class="input-group-addon">
                           <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>
                       </span>
