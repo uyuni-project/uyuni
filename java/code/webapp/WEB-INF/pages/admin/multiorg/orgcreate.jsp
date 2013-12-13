@@ -75,7 +75,7 @@
                     <div class="input-group">
                         <html:password property="desiredpasswordConfirm" size="15"
                                        styleClass="form-control"
-                                       onkeyup="updateTickIcon('confirm')"
+                                       onkeyup="updateTickIcon()"
                                        maxlength="32" styleId="confirmpass"/>
                         <span class="input-group-addon">
                             <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>

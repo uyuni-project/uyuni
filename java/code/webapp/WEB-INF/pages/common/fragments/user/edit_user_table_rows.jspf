@@ -60,7 +60,7 @@
     <label class="col-lg-3 control-label"><bean:message key="confirmpass.displayname"/></label>
     <div class="col-lg-6">
         <div class="input-group">
-            <html:password property="desiredpasswordConfirm" styleClass="form-control" onkeyup="updateTickIcon('confirm')" maxlength="${passwordLength}" styleId="confirmpass"/>
+            <html:password property="desiredpasswordConfirm" styleClass="form-control" onkeyup="updateTickIcon()" maxlength="${passwordLength}" styleId="confirmpass"/>
             <span class="input-group-addon">
                 <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>
             </span>
