@@ -58,8 +58,6 @@
                       </span>
                   </div>
                 </td>
-                <script type="text/javascript" src="/javascript/pwstrength.js"></script>
-                <script type="text/javascript">checkPasswordStrength()</script>
               </tr>
               <tr>
                 <td><label for="confirmpass"><bean:message key="confirmpass" /><span name="password-asterisk"
@@ -232,5 +230,9 @@
     }
   }
 </script>
+
+<%-- Render the password strength meter --%>
+<script type="text/javascript" src="/javascript/pwstrength.js"></script>
+<script type="text/javascript">checkPasswordStrength()</script>
 </body>
 </html>
