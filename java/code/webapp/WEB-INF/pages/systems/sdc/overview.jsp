@@ -204,15 +204,15 @@
           <tr>
             <td><bean:message key="sdc.details.overview.lockstatus"/></td>
             <td>
-              <c:choose>
-                <c:when test="${serverLock != null}">
-                  <i class="fa fa-lock"></i>
-                  <bean:message key="sdc.details.overview.locked"
-                          arg0="${serverLock.locker.login}"
-                          arg1="${serverLock.reason}" /><br/>
-                  <bean:message key="sdc.details.overview.unlock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=0"/>
-                </c:when>
-                <c:otherwise>
+            <c:choose>
+              <c:when test="${serverLock != null}">
+              <rhn:icon type="errata-security" />
+              <bean:message key="sdc.details.overview.locked"
+                            arg0="${serverLock.locker.login}"
+                            arg1="${serverLock.reason}" /><br/>
+              <bean:message key="sdc.details.overview.unlock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=0"/>
+              </c:when>
+              <c:otherwise>
                   <i class="fa fa-unlock"></i>
                   <bean:message key="sdc.details.overview.unlocked"/><br/>
                   <bean:message key="sdc.details.overview.lock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=1"/>

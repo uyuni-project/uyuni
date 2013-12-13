@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.1.8
+Version: 2.1.9
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -17,7 +17,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 
 #Requires: apache-ibatis-sqlmap
-Requires: c3p0
+Requires: c3p0 >= 0.9.1
 Requires: cglib
 Requires(pre): doc-indexes
 Requires: jakarta-commons-cli
@@ -37,7 +37,11 @@ Requires: jakarta-oro
 Requires: oro
 %endif
 #Requires: lucene
+%if 0%{?fedora}
 Requires: objectweb-asm
+%else
+Requires: asm
+%endif
 Requires: quartz < 2.0
 Conflicts: quartz >= 2.0
 Requires: redstone-xmlrpc
@@ -47,7 +51,7 @@ Requires: simple-core
 Obsoletes: rhn-search < 5.3.0
 BuildRequires: ant
 #BuildRequires: apache-ibatis-sqlmap
-BuildRequires: c3p0
+BuildRequires: c3p0 >= 0.9.1
 BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-codec
 BuildRequires: jakarta-commons-httpclient
@@ -219,6 +223,11 @@ fi
 %doc licenses/*
 
 %changelog
+* Thu Dec 12 2013 Tomas Lestach <tlestach@redhat.com> 2.1.9-1
+- do not let cleanindex log into the console
+- there're no objectweb-asm on rhel5
+- let spacewalk-search require c3p0 >= 0.9.1
+
 * Wed Dec 11 2013 Milan Zazrivec <mzazrivec@redhat.com> 2.1.8-1
 - 1040540 - have package search return all matching results
 

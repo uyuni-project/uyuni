@@ -27,7 +27,7 @@ function setStep(stepName) {
 
 <br />
 <h2>
-  <i class="fa fa-rocket" title="<bean:message key='system.common.kickstartAlt' />"></i>
+  <rhn:icon type="header-kickstart" title="<bean:message key='system.common.kickstartAlt' />" />
   <c:choose>
     <c:when test="${system.bootstrap}">
       <bean:message key="kickstart.configure.heading1.jsp" />
