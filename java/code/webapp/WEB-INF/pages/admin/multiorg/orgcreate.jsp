@@ -53,7 +53,7 @@
                     <span name="password-asterisk" class="required-form-field">*</span>:
                 </label>
                 <div class="col-lg-6">
-                    <div class="input-group">
+                    <div id="desiredpassword-input-group" class="input-group">
                         <html:password property="desiredpassword"
                                        size="15"
                                        styleClass="form-control"

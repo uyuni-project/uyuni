@@ -51,7 +51,7 @@
                 <td><label for="desiredpass"><bean:message key="desiredpass" /><span name="password-asterisk"
                       class="required-form-field">*</span>:</td></label>
                 <td>
-                  <div class="input-group">
+                  <div id="desiredpassword-input-group" class="input-group">
                       <html:password property="desiredpassword" styleClass="form-control" size="15" maxlength="${passwordLength}"/>
                       <span class="input-group-addon">
                           <i class="fa fa-times-circle text-danger fa-1-5x" id="desiredtick"></i>
