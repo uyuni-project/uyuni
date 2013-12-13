@@ -127,7 +127,11 @@ function checkPasswordStrength() {
         usernameField: "#loginname",
         errorMessages:
         {
-            password_too_short: '<dl><dt>The Password is too short.</dt><dd>must be at least 5 characters</dd></dl>',
+            password_too_short: '<dl><dt><i class="fa fa-exclamation-circle fa-1-5x text-danger"></i>The Password is too short.</dt><dd>must be at least 5 characters</dd></dl>',
+            same_as_username: '<dl><dt><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>Password contains username</dt></dl>',
+            email_as_password: '<dl><dt><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>Password contains email address</dt></dl>',
+            repeated_character: '<dl><dt><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>Try to avoid repetitions</dt></dl>',
+            no_character_classes: '<dl><dt><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>Use different character classes</dt></dl>'
         },
         onKeyUp: function (evt) {
             $('input[name="desiredpassword"]').popover('destroy');
