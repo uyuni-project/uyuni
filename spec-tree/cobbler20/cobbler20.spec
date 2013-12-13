@@ -7,13 +7,15 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 20%{?dist}
+Release: 21%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
 Patch1: lvm_storage.patch
 Patch2: koan_no_selinux_set.patch
 Patch3: buildiso.patch
+Patch4: koan-rhel7-virtinst.patch
+Patch5: koan-extra-options.patch
 Group: Applications/System
 Requires: python >= 2.3
 
@@ -107,6 +109,8 @@ a XMLRPC API for integration with other applications.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 %{__python} setup.py build 
@@ -460,6 +464,10 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Thu Dec 12 2013 Stephen Herr <sherr@redhat.com> 2.0.11-21
+- 1042381 - Add extra options to koan for virt-install
+- 1042363 - make koan virt guest installs work on newer operating systems
+
 * Fri Jul 05 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.11-20
 - polishing cobbler20 dependencies for fedora19
 

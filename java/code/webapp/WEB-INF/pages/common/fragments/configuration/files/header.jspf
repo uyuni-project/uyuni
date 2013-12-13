@@ -14,8 +14,8 @@
 <c:set var="helpUrl" scope="request" value="/rhn/help/reference/en-US/s1-sm-configuration.jsp#configuration-files-local" />
 <c:set var="downloadUrl" scope="request" value="/rhn/configuration/file/FileDownload.do?crid=${revision.id}&amp;cfid=${file.id}" />
 <c:set var="deleteUrl" scope="request" value="/rhn/configuration/file/DeleteRevision.do?crid=${revision.id}&amp;cfid=${file.id}" />
-<c:set var="fileIcon" scope="request" value="icon-file-text" />
-<c:set var="dirIcon" scope="request" value="icon-folder-open-alt" />
+<c:set var="fileIcon" scope="request" value="header-configuration" />
+<c:set var="dirIcon" scope="request" value="header-configuration" />
 <c:set var="toolbarText" scope="request">
   <bean:message key="filedetails.header.jspf.label"
                 arg0="${fn:escapeXml(file.configFileName.path)}" arg1="${revision.revision}"
@@ -35,7 +35,7 @@
                              icon="${fileIcon}"
                              helpUrl="${helpUrl}"
                              miscUrl="${downloadUrl}"
-                             miscIcon="icon-download-alt"
+                             miscIcon="item-download"
                              miscText="filedetails.header.jspf.download">
 					${toolbarText}
 				</rhn:toolbar>
@@ -47,7 +47,7 @@
 					deletionType="configfile"
 					deletionAcl="config_channel_editable(${channel.id})"
 					miscUrl="${downloadUrl}"
-					miscIcon="icon-download-alt"
+					miscIcon="item-download"
 					miscText="filedetails.header.jspf.download"
 					aclMixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
 					${toolbarText}
