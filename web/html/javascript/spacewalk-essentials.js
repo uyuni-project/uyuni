@@ -152,7 +152,7 @@ function checkPasswordStrength() {
             updateTickIcon("desired");
         }
     };
-    $(':password').pwstrength(options);
+    $('input[name="desiredpassword"]').pwstrength(options);
 }
 
 function updateTickIcon(inputField) {
