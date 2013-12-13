@@ -21,7 +21,9 @@
             errorMessages: {
                 password_too_short: '<span style="color: #d52929">The Password is too short</span>',
                 email_as_password: '<span style="color: #d52929">Do not use your email as your password</span>',
-                same_as_username: '<span style="color: #d52929">Your password cannot contain your username</span>'
+                same_as_username: '<span style="color: #d52929">Your password cannot contain your username</span>',
+                repeated_character: '<span style="color: #d52929">The password should not contain repetitions</span>',
+                no_character_classes: '<span style="color: #d52929">Use different character classes</span>'
             },
             scores: [17, 26, 40, 50],
             verdicts: ["Weak", "Normal", "Medium", "Strong", "Very Strong"],
@@ -42,6 +44,7 @@
                 wordNotEmail: -100,
                 wordLength: -100,
                 wordSimilarToUsername: -100,
+                wordRepetition: -30,
                 wordLowercase: 1,
                 wordUppercase: 3,
                 wordOneNumber: 3,
@@ -50,12 +53,14 @@
                 wordTwoSpecialChar: 5,
                 wordUpperLowerCombo: 2,
                 wordLetterNumberCombo: 2,
-                wordLetterNumberCharCombo: 2
+                wordLetterNumberCharCombo: 2,
+                wordTwoCharacterClasses: -5
             },
             rules: {
-                wordNotEmail: false,
+                wordNotEmail: true,
                 wordLength: true,
-                wordSimilarToUsername: false,
+                wordSimilarToUsername: true,
+                wordRepetition: true,
                 wordLowercase: true,
                 wordUppercase: true,
                 wordOneNumber: true,
@@ -64,7 +69,8 @@
                 wordTwoSpecialChar: true,
                 wordUpperLowerCombo: true,
                 wordLetterNumberCombo: true,
-                wordLetterNumberCharCombo: true
+                wordLetterNumberCharCombo: true,
+                wordTwoCharacterClasses: true
             },
             validationRules: {
                 wordNotEmail: function (options, word, score) {
@@ -90,6 +96,12 @@
                     }
                     return true;
                 },
+                wordRepetition: function (options, word, score) {
+                    if (word.match(/(.)\1\1/)) {
+                        options.errors.push(options.errorMessages.repeated_character);
+                        return score;
+                    }
+                },
                 wordLowercase: function (options, word, score) {
                     return word.match(/[a-z]/) && score;
                 },
@@ -103,7 +115,7 @@
                     return word.match(/(.*[0-9].*[0-9].*[0-9])/) && score;
                 },
                 wordOneSpecialChar : function (options, word, score) {
-                    return word.match(/.[!,@,#,$,%,\^,&,*,?,_,~]/) && score;
+                    return word.match(/(.[!,@,#,$,%,\^,&,*,?,_,~])|(^[!,@,#,$,%,\^,&,*,?,_,~])/) && score;
                 },
                 wordTwoSpecialChar : function (options, word, score) {
                     return word.match(/(.*[!,@,#,$,%,\^,&,*,?,_,~].*[!,@,#,$,%,\^,&,*,?,_,~])/) && score;
@@ -116,6 +128,16 @@
                 },
                 wordLetterNumberCharCombo : function (options, word, score) {
                     return word.match(/([a-zA-Z0-9].*[!,@,#,$,%,\^,&,*,?,_,~])|([!,@,#,$,%,\^,&,*,?,_,~].*[a-zA-Z0-9])/) && score;
+                },
+                wordTwoCharacterClasses: function (options, word, score) {
+                    if (word.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/) || 
+                       (word.match(/([a-zA-Z])/) && word.match(/([0-9])/)) || 
+                       (word.match(/(.[!,@,#,$,%,\^,&,*,?,_,~])/) && word.match(/[a-zA-Z0-9_]/))) {
+                        return score;
+                    }
+                    else {
+                        options.errors.push(options.errorMessages.no_character_classes);
+                    }
                 }
             }
         },
@@ -147,7 +169,7 @@
             if (options.viewports.progress) {
                 $container.find(options.viewports.progress).append($progressbar);
             } else {
-                $progressbar.insertAfter($el);
+                $progressbar.insertAfter('#desiredpassword-input-group');
             }
 
             if (options.bootstrap3) {
