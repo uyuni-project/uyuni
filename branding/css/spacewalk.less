@@ -9,6 +9,8 @@
 @import url(spacewalk-variables.less);
 /* Spacewalk mixins */
 @import url(spacewalk-mixins.less);
+/* Spacewalk inputs */
+@import url(spacewalk-inputs.less);
 /*Import of Tables style*/
 @import url(spacewalk-tables.less);
 /* Spacewalk Tools */
@@ -16,22 +18,19 @@
 /* Import of the Theme */
 @import url(spacewalk-theme.less);
 
+/* Spacewalk fixes of TB3 */
+@import url(spacewalk-fixes.less);
 
-/* fixing margin issue in Bootstrap 3 */
-
-@media (min-width: 768px) {
-  .row {
-  	margin-right: 0;
-  	margin-left: 0;
-  }
-}
-
+/* ------------------ */
 /* SUSE Manager theme */
 @import url(susemanager-variables.less);
 @import url(susemanager-theme.less);
 
+
 // LEAVE THIS LINE AT THE END ALWAYS TO WARRANTY THE RESPONSIVE RULES REWRITE THE EXISTING STYLES
 /* Responsive rules */
 @import url(spacewalk-responsive-rules.less);
+
+/* ------------------------ */
 // SUSE Manager responsiveness
 @import url(susemanager-responsive-rules.less);
