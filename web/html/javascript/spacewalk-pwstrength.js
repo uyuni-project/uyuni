@@ -130,8 +130,8 @@
                     return word.match(/([a-zA-Z0-9].*[!,@,#,$,%,\^,&,*,?,_,~])|([!,@,#,$,%,\^,&,*,?,_,~].*[a-zA-Z0-9])/) && score;
                 },
                 wordTwoCharacterClasses: function (options, word, score) {
-                    if (word.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/) || 
-                       (word.match(/([a-zA-Z])/) && word.match(/([0-9])/)) || 
+                    if (word.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/) ||
+                       (word.match(/([a-zA-Z])/) && word.match(/([0-9])/)) ||
                        (word.match(/(.[!,@,#,$,%,\^,&,*,?,_,~])/) && word.match(/[a-zA-Z0-9_]/))) {
                         return score;
                     }
@@ -445,7 +445,7 @@ $(document).ready(function () {
 });
 
 // check if password >= 5 characters
-// check if confirm password input field matches with password input field 
+// check if confirm password input field matches with password input field
 // swap icons in the input-group-addon
 function updateTickIcon() {
     var desiredpassval = $.trim($('input[name="desiredpassword"]').val());
