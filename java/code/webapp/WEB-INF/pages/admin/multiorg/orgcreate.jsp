@@ -47,6 +47,7 @@
                 </div>
             </div>
 
+            <script type="text/javascript" src="/javascript/spacewalk-pwstrength.js"></script>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="desiredpass">
                     <bean:message key="desiredpass" />
@@ -180,8 +181,5 @@
             }
         </script>
 
-        <%-- Render the password strength meter --%>
-        <script type="text/javascript" src="/javascript/pwstrength.js"></script>
-        <script type="text/javascript">checkPasswordStrength()</script>
     </body>
 </html>
