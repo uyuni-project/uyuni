@@ -2,7 +2,7 @@
 
 Name: tito
 Version: 0.4.18
-Release: 1.2%{?dist}
+Release: 1.3%{?dist}
 Summary: A tool for managing rpm based git projects
 
 Group: Development/Tools
@@ -10,6 +10,7 @@ License: GPLv2
 URL: http://rm-rf.ca/tito
 Source0: http://rm-rf.ca/files/tito/tito-%{version}.tar.gz
 Patch0:  0001-support-local-releasers.conf-overwrite.patch
+Patch1:  0001-fixed-building-third-party-packages.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch: noarch
@@ -36,6 +37,7 @@ git.
 %prep
 %setup -q -n tito-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__python} setup.py build
@@ -80,6 +82,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Dec 16 2013 Michael Mraka <michael.mraka@redhat.com> 0.4.18-1.3
+- fixed building third party packages
+
 * Thu Nov 28 2013 Michael Mraka <michael.mraka@redhat.com> 0.4.18-1.2
 - support for local releaser.conf overwrite
 
