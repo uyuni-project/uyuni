@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.1.2.1
+Version: 2.1.3
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -179,6 +179,11 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Mon Dec 16 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.3-1
+- Remove groups/errata_list.pxt
+- system group edit properties - linking + cleanup
+- system group details - linking + cleanup
+
 * Tue Sep 17 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.2-1
 - Updating rhn.conf man page for taskomatic.maxmemory option
 - Changes to rhn.conf man page for ISS settings
