@@ -15,6 +15,7 @@
     <ul><bean:message key="ssm.overview.summary2"/></ul>
 </div>
 
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <rhn:icon type="header-system" title="<bean:message key='ssm.overview.systems' />" />

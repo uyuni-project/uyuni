@@ -16,10 +16,10 @@
     <div class="panel-body">
       <c:choose>
         <c:when test="${unentitled}">
-          <i class="spacewalk-icon-Unentitled"></i> <bean:message key="sdc.details.overview.unentitled" arg0="/rhn/systems/details/Edit.do?sid=${system.id}"/>
+          <rhn:icon type="system-unentitled" /> <bean:message key="sdc.details.overview.unentitled" arg0="/rhn/systems/details/Edit.do?sid=${system.id}"/>
         </c:when>
         <c:when test="${systemInactive}">
-          <i class="spacewalk-icon-unknown-system"/></i> <bean:message key="sdc.details.overview.inactive1"/>
+          <rhn:icon type="system-unknown" /> <bean:message key="sdc.details.overview.inactive1"/>
           <c:if test="${documentation == 'true'}">
             <bean:message key="sdc.details.overview.inactive2" arg0="/rhn/help/reference/en-US/s1-sm-systems.jsp#s2-sm-system-list"/>
           </c:if>
@@ -27,10 +27,10 @@
         <c:when test="${hasUpdates}">
           <c:choose>
             <c:when test="${criticalErrataCount > 0}">
-              <i class="fa fa-exclamation-circle fa-1-5x text-danger"></i>
+              <rhn:icon type="system-crit" />
             </c:when>
             <c:otherwise>
-              <i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>
+              <rhn:icon type="system-warn" />
             </c:otherwise>
           </c:choose>
           &nbsp; <bean:message key="sdc.details.overview.updatesavailable" /> &nbsp;&nbsp;
@@ -47,14 +47,14 @@
         </c:when>
 
         <c:otherwise>
-          <i class="fa fa-check-circle fa-1-5x text-success"></i> <bean:message key="sdc.details.overview.updated"/>
+          <rhn:icon type="system-ok" /> <bean:message key="sdc.details.overview.updated"/>
         </c:otherwise>
       </c:choose>
 
       <c:if test="${rebootRequired}">
         <div class="systeminfo">
           <div class="systeminfo-full">
-            <i class="fa fa-refresh text-primary"></i><bean:message key="sdc.details.overview.requires_reboot"/>
+            <rhn:icon type="system-reboot" /><bean:message key="sdc.details.overview.requires_reboot"/>
             <bean:message key="sdc.details.overview.schedulereboot" arg0="/network/systems/details/reboot_confirm.pxt?sid=${system.id}"/>
           </div>
         </div>
@@ -93,6 +93,7 @@
 
   <div class="row-0">
     <div class="col-md-6">
+
       <!-- System Info box -->
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -115,14 +116,14 @@
           <tr>
             <td><bean:message key="sdc.details.overview.ipaddy"/></td>
             <td>
-            <c:choose>
-              <c:when test="${system.ipAddress == null}">
-                <bean:message key="sdc.details.overview.unknown"/>
-              </c:when>
-              <c:otherwise>
-                <c:out value="${system.ipAddress}" />
-              </c:otherwise>
-            </c:choose>
+              <c:choose>
+                <c:when test="${system.ipAddress == null}">
+                  <bean:message key="sdc.details.overview.unknown"/>
+                </c:when>
+                <c:otherwise>
+                  <c:out value="${system.ipAddress}" />
+                </c:otherwise>
+              </c:choose>
             </td>
           </tr>
           <tr>
@@ -160,14 +161,14 @@
           <tr>
             <td><bean:message key="sdc.details.overview.kernel"/></td>
             <td>
-            <c:choose>
-              <c:when test="${system.runningKernel == null}">
-                <bean:message key="sdc.details.overview.unknown"/>
-              </c:when>
-              <c:otherwise>
-                <c:out value="${system.runningKernel}" />
-              </c:otherwise>
-            </c:choose>
+              <c:choose>
+                <c:when test="${system.runningKernel == null}">
+                  <bean:message key="sdc.details.overview.unknown"/>
+                </c:when>
+                <c:otherwise>
+                  <c:out value="${system.runningKernel}" />
+                </c:otherwise>
+              </c:choose>
             </td>
           </tr>
           <tr>
@@ -204,20 +205,20 @@
           <tr>
             <td><bean:message key="sdc.details.overview.lockstatus"/></td>
             <td>
-            <c:choose>
-              <c:when test="${serverLock != null}">
-              <rhn:icon type="system-locked" />
-              <bean:message key="sdc.details.overview.locked"
-                            arg0="${serverLock.locker.login}"
-                            arg1="${serverLock.reason}" /><br/>
-              <bean:message key="sdc.details.overview.unlock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=0"/>
-              </c:when>
-              <c:otherwise>
+              <c:choose>
+                <c:when test="${serverLock != null}">
+                    <rhn:icon type="system-locked" />
+                  <bean:message key="sdc.details.overview.locked"
+                          arg0="${serverLock.locker.login}"
+                          arg1="${serverLock.reason}" /><br/>
+                  <bean:message key="sdc.details.overview.unlock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=0"/>
+                </c:when>
+                <c:otherwise>
                   <rhn:icon type="system-physical" />
                   <bean:message key="sdc.details.overview.unlocked"/><br/>
                   <bean:message key="sdc.details.overview.lock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=1"/>
-              </c:otherwise>
-            </c:choose>
+                </c:otherwise>
+              </c:choose>
             </td>
           </tr>
           </rhn:require>
@@ -293,20 +294,19 @@
                     <bean:message key="sdc.details.overview.osa.status.message"
                                   arg0="${system.pushClient.state.name}"/>
                     <c:choose>
-                        <c:when test="${system.pushClient.lastMessageTime != null}">
-                            <fmt:formatDate value="${system.pushClient.lastMessageTime}" type="both" dateStyle="short" timeStyle="long"/><br/>
-                        </c:when>
-                        <c:otherwise>
-                            <bean:message key="sdc.details.overview.unknown" /><br/>
-                        </c:otherwise>
+                      <c:when test="${system.pushClient.lastMessageTime != null}">
+                        <fmt:formatDate value="${system.pushClient.lastMessageTime}" type="both" dateStyle="short" timeStyle="long"/><br/>
+                      </c:when>
+                      <c:otherwise>
+                        <bean:message key="sdc.details.overview.unknown" /><br/>
+                      </c:otherwise>
                     </c:choose>
                     <c:if test="${system.pushClient.lastPingTime != null}">
-                        <bean:message key="sdc.details.overview.osa.status.lastping"/>
-                        <fmt:formatDate value="${system.pushClient.lastPingTime}" type="both" dateStyle="short" timeStyle="long"/>
-                        <br/>
+                      <bean:message key="sdc.details.overview.osa.status.lastping"/>
+                      <fmt:formatDate value="${system.pushClient.lastPingTime}" type="both" dateStyle="short" timeStyle="long"/>
+                      <br/>
                     </c:if>
-
-                    <a href="/rhn/systems/details/Overview.do?sid=${system.id}&amp;ping=1"><bean:message key="sdc.details.overview.osa.status.ping"/></a>
+                     <a href="/rhn/systems/details/Overview.do?sid=${system.id}&amp;ping=1"><bean:message key="sdc.details.overview.osa.status.ping"/></a>
                   </c:when>
                   <c:otherwise>
                     <bean:message key="sdc.details.overview.unknown" />
@@ -323,7 +323,7 @@
                 <c:choose>
                   <c:when test="${system.serverUuid == null}">
                     <bean:message key="sdc.details.overview.applet.notactivated"/><br/>
-                    <a href="/rhn/systems/details/Overview.do?sid=${system.id}&amp;applet=1"/><bean:message key="sdc.details.overview.applet.activate"/></a>
+                  <a href="/rhn/systems/details/Overview.do?sid=${system.id}&amp;applet=1"/><bean:message key="sdc.details.overview.applet.activate"/></a>
                   </c:when>
                   <c:otherwise>
                     <bean:message key="sdc.details.overview.applet.activated"/><br/>
