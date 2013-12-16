@@ -42,42 +42,35 @@
     
     <rhn:csrf />
     <div class="form-group">
-        <label class="col-lg-2 control-label">
-            <bean:message key="kickstartips.jsp.label" />:
-        </label>
         <div class="row">
-            <fieldset class="form-inline">
-                <div class="col-lg-1">
-                    <html:text styleClass="form-control col-lg-1" property="octet1a" maxlength="3" size="3" />
-                </div>
-                <label class="control-label">.</label>
-                <div class="col-lg-1">
-                    <html:text styleClass="form-control col-lg-1" property="octet1b" maxlength="3" size="3" />
-                </div>
-                <label class="control-label">.</label>
-                <div class="col-lg-1">
-                    <html:text styleClass="form-control col-lg-1" property="octet1c" maxlength="3" size="3" />
-                </div>
-                <label class="control-label">.</label>
-                <div class="col-lg-1">
-                    <html:text styleClass="form-control col-lg-1" property="octet1d" maxlength="3" size="3" />
-                </div>
-                <label class="control-label">&nbsp;&ndash;&nbsp;</label>
-                <div class="col-lg-1">
-                    <html:text styleClass="form-control col-lg-1" property="octet2a" maxlength="3" size="3" />
-                </div>
-                <label class="control-label">.</label>
-                <div class="col-lg-1">
-                    <html:text styleClass="form-control col-lg-1" property="octet2b" maxlength="3" size="3" />
-                </div>
-                <label class="control-label">.</label>
-                <div class="col-lg-1">
-                    <html:text styleClass="form-control col-lg-1" property="octet2c" maxlength="3" size="3" />
-                </div>
-                <label class="control-label">.</label>
-                <div class="col-lg-1">
-                    <html:text styleClass="form-control col-lg-1" property="octet2d" maxlength="3" size="3" />
-                </div>
+            <label class="col-lg-2 control-label">
+                <bean:message key="kickstartips.jsp.label" />:
+            </label>
+            <fieldset class="col-md-8">
+                
+                    <html:text styleClass="input-ip-range" property="octet1a" maxlength="3" size="3" />
+                    <span class="dot-ip-range">.</span>
+                
+                    <html:text styleClass="input-ip-range" property="octet1b" maxlength="3" size="3" />
+                    <span class="dot-ip-range">.</span>
+                
+                    <html:text styleClass="input-ip-range" property="octet1c" maxlength="3" size="3" />
+                    <span class="dot-ip-range">.</span>
+                
+                    <html:text styleClass="input-ip-range" property="octet1d" maxlength="3" size="3" />
+                    <span class="dash-ip-range"> - </span>
+
+                    <html:text styleClass="input-ip-range" property="octet2a" maxlength="3" size="3" />
+                    <span class="dot-ip-range">.</span>
+                
+                    <html:text styleClass="input-ip-range" property="octet2b" maxlength="3" size="3" />
+                    <span class="dot-ip-range">.</span>
+                
+                    <html:text styleClass="input-ip-range" property="octet2c" maxlength="3" size="3" />
+                    <span class="dot-ip-range">.</span>
+                
+                    <html:text styleClass="input-ip-range" property="octet2d" maxlength="3" size="3" />
+                
             </fieldset>
         </div>
     </div>
