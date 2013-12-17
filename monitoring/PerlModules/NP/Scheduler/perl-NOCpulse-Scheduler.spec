@@ -15,7 +15,7 @@ BuildRequires: perl(ExtUtils::MakeMaker)
 BuildRequires:  nocpulse-common
 %endif
 BuildArch:    noarch
-Group:        Development/Libraries 
+Group:        Development/Libraries/Perl
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
