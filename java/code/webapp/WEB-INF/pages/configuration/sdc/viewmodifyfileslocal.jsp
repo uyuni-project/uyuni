@@ -56,11 +56,9 @@
 							type = "central"/>
    					</c:set>
       	       		<bean:message key="sdc.config.file_list.revision_from"
-    	       				arg0 = "${cfg:fileRevisionUrl(current.configFileId, current.configRevisionId)}"
-    	       				arg1 = "${cfg:fileListIcon(current.configFileType)}"
-    	       				arg2 = "${rhn:localize(cfg:fileAlt(current.configFileType))}"
-       	       				arg3 = "${current.configRevision}"
-       	       				arg4 = "${channelDisplay}"
+					arg0 = "${cfg:fileRevisionUrl(current.configFileId, current.configRevisionId)}"
+          arg1 = "${current.configRevision}"
+          arg2 = "${channelDisplay}"
        	       				/>
                 </c:when>
                 <c:otherwise>
