@@ -175,7 +175,9 @@ class BrokerHandler(SharedHandler):
         # do that for us
 
         # Add/modify the X-RHN-IP-Path header.
-        ip_path = _oto['X-RHN-IP-Path']
+        ip_path = None
+        if 'X-RHN-IP-Path' in _oto:
+            ip_path = _oto['X-RHN-IP-Path']
         log_debug(4, "X-RHN-IP-Path is: %s" % repr(ip_path))
         client_ip = self.req.connection.remote_ip
         if ip_path is None:
