@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.100
+Version: 2.1.102
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -895,6 +895,17 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Dec 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.102-1
+- delete ConfigSystemTag as these things are easily handled in jsp
+- Local variables need not to be synchronized
+
+* Tue Dec 17 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.101-1
+- updated links to system group delete page
+- converted system group > delete page from pxt to java
+- bootstrap tuning: fixed icons
+- rework logic of ConfigFileTag so it uses icons instead of gifs and cool stuff
+- fixing references to SSM errata page
+
 * Mon Dec 16 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.100-1
 - more icon fixes
 - Rewrite of errata_list.pxt to Java
