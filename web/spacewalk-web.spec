@@ -55,7 +55,6 @@ Provides: spacewalk(spacewalk-base) = %{version}-%{release}
 Requires: /usr/bin/sudo 
 %if 0%{?suse_version}
 Requires: perl-RPM2
-Requires: perl-Authen-PAM
 Requires: perl-Digest-HMAC
 Requires: perl-Text-Diff
 Requires: perl-DateTime
