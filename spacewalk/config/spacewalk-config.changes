@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Dec 18 13:53:45 CET 2013 - mc@suse.de
+
+- version 2.1.3.1-1
+- updated links to system group delete page
+- Remove groups/errata_list.pxt
+- system group edit properties - linking + cleanup
+- system group details - linking + cleanup
+
+-------------------------------------------------------------------
 Tue Dec 10 15:33:57 CET 2013 - mc@suse.de
 
 - version 2.1.2.1-1
