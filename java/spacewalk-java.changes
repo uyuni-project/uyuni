@@ -1,4 +1,66 @@
 -------------------------------------------------------------------
+Wed Dec 18 13:55:00 CET 2013 - mc@suse.de
+
+- version 2.1.102.1-1
+- bootstrap tuning: fixed icons
+- Make sure that all form fields are correctly aligned
+- implement pwstrength meter
+- removing dead code, exception is thrown within lookupAndBindServerGroup
+- Fix NPE when uploading kickstart profile with virt type none
+- delete ConfigSystemTag as these things are easily handled in jsp
+- Local variables need not to be synchronized
+- updated links to system group delete page
+- converted system group > delete page from pxt to java
+- prefer objectweb-asm again to compile correctly if both are installed.
+- fixing references to SSM errata page
+- Rewrite of errata_list.pxt to Java
+- call ssm check on system - software crashes page
+- call ssm check on system notes page
+- call ssm check on system migrate page
+- call ssm check on system hardware page
+- Fix display of notifications checkboxes on system properties page
+- Id added to the Language div in the section Create New User
+- Refactor the List tag to get rid of the complicated state handled by bools,
+  keeping only the commands as state.
+- channel/manage/delete.jsp: disabled attribute fixed
+- List pagination buttons: restore hover text
+- adapt the testcase and fix a issue catched by the testcase
+- There is no reason for address to be a jumbotron - Use the markup like
+  documented at http://getbootstrap.com/css/#type-addresses
+- makes the system details page to be shown in two columns, with boxes at both
+  sides instead of each of them taking the full width.
+- Fix display of notifications checkboxes on system properties page
+- remove obsolete unit test as tag was rewritten
+- simplify logic in cfg:channel tag
+- Re-add the server contact method on various pages
+- Fix cve audit header icon after upstream changes
+- Remove unnecessary reference to tooltip.js + the file itself
+- system group edit properties - linking + cleanup
+- alter system group create page to do editing
+- allow channel administrator to view Channel > Managers page
+- 1040540 - have package search return all matching results
+- use rhn:icon tag for creating icons in rhn:toolbar
+- 1039193 - Increase default ram to 768 for RHEL 7
+- Move cve audit popover content into a translation file
+- System Group / Admins - updated links and removed old page
+- ported System Group / Admins to java
+- Move javascript code from jsp file to document.ready handler
+- Reference susemanager-cve-audit.js from the jsp file
+- channel/manage/delete.jsp: disabled attribute fixed
+- system group details - linking + cleanup
+- converting system group details page to java
+- button submit set back to normal size. We dont use Large size for buttons
+- Bare-metal systems: disabled button style fixed
+- Disabled buttons' style fixed
+- CVE UI was updated and improved. It now has a popover that shows a link to
+  http://cve.mitre.org/ and explains that a user can also paste the entire CVE
+  as found on the site
+- Fix Edit Autoinstallable Distribution page
+- LoginExpiredTest fixed
+- Merge the upstream details page with Manager and the bootstrap entitlement
+  conditionals, product list, etc.
+
+-------------------------------------------------------------------
 Mon Dec 09 17:08:30 CET 2013 - mc@suse.de
 
 - version 2.1.90.1-1
