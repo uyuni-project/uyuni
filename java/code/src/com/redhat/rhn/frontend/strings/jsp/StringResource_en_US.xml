@@ -2998,7 +2998,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.edit.publisherrata">
-<source>Publish Patches</source>
+<source>Publish Patch</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
@@ -3251,7 +3251,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
 
       <trans-unit id="errata.publish.publisherrata">
-<source>Publish Patches</source>
+<source>Publish Patch</source>
         <context-group name="ctx">
             <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
