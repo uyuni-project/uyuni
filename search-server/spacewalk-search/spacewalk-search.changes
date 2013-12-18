@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Dec 18 13:43:31 CET 2013 - mc@suse.de
+
+- version 2.1.9.1-1
+- do not let cleanindex log into the console
+- let spacewalk-search require c3p0 >= 0.9.1
+- have package search return all matching results
+
+-------------------------------------------------------------------
 Mon Dec 09 16:44:52 CET 2013 - mc@suse.de
 
 - version 2.1.7.1-1
