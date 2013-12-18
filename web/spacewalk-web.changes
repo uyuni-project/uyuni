@@ -1,4 +1,37 @@
 -------------------------------------------------------------------
+Wed Dec 18 13:44:29 CET 2013 - mc@suse.de
+
+- version 2.1.43.1-1
+- perl-Authen-PAM is no longer required
+- remove trailing whitespace from rpm group
+- updated links to system group delete page
+- removed unused ssm errata pxt pages
+- fixing references to SSM errata page
+- define new rules and add a few more error messages. move the progressbar to a
+  specific container.
+- style and add error messages in the popover
+- The only real error is password_too_short. The rest needs to go into the
+  suggestions
+- Some improvements to the updateTickIcon function.
+- Assign the pwstrength meter to the desiredpassword input form
+- Add function to update the Tick Icon. Display bootstrap list in popover.
+- Adding pwstrength library to check password strength
+- Adding the bootstrap tooltip library
+- Adding the bootstrap popover library
+- Remove groups/errata_list.pxt
+- replaced icons with icon tag
+- updated pxt pages to use <rhn-icon> tag
+- updated perl modules to use PXT::HTML->icon()
+- Show the popover for 10 seconds if not hidden by the user
+- System Group / Admins - updated links and removed old page
+- Put the given year in the valid range (bnc#846356)
+- Paste event handler parsing CVE identifiers with javascript (bnc#846356)
+- system group details - linking + cleanup
+- CVE UI was updated and improved. It now has a popover that shows a link to
+  http://cve.mitre.org/ and explains that a user can also paste the entire CVE
+  as found on the site
+
+-------------------------------------------------------------------
 Mon Dec 09 17:06:02 CET 2013 - mc@suse.de
 
 - version 2.1.39.1-1
