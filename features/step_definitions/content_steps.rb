@@ -176,7 +176,7 @@ end
 
 Then /^I should see a "([^"]*)" element in "([^"]*)" form$/ do |arg1, arg2|
    within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    fail if not find_field(arg1).visible?
+    fail if not find_field(arg1, :match => :first).visible?
   end
 end
 
