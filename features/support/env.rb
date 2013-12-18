@@ -36,6 +36,7 @@ def debrand_string(str)
         when "Upload a New Kickstart File" then "Upload a New Kickstart/AutoYaST File"
         when "RHN Reference Guide" then "Reference Guide"
         when "Create Errata" then "Create Patch"
+        when "Publish Errata" then "Publish Patch"
         # generic regex replace
         when /.*kickstartable.*/ then str.gsub(/kickstartable/, 'autoinstallable')
         when /.*Kickstartable.*/ then str.gsub(/Kickstartable/, 'Autoinstallable')
