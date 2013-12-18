@@ -1,4 +1,31 @@
 -------------------------------------------------------------------
+Wed Dec 18 13:52:12 CET 2013 - mc@suse.de
+
+- version 2.1.15.1-1
+- New less file added to style Inputs. New less file added for the minor fixes
+  of TB3 for spacewalk layout
+- Import spacewalk-tools.less
+- Adding spacewalk-tools.less with custom class to overwrite the progress class
+  for the password strength check
+- making help links disappear
+- There is no reason for address to be a jumbotron - Use the markup like
+  documented at http://getbootstrap.com/css/#type-addresses
+- colour added to the counter in SSM
+- Links inside a alert-info have a darker blue than the text shown and have
+  underline. It is necessary to distinguish the link over the general text
+- replaced icons with icon tag
+- Add colon to the string itself and remove from jsp files
+- updated pxt pages to use <rhn-icon> tag
+- Move cve audit popover content into a translation file
+- Remove duplicated strings from the branding package
+- Icon legend contrast enhanced. Select in search form in the header has now
+  plain colour
+- Language selection hidden for SUSE Manager as we only support English
+- CVE UI was updated and improved. It now has a popover that shows a link to
+  http://cve.mitre.org/ and explains that a user can also paste the entire CVE
+  as found on the site
+
+-------------------------------------------------------------------
 Mon Dec 09 16:11:09 CET 2013 - mc@suse.de
 
 - version 2.1.13.1-1
