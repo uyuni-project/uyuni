@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Dec 18 13:51:21 CET 2013 - mc@suse.de
+
+- version 2.1.20.1-1
+- don't attempt to write out 'None'
+- fix system listing when identified by system id
+
+-------------------------------------------------------------------
 Mon Dec 09 16:42:53 CET 2013 - mc@suse.de
 
 - version 2.1.18.1-1
