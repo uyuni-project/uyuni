@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Dec 18 13:48:24 CET 2013 - mc@suse.de
+
+- version 2.1.2-1
+- if management entitlements are available set also
+  bootstrap entitlements
+
+-------------------------------------------------------------------
 Mon Dec 09 16:33:15 CET 2013 - mc@suse.de
 
 - version 2.1.1-1
