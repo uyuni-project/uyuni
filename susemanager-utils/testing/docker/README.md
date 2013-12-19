@@ -126,7 +126,7 @@ At the moment it is not possible to have an Oracle instance running inside a con
 because of containers' limitations (access to /proc and AuFS are known to be problematic,
 at least).
 
-Thus, at the moment, Oracle containers access a virtual Oracle server (1c059.qa.suse.de),
+Thus, at the moment, Oracle containers access a virtual Oracle server (sumaoracletest.suse.de),
 which is an Oracle for Testsuite instance available here:
 
 http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head:/Appliance/images/
