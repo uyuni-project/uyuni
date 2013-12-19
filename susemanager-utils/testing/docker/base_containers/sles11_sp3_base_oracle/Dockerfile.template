@@ -2,7 +2,6 @@
 #
 # VERSION               0.1
 
-i
 FROM PARENT_CONTAINER
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
 
@@ -13,7 +12,11 @@ RUN zypper cc -a
 RUN zypper --non-interactive --gpg-auto-import-keys --no-gpg-checks ref 
 
 # Install needed packages
-RUN zypper in -y bc perl-DBD-ODBC perl-DBD-Oracle oracle-instantclient11_2-sqlplus openssh
+RUN zypper in -y bc \
+                 openssh \
+                 oracle-instantclient11_2-sqlplus \
+                 perl-DBD-ODBC \
+                 perl-DBD-Oracle
 
 # Create a tomcat user - this is required later by spacewalk-setup
 RUN useradd tomcat
