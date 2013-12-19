@@ -11,7 +11,44 @@ RUN zypper cc -a
 # make sure the package repository is up to date
 RUN zypper --non-interactive --gpg-auto-import-keys ref
 
-RUN zypper in -y python-base python-gzipstream python-mock python-xml python-curl python-gpgme python-debian python-dmidecode python-logilab-common python-pam python-logilab-astng python-psycopg2 python python-unittest2 rpm-python python-iniparse python-urlgrabber python-gobject2 python-devel python-selinux python-setools python-crypto python-openssl python-ethtool python-newt python-nose yum make cx_Oracle pylint
+RUN zypper in -y  cx_Oracle \
+                  make \
+                  pylint \
+                  python \
+                  python-base \
+                  python-crypto \
+                  python-curl \
+                  python-debian \
+                  python-devel \
+                  python-dmidecode \
+                  python-ethtool \
+                  python-gobject2 \
+                  python-gpgme \
+                  python-gzipstream \
+                  python-iniparse \
+                  python-logilab-astng \
+                  python-logilab-common \
+                  python-mock \
+                  python-newt \
+                  python-nose \
+                  python-openssl \
+                  python-pam \
+                  python-psycopg2 \
+                  python-selinux \
+                  python-setools \
+                  python-unittest2 \
+                  python-urlgrabber \
+                  python-xml \
+                  rpm-python \
+                  yum
+
+RUN mkdir -p /usr/share/rhn/
+
+RUN mkdir -p /manager/backend/rhn-conf/
+RUN ln -s /manager/backend/rhn-conf/ /usr/share/rhn/config-defaults
+RUN rm -rf /manager/backend
+
+ADD rhn.conf /etc/rhn/rhn.conf
 
 # Remove contents of /var/cache/zypp/{packages,raw,solv} - this is a workaround for an aufs bug
 RUN zypper cc -a
