@@ -2994,6 +2994,32 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * @param sid server id
+     * @param pc pageContext
+     * @return Returns history events for a system
+     */
+    public static DataResult systemEventHistory(Long sid, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries", "system_events_history");
+        Map params = new HashMap();
+        params.put("sid", sid);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
+     * @param sid server id
+     * @return Count of pending actions on system
+     */
+    public static Long countPendingActions(Long sid) {
+        SelectMode m = ModeFactory.getMode("System_queries",
+                "system_events_history_count_pending");
+        Map params = new HashMap();
+        params.put("sid", sid);
+        DataResult toReturn = m.execute(params);
+        return (Long) ((HashMap)toReturn.get(0)).get("count");
+    }
+
+    /**
      * For a {@link ServerArch}, find the compatible {@link ChannelArch}.
      * @param serverArch server arch
      * @return channel arch
