@@ -5,9 +5,6 @@
 FROM PARENT_CONTAINER
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
 
-# Ensure /var/cache/zypp/{packages,raw,solv} are empty - this is a workaround for an aufs bug
-RUN zypper cc -a
-
 # make sure the package repository is up to date
 RUN zypper --non-interactive --gpg-auto-import-keys ref
 
@@ -49,6 +46,3 @@ RUN ln -s /manager/backend/rhn-conf/ /usr/share/rhn/config-defaults
 RUN rm -rf /manager/backend
 
 ADD rhn.conf /etc/rhn/rhn.conf
-
-# Remove contents of /var/cache/zypp/{packages,raw,solv} - this is a workaround for an aufs bug
-RUN zypper cc -a
