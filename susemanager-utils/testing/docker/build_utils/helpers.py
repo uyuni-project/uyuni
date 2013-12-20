@@ -161,7 +161,7 @@ def build_container_using_docker(container_name, parent_container, use_template_
   try:
     if use_template_file:
       sh("sed -e\"s/PARENT_CONTAINER/{0}/g\" Dockerfile.template > Dockerfile".format(re.escape(parent_container)))
-    sh('docker build -no-cache=true -t {0} .'.format(container_name))
+    sh('docker build -rm=true -no-cache=true -t {0} .'.format(container_name))
   finally:
     if use_template_file and os.path.exists('Dockerfile'):
       os.remove('Dockerfile')
