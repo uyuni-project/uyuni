@@ -476,16 +476,17 @@ function updatePlaceholder() {
     // PLACEHOLDER needs to be in sync with PLACEHOLDER_PASSWORD 
     // in the UserActionHelper Java class.
     var PLACEHOLDER = "******";
-    $('input[value="' + PLACEHOLDER + '"]').focus(function() {
+    $('input:password').focus(function() {
         if ($(this).val() == PLACEHOLDER) {
-            $('input[value="' + PLACEHOLDER + '"]').val('');
+            $('input:password').val('');
+            updateTickIcon();
         }
     }).blur(function() {
-        if ($(this).val() == '') {
-            $('input[value="' + PLACEHOLDER + '"]').val(PLACEHOLDER);
+        if ($(this).val() == '' && $(this).prev().val() == '') {
+            $('input:password').val(PLACEHOLDER);
+            updateTickIcon();
         }
     });
-    updateTickIcon();
 }
 
 // document ready handler
