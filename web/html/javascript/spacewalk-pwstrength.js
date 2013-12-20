@@ -473,6 +473,18 @@ function updateTickIcon() {
 
 // make sure not to submit the placeholder (or parts of it) as a password when editing a user
 function updatePlaceholder() {
+    // Return true if all password fields are empty
+    function isPasswordFieldsEmpty() {
+        var empty = true;
+        $('input:password').each(function(index) {
+            if($(this).val() != '') {
+                empty = false;
+                return false;
+            }
+        });
+        return empty;
+    }
+
     // PLACEHOLDER needs to be in sync with PLACEHOLDER_PASSWORD 
     // in the UserActionHelper Java class.
     var PLACEHOLDER = "******";
@@ -482,7 +494,7 @@ function updatePlaceholder() {
             updateTickIcon();
         }
     }).blur(function() {
-        if ($(this).val() == '' && $(this).prev().val() == '') {
+        if (isPasswordFieldsEmpty()) {
             $('input:password').val(PLACEHOLDER);
             updateTickIcon();
         }
