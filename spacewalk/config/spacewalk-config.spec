@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.1.3.1
+Version: 2.1.4
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -179,6 +179,9 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Thu Dec 19 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.4-1
+- updated links to system group delete page
+
 * Mon Dec 16 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.3-1
 - Remove groups/errata_list.pxt
 - system group edit properties - linking + cleanup
