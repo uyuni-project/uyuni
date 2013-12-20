@@ -166,3 +166,12 @@ def build_container_using_docker(container_name, parent_container, use_template_
     if use_template_file and os.path.exists('Dockerfile'):
       os.remove('Dockerfile')
 
+def is_db_supported_by_branch(db, branch):
+    """Returns True if the db is supported by the target branch"""
+
+    if not branch in INCOMPATIBLE_DBS_BY_BRANCH:
+      return True
+
+    unsupported_dbs = INCOMPATIBLE_DBS_BY_BRANCH[branch]
+
+    return not db in unsupported_dbs

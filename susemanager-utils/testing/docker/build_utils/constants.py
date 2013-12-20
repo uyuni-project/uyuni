@@ -5,6 +5,10 @@ GIT_BRANCH_BASE_CONTAINER = {
 
 KNOWN_DBS = ('oracle', 'pgsql')
 
+INCOMPATIBLE_DBS_BY_BRANCH = {
+    '1.7' : ('oracle')
+}
+
 TEST_TARGETS = ('python', 'java')
 
 DOCKER_REGISTRY_HOST = 'ix64smc161.qa.suse.de'
