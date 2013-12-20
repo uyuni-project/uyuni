@@ -87,7 +87,7 @@ def build_db_containers(options):
   for branch in target_branches:
     for db in target_dbs:
       if not build_utils.helpers.is_db_supported_by_branch(db, branch):
-        print "db {1} is not supported by branch {2}, ignoring".format(db, branch)
+        print "db {0} is not supported by branch {1}, ignoring".format(db, branch)
         continue
       container_name = GIT_BRANCH_BASE_CONTAINER[branch] + "_" + db
       container_project_dir = os.path.join(ROOT_DIR, 'base_containers', container_name)
@@ -113,7 +113,7 @@ def publish_db_containers(options):
   for branch in target_branches:
     for db in target_dbs:
       if not build_utils.helpers.is_db_supported_by_branch(db, branch):
-        print "db {1} is not supported by branch {2}, ignoring".format(db, branch)
+        print "db {0} is not supported by branch {1}, ignoring".format(db, branch)
         continue
 
       container_name = GIT_BRANCH_BASE_CONTAINER[branch] + "_" + db

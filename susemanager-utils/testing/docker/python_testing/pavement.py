@@ -38,7 +38,7 @@ def build(options):
     if len(target_dbs):
       for db in target_dbs:
         if not build_utils.helpers.is_db_supported_by_branch(db, branch):
-          print "db {1} is not supported by branch {2}, ignoring".format(db, branch)
+          print "db {0} is not supported by branch {1}, ignoring".format(db, branch)
           continue
 
         print 'Building container for branch {0}, with {1} db'.format(branch, db)
@@ -78,7 +78,7 @@ def publish(options):
     if len(target_dbs):
       for db in target_dbs:
         if not build_utils.helpers.is_db_supported_by_branch(db, branch):
-          print "db {1} is not supported by branch {2}, ignoring".format(db, branch)
+          print "db {0} is not supported by branch {1}, ignoring".format(db, branch)
           continue
 
         print 'Publishing container for branch {0}, with {1} db'.format(branch, db)
