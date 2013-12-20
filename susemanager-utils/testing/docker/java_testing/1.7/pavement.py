@@ -30,10 +30,14 @@ def build(options):
   except AttributeError:
     pass
 
-  target_dbs      = build_utils.helpers.extract_dbs_from_options(options)
+  target_dbs = build_utils.helpers.extract_dbs_from_options(options)
 
   if len(target_dbs):
     for db in target_dbs:
+      if not build_utils.helpers.is_db_supported_by_branch(db, branch):
+        print "db {1} is not supported by branch {2}, ignoring".format(db, BRANCH)
+        continue
+
       print 'Building container for branch {0}, with {1} db'.format(BRANCH, db)
       container_name = "{0}_{1}_{2}".format(CONTAINER_NAME_PREFIX, db, build_utils.helpers.sanitize_name(BRANCH))
       parent_container = "{0}_{1}".format(GIT_BRANCH_BASE_CONTAINER[BRANCH], db)
@@ -63,10 +67,14 @@ def build(options):
 def publish(options):
   """Publish the container on our internal docker registry."""
 
-  target_dbs      = build_utils.helpers.extract_dbs_from_options(options)
+  target_dbs = build_utils.helpers.extract_dbs_from_options(options)
 
   if len(target_dbs):
     for db in target_dbs:
+      if not build_utils.helpers.is_db_supported_by_branch(db, branch):
+        print "db {1} is not supported by branch {2}, ignoring".format(db, BRANCH)
+        continue
+
       print 'Publishing container for branch {0}, with {1} db'.format(BRANCH, db)
       container_name = "{0}_{1}_{2}".format(CONTAINER_NAME_PREFIX, db, build_utils.helpers.sanitize_name(BRANCH))
       build_utils.helpers.publish_container(container_name)
