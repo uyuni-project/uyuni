@@ -9,8 +9,6 @@
             type="org.apache.struts.action.DynaActionForm">
             <form-property name="username" type="java.lang.String"/>
             <form-property name="password" type="java.lang.String"/>
-            <form-property name="url_bounce" type="java.lang.String"/>
-            <form-property name="request_method" type="java.lang.String"/>
         </form-bean>
       <form-bean name="activationKeyForm"
            type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
@@ -4015,7 +4013,7 @@
         scope="request"
         name="deleteSystemGroupForm"
         input="/WEB-INF/pages/groups/delete.jsp"
-        type="com.redhat.rhn.frontend.action.token.DeleteGroupAction"
+        type="com.redhat.rhn.frontend.action.groups.DeleteGroupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         >
         <set-property property="postRequiredIfSubmitted" value="true" />
