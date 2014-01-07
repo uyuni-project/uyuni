@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.1.9.1
+Version: 2.1.10
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -38,6 +38,7 @@ Requires: oro
 %endif
 #Requires: lucene
 %if 0%{?fedora}
+Requires: mchange-commons
 Requires: objectweb-asm
 %else
 Requires: asm
@@ -223,6 +224,9 @@ fi
 %doc licenses/*
 
 %changelog
+* Mon Jan 06 2014 Tomas Lestach <tlestach@redhat.com> 2.1.10-1
+- fix rhn-search on fedoras
+
 * Thu Dec 12 2013 Tomas Lestach <tlestach@redhat.com> 2.1.9-1
 - do not let cleanindex log into the console
 - there're no objectweb-asm on rhel5
