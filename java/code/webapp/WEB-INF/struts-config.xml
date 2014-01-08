@@ -8618,6 +8618,18 @@
         <forward name="default" path="/WEB-INF/pages/audit/cveaudit.jsp"/>
         <forward name="queryStringParameters" path="/audit/CVEAudit.do" redirect="true"/>
     </action>
+
+    <!-- Setup wizard -->
+    <action path="/admin/SetupWizard"
+            scope="request"
+            type="com.redhat.rhn.frontend.action.satellite.SetupWizard"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping"
+            parameter="dispatch">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <set-property property="acls" value="user_role(satellite_admin)" />
+      <forward name="default"
+               path="/WEB-INF/pages/admin/setup-wizard/setup-wizard.jsp" />
+    </action>
   </action-mappings>
 
   <!-- ===================================== -->
