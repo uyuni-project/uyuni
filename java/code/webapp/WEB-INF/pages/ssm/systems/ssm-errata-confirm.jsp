@@ -18,16 +18,8 @@
 <c:set var="notSelectable" value="True" />
 <%@ include file="/WEB-INF/pages/ssm/systems/errata-list-fragment.jspf" %>
 
-    <table class="details" align="center">
-        <tr>
-            <th><label for="radio_use_date_now"><bean:message key="scheduleremote.jsp.nosoonerthan" /></label></th>
-            <td>
-                <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
-                    <jsp:param name="widget" value="date" />
-                </jsp:include>
-            </td>
-        </tr>
-    </table>
+    <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
+
     <div class="text-right">
         <hr />
         <html:submit property="dispatch">

@@ -16,12 +16,7 @@ following systems will get rebooted...
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
   <hr />
 
-  <div style="text-align: center">
-    <bean:message key="scheduleremote.jsp.nosoonerthan" />
-    <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
-      <jsp:param name="widget" value="date" />
-    </jsp:include>
-  </div>
+  <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
   <rhn:submitted />
   <div class="text-right">
     <html:submit property="dispatch">

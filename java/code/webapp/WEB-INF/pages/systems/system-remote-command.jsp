@@ -66,16 +66,7 @@
                                       rows="8" wrap="off" style="width: 100%;">${formData.scriptBody}</textarea>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="fLblInput">
-                            <bean:message key="ssm.operations.provisioning.remotecommand.form.date.label"/>:
-                        </label>
-                        <div class="col-lg-6">
-                            <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
-                                <jsp:param name="widget" value="date"/>
-                            </jsp:include>
-                        </div>
-                    </div>
+                    <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
                     <div class="form-group">
                         <div class="col-lg-offset-3 col-lg-6">
                             <button type="submit" name="schedule" class="btn btn-success"
@@ -86,7 +77,6 @@
                     </div>
                     <input type="hidden" name="sid" value="${system.id}" />
                     <input type="hidden" name="submitted" value="true" />
-                    <input type="hidden" name="use_date" value="true" />
                 </form>
             </div>
         </div>
