@@ -404,7 +404,7 @@
 }(jQuery));
 
 // Setup the password strength meter
-$(document).ready(function () {
+function setupPasswordStrengthMeter () {
     "use strict";
     var options = {
         scores: [10, 26, 40, 50],
@@ -442,7 +442,7 @@ $(document).ready(function () {
         }
     };
     $('input[name="desiredpassword"]').pwstrength(options);
-});
+}
 
 // check if password >= 5 characters
 // check if confirm password input field matches with password input field
@@ -471,3 +471,38 @@ function updateTickIcon() {
     }
 }
 
+// make sure not to submit the placeholder (or parts of it) as a password when editing a user
+function updatePlaceholder() {
+    // Return true if all password fields are empty
+    function isPasswordFieldsEmpty() {
+        var empty = true;
+        $('input:password').each(function(index) {
+            if($(this).val() != '') {
+                empty = false;
+                return false;
+            }
+        });
+        return empty;
+    }
+
+    // PLACEHOLDER needs to be in sync with PLACEHOLDER_PASSWORD 
+    // in the UserActionHelper Java class.
+    var PLACEHOLDER = "******";
+    $('input:password').focus(function() {
+        if ($(this).val() == PLACEHOLDER) {
+            $('input:password').val('');
+            updateTickIcon();
+        }
+    }).blur(function() {
+        if (isPasswordFieldsEmpty()) {
+            $('input:password').val(PLACEHOLDER);
+            updateTickIcon();
+        }
+    });
+}
+
+// document ready handler
+$(document).ready(function() {
+    setupPasswordStrengthMeter();
+    updatePlaceholder();
+});
