@@ -546,7 +546,7 @@ public class ActionFactory extends HibernateFactory {
      * @param actionIn Action to be stored in database.
      * @return action
      */
-    public static Action save(Action actionIn) throws RuntimeException {
+    public static Action save(Action actionIn) {
         /**
          * If we are trying to commit a package action, make sure
          * the packageEvr stored proc is called first so that
@@ -575,8 +575,6 @@ public class ActionFactory extends HibernateFactory {
                     detail.setEvr(newEvr);
                 }
             }
-        } else {
-            throw new RuntimeException("Unknown action type: " + actionIn.getActionType().toString());
         }
         singleton.saveObject(actionIn);
         return actionIn;
