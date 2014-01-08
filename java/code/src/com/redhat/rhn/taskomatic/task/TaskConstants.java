@@ -174,6 +174,9 @@ public class TaskConstants {
     public static final String TASK_QUERY_SSH_PUSH_FIND_CANDIDATES =
             "ssh_push_find_candidates";
 
+    public static final String TASK_QUERY_SSH_PUSH_FIND_REBOOT_CANDIDATES =
+            "ssh_push_find_reboot_candidates";
+
     public static final String TASK_QUERY_SSH_PUSH_FIND_CHECKIN_CANDIDATES =
             "ssh_push_find_checkin_candidates";
 

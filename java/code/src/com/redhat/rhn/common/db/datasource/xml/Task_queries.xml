@@ -663,6 +663,21 @@ SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, max(a.earliest_
   </query>
 </mode>
 
+<mode name="ssh_push_find_reboot_candidates" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem">
+  <query>
+SELECT DISTINCT s.id, s.name, scm.label as contact_method_label
+  FROM rhnServer s
+  JOIN rhnServerAction sa ON sa.server_id = s.id
+  JOIN rhnAction a ON sa.action_id = a.id
+  JOIN suseServerContactMethod scm ON s.contact_method_id = scm.id
+  JOIN rhnActionType at on a.action_type = at.id
+ WHERE sa.status = 1
+   AND at.label = 'reboot.reboot'
+   AND (scm.label = 'ssh-push' OR scm.label = 'ssh-push-tunnel')
+   AND sa.pickup_time + numtodsinterval(4, 'minute') &lt;= current_timestamp
+  </query>
+</mode>
+
 <mode name="ssh_push_find_checkin_candidates" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem">
   <query params="checkin_threshold">
 SELECT s.id,

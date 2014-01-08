@@ -115,6 +115,14 @@ public class SSHPushDriver implements QueueDriver {
         // Find systems with actions scheduled
         List<SSHPushSystem> candidates = getCandidateSystems();
 
+        // Find systems currently rebooting
+        List<SSHPushSystem> rebootCandidates = getRebootingSystems();
+        for (SSHPushSystem s : rebootCandidates) {
+            if (!candidates.contains(s)) {
+                candidates.add(s);
+            }
+        }
+
         // Look for checkin candidates every <moduloDivisor> minutes
         Calendar cal = Calendar.getInstance();
         int currentMinutes = cal.get(Calendar.MINUTE);
@@ -218,6 +226,18 @@ public class SSHPushDriver implements QueueDriver {
     private DataResult<SSHPushSystem> getCandidateSystems() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_SSH_PUSH_FIND_CANDIDATES);
+        return select.execute();
+    }
+
+    /**
+     * Run query to find all candidates with ongoing reboot actions.
+     *
+     * @return list of candidates with ongoing reboot actions
+     */
+    @SuppressWarnings("unchecked")
+    private DataResult<SSHPushSystem> getRebootingSystems() {
+        SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_SSH_PUSH_FIND_REBOOT_CANDIDATES);
         return select.execute();
     }
 
