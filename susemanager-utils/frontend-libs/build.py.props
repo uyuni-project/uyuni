@@ -1,1 +1,2 @@
+[buildconfig]
 builder = spacewalkx.builderx.NoTgzBuilder
