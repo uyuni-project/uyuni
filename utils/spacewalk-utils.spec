@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	2.1.22.1
+Version:	2.1.23
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -66,15 +66,21 @@ Generic utilities that may be run against a Spacewalk server.
 %prep
 %setup -q
 
+%if  0%{?rhel} && 0%{?rhel} < 6
+%define pod2man POD2MAN=pod2man
+%endif
+%if  0%{?suse_version} && 0%{?suse_version} < 1200
+%define pod2man POD2MAN=pod2man
+%endif
 
 %build
-make all
+make all %{?pod2man}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{rhnroot}
 make install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
-    MANDIR=%{_mandir}
+    MANDIR=%{_mandir} %{?pod2man}
 
 
 %clean
@@ -103,6 +109,9 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Wed Jan 08 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.23-1
+- fixed man page encoding
+
 * Tue Nov 12 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.22-1
 - Added Oracle Linux channels for UEKR3, as well as Spacewalk 2.0 Server/Client
   for OL6 and Client for OL5

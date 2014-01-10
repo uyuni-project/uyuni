@@ -2,7 +2,7 @@
 %define hb_res_dir     %{_sysconfdir}/ha.d/resource.d
 %define installed_dir  %sysv_dir/installed
 Name:         SatConfig-general
-Version:      1.216.29.1
+Version:      1.216.30
 Release:      1%{?dist}
 Summary:      Satellite Configuration System - general setup, used by many packages
 URL:          https://fedorahosted.org/spacewalk
@@ -30,7 +30,16 @@ to make a monitoring work.
 %setup -q
 
 %build
-pod2man --section=8 NOCpulse-ini NOCpulse-ini.8
+%if  0%{?rhel} && 0%{?rhel} < 6
+%define pod2man pod2man
+%else
+%if  0%{?suse_version} && 0%{?suse_version} < 1200
+%define pod2man pod2man
+%else
+%define pod2man pod2man --utf8
+%endif
+%endif
+%{pod2man} --section=8 NOCpulse-ini NOCpulse-ini.8
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -75,6 +84,9 @@ install -D -p -m 755 NOCpulse-ini $RPM_BUILD_ROOT%{_sbindir}/NOCpulse-ini
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Jan 08 2014 Michael Mraka <michael.mraka@redhat.com> 1.216.30-1
+- fixed man page encoding
+
 * Mon Feb 18 2013 Miroslav Suchý <msuchy@redhat.com> 1.216.29-1
 - Buildrequire pod2man
 - %%defattr is not needed since rpm 4.4

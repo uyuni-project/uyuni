@@ -6,6 +6,7 @@
 %global tomcat tomcat6
 %define lesspkg lesscss-engine
 %define lesscmd lesscss-engine
+%define bootstrappkg susemanager-frontend-libs-devel
 %else
 %if  0%{?rhel} && 0%{?rhel} < 6
 %global tomcat tomcat5
@@ -21,9 +22,10 @@
 %define apache_group apache
 %define lesspkg nodejs-less
 %define lesscmd lessc
+%define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.1.15.1
+Version:    2.1.16
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -33,9 +35,9 @@ URL:        https://fedorahosted.org/spacewalk/
 Source0:    https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildArch:  noarch
-
 BuildRequires: java-devel >= 1.5.0
 BuildRequires: %{lesspkg}
+BuildRequires: %{bootstrappkg}
 BuildRequires: httpd
 Requires:      httpd
 Requires(pre): tomcat6
@@ -57,7 +59,9 @@ rm -f java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 jar -cf java-branding.jar -C java/code/src com
 
 # Compile less into css
+ln -sf %{_datadir}/susemanager-frontend-libs/bootstrap css/bootstrap
 %{lesscmd} css/spacewalk.less > css/spacewalk.css
+rm -f css/bootstrap
 
 %install
 rm -rf %{buildroot}
@@ -125,6 +129,9 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Thu Jan 09 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.16-1
+- use packaged upstream bootstrap .less files
+
 * Mon Dec 16 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.15-1
 - making help links disappear
 - colour added to the counter in SSM

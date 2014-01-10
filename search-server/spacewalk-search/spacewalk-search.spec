@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.1.10
+Version: 2.1.12
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -29,7 +29,12 @@ Requires: apache-commons-logging
 %else
 Requires: jakarta-commons-logging
 %endif
+%if 0%{?fedora} >= 20
+BuildRequires: javapackages-tools
+Requires: javapackages-tools
+%else
 Requires: jpackage-utils >= 1.5
+%endif
 Requires: log4j
 %if 0%{?fedora} >= 16
 Requires: jakarta-oro
@@ -224,6 +229,12 @@ fi
 %doc licenses/*
 
 %changelog
+* Wed Jan 08 2014 Tomas Lestach <tlestach@redhat.com> 2.1.12-1
+- let spacewalk-search buildrequire javapackages-tools
+
+* Tue Jan 07 2014 Tomas Lestach <tlestach@redhat.com> 2.1.11-1
+- jpackage-utils were replaced with javapackages-tools in fc20
+
 * Mon Jan 06 2014 Tomas Lestach <tlestach@redhat.com> 2.1.10-1
 - fix rhn-search on fedoras
 

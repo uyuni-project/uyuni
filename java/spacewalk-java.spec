@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.109
+Version: 2.1.113
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -121,22 +121,33 @@ Requires: spacewalk-java-config
 Requires: spacewalk-java-lib
 Requires: spacewalk-java-jdbc
 Requires: spacewalk-branding
-Requires: jpackage-utils >= 1.5
+%if 0%{?fedora} >= 20
+BuildRequires: apache-commons-validator
+BuildRequires: mvn(ant-contrib:ant-contrib)
+BuildRequires: javapackages-tools
+Requires:      javapackages-tools
+%else
+BuildRequires: jakarta-commons-validator
+BuildRequires: ant-contrib
+BuildRequires: ant-nodeps
+BuildRequires: jpackage-utils
+Requires:      jpackage-utils
+%endif
 Requires: cobbler >= 2.0.0
 Requires: dojo
 %if 0%{?fedora}
-Requires: apache-commons-io
-Requires: apache-commons-logging
+Requires:       apache-commons-io
+BuildRequires:  apache-commons-logging
+Requires:       apache-commons-logging
 %else
-Requires: jakarta-commons-io
-Requires: jakarta-commons-logging
+Requires:       jakarta-commons-io
+BuildRequires:  jakarta-commons-logging
+Requires:       jakarta-commons-logging
 %endif
 BuildRequires: ant
 BuildRequires: ant-apache-regexp
 BuildRequires: java-devel >= 1.6.0
-BuildRequires: ant-contrib
 BuildRequires: ant-junit
-BuildRequires: ant-nodeps
 BuildRequires: antlr >= 2.7.6
 BuildRequires: tanukiwrapper
 Requires: classpathx-mail
@@ -167,13 +178,11 @@ BuildRequires: javassist
 BuildRequires: hibernate3 = 0:3.2.4
 %endif
 BuildRequires: jaf
-BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-codec
 BuildRequires: jakarta-commons-collections
 BuildRequires: jakarta-commons-discovery
 BuildRequires: jakarta-commons-el
 BuildRequires: jakarta-commons-fileupload
-BuildRequires: jakarta-commons-validator
 BuildRequires: jakarta-taglibs-standard
 BuildRequires: jcommon
 BuildRequires: jdom
@@ -206,7 +215,6 @@ BuildRequires: struts >= 0:1.3.0
 BuildRequires: struts-taglib >= 0:1.3.0
 BuildRequires: tomcat >= 7
 BuildRequires: tomcat-lib >= 7
-BuildRequires: jpackage-utils
 %else
 # SUSE = Struts 1.2 and Tomcat 6
 %if 0%{?suse_version}
@@ -224,8 +232,10 @@ BuildRequires: postgresql-jdbc
 %if 0%{?fedora}
 # spelling checker is only for Fedoras (no aspell in RHEL6)
 BuildRequires: aspell aspell-en libxslt
+BuildRequires: apache-commons-cli
 BuildRequires: apache-commons-io
 %else
+BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-io
 %endif
 Obsoletes: rhn-java < 5.3.0
@@ -387,6 +397,7 @@ Provides: taskomatic-sat = %{version}-%{release}
 Requires(post): %fillup_prereq %insserv_prereq
 Requires(preun): %fillup_prereq %insserv_prereq
 Requires: satsolver-tools
+Requires: susemanager-frontend-libs
 %else
 Requires(post): chkconfig
 Requires(preun): chkconfig
@@ -736,7 +747,7 @@ fi
 %{jardir}/hibernate3*
 %if 0%{?fedora}
 %{jardir}/ehcache-core.jar
-%{jardir}/hibernate_hibernate-commons-annotations.jar
+%{jardir}/*_hibernate-commons-annotations.jar
 %{jardir}/hibernate-jpa-2.0-api.jar
 %{jardir}/javassist.jar
 %{jardir}/slf4j_api.jar
@@ -895,6 +906,32 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Jan 10 2014 Tomas Lestach <tlestach@redhat.com> 2.1.113-1
+- fix PxtAuthenticationServiceTest
+- Protected field in final class makes no sense
+- Avoiding instantiating Boolean objects
+- Eliminate unused private fields
+
+* Fri Jan 10 2014 Tomas Lestach <tlestach@redhat.com> 2.1.112-1
+- 1013712 - return server action message within schedule.listInProgressSystems
+  and schedule.listCompletedSystems API calls
+- fix linking of hibernate-commons-annotations
+- ant-nodpes is buildrequired on rhels
+- differentiate between apache- and jakarta- buildrequires on fedora and rhel
+- buildrequire mvn(ant-contrib:ant-contrib) on fc20
+- build/require javapackages-tools on fc20
+
+* Fri Jan 10 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.111-1
+- 1051230 - fixed icon name
+- String.indexOf(char) is faster than String.indexOf(String).
+- fix RequestContextTest.testGetLoggedInUser unit test
+- fix LoginActionTest.testPerformValidUsername unit test
+- Rewrite groups/systems_affected_by_errata.pxt to java
+
+* Tue Jan 07 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.110-1
+- .project file was not accidentally committed
+- there's not ant-nodeps on fc20
+
 * Mon Jan 06 2014 Tomas Lestach <tlestach@redhat.com> 2.1.109-1
 - 1048090 - Revert "add package ID to array returned by system.listPackages API
   call"

@@ -39,7 +39,7 @@
 
 Name:		tanukiwrapper
 Version:	3.2.3
-Release:	11%{?dist}
+Release:	12%{?dist}
 Summary:	Java Service Wrapper
 Epoch:		0
 License:	BSD
@@ -55,16 +55,21 @@ Patch5:         %{name}-Makefile-sparc-sparc64.patch
 Patch6:		%{name}-nosun-jvm-64.patch
 Patch7:     %{name}-compilewithfpic.patch
 Group:		Development/Java
-BuildRequires:	jpackage-utils >= 0:1.6
+%if 0%{?fedora} >= 20
+BuildRequires: javapackages-tools
+Requires:      javapackages-tools
+%else
+BuildRequires:	ant-nodeps >= 0:1.6.1
+BuildRequires:  jpackage-utils >= 0:1.6
+Requires:       jpackage-utils >= 0:1.6
+%endif
 BuildRequires:	glibc-devel
 BuildRequires:	ant >= 0:1.6.1
-BuildRequires:	ant-nodeps >= 0:1.6.1
 BuildRequires:	ant-junit
 BuildRequires:	xerces-j2
 BuildRequires:	xml-commons-apis
 BuildRequires:	%{__perl}
 BuildRequires:	java-javadoc
-Requires:	jpackage-utils >= 0:1.6
 Obsoletes:	%{name}-demo < 0:3.1.2-2jpp
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -215,6 +220,10 @@ fi
 %endif
 
 %changelog
+* Tue Jan 07 2014 Tomas Lestach <tlestach@redhat.com> 3.2.3-12
+- jpackage-utils were replaced with javapackages-tools in fc20
+- there's not ant-nodeps on fc20
+
 * Wed Mar 20 2013 Tomas Lestach <tlestach@redhat.com> 3.2.3-11
 - Revert "set fuzz=1 for tanukiwrapper patch application"
 

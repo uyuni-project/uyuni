@@ -50,9 +50,6 @@ import com.redhat.rhn.frontend.taglibs.list.decorators.ExtraButtonDecorator;
 public class ListTagUtil {
     private static final String HIDDEN_TEXT = "<input type=\"hidden\" " +
                                                 "name=\"%s\" value=\"%s\"/>";
-    private static final String IE_MAGIC_SNIPPET = "<!--[if IE]><input type=\"text\" " +
-            "style=\"display: none;\" disabled=\"disabled\" size=\"1\" /><![endif]-->";
-
     private ListTagUtil() {
 
     }
@@ -700,7 +697,7 @@ public class ListTagUtil {
     private static String makePageLink(HttpServletRequest request,
             String listName, String page) {
         String url = makeNonPagedLink(request, listName);
-        if (url.indexOf("?") == -1) {
+        if (url.indexOf('?') == -1) {
             url += "?";
         }
         else {
