@@ -402,6 +402,7 @@ Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
+Requires: susemanager-frontend-libs
 %endif
 
 %description -n spacewalk-taskomatic
