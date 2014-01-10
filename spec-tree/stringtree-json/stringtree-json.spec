@@ -2,14 +2,18 @@
 Summary: An json string library
 Name: stringtree-json
 Version: 2.0.9
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: LGPL
 Group: Development/Library
 URL: http://stringtree.org/stringtree-json.html
 Source0: %{base_package}-%{version}-src.zip
 Patch0: stringtree-2.0.9-build-xml.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+%if 0%{?fedora} >= 20
+BuildRequires: javapackages-tools
+%else
 BuildRequires: jpackage-utils >= 0:1.5
+%endif
 BuildRequires: ant
 BuildRequires: unzip
 BuildArch: noarch
@@ -42,6 +46,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_javadir}
 
 %changelog
+* Tue Jan 07 2014 Tomas Lestach <tlestach@redhat.com> 2.0.9-9
+- jpackage-utils were replaced with javapackages-tools in fc20
+
 * Sat Jan 19 2013 Michael Mraka <michael.mraka@redhat.com> 2.0.9-8
 - rebuild stringtree-json from git
 

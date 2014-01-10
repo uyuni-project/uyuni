@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.44
+Version: 2.1.47
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -58,6 +58,7 @@ Requires: perl-RPM2
 Requires: perl-Digest-HMAC
 Requires: perl-Text-Diff
 Requires: perl-DateTime
+Requires: susemanager-frontend-libs
 %endif
 Requires: httpd
 Obsoletes: rhn-base < 5.3.0
@@ -309,6 +310,17 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Jan 10 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.47-1
+- replaced old monitoring images with icons
+- perl List port to new css/markup
+
+* Fri Jan 10 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.46-1
+- Deleting obsoleted perl pages
+- removed dead js file
+
+* Thu Jan 09 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.45-1
+- use packaged upstream bootstrap js files
+
 * Thu Dec 19 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.44-1
 - updated references to new java WorkWithGroup page
 - rewrite system event history page to java

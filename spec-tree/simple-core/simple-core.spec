@@ -1,6 +1,6 @@
 Name:		simple-core		
 Version:	3.1.3
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	Embeddable Java HTTP engine capable of handling large loads
 Group:	 	Development/Libraries	
 License:	GNU
@@ -8,8 +8,12 @@ URL:	 	http://www.simpleframework.org
 Source0:	simple-core-%{version}.tar.gz	
 BuildRoot:	%{_tmppath}/%{origname}-%{version}-%{release}-buildroot
 
-BuildRequires:	ant
-Requires: 	java >= 1.5	
+BuildRequires:  ant
+%if 0%{?fedora} >= 20
+BuildRequires: javapackages-tools
+%endif
+BuildRequires:  java >= 1.5
+Requires:       java >= 1.5
 
 %description
 The core API consists of a simple.http package and various sub-packages, it also contains various utilities. This is all that is required to develop HTTP services. 
@@ -55,6 +59,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_javadocdir}/*
 
 %changelog
+* Tue Jan 07 2014 Tomas Lestach <tlestach@redhat.com> 3.1.3-4
+- let simple-core buildrequire javapackages-tools on fc20
+- let simple-core buildrequire java
+
 * Fri Jan 18 2013 Michael Mraka <michael.mraka@redhat.com> 3.1.3-3
 - rebuild simple-core from git
 

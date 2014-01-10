@@ -20,7 +20,7 @@
 Name:           simple-xml
 Summary:        An XML serialization framework for Java
 Version:        2.6.7
-Release:        1%{?dist}
+Release:        2%{?dist}
 %if 0%{?suse_version}
 License:        Apache-2.0
 Group:          Development/Libraries/Java
@@ -38,7 +38,11 @@ BuildRequires:  bea-stax
 BuildRequires:  bea-stax-api
 %endif
 BuildRequires:  java-devel
+%if 0%{?fedora} >= 20
+BuildRequires: javapackages-tools
+%else
 BuildRequires:  jpackage-utils >= 1.6
+%endif
 BuildRequires:  xpp3
 BuildArch:      noarch
 Provides:       java(org.simpleframework:simple-xml) == 2.6.3
@@ -93,6 +97,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_javadocdir}/%{name}
 
 %changelog
+* Tue Jan 07 2014 Tomas Lestach <tlestach@redhat.com> 2.6.7-2
+- add tito.props to simple-xml directory
+- jpackage-utils were replaced with javapackages-tools in fc20
+
 * Mon Oct 08 2012 Jan Pazdziora 2.6.7-1
 - Updating simple-xml to latest version (2.6.7).
 
