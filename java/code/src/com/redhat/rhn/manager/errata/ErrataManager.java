@@ -66,6 +66,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -353,14 +354,13 @@ public class ErrataManager extends BaseManager {
 
     /** Returns errata relevant to given server group.
      * @param serverGroup Server group.
-     * @return Relevant errata for ...
+     * @return Relevant errata for server group.
      */
     public static DataResult relevantErrata(ManagedServerGroup serverGroup) {
         SelectMode m = ModeFactory.getMode("Errata_queries", "relevant_to_server_group");
         Map params = new HashMap();
         params.put("sgid", serverGroup.getId());
-        DataResult res = makeDataResultNoPagination(params, null, m);
-        return res;
+        return makeDataResultNoPagination(params, null, m);
     }
 
     /**
@@ -757,6 +757,25 @@ public class ErrataManager extends BaseManager {
         Map elabParams = new HashMap();
         elabParams.put("eid", eid);
         return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
+     * Returns the systems affected by a given errata
+     *
+     * @param user Logged-in user.
+     * @param serverGroup Server group.
+     * @param erratum Errata ID.
+     * @param pc PageControl
+     * @return systems Affected by current errata, that are in serverGroup.
+     */
+    public static DataResult<SystemOverview> systemsAffected(User user,
+            ManagedServerGroup serverGroup, Errata erratum, PageControl pc) {
+        Map params = new HashMap();
+        params.put("eid", erratum.getId());
+        params.put("user_id", user.getId());
+        params.put("sgid", serverGroup.getId());
+        return makeDataResult(params, Collections.EMPTY_MAP, pc,
+            ModeFactory.getMode("Errata_queries", "in_group_and_affected_by_errata"));
     }
 
     /**
