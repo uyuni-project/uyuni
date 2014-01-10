@@ -62,7 +62,8 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
     @Override
     protected DataResult getDataResult(Server server) {
-        return PackageManager.systemAvailablePackages(server.getId(), null);
+        DataResult result = PackageManager.systemTotalPackages(server.getId(), null);
+        return result;
     }
     
 

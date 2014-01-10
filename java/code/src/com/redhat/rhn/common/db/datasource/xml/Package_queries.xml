@@ -6,6 +6,44 @@
   </query>
 </callable-mode>
 
+<mode name="system_total_packages" class="com.redhat.rhn.frontend.dto.PackageListItem">
+    <!--
+    Returns all installed and not yet installed packages, available for the particular system.
+    -->
+  <query params="sid">
+SELECT * FROM
+(SELECT distinct pn.name AS NAME,
+        pn.name || '-' || evr_t_as_vre_simple(avl.evr) AS NVRE,
+        pn.name || '-' || evr_t_as_vre_simple(avl.evr) || '.' || avl.arch_label AS NVREA,
+        pn.id || '|' || lookup_evr((avl.evr).epoch, (avl.evr).version, (avl.evr).release) || '|' || avl.arch_id AS ID_COMBO,
+        avl.arch_label as ARCH,
+        lck.pending,
+        CASE WHEN lck.server_id IS NOT NULL THEN 'Y'
+             ELSE NULL
+        END AS locked
+  FROM  (
+         SELECT  p.name_id name_id, max(pe.evr) evr, pe.id evr_id,
+                 pa.label as arch_label, pa.id as arch_id
+           FROM  rhnPackageEVR PE, rhnPackage P,
+                 rhnChannelPackage CP, rhnServerChannel SC,
+                 rhnPackageArch PA
+          WHERE  sc.server_id = :sid
+            AND  sc.channel_id = cp.channel_id
+            AND  cp.package_id = p.id
+            AND  p.evr_id = pe.id
+            AND  p.package_arch_id = pa.id
+       GROUP BY  p.name_id, pa.label, pa.id, pe.id
+) as avl
+       left join rhnpackagename pn on pn.id = avl.name_id
+       left join rhnpackage pkg on pkg.name_id = avl.name_id and pkg.evr_id = avl.evr_id and pkg.package_arch_id = avl.arch_id
+       LEFT JOIN rhnlockedpackages lck ON lck.name_id = pkg.name_id
+                                      AND lck.evr_id = pkg.evr_id
+                                      AND lck.arch_id = pkg.package_arch_id
+                                      AND lck.server_id = :sid) pkgs
+order by name
+  </query>
+</mode>
+
 <mode name="system_all_available_packages">
   <query params="sid">
 SELECT PKG.id AS id,
