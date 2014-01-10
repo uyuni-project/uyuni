@@ -1,7 +1,5 @@
 #
-# spec file for package 
-#
-# Copyright (c) specCURRENT_YEAR SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2013 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -16,6 +14,8 @@
 #
 
 %global bootstrap_version 3.0.3
+%global jquery_version 1.10.2
+%global less_version 1.6.0
 
 Name:           susemanager-frontend-libs
 Version:        2.1
@@ -25,9 +25,9 @@ License:        MIT; Apache-2.0
 Summary:        Web libraries used by SUSE Manager
 Url:            https://www.suse.com/products/suse-manager
 Group:          Applications/Internet
-Source0:        http://code.jquery.com/jquery-1.10.2.min.js
+Source0:        http://code.jquery.com/jquery-%{jquery_version}.min.js
 Source1:        https://github.com/twbs/bootstrap/archive/v%{bootstrap_version}.tar.gz
-Source2:        https://raw.github.com/less/less.js/master/dist/less-1.6.0.min.js
+Source2:        https://raw.github.com/less/less.js/master/dist/less-%{less_version}.min.js
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
