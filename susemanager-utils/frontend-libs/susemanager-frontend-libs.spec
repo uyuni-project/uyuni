@@ -28,6 +28,9 @@ Group:          Applications/Internet
 Source0:        http://code.jquery.com/jquery-%{jquery_version}.min.js
 Source1:        https://github.com/twbs/bootstrap/archive/v%{bootstrap_version}.tar.gz
 Source2:        https://raw.github.com/less/less.js/master/dist/less-%{less_version}.min.js
+Provides:       susemanager(jquery) = %{jquery_version}
+Provides:       susemanager(less) = %{less_version}
+Provides:       susemanager(twitter-bootstrap) = %{bootstrap_version}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
