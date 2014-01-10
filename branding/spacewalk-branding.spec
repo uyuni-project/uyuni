@@ -33,7 +33,7 @@ URL:        https://fedorahosted.org/spacewalk/
 Source0:    https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildArch:  noarch
-
+BuildRequires: susemanager-frontend-libs-devel
 BuildRequires: java-devel >= 1.5.0
 BuildRequires: %{lesspkg}
 BuildRequires: httpd
@@ -57,7 +57,9 @@ rm -f java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 jar -cf java-branding.jar -C java/code/src com
 
 # Compile less into css
+ln -sf %{_datadir}/susemanager-frontend-libs/bootstrap css/bootstrap
 %{lesscmd} css/spacewalk.less > css/spacewalk.css
+rm -f css/bootstrap
 
 %install
 rm -rf %{buildroot}

@@ -58,6 +58,7 @@ Requires: perl-RPM2
 Requires: perl-Digest-HMAC
 Requires: perl-Text-Diff
 Requires: perl-DateTime
+Requires: susemanager-frontend-libs
 %endif
 Requires: httpd
 Obsoletes: rhn-base < 5.3.0
