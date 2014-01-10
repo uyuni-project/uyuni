@@ -397,12 +397,12 @@ Provides: taskomatic-sat = %{version}-%{release}
 Requires(post): %fillup_prereq %insserv_prereq
 Requires(preun): %fillup_prereq %insserv_prereq
 Requires: satsolver-tools
+Requires: susemanager-frontend-libs
 %else
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
-Requires: susemanager-frontend-libs
 %endif
 
 %description -n spacewalk-taskomatic
