@@ -6,6 +6,7 @@
 %global tomcat tomcat6
 %define lesspkg lesscss-engine
 %define lesscmd lesscss-engine
+%define bootstrappkg susemanager-frontend-libs-devel
 %else
 %if  0%{?rhel} && 0%{?rhel} < 6
 %global tomcat tomcat5
@@ -21,6 +22,7 @@
 %define apache_group apache
 %define lesspkg nodejs-less
 %define lesscmd lessc
+%define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
 Version:    2.1.16
@@ -33,9 +35,9 @@ URL:        https://fedorahosted.org/spacewalk/
 Source0:    https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildArch:  noarch
-BuildRequires: susemanager-frontend-libs-devel
 BuildRequires: java-devel >= 1.5.0
 BuildRequires: %{lesspkg}
+BuildRequires: %{bootstrappkg}
 BuildRequires: httpd
 Requires:      httpd
 Requires(pre): tomcat6
