@@ -24,7 +24,7 @@ Release:        1
 License:        MIT; Apache-2.0
 Summary:        Web libraries used by SUSE Manager
 Url:            https://www.suse.com/products/suse-manager
-Group:          Applications/Internet
+Group:          Productivity/Networking/Web/Frontends
 Source0:        http://code.jquery.com/jquery-%{jquery_version}.min.js
 Source1:        https://github.com/twbs/bootstrap/archive/v%{bootstrap_version}.tar.gz
 Source2:        https://raw.github.com/less/less.js/master/dist/less-%{less_version}.min.js
@@ -40,6 +40,7 @@ like web/javascript libraries.
 %package devel
 Requires:       %{name} = %{version}-%{release}
 Summary:        LESS files to build SUSE Manager CSS and others
+Group:          Development/Languages/Other
 %description devel
 
 %prep
