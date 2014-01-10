@@ -18,8 +18,8 @@
 %global less_version 1.6.0
 
 Name:           susemanager-frontend-libs
-Version:        2.1
-Release:        0
+Version:        2.1.1
+Release:        1
 # Make sure you review this when adding more libraries
 License:        MIT; Apache-2.0
 Summary:        Web libraries used by SUSE Manager
