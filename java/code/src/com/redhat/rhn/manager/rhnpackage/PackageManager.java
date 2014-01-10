@@ -230,12 +230,7 @@ public class PackageManager extends BaseManager {
      * @return list of packages for given server
      */
     public static DataResult systemPackageList(Long sid, PageControl pc) {
-
-        SelectMode m = ModeFactory.getMode("Package_queries", "system_package_list");
-        Map params = new HashMap();
-        params.put("sid", sid);
-        Map elabParams = new HashMap();
-        return makeDataResult(params, elabParams, pc, m);
+        return PackageManager.getPackagesPerSystem(sid, "system_package_list", pc);
     }
 
     /**
@@ -245,8 +240,32 @@ public class PackageManager extends BaseManager {
      * @return list of packages for given server
      */
     public static DataResult systemAvailablePackages(Long sid, PageControl pc) {
+        return PackageManager.getPackagesPerSystem(sid, "system_available_packages", pc);
+    }
 
-        SelectMode m = ModeFactory.getMode("Package_queries", "system_available_packages");
+    /**
+     * Returns the list of all installed and also not installed packages,
+     * available for the particular system.
+     * @param sid Server Id
+     * @param pc PageControl can also be null.
+     * @return list of packages for given server
+     */
+    public static DataResult systemTotalPackages(Long sid, PageControl pc) {
+        return PackageManager.getPackagesPerSystem(sid, "system_total_packages", pc);
+    }
+
+    /**
+     * Call any template from the Package_queries with the system ID.
+     * 
+     * @param sid
+     * @param template
+     * @param pc
+     * @return 
+     */
+    protected static DataResult getPackagesPerSystem(Long sid,
+                                                     String template,
+                                                     PageControl pc) {
+        SelectMode m = ModeFactory.getMode("Package_queries", template);
         Map params = new HashMap();
         params.put("sid", sid);
         Map elabParams = new HashMap();
