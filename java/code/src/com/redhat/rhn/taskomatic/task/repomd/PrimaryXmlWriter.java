@@ -342,7 +342,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
                 vr = parts[0];
             }
 
-            int dash = vr.lastIndexOf("-");
+            int dash = vr.lastIndexOf('-');
 
             if (dash == -1) {
                 map.put("version", vr);
