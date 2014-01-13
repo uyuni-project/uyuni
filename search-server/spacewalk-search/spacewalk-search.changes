@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 13 09:24:07 CET 2014 - mc@suse.de
+
+- version 2.1.12.1-1
+- adapt buildrequires for new distributions
+- fix rhn-search on fedora
+
+-------------------------------------------------------------------
 Wed Dec 18 13:43:31 CET 2013 - mc@suse.de
 
 - version 2.1.9.1-1
