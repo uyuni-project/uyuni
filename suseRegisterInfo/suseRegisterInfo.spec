@@ -14,12 +14,6 @@ Requires:       perl
 Requires:       python
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
-%if 0%{?suse_version}
-Requires: suseRegister >= 1.4
-%else
-Requires: suseRegisterRES
-%endif
-
 %description
 This tool read data from the local system required
 for a registration
@@ -32,7 +26,7 @@ for a registration
 %install
 make -C suseRegister install PREFIX=$RPM_BUILD_ROOT
 mkdir -p %{buildroot}/usr/lib/suseRegister/bin/
-install -m 0755 suseRegister/suse_register_info.pl %{buildroot}/usr/lib/suseRegister/bin/suse_register_info
+install -m 0755 suseRegister/parse_release_info %{buildroot}/usr/lib/suseRegister/bin/parse_release_info
 
 %if 0%{?suse_version}
 %py_compile %{buildroot}/
@@ -46,7 +40,8 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %dir /usr/lib/suseRegister
 %dir /usr/lib/suseRegister/bin
-/usr/lib/suseRegister/bin/suse_register_info
+/usr/lib/suseRegister/bin/parse_release_info
 %{python_sitelib}/suseRegister
 
 %changelog
+
