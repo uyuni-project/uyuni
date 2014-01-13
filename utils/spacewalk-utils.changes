@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 13 09:43:53 CET 2014 - mc@suse.de
+
+- version 2.1.23.1-1
+- fix man page generation on SUSE
+- fixed man page encoding
+
+-------------------------------------------------------------------
 Mon Dec 09 16:20:01 CET 2013 - mc@suse.de
 
 - version 2.1.22.1-1
