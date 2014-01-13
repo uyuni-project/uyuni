@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+
+# Print a message
+echo "* Setup a client to be managed via SSH push"
 
 # Check if we are root
 if [ 0$UID -gt 0 ]; then
@@ -10,12 +13,10 @@ fi
 function usage() {
   if [ -n "$1" ] ; then
     echo "$1" >&2
-    echo ""
   fi
 
   me=`basename $0`
-  echo "USAGE: ${me} [--register <bootstrap_script>] --client <client>"
-  echo "USAGE: ${me} --tunnel --register <bootstrap_script> --client <client>"
+  echo "USAGE: ${me} --client <client> [--register <bootstrap_script> [--tunnel]] "
   exit 1
 }
 
@@ -26,15 +27,15 @@ CLIENT=""
 VARIABLE=""
 while true; do
   case "$1" in
-    --tunnel) USE_TUNNEL="Y";;
-    --register) VARIABLE=BOOTSTRAP_ORIG;;
     --client) VARIABLE=CLIENT;;
-    -h|--help) usage;;
+    --help|-h) usage;;
+    --register) VARIABLE=BOOTSTRAP_ORIG;;
+    --tunnel) USE_TUNNEL="Y";;
     "") break;;
-    *) usage "Unknown option $1";;
+    *) usage "ERROR: Unknown option $1";;
   esac
-  if [ -n "$VARIABLE" ]; then
-    test -z "$2" && usage "Option $1 needs an argument"
+  if [ -n "${VARIABLE}" ]; then
+    test -z "$2" && usage "ERROR: Option $1 needs an argument"
     eval $VARIABLE=\$2
     shift
     VARIABLE=""
@@ -42,11 +43,11 @@ while true; do
   shift
 done
 
-# The client hostname or IP address is always required
-if [ -z "$CLIENT" ]; then
+# A client's hostname or IP address is always required
+if [ -z "${CLIENT}" ]; then
   usage "ERROR: A client's hostname or IP is required"
-# Setup for tunneling requires registration
-elif [ "$USE_TUNNEL" = "Y" ] && [ -z "$BOOTSTRAP_ORIG" ]; then
+# Tunnel setup requires registration
+elif [ "${USE_TUNNEL}" = "Y" ] && [ -z "${BOOTSTRAP_ORIG}" ]; then
   usage "ERROR: Setup with '--tunnel' requires a bootstrap script for registration"
 # Check bootstrap script existence
 elif [ -n "${BOOTSTRAP_ORIG}" ] && [ ! -f "${BOOTSTRAP_ORIG}" ]; then
@@ -60,8 +61,8 @@ if [ ${?} -ne '0' ]; then
   exit 1
 fi
 
-# Init tunneling setup
-if [ "USE_TUNNEL" = "Y" ]; then
+# Init tunnel setup
+if [ "${USE_TUNNEL}" = "Y" ]; then
   # Tunnel port config keys
   PORT_HTTP_KEY=ssh_push_port_http
   PORT_HTTPS_KEY=ssh_push_port_https
@@ -100,7 +101,7 @@ if [ "USE_TUNNEL" = "Y" ]; then
 
   # Generating the enablement script
   ENABLE=`mktemp`
-  echo "* generating enablement script (${ENABLE})"
+  echo "* Generating tunnel setup script (${ENABLE})"
   echo "if [[ \`grep ^127.0.0.1 /etc/hosts\` != *${HOSTNAME}* ]]; then" >> ${ENABLE}
   echo "sed -i 's/\(127\.0\.0\.1.*\)/& ${HOSTNAME}/' /etc/hosts" >> ${ENABLE}
   echo "fi" >> ${ENABLE}
@@ -121,7 +122,7 @@ if [ "USE_TUNNEL" = "Y" ]; then
 
   # Create a tunnel version of client-config-overrides.txt
   PATH_OVERRIDES=/srv/www/htdocs/pub/bootstrap/client-config-overrides-tunnel.txt
-  echo "* creating tunnel version of client-config-overrides.txt"
+  echo "* Creating tunnel version of client-config-overrides.txt"
   cp /srv/www/htdocs/pub/bootstrap/client-config-overrides.txt ${PATH_OVERRIDES}
   sed -i "s/\(enableProxy=\).*/\10/" ${PATH_OVERRIDES}
   sed -i "s/\(enableProxyAuth=\).*/\10/" ${PATH_OVERRIDES}
@@ -133,7 +134,7 @@ if [ "USE_TUNNEL" = "Y" ]; then
 fi
 
 # Prepare the bootstrap script used for registration
-if [ "USE_TUNNEL" = "Y" ]; then
+if [ "${USE_TUNNEL}" = "Y" ]; then
   BOOTSTRAP=`mktemp`
   echo "* Preparing bootstrap script (${BOOTSTRAP})"
   cp ${BOOTSTRAP_ORIG} ${BOOTSTRAP}
@@ -141,26 +142,29 @@ if [ "USE_TUNNEL" = "Y" ]; then
   sed -i "s/\(HOSTNAME=\).*/\1${HOSTNAME}:${PORT_HTTPS}/" ${BOOTSTRAP}
   sed -i "s/\(HTTP_PUB_DIRECTORY=\).*/\1http:\/\/${HOSTNAME}:${PORT_HTTP}\/pub/" ${BOOTSTRAP}
 elif [ -n "${BOOTSTRAP_ORIG}" ]; then
+  # Otherwise just use the given file
   BOOTSTRAP=${BOOTSTRAP_ORIG}
 fi
 
-# SUSE Manager SSH key comment and filename
+# SUSE Manager SSH key comment and identity file
 SSH_KEY_COMMENT=susemanager
-SSH_KEY_FILE=~/.ssh/id_susemanager
+SSH_IDENTITY=~/.ssh/id_susemanager
 
 # Run key generation if key doesn't exist
-if [ ! -f "${SSH_KEY_FILE}" ]; then
-  echo "* SUSE Manager key not found, generating it (${SSH_KEY_FILE})"
-  ssh-keygen -q -N '' -C ${SSH_KEY_COMMENT} -f ${SSH_KEY_FILE}
+if [ ! -f "${SSH_IDENTITY}" ]; then
+  echo "* SUSE Manager key not found, generating it (${SSH_IDENTITY})"
+  ssh-keygen -q -N '' -C ${SSH_KEY_COMMENT} -f ${SSH_IDENTITY}
 else
-  echo "* SUSE Manager key found: ${SSH_KEY_FILE}"
+  echo "* SUSE Manager key found: ${SSH_IDENTITY}"
 fi
 
 # Function to cleanup temp files in case a previous command failed
 function exit_in_case_of_error() {
   if [ ${?} -ne '0' ]; then
     echo "ERROR: Connection to client (${CLIENT}) failed, exiting..."
-    rm -fv ${ENABLE} ${BOOTSTRAP}
+    if [ "${USE_TUNNEL}" = "Y" ]; then
+      rm -fv ${ENABLE} ${BOOTSTRAP}
+    fi
     exit 1
   fi
 }
@@ -169,43 +173,44 @@ function exit_in_case_of_error() {
 echo "* Removing existing host key entries from known_hosts"
 ssh-keygen -R ${CLIENT}
 
-# Copy public key to the client (require the ssh server's host key as 'ssh-rsa')
+# Copy public key to the client, require 'ssh-rsa' as host key algorithm
 echo "* Pushing SSH key to '${CLIENT}', please login as root:"
-ssh-copy-id -o HostKeyAlgorithms=ssh-rsa -i ${SSH_KEY_FILE}.pub root@${CLIENT} &> /dev/null
+ssh-copy-id -o HostKeyAlgorithms=ssh-rsa -i ${SSH_IDENTITY}.pub root@${CLIENT} &> /dev/null
 exit_in_case_of_error
 
 # Remove duplicate entries from authorized keys
 echo "* Removing duplicate host keys remotely"
-ssh -i ${SSH_KEY_FILE} root@${CLIENT} "sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ~/.ssh/authorized_keys"
+ssh -i ${SSH_IDENTITY} root@${CLIENT} "sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ~/.ssh/authorized_keys"
 exit_in_case_of_error
 
 # Copy scripts to the client
 if [ -n "${BOOTSTRAP}" ]; then
   echo "* Pushing scripts to the client"
-  if [ "$USE_TUNNEL" = "Y" ]; then
-    scp -i ${SSH_KEY_FILE} ${ENABLE} root@${CLIENT}:enable.sh
+  if [ "${USE_TUNNEL}" = "Y" ]; then
+    scp -i ${SSH_IDENTITY} ${ENABLE} root@${CLIENT}:enable.sh
     exit_in_case_of_error
   fi
-  scp -i ${SSH_KEY_FILE} ${BOOTSTRAP} root@${CLIENT}:bootstrap.sh
+  scp -i ${SSH_IDENTITY} ${BOOTSTRAP} root@${CLIENT}:bootstrap.sh
   exit_in_case_of_error
 fi
 
 # Enablement, registration and cleanup
-if [ "USE_TUNNEL" = "Y" ]; then
-  echo "* Enabling client for SSH Push with tunneling"
-  ssh -i ${SSH_KEY_FILE} root@${CLIENT} "bash enable.sh"
+if [ "${USE_TUNNEL}" = "Y" ]; then
+  echo "* Enabling client for SSH Push via tunnel"
+  ssh -i ${SSH_IDENTITY} root@${CLIENT} "bash enable.sh"
   exit_in_case_of_error
 
   echo "* Registering client with SUSE Manager: ${CLIENT}"
-  ssh -i ${SSH_KEY_FILE} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 root@${CLIENT} 'bash bootstrap.sh'
+  ssh -i ${SSH_IDENTITY} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 root@${CLIENT} 'bash bootstrap.sh'
   exit_in_case_of_error
 
   echo "* Cleaning up temporary files"
-  ssh -i ${SSH_KEY_FILE} root@${CLIENT} "rm -f enable.sh bootstrap.sh client-config-overrides-tunnel.txt client_config_update.py"
+  ssh -i ${SSH_IDENTITY} root@${CLIENT} "rm -f enable.sh bootstrap.sh client-config-overrides-tunnel.txt client_config_update.py"
   rm -fv ${ENABLE} ${BOOTSTRAP}
 elif [ -n "${BOOTSTRAP}" ]; then
+  # Simple registration with given bootstrap script
   echo "* Registering client with SUSE Manager: ${CLIENT}"
-  ssh -i ${SSH_KEY_FILE} root@${CLIENT} 'bash bootstrap.sh'
+  ssh -i ${SSH_IDENTITY} root@${CLIENT} 'bash bootstrap.sh'
   exit_in_case_of_error
 fi
 
