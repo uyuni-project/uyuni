@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Mon Jan 13 09:29:11 CET 2014 - mc@suse.de
+
+- version 2.1.47.1-1
+- Make the packages require the frontend-libs
+- replaced old monitoring images with icons
+- perl List port to new css/markup
+- removed dead js file
+- use packaged upstream bootstrap js files
+- Check if all password input fields are empty.
+- make sure not to submit the placeholder as a password.
+  reduce file to only one document ready handler.
+- add password strength meter
+- updated references to new java WorkWithGroup page
+- rewrite system event history page to java
+- removed unused pxt pages
+
+-------------------------------------------------------------------
 Wed Dec 18 13:44:29 CET 2013 - mc@suse.de
 
 - version 2.1.43.1-1
