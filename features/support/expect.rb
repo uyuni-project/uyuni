@@ -13,7 +13,7 @@ class ExpectFileGenerator
     raise(ArgumentError, "Hostname is missing!") if host.nil? || host.empty?
     Tempfile.open('push-registration.expect') do |f|
       @file = f
-      f.write("spawn spacewalk-push-register " + host + " " + bootstrap + "\n")
+      f.write("spawn spacewalk-ssh-push-init --client " + host + " --register " + bootstrap + " --tunnel" + "\n")
       f.write("while {1} {\n")
       f.write("  expect {\n")
       f.write("    eof                                                        {break}\n")
