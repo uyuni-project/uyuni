@@ -43,6 +43,7 @@ RUN mkdir -p /usr/share/rhn/
 
 RUN mkdir -p /manager/backend/rhn-conf/
 RUN ln -s /manager/backend/rhn-conf/ /usr/share/rhn/config-defaults
+RUN ln -s /manager/backend/ /usr/lib64/python/site-packages/spacewalk
 RUN rm -rf /manager/backend
 
 ADD rhn.conf /etc/rhn/rhn.conf
