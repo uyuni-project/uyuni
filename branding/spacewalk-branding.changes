@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Jan 13 09:48:24 CET 2014 - mc@suse.de
+
+- version 2.1.16.1-1
+- revert import of bootstrap/less/bootstrap.less
+- define bootstarppkg via macro
+- require the frontend-libs-devel for building
+- move less files to seperate package
+- perl List port to new css/markup
+- use packaged upstream bootstrap .less files
+
+-------------------------------------------------------------------
 Wed Dec 18 13:52:12 CET 2013 - mc@suse.de
 
 - version 2.1.15.1-1
