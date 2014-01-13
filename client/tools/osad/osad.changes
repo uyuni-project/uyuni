@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 13 09:35:06 CET 2014 - mc@suse.de
+
+- version 5.11.32.2-1
+- do not notify osad of a server which reboot is in progress
+  (FATE#312591)
+
+-------------------------------------------------------------------
 Mon Dec 09 16:10:08 CET 2013 - mc@suse.de
 
 - version 5.11.32.1-1
