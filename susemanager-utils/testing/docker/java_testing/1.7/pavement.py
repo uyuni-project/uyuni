@@ -34,7 +34,9 @@ def build(options):
 
   if len(target_dbs):
     for db in target_dbs:
-      if not build_utils.helpers.is_db_supported_by_branch(db, build_utils.helpers.sanitize_name(BRANCH)):
+      print(db)
+      print(build_utils.helpers.sanitize_name(BRANCH))
+      if not build_utils.helpers.is_db_supported_by_branch(db, BRANCH):
         print "db {0} is not supported by branch {1}, ignoring".format(db, BRANCH)
         continue
 
@@ -71,7 +73,7 @@ def publish(options):
 
   if len(target_dbs):
     for db in target_dbs:
-      if not build_utils.helpers.is_db_supported_by_branch(db, build_utils.helpers.sanitize_name(BRANCH)):
+      if not build_utils.helpers.is_db_supported_by_branch(db, BRANCH):
         print "db {0} is not supported by branch {1}, ignoring".format(db, BRANCH)
         continue
 
