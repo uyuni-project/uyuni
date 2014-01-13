@@ -21,7 +21,7 @@ import pycurl
 
 # prevent build dependency cycles
 # pylint: disable=W0611
-from suseRegister.info import getProductProfile, parseProductProfileFile
+from suseRegister.info import getProductProfile
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
