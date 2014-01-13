@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 13 09:53:00 CET 2014 - mc@suse.de
+
+- version 2.1.39.1-1
+- set reboot action status to sucess after the reboot (FATE#312591)
+- added setLocked actions (FATE#312359)
+
+-------------------------------------------------------------------
 Wed Dec 18 14:05:37 CET 2013 - mc@suse.de
 
 - version 2.1.38.2-1
