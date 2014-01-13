@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Jan 13 09:46:05 CET 2014 - mc@suse.de
+
+- version 2.1.30.2-1
+- add reboot action cleanup task (FATE#312591)
+- add rhnLockedPackages table. (FATE#312359)
+- changes to rhnActionType (FATE#312359)
+- updated rhnActionPackage parameter constraint
+  (FATE#312359)
+
+-------------------------------------------------------------------
 Mon Dec 09 17:02:58 CET 2013 - mc@suse.de
 
 - version 2.1.30.1-1
