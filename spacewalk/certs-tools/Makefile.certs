@@ -40,9 +40,10 @@ include Makefile.defs
 
 BINFILES = rhn-sudo-ssl-tool rhn-ssl-tool rhn-bootstrap
 
-install :: $(addsuffix .inst,$(BINFILES)) $(MANS) $(PREFIX)/$(MANDIR) spacewalk-push-register
+install :: $(addsuffix .inst,$(BINFILES)) $(MANS) $(PREFIX)/$(MANDIR) spacewalk-push-register spacewalk-ssh-push-init
 	$(INSTALL_DATA) $(MANS) $(PREFIX)$(MANDIR)/man$(MANSECT)
 	$(INSTALL_BIN) spacewalk-push-register $(PREFIX)$(SBINDIR)/
+	$(INSTALL_BIN) spacewalk-ssh-push-init $(PREFIX)$(SBINDIR)/
 
 install :: instClientScript
 
