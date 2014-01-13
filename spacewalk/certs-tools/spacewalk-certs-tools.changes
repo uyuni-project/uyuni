@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 13 09:34:02 CET 2014 - mc@suse.de
+
+- version 2.1.5.1-1
+- New ssh-push client initialization script
+- older Proxies don't implement PRODUCT_NAME
+
+-------------------------------------------------------------------
 Mon Dec 09 16:39:50 CET 2013 - mc@suse.de
 
 - version 2.1.4.1-1
