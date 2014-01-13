@@ -1,4 +1,34 @@
 -------------------------------------------------------------------
+Mon Jan 13 09:54:49 CET 2014 - mc@suse.de
+
+- version 2.1.113.1-1
+- Bugfix: duplicated packages in SQL quary error caused unpredictable results
+- require susemanager-frontend-libs for SUSE only
+- add new reboot action handling for ssh-push (FATE#312591)
+- Implement task to invalidate reboot actions (FATE#312591)
+- Make the packages require the frontend-libs 
+- return server action message within schedule.listInProgressSystems
+  and schedule.listCompletedSystems API calls
+- fixed icon name
+- do not override existing ant property
+- Rewrite groups/systems_affected_by_errata.pxt to java
+- Added locking/unlocking status display on request (FATE#312359)
+- Added locking action scheduling (FATE#312359)
+- Added LockPackageAction for the "Package Lock" feature (FATE#312359)
+- store url_bounce and request_method to session and re-use common login parts
+- support logins using Kerberos ticket
+- Use new rhn:icon internationalization/localization
+- Perform localization inside rhn:icon tag
+- Expect 'autoinstallation' instead of 'kickstart'
+- updated references to new java WorkWithGroup page
+- work_with_group.pxt rewritten to java
+- change order of system ok/warn/crit in legends
+- rewrite system event history page to java
+- give icons title in rhn:toolbar tag
+- kickstarts to RHEL 7 don't work because of missing rpms
+- Fix the java package of DeleteGroupAction class
+
+-------------------------------------------------------------------
 Wed Dec 18 13:55:00 CET 2013 - mc@suse.de
 
 - version 2.1.102.1-1
