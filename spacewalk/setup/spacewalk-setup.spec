@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.1.7.1
+Version:        2.1.8
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -168,6 +168,9 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Tue Jan 14 2014 Matej Kollar <mkollar@redhat.com> 2.1.8-1
+- Updating the copyright years info
+
 * Fri Jan 03 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.1.7-1
 - 964323 - external PG: remove postgresql from spacewalk services
 
