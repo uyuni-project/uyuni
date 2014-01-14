@@ -4420,7 +4420,7 @@ value for this entitlement, excluding the default organization's consumption.</s
           <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On Entitlements</source>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.delete">
-          <source>&lt;a href="/rhn/systems/ssm/DeleteConfirm.do"&gt;Delete&lt;/a&gt; systems</source>
+          <source>&lt;a href="/rhn/systems/ssm/DeleteConfirm.do"&gt;Delete&lt;/a&gt; systems from @@PRODUCT_NAME@@</source>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.reboot">
           <source>&lt;a href="/rhn/systems/ssm/misc/RebootSystem.do"&gt;Reboot&lt;/a&gt; systems</source>
@@ -8903,7 +8903,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.postlog">
-        <source>Log custom post scripts</source>
+        <source>Log custom post scripts:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -8915,7 +8915,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.prelog">
-        <source>Log custom pre scripts</source>
+        <source>Log custom pre scripts:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -8927,7 +8927,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kscfg">
-        <source>Preserve ks.cfg</source>
+        <source>Preserve ks.cfg:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -9194,13 +9194,13 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.active">
-        <source>Active</source>
+        <source>Active:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.org_default">
-        <source>Organization Default Profile</source>
+        <source>Organization Default Profile:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>

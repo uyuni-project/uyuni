@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2012 Red Hat, Inc.
+ * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -58,7 +58,7 @@ public class LoginSetupActionTest extends RhnMockStrutsTestCase {
         ActionForward rc = action.execute(mapping, form, req, resp);
 
         // verify
-        String bounce = (String) form.get("url_bounce");
+        String bounce = (String) req.getAttribute("url_bounce");
 
         assertNotNull(bounce);
         assertEquals(bounce, "/rhn/UserDetails.do?sid=1");
