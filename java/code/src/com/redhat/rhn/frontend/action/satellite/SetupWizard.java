@@ -27,7 +27,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
 /**
- * In here we will call 'mgr-ncc-sync' to get the list of products.
+ * This is for now just a generic RhnAction used for all pages of the wizard.
  */
 public class SetupWizard extends RhnAction {
     /** {@inheritDoc} */

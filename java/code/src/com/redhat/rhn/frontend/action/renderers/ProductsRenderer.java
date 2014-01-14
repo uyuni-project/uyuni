@@ -47,7 +47,7 @@ public class ProductsRenderer extends BaseFragmentRenderer {
     //public static final String ATTRIB_ERROR_MSG = "errorMsg";
 
     // The URL of the page to render
-    private static final String PAGE_URL = "/WEB-INF/pages/admin/setup-wizard/setup-wizard-async.jsp";
+    private static final String PAGE_URL = "/WEB-INF/pages/admin/setup/suse-products-async.jsp";
 
     /**
      * {@inheritDoc}
