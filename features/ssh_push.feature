@@ -5,7 +5,7 @@
 Feature: Register a system to be managed via SSH push
   In order to register a system to Spacewalk for being managed via SSH push
   As the testing user
-  I want to register a client using spacewalk-push-register
+  I want to register a client using spacewalk-ssh-push-init
 
   Scenario: Create activation key for SSH push
     Given I am on the Systems page
