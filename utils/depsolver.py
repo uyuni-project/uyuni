@@ -43,6 +43,7 @@ CACHE_DIR = "/tmp/cache/yum"
 
 class DepSolver:
     def __init__(self, repos, pkgs_in=None):
+        self._override_sigchecks = False
         self.pkgs = pkgs_in or []
         self.repos = repos
         self._repostore = RepoStorage(self)
