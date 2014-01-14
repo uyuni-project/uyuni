@@ -52,7 +52,7 @@ Group: Applications/Internet
 Summary: Programs needed to be installed on the RHN Web base classes
 Requires: spacewalk-pxt
 Provides: spacewalk(spacewalk-base) = %{version}-%{release}
-Requires: /usr/bin/sudo 
+Requires: sudo
 %if 0%{?suse_version}
 Requires: perl-RPM2
 Requires: perl-Digest-HMAC
