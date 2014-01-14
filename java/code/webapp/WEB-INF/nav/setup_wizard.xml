@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<rhn-navi-tree label="setup_wizard" invisible="1" title-depth="1">
+  <rhn-tab name="Mirror Credentials" acl="user_role(satellite_admin)">
+    <rhn-tab-url>/rhn/admin/setup/MirrorCredentials.do</rhn-tab-url>
+  </rhn-tab>
+  <rhn-tab name="SUSE Products" acl="user_role(satellite_admin)">
+    <rhn-tab-url>/rhn/admin/setup/SUSEProducts.do</rhn-tab-url>
+  </rhn-tab>
+</rhn-navi-tree>
