@@ -13,6 +13,7 @@
 import os
 import tempfile
 import uuid
+import time
 import xml.dom.minidom
 from xml.dom import Node
 from subprocess import Popen, PIPE
@@ -155,7 +156,9 @@ def getSystemID():
         secret = str(uuid.uuid4())
         secret = secret.replace('-', '').strip()
 
-    if os.path.exists('/etc/zypp/credentials.d'):
+    if os.path.exists('/etc/zypp/'):
+        if not os.path.exists('/etc/zypp/credentials.d'):
+            os.makedirs('/etc/zypp/credentials.d')
         f = open(nccCredentialsFile, 'w')
     else:
         f = open(nccCredentialsFileRH, 'w')
