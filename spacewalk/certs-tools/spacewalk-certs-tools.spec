@@ -29,7 +29,7 @@ Requires: %{rhn_client_tools}
 %endif
 Requires: tar
 Requires: spacewalk-backend-libs >= 0.8.28
-Requires: /usr/bin/sudo
+Requires: sudo
 BuildRequires: docbook-utils
 %if 0%{?suse_version}
 BuildRequires: filesystem
