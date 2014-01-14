@@ -25,7 +25,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.1.16.1
+Version:    2.1.17
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -129,6 +129,10 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Mon Jan 13 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.17-1
+- allow to use .less files in development mode
+- perl List port to new css/markup
+
 * Thu Jan 09 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.16-1
 - use packaged upstream bootstrap .less files
 
