@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.47.1
+Version: 2.1.48
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -310,6 +310,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Tue Jan 14 2014 Matej Kollar <mkollar@redhat.com> 2.1.48-1
+- Updating the copyright years info
+
 * Fri Jan 10 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.47-1
 - replaced old monitoring images with icons
 - perl List port to new css/markup
