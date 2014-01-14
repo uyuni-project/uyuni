@@ -182,16 +182,16 @@
     </condition>
     <echo message="Copying css/js files to remote host...${static.files.dir}"/>
     <exec executable="rsync">
-      <arg line="-a --delete ${branding.css.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/css/" />
+      <arg line="-a ${branding.css.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/css/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a --delete ${branding.img.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/img/" />
+      <arg line="-a ${branding.img.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/img/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a --delete ${branding.fonts.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/fonts/" />
+      <arg line="-a ${branding.fonts.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/fonts/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a --delete ${js.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
+      <arg line="-a ${js.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
     </exec>
   </target>
 
