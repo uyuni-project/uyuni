@@ -5,7 +5,7 @@ Feature: Test XML-RPC "api" namespace.
 
   Scenario: Public API test
     Given I am logged in via XML-RPC/api as user "admin" and password "admin"
-    When I call getVersion, I should get "13" as result
+    When I call getVersion, I should get "14" as result
     When I call systemVersion, I should get "2.1 nightly" as result
     When I call getApiNamespaces, I should get 43 namespaces
     When I call getApiNamespaceCallList, I should get 589 available api calls
