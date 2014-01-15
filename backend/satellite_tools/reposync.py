@@ -1173,7 +1173,7 @@ def _update_cve(notice):
         # the reference list
         cves = find_cves(notice['description'])
     if notice['references'] is not None:
-        cves.extend([cve['id'][:13] for cve in notice['references'] if cve['type'] == 'cve'])
+        cves.extend([cve['id'][:20] for cve in notice['references'] if cve['type'] == 'cve'])
     # remove duplicates
     cves = list(set(cves))
 
@@ -1300,10 +1300,14 @@ def find_cves(text):
     """Find and return a list of CVE ids
 
     Matches:
-     - CVE-YEAR-NUMB
+     - CVE-YEAR-NUMBER
 
+     Beginning 2014, the NUMBER has no maximal length anymore.
+     We limit the length at 20 chars, because of the DB column size
     """
-    return list(set(re.findall('CVE-\d{4}-\d{4}', text)))
+    cves = list()
+    cves.extend([cve[:20] for cve in set(re.findall('CVE-\d{4}-\d+', text))])
+    return cves
 
 def set_filter_opt(option, opt_str, value, parser):
     if opt_str in [ '--include', '-i']: f_type = '+'
