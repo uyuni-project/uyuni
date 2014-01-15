@@ -3,7 +3,7 @@ db_backend = oracle
 db_user = spacewalk
 db_password = spacewalk
 db_name = susemanager
-db_host = 1c059.qa.suse.de
+db_host = sumaoracletest.suse.de
 db_port = 1521
 server.nls_lang = english.AL32UTF8
 
