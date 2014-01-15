@@ -241,7 +241,7 @@ class OracleBackend(Backend):
         Table('rhnCVE',
             fields      = {
                 'id'            : DBint(),
-                'name'          : DBstring(13),
+                'name'          : DBstring(20),
             },
             pk          = ['name'],
         ),
