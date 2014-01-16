@@ -171,7 +171,9 @@ function exit_in_case_of_error() {
 
 # Remove existing host key entries from known_hosts
 echo "* Removing existing host key entries from known_hosts"
-ssh-keygen -R ${CLIENT}
+if [ -f "~/.ssh/known_hosts" ];then
+  ssh-keygen -R ${CLIENT}
+fi
 
 # Copy public key to the client, require 'ssh-rsa' as host key algorithm
 echo "* Pushing SSH key to '${CLIENT}', please login as root:"
