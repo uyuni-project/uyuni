@@ -96,7 +96,6 @@ mkdir -p $DIR/rhn-logs
 mkdir -p $DIR/kickstarts
 mkdir -p $DIR/database
 mkdir -p $DIR/cobbler-lib
-mkdir -p $DIR/tasko
 
 echo "    * copying configuration information"
 cp -fapRd /etc/apache2/conf* $DIR/conf/httpd
@@ -292,11 +291,6 @@ if [ -f /var/log/audit/audit.log ] ; then
 	echo "    * copying audit.log"
 	mkdir -p $DIR/audit-log
 	cp -fa /var/log/audit/audit.log $DIR/audit-log
-fi
-
-if [ -d /var/lib/rhn/tasko/sat ] ; then
-	echo "    * copying tasko/sat"
-	cp -fa /var/lib/rhn/tasko/sat $DIR/tasko
 fi
 
 if [ $IS_SUSE -eq 1 ]; then
