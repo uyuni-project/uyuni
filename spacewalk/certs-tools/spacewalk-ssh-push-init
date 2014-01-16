@@ -9,14 +9,16 @@ if [ 0$UID -gt 0 ]; then
   exit 1
 fi
 
+# This script's name
+ME=`basename $0`
+
 # Print usage instructions
 function usage() {
   if [ -n "$1" ] ; then
     echo "$1" >&2
   fi
 
-  me=`basename $0`
-  echo "USAGE: ${me} --client <client> [--register <bootstrap_script> [--tunnel]] "
+  echo "USAGE: ${ME} --client <client> [--register <bootstrap_script> [--tunnel]] "
   exit 1
 }
 
@@ -150,6 +152,9 @@ fi
 SSH_KEY_COMMENT=susemanager
 SSH_IDENTITY=~/.ssh/id_susemanager
 
+# Logfile for this script
+LOGFILE=/var/log/rhn/${ME}.log
+
 # Run key generation if key doesn't exist
 if [ ! -f "${SSH_IDENTITY}" ]; then
   echo "* SUSE Manager key not found, generating it (${SSH_IDENTITY})"
@@ -177,7 +182,7 @@ fi
 
 # Copy public key to the client, require 'ssh-rsa' as host key algorithm
 echo "* Pushing SSH key to '${CLIENT}', please login as root:"
-ssh-copy-id -i ${SSH_IDENTITY}.pub root@${CLIENT} &> /dev/null
+ssh-copy-id -i ${SSH_IDENTITY}.pub root@${CLIENT} >> LOGFILE 2>&1
 exit_in_case_of_error
 
 # Remove duplicate entries from authorized keys
