@@ -49,6 +49,7 @@ for d in ${dirs[*]}; do
             if [ "$src" != "$target" ]; then
                 if ! grep "already applied in Manager" "$dest" > /dev/null; then
                     templatename=`basename $dest`
+                    #echo "Searching for template: $templatedir/$templatename.dif"
                     if [ -e "$templatedir/$templatename.dif" ]; then
                         DIFF1=`diff -ub $i $dest`
                         DIFF2=`cat "$templatedir/$templatename.dif"`
