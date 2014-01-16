@@ -4,9 +4,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
 <html>
-<head>
-    <meta name="page-decorator" content="none" />
-</head>
 <body>
 
 <%@ include file="/WEB-INF/pages/common/fragments/groups/header.jspf" %>
@@ -21,17 +18,21 @@
 
 <rl:listset name="groupAdmins">
     <rhn:csrf />
-    <input type="hidden" name="sgid" value="${systemgroup.id}" />
-
     <rl:list>
 
         <rl:decorator name="SelectableDecorator"/>
         <rl:decorator name="PageSizeDecorator"/>
 
+        <c:if test='${not current.disabled}'>
         <rl:selectablecolumn value="${current.id}"
-            selected="${current.selected}"
-            disabled="${current.disabled}">
+            selected="${current.selected}">
         </rl:selectablecolumn>
+        </c:if>
+        <c:if test='${current.disabled}'>
+            <rl:column>
+                <input type="checkbox" disabled="1" checked="1" />
+            </rl:column>
+        </c:if>
 
          <rl:column sortable="true"
             bound="false"
@@ -60,10 +61,11 @@
 
     </rl:list>
 
+    <hr />
     <div class="text-right">
-        <hr />
-        <input type="submit" name="confirm"
-                value="<bean:message key='message.Update'/>" />
+        <html:submit property="dispatch">
+            <bean:message key="message.Update" />
+        </html:submit>
     </div>
     <rhn:submitted/>
 

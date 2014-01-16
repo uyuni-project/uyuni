@@ -7,17 +7,22 @@
 
 <rl:listset name="managerSet">
     <rhn:csrf />
-    <input type="hidden" name="cid" value="${cid}" />
 
     <rl:list>
 
         <rl:decorator name="SelectableDecorator"/>
         <rl:decorator name="PageSizeDecorator"/>
 
+        <c:if test='${not current.disabled}'>
         <rl:selectablecolumn value="${current.id}"
-            selected="${current.selected}"
-            disabled="${current.disabled}">
+            selected="${current.selected}">
         </rl:selectablecolumn>
+        </c:if>
+        <c:if test='${current.disabled}'>
+            <rl:column>
+                <input type="checkbox" disabled="1" checked="1" />
+            </rl:column>
+        </c:if>
 
          <rl:column sortable="true"
             bound="false"
@@ -52,10 +57,11 @@
 
     </rl:list>
 
+    <hr />
     <div class="text-right">
-        <hr />
-        <input type="submit" name="confirm"
-                value="<bean:message key='message.Update'/>" />
+        <html:submit property="dispatch">
+                <bean:message key="message.Update" />
+        </html:submit>
     </div>
     <rhn:submitted/>
 

@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.114
+Version: 2.1.116
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -906,6 +906,16 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Jan 15 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.116-1
+- removed unused methods
+- selectable doesn't work properly with ListRhnSetHelper
+- select all / unselect all should not submit changes
+
+* Wed Jan 15 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.115-1
+- reuse BaseListAction for AdminListAction
+- fixed added/removed keys logic
+- select all / unselect all should not submit changes
+
 * Tue Jan 14 2014 Matej Kollar <mkollar@redhat.com> 2.1.114-1
 - bump java API version
 - update LICENSE, allow Copyright (c) to start in 2013
