@@ -1838,6 +1838,17 @@ tree will not be usable for autoinstalling.
       <trans-unit id="cobbler.powermanagement.ipmitool">
         <source>IPMI</source>
       </trans-unit>
+
+      <!-- Setup Wizard -->
+      <trans-unit id="Setup Wizard">
+        <source>Setup Wizard</source>
+      </trans-unit>
+      <trans-unit id="Mirror Credentials">
+        <source>Mirror Credentials</source>
+      </trans-unit>
+      <trans-unit id="SUSE Products">
+        <source>SUSE Products</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
