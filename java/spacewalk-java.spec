@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.116
+Version: 2.1.121
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -70,7 +70,6 @@ Requires: java >= 1.6.0
 Requires: jakarta-commons-lang >= 0:2.1
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-discovery
-Requires: jakarta-commons-cli
 Requires: jakarta-commons-el
 Requires: jakarta-commons-fileupload
 Requires: jakarta-taglibs-standard
@@ -232,9 +231,11 @@ BuildRequires: postgresql-jdbc
 %if 0%{?fedora}
 # spelling checker is only for Fedoras (no aspell in RHEL6)
 BuildRequires: aspell aspell-en libxslt
+Requires:      apache-commons-cli
 BuildRequires: apache-commons-cli
 BuildRequires: apache-commons-io
 %else
+Requires:      jakarta-commons-cli
 BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-io
 %endif
@@ -364,12 +365,13 @@ Requires: hibernate3 >= 3.2.4
 %endif
 Requires: java >= 1.6.0
 Requires: jakarta-commons-lang >= 2.1
-Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-dbcp
 %if 0%{?fedora}
+Requires: apache-commons-cli
 Requires: apache-commons-logging
 %else
+Requires: jakarta-commons-cli
 Requires: jakarta-commons-logging
 %endif
 Requires: jakarta-taglibs-standard
@@ -506,7 +508,9 @@ ln -s -f %{_javadir}/hibernate3/hibernate-ehcache.jar $RPM_BUILD_ROOT%{_javadir}
 # on Fedora 19 some jars are named differently
 %if 0%{?fedora} && 0%{?fedora} > 18
 mkdir -p $RPM_BUILD_ROOT%{_javadir}
+%if 0%{?fedora} < 20
 ln -s -f %{_javadir}/apache-commons-validator.jar $RPM_BUILD_ROOT%{_javadir}/commons-validator.jar
+%endif
 ln -s -f %{_javadir}/mchange-commons-java.jar $RPM_BUILD_ROOT%{_javadir}/mchange-commons.jar
 ln -s -f %{_javadir}/jboss-logging/jboss-logging.jar $RPM_BUILD_ROOT%{_javadir}/jboss-logging.jar
 %endif
@@ -759,7 +763,9 @@ fi
 %{_javadir}/hibernate3/hibernate-ehcache-3.jar
 %endif
 %if 0%{?fedora} && 0%{?fedora} > 18
+%if 0%{?fedora} < 20
 %{_javadir}/commons-validator.jar
+%endif
 %{_javadir}/mchange-commons.jar
 %{_javadir}/jboss-logging.jar
 %{jardir}/jboss-loggingjboss-logging.jar
@@ -872,8 +878,8 @@ fi
 %else
 %attr(755, root, root) %{_initrddir}/taskomatic
 %endif
-%attr(755, root, root) %{_bindir}/taskomaticd
-%attr(755, root, root) %{_datadir}/rhn/lib/spacewalk-asm.jar
+%{_bindir}/taskomaticd
+%{_datadir}/rhn/lib/spacewalk-asm.jar
 %{_sbindir}/rctaskomatic
 
 %files config
@@ -906,6 +912,26 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Jan 17 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.121-1
+- increase column length for CVE ids
+
+* Fri Jan 17 2014 Tomas Lestach <tlestach@redhat.com> 2.1.120-1
+- fix checkstyle
+
+* Thu Jan 16 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.119-1
+- checkstyle fixes
+- avoid reassigning parameters in StringUtil
+
+* Thu Jan 16 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.118-1
+- %%attr() mode not applicaple to symlink
+- fixed conflict with apache-commons-validator
+- resolve conflict between {apache,jakarta}-commons-cli on Fedora 20
+
+* Thu Jan 16 2014 Tomas Lestach <tlestach@redhat.com> 2.1.117-1
+- remove unused method
+- create external authentication page
+- removed unused import
+
 * Wed Jan 15 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.116-1
 - removed unused methods
 - selectable doesn't work properly with ListRhnSetHelper

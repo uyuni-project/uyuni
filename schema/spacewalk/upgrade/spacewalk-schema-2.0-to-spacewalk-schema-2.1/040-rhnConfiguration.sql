@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008 Red Hat, Inc.
+-- Copyright (c) 2014 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,20 +13,17 @@
 -- in this software or its documentation.
 --
 
-
-CREATE TABLE rhnCVE
+CREATE TABLE rhnConfiguration
 (
-    id    NUMBER NOT NULL
-              CONSTRAINT rhn_cve_id_pk PRIMARY KEY
-              USING INDEX TABLESPACE [[2m_tbs]],
-    name  VARCHAR2(20) NOT NULL
+    key                     VARCHAR2(64) NOT NULL
+                                CONSTRAINT rhnConfig_key_pk PRIMARY KEY,
+    description             VARCHAR2(512) NOT NULL,
+    value                   VARCHAR2(512),
+    default_value           VARCHAR2(512),
+    created                 TIMESTAMP WITH LOCAL TIME ZONE
+                                DEFAULT (current_timestamp) NOT NULL,
+    modified                TIMESTAMP WITH LOCAL TIME ZONE
+                                DEFAULT (current_timestamp) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;
-
-CREATE UNIQUE INDEX rhn_cve_name_uq
-    ON rhnCVE (name)
-    TABLESPACE [[2m_tbs]];
-
-CREATE SEQUENCE rhn_cve_id_seq;
-

@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008 Red Hat, Inc.
+-- Copyright (c) 2014 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,19 +14,22 @@
 --
 
 
-CREATE TABLE rhnCVE
+CREATE TABLE rhnUserExtGroup
 (
-    id    NUMBER NOT NULL
-              CONSTRAINT rhn_cve_id_pk PRIMARY KEY
-              USING INDEX TABLESPACE [[2m_tbs]],
-    name  VARCHAR2(20) NOT NULL
+    id        NUMBER NOT NULL
+                  CONSTRAINT rhn_userExtGroup_id_pk PRIMARY KEY
+                  USING INDEX TABLESPACE [[64k_tbs]],
+    label     VARCHAR2(512) NOT NULL,
+    created   timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified  timestamp with local time zone
+                  DEFAULT (current_timestamp) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;
 
-CREATE UNIQUE INDEX rhn_cve_name_uq
-    ON rhnCVE (name)
-    TABLESPACE [[2m_tbs]];
+CREATE UNIQUE INDEX rhn_userextgroup_label_uq
+    ON rhnUserExtGroup (label)
+    TABLESPACE [[64k_tbs]];
 
-CREATE SEQUENCE rhn_cve_id_seq;
-
+CREATE SEQUENCE rhn_userextgroup_seq;

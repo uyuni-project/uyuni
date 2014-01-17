@@ -1,0 +1,2 @@
+[buildconfig]
+tagger = tito.tagger.ReleaseTagger
