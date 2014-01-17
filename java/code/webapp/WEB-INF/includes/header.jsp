@@ -12,13 +12,13 @@
 </c:if>
 
 <rhn:require acl="user_authenticated()">
-	<!--div id="utilityLinks">
+    <!--div id="utilityLinks">
 
 <p id="geo"><c:out value="${rhnActiveLang} "/> (<a href="/rhn/account/LocalePreferences.do"><bean:message key="header.jsp.change"/></a>)</p>
-		<p id="linx"><span class="hide"><strong><bean:message key="header.jsp.shortcuts"/></strong> </span><a href="http://kbase.redhat.com/"><bean:message key="header.jsp.knowledgebase"/></a> <span class="navPipe">|</span> <a href="/help"><bean:message key="header.jsp.documentation"/></a></p>
+        <p id="linx"><span class="hide"><strong><bean:message key="header.jsp.shortcuts"/></strong> </span><a href="http://kbase.redhat.com/"><bean:message key="header.jsp.knowledgebase"/></a> <span class="navPipe">|</span> <a href="/help"><bean:message key="header.jsp.documentation"/></a></p>
 
-	</div-->
-	<div id="utilityAccount">
+    </div-->
+    <div id="utilityAccount">
         <p>
 	  <a href="/help"><bean:message key="header.jsp.documentation"/></a><span class="navPipe">|</span> <!-- Moved over from utilityLinks as most of those are now gone, and there is no need to keep it as a separate bar. -->
          <span class="label"><bean:message key="header.jsp.loggedin"/></span> <a href="/rhn/account/UserDetails.do"><c:out escapeXml="true" value="${requestScope.session.user.login}" /></a><span class="navPipe">|</span><span class="label"><bean:message key="header.jsp.org"/></span> <c:out escapeXml="true" value="${requestScope.session.user.org.name}" /><span class="navPipe">|</span><a href="/rhn/account/UserPreferences.do"><bean:message key="header.jsp.preferences"/></a><span class="navPipe">|</span><html:link forward="logout"><span><bean:message key="header.jsp.signout"/></span></html:link>
@@ -28,27 +28,44 @@
   </div><!-- id="utility" -->
 
   <div id="header">
-      <a href="<bean:message key="layout.jsp.vendor.website"/>" title="<bean:message key="layout.jsp.vendor.title"/>"><img src="/img/logo_vendor.png" alt="<bean:message key="layout.jsp.vendor.name"/>" id="rhLogo" /></a>
-        <a href="/" title="<bean:message key="layout.jsp.productname"/> homepage">
-          <img src="/img/logo_product.png" alt="<bean:message key="layout.jsp.productname"/>" id="rhnLogo" accesskey="2"/>
-        </a>
-      <rhn:require acl="user_authenticated()">
-  <div id="searchbar">
-    <div id="searchbarinner">
-      <form name="form1" action="/rhn/Search.do" method="get">
-      <select name="search_type">
-      <rhn:require acl="org_entitlement(sw_mgr_enterprise)">
-            <option value="systems"><bean:message key="header.jsp.systems"/></option>
-          </rhn:require>
-      <option value="packages"><bean:message key="header.jsp.packages"/></option>
-      <option value="errata"><bean:message key="header.jsp.errata"/></option>
-      <option value="docs"><bean:message key="header.jsp.documentation"/></option>
-      </select><input type="text" name="search_string" maxlength="40" size="20" accesskey="4" autofocus/>
-      <input type="hidden" name="submitted" value="true"/>
-      <input type="submit" class="button" name="image-1" value="Search" align="top" /></form>
-    </div><!-- id="searchbarinner" -->
-  </div><!-- id="searchbar" -->
-      </rhn:require>
+    <a href="<bean:message key="layout.jsp.vendor.website"/>"
+      title="<bean:message key="layout.jsp.vendor.title"/>"><img
+      src="/img/logo_vendor.png"
+      alt="<bean:message key="layout.jsp.vendor.name"/>" id="rhLogo" /></a> <a
+      href="/" title="<bean:message key="layout.jsp.productname"/> homepage">
+      <img src="/img/logo_product.png"
+      alt="<bean:message key="layout.jsp.productname"/>" id="rhnLogo"
+      accesskey="2" />
+    </a>
+    <rhn:require acl="user_authenticated()">
+      <div id="searchbar">
+      <div id="searchbarinner">
+        <html:form action="/Search.do">
+          <rhn:csrf />
+          <rhn:submitted />
+          <select name="search_type">
+            <rhn:require acl="org_entitlement(sw_mgr_enterprise)">
+              <option value="systems">
+                <bean:message key="header.jsp.systems" />
+              </option>
+            </rhn:require>
+            <option value="packages">
+              <bean:message key="header.jsp.packages" />
+            </option>
+            <option value="errata">
+              <bean:message key="header.jsp.errata" />
+            </option>
+            <option value="docs">
+              <bean:message key="header.jsp.documentation" />
+            </option>
+          </select>
+          <input type="text" name="search_string" maxlength="40" size="20"
+            accesskey="4" autofocus="autofocus" />
+          <html:submit><bean:message key="button.search" /></html:submit>
+        </html:form>
+      </div>
+      </div>
+    </rhn:require>
   </div><!-- id="header" -->
 
   <div id="navWrap">
