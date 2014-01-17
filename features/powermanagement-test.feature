@@ -15,9 +15,9 @@ Feature: Test Powermanagement
     Given I am on the Systems overview page of this client
       And I follow "Provisioning" in the content area
       And I follow "Power Management" in the content area
-     When I enter "10.120.66.57" as "powerAddress"
-      And I enter "ADMIN" as "powerUsername"
-      And I enter "linux" as "powerPassword"
+     When I enter "192.168.0.5" as "powerAddress"
+      And I enter "admin" as "powerUsername"
+      And I enter "admin" as "powerPassword"
       And I click on "Save"
      Then I should see a "Power settings saved" text
       And the cobbler report contains "Power Management Address       : 10.120.66.57"
