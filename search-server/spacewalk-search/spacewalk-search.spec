@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.1.12.1
+Version: 2.1.13
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -20,13 +20,14 @@ BuildArch: noarch
 Requires: c3p0 >= 0.9.1
 Requires: cglib
 Requires(pre): doc-indexes
-Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-httpclient
 Requires: jakarta-commons-lang >= 0:2.1
 %if 0%{?fedora}
+Requires: apache-commons-cli
 Requires: apache-commons-logging
 %else
+Requires: jakarta-commons-cli
 Requires: jakarta-commons-logging
 %endif
 %if 0%{?fedora} >= 20
@@ -58,13 +59,14 @@ Obsoletes: rhn-search < 5.3.0
 BuildRequires: ant
 #BuildRequires: apache-ibatis-sqlmap
 BuildRequires: c3p0 >= 0.9.1
-BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-codec
 BuildRequires: jakarta-commons-httpclient
 BuildRequires: jakarta-commons-lang >= 0:2.1
 %if 0%{?fedora}
+BuildRequires: apache-commons-cli
 BuildRequires: apache-commons-logging
 %else
+BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-logging
 %endif
 BuildRequires: java-devel >= 1.6.0
@@ -212,7 +214,7 @@ fi
 %else
 %attr(755, root, root) %{_initrddir}/rhn-search
 %endif
-%attr(755, root, root) %{_bindir}/rhnsearchd
+%{_bindir}/rhnsearchd
 %{_sbindir}/rcrhn-search
 %attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %{_prefix}/share/rhn/config-defaults/rhn_search.conf
@@ -221,7 +223,7 @@ fi
 %dir %attr(755, root, root) %{_var}/lib/rhn
 %dir %attr(755, root, root) %{_var}/lib/rhn/search
 %dir %attr(755, root, root) %{_var}/lib/rhn/search/indexes
-%attr(755, root, root) %{_var}/lib/rhn/search/indexes/docs
+%{_var}/lib/rhn/search/indexes/docs
 %dir /usr/share/rhn
 %dir /usr/share/rhn/search
 %dir /usr/share/rhn/search/lib
@@ -229,6 +231,10 @@ fi
 %doc licenses/*
 
 %changelog
+* Thu Jan 16 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.13-1
+- %%attr() mode not applicaple to symlink
+- resolve conflict between {apache,jakarta}-commons-cli on Fedora 20
+
 * Wed Jan 08 2014 Tomas Lestach <tlestach@redhat.com> 2.1.12-1
 - let spacewalk-search buildrequire javapackages-tools
 

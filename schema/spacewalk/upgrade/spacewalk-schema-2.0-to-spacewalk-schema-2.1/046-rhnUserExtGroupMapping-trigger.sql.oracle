@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008 Red Hat, Inc.
+-- Copyright (c) 2014 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,20 +13,12 @@
 -- in this software or its documentation.
 --
 
-
-CREATE TABLE rhnCVE
-(
-    id    NUMBER NOT NULL
-              CONSTRAINT rhn_cve_id_pk PRIMARY KEY
-              USING INDEX TABLESPACE [[2m_tbs]],
-    name  VARCHAR2(20) NOT NULL
-)
-ENABLE ROW MOVEMENT
-;
-
-CREATE UNIQUE INDEX rhn_cve_name_uq
-    ON rhnCVE (name)
-    TABLESPACE [[2m_tbs]];
-
-CREATE SEQUENCE rhn_cve_id_seq;
-
+create or replace trigger
+rhn_userextgrmap_mod_trig
+before insert or update on rhnUserExtGroupMapping
+for each row
+begin
+        :new.modified := current_timestamp;
+end;
+/
+show errors
