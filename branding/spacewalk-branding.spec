@@ -25,12 +25,12 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.1.19
+Version:    2.1.20
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
 Group:      Applications/Internet
-License:    Apache-2.0 and GPL-2.0 and MIT and OFL-1.1
+License:    GPLv2
 URL:        https://fedorahosted.org/spacewalk/
 Source0:    https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -41,6 +41,7 @@ BuildRequires: %{bootstrappkg}
 BuildRequires: httpd
 Requires:      httpd
 Requires(pre): tomcat6
+Requires:      susemanager-frontend-libs >= 2.1
 
 %description
 Spacewalk specific branding, CSS, and images.
@@ -129,6 +130,10 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Fri Jan 17 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.20-1
+- Roboto font has been moved to separate package
+- font-awesome has been moved to separate package
+
 * Thu Jan 16 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.19-1
 - Fix to use .less files in development mode (2)
 
