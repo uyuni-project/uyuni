@@ -89,8 +89,12 @@ public class IndexServerCustomInfoTask extends GenericIndexTask {
         attrs.put("serverId", new Long(scInfo.getServerId()).toString());
         attrs.put("value", scInfo.getValue());
         attrs.put("label", scInfo.getLabel());
-        attrs.put("createdBy", new Long(scInfo.getCreatedBy()).toString());
-        attrs.put("lastModifiedBy", new Long(scInfo.getLastModifiedBy()).toString());
+        if (scInfo.getCreatedBy() != null) {
+            attrs.put("createdBy", scInfo.getCreatedBy().toString());
+        }
+        if (scInfo.getLastModifiedBy() != null) {
+            attrs.put("lastModifiedBy", scInfo.getLastModifiedBy().toString());
+        }
         attrs.put("created", scInfo.getCreated());
         attrs.put("modified", scInfo.getModified());
         return attrs;
