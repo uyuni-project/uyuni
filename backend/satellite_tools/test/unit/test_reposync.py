@@ -234,27 +234,27 @@ class RepoSyncTest(unittest.TestCase):
         notice = {'references': [{'type': 'cve',
                                   'id': "CVE-1234-5678"},
                                  {'type': 'cve',
-                                  'id': "CVE-1234-1234:"},
+                                  'id': "CVE-1234-123456"},
                                  {'type': 'cve',
                                   'id': "CVE-1234-5678"},
                                  {'type': 'this should be skipped'}],
                   'description': None}
         cves = self.reposync._update_cve(notice)
 
-        self.assertEqual(cves, ["CVE-1234-5678", "CVE-1234-1234"])
+        self.assertEqual(cves, ["CVE-1234-5678", "CVE-1234-123456"])
 
     def test_update_cves_with_description(self):
         notice = {'references': [{'type': 'cve',
                                   'id': "CVE-1234-5678"},
                                  {'type': 'cve',
-                                  'id': "CVE-1234-1234:"},
+                                  'id': "CVE-1234-1234"},
                                  {'type': 'cve',
                                   'id': "CVE-1234-5678"},
                                  {'type': 'this should be skipped'}],
-                  'description': 'This is a text with two CVE numbers CVE-1234-5678, CVE-1234-5679'}
+                  'description': 'This is a text with two CVE numbers CVE-1234-5678, CVE-1234-567901'}
         cves = self.reposync._update_cve(notice)
 
-        self.assertEqual(cves, ["CVE-1234-5679", "CVE-1234-5678", "CVE-1234-1234"])
+        self.assertEqual(cves, ["CVE-1234-567901", "CVE-1234-5678", "CVE-1234-1234"])
 
 
     def test_update_keywords_reboot(self):
