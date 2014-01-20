@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jan 20 15:15:43 CET 2014 - mc@suse.de
+
+- version 5.0.14.2-1
+- use correct rc link
+- support systemd for SLE12
+- change license to SPDX format
+
+-------------------------------------------------------------------
 Tue Dec 10 15:29:23 CET 2013 - mc@suse.de
 
 - version 5.0.14.1-1
