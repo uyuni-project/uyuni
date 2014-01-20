@@ -9,7 +9,7 @@
 %define apache_group apache
 %endif
 Name:       spacewalk-branding
-Version:    1.7.1.10
+Version:    1.7.1.11
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
