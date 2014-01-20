@@ -1,5 +1,5 @@
 Name:           suseRegisterInfo
-Version:        2.1.1
+Version:        2.1.2
 Release:        1%{?dist}
 Summary:        Tool to get informations from the local system
 Group:          Productivity/Other
