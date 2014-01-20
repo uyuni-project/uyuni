@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Mon Jan 20 16:51:42 CET 2014 - mc@suse.de
+
+- version 1.7.54.30-1
+- Fix for CVE-2013-4415: PAGE_SIZE_LABEL_SELECTED cross-site scripting
+  (bnc#850925)
+- CVE-2010-2236, Clean backticks from monitoring-probes where
+  appropriate (bnc#850930)
+- CVE-2012-6149, Fix XSS in notes.jsp (bnc#850929)
+- CVE-2013-1869, Only follow internal return_urls to fix header injection
+  flaw (bnc#850928)
+- CVE-2013-1871, Fix XSS in edit-address JSPs (bnc#850927)
+- removing obsolete kickstart warning
+- Small translation fixes
+- Put a hint about pasting CVE identifiers in the tooltip
+- Add the paste event handler in 'onload' (bnc#846356)
+- system.entitle.guestcantvirt: phrase corrected
+- Add a missing translation string: system.entitle.guestcantvirt
+
+-------------------------------------------------------------------
 Thu Nov 28 16:18:08 CET 2013 - mc@suse.de
 
 - version 1.7.54.29-1
