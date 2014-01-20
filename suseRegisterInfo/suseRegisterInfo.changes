@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Jan 20 15:17:07 CET 2014 - mc@suse.de
+
+- version 2.1.2-1
+- change license to SPDX format
+- create credentials.d directory if it does not exist
+- replace suse_register_info with native calles of required
+  software to prepare for SLE12 integration
+
+-------------------------------------------------------------------
 Mon Dec 09 16:35:28 CET 2013 - mc@suse.de
 
 - version 2.1.1-1
