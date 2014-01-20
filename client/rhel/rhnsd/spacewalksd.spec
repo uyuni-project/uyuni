@@ -80,16 +80,18 @@ install -m 0644 rhnsd.service $RPM_BUILD_ROOT/%{_unitdir}/
 %{!?systemd_postun_with_restart: %global systemd_postun_with_restart() /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : ; if [ $1 -ge 1 ] ; then /usr/bin/systemctl try-restart %%{?*} >/dev/null 2>&1 || : ; fi; }
 
 %if 0%{?suse_version}
+# remove all unsupported translations
+cd $RPM_BUILD_ROOT
+for d in usr/share/locale/*; do
+  if [ ! -d "/$d" ]; then
+    rm -rfv "./$d"
+  fi
+done
+cd -
+%if 0%{?suse_version} >= 1210
 rm -f $RPM_BUILD_ROOT/%{_sbindir}/rcrhnsd
 ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcrhnsd
-# remove all unsupported translations
-#cd $RPM_BUILD_ROOT
-#for d in usr/share/locale/*; do
-#  if [ ! -d "/$d" ]; then
-#    rm -rfv "./$d"
-#  fi
-#done
-#cd -
+%endif
 %endif
 
 %if 0%{?suse_version} >= 1210
