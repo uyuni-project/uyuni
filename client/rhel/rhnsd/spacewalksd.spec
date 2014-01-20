@@ -23,13 +23,28 @@ Requires: %{rhn_check} >= 0.0.8
 Requires(post): aaa_base
 Requires(preun): aaa_base
 BuildRequires: sysconfig
+%if 0%{?suse_version} >=1210
+BuildRequires: systemd
+%{?systemd_requires}
+%else
 Requires(preun): %fillup_prereq %insserv_prereq
+%endif
+%else
+%if 0%{?fedora}
+Requires(post): chkconfig
+Requires(preun): chkconfig
+Requires(post): systemd-sysv
+Requires(preun): systemd-sysv
+Requires(post): systemd-units
+Requires(preun): systemd-units
+BuildRequires: systemd-units
 %else
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
 Requires(postun): initscripts
+%endif
 %endif
 
 %description
@@ -47,32 +62,48 @@ make -f Makefile.rhnsd %{?_smp_mflags} CFLAGS="%{optflags}"
 rm -rf $RPM_BUILD_ROOT
 make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir} INIT_DIR=$RPM_BUILD_ROOT/%{_initrddir}
 
-%if 0%{?suse_version}
+%if 0%{?suse_version} && 0%{?suse_version} < 1210
 install -m 0755 rhnsd.init.SUSE $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
-# remove all unsupported translations
-cd $RPM_BUILD_ROOT
-for d in usr/share/locale/*; do
-  if [ ! -d "/$d" ]; then
-    rm -rfv "./$d"
-  fi
-done
-cd -
-%endif
-
 # add rclink
 ln -sf ../../etc/init.d/rhnsd $RPM_BUILD_ROOT/%{_sbindir}/rcrhnsd
+%endif
+%if 0%{?fedora} || 0%{?suse_version} >= 1210
+rm $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
+mkdir -p $RPM_BUILD_ROOT/%{_unitdir}
+install -m 0644 rhnsd.service $RPM_BUILD_ROOT/%{_unitdir}/
+%endif
+
+%find_lang rhnsd
 
 %{!?systemd_post: %global systemd_post() if [ $1 -eq 1 ] ; then /usr/bin/systemctl enable %%{?*} >/dev/null 2>&1 || : ; fi; }
 %{!?systemd_preun: %global systemd_preun() if [ $1 -eq 0 ] ; then /usr/bin/systemctl --no-reload disable %%{?*} > /dev/null 2>&1 || : ; /usr/bin/systemctl stop %%{?*} > /dev/null 2>&1 || : ; fi; }
 %{!?systemd_postun_with_restart: %global systemd_postun_with_restart() /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : ; if [ $1 -ge 1 ] ; then /usr/bin/systemctl try-restart %%{?*} >/dev/null 2>&1 || : ; fi; }
 
+%if 0%{?suse_version}
+rm -f $RPM_BUILD_ROOT/%{_sbindir}/rcrhnsd
+ln -s /sbin/service %{buildroot}%{_sbindir}/rcrhnsd
+# remove all unsupported translations
+#cd $RPM_BUILD_ROOT
+#for d in usr/share/locale/*; do
+#  if [ ! -d "/$d" ]; then
+#    rm -rfv "./$d"
+#  fi
+#done
+#cd -
+%endif
 
-%find_lang rhnsd
-
+%if 0%{?suse_version} >= 1210
+%pre
+%service_add_pre rhnsd.service
+%endif
 
 %post
 %if 0%{?suse_version}
+%if 0%{?suse_version} >= 1210
+%service_add_post rhnsd.service
+%else
 %{fillup_and_insserv rhnsd}
+%endif
 %else
 if [ -f /etc/init.d/rhnsd ]; then
     /sbin/chkconfig --add rhnsd
@@ -91,8 +122,12 @@ fi
 
 %preun
 %if 0%{?suse_version}
+%if 0%{?suse_version} >= 1210
+%service_del_preun rhnsd.service
+%else
 %stop_on_removal rhnsd
 exit 0
+%endif
 %else
 if [ $1 = 0 ] ; then
     %if 0%{?fedora}
@@ -108,7 +143,11 @@ fi
 
 %postun
 %if 0%{?suse_version}
+%if 0%{?suse_version} >= 1210
+%service_del_postun rhnsd.service
+%else
 %restart_on_update rhnsd
+%endif
 %{insserv_cleanup}
 %else
 if [ "$1" -ge "1" ]; then
@@ -132,8 +171,10 @@ rm -fr $RPM_BUILD_ROOT
 %if 0%{?fedora} || 0%{?suse_version} >= 1210
 %{_unitdir}/rhnsd.service
 %else
-%{_sbindir}/rcrhnsd
 %{_initrddir}/rhnsd
+%endif
+%if 0%{?suse_version}
+%{_sbindir}/rcrhnsd
 %endif
 %{_mandir}/man8/rhnsd.8*
 %doc LICENSE
