@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 20 16:41:44 CET 2014 - mc@suse.de
+
+- version 1.7.3.12-1
+- Allow null as createdBy and lastModifiedBy  to fix
+  custom info value index (bnc#834415)
+
+-------------------------------------------------------------------
 Thu Nov 28 16:12:04 CET 2013 - mc@suse.de
 
 - version 1.7.3.11-1
