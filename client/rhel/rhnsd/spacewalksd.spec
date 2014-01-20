@@ -5,7 +5,7 @@
 %define rhnsd		 spacewalksd
 #
 Summary: Spacewalk query daemon
-License: GPLv2
+License: GPL-2.0
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhnsd-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
