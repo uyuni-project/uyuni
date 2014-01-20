@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Jan 20 16:42:52 CET 2014 - mc@suse.de
+
+- version 1.7.28.20-1
+- Fix for CVE-2013-4415: PAGE_SIZE_LABEL_SELECTED cross-site scripting
+  (bnc#850925)
+- Put the given year in the valid range (bnc#846356)
+- Paste event handler parsing CVE identifiers with javascript
+  (bnc#846356)
+
+-------------------------------------------------------------------
 Thu Nov 28 16:16:08 CET 2013 - mc@suse.de
 
 - version 1.7.28.19-1
