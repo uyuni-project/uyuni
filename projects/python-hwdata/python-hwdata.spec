@@ -1,9 +1,10 @@
 %if ! (0%{?fedora} || 0%{?rhel} > 5)
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %endif
-#%global with_python2 1
-%if (0%{?fedora} || 0%{?rhel} > 6)
+%if (0%{?fedora} || 0%{?rhel} > 6 || 0%{?suse_version} >= 1210)
 %global with_python3 1
+%{!?py3dir: %global py3dir %{_builddir}/py3dir}
+%{!?__python3: %global __python3 python3}
 %else
 %global with_python3 0
 %endif
@@ -82,6 +83,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %if 0%{?with_python3}
 %files -n python3-hwdata
+%defattr(-,root,root,-)
 %doc LICENSE example.py
 %doc html
 %{python3_sitelib}/*
