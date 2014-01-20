@@ -24,7 +24,7 @@ Requires(post): aaa_base
 Requires(preun): aaa_base
 BuildRequires: sysconfig
 %if 0%{?suse_version} >=1210
-BuildRequires: systemd
+BuildRequires: pkgconfig(systemd)
 %{?systemd_requires}
 %else
 Requires(preun): %fillup_prereq %insserv_prereq
@@ -81,7 +81,7 @@ install -m 0644 rhnsd.service $RPM_BUILD_ROOT/%{_unitdir}/
 
 %if 0%{?suse_version}
 rm -f $RPM_BUILD_ROOT/%{_sbindir}/rcrhnsd
-ln -s /sbin/service %{buildroot}%{_sbindir}/rcrhnsd
+ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcrhnsd
 # remove all unsupported translations
 #cd $RPM_BUILD_ROOT
 #for d in usr/share/locale/*; do
