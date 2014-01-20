@@ -3,7 +3,7 @@ Version:        2.1.1
 Release:        1%{?dist}
 Summary:        Tool to get informations from the local system
 Group:          Productivity/Other
-License:        GPLv2
+License:        GPL-2.0
 URL:            http://www.novell.com
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
