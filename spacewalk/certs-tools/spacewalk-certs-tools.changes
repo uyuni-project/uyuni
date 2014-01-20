@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Jan 20 16:44:39 CET 2014 - mc@suse.de
+
+- version 1.7.3.11-1
+- Older versions of ssh-copy-id do not support the -o switch
+- ssh-keygen fails with an error when known_hosts doesn't exist
+- Call the new script from the old one and print deprecation warning
+- New ssh-push client initialization script
+
+-------------------------------------------------------------------
 Thu Nov 28 16:16:49 CET 2013 - mc@suse.de
 
 - version 1.7.3.10-1
