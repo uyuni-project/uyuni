@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jan 20 16:50:23 CET 2014 - mc@suse.de
+
+- version 1.7.38.31-1
+- Check for empty result before printing software entitlement (bnc#853913)
+- Added extra log folder to spacewalk-debug (bnc#854090)
+- better detection for SUSE KVM and Cloud systems
+
+-------------------------------------------------------------------
 Thu Nov 28 16:24:43 CET 2013 - mc@suse.de
 
 - version 1.7.38.30-1
