@@ -10,7 +10,7 @@
 
 Name: spacewalk-client-tools
 Summary: Support programs and libraries for Spacewalk
-License: GPLv2
+License: GPL-2.0
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 URL:     https://fedorahosted.org/spacewalk
