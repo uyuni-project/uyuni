@@ -8622,7 +8622,7 @@
     <!-- Setup wizard -->
     <action path="/admin/setup/MirrorCredentials"
             scope="request"
-            type="com.redhat.rhn.frontend.action.satellite.SetupWizard"
+            type="com.redhat.rhn.frontend.action.satellite.SetupWizardAction"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping"
             parameter="dispatch">
       <set-property property="postRequiredIfSubmitted" value="true" />
@@ -8633,7 +8633,7 @@
 
     <action path="/admin/setup/SUSEProducts"
             scope="request"
-            type="com.redhat.rhn.frontend.action.satellite.SetupWizard"
+            type="com.redhat.rhn.frontend.action.satellite.SetupWizardAction"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping"
             parameter="dispatch">
       <set-property property="postRequiredIfSubmitted" value="true" />

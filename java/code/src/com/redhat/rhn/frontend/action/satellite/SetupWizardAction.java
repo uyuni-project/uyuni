@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013 SUSE
+ * Copyright (c) 2014 SUSE
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,21 +15,30 @@
 
 package com.redhat.rhn.frontend.action.satellite;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
+import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.manager.setup.SetupWizardManager;
 
 /**
  * This is for now just a generic RhnAction used for all pages of the wizard.
  */
-public class SetupWizard extends RhnAction {
+public class SetupWizardAction extends RhnAction {
+
+    // Logger for this class
+    private static Logger logger = Logger.getLogger(SetupWizardAction.class);
+
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
@@ -38,6 +47,13 @@ public class SetupWizard extends RhnAction {
 
         DynaActionForm form = (DynaActionForm) formIn;
         // RequestContext ctx = new RequestContext(request);
+
+        String path = mapping.getPath();
+        logger.debug("Current path: " + path);
+        if (path.endsWith("MirrorCredentials")) {
+            List<Credentials> creds = SetupWizardManager.getMirrorCredentials();
+            logger.debug("Found " + creds.size() + " pairs of credentials");
+        }
 
         // Do nothing for now
         if (isSubmitted(form)) {
