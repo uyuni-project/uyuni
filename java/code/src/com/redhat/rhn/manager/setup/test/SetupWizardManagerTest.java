@@ -18,7 +18,7 @@ package com.redhat.rhn.manager.setup.test;
 import java.util.List;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.manager.setup.MirrorCredentials;
 import com.redhat.rhn.manager.setup.SetupWizardManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -28,7 +28,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 public class SetupWizardManagerTest extends RhnBaseTestCase {
 
     public void testGetMirrorCredsEmpty() throws Exception {
-        List<Credentials> credentials = SetupWizardManager.getMirrorCredentials();
+        List<MirrorCredentials> credentials = SetupWizardManager.getMirrorCredentials();
         assertEquals(0, credentials.size());
     }
 
@@ -36,14 +36,14 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         writeTestCredentials("testuser", "testpass", "testemail", 0);
         writeTestCredentials("testuser1", "testpass1", "testemail1", 1);
         writeTestCredentials("testuser2", "testpass2", "testemail2", 2);
-        List<Credentials> credentials = SetupWizardManager.getMirrorCredentials();
+        List<MirrorCredentials> credentials = SetupWizardManager.getMirrorCredentials();
         assertEquals(3, credentials.size());
     }
 
     public void testGetMirrorCredsMissing() throws Exception {
         writeTestCredentials("testuser", "testpass", "testemail", 0);
         writeTestCredentials("testuser2", "testpass2", "testemail2", 2);
-        List<Credentials> credentials = SetupWizardManager.getMirrorCredentials();
+        List<MirrorCredentials> credentials = SetupWizardManager.getMirrorCredentials();
         assertEquals(1, credentials.size());
     }
 
