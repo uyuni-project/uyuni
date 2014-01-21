@@ -26,9 +26,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.manager.setup.MirrorCredentials;
 import com.redhat.rhn.manager.setup.SetupWizardManager;
 
 /**
@@ -51,7 +51,7 @@ public class SetupWizardAction extends RhnAction {
         String path = mapping.getPath();
         logger.debug("Current path: " + path);
         if (path.endsWith("MirrorCredentials")) {
-            List<Credentials> creds = SetupWizardManager.getMirrorCredentials();
+            List<MirrorCredentials> creds = SetupWizardManager.getMirrorCredentials();
             logger.debug("Found " + creds.size() + " pairs of credentials");
         }
 

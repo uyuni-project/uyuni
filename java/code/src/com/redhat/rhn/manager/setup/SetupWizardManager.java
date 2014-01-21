@@ -21,7 +21,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.manager.BaseManager;
 
 public class SetupWizardManager extends BaseManager {
@@ -38,8 +37,8 @@ public class SetupWizardManager extends BaseManager {
      * Find all valid mirror credentials and return them.
      * @return List of all available mirror credentials
      */
-    public static List<Credentials> getMirrorCredentials() {
-        List<Credentials> credsList = new ArrayList<Credentials>();
+    public static List<MirrorCredentials> getMirrorCredentials() {
+        List<MirrorCredentials> credsList = new ArrayList<MirrorCredentials>();
 
         // Get the main pair of credentials
         String user = Config.get().getString(KEY_MIRROR_CREDENTIALS_USER);
@@ -47,7 +46,7 @@ public class SetupWizardManager extends BaseManager {
         String email = Config.get().getString(KEY_MIRROR_CREDENTIALS_EMAIL);
 
         // Add credentials as long as they have user and password
-        Credentials creds;
+        MirrorCredentials creds;
         int index = 1;
         while (user != null && password != null) {
             if (logger.isDebugEnabled()) {
@@ -55,10 +54,7 @@ public class SetupWizardManager extends BaseManager {
             }
 
             // Create credentials object
-            creds = new Credentials();
-            creds.setUsername(user);
-            creds.setPassword(password);
-            creds.setEmail(email);
+            creds = new MirrorCredentials(user, password, email);
             credsList.add(creds);
 
             // Search additional credentials with continuous enumeration
