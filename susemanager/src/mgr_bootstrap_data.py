@@ -2,21 +2,64 @@
 # DO NOT EDIT !!!
 #
 
-PKGLIST10 = ["spacewalk-client-tools", "zypper", "libzypp", "satsolver-tools",
-             "zypp-plugin-python", "zypp-plugin-spacewalk", "spacewalk-check",
-             "spacewalk-client-setup", "newt", "libnewt0_52", "python-newt",
-             "python-dmidecode", "python-ethtool", "python-openssl", "rhnlib",
-             "spacewalksd", "suseRegisterInfo", "yast2-ncurses", "yast2-qt",
-             "yast2-perl-bindings", "yast2-pkg-bindings", "suseRegister",
-             "libaugeas0", "perl-WWW-Curl", "python-xml", "rpm-python",
-             "suseRegister"]
+PKGLIST10 = [
+                "libaugeas0",
+                "libnewt0_52",
+                "libzypp",
+                "newt",
+                "perl-WWW-Curl",
+                "python-dmidecode",
+                "python-ethtool",
+                "python-newt",
+                "python-openssl",
+                "python-xml",
+                "rhnlib",
+                "rpm-python",
+                "satsolver-tools",
+                "spacewalk-check",
+                "spacewalk-client-setup",
+                "spacewalk-client-tools",
+                "spacewalksd",
+                "suseRegister"
+                "suseRegister",
+                "suseRegisterInfo",
+                "yast2-ncurses",
+                "yast2-perl-bindings",
+                "yast2-pkg-bindings",
+                "yast2-qt",
+                "zypp-plugin-python",
+                "zypp-plugin-spacewalk",
+                "zypper"
+            ]
 
-PKGLIST11 = ["dbus-1-python", "rpm-python", "python", "python-xml", "libsqlite3-0", "libnl", "libxml2-python",
-            "spacewalk-client-tools", "zypper", "libzypp", "satsolver-tools",
-            "zypp-plugin-python", "zypp-plugin-spacewalk", "spacewalk-check",
-            "spacewalk-client-setup", "newt", "libnewt0_52", "python-newt",
-            "python-dmidecode", "python-ethtool", "python-openssl", "rhnlib",
-            "spacewalksd", "suseRegisterInfo", "libcurl4", "slang"]
+PKGLIST11 = [
+                "dbus-1-python",
+                "libcurl4",
+                "libnewt0_52",
+                "libnl",
+                "libsqlite3-0",
+                "libxml2-python",
+                "libzypp",
+                "newt",
+                "python",
+                "python-dmidecode",
+                "python-ethtool",
+                "python-newt",
+                "python-openssl",
+                "python-xml",
+                "rhnlib",
+                "rpm-python",
+                "satsolver-tools",
+                "slang"
+                "spacewalk-check",
+                "spacewalk-client-setup",
+                "spacewalk-client-tools",
+                "spacewalksd",
+                "suseRegisterInfo",
+                "zypp-plugin-python",
+                "zypp-plugin-spacewalk",
+                "zypper"
+            ]
 
 DATA = {
     'SLE-11-SP1-i586' : {
