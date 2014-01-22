@@ -8,7 +8,7 @@ document.observe("dom:loaded", function() {
         fields.each(function(field) {
             if (field.getValue() != '') {
                 empty = false;
-                return false;
+                throw $break;
             }
         });
         return empty;
