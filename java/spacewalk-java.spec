@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.121
+Version: 2.1.124
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -912,6 +912,20 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Jan 22 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.1.124-1
+- 1053591 - fix deadlock when cloning using spacewalk-clone-by-date
+
+* Wed Jan 22 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.123-1
+- Bugfix: ISE when cobbler components are missing (not installed)
+- port reboot_confirm.pxt from perl to java
+- SUSE Studio API will stop working via unencrypted HTTP
+- Inconsistency in build vs. eclipse checkstyle.
+
+* Wed Jan 22 2014 Tomas Lestach <tlestach@redhat.com> 2.1.122-1
+- let taskomatic link commons-io
+- fix CVE URL in updateinfo references
+- 1009396 - escape system name for SystemRemoteCommand page
+
 * Fri Jan 17 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.121-1
 - increase column length for CVE ids
 
