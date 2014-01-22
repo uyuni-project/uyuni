@@ -11,14 +11,22 @@ import time
 import types
 from spacewalk.server import rhnSQL
 
-DB = 'rhnuser/rhnuser@webdev'
+import misc_functions
+
+DB_SETTINGS = misc_functions.db_settings("oracle")
 
 class Tests1(unittest.TestCase):
 
     def setUp(self):
         self.table_name = "misatest_%d" % os.getpid()
-        rhnSQL.initDB(DB)
+        rhnSQL.initDB(
+            backend  = "oracle",
+            username = DB_SETTINGS["user"],
+            password = DB_SETTINGS["password"],
+            database = DB_SETTINGS["database"]
+        )
         self._cleanup()
+        rhnSQL.clear_log_id()
 
         rhnSQL.execute("create table %s (id int, val varchar2(10))" %
             self.table_name)
@@ -38,20 +46,19 @@ class Tests1(unittest.TestCase):
     def test_exception_procedure_1(self):
         "Tests exceptions raised by procedure calls"
         p = rhnSQL.Procedure("rhn_channel.subscribe_server")
-        self.assertRaises(rhnSQL.SQLSchemaError, p, 1000102174, 33)
+        self.assertRaises(rhnSQL.SQLError, p, 1000102174, 33)
 
     def test_function_1(self):
         "Tests function calls"
-        p = rhnSQL.Function("rhn_entitlements.get_server_entitlement",
-            rhnSQL.types.STRING())
-        ret = p(1000102174)
-        self.failUnless(isinstance(ret, types.StringType))
+        p = rhnSQL.Function("logging.get_log_id",
+            rhnSQL.types.NUMBER())
+        ret = p()
+        self.failUnless(isinstance(ret, types.FloatType))
 
     def _run_stproc(self):
         p = rhnSQL.Procedure("create_new_org")
         username = password = "unittest-%.3f" % time.time()
-        args = (username, password, None, None, 'P', rhnSQL.types.NUMBER(),
-            rhnSQL.types.NUMBER(), rhnSQL.types.NUMBER())
+        args = (username, password, rhnSQL.types.NUMBER())
         return apply(p, args), args
 
     def test_procedure_1(self):
@@ -60,12 +67,7 @@ class Tests1(unittest.TestCase):
         self.assertEqual(len(args), len(ret))
         self.assertEqual(args[0], ret[0])
         self.assertEqual(args[1], ret[1])
-        self.assertEqual(args[2], ret[2])
-        self.assertEqual(args[3], ret[3])
-        self.assertEqual(args[4], ret[4])
-        self.assertNotEqual(args[5], None)
-        self.assertNotEqual(args[6], None)
-        self.assertNotEqual(args[7], None)
+        self.failUnless(isinstance(ret[2], types.FloatType))
 
     def test_procedure_2(self):
         """Run the same stored procedure twice. This should excerise the
@@ -97,17 +99,30 @@ class Tests1(unittest.TestCase):
 
     def test_execute_rowcount(self):
         """Tests row counts"""
-        # XXX
         table_name = "misatest"
-        rhnSQL.execute("delete from misatest")
-        ret = rhnSQL.execute("insert into misatest values (1, 1)")
-        self.assertEqual(ret, 1)
-        ret = rhnSQL.execute("insert into misatest values (2, 2)")
-        self.assertEqual(ret, 1)
+        try:
+          tables = self._list_tables()
+          if not table_name in tables:
+            rhnSQL.execute("create table %s (id int, value int)" % table_name)
+          else:
+            rhnSQL.execute("delete from %s" % table_name)
 
-        ret = rhnSQL.execute("delete from misatest")
-        self.assertEqual(ret, 2)
-        rhnSQL.commit()
+          insert_statement = rhnSQL.Statement(
+              "insert into %s values (:item_id, :value)" % table_name
+          )
+          h = rhnSQL.prepare(insert_statement)
+          ret = h.execute(item_id = 1, value = 2)
+          self.assertEqual(ret, 1)
+          ret = h.execute(item_id = 2, value = 2)
+          self.assertEqual(ret, 1)
+
+          delete_statement = rhnSQL.Statement("delete from %s" % table_name)
+          h = rhnSQL.prepare(delete_statement)
+          ret = h.execute()
+          self.assertEqual(ret, 2)
+          rhnSQL.commit()
+        finally:
+          rhnSQL.execute("drop table %s" % table_name)
 
     def _list_tables(self):
         h = rhnSQL.prepare("select table_name from user_tables")

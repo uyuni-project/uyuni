@@ -316,9 +316,10 @@ class Procedure(sql_base.Procedure):
 
     def _munge_arg(self, val):
         for sqltype, db_specific_type in self._type_mapping:
-            var = self.proc.var(db_specific_type, val.size)
-            var.setvalue(0, val.get_value())
-            return var
+            if isinstance(val, sqltype):
+              var = self.cursor.var(db_specific_type, val.size)
+              var.setvalue(0, val.get_value())
+              return var
 
         # XXX
         return val.get_value()
@@ -329,12 +330,14 @@ class Procedure(sql_base.Procedure):
     def _call_proc_ret(self, args, ret_type=None):
         args = map(to_string, self._munge_args(args))
         if ret_type:
+            ret_type_mapped = False
             for sqltype, db_type in self._type_mapping:
                 if isinstance(ret_type, sqltype):
                     ret_type = db_type
+                    ret_type_mapped = True
                     break
-                else:
-                    raise Exception("Unknown type", ret_type)
+            if not ret_type_mapped:
+              raise Exception("Unknown type", ret_type)
 
         if ret_type:
             return self.cursor.callfunc(self.name, ret_type, args)

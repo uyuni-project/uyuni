@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.1.8
+Version:        2.1.10
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -100,6 +100,7 @@ install -d -m 755 %{buildroot}/%{misc_path}/spacewalk
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=8 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-make-mount-points | gzip > $RPM_BUILD_ROOT%{_mandir}/man8/spacewalk-make-mount-points.8.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-cobbler | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-cobbler.1.gz
+/usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-tomcat | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-tomcat.1.gz
 
 %post
 if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
@@ -159,6 +160,7 @@ rm -rf %{buildroot}
 %{_bindir}/spacewalk-setup
 %{_bindir}/spacewalk-make-mount-points
 %{_bindir}/spacewalk-setup-cobbler
+%{_bindir}/spacewalk-setup-tomcat
 %{_bindir}/cobbler20-setup
 %{_mandir}/man[13]/*.[13]*
 %dir %{_datadir}/spacewalk
@@ -168,6 +170,12 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Wed Jan 22 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.10-1
+- 1039877 - disable ehcache check for updates
+
+* Wed Jan 22 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.9-1
+- modified tomcat setup to work also on Fedora 20
+
 * Tue Jan 14 2014 Matej Kollar <mkollar@redhat.com> 2.1.8-1
 - Updating the copyright years info
 

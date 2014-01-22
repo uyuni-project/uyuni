@@ -1,5 +1,5 @@
 Name:           oracle-lib-compat
-Version:        11.2.0.8.1
+Version:        11.2.0.9
 Release:        1%{?dist}
 Summary:        Compatibility package so that perl-DBD-Oracle will install
 Group:          Applications/Multimedia
@@ -101,18 +101,6 @@ ln -sf ../../%{_lib}/oracle/%{icdir}/client/lib/ojdbc6.jar $RPM_BUILD_ROOT/%{_ja
 %endif
 %endif
 
-%if 0%{?rhel} && 0%{?rhel} < 6
-%define tomcatname tomcat5
-%else
-%if 0%{?fedora}
-%define tomcatname tomcat
-%else
-%define tomcatname tomcat6
-%endif
-%endif
-install -d $RPM_BUILD_ROOT%{_datadir}/%{tomcatname}/bin
-install tomcat-setenv.sh $RPM_BUILD_ROOT%{_datadir}/%{tomcatname}/bin/setenv.sh
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -133,17 +121,16 @@ rm -rf $RPM_BUILD_ROOT
 %ifnarch s390x
 %{_javadir}/ojdbc14.jar
 %endif
-%{_datadir}/%{tomcatname}/bin/setenv.sh
-%if 0%{?suse_version}
-%dir %{_datadir}/%{tomcatname}
-%dir %{_datadir}/%{tomcatname}/bin
-%endif
 
 %post
 ldconfig
 
 
 %changelog
+* Wed Jan 22 2014 Michael Mraka <michael.mraka@redhat.com> 11.2.0.9-1
+- LD_PRELOAD setup has been moved to spacewalk-setup-tomcat
+- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
+
 * Tue Dec 04 2012 Jan Pazdziora 11.2.0.8-1
 - On Fedoras, start to use tomcat >= 7.
 
