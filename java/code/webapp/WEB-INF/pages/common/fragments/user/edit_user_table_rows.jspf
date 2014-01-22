@@ -46,6 +46,7 @@
     <th><bean:message key="password.displayname"/></th>
     <td>
       <script language="javascript" src="/javascript/pwstrengthmeter.js"></script>
+      <script language="javascript" src="/javascript/pwstrengthmeter-placeholder.js"></script>
       <div style="position:relative;">
         <html:password property="desiredpassword" size="20" maxlength="${passwordLength}" styleId="desiredpass" onkeyup="checkPassword();"/>
         <span id="pwstrength-result" style="position:absolute; left:165px; top:8px; font-size:11px;"></span><br/>
