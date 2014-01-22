@@ -11,7 +11,8 @@ PKGLIST10 = ["spacewalk-client-tools", "zypper", "libzypp", "satsolver-tools",
              "libaugeas0", "perl-WWW-Curl", "python-xml", "rpm-python",
              "suseRegister"]
 
-PKGLIST11 = ["spacewalk-client-tools", "zypper", "libzypp", "satsolver-tools",
+PKGLIST11 = ["dbus-1-python", "rpm-python", "python", "python-xml", "libsqlite3-0", "libnl", "libxml2-python",
+            "spacewalk-client-tools", "zypper", "libzypp", "satsolver-tools",
             "zypp-plugin-python", "zypp-plugin-spacewalk", "spacewalk-check",
             "spacewalk-client-setup", "newt", "libnewt0_52", "python-newt",
             "python-dmidecode", "python-ethtool", "python-openssl", "rhnlib",
