@@ -31,7 +31,6 @@ public class Credentials extends BaseDomainHelper {
 
     // Available type labels
     public static final String TYPE_SUSESTUDIO = "susestudio";
-    public static final String TYPE_NCC = "ncc";
 
     private Long id;
     private User user;
@@ -39,7 +38,6 @@ public class Credentials extends BaseDomainHelper {
     private String url;
     private String username;
     private String encodedPassword;
-    private String email;
 
     /**
      * Get the ID of this object.
@@ -182,19 +180,5 @@ public class Credentials extends BaseDomainHelper {
         return StringUtils.isEmpty(username) &&
                 StringUtils.isEmpty(encodedPassword) &&
                 StringUtils.isEmpty(url);
-    }
-
-    /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
     }
 }
