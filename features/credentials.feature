@@ -35,7 +35,7 @@ Feature: Create external system or API credentials
     When I follow "delete credentials"
     Then I should see a "foobar-user" text
     And I should see a "foobar-key" text
-    And I should see a "http://susestudio.com" text
+    And I should see a "https://susestudio.com" text
     When I click on "Delete Credentials"
     Then I should see a "Your credentials were successfully deleted." text
 
