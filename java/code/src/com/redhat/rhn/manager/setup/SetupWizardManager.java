@@ -21,7 +21,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.BaseManager;
+import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
 
 public class SetupWizardManager extends BaseManager {
 
@@ -65,5 +68,19 @@ public class SetupWizardManager extends BaseManager {
         }
 
         return credsList;
+    }
+
+    /**
+     * Store mirror credentials in the filesystem.
+     * TODO: Extend this to store a given list of {@link MirrorCredentials}.
+     * @param creds mirror credentials to store
+     * @return list of validation errors or null in case of success
+     */
+    public static ValidatorError[] storeMirrorCredentials(MirrorCredentials creds, User userIn) {
+        ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
+        configCommand.updateString(KEY_MIRROR_CREDENTIALS_USER, creds.getUser());
+        configCommand.updateString(KEY_MIRROR_CREDENTIALS_PASS, creds.getPassword());
+        configCommand.updateString(KEY_MIRROR_CREDENTIALS_EMAIL, creds.getEmail());
+        return configCommand.storeConfiguration();
     }
 }
