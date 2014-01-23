@@ -5,16 +5,21 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
 <html>
-  <head>
-  </head>
-  <body>
-    <rhn:toolbar base="h1" icon="header-preferences">
-      Setup Wizard
-    </rhn:toolbar>
-    <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/setup_wizard.xml"
-                    renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
-    <p>
-      Configure your mirror credentials below.
-    </p>
-  </body>
+    <head>
+    </head>
+    <body>
+        <rhn:toolbar base="h1" icon="header-preferences">Setup Wizard</rhn:toolbar>
+        <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/setup_wizard.xml"
+                        renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
+        <p>
+            Configure your mirror credentials below.
+        </p>
+        <table class="table">
+            <tr>
+                <th>User</th>
+                <th>Password</th>
+                <th>Email</th>
+            </tr>
+        </table>
+    </body>
 </html>
