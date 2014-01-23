@@ -14,12 +14,21 @@
         <p>
             Configure your mirror credentials below.
         </p>
-        <table class="table">
-            <tr>
-                <th>User</th>
-                <th>Password</th>
-                <th>Email</th>
-            </tr>
-        </table>
+        <rl:listset name="mirrorCredsListSet">
+            <rhn:csrf />
+            <rl:list name="mirrorCredsList"
+                     dataset="mirrorCredsList"
+                     emptykey="mirror-credentials.jsp.empty">
+                <rl:column headerkey="mirror-credentials.jsp.user">
+                    <c:out value="${current.user}" />
+                </rl:column>
+                <rl:column headerkey="mirror-credentials.jsp.password">
+                    <c:out value="${current.password}" />
+                </rl:column>
+                <rl:column headerkey="mirror-credentials.jsp.email">
+                    <c:out value="${current.email}" />
+                </rl:column>
+            </rl:list>
+        </rl:listset>
     </body>
 </html>
