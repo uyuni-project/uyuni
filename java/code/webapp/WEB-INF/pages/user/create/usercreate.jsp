@@ -52,7 +52,7 @@
                       class="required-form-field">*</span>:</td></label>
                 <td>
                   <script type="text/javascript" src="/javascript/pwstrength-bootstrap-1.0.2.js"></script>
-                  <script type="text/javascript" src="/javascript/spacewalk-pwstrength_handler.js"></script>
+                  <script type="text/javascript" src="/javascript/spacewalk-pwstrength-handler.js"></script>
                   <div id="desiredpassword-input-group" class="input-group">
                       <html:password property="desiredpassword" styleClass="form-control" size="15" maxlength="${passwordLength}"/>
                       <span class="input-group-addon">
