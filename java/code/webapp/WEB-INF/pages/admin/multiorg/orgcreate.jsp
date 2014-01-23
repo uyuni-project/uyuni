@@ -48,7 +48,7 @@
             </div>
 
             <script type="text/javascript" src="/javascript/pwstrength-bootstrap-1.0.2.js"></script>
-            <script type="text/javascript" src="/javascript/spacewalk-pwstrength_handler.js"></script>
+            <script type="text/javascript" src="/javascript/spacewalk-pwstrength-handler.js"></script>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="desiredpass">
                     <bean:message key="desiredpass" />
