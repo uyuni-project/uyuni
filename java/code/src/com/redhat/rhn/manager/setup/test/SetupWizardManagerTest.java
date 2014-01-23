@@ -57,9 +57,9 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
     }
 
     private void writeTestCredentials(String user, String pass, String email, int index) {
-        String keyUser = SetupWizardManager.KEY_MIRROR_CREDENTIALS_USER;
-        String keyPass = SetupWizardManager.KEY_MIRROR_CREDENTIALS_PASS;
-        String keyEmail = SetupWizardManager.KEY_MIRROR_CREDENTIALS_EMAIL;
+        String keyUser = SetupWizardManager.KEY_MIRRCREDS_USER;
+        String keyPass = SetupWizardManager.KEY_MIRRCREDS_PASS;
+        String keyEmail = SetupWizardManager.KEY_MIRRCREDS_EMAIL;
         if (index >= 1) {
             keyUser += "." + index;
             keyPass += "." + index;

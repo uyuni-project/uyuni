@@ -32,9 +32,9 @@ public class SetupWizardManager extends BaseManager {
     private static Logger logger = Logger.getLogger(SetupWizardManager.class);
 
     // Config keys
-    public final static String KEY_MIRROR_CREDENTIALS_USER = "server.susemanager.mirrcred_user";
-    public final static String KEY_MIRROR_CREDENTIALS_PASS = "server.susemanager.mirrcred_pass";
-    public final static String KEY_MIRROR_CREDENTIALS_EMAIL = "server.susemanager.mirrcred_email";
+    public final static String KEY_MIRRCREDS_USER = "server.susemanager.mirrcred_user";
+    public final static String KEY_MIRRCREDS_PASS = "server.susemanager.mirrcred_pass";
+    public final static String KEY_MIRRCREDS_EMAIL = "server.susemanager.mirrcred_email";
 
     /**
      * Find all valid mirror credentials and return them.
@@ -44,9 +44,9 @@ public class SetupWizardManager extends BaseManager {
         List<MirrorCredentials> credsList = new ArrayList<MirrorCredentials>();
 
         // Get the main pair of credentials
-        String user = Config.get().getString(KEY_MIRROR_CREDENTIALS_USER);
-        String password = Config.get().getString(KEY_MIRROR_CREDENTIALS_PASS);
-        String email = Config.get().getString(KEY_MIRROR_CREDENTIALS_EMAIL);
+        String user = Config.get().getString(KEY_MIRRCREDS_USER);
+        String password = Config.get().getString(KEY_MIRRCREDS_PASS);
+        String email = Config.get().getString(KEY_MIRRCREDS_EMAIL);
 
         // Add credentials as long as they have user and password
         MirrorCredentials creds;
@@ -61,9 +61,9 @@ public class SetupWizardManager extends BaseManager {
             credsList.add(creds);
 
             // Search additional credentials with continuous enumeration
-            user = Config.get().getString(KEY_MIRROR_CREDENTIALS_USER + "." + index);
-            password = Config.get().getString(KEY_MIRROR_CREDENTIALS_PASS + "." + index);
-            email = Config.get().getString(KEY_MIRROR_CREDENTIALS_EMAIL + "." + index);
+            user = Config.get().getString(KEY_MIRRCREDS_USER + "." + index);
+            password = Config.get().getString(KEY_MIRRCREDS_PASS + "." + index);
+            email = Config.get().getString(KEY_MIRRCREDS_EMAIL + "." + index);
             index++;
         }
 
@@ -78,9 +78,9 @@ public class SetupWizardManager extends BaseManager {
      */
     public static ValidatorError[] storeMirrorCredentials(MirrorCredentials creds, User userIn) {
         ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
-        configCommand.updateString(KEY_MIRROR_CREDENTIALS_USER, creds.getUser());
-        configCommand.updateString(KEY_MIRROR_CREDENTIALS_PASS, creds.getPassword());
-        configCommand.updateString(KEY_MIRROR_CREDENTIALS_EMAIL, creds.getEmail());
+        configCommand.updateString(KEY_MIRRCREDS_USER, creds.getUser());
+        configCommand.updateString(KEY_MIRRCREDS_PASS, creds.getPassword());
+        configCommand.updateString(KEY_MIRRCREDS_EMAIL, creds.getEmail());
         return configCommand.storeConfiguration();
     }
 }
