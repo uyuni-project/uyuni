@@ -71,6 +71,12 @@ Then /^I should not see a "([^"]*)" link in element "([^"]*)"$/ do |arg1, arg2|
   end
 end
 
+Then /^I should see a "([^"]*)" text in element "([^"]*)"$/ do |arg1, arg2|
+  within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
+    fail if not has_content?(debrand_string(arg1))
+  end
+end
+
 Then /^I should see a "([^"]*)" link in "([^"]*)" "([^"]*)"$/ do |arg1, arg2, arg3|
   fail if not page.has_xpath?("//#{arg2}[@id='#{arg3}' or @class='#{arg3}']/a[text()='#{debrand_string(arg1)}']")
 end

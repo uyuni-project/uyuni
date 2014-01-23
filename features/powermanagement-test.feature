@@ -10,11 +10,12 @@ Feature: Test Powermanagement
      Then I should see a "Power Management Settings" text
       And I should see a "IPMI" text
       And I should see a "Save" button
-
+  
   Scenario: Save powermanagement values
     Given I am on the Systems overview page of this client
       And I follow "Provisioning" in the content area
       And I follow "Power Management" in the content area
+      And I setup the ipmi network card
      When I enter "192.168.0.5" as "powerAddress"
       And I enter "admin" as "powerUsername"
       And I enter "admin" as "powerPassword"
@@ -24,6 +25,27 @@ Feature: Test Powermanagement
       And the cobbler report contains "Power Management Password      : admin"
       And the cobbler report contains "Power Management Type          : ipmitool"
       And the cobbler report contains "Power Management Username      : admin"
+   
+  Scenario: Test IPMI functions
+    Given I am on the Systems overview page of this client
+      And I follow "Provisioning" in the content area
+      And I follow "Power Management" in the content area
+     Then I click on "Get status"
+      And I should see the power is "On"
+      And I click on "Power Off"
+      And I should see a "system has been powered off" text
+      And I should see the power is "Unknown"
+     Then I click on "Get status"
+      And I should see the power is "Off"
+     Then I click on "Power On"
+      And I should see a "system has been powered on" text
+     Then I click on "Get status"
+      And I should see the power is "On"
+     Then I click on "Reboot"
+      And I should see a "system has been rebooted" text
+     Then I click on "Get status"
+      And I should see the power is "On"
+
 
     Scenario: check powermanagement in SSM
         Given I am on the Systems page
