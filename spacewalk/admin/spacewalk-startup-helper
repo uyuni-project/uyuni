@@ -45,11 +45,14 @@ fi
 
 if [ -x $LSOF ]; then
     echo "Waiting for tomcat to be ready ..."
+    RETRIES=30
     TOMCAT_PID=$(cat /var/run/$TOMCAT.pid 2>/dev/null)
     while [ -n "$TOMCAT_PID" ] ; do
         $LSOF -t -i TCP:8005 | grep "^$TOMCAT_PID$" > /dev/null \
         && $LSOF -t -i TCP:8009 | grep "^$TOMCAT_PID$" > /dev/null \
         && break
+        [ $RETRIES -gt 0 ] || break
+        ((RETRIES--))
         sleep 1
     done
 else
