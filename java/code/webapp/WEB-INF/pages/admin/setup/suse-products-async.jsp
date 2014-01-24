@@ -4,23 +4,28 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<rl:listset name="groupSet">
-  <rhn:csrf />
-  <rl:list dataset="productsList" emptykey="images.jsp.noimages">
-    <rl:column headerkey="images.jsp.name">
-      <input type="checkbox" />
-    </rl:column>
-    <rl:column headerkey="images.jsp.name" filterattr="name">
-      <c:out value="${current.name}" />
-    </rl:column>
-    <rl:column headerkey="images.jsp.arch">
-      <c:out value="${current.arch}" />
-    </rl:column>
-  </rl:list>
-</rl:listset>
+<rl:listset name="productsListSet">
+    <rhn:csrf />
+    <rhn:submitted />
+    <rl:list name="productsList"
+             dataset="productsList"
+             emptykey="suse-products.jsp.noproducts">
+        <rl:selectablecolumn value="${current.ident}"
+                             selected="${current.selected}"
+                             disabled="${not current.selectable}" />
+        <rl:column headerkey="suse-products.jsp.name"
+                   bound="true"
+                   attr="name" />
+        <rl:column headerkey="suse-products.jsp.arch"
+                   bound="true"
+                   attr="arch" />
+    </rl:list>
 
-<div align="right">
-  <hr />
-  <input type="button"
-         value="Synchronize Channels" />
-</div>
+    <div class="pull-right">
+        <hr />
+        <html:submit property="dispatch"
+                     styleClass="btn btn-success">
+            <bean:message key="suse-products.jsp.dispatch" />
+        </html:submit>
+    </div>
+</rl:listset>

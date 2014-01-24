@@ -21,8 +21,10 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import com.redhat.rhn.frontend.struts.Selectable;
+
 @Root(strict = false)
-public class Product implements Comparable<Product> {
+public class Product implements Selectable, Comparable<Product> {
 
     @Attribute
     private String arch;
@@ -41,6 +43,9 @@ public class Product implements Comparable<Product> {
 
     @Element(name="optional_channels")
     private OptionalChannels optionalChannels;
+
+    // This product is selectable
+    private boolean selected;
 
     public String getArch() {
         return arch;
@@ -76,5 +81,25 @@ public class Product implements Comparable<Product> {
             ret = this.arch.compareTo(product.getArch());
         }
         return ret;
+    }
+
+    @Override
+    public boolean isSelectable() {
+        return true;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return this.selected;
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    @Override
+    public String getSelectionKey() {
+        return this.ident;
     }
 }
