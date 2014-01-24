@@ -32,6 +32,14 @@
                            bound="true"
                            attr="email" />
             </rl:list>
+
+            <div class="pull-right">
+                <hr />
+                <html:submit property="dispatch"
+                             styleClass="btn btn-success">
+                    <bean:message key="mirror-credentials.jsp.dispatch" />
+                </html:submit>
+            </div>
         </rl:listset>
     </body>
 </html>
