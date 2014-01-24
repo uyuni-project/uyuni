@@ -1218,7 +1218,7 @@ public class ChannelFactory extends HibernateFactory {
         return ids;
     }
 
-    /*
+    /**
      * Locks the given Channel for update on a database level
      * @param c Channel to lock
      */
