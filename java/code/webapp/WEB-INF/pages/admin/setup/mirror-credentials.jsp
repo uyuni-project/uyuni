@@ -8,8 +8,11 @@
     <head>
     </head>
     <body>
-        <rhn:toolbar base="h1" icon="header-preferences">Setup Wizard</rhn:toolbar>
-        <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/setup_wizard.xml"
+        <rhn:toolbar base="h1" icon="header-preferences">
+            <bean:message key="Setup Wizard" />
+        </rhn:toolbar>
+        <rhn:dialogmenu mindepth="0" maxdepth="1"
+                        definition="/WEB-INF/nav/setup_wizard.xml"
                         renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
         <p>
             Configure your mirror credentials below.
@@ -19,15 +22,15 @@
             <rl:list name="mirrorCredsList"
                      dataset="mirrorCredsList"
                      emptykey="mirror-credentials.jsp.empty">
-                <rl:column headerkey="mirror-credentials.jsp.user">
-                    <c:out value="${current.user}" />
-                </rl:column>
-                <rl:column headerkey="mirror-credentials.jsp.password">
-                    <c:out value="${current.password}" />
-                </rl:column>
-                <rl:column headerkey="mirror-credentials.jsp.email">
-                    <c:out value="${current.email}" />
-                </rl:column>
+                <rl:column headerkey="mirror-credentials.jsp.user"
+                           bound="true"
+                           attr="user" />
+                <rl:column headerkey="mirror-credentials.jsp.password"
+                           bound="true"
+                           attr="password" />
+                <rl:column headerkey="mirror-credentials.jsp.email"
+                           bound="true"
+                           attr="email" />
             </rl:list>
         </rl:listset>
     </body>
