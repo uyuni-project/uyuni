@@ -1863,6 +1863,20 @@ tree will not be usable for autoinstalling.
       <trans-unit id="mirror-credentials.jsp.email">
         <source>Email</source>
       </trans-unit>
+
+      <!-- SUSE Products -->
+      <trans-unit id="suse-products.jsp.empty">
+        <source>No SUSE products found.</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.name">
+        <source>Name</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.arch">
+        <source>Architecture</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.dispatch">
+        <source>Sync Products</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
