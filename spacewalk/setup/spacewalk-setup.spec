@@ -76,6 +76,7 @@ install -m 0755 share/embedded_diskspace_check.py %{buildroot}/%{_datadir}/space
 install -m 0644 share/sudoers.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcat.* %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/tomcat6.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/editarea.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/context.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
