@@ -7,5 +7,5 @@ Feature: Test single system reboot confirm page
     Given I am on the Systems overview page of this client
      When I follow first "Schedule System Reboot"
      Then I should see a "System Reboot Confirmation" text
-      And I should see a "Schedule Reboot" button
+      And I should see a "Reboot system" button
       # we do not schedule a reboot during a testrun
