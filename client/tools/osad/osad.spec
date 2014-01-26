@@ -213,7 +213,7 @@ touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
 ln -sf ../../etc/init.d/osad %{buildroot}%{_sbindir}/rcosad
 ln -sf ../../etc/init.d/osa-dispatcher %{buildroot}%{_sbindir}/rcosa-dispatcher
 %else
-ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcrhnsd
+ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcosad
 ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcosa-dispatcher
 %endif
 %endif
