@@ -116,6 +116,10 @@ function copy_changed_package()
         # tarball diff or rename not necessarily implies content change!
         ttar="$tdir/$stem"
         ;;
+      *-rpmlintrc)
+	# ignore rpmlintrc files
+	continue
+	;;
       *)
 	test -f "$sdir/$stem" || {
 	  rm -f "$F"
