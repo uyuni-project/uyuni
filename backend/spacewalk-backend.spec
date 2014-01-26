@@ -37,19 +37,13 @@ BuildArch: noarch
 BuildRequires: python-mock
 BuildRequires: python-unittest2
 BuildRequires: yum
+BuildRequires: suseRegisterInfo
 
-# for pylint
-BuildRequires: spacewalk-client-tools
-BuildRequires: python-gzipstream
-BuildRequires: python-psycopg2
-BuildRequires: python(:DBAPI:oracle)
-BuildRequires: PyPAM
 %else
 BuildRequires: python-hashlib
 %endif
 
 %if 0%{?suse_version}
-BuildRequires: spacewalk-config
 Requires(pre): apache2
 PreReq:         %fillup_prereq
 %else
@@ -362,7 +356,6 @@ rm -rf $RPM_BUILD_ROOT
 export PYTHONPATH=%{buildroot}%{python_sitelib}:%{_datadir}/rhn
 # only run our unittests on versions where we have all the right BuildRequires
 %if 0%{?suse_version} >= 1100
-make -f Makefile.backend pylint
 make -f Makefile.backend unittest
 %endif
 make -f Makefile.backend test || :
