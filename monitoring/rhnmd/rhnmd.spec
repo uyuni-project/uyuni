@@ -86,9 +86,11 @@ install -m 644 rhnmd.fw $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/SuSEfirewall2.d
 %if 0%{?suse_version} >= 1210
 mkdir -p $RPM_BUILD_ROOT/%{_unitdir}
 install -m 0644 rhnmd.service $RPM_BUILD_ROOT/%{_unitdir}/
+ln -sf %{_sbindir}/service $RPM_BUILD_ROOT/%{_sbindir}/rcrhnmd
 %else
 mkdir -p $RPM_BUILD_ROOT%{_initddir}
 install -pm 0755 rhnmd.init.SUSE $RPM_BUILD_ROOT%{_initddir}/rhnmd
+ln -sf ../../etc/init.d/rhnmd $RPM_BUILD_ROOT/%{_sbindir}/rcrhnmd
 %endif
 %else
 %if 0%{?fedora}
@@ -104,8 +106,6 @@ install -pm 0644 rhnmd_config $RPM_BUILD_ROOT%{_sysconfdir}/%{np_name}/rhnmd_con
 install -pm 0600 authorized_keys $RPM_BUILD_ROOT%{_var}/lib/%{np_name}/.ssh/authorized_keys
 install -pm 0644 rhnmd-pam_config $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/rhnmd
 
-# add rclink
-ln -sf ../../etc/init.d/rhnmd $RPM_BUILD_ROOT/%{_sbindir}/rcrhnmd
 
 %pre
 if [ $1 -eq 1 ] ; then
