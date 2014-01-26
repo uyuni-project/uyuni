@@ -211,7 +211,6 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %attr(-, %{np_name},%{np_name}) %{_var}/lib/%{np_name}/.ssh/authorized_keys
 %{_var}/lib/%{np_name}/sbin/*
 %{_usr}/sbin/rhnmd
-%{_sbindir}/rcrhnmd
 %config(noreplace) %{_sysconfdir}/%{np_name}/rhnmd_config
 %if 0%{?fedora} || 0%{?suse_version} >= 1210
 %{_unitdir}/rhnmd.service
@@ -221,6 +220,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 %if 0%{?suse_version} >= 1100
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/rhnmd
+%endif
+%if 0%{?suse_version}
+%{_sbindir}/rcrhnmd
 %endif
 
 %changelog
