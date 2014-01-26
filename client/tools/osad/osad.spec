@@ -389,10 +389,10 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(755,root,root) %{_initrddir}/osad
 %endif
 %doc LICENSE
-%{_sbindir}/rcosad
 %config(noreplace) %{_sysconfdir}/logrotate.d/osad
 %ghost %attr(600,root,root) %{_var}/log/osad
 %if 0%{?suse_version}
+%{_sbindir}/rcosad
 # provide directories not owned by any package during build
 %dir %{rhnroot}
 %dir %{_sysconfdir}/sysconfig/rhn
@@ -422,9 +422,9 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn/oracle
 %attr(770,root,root) %dir %{_var}/log/rhn/oracle/osa-dispatcher
 %doc LICENSE
-%{_sbindir}/rcosa-dispatcher
 %ghost %attr(640,apache,root) %{_var}/log/rhn/osa-dispatcher.log
 %if 0%{?suse_version}
+%{_sbindir}/rcosa-dispatcher
 %dir %attr(750, root, %{apache_group}) %{_sysconfdir}/rhn
 %attr(755,root,%{apache_group}) %dir %{rhnroot}/config-defaults
 %dir %{_sysconfdir}/rhn/tns_admin
