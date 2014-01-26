@@ -205,13 +205,17 @@ mkdir -p %{buildroot}%{_var}/log/rhn
 touch %{buildroot}%{_var}/log/osad
 touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
 
-# add rclinks
-ln -sf ../../etc/init.d/osad %{buildroot}%{_sbindir}/rcosad
-ln -sf ../../etc/init.d/osa-dispatcher %{buildroot}%{_sbindir}/rcosa-dispatcher
-
 %if 0%{?suse_version}
 %py_compile %{buildroot}/%{rhnroot}
 %py_compile -O %{buildroot}/%{rhnroot}
+# add rclinks
+%if 0%{?suse_version} < 1210
+ln -sf ../../etc/init.d/osad %{buildroot}%{_sbindir}/rcosad
+ln -sf ../../etc/init.d/osa-dispatcher %{buildroot}%{_sbindir}/rcosa-dispatcher
+%else
+ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcrhnsd
+ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcosa-dispatcher
+%endif
 %endif
 
 %clean
