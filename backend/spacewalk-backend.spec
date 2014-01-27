@@ -68,7 +68,7 @@ BuildRequires: docbook-utils
 BuildRequires: spacewalk-pylint
 BuildRequires: rhnlib >= 2.5.57
 BuildRequires: rpm-python
-BuildRequires: python-crypto
+#BuildRequires: python-crypto
 BuildRequires: python-debian
 %endif
 # we don't really want to require this redhat-release, so we protect
