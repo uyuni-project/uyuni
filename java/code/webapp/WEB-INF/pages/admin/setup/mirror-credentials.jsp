@@ -31,6 +31,18 @@
                 <rl:column headerkey="mirror-credentials.jsp.email"
                            bound="true"
                            attr="email" />
+                <rl:column headerkey="mirror-credentials.jsp.actions"
+                           bound="false">
+                    <a>
+                        <rhn:icon type="item-cloud-download" title="mirror-credentials.jsp.download" />
+                    </a>
+                    <a>
+                        <rhn:icon type="item-edit" title="mirror-credentials.jsp.edit" />
+                    </a>
+                    <a>
+                        <rhn:icon type="item-del" title="mirror-credentials.jsp.delete" />
+                    </a>
+                </rl:column>
             </rl:list>
 
             <div class="pull-right">
