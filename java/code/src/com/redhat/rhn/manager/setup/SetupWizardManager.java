@@ -53,6 +53,9 @@ public class SetupWizardManager extends BaseManager {
     // NCC URL for listing subscriptions
     public final static String NCC_URL = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions";
 
+    // Maximum number of redirects that will be followed
+    private final static int MAX_REDIRECTS = 10;
+
     /**
      * Find all valid mirror credentials and return them.
      * @return List of all available mirror credentials
@@ -124,13 +127,15 @@ public class SetupWizardManager extends BaseManager {
             // Manually follow redirects as long as we get 302
             HttpClient httpclient = new HttpClient();
             int result = 0;
+            int redirects = 0;
             do {
                 if (result == 302) {
-                    // Read the redirect location from header
+                    // Prepare the redirect
                     Header locationHeader = post.getResponseHeader("Location");
                     String location = locationHeader.getValue();
                     logger.info("Got 302, following redirect to: " + location);
                     post = new PostMethod(location);
+                    redirects++;
                 }
 
                 // Execute the request
@@ -139,7 +144,7 @@ public class SetupWizardManager extends BaseManager {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Response status code: " + result);
                 }
-            } while (result == 302);
+            } while (result == 302 && redirects < MAX_REDIRECTS);
 
             // Parse the response body in case of success
             if (result == 200) {
