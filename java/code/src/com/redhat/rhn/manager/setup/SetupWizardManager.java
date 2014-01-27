@@ -15,16 +15,27 @@
 
 package com.redhat.rhn.manager.setup;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.RequestEntity;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
+import com.suse.manager.ncc.ListSubscriptions;
 
 public class SetupWizardManager extends BaseManager {
 
@@ -35,6 +46,9 @@ public class SetupWizardManager extends BaseManager {
     public final static String KEY_MIRRCREDS_USER = "server.susemanager.mirrcred_user";
     public final static String KEY_MIRRCREDS_PASS = "server.susemanager.mirrcred_pass";
     public final static String KEY_MIRRCREDS_EMAIL = "server.susemanager.mirrcred_email";
+
+    // NCC URL for listing subscriptions
+    public final static String NCC_URL = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions";
 
     /**
      * Find all valid mirror credentials and return them.
@@ -82,5 +96,55 @@ public class SetupWizardManager extends BaseManager {
         configCommand.updateString(KEY_MIRRCREDS_PASS, creds.getPassword());
         configCommand.updateString(KEY_MIRRCREDS_EMAIL, creds.getEmail());
         return configCommand.storeConfiguration();
+    }
+
+    /**
+     * Connect to NCC and return subscriptions for a given pair of credentials.
+     * @param creds the mirror credentials to use
+     */
+    public static void listSubscriptions(MirrorCredentials creds) {
+        // Setup XML to send it with the request
+        ListSubscriptions listsubs = new ListSubscriptions();
+        listsubs.setUser(creds.getUser());
+        listsubs.setPassword(creds.getPassword());
+        PostMethod post = new PostMethod(NCC_URL);
+        try {
+            // Serialize into XML
+            Serializer serializer = new Persister();
+            StringWriter xmlString = new StringWriter();
+            serializer.write(listsubs, xmlString);
+            RequestEntity entity = new StringRequestEntity(
+                    xmlString.toString(), "text/xml", "UTF-8");
+
+            // Manually follow redirects as long as we get 302
+            HttpClient httpclient = new HttpClient();
+            int result = 0;
+            do {
+                if (result == 302) {
+                    // Read the redirect location from header
+                    Header locationHeader = post.getResponseHeader("Location");
+                    String location = locationHeader.getValue();
+                    logger.info("Got 302, following redirect to: " + location);
+                    post = new PostMethod(location);
+                }
+
+                // Execute the request
+                post.setRequestEntity(entity);
+                result = httpclient.executeMethod(post);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Response status code: " + result);
+                    logger.debug("Response body:\n" + post.getResponseBodyAsString());
+                }
+            } while (result == 302);
+        } catch (HttpException e) {
+            logger.error(e.getMessage());
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        } finally {
+            logger.debug("Releasing connection");
+            post.releaseConnection();
+        }
     }
 }
