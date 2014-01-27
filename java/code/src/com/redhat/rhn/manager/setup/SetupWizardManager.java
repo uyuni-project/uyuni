@@ -51,7 +51,7 @@ public class SetupWizardManager extends BaseManager {
     public final static String KEY_MIRRCREDS_EMAIL = "server.susemanager.mirrcred_email";
 
     // NCC URL for listing subscriptions
-    public final static String NCC_URL = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions";
+    private final static String NCC_URL = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions";
 
     // Maximum number of redirects that will be followed
     private final static int MAX_REDIRECTS = 10;
