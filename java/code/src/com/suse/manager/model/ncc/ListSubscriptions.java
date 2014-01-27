@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.ncc;
+package com.suse.manager.model.ncc;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;

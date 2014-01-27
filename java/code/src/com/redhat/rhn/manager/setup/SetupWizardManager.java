@@ -36,9 +36,9 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
-import com.suse.manager.ncc.ListSubscriptions;
-import com.suse.manager.ncc.Subscription;
-import com.suse.manager.ncc.SubscriptionList;
+import com.suse.manager.model.ncc.ListSubscriptions;
+import com.suse.manager.model.ncc.Subscription;
+import com.suse.manager.model.ncc.SubscriptionList;
 
 public class SetupWizardManager extends BaseManager {
 
