@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.ncc;
+package com.suse.manager.model.ncc;
 
 import java.util.ArrayList;
 import java.util.List;
