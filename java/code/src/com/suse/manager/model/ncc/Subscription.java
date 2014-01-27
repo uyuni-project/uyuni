@@ -19,7 +19,6 @@ import org.simpleframework.xml.Element;
 
 /**
  * Class representation of a NCC subscription.
- * TODO: Add getters and setters.
  */
 public class Subscription {
 
@@ -64,4 +63,102 @@ public class Subscription {
 
     @Element(name="consumed-virtual")
     private int consumedVirtual;
+
+    /**
+     * @return the subid
+     */
+    public String getSubid() {
+        return subid;
+    }
+
+    /**
+     * @return the regcode
+     */
+    public String getRegcode() {
+        return regcode;
+    }
+
+    /**
+     * @return the subname
+     */
+    public String getSubname() {
+        return subname;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @return the substatus
+     */
+    public String getSubstatus() {
+        return substatus;
+    }
+
+    /**
+     * @return the startDate
+     */
+    public int getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * @return the endDate
+     */
+    public int getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * @return the duration
+     */
+    public int getDuration() {
+        return duration;
+    }
+
+    /**
+     * @return the serverClass
+     */
+    public String getServerClass() {
+        return serverClass;
+    }
+
+    /**
+     * @return the productClass
+     */
+    public String getProductClass() {
+        return productClass;
+    }
+
+    /**
+     * @return the productlist
+     */
+    public String getProductlist() {
+        return productlist;
+    }
+
+    /**
+     * @return the nodecount
+     */
+    public int getNodecount() {
+        return nodecount;
+    }
+
+    /**
+     * @return the consumed
+     */
+    public int getConsumed() {
+        return consumed;
+    }
+
+    /**
+     * @return the consumedVirtual
+     */
+    public int getConsumedVirtual() {
+        return consumedVirtual;
+    }
 }
