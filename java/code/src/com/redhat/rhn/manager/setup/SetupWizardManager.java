@@ -16,6 +16,7 @@
 package com.redhat.rhn.manager.setup;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
 import com.suse.manager.ncc.ListSubscriptions;
+import com.suse.manager.ncc.Subscription;
+import com.suse.manager.ncc.SubscriptionList;
 
 public class SetupWizardManager extends BaseManager {
 
@@ -101,13 +104,15 @@ public class SetupWizardManager extends BaseManager {
     /**
      * Connect to NCC and return subscriptions for a given pair of credentials.
      * @param creds the mirror credentials to use
+     * @return list of subscriptions available via the given credentials
      */
-    public static void listSubscriptions(MirrorCredentials creds) {
+    public static List<Subscription> listSubscriptions(MirrorCredentials creds) {
         // Setup XML to send it with the request
         ListSubscriptions listsubs = new ListSubscriptions();
         listsubs.setUser(creds.getUser());
         listsubs.setPassword(creds.getPassword());
         PostMethod post = new PostMethod(NCC_URL);
+        List<Subscription> subscriptions = null;
         try {
             // Serialize into XML
             Serializer serializer = new Persister();
@@ -133,9 +138,16 @@ public class SetupWizardManager extends BaseManager {
                 result = httpclient.executeMethod(post);
                 if (logger.isDebugEnabled()) {
                     logger.debug("Response status code: " + result);
-                    logger.debug("Response body:\n" + post.getResponseBodyAsString());
                 }
             } while (result == 302);
+
+            // Parse the response body in case of success
+            if (result == 200) {
+                InputStream stream = post.getResponseBodyAsStream();
+                SubscriptionList subsList = serializer.read(SubscriptionList.class, stream);
+                subscriptions = subsList.getSubscriptions();
+                logger.info("Found " + subscriptions.size() + " subscriptions");
+            }
         } catch (HttpException e) {
             logger.error(e.getMessage());
         } catch (IOException e) {
@@ -146,5 +158,6 @@ public class SetupWizardManager extends BaseManager {
             logger.debug("Releasing connection");
             post.releaseConnection();
         }
+        return subscriptions;
     }
 }
