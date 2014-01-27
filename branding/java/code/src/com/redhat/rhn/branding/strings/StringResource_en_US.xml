@@ -1863,6 +1863,18 @@ tree will not be usable for autoinstalling.
       <trans-unit id="mirror-credentials.jsp.email">
         <source>Email</source>
       </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.actions">
+        <source>Actions</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.download">
+        <source>download subscriptions</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.edit">
+        <source>edit credentials</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.delete">
+        <source>delete credentials</source>
+      </trans-unit>
       <trans-unit id="mirror-credentials.jsp.dispatch">
         <source>Store Credentials</source>
       </trans-unit>
