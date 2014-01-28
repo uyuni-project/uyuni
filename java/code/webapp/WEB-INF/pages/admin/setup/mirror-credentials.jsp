@@ -47,10 +47,9 @@
 
             <div class="pull-right">
                 <hr />
-                <html:submit property="dispatch"
-                             styleClass="btn btn-success">
+                <a class="btn btn-success" href="/rhn/admin/setup/SUSEProducts.do">
                     <bean:message key="mirror-credentials.jsp.dispatch" />
-                </html:submit>
+                </a>
             </div>
         </rl:listset>
     </body>
