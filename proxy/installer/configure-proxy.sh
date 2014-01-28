@@ -311,7 +311,8 @@ if ! [ -d $SSL_BUILD_DIR ] && [ 0$FORCE_OWN_CA -eq 0 ]; then
     exit 1
 fi
 
-default_or_input "SUSE Manager Parent" RHN_PARENT $(awk -F= '/serverURL=/ {split($2, a, "/")} END { print a[3]}' $SYSCONFIG_DIR/up2date)
+UP2DATE_FILE=$SYSCONFIG_DIR/up2date
+default_or_input "SUSE Manager Parent" RHN_PARENT $(awk -F= '/serverURL=/ {split($2, a, "/")} END { print a[3]}' $UP2DATE_FILE)
 
 if [ "$RHN_PARENT" == "rhn.redhat.com" ]; then
    RHN_PARENT="xmlrpc.rhn.redhat.com"
