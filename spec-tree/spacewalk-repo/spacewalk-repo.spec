@@ -1,7 +1,7 @@
 Summary: Spacewalk packages yum repository configuration
 Name: spacewalk-repo
-Version: 2.1.1
-Release: 1%{?dist}
+Version: 2.1
+Release: 2%{?dist}
 License: GPLv2
 Group: System Environment/Base
 # This src.rpm is cannonical upstream
@@ -34,7 +34,7 @@ rm -rf $RPM_BUILD_ROOT
 # some sane default value
 %define reposubdir      RHEL/%{rhel}
 # redefine on fedora
-%{?fedora: %define reposubdir      Fedora/\$releasever}
+%{?fedora: %define reposubdir      Fedora/\\\$releasever}
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d
 cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk.repo <<REPO
@@ -99,6 +99,12 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/yum.repos.d/spacewalk-client-nightly.repo
 
 %changelog
+* Tue Jan 28 2014 Michael Mraka <michael.mraka@redhat.com> 2.1-2
+- reverted versioning of package
+
+* Tue Jan 28 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.2-1
+- fixed variable quoting
+
 * Wed Jan 22 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.1-1
 - reverted tagger to VersionTagger
 

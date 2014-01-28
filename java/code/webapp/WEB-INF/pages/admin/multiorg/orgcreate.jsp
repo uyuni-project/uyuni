@@ -47,8 +47,6 @@
                 </div>
             </div>
 
-            <script type="text/javascript" src="/javascript/pwstrength-bootstrap-1.0.2.js"></script>
-            <script type="text/javascript" src="/javascript/spacewalk-pwstrength-handler.js"></script>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="desiredpass">
                     <bean:message key="desiredpass" />
@@ -64,7 +62,7 @@
                         <span class="input-group-addon">
                             <i class="fa fa-times-circle text-danger fa-1-5x" id="desiredtick"></i>
                         </span>
-                    </div> 
+                    </div>
                 </div>
             </div>
 
@@ -83,6 +81,15 @@
                             <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>
                         </span>
                     </div>
+                </div>
+            </div>
+
+            <script type="text/javascript" src="/javascript/pwstrength-bootstrap-1.0.2.js"></script>
+            <script type="text/javascript" src="/javascript/spacewalk-pwstrength-handler.js"></script>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Password strength:</label>
+                <div class="col-lg-6" id="pwstrenghtfield">
+                  <!-- progress-bar will attach to this container -->
                 </div>
             </div>
 
@@ -184,4 +191,3 @@
 
     </body>
 </html>
-
