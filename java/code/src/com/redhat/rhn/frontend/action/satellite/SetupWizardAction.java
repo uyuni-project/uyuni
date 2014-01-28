@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
 
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -49,22 +48,17 @@ public class SetupWizardAction extends RhnAction {
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
-        DynaActionForm form = (DynaActionForm) formIn;
+        // DynaActionForm form = (DynaActionForm) formIn;
         // RequestContext ctx = new RequestContext(request);
 
         String path = mapping.getPath();
         logger.debug("Current path: " + path);
+
         if (path.endsWith("MirrorCredentials")) {
             List<MirrorCredentials> creds = SetupWizardManager.getMirrorCredentials();
             logger.debug("Found " + creds.size() + " pairs of credentials");
             request.setAttribute(ListTagHelper.PARENT_URL, "");
             request.setAttribute(ATTRIB_MIRRCREDS_LIST, creds);
-        }
-
-        // Do nothing for now
-        if (isSubmitted(form)) {
-        }
-        else {
         }
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
