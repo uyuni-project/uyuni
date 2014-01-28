@@ -44,7 +44,11 @@ function setupPasswordStrengthMeter() {
             sequence_found: '<dl><dt><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>Your Password contains sequences</dt></dl>',
             two_character_classes: '<dl><dt><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>Use different character classes</dt></dl>'
         },
-        showVerdicts: false
+        showVerdicts: false,
+        container: '#pwstrenghtfield',
+        viewports: {
+            progress: '#pwstrenghtfield'
+        }
     };
     $('input[name="desiredpassword"]').pwstrength(options);
 }
