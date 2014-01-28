@@ -481,6 +481,8 @@ class Erratum(Information):
         'notes'             : StringType,
         'org_id'            : IntType,
         'refers_to'         : StringType,
+        'severity'          : StringType,
+        'errata_from'       : StringType,
         # These attributes are lists of objects
         'channels'          : [Channel],
         'packages'          : [IncompletePackage],
@@ -488,7 +490,6 @@ class Erratum(Information):
         'keywords'          : [Keyword],
         'bugs'              : [Bug],
         'cve'               : [StringType],
-        'errata_from'       : StringType,
     }
 
 
