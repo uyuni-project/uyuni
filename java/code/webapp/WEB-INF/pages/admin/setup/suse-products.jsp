@@ -8,7 +8,6 @@
     <head>
         <script type="text/javascript" src="/rhn/dwr/interface/ProductsRenderer.js"></script>
         <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
-        <script type="text/javascript" src="/javascript/render.js"></script>
     </head>
     <body>
         <rhn:toolbar base="h1" icon="header-preferences">
