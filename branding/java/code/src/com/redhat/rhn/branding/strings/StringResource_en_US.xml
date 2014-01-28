@@ -1876,7 +1876,7 @@ tree will not be usable for autoinstalling.
         <source>delete credentials</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.dispatch">
-        <source>Store Credentials</source>
+        <source>Configure Products</source>
       </trans-unit>
 
       <!-- SUSE Products -->
