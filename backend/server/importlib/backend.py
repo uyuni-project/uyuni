@@ -369,19 +369,21 @@ class Backend:
 
         h = self.dbmodule.prepare(sql)
 
-	if erratum['security_impact'] == '':
-	    return None
-
-        #concatenate the severity to reflect the db
-	#bz-204374: rhnErrataSeverity tbl has lower case severity values,
-	#so we convert severity in errata hash to lower case to lookup.
-        severity_label = 'errata.sev.label.' + erratum['security_impact'].lower()
+        if erratum.has_key('security_impact') and erratum['security_impact']:
+            #concatenate the severity to reflect the db
+            #bz-204374: rhnErrataSeverity tbl has lower case severity values,
+            #so we convert severity in errata hash to lower case to lookup.
+            severity_label = 'errata.sev.label.' + erratum['security_impact'].lower()
+        elif erratum.has_key('severity') and erratum['severity']:
+            severity_label = erratum['severity']
+        else:
+            return None
 
         h.execute(severity= severity_label)
         row = h.fetchone_dict()
 
         if not row:
-            raise InvalidSeverityError("Invalid severity: %s" % erratum['security_impact'])
+            raise InvalidSeverityError("Invalid severity: %s" % severity_label)
 
         return row['id']
 
