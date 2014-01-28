@@ -15,11 +15,14 @@
 
 package com.redhat.rhn.manager.setup;
 
+import com.redhat.rhn.frontend.dto.BaseDto;
+
 /**
  * Representation of a pair of mirror credentials (for either NCC or SCC).
  */
-public class MirrorCredentials {
+public class MirrorCredentials extends BaseDto {
 
+    private Long id;
     private String user;
     private String password;
     private String email;
@@ -34,6 +37,19 @@ public class MirrorCredentials {
         this.setUser(userIn);
         this.setPassword(passwordIn);
         this.setEmail(emailIn);
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Use the ranking from rhn.conf.
+     * @param the id
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**
