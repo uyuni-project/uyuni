@@ -1130,6 +1130,16 @@ class _ErratumDumper(BaseRowDumper):
         arr.append(SimpleDumper(self._writer, 'rhn-erratum-last-modified',
             _dbtime2timestamp(self._row['last_modified'])))
 
+
+        h = rhnSQL.prepare("""
+            select label
+            from rhnErrataSeverity
+            where id = :severity_id
+        """)
+        h.execute(severity_id=self._row['severity_id'])
+        arr.append(SimpleDumper(self._writer, 'rhn-erratum-severity',
+            h.fetchone_dict()['label']))
+
         h = rhnSQL.prepare("""
             select keyword
             from rhnErrataKeyword

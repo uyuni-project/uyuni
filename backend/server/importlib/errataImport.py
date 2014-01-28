@@ -303,8 +303,15 @@ class ErrataImport(GenericPackageImport):
 	# Re-check for severity, it could be a RHBA or RHEA
 	# If RHBA/RHEA severity is irrelevant and posibly
 	# not included or it could not be hosted
+        severity = None
+
         if erratum.has_key('security_impact'):
-	    erratum['severity_id'] = self.backend.lookupErrataSeverityId(erratum)
+            severity = erratum['security_impact']
+        elif erratum.has_key('severity'):
+            severity = erratum['severity']
+
+        if severity:
+            erratum['severity_id'] = self.backend.lookupErrataSeverityId(erratum)
 
     def _fix_erratum_oval_info(self, erratum):
         """
