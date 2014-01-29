@@ -1875,6 +1875,12 @@ tree will not be usable for autoinstalling.
       <trans-unit id="mirror-credentials.jsp.delete">
         <source>delete credentials</source>
       </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.success">
+        <source>credentials verified</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.failed">
+        <source>verification failed</source>
+      </trans-unit>
       <trans-unit id="mirror-credentials.jsp.dispatch">
         <source>Configure Products</source>
       </trans-unit>
