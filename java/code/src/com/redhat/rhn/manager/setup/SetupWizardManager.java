@@ -92,6 +92,29 @@ public class SetupWizardManager extends BaseManager {
     }
 
     /**
+     * Find mirror credentials for a given ID.
+     * @return pair of credentials for given ID.
+     */
+    public static MirrorCredentials findMirrorCredentials(Long id) {
+        // Generate the suffix depending on the ID
+        String suffix = "";
+        if (id > 0) {
+            suffix = "." + id;
+        }
+
+        // Get the credentials from config
+        String user = Config.get().getString(KEY_MIRRCREDS_USER + suffix);
+        String password = Config.get().getString(KEY_MIRRCREDS_PASS + suffix);
+        String email = Config.get().getString(KEY_MIRRCREDS_EMAIL + suffix);
+        MirrorCredentials creds = new MirrorCredentials(user, password, email);
+        creds.setId(id);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Credentials (" + id + "): " + user + ":" + password + ", " + email);
+        }
+        return creds;
+    }
+
+    /**
      * Store mirror credentials in the filesystem.
      * TODO: Extend this to store a given list of {@link MirrorCredentials}.
      * @param creds mirror credentials to store

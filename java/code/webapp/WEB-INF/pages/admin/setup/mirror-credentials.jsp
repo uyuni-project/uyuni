@@ -6,6 +6,14 @@
 
 <html>
     <head>
+        <script type="text/javascript" src="/rhn/dwr/interface/SubscriptionsRenderer.js"></script>
+        <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
+        <script type="text/javascript">
+            function verifyCreds(id) {
+                $("#verify-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
+                SubscriptionsRenderer.renderAsync(id, makeAjaxCallback("verify-" + id, false));
+            }
+        </script>
     </head>
     <body>
         <rhn:toolbar base="h1" icon="header-preferences">
@@ -25,17 +33,16 @@
                 <rl:column headerkey="mirror-credentials.jsp.user"
                            bound="true"
                            attr="user" />
-                <rl:column headerkey="mirror-credentials.jsp.password"
-                           bound="true"
-                           attr="password" />
                 <rl:column headerkey="mirror-credentials.jsp.email"
                            bound="true"
                            attr="email" />
                 <rl:column headerkey="mirror-credentials.jsp.actions"
                            bound="false">
-                    <a>
-                        <rhn:icon type="item-cloud-download" title="mirror-credentials.jsp.download" />
-                    </a>
+                    <span id="verify-${current.id}">
+                        <a href="javascript:void(0);" onClick="verifyCreds('${current.id}');">
+                            <rhn:icon type="item-cloud-download" title="mirror-credentials.jsp.download" />
+                        </a>
+                    </span>
                     <a>
                         <rhn:icon type="item-edit" title="mirror-credentials.jsp.edit" />
                     </a>
