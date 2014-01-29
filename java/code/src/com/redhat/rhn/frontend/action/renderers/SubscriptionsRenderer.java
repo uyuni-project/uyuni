@@ -65,13 +65,6 @@ public class SubscriptionsRenderer {
         request.setAttribute(ATTRIB_SUCCESS, success);
 
         HttpServletResponse response = webContext.getHttpServletResponse();
-        return RendererHelper.renderRequest(getPageUrl(), request, response);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected String getPageUrl() {
-        return PAGE_URL;
+        return RendererHelper.renderRequest(PAGE_URL, request, response);
     }
 }
