@@ -38,13 +38,13 @@ public class Subscription {
     private String substatus;
 
     @Element(name="start-date")
-    private int startDate;
+    private long startDate;
 
     @Element(name="end-date")
-    private int endDate;
+    private long endDate;
 
     @Element
-    private int duration;
+    private long duration;
 
     @Element(name="server-class")
     private String serverClass;
@@ -102,21 +102,21 @@ public class Subscription {
     /**
      * @return the startDate
      */
-    public int getStartDate() {
+    public long getStartDate() {
         return startDate;
     }
 
     /**
      * @return the endDate
      */
-    public int getEndDate() {
+    public long getEndDate() {
         return endDate;
     }
 
     /**
      * @return the duration
      */
-    public int getDuration() {
+    public long getDuration() {
         return duration;
     }
 
