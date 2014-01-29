@@ -57,7 +57,7 @@ public class SubscriptionsRenderer {
         // Load credentials for given ID and the subscriptions
         MirrorCredentials creds = SetupWizardManager.findMirrorCredentials(id);
         if (logger.isDebugEnabled()) {
-            logger.debug("Render subscriptions for user: " + creds.getUser());
+            logger.debug("List subscriptions: " + creds.getUser());
         }
         List<Subscription> subs = SetupWizardManager.listSubscriptions(creds);
         request.setAttribute(ATTRIB_SUCCESS, subs != null);
