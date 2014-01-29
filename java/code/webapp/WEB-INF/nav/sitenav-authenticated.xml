@@ -266,6 +266,8 @@
     <rhn-tab name="Setup Wizard" acl="user_role(satellite_admin)" url="/rhn/admin/setup/MirrorCredentials.do">
       <rhn-tab-url>/rhn/admin/setup/MirrorCredentials.do</rhn-tab-url>
       <rhn-tab-url>/rhn/admin/setup/SUSEProducts.do</rhn-tab-url>
+      <rhn-tab-url>/rhn/admin/setup/SystemGroups.do</rhn-tab-url>
+      <rhn-tab-url>/rhn/admin/setup/ActivationKeys.do</rhn-tab-url>
     </rhn-tab>
 
     <rhn-tab name="Organizations" acl="user_role(satellite_admin)" url="/rhn/admin/multiorg/Organizations.do">
