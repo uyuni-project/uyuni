@@ -33,18 +33,39 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
     }
 
     public void testGetMirrorCreds() throws Exception {
-        writeTestCredentials("testuser", "testpass", "testemail", 0);
+        writeTestCredentials("testuser0", "testpass0", "testemail0", 0);
         writeTestCredentials("testuser1", "testpass1", "testemail1", 1);
         writeTestCredentials("testuser2", "testpass2", "testemail2", 2);
         List<MirrorCredentials> credentials = SetupWizardManager.getMirrorCredentials();
         assertEquals(3, credentials.size());
+
+        for (MirrorCredentials creds : credentials) {
+            int i = credentials.indexOf(creds);
+            assertEquals("testuser" + i, creds.getUser());
+            assertEquals("testpass" + i, creds.getPassword());
+            assertEquals("testemail" + i, creds.getEmail());
+        }
     }
 
     public void testGetMirrorCredsMissing() throws Exception {
-        writeTestCredentials("testuser", "testpass", "testemail", 0);
+        writeTestCredentials("testuser0", "testpass0", "testemail0", 0);
         writeTestCredentials("testuser2", "testpass2", "testemail2", 2);
         List<MirrorCredentials> credentials = SetupWizardManager.getMirrorCredentials();
         assertEquals(1, credentials.size());
+        assertNull(SetupWizardManager.findMirrorCredentials(1));
+    }
+
+    public void testFindMirrorCreds() throws Exception {
+        writeTestCredentials("testuser0", "testpass0", "testemail0", 0);
+        writeTestCredentials("testuser1", "testpass1", "testemail1", 1);
+        writeTestCredentials("testuser2", "testpass2", "testemail2", 2);
+
+        for (int i = 0; i <= 2; i++) {
+            MirrorCredentials creds = SetupWizardManager.findMirrorCredentials(i);
+            assertEquals("testuser" + i, creds.getUser());
+            assertEquals("testpass" + i, creds.getPassword());
+            assertEquals("testemail" + i, creds.getEmail());
+        }
     }
 
     @Override
