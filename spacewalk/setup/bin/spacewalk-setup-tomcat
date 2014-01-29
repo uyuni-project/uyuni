@@ -27,9 +27,10 @@ sub java_opts {
   if (-r TOMCAT_JAVA_OPTS) {
     open F, '<', TOMCAT_JAVA_OPTS
                  or die "Error reading [" + TOMCAT_JAVA_OPTS + "]: $!\n";
-    $ret = <F>;
-    close(F);
+    $ret = join("", <F>);
     chomp($ret);
+    $ret =~ s/\n/ /gm;
+    close(F);
     $ret .= ld_library_path();
     $ret = qq{JAVA_OPTS="$ret"\n};
   }
@@ -57,7 +58,7 @@ sub ld_library_path {
   if (-r ORACLE_LDCONF) {
     open F, '<', ORACLE_LDCONF
                  or die "Error reading [" + ORACLE_LDCONF + "]: $!\n";
-    $ret = " -Djava.library.path=" . <F>;
+    $ret = ' -Djava.library.path=\${system_property:java.library.path}:' . <F>;
     chomp($ret);
     close(F);
   }

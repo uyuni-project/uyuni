@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.1.12
+Version:        2.1.13
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -70,6 +70,14 @@ rm -rf %{buildroot}
 make pure_install PERL_INSTALL_ROOT=%{buildroot}
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -type d -depth -exec rmdir {} 2>/dev/null ';'
+%if 0%{?rhel} == 5
+cat share/tomcat.java_opts.rhel5 >>share/tomcat.java_opts
+%endif
+%if 0%{?rhel} == 6
+cat share/tomcat.java_opts.rhel6 >>share/tomcat.java_opts
+%endif
+rm -f share/tomcat.java_opts.*
+
 chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0755 share/embedded_diskspace_check.py %{buildroot}/%{_datadir}/spacewalk/setup/
@@ -171,6 +179,10 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Wed Jan 29 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.13-1
+- fixed typo in library path
+- tomcat on RHEL5 and RHEL6 needs more parameters
+
 * Mon Jan 27 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.12-1
 - preserve standard library path
 
