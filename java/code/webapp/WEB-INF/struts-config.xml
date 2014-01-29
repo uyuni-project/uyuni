@@ -8641,6 +8641,28 @@
       <forward name="default"
                path="/WEB-INF/pages/admin/setup/suse-products.jsp" />
     </action>
+
+    <action path="/admin/setup/SystemGroups"
+            scope="request"
+            type="com.redhat.rhn.frontend.action.satellite.SetupWizardAction"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping"
+            parameter="dispatch">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <set-property property="acls" value="user_role(satellite_admin)" />
+      <forward name="default"
+               path="/WEB-INF/pages/admin/setup/system-groups.jsp" />
+    </action>
+
+    <action path="/admin/setup/ActivationKeys"
+            scope="request"
+            type="com.redhat.rhn.frontend.action.satellite.SetupWizardAction"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping"
+            parameter="dispatch">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <set-property property="acls" value="user_role(satellite_admin)" />
+      <forward name="default"
+               path="/WEB-INF/pages/admin/setup/activation-keys.jsp" />
+    </action>
   </action-mappings>
 
   <!-- ===================================== -->
