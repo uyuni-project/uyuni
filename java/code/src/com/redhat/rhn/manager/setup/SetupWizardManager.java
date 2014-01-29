@@ -60,7 +60,7 @@ public class SetupWizardManager extends BaseManager {
      * Find all valid mirror credentials and return them.
      * @return List of all available mirror credentials
      */
-    public static List<MirrorCredentials> getMirrorCredentials() {
+    public static List<MirrorCredentials> findMirrorCredentials() {
         List<MirrorCredentials> credsList = new ArrayList<MirrorCredentials>();
 
         // Get the main pair of credentials
@@ -70,24 +70,23 @@ public class SetupWizardManager extends BaseManager {
 
         // Add credentials as long as they have user and password
         MirrorCredentials creds;
-        int index = 0;
+        int id = 0;
         while (user != null && password != null) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Mirror Credentials: " + user + ", " + email);
+                logger.debug("Found credentials (" + id + "): " + user);
             }
 
             // Create credentials object
             creds = new MirrorCredentials(user, password, email);
-            creds.setId(new Long(index));
+            creds.setId(new Long(id));
             credsList.add(creds);
 
             // Search additional credentials with continuous enumeration
-            index++;
-            user = Config.get().getString(KEY_MIRRCREDS_USER + "." + index);
-            password = Config.get().getString(KEY_MIRRCREDS_PASS + "." + index);
-            email = Config.get().getString(KEY_MIRRCREDS_EMAIL + "." + index);
+            id++;
+            user = Config.get().getString(KEY_MIRRCREDS_USER + "." + id);
+            password = Config.get().getString(KEY_MIRRCREDS_PASS + "." + id);
+            email = Config.get().getString(KEY_MIRRCREDS_EMAIL + "." + id);
         }
-
         return credsList;
     }
 
@@ -96,7 +95,7 @@ public class SetupWizardManager extends BaseManager {
      * @return pair of credentials for given ID.
      */
     public static MirrorCredentials findMirrorCredentials(long id) {
-        // Generate the suffix depending on the ID
+        // Generate suffix depending on the ID
         String suffix = "";
         if (id > 0) {
             suffix = "." + id;
@@ -108,11 +107,13 @@ public class SetupWizardManager extends BaseManager {
         String email = Config.get().getString(KEY_MIRRCREDS_EMAIL + suffix);
         MirrorCredentials creds = null;
         if (user != null && password != null) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Found credentials (" + id + "): " + user);
+            }
+
+            // Create credentials object
             creds = new MirrorCredentials(user, password, email);
             creds.setId(id);
-            if (logger.isDebugEnabled()) {
-                logger.debug("Credentials (" + id + "): " + user + ", " + email);
-            }
         }
         return creds;
     }

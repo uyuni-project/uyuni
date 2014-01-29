@@ -55,7 +55,7 @@ public class SetupWizardAction extends RhnAction {
         logger.debug("Current path: " + path);
 
         if (path.endsWith("MirrorCredentials")) {
-            List<MirrorCredentials> creds = SetupWizardManager.getMirrorCredentials();
+            List<MirrorCredentials> creds = SetupWizardManager.findMirrorCredentials();
             logger.debug("Found " + creds.size() + " pairs of credentials");
             request.setAttribute(ListTagHelper.PARENT_URL, "");
             request.setAttribute(ATTRIB_MIRRCREDS_LIST, creds);
