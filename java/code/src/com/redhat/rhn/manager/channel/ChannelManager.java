@@ -2827,10 +2827,15 @@ public class ChannelManager extends BaseManager {
 
     /**
      * List SUSE products in a given channel.
+     * @deprecated only for SLE11 repositories
+     *     This method is used to generate products.xml in repomd metadata.
+     *     This is only needed for SLE11. Beginning with SLE12
+     *     the data are in the package provides and no extra metadata file
+     *     is needed.
      * @param channel channel
-     * @return result
+     * @return only SLE11 products
      */
-    public static DataResult listSuseProductsInChannel(Channel channel) {
+    @Deprecated public static DataResult listSuseProductsInChannel(Channel channel) {
         String mode = "suse_products_in_channel";
         Map params = new HashMap();
         params.put("channel_id", channel.getId());
