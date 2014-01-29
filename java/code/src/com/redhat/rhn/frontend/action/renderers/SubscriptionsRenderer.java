@@ -36,6 +36,7 @@ import com.suse.manager.model.ncc.Subscription;
  */
 public class SubscriptionsRenderer {
 
+    // The logger for this class
     private static Logger logger = Logger.getLogger(SubscriptionsRenderer.class);
 
     // Attribute keys
@@ -45,25 +46,24 @@ public class SubscriptionsRenderer {
     private static final String PAGE_URL = "/WEB-INF/pages/admin/setup/mirror-credentials-async.jsp";
 
     /**
-     * {@inheritDoc}
+     * Get subscriptions for credentials and asynchronously render the page fragment.
      * @throws IOException 
      * @throws ServletException 
      */
     public String renderAsync(Long id) throws ServletException, IOException {
-        logger.debug("renderAsync() for id " + id);
-
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
 
-        // Load credentials for given ID
+        // Load credentials for given ID and the subscriptions
         MirrorCredentials creds = SetupWizardManager.findMirrorCredentials(id);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Render subscriptions for user: " + creds.getUser());
+        }
         List<Subscription> subs = SetupWizardManager.listSubscriptions(creds);
-        boolean success = subs != null;
-        logger.debug("success = " + success);
+        request.setAttribute(ATTRIB_SUCCESS, subs != null);
+
         // Set the "parentUrl" for the form (in rl:listset)
         request.setAttribute(ListTagHelper.PARENT_URL, "");
-        request.setAttribute(ATTRIB_SUCCESS, success);
-
         HttpServletResponse response = webContext.getHttpServletResponse();
         return RendererHelper.renderRequest(PAGE_URL, request, response);
     }
