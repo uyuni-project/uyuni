@@ -73,7 +73,7 @@ public class SetupWizardManager extends BaseManager {
         int index = 0;
         while (user != null && password != null) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Mirror Credentials: " + user + ":" + password + ", " + email);
+                logger.debug("Mirror Credentials: " + user + ", " + email);
             }
 
             // Create credentials object
@@ -95,7 +95,7 @@ public class SetupWizardManager extends BaseManager {
      * Find mirror credentials for a given ID.
      * @return pair of credentials for given ID.
      */
-    public static MirrorCredentials findMirrorCredentials(Long id) {
+    public static MirrorCredentials findMirrorCredentials(long id) {
         // Generate the suffix depending on the ID
         String suffix = "";
         if (id > 0) {
@@ -106,10 +106,13 @@ public class SetupWizardManager extends BaseManager {
         String user = Config.get().getString(KEY_MIRRCREDS_USER + suffix);
         String password = Config.get().getString(KEY_MIRRCREDS_PASS + suffix);
         String email = Config.get().getString(KEY_MIRRCREDS_EMAIL + suffix);
-        MirrorCredentials creds = new MirrorCredentials(user, password, email);
-        creds.setId(id);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Credentials (" + id + "): " + user + ":" + password + ", " + email);
+        MirrorCredentials creds = null;
+        if (user != null && password != null) {
+            creds = new MirrorCredentials(user, password, email);
+            creds.setId(id);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Credentials (" + id + "): " + user + ", " + email);
+            }
         }
         return creds;
     }
