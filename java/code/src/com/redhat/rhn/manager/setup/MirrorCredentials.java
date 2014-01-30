@@ -33,10 +33,10 @@ public class MirrorCredentials extends BaseDto {
      * @param passwordIn
      * @param emailIn
      */
-    public MirrorCredentials(String userIn, String passwordIn, String emailIn) {
+    public MirrorCredentials(String emailIn, String userIn, String passwordIn) {
+        this.setEmail(emailIn);
         this.setUser(userIn);
         this.setPassword(passwordIn);
-        this.setEmail(emailIn);
     }
 
     @Override

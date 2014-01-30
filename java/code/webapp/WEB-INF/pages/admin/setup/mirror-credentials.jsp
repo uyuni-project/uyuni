@@ -9,10 +9,23 @@
         <script type="text/javascript" src="/rhn/dwr/interface/SubscriptionsRenderer.js"></script>
         <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
         <script type="text/javascript">
-            function verifyCreds(id) {
-                $("#verify-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
-                SubscriptionsRenderer.renderAsync(id, makeAjaxCallback("verify-" + id, false));
-            }
+          function addCredentials() {
+            // Read values
+            var email = $('#new-creds-email').val();
+            var user = $('#new-creds-user').val();
+            var password = $('#new-creds-password').val();
+            // Empty input fields
+            $('#new-creds-email').val("");
+            $('#new-creds-user').val("");
+            $('#new-creds-password').val("");
+            SubscriptionsRenderer.addCredentials(email, user, password,
+                makeAjaxCallback("listset-container", false));
+          }
+          function downloadSubscriptions(id) {
+            $("#subscriptions-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
+            SubscriptionsRenderer.renderSubscriptions(id,
+                makeAjaxCallback("subscriptions-" + id, false));
+          }
         </script>
     </head>
     <body>
@@ -23,41 +36,31 @@
                         definition="/WEB-INF/nav/setup_wizard.xml"
                         renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
         <p>
-            Configure your mirror credentials below.
+            Please configure your mirror credentials below.
         </p>
-        <rl:listset name="mirrorCredsListSet">
-            <rhn:csrf />
-            <rl:list name="mirrorCredsList"
-                     dataset="mirrorCredsList"
-                     emptykey="mirror-credentials.jsp.empty">
-                <rl:column headerkey="mirror-credentials.jsp.user"
-                           bound="true"
-                           attr="user" />
-                <rl:column headerkey="mirror-credentials.jsp.email"
-                           bound="true"
-                           attr="email" />
-                <rl:column headerkey="mirror-credentials.jsp.actions"
-                           bound="false">
-                    <span id="verify-${current.id}">
-                        <a href="javascript:void(0);" onClick="verifyCreds('${current.id}');">
-                            <rhn:icon type="item-cloud-download" title="mirror-credentials.jsp.download" />
-                        </a>
-                    </span>
-                    <a>
-                        <rhn:icon type="item-edit" title="mirror-credentials.jsp.edit" />
-                    </a>
-                    <a>
-                        <rhn:icon type="item-del" title="mirror-credentials.jsp.delete" />
-                    </a>
-                </rl:column>
-            </rl:list>
-
-            <div class="pull-right">
-                <hr />
-                <a class="btn btn-success" href="/rhn/admin/setup/SUSEProducts.do">
-                    <bean:message key="mirror-credentials.jsp.dispatch" />
-                </a>
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="text" class="form-control" id="new-creds-email" placeholder="Email" />
             </div>
-        </rl:listset>
+            <div class="form-group">
+                <input type="text" class="form-control" id="new-creds-user" placeholder="Username" />
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="new-creds-password" placeholder="Password" />
+            </div>
+            <button class="btn btn-default" type="button" onClick="addCredentials();">Add</button>
+        </form>
+        <div id="listset-container">
+            <i class='fa fa-spinner fa-spin'></i><span>Loading ...</span>
+            <script>
+                SubscriptionsRenderer.renderCredentials(makeAjaxCallback("listset-container", false));
+            </script>
+        </div>
+        <div class="pull-right">
+            <hr />
+            <a class="btn btn-success" href="/rhn/admin/setup/SUSEProducts.do">
+                <bean:message key="mirror-credentials.jsp.dispatch" />
+            </a>
+        </div>
     </body>
 </html>
